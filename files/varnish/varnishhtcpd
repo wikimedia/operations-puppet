@@ -1,0 +1,272 @@
+#!/usr/bin/perl
+
+# varnishhtpcd      Translates multicast htcp to varnish local http purge
+#
+# chkconfig: - 90 10
+# description: HTCP2Varnish purger
+
+#
+# Released under some license as perl AL || GPL
+#
+# Requires the second patch at http://varnish.projects.linpro.no/ticket/265
+#
+
+
+use strict;
+use URI;
+use warnings;
+
+use Socket;
+use IO::Socket;
+use LWP::UserAgent;
+
+my $ip_add_membership;
+if($^O eq 'linux') {
+    $ip_add_membership = 35;
+} else {
+    die "no constants for non linux platforms";
+}
+
+use Working::Daemon;
+my $daemon = Working::Daemon->new();
+
+$daemon->parse_options(
+    'mcast_port=i' => 4827 => "htcp multicast port to listen to",
+    'mcast_address=s' => "224.0.0.85" => "htcp multicast port",
+    'cache=s@' => [] => 'Where to purge',
+    'cport=i' => 80 => "Port for local cache to purge",
+    'address=s'=> '0.0.0.0' => 'Interface to listen to',
+    'debug'    => 0 =>  "Debugging",
+    );
+
+
+
+$daemon->do_action;
+use Data::Dumper;
+print Dumper($daemon->options);
+
+use threads;
+use threads::shared;
+my %servers;
+my %servers_count_success : shared;
+my %servers_count_fail : shared;
+my @errors : shared;
+use Thread::Queue;
+
+foreach my $cache (@{$daemon->options->{cache}}) {
+    my $queue = $servers{$cache}->{queue} = Thread::Queue->new;
+    $servers{$cache}->{thread} = threads->create(\&worker, $cache, $queue);
+}
+
+my $cport = $daemon->options->{cport};
+my $admin = threads->create(sub {
+    my $sock = IO::Socket::INET->new
+        (Listen    => 5,
+         LocalAddr => 'localhost',
+         LocalPort => 9001,
+         Proto     => 'tcp',
+         Reuse     => 1
+        );
+    while(my $connection = $sock->accept) {
+	$connection->print("# Server\tPending\tDelivered\tFailed\n");
+	foreach my $server (keys %servers) {
+	    $connection->print("$server: \t" . $servers{$server}->{queue}->pending . "\t$servers_count_success{$server}\t$servers_count_fail{$server}\n");
+	}
+	$connection->print("#######   ERRORS  ##########\n");
+	$connection->print(@errors);
+        close($connection);
+    }
+    		});
+
+
+sub worker {
+    my ($cache, $queue) = @_;
+    print "Starting worker for $cache\n";
+    $servers_count_success{$cache} = 0;
+    $servers_count_fail{$cache} = 0;
+    my $ua = LWP::UserAgent->new(keep_alive => 1);
+    $ua->agent("HTCP Purger");
+    $ua->proxy('http', "http://$cache/");
+    while(my $url = $queue->dequeue) {
+	my $uri = URI->new($url);
+	my $req = HTTP::Request->new(PURGE => "$uri");
+	$req->header("Accept-Encoding" => 'gzip');
+	
+	my $res = $ua->request($req);
+	if($res->is_success()) {
+	    #warn "Purged $uri\n";
+	    $servers_count_success{$cache}++;
+	} else {
+	    #warn "Purging $uri failed: @{[$res->status_line]}\n";
+	    $servers_count_fail{$cache}++;
+	    lock(@errors);
+	    if (@errors > 20) {
+		pop @errors;
+	    }
+	    my $error = scalar gmtime;
+	    $error .= " $cache: '@{[$res->status_line]}' $uri\n";
+	    push @errors, $error;
+	}
+    }
+}
+
+
+my $listen = IO::Socket::INET->new(
+                                   LocalPort => $daemon->options->{'mcast_port'},
+                                   Type      => SOCK_DGRAM,
+                                   Proto     => 'udp',
+                                   ) || die;
+
+
+setsockopt($listen, 0, $ip_add_membership,,
+           pack("a4 a4", inet_aton($daemon->options->{'mcast_address'}), inet_aton($daemon->options->{address})))
+    || die "IP_ADD_MEMBERSHIP: $!"; 
+
+while(1) {
+  my $raw;
+  my ($len, $datalen, $op, $id, $specifier,$extra);
+  my ($method, $url, $version, $nr3);
+  eval {
+    $0 = $daemon->name . " worker - waiting for net";
+
+    (my $peer = recv($listen, $raw, 4096, 0)) || die "recv: $!";
+    my ($port, $addr) = sockaddr_in($peer);
+
+    # reverse engineered from mediawiki SquidUpdate.php
+    ($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);    
+    ($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier); 
+    
+    $0 = $daemon->name ." worker - purging $url";
+
+    foreach my $server (values %servers) {
+	$server->{queue}->enqueue("$url");
+    }
+
+  };
+  if($@) {
+    no warnings;
+    warn "$@\n";
+    warn "$len, $datalen, $op, $id, $specifier,$extra\n";
+    warn "$method, $url, $version, $nr3\n";
+  }
+}
+
+exit;
+__END__
+
+
+
+my $ua = LWP::UserAgent->new(keep_alive => 1);
+$ua->agent("HTCP Purger");
+$ua->proxy('http', "http://$config{cache}:$cport/");
+my $req = HTTP::Request->new(PURGE => "http://$config{cache}/lvscheck.html");
+$req->header(PurgeURL => "xx");
+my $res = $ua->request($req);
+if($res->code != 200) {
+    die "FAILED @{[$res->status_line]}\n";    
+}
+
+# these are just so those functions are autoloaded
+$res->status_line;
+$res->is_success;
+$res->is_error;
+
+
+{
+    mkdir ("/tmp/varnishhtcpd.$$") || die;
+    chown($uid,$gid, "/tmp/varnishhtcpd.$$") || die;
+    chroot("/tmp/varnishhtcpd.$$") || die;
+    chdir("/");
+    drop_privs();
+    mkdir ("/etc") || die;
+    open(my $protocol, "+>/etc/protocols") || die;
+    print $protocol "tcp     6       TCP\n";
+    close($protocol);
+}
+
+while(1) {
+  my $raw;
+  my ($len, $datalen, $op, $id, $specifier,$extra);
+  my ($method, $url, $version, $nr3);
+  eval {
+    $0 = "$config{name} worker - waiting for net";
+    (my $peer = recv($listen, $raw, 512, 0)) || die "recv: $!";
+    my ($port, $addr) = sockaddr_in($peer);
+    
+    # reverse engineered from mediawiki SquidUpdate.php
+    
+    ($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
+    
+    ($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier); 
+    
+    $0 = "$config{name} worker - purging $url";
+    print "$0\n";
+ #   return  unless($url =~/communitytest.wikia.com/);
+    print "Got [[[$url]]] from " . inet_ntoa($addr) . ":$port\n";
+    my $uri = URI->new($url);
+    warn "$url";
+    warn $uri->path_query;
+    warn $uri->host;
+    my $hashed_url = $uri->path_query . "#" . $uri->host . "#";
+    $hashed_url =~ s/\?/\\?/;
+    my $req = HTTP::Request->new(PURGE => "$uri");
+    $req->header("Accept-Encoding" => 'gzip');
+    $req->header(PurgeURL => "$hashed_url");
+    my $res = $ua->request($req);
+    if($res->is_success()) {
+	warn "PURGED";
+    } else {
+	warn "FAILED @{[$res->status_line]}\n";
+    }
+
+  };
+  if($@) {
+    no warnings;
+    warn "$@\n";
+    warn "$len, $datalen, $op, $id, $specifier,$extra\n";
+    warn "$method, $url, $version, $nr3\n";
+    mylog(1, 'alert', "$@");
+    mylog(1, 'alert', "$len, $datalen, $op, $id, $specifier,$extra");
+    mylog(1, 'alert', "$method, $url, $version, $nr3");
+  }
+}
+
+exit;
+
+sub daemonize {
+  use POSIX qw(setsid);
+  defined(my $pid = fork) || die "Can't fork: $!";
+  if ($pid) {
+    print "$config{name} started on $pid\n";
+    exit 0;
+  }
+  setsid() || die "Can't start a new session: $!";
+  open (STDIN , '/dev/null') || die "Can't read /dev/null: $!";
+  open (STDOUT, '>/dev/null') || die "Can't write to /dev/null: $!";
+  open (STDERR, '>/dev/null') || die "Can't write to /dev/null: $!";
+
+}
+
+sub mylog {
+  my ($level, $prio, $msg) = @_;
+  return 1 if ($level > $config{loglevel});
+  if ($config{syslog}) {
+    syslog($prio, $msg) || die "$!";
+  } else {
+    print STDERR "$prio - $msg\n";
+  }
+}
+    
+
+
+
+sub drop_privs {
+  # drop user to nobody
+  $< = $uid;
+  $> = $uid;
+  # drop group to nobody
+  $( = $gid;
+  $) = $gid;
+}
+
+1;

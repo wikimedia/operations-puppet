@@ -1,0 +1,61 @@
+# This file is managed by puppet - don't edit it locally!
+#
+# PowerDNS configuration file for package wikimedia-task-dns-auth
+# Written on 2006/12/13 by Mark Bergsma <mark@wikimedia.org>
+
+# Always bind to specific addresses - pdns complains when using INADDR_ANY.
+# Change this to the external interface address
+local-address=<%= dns_auth_ipaddress %>
+query-local-address=<%= dns_auth_ipaddress %>
+
+# Change this to the actual SOA name:
+default-soa-name=<%= dns_auth_soa_name %>
+
+# A backend like geobackend can't make use of caching, since returned
+# results will be different depending on "who's asking".
+query-cache-ttl=0
+cache-ttl=0
+negquery-cache-ttl=300
+
+# If just geobackend is used, multithreading is unnecessary,
+# and may even impact performance.
+distributor-threads=1
+
+# We are not using wildcards
+wildcards=no
+
+# Master for allowing AXFRs
+master=yes
+slave=no
+
+# Running privileged is unnecessary
+setgid=pdns
+setuid=pdns
+
+# Logging
+logging-facility=6
+loglevel=6
+query-logging=no
+log-dns-details=no
+
+# Backends to load
+launch=pipe,bind,geo
+
+# Bind backend configuration
+bind-config=/etc/powerdns/bind.conf
+
+# Geobackend configuration
+geo-zone=wikimedia.org
+geo-soa-values=ns0.wikimedia.org,hostmaster@wikimedia.org
+geo-ns-records=ns0.wikimedia.org,ns1.wikimedia.org,ns2.wikimedia.org
+geo-ip-map-zonefile=/etc/powerdns/ip-map/zz.countries.nerd.dk.rbldnsd
+geo-maps=/etc/powerdns/geomaps/
+geo-ttl=600
+geo-ns-ttl=600
+
+# Pipe backend configuration
+pipe-command=/usr/local/lib/selective-answer.py
+pipe-timeout=10000
+pipe-regex=^upload\.esams\.wikimedia\.org;(A|AAAA|TXT|ANY)$
+pipebackend-abi-version=2
+

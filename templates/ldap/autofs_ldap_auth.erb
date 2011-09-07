@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<autofs_ldap_sasl_conf
+        usetls="yes"
+        tlsrequired="yes"
+        authrequired="yes"
+        authtype="PLAIN"
+	user="dn:cn=proxyagent,ou=profile,<%= basedn %>"
+	secret="<%= proxypass %>"
+/>

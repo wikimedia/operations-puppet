@@ -1,0 +1,53 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/sudo/sudoers.search
+#####################################################################
+
+# sudoers file.
+#
+# See the sudoers man page for the details on how to write a sudoers file.
+
+# User alias specification
+User_Alias      ADMINS = %wikidev
+User_Alias      WIKIUSER = apache,%wikidev
+
+# Cmnd alias specification
+Cmnd_Alias	ADMIN_COMMANDS = \
+	/usr/sbin/apache2ctl, \
+	/etc/init.d/apache2, \
+	/usr/sbin/scap-2, \
+	/usr/sbin/set-group-write2, \
+	/usr/sbin/install-common, \
+	/home/wikipedia/sbin/scap-2, \
+	/home/wikipedia/sbin/apache-kill-it, \
+	/home/wikipedia/sbin/sync-common-it, \
+	/home/wikipedia/sbin/sync-common-php, \
+        /home/wikipedia/sbin/scap15-2, \
+	/home/wikipedia/sbin/unscap-2, \
+	/home/wikipedia/sbin/set-group-write2, \
+	/usr/bin/renice
+	
+# User privilege specification
+root	ALL=(ALL) ALL
+ADMINS  ALL= NOPASSWD: ADMIN_COMMANDS
+WIKIUSER    ALL=NOPASSWD: /home/wikipedia/sbin/wikiuser_pass_real
+
+# Allow admins to run commands as apache
+ADMINS	ALL = (apache,mwdeploy) NOPASSWD: ALL
+
+Cmnd_Alias      SEARCH = \
+			/etc/init.d/lsearchd, \
+			/usr/bin/jstack
+rainman         ALL=NOPASSWD: SEARCH
+
+# Uncomment to allow people in group wheel to run all commands
+# %wheel	ALL=(ALL)	ALL
+
+# Same thing without a password
+# %wheel	ALL=(ALL)	NOPASSWD: ALL
+
+# Samples
+# %users  ALL=/sbin/mount /cdrom,/sbin/umount /cdrom
+# %users  localhost=/sbin/shutdown -h now
+
+nagios ALL=NOPASSWD: /usr/bin/check-raid.py ""

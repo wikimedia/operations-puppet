@@ -1,0 +1,4 @@
+[search]
+path = /a/search/indexes
+comment = Lucene Search 2 index data
+read only

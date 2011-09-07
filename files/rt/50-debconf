@@ -1,0 +1,13 @@
+# THE BASICS:
+
+Set($rtname, 'wikimedia');
+Set($Organization, 'rt.wikimedia.org');
+
+Set($CorrespondAddress , 'correspond@rt.wikimedia.org');
+Set($CommentAddress , 'comment@rt.wikimedia.org');
+
+# THE WEBSERVER:
+
+Set($WebPath , "");
+Set($WebBaseURL , "http://rt.wikimedia.org");
+

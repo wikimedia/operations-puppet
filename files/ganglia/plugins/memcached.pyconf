@@ -1,0 +1,52 @@
+modules {
+	module {
+		name = "memcache"
+		language = "python"
+		path = "memcache.py"
+	}
+}
+
+collection_group {
+	collect_every = 15
+	time_threshold = 15
+
+        metric {
+                name = 'curr_connectons'
+                title = 'Number of clients connected'
+        }
+
+        metric {
+                name = 'evictions'
+                title = 'Number of valid items removed from cache to free memoy for new items'
+        }
+
+        metric {
+                name = 'threads'
+                title = 'Number of worker threads requested'
+        }
+
+        metric {
+                name = 'cmd_flush'
+                title = 'Number of times flush_all has been called'
+        }
+
+        metric {
+                name = 'listen_disabled_num'
+                title = 'Number of times memcached has hit connection limit'
+        }
+
+        metric {
+                name = 'curr_items'
+                title = 'Current number of items stored'
+        }
+
+        metric {
+                name = 'global_hitrate'
+                title = 'Percentage of hits vs misses (get_hits / (get_hits + get_misses))'
+        }
+
+        metric {
+                name = 'bytes'
+                title = 'Current number of bytes used to store items'
+        }
+}

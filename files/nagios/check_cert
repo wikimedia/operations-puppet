@@ -1,0 +1,44 @@
+#!/usr/bin/python
+import socket
+import ssl
+import time
+import datetime
+import sys
+from optparse import OptionParser
+
+parser = OptionParser(conflict_handler="resolve")
+parser.set_usage("check_cert <hostname> <port> <CAfile>\nExample: check_cert secure.wikimedia.org 443 Equifax_Secure_CA.pem")
+(options, args) = parser.parse_args()
+
+if len(args) != 3:
+    parser.error("check_cert requires exactly 3 arguments.\n")
+    sys.exit(3)
+
+HOST = args[0]
+PORT = int(args[1])
+
+sock = socket.socket()
+sock.connect((HOST, PORT))
+
+# It is required to check for validity to pull the peer cert
+sock = ssl.wrap_socket(sock,
+    cert_reqs = ssl.CERT_REQUIRED,
+    ca_certs = "/etc/ssl/certs/" + args[2]
+    )
+cert = sock.getpeercert()
+
+expire = datetime.datetime(*time.strptime(cert['notAfter'], "%b %d %H:%M:%S %Y GMT")[0:5])
+# Send a warning if the cert expires in the next four weeks
+yellow = expire + datetime.timedelta(weeks=-4)
+# Send a critical warning if the cert expires in the next week
+red = expire + datetime.timedelta(weeks=-1)
+EpochSeconds = time.mktime((datetime.datetime.utcnow()).timetuple())
+now = datetime.datetime.fromtimestamp(EpochSeconds)
+
+if now > yellow:
+    if now > red:
+        sys.exit(2)
+    sys.exit(1)
+
+# Cert is still good
+sys.exit(0)

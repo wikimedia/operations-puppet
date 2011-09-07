@@ -1,0 +1,12 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/squid/squid-frontend
+#####################################################################
+
+#
+# /etc/default/squid-frontend    Configuration settings for the Squid proxy server.
+#
+
+# Max. number of filedescriptors to use. You can increase this on a busy
+# cache to a maximum of (currently) 65536 filedescriptors. Default is 32768.
+SQUID_MAXFD=65536

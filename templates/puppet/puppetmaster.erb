@@ -1,0 +1,51 @@
+
+# you probably want to tune these settings
+PassengerHighPerformance on
+PassengerMaxPoolSize 4
+PassengerPoolIdleTime 1500
+# PassengerMaxRequests 1000
+PassengerStatThrottleRate 120
+RackAutoDetect Off
+RailsAutoDetect Off
+
+<VirtualHost <%= puppet_passenger_bind_address %>:8140>
+	<% if has_variable?("puppet_passenger_allow_from") then %><Location />
+	Order Allow,Deny
+	Allow from <%= puppet_passenger_allow_from %>
+	</Location><% end %>
+
+        SSLEngine on
+        SSLProtocol -ALL +SSLv3 +TLSv1
+        SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+	<% if puppet_environment_type == "labs" %>
+	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
+	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
+        SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
+        SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
+        # If Apache complains about invalid signatures on the CRL, you can try disabling
+        # CRL checking by commenting the next line, but this is not recommended.
+	SSLCARevocationPath     /var/lib/puppet/server/ssl/crl/
+	<% else %>
+	SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
+	SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+        SSLCertificateChainFile /var/lib/puppet/ssl/ca/ca_crt.pem
+        SSLCACertificateFile    /var/lib/puppet/ssl/ca/ca_crt.pem
+        # If Apache complains about invalid signatures on the CRL, you can try disabling
+        # CRL checking by commenting the next line, but this is not recommended.
+	SSLCARevocationPath     /var/lib/puppet/ssl/crl/
+	<% end %>
+	SSLVerifyClient <%= puppet_passenger_verify_client %>
+        SSLVerifyDepth  1
+        SSLOptions +StdEnvVars
+
+        DocumentRoot /usr/share/puppet/rack/puppetmasterd/public/
+        RackBaseURI /
+        <Directory /usr/share/puppet/rack/puppetmasterd/>
+                Options None
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+</VirtualHost>
+

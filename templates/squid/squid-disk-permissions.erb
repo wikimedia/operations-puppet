@@ -1,0 +1,8 @@
+########################################################################
+## This file is managed by puppet.  Please do not make local changes. ##
+#######    puppt://templates/squid/squid-disk-permissions.erb    #######
+########################################################################
+<% squid_coss_disks.each do |disk| -%> 
+SUBSYSTEM=="block", KERNEL=="<%= disk %>", GROUP="proxy"
+<% end -%>
+

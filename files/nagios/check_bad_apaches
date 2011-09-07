@@ -1,0 +1,4 @@
+#!/bin/bash
+#tail -n 2000000 /var/log/remote/remote | (egrep Segmentationn\|Allowedd | awk '{print $4}' | sort | uniq -c | awk '$1>10 { print $2}' ) && exit 2 || exit 0
+tail -n 2000000 /home/w/syslog/apache.log | (egrep Segmentationn\|Allowedd | awk '{print $4}' | sort | uniq -c | awk '$1>10 { print $2}' )
+

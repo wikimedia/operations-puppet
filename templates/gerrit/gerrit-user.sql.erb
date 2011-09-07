@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_user') %>'@'%' IDENTIFIED BY '<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_pass') %>';
+GRANT ALL PRIVILEGES ON <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>.* to '<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_user') %>'@'%';

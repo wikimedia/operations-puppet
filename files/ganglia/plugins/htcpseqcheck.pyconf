@@ -1,0 +1,61 @@
+# Ganglia Python gmond module configuration file
+
+modules {
+  module {
+    name = "htcpseqcheck"
+    language = "python"
+
+	param multicast_group {
+	  value = "239.128.0.112"
+	}
+	
+	param port {
+	  value = 4827
+	}
+  }
+}
+
+collection_group {
+  collect_every = 15
+  time_threshold = 15
+
+  metric {
+    name = "htcp_losspct"
+    title = "HTCP packet loss percentage"
+  }
+
+  metric {
+    name = "htcp_dequeued"
+    title = "Dequeued HTCP packets"
+  }
+
+  metric {
+    name = "htcp_dups"
+    title = "Duplicate HTCP packets"
+  }
+
+  metric {
+    name = "htcp_ancient"
+    title = "Ancient HTCP packets"
+  }
+
+  metric {
+    name = "htcp_received"
+    title = "Received HTCP packets"
+  }
+
+  metric {
+    name = "htcp_sources"
+    title = "Unique HTCP senders"
+  }
+
+  metric {
+    name = "htcp_lost"
+    title = "Lost HTCP packets"
+  }
+
+  metric {
+    name = "htcp_outoforder"
+    title = "HTCP packets received out-of-order"
+  }
+}

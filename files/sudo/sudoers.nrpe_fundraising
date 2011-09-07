@@ -1,0 +1,2 @@
+nagios  ALL = (root) NOPASSWD: /opt/fundraising-misc/monitoring/nagios/check_subdir_limit
+nagios  ALL = (root) NOPASSWD: /usr/local/bin/check_subdir_limit

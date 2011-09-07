@@ -1,0 +1,39 @@
+#!/bin/bash
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/powerdns/recursorstats/scripts/update
+#####################################################################
+
+#SOCKETDIR=/home/ahu/work/pdns/pdns/pdns/    
+SOCKETDIR=/var/run/
+
+TSTAMP=$(date +%s)
+
+VARIABLES="questions tcp-questions cache-entries concurrent-queries\
+	   nxdomain-answers noerror-answers\
+	   servfail-answers tcp-outqueries\
+	   outgoing-timeouts nsspeeds-entries negcache-entries all-outqueries throttled-out\
+	   cache-hits cache-misses answers0-1 answers1-10 answers10-100 answers100-1000 answers-slow\
+	qa-latency throttle-entries sys-msec user-msec unauthorized-udp unauthorized-tcp client-parse-errors\
+	server-parse-errors"
+
+UVARIABLES=$(echo $VARIABLES | tr '[a-z]' '[A-Z]' | tr - _ )
+
+rec_control --socket-dir=$SOCKETDIR  GET $VARIABLES |
+(
+  for a in $UVARIABLES
+  do
+	  read $a
+  done
+  rrdtool update pdns_recursor.rrd \
+	-t \
+	$(for a in $VARIABLES 
+	do
+		echo -n $a:
+	done | sed 's/:$//' ) \
+$TSTAMP$(
+	for a in $UVARIABLES
+	do
+		echo -n :${!a}
+	done)
+)

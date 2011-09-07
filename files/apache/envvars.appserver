@@ -1,0 +1,20 @@
+# Wikimedia configuration file, a hook into apache2ctl
+# This file is managed by Puppet!
+# vim: ft=sh :
+
+# Set nice level
+HTTPD="nice -n10 /usr/sbin/apache2 -DPHP5"
+
+# Image scaler detection
+if [ -e /etc/wikimedia-image-scaler ]; then
+	HTTPD="$HTTPD -DSCALER"
+fi
+
+# For Ubuntu 8.04+
+APACHE_HTTPD="$HTTPD"
+
+# For Ubuntu 10.04+
+APACHE_PID_FILE="/var/run/apache2.pid"
+
+# Don't crash when NFS goes down
+cd /

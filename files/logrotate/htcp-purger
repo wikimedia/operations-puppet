@@ -1,0 +1,11 @@
+# This file is managed by Puppet!
+#
+
+/var/log/HTCPpurger.log {
+	daily
+	compress
+	delaycompress
+	rotate 7
+	missingok
+	copytruncate
+}

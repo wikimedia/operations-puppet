@@ -1,0 +1,107 @@
+# Proxy site configuration file for <%= proxy_server_name %>
+# This file is managed by Puppet!
+
+upstream <%= name %> {
+<% if site == "esams" then -%>
+	# TODO: find a way to properly support proxy_port
+	server <%= proxy_backend["esams"]["primary"] %>;
+<% end -%>
+<% if site == "pmtpa" then -%>
+	# max fails is ignored when using one host, so we use the same host twice
+	server <%= proxy_backend["pmtpa"]["primary"] %>:<%= proxy_port %>;
+	server <%= proxy_backend["pmtpa"]["primary"] %>:<%= proxy_port %>;
+<% end -%>
+<% if site == "eqiad" then -%>
+	# max fails is ignored when using one host, so we use the same host twice
+	server <%= proxy_backend["eqiad"]["primary"] %>:<%= proxy_port %>;
+	server <%= proxy_backend["eqiad"]["primary"] %>:<%= proxy_port %>;
+<% end -%>
+}
+
+<% if site == "esams" then -%>
+upstream <%= name %>_fallback {
+	# fallback always uses 443
+	server <%= proxy_backend["esams"]["secondary"] %>:443;
+}
+<% end -%>
+
+# SSL proxying
+server {
+<% proxy_addresses[site].each do |proxy_address| -%>
+<% if !has_variable?("enable_ipv6_proxy") and proxy_address[0,1] == "[" then
+	# Skip IPv6 address
+	next
+end -%>
+	listen <%= proxy_address %>:443<% if proxy_address == proxy_addresses[site][0] -%> <%= proxy_listen_flags %><% end -%>;
+<% end -%>
+	# For LVS-DR, we must listen to the RIP and the VIP addresses
+	listen <%= ipaddress %>:443;
+	ssl on;
+	server_name  <%= proxy_server_name %>;
+
+	error_log   /var/log/nginx/<%= name %>.error.log;
+	access_log   off;
+
+	ssl_certificate /etc/ssl/certs/<%= proxy_server_cert_name %>.chained.pem;
+	ssl_certificate_key /etc/ssl/private/<%= proxy_server_cert_name %>.key;
+	keepalive_timeout 60;
+
+	location / {
+		proxy_pass http://<%= name %>;
+		<% if site == "esams" then -%>
+proxy_intercept_errors on;
+		error_page 502 503 504 = @fallback;
+		<% end -%>
+
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_set_header X-Forwarded-Proto https;
+
+		proxy_redirect off;
+		proxy_buffering off;
+	}
+	<% if site == "esams" then -%>
+location @fallback {
+		proxy_pass https://<%= name %>_fallback;
+
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_set_header X-Forwarded-Proto https;
+
+		proxy_redirect off;
+		proxy_buffering off;
+	}
+	<% end -%>
+
+}
+<% if has_variable?("enable_ipv6_proxy") then -%>
+	
+# IPv6 proxying	
+server {
+<% proxy_addresses[site].each do |proxy_address| -%>
+	listen <%= proxy_address %>:80;
+<% end -%>
+	server_name  <%= proxy_server_name %>;
+
+	error_log   /var/log/nginx/<%= name %>-ipv6.error.log;
+
+	keepalive_timeout 60;
+
+	location / {
+		proxy_pass http://<%= name %>;
+		proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_redirect off;
+		proxy_buffering off;
+	}
+
+}
+<% end -%>

@@ -1,0 +1,27 @@
+alwaysHttps = false
+ajstdlibHome = ../infrastructure/framework-src/modules
+appjetHome = ./data/appjet
+devMode = false
+etherpad.adminPass = <%= etherpad_admin_pass %>
+etherpad.fakeProduction = false
+etherpad.isProduction = true
+etherpad.proAccounts = true
+etherpad.SQL_JDBC_DRIVER = com.mysql.jdbc.Driver
+etherpad.SQL_JDBC_URL = jdbc:mysql://db9.pmtpa.wmnet:3306/etherpad
+etherpad.SQL_PASSWORD = <%= etherpad_sql_pass %>
+etherpad.SQL_USERNAME = etherpad
+hidePorts = false
+listen = 9000
+logDir = /var/log/etherpad
+modulePath = ./src
+motdPage = /ep/pad/view/ro.3PfHCD0ApLc/latest?fullScreen=1&slider=0&sidebar=0
+topdomains = etherpad.wikimedia.org,eiximenis.wikimedia.org,<%= fqdn %>,localhost,localhost.localdomain
+transportPrefix = /comet
+transportUseWildcardSubdomains = true
+useHttpsUrls = false
+useVirtualFileRoot = ./src
+theme = default
+etherpad.soffice = /usr/bin/soffice
+customBrandingName = Etherpad v1.1
+customEmailAddress = support@etherpad.org
+showLinkandLicense = true

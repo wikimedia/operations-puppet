@@ -1,0 +1,16 @@
+#!/bin/bash
+
+REPOS=$1
+TXN=$2
+
+( cd /etc/puppet/manifests; svn up; cd /etc/puppet/files; svn up; cd /var/lib/puppet/templates; svn up; touch /etc/puppet/manifests/site.pp )
+
+# 20110826 dzahn - No --with-diff for the private repo for security reasons
+
+/usr/bin/svnnotify		\
+    --repos-path    "$REPOS"		\
+    --revision      "$TXN"		\
+    --subject-cx			\
+    --handler       HTML::ColorDiff	\
+    --to            ops@wikimedia.org	\
+    --from          svn@sockpuppet.wikimedia.org \

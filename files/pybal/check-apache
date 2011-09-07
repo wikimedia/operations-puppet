@@ -1,0 +1,13 @@
+#!/bin/sh
+# This file is managed by Puppet!
+
+set -e
+
+HOST=$1
+SSH_USER=pybal-check
+SSH_OPTIONS="-o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=8"
+
+# Open an SSH connection to the real-server. The command is overridden by the authorized_keys file.
+ssh -i /root/.ssh/pybal-check $SSH_OPTIONS $SSH_USER@$HOST true
+
+exit 0

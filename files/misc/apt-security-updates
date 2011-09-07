@@ -1,0 +1,22 @@
+#!/bin/bash
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/misc/apt-security-updates
+#####################################################################
+
+## 
+## (semi)automated way to keep up with security updates
+##
+
+echo "**************" >> /var/log/apt-security-updates
+date >> /var/log/apt-security-updates
+echo "--> Updating package cache..." >> /var/log/apt-security-updates
+aptitude update >> /var/log/apt-security-updates 
+echo "<-- Done."  >> /var/log/apt-security-updates
+echo "--> Current packages in need of upgrades:" >> /var/log/apt-security-updates
+apt-show-versions -u >> /var/log/apt-security-updates
+echo "<-- Done." >> /var/log/apt-security-updates
+echo "--> Safe upgrading starting..." >> /var/log/apt-security-updates
+aptitude safe-upgrade -o Aptitude::Delete-Unused=false --assume-yes --target-release `lsb_release -cs`-security >> /var/log/apt-security-updates
+echo "Security updates (if any) installed" >> /var/log/apt-security-updates
+echo "<-- Done." >> /var/log/apt-security-updates

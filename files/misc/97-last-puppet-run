@@ -1,0 +1,21 @@
+#!/bin/bash
+# Script that reports when Puppet last ran, in bold if more than an hour ago.
+# Written by Mark Bergsma <mark@wikimedia.org>
+
+set -e
+
+PATH=/bin:/usr/bin
+
+TSLASTPUPPETRUN=$(stat -c %Z /var/lib/puppet/state/classes.txt)
+NOW=$(date +%s)
+DELTAMIN=$((($NOW-$TSLASTPUPPETRUN)/60))
+BOLD="\033[1m"
+NORM="\033[0m"
+
+echo -n "The last Puppet run was at $(date -d @$TSLASTPUPPETRUN) "
+
+if [[ $DELTAMIN -gt 60 ]]; then
+	echo -e "${BOLD}($DELTAMIN minutes ago)${NORM}."
+else
+	echo "($DELTAMIN minutes ago)."
+fi

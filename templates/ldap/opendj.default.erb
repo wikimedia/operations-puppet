@@ -1,0 +1,11 @@
+# Defaults for opendj initscript
+# sourced by /etc/init.d/opendj
+# installed at /etc/default/opendj by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Space separated list of addresses 389 and 636 should forward to, defaults
+# to all configured IPs. Used to configure iptables
+BINDADDRS="<%= ldap_server_bind_ips %>"

@@ -1,0 +1,33 @@
+#!/bin/sh
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/misc/udp2log.init
+#####################################################################
+
+# Start/stop the udp2log daemon.
+#
+
+
+case "$1" in
+start)	log_daemon_msg "Starting UDP logger" "udp2log"
+        start-stop-daemon --start --quiet --pidfile /var/run/udp2log.pid --name cron --startas /usr/bin/udp2log &
+        log_end_msg $?
+	;;
+stop)	log_daemon_msg "Stopping UDP logger" "udp2log"
+        start-stop-daemon --stop --quiet --pidfile /var/run/udp2log.pid --name udp2log
+        log_end_msg $?
+        ;;
+restart) log_daemon_msg "Restarting UDP logger" "upd2log" 
+        start-stop-daemon --stop --retry 5 --quiet --pidfile /var/run/udp2log.pid --name udp2log
+        start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name udp2log --startas /usr/bin/udp2log
+        log_end_msg $?
+        ;;
+reload|force-reload) log_daemon_msg "Reloading configuration files for UDP logger" "udp2log"
+	# cron reloads automatically
+        log_end_msg 0
+        ;;
+*)	log_action_msg "Usage: /etc/init.d/udp2log {start|stop|restart|reload|force-reload}"
+        exit 2
+        ;;
+esac
+exit 0

@@ -1,0 +1,37 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/apache/sites/noc.wikimedia.org
+#####################################################################
+
+<VirtualHost *:80>
+        ServerName noc.wikimedia.org
+        
+	DocumentRoot /home/wikipedia/htdocs/noc
+
+        UserDir public_html
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+
+        <Directory />
+                Order Deny,Allow
+                AllowOverride All
+        </Directory>
+
+	<Directory /home/wikipedia/htdocs/noc/conf>
+		AddDefaultCharset utf-8
+	</Directory>
+
+        <Directory /home/wikipedia/htdocs/noc/cgi-bin>
+                Order Deny,Allow
+                Options ExecCGI
+        </Directory>
+</VirtualHost>
+

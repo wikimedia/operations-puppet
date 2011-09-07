@@ -1,0 +1,8 @@
+# Managed by Puppet.
+
+conf           	"<%= backup_name %>" 
+index_server    "<%= backup_server %>"
+tape_server     "<%= backup_server %>"
+
+auth "ssh"
+ssh_keys "<%= ssh_key_location %>"

@@ -1,0 +1,69 @@
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel notice
+
+	LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+	LogFormat "%h %l %u %t \"%r\" %>s %b" common
+	LogFormat "%{Referer}i -> %U" referer
+	LogFormat "%{User-agent}i" agent
+
+	ServerSignature Off
+
+	Alias /owa /usr/local/owa/deployment
+	Alias /resources /usr/local/owa/resources
+
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+                                                                                                           
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+	LogFormat "%h %l %u %t \"%r\" %>s %b" common
+	LogFormat "%{Referer}i -> %U" referer
+	LogFormat "%{User-agent}i" agent
+
+	ServerSignature Off
+
+	Alias /owa /usr/local/owa/deployment
+	Alias /resources /usr/local/owa/resources
+
+</VirtualHost>

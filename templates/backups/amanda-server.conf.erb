@@ -1,0 +1,54 @@
+org             "<%= cycle_type %>"
+mailto          "<%= mailto_account %>"
+dumpuser        "backup"
+logdir          "/etc/amanda/<%= cycle_type %>/logs"
+infofile        "/etc/amanda/<%= cycle_type %>/curinfo"
+indexdir        "/etc/amanda/<%= cycle_type %>/index"
+tapelist        "/etc/amanda/<%= cycle_type %>/tapelist"
+tapecycle       <%= tape_num %>
+tapetype        DISK
+tpchanger       "chg-disk"
+changerfile     "/etc/amanda/<%= cycle_type %>/changer"
+tapedev         "file:<%= vtapes_location %>/slots"
+dumpcycle	<%= dumpcycle %>
+runspercycle	<%= runspercycle %>
+
+define tapetype DISK {
+        comment         "Backup to HD"
+	length          <%= tape_length %>
+}
+
+define dumptype global {
+        comment         "Global definitions"
+        index           yes
+        record          yes
+        auth            "ssh"
+}
+
+define dumptype default {
+        global
+        comment         "default dumptype"
+	compress        <%= compress_type %>
+        program         "GNUTAR"
+	strategy        standard
+	priority        <%= backup_priority %>
+}
+
+define dumptype incremental {
+        global
+        comment         "default dumptype"
+	compress        <%= compress_type %>
+        program         "GNUTAR"
+	strategy        incronly
+	priority        <%= backup_priority %>
+}
+
+define dumptype full {
+        global
+        comment         "default dumptype"
+	compress        <%= compress_type %>
+        program         "GNUTAR"
+	strategy        noinc
+	priority        <%= backup_priority %>
+}
+

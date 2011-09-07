@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= scope.lookupvar('openstack::nova_config::nova_puppet_user') %>'@'%' IDENTIFIED BY '<%= scope.lookupvar('openstack::nova_config::nova_puppet_user_pass') %>';
+GRANT ALL PRIVILEGES ON <%= scope.lookupvar('openstack::nova_config::nova_puppet_db_name') %>.* to '<%= scope.lookupvar('openstack::nova_config::nova_puppet_user') %>'@'%';

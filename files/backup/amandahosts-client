@@ -1,0 +1,4 @@
+# Managed by Puppet.
+
+localhost backup
+tridge.wikimedia.org    backup  amdump

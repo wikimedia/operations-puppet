@@ -1,0 +1,1 @@
+echo "" | openssl s_client -connect $ARG1$:$ARG2$ | openssl x509 -noout -enddate 

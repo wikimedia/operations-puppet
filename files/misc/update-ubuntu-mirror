@@ -1,0 +1,41 @@
+#!/bin/sh
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/misc/update-ubuntu-mirror
+#####################################################################
+
+#
+# Ubuntu mirror script
+
+BASEDIR=/srv/ubuntu
+
+echo "Checking Sanity"
+mkdir -p $BASEDIR
+SRC="rsync://archive.ubuntu.com/ubuntu/"
+# Faster, closer but less up to date mirror:
+#SRC="rsync://ubuntu.osuosl.org/ubuntu/"
+
+echo "Running rsync"
+umask 002
+for ONE in $SRC; do
+echo " * Handling repository: $ONE"
+
+UPDATEHOST=brewster
+touch ${BASEDIR}/Archive-Update-in-Progress-${UPDATEHOST}
+
+rsync --recursive --times --links --hard-links \
+      --exclude "Packages*" --exclude "Sources*" \
+      --exclude "Release*" \
+      --exclude "Archive-Update-in-Progress-${UPDATEHOST}" \
+      ${ONE} ${BASEDIR} || fatal "Could not rsync $ONE, first stage"
+
+rsync --recursive --times --links --hard-links \
+      --delete --delete-after \
+      --exclude "Archive-Update-in-Progress-${UPDATEHOST}" \
+      --exclude "project/trace/${HOSTNAME}" \
+      ${ONE} ${BASEDIR} || fatal "Could not rsync $ONE, second stage"
+done
+echo "Done (rsync)"
+echo ""
+
+rm ${BASEDIR}/Archive-Update-in-Progress-${UPDATEHOST}

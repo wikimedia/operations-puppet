@@ -1,0 +1,2 @@
+#\!/bin/bash
+/usr/local/lib/user-management/add-ldap-group $*

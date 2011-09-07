@@ -1,0 +1,114 @@
+# Backend VCL 3.0 file for <%= fqdn %>, site <%= site %>
+# This file is managed by Puppet!
+
+# Backends
+
+# NOTE: this should be a puppet generated list of backends
+# as per bits and frontend
+backend appservers {
+<% if site == "pmtpa" -%>
+	.host = "10.2.1.1";   # appservers.svc.pmtpa.wmnet
+<% elsif site == "eqiad" -%>
+	.host = "10.2.4.1";   # one day we'll have an appserver cluster in eqiad
+<% else -%>
+	.host = "10.2.1.1";   
+<% end -%>
+	.port = "80";
+	.max_connections = 1000;
+	.connect_timeout = 3s;
+	.first_byte_timeout = 5s;
+	.between_bytes_timeout = 2s;
+}
+
+acl purge { 
+	"localhost";
+}
+
+sub vcl_hash {
+	hash_data(req.url);
+	if (req.http.host) {
+		hash_data(req.url + req.http.host);
+	} else {
+		hash_data(req.url + server.ip);
+	
+}
+
+sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE") {
+		/* We only deal with GET and HEAD by default */
+		error 403 "HTTP method not allowed.";
+	}
+
+	if (req.request == "PURGE") { 
+		if (!client.ip ~ purge) {
+			error 405 "Not allowed.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} else if (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
+		}
+	}
+	
+	set req.backend = appservers;
+	return (lookup);
+}
+
+# front page purges aren't going to come through for this url, 
+# so don't cache it for long
+sub vcl_fetch {
+	if (req.url == "/?useformat=mobile") {
+		set beresp.ttl = 60 s;
+	}
+}
+
+sub vcl_deliver {
+	if (obj.hits > 0) {
+		set resp.http.X-Cache-Be = "hit";
+	} else {
+		set resp.http.X-Cache-Be = "miss";
+	}
+	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
+		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
+	} else {
+		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	}
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged.";
+	}
+}
+
+sub vcl_miss {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged.";
+	}
+}
+
+
+sub vcl_error {
+	set obj.http.Content-Type = "text/html; charset=utf-8";
+	synthetic {"
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>"} + obj.status + " " + obj.response + {"</title>
+  </head>
+  <body>
+    <h1>Error "} + obj.status + " " + obj.response + {"</h1>
+    <p>"} + obj.response + {"</p>
+    <h3>Guru Meditation:</h3>
+    <p>XID: "} + req.xid + {"</p>
+    <hr>
+    <address>
+       <a href="http://www.varnish-cache.org/">Varnish cache server</a>
+    </address>
+  </body>
+</html>
+"};
+}

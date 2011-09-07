@@ -1,0 +1,508 @@
+modules {
+	module {
+		name = "varnish"
+		language = "python"
+		path = "varnish.py"
+	}
+}
+
+collection_group {
+	collect_every = 15
+	time_threshold = 15
+
+	metric {
+		name = 'fetch_zero'
+		title = 'Fetch zero len'
+	}
+
+	metric {
+		name = 's_pass'
+		title = 'Total pass'
+	}
+
+	metric {
+		name = 'backend_conn'
+		title = 'Backend conn. success'
+	}
+
+	metric {
+		name = 'fetch_chunked'
+		title = 'Fetch chunked'
+	}
+
+	metric {
+		name = 'n_wrk_max'
+		title = 'N worker threads limited'
+	}
+
+	metric {
+		name = 'n_vampireobject'
+		title = 'N unresurrected objects'
+	}
+
+	metric {
+		name = 'n_vcl'
+		title = 'N vcl total'
+	}
+
+	metric {
+		name = 'esi_parse'
+		title = 'Objects ESI parsed (unlock)'
+	}
+
+	metric {
+		name = 'esi_errors'
+		title = 'ESI parse errors (unlock)'
+	}
+
+	metric {
+		name = 'n_vcl_avail'
+		title = 'N vcl available'
+	}
+
+	metric {
+		name = 's_fetch'
+		title = 'Total fetch'
+	}
+
+	metric {
+		name = 'n_purge_dups'
+		title = 'N duplicate purges removed'
+	}
+
+	metric {
+		name = 'sma_bfree'
+		title = 'SMA bytes free'
+	}
+
+	metric {
+		name = 'client_drop_late'
+		title = 'Connection dropped late'
+	}
+
+	metric {
+		name = 'shm_cycles'
+		title = 'SHM cycles through buffer'
+	}
+
+	metric {
+		name = 'n_deathrow'
+		title = 'N objects on deathrow'
+	}
+
+	metric {
+		name = 'fetch_bad'
+		title = 'Fetch had bad headers'
+	}
+
+	metric {
+		name = 'backend_fail'
+		title = 'Backend conn. failures'
+	}
+
+	metric {
+		name = 's_pipe'
+		title = 'Total pipe'
+	}
+
+	metric {
+		name = 'n_smf_large'
+		title = 'N large free smf'
+	}
+
+	metric {
+		name = 'n_purge'
+		title = 'N total active purges'
+	}
+
+	metric {
+		name = 'backend_unhealthy'
+		title = 'Backend conn. not attempted'
+	}
+
+	metric {
+		name = 'fetch_length'
+		title = 'Fetch with Length'
+	}
+
+	metric {
+		name = 'n_vcl_discard'
+		title = 'N vcl discarded'
+	}
+
+	metric {
+		name = 'hcb_insert'
+		title = 'HCB Inserts'
+	}
+
+	metric {
+		name = 'backend_recycle'
+		title = 'Backend conn. recycles'
+	}
+
+	metric {
+		name = 'n_smf_frag'
+		title = 'N small free smf'
+	}
+
+	metric {
+		name = 'sm_nobj'
+		title = 'outstanding allocations'
+	}
+
+	metric {
+		name = 'shm_flushes'
+		title = 'SHM flushes due to overflow'
+	}
+
+	metric {
+		name = 'sma_balloc'
+		title = 'SMA bytes allocated'
+	}
+
+	metric {
+		name = 'backend_req'
+		title = 'Backend requests made'
+	}
+
+	metric {
+		name = 'n_purge_obj_test'
+		title = 'N objects tested'
+	}
+
+	metric {
+		name = 'n_purge_add'
+		title = 'N new purges added'
+	}
+
+	metric {
+		name = 'n_backend'
+		title = 'N backends'
+	}
+
+	metric {
+		name = 'sma_nobj'
+		title = 'SMA outstanding allocations'
+	}
+
+	metric {
+		name = 's_sess'
+		title = 'Total Sessions'
+	}
+
+	metric {
+		name = 'n_purge_re_test'
+		title = 'N regexps tested against'
+	}
+
+	metric {
+		name = 'client_req'
+		title = 'Client requests received'
+	}
+
+	metric {
+		name = 's_bodybytes'
+		title = 'Total body bytes'
+	}
+
+	metric {
+		name = 'sma_nreq'
+		title = 'SMA allocator requests'
+	}
+
+	metric {
+		name = 'backend_reuse'
+		title = 'Backend conn. reuses'
+	}
+
+	metric {
+		name = 'cache_hitpass'
+		title = 'Cache hits for pass'
+	}
+
+	metric {
+		name = 'sess_closed'
+		title = 'Session Closed'
+	}
+
+	metric {
+		name = 'n_objwrite'
+		title = 'Objects sent with write'
+	}
+
+	metric {
+		name = 'shm_records'
+		title = 'SHM records'
+	}
+
+	metric {
+		name = 'n_wrk_create'
+		title = 'N worker threads created'
+	}
+
+	metric {
+		name = 'backend_toolate'
+		title = 'Backend conn. was closed'
+	}
+
+	metric {
+		name = 'sms_nreq'
+		title = 'SMS allocator requests'
+	}
+
+	metric {
+		name = 'fetch_head'
+		title = 'Fetch head'
+	}
+
+	metric {
+		name = 'accept_fail'
+		title = 'Accept failures'
+	}
+
+	metric {
+		name = 'sess_linger'
+		title = 'Session Linger'
+	}
+
+	metric {
+		name = 'n_wrk_overflow'
+		title = 'N overflowed work requests'
+	}
+
+	metric {
+		name = 'fetch_close'
+		title = 'Fetch wanted close'
+	}
+
+	metric {
+		name = 'n_wrk'
+		title = 'N worker threads'
+	}
+
+	metric {
+		name = 'client_conn'
+		title = 'Client connections accepted'
+	}
+
+	metric {
+		name = 'backend_unused'
+		title = 'Backend conn. unused'
+	}
+
+	metric {
+		name = 'n_vbe_conn'
+		title = 'N struct vbe_conn'
+	}
+
+	metric {
+		name = 'n_wrk_queue'
+		title = 'N queued work requests'
+	}
+
+	metric {
+		name = 'losthdr'
+		title = 'HTTP header overflows'
+	}
+
+	metric {
+		name = 'fetch_eof'
+		title = 'Fetch EOF'
+	}
+
+	metric {
+		name = 'n_lru_nuked'
+		title = 'N LRU nuked objects'
+	}
+
+	metric {
+		name = 'n_objecthead'
+		title = 'N struct objecthead'
+	}
+
+	metric {
+		name = 'sms_nobj'
+		title = 'SMS outstanding allocations'
+	}
+
+	metric {
+		name = 'sma_nbytes'
+		title = 'SMA outstanding bytes'
+	}
+
+	metric {
+		name = 'cache_hit'
+		title = 'Cache hits'
+	}
+
+	metric {
+		name = 'n_objoverflow'
+		title = 'Objects overflowing workspace'
+	}
+
+	metric {
+		name = 'fetch_failed'
+		title = 'Fetch failed'
+	}
+
+	metric {
+		name = 'n_lru_moved'
+		title = 'N LRU moved objects'
+	}
+
+	metric {
+		name = 'n_object'
+		title = 'N struct object'
+	}
+
+	metric {
+		name = 'sm_balloc'
+		title = 'bytes allocated'
+	}
+
+	metric {
+		name = 'shm_cont'
+		title = 'SHM MTX contention'
+	}
+
+	metric {
+		name = 'n_wrk_failed'
+		title = 'N worker threads not created'
+	}
+
+	metric {
+		name = 'uptime'
+		title = 'Client uptime'
+	}
+
+	metric {
+		name = 'client_drop'
+		title = 'Connection dropped, no sess/wrk'
+	}
+
+	metric {
+		name = 'n_sess'
+		title = 'N struct sess'
+	}
+
+	metric {
+		name = 'sess_readahead'
+		title = 'Session Read Ahead'
+	}
+
+	metric {
+		name = 'shm_writes'
+		title = 'SHM writes'
+	}
+
+	metric {
+		name = 'cache_miss'
+		title = 'Cache misses'
+	}
+
+	metric {
+		name = 'n_purge_retire'
+		title = 'N old purges deleted'
+	}
+
+	metric {
+		name = 'hcb_lock'
+		title = 'HCB Lookups with lock'
+	}
+
+	metric {
+		name = 'n_objsendfile'
+		title = 'Objects sent with sendfile'
+	}
+
+	metric {
+		name = 's_req'
+		title = 'Total Requests'
+	}
+
+	metric {
+		name = 'sm_bfree'
+		title = 'bytes free'
+	}
+
+	metric {
+		name = 'sms_balloc'
+		title = 'SMS bytes allocated'
+	}
+
+	metric {
+		name = 'n_wrk_drop'
+		title = 'N dropped work requests'
+	}
+
+	metric {
+		name = 'sess_pipeline'
+		title = 'Session Pipeline'
+	}
+
+	metric {
+		name = 'n_lru_saved'
+		title = 'N LRU saved objects'
+	}
+
+	metric {
+		name = 'sms_bfree'
+		title = 'SMS bytes freed'
+	}
+
+	metric {
+		name = 'hcb_nolock'
+		title = 'HCB Lookups without lock'
+	}
+
+	metric {
+		name = 'sm_nreq'
+		title = 'allocator requests'
+	}
+
+	metric {
+		name = 'fetch_oldhttp'
+		title = 'Fetch pre HTTP/1.1 closed'
+	}
+
+	metric {
+		name = 'sms_nbytes'
+		title = 'SMS outstanding bytes'
+	}
+
+	metric {
+		name = 'backend_busy'
+		title = 'Backend conn. too many'
+	}
+
+	metric {
+		name = 'sess_herd'
+		title = 'Session herd'
+	}
+
+	metric {
+		name = 'n_objectcore'
+		title = 'N struct objectcore'
+	}
+
+	metric {
+		name = 's_hdrbytes'
+		title = 'Total header bytes'
+	}
+
+	metric {
+		name = 'n_smf'
+		title = 'N struct smf'
+	}
+
+	metric {
+		name = 'n_sess_mem'
+		title = 'N struct sess_mem'
+	}
+
+	metric {
+		name = 'n_expired'
+		title = 'N expired objects'
+	}
+}
+

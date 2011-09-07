@@ -1,0 +1,8 @@
+# This file is managed by puppet!
+
+# Location of the sysctl file containing LVS ARP settings
+SYSCTLFILE=/usr/share/wikimedia-lvs-realserver/sysctl.conf
+
+# LVS service IPs to be bound to the loopback interface,
+# separate using spaces
+LVS_SERVICE_IPS="<%= lvs_realserver_ips.join(" ") -%>"

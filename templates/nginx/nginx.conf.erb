@@ -1,0 +1,57 @@
+# This file is managed by Puppet!
+
+# Thumbs server configuration file
+
+user www-data www-data;
+worker_processes  <%= processorcount %>;
+worker_rlimit_nofile 30000;
+
+
+error_log  /var/log/nginx/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  <%= nginx_worker_connections %>;
+    <% if has_variable?("nginx_use_ssl") then %>
+    # Setting multi_accept makes it much less likely that
+    # the SSL server will throw SSL connection errors
+    multi_accept on;
+    <% end %>
+}
+
+http {
+    include       /etc/nginx/mime.types;
+
+    access_log	/var/log/nginx/access.log;
+    <% if has_variable?("nginx_use_ssl") then %>
+    log_format squid_combined '$hostname $udplog_sequence $udplog_time $request_time $remote_addr FAKE_CACHE_STATUS/$status $bytes_sent $request_method $scheme://$host$uri NONE/$proxy_host $content_type $http_referer $http_x_forwarded_for $http_user_agent';
+    access_udplog 208.80.152.138:8420 squid_combined; 
+    access_udplog 208.80.152.184:8420 squid_combined; 
+    client_max_body_size 100m;
+    <% end %>
+
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+    tcp_nodelay        on;
+
+    gzip  off;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+
+    <% if has_variable?("nginx_use_ssl") then %>
+    # Enable a shared cache, since it is defined at this level
+    # it will be used for all virtual hosts. 1m = 4000 active sessions,
+    # so we are allowing 200,000 active sessions.
+    ssl_session_cache shared:SSL:50m;
+    # SSLv2 is insecure, only allow SSLv3 and TLSv1
+    ssl_protocols SSLv3 TLSv1;
+    # Limit ciphers allowed
+    ssl_ciphers RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA;
+    <% end %>
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}

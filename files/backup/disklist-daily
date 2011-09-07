@@ -1,0 +1,15 @@
+#spence.wikimedia.org   /etc/nagios daily
+mchenry.wikimedia.org   /root default
+sockpuppet.pmtpa.wmnet /svnroot default
+sockpuppet.pmtpa.wmnet /var/lib/puppet/ssl default
+db10.pmtpa.wmnet /a/sqldata {
+	default
+	include "./db10-bin.*"
+}
+brewster.wikimedia.org	/srv/wikimedia	default
+brewster.wikimedia.org	/srv/autoinstall	default
+brewster.wikimedia.org	/srv/tftpboot	default
+sanger.wikimedia.org	/var/vmail	default
+nfs1.pmtpa.wmnet        /var/opendj/backups default
+nfs2.pmtpa.wmnet        /var/opendj/backups default
+formey.wikimedia.org    /svnroot/bak default

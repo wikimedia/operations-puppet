@@ -1,0 +1,41 @@
+# network.pp
+
+class network::checks {
+
+	include passwords::network
+	$router_pass = $passwords::network::router_pass
+
+	# Nagios monitoring
+	@monitor_group { "routers": description => "IP routers" }
+
+	# Virtual resource for the monitoring host
+	@monitor_host { "br1-knams": ip_address => "91.198.174.245", group => "routers" }
+	@monitor_service { "br1-knams interfaces": host => "br1-knams", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+
+	@monitor_host { "csw1-esams": ip_address => "91.198.174.247", group => "routers" }
+	@monitor_service { "csw1-esams bgp status": host => "csw1-esams", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "csw2-esams": ip_address => "91.198.174.244", group => "routers" }
+	@monitor_service { "csw2-esams bgp status": host => "csw2-esams", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "csw5-pmtpa": ip_address => "208.80.152.192", group => "routers" }
+	@monitor_service { "csw5-pmtpa bgp status": host => "csw5-pmtpa", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "cr1-eqiad": ip_address => "208.80.154.196", group => "routers" }
+	@monitor_service { "cr1-eqiad interfaces": host => "cr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+	@monitor_service { "cr1-eqiad bgp status": host => "cr1-eqiad", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "cr2-eqiad": ip_address => "208.80.154.197", group => "routers" }
+	@monitor_service { "cr2-eqiad interfaces": host => "cr2-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+	@monitor_service { "cr2-eqiad bgp status": host => "cr2-eqiad", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "cr1-sdtpa": ip_address => "208.80.152.196", group => "routers" }
+	@monitor_service { "cr1-sdtpa interfaces": host => "cr1-sdtpa", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+	@monitor_service { "cr1-sdtpa bgp status": host => "cr1-sdtpa", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "cr2-pmtpa": ip_address => "208.80.152.197", group => "routers" }
+	@monitor_service { "cr2-pmtpa interfaces": host => "cr2-pmtpa", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+	@monitor_service { "cr2-pmtpa bgp status": host => "cr2-pmtpa", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+}
+
+include network::checks

@@ -1,0 +1,11 @@
+# Defaults for ircecho initscript
+# sourced by /etc/init.d/ircecho
+# installed at /etc/default/ircecho by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+INFILE="/var/log/nagios/irc.log"
+NICK="nagios-wm"
+CHANS="#wikimedia-tech,#wikimedia-operations"
+SERVER="irc.freenode.net"

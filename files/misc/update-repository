@@ -1,0 +1,63 @@
+#!/bin/sh
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/misc/update-repository
+#####################################################################
+
+#
+# APT repository update script
+# Written by Mark Bergsma <mark@nedworks.org>
+
+set -e
+
+REPOSITORY_ROOT=/srv/wikimedia
+DISTRIBUTIONS="hardy-wikimedia karmic-wikimedia lucid-wikimedia"
+COMPONENTS="main restricted universe multiverse"
+ARCHITECTURES="amd64"
+CODENAME=hardy
+VERSION=8.04
+
+GPGKEY="Wikimedia Archive Automatic Signing Key <root@wikimedia.org>"
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+cd $REPOSITORY_ROOT
+
+for distribution in $DISTRIBUTIONS
+do
+	for component in $COMPONENTS
+	do
+		# Generate the overrides file
+		find pool -name '*.deb' -exec dpkg-deb --show --showformat='${Package}\t${Priority}\t${Section}\n' {} \; \
+			> indices/override.$distribution.$component
+
+		# Generate the Packages files
+		for architecture in $ARCHITECTURES
+		do
+			dpkg-scanpackages -m -a $architecture pool/$component indices/override.$distribution.$component \
+                                > dists/$distribution/$component/binary-$architecture/Packages
+			gzip -c dists/$distribution/$component/binary-$architecture/Packages \
+				> dists/$distribution/$component/binary-$architecture/Packages.gz
+			bzip2 -c dists/$distribution/$component/binary-$architecture/Packages \
+				> dists/$distribution/$component/binary-$architecture/Packages.bz2
+			
+			# Redundant? why twice?
+                        #dpkg-scanpackages -m -a $architecture pool/$component indices/override.$distribution.$component \
+                        #        | bzip2 -c > dists/$distribution/$component/binary-$architecture/Packages.bz2
+		done
+
+		# Generate the Sources files
+		dpkg-scansources pool/$component /dev/null \
+				> dists/$distribution/$component/source/Sources
+		gzip -c dists/$distribution/$component/source/Sources \
+				> dists/$distribution/$component/source/Sources.gz
+		bzip2 -c dists/$distribution/$component/source/Sources \
+				> dists/$distribution/$component/source/Sources.bz2
+	done
+
+	# Generate the Release file
+	apt-ftparchive -o 'APT::FTPArchive::Release::Origin=Wikimedia' -o 'APT::FTPArchive::Release::Label=Wikimedia' -o "APT::FTPArchive::Release::Suite=$distribution" -o "APT::FTPArchive::Release::Version=$VERSION" -o "APT::FTPArchive::Release::Codename=$CODENAME" -o "APT::FTPArchive::Release::Architectures=$ARCHITECTURES" -o "APT::FTPArchive::Release::Components=$COMPONENTS" release dists/$distribution > dists/$distribution/Release
+
+	# Sign the Release file
+	gpg --batch --yes -a -b -u "$GPGKEY" -o dists/$distribution/Release.gpg dists/$distribution/Release	
+done
