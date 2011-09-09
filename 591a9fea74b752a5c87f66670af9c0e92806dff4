@@ -1,0 +1,8 @@
+Change-Id: I591a9fea74b752a5c87f66670af9c0e92806dff4
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: Ryan Lane <rlane@wikimedia.org>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Fri, 09 Sep 2011 19:01:00 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/5
+Project: operations/puppet
+Branch: refs/heads/test
