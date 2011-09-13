@@ -170,3 +170,9 @@ class apaches::pybal-check {
 class apaches::monitoring {
 	monitor_service { "appserver http": description => "Apache HTTP", check_command => "check_http_wikipedia" }
 }
+
+class apaches::fonts {
+	package { [ "texlive-fonts-recommended" ]:
+		ensure => latest;
+	}
+}

@@ -89,6 +89,9 @@ class mysql {
 
 	class conf {
 		$db_clusters = {
+			"fr" => { 
+				"innodb_log_file_size" => "500M"
+			},
 			"s1" => { 
 				"innodb_log_file_size" => "2000M"
 			},
@@ -117,6 +120,13 @@ class mysql {
 		} else { 
 			$ibsize = "500M"
 		}
+
+		# enable innodb_file_per_table if it's a fundraising (fr) database
+		if $db_cluster == "fr" {
+			$innodb_file_per_table = "true"
+		} else {
+			$innodb_file_per_table = "false"
+		}
 		
 		# collect all the changes to the dbs used by the summer researchers
 
@@ -130,14 +140,22 @@ class mysql {
 			$large_slave_trans_retries = "true"
 		} else {
 			$disable_binlogs = "false"
-			$read_only = "true"
 			$long_timeouts = "false"
 			$enable_unsafe_locks = "false"
 			$large_slave_trans_retries = "false"
 		}
 
+		if $writable { 
+			$read_only = "false"
+		} else { 
+			$read_only = "true"
+		}
+
 		file { "/etc/my.cnf":
 			content => template("mysql/prod.my.cnf.erb")
+		}
+		file { "/etc/mysql/my.cnf":
+			source => "puppet:///files/mysql/empty-my.cnf"
 		}
 
 		file {
@@ -146,6 +164,15 @@ class mysql {
 				group => root,
 				mode => 755,
 				source => "puppet:///files/mysql/snaprotate.pl"
+		}
+	}
+
+	class mysqlpath {
+		file { "/etc/profile.d/mysqlpath.sh":
+			owner => root,
+			group => root,
+			mode => 644,
+			source => "puppet:///files/mysql/mysqlpath.sh"
 		}
 	}
 

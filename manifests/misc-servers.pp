@@ -323,7 +323,7 @@ class misc::noc-wikimedia {
 	}
 
 	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http", critical => "true"}
+	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
 class misc::blog-wikimedia {
@@ -386,6 +386,36 @@ class misc::download-wikimedia {
 
 	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" } 
 
+}
+
+class misc::download-mirror {
+	system_role { "misc::download-mirror": description => "Service for external download mirrors" }
+
+        package { rsync:
+                ensure => latest;
+        }
+
+        file {
+                "/etc/rsyncd.conf":
+                        require => Package[rsync],
+                        mode => 0644,
+                        owner => root,
+                        group => root,
+                        source => "puppet:///files/rsync/rsyncd.conf.downloadmirror",
+                        ensure => present;
+                "/etc/default/rsync":
+                        require => Package[rsync],
+                        mode => 0644,
+                        owner => root,
+                        group => root,
+                        source => "puppet:///files/rsync/rsync.default.downloadmirror",
+                        ensure => present;
+        }
+
+        service { rsync:
+                require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+                ensure => running;
+        }
 }
 
 class misc::url-downloader {

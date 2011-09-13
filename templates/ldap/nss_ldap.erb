@@ -12,6 +12,7 @@ nss_base_netgroup     ou=netgroup,<%= basedn %>
 nss_schema      rfc2307bis
 nss_map_attribute   uniquemember member
 nss_map_objectclass groupofuniquenames groupofnames
+<%= if site == "labs_pmtpa" || site == "labs_eqiad" %>nss_override_attribute_value loginshell /bin/bash<% end %>
 tls_checkpeer   yes
 tls_cacertfile  /etc/ssl/certs/wmf-ca.pem
 tls_cacertdir   /etc/ssl/certs
