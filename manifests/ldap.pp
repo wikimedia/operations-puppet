@@ -570,7 +570,11 @@ class ldap::client::wmf-test-cluster {
 	$servernames = [ "virt1.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
-	$ldapincludes = ['openldap', 'utils']
+	if ( $cluster_env == "labs" ) {
+		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'autofs', 'utils', 'managehome']
+	} else {
+		$ldapincludes = ['openldap', 'utils']
+	}
 	$wikildapdomain = "labs"
 	$wikicontrollerapiurl = "https://labsconsole.wikimedia.org/w/api.php"
 
