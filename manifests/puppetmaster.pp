@@ -26,15 +26,10 @@ class puppetmaster::passenger {
 	if $puppet_environment_type == "labs" {
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
-		exec { "/usr/bin/svn export -r89631 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/puppetsigner.py && /bin/chmod 0755 puppetsigner.py":
-			creates => "/usr/local/lib/user-management/puppetsigner.py",
-			cwd => "/usr/local/lib/user-management",
-			require => [Package["subversion"], Exec["checkout_user_ldap_tools"]];
-		}
 		file {
 			"/usr/local/sbin/puppetsigner.py":
 				ensure => link,
-				target => "/usr/local/lib/user-management/puppetsigner.py";
+				target => "/usr/local/lib/instance-management/puppetsigner.py";
 		}
 		cron {
 			"puppet_certificate_signer":

@@ -15,10 +15,12 @@ $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
 
 # Determine the site the server is in
 $site = $ipaddress_eth0 ? {
-	/^208\.80\.15[45]\./	=> "eqiad",
-	/^10\.64\./		=> "eqiad",
-	/^91\.198\.174\./	=> "esams",
-	default			=> "pmtpa"
+	/^208\.80\.15[45]\./			=> "eqiad",
+	/^208\.80\.153\.(19[2-9]|20[0-7])/	=> "labs_pmtpa",
+	/^10\.4\.0\./				=> "labs_pmtpa",
+	/^10\.64\./				=> "eqiad",
+	/^91\.198\.174\./			=> "esams",
+	default					=> "pmtpa"
 }
 
 $network_zone = $ipaddress_eth0 ? {
@@ -268,6 +270,18 @@ class base::decommissioned {
 	decommissioned_host_role { $decommissioned_servers: }
 }
 
+class base::instance-upstarts {
+
+        file {
+                "/etc/init/ttyS0.conf":
+                        owner => root,
+                        group => root,
+                        mode => 0644,
+                        source => 'puppet:///files/upstart/ttyS0.conf';
+        }
+
+}
+
 class base::instance-finish {
 
         if $puppet_environment_type == "labs" {
@@ -280,6 +294,7 @@ class base::instance-finish {
         }
 
 }
+
 class base::vimconfig {
 	file { "/etc/vim/vimrc.local": 
   		owner => root, 
@@ -317,5 +332,9 @@ class base {
 		base::standard-packages,
 		base::monitoring::host,
 		ssh
+
+	if $site =~ /labs_(pmtpa|eqiad)/ {
+		include base::instance-upstarts
+	}
 
 }

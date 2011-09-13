@@ -33,8 +33,8 @@ class varnish {
 			content => template("varnish/wikimedia.vcl.erb");
 	}
 
-        # Tune kernel settings
-        include generic::sysctl::high-http-performance
+	# Tune kernel settings
+	include generic::sysctl::high-http-performance
 
 	# Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
 	# shm memory to disk
@@ -124,18 +124,6 @@ class varnish3 {
 		"/etc/varnish/mobile-backend.vcl":
 			require => Package[varnish3],
 			content => template("varnish/mobile-backend.vcl.erb");
-		"/usr/bin/varnishhtcpd":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnishhtcpd",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/init.d/varnishhtcpd":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnishhtcpd.init",
-			owner => root,
-			group => root,
-			mode => 0555;
 	}
 
         # Tune kernel settings
@@ -156,13 +144,6 @@ class varnish3 {
 
 	service { varnish:
 		require => [ Package[varnish3], File["/etc/default/varnish"], Mount["/var/lib/varnish"] ],
-		ensure => running;
-	}
-
-	service { varnishhtcpd:
-		require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"] ],
-		hasstatus => false,
-		pattern => "varnishhtcpd",
 		ensure => running;
 	}
 
@@ -192,6 +173,29 @@ class varnish3 {
 				require => File["/etc/ganglia/conf.d"],
 				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
 				notify => Service[gmond];
+		}
+	}
+
+	class htcpd { 
+		file {
+			"/usr/bin/varnishhtcpd":
+				require => Package[varnish3],
+				source => "puppet:///files/varnish/varnishhtcpd",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/etc/init.d/varnishhtcpd":
+				require => Package[varnish3],
+				source => "puppet:///files/varnish/varnishhtcpd.init",
+				owner => root,
+				group => root,
+				mode => 0555;
+		}
+		service { varnishhtcpd:
+			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"] ],
+			hasstatus => false,
+			pattern => "varnishhtcpd",
+			ensure => running;
 		}
 	}
 

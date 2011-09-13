@@ -41,7 +41,7 @@ director backend hash {
 
 sub device_detection { 
 
-	set req.http.X-Device = "unknown";
+	set req.http.X-Device = "html";
 
 	if (req.http.User-Agent ~ "WebKit"){
 		set req.http.X-Device = "webkit";
@@ -91,7 +91,10 @@ sub device_detection {
 	if (req.http.User-Agent ~ "PLAYSTATION 3"){
 		set req.http.X-Device = "ps3";
 	}
-	if (req.http.X-Device == "unknown") {
+	if (req.http.User-Agent ~ "BlackBerry"){
+		set req.http.X-Device = "blackberry";
+	}
+	if (req.http.X-Device == "html") {
 		if (req.http.Accept ~ "vnd.wap.wml"){
 			set req.http.X-Device = "wml";
 		}
@@ -136,12 +139,16 @@ sub vcl_recv {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
+	if ( req.http.host == "m.wikipedia.org" ) {
+		error 666 "http://en.m.wikipedia.org/";
+	}
+
 	if ( req.url == "/" ) { 
 		set req.url = "/?useformat=mobile";
 	}
 
 	# For now this is set on the RoR mobile
-	#set req.http.X-Forwarded-For = client.ip;
+	set req.http.X-Forwarded-For = client.ip;
 
 	call device_detection;
 
@@ -173,6 +180,13 @@ sub vcl_miss {
 
 
 sub vcl_error {
+
+	if (obj.status == 666) {
+		set obj.http.Location = obj.response;
+		set obj.status = 302;
+		return(deliver);
+	}
+	
 	set obj.http.Content-Type = "text/html; charset=utf-8";
 	synthetic {"
 <?xml version="1.0" encoding="utf-8"?>
