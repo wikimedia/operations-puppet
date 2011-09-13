@@ -7,6 +7,8 @@
 	database = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>
 [auth]
 	type = LDAP
+	cookieSecure = true
+	registerUrl = http://www.mediawiki.org/wiki/Commit_access
 [ldap]
 	server = ldaps://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host') %>
 
@@ -18,9 +20,8 @@
 	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
 	groupScope = one
 [sendemail]
-	smtpServer = mchenry.wikimedia.org
-	smtpServerPort = 465
-	smtpEncryption = tls
+	smtpServer = smtp.pmtpa.wmnet
+	smtpServerPort = 25
 [container]
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre

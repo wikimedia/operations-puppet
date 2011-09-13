@@ -16,8 +16,6 @@ $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
 # Determine the site the server is in
 $site = $ipaddress_eth0 ? {
 	/^208\.80\.15[45]\./			=> "eqiad",
-	/^208\.80\.153\.(19[2-9]|20[0-7])/	=> "labs_pmtpa",
-	/^10\.4\.0\./				=> "labs_pmtpa",
 	/^10\.64\./				=> "eqiad",
 	/^91\.198\.174\./			=> "esams",
 	default					=> "pmtpa"
@@ -333,7 +331,7 @@ class base {
 		base::monitoring::host,
 		ssh
 
-	if $site =~ /labs_(pmtpa|eqiad)/ {
+	if $cluster_env == "labs" {
 		include base::instance-upstarts
 	}
 

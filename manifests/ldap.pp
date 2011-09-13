@@ -610,7 +610,7 @@ class ldap::client::includes {
 			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/homedirectorymanager.py &>> /var/log/homedirectorymanager.log",
 			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ssl/certs/wmf-tesla-ca.pem"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
-		if $site =~ /labs_(pmtpa|eqiad)/ {
+		if $cluster_env == "labs" {
 			exec {
 				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang http://nova-controller.tesla.usability.wikimedia.org/s-1/ && touch /var/lib/cloud/data/.usermailed":
 				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Exec["createhomedirs"], Service['exim4'], Package['exim4-daemon-light'] ],

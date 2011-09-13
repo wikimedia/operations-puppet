@@ -410,3 +410,35 @@ class generic::rsyncd($config) {
                 ensure => running;
         }
 }
+
+# definition to import gkg keys from a keyserver into apt
+# copied from http://projects.puppetlabs.com/projects/1/wiki/Apt_Keys_Patterns
+
+define apt::key($keyid, $ensure, $keyserver = "keyserver.ubuntu.com") {
+	case $ensure {
+		present: {
+			exec { "Import $keyid to apt keystore":
+				path        => "/bin:/usr/bin",
+				environment => "HOME=/root",
+				command     => "gpg --keyserver $keyserver --recv-keys $keyid && gpg --export --armor $keyid | apt-key add -",
+				user        => "root",
+				group       => "root",
+				unless      => "apt-key list | grep $keyid",
+				logoutput   => on_failure,
+			}
+		}
+		absent:  {
+			exec { "Remove $keyid from apt keystore":
+				path    => "/bin:/usr/bin",
+				environment => "HOME=/root",
+				command => "apt-key del $keyid",
+				user    => "root",
+				group   => "root",
+				onlyif  => "apt-key list | grep $keyid",
+			}
+		}
+		default: {
+			fail "Invalid 'ensure' value '$ensure' for apt::key"
+		}
+	}
+}
