@@ -51,7 +51,7 @@ class gerrit::jetty {
 	include gerrit::account,
 		gerrit::gerrit_config
 
-	package { [ "openjdk-6-jre", "git-core" ]:
+	package { [ "openjdk-6-jre", "git-core", "gitweb" ]:
 		ensure => latest; 
 	} 
 
@@ -126,6 +126,13 @@ class gerrit::proxy {
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/gerrit.wikimedia.org",
+			ensure => present;
+		# Overwrite gitweb's stupid default apache file
+		"/etc/apache2/conf.d/gitweb":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => "Alias /gitweb /usr/share/gitweb",
 			ensure => present;
 	}
 

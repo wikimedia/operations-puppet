@@ -312,16 +312,16 @@ class openstack::openstack-manager {
 	}
 
 	file {
-		"/etc/apache2/sites-available/controller.wikimedialabs.org":
+		"/etc/apache2/sites-available/labsconsole.wikimedia.org":
 			require => [ Package[php5] ],
 			mode => 644,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/controller.wikimedialabs.org",
+			source => "puppet:///files/apache/sites/labsconsole.wikimedia.org",
 			ensure => present;
 	}
 
-	apache_site { controller: name => "controller.wikimedialabs.org" }
+	apache_site { controller: name => "labsconsole.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
 }
@@ -490,7 +490,7 @@ class openstack::nova_config {
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "10.4.16.3"
 	$nova_dmz_cidr = "10.4.0.2/32"
-	$nova_ajax_proxy_url = "http://controller.labs.wikimedia.org:8000"
+	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
 	$nova_ldap_host = "virt1.wikimedia.org"
 	$nova_ldap_domain = "labs"
 	$nova_ldap_base_dn = "dc=wikimedia,dc=org"

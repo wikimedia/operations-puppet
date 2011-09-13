@@ -46,7 +46,7 @@ class svn::server {
 			owner => root,
 			group => root,
 			mode => 644,
-			source => "puppet:///private/files/svn/svn-authz";
+			source => "puppet:///private/svn/svn-authz";
 		"/etc/viewvc/viewvc.conf":
 			owner => root,
 			group => root,

@@ -21,6 +21,7 @@ import "ntp.pp"
 import "nfs.pp"
 import "lvs.pp"
 import "exim.pp"
+import "mailman.pp"
 import "misc-servers.pp"
 import "network.pp"
 import "facilities.pp"
@@ -60,9 +61,9 @@ class standard {
 
 class applicationserver {
 	class parent {
-                $roles += [ 'appserver' ]
-                $cluster = "appserver"
-                $nagios_group = $cluster
+		$roles += [ 'appserver' ]
+		$cluster = "appserver"
+		$nagios_group = $cluster
 	}
 
 	class homeless inherits parent {
@@ -73,6 +74,7 @@ class applicationserver {
 			exim::simple-mail-sender,
 			admins::roots,
 			admins::mortals,
+			accounts::l10nupdate,
 			nfs::upload,
 			mediawiki::packages,
 			apaches::cron,
@@ -92,12 +94,13 @@ class applicationserver {
 		include	base,
 			ganglia,
 			ntp::client,
-                        exim::simple-mail-sender,
+			exim::simple-mail-sender,
 			nfs::home,
 			nfs::upload,
 			mediawiki::packages,
 			admins::roots,
 			admins::mortals,
+			accounts::l10nupdate,
 			generic::geoip::files
 	}
 
@@ -119,6 +122,7 @@ class applicationserver {
 			exim::simple-mail-sender,
 			admins::roots,
 			admins::mortals,
+			accounts::l10nupdate,
 			nfs::upload,
 			lvs::realserver,
 			mediawiki::packages,
@@ -137,6 +141,7 @@ class applicationserver {
 		include standard,
 			admins::roots,
 			admins::mortals,
+			accounts::l10nupdate,
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,
@@ -191,16 +196,16 @@ class imagescaler {
 
 class db {
 	class core {
-	        $roles += [ 'db::core' ]
-	        $cluster = "mysql"
+		$roles += [ 'db::core' ]
+		$cluster = "mysql"
 
 		system_role { "db::core": description => "Core Database server" }
 
-	        include base,
-	                ntp::client,
-	                ganglia,
-	                exim::simple-mail-sender,
-	                mysql
+		include base,
+			ntp::client,
+			ganglia,
+			exim::simple-mail-sender,
+			mysql
 	}
 
 	class es {
@@ -215,6 +220,10 @@ class db {
 			ganglia,
 			exim::simple-mail-sender,
 			mysql,
+			mysql::mysqluser,
+			mysql::datadirs,
+			mysql::conf,
+			mysql::mysqlpath,
 			nrpe
 
 		# Nagios monitoring
@@ -340,19 +349,19 @@ class upload-squid {
 		ganglia,
 		exim::simple-mail-sender
 
-        # HTCP packet loss monitoring on the ganglia aggregators
-        if $ganglia_aggregator == "true" and $site != "esams" {
-                include misc::monitoring::htcp-loss
-        }
+	# HTCP packet loss monitoring on the ganglia aggregators
+	if $ganglia_aggregator == "true" and $site != "esams" {
+		include misc::monitoring::htcp-loss
+	}
 }
 
 class cache {
 	class bits {
 		$roles += [ 'cache::bits' ]
 		$cluster = "cache_bits_${site}"
-	        $nagios_group = "cache_bits_${site}"
+		$nagios_group = "cache_bits_${site}"
 
-	        $lvs_realserver_ips = $site ? {
+		$lvs_realserver_ips = $site ? {
 			"pmtpa" => [ "208.80.152.118", "208.80.152.210", "10.2.1.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
@@ -362,23 +371,23 @@ class cache {
 			$varnish_directors = { "appservers" => $varnish_backends }
 		}
 
-		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 
 		system_role { "cache::bits": description => "bits Varnish cache server" }
 
-	        include base,
-	                ganglia,
-	                ntp::client,
-	                exim::simple-mail-sender,
-	                varnish,
-	                lvs::realserver
+		include base,
+			ganglia,
+			ntp::client,
+			exim::simple-mail-sender,
+			varnish,
+			lvs::realserver
 	}
 	class mobile { 
 		$roles += [ 'cache::mobile' ]
 		$cluster = "cache_mobile_${site}"
-	        $nagios_group = "cache_mobile_${site}"
+		$nagios_group = "cache_mobile_${site}"
 
-	        $lvs_realserver_ips = $site ? {
+		$lvs_realserver_ips = $site ? {
 			'eqiad' => [ "208.80.154.236" ],
 			default => [ ]
 		}
@@ -392,14 +401,15 @@ class cache {
 
 		system_role { "cache::mobile": description => "mobile Varnish cache server" }
 
-	        include base,
-	                ganglia,
-	                ntp::client,
-	                exim::simple-mail-sender,
+		include base,
+			ganglia,
+			ntp::client,
+			exim::simple-mail-sender,
 			varnish3,
-	                varnish3_frontend,
-	                lvs::realserver
-
+			varnish3_frontend,
+			varnish3::htcpd,
+			varnish3::monitoring,
+			lvs::realserver
 	}
 }
 
@@ -422,15 +432,15 @@ node "aluminium.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { rfaulk: user => "rfaulk", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	#sudo_user { rfaulk: user => "rfaulk", privileges => ['ALL = NOPASSWD: ALL'] }
+	#sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
 	include	base,
 		ntp::client,
 		nrpe,
-                admins::roots,
+		admins::roots,
 		accounts::rfaulk,
 		accounts::nimishg,
 		accounts::zexley,
@@ -448,10 +458,10 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 
 	$lvs_balancer_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 
-        # PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-        # So we'll have every LVS server run their own recursor
-        $nameservers = [ $ipaddress, "91.198.174.6", "208.80.152.131" ]
-        $dns_recursor_ipaddress = $ipaddress
+	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+	# So we'll have every LVS server run their own recursor
+	$nameservers = [ $ipaddress, "91.198.174.6", "208.80.152.131" ]
+	$dns_recursor_ipaddress = $ipaddress
 
 	include base,
 		ganglia,
@@ -462,14 +472,14 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-        $lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-        include text-squid,
-                lvs::realserver
+	include text-squid,
+		lvs::realserver
 }
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
@@ -488,7 +498,7 @@ node "argon.wikimedia.org" {
 		ntp::client,
 		misc::survey
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
@@ -508,15 +518,15 @@ node "brewster.wikimedia.org" {
 		ganglia,
 		ntp::client,
 	#	misc::install-server,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		backup::client,
-        	misc::install-server::ubuntu-mirror,
-                misc::install-server::apt-repository,
-                misc::install-server::preseed-server,
-                misc::install-server::tftp-server,
-                misc::install-server::caching-proxy,
-                misc::install-server::web-server,
-                misc::install-server::dhcp-server
+		misc::install-server::ubuntu-mirror,
+		misc::install-server::apt-repository,
+		misc::install-server::preseed-server,
+		misc::install-server::tftp-server,
+		misc::install-server::caching-proxy,
+		misc::install-server::web-server,
+		misc::install-server::dhcp-server
 
 }
 
@@ -525,17 +535,17 @@ node "carbon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 #		misc::install-server,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		backup::client,
-                misc::install-server::tftp-server
+		misc::install-server::tftp-server
 }
 
 node "ekrem.wikimedia.org" {
-        install_certificate{ "star.wikimedia.org": }
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
+	install_certificate{ "star.wikimedia.org": }
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
 		misc::wapsite,
 		misc::apple-dictionary-bridge,
 		misc::irc-server,
@@ -548,7 +558,7 @@ node "emery.wikimedia.org" {
 	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		ntp::client,
 		groups::wikidev,
 		admins::mortals,
@@ -560,35 +570,46 @@ node "erzurumi.pmtpa.wmnet" {
 	include	base,
 		ganglia,
 		ntp::client,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		groups::wikidev,
 		accounts::awjrichards,
 		accounts::tfinc
 }
 
+node /es100[1-4]\.eqiad\.wmnet/ {
+	#if $hostname == "es1001" { ## making a nonexistent host the master to quiet nagios until the host is actually up
+	if $hostname == "es1000" {
+		include db::es::master
+	}
+	else {
+		include db::es::slave
+	}
+}
+
 node "dataset1.wikimedia.org" {
-        $cluster = "misc"
+	$cluster = "misc"
 	$gid=500
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
-                admins::roots,
-                misc::download-wikimedia
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
+		admins::roots,
+		misc::download-wikimedia
 
 }
 
 node "dataset2.wikimedia.org" {
-        $cluster = "misc"
-        $gid=500
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
-                admins::roots,
+	$cluster = "misc"
+	$gid=500
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
+		admins::roots,
 		groups::wikidev,
 		accounts::catrope,
-                misc::download-wikimedia,
+		misc::download-wikimedia,
+		misc::download-mirror,
 		misc::kiwix-mirror
 }
 
@@ -754,18 +775,18 @@ node "db40.pmtpa.wmnet" {
 }
 
 node "db41.pmtpa.wmnet" {
-        $cluster = "misc"
-        $gid=500
-        sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
-        include base,
-                ganglia,
-                ntp::client,
-                memcached,
-                memcached::config,
-                owa::database,
-                sudo::sudoers,
-                groups::wikidev,
-                accounts::nimishg
+	$cluster = "misc"
+	$gid=500
+	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	include base,
+		ganglia,
+		ntp::client,
+		memcached,
+		memcached::config,
+		owa::database,
+		sudo::sudoers,
+		groups::wikidev,
+		accounts::nimishg
 }
 
 node "db42.pmtpa.wmnet" {
@@ -798,11 +819,11 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	if $hostname =~ /^db(1001|1017|1033|1047|1048)$/ {
+	if $hostname =~ /^db(1001|1017|1033|1047)$/ {
 		$db_cluster = "s1"
 	}
 
-	if $hostname =~ /^db(1047|1048)$/ {
+	if $hostname =~ /^db(1047)$/ {
 		$research_dbs = true
 	}
 
@@ -830,6 +851,16 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "s7"
 	}
 
+	if $hostname =~ /^db(1008|1025|1042|1048)$/ {
+		$db_cluster = "fr"
+	}
+
+	# Here Be Masters
+	if $hostname =~ /^db(1047|1048)$/ {
+		$writable = "true"
+		system_role { "waste::limesurvey": description => "bastard child waste of hardware for limesurvey" }
+	} 
+
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -855,7 +886,7 @@ node "dobson.wikimedia.org" {
 		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
-                exim::simple-mail-sender
+		exim::simple-mail-sender
 }
 
 node "fenari.wikimedia.org" {
@@ -870,6 +901,7 @@ node "fenari.wikimedia.org" {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
+		accounts::l10nupdate,
 		misc::bastionhost,
 		misc::noc-wikimedia,
 		misc::extension-distributor,
@@ -889,18 +921,18 @@ node "formey.wikimedia.org" {
 
 	install_certificate{ "star.wikimedia.org": }
 
-        sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-        sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-        sudo_user { pdhanda: user => "pdhanda", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-        $cluster = "misc"
+	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
+	sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
+	sudo_user { pdhanda: user => "pdhanda", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
+	$cluster = "misc"
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
 		svn::server,
 		ldap::client::wmf-cluster,
 		backup::client,
@@ -912,9 +944,9 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-        include base,
-                ganglia,
-                ntp::client,
+	include base,
+		ganglia,
+		ntp::client,
 		admins::roots,
 		accounts::demon
 }
@@ -932,7 +964,7 @@ node "gilman.wikimedia.org" {
 	include	base,
 		ntp::client,
 		nrpe,
-                admins::roots,
+		admins::roots,
 		accounts::rfaulk,
 		accounts::nimishg,
 		accounts::awjrichards,
@@ -953,13 +985,14 @@ node "grosley.wikimedia.org" {
 	include	base,
 		ntp::client,
 		nrpe,
-                admins::roots,
+		admins::roots,
 		accounts::rfaulk,
 		accounts::nimishg,
 		accounts::zexley,
 		accounts::khorn,
 		accounts::awjrichards,
 		accounts::kaldari,
+		accounts::jpostlethwaite,
 		misc::jenkins,
 		backup::client,
 		misc::fundraising
@@ -970,7 +1003,7 @@ node "grosley.wikimedia.org" {
 	#	ganglia,
 	#	ntp::client,
 	#	nrpe,
-         #       admins::roots,
+	#	admins::roots,
 	#	accounts::rfaulk
 }
 
@@ -983,7 +1016,7 @@ node "gurvin.wikimedia.org" {
 	$cluster = "ssl"
 	$ganglia_aggregator = "true"
 
-        include base,
+	include base,
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca,
@@ -1005,17 +1038,17 @@ node "hooft.esams.wikimedia.org" {
 }
 
 node "hooper.wikimedia.org" {
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
-                admins::roots,
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
+		admins::roots,
 		svn::client,
-                misc::etherpad,
+		misc::etherpad,
 		misc::blog-wikimedia,
 		certificates::star_wikimedia_org
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node "hume.wikimedia.org" {
@@ -1025,7 +1058,7 @@ node "hume.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		nfs::home,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -1042,17 +1075,17 @@ node "kaulen.wikimedia.org" {
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$gid = 500
 
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
 		admins::roots,
 		accounts::demon,
 		ldap::client::wmf-cluster,
 		misc::download-mediawiki,
 		certificates::star_wikimedia_org
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 	cron { bugzilla_whine: command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl", user => root, minute => 15 }
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
 }
@@ -1060,30 +1093,30 @@ node "kaulen.wikimedia.org" {
 # knsq1-7 are Varnish bits servers, 5 has been decommissioned
 node /knsq([1-7])\.esams\.wikimedia\.org/ {
 	if $hostname =~ /^knsq[4]$/ {
-	        $ganglia_aggregator = "true"
+		$ganglia_aggregator = "true"
 	}
 
-        include cache::bits
+	include cache::bits
 }
 
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
  node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
- 	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
+	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
 	}
 
- 	include upload-squid
+	include upload-squid
 }
 
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-        $lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
- 		include text-squid,
+		include text-squid,
 			lvs::realserver
 }
 
@@ -1099,7 +1132,7 @@ node "linne.wikimedia.org" {
 
 	include base,
 		ganglia,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		ntp::server,
 		dns::auth-server,
 		misc::url-downloader,
@@ -1113,7 +1146,7 @@ node "locke.wikimedia.org" {
 	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		ntp::client,
 		groups::wikidev,
 		admins::restricted,
@@ -1128,27 +1161,27 @@ node "lomaria.pmtpa.wmnet" {
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
-        $cluster = "misc"
+	$cluster = "misc"
 
-        # PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-        # So we'll have every LVS server run their own recursor
-        $nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-        $dns_recursor_ipaddress = $ipaddress
+	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+	# So we'll have every LVS server run their own recursor
+	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+	$dns_recursor_ipaddress = $ipaddress
 
 	if $hostname =~ /^lvs[12]$/ {
-                $lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211" ]
+		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211" ]
 	}
 	if $hostname =~ /^lvs[56]$/ {
 		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "10.2.1.23", "10.2.1.24", "10.2.1.25" ]
 	}
 	if $hostname =~ /^lvs[34]$/ {
-                $lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12", "10.2.1.13", "10.2.1.21", "10.2.1.22" ]
+		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12", "10.2.1.13", "10.2.1.21", "10.2.1.22" ]
 	}
 
-        include base,
-                ganglia,
-                dns::recursor,
-                lvs::balancer,
+	include base,
+		ganglia,
+		dns::recursor,
+		lvs::balancer,
 		lvs::balancer::runcommand
 
 	if $hostname == "lvs1" {
@@ -1192,28 +1225,28 @@ node /lvs[1-6]\.wikimedia\.org/ {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-        $cluster = "misc"
+	$cluster = "misc"
 
-        # PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-        # So we'll have every LVS server run their own recursor
-        $nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-        $dns_recursor_ipaddress = $ipaddress
+	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+	# So we'll have every LVS server run their own recursor
+	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+	$dns_recursor_ipaddress = $ipaddress
 
-        if $hostname =~ /^lvs100[14]$/ {
-                $lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236" ]
-        }
+	if $hostname =~ /^lvs100[14]$/ {
+		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236" ]
+	}
 
 	if $hostname =~ /^lvs100[2356]$/ {
 		$lvs_balancer_ips = [ "" ]
-        }
+	}
 
-        include base,
-                ganglia,
-                dns::recursor,
-                lvs::balancer,
-                lvs::balancer::runcommand
+	include base,
+		ganglia,
+		dns::recursor,
+		lvs::balancer,
+		lvs::balancer::runcommand
 
-        $ips = {
+	$ips = {
 		'public1-a-eqiad' => {
 			'lvs1004' => "208.80.154.58",
 			'lvs1005' => "208.80.154.59",
@@ -1240,18 +1273,18 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			'lvs1005' => "10.64.17.5",
 			'lvs1006' => "10.64.17.6",
 		}
-        }
+	}
 
-        # Set up tagged interfaces to all subnets with real servers in them, but no IP addresses, just routes
-        case $hostname {
+	# Set up tagged interfaces to all subnets with real servers in them, but no IP addresses, just routes
+	case $hostname {
 		/^lvs100[1-3]$/: {
 			# Row A subnets on eth0
 			interface_tagged { "eth0.1017":
-		                base_interface => "eth0",
-		                vlan_id => "1017",
-		                address => $ips["private1-a-eqiad"][$hostname],
-		                netmask => "255.255.252.0"
-		        }
+				base_interface => "eth0",
+				vlan_id => "1017",
+				address => $ips["private1-a-eqiad"][$hostname],
+				netmask => "255.255.252.0"
+			}
 			# Row B subnets on eth1
 			interface_tagged { "eth1.1002":
 				base_interface => "eth1",
@@ -1294,7 +1327,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		}
 	}
 
-        # Make sure GRO is off
+	# Make sure GRO is off
 	interface_manual { "eth1": interface => "eth1", before => Interface_setting["eth1 gro"] }
 	interface_manual { "eth2": interface => "eth2", before => Interface_setting["eth2 gro"] }
 	interface_manual { "eth3": interface => "eth3", before => Interface_setting["eth3 gro"] }
@@ -1315,7 +1348,7 @@ node "maerlant.esams.wikimedia.org" {
 	$cluster = "ssl_esams"
 	$ganglia_aggregator = "true"
 
-        include base,
+	include base,
 		ganglia,
 		ntp::client,
 		protoproxy::proxy_sites,
@@ -1331,7 +1364,7 @@ node "mchenry.wikimedia.org" {
 
 	$dns_recursor_ipaddress = "208.80.152.132"
 
-        interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
+	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 
 	include base,
 		ganglia,
@@ -1352,7 +1385,7 @@ node "lily.knams.wikimedia.org" {
 		nrpe,
 		certificates::star_wikimedia_org
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node /mobile[1-5]\.wikimedia\.org/ {
@@ -1362,13 +1395,13 @@ node /mobile[1-5]\.wikimedia\.org/ {
 	}
 	$cluster = "mobile"
 	$gid = 500
-        $lvs_realserver_ips = [ "208.80.152.5" ]
+	$lvs_realserver_ips = [ "208.80.152.5" ]
 	sudo_user { hcatlin : user => "hcatlin", privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
-                lvs::realserver,
+		lvs::realserver,
 		ntp::client,
 		ganglia,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		groups::wikidev,
 		accounts::hcatlin,
 		accounts::preilly
@@ -1443,33 +1476,33 @@ node /ms100[4]\.eqiad\.wmnet/ {
 	$cluster = "misc"
 	$ganglia_aggregator = "true"
 
-        $thumbs_proxying = "true"
-        $thumbs_proxy_source = "http://10.0.0.252"
+	$thumbs_proxying = "true"
+	$thumbs_proxy_source = "http://10.0.0.252"
 
-        include standard,
-                media-storage::thumbs-server,
-                media-storage::htcp-purger
+	include standard,
+		media-storage::thumbs-server,
+		media-storage::htcp-purger
 }
 
 node "nescio.esams.wikimedia.org" {
-        $cluster = "misc_esams"
+	$cluster = "misc_esams"
 
-        $dns_auth_ipaddress = "91.198.174.4"
-        $dns_auth_soa_name = "ns2.wikimedia.org"
+	$dns_auth_ipaddress = "91.198.174.4"
+	$dns_auth_soa_name = "ns2.wikimedia.org"
 
 	$dns_recursor_ipaddress = "91.198.174.6"
 
 	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
-        interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
-        
+	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
+	
 	include base,
-                ganglia,
-                ntp::client,
-                dns::auth-server,
-                dns::recursor,
+		ganglia,
+		ntp::client,
+		dns::auth-server,
+		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
-                exim::simple-mail-sender
+		exim::simple-mail-sender
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
@@ -1483,7 +1516,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 	include base,
 		ganglia,
 		ntp::client,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		misc::nfs-server::home,
 		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
@@ -1585,7 +1618,7 @@ node "pdf1.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		groups::wikidev,
-                accounts::file_mover
+		accounts::file_mover
 }
 
 node "pdf2.wikimedia.org" {
@@ -1597,7 +1630,7 @@ node "pdf2.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		groups::wikidev,
-                accounts::file_mover
+		accounts::file_mover
 }
 
 node "pdf3.wikimedia.org" {
@@ -1608,25 +1641,25 @@ node "pdf3.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		groups::wikidev,
-                accounts::file_mover
+		accounts::file_mover
 }
 
 node "project1.wikimedia.org" {
-        $cluster = "misc"
+	$cluster = "misc"
 
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender
 }
 
 node "project2.wikimedia.org" {
-        $cluster = "misc"
+	$cluster = "misc"
 
-        include base,
-                ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
+	include base,
+		ganglia,
+		ntp::client,
+		exim::simple-mail-sender,
 		groups::wikidev,
 		accounts::reedy
 }
@@ -1638,8 +1671,8 @@ node "sanger.wikimedia.org" {
 	install_certificate{ "sanger.wikimedia.org": }
 
 	include base,
-                ganglia,
-                ntp::client,
+		ganglia,
+		ntp::client,
 		nrpe,
 		ldap::server::wmf-corp-cluster,
 		ldap::client::wmf-corp-cluster,
@@ -1686,7 +1719,7 @@ node "singer.wikimedia.org" {
 		accounts::awjrichards
 
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
@@ -1701,6 +1734,18 @@ node "sockpuppet.pmtpa.wmnet" {
 		misc::puppetmaster,
 		backup::client,
 		svn::server::notify
+}
+
+node "sodium.wikimedia.org" {
+
+	include base,
+		ganglia,
+		nrpe,
+		exim::packages::heavy,
+		certificates::star_wikimedia_org
+
+	install_certificate{ "star.wikimedia.org": }
+
 }
 
 node "spence.wikimedia.org" {
@@ -1723,236 +1768,236 @@ node "spence.wikimedia.org" {
 }
 
 node "srv151.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv152.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv153.pmtpa.wmnet" {
-        $ganglia_aggregator = "true"
-        include applicationserver::homeless,
+	$ganglia_aggregator = "true"
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv154.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv155.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv156.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv157.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv158.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv159.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv160.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv161.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv162.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv163.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv164.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv165.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv166.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv167.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv168.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv169.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv170.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv171.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv172.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv174.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv175.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv176.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv177.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv178.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv179.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv180.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv181.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv182.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv183.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv184.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv185.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv186.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv187.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv188.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv189.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv190.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
@@ -1960,135 +2005,135 @@ node "srv190.pmtpa.wmnet" {
 node "srv191.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 
-        include applicationserver::bits,
+	include applicationserver::bits,
 		memcached
 }
 
 node "srv192.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 
-        include applicationserver::bits,
+	include applicationserver::bits,
 		memcached
 }
 
 # srv193 is test.wikipedia.org
 node "srv193.pmtpa.wmnet" {
-        include applicationserver::home,
+	include applicationserver::home,
 		memcached
 }
 
 node "srv194.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv195.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv196.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv197.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv198.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv199.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv200.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv201.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv202.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv203.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv204.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv205.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv206.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv207.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv208.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv209.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv210.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv211.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv212.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv213.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv214.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
 node "srv215.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
 node "srv216.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
@@ -2098,7 +2143,7 @@ node "srv217.pmtpa.wmnet" {
 }
 
 node "srv218.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
@@ -2129,165 +2174,165 @@ node "srv224.pmtpa.wmnet" {
 
 node "srv225.pmtpa.wmnet" {
 	#$dist = "lucid"
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv226.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv227.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv228.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv229.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv230.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		memcached
 }
 
 node "srv231.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv232.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv233.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv234.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv235.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv236.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv237.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv238.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv239.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv240.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv241.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv242.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv243.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv244.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv245.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv246.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv247.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv248.pmtpa.wmnet" {
-        include applicationserver::bits,
+	include applicationserver::bits,
 		memcached
 }
 
 node "srv249.pmtpa.wmnet" {
-        include applicationserver::bits,
+	include applicationserver::bits,
 		memcached
 }
 
 node "srv250.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
 node "srv251.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
 node "srv252.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
 node "srv253.pmtpa.wmnet" {
-        include applicationserver::api,
+	include applicationserver::api,
 		memcached
 }
 
@@ -2312,147 +2357,147 @@ node "srv257.pmtpa.wmnet" {
 }
 
 node "srv258.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv259.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv260.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv261.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv262.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv263.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv264.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv265.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv266.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv267.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv268.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv269.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv270.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv271.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv272.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv273.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv274.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv275.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv276.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv277.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv278.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv279.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv280.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv281.pmtpa.wmnet" {
-        #include applicationserver::homeless,
+	#include applicationserver::homeless,
 	#	applicationserver::jobrunner,
-        #        memcached
+	#	 memcached
 	include admins::roots,
 		admins::mortals,
 		apaches::pybal-check,
@@ -2460,51 +2505,51 @@ node "srv281.pmtpa.wmnet" {
 }
 
 node "srv282.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv283.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv284.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv285.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv286.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv287.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv288.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv289.pmtpa.wmnet" {
-        include applicationserver::homeless,
+	include applicationserver::homeless,
 		applicationserver::jobrunner,
-                memcached
+		memcached
 }
 
 node "srv290.pmtpa.wmnet" {
@@ -2568,7 +2613,7 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 		$enable_ipv6_proxy = true
 	}
 
-        include base,
+	include base,
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca,
@@ -2591,8 +2636,8 @@ node /sq(3[7-9]|40)\.wikimedia\.org/ {
 	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-        include text-squid,
-                lvs::realserver
+	include text-squid,
+		lvs::realserver
 }
 
 # sq41-50 are old 4 disk upload squids
@@ -2643,15 +2688,15 @@ node /sq7[1-8]\.wikimedia\.org/ {
 	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 
-        include text-squid,
-                lvs::realserver
+	include text-squid,
+		lvs::realserver
 }
 
 # sq79-86 are upload squids
 node /sq(79|8[0-6])\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5' ]
 
-        include upload-squid
+	include upload-squid
 }
 
 node "stat1.wikimedia.org" {
@@ -2670,7 +2715,7 @@ node "storage1.wikimedia.org" {
 	include	base,
 		ganglia,
 		ntp::client,
-                exim::simple-mail-sender
+		exim::simple-mail-sender
 
 # Disable so puppet won't interfere with manual work
 #	include	varnish
@@ -2680,17 +2725,17 @@ node "storage2.wikimedia.org" {
 	include	base,
 		ganglia,
 		ntp::client,
-                exim::simple-mail-sender
+		exim::simple-mail-sender
 }
 
 node "storage3.pmtpa.wmnet" {
-        include db::core,
+	include db::core,
 		svn::client,
-                groups::wikidev,
-                accounts::nimishg,
-                accounts::rfaulk,
-                accounts::awjrichards,
-                accounts::logmover
+		groups::wikidev,
+		accounts::nimishg,
+		accounts::rfaulk,
+		accounts::awjrichards,
+		accounts::logmover
 }
 
 node "streber.wikimedia.org" {
@@ -2706,7 +2751,7 @@ node "streber.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
@@ -2731,15 +2776,15 @@ node "snapshot2.pmtpa.wmnet" {
 	include base,
 		ntp::client,
 		ganglia,
-                mediawiki::sync,
-                snapshots::packages,
-                snapshots::sync,
-                snapshots::files,
-                snapshots::noapache,
-                admins::roots,
-                admins::mortals,
-                nfs::data,
-                groups::wikidev
+		mediawiki::sync,
+		snapshots::packages,
+		snapshots::sync,
+		snapshots::files,
+		snapshots::noapache,
+		admins::roots,
+		admins::mortals,
+		nfs::data,
+		groups::wikidev
 }
 
 node "snapshot3.wikimedia.org" {
@@ -2753,19 +2798,19 @@ node "snapshot3.wikimedia.org" {
 }
 
 node "snapshot4.pmtpa.wmnet" {
-        $gid=500
-        include base,
-                ntp::client,
-                ganglia,
-                mediawiki::sync,
-                snapshots::packages,
-                snapshots::sync,
-                snapshots::files,
+	$gid=500
+	include base,
+		ntp::client,
+		ganglia,
+		mediawiki::sync,
+		snapshots::packages,
+		snapshots::sync,
+		snapshots::files,
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
-                nfs::data,
-                groups::wikidev
+		nfs::data,
+		groups::wikidev
 }
 
 node "thistle.pmtpa.wmnet" {
@@ -2776,8 +2821,8 @@ node "thistle.pmtpa.wmnet" {
 node "transcode1.wikimedia.org" {
 	include base,
 		ganglia,
-                ntp::client,
-                exim::simple-mail-sender,
+		ntp::client,
+		exim::simple-mail-sender,
 		misc::dc-cam-transcoder
 }		
 
@@ -2797,13 +2842,13 @@ node "virt1.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		openstack::controller
 }
 
 node /virt[2-4].pmtpa.wmnet/ {
 	include standard,
-                exim::simple-mail-sender,
+		exim::simple-mail-sender,
 		openstack::compute
 }
 
@@ -2813,15 +2858,15 @@ node "williams.wikimedia.org" {
 		ntp::client,
 		certificates::star_wikimedia_org
 
-        install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node  "yongle.wikimedia.org" {
-        $gid=500
+	$gid=500
 	include	base,
 		ganglia,
 		ntp::client,
-                groups::wikidev,
+		groups::wikidev,
 		accounts::catrope,
 		exim::simple-mail-sender
 }
@@ -2832,7 +2877,7 @@ node "yvon.wikimedia.org" {
 	$cluster = "ssl"
 	$ganglia_aggregator = "true"
 
-        include base,
+	include base,
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca,

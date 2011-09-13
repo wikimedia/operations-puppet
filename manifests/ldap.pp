@@ -419,7 +419,7 @@ class ldap::client::utils {
 
 	include svn::client
 
-	package { [ "python-ldap", "python-pycurl" ]:
+	package { [ "python-ldap", "python-pycurl", "python-mwclient" ]:
 		ensure => latest;
 	}
 
@@ -427,6 +427,9 @@ class ldap::client::utils {
 		"/usr/local/sbin/add-ldap-user":
 			ensure => link,
 			target => "/usr/local/lib/user-management/add-ldap-user";
+		"/usr/local/sbin/add-labs-user":
+			ensure => link,
+			target => "/usr/local/lib/user-management/add-labs-user";
 		"/usr/local/sbin/modify-ldap-user":
 			ensure => link,
 			target => "/usr/local/lib/user-management/modify-ldap-user";
@@ -457,19 +460,31 @@ class ldap::client::utils {
 		"/usr/local/sbin/ldapsupportlib.py":
 			ensure => link,
 			target => "/usr/local/lib/user-management/ldapsupportlib.py";
+		"/usr/local/sbin/mail-instance-creator.py":
+			ensure => link,
+			target => "/usr/local/lib/instance-management/mail-instance-creator.py";
 		"/etc/ldap/.ldapscriptrc":
 			owner => root,
 			group => root,
 			mode  => 0700,
 			content => template("ldap/ldapscriptrc.erb");
+		"/etc/ldap/scriptconfig.py":
+			owner => root,
+			group => root,
+			mode  => 0644,
+			content => template("ldap/scriptconfig.py.erb");
 			
 	}
 
 	# Use a specific revision for the checkout, to ensure we are using
 	# a known and approved version of this script.
 	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r95913 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
-		creates => "/usr/local/lib/user-management",
+		command => "/usr/bin/svn co -r96446 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
+		cwd => "/usr/local/lib",
+		require => Package["subversion"];
+	}
+	exec { "checkout_instance_ldap_tools":
+		command => "/usr/bin/svn co -r96928 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
@@ -524,6 +539,8 @@ class ldap::client::wmf-cluster {
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_cluster::ldap_user_pass
 	$ldap_ca = "wmf-ca.pem"
+	$wikildapdomain = "labs"
+	$wikicontrollerapiurl = "https://labsconsole.wikimedia.org/w/api.php"
 
 	include ldap::client::includes,
 		certificates::wmf_ca
@@ -554,6 +571,8 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	$ldapincludes = ['openldap', 'utils']
+	$wikildapdomain = "labs"
+	$wikicontrollerapiurl = "https://labsconsole.wikimedia.org/w/api.php"
 
 	include ldap::client::includes,
 		certificates::wmf_ca
@@ -584,6 +603,20 @@ class ldap::client::includes {
 
 	if "utils" in $ldapincludes {
 		include ldap::client::utils
+	}
+
+	if "managehome" in $ldapincludes {
+		exec { "createhomedirs":
+			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/homedirectorymanager.py &>> /var/log/homedirectorymanager.log",
+			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ssl/certs/wmf-tesla-ca.pem"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
+		}
+		if $site =~ /labs_(pmtpa|eqiad)/ {
+			exec {
+				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang http://nova-controller.tesla.usability.wikimedia.org/s-1/ && touch /var/lib/cloud/data/.usermailed":
+				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Exec["createhomedirs"], Service['exim4'], Package['exim4-daemon-light'] ],
+				creates => "/var/lib/cloud/data/.usermailed";
+			}
+		}
 	}
 
 }

@@ -9,15 +9,15 @@ backend appservers {
 <% if site == "pmtpa" -%>
 	.host = "10.2.1.1";   # appservers.svc.pmtpa.wmnet
 <% elsif site == "eqiad" -%>
-	.host = "10.2.4.1";   # one day we'll have an appserver cluster in eqiad
+	.host = "10.2.1.1";   # eqiad appservers not live
 <% else -%>
 	.host = "10.2.1.1";   
 <% end -%>
 	.port = "80";
-	.max_connections = 1000;
+	.max_connections = 10000;
 	.connect_timeout = 3s;
 	.first_byte_timeout = 5s;
-	.between_bytes_timeout = 2s;
+	.between_bytes_timeout = 4s;
 }
 
 acl purge { 
@@ -30,7 +30,7 @@ sub vcl_hash {
 		hash_data(req.url + req.http.host);
 	} else {
 		hash_data(req.url + server.ip);
-	
+	}	
 }
 
 sub vcl_recv {
