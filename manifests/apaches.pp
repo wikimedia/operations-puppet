@@ -108,17 +108,19 @@ extension=php_wikidiff2.so
 	}
 
 	# local run of sync-apache for initial deploy
-#	exec { 
-#		'local_sync_apache':
-#			unless => '/usr/bin/test ! -d "/usr/local/apache/conf" ',
-#			command => "/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf";
-#		'local_sync_common':
-#			subscribe => Exec['local_sync_apache'],
-#			command => "/usr/bin/sync-common";
-#		'apache_graceful':
-#			subscribe => Exec['local_sync_common'],
-#			command => "/usr/sbin/apache2ctl graceful";
-#	}	
+	exec { 
+		'local_sync_apache':
+			unless => '/usr/bin/test -d "/usr/local/apache/conf" ',
+			command => "/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf";
+		'local_sync_common':
+			subscribe => Exec['local_sync_apache'],
+			refreshonly => true,
+			command => "/usr/bin/sync-common";
+		'apache_graceful':
+			subscribe => Exec['local_sync_common'],
+			refreshonly => true,
+			command => "/usr/sbin/apache2ctl graceful";
+	}	
 }
 
 class apaches::service {

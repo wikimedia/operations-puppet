@@ -947,6 +947,7 @@ node "gallium.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
+		misc::contint::test,
 		admins::roots,
 		accounts::demon
 }
