@@ -47,6 +47,7 @@ class gerrit::database-server {
 }
 
 class gerrit::jetty {
+	system_role { "gerrit": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::account,
 		gerrit::gerrit_config

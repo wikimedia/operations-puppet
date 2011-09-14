@@ -918,7 +918,6 @@ node "fenari.wikimedia.org" {
 
 node "formey.wikimedia.org" {
 	system_role { "public_svn": description => "Wikimedia public SVN server" }
-	system_role { "gerrit": description => "Wikimedia gerrit (git) server" }
 
 	install_certificate{ "star.wikimedia.org": }
 
