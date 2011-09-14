@@ -157,8 +157,6 @@ class varnish3 {
 	}
 
 	class monitoring {
-		# FIXME: make this service-unspecific, and also monitor possible frontends.
-		
 		# Nagios
 	        monitor_service { "varnish http":
         	        description => "Varnish HTTP",

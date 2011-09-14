@@ -42,6 +42,7 @@ ldapbase = ou=hosts,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_
 ldapstring = (&(objectclass=puppetClient)(associatedDomain=%s))
 ldapuser = cn=proxyagent,ou=profile,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
 ldappassword = <%= scope.lookupvar('openstack::nova_config::nova_ldap_proxyagent_pass') %>
+ldaptls = true
 manifestdir = /var/lib/puppet/conf/manifests
 templatedir = /var/lib/puppet/conf/templates
 modulepath = /var/lib/puppet/conf/modules
