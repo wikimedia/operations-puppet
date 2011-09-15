@@ -257,6 +257,25 @@ class accounts {
 			}
 		}
 	}
+	
+		class cmjohnson inherits baseaccount {
+		$username = "cmjohnson"
+		$realname = "Chris Johnson"
+		$uid = 575
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+                if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname]}
+
+                        ssh_authorized_key {
+				"chris@ubuntu":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61",
+			}
+		}
 
 	class dab inherits baseaccount {
 		$username = "dab"
@@ -1491,6 +1510,7 @@ class admins::restricted {
 	include accounts::austin
 	include accounts::avar
 	include accounts::bastique
+	include accounts::cmjohnson
 	include accounts::dab
 	include accounts::daniel
 	include accounts::erik
