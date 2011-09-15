@@ -1,0 +1,8 @@
+Change-Id: Ia37a135da29047b4733dce0b6850f1cff2003c98
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+1: RobH <rob@wikimedia.org>
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Thu, 15 Sep 2011 20:23:45 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/23
+Project: operations/puppet
+Branch: refs/heads/production
