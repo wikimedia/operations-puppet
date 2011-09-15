@@ -917,8 +917,6 @@ node "fenari.wikimedia.org" {
 }
 
 node "formey.wikimedia.org" {
-	system_role { "public_svn": description => "Wikimedia public SVN server" }
-
 	install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }

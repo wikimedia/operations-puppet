@@ -157,7 +157,7 @@ class openstack::compute {
 class openstack::puppet-server {
 
 	# Only allow puppet access from the instances
-	$puppet_passenger_allow_from = "10.4.0.0/24"
+	$puppet_passenger_allow_from = "10.4.0.0/24 10.4.16.3"
 
 	include puppetmaster::passenger
 
@@ -485,7 +485,7 @@ class openstack::nova_config {
 	$nova_flat_network_bridge = "br103"
 	$nova_fixed_range = "10.4.0.0/24"
 	$nova_dhcp_start = "10.4.0.3"
-	$nova_dhcp_domain = "sdtpa.labs.wmnet"
+	$nova_dhcp_domain = "pmtpa.labs.wmnet"
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "10.4.16.3"

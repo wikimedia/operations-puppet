@@ -257,6 +257,25 @@ class accounts {
 			}
 		}
 	}
+	
+		class cmjohnson inherits baseaccount {
+		$username = "cmjohnson"
+		$realname = "Chris Johnson"
+		$uid = 575
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+                if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname]}
+
+                        ssh_authorized_key {
+				"chris@ubuntu":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61",
+			}
+		}
 
 	class dab inherits baseaccount {
 		$username = "dab"
@@ -303,8 +322,8 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                	Ssh_authorized_key { require => Unixaccount[$realname] }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "dz@ubuntu":
 				ensure	=> present,
@@ -323,8 +342,8 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                	Ssh_authorized_key { require => Unixaccount[$realname] }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "jpostlethwaite@WMF299s-MacBook-Pro.local":
 				ensure	=> present,
@@ -334,6 +353,27 @@ class accounts {
 			}
 		}
 	}
+
+
+	class sumanah inherits baseaccount {
+		$username = "sumanah"
+		$realname = "Sumana Harihareswara"
+		$uid = 578
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "sumanah@compassion":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ8wX2EjwOWmK312keUphSIdkEoLp7ZzqL3uoMW/IzTH0QbUgddCxmtcFxGoF3+s80CkaWUrO28CfcpX/B30XADk7K0hGhGzSOWGqUdjohQfUzvtpuRPKxLy4LJWBWrIRfcjRBrVSZepXv3H6mLHE+IECRewefdwCi412cZye31wx1PVyBCv1Vbu3EaDo5OoMAhgcHkrvM+LHWCggztR5zFKbqbl3CG8FpJdULB/zRznOKCN5ApgdzSRtL4S4Epb4xKrtUI2OBdlPP4XoSFpscpTCwhBiBGEmIH6txrH5wt/ZYxdhBg+DofqLfxlpMmiIhLhDLLixYiACbbYXUCi6N"
+			}
+		}
+	}
+
 
 	class erik inherits baseaccount {
 		$username = "erik"
@@ -1470,6 +1510,7 @@ class admins::restricted {
 	include accounts::austin
 	include accounts::avar
 	include accounts::bastique
+	include accounts::cmjohnson
 	include accounts::dab
 	include accounts::daniel
 	include accounts::erik

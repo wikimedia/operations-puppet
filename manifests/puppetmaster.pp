@@ -10,7 +10,7 @@ class puppetmaster::passenger {
 	# add an Allow from statement (and Order Allow,Deny), limiting access
 	# to the passenger service.
 
-	package { [ "puppetmaster", "puppetmaster-common", "puppetmaster-passenger", "vim-puppet", "puppet-el", "libapache2-mod-passenger", "libactiverecord-ruby1.8", "libactivesupport-ruby1.8" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "puppetmaster-passenger", "vim-puppet", "puppet-el", "libapache2-mod-passenger", "libactiverecord-ruby1.8", "libactivesupport-ruby1.8", "libldap-ruby1.8" ]:
 		ensure => latest;
 	}
 
@@ -30,6 +30,11 @@ class puppetmaster::passenger {
 			"/usr/local/sbin/puppetsigner.py":
 				ensure => link,
 				target => "/usr/local/lib/instance-management/puppetsigner.py";
+			"/etc/apache2/ports.conf":
+				owner => root,
+				group => root,
+				mode  => 0644,
+				source => "puppet:///files/puppet/ports.conf";
 		}
 		cron {
 			"puppet_certificate_signer":

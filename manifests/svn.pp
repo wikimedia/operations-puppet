@@ -1,4 +1,5 @@
 class svn::server {
+	system_role { "svn::server": description => "Wikimedia public SVN server" }
 
 	include svn::users::mwdocs
 	include svn::groups::svn

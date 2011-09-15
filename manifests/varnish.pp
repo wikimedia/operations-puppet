@@ -99,7 +99,7 @@ class varnish3 {
 	}
 
 	package { varnish3:
-		ensure => "3.0.0-1wmf5";
+		ensure => "3.0.0-1wmf6";
 	}
 
 	package { libworking-daemon-perl: 
