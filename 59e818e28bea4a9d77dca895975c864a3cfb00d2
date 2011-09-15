@@ -1,0 +1,8 @@
+Change-Id: I59e818e28bea4a9d77dca895975c864a3cfb00d2
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+1: RobH <rob@wikimedia.org>
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Thu, 15 Sep 2011 19:42:03 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/21
+Project: operations/puppet
+Branch: refs/heads/test
