@@ -61,7 +61,7 @@ def main():
 	sys.stderr.write("git init stderr: " + stdoutdata + "\n")
 	command = '/usr/bin/git pull ' + repo + ' ' + ref
 	sys.stderr.write("Running the following git command: " + command + "\n")
-	proc = subprocess.Popen(command, shell=True, cwd=directory)
+	proc = subprocess.Popen(command, shell=True, cwd=directory, env={"GIT_DIR": directory + '/.git'})
 	proc.wait()
 	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
 	proc.wait()
