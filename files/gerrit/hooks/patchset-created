@@ -25,7 +25,7 @@ def main():
 	(options, args) = parser.parse_args()
 	if not options.change or not options.change.isalnum():
 		parser.error("No change id, or changeid valid")
-	sys.stderr.write("Patchset passed in: " + str(options.patchset))
+	sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
 	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
 	ssh = paramiko.SSHClient()
 	command = 'gerrit query --format=JSON --patch-sets ' + options.change
@@ -37,7 +37,7 @@ def main():
 		queryresult = json.loads(queryresult[0])
 		subject = str(queryresult['subject'])
 		ref = str(queryresult['patchSets'][options.patchset - 1]['ref'])
-		sys.stderr.write("Ref fetched: " + ref)
+		sys.stderr.write("Ref fetched: " + ref + "\n")
 		if not ref:
 			sys.stderr.write("Failed to find a ref for this change")
 			sys.exit(-1)
@@ -53,6 +53,8 @@ def main():
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
 	proc = subprocess.Popen('/usr/bin/git init ' + directory, shell=True, stdout=subprocess.PIPE)
 	output = proc.communicate()
+	command = '/usr/bin/git pull ' + repo + ' ' + ref
+	sys.stderr.write("Running the following git command: " + command)
 	proc = subprocess.Popen('/usr/bin/git pull ' + repo + ' ' + ref, shell=True, stdout=subprocess.PIPE, cwd=directory)
 	output = proc.communicate()
 	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
