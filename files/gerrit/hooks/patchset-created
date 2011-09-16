@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import os
 import traceback
 import subprocess
 import re
@@ -51,12 +52,14 @@ def main():
 	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
-	command = 'GIR_DIR="' + directory + '" /usr/bin/git init ' + directory
-	sys.stderr.write("Running the following git command: " + command + "\n")
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	(stdoutdata, stferrdata) = proc.communicate()
-	sys.stderr.write("git init stdout: " + stdoutdata + "\n")
-	sys.stderr.write("git init stderr: " + stdoutdata + "\n")
+	os.mkdir(directory)
+	#command = '/usr/bin/git init'
+	#sys.stderr.write("Running the following git command: " + command + "\n")
+	#proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, cwd=directory)
+	#(stdoutdata, stferrdata) = proc.communicate()
+	#sys.stderr.write("git init stdout: " + stdoutdata + "\n")
+	#sys.stderr.write("git init stderr: " + stdoutdata + "\n")
+	shutil.copytree('/usr/share/git-core/templates', directory + '/.git')
 	command = '/usr/bin/git pull ' + repo + ' ' + ref
 	sys.stderr.write("Running the following git command: " + command + "\n")
 	proc = subprocess.Popen(command, shell=True, cwd=directory)
