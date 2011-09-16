@@ -55,7 +55,7 @@ def main():
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
 	command = '/usr/bin/git init ' + directory
 	sys.stderr.write("Running the following git command: " + command + "\n")
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory})
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory + '/.git'})
 	(stdoutdata, stferrdata) = proc.communicate()
 	sys.stderr.write("git init stdout: " + stdoutdata + "\n")
 	sys.stderr.write("git init stderr: " + stdoutdata + "\n")
