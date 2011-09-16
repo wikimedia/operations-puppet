@@ -51,10 +51,12 @@ def main():
 	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
-	proc = subprocess.Popen('/usr/bin/git init ' + directory, shell=True)
-	proc.wait()
+	proc = subprocess.Popen('/usr/bin/git init ' + directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	(stdoutdata, stferrdata) = proc.communicate()
+	sys.stderr.write("git init stdout: " + stdoutdata + "\n")
+	sys.stderr.write("git init stderr: " + stdoutdata + "\n")
 	command = '/usr/bin/git pull ' + repo + ' ' + ref
-	sys.stderr.write("Running the following git command: " + command)
+	sys.stderr.write("Running the following git command: " + command + "\n")
 	proc = subprocess.Popen('/usr/bin/git pull ' + repo + ' ' + ref, shell=True, cwd=directory)
 	proc.wait()
 	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
