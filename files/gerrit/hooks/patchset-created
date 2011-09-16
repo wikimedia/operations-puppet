@@ -51,7 +51,7 @@ def main():
 	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
-	proc = subprocess.Popen('/usr/bin/git init ' + directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	proc = subprocess.Popen('GIR_DIR="' + directory + '" /usr/bin/git init ' + directory, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	(stdoutdata, stferrdata) = proc.communicate()
 	sys.stderr.write("git init stdout: " + stdoutdata + "\n")
 	sys.stderr.write("git init stderr: " + stdoutdata + "\n")
