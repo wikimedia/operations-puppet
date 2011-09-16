@@ -1,0 +1,8 @@
+Change-Id: I2cd8273282b766a3c9da805e9a22c0ac61922ec9
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: Ryan Lane <rlane@wikimedia.org>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Fri, 16 Sep 2011 22:34:05 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/46
+Project: operations/puppet
+Branch: refs/heads/production
