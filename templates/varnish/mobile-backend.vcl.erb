@@ -15,8 +15,8 @@ backend appservers {
 <% end -%>
 	.port = "80";
 	.max_connections = 10000;
-	.connect_timeout = 3s;
-	.first_byte_timeout = 5s;
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
 	.between_bytes_timeout = 4s;
 }
 
@@ -25,11 +25,10 @@ acl purge {
 }
 
 sub vcl_hash {
-	hash_data(req.url);
 	if (req.http.host) {
 		hash_data(req.url + req.http.host);
 	} else {
-		hash_data(req.url + server.ip);
+		hash_data(req.url);
 	}	
 }
 
