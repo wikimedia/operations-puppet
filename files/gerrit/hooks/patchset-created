@@ -1,0 +1,73 @@
+#!/usr/bin/env python
+import sys
+import traceback
+import subprocess
+import re
+import pipes
+import paramiko
+import socket
+import json
+sys.path.append('/var/lib/gerrit2/review_site/etc')
+import scriptconfig
+
+from optparse import OptionParser
+
+def main():
+	parser = OptionParser(conflict_handler="resolve")
+	parser.set_usage("patchset-created --change")
+	parser.add_option("--change", dest="change")
+	parser.add_option("--change-url", dest="changeurl")
+	parser.add_option("--project", dest="project")
+	parser.add_option("--branch", dest="branch")
+	parser.add_option("--uploader", dest="uploader")
+	parser.add_option("--commit", dest="commit")
+	parser.add_option("--patchset", dest="patchset", type="int")
+	(options, args) = parser.parse_args()
+	if not options.change or not options.change.isalnum():
+		parser.error("No change id, or changeid valid")
+	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
+	ssh = paramiko.SSHClient()
+	command = 'gerrit query --format=JSON --patch-sets ' + options.change
+	ssh.load_host_keys('/var/lib/gerrit2/.ssh/known_hosts')
+	try:
+		ssh.connect(scriptconfig.sshhost, scriptconfig.sshport, scriptconfig.sshuser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
+		stdin, stdout, stderr = ssh.exec_command(command)
+		queryresult = stdout.readlines()
+		queryresult = json.loads(queryresult[0])
+		subject = str(queryresult['subject'])
+		ref = str(queryresult['patchSets'][options.patchset - 1]['ref'])
+		if not ref or not subject:
+			sys.stderr.write("Failed to find a ref for this change")
+			sys.exit(-1)
+	except (paramiko.SSHException, socket.error):
+		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
+		traceback.print_exc(file=sys.stderr)
+		sys.exit(-1)
+	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
+	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
+	f.close()
+	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
+	proc = subprocess.Popen('/usr/bin/git init ' + directory, shell=True, stdout=subprocess.PIPE)
+	output = proc.communicate()
+	proc = subprocess.Popen('/usr/bin/git pull ' + repo + ' ' + ref, shell=True, stdout=subprocess.PIPE, cwd=directory)
+	output = proc.communicate()
+	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
+	output = proc.communicate()
+	#shutil.rmtree(directory)
+	proc = subprocess.Popen('/usr/bin/puppet --parseonly ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
+	(stdoutdata, stferrdata) = proc.communicate()
+	status = proc.returncode
+	command = 'gerrit approve'
+	if status != 0:
+		command = command + ' --verified "' + scriptconfig.failscore + '" -m ' + pipes.quote(scriptconfig.failmessage + stdoutdata)
+	else:
+		command = command + ' --verified "' + scriptconfig.passscore + '" -m ' + pipes.quote(scriptconfig.passmessage)
+	command = command + ' ' + options.commit
+	try:
+		ssh.exec_command(command)
+	except (paramiko.SSHException, socket.error):
+		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
+		traceback.print_exc(file=sys.stderr)
+
+if __name__ == '__main__':
+	main()
