@@ -25,6 +25,7 @@ def main():
 	(options, args) = parser.parse_args()
 	if not options.change or not options.change.isalnum():
 		parser.error("No change id, or changeid valid")
+	sys.stderr.write("Patchset passed in: " + options.patchset)
 	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
 	ssh = paramiko.SSHClient()
 	command = 'gerrit query --format=JSON --patch-sets ' + options.change

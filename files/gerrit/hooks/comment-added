@@ -22,7 +22,7 @@ def main():
 		if len(comment) > 100:
 			comment = comment[0:100] + "..."
 	else:
-		comment = "No comment provided"
+		comment = "(no comment)"
 	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
 	f.write("New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
