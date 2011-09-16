@@ -169,7 +169,7 @@ class gerrit::account {
 
 	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
 
-	ssh_authorized_key { gerrit:
+	ssh_authorized_key { gerrit2:
 		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
 		type => ssh-rsa,
 		user => gerrit2,
@@ -177,11 +177,11 @@ class gerrit::account {
 	}
 
 	file {
-		"/var/backups/.ssh/id_rsa":
+		"/var/lib/gerrit2/.ssh/id_rsa":
 			owner => gerrit2,
 			group => gerrit2,
 			mode  => 0600,
-			require => [Systemuser["gerrit2"], Ssh_authorized_key["gerrit"]],
+			require => [Systemuser["gerrit2"], Ssh_authorized_key["gerrit2"]],
 			source => "puppet:///private/gerrit/id_rsa";
 	}
 
