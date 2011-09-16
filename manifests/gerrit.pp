@@ -144,6 +144,26 @@ class gerrit::proxy {
 	apache_module { ssl: name => "ssl" }
 }
 
+class gerrit::ircbot {
+
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/gerrit_bot.log"
+	$ircecho_nick = "gerrit-wm"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
+
+	package { ['ircecho']:
+		ensure => latest;
+	}
+
+	file {
+		"/etc/default/ircecho":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template('ircecho/default.erb'),
+			require => Package[ircecho];
+	}
+}
 
 class gerrit::account { 
 
