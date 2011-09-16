@@ -24,18 +24,13 @@ def main():
 	else:
 		comment = "(no comment)"
 	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
-	f.write("New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
-	f.close()
-	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
-	addnewline = False
+	review = ""
 	if options.verified:
-		f.write("Verified: " + options.verified + " ")
-		addnewline = True
+		review = review + "; V: " + options.verified
 	if options.codereview:
-		f.write("Code Review: " + options.codereview)
-		addnewline = True
-	if addnewline:
-		f.write("\n")
+		review = review + " C: " + options.codereview + "; "
+	message = "New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
+	f.write(message)
 	f.close()
 
 if __name__ == "__main__":
