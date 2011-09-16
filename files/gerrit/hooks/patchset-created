@@ -37,9 +37,12 @@ def main():
 		queryresult = json.loads(queryresult[0])
 		subject = str(queryresult['subject'])
 		ref = str(queryresult['patchSets'][options.patchset - 1]['ref'])
-		if not ref or not subject:
+		sys.stderr.write("Ref fetched: " + ref)
+		if not ref:
 			sys.stderr.write("Failed to find a ref for this change")
 			sys.exit(-1)
+		if not subject:
+			subject = "(no subject)"
 	except (paramiko.SSHException, socket.error):
 		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
 		traceback.print_exc(file=sys.stderr)
