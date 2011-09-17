@@ -202,5 +202,6 @@ class gerrit::gerrit_config {
 	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
+	$gerrit_session_timeout = "90 days"
 
 }
