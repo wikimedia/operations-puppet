@@ -71,7 +71,7 @@ def main():
 	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
 	proc.wait()
 	proc = subprocess.Popen('/usr/bin/puppet --parseonly ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
-	(stdoutdata, stferrdata) = proc.communicate()
+	(stdoutdata, stderrdata) = proc.communicate()
 	status = proc.returncode
 	shutil.rmtree(directory)
 	command = 'gerrit approve'
