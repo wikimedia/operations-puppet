@@ -1,0 +1,37 @@
+#!/usr/bin/python
+import re
+from optparse import OptionParser
+
+def main():
+	parser = OptionParser(conflict_handler="resolve")
+	parser.set_usage("comment-added --change <change id> --project <project name> --branch <branch> --author <comment author> --commit <commit> --comment <comment> [--<approval category id> <score> --<approval category id> <score> ...]")
+	parser.add_option("--change", dest="change")
+	parser.add_option("--project", dest="project")
+	parser.add_option("--branch", dest="branch")
+	parser.add_option("--author", dest="author")
+	parser.add_option("--commit", dest="commit")
+	parser.add_option("--comment", dest="comment")
+	parser.add_option("--change-url", dest="changeurl")
+	parser.add_option("--VRIF", dest="verified")
+	parser.add_option("--CRVW", dest="codereview")
+	(options, args) = parser.parse_args()
+
+	comment = options.comment.splitlines()
+	if comment:
+		comment = comment[0]
+		if len(comment) > 100:
+			comment = comment[0:100] + "..."
+	else:
+		comment = "(no comment)"
+	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
+	review = ""
+	if options.verified:
+		review = review + "; V: " + options.verified
+	if options.codereview:
+		review = review + " C: " + options.codereview + "; "
+	message = "New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
+	f.write(message)
+	f.close()
+
+if __name__ == "__main__":
+	main()
