@@ -71,6 +71,12 @@ monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => "false" }
 # monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
 monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
 
+# pmtpa
+# D
+monitor_pdu_3phase { "ps1-d1-pmtpa": ip=> "10.1.5.17" }
+monitor_pdu_3phase { "ps1-d2-pmtpa": ip=> "10.1.5.18" }
+monitor_pdu_3phase { "ps1-d3-pmtpa": ip=> "10.1.5.19" }
+
 # eqiad
 # A
 monitor_pdu_3phase { "ps1-a1-eqiad": ip => "10.65.0.32" }
