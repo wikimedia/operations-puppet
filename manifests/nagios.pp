@@ -484,6 +484,11 @@ class nagios::ganglia::monitor::enwiki {
 
 class nagios::bot {
 
+        $ircecho_infile = "/var/log/nagios/irc.log"
+        $ircecho_nick = "nagios-wm"
+        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+        $ircecho_server = "irc.freenode.net"
+
 	package { "ircecho":
 		ensure => latest;
 	}
@@ -496,7 +501,7 @@ class nagios::bot {
 	file {
 		"/etc/default/ircecho":
 			require => Package[ircecho],
-			source => "puppet:///files/ircecho/default",
+			content => template('ircecho/default.erb'),
 			owner => root,
 			mode => 0755;
 	}

@@ -1,0 +1,91 @@
+#!/usr/bin/env python
+import sys
+import os
+import shutil
+import traceback
+import subprocess
+import re
+import pipes
+import paramiko
+import socket
+import json
+sys.path.append('/var/lib/gerrit2/review_site/etc')
+import scriptconfig
+
+from optparse import OptionParser
+
+def main():
+	parser = OptionParser(conflict_handler="resolve")
+	parser.set_usage("patchset-created --change")
+	parser.add_option("--change", dest="change")
+	parser.add_option("--change-url", dest="changeurl")
+	parser.add_option("--project", dest="project")
+	parser.add_option("--branch", dest="branch")
+	parser.add_option("--uploader", dest="uploader")
+	parser.add_option("--commit", dest="commit")
+	parser.add_option("--patchset", dest="patchset", type="int")
+	(options, args) = parser.parse_args()
+	if not options.change or not options.change.isalnum():
+		parser.error("No change id, or changeid valid")
+	if scriptconfig.debug:
+		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
+	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
+	ssh = paramiko.SSHClient()
+	command = 'gerrit query --format=JSON --patch-sets ' + options.change
+	ssh.load_host_keys('/var/lib/gerrit2/.ssh/known_hosts')
+	try:
+		ssh.connect(scriptconfig.sshhost, scriptconfig.sshport, scriptconfig.sshuser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
+		stdin, stdout, stderr = ssh.exec_command(command)
+		queryresult = stdout.readlines()
+		queryresult = json.loads(queryresult[0])
+		subject = str(queryresult['subject'])
+		ref = str(queryresult['patchSets'][options.patchset - 1]['ref'])
+		if scriptconfig.debug:
+			sys.stderr.write("Ref fetched: " + ref + "\n")
+		if not ref:
+			sys.stderr.write("Failed to find a ref for this change")
+			sys.exit(-1)
+		if not subject:
+			subject = "(no subject)"
+	except (paramiko.SSHException, socket.error):
+		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
+		traceback.print_exc(file=sys.stderr)
+		sys.exit(-1)
+	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
+	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
+	f.close()
+	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
+	command = '/usr/bin/git init ' + directory
+	if scriptconfig.debug:
+		sys.stderr.write("Running the following git command: " + command + "\n")
+	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory + '/.git'})
+	(stdoutdata, stferrdata) = proc.communicate()
+	if scriptconfig.debug:
+		sys.stderr.write("git init stdout: " + stdoutdata + "\n")
+		sys.stderr.write("git init stderr: " + stdoutdata + "\n")
+	command = '/usr/bin/git pull ' + repo + ' ' + ref
+	if scriptconfig.debug:
+		sys.stderr.write("Running the following git command: " + command + "\n")
+	proc = subprocess.Popen(command, shell=True, cwd=directory, env={"GIT_DIR": directory + '/.git'})
+	proc.wait()
+	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
+	proc.wait()
+	proc = subprocess.Popen('/usr/bin/puppet --parseonly ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
+	(stdoutdata, stderrdata) = proc.communicate()
+	status = proc.returncode
+	shutil.rmtree(directory)
+	command = 'gerrit approve'
+	if status != 0:
+		command = command + ' --verified "' + scriptconfig.failscore + '" -m ' + pipes.quote(scriptconfig.failmessage + stdoutdata + stderrdata)
+	else:
+		command = command + ' --verified "' + scriptconfig.passscore + '" -m ' + pipes.quote(scriptconfig.passmessage)
+	command = command + ' ' + options.commit
+	try:
+		ssh.exec_command(command)
+	except (paramiko.SSHException, socket.error):
+		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
+		traceback.print_exc(file=sys.stderr)
+	ssh.close()
+
+if __name__ == '__main__':
+	main()

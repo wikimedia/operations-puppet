@@ -144,10 +144,46 @@ class gerrit::proxy {
 	apache_module { ssl: name => "ssl" }
 }
 
+class gerrit::ircbot {
+
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/gerrit_bot.log"
+	$ircecho_nick = "gerrit-wm"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
+
+	package { ['ircecho']:
+		ensure => latest;
+	}
+
+	file {
+		"/etc/default/ircecho":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template('ircecho/default.erb'),
+			require => Package[ircecho];
+	}
+}
 
 class gerrit::account { 
 
 	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
+
+	ssh_authorized_key { gerrit2:
+		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
+		type => ssh-rsa,
+		user => gerrit2,
+		ensure => present;
+	}
+
+	file {
+		"/var/lib/gerrit2/.ssh/id_rsa":
+			owner => gerrit2,
+			group => gerrit2,
+			mode  => 0600,
+			require => [Systemuser["gerrit2"], Ssh_authorized_key["gerrit2"]],
+			source => "puppet:///private/gerrit/id_rsa";
+	}
 
 }
 
@@ -166,5 +202,6 @@ class gerrit::gerrit_config {
 	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
+	$gerrit_session_timeout = "90 days"
 
 }

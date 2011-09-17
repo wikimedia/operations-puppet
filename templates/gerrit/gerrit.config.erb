@@ -31,6 +31,8 @@
 	listenUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_listen_url') %>
 [cache]
 	directory = cache
+[cache "web_sessions"]
+	maxAge = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_session_timeout') %>
 [gitweb]
 	cgi = /usr/lib/cgi-bin/gitweb.cgi
 	url = /r/gitweb
