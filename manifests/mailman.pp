@@ -1,15 +1,15 @@
 class mailman::base {
 
-        package { [ "mailman" ]:
-                ensure => latest;
-        }
+	package { [ "mailman" ]:
+		ensure => latest;
+	}
 
 	file {
-                "/etc/aliases":
-                        owner => root,
-                        group => root,
-                        mode => 0444,
-                        source => "puppet:///files/mailman/aliases";
+		"/etc/aliases":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/mailman/aliases";
 		"/etc/mailman/mm_cfg.py":
 			require => Package[mailman],
 			owner => root,

@@ -258,7 +258,7 @@ class accounts {
 		}
 	}
 	
-		class cmjohnson inherits baseaccount {
+	class cmjohnson inherits baseaccount {
 		$username = "cmjohnson"
 		$realname = "Chris Johnson"
 		$uid = 575
@@ -273,9 +273,10 @@ class accounts {
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61";
 			}
 		}
+	}
 
 	class dab inherits baseaccount {
 		$username = "dab"

@@ -8,8 +8,8 @@
 backend <%= backend.split(".")[0] %> {
 	.host = "<%= backend %>";
 	.port = "81";
-	.connect_timeout = 3s;
-	.first_byte_timeout = 5s;
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
 	.between_bytes_timeout = 2s;
 	.probe = {
 		.request =
@@ -102,13 +102,11 @@ sub device_detection {
 }
 
 sub vcl_hash {
-	hash_data(req.url);
 	if (req.http.host) {
 		hash_data(req.url + req.http.host);
 	} else {
-		hash_data(req.url + server.ip);
+		hash_data(req.url);
 	}
-	hash_data(req.http.X-Device);
 }
 
 acl purge { 
@@ -137,6 +135,9 @@ sub vcl_recv {
 
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
+		if ( req.url ~ "^/wiki/" ) { 
+			unset req.http.Cookie;
+		}
 	}
 
 	if ( req.http.host == "m.wikipedia.org" ) {

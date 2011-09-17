@@ -935,7 +935,8 @@ node "formey.wikimedia.org" {
 		ldap::client::wmf-cluster,
 		backup::client,
 		gerrit::proxy,
-		gerrit::jetty
+		gerrit::jetty,
+		gerrit::ircbot
 }
 
 
