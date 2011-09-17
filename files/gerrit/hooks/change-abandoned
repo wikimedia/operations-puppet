@@ -1,0 +1,29 @@
+#!/usr/bin/python
+import re
+from optparse import OptionParser
+
+def main():
+	parser = OptionParser(conflict_handler="resolve")
+	parser.set_usage("change-abandoned --change <change id> --change-url <change url> --project <project name> --branch <branch> --abandoner <abandoner> --reason <reason>")
+	parser.add_option("--change", dest="change")
+	parser.add_option("--change-url", dest="changeurl")
+	parser.add_option("--project", dest="project")
+	parser.add_option("--branch", dest="branch")
+	parser.add_option("--abandoner", dest="abandoner")
+	parser.add_option("--reason", dest="reason")
+	(options, args) = parser.parse_args()
+
+	reason = options.reason.splitlines()
+	if reason:
+		reason = reason[0]
+		if len(reason) > 100:
+			reason = reason[0:100] + "..."
+	else:
+		reason = "(no reason)"
+	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
+	message = "Change abandoned: " + re.sub(' \(.*', "", options.abandoner) + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+	f.write(message)
+	f.close()
+
+if __name__ == "__main__":
+	main()

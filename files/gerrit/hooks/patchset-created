@@ -76,7 +76,12 @@ def main():
 	shutil.rmtree(directory)
 	command = 'gerrit approve'
 	if status != 0:
-		command = command + ' --verified "' + scriptconfig.failscore + '" -m ' + pipes.quote(scriptconfig.failmessage + stdoutdata + stderrdata)
+		command = command + ' --verified "' + scriptconfig.failscore + '" -m '
+		if stdoutdata:
+			message = stdoutdata
+		if stderrdata:
+			message = message + stderrdata
+		command = command + pipes.quote(message)
 	else:
 		command = command + ' --verified "' + scriptconfig.passscore + '" -m ' + pipes.quote(scriptconfig.passmessage)
 	command = command + ' ' + options.commit
