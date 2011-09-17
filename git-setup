@@ -13,6 +13,6 @@ git config --global user.email "$email"
 git config --global user.name "$name"
 
 # Setup remotes/aliases
-git remote add puppet ssh://$user@gerrit.wikimedia.org:29418/operations/puppet
+git remote add puppet ssh://$name@gerrit.wikimedia.org:29418/operations/puppet
 git config alias.push-for-review-test "push puppet HEAD:refs/for/test"
 git config alias.push-for-review-production "push puppet HEAD:refs/for/production"
