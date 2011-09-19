@@ -305,7 +305,7 @@ $lvs_services = {
 		'class' => "low-traffic",
 		'protocol' => "tcp",
 		'ip' => $site ? {
-			'pmtpa' => "10.2.4.13",
+			'pmtpa' => "10.2.1.13",
 			'eqiad' => "10.2.4.13",
 			default => undef,
 		},
