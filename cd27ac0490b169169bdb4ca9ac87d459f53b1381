@@ -1,0 +1,8 @@
+Change-Id: Icd27ac0490b169169bdb4ca9ac87d459f53b1381
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Mon, 19 Sep 2011 11:59:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/68
+Project: operations/puppet
+Branch: refs/heads/production
