@@ -30,6 +30,7 @@ $lvs_class_hosts = {
 	'low-traffic' => $site ? {
 		'pmtpa' => [ "lvs3", "lvs4" ],
 		'eqiad' => [ "lvs1003", "lvs1006" ],
+		'esams' => [ ],
 		default => undef,
 	},
 	'testing' => [ "lvs1001", "lvs1004" ],
