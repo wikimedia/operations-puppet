@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/cgi-bin/noc/report.py
 #####################################################################
 
@@ -23,10 +23,13 @@ import cgi
 import cgitb; cgitb.enable()
 
 import socket
+import codecs
 
-print "Content-type: text/html";
+
+print "Content-type: text/html; charset=utf-8";
 print "\n"
 
+utf8 = codecs.getencoder("UTF-8")
 form=cgi.SvFormContentDict()
 
 if "db" in form:
@@ -58,7 +61,7 @@ except KeyError:
 	for dbname in fullprofile.keys():
        		print " [<a href='report.py?db=%s'>%s</a>] "%(dbname,dbname)
 
-	
+
 cache[db]=events
 cache["_dbs"]=fullprofile.keys()
 dbs=cache["_dbs"]
@@ -79,8 +82,8 @@ def surl(stype,stext=None,limit=50):
 print """
 <style>
 table { width: 100%; }
-td { cell-padding: 1px; 
-	text-align: right; 
+td { cell-padding: 1px;
+	text-align: right;
 	vertical-align: top;
 	argin: 2px;
 	border: 1px silver dotted;
@@ -111,16 +114,17 @@ print surl("real","real%")
 print surl("onereal","real/c")
 print "</tr>"
 
-rowformat="""<tr class="data"><td class="name">%s</td><td>%d</td>
+rowformat=u"""<tr class="data"><td class="name">%s</td><td>%d</td>
 	<td>%.3g</td><td>%.3g</td><td>%.3g</td><td>%.3g</td></tr>"""
 
 for event in events:
 	if event[0]=="close": continue
-	if not event[0].startswith(prefix): continue 
+	if not event[0].startswith(prefix): continue
 	limit-=1
 	if limit<0: break
-	print rowformat % \
+	row = rowformat % \
 		(event[0].replace(",",", "),event[1]["count"],event[1]["cpu"]/total["cpu"]*100,event[1]["onecpu"]*1000,\
 			event[1]["real"]/total["real"]*100,event[1]["onereal"]*1000)
+	print utf8(row)[0]
 
 print "</table>"
