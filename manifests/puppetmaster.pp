@@ -24,7 +24,7 @@ class puppetmaster::passenger {
 		"/usr/local/bin/position-of-the-moon":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0755,
 			source => "puppet:///files/puppet/position-of-the-moon";
 	}
 
