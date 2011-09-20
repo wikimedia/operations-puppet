@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import random, sys
+
+#sys.stdout.write('True')
+sys.stdout.write(str(random.randint(0, 24) == 5))
