@@ -1,0 +1,9 @@
+Change-Id: Iba61c08a31e3401ad41744a5d9dd6122aac0bd2f
+Code-Review+2: RobH <rob@wikimedia.org>
+Verified+1: RobH <rob@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: RobH <rob@wikimedia.org>
+Submitted-at: Tue, 20 Sep 2011 14:44:23 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/81
+Project: operations/puppet
+Branch: refs/heads/production
