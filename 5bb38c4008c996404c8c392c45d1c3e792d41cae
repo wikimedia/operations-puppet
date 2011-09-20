@@ -1,0 +1,9 @@
+Change-Id: I5bb38c4008c996404c8c392c45d1c3e792d41cae
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+1: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Tue, 20 Sep 2011 13:52:44 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/75
+Project: operations/puppet
+Branch: refs/heads/production
