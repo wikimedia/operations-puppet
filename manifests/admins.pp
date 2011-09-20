@@ -413,17 +413,11 @@ class accounts {
 		if $manage_home {
                         Ssh_authorized_key { require => Unixaccount[$realname] }
 
-                        ssh_authorized_key { "ezachte@zwinger":
+                        ssh_authorized_key { "rsa-key-20040727":
                                 ensure  => present,
                                 user    => $username,
-                                type    => "ssh-dss",
-                                key     => "AAAAB3NzaC1kc3MAAACBAIqkSkNxLlbydSrNsuoHLKzdbG+tV8gwZMX+ybMA12Sdo2GrF/HAmFKv+zC8RBNFhF94VCoMmPmwC4PfNMuoN7jSfCSlCJYbA5luNTKwIO3FgOpF13LgZVv6aePMxd2j2D/3lqlnrpPRskc49u1LyUabqjn8qhcrE8oAM4dKQzmBAAAAFQDlpcYdJ5Uez/acRPrkJkwJ//tybQAAAIB9OSbHEgF/3JqG5mDtrK6H9h0VInavNyA8IePv+cEB9566W4qPxAQUW7sk8GLKWNqYIPxXVRIWnjJcweKJ80J0LOdixKRmFD9oCLgKNwBPisd2B7exxgXfAxeEVLfBU9XGKGUW1aWiGw91bAzAbgTamp/ylLWMSt+d8t3TwKunsQAAAIBkTikyTFY0Ne37CZmHGp6UEGT6+qT/VUEK3Q7V01RnKVBWS/ZfZjpf8axq3SRziilrCGruWdhE8TuUTLRq/i3jAUKxJUBZ16Me8DWK/hwWcXYIJ4EX8D7Fn9yFXQZ0mvncHArCIu7NeLHE8DtT6l3Y1PwffpHNDziC76FBo2duaA==",
-                        }
-			ssh_authorized_key { "ezachte_key2@zwinger":
-                                ensure  => present,
-                                user    => $username,
-                                type    => "ssh-dss",
-                                key     => "AAAAB3NzaC1kc3MAAACBAI+L6hg26zMXfwyI5tXBhFv1oBycdTaCUIfNR3cZKfbieonoSxR2l31wRIK12fTpCCxoJqfN4d+VCLB3frSz7N5LFjDceJBNCx/psr64BN3aC/CyUTyBaoiGfU6U/5iOGjxOMnk2eNi7vBjy3Wga7m+aQPGiBgA8nvfSvs+Ik7H3AAAAFQCK/PrboaWAVGRSr4QJzbB7OWMhoQAAAIB+g425EmyWTmW/NS8yKLkHzUnXPRjBr+5B0B2ezyWJgpdYOlYxrlW5289HJuH8ErPwxLK7YiFIT1Ca+1QtQk6/Zoe2QlX6VfrTja6iwt559u87C3OvRzwptxj/6Mj5GysRQOkJzs2IizEtPz+SRJsCVedFrO1EP9gdLOS6cpkzXgAAAIAIL1GsZSdXfTUCkRMLts7Di0OQSjEYsCRhwJlk/K10IO18GR/iYdNPSCiUV0Dc5dxFPV+Qn59m86ahZclwq1byfUE68ySIBDGohx20tp1AuNFmqaB4HMd40/t0pg4G0NIlgtkq4t4b3oijZdq8JcJcTjfzBJtMjkaj545V35xxWg==",
+                                type    => "ssh-rsa",
+                                key     => "AAAAB3NzaC1yc2EAAAABJQAAAIEA30NTewvOFOErJeFtgi+Bpf52+aGI3fmQtOgmsmBIIdnMXdJAdduKZU95OIvsCVCpGKdtT602Twp3R4tOoe001ObTDpF14i28zwYcXgk1VD+ErPpOqcO1S2Ojs1qAaOOGEMCo/yDYkfgT7qLiplX3q9JdVDLkSlVvm+NiWSmzqnU=",
                         }
                 }
 
