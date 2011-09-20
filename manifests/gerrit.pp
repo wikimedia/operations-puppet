@@ -52,7 +52,7 @@ class gerrit::jetty {
 	include gerrit::account,
 		gerrit::gerrit_config
 
-	package { [ "openjdk-6-jre", "git-core", "gitweb", "gitweb-svn" ]:
+	package { [ "openjdk-6-jre", "git-core", "gitweb", "git-svn" ]:
 		ensure => latest; 
 	} 
 

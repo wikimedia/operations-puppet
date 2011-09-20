@@ -17,7 +17,7 @@ class apaches::packages {
 		}
 	}
 	if ( $lsbdistcodename == "lucid" ) {
-		package { [ "php5", "php-wikidiff2", "php5-wmerrors" ]:
+		package { [ "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
 			ensure => latest;
 		}
 	}
