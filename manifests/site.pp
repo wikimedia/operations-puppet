@@ -502,6 +502,12 @@ node "argon.wikimedia.org" {
 	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
+node /(arsenic|niobium)\.wikimedia\.org/ {
+	$ganglia_aggregator = "true"
+	
+	include standard
+}
+
 node "bayes.wikimedia.org" {
 	include base,
 		ganglia,
