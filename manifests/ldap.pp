@@ -618,7 +618,7 @@ class ldap::client::includes {
 	if "managehome" in $ldapincludes {
 		exec { "createhomedirs":
 			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/homedirectorymanager.py &>> /var/log/homedirectorymanager.log",
-			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ssl/certs/wmf-tesla-ca.pem"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
+			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
 		if $cluster_env == "labs" {
 			exec {
