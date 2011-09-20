@@ -4,7 +4,7 @@
 ### THIS FILE IS MANAGED BY PUPPET 
 ### puppet:///files/cgi-bin/noc/report.py
 #####################################################################
-
+#
 # Configuration and defaults
 
 profilehost = "spence.wikimedia.org"
