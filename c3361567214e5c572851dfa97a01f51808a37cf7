@@ -1,0 +1,8 @@
+Change-Id: Ic3361567214e5c572851dfa97a01f51808a37cf7
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Tue, 20 Sep 2011 21:45:44 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/94
+Project: operations/puppet
+Branch: refs/heads/production
