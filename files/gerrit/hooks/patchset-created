@@ -29,6 +29,8 @@ def main():
 		parser.error("No change id, or changeid valid")
 	if scriptconfig.debug:
 		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
+
+	# Pull information about the patchset
 	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
 	ssh = paramiko.SSHClient()
 	command = 'gerrit query --format=JSON --patch-sets ' + options.change
@@ -51,9 +53,16 @@ def main():
 		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
 		traceback.print_exc(file=sys.stderr)
 		sys.exit(-1)
+
+	# Update the log file, for the bot
 	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
 	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
+	if options.project == "operations/private":
+		# Don't run the lint test
+		sys.exit(0)
+	
+	# Lint test
 	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
 	command = '/usr/bin/git init ' + directory
 	if scriptconfig.debug:
@@ -76,7 +85,12 @@ def main():
 	shutil.rmtree(directory)
 	command = 'gerrit approve'
 	if status != 0:
-		command = command + ' --verified "' + scriptconfig.failscore + '" -m ' + pipes.quote(scriptconfig.failmessage + stdoutdata + stderrdata)
+		command = command + ' --verified "' + scriptconfig.failscore + '" -m '
+		if stdoutdata:
+			message = stdoutdata
+		if stderrdata:
+			message = message + stderrdata
+		command = command + pipes.quote(message)
 	else:
 		command = command + ' --verified "' + scriptconfig.passscore + '" -m ' + pipes.quote(scriptconfig.passmessage)
 	command = command + ' ' + options.commit

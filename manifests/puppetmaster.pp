@@ -21,6 +21,11 @@ class puppetmaster::passenger {
 			mode => 0644,
 			content => template('puppet/puppetmaster.erb'),
 			require => Package["puppetmaster-passenger"];
+		"/usr/local/bin/position-of-the-moon":
+			owner => root,
+			group => root,
+			mode => 0755,
+			source => "puppet:///files/puppet/position-of-the-moon";
 	}
 
 	if $puppet_environment_type == "labs" {
