@@ -1,9 +1,0 @@
-#!/usr/bin/php
-<?php
-
-require( "HooksCommon.inc" );
-$repo = $argv[1];
-$rev = $argv[2];
-
-$postCommit = new CommitInfo( $repo, $rev );
-exit( $postCommit->runPostCommitPings() );

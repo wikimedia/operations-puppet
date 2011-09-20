@@ -1,9 +1,0 @@
-#!/usr/bin/php
-<?php
-
-require( "HooksCommon.inc" );
-$repo = $argv[1];
-$txn = $argv[2];
-
-$preCommit = new CommitInfo( $repo, $txn );
-exit( $preCommit->runPreCommitTests() );
