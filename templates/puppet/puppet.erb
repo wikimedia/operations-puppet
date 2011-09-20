@@ -44,9 +44,8 @@ ldapuser = cn=proxyagent,ou=profile,<%= scope.lookupvar('openstack::nova_config:
 ldappassword = <%= scope.lookupvar('openstack::nova_config::nova_ldap_proxyagent_pass') %>
 ldaptls = true
 ssldir=/var/lib/puppet/server/ssl
-<% else %>
-templatedir = /var/lib/puppet/templates
 <% end %>
+templatedir = /var/lib/puppet/templates
 <% end %>
 ssl_client_header = SSL_CLIENT_S_DN 
 ssl_client_verify_header = SSL_CLIENT_VERIFY
