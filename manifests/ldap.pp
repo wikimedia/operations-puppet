@@ -463,17 +463,22 @@ class ldap::client::utils {
 		"/usr/local/sbin/mail-instance-creator.py":
 			ensure => link,
 			target => "/usr/local/lib/instance-management/mail-instance-creator.py";
-		"/etc/ldap/.ldapscriptrc":
-			owner => root,
-			group => root,
-			mode  => 0700,
-			content => template("ldap/ldapscriptrc.erb");
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
 			group => root,
 			mode  => 0644,
 			content => template("ldap/scriptconfig.py.erb");
 			
+	}
+
+	if ( $cluster_env != "labs" ) {
+		file {
+			"/etc/ldap/.ldapscriptrc":
+				owner => root,
+				group => root,
+				mode  => 0700,
+				content => template("ldap/ldapscriptrc.erb");
+		}
 	}
 
 	# Use a specific revision for the checkout, to ensure we are using
@@ -562,6 +567,7 @@ class ldap::client::wmf-corp-cluster {
 		certificates::wmf_ca
 
 }
+
 class ldap::client::wmf-test-cluster {
 
 	include passwords::ldap::wmf_test_cluster
