@@ -18,7 +18,7 @@ RailsAutoDetect Off
         SSLProtocol -ALL +SSLv3 +TLSv1
         SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
-	<% if is_labs_puppet_master == "labs" %>
+	<% if is_labs_puppet_master == "true" %>
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
         SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
