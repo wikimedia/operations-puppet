@@ -14,7 +14,7 @@ nss_map_attribute   uniquemember member
 nss_map_objectclass groupofuniquenames groupofnames
 <% if cluster_env == "labs" %>nss_override_attribute_value loginshell /bin/bash<% end %>
 tls_checkpeer   yes
-tls_cacertfile  /etc/ssl/certs/wmf-ca.pem
+tls_cacertfile  /etc/ssl/certs/<%= ldap_ca %>
 tls_cacertdir   /etc/ssl/certs
 ssl             start_tls
 pam_password    clear
