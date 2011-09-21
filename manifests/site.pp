@@ -84,7 +84,6 @@ class applicationserver {
 			apaches::pybal-check,
 			apaches::monitoring,
 			generic::geoip::files
-		}
 	}
 
 	class home-no-service inherits parent {
