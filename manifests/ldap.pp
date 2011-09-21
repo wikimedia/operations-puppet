@@ -622,7 +622,7 @@ class ldap::client::includes {
 		}
 		if $cluster_env == "labs" {
 			exec {
-				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang http://nova-controller.tesla.usability.wikimedia.org/s-1/ && touch /var/lib/cloud/data/.usermailed":
+				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
 				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Exec["createhomedirs"], Service['exim4'], Package['exim4-daemon-light'] ],
 				creates => "/var/lib/cloud/data/.usermailed";
 			}
