@@ -1218,7 +1218,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		},
 	}
 
-	# Set up tagged interfaces to all subnets with real servers in them, but no IP addresses, just routes
+	# Set up tagged interfaces to all subnets with real servers in them
 	interface_tagged { "eth0.2":
 		base_interface => "eth0",
 		vlan_id => "2",
@@ -1283,7 +1283,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		}
 	}
 
-	# Set up tagged interfaces to all subnets with real servers in them, but no IP addresses, just routes
+	# Set up tagged interfaces to all subnets with real servers in them
 	case $hostname {
 		/^lvs100[1-3]$/: {
 			# Row A subnets on eth0
