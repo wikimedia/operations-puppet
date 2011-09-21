@@ -38,7 +38,7 @@ dbserver = db9.pmtpa.wmnet
 ca_md = sha1
 #storeconfigs = true
 thin_storeconfigs = true
-<% if is_labs_puppet_master == "labs" %>
+<% if is_labs_puppet_master == "true" %>
 node_terminus = ldap
 ldapserver = <%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
 ldapbase = ou=hosts,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
