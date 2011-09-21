@@ -19,9 +19,6 @@ magic_quotes_gpc = Off
 ; Including both FC and Ubuntu paths here
 include_path = ".:/usr/share/php:/usr/local/apache/common/php"
 
-; temporarily on while working on lucene config --brion 2005-04-16
-allow_url_fopen = On
-
 ; Don't care about MySQL down too much
 mysql.connect_timeout = 1
 
