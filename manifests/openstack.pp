@@ -40,6 +40,10 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "${hostname}_ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "${hostname}_ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "${hostname}_ldaps_backend_private": source => "10.4.0.0/16", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "${hostname}_ldap_floating": source => "208.80.153.192/28", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "${hostname}_ldaps_floating": source => "208.80.153.192/28", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "${hostname}_ldap_backend_floating": source => "208.80.153.192/28", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "${hostname}_ldaps_backend_floating": source => "208.80.153.192/28", service => "ldaps_backend", jump => "ACCEPT" }
 	iptables_add_service{ "${hostname}_ldap_gerrit": source => "208.80.152.147", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "${hostname}_ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "${hostname}_ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
