@@ -94,7 +94,7 @@ class base::puppet {
 	if $is_labs_puppet_master != "true" {
 		$is_labs_puppet_master = "false"
 	}
-	if $cluster_env == "labs" {
+	if $cluster_env == "labs" or $is_labs_puppet_master {
 		# We must load the nova config class, if we want to
 		# use the vars in the template
 		include openstack::nova_config
