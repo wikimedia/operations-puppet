@@ -67,6 +67,7 @@ class applicationserver {
 	}
 
 	class homeless inherits parent {
+		$lvs_realserver_ips = [ "10.2.1.1" ]
 
 		include	base,
 			ganglia,
@@ -77,16 +78,12 @@ class applicationserver {
 			accounts::l10nupdate,
 			nfs::upload,
 			mediawiki::packages,
+			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			generic::geoip::files
-
-		if ( $lsbdistcodename == "lucid" ) {
-			# The lucid packages don't include the LVS config
-			$lvs_realserver_ips = [ "10.2.1.1" ]
-			include lvs::realserver
 		}
 	}
 
@@ -138,22 +135,19 @@ class applicationserver {
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
 
+		$lvs_realserver_ips = [ "10.2.1.1" ]
+
 		include standard,
 			admins::roots,
 			admins::mortals,
 			accounts::l10nupdate,
 			mediawiki::packages,
+			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			generic::geoip::files
-
-		if ( $lsbdistcodename == "lucid" ) {
-			# The lucid packages don't include the LVS config
-			$lvs_realserver_ips = [ "10.2.1.1" ]
-			include lvs::realserver
-		}
 	}
 
 	class jobrunner {
@@ -168,6 +162,8 @@ class imagescaler {
 	$roles += [ 'imagescaler' ]
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
+	
+	$lvs_realserver_ips = [ "10.2.1.21" ]
 
 	include	base,
 		imagescaler::cron,
@@ -175,6 +171,7 @@ class imagescaler {
 		imagescaler::files,
 		nfs::upload,
 		mediawiki::packages,
+		lvs::realserver,
 		apaches::packages,
 		apaches::cron,
 		apaches::service,
@@ -186,12 +183,6 @@ class imagescaler {
 		admins::restricted,
 		apaches::pybal-check,
 		apaches::monitoring
-
-	if ( $lsbdistcodename == "lucid" ) {
-		# The lucid packages don't include the LVS config
-		$lvs_realserver_ips = [ "10.2.1.21" ]
-		include lvs::realserver
-	}
 }
 
 class db {
