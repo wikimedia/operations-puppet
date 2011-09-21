@@ -80,6 +80,11 @@ extension=php_wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/php.ini.appserver";
+		"/etc/php5/cli/php.ini":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/php/php.ini.cli.appserver";
 		"/etc/php5/conf.d/apc.ini":
 			owner => root,
 			group => root,
