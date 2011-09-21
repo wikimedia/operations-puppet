@@ -2842,7 +2842,7 @@ node "tridge.wikimedia.org" {
 node "virt1.wikimedia.org" {
 
 	$is_puppet_master = "true"
-	$puppet_environment_type = "labs"
+	$is_labs_puppet_master = "true"
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
 	$ldap_first_master = "true"
