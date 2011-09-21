@@ -36,6 +36,12 @@ class network::checks {
 	@monitor_host { "cr2-pmtpa": ip_address => "208.80.152.197", group => "routers" }
 	@monitor_service { "cr2-pmtpa interfaces": host => "cr2-pmtpa", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
 	@monitor_service { "cr2-pmtpa bgp status": host => "cr2-pmtpa", group => "routers", description => "BGP status", check_command => "check_bgpstate!${router_pass}" }
+
+	@monitor_host { "mr1-pmtpa": ip_address => "10.1.2.3", group => "routers" }
+	@monitor_service { "mr1-pmtpa interfaces": host => "mr1-pmtpa", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }
+
+	@monitor_host { "mr1-eqiad": ip_address => "10.65.0.1", group => "routers" }
+	@monitor_service { "mr1-eqiad interfaces": host => "mr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${router_pass}" }	
 }
 
 include network::checks
