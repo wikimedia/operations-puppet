@@ -28,7 +28,7 @@ class puppetmaster::passenger {
 			source => "puppet:///files/puppet/position-of-the-moon";
 	}
 
-	if $puppet_environment_type == "labs" {
+	if $cluster_env == "labs" {
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
 		file {

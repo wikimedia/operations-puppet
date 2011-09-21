@@ -91,7 +91,10 @@ class base::puppet {
 	if $is_puppet_master != "true" {
 		$is_puppet_master = "false"
 	}
-	if $puppet_environment_type == "labs" {
+	if $is_labs_puppet_master != "true" {
+		$is_labs_puppet_master = "false"
+	}
+	if $cluster_env == "labs" {
 		# We must load the nova config class, if we want to
 		# use the vars in the template
 		include openstack::nova_config
@@ -284,7 +287,7 @@ class base::instance-upstarts {
 
 class base::instance-finish {
 
-        if $puppet_environment_type == "labs" {
+        if $cluster_env == "labs" {
                 exec {
                         "/bin/rm /etc/init/runonce-fixpuppet.conf":
                                 onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
@@ -308,8 +311,8 @@ class base {
 
 	# Ensure this is set at a high scope, so that it can
 	# be used in all templates
-	if $puppet_environment_type == "" {
-		$puppet_environment_type = "production"
+	if $cluster_env == "" {
+		$cluster_env = "production"
 	}
 
 	case $operatingsystem {
