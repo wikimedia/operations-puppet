@@ -135,11 +135,14 @@ sub vcl_recv {
 
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
-		# varying on cookies is bad w/o X-Vary-Options support
-		# but we still need to allow them for disable images, etc.
-		#if ( req.url ~ "^/wiki/" ) { 
-		#	unset req.http.Cookie;
-		#}
+	}
+
+	set req.http.X-Orig-Cookie = req.http.Cookie;
+	if(req.http.Cookie ~ "disable") {
+		# do nothing ; these are the cookies we pass
+		# this is a hack in the absence of X-V-O support
+	} else {
+		unset req.http.Cookie;
 	}
 
 	if ( req.http.host == "m.wikipedia.org" ) {
