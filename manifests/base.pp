@@ -311,7 +311,7 @@ class base {
 
 	# Ensure this is set at a high scope, so that it can
 	# be used in all templates
-	if !$cluster_env == undef {
+	if $cluster_env == undef {
 		$cluster_env = "production"
 	}
 
