@@ -443,16 +443,22 @@ define apt::key($keyid, $ensure, $keyserver = "keyserver.ubuntu.com") {
 	}
 }
 
+class apt::ppa-req {
+
+	package { "python-software-properties":
+		ensure => latest;
+	}
+
+}
+
 # WARNING
 # Third party repositories are generally *NOT* allowed to be used on
 # Wikimedia production servers. This definition should therefore ONLY
 # be used after consensus is reached on the trustability of the repo.
 define apt::pparepo($repo_string = "", $apt_key = "", $dist = "lucid", $ensure = "present") {
-	$grep_for_key = "apt-key list | grep '^pub' | sed -r 's.^pub\\s+\\w+/..' | grep '^$apt_key'"
+	include apt::ppa-req
 
-	package { "python-software-properties":
-		ensure => latest;
-	}
+	$grep_for_key = "apt-key list | grep '^pub' | sed -r 's.^pub\\s+\\w+/..' | grep '^$apt_key'"
 
 	exec { ["${name}_update_apt"]:
 		command => '/usr/bin/apt-get update',
