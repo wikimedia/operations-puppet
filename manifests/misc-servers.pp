@@ -964,13 +964,16 @@ class misc::jenkins {
                 groups => [ "wikidev" ]; 
         }
 	
-service { 'jenkins':
+	service { 'jenkins':
 		enable => true,
 		ensure => 'running',
 		hasrestart => true,
 		start => '/etc/init.d/jenkins start',
 		stop => '/etc/init.d/jenkins stop';
 	}
+
+	# Nagios monitoring
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
 
 	#file {
 		#jenkins stuffs
@@ -1330,12 +1333,15 @@ class misc::contint::test {
 	#	require => File["jenkins.list"],
 	#}
 
-service { 'jenkins':
+	service { 'jenkins':
 		enable => true,
 		ensure => 'running',
 		hasrestart => true,
 		start => '/etc/init.d/jenkins start',
 		stop => '/etc/init.d/jenkins stop';
 	}
-}
 
+	# nagios monitoring
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+
+	}
