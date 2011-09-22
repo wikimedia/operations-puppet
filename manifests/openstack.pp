@@ -96,6 +96,7 @@ class openstack::common {
 	interface_tagged { "eth1.103":
 		base_interface => "eth1",
 		vlan_id => "103",
+		method => "manual";
 	}
 
 	# FIXME: third party repository
