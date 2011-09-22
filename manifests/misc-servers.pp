@@ -964,6 +964,14 @@ class misc::jenkins {
                 groups => [ "wikidev" ]; 
         }
 	
+service { 'jenkins':
+		enable => true,
+		ensure => 'running',
+		has_restart => true,
+		start => '/etc/init.d/jenkins start',
+		stop => '/etc/init.d/jenkins stop';
+	}
+
 	#file {
 		#jenkins stuffs
 	#	"/var/lib/jenkins/config.xml":
@@ -1322,4 +1330,12 @@ class misc::contint::test {
 	#	require => File["jenkins.list"],
 	#}
 
+service { 'jenkins':
+		enable => true,
+		ensure => 'running',
+		has_restart => true,
+		start => '/etc/init.d/jenkins start',
+		stop => '/etc/init.d/jenkins stop';
+	}
 }
+
