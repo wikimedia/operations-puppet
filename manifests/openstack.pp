@@ -357,15 +357,8 @@ class openstack::network-service {
 		ensure => stopped;
 	}
 
-	file { enable_ip_forward:
-		name => "/etc/sysctl.d/60-wikimedia-forwarding.conf",
-		owner => root,
-		group => root,
-		mode => 644,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/60-wikimedia-forwarding.conf.sysctl"
-	}
-
+	# Enable IP forwarding
+	include generic::sysctl::advanced-routing
 }
 
 class openstack::api-service {
