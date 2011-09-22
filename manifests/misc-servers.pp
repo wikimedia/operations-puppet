@@ -972,6 +972,9 @@ service { 'jenkins':
 		stop => '/etc/init.d/jenkins stop';
 	}
 
+# Nagios monitoring
+monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins" }
+
 	#file {
 		#jenkins stuffs
 	#	"/var/lib/jenkins/config.xml":
@@ -1337,5 +1340,8 @@ service { 'jenkins':
 		start => '/etc/init.d/jenkins start',
 		stop => '/etc/init.d/jenkins stop';
 	}
-}
 
+# nagios monitoring
+monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins" }
+
+}
