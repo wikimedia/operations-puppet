@@ -1,6 +1,11 @@
 [gerrit]
 	basePath = git
 	canonicalWebUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_url') %>
+[core]
+	packedGitOpenFiles = 4096
+	packedGitLimit = 500m
+	packedGitWindowSize = 16k
+	streamFileThreshold = 100m
 [database]
 	type = MYSQL
 	hostname = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>
@@ -25,8 +30,11 @@
 [container]
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre
+	heapLimit = 2g
 [sshd]
 	listenAddress = *:29418
+	threads = 8
+	batchThreads = 2
 [httpd]
 	listenUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_listen_url') %>
 [cache]
