@@ -92,6 +92,12 @@ class openstack::common {
 
 	include openstack::nova_config
 
+	# Setup eth1 as tagged and created a tagged interface for VLAN 103
+	interface_tagged { "eth1.103":
+		base_interface => "eth1",
+		vlan_id => "103",
+	}
+
 	# FIXME: third party repository
 	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
 
@@ -100,7 +106,7 @@ class openstack::common {
 		require => Apt::Pparepo["nova-core-release"];
 	}
 
-	package { [ "unzip", "aoetools", "vlan", "vblade-persist", "mysql-client", "python-mysqldb", "bridge-utils", "ebtables" ]:
+	package { [ "unzip", "aoetools", "vblade-persist", "mysql-client", "python-mysqldb", "bridge-utils", "ebtables" ]:
 		ensure => latest;
 	}
 
@@ -138,12 +144,6 @@ class openstack::compute {
 	include openstack::common,
 		openstack::compute-service,
 		openstack::volume-service
-
-	# Setup eth1 as tagged and created a tagged interface for VLAN 103
-	interface_tagged { "eth1.103":
-		base_interface => "eth1",
-		vlan_id => "103",
-	}
 
 	if $hostname == "virt2" {
 		include openstack::network-service,
