@@ -346,6 +346,8 @@ class openstack::scheduler-service {
 
 class openstack::network-service {
 
+	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
+
 	package {  [ "nova-network", "dnsmasq" ]:
 		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
