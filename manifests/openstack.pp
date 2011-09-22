@@ -477,25 +477,18 @@ class openstack::nova_config {
 	$nova_glance_host = "virt1.wikimedia.org"
 	$nova_rabbit_host = "virt1.wikimedia.org"
 	$nova_cc_host = "virt1.wikimedia.org"
-	$nova_network_host = "10.4.16.3"
+	$nova_network_host = "10.4.0.1"
 	$nova_api_host = "virt2.wikimedia.org"
-	$nova_api_ip = "10.4.16.3"
-	$nova_network_flat_interface = "eth1.103"
-	$nova_flat_network_bridge = "br103"
+	$nova_api_ip = "10.4.0.1"
+	$nova_network_flat_interface = "eth1"
+	$nova_flat_network_bridge = "br103.103"
 	$nova_fixed_range = "10.4.0.0/24"
-	# Note that .1, .252 and .253 are currently in use by the routers for VRRP
-	# These addresses (which we can move to the front of the subnet if that's
-	# helpful) may need to be excluded in the Nova database
-	$nova_dhcp_start = "10.4.0.3"
+	$nova_dhcp_start = "10.4.0.4"
 	$nova_dhcp_domain = "pmtpa.labs.wmnet"
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
-	# $nova_network_public_ip being RFC 1918 means that instances without
-	# their own public IP, will not have Internet connectivity. Do we want
-	# this? We can do SNAT to a single, shared public IP for this, but it
-	# means dynamic NAT as opposed to just static NAT...
-	$nova_network_public_ip = "10.4.16.3"
-	$nova_dmz_cidr = "10.4.0.2/32"
+	$nova_network_public_ip = "208.80.153.192"
+	$nova_dmz_cidr = "10.4.0.0/8"
 	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
 	$nova_ldap_host = "virt1.wikimedia.org"
 	$nova_ldap_domain = "labs"
