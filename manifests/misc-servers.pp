@@ -937,6 +937,8 @@ class misc::jenkins {
 
 	system_role { "misc::jenkins": description => "jenkins integration server" }
 
+	# FIXME: third party repository
+	# This needs to removed, and changed to use Jenkins from our own WMF repository instead.
 	exec {
 		'jenkins-apt-repo-key':
 			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
