@@ -87,24 +87,17 @@ class openstack::iptables  {
 	iptables_add_exec{ "${hostname}": service => "openstack" }
 
 }
-class openstack::ppa-req {
-
-	package { "python-software-properties":
-		ensure => latest;
-	}
-
-}
 
 class openstack::common {
 
-	include openstack::ppa-req,
-		openstack::nova_config
+	include openstack::nova_config
 
-	pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
+	# FIXME: third party repository
+	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
 
 	package { [ "nova-common" ]:
 		ensure => latest,
-		require => Pparepo["nova-core-release"];
+		require => Apt::Pparepo["nova-core-release"];
 	}
 
 	package { [ "unzip", "aoetools", "vlan", "vblade-persist", "mysql-client", "python-mysqldb", "bridge-utils", "ebtables" ]:
@@ -116,7 +109,7 @@ class openstack::common {
 			content => template("openstack/nova.conf.erb"),
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			require => Package['nova-common'];
 	}
 
@@ -145,6 +138,12 @@ class openstack::compute {
 	include openstack::common,
 		openstack::compute-service,
 		openstack::volume-service
+
+	# Setup eth1 as tagged and created a tagged interface for VLAN 103
+	interface_tagged { "eth1.103":
+		base_interface => "eth1",
+		vlan_id => "103",
+	}
 
 	if $hostname == "virt2" {
 		include openstack::network-service,
@@ -333,7 +332,7 @@ class openstack::openstack-manager {
 class openstack::scheduler-service {
 
 	package {  "nova-scheduler":
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -350,7 +349,7 @@ class openstack::network-service {
 	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
 
 	package {  [ "nova-network", "dnsmasq" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -366,21 +365,14 @@ class openstack::network-service {
 		ensure => stopped;
 	}
 
-	file { enable_ip_forward:
-		name => "/etc/sysctl.d/60-wikimedia-forwarding.conf",
-		owner => root,
-		group => root,
-		mode => 644,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/60-wikimedia-forwarding.conf.sysctl"
-	}
-
+	# Enable IP forwarding
+	include generic::sysctl::advanced-routing
 }
 
 class openstack::api-service {
 
 	package {  [ "nova-api" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -395,7 +387,7 @@ class openstack::api-service {
 class openstack::ajax-console-proxy-service {
 
 	package {  [ "nova-ajax-console-proxy" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -409,7 +401,7 @@ class openstack::ajax-console-proxy-service {
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -424,7 +416,7 @@ class openstack::volume-service {
 class openstack::compute-service {
 
 	package { [ "nova-compute", "ajaxterm" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -444,12 +436,13 @@ class openstack::compute-service {
 
 class openstack::glance-service {
 
-	pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
+	# FIXME: third party repository
+	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
 
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Pparepo["glance-core-release"],
+		require => Apt::Pparepo["glance-core-release"],
 		ensure => latest;
 	}
 
@@ -468,7 +461,7 @@ class openstack::glance-service {
 			group => root,
 			notify => Service["glance-api", "glance-registry"],
 			require => Package["glance"],
-			mode => 0644;
+			mode => 0444;
 	}
 
 }
@@ -487,7 +480,7 @@ class openstack::nova_config {
 	$nova_network_host = "10.4.0.1"
 	$nova_api_host = "virt2.wikimedia.org"
 	$nova_api_ip = "10.4.0.1"
-	$nova_network_flat_interface = "eth1"
+	$nova_network_flat_interface = "eth1.103"
 	$nova_flat_network_bridge = "br103"
 	$nova_fixed_range = "10.4.0.0/24"
 	$nova_dhcp_start = "10.4.0.4"

@@ -36,7 +36,6 @@ import "media-storage.pp"
 import "certs.pp"
 import "udpprofile.pp"
 import "drac.pp"
-import "ppa.pp"
 import "openstack.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
@@ -1375,6 +1374,13 @@ node "mchenry.wikimedia.org" {
 		groups::wikidev,
 		accounts::jdavis
 }
+
+node /mw([1-9]|(1[0-9])|(2[0-7]))\.pmtpa\.mwnet/ {
+	include applicationserver::homeless,
+		applicationserver::jobrunner,
+		memcached
+}
+
 
 node "lily.knams.wikimedia.org" {
 	$cluster = "misc_esams"
