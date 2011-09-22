@@ -1375,6 +1375,13 @@ node "mchenry.wikimedia.org" {
 		accounts::jdavis
 }
 
+node /mw([1-9]|(1[0-9])|(2[0-7]))\.pmtpa\.mwnet/ {
+	include applicationserver::homeless,
+		applicationserver::jobrunner,
+		memcached
+}
+
+
 node "lily.knams.wikimedia.org" {
 	$cluster = "misc_esams"
 	include ganglia,
