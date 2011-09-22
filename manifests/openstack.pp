@@ -483,16 +483,22 @@ class openstack::nova_config {
 	$nova_fixed_range = "10.4.0.0/24"
 	# Note that .1, .252 and .253 are currently in use by the routers for VRRP
 	# These addresses (which we can move to the front of the subnet if that's
-	# helpful) may need to be excluded in the Nova database
+	# helpful) may need to be excluded in the Nova database -- mark
 	$nova_dhcp_start = "10.4.0.3"
 	$nova_dhcp_domain = "pmtpa.labs.wmnet"
+	# I'd like this to become eth1.103, for cleaner separation of hosts and
+	# guests, and firewalling on the routers. We'll probably need to do
+	# policy routing in Linux with "ip rule" for this. -- mark
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	# $nova_network_public_ip being RFC 1918 means that instances without
 	# their own public IP, will not have Internet connectivity. Do we want
 	# this? We can do SNAT to a single, shared public IP for this, but it
-	# means dynamic NAT as opposed to just static NAT...
+	# means dynamic NAT as opposed to just static NAT... We could do
+	# one public IP per network node. Also, I'd prefer it if *only*
+	# traffic to the Internet, so not the WMF network, were NATed. -- mark
 	$nova_network_public_ip = "10.4.16.3"
+	# What is this for? -- mark
 	$nova_dmz_cidr = "10.4.0.2/32"
 	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
 	$nova_ldap_host = "virt1.wikimedia.org"
