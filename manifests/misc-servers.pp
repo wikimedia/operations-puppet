@@ -1320,4 +1320,17 @@ class misc::contint::test {
 	#	require => File["jenkins.list"],
 	#}
 
+	file {
+		"/var/lib/jenkins/jobs":
+			owner => "jenkins",
+			group => "wikidev",
+			mode => 0775,
+			ensure => directory;
+		"/var/www":
+			owner => "www-data",
+			group => "wikidev",
+			mode => 0775,
+			ensure => directory;
+	}
+
 }
