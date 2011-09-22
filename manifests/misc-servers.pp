@@ -1353,8 +1353,14 @@ class misc::contint::test {
 			group => wikidev,
 			mode => 0755,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
+		# Configure the testing.mediawiki.org subdomain
+		"/etc/apache2/sites-available/testing.mediawiki.org":
+			owner => root,
+			group => root,
+			mode => 644,
+			source => "puppet:///files/apache/sites/testing.mediawiki.org";
 		# Let wikidev users maintain the homepage
-		"/var/www":
+		"/srv/org/mediawiki/testing":
 			owner => "www-data",
 			group => "wikidev",
 			mode => 0775,

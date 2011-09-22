@@ -1,0 +1,38 @@
+# This file is managed by Puppet!
+
+<VirtualHost *:80>
+	ServerAdmin root@wikimedia.org
+	ServerName testing.mediawiki.org
+
+	DocumentRoot /srv/org/mediawiki/testing/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/mediawiki/testing/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	<IfModule mod_proxy.c>
+ 		ProxyRequests Off
+
+		<Proxy http://localhost:8080/ci/*>
+			Order deny,allow
+			Allow from all
+		</Proxy>
+
+		ProxyPass         /ci  http://localhost:8080/ci
+		ProxyPassReverse  /ci  http://localhost:8080/ci
+	</IfModule>
+</VirtualHost>
