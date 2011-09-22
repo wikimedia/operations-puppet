@@ -967,7 +967,7 @@ class misc::jenkins {
 service { 'jenkins':
 		enable => true,
 		ensure => 'running',
-		has_restart => true,
+		hasrestart => true,
 		start => '/etc/init.d/jenkins start',
 		stop => '/etc/init.d/jenkins stop';
 	}
@@ -1333,7 +1333,7 @@ class misc::contint::test {
 service { 'jenkins':
 		enable => true,
 		ensure => 'running',
-		has_restart => true,
+		hasrestart => true,
 		start => '/etc/init.d/jenkins start',
 		stop => '/etc/init.d/jenkins stop';
 	}
