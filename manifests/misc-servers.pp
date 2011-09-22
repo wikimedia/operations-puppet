@@ -937,6 +937,8 @@ class misc::jenkins {
 
 	system_role { "misc::jenkins": description => "jenkins integration server" }
 
+	# FIXME: third party repository
+	# This needs to removed, and changed to use Jenkins from our own WMF repository instead.
 	exec {
 		'jenkins-apt-repo-key':
 			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
@@ -962,6 +964,17 @@ class misc::jenkins {
                 groups => [ "wikidev" ]; 
         }
 	
+	service { 'jenkins':
+		enable => true,
+		ensure => 'running',
+		hasrestart => true,
+		start => '/etc/init.d/jenkins start',
+		stop => '/etc/init.d/jenkins stop';
+	}
+
+	# Nagios monitoring
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+
 	#file {
 		#jenkins stuffs
 	#	"/var/lib/jenkins/config.xml":
@@ -1320,4 +1333,15 @@ class misc::contint::test {
 	#	require => File["jenkins.list"],
 	#}
 
-}
+	service { 'jenkins':
+		enable => true,
+		ensure => 'running',
+		hasrestart => true,
+		start => '/etc/init.d/jenkins start',
+		stop => '/etc/init.d/jenkins stop';
+	}
+
+	# nagios monitoring
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+
+	}

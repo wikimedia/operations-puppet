@@ -20,7 +20,7 @@ class mysql {
 
 	class ganglia {
 
-		include passwords::ldap::wmf_corp_cluster
+		include passwords::ganglia
 		$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
 
 		# Ganglia
