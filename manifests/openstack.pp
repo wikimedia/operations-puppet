@@ -87,24 +87,17 @@ class openstack::iptables  {
 	iptables_add_exec{ "${hostname}": service => "openstack" }
 
 }
-class openstack::ppa-req {
-
-	package { "python-software-properties":
-		ensure => latest;
-	}
-
-}
 
 class openstack::common {
 
-	include openstack::ppa-req,
-		openstack::nova_config
+	include openstack::nova_config
 
-	pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
+	# FIXME: third party repository
+	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
 
 	package { [ "nova-common" ]:
 		ensure => latest,
-		require => Pparepo["nova-core-release"];
+		require => Apt::Pparepo["nova-core-release"];
 	}
 
 	package { [ "unzip", "aoetools", "vlan", "vblade-persist", "mysql-client", "python-mysqldb", "bridge-utils", "ebtables" ]:
@@ -333,7 +326,7 @@ class openstack::openstack-manager {
 class openstack::scheduler-service {
 
 	package {  "nova-scheduler":
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -348,7 +341,7 @@ class openstack::scheduler-service {
 class openstack::network-service {
 
 	package {  [ "nova-network", "dnsmasq" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -378,7 +371,7 @@ class openstack::network-service {
 class openstack::api-service {
 
 	package {  [ "nova-api" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -393,7 +386,7 @@ class openstack::api-service {
 class openstack::ajax-console-proxy-service {
 
 	package {  [ "nova-ajax-console-proxy" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -407,7 +400,7 @@ class openstack::ajax-console-proxy-service {
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -422,7 +415,7 @@ class openstack::volume-service {
 class openstack::compute-service {
 
 	package { [ "nova-compute", "ajaxterm" ]:
-		require => Pparepo["nova-core-release"],
+		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -442,12 +435,13 @@ class openstack::compute-service {
 
 class openstack::glance-service {
 
-	pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
+	# FIXME: third party repository
+	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
 
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Pparepo["glance-core-release"],
+		require => Apt::Pparepo["glance-core-release"],
 		ensure => latest;
 	}
 
