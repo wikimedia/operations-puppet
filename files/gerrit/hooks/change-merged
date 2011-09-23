@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import re
+import sys
 from optparse import OptionParser
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import scriptconfig
@@ -15,8 +16,8 @@ def main():
 	parser.add_option("--commit", dest="commit")
 	(options, args) = parser.parse_args()
 
-	if scriptconfig.dirname && scriptconfig.dirname[-1] == '/':
-		scriptconfig.dirname = scriptconfig.dirname[0:-1]
+	if scriptconfig.logdir and scriptconfig.logdir[-1] == '/':
+		scriptconfig.logdir = scriptconfig.logdir[0:-1]
 	if options.project in scriptconfig.filenames: 
 		filename = scriptconfig.logdir + "/" + scriptconfig.filenames[options.project]
 	f = open(filename, 'a')

@@ -55,8 +55,8 @@ def main():
 		sys.exit(-1)
 
 	# Update the log file, for the bot
-	if scriptconfig.dirname && scriptconfig.dirname[-1] == '/':
-		scriptconfig.dirname = scriptconfig.dirname[0:-1]
+	if scriptconfig.logdir and scriptconfig.logdir[-1] == '/':
+		scriptconfig.logdir = scriptconfig.logdir[0:-1]
 	if options.project in scriptconfig.filenames:
 		filename = scriptconfig.logdir + "/" + scriptconfig.filenames[options.project]
 	f = open(filename, 'a')
