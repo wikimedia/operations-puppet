@@ -1075,7 +1075,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key {
-				"logmover":
+				"root@grosley":
 					ensure  => present,
 					user    => $username,
 					type    => "ssh-rsa",
