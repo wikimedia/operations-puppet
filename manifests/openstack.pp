@@ -489,7 +489,7 @@ class openstack::nova_config {
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "208.80.153.192"
-	$nova_dmz_cidr = "10.4.0.0/24"
+	$nova_dmz_cidr = "208.80.153.0/22,10.4.0.0/24"
 	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
 	$nova_ldap_host = "virt1.wikimedia.org"
 	$nova_ldap_domain = "labs"
