@@ -14,7 +14,7 @@ def main():
 	(options, args) = parser.parse_args()
 
 	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
-	f.write("Change merged: " + re.sub(' \(.*', "", options.submitter) + ';'  + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
+	f.write("Change merged: " + re.sub(' \(.*', "", options.submitter) + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
 
 if __name__ == "__main__":
