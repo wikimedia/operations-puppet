@@ -1,0 +1,8 @@
+sshuser="<%= scope.lookupvar('gerrit::gerrit_config::gerrit_username') %>"
+sshhost="<%= scope.lookupvar('gerrit::gerrit_config::gerrit_hostname') %>"
+sshport=<%= scope.lookupvar('gerrit::gerrit_config::gerrit_sshport') %>
+failscore="-1"
+passscore="+1"
+failmessage="Change did not pass lint check. Below is the output from the lint check:\n\n"
+passmessage="Lint check passed."
+debug=False

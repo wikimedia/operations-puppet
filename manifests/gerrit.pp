@@ -61,7 +61,7 @@ class gerrit::jetty {
 			source => "puppet:///files/gerrit/gerrit-2.2.1.war",
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			require => Systemuser["gerrit2"];
 		"/etc/init.d/gerrit":
 			source => "puppet:///files/gerrit/gerrit.sh",
@@ -72,31 +72,73 @@ class gerrit::jetty {
 			source => "puppet:///files/gerrit/gerritcodereview",
 			owner => root,
 			group => root,
-			mode => 0644;
+			mode => 0444;
 		"/var/lib/gerrit2/review_site":
 			ensure => directory,
 			owner => gerrit2,
 			group => gerrit2,
-			mode => 0644,
+			mode => 0755,
 			require => Systemuser["gerrit2"];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
 			group => gerrit2,
-			mode => 0644,
+			mode => 0755,
 			require => File["/var/lib/gerrit2/review_site"];
 		"/var/lib/gerrit2/review_site/etc/gerrit.config":
 			content => template('gerrit/gerrit.config.erb'),
 			owner => gerrit2,
 			group => gerrit2,
-			mode => 0644,
+			mode => 0444,
 			require => File["/var/lib/gerrit2/review_site/etc"];
 		"/var/lib/gerrit2/review_site/etc/secure.config":
 			content => template('gerrit/secure.config.erb'),
 			owner => gerrit2,
 			group => gerrit2,
-			mode => 0644,
+			mode => 0444,
 			require => File["/var/lib/gerrit2/review_site/etc"];
+		"/var/lib/gerrit2/review_site/etc/scriptconfig.py":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			content => template('gerrit/scriptconfig.py.erb'),
+			require => File["/var/lib/gerrit2/review_site/etc"];
+		"/var/lib/gerrit2/review_site/etc/mail/ChangeSubject.vm":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/mail/ChangeSubject.vm",
+			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/change-abandoned":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/change-abandoned":
+			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/change-merged":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/change-merged":
+			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/change-restored":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/change-restored":
+			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/comment-added":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/comment-added":
+			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/patchset-created":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/patchset-created":
+			require => Exec["install_gerrit_jetty"];
 	}
 
 	exec {
@@ -146,6 +188,8 @@ class gerrit::proxy {
 
 class gerrit::ircbot {
 
+	include gerrit::gerrit_config
+
 	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/gerrit_bot.log"
 	$ircecho_nick = "gerrit-wm"
 	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
@@ -157,7 +201,7 @@ class gerrit::ircbot {
 
 	file {
 		"/etc/default/ircecho":
-			mode => 644,
+			mode => 444,
 			owner => root,
 			group => root,
 			content => template('ircecho/default.erb'),
@@ -192,6 +236,9 @@ class gerrit::gerrit_config {
 	include openstack::nova_config,
 		passwords::gerrit
 
+	$gerrit_hostname = "gerrit.wikimedia.org"
+	$gerrit_username = "gerrit2"
+	$gerrit_sshport = "29418"
 	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
 	$gerrit_db_host = $openstack::nova_config::nova_db_host
 	$gerrit_db_name = "reviewdb"
