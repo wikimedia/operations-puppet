@@ -190,13 +190,18 @@ class gerrit::ircbot {
 
 	include gerrit::gerrit_config
 
-	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log;/var/lib/gerrit2/review_site/logs/labs.log"
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log;/var/lib/gerrit2/review_site/logs/labs.log;/var/lib/gerrit2/review_site/logs/mobile.log"
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech,#wikimedia-mobile"
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:
 		ensure => latest;
+	}
+
+	service { ['ircecho']:
+		enable => true,
+		ensure => running;
 	}
 
 	file {
@@ -205,6 +210,7 @@ class gerrit::ircbot {
 			owner => root,
 			group => root,
 			content => template('ircecho/default.erb'),
+			notify => Service[ircecho],
 			require => Package[ircecho];
 	}
 }
