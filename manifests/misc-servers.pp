@@ -1344,8 +1344,6 @@ class misc::contint::test {
 	# nagios monitoring
 	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
 
-	}
-
 	file {
 		"/var/lib/jenkins/jobs":
 			owner => "jenkins",
