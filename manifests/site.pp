@@ -1375,7 +1375,7 @@ node "mchenry.wikimedia.org" {
 		accounts::jdavis
 }
 
-node /mw([1-9]|(1[0-9])|(2[0-7]))\.pmtpa\.mwnet/ {
+node /mw[1-2]?[0-9]\.pmtpa\.mwnet/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
