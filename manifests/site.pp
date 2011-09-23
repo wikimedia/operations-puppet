@@ -36,7 +36,6 @@ import "media-storage.pp"
 import "certs.pp"
 import "udpprofile.pp"
 import "drac.pp"
-import "ppa.pp"
 import "openstack.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
@@ -778,7 +777,6 @@ node "db41.pmtpa.wmnet" {
 		ganglia,
 		ntp::client,
 		memcached,
-		memcached::config,
 		owa::database,
 		sudo::sudoers,
 		groups::wikidev,
@@ -1377,6 +1375,13 @@ node "mchenry.wikimedia.org" {
 		accounts::jdavis
 }
 
+node /mw([1-9]|(1[0-9])|(2[0-7]))\.pmtpa\.mwnet/ {
+	include applicationserver::homeless,
+		applicationserver::jobrunner,
+		memcached
+}
+
+
 node "lily.knams.wikimedia.org" {
 	$cluster = "misc_esams"
 	include ganglia,
@@ -1538,7 +1543,6 @@ node "owa1.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		memcached,
-		memcached::config,
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
@@ -1558,7 +1562,6 @@ node "owa2.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		memcached,
-		memcached::config,
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
@@ -1578,7 +1581,6 @@ node "owa3.wikimedia.org" {
 		ntp::client,
 		exim::simple-mail-sender,
 		memcached,
-		memcached::config,
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,

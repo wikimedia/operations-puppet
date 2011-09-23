@@ -36,6 +36,10 @@ $domain_search = $domain
 # Default group
 $gid = 500
 
+if !$cluster_env {
+	$cluster_env = "production"
+}
+
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
 	exec { "/usr/bin/apt-get update":
@@ -308,12 +312,6 @@ class base::vimconfig {
 	}
 }
 class base {
-
-	# Ensure this is set at a high scope, so that it can
-	# be used in all templates
-	if $cluster_env == "" {
-		$cluster_env = "production"
-	}
 
 	case $operatingsystem {
 		Ubuntu,Debian: {

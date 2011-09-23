@@ -4,6 +4,9 @@
 @monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
 
 class memcached {
+
+	include memcached::config
+
 	package { memcached:
 		ensure => latest;
 	}

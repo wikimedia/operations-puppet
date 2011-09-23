@@ -32,7 +32,7 @@ modules {
       value = False
     }
     param get_slave {
-      value = False
+      value = True
     }
   }
 }
@@ -339,6 +339,18 @@ collection_group {
 
   metric {
     name = "mysql_slave_retried_transactions"
+  }
+
+  metric {
+    name = "mysql_slave_io"
+  }
+
+  metric {
+    name = "mysql_slave_sql"
+  }
+
+  metric {
+    name = "mysql_slave_lag"
   }
 
   metric {
