@@ -55,7 +55,11 @@ def main():
 		sys.exit(-1)
 
 	# Update the log file, for the bot
-	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
+	if scriptconfig.dirname && scriptconfig.dirname[-1] == '/':
+		scriptconfig.dirname = scriptconfig.dirname[0:-1]
+	if options.project in scriptconfig.filenames:
+		filename = scriptconfig.logdir + "/" + scriptconfig.filenames[options.project]
+	f = open(filename, 'a')
 	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
 	f.close()
 	if options.project == "operations/private":

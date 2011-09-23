@@ -190,7 +190,7 @@ class gerrit::ircbot {
 
 	include gerrit::gerrit_config
 
-	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/gerrit_bot.log"
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log;/var/lib/gerrit2/review_site/logs/labs.log"
 	$ircecho_nick = "gerrit-wm"
 	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
 	$ircecho_server = "irc.freenode.net"
