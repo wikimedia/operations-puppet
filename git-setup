@@ -23,12 +23,12 @@ TOPLEVEL=`git rev-parse --show-toplevel`
 which curl
 if [ "$?" == "0" ]
 then
-	curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $TOPLEVEL/.git/hooks/commit-msg && chmod u+x .git/hooks/commit-msg
+	curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 else
 	which wget
 	if [ "$?" == "0" ]
 	then
-		wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x .git/hooks/commit-msg
+		wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 	else
 		scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
 		if [ "$?" != "0" ]
