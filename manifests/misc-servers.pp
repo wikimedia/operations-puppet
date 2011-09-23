@@ -1344,4 +1344,17 @@ class misc::contint::test {
 	# nagios monitoring
 	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
 
+	file {
+		"/var/lib/jenkins/jobs":
+			owner => "jenkins",
+			group => "wikidev",
+			mode => 0775,
+			ensure => directory;
+		"/var/www":
+			owner => "www-data",
+			group => "wikidev",
+			mode => 0775,
+			ensure => directory;
 	}
+
+}
