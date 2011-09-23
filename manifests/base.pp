@@ -217,9 +217,8 @@ class base::standard-packages {
 			include nrpe
 		}
 
-		if $site == "eqiad" {
-			package { lldpd: ensure => latest; }
-		}
+		# Run lldpd on all hosts
+		package { lldpd: ensure => latest; }
 	}
 }
 
