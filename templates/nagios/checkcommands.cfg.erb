@@ -362,3 +362,7 @@ define command{
 	command_line	$USER1$/check_snmp -H $HOSTADDRESS$ -C $ARG1$ -o $ARG2$ -l '$ARG3$' -w $ARG4$ -c $ARG5$
 }
 
+define command{
+	command_name	check_jenkins_service
+	command_line	$USER3$/check_procs -w 1:3 -c 1:20 -a jenkins
+}
