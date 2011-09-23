@@ -48,7 +48,9 @@ if "compare" in form: compare=form["compare"]
 
 class SocketSource (socket.socket):
     def read(self,what):
-        return self.recv(what,0)
+        enc = self.recv(what,0)
+        return enc.decode('latin-1').encode('utf-8')
+
 sock=SocketSource()
 sock.connect((profilehost,profileport))
 
