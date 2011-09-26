@@ -2,10 +2,9 @@
 import sys
 import os
 import shutil
-import traceback
 import subprocess
 import re
-import hookhelper
+from hookhelper import HookHelper
 from optparse import OptionParser
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
@@ -28,11 +27,14 @@ def main():
 		parser.error("No change id, or changeid invalid")
 	if hookconfig.debug:
 		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
-	helper = hookhelper.HookHelper()
-	helper.log_to_file(options.project, message)
-	lint_test(options)
+	helper = HookHelper()
+	subject = helper.get_subject(options.change)
+	if subject:
+		message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+		helper.log_to_file(options.project, message)
+	lint_test(options, helper)
 
-def lint_test(options):
+def lint_test(options, helper):
 	if not hookconfig.tmpdir:
 		sys.stderr.write("tmpdir isn't set in the configuration, not running lint tests.")
 		# Not having tmpdir is dangerous!
@@ -74,7 +76,7 @@ def lint_test(options):
 		message = stdoutdata
 	if stderrdata:
 		message = message + stderrdata
-	verifyset = helper.set_verify(status, commit, message)
+	verifyset = helper.set_verify(status, options.commit, message)
 	if not verifyset:
 		sys.stderr.write("Failed to set verify score")
 
