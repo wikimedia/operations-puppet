@@ -1,5 +1,4 @@
 #!/usr/bin/python
-import os
 import sys
 import re
 import paramiko
@@ -7,9 +6,7 @@ import socket
 import json
 import pipes
 import traceback
-import cookielib
-import urllib
-import urllib2
+from rtkit.resource import RTResource
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
@@ -116,29 +113,13 @@ class HookHelper:
 			match = re.search('resolves?:?\s?RT\s?#?\s?(\d+)', message, re.I)
 			if match:
 				ticketid = match.group(1)
-		if ticketid:
-			COOKIEFILE = os.path.expanduser('~/.rt_cookies.txt')
-			cj = cookielib.LWPCookieJar(COOKIEFILE)
-			opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-			urllib2.install_opener(opener)
-			try:
-				cj.load(ignore_discard=True, ignore_expires=True)
-			except IOError:
-				pass
-			data = {'user': hookconfig.gerrituser, 'pass': hookconfig.gerritpass}
-			data = urllib.urlencode(data)
-			try:
-				opener.open(uri, data)
-				cj.save(COOKIEFILE, ignore_discard=True, ignore_expires=True)
-				uri = hookconfig.rtresturl + 'ticket/%s/comment' (ticketid)
-				message = 'Resolved in change ' + change + ' (' + changeurl + ').'
-				data = {'content': 'id: %s\nAction: comment\nText: %s' (ticketid, message)}
-				data = urllib.urlencode(data)
-				opener.open(uri, data)
-				uri = hookconfig.rtresturl + 'ticket/edit'
-				data = {'content': 'id: 1514\nStatus: resolved'}
-				data = urllib.urlencode(data)
-				opener.open(uri, data)
-			except urllib2.URLError:
-				sys.stderr.write("Failed to update RT")
-				traceback.print_exc(file=sys.stderr)
+				resource = RTResource(hookconfig.rtresturl, (hookconfig.gerrituser, hookconfig.gerritpass))
+				content = {
+					'Status': 'resolved',
+					'Resolved': 'Resolved in change ' + change + ' (' + changeurl + ').'
+				}
+				try:
+					resource.post(path="ticket/" + ticketid, payload=content)
+				except RTResourceError as e:
+					sys.stderr.write("Failed to update RT #" + ticketid + "; error: " + e.response.status)
+				break
