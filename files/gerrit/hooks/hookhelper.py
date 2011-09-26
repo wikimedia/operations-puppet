@@ -131,13 +131,13 @@ class HookHelper:
 			try:
 				opener.open(hookconfig.rtresturl, data)
 				cj.save(COOKIEFILE, ignore_discard=True, ignore_expires=True)
-				uri = hookconfig.rtresturl + 'ticket/%s/comment' (ticketid)
+				uri = hookconfig.rtresturl + 'ticket/' + ticketid + '/comment'
 				message = 'Resolved in change ' + change + ' (' + changeurl + ').'
-				data = {'content': 'id: %s\nAction: comment\nText: %s' (ticketid, message)}
+				data = {'content': 'id: ' + ticketid + '\nAction: comment\nText: ' + message}
 				data = urllib.urlencode(data)
 				opener.open(uri, data)
 				uri = hookconfig.rtresturl + 'ticket/edit'
-				data = {'content': 'id: 1514\nStatus: resolved'}
+				data = {'content': 'id: ' + ticketid + '\nStatus: resolved'}
 				data = urllib.urlencode(data)
 				opener.open(uri, data)
 			except urllib2.URLError:
