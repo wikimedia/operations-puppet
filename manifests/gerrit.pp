@@ -52,7 +52,7 @@ class gerrit::jetty {
 	include gerrit::account,
 		gerrit::gerrit_config
 
-	package { [ "openjdk-6-jre", "git-core", "gitweb", "git-svn" ]:
+	package { [ "openjdk-6-jre", "git-core", "gitweb", "git-svn", "python-rtkit" ]:
 		ensure => latest; 
 	} 
 
@@ -97,11 +97,11 @@ class gerrit::jetty {
 			group => gerrit2,
 			mode => 0444,
 			require => File["/var/lib/gerrit2/review_site/etc"];
-		"/var/lib/gerrit2/review_site/etc/scriptconfig.py":
+		"/var/lib/gerrit2/review_site/etc/hookconfig.py":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0444,
-			content => template('gerrit/scriptconfig.py.erb'),
+			content => template('gerrit/hookconfig.py.erb'),
 			require => File["/var/lib/gerrit2/review_site/etc"];
 		"/var/lib/gerrit2/review_site/etc/mail/ChangeSubject.vm":
 			owner => gerrit2,
