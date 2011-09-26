@@ -85,6 +85,11 @@ extension=php_wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/php.ini.cli.appserver";
+		"/etc/php5/conf.d/fss.ini":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/php/fss.ini.appserver";
 		"/etc/php5/conf.d/apc.ini":
 			owner => root,
 			group => root,
