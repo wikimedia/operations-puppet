@@ -3,13 +3,13 @@ import sys
 import re
 import paramiko
 import socket
-from rtkit import RTResource, set_logging, RTResourceError
+from rtkit.resource import RTResource
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
 
 class HookHelper:
-	def __init__():
+	def __init__(this):
 		this.patchsets = {}
 
 	def ssh_connect(this):
