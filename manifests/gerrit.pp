@@ -115,6 +115,12 @@ class gerrit::jetty {
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-abandoned",
 			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/hookhelper.py",
+			require => Exec["install_gerrit_jetty"];
 		"/var/lib/gerrit2/review_site/hooks/change-merged":
 			owner => gerrit2,
 			group => gerrit2,
