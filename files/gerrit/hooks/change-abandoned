@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import re
 import sys
-import hookhelper import HookHelper
+from hookhelper import HookHelper
 from optparse import OptionParser
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
