@@ -5,14 +5,13 @@ import shutil
 import traceback
 import subprocess
 import re
-import pipes
-import paramiko
-import socket
-import json
-sys.path.append('/var/lib/gerrit2/review_site/etc')
-import scriptconfig
-
+import hookhelper
 from optparse import OptionParser
+
+sys.path.append('/var/lib/gerrit2/review_site/etc')
+import hookconfig
+
+global helper
 
 def main():
 	parser = OptionParser(conflict_handler="resolve")
@@ -26,58 +25,38 @@ def main():
 	parser.add_option("--patchset", dest="patchset", type="int")
 	(options, args) = parser.parse_args()
 	if not options.change or not options.change.isalnum():
-		parser.error("No change id, or changeid valid")
-	if scriptconfig.debug:
+		parser.error("No change id, or changeid invalid")
+	if hookconfig.debug:
 		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
+	helper = hookhelper.HookHelper()
+	helper.log_to_file(options.project, message)
+	lint_test(options)
 
-	# Pull information about the patchset
-	directory = '/var/lib/gerrit2/review_site/tmp/' + options.change
-	ssh = paramiko.SSHClient()
-	command = 'gerrit query --format=JSON --patch-sets ' + options.change
-	ssh.load_host_keys('/var/lib/gerrit2/.ssh/known_hosts')
-	try:
-		ssh.connect(scriptconfig.sshhost, scriptconfig.sshport, scriptconfig.sshuser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
-		stdin, stdout, stderr = ssh.exec_command(command)
-		queryresult = stdout.readlines()
-		queryresult = json.loads(queryresult[0])
-		subject = str(queryresult['subject'])
-		ref = str(queryresult['patchSets'][options.patchset - 1]['ref'])
-		if scriptconfig.debug:
-			sys.stderr.write("Ref fetched: " + ref + "\n")
-		if not ref:
-			sys.stderr.write("Failed to find a ref for this change")
-			sys.exit(-1)
-		if not subject:
-			subject = "(no subject)"
-	except (paramiko.SSHException, socket.error):
-		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
-		traceback.print_exc(file=sys.stderr)
-		sys.exit(-1)
-
-	# Update the log file, for the bot
-	if scriptconfig.logdir and scriptconfig.logdir[-1] == '/':
-		scriptconfig.logdir = scriptconfig.logdir[0:-1]
-	if options.project in scriptconfig.filenames:
-		filename = scriptconfig.logdir + "/" + scriptconfig.filenames[options.project]
-	f = open(filename, 'a')
-	f.write("New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n")
-	f.close()
+def lint_test(options):
+	if not hookconfig.tmpdir:
+		sys.stderr.write("tmpdir isn't set in the configuration, not running lint tests.")
+		# Not having tmpdir is dangerous!
+		return
 	if options.project == "operations/private":
-		# Don't run the lint test
-		sys.exit(0)
-	
-	# Lint test
-	repo = 'ssh://' + scriptconfig.sshuser + '@' + scriptconfig.sshhost + ':' + str(scriptconfig.sshport) + '/' + options.project
+		# TODO: make this configurable
+		return
+	ref = helper.get_ref(options.change, options.patchset)
+	if not ref:
+		return
+	if hookconfig.tmpdir[-1] == '/':
+		hookconfig.tmpdir = hookconfig.tmpdir[0:-1]
+	directory = hookconfig.tmpdir + '/' +	options.change
+	repo = 'ssh://' + hookconfig.gerrituser + '@' + hookconfig.sshhost + ':' + str(hookconfig.sshport) + '/' + options.project
 	command = '/usr/bin/git init ' + directory
-	if scriptconfig.debug:
+	if hookconfig.debug:
 		sys.stderr.write("Running the following git command: " + command + "\n")
 	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory + '/.git'})
 	(stdoutdata, stferrdata) = proc.communicate()
-	if scriptconfig.debug:
+	if hookconfig.debug:
 		sys.stderr.write("git init stdout: " + stdoutdata + "\n")
 		sys.stderr.write("git init stderr: " + stdoutdata + "\n")
 	command = '/usr/bin/git pull ' + repo + ' ' + ref
-	if scriptconfig.debug:
+	if hookconfig.debug:
 		sys.stderr.write("Running the following git command: " + command + "\n")
 	proc = subprocess.Popen(command, shell=True, cwd=directory, env={"GIT_DIR": directory + '/.git'})
 	proc.wait()
@@ -85,25 +64,19 @@ def main():
 	proc.wait()
 	proc = subprocess.Popen('/usr/bin/puppet --parseonly ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
 	(stdoutdata, stderrdata) = proc.communicate()
-	status = proc.returncode
 	shutil.rmtree(directory)
-	command = 'gerrit approve'
-	if status != 0:
-		command = command + ' --verified "' + scriptconfig.failscore + '" -m '
-		if stdoutdata:
-			message = stdoutdata
-		if stderrdata:
-			message = message + stderrdata
-		command = command + pipes.quote(message)
+	procstatus = proc.returncode
+	if procstatus == 0:
+		status = "pass"
 	else:
-		command = command + ' --verified "' + scriptconfig.passscore + '" -m ' + pipes.quote(scriptconfig.passmessage)
-	command = command + ' ' + options.commit
-	try:
-		ssh.exec_command(command)
-	except (paramiko.SSHException, socket.error):
-		sys.stderr.write("Failed to connect to %s." % scriptconfig.sshhost)
-		traceback.print_exc(file=sys.stderr)
-	ssh.close()
+		status = "fail"
+	if stdoutdata:
+		message = stdoutdata
+	if stderrdata:
+		message = message + stderrdata
+	verifyset = helper.set_verify(status, commit, message)
+	if not verifyset:
+		sys.stderr.write("Failed to set verify score")
 
 if __name__ == '__main__':
 	main()
