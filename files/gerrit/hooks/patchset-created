@@ -5,7 +5,7 @@ import shutil
 import traceback
 import subprocess
 import re
-import hookhelper
+from hookhelper import HookHelper
 from optparse import OptionParser
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
@@ -28,7 +28,9 @@ def main():
 		parser.error("No change id, or changeid invalid")
 	if hookconfig.debug:
 		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
-	helper = hookhelper.HookHelper()
+	helper = HookHelper()
+	subject = helper.get_subject(options.change)
+	message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
 	helper.log_to_file(options.project, message)
 	lint_test(options)
 

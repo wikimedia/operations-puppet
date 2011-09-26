@@ -3,20 +3,20 @@ import sys
 import re
 import paramiko
 import socket
-from rtkit import RTResource, set_logging, RTResourceError
+from rtkit.resource import RTResource
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
 
 class HookHelper:
-	def __init__():
+	def __init__(this):
 		this.patchsets = {}
 
 	def ssh_connect(this):
 		this.ssh = paramiko.SSHClient()
 		this.ssh.load_host_keys('/var/lib/gerrit2/.ssh/known_hosts')
 		try:
-			ssh.connect(hookconfig.sshhost, hookconfig.sshport, hookconfig.gerrituser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
+			this.ssh.connect(hookconfig.sshhost, hookconfig.sshport, hookconfig.gerrituser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
 			return True
 		except (paramiko.SSHException, socket.error):
 			sys.stderr.write("Failed to connect to %s." % hookconfig.sshhost)
@@ -27,7 +27,8 @@ class HookHelper:
 		try:
 			connected = this.ssh_connect()
 			if not connected:
-				return None
+				sys.stderr.write("Failed to connect to %s." % hookconfig.sshhost)
+				return (None, None, None)
 			stdin, stdout, stderr = this.ssh.exec_command(command)
 		except (paramiko.SSHException, socket.error):
 			sys.stderr.write("Failed to connect to %s." % hookconfig.sshhost)
@@ -39,7 +40,7 @@ class HookHelper:
 
 	def get_patchsets(this, change):
 		command = 'gerrit query --format=JSON --patch-sets ' + change
-		stdin, stdout, stderr = this.ssh.exec_command(command)
+		stdin, stdout, stderr = this.ssh_exec_command(command)
 		if not stdout:
 			return False
 		queryresult = stdout.readlines()
@@ -50,7 +51,7 @@ class HookHelper:
 			return False
 
 	def get_subject(this, change):
-		if not this.patchsets[change]:
+		if change not in this.patchsets:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
@@ -60,7 +61,7 @@ class HookHelper:
 		return subject
 
 	def get_ref(this, change, patchset):
-		if not this.patchsets[change]:
+		if change not in this.patchsets:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
@@ -74,7 +75,7 @@ class HookHelper:
 
 	def get_comments(this, change):
 		# Not functional, support isn't in Gerrit yet
-		if not this.patchsets[change]:
+		if change not in this.patchsets[change]:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
