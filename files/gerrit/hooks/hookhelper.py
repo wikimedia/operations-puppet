@@ -3,13 +3,13 @@ import sys
 import re
 import paramiko
 import socket
-from rtkit import RTResource, set_logging, RTResourceError
+from rtkit.resource import RTResource
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
 
 class HookHelper:
-	def __init__():
+	def __init__(this):
 		this.patchsets = {}
 
 	def ssh_connect(this):
@@ -50,7 +50,7 @@ class HookHelper:
 			return False
 
 	def get_subject(this, change):
-		if not this.patchsets[change]:
+		if change not in this.patchsets:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
@@ -60,7 +60,7 @@ class HookHelper:
 		return subject
 
 	def get_ref(this, change, patchset):
-		if not this.patchsets[change]:
+		if change not in this.patchsets:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
@@ -74,7 +74,7 @@ class HookHelper:
 
 	def get_comments(this, change):
 		# Not functional, support isn't in Gerrit yet
-		if not this.patchsets[change]:
+		if change not in this.patchsets[change]:
 			patchsets_fetched = this.get_patchsets(change)
 			if not patchsets_fetched:
 				return None
