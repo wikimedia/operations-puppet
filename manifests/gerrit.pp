@@ -250,6 +250,7 @@ class gerrit::gerrit_config {
 
 	$gerrit_hostname = "gerrit.wikimedia.org"
 	$gerrit_username = "gerrit2"
+	$gerrit_pass = $passwords::gerrit::gerrit_pass
 	$gerrit_sshport = "29418"
 	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
 	$gerrit_db_host = $openstack::nova_config::nova_db_host
