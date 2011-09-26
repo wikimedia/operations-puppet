@@ -112,6 +112,7 @@ class HookHelper:
 		messages.append(this.get_subject(change))
 		# TODO: add this in when it's possible to get comments from gerrit's query api
 		#messages.extend(this.get_comments(change))
+		ticketid = None
 		for message in messages:
 			match = re.search('resolves?:?\s?RT\s?#?\s?(\d+)', message, re.I)
 			if match:
@@ -128,7 +129,7 @@ class HookHelper:
 			data = {'user': hookconfig.gerrituser, 'pass': hookconfig.gerritpass}
 			data = urllib.urlencode(data)
 			try:
-				opener.open(uri, data)
+				opener.open(hookconfig.rtresturl, data)
 				cj.save(COOKIEFILE, ignore_discard=True, ignore_expires=True)
 				uri = hookconfig.rtresturl + 'ticket/%s/comment' (ticketid)
 				message = 'Resolved in change ' + change + ' (' + changeurl + ').'
