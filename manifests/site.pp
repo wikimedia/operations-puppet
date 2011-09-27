@@ -1023,16 +1023,10 @@ node "grosley.wikimedia.org" {
 }
 
 node "gurvin.wikimedia.org" {
-	$enable_ipv6_proxy = true
-
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node "hooft.esams.wikimedia.org" {
@@ -2898,14 +2892,10 @@ node  "yongle.wikimedia.org" {
 }
 
 node "yvon.wikimedia.org" {
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node default {
