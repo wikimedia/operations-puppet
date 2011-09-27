@@ -1385,4 +1385,21 @@ class misc::contint::test {
 			ensure => directory;
 	}
 
+	# run jenkins behind Apache and have pretty URLs / proxy port 80
+	# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
+
+	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
+
+	file {
+		"/etc/default/jenkins":
+			owner => "root",
+			group => "root",
+			mode => 0644,
+			source => "puppet:///files/misc/jenkins/etc_default_jenkins";
+		"/etc/apache2/conf.d/jenkins_proxy":
+			owner => "root",
+			group => "root",
+			source => "puppet:///files/misc/jenkins/apache_proxy";
+	}		
 }
