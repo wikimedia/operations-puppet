@@ -572,12 +572,15 @@ node "erzurumi.pmtpa.wmnet" {
 }
 
 node /es100[1-4]\.eqiad\.wmnet/ {
-	#if $hostname == "es1001" { ## making a nonexistent host the master to quiet nagios until the host is actually up
-	if $hostname == "es1000" {
+	if $hostname == "es1001" {
 		include db::es::master
 	}
 	else {
 		include db::es::slave
+	}
+	if $hostname == "es1004" {
+		# replica of ms3 - currently used for backups
+		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
 	}
 }
 
