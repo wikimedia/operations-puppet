@@ -1122,6 +1122,11 @@ class misc::fundraising {
                 	ensure => directory;
 			
 		#apache conf stuffs
+		"/etc/apache2/sites-available/000-donate":
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/apache.conf.donate";
 		"/etc/apache2/sites-available/002-civicrm":
 			mode => 0644,
 			owner => root,
@@ -1142,16 +1147,16 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl";
-		"/etc/apache2/sites-available/000-donate":
-			mode => 0644,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.donate";
 		"/etc/apache2/sites-available/006-fundraising":
 			mode => 0644,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising";
+		"/etc/apache2/sites-available/007-fundraising-analytics":
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
 
 		"/usr/local/bin/drush":
 			ensure => "/opt/drush/drush";	
@@ -1193,12 +1198,13 @@ class misc::fundraising {
 	apache_module { ssl: name => "ssl" }
 
 	#enable apache sites
+	apache_site { donate: name => "000-donate" }
 	apache_site { civicrm: name => "002-civicrm" }
 	apache_site { civicrm-ssl: name => "003-civicrm-ssl" }
 	apache_site { civicrm-dev: name => "004-civicrm-dev" }
 	apache_site { civicrm-dev-ssl: name => "005-civicrm-dev-ssl" }
-	apache_site { donate: name => "000-donate" }
 	apache_site { fundraising: name => "006-fundraising" }
+	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
 
 }	
 
