@@ -458,6 +458,22 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		lvs::balancer
 }
 
+node /amsssl[1-4]\.wikimedia\.org/ {
+	$cluster = "ssl_esams"
+	if $hostname =~ /^amsssl[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^amsssl1$/ {
+		$enable_ipv6_proxy = true
+	}
+
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
@@ -1004,9 +1020,6 @@ node "grosley.wikimedia.org" {
 }
 
 node "gurvin.wikimedia.org" {
-	system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
-
 	$enable_ipv6_proxy = true
 
 	$cluster = "ssl"
@@ -1336,9 +1349,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 node "maerlant.esams.wikimedia.org" {
 	$gid = 500
-
-	system_role { "ipv6proxy": description => "IPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
 
 	$enable_ipv6_proxy = "true"
 	$cluster = "ssl_esams"
@@ -2601,15 +2611,28 @@ node "srv301.pmtpa.wmnet" {
 	include applicationserver::api
 }
 
-node /ssl100[1-4]\.wikimedia\.org/ {
-	system_role { "sslproxy": description => "SSL Proxy" }
+node /ssl[1-4]\.wikimedia\.org/ {
+	$cluster = "ssl"
+	if $hostname =~ /^ssl[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ssl1$/ {
+		$enable_ipv6_proxy = true
+	}
 
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
+node /ssl100[1-4]\.wikimedia\.org/ {
 	$cluster = "ssl"
 	if $hostname =~ /^ssl100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ssl1001$/ {
-		system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
 		$enable_ipv6_proxy = true
 	}
 
@@ -2872,8 +2895,6 @@ node  "yongle.wikimedia.org" {
 }
 
 node "yvon.wikimedia.org" {
-	system_role { "sslproxy": description => "SSL Proxy" }
-
 	$cluster = "ssl"
 	$ganglia_aggregator = "true"
 
