@@ -1769,50 +1769,50 @@ node "spence.wikimedia.org" {
 
 node "srv151.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv152.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv153.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv154.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv155.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv156.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv157.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv158.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
@@ -1824,13 +1824,13 @@ node "srv159.pmtpa.wmnet" {
 
 node "srv160.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv161.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
@@ -1842,49 +1842,49 @@ node "srv162.pmtpa.wmnet" {
 
 node "srv163.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv164.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv165.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv166.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv167.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv168.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv169.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv170.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
@@ -1896,7 +1896,7 @@ node "srv171.pmtpa.wmnet" {
 
 node "srv172.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
@@ -1908,49 +1908,49 @@ node "srv174.pmtpa.wmnet" {
 
 node "srv175.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv176.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv177.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv178.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv179.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv180.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv181.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv182.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
@@ -1962,13 +1962,13 @@ node "srv183.pmtpa.wmnet" {
 
 node "srv184.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
 node "srv185.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached
 }
 
