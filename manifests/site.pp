@@ -869,7 +869,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^db(1047|1048)$/ {
+	if $hostname =~ /^db(1047)$/ {
 		$writable = "true"
 		system_role { "waste::limesurvey": description => "bastard child waste of hardware for limesurvey" }
 	} 
