@@ -458,12 +458,12 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		lvs::balancer
 }
 
-node /amsssl[1-4]\.wikimedia\.org/ {
+node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	$cluster = "ssl_esams"
-	if $hostname =~ /^amsssl[12]$/ {
+	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^amsssl1$/ {
+	if $hostname =~ /^ssl3001$/ {
 		$enable_ipv6_proxy = true
 	}
 
