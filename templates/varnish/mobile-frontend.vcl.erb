@@ -137,6 +137,12 @@ sub vcl_recv {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
+	# support for the old mobile.wikipedia.org wap gateway
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
+		set req.url = regsub( req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1" );
+	}
+
 	set req.http.X-Orig-Cookie = req.http.Cookie;
 	if(req.http.Cookie ~ "disable") {
 		# do nothing ; these are the cookies we pass
@@ -146,7 +152,11 @@ sub vcl_recv {
 	}
 
 	if ( req.http.host == "m.wikipedia.org" ) {
-		error 666 "http://en.m.wikipedia.org/";
+		error 666 "http://en.m.wikipedia.org" + req.url;
+	}
+
+	if ( req.http.host == "mobile.wikipedia.org" ) {
+		error 666 "http://en.mobile.wikipedia.org" + req.url;
 	}
 
 	if ( req.url == "/" ) { 
