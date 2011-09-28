@@ -139,8 +139,8 @@ sub vcl_recv {
 
 	# support for the old mobile.wikipedia.org wap gateway
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.m.\2.org" );
-		set req.url = regsub( req.url, "\S+[\?&]go=(.+)(?:&*)", "/wiki/\1" );
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
+		set req.url = regsub( req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1" );
 	}
 
 	set req.http.X-Orig-Cookie = req.http.Cookie;
