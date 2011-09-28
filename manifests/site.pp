@@ -458,6 +458,22 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		lvs::balancer
 }
 
+node /amsssl[1-4]\.wikimedia\.org/ {
+	$cluster = "ssl_esams"
+	if $hostname =~ /^amsssl[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^amsssl1$/ {
+		$enable_ipv6_proxy = true
+	}
+
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
@@ -572,12 +588,15 @@ node "erzurumi.pmtpa.wmnet" {
 }
 
 node /es100[1-4]\.eqiad\.wmnet/ {
-	#if $hostname == "es1001" { ## making a nonexistent host the master to quiet nagios until the host is actually up
-	if $hostname == "es1000" {
+	if $hostname == "es1001" {
 		include db::es::master
 	}
 	else {
 		include db::es::slave
+	}
+	if $hostname == "es1004" {
+		# replica of ms3 - currently used for backups
+		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
 	}
 }
 
@@ -1004,19 +1023,10 @@ node "grosley.wikimedia.org" {
 }
 
 node "gurvin.wikimedia.org" {
-	system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
-
-	$enable_ipv6_proxy = true
-
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node "hooft.esams.wikimedia.org" {
@@ -1336,9 +1346,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 node "maerlant.esams.wikimedia.org" {
 	$gid = 500
-
-	system_role { "ipv6proxy": description => "IPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
 
 	$enable_ipv6_proxy = "true"
 	$cluster = "ssl_esams"
@@ -1769,231 +1776,231 @@ node "spence.wikimedia.org" {
 
 node "srv151.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv152.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv153.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv154.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv155.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv156.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv157.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv158.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv159.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv160.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv161.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv162.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv163.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv164.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv165.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv166.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv167.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv168.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv169.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv170.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv171.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv172.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv174.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv175.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv176.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv177.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv178.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv179.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv180.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv181.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv182.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv183.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv184.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv185.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv186.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv187.pmtpa.wmnet" {
 	include applicationserver::api,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv188.pmtpa.wmnet" {
 	include applicationserver::api,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv189.pmtpa.wmnet" {
 	include applicationserver::api,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv190.pmtpa.wmnet" {
@@ -2601,15 +2608,28 @@ node "srv301.pmtpa.wmnet" {
 	include applicationserver::api
 }
 
-node /ssl100[1-4]\.wikimedia\.org/ {
-	system_role { "sslproxy": description => "SSL Proxy" }
+node /ssl[1-4]\.wikimedia\.org/ {
+	$cluster = "ssl"
+	if $hostname =~ /^ssl[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ssl1$/ {
+		$enable_ipv6_proxy = true
+	}
 
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
+node /ssl100[1-4]\.wikimedia\.org/ {
 	$cluster = "ssl"
 	if $hostname =~ /^ssl100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ssl1001$/ {
-		system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
 		$enable_ipv6_proxy = true
 	}
 
@@ -2872,16 +2892,10 @@ node  "yongle.wikimedia.org" {
 }
 
 node "yvon.wikimedia.org" {
-	system_role { "sslproxy": description => "SSL Proxy" }
-
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node default {
