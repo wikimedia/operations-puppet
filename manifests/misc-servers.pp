@@ -1411,22 +1411,23 @@ class misc::contint::test {
 	}		
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
-	$jenkins_iptables_command = "
-		/sbin/iptables -F jenkins;
-		/sbin/iptables -A jenkins -i lo -j ACCEPT;
-		/sbin/iptables -A jenkins -s 127.0.0.1/8 -j ACCEPT;
-		/sbin/iptables -A jenkins -s 208.80.154.128/26 -j ACCEPT;
-		/sbin/iptables -A jenkins -s 10.0.0.0/8 -j ACCEPT;
-		/sbin/iptables -A jenkins -j DROP;
-		/sbin/iptables -I INPUT -p tcp --dport 8080 -j jenkins
-		"
+	# put the iptables rules into a file, to avoid running into a puppet bug re: tabs/newlines in commands
 
-	exec { jenkins-firewall-rules:
-		command => $jenkins_iptables_command,
+	file {
+		"/usr/local/sbin/jenkins_firewall":
+			owner => "root",
+			group => "root",
+			mode => 0544,
+			source => "puppet:///files/misc/jenkins/firewall_rules";
+	}
+
+	exec { "jenkins_firewall":
+		command => "/usr/local/sbin/jenkins_firewall",
 		onlyif => "/sbin/iptables -N jenkins",
-		path => "/sbin",
+		require => File["/usr/local/sbin/jenkins_firewall"],
+		path => "/usr/local/sbin",
 		timeout => 5,
 		user => root
-		}
+	}
 
 }
