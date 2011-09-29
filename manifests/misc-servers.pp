@@ -1391,4 +1391,42 @@ class misc::contint::test {
 			ensure => directory;
 	}
 
+	# run jenkins behind Apache and have pretty URLs / proxy port 80
+	# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
+
+	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
+
+	file {
+		"/etc/default/jenkins":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/misc/jenkins/etc_default_jenkins";
+		"/etc/apache2/conf.d/jenkins_proxy":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/misc/jenkins/apache_proxy";
+	}		
+
+	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
+	$jenkins_iptables_command = "
+		/sbin/iptables -F jenkins;
+		/sbin/iptables -A jenkins -i lo -j ACCEPT;
+		/sbin/iptables -A jenkins -s 127.0.0.1/8 -j ACCEPT;
+		/sbin/iptables -A jenkins -s 208.80.154.128/26 -j ACCEPT;
+		/sbin/iptables -A jenkins -s 10.0.0.0/8 -j ACCEPT;
+		/sbin/iptables -A jenkins -j DROP;
+		/sbin/iptables -I INPUT -p tcp --dport 8080 -j jenkins
+		"
+
+	exec { jenkins-firewall-rules:
+		command => $jenkins_iptables_command,
+		onlyif => "/sbin/iptables -N jenkins",
+		path => "/sbin",
+		timeout => 5,
+		user => root
+		}
+
 }
