@@ -466,6 +466,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	if $hostname =~ /^ssl3001$/ {
 		$enable_ipv6_proxy = true
 
+		$gid = 500
 		include protoproxy::ipv6_labs,
 			accounts::gmaxwell
 	}
