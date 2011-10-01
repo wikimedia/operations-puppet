@@ -1,3 +1,4 @@
+NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerAdmin software@wikimedia.org 
 	ServerName blog.wikimedia.org
