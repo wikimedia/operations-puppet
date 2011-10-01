@@ -865,31 +865,20 @@ class misc::etherpad {
 			mode => 0755,
 			owner => root,
 			group => root;
-
 		"/etc/apache2/sites-available/etherpad.proxy":
 			source => "puppet:///files/misc/etherpad/etherpad.proxy.apache.conf",
 			mode => 0644,
 			owner => root,
 			group => root;
-
-		"/etc/apache2/mods-available/proxy.conf":
-			source => "puppet:///files/misc/etherpad/proxy.conf",
-			mode => 0644,
-			owner => root,
-			group => root;
-
 		"/etc/etherpad/etherpad.local.properties":
 			content => template("etherpad/etherpad.local.properties.erb"),
 			mode => 0644,
 			owner => root,
 			group => root;
-
-		"/etc/apache2/mods-enabled/proxy.conf":
-                	ensure => "/etc/apache2/mods-available/proxy.conf";
-
-		"/etc/apache2/sites-enabled/etherpad.proxy":
-                	ensure => "/etc/apache2/sites-available/etherpad.proxy";
         }
+
+	apache_module { proxy: name => "proxy" }
+	apache_site { etherpad_proxy: name => "etherpad.proxy" }
 
         # Nagios monitoring
 	monitor_service { "etherpad httpcheck": 
