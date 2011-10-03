@@ -372,7 +372,6 @@ class nagios::monitor {
 	}
 	Nagios_service <<| |>> {
 		notify => Service[nagios],
-		notify => Exec["fix_nagios_perms"],
 	}
 
         # Collect all (virtual) resources
