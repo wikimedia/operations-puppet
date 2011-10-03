@@ -262,6 +262,13 @@ class nagios::monitor {
 		mode => 0644,
 		ensure => present;
 	}
+	
+	# also fix permissions on all individual service files
+	exec { "fix_nagios_perms":
+		command => "/bin/chmod -R 644 /etc/nagios/puppet_checks.d",
+		notify => Service["nagios"],
+		refreshonly => "true";
+	}
 
 	# Script to purge resources for non-existent hosts
 	file { "/usr/local/sbin/purge-nagios-resources.py":
@@ -365,6 +372,7 @@ class nagios::monitor {
 	}
 	Nagios_service <<| |>> {
 		notify => Service[nagios],
+		notify => Exec["fix_nagios_perms"],
 	}
 
         # Collect all (virtual) resources
