@@ -321,7 +321,7 @@ class upload-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = [ "208.80.152.3", "208.80.152.211", "10.2.1.24" ]
+		$lvs_realserver_ips = [ "208.80.152.211", "10.2.1.24" ]
 	}
 
 	system_role { upload-squid: description => "upload Squid server" }
@@ -351,7 +351,7 @@ class cache {
 		$nagios_group = "cache_bits_${site}"
 
 		$lvs_realserver_ips = $site ? {
-			"pmtpa" => [ "208.80.152.118", "208.80.152.210", "10.2.1.23" ],
+			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
@@ -461,7 +461,7 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+	$lvs_realserver_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
@@ -473,7 +473,7 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
-	$lvs_realserver_ips = [ "91.198.174.3", "91.198.174.234", "10.2.3.24" ]
+	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5' ]
 
 	include upload-squid
@@ -1104,7 +1104,7 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+	$lvs_realserver_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 		include text-squid,
 			lvs::realserver
