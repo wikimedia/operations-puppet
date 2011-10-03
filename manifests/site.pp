@@ -1176,10 +1176,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
 	$dns_recursor_ipaddress = $ipaddress
 
-	if $hostname =~ /^lvs[12]$/ {
-		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211" ]
-	}
-	if $hostname =~ /^lvs[56]$/ {
+	if $hostname =~ /^lvs[1256]$/ {
 		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "10.2.1.23", "10.2.1.24", "10.2.1.25" ]
 	}
 	if $hostname =~ /^lvs[34]$/ {
@@ -1193,15 +1190,12 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		lvs::balancer::runcommand
 
 	if $hostname == "lvs1" {
-		interface_ip { "uploadsvc": interface => "eth0", address => "10.2.1.24" }
 		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
 		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
 	} 
 	if $hostname == "lvs2" {
 		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
-		interface_ip { "textsvc": interface => "eth0", address => "10.2.1.25" }
 		interface_ip { "bits": interface => "eth0", address => "208.80.152.118" }
-		interface_ip { "bitssvc": interface => "eth0", address => "10.2.1.23" }
 	}
 
 	$ips = {
