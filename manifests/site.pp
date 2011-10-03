@@ -292,7 +292,11 @@ class text-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
+		$lvs_realserver_ips = $site ? {}
+		 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
+			'eqiad' => [ "" ],
+			'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+		}
 	}
 
 	system_role { text-squid: description => "text Squid server" }
@@ -304,6 +308,7 @@ class text-squid {
 
 	include	base,
 		squid,
+		lvs::realserver,
 		ntp::client,
 		ganglia,
 		exim::simple-mail-sender
@@ -321,7 +326,11 @@ class upload-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = [ "208.80.152.211", "10.2.1.24" ]
+		$lvs_realserver_ips = $site ? { 
+			'pmtpa' => [ "208.80.152.211", "10.2.1.24" ],
+			'eqiad' => [ "" ],
+			'esams' => [ "91.198.174.234", "10.2.3.24" ],
+		}
 	}
 
 	system_role { upload-squid: description => "upload Squid server" }
@@ -461,7 +470,6 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
@@ -473,7 +481,6 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
-	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5' ]
 
 	include upload-squid
@@ -1092,7 +1099,6 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
  node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
-	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
@@ -1104,10 +1110,9 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-		include text-squid,
-			lvs::realserver
+	
+	include text-squid
 }
 
 node "linne.wikimedia.org" {
@@ -2645,11 +2650,9 @@ node /sq(3[1-6])\.wikimedia\.org/ {
 
 # sq37-40 are text squids
 node /sq(3[7-9]|40)\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid,
-		lvs::realserver
+	include text-squid
 }
 
 # sq41-50 are old 4 disk upload squids
@@ -2670,7 +2673,6 @@ node /sq5[0-8]\.wikimedia\.org/ {
 
 # sq59-66 are text squids
 node /sq(59|6[0-6])\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^sq(59|60)$/ {
 		$ganglia_aggregator = "true"
@@ -2697,7 +2699,6 @@ node /cp104[3-4].wikimedia.org/ {
 
 # sq71-78 are text squids
 node /sq7[1-8]\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 
 	include text-squid,
