@@ -138,8 +138,8 @@ $lvs_services = {
 			'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
-	"new-mobile" => {
-		'description' => "New PHP based mobile site",
+	"mobile" => {
+		'description' => "MediaWiki based mobile site",
 		'class' => "testing",
 		'ip' => "208.80.154.236",
 		'bgp' => "yes",
