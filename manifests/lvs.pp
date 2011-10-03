@@ -124,7 +124,7 @@ $lvs_services = {
 		'description' => "Images and other media, upload.${site}.wikimedia.org",
 		'class' => "high-traffic2",
 		'ip' => $site ? {
-			'pmtpa' => { 'upload' => "208.80.152.3", 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+			'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 			'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.4.24" },
 			'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			default => undef,
@@ -134,19 +134,6 @@ $lvs_services = {
 		'monitors' => {
 			'ProxyFetch' => {
 				'url' => [ 'http://upload.wikimedia.org/pybaltestfile.txt' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"mobile" => {
-		'description' => "Mobile site, m.wikimedia.org",
-		'class' => "specials",
-		'ip' => "208.80.152.5",
-		'bgp' => "no",
-		'depool-threshold' => ".6",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
 				},
 			'IdleConnection' => $idleconnection_monitor_options
 			},
@@ -475,8 +462,8 @@ monitor_service_lvs_http { "wikinews-lb.esams.wikimedia.org": ip_address => "91.
 monitor_service_lvs_https { "wikinews-lb.esams.wikimedia.org": ip_address => "91.198.174.230", check_command => "check_https_url!en.wikinews.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_http_lvs!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_https { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_https_url!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-#monitor_service_lvs_http { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
-#monitor_service_lvs_https { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
+monitor_service_lvs_http { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
+monitor_service_lvs_https { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_http_lvs!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_https { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_https_url!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }

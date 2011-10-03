@@ -1193,7 +1193,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		lvs::balancer::runcommand
 
 	if $hostname == "lvs1" {
-		interface_ip { "upload": interface => "eth0", address => "208.80.152.3" }
 		interface_ip { "uploadsvc": interface => "eth0", address => "10.2.1.24" }
 		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
 		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
@@ -1203,8 +1202,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		interface_ip { "textsvc": interface => "eth0", address => "10.2.1.25" }
 		interface_ip { "bits": interface => "eth0", address => "208.80.152.118" }
 		interface_ip { "bitssvc": interface => "eth0", address => "10.2.1.23" }
-		interface_ip { "mobile": interface => "eth0", address => "208.80.152.5" }
-
 	}
 
 	$ips = {
