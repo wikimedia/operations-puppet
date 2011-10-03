@@ -458,24 +458,6 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		lvs::balancer
 }
 
-node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "ssl_esams"
-	if $hostname =~ /^ssl300[12]$/ {
-		$ganglia_aggregator = "true"
-	}
-	if $hostname =~ /^ssl3001$/ {
-		$enable_ipv6_proxy = true
-
-		include protoproxy::ipv6_labs
-	}
-
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
-}
-
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
@@ -2623,6 +2605,24 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 	}
 	if $hostname =~ /^ssl1001$/ {
 		$enable_ipv6_proxy = true
+	}
+
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
+node /ssl300[1-4]\.esams\.wikimedia\.org/ {
+	$cluster = "ssl_esams"
+	if $hostname =~ /^ssl300[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ssl3001$/ {
+		$enable_ipv6_proxy = true
+
+		include protoproxy::ipv6_labs
 	}
 
 	include base,
