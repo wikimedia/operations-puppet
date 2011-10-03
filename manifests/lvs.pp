@@ -106,7 +106,7 @@ $lvs_services = {
 		'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 		'class' => "high-traffic1",
 		'ip' => $site ? {
-			'pmtpa' => { 'bits' => "208.80.152.118", 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
+			'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
 			'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.4.23" },
 			'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			default => undef,
