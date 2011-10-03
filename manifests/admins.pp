@@ -261,14 +261,14 @@ class accounts {
 	class cmjohnson inherits baseaccount {
 		$username = "cmjohnson"
 		$realname = "Chris Johnson"
-		$uid = 575
+		$uid = 579
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
 
-                        ssh_authorized_key {
+			ssh_authorized_key {
 				"chris@ubuntu":
 					ensure	=> present,
 					user	=> $username,
