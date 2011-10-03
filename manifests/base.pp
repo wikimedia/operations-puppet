@@ -217,8 +217,10 @@ class base::standard-packages {
 			include nrpe
 		}
 
-		# Run lldpd on all hosts
-		package { lldpd: ensure => latest; }
+		# Run lldpd on all >= Lucid hosts
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+			package { lldpd: ensure => latest; }
+		}
 	}
 }
 
@@ -240,7 +242,7 @@ class base::resolving {
 
 class base::motd {
 	# Remove the standard help text
-        if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/update-motd.d/10-help-text": ensure => absent; }
 	}
 }
