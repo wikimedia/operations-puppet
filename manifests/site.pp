@@ -1195,7 +1195,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	} 
 	if $hostname == "lvs2" {
 		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
-		interface_ip { "bits": interface => "eth0", address => "208.80.152.118" }
 	}
 
 	$ips = {
