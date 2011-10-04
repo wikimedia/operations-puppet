@@ -5,7 +5,7 @@ ProxyRequests		Off
 # Local reverse proxy authorization override
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
 
-<Proxy http://localhost:8080/ci*>
+<Proxy http://localhost:8080/*>
 	Order deny,allow
 	Allow from all
 </Proxy>
