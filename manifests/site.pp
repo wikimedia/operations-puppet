@@ -1744,6 +1744,7 @@ node "spence.wikimedia.org" {
 		nagios::monitor::pager,
 		nagios::bot,
 		nagios::ganglia::monitor::enwiki,
+		nagios::ganglia::ganglios,
 		ntp::client,
 		nfs::home,
 		exim::simple-mail-sender,

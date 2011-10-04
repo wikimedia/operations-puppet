@@ -489,6 +489,11 @@ class nagios::ganglia::monitor::enwiki {
 	}
 }
 
+class nagios::ganglia::ganglios {
+	package { "ganglios":
+		ensure => latest;
+	}
+
 class nagios::bot {
 
         $ircecho_infile = "/var/log/nagios/irc.log"
