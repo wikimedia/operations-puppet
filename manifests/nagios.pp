@@ -498,6 +498,11 @@ class nagios::ganglia::ganglios {
 		user => nagios,
 		ensure => present;
 	}
+	file { "/var/lib/ganglia/xmlcache":
+		ensure => directory,
+		mode => 0755,
+		owner => nagios;
+	}
 }
 
 class nagios::bot {
