@@ -153,7 +153,7 @@ $lvs_services = {
 		},
 	"new-payments" => {
 		'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-		'class' => "specials",
+		'class' => "high-traffic2",
 		'ip' => "208.80.152.213",
 		'port' => 443,
 		'scheduler' => 'sh',
