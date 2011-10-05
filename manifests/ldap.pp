@@ -260,7 +260,13 @@ class ldap::server::wmf-cluster {
 	$ldap_proxyagent_pass = $passwords::ldap::wmf_cluster::ldap_proxyagent_pass
 	$ldap_domain = "wikimedia"
 
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass } 
+	create_pkcs12{ "${ldap_certificate}.opendj":
+		certname => "${ldap_certificate}",
+		user => "opendj",
+		group => "opendj",
+		location => $ldap_certificate_location,
+		password => $ldap_cert_pass
+	} 
 
 	include ldap::server::schema::sudo,
 		ldap::server::schema::ssh,
@@ -289,7 +295,13 @@ class ldap::server::wmf-corp-cluster {
 	$ldap_proxyagent_pass = $passwords::ldap::wmf_corp_cluster::ldap_proxyagent_pass
 	$ldap_domain = "corp"
 
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass } 
+	create_pkcs12{ "${ldap_certificate}.opendj":
+		certname => "${ldap_certificate}",
+		user => "opendj",
+		group => "opendj",
+		location => $ldap_certificate_location,
+		password => $ldap_cert_pass
+	} 
 
 	class { "ldap::server":
 		ldap_certificate_location => $ldap_certificate_location,
