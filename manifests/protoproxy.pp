@@ -29,6 +29,9 @@ class protoproxy::proxy_sites {
 		protoproxy::service,
 		lvs::realserver
 
+	# Tune kernel settings
+	include generic::sysctl::high-http-performance
+
 	$nginx_worker_connections = '32768'
 	$nginx_use_ssl = true
 
