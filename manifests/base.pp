@@ -221,6 +221,11 @@ class base::standard-packages {
 		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
 		}
+		
+		# DEINSTALL these packages
+		package { [ "mlocate" ]:
+			ensure => absent;
+		}
 	}
 }
 
