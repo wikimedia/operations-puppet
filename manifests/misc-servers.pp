@@ -1400,23 +1400,35 @@ class misc::contint::test {
 	}		
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
-	# put the iptables rules into a file, to avoid running into a puppet bug re: tabs/newlines in commands
 
-	file {
-		"/usr/local/sbin/jenkins_firewall":
-			owner => "root",
-			group => "root",
-			mode => 0544,
-			source => "puppet:///files/misc/jenkins/firewall_rules";
+	class jenkins::iptables-purges {
+
+		require "iptables::tables"
+
+		iptables_purge_service{  "${hostname}_deny_all_http-alt": service => "http-alt" }
 	}
 
-	exec { "jenkins_firewall":
-		command => "/usr/local/sbin/jenkins_firewall",
-		onlyif => "/sbin/iptables -N jenkins",
-		require => File["/usr/local/sbin/jenkins_firewall"],
-		path => "/usr/local/sbin",
-		timeout => 5,
-		user => root
+	class jenkins::iptables-accepts {
+
+		require "jenkins::iptables-purges"
+
+		iptables_add_service{ "${hostname}_lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "${hostname}_localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "${hostname}_localhost_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
+	}
+
+	class jenkins::iptables-drops {
+
+		require "jenkins::iptables-accepts"
+
+		iptables_add_service{ "${hostname}_deny_all_http-alt": service => "http-alt", jump => "DROP" }
+	}
+
+	class jenkins::iptables {
+
+	require "jenkins::iptables-drops"
+	iptables_add_exec{ "${hostname}": service => "http-alt" }
+
 	}
 
 }
