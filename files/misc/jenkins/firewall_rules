@@ -1,9 +1,0 @@
-#!/bin/bash
-# prevent users from accessing jenkins on port 8080 directly (but still allow from localhost and own net)
-/sbin/iptables -F jenkins
-/sbin/iptables -A jenkins -i lo -j ACCEPT
-/sbin/iptables -A jenkins -s 127.0.0.1/8 -j ACCEPT
-/sbin/iptables -A jenkins -s 208.80.154.128/26 -j ACCEPT
-/sbin/iptables -A jenkins -s 10.0.0.0/8 -j ACCEPT
-/sbin/iptables -A jenkins -j DROP
-/sbin/iptables -I INPUT -p tcp --dport 8080 -j jenkins
