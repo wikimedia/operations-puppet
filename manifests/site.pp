@@ -447,6 +447,8 @@ node "aluminium.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::khorn,
 		accounts::kaldari,
+		accounts::jamesofur,
+		accounts::pgehres,
 		misc::jenkins,
 		misc::fundraising,
 		backup::client
@@ -1001,6 +1003,8 @@ node "grosley.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::kaldari,
 		accounts::jpostlethwaite,
+		accounts::jamesofur,
+		accounts::pgehres,
 		misc::jenkins,
 		backup::client,
 		misc::fundraising
