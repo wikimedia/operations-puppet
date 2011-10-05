@@ -1,6 +1,7 @@
 # site.pp
 
-import "base.pp"	# This one first
+import "realm.pp"	# These ones first
+import "base.pp"
 
 import "admins.pp"
 import "ganglia.pp"
@@ -40,6 +41,7 @@ import "openstack.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
 import "gerrit.pp"
+
 # Include stages last
 import "stages.pp"
 
