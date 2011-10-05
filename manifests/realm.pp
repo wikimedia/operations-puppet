@@ -25,7 +25,7 @@ $network_zone = $ipaddress_eth0 ? {
 # TODO: create hash of all LVS service IPs
 
 # Set some basic variables
-$nameservers = $site ? {	
+$nameservers = $site ? {
 	"esams"	=> [ "91.198.174.6", "208.80.152.131" ],
 	default	=> [ "208.80.152.131", "208.80.152.132" ]
 }
