@@ -278,6 +278,51 @@ class accounts {
 		}
 	}
 
+	class jamesofur inherits baseaccount {
+		$username = "jamesofur"
+		$realname = "James Alexander"
+		$uid = 580
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname] }
+
+                        ssh_authorized_key {
+                                "jalexander@wikimedia.org":
+                                        ensure  => present,
+                                        user    => $username,
+                                        type    => "ssh-rsa",
+                                        key     => "AAAAB3NzaC1yc2EAAAABJQAAAIBt7ePL3ps6MVHEAMGdNHVd/lO2L3Yc0szq/M5gSino+bNmn7yOmNMk7QxVHHwsPOBPbEuBhKEUj5LC/K5oxMT4jOW5lH/PTGntsHNK+42nLsrbkTV20MVZerf5JUw7y/IL12RYzrzk6/uvA5LqBLGucha2yi2llcrWCzbvlnxTUw==";
+                        }
+                }
+
+	}
+
+	class pgehres inherits baseaccount {
+		$username = "pgehres"
+		$realname = "Peter Gehres"
+		$uid = 581
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname] }
+
+                        ssh_authorized_key {
+                                "pgehres@wikimedia.org":
+                                        ensure  => present,
+                                        user    => $username,
+                                        type    => "ssh-rsa",
+                                        key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC8+5CuJlnFqzlYcs8QRu42ur5Y+9yM5g+uQIDYX+3SRA1UzOOOmj/Tqv0pzGhmvK15/y+Vz5LwE927fcI9VwAxBpCgfcV97r68aDF3YD4Zqo8ksV51GhRwk2QPNlwvCtf7+BMCLFt+ymLpAIsq3L1YReovJgfkDHvOQrujXH7LGd6tEXaUksqyn9L7TTbFEyHUZxTkrV33OOlaSxIJM1EZu1fsVSL0LppmXaLH1bi4/gPSbw3A4l8EAttWAqkvK0zrty022wn/1JRa868/OD3WWCoDNp4SSH0DisURdPlT4Jc+q+P6+P/RqeWJAx5IqEQhVg2GxW6BMIKQP5VigS5j";
+                        }
+                }
+
+	}
+
+
+
+
 	class dab inherits baseaccount {
 		$username = "dab"
 		$realname = "Daniel Bauer"
@@ -1515,6 +1560,8 @@ class admins::restricted {
 	include accounts::daniel
 	include accounts::erik
 	include accounts::ezachte
+	include accounts::jamesofur
+	include accounts::pgehres
 	include accounts::rcole
 	include accounts::rainman
 	include accounts::tparscal
