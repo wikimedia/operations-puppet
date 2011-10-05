@@ -76,7 +76,7 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 
 		package { [ "openjdk-6-jre" ]:
 			ensure => latest;
-        	}
+		}
 
 		package { [ "opendj" ]:
 			ensure => "2.4.0-10",
@@ -114,7 +114,7 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 	}
 
 	if ( $ldap_first_master == "true" ) {
-	        exec {
+		exec {
 			# Create an opendj instance with an initial DIT and SSL
 			'create_ldap_db':
 				unless => '/usr/bin/[ -d "/var/opendj/instance/db/userRoot" ]',
@@ -124,11 +124,11 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 				# changing the default file will schedule a service refresh. If the
 				# service tries to start before an instance is created, it will create
 				# an example userRoot, causing this to never run.
-				before => File["/etc/default/opendj"],                        
+				before => File["/etc/default/opendj"],						  
 				require => [Package["opendj"], File["${ldap_certificate_location}/${ldap_certificate}.p12"]];
 		}
 	} else {
-	        exec {
+		exec {
 			# Create an opendj instance with an initial DIT and SSL
 			'create_ldap_db':
 				unless => '/usr/bin/[ -d "/var/opendj/instance/db/userRoot" ]',
@@ -138,76 +138,77 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 				# changing the default file will schedule a service refresh. If the
 				# service tries to start before an instance is created, it will create
 				# an example userRoot, causing this to never run.
-				before => File["/etc/default/opendj"],                        
+				before => File["/etc/default/opendj"],						  
 				require => [Package["opendj"], File["${ldap_certificate_location}/${ldap_certificate}.p12"]];
 		}
 	}
-        exec {
-                'start_opendj':                        
-			subscribe => Exec['create_ldap_db'],                        
-			refreshonly => true,                        
+	
+	exec {
+		'start_opendj':						   
+			subscribe => Exec['create_ldap_db'],						
+			refreshonly => true,						
 			command => "/etc/init.d/opendj start";
-                # Create indexes for common attributes
+		# Create indexes for common attributes
 		'create_indexes':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,                        
-			user => "opendj",                        
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,						
+			user => "opendj",						 
 			command => "/usr/opendj/bin/create-nis-indexes \"${ldap_base_dn}\" /var/tmp/indexes.cmds && /usr/opendj/bin/dsconfig -F /var/tmp/indexes.cmds --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no
 -prompt; rm /var/tmp/indexes.cmds";
-                # Rebuild the indexes
-                'rebuild_indexes':
-                        subscribe => Exec['create_indexes'],
-                        refreshonly => true,
-                        command => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${ldap::server::config::ldap_base_dn}'; /etc/init.d/opendj start";                
+		# Rebuild the indexes
+		'rebuild_indexes':
+			subscribe => Exec['create_indexes'],
+			refreshonly => true,
+			command => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${ldap::server::config::ldap_base_dn}'; /etc/init.d/opendj start";				 
 		# Add the wmf CA to the opendj admin connector's truststore
-                'add_ca_to_admintruststore':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt",
-                        require => Package['ca-certificates'];
-                # Add the wmf CA to the opendj ssl truststore
-                'add_ca_to_truststore':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
-                        require => Package['ca-certificates'];
-                # Make the admin connector use the same pkcs12 file as ldaps config
-                'fix_connector_cert_provider':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-cert-nickname:${ldap_certificate} --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable starttls for ldap, using same pkcs12 file as ldaps config
-                'enable_starttls':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,                        
-			user => "opendj",                        
+		'add_ca_to_admintruststore':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt",
+			require => Package['ca-certificates'];
+		# Add the wmf CA to the opendj ssl truststore
+		'add_ca_to_truststore':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
+			require => Package['ca-certificates'];
+		# Make the admin connector use the same pkcs12 file as ldaps config
+		'fix_connector_cert_provider':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-cert-nickname:${ldap_certificate} --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable starttls for ldap, using same pkcs12 file as ldaps config
+		'enable_starttls':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,						
+			user => "opendj",						 
 			command => "/usr/opendj/bin/dsconfig set-connection-handler-prop --handler-name \"LDAP Connection Handler\" --set allow-start-tls:true --set key-manager-provider:PKCS12 --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable the uid unique attribute plugin
-                'enable_uid_uniqueness_plugin':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"UID Unique Attribute\" --set enabled:true --add type:uidnumber --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable referential integrity
-                'enable_referential_integrity':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"Referential Integrity\" --set enabled:true --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Modify the default global aci to fix access controls
-                'modify_default_global_aci':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        command => "/usr/bin/ldapmodify -x -D 'cn=Directory Manager' -H ldaps://${fqdn}:636 -w $passwords::ldap::initial_setup::ldap_initial_password -f /etc/ldap/global-aci.ldif",
-                        require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
-        }
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable the uid unique attribute plugin
+		'enable_uid_uniqueness_plugin':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"UID Unique Attribute\" --set enabled:true --add type:uidnumber --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable referential integrity
+		'enable_referential_integrity':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"Referential Integrity\" --set enabled:true --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Modify the default global aci to fix access controls
+		'modify_default_global_aci':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			command => "/usr/bin/ldapmodify -x -D 'cn=Directory Manager' -H ldaps://${fqdn}:636 -w $passwords::ldap::initial_setup::ldap_initial_password -f /etc/ldap/global-aci.ldif",
+			require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
+	}
 
 	file {
 		"/usr/local/sbin/opendj-backup.sh":
@@ -252,7 +253,7 @@ class ldap::server::wmf-cluster {
 
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_cluster::ldap_user_pass 
-        $ldap_cert_pass = $passwords::certs::certs_default_pass
+	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_base_dn = "dc=wikimedia,dc=org"
 	$ldap_proxyagent = "cn=proxyagent,ou=profile,dc=corp,dc=wikimedia,dc=org"
@@ -281,7 +282,7 @@ class ldap::server::wmf-corp-cluster {
 
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=corp,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_corp_cluster::ldap_user_pass
-        $ldap_cert_pass = $passwords::certs::certs_default_pass
+	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_base_dn = "dc=corp,dc=wikimedia,dc=org"
 	$ldap_proxyagent = "cn=proxyagent,ou=profile,dc=corp,dc=wikimedia,dc=org"
@@ -393,7 +394,7 @@ class ldap::client::nss {
 
 	service {
 		nscd:
-			ensure  =>      running;
+			ensure => running;
 	}
 
 	file {
@@ -468,7 +469,6 @@ class ldap::client::utils {
 			group => root,
 			mode  => 0644,
 			content => template("ldap/scriptconfig.py.erb");
-			
 	}
 
 	if ( $cluster_env != "labs" ) {
@@ -576,6 +576,7 @@ class ldap::client::wmf-test-cluster {
 	$servernames = [ "virt1.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
+	
 	if ( $cluster_env == "labs" ) {
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'autofs', 'utils', 'managehome']
 	} else {
