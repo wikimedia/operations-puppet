@@ -151,6 +151,21 @@ $lvs_services = {
 			'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+	"new-payments" => {
+		'description' => "Payments cluster, HTTPS payments.wikimedia.org",
+		'class' => "specials",
+		'ip' => "208.80.152.213",
+		'port' => 443,
+		'scheduler' => 'sh',
+		'bgp' => "yes",
+		'depool-threshold' => ".5",
+		'monitors' => {
+			'ProxyFetch' => {
+				'url' => [ 'https://payments.wikimedia.org/index.php' ],
+				},
+			'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 	"owa" => {
 		'description' => "OWA analytics, owa.wikimedia.org",
 		'class' => "specials",
@@ -469,8 +484,8 @@ monitor_service_lvs_https { "foundation-lb.esams.wikimedia.org": ip_address => "
 monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
 monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
-# Not really LVS but similar:
+monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.213", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
 
-monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.7", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
+# Not really LVS but similar:
 
 monitor_service_lvs_http { "ipv6 upload.esams.wikimedia.org": ip_address => "2620:0:862:1::80:2", check_command => "check_http_upload" }
