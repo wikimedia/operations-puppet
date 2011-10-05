@@ -95,14 +95,14 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 			content => template("ldap/base.ldif.erb"),
 			owner => opendj,
 			group => opendj,
-			mode => 0640,
+			mode => 0440,
 			require => Package['ldap-utils', 'opendj'];
 		# Changes global ACIs to set proper access controls
 		'/etc/ldap/global-aci.ldif':
 			source => "puppet:///files/ldap/global-aci.ldif",
 			owner => opendj,
 			group => opendj,
-			mode => 0640,
+			mode => 0440,
 			require => Package['ldap-utils', 'opendj'];
 		"$ldap_certificate_location":
 			ensure => directory,
@@ -214,13 +214,13 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 		"/usr/local/sbin/opendj-backup.sh":
 			owner => root,
 			group => root,
-			mode  => 0755,
+			mode  => 0555,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/scripts/opendj-backup.sh";
 		"/etc/default/opendj":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			notify => Service["opendj"],
 			require => Package["opendj"],
 			content => template("ldap/opendj.default.erb");
@@ -305,7 +305,7 @@ class ldap::server::schema::sudo {
 		"/var/opendj/instance/config/schema/98-sudo.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/sudo.ldif";
 	}
@@ -318,7 +318,7 @@ class ldap::server::schema::ssh {
 		"/var/opendj/instance/config/schema/98-openssh-lpk.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/openssh-lpk.ldif";
 	}
@@ -331,7 +331,7 @@ class ldap::server::schema::openstack {
 		"/var/opendj/instance/config/schema/97-nova.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/nova_sun.ldif";
 	}
@@ -344,7 +344,7 @@ class ldap::server::schema::puppet {
 		"/var/opendj/instance/config/schema/98-puppet.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/puppet.ldif";
 	}
@@ -357,31 +357,22 @@ class ldap::client::pam {
 		ensure => latest;
 	}
 
+	File {
+		owner => root,
+		group => root,
+		mode => 0444,
+	}
+
 	file {
 		"/etc/pam.d/common-auth":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-auth";
 		"/etc/pam.d/common-account":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-account";
 		"/etc/pam.d/common-password":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-password";
 		"/etc/pam.d/common-session":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-session";
 		"/etc/pam.d/common-session-noninteractive":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-session-noninteractive";
 	}
 }
@@ -397,16 +388,16 @@ class ldap::client::nss {
 			ensure => running;
 	}
 
+	File {
+		owner => root,
+		group => root,
+		mode => 0444,
+	}
+
 	file {
 		"/etc/nsswitch.conf":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/nsswitch.conf";
 		"/etc/ldap.conf":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			content => template("ldap/nss_ldap.erb");
 	}
 
@@ -467,7 +458,7 @@ class ldap::client::utils {
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			content => template("ldap/scriptconfig.py.erb");
 	}
 
@@ -514,7 +505,7 @@ class ldap::client::openldap {
 		"/etc/ldap/ldap.conf":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			content => template("ldap/open_ldap.erb");
 	}
 }
