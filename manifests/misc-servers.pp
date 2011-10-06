@@ -5,6 +5,7 @@
 import "generic-definitions.pp"
 import "nagios.pp"
 
+# TODO: perhaps move this to generic-definitions...
 class misc::apache2 {
 
 	package { apache2:
@@ -14,13 +15,14 @@ class misc::apache2 {
 }
 
 class misc::bastionhost {
+	system_role { "misc::bastionhost": description => "Bastion" }
+	
 	package { "irssi":
 		ensure => absent;
 	}
 }
 
 class misc::install-server {
-
 	system_role { "misc::install-server": description => "Install server" }
 
 	class web-server {
@@ -29,7 +31,7 @@ class misc::install-server {
 		}
 
 		file { "lighttpd.conf":
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/etc/lighttpd/lighttpd.conf",
@@ -49,6 +51,7 @@ class misc::install-server {
 	class tftp-server {
 		system_role { "misc::tftp-server": description => "TFTP server" }
 
+		# TODO: replace this by iptables.pp definitions
 		$iptables_command = "
 			/sbin/iptables -F tftp;
 			/sbin/iptables -A tftp -s 10.0.0.0/8 -j ACCEPT;
@@ -68,12 +71,12 @@ class misc::install-server {
 
 		file {
 			 "/srv/tftpboot":
-				mode => 755,
+				mode => 0755,
 				owner => root,
 				group => root,
 				ensure => directory;
 			 "/srv/tftpboot/restricted/":
-				mode => 755,
+				mode => 0755,
 				owner => root,
 				group => root,
 				path => "/srv/tftpboot/restricted/",
@@ -93,32 +96,12 @@ class misc::install-server {
 		}
 	}
 
-	class db42-forward { 
-		system_role { "misc::db42-forward": description => "port 2222 fwds to db42:22" }
-
-		#$iptables_command = "
-		#	/sbin/iptables -t nat -A PREROUTING -p tcp -i eth0  --dport 2222 -j DNAT --to 10.0.6.52:22
-		#	/sbin/iptables -A FORWARD -p tcp -d 10.0.6.52 --dport 22 -j ACCEPT
-		#	/sbin/iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-		#	"
-
-		#exec { db42-firewall-rules:
-		#	command => $iptables_command,
-		#	onlyif => "/sbin/iptables -N db42",
-		#	path => "/sbin",
-		#	timeout => 5,
-		#	user => root
-		#}
-
-
-	}
-
 	class caching-proxy {
 		system_role { "misc::caching-proxy": description => "Caching proxy server" }
 
 		file { "/etc/squid/squid.conf":
 			require => Package[squid],
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/etc/squid/squid.conf",
@@ -146,7 +129,7 @@ class misc::install-server {
 		# Top level directory must exist
 		file { "/srv/ubuntu/":
 			require => Systemuser[mirror],
-			mode => 755,
+			mode => 0755,
 			owner => mirror,
 			group => mirror,
 			path => "/srv/ubuntu/",
@@ -155,7 +138,7 @@ class misc::install-server {
 
 		# Update script
 		file { "update-ubuntu-mirror":
-			mode => 755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			path => "/usr/local/sbin/update-ubuntu-mirror",
@@ -187,13 +170,13 @@ class misc::install-server {
 
 		file {
 			"/srv/wikimedia/":
-				mode => 755,
+				mode => 0755,
 				owner => root,
 				group => root,
 				path => "/srv/wikimedia/",
 				ensure => directory;
 			"/usr/local/sbin/update-repository":
-				mode => 755,
+				mode => 0555,
 				owner => root,
 				group => root,
 				path => "/usr/local/sbin/update-repository",
@@ -211,7 +194,7 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 		}
 
 		file { "/srv/autoinstall":
-			mode => 755,
+			mode => 0755,
 			owner => root,
 			group => root,
 			path => "/srv/autoinstall/",
@@ -222,7 +205,7 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 	class dhcp-server {
 		file { "/etc/dhcp3/dhcpd.conf":
 			require => Package[dhcp3-server],
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/etc/dhcp3/dhcpd.conf",
@@ -251,13 +234,13 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 		}
 	}
 
-#	include misc::install-server::ubuntu-mirror,
-#		misc::install-server::apt-repository,
-#		misc::install-server::preseed-server,
-#		misc::install-server::tftp-server,
-#		misc::install-server::caching-proxy,
-#		misc::install-server::web-server,
-#		misc::install-server::dhcp-server
+	include misc::install-server::ubuntu-mirror,
+		misc::install-server::apt-repository,
+		misc::install-server::preseed-server,
+		misc::install-server::tftp-server,
+		misc::install-server::caching-proxy,
+		misc::install-server::web-server,
+		misc::install-server::dhcp-server
 }
 
 class misc::puppetmaster {
