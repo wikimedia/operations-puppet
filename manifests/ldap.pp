@@ -6,8 +6,8 @@ class ldap::server::iptables-purges {
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "${hostname}_ldap_deny_all": service => "ldap" }
-	iptables_purge_service{ "${hostname}_ldaps_deny_all": service => "ldaps" }
+	iptables_purge_service{ "ldap_deny_all": service => "ldap" }
+	iptables_purge_service{ "ldaps_deny_all": service => "ldaps" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -19,9 +19,9 @@ class ldap::server::iptables-accepts {
 	require "owa::database::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "${hostname}_ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
 
 }
 
@@ -29,8 +29,8 @@ class ldap::server::iptables-drops {
 
 	require "ldap::server::iptables-accepts"
 
-	iptables_add_service{ "${hostname}_ldap_server_deny_all": service => "ldap", jump => "DROP" }
-	iptables_add_service{ "${hostname}_ldaps_server_deny_all": service => "ldaps", jump => "DROP" }
+	iptables_add_service{ "ldap_server_deny_all": service => "ldap", jump => "DROP" }
+	iptables_add_service{ "ldaps_server_deny_all": service => "ldaps", jump => "DROP" }
 
 }
 
@@ -43,7 +43,7 @@ class ldap::server::iptables  {
 	require "ldap::server::iptables-drops"
 
 	# This exec should always occur last in the requirement chain.
-	iptables_add_exec{ "${hostname}_ldap_server": service => "ldap_server" }
+	iptables_add_exec{ "ldap_server": service => "ldap_server" }
 
 }
 

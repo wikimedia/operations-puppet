@@ -1405,24 +1405,24 @@ class misc::contint::test {
 
 		require "iptables::tables"
 
-		iptables_purge_service{  "${hostname}_deny_all_http-alt": service => "http-alt" }
+		iptables_purge_service{  "deny_all_http-alt": service => "http-alt" }
 	}
 
 	class iptables-accepts {
 
 		require "misc::contint::test::iptables-purges"
 
-		iptables_add_service{ "${hostname}_lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "${hostname}_localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "${hostname}_private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "${hostname}_public_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
 	}
 
 	class iptables-drops {
 
 		require "misc::contint::test::iptables-accepts"
 
-		iptables_add_service{ "${hostname}_deny_all_http-alt": service => "http-alt", jump => "DROP" }
+		iptables_add_service{ "deny_all_http-alt": service => "http-alt", jump => "DROP" }
 	}
 
 	class iptables {
