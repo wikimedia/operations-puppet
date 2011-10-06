@@ -16,7 +16,7 @@ class ldap::server::iptables-purges {
 
 class ldap::server::iptables-accepts {
 
-	require "owa::database::iptables-purges"
+	require "ldap::server::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
 	iptables_add_service{ "${hostname}_ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
