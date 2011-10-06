@@ -1431,4 +1431,6 @@ class misc::contint::test {
 
 		iptables_add_exec{ "${hostname}": service => "http-alt" }
 	}
+	
+	require "misc::contint::test::iptables"
 }
