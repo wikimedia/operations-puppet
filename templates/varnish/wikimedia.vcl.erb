@@ -62,7 +62,7 @@ backend <%= backend.split(".")[0] %> {
 	.host = "<%= backend %>";
 	.max_connections = 100;
 	.connect_timeout = 3s;
-	.first_byte_timeout = 10s;
+	.first_byte_timeout = 5s;
 	.between_bytes_timeout = 2s;
 	.probe = {
 		.request =
@@ -83,7 +83,7 @@ backend test_wikipedia {
         .port = "80";
         .max_connections = 30;
         .connect_timeout = 3s;
-        .first_byte_timeout = 10s;
+        .first_byte_timeout = 5s;
         .between_bytes_timeout = 2s;
 }
 <% elsif site == "esams" -%>
@@ -92,7 +92,7 @@ backend bits_pmtpa {
 	.port = "80";
         .max_connections = 100;
         .connect_timeout = 3s;
-        .first_byte_timeout = 10s;
+        .first_byte_timeout = 5s;
         .between_bytes_timeout = 2s;
 }
 <% end -%>
