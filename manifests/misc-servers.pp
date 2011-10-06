@@ -244,6 +244,8 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 }
 
 class misc::puppetmaster {
+	system_role { "misc::puppetmaster": description => "Puppetmaster" }
+	
 	package { stompserver:
 		ensure => latest;
 	}
@@ -260,19 +262,20 @@ class misc::puppetmaster {
 			ensure => stopped;
 	}
 
-
 	cron {
-                updategeoipdb:
-                        environment => "http_proxy=http://brewster.wikimedia.org:8080",
-                        command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /etc/puppet/files/misc/GeoIP.dat.new && mv /etc/puppet/files/misc/GeoIP.dat.new /etc/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /etc/puppet/files/misc/GeoIPcity.dat.new && mv /etc/puppet/files/misc/GeoIPcity.dat.new /etc/puppet/files/misc/GeoIPcity.dat",
-                        user => root,
+		updategeoipdb:
+			environment => "http_proxy=http://brewster.wikimedia.org:8080",
+			command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /etc/puppet/files/misc/GeoIP.dat.new && mv /etc/puppet/files/misc/GeoIP.dat.new /etc/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /etc/puppet/files/misc/GeoIPcity.dat.new && mv /etc/puppet/files/misc/GeoIPcity.dat.new /etc/puppet/files/misc/GeoIPcity.dat",
+			user => root,
 			hour => 3,
-                        minute => 26,
-                        ensure => present;
+			minute => 26,
+			ensure => present;
 	}
 }
 
 class misc::noc-wikimedia {
+	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
+	
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
 	}
@@ -281,11 +284,10 @@ class misc::noc-wikimedia {
 		"/etc/apache2/sites-available/noc.wikimedia.org":
 			require => [ Apache_module[userdir], Apache_module[cgi], Package[libapache2-mod-php5] ],
 			path => "/etc/apache2/sites-available/noc.wikimedia.org",
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/noc.wikimedia.org",
-			ensure => present;
 		"/usr/lib/cgi-bin":
 			source => "puppet:///files/cgi-bin/noc/",
 			recurse => true,
@@ -293,7 +295,6 @@ class misc::noc-wikimedia {
 			ensure => present;
 	}
 
-	
 	apache_module { userdir: name => "userdir" }
 	apache_module { cgi: name => "cgi" }
 
@@ -310,43 +311,43 @@ class misc::noc-wikimedia {
 }
 
 class misc::blog-wikimedia {
-
-        system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
+	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
 
 	require apaches::packages
-        package { php5-gd:
-                ensure => latest;
-                }	
+	
+	package { php5-gd:
+		ensure => latest;
+	}	
 
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
 			path => "/etc/apache2/sites-available/blog.wikimedia.org",
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/blog.wikimedia.org",
-			ensure => present;
 	}
 }
 
 class misc::download-wikimedia {
+	system_role { "misc::download-wikimedia": description => "download.wikimedia.org" }
+
 	package { lighttpd:
 		ensure => latest;
 	}
 
 	file {
 		"/etc/lighttpd/lighttpd.conf":
-		mode => 644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		path => "/etc/lighttpd/lighttpd.conf",
 		source => "puppet:///files/download/lighttpd.conf",
-		ensure => present;
 	}
 
-        service { lighttpd:
-                ensure => running;
-        }
+	service { lighttpd:
+		ensure => running;
+	}
 
 	package { nfs-kernel-server:
 		ensure => latest;
@@ -354,7 +355,7 @@ class misc::download-wikimedia {
 
 	file { "/etc/exports":
 		require => Package[nfs-kernel-server],
-		mode => 0644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		source => "puppet:///files/download/exports",
@@ -365,8 +366,7 @@ class misc::download-wikimedia {
 		require => [ Package[nfs-kernel-server], File["/etc/exports"] ],
 	}
 
-        monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
-
+	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" } 
 
 }
@@ -374,31 +374,29 @@ class misc::download-wikimedia {
 class misc::download-mirror {
 	system_role { "misc::download-mirror": description => "Service for external download mirrors" }
 
-        package { rsync:
-                ensure => latest;
-        }
+	package { rsync:
+		ensure => latest;
+	}
 
-        file {
-                "/etc/rsyncd.conf":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsyncd.conf.downloadmirror",
-                        ensure => present;
-                "/etc/default/rsync":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsync.default.downloadmirror",
-                        ensure => present;
-        }
+	file {
+		"/etc/rsyncd.conf":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsyncd.conf.downloadmirror",
+		"/etc/default/rsync":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsync.default.downloadmirror",
+	}
 
-        service { rsync:
-                require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-                ensure => running;
-        }
+	service { rsync:
+		require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+		ensure => running;
+	}
 }
 
 class misc::url-downloader {
@@ -406,12 +404,11 @@ class misc::url-downloader {
 
 	file { "/etc/squid/squid.conf":
 		require => Package[squid],
-		mode => 644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		path => "/etc/squid/squid.conf",
 		source => "puppet:///files/squid/copy-by-url-proxy.conf",
-		ensure => present;
 	}
 
 	generic::apt::pin-package { squid: }
@@ -424,10 +421,12 @@ class misc::url-downloader {
 		require => [ File["/etc/squid/squid.conf"], Package[squid], Interface_ip["misc::url-downloader"] ],
 		subscribe => File["/etc/squid/squid.conf"],
 		ensure => running;
-        }
+	}
 }
 
 class misc::nfs-server::home {
+	system_role { "misc::nfs-server::home": description => "/home NFS" }
+	
 	class backup {
 		cron { home-rsync:
 			require => File["/root/.ssh/home-rsync"],
@@ -442,9 +441,8 @@ class misc::nfs-server::home {
 		file { "/root/.ssh/home-rsync":
 			owner => root,
 			group => root,
-			mode => 0600,
+			mode => 0400,
 			source => "puppet:///private/backup/ssh-keys/home-rsync",
-			ensure => present;
 		}
 	}
 
@@ -454,11 +452,10 @@ class misc::nfs-server::home {
 
 	file { "/etc/exports":
 		require => Package[nfs-kernel-server],
-		mode => 0644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		source => "puppet:///files/nfs/exports.home",
-		ensure => present;
 	}
 
 	service { nfs-kernel-server:
@@ -468,7 +465,6 @@ class misc::nfs-server::home {
 
 	class monitoring {
 		monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
-		#monitor_service { "disk space": description => "Disk space", check_command => "nrpe_check_disk_5_2" }
 	}
 
 	include monitoring
@@ -506,6 +502,7 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
+# TODO: fold most this in a generic, parameterized 'udp2log' class
 class misc::mediawiki-logger {
 	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
 
@@ -516,20 +513,18 @@ class misc::mediawiki-logger {
 	file {
 		"/etc/udp2log":
 			require => Package[udplog],
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			content => "flush pipe 1 python /usr/local/bin/demux.py\n",
-			ensure => present;
 		"/usr/local/bin/demux.py":
-			mode => 0644,
+			mode => 0544,
 			owner => root,
 			group => root,
 			source => "puppet:///files/misc/demux.py",
-			ensure => present;
 		"/etc/logrotate.d/mw-udp2log":
 			source => "puppet:///files/logrotate/mw-udp2log",
-			ensure => present;
+			mode => 0444,
 	}
 
 	service { udp2log:
@@ -540,6 +535,8 @@ class misc::mediawiki-logger {
 }
 
 class misc::syslog-server {
+	system_role { "misc::syslog-server": description => "central syslog server" }
+	
 	package { syslog-ng:
 		ensure => latest;
 	}
@@ -548,10 +545,10 @@ class misc::syslog-server {
 		"/etc/syslog-ng/syslog-ng.conf":
 			require => Package[syslog-ng],
 			source => "puppet:///files/syslog-ng/syslog-ng.conf",
-			ensure => present;
+			mode => 0444,
 		"/etc/logrotate.d/remote-logs":
 			source => "puppet:///files/syslog-ng/remote-logs",
-			ensure => present;
+			mode => 0444,
 	}
 
 	service { syslog-ng:
@@ -562,6 +559,8 @@ class misc::syslog-server {
 }
 
 class misc::extension-distributor {
+	system_role { "misc::extension-distributor": description => "MediaWiki extension distributor" }
+	
 	$extdist_working_dir = "/mnt/upload6/private/ExtensionDistributor"
 	$extdist_download_dir = "/mnt/upload6/ext-dist"
 
@@ -576,15 +575,13 @@ class misc::extension-distributor {
 			require => [ Package[xinetd], Systemuser[extdist] ],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/misc/svn_invoker.xinetd",
-			ensure => present;
 		"/etc/logrotate.d/svn-invoker":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/logrotate/svn-invoker",
-			ensure => present;
 		"$extdist_working_dir":
 			owner => extdist,
 			group => wikidev,
@@ -635,7 +632,7 @@ class misc::rt::server {
 		"/etc/request-tracker3.8/RT_SiteConfig.pm":
 			owner => "root",
 			group => "www-data",
-			mode => 0640;
+			mode => 0440;
 		"/etc/request-tracker3.8/rt.conf":
 			require => Package["request-tracker3.8"],
 			content => $rtconf;
@@ -659,21 +656,22 @@ class misc::rt::server {
 	}
 }
 
+# TODO: kill.
 class misc::wapsite {
-        system_role { "misc::wapsite": description => "WAP site server" }
+	system_role { "misc::wapsite": description => "WAP site server" }
 
 	require generic::webserver::php5
 
 	file {
-                "/etc/apache2/sites-available/mobile.wikipedia.org":
-                        path => "/etc/apache2/sites-available/mobile.wikipedia.org",
-                        mode => 644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/apache/sites/mobile.wikipedia.org";
+		"/etc/apache2/sites-available/mobile.wikipedia.org":
+			path => "/etc/apache2/sites-available/mobile.wikipedia.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/mobile.wikipedia.org";
 		"/etc/apache2/sites-available/wap.wikipedia.org":
 			path => "/etc/apache2/sites-available/wap.wikipedia.org",
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/wap.wikipedia.org";
@@ -690,7 +688,7 @@ class misc::wapsite {
 
 	apache_module { rewrite: name => "rewrite" }
 
-        apache_site {
+	apache_site {
 		mobile:
 			name => "mobile.wikipedia.org",
 			require => File["/srv/mobile.wikipedia.org/"];
@@ -712,17 +710,17 @@ class misc::apple-dictionary-bridge {
 	require generic::webserver::php5
 
 	file {
-                "/etc/apache2/sites-available/search.wikimedia.org":
-                        path => "/etc/apache2/sites-available/search.wikimedia.org",
-                        mode => 644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/apache/sites/search.wikimedia.org";
-                "/srv/search.wikimedia.org/":
-                        mode => 0755,
-                        owner => root,
-                        group => root,
-                        ensure => directory;
+		"/etc/apache2/sites-available/search.wikimedia.org":
+			path => "/etc/apache2/sites-available/search.wikimedia.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/search.wikimedia.org";
+		"/srv/search.wikimedia.org/":
+			mode => 0755,
+			owner => root,
+			group => root,
+			ensure => directory;
 	}
 
 	apache_site { search:
@@ -758,12 +756,12 @@ Wikimedia-related channels on irc.freenode.net.
 
 	file {
 		"/usr/local/ircd-ratbox/etc/ircd.conf":
-			mode => 0644,
+			mode => 0444,
 			owner => irc,
 			group => irc,
 			source => "puppet:///private/misc/ircd.conf";
 		"/usr/local/ircd-ratbox/etc/ircd.motd":
-			mode => 0644,
+			mode => 0444,
 			owner => irc,
 			group => irc,
 			content => $motd;
@@ -787,7 +785,7 @@ class misc::mediawiki-irc-relay {
 
 	file { "/usr/local/bin/udpmxircecho.py":
 		source => "puppet:///private/misc/udpmxircecho.py",
-		mode => 0755,
+		mode => 0555,
 		owner => irc,
 		group => irc;
 	}
@@ -827,43 +825,42 @@ class misc::etherpad {
 	$etherpad_admin_pass = $passwords::etherpad::etherpad_admin_pass
 	$etherpad_sql_pass = $passwords::etherpad::etherpad_sql_pass
 
-        system_role { "misc::etherpad": description => "Etherpad server" }
+	system_role { "misc::etherpad": description => "Etherpad server" }
 
 	require generic::webserver::modproxy
 	
 	# NB: this has some GUI going on all up in it. first install must be done by hand.
-        package { etherpad:
-                ensure => latest;
-        }
+	package { etherpad:
+		ensure => latest;
+	}
 
-        service { etherpad:
-                        require => Package[etherpad],
-                        ensure => running;
-
-        }
+	service { etherpad:
+		require => Package[etherpad],
+		ensure => running;
+	}
 
 	file { 	
 		"/etc/init.d/etherpad":
 			source => "puppet:///files/misc/etherpad/etherpad.init",
-			mode => 0755,
+			mode => 0555,
 			owner => root,
 			group => root;
 		"/etc/apache2/sites-available/etherpad.proxy":
 			source => "puppet:///files/misc/etherpad/etherpad.proxy.apache.conf",
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root;
 		"/etc/etherpad/etherpad.local.properties":
 			content => template("etherpad/etherpad.local.properties.erb"),
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root;
-        }
+	}
 
 	apache_module { proxy: name => "proxy" }
 	apache_site { etherpad_proxy: name => "etherpad.proxy" }
 
-        # Nagios monitoring
+	# Nagios monitoring
 	monitor_service { "etherpad httpcheck": 
 			description => "Etherpad HTTP", 
 			check_command => "check_http_on_port!9000";
@@ -872,23 +869,24 @@ class misc::etherpad {
 }
 
 class misc::kiwix-mirror {
+	# TODO: add system_role
+	
 	group { mirror:
 		ensure => "present";
 	}
 
 	user { mirror:
 		name => "mirror",
-                gid => "mirror",
+		gid => "mirror",
 		groups => [ "www-data"],
-                membership => "minimum", 
-                home => "/data/home",
-                shell => "/bin/bash";
+		membership => "minimum", 
+		home => "/data/home",
+		shell => "/bin/bash";
 	}
 
-        file { 
+	file { 
 		"/data/xmldatadumps/public/kiwix":
-	        	ensure => "/data/kiwix";
-
+			ensure => "/data/kiwix";
 		"/data/kiwix":
 			owner => "mirror",
 			group => "mirror",
@@ -905,6 +903,7 @@ class misc::kiwix-mirror {
 
 }
 
+# FIXME: merge with misc::contint::test, or remove
 class misc::jenkins {
 
 	system_role { "misc::jenkins": description => "jenkins integration server" }
@@ -927,14 +926,14 @@ class misc::jenkins {
 			command => "/usr/bin/apt-get update";
 	}
 
-        package { jenkins:
-                ensure => latest;
-        }
+	package { jenkins:
+		ensure => latest;
+	}
 
-        user { jenkins:
-                name => "jenkins",
-                groups => [ "wikidev" ]; 
-        }
+	user { jenkins:
+		name => "jenkins",
+		groups => [ "wikidev" ]; 
+	}
 	
 	service { 'jenkins':
 		enable => true,
@@ -958,6 +957,7 @@ class misc::jenkins {
 	#}
 }
 
+# TODO: break this up in different (sub) classes for the different services
 class misc::fundraising {
 
 	#include exim::packages
@@ -967,29 +967,28 @@ class misc::fundraising {
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
 	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
-                ensure => latest;
-	}
+		ensure => latest;
+}
 
 	# civimail user
 	group { civimail:
-                ensure => "present",
-        }
+		ensure => "present",
+	}
 
-        user { civimail:
-                name => "civimail",
-                gid => "civimail",
-                groups => [ "civimail" ], 
-                membership => "minimum",
-                password => $passwords::civi::civimail_pass,
-                home => "/home/civimail",
-                shell => "/bin/sh",
-        }
+	user { civimail:
+		name => "civimail",
+		gid => "civimail",
+		groups => [ "civimail" ], 
+		membership => "minimum",
+		password => $passwords::civi::civimail_pass,
+		home => "/home/civimail",
+		shell => "/bin/sh",
+	}
 
 	file {
-
 		#civicrm confs 
 		"/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php":
-			mode => 0660,
+			mode => 0440,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/civicrm.civicrm.settings.php";
@@ -999,14 +998,14 @@ class misc::fundraising {
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/civicrm.default.settings.php";
 		"/srv/org.wikimedia.civicrm/sites/default/settings.php":
-			mode => 0660,
+			mode => 0440,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/civicrm.settings.php";
 
 		#civicrm dev confs
 		"/srv/org.wikimedia.civicrm-dev/sites/default/civicrm.settings.php":
-			mode => 0660,
+			mode => 0440,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php";
@@ -1016,24 +1015,24 @@ class misc::fundraising {
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.default.settings.php";
 		"/srv/org.wikimedia.civicrm-dev/sites/default/settings.php":
-			mode => 0660,
+			mode => 0440,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.settings.php";
 
 		#misc fundraising confs
 		"/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php":
-			mode => 0644,
+			mode => 0444,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/misc.executeStompPFPPendingProcessorSA.php";
 		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php":
-			mode => 0644,
+			mode => 0444,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php";
 		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php":
-			mode => 0644,
+			mode => 0444,
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php";
@@ -1044,88 +1043,88 @@ class misc::fundraising {
 		"/srv/org.wikimedia.civicrm/IPNListener_Recurring.php":
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php";	
 		"/srv/org.wikimedia.civicrm/files":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/srv/org.wikimedia.civicrm-dev/files":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/srv/org.wikimedia.civicrm/fundcore_gateway":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/.htaccess":
-                	owner => "www-data",
-                	group => "wikidev",
-			mode => 0664,
-                	content => "<Files paypal>
+			owner => "www-data",
+			group => "wikidev",
+			mode => 0444,
+			content => "<Files paypal>
 	ForceType application/x-httpd-php
 </Files>";
 
 		#logging stuffs
 		"/etc/logrotate.d/paypal_ipn":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/logrotate.paypal_ipn";
 		"/etc/logrotate.d/pfp_pending_processor":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/logrotate.pfp_pending_processor";
 		"/var/log/fundraising/":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/var/log/fundraising/paypal_ipn/":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/var/log/fundraising/pfp_pending_processing/":
-                	owner => "www-data",
-                	group => "wikidev",
+			owner => "www-data",
+			group => "wikidev",
 			mode => 0775,
-                	ensure => directory;
-			
+			ensure => directory;
+
 		#apache conf stuffs
 		"/etc/apache2/sites-available/000-donate":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.donate";
 		"/etc/apache2/sites-available/002-civicrm":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm";
 		"/etc/apache2/sites-available/003-civicrm-ssl":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-ssl";
 		"/etc/apache2/sites-available/004-civicrm-dev":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev";
 		"/etc/apache2/sites-available/005-civicrm-dev-ssl":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl";
 		"/etc/apache2/sites-available/006-fundraising":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising";
 		"/etc/apache2/sites-available/007-fundraising-analytics":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
@@ -1136,26 +1135,26 @@ class misc::fundraising {
 		# mail stuff
 		"/etc/exim4/exim4.conf":
 			content => template("exim/exim4.donate.erb"),
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root;
 
 		"/etc/dovecot/dovecot.conf":
 			source => "puppet:///files/dovecot/dovecot.donate.conf",
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root;
 
 		"/var/mail/civimail":
-                	owner => "civimail",
-                	group => "civimail",
+			owner => "civimail",
+			group => "civimail",
 			mode => 2755,
-                	ensure => directory;
+			ensure => directory;
 
 		# monitoring stuff
 		"/etc/nagios/nrpe.d/fundraising.cfg":
 			source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root;
 		"/etc/sudoers.d/nrpe_fundraising":
@@ -1187,18 +1186,16 @@ class misc::survey {
 	system_role { "misc::survey": description => "limesurvey server" }
 
 	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-gd", "php5-mysql", "mysql-client-5.1" ]:
-                ensure => latest;
-	}
+		ensure => latest;
+}
 
 	file {
-
 		# apche configs
 		"/etc/apache2/sites-available/survey.wikimedia.org":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/survey.wikimedia.org";
-
 	}
 
 	apache_site { survey: name => "survey.wikimedia.org" }
@@ -1207,29 +1204,30 @@ class misc::survey {
 }
 
 class misc::download-mediawiki {
+	
+	# TODO: add system_role
 
 	package { [ "wikimedia-task-appserver"]:
-                ensure => latest;
-	}
+		ensure => latest;
+}
 
 	file {
 		#apache config
 		"/etc/apache2/sites-available/download.mediawiki.org":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/download.mediawiki.org";
-
 		"/srv/org/mediawiki":
-                	owner => "root",
-                	group => "root",
+			owner => "root",
+			group => "root",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 		"/srv/org/mediawiki/download":
-                	owner => "mwdeploy",
-                	group => "mwdeploy",
+			owner => "mwdeploy",
+			group => "mwdeploy",
 			mode => 0775,
-                	ensure => directory;
+			ensure => directory;
 	}
 
 	apache_site { survey: name => "download.mediawiki.org" }
@@ -1247,24 +1245,28 @@ class misc::monitoring::htcp-loss {
 	# Ganglia
 	file {
 		"/usr/lib/ganglia/python_modules/htcpseqcheck.py":
-                        source => "puppet:///files/ganglia/plugins/htcpseqcheck.py";
+			source => "puppet:///files/ganglia/plugins/htcpseqcheck.py";
 		"/usr/lib/ganglia/python_modules/htcpseqcheck_ganglia.py":
-                        source => "puppet:///files/ganglia/plugins/htcpseqcheck_ganglia.py";
+			source => "puppet:///files/ganglia/plugins/htcpseqcheck_ganglia.py";
 		"/usr/lib/ganglia/python_modules/util.py":
 			source => "puppet:///files/ganglia/plugins/util.py";
-                "/usr/lib/ganglia/python_modules/compat.py":
-                        source => "puppet:///files/ganglia/plugins/compat.py";
-                "/etc/ganglia/conf.d/htcpseqcheck.pyconf":
+		"/usr/lib/ganglia/python_modules/compat.py":
+			source => "puppet:///files/ganglia/plugins/compat.py";
+		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
 			require => File["/etc/ganglia/conf.d"],
 			source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
         }
 }
 
+# TODO: Create a generic udp2log parameterized class and use it for this, and
+# for misc::mediawiki-logger above
 class misc::udp2log::aft {
+	
+	# TODO: add system_role
 
 	file {
 		"/etc/init.d/udp2log-aft":
-			mode => 0755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/udp2log-aft";
