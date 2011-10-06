@@ -28,6 +28,7 @@ class mysql {
 			ensure => present;
 		}
 
+		# FIXME: this belongs in ganglia.pp, not here.
 		if $lsbdistcodename == "hardy" {
 			file {
 				"/etc/ganglia":
