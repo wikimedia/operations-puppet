@@ -14,8 +14,8 @@ class misc::apache2 {
 }
 
 class misc::bastionhost {
-	package { [ "irssi" ]:
-		ensure => present;
+	package { "irssi":
+		ensure => absent;
 	}
 }
 
