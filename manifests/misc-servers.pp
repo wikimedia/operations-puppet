@@ -1355,22 +1355,22 @@ class misc::contint::test {
 		"/var/lib/jenkins/jobs/MediaWiki-phpunit/build.properties":
 			owner => jenkins,
 			group => wikidev,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/build.properties";
 		"/var/lib/jenkins/jobs/MediaWiki-phpunit/build.xml":
 			owner => jenkins,
 			group => wikidev,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/build.xml";
 		"/var/lib/jenkins/jobs/MediaWiki-phpunit/config.xml":
 			owner => jenkins,
 			group => wikidev,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/config.xml";
 		"/var/lib/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php":
 			owner => jenkins,
 			group => wikidev,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
 		# Let wikidev users maintain the homepage
 		"/var/www":
@@ -1401,16 +1401,16 @@ class misc::contint::test {
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
 
-	class jenkins::iptables-purges {
+	class iptables-purges {
 
 		require "iptables::tables"
 
 		iptables_purge_service{  "${hostname}_deny_all_http-alt": service => "http-alt" }
 	}
 
-	class jenkins::iptables-accepts {
+	class iptables-accepts {
 
-		require "jenkins::iptables-purges"
+		require "misc::contint::test::iptables-purges"
 
 		iptables_add_service{ "${hostname}_lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "${hostname}_localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
@@ -1418,18 +1418,17 @@ class misc::contint::test {
 		iptables_add_service{ "${hostname}_localhost_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
 	}
 
-	class jenkins::iptables-drops {
+	class iptables-drops {
 
-		require "jenkins::iptables-accepts"
+		require "misc::contint::test::iptables-accepts"
 
 		iptables_add_service{ "${hostname}_deny_all_http-alt": service => "http-alt", jump => "DROP" }
 	}
 
-	class jenkins::iptables {
+	class iptables {
 
-	require "jenkins::iptables-drops"
-	iptables_add_exec{ "${hostname}": service => "http-alt" }
+		require "misc::contint::test::iptables-drops"
 
+		iptables_add_exec{ "${hostname}": service => "http-alt" }
 	}
-
 }
