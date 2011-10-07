@@ -493,6 +493,11 @@ class nagios::ganglia::ganglios {
 	package { "ganglios":
 		ensure => latest;
 	}
+	cron { "ganglios-cron":
+		command => "/usr/sbin/ganglia_parser",
+		user => nagios,
+		ensure => present;
+	}
 	file { "/var/lib/ganglia/xmlcache":
 		ensure => directory,
 		mode => 0755,
