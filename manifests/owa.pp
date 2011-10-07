@@ -3,7 +3,7 @@ class owa::database::iptables-purges {
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "${hostname}_database_deny_all": service => "mysql" }
+	iptables_purge_service{ "database_deny_all": service => "mysql" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -15,10 +15,10 @@ class owa::database::iptables-accepts {
 	require "owa::database::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "${hostname}_database_owa1": service => "mysql", source => "208.80.152.112", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_database_owa2": service => "mysql", source => "208.80.152.113", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_database_owa3": service => "mysql", source => "208.80.152.114", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_database_spence": service => "mysql", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "database_owa1": service => "mysql", source => "208.80.152.112", jump => "ACCEPT" }
+	iptables_add_service{ "database_owa2": service => "mysql", source => "208.80.152.113", jump => "ACCEPT" }
+	iptables_add_service{ "database_owa3": service => "mysql", source => "208.80.152.114", jump => "ACCEPT" }
+	iptables_add_service{ "database_spence": service => "mysql", source => "208.80.152.161", jump => "ACCEPT" }
 
 }
 
@@ -26,7 +26,7 @@ class owa::database::iptables-drops {
 
 	require "owa::database::iptables-accepts"
 
-	iptables_add_service{ "${hostname}_database_deny_all": service => "mysql", jump => "DROP" }
+	iptables_add_service{ "database_deny_all": service => "mysql", jump => "DROP" }
 
 }
 
@@ -39,7 +39,7 @@ class owa::database::iptables  {
 	require "owa::database::iptables-drops"
 
 	# This exec should always occur last in the requirement chain.
-	iptables_add_exec{ "${hostname}_database": service => "owa_database" }
+	iptables_add_exec{ "database": service => "owa_database" }
 
 }
 
@@ -48,7 +48,7 @@ class owa::iptables-purges {
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "${hostname}_deny_all": service => "memcached" }
+	iptables_purge_service{ "deny_all": service => "memcached" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -60,10 +60,10 @@ class owa::iptables-accepts {
 	require "owa::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "${hostname}_owa1": service => "memcached", source => "208.80.152.112", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_owa2": service => "memcached", source => "208.80.152.113", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_owa3": service => "memcached", source => "208.80.152.114", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_spence": service => "memcached", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "owa1": service => "memcached", source => "208.80.152.112", jump => "ACCEPT" }
+	iptables_add_service{ "owa2": service => "memcached", source => "208.80.152.113", jump => "ACCEPT" }
+	iptables_add_service{ "owa3": service => "memcached", source => "208.80.152.114", jump => "ACCEPT" }
+	iptables_add_service{ "spence": service => "memcached", source => "208.80.152.161", jump => "ACCEPT" }
 
 }
 
@@ -71,7 +71,7 @@ class owa::iptables-drops {
 
 	require "owa::iptables-accepts"
 
-	iptables_add_service{ "${hostname}_deny_all": service => "memcached", jump => "DROP" }
+	iptables_add_service{ "deny_all": service => "memcached", jump => "DROP" }
 
 }
 
