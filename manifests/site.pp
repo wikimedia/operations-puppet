@@ -1364,6 +1364,13 @@ node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
 		memcached
 }
 
+node /mw6[0-1]\.pmtpa\.wmnet/ {
+	include applicationserver::bits,
+}
+
+node /mw(6[2-9])|(7[0-4])\.pmtpa\.wmnet/ {
+	include applicationserver::api
+}
 
 node "lily.knams.wikimedia.org" {
 	$cluster = "misc_esams"
