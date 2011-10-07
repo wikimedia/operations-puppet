@@ -523,24 +523,15 @@ node "brewster.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-	#	misc::install-server,
+		misc::install-server,
 		exim::simple-mail-sender,
-		backup::client,
-		misc::install-server::ubuntu-mirror,
-		misc::install-server::apt-repository,
-		misc::install-server::preseed-server,
-		misc::install-server::tftp-server,
-		misc::install-server::caching-proxy,
-		misc::install-server::web-server,
-		misc::install-server::dhcp-server
-
+		backup::client
 }
 
 node "carbon.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-#		misc::install-server,
 		exim::simple-mail-sender,
 		backup::client,
 		misc::install-server::tftp-server
