@@ -1368,7 +1368,7 @@ node /mw6[0-1]\.pmtpa\.wmnet/ {
 	include applicationserver::bits,
 }
 
-node /mw(6[2-9])|(7[0-4])\.pmtpa\.wmnet/ {
+node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver::api
 }
 
