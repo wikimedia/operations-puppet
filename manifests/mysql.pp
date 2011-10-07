@@ -12,7 +12,7 @@ class mysql {
 		ensure => "installed";
 	}
 
-	if ( $lsbdistcodename == "lucid" ) {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		package { xtrabackup:	
 			ensure => "installed";
 		}
@@ -29,22 +29,22 @@ class mysql {
 		}
 
 		# FIXME: this belongs in ganglia.pp, not here.
-		if $lsbdistcodename == "hardy" {
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "8.04") == 0 {
 			file {
 				"/etc/ganglia":
 					owner => root,
 					group => root,
-					mode => 755,
+					mode => 0755,
 					ensure => directory;
 				"/etc/ganglia/conf.d":
 					owner => root,
 					group => root,
-					mode => 755,
+					mode => 0755,
 					ensure => directory;
 				"/usr/lib/ganglia/python_modules":
 					owner => root,
 					group => root,
-					mode => 755,
+					mode => 0755,
 					ensure => directory;
 			}
 		}
@@ -75,13 +75,13 @@ class mysql {
 				"/a/sqldata":
 					owner => mysql,
 					group => mysql,
-					mode => 755,
+					mode => 0755,
 					ensure => directory,
 					require => User["mysql"];
 				"/a/tmp":
 					owner => mysql,
 					group => mysql,
-					mode => 755,
+					mode => 0755,
 					ensure => directory,
 					require => User["mysql"];
 			}
@@ -163,7 +163,7 @@ class mysql {
 			"/usr/local/sbin/snaprotate.pl":
 				owner => root,
 				group => root,
-				mode => 755,
+				mode => 0555,
 				source => "puppet:///files/mysql/snaprotate.pl"
 		}
 	}
@@ -172,7 +172,7 @@ class mysql {
 		file { "/etc/profile.d/mysqlpath.sh":
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0444,
 			source => "puppet:///files/mysql/mysqlpath.sh"
 		}
 	}
