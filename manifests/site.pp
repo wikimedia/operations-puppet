@@ -2892,3 +2892,5 @@ node "yvon.wikimedia.org" {
 node default {
 	include	standard
 }
+
+# FIXME: remove. just a test.
