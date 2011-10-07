@@ -269,11 +269,11 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key {
-				"chris@ubuntu":
+				"chrisj@ubuntu":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61";
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
 			}
 		}
 	}
