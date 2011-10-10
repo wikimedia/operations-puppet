@@ -857,7 +857,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	# Here Be Masters
 	if $hostname =~ /^db(1047)$/ {
 		$writable = "true"
-		system_role { "waste::limesurvey": description => "bastard child waste of hardware for limesurvey" }
 	} 
 
 	include db::core,
@@ -1755,7 +1754,10 @@ node "spence.wikimedia.org" {
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
-		udpprofile::collector
+		udpprofile::collector,
+		certificates::star_wikimedia_org
+
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node "srv151.pmtpa.wmnet" {
