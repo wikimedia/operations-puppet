@@ -29,7 +29,6 @@ class dns::auth-server-ldap {
 
 	file {
 		"/etc/powerdns/pdns.conf":
-			require => Package[wikimedia-task-dns-auth],
 			owner => root,
 			group => root,
 			mode => 0644,
@@ -38,7 +37,7 @@ class dns::auth-server-ldap {
 	}
 
 	service { pdns:
-		require => [ Package[wikimedia-task-dns-auth], File["/etc/powerdns/pdns.conf"], Interface_ip["dns::auth-server"] ],
+		require => File["/etc/powerdns/pdns.conf"],
 		subscribe => File["/etc/powerdns/pdns.conf"],
 		hasrestart => false,
 		ensure => running;
