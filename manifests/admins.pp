@@ -1534,6 +1534,7 @@ class admins::roots {
 	include accounts::fvassard
 	include accounts::jeluf
 	include accounts::kate
+	include accounts::lcarr
 	include accounts::mark
 	include accounts::midom
 	include accounts::py
