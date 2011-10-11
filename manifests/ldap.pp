@@ -6,8 +6,8 @@ class ldap::server::iptables-purges {
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "${hostname}_ldap_deny_all": service => "ldap" }
-	iptables_purge_service{ "${hostname}_ldaps_deny_all": service => "ldaps" }
+	iptables_purge_service{ "ldap_deny_all": service => "ldap" }
+	iptables_purge_service{ "ldaps_deny_all": service => "ldaps" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -16,12 +16,12 @@ class ldap::server::iptables-purges {
 
 class ldap::server::iptables-accepts {
 
-	require "owa::database::iptables-purges"
+	require "ldap::server::iptables-purges"
 
-	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "${hostname}_ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
+	# Remember to place modified or removed rules into purges!
+	iptables_add_service{ "ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
 
 }
 
@@ -29,8 +29,8 @@ class ldap::server::iptables-drops {
 
 	require "ldap::server::iptables-accepts"
 
-	iptables_add_service{ "${hostname}_ldap_server_deny_all": service => "ldap", jump => "DROP" }
-	iptables_add_service{ "${hostname}_ldaps_server_deny_all": service => "ldaps", jump => "DROP" }
+	iptables_add_service{ "ldap_server_deny_all": service => "ldap", jump => "DROP" }
+	iptables_add_service{ "ldaps_server_deny_all": service => "ldaps", jump => "DROP" }
 
 }
 
@@ -43,7 +43,7 @@ class ldap::server::iptables  {
 	require "ldap::server::iptables-drops"
 
 	# This exec should always occur last in the requirement chain.
-	iptables_add_exec{ "${hostname}_ldap_server": service => "ldap_server" }
+	iptables_add_exec{ "ldap_server": service => "ldap_server" }
 
 }
 
@@ -76,7 +76,7 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 
 		package { [ "openjdk-6-jre" ]:
 			ensure => latest;
-        	}
+		}
 
 		package { [ "opendj" ]:
 			ensure => "2.4.0-10",
@@ -95,14 +95,14 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 			content => template("ldap/base.ldif.erb"),
 			owner => opendj,
 			group => opendj,
-			mode => 0640,
+			mode => 0440,
 			require => Package['ldap-utils', 'opendj'];
 		# Changes global ACIs to set proper access controls
 		'/etc/ldap/global-aci.ldif':
 			source => "puppet:///files/ldap/global-aci.ldif",
 			owner => opendj,
 			group => opendj,
-			mode => 0640,
+			mode => 0440,
 			require => Package['ldap-utils', 'opendj'];
 		"$ldap_certificate_location":
 			ensure => directory,
@@ -114,7 +114,7 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 	}
 
 	if ( $ldap_first_master == "true" ) {
-	        exec {
+		exec {
 			# Create an opendj instance with an initial DIT and SSL
 			'create_ldap_db':
 				unless => '/usr/bin/[ -d "/var/opendj/instance/db/userRoot" ]',
@@ -124,11 +124,11 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 				# changing the default file will schedule a service refresh. If the
 				# service tries to start before an instance is created, it will create
 				# an example userRoot, causing this to never run.
-				before => File["/etc/default/opendj"],                        
+				before => File["/etc/default/opendj"],						  
 				require => [Package["opendj"], File["${ldap_certificate_location}/${ldap_certificate}.p12"]];
 		}
 	} else {
-	        exec {
+		exec {
 			# Create an opendj instance with an initial DIT and SSL
 			'create_ldap_db':
 				unless => '/usr/bin/[ -d "/var/opendj/instance/db/userRoot" ]',
@@ -138,88 +138,89 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 				# changing the default file will schedule a service refresh. If the
 				# service tries to start before an instance is created, it will create
 				# an example userRoot, causing this to never run.
-				before => File["/etc/default/opendj"],                        
+				before => File["/etc/default/opendj"],						  
 				require => [Package["opendj"], File["${ldap_certificate_location}/${ldap_certificate}.p12"]];
 		}
 	}
-        exec {
-                'start_opendj':                        
-			subscribe => Exec['create_ldap_db'],                        
-			refreshonly => true,                        
+	
+	exec {
+		'start_opendj':						   
+			subscribe => Exec['create_ldap_db'],						
+			refreshonly => true,						
 			command => "/etc/init.d/opendj start";
-                # Create indexes for common attributes
+		# Create indexes for common attributes
 		'create_indexes':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,                        
-			user => "opendj",                        
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,						
+			user => "opendj",						 
 			command => "/usr/opendj/bin/create-nis-indexes \"${ldap_base_dn}\" /var/tmp/indexes.cmds && /usr/opendj/bin/dsconfig -F /var/tmp/indexes.cmds --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no
 -prompt; rm /var/tmp/indexes.cmds";
-                # Rebuild the indexes
-                'rebuild_indexes':
-                        subscribe => Exec['create_indexes'],
-                        refreshonly => true,
-                        command => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${ldap::server::config::ldap_base_dn}'; /etc/init.d/opendj start";                
+		# Rebuild the indexes
+		'rebuild_indexes':
+			subscribe => Exec['create_indexes'],
+			refreshonly => true,
+			command => "/etc/init.d/opendj stop; su - opendj -c '/usr/opendj/bin/rebuild-index --rebuildAll -b ${ldap::server::config::ldap_base_dn}'; /etc/init.d/opendj start";				 
 		# Add the wmf CA to the opendj admin connector's truststore
-                'add_ca_to_admintruststore':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt",
-                        require => Package['ca-certificates'];
-                # Add the wmf CA to the opendj ssl truststore
-                'add_ca_to_truststore':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
-                        require => Package['ca-certificates'];
-                # Make the admin connector use the same pkcs12 file as ldaps config
-                'fix_connector_cert_provider':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-cert-nickname:${ldap_certificate} --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable starttls for ldap, using same pkcs12 file as ldaps config
-                'enable_starttls':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,                        
-			user => "opendj",                        
+		'add_ca_to_admintruststore':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/admin-truststore -storepass `cat /var/opendj/instance/config/admin-keystore.pin` -noprompt",
+			require => Package['ca-certificates'];
+		# Add the wmf CA to the opendj ssl truststore
+		'add_ca_to_truststore':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-ca\" -file /etc/ssl/certs/wmf-ca.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
+			require => Package['ca-certificates'];
+		# Make the admin connector use the same pkcs12 file as ldaps config
+		'fix_connector_cert_provider':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-administration-connector-prop --set key-manager-provider:PKCS12 --set ssl-cert-nickname:${ldap_certificate} --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable starttls for ldap, using same pkcs12 file as ldaps config
+		'enable_starttls':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,						
+			user => "opendj",						 
 			command => "/usr/opendj/bin/dsconfig set-connection-handler-prop --handler-name \"LDAP Connection Handler\" --set allow-start-tls:true --set key-manager-provider:PKCS12 --set trust-manager-provider:JKS --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable the uid unique attribute plugin
-                'enable_uid_uniqueness_plugin':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"UID Unique Attribute\" --set enabled:true --add type:uidnumber --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Enable referential integrity
-                'enable_referential_integrity':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        user => "opendj",
-                        command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"Referential Integrity\" --set enabled:true --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
-                        require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
-                # Modify the default global aci to fix access controls
-                'modify_default_global_aci':
-                        subscribe => Exec['start_opendj'],
-                        refreshonly => true,
-                        command => "/usr/bin/ldapmodify -x -D 'cn=Directory Manager' -H ldaps://${fqdn}:636 -w $passwords::ldap::initial_setup::ldap_initial_password -f /etc/ldap/global-aci.ldif",
-                        require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
-        }
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable the uid unique attribute plugin
+		'enable_uid_uniqueness_plugin':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"UID Unique Attribute\" --set enabled:true --add type:uidnumber --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Enable referential integrity
+		'enable_referential_integrity':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			user => "opendj",
+			command => "/usr/opendj/bin/dsconfig set-plugin-prop --plugin-name \"Referential Integrity\" --set enabled:true --hostname ${fqdn} --port 4444 --trustStorePath /var/opendj/instance/config/admin-truststore --bindDN \"cn=Directory Manager\" --bindPassword $passwords::ldap::initial_setup::ldap_initial_password --no-prompt",
+			require => Exec["add_ca_to_truststore", "add_ca_to_admintruststore"];
+		# Modify the default global aci to fix access controls
+		'modify_default_global_aci':
+			subscribe => Exec['start_opendj'],
+			refreshonly => true,
+			command => "/usr/bin/ldapmodify -x -D 'cn=Directory Manager' -H ldaps://${fqdn}:636 -w $passwords::ldap::initial_setup::ldap_initial_password -f /etc/ldap/global-aci.ldif",
+			require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
+	}
 
 	file {
 		"/usr/local/sbin/opendj-backup.sh":
 			owner => root,
 			group => root,
-			mode  => 0755,
+			mode  => 0555,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/scripts/opendj-backup.sh";
 		"/etc/default/opendj":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			notify => Service["opendj"],
 			require => Package["opendj"],
 			content => template("ldap/opendj.default.erb");
@@ -252,14 +253,20 @@ class ldap::server::wmf-cluster {
 
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_cluster::ldap_user_pass 
-        $ldap_cert_pass = $passwords::certs::certs_default_pass
+	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_base_dn = "dc=wikimedia,dc=org"
 	$ldap_proxyagent = "cn=proxyagent,ou=profile,dc=corp,dc=wikimedia,dc=org"
 	$ldap_proxyagent_pass = $passwords::ldap::wmf_cluster::ldap_proxyagent_pass
 	$ldap_domain = "wikimedia"
 
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass } 
+	create_pkcs12{ "${ldap_certificate}.opendj":
+		certname => "${ldap_certificate}",
+		user => "opendj",
+		group => "opendj",
+		location => $ldap_certificate_location,
+		password => $ldap_cert_pass
+	} 
 
 	include ldap::server::schema::sudo,
 		ldap::server::schema::ssh,
@@ -281,14 +288,20 @@ class ldap::server::wmf-corp-cluster {
 
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=corp,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_corp_cluster::ldap_user_pass
-        $ldap_cert_pass = $passwords::certs::certs_default_pass
+	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_base_dn = "dc=corp,dc=wikimedia,dc=org"
 	$ldap_proxyagent = "cn=proxyagent,ou=profile,dc=corp,dc=wikimedia,dc=org"
 	$ldap_proxyagent_pass = $passwords::ldap::wmf_corp_cluster::ldap_proxyagent_pass
 	$ldap_domain = "corp"
 
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass } 
+	create_pkcs12{ "${ldap_certificate}.opendj":
+		certname => "${ldap_certificate}",
+		user => "opendj",
+		group => "opendj",
+		location => $ldap_certificate_location,
+		password => $ldap_cert_pass
+	} 
 
 	class { "ldap::server":
 		ldap_certificate_location => $ldap_certificate_location,
@@ -304,7 +317,7 @@ class ldap::server::schema::sudo {
 		"/var/opendj/instance/config/schema/98-sudo.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/sudo.ldif";
 	}
@@ -317,7 +330,7 @@ class ldap::server::schema::ssh {
 		"/var/opendj/instance/config/schema/98-openssh-lpk.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/openssh-lpk.ldif";
 	}
@@ -330,7 +343,7 @@ class ldap::server::schema::openstack {
 		"/var/opendj/instance/config/schema/97-nova.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/nova_sun.ldif";
 	}
@@ -343,7 +356,7 @@ class ldap::server::schema::puppet {
 		"/var/opendj/instance/config/schema/98-puppet.ldif":
 			owner => opendj,
 			group => opendj,
-			mode  => 0644,
+			mode  => 0444,
 			require => Package["opendj"],
 			source => "puppet:///files/ldap/puppet.ldif";
 	}
@@ -356,31 +369,22 @@ class ldap::client::pam {
 		ensure => latest;
 	}
 
+	File {
+		owner => root,
+		group => root,
+		mode => 0444,
+	}
+
 	file {
 		"/etc/pam.d/common-auth":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-auth";
 		"/etc/pam.d/common-account":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-account";
 		"/etc/pam.d/common-password":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-password";
 		"/etc/pam.d/common-session":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-session";
 		"/etc/pam.d/common-session-noninteractive":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/common-session-noninteractive";
 	}
 }
@@ -393,19 +397,19 @@ class ldap::client::nss {
 
 	service {
 		nscd:
-			ensure  =>      running;
+			ensure => running;
+	}
+
+	File {
+		owner => root,
+		group => root,
+		mode => 0444,
 	}
 
 	file {
 		"/etc/nsswitch.conf":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			source => "puppet:///files/ldap/nsswitch.conf";
 		"/etc/ldap.conf":
-			owner => root,
-			group => root,
-			mode  => 0644,
 			content => template("ldap/nss_ldap.erb");
 	}
 
@@ -466,9 +470,8 @@ class ldap::client::utils {
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			content => template("ldap/scriptconfig.py.erb");
-			
 	}
 
 	if ( $cluster_env != "labs" ) {
@@ -514,7 +517,7 @@ class ldap::client::openldap {
 		"/etc/ldap/ldap.conf":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			content => template("ldap/open_ldap.erb");
 	}
 }
@@ -576,8 +579,9 @@ class ldap::client::wmf-test-cluster {
 	$servernames = [ "virt1.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
+	
 	if ( $cluster_env == "labs" ) {
-		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'autofs', 'utils', 'managehome']
+		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
 	} else {
 		$ldapincludes = ['openldap', 'utils']
 	}

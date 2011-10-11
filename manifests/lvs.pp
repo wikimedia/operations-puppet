@@ -85,9 +85,9 @@ $lvs_services = {
 		'description' => "HTTPS services",
 		'class' => "https",
 		'ip' => $site ? {
-			'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitssecure' => "208.80.152.118", 'bitslbsecure' => "208.80.152.210", 'uploadsecure' => "208.80.152.3", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
+			'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
 			'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
-			'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitssecure' => "91.198.174.233", 'uploadsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'foundationlbsecure' => "91.198.174.235" },
+			'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
 			default => undef,
 		},
 		'port' => 443,
@@ -106,7 +106,7 @@ $lvs_services = {
 		'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 		'class' => "high-traffic1",
 		'ip' => $site ? {
-			'pmtpa' => { 'bits' => "208.80.152.118", 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
+			'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
 			'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.4.23" },
 			'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			default => undef,
@@ -124,7 +124,7 @@ $lvs_services = {
 		'description' => "Images and other media, upload.${site}.wikimedia.org",
 		'class' => "high-traffic2",
 		'ip' => $site ? {
-			'pmtpa' => { 'upload' => "208.80.152.3", 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+			'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 			'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.4.24" },
 			'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			default => undef,
@@ -139,10 +139,10 @@ $lvs_services = {
 			},
 		},
 	"mobile" => {
-		'description' => "Mobile site, m.wikimedia.org",
-		'class' => "specials",
-		'ip' => "208.80.152.5",
-		'bgp' => "no",
+		'description' => "MediaWiki based mobile site",
+		'class' => "testing",
+		'ip' => "208.80.154.236",
+		'bgp' => "yes",
 		'depool-threshold' => ".6",
 		'monitors' => {
 			'ProxyFetch' => {
@@ -151,15 +151,17 @@ $lvs_services = {
 			'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
-	"new-mobile" => {
-		'description' => "New PHP based mobile site",
-		'class' => "testing",
-		'ip' => "208.80.154.236",
+	"new-payments" => {
+		'description' => "Payments cluster, HTTPS payments.wikimedia.org",
+		'class' => "high-traffic2",
+		'ip' => "208.80.152.213",
+		'port' => 443,
+		'scheduler' => 'sh',
 		'bgp' => "yes",
-		'depool-threshold' => ".6",
+		'depool-threshold' => ".5",
 		'monitors' => {
 			'ProxyFetch' => {
-				'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
+				'url' => [ 'https://payments.wikimedia.org/index.php' ],
 				},
 			'IdleConnection' => $idleconnection_monitor_options
 			},
@@ -475,15 +477,15 @@ monitor_service_lvs_http { "wikinews-lb.esams.wikimedia.org": ip_address => "91.
 monitor_service_lvs_https { "wikinews-lb.esams.wikimedia.org": ip_address => "91.198.174.230", check_command => "check_https_url!en.wikinews.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_http_lvs!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_https { "wikiversity-lb.esams.wikimedia.org": ip_address => "91.198.174.231", check_command => "check_https_url!en.wikiversity.org!/wiki/Main_Page", critical => "false" }
-#monitor_service_lvs_http { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
-#monitor_service_lvs_https { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
+monitor_service_lvs_http { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!mediawiki.org!/wiki/Main_Page", critical => "false" }
+monitor_service_lvs_https { "mediawiki-lb.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_https_url!mediawiki.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_http_lvs!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_https { "foundation-lb.esams.wikimedia.org": ip_address => "91.198.174.235", check_command => "check_https_url!wikimediafoundation.org!/wiki/Main_Page", critical => "false" }
 monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
 monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
-# Not really LVS but similar:
+monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.213", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
 
-monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.7", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
+# Not really LVS but similar:
 
 monitor_service_lvs_http { "ipv6 upload.esams.wikimedia.org": ip_address => "2620:0:862:1::80:2", check_command => "check_http_upload" }

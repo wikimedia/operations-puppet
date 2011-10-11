@@ -3,25 +3,25 @@ class openstack::iptables-purges {
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "${hostname}_deny_all_mysql": service => "mysql" }
-	iptables_purge_service{ "${hostname}_deny_all_ldap": service => "ldap" }
-	iptables_purge_service{ "${hostname}_deny_all_ldap_backend": service => "ldap_backend" }
-	iptables_purge_service{ "${hostname}_deny_all_ldaps": service => "ldaps" }
-	iptables_purge_service{ "${hostname}_deny_all_ldaps_backend": service => "ldaps_backend" }
-	iptables_purge_service{ "${hostname}_deny_all_ldap_admin_connector": service => "ldap_admin_connector" }
-	iptables_purge_service{ "${hostname}_deny_all_puppetmaster": service => "puppetmaster" }
-	iptables_purge_service{ "${hostname}_deny_all_glance_api": service => "glance_api" }
-	iptables_purge_service{ "${hostname}_deny_all_glance_registry": service => "glance_registry" }
-	iptables_purge_service{ "${hostname}_deny_all_beam1": service => "beam1" }
-	iptables_purge_service{ "${hostname}_deny_all_beam2": service => "beam2" }
-	iptables_purge_service{ "${hostname}_deny_all_epmd": service => "epmd" }
+	iptables_purge_service{ "deny_all_mysql": service => "mysql" }
+	iptables_purge_service{ "deny_all_ldap": service => "ldap" }
+	iptables_purge_service{ "deny_all_ldap_backend": service => "ldap_backend" }
+	iptables_purge_service{ "deny_all_ldaps": service => "ldaps" }
+	iptables_purge_service{ "deny_all_ldaps_backend": service => "ldaps_backend" }
+	iptables_purge_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector" }
+	iptables_purge_service{ "deny_all_puppetmaster": service => "puppetmaster" }
+	iptables_purge_service{ "deny_all_glance_api": service => "glance_api" }
+	iptables_purge_service{ "deny_all_glance_registry": service => "glance_registry" }
+	iptables_purge_service{ "deny_all_beam1": service => "beam1" }
+	iptables_purge_service{ "deny_all_beam2": service => "beam2" }
+	iptables_purge_service{ "deny_all_epmd": service => "epmd" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
-	iptables_purge_service{ "${hostname}_nova_ec2_api_private": service => "nova_ec2_api" }
-	iptables_purge_service{ "${hostname}_nova_os_api_private": service => "nova_openstack_api" }
-	iptables_purge_service{ "${hostname}_deny_all_nova_ec2_api": service => "nova_ec2_api" }
-	iptables_purge_service{ "${hostname}_deny_all_nova_openstack_api": service => "nova_openstack_api" }
+	iptables_purge_service{ "nova_ec2_api_private": service => "nova_ec2_api" }
+	iptables_purge_service{ "nova_os_api_private": service => "nova_openstack_api" }
+	iptables_purge_service{ "deny_all_nova_ec2_api": service => "nova_ec2_api" }
+	iptables_purge_service{ "deny_all_nova_openstack_api": service => "nova_openstack_api" }
 
 }
 
@@ -30,28 +30,28 @@ class openstack::iptables-accepts {
 	require "openstack::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "${hostname}_lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_virt1_all": source => "208.80.153.131", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_mysql_gerrit": source => "208.80.152.147", service => "mysql", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_backend_private": source => "10.4.0.0/16", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_floating": source => "208.80.153.192/28", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_floating": source => "208.80.153.192/28", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_backend_floating": source => "208.80.153.192/28", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_backend_floating": source => "208.80.153.192/28", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_gerrit": source => "208.80.152.147", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
-	iptables_add_service{ "${hostname}_beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
+	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "virt1_all": source => "208.80.153.131", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
+	iptables_add_service{ "mysql_gerrit": source => "208.80.152.147", service => "mysql", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_private": source => "10.4.0.0/16", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_floating": source => "208.80.153.192/28", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_floating": source => "208.80.153.192/28", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_floating": source => "208.80.153.192/28", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_floating": source => "208.80.153.192/28", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_gerrit": source => "208.80.152.147", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
+	iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
+	iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
 
 }
 
@@ -60,18 +60,18 @@ class openstack::iptables-drops {
 	require "openstack::iptables-accepts"
 
 	# Deny by default
-	iptables_add_service{ "${hostname}_deny_all_mysql": service => "mysql", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_ldap": service => "ldap", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_ldap_backend": service => "ldap_backend", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_ldaps": service => "ldaps", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_ldaps_backend": service => "ldaps_backend", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_ldap_admin_connector": service => "ldap_admin_connector", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_puppetmaster": service => "puppetmaster", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_glance_api": service => "glance_api", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_glance_registry": service => "glance_registry", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_beam1": service => "beam1", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_beam2": service => "beam2", jump => "DROP" }
-	iptables_add_service{ "${hostname}_deny_all_epmd": service => "epmd", jump => "DROP" }
+	iptables_add_service{ "deny_all_mysql": service => "mysql", jump => "DROP" }
+	iptables_add_service{ "deny_all_ldap": service => "ldap", jump => "DROP" }
+	iptables_add_service{ "deny_all_ldap_backend": service => "ldap_backend", jump => "DROP" }
+	iptables_add_service{ "deny_all_ldaps": service => "ldaps", jump => "DROP" }
+	iptables_add_service{ "deny_all_ldaps_backend": service => "ldaps_backend", jump => "DROP" }
+	iptables_add_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector", jump => "DROP" }
+	iptables_add_service{ "deny_all_puppetmaster": service => "puppetmaster", jump => "DROP" }
+	iptables_add_service{ "deny_all_glance_api": service => "glance_api", jump => "DROP" }
+	iptables_add_service{ "deny_all_glance_registry": service => "glance_registry", jump => "DROP" }
+	iptables_add_service{ "deny_all_beam1": service => "beam1", jump => "DROP" }
+	iptables_add_service{ "deny_all_beam2": service => "beam2", jump => "DROP" }
+	iptables_add_service{ "deny_all_epmd": service => "epmd", jump => "DROP" }
 
 }
 
@@ -489,7 +489,7 @@ class openstack::nova_config {
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "208.80.153.192"
-	$nova_dmz_cidr = "10.4.0.0/8"
+	$nova_dmz_cidr = "208.80.153.0/22,10.0.0.0/8"
 	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
 	$nova_ldap_host = "virt1.wikimedia.org"
 	$nova_ldap_domain = "labs"

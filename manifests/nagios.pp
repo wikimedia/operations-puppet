@@ -262,6 +262,13 @@ class nagios::monitor {
 		mode => 0644,
 		ensure => present;
 	}
+	
+	# also fix permissions on all individual service files
+	exec { "fix_nagios_perms":
+		command => "/bin/chmod -R 644 /etc/nagios/puppet_checks.d",
+		notify => Service["nagios"],
+		refreshonly => "true";
+	}
 
 	# Script to purge resources for non-existent hosts
 	file { "/usr/local/sbin/purge-nagios-resources.py":
@@ -479,6 +486,22 @@ class nagios::ganglia::monitor::enwiki {
 			command => "/usr/bin/gmetric --name='enwiki JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'en.wikipedia.org:en.wikipedia.org' --value=$(mysql --batch --skip-column-names -u $ganglia_mysql_enwiki_user -p$ganglia_mysql_enwiki_pass -h db36.pmtpa.wmnet enwiki -e 'select count(*) from job') > /dev/null 2>&1",
 			user => root,
 			ensure => present;
+	}
+}
+
+class nagios::ganglia::ganglios {
+	package { "ganglios":
+		ensure => latest;
+	}
+	cron { "ganglios-cron":
+		command => "/usr/sbin/ganglia_parser",
+		user => nagios,
+		ensure => present;
+	}
+	file { "/var/lib/ganglia/xmlcache":
+		ensure => directory,
+		mode => 0755,
+		owner => nagios;
 	}
 }
 

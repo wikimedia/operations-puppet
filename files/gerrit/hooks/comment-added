@@ -1,6 +1,9 @@
 #!/usr/bin/python
 import re
+import sys
+from hookhelper import HookHelper
 from optparse import OptionParser
+sys.path.append('/var/lib/gerrit2/review_site/etc')
 
 def main():
 	parser = OptionParser(conflict_handler="resolve")
@@ -15,7 +18,7 @@ def main():
 	parser.add_option("--VRIF", dest="verified")
 	parser.add_option("--CRVW", dest="codereview")
 	(options, args) = parser.parse_args()
-
+	helper = HookHelper()
 	comment = options.comment.splitlines()
 	if comment:
 		comment = comment[0]
@@ -23,15 +26,13 @@ def main():
 			comment = comment[0:100] + "..."
 	else:
 		comment = "(no comment)"
-	f = open('/var/lib/gerrit2/review_site/logs/gerrit_bot.log', 'a')
 	review = ""
 	if options.verified:
 		review = review + "; V: " + options.verified
 	if options.codereview:
 		review = review + " C: " + options.codereview + "; "
 	message = "New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
-	f.write(message)
-	f.close()
+	helper.log_to_file(options.project, message)
 
 if __name__ == "__main__":
 	main()
