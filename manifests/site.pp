@@ -1967,25 +1967,25 @@ node "srv185.pmtpa.wmnet" {
 
 node "srv186.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv187.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv188.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv189.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
