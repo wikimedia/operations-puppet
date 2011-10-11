@@ -1,0 +1,7 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/sudo/sudoers.jenkins
+#####################################################################
+
+# Allow wikidev users to run commands as jenkins
+%wikidev	ALL = (jenkins) NOPASSWD: ALL

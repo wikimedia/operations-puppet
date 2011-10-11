@@ -1345,6 +1345,12 @@ class misc::contint::test {
 	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
 
 	file {
+		# Sudo conf
+		"/etc/sudoers.d/sudoers.appserver":
+			source => "puppet:///files/sudo/sudoers.appserver",
+			mode => 0440,
+			owner => root,
+			group => root;
 		# Top level jobs folder
 		"/var/lib/jenkins/jobs/":
 			owner => "jenkins",
