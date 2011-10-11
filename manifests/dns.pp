@@ -9,6 +9,13 @@ import "generic-definitions.pp"
 
 class dns::auth-server-ldap {
 
+	include openstack::nova_config
+	
+	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
+	$nova_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+	$nova_ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+	$nova_ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+
 	# FIXME: remove some duplication between this and dns::auth-server
 	if ! $dns_auth_ipaddress {
 		fail("Parametmer $dns_auth_ipaddress not defined!")
