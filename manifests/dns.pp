@@ -7,6 +7,42 @@
 
 import "generic-definitions.pp"
 
+class dns::auth-server-ldap {
+
+	# FIXME: remove some duplication between this and dns::auth-server
+	if ! $dns_auth_ipaddress {
+		fail("Parametmer $dns_auth_ipaddress not defined!")
+	}
+
+	if ! $dns_auth_soa_name {
+		fail("Parameter $dns_auth_soa_name not defined!")
+	}
+
+	system_role { "dns::auth-server": description => "Authoritative DNS server" }
+
+	file {
+		"/etc/powerdns/pdns.conf":
+			require => Package[wikimedia-task-dns-auth],
+			owner => root,
+			group => root,
+			mode => 0644,
+			content => template("powerdns/pdns-ldap.conf.erb"),
+			ensure => present;
+	}
+
+	service { pdns:
+		require => [ Package[wikimedia-task-dns-auth], File["/etc/powerdns/pdns.conf"], Interface_ip["dns::auth-server"] ],
+		subscribe => File["/etc/powerdns/pdns.conf"],
+		hasrestart => false,
+		ensure => running;
+	}
+
+	# Monitoring
+	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns" }
+
+}
+
 class dns::auth-server {
 	if ! $dns_auth_ipaddress {
 		fail("Parametmer $dns_auth_ipaddress not defined!")
@@ -20,60 +56,43 @@ class dns::auth-server {
 		fail("Parameter $dns_auth_master not defined!")
 	}
 
-	if ! $dns_ldap_backend {
-		$dns_ldap_backend = "false"
-	}
-
 	package { wikimedia-task-dns-auth:
 		ensure => latest;
 	}
 
 	system_role { "dns::auth-server": description => "Authoritative DNS server" }
 
-	# FIXME: remove the conditional and break this into smaller includable chunks
-	if $dns_ldap_backend {
-		file {
-			"/etc/powerdns/pdns.conf":
-				require => Package[wikimedia-task-dns-auth],
-				owner => root,
-				group => root,
-				mode => 0644,
-				content => template("powerdns/pdns-ldap.conf.erb"),
-				ensure => present;
-		}
-	} else {
-		file {
-			"/etc/powerdns/pdns.conf":
-				require => Package[wikimedia-task-dns-auth],
-				owner => root,
-				group => root,
-				mode => 0644,
-				content => template("powerdns/pdns.conf.erb"),
-				ensure => present;
-			"/usr/local/lib/selective-answer.py":
-				owner => root,
-				group => root,
-				mode => 0755,
-				source => "puppet:///files/powerdns/selective-answer.py",
-				ensure => present;
-			"/etc/powerdns/participants":
-				require => Package[wikimedia-task-dns-auth],
-				ensure => present;
-			"/root/.ssh/wikimedia-task-dns-auth":
-				owner => root,
-				group => root,
-				mode => 0600,
-				source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
-				ensure => present;
-			"/etc/powerdns/ip-map":
-				owner => pdns,
-				group => pdns,
-				mode => 0755,
-				recurse => true;
-			# Remove broken cron job
-			"/etc/cron.d/wikimedia-task-dns-auth":
-				ensure => absent;
-		}
+	file {
+		"/etc/powerdns/pdns.conf":
+			require => Package[wikimedia-task-dns-auth],
+			owner => root,
+			group => root,
+			mode => 0644,
+			content => template("powerdns/pdns.conf.erb"),
+			ensure => present;
+		"/usr/local/lib/selective-answer.py":
+			owner => root,
+			group => root,
+			mode => 0755,
+			source => "puppet:///files/powerdns/selective-answer.py",
+			ensure => present;
+		"/etc/powerdns/participants":
+			require => Package[wikimedia-task-dns-auth],
+			ensure => present;
+		"/root/.ssh/wikimedia-task-dns-auth":
+			owner => root,
+			group => root,
+			mode => 0600,
+			source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
+			ensure => present;
+		"/etc/powerdns/ip-map":
+			owner => pdns,
+			group => pdns,
+			mode => 0755,
+			recurse => true;
+		# Remove broken cron job
+		"/etc/cron.d/wikimedia-task-dns-auth":
+			ensure => absent;
 	}
 
 	exec { authdns-local-update:
