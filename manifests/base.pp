@@ -9,37 +9,6 @@ import "nrpe.pp"
 import "../private/manifests/passwords.pp"
 
 
-# Global definitions
-
-$all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
-
-# Determine the site the server is in
-$site = $ipaddress_eth0 ? {
-	/^208\.80\.15[45]\./			=> "eqiad",
-	/^10\.64\./				=> "eqiad",
-	/^91\.198\.174\./			=> "esams",
-	default					=> "pmtpa"
-}
-
-$network_zone = $ipaddress_eth0 ? {
-	/^10./			=> "internal",
-	default			=> "public"
-}
-
-# Set some basic variables
-$nameservers = $site ? {
-	"esams"	=> [ "91.198.174.6", "208.80.152.131" ],
-	default	=> [ "208.80.152.131", "208.80.152.132" ]
-}
-$domain_search = $domain
-
-# Default group
-$gid = 500
-
-if !$cluster_env {
-	$cluster_env = "production"
-}
-
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
 	exec { "/usr/bin/apt-get update":
@@ -217,8 +186,14 @@ class base::standard-packages {
 			include nrpe
 		}
 
-		if $site == "eqiad" {
+		# Run lldpd on all >= Lucid hosts
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
+		}
+		
+		# DEINSTALL these packages
+		package { [ "mlocate" ]:
+			ensure => absent;
 		}
 	}
 }
@@ -241,7 +216,7 @@ class base::resolving {
 
 class base::motd {
 	# Remove the standard help text
-        if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/update-motd.d/10-help-text": ensure => absent; }
 	}
 }

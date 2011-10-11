@@ -1,3 +1,4 @@
+NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerAdmin software@wikimedia.org 
 	ServerName blog.wikimedia.org
@@ -102,6 +103,10 @@
 <VirtualHost *:443>
     ServerAdmin software@wikimedia.org
     ServerName techblog.wikimedia.org
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+    SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
     ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
                 RewriteEngine On
                 RewriteRule ^/feed/(.*) https://blog.wikimedia.org/c/technology/feed/$1 [R=301]

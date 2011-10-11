@@ -1,6 +1,50 @@
-$iptables_ports = { all => "", ssh => "22", http => "80", https => "443", memcached => "11000", ldap => "389", ldap_backend => "1389", ldaps => "636", ldaps_backend => "1636", ldap_admin_connector => "4444", mysql => "3306", puppetmaster => "8140", nova_ec2_api => "8773", nova_openstack_api => "8774", nova_ajax_proxy => "8000", glance_api => "9292", glance_registry => "9191", epmd => "4369", beam1 => "33416", beam2 => "5672" }
+$iptables_ports = {
+	all => "",
+	ssh => "22",
+	http => "80",
+	http-alt => "8080",
+	https => "443",
+	memcached => "11000",
+	ldap => "389",
+	ldap_backend => "1389",
+	ldaps => "636",
+	ldaps_backend => "1636",
+	ldap_admin_connector => "4444",
+	mysql => "3306",
+	puppetmaster => "8140",
+	nova_ec2_api => "8773",
+	nova_openstack_api => "8774",
+	nova_ajax_proxy => "8000",
+	glance_api => "9292",
+	glance_registry => "9191",
+	epmd => "4369",
+	beam1 => "33416",
+	beam2 => "5672"
+}
 
-$iptables_protocols = { all => "all", ssh => "tcp", http => "tcp", https => "tcp", memcached => "tcp", ldap => "tcp", ldap_backend => "tcp", ldaps => "tcp", ldaps_backend => "tcp", ldap_admin_connector => "tcp", mysql => "tcp", puppetmaster => "tcp", nova_ec2_api => "tcp", nova_openstack_api => "tcp", nova_ajax_proxy => "tcp", glance_api => "tcp", glance_registry => "tcp", epmd => "tcp", beam1 => "tcp", beam2 => "tcp" }
+$iptables_protocols = {
+	all => "all",
+	ssh => "tcp",
+	http => "tcp",
+	http-alt => "tcp",
+	https => "tcp",
+	memcached => "tcp",
+	ldap => "tcp",
+	ldap_backend => "tcp",
+	ldaps => "tcp",
+	ldaps_backend => "tcp",
+	ldap_admin_connector => "tcp",
+	mysql => "tcp",
+	puppetmaster => "tcp",
+	nova_ec2_api => "tcp",
+	nova_openstack_api => "tcp",
+	nova_ajax_proxy => "tcp",
+	glance_api => "tcp",
+	glance_registry => "tcp",
+	epmd => "tcp",
+	beam1 => "tcp",
+	beam2 => "tcp"
+}
 
 class iptables::tables {
 

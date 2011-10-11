@@ -1,6 +1,7 @@
 # site.pp
 
-import "base.pp"	# This one first
+import "realm.pp"	# These ones first
+import "base.pp"
 
 import "admins.pp"
 import "ganglia.pp"
@@ -40,6 +41,7 @@ import "openstack.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
 import "gerrit.pp"
+
 # Include stages last
 import "stages.pp"
 
@@ -292,7 +294,11 @@ class text-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
+		$lvs_realserver_ips = $site ? {
+		 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
+			'eqiad' => [ "" ],
+			'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+		}
 	}
 
 	system_role { text-squid: description => "text Squid server" }
@@ -304,6 +310,7 @@ class text-squid {
 
 	include	base,
 		squid,
+		lvs::realserver,
 		ntp::client,
 		ganglia,
 		exim::simple-mail-sender
@@ -321,7 +328,11 @@ class upload-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = [ "208.80.152.3", "208.80.152.211", "10.2.1.24" ]
+		$lvs_realserver_ips = $site ? { 
+			'pmtpa' => [ "208.80.152.211", "10.2.1.24" ],
+			'eqiad' => [ "" ],
+			'esams' => [ "91.198.174.234", "10.2.3.24" ],
+		}
 	}
 
 	system_role { upload-squid: description => "upload Squid server" }
@@ -351,12 +362,12 @@ class cache {
 		$nagios_group = "cache_bits_${site}"
 
 		$lvs_realserver_ips = $site ? {
-			"pmtpa" => [ "208.80.152.118", "208.80.152.210", "10.2.1.23" ],
+			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
 		if $site == "pmtpa" {
-			$varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet" ]
+			$varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 			$varnish_directors = { "appservers" => $varnish_backends }
 		}
 
@@ -436,6 +447,8 @@ node "aluminium.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::khorn,
 		accounts::kaldari,
+		accounts::jamesofur,
+		accounts::pgehres,
 		misc::jenkins,
 		misc::fundraising,
 		backup::client
@@ -445,7 +458,7 @@ node "aluminium.wikimedia.org" {
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	$cluster = "misc_esams"
 
-	$lvs_balancer_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
+	$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 
 	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
@@ -461,7 +474,6 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
@@ -473,7 +485,6 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
-	$lvs_realserver_ips = [ "91.198.174.3", "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5' ]
 
 	include upload-squid
@@ -512,24 +523,15 @@ node "brewster.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-	#	misc::install-server,
+		misc::install-server,
 		exim::simple-mail-sender,
-		backup::client,
-		misc::install-server::ubuntu-mirror,
-		misc::install-server::apt-repository,
-		misc::install-server::preseed-server,
-		misc::install-server::tftp-server,
-		misc::install-server::caching-proxy,
-		misc::install-server::web-server,
-		misc::install-server::dhcp-server
-
+		backup::client
 }
 
 node "carbon.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-#		misc::install-server,
 		exim::simple-mail-sender,
 		backup::client,
 		misc::install-server::tftp-server
@@ -572,12 +574,15 @@ node "erzurumi.pmtpa.wmnet" {
 }
 
 node /es100[1-4]\.eqiad\.wmnet/ {
-	#if $hostname == "es1001" { ## making a nonexistent host the master to quiet nagios until the host is actually up
-	if $hostname == "es1000" {
+	if $hostname == "es1001" {
 		include db::es::master
 	}
 	else {
 		include db::es::slave
+	}
+	if $hostname == "es1004" {
+		# replica of ms3 - currently used for backups
+		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
 	}
 }
 
@@ -850,9 +855,8 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^db(1047|1048)$/ {
+	if $hostname =~ /^db(1047)$/ {
 		$writable = "true"
-		system_role { "waste::limesurvey": description => "bastard child waste of hardware for limesurvey" }
 	} 
 
 	include db::core,
@@ -989,6 +993,8 @@ node "grosley.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::kaldari,
 		accounts::jpostlethwaite,
+		accounts::jamesofur,
+		accounts::pgehres,
 		misc::jenkins,
 		backup::client,
 		misc::fundraising
@@ -1004,19 +1010,10 @@ node "grosley.wikimedia.org" {
 }
 
 node "gurvin.wikimedia.org" {
-	system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
-
-	$enable_ipv6_proxy = true
-
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node "hooft.esams.wikimedia.org" {
@@ -1098,7 +1095,6 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
  node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_u"
-	$lvs_realserver_ips = [ "91.198.174.234", "10.2.3.24" ]
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
@@ -1110,10 +1106,9 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
-	$lvs_realserver_ips = [ "91.198.174.2", "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-		include text-squid,
-			lvs::realserver
+	
+	include text-squid
 }
 
 node "linne.wikimedia.org" {
@@ -1164,11 +1159,8 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
 	$dns_recursor_ipaddress = $ipaddress
 
-	if $hostname =~ /^lvs[12]$/ {
-		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211" ]
-	}
-	if $hostname =~ /^lvs[56]$/ {
-		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "10.2.1.23", "10.2.1.24", "10.2.1.25" ]
+	if $hostname =~ /^lvs[1256]$/ {
+		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "208.80.152.212", "208.80.152.213", "10.2.1.23", "10.2.1.24", "10.2.1.25" ]
 	}
 	if $hostname =~ /^lvs[34]$/ {
 		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12", "10.2.1.13", "10.2.1.21", "10.2.1.22" ]
@@ -1181,18 +1173,11 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		lvs::balancer::runcommand
 
 	if $hostname == "lvs1" {
-		interface_ip { "upload": interface => "eth0", address => "208.80.152.3" }
-		interface_ip { "uploadsvc": interface => "eth0", address => "10.2.1.24" }
 		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
 		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
 	} 
 	if $hostname == "lvs2" {
 		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
-		interface_ip { "textsvc": interface => "eth0", address => "10.2.1.25" }
-		interface_ip { "bits": interface => "eth0", address => "208.80.152.118" }
-		interface_ip { "bitssvc": interface => "eth0", address => "10.2.1.23" }
-		interface_ip { "mobile": interface => "eth0", address => "208.80.152.5" }
-
 	}
 
 	$ips = {
@@ -1229,7 +1214,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	$dns_recursor_ipaddress = $ipaddress
 
 	if $hostname =~ /^lvs100[14]$/ {
-		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236" ]
+		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236", "208.80.154.237" ]
 	}
 
 	if $hostname =~ /^lvs100[2356]$/ {
@@ -1337,9 +1322,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 node "maerlant.esams.wikimedia.org" {
 	$gid = 500
 
-	system_role { "ipv6proxy": description => "IPv6 Proxy" }
-	system_role { "sslproxy": description => "SSL Proxy" }
-
 	$enable_ipv6_proxy = "true"
 	$cluster = "ssl_esams"
 	$ganglia_aggregator = "true"
@@ -1375,12 +1357,19 @@ node "mchenry.wikimedia.org" {
 		accounts::jdavis
 }
 
-node /mw([1-9]|(1[0-9])|(2[0-7]))\.pmtpa\.mwnet/ {
+node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
+node /mw6[0-1]\.pmtpa\.wmnet/ {
+	include applicationserver::bits
+}
+
+node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
+	include applicationserver::api
+}
 
 node "lily.knams.wikimedia.org" {
 	$cluster = "misc_esams"
@@ -1758,242 +1747,246 @@ node "spence.wikimedia.org" {
 		nagios::monitor::pager,
 		nagios::bot,
 		nagios::ganglia::monitor::enwiki,
+		nagios::ganglia::ganglios,
 		ntp::client,
 		nfs::home,
 		exim::simple-mail-sender,
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
-		udpprofile::collector
+		udpprofile::collector,
+		certificates::star_wikimedia_org
+
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node "srv151.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv152.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv153.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv154.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv155.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv156.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv157.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv158.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv159.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv160.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv161.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv162.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv163.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv164.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv165.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv166.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv167.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv168.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv169.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv170.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
+		#applicationserver::jobrunner,
 		memcached::disabled
 }
 
 node "srv171.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv172.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv174.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv175.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv176.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv177.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv178.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv179.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv180.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv181.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv182.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv183.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
-		memcached
+		memcached::disabled
 }
 
 node "srv184.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv185.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv186.pmtpa.wmnet" {
 	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv187.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv188.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv189.pmtpa.wmnet" {
 	include applicationserver::api,
-		applicationserver::jobrunner,
-		memcached
+		#applicationserver::jobrunner,
+		memcached::disabled
 }
 
 node "srv190.pmtpa.wmnet" {
@@ -2601,16 +2594,47 @@ node "srv301.pmtpa.wmnet" {
 	include applicationserver::api
 }
 
-node /ssl100[1-4]\.wikimedia\.org/ {
-	system_role { "sslproxy": description => "SSL Proxy" }
+node /ssl[1-4]\.wikimedia\.org/ {
+	$cluster = "ssl"
+	if $hostname =~ /^ssl[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ssl1$/ {
+		$enable_ipv6_proxy = true
+	}
 
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
+node /ssl100[1-4]\.wikimedia\.org/ {
 	$cluster = "ssl"
 	if $hostname =~ /^ssl100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ssl1001$/ {
-		system_role { "ipv6proxy": description => "ISSLPv6 Proxy" }
 		$enable_ipv6_proxy = true
+	}
+
+	include base,
+		ganglia,
+		ntp::client,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+}
+
+node /ssl300[1-4]\.esams\.wikimedia\.org/ {
+	$cluster = "ssl_esams"
+	if $hostname =~ /^ssl300[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ssl3001$/ {
+		$enable_ipv6_proxy = true
+
+		include protoproxy::ipv6_labs
 	}
 
 	include base,
@@ -2633,11 +2657,9 @@ node /sq(3[1-6])\.wikimedia\.org/ {
 
 # sq37-40 are text squids
 node /sq(3[7-9]|40)\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid,
-		lvs::realserver
+	include text-squid
 }
 
 # sq41-50 are old 4 disk upload squids
@@ -2658,7 +2680,6 @@ node /sq5[0-8]\.wikimedia\.org/ {
 
 # sq59-66 are text squids
 node /sq(59|6[0-6])\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^sq(59|60)$/ {
 		$ganglia_aggregator = "true"
@@ -2685,7 +2706,6 @@ node /cp104[3-4].wikimedia.org/ {
 
 # sq71-78 are text squids
 node /sq7[1-8]\.wikimedia\.org/ {
-	$lvs_realserver_ips = [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ]
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 
 	include text-squid,
@@ -2872,16 +2892,10 @@ node  "yongle.wikimedia.org" {
 }
 
 node "yvon.wikimedia.org" {
-	system_role { "sslproxy": description => "SSL Proxy" }
-
-	$cluster = "ssl"
-	$ganglia_aggregator = "true"
-
 	include base,
 		ganglia,
 		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+		certificates::wmf_ca
 }
 
 node default {

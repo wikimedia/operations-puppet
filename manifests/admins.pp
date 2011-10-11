@@ -261,22 +261,67 @@ class accounts {
 	class cmjohnson inherits baseaccount {
 		$username = "cmjohnson"
 		$realname = "Chris Johnson"
-		$uid = 575
+		$uid = 579
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
 
-                        ssh_authorized_key {
-				"chris@ubuntu":
+			ssh_authorized_key {
+				"chrisj@ubuntu":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDHk32j3fXjfWX0cInuWvpTekDXdi4Z1Ijy7ZQpfWWR6+5lkiAjLZhDdf4my/NINgeebqNjkDbwDeXn4PaOtNFmP4WXYZE4xWyB93touVSkKJ/MrpaxTZiXmPGgXmx169vOu2tqdz1PRN4rsjSnFVAjjhVglF/I8xpCCxvHQin8rjJS+WcpdhjNHq9BKteSoqEleRiHiGu148phu9Wjw5j1UU8WtVTqru1GBY7CX95QUWKE+KuLkX43BHREGtD5c+BjU05/KTY9tD2qoM1RCApjYK0IdOwGHKfFLMFfRH2cMFxorUJP8vkHmfu8e3aS/nQHG9pRVpBlJSpmS/9ZoA61";
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
 			}
 		}
 	}
+
+	class jamesofur inherits baseaccount {
+		$username = "jamesofur"
+		$realname = "James Alexander"
+		$uid = 580
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname] }
+
+                        ssh_authorized_key {
+                                "jalexander@wikimedia.org":
+                                        ensure  => present,
+                                        user    => $username,
+                                        type    => "ssh-rsa",
+                                        key     => "AAAAB3NzaC1yc2EAAAABJQAAAIBt7ePL3ps6MVHEAMGdNHVd/lO2L3Yc0szq/M5gSino+bNmn7yOmNMk7QxVHHwsPOBPbEuBhKEUj5LC/K5oxMT4jOW5lH/PTGntsHNK+42nLsrbkTV20MVZerf5JUw7y/IL12RYzrzk6/uvA5LqBLGucha2yi2llcrWCzbvlnxTUw==";
+                        }
+                }
+
+	}
+
+	class pgehres inherits baseaccount {
+		$username = "pgehres"
+		$realname = "Peter Gehres"
+		$uid = 581
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname] }
+
+                        ssh_authorized_key {
+                                "pgehres@wikimedia.org":
+                                        ensure  => present,
+                                        user    => $username,
+                                        type    => "ssh-rsa",
+                                        key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC8+5CuJlnFqzlYcs8QRu42ur5Y+9yM5g+uQIDYX+3SRA1UzOOOmj/Tqv0pzGhmvK15/y+Vz5LwE927fcI9VwAxBpCgfcV97r68aDF3YD4Zqo8ksV51GhRwk2QPNlwvCtf7+BMCLFt+ymLpAIsq3L1YReovJgfkDHvOQrujXH7LGd6tEXaUksqyn9L7TTbFEyHUZxTkrV33OOlaSxIJM1EZu1fsVSL0LppmXaLH1bi4/gPSbw3A4l8EAttWAqkvK0zrty022wn/1JRa868/OD3WWCoDNp4SSH0DisURdPlT4Jc+q+P6+P/RqeWJAx5IqEQhVg2GxW6BMIKQP5VigS5j";
+                        }
+                }
+
+	}
+
+
+
 
 	class dab inherits baseaccount {
 		$username = "dab"
@@ -366,11 +411,11 @@ class accounts {
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-			ssh_authorized_key { "sumanah@compassion":
+			ssh_authorized_key { "sumanah@sumana-ThinkPad-X220":
 				ensure	=> present,
 				user	=> $username,
 				type	=> "ssh-rsa",
-				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDJ8wX2EjwOWmK312keUphSIdkEoLp7ZzqL3uoMW/IzTH0QbUgddCxmtcFxGoF3+s80CkaWUrO28CfcpX/B30XADk7K0hGhGzSOWGqUdjohQfUzvtpuRPKxLy4LJWBWrIRfcjRBrVSZepXv3H6mLHE+IECRewefdwCi412cZye31wx1PVyBCv1Vbu3EaDo5OoMAhgcHkrvM+LHWCggztR5zFKbqbl3CG8FpJdULB/zRznOKCN5ApgdzSRtL4S4Epb4xKrtUI2OBdlPP4XoSFpscpTCwhBiBGEmIH6txrH5wt/ZYxdhBg+DofqLfxlpMmiIhLhDLLixYiACbbYXUCi6N"
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDLxspOGfRjS0t6C7j2WVLFjxy5u0rdqt3gm8/RSZCkGGqpzdHNfRGIqWAd+BfKTAPwA1dk78p034bfAm6Rmyy8vsCX3+Rep9ZgwXuAguBZsMV91qumT4wG2gNMH1yuMFxL/TZzx7gZeb/Qb5VFpZ7qvmtWnwBqQBWoKg5qDGffwHJRS0CRxbrbB59mbJXKyEqij2FzFcTpLNIg+waBhAPIrjpzSBv5WHeGkLwx/1DS6McjuFifyNMl3FXLv2JBUYct0ja+N57aASXSHKBsQxdvMYM7FMgmB3+h/okX3NMrHcDLJs5kINepy4Mve7EcNZwUZb9m4f0zywFA16wzgukV"
 			}
 		}
 	}
@@ -581,6 +626,25 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAyszt9jTA88Dz4SjVVevwgCKHY1GfS5hla0XatqtAWNI+9O5eXasbybB7UfHo5Y6FB8Xu7Snu1NAj/xVGKLlQ69cNT6YMaj3TC1TLfhK2pmHxWHXDUqffU5ZOE/C4VSdING8FateJ5E7oOw9152UKNRoI12Fsu9yzzUZnKm0+43kFg/XfGioGqagm4jAUNhwylqRulRxFWCpZLjEjJOiRI+6pgVK8+wsq5kpuwVe36k0wmHEPWhbGabNY1Uw6dkVWIz3pI1PtaAmmb4FZ6KLYFh6kO4u3M+uhPfj94mtJb3Yr5jPkOb/9DKhCaZqYLVm3cs7pyQZtN3oRkitjzJC34Q==";
+			}
+		}
+	}
+	
+	class lcarr inherits baseaccount {
+		$username = "lcarr"
+		$realname = "Leslie Carr"
+		$uid = 582
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "lcarr@Administrators-MacBook-Air.local":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key		=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC84js+fBru2S9Ty5loT2mWEoS2WcXDykJIUOKhT976JsANeP9sL0ox2/V+sAY4OPsAv1INxTbuPp5pl3B4yk8aSBZjZO5OwSZSfkICmVuqzKrzyZnvCwEr2dwZRW7Bf0sIlzMrg7gJKbKPn85zsZHSrRChouJxmeV6w5gIaA8asdsATNIgIU1BmRhbPQkMx5UkbqcbxK8mPpFPGZvEOBt7ZUxls/lT9CmUqInkrQ93usZYzo8RQk2KqTiv3gx/K4vkNSqaESQRvcg+JKrdN9QnB9IUzdeW0M16xTittN4ETWT2cAVZ1HNWmIvrxua5GDsrjI4psFEd8saWD8IJrfR3"
 			}
 		}
 	}
@@ -1075,11 +1139,16 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key {
-				"logmover":
+				"root@grosley":
 					ensure  => present,
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsaJuUA5iu3+GoTQ37wq95fXlYTcduZ6nK2tRiWf9N01bhNU7y+uGREoxYMfFZQVxuQ1uXxM7u2GQwEu3Cy0IcCcMB4KZQokFhQ4/PWVFVj9JohIFU8EGBcEKeOX6DV8hnv4n82AINz/bymNf4O9kRAj7i2FLA1g1+zjzOpj5wiUWLFHhJBnW05rD8jAeqSRRYUE11Dmbis4eEb0FmTsv7rvzxZxd+Ky8bATdywlFacIBKzZhjWhsqhDvodNcLIYVUm+VS0nu5bjZyVIYJzjt+ScrME6Gnugz9N9IE1ILnsklrkGPdrnZKMuGDChhGelEKjRYbVA0t+vQ4DO56voMzQ==";
+				"root@loudon":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
 			}
 		}
 	}
@@ -1429,6 +1498,7 @@ class accounts {
 		}
 	}
 
+	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
 		$realname = "l10nupdate"
@@ -1464,6 +1534,7 @@ class admins::roots {
 	include accounts::fvassard
 	include accounts::jeluf
 	include accounts::kate
+	include accounts::lcarr
 	include accounts::mark
 	include accounts::midom
 	include accounts::py
@@ -1510,6 +1581,8 @@ class admins::restricted {
 	include accounts::daniel
 	include accounts::erik
 	include accounts::ezachte
+	include accounts::jamesofur
+	include accounts::pgehres
 	include accounts::rcole
 	include accounts::rainman
 	include accounts::tparscal
