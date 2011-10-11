@@ -2858,6 +2858,7 @@ node "virt1.wikimedia.org" {
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
 	$ldap_first_master = "true"
+	$dns_ldap_backend = "true"
 
 	install_certificate{ "star.wikimedia.org": }
 
