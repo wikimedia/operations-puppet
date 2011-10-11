@@ -41,21 +41,6 @@ log-dns-details=no
 # Backends to load
 launch=ldap
 
-# Geobackend configuration
-#geo-zone=wikimedia.org
-#geo-soa-values=ns0.wikimedia.org,hostmaster@wikimedia.org
-#geo-ns-records=ns0.wikimedia.org,ns1.wikimedia.org,ns2.wikimedia.org
-#geo-ip-map-zonefile=/etc/powerdns/ip-map/zz.countries.nerd.dk.rbldnsd
-#geo-maps=/etc/powerdns/geomaps/
-#geo-ttl=600
-#geo-ns-ttl=600
-
-# Pipe backend configuration
-#pipe-command=/usr/local/lib/selective-answer.py
-#pipe-timeout=10000
-#pipe-regex=^upload\.esams\.wikimedia\.org;(A|AAAA|TXT|ANY)$
-#pipebackend-abi-version=2
-
 ldap-host=<%= nova_ldap_host %>
 ldap-method=strict
 ldap-basedn=ou=hosts,<%= nova_ldap_base_dn %>

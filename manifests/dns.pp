@@ -20,44 +20,61 @@ class dns::auth-server {
 		fail("Parameter $dns_auth_master not defined!")
 	}
 
+	if ! $dns_ldap_backend {
+		$dns_ldap_backend = "false"
+	}
+
 	package { wikimedia-task-dns-auth:
 		ensure => latest;
 	}
 
 	system_role { "dns::auth-server": description => "Authoritative DNS server" }
 
-	file {
-		"/etc/powerdns/pdns.conf":
-			require => Package[wikimedia-task-dns-auth],
-			owner => root,
-			group => root,
-			mode => 0644,
-			content => template("powerdns/pdns.conf.erb"),
-			ensure => present;
-		"/usr/local/lib/selective-answer.py":
-			owner => root,
-			group => root,
-			mode => 0755,
-			source => "puppet:///files/powerdns/selective-answer.py",
-			ensure => present;
-		"/etc/powerdns/participants":
-			require => Package[wikimedia-task-dns-auth],
-			ensure => present;
-		"/root/.ssh/wikimedia-task-dns-auth":
-			owner => root,
-			group => root,
-			mode => 0600,
-			source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
-			ensure => present;
-		"/etc/powerdns/ip-map":
-			owner => pdns,
-			group => pdns,
-			mode => 0755,
-			recurse => true;
-		# Remove broken cron job
-		"/etc/cron.d/wikimedia-task-dns-auth":
-			ensure => absent;
-	}	
+	// FIXME: remove the conditional and break this into smaller includable chunks
+	if $dns_ldap_backend {
+		file {
+			"/etc/powerdns/pdns.conf":
+				require => Package[wikimedia-task-dns-auth],
+				owner => root,
+				group => root,
+				mode => 0644,
+				content => template("powerdns/pdns-ldap.conf.erb"),
+				ensure => present;
+		}
+	} else {
+		file {
+			"/etc/powerdns/pdns.conf":
+				require => Package[wikimedia-task-dns-auth],
+				owner => root,
+				group => root,
+				mode => 0644,
+				content => template("powerdns/pdns.conf.erb"),
+				ensure => present;
+			"/usr/local/lib/selective-answer.py":
+				owner => root,
+				group => root,
+				mode => 0755,
+				source => "puppet:///files/powerdns/selective-answer.py",
+				ensure => present;
+			"/etc/powerdns/participants":
+				require => Package[wikimedia-task-dns-auth],
+				ensure => present;
+			"/root/.ssh/wikimedia-task-dns-auth":
+				owner => root,
+				group => root,
+				mode => 0600,
+				source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
+				ensure => present;
+			"/etc/powerdns/ip-map":
+				owner => pdns,
+				group => pdns,
+				mode => 0755,
+				recurse => true;
+			# Remove broken cron job
+			"/etc/cron.d/wikimedia-task-dns-auth":
+				ensure => absent;
+		}
+	}
 
 	exec { authdns-local-update:
 		command => "/usr/sbin/authdns-local-update authdns@${dns_auth_master}",
