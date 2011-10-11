@@ -943,12 +943,14 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
+	sudo_user { demon: user => "demon", privileges => ['(jenkins) = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		ntp::client,
 		misc::contint::test,
 		admins::roots,
-		accounts::demon
+		accounts::demon,
+		accounts::hashar
 }
 
 node "gilman.wikimedia.org" {
