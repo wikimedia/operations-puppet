@@ -9,7 +9,7 @@ import "generic-definitions.pp"
 
 class dns::auth-server-ldap {
 
-	package { pdns:
+	package { "pdns-server":
 		ensure => latest;
 	}
 
@@ -33,7 +33,7 @@ class dns::auth-server-ldap {
 
 	file {
 		"/etc/powerdns/pdns.conf":
-			require => Package[pdns],
+			require => Package["pdns-server"],
 			owner => root,
 			group => root,
 			mode => 0644,
@@ -42,7 +42,7 @@ class dns::auth-server-ldap {
 	}
 
 	service { pdns:
-		require => [Package[pdns], File["/etc/powerdns/pdns.conf"]],
+		require => [Package["pdns-server"], File["/etc/powerdns/pdns.conf"]],
 		subscribe => File["/etc/powerdns/pdns.conf"],
 		hasrestart => false,
 		ensure => running;
