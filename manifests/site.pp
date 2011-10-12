@@ -367,7 +367,7 @@ class cache {
 		}
 
 		if $site == "pmtpa" {
-			$varnish_backends = [ "srv192.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+			$varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 			$varnish_directors = { "appservers" => $varnish_backends }
 		}
 
