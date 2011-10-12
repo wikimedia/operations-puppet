@@ -9,7 +9,7 @@ import "generic-definitions.pp"
 
 class dns::auth-server-ldap {
 
-	package { "pdns-server":
+	package { [ "pdns-server", "pdns-backend-ldap" ]:
 		ensure => latest;
 	}
 
