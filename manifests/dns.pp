@@ -9,6 +9,10 @@ import "generic-definitions.pp"
 
 class dns::auth-server-ldap {
 
+	package { pdns:
+		ensure => latest;
+	}
+
 	include openstack::nova_config
 	
 	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
@@ -29,6 +33,7 @@ class dns::auth-server-ldap {
 
 	file {
 		"/etc/powerdns/pdns.conf":
+			require => Package[pdns],
 			owner => root,
 			group => root,
 			mode => 0644,
@@ -37,7 +42,7 @@ class dns::auth-server-ldap {
 	}
 
 	service { pdns:
-		require => File["/etc/powerdns/pdns.conf"],
+		require => [Package[pdns], File["/etc/powerdns/pdns.conf"]],
 		subscribe => File["/etc/powerdns/pdns.conf"],
 		hasrestart => false,
 		ensure => running;
