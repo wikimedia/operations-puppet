@@ -948,7 +948,8 @@ node "gallium.wikimedia.org" {
 		ntp::client,
 		misc::contint::test,
 		admins::roots,
-		accounts::demon
+		accounts::demon,
+		accounts::hashar
 }
 
 node "gilman.wikimedia.org" {
