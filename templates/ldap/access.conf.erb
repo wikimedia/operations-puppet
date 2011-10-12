@@ -1,2 +1,4 @@
-# Disallow access to all forms of login to users in the project
--:ALL EXCEPT (<%= $instanceproject %>) root:ALL
+# Disallow access to all forms of login to all
+# users except for members of the nova project
+# that this instance is a member of:
+-:ALL EXCEPT (<%= instanceproject %>) root:ALL
