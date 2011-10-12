@@ -1357,11 +1357,11 @@ class misc::contint::test {
 			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
 		# Let wikidev users maintain the homepage
-		"/var/www":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
+		"/srv/org/mediawiki/integration/index.html":
+			owner => www-data,
+			group => wikidev,
+			mode => 0555,
+			source => "puppet:///files/misc/jenkins/index.html";
 	}
 
 	# run jenkins behind Apache and have pretty URLs / proxy port 80
@@ -1369,6 +1369,7 @@ class misc::contint::test {
 
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
+	apache_site { integration: name => "integration.mediawiki.org" }
 
 	file {
 		"/etc/default/jenkins":
