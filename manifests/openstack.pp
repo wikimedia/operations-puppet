@@ -485,7 +485,7 @@ class openstack::nova_config {
 	$nova_flat_network_bridge = "br103"
 	$nova_fixed_range = "10.4.0.0/24"
 	$nova_dhcp_start = "10.4.0.4"
-	$nova_dhcp_domain = "pmtpa.labs.wmnet"
+	$nova_dhcp_domain = "pmtpa.wmlabs"
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "208.80.153.192"

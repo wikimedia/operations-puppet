@@ -920,7 +920,7 @@ node "formey.wikimedia.org" {
 	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
 	sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
 	sudo_user { pdhanda: user => "pdhanda", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-	sudo_user { sumanah: user => "sumanah", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
+	sudo_user { sumanah: user => "sumanah", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user','ALL = NOPASSWD: /usr/local/bin/svn-group'] }
 	$cluster = "misc"
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
@@ -2858,11 +2858,14 @@ node "virt1.wikimedia.org" {
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
 	$ldap_first_master = "true"
+	$dns_auth_ipaddress = "208.80.153.131"
+	$dns_auth_soa_name = "virt1.wikimedia.org"
 
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
 		exim::simple-mail-sender,
+		dns::auth-server-ldap,
 		openstack::controller
 }
 

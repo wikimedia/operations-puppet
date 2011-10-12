@@ -7,6 +7,53 @@
 
 import "generic-definitions.pp"
 
+class dns::auth-server-ldap {
+
+	package { [ "pdns-server", "pdns-backend-ldap" ]:
+		ensure => latest;
+	}
+
+	include openstack::nova_config
+	
+	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
+	$nova_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+	$nova_ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+	$nova_ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+
+	# FIXME: remove some duplication between this and dns::auth-server
+	if ! $dns_auth_ipaddress {
+		fail("Parametmer $dns_auth_ipaddress not defined!")
+	}
+
+	if ! $dns_auth_soa_name {
+		fail("Parameter $dns_auth_soa_name not defined!")
+	}
+
+	system_role { "dns::auth-server": description => "Authoritative DNS server" }
+
+	file {
+		"/etc/powerdns/pdns.conf":
+			require => Package["pdns-server"],
+			owner => root,
+			group => root,
+			mode => 0644,
+			content => template("powerdns/pdns-ldap.conf.erb"),
+			ensure => present;
+	}
+
+	service { pdns:
+		require => [Package["pdns-server"], File["/etc/powerdns/pdns.conf"]],
+		subscribe => File["/etc/powerdns/pdns.conf"],
+		hasrestart => false,
+		ensure => running;
+	}
+
+	# Monitoring
+	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns" }
+
+}
+
 class dns::auth-server {
 	if ! $dns_auth_ipaddress {
 		fail("Parametmer $dns_auth_ipaddress not defined!")
@@ -57,7 +104,7 @@ class dns::auth-server {
 		# Remove broken cron job
 		"/etc/cron.d/wikimedia-task-dns-auth":
 			ensure => absent;
-	}	
+	}
 
 	exec { authdns-local-update:
 		command => "/usr/sbin/authdns-local-update authdns@${dns_auth_master}",
