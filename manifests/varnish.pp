@@ -165,7 +165,7 @@ class varnish3 {
 		# Load a new VCL file
 		exec { "load-new-vcl-file":
 			require => File["${vcl}.vcl"],
-			subscribe => File["${vcl}.vlc"],
+			subscribe => File["${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
