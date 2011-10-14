@@ -33,7 +33,7 @@ class svn::server {
 			owner => mwdocs,
 			group => svn,
 			mode => 0644,
-			ensure => present,
+			ensure => present;
 		"/etc/apache2/sites-available/svn":
 			owner => root,
 			group => root,
@@ -55,7 +55,7 @@ class svn::server {
 			owner => mwdocs,
 			group => svn,
 			mode => 0755,
-			ensure => directory,
+			ensure => directory;
 		"/home/mwdocs/phase3":
 			ensure => link,
 			target => "/var/mwdocs/phase3";
@@ -147,7 +147,7 @@ class svn::groups {
 			gid => 550,
 			alias => 550,
 			ensure => present,
-			allowdupe => false,
+			allowdupe => false;
 		}
 	}
 
@@ -157,30 +157,6 @@ class svn::client {
 
 	package { subversion:
 		ensure => latest;
-	}
-
-}
-
-# RT 1274 dzahn
-class svn::server::notify {
-
-	# post-commit hook sending out mails with diffs for the public repo
-	package { libsvn-notify-perl:
-		ensure => latest;
-	}
-
-	file {
-		"/svnroot/configuration/hooks/post-commit":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/svn/post-commit-hooks";
-		# another post-commit hook sending out mails WITHOUT diffs for the private repo
-		"/svnroot/private/hooks/post-commit":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/svn/post-commit-hooks_PRIV";
 	}
 
 }
