@@ -65,10 +65,10 @@ class varnish {
 
 	class monitoring {
 		# Nagios
-	        monitor_service { "varnish http":
-        	        description => "Varnish HTTP",
-	                check_command => 'check_http_bits'
-	        }
+		monitor_service { "varnish http":
+			description => "Varnish HTTP",
+			check_command => 'check_http_bits'
+		}
 
 		# Ganglia
 		file {
@@ -126,8 +126,8 @@ class varnish3 {
 			content => template("varnish/mobile-backend.vcl.erb");
 	}
 
-        # Tune kernel settings
-        include generic::sysctl::high-http-performance
+	# Tune kernel settings
+	include generic::sysctl::high-http-performance
 
 	# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
 	# shm memory to disk
@@ -158,10 +158,10 @@ class varnish3 {
 
 	class monitoring {
 		# Nagios
-	        monitor_service { "varnish http":
-        	        description => "Varnish HTTP",
-	                check_command => 'check_http_bits'
-	        }
+		monitor_service { "varnish http":
+			description => "Varnish HTTP",
+			check_command => 'check_http_bits'
+		}
 
 		# Ganglia
 		file {
