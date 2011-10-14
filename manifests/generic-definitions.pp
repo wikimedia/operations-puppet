@@ -63,6 +63,12 @@ define apache_module($name) {
 	}
 }
 
+class generic::apache::no-default-site {
+	file { "/etc/apache2/sites-enabled/000-default":
+		ensure => absent;
+	}
+}
+
 # Enables a certain Lighttpd config
 define lighttpd_config($name) {
 	file { "/etc/lighttpd/conf-enabled/${name}":

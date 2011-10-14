@@ -1,9 +1,6 @@
 class svn::server {
 	system_role { "svn::server": description => "public SVN server" }
 
-	# TODO: split up class into multiple sub classes for e.g. pure SVN server,
-	# viewvc, backups, etc.
-
 	require "svn::users::mwdocs"
 	require "svn::groups::svn"
 	
@@ -20,11 +17,6 @@ class svn::server {
 			group => root,
 			mode  => 0555,
 			source => "puppet:///files/svn/sillyshell";
-		"/usr/local/bin/ciabot_svn.py":
-			owner => root,
-			group => root,
-			mode  => 0555,
-			source => "puppet:///files/svn/ciabot_svn.py";
 		"/var/log/mwdocs.log":
 			owner => mwdocs,
 			group => svn,
@@ -36,8 +28,6 @@ class svn::server {
 			mode => 0444,
 			source => "puppet:///files/svn/svn.http-include",
 			notify => Service[apache2];
-		"/etc/apache2/sites-enabled/000-default":
-			ensure => absent;
 		"/var/mwdocs":
 			owner => mwdocs,
 			group => svn,
@@ -60,6 +50,8 @@ class svn::server {
 	}
 	
 	apache_site { "svn": name => "svn", prefix => "000-" }
+	
+	include generic::apache::no-default-site
 
 	cron {
 		doc_generation:
@@ -137,8 +129,16 @@ class svn::server {
 				minute => 0;
 		}
 	}
+	
+	class cia {
+		file { "/usr/local/bin/ciabot_svn.py":
+			owner => root,
+			group => root,
+			mode  => 0555,
+			source => "puppet:///files/svn/ciabot_svn.py";		
+	}
 
-	include viewvc, dumps
+	include viewvc, dumps, cia
 }
 
 class svn::users {
