@@ -92,7 +92,7 @@ class svn::server {
 	class viewvc {
 		require "svn::server"
 		
-		packages { [ 'viewvc', 'graphviz', 'doxygen' ]:
+		package { [ 'viewvc', 'graphviz', 'doxygen' ]:
 			ensure => latest;
 		}
 		
