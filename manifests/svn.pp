@@ -160,27 +160,3 @@ class svn::client {
 	}
 
 }
-
-# RT 1274 dzahn
-class svn::server::notify {
-
-	# post-commit hook sending out mails with diffs for the public repo
-	package { libsvn-notify-perl:
-		ensure => latest;
-	}
-
-	file {
-		"/svnroot/configuration/hooks/post-commit":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/svn/post-commit-hooks";
-		# another post-commit hook sending out mails WITHOUT diffs for the private repo
-		"/svnroot/private/hooks/post-commit":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/svn/post-commit-hooks_PRIV";
-	}
-
-}
