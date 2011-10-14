@@ -35,7 +35,6 @@ import "iptables.pp"
 import "owa.pp"
 import "media-storage.pp"
 import "certs.pp"
-import "udpprofile.pp"
 import "drac.pp"
 import "openstack.pp"
 import "protoproxy.pp"
@@ -1855,7 +1854,7 @@ node "spence.wikimedia.org" {
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
-		udpprofile::collector,
+		misc::udpprofile::collector,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }

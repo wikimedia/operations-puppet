@@ -1442,3 +1442,18 @@ class misc::contint::test {
 	
 	require "misc::contint::test::iptables"
 }
+
+class misc::udpprofile::collector {
+	system_role { "misc::udpprofile::collector": description => "MediaWiki UDP profile collector" }
+
+	package { "udpprofile":
+		ensure => latest;
+	}
+
+	service { udpprofile:
+		require => Package[ 'udpprofile' ],
+		ensure => running;
+	}
+
+	# FIXME: Nagios monitoring
+}
