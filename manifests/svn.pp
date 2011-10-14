@@ -1,21 +1,17 @@
 class svn::server {
 	system_role { "svn::server": description => "public SVN server" }
 
+	# TODO: split up class into multiple sub classes for e.g. pure SVN server,
+	# viewvc, backups, etc.
+
 	require "svn::users::mwdocs"
 	require "svn::groups::svn"
 	
-	# TODO: move this to something more generic
-	include apaches::packages
+	include generic::webserver::php5
 
-	package { [ 'libsvn-notify-perl', 'python-subversion', 'doxygen', 'apache2',
+	package { [ 'libsvn-notify-perl', 'python-subversion', 'doxygen',
 			'libapache2-svn', 'python-pygments', 'viewvc', 'graphviz' ]:
 		ensure => latest;
-	}
- 
-	service { apache2:
-		require => Package[apache2],
-		subscribe => File["/etc/apache2/sites-available/svn"],
-		ensure => running;
 	}
 
 	file {
@@ -38,7 +34,8 @@ class svn::server {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/svn/svn.http-include";
+			source => "puppet:///files/svn/svn.http-include",
+			notify => Service[apache2];
 		"/etc/apache2/sites-enabled/000-default":
 			ensure => absent;
 		"/etc/apache2/svn-authz":
