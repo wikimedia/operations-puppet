@@ -123,27 +123,25 @@ class svn::server {
 }
 
 class svn::users {
-
-	# FIXME: this shouldn't use admins.pp
-	
-	# used in svn.pp
-	class mwdocs inherits baseaccount {
-		$username = "mwdocs"
-		$realname = "mwdocs"
-		$myshell = "/bin/bash"
-		$uid = 108
-		$gid = 550
- 
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+	class mwdocs {
+		user { "mwdocs":
+			name => "mwdocs",
+			uid => 108,
+			gid => 550,
+			comment => "mwdocs",
+			shell => "/bin/bash",
+			ensure => "present",
+			managehome => true,
+			allowdupe => false,
+			require => Group[550],
+		}
 	}
-
 }
 
 class svn::groups {
-
 	class svn {
 		group { "svn":
-			name=> "svn",
+			name => "svn",
 			gid => 550,
 			alias => 550,
 			ensure => present,
