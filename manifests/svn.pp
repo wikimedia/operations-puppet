@@ -1,8 +1,10 @@
 class svn::server {
-	system_role { "svn::server": description => "Wikimedia public SVN server" }
+	system_role { "svn::server": description => "public SVN server" }
 
-	include svn::users::mwdocs
-	include svn::groups::svn
+	require "svn::users::mwdocs"
+	require "svn::groups::svn"
+	
+	# TODO: move this to something more generic
 	include apaches::packages
 
 	package { [ 'libsvn-notify-perl', 'python-subversion', 'doxygen', 'apache2',
@@ -20,45 +22,40 @@ class svn::server {
 		"/usr/local/bin/sillyshell":
 			owner => root,
 			group => root,
-			mode  => 755,
+			mode  => 0555,
 			source => "puppet:///files/svn/sillyshell";
 		"/usr/local/bin/ciabot_svn.py":
 			owner => root,
 			group => root,
-			mode  => 755,
+			mode  => 0555,
 			source => "puppet:///files/svn/ciabot_svn.py";
 		"/var/log/mwdocs.log":
 			owner => mwdocs,
 			group => svn,
-			mode => 644,
-			ensure => present,
-			require => Unixaccount[mwdocs];
+			mode => 0644,
+			ensure => present;
 		"/etc/apache2/sites-available/svn":
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0444,
 			source => "puppet:///files/svn/svn.http-include";
-		"/etc/apache2/sites-enabled/000-svn":
-			ensure => link,
-			target => "/etc/apache2/sites-available/svn";
 		"/etc/apache2/sites-enabled/000-default":
 			ensure => absent;
 		"/etc/apache2/svn-authz":
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0444,
 			source => "puppet:///private/svn/svn-authz";
 		"/etc/viewvc/viewvc.conf":
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0444,
 			source => "puppet:///files/svn/viewvc.conf";
 		"/var/mwdocs":
 			owner => mwdocs,
 			group => svn,
-			mode => 755,
-			ensure => directory,
-			require => Unixaccount[mwdocs];
+			mode => 0755,
+			ensure => directory;
 		"/home/mwdocs/phase3":
 			ensure => link,
 			target => "/var/mwdocs/phase3";
@@ -66,31 +63,32 @@ class svn::server {
 			ensure => directory,
 			owner => www-data,
 			group => www-data,
-			mode => 755,
+			mode => 0755,
 			require => Package[apache2];
 		"/svnroot":
 			ensure => directory,
 			owner => root,
 			group => svn,
-			mode => 775;
+			mode => 0775;
 		"/svnroot/bak":
 			ensure => directory,
 			owner => root,
 			group => svnadm,
-			mode => 775,
+			mode => 0775,
 			require => File["/svnroot"];
 		"/usr/local/bin/svndump.php":
 			owner => root,
 			group => root,
-			mode => 755,
+			mode => 0555,
 			source => "puppet:///files/svn/svndump.php",
 			require => File["/svnroot/bak"];
 	}
+	
+	apache_site { "svn": name => "svn", prefix => "000-" }
 
 	cron {
 		doc_generation:
 			command => "(cd /home/mwdocs/phase3 && svn up && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",
-			require => Unixaccount[mwdocs],
 			user => "mwdocs",
 			hour => 0,
 			minute => 0;
@@ -126,6 +124,8 @@ class svn::server {
 
 class svn::users {
 
+	# FIXME: this shouldn't use admins.pp
+	
 	# used in svn.pp
 	class mwdocs inherits baseaccount {
 		$username = "mwdocs"
@@ -146,8 +146,8 @@ class svn::groups {
 			name=> "svn",
 			gid => 550,
 			alias => 550,
-			ensure=> present,
-			allowdupe => false,
+			ensure => present,
+			allowdupe => false;
 		}
 	}
 
@@ -164,26 +164,22 @@ class svn::client {
 # RT 1274 dzahn
 class svn::server::notify {
 
-# post-commit hook sending out mails with diffs for the public repo
+	# post-commit hook sending out mails with diffs for the public repo
 	package { libsvn-notify-perl:
 		ensure => latest;
 	}
+
 	file {
 		"/svnroot/configuration/hooks/post-commit":
 			owner => root,
 			group => root,
-			mode => 755,
-			ensure => present,
+			mode => 0555,
 			source => "puppet:///files/svn/post-commit-hooks";
-	}
-
-# another post-commit hook sending out mails WITHOUT diffs for the private repo
-	file {
+		# another post-commit hook sending out mails WITHOUT diffs for the private repo
 		"/svnroot/private/hooks/post-commit":
 			owner => root,
 			group => root,
-			mode => 755,
-			ensure => present,
+			mode => 0555,
 			source => "puppet:///files/svn/post-commit-hooks_PRIV";
 	}
 
