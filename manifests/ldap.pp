@@ -581,7 +581,13 @@ class ldap::client::wmf-test-cluster {
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
 	if ( $cluster_env == "labs" ) {
-		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'autofs', 'utils', 'managehome']
+		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
+		file { "/etc/security/access.conf":
+			owner => root,
+			group => root,
+			mode  => 0444,
+			content => template("ldap/access.conf.erb");
+		}
 	} else {
 		$ldapincludes = ['openldap', 'utils']
 	}
