@@ -872,7 +872,6 @@ node "db41.pmtpa.wmnet" {
 		ntp::client,
 		memcached,
 		owa::database,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1240,7 +1239,6 @@ node "locke.wikimedia.org" {
 		ntp::client,
 		groups::wikidev,
 		admins::restricted,
-		sudo::sudoers,
 		accounts::awjrichards,
 		misc::udp2log::aft,
 		nrpe
@@ -1634,7 +1632,6 @@ node "owa1.wikimedia.org" {
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1653,7 +1650,6 @@ node "owa2.wikimedia.org" {
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1673,7 +1669,6 @@ node "owa3.wikimedia.org" {
 		generic::geoip::files,
 		lvs::realserver,
 		owa::database,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
