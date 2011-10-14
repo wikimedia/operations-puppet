@@ -19,17 +19,17 @@ class ssh::client {
 
 define sshhostkey($ip, $key) {
 	$host = regsubst($title, '^([^\.]+)\..*$', '\1')
-	
+
 	sshkey {
 		"$title":
-                	type => ssh-rsa,
-                        key => $key,
-                        ensure => present;
+			type => ssh-rsa,
+			key => $key,
+			ensure => present;
 		"$host":
-                	type => ssh-rsa,
-                        key => $key,
-                        ensure => present;
-                "$ip":
+			type => ssh-rsa,
+			key => $key,
+			ensure => present;
+		"$ip":
 			type => ssh-rsa,
 			key => $key,
 			ensure => present;
@@ -59,19 +59,18 @@ class ssh::hostkeys::collect {
 	if $hostname == "fenari" or generate("/usr/local/bin/position-of-the-moon") == "True" {
 		notice("Collecting SSH host keys on $hostname.")
 
-        	# Install all collected ssh host keys
+		# Install all collected ssh host keys
 		Sshhostkey <<| |>>
 	}
 }
 
 class ssh::config {
-        if $operatingsystem == "Ubuntu" {
-		file {
-                	"/etc/ssh/sshd_config":
-	                        owner => root,
-	                        group => root,
-	                        mode  => 0644,
-	                        content => template("ssh/sshd_config.erb");
+	if $operatingsystem == "Ubuntu" {
+		file { "/etc/ssh/sshd_config":
+			owner => root,
+			group => root,
+			mode  => 0644,
+			content => template("ssh/sshd_config.erb");
 		}
 	}
 }
