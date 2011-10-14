@@ -67,18 +67,6 @@ class svn::server {
 			owner => root,
 			group => svn,
 			mode => 0775;
-		"/svnroot/bak":
-			ensure => directory,
-			owner => root,
-			group => svnadm,
-			mode => 0775,
-			require => File["/svnroot"];
-		"/usr/local/bin/svndump.php":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/svn/svndump.php",
-			require => File["/svnroot/bak"];
 	}
 	
 	apache_site { "svn": name => "svn", prefix => "000-" }
@@ -95,12 +83,6 @@ class svn::server {
 			user => "www-data",
 			hour => 0,
 			minute => 0;
-		svndump:
-			command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
-			require => File["/usr/local/bin/svndump.php"],
-			user => root,
-			hour => 18,
-			minute => 0;
 	}
 
 	exec { "/usr/bin/svn co file:///svnroot/mediawiki/trunk/phase3":
@@ -116,7 +98,36 @@ class svn::server {
 		user => "www-data",
 		require => File["/var/cache/svnusers"];
 	}
+	
+	class dumps {
+		require "svn::server"
+		
+		file {
+			"/svnroot/bak":
+				ensure => directory,
+				owner => root,
+				group => svnadm,
+				mode => 0775,
+				require => File["/svnroot"];
+			"/usr/local/bin/svndump.php":
+				owner => root,
+				group => root,
+				mode => 0555,
+				source => "puppet:///files/svn/svndump.php",
+				require => File["/svnroot/bak"];
+			}
+		
+		cron {
+			svndump:
+				command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
+				require => File["/usr/local/bin/svndump.php"],
+				user => root,
+				hour => 18,
+				minute => 0;
+		}
+	}
 
+	include dumps
 }
 
 class svn::users {
