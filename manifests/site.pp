@@ -375,6 +375,8 @@ class cache {
 
 		system_role { "cache::bits": description => "bits Varnish cache server" }
 
+		require generic::geoip::files
+
 		include base,
 			ganglia,
 			ntp::client,
@@ -401,15 +403,25 @@ class cache {
 
 		system_role { "cache::mobile": description => "mobile Varnish cache server" }
 
-		include base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
-			varnish3,
-			varnish3_frontend,
+		include standard,
 			varnish3::htcpd,
 			varnish3::monitoring,
 			lvs::realserver
+		
+		varnish3::instance { "mobile-backend":
+			name => "",
+			vcl => "mobile-backend",
+			port => 81,
+			admin_port => 6083,
+			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
+		}
+		
+		varnish3::instance { "mobile-frontend":
+			name => "frontend",
+			vcl => "mobile-frontend",
+			port => 80,
+			admin_port => 6082
+		}
 	}
 }
 

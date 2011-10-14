@@ -91,71 +91,88 @@ class varnish {
 ### extra paranoid to avoid accidentally changing anything on bits.  Once fully migrated,
 ### This class should be renamed to varnish and everything above deleted.
 class varnish3 {
-	if ! $varnish_backends {
-		$varnish_backends = [ ]
-	}
-	if ! $varnish_directors {
-		$varnish_directors = { }
-	}
+	class packages {
+		package { varnish3:
+			ensure => "3.0.0-1wmf6";
+		}
 
-	package { varnish3:
-		ensure => "3.0.0-1wmf6";
+		package { libworking-daemon-perl: 
+			ensure => present;
+		}
 	}
+	
+	class common {
+		require varnish3::packages
+		
+		# Tune kernel settings
+		include generic::sysctl::high-http-performance
 
-	package { libworking-daemon-perl: 
-		ensure => present;
-	}
-
-	$vcl = "/etc/varnish/mobile-backend.vcl"
-	$varnish_port = "81"
-	$varnish_admin_port = "6083"
-	$varnish_storage = "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
-
-	file {
-		"/etc/init.d/varnish":
+		# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
+		# shm memory to disk
+		mount { "/var/lib/varnish":
 			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnish.init-nogeo",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/default/varnish":
-			require => Package[varnish3],
-			content => template("varnish/varnish3-default.erb");
-		"/etc/varnish/mobile-backend.vcl":
-			require => Package[varnish3],
-			content => template("varnish/mobile-backend.vcl.erb");
+			device => "tmpfs",
+			fstype => "tmpfs",
+			options => "noatime,defaults,size=320M",
+			pass => 0,
+			dump => 0,
+			ensure => mounted;
+		}		
+	}
+	
+	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M") {
+		include varnish3::common
+		
+		if $name == "" {
+			$instancesuffix = ""
+			$extraopts = ""
+		}
+		else {
+			$instancesuffix = "-${name}"
+			$extraopts = "-n ${name}"
+		}
+		
+		if ! $varnish_backends {
+			$varnish_backends = [ ]
+		}
+		if ! $varnish_directors {
+			$varnish_directors = { }
+		}
+
+		# FIXME: rename or change in template
+		$varnish_port = $port
+		$varnish_admin_port = $admin_port
+		$varnish_storage = $storage
+
+		file {
+			# FIXME: template init file
+			"/etc/init.d/varnish${instancesuffix}":
+				source => "puppet:///files/varnish/varnish.init-nogeo",
+				mode => 0555;
+			"/etc/default/varnish${instancesuffix}":
+				content => template("varnish/varnish3-default.erb");
+			"/etc/varnish/${vcl}.vcl":
+				content => template("varnish/${vcl}.vcl.erb");
+		}
+
+		# FIXME: make work with multiple instances
+		service { varnish:
+			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
+			ensure => running;
+		}
+
+		# FIXME: make instance specific
+		# Load a new VCL file
+		exec { "load-new-vcl-file":
+			require => File["${vcl}.vcl"],
+			subscribe => File["${vcl}.vlc"],
+			command => "/usr/share/varnish/reload-vcl",
+			path => "/bin:/usr/bin",
+			refreshonly => true;
+		}
 	}
 
-	# Tune kernel settings
-	include generic::sysctl::high-http-performance
-
-	# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
-	# shm memory to disk
-	mount { "/var/lib/varnish":
-		require => Package[varnish3],
-		#notify => Service[varnish],
-		device => "tmpfs",
-		fstype => "tmpfs",
-		options => "noatime,defaults,size=320M",
-		pass => 0,
-		dump => 0,
-		ensure => mounted;
-	}
-
-	service { varnish:
-		require => [ Package[varnish3], File["/etc/default/varnish"], Mount["/var/lib/varnish"] ],
-		ensure => running;
-	}
-
-	# Load a new VCL file
-	exec { "load-new-vcl-file":
-		require => File["$vcl"],
-		subscribe => File["$vcl"],
-		command => "/usr/share/varnish/reload-vcl",
-		path => "/bin:/usr/bin",
-		refreshonly => true;
-	}
-
+	# FIXME: make generic/multi-instance
 	class monitoring {
 		# Nagios
 		monitor_service { "varnish http":
@@ -199,12 +216,12 @@ class varnish3 {
 		}
 	}
 
-	#include varnish::monitoring
+	# Make a default instance
+	instance { "default": }
 }
 
+# FIXME: remove
 class varnish3_frontend { 
-	require generic::geoip::files
-
 	$varnish_backends = $varnish_fe_backends
 	$varnish_directors = $varnish_fe_directors
 
