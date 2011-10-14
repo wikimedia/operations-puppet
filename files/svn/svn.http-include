@@ -38,10 +38,6 @@
 	</Location>
 
 	ScriptAlias /viewvc /usr/lib/cgi-bin/viewvc.cgi
-	# ScriptAlias /viewvc114 /usr/local/viewvc-1.1.4/bin/cgi/viewvc.cgi
-	# <Location /viewvc/*docroot*/>
-	# ExpiresDefault "access plus 4 weeks"
-	# </Location>
 
 	Alias /doc /var/mwdocs/phase3/docs/html
 	<Directory /var/mwdocs/phase3/docs/html>
@@ -53,6 +49,7 @@
 		Allow from all
 	</Directory>
 
+	# FIXME: Move out of demon's home directory
 	Alias /dumps /home/demon/svn
 	<Directory /home/demon/svn>
 		Allow from all
