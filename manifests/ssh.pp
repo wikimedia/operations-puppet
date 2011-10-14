@@ -69,7 +69,7 @@ class ssh::config {
 		file { "/etc/ssh/sshd_config":
 			owner => root,
 			group => root,
-			mode  => 0644,
+			mode  => 0444,
 			content => template("ssh/sshd_config.erb");
 		}
 	}
@@ -77,6 +77,10 @@ class ssh::config {
 
 class ssh::daemon {
 	if $operatingsystem == "Ubuntu" {
+		package { "openssh-server":
+			ensure => latest;
+		}
+		
 		service {
 			ssh:
 				ensure => running,
