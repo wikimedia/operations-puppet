@@ -9,8 +9,8 @@ class svn::server {
 	
 	include generic::webserver::php5
 
-	package { [ 'libsvn-notify-perl', 'python-subversion', 'doxygen',
-			'libapache2-svn', 'python-pygments', 'viewvc', 'graphviz' ]:
+	package { [ 'libsvn-notify-perl', 'python-subversion',
+			'libapache2-svn', 'python-pygments' ]:
 		ensure => latest;
 	}
 
@@ -38,16 +38,6 @@ class svn::server {
 			notify => Service[apache2];
 		"/etc/apache2/sites-enabled/000-default":
 			ensure => absent;
-		"/etc/apache2/svn-authz":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///private/svn/svn-authz";
-		"/etc/viewvc/viewvc.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/svn/viewvc.conf";
 		"/var/mwdocs":
 			owner => mwdocs,
 			group => svn,
@@ -98,7 +88,28 @@ class svn::server {
 		user => "www-data",
 		require => File["/var/cache/svnusers"];
 	}
-	
+
+	class viewvc {
+		require "svn::server"
+		
+		packages { [ 'viewvc', 'graphviz', 'doxygen' ]:
+			ensure => latest;
+		}
+		
+		file {
+			"/etc/apache2/svn-authz":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///private/svn/svn-authz";
+			"/etc/viewvc/viewvc.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/svn/viewvc.conf";
+		}
+	}
+
 	class dumps {
 		require "svn::server"
 		
@@ -127,7 +138,7 @@ class svn::server {
 		}
 	}
 
-	include dumps
+	include viewvc, dumps
 }
 
 class svn::users {
