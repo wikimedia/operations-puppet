@@ -6,8 +6,9 @@
 # Stig Sandbeck Mathisen <ssm@debian.org>
 
 # Settings
-defaults=/etc/default/varnish-frontend
+defaults=/etc/default/varnish
 secret=/etc/varnish/secret
+instance=""
 
 # Paths
 varnishadm=/usr/bin/varnishadm
@@ -104,6 +105,11 @@ do
 		S)
 			secret="$OPTARG"
 			;;
+		n)
+			if [  -f "$OPTARG" ] ; then
+				instance="-n $OPTARG"
+			fi
+			;;
     esac
 done
 
@@ -143,13 +149,13 @@ fi
 logfile=$($tempfile -n /tmp/$vcl_label)
 
 # Compile and maybe reload
-if $varnishadm -T $mgmt_interface -S ${secret} vcl.load $vcl_label $vcl_file
+if $varnishadm $instance vcl.load $vcl_label $vcl_file
 then
     if [ -n "$compile_only" ]
     then
 	printf "$msg_compile_only" $varnishadm $mgmt_interface $vcl_label
     else
-	if $varnishadm -T $mgmt_interface -S ${secret} vcl.use $vcl_label
+	if $varnishadm $instance vcl.use $vcl_label
 	then
 	    printf "$msg_use_ok" $vcl_label
 	else
