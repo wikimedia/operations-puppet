@@ -155,7 +155,7 @@ class varnish3 {
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
 				content => template("varnish/varnish3-default.erb");
-			"/etc/varnish/${vcl}.vcl":
+			"/etc/varnish/wikimedia3.vcl":
 				content => template("varnish/wikimedia3.vcl.erb");
 		}
 
