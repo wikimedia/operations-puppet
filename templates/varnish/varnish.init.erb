@@ -25,7 +25,7 @@ PIDFILE=/var/run/$NAME.pid
 test -x $DAEMON || exit 0
 
 # Include varnish defaults if available
-if [ -f /etc/default/varnish ] ; then
+if [ -f /etc/default/varnish<%= instancesuffix %> ] ; then
         . /etc/default/varnish<%= instancesuffix %>
 fi
 
