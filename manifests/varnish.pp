@@ -126,6 +126,13 @@ class varnish3 {
 		}
 	}
 	
+	class common-vcl {
+		file {
+			"/etc/varnish/geoip.inc.vcl":
+				content => template("varnish/geoip.inc.vcl.erb");
+		}
+	}
+	
 	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false") {
 		include varnish3::common
 		
@@ -148,15 +155,25 @@ class varnish3 {
 		$varnish_backend_options = $backend_options
 		
 		$varnish_hook_functions = [ "vcl_recv", "vcl_fetch", "vcl_hit", "vcl_miss", "vcl_deliver", "vcl_error" ]
+		
+		# Install VCL include files shared by all instances
+		require "varnish3::common-vcl"
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":
 				content => template("varnish/varnish.init.erb"),
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
-				content => template("varnish/varnish3-default.erb");
-			"/etc/varnish/wikimedia3.vcl":
-				content => template("varnish/wikimedia3.vcl.erb");
+				content => template("varnish/varnish3-default.erb"),
+				mode => 0444;
+			"/etc/varnish/${vcl}.inc.vcl":
+				content => template("varnish/${vcl}.inc.vcl.erb"),
+				notify => Exec["load-new-vcl-file${instancesuffix}"],
+				mode => 0444;
+			"/etc/varnish/wikimedia3_${vcl}.vcl":
+				require => File["/etc/varnish/${vcl}.inc.vcl"],
+				content => template("varnish/wikimedia3.vcl.erb"),
+				mode => 0444;
 		}
 
 		service { "varnish${instancesuffix}":
@@ -167,8 +184,8 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
-			require => File["/etc/varnish/wikimedia3.vcl"],
-			subscribe => File["/etc/varnish/wikimedia3.vcl"],
+			require => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
+			subscribe => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
