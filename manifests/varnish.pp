@@ -154,7 +154,7 @@ class varnish3 {
 		file {
 			# FIXME: template init file
 			"/etc/init.d/varnish${instancesuffix}":
-				source => template("varnish/varnish.init.erb"),
+				content => template("varnish/varnish.init.erb"),
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
 				content => template("varnish/varnish3-default.erb");
