@@ -50,11 +50,13 @@ class puppetmaster::passenger {
 		cron {
 			"update_private_puppet_repos":
 				command => "(cd /root/testrepo/private && /usr/bin/git pull) > /dev/null 2>&1",
+				environment => "GIT_SSH=/root/testrepo/ssh",
 				user    => root;
 		}
 		cron {
 			"update_public_puppet_repos":
 				command => "(cd /root/testrepo/puppet && /usr/bin/git pull) > /dev/null 2>&1",
+				environment => "GIT_SSH=/root/testrepo/ssh",
 				user    => root;
 		}
 	}
