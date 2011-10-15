@@ -1,0 +1,198 @@
+# Wikimedia VCL file for <%= fqdn %>, site <%= site %>
+# This file is managed by Puppet!
+
+<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
+include "geoip.inc.vcl"
+<% end -%>
+
+/* Include the VCL file for this role */
+<% if vcl != "" -%>
+include "<%= vcl %>.inc.vcl"
+<% end -%>
+
+# ACLs
+
+acl purge { 
+	"127.0.0.1";
+}
+
+# Hosts we trust for XFF
+<% if has_variable?("varnish_xff_sources") -%>
+acl allow_xff {
+<% varnish_xff_sources.each do |source| -%>
+	"<%= source["ip"] %>"/<%= source["mask"] %>;
+<% end -%>
+}
+<% end -%>
+
+# Backend probes
+
+probe text {
+	.request =
+		"GET /wiki/Main_Page HTTP/1.1"
+		"Host: en.wikipedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";	
+}
+
+probe bits {
+	.request =
+		"GET /w/load.php HTTP/1.1"
+		"Host: en.wikipedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe upload {
+	.url = "/pybaltestfile.txt";
+	.timeout = 5s;
+}
+
+# Backends
+
+# List of Puppet generated backends
+<% varnish_backends.each do |backend| -%>
+backend <%= backend.split(".")[0] %> {
+	.host = "<%= backend %>";
+	.port = "<%= varnish_backend_options.fetch("port", "80") %>;
+	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "5s") %>;
+	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
+	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
+	.probe = <%= varnish_backend_options.fetch("probe", "bits") %>;
+	}
+}
+
+<% end -%>
+
+# Directors
+# Expected format: { "director name" => [ "backend1", "backend2" ] }
+<% varnish_directors.keys.each do |director| -%>
+director <%= director %> hash {
+	.retries = 2;
+<% varnish_directors[director].each do |backend| -%>
+	{
+		.backend = <%= backend.split(".")[0] %>;
+		.weight = 10;
+	}
+<% end -%>
+}
+<% end -%>
+
+# Functions
+
+sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE") {
+		/* We only deal with GET and HEAD by default */
+		error 403 "HTTP method not allowed.";
+	}
+
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") { 
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} else if (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
+		}
+		return (lookup);
+	}
+	
+	<% if has_variable?("varnish_xff_sources") -%>
+	/* Ensure we only accept Forwarded headers from the SSL proxies */
+	if (client.ip ~ allow_xff) {
+		// Do nothing. It seems you can't do !~ with IP matches
+	} else {
+		// Strip the headers, we shouldn't trust these from anything other
+		// than hosts we specify. Needed for the geoiplookup code later on
+		// as it will use xff. MediaWiki uses xfp.
+		set req.http.X-Forwarded-For = client.ip;
+		unset req.http.X-Forwarded-Proto;
+	}
+	<% end -%>
+
+	/* Select the default backend(s) */
+	set req.backend = backend;
+	
+	<% if vcl != "" -%>
+	call <%= vcl %>_vcl_recv;
+	<% end -%>
+	
+	return (lookup);
+}
+
+sub vcl_fetch {
+	<% if vcl != "" -%>
+	call <%= vcl %>_vcl_fetch;
+	<% end -%>
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged.";
+	}
+	
+	<% if vcl != "" -%>
+	call <%= vcl %>_vcl_hit;
+	<% end -%>	
+}
+
+sub vcl_miss {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Cache miss";
+	}
+
+	<% if vcl != "" -%>
+	call <%= vcl %>_vcl_miss;
+	<% end -%>
+}
+
+sub vcl_deliver {
+	if (obj.hits > 0) {
+		set resp.http.X-Cache<%= instancesuffix %> = "hit (" + obj.hits + ")";
+	} else {
+		set resp.http.X-Cache<%= instancesuffix %> = "miss (0)";
+	}
+
+	<% if vcl != "" -%>
+	call <%= vcl %>_vcl_deliver;
+	<% end -%>
+}
+
+sub vcl_error {
+	call <%= vcl %>_vcl_error;
+	
+	set obj.http.Content-Type = "text/html; charset=utf-8";
+	synthetic {"
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>"} + obj.status + " " + obj.response + {"</title>
+  </head>
+  <body>
+    <h1>Error "} + obj.status + " " + obj.response + {"</h1>
+    <p>"} + obj.response + {"</p>
+    <h3>Guru Meditation:</h3>
+    <p>XID: "} + req.xid + {"</p>
+    <hr>
+    <address>
+       <a href="http://www.varnish-cache.org/">Varnish cache server</a>
+    </address>
+  </body>
+</html>
+"};
+}
+
+# Automatically generate empty hooks, to make sure they exist
+# They will get concatenated by Varnish
+<% varnish_hook_functions.each do |fname| -%>
+sub <%= fname %> {
+	/* Pretty please gcc, optimize me out... */
+}
+<% end -%>
