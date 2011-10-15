@@ -172,7 +172,7 @@ class varnish3 {
 
 		# FIXME: make instance specific
 		# Load a new VCL file
-		exec { "load-new-vcl-file":
+		exec { "load-new-vcl-file${instancesuffix}":
 			require => File["${vcl}.vcl"],
 			subscribe => File["${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
