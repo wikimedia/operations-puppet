@@ -126,7 +126,7 @@ class varnish3 {
 		}
 	}
 	
-	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $link_geoip="false") {
+	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false") {
 		include varnish3::common
 		
 		if $name == "" {
@@ -142,9 +142,10 @@ class varnish3 {
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
-		$varnish_link_geoip = $link_geoip
+		$varnish_enable_geoiplookup = $enable_geoiplookup
 		$varnish_backends = $backends
 		$varnish_directors = $directors
+		$varnish_backend_options = $backend_options
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":
@@ -153,7 +154,7 @@ class varnish3 {
 			"/etc/default/varnish${instancesuffix}":
 				content => template("varnish/varnish3-default.erb");
 			"/etc/varnish/${vcl}.vcl":
-				content => template("varnish/${vcl}.vcl.erb");
+				content => template("varnish/wikimedia3.vcl.erb");
 		}
 
 		service { "varnish${instancesuffix}":
@@ -164,8 +165,8 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
-			require => File["/etc/varnish/${vcl}.vcl"],
-			subscribe => File["/etc/varnish/${vcl}.vcl"],
+			require => File["/etc/varnish/wikimedia3.vcl"],
+			subscribe => File["/etc/varnish/wikimedia3.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
