@@ -1357,11 +1357,34 @@ class misc::contint::test {
 			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
 		# Let wikidev users maintain the homepage
+		 "/srv/org":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
+		 "/srv/org/mediawiki":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
+		 "/srv/org/mediawiki/integration":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
 		"/srv/org/mediawiki/integration/index.html":
 			owner => www-data,
 			group => wikidev,
 			mode => 0555,
 			source => "puppet:///files/misc/jenkins/index.html";
+		# Placing the file in sites-available	
+		"/etc/apache2/sites-available/integration.mediawiki.org":
+			path => "/etc/apache2/sites-available/integration.mediawiki.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/integration.mediawiki.org";
+
 	}
 
 	# run jenkins behind Apache and have pretty URLs / proxy port 80

@@ -65,10 +65,10 @@ class varnish {
 
 	class monitoring {
 		# Nagios
-	        monitor_service { "varnish http":
-        	        description => "Varnish HTTP",
-	                check_command => 'check_http_bits'
-	        }
+		monitor_service { "varnish http":
+			description => "Varnish HTTP",
+			check_command => 'check_http_bits'
+		}
 
 		# Ganglia
 		file {
@@ -91,77 +91,94 @@ class varnish {
 ### extra paranoid to avoid accidentally changing anything on bits.  Once fully migrated,
 ### This class should be renamed to varnish and everything above deleted.
 class varnish3 {
-	if ! $varnish_backends {
-		$varnish_backends = [ ]
-	}
-	if ! $varnish_directors {
-		$varnish_directors = { }
-	}
+	class packages {
+		package { varnish3:
+			ensure => "3.0.0-1wmf6";
+		}
 
-	package { varnish3:
-		ensure => "3.0.0-1wmf6";
+		package { libworking-daemon-perl: 
+			ensure => present;
+		}
 	}
+	
+	class common {
+		require varnish3::packages
+		
+		# Tune kernel settings
+		include generic::sysctl::high-http-performance
 
-	package { libworking-daemon-perl: 
-		ensure => present;
-	}
-
-	$vcl = "/etc/varnish/mobile-backend.vcl"
-	$varnish_port = "81"
-	$varnish_admin_port = "6083"
-	$varnish_storage = "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
-
-	file {
-		"/etc/init.d/varnish":
+		# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
+		# shm memory to disk
+		mount { "/var/lib/varnish":
 			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnish.init-nogeo",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/default/varnish":
-			require => Package[varnish3],
-			content => template("varnish/varnish3-default.erb");
-		"/etc/varnish/mobile-backend.vcl":
-			require => Package[varnish3],
-			content => template("varnish/mobile-backend.vcl.erb");
+			device => "tmpfs",
+			fstype => "tmpfs",
+			options => "noatime,defaults,size=320M",
+			pass => 0,
+			dump => 0,
+			ensure => mounted;
+		}
+
+		file {
+			"/usr/share/varnish/reload-vcl":
+				source => "puppet:///files/varnish/reload-vcl",
+				mode => 0555;
+		}
+	}
+	
+	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $link_geoip="false") {
+		include varnish3::common
+		
+		if $name == "" {
+			$instancesuffix = ""
+			$extraopts = ""
+		}
+		else {
+			$instancesuffix = "-${name}"
+			$extraopts = "-n ${name}"
+		}
+
+		# Initialize variables for templates
+		$varnish_port = $port
+		$varnish_admin_port = $admin_port
+		$varnish_storage = $storage
+		$varnish_link_geoip = $link_geoip
+		$varnish_backends = $backends
+		$varnish_directors = $directors
+
+		file {
+			"/etc/init.d/varnish${instancesuffix}":
+				content => template("varnish/varnish.init.erb"),
+				mode => 0555;
+			"/etc/default/varnish${instancesuffix}":
+				content => template("varnish/varnish3-default.erb");
+			"/etc/varnish/${vcl}.vcl":
+				content => template("varnish/${vcl}.vcl.erb");
+		}
+
+		service { "varnish${instancesuffix}":
+			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
+			hasstatus => false,
+			pattern => "/var/run/varnishd${instancesuffix}.pid",
+			ensure => running;
+		}
+
+		exec { "load-new-vcl-file${instancesuffix}":
+			require => File["/etc/varnish/${vcl}.vcl"],
+			subscribe => File["/etc/varnish/${vcl}.vcl"],
+			command => "/usr/share/varnish/reload-vcl $extraopts",
+			path => "/bin:/usr/bin",
+			refreshonly => true;
+		}
 	}
 
-        # Tune kernel settings
-        include generic::sysctl::high-http-performance
-
-	# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
-	# shm memory to disk
-	mount { "/var/lib/varnish":
-		require => Package[varnish3],
-		#notify => Service[varnish],
-		device => "tmpfs",
-		fstype => "tmpfs",
-		options => "noatime,defaults,size=320M",
-		pass => 0,
-		dump => 0,
-		ensure => mounted;
-	}
-
-	service { varnish:
-		require => [ Package[varnish3], File["/etc/default/varnish"], Mount["/var/lib/varnish"] ],
-		ensure => running;
-	}
-
-	# Load a new VCL file
-	exec { "load-new-vcl-file":
-		require => File["$vcl"],
-		subscribe => File["$vcl"],
-		command => "/usr/share/varnish/reload-vcl",
-		path => "/bin:/usr/bin",
-		refreshonly => true;
-	}
-
+	# FIXME: make generic/multi-instance
 	class monitoring {
 		# Nagios
-	        monitor_service { "varnish http":
-        	        description => "Varnish HTTP",
-	                check_command => 'check_http_bits'
-	        }
+		monitor_service { "varnish http":
+			description => "Varnish HTTP",
+			check_command => 'check_http_bits'
+		}
 
 		# Ganglia
 		file {
@@ -199,63 +216,7 @@ class varnish3 {
 		}
 	}
 
-	#include varnish::monitoring
+	# Make a default instance
+	instance { "default": }
 }
 
-class varnish3_frontend { 
-	require generic::geoip::files
-
-	$varnish_backends = $varnish_fe_backends
-	$varnish_directors = $varnish_fe_directors
-
-	if ! $varnish_backends {
-		$varnish_backends = [ ]
-	}
-	if ! $varnish_directors {
-		$varnish_directors = { }
-	}
-
-	$vcl = "/etc/varnish/mobile-frontend.vcl"
-	$varnish_port = "80"
-	$varnish_admin_port = "6082"
-	$varnish_storage = "-s malloc,256M"
-	$extraopts = "-n frontend"
-	
-	file {
-		"/etc/init.d/varnish-frontend":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnish-frontend.init",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/usr/share/varnish/reload-vcl-frontend":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/reload-vcl-frontend",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/default/varnish-frontend":
-			require => Package[varnish3],
-			content => template("varnish/varnish3-default.erb");
-		"/etc/varnish/mobile-frontend.vcl":
-			require => Package[varnish3],
-			content => template("varnish/mobile-frontend.vcl.erb");
-
-	}
-
-	service { varnish-frontend:
-		require => [ Package[varnish3], File["/etc/default/varnish-frontend"], Mount["/var/lib/varnish"] ],
-		hasstatus => false,
-		pattern => "/var/run/varnishd-frontend.pid",
-		ensure => running;
-	}
-
-	exec { "load-new-frontend-vcl-file":
-		require => File["$vcl"],
-		subscribe => File["$vcl"],
-		command => "/usr/share/varnish/reload-vcl-frontend",
-		path => "/bin:/usr/bin",
-		refreshonly => true;
-	}
-
-}

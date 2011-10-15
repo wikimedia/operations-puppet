@@ -375,6 +375,8 @@ class cache {
 
 		system_role { "cache::bits": description => "bits Varnish cache server" }
 
+		require generic::geoip::files
+
 		include base,
 			ganglia,
 			ntp::client,
@@ -392,24 +394,40 @@ class cache {
 			default => [ ]
 		}
 
-		if $site == "eqiad" {
-			$varnish_fe_backends = [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ]
-			$varnish_fe_directors = { "back" => $varnish_fe_backends }
+		$varnish_fe_backends = $site ? {
+			"eqiad" => [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+			default => []
+		}
+		$varnish_fe_directors = $site ? {
+			"eqiad" => { "back" => $varnish_fe_backends },
+			default => {}
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 
 		system_role { "cache::mobile": description => "mobile Varnish cache server" }
 
-		include base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
-			varnish3,
-			varnish3_frontend,
+		include standard,
 			varnish3::htcpd,
 			varnish3::monitoring,
 			lvs::realserver
+		
+		varnish3::instance { "mobile-backend":
+			name => "",
+			vcl => "mobile-backend",
+			port => 81,
+			admin_port => 6083,
+			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
+		}
+		
+		varnish3::instance { "mobile-frontend":
+			name => "frontend",
+			vcl => "mobile-frontend",
+			port => 80,
+			admin_port => 6082,
+			backends => $varnish_fe_backends,
+			directors => $varnish_fe_directors,
+		}
 	}
 }
 
@@ -943,8 +961,7 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL'] }
-	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /etc/init.d/jenkins'] }
+	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	include base,
 		ganglia,
 		ntp::client,

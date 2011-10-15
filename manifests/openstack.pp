@@ -48,6 +48,10 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_jenkins": source => "208.80.154.135", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_jenkins": source => "208.80.154.135", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_jenkins": source => "208.80.154.135", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_jenkins": source => "208.80.154.135", service => "ldaps_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
 	iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
@@ -485,7 +489,7 @@ class openstack::nova_config {
 	$nova_flat_network_bridge = "br103"
 	$nova_fixed_range = "10.4.0.0/24"
 	$nova_dhcp_start = "10.4.0.4"
-	$nova_dhcp_domain = "pmtpa.wmlabs"
+	$nova_dhcp_domain = "pmtpa.wmflabs"
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
 	$nova_network_public_ip = "208.80.153.192"

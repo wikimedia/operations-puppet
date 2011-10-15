@@ -84,6 +84,7 @@ $decommissioned_servers = [
 "srv148",
 "srv149",
 "srv150",
+"srv171",
 "srv173",
 "thistle",
 "transcode2",
