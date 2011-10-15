@@ -153,9 +153,7 @@ class varnish3 {
 		$varnish_backends = $backends
 		$varnish_directors = $directors
 		$varnish_backend_options = $backend_options
-		
-		$varnish_hook_functions = [ "vcl_recv", "vcl_fetch", "vcl_hit", "vcl_miss", "vcl_deliver", "vcl_error" ]
-		
+				
 		# Install VCL include files shared by all instances
 		require "varnish3::common-vcl"
 
