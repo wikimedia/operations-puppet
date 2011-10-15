@@ -126,7 +126,7 @@ class varnish3 {
 		}
 	}
 	
-	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M") {
+	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $link_geoip="false") {
 		include varnish3::common
 		
 		if $name == "" {
@@ -145,15 +145,16 @@ class varnish3 {
 			$varnish_directors = { }
 		}
 
-		# FIXME: rename or change in template
+		# Initialize variables for templates
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
+		$varnish_link_geoip = $link_geoip
 
 		file {
 			# FIXME: template init file
 			"/etc/init.d/varnish${instancesuffix}":
-				source => "puppet:///files/varnish/varnish.init-nogeo",
+				source => template("varnish/varnish.init.erb"),
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
 				content => template("varnish/varnish3-default.erb");
