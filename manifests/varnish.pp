@@ -163,8 +163,10 @@ class varnish3 {
 		}
 
 		# FIXME: make work with multiple instances
-		service { varnish:
+		service { varnish${instancesuffix}:
 			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
+			hasstatus => false,
+			pattern => "/var/run/varnishd${instancesuffix}.pid",
 			ensure => running;
 		}
 
