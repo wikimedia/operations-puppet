@@ -89,7 +89,7 @@ sub vcl_recv {
 	if ( req.http.host == "m.wikipedia.org" ) {
 		error 666 "http://en.m.wikipedia.org" + req.url;
 	}
-	elif ( req.http.host == "mobile.wikipedia.org" ) {
+	else if ( req.http.host == "mobile.wikipedia.org" ) {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
 	}
 	

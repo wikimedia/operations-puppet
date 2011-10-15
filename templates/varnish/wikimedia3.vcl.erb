@@ -58,13 +58,12 @@ backend ipv4_<%= backend %>
 backend <%= backend.split(".")[0] %> {
 <% end -%>
 	.host = "<%= backend %>";
-	.port = <%= varnish_backend_options.fetch("port", "80") %>;
+	.port = "<%= varnish_backend_options.fetch("port", "80") %>";
 	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "5s") %>;
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
 	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
 	.probe = <%= varnish_backend_options.fetch("probe", "bits") %>;
-	}
 }
 
 <% end -%>

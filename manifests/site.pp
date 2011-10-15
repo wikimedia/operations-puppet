@@ -409,7 +409,7 @@ class cache {
 			default => []
 		}
 		$varnish_fe_directors = $site ? {
-			"eqiad" => { "back" => $varnish_fe_backends },
+			"eqiad" => { "backend" => $varnish_fe_backends },
 			default => {}
 		}
 
