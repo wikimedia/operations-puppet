@@ -153,6 +153,9 @@ class varnish3 {
 				content => template("varnish/varnish3-default.erb");
 			"/etc/varnish/${vcl}.vcl":
 				content => template("varnish/${vcl}.vcl.erb");
+			"/usr/share/varnish/reload-vcl":
+				source => "puppet:///files/varnish/reload-vcl",
+				mode => 0555;
 		}
 
 		# FIXME: make work with multiple instances
@@ -166,7 +169,7 @@ class varnish3 {
 		exec { "load-new-vcl-file":
 			require => File["${vcl}.vcl"],
 			subscribe => File["${vcl}.vcl"],
-			command => "/usr/share/varnish/reload-vcl",
+			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
 		}
