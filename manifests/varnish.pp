@@ -126,7 +126,7 @@ class varnish3 {
 		}
 	}
 	
-	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $link_geoip="false") {
+	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $link_geoip="false") {
 		include varnish3::common
 		
 		if $name == "" {
@@ -137,19 +137,14 @@ class varnish3 {
 			$instancesuffix = "-${name}"
 			$extraopts = "-n ${name}"
 		}
-		
-		if ! $varnish_backends {
-			$varnish_backends = [ ]
-		}
-		if ! $varnish_directors {
-			$varnish_directors = { }
-		}
 
 		# Initialize variables for templates
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
 		$varnish_link_geoip = $link_geoip
+		$varnish_backends = $backends
+		$varnish_directors = $directors
 
 		file {
 			# FIXME: template init file

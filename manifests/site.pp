@@ -394,9 +394,13 @@ class cache {
 			default => [ ]
 		}
 
-		if $site == "eqiad" {
-			$varnish_fe_backends = [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ]
-			$varnish_fe_directors = { "back" => $varnish_fe_backends }
+		$varnish_fe_backends = $site ? {
+			"eqiad" => [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+			default => []
+		}
+		$varnish_fe_directors = $site ? {
+			"eqiad" => { "back" => $varnish_fe_backends },
+			default => {}
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
@@ -420,7 +424,9 @@ class cache {
 			name => "frontend",
 			vcl => "mobile-frontend",
 			port => 80,
-			admin_port => 6082
+			admin_port => 6082,
+			backends => $varnish_fe_backends,
+			directors => $varnish_fe_directors,
 		}
 	}
 }
