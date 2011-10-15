@@ -1377,6 +1377,14 @@ class misc::contint::test {
 			group => wikidev,
 			mode => 0555,
 			source => "puppet:///files/misc/jenkins/index.html";
+		# Placing the file in sites-available	
+		"/etc/apache2/sites-available/integration.mediawiki.org":
+			path => "/etc/apache2/sites-available/integration.mediawiki.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/integration.mediawiki.org";
+
 	}
 
 	# run jenkins behind Apache and have pretty URLs / proxy port 80
