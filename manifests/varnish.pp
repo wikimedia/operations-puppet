@@ -117,7 +117,13 @@ class varnish3 {
 			pass => 0,
 			dump => 0,
 			ensure => mounted;
-		}		
+		}
+
+		file {
+			"/usr/share/varnish/reload-vcl":
+				source => "puppet:///files/varnish/reload-vcl",
+				mode => 0555;
+		}
 	}
 	
 	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M") {
@@ -153,9 +159,6 @@ class varnish3 {
 				content => template("varnish/varnish3-default.erb");
 			"/etc/varnish/${vcl}.vcl":
 				content => template("varnish/${vcl}.vcl.erb");
-			"/usr/share/varnish/reload-vcl":
-				source => "puppet:///files/varnish/reload-vcl",
-				mode => 0555;
 		}
 
 		# FIXME: make work with multiple instances
