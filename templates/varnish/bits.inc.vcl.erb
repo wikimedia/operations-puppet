@@ -1,0 +1,31 @@
+# Varnish VCL include file for bits
+
+sub bits_vcl_recv {
+	/* Only accept requests for domain bits.wikimedia.org at this time */
+	if (req.http.host == "bits.wikimedia.org") {
+		# Yay
+	}
+	<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
+	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
+		call geoip_lookup;
+	}
+	<% end -%>
+	else {
+		error 403 "Requested target domain not allowed."; 
+	}
+}
+
+sub bits_vcl_miss {
+	/* transform backend url: /<sitename>/load.php -> /w/load.php
+	   set host header for backend to <sitename>
+	*/
+	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.org/load\.php" ) {
+		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
+		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
+
+		# Send test.wikipedia.org to the right backend server
+		if ( req.url ~ "^/test\.wikipedia\.org/load\.php" ) {
+			set req.backend = test_wikipedia;
+		}
+	}
+}
