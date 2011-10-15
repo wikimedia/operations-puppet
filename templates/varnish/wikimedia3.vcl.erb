@@ -6,9 +6,7 @@ include "geoip.inc.vcl"
 <% end -%>
 
 /* Include the VCL file for this role */
-<% if vcl != "" -%>
 include "<%= vcl %>.inc.vcl"
-<% end -%>
 
 # ACLs
 
@@ -116,17 +114,13 @@ sub vcl_recv {
 	/* Select the default backend(s) */
 	set req.backend = backend;
 	
-	<% if vcl != "" -%>
 	call <%= vcl %>_vcl_recv;
-	<% end -%>
 	
 	return (lookup);
 }
 
 sub vcl_fetch {
-	<% if vcl != "" -%>
 	call <%= vcl %>_vcl_fetch;
-	<% end -%>
 }
 
 sub vcl_hit {
@@ -135,9 +129,7 @@ sub vcl_hit {
 		error 200 "Purged.";
 	}
 	
-	<% if vcl != "" -%>
 	call <%= vcl %>_vcl_hit;
-	<% end -%>	
 }
 
 sub vcl_miss {
@@ -146,9 +138,7 @@ sub vcl_miss {
 		error 200 "Cache miss";
 	}
 
-	<% if vcl != "" -%>
 	call <%= vcl %>_vcl_miss;
-	<% end -%>
 }
 
 sub vcl_deliver {
@@ -158,9 +148,7 @@ sub vcl_deliver {
 		set resp.http.X-Cache<%= instancesuffix %> = "miss (0)";
 	}
 
-	<% if vcl != "" -%>
 	call <%= vcl %>_vcl_deliver;
-	<% end -%>
 }
 
 sub vcl_error {
@@ -192,7 +180,7 @@ sub vcl_error {
 # Automatically generate empty hooks, to make sure they exist
 # They will get concatenated by Varnish
 <% varnish_hook_functions.each do |fname| -%>
-sub <%= fname %> {
+sub <%= vcl %>_<%= fname %> {
 	/* Pretty please gcc, optimize me out... */
 }
 <% end -%>
