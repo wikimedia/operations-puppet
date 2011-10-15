@@ -117,7 +117,13 @@ class varnish3 {
 			pass => 0,
 			dump => 0,
 			ensure => mounted;
-		}		
+		}
+
+		file {
+			"/usr/share/varnish/reload-vcl":
+				source => "puppet:///files/varnish/reload-vcl",
+				mode => 0555;
+		}
 	}
 	
 	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $link_geoip="false") {
@@ -167,7 +173,7 @@ class varnish3 {
 		exec { "load-new-vcl-file":
 			require => File["${vcl}.vcl"],
 			subscribe => File["${vcl}.vcl"],
-			command => "/usr/share/varnish/reload-vcl",
+			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
 		}
