@@ -22,7 +22,7 @@
 	</Directory>
 
 	<Directory /srv/org/mediawiki/integration>
-		Options NoIndexes FollowSymLinks
+		Options FollowSymLinks
 		AllowOverride All
 		Order allow,deny
 		allow from all
