@@ -372,6 +372,16 @@ class cache {
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
+		
+		# TODO: enable geoip
+		$backend_options = {
+			'port' => 80,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 10000,
+			'probe' => "bits"
+		}
 
 		system_role { "cache::bits": description => "bits Varnish cache server" }
 
@@ -417,7 +427,18 @@ class cache {
 			vcl => "mobile-backend",
 			port => 81,
 			admin_port => 6083,
-			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
+			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
+			backends => [ "10.2.1.1" ],
+			directors => { "backend" => [ "10.2.1.1" ] },
+			backend_options => {
+				'port' => 81,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "2s",
+				'max_connections' => 100000,
+				'probe' => "bits"
+				},
+			}
 		}
 		
 		varnish3::instance { "mobile-frontend":
@@ -427,6 +448,15 @@ class cache {
 			admin_port => 6082,
 			backends => $varnish_fe_backends,
 			directors => $varnish_fe_directors,
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 1000,
+				'probe' => "bits"
+				},
+			}
 		}
 	}
 }
