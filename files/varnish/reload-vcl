@@ -24,7 +24,7 @@ msg_defaults_not_readable="Error: %s is not readable\n"
 # msg_defaults_not_there: defaults
 msg_defaults_not_there="Error: %s does not exist\n"
 msg_no_vcl="Error: No VCL file used, nothing to reload\n"
-msg_usage="Usage: $0 [-h][-c][-q]\n\t-h\tdisplay help\n\t-q\tquiet\n\t-c\tcompile only, do not reload\n"
+msg_usage="Usage: $0 [-h][-c][-q][-n instance]\n\t-h\tdisplay help\n\t-q\tquiet\n\t-c\tcompile only, do not reload\n"
 # msg_compile_only: varnishadm, mgmt_interface, vcl_label
 msg_compile_only="To activate, run:\n\t%s -T %s \\\\\n\tvcl.use %s\n"
 # msg_compile_failed: vcl_label, vcl_file
@@ -64,7 +64,7 @@ else
 fi
 
 # parse command line arguments
-while getopts hcq flag
+while getopts n:hcq flag
 do
     case $flag in
 	h)
@@ -77,6 +77,11 @@ do
 	q)
 	    quiet=1
 	    ;;
+	n)
+		if [  -f "$OPTARG" ] ; then
+			instance="-n $OPTARG"
+		fi
+		;;
 	*)
 	    printf >&2 "$msg_usage\n"
 	    exit 1
@@ -104,11 +109,6 @@ do
 			;;
 		S)
 			secret="$OPTARG"
-			;;
-		n)
-			if [  -f "$OPTARG" ] ; then
-				instance="-n $OPTARG"
-			fi
 			;;
     esac
 done
