@@ -1357,6 +1357,16 @@ class misc::contint::test {
 			mode => 0555,
 			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
 		# Let wikidev users maintain the homepage
+		 "/srv/org":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
+		 "/srv/org/mediawiki":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
 		 "/srv/org/mediawiki/integration":
 				mode => 0755,
 				owner => www-data,
