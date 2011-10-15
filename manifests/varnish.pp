@@ -147,7 +147,6 @@ class varnish3 {
 		$varnish_directors = $directors
 
 		file {
-			# FIXME: template init file
 			"/etc/init.d/varnish${instancesuffix}":
 				content => template("varnish/varnish.init.erb"),
 				mode => 0555;
@@ -157,7 +156,6 @@ class varnish3 {
 				content => template("varnish/${vcl}.vcl.erb");
 		}
 
-		# FIXME: make work with multiple instances
 		service { "varnish${instancesuffix}":
 			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
 			hasstatus => false,
@@ -165,8 +163,6 @@ class varnish3 {
 			ensure => running;
 		}
 
-		# FIXME: make instance specific
-		# Load a new VCL file
 		exec { "load-new-vcl-file${instancesuffix}":
 			require => File["/etc/varnish/${vcl}.vcl"],
 			subscribe => File["/etc/varnish/${vcl}.vcl"],
@@ -224,59 +220,3 @@ class varnish3 {
 	instance { "default": }
 }
 
-# FIXME: remove
-class varnish3_frontend { 
-	$varnish_backends = $varnish_fe_backends
-	$varnish_directors = $varnish_fe_directors
-
-	if ! $varnish_backends {
-		$varnish_backends = [ ]
-	}
-	if ! $varnish_directors {
-		$varnish_directors = { }
-	}
-
-	$vcl = "/etc/varnish/mobile-frontend.vcl"
-	$varnish_port = "80"
-	$varnish_admin_port = "6082"
-	$varnish_storage = "-s malloc,256M"
-	$extraopts = "-n frontend"
-	
-	file {
-		"/etc/init.d/varnish-frontend":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/varnish-frontend.init",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/usr/share/varnish/reload-vcl-frontend":
-			require => Package[varnish3],
-			source => "puppet:///files/varnish/reload-vcl-frontend",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/default/varnish-frontend":
-			require => Package[varnish3],
-			content => template("varnish/varnish3-default.erb");
-		"/etc/varnish/mobile-frontend.vcl":
-			require => Package[varnish3],
-			content => template("varnish/mobile-frontend.vcl.erb");
-
-	}
-
-	service { varnish-frontend:
-		require => [ Package[varnish3], File["/etc/default/varnish-frontend"], Mount["/var/lib/varnish"] ],
-		hasstatus => false,
-		pattern => "/var/run/varnishd-frontend.pid",
-		ensure => running;
-	}
-
-	exec { "load-new-frontend-vcl-file":
-		require => File["$vcl"],
-		subscribe => File["$vcl"],
-		command => "/usr/share/varnish/reload-vcl-frontend",
-		path => "/bin:/usr/bin",
-		refreshonly => true;
-	}
-
-}
