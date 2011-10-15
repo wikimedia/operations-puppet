@@ -28,7 +28,7 @@ class puppetmaster::passenger {
 			source => "puppet:///files/puppet/position-of-the-moon";
 	}
 
-	if $cluster_env == "labs" {
+	if $is_labs_puppet_master {
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
 		file {
@@ -47,7 +47,16 @@ class puppetmaster::passenger {
 				require => File["/usr/local/sbin/puppetsigner.py"],
 				user    => root;
 		}
-
+		cron {
+			"update_private_puppet_repos":
+				command => "(cd /root/testrepo/private && /usr/bin/git pull) > /dev/null 2>&1",
+				user    => root;
+		}
+		cron {
+			"update_public_puppet_repos":
+				command => "(cd /root/testrepo/puppet && /usr/bin/git pull) > /dev/null 2>&1",
+				user    => root;
+		}
 	}
 
 	apache_module { "passenger":
