@@ -16,7 +16,7 @@
 # Source function library
 . /lib/lsb/init-functions
 
-NAME=varnishd
+NAME=varnishd<%= instancesuffix %>
 DESC="HTTP accelerator"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/varnishd
@@ -26,7 +26,7 @@ test -x $DAEMON || exit 0
 
 # Include varnish defaults if available
 if [ -f /etc/default/varnish ] ; then
-        . /etc/default/varnish
+        . /etc/default/varnish<%= instancesuffix %>
 fi
 
 # Open files (usually 1024, which is way too small for varnish)
@@ -75,7 +75,7 @@ case "$1" in
 	reload)
 		log_daemon_msg "Reloading $DESC"
 		log_progress_msg $NAME
-		if /usr/share/varnish/reload-vcl -q; then
+		if /usr/share/varnish/reload-vcl <%= extraopts %> -q; then
 			log_end_msg 0
 		else
 			log_end_msg 1
