@@ -1,6 +1,6 @@
 # Varnish VCL include file for mobile backends
 
-sub mobile-backend_vcl_fetch {
+sub vcl_fetch {
 	if (req.url == "/?useformat=mobile") {
 		set beresp.ttl = 60 s;
 	}
@@ -8,7 +8,7 @@ sub mobile-backend_vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
 }
 
-sub mobile-backend_vcl_deliver {
+sub vcl_deliver {
 	/* Cachable files delivered to the mobile frontends should be cached for
 	 * a short time only.
 	 */

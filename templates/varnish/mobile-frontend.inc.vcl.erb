@@ -64,7 +64,7 @@ sub device_detection {
 }
 
 
-sub mobile-frontend_vcl_recv {
+sub vcl_recv {
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
@@ -100,7 +100,7 @@ sub mobile-frontend_vcl_recv {
 	call device_detection;
 }
 
-sub mobile-frontend_vcl_fetch {
+sub vcl_fetch {
 	if (req.url == "/?useformat=mobile") {
 		set beresp.ttl = 60 s;
 	}
@@ -108,7 +108,7 @@ sub mobile-frontend_vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
 }
 
-sub mobile-frontend_vcl_error {
+sub vcl_error {
 	/* Support mobile redirects */
 	if (obj.status == 666) {
 		set obj.http.Location = obj.response;

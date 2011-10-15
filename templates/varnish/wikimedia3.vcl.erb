@@ -2,11 +2,8 @@
 # This file is managed by Puppet!
 
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
-include "geoip.inc.vcl"
+include "geoip.inc.vcl";
 <% end -%>
-
-/* Include the VCL file for this role */
-include "<%= vcl %>.inc.vcl"
 
 # ACLs
 
@@ -25,6 +22,7 @@ acl allow_xff {
 
 # Backend probes
 
+/*
 probe text {
 	.request =
 		"GET /wiki/Main_Page HTTP/1.1"
@@ -32,6 +30,7 @@ probe text {
 		"User-agent: Varnish backend check"
 		"Connection: close";	
 }
+*/
 
 probe bits {
 	.request =
@@ -42,18 +41,24 @@ probe bits {
 	.timeout = 5s;	
 }
 
+/*
 probe upload {
 	.url = "/pybaltestfile.txt";
 	.timeout = 5s;
 }
+*/
 
 # Backends
 
 # List of Puppet generated backends
 <% varnish_backends.each do |backend| -%>
+<% if backend =~ /^[0-9\.]+$/ -%>
+backend ipv4_<%= backend %>
+<% else -%>
 backend <%= backend.split(".")[0] %> {
+<% end -%>
 	.host = "<%= backend %>";
-	.port = "<%= varnish_backend_options.fetch("port", "80") %>;
+	.port = <%= varnish_backend_options.fetch("port", "80") %>;
 	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "5s") %>;
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
@@ -71,7 +76,11 @@ director <%= director %> hash {
 	.retries = 2;
 <% varnish_directors[director].each do |backend| -%>
 	{
+<% if backend =~ /^[0-9\.]+$/ -%>
+		.backend = ipv4_<%= backend %>;
+<% else -%>
 		.backend = <%= backend.split(".")[0] %>;
+<% end -%>
 		.weight = 10;
 	}
 <% end -%>
@@ -114,13 +123,11 @@ sub vcl_recv {
 	/* Select the default backend(s) */
 	set req.backend = backend;
 	
-	call <%= vcl %>_vcl_recv;
-	
-	return (lookup);
+	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_fetch {
-	call <%= vcl %>_vcl_fetch;
+	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_hit {
@@ -129,7 +136,7 @@ sub vcl_hit {
 		error 200 "Purged.";
 	}
 	
-	call <%= vcl %>_vcl_hit;
+	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_miss {
@@ -138,7 +145,7 @@ sub vcl_miss {
 		error 200 "Cache miss";
 	}
 
-	call <%= vcl %>_vcl_miss;
+	/* Function vcl_miss in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_deliver {
@@ -148,39 +155,13 @@ sub vcl_deliver {
 		set resp.http.X-Cache<%= instancesuffix %> = "miss (0)";
 	}
 
-	call <%= vcl %>_vcl_deliver;
+	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_error {
-	call <%= vcl %>_vcl_error;
-	
-	set obj.http.Content-Type = "text/html; charset=utf-8";
-	synthetic {"
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
- "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-  <head>
-    <title>"} + obj.status + " " + obj.response + {"</title>
-  </head>
-  <body>
-    <h1>Error "} + obj.status + " " + obj.response + {"</h1>
-    <p>"} + obj.response + {"</p>
-    <h3>Guru Meditation:</h3>
-    <p>XID: "} + req.xid + {"</p>
-    <hr>
-    <address>
-       <a href="http://www.varnish-cache.org/">Varnish cache server</a>
-    </address>
-  </body>
-</html>
-"};
+	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
-# Automatically generate empty hooks, to make sure they exist
-# They will get concatenated by Varnish
-<% varnish_hook_functions.each do |fname| -%>
-sub <%= vcl %>_<%= fname %> {
-	/* Pretty please gcc, optimize me out... */
-}
-<% end -%>
+
+/* Include the VCL file for this role */
+include "<%= vcl %>.inc.vcl";
