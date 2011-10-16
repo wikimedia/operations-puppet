@@ -50,12 +50,10 @@ probe upload {
 
 # Backends
 
-# FIXME: dots are not allowed in backend names
-
 # List of Puppet generated backends
 <% varnish_backends.each do |backend| -%>
 <% if backend =~ /^[0-9\.]+$/ -%>
-backend ipv4_<%= backend %>
+backend ipv4_<%= backend.gsub(".", "_") %>
 <% else -%>
 backend <%= backend.split(".")[0] %> {
 <% end -%>
@@ -78,7 +76,7 @@ director <%= director %> hash {
 <% varnish_directors[director].each do |backend| -%>
 	{
 <% if backend =~ /^[0-9\.]+$/ -%>
-		.backend = ipv4_<%= backend %>;
+		.backend = ipv4_<%= backend.gsub(".", "_") %>;
 <% else -%>
 		.backend = <%= backend.split(".")[0] %>;
 <% end -%>
