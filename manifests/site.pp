@@ -363,36 +363,74 @@ class cache {
 
 		$lvs_realserver_ips = $site ? {
 			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
+			"eqiad" => [ "208.80.154.234", "10.2.4.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		if $site == "pmtpa" {
-			$varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-			$varnish_directors = { "appservers" => $varnish_backends }
+		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+
+		if $site == "esams" and $hostname =~ /^cp/ {
+
+			# FIXME: add eqiad as backend for esams
+			$varnish_backends = $site ? {
+				/^(pmtpa|eqiad)$/ => $all_backends,
+				'esams' => [ "bits.pmtpa.wikimedia.org" ],
+				default => []
+			}
+			$varnish_directors = $site ? {
+				/^(pmtpa|eqiad)$/ => {
+					"backend" => $bits_appservers,
+					"test_wikipedia" => $test_wikipedia
+					},
+				'esams' => {
+					"backend" => $varnish_backends,
+					"test_wikipedia" => $varnish_backends
+					}
+			}
+		else {
+			if $site == "pmtpa" {
+                    $varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+                    $varnish_directors = { "appservers" => $varnish_backends }
+            }
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
-		
-		# TODO: enable geoip
-		$backend_options = {
-			'port' => 80,
-			'connect_timeout' => "5s",
-			'first_byte_timeout' => "35s",
-			'between_bytes_timeout' => "4s",
-			'max_connections' => 10000,
-			'probe' => "bits"
-		}
 
 		system_role { "cache::bits": description => "bits Varnish cache server" }
 
 		require generic::geoip::files
 
-		include base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
-			varnish,
+		include standard,
 			lvs::realserver
+		
+		if $site == "esams" and $hostname =~ /^cp/ {
+			include varnish3::monitoring::ganglia
+			
+			varnish3::instance { "bits":
+				name => "",
+				vcl => "bits",
+				port => 80,
+				admin_port => 6082,
+				storage => "-s malloc,1G",
+				backends => $varnish_backends,
+				directors => $varnish_directors,
+				backend_options => {
+					'port' => 80,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 10000,
+					'probe' => "bits"
+				},
+				enable_geoiplookup => "true"
+			}
+		}
+		else {
+			# Old configuration
+			include varnish
+		}
 	}
 	class mobile { 
 		$roles += [ 'cache::mobile' ]
@@ -581,6 +619,12 @@ node "carbon.wikimedia.org" {
 		exim::simple-mail-sender,
 		backup::client,
 		misc::install-server::tftp-server
+}
+
+node /^cp300[12]\.esams\.wikimedia\.org$/ {
+	$ganglia_aggregator = "true"
+	
+	include cache::bits
 }
 
 node "ekrem.wikimedia.org" {
