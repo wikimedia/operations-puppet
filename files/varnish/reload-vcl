@@ -63,7 +63,7 @@ do
 	    quiet=1
 	    ;;
 	n)
-		if [  -f "$OPTARG" ] ; then
+		if [  -n "$OPTARG" ] ; then
 			instance="-n $OPTARG"
 			defaults="${defaults}-${OPTARG}"
 		fi
