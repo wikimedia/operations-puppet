@@ -208,7 +208,9 @@ class varnish3 {
 		}
 	}
 
-	class htcpd { 
+	class htcpd {
+		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
+		
 		file {
 			"/usr/bin/varnishhtcpd":
 				require => Package[varnish3],
@@ -223,8 +225,9 @@ class varnish3 {
 				group => root,
 				mode => 0555;
 		}
+		
 		service { varnishhtcpd:
-			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"] ],
+			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"], Systemuser[varnishhtcpd] ],
 			hasstatus => false,
 			pattern => "varnishhtcpd",
 			ensure => running;

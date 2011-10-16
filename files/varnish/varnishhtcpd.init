@@ -42,7 +42,7 @@ case "$1" in
 		log_daemon_msg "Starting $DESC" 
 		log_progress_msg $NAME
                 if start-stop-daemon \
-		   --start --quiet --exec ${DAEMON} -- \
+		   --start --quiet -c varnishhtcpd -g varnishhtcpd--exec ${DAEMON} -- \
                   ${DAEMON_OPTS} > ${output} 2>&1; then
 			log_end_msg 0
 		else
