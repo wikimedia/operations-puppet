@@ -373,11 +373,7 @@ class cache {
 			'esams' => [ "208.80.152.210" ],
 			default => []
 		}
-		$varnish_directors = $site ? {
-			/^(pmtpa|eqiad)$/ => { "appservers" => $varnish_backends },
-			'esams' => { "upstream" => $varnish_backends },
-			default => {}
-		}
+		$varnish_directors = { "backend" => $varnish_backends }
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 

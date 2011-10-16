@@ -5,11 +5,11 @@ sub vcl_recv {
 	if (req.http.host == "bits.wikimedia.org") {
 		# Yay
 	}
-	<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
+<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
 		call geoip_lookup;
 	}
-	<% end -%>
+<% end -%>
 	else {
 		error 403 "Requested target domain not allowed."; 
 	}
