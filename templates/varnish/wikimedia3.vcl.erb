@@ -53,7 +53,7 @@ probe upload {
 # List of Puppet generated backends
 <% varnish_backends.each do |backend| -%>
 <% if backend =~ /^[0-9\.]+$/ -%>
-backend ipv4_<%= backend.gsub(".", "_") %>
+backend ipv4_<%= backend.gsub(".", "_") %> {
 <% else -%>
 backend <%= backend.split(".")[0] %> {
 <% end -%>
