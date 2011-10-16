@@ -50,6 +50,8 @@ probe upload {
 
 # Backends
 
+# FIXME: dots are not allowed in backend names
+
 # List of Puppet generated backends
 <% varnish_backends.each do |backend| -%>
 <% if backend =~ /^[0-9\.]+$/ -%>
