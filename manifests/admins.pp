@@ -1,5 +1,5 @@
 # admins.pp
-
+# last used uid 583
 define unixaccount($username, $uid, $gid, $enabled="true") {
 	if defined(Class["nfs::home"]) {
 		$manage_home = "false"
@@ -710,6 +710,27 @@ class accounts {
 				}
 			}
 		}
+	}
+
+	class nikerabbit inherits baseaccount {
+		$username = "nikerabbit"
+		$realname = "Niklas Laxström"
+		$uid = 583
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname] }
+
+                        ssh_authorized_key {
+                                "jadekukka":
+                                        ensure  => present,
+                                        user    => $username,
+                                        type    => "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAgEAz5I9ctvMwZwehidz3oen7Teoj3pWi6M7+q0PnjXCWy6JuqkIv5vFtmi8NvCDSTCEaAdNdr7WPQHpGTSqUkbWsz0sswPlODZLDM97x9fzC8z4YhckJt9nlhGCYYqUi9hbchxTOGX2LL18/9IeU7yA5nb8qd3PPzhzjzgJkSjTgMnU5Ni+OBY3WiNJ4FFwYyitokYPVIF9ZFKkUWwuM0bSiNUjbNIUb4834i/tJ3g2plxX+9+7d5b6wFSWu7+e8wgN4avaTC46B3zKcYmfDUA2ebiZuhwUU2NdsP/z0Q3rOZ3LxRmVkOJFbK9vgmkQtTzSkhG3ZEgUiHc2QCjgccjkv+KFayn26WujtbmZZoIELC7/46lgwWGEZtb0QUbo2rY8yHaeetoVuVzZGtCrr0tEBx0w2AH9BfOYsQOnM7eOVzM/VSdW+3sTrQMCvfpd8HZsWT7d2dSyM4hsvRaETwxxoXQEiZZfik0oH/EJSH/AogfvXu4MTUiCekNtPRazJPa9nI5M8CVtMiSUb3mY7OJ1OLfn4nWBvVTxp2sP3nTSwLEYpop2lMUwEwy/O4POXUuKDZQOEqKb5yRxuW7bOSGSDKZKHaZn5X25BwVOT/oNX/vqSRGxf8OWGVj6Ic2RNuGnYWDmEf1Rp4BVn8xATzOO8/o3yDnElw3M2gBkQ3hDWFM=";
+                        }
+                }
+
 	}
 
 	class nimishg inherits baseaccount {
@@ -1548,14 +1569,15 @@ class admins::roots {
 	include accounts::ben
 	include accounts::catrope
 }
-
-class admins::mortals {
+# mortals are the software deployment group, we should rename and rewrite this someday
+class admins::mortals { 
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 
 	include accounts::andrew
 	include accounts::awjrichards
 	include accounts::aaron
+	include accounts::nikerabbit
 	include accounts::nimishg
 	include accounts::rfaulk
 	include accounts::zak
