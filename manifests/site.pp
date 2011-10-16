@@ -384,8 +384,7 @@ class cache {
 					"test_wikipedia" => $test_wikipedia
 					},
 				'esams' => {
-					"backend" => $varnish_backends,
-					"test_wikipedia" => $varnish_backends
+					"backend" => $varnish_backends
 					}
 			}
 		}
