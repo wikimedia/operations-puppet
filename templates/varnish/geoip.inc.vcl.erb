@@ -98,5 +98,4 @@ sub geoip_lookup {
 		VRT_SetHdr(sp, HDR_OBJ, "\016Last-Modified:", date, vrt_magic_string_end);
 		VRT_SetHdr(sp, HDR_OBJ, "\016Cache-Control:", "private, max-age=86400, s-maxage=0", vrt_magic_string_end);
 	}C
-	return (deliver);
 }
