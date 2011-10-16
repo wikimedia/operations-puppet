@@ -397,7 +397,7 @@ class cache {
 		include standard,
 			lvs::realserver
 		
-		if $site == "esams" {
+		if $site == "esams" and $hostname =~ /^cp/ {
 			include varnish3::monitoring::ganglia
 			
 			varnish3::instance { "bits":
