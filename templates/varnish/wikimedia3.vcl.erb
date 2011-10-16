@@ -32,6 +32,17 @@ probe text {
 }
 */
 
+# FIXME: need to support checks from pmtpa to backend bits app servers
+<% if vcl == "bits" and site == "esams" -%>
+probe bits {
+	.request =
+		"GET /images/wikimedia-button.png HTTP/1.1"
+		"Host: bits.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+<% else -%>
 probe bits {
 	.request =
 		"GET /w/load.php HTTP/1.1"
@@ -40,6 +51,7 @@ probe bits {
 		"Connection: close";
 	.timeout = 5s;	
 }
+<% end -%>
 
 /*
 probe upload {
