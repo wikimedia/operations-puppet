@@ -419,7 +419,7 @@ class cache {
 
 		include standard,
 			varnish3::htcpd,
-			varnish3::monitoring,
+			varnish3::monitoring::ganglia,
 			lvs::realserver
 		
 		varnish3::instance { "mobile-backend":

@@ -188,17 +188,14 @@ class varnish3 {
 			path => "/bin:/usr/bin",
 			refreshonly => true;
 		}
+
+		monitor_service { "varnish http ${title}":
+			description => "Varnish HTTP ${title}",
+			check_command => 'check_http_generic!varnishcheck!${port}'
+		}
 	}
 
-	# FIXME: make generic/multi-instance
-	class monitoring {
-		# Nagios
-		monitor_service { "varnish http":
-			description => "Varnish HTTP",
-			check_command => 'check_http_bits'
-		}
-
-		# Ganglia
+	class monitoring::ganglia {
 		file {
 			"/usr/lib/ganglia/python_modules/varnish.py":
 				require => File["/usr/lib/ganglia/python_modules"],

@@ -121,7 +121,11 @@ sub vcl_recv {
 
 	/* Select the default backend(s) */
 	set req.backend = backend;
-	
+
+	if ( req.http.host == "varnishcheck" ) {
+		error 200 "OK"; 
+	}
+
 	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
 }
 
