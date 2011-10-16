@@ -367,25 +367,33 @@ class cache {
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
-		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+		if $site == "esams" and $hostname =~ /^cp/ {
+			$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-		# FIXME: add eqiad as backend for esams
-		$varnish_backends = $site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
-			'esams' => [ "bits.pmtpa.wikimedia.org" ],
-			default => []
+			# FIXME: add eqiad as backend for esams
+			$varnish_backends = $site ? {
+				/^(pmtpa|eqiad)$/ => $all_backends,
+				'esams' => [ "bits.pmtpa.wikimedia.org" ],
+				default => []
+			}
+			$varnish_directors = $site ? {
+				/^(pmtpa|eqiad)$/ => {
+					"backend" => $bits_appservers,
+					"test_wikipedia" => $test_wikipedia
+					},
+				'esams' => {
+					"backend" => $varnish_backends,
+					"test_wikipedia" => $varnish_backends
+					}
+			}
 		}
-		$varnish_directors = $site ? {
-			/^(pmtpa|eqiad)$/ => {
-				"backend" => $bits_appservers,
-				"test_wikipedia" => $test_wikipedia
-				},
-			'esams' => {
-				"backend" => $varnish_backends,
-				"test_wikipedia" => $varnish_backends
-				}
+		else {
+            if $site == "pmtpa" {
+                    $varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+                    $varnish_directors = { "appservers" => $varnish_backends }
+            }
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
