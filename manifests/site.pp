@@ -363,6 +363,7 @@ class cache {
 
 		$lvs_realserver_ips = $site ? {
 			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
+			"eqiad" => [ "208.80.154.234", "10.2.4.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
@@ -606,7 +607,7 @@ node "carbon.wikimedia.org" {
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 	
-	include standard
+	include cache::bits
 }
 
 node "ekrem.wikimedia.org" {
