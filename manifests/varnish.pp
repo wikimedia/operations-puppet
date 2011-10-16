@@ -113,7 +113,7 @@ class varnish3 {
 			require => Package[varnish3],
 			device => "tmpfs",
 			fstype => "tmpfs",
-			options => "noatime,defaults,size=320M",
+			options => "noatime,defaults,size=512M",
 			pass => 0,
 			dump => 0,
 			ensure => mounted;
