@@ -7,7 +7,7 @@ sub vcl_recv {
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
-		call geoip_lookup;
+		error 666 "geoiplookup";
 	}
 <% end -%>
 	else {
@@ -27,5 +27,14 @@ sub vcl_miss {
 		if ( req.url ~ "^/test\.wikipedia\.org/load\.php" ) {
 			set req.backend = test_wikipedia;
 		}
+	}
+}
+
+sub vcl_error {
+	/* Support geoiplookup */
+	if (obj.status == 666) {
+		call geoip_lookup;
+		set obj.status = 200;
+		return(deliver);
 	}
 }
