@@ -127,6 +127,8 @@ class varnish3 {
 	}
 	
 	class common-vcl {
+		require "varnish3::common"
+		
 		file {
 			"/etc/varnish/geoip.inc.vcl":
 				content => template("varnish/geoip.inc.vcl.erb");
