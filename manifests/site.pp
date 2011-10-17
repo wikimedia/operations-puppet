@@ -939,8 +939,15 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "s7"
 	}
 
-	if $hostname =~ /^db(1008|1025|1042|1048)$/ {
-		$db_cluster = "fr"
+	if $hostname =~ /^(db1008|db1025)$/ {
+		$db_cluster = "fundraisingdb"
+		if $hostname == "db1008" { # db1008 is a middle-master
+			$writable = "true"
+		}
+	}
+
+	if $hostname =~ /^(db1042|db1048)$/ {
+		$db_cluster = "otrsdb"
 	}
 
 	# Here Be Masters
