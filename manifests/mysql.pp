@@ -125,7 +125,7 @@ class mysql {
 			$ibsize = "500M"
 		}
 
-		# enable innodb_file_per_table if it's a fundraising or otrs database
+		# enable innodb_file_per_table if it's a fundraising/otrs database
 		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ {
 			$innodb_file_per_table = "true"
 		} else {
