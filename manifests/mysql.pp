@@ -126,7 +126,7 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster ==~ /^(fundraisingdb|otrsdb)$/ {
+		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ {
 			$innodb_file_per_table = "true"
 		} else {
 			$innodb_file_per_table = "false"
