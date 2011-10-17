@@ -90,7 +90,10 @@ class mysql {
 
 	class conf {
 		$db_clusters = {
-			"fr" => { 
+			"fundraisingdb" => { 
+				"innodb_log_file_size" => "500M"
+			},
+			"otrsdb" => { 
 				"innodb_log_file_size" => "500M"
 			},
 			"s1" => { 
@@ -122,8 +125,8 @@ class mysql {
 			$ibsize = "500M"
 		}
 
-		# enable innodb_file_per_table if it's a fundraising (fr) database
-		if $db_cluster == "fr" {
+		# enable innodb_file_per_table if it's a fundraising or otrs database
+		if $db_cluster ==~ /^(fundraisingdb|otrsdb)$/ {
 			$innodb_file_per_table = "true"
 		} else {
 			$innodb_file_per_table = "false"
