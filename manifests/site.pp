@@ -16,7 +16,6 @@ import "apaches.pp"
 import "mediawiki.pp"
 import "mysql.pp"
 import "memcached.pp"
-import "mobile.pp"
 import "snapshots.pp"
 import "ntp.pp"
 import "nfs.pp"
@@ -1481,30 +1480,6 @@ node "lily.knams.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
-}
-
-node /mobile[1-5]\.wikimedia\.org/ {
-	sudo_user { preilly: user => "preilly", privileges => ['ALL = NOPASSWD: ALL'] }
-	if $hostname =~ /^mobile[12]/ {
-		$ganglia_aggregator = "true"
-	}
-	$cluster = "mobile"
-	$gid = 500
-	$lvs_realserver_ips = [ "208.80.152.5" ]
-	sudo_user { hcatlin : user => "hcatlin", privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender,
-		groups::wikidev,
-		accounts::hcatlin,
-		accounts::preilly
-	if $hostname =~ /^mobile[2345]/ {
-		include mobile::v1104
-	} else {
-		include mobile::disabled
-	}	
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
