@@ -1040,6 +1040,7 @@ node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+	sudo_user { hashar: user => "hashar", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	include base,
 		ganglia,
 		ntp::client,
