@@ -14,7 +14,7 @@ class dns::auth-server-ldap {
 	}
 
 	include openstack::nova_config
-	
+
 	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
 	$nova_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
 	$nova_ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
@@ -129,7 +129,7 @@ class dns::auth-server {
 		"${dns_auth_soa_name}":
 			type => ssh-rsa,
 			key => $sshrsakey,
-	                ensure => present;
+			ensure => present;
 		"${dns_auth_ipaddress}":
 			type => ssh-rsa,
 			key => $sshrsakey,
@@ -142,12 +142,11 @@ class dns::auth-server {
 
 	cron { "update ip map":
 		command => "rsync -qt 'rsync://countries-ns.mdc.dk/zone/zz.countries.nerd.dk.rbldnsd' /etc/powerdns/ip-map/zz.countries.nerd.dk.rbldnsd && pdns_control rediscover > /dev/null",
-                user => pdns,
-                hour => 4,
+		user => pdns,
+		hour => 4,
 		minute => 7,
 		ensure => present;
-        }
-
+	}
 
 	# Monitoring
 	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
