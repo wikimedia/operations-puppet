@@ -36,7 +36,7 @@ class dns::auth-server-ldap {
 			require => Package["pdns-server"],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => template("powerdns/pdns-ldap.conf.erb"),
 			ensure => present;
 	}
@@ -78,13 +78,13 @@ class dns::auth-server {
 			require => Package[wikimedia-task-dns-auth],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => template("powerdns/pdns.conf.erb"),
 			ensure => present;
 		"/usr/local/lib/selective-answer.py":
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/powerdns/selective-answer.py",
 			ensure => present;
 		"/etc/powerdns/participants":
@@ -93,13 +93,13 @@ class dns::auth-server {
 		"/root/.ssh/wikimedia-task-dns-auth":
 			owner => root,
 			group => root,
-			mode => 0600,
+			mode => 0400,
 			source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
 			ensure => present;
 		"/etc/powerdns/ip-map":
 			owner => pdns,
 			group => pdns,
-			mode => 0755,
+			mode => 0555,
 			recurse => true;
 		# Remove broken cron job
 		"/etc/cron.d/wikimedia-task-dns-auth":
@@ -169,7 +169,7 @@ class dns::recursor {
 		require => Package[pdns-recursor],
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		content => template("powerdns/recursor.conf.erb"),
 		ensure => present;
 	}
