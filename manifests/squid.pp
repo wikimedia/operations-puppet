@@ -11,7 +11,7 @@ import "generic-definitions.pp"
 
 class squid {
 
-	if $cluster_env == "labs" {
+	if $realm == "labs" {
 		# Hack for arrays in LDAP - you suck puppet
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}

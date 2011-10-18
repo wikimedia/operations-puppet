@@ -67,7 +67,7 @@ class base::puppet {
 	if $is_labs_puppet_master != "true" {
 		$is_labs_puppet_master = "false"
 	}
-	if $cluster_env == "labs" or $is_labs_puppet_master {
+	if $realm == "labs" or $is_labs_puppet_master {
 		# We must load the nova config class, if we want to
 		# use the vars in the template
 		include openstack::nova_config
@@ -203,7 +203,7 @@ class base::resolving {
 		error("Variable $nameservers is not defined!")
 	}
 	else {
-		if $cluster_env != "labs" {
+		if $realm != "labs" {
 			file { "/etc/resolv.conf":
 				owner => root,
 				group => root,
@@ -266,7 +266,7 @@ class base::instance-upstarts {
 
 class base::instance-finish {
 
-        if $cluster_env == "labs" {
+        if $realm == "labs" {
                 exec {
                         "/bin/rm /etc/init/runonce-fixpuppet.conf":
                                 onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
@@ -309,7 +309,7 @@ class base {
 		base::monitoring::host,
 		ssh
 
-	if $cluster_env == "labs" {
+	if $realm == "labs" {
 		include base::instance-upstarts
 	}
 

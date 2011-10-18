@@ -474,7 +474,7 @@ class ldap::client::utils {
 			content => template("ldap/scriptconfig.py.erb");
 	}
 
-	if ( $cluster_env != "labs" ) {
+	if ( $realm != "labs" ) {
 		file {
 			"/etc/ldap/.ldapscriptrc":
 				owner => root,
@@ -580,7 +580,7 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
-	if ( $cluster_env == "labs" ) {
+	if ( $realm == "labs" ) {
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
 		file { "/etc/security/access.conf":
 			owner => root,
@@ -630,7 +630,7 @@ class ldap::client::includes {
 			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/homedirectorymanager.py &>> /var/log/homedirectorymanager.log",
 			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
-		if $cluster_env == "labs" {
+		if $realm == "labs" {
 			exec {
 				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
 				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Exec["createhomedirs"], Service['exim4'], Package['exim4-daemon-light'] ],

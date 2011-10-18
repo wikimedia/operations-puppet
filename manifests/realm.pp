@@ -2,7 +2,9 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
-$realm = "production"
+if !$realm {
+	$realm = "production"
+}
 
 # TODO: redo this in a much better way
 $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
@@ -39,8 +41,3 @@ $domain_search = $domain
 
 # Default group
 $gid = 500
-
-# FIXME: remove this, create special realm.pp for other realms
-if !$cluster_env {
-	$cluster_env = "production"
-}
