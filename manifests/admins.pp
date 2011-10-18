@@ -1,5 +1,13 @@
 # admins.pp
+
 # last used uid 583
+
+# TODO: completely rewrite this file
+
+# NOTE: To completely disable an account, you should
+# 1) set variable $enabled = "false"
+# 2) set all ssh authorized keys to ensure => absent
+
 define unixaccount($username, $uid, $gid, $enabled="true") {
 	if defined(Class["nfs::home"]) {
 		$manage_home = "false"
@@ -97,7 +105,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"ashields@local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAK2KMwlLfnArieW+Obz2e8V+7EgK+9tsX+eUOyRM6MDNHLlxnSLr9b0EVpS6dBtSaWt1LcfZtSBGAJvFBloROZBRDup+w+N+S27QTBdfxLtsnn4j16zHjaF/psameua+f9onQ8yK4lAPZfxpvY/6Fr0nt9skFTrC60V3kgdu18WJAAAAFQCHIvPCAB6Yg56Ha2ST7JT1iorrYQAAAIA4F6foFJB/PJ0wcySUVlXYI0KahgnZkQDnhsPebX/g2L/5/IVOCOxDH5EttA/w+IsmArO9Lrj7T8fAvs8bykaYOAhVNdP2kLq387T0LgBD8b9eexK0zdbhqoHDiyx2+Z80gaewKB/tOVzhE0QCN3Krr/ubdI2dM57fzjygDCp1GAAAAIEApbMDfrRfJZk0GL14ykKDj83bHUfjn/KrH+BULMctePytaIwfDjsKvy/ntj5mIglipX2Y2QL7H+/pEGkQbP8SdNNb8tEb2iDjq6jKKsKB5lFfUHX5rk9sUfViEOUNJ6JJCcSVMmj7hgVWKA2UdI0XQuaBoxEARVXtLnCp5LGcDbw=",
@@ -521,6 +529,7 @@ class accounts {
 		$username = "hcatlin"
 		$realname = "Hampton Catlin"
 		$uid = 550
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -529,7 +538,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"hcatlin@greed.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAoET83J1YKyC8C0su4RfGVWz9Lx69dwSgPamrAGue/BvQ4W7IDvCQZPi8pKMZuhY4N7OkjjhTjV7JqMqqjKICCwFVHZQSuMbFKYbaMtuYGGno0kGVRpGd7n9x4bHAep5K6H/FUpedPPjuhfXmvl7EYRIYHJrayMS2P79o5GcFFwQ6rYuBvc/vAMkOp1NFjfOktPLUmaU4PMroeIPf1XJ+n2Wr5hFw7fehHcYF7VmJft6jhPN+DVHyziJPRWEhFe5axfkqEC6wIk2O/d7OqnPATlk+7+vEh69yOzZu8Jh/FrNn9HzGHH8ZzvuksUvVoRyw8qlhFRxJKLbl/IPPZ5v7Dw==";
@@ -541,6 +550,7 @@ class accounts {
                 $username = "jdavis"
                 $realname = "Jon Davis"
 		$uid = 1004
+		$enabled = "false"
 
                 unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -548,7 +558,7 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname] }
                         
 			ssh_authorized_key { "jdavis@wikimedia.org":
-                                        ensure  => present,
+                                        ensure  => absent,
                                         user    => $username,
                                         type    => "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAQEAliYsMiUqipe/HtqzehVebaH8/kVl6RddesJC8fy/jV4TTTFpp+Ow9zpwqgS4lVgeYmrHnp3iDraTiqLlTzoB9e3hXwatzysUASn6sgep5zSTIqC7pb5xYHi6dsI+47L72vFoGfZdugXUYXqgml5JIRk++CK2KaH6udsxev/vW7iJWLxoPbXA9/dsX32/JHnHcNKWkYSjOvl+kvDsLqgnBO+smrLqLey5h1T6BObo7sM6hUUe+COpzNyJC5stP/GMUaYohHu2u9lwcIUFDB/5Wn7aY2ZyNgeoiGrS2angNoI2kNMucHw0eAtIFpXVYuuz7+ijDdGICeh0auIRfOg54Q==";
@@ -1020,7 +1030,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "pdhanda":
-				ensure 	=> present,
+				ensure 	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA3HbBUW7PKFdkYaPkzvPJlXywNtiu2+9w0nZyfqnC2cM1oEh8E1R8q5gWiUnaeNr65XYceMl/bja+g2g9QZkBAHtQArOZ+DePoejPUyfR1UUczARRywTFVTCS6vSZ5gAnujPuEcrOU5UTVgB+jicX7tqMh3AyJ9HBSDa0FCgK6PP68w4zDgIIFp5wRVBhzfPUNXHUkRBMuUaN7oGtq7VYaDITGLvyIFDIQ5FHLXiuy4OAAPvnf9/4pC30d0C1BVMPJEEIrj+KzlNSdUfy9WOxeNYn6vfsc0CR+soie0um5juwfyQWiDVmw2/lJcB47GoEqZ9dp3zXc91tsVEom7TADQ=="
@@ -1078,7 +1088,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key { "rcole":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAugxekmKIaoXPi5P3DXSG7CQM8tvDsaXjE9SEdAhQ0G/elNvjpaVUO1qp1OatsvcMkehlKsRC0/7+SsQVXJAANe0TD7gnYJPfQXq8aY9+Q/Jw+/qNWdTzlJpdyY5ZY3OuBXn2oDgmxk1RmEzCGYfjGN/+/tuQiYUoX+tJu/EbxMnZQjs9CTf3YmzKOI1Sghy2wHw7e9yYnnevA1zUgWBd0hy5CImxDquzgiW38Bmx1HyUJnaTmxeSoYG7/o4Mxqpx2HULPZNyrDuvDxpO3pUPqANgTIHalH1PrSlbpORm/mKlH16q8qvV+ea5wOTtev8/Hso9+Qh67emczngQ3K2LUw=="
@@ -1339,7 +1349,8 @@ class accounts {
 	class shawn inherits baseaccount {
 		$username = "shawn"
 		$realname = "Shawn Walker"
-		$uid = 563 
+		$uid = 563
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1359,7 +1370,8 @@ class accounts {
 	class halfak inherits baseaccount {
 		$username = "halfak"
 		$realname = "Aaron Halfaker"
-		$uid = 564 
+		$uid = 564
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1379,7 +1391,8 @@ class accounts {
 	class diederik inherits baseaccount {
 		$username = "diederik"
 		$realname = "Diederik van Liere"
-		$uid = 565 
+		$uid = 565
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1399,7 +1412,8 @@ class accounts {
 	class declerembaul inherits baseaccount {
 		$username = "declerembaul"
 		$realname = "Fabian Kaelin"
-		$uid = 566 
+		$uid = 566
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1419,7 +1433,8 @@ class accounts {
 	class whym inherits baseaccount {
 		$username = "whym"
 		$realname = "Yusuke Matsubara"
-		$uid = 567 
+		$uid = 567
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1440,6 +1455,7 @@ class accounts {
 		$username = "giovanni"
 		$realname = "Giovanni Luca Ciampaglia"
 		$uid = 568 
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
