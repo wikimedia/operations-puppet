@@ -184,7 +184,7 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
-			require => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
+			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia3_${vcl}.vcl"] ],
 			subscribe => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
@@ -235,6 +235,8 @@ class varnish3 {
 			ensure => running;
 		}
 	}
+
+	# FIXME: add varnish logging class
 
 	# Make a default instance
 	instance { "default": }
