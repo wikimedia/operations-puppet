@@ -13,6 +13,7 @@ class dns::auth-server-ldap {
 		ensure => latest;
 	}
 
+	# FIXME: parameterize, call from a nova role class, remove this include
 	include openstack::nova_config
 
 	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
@@ -29,7 +30,7 @@ class dns::auth-server-ldap {
 		fail("Parameter $dns_auth_soa_name not defined!")
 	}
 
-	system_role { "dns::auth-server": description => "Authoritative DNS server" }
+	system_role { "dns::auth-server-ldap": description => "Authoritative DNS server (LDAP)" }
 
 	file {
 		"/etc/powerdns/pdns.conf":
@@ -159,7 +160,7 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 
 class dns::recursor {
 	if ! $dns_recursor_ipaddress {
-		fail("Parametmer $dns_recursor_ipaddress not defined!")
+		fail("Parameter $dns_recursor_ipaddress not defined!")
 	}
 
 	package { pdns-recursor:
