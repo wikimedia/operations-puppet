@@ -113,7 +113,7 @@ class varnish3 {
 			require => Package[varnish3],
 			device => "tmpfs",
 			fstype => "tmpfs",
-			options => "noatime,defaults,size=320M",
+			options => "noatime,defaults,size=512M",
 			pass => 0,
 			dump => 0,
 			ensure => mounted;
@@ -126,7 +126,16 @@ class varnish3 {
 		}
 	}
 	
-	define instance($name="", $vcl = "wikimedia", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $link_geoip="false") {
+	class common-vcl {
+		require "varnish3::common"
+		
+		file {
+			"/etc/varnish/geoip.inc.vcl":
+				content => template("varnish/geoip.inc.vcl.erb");
+		}
+	}
+	
+	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false") {
 		include varnish3::common
 		
 		if $name == "" {
@@ -142,18 +151,29 @@ class varnish3 {
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
-		$varnish_link_geoip = $link_geoip
+		$varnish_enable_geoiplookup = $enable_geoiplookup
 		$varnish_backends = $backends
 		$varnish_directors = $directors
+		$varnish_backend_options = $backend_options
+				
+		# Install VCL include files shared by all instances
+		require "varnish3::common-vcl"
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":
 				content => template("varnish/varnish.init.erb"),
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
-				content => template("varnish/varnish3-default.erb");
-			"/etc/varnish/${vcl}.vcl":
-				content => template("varnish/${vcl}.vcl.erb");
+				content => template("varnish/varnish3-default.erb"),
+				mode => 0444;
+			"/etc/varnish/${vcl}.inc.vcl":
+				content => template("varnish/${vcl}.inc.vcl.erb"),
+				notify => Exec["load-new-vcl-file${instancesuffix}"],
+				mode => 0444;
+			"/etc/varnish/wikimedia3_${vcl}.vcl":
+				require => File["/etc/varnish/${vcl}.inc.vcl"],
+				content => template("varnish/wikimedia3.vcl.erb"),
+				mode => 0444;
 		}
 
 		service { "varnish${instancesuffix}":
@@ -164,23 +184,20 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
-			require => File["/etc/varnish/${vcl}.vcl"],
-			subscribe => File["/etc/varnish/${vcl}.vcl"],
+			require => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
+			subscribe => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
 		}
+
+		monitor_service { "varnish http ${title}":
+			description => "Varnish HTTP ${title}",
+			check_command => "check_http_generic!varnishcheck!${port}"
+		}
 	}
 
-	# FIXME: make generic/multi-instance
-	class monitoring {
-		# Nagios
-		monitor_service { "varnish http":
-			description => "Varnish HTTP",
-			check_command => 'check_http_bits'
-		}
-
-		# Ganglia
+	class monitoring::ganglia {
 		file {
 			"/usr/lib/ganglia/python_modules/varnish.py":
 				require => File["/usr/lib/ganglia/python_modules"],
@@ -193,7 +210,9 @@ class varnish3 {
 		}
 	}
 
-	class htcpd { 
+	class htcpd {
+		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
+		
 		file {
 			"/usr/bin/varnishhtcpd":
 				require => Package[varnish3],
@@ -208,8 +227,9 @@ class varnish3 {
 				group => root,
 				mode => 0555;
 		}
+		
 		service { varnishhtcpd:
-			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"] ],
+			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"], Systemuser[varnishhtcpd] ],
 			hasstatus => false,
 			pattern => "varnishhtcpd",
 			ensure => running;

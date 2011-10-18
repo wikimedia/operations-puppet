@@ -363,12 +363,36 @@ class cache {
 
 		$lvs_realserver_ips = $site ? {
 			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
+			"eqiad" => [ "208.80.154.234", "10.2.4.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		if $site == "pmtpa" {
-			$varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-			$varnish_directors = { "appservers" => $varnish_backends }
+		if $site == "esams" and $hostname =~ /^cp/ {
+			$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+
+			# FIXME: add eqiad as backend for esams
+			$varnish_backends = $site ? {
+				/^(pmtpa|eqiad)$/ => $all_backends,
+				'esams' => [ "bits.pmtpa.wikimedia.org" ],
+				default => []
+			}
+			$varnish_directors = $site ? {
+				/^(pmtpa|eqiad)$/ => {
+					"backend" => $bits_appservers,
+					"test_wikipedia" => $test_wikipedia
+					},
+				'esams' => {
+					"backend" => $varnish_backends
+					}
+			}
+		}
+		else {
+            if $site == "pmtpa" {
+                    $varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+                    $varnish_directors = { "appservers" => $varnish_backends }
+            }
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
@@ -377,12 +401,35 @@ class cache {
 
 		require generic::geoip::files
 
-		include base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
-			varnish,
+		include standard,
 			lvs::realserver
+		
+		if $site == "esams" and $hostname =~ /^cp/ {
+			include varnish3::monitoring::ganglia
+			
+			varnish3::instance { "bits":
+				name => "",
+				vcl => "bits",
+				port => 80,
+				admin_port => 6082,
+				storage => "-s malloc,1G",
+				backends => $varnish_backends,
+				directors => $varnish_directors,
+				backend_options => {
+					'port' => 80,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 10000,
+					'probe' => "bits"
+				},
+				enable_geoiplookup => "true"
+			}
+		}
+		else {
+			# Old configuration
+			include varnish
+		}
 	}
 	class mobile { 
 		$roles += [ 'cache::mobile' ]
@@ -399,7 +446,7 @@ class cache {
 			default => []
 		}
 		$varnish_fe_directors = $site ? {
-			"eqiad" => { "back" => $varnish_fe_backends },
+			"eqiad" => { "backend" => $varnish_fe_backends },
 			default => {}
 		}
 
@@ -409,7 +456,7 @@ class cache {
 
 		include standard,
 			varnish3::htcpd,
-			varnish3::monitoring,
+			varnish3::monitoring::ganglia,
 			lvs::realserver
 		
 		varnish3::instance { "mobile-backend":
@@ -417,7 +464,17 @@ class cache {
 			vcl => "mobile-backend",
 			port => 81,
 			admin_port => 6083,
-			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%"
+			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
+			backends => [ "10.2.1.1" ],
+			directors => { "backend" => [ "10.2.1.1" ] },
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 1000,
+				'probe' => "bits"
+				},
 		}
 		
 		varnish3::instance { "mobile-frontend":
@@ -427,6 +484,14 @@ class cache {
 			admin_port => 6082,
 			backends => $varnish_fe_backends,
 			directors => $varnish_fe_directors,
+			backend_options => {
+				'port' => 81,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "2s",
+				'max_connections' => 100000,
+				'probe' => "bits"
+				},
 		}
 	}
 }
@@ -553,6 +618,12 @@ node "carbon.wikimedia.org" {
 		exim::simple-mail-sender,
 		backup::client,
 		misc::install-server::tftp-server
+}
+
+node /^cp300[12]\.esams\.wikimedia\.org$/ {
+	$ganglia_aggregator = "true"
+	
+	include cache::bits
 }
 
 node "ekrem.wikimedia.org" {
@@ -868,8 +939,15 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "s7"
 	}
 
-	if $hostname =~ /^db(1008|1025|1042|1048)$/ {
-		$db_cluster = "fr"
+	if $hostname =~ /^(db1008|db1025)$/ {
+		$db_cluster = "fundraisingdb"
+		if $hostname == "db1008" { # db1008 is a middle-master
+			$writable = "true"
+		}
+	}
+
+	if $hostname =~ /^(db1042|db1048)$/ {
+		$db_cluster = "otrsdb"
 	}
 
 	# Here Be Masters

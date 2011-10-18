@@ -48,21 +48,6 @@ else
     vcl_label="$($date +${LOGNAME}${LOGNAME:+:}%s.%N)"
 fi
 
-# Load defaults file
-if [ -f "$defaults" ]
-then
-    if [ -r "$defaults" ]
-    then
-	. "$defaults"
-    else
-	printf >&2 "$msg_defaults_not_readable" $defaults
-	exit 1
-    fi
-else
-    printf >&2 "$msg_defaults_not_there" $defaults
-    exit 1
-fi
-
 # parse command line arguments
 while getopts n:hcq flag
 do
@@ -78,8 +63,9 @@ do
 	    quiet=1
 	    ;;
 	n)
-		if [  -f "$OPTARG" ] ; then
+		if [  -n "$OPTARG" ] ; then
 			instance="-n $OPTARG"
+			defaults="${defaults}-${OPTARG}"
 		fi
 		;;
 	*)
@@ -88,6 +74,21 @@ do
 	    ;;
     esac
 done
+
+# Load defaults file
+if [ -f "$defaults" ]
+then
+    if [ -r "$defaults" ]
+    then
+	. "$defaults"
+    else
+	printf >&2 "$msg_defaults_not_readable" $defaults
+	exit 1
+    fi
+else
+    printf >&2 "$msg_defaults_not_there" $defaults
+    exit 1
+fi
 
 # Parse $DAEMON_OPTS (options must be kept in sync with varnishd).
 # Extract the -f and the -T option, and (try to) ensure that the
@@ -166,7 +167,11 @@ then
 else
     printf "$msg_compile_failed" $vcl_label $vcl_file
     exitstatus=1
-fi | grep -v "^$" > $logfile
+fi 
+
+if [ -n "$exitstatus" ] ; then
+	echo "$vcl_file $vcl_label relaod failed" > $logfile
+fi
 
 # Blather
 if [ -z "${quiet}" -o -n "$exitstatus" ]

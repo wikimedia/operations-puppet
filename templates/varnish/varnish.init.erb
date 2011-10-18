@@ -40,7 +40,7 @@ ulimit -l ${MEMLOCK:-82000}
 # installed application server.)
 DAEMON_OPTS=${DAEMON_OPTS:--b localhost}
 
-<% if varnish_link_geoip == "true" %>
+<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" %>
 # Bash sucks
 CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -lGeoIP -o %o %s"
 <% end %>
@@ -52,7 +52,7 @@ case "$1" in
 		log_progress_msg $NAME
                 if start-stop-daemon \
 		   --start --quiet --pidfile ${PIDFILE} --exec ${DAEMON} -- \
-                   -P ${PIDFILE} ${DAEMON_OPTS} <% if varnish_link_geoip == "true" -%>-p cc_command="${CC_COMMAND}"<% end -%> > ${output} 2>&1; then
+                   -P ${PIDFILE} ${DAEMON_OPTS} <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>-p cc_command="${CC_COMMAND}"<% end -%> > ${output} 2>&1; then
 			log_end_msg 0
 		else
 			log_end_msg 1
