@@ -333,6 +333,10 @@ $lvs_services = {
 
 
 class lvs::balancer {
+	if $realm == "labs" {
+		# Hack for arrays in LDAP - you suck puppet
+		$lvs_balancer_ips = split(get_var('lvs_balancer_ips'), ',')
+	}
 	$lvs_realserver_ips = $lvs_balancer_ips
 
 	system_role { "lvs::balancer": description => "LVS balancer" }
