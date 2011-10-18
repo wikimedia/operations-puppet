@@ -54,7 +54,11 @@ class dns::auth-server-ldap {
 
 }
 
-class dns::auth-server {
+class dns::auth-server($ipaddress="", $soa_name="", $master="") {
+	$dns_auth_ipaddress = $ipaddress
+	$dns_auth_soa_name = $soa_name
+	$dns_auth_master = $master
+
 	if ! $dns_auth_ipaddress {
 		fail("Parametmer $dns_auth_ipaddress not defined!")
 	}
