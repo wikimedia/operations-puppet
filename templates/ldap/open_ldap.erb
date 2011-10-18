@@ -1,6 +1,8 @@
 BASE            <%= basedn %>
 URI             <% servernames.each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
+BINDDN          cn=proxyagent,ou=profile,<%= basedn %>
+BINDPW          <%= proxypass %>
 SSL             start_tls
 TLS_CHECKPEER   yes
 TLS_REQCERT     demand
