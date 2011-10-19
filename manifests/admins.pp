@@ -1180,6 +1180,11 @@ class accounts {
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAt0zYrPQ9uWGikvIQymX30hGeV42aSNnSZ3ClhEVMYHi98IJFFCFJC1UiQdhMV3p0fyVN0KZRTzYDFDsIKZxAN7/ZAyNaAujmRb5FBJ2IxDUaG89n0ZbmMz09BktVbM9jorzkaLatMYs4ouzjuH4EoW7Dbr2EO/cYAzK4Qv0wQnVDbd2bTjcJ48b5QWhQ9PWvytPOv0PgJTql3zUs3lSVAc7sOTU5FmwGIQBehGCvHJvepr/b8omJwTICQUsiICisJELlZesc7QdfiourSZIy3MYSMefhbELPGPBMC132bS8IhaC/3iFA8GAuTuNqaHqJVzrUm2t4r0ZvDJReX0zLdQ==";
+				"root@locke":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAts9B3wd7NAZVKvdgPc2KWuIwvbxrUdbNGZZQA7W6j4OKBOB6FW+75gbpnSy3gLdj7DmOAzebRVNKcV7rWFQatntlfIFtWyOefLjnFFKuGemo86jiyTmjXxm4NX0EqQJuk2PvkPc9ZMHp0si3vVUT2/TMN7ZbMmorWfp90Zu0SuB3b1DeNiKRHBM+bwo57lMGxvHxWQOG/Qj6btzpiIAXye6hSj57l4ByQl1s9URRzMkgnNofapWt9Bq3JyyGgQnF5uEFVdWfu0yhlkFrj721P3Ren6M9YmH4uY7l8iGuak8zE8cCW3VeYZTJAKmxLuJxT5BX1bQfBuo5loOlg8HQow==";
 			}
 		}
 	}
