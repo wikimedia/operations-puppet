@@ -19,6 +19,9 @@ class exim::packages {
 }
 
 class exim::packages::heavy {
+
+	$exim_queuerunner = 'combined'
+
 	package { [ "exim4-daemon-heavy", "exim4-config" ]:
 		ensure => latest;
         }
