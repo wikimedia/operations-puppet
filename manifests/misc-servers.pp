@@ -1303,6 +1303,10 @@ class misc::contint::test {
 		ensure => present;
 	}
 	
+  package { tree:
+    ensure => present;
+  }
+
 	# Prefer the PHP package from Ubuntu
 	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl ]: }
 
