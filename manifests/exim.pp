@@ -103,8 +103,7 @@ class exim::listserve {
 			path => "/etc/exim4/aliases/",
 			ensure => directory;
 		"/etc/exim4/aliases/lists.wikimedia.org":
-			require => Package[exim4-config],
-			require => File["/etc/exim4/aliases"],
+			require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
 			owner => root,
 			group => root,
 			mode => 0444,
