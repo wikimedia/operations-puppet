@@ -1829,7 +1829,8 @@ node "sodium.wikimedia.org" {
 	include base,
 		ganglia,
 		nrpe,
-		exim::packages::heavy,
+		exim::listserve,
+		mailman::base,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
