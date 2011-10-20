@@ -1049,6 +1049,9 @@ node "gallium.wikimedia.org" {
 	$gid=500
 	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	sudo_user { hashar: user => "hashar", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+  package {
+    tree: ensure=> installed
+  }
 	include base,
 		ganglia,
 		ntp::client,
