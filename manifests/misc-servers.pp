@@ -927,6 +927,7 @@ class misc::jenkins {
 
 	package { jenkins:
 		ensure => latest;
+    tree: ensure => installed;
 	}
 
 	user { jenkins:
