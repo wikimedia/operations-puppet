@@ -26,11 +26,11 @@ class apaches::packages {
 class apaches::cron {
         cron {
 		synclocalisation:
-                	command =>"rsync -a --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/", 
-	                user => root,
-	                hour => 3,
+			command =>"rsync -a --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/", 
+			user => root,
+			hour => 3,
 			minute => 0,
-	                ensure => present;
+			ensure => present;
 		cleanupipc:
 			command => "ipcs -s | grep apache | cut -f 2 -d \\  | xargs -rn 1 ipcrm -s",
 			user => root,
@@ -43,7 +43,7 @@ class apaches::cron {
 			minute => 26,
 			ensure => absent;
 		cleantmpphp:
-			command => "find /tmp -name 'php*'  -ctime +1 -exec rm -f {} \\;",
+			command => "find /tmp -name 'php*' -type f -ctime +1 -exec rm -f {} \\;",
 			user => root,
 			hour => 5,
 			minute => 0,
