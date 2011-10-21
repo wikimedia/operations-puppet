@@ -14,7 +14,7 @@ $lvs_class_hosts = {
 			default => undef,
 		},
 		'labs' => $site ? {
-			'pmtpa' => [ "labs-lvs1.pmtpa.wmflabs" ],
+			'pmtpa' => [ "i-00000051" ],
 			default => undef,
 		},
 		default => undef,
@@ -27,7 +27,7 @@ $lvs_class_hosts = {
 			default => undef,
 		},
 		'labs' => $site ? {
-			'pmtpa' => [ "labs-lvs1.pmtpa.wmflabs" ],
+			'pmtpa' => [ "i-00000051" ],
 			default => undef,
 		},
 		default => undef,
@@ -42,14 +42,14 @@ $lvs_class_hosts = {
 			default => undef,
 		},
 		'labs' => $site ? {
-			'pmtpa' => [ "labs-lvs1.pmtpa.wmflabs" ],
+			'pmtpa' => [ "i-00000051" ],
 			default => undef,
 		},
 		default => undef,
 	},
 	'specials' => $realm ? {
 		'production' => [ "lvs1", "lvs2" ],
-		'labs' => [ "labs-lvs1.pmtpa.wmflabs" ],
+		'labs' => [ "i-00000051" ],
 	},
 	'low-traffic' => $realm ? {
 		'production' => $site ? {
@@ -59,14 +59,14 @@ $lvs_class_hosts = {
 			default => undef,
 		},
 		'labs' => $site ? {
-			'pmtpa' => [ "labs-lvs1.pmtpa.wmflabs" ],
+			'pmtpa' => [ "i-00000051" ],
 			default => undef,
 		},
 		default => undef,
 	},
 	'testing' => $realm ? {
 		'production' => [ "lvs1001", "lvs1004" ],
-		'labs' => [ "labs-lvs1.pmtpa.wmflabs" ],
+		'labs' => [ "i-00000051" ],
 	},
 }
 
