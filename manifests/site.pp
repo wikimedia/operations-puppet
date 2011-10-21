@@ -599,7 +599,8 @@ node "bayes.wikimedia.org" {
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy,
-		accounts::nimishg
+		accounts::nimishg,
+		accounts::diederik
 }
 
 node "brewster.wikimedia.org" {
