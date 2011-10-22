@@ -2831,15 +2831,8 @@ node "stat1.wikimedia.org" {
 }
 
 node "storage1.wikimedia.org" {
-	system_role { "cache::saviour": description => "Varnish server between the Squids and ms4" }
 
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender
-
-# Disable so puppet won't interfere with manual work
-#	include	varnish
+	include standard
 }
 
 node "storage2.wikimedia.org" {
