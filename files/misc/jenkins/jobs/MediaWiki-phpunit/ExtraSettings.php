@@ -9,6 +9,7 @@ require_once( "$ext/Gadgets/Gadgets.php" );
 require_once( "$ext/LabeledSectionTransclusion/lst.php" );
 require_once( "$ext/ParserFunctions/ParserFunctions.php" );
 require_once( "$ext/Poem/Poem.php" );
+require_once( "$ext/MobileFrontend/MobileFrontend.php" );
 
 $wgPFEnableStringFunctions = true; # fully test ParserFunctions
 
