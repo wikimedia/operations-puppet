@@ -1042,13 +1042,15 @@ node "gallium.wikimedia.org" {
 	$gid=500
 	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	sudo_user { hashar: user => "hashar", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+	sudo_user { reedy: user => "reedy", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	include base,
 		ganglia,
 		ntp::client,
 		misc::contint::test,
 		admins::roots,
 		accounts::demon,
-		accounts::hashar
+		accounts::hashar,
+		accounts::reedy,
 }
 
 node "gilman.wikimedia.org" {
