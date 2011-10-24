@@ -1330,32 +1330,6 @@ class misc::contint::test {
 			group => "wikidev",
 			mode => 0775,
 			ensure => directory;
-		# The following are for the main project: MediaWiki-phpunit
-		"/var/lib/jenkins/jobs/MediaWiki-phpunit":
-			owner => "jenkins",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/var/lib/jenkins/jobs/MediaWiki-phpunit/build.properties":
-			owner => jenkins,
-			group => wikidev,
-			mode => 0555,
-			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/build.properties";
-		"/var/lib/jenkins/jobs/MediaWiki-phpunit/build.xml":
-			owner => jenkins,
-			group => wikidev,
-			mode => 0555,
-			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/build.xml";
-		"/var/lib/jenkins/jobs/MediaWiki-phpunit/config.xml":
-			owner => jenkins,
-			group => wikidev,
-			mode => 0555,
-			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/config.xml";
-		"/var/lib/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php":
-			owner => jenkins,
-			group => wikidev,
-			mode => 0555,
-			source => "puppet:///files/misc/jenkins/jobs/MediaWiki-phpunit/ExtraSettings.php";
 		# Let wikidev users maintain the homepage
 		 "/srv/org":
 				mode => 0755,
