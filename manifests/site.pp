@@ -968,7 +968,7 @@ node "dobson.wikimedia.org" {
 
 	$dns_recursor_ipaddress = "208.80.152.131"
 
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 
 	include	base,
@@ -1217,7 +1217,7 @@ node "linne.wikimedia.org" {
 	$ntp_servers = [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ]
 	$ntp_peers = [ "dobson.wikimedia.org" ]
 
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
 	interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
 	include base,
@@ -1584,7 +1584,7 @@ node "nescio.esams.wikimedia.org" {
 
 	$dns_recursor_ipaddress = "91.198.174.6"
 
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 	
 	include standard,
