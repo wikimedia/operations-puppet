@@ -1835,7 +1835,6 @@ node "sodium.wikimedia.org" {
 
 	install_certificate{ "star.wikimedia.org": }
 
-	monitor_service { "exim4": description => "exim4 processes", check_command => "check_procs_exim4" }
 }
 
 node "spence.wikimedia.org" {
