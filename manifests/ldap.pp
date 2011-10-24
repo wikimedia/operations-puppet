@@ -509,6 +509,8 @@ class ldap::client::sudo {
 
 class ldap::client::openldap {
 
+	include ldap::client::wmf-cluster
+
 	package { [ "ldap-utils" ]:
 		ensure => latest;
 	}
