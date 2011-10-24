@@ -1820,8 +1820,7 @@ node "sockpuppet.pmtpa.wmnet" {
 		ntp::client,
 		exim::simple-mail-sender,
 		misc::puppetmaster,
-		backup::client,
-		svn::server::notify
+		backup::client
 }
 
 node "sodium.wikimedia.org" {
