@@ -468,6 +468,21 @@ class lvs::realserver {
 	}
 }
 
+class lvs::static_labs_ips {
+
+	interface_ip { "wikimedialb": interface => "eth0", address => $lvs_services["text"] }
+	interface_ip { "wikipedialb": interface => "eth0", address => $lvs_services["text"] }
+	interface_ip { "wiktionarylb": interface => "eth0", address => $lvs_services['text']['ip']['wiktionarylb'] }
+	interface_ip { "wikiquotelb": interface => "eth0", address => $lvs_services['text']['ip']['wikiquotelb'] }
+	interface_ip { "wikibookslb": interface => "eth0", address => $lvs_services['text']['ip']['wikibookslb'] }
+	interface_ip { "wikisourcelb": interface => "eth0", address => $lvs_services['text']['ip']['wikisourcelb'] }
+	interface_ip { "wikinewslb": interface => "eth0", address => $lvs_services['text']['ip']['wikinewslb'] }
+	interface_ip { "wikiversitylb": interface => "eth0", address => $lvs_services['text']['ip']['wikiversitylb'] }
+	interface_ip { "mediawikilb": interface => "eth0", address => $lvs_services['text']['ip']['mediawikilb'] }
+	interface_ip { "foundationlb": interface => "eth0", address => $lvs_services['text']['ip']['foundationlb'] }
+
+}
+
 define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
