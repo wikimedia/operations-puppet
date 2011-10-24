@@ -1834,7 +1834,6 @@ node "sodium.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
-
 }
 
 node "spence.wikimedia.org" {
