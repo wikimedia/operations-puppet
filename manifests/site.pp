@@ -1835,6 +1835,11 @@ node "sodium.wikimedia.org" {
 
 	install_certificate{ "star.wikimedia.org": }
 
+	monitor_service { "mailman": description => "mailman processes", check_command => "check_procs_mailman" }
+	monitor_service { "spamd": description => "spamassassin processes", check_command => "check_procs_spamd" }
+	monitor_service { "SMTP": description => "TCP 25", check_command => "check_tcp!25" }
+	monitor_service { "HTTP": description => "TCP 80", check_command => "check_tcp!80" }
+	monitor_service { "HTTPS": description => "TCP 443", check_command => "check_tcp!443" }
 }
 
 node "spence.wikimedia.org" {
