@@ -1831,6 +1831,7 @@ node "sodium.wikimedia.org" {
 		nrpe,
 		exim::listserve,
 		mailman::base,
+		backup::client,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
