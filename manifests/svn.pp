@@ -132,6 +132,7 @@ class svn::server {
 	
 	class hooks {
 		# The commit hooks run PHP5
+		generic::apt::pin-package { "php5-cli": }
 		package { "php5-cli":
 			ensure => latest;
 		}
