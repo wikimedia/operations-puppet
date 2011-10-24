@@ -130,6 +130,13 @@ class svn::server {
 		}
 	}
 	
+	class hooks {
+		# The commit hooks run PHP5
+		package { "php5-cli":
+			ensure => latest;
+		}
+	}
+	
 	class cia {
 		file { "/usr/local/bin/ciabot_svn.py":
 			owner => root,
@@ -139,7 +146,7 @@ class svn::server {
 		}
 	}
 
-	include viewvc, dumps, cia
+	include viewvc, hooks, dumps, cia
 }
 
 class svn::users {
