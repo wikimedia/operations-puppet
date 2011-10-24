@@ -468,6 +468,24 @@ class lvs::realserver {
 	}
 }
 
+class lvs::static_labs_ips {
+
+	# Hack because puppet is a broken piece of crap
+	$text = $lvs_services["text"]
+
+	interface_ip { "wikimedialb": interface => "eth0", address => $text['ip']['wikimedialb'] }
+	interface_ip { "wikipedialb": interface => "eth0", address => $text['ip']['wikipedialb'] }
+	interface_ip { "wiktionarylb": interface => "eth0", address => $text['ip']['wiktionarylb'] }
+	interface_ip { "wikiquotelb": interface => "eth0", address => $text['ip']['wikiquotelb'] }
+	interface_ip { "wikibookslb": interface => "eth0", address => $text['ip']['wikibookslb'] }
+	interface_ip { "wikisourcelb": interface => "eth0", address => $text['ip']['wikisourcelb'] }
+	interface_ip { "wikinewslb": interface => "eth0", address => $text['ip']['wikinewslb'] }
+	interface_ip { "wikiversitylb": interface => "eth0", address => $text['ip']['wikiversitylb'] }
+	interface_ip { "mediawikilb": interface => "eth0", address => $text['ip']['mediawikilb'] }
+	interface_ip { "foundationlb": interface => "eth0", address => $text['ip']['foundationlb'] }
+
+}
+
 define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
