@@ -372,3 +372,9 @@ define command{
 	command_name	check_jenkins_service
 	command_line	$USER3$/check_procs -w 1:3 -c 1:20 -a jenkins
 }
+
+# monitor number of exim4 processes, exim will fork a copy for each delivery so it depends
+define command{
+	command_name	check_procs_exim4
+	command_line	$USER3$/check_procs -w 1:20 -c 1:50 -C exim4
+}
