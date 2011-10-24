@@ -509,7 +509,8 @@ class ldap::client::sudo {
 
 class ldap::client::openldap {
 
-	include ldap::client::wmf-cluster
+	require "ldap::client::wmf-cluster"
+	$proxypass = $ldap::client::wmf-cluster::proxypass
 
 	package { [ "ldap-utils" ]:
 		ensure => latest;
