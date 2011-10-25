@@ -1833,11 +1833,13 @@ node "sodium.wikimedia.org" {
 		exim::listserve,
 		mailman::base,
 		spamassassin,
+		web-server,
 		backup::client,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
 
+	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
 node "spence.wikimedia.org" {
