@@ -1,4 +1,9 @@
-# This file is managed by Puppet!
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/mobile.wikipedia.org
+#####################################################################
+# vim: filetype=apache
+
 
 <VirtualHost *:80>
 	ServerAdmin root@wikimedia.org
