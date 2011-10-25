@@ -510,34 +510,6 @@ node "alsted.wikimedia.org" {
 		admins::roots
 }
 
-# copied from grosley -ben 2011-08-05
-node "aluminium.wikimedia.org" {
-
-	install_certificate{ "star.wikimedia.org": }
-
-	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
-	#sudo_user { rfaulk: user => "rfaulk", privileges => ['ALL = NOPASSWD: ALL'] }
-	#sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
-
-	$cluster = "misc"
-	$gid = 500
-	include	base,
-		ntp::client,
-		nrpe,
-		admins::roots,
-		accounts::rfaulk,
-		accounts::nimishg,
-		accounts::zexley,
-		accounts::awjrichards,
-		accounts::khorn,
-		accounts::kaldari,
-		accounts::jamesofur,
-		accounts::pgehres,
-		misc::jenkins,
-		misc::fundraising,
-		backup::client
-
-}
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	$cluster = "misc_esams"
@@ -1076,7 +1048,7 @@ node "gilman.wikimedia.org" {
 		misc::fundraising
 }
 
-node "grosley.wikimedia.org" {
+node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1103,14 +1075,6 @@ node "grosley.wikimedia.org" {
 		backup::client,
 		misc::fundraising
 
-	#$cluster = "misc"
-	#$gid = 500
-	#include	base,
-	#	ganglia,
-	#	ntp::client,
-	#	nrpe,
-	#	admins::roots,
-	#	accounts::rfaulk
 }
 
 node "gurvin.wikimedia.org" {
