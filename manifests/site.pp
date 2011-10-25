@@ -68,7 +68,10 @@ class applicationserver {
 	}
 
 	class homeless inherits parent {
-		$lvs_realserver_ips = [ "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.1" ],
+			'labs' => [ "10.4.0.254" ],
+		}
 
 		include	base,
 			ganglia,
@@ -111,7 +114,10 @@ class applicationserver {
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = [ "10.2.1.22", "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.22", "10.2.1.1" ],
+			'labs' => [ "10.4.0.253" ],
+		}
 
 		include base,
 			ganglia,
@@ -135,7 +141,10 @@ class applicationserver {
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = [ "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.1" ],
+			'labs' => [ "10.4.0.252" ],
+		}
 
 		include standard,
 			admins::roots,
@@ -163,7 +172,10 @@ class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
 	
-	$lvs_realserver_ips = [ "10.2.1.21" ]
+	$lvs_realserver_ips = $realm ? {
+		'production' => [ "10.2.1.21" ],
+		'labs' => [ "10.4.0.252" ],
+	}
 
 	include	base,
 		imagescaler::cron,
