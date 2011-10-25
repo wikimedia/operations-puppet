@@ -1,4 +1,9 @@
 <?php
+
+##################################
+# THIS FILE IS MANAGED BY PUPPET #
+##################################
+
 /**
  * Utility class for things relating to commits and their tests.
  */
@@ -275,7 +280,7 @@ class CommitInfo {
 	protected function notifyIRCBot( $ciaScript, $acctName ) {
 		exec( "{$ciaScript} \"{$this->repo}\" \"{$this->transaction}\" \"{$acctName}\"" );
 	}
-	
+
 	/**
 	 * Jenkins needs a little more info than a normal ping. So append post data.
 	 */

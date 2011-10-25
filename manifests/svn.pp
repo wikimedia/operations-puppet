@@ -48,7 +48,31 @@ class svn::server {
 			group => svn,
 			mode => 0775;
 	}
-	
+
+	# hooks
+	file {
+		"/svnroot/mediawiki/hooks/pre-commit":
+			owner => root,
+			group => svnadm,
+			mode => 0775,
+			source => "puppet:///files/svn/hooks/pre-commit";
+		"/svnroot/mediawiki/hooks/post-commit":
+			owner => root,
+			group => svnadm,
+			mode => 0775,
+			source => "puppet:///files/svn/hooks/post-commit";
+		"/svnroot/mediawiki/hooks/HooksCommon.inc":
+			owner => root,
+			group => svnadm,
+			mode => 0775,
+			source => "puppet:///files/svn/hooks/HooksCommon.inc";
+		"/svnroot/mediawiki/hooks/deferred-updates.sh":
+			owner => root,
+			group => svnadm,
+			mode => 0775,
+			source => "puppet:///files/svn/hooks/deferred-updates.sh";
+	}
+
 	apache_site { "svn": name => "svn", prefix => "000-" }
 	
 	include generic::apache::no-default-site
