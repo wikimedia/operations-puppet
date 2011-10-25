@@ -620,6 +620,7 @@ node "emery.wikimedia.org" {
 		ganglia,
 		exim::simple-mail-sender,
 		ntp::client,
+		misc::udp2log::aft,
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
@@ -1212,7 +1213,6 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
-		misc::udp2log::aft,
 		nrpe
 }
 
