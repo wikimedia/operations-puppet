@@ -1,9 +1,82 @@
-#!/usr/bin/php
-<?php
+#!/bin/sh
 
-require( "HooksCommon.inc" );
-$repo = $argv[1];
-$rev = $argv[2];
+##################################
+# THIS FILE IS MANAGED BY PUPPET #
+##################################
 
-$postCommit = new CommitInfo( $repo, $rev );
-exit( $postCommit->runPostCommitPings() );
+# POST-COMMIT HOOK
+#
+# The post-commit hook is invoked after a commit.  Subversion runs
+# this hook by invoking a program (script, executable, binary, etc.)
+# named 'post-commit' (for which this file is a template) with the
+# following ordered arguments:
+#
+#   [1] REPOS-PATH   (the path to this repository)
+#   [2] REV          (the number of the revision just committed)
+#
+# The default working directory for the invocation is undefined, so
+# the program should set one explicitly if it cares.
+#
+# Because the commit has already completed and cannot be undone,
+# the exit code of the hook program is ignored.  The hook program
+# can use the 'svnlook' utility to help it examine the
+# newly-committed tree.
+#
+# On a Unix system, the normal procedure is to have 'post-commit'
+# invoke other programs to do the real work, though it may do the
+# work itself too.
+#
+# Note that 'post-commit' must be executable by the user(s) who will
+# invoke it (typically the user httpd runs as), and that user must
+# have filesystem-level permission to access the repository.
+#
+# On a Windows system, you should name the hook program
+# 'post-commit.bat' or 'post-commit.exe',
+# but the basic idea is the same.
+#
+# The hook program typically does not inherit the environment of
+# its parent process.  For example, a common problem is for the
+# PATH environment variable to not be set to its usual value, so
+# that subprograms fail to launch unless invoked via absolute path.
+# If you're having unexpected problems with a hook program, the
+# culprit may be unusual (or missing) environment variables.
+#
+# Here is an example hook script, for a Unix /bin/sh interpreter.
+# For more examples and pre-written hooks, see those in
+# the Subversion repository at
+# http://svn.collab.net/repos/svn/trunk/tools/hook-scripts/ and
+# http://svn.collab.net/repos/svn/trunk/contrib/hook-scripts/
+
+
+REPOS="$1"
+REV="$2"
+
+#commit-email.pl "$REPOS" "$REV" commit-watchers@example.org
+#log-commit.py --repository "$REPOS" --revision "$REV"
+
+svnnotify --repos-path "$1" --revision "$2" \
+  --to "mediawiki-cvs@lists.wikimedia.org" \
+  --smtp lily.knams.wikimedia.org \
+  --subject-prefix "SVN: " \
+  --subject-cx --no-first-line --with-diff \
+  --user-domain "svn.wikimedia.org" \
+  --header "https://www.mediawiki.org/wiki/Special:Code/MediaWiki/$2" \
+  -l /usr/bin/svnlook
+
+#  --viewcvs-url "http://svn.wikimedia.org/viewvc" \
+
+UUID=`svnlook uuid $REPOS`
+/usr/bin/wget \
+	  --header "Content-Type:text/plain;charset=UTF-8" \
+	    --post-data "`svnlook changed --revision $REV $REPOS`" \
+	      --output-document "-" \
+	        --timeout=5 \
+		  http://integration.mediawiki.org/ci/subversion/${UUID}/notifyCommit?rev=$REV
+
+# temporary disable, hanging?
+# enabling again, trying email mode
+ciabot_svn.py "$REPOS" "$REV" "mediawiki"
+# /svnroot/mediawiki/hooks/codurrbot.py "$REPOS" "$REV" "mediawiki" > /home/demon/test-bot-output
+
+# Run deferred updates
+bash /svnroot/mediawiki/hooks/deferred-updates.sh "$REV"
