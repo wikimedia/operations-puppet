@@ -1832,6 +1832,7 @@ node "sodium.wikimedia.org" {
 		nrpe,
 		exim::listserve,
 		mailman::base,
+		spamassassin,
 		backup::client,
 		certificates::star_wikimedia_org
 
