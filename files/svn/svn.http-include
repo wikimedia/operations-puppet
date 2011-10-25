@@ -1,5 +1,4 @@
 # This file is managed by puppet
-# vim: filetype=apache
 
 <VirtualHost *:80>
   ServerName svn.wikimedia.org

@@ -2,7 +2,6 @@
 ### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/apache/sites/integration.mediawiki.org
 #####################################################################
-# vim: filetype=apache
 
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org

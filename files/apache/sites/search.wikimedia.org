@@ -1,8 +1,4 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/search.wikimedia.org
-#####################################################################
-# vim: filetype=apache
+# This file is managed by Puppet!
 
 <VirtualHost *:80>
 	ServerAdmin root@wikimedia.org

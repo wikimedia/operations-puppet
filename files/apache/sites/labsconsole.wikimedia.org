@@ -1,8 +1,7 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/labconsole.wikimedia.org
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/apache/sites/noc.wikimedia.org
 #####################################################################
-# vim: filetype=apache
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org

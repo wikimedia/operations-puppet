@@ -1,5 +1,3 @@
-# vim: filetype=apache
-
 ProxyPass		/ci	http://localhost:8080/ci
 ProxyPassReverse	/ci	http://localhost:8080/ci
 ProxyRequests		Off

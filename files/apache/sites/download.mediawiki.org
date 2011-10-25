@@ -1,9 +1,3 @@
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/download.mediawiki.org
-#####################################################################
-# vim: filetype=apache
-
 <VirtualHost *:80>
     ServerName download.mediawiki.org
     DocumentRoot /srv/org/mediawiki/download
