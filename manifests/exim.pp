@@ -133,7 +133,7 @@ class spamassassin {
 		source => "puppet:///files/spamassassin/local.cf";
 	}
 
-	service { "spamd":
+	service { "spamassassin":
 	require => Package[spamassassin],
 	ensure => running;
 	}
