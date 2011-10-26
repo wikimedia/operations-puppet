@@ -101,6 +101,10 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+	if (beresp.status > 400) {
+		set beresp.ttl = 0s;
+	}
+
 	set beresp.http.X-Device = req.http.X-Device;
 }
 
