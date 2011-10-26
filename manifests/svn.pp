@@ -5,6 +5,7 @@ class svn::server {
 	require "svn::groups::svn"
 	
 	include generic::webserver::php5
+	include generic::webserver::https
 
 	package { [ 'libsvn-notify-perl', 'python-subversion',
 			'libapache2-svn', 'python-pygments' ]:
