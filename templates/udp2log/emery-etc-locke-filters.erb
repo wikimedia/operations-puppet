@@ -1,0 +1,26 @@
+###
+####    This file managed by puppet.
+###
+
+file 1000 /var/log/squid/sampled-1000.log
+#brazil
+#pipe 10 /var/log/squid/filters/brazil-filter >> /var/log/squid/brazil.log
+
+#api
+#pipe 1 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
+
+pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/squid/packet-loss.log
+
+#pipe 1 /var/log/squid/filters/landingpages2010.awk >> /var/log/squid/landingPages2010.log
+
+#pipe 1 /var/log/squid/filters/bannerImpressions.awk >> /var/log/squid/bannerImpressions.log
+
+#pipe 1 /var/log/squid/filters/hotlink.awk >> /var/log/squid/hotlink.log           
+#pipe 1 /var/log/squid/filters/titles.awk  >> /var/log/squid/titles.log     
+#pipe 1 /var/log/squid/filters/vu.awk >> /var/log/squid/vu.log
+#pipe 1 /var/log/squid/filters/domain.awk >> /var/log/squid/domain.log           
+#pipe 1 /var/log/squid/filters/minnesota.awk  >> /var/log/squid/minnesota.log
+#pipe 1 /var/log/squid/filters/true-internet.awk >> /var/log/squid/true-internet.log
+#pipe 1 /var/log/squid/filters/support.awk >> /var/log/squid/support.log
+#pipe 1 /var/log/squid/filters/urjc.awk >> /var/log/squid/urjc.log
+

@@ -624,7 +624,8 @@ node "emery.wikimedia.org" {
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
-		nrpe
+		nrpe,
+		misc::udp2log::emeryconfig
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -1213,7 +1214,8 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
-		nrpe
+		nrpe,
+		misc::udp2log::lockeconfig
 }
 
 node "lomaria.pmtpa.wmnet" {
