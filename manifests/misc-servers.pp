@@ -1280,6 +1280,28 @@ class misc::udp2log::aft {
 
 }
 
+# TODO: this is  a hacky short term method to get the config files into
+#      puppet.  The app should be puppetized for real using mediawiki-logger above.
+class misc::udp2log::lockeconfig {
+	include contacts::udp2log
+	file {
+		"/etc/udp2log/squid":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template("udp2log/locke-etc-squid.erb");
+	}
+}
+class misc::udp2log::emeryconfig {
+	file {
+		"/etc/udp2log/locke-filters":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template("udp2log/emery-etc-locke-filters.erb");
+	}
+}
+
 # CI test server as per RT #1204
 class misc::contint::test {
 
