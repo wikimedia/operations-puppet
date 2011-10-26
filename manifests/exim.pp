@@ -129,11 +129,18 @@ class spamassassin {
 		ensure => latest;
         }
 
-	file { "/etc/spamassassin/local.cf":
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/spamassassin/local.cf";
+	file { 
+		"/etc/spamassassin/local.cf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/spamassassin/local.cf";
+	
+		"/etc/default/spamassassin":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/spamassassin/spamassassin.default";
 	}
 
 	service { "spamassassin":
