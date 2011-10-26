@@ -1162,6 +1162,7 @@ node "kaulen.wikimedia.org" {
 		exim::simple-mail-sender,
 		admins::roots,
 		accounts::demon,
+		accounts::reedy,
 		ldap::client::wmf-cluster,
 		misc::download-mediawiki,
 		certificates::star_wikimedia_org
