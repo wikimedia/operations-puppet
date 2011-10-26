@@ -49,5 +49,6 @@ class mailman::base {
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-	monitor_service { "https": description => "HTTPS", check_command => "check_http -S" }
+	# Fix me
+	# monitor_service { "https": description => "HTTPS", check_command => "check_http -S" }
 }
