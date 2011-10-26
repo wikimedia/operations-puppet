@@ -1,3 +1,9 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/blog.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
 NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerAdmin software@wikimedia.org 
