@@ -1,7 +1,8 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/apache/sites/gerrit.wikimedia.org
 #####################################################################
+# vim: filetype=apache
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
