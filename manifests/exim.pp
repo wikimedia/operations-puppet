@@ -115,6 +115,9 @@ class exim::listserve {
 			mode => 0444,
 			source => "puppet:///private/exim/exim4.listserver_system_filter.conf";
 	}
+
+	# Nagios monitoring
+	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 }
 
 
