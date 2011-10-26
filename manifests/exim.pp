@@ -140,4 +140,7 @@ class spamassassin {
 	require => Package[spamassassin],
 	ensure => running;
 	}
+
+	monitor_service { "spamd": description => "spamassassin processes", check_command => "check_procs_spamd" }
+
 }
