@@ -13,6 +13,7 @@ class dns::auth-server-ldap {
 		ensure => latest;
 	}
 
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 	include openstack::nova_config
 	
 	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
@@ -55,6 +56,55 @@ class dns::auth-server-ldap {
 }
 
 class dns::auth-server {
+=======
+	# FIXME: parameterize, call from a nova role class, remove this include
+	include openstack::nova_config
+
+	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
+	$nova_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+	$nova_ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+	$nova_ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+
+	# FIXME: remove some duplication between this and dns::auth-server
+	if ! $dns_auth_ipaddress {
+		fail("Parametmer $dns_auth_ipaddress not defined!")
+	}
+
+	if ! $dns_auth_soa_name {
+		fail("Parameter $dns_auth_soa_name not defined!")
+	}
+
+	system_role { "dns::auth-server-ldap": description => "Authoritative DNS server (LDAP)" }
+
+	file {
+		"/etc/powerdns/pdns.conf":
+			require => Package["pdns-server"],
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("powerdns/pdns-ldap.conf.erb"),
+			ensure => present;
+	}
+
+	service { pdns:
+		require => [Package["pdns-server"], File["/etc/powerdns/pdns.conf"]],
+		subscribe => File["/etc/powerdns/pdns.conf"],
+		hasrestart => false,
+		ensure => running;
+	}
+
+	# Monitoring
+	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns" }
+
+}
+
+class dns::auth-server($ipaddress="", $soa_name="", $master="") {
+	$dns_auth_ipaddress = $ipaddress
+	$dns_auth_soa_name = $soa_name
+	$dns_auth_master = $master
+
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 	if ! $dns_auth_ipaddress {
 		fail("Parametmer $dns_auth_ipaddress not defined!")
 	}
@@ -78,13 +128,13 @@ class dns::auth-server {
 			require => Package[wikimedia-task-dns-auth],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => template("powerdns/pdns.conf.erb"),
 			ensure => present;
 		"/usr/local/lib/selective-answer.py":
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/powerdns/selective-answer.py",
 			ensure => present;
 		"/etc/powerdns/participants":
@@ -93,7 +143,7 @@ class dns::auth-server {
 		"/root/.ssh/wikimedia-task-dns-auth":
 			owner => root,
 			group => root,
-			mode => 0600,
+			mode => 0400,
 			source => "puppet:///private/powerdns/wikimedia-task-dns-auth",
 			ensure => present;
 		"/etc/powerdns/ip-map":
@@ -129,7 +179,7 @@ class dns::auth-server {
 		"${dns_auth_soa_name}":
 			type => ssh-rsa,
 			key => $sshrsakey,
-	                ensure => present;
+			ensure => present;
 		"${dns_auth_ipaddress}":
 			type => ssh-rsa,
 			key => $sshrsakey,
@@ -142,12 +192,11 @@ class dns::auth-server {
 
 	cron { "update ip map":
 		command => "rsync -qt 'rsync://countries-ns.mdc.dk/zone/zz.countries.nerd.dk.rbldnsd' /etc/powerdns/ip-map/zz.countries.nerd.dk.rbldnsd && pdns_control rediscover > /dev/null",
-                user => pdns,
-                hour => 4,
+		user => pdns,
+		hour => 4,
 		minute => 7,
 		ensure => present;
-        }
-
+	}
 
 	# Monitoring
 	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
@@ -156,7 +205,7 @@ class dns::auth-server {
 
 class dns::recursor {
 	if ! $dns_recursor_ipaddress {
-		fail("Parametmer $dns_recursor_ipaddress not defined!")
+		fail("Parameter $dns_recursor_ipaddress not defined!")
 	}
 
 	package { pdns-recursor:
@@ -169,7 +218,7 @@ class dns::recursor {
 		require => Package[pdns-recursor],
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		content => template("powerdns/recursor.conf.erb"),
 		ensure => present;
 	}

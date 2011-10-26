@@ -2,7 +2,8 @@
 
 # definition for monitoring PDUs via SNMP
 # RT #308 
-# dzahn 20110727
+
+# TODO: Monitor infeed status
 
 define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redundant="true") {
 
@@ -12,7 +13,7 @@ define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redund
 	$infeedLoad = ".3.2.2.1.7"
 	$oid = "${servertech_tree}${infeedLoad}.${tower}.${infeed}"
 
-# the value of infeedLoadValue is given in _hundredths of Amps_, thats why we multiply here
+	# The value of infeedLoadValue is given in _hundredths of Amps_, thats why we multiply here
 
 	if $redundant == "false" {
 		$warn_hi = $breaker * 0.8 * 100
@@ -65,10 +66,10 @@ monitor_pdu_3phase { "ps1-b5-sdtpa": ip => "10.1.5.10", redundant => "false" }
 # C
 monitor_pdu_3phase { "ps1-c1-sdtpa": ip => "10.1.5.11" }
 monitor_pdu_3phase { "ps1-c2-sdtpa": ip => "10.1.5.12" }
-# monitor_pdu_3phase { "ps1-c3-sdtpa": ip => "10.1.5.13" }
+monitor_pdu_3phase { "ps1-c3-sdtpa": ip => "10.1.5.13" }
 # D
 monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => "false" }
-# monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
+monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
 monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
 
 # pmtpa

@@ -1,6 +1,7 @@
 # Varnish VCL include file for mobile backends
 
 sub vcl_fetch {
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 	if (req.url == "/?useformat=mobile") {
 		set beresp.ttl = 60 s;
 	}
@@ -16,3 +17,24 @@ sub vcl_deliver {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
 }
+=======
+	if (beresp.status > 400) {
+		set beresp.ttl = 0s;
+	}
+
+	if (req.url == "/?useformat=mobile") {
+		set beresp.ttl = 60 s;
+	}
+}
+
+sub vcl_deliver {
+	/* Cachable files delivered to the mobile frontends should be cached for
+	 * a short time only.
+	 */
+	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
+		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
+	} else {
+		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	}
+}
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)

@@ -184,7 +184,11 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 			require => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
+=======
+			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia3_${vcl}.vcl"] ],
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 			subscribe => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
@@ -236,6 +240,11 @@ class varnish3 {
 		}
 	}
 
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
+=======
+	# FIXME: add varnish logging class
+
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 	# Make a default instance
 	instance { "default": }
 }

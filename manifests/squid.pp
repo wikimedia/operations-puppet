@@ -11,7 +11,11 @@ import "generic-definitions.pp"
 
 class squid {
 
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 	if $realm == "labs" {
+=======
+	if $cluster_env == "labs" {
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 		# Hack for arrays in LDAP - you suck puppet
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}

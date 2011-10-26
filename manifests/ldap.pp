@@ -509,6 +509,9 @@ class ldap::client::sudo {
 
 class ldap::client::openldap {
 
+	include passwords::ldap::wmf_cluster
+	$proxypass = $passwords::ldap::wmf_cluster::proxypass
+
 	package { [ "ldap-utils" ]:
 		ensure => latest;
 	}
@@ -580,7 +583,11 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 	if ( $realm == "labs" ) {
+=======
+	if ( $cluster_env == "labs" ) {
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
 		file { "/etc/security/access.conf":
 			owner => root,

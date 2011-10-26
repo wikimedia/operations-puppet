@@ -410,7 +410,7 @@ class misc::url-downloader {
 		source => "puppet:///files/squid/copy-by-url-proxy.conf";
 	}
 
-	generic::apt::pin-package { squid: }
+	generic::apt::pin-package { [ "squid", "squid-common" ]: }
 
 	package { squid:
 		ensure => latest;
@@ -1441,4 +1441,22 @@ class misc::contint::test {
 	}
 	
 	require "misc::contint::test::iptables"
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
+=======
+}
+
+class misc::udpprofile::collector {
+	system_role { "misc::udpprofile::collector": description => "MediaWiki UDP profile collector" }
+
+	package { "udpprofile":
+		ensure => latest;
+	}
+
+	service { udpprofile:
+		require => Package[ 'udpprofile' ],
+		ensure => running;
+	}
+
+	# FIXME: Nagios monitoring
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 }

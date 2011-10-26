@@ -35,7 +35,6 @@ import "iptables.pp"
 import "owa.pp"
 import "media-storage.pp"
 import "certs.pp"
-import "udpprofile.pp"
 import "drac.pp"
 import "openstack.pp"
 import "protoproxy.pp"
@@ -306,6 +305,7 @@ class text-squid {
 	}
 
 	if ! $lvs_realserver_ips {
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		$lvs_realserver_ips = $realm ? {
 			'production' => $site ? {
 			 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
@@ -318,6 +318,12 @@ class text-squid {
 				'eqiad' => [ "" ],
 				'esams' => [ "" ]
 			}
+=======
+		$lvs_realserver_ips = $site ? {
+		 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
+			'eqiad' => [ "" ],
+			'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 		}
 	}
 
@@ -519,6 +525,8 @@ class cache {
 # Default variables
 $cluster = "misc"
 
+# FIXME: move to realm.pp
+# FIXME: check if this is still correct, this was temp for a migration
 $dns_auth_master = "ns1.wikimedia.org"
 
 # Node definitions (alphabetic order)
@@ -529,6 +537,7 @@ node "alsted.wikimedia.org" {
 		admins::roots
 }
 
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 # copied from grosley -ben 2011-08-05
 node "aluminium.wikimedia.org" {
 
@@ -557,6 +566,8 @@ node "aluminium.wikimedia.org" {
 		backup::client
 
 }
+=======
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	$cluster = "misc_esams"
@@ -619,7 +630,8 @@ node "bayes.wikimedia.org" {
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy,
-		accounts::nimishg
+		accounts::nimishg,
+		accounts::diederik
 }
 
 node "brewster.wikimedia.org" {
@@ -666,6 +678,7 @@ node "emery.wikimedia.org" {
 		ganglia,
 		exim::simple-mail-sender,
 		ntp::client,
+		misc::udp2log::aft,
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
@@ -892,7 +905,6 @@ node "db41.pmtpa.wmnet" {
 		ntp::client,
 		memcached,
 		owa::database,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -985,22 +997,24 @@ node "dobson.wikimedia.org" {
 	$ntp_servers = [ "173.9.142.98", "66.250.45.2", "169.229.70.201", "69.31.13.207", "72.167.54.201" ]
 	$ntp_peers = [ "linne.wikimedia.org" ]
 
-	$dns_auth_ipaddress = "208.80.152.130"
-	$dns_auth_soa_name = "ns0.wikimedia.org"
-
 	$dns_recursor_ipaddress = "208.80.152.131"
 
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 
 	include	base,
 		ganglia,
 		ntp::server,
-		dns::auth-server,
 		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
 		exim::simple-mail-sender
+
+	class { "dns::auth-server":
+		ipaddress => "208.80.152.130",
+		soa_name => "ns0.wikimedia.org",
+		master => $dns_auth_master
+	}
 }
 
 node "fenari.wikimedia.org" {
@@ -1061,13 +1075,22 @@ node "gallium.wikimedia.org" {
 	$gid=500
 	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	sudo_user { hashar: user => "hashar", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
+=======
+	sudo_user { reedy: user => "reedy", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 	include base,
 		ganglia,
 		ntp::client,
 		misc::contint::test,
 		admins::roots,
 		accounts::demon,
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		accounts::hashar
+=======
+		accounts::hashar,
+		accounts::reedy
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 }
 
 node "gilman.wikimedia.org" {
@@ -1091,7 +1114,7 @@ node "gilman.wikimedia.org" {
 		misc::fundraising
 }
 
-node "grosley.wikimedia.org" {
+node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1118,14 +1141,6 @@ node "grosley.wikimedia.org" {
 		backup::client,
 		misc::fundraising
 
-	#$cluster = "misc"
-	#$gid = 500
-	#include	base,
-	#	ganglia,
-	#	ntp::client,
-	#	nrpe,
-	#	admins::roots,
-	#	accounts::rfaulk
 }
 
 node "gurvin.wikimedia.org" {
@@ -1234,19 +1249,21 @@ node "linne.wikimedia.org" {
 	$ntp_servers = [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ]
 	$ntp_peers = [ "dobson.wikimedia.org" ]
 
-	$dns_auth_ipaddress = "208.80.152.142"
-	$dns_auth_soa_name = "ns1.wikimedia.org"
-
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
 	interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
 	include base,
 		ganglia,
 		exim::simple-mail-sender,
 		ntp::server,
-		dns::auth-server,
 		misc::url-downloader,
 		misc::squid-logging::multicast-relay
+
+		class { "dns::auth-server":
+			ipaddress => "208.80.152.142",
+			soa_name => "ns1.wikimedia.org",
+			master => $dns_auth_master
+		}
 }
 # Why would Locke be getting apaches::files for the sudoers... that is just silly...
 # removing apaches::files.
@@ -1260,9 +1277,7 @@ node "locke.wikimedia.org" {
 		ntp::client,
 		groups::wikidev,
 		admins::restricted,
-		sudo::sudoers,
 		accounts::awjrichards,
-		misc::udp2log::aft,
 		nrpe
 }
 
@@ -1598,22 +1613,21 @@ node /ms100[4]\.eqiad\.wmnet/ {
 node "nescio.esams.wikimedia.org" {
 	$cluster = "misc_esams"
 
-	$dns_auth_ipaddress = "91.198.174.4"
-	$dns_auth_soa_name = "ns2.wikimedia.org"
-
 	$dns_recursor_ipaddress = "91.198.174.6"
 
-	interface_ip { "dns::auth-server": interface => "eth0", address => $dns_auth_ipaddress }
+	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 	
-	include base,
-		ganglia,
-		ntp::client,
-		dns::auth-server,
+	include standard,
 		dns::recursor,
 		dns::recursor::monitoring,
-		dns::recursor::statistics,
-		exim::simple-mail-sender
+		dns::recursor::statistics
+
+		class { "dns::auth-server":
+			ipaddress => "91.198.174.4",
+			soa_name => "ns2.wikimedia.org",
+			master => $dns_auth_master
+		}
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
@@ -1654,7 +1668,6 @@ node "owa1.wikimedia.org" {
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1673,7 +1686,6 @@ node "owa2.wikimedia.org" {
 		owa::processing,
 		generic::geoip::files,
 		lvs::realserver,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1693,7 +1705,6 @@ node "owa3.wikimedia.org" {
 		generic::geoip::files,
 		lvs::realserver,
 		owa::database,
-		sudo::sudoers,
 		groups::wikidev,
 		accounts::nimishg
 }
@@ -1840,8 +1851,7 @@ node "sockpuppet.pmtpa.wmnet" {
 		ntp::client,
 		exim::simple-mail-sender,
 		misc::puppetmaster,
-		backup::client,
-		svn::server::notify
+		backup::client
 }
 
 node "sodium.wikimedia.org" {
@@ -1849,7 +1859,11 @@ node "sodium.wikimedia.org" {
 	include base,
 		ganglia,
 		nrpe,
-		exim::packages::heavy,
+		exim::listserve,
+		mailman::base,
+		spamassassin,
+		web-server,
+		backup::client,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
@@ -1873,7 +1887,11 @@ node "spence.wikimedia.org" {
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		udpprofile::collector,
+=======
+		misc::udpprofile::collector,
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
@@ -2849,15 +2867,8 @@ node "stat1.wikimedia.org" {
 }
 
 node "storage1.wikimedia.org" {
-	system_role { "cache::saviour": description => "Varnish server between the Squids and ms4" }
 
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender
-
-# Disable so puppet won't interfere with manual work
-#	include	varnish
+	include standard
 }
 
 node "storage2.wikimedia.org" {

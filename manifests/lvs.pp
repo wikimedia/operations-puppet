@@ -125,6 +125,7 @@ $lvs_services = {
 	"https" => {
 		'description' => "HTTPS services",
 		'class' => "https",
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
@@ -136,6 +137,12 @@ $lvs_services = {
 				'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
 				default => undef,
 			},
+=======
+		'ip' => $site ? {
+			'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
+			'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
+			'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 			default => undef,
 		},
 		'port' => 443,
@@ -153,6 +160,7 @@ $lvs_services = {
 	"bits" => {
 		'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 		'class' => "high-traffic1",
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
@@ -164,6 +172,12 @@ $lvs_services = {
 				'pmtpa' => { 'bitslb' => "208.80.153.196" },
 				default => undef,
 			},
+=======
+		'ip' => $site ? {
+			'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
+			'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.4.23" },
+			'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 			default => undef,
 		},
 		'bgp' => "yes",
@@ -178,6 +192,7 @@ $lvs_services = {
 	"upload" => {
 		'description' => "Images and other media, upload.${site}.wikimedia.org",
 		'class' => "high-traffic2",
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
@@ -189,6 +204,12 @@ $lvs_services = {
 				'pmtpa' => { 'uploadlb' => "208.80.153.206" },
 				default => undef,
 			},
+=======
+		'ip' => $site ? {
+			'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+			'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.4.24" },
+			'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 			default => undef,
 		},
 		'bgp' => "yes",

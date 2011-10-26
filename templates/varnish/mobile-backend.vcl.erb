@@ -55,6 +55,10 @@ sub vcl_recv {
 # front page purges aren't going to come through for this url, 
 # so don't cache it for long
 sub vcl_fetch {
+	if (beresp.status > 400) { 
+		set beresp.ttl = 0s; 
+	}
+
 	if (req.url == "/?useformat=mobile") {
 		set beresp.ttl = 60 s;
 	}

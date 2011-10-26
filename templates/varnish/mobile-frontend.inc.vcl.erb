@@ -101,6 +101,13 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
+=======
+	if (beresp.status > 400) {
+		set beresp.ttl = 0s;
+	}
+
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 	set beresp.http.X-Device = req.http.X-Device;
 }
 

@@ -1,5 +1,17 @@
 # admins.pp
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
 # last used uid 583
+=======
+
+# last used uid 583
+
+# TODO: completely rewrite this file
+
+# NOTE: To completely disable an account, you should
+# 1) set variable $enabled = "false"
+# 2) set all ssh authorized keys to ensure => absent
+
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 define unixaccount($username, $uid, $gid, $enabled="true") {
 	if defined(Class["nfs::home"]) {
 		$manage_home = "false"
@@ -97,7 +109,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"ashields@local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAK2KMwlLfnArieW+Obz2e8V+7EgK+9tsX+eUOyRM6MDNHLlxnSLr9b0EVpS6dBtSaWt1LcfZtSBGAJvFBloROZBRDup+w+N+S27QTBdfxLtsnn4j16zHjaF/psameua+f9onQ8yK4lAPZfxpvY/6Fr0nt9skFTrC60V3kgdu18WJAAAAFQCHIvPCAB6Yg56Ha2ST7JT1iorrYQAAAIA4F6foFJB/PJ0wcySUVlXYI0KahgnZkQDnhsPebX/g2L/5/IVOCOxDH5EttA/w+IsmArO9Lrj7T8fAvs8bykaYOAhVNdP2kLq387T0LgBD8b9eexK0zdbhqoHDiyx2+Z80gaewKB/tOVzhE0QCN3Krr/ubdI2dM57fzjygDCp1GAAAAIEApbMDfrRfJZk0GL14ykKDj83bHUfjn/KrH+BULMctePytaIwfDjsKvy/ntj5mIglipX2Y2QL7H+/pEGkQbP8SdNNb8tEb2iDjq6jKKsKB5lFfUHX5rk9sUfViEOUNJ6JJCcSVMmj7hgVWKA2UdI0XQuaBoxEARVXtLnCp5LGcDbw=",
@@ -521,6 +533,7 @@ class accounts {
 		$username = "hcatlin"
 		$realname = "Hampton Catlin"
 		$uid = 550
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -529,7 +542,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"hcatlin@greed.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAoET83J1YKyC8C0su4RfGVWz9Lx69dwSgPamrAGue/BvQ4W7IDvCQZPi8pKMZuhY4N7OkjjhTjV7JqMqqjKICCwFVHZQSuMbFKYbaMtuYGGno0kGVRpGd7n9x4bHAep5K6H/FUpedPPjuhfXmvl7EYRIYHJrayMS2P79o5GcFFwQ6rYuBvc/vAMkOp1NFjfOktPLUmaU4PMroeIPf1XJ+n2Wr5hFw7fehHcYF7VmJft6jhPN+DVHyziJPRWEhFe5axfkqEC6wIk2O/d7OqnPATlk+7+vEh69yOzZu8Jh/FrNn9HzGHH8ZzvuksUvVoRyw8qlhFRxJKLbl/IPPZ5v7Dw==";
@@ -541,6 +554,7 @@ class accounts {
                 $username = "jdavis"
                 $realname = "Jon Davis"
 		$uid = 1004
+		$enabled = "false"
 
                 unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -548,7 +562,7 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname] }
                         
 			ssh_authorized_key { "jdavis@wikimedia.org":
-                                        ensure  => present,
+                                        ensure  => absent,
                                         user    => $username,
                                         type    => "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAQEAliYsMiUqipe/HtqzehVebaH8/kVl6RddesJC8fy/jV4TTTFpp+Ow9zpwqgS4lVgeYmrHnp3iDraTiqLlTzoB9e3hXwatzysUASn6sgep5zSTIqC7pb5xYHi6dsI+47L72vFoGfZdugXUYXqgml5JIRk++CK2KaH6udsxev/vW7iJWLxoPbXA9/dsX32/JHnHcNKWkYSjOvl+kvDsLqgnBO+smrLqLey5h1T6BObo7sM6hUUe+COpzNyJC5stP/GMUaYohHu2u9lwcIUFDB/5Wn7aY2ZyNgeoiGrS2angNoI2kNMucHw0eAtIFpXVYuuz7+ijDdGICeh0auIRfOg54Q==";
@@ -1020,7 +1034,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "pdhanda":
-				ensure 	=> present,
+				ensure 	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA3HbBUW7PKFdkYaPkzvPJlXywNtiu2+9w0nZyfqnC2cM1oEh8E1R8q5gWiUnaeNr65XYceMl/bja+g2g9QZkBAHtQArOZ+DePoejPUyfR1UUczARRywTFVTCS6vSZ5gAnujPuEcrOU5UTVgB+jicX7tqMh3AyJ9HBSDa0FCgK6PP68w4zDgIIFp5wRVBhzfPUNXHUkRBMuUaN7oGtq7VYaDITGLvyIFDIQ5FHLXiuy4OAAPvnf9/4pC30d0C1BVMPJEEIrj+KzlNSdUfy9WOxeNYn6vfsc0CR+soie0um5juwfyQWiDVmw2/lJcB47GoEqZ9dp3zXc91tsVEom7TADQ=="
@@ -1078,7 +1092,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key { "rcole":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAugxekmKIaoXPi5P3DXSG7CQM8tvDsaXjE9SEdAhQ0G/elNvjpaVUO1qp1OatsvcMkehlKsRC0/7+SsQVXJAANe0TD7gnYJPfQXq8aY9+Q/Jw+/qNWdTzlJpdyY5ZY3OuBXn2oDgmxk1RmEzCGYfjGN/+/tuQiYUoX+tJu/EbxMnZQjs9CTf3YmzKOI1Sghy2wHw7e9yYnnevA1zUgWBd0hy5CImxDquzgiW38Bmx1HyUJnaTmxeSoYG7/o4Mxqpx2HULPZNyrDuvDxpO3pUPqANgTIHalH1PrSlbpORm/mKlH16q8qvV+ea5wOTtev8/Hso9+Qh67emczngQ3K2LUw=="
@@ -1170,6 +1184,24 @@ class accounts {
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
+<<<<<<< HEAD   (c10c64 Setting lvs addresses for labs)
+=======
+				"root@aluminium":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==";
+				"root@hume":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAt0zYrPQ9uWGikvIQymX30hGeV42aSNnSZ3ClhEVMYHi98IJFFCFJC1UiQdhMV3p0fyVN0KZRTzYDFDsIKZxAN7/ZAyNaAujmRb5FBJ2IxDUaG89n0ZbmMz09BktVbM9jorzkaLatMYs4ouzjuH4EoW7Dbr2EO/cYAzK4Qv0wQnVDbd2bTjcJ48b5QWhQ9PWvytPOv0PgJTql3zUs3lSVAc7sOTU5FmwGIQBehGCvHJvepr/b8omJwTICQUsiICisJELlZesc7QdfiourSZIy3MYSMefhbELPGPBMC132bS8IhaC/3iFA8GAuTuNqaHqJVzrUm2t4r0ZvDJReX0zLdQ==";
+				"file_mover@locke":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==";
+>>>>>>> BRANCH (3098d2 status based caching rule should be in frontend as well)
 			}
 		}
 	}
@@ -1324,7 +1356,8 @@ class accounts {
 	class shawn inherits baseaccount {
 		$username = "shawn"
 		$realname = "Shawn Walker"
-		$uid = 563 
+		$uid = 563
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1344,7 +1377,8 @@ class accounts {
 	class halfak inherits baseaccount {
 		$username = "halfak"
 		$realname = "Aaron Halfaker"
-		$uid = 564 
+		$uid = 564
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1364,7 +1398,8 @@ class accounts {
 	class diederik inherits baseaccount {
 		$username = "diederik"
 		$realname = "Diederik van Liere"
-		$uid = 565 
+		$uid = 565
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1384,7 +1419,8 @@ class accounts {
 	class declerembaul inherits baseaccount {
 		$username = "declerembaul"
 		$realname = "Fabian Kaelin"
-		$uid = 566 
+		$uid = 566
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1404,7 +1440,8 @@ class accounts {
 	class whym inherits baseaccount {
 		$username = "whym"
 		$realname = "Yusuke Matsubara"
-		$uid = 567 
+		$uid = 567
+		$enabled = "false" 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1425,6 +1462,7 @@ class accounts {
 		$username = "giovanni"
 		$realname = "Giovanni Luca Ciampaglia"
 		$uid = 568 
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
