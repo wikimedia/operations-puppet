@@ -140,6 +140,12 @@ class generic::webserver::php5 {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
+class generic::webserver::https {
+  # Monitor HTTPS service and make sure certificate is not expiring
+  # during the next 14 days
+  monitor_service { "https": description => "HTTPS", check_command => "check_http --ssl --certificate 14" }
+}
+
 class generic::webserver::modproxy {
 
         package { libapache2-mod-proxy-html:
