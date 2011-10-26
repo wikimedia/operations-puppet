@@ -10,7 +10,7 @@
         compress
         delaycompress
         notifempty
-        create 640 deploy deploy
+        create 640 deploy wikidev
         sharedscripts
         postrotate
                 bash /srv/mobile/current/bin/rotate
@@ -24,7 +24,7 @@
         compress
         delaycompress
         notifempty
-        create 640 deploy deploy
+        create 640 deploy wikidev
         sharedscripts
         postrotate
                 bash /srv/mobile/current/bin/rotate

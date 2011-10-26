@@ -509,6 +509,9 @@ class ldap::client::sudo {
 
 class ldap::client::openldap {
 
+	include passwords::ldap::wmf_cluster
+	$proxypass = $passwords::ldap::wmf_cluster::proxypass
+
 	package { [ "ldap-utils" ]:
 		ensure => latest;
 	}

@@ -19,6 +19,9 @@ class exim::packages {
 }
 
 class exim::packages::heavy {
+
+	$exim_queuerunner = 'combined'
+
 	package { [ "exim4-daemon-heavy", "exim4-config" ]:
 		ensure => latest;
         }
@@ -100,8 +103,7 @@ class exim::listserve {
 			path => "/etc/exim4/aliases/",
 			ensure => directory;
 		"/etc/exim4/aliases/lists.wikimedia.org":
-			require => Package[exim4-config],
-			require => File["/etc/exim4/aliases"],
+			require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
 			owner => root,
 			group => root,
 			mode => 0444,
@@ -131,7 +133,7 @@ class spamassassin {
 		source => "puppet:///files/spamassassin/local.cf";
 	}
 
-	service { "spamd":
+	service { "spamassassin":
 	require => Package[spamassassin],
 	ensure => running;
 	}

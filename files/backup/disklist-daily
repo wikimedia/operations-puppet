@@ -13,3 +13,4 @@ sanger.wikimedia.org	/var/vmail	default
 nfs1.pmtpa.wmnet        /var/opendj/backups default
 nfs2.pmtpa.wmnet        /var/opendj/backups default
 formey.wikimedia.org    /svnroot/bak default
+sodium.wikimedia.org	/var/lib/mailman	default

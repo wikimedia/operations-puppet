@@ -43,8 +43,8 @@ define systemuser($name, $home, $shell="/bin/false", $groups=undef) {
 }
 
 # Enables a certain Apache 2 site
-define apache_site($name) {
-	file { "/etc/apache2/sites-enabled/${name}":
+define apache_site($name, $prefix="") {
+	file { "/etc/apache2/sites-enabled/${prefix}${name}":
 		ensure => "/etc/apache2/sites-available/$name",
 	}
 }
@@ -60,6 +60,12 @@ define apache_module($name) {
 			ensure => "../mods-available/${name}.conf";
 		"/etc/apache2/mods-enabled/${name}.load":
 			ensure => "../mods-available/${name}.load";
+	}
+}
+
+class generic::apache::no-default-site {
+	file { "/etc/apache2/sites-enabled/000-default":
+		ensure => absent;
 	}
 }
 
