@@ -1,0 +1,9 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+1: Hashar <hashar@free.fr>
+Submitted-by: Hashar <hashar@free.fr>
+Submitted-at: Wed, 26 Oct 2011 09:57:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/433
+Project: operations/puppet
+Branch: refs/heads/test
