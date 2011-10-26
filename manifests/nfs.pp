@@ -9,6 +9,50 @@ class nfs::common {
 	}
 }
 
+class nfs::server {
+
+	include nfs::common
+
+	package { nfs-kernel-server:
+		ensure => latest;
+	}
+
+	if $static_nfs {
+		file {
+			'/etc/default/nfs-common':
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/nfs/nfs-common",
+				ensure => present,
+				require => Package["nfs-common"];
+			'/etc/default/nfs-kernel-server':
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/nfs/nfs-kernel-server",
+				ensure => present,
+				require => Package["nfs-kernel-server"];
+			'/etc/default/quota':
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/nfs/quota",
+				ensure => present,
+				require => Package["nfs-kernel-server"];
+			'/etc/modprobe.d/lockd.conf':
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/nfs/lockd.conf",
+				ensure => present,
+				require => Package["nfs-kernel-server"];
+		}
+
+	}
+
+}
+
 class nfs::home {
 	include nfs::common
 
