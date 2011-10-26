@@ -33,9 +33,17 @@ class mailman::base {
 			source => "puppet:///files/lighttpd/list-server.conf";
 	}
 
+	file { "mailman-private-archives.conf":
+			mode => 0444,
+			owner => root,
+			group => root,
+			path => "/etc/lighttpd/mailman-private-archives.conf",
+			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
+	}
+
 	service { "lighttpd":
-			require => [ File["lighttpd.conf"], Package[lighttpd] ],
-			subscribe => File["lighttpd.conf"],
+			require => [ File["lighttpd.conf"], File["mailman-private-archives.conf"], Package[lighttpd] ],
+			subscribe => [ File["lighttpd.conf"], File["mailman-private-archives.conf"] ],
 			ensure => running;
 	}
 
