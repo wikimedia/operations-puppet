@@ -19,7 +19,11 @@ class mailman::base {
 
 	}
 
-	# lighttpd is used for the mailman UI
+	# monitor mailman procs
+	monitor_service { "mailman": description => "mailman processes", check_command => "check_pro
+cs_mailman" }
+
+	# lighttpd is used for the mailman UI, and therefore considered part of it
 
 	package { "lighttpd":
 			ensure => latest;
@@ -39,6 +43,8 @@ class mailman::base {
 			ensure => running;
 	}
 
-	# Monitoring
+	# monitor http and https
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+	monitor_service { "https": description => "HTTPS", check_command => "check_http -S" }
+
 }
