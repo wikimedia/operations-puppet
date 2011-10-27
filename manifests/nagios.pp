@@ -531,3 +531,81 @@ class nagios::bot {
 
 }
 
+# passive checks / NSCA
+
+# package contains daemon and client script
+class nagios::nsca {
+
+	package { "nsca":
+		ensure => latest;
+	}
+
+}
+# NSCA - daemon
+class nagios::nsca::daemon {
+
+	require nagios::nsca
+
+	file { "/etc/nsca.cfg":
+		source => "puppet:///private/nagios/nsca.cfg",
+		owner => root,
+		mode => 0400;
+	}
+
+
+	service { "nsca":
+		ensure => running;
+	}
+
+
+	# deny access to port 5667 TCP (nsca) from external networks
+
+	class iptables-purges {
+
+		require "iptables::tables"
+
+		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
+	}
+
+	class iptables-accepts {
+
+		require "nagios::nsca::daemon::iptables-purges"
+
+		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
+	}
+
+	class iptables-drops {
+
+		require "nagios::nsca::daemon::iptables-accepts"
+
+		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
+	}
+
+	class iptables {
+
+		require "nagios::nsca::daemon::iptables-drops"
+
+		iptables_add_exec{ "${hostname}": service => "nsca" }
+	}
+
+	require "nagios::nsca::daemon::iptables"
+}
+
+# NSCA - client
+class nagios::nsca::client {
+
+	require nagios::nsca
+
+	file { "/etc/send_nsca.cfg":
+		source => "puppet:///private/nagios/send_nsca.cfg",
+		owner => root,
+		mode => 0400;
+	}
+
+	service { "nsca":
+		ensure => stopped;
+	}
+}
