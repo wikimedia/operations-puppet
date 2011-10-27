@@ -621,6 +621,8 @@ node "emery.wikimedia.org" {
 		exim::simple-mail-sender,
 		ntp::client,
 		misc::udp2log::aft,
+		misc::udp2log::packetloss,
+		misc::udp2log::emery,
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
@@ -1214,6 +1216,8 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
+		misc::udp2log::packetloss,
+		misc::udp2log::locke,
 		nrpe
 }
 
