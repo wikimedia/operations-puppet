@@ -115,6 +115,9 @@ class exim::listserve {
 			mode => 0444,
 			source => "puppet:///private/exim/exim4.listserver_system_filter.conf";
 	}
+
+	# Nagios monitoring
+	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 }
 
 
@@ -126,15 +129,24 @@ class spamassassin {
 		ensure => latest;
         }
 
-	file { "/etc/spamassassin/local.cf":
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/spamassassin/local.cf";
+	file { 
+		"/etc/spamassassin/local.cf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/spamassassin/local.cf";
+	
+		"/etc/default/spamassassin":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/spamassassin/spamassassin.default";
 	}
 
 	service { "spamassassin":
 	require => Package[spamassassin],
 	ensure => running;
 	}
+
+	monitor_service { "spamd": description => "spamassassin processes", check_command => "check_procs_spamd" }
 }
