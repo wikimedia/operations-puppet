@@ -47,8 +47,9 @@ class mailman::base {
 			ensure => running;
 	}
 
-	# Monitoring
+	# monitor HTTP
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-	# Fix me
-	# monitor_service { "https": description => "HTTPS", check_command => "check_http -S" }
+	# monitor SSL cert
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!lists.wikimedia.org" }
+
 }
