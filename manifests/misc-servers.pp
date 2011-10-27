@@ -1457,3 +1457,37 @@ class misc::udpprofile::collector {
 
 	# FIXME: Nagios monitoring
 }
+
+class misc::udp2log::packetloss {
+	package { "ganglia-logtailer":
+		ensure => latest;
+	}
+	file {
+		"PacketLossLogtailer.py":
+			path => "/usr/share/ganglia-logtailer/PacketLossLogtailer.py",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/misc/PacketLossLogtailer.py";
+	}
+}
+
+class misc::udp2log::emery {
+# emery and locke have their log files in different places and therefore need different cron jobs
+	cron { "ganglia-logtailer" :
+		ensure => present,
+		command => "ganglia-logtailer --classname PacketLossLogtailer --log_file /var/log/squid/packet-loss.log --mode cron",
+		user => 'root',
+		minute => '*/5';
+	}
+}
+
+class misc::udp2log::locke {
+# emery and locke have their log files in different places and therefore need different cron jobs
+	cron { "ganglia-logtailer" :
+		ensure => present,
+		command => "ganglia-logtailer --classname PacketLossLogtailer --log_file /a/squid/packet-loss.log --mode cron",
+		user => 'root',
+		minute => '*/5';
+	}
+}
