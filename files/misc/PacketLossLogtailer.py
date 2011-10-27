@@ -45,19 +45,19 @@ class PacketLossLogtailer(object):
         self.lock.acquire()
         try:
             regMatch = self.reg.match(line)
-                if regMatch:
-                    linebits = regMatch.groupdict()
-                    self.num_hits+=1
-                    # capture data
-                    percentloss = float(linebits['percentloss'])
-                    margin = float(linebits['margin'])
-                    # store for 90th % and average calculations
-                    # on ssl servers, sequence numbers are out of order.
-                    # http://rt.wikimedia.org/Ticket/Display.html?id=1616
-                    if( ( margin <= 20 ) and ( percentloss <= 98 ) ):
-                        self.percentloss_list.append(percentloss)
-                else:
-                    raise LogtailerParsingException, "regmatch failed to match"
+            if regMatch:
+                linebits = regMatch.groupdict()
+                self.num_hits+=1
+                # capture data
+                percentloss = float(linebits['percentloss'])
+                margin = float(linebits['margin'])
+                # store for 90th % and average calculations
+                # on ssl servers, sequence numbers are out of order.
+                # http://rt.wikimedia.org/Ticket/Display.html?id=1616
+                if( ( margin <= 20 ) and ( percentloss <= 98 ) ):
+                    self.percentloss_list.append(percentloss)
+            else:
+                raise LogtailerParsingException, "regmatch failed to match"
 
         except Exception, e:
             self.lock.release()
@@ -121,7 +121,7 @@ class PacketLossLogtailer(object):
         current time if necessary, call reset_state, then do its
         calculations.  It should return a list of metric objects.'''
         # if number of log lines is 0, then return no data
-        if ( self.numhits = 0):
+        if ( self.num_hits == 0):
             return list()
 
         self.lock.acquire()
