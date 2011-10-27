@@ -35,6 +35,8 @@ WIKIUSER    ALL=NOPASSWD: /home/wikipedia/sbin/wikiuser_pass_real
 
 # Allow admins to run commands as apache
 ADMINS	ALL = (apache,mwdeploy) NOPASSWD: ALL
+# Allow the l10nupdate user to run l10nupdate-2 and l10nupdate-3 as apache
+l10nupdate ALL = (apache) NOPASSWD: /home/wikipedia/bin/l10nupdate-2 /home/wikipedia/bin/l10nupdate-3
 
 # Uncomment to allow people in group wheel to run all commands
 # %wheel	ALL=(ALL)	ALL
