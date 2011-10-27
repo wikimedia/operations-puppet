@@ -531,3 +531,49 @@ class nagios::bot {
 
 }
 
+# passive checks / NSCA
+
+# package contains daemon and client script
+class nagios::nsca {
+
+	package { "nsca":
+		ensure => latest;
+	}
+
+}
+# NSCA - daemon
+class nagios::nsca::daemon {
+
+	include nagios::nsca
+
+	file { "/etc/nsca.cfg":
+		require => Package[nsca],
+		source => "puppet:///private/nagios/nsca.cfg",
+		owner => root,
+		mode => 0400;
+	}
+
+	
+	service { "nsca":
+		require => Package[nsca],
+		ensure => running;
+	}
+}
+
+# NSCA - client
+class nagios::nsca::client {
+
+	include nagios::nsca
+
+	file { "/etc/send_nsca.cfg":
+		require => Package[nsca],
+		source => "puppet:///private/nagios/send_nsca.cfg",
+		owner => root,
+		mode => 0400;
+	}
+	
+	service { "nsca":
+		require => Package[nsca],
+		ensure => stopped;
+	}
+}
