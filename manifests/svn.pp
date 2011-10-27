@@ -54,22 +54,22 @@ class svn::server {
 		"/svnroot/mediawiki/hooks/pre-commit":
 			owner => root,
 			group => svnadm,
-			mode => 0775,
+			mode => 0555,
 			source => "puppet:///files/svn/hooks/pre-commit";
 		"/svnroot/mediawiki/hooks/post-commit":
 			owner => root,
 			group => svnadm,
-			mode => 0775,
+			mode => 0555,
 			source => "puppet:///files/svn/hooks/post-commit";
 		"/svnroot/mediawiki/hooks/HooksCommon.inc":
 			owner => root,
 			group => svnadm,
-			mode => 0775,
+			mode => 0555,
 			source => "puppet:///files/svn/hooks/HooksCommon.inc";
 		"/svnroot/mediawiki/hooks/deferred-updates.sh":
 			owner => root,
 			group => svnadm,
-			mode => 0775,
+			mode => 0555,
 			source => "puppet:///files/svn/hooks/deferred-updates.sh";
 	}
 
