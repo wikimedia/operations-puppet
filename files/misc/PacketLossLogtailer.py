@@ -148,8 +148,9 @@ class PacketLossLogtailer(object):
             packetloss_90th = 99
             packetloss_ave = 99
         # package up the data you want to submit
-        packetloss_ave_metric = GangliaMetricObject( 'packet_loss_average', packetloss_ave, units='%')
-        packetloss_90th_metric = GangliaMetricObject( 'packet_loss_90th', packetloss_90th, units='%')
+        # setting tmax to 960 seconds as data may take as long as 15 minutes to be processed
+        packetloss_ave_metric = GangliaMetricObject( 'packet_loss_average', packetloss_ave, units='%', tmax=960 )
+        packetloss_90th_metric = GangliaMetricObject( 'packet_loss_90th', packetloss_90th, units='%', tmax=960 )
 
         # return a list of metric objects
         return [ packetloss_ave_metric, packetloss_90th_metric, ]
