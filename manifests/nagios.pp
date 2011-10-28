@@ -436,6 +436,26 @@ class nagios::monitor {
 	}
 }
 
+
+class nagios::monitor::nsca {
+
+	# insure nsca package is installed
+
+	# install config file for nsca
+	file { "/etc/nsca.cfg":
+		source => "puppet:///private/nagios/nsca.cfg",
+		owner => root,
+		group => root,
+		mode => 0600;
+	}
+
+	# add iptables rule here(?)
+
+	# make sure nsca service is started
+	
+}
+
+
 class nagios::monitor::pager {
 
 	#package { "gammu":
