@@ -1,0 +1,52 @@
+#!/bin/bash
+# This script belongs in /home/wikipedia/bin/.
+BINDIR=/home/wikipedia/bin
+MWMULTIDIR=/home/wikipedia/common/multiversion
+
+umask 0002
+
+# SVN up i18 messages to /trunk HEAD
+echo "Starting l10nupdate at `date`."
+if svn up --ignore-externals /home/wikipedia/l10n/trunk/phase3 &&
+	svn up --ignore-externals /home/wikipedia/l10n/trunk/extensions
+then
+	echo "SVN update completed."
+else
+	$BINDIR/dologmsg "!log LocalisationUpdate failed"
+	echo "FAILED"
+	exit 1
+fi
+
+# Get all MW message cache versions (and a wiki DB name for each)
+mwVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
+if [ -z "$mwVerDbSets" ]; then
+	$BINDIR/dologmsg "!log LocalisationUpdate failed"
+	echo "FAILED"
+	exit 1
+fi
+
+# Update l10n cache and clear the message cache for these versions
+for i in ${mwVerDbSets[@]}
+do
+	mwVerNum=${i%=*}
+	mwDbName=${i#*=}
+	echo "Running updates for $mwVerNum (on $mwDbName)"
+	# l10nupdate-2 is a wrapper for mwscript extensions/LocalisationUpdate/update.php
+	if l10nupdate-2 \
+		  --wiki="$mwDbName" \
+		  --outdir=/home/wikipedia/common/php-"$mwVerNum"/cache/l10n \
+		  --all \
+		  --quiet
+	then
+		echo "Completed. Syncing to Apaches"
+		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
+		echo "Clearing message blobs"
+		# l10nupdate-3 is a wrapper for mwscript maintenance/wmf/clearMessageBlobs.php
+		l10nupdate-3 --wiki="$mwDbName"
+		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
+		echo "All done"
+	else
+		$BINDIR/dologmsg "!log LocalisationUpdate failed ($mwVerNum) at `date`"
+		echo "FAILED"
+	fi
+done

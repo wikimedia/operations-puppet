@@ -1473,6 +1473,21 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/wikipediabin/bin/l10nupdate";
+		"/usr/local/bin/l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/l10nupdate-1";
+		"/usr/local/bin/l10nupdate-2":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/l10nupdate-2";
+		"/usr/local/bin/l10nupdate-3":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/l10nupdate-3";
 		"/usr/local/bin/lint":
 			owner => root,
 			group => root,
