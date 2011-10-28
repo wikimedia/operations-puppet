@@ -1819,6 +1819,7 @@ node "spence.wikimedia.org" {
 		nagios::bot,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
+		nagios::nsca::daemon,
 		ntp::client,
 		nfs::home,
 		exim::simple-mail-sender,
