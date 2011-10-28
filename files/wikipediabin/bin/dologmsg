@@ -1,2 +1,2 @@
 #! /bin/sh
-echo "$*" | nc -q0 -u fenari.wikimedia.org 53412
+echo "$*" >> /var/log/logmsg
