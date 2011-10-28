@@ -1167,7 +1167,6 @@ node "ixia.pmtpa.wmnet" {
 
 node "kaulen.wikimedia.org" {
 	system_role { "misc": description => "Bugzilla server" }
-	$ldapincludes = ['openldap', 'nss', 'utils']
 	$gid = 500
 
 	include base,
@@ -1177,7 +1176,7 @@ node "kaulen.wikimedia.org" {
 		admins::roots,
 		accounts::demon,
 		accounts::reedy,
-		ldap::client::wmf-cluster,
+		accounts::robla,
 		misc::download-mediawiki,
 		certificates::star_wikimedia_org
 
