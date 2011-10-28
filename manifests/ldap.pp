@@ -554,11 +554,14 @@ class ldap::client::autofs {
 			group => root,
 			mode  => 0444,
 			content => template("ldap/autofs.default.erb");
+<<<<<<< HEAD   (172866 Merge branch 'testlabs/bindir' into test)
 	}
 
 	service { "autofs":
 		enable => true,
 		ensure => running;
+=======
+>>>>>>> BRANCH (f86b1d additional config bits for grosley/aluminium)
 	}
 }
 
@@ -605,7 +608,11 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
+<<<<<<< HEAD   (172866 Merge branch 'testlabs/bindir' into test)
 	if ( $realm == "labs" ) {
+=======
+	if ( $cluster_env == "labs" ) {
+>>>>>>> BRANCH (f86b1d additional config bits for grosley/aluminium)
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs']
 		file { "/etc/security/access.conf":
 			owner => root,
@@ -657,7 +664,11 @@ class ldap::client::includes {
 		}
 	}
 
+<<<<<<< HEAD   (172866 Merge branch 'testlabs/bindir' into test)
 	if $realm == "labs" {
+=======
+	if $cluster_env == "labs" {
+>>>>>>> BRANCH (f86b1d additional config bits for grosley/aluminium)
 		exec {
 			"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
 			require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
