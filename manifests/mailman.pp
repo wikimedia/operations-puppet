@@ -25,20 +25,31 @@ class mailman::base {
 			ensure => latest;
 	}
 
-	file { "lighttpd.conf":
+	file { 
+		"lighttpd.conf":
 			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/etc/lighttpd/lighttpd.conf",
 			source => "puppet:///files/lighttpd/list-server.conf";
-	}
-
-	file { "mailman-private-archives.conf":
+		"mailman-private-archives.conf":
 			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/etc/lighttpd/mailman-private-archives.conf",
 			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
+
+		"/etc/lighttpd/ssl/lists.wikimedia.org.pem":
+			mode => 0400,
+			owner => root,
+			group => root,
+			source => "puppet:///private/mailman/lists.wikimedia.org.pem";
+		"/etc/lighttpd/ssl/*.wikimedia.org.pem":
+			mode => 0400,
+			owner => root,
+			group => root,
+			source => "puppet:///private/mailman/*.wikimedia.org.pem";
+			
 	}
 
 	service { "lighttpd":
