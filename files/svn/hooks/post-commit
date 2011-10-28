@@ -65,13 +65,13 @@ svnnotify --repos-path "$1" --revision "$2" \
 
 #  --viewcvs-url "http://svn.wikimedia.org/viewvc" \
 
-UUID=`svnlook uuid $REPOS`
-/usr/bin/wget \
-	  --header "Content-Type:text/plain;charset=UTF-8" \
-	    --post-data "`svnlook changed --revision $REV $REPOS`" \
-	      --output-document "-" \
-	        --timeout=5 \
-		  http://integration.mediawiki.org/ci/subversion/${UUID}/notifyCommit?rev=$REV
+#UUID=`svnlook uuid $REPOS`
+#/usr/bin/wget \
+#	  --header "Content-Type:text/plain;charset=UTF-8" \
+#	    --post-data "`svnlook changed --revision $REV $REPOS`" \
+#	      --output-document "-" \
+#	        --timeout=5 \
+#		  http://integration.mediawiki.org/ci/subversion/${UUID}/notifyCommit?rev=$REV
 
 # temporary disable, hanging?
 # enabling again, trying email mode
