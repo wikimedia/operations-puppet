@@ -556,7 +556,7 @@ class ldap::client::autofs {
 			content => template("ldap/autofs.default.erb");
 	}
 
-	service { "autofs"
+	service { "autofs":
 		enable => true,
 		ensure => running;
 	}
