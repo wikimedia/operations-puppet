@@ -1478,7 +1478,7 @@ class misc::udp2log::emery {
 		ensure => present,
 		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /var/log/squid/packet-loss.log --mode cron",
 		user => 'root',
-		minute => '*/5';
+		minute => '*/10';
 	}
 
 	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
@@ -1489,7 +1489,7 @@ class misc::udp2log::locke {
 		ensure => present,
 		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /a/squid/packet-loss.log --mode cron",
 		user => 'root',
-		minute => '*/5';
+		minute => '*/10';
 	}
 	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
 }
