@@ -555,6 +555,11 @@ class ldap::client::autofs {
 			mode  => 0444,
 			content => template("ldap/autofs.default.erb");
 	}
+
+	service { "autofs"
+		enable => true,
+		ensure => running;
+	}
 }
 
 class ldap::client::wmf-cluster {
