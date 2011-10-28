@@ -591,7 +591,6 @@ class nagios::nsca::daemon {
 		# temporarily remove the exec rule so that the ruleset is simply created
 		# and we can inspect the file before allowing puppet to auto-load the rules
 		#iptables_add_exec{ "${hostname}": service => "nsca" }
-		iptables_add_service{ "${hostname}": service => "nsca" }
 	}
 
 	require "nagios::nsca::daemon::iptables"
