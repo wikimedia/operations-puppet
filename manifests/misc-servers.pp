@@ -1433,6 +1433,7 @@ class misc::udpprofile::collector {
 }
 
 class misc::scripts {
+	require misc::passwordScripts
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
 
@@ -1607,5 +1608,66 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/wikipediabin/sbin/set-group-write2";
+	}
+}
+
+class misc::passwordScripts {
+	include passwords::misc::scripts
+	$cachemgr_pass = $passwords::misc::scripts::cachemgr_pass
+	$mysql_root_pass = $passwords::misc::scripts::mysql_root_pass
+	$nagios_sql_pass = $passwords::misc::scripts::nagios_sql_pass
+	$webshop_pass = $passwords::misc::scripts::webshop_pass
+	$wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
+	$wikiuser2_pass = $passwords::misc::scripts::wikiuser2_pass
+	$wikiuser_pass = $passwords::misc::scripts::wikiuser_pass
+	$wikiuser_pass_nagios = $passwords::misc::scripts::wikiuser_pass_nagios
+	$wikiuser_pass_real = $passwords::misc::scripts::wikiuser_pass_real
+
+	file {
+		"/usr/local/bin/cachemgr_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/cachemgr_pass.erb");
+		"/usr/local/bin/mysql_root_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/mysql_root_pass.erb");
+		"/usr/local/bin/nagios_sql_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/nagios_sql_pass.erb");
+		"/usr/local/bin/webshop_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/webshop_pass.erb");
+		"/usr/local/bin/wikiadmin_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/wikiadmin_pass.erb");
+		"/usr/local/bin/wikiuser2_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/wikiuser2_pass.erb");
+		"/usr/local/bin/wikiuser_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/wikiuser_pass.erb");
+		"/usr/local/bin/wikiuser_pass_nagios":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/wikiuser_pass_nagios.erb");
+		"/usr/local/bin/wikiuser_pass_real":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("wikipediabin/wikiuser_pass_real.erb");
 	}
 }
