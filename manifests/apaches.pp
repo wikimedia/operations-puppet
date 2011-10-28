@@ -26,7 +26,11 @@ class apaches::packages {
 class apaches::cron {
         cron {
 		synclocalisation:
+<<<<<<< HEAD   (172866 Merge branch 'testlabs/bindir' into test)
 			command =>"rsync -r --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/",
+=======
+			command =>"rsync --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/", 
+>>>>>>> BRANCH (f86b1d additional config bits for grosley/aluminium)
 			user => mwdeploy,
 			hour => 3,
 			minute => 0,
