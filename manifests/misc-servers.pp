@@ -1583,6 +1583,11 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate";
+		"/usr/local/bin/sync-l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate-1";
 		"/usr/local/bin/sync-wikiversions":
 			owner => root,
 			group => root,
