@@ -391,9 +391,6 @@ class ldap::client::pam {
 
 class ldap::client::nss {
 
-	include passwords::ldap::wmf_cluster
-	$proxypass = $passwords::ldap::wmf_cluster::proxypass
-
 	package { [ "libnss-ldap", "nss-updatedb", "libnss-db", "nscd" ]:
 		ensure => latest
 	}
@@ -515,9 +512,6 @@ class ldap::client::sudo {
 }
 
 class ldap::client::openldap {
-
-	include passwords::ldap::wmf_cluster
-	$proxypass = $passwords::ldap::wmf_cluster::proxypass
 
 	package { [ "ldap-utils" ]:
 		ensure => latest;
