@@ -11,7 +11,7 @@ fi
 if [ "$db" == centralauth ]; then
 	host=`echo 'echo wfGetLB()->getServerName(0);' | php /home/wikipedia/common/php/maintenance/eval.php --wiki=fawiki`
 else 
-if [ $HOSTNAME == 'zwinger' -o $HOSTNAME == 'fenari' ]; then
+if [ $HOSTNAME == 'fenari' ]; then
 #	host=`echo 'echo wfGetLB()->getServerName(0);' | php /home/wikipedia/common/php/maintenance/eval.php --wiki=$db`
 	host=`echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki="$db"`
 else 

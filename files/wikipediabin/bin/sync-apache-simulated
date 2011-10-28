@@ -24,17 +24,3 @@ ddsh -cM -g searchidx -- '
 	rsync -avn 10.0.5.8::httpdconf/ /usr/local/apache/conf	
 	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
 '
-
-# this sync doesnt work with puppet hosts
-#ddsh -cM -g apaches -- '
-#	rsync -avn /home/wikipedia/conf/httpd/ /usr/local/apache/conf
-#	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
-#'
-#echo "yaseo apaches:"
-
-#rsync -e ssh -av /home/wikipedia/conf/httpd/ amaryllis:/home/wikipedia/conf/ht
-#ssh -A amaryllis "dsh -f -N apaches 'rsync -avn /home/wikipedia/conf/httpd/ /us
-
-
-
-
