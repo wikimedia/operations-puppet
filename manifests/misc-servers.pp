@@ -1480,8 +1480,9 @@ class misc::udp2log::emery {
 		user => 'root',
 		minute => '*/5';
 	}
-}
 
+	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
+}
 class misc::udp2log::locke {
 # emery and locke have their log files in different places and therefore need different cron jobs
 	cron { "ganglia-logtailer" :
@@ -1490,4 +1491,5 @@ class misc::udp2log::locke {
 		user => 'root',
 		minute => '*/5';
 	}
+	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
 }
