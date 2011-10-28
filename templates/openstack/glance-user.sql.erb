@@ -1,2 +1,0 @@
-GRANT USAGE ON *.* to '<%= scope.lookupvar('openstack::glance_config::glance_db_user') %>'@'%' IDENTIFIED BY '<%= scope.lookupvar('openstack::glance_config::glance_db_pass') %>';
-GRANT ALL PRIVILEGES ON <%= scope.lookupvar('openstack::glance_config::glance_db_name') %>.* to '<%= scope.lookupvar('openstack::glance_config::glance_db_user') %>'@'%';

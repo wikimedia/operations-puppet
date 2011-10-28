@@ -1,5 +1,0 @@
-#! /bin/bash
-echo "UserMailer::send( new MailAddress( \"newprojects@lists.wikimedia.org\" ),\
- new MailAddress( \$wgPasswordSender ), \"New wiki: $1\",\
-\"A new wiki was created by $USER at $2 for a $3 in $4 ($5).\n\
-Once the wiki is fully set up, it'll be visible at http://$6\");" | php /home/wikipedia/common/php/maintenance/eval.php --wiki=aawiki
