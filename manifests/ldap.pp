@@ -602,8 +602,13 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
+<<<<<<< HEAD
 	if ( $cluster_env == "labs" ) {
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
+=======
+	if ( $realm == "labs" ) {
+		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs']
+>>>>>>> 63c2e0f... Removing home directory management from most nodes
 		file { "/etc/security/access.conf":
 			owner => root,
 			group => root,
@@ -647,20 +652,20 @@ class ldap::client::includes {
 		include ldap::client::utils
 	}
 
-	if "managehome" in $ldapincludes {
+	if $managehome {
 		cron { "manage-exports":
 			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports &>> /var/log/manage-exports.log",
 			require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
-		if $cluster_env == "labs" {
-			exec {
-				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
-				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
-				creates => "/var/lib/cloud/data/.usermailed";
-			}
-		}
 	}
 
+	if $cluster_env == "labs" {
+		exec {
+			"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
+			require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
+			creates => "/var/lib/cloud/data/.usermailed";
+		}
+	}
 }
 
 class ldap::client::corp-server {
