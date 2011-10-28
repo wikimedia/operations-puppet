@@ -965,7 +965,7 @@ class misc::fundraising {
 	#what is currently on grosley
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
-	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
 }
 
@@ -1035,6 +1035,11 @@ class misc::fundraising {
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php";
+		"/opt/fundraising-misc/auditing/paypal-audit/auth.cfg":
+			mode => 0444,
+			owner => www-data,
+			group => wikidev,
+			source => "puppet:///private/misc/fundraising/fundraising-misc.auth.cfg";
 		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
