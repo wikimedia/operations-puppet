@@ -1677,6 +1677,7 @@ class misc::passwordScripts {
 	}
 }
 
+<<<<<<< HEAD   (24ba68 Merge remote-tracking branch 'origin/production' into test)
 class misc::udp2log::packetloss {
 	package { "ganglia-logtailer":
 		ensure => latest;
@@ -1711,4 +1712,29 @@ class misc::udp2log::locke {
 		minute => '*/10';
 	}
 	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
+=======
+class misc::logmsgbot {
+
+        $ircecho_infile = "/var/log/logmsg"
+        $ircecho_nick = "logmsgbot"
+        $ircecho_chans = "#wikimedia-tech"
+        $ircecho_server = "irc.freenode.net"
+
+	package { "ircecho":
+		ensure => latest;
+	}
+
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
+	}
+>>>>>>> BRANCH (23a16e Puppetize logmsgbot)
 }
