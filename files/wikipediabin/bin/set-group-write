@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo /home/wikipedia/bin/set-group-write2
+sudo /home/wikipedia/sbin/set-group-write2
