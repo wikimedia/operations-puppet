@@ -26,7 +26,7 @@ class apaches::packages {
 class apaches::cron {
         cron {
 		synclocalisation:
-			command =>"rsync --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/", 
+			command =>"rsync -r --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/",
 			user => mwdeploy,
 			hour => 3,
 			minute => 0,
