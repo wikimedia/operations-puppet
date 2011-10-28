@@ -385,3 +385,9 @@ define command{
 	command_name	check_procs_spamd
 	command_line	$USER3$/check_procs -w 1:20 -c 1:40 -C spamd
 }
+
+# check that logging packet loss is not too high
+define command{
+	command_name	check_packet_loss_ave
+	command_line	$USER3$/check_ganglios_generic_value -H $HOSTADDRESS$ -m packet_loss_average -w 4 -c 8 -o gt
+}

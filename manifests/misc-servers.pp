@@ -1470,6 +1470,8 @@ class misc::udp2log::packetloss {
 			group => root,
 			source => "puppet:///files/misc/PacketLossLogtailer.py";
 	}
+	monitor_service { "packetloss": description => "Packetloss_Average", check_command => check_packet_loss_ave
+	} 
 }
 
 class misc::udp2log::emery {
