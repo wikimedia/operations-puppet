@@ -1671,3 +1671,28 @@ class misc::passwordScripts {
 			content => template("wikipediabin/wikiuser_pass_real.erb");
 	}
 }
+
+class misc::logmsgbot {
+
+        $ircecho_infile = "/var/log/logmsg"
+        $ircecho_nick = "logmsgbot"
+        $ircecho_chans = "#wikimedia-tech"
+        $ircecho_server = "irc.freenode.net"
+
+	package { "ircecho":
+		ensure => latest;
+	}
+
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
+	}
+}
