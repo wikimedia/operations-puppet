@@ -1,0 +1,20 @@
+#!/bin/bash
+
+echo "Synchronizing /home/wikipedia/common/docroot to /usr/local/apache/common-local/docroot..."
+#echo "pmtpa apaches:"
+
+#dsh -f -N apaches 'rsync -av /home/wikipedia/common/docroot /usr/local/apache/common-local'
+
+echo "pmtpa mediawiki-installation:"
+ddsh -cM -g mediawiki-installation -- 'sudo -u mwdeploy rsync -a --no-perms 10.0.5.8::common/docroot /usr/local/apache/common-local'
+
+
+# Pre-puppet stuff
+# echo "pmtpa mediawiki-installation:"
+# dsh -f -N mediawiki-installation 'rsync -av /home/wikipedia/common/docroot /usr/local/apache/common-local'
+
+
+#echo "yaseo apaches:"
+
+#rsync -e ssh -av /home/wikipedia/common/docroot amaryllis:/home/wikipedia/common
+#ssh -A amaryllis "dsh -f -N apaches 'rsync -av /home/wikipedia/common/docroot /usr/local/apache/common-local'"

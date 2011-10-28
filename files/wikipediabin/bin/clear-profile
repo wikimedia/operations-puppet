@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ `</etc/cluster` == yaseo ]; then
+	host=amaryllis
+else
+	host=spence.wikimedia.org
+fi
+
+if [ "$HOSTNAME" == zwinger ]; then
+	echo "-truncate" | /usr/local/bin/nc -cu "$host" 3811
+else
+	# Ubuntu
+	echo "-truncate" | nc -q0 -u "$host" 3811
+fi
+#echo "-truncate" | nc -cu webster 3811
+dologmsg "$USER cleared profiling data"

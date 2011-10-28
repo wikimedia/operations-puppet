@@ -1,0 +1,11 @@
+#! /bin/bash
+if php -l /home/wikipedia/common/$1 > /dev/null
+then
+	svn ci /home/wikipedia/common/$1 "--message=$2"
+	sync-common-file $1 "$2"
+else
+	echo SYNTAX ERROR;
+	php -l /home/wikipedia/common/$1
+fi
+
+

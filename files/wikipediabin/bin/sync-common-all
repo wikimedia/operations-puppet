@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd `dirname $0`
+BINDIR=`pwd -L`
+
+$BINDIR/set-group-write
+
+if [ -n "$1" ]; then
+        MESSAGE=" '"$@"'"
+else
+        MESSAGE=
+fi
+
+
+ddsh -cM -g mediawiki-installation /usr/bin/sync-common
+
+/home/wikipedia/bin/dologmsg "!log $USER ran sync-common-all $MESSAGE"

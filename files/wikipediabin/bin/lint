@@ -1,0 +1,3 @@
+#!/bin/bash
+php -n -dextension=parsekit.so `dirname $0`/lint.php "$@"
+exit $?

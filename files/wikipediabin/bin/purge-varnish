@@ -1,0 +1,7 @@
+#!/bin/bash
+
+for s in knsq2 knsq4 knsq5 sq67 sq68 sq70; do
+	echo "$s"
+	ssh root@$s "varnishadm -T :6082 -S /etc/varnish/secret purge.url $1"
+done
+

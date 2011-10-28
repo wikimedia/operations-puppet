@@ -1,0 +1,11 @@
+#! /bin/sh
+#/home/wikipedia/bin/smlogmsg -l 10 -tH 10.0.0.22 "$@"
+#echo "$@" | nc -u bart 31239
+
+host=fenari.wikimedia.org
+
+if [ -e /etc/redhat-release ]; then
+	echo "$*" > /dev/udp/$host/53412
+else
+	echo "$*" | nc -q0 -u $host 53412
+fi
