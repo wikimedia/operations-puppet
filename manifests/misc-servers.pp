@@ -1431,3 +1431,181 @@ class misc::udpprofile::collector {
 
 	# FIXME: Nagios monitoring
 }
+
+class misc::scripts {
+	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
+	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
+
+	file {
+		"/usr/local/bin/clear-profile":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/clear-profile";
+		"/usr/local/bin/configchange":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/configchange";
+		"/usr/local/bin/dologmsg":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/dologmsg";
+		"/usr/local/bin/fatalmonitor":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/fatalmonitor";
+		"/usr/local/bin/foreachwiki":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/foreachwiki";
+		"/usr/local/bin/foreachwikiindblist":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/foreachwikiindblist";
+		"/usr/local/bin/l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/l10nupdate";
+		"/usr/local/bin/lint":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/lint";
+		"/usr/local/bin/lint.php":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/lint.php";
+		"/usr/local/bin/mwscript":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/mwscript";
+		"/usr/local/bin/mwscriptwikiset":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/mwscriptwikiset";
+		"/usr/local/bin/mwversionsinuse":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/mwversionsinuse";
+		"/usr/local/bin/notifyNewProjects":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/notifyNewProjects";
+		"/usr/local/bin/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/purge-checkuser";
+		"/usr/local/bin/purge-varnish":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/purge-varnish";
+		"/usr/local/bin/refreshWikiversionsCDB":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/refreshWikiversionsCDB";
+		"/usr/local/bin/reset-mysql-slave":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/reset-mysql-slave";
+		"/usr/local/bin/scap":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/scap";
+		"/usr/local/bin/set-group-write":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/set-group-write";
+		"/usr/local/bin/sql":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sql";
+		"/usr/local/bin/sync-apache":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-apache";
+		"/usr/local/bin/sync-apache-simulated":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-apache-simulated";
+		"/usr/local/bin/sync-common-all":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-common-all";
+		"/usr/local/bin/sync-common-file":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-common-file";
+		"/usr/local/bin/sync-dblist":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-dblist";
+		"/usr/local/bin/sync-dir":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-dir";
+		"/usr/local/bin/sync-docroot":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-docroot";
+		"/usr/local/bin/sync-file":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-file";
+		"/usr/local/bin/sync-l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate";
+		"/usr/local/bin/sync-wikiversions":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/sync-wikiversions";
+		"/usr/local/bin/udprec":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/udprec";
+		"/usr/local/bin/update-special-pages": # FIXME hume cron job
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/update-special-pages";
+		"/usr/local/bin/update-special-pages-small": # FIXME hume cron job
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/bin/update-special-pages-small";
+		"/usr/local/sbin/set-group-write2":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/wikipediabin/sbin/set-group-write2";
+	}
+}
