@@ -546,10 +546,11 @@ class ldap::client::autofs {
 	}
 
 	file {
+		# autofs requires the permissions of this file to be 0600
 		"/etc/autofs_ldap_auth.conf":
 			owner => root,
 			group => root,
-			mode  => 0400,
+			mode  => 0600,
 			content => template("ldap/autofs_ldap_auth.erb");
 		"/etc/default/autofs":
 			owner => root,
