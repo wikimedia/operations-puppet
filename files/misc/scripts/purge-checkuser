@@ -4,4 +4,4 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-/home/wikipedia/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php 2>&1 >/home/wikipedia/logs/norotate/purge-checkuser.log
+$BINDIR/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php 2>&1 >/home/wikipedia/logs/norotate/purge-checkuser.log
