@@ -1468,26 +1468,6 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/wikipediabin/bin/foreachwikiindblist";
-		"/usr/local/bin/l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/l10nupdate";
-		"/usr/local/bin/l10nupdate-1":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/l10nupdate-1";
-		"/usr/local/bin/l10nupdate-2":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/l10nupdate-2";
-		"/usr/local/bin/l10nupdate-3":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/l10nupdate-3";
 		"/usr/local/bin/lint":
 			owner => root,
 			group => root,
@@ -1593,16 +1573,6 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/wikipediabin/bin/sync-file";
-		"/usr/local/bin/sync-l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate";
-		"/usr/local/bin/sync-l10nupdate-1":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate-1";
 		"/usr/local/bin/sync-wikiversions":
 			owner => root,
 			group => root,
@@ -1702,6 +1672,39 @@ class misc::l10nupdate {
 			hour => 2,
 			minute => 0,
 			ensure => present;
+	}
+
+	file {
+		"/usr/local/bin/l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate";
+		"/usr/local/bin/l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
+		"/usr/local/bin/l10nupdate-2":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-2";
+		"/usr/local/bin/l10nupdate-3":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-3";
+		"/usr/local/bin/sync-l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate";
+		"/usr/local/bin/sync-l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
 	}
 
 	# Make sure the log file exists and has adequate permissions
