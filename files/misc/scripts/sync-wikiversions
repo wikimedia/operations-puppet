@@ -1,5 +1,5 @@
 #!/bin/bash
-BINDIR="/home/wikipedia/bin"
+BINDIR="/usr/local/bin"
 COMMONDIR="/home/wikipedia/common"
 
 if [ ! -S "$SSH_AUTH_SOCK" ]; then
