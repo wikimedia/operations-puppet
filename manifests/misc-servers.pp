@@ -1691,3 +1691,26 @@ class misc::passwordScripts {
 			content => template("wikipediabin/wikiuser_pass_real.erb");
 	}
 }
+
+class misc::l10nupdate {
+	require misc::scripts
+
+	cron {
+		l10nupdate:
+			command => "/usr/local/bin/l10nupdate-1 > /var/log/l10nupdate 2>&1",
+			user => l10nupdate,
+			hour => 2,
+			minute => 0,
+			ensure => present;
+	}
+
+	# Make sure the log file exists and has adequate permissions
+	# TODO we need log rotation here
+	file {
+		"/var/log/l10nupdate":
+			owner => l10nupdate,
+			group => wikidev,
+			mode => 0664,
+			ensure => present;
+	}
+}
