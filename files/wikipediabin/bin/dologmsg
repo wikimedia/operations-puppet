@@ -1,2 +1,5 @@
+<<<<<<< HEAD   (3377e7 Merge branch 'testlabs/logmsgbot2' into test)
 #! /bin/sh
 echo "$*" >> /var/log/logmsg
+=======
+>>>>>>> BRANCH (14ead2 Fix all references to /h/w/bin)
