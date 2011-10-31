@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BINDIR=/home/wikipedia/bin
+BINDIR=/usr/local/bin
 SOURCE=/home/wikipedia/common
 
 if [ ! -S "$SSH_AUTH_SOCK" ]; then
