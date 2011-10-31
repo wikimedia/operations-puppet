@@ -1447,172 +1447,172 @@ class misc::scripts {
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/clear-profile";
+			source => "puppet:///files/misc/scripts/clear-profile";
 		"/usr/local/bin/configchange":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/configchange";
+			source => "puppet:///files/misc/scripts/configchange";
 		"/usr/local/bin/dologmsg":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/dologmsg";
+			source => "puppet:///files/misc/scripts/dologmsg";
 		"/usr/local/bin/fatalmonitor":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/fatalmonitor";
+			source => "puppet:///files/misc/scripts/fatalmonitor";
 		"/usr/local/bin/foreachwiki":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/foreachwiki";
+			source => "puppet:///files/misc/scripts/foreachwiki";
 		"/usr/local/bin/foreachwikiindblist":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/foreachwikiindblist";
+			source => "puppet:///files/misc/scripts/foreachwikiindblist";
 		"/usr/local/bin/l10nupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/l10nupdate";
+			source => "puppet:///files/misc/scripts/l10nupdate";
 		"/usr/local/bin/lint":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/lint";
+			source => "puppet:///files/misc/scripts/lint";
 		"/usr/local/bin/lint.php":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/lint.php";
+			source => "puppet:///files/misc/scripts/lint.php";
 		"/usr/local/bin/mwscript":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/mwscript";
+			source => "puppet:///files/misc/scripts/mwscript";
 		"/usr/local/bin/mwscriptwikiset":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/mwscriptwikiset";
+			source => "puppet:///files/misc/scripts/mwscriptwikiset";
 		"/usr/local/bin/mwversionsinuse":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/mwversionsinuse";
+			source => "puppet:///files/misc/scripts/mwversionsinuse";
 		"/usr/local/bin/notifyNewProjects":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/notifyNewProjects";
+			source => "puppet:///files/misc/scripts/notifyNewProjects";
 		"/usr/local/bin/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/purge-checkuser";
+			source => "puppet:///files/misc/scripts/purge-checkuser";
 		"/usr/local/bin/purge-varnish":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/purge-varnish";
+			source => "puppet:///files/misc/scripts/purge-varnish";
 		"/usr/local/bin/refreshWikiversionsCDB":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/refreshWikiversionsCDB";
+			source => "puppet:///files/misc/scripts/refreshWikiversionsCDB";
 		"/usr/local/bin/reset-mysql-slave":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/reset-mysql-slave";
+			source => "puppet:///files/misc/scripts/reset-mysql-slave";
 		"/usr/local/bin/scap":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/scap";
+			source => "puppet:///files/misc/scripts/scap";
 		"/usr/local/bin/set-group-write":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/set-group-write";
+			source => "puppet:///files/misc/scripts/set-group-write";
 		"/usr/local/bin/sql":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sql";
+			source => "puppet:///files/misc/scripts/sql";
 		"/usr/local/bin/sync-apache":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-apache";
+			source => "puppet:///files/misc/scripts/sync-apache";
 		"/usr/local/bin/sync-apache-simulated":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-apache-simulated";
+			source => "puppet:///files/misc/scripts/sync-apache-simulated";
 		"/usr/local/bin/sync-common-all":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-common-all";
+			source => "puppet:///files/misc/scripts/sync-common-all";
 		"/usr/local/bin/sync-common-file":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-common-file";
+			source => "puppet:///files/misc/scripts/sync-common-file";
 		"/usr/local/bin/sync-dblist":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-dblist";
+			source => "puppet:///files/misc/scripts/sync-dblist";
 		"/usr/local/bin/sync-dir":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-dir";
+			source => "puppet:///files/misc/scripts/sync-dir";
 		"/usr/local/bin/sync-docroot":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-docroot";
+			source => "puppet:///files/misc/scripts/sync-docroot";
 		"/usr/local/bin/sync-file":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-file";
+			source => "puppet:///files/misc/scripts/sync-file";
 		"/usr/local/bin/sync-l10nupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-l10nupdate";
+			source => "puppet:///files/misc/scripts/sync-l10nupdate";
 		"/usr/local/bin/sync-wikiversions":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/sync-wikiversions";
+			source => "puppet:///files/misc/scripts/sync-wikiversions";
 		"/usr/local/bin/udprec":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/udprec";
+			source => "puppet:///files/misc/scripts/udprec";
 		"/usr/local/bin/update-special-pages": # FIXME hume cron job
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/update-special-pages";
+			source => "puppet:///files/misc/scripts/update-special-pages";
 		"/usr/local/bin/update-special-pages-small": # FIXME hume cron job
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/bin/update-special-pages-small";
+			source => "puppet:///files/misc/scripts/update-special-pages-small";
 		"/usr/local/sbin/set-group-write2":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/wikipediabin/sbin/set-group-write2";
+			source => "puppet:///files/misc/scripts/set-group-write2";
 	}
 }
 
@@ -1633,47 +1633,47 @@ class misc::passwordScripts {
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/cachemgr_pass.erb");
+			content => template("misc/passwordScripts/cachemgr_pass.erb");
 		"/usr/local/bin/mysql_root_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/mysql_root_pass.erb");
+			content => template("misc/passwordScripts/mysql_root_pass.erb");
 		"/usr/local/bin/nagios_sql_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/nagios_sql_pass.erb");
+			content => template("misc/passwordScripts/nagios_sql_pass.erb");
 		"/usr/local/bin/webshop_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/webshop_pass.erb");
+			content => template("misc/passwordScripts/webshop_pass.erb");
 		"/usr/local/bin/wikiadmin_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/wikiadmin_pass.erb");
+			content => template("misc/passwordScripts/wikiadmin_pass.erb");
 		"/usr/local/bin/wikiuser2_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/wikiuser2_pass.erb");
+			content => template("misc/passwordScripts/wikiuser2_pass.erb");
 		"/usr/local/bin/wikiuser_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/wikiuser_pass.erb");
+			content => template("misc/passwordScripts/wikiuser_pass.erb");
 		"/usr/local/bin/wikiuser_pass_nagios":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/wikiuser_pass_nagios.erb");
+			content => template("misc/passwordScripts/wikiuser_pass_nagios.erb");
 		"/usr/local/bin/wikiuser_pass_real":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("wikipediabin/wikiuser_pass_real.erb");
+			content => template("misc/passwordScripts/wikiuser_pass_real.erb");
 	}
 }
 

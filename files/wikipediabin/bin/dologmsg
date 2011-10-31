@@ -1,2 +1,5 @@
+<<<<<<< HEAD   (8459a3 Merge branch 'production' of ssh://gerrit.wikimedia.org:2941)
 #! /bin/sh
 echo "$*" >> /var/log/logmsg
+=======
+>>>>>>> BRANCH (14ead2 Fix all references to /h/w/bin)

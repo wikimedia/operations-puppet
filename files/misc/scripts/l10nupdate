@@ -1,6 +1,6 @@
 #!/bin/bash
-# This script belongs in /home/wikipedia/bin/.
-BINDIR=/home/wikipedia/bin
+# This script belongs in /usr/local/bin/.
+BINDIR=/usr/local/bin
 MWMULTIDIR=/home/wikipedia/common/multiversion
 
 umask 0002
