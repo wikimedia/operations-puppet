@@ -16,7 +16,6 @@ import "apaches.pp"
 import "mediawiki.pp"
 import "mysql.pp"
 import "memcached.pp"
-import "mobile.pp"
 import "snapshots.pp"
 import "ntp.pp"
 import "nfs.pp"
@@ -67,7 +66,10 @@ class applicationserver {
 	}
 
 	class homeless inherits parent {
-		$lvs_realserver_ips = [ "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.1" ],
+			'labs' => [ "10.4.0.254" ],
+		}
 
 		include	base,
 			ganglia,
@@ -110,7 +112,10 @@ class applicationserver {
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = [ "10.2.1.22", "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.22", "10.2.1.1" ],
+			'labs' => [ "10.4.0.253" ],
+		}
 
 		include base,
 			ganglia,
@@ -134,7 +139,10 @@ class applicationserver {
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = [ "10.2.1.1" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => [ "10.2.1.1" ],
+			'labs' => [ "10.4.0.252" ],
+		}
 
 		include standard,
 			admins::roots,
@@ -162,7 +170,10 @@ class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
 	
-	$lvs_realserver_ips = [ "10.2.1.21" ]
+	$lvs_realserver_ips = $realm ? {
+		'production' => [ "10.2.1.21" ],
+		'labs' => [ "10.4.0.252" ],
+	}
 
 	include	base,
 		imagescaler::cron,
@@ -293,10 +304,18 @@ class text-squid {
 	}
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = $site ? {
-		 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
-			'eqiad' => [ "" ],
-			'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+		$lvs_realserver_ips = $realm ? {
+			'production' => $site ? {
+			 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
+				'eqiad' => [ "" ],
+				'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
+			},
+			# TODO: add text svc address
+			'labs' => $site ? {
+			 	'pmtpa' => [ "208.80.153.193", "208.80.153.197", "208.80.153.198", "208.80.153.199", "208.80.153.200", "208.80.153.201", "208.80.153.202", "208.80.153.203", "208.80.153.204", "208.80.153.205" ],
+				'eqiad' => [ "" ],
+				'esams' => [ "" ]
+			}
 		}
 	}
 
@@ -509,7 +528,6 @@ node "alsted.wikimedia.org" {
 	include base,
 		admins::roots
 }
-
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	$cluster = "misc_esams"
@@ -977,6 +995,8 @@ node "fenari.wikimedia.org" {
 		misc::bastionhost,
 		misc::noc-wikimedia,
 		misc::extension-distributor,
+		misc::scripts,
+		misc::logmsgbot,
 		dns::account,
 		exim::simple-mail-sender,
 		nrpe,
@@ -1122,6 +1142,7 @@ node "hume.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		nfs::home,
+		misc::scripts,
 		exim::simple-mail-sender,
 		admins::roots,
 		admins::mortals,
@@ -1452,30 +1473,6 @@ node "lily.knams.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
-}
-
-node /mobile[1-5]\.wikimedia\.org/ {
-	sudo_user { preilly: user => "preilly", privileges => ['ALL = NOPASSWD: ALL'] }
-	if $hostname =~ /^mobile[12]/ {
-		$ganglia_aggregator = "true"
-	}
-	$cluster = "mobile"
-	$gid = 500
-	$lvs_realserver_ips = [ "208.80.152.5" ]
-	sudo_user { hcatlin : user => "hcatlin", privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender,
-		groups::wikidev,
-		accounts::hcatlin,
-		accounts::preilly
-	if $hostname =~ /^mobile[2345]/ {
-		include mobile::v1104
-	} else {
-		include mobile::disabled
-	}	
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
@@ -1819,6 +1816,7 @@ node "spence.wikimedia.org" {
 		nagios::bot,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
+		nagios::nsca::daemon,
 		ntp::client,
 		nfs::home,
 		exim::simple-mail-sender,

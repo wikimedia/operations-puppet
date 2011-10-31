@@ -427,6 +427,7 @@ class ldap::client::utils {
 		ensure => latest;
 	}
 
+	# TODO: move all ldap scripts from SVN to the puppet repo
 	file {
 		"/usr/local/sbin/add-ldap-user":
 			ensure => link,
@@ -461,6 +462,9 @@ class ldap::client::utils {
 		"/usr/local/sbin/homedirectorymanager.py":
 			ensure => link,
 			target => "/usr/local/lib/user-management/homedirectorymanager.py";
+		"/usr/local/sbin/manage-exports":
+			ensure => link,
+			target => "/usr/local/lib/user-management/manage-exports";
 		"/usr/local/sbin/ldapsupportlib.py":
 			ensure => link,
 			target => "/usr/local/lib/user-management/ldapsupportlib.py";
@@ -474,7 +478,7 @@ class ldap::client::utils {
 			content => template("ldap/scriptconfig.py.erb");
 	}
 
-	if ( $cluster_env != "labs" ) {
+	if ( $realm != "labs" ) {
 		file {
 			"/etc/ldap/.ldapscriptrc":
 				owner => root,
@@ -487,7 +491,7 @@ class ldap::client::utils {
 	# Use a specific revision for the checkout, to ensure we are using
 	# a known and approved version of this script.
 	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r97697 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
+		command => "/usr/bin/svn co -r101095 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
@@ -509,9 +513,6 @@ class ldap::client::sudo {
 
 class ldap::client::openldap {
 
-	include passwords::ldap::wmf_cluster
-	$proxypass = $passwords::ldap::wmf_cluster::proxypass
-
 	package { [ "ldap-utils" ]:
 		ensure => latest;
 	}
@@ -527,16 +528,37 @@ class ldap::client::openldap {
 
 class ldap::client::autofs {
 
+	if $realm == "labs" {
+		$homedir_location = "/export/home/${instanceproject}"
+		$nfs_server_name = $instanceproject ? {
+			default => "labs-nfs1",
+		}
+	} else {
+		$homedir_location = "/home"
+		$nfs_server_name = "nfs-home.pmtpa.wmnet"
+	}
+
 	package { [ "autofs5", "autofs5-ldap" ]:
 		ensure => latest;
 	}
 
 	file {
+		# autofs requires the permissions of this file to be 0600
 		"/etc/autofs_ldap_auth.conf":
 			owner => root,
 			group => root,
 			mode  => 0600,
 			content => template("ldap/autofs_ldap_auth.erb");
+		"/etc/default/autofs":
+			owner => root,
+			group => root,
+			mode  => 0444,
+			content => template("ldap/autofs.default.erb");
+	}
+
+	service { "autofs":
+		enable => true,
+		ensure => running;
 	}
 }
 
@@ -583,8 +605,8 @@ class ldap::client::wmf-test-cluster {
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
-	if ( $cluster_env == "labs" ) {
-		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'managehome']
+	if ( $realm == "labs" ) {
+		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs']
 		file { "/etc/security/access.conf":
 			owner => root,
 			group => root,
@@ -628,20 +650,20 @@ class ldap::client::includes {
 		include ldap::client::utils
 	}
 
-	if "managehome" in $ldapincludes {
-		exec { "createhomedirs":
-			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/homedirectorymanager.py &>> /var/log/homedirectorymanager.log",
-			require => [ File["/usr/local/sbin/homedirectorymanager.py"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
-		}
-		if $cluster_env == "labs" {
-			exec {
-				"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
-				require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Exec["createhomedirs"], Service['exim4'], Package['exim4-daemon-light'] ],
-				creates => "/var/lib/cloud/data/.usermailed";
-			}
+	if $managehome {
+		cron { "manage-exports":
+			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports &>> /var/log/manage-exports.log",
+			require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
 	}
 
+	if $realm == "labs" {
+		exec {
+			"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
+			require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
+			creates => "/var/lib/cloud/data/.usermailed";
+		}
+	}
 }
 
 class ldap::client::corp-server {

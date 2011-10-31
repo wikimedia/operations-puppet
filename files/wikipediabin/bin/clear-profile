@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "-truncate" | nc -q0 -u spence.wikimedia.org 3811
+dologmsg "$USER cleared profiling data"

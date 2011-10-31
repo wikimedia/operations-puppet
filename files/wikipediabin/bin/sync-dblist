@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Synchronizing /home/wikipedia/common/*.dblist to /usr/local/apache/common-local/*.dblist..."
+echo "pmtpa mediawiki-installation:"
+
+ddsh -cM -g mediawiki-installation \
+  'rsync -a 10.0.5.8::common/*.dblist /usr/local/apache/common-local'

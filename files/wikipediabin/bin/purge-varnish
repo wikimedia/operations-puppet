@@ -1,0 +1,3 @@
+#!/bin/bash
+dsh -cM -g bits -o -lroot "varnishadm -T :6082 -S /etc/varnish/secret purge.url $1; echo done"
+

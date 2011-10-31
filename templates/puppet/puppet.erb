@@ -1,5 +1,5 @@
 [main]
-<% if cluster_env == "labs" %>
+<% if realm == "labs" %>
 server = <%= scope.lookupvar('openstack::nova_config::nova_puppet_host') %>
 <% end %>
 logdir=/var/log/puppet

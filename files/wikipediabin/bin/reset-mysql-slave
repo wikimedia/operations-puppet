@@ -1,0 +1,34 @@
+#!/bin/bash
+
+HOST=$1
+RUSER=repl
+RPASS=$(</home/wikipedia/doc/repl-password)
+
+IFS="
+"
+
+mysql -h $HOST -e "STOP SLAVE"
+
+for line in $(mysql -e "SHOW SLAVE STATUS" -E -h $HOST)
+ do
+	key=${line%:*} # Split off what goes before :
+	key=${key// }  # And trim spaces
+	data=${line#*:} # Split off what goes after :
+	data=${data// } # And trim spaces yet again!!! 
+
+	case $key in
+		Exec_master_log_pos) LOGPOS=$data;;
+		Exec_Master_Log_Pos) LOGPOS=$data;;
+		Relay_Master_Log_File) LOGFILE=$data;;
+		Master_Host) RHOST=$data;;
+		Master_User) RUSER=$data;;
+		Master_Port) RPORT=$data;;
+	esac
+		
+ done
+
+if [ -z $LOGPOS -o -z $LOGFILE ]; then echo "OMG FAIL NO POSITIONS KNOWN"; exit; fi 
+
+mysql -h $HOST -e "RESET SLAVE"
+mysql -h $HOST -e "CHANGE MASTER TO MASTER_HOST='$RHOST', MASTER_USER='repl', MASTER_PASSWORD='$RPASS', MASTER_LOG_FILE='$LOGFILE', MASTER_LOG_POS=$LOGPOS"
+mysql -h $HOST -e "START SLAVE"

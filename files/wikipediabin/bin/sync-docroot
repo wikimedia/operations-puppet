@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "Synchronizing /home/wikipedia/common/docroot to /usr/local/apache/common-local/docroot..."
+ddsh -cM -g mediawiki-installation -- 'sudo -u mwdeploy rsync -a --no-perms 10.0.5.8::common/docroot /usr/local/apache/common-local'
+
