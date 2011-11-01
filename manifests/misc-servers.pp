@@ -1734,5 +1734,10 @@ class misc::logmsgbot {
 			content => template('ircecho/default.erb'),
 			owner => root,
 			mode => 0755;
+		"/var/log/logmsg":
+			owner => root,
+			group => wikidev,
+			mode => 0664,
+			ensure => present;
 	}
 }
