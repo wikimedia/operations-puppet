@@ -544,6 +544,8 @@ class nagios::nsca {
 # NSCA - daemon
 class nagios::nsca::daemon {
 
+	system_role { "nagios::nsca::daemon": description => "Nagios Service Checks Acceptor Daemon" }
+
 	require nagios::nsca
 
 	file { "/etc/nsca.cfg":
