@@ -4,6 +4,7 @@ class openstack::iptables-purges {
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
 	iptables_purge_service{ "deny_all_mysql": service => "mysql" }
+	iptables_purge_service{ "deny_all_memcached": service => "memcached" }
 	iptables_purge_service{ "deny_all_ldap": service => "ldap" }
 	iptables_purge_service{ "deny_all_ldap_backend": service => "ldap_backend" }
 	iptables_purge_service{ "deny_all_ldaps": service => "ldaps" }
@@ -65,6 +66,7 @@ class openstack::iptables-drops {
 
 	# Deny by default
 	iptables_add_service{ "deny_all_mysql": service => "mysql", jump => "DROP" }
+	iptables_add_service{ "deny_all_memcached": service => "memcached", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldap": service => "ldap", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldap_backend": service => "ldap_backend", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldaps": service => "ldaps", jump => "DROP" }
