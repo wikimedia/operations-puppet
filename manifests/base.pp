@@ -7,6 +7,7 @@ import "sudo.pp"
 import "nagios.pp"
 import "nrpe.pp"
 import "../private/manifests/passwords.pp"
+import "../private/manifests/contacts.pp"
 
 
 class base::apt::update {
