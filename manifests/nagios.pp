@@ -544,6 +544,8 @@ class nagios::nsca {
 # NSCA - daemon
 class nagios::nsca::daemon {
 
+	system_role { "nagios::nsca::daemon": description => "Nagios Service Checks Acceptor Daemon" }
+
 	require nagios::nsca
 
 	file { "/etc/nsca.cfg":
@@ -590,7 +592,7 @@ class nagios::nsca::daemon {
 
 		# temporarily remove the exec rule so that the ruleset is simply created
 		# and we can inspect the file before allowing puppet to auto-load the rules
-		#iptables_add_exec{ "${hostname}": service => "nsca" }
+		iptables_add_exec{ "${hostname}": service => "nsca" }
 	}
 
 	require "nagios::nsca::daemon::iptables"
