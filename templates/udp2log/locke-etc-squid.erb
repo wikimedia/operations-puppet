@@ -37,18 +37,18 @@ pipe 1 /a/squid/fundraising/bi-filter >> /a/squid/fundraising/logs/bannerImpress
 #pipe 1 /a/squid/acctcreation/ac-filter >> /a/squid/acctcreation.log
 
 # Vrije Universiteit
-# Contact: <%= vrije_universiteit_contact %>
+# Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
 pipe 10 awk -f /a/squid/vu.awk | log2udp -h 130.37.198.252 -p 9999
 
 # Universidad Rey Juan Carlos
-# Contact: <%= universidad_rey_juan_carlos_contact %>
-# Backup contact: <%= universidad_rey_juan_carlos_backup_contact %>
+# Contact: <%= scope.lookupvar('contacts::udp2log::universidad_rey_juan_carlos_contact') %>
+# Backup contact: <%= scope.lookupvar('contacts::udp2log::universidad_rey_juan_carlos_backup_contact') %>
 pipe 100 awk -f /a/squid/urjc.awk | log2udp -h wikilogs.libresoft.es -p 10514
 
 # University of Minnesota
-# Contact: <%= university_minnesota_contact %>
-# Former Contact: <%= university_minnesota_contact_former %>
-# Former contact: <%= university_minnesota_contact_former2 %>
+# Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
+# Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
+# Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
 pipe 10 awk -f /a/squid/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 
 # Investigating watchlistr.com -- TS
