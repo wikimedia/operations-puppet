@@ -491,7 +491,7 @@ class ldap::client::utils {
 	# Use a specific revision for the checkout, to ensure we are using
 	# a known and approved version of this script.
 	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r101095 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
+		command => "/usr/bin/svn co -r101447 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
@@ -652,7 +652,7 @@ class ldap::client::includes {
 
 	if $managehome {
 		cron { "manage-exports":
-			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports &>> /var/log/manage-exports.log",
+			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
 			require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 		}
 	}
