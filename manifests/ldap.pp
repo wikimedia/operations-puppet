@@ -650,14 +650,41 @@ class ldap::client::includes {
 		include ldap::client::utils
 	}
 
-	if $managehome {
-		cron { "manage-exports":
-			command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
-			require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
-		}
-	}
-
 	if $realm == "labs" {
+		if $managehome {
+			$ircecho_infile = "/var/log/manage-exports.log"
+			$ircecho_nick = "labs-home-wm"
+			$ircecho_chans = "#wikimedia-labs"
+			$ircecho_server = "irc.freenode.net"
+	
+			package { "ircecho":
+				ensure => latest;
+			}
+	
+			service { "ircecho":
+				require => Package[ircecho],
+				ensure => running;
+			}
+	
+			file {
+				"/etc/default/ircecho":
+					require => Package[ircecho],
+					content => template('ircecho/default.erb'),
+					owner => root,
+					mode => 0755;
+			}
+	
+			cron { "manage-exports":
+				command => "/etc/init.d/nscd restart; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+				require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
+			}
+		} else {
+			# This was added to all nodes accidentally
+			cron { "manage-exports":
+				ensure => absent;
+			}
+		}
+
 		exec {
 			"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://labsconsole.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
 			require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
