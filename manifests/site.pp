@@ -1167,6 +1167,7 @@ node "kaulen.wikimedia.org" {
 		admins::roots,
 		accounts::demon,
 		accounts::reedy,
+		accounts::robla,
 		misc::download-mediawiki,
 		certificates::star_wikimedia_org
 
