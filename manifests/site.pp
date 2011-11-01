@@ -1167,6 +1167,10 @@ node "kaulen.wikimedia.org" {
 		admins::roots,
 		accounts::demon,
 		accounts::reedy,
+<<<<<<< HEAD   (7c838b Removing LDAP config from kaulen)
+=======
+		accounts::robla,
+>>>>>>> BRANCH (b16da4 Add robla to kaulen for rt #1838)
 		misc::download-mediawiki,
 		certificates::star_wikimedia_org
 
