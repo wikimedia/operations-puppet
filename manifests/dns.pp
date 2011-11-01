@@ -51,7 +51,7 @@ class dns::auth-server-ldap {
 
 	# Monitoring
 	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
-	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns" }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!www.wikipedia.wmflabs.org" }
 
 }
 
@@ -155,7 +155,7 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 
 	# Monitoring
 	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
-	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns" }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!www.wikipedia.org" }
 }
 
 class dns::recursor {
@@ -189,7 +189,7 @@ class dns::recursor {
 	class monitoring {
 		# Monitoring
 		monitor_host { $dns_recursor_ipaddress: ip_address => $dns_recursor_ipaddress }
-		monitor_service { "recursive dns": host => $dns_recursor_ipaddress, description => "Recursive DNS", check_command => "check_dns" }
+		monitor_service { "recursive dns": host => $dns_recursor_ipaddress, description => "Recursive DNS", check_command => "check_dns!www.wikipedia.org" }
 	}
 
 	class statistics {
