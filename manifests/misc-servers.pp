@@ -1097,6 +1097,11 @@ class misc::fundraising {
 			ensure => directory;
 
 		#apache conf stuffs
+		"/etc/php5/apache2/php.ini":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/php/php.ini.civicrm";
 		"/etc/apache2/sites-available/000-donate":
 			mode => 0444,
 			owner => root,
