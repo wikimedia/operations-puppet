@@ -1,0 +1,9 @@
+Change-Id: I4390942b610d817ce0081f955e695cbf8f1427a7
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+1: Dzahn <dzahn@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 02 Nov 2011 16:51:09 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/627
+Project: operations/puppet
+Branch: refs/heads/test
