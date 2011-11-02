@@ -1,2 +1,5 @@
 #! /bin/sh
-echo "$*" >> /var/log/logmsg
+if [ -z $DOLOGMSGNOLOG ]; then
+	echo "$*" >> /var/log/logmsg
+fi
+
