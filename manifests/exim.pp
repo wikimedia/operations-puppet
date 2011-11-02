@@ -148,5 +148,16 @@ class spamassassin {
 	ensure => running;
 	}
 
+	user { "spamd":
+		ensure => "present";
+	}
+
+	file { "/var/spamd": 
+		ensure => directory,
+		owner => spamd,
+		group => spamd,
+		mode = 0700;
+	}
+
 	monitor_service { "spamd": description => "spamassassin processes", check_command => "check_procs_spamd" }
 }
