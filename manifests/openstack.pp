@@ -510,6 +510,10 @@ class openstack::nova_config {
 	$nova_puppet_user = "puppet"
 	$nova_puppet_user_pass = $passwords::openstack::nova::nova_puppet_user_pass
 	$nova_zone = "pmtpa"
+	# By default, don't allow projects to allocate public IPs; this way we can
+	# let users have network admin rights, for firewall rules and such, and can
+	# give them public ips by increasing their quota
+	$nova_quota_floating_ips = "0"
 
 }
 
