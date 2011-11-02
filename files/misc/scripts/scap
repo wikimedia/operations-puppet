@@ -39,7 +39,7 @@ fi
 # Update the current machine so that serialization works.
 # Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
 # and mwscript work with the right version of the files.
-$BINDIR/sync-common
+/usr/bin/sync-common
 
 
 mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
