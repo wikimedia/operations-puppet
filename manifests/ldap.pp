@@ -548,11 +548,13 @@ class ldap::client::autofs {
 			owner => root,
 			group => root,
 			mode  => 0600,
+			notify => Service[Autofs],
 			content => template("ldap/autofs_ldap_auth.erb");
 		"/etc/default/autofs":
 			owner => root,
 			group => root,
 			mode  => 0444,
+			notify => Service[Autofs],
 			content => template("ldap/autofs.default.erb");
 	}
 
