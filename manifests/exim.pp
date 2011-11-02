@@ -144,7 +144,6 @@ class spamassassin {
 	}
 
 	service { "spamassassin":
-	require => Package[spamassassin],
 	ensure => running;
 	}
 
