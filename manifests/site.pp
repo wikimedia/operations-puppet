@@ -998,6 +998,7 @@ node "fenari.wikimedia.org" {
 		misc::extension-distributor,
 		misc::scripts,
 		misc::logmsgbot,
+		misc::l10nupdate,
 		dns::account,
 		exim::simple-mail-sender,
 		nrpe,
