@@ -4,7 +4,7 @@
 BINDIR=/usr/local/bin
 
 [ $# -lt 1 ] && {
-	echo >&2 "usage: sync-file file [message]"
+	echo >&2 "usage: sync-common-file file [message]"
 	exit 1
 }
 
@@ -40,7 +40,7 @@ echo >&2 "copying to apaches"
 if [ -d "/home/wikipedia/common/$DIR" ]; then
 	DESTDIR=/apache/common-local/$DIR
 	ddsh -cM -g mediawiki-installation -o -oSetupTimeout=10 -- "
-		sudo -u mwdeploy rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/$DIR/ $DESTDIR
+		sudo -u mwdeploy rsync -a --delete --exclude=.svn --exclude=.git --exclude=cache/l10n --no-perms 10.0.5.8::common/$DIR/ $DESTDIR
 	"
 else
 	DESTDIR=$(dirname /apache/common-local/$DIR)
