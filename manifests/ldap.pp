@@ -410,6 +410,7 @@ class ldap::client::nss {
 		"/etc/nsswitch.conf":
 			source => "puppet:///files/ldap/nsswitch.conf";
 		"/etc/ldap.conf":
+			notify => Service[nscd],
 			content => template("ldap/nss_ldap.erb");
 	}
 
@@ -522,6 +523,7 @@ class ldap::client::openldap {
 			owner => root,
 			group => root,
 			mode  => 0444,
+			notify => Service[nscd],
 			content => template("ldap/open_ldap.erb");
 	}
 }
