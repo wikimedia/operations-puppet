@@ -997,7 +997,11 @@ node "fenari.wikimedia.org" {
 		misc::noc-wikimedia,
 		misc::extension-distributor,
 		misc::scripts,
+<<<<<<< HEAD   (2416ab Merge "nagios cmd check_ssl_cert verify cert expiration" int)
 		misc::logmsgbot,
+=======
+		misc::l10nupdate,
+>>>>>>> BRANCH (92d8f2 /home/wikipedia/bin -> /usr/local/bin)
 		dns::account,
 		exim::simple-mail-sender,
 		nrpe,
