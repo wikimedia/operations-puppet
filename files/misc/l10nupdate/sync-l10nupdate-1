@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script belongs in /home/wikipedia/bin/.
+# This script belongs in /usr/local/bin/.
 MWVER="$1"
 
 if [ -z "$MWVER" ]; then
