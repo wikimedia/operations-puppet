@@ -1083,6 +1083,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 	$cluster = "misc"
 	$gid = 500
 	include	base,
+		ganglia,
 		ntp::client,
 		nrpe,
 		admins::roots,
