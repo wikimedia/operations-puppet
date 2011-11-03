@@ -26,6 +26,12 @@ class mailman::base {
 	}
 
 	file { 
+		"/etc/lighttpd":
+			ensure => directory,
+			# puppet will automatically set +x for directories
+			mode => 0644,
+			owner => root,
+			group => root;
 		"lighttpd.conf":
 			mode => 0444,
 			owner => root,
@@ -38,7 +44,11 @@ class mailman::base {
 			group => root,
 			path => "/etc/lighttpd/mailman-private-archives.conf",
 			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
-
+		"/etc/lighttpd/ssl":
+			ensure => directory,
+			mode => 0644,
+			owner => root,
+			group => root;
 		"/etc/lighttpd/ssl/lists.wikimedia.org.pem":
 			mode => 0400,
 			owner => root,
