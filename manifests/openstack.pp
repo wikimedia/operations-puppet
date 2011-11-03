@@ -315,7 +315,7 @@ class openstack::ldap-server {
 
 class openstack::openstack-manager {
 
-	package { [ 'apache2', 'memcached', 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php5-memcache', 'php-apc' ]:
+	package { [ 'apache2', 'memcached', 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php5-memcache', 'php-apc', 'imagemagick' ]:
 		ensure => latest;
 	}
 
