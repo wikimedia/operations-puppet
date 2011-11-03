@@ -117,8 +117,16 @@ define iptables_add_service( $service, $source="", $destination="", $interface="
 
 }
 
+# add an external service (chain OUTPUT)
+define iptables_add_ext_service( $service, $source="", $destination="", $interface="", $jump="ACCEPT" ) {
+	$service_title = "${title}_${service}"
+
+	iptables_add_rule{ $service_title: table => "filter", chain => "OUTPUT", source => $source, destination => $destination, protocol => $iptables_protocols["$service"], destination_port => $iptables_ports["$service"], interface => $interface, jump => $jump }
+
+}
+
 # TODO: Make this work with other tables
-define iptables_purge_service( $service ) {
+	define iptables_purge_service( $service ) {
 	$service_title = "${title}_${service}"
 
 	iptables_purge_rule{ $service_title: table => "filter" }
