@@ -1666,6 +1666,8 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		base::monitoring::host,
 		lvs::realserver,
 		ganglia
+
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
 
 node "pdf1.wikimedia.org" {
