@@ -132,14 +132,6 @@ class mysql {
 			$innodb_file_per_table = "false"
 		}
 
-		# skip otrs database replication if it's a fundraising database
-		# temporary measure while we split fundraising db's off of misc jgreen/20111103
-		if $fundraisingdb_master {
-			$replicate_ignore_db_fundraising = "true"
-		} else {
-			$replicate_ignore_db_fundraising = "false"
-		}
-		
 		# collect all the changes to the dbs used by the summer researchers
 
 		# FIXME: please qualify these globals with something descriptive, e.g. $mysql_read_only

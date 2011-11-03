@@ -938,7 +938,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "fundraisingdb"
 		if $hostname == "db1008" { # db1008 is a middle-master
 			$writable = "true"
-			$fundraisingdb_master = "true"
 		}
 	}
 

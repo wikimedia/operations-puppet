@@ -22,36 +22,6 @@ tmpdir		= /a/tmp/
 skip-external-locking
 skip-name-resolve
 
-<% if replicate_ignore_db_fundraising == "true" then -%>
-replicate-do-db= blog
-replicate-do-db= bugzilla3
-replicate-do-db= bugzilla4
-replicate-do-db= bugzilla_testing
-replicate-do-db= civicrm
-replicate-do-db= communicate
-replicate-do-db= communicate_civicrm
-replicate-do-db= contacts_civicrm
-replicate-do-db= contacts_drupal
-replicate-do-db= dev_civicrm
-replicate-do-db= dev_drupal
-replicate-do-db= dev_fundraising
-replicate-do-db= donateblog
-replicate-do-db= drupal
-replicate-do-db= etherpad
-replicate-do-db= limesurvey
-replicate-do-db= newsblog
-replicate-do-db= observium
-replicate-do-db= ocs_wikimania2009
-replicate-do-db= outreach_civicrm
-replicate-do-db= outreach_drupal
-replicate-do-db= puppet
-replicate-do-db= racktables
-replicate-do-db= rt
-replicate-do-db= scholarships
-replicate-do-db= techblog
-replicate-do-db= testblog
-<% end -%>
-
 key_buffer		= 1M
 max_allowed_packet	= 16M
 thread_stack		= 192K
