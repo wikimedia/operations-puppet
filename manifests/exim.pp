@@ -158,5 +158,5 @@ class spamassassin {
 		mode => 0700;
 	}
 
-	monitor_service { "spamd": description => "spamassassin processes", check_command => "check_procs_spamd" }
+	monitor_service { "spamd": description => "spamassassin procs", check_command => "check_procs_spamd" }
 }

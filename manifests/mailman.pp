@@ -21,6 +21,8 @@ class mailman::base {
 			source => "puppet:///files/mailman/mm_cfg.py";
 
 	}
+	
+	monitor_service { "procs_mailman": description => "mailman procs", check_command => "check_procs_mailman" }
 }
 	
 # lighttpd setup as used by the mailman UI (lists.wm)
