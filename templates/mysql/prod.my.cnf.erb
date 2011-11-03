@@ -22,6 +22,10 @@ tmpdir		= /a/tmp/
 skip-external-locking
 skip-name-resolve
 
+<% if replicate_ignore_dbs_fundraising == "true" then -%>
+replicate-ignore-db= faulkner,otrs
+<% end -%>
+
 key_buffer		= 1M
 max_allowed_packet	= 16M
 thread_stack		= 192K
