@@ -632,4 +632,39 @@ class nagios::nsca::client {
 	service { "nsca":
 		ensure => stopped;
 	}
+
+
+	# payments hosts also filter OUTPUT, so we just want to allow the nagios host (208.80.152.161) as a destination for 5667/tcp
+	# (please review this attempt to use the output chain, does it work with the default policies as intended?)
+
+	class iptables-purges {
+
+		require "iptables::tables"
+		iptables_purge_service{ "allow_nsca_spence": service => "nsca" }
+	}
+
+	class iptables-accepts {
+
+		require "nagios::nsca::client::iptables-purges"
+
+		iptables_add_ext_service{ "allow_nsca_spence": service => "nsca", destination => $iptables_hosts["spence"], jump => "ACCEPT" }
+	}
+
+	class iptables-drops {
+
+		require "nagios::nsca::client::iptables-accepts"
+
+		iptables_add_ext_service{ "deny_nsca_any": service => "nsca", destination => "any", jump => "DROP" }
+	}
+
+	class iptables {
+
+		require "nagios::nsca::client::iptables-drops"
+
+		# temporarily remove the exec rule so that the ruleset is simply created
+		# and we can inspect the file before allowing puppet to auto-load the rules
+		iptables_add_exec{ "${hostname}": service => "nsca" }
+	}
+
+	require "nagios::nsca::client::iptables"
 }

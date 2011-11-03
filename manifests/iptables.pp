@@ -48,6 +48,17 @@ $iptables_protocols = {
 	beam2 => "tcp"
 }
 
+# some host aliases because we want to use names in iptables rules but not DNS
+$iptables_hosts = {
+	spence => "208.80.152.161",
+	fenari => "208.80.152.165";
+}
+
+# IP ranges to use (later?) with --src-range / --dst-range
+$iptables_ranges = {
+	payments_boxes => "208.800.152.11-208.80.152.14";
+}
+
 class iptables::tables {
 
 	augeas { "$hostname iptables tables":
