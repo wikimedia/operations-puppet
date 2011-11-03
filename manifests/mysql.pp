@@ -134,7 +134,7 @@ class mysql {
 
 		# skip otrs database replication if it's a fundraising database
 		# temporary measure while we split fundraising db's off of misc jgreen/20111103
-		if $db_cluster =~ /^fundraisingdb$/ {
+		if $fundraisingdb_master {
 			$replicate_ignore_db_fundraising = "true"
 		} else {
 			$replicate_ignore_db_fundraising = "false"
