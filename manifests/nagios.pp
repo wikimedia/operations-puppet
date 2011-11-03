@@ -202,6 +202,26 @@ class nagios::monitor {
 
 	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
 
+	# Nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
+	package { "nagios3":
+		ensure => latest;
+	}
+
+	# the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
+	package { "nagios-plugins":
+		ensure => latest;
+	}
+
+	# plugins, but "extra functionality to be useful on a central nagios host"
+	package { "nagios-plugins-extra":
+		ensure => latest;
+	}
+
+	# images and icons for the web frontend
+	package { "nagios-images":
+		ensure => latest;
+	}
+
 	service { nagios:
 		require => File[$puppet_files],
 		ensure => running,
