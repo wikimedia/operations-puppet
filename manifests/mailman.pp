@@ -1,4 +1,7 @@
+# mailman setup for lists.wm
 class mailman::base {
+
+	require lighttpd::mailman
 
 	package { [ "mailman" ]:
 		ensure => latest;
@@ -18,10 +21,12 @@ class mailman::base {
 			source => "puppet:///files/mailman/mm_cfg.py";
 
 	}
+}
+	
+# lighttpd setup as used by the mailman UI (lists.wm)
+class lighttpd::mailman {
 
-	# lighttpd is used for the mailman UI
-
-	package { "lighttpd":
+	package { [ "lighttpd" ]:
 			ensure => latest;
 	}
 
