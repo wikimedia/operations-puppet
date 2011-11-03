@@ -2678,6 +2678,8 @@ node /ssl[1-4]\.wikimedia\.org/ {
 		ntp::client,
 		certificates::wmf_ca,
 		protoproxy::proxy_sites
+
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 }
 
 node /ssl100[1-4]\.wikimedia\.org/ {
