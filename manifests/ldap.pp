@@ -562,6 +562,7 @@ class ldap::client::autofs {
 
 	service { "autofs":
 		enable => true,
+		hasrestart => true,
 		ensure => running;
 	}
 }
