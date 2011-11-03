@@ -1,2 +1,5 @@
 #! /bin/sh
-echo "$*" >> /var/log/logmsg
+# ircecho is broken in hardy, so use old-style UDP stuff instead
+#echo "$*" >> /var/log/logmsg
+echo "$*" | nc -q0 -u $host 53412
+
