@@ -60,12 +60,12 @@ class lighttpd::mailman {
 			mode => 0400,
 			owner => root,
 			group => root,
-			source => "puppet:///private/mailman/lists.wikimedia.org.pem";
+			source => "puppet:///private/ssl/lists.wikimedia.org.pem";
 		"/etc/lighttpd/ssl/*.wikimedia.org.pem":
 			mode => 0400,
 			owner => root,
 			group => root,
-			source => "puppet:///private/mailman/*.wikimedia.org.pem";
+			source => "puppet:///private/ssl/*.wikimedia.org.pem";
 			
 	}
 
