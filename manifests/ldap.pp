@@ -682,7 +682,7 @@ class ldap::client::includes {
 			}
 	
 			cron { "manage-exports":
-				command => "/etc/init.d/nscd restart > /dev/null; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+				command => "/etc/init.d/nscd restart &> /dev/null; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
 				require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 			}
 		} else {
