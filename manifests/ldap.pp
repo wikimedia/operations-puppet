@@ -408,6 +408,7 @@ class ldap::client::nss {
 
 	file {
 		"/etc/nsswitch.conf":
+			notify => Service[nscd],
 			source => "puppet:///files/ldap/nsswitch.conf";
 		"/etc/ldap.conf":
 			notify => Service[nscd],
