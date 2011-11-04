@@ -671,6 +671,10 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 	}
 }
 
+node /es[3-4]\.pmtpa\.wmnet/ {
+	include db::es::slave
+}
+
 node "dataset1.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
