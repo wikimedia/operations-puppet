@@ -1097,9 +1097,12 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::jpostlethwaite,
 		accounts::jamesofur,
 		accounts::pgehres,
-		misc::jenkins,
 		backup::client,
 		misc::fundraising
+
+	if $hostname == "aluminium" {
+		include misc::jenkins
+	}
 
 }
 
