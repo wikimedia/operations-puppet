@@ -1,12 +1,14 @@
 # mailman setup for lists.wm
 class mailman::base {
-
+	# FIXME: why does this class (a base class nonetheless) require
+	# a web server to be installed?
 	require lighttpd::mailman
 
 	package { [ "mailman" ]:
 		ensure => latest;
 	}
 
+	# FIXME: is /etc/aliases specific to Mailman? probably not...
 	file {
 		"/etc/aliases":
 			owner => root,
@@ -17,14 +19,23 @@ class mailman::base {
 			require => Package[mailman],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/mailman/mm_cfg.py";
 
 	}
 
 	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 }
-	
+
+
+# FIXME: this should not be in mailman.pp
+# Create or use a generic lighttpd installer (may already
+# exist in generic-definitions), and then put mailman specific
+# config bits in conf.d/ directory files. Those can be installed
+# here.
+
+# FIXME: install SSL certificates using "install_cert"
+
 # lighttpd setup as used by the mailman UI (lists.wm)
 class lighttpd::mailman {
 
