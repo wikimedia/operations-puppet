@@ -867,6 +867,52 @@ class misc::etherpad {
 
 }
 
+class misc::etherpad-lite {
+
+	include misc::apache2,
+		passwords::etherpad-lite
+	
+	$etherpad_db_pass = $passwords::etherpad-lite::etherpad_db_pass
+	
+	if $realm == "labs" {
+		$etherpad_host = $fqdn
+	}
+	
+	system_role { "misc::etherpad-lite": description => "Etherpad-lite server" }
+
+	file {
+		"/etc/apache2/sites-available/etherpad.wikimedia.org":
+			mode => 444,
+			owner => root,
+			group => root,
+			source => template('apache/sites/etherpad-lite.wikimedia.org'),
+			ensure => present;
+	}
+
+	apache_site { controller: name => "etherpad.wikimedia.org" }
+	# For later use
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { rewrite: name => "proxy" }
+	
+	package { etherpad-lite:
+		ensure => latest;
+	}
+	service { etherpad-lite:
+		require => Package[etherpad-lite],
+		subscribe => File['/etc/etherpad-lite/settings.json'],
+		ensure => running;
+	}
+	
+	file { '/etc/etherpad-lite/settings.json':
+		path => '/etc/etherpad-lite/settings.json',
+		require => Package[etherpad-lite],
+		owner => 'root',
+		group => 'root',
+		mode => 0444,
+		content => template('etherpad-lite/settings.json.erb');
+	}
+}
+
 class misc::kiwix-mirror {
 	# TODO: add system_role
 	
