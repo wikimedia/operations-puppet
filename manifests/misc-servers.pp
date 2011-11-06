@@ -872,7 +872,7 @@ class misc::etherpad-lite {
 	include misc::apache2,
 		passwords::etherpad-lite
 	
-	$etherpad_db_pass = $passwords::etherpad-lite::etherpad_db_pass
+	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
 	
 	if $realm == "labs" {
 		$etherpad_host = $fqdn
