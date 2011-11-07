@@ -31,16 +31,18 @@ do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 	echo "Running updates for $mwVerNum (on $mwDbName)"
-	if php $MWMULTIDIR/MWScript.php extensions/LocalisationUpdate/update.php \
+	# l10nupdate-2 is a wrapper for mwscript extensions/LocalisationUpdate/update.php
+	if l10nupdate-2 \
 		  --wiki="$mwDbName" \
 		  --outdir=/home/wikipedia/common/php-"$mwVerNum"/cache/l10n \
 		  --all \
 		  --quiet
 	then
 		echo "Completed. Syncing to Apaches"
-		$BINDIR/sync-l10nupdate "$mwVerNum"
+		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		echo "Clearing message blobs"
-		php $MWMULTIDIR/MWScript.php maintenance/wmf/clearMessageBlobs.php --wiki="$mwDbName"
+		# l10nupdate-3 is a wrapper for mwscript maintenance/wmf/clearMessageBlobs.php
+		l10nupdate-3 --wiki="$mwDbName"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
 		echo "All done"
 	else
