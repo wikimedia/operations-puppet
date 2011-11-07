@@ -999,6 +999,7 @@ node "fenari.wikimedia.org" {
 		misc::scripts,
 		# logmsgbot puppetization is broken in hardy
 		#misc::logmsgbot,
+		misc::l10nupdate,
 		dns::account,
 		exim::simple-mail-sender,
 		nrpe,
