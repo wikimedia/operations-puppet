@@ -997,8 +997,12 @@ node "fenari.wikimedia.org" {
 		misc::noc-wikimedia,
 		misc::extension-distributor,
 		misc::scripts,
+<<<<<<< HEAD   (0ec303 Merge "Fix path to set-group-write2 and kill obsolete /h/w/s)
 		# logmsgbot puppetization is broken in hardy
 		#misc::logmsgbot,
+=======
+		misc::l10nupdate,
+>>>>>>> BRANCH (92d8f2 /home/wikipedia/bin -> /usr/local/bin)
 		dns::account,
 		exim::simple-mail-sender,
 		nrpe,

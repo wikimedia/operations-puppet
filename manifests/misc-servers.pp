@@ -1534,11 +1534,6 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/foreachwikiindblist";
-		"/usr/local/bin/l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/l10nupdate";
 		"/usr/local/bin/lint":
 			owner => root,
 			group => root,
@@ -1644,11 +1639,6 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-file";
-		"/usr/local/bin/sync-l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-l10nupdate";
 		"/usr/local/bin/sync-wikiversions":
 			owner => root,
 			group => root,
@@ -1738,6 +1728,7 @@ class misc::passwordScripts {
 	}
 }
 
+<<<<<<< HEAD   (0ec303 Merge "Fix path to set-group-write2 and kill obsolete /h/w/s)
 class misc::udp2log::packetloss {
 	package { "ganglia-logtailer":
 		ensure => latest;
@@ -1797,6 +1788,58 @@ class misc::logmsgbot {
 			mode => 0755;
 		"/var/log/logmsg":
 			owner => root,
+=======
+class misc::l10nupdate {
+	require misc::scripts
+
+	cron {
+		l10nupdate:
+			command => "/usr/local/bin/l10nupdate-1 > /var/log/l10nupdate 2>&1",
+			user => l10nupdate,
+			hour => 2,
+			minute => 0,
+			ensure => present;
+	}
+
+	file {
+		"/usr/local/bin/l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate";
+		"/usr/local/bin/l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
+		"/usr/local/bin/l10nupdate-2":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-2";
+		"/usr/local/bin/l10nupdate-3":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/l10nupdate-3";
+		"/usr/local/bin/sync-l10nupdate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate";
+		"/usr/local/bin/sync-l10nupdate-1":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
+	}
+
+	# Make sure the log file exists and has adequate permissions
+	# TODO we need log rotation here
+	file {
+		"/var/log/l10nupdate":
+			owner => l10nupdate,
+>>>>>>> BRANCH (92d8f2 /home/wikipedia/bin -> /usr/local/bin)
 			group => wikidev,
 			mode => 0664,
 			ensure => present;
