@@ -425,16 +425,13 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			# Convert an existing interface, e.g. from eth0 to bond0
 			$augeas_changes = [
 				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
-				"set iface[. = '${orig_interface}'] '${aggr_interface}'",
-				"set iface[. = '${aggr_interface}']/bond-master '${aggr_interface}'",
-				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
-				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
+				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
 			]
 			
 			# Bring down the old interface after conversion
 			exec { "/sbin/ifdown ${orig_interface}":
 				before => exec["/sbin/ifup ${aggr_interface}"],
-				subscribe => Augeas["$aggr_interface"],
+				subscribe => Augeas["create $aggr_interface"],
 				refreshonly => true
 			}
 		} else {
@@ -442,21 +439,28 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 				"set auto[./1 = '${aggr_interface}']/1 '${aggr_interface}'",
 				"set iface[. = '${aggr_interface}'] '${aggr_interface}'",
 				"set iface[. = '${aggr_interface}']/family 'inet'",
-				"set iface[. = '${aggr_interface}']/method 'manual'",
+				"set iface[. = '${aggr_interface}']/method 'manual'"
+			]
+		}
+
+		augeas { "create $aggr_interface":
+			context => "/files/etc/network/interfaces/",
+			changes => $augeas_changes
+		}
+
+		augeas { "configure $aggr_interface":
+			require => Augeas["create $aggr_interface"]
+			context => "/files/etc/network/interfaces/",
+			changes => [
 				"set iface[. = '${aggr_interface}']/bond-master '${aggr_interface}'",
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
 		}
 
-		augeas { "$aggr_interface":
-			context => "/files/etc/network/interfaces/",
-			changes => $augeas_changes
-		}
-
 		# Define all aggregate members
 		interface_aggregate_member{ $members:
-			require => Augeas["$aggr_interface"],
+			require => Augeas["configure $aggr_interface"],
 			master => $aggr_interface
 		}
 
