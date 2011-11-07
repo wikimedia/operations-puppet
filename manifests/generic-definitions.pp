@@ -449,7 +449,7 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 		}
 
 		augeas { "configure $aggr_interface":
-			require => Augeas["create $aggr_interface"]
+			require => Augeas["create $aggr_interface"],
 			context => "/files/etc/network/interfaces/",
 			changes => [
 				"set iface[. = '${aggr_interface}']/bond-master '${aggr_interface}'",
