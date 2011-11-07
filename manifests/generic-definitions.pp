@@ -430,6 +430,9 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
+			
+			# Bring down the old interface before conversion
+			exec { "/sbin/ifdown ${orig_interface}": before => Augeas["$aggr_interface"] }
 		} else {
 			$augeas_changes = [
 				"set auto[./1 = '${aggr_interface}']/1 '${aggr_interface}'",
