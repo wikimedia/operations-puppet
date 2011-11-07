@@ -17,7 +17,7 @@ def main():
 	(options, args) = parser.parse_args()
 	helper = HookHelper()
 	message = "Change merged: " + re.sub(' \(.*', "", options.submitter) + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-	helper.log_to_file(options.project, message)
+	helper.log_to_file(options.project, options.branch, message)
 	# Resolve any RT tickets that this change mentions as resolved
 	helper.update_rt(options.change, options.changeurl)
 
