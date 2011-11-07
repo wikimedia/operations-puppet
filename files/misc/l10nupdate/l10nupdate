@@ -1,0 +1,3 @@
+#! /bin/bash
+# This script belongs in /usr/local/bin/.
+sudo -u l10nupdate /usr/local/bin/l10nupdate-1

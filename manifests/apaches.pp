@@ -25,12 +25,6 @@ class apaches::packages {
 
 class apaches::cron {
         cron {
-		synclocalisation:
-			command =>"rsync -r --delete 10.0.5.8::common/php/cache/l10n/ /usr/local/apache/common/php/cache/l10n/",
-			user => mwdeploy,
-			hour => 3,
-			minute => 0,
-			ensure => present;
 		cleanupipc:
 			command => "ipcs -s | grep apache | cut -f 2 -d \\  | xargs -rn 1 ipcrm -s",
 			user => root,
