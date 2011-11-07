@@ -431,9 +431,9 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
 			
-			# Bring down the old interface before conversion
+			# Bring down the old interface after conversion
 			exec { "/sbin/ifdown ${orig_interface}":
-				before => Augeas["$aggr_interface"],
+				before => exec["/sbin/ifup ${aggr_interface}"],
 				subscribe => Augeas["$aggr_interface"],
 				refreshonly => true
 			}
