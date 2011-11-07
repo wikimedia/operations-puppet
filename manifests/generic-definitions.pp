@@ -426,6 +426,8 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			$augeas_changes = [
 				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
 				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
+				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
 		} else {
 			$augeas_changes = [
@@ -433,6 +435,8 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 				"set iface[. = '${aggr_interface}'] '${aggr_interface}'",
 				"set iface[. = '${aggr_interface}']/family 'inet'",
 				"set iface[. = '${aggr_interface}']/method 'manual'",
+				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
 		}
 
