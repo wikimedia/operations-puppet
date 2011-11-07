@@ -8,16 +8,16 @@ class swift::base {
 
 	file { "/etc/swift":
 			ensure => directory,
-			recurse: true,
-			owner: swift,
-			group: swift,
-			mode: 644;
+			recurse => true,
+			owner => swift,
+			group => swift,
+			mode => 0444;
 		"/etc/swift/swift.conf":
 			ensure => present;
 			source => "puppet://files/swift/etc.swift.conf",
 			owner => root,
 			group => root,
-			mode: 644;
+			mode => 0444;
 	}
 
 }
@@ -33,15 +33,15 @@ class swift::proxy {
 	file { "/etc/swift/cert.crt":
 			ensure => present,
 			source => "puppet://private/swift/cert.crt"
-			owner: root,
-			group: root,
-			mode: 644;
+			owner => root,
+			group => root,
+			mode => 0444;
 		"/etc/swift/cert.key":
 			ensure => present,
 			source => "puppet://private/swift/cert.key"
-			owner: root,
-			group: root,
-			mode: 644;
+			owner => root,
+			group => root,
+			mode => 0444;
 	}
 
 }
