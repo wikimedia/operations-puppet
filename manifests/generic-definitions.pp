@@ -445,7 +445,8 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 
 		augeas { "create $aggr_interface":
 			context => "/files/etc/network/interfaces/",
-			changes => $augeas_changes
+			changes => $augeas_changes,
+			onlyif => "match iface[. = '${aggr_interface}'] size == 0"
 		}
 
 		augeas { "configure $aggr_interface":
@@ -460,7 +461,7 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 
 		# Define all aggregate members
 		interface_aggregate_member{ $members:
-			require => Augeas["configure $aggr_interface"],
+			require => Augeas["create $aggr_interface"],
 			master => $aggr_interface
 		}
 
