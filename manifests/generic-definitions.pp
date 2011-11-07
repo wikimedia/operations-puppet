@@ -432,7 +432,11 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			]
 			
 			# Bring down the old interface before conversion
-			exec { "/sbin/ifdown ${orig_interface}": before => Augeas["$aggr_interface"] }
+			exec { "/sbin/ifdown ${orig_interface}":
+				before => Augeas["$aggr_interface"],
+				subscribe => Augeas["$aggr_interface"],
+				refreshonly => true
+			}
 		} else {
 			$augeas_changes = [
 				"set auto[./1 = '${aggr_interface}']/1 '${aggr_interface}'",
