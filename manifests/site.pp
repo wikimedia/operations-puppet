@@ -673,7 +673,7 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 	}
 }
 
-node /es[3-4]\.pmtpa\.wmnet/ {
+node /es[1-4]\.pmtpa\.wmnet/ {
 	include db::es::slave
 }
 
