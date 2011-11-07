@@ -31,7 +31,7 @@ def main():
 	subject = helper.get_subject(options.change)
 	if subject:
 		message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		helper.log_to_file(options.project, message)
+		helper.log_to_file(options.project, options.branch, message)
 	lint_test(options, helper)
 
 def lint_test(options, helper):
