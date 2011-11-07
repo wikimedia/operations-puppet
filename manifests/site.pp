@@ -1676,6 +1676,10 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		lvs::realserver,
 		ganglia
 
+	package { "php5-geoip":
+		ensure => latest;
+	}
+
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
 
