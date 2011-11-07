@@ -10,6 +10,14 @@ passmessage = "Lint check passed."
 debug = False
 logdir = "/var/lib/gerrit2/review_site/logs"
 tmpdir = "/var/lib/gerrit2/review_site/tmp"
-filenames = {"operations/puppet": "operations.log",
-             "operations/private": "labs.log",
-             "default": "operations.log"}
+filenames = {"operations/puppet": {
+                 "production": "operations.log",
+                 "test": "labs.log",
+                 "default": "labs.log"
+                 },
+             "operations/private": {
+                 "master": "labs.log",
+                 "default": "labs.log"
+                 },
+             "default": "operations.log"
+            }

@@ -98,11 +98,16 @@ class HookHelper:
 		this.ssh_exec_command(command)
 		return True
 
-	def log_to_file(this, project, message):
+	def log_to_file(this, project, branch, message):
 		if hookconfig.logdir and hookconfig.logdir[-1] == '/':
 			hookconfig.logdir = hookconfig.logdir[0:-1]
-		if project in hookconfig.filenames: 
-			filename = hookconfig.logdir + "/" + hookconfig.filenames[project]
+		if project in hookconfig.filenames:
+			if branch in hookconfig.filenames[project]:
+				filename = hookconfig.logdir + "/" + hookconfig.filenames[project][branch]
+			else:
+				filename = hookconfig.logdir + "/" + hookconfig.filenames[project]["default"]
+		else:
+			filename = hookconfig.logdir + "/" + hookconfig.filenames["default"]
 		f = open(filename, 'a')
 		f.write(message)
 		f.close()
