@@ -334,6 +334,10 @@ class base::vlan-tools {
 	package { vlan: ensure => latest; }
 }
 
+class base::bonding-tools {
+	package { "ifenslave-2.6": ensure => latest; }
+}
+
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
 	require base::vlan-tools
 
@@ -386,6 +390,65 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 		if $remove != 'true' {
 			exec { "/sbin/ifup $intf": require => Augeas["$intf"] }
 		}
+	}
+}
+
+define interface_aggregate_member($master) {
+	require base::bonding-tools
+	
+	$interface = $title
+	
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		augeas { "aggregate member ${interface}":
+			context => "/files/etc/network/interfaces/",
+			changes => [
+					"set auto[./1 = '$interface']/1 '$interface'",
+					"set iface[. = '$interface'] '$interface'",
+					"set iface[. = '$interface']/family 'inet'",
+					"set iface[. = '$interface']/method 'manual'",
+					"set iface[. = '$interface']/bond-master '$master'"
+			]
+		}
+		
+		exec { "/sbin/ifup $interface": require => Augeas["aggregate member ${interface}"] }
+	}
+}
+
+define interface_aggregate($orig_interface=undef, $members=[]) {
+	require base::bonding-tools
+	
+	# Use the definition title as the destination (aggregated) interface
+	$aggr_interface = $title
+	
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $orig_interface != "" {
+			# Convert an existing interface, e.g. from eth0 to bond0
+			$augeas_changes = [
+				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
+				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
+			]
+		else {
+			$augeas_changes = [
+				"set auto[./1 = '${aggr_interface}']/1 '${aggr_interface}'",
+				"set iface[. = '${aggr_interface}'] '${aggr_interface}'",
+				"set iface[. = '${aggr_interface}']/family 'inet'",
+				"set iface[. = '${aggr_interface}']/method 'manual'",
+			]
+		}
+
+		augeas { "$aggr_interface":
+			context => "/files/etc/network/interfaces/",
+			changes => $augeas_changes 
+		}
+			
+		# Define all aggregate members
+		interface_aggregate_member{ $members:
+			require => Augeas["$aggr_interface"],
+			master => $aggr_interface
+		}
+		
+		# Bring up the new interface
+		exec { "/sbin/ifup ${aggr_interface}": require => Interface_aggregate_member[$members] }
 	}
 }
 
