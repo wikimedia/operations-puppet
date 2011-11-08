@@ -406,10 +406,14 @@ define interface_aggregate_member($master) {
 					"set iface[. = '$interface'] '$interface'",
 					"set iface[. = '$interface']/family 'inet'",
 					"set iface[. = '$interface']/method 'manual'",
-			]
+			],
+			notify => Exec["/sbin/ifup $interface"]
 		}
 
-		exec { "/sbin/ifup $interface": require => Augeas["aggregate member ${interface}"] }
+		exec { "/sbin/ifup $interface":
+			require => Augeas["aggregate member ${interface}"],
+			refreshonly => true
+		}
 	}
 }
 
@@ -445,7 +449,8 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 		augeas { "create $aggr_interface":
 			context => "/files/etc/network/interfaces/",
 			changes => $augeas_changes,
-			onlyif => "match iface[. = '${aggr_interface}'] size == 0"
+			onlyif => "match iface[. = '${aggr_interface}'] size == 0",
+			notify => Exec["/sbin/ifup ${aggr_interface}"]
 		}
 
 		augeas { "configure $aggr_interface":
@@ -455,17 +460,22 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 				inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>'"),
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
-			]
+			],
+			notify => Exec["/sbin/ifup ${aggr_interface}"]
 		}
 
 		# Define all aggregate members
 		interface_aggregate_member{ $members:
 			require => Augeas["create $aggr_interface"],
-			master => $aggr_interface
+			master => $aggr_interface,
+			notify => Exec["/sbin/ifup ${aggr_interface}"]
 		}
 
 		# Bring up the new interface
-		exec { "/sbin/ifup ${aggr_interface}": require => Interface_aggregate_member[$members] }
+		exec { "/sbin/ifup ${aggr_interface}":
+			require => Interface_aggregate_member[$members],
+			refreshonly => true
+		}
 	}
 }
 
