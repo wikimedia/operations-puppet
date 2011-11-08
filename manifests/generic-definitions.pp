@@ -417,7 +417,7 @@ define interface_aggregate_member($master) {
 	}
 }
 
-define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="slow") {
+define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast") {
 	require base::bonding-tools
 
 	# Use the definition title as the destination (aggregated) interface
