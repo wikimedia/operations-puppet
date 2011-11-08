@@ -417,7 +417,7 @@ define interface_aggregate_member($master) {
 	}
 }
 
-define interface_aggregate($orig_interface=undef, $members=[]) {
+define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="slow") {
 	require base::bonding-tools
 
 	# Use the definition title as the destination (aggregated) interface
@@ -460,7 +460,7 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			changes => [
 				inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>'"),
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
-				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'"
 			],
 			notify => Exec["/sbin/ifup ${aggr_interface}"]
 		}
