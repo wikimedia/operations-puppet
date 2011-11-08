@@ -1189,7 +1189,7 @@ class misc::fundraising {
 			mode => 0710,
 			owner => root,
 			group => wikidev,
-			source => "puppet:///private/civicrm/civimail_send";
+			source => "puppet:///private/misc/fundraising/civimail_send";
 		"/usr/local/bin/jenkins_watcher":
 			mode => 0500,
 			owner => root,
