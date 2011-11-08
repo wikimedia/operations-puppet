@@ -435,7 +435,8 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			exec { "/sbin/ifdown ${orig_interface}":
 				before => Exec["/sbin/ifup ${aggr_interface}"],
 				subscribe => Augeas["create $aggr_interface"],
-				refreshonly => true
+				refreshonly => true,
+				notify => Exec["/sbin/ifup ${aggr_interface}"]
 			}
 		} else {
 			$augeas_changes = [
