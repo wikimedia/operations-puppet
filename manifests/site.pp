@@ -1514,6 +1514,8 @@ node "ms6.esams.wikimedia.org" {
 	$thumbs_proxying = "true"
 	$thumbs_proxy_source = "http://208.80.152.3"
 
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
+
 	include standard,
 		media-storage::thumbs-server,
 		media-storage::htcp-purger
