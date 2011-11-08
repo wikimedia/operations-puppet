@@ -19,10 +19,6 @@ class media-storage::thumbs-server {
 		ensure => "0.7.65-1ubuntu2.1";
 	}
 
-	package { "mlocate":
-		ensure => absent;
-	}
-
 	file {
 		"/etc/nginx/nginx.conf":
 			require => Package[nginx],
