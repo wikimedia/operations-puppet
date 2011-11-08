@@ -433,8 +433,8 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			]
 			
 			# Bring down the old interface after conversion
-			exec { "ifdown --force ${orig_interface}":
-				command => "/sbin/ifdown --force ${orig_interface}",
+			exec { "ip addr flush dev ${orig_interface}":
+				command => "/sbin/ip addr flush dev ${orig_interface}",
 				before => Exec["ifup ${aggr_interface}"],
 				subscribe => Augeas["create $aggr_interface"],
 				refreshonly => true,
