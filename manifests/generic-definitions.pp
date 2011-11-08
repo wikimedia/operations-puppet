@@ -407,10 +407,11 @@ define interface_aggregate_member($master) {
 					"set iface[. = '$interface']/family 'inet'",
 					"set iface[. = '$interface']/method 'manual'",
 			],
-			notify => Exec["/sbin/ifup $interface"]
+			notify => Exec["ifup $interface"]
 		}
 
-		exec { "/sbin/ifup $interface":
+		exec { "ifup $interface":
+			command => "/sbin/ifup --force $interface",
 			require => Augeas["aggregate member ${interface}"],
 			refreshonly => true
 		}
@@ -432,11 +433,12 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			]
 			
 			# Bring down the old interface after conversion
-			exec { "/sbin/ifdown ${orig_interface}":
-				before => Exec["/sbin/ifup ${aggr_interface}"],
+			exec { "ifdown --force ${orig_interface}":
+				command => "/sbin/ifdown --force ${orig_interface}",
+				before => Exec["ifup ${aggr_interface}"],
 				subscribe => Augeas["create $aggr_interface"],
 				refreshonly => true,
-				notify => Exec["/sbin/ifup ${aggr_interface}"]
+				notify => Exec["ifup ${aggr_interface}"]
 			}
 		} else {
 			$augeas_changes = [
@@ -451,7 +453,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			context => "/files/etc/network/interfaces/",
 			changes => $augeas_changes,
 			onlyif => "match iface[. = '${aggr_interface}'] size == 0",
-			notify => Exec["/sbin/ifup ${aggr_interface}"]
+			notify => Exec["ifup ${aggr_interface}"]
 		}
 
 		augeas { "configure $aggr_interface":
@@ -462,18 +464,19 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'"
 			],
-			notify => Exec["/sbin/ifup ${aggr_interface}"]
+			notify => Exec["ifup ${aggr_interface}"]
 		}
 
 		# Define all aggregate members
 		interface_aggregate_member{ $members:
 			require => Augeas["create $aggr_interface"],
 			master => $aggr_interface,
-			notify => Exec["/sbin/ifup ${aggr_interface}"]
+			notify => Exec["ifup ${aggr_interface}"]
 		}
 
 		# Bring up the new interface
-		exec { "/sbin/ifup ${aggr_interface}":
+		exec { "ifup ${aggr_interface}":
+			command => "/sbin/ifup --force ${aggr_interface}",
 			require => Interface_aggregate_member[$members],
 			refreshonly => true
 		}
