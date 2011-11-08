@@ -406,7 +406,6 @@ define interface_aggregate_member($master) {
 					"set iface[. = '$interface'] '$interface'",
 					"set iface[. = '$interface']/family 'inet'",
 					"set iface[. = '$interface']/method 'manual'",
-					"set iface[. = '$interface']/bond-master '$master'"
 			]
 		}
 
@@ -453,7 +452,7 @@ define interface_aggregate($orig_interface=undef, $members=[]) {
 			require => Augeas["create $aggr_interface"],
 			context => "/files/etc/network/interfaces/",
 			changes => [
-				"set iface[. = '${aggr_interface}']/bond-master '${aggr_interface}'",
+				"set iface[. = '${aggr_interface}']/bond-slaves '${members}'",
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate 'fast'"
 			]
