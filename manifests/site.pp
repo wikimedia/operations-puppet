@@ -1110,6 +1110,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		include misc::jenkins
 	}
 
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
 }
 
 node "gurvin.wikimedia.org" {
