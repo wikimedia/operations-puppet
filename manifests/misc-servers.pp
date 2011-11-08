@@ -1185,6 +1185,16 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/php/php.ini.fundraising.cli";
+		"/usr/local/bin/civimail_send":
+			mode => 0710,
+			owner => root,
+			group => wikidev,
+			source => "puppet:///private/civicrm/civimail_send";
+		"/usr/local/bin/jenkins_watcher":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/jenkins_watcher";
 	}
 
 	#enable apache mods
