@@ -877,7 +877,7 @@ class misc::etherpad {
 class misc::etherpad_lite {
 
 	include misc::apache2,
-		passwords::etherpad-lite
+		passwords::etherpad_lite
 
 	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
 
@@ -887,7 +887,7 @@ class misc::etherpad_lite {
 		$etherpad_ssl_key = "/etc/ssl/private/local.key"
 	}
 
-	system_role { "misc::etherpad-lite": description => "Etherpad-lite server" }
+	system_role { "misc::etherpad_lite": description => "Etherpad-lite server" }
 
 	file {
 		"/etc/apache2/sites-available/etherpad.wikimedia.org":
