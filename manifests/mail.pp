@@ -99,14 +99,9 @@ class exim::rt {
 class exim::smtp {
 
 	$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
-	$smtp_mysql_servers = $passwords::exim4::smtp_mysql_servers
 }
 
 class exim::listserve {
-	# TODO: Create one, generic exim configuration file template, which is shared
-	# by mchenry (mail relay), sodium (lists server, backup mail) and sanger
-	# (IMAP), with variables/parameters to customize its contents. Can use include
-	# files as well.
 	$exim_install_type = 'heavy'
 	$exim_queuerunner = 'combined'
 	$exim_conf_type = 'mailman'
@@ -142,13 +137,12 @@ class exim::listserve {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/exim/exim4.listserver_aliases.conf";
-		# TODO: Make a generic template as well
 		"/etc/exim4/system_filter":
 			require => Package[exim4-config],
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///private/exim/exim4.listserver_system_filter.conf";
+			source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
 	}
 
 	# Nagios monitoring
