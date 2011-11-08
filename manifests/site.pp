@@ -579,11 +579,7 @@ node "argon.wikimedia.org" {
 node /(arsenic|niobium)\.wikimedia\.org/ {
 	$ganglia_aggregator = "true"
 	
-	interface_aggregate { "bond0":
-		orig_interface => "eth0",
-		members => [ "eth0", "eth1", "eth2", "eth3" ],
-		lacp_rate => "fast"
-	}
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 	
 	include standard
 }
@@ -2782,6 +2778,10 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	if $hostname =~ /^sq6[68]$/ {
 		$ganglia_aggregator = "true"
+	}
+	
+	if $hostname == "sq68" {
+		interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 	}
 
 	include cache::bits
