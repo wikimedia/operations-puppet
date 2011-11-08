@@ -894,7 +894,7 @@ class misc::etherpad_lite {
 			mode => 444,
 			owner => root,
 			group => root,
-			source => template('apache/sites/etherpad_lite.wikimedia.org'),
+			source => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
 			ensure => present;
 	}
 
