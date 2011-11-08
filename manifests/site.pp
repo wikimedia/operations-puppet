@@ -942,9 +942,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 
 	if $hostname =~ /^(db1008|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		if $hostname == "db1008" { # db1008 is a middle-master
-			$writable = "true"
-		}
 	}
 
 	if $hostname =~ /^(db1042|db1048)$/ {
@@ -952,7 +949,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^db(1047)$/ {
+	if $hostname =~ /^(db1047|db1008)$/ {
 		$writable = "true"
 	} 
 
@@ -2830,13 +2827,20 @@ node "storage2.wikimedia.org" {
 }
 
 node "storage3.pmtpa.wmnet" {
+
+	$db_cluster = "fundraisingdb"
+
 	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
 		svn::client,
 		groups::wikidev,
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
 		accounts::logmover
+
 }
 
 node "streber.wikimedia.org" {
