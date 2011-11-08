@@ -1178,6 +1178,13 @@ class misc::fundraising {
 			mode => 0440,
 			owner => root,
 			group => root;
+
+		# other stuff
+		"/etc/php5/cli/php.ini":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/php/php.ini.fundraising.cli";
 	}
 
 	#enable apache mods
