@@ -44,4 +44,7 @@ class network::checks {
 	@monitor_service { "mr1-eqiad interfaces": host => "mr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${snmp_ro_community}" }	
 }
 
-include network::checks
+# FIXME: temporary hack
+if $hostname == "spence" {
+	include network::checks
+}

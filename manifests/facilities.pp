@@ -50,50 +50,53 @@ define monitor_pdu_3phase ( $ip, $breaker="30", $redundant="true" ) {
 # Nagios monitoring
 @monitor_group { "pdus": description => "PDUs" }
 
-# sdtpa
-# A
-monitor_pdu_3phase { "ps1-a1-sdtpa": ip => "10.1.5.1" }
-monitor_pdu_3phase { "ps1-a2-sdtpa": ip => "10.1.5.2" }
-monitor_pdu_3phase { "ps1-a3-sdtpa": ip => "10.1.5.3", redundant => "false" }
-monitor_pdu_3phase { "ps1-a4-sdtpa": ip => "10.1.5.4", redundant => "false" }
-monitor_pdu_3phase { "ps1-a5-sdtpa": ip => "10.1.5.5", redundant => "false" }
-# B
-monitor_pdu_3phase { "ps1-b1-sdtpa": ip => "10.1.5.6" }
-monitor_pdu_3phase { "ps1-b2-sdtpa": ip => "10.1.5.7" }
-monitor_pdu_3phase { "ps1-b3-sdtpa": ip => "10.1.5.8", redundant => "false" }
-monitor_pdu_3phase { "ps1-b4-sdtpa": ip => "10.1.5.9", redundant => "false" }
-monitor_pdu_3phase { "ps1-b5-sdtpa": ip => "10.1.5.10", redundant => "false" }
-# C
-monitor_pdu_3phase { "ps1-c1-sdtpa": ip => "10.1.5.11" }
-monitor_pdu_3phase { "ps1-c2-sdtpa": ip => "10.1.5.12" }
-monitor_pdu_3phase { "ps1-c3-sdtpa": ip => "10.1.5.13" }
-# D
-monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => "false" }
-monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
-monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
+# FIXME: temporary hack
+if $hostname == "spence" {
+	# sdtpa
+	# A
+	monitor_pdu_3phase { "ps1-a1-sdtpa": ip => "10.1.5.1" }
+	monitor_pdu_3phase { "ps1-a2-sdtpa": ip => "10.1.5.2" }
+	monitor_pdu_3phase { "ps1-a3-sdtpa": ip => "10.1.5.3", redundant => "false" }
+	monitor_pdu_3phase { "ps1-a4-sdtpa": ip => "10.1.5.4", redundant => "false" }
+	monitor_pdu_3phase { "ps1-a5-sdtpa": ip => "10.1.5.5", redundant => "false" }
+	# B
+	monitor_pdu_3phase { "ps1-b1-sdtpa": ip => "10.1.5.6" }
+	monitor_pdu_3phase { "ps1-b2-sdtpa": ip => "10.1.5.7" }
+	monitor_pdu_3phase { "ps1-b3-sdtpa": ip => "10.1.5.8", redundant => "false" }
+	monitor_pdu_3phase { "ps1-b4-sdtpa": ip => "10.1.5.9", redundant => "false" }
+	monitor_pdu_3phase { "ps1-b5-sdtpa": ip => "10.1.5.10", redundant => "false" }
+	# C
+	monitor_pdu_3phase { "ps1-c1-sdtpa": ip => "10.1.5.11" }
+	monitor_pdu_3phase { "ps1-c2-sdtpa": ip => "10.1.5.12" }
+	monitor_pdu_3phase { "ps1-c3-sdtpa": ip => "10.1.5.13" }
+	# D
+	monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => "false" }
+	monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
+	monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
 
-# pmtpa
-# D
-monitor_pdu_3phase { "ps1-d1-pmtpa": ip=> "10.1.5.17" }
-monitor_pdu_3phase { "ps1-d2-pmtpa": ip=> "10.1.5.18" }
-monitor_pdu_3phase { "ps1-d3-pmtpa": ip=> "10.1.5.19" }
+	# pmtpa
+	# D
+	monitor_pdu_3phase { "ps1-d1-pmtpa": ip=> "10.1.5.17" }
+	monitor_pdu_3phase { "ps1-d2-pmtpa": ip=> "10.1.5.18" }
+	monitor_pdu_3phase { "ps1-d3-pmtpa": ip=> "10.1.5.19" }
 
-# eqiad
-# A
-monitor_pdu_3phase { "ps1-a1-eqiad": ip => "10.65.0.32" }
-monitor_pdu_3phase { "ps1-a2-eqiad": ip => "10.65.0.33" }
-monitor_pdu_3phase { "ps1-a3-eqiad": ip => "10.65.0.34" }
-monitor_pdu_3phase { "ps1-a4-eqiad": ip => "10.65.0.35" }
-monitor_pdu_3phase { "ps1-a5-eqiad": ip => "10.65.0.36" }
-monitor_pdu_3phase { "ps1-a6-eqiad": ip => "10.65.0.37" }
-monitor_pdu_3phase { "ps1-a7-eqiad": ip => "10.65.0.38" }
-monitor_pdu_3phase { "ps1-a8-eqiad": ip => "10.65.0.39" }
-# B
-monitor_pdu_3phase { "ps1-b1-eqiad": ip => "10.65.0.40" }
-monitor_pdu_3phase { "ps1-b2-eqiad": ip => "10.65.0.41" }
-monitor_pdu_3phase { "ps1-b3-eqiad": ip => "10.65.0.42" }
-monitor_pdu_3phase { "ps1-b4-eqiad": ip => "10.65.0.43" }
-monitor_pdu_3phase { "ps1-b5-eqiad": ip => "10.65.0.44" }
-monitor_pdu_3phase { "ps1-b6-eqiad": ip => "10.65.0.45" }
-monitor_pdu_3phase { "ps1-b7-eqiad": ip => "10.65.0.46" }
-monitor_pdu_3phase { "ps1-b8-eqiad": ip => "10.65.0.47" }
+	# eqiad
+	# A
+	monitor_pdu_3phase { "ps1-a1-eqiad": ip => "10.65.0.32" }
+	monitor_pdu_3phase { "ps1-a2-eqiad": ip => "10.65.0.33" }
+	monitor_pdu_3phase { "ps1-a3-eqiad": ip => "10.65.0.34" }
+	monitor_pdu_3phase { "ps1-a4-eqiad": ip => "10.65.0.35" }
+	monitor_pdu_3phase { "ps1-a5-eqiad": ip => "10.65.0.36" }
+	monitor_pdu_3phase { "ps1-a6-eqiad": ip => "10.65.0.37" }
+	monitor_pdu_3phase { "ps1-a7-eqiad": ip => "10.65.0.38" }
+	monitor_pdu_3phase { "ps1-a8-eqiad": ip => "10.65.0.39" }
+	# B
+	monitor_pdu_3phase { "ps1-b1-eqiad": ip => "10.65.0.40" }
+	monitor_pdu_3phase { "ps1-b2-eqiad": ip => "10.65.0.41" }
+	monitor_pdu_3phase { "ps1-b3-eqiad": ip => "10.65.0.42" }
+	monitor_pdu_3phase { "ps1-b4-eqiad": ip => "10.65.0.43" }
+	monitor_pdu_3phase { "ps1-b5-eqiad": ip => "10.65.0.44" }
+	monitor_pdu_3phase { "ps1-b6-eqiad": ip => "10.65.0.45" }
+	monitor_pdu_3phase { "ps1-b7-eqiad": ip => "10.65.0.46" }
+	monitor_pdu_3phase { "ps1-b8-eqiad": ip => "10.65.0.47" }
+}
