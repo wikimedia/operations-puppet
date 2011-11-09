@@ -402,10 +402,10 @@ class lvs::balancer {
 	}
 
 	# Generate PyBal config file
-        file { "/etc/pybal/pybal.conf":
+	file { "/etc/pybal/pybal.conf":
 		require => Package[pybal],
-                content => template("pybal/pybal.conf.erb")
-        }
+		content => template("pybal/pybal.conf.erb")
+	}
 
 	# Needs an optimized kernel
 	package { "linux-image-2.6.36-1-server":
