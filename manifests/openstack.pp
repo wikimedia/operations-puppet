@@ -150,11 +150,15 @@ class openstack::compute {
 
 	include openstack::common,
 		openstack::compute-service,
-		openstack::volume-service
+		openstack::volume-service,
+		openstack::glance-service,
+		openstack::glance-client
 
 	if $hostname == "virt2" {
 		include openstack::network-service,
 			openstack::api-service
+	}
+	if $hostname =~ /^virt[3-4]$/ {
 	}
 
 	file {
@@ -473,6 +477,35 @@ class openstack::glance-service {
 			require => Package["glance"],
 			mode => 0444;
 	}
+
+}
+
+class openstack::gluster-service {
+
+	include generic::gluster
+
+	service { "glusterd":
+		enabled => true,
+		ensure => running,
+		require => Package["glusterfs"];
+	}
+
+}
+
+class openstack::gluster-client {
+
+	include generic::gluster
+
+	## mount the gluster volume for the instances
+	## uncomment after migration of data
+	#mount { "/var/lib/nova/instances":
+	#	device => "virt2.pmtpa.wmnet:/instances",
+	#	fstype => "glusterfs",
+	#	name => "/var/lib/nova/instances",
+	#	options => "defaults,_netdev",
+	#	require => Package["glusterfs"],
+	#	ensure => mounted;
+	#}
 
 }
 
