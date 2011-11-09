@@ -58,7 +58,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) { 
 	if ! $host {
-		fail("Parametmer $host not defined!")
+		fail("Parameter $host not defined!")
 	}
 
 	if $hostname in $decommissioned_servers {
@@ -152,20 +152,9 @@ define monitor_group ($description, $ensure=present) {
 }
 
 define decommission_monitor_host {
-	if defined(Nagios_host[$title]) {
-		# Override the existing resources
-		Nagios_host <| title == $title |> {
-			ensure => absent
-		}
-		Nagios_hostextinfo <| title == $title |> {
-			ensure => absent
-		}
-	}
-	else {
-		# Resources don't exist in Puppet. Remove from Nagios config as well.
-		file { "${nagios_config_dir}/puppet_checks.d/${title}.cfg":
-			ensure => absent
-		}
+	# Remove the decommissioned hosts's file
+	file { "${nagios_config_dir}/puppet_checks.d/${title}.cfg":
+		ensure => absent
 	}
 }
 
@@ -264,14 +253,20 @@ class nagios::monitor {
 		Monitor_service <| tag != "nrpe" |> {
 			notify => Service[nagios],
 		}
+	}
+
+	class decommission {
+		require nagios::monitor::checks
 
 		# Decommission servers
 		decommission_monitor_host { $decommissioned_servers: }
 	}
 
 	class service {
-		# Make sure all checks configuration has completed at this point
-		require nagios::monitor::checks
+		# Make sure all checks configuration has completed at this point,
+		# and decommissioned hosts's configs have been removed
+		require nagios::monitor::checks,
+			nagios::monitor::decommission
 
 		# Fix permissions on all individual service files
 		exec { "fix nagios permissions":
