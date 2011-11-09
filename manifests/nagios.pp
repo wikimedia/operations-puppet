@@ -14,7 +14,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 
 	# Export the nagios host instance
 	@@nagios_host { $title:
-		target => "${nagios_config_dir}/puppet_hosts.cfg",
+		target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
 		host_name => $title,
 		address => $ip_address,
 		hostgroups => $group ? {
@@ -43,7 +43,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 
 		# Couple it with some hostextinfo
 		@@nagios_hostextinfo { $title:
-			target => "${nagios_config_dir}/puppet_hostextinfo.cfg",
+			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
 			host_name => $title,
 			notes => $title,
 			# Needs c= cluster parameter. Let's fix this cleanly with Puppet 2.6 hashes
@@ -57,9 +57,9 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 }
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) { 
-        if ! $host {
-                fail("Parametmer $host not defined!")
-        }
+	if ! $host {
+		fail("Parametmer $host not defined!")
+	}
 
 	if $hostname in $decommissioned_servers {
 		# Export the nagios service instance
@@ -76,7 +76,7 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			normal_check_interval => 1,
 			retry_check_interval => 1,
 			check_period => "24x7",
-	                notification_interval => 0,
+			notification_interval => 0,
 			notification_period => "24x7",
 			notification_options => "c,r,f",
 			contact_groups => $critical ? {
@@ -134,13 +134,13 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 }
 
 define monitor_group ($description, $ensure=present) {
-        # Nagios hostgroup instance
+	# Nagios hostgroup instance
 	nagios_hostgroup { $title:
 		target => "${nagios_config_dir}/puppet_hostgroups.cfg",
 		hostgroup_name => $title,
 		alias => $description,
 		ensure => $ensure;
-        }
+	}
 
 	# Nagios servicegroup instance
 	nagios_servicegroup { $title:
@@ -163,286 +163,216 @@ define decommission_monitor_host {
 	}
 	else {
 		# Resources don't exist in Puppet. Remove from Nagios config as well.
-		nagios_host { $title:
-			host_name => $title,
-			ensure => absent;
-		}
-
-		nagios_hostextinfo { $title:
-			host_name => $title,
-			ensure => absent;
+		file { "${nagios_config_dir}/puppet_checks.d/${host}.cfg":
+			ensure => absent
 		}
 	}
 }
 
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
+	class packages {
+		# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
+		# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
+		# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
+		# nagios-images: images and icons for the web frontend
 
-	include passwords::nagios::mysql
-	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
-
-	# puppet_hosts.cfg must be first
-	$puppet_files = [ "${nagios_config_dir}/puppet_hosts.cfg",
-			  "${nagios_config_dir}/puppet_hostgroups.cfg",
-			  "${nagios_config_dir}/puppet_hostextinfo.cfg",
-			  "${nagios_config_dir}/puppet_servicegroups.cfg",
-			  "${nagios_config_dir}/puppet_services.cfg" ]
-
-	$static_files = [ "${nagios_config_dir}/nagios.cfg",
-			  "${nagios_config_dir}/special.cfg",
-			  "${nagios_config_dir}/cgi.cfg",
-			  "${nagios_config_dir}/checkcommands.cfg",
-			  "${nagios_config_dir}/contactgroups.cfg",
-			  "${nagios_config_dir}/contacts.cfg",
-			  "${nagios_config_dir}/migration.cfg",
-			  "${nagios_config_dir}/misccommands.cfg",
-			  "${nagios_config_dir}/resource.cfg",
-			  "${nagios_config_dir}/timeperiods.cfg",
-			  "${nagios_config_dir}/htpasswd.users"]
-
-	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
-
-	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
-	# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
-	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
-	# nagios-images: images and icons for the web frontend
-
-	package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
-		ensure => latest;
+		package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
+			ensure => latest;
+		}
 	}
 
-	service { nagios:
-		require => File[$puppet_files],
-		ensure => running,
-		subscribe => [ File[$puppet_files],
-			       File[$static_files],
-			       File["/etc/nagios/puppet_checks.d"] ];
+	class config {
+		require nagios::monitor::packages
+
+		include passwords::nagios::mysql
+		$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+		systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
+
+		file { "/etc/init.d/nagios":
+			source => "puppet:///files/nagios/nagios-init",
+			owner => root,
+			group => root,
+			mode => 0555;
+		}
+		
+		# make sure the directory for individual service checks exists
+		file { "/etc/nagios/puppet_checks.d":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0644;
+		}
+		
+		# Defaults
+		File {
+			owner => root,
+			group => root,
+			mode => 0444,
+			notify => Service[nagios];
+		}
+		
+		file {
+			"/etc/nagios/nagios.cfg":
+				source => "puppet:///files/nagios/nagios.cfg",
+			"/etc/nagios/special.cfg":
+				source => "puppet:///files/nagios/special.cfg",
+			"/etc/nagios/cgi.cfg":
+				source => "puppet:///files/nagios/cgi.cfg",
+			"/etc/nagios/htpasswd.users":
+				source => "puppet:///private/nagios/htpasswd.users",
+			"/etc/nagios/checkcommands.cfg":
+				content => template("nagios/checkcommands.cfg.erb"),
+			"/etc/nagios/contactgroups.cfg":
+				source => "puppet:///files/nagios/contactgroups.cfg",
+			"/etc/nagios/contacts.cfg":
+				source => "puppet:///private/nagios/contacts.cfg",
+			"/etc/nagios/migration.cfg":
+				source => "puppet:///files/nagios/migration.cfg",
+			"/etc/nagios/misccommands.cfg":
+				source => "puppet:///files/nagios/misccommands.cfg",
+			"/etc/nagios/resource.cfg":
+				source => "puppet:///files/nagios/resource.cfg",
+			"/etc/nagios/timeperiods.cfg":
+				source => "puppet:///files/nagios/timeperiods.cfg",
+		}	
 	}
 
-	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+	class checks {
+		require nagios::monitor::config,
+			nagios::monitor::checkcommands
+		
+		# Collect exported resources
+		Nagios_host <<| |>> {
+			notify => Service[nagios],
+		}
+		Nagios_hostextinfo <<| |>> {
+			notify => Service[nagios],
+		}
+		Nagios_service <<| |>> {
+			notify => Service[nagios],
+		}
 
-	package { "snmpd":
-		ensure => latest;
+		# Collect all (virtual) resources
+		Monitor_group <| |> {
+			notify => Service[nagios],
+		}
+		Monitor_host <| |> {
+			notify => Service[nagios],
+		}
+		Monitor_service <| tag != "nrpe" |> {
+			notify => Service[nagios],
+		}
+
+		# Decommission servers
+		decommission_monitor_host { $decommissioned_servers: }
 	}
 
-	package { "snmptt":
-		ensure => latest;
+	class service {
+		# Make sure all checks configuration has completed at this point
+		require nagios::monitor::checks
+
+		# Fix permissions on all individual service files
+		exec { "fix nagios permissions":
+			command => "/bin/chmod -R 644 /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_servicegroups.cfg /etc/nagios/puppet_checks.d/";
+		}
+
+		service { nagios:
+			require => Exec["fix nagios permissions"],
+			ensure => running;
+		}
 	}
 	
-	# Stomp Perl module to monitor erzurumi (RT #703)
-	
-	package { "libnet-stomp-perl":
-		ensure => latest;
-	}
+	class traps {
+		# FIXME: move this to a different class!
+		# snmp tarp stuff
+		systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
 
-	# make sure the directory for individual service checks exists
-	file { "/etc/nagios/puppet_checks.d":
-		ensure => directory,
-		owner => root,
-		group => root,
-		recurse => true,
-		mode => 0644;
-	}
+		package { [ "snmpd", "snmptt" ]: ensure => latest; }
 
-	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
-		source => "puppet:///files/nagios/submit_check_result",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0755; 
-	}
-
-	file { "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0600; 
-	}
-
-	file { "/etc/snmp/snmptt.conf":
-		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0644; 
-	}
-
-	# Fix permissions
-	file { $puppet_files:
-		mode => 0644,
-		ensure => present;
+		# FIXME: move this to a different class!
+		file {
+			"/etc/snmp/snmptrapd.conf":
+				source => "puppet:///files/snmp/snmptrapd.conf",
+				owner => root,                                                                                                                                                 
+				group => root,                                                                                                                                                 
+				mode => 0400; 
+			"/etc/snmp/snmptt.conf":
+				source => "puppet:///files/snmp/snmptt.conf",
+				owner => root,                                                                                                                                                 
+				group => root,                                                                                                                                                 
+				mode => 0444; 
+		}
 	}
 	
-	# also fix permissions on all individual service files
-	exec { "fix_nagios_perms":
-		command => "/bin/chmod -R 644 /etc/nagios/puppet_checks.d",
-		notify => Service["nagios"],
-		refreshonly => "true";
-	}
+	class checkcommands {
+		# Stomp Perl module to monitor erzurumi (RT #703)
 
-	# Script to purge resources for non-existent hosts
-	file { "/usr/local/sbin/purge-nagios-resources.py":
-		source => "puppet:///files/nagios/purge-nagios-resources.py",
-		owner => root,
-		group => root,
-		mode => 0755;
-	}
+		package { "libnet-stomp-perl":
+			ensure => latest;
+		}
+		
+		# FIXME: move all nagios checkcommand scripts into a separate directory,
+		# and manage them with one recursive file { }.
 
-	file { "/etc/init.d/nagios":
-		source => "puppet:///files/nagios/nagios-init",
-		owner => root,
-		group => root,
-		mode => 0755;
+		file {
+			"/usr/local/nagios/libexec/check_mysql-replication.pl":
+				source => "puppet:///files/nagios/check_mysql-replication.pl",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_cert":
+				owner => root,
+				group => root,
+				mode => 0555,
+				source => "puppet:///files/nagios/check_cert";
+			"/usr/local/nagios/libexec/check_all_memcached.php":
+				source => "puppet:///files/nagios/check_all_memcached.php",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_bad_apaches":
+				source => "puppet:///files/nagios/check_bad_apaches",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_job_queue":
+				source => "puppet:///files/nagios/check_job_queue",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_longqueries":
+				source => "puppet:///files/nagios/check_longqueries",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_MySQL.php":
+				source => "puppet:///files/nagios/check_MySQL.php",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check-ssl-cert":
+				source => "puppet:///files/nagios/check-ssl-cert",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/local/nagios/libexec/check_stomp.pl":
+				source => "puppet:///files/nagios/check_stomp.pl",
+				owner => root,
+				group => root,
+				mode => 0555;
+		}
+		
+		file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
+			source => "puppet:///files/nagios/submit_check_result",
+			owner => root,                                                                                                                                                 
+			group => root,                                                                                                                                                 
+			mode => 0755; 
+		}
 	}
-
-	file { "/etc/nagios/nagios.cfg":
-		source => "puppet:///files/nagios/nagios.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/special.cfg":
-		source => "puppet:///files/nagios/special.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/cgi.cfg":
-		source => "puppet:///files/nagios/cgi.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/htpasswd.users":
-		source => "puppet:///private/nagios/htpasswd.users",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/checkcommands.cfg":
-		content => template("nagios/checkcommands.cfg.erb"),
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/contactgroups.cfg":
-		source => "puppet:///files/nagios/contactgroups.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/contacts.cfg":
-		source => "puppet:///private/nagios/contacts.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/migration.cfg":
-		source => "puppet:///files/nagios/migration.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/misccommands.cfg":
-		source => "puppet:///files/nagios/misccommands.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/resource.cfg":
-		source => "puppet:///files/nagios/resource.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/timeperiods.cfg":
-		source => "puppet:///files/nagios/timeperiods.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	# Collect exported resources
-	Nagios_host <<| |>> {
-		#before => Service[nagios],
-		notify => Service[nagios],
-	}
-	Nagios_hostextinfo <<| |>> {
-		notify => Service[nagios],
-	}
-	Nagios_service <<| |>> {
-		notify => Service[nagios],
-	}
-
-        # Collect all (virtual) resources
-	Monitor_group <| |> {
-		notify => Service[nagios],
-	}
-	Monitor_host <| |> {
-		notify => Service[nagios],
-	}
-	Monitor_service <| tag != "nrpe" |> {
-		notify => Service[nagios],
-	}
-
-	# Decommission servers
-	decommission_monitor_host { $decommissioned_servers: }
-
-	file { "/usr/local/nagios/libexec/check_mysql-replication.pl":
-			source => "puppet:///files/nagios/check_mysql-replication.pl",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_cert":
-			owner => root,
-			group => root,
-			mode => 0755,
-			source => "puppet:///files/nagios/check_cert";
-		"/usr/local/nagios/libexec/check_all_memcached.php":
-			source => "puppet:///files/nagios/check_all_memcached.php",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_bad_apaches":
-			source => "puppet:///files/nagios/check_bad_apaches",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_job_queue":
-			source => "puppet:///files/nagios/check_job_queue",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_longqueries":
-			source => "puppet:///files/nagios/check_longqueries",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_MySQL.php":
-			source => "puppet:///files/nagios/check_MySQL.php",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check-ssl-cert":
-			source => "puppet:///files/nagios/check-ssl-cert",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_stomp.pl":
-			source => "puppet:///files/nagios/check_stomp.pl",
-			owner => root,
-			group => root,
-			mode => 0755;
-	}
+	
+	include packages, config, checkcommands, traps, checks
 }
 
 class nagios::monitor::pager {
@@ -462,11 +392,11 @@ class nagios::monitor::pager {
 		"/etc/gammurc":
 			source => "puppet:///files/nagios/gammurc",
 			owner => root,
-			mode => 0644;
+			mode => 0444;
 		"/etc/gammu-smsdrc":
 			content => template("nagios/gammu-smsdrc.erb"),
 			owner => root,
-			mode => 0644;
+			mode => 0444;
 	}
 
 	systemuser { gammu: name => "gammu", home => "/nonexistent", groups => [ "gammu", "dialout" ] }
@@ -477,6 +407,7 @@ class nagios::monitor::pager {
 		ensure => running;
 	}
 }
+
 class nagios::ganglia::monitor::enwiki {
 
 	include passwords::nagios::mysql
@@ -516,10 +447,10 @@ class nagios::ganglia::ganglios {
 
 class nagios::bot {
 
-        $ircecho_infile = "/var/log/nagios/irc.log"
-        $ircecho_nick = "nagios-wm"
-        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
-        $ircecho_server = "irc.freenode.net"
+	$ircecho_infile = "/var/log/nagios/irc.log"
+	$ircecho_nick = "nagios-wm"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":
 		ensure => latest;
