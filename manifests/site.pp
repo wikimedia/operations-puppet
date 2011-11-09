@@ -385,7 +385,7 @@ class cache {
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		if $site == "esams" and $hostname =~ /^cp/ {
+		if $site == "eqiad" or ($site == "esams" and $hostname =~ /^cp/) {
 			$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
 			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
@@ -422,7 +422,7 @@ class cache {
 		include standard,
 			lvs::realserver
 		
-		if $site == "esams" and $hostname =~ /^cp/ {
+		if $site == "eqiad" or ($site == "esams" and $hostname =~ /^cp/) {
 			include varnish3::monitoring::ganglia
 			
 			varnish3::instance { "bits":
@@ -581,7 +581,7 @@ node /(arsenic|niobium)\.wikimedia\.org/ {
 	
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 	
-	include standard
+	include cache::bits
 }
 
 node "bayes.wikimedia.org" {
