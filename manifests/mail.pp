@@ -229,8 +229,6 @@ class mailman::base {
 # config bits in conf.d/ directory files. Those can be installed
 # here.
 
-# FIXME: install SSL certificates using "install_cert"
-
 # lighttpd setup as used by the mailman UI (lists.wm)
 class lighttpd::mailman {
 
@@ -275,5 +273,5 @@ class lighttpd::mailman {
 
 	# monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!lists.wikimedia.org" }
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 }
