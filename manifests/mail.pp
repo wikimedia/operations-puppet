@@ -211,13 +211,7 @@ class mailman::listserve {
 	require mailman::base
 	require lighttpd::mailman
 
-	# FIXME: is /etc/aliases specific to Mailman? probably not...
 	file {
-		"/etc/aliases":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/mailman/aliases";
 		"/etc/mailman/mm_cfg.py":
 			require => Package[mailman],
 			owner => root,
