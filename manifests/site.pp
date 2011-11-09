@@ -1428,7 +1428,7 @@ node "maerlant.esams.wikimedia.org" {
 	$gid = 500
 
 	$enable_ipv6_proxy = "true"
-	$cluster = "ssl_esams"
+	$cluster = "ssl"
 	$ganglia_aggregator = "true"
 
 	include base,
@@ -2714,7 +2714,7 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "ssl_esams"
+	$cluster = "ssl"
 	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
