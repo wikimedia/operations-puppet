@@ -485,7 +485,7 @@ class openstack::gluster-service {
 	include generic::gluster
 
 	service { "glusterd":
-		enabled => true,
+		enable => true,
 		ensure => running,
 		require => Package["glusterfs"];
 	}
