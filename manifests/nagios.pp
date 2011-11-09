@@ -163,7 +163,7 @@ define decommission_monitor_host {
 	}
 	else {
 		# Resources don't exist in Puppet. Remove from Nagios config as well.
-		file { "${nagios_config_dir}/puppet_checks.d/${host}.cfg":
+		file { "${nagios_config_dir}/puppet_checks.d/${title}.cfg":
 			ensure => absent
 		}
 	}
@@ -285,13 +285,11 @@ class nagios::monitor {
 	}
 	
 	class traps {
-		# FIXME: move this to a different class!
 		# snmp tarp stuff
 		systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
 
 		package { [ "snmpd", "snmptt" ]: ensure => latest; }
 
-		# FIXME: move this to a different class!
 		file {
 			"/etc/snmp/snmptrapd.conf":
 				source => "puppet:///files/snmp/snmptrapd.conf",
