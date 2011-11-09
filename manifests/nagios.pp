@@ -372,7 +372,7 @@ class nagios::monitor {
 		}
 	}
 	
-	include packages, config, checkcommands, traps, checks
+	include packages, config, checkcommands, traps, checks, service
 }
 
 class nagios::monitor::pager {
