@@ -29,6 +29,9 @@ class ganglia {
 			default => ""
 		}
 
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
 		$ganglia_clusters = {
 			"appserver"	=>	{
 				"name"		=> "Apaches 8 CPU",
@@ -94,6 +97,9 @@ class ganglia {
 				"name"		=> "Mobile Varnish",
 				"ip_oct"	=> "28" },
 		}
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
 
 		if ! $cluster {
 			$cluster = $site ? {
