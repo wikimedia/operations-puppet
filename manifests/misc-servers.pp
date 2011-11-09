@@ -1240,10 +1240,7 @@ class misc::survey {
 class misc::download-mediawiki {
 	
 	# TODO: add system_role
-
-	package { [ "wikimedia-task-appserver"]:
-		ensure => latest;
-}
+	require mediawiki::packages
 
 	file {
 		#apache config
