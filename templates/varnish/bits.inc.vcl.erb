@@ -3,7 +3,7 @@
 sub vcl_recv {
 	/* Only accept requests for domain bits.wikimedia.org at this time */
 	if (req.http.host == "bits.wikimedia.org") {
-		return (lookup)
+		return (lookup);
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
