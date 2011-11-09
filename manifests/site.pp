@@ -376,7 +376,7 @@ class upload-squid {
 class cache {
 	class bits {
 		$roles += [ 'cache::bits' ]
-		$cluster = "cache_bits_${site}"
+		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${site}"
 
 		$lvs_realserver_ips = $site ? {
