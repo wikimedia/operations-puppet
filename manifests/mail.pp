@@ -37,7 +37,7 @@ class exim::config {
 }
 
 class exim::service {
-	
+
 	if ( $exim_install_type == 'light' ) {
 		service {
 			"exim4":
@@ -158,7 +158,7 @@ class spamassassin {
 		ensure => latest;
 	}
 
-	file { 
+	file {
 		"/etc/spamassassin/local.cf":
 			owner => root,
 			group => root,
@@ -193,15 +193,23 @@ class spamassassin {
 
 # this section from old mailman.pp
 
-# mailman setup for lists.wm
+# basic mailman
 class mailman::base {
-	# FIXME: why does this class (a base class nonetheless) require
-	# a web server to be installed?
-	require lighttpd::mailman
 
 	package { [ "mailman" ]:
 		ensure => latest;
 	}
+	
+	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
+
+}
+
+
+# mailman for a list server
+class mailman::listserve {
+
+	require mailman::base
+	require lighttpd::mailman
 
 	# FIXME: is /etc/aliases specific to Mailman? probably not...
 	file {
@@ -218,8 +226,6 @@ class mailman::base {
 			source => "puppet:///files/mailman/mm_cfg.py";
 
 	}
-
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 }
 
 
@@ -236,7 +242,7 @@ class lighttpd::mailman {
 			ensure => latest;
 	}
 
-	file { 
+	file {
 		"/etc/lighttpd":
 			ensure => directory,
 			# puppet will automatically set +x for directories
