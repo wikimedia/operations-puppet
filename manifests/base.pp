@@ -83,6 +83,7 @@ class base::puppet {
 		ensure => latest;
 	}
 
+	# FIXME: remove $hostname from the title, it's already being prepended. Then, purge the existing Nagios resources.
 	monitor_service { "$hostname puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
 	exec { "puppet snmp trap":
