@@ -262,18 +262,10 @@ class lighttpd::mailman {
 			mode => 0644,
 			owner => root,
 			group => root;
-		"/etc/lighttpd/ssl/lists.wikimedia.org.pem":
-			mode => 0400,
-			owner => root,
-			group => root,
-			source => "puppet:///private/ssl/lists.wikimedia.org.pem";
-		"/etc/lighttpd/ssl/*.wikimedia.org.pem":
-			mode => 0400,
-			owner => root,
-			group => root,
-			source => "puppet:///private/ssl/*.wikimedia.org.pem";
-			
 	}
+	
+	# if we have this we dont need the lists. cert, right? we had them both before
+	install_certificate{ "star.wikimedia.org": }
 
 	service { "lighttpd":
 			require => [ File["lighttpd.conf"], File["mailman-private-archives.conf"], Package[lighttpd] ],
