@@ -93,6 +93,10 @@ class ganglia {
 			"cache_mobile_eqiad"	=> {
 				"name"		=> "Mobile Varnish",
 				"ip_oct"	=> "28" },
+			"cache_bits_eqiad" => {
+				"name"		=> "Bits caches eqiad",
+				"ip_oct"	=> "29" },
+			}
 		}
 
 		if ! $cluster {
