@@ -595,8 +595,9 @@ class misc::extension-distributor {
 	}
 
 	cron { extdist_updateall:
-		command => "cd $extdist_working_dir/mw-snapshot; for branch in trunk branches/*; do /usr/bin/svn cleanup \$branch/extensions; /usr/bin/svn up \$branch/extensions > /dev/null; done",
-		minute => 0,
+		command => "php /home/wikipedia/common/php/extensions/ExtensionDistributor/cron.php 2>&1 >/dev/null",
+		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+		hour => 3,
 		user => extdist,
 		ensure => present;
 	}
