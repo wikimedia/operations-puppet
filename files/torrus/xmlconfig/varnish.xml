@@ -54,6 +54,32 @@
 				</subtree>
 			</subtree>
 
+			<subtree name="eqiad">
+				<subtree name="bits">
+					<subtree name="arsenic.wikimedia.org">
+						<param name="hostname" value="arsenic.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="niobium.wikimedia.org">
+						<param name="hostname" value="niobium.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+				
+				<subtree name="mobile">
+					<subtree name="cp1043.wikimedia.org">
+						<param name="hostname" value="cp1043.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp1044.wikimedia.org">
+						<param name="hostname" value="cp1044.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+			</subtree>
+			
 			<subtree name="esams">
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
@@ -87,6 +113,16 @@
 
 					<subtree name="knsq7.esams.wikimedia.org">
 						<param name="hostname" value="knsq7.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp3001.esams.wikimedia.org">
+						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp3002.esams.wikimedia.org">
+						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
 						<apply-template name="wikimedia-varnish-server"/>
 					</subtree>
 				</subtree>
