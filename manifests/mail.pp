@@ -245,13 +245,6 @@ class lighttpd::mailman {
 	# if we have this we dont need the lists. cert, right? we had them both before
 	install_certificate{ "star.wikimedia.org": }
 
-	service { "lighttpd":
-			require => [ File["lighttpd.conf"], File["mailman-private-archives.conf"], Package[lighttpd] ],
-			subscribe => [ File["lighttpd.conf"], File["mailman-private-archives.conf"] ],
-			ensure => running;
-	}
-
-	# monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+	# monitor SSL cert expiry 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 }
