@@ -1849,6 +1849,12 @@ class misc::torrus {
 	system_role { "misc::torrus": description => "Torrus" }
 	
 	file {
+		"/etc/torrus/conf/":
+			source => "puppet:///files/torrus/conf/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
 		"/etc/torrus/xmlconfig/":
 			source => "puppet:///files/torrus/xmlconfig/",
 			owner => root,
@@ -1859,8 +1865,8 @@ class misc::torrus {
 	
 	exec { "torrus compile":
 		command => "/usr/sbin/torrus compile --all",
-		require => File["/etc/torrus/xmlconfig"],
-		subscribe => File["/etc/torrus/xmlconfig/"],
+		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
+		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		refreshonly => true
 	}
 	
