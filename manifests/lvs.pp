@@ -450,13 +450,14 @@ class lvs::balancer::runcommand {
 
 class lvs::realserver {
 	file { "/etc/default/wikimedia-lvs-realserver":
-		mode => 644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		content => template("lvs/wikimedia-lvs-realserver.erb");
 	}
 
 	exec { "/usr/sbin/dpkg-reconfigure -p critical -f noninteractive wikimedia-lvs-realserver":
+		require => Package["wikimedia-lvs-realserver"],
 		path => "/bin:/sbin:/usr/bin:/usr/sbin",
 		subscribe => File["/etc/default/wikimedia-lvs-realserver"],
 		refreshonly => true;
