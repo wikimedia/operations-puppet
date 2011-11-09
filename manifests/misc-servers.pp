@@ -1859,6 +1859,7 @@ class misc::torrus {
 			group => root,
 			mode => 0444,
 			recurse => remote;
+		# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
 		"/etc/torrus/xmlconfig/":
 			source => "puppet:///files/torrus/xmlconfig/",
 			owner => root,
