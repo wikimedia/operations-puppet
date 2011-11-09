@@ -87,7 +87,7 @@ class ganglia {
 			"ssl"		=> {
 				"name"		=> "SSL cluster",
 				"ip_oct"	=> "26" },
-			"cache_mobile_eqiad"	=> {
+			"cache_mobile"	=> {
 				"name"		=> "Mobile Varnish",
 				"ip_oct"	=> "28" },
 		}

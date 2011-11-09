@@ -451,7 +451,7 @@ class cache {
 	}
 	class mobile { 
 		$roles += [ 'cache::mobile' ]
-		$cluster = "cache_mobile_${site}"
+		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
 		$lvs_realserver_ips = $site ? {
