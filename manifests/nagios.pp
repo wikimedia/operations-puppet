@@ -241,8 +241,6 @@ class nagios::monitor {
 		ensure => directory,
 		owner => root,
 		group => root,
-		recurse => true,
-		mode => 0644;
 	}
 
 	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
@@ -274,7 +272,7 @@ class nagios::monitor {
 	
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
-		command => "/bin/chmod -R 644 /etc/nagios/puppet_checks.d",
+		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
 		notify => Service["nagios"],
 		refreshonly => "true";
 	}
