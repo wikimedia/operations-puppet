@@ -198,33 +198,43 @@ class nagios::monitor {
 		File {
 			owner => root,
 			group => root,
-			mode => 0444,
-			notify => Service[nagios]
+			mode => 0444
 		}
 		
 		file {
 			"/etc/nagios/nagios.cfg":
-				source => "puppet:///files/nagios/nagios.cfg";
+				source => "puppet:///files/nagios/nagios.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/special.cfg":
-				source => "puppet:///files/nagios/special.cfg";
+				source => "puppet:///files/nagios/special.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/cgi.cfg":
-				source => "puppet:///files/nagios/cgi.cfg";
+				source => "puppet:///files/nagios/cgi.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/htpasswd.users":
-				source => "puppet:///private/nagios/htpasswd.users";
+				source => "puppet:///private/nagios/htpasswd.users",
+				notify => Service[nagios];
 			"/etc/nagios/checkcommands.cfg":
-				content => template("nagios/checkcommands.cfg.erb");
+				content => template("nagios/checkcommands.cfg.erb"),
+				notify => Service[nagios];
 			"/etc/nagios/contactgroups.cfg":
-				source => "puppet:///files/nagios/contactgroups.cfg";
+				source => "puppet:///files/nagios/contactgroups.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/contacts.cfg":
-				source => "puppet:///private/nagios/contacts.cfg";
+				source => "puppet:///private/nagios/contacts.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/migration.cfg":
-				source => "puppet:///files/nagios/migration.cfg";
+				source => "puppet:///files/nagios/migration.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/misccommands.cfg":
-				source => "puppet:///files/nagios/misccommands.cfg";
+				source => "puppet:///files/nagios/misccommands.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/resource.cfg":
-				source => "puppet:///files/nagios/resource.cfg";
+				source => "puppet:///files/nagios/resource.cfg",
+				notify => Service[nagios];
 			"/etc/nagios/timeperiods.cfg":
-				source => "puppet:///files/nagios/timeperiods.cfg";
+				source => "puppet:///files/nagios/timeperiods.cfg",
+				notify => Service[nagios];
 		}	
 	}
 
