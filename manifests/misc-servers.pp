@@ -1266,9 +1266,8 @@ class misc::download-mediawiki {
 	
 	# TODO: add system_role
 
-	package { [ "wikimedia-task-appserver"]:
-		ensure => latest;
-}
+	# wikimedia-task-appserver package is required
+	require mediawiki::packages
 
 	file {
 		#apache config
@@ -1495,10 +1494,8 @@ class misc::udpprofile::collector {
 class misc::scripts {
 	require misc::passwordScripts
 
-	# For sync-common, required by scap
-	package { wikimedia-task-appserver:
-		ensure => latest;
-	}
+	# scap requires sync-common, which is in the wikimedia-task-appserver package
+	require mediawiki::packages
 
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
