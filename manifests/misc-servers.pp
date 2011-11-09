@@ -1844,3 +1844,25 @@ class misc::l10nupdate {
 			ensure => present;
 	}
 }
+
+class misc::torrus {
+	system_role { "misc::torrus": description => "Torrus" }
+	
+	file {
+		"/etc/torrus/xmlconfig/":
+			source => "puppet:///files/torrus/xmlconfig/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => true;
+	}
+	
+	exec { "torrus compile":
+		command => "/usr/sbin/torrus compile --all",
+		require => File["/etc/torrus/xmlconfig"],
+		subscribe => File["/etc/torrus/xmlconfig/"],
+		refreshonly => true
+	}
+	
+	# TODO: Puppetize the rest of Torrus
+}
