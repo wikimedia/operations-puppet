@@ -222,7 +222,7 @@ class mailman::listserve {
 
 
 # FIXME: put mailman specific config bits in conf.d/ directory files.
-# Those can be installed here.
+# Those can be installed here. use: lighttpd_config
 
 # lighttpd setup as used by the mailman UI (lists.wm)
 class lighttpd::mailman {
@@ -236,14 +236,12 @@ class lighttpd::mailman {
 			group => root,
 			path => "/etc/lighttpd/lighttpd.conf",
 			source => "puppet:///files/lighttpd/list-server.conf";
-		"mailman-private-archives.conf":
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/lighttpd/mailman-private-archives.conf",
-			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
 	}
-	
+
+	lighttpd_config	{ "mailman-private-archives":
+			name => "mailman-private-archives.conf";
+	}
+
 	# if we have this we dont need the lists. cert, right? we had them both before
 	install_certificate{ "star.wikimedia.org": }
 
