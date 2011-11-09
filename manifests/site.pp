@@ -1807,8 +1807,6 @@ node "sockpuppet.pmtpa.wmnet" {
 
 node "sodium.wikimedia.org" {
 
-	$exim_install_type = "heavy"
-
 	include base,
 		ganglia,
 		nrpe,
