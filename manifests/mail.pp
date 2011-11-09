@@ -222,13 +222,15 @@ class mailman::listserve {
 
 
 # FIXME: put mailman specific config bits in conf.d/ directory files.
-# Those can be installed here. use: lighttpd_config
+# move custom stuff to files in /etc/lighttpd/conf-available/
+# use lighttpd_config to enable
 
 # lighttpd setup as used by the mailman UI (lists.wm)
 class lighttpd::mailman {
 
 	require	generic::webserver::static
 
+	# FIXME: still some custom stuff in global config
 	file {
 		"lighttpd.conf":
 			mode => 0444,
@@ -236,8 +238,16 @@ class lighttpd::mailman {
 			group => root,
 			path => "/etc/lighttpd/lighttpd.conf",
 			source => "puppet:///files/lighttpd/list-server.conf";
+		"mailman-private-archives.conf":
+			mode => 0444,
+			owner => root,
+			group => root,
+			path => "/etc/lighttpd/conf-available/mailman-private-archives.conf",
+			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
 	}
 
+	# shouldn't the generic class also have a source and ensure the file is in conf-available?
+	# currently it is just for enabling it to conf-enabled
 	lighttpd_config	{ "mailman-private-archives":
 			name => "mailman-private-archives.conf";
 	}
