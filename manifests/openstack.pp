@@ -151,8 +151,8 @@ class openstack::compute {
 	include openstack::common,
 		openstack::compute-service,
 		openstack::volume-service,
-		openstack::glance-service,
-		openstack::glance-client
+		openstack::gluster-service,
+		openstack::gluster-client
 
 	if $hostname == "virt2" {
 		include openstack::network-service,
