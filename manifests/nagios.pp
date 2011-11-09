@@ -270,7 +270,7 @@ class nagios::monitor {
 
 		# Fix permissions on all individual service files
 		exec { "fix nagios permissions":
-			command => "/bin/chmod -R 644 /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_servicegroups.cfg /etc/nagios/puppet_checks.d/";
+			command => "/bin/chmod -R ugo+r /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_servicegroups.cfg /etc/nagios/puppet_checks.d/";
 		}
 
 		service { nagios:
