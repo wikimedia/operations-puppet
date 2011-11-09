@@ -1854,7 +1854,7 @@ class misc::torrus {
 			owner => root,
 			group => root,
 			mode => 0444,
-			recurse => true;
+			recurse => remote;
 	}
 	
 	exec { "torrus compile":
