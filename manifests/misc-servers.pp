@@ -1861,6 +1861,12 @@ class misc::torrus {
 			group => root,
 			mode => 0444,
 			recurse => remote;
+		"/etc/torrus/templates/":
+			source => "puppet:///files/torrus/templates/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
 	}
 	
 	exec { "torrus compile":
