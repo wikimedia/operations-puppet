@@ -573,4 +573,5 @@ monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152
 
 # Not really LVS but similar:
 
-monitor_service_lvs_http { "ipv6 upload.esams.wikimedia.org": ip_address => "2620:0:862:1::80:2", check_command => "check_http_upload" }
+# FIXME: hostnames can't have spaces
+#monitor_service_lvs_http { "ipv6 upload.esams.wikimedia.org": ip_address => "2620:0:862:1::80:2", check_command => "check_http_upload" }
