@@ -244,25 +244,33 @@ class nagios::monitor {
 		
 		# Collect exported resources
 		Nagios_host <<| |>> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
 		Nagios_hostextinfo <<| |>> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
 		Nagios_service <<| |>> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
 
 		# Collect all (virtual) resources
 		Monitor_group <| |> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
 		Monitor_host <| |> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
 		Monitor_service <| tag != "nrpe" |> {
+			before => Class[decommission],
 			notify => Service[nagios],
 		}
+		
+		include nagios::monitor::decommission
 	}
 
 	class decommission {
