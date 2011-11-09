@@ -177,7 +177,15 @@ class varnish3 {
 		}
 
 		service { "varnish${instancesuffix}":
-			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
+			require => [
+					File[
+						"/etc/default/varnish${instancesuffix}",
+						"/etc/init.d/varnish${instancesuffix}",
+						"/etc/varnish/${vcl}.inc.vcl",
+						"/etc/varnish/wikimedia3_${vcl}.vcl"
+					],
+					Mount["/var/lib/varnish"]
+				],
 			hasstatus => false,
 			pattern => "/var/run/varnishd${instancesuffix}.pid",
 			ensure => running;
