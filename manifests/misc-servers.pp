@@ -1849,6 +1849,10 @@ class misc::l10nupdate {
 class misc::torrus {
 	system_role { "misc::torrus": description => "Torrus" }
 	
+	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
+	
+	File { require => Package["torrus-common"] }
+	
 	file {
 		"/etc/torrus/conf/":
 			source => "puppet:///files/torrus/conf/",
@@ -1875,6 +1879,12 @@ class misc::torrus {
 		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		refreshonly => true
+	}
+	
+	service { "torrus-common":
+		require => Exec["torrus compile"],
+		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
+		ensure => running;
 	}
 	
 	# TODO: Puppetize the rest of Torrus
