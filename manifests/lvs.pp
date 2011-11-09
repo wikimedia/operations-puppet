@@ -103,7 +103,7 @@ $lvs_services = {
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
-				'eqiad' => { 'textsvc' => "10.2.4.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
+				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
 				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
 				default => undef,
 			},
@@ -156,7 +156,7 @@ $lvs_services = {
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
-				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.4.23" },
+				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
 				'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 				default => undef,
 			},
@@ -181,7 +181,7 @@ $lvs_services = {
 		'ip' => $realm ? {
 			'production' => $site ? {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.4.24" },
+				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 				default => undef,
 			},
@@ -294,7 +294,7 @@ $lvs_services = {
 		'class' => "low-traffic",
 		'ip' => $site ? {
 			'pmtpa' => "10.2.1.21",
-			'eqiad' => "10.2.4.21",
+			'eqiad' => "10.2.2.21",
 			default => undef,
 		},
 		'bgp' => "yes",
@@ -312,7 +312,7 @@ $lvs_services = {
 		'class' => "low-traffic",
 		'ip' => $site ? {
 			'pmtpa' => "10.2.1.22",
-			'eqiad' => "10.2.4.22",
+			'eqiad' => "10.2.2.22",
 			default => undef,
 		},
 		'bgp' => "yes",
@@ -331,7 +331,7 @@ $lvs_services = {
 		'protocol' => "tcp",
 		'ip' => $site ? {
 			'pmtpa' => "10.2.1.11",
-			'eqiad' => "10.2.4.11",
+			'eqiad' => "10.2.2.11",
 			default => undef,
 		},
 		'port' => 8123,
@@ -351,7 +351,7 @@ $lvs_services = {
 		'protocol' => "tcp",
 		'ip' => $site ? {
 			'pmtpa' => "10.2.1.12",
-			'eqiad' => "10.2.4.12",
+			'eqiad' => "10.2.2.12",
 			default => undef,
 		},
 		'port' => 8123,
@@ -371,7 +371,7 @@ $lvs_services = {
 		'protocol' => "tcp",
 		'ip' => $site ? {
 			'pmtpa' => "10.2.1.13",
-			'eqiad' => "10.2.4.13",
+			'eqiad' => "10.2.2.13",
 			default => undef,
 		},
 		'port' => 8123,
