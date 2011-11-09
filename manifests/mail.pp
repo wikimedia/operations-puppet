@@ -191,8 +191,6 @@ class spamassassin {
 	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_spamd" }
 }
 
-# this section from old mailman.pp
-
 # basic mailman
 class mailman::base {
 
@@ -223,26 +221,15 @@ class mailman::listserve {
 }
 
 
-# FIXME: this should not be in mailman.pp
-# Create or use a generic lighttpd installer (may already
-# exist in generic-definitions), and then put mailman specific
-# config bits in conf.d/ directory files. Those can be installed
-# here.
+# FIXME: put mailman specific config bits in conf.d/ directory files.
+# Those can be installed here.
 
 # lighttpd setup as used by the mailman UI (lists.wm)
 class lighttpd::mailman {
 
-	package { [ "lighttpd" ]:
-			ensure => latest;
-	}
+	require	generic::webserver::static
 
 	file {
-		"/etc/lighttpd":
-			ensure => directory,
-			# puppet will automatically set +x for directories
-			mode => 0644,
-			owner => root,
-			group => root;
 		"lighttpd.conf":
 			mode => 0444,
 			owner => root,
@@ -255,11 +242,6 @@ class lighttpd::mailman {
 			group => root,
 			path => "/etc/lighttpd/mailman-private-archives.conf",
 			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
-		"/etc/lighttpd/ssl":
-			ensure => directory,
-			mode => 0644,
-			owner => root,
-			group => root;
 	}
 	
 	# if we have this we dont need the lists. cert, right? we had them both before
