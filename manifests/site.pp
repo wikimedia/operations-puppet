@@ -2855,6 +2855,7 @@ node "streber.wikimedia.org" {
 		ganglia::collector,
 		ntp::client,
 		admins::roots,
+		misc::torrus,
 		exim::rt,
 		misc::rt::server,
 		certificates::star_wikimedia_org
