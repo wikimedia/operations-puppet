@@ -514,6 +514,20 @@ class cache {
 	}
 }
 
+class protoproxy::ssl {
+	$cluster = "ssl"
+
+	if $hostname =~ /^ssl[0-9]*1$/ {
+		$enable_ipv6_proxy = true
+	}
+
+	include standard,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+} 
+
 # Default variables
 $cluster = "misc"
 
@@ -1428,15 +1442,10 @@ node "maerlant.esams.wikimedia.org" {
 	$gid = 500
 
 	$enable_ipv6_proxy = "true"
-	$cluster = "ssl"
 	$ganglia_aggregator = "true"
 
-	include base,
-		ganglia,
-		ntp::client,
-		protoproxy::proxy_sites,
+	include protoproxy::ssl,
 		protoproxy::ipv6_labs,
-		certificates::wmf_ca,
 		groups::wikidev,
 		accounts::gmaxwell
 }
@@ -2678,55 +2687,30 @@ node "srv301.pmtpa.wmnet" {
 }
 
 node /ssl[1-4]\.wikimedia\.org/ {
-	$cluster = "ssl"
 	if $hostname =~ /^ssl[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^ssl1$/ {
-		$enable_ipv6_proxy = true
-	}
-
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
-
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+	
+	include protoproxy::ssl
 }
 
 node /ssl100[1-4]\.wikimedia\.org/ {
-	$cluster = "ssl"
 	if $hostname =~ /^ssl100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^ssl1001$/ {
-		$enable_ipv6_proxy = true
-	}
 
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+	include protoproxy::ssl
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "ssl"
 	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ssl3001$/ {
-		$enable_ipv6_proxy = true
-
 		include protoproxy::ipv6_labs
 	}
 
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+	include protoproxy::ssl
 }
 
 #sq31-sq36 are api squids
