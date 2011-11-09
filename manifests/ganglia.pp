@@ -72,12 +72,9 @@ class ganglia {
 			"misc_esams"	=> {
 				"name"		=> "Miscellaneous esams",
 				"ip_oct"	=> "20" },
-			"cache_bits_pmtpa"	=> {
+			"cache_bits"	=> {
 				"name"		=> "Bits caches",
 				"ip_oct"	=> "21" },
-			"cache_bits_esams"	=> {
-				"name"		=> "Bits caches esams",
-				"ip_oct"	=> "22" },
 			"payments"	=> {
 				"name"		=> "Fundraiser payments",
 				"ip_oct"	=> "23" },
