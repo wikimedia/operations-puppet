@@ -1260,6 +1260,7 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
+		accounts::datasets,
 		misc::udp2log::packetloss,
 		misc::udp2log::locke,
 		misc::udp2log::lockeconfig,
