@@ -2861,6 +2861,7 @@ node "snapshot1.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
@@ -2877,6 +2878,7 @@ node "snapshot2.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
@@ -2903,6 +2905,7 @@ node "snapshot4.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
