@@ -492,12 +492,12 @@ class openstack::gluster-service {
 
 	# Every host exports its own peer resource
 	@@gluster::server::peer {
-		["${fqdn}"]:
-			tag => "${fqdn}";
+		["${hostname}.${domain}"]:
+			tag => "${hostname}.${domain}";
 	}
 
 	# Put the hosts own uuid in glusterd.info
-	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${fqdn}")
+	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
 	file {
 		"/etc/glusterd/glusterd.info":
 			content => "UUID=${local_host_uuid}",
@@ -505,7 +505,7 @@ class openstack::gluster-service {
 	}
 
 	# Every host imports all peer resources except its own
-	Gluster::Server::Peer<<| tag != "${fqdn}" |>>
+	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" |>>
 
 }
 
