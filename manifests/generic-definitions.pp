@@ -617,7 +617,9 @@ define gluster::server::peer {
 			content =>
 "uuid=${host_uuid}
 state=3
-hostname1=${name}"
+hostname1=${name}",
+			notify => Service["glusterd"],
+			require => Package["glusterfs"];
 
 	} 
 
