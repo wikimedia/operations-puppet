@@ -497,10 +497,10 @@ class openstack::gluster-service {
 	}
 
 	# Put the hosts own uuid in glusterd.info
-	$host_uuid = generate("/usr/local/bin/uuid-generator", "${fqdn}")
+	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${fqdn}")
 	file {
 		"/etc/glusterd/glusterd.info":
-			content => "UUID=${host_uuid}",
+			content => "UUID=${local_host_uuid}",
 			require => Package["glusterfs"];
 	}
 
