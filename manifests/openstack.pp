@@ -487,8 +487,24 @@ class openstack::gluster-service {
 	service { "glusterd":
 		enable => true,
 		ensure => running,
-		require => Package["glusterfs"];
+		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info"]];
 	}
+
+	# Every host exports its own peer resource
+	@@gluster::server::peer {
+		["${fqdn}"]: ;
+	}
+
+	# Put the hosts own uuid in glusterd.info
+	$host_uuid = generate("/usr/local/bin/uuid-generator", "${fqdn}")
+	file {
+		"/etc/glusterd/glusterd.info":
+			content => "UUID=${host_uuid}",
+			require => Package["glusterfs"];
+	}
+
+	# Every host imports all peer resources except its own
+	Gluster::Server::Peer<<| name != "${fqdn}" |>>
 
 }
 
