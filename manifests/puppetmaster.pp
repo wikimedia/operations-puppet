@@ -18,14 +18,19 @@ class puppetmaster::passenger {
 		"/etc/apache2/sites-available/puppetmaster":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => template('puppet/puppetmaster.erb'),
 			require => Package["puppetmaster-passenger"];
 		"/usr/local/bin/position-of-the-moon":
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/puppet/position-of-the-moon";
+		"/usr/local/bin/uuid-generator":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/puppet/uuid-generator";
 	}
 
 	if $is_labs_puppet_master {
@@ -38,7 +43,7 @@ class puppetmaster::passenger {
 			"/etc/apache2/ports.conf":
 				owner => root,
 				group => root,
-				mode  => 0644,
+				mode  => 0444,
 				source => "puppet:///files/puppet/ports.conf";
 		}
 		cron {

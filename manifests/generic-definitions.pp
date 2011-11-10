@@ -608,3 +608,17 @@ class generic::gluster {
 	}
 
 }
+
+define gluster::server::peer {
+
+	$host_uuid = generate("/usr/local/bin/uuid-generator", "${name}")
+	file {
+		"/etc/glusterd/peers/${host_uuid}":
+			content =>
+"uuid=${host_uuid}
+state=3
+hostname1=${name}"
+
+	} 
+
+}
