@@ -45,6 +45,7 @@
 		Allow from all
 	</Directory>
 
+	# FIXME: What is this for??
 	Alias /stats /var/statsvn/html
 	<Directory /var/statsvn/html>
 		Allow from all
