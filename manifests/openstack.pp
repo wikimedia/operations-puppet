@@ -521,16 +521,15 @@ class openstack::gluster-client {
 
 	include generic::gluster
 
-	## mount the gluster volume for the instances
-	## uncomment after migration of data
-	#mount { "/var/lib/nova/instances":
-	#	device => "virt2.pmtpa.wmnet:/instances",
-	#	fstype => "glusterfs",
-	#	name => "/var/lib/nova/instances",
-	#	options => "defaults,_netdev",
-	#	require => Package["glusterfs"],
-	#	ensure => mounted;
-	#}
+	## mount the gluster volume for the instances; always use the local daemon to mount
+	mount { "/var/lib/nova/instances":
+		device => "${hostname}.${domain}:/instances",
+		fstype => "glusterfs",
+		name => "/var/lib/nova/instances",
+		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
+		require => Package["glusterfs"],
+		ensure => mounted;
+	}
 
 }
 
