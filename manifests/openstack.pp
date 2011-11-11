@@ -487,7 +487,7 @@ class openstack::gluster-service {
 	service { "glusterd":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info"], File["/etc/init/gluster.conf"], File["/etc/init.d/glusterd"]];
+		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info"], File["/etc/init/glusterd.conf"], File["/etc/init.d/glusterd"]];
 	}
 
 	# Every host exports its own peer resource
@@ -504,8 +504,8 @@ class openstack::gluster-service {
 			require => Package["glusterfs"];
 		# We need to replace the init script with an upstart job that'll ensure
 		# the filesystem gets mounted after gluster is started.
-		"/etc/init/gluster.conf":
-			source => "puppet:///files/gluster/gluster.conf",
+		"/etc/init/glusterd.conf":
+			source => "puppet:///files/gluster/glusterd.conf",
 			require => Package["glusterfs"];
 		"/etc/init.d/glusterd":
 			ensure => link,
