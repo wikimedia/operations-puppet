@@ -1134,10 +1134,9 @@ node "gurvin.wikimedia.org" {
 node "hooft.esams.wikimedia.org" {
 	$cluster = "misc_esams"
 	$ganglia_aggregator = "true"
+	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
-	include base,
-		ganglia,
-		ntp::client,
+	include standard,
 		misc::install-server::tftp-server,
 		admins::roots,
 		admins::mortals,
