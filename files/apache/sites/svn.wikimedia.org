@@ -49,11 +49,4 @@
 	<Directory /var/statsvn/html>
 		Allow from all
 	</Directory>
-
-	# FIXME: Move out of demon's home directory
-	Alias /dumps /home/demon/svn
-	<Directory /home/demon/svn>
-		Allow from all
-		Options Indexes FollowSymLinks
-	</Directory>
 </VirtualHost>

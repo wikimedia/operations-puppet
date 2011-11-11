@@ -26,7 +26,7 @@ class svn::server {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/svn/svn.http-include",
+			source => "puppet:///files/apache/sites/svn.wikimedia.org",
 			notify => Service[apache2];
 		"/var/mwdocs":
 			owner => mwdocs,
