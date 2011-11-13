@@ -913,7 +913,6 @@ class misc::etherpad_lite {
 	}
 
 	file { '/etc/etherpad-lite/settings.json':
-		path => '/etc/etherpad_lite/settings.json',
 		require => Package[etherpad-lite],
 		owner => 'root',
 		group => 'root',
