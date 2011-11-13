@@ -901,7 +901,7 @@ class misc::etherpad_lite {
 	apache_site { controller: name => "etherpad.wikimedia.org" }
 	# For later use
 	apache_module { rewrite: name => "rewrite" }
-	apache_module { rewrite: name => "proxy" }
+	apache_module { proxy: name => "proxy" }
 
 	package { etherpad-lite:
 		ensure => latest;
