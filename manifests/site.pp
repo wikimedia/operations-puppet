@@ -385,7 +385,9 @@ class cache {
 			$varnish_backends = $site ? {
 				/^(pmtpa|eqiad)$/ => $all_backends,
 				# [ bits-lb.pmtpa, bits-lb.eqiad ]
-				'esams' => [ "208.80.152.210", "208.80.154.234" ],
+				#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+				# FIXME: add pmtpa back in
+				'esams' => [ "208.80.154.234" ],
 				default => []
 			}
 			$varnish_directors = $site ? {
