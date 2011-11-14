@@ -299,9 +299,7 @@ class searchindexer {
 
 class text-squid {
 	$roles += [ 'cache::text' ]
-	if $cluster == "misc" {
-		$cluster = "squids_text"
-	}
+	$cluster = "squids_text"
 
 	if ! $lvs_realserver_ips {
 		$lvs_realserver_ips = $realm ? {
@@ -321,17 +319,15 @@ class text-squid {
 
 	system_role { text-squid: description => "text Squid server" }
 
+	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_text',
 		'esams' => 'squids_esams_text'
 	}
 
-	include	base,
+	include	standard,
 		squid,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender
+		lvs::realserver
 
 	# HTCP packet loss monitoring on the ganglia aggregators
 	if $ganglia_aggregator == "true" and $site != "esams" {
@@ -341,9 +337,7 @@ class text-squid {
 
 class upload-squid {
 	$roles += [ 'cache::upload' ]
-	if $cluster == "misc" {
-		$cluster = "squids_upload"
-	}
+	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
 		$lvs_realserver_ips = $site ? { 
@@ -355,17 +349,15 @@ class upload-squid {
 
 	system_role { upload-squid: description => "upload Squid server" }
 
+	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_upload',
 		'esams' => 'squids_esams_upload'
 	}
 
-	include base,
+	include standard,
 		squid,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender
+		lvs::realserver
 
 	# HTCP packet loss monitoring on the ganglia aggregators
 	if $ganglia_aggregator == "true" and $site != "esams" {
@@ -544,8 +536,6 @@ node "alsted.wikimedia.org" {
 }
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "misc_esams"
-
 	$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 
 	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
@@ -1132,7 +1122,6 @@ node "gurvin.wikimedia.org" {
 }
 
 node "hooft.esams.wikimedia.org" {
-	$cluster = "misc_esams"
 	$ganglia_aggregator = "true"
 	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
@@ -1486,7 +1475,6 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 }
 
 node "lily.knams.wikimedia.org" {
-	$cluster = "misc_esams"
 	include ganglia,
 		nrpe,
 		certificates::star_wikimedia_org
@@ -1519,7 +1507,6 @@ node "ms5.pmtpa.wmnet" {
 }
 
 node "ms6.esams.wikimedia.org" {
-	$cluster = "misc_esams"
 	$thumbs_proxying = "true"
 	$thumbs_proxy_source = "http://208.80.152.3"
 
@@ -1569,8 +1556,6 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node "nescio.esams.wikimedia.org" {
-	$cluster = "misc_esams"
-
 	$dns_recursor_ipaddress = "91.198.174.6"
 
 	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }

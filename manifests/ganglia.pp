@@ -26,6 +26,7 @@ class ganglia {
 	
 		$name_suffix = $site ? {
 			"eqiad" => " eqiad",
+			"esams" => " esams",
 			default => ""
 		}
 
@@ -63,15 +64,6 @@ class ganglia {
 			"squids_upload"	=>	{
 				"name"		=> "Upload squids",
 				"ip_oct"	=> "6" },
-			"squids_esams_u"	=> {
-				"name"		=> "Kennisnet upload squids",
-				"ip_oct"	=> "9" },
-			"squids_esams_t"	=> {
-				"name"		=> "Kennisnet text squids",
-				"ip_oct"	=> "10" },
-			"misc_esams"	=> {
-				"name"		=> "Miscellaneous esams",
-				"ip_oct"	=> "20" },
 			"cache_bits"	=> {
 				"name"		=> "Bits caches",
 				"ip_oct"	=> "21" },
