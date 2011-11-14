@@ -894,31 +894,44 @@ class misc::etherpad_lite {
 			mode => 444,
 			owner => root,
 			group => root,
+			notify => Service["apache2"],
 			source => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
 			ensure => present;
 	}
 
 	apache_site { controller: name => "etherpad.wikimedia.org" }
-	# For later use
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
 
 	package { etherpad-lite:
 		ensure => latest;
 	}
 	service { etherpad-lite:
-		require => Package[etherpad-lite],
+		require => Package["etherpad-lite"],
 		subscribe => File['/etc/etherpad-lite/settings.json'],
+		enable => true,
 		ensure => running;
 	}
 
-	file { '/etc/etherpad-lite/settings.json':
-		path => '/etc/etherpad_lite/settings.json',
-		require => Package[etherpad-lite],
-		owner => 'root',
-		group => 'root',
-		mode => 0444,
-		content => template('etherpad_lite/settings.json.erb');
+	service { apache2:
+		enable => true,
+		ensure => running;
+	}
+
+	file {
+		'/etc/etherpad-lite/settings.json':
+			path => '/etc/etherpad_lite/settings.json',
+			require => Package["etherpad-lite"],
+			owner => 'root',
+			group => 'root',
+			mode => 0444,
+			content => template('etherpad_lite/settings.json.erb');
+		'/etc/apache2/sites-enabled/000-default':
+			notify => Service["apache2"],
+			require => Service["apache2"],
+			ensure => absent;
 	}
 }
 
