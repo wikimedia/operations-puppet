@@ -24,6 +24,7 @@ def metric_init(params):
 	all_metrics = build_dict()
 
 	for metric in stats.keys():
+		if metric.startswith("VBE."): continue
 		metric_properties = {
 			'name': metric,
 			'call_back': get_value,
