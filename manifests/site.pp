@@ -384,7 +384,8 @@ class cache {
 
 			$varnish_backends = $site ? {
 				/^(pmtpa|eqiad)$/ => $all_backends,
-				'esams' => [ "bits-lb.pmtpa.wikimedia.org", "bits-lb.eqiad.wikimedia.org" ],
+				# [ bits-lb.pmtpa, bits-lb.eqiad ]
+				'esams' => [ "208.80.152.210", "208.80.154.234" ],
 				default => []
 			}
 			$varnish_directors = $site ? {
