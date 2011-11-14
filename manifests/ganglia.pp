@@ -10,10 +10,18 @@ class ganglia {
 
 	#class config {
 		# Variables
-		if $ganglia_aggregator {
+		if $hostname in $decommissioned_servers {
+			$cluster = "decommissioned"
 			$deaf = "no"
 		} else {
-			$deaf = "yes"
+			if ! $cluster {
+				$cluster = "misc"
+			}
+			if $ganglia_aggregator {
+				$deaf = "no"
+			} else {
+				$deaf = "yes"
+			}
 		}	
 	
 		$location = "unspecified"
@@ -82,14 +90,6 @@ class ganglia {
 		# NOTE: Do *not* add new clusters *per site* anymore,
 		# the site name will automatically be appended now,
 		# and a different IP prefix will be used.
-
-		if $hostname in $decommissioned_servers {
-			$cluster = "decommissioned"
-		} else {
-			if ! $cluster {
-				$cluster = "misc"
-			}
-		}
 		
 		# gmond.conf template variables
 		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
