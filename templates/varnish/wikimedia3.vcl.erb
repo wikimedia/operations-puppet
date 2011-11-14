@@ -67,7 +67,7 @@ probe upload {
 <% if backend =~ /^[0-9\.]+$/ -%>
 backend ipv4_<%= backend.gsub(".", "_") %> {
 <% else -%>
-backend <%= backend.split(".")[0] %> {
+backend <%= backend.split(".")[0].gsub("-", "_") %> {
 <% end -%>
 	.host = "<%= backend %>";
 	.port = "<%= varnish_backend_options.fetch("port", "80") %>";
