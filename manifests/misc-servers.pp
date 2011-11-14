@@ -895,6 +895,8 @@ class misc::etherpad_lite {
 			owner => root,
 			group => root,
 			source => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
+			notify => Service["apache2"],
+			content => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
 			ensure => present;
 	}
 
