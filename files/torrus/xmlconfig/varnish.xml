@@ -57,7 +57,7 @@
 			<subtree name="eqiad">
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Bits caches"/>
+					<param name="varnishcluster" value="Bits caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
 					<subtree name="arsenic.wikimedia.org">
@@ -73,7 +73,7 @@
 				
 				<subtree name="mobile">
 					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Mobile caches"/>
+					<param name="varnishcluster" value="Mobile caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
 					<subtree name="cp1043.wikimedia.org">
