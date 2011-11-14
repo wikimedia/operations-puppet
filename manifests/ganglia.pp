@@ -73,7 +73,7 @@ class ganglia {
 				"name"		=> "SSL cluster",
 				"ip_oct"	=> "26" },
 			"cache_mobile"	=> {
-				"name"		=> "Mobile Varnish",
+				"name"		=> "Mobile caches",
 				"ip_oct"	=> "28" },
 		}
 		# NOTE: Do *not* add new clusters *per site* anymore,
