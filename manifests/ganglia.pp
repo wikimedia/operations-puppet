@@ -30,6 +30,9 @@ class ganglia {
 		# the site name will automatically be appended now,
 		# and a different IP prefix will be used.
 		$ganglia_clusters = {
+			"decommissioned" => {
+				"name"		=> "Decommissioned servers",
+				"ip_oct"	=> "1" },
 			"appserver"	=>	{
 				"name"		=> "Application servers",
 				"ip_oct"	=> "11"	},
@@ -80,10 +83,14 @@ class ganglia {
 		# the site name will automatically be appended now,
 		# and a different IP prefix will be used.
 
-		if ! $cluster {
-			$cluster = "misc"
+		if $hostname in $decommissioned_servers {
+			$cluster = "decommissioned"
+		} else {
+			if ! $cluster {
+				$cluster = "misc"
+			}
 		}
-
+		
 		# gmond.conf template variables
 		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
 		$mcast_address = "${ip_prefix}.${ipoct}"	
