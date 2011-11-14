@@ -620,7 +620,9 @@ node "carbon.wikimedia.org" {
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
-	
+
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+
 	include cache::bits
 }
 
