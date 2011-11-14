@@ -424,9 +424,9 @@ class cache {
 		include standard,
 			lvs::realserver
 		
-		include varnish3::monitoring::ganglia
+		include varnish::monitoring::ganglia
 		
-		varnish3::instance { "bits":
+		varnish::instance { "bits":
 			name => "",
 			vcl => "bits",
 			port => 80,
@@ -471,11 +471,11 @@ class cache {
 		system_role { "cache::mobile": description => "mobile Varnish cache server" }
 
 		include standard,
-			varnish3::htcpd,
-			varnish3::monitoring::ganglia,
+			varnish::htcpd,
+			varnish::monitoring::ganglia,
 			lvs::realserver
 		
-		varnish3::instance { "mobile-backend":
+		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
 			port => 81,
@@ -494,7 +494,7 @@ class cache {
 				},
 		}
 		
-		varnish3::instance { "mobile-frontend":
+		varnish::instance { "mobile-frontend":
 			name => "frontend",
 			vcl => "mobile-frontend",
 			port => 80,
