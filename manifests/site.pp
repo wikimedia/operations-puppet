@@ -377,34 +377,26 @@ class cache {
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		if $site == "eqiad" or ($site == "esams" and $hostname =~ /^cp/) {
-			$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
-			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-			$varnish_backends = $site ? {
-				/^(pmtpa|eqiad)$/ => $all_backends,
-				# [ bits-lb.pmtpa, bits-lb.eqiad ]
-				#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-				# FIXME: add pmtpa back in
-				'esams' => [ "208.80.154.234" ],
-				default => []
-			}
-			$varnish_directors = $site ? {
-				/^(pmtpa|eqiad)$/ => {
-					"backend" => $bits_appservers,
-					"test_wikipedia" => $test_wikipedia
-					},
-				'esams' => {
-					"backend" => $varnish_backends
-					}
-			}
+		$varnish_backends = $site ? {
+			/^(pmtpa|eqiad)$/ => $all_backends,
+			# [ bits-lb.pmtpa, bits-lb.eqiad ]
+			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+			# FIXME: add pmtpa back in
+			'esams' => [ "208.80.154.234" ],
+			default => []
 		}
-		else {
-            if $site == "pmtpa" {
-                    $varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-                    $varnish_directors = { "appservers" => $varnish_backends }
-            }
+		$varnish_directors = $site ? {
+			/^(pmtpa|eqiad)$/ => {
+				"backend" => $bits_appservers,
+				"test_wikipedia" => $test_wikipedia
+				},
+			'esams' => {
+				"backend" => $varnish_backends
+				}
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
@@ -416,31 +408,25 @@ class cache {
 		include standard,
 			lvs::realserver
 		
-		if $site == "eqiad" or ($site == "esams" and $hostname =~ /^cp/) {
-			include varnish3::monitoring::ganglia
-			
-			varnish3::instance { "bits":
-				name => "",
-				vcl => "bits",
-				port => 80,
-				admin_port => 6082,
-				storage => "-s malloc,1G",
-				backends => $varnish_backends,
-				directors => $varnish_directors,
-				backend_options => {
-					'port' => 80,
-					'connect_timeout' => "5s",
-					'first_byte_timeout' => "35s",
-					'between_bytes_timeout' => "4s",
-					'max_connections' => 10000,
-					'probe' => "bits"
-				},
-				enable_geoiplookup => "true"
-			}
-		}
-		else {
-			# Old configuration
-			include varnish
+		include varnish3::monitoring::ganglia
+		
+		varnish3::instance { "bits":
+			name => "",
+			vcl => "bits",
+			port => 80,
+			admin_port => 6082,
+			storage => "-s malloc,1G",
+			backends => $varnish_backends,
+			directors => $varnish_directors,
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 10000,
+				'probe' => "bits"
+			},
+			enable_geoiplookup => "true"
 		}
 	}
 	class mobile { 
