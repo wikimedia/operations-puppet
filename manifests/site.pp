@@ -1183,7 +1183,7 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include cache::bits
+	include standard
 }
 
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
