@@ -382,10 +382,9 @@ class cache {
 			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
 			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-			# FIXME: add eqiad as backend for esams
 			$varnish_backends = $site ? {
 				/^(pmtpa|eqiad)$/ => $all_backends,
-				'esams' => [ "bits.pmtpa.wikimedia.org" ],
+				'esams' => [ "bits-lb.pmtpa.wikimedia.org", "bits-lb.eqiad.wikimedia.org" ],
 				default => []
 			}
 			$varnish_directors = $site ? {
