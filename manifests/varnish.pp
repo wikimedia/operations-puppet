@@ -214,7 +214,7 @@ class varnish3 {
 				notify => Service[gmond];
 			"/etc/ganglia/conf.d/varnish.pyconf":
 				require => File["/etc/ganglia/conf.d"],
-				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
+				source => "puppet:///files/ganglia/plugins/varnish3.pyconf",
 				notify => Service[gmond];
 		}
 	}
