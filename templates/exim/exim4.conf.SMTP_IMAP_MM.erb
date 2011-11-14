@@ -33,7 +33,7 @@ NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
 
 <% if exim_conf_type == "smtp" then -%>
 # MySQL lookups (OTRS)
-hide mysql_servers =  db9.pmtpa.wmnet/otrs/exim/8n6f3TL1 : db10.pmtpa.wmnet/otrs/exim/8n6f3TL1
+hide mysql_servers =  db9.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db10.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
 # LDAP lookups (Office)
 ldap_default_servers = sanger.wikimedia.org
