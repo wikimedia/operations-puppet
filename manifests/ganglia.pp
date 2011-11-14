@@ -24,18 +24,14 @@ class ganglia {
 			"esams"	=> "239.192.20",
 		}
 	
-		$name_suffix = $site ? {
-			"eqiad" => " eqiad",
-			"esams" => " esams",
-			default => ""
-		}
+		$name_suffix = " ${site}"
 
 		# NOTE: Do *not* add new clusters *per site* anymore,
 		# the site name will automatically be appended now,
 		# and a different IP prefix will be used.
 		$ganglia_clusters = {
 			"appserver"	=>	{
-				"name"		=> "Apaches 8 CPU",
+				"name"		=> "Application servers",
 				"ip_oct"	=> "11"	},
 			"imagescaler"	=>	{
 				"name"		=> "Image scalers",
@@ -46,9 +42,6 @@ class ganglia {
 			"misc"		=>	{
 				"name"		=> "Miscellaneous",
 				"ip_oct"	=> "8" },
-			"mobile"	=>	{
-				"name"		=> "Mobile servers",
-				"ip_oct"	=> "14" },
 			"mysql"		=>	{
 				"name"		=> "MySQL",
 				"ip_oct"	=> "5" },
@@ -88,10 +81,7 @@ class ganglia {
 		# and a different IP prefix will be used.
 
 		if ! $cluster {
-			$cluster = $site ? {
-				"esams" => "misc_esams",
-				default	=> "misc"
-			}
+			$cluster = "misc"
 		}
 
 		# gmond.conf template variables
