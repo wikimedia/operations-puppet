@@ -90,7 +90,7 @@ director <%= director %> hash {
 <% if backend =~ /^[0-9\.]+$/ -%>
 		.backend = ipv4_<%= backend.gsub(".", "_") %>;
 <% else -%>
-		.backend = <%= backend.split(".")[0] %>;
+		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
 <% end -%>
 		.weight = 10;
 	}
