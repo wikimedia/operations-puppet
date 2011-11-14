@@ -883,8 +883,8 @@ class misc::etherpad_lite {
 
 	if $realm == "labs" {
 		$etherpad_host = $fqdn
-		$etherpad_ssl_cert = "/etc/ssl/certs/local.pem"
-		$etherpad_ssl_key = "/etc/ssl/private/local.key"
+		$etherpad_ssl_cert = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+		$etherpad_ssl_key = "/etc/ssl/private/ssl-cert-snakeoil.key"
 	}
 
 	system_role { "misc::etherpad_lite": description => "Etherpad-lite server" }
