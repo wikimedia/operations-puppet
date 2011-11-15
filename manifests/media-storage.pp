@@ -19,6 +19,7 @@ class media-storage::thumbs-server {
 		ensure => "0.7.65-1ubuntu2.1";
 	}
 
+	# FIXME: use nginx.conf.erb
 	file {
 		"/etc/nginx/nginx.conf":
 			require => Package[nginx],
