@@ -5,6 +5,8 @@
 import "generic-definitions.pp"
 import "nagios.pp"
 
+}
+
 # TODO: perhaps move this to generic-definitions...
 class misc::apache2 {
 
