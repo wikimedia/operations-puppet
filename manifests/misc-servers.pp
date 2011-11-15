@@ -1889,6 +1889,11 @@ class misc::torrus {
 	# TODO: Puppetize the rest of Torrus
 }
 
+# FIXME: (increasingly popular) temporary hack
+if $hostname == "spence" {
+        include misc::gsbmonitoring
+}
+
 class misc::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
 
