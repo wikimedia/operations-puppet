@@ -134,6 +134,8 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 			"star.wikiversity.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.mediawiki.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikimediafoundation.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
+			"star.wmflabs.org" => "wmf-labs.pem",
+			"star.wmflabs" => "wmf-labs.pem",
 			default => "wmf-ca.pem",
 		}
 	}
@@ -146,6 +148,18 @@ class certificates::packages {
 	package { [ "openssl", "ca-certificates" ]:
 		ensure => latest;
 	}
+
+}
+
+class certificates::star_wmflabs_org {
+
+	install_certificate{ "star.wmflabs.org": }
+
+}
+
+class certificates::star_wmflabs {
+
+	install_certificate{ "star.wmflabs": }
 
 }
 

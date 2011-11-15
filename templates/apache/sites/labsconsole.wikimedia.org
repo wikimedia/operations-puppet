@@ -6,7 +6,7 @@
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
-        ServerName labsconsole.wikimedia.org
+        ServerName <%= nova_controller_hostname %>
 	
 	DocumentRoot /var/www
 	<Directory />
@@ -22,7 +22,7 @@
 
 	RewriteEngine on
 	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://labsconsole.wikimedia.org/$1 [L,R]
+	RewriteRule ^/(.*)$ https://<%= nova_controller_hostname %>/$1 [L,R]
 
 	ErrorLog /var/log/apache2/error.log
 
@@ -36,13 +36,13 @@
 </VirtualHost>
 <VirtualHost *:443>
 	ServerAdmin noc@wikimedia.org 
-	ServerName labsconsole.wikimedia.org
+	ServerName <%= nova_controller_hostname %>
 
         SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-        SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+        SSLCertificateFile /etc/ssl/certs/<%= ldap_certificate %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/<%= ldap_certificate %>.key
 
-	RedirectMatch ^/$ http://labsconsole.wikimedia.org/wiki/
+	RedirectMatch ^/$ http://<%= nova_controller_hostname %>/wiki/
 
 	DocumentRoot /var/www
 	<Directory />
