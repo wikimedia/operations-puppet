@@ -6,19 +6,19 @@
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
-        ServerName gerrit.wikimedia.org
-	
+	ServerName gerrit.wikimedia.org
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-        <Directory /var/www/>
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
-                Order allow,deny
-                allow from all
-        </Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
 
 	RewriteEngine on
 	RewriteCond %{SERVER_PORT} !^443$
@@ -38,9 +38,9 @@
 	ServerAdmin noc@wikimedia.org 
 	ServerName gerrit.wikimedia.org
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-        SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	RedirectMatch ^/$ http://gerrit.wikimedia.org/r/
 
@@ -49,8 +49,8 @@
 	ProxyPreserveHost On
 
 	<Proxy *>
-                Order deny,allow
-                Allow from all
+		Order deny,allow
+		Allow from all
 	</Proxy>
 
 	ProxyPass /r/ http://127.0.0.1:8080/r/
