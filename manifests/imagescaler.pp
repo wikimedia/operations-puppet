@@ -14,7 +14,7 @@ class imagescaler::cron {
 
 class imagescaler::packages {
 	if ( $lsbdistcodename == "lucid" ) {
-		package { 
+		package {
 			[ 
 				"imagemagick",
 				"gs",
@@ -72,10 +72,10 @@ class imagescaler::packages {
 			ensure => latest;
 		}
 	} else {
-        	package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
-                	ensure => latest
+		package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
+				ensure => latest;
 		}
-        }
+	}
 }
 
 class imagescaler::files {
