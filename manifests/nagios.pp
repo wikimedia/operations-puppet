@@ -178,6 +178,7 @@ define decommission_monitor_host {
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
 
+	include nagios::monitor::homeless
 	include passwords::nagios::mysql
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
