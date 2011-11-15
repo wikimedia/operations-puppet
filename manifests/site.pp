@@ -772,10 +772,6 @@ node "db18.pmtpa.wmnet" {
 	include db::core
 }
 
-node "db19.pmtpa.wmnet" {
-	include db::core
-}
-
 node "db20.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 
@@ -886,6 +882,17 @@ node "db43.pmtpa.wmnet" {
 }
 
 # new pmtpa dbs
+# New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
+# DO NOT add old prod db's to new classes unless you
+# know what you're doing! 
+node "db19.pmtpa.wmnet" {
+	$db_cluster = "s2"
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf
+}
+
 node /db4[4-7]\.pmtpa\.wmnet/ { 
 	if $hostname =~ /^db(44|45)$/ { 
 		$db_cluster = "s5"
