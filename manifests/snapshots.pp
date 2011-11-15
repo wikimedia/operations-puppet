@@ -17,6 +17,15 @@ class snapshots::files {
 		ensure => present;
 	}
 
+	file { 'wikidiff2-ini':
+		path => "/etc/php5/conf.d/wikidiff2.ini",
+		mode => 0444,
+		owner => root,
+		group => root,
+		source => "puppet:///files/php/wikidiff2.ini.snaps",
+		ensure => present;
+	}
+
 	file { 'snapshot-fss-ini':
 		path => "/etc/php5/conf.d/fss.ini",
 		mode => 0644,
