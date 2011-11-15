@@ -161,19 +161,19 @@ class base::remote-syslog {
 
 class base::sysctl {
 	if ($lsbdistid == "Ubuntu") and ($lsbdistrelease != "8.04") {
-                exec { "/sbin/start procps":
-                        path => "/bin:/sbin:/usr/bin:/usr/sbin",
-                        refreshonly => true;
-                }
+		exec { "/sbin/start procps":
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			refreshonly => true;
+		}
 
-                file { wikimedia-base-sysctl:
-                        name => "/etc/sysctl.d/50-wikimedia-base.conf",
-                        owner => root,
-                        group => root,
-                        mode => 644,
+		file { wikimedia-base-sysctl:
+			name => "/etc/sysctl.d/50-wikimedia-base.conf",
+			owner => root,
+			group => root,
+			mode => 644,
 			notify => Exec["/sbin/start procps"],
-                        source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
-                }
+			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
+		}
 	}
 }
 
@@ -257,32 +257,31 @@ class base::decommissioned {
 
 class base::instance-upstarts {
 
-        file {
-                "/etc/init/ttyS0.conf":
-                        owner => root,
-                        group => root,
-                        mode => 0644,
-                        source => 'puppet:///files/upstart/ttyS0.conf';
-        }
+	file {"/etc/init/ttyS0.conf":
+		owner => root,
+		group => root,
+		mode => 0644,
+		source => 'puppet:///files/upstart/ttyS0.conf';
+	}
 
 }
 
 class base::instance-finish {
 
-        if $realm == "labs" {
-                exec {
-                        "/bin/rm /etc/init/runonce-fixpuppet.conf":
-                                onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
-                        "/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
-                                onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
-                }
-        }
+	if $realm == "labs" {
+		exec {
+			"/bin/rm /etc/init/runonce-fixpuppet.conf":
+				onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
+			"/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
+				onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
+		}
+	}
 
 }
 
 class base::vimconfig {
 	file { "/etc/vim/vimrc.local": 
-  		owner => root, 
+		owner => root, 
 		group => root, 
 		mode => 0644,  
 		source => "puppet:///files/misc/vimrc.local",
