@@ -668,7 +668,12 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
-	include db::es::slave
+	if $hostname == "es3" {
+		include db::es::master
+	}
+	else {
+		include db::es::slave
+	}
 }
 
 node "dataset1.wikimedia.org" {
@@ -1473,12 +1478,7 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	if $hostname == "ms3" {
-		include db::es::master
-	}
-	else {
-		include	db::es::slave
-	}
+	include	db::es::slave
 }
 
 node "ms4.pmtpa.wmnet" {
