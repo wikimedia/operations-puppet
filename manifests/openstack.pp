@@ -327,14 +327,15 @@ class openstack::ldap-server {
 
 	if $realm == "labs" {
 		# server is on localhost
-		file { "/root/.ldaprc":
+		file { "/var/opendj/.ldaprc":
 			content => 'TLS_CHECKPEER   no
 TLS_REQCERT     never
 ',
 			mode => 400,
 			owner => root,
 			group => root,
-			before => Package["opendj"];
+			require => Package["opendj"],
+			before => Exec["start_opendj"];
 		}
 	}
 
