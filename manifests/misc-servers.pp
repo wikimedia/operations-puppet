@@ -1339,6 +1339,9 @@ class misc::udp2log::aft {
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/udp2log-aft";
+		"/etc/logrotate.d/mw-udp2log-aft":
+			source => "puppet:///files/logrotate/mw-udp2log-aft",
+			mode => 0444;
 	}
 
 	service {
