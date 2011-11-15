@@ -313,6 +313,13 @@ class nagios::monitor {
 		mode => 0644;
 	}
 
+	file { "/etc/nagios/nsca_payments.cfg":
+		source => "puppet:///private/nagios/nsca_payments.cfg",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
+
 	file { "/etc/nagios/htpasswd.users":
 		source => "puppet:///private/nagios/htpasswd.users",
 		owner => root,
