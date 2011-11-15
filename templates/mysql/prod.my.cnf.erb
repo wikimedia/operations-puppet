@@ -35,7 +35,9 @@ table_definition_cache = 40000
 query_cache_size        = 0
 
 log_slow_queries
-long_query_time = 2
+log_queries_not_using_indexes
+log_slow_extra
+long_query_time = 0.6
 
 <% if disable_binlogs == "true" then -%>
 #log_bin
