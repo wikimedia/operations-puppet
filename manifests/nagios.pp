@@ -37,7 +37,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	if $title == $hostname {
 		$image = $operatingsystem ? {
 			"Ubuntu"	=> "ubuntu",
-			"Solaris" 	=> "sunlogo",
+			"Solaris"	=> "sunlogo",
 			default		=> "linux40"
 		}
 
@@ -56,10 +56,10 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) { 
-        if ! $host {
-                fail("Parametmer $host not defined!")
-        }
+define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) {
+	if ! $host {
+		fail("Parametmer $host not defined!")
+	}
 
 	if $hostname in $decommissioned_servers {
 		# Export the nagios service instance
@@ -76,12 +76,12 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			normal_check_interval => 1,
 			retry_check_interval => 1,
 			check_period => "24x7",
-	                notification_interval => 0,
+			notification_interval => 0,
 			notification_period => "24x7",
 			notification_options => "c,r,f",
 			contact_groups => $critical ? {
 						"true" => "admins,sms",
-						default	=> "admins"
+						default => "admins"
 					},
 			ensure => absent;
 		}
@@ -109,7 +109,7 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			notification_options => "c,r,f",
 			contact_groups => $critical ? {
 						"true" => "admins,sms",
-						default	=> "admins"
+						default => "admins"
 					},
 			passive_checks_enabled => 1,
 			active_checks_enabled => $passive ? {
@@ -134,13 +134,13 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 }
 
 define monitor_group ($description, $ensure=present) {
-        # Nagios hostgroup instance
+	# Nagios hostgroup instance
 	nagios_hostgroup { $title:
 		target => "${nagios_config_dir}/puppet_hostgroups.cfg",
 		hostgroup_name => $title,
 		alias => $description,
 		ensure => $ensure;
-        }
+	}
 
 	# Nagios servicegroup instance
 	nagios_servicegroup { $title:
@@ -214,9 +214,9 @@ class nagios::monitor {
 	service { nagios:
 		require => File[$puppet_files],
 		ensure => running,
-		subscribe => [ File[$puppet_files],
-			       File[$static_files],
-			       File["/etc/nagios/puppet_checks.d"] ];
+		subscribe => [  File[$puppet_files],
+				File[$static_files],
+				File["/etc/nagios/puppet_checks.d"] ];
 	}
 
 	# snmp tarp stuff
@@ -229,9 +229,9 @@ class nagios::monitor {
 	package { "snmptt":
 		ensure => latest;
 	}
-	
+
 	# Stomp Perl module to monitor erzurumi (RT #703)
-	
+
 	package { "libnet-stomp-perl":
 		ensure => latest;
 	}
@@ -245,23 +245,23 @@ class nagios::monitor {
 
 	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
 		source => "puppet:///files/nagios/submit_check_result",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0755; 
+		owner => root,
+		group => root,
+		mode => 0755;
 	}
 
 	file { "/etc/snmp/snmptrapd.conf":
 		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0600; 
+		owner => root,
+		group => root,
+		mode => 0600;
 	}
 
 	file { "/etc/snmp/snmptt.conf":
 		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0644; 
+		owner => root,
+		group => root,
+		mode => 0644;
 	}
 
 	# Fix permissions
@@ -269,7 +269,7 @@ class nagios::monitor {
 		mode => 0644,
 		ensure => present;
 	}
-	
+
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
 		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
@@ -381,7 +381,7 @@ class nagios::monitor {
 		notify => Service[nagios],
 	}
 
-        # Collect all (virtual) resources
+	# Collect all (virtual) resources
 	Monitor_group <| |> {
 		notify => Service[nagios],
 	}
@@ -514,10 +514,10 @@ class nagios::ganglia::ganglios {
 
 class nagios::bot {
 
-        $ircecho_infile = "/var/log/nagios/irc.log"
-        $ircecho_nick = "nagios-wm"
-        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
-        $ircecho_server = "irc.freenode.net"
+	$ircecho_infile = "/var/log/nagios/irc.log"
+	$ircecho_nick = "nagios-wm"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":
 		ensure => latest;
