@@ -576,10 +576,7 @@ class openstack::nova_config {
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
 	$nova_db_version = "14"
-	$nova_puppet_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
-	}
+	$nova_puppet_host = "virt1.wikimedia.org"
 	$nova_puppet_db_name = "puppet"
 	$nova_puppet_user = "puppet"
 	$nova_puppet_user_pass = $passwords::openstack::nova::nova_puppet_user_pass
