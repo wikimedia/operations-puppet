@@ -309,7 +309,7 @@ class openstack::ldap-server {
 
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass }
+	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass, require => Package["opendj"] }
 
 	include openstack::nova_config,
 		openstack::glance_config,
