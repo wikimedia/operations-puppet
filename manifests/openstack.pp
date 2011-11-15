@@ -326,8 +326,11 @@ class openstack::ldap-server {
 	}
 
 	if $realm == "labs" {
+		# server is on localhost
 		file { "/root/.ldaprc":
-			content => 'tls_cacertfile  /etc/ssl/certs/wmf-labs.pem',
+			content => 'TLS_CHECKPEER   no
+TLS_REQCERT     never
+',
 			mode => 400,
 			owner => root,
 			group => root,
