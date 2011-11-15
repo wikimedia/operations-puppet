@@ -325,6 +325,16 @@ class openstack::ldap-server {
 		ldap_base_dn => $ldap_base_dn;
 	}
 
+	if $realm == "labs" {
+		file { "/root/.ldaprc":
+			content => 'tls_cacertfile  /etc/ssl/certs/wmf-labs.pem',
+			mode => 400,
+			owner => root,
+			group => root,
+			before => Package["opendj"];
+		}
+	}
+
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt1.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
 
 }
