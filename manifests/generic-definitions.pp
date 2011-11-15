@@ -43,9 +43,10 @@ define systemuser($name, $home, $shell="/bin/false", $groups=undef) {
 }
 
 # Enables a certain Apache 2 site
-define apache_site($name, $prefix="") {
+define apache_site($name, $prefix="", $ensure="link") {
 	file { "/etc/apache2/sites-enabled/${prefix}${name}":
-		ensure => "/etc/apache2/sites-available/$name",
+		target => "/etc/apache2/sites-available/$name",
+		ensure => $ensure;
 	}
 }
 

@@ -353,6 +353,7 @@ class openstack::openstack-manager {
 	}
 
 	apache_site { controller: name => "${nova_controller_hostname}" }
+	apache_site { 000_default: name => "000-default", ensure => absent }
 	apache_module { rewrite: name => "rewrite" }
 
 }
