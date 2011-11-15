@@ -1,0 +1,8 @@
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Johnduhart <john@compwhizii.net>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Mon, 14 Nov 2011 17:45:27 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/837
+Project: operations/puppet
+Branch: refs/heads/test
