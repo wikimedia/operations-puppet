@@ -503,7 +503,7 @@ class openstack::nova_config {
 
 	$nova_db_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_db_name = "nova"
 	$nova_db_user = "nova"
@@ -595,7 +595,7 @@ class openstack::glance_config {
 
 	$glance_db_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$glance_db_name = "glance"
 	$glance_db_user = "glance"
