@@ -6,8 +6,8 @@ class backup::server {
 
 
 	package { [ "amanda-common", "amanda-server" ]:
-                ensure => latest;
-        }
+		ensure => latest;
+	}
 
 	file {
 		"/var/backups/.ssh/authorized_keys":
@@ -165,37 +165,37 @@ class backup::server::weekly {
 			mode	=>	0644,
 			content	=>	template("backups/amanda-server.conf.erb"),
 			require =>	File["$conf_location"];
-                "$conf_location/logs":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-                        ensure  =>      directory,
+		"$conf_location/logs":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			ensure	=>	directory:
 			require =>	File["$conf_location"];
-                "$conf_location/index":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-                        ensure  =>      directory,
-			require =>	File["$conf_location"];
-                "$conf_location/curinfo":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-                        ensure  =>      directory,
-			require =>	File["$conf_location"];
-                "$conf_location/tapelist":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0644,
+		"$conf_location/index":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			ensure	=>	directory,
+			require	=>	File["$conf_location"];
+		"$conf_location/curinfo":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			ensure	=>	directory,
+			require	=>	File["$conf_location"];
+		"$conf_location/tapelist":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0644,
 			require =>	File["$conf_location"];
 		"$conf_location/disklist":
 			owner	=>	root,
 			group	=>	root,
 			mode	=>	0644,
-			source	=>	"puppet:///files/backup/disklist-weekly",	
+			source	=>	"puppet:///files/backup/disklist-weekly",
 			require =>	File["$conf_location"];
 	}
 
@@ -211,10 +211,10 @@ class backup::server::weekly {
 class backup::server::monthly {
 	$mailto_account = "ops@wikimedia.org"
 	$cycle_type = "Wikimedia-Monthly"
-        $vtapes_location = "/data/amanda/Wikimedia-Monthly"
+	$vtapes_location = "/data/amanda/Wikimedia-Monthly"
 	$conf_location = "/etc/amanda/Wikimedia-Monthly"
-        $tape_length = "200 gbytes"
-        $tape_num = 12
+	$tape_length = "200 gbytes"
+	$tape_num = 12
 	$dumpcycle = "365 days"
 	$runspercycle = 1
 	$tapecycle = "12 tapes"
@@ -234,34 +234,34 @@ class backup::server::monthly {
 			owner	=>	root,
 			group	=>	root,
 			mode	=>	0644,
-			require =>	File["$conf_location"],
+			require	=>	File["$conf_location"],
 			content	=>	template("backups/amanda-server.conf.erb");
-                "$conf_location/logs":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-			require =>	File["$conf_location"],
-                        ensure  =>      directory;
-                "$conf_location/index":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-			require =>	File["$conf_location"],
-                        ensure  =>      directory;
-                "$conf_location/curinfo":
-                        owner   =>      backup,
-                        group   =>      backup,
-                        mode    =>      0755,
-                        purge   =>      false,
-			require =>	File["$conf_location"],
-                        ensure  =>      directory;
-                "$conf_location/tapelist":
-                        owner   =>      backup,
-                        group   =>      backup,
-			require =>	File["$conf_location"],
-                        mode    =>      0644;
+			"$conf_location/logs":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			require	=>	File["$conf_location"],
+			ensure	=>	directory;
+		"$conf_location/index":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			require	=>	File["$conf_location"],
+			ensure	=>	directory;
+		"$conf_location/curinfo":
+			owner	=>	backup,
+			group	=>	backup,
+			mode	=>	0755,
+			purge	=>	false,
+			require	=>	File["$conf_location"],
+			ensure	=>	directory;
+		"$conf_location/tapelist":
+			owner	=>	backup,
+			group	=>	backup,
+			require	=>	File["$conf_location"],
+			mode	=>	0644;
 		"$conf_location/disklist":
 			owner	=>	root,
 			group	=>	root,
