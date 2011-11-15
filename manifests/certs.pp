@@ -217,6 +217,27 @@ class certificates::wmf_ca {
 
 }
 
+class certificates::wmf_labs_ca {
+
+	include certificates::packages
+
+	file {
+		"/etc/ssl/certs/wmf-labs.pem":
+			owner => root,
+			group => root,
+			mode => 0644,
+			source => "puppet:///files/ssl/wmf-labs.pem",
+			require => Package["openssl"];
+	}
+
+	exec {
+		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/wmf-labs.pem"];
+	}
+
+}
+
 class certificates::rapidssl_ca {
 
 	include certificates::packages

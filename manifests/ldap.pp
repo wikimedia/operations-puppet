@@ -210,6 +210,18 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 			require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
 	}
 
+	if $realm == "labs" {
+		exec {
+			# Add the wmf CA to the opendj ssl truststore
+			'add_labs_ca_to_truststore':
+				subscribe => Exec['start_opendj'],
+				refreshonly => true,
+				user => "opendj",
+				command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-labs-ca\" -file /etc/ssl/certs/wmf-labs.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
+				require => Package['ca-certificates'];
+		}
+	}
+
 	file {
 		"/usr/local/sbin/opendj-backup.sh":
 			owner => root,
@@ -636,6 +648,7 @@ class ldap::client::wmf-test-cluster {
 			mode  => 0444,
 			content => template("ldap/access.conf.erb");
 		}
+		include certificates::wmf_labs_ca
 	} else {
 		$ldapincludes = ['openldap', 'utils']
 	}
