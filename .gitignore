@@ -1,5 +1,0 @@
-# Puppet's repository shouldn't have any editor backup files
-*~
-
-# Ignore .project (for eclipse/geppetto)
-.project

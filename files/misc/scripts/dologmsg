@@ -1,7 +1,0 @@
-#! /bin/sh
-if [ -z $DOLOGMSGNOLOG ]; then
-	# ircecho is broken in hardy, so use old-style UDP stuff instead
-	#echo "$*" >> /var/log/logmsg
-	echo "$*" | nc -q0 -u fenari.wikimedia.org 53412
-fi
-
