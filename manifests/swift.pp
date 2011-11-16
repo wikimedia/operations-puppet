@@ -24,7 +24,7 @@ class swift::base {
 
 class swift::proxy {
 	include swift::base
-	system_role { "swift:base": description => "This is a swift frontend proxy" }
+	system_role { "swift:base": description => "swift frontend proxy" }
 
 	package { [ "swift-proxy", "memcached" ]:
 		ensure => present;
@@ -48,7 +48,7 @@ class swift::proxy {
 
 class swift:storage {
 	include swift::base
-	system_role { "swift::storage": description => "This is a swift backend storage brick" }
+	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	package { 
 		[ "swift-account",
