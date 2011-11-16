@@ -1196,6 +1196,26 @@ node "kaulen.wikimedia.org" {
 
 	install_certificate{ "star.wikimedia.org": }
 	cron { bugzilla_whine: command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl", user => root, minute => 15 }
+
+	# cron jobs to generate charts data see https://bugzilla.wikimedia.org/29203
+	cron { bugzilla_collectstats:
+		# Get statistics for the day:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
+	}
+	cron { bugzilla_collectstats_regenerate:
+		# On sunday, regenerates the whole statistics data
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl --regenerate",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => 0  # Sunday
+	}
+	# end of: cron jobs to generate charts data
+
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
 }
 
