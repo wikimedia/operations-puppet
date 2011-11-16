@@ -39,6 +39,7 @@ import "openstack.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
 import "gerrit.pp"
+import "swift.pp"
 
 # Include stages last
 import "stages.pp"
