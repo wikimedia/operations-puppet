@@ -746,10 +746,6 @@ node "db10.pmtpa.wmnet" {
 		backup::mysql
 }
 
-node "db11.pmtpa.wmnet" {
-	include db::core
-}
-
 node "db12.pmtpa.wmnet" {
 	include db::core
 }
@@ -891,6 +887,14 @@ node "db43.pmtpa.wmnet" {
 # New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
 # DO NOT add old prod db's to new classes unless you
 # know what you're doing! 
+node "db11.pmtpa.wmnet" {
+	$db_cluster = "s3"
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf
+}
+
 node "db19.pmtpa.wmnet" {
 	$db_cluster = "s2"
 	include db::core,
