@@ -210,6 +210,18 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 			require => [Package["ldap-utils"], File["/etc/ldap/global-aci.ldif"]];
 	}
 
+	if $realm == "labs" {
+		exec {
+			# Add the wmf CA to the opendj ssl truststore
+			'add_labs_ca_to_truststore':
+				subscribe => Exec['start_opendj'],
+				refreshonly => true,
+				user => "opendj",
+				command => "/usr/bin/keytool -importcert -trustcacerts -alias \"wmf-labs-ca\" -file /etc/ssl/certs/wmf-labs.pem -keystore /var/opendj/instance/config/truststore -storepass `cat /var/opendj/instance/config/keystore.pin` -noprompt",
+				require => Package['ca-certificates'];
+		}
+	}
+
 	file {
 		"/usr/local/sbin/opendj-backup.sh":
 			owner => root,
@@ -408,6 +420,7 @@ class ldap::client::nss {
 
 	file {
 		"/etc/nsswitch.conf":
+			notify => Service[nscd],
 			source => "puppet:///files/ldap/nsswitch.conf";
 		"/etc/ldap.conf":
 			notify => Service[nscd],
@@ -492,7 +505,7 @@ class ldap::client::utils {
 	# Use a specific revision for the checkout, to ensure we are using
 	# a known and approved version of this script.
 	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r101588 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
+		command => "/usr/bin/svn co -r102363 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
@@ -550,13 +563,13 @@ class ldap::client::autofs {
 			owner => root,
 			group => root,
 			mode  => 0600,
-			notify => Service[Autofs],
+			notify => Service[autofs],
 			content => template("ldap/autofs_ldap_auth.erb");
 		"/etc/default/autofs":
 			owner => root,
 			group => root,
 			mode  => 0444,
-			notify => Service[Autofs],
+			notify => Service[autofs],
 			content => template("ldap/autofs.default.erb");
 	}
 
@@ -566,6 +579,22 @@ class ldap::client::autofs {
 		pattern => "automount",
 		ensure => running;
 	}
+}
+
+class ldap::client::instance-finish {
+
+	# Hacks to ensure these services are reloaded after the puppet run finishes
+
+	exec { "check_nscd":
+		command => "/etc/init.d/nscd restart",
+		unless => "/usr/bin/id novaadmin";
+	}
+
+	exec { "check_autofs":
+		command => "/etc/init.d/autofs restart",
+		creates => "/home/autofs_check";
+	}
+
 }
 
 class ldap::client::wmf-cluster {
@@ -619,6 +648,7 @@ class ldap::client::wmf-test-cluster {
 			mode  => 0444,
 			content => template("ldap/access.conf.erb");
 		}
+		include certificates::wmf_labs_ca
 	} else {
 		$ldapincludes = ['openldap', 'utils']
 	}
@@ -681,7 +711,7 @@ class ldap::client::includes {
 			}
 	
 			cron { "manage-exports":
-				command => "/etc/init.d/nscd restart > /dev/null; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+				command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
 				require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
 			}
 		} else {

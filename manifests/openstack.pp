@@ -83,14 +83,18 @@ class openstack::iptables-drops {
 
 class openstack::iptables  {
 
-	# We use the following requirement chain:
-	# iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
-	#
-	# This ensures proper ordering of the rules
-	require "openstack::iptables-drops"
+	if $realm == "production" {
+		# We use the following requirement chain:
+		# iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
+		#
+		# This ensures proper ordering of the rules
+		require "openstack::iptables-drops"
 
-	# This exec should always occur last in the requirement chain.
-	iptables_add_exec{ "${hostname}": service => "openstack" }
+		# This exec should always occur last in the requirement chain.
+		iptables_add_exec{ "${hostname}": service => "openstack" }
+	}
+
+	# Labs has security groups, and as such, doesn't need firewall rules
 
 }
 
@@ -98,11 +102,20 @@ class openstack::common {
 
 	include openstack::nova_config
 
-	# Setup eth1 as tagged and created a tagged interface for VLAN 103
-	interface_tagged { "eth1.103":
-		base_interface => "eth1",
-		vlan_id => "103",
-		method => "manual";
+	if $realm == "production" {
+		# Setup eth1 as tagged and created a tagged interface for VLAN 103
+		interface_tagged { "eth1.103":
+			base_interface => "eth1",
+			vlan_id => "103",
+			method => "manual";
+		}
+	} elsif $realm == "labs" {
+		# Setup eth1 as tagged and created a tagged interface for VLAN 103
+		interface_tagged { "eth0.103":
+			base_interface => "eth0",
+			vlan_id => "103",
+			method => "manual";
+		}
 	}
 
 	# FIXME: third party repository
@@ -154,7 +167,7 @@ class openstack::compute {
 		openstack::gluster-service,
 		openstack::gluster-client
 
-	if $hostname == "virt2" {
+	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
 	}
@@ -171,7 +184,10 @@ class openstack::compute {
 class openstack::puppet-server {
 
 	# Only allow puppet access from the instances
-	$puppet_passenger_allow_from = "10.4.0.0/24 10.4.16.3"
+	$puppet_passenger_allow_from = $realm ? {
+		"production" => "10.4.0.0/24 10.4.16.3",
+		"labs" => "192.168.0.0/24",
+	}
 
 	include puppetmaster::passenger
 
@@ -299,7 +315,7 @@ class openstack::ldap-server {
 
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass }
+	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass, require => Package["opendj"] }
 
 	include openstack::nova_config,
 		openstack::glance_config,
@@ -315,30 +331,48 @@ class openstack::ldap-server {
 		ldap_base_dn => $ldap_base_dn;
 	}
 
+	if $realm == "labs" {
+		# server is on localhost
+		file { "/var/opendj/.ldaprc":
+			content => 'TLS_CHECKPEER   no
+TLS_REQCERT     never
+',
+			mode => 400,
+			owner => root,
+			group => root,
+			require => Package["opendj"],
+			before => Exec["start_opendj"];
+		}
+	}
+
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt1.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
 
 }
 
 class openstack::openstack-manager {
 
-	include memcached
+	include memcached,
+		misc::apache2,
+		openstack::nova_config
 
-	package { [ 'apache2', 'memcached', 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php5-memcache', 'php-apc', 'imagemagick' ]:
+	$nova_controller_hostname = $openstack::nova_config::nova_controller_hostname
 
+	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php5-memcache', 'php-apc', 'imagemagick' ]:
 		ensure => latest;
 	}
 
 	file {
-		"/etc/apache2/sites-available/labsconsole.wikimedia.org":
+		"/etc/apache2/sites-available/${nova_controller_hostname}":
 			require => [ Package[php5] ],
 			mode => 644,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/labsconsole.wikimedia.org",
+			content => template('apache/sites/labsconsole.wikimedia.org'),
 			ensure => present;
 	}
 
-	apache_site { controller: name => "labsconsole.wikimedia.org" }
+	apache_site { controller: name => "${nova_controller_hostname}" }
+	apache_site { 000_default: name => "000-default", ensure => absent }
 	apache_module { rewrite: name => "rewrite" }
 
 }
@@ -360,7 +394,9 @@ class openstack::scheduler-service {
 
 class openstack::network-service {
 
-	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
+	if $realm == "production" {
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
+	}
 
 	package {  [ "nova-network", "dnsmasq" ]:
 		require => Apt::Pparepo["nova-core-release"],
@@ -537,27 +573,73 @@ class openstack::nova_config {
 
 	include passwords::openstack::nova
 
-	$nova_db_host = "virt1.wikimedia.org"
+	$nova_db_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "localhost",
+	}
 	$nova_db_name = "nova"
 	$nova_db_user = "nova"
 	$nova_db_pass = $passwords::openstack::nova::nova_db_pass
-	$nova_glance_host = "virt1.wikimedia.org"
-	$nova_rabbit_host = "virt1.wikimedia.org"
-	$nova_cc_host = "virt1.wikimedia.org"
-	$nova_network_host = "10.4.0.1"
-	$nova_api_host = "virt2.wikimedia.org"
-	$nova_api_ip = "10.4.0.1"
-	$nova_network_flat_interface = "eth1.103"
+	$nova_glance_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
+	$nova_rabbit_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
+	$nova_cc_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
+	$nova_network_host = $realm ? {
+		"production" => "10.4.0.1",
+		"labs" => "127.0.0.1",
+	}
+	$nova_api_host = $realm ? {
+		"production" => "virt2.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
+	$nova_api_ip = $realm ? {
+		"production" => "10.4.0.1",
+		"labs" => "127.0.0.1",
+	}
+	$nova_network_flat_interface = $realm ? {
+		"production" => "eth1.103",
+		"labs" => "eth0.103",
+	}
 	$nova_flat_network_bridge = "br103"
-	$nova_fixed_range = "10.4.0.0/24"
-	$nova_dhcp_start = "10.4.0.4"
+	$nova_fixed_range = $realm ? {
+		"production" => "10.4.0.0/24",
+		"labs" => "192.168.0.0/24",
+	}
+	$nova_dhcp_start = $realm ? {
+		"production" => "10.4.0.4",
+		"labs" => "192.168.0.4",
+	}
 	$nova_dhcp_domain = "pmtpa.wmflabs"
 	$nova_network_public_interface = "eth0"
 	$nova_my_ip = $ipaddress_eth0
-	$nova_network_public_ip = "208.80.153.192"
-	$nova_dmz_cidr = "208.80.153.0/22,10.0.0.0/8"
-	$nova_ajax_proxy_url = "http://labsconsole.wikimedia.org:8000"
-	$nova_ldap_host = "virt1.wikimedia.org"
+	$nova_network_public_ip = $realm ? {
+		"production" => "208.80.153.192",
+		"labs" => "127.0.0.1",
+	}
+	$nova_dmz_cidr = $realm ? {
+		"production" => "208.80.153.0/22,10.0.0.0/8",
+		"labs" => "10.4.0.0/24",
+	}
+	$nova_controller_hostname = $realm ? {
+		"production" => "labsconsole.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
+	$nova_ajax_proxy_url = $realm ? {
+		"production" => "http://labsconsole.wikimedia.org:8000",
+		"labs" => "http://${hostname}.${domain}:8000",
+	}
+	$nova_ldap_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "${hostname}.${domain}",
+	}
 	$nova_ldap_domain = "labs"
 	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
 	$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
@@ -583,10 +665,16 @@ class openstack::glance_config {
 
 	include passwords::openstack::glance
 
-	$glance_db_host = "virt1.wikimedia.org"
+	$glance_db_host = $realm ? {
+		"production" => "virt1.wikimedia.org",
+		"labs" => "localhost",
+	}
 	$glance_db_name = "glance"
 	$glance_db_user = "glance"
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
-	$glance_bind_ip = "208.80.153.131"
+	$glance_bind_ip = $realm ? {
+		"production" => "208.80.153.131",
+		"labs" => "127.0.0.1",
+	}
 
 }
