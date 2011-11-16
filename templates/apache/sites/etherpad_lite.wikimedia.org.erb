@@ -1,0 +1,49 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/labconsole.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+	ServerName <%= etherpad_host %>
+
+	RewriteEngine on
+	ProxyVia On
+	ProxyRequests Off
+	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Options FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+    </Proxy>
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+	ServerName <%= etherpad_host %>
+
+	SSLEngine on
+	SSLCertificateFile <%= etherpad_ssl_cert %>
+	SSLCertificateKeyFile <%= etherpad_ssl_key %>
+
+	RewriteEngine on
+	ProxyVia On
+	ProxyRequests Off
+	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Options FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+	</Proxy>
+
+</VirtualHost>

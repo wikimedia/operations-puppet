@@ -901,6 +901,65 @@ class misc::etherpad {
 
 }
 
+class misc::etherpad_lite {
+
+	include misc::apache2,
+		passwords::etherpad_lite
+
+	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
+
+	if $realm == "labs" {
+		$etherpad_host = $fqdn
+		$etherpad_ssl_cert = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+		$etherpad_ssl_key = "/etc/ssl/private/ssl-cert-snakeoil.key"
+	}
+
+	system_role { "misc::etherpad_lite": description => "Etherpad-lite server" }
+
+	file {
+		"/etc/apache2/sites-available/etherpad.wikimedia.org":
+			mode => 444,
+			owner => root,
+			group => root,
+			notify => Service["apache2"],
+			content => template('apache/sites/etherpad_lite.wikimedia.org.erb'),
+			ensure => present;
+	}
+
+	apache_site { controller: name => "etherpad.wikimedia.org" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
+
+	package { etherpad-lite:
+		ensure => latest;
+	}
+	service { etherpad-lite:
+		require => Package["etherpad-lite"],
+		subscribe => File['/etc/etherpad-lite/settings.json'],
+		enable => true,
+		ensure => running;
+	}
+	service { apache2:
+		enable => true,
+		ensure => running;
+	}
+
+	file {
+		'/etc/etherpad-lite/settings.json':
+			require => Package[etherpad-lite],
+			owner => 'root',
+			group => 'root',
+			mode => 0444,
+			content => template('etherpad_lite/settings.json.erb');
+		'/etc/apache2/sites-enabled/000-default':
+			notify => Service["apache2"],
+			require => Package["apache2"],
+			ensure => absent;
+	}
+}
+
 class misc::kiwix-mirror {
 	# TODO: add system_role
 	
@@ -1266,6 +1325,8 @@ class misc::survey {
 class misc::download-mediawiki {
 	
 	# TODO: add system_role
+
+	# wikimedia-task-appserver package is required
 	require mediawiki::packages
 
 	file {
@@ -1519,7 +1580,7 @@ class misc::udpprofile::collector {
 class misc::scripts {
 	require misc::passwordScripts
 
-	# For sync-common, required by scap
+	# scap requires sync-common, which is in the wikimedia-task-appserver package
 	require mediawiki::packages
 
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
