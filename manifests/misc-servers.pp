@@ -92,8 +92,6 @@ class misc::install-server {
 				ensure => "/srv/tftpboot";
 		}
 
-		include generic::rsyncdtftpboot
-
 		package { openbsd-inetd:
 			ensure => latest;
 		}
@@ -102,6 +100,32 @@ class misc::install-server {
 		package { "atftpd":
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
+		}
+
+		## allow other tftp servers to rsync /srv/tftpboot
+
+		package { rsync:
+			ensure => latest;
+		}
+
+		file {
+			"/etc/rsyncd.conf":
+				require => Package[rsync],
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
+			"/etc/default/rsync":
+				require => Package[rsync],
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/rsync/rsync.default";
+		}
+
+		service { rsync:
+			require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+			ensure => running;
 		}
 	}
 
