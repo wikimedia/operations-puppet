@@ -606,6 +606,12 @@ node "carbon.wikimedia.org" {
 		misc::install-server::tftp-server
 }
 
+node "copper.wikimedia.org" {
+	include base,
+		swift::proxy,
+		swift::storage
+}
+
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 
@@ -1439,6 +1445,11 @@ node "maerlant.esams.wikimedia.org" {
 		protoproxy::ipv6_labs,
 		groups::wikidev,
 		accounts::gmaxwell
+}
+
+node "magnesium.wikimedia.org" {
+	include base,
+		swift::storage
 }
 
 node "mchenry.wikimedia.org" {
@@ -2956,6 +2967,12 @@ node "yvon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca
+}
+
+node "zinc.wikimedia.org" {
+	include base,
+		swift::proxy,
+		swift::storage
 }
 
 node default {
