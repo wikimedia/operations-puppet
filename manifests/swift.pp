@@ -13,7 +13,7 @@ class swift::base {
 			group => swift,
 			mode => 0444;
 		"/etc/swift/swift.conf":
-			ensure => present;
+			ensure => present,
 			source => "puppet://files/swift/etc.swift.conf",
 			owner => root,
 			group => root,
