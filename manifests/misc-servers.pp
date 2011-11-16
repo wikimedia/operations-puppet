@@ -92,6 +92,8 @@ class misc::install-server {
 				ensure => "/srv/tftpboot";
 		}
 
+		include generic::rsyncdtftpboot
+
 		package { openbsd-inetd:
 			ensure => latest;
 		}
