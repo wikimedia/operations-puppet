@@ -3,13 +3,15 @@
 import "generic-definitions.pp"
 
 class media-storage::thumbs-server {
+	$nginx_worker_connections = 16384
+
 	if ! $thumbs_proxy_source {
 		$thumbs_proxy_source = "http://208.80.152.156"
 	}
 
 	if ! $thumbs_proxying {
 		$thumbs_proxying = "false"
-	} 
+	}
 
 	include generic::sysctl::high-http-performance
 
@@ -19,14 +21,11 @@ class media-storage::thumbs-server {
 		ensure => "0.7.65-1ubuntu2.1";
 	}
 
-	package { "mlocate":
-		ensure => absent;
-	}
-
 	file {
 		"/etc/nginx/nginx.conf":
 			require => Package[nginx],
-			source => "puppet:///files/nginx/nginx.conf";
+			mode => 0444,
+			content => template("nginx/nginx.conf.erb");
 		"/etc/nginx/sites-enabled/default":
 			ensure => absent;
 	}

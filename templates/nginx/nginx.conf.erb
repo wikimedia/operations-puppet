@@ -3,7 +3,7 @@
 # Thumbs server configuration file
 
 user www-data www-data;
-worker_processes  <%= processorcount %>;
+worker_processes  <%= processorcount.to_i * 8 %>;
 worker_rlimit_nofile 30000;
 
 

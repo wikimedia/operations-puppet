@@ -123,6 +123,13 @@ AccessFileName .htaccess
     Satisfy All
 </Files>
 
+# RT 1666: prevent downloading of .*~ and similar files
+<FilesMatch "(\.bak|\.old|~|#)$">
+	Order allow,deny
+	Deny from all
+	Satisfy All
+</FilesMatch>
+
 UseCanonicalName On
 
 TypesConfig /etc/mime.types

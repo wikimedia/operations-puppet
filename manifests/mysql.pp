@@ -131,7 +131,7 @@ class mysql {
 		} else {
 			$innodb_file_per_table = "false"
 		}
-		
+
 		# collect all the changes to the dbs used by the summer researchers
 
 		# FIXME: please qualify these globals with something descriptive, e.g. $mysql_read_only

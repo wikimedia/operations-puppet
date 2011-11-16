@@ -7,6 +7,7 @@ import "sudo.pp"
 import "nagios.pp"
 import "nrpe.pp"
 import "../private/manifests/passwords.pp"
+import "../private/manifests/contacts.pp"
 
 
 class base::apt::update {
@@ -82,9 +83,11 @@ class base::puppet {
 		ensure => latest;
 	}
 
+	# FIXME: remove $hostname from the title, it's already being prepended. Then, purge the existing Nagios resources.
 	monitor_service { "$hostname puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
-	exec { "snmptrap -v 1 -c public nagios.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`":
+	exec { "puppet snmp trap":
+		command => "snmptrap -v 1 -c public nagios.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
 		path => "/bin:/usr/bin",
 		require => Package["snmp"]
 	}
@@ -158,19 +161,19 @@ class base::remote-syslog {
 
 class base::sysctl {
 	if ($lsbdistid == "Ubuntu") and ($lsbdistrelease != "8.04") {
-                exec { "/sbin/start procps":
-                        path => "/bin:/sbin:/usr/bin:/usr/sbin",
-                        refreshonly => true;
-                }
+		exec { "/sbin/start procps":
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			refreshonly => true;
+		}
 
-                file { wikimedia-base-sysctl:
-                        name => "/etc/sysctl.d/50-wikimedia-base.conf",
-                        owner => root,
-                        group => root,
-                        mode => 644,
+		file { wikimedia-base-sysctl:
+			name => "/etc/sysctl.d/50-wikimedia-base.conf",
+			owner => root,
+			group => root,
+			mode => 644,
 			notify => Exec["/sbin/start procps"],
-                        source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
-                }
+			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
+		}
 	}
 }
 
@@ -254,34 +257,33 @@ class base::decommissioned {
 
 class base::instance-upstarts {
 
-        file {
-                "/etc/init/ttyS0.conf":
-                        owner => root,
-                        group => root,
-                        mode => 0644,
-                        source => 'puppet:///files/upstart/ttyS0.conf';
-        }
+	file {"/etc/init/ttyS0.conf":
+		owner => root,
+		group => root,
+		mode => 0644,
+		source => 'puppet:///files/upstart/ttyS0.conf';
+	}
 
 }
 
 class base::instance-finish {
 
-        if $realm == "labs" {
-                exec {
-                        "/bin/rm /etc/init/runonce-fixpuppet.conf":
-                                onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
-                        "/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
-                                onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
-                }
-        }
+	if $realm == "labs" {
+		exec {
+			"/bin/rm /etc/init/runonce-fixpuppet.conf":
+				onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
+			"/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
+				onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
+		}
+	}
 
 }
 
 class base::vimconfig {
 	file { "/etc/vim/vimrc.local": 
-  		owner => root, 
-		group => root, 
-		mode => 0644,  
+		owner => root,
+		group => root,
+		mode => 0644,
 		source => "puppet:///files/misc/vimrc.local",
 		ensure => present; 
 	}

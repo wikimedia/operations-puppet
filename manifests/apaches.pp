@@ -53,7 +53,7 @@ mail.force_extra_parameters=\"-f <>\"
 
 	$file_wikidiff2_ini = "
 ; This file is managed by Puppet!
-extension=php_wikidiff2.so
+extension=wikidiff2.so
 "
 	
 	require apaches::packages

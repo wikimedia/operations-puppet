@@ -101,6 +101,32 @@ class misc::install-server {
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
 		}
+
+		## allow other tftp servers to rsync /srv/tftpboot
+
+#		package { rsync:
+#			ensure => latest;
+#		}
+#
+#		file {
+#			"/etc/rsyncd.conf":
+#				require => Package[rsync],
+#				mode => 0444,
+#				owner => root,
+#				group => root,
+#				source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
+#			"/etc/default/rsync":
+#				require => Package[rsync],
+#				mode => 0444,
+#				owner => root,
+#				group => root,
+#				source => "puppet:///files/rsync/rsync.default";
+#		}
+#
+#		service { rsync:
+#			require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+#			ensure => running;
+#		}
 	}
 
 	class caching-proxy {
@@ -595,8 +621,9 @@ class misc::extension-distributor {
 	}
 
 	cron { extdist_updateall:
-		command => "cd $extdist_working_dir/mw-snapshot; for branch in trunk branches/*; do /usr/bin/svn cleanup \$branch/extensions; /usr/bin/svn up \$branch/extensions > /dev/null; done",
-		minute => 0,
+		command => "php /home/wikipedia/common/php/extensions/ExtensionDistributor/cron.php 2>&1 >/dev/null",
+		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+		hour => 3,
 		user => extdist,
 		ensure => present;
 	}
@@ -1031,7 +1058,7 @@ class misc::fundraising {
 	#what is currently on grosley
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
-	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
 }
 
@@ -1163,6 +1190,11 @@ class misc::fundraising {
 			ensure => directory;
 
 		#apache conf stuffs
+		"/etc/php5/apache2/php.ini":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/php/php.ini.civicrm";
 		"/etc/apache2/sites-available/000-donate":
 			mode => 0444,
 			owner => root,
@@ -1232,6 +1264,23 @@ class misc::fundraising {
 			mode => 0440,
 			owner => root,
 			group => root;
+
+		# other stuff
+		"/etc/php5/cli/php.ini":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/php/php.ini.fundraising.cli";
+		"/usr/local/bin/civimail_send":
+			mode => 0710,
+			owner => root,
+			group => wikidev,
+			source => "puppet:///private/misc/fundraising/civimail_send";
+		"/usr/local/bin/jenkins_watcher":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/jenkins_watcher";
 	}
 
 	#enable apache mods
@@ -1352,6 +1401,29 @@ class misc::udp2log::aft {
 	}
 
 }
+# TODO: this is  a hacky short term method to get the config files into
+#       puppet.  The app should be puppetized for real using mediawiki-logger above.
+class misc::udp2log::lockeconfig {
+	include contacts::udp2log
+	file {
+		"/etc/udp2log/squid":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template("udp2log/locke-etc-squid.erb");
+	}
+}
+class misc::udp2log::emeryconfig {
+	include contacts::udp2log
+	file {
+		"/etc/udp2log/locke-filters":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => template("udp2log/emery-etc-locke-filters.erb");
+	}
+}
+
 
 # CI test server as per RT #1204
 class misc::contint::test {
@@ -1759,7 +1831,7 @@ class misc::udp2log::emery {
 		ensure => present,
 		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /var/log/squid/packet-loss.log --mode cron",
 		user => 'root',
-		minute => '*/10';
+		minute => '*/5';
 	}
 
 	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
@@ -1770,7 +1842,7 @@ class misc::udp2log::locke {
 		ensure => present,
 		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /a/squid/packet-loss.log --mode cron",
 		user => 'root',
-		minute => '*/10';
+		minute => '*/5';
 	}
 	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
 }
@@ -1856,5 +1928,97 @@ class misc::l10nupdate {
 			group => wikidev,
 			mode => 0664,
 			ensure => present;
+	}
+}
+
+class misc::torrus {
+	system_role { "misc::torrus": description => "Torrus" }
+	
+	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
+	
+	File { require => Package["torrus-common"] }
+	
+	file {
+		"/etc/torrus/conf/":
+			source => "puppet:///files/torrus/conf/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
+		# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
+		"/etc/torrus/xmlconfig/":
+			source => "puppet:///files/torrus/xmlconfig/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
+		"/etc/torrus/templates/":
+			source => "puppet:///files/torrus/templates/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
+	}
+	
+	exec { "torrus compile":
+		command => "/usr/sbin/torrus compile --all",
+		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
+		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
+		refreshonly => true
+	}
+	
+	service { "torrus-common":
+		require => Exec["torrus compile"],
+		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
+		ensure => running;
+	}
+	
+	# TODO: Puppetize the rest of Torrus
+}
+
+# FIXME: (increasingly popular) temporary hack
+if $hostname == "spence" {
+        include misc::gsbmonitoring
+}
+
+class misc::gsbmonitoring {
+	@monitor_host { "google": ip_address => "74.125.225.84" }
+
+        @monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
+        @monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
+}
+
+
+class misc::bugzilla_crons {
+	cron { bugzilla_whine:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
+		user => root,
+		minute => 15
+	}
+
+	# 2 cron jobs to generate charts data
+	# See https://bugzilla.wikimedia.org/29203
+	# 1) get statistics for the day:
+	cron { bugzilla_collectstats:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
+	}
+	# 2) on sunday, regenerates the whole statistics data
+	cron { bugzilla_collectstats_regenerate:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl --regenerate",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => 0  # Sunday
 	}
 }

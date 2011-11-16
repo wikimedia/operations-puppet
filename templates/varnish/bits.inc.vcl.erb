@@ -3,7 +3,7 @@
 sub vcl_recv {
 	/* Only accept requests for domain bits.wikimedia.org at this time */
 	if (req.http.host == "bits.wikimedia.org") {
-		# Yay
+		return (lookup);
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
@@ -15,8 +15,8 @@ sub vcl_recv {
 	}
 }
 
-# FIXME: make compatible with eqiad
-<% if site == "pmtpa" -%>
+<% if site == "pmtpa" or site == "eqiad" -%>
+# FIXME: Implement some proper topology code for primary DCs and downstream cache sites
 sub vcl_miss {
 	/* transform backend url: /<sitename>/load.php -> /w/load.php
 	   set host header for backend to <sitename>

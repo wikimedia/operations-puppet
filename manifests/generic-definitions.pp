@@ -335,6 +335,10 @@ class base::vlan-tools {
 	package { vlan: ensure => latest; }
 }
 
+class base::bonding-tools {
+	package { "ifenslave-2.6": ensure => latest; }
+}
+
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
 	require base::vlan-tools
 
@@ -386,6 +390,96 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 
 		if $remove != 'true' {
 			exec { "/sbin/ifup $intf": require => Augeas["$intf"] }
+		}
+	}
+}
+
+define interface_aggregate_member($master) {
+	require base::bonding-tools
+
+	$interface = $title
+
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		augeas { "aggregate member ${interface}":
+			context => "/files/etc/network/interfaces/",
+			changes => [
+					"set auto[./1 = '$interface']/1 '$interface'",
+					"set iface[. = '$interface'] '$interface'",
+					"set iface[. = '$interface']/family 'inet'",
+					"set iface[. = '$interface']/method 'manual'",
+			],
+			notify => Exec["ifup $interface"]
+		}
+
+		exec { "ifup $interface":
+			command => "/sbin/ifup --force $interface",
+			require => Augeas["aggregate member ${interface}"],
+			refreshonly => true
+		}
+	}
+}
+
+define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast") {
+	require base::bonding-tools
+
+	# Use the definition title as the destination (aggregated) interface
+	$aggr_interface = $title
+
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $orig_interface != "" {
+			# Convert an existing interface, e.g. from eth0 to bond0
+			$augeas_changes = [
+				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
+				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
+			]
+			
+			# Bring down the old interface after conversion
+			exec { "ip addr flush dev ${orig_interface}":
+				command => "/sbin/ip addr flush dev ${orig_interface}",
+				before => Exec["ifup ${aggr_interface}"],
+				subscribe => Augeas["create $aggr_interface"],
+				refreshonly => true,
+				notify => Exec["ifup ${aggr_interface}"]
+			}
+		} else {
+			$augeas_changes = [
+				"set auto[./1 = '${aggr_interface}']/1 '${aggr_interface}'",
+				"set iface[. = '${aggr_interface}'] '${aggr_interface}'",
+				"set iface[. = '${aggr_interface}']/family 'inet'",
+				"set iface[. = '${aggr_interface}']/method 'manual'"
+			]
+		}
+
+		augeas { "create $aggr_interface":
+			context => "/files/etc/network/interfaces/",
+			changes => $augeas_changes,
+			onlyif => "match iface[. = '${aggr_interface}'] size == 0",
+			notify => Exec["ifup ${aggr_interface}"]
+		}
+
+		augeas { "configure $aggr_interface":
+			require => Augeas["create $aggr_interface"],
+			context => "/files/etc/network/interfaces/",
+			changes => [
+				inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>'"),
+				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'"
+			],
+			notify => Exec["ifup ${aggr_interface}"]
+		}
+
+		# Define all aggregate members
+		interface_aggregate_member{ $members:
+			require => Augeas["create $aggr_interface"],
+			master => $aggr_interface,
+			notify => Exec["ifup ${aggr_interface}"]
+		}
+
+		# Bring up the new interface
+		exec { "ifup ${aggr_interface}":
+			command => "/sbin/ifup --force ${aggr_interface}",
+			require => Interface_aggregate_member[$members],
+			refreshonly => true
 		}
 	}
 }
@@ -506,4 +600,29 @@ define apt::pparepo($repo_string = "", $apt_key = "", $dist = "lucid", $ensure =
 			}
 		}
 	}
+}
+
+class generic::gluster {
+
+	package { "glusterfs":
+		ensure => latest;
+	}
+
+}
+
+define gluster::server::peer {
+
+	$host_uuid = generate("/usr/local/bin/uuid-generator", "${tag}")
+	file {
+		"/etc/glusterd/peers/${host_uuid}":
+			content =>
+"uuid=${host_uuid}
+state=3
+hostname1=${tag}
+",
+			notify => Service["glusterd"],
+			require => Package["glusterfs"];
+
+	} 
+
 }

@@ -4,10 +4,17 @@ import "realm.pp"	# These ones first
 import "base.pp"
 
 import "admins.pp"
-import "ganglia.pp"
-import "ntp.pp"
+import "apaches.pp"
+import "backups.pp"
+import "certs.pp"
 import "dns.pp"
+import "drac.pp"
+import "exim.pp"
+import "facilities.pp"
+import "ganglia.pp"
+import "gerrit.pp"
 import "imagescaler.pp"
+import "iptables.pp"
 import "jobrunner.pp"
 import "search.pp"
 import "squid.pp"
@@ -19,26 +26,30 @@ import "memcached.pp"
 import "snapshots.pp"
 import "ntp.pp"
 import "nfs.pp"
-import "lvs.pp"
-import "exim.pp"
-import "mailman.pp"
-import "misc-servers.pp"
-import "network.pp"
-import "facilities.pp"
-import "nrpe.pp"
-import "nagios.pp"
-import "backups.pp"
-import "svn.pp"
 import "ldap.pp"
-import "iptables.pp"
-import "owa.pp"
+import "lvs.pp"
+import "mailman.pp"
 import "media-storage.pp"
-import "certs.pp"
-import "drac.pp"
+import "mediawiki.pp"
+import "memcached.pp"
+import "misc-servers.pp"
+import "mysql.pp"
+import "nagios.pp"
+import "network.pp"
+import "nfs.pp"
+import "nrpe.pp"
+import "ntp.pp"
+import "ntp.pp"
 import "openstack.pp"
+import "owa.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
-import "gerrit.pp"
+import "search.pp"
+import "snapshots.pp"
+import "squid.pp"
+import "svn.pp"
+import "swift.pp"
+import "varnish.pp"
 
 # Include stages last
 import "stages.pp"
@@ -299,9 +310,7 @@ class searchindexer {
 
 class text-squid {
 	$roles += [ 'cache::text' ]
-	if $cluster == "misc" {
-		$cluster = "squids_text"
-	}
+	$cluster = "squids_text"
 
 	if ! $lvs_realserver_ips {
 		$lvs_realserver_ips = $realm ? {
@@ -321,17 +330,15 @@ class text-squid {
 
 	system_role { text-squid: description => "text Squid server" }
 
+	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_text',
 		'esams' => 'squids_esams_text'
 	}
 
-	include	base,
+	include	standard,
 		squid,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender
+		lvs::realserver
 
 	# HTCP packet loss monitoring on the ganglia aggregators
 	if $ganglia_aggregator == "true" and $site != "esams" {
@@ -341,9 +348,7 @@ class text-squid {
 
 class upload-squid {
 	$roles += [ 'cache::upload' ]
-	if $cluster == "misc" {
-		$cluster = "squids_upload"
-	}
+	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
 		$lvs_realserver_ips = $site ? { 
@@ -355,17 +360,15 @@ class upload-squid {
 
 	system_role { upload-squid: description => "upload Squid server" }
 
+	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_upload',
 		'esams' => 'squids_esams_upload'
 	}
 
-	include base,
+	include standard,
 		squid,
-		lvs::realserver,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender
+		lvs::realserver
 
 	# HTCP packet loss monitoring on the ganglia aggregators
 	if $ganglia_aggregator == "true" and $site != "esams" {
@@ -376,41 +379,35 @@ class upload-squid {
 class cache {
 	class bits {
 		$roles += [ 'cache::bits' ]
-		$cluster = "cache_bits_${site}"
+		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${site}"
 
 		$lvs_realserver_ips = $site ? {
 			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
-			"eqiad" => [ "208.80.154.234", "10.2.4.23" ],
+			"eqiad" => [ "208.80.154.234", "10.2.2.23" ],
 			"esams" => [ "91.198.174.233", "10.2.3.23" ],
 		}
 
-		if $site == "esams" and $hostname =~ /^cp/ {
-			$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-			$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
-			$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-			# FIXME: add eqiad as backend for esams
-			$varnish_backends = $site ? {
-				/^(pmtpa|eqiad)$/ => $all_backends,
-				'esams' => [ "bits.pmtpa.wikimedia.org" ],
-				default => []
-			}
-			$varnish_directors = $site ? {
-				/^(pmtpa|eqiad)$/ => {
-					"backend" => $bits_appservers,
-					"test_wikipedia" => $test_wikipedia
-					},
-				'esams' => {
-					"backend" => $varnish_backends
-					}
-			}
+		$varnish_backends = $site ? {
+			/^(pmtpa|eqiad)$/ => $all_backends,
+			# [ bits-lb.pmtpa, bits-lb.eqiad ]
+			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+			# FIXME: add pmtpa back in
+			'esams' => [ "208.80.154.234" ],
+			default => []
 		}
-		else {
-            if $site == "pmtpa" {
-                    $varnish_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-                    $varnish_directors = { "appservers" => $varnish_backends }
-            }
+		$varnish_directors = $site ? {
+			/^(pmtpa|eqiad)$/ => {
+				"backend" => $bits_appservers,
+				"test_wikipedia" => $test_wikipedia
+				},
+			'esams' => {
+				"backend" => $varnish_backends
+				}
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
@@ -422,36 +419,30 @@ class cache {
 		include standard,
 			lvs::realserver
 		
-		if $site == "esams" and $hostname =~ /^cp/ {
-			include varnish3::monitoring::ganglia
-			
-			varnish3::instance { "bits":
-				name => "",
-				vcl => "bits",
-				port => 80,
-				admin_port => 6082,
-				storage => "-s malloc,1G",
-				backends => $varnish_backends,
-				directors => $varnish_directors,
-				backend_options => {
-					'port' => 80,
-					'connect_timeout' => "5s",
-					'first_byte_timeout' => "35s",
-					'between_bytes_timeout' => "4s",
-					'max_connections' => 10000,
-					'probe' => "bits"
-				},
-				enable_geoiplookup => "true"
-			}
-		}
-		else {
-			# Old configuration
-			include varnish
+		include varnish3::monitoring::ganglia
+		
+		varnish3::instance { "bits":
+			name => "",
+			vcl => "bits",
+			port => 80,
+			admin_port => 6082,
+			storage => "-s malloc,1G",
+			backends => $varnish_backends,
+			directors => $varnish_directors,
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 10000,
+				'probe' => "bits"
+			},
+			enable_geoiplookup => "true"
 		}
 	}
 	class mobile { 
 		$roles += [ 'cache::mobile' ]
-		$cluster = "cache_mobile_${site}"
+		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
 		$lvs_realserver_ips = $site ? {
@@ -514,6 +505,20 @@ class cache {
 	}
 }
 
+class protoproxy::ssl {
+	$cluster = "ssl"
+
+	if $hostname =~ /^ssl[0-9]*1$/ {
+		$enable_ipv6_proxy = true
+	}
+
+	include standard,
+		certificates::wmf_ca,
+		protoproxy::proxy_sites
+
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+} 
+
 # Default variables
 $cluster = "misc"
 
@@ -530,8 +535,6 @@ node "alsted.wikimedia.org" {
 }
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "misc_esams"
-
 	$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 
 	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
@@ -579,7 +582,9 @@ node "argon.wikimedia.org" {
 node /(arsenic|niobium)\.wikimedia\.org/ {
 	$ganglia_aggregator = "true"
 	
-	include standard
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
+	
+	include cache::bits
 }
 
 node "bayes.wikimedia.org" {
@@ -612,9 +617,17 @@ node "carbon.wikimedia.org" {
 		misc::install-server::tftp-server
 }
 
+node "copper.wikimedia.org" {
+	include base,
+		swift::proxy,
+		swift::storage
+}
+
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
-	
+
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+
 	include cache::bits
 }
 
@@ -644,7 +657,8 @@ node "emery.wikimedia.org" {
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
-		nrpe
+		nrpe,
+		misc::udp2log::emeryconfig
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -667,6 +681,15 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 	if $hostname == "es1004" {
 		# replica of ms3 - currently used for backups
 		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
+	}
+}
+
+node /es[1-4]\.pmtpa\.wmnet/ {
+	if $hostname == "es3" {
+		include db::es::master
+	}
+	else {
+		include db::es::slave
 	}
 }
 
@@ -734,10 +757,6 @@ node "db10.pmtpa.wmnet" {
 		backup::mysql
 }
 
-node "db11.pmtpa.wmnet" {
-	include db::core
-}
-
 node "db12.pmtpa.wmnet" {
 	include db::core
 }
@@ -763,10 +782,6 @@ node "db17.pmtpa.wmnet" {
 }
 
 node "db18.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db19.pmtpa.wmnet" {
 	include db::core
 }
 
@@ -880,6 +895,25 @@ node "db43.pmtpa.wmnet" {
 }
 
 # new pmtpa dbs
+# New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
+# DO NOT add old prod db's to new classes unless you
+# know what you're doing! 
+node "db11.pmtpa.wmnet" {
+	$db_cluster = "s3"
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf
+}
+
+node "db19.pmtpa.wmnet" {
+	$db_cluster = "s2"
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf
+}
+
 node /db4[4-7]\.pmtpa\.wmnet/ { 
 	if $hostname =~ /^db(44|45)$/ { 
 		$db_cluster = "s5"
@@ -935,9 +969,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 
 	if $hostname =~ /^(db1008|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		if $hostname == "db1008" { # db1008 is a middle-master
-			$writable = "true"
-		}
 	}
 
 	if $hostname =~ /^(db1042|db1048)$/ {
@@ -945,7 +976,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^db(1047)$/ {
+	if $hostname =~ /^(db1047|db1008)$/ {
 		$writable = "true"
 	} 
 
@@ -1013,10 +1044,9 @@ node "fenari.wikimedia.org" {
 node "formey.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-	sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-	sudo_user { pdhanda: user => "pdhanda", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user'] }
-	sudo_user { sumanah: user => "sumanah", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user','ALL = NOPASSWD: /usr/local/bin/svn-group'] }
+	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
+	sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
+	sudo_user { sumanah: user => "sumanah", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
 	$cluster = "misc"
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
@@ -1084,6 +1114,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 	$cluster = "misc"
 	$gid = 500
 	include	base,
+		ganglia,
 		ntp::client,
 		nrpe,
 		admins::roots,
@@ -1096,9 +1127,12 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::jpostlethwaite,
 		accounts::jamesofur,
 		accounts::pgehres,
-		misc::jenkins,
 		backup::client,
 		misc::fundraising
+
+	if $hostname == "aluminium" {
+		include misc::jenkins
+	}
 
 }
 
@@ -1110,12 +1144,10 @@ node "gurvin.wikimedia.org" {
 }
 
 node "hooft.esams.wikimedia.org" {
-	$cluster = "misc_esams"
 	$ganglia_aggregator = "true"
+	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
-	include base,
-		ganglia,
-		ntp::client,
+	include standard,
 		misc::install-server::tftp-server,
 		admins::roots,
 		admins::mortals,
@@ -1170,10 +1202,11 @@ node "kaulen.wikimedia.org" {
 		accounts::reedy,
 		accounts::robla,
 		misc::download-mediawiki,
+		misc::bugzilla_crons,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
-	cron { bugzilla_whine: command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl", user => root, minute => 15 }
+
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
 }
 
@@ -1183,7 +1216,7 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include cache::bits
+	include standard
 }
 
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
@@ -1238,8 +1271,10 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
+		accounts::datasets,
 		misc::udp2log::packetloss,
 		misc::udp2log::locke,
+		misc::udp2log::lockeconfig,
 		nrpe
 }
 
@@ -1310,7 +1345,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	$dns_recursor_ipaddress = $ipaddress
 
 	if $hostname =~ /^lvs100[14]$/ {
-		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236", "208.80.154.237" ]
+		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236", "208.80.154.237", "10.2.2.23", "10.2.2.24", "10.2.2.25" ]
 	}
 
 	if $hostname =~ /^lvs100[2356]$/ {
@@ -1419,17 +1454,17 @@ node "maerlant.esams.wikimedia.org" {
 	$gid = 500
 
 	$enable_ipv6_proxy = "true"
-	$cluster = "ssl_esams"
 	$ganglia_aggregator = "true"
 
-	include base,
-		ganglia,
-		ntp::client,
-		protoproxy::proxy_sites,
+	include protoproxy::ssl,
 		protoproxy::ipv6_labs,
-		certificates::wmf_ca,
 		groups::wikidev,
 		accounts::gmaxwell
+}
+
+node "magnesium.wikimedia.org" {
+	include base,
+		swift::storage
 }
 
 node "mchenry.wikimedia.org" {
@@ -1468,7 +1503,6 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 }
 
 node "lily.knams.wikimedia.org" {
-	$cluster = "misc_esams"
 	include ganglia,
 		nrpe,
 		certificates::star_wikimedia_org
@@ -1477,12 +1511,7 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	if $hostname == "ms3" {
-		include db::es::master
-	}
-	else {
-		include	db::es::slave
-	}
+	include db::es::slave
 }
 
 node "ms4.pmtpa.wmnet" {
@@ -1501,9 +1530,10 @@ node "ms5.pmtpa.wmnet" {
 }
 
 node "ms6.esams.wikimedia.org" {
-	$cluster = "misc_esams"
 	$thumbs_proxying = "true"
 	$thumbs_proxy_source = "http://208.80.152.3"
+
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	include standard,
 		media-storage::thumbs-server,
@@ -1549,8 +1579,6 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node "nescio.esams.wikimedia.org" {
-	$cluster = "misc_esams"
-
 	$dns_recursor_ipaddress = "91.198.174.6"
 
 	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
@@ -1664,6 +1692,8 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		base::monitoring::host,
 		lvs::realserver,
 		ganglia
+
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
 
 node "pdf1.wikimedia.org" {
@@ -2665,53 +2695,30 @@ node "srv301.pmtpa.wmnet" {
 }
 
 node /ssl[1-4]\.wikimedia\.org/ {
-	$cluster = "ssl"
 	if $hostname =~ /^ssl[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^ssl1$/ {
-		$enable_ipv6_proxy = true
-	}
-
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+	
+	include protoproxy::ssl
 }
 
 node /ssl100[1-4]\.wikimedia\.org/ {
-	$cluster = "ssl"
 	if $hostname =~ /^ssl100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^ssl1001$/ {
-		$enable_ipv6_proxy = true
-	}
 
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+	include protoproxy::ssl
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
-	$cluster = "ssl_esams"
 	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ssl3001$/ {
-		$enable_ipv6_proxy = true
-
 		include protoproxy::ipv6_labs
 	}
 
-	include base,
-		ganglia,
-		ntp::client,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
+	include protoproxy::ssl
 }
 
 #sq31-sq36 are api squids
@@ -2764,6 +2771,8 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	if $hostname =~ /^sq6[68]$/ {
 		$ganglia_aggregator = "true"
 	}
+	
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	include cache::bits
 }
@@ -2812,13 +2821,20 @@ node "storage2.wikimedia.org" {
 }
 
 node "storage3.pmtpa.wmnet" {
+
+	$db_cluster = "fundraisingdb"
+
 	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
 		svn::client,
 		groups::wikidev,
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
 		accounts::logmover
+
 }
 
 node "streber.wikimedia.org" {
@@ -2829,6 +2845,7 @@ node "streber.wikimedia.org" {
 		ganglia::collector,
 		ntp::client,
 		admins::roots,
+		misc::torrus,
 		exim::rt,
 		misc::rt::server,
 		certificates::star_wikimedia_org
@@ -2850,6 +2867,7 @@ node "snapshot1.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
@@ -2866,6 +2884,7 @@ node "snapshot2.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
@@ -2892,6 +2911,7 @@ node "snapshot4.pmtpa.wmnet" {
 		snapshots::noapache,
 		admins::roots,
 		admins::mortals,
+		accounts::datasets,
 		nfs::data,
 		groups::wikidev
 }
@@ -2962,6 +2982,12 @@ node "yvon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca
+}
+
+node "zinc.wikimedia.org" {
+	include base,
+		swift::proxy,
+		swift::storage
 }
 
 node default {

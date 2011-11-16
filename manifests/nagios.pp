@@ -202,6 +202,15 @@ class nagios::monitor {
 
 	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
 
+	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
+	# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
+	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
+	# nagios-images: images and icons for the web frontend
+
+	package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
+		ensure => latest;
+	}
+
 	service { nagios:
 		require => File[$puppet_files],
 		ensure => running,
@@ -232,8 +241,6 @@ class nagios::monitor {
 		ensure => directory,
 		owner => root,
 		group => root,
-		recurse => true,
-		mode => 0644;
 	}
 
 	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
@@ -265,7 +272,7 @@ class nagios::monitor {
 	
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
-		command => "/bin/chmod -R 644 /etc/nagios/puppet_checks.d",
+		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
 		notify => Service["nagios"],
 		refreshonly => "true";
 	}
@@ -301,6 +308,13 @@ class nagios::monitor {
 
 	file { "/etc/nagios/cgi.cfg":
 		source => "puppet:///files/nagios/cgi.cfg",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
+
+	file { "/etc/nagios/nsca_payments.cfg":
+		source => "puppet:///private/nagios/nsca_payments.cfg",
 		owner => root,
 		group => root,
 		mode => 0644;
@@ -544,6 +558,8 @@ class nagios::nsca {
 # NSCA - daemon
 class nagios::nsca::daemon {
 
+	system_role { "nagios::nsca::daemon": description => "Nagios Service Checks Acceptor Daemon" }
+
 	require nagios::nsca
 
 	file { "/etc/nsca.cfg":
@@ -574,7 +590,7 @@ class nagios::nsca::daemon {
 		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "public_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_all": source => "208.80.152.0/22", service => "all", jump => "ACCEPT" }
 	}
 
 	class iptables-drops {
@@ -590,7 +606,7 @@ class nagios::nsca::daemon {
 
 		# temporarily remove the exec rule so that the ruleset is simply created
 		# and we can inspect the file before allowing puppet to auto-load the rules
-		#iptables_add_exec{ "${hostname}": service => "nsca" }
+		iptables_add_exec{ "${hostname}": service => "nsca" }
 	}
 
 	require "nagios::nsca::daemon::iptables"

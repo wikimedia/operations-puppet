@@ -4,6 +4,7 @@ class openstack::iptables-purges {
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
 	iptables_purge_service{ "deny_all_mysql": service => "mysql" }
+	iptables_purge_service{ "deny_all_memcached": service => "memcached" }
 	iptables_purge_service{ "deny_all_ldap": service => "ldap" }
 	iptables_purge_service{ "deny_all_ldap_backend": service => "ldap_backend" }
 	iptables_purge_service{ "deny_all_ldaps": service => "ldaps" }
@@ -65,6 +66,7 @@ class openstack::iptables-drops {
 
 	# Deny by default
 	iptables_add_service{ "deny_all_mysql": service => "mysql", jump => "DROP" }
+	iptables_add_service{ "deny_all_memcached": service => "memcached", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldap": service => "ldap", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldap_backend": service => "ldap_backend", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldaps": service => "ldaps", jump => "DROP" }
@@ -161,11 +163,15 @@ class openstack::compute {
 
 	include openstack::common,
 		openstack::compute-service,
-		openstack::volume-service
+		openstack::volume-service,
+		openstack::gluster-service,
+		openstack::gluster-client
 
 	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
+	}
+	if $hostname =~ /^virt[3-4]$/ {
 	}
 
 	file {
@@ -352,7 +358,6 @@ class openstack::openstack-manager {
 	$nova_controller_hostname = $openstack::nova_config::nova_controller_hostname
 
 	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php5-memcache', 'php-apc', 'imagemagick' ]:
-
 		ensure => latest;
 	}
 
@@ -507,6 +512,59 @@ class openstack::glance-service {
 			notify => Service["glance-api", "glance-registry"],
 			require => Package["glance"],
 			mode => 0444;
+	}
+
+}
+
+class openstack::gluster-service {
+
+	include generic::gluster
+
+	service { "glusterd":
+		enable => true,
+		ensure => running,
+		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info"], File["/etc/init/glusterd.conf"], File["/etc/init.d/glusterd"]];
+	}
+
+	# Every host exports its own peer resource
+	@@gluster::server::peer {
+		["${hostname}.${domain}"]:
+			tag => "${hostname}.${domain}";
+	}
+
+	# Put the hosts own uuid in glusterd.info
+	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
+	file {
+		"/etc/glusterd/glusterd.info":
+			content => "UUID=${local_host_uuid}",
+			require => Package["glusterfs"];
+		# We need to replace the init script with an upstart job that'll ensure
+		# the filesystem gets mounted after gluster is started.
+		"/etc/init/glusterd.conf":
+			source => "puppet:///files/gluster/glusterd.conf",
+			require => Package["glusterfs"];
+		"/etc/init.d/glusterd":
+			ensure => link,
+			target => "/lib/init/upstart-job";
+	}
+
+	# Every host imports all peer resources except its own
+	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" |>>
+
+}
+
+class openstack::gluster-client {
+
+	include generic::gluster
+
+	## mount the gluster volume for the instances; always use the local daemon to mount
+	mount { "/var/lib/nova/instances":
+		device => "${hostname}.${domain}:/instances",
+		fstype => "glusterfs",
+		name => "/var/lib/nova/instances",
+		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
+		require => Package["glusterfs"],
+		ensure => mounted;
 	}
 
 }

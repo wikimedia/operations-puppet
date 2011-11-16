@@ -1,90 +1,9 @@
 # varnish.pp
 
 @monitor_group { "cache_bits_pmtpa": description => "pmtpa bits Varnish" }
+@monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
 @monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
-
-class varnish {
-	if ! $varnish_backends {
-		$varnish_backends = [ ]
-	}
-	if ! $varnish_directors {
-		$varnish_directors = { }
-	}
-
-	require generic::geoip::files
-
-	package { varnish:
-		ensure => "2.1.5-2ubuntu1wm1";
-	}
-
-	file {
-		"/etc/init.d/varnish":
-			require => Package[varnish],
-			source => "puppet:///files/varnish/varnish.init",
-			owner => root,
-			group => root,
-			mode => 0555;
-		"/etc/default/varnish":
-			require => Package[varnish],
-			content => template("varnish/varnish-default.erb");
-		"/etc/varnish/wikimedia.vcl":
-			require => Package[varnish],
-			content => template("varnish/wikimedia.vcl.erb");
-	}
-
-	# Tune kernel settings
-	include generic::sysctl::high-http-performance
-
-	# Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
-	# shm memory to disk
-	mount { "/var/lib/varnish":
-		require => Package[varnish],
-		notify => Service[varnish],
-		device => "tmpfs",
-		fstype => "tmpfs",
-		options => "noatime,defaults,size=150M",
-		pass => 0,
-		dump => 0,
-		ensure => mounted;
-	}
-
-	service { varnish:
-		require => [ Package[varnish], File["/etc/default/varnish"], File["/etc/varnish/wikimedia.vcl"], Mount["/var/lib/varnish"] ],
-		ensure => running;
-	}
-
-	# Load a new VCL file
-	exec { "load-new-vcl-file":
-		require => File["/etc/varnish/wikimedia.vcl"],
-		subscribe => File["/etc/varnish/wikimedia.vcl"],
-		command => "echo 'dirtyhack' > /dev/null; TS=`date +%Y%m%d%H%M%S`; varnishadm -S /etc/varnish/secret -T 127.0.0.1:6082 vcl.load \$TS /etc/varnish/wikimedia.vcl && varnishadm -S /etc/varnish/secret -T 127.0.0.1:6082 vcl.use \$TS",
-		path => "/bin:/usr/bin",
-		refreshonly => true;
-	}
-
-	class monitoring {
-		# Nagios
-		monitor_service { "varnish http":
-			description => "Varnish HTTP",
-			check_command => 'check_http_bits'
-		}
-
-		# Ganglia
-		file {
-			"/usr/lib/ganglia/python_modules/varnish.py":
-				require => File["/usr/lib/ganglia/python_modules"],
-				source => "puppet:///files/ganglia/plugins/varnish.py",
-				notify => Service[gmond];
-			"/etc/ganglia/conf.d/varnish.pyconf":
-				require => File["/etc/ganglia/conf.d"],
-				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
-				notify => Service[gmond];
-		}
-	}
-
-	include varnish::monitoring
-}
 
 ### This is a mess of horrible duplication while migrating to Varnish 3.0 
 ### VCL in 3.0 isn't compatible with prior versions in some important ways, this is to be 
@@ -177,7 +96,15 @@ class varnish3 {
 		}
 
 		service { "varnish${instancesuffix}":
-			require => [ File["/etc/default/varnish${instancesuffix}"], Mount["/var/lib/varnish"] ],
+			require => [
+					File[
+						"/etc/default/varnish${instancesuffix}",
+						"/etc/init.d/varnish${instancesuffix}",
+						"/etc/varnish/${vcl}.inc.vcl",
+						"/etc/varnish/wikimedia3_${vcl}.vcl"
+					],
+					Mount["/var/lib/varnish"]
+				],
 			hasstatus => false,
 			pattern => "/var/run/varnishd${instancesuffix}.pid",
 			ensure => running;
@@ -205,7 +132,7 @@ class varnish3 {
 				notify => Service[gmond];
 			"/etc/ganglia/conf.d/varnish.pyconf":
 				require => File["/etc/ganglia/conf.d"],
-				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
+				source => "puppet:///files/ganglia/plugins/varnish3.pyconf",
 				notify => Service[gmond];
 		}
 	}

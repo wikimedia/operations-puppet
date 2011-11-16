@@ -10,7 +10,15 @@ if !$realm {
 $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
 
 # Determine the site the server is in
-$site = $ipaddress_eth0 ? {
+if $ipaddress_eth0 {
+	$main_ipaddress = $ipaddress_eth0
+} elsif $ipaddress_bond0 {
+	$main_ipaddress = $ipaddress_bond0
+} else {
+	$main_ipaddress = $ipaddress
+}
+
+$site = $main_ipaddress ? {
 	/^208\.80\.15[23]\./	=> "pmtpa",
 	/^208\.80\.15[45]\./	=> "eqiad",
 	/^10\.[0-4]\./			=> "pmtpa",

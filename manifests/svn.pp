@@ -77,6 +77,8 @@ class svn::server {
 	
 	include generic::apache::no-default-site
 
+	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
+
 	cron {
 		doc_generation:
 			command => "(cd /home/mwdocs/phase3 && svn up && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",

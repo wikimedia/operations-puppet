@@ -10,10 +10,18 @@ class ganglia {
 
 	#class config {
 		# Variables
-		if $ganglia_aggregator {
+		if $hostname in $decommissioned_servers {
+			$cluster = "decommissioned"
 			$deaf = "no"
 		} else {
-			$deaf = "yes"
+			if ! $cluster {
+				$cluster = "misc"
+			}
+			if $ganglia_aggregator {
+				$deaf = "no"
+			} else {
+				$deaf = "yes"
+			}
 		}	
 	
 		$location = "unspecified"
@@ -24,14 +32,17 @@ class ganglia {
 			"esams"	=> "239.192.20",
 		}
 	
-		$name_suffix = $site ? {
-			"eqiad" => " eqiad",
-			default => ""
-		}
+		$name_suffix = " ${site}"
 
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
 		$ganglia_clusters = {
+			"decommissioned" => {
+				"name"		=> "Decommissioned servers",
+				"ip_oct"	=> "1" },
 			"appserver"	=>	{
-				"name"		=> "Apaches 8 CPU",
+				"name"		=> "Application servers",
 				"ip_oct"	=> "11"	},
 			"imagescaler"	=>	{
 				"name"		=> "Image scalers",
@@ -42,9 +53,6 @@ class ganglia {
 			"misc"		=>	{
 				"name"		=> "Miscellaneous",
 				"ip_oct"	=> "8" },
-			"mobile"	=>	{
-				"name"		=> "Mobile servers",
-				"ip_oct"	=> "14" },
 			"mysql"		=>	{
 				"name"		=> "MySQL",
 				"ip_oct"	=> "5" },
@@ -60,21 +68,9 @@ class ganglia {
 			"squids_upload"	=>	{
 				"name"		=> "Upload squids",
 				"ip_oct"	=> "6" },
-			"squids_esams_u"	=> {
-				"name"		=> "Kennisnet upload squids",
-				"ip_oct"	=> "9" },
-			"squids_esams_t"	=> {
-				"name"		=> "Kennisnet text squids",
-				"ip_oct"	=> "10" },
-			"misc_esams"	=> {
-				"name"		=> "Miscellaneous esams",
-				"ip_oct"	=> "20" },
-			"cache_bits_pmtpa"	=> {
+			"cache_bits"	=> {
 				"name"		=> "Bits caches",
 				"ip_oct"	=> "21" },
-			"cache_bits_esams"	=> {
-				"name"		=> "Bits caches esams",
-				"ip_oct"	=> "22" },
 			"payments"	=> {
 				"name"		=> "Fundraiser payments",
 				"ip_oct"	=> "23" },
@@ -87,21 +83,14 @@ class ganglia {
 			"ssl"		=> {
 				"name"		=> "SSL cluster",
 				"ip_oct"	=> "26" },
-			"ssl_esams"		=> {
-				"name"		=> "SSL cluster esams",
-				"ip_oct"	=> "27" },
-			"cache_mobile_eqiad"	=> {
-				"name"		=> "Mobile Varnish",
+			"cache_mobile"	=> {
+				"name"		=> "Mobile caches",
 				"ip_oct"	=> "28" },
 		}
-
-		if ! $cluster {
-			$cluster = $site ? {
-				"esams" => "misc_esams",
-				default	=> "misc"
-			}
-		}
-
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
+		
 		# gmond.conf template variables
 		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
 		$mcast_address = "${ip_prefix}.${ipoct}"	
