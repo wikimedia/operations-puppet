@@ -13,7 +13,7 @@ class swift::base {
 			group => swift,
 			mode => 0444;
 		"/etc/swift/swift.conf":
-			ensure => present;
+			ensure => present,
 			source => "puppet://files/swift/etc.swift.conf",
 			owner => root,
 			group => root,
@@ -32,13 +32,13 @@ class swift::proxy {
 
 	file { "/etc/swift/cert.crt":
 			ensure => present,
-			source => "puppet://private/swift/cert.crt"
+			source => "puppet://private/swift/cert.crt",
 			owner => root,
 			group => root,
 			mode => 0444;
 		"/etc/swift/cert.key":
 			ensure => present,
-			source => "puppet://private/swift/cert.key"
+			source => "puppet://private/swift/cert.key",
 			owner => root,
 			group => root,
 			mode => 0444;
