@@ -1195,7 +1195,7 @@ node "kaulen.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
-	cron { bugzilla_whine: command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl", user => root, minute => 15 }
+
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
 }
 

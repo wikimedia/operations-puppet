@@ -1933,3 +1933,31 @@ class misc::gsbmonitoring {
         @monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
         @monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
+
+
+class misc::bugzilla_crons {
+	cron { bugzilla_whine:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
+		user => root,
+		minute => 15
+	}
+
+	# 2 cron jobs to generate charts data
+	# See https://bugzilla.wikimedia.org/29203
+	# 1) get statistics for the day:
+	cron { bugzilla_collectstats:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
+	}
+	# 2) on sunday, regenerates the whole statistics data
+	cron { bugzilla_collectstats_regenerate:
+		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl --regenerate",
+		user    => root,
+		hour    => 0,
+		minute  => 5,
+		day     => 0  # Sunday
+	}
+}
