@@ -253,6 +253,39 @@ class db {
 			include db::es
 		}
 	}
+
+	class fundraising {
+	
+		$roles += [ 'db::fundraising' ]
+		$cluster = "mysql"
+
+		system_role { "db::fundraising": description => "Fundraising Database (${mysql_role})" }
+
+		monitor_service {
+			"mysql status":
+				description => "MySQL ${mysql_role} status",
+				check_command => "check_mysqlstatus!--${mysql_role}";
+			"mysql replication":
+				description => "MySQL replication status",
+				check_command => "check_db_lag",
+				ensure => $mysql_role ? {
+					"master" => absent,
+					"slave" => present
+				};
+		}
+
+		class master {
+			$mysql_role = "master"
+			include db::fundraising
+		}
+
+		class slave {
+			$mysql_role = "slave"
+			include db::fundraising
+		}
+		
+	}		
+
 }
 
 class searchserver {
@@ -957,8 +990,15 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "s7"
 	}
 
-	if $hostname =~ /^(db1008|db1025)$/ {
+	if $hostname =~ /^db1008$/ {
 		$db_cluster = "fundraisingdb"
+		include db::fundraising::master
+		$writable = "true"
+	}
+
+	if $hostname =~ /^db1025$/ {
+		$db_cluster = "fundraisingdb"
+		include db::fundraising::slave
 	}
 
 	if $hostname =~ /^(db1042|db1048)$/ {
@@ -966,7 +1006,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^(db1047|db1008)$/ {
+	if $hostname =~ /^db1047$/ {
 		$writable = "true"
 	} 
 
@@ -2823,7 +2863,8 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
-		accounts::logmover
+		accounts::logmover,
+		db::fundraising::master
 
 }
 
