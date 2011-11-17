@@ -1133,6 +1133,11 @@ class misc::fundraising {
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/fundraising-misc.auth.cfg";
+		"/opt/fundraising-misc/public_reporting/update_config.php":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/fundraising-misc.update_config.php";
 		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
