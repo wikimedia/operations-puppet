@@ -4,6 +4,7 @@
 #####################################################################
 # vim: filetype=apache
 
+NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
 	ServerName gerrit.wikimedia.org
@@ -34,6 +35,8 @@
 	ServerSignature Off
 
 </VirtualHost>
+
+NameVirtualHost *:443
 <VirtualHost *:443>
 	ServerAdmin noc@wikimedia.org 
 	ServerName gerrit.wikimedia.org
