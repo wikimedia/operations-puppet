@@ -49,7 +49,7 @@ class swift::proxy {
 			ensure => present;
 	}
 	service { "memcached":
-			enabled => true,
+			enable => true,
 			ensure => running,
 			subscribe => File["/etc/memcached.conf"];
 	}
