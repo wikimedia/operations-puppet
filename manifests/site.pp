@@ -609,6 +609,7 @@ node "carbon.wikimedia.org" {
 node "copper.wikimedia.org" {
 	include base,
 		swift::proxy,
+		swift::proxy::testclusterconf,
 		swift::storage
 }
 
@@ -2976,6 +2977,7 @@ node "yvon.wikimedia.org" {
 node "zinc.wikimedia.org" {
 	include base,
 		swift::proxy,
+		swift::proxy::testclusterconf,
 		swift::storage
 }
 
