@@ -4,10 +4,41 @@
 #####################################################################
 # vim: filetype=apache
 
+NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
 
 	DocumentRoot /srv/org/mediawiki/integration
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	<Directory />
+		Order Deny,Allow
+		AllowOverride All
+	</Directory>
+
+	<Directory /srv/org/mediawiki/integration>
+		Options FollowSymLinks
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+</VirtualHost>
+<VirtualHost *:443>
+	ServerName integration.mediawiki.org
+
+	DocumentRoot /srv/org/mediawiki/integration
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	ErrorLog /var/log/apache2/error.log
 
