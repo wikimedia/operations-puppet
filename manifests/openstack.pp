@@ -658,6 +658,10 @@ class openstack::nova_config {
 	# let users have network admin rights, for firewall rules and such, and can
 	# give them public ips by increasing their quota
 	$nova_quota_floating_ips = "0"
+	$nova_libvirt_type = $realm ? {
+		"production" => "kvm",
+		"labs" => "qemu",
+	}
 
 }
 
