@@ -34,6 +34,10 @@ class puppetmaster::passenger {
 	}
 
 	if $is_labs_puppet_master {
+		package { "git-core":
+			ensure => latest;
+		}
+
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
 		file {
@@ -56,12 +60,14 @@ class puppetmaster::passenger {
 			"update_private_puppet_repos":
 				command => "(cd /root/testrepo/private && /usr/bin/git pull) > /dev/null 2>&1",
 				environment => "GIT_SSH=/root/testrepo/ssh",
+				require => Package["git-core"],
 				user    => root;
 		}
 		cron {
 			"update_public_puppet_repos":
 				command => "(cd /root/testrepo/puppet && /usr/bin/git pull) > /dev/null 2>&1",
 				environment => "GIT_SSH=/root/testrepo/ssh",
+				require => Package["git-core"],
 				user    => root;
 		}
 	}
