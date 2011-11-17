@@ -1189,6 +1189,7 @@ node "kaulen.wikimedia.org" {
 		exim::simple-mail-sender,
 		admins::roots,
 		accounts::demon,
+		accounts::hashar,
 		accounts::reedy,
 		accounts::robla,
 		misc::download-mediawiki,
