@@ -88,6 +88,33 @@ class swift::storage {
 		ensure => present;
 	}
 
+	# set up rsync to allow the storage nodes to share data bits around
+	package { "rsync":
+			ensure => present;
+	}
+	file { "/etc/rsyncd.conf":
+			ensure => present,
+			source => "puppet:///files/swift/storage-rsyncd.conf",
+			owner => root,
+			group => root,
+			mode => 0444,
+			require => Package['rsync'],
+			notify => Service['rsync'];
+		"/etc/default/rsync":
+			ensure => present,
+			source => "puppet:///files/swift/storage-rsyncd.default",
+			owner => root,
+			group => root,
+			mode => 0444,
+			require => Package['rsync'],
+			notify => Service['rsync'];
+	}
+	service { "rsync":
+			ensure => running,
+			enabled => true,
+	}
+
+
 }
 
 
