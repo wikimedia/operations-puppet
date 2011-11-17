@@ -2864,7 +2864,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::rfaulk,
 		accounts::awjrichards,
 		accounts::logmover,
-		db::fundraising::master
+		db::fundraising::slave
 
 }
 
