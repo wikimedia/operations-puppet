@@ -582,15 +582,15 @@ class openstack::nova_config {
 	$nova_db_pass = $passwords::openstack::nova::nova_db_pass
 	$nova_glance_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_rabbit_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_cc_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_network_host = $realm ? {
 		"production" => "10.4.0.1",
@@ -598,7 +598,7 @@ class openstack::nova_config {
 	}
 	$nova_api_host = $realm ? {
 		"production" => "virt2.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_api_ip = $realm ? {
 		"production" => "10.4.0.1",
@@ -630,7 +630,7 @@ class openstack::nova_config {
 	}
 	$nova_controller_hostname = $realm ? {
 		"production" => "labsconsole.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_ajax_proxy_url = $realm ? {
 		"production" => "http://labsconsole.wikimedia.org:8000",
@@ -638,7 +638,7 @@ class openstack::nova_config {
 	}
 	$nova_ldap_host = $realm ? {
 		"production" => "virt1.wikimedia.org",
-		"labs" => "${hostname}.${domain}",
+		"labs" => "localhost",
 	}
 	$nova_ldap_domain = "labs"
 	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
