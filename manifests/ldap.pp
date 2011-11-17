@@ -584,15 +584,16 @@ class ldap::client::autofs {
 class ldap::client::instance-finish {
 
 	# Hacks to ensure these services are reloaded after the puppet run finishes
+	if $realm == "labs" {
+		exec { "check_nscd":
+			command => "/etc/init.d/nscd restart",
+			unless => "/usr/bin/id novaadmin";
+		}
 
-	exec { "check_nscd":
-		command => "/etc/init.d/nscd restart",
-		unless => "/usr/bin/id novaadmin";
-	}
-
-	exec { "check_autofs":
-		command => "/etc/init.d/autofs restart",
-		creates => "/home/autofs_check";
+		exec { "check_autofs":
+			command => "/etc/init.d/autofs restart",
+			creates => "/home/autofs_check";
+		}
 	}
 
 }
