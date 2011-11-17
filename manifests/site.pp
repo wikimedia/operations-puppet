@@ -808,13 +808,8 @@ node "db18.pmtpa.wmnet" {
 	include db::core
 }
 
-node "db20.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-
-	include db::core
-}
-
 node "db21.pmtpa.wmnet" {
+	$ganglia_aggregator = "true"
 	include db::core
 }
 
@@ -1759,6 +1754,13 @@ node "pdf3.wikimedia.org" {
 		exim::simple-mail-sender,
 		groups::wikidev,
 		accounts::file_mover
+}
+
+node "professor.pmtp.wmnet" {
+	$cluster = "misc"
+	include base,
+		ganglia,
+		ntp::client
 }
 
 node "project1.wikimedia.org" {
