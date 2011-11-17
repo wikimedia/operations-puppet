@@ -26,7 +26,7 @@ class swift::proxy {
 	include swift::base
 	system_role { "swift:base": description => "swift frontend proxy" }
 
-	package { [ "swift-proxy", "memcached" ]:
+	package { "swift-proxy":
 		ensure => present;
 	}
 
@@ -44,6 +44,15 @@ class swift::proxy {
 			mode => 0444;
 	}
 
+	# set up memcached
+	package { "memcached":
+			ensure => present;
+	}
+	service { "memcached":
+			enabled => true,
+			ensure => running,
+			subscribe => File["/etc/memcached.conf"];
+	}
 	file { "/etc/memcached.conf":
 			ensure => present,
 			source => "puppet:///files/swift/memcached.conf",
