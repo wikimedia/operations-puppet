@@ -114,26 +114,6 @@ class swift::storage {
 			enable => true,
 	}
 
-	# set up swift specific configs
-	file { "/etc/swift/account-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.account-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-		"/etc/swift/container-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.container-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-		"/etc/swift/object-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.object-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-	}
 
 }
 
