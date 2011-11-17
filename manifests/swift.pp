@@ -111,7 +111,7 @@ class swift::storage {
 	}
 	service { "rsync":
 			ensure => running,
-			enabled => true,
+			enable => true,
 	}
 
 
