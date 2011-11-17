@@ -409,6 +409,7 @@ class ldap::client::nss {
 
 	service {
 		nscd:
+			subscribe => File["/etc/ldap/ldap.conf"],
 			ensure => running;
 	}
 
@@ -536,7 +537,6 @@ class ldap::client::openldap {
 			owner => root,
 			group => root,
 			mode  => 0444,
-			notify => Service[nscd],
 			content => template("ldap/open_ldap.erb");
 	}
 }
