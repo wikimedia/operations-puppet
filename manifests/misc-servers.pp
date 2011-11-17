@@ -1543,6 +1543,7 @@ class misc::contint::test {
 	# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
 
 	apache_module { proxy: name => "proxy" }
+	apache_module { ssl: name => "ssl" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_site { integration: name => "integration.mediawiki.org" }
 
