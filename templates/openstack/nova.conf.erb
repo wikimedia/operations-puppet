@@ -14,7 +14,7 @@
 --ec2_url=http://<%= scope.lookupvar('openstack::nova_config::nova_api_host') %>:8773/services/Cloud
 --ec2_dmz_host=<%= scope.lookupvar('openstack::nova_config::nova_api_ip') %>
 --dmz_cidr=<%= scope.lookupvar('openstack::nova_config::nova_dmz_cidr') %>
---libvirt_type=kvm
+--libvirt_type=<%= scope.lookupvar('openstack::nova_config::nova_libvirt_type') %>
 --dhcpbridge_flagfile=/etc/nova/nova.conf
 --dhcpbridge=/usr/bin/nova-dhcpbridge
 --flat_network_dhcp_start=<%= scope.lookupvar('openstack::nova_config::nova_dhcp_start') %>
