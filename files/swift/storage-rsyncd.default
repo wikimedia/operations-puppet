@@ -1,4 +1,3 @@
-root@copper:~# cat /etc/default/rsync 
 # defaults file for rsync daemon mode
 
 # start rsync in daemon mode from init.d script?
