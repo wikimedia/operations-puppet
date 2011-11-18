@@ -685,9 +685,8 @@ node "emery.wikimedia.org" {
 }
 
 node "erzurumi.pmtpa.wmnet" {
-	# note: ganglia should be installed but this is a 8.04.2 host and ganglia.pp 
-	# is currently broken for 8.04.2 hosts
 	include	base,
+		ganglia,
 		ntp::client,
 		exim::simple-mail-sender,
 		groups::wikidev,
