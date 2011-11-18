@@ -288,6 +288,24 @@ class base::vimconfig {
 		ensure => present; 
 	}
 }
+
+class base::environment {
+
+	file {
+		"/etc/bash.bashrc":
+			content => template('environment/bash.bashrc'),
+			owner => root,
+			group => root,
+			mode => 0644;
+		"/etc/skel/.bashrc":
+			content => template('environment/skel/bashrc'),
+			owner => root,
+			group => root,
+			mode => 0644;
+	}
+
+}
+
 class base {
 
 	case $operatingsystem {
@@ -309,6 +327,7 @@ class base {
 		base::vimconfig,
 		base::standard-packages,
 		base::monitoring::host,
+		base::environment,
 		ssh
 
 	if $realm == "labs" {
