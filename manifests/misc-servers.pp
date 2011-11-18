@@ -1582,6 +1582,21 @@ class misc::udpprofile::collector {
 	# FIXME: Nagios monitoring
 }
 
+class misc::graphite { 
+	system_role { "misc::graphite": description => "graphite and carbon services" }
+
+	include misc::apache2
+
+	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
+		ensure => present;
+	}
+
+	package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
+		ensure => "0.9.9-1";
+	} 
+}
+
+
 class misc::scripts {
 	require misc::passwordScripts
 
