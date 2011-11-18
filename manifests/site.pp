@@ -1760,7 +1760,9 @@ node "professor.pmtp.wmnet" {
 	$cluster = "misc"
 	include base,
 		ganglia,
-		ntp::client
+		ntp::client,
+		misc::udpprofile::collector,
+		misc::graphite
 }
 
 node "project1.wikimedia.org" {
