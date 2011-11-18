@@ -1756,7 +1756,7 @@ node "pdf3.wikimedia.org" {
 		accounts::file_mover
 }
 
-node "professor.pmtp.wmnet" {
+node "professor.pmtpa.wmnet" {
 	$cluster = "misc"
 	include base,
 		ganglia,
