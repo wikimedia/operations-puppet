@@ -534,6 +534,18 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
+class misc::udp-profiling { 
+	system_role { "misc::udp-profiling": description => "MediaWiki udpprofile collector and graphite" }
+
+	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
+		ensure => present;
+	}
+
+	package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
+		ensure => "0.9.9-1";
+	} 
+}
+
 # TODO: fold most this in a generic, parameterized 'udp2log' class
 class misc::mediawiki-logger {
 	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
@@ -1569,6 +1581,8 @@ class misc::contint::test {
 
 class misc::udpprofile::collector {
 	system_role { "misc::udpprofile::collector": description => "MediaWiki UDP profile collector" }
+
+	include misc::apache2;
 
 	package { "udpprofile":
 		ensure => latest;
