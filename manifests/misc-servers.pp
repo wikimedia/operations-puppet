@@ -1601,11 +1601,11 @@ class misc::graphite {
 			group => "root",
 			mode => 0444,
 			source => "puppet:///files/graphite/carbon.conf";
-		"/a/graphite/conf/graphite.conf":
+		"/a/graphite/conf/dashboard.conf":
 			owner => "root",
 			group => "root",
 			mode => 0444,
-			source => "puppet:///files/graphite/graphite.conf";
+			source => "puppet:///files/graphite/dashboard.conf";
 		"/a/graphite/conf/storage-schemas.conf":
 			owner => "root",
 			group => "root",
