@@ -1593,9 +1593,31 @@ class misc::graphite {
 
 	package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
 		ensure => "0.9.9-1";
-	} 
-}
+	}
 
+	file { 
+		"/a/graphite/conf/carbon.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/carbon.conf";
+		"/a/graphite/conf/graphite.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/graphite.conf";
+		"/a/graphite/conf/storage-schemas.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/storage-schemas.conf";
+		"/a/graphite/storage":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0755,
+			ensure => directory;
+	}
+}
 
 class misc::scripts {
 	require misc::passwordScripts
