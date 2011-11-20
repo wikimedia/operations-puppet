@@ -1880,7 +1880,7 @@ class misc::l10nupdate {
 
 	cron {
 		l10nupdate:
-			command => "/usr/local/bin/l10nupdate-1 > /var/log/l10nupdate 2>&1",
+			command => "/usr/local/bin/l10nupdate-1 >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
 			user => l10nupdate,
 			hour => 2,
 			minute => 0,
@@ -1920,14 +1920,19 @@ class misc::l10nupdate {
 			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
 	}
 
-	# Make sure the log file exists and has adequate permissions
-	# TODO we need log rotation here
+	# Make sure the log directory exists and has adequate permissions.
+	# It's called l10nupdatelog because /var/log/l10nupdate was used
+	# previously so it'll be an existing file on some systems.
+	# Also set up log rotation
 	file {
-		"/var/log/l10nupdate":
+		"/var/log/l10nupdatelog/":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
-			ensure => present;
+			ensure => directory,
+		"/etc/logrotate.d/l10nupdate":
+			source => "puppet:///files/logrotate/l10nupdate"
+			mode => 0444;
 	}
 }
 
