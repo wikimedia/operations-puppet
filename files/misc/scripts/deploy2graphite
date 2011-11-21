@@ -1,0 +1,19 @@
+#! /bin/bash
+
+usage() { 
+	echo "$0 deploytype"
+	exit
+}
+
+[ "${1/-h}" != "$1" ] && usage
+
+if [ -z $DOLOGMSGNOLOG ]; then
+	if [ "$1" ] && [ -z "$2" ] ; then 
+		utime="$(date +%s)"
+		echo "deploy.$1 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003
+		echo "deploy.any 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003
+	else
+		usage
+	fi
+fi
+
