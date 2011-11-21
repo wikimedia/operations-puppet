@@ -622,6 +622,9 @@ node "bayes.wikimedia.org" {
 }
 
 node "brewster.wikimedia.org" {
+
+	$tftpboot_server_type = 'master'
+	
 	include base,
 		ganglia,
 		ntp::client,

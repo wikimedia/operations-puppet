@@ -102,31 +102,61 @@ class misc::install-server {
 			ensure => latest;
 		}
 
-		## allow other tftp servers to rsync /srv/tftpboot
+		## allow other tftp servers to rsync /srv/tftpboot on the master
 
-#		package { rsync:
-#			ensure => latest;
-#		}
-#
-#		file {
-#			"/etc/rsyncd.conf":
-#				require => Package[rsync],
-#				mode => 0444,
-#				owner => root,
-#				group => root,
-#				source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
-#			"/etc/default/rsync":
-#				require => Package[rsync],
-#				mode => 0444,
-#				owner => root,
-#				group => root,
-#				source => "puppet:///files/rsync/rsync.default";
-#		}
-#
-#		service { rsync:
-#			require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-#			ensure => running;
-#		}
+		if ! $tftpboot_server_type {
+			$tftpboot_server_type = 'slave'
+		}
+
+		if ( $tftpboot_server_type == 'master' ) {
+
+			include account::tftp_mover
+
+			$rsync_iptables_command = "
+				/sbin/iptables -F rsync;
+				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
+				/sbin/iptables -A rsync -s 208.80.154.10 -j ACCEPT;
+				/sbin/iptables -A rsync -j DROP;
+				/sbin/iptables -I INPUT -p tcp --dport 873 -j rsync
+				"
+
+			exec { rsync-firewall-rules:
+				command => $rsync_iptables_command,
+				onlyif => "/sbin/iptables -N rsync",
+				path => "/sbin",
+				timeout => 5,
+				user => root
+			}
+
+			package { rsync:
+				ensure => latest;
+			}
+
+			file {
+				"/etc/rsyncd.conf":
+					require => Package[rsync],
+					mode => 0444,
+					owner => root,
+					group => root,
+					source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
+				"/etc/default/rsync":
+					require => Package[rsync],
+					mode => 0444,
+					owner => root,
+					group => root,
+					source => "puppet:///files/rsync/rsync.default";
+			}
+
+			service { rsync:
+				require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+				ensure => running;
+			}
+		}
+
+		if ( $tftpboot_server_type == 'slave' ) {
+
+			cron { rsync_tftpboot : command => "rsync -a brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
+		}
 	}
 
 	class caching-proxy {
