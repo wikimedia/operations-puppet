@@ -110,8 +110,6 @@ class misc::install-server {
 
 		if ( $tftpboot_server_type == 'master' ) {
 
-			include account::tftp_mover
-
 			$rsync_iptables_command = "
 				/sbin/iptables -F rsync;
 				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
