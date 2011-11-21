@@ -1,7 +1,14 @@
 #! /bin/bash
 
 usage() { 
-	echo "$0 deploytype"
+	echo "Usage: $0 deploytype"
+	echo "$0 will log an entry at graphite.wikimedia.org indicating that a"
+	echo " deploy event of the type indicated has occurred."
+	echo " Expected deploy events include sync-common, sync-file, scap, etc."
+	echo " These messages can be suppressed by setting an environment variable $DOLOGMSGNOLOG."
+	echo ""
+	echo "  IF YOU'RE RUNNING THIS BY HAND, PLEASE STOP.  Go ask Asher why.  :)"
+	echo ""
 	exit
 }
 
