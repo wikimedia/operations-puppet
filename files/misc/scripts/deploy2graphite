@@ -1,0 +1,7 @@
+#! /bin/sh
+if [ -z $DOLOGMSGNOLOG ]; then
+	utime="$(perl -e 'print time')"
+	echo "deploy.$1 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003
+	echo "deploy.any 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003
+fi
+
