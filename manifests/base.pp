@@ -288,6 +288,13 @@ class base::vimconfig {
 		ensure => present; 
 	}
 }
+
+class base::iperf {
+	if ($lsbdistid == "Ubuntu") {
+		package {"iperf": ensure => latest }
+	}
+}
+
 class base {
 
 	case $operatingsystem {
@@ -309,6 +316,7 @@ class base {
 		base::vimconfig,
 		base::standard-packages,
 		base::monitoring::host,
+		base::iperf,
 		ssh
 
 	if $realm == "labs" {
