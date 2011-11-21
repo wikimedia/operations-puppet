@@ -1219,7 +1219,7 @@ class accounts {
 		}
         }
 
-	class file_mover inherits baseaccount {
+	class tftp_mover inherits baseaccount {
 		$username = "tftp_mover"
 		$realname = "tftp_mover"
 		$uid = 10010
