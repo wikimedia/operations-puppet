@@ -1159,6 +1159,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		include misc::jenkins
 	}
 
+	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
+	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
 node "gurvin.wikimedia.org" {
