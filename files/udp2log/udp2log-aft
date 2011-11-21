@@ -29,7 +29,7 @@ if [ -f /proc/sys/net/core/rmem_max ] ; then
 	else
 		queue=$((rmax/1024))
 	fi
-	$DAEMON_ARGS="$DAEMON_ARGS --recv-queue=$queue"
+	DAEMON_ARGS="$DAEMON_ARGS --recv-queue=$queue"
 fi
 
 # Exit if the package is not installed
