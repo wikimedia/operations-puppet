@@ -631,7 +631,7 @@ node "brewster.wikimedia.org" {
 		misc::install-server,
 		exim::simple-mail-sender,
 		backup::client,
-		account::tftp_mover
+		accounts::tftp_mover
 }
 
 node "carbon.wikimedia.org" {
