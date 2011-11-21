@@ -2892,51 +2892,7 @@ node "streber.wikimedia.org" {
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
-node "snapshot1.pmtpa.wmnet" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		mediawiki::sync,
-		snapshots::packages,
-		snapshots::sync,
-		snapshots::files,
-		snapshots::noapache,
-		admins::roots,
-		admins::mortals,
-		accounts::datasets,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot2.pmtpa.wmnet" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		mediawiki::sync,
-		snapshots::packages,
-		snapshots::sync,
-		snapshots::files,
-		snapshots::noapache,
-		admins::roots,
-		admins::mortals,
-		accounts::datasets,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot3.wikimedia.org" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		applicationserver::home,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot4.pmtpa.wmnet" {
+node /snapshot[1-4]\.pmtpa\.wmnet/ {
 	$gid=500
 	include base,
 		ntp::client,
