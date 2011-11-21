@@ -1223,6 +1223,7 @@ class accounts {
 		$username = "tftp_mover"
 		$realname = "tftp_mover"
 		$uid = 10010
+		$gid = 10010
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
