@@ -178,7 +178,7 @@ class base::sysctl {
 }
 
 class base::standard-packages {
-	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb" ]
+	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf" ]
 
 	if $lsbdistid == "Ubuntu" {
 		package { $packages:
@@ -288,6 +288,7 @@ class base::vimconfig {
 		ensure => present; 
 	}
 }
+
 class base {
 
 	case $operatingsystem {
