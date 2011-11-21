@@ -70,3 +70,4 @@ echo 'Finished'
 
 DOLOGMSGNOLOG=
 $BINDIR/dologmsg "sync done."
+$BINDIR/deploy2graphite scap

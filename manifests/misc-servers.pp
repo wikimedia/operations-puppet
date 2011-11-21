@@ -1644,6 +1644,11 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/dologmsg";
+		"/usr/local/bin/deploy2graphite":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/deploy2graphite";
 		"/usr/local/bin/fatalmonitor":
 			owner => root,
 			group => root,
