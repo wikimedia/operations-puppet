@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/l10nupdate
+#####################################################################
+
+/var/log/l10nupdatelog/*.log {
+	daily
+	olddir /var/log/l10nupdatelog/archive
+	notifempty
+	maxage 180
+	rotate 1000
+	dateext
+	compress
+}
+
