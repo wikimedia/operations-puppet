@@ -56,7 +56,7 @@ class ssh::hostkeys::publish {
 
 class ssh::hostkeys::collect {
 	# Do this about twice a day
-	if $hostname == "fenari" or generate("/usr/local/bin/position-of-the-moon") == "True" {
+	if $hostname == "fenari" or $hostname == "bast1001" or generate("/usr/local/bin/position-of-the-moon") == "True" {
 		notice("Collecting SSH host keys on $hostname.")
 
 		# Install all collected ssh host keys
