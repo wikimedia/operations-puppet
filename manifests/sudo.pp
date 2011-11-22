@@ -1,6 +1,7 @@
 # sudo.pp
 
-define sudo_user( $user, $privileges ) {
+define sudo_user( $privileges ) {
+	$user = $title
 
 	file { "/etc/sudoers.d/$user":
 		owner => root,
@@ -11,7 +12,8 @@ define sudo_user( $user, $privileges ) {
 
 }
 
-define sudo_group( $group, $privileges ) {
+define sudo_group( $privileges ) 
+	$group = $title
 
 	file { "/etc/sudoers.d/$group":
 		owner => root,
@@ -29,7 +31,7 @@ class sudo::labs_project {
 	if ! ($instanceproject in ['testlabs', 'admininstances']) {
 		# Paranoia check
 		if $realm == "labs" {
-			sudo_group { $instanceproject: group => "${instanceproject}", privileges => ['ALL = NOPASSWD: ALL'] }
+			sudo_group { "${instanceproject}": privileges => ['ALL = NOPASSWD: ALL'] }
 		}
 	}
 
