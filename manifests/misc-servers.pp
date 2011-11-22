@@ -130,7 +130,7 @@ class misc::install-server {
 
 		if ( $tftpboot_server_type == 'slave' ) {
 
-			cron { rsync_tftpboot : command => "rsync -a brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
+			cron { rsync_tftpboot : command => "rsync -a tftp_mover@brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
 		}
 	}
 

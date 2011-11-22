@@ -1223,7 +1223,7 @@ class accounts {
 		$username = "tftp_mover"
 		$realname = "tftp_mover"
 		$uid = 10010
-		$gid = 10010
+		$gid = 34
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1231,6 +1231,11 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key {
+				"root@carbon":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEArS8yzB2McGHb1HvIe76G8/lp5X2nBJwMEdIYMgSj5EzAEhWjcbq8imNJzvENdnpfjV4rzmB4csHyesDpFeQGXt6+EyOI9V87x4URbQ4dIyy1iJIc6fsxT7xwELlxjMwBmabdUBL3F2yQWM1ZKUKFgUYolFbyAA5hJqw3KGx3NbGSVaT3IuFAxbiAj6juPoZBgNT/2EP92+Ksvq4KkLSbIN1hTtk9yyb48YLz4MCRrL7SGizSTDVpbPIIEt5DkWbRpfcmtnVk+Kn5xIeGS5QEFbTK9xiu8rR6GTJHJr0qbO4BQMySoFEcqcrx43sDPLDFgRCoV2ILmSFXQDF4WUPVJQ==";
 				"root@hooft":
 					ensure  => present,
 					user    => $username,
