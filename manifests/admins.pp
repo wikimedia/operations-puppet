@@ -1271,6 +1271,11 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
+				"py@trap.local":
+					ensure	=> absent,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAo6QSWqR2j6bS3c0WzlekW9d5n3DlxhwKhHHd4GJScPiTwztyVCN8wj+flb7qfrXKx0CT+UY1z8VlnoktuTK7OyvifQAvyIrkeAbX2JoOP+8NVB3a/bsnqLjKqdvbrlndBtD0cbdqvd4XJd9OU2BoJtxNNpcBn/LEUK8LJ+PiAMO1PVEN5+UY3hqm+LM7syMxrWugGEVg7gHDpOzmQmhmqUQ3kXNfabjsgG9xyXa6TNqyKHvP0bhdWXAYjgMMeNU+IufDQdNJMFBKblo0QFqEO7/vgDQTnkc60/fvJSekRchSl9skeiE/nFw8O7s4h6fF1iZ4J4kiAF7nDgfvVCNi9Q==";
 				"py@tarp":
 					ensure	=> present,
 					user	=> $username,
