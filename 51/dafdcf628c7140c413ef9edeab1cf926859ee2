@@ -1,0 +1,9 @@
+Code-Review+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: Bhartshorne <ben@wikimedia.org>
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Tue, 22 Nov 2011 00:55:10 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/981
+Project: operations/puppet
+Branch: refs/heads/production
