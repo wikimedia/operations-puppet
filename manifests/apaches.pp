@@ -25,6 +25,8 @@ class apaches::packages {
 
 class apaches::cron {
         cron {
+		synclocalisation:
+			ensure => absent;
 		cleanupipc:
 			command => "ipcs -s | grep apache | cut -f 2 -d \\  | xargs -rn 1 ipcrm -s",
 			user => root,
