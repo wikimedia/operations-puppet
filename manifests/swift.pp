@@ -30,6 +30,7 @@ class swift::proxy {
 		ensure => present;
 	}
 
+	# FIXME: use generic install_cert in /etc/ssl if possible
 	file { "/etc/swift/cert.crt":
 			ensure => present,
 			source => "puppet:///private/swift/cert.crt",
@@ -44,6 +45,8 @@ class swift::proxy {
 			mode => 0444;
 	}
 
+	# TODO: create and/or use a generic (parameterized) memcached class instead
+	
 	# set up memcached
 	package { "memcached":
 			ensure => present;
@@ -104,6 +107,7 @@ class swift::proxy::testclusterconf {
 	# file for each swift cluster so that they can use their own memcached 
 	# instances.
 	
+	# FIXME: require /etc/swift to exist
 	file { "/etc/swift/proxy-server.conf":
 			ensure => present,
 			source => "puppet:///files/swift/proxy-server.conf-testcluster",
@@ -123,6 +127,8 @@ class swift::storage {
 		  "swift-object" ]:
 		ensure => present;
 	}
+
+	# FIXME: use the generic rsync class in generic-definitions
 
 	# set up rsync to allow the storage nodes to share data bits around
 	package { "rsync":
