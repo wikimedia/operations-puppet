@@ -2064,7 +2064,7 @@ class misc::bugzilla::crons {
 		user    => root,
 		hour    => 0,
 		minute  => 5,
-		weekday     => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
+		weekday => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
 	}
 	# 2) on sunday, regenerates the whole statistics data
 	cron { bugzilla_collectstats_regenerate:
@@ -2072,6 +2072,6 @@ class misc::bugzilla::crons {
 		user    => root,
 		hour    => 0,
 		minute  => 5,
-		weekday     => 0  # Sunday
+		weekday => 0  # Sunday
 	}
 }
