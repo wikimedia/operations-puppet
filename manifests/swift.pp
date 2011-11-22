@@ -86,9 +86,9 @@ class swift::proxy {
 			owner => root,
 			group => root,
 			mode => 0444;
-		"/usr/local/lib/python2.6/dist-packages/wmf/__init.py__":
+		"/usr/local/lib/python2.6/dist-packages/wmf/__init__.py":
 			ensure => present,
-			source => "puppet:///files/swift/SwiftMedia/wmf/__init.py__",
+			source => "puppet:///files/swift/SwiftMedia/wmf/__init__.py",
 			owner => root,
 			group => root,
 			mode => 0444;
