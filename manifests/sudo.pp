@@ -24,10 +24,23 @@ define sudo_group( $group, $privileges ) {
 
 class sudo::labs_project {
 
+	include sudo::default
+
 	# For all project except ones listed here, give sudo privileges
 	# to all project members
 	if ! ($instanceproject in ['testlabs', 'admininstances']) {
 		sudo_group { $instanceproject: group => "${instanceproject}", privileges => ['ALL = NOPASSWD: ALL'] }
+	}
+
+}
+
+class sudo::default {
+
+	file { "/etc/sudoers":
+		owner => root,
+		group => root,
+		mode => 0440,
+		source => "puppet:///files/sudo/sudoers.default";
 	}
 
 }
