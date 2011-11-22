@@ -1090,9 +1090,15 @@ node "fenari.wikimedia.org" {
 node "formey.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { demon: user => "demon", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
-	sudo_user { robla: user => "robla", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
-	sudo_user { sumanah: user => "sumanah", privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user'] }
+	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+			'ALL = NOPASSWD: /usr/local/bin/svn-group',
+			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
+	sudo_user { demon: user => "demon", privileges => $sudo_privs }
+	sudo_user { robla: user => "robla", privileges => $sudo_privs }
+	sudo_user { sumanah: user => "sumanah", privileges => $sudo_privs }
+
 	$cluster = "misc"
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
