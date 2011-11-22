@@ -6,7 +6,7 @@ workers = 8
 user = swift
 
 [pipeline:main]
-pipeline = healthcheck cache tempauth proxy-server
+pipeline = rewrite healthcheck cache tempauth proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -22,4 +22,20 @@ use = egg:swift#healthcheck
 [filter:cache]
 use = egg:swift#memcache
 memcache_servers = copper.wikimedia.org:11211,zinc.wikimedia.org:11211
+
+[filter:rewrite]
+# the auth system turns our login and key into an account / token pair.
+# the account remains valid forever, but the token times out.
+account = system
+url = http://127.0.0.1/auth/v1.0
+login = root
+key = testpass
+# the name of the scaler cluster.
+thumbhost = srv222.pmtpa.wmnet
+# upload doesn't like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
+user_agent = Mozilla/5.0
+# uncomment this if we want to write the 404 handler's output into Swift.
+# writethumb=yes
+
+paste.filter_factory = wmf.rewrite:filter_factory
 
