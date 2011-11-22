@@ -1009,11 +1009,20 @@ class accounts {
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
+			# old key
 			ssh_authorized_key { "catrope@scratch":
-				ensure 	=> present,
+				ensure 	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAg8ogPqDDyhMBfXdV6Z8UKv3esRE4I0EAkrxnCCXuBfBnJ1A0dNsV8hKBsdRs4UCEitIA1a6bSCbq+kV7Xvq0yMihAFe3AG+26OISi5NZP+gNtx/aIBLGAgDXoC3M4Nb27F+pEDSfhT5OC6N/uO3o1UK4RSfgWNsmNW/lk5Ir57U="
+			}
+
+			# new key
+			ssh_authorized_key { "catrope@fenari":
+				ensure  => present,
+				user    => $username,
+				type    => "ssh-rsa",
+				key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDt0lR5k9MsCt1TnefSX/AiNsVAurjqgl5w0l6xgRmZWeuJUJ0X+0svKjgJPnTVFLjfBzMy7ACkk3R5U9UnW4JNY4R3PlgaSKUe+u4/iFP9MVC0UsS6My6uVW3xgEFTksEQucmWsj0SJVjLcS5hGIu0Tl9SLkSBT5gQLwXRhrXopCK+Aco7ACSuMNjKe7Vtslmh6l3qYT8L9nfYJ/dZ/2Oryzw7rMb1SgQQhXqUIUzTu0lSBaTSjPbe5fre2RvGLnIUQbrt0PQd3AKGBI65LaW53fEMhWHXTdw/p46PkJLfQ1X3i+N8o4ZGRr4aVP/6Cn5ANOyu3JnSoxmI6Pjoyurj"
 			}
 		}
 	}
