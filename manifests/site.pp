@@ -1098,6 +1098,7 @@ node "formey.wikimedia.org" {
 	sudo_user { demon: user => "demon", privileges => $sudo_privs }
 	sudo_user { robla: user => "robla", privileges => $sudo_privs }
 	sudo_user { sumanah: user => "sumanah", privileges => $sudo_privs }
+	sudo_user { reedy: user => "reedy", privileges => $sudo_privs }
 
 	$cluster = "misc"
 	$gid = 550
