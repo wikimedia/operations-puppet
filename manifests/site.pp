@@ -621,6 +621,24 @@ node "bayes.wikimedia.org" {
 		accounts::diederik
 }
 
+node "bast1001.wikimedia.org" {
+        $cluster = "misc"
+        $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+
+        include base,
+                ganglia,
+                svn::client,
+                ntp::client,
+                nfs::home,
+                admins::roots,
+                admins::mortals,
+                admins::restricted,
+                misc::bastionhost,
+                misc::scripts,
+                exim::simple-mail-sender,
+                nrpe
+}
+
 node "brewster.wikimedia.org" {
 	include base,
 		ganglia,
