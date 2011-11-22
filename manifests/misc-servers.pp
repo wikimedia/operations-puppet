@@ -109,6 +109,7 @@ class misc::install-server {
 		}
 
 		if ( $tftpboot_server_type == 'master' ) {
+			class { 'generic::rsyncd': config => "tftpboot" }
 
 			$rsync_iptables_command = "
 				/sbin/iptables -F rsync;
@@ -124,30 +125,6 @@ class misc::install-server {
 				path => "/sbin",
 				timeout => 5,
 				user => root
-			}
-
-			package { rsync:
-				ensure => latest;
-			}
-
-			file {
-				"/etc/rsyncd.conf":
-					require => Package[rsync],
-					mode => 0444,
-					owner => root,
-					group => root,
-					source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
-				"/etc/default/rsync":
-					require => Package[rsync],
-					mode => 0444,
-					owner => root,
-					group => root,
-					source => "puppet:///files/rsync/rsync.default";
-			}
-
-			service { rsync:
-				require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-				ensure => running;
 			}
 		}
 
