@@ -42,6 +42,14 @@ define systemuser($name, $home, $shell="/bin/false", $groups=undef) {
 	}
 }
 
+# gives a user sudo permissions to add/delete/modify LDAP users
+define ldap_admin_user($username) {
+	sudo_user { $username:
+		user => "$username",
+		privileges => ['ALL = NOPASSWD: /usr/local/sbin/add-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user', 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user', 'ALL = NOPASSWD: /usr/local/bin/svn-group', 'ALL = NOPASSWD: /usr/local/sbin/add-labs-user']
+	}
+}
+
 # Enables a certain Apache 2 site
 define apache_site($name, $prefix="", $ensure="link") {
 	file { "/etc/apache2/sites-enabled/${prefix}${name}":
