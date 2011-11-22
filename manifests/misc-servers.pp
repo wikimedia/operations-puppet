@@ -2072,7 +2072,7 @@ class misc::gsbmonitoring {
 }
 
 
-class misc::bugzilla_crons {
+class misc::bugzilla::crons {
 	cron { bugzilla_whine:
 		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
 		user => root,
