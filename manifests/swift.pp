@@ -37,7 +37,8 @@ class swift::iptables-accepts {
 	require "swift::iptables-purges"
 	# Rememeber to place modified or removed rules into purges!
 	# common services for all hosts
-	#iptables_add_rule{ "swift_common_established": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "swift_common_established": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "swift_common_established": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_icmp": service => "icmp", jump => "ACCEPT" }
 	# swift specific services
