@@ -20,10 +20,10 @@ logfile /var/log/memcached.log
 # Start with a cap of 2000 megs of memory. It's reasonable, and the daemon default
 # Note that the daemon will grow to this size, but does not start out holding this much
 # memory
--m 2000
+-m <%= memcached_size %>
 
 # Default connection port is 11000 ( Wikimedia specific, general default is 11211 )
--p 11000
+-p <%= memcached_port %>
 
 # Run the daemon as nobody. The start-memcached will default to running as root if no
 # -u command is present in this config file

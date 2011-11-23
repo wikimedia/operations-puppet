@@ -3,9 +3,9 @@
 # Virtual resource for monitoring server
 @monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
 
-class memcached {
+class memcached ($memcached_size = '2000', $memcached_port = '11000') {
 
-	include memcached::config
+	class { "memcached::config": memcached_size => '$memcached_size', memcached_port => '$memcached_port' }
 
 	package { memcached:
 		ensure => latest;
@@ -19,7 +19,7 @@ class memcached {
 
 	class monitoring {
 		# Nagios
-		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!11000" }
+		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!$memcached_port" }
 
 		# Ganglia
 		package { python-memcache:
@@ -50,11 +50,11 @@ class memcached {
 	include memcached::monitoring
 }
 
-class memcached::config {
+class memcached::config ($memcached_size, $memcached_port) {
 
 	file {
 		"/etc/memcached.conf":
-			source => "puppet:///files/memcached/memcached.conf",
+			content => template("memcached/memcached.conf.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
@@ -68,9 +68,9 @@ class memcached::disabled {
 		ensure => absent;
 	}
 
-        service { memcached:
-                require => Package[memcached],
-		enable     => false,
-                ensure => stopped;
-        }
+	service { memcached:
+		require => Package[memcached],
+		enable  => false,
+		ensure  => stopped;
+	}
 }
