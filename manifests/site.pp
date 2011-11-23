@@ -1,6 +1,7 @@
 # site.pp
 
 import "realm.pp"	# These ones first
+import "generic-definitions.pp"
 import "base.pp"
 
 import "admins.pp"
