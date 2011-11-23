@@ -31,7 +31,7 @@ class sudo::labs_project {
 	if ! ($instanceproject in ['testlabs', 'admininstances']) {
 		# Paranoia check
 		if $realm == "labs" {
-			sudo_group { $instanceproject: group => "${instanceproject}", privileges => ['ALL = NOPASSWD: ALL'] }
+			sudo_group { $instanceproject: group => "${instanceproject}", privileges => ['ALL=(ALL) ALL'] }
 		}
 	}
 
