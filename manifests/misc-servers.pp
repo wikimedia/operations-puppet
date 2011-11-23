@@ -2027,3 +2027,21 @@ class misc::bugzilla_crons {
 		day     => 0  # Sunday
 	}
 }
+
+class misc::package-builder {
+	system_role { "misc::package-builder": description => "Debian package builder" }
+	
+	class packages {
+		package { [ "build-essential", "fakeroot", "deb-helper", "git-core", "git-buildpackage" ]:
+			ensure => latest;
+		}
+	}
+	
+	class defaults {
+		file { "/etc/devscripts.conf":
+			content => template("templates/misc/devscripts.conf.erb")
+		}
+	}
+	
+	include packages, defaults
+}
