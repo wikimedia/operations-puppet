@@ -50,9 +50,10 @@ class gerrit::jetty {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::account,
-		gerrit::gerrit_config
+		gerrit::gerrit_config,
+		generic::packages::git-core
 
-	package { [ "openjdk-6-jre", "git-core", "gitweb", "git-svn" ]:
+	package { [ "openjdk-6-jre", "gitweb", "git-svn" ]:
 		ensure => latest; 
 	} 
 

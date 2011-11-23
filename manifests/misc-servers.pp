@@ -1434,7 +1434,7 @@ class misc::contint::test {
 
 	$CI_PHP_packages = [ "libapache2-mod-php5", "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
 	$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
-	$CI_DEV_packages = [ "ant", "git-core", "imagemagick", "subversion" ]
+	$CI_DEV_packages = [ "ant", "imagemagick", "subversion" ]
 
 	package { $CI_PHP_packages:
 		ensure => present;
@@ -1447,6 +1447,8 @@ class misc::contint::test {
 	package { $CI_DEV_packages:
 		ensure => present;
 	}
+	
+	include generic::packages::git-core
 	
 	# Prefer the PHP package from Ubuntu
 	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl ]: }
@@ -2031,8 +2033,10 @@ class misc::bugzilla_crons {
 class misc::package-builder {
 	system_role { "misc::package-builder": description => "Debian package builder" }
 	
+	include generic::packages::git-core
+	
 	class packages {
-		package { [ "build-essential", "fakeroot", "deb-helper", "git-core", "git-buildpackage" ]:
+		package { [ "build-essential", "fakeroot", "deb-helper", "git-buildpackage" ]:
 			ensure => latest;
 		}
 	}

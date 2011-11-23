@@ -34,9 +34,7 @@ class puppetmaster::passenger {
 	}
 
 	if $is_labs_puppet_master {
-		package { "git-core":
-			ensure => latest;
-		}
+		include generic::packages::git-core
 
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
