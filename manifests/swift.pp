@@ -62,7 +62,7 @@ class swift::iptables  {
 	require "swift::iptables-drops"
 	# This exec should always occur last in the requirement chain.
 	## creating iptables rules but not enabling them to test.
-	#iptables_add_exec{ "swift: service => "swift" }
+	iptables_add_exec{ "swift": service => "swift" }
 }
 
 class swift::proxy {
