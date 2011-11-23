@@ -1,3 +1,5 @@
+import "generic-definitions.pp"
+
 class puppetmaster::passenger {
 
 	if ( $puppet_passenger_bind_address == "" ) {
