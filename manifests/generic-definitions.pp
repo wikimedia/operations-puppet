@@ -627,6 +627,6 @@ hostname1=${tag}
 
 }
 
-define generic::packages::git-core {
+class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
