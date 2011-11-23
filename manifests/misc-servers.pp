@@ -2043,7 +2043,7 @@ class misc::package-builder {
 	
 	class defaults {
 		file { "/etc/devscripts.conf":
-			content => template("templates/misc/devscripts.conf.erb")
+			content => template("misc/devscripts.conf.erb")
 		}
 	}
 	
