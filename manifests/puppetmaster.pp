@@ -12,7 +12,7 @@ class puppetmaster::passenger {
 	# add an Allow from statement (and Order Allow,Deny), limiting access
 	# to the passenger service.
 
-	package { [ "puppetmaster", "puppetmaster-common", "puppetmaster-passenger", "vim-puppet", "puppet-el", "libapache2-mod-passenger", "libactiverecord-ruby1.8", "libactivesupport-ruby1.8", "libldap-ruby1.8" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "puppetmaster-passenger", "vim-puppet", "puppet-el", "libapache2-mod-passenger", "libldap-ruby1.8" ]:
 		ensure => latest;
 	}
 
