@@ -2042,8 +2042,14 @@ class misc::package-builder {
 	}
 	
 	class defaults {
-		file { "/etc/devscripts.conf":
-			content => template("misc/devscripts.conf.erb")
+		File { mode => 0444 }
+		
+		file {
+			"/etc/devscripts.conf":
+				content => template("misc/devscripts.conf.erb");
+			"/etc/git-buildpackage/gbp.conf":
+				require => Package["git-buildpackage"],
+				content => template("misc/gbp.conf.erb");
 		}
 	}
 	

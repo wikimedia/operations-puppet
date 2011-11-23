@@ -1,3 +1,5 @@
+# This file is managed by Puppet!
+
 # This configuration file gives defaults for the scripts in
 # the devscripts package, as documented in the individual manpages.
 # Variables defined here may be overridden by a per-user ~/.devscripts
@@ -356,7 +358,7 @@
 # quoted, for example "-m'Julian Gilbey <jdg@debian.org>' -us -uc"
 # If this contains a -r, -d or -D option, this will also be recognised
 # when running debuild binary|binary-arch|...
-# DEBUILD_DPKG_BUILDPACKAGE_OPTS=""
+DEBUILD_DPKG_BUILDPACKAGE_OPTS="-us -uc"
 # 
 # Do we run lintian at the end of a full run?
 # DEBUILD_LINTIAN=yes
