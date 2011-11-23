@@ -22,32 +22,75 @@ class swift::base {
 
 }
 
+class swift::common::iptables-purges {
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
+	iptables_purge_service{ "swift_default_deny": service => "all" }
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
 class swift::proxy::iptables-purges {
 	require "iptables::tables"
+	require "swift::common::iptables-purges"
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "swift_proxy_default_deny": service => "all" }
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
+class swift::storage::iptables-purges {
+	require "iptables::tables"
+	require "swift::common::iptables-purges"
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
 }
 
-class swift::proxy::iptables-accepts {
-	require "swift::proxy::iptables-purges"
+class swift::common::iptables-accepts {
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "swift_proxy_http_alt": service => "http-alt", jump => "ACCEPT" }
-	iptables_add_service{ "swift_proxy_memcached": service => "memcached-standard", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_proxy_rsyncd": service => "rsyncd", source => "208.80.152.0/22", jump => "ACCEPT" }
+	# common services for all hosts
+	iptables_add_service{ "swift_proxy_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_proxy_icmp": service => "icmp", jump => "ACCEPT" }
+	# swift specific services
 	iptables_add_service{ "swift_proxy_account": service => "swift_account", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_container": service => "swift_container", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_object": service => "swift_object", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_proxy_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_proxy_icmp": service => "icmp", jump => "ACCEPT" }
 }
 
+class swift::storage::iptables-accepts {
+	require "swift::storage::iptables-purges"
+	require "swift::common::iptables-accepts"
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "swift_proxy_rsyncd": service => "rsyncd", source => "208.80.152.0/22", jump => "ACCEPT" }
+}
+class swift::proxy::iptables-accepts {
+	require "swift::proxy::iptables-purges"
+	require "swift::common::iptables-accepts"
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "swift_proxy_http_alt": service => "http-alt", jump => "ACCEPT" }
+	iptables_add_service{ "swift_proxy_memcached": service => "memcached-standard", source => "208.80.152.0/22", jump => "ACCEPT" }
+}
+
+class swift::common::iptables-drops {
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "swift_default_deny": service => "all", jump => "DROP" }
+}
+class swift::storage::iptables-drops {
+	require "swift::storage::iptables-accepts"
+	require "swift::common::iptables-drops"
+}
 class swift::proxy::iptables-drops {
 	require "swift::proxy::iptables-accepts"
-	iptables_add_service{ "swift_proxy_default_deny": service => "all", jump => "DROP" }
+	require "swift::common::iptables-drops"
 }
 
+class swift::storage::iptables  {
+	# We use the following requirement chain:
+	# iptables -> iptables::drops -> iptables::accepts -> iptables::purges
+	#
+	# This ensures proper ordering of the rules
+	require "swift::storage::iptables-drops"
+	# This exec should always occur last in the requirement chain.
+	## creating iptables rules but not enabling them to test.
+	#iptables_add_exec{ "swift_storage": service => "swift_storage" }
+}
 class swift::proxy::iptables  {
 	# We use the following requirement chain:
 	# iptables -> iptables::drops -> iptables::accepts -> iptables::purges
@@ -162,6 +205,9 @@ class swift::proxy::testclusterconf {
 class swift::storage {
 	include swift::base
 	system_role { "swift::storage": description => "swift backend storage brick" }
+
+	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
+	include swift::proxy::iptables
 
 	package { 
 		[ "swift-account",
