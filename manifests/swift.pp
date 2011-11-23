@@ -40,7 +40,7 @@ class swift::proxy::iptables-accepts {
 	iptables_add_service{ "swift_proxy_container": service => "swift_container", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_object": service => "swift_object", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_proxy_icmp": service => "icmp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_proxy_icmp": service => "icmp", jump => "ACCEPT" }
 }
 
 class swift::proxy::iptables-drops {
