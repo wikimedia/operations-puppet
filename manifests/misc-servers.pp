@@ -2036,7 +2036,7 @@ class misc::package-builder {
 	include generic::packages::git-core
 	
 	class packages {
-		package { [ "build-essential", "fakeroot", "deb-helper", "git-buildpackage" ]:
+		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage" ]:
 			ensure => latest;
 		}
 	}
