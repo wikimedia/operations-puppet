@@ -197,7 +197,7 @@ define iptables_add_rule( $table, $chain, $source="", $destination="", $protocol
 			changes => [
 				"set $path_exact/ctstate \"RELATED,ESTABLISHED\"",
 				"ins match before $path_exact/ctstate",
-				"set $path_exact/match conntrack"
+				"set $path_exact/match[2] conntrack"
 				   ],
 			require => Augeas["iptables $title"];
 		}
