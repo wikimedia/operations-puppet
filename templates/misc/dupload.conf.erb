@@ -32,14 +32,14 @@ package config;
 
 # Example of a default host:
 #$default_host = "anonymous-ftp-master";
-$default_host = "ubuntu";
+$default_host = "wikimedia";
 
 # -----------------
 # Pre-defined hooks
 # -----------------
 # Check changes file for valid signatures
 # Using GPG:
-$preupload{'changes'} = '/usr/share/dupload/gpg-check %1';
+#$preupload{'changes'} = '/usr/share/dupload/gpg-check %1';
 # or using PGP:
 # $preupload{'changes'} = '/usr/share/dupload/pgp-check %1';
 
@@ -140,6 +140,14 @@ $cfg{'bpo'} = {
 #	nonus => 1,
 #};
 
+# Wikimedia APT repository on brewster
+$cfg{'wikimedia'} = {
+	fqdn => "brewster.wikimedia.org",
+	login => "root",
+	method => "scpb",
+	incoming => "/srv/wikimedia/incoming/",
+	dinstall_runs => 1,
+};
 
 # Don't remove the following line.  Perl needs it.
 1;

@@ -2006,7 +2006,7 @@ class misc::package-builder {
 	include generic::packages::git-core
 	
 	class packages {
-		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage" ]:
+		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload" ]:
 			ensure => latest;
 		}
 	}
@@ -2020,6 +2020,9 @@ class misc::package-builder {
 			"/etc/git-buildpackage/gbp.conf":
 				require => Package["git-buildpackage"],
 				content => template("misc/gbp.conf.erb");
+			"/etc/dupload.conf":
+				require => Package["dupload"],
+				content => template("misc/dupload.conf.erb");
 		}
 	}
 	
