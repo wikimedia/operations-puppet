@@ -90,24 +90,8 @@ class swift::proxy {
 			mode => 0444;
 	}
 
-	# TODO: create and/or use a generic (parameterized) memcached class instead
-	
-	# set up memcached
-	package { "memcached":
-			ensure => present;
-	}
-	service { "memcached":
-			enable => true,
-			ensure => running,
-			subscribe => File["/etc/memcached.conf"];
-	}
-	file { "/etc/memcached.conf":
-			ensure => present,
-			source => "puppet:///files/swift/memcached.conf",
-			owner => root,
-			group => root,
-			mode => 0444;
-	}
+	# use a generic (parameterized) memcached class
+	class { "memcached": memcached_size => '128', memcached_port => '11211' }
 
 	# pull in the SwiftMedia python bits
 	# note that though these are in puppet, svn is the canonical store;
