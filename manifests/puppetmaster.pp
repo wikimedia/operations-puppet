@@ -3,19 +3,24 @@ import "generic-definitions.pp"
 class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
+	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
+	require "base::puppet"
+
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el" ]:
 		ensure => latest;
 	}
 	
 	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
-	file { [ "/var/lib/puppet/server", $ssldir, "$ssldir/ca", "$ssldir/certificate_requests",
-			"$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys" ]:
-		require => Package["puppetmaster"],
-		ensure => directory,
-		owner => puppet,
-		group => root,
-		mode => 0771;
+	file {
+		[ "/var/lib/puppet/server", $ssldir ]:
+			require => Package["puppetmaster"],
+			ensure => directory,
+			owner => puppet,
+			group => root,
+			mode => 0771;
+		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys" ]:
+			ensure => directory;
 	}
 
 	class passenger {
