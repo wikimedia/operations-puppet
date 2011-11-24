@@ -5,7 +5,7 @@
 
 class memcached ($memcached_size = '2000', $memcached_port = '11000') {
 
-	class { "memcached::config": memcached_size => '$memcached_size', memcached_port => '$memcached_port' }
+	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port" }
 
 	package { memcached:
 		ensure => latest;
