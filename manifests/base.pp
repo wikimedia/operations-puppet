@@ -96,17 +96,17 @@ class base::puppet {
 		"/etc/default/puppet":
 			owner => root,
 			group => root,
-			mode  => 0644,
-			source => "puppet:///files/puppet/puppet";
+			mode  => 0444,
+			source => "puppet:///files/puppet/puppet.default";
 		"/etc/puppet/puppet.conf":
 			owner => root,
 			group => root,
-			mode  => 0644,
-			content => template("puppet/puppet.erb");
+			mode  => 0444,
+			content => template("puppet/puppet.conf.erb");
 		"/etc/init.d/puppet":
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			source => "puppet:///files/misc/puppet.init";
 	}
 
