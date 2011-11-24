@@ -1,0 +1,149 @@
+# This is the configuration for dupload.
+# It is intended to be read and evaluated from Perl.
+#
+### PLEASE READ THE dupload.conf(5) MANUAL PAGE
+#
+# reading the dupload(1) manual page is also advisable
+
+package config;
+
+# Global variables:
+# $default_host  - the host to use if no --to option is used
+# $no_parentheses_to_fullname - boolean, as its name says
+#
+# Per-host variables:
+# fqdn          - full hostname
+# method        - ftp, scp, scpb or rsync
+#                 (defaults to ftp)
+# login         - user name to use on the remote host
+#                 (defaults to 'anonymous' for FTP and local username for SSH methods)
+#                 use "user\@remote" for firewall logins
+# incoming 	- directory where to upload first
+# queuedir	- directory where to move if upload succeeded
+# mailto	- address for announcement email (stable)
+# mailtx	- address for announcement email (unstable)
+# cc		- address for carbon copy of the announcement email
+# fullname      - the full name to use in the announcement email
+#                 (defaults to what your local MTA uses)
+# visibleuser   - the username to use in the announcement email
+#                 (defaults to local username)
+# visiblename   - the domainname to use in the announcement email
+#                 (defaults to what your local MTA uses)
+
+# Example of a default host:
+#$default_host = "anonymous-ftp-master";
+$default_host = "ubuntu";
+
+# -----------------
+# Pre-defined hooks
+# -----------------
+# Check changes file for valid signatures
+# Using GPG:
+$preupload{'changes'} = '/usr/share/dupload/gpg-check %1';
+# or using PGP:
+# $preupload{'changes'} = '/usr/share/dupload/pgp-check %1';
+
+# Lintian check of packages
+# $preupload{'deb'} = 'lintian -v -i %1';
+
+# Other hooks:
+# $preupload{'sourcepackage'}
+# $preupload{'file'}
+# $preupload{'package'}
+# $postupload{'changes'}
+# $postupload{'sourcepackage'}
+# $postupload{'file'}
+# $postupload{'deb'}
+# $postupload{'package'}
+
+# Note: hooks can also be defined in a per-host basis, this
+# overrides globaly defined hooks.
+
+# -----------------
+# Pre-defined hosts
+# -----------------
+
+$cfg{'ubuntu'} = {
+	fqdn => "upload.ubuntu.com",
+	incoming => "/",
+	dinstall_runs => 1,
+};
+
+$cfg{'ftp-master'} = {
+	fqdn => "ssh.upload.debian.org",
+	method => "scpb",
+	incoming => "/srv/upload.debian.org/UploadQueue/",
+	# files pass on to dinstall on ftp-master which sends emails itself
+	dinstall_runs => 1,
+};
+$cfg{'anonymous-ftp-master'} = {
+	fqdn => "ftp.upload.debian.org",
+	incoming => "/pub/UploadQueue/",
+	# The dinstall on ftp-master sends emails itself
+	dinstall_runs => 1,
+};
+
+# see http://www.debian.org/devel/debian-volatile/ for more information
+$cfg{'volatile'} = {
+        fqdn => "volatile-master.debian.org",
+        incoming => "/pub/UploadQueue/",
+        # files pass on to dinstall on ftp-master which sends emails itself
+        dinstall_runs => 1,
+        passive => 1,
+};
+
+# For Delayed uploads use this. You can use 0-day, which is uploaded
+# one hour before dinstall runs.
+$delay = (defined($ENV{DEBDELAY}) ? $ENV{DEBDELAY} : 7);
+$cfg{'delayed'} = {
+	fqdn => "ftp.upload.debian.org",
+	incoming => "/pub/UploadQueue/DELAYED/$delay-day/",
+	# The dinstall on ftp-master sends emails itself
+	dinstall_runs => 1,
+};
+
+# Mentors upload queue, see
+# http://mentors.debian.net/cgi-bin/maintainer-intro
+$cfg{'mentors'} = {
+	fqdn    =>'mentors.debian.net',
+	incoming=>'/',
+	dinstall_runs => 1,
+	passive => 1,
+};
+
+# see http://www.backports.org/dokuwiki/doku.php?id=contribute for more information
+$cfg{'bpo'} = {
+    fqdn => "www.backports.org",
+    incoming => "/",
+};
+
+# NOTE: Do _NOT_ upload a package to the security upload queue 
+# (oldstable-security, stable-security, etc.) without prior authorization 
+# from the security team. Please read:
+# http://www.debian.org/doc/developers-reference/ch-pkgs.en.html#s-bug-security
+
+# Notice: There are login restriction on this host, scp will not
+# work unless you are authorised.
+#$cfg{'security'} = {
+#	fqdn => "security-master.debian.org",
+#	method => "scpb",
+#	incoming => "/org/security.debian.org/queue/unchecked",
+#	# The dinstall on security sends emails itself
+#	dinstall_runs => 1,
+#	nonus => 1,
+#};
+#$cfg{'anonymous-security'} = {
+#	fqdn => "security-master.debian.org",
+#	incoming => "/pub/SecurityUploadQueue",
+#	# files pass on to dinstall on security which sends emails itself
+#	dinstall_runs => 1,
+#	nonus => 1,
+#};
+
+
+# Don't remove the following line.  Perl needs it.
+1;
+
+## Local Variables: ##
+## mode:perl ##
+## End: ##
