@@ -6,7 +6,7 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require "base::puppet"
 
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
 		ensure => latest;
 	}
 	
