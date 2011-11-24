@@ -20,23 +20,13 @@ RailsAutoDetect Off
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
-	<% if is_labs_puppet_master == "true" %>
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
-	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_pub.pem
+	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_pub.pem
 	# If Apache complains about invalid signatures on the CRL, you can try disabling
 	# CRL checking by commenting the next line, but this is not recommended.
-	SSLCARevocationPath     /var/lib/puppet/server/ssl/crl/
-	<% else %>
-	SSLCertificateFile      /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-	SSLCertificateKeyFile   /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
-	SSLCertificateChainFile /var/lib/puppet/ssl/ca/ca_pub.pem
-	SSLCACertificateFile    /var/lib/puppet/ssl/ca/ca_pub.pem
-	# If Apache complains about invalid signatures on the CRL, you can try disabling
-	# CRL checking by commenting the next line, but this is not recommended.
-	SSLCARevocationFile     /var/lib/puppet/ssl/crl.pem
-	<% end %>
+	SSLCARevocationFile     /var/lib/puppet/server/ssl/crl.pem
 	SSLVerifyClient <%= puppet_passenger_verify_client %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars

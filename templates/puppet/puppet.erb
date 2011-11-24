@@ -38,6 +38,7 @@ dbserver = db9.pmtpa.wmnet
 ca_md = sha1
 #storeconfigs = true
 thin_storeconfigs = true
+ssldir=/var/lib/puppet/server/ssl
 <% if is_labs_puppet_master == "true" %>
 node_terminus = ldap
 ldapserver = <%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
@@ -46,7 +47,6 @@ ldapstring = (&(objectclass=puppetClient)(associatedDomain=%s))
 ldapuser = cn=proxyagent,ou=profile,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
 ldappassword = <%= scope.lookupvar('openstack::nova_config::nova_ldap_proxyagent_pass') %>
 ldaptls = true
-ssldir=/var/lib/puppet/server/ssl
 <% end %>
 templatedir = /var/lib/puppet/templates
 <% end %>
