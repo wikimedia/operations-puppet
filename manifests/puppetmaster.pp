@@ -28,6 +28,16 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		command => "/usr/bin/puppet cert generate ${fqdn}",
 		creates => "$ssldir/certs/${fqdn}.pem"
 	}
+	
+	# Link the server SSL host cert to the client side cert
+	file {
+		"${ssldir}/certs/${fqdn}.pem":
+			ensure => "/var/lib/puppet/ssl/certs/${fqdn}.pem";
+		"${ssldir}/private_keys/${fqdn}.pem":
+			ensure => "/var/lib/puppet/ssl/private_keys/${fqdn}.pem";
+	}
+	
+	# TODO fileserver.conf
 
 	class passenger {
 		require puppetmaster
