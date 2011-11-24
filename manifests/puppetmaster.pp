@@ -7,8 +7,10 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		ensure => latest;
 	}
 	
+	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
-	file { [ "/var/lib/puppet/server", "/var/lib/puppet/server/ssl" ]:
+	file { [ "/var/lib/puppet/server", $ssldir, "$ssldir/ca", "$ssldir/certificate_requests",
+			"$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys" ]:
 		require => Package["puppetmaster"],
 		ensure => directory,
 		owner => puppet,
