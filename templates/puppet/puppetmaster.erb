@@ -1,17 +1,7 @@
 # This file is managed by Puppet!
 
-# You probably want to tune these settings
-PassengerHighPerformance on
-PassengerMaxPoolSize 8
-PassengerPoolIdleTime 1500
-# PassengerMaxRequests 1000
-PassengerStatThrottleRate 120
-PassengerUseGlobalQueue on
-RackAutoDetect Off
-RailsAutoDetect Off
-
 <VirtualHost <%= puppet_passenger_bind_address %>:8140>
-	<% if has_variable?("puppet_passenger_allow_from") then %><Location />
+	<% if has_variable?("puppet_passenger_allow_from") and puppet_passenger_allow_from != "undef" then %><Location />
 	Order Allow,Deny
 	Allow from <%= puppet_passenger_allow_from %>
 	</Location><% end %>
@@ -22,17 +12,28 @@ RailsAutoDetect Off
 
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_pub.pem
-	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_pub.pem
+	SSLCACertificateFile	/var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
 	# If Apache complains about invalid signatures on the CRL, you can try disabling
 	# CRL checking by commenting the next line, but this is not recommended.
-	SSLCARevocationFile     /var/lib/puppet/server/ssl/crl.pem
+	SSLCARevocationFile     /var/lib/puppet/server/ssl/ca/ca_crl.pem
 	SSLVerifyClient <%= puppet_passenger_verify_client %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
 
-	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public/
+	# Passenger configuration
+	PassengerHighPerformance on
+	PassengerMaxPoolSize 8
+	PassengerPoolIdleTime 1500
+	#PassengerMaxRequests 1000
+	PassengerStatThrottleRate 120
+	PassengerUseGlobalQueue on
+	RackAutoDetect Off
+	RailsAutoDetect Off
+
 	RackBaseURI /
+
+	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
 	<Directory /usr/share/puppet/rack/puppetmasterd/>
 		Options None
 		AllowOverride None
