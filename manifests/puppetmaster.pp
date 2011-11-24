@@ -6,6 +6,15 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el" ]:
 		ensure => latest;
 	}
+	
+	# Move the puppetmaster's SSL files to a separate directory from the client's
+	file { [ "/var/lib/puppet/server", "/var/lib/puppet/server/ssl" ]:
+		require => Package["puppetmaster"],
+		ensure => directory,
+		owner => puppet,
+		group => root,
+		mode => 0771;
+	}
 
 	class passenger {
 		$puppet_passenger_bind_address = $bind_address
