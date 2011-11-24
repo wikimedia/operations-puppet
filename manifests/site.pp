@@ -661,7 +661,7 @@ node "carbon.wikimedia.org" {
 }
 
 node "copper.wikimedia.org" {
-	include base,
+	include standard,
 		swift::proxy,
 		swift::proxy::testclusterconf,
 		swift::storage
@@ -1510,7 +1510,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include base,
+	include standard,
 		swift::storage
 }
 
@@ -2998,7 +2998,7 @@ node "yvon.wikimedia.org" {
 }
 
 node "zinc.wikimedia.org" {
-	include base,
+	include standard,
 		swift::proxy,
 		swift::proxy::testclusterconf,
 		swift::storage
