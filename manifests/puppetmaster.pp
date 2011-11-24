@@ -3,12 +3,17 @@ import "generic-definitions.pp"
 class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
+<<<<<<< HEAD   (ddb719 dupload configuration)
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require "base::puppet"
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
+=======
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el" ]:
+>>>>>>> BRANCH (341781 Move Package[git-core] into a generic-definitions class)
 		ensure => latest;
 	}
+<<<<<<< HEAD   (ddb719 dupload configuration)
 	
 	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
@@ -38,7 +43,18 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 	}
 	
 	# TODO fileserver.conf
+=======
 
+	class passenger {
+		$puppet_passenger_bind_address = $bind_address
+		$puppet_passenger_verify_client = $verify_client
+		# Another variable available: $puppet_passenger_allow_from, which will
+		# add an Allow from statement (and Order Allow,Deny), limiting access
+		# to the passenger service.
+		$puppet_passenger_allow_from = $allow_from
+>>>>>>> BRANCH (341781 Move Package[git-core] into a generic-definitions class)
+
+<<<<<<< HEAD   (ddb719 dupload configuration)
 	class passenger {
 		require puppetmaster
 		
@@ -49,6 +65,8 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		# to the passenger service.
 		$puppet_passenger_allow_from = $allow_from
 
+=======
+>>>>>>> BRANCH (341781 Move Package[git-core] into a generic-definitions class)
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:
 			ensure => latest;
 		}

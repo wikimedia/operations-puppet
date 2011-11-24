@@ -102,31 +102,36 @@ class misc::install-server {
 			ensure => latest;
 		}
 
-		## allow other tftp servers to rsync /srv/tftpboot
+		## allow other tftp servers to rsync /srv/tftpboot on the master
 
-#		package { rsync:
-#			ensure => latest;
-#		}
-#
-#		file {
-#			"/etc/rsyncd.conf":
-#				require => Package[rsync],
-#				mode => 0444,
-#				owner => root,
-#				group => root,
-#				source => "puppet:///files/rsync/rsyncd.conf.tftpboot";
-#			"/etc/default/rsync":
-#				require => Package[rsync],
-#				mode => 0444,
-#				owner => root,
-#				group => root,
-#				source => "puppet:///files/rsync/rsync.default";
-#		}
-#
-#		service { rsync:
-#			require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-#			ensure => running;
-#		}
+		if ! $tftpboot_server_type {
+			$tftpboot_server_type = 'slave'
+		}
+
+		if ( $tftpboot_server_type == 'master' ) {
+			class { 'generic::rsyncd': config => "tftpboot" }
+
+			$rsync_iptables_command = "
+				/sbin/iptables -F rsync;
+				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
+				/sbin/iptables -A rsync -s 208.80.154.10 -j ACCEPT;
+				/sbin/iptables -A rsync -j DROP;
+				/sbin/iptables -I INPUT -p tcp --dport 873 -j rsync
+				"
+
+			exec { rsync-firewall-rules:
+				command => $rsync_iptables_command,
+				onlyif => "/sbin/iptables -N rsync",
+				path => "/sbin",
+				timeout => 5,
+				user => root
+			}
+		}
+
+		if ( $tftpboot_server_type == 'slave' ) {
+
+			cron { rsync_tftpboot : command => "rsync -a tftp_mover@brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
+		}
 	}
 
 	class caching-proxy {
@@ -1103,6 +1108,11 @@ class misc::fundraising {
 			owner => www-data,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/fundraising-misc.auth.cfg";
+		"/opt/fundraising-misc/public_reporting/update_config.php":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/fundraising-misc.update_config.php";
 		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
@@ -1482,6 +1492,7 @@ class misc::contint::test {
 	# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
 
 	apache_module { proxy: name => "proxy" }
+	apache_module { ssl: name => "ssl" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_site { integration: name => "integration.mediawiki.org" }
 
@@ -1549,6 +1560,43 @@ class misc::udpprofile::collector {
 	# FIXME: Nagios monitoring
 }
 
+class misc::graphite { 
+	system_role { "misc::graphite": description => "graphite and carbon services" }
+
+	include misc::apache2
+
+	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
+		ensure => present;
+	}
+
+	package { [ "python-carbon", "python-graphite-web", "python-whisper" ]:
+		ensure => "0.9.9-1";
+	}
+
+	file { 
+		"/a/graphite/conf/carbon.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/carbon.conf";
+		"/a/graphite/conf/dashboard.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/dashboard.conf";
+		"/a/graphite/conf/storage-schemas.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/storage-schemas.conf";
+		"/a/graphite/storage":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0755,
+			ensure => directory;
+	}
+}
+
 class misc::scripts {
 	require misc::passwordScripts
 
@@ -1574,6 +1622,11 @@ class misc::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/dologmsg";
+		"/usr/local/bin/deploy2graphite":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/deploy2graphite";
 		"/usr/local/bin/fatalmonitor":
 			owner => root,
 			group => root,
@@ -1961,19 +2014,19 @@ if $hostname == "spence" {
 class misc::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
 
-        @monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
-        @monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
 
-class misc::bugzilla_crons {
+class misc::bugzilla::crons {
 	cron { bugzilla_whine:
 		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
 		user => root,
@@ -1988,7 +2041,7 @@ class misc::bugzilla_crons {
 		user    => root,
 		hour    => 0,
 		minute  => 5,
-		day     => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
+		weekday => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
 	}
 	# 2) on sunday, regenerates the whole statistics data
 	cron { bugzilla_collectstats_regenerate:
@@ -1996,7 +2049,19 @@ class misc::bugzilla_crons {
 		user    => root,
 		hour    => 0,
 		minute  => 5,
-		day     => 0  # Sunday
+		weekday => 0  # Sunday
+	}
+}
+
+class misc::package-builder {
+	system_role { "misc::package-builder": description => "Debian package builder" }
+	
+	include generic::packages::git-core
+	
+	class packages {
+		package { [ "build-essential", "fakeroot", "deb-helper", "git-buildpackage" ]:
+			ensure => latest;
+		}
 	}
 }
 

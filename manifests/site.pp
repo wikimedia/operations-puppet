@@ -254,6 +254,39 @@ class db {
 			include db::es
 		}
 	}
+
+	class fundraising {
+	
+		$roles += [ 'db::fundraising' ]
+		$cluster = "mysql"
+
+		system_role { "db::fundraising": description => "Fundraising Database (${mysql_role})" }
+
+		monitor_service {
+			"mysql status":
+				description => "MySQL ${mysql_role} status",
+				check_command => "check_mysqlstatus!--${mysql_role}";
+			"mysql replication":
+				description => "MySQL replication status",
+				check_command => "check_db_lag",
+				ensure => $mysql_role ? {
+					"master" => absent,
+					"slave" => present
+				};
+		}
+
+		class master {
+			$mysql_role = "master"
+			include db::fundraising
+		}
+
+		class slave {
+			$mysql_role = "slave"
+			include db::fundraising
+		}
+		
+	}		
+
 }
 
 class searchserver {
@@ -589,13 +622,34 @@ node "bayes.wikimedia.org" {
 		accounts::diederik
 }
 
+node "bast1001.wikimedia.org" {
+        $cluster = "misc"
+        $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+
+        include base,
+                ganglia,
+                svn::client,
+                ntp::client,
+                admins::roots,
+                admins::mortals,
+                admins::restricted,
+                misc::bastionhost,
+                misc::scripts,
+                exim::simple-mail-sender,
+                nrpe
+}
+
 node "brewster.wikimedia.org" {
+
+	$tftpboot_server_type = 'master'
+	
 	include base,
 		ganglia,
 		ntp::client,
 		misc::install-server,
 		exim::simple-mail-sender,
-		backup::client
+		backup::client,
+		accounts::tftp_mover
 }
 
 node "carbon.wikimedia.org" {
@@ -608,8 +662,9 @@ node "carbon.wikimedia.org" {
 }
 
 node "copper.wikimedia.org" {
-	include base,
+	include standard,
 		swift::proxy,
+		swift::proxy::testclusterconf,
 		swift::storage
 }
 
@@ -636,7 +691,7 @@ node "ekrem.wikimedia.org" {
 node "emery.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		exim::simple-mail-sender,
@@ -775,13 +830,8 @@ node "db18.pmtpa.wmnet" {
 	include db::core
 }
 
-node "db20.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-
-	include db::core
-}
-
 node "db21.pmtpa.wmnet" {
+	$ganglia_aggregator = "true"
 	include db::core
 }
 
@@ -866,7 +916,7 @@ node "db40.pmtpa.wmnet" {
 node "db41.pmtpa.wmnet" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		ntp::client,
@@ -957,8 +1007,15 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$db_cluster = "s7"
 	}
 
-	if $hostname =~ /^(db1008|db1025)$/ {
+	if $hostname =~ /^db1008$/ {
 		$db_cluster = "fundraisingdb"
+		include db::fundraising::master
+		$writable = "true"
+	}
+
+	if $hostname =~ /^db1025$/ {
+		$db_cluster = "fundraisingdb"
+		include db::fundraising::slave
 	}
 
 	if $hostname =~ /^(db1042|db1048)$/ {
@@ -966,7 +1023,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	}
 
 	# Here Be Masters
-	if $hostname =~ /^(db1047|db1008)$/ {
+	if $hostname =~ /^db1047$/ {
 		$writable = "true"
 	} 
 
@@ -1039,9 +1096,13 @@ node "formey.wikimedia.org" {
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
 			'ALL = NOPASSWD: /usr/local/bin/svn-group',
 			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
+<<<<<<< HEAD   (ddb719 dupload configuration)
 	sudo_user { demon: user => "demon", privileges => $sudo_privs }
 	sudo_user { robla: user => "robla", privileges => $sudo_privs }
 	sudo_user { sumanah: user => "sumanah", privileges => $sudo_privs }
+=======
+	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
+>>>>>>> BRANCH (341781 Move Package[git-core] into a generic-definitions class)
 
 	$cluster = "misc"
 	$gid = 550
@@ -1065,9 +1126,7 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { demon: user => "demon", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
-	sudo_user { hashar: user => "hashar", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
-	sudo_user { reedy: user => "reedy", privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
 	include base,
 		ganglia,
 		ntp::client,
@@ -1082,9 +1141,7 @@ node "gilman.wikimedia.org" {
 
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { rfaulk: user => "rfaulk", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "awjrichards", "rfaulk", "nimishg" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
@@ -1103,9 +1160,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { rfaulk: user => "rfaulk", privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "awjrichards", "rfaulk", "nimishg" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
@@ -1130,6 +1185,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		include misc::jenkins
 	}
 
+	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
+	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
 node "gurvin.wikimedia.org" {
@@ -1195,10 +1252,11 @@ node "kaulen.wikimedia.org" {
 		exim::simple-mail-sender,
 		admins::roots,
 		accounts::demon,
+		accounts::hashar,
 		accounts::reedy,
 		accounts::robla,
 		misc::download-mediawiki,
-		misc::bugzilla_crons,
+		misc::bugzilla::crons,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
@@ -1259,7 +1317,7 @@ node "linne.wikimedia.org" {
 node "locke.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	sudo_user { awjrichards: user => "awjrichards", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "awjrichards": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		exim::simple-mail-sender,
@@ -1459,7 +1517,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include base,
+	include standard,
 		swift::storage
 }
 
@@ -1621,7 +1679,7 @@ node "owa1.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		ntp::client,
@@ -1639,7 +1697,7 @@ node "owa2.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		ntp::client,
@@ -1657,7 +1715,7 @@ node "owa3.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { nimishg: user => "nimishg", privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include base,
 		ganglia,
 		ntp::client,
@@ -1725,6 +1783,15 @@ node "pdf3.wikimedia.org" {
 		exim::simple-mail-sender,
 		groups::wikidev,
 		accounts::file_mover
+}
+
+node "professor.pmtpa.wmnet" {
+	$cluster = "misc"
+	include base,
+		ganglia,
+		ntp::client,
+		misc::udpprofile::collector,
+		misc::graphite
 }
 
 node "project1.wikimedia.org" {
@@ -2829,7 +2896,8 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
-		accounts::logmover
+		accounts::logmover,
+		db::fundraising::slave
 
 }
 
@@ -2851,51 +2919,7 @@ node "streber.wikimedia.org" {
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
-node "snapshot1.pmtpa.wmnet" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		mediawiki::sync,
-		snapshots::packages,
-		snapshots::sync,
-		snapshots::files,
-		snapshots::noapache,
-		admins::roots,
-		admins::mortals,
-		accounts::datasets,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot2.pmtpa.wmnet" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		mediawiki::sync,
-		snapshots::packages,
-		snapshots::sync,
-		snapshots::files,
-		snapshots::noapache,
-		admins::roots,
-		admins::mortals,
-		accounts::datasets,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot3.wikimedia.org" {
-	$gid=500
-	include base,
-		ntp::client,
-		ganglia,
-		applicationserver::home,
-		nfs::data,
-		groups::wikidev
-}
-
-node "snapshot4.pmtpa.wmnet" {
+node /snapshot[1-4]\.pmtpa\.wmnet/ {
 	$gid=500
 	include base,
 		ntp::client,
@@ -2981,8 +3005,9 @@ node "yvon.wikimedia.org" {
 }
 
 node "zinc.wikimedia.org" {
-	include base,
+	include standard,
 		swift::proxy,
+		swift::proxy::testclusterconf,
 		swift::storage
 }
 

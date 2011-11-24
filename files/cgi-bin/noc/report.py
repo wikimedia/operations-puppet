@@ -7,7 +7,7 @@
 
 # Configuration and defaults
 
-profilehost = "spence.wikimedia.org"
+profilehost = "professor.pmtpa.wmnet"
 profileport = 3811
 
 db="enwiki"

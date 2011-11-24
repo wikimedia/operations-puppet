@@ -53,7 +53,7 @@ $BINDIR/dologmsg "!log $USER synchronizing Wikimedia installation... : $*"
 
 
 # Disable logging
-DOLOGMSGNOLOG=1
+export DOLOGMSGNOLOG=1
 
 # Set write permissions
 $BINDIR/set-group-write
@@ -70,3 +70,4 @@ echo 'Finished'
 
 DOLOGMSGNOLOG=
 $BINDIR/dologmsg "sync done."
+$BINDIR/deploy2graphite scap

@@ -538,15 +538,11 @@ class openstack::gluster-service {
 		"/etc/glusterd/glusterd.info":
 			content => "UUID=${local_host_uuid}",
 			require => Package["glusterfs"];
-		# We need to replace the init script with an upstart job that'll ensure
-		# the filesystem gets mounted after gluster is started.
-		"/etc/init/glusterd.conf":
-			source => "puppet:///files/gluster/glusterd.conf",
-			require => Package["glusterfs"];
-		"/etc/init.d/glusterd":
-			ensure => link,
-			target => "/lib/init/upstart-job";
 	}
+
+	# TODO: We need to replace the init script with an upstart job that'll ensure
+	# the filesystem gets mounted after gluster is started.
+	upstart_job{ "glusterd": require => Package["glusterfs"], install => true }
 
 	# Every host imports all peer resources except its own
 	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" |>>

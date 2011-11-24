@@ -75,7 +75,7 @@ class base::puppet {
 	}
 
 	package { [ "puppet" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	# monitoring via snmp traps
@@ -178,7 +178,7 @@ class base::sysctl {
 }
 
 class base::standard-packages {
-	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb" ]
+	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf" ]
 
 	if $lsbdistid == "Ubuntu" {
 		package { $packages:
@@ -289,6 +289,7 @@ class base::vimconfig {
 	}
 }
 
+<<<<<<< HEAD   (ddb719 dupload configuration)
 class base::environment {
 
 	file {
@@ -306,6 +307,8 @@ class base::environment {
 
 }
 
+=======
+>>>>>>> BRANCH (341781 Move Package[git-core] into a generic-definitions class)
 class base {
 
 	case $operatingsystem {

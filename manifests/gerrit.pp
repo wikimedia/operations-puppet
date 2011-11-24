@@ -254,7 +254,7 @@ class gerrit::gerrit_config {
 	$gerrit_pass = $passwords::gerrit::gerrit_pass
 	$gerrit_sshport = "29418"
 	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
-	$gerrit_db_host = $openstack::nova_config::nova_db_host
+	$gerrit_db_host = "db9.pmtpa.wmnet"
 	$gerrit_db_name = "reviewdb"
 	$gerrit_db_user = "gerrit"
 	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass

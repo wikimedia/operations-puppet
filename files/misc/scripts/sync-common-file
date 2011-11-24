@@ -51,3 +51,4 @@ fi
 
 # Notify (one line only)
 $BINDIR/dologmsg "!log $USER synchronized $DIR $MESSAGE"
+$BINDIR/deploy2graphite sync-common-file
