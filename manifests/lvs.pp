@@ -98,23 +98,82 @@ class lvs::configuration {
 
 	# Configuration of PyBal LVS services.
 	# NOTE! Double quotation may be needed for passing strings
+	$lvs_service_ips = {
+		'production' => {
+			'text' => {
+				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
+				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
+				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
+			},
+			'https' => {
+				'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
+				'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
+				'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
+			},
+			'bits' => {
+				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
+				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
+				'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+			},
+			'upload' => {
+				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
+				'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+			},
+			'apaches' => {
+				'pmtpa' => "10.2.1.1",
+				'eqiad' => "10.4.1.1",
+			},
+			'rendering' => {
+				'pmtpa' => "10.2.1.21",
+				'eqiad' => "10.2.2.21",
+			},
+			'api' => {
+				'pmtpa' => "10.2.1.22",
+				'eqiad' => "10.2.2.22",
+			},
+			'search_pool1' => {
+				'pmtpa' => "10.2.1.11",
+				'eqiad' => "10.2.2.11",
+			},
+			'search_pool2' => {
+				'pmtpa' => "10.2.1.12",
+				'eqiad' => "10.2.2.12",
+			},
+			'search_pool3' => {
+				'pmtpa' => "10.2.1.13",
+				'eqiad' => "10.2.2.13",
+			}
+		},
+		'labs' = {
+			'text' => {
+				'pmtpa' => { 'wikimedialb' => "208.80.153.193", 'wikipedialb' => "208.80.153.197", 'wiktionarylb' => "208.80.153.198", 'wikiquotelb' => "208.80.153.199", 'wikibookslb' => "208.80.153.200", 'wikisourcelb' => "208.80.153.201", 'wikinewslb' => "208.80.153.202", 'wikiversitylb' => "208.80.153.203", 'mediawikilb' => "208.80.153.204", 'foundationlb' => "208.80.153.205" },
+			},
+			'https' => {
+				'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
+			},
+			'bits' => {
+				'pmtpa' => { 'bitslb' => "208.80.153.196" },
+			},
+			'upload' => {
+				'pmtpa' => { 'uploadlb' => "208.80.153.206" },
+			},
+			'apaches' => undef,
+			'rendering' => undef,
+			'api' => undef,
+			'search_pool1' => undef,
+			'search_pool2' => undef,
+			'search_pool3' => undef,
+		}
+	}
+
+	$service_ips = $lvs_service_ips[$realm]
+
 	$lvs_services = {
 		"text" => {
 			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $realm ? {
-				'production' => $site ? {
-					'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
-					'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
-					'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
-					default => undef,
-				},
-				'labs' => $site ? {
-					'pmtpa' => { 'wikimedialb' => "208.80.153.193", 'wikipedialb' => "208.80.153.197", 'wiktionarylb' => "208.80.153.198", 'wikiquotelb' => "208.80.153.199", 'wikibookslb' => "208.80.153.200", 'wikisourcelb' => "208.80.153.201", 'wikinewslb' => "208.80.153.202", 'wikiversitylb' => "208.80.153.203", 'mediawikilb' => "208.80.153.204", 'foundationlb' => "208.80.153.205" },
-					default => undef,
-				},
-				default => undef,
-			},
+			'ip' => $service_ips['text'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -127,19 +186,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
-			'ip' => $realm ? {
-				'production' => $site ? {
-					'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
-					'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
-					'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
-					default => undef,
-				},
-				'labs' => $site ? {
-					'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
-					default => undef,
-				},
-				default => undef,
-			},
+			'ip' => $service_ips['https'][$site],
 			'port' => 443,
 			'scheduler' => 'sh',
 			# These IPs are announced by the corresponding HTTP services
@@ -155,19 +202,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $realm ? {
-				'production' => $site ? {
-					'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
-					'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
-					'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
-					default => undef,
-				},
-				'labs' => $site ? {
-					'pmtpa' => { 'bitslb' => "208.80.153.196" },
-					default => undef,
-				},
-				default => undef,
-			},
+			'ip' => $service_ips['bits'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -180,19 +215,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'ip' => $realm ? {
-				'production' => $site ? {
-					'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-					'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
-					'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
-					default => undef,
-				},
-				'labs' => $site ? {
-					'pmtpa' => { 'uploadlb' => "208.80.153.206" },
-					default => undef,
-				},
-				default => undef,
-			},
+			'ip' => $service_ips['upload'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -276,11 +299,7 @@ class lvs::configuration {
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.1",
-				'eqiad' => "10.4.1.1",
-				default => undef,
-			},
+			'ip' => $service_ips['apaches'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -294,11 +313,7 @@ class lvs::configuration {
 		"rendering" => {
 			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.21",
-				'eqiad' => "10.2.2.21",
-				default => undef,
-			},
+			'ip' => $service_ips['rendering'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".74",
 			'monitors' => {
@@ -312,11 +327,7 @@ class lvs::configuration {
 		"api" => {
 			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.22",
-				'eqiad' => "10.2.2.22",
-				default => undef,
-			},
+			'ip' => $service_ips['api'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -331,11 +342,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.11",
-				'eqiad' => "10.2.2.11",
-				default => undef,
-			},
+			'ip' => $service_ips['search_pool1'][$site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -351,11 +358,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.12",
-				'eqiad' => "10.2.2.12",
-				default => undef,
-			},
+			'ip' => $service_ips['search_pool2'][$site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -371,11 +374,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $site ? {
-				'pmtpa' => "10.2.1.13",
-				'eqiad' => "10.2.2.13",
-				default => undef,
-			},
+			'ip' => $service_ips['search_pool3'][$site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
