@@ -5,390 +5,399 @@ import "generic-definitions.pp"
 @monitor_group { "lvs": description => "LVS" }
 
 # Global options
-$lvs_class_hosts = {
-	'high-traffic1' => $realm ? {
-		'production' => $site ? {
-			'pmtpa' => [ "lvs2", "lvs6" ],
-			'eqiad' => [ "lvs1001", "lvs1004" ],
-			'esams' => [ "amslvs1", "amslvs3" ],
-			default => undef,
-		},
-		'labs' => $site ? {
-			'pmtpa' => [ "i-00000051" ],
-			default => undef,
-		},
-		default => undef,
-	},
-	'high-traffic2' => $realm ? {
-		'production' => $site ? {
-			'pmtpa' => [ "lvs1", "lvs5" ],
-			'eqiad' => [ "lvs1002", "lvs1005" ],
-			'esams' => [ "amslvs2", "amslvs4" ],
-			default => undef,
-		},
-		'labs' => $site ? {
-			'pmtpa' => [ "i-00000051" ],
-			default => undef,
-		},
-		default => undef,
-	},
-	# class https needs to be present on the same hosts as the corresponding
-	# http services
-	'https' => $realm ? {
-		'production' => $site ? {
-			'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
-			'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
-			'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
-			default => undef,
-		},
-		'labs' => $site ? {
-			'pmtpa' => [ "i-00000051" ],
-			default => undef,
-		},
-		default => undef,
-	},
-	'specials' => $realm ? {
-		'production' => [ "lvs1", "lvs2" ],
-		'labs' => [ "i-00000051" ],
-	},
-	'low-traffic' => $realm ? {
-		'production' => $site ? {
-			'pmtpa' => [ "lvs3", "lvs4" ],
-			'eqiad' => [ "lvs1003", "lvs1006" ],
-			'esams' => [ ],
-			default => undef,
-		},
-		'labs' => $site ? {
-			'pmtpa' => [ "i-00000051" ],
-			default => undef,
-		},
-		default => undef,
-	},
-	'testing' => $realm ? {
-		'production' => [ "lvs1001", "lvs1004" ],
-		'labs' => [ "i-00000051" ],
-	},
-}
+class lvs::configuration {
 
-$pybal = { 
-	'bgp' => "yes",
-	'bgp-peer-address' => $hostname ? {
-		/^lvs[1-3]$/ => "208.80.152.197",
-		/^lvs[4-6]$/ => "208.80.152.196",
-		/^lvs100[1-3]$/ => "208.80.154.196",
-		/^lvs100[4-6]$/ => "208.80.154.197",
-		/^amslvs[12]$/ => "91.198.174.247",
-		/^amslvs[34]$/ => "91.198.174.244",
-		default => "(unspecified)"
-		}
-}
-
-$idleconnection_monitor_options = {
-	'timeout-clean-reconnect' => 3,
-        'max-delay' => 300
-}
-$runcommand_monitor_options = {
-	'command' => "/bin/sh",
-	'arguments' => "[ '/etc/pybal/runcommand/check-apache', server.host ]",
-	'interval' => 60,
-	'timeout' => 10,
-}
-
-# Configuration of PyBal LVS services.
-# NOTE! Double quotation may be needed for passing strings
-$lvs_services = {
-	"text" => {
-		'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
-		'class' => "high-traffic1",
-		'ip' => $realm ? {
+	$lvs_class_hosts = {
+		'high-traffic1' => $realm ? {
 			'production' => $site ? {
-				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
-				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
-				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
+				'pmtpa' => [ "lvs2", "lvs6" ],
+				'eqiad' => [ "lvs1001", "lvs1004" ],
+				'esams' => [ "amslvs1", "amslvs3" ],
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => { 'wikimedialb' => "208.80.153.193", 'wikipedialb' => "208.80.153.197", 'wiktionarylb' => "208.80.153.198", 'wikiquotelb' => "208.80.153.199", 'wikibookslb' => "208.80.153.200", 'wikisourcelb' => "208.80.153.201", 'wikinewslb' => "208.80.153.202", 'wikiversitylb' => "208.80.153.203", 'mediawikilb' => "208.80.153.204", 'foundationlb' => "208.80.153.205" },
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
-		'bgp' => "yes",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"https" => {
-		'description' => "HTTPS services",
-		'class' => "https",
-		'ip' => $realm ? {
+		'high-traffic2' => $realm ? {
 			'production' => $site ? {
-				'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
-				'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
-				'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
+				'pmtpa' => [ "lvs1", "lvs5" ],
+				'eqiad' => [ "lvs1002", "lvs1005" ],
+				'esams' => [ "amslvs2", "amslvs4" ],
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
-		'port' => 443,
-		'scheduler' => 'sh',
-		# These IPs are announced by the corresponding HTTP services
-		'bgp' => "no",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			#'ProxyFetch' => {
-			#	 'url' => [ 'https://meta.wikimedia.org/wiki/Main_Page' ],
-			#	 },
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"bits" => {
-		'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
-		'class' => "high-traffic1",
-		'ip' => $realm ? {
+		# class https needs to be present on the same hosts as the corresponding
+		# http services
+		'https' => $realm ? {
 			'production' => $site ? {
-				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
-				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
-				'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+				'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
+				'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
+				'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => { 'bitslb' => "208.80.153.196" },
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
-		'bgp' => "yes",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://bits.wikimedia.org/pybal-test-file' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
+		'specials' => $realm ? {
+			'production' => [ "lvs1", "lvs2" ],
+			'labs' => [ "i-00000051" ],
 		},
-	"upload" => {
-		'description' => "Images and other media, upload.${site}.wikimedia.org",
-		'class' => "high-traffic2",
-		'ip' => $realm ? {
+		'low-traffic' => $realm ? {
 			'production' => $site ? {
-				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
-				'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+				'pmtpa' => [ "lvs3", "lvs4" ],
+				'eqiad' => [ "lvs1003", "lvs1006" ],
+				'esams' => [ ],
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => { 'uploadlb' => "208.80.153.206" },
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
-		'bgp' => "yes",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://upload.wikimedia.org/pybaltestfile.txt' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"mobile" => {
-		'description' => "MediaWiki based mobile site",
-		'class' => "testing",
-		'ip' => "208.80.154.236",
-		'bgp' => "yes",
-		'depool-threshold' => ".6",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"new-payments" => {
-		'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-		'class' => "high-traffic2",
-		'ip' => "208.80.152.213",
-		'port' => 443,
-		'scheduler' => 'sh',
-		'bgp' => "yes",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'https://payments.wikimedia.org/index.php' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"owa" => {
-		'description' => "OWA analytics, owa.wikimedia.org",
-		'class' => "specials",
-		'ip' => "208.80.152.6",
-		'bgp' => "no",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://owa.wikimedia.org/owa' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"owas" => {
-		'description' => "OWA analytics, HTTPS owa.wikimedia.org",
-		'class' => "specials",
-		'ip' => "208.80.152.6",
-		'port' => 443,
-		'scheduler' => 'sh',
-		'bgp' => "no",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'https://owa.wikimedia.org/owa' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"payments" => {
-		'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-		'class' => "specials",
-		'ip' => "208.80.152.7",
-		'port' => 443,
-		'scheduler' => 'sh',
-		'bgp' => "no",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'https://payments.wikimedia.org/index.php' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-	"apaches" => {
-		'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.1",
-			'eqiad' => "10.4.1.1",
-			default => undef,
-		},
-		'bgp' => "yes",
-		'depool-threshold' => ".6",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			'RunCommand' => $runcommand_monitor_options
-			},
-		},
-	"rendering" => {
-		'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.21",
-			'eqiad' => "10.2.2.21",
-			default => undef,
-		},
-		'bgp' => "yes",
-		'depool-threshold' => ".74",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.wikipedia.org/favicon.ico' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			'RunCommand' => $runcommand_monitor_options
-			},
-		},
-	"api" => {
-		'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.22",
-			'eqiad' => "10.2.2.22",
-			default => undef,
-		},
-		'bgp' => "yes",
-		'depool-threshold' => ".6",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://en.wikipedia.org/w/api.php' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			'RunCommand' => $runcommand_monitor_options
-			},
-		},
-	"search_pool1" => {
-		'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'protocol' => "tcp",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.11",
-			'eqiad' => "10.2.2.11",
-			default => undef,
-		},
-		'port' => 8123,
-		'scheduler' => "wrr",
-		'bgp' => "yes",
-		'depool-threshold' => ".5",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://localhost/stats' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			},
-		},
-	"search_pool2" => {
-		'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'protocol' => "tcp",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.12",
-			'eqiad' => "10.2.2.12",
-			default => undef,
-		},
-		'port' => 8123,
-		'scheduler' => "wrr",
-		'bgp' => "yes",
-		'depool-threshold' => "1",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://localhost/stats' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			},
-		},
-	"search_pool3" => {
-		'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
-		'class' => "low-traffic",
-		'protocol' => "tcp",
-		'ip' => $site ? {
-			'pmtpa' => "10.2.1.13",
-			'eqiad' => "10.2.2.13",
-			default => undef,
-		},
-		'port' => 8123,
-		'scheduler' => "wrr",
-		'bgp' => "yes",
-		'depool-threshold' => "1",
-		'monitors' => {
-			'ProxyFetch' => {
-				'url' => [ 'http://localhost/stats' ],
-				},
-			'IdleConnection' => $idleconnection_monitor_options,
-			},
+		'testing' => $realm ? {
+			'production' => [ "lvs1001", "lvs1004" ],
+			'labs' => [ "i-00000051" ],
 		},
 	}
 
+	$pybal = { 
+		'bgp' => "yes",
+		'bgp-peer-address' => $hostname ? {
+			/^lvs[1-3]$/ => "208.80.152.197",
+			/^lvs[4-6]$/ => "208.80.152.196",
+			/^lvs100[1-3]$/ => "208.80.154.196",
+			/^lvs100[4-6]$/ => "208.80.154.197",
+			/^amslvs[12]$/ => "91.198.174.247",
+			/^amslvs[34]$/ => "91.198.174.244",
+			default => "(unspecified)"
+			}
+	}
+
+	$idleconnection_monitor_options = {
+		'timeout-clean-reconnect' => 3,
+	        'max-delay' => 300
+	}
+	$runcommand_monitor_options = {
+		'command' => "/bin/sh",
+		'arguments' => "[ '/etc/pybal/runcommand/check-apache', server.host ]",
+		'interval' => 60,
+		'timeout' => 10,
+	}
+
+	# Configuration of PyBal LVS services.
+	# NOTE! Double quotation may be needed for passing strings
+	$lvs_services = {
+		"text" => {
+			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
+			'class' => "high-traffic1",
+			'ip' => $realm ? {
+				'production' => $site ? {
+					'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
+					'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
+					'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
+					default => undef,
+				},
+				'labs' => $site ? {
+					'pmtpa' => { 'wikimedialb' => "208.80.153.193", 'wikipedialb' => "208.80.153.197", 'wiktionarylb' => "208.80.153.198", 'wikiquotelb' => "208.80.153.199", 'wikibookslb' => "208.80.153.200", 'wikisourcelb' => "208.80.153.201", 'wikinewslb' => "208.80.153.202", 'wikiversitylb' => "208.80.153.203", 'mediawikilb' => "208.80.153.204", 'foundationlb' => "208.80.153.205" },
+					default => undef,
+				},
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"https" => {
+			'description' => "HTTPS services",
+			'class' => "https",
+			'ip' => $realm ? {
+				'production' => $site ? {
+					'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
+					'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
+					'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
+					default => undef,
+				},
+				'labs' => $site ? {
+					'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
+					default => undef,
+				},
+				default => undef,
+			},
+			'port' => 443,
+			'scheduler' => 'sh',
+			# These IPs are announced by the corresponding HTTP services
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				#'ProxyFetch' => {
+				#	 'url' => [ 'https://meta.wikimedia.org/wiki/Main_Page' ],
+				#	 },
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"bits" => {
+			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
+			'class' => "high-traffic1",
+			'ip' => $realm ? {
+				'production' => $site ? {
+					'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
+					'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
+					'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+					default => undef,
+				},
+				'labs' => $site ? {
+					'pmtpa' => { 'bitslb' => "208.80.153.196" },
+					default => undef,
+				},
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://bits.wikimedia.org/pybal-test-file' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"upload" => {
+			'description' => "Images and other media, upload.${site}.wikimedia.org",
+			'class' => "high-traffic2",
+			'ip' => $realm ? {
+				'production' => $site ? {
+					'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+					'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
+					'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+					default => undef,
+				},
+				'labs' => $site ? {
+					'pmtpa' => { 'uploadlb' => "208.80.153.206" },
+					default => undef,
+				},
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://upload.wikimedia.org/pybaltestfile.txt' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"mobile" => {
+			'description' => "MediaWiki based mobile site",
+			'class' => "testing",
+			'ip' => "208.80.154.236",
+			'bgp' => "yes",
+			'depool-threshold' => ".6",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://en.m.wikipedia.org/wiki/Angelsberg' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"new-payments" => {
+			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
+			'class' => "high-traffic2",
+			'ip' => "208.80.152.213",
+			'port' => 443,
+			'scheduler' => 'sh',
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'https://payments.wikimedia.org/index.php' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"owa" => {
+			'description' => "OWA analytics, owa.wikimedia.org",
+			'class' => "specials",
+			'ip' => "208.80.152.6",
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://owa.wikimedia.org/owa' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"owas" => {
+			'description' => "OWA analytics, HTTPS owa.wikimedia.org",
+			'class' => "specials",
+			'ip' => "208.80.152.6",
+			'port' => 443,
+			'scheduler' => 'sh',
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'https://owa.wikimedia.org/owa' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"payments" => {
+			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
+			'class' => "specials",
+			'ip' => "208.80.152.7",
+			'port' => 443,
+			'scheduler' => 'sh',
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'https://payments.wikimedia.org/index.php' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options
+				},
+			},
+		"apaches" => {
+			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.1",
+				'eqiad' => "10.4.1.1",
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".6",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				'RunCommand' => $runcommand_monitor_options
+				},
+			},
+		"rendering" => {
+			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.21",
+				'eqiad' => "10.2.2.21",
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".74",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://en.wikipedia.org/favicon.ico' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				'RunCommand' => $runcommand_monitor_options
+				},
+			},
+		"api" => {
+			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.22",
+				'eqiad' => "10.2.2.22",
+				default => undef,
+			},
+			'bgp' => "yes",
+			'depool-threshold' => ".6",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://en.wikipedia.org/w/api.php' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				'RunCommand' => $runcommand_monitor_options
+				},
+			},
+		"search_pool1" => {
+			'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'protocol' => "tcp",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.11",
+				'eqiad' => "10.2.2.11",
+				default => undef,
+			},
+			'port' => 8123,
+			'scheduler' => "wrr",
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost/stats' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				},
+			},
+		"search_pool2" => {
+			'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'protocol' => "tcp",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.12",
+				'eqiad' => "10.2.2.12",
+				default => undef,
+			},
+			'port' => 8123,
+			'scheduler' => "wrr",
+			'bgp' => "yes",
+			'depool-threshold' => "1",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost/stats' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				},
+			},
+		"search_pool3" => {
+			'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
+			'class' => "low-traffic",
+			'protocol' => "tcp",
+			'ip' => $site ? {
+				'pmtpa' => "10.2.1.13",
+				'eqiad' => "10.2.2.13",
+				default => undef,
+			},
+			'port' => 8123,
+			'scheduler' => "wrr",
+			'bgp' => "yes",
+			'depool-threshold' => "1",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost/stats' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+				},
+			},
+		}
+	}
+}
 
 class lvs::balancer {
+	require "lvs::configuration"
+	
+	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
+	$pybal = $lvs::configuration::pybal
+	$lvs_services = $lvs::configuration::lvs_services
+	
 	if $realm == "labs" {
 		# Hack for arrays in LDAP - you suck puppet
 		$lvs_balancer_ips = split(get_var('lvs_balancer_ips'), ',')
@@ -470,6 +479,11 @@ class lvs::realserver {
 }
 
 class lvs::static_labs_ips {
+	require "lvs::configuration"
+	
+	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
+	$pybal = $lvs::configuration::pybal
+	$lvs_services = $lvs::configuration::lvs_services
 
 	# Hack because puppet is a broken piece of crap
 	$text = $lvs_services["text"]
