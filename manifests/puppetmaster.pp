@@ -1,6 +1,6 @@
 import "generic-definitions.pp"
 
-class puppetmaster {
+class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el" ]:
@@ -8,15 +8,12 @@ class puppetmaster {
 	}
 
 	class passenger {
-		if ( $puppet_passenger_bind_address == "" ) {
-			$puppet_passenger_bind_address = '*'
-		}
-		if ( $puppet_passenger_verify_client == "" ) {
-			$puppet_passenger_verify_client = 'optional'
-		}
+		$puppet_passenger_bind_address = $bind_address
+		$puppet_passenger_verify_client = $verify_client
 		# Another variable available: $puppet_passenger_allow_from, which will
 		# add an Allow from statement (and Order Allow,Deny), limiting access
 		# to the passenger service.
+		$puppet_passenger_allow_from = $allow_from
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:
 			ensure => latest;
