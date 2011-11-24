@@ -276,36 +276,6 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 		misc::install-server::dhcp-server
 }
 
-class misc::puppetmaster {
-	system_role { "misc::puppetmaster": description => "Puppetmaster" }
-	
-	package { stompserver:
-		ensure => latest;
-	}
-
-	# puppetqd does not have an init script.
-	service {
-		stompserver:
-			require => Package[stompserver],
-			ensure => stopped;
-		puppetqd:
-			provider => base,
-			start => "/sbin/start-stop-daemon --start --pidfile /var/run/puppet/puppetqd.pid --startas /usr/sbin/puppetqd",
-			stop => "/sbin/start-stop-daemon --stop --pidfile /var/run/puppet/puppetqd.pid",
-			ensure => stopped;
-	}
-
-	cron {
-		updategeoipdb:
-			environment => "http_proxy=http://brewster.wikimedia.org:8080",
-			command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /etc/puppet/files/misc/GeoIP.dat.new && mv /etc/puppet/files/misc/GeoIP.dat.new /etc/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /etc/puppet/files/misc/GeoIPcity.dat.new && mv /etc/puppet/files/misc/GeoIPcity.dat.new /etc/puppet/files/misc/GeoIPcity.dat",
-			user => root,
-			hour => 3,
-			minute => 26,
-			ensure => present;
-	}
-}
-
 class misc::noc-wikimedia {
 	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
 	

@@ -1814,7 +1814,7 @@ node "sockpuppet.pmtpa.wmnet" {
 		ganglia,
 		ntp::client,
 		exim::simple-mail-sender,
-		misc::puppetmaster,
+		puppetmaster,
 		backup::client
 }
 
