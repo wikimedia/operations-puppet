@@ -47,13 +47,11 @@ failboat("$resetudp2log is not executable") unless (-x $resetudp2log);
 # rotate/rename logs
 my $logs_to_rsync;
 for my $file (@logs_to_process) {
-	if (-e "$udp2log_dir/$file.log") {	
+	if (-e "$udp2log_dir/$file.log") {
 		my $date = `/bin/date +%Y-%m-%d-%I%p--%M`;
 		chomp $date;
 		printlog("move $udp2log_dir/$file.log to $transfer_dir/$file-$date.log");
 		move("$udp2log_dir/$file.log", "$transfer_dir/$file-$date.log") or failboat($!);
-		printlog('reload udp2log');
-		`/home/file_mover/scripts/resetudp2log`;
 		$logs_to_rsync++;
 	} else {
 		printlog("didn't find $udp2log_dir/$file.log?!");
@@ -62,6 +60,10 @@ for my $file (@logs_to_process) {
 
 # copy newly rotated logs to storage host
 if (defined $logs_to_rsync) {
+	# only kick udp2log if we have moved any existing log files
+	printlog('reload udp2log');
+	`/home/file_mover/scripts/resetudp2log`;
+	# go ahead and transfer the files
 	printlog("rsync -ar $transfer_dir/ $remote_dir/");
 	open CMD, "rsync -ar $transfer_dir/ $remote_dir/ 2>&1|";
 	while (<CMD>) {
@@ -72,6 +74,13 @@ if (defined $logs_to_rsync) {
 	}		
 	close CMD;
 }
+
+for my $file (@logs_to_process) {
+	unless ( -e "$udp2log_dir/$file.log") {
+		printlog("log file $udp2log_dir/$file.log hasn't been recreated yet.");
+	}
+}
+
 
 # somewhere like here we should do a quota check and email if bloatworthy
 

@@ -15,3 +15,4 @@ fi
 ddsh -cM -g mediawiki-installation /usr/bin/sync-common
 
 $BINDIR/dologmsg "!log $USER ran sync-common-all $MESSAGE"
+$BINDIR/deploy2graphite sync-common-all

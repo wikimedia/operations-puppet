@@ -1,6 +1,7 @@
 # sudo.pp
 
-define sudo_user( $user, $privileges ) {
+define sudo_user( $privileges ) {
+	$user = $title
 
 	file { "/etc/sudoers.d/$user":
 		owner => root,
@@ -11,7 +12,8 @@ define sudo_user( $user, $privileges ) {
 
 }
 
-define sudo_group( $group, $privileges ) {
+define sudo_group( $privileges ) {
+	$group = $title
 
 	file { "/etc/sudoers.d/$group":
 		owner => root,
@@ -23,7 +25,6 @@ define sudo_group( $group, $privileges ) {
 }
 
 class sudo::labs_project {
-
 	include sudo::default
 
 	# For all project except ones listed here, give sudo privileges
