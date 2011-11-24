@@ -4,7 +4,7 @@
 #@monitor_group { "mysql": description => "MySQL core" }
 @monitor_group { "es": description => "External Storage" }
 
-
+# TODO should really be named mysql-server, or mysql::server
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
 
@@ -181,4 +181,12 @@ class mysql {
 	}
 
 	include mysql::ganglia
+
+	# TODO do we want to have a class for PHP clients (php5-mysql) as well
+	# and rename this to mysql::client-cli?
+	class client {
+		package { "mysql-client-5.1":
+			ensure => latest;
+		}
+	}
 }
