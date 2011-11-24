@@ -26,16 +26,12 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000') {
 			ensure => absent;
 		}
 
-		if $lsbdistcodename == "hardy" {
-			file {
-				"/usr/lib/ganglia/python_modules":
-					owner => root,
-					group => root,
-					mode => 755,
-					ensure => directory;
-			}
-		}
 		file {
+			"/usr/lib/ganglia/python_modules":
+				owner => root,
+				group => root,
+				mode => 755,
+				ensure => directory;
 			"/usr/lib/ganglia/python_modules/memcached.py":
 				require => File["/usr/lib/ganglia/python_modules"],
 				source => "puppet:///files/ganglia/plugins/memcached.py",
