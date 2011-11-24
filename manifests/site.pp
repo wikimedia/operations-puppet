@@ -483,9 +483,10 @@ class cache {
 			"eqiad" => [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
-		$varnish_fe_directors = $site ? {
+		$varnish_fe_directors = {
+			"pmtpa" => {},
 			"eqiad" => { "backend" => $varnish_fe_backends },
-			default => {}
+			"esams" => {},
 		}
 
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
@@ -521,7 +522,7 @@ class cache {
 			port => 80,
 			admin_port => 6082,
 			backends => $varnish_fe_backends,
-			directors => $varnish_fe_directors,
+			directors => $varnish_fe_directors[$site],
 			backend_options => {
 				'port' => 81,
 				'connect_timeout' => "5s",
