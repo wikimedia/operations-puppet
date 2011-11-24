@@ -24,7 +24,7 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 	}
 	
 	exec { "generate hostcert":
-		require => Directory["$ssldir/certs"],
+		require => File["$ssldir/certs"],
 		command => "/usr/bin/puppet cert generate ${fqdn}",
 		creates => "$ssldir/certs/${fqdn}.pem"
 	}
