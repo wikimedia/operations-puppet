@@ -22,8 +22,16 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys" ]:
 			ensure => directory;
 	}
+	
+	exec { "generate hostcert":
+		require => Directory["$ssldir/certs"],
+		command => "/usr/bin/puppet cert generate ${fqdn}",
+		creates => "$ssldir/certs/${fqdn}.pem"
+	}
 
 	class passenger {
+		require puppetmaster
+		
 		$puppet_passenger_bind_address = $bind_address
 		$puppet_passenger_verify_client = $verify_client
 		# Another variable available: $puppet_passenger_allow_from, which will
