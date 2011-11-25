@@ -236,6 +236,11 @@ class nagios::monitor {
 		ensure => latest;
 	}
 
+	# PHP CLI needed for check scripts
+	package { [ "php5-cli", "php5-mysql" ]:
+		ensure => latest;
+	}
+
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios/puppet_checks.d":
 		ensure => directory,
