@@ -1,7 +1,7 @@
 # This file is managed by Puppet!
 
 <VirtualHost <%= puppet_passenger_bind_address %>:8140>
-	<% if has_variable?("puppet_passenger_allow_from") and puppet_passenger_allow_from != "undef" then %><Location />
+	<% if defined?("puppet_passenger_allow_from") then %><Location />
 	Order Allow,Deny
 	<% puppet_passenger_allow_from.each do |entry| -%>
 	Allow from <%= entry %>
