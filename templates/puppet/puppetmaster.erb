@@ -1,13 +1,6 @@
 # This file is managed by Puppet!
 
-<VirtualHost <%= puppet_passenger_bind_address %>:8140>
-	<% if defined?("puppet_passenger_allow_from") then %><Location />
-	Order Allow,Deny
-	<% puppet_passenger_allow_from.each do |entry| -%>
-	Allow from <%= entry %>
-	<% end -%>
-	</Location><% end %>
-
+<VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
@@ -35,6 +28,15 @@
 
 	RackBaseURI /
 
+<% if defined?(scope.lookupvar('puppetmaster::passenger::allow_from')) then -%>
+	<Location />
+		Order Allow,Deny
+		<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+		Allow from <%= entry %>
+		<% end -%>
+	</Location>
+
+<% end -%>
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
 	<Directory /usr/share/puppet/rack/puppetmasterd/>
 		Options None

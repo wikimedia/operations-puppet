@@ -1,5 +1,17 @@
 import "generic-definitions.pp"
 
+# Class: puppetmaster
+#
+# This class installs a Puppetmaster
+# 
+# Parameters:
+#	- $bind_address:
+#		The IP address Apache will bind to
+#	- $verify_client:
+#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+#	- $allow_from:
+#		Adds an Allow from statement (and Order Allow,Deny), limiting access
+#		to the passenger service.
 class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
@@ -31,15 +43,20 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		
 	# TODO fileserver.conf
 
+	# Class: puppetmaster::passenger
+	#
+	# This class handles the Apache Passenger specific parts of a Puppetmaster
+	#
+	# Parameters:
+	#	- $bind_address:
+	#		The IP address Apache will bind to
+	#	- $verify_client:
+	#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+	#	- $allow_from:
+	#		Adds an Allow from statement (and Order Allow,Deny), limiting access
+	#		to the passenger service.
 	class passenger($bind_address="*", $verify_client="optional", $allow_from=undef) {
 		require puppetmaster
-		
-		$puppet_passenger_bind_address = $bind_address
-		$puppet_passenger_verify_client = $verify_client
-		# Another variable available: $puppet_passenger_allow_from, which will
-		# add an Allow from statement (and Order Allow,Deny), limiting access
-		# to the passenger service.
-		$puppet_passenger_allow_from = $allow_from
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:
 			ensure => latest;
@@ -71,7 +88,10 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 			ensure => stopped;
 		}
 	}
-	
+
+	# Class: puppetmaster::labs
+	#
+	# This class handles the Wikimedia Labs specific buts of a Puppetmaster
 	class labs {
 		include generic::packages::git-core
 		
@@ -108,6 +128,9 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		}
 	}
 	
+	# Class: puppetmaster::scripts
+	#
+	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
 		file {
 			"/usr/local/bin/position-of-the-moon":
