@@ -12,7 +12,8 @@ define sudo_user( $privileges ) {
 
 }
 
-define sudo_group( $group=$title, $privileges ) {
+define sudo_group($privileges ) {
+	$group = $title
 
 	file { "/etc/sudoers.d/$group":
 		owner => root,
@@ -31,7 +32,7 @@ class sudo::labs_project {
 	if ! ($instanceproject in ['testlabs', 'admininstances']) {
 		# Paranoia check
 		if $realm == "labs" {
-			sudo_group { $instanceproject: group => "${instanceproject}", privileges => ['ALL=(ALL) ALL'] }
+			sudo_group { $instanceproject: privileges => ['ALL=(ALL) ALL'] }
 		}
 	}
 
