@@ -31,7 +31,7 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		
 	# TODO fileserver.conf
 
-	class passenger {
+	class passenger($bind_address="*", $verify_client="optional", $allow_from=undef) {
 		require puppetmaster
 		
 		$puppet_passenger_bind_address = $bind_address
@@ -133,7 +133,13 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		}
 	}
 	
-	include passenger, scripts
+	class { "puppetmaster::passenger":
+		bind_address => $bind_address,
+		verify_client => $verify_client,
+		allow_from => $allow_from
+	}
+	
+	include scripts
 
 	if $is_labs_puppet_master {
 		include labs
