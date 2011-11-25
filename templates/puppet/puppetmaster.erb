@@ -3,7 +3,9 @@
 <VirtualHost <%= puppet_passenger_bind_address %>:8140>
 	<% if has_variable?("puppet_passenger_allow_from") and puppet_passenger_allow_from != "undef" then %><Location />
 	Order Allow,Deny
-	Allow from <%= puppet_passenger_allow_from %>
+	<% puppet_passenger_allow_from.each do |entry| -%>
+	Allow from <%= entry %>
+	<% end -%>
 	</Location><% end %>
 
 	SSLEngine on
