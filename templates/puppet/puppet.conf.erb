@@ -18,7 +18,7 @@ templatedir=$confdir/templates
 <% end %>
 prerun_command=/etc/puppet/etckeeper-commit-pre
 postrun_command=/etc/puppet/etckeeper-commit-post
-pluginsync=true
+pluginsync=false
 <% if is_puppet_master == "true" %>
 
 <% if is_labs_puppet_master == "true" %>
