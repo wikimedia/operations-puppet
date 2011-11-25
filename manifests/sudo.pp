@@ -12,8 +12,7 @@ define sudo_user( $privileges ) {
 
 }
 
-define sudo_group( $privileges ) {
-	$group = $title
+define sudo_group( $group=$title, $privileges ) {
 
 	file { "/etc/sudoers.d/$group":
 		owner => root,
