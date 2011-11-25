@@ -1,9 +1,9 @@
 # This file is managed by Puppet!
 
 [main]
-<% if realm == "labs" %>
+<% if realm == "labs" -%>
 server = <%= scope.lookupvar('openstack::nova_config::nova_puppet_host') %>
-<% end %>
+<% end -%>
 logdir=/var/log/puppet
 vardir=/var/lib/puppet
 ssldir=/var/lib/puppet/ssl
@@ -13,34 +13,26 @@ configtimeout=480
 splay=true
 # asking puppet to run every 2 hours instead of every 30 minutes to reduce load on the puppet server -ben 2011-08-25
 runinterval=7200
-<% if is_puppet_master == "false" %>
+<% if not has_variable?("is_puppet_master") or is_puppet_master == "false" -%>
 templatedir=$confdir/templates
-<% end %>
+<% end -%>
 prerun_command=/etc/puppet/etckeeper-commit-pre
 postrun_command=/etc/puppet/etckeeper-commit-post
 pluginsync=false
-<% if is_puppet_master == "true" %>
 
-<% if is_labs_puppet_master == "true" %>
+<% if has_variable?("is_puppet_master") and is_puppet_master == "true" -%>
+[master]
+ca_md = sha1
+thin_storeconfigs = true
+templatedir = /var/lib/puppet/templates
+
 dbadapter=mysql
+<% if has_variable?("is_labs_puppet_master") and is_labs_puppet_master == "true" -%>
 dbuser = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user') %>
 dbpassword = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user_pass') %>
 dbserver = <%= scope.lookupvar('openstack::nova_config::nova_db_host') %>
-<% else %>
-dbadapter=mysql
-dbuser = puppet
-dbpassword = <%= scope.lookupvar('passwords::puppet::database::puppet_production_db_pass') %>
-dbserver = db9.pmtpa.wmnet
-#dblocation=$vardir/clientconfigs/clientconfigs.sqlite3
-<% end %>
-<% end %>
 
-[master]
-ca_md = sha1
-#storeconfigs = true
-thin_storeconfigs = true
-templatedir = /var/lib/puppet/templates
-<% if is_labs_puppet_master == "true" %>
+# LDAP
 node_terminus = ldap
 ldapserver = <%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
 ldapbase = ou=hosts,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
@@ -48,7 +40,11 @@ ldapstring = (&(objectclass=puppetClient)(associatedDomain=%s))
 ldapuser = cn=proxyagent,ou=profile,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
 ldappassword = <%= scope.lookupvar('openstack::nova_config::nova_ldap_proxyagent_pass') %>
 ldaptls = true
-<% end %>
+<% else -%>
+dbuser = puppet
+dbpassword = <%= scope.lookupvar('passwords::puppet::database::puppet_production_db_pass') %>
+dbserver = db9.pmtpa.wmnet
+<% end -%>
 
 # SSL
 ssldir=/var/lib/puppet/server/ssl/
@@ -56,3 +52,4 @@ ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
+<% end -%>
