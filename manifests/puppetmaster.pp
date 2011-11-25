@@ -40,8 +40,13 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		command => "/usr/bin/puppet cert generate ${fqdn}",
 		creates => "$ssldir/certs/${fqdn}.pem"
 	}
-		
-	# TODO fileserver.conf
+
+	file { "/etc/puppet/fileserver.conf":
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => template("puppet/fileserver.conf.erb")
+	}
 
 	# Class: puppetmaster::passenger
 	#

@@ -1,0 +1,39 @@
+# This file is managed by Puppet!
+#
+# This file consists of arbitrarily named sections/modules
+# defining where files are served from and to whom
+
+# Define a section 'files'
+# Adapt the allow/deny settings to your needs. Order
+# for allow/deny does not matter, allow always takes precedence
+# over deny
+[files]
+  path /etc/puppet/files
+<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+<% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
+  allow <%= entry %>
+<% end -%>
+<% end -%>
+
+[plugins]
+<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+<% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
+  allow <%= entry %>
+<% end -%>
+<% end -%>
+
+[private]
+  path /etc/puppet/private/files
+<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+<% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
+  allow <%= entry %>
+<% end -%>
+<% end -%>
+
+[facts]
+  path /var/lib/puppet/facts
+<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+<% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
+  allow <%= entry %>
+<% end -%>
+<% end -%>
