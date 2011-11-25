@@ -75,7 +75,7 @@ class base::puppet {
 	}
 
 	package { [ "puppet" ]:
-		ensure => present;
+		ensure => latest;
 	}
 
 	# monitoring via snmp traps
