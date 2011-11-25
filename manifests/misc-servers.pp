@@ -2059,18 +2059,6 @@ class misc::package-builder {
 	include generic::packages::git-core
 	
 	class packages {
-		package { [ "build-essential", "fakeroot", "deb-helper", "git-buildpackage" ]:
-			ensure => latest;
-		}
-	}
-}
-
-class misc::package-builder {
-	system_role { "misc::package-builder": description => "Debian package builder" }
-	
-	include generic::packages::git-core
-	
-	class packages {
 		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload" ]:
 			ensure => latest;
 		}
