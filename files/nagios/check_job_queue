@@ -1,13 +1,13 @@
 #!/bin/sh
 # nagios plugin to check the mediawiki job queue
 
-if [ $( php /home/w/common/php-1.17/maintenance/showJobs.php enwiki ) -gt 50000 ]; then
+if [ $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php enwiki ) -gt 50000 ]; then
 	echo "JOBQUEUE CRITICAL - enwiki has more than 50 000 entries in its job queue"
 	exit 2
 fi
 
 for a in commonswiki enwiktionary dewikinews itwiki ptwiki dewiki plwiki frwiki eswiki jawiki svwiki ; do
-	echo $(php /home/w/common/php-1.17/maintenance/showJobs.php $a ) $a;
+	echo $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php $a ) $a;
 done | sort -n | tail -3 | head -1 | while read count wiki ; do
 
 	if [ $(echo "$count" | grep -E "^[0-9]+$") ] && [ $count -gt 9999 ]; then
