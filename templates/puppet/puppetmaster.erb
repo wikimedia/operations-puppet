@@ -30,12 +30,12 @@
 
 	<Location />
 		Order Allow,Deny
-		<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry %>
-		<% end -%>
-		<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+<% end -%>
+<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry %>
-		<% end -%>
+<% end -%>
 	</Location>
 
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
