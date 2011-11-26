@@ -1881,10 +1881,7 @@ node "sockpuppet.pmtpa.wmnet" {
 	include standard,
 		backup::client
 
-	class { puppetmaster:
-		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
-		deny_from => [ "all" ]
-	}
+	class { puppetmaster: allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ] }
 }
 
 node "sodium.wikimedia.org" {
