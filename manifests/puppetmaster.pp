@@ -15,11 +15,15 @@ import "generic-definitions.pp"
 #	- $deny_from:
 #		Adds a Deny from statement (order Allow,Deny), limiting access
 #		to the passenger service.
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
+=======
+class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
-	require "base::puppet"
+	require config
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
 		ensure => latest;
@@ -34,16 +38,23 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 			owner => puppet,
 			group => root,
 			mode => 0771;
-		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys" ]:
+		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
 			ensure => directory;
 	}
 	
-	exec { "generate hostcert":
-		require => File["$ssldir/certs"],
-		command => "/usr/bin/puppet cert generate ${fqdn}",
-		creates => "$ssldir/certs/${fqdn}.pem"
+	exec {
+		"generate hostcert":
+			require => File["$ssldir/certs"],
+			command => "/usr/bin/puppet cert generate ${server_name}",
+			creates => "$ssldir/certs/${server_name}.pem";
+		"setup crl dir":
+			require => File["$ssldir/crl"],
+			path => "/usr/sbin:/usr/bin:/sbin:/bin",
+			command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
+			onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
 
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 	file { "/etc/puppet/fileserver.conf":
 		owner => root,
 		group => root,
@@ -67,6 +78,46 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 	#		Adds a Deny from statement (order Allow,Deny), limiting access
 	#		to the passenger service.
 	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
+=======
+	# Class: puppetmaster::config
+	#
+	# This class handles the master part of /etc/puppet.conf. Do not include directly.
+	class config {
+		include base::puppet
+		
+		file {
+			"/etc/puppet/puppet.conf.d/20-master.conf":
+				require => File["/etc/puppet/puppet.conf.d"],
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("puppet/puppet.conf.d/20-master.conf.erb"),
+				notify => Exec["compile puppet.conf"];
+			"/etc/puppet/fileserver.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("puppet/fileserver.conf.erb")
+		}
+	}
+
+	# Class: puppetmaster::passenger
+	#
+	# This class handles the Apache Passenger specific parts of a Puppetmaster
+	#
+	# Parameters:
+	#	- $bind_address:
+	#		The IP address Apache will bind to
+	#	- $verify_client:
+	#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+	#	- $allow_from:
+	#		Adds an Allow from statement (order Allow,Deny), limiting access
+	#		to the passenger service.
+	#	- $deny_from:
+	#		Adds a Deny from statement (order Allow,Deny), limiting access
+	#		to the passenger service.
+	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 		require puppetmaster
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:

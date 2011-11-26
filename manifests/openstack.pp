@@ -189,7 +189,11 @@ class openstack::puppet-server {
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 	class { puppetmaster: allow_from => $puppet_passenger_allow_from }
+=======
+	class { puppetmaster: server_name => $fqdn, allow_from => $puppet_passenger_allow_from }
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 
 }
 

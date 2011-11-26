@@ -5,13 +5,17 @@
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
-	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
-	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-	SSLCACertificateFile	/var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
+	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= scope.lookupvar('puppetmaster::server_name') %>.pem
+	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
 	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
 	# If Apache complains about invalid signatures on the CRL, you can try disabling
 	# CRL checking by commenting the next line, but this is not recommended.
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 	SSLCARevocationFile     /var/lib/puppet/server/ssl/ca/ca_crl.pem
+=======
+	SSLCARevocationPath     /var/lib/puppet/server/ssl/crl
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 	SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
@@ -31,10 +35,17 @@
 	<Location />
 		Order Allow,Deny
 <% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 		Allow from <%= entry %>
 <% end -%>
 <% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
 		Deny from <%= entry %>
+=======
+		Allow from <%= entry.gsub(/^\*/, "") %>
+<% end -%>
+<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+		Deny from <%= entry.gsub(/^\*/, "") %>
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 <% end -%>
 	</Location>
 

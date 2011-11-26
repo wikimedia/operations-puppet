@@ -1881,10 +1881,14 @@ node "sockpuppet.pmtpa.wmnet" {
 	include standard,
 		backup::client
 
+<<<<<<< HEAD   (23f229 Merge branch 'production' into test)
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		deny_from => [ "all" ]
 	}
+=======
+	class { puppetmaster: allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ] }
+>>>>>>> BRANCH (5190d2 Use the new puppet validator in gerrit's patchset-created ho)
 }
 
 node "sodium.wikimedia.org" {
