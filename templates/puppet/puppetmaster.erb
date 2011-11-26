@@ -1,10 +1,26 @@
 # This file is managed by Puppet!
+<<<<<<< HEAD   (7b11a2 Fix spacing)
 
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+=======
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 
+<<<<<<< HEAD   (7b11a2 Fix spacing)
+=======
+<VirtualHost <%= puppet_passenger_bind_address %>:8140>
+	<% if has_variable?("puppet_passenger_allow_from") and puppet_passenger_allow_from != "undef" then %><Location />
+	Order Allow,Deny
+	Allow from <%= puppet_passenger_allow_from %>
+	</Location><% end %>
+
+	SSLEngine on
+	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
 	SSLCACertificateFile	/var/lib/puppet/server/ssl/ca/ca_crt.pem
@@ -12,7 +28,11 @@
 	# If Apache complains about invalid signatures on the CRL, you can try disabling
 	# CRL checking by commenting the next line, but this is not recommended.
 	SSLCARevocationFile     /var/lib/puppet/server/ssl/ca/ca_crl.pem
+<<<<<<< HEAD   (7b11a2 Fix spacing)
 	SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
+=======
+	SSLVerifyClient <%= puppet_passenger_verify_client %>
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
 
@@ -28,6 +48,7 @@
 
 	RackBaseURI /
 
+<<<<<<< HEAD   (7b11a2 Fix spacing)
 	<Location />
 		Order Allow,Deny
 <% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
@@ -38,6 +59,8 @@
 <% end -%>
 	</Location>
 
+=======
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
 	<Directory /usr/share/puppet/rack/puppetmasterd/>
 		Options None

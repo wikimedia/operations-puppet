@@ -43,7 +43,21 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 		command => "/usr/bin/puppet cert generate ${fqdn}",
 		creates => "$ssldir/certs/${fqdn}.pem"
 	}
+<<<<<<< HEAD   (7b11a2 Fix spacing)
+=======
+	
+	# Link the server SSL host cert to the client side cert
+	file {
+		"${ssldir}/certs/${fqdn}.pem":
+			ensure => "/var/lib/puppet/ssl/certs/${fqdn}.pem";
+		"${ssldir}/private_keys/${fqdn}.pem":
+			ensure => "/var/lib/puppet/ssl/private_keys/${fqdn}.pem";
+	}
+	
+	# TODO fileserver.conf
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 
+<<<<<<< HEAD   (7b11a2 Fix spacing)
 	file { "/etc/puppet/fileserver.conf":
 		owner => root,
 		group => root,
@@ -68,6 +82,17 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 	#		to the passenger service.
 	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
 		require puppetmaster
+=======
+	class passenger {
+		require puppetmaster
+		
+		$puppet_passenger_bind_address = $bind_address
+		$puppet_passenger_verify_client = $verify_client
+		# Another variable available: $puppet_passenger_allow_from, which will
+		# add an Allow from statement (and Order Allow,Deny), limiting access
+		# to the passenger service.
+		$puppet_passenger_allow_from = $allow_from
+>>>>>>> BRANCH (07dd98 Need rails for storedconfigs)
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:
 			ensure => latest;
