@@ -12,7 +12,7 @@
 	# If Apache complains about invalid signatures on the CRL, you can try disabling
 	# CRL checking by commenting the next line, but this is not recommended.
 	SSLCARevocationFile     /var/lib/puppet/server/ssl/ca/ca_crl.pem
-	SSLVerifyClient <%= puppet_passenger_verify_client %>
+	SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
 
