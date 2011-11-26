@@ -98,16 +98,29 @@ class base::puppet {
 			group => root,
 			mode  => 0444,
 			source => "puppet:///files/puppet/puppet.default";
-		"/etc/puppet/puppet.conf":
+		"/etc/puppet/puppet.conf.d/":
+			owner => root,
+			group => root,
+			mode => 0550,
+			ensure => directory;
+		"/etc/puppet/puppet.conf.d/10-main.conf":
 			owner => root,
 			group => root,
 			mode  => 0444,
-			content => template("puppet/puppet.conf.erb");
+			content => template("puppet/puppet.conf.d/10-main.conf.erb"),
+			notify => Exec["compile puppet.conf"];
 		"/etc/init.d/puppet":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/puppet.init";
+	}
+
+	# Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
+	exec { "compile puppet.conf":
+		path => "/usr/bin:/bin",
+		command => "cat /etc/puppet/puppet.conf.d/??-*.conf > /etc/puppet/puppet.conf",
+		refreshonly => true;
 	}
 
 	# Keep puppet running

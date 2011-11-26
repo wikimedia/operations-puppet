@@ -19,7 +19,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
-	require "base::puppet"
+	require config
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
 		ensure => latest;
@@ -50,11 +50,26 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
 
-	file { "/etc/puppet/fileserver.conf":
-		owner => root,
-		group => root,
-		mode => 0444,
-		content => template("puppet/fileserver.conf.erb")
+	# Class: puppetmaster::config
+	#
+	# This class handles the master part of /etc/puppet.conf. Do not include directly.
+	class config {
+		include base::puppet
+		
+		file {
+			"/etc/puppet/puppet.conf.d/20-master.conf":
+				require => File["/etc/puppet/puppet.conf.d"],
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("puppet/puppet.conf.d/20-master.conf.erb"),
+				notify => Exec["compile puppet.conf"];
+			"/etc/puppet/fileserver.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("puppet/fileserver.conf.erb")
+		}
 	}
 
 	# Class: puppetmaster::passenger
