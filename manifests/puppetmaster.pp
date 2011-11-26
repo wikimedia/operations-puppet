@@ -15,7 +15,7 @@ import "generic-definitions.pp"
 #	- $deny_from:
 #		Adds a Deny from statement (order Allow,Deny), limiting access
 #		to the passenger service.
-class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
+class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
@@ -40,8 +40,8 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 	
 	exec { "generate hostcert":
 		require => File["$ssldir/certs"],
-		command => "/usr/bin/puppet cert generate ${fqdn}",
-		creates => "$ssldir/certs/${fqdn}.pem"
+		command => "/usr/bin/puppet cert generate ${server_name}",
+		creates => "$ssldir/certs/${server_name}.pem"
 	}
 
 	file { "/etc/puppet/fileserver.conf":
