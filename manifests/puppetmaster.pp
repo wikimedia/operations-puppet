@@ -15,7 +15,7 @@ import "generic-definitions.pp"
 #	- $deny_from:
 #		Adds a Deny from statement (order Allow,Deny), limiting access
 #		to the passenger service.
-class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
+class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
@@ -66,7 +66,7 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[],
 	#	- $deny_from:
 	#		Adds a Deny from statement (order Allow,Deny), limiting access
 	#		to the passenger service.
-	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
+	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[]) {
 		require puppetmaster
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:

@@ -31,10 +31,10 @@
 	<Location />
 		Order Allow,Deny
 <% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
-		Allow from <%= entry %>
+		Allow from <%= entry.gsub(/^\*/, "") %>
 <% end -%>
 <% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
-		Deny from <%= entry %>
+		Deny from <%= entry.gsub(/^\*/, "") %>
 <% end -%>
 	</Location>
 
