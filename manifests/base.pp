@@ -98,6 +98,12 @@ class base::puppet {
 			group => root,
 			mode  => 0444,
 			source => "puppet:///files/puppet/puppet.default";
+		"/etc/puppet/puppet.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			ensure => file,
+			notify => Exec["compile puppet.conf"];
 		"/etc/puppet/puppet.conf.d/":
 			owner => root,
 			group => root,
