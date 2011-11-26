@@ -1,6 +1,21 @@
 import "generic-definitions.pp"
 
-class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
+# Class: puppetmaster
+#
+# This class installs a Puppetmaster
+# 
+# Parameters:
+#	- $bind_address:
+#		The IP address Apache will bind to
+#	- $verify_client:
+#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+#	- $allow_from:
+#		Adds an Allow from statement (order Allow,Deny), limiting access
+#		to the passenger service.
+#	- $deny_from:
+#		Adds a Deny from statement (order Allow,Deny), limiting access
+#		to the passenger service.
+class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
@@ -28,26 +43,31 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		command => "/usr/bin/puppet cert generate ${fqdn}",
 		creates => "$ssldir/certs/${fqdn}.pem"
 	}
-	
-	# Link the server SSL host cert to the client side cert
-	file {
-		"${ssldir}/certs/${fqdn}.pem":
-			ensure => "/var/lib/puppet/ssl/certs/${fqdn}.pem";
-		"${ssldir}/private_keys/${fqdn}.pem":
-			ensure => "/var/lib/puppet/ssl/private_keys/${fqdn}.pem";
-	}
-	
-	# TODO fileserver.conf
 
-	class passenger {
+	file { "/etc/puppet/fileserver.conf":
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => template("puppet/fileserver.conf.erb")
+	}
+
+	# Class: puppetmaster::passenger
+	#
+	# This class handles the Apache Passenger specific parts of a Puppetmaster
+	#
+	# Parameters:
+	#	- $bind_address:
+	#		The IP address Apache will bind to
+	#	- $verify_client:
+	#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
+	#	- $allow_from:
+	#		Adds an Allow from statement (order Allow,Deny), limiting access
+	#		to the passenger service.
+	#	- $deny_from:
+	#		Adds a Deny from statement (order Allow,Deny), limiting access
+	#		to the passenger service.
+	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
 		require puppetmaster
-		
-		$puppet_passenger_bind_address = $bind_address
-		$puppet_passenger_verify_client = $verify_client
-		# Another variable available: $puppet_passenger_allow_from, which will
-		# add an Allow from statement (and Order Allow,Deny), limiting access
-		# to the passenger service.
-		$puppet_passenger_allow_from = $allow_from
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:
 			ensure => latest;
@@ -79,7 +99,10 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 			ensure => stopped;
 		}
 	}
-	
+
+	# Class: puppetmaster::labs
+	#
+	# This class handles the Wikimedia Labs specific buts of a Puppetmaster
 	class labs {
 		include generic::packages::git-core
 		
@@ -116,6 +139,9 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		}
 	}
 	
+	# Class: puppetmaster::scripts
+	#
+	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
 		file {
 			"/usr/local/bin/position-of-the-moon":
@@ -141,7 +167,13 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 		}
 	}
 	
-	include passenger, scripts
+	class { "puppetmaster::passenger":
+		bind_address => $bind_address,
+		verify_client => $verify_client,
+		allow_from => $allow_from
+	}
+	
+	include scripts
 
 	if $is_labs_puppet_master {
 		include labs

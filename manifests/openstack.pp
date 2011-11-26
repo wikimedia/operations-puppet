@@ -185,11 +185,11 @@ class openstack::puppet-server {
 
 	# Only allow puppet access from the instances
 	$puppet_passenger_allow_from = $realm ? {
-		"production" => "10.4.0.0/24 10.4.16.3",
-		"labs" => "192.168.0.0/24",
+		"production" => [ "10.4.0.0/24", "10.4.16.3" ],
+		"labs" => [ "192.168.0.0/24" ],
 	}
 
-	class { "puppetmaster": allow_from => $puppet_passenger_allow_from }
+	class { puppetmaster: allow_from => $puppet_passenger_allow_from }
 
 }
 
