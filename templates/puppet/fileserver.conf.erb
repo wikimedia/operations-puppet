@@ -8,32 +8,36 @@
 # for allow/deny does not matter, allow always takes precedence
 # over deny
 [files]
-  path /etc/puppet/files
-<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+	path /etc/puppet/files
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
-  allow <%= entry %>
+	allow <%= entry %>
 <% end -%>
+<% scope.lookupvar('puppetmaster::deny_from').each do |entry| -%>
+	deny <%= entry %>
 <% end -%>
 
 [plugins]
-<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
-  allow <%= entry %>
+	allow <%= entry %>
 <% end -%>
+<% scope.lookupvar('puppetmaster::deny_from').each do |entry| -%>
+	deny <%= entry %>
 <% end -%>
 
 [private]
-  path /etc/puppet/private/files
-<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+	path /etc/puppet/private/files
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
-  allow <%= entry %>
+	allow <%= entry %>
 <% end -%>
+<% scope.lookupvar('puppetmaster::deny_from').each do |entry| -%>
+	deny <%= entry %>
 <% end -%>
 
 [facts]
-  path /var/lib/puppet/facts
-<% if defined?(scope.lookupvar('puppetmaster::allow_from')) then -%>
+	path /var/lib/puppet/facts
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
-  allow <%= entry %>
+	allow <%= entry %>
 <% end -%>
+<% scope.lookupvar('puppetmaster::deny_from').each do |entry| -%>
+	deny <%= entry %>
 <% end -%>

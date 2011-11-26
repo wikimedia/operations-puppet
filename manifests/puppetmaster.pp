@@ -10,9 +10,12 @@ import "generic-definitions.pp"
 #	- $verify_client:
 #		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
 #	- $allow_from:
-#		Adds an Allow from statement (and Order Allow,Deny), limiting access
+#		Adds an Allow from statement (order Allow,Deny), limiting access
 #		to the passenger service.
-class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=undef) {
+#	- $deny_from:
+#		Adds a Deny from statement (order Allow,Deny), limiting access
+#		to the passenger service.
+class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
@@ -58,9 +61,12 @@ class puppetmaster($bind_address="*", $verify_client="optional", $allow_from=und
 	#	- $verify_client:
 	#		Whether apache mod_ssl will verify the client (SSLVerifyClient option)
 	#	- $allow_from:
-	#		Adds an Allow from statement (and Order Allow,Deny), limiting access
+	#		Adds an Allow from statement (order Allow,Deny), limiting access
 	#		to the passenger service.
-	class passenger($bind_address="*", $verify_client="optional", $allow_from=undef) {
+	#	- $deny_from:
+	#		Adds a Deny from statement (order Allow,Deny), limiting access
+	#		to the passenger service.
+	class passenger($bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=["all"]) {
 		require puppetmaster
 
 		package { [ "puppetmaster-passenger", "libapache2-mod-passenger" ]:

@@ -28,15 +28,16 @@
 
 	RackBaseURI /
 
-<% if defined?(scope.lookupvar('puppetmaster::passenger::allow_from')) then -%>
 	<Location />
 		Order Allow,Deny
 		<% scope.lookupvar('puppetmaster::passenger::allow_from').each do |entry| -%>
 		Allow from <%= entry %>
 		<% end -%>
+		<% scope.lookupvar('puppetmaster::passenger::deny_from').each do |entry| -%>
+		Deny from <%= entry %>
+		<% end -%>
 	</Location>
 
-<% end -%>
 	DocumentRoot /usr/share/puppet/rack/puppetmasterd/public
 	<Directory /usr/share/puppet/rack/puppetmasterd/>
 		Options None

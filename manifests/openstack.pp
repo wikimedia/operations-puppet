@@ -189,7 +189,7 @@ class openstack::puppet-server {
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
-	class { "puppetmaster": allow_from => $puppet_passenger_allow_from }
+	class { puppetmaster: allow_from => $puppet_passenger_allow_from }
 
 }
 

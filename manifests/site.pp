@@ -1878,12 +1878,13 @@ node "sockpuppet.pmtpa.wmnet" {
 	$cluster = "misc"
 	$is_puppet_master = "true"
 
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
-		puppetmaster,
+	include standard,
 		backup::client
+
+	class { puppetmaster:
+		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
+		deny_from => [ "all" ]
+	}
 }
 
 node "sodium.wikimedia.org" {
