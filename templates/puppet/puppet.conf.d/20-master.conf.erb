@@ -1,5 +1,5 @@
 
-<% if has_variable?("is_puppet_master") and is_puppet_master == "true" -%>
+<% if scope.lookupvar('::is_puppet_master') == "true" -%>
 [master]
 ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
@@ -7,7 +7,7 @@ thin_storeconfigs = true
 templatedir = /var/lib/puppet/templates
 
 dbadapter = mysql
-<% if has_variable?("is_labs_puppet_master") and is_labs_puppet_master == "true" -%>
+<% if scope.lookupvar('::is_labs_puppet_master') == "true" -%>
 dbuser = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user') %>
 dbpassword = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user_pass') %>
 dbserver = <%= scope.lookupvar('openstack::nova_config::nova_db_host') %>

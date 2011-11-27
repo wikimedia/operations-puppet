@@ -13,7 +13,7 @@ configtimeout = 480
 splay = true
 # asking puppet to run every 2 hours instead of every 30 minutes to reduce load on the puppet server -ben 2011-08-25
 runinterval = 7200
-<% if not has_variable?("is_puppet_master") or is_puppet_master == "false" -%>
+<% if is_puppet_master == "false" -%>
 templatedir = $confdir/templates
 <% end -%>
 prerun_command = /etc/puppet/etckeeper-commit-pre
