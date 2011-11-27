@@ -1,29 +1,13 @@
 
-<% if scope.lookupvar('::is_puppet_master') == "true" -%>
 [master]
 ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 thin_storeconfigs = true
 templatedir = /var/lib/puppet/templates
 
-dbadapter = mysql
-<% if scope.lookupvar('::is_labs_puppet_master') == "true" -%>
-dbuser = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user') %>
-dbpassword = <%= scope.lookupvar('openstack::nova_config::nova_puppet_user_pass') %>
-dbserver = <%= scope.lookupvar('openstack::nova_config::nova_db_host') %>
-
-# LDAP
-node_terminus = ldap
-ldapserver = <%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
-ldapbase = ou=hosts,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
-ldapstring = (&(objectclass=puppetClient)(associatedDomain=%s))
-ldapuser = cn=proxyagent,ou=profile,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
-ldappassword = <%= scope.lookupvar('openstack::nova_config::nova_ldap_proxyagent_pass') %>
-ldaptls = true
-<% else -%>
-dbuser = puppet
-dbpassword = <%= scope.lookupvar('passwords::puppet::database::puppet_production_db_pass') %>
-dbserver = db9.pmtpa.wmnet
+# puppetmaster($config) settings
+<% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>
+<%= setting %> = <%= value %>
 <% end -%>
 
 # SSL
@@ -32,4 +16,3 @@ ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-<% end -%>

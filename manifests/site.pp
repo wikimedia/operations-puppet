@@ -1877,10 +1877,20 @@ node "sockpuppet.pmtpa.wmnet" {
 	$cluster = "misc"
 	$is_puppet_master = "true"
 
+	include passwords::puppet::database
+
 	include standard,
 		backup::client
 
-	class { puppetmaster: allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ] }
+	class { puppetmaster:
+		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
+		config => {
+			'dbadaptor' => "mysql",
+			'dbuser' => "puppet",
+			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+			'dbserver' => "db9.pmtpa.wmnet"
+		}
+	}
 }
 
 node "sodium.wikimedia.org" {
