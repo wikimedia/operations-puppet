@@ -188,6 +188,51 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 	
+	# Class: puppetmaster::dashboard
+	#
+	# This class installs a Puppet Dashboard interface for managing all Puppet clients
+	#
+	# Parameters:
+	#	- $dashboard_environment:
+	#		The RAILS environment dashboard should run in (production, development, test)
+	class dashboard($dashboard_environment="production") {
+		require puppetmaster::passenger, passwords::puppetmaster::dashboard
+
+		system_role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
+
+		$db_pass = $passwords::puppetmaster::dashboard::db_pass
+
+		package { "puppet-dashboard": ensure => latest }
+
+		File { mode => 0444 }
+		file {
+			"/etc/apache2/sites-available/dashboard":
+				content => template("puppet/dashboard/dashboard.erb");
+			"/etc/puppet-dashboard/database.yml":
+				require => Package["puppet-dashboard"],
+				content => template("puppet/dashboard/database.yml.erb");
+			"/etc/default/puppet-dashboard":
+				content => template("puppet/dashboard/puppet-dashboard.default.erb");
+			"/etc/default/puppet-dashboard-workers":
+				content => template("puppet/dashboard/puppet-dashboard-workers.default.erb");
+		}
+		
+		apache_site { "dashboard": name => "dashboard" }
+
+		exec {
+			"create database":
+				require => File["/etc/puppet-dashboard/database.yml"],
+				path => "/usr/bin:/bin",
+				command => "rake RAILS_ENV=${dashboard_environment} db:create";
+			"migrate database":
+				path => "/usr/bin:/bin",
+				command => "rake RAILS_ENV=${dashboard_environment} db:migrate";
+		}
+		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard"]
+
+		service { "puppet-dashboard": ensure => running }
+	}
+	
 	class { "puppetmaster::passenger":
 		bind_address => $bind_address,
 		verify_client => $verify_client,
