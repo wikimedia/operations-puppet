@@ -9,6 +9,15 @@ import "nrpe.pp"
 import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
 
+# This needs to be in top-level scope:
+
+# Templates need variables defined explicitly
+if $is_puppet_master != "true" {
+	$is_puppet_master = "false"
+}
+if $is_labs_puppet_master != "true" {
+	$is_labs_puppet_master = "false"
+}
 
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
@@ -61,13 +70,6 @@ class base::puppet {
 
 	include passwords::puppet::database
 
-	# Templates need variables defined explicitly
-	if $is_puppet_master != "true" {
-		$is_puppet_master = "false"
-	}
-	if $is_labs_puppet_master != "true" {
-		$is_labs_puppet_master = "false"
-	}
 	if $realm == "labs" or $is_labs_puppet_master {
 		# We must load the nova config class, if we want to
 		# use the vars in the template
