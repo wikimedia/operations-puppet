@@ -12,10 +12,10 @@ import "../private/manifests/contacts.pp"
 # This needs to be in top-level scope:
 
 # Templates need variables defined explicitly
-if $is_puppet_master != "true" {
+if ! $is_puppet_master {
 	$is_puppet_master = "false"
 }
-if $is_labs_puppet_master != "true" {
+if ! $is_labs_puppet_master {
 	$is_labs_puppet_master = "false"
 }
 
