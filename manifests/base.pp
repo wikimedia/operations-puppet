@@ -9,16 +9,6 @@ import "nrpe.pp"
 import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
 
-# This needs to be in top-level scope:
-
-# Templates need variables defined explicitly
-if ! $is_puppet_master {
-	$is_puppet_master = "false"
-}
-if ! $is_labs_puppet_master {
-	$is_labs_puppet_master = "false"
-}
-
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
 	exec { "/usr/bin/apt-get update":
@@ -66,15 +56,9 @@ deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main uni
 	}
 }
 
-class base::puppet {
+class base::puppet($server="puppet") {
 
 	include passwords::puppet::database
-
-	if $realm == "labs" or $is_labs_puppet_master {
-		# We must load the nova config class, if we want to
-		# use the vars in the template
-		include openstack::nova_config
-	}
 
 	package { [ "puppet" ]:
 		ensure => latest;
@@ -152,7 +136,7 @@ class base::puppet {
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
 		file { "/etc/update-motd.d/97-last-puppet-run":
 			source => "puppet:///files/misc/97-last-puppet-run",
-			mode => 0755;
+			mode => 0555;
 		}
 	}
 }

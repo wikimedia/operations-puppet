@@ -189,7 +189,23 @@ class openstack::puppet-server {
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
-	class { puppetmaster: server_name => $fqdn, allow_from => $puppet_passenger_allow_from }
+	class { puppetmaster:
+		server_name => $fqdn,
+		allow_from => $puppet_passenger_allow_from,
+		config => {
+			'dbadapter' => "mysql",
+			'dbuser' => $openstack::nova_config::nova_puppet_user,
+			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+			'dbhost' => $openstack::nova_config::nova_db_host,
+			'node_terminus' => "ldap",
+			'ldapserver' => $openstack::nova_config::nova_ldap_host,
+			'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
+			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
+			'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
+			'ldaptls' => true
+		};
+	}
 
 }
 

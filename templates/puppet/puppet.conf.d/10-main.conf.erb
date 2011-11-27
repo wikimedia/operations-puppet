@@ -1,9 +1,7 @@
 # This file is managed by Puppet!
 
 [main]
-<% if realm == "labs" -%>
-server = <%= scope.lookupvar('openstack::nova_config::nova_puppet_host') %>
-<% end -%>
+server = <%= scope.lookupvar('base::puppet::server') %>
 logdir = /var/log/puppet
 vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
@@ -13,9 +11,6 @@ configtimeout = 480
 splay = true
 # asking puppet to run every 2 hours instead of every 30 minutes to reduce load on the puppet server -ben 2011-08-25
 runinterval = 7200
-<% if is_puppet_master == "false" -%>
-templatedir = $confdir/templates
-<% end -%>
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = false

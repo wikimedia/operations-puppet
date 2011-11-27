@@ -49,3 +49,10 @@ $domain_search = $domain
 
 # Default group
 $gid = 500
+
+# Labs
+# TODO: move this to a different file
+if $realm == "labs" {
+	include openstack::nova_config
+	Class { "base::puppet": server => $openstack::nova_config::nova_puppet_host }
+}
