@@ -224,7 +224,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 		Exec {
 			path => "/usr/bin:/bin",
-			cwd => "/usr/share/puppet-dashboard"
+			cwd => "/usr/share/puppet-dashboard",
+			subscribe => Package["puppet-dashboard"],
+			refreshonly => true
 		}
 		exec {
 			"create database":

@@ -1,6 +1,17 @@
 # This file is managed by Puppet!
 
-<VirtualHost localhost>
+NameVirtualHost *:443
+<VirtualHost *:443>
+	SSLEngine on
+	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
+	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
+	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLOptions +StdEnvVars
+
 	# this is the passenger config
 	RailsEnv production
 	RailsBaseURI /puppet-dashboard
