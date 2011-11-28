@@ -14,9 +14,9 @@ NameVirtualHost *:443
 
 	# this is the passenger config
 	RailsEnv production
-	RailsBaseURI /puppet-dashboard
+	RailsBaseURI /
 	SetEnv X_DEBIAN_SITEID "default"
-	Alias "/puppet-dashboard/plugin_assets/" /var/cache/puppet-dashboard./default/plugin_assets/
+	Alias "/plugin_assets/" /var/cache/puppet-dashboard./default/plugin_assets/
 	DocumentRoot /usr/share/puppet-dashboard/public
 	<Directory "/usr/share/puppet-dashboard/public">
 		Order allow,deny
