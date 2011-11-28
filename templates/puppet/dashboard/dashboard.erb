@@ -6,10 +6,8 @@ NameVirtualHost *:443
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
-	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
-	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
-	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+	SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
 	SSLOptions +StdEnvVars
 
 	# this is the passenger config
