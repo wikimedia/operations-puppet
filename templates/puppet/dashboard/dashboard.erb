@@ -1,6 +1,23 @@
 # This file is managed by Puppet!
 
-NameVirtualHost *:443
+<VirtualHost *:80>
+	<Location />
+		Order allow,deny
+		Allow from localhost
+	</Location>
+
+	# this is the passenger config
+	RailsEnv production
+	RailsBaseURI /
+	SetEnv X_DEBIAN_SITEID "default"
+	Alias "/plugin_assets/" /var/cache/puppet-dashboard./default/plugin_assets/
+	DocumentRoot /usr/share/puppet-dashboard/public
+	<Directory "/usr/share/puppet-dashboard/public">
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>
+
 <VirtualHost *:443>
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1

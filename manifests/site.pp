@@ -1889,7 +1889,9 @@ node "sockpuppet.pmtpa.wmnet" {
 			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-			'dbserver' => "db9.pmtpa.wmnet"
+			'dbserver' => "db9.pmtpa.wmnet",
+			'reports' => "store, http",
+			'reporturl' => "http://localhost/reports/upload"
 		}
 	}
 
