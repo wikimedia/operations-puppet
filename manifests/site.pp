@@ -1893,7 +1893,7 @@ node "sockpuppet.pmtpa.wmnet" {
 		}
 	}
 
-	class { "puppetmaster-dashboard":
+	class { puppetmaster::dashboard:
 		dashboard_environment => "production",
 		db_host => "db9.pmtpa.wmnet"
 	}
