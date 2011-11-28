@@ -1,5 +1,6 @@
 # This file is managed by Puppet!
 
+<<<<<<< HEAD   (ecdb40 Move base URL to /, fix gem-dependency.rb)
 NameVirtualHost *:443
 <VirtualHost *:443>
 	SSLEngine on
@@ -10,6 +11,33 @@ NameVirtualHost *:443
 	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
 	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
 	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
+=======
+<VirtualHost *:80>
+	<Location />
+		Order allow,deny
+		Allow from localhost
+	</Location>
+
+	# this is the passenger config
+	RailsEnv production
+	RailsBaseURI /
+	SetEnv X_DEBIAN_SITEID "default"
+	Alias "/plugin_assets/" /var/cache/puppet-dashboard./default/plugin_assets/
+	DocumentRoot /usr/share/puppet-dashboard/public
+	<Directory "/usr/share/puppet-dashboard/public">
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+	SSLEngine on
+	SSLProtocol -ALL +SSLv3 +TLSv1
+	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
+
+	SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+	SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
+>>>>>>> BRANCH (ce9c7d Finishing touches of dashboard configuration: settings.yml a)
 	SSLOptions +StdEnvVars
 
 	# this is the passenger config

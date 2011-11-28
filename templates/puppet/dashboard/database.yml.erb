@@ -46,6 +46,7 @@
 # be "utf8".
 # 
 production:
+<<<<<<< HEAD   (ecdb40 Move base URL to /, fix gem-dependency.rb)
   database: dashboard_production
   username: dashboard
   password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>
@@ -60,6 +61,25 @@ development:
   adapter: mysql
 
 test:
+=======
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
+  database: dashboard_production
+  username: dashboard
+  password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>
+  encoding: utf8
+  adapter: mysql
+
+development:
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
+  database: dashboard_development
+  username: dashboard
+  password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>
+  encoding: utf8
+  adapter: mysql
+
+test:
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
+>>>>>>> BRANCH (ce9c7d Finishing touches of dashboard configuration: settings.yml a)
   database: dashboard_test
   username: dashboard
   password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>

@@ -198,6 +198,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Parameters:
 	#	- $dashboard_environment:
 	#		The RAILS environment dashboard should run in (production, development, test)
+<<<<<<< HEAD   (ecdb40 Move base URL to /, fix gem-dependency.rb)
 	class dashboard($dashboard_environment="production") {
 		require puppetmaster::passenger, passwords::puppetmaster::dashboard
 
@@ -252,6 +253,71 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
 				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
 				require => File["/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch"],
+=======
+	#	- $db_host
+	#		Hostname of the MySQL database server to use
+	class dashboard($dashboard_environment="production", $db_host="localhost") {
+		require puppetmaster::passenger, passwords::puppetmaster::dashboard
+
+		system_role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
+
+		$db_pass = $passwords::puppetmaster::dashboard::db_pass
+
+		package { "puppet-dashboard": ensure => latest }
+
+		File { mode => 0444 }
+		file {
+			"/etc/apache2/sites-available/dashboard":
+				content => template("puppet/dashboard/dashboard.erb");
+			"/etc/puppet-dashboard/database.yml":
+				require => Package["puppet-dashboard"],
+				content => template("puppet/dashboard/database.yml.erb");
+			"/etc/puppet-dashboard/settings.yml":
+				require => Package["puppet-dashboard"],
+				content => template("puppet/dashboard/settings.yml.erb");
+			"/etc/default/puppet-dashboard":
+				content => template("puppet/dashboard/puppet-dashboard.default.erb");
+			"/etc/default/puppet-dashboard-workers":
+				content => template("puppet/dashboard/puppet-dashboard-workers.default.erb");
+		}
+		
+		apache_site { "dashboard":
+			name => "dashboard",
+			require => Exec["migrate database"]
+		}
+
+		Exec {
+			path => "/usr/bin:/bin",
+			cwd => "/usr/share/puppet-dashboard",
+			subscribe => Package["puppet-dashboard"],
+			refreshonly => true
+		}
+		exec {
+			"create database":
+				require => File["/etc/puppet-dashboard/database.yml"],
+				command => "rake RAILS_ENV=${dashboard_environment} db:create";
+			"migrate database":
+				command => "rake RAILS_ENV=${dashboard_environment} db:migrate";
+		}
+		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard-workers"]
+
+		service { "puppet-dashboard-workers": ensure => running }
+		
+		# Temporary fix for dashboard under Lucid
+		# http://projects.puppetlabs.com/issues/8800
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") == 0 {
+			file { "/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch":
+				require => Package["puppet-dashboard"],
+				before => Exec["migrate database"],
+				source => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
+			}
+			
+			exec { "fix gem-dependency.rb":
+				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
+				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
+				require => File["/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch"],
+				before => [Apache_site[dashboard], Service["puppet-dashboard-workers"]],
+>>>>>>> BRANCH (ce9c7d Finishing touches of dashboard configuration: settings.yml a)
 				subscribe => Package["puppet-dashboard"],
 				refreshonly => true
 			}

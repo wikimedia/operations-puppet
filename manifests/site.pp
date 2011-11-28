@@ -1886,11 +1886,26 @@ node "sockpuppet.pmtpa.wmnet" {
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		config => {
+<<<<<<< HEAD   (ecdb40 Move base URL to /, fix gem-dependency.rb)
 			'dbadaptor' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
 			'dbserver' => "db9.pmtpa.wmnet"
 		}
+=======
+			'dbadapter' => "mysql",
+			'dbuser' => "puppet",
+			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+			'dbserver' => "db9.pmtpa.wmnet",
+			'reports' => "store, http",
+			'reporturl' => "http://localhost/reports/upload"
+		}
+	}
+
+	class { puppetmaster::dashboard:
+		dashboard_environment => "production",
+		db_host => "db9.pmtpa.wmnet"
+>>>>>>> BRANCH (ce9c7d Finishing touches of dashboard configuration: settings.yml a)
 	}
 }
 
