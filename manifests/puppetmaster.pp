@@ -238,6 +238,23 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard"]
 
 		service { "puppet-dashboard": ensure => running }
+		
+		# Temporary fix for dashboard under Lucid
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") == 0 {
+			file "/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch":
+				require => Package["puppet-dashboard"],
+				before => Exec["migrate database"],
+				content => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
+			}
+			
+			exec { "fix gem-dependency.rb":
+				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
+				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
+				require => File["/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch"],
+				subscribe => Package["puppet-dashboard"],
+				refreshonly => true
+			}
+		}
 	}
 	
 	class { "puppetmaster::passenger":
