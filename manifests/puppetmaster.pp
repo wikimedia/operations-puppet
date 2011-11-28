@@ -247,7 +247,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			file { "/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch":
 				require => Package["puppet-dashboard"],
 				before => Exec["migrate database"],
-				content => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
+				source => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
 			}
 			
 			exec { "fix gem-dependency.rb":
