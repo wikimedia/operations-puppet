@@ -1431,7 +1431,7 @@ class misc::contint::test {
 	include generic::packages::git-core
 	
 	# Prefer the PHP package from Ubuntu
-	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl ]: }
+	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl, php5-pgsql ]: }
 
 	# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
 	# package { "jenkins":
