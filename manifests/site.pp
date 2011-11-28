@@ -1,6 +1,7 @@
 # site.pp
 
 import "realm.pp"	# These ones first
+import "generic-definitions.pp"
 import "base.pp"
 
 import "admins.pp"
@@ -1890,6 +1891,11 @@ node "sockpuppet.pmtpa.wmnet" {
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
 			'dbserver' => "db9.pmtpa.wmnet"
 		}
+	}
+
+	class { "puppetmaster-dashboard":
+		dashboard_environment => "production",
+		db_host => "db9.pmtpa.wmnet"
 	}
 }
 

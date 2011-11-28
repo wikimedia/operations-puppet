@@ -198,7 +198,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Parameters:
 	#	- $dashboard_environment:
 	#		The RAILS environment dashboard should run in (production, development, test)
-	class dashboard($dashboard_environment="production") {
+	#	- $db_host
+	#		Hostname of the MySQL database server to use
+	class dashboard($dashboard_environment="production", $db_host="localhost") {
 		require puppetmaster::passenger, passwords::puppetmaster::dashboard
 
 		system_role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
