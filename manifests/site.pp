@@ -1135,7 +1135,10 @@ node "gallium.wikimedia.org" {
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
-		accounts::reedy
+		accounts::reedy,
+		certificates::star_wikimedia_org
+
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node "gilman.wikimedia.org" {
