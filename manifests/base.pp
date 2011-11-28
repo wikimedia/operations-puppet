@@ -61,7 +61,7 @@ class base::puppet($server="puppet") {
 	include passwords::puppet::database
 
 	package { [ "puppet" ]:
-		ensure => present;
+		ensure => latest;
 	}
 
 	# monitoring via snmp traps
