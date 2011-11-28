@@ -222,13 +222,15 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		
 		apache_site { "dashboard": name => "dashboard" }
 
+		Exec {
+			path => "/usr/bin:/bin",
+			cwd => "/usr/share/puppet-dashboard"
+		}
 		exec {
 			"create database":
 				require => File["/etc/puppet-dashboard/database.yml"],
-				path => "/usr/bin:/bin",
 				command => "rake RAILS_ENV=${dashboard_environment} db:create";
 			"migrate database":
-				path => "/usr/bin:/bin",
 				command => "rake RAILS_ENV=${dashboard_environment} db:migrate";
 		}
 		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard"]
