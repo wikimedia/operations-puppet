@@ -237,9 +237,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"migrate database":
 				command => "rake RAILS_ENV=${dashboard_environment} db:migrate";
 		}
-		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard"]
+		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard-workers"]
 
-		service { "puppet-dashboard": ensure => running }
+		service { "puppet-dashboard-workers": ensure => running }
 		
 		# Temporary fix for dashboard under Lucid
 		# http://projects.puppetlabs.com/issues/8800

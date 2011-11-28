@@ -20,8 +20,8 @@ DASHBOARD_RUBY=/usr/bin/ruby
 DASHBOARD_ENVIRONMENT=<%= scope.lookupvar('puppetmaster::dashboard::dashboard_environment') %>
 
 # Network interface which puppet-dashboard web server is running at:
-DASHBOARD_IFACE=0.0.0.0
+DASHBOARD_IFACE=127.0.0.1
 
 # Port on which puppet-dashboard web server is running at, note that if the
 # puppet-dashboard user is not root, it has to be a > 1024:
-DASHBOARD_PORT=3000
+DASHBOARD_PORT=80
