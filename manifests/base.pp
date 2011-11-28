@@ -298,8 +298,8 @@ class base {
 
 	case $operatingsystem {
 		Ubuntu,Debian: {
-			include	::apt,
-				::apt::update
+			include	base::apt,
+				base::apt::update
 
 			class { base::puppet:
 				server => $realm ? {
