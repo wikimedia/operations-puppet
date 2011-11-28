@@ -126,9 +126,11 @@ class openstack::common {
 		require => Apt::Pparepo["nova-core-release"];
 	}
 
-	package { [ "unzip", "aoetools", "vblade-persist", "mysql-client", "python-mysqldb", "bridge-utils", "ebtables" ]:
+	package { [ "unzip", "aoetools", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-common" ]:
 		ensure => latest;
 	}
+
+	generic::apt::pin-package { [ "libmysqlclient16", "mysql-common" ]: }
 
 	file {
 		"/etc/nova/nova.conf":
@@ -215,12 +217,19 @@ class openstack::database-server {
 		openstack::glance_config,
 		gerrit::database-server
 
+	generic::apt::pin-package { [ "mysql-server", "mysql-client" ]: }
+	generic::apt::pin-package { "mysql-server-51": package => "mysql-server-5.1" }
+	generic::apt::pin-package { "mysql-server-core-51": package => "mysql-server-core-5.1" }
+	generic::apt::pin-package { "mysql-client-51": package => "mysql-client-5.1" }
+	generic::apt::pin-package { "mysql-client-core-51": package => "mysql-client-core-5.1" }
+
 	package { "mysql-server":
 		ensure => latest;
 	}
 
 	service { "mysql":
 		enable => true,
+		require => Package["mysql-server"],
 		ensure => running;
 	}
 
