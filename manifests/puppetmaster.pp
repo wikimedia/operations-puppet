@@ -216,13 +216,19 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/etc/puppet-dashboard/database.yml":
 				require => Package["puppet-dashboard"],
 				content => template("puppet/dashboard/database.yml.erb");
+			"/etc/puppet-dashboard/settings.yml":
+				require => Package["puppet-dashboard"],
+				content => template("puppet/dashboard/settings.yml.erb");
 			"/etc/default/puppet-dashboard":
 				content => template("puppet/dashboard/puppet-dashboard.default.erb");
 			"/etc/default/puppet-dashboard-workers":
 				content => template("puppet/dashboard/puppet-dashboard-workers.default.erb");
 		}
 		
-		apache_site { "dashboard": name => "dashboard" }
+		apache_site { "dashboard":
+			name => "dashboard",
+			require => Exec["migrate database"]
+		}
 
 		Exec {
 			path => "/usr/bin:/bin",
@@ -254,6 +260,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
 				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
 				require => File["/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch"],
+				before => [Apache_site[dashboard], Service["puppet-dashboard-workers"]],
 				subscribe => Package["puppet-dashboard"],
 				refreshonly => true
 			}
