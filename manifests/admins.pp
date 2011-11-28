@@ -1146,15 +1146,20 @@ class accounts {
 
 			ssh_authorized_key {
 				"chad@veropedia":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIB0gV8BlCV+bNI3YkVmoDu8XoSZoTswATlO3gPbEcE9oxZ0MaaEyHRoV2+G9IloreAfPvr9+bs0fHj1omWid5xB3obsh2PIqNVu8X5Se5Zyuqo9Vg3eKYaWFwINgcwHrUH2I0SpO2l/U7+Z4SPoRQpB+EK9+C2D6I11oschiou4qw==";
 				"chad@anyonecanedit":
-					ensure  => present,
+					ensure  => absent,
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsWDBqUQBaIfJYCslelxUgpx1YVeKGKiAq1OZjGiJZMdjQb6UXPN44CgdamuZY2sFZo7D1mxI0uvxjv+zRfLChHkYQr5vPcPfsNzWAKLo+54rzC3aBhjgZE40H3X0W6x0HgctopCAVLET/tp9/EX5cstGBRw9CfAOrcF6jpCwWg42Y766lpvwcG+JtacuT/BqeO8wh+V1blLBIiF+ai3G173WwVXQ4e1f2/tZ40zKoy4VCMYLl0MtvPt4aPqqHPa+WNdx10aFWNCrDQIQa28EYcj3kw1pY3xlTORyxM02DgqFzqc8dNSU7UhTfL+nKR4kuG0S65e7SXiG48axnv/SOw==";
+				"chad@chadsmac":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/M7FcM/RpajWHfGsCgQiXo07cTkC9sQkpPvfInCA16Gk0rLOm1nJb2BKSlg5PhXLuJySS0iu7P95HJaKwoZDHkFc75bHx6ISRHOhgqUr1yR7S0pTdm+ithTi/zVEfc4j3KNQyift4o2pwVgx0CQTZjZL8sgf7XoKbw9YeftDt9Kz/KabNx45uB7qeH2sB7xnqixnb7knKu3rFN932eyFmA+G5+q2sPLjHNoyGhr6sfQi/dbUV1DDyd3zIs2W2Isej38WAX+B+KPT+mAj1uO9TUkY9v6ollDE+N92uQHiLrQDZ+dF4joDTsQu5ydai0QTYs5xNvrim/bMZHg+5F+X";
 			}
 		}
 	}
