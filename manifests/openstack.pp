@@ -195,8 +195,8 @@ class openstack::puppet-server {
 		config => {
 			'dbadapter' => "mysql",
 			'dbuser' => $openstack::nova_config::nova_puppet_user,
-			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-			'dbhost' => $openstack::nova_config::nova_db_host,
+			'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
+			'dbserver' => $openstack::nova_config::nova_db_host,
 			'node_terminus' => "ldap",
 			'ldapserver' => $openstack::nova_config::nova_ldap_host,
 			'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",

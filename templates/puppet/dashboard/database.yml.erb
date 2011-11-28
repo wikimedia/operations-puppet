@@ -46,6 +46,7 @@
 # be "utf8".
 # 
 production:
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
   database: dashboard_production
   username: dashboard
   password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>
@@ -53,6 +54,7 @@ production:
   adapter: mysql
 
 development:
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
   database: dashboard_development
   username: dashboard
   password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>
@@ -60,6 +62,7 @@ development:
   adapter: mysql
 
 test:
+  host: <%= scope.lookupvar('puppetmaster::dashboard::db_host') %>
   database: dashboard_test
   username: dashboard
   password: <%= scope.lookupvar('puppetmaster::dashboard::db_pass') %>

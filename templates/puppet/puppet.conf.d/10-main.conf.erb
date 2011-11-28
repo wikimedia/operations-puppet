@@ -1,12 +1,14 @@
 # This file is managed by Puppet!
 
 [main]
-server = <%= scope.lookupvar('base::puppet::server') %>
 logdir = /var/log/puppet
 vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
+
+[agent]
+server = <%= scope.lookupvar('base::puppet::server') %>
 configtimeout = 480
 splay = true
 # asking puppet to run every 2 hours instead of every 30 minutes to reduce load on the puppet server -ben 2011-08-25
@@ -14,3 +16,4 @@ runinterval = 7200
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = false
+report = true

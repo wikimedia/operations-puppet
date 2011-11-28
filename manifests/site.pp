@@ -1886,11 +1886,18 @@ node "sockpuppet.pmtpa.wmnet" {
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		config => {
-			'dbadaptor' => "mysql",
+			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-			'dbserver' => "db9.pmtpa.wmnet"
+			'dbserver' => "db9.pmtpa.wmnet",
+			'reports' => "store, http",
+			'reporturl' => "http://localhost/reports/upload"
 		}
+	}
+
+	class { puppetmaster::dashboard:
+		dashboard_environment => "production",
+		db_host => "db9.pmtpa.wmnet"
 	}
 }
 

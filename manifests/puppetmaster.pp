@@ -198,7 +198,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Parameters:
 	#	- $dashboard_environment:
 	#		The RAILS environment dashboard should run in (production, development, test)
-	class dashboard($dashboard_environment="production") {
+	#	- $db_host
+	#		Hostname of the MySQL database server to use
+	class dashboard($dashboard_environment="production", $db_host="localhost") {
 		require puppetmaster::passenger, passwords::puppetmaster::dashboard
 
 		system_role { "puppetmaster::dashboard": description => "Puppet Dashboard interface" }
@@ -214,13 +216,19 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/etc/puppet-dashboard/database.yml":
 				require => Package["puppet-dashboard"],
 				content => template("puppet/dashboard/database.yml.erb");
+			"/etc/puppet-dashboard/settings.yml":
+				require => Package["puppet-dashboard"],
+				content => template("puppet/dashboard/settings.yml.erb");
 			"/etc/default/puppet-dashboard":
 				content => template("puppet/dashboard/puppet-dashboard.default.erb");
 			"/etc/default/puppet-dashboard-workers":
 				content => template("puppet/dashboard/puppet-dashboard-workers.default.erb");
 		}
 		
-		apache_site { "dashboard": name => "dashboard" }
+		apache_site { "dashboard":
+			name => "dashboard",
+			require => Exec["migrate database"]
+		}
 
 		Exec {
 			path => "/usr/bin:/bin",
@@ -235,9 +243,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"migrate database":
 				command => "rake RAILS_ENV=${dashboard_environment} db:migrate";
 		}
-		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard"]
+		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard-workers"]
 
-		service { "puppet-dashboard": ensure => running }
+		service { "puppet-dashboard-workers": ensure => running }
 		
 		# Temporary fix for dashboard under Lucid
 		# http://projects.puppetlabs.com/issues/8800
@@ -245,13 +253,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			file { "/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch":
 				require => Package["puppet-dashboard"],
 				before => Exec["migrate database"],
-				content => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
+				source => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
 			}
 			
 			exec { "fix gem-dependency.rb":
 				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
 				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
 				require => File["/etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch"],
+				before => [Apache_site[dashboard], Service["puppet-dashboard-workers"]],
 				subscribe => Package["puppet-dashboard"],
 				refreshonly => true
 			}

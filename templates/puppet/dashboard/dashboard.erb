@@ -1,15 +1,30 @@
 # This file is managed by Puppet!
 
-NameVirtualHost *:443
+<VirtualHost *:80>
+	<Location />
+		Order allow,deny
+		Allow from localhost
+	</Location>
+
+	# this is the passenger config
+	RailsEnv production
+	RailsBaseURI /
+	SetEnv X_DEBIAN_SITEID "default"
+	Alias "/plugin_assets/" /var/cache/puppet-dashboard./default/plugin_assets/
+	DocumentRoot /usr/share/puppet-dashboard/public
+	<Directory "/usr/share/puppet-dashboard/public">
+		Order allow,deny
+		Allow from all
+	</Directory>
+</VirtualHost>
+
 <VirtualHost *:443>
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1
 	SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP
 
-	SSLCertificateFile      /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
-	SSLCertificateKeyFile   /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-	SSLCACertificateFile    /var/lib/puppet/server/ssl/ca/ca_crt.pem
-	SSLCertificateChainFile /var/lib/puppet/server/ssl/ca/ca_crt.pem
+	SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+	SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-snakeoil.key
 	SSLOptions +StdEnvVars
 
 	# this is the passenger config
