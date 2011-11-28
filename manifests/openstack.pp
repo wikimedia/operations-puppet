@@ -530,11 +530,18 @@ class openstack::glance-service {
 	}
 
 	file {
-		"/etc/glance/glance.conf":
-			content => template("openstack/glance.conf.erb"),
+		"/etc/glance/glance-api.conf":
+			content => template("openstack/glance-api.conf.erb"),
 			owner => root,
 			group => root,
-			notify => Service["glance-api", "glance-registry"],
+			notify => Service["glance-api"],
+			require => Package["glance"],
+			mode => 0444;
+		"/etc/glance/glance-registry.conf":
+			content => template("openstack/glance-registry.conf.erb"),
+			owner => root,
+			group => root,
+			notify => Service["glance-registry"],
 			require => Package["glance"],
 			mode => 0444;
 	}
