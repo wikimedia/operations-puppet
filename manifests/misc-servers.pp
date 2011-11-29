@@ -288,6 +288,8 @@ class misc::noc-wikimedia {
 		ensure => latest;
 	}
 
+	$proxypass = $passwords::ldap::wmf_cluster::proxypass
+
 	file {
 		"/etc/apache2/sites-available/noc.wikimedia.org":
 			require => [ Apache_module[userdir], Apache_module[cgi], Package[libapache2-mod-php5] ],
@@ -296,6 +298,12 @@ class misc::noc-wikimedia {
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/noc.wikimedia.org";
+		"/etc/apache2/sites-available/graphite.wikimedia.org":
+			path => "/etc/apache2/sites-available/graphite.wikimedia.org",
+			content => template('apache/sites/graphite.wikimedia.org'),
+			mode => 0444,
+			owner => root,
+			group => root;
 		"/usr/lib/cgi-bin":
 			source => "puppet:///files/cgi-bin/noc/",
 			recurse => true,
@@ -305,8 +313,13 @@ class misc::noc-wikimedia {
 
 	apache_module { userdir: name => "userdir" }
 	apache_module { cgi: name => "cgi" }
+	apache_module { ldap: name => "ldap" }
+	apache_module { authnz_ldap: name => "authnz_ldap" }
+	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
 
 	apache_site { noc: name => "noc.wikimedia.org" }
+	apache_site { graphiteproxy: name => "graphite.wikimedia.org" }
 
 	service { apache2:
 		require => [ Package[apache2], Apache_module[userdir], Apache_module[cgi], Apache_site[noc] ],
