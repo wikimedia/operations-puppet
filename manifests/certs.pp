@@ -80,7 +80,6 @@ class certs::groups::ssl-cert {
 	# Hardy doesn't have system group ssl-cert, so ensure it exists
 	group { "ssl-cert":
 		gid => 116,
-		system => true,
 		ensure => present
 	}
 }
