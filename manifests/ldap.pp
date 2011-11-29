@@ -577,6 +577,8 @@ class ldap::client::autofs {
 		enable => true,
 		hasrestart => true,
 		pattern => "automount",
+		require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldap" ],
+		subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf"],
 		ensure => running;
 	}
 }
