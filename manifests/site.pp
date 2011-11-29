@@ -2955,6 +2955,10 @@ node /snapshot[1-4]\.pmtpa\.wmnet/ {
 		groups::wikidev
 }
 
+node "tarin.wikimedia.org" {
+	include standard
+}
+
 node "thistle.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include db::core
