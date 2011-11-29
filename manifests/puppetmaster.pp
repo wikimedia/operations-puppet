@@ -186,6 +186,18 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				minute => 26,
 				ensure => present;
 		}
+
+		# Purge decommissioned hosts from the stored configs db		
+		schedule { "nightly":
+			range => "2 - 6",
+			period => daily,
+		}
+		
+		exec { "purge decommissioned hosts":
+			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
+			command => "for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+			schedule => nightly
+		}
 	}
 	
 	# Class: puppetmaster::dashboard
