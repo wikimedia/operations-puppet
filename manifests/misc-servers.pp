@@ -288,6 +288,7 @@ class misc::noc-wikimedia {
 		ensure => latest;
 	}
 
+	include passwords::ldap::wmf_cluster
 	$proxypass = $passwords::ldap::wmf_cluster::proxypass
 
 	file {
