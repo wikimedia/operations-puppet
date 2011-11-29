@@ -90,7 +90,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::wmf_ca,
-		certs::groups::sslcert
+		certs::groups::ssl-cert
 
 	if ( $privatekey == "false" ) {
 		$key_loc = "puppet:///files/ssl/${name}"
