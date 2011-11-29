@@ -555,7 +555,7 @@ class openstack::gluster-service {
 	service { "glusterd":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info"], File["/etc/init/glusterd.conf"], File["/etc/init.d/glusterd"]];
+		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info","/etc/init.d/glusterd"], Upstart_job["glusterd"]];
 	}
 
 	# Every host exports its own peer resource
