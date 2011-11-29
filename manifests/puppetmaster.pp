@@ -167,17 +167,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
+		File { mode => 0555 }
 		file {
 			"/usr/local/bin/position-of-the-moon":
-				owner => root,
-				group => root,
-				mode => 0555,
 				source => "puppet:///files/puppet/position-of-the-moon";
 			"/usr/local/bin/uuid-generator":
-				owner => root,
-				group => root,
-				mode => 0555,
 				source => "puppet:///files/puppet/uuid-generator";
+			"/usr/local/sbin/puppetstoredconfigclean.rb":
+				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
 		}
 
 		cron {
