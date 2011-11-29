@@ -1584,6 +1584,11 @@ class misc::graphite {
 	}
 
 	file { 
+		"/etc/apache2/sites-available/graphite":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/apache.conf";
 		"/a/graphite/conf/carbon.conf":
 			owner => "root",
 			group => "root",
@@ -1605,6 +1610,9 @@ class misc::graphite {
 			mode => 0755,
 			ensure => directory;
 	}
+
+	apache_module { python: name => "python" }
+	apache_site { graphite: name => "graphite" }
 }
 
 class misc::scripts {
