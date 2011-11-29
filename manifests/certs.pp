@@ -76,12 +76,21 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
+class certs::groups::ssl-cert {
+	# Hardy doesn't have system group ssl-cert, so ensure it exists
+	group { "ssl-cert":
+		gid => 116,
+		system => true,
+		ensure => present
+	}
+}
+
 define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
-		certificates::wmf_ca
-
+		certificates::wmf_ca,
+		certs::groups::sslcert
 
 	if ( $privatekey == "false" ) {
 		$key_loc = "puppet:///files/ssl/${name}"
