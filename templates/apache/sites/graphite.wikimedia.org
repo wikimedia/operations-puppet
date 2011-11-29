@@ -1,0 +1,27 @@
+<VirtualHost *:80>
+	ServerName graphite.wikimedia.org
+
+	<Location />
+		Order allow,deny
+		Allow from all
+
+		AuthName "WMF" 
+		AuthType Basic
+		AuthBasicProvider ldap
+		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+		AuthLDAPBindPassword <%= proxypass %>
+		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?uid"
+		Require valid-user
+
+		RedirectMatch ^/$ "http://graphite.wikimedia.org/dashboard/"
+
+		ProxyPass http://graphite.pmtpa.wmnet/
+		ProxyPassReverse http://graphite.pmtpa.wmnet/
+	</Location> 
+
+	<Location "/render">
+		Satisfy Any
+		Allow from all
+	</Location>
+
+</VirtualHost>
