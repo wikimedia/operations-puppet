@@ -3030,6 +3030,9 @@ node "zinc.wikimedia.org" {
 		swift::storage
 }
 
+node "tarin.wikimedia.org" {
+}
+
 node default {
 	include	standard
 }
