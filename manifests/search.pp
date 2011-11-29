@@ -23,17 +23,22 @@ class search::php {
 }
 
 class search::jvm {
-	package { ia32-sun-java6-bin:
-		ensure => latest;
-	}
+	# FIXME: build replacement packages
+	
+	# These packages are no longer available in Lucid
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") < 0 {
+		package { ia32-sun-java6-bin:
+			ensure => latest;
+		}
 
-	$jvm = $hostname ? {
-		/search(11|13)/	=> "/usr/lib/jvm/java-6-openjdk/jre/bin/java",
-		default		=> "/usr/lib/jvm/ia32-java-6-sun/jre/bin/java",
-	}
+		$jvm = $hostname ? {
+			/search(11|13)/	=> "/usr/lib/jvm/java-6-openjdk/jre/bin/java",
+			default		=> "/usr/lib/jvm/ia32-java-6-sun/jre/bin/java",
+		}
 
-	exec { jvm-alternatives:
-		command => "/usr/sbin/update-alternatives --set java $jvm"
+		exec { jvm-alternatives:
+			command => "/usr/sbin/update-alternatives --set java $jvm"
+		}
 	}
 }
 
