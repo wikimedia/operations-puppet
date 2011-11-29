@@ -2663,7 +2663,8 @@ node "streber.wikimedia.org" {
 		misc::torrus,
 		exim::rt,
 		misc::rt::server,
-		certificates::star_wikimedia_org
+		certificates::star_wikimedia_org,
+		misc::firewall-builder
 
 
 	install_certificate{ "star.wikimedia.org": }
