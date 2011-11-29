@@ -1314,10 +1314,9 @@ class misc::survey {
 
 class misc::download-mediawiki {
 	
-	# TODO: add system_role
+	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
 
-	# wikimedia-task-appserver package is required
-	require mediawiki::packages
+	# FIXME: require apache
 
 	file {
 		#apache config
@@ -1338,8 +1337,7 @@ class misc::download-mediawiki {
 			ensure => directory;
 	}
 
-	apache_site { survey: name => "download.mediawiki.org" }
-
+	apache_site { "download.mediawiki.org": name => "download.mediawiki.org" }
 }
 
 class misc::monitoring::htcp-loss {
