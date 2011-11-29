@@ -1509,15 +1509,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 }
 
 node "maerlant.esams.wikimedia.org" {
-	$gid = 500
-
-	$enable_ipv6_proxy = "true"
-	$ganglia_aggregator = "true"
-
-	include protoproxy::ssl,
-		protoproxy::ipv6_labs,
-		groups::wikidev,
-		accounts::gmaxwell
+	include standard
 }
 
 node "magnesium.wikimedia.org" {
