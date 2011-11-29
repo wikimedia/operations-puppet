@@ -7,6 +7,8 @@
 <VirtualHost *:80>
     ServerName download.mediawiki.org
     DocumentRoot /srv/org/mediawiki/download
-    DirectoryIndex index.php
-    php_admin_flag engine On
+	<Directory /srv/org/mediawiki/download>
+		Options +Indexes
+	</Directory>
+    php_admin_flag engine Off
 </VirtualHost>
