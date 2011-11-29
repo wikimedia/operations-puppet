@@ -1,17 +1,23 @@
 #!/bin/sh
+# nagios plugin to check the mediawiki job queue
 
-if [ $( php /home/w/common/php-1.5/maintenance/showJobs.php enwiki ) -gt 50000 ]; then
+if [ $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php enwiki ) -gt 50000 ]; then
 	echo "JOBQUEUE CRITICAL - enwiki has more than 50 000 entries in its job queue"
 	exit 2
 fi
 
 for a in commonswiki enwiktionary dewikinews itwiki ptwiki dewiki plwiki frwiki eswiki jawiki svwiki ; do
-	echo $(php /home/w/common/php-1.5/maintenance/showJobs.php $a ) $a;
+	echo $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php $a ) $a;
 done | sort -n | tail -3 | head -1 | while read count wiki ; do
-	if [ $count -gt 10000 ]; then
+
+	if [ $(echo "$count" | grep -E "^[0-9]+$") ] && [ $count -gt 9999 ]; then
 		echo "JOBQUEUE CRITICAL - $wiki has $count entries in its job queue - 3rd biggest job queue"
 		exit 2
+	elif [ $(echo "$count" | grep -E "^[0-9]+$") ] && [ $count -lt 10000 ]; then
+		echo "JOBQUEUE OK - $wiki has the 3rd biggest job queue, $count entries"
+		exit 0
+	else
+		echo "JOBQUEUE CRITICAL - check plugin (`basename $0`) or PHP errors - $wiki"
+		exit 2
 	fi
-	echo "JOBQUEUE OK - $wiki has the 3rd biggest job queue, $count entries"
-	exit 0
 done
