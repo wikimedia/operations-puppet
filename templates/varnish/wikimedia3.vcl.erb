@@ -138,10 +138,20 @@ sub vcl_recv {
 		error 200 "OK"; 
 	}
 
+	set req.grace = 20m;
+
 	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_fetch {
+	<% if varnish_backend_options.fetch("retry5x", "0") == 1 -%>
+	if (beresp.status > 499 && beresp.status < 505) {
+		restart;
+	}
+	<% end -%>
+
+	set bresp.grace = 20m;
+
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }
 
@@ -174,6 +184,10 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
+	<% if varnish_backend_options.fetch("retry5x", "0") == 1 -%>
+	if (obj.status == 503 && req.restarts < 4) {
+		restart;
+	}
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
