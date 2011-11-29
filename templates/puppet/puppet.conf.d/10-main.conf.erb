@@ -12,7 +12,8 @@ server = <%= scope.lookupvar('base::puppet::server') %>
 configtimeout = 480
 splay = true
 # asking puppet to run every 2 hours instead of every 30 minutes to reduce load on the puppet server -ben 2011-08-25
-runinterval = 7200
+# trying with 1 hour now Puppet performance is better --mark 2011-11-29
+runinterval = 3600
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = false
