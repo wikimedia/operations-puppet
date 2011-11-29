@@ -163,6 +163,8 @@ class gerrit::jetty {
 			subscribe => File["/var/lib/gerrit2/review_site/etc/gerrit.config"],
 			enable => true,
 			ensure => running,
+			hasstatus => false,
+			status => "/etc/init.d/gerrit check",
 			require => Exec["install_gerrit_jetty"];
 	}
 
