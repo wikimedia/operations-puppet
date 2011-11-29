@@ -1670,59 +1670,8 @@ node /^nfs[12].pmtpa.wmnet/ {
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
 
-node "owa1.wikimedia.org" {
-	system_role { "owa::processing": description => "OWA processing node" }
-	$cluster = "misc"
-	$gid=500
-	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
-		memcached,
-		owa::processing,
-		generic::geoip::files,
-		lvs::realserver,
-		groups::wikidev,
-		accounts::nimishg
-}
-
-node "owa2.wikimedia.org" {
-	system_role { "owa::processing": description => "OWA processing node" }
-	$cluster = "misc"
-	$gid=500
-	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
-		memcached,
-		owa::processing,
-		generic::geoip::files,
-		lvs::realserver,
-		groups::wikidev,
-		accounts::nimishg
-}
-
-node "owa3.wikimedia.org" {
-	system_role { "owa::processing": description => "OWA processing node. Also temporary OWA db for now." }
-	$cluster = "misc"
-	$gid=500
-	$lvs_realserver_ips = [ "208.80.152.6" ]
-	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
-		memcached,
-		owa::processing,
-		generic::geoip::files,
-		lvs::realserver,
-		owa::database,
-		groups::wikidev,
-		accounts::nimishg
+node /^owa[1-3]\.wikimedia\.org$/ {
+	include standard
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
