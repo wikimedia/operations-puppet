@@ -25,7 +25,9 @@ define sudo_group($privileges ) {
 }
 
 class sudo::labs_project {
-	include sudo::default
+	if $realm == labs {
+		include sudo::default
+	}
 
 	# For all project except ones listed here, give sudo privileges
 	# to all project members

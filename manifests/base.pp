@@ -296,19 +296,21 @@ class base::vimconfig {
 
 class base::environment {
 
-	file {
-		"/etc/bash.bashrc":
-			content => template('environment/bash.bashrc'),
-			owner => root,
-			group => root,
-			mode => 0644;
-		"/etc/skel/.bashrc":
-			content => template('environment/skel/bashrc'),
-			owner => root,
-			group => root,
-			mode => 0644;
+	# TODO: check for production
+	if $realm == "labs" {
+		file {
+			"/etc/bash.bashrc":
+				content => template('environment/bash.bashrc'),
+				owner => root,
+				group => root,
+				mode => 0444;
+			"/etc/skel/.bashrc":
+				content => template('environment/skel/bashrc'),
+				owner => root,
+				group => root,
+				mode => 0644;
+		}
 	}
-
 }
 
 class base {
