@@ -1373,16 +1373,16 @@ class misc::monitoring::htcp-loss {
 class misc::udp2log::aft {
 	
 	# TODO: add system_role
-
+	# FIXME: add mw-udp2log-aft logrotate file to the repo
 	file {
 		"/etc/init.d/udp2log-aft":
 			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/udp2log-aft";
-		"/etc/logrotate.d/mw-udp2log-aft":
-			source => "puppet:///files/logrotate/mw-udp2log-aft",
-			mode => 0444;
+		#"/etc/logrotate.d/mw-udp2log-aft":
+		#	source => "puppet:///files/logrotate/mw-udp2log-aft",
+		#	mode => 0444;
 	}
 
 	service {
