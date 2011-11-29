@@ -173,7 +173,13 @@ class svn::server {
 		}
 	}
 
-	include viewvc, hooks, dumps, cia
+	class conversion {
+		package { "qt4-qmake":
+			ensure => latest;
+		}
+	}
+
+	include viewvc, hooks, dumps, cia, conversion
 }
 
 class svn::users {
