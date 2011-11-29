@@ -126,7 +126,7 @@ class openstack::common {
 		require => Apt::Pparepo["nova-core-release"];
 	}
 
-	package { [ "unzip", "aoetools", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-common" ]:
+	package { [ "unzip", "aoetools", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
 		ensure => latest;
 	}
 
