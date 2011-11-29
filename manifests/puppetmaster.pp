@@ -167,17 +167,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
+		File { mode => 0555 }
 		file {
 			"/usr/local/bin/position-of-the-moon":
-				owner => root,
-				group => root,
-				mode => 0555,
 				source => "puppet:///files/puppet/position-of-the-moon";
 			"/usr/local/bin/uuid-generator":
-				owner => root,
-				group => root,
-				mode => 0555,
 				source => "puppet:///files/puppet/uuid-generator";
+			"/usr/local/sbin/puppetstoredconfigclean.rb":
+				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
 		}
 
 		cron {
@@ -188,6 +185,18 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				hour => 3,
 				minute => 26,
 				ensure => present;
+		}
+
+		# Purge decommissioned hosts from the stored configs db		
+		schedule { "nightly":
+			range => "2 - 6",
+			period => daily,
+		}
+		
+		exec { "purge decommissioned hosts":
+			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
+			command => "for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+			schedule => nightly
 		}
 	}
 	

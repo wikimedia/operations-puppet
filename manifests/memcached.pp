@@ -66,13 +66,7 @@ class memcached::config ($memcached_size, $memcached_port) {
 }
 
 class memcached::disabled {
-
-	package { memcached:
-		ensure => absent;
-	}
-
 	service { memcached:
-		require => Package[memcached],
 		enable  => false,
 		ensure  => stopped;
 	}

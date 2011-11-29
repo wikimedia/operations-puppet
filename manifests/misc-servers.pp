@@ -1261,6 +1261,16 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/jenkins_watcher";
+		"/usr/local/bin/jenkins_archiver":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/jenkins_archiver";
+		"/usr/local/bin/sync_archive_to_storage3":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/sync_archive_to_storage3";
 	}
 
 	#enable apache mods
@@ -1304,10 +1314,9 @@ class misc::survey {
 
 class misc::download-mediawiki {
 	
-	# TODO: add system_role
+	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
 
-	# wikimedia-task-appserver package is required
-	require mediawiki::packages
+	# FIXME: require apache
 
 	file {
 		#apache config
@@ -1328,8 +1337,7 @@ class misc::download-mediawiki {
 			ensure => directory;
 	}
 
-	apache_site { survey: name => "download.mediawiki.org" }
-
+	apache_site { "download.mediawiki.org": name => "download.mediawiki.org" }
 }
 
 class misc::monitoring::htcp-loss {
@@ -1431,7 +1439,7 @@ class misc::contint::test {
 	include generic::packages::git-core
 	
 	# Prefer the PHP package from Ubuntu
-	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl ]: }
+	generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl, php5-pgsql ]: }
 
 	# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
 	# package { "jenkins":
@@ -1574,6 +1582,11 @@ class misc::graphite {
 	}
 
 	file { 
+		"/etc/apache2/sites-available/graphite":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/apache.conf";
 		"/a/graphite/conf/carbon.conf":
 			owner => "root",
 			group => "root",
@@ -1595,6 +1608,9 @@ class misc::graphite {
 			mode => 0755,
 			ensure => directory;
 	}
+
+	apache_module { python: name => "python" }
+	apache_site { graphite: name => "graphite" }
 }
 
 class misc::scripts {

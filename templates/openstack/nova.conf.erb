@@ -7,7 +7,7 @@
 --sql_connection=mysql://<%= scope.lookupvar('openstack::nova_config::nova_db_user') %>:<%= scope.lookupvar('openstack::nova_config::nova_db_pass') %>@<%= scope.lookupvar('openstack::nova_config::nova_db_host') %>/<%= scope.lookupvar('openstack::nova_config::nova_db_name') %>
 --image_service=nova.image.glance.GlanceImageService
 --s3_host=<%= scope.lookupvar('openstack::nova_config::nova_glance_host') %>
---glance_host=<%= scope.lookupvar('openstack::nova_config::nova_glance_host') %>
+--glance_api_servers=<%= scope.lookupvar('openstack::nova_config::nova_glance_host') %>:9292
 --rabbit_host=<%= scope.lookupvar('openstack::nova_config::nova_rabbit_host') %>
 --cc_host=<%= scope.lookupvar('openstack::nova_config::nova_cc_host') %>
 --network_host=<%= scope.lookupvar('openstack::nova_config::nova_network_host') %>
@@ -43,3 +43,6 @@
 --node_availability_zone=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --zone_name=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --quota_floating_ips=<%= scope.lookupvar('openstack::nova_config::nova_quota_floating_ips') %>
+--multi_host=T
+--api_paste_config=/etc/nova/api-paste.ini
+--use_deprecated_auth=True

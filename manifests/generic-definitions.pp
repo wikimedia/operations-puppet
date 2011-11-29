@@ -242,9 +242,14 @@ class generic::geoip {
 
 # APT pinning
 
-define generic::apt::pin-package($pin="release o=Ubuntu", $priority="1001") {
+define generic::apt::pin-package($pin="release o=Ubuntu", $priority="1001", $package="") {
+	if $package == "" {
+		$packagename = $title
+	} else {
+		$packagename = $package
+	}
 	$packagepin = "
-Package: ${title}
+Package: ${packagename}
 Pin: ${pin}
 Pin-Priority: ${priority}
 "
