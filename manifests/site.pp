@@ -538,7 +538,7 @@ class cache {
 class protoproxy::ssl {
 	$cluster = "ssl"
 
-	if $hostname =~ /^ssl[0-9]*1$/ {
+	if $hostname =~ /^ssl(300)?1$/ {
 		$enable_ipv6_proxy = true
 	}
 
