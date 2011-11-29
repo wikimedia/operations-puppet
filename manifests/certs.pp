@@ -76,12 +76,22 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
+class certs::groups::ssl-cert {
+	# Hardy doesn't have system group ssl-cert, so ensure it exists
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") < 0 {
+		group { "ssl-cert":
+			gid => 116,
+			ensure => present
+		}
+	}
+}
+
 define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
-		certificates::wmf_ca
-
+		certificates::wmf_ca,
+		certs::groups::ssl-cert
 
 	if ( $privatekey == "false" ) {
 		$key_loc = "puppet:///files/ssl/${name}"

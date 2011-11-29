@@ -25,8 +25,9 @@ class protoproxy::proxy_sites {
 		"esams" => [ "91.198.174.224", "91.198.174.225", "91.198.174.233", "91.198.174.234", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.232", "91.198.174.235"  ]
 	}
 
-	include protoproxy::package,
-		protoproxy::service,
+	require protoproxy::package
+
+	include protoproxy::service,
 		lvs::realserver
 
 	# Tune kernel settings
@@ -274,6 +275,7 @@ class protoproxy::package {
 }
 
 class protoproxy::service {
+	require protoproxy::proxy_sites
 
 	service { ['nginx']:
 		enable => true,
