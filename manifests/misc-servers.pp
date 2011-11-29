@@ -2097,3 +2097,9 @@ class misc::package-builder {
 	
 	include packages, defaults
 }
+
+class misc::firewall-builder {
+	package { "python": ensure => present }
+
+	File <<| tag == 'openports' |>>
+}
