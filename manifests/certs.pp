@@ -24,7 +24,7 @@ define create_pkcs12( $certname="$name", $cert_alias="", $password="", $user="ro
 		# Fix permissions on the p12 file, and make it available as
 		# a puppet resource
 		"${location}/${certname}.p12":
-			mode => 0640,
+			mode => 0440,
 			owner => $user,
 			group => $group,
 			require => Exec["${name}_create_pkcs12"],
@@ -46,7 +46,7 @@ define create_chained_cert( $certname="$name", $ca, $user="root", $group="ssl-ce
 		# Fix permissions on the chained file, and make it available as
 		# a puppet resource
 		"${location}/${certname}.chained.pem":
-			mode => 0644,
+			mode => 0444,
 			owner => $user,
 			group => $group,
 			require => Exec["${name}_create_chained_cert"],
@@ -68,7 +68,7 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 		# Fix permissions on the combined file, and make it available as
 		# a puppet resource
 		"${location}/${certname}.pem":
-			mode => 0640,
+			mode => 0440,
 			owner => $user,
 			group => $group,
 			require => Exec["${name}_create_combined_cert"],
@@ -80,7 +80,7 @@ class certs::groups::ssl-cert {
 	# Hardy doesn't have system group ssl-cert, so ensure it exists
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") < 0 {
 		group { "ssl-cert":
-			gid => 116,
+			system => true,
 			ensure => present
 		}
 	}
@@ -104,14 +104,14 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 		"/etc/ssl/certs/${name}.pem":
 			owner => root,
 			group => $group,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/ssl/${name}.pem",
 			require => Package["openssl"];
 		# Private key
 		"/etc/ssl/private/${name}.key":
 			owner => root,
 			group => $group,
-			mode => 0640,
+			mode => 0440,
 			source => "${key_loc}.key",
 			require => Package["openssl"];
 	}
@@ -181,19 +181,19 @@ class certificates::star_wikimedia_org {
 		"/etc/ssl/private/*.wikimedia.org.key":
 			owner => root,
 			group => root,
-			mode => 0600,
+			mode => 0400,
 			source => "puppet:///private/ssl/*.wikimedia.org.key",
 			require => Package["openssl"];
 		"/etc/ssl/private/*.wikimedia.org.pem":
 			owner => root,
 			group => root,
-			mode => 0600,
+			mode => 0400,
 			source => "puppet:///private/ssl/*.wikimedia.org.pem",
 			require => Package["openssl"];
 		"/etc/ssl/certs/*.wikimedia.org.crt":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/ssl/*.wikimedia.org.crt",
 			require => Package["openssl"];
 	}
@@ -214,7 +214,7 @@ class certificates::wmf_ca {
 		"/etc/ssl/certs/wmf-ca.pem":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/ssl/wmf-ca.pem",
 			require => Package["openssl"];
 	}
@@ -235,7 +235,7 @@ class certificates::wmf_labs_ca {
 		"/etc/ssl/certs/wmf-labs.pem":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/ssl/wmf-labs.pem",
 			require => Package["openssl"];
 	}
@@ -256,7 +256,7 @@ class certificates::rapidssl_ca {
 		"/etc/ssl/certs/RapidSSL_CA.pem":
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			source => "puppet:///files/ssl/RapidSSL_CA.pem",
 			require => Package["openssl"];
 	}
