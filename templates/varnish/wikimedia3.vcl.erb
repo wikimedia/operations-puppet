@@ -188,6 +188,7 @@ sub vcl_error {
 	if (obj.status == 503 && req.restarts < 4) {
 		restart;
 	}
+	<% end -%>
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
