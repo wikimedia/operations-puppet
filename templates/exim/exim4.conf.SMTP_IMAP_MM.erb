@@ -7,31 +7,27 @@
 # Macros #
 ##########
 
+# Not all will be used
+
 CONFDIR=/etc/exim4
-<% if exim_conf_type == "smtp" then -%>
 WIKI_INTERFACE=208.80.152.133
 USERDB=/var/vmaildb/user.db
-<% end %>
-<% if exim_conf_type == "mailman" then -%>
+VMAIL=/var/vmail
+DELIVER=/usr/lib/dovecot/deliver
+NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
+
 # Mailman
 MAILMAN_HOME = /usr/lib/mailman
 MAILMAN_LISTS_HOME = /var/lib/mailman
 MAILMAN_WRAP = MAILMAN_HOME/mail/mailman
 MAILMAN_UID = list
 MAILMAN_GID = list
-<% end %>
-<% if exim_conf_type == "imap" then -%>
-VMAIL=/var/vmail
-USERDB=/var/vmaildb/user.db
-DELIVER=/usr/lib/dovecot/deliver
-NOT_LOCALLY_SUBMITTED=${if !match{$received_protocol}{\Nsmtpsa$\N}}
-<% end %>
 
 ###############################
 # Main configuration settings #
 ###############################
 
-<% if exim_conf_type == "smtp" then -%>
+<% if exim_enable_mail_relay == "primary" then -%>
 # MySQL lookups (OTRS)
 hide mysql_servers =  db9.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db10.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
@@ -42,28 +38,26 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 
 # Standard lists
 domainlist system_domains = @
+hostlist wikimedia_nets = <<% scope.lookupvar('network::constants::external_networks').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>; 10.0.0.0/16
 <% if exim_conf_type == "mailman" then -%>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 domainlist mailman_domains = lists.wikimedia.org
-hostlist wikimedia_nets = <; 208.80.152.0/22; 91.198.174.0/24 ; 2620:0:860::/46
 domainlist local_domains = +system_domains : +mailman_domains
-hostlist relay_from_hosts = <; 127.0.0.1 ; ::1 ; 91.198.174.0/24 ; 208.80.152.0/22 ; 2620:0:860::/46
+hostlist relay_from_hosts = <<% scope.lookupvar('network::constants::external_networks').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>; 127.0.0.1 ; ::1
 
 # Relay @mx_secondary domains only to these hosts
-hostlist primary_mx = <; 208.80.152.186 ; 2620::860:2:219:b9ff:fedd:c027  # make var
+hostlist primary_mx = <<% scope.lookupvar('exim::constants::priamry_mx').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>
 <% end %>
-<% if exim_conf_type == "smtp" then -%>
+<% if exim_enable_mail_relay == "primary" then -%>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist rt_domains = rt.wikimedia.org
 domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
-hostlist wikimedia_nets = <; 208.80.152.0/22 ; 91.198.174.0/24 ; 2620:0:860::/46 ; 10.0.0.0/16
 domainlist local_domains = +system_domains : +legacy_mailman_domains : lsearch;CONFDIR/local_domains : @mx_primary/ignore=127.0.0.1
 domainlist spamassassin_domains = *
-hostlist relay_from_hosts = <; @[] ; 208.80.152.0/22 ; 10.0.0.0/16 ; 2620:0:860::/48
+hostlist relay_from_hosts = <; @[] ; <% scope.lookupvar('network::constants::external_networks').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>; 10.0.0.0/16
 <% end %>
-<% if exim_conf_type == "imap" then -%>
-hostlist wikimedia_nets = <; 208.80.152.0/22 ; 91.198.174.0/24 ; 2620:0:860::/46 ; 10.0.0.0/16
+<% if exim_enable_imap_delivery == "true" then -%>
 domainlist local_domains = +system_domains : wikimedia.org
 domainlist spamassassin_domains = *
 hostlist relay_from_hosts = <; @[]
@@ -77,15 +71,11 @@ log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incom
 message_logs = false
 
 # Policy control
-<% if exim_conf_type == "smtp" then -%>
 acl_smtp_connect = acl_check_connect
-<% end %>
 acl_smtp_rcpt = acl_check_rcpt
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
+<% if ( exim_enable_mail_relay == "primary" ) or ( exim_enable_mail_relay == "secondary" ) then -%>
 acl_smtp_data = acl_check_data
-<% end %>
 
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
 helo_try_verify_hosts = *
 <% end %>
 
@@ -95,46 +85,26 @@ system_filter = CONFDIR/system_filter
 check_spool_space = 50M
 smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
 smtp_accept_queue_per_connection = 500
-<% if exim_conf_type == "mailman" then -%>
-deliver_queue_load_max = 75.0
-queue_only_load = 50.0
-smtp_accept_max = 500
-smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
-smtp_accept_reserve = 40
-smtp_receive_timeout = 1m
-remote_max_parallel = 50 
-smtp_connect_backlog = 64
-<% end %>
-<% if exim_conf_type == "smtp" then -%>
 deliver_queue_load_max = 800.0
 queue_only_load = 100.0
 smtp_accept_max = 4000
+smtp_connect_backlog = 128
+remote_max_parallel = 100
 smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
 smtp_accept_reserve = 100
 smtp_receive_timeout = 1m
-remote_max_parallel = 100 
-smtp_connect_backlog = 128
-<% end %>
-<% if exim_conf_type == "imap" then -%>
-smtp_accept_max = 100
-smtp_accept_max_per_host = 10
-smtp_accept_reserve = 20
-remote_max_parallel = 25
-smtp_connect_backlog = 32
-<% end %>
-
 
 # Lookups
 host_lookup = *
 rfc1413_hosts =
 rfc1413_query_timeout = 5s
 
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mailman == "true" then -%>
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
 
-<% if exim_conf_type == "imap" then -%>
+<% if exim_enable_imap_delivery == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
@@ -160,36 +130,31 @@ acl_check_rcpt:
 
         drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
              hosts = ! +wikimedia_nets
-<% end %>
-<% if exim_conf_type == "mailman" then -%>
              condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
 <% end %>
-<% if exim_conf_type == "smtp" then -%>
-             condition = ${if >={$rcpt_fail_count}{${eval:3*($recipients_count+1)}}}
-<% end %>
 
-        # Accept if the source is local SMTP (a pipe)
+	# Accept if the source is local SMTP (a pipe)
 
-        accept hosts = :
+	accept hosts = :
 
-        # Deny if the local part contains @, %, /, | or !, or starts with a dot
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
 
-        deny local_parts = ^.*[@%!/|] : ^\\.
+	deny local_parts = ^.*[@%!/|] : ^\\.
 
-        # Accept relaying from networks we control. Note: no address verification
-        # is done at this point, which is good for mail submission, but may render
-        # recipient callout verification by affected hosts useless.
+	# Accept relaying from networks we control. Note: no address verification
+	# is done at this point, which is good for mail submission, but may render
+	# recipient callout verification by affected hosts useless.
 
-        accept hosts = +relay_from_hosts
+	accept hosts = +relay_from_hosts
 
-<% if exim_conf_type == "imap" then -%>
+<% if exim_enable_imap_delivery == "true" then -%>
 # Mail submissions from other hosts must be from SMTP authenticated users
 
 	accept authenticated = *
 		encrypted = *
 <% end %>
 	       control = submission/sender_retain
-<% if exim_conf_type == "imap" then -%>
+<% if exim_enable_imap_delivery == "true" then -%>
 
 # We only accept mail from our own mail relays, on port 25 only
 
@@ -199,19 +164,14 @@ acl_check_rcpt:
 		condition = ${if eq{$interface_port}{25}}
 <% end %>
 
-        # Require recipient domain to be local, or a domain we relay for
+	# Require recipient domain to be local, or a domain we relay for
 
-        require message = Relay not permitted
-<% if exim_conf_type == "mailman" then -%>
-                domains = +local_domains : +relay_domains : +secondary_domains
-<% end %>
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "imap" ) then -%>
-                domains = +local_domains : +relay_domains
-<% end %>
+	require message = Relay not permitted
+	domains = +local_domains : +relay_domains : <% if exim_mail_relay == "secondary" then -%>+secondary_domains<% end %>
 
         # { recipient domain is under our administrative control }
 
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
+<% if ( exim_enable_mail_relay == "primary" ) or ( exim_enable_mail_relay == "secondary" ) then -%>
         # Accept mail for postmaster without further policy checking,
         # for compliance with the RFCs
 
@@ -222,51 +182,39 @@ acl_check_rcpt:
         # recipient domain to exist for remote domains
 
         require verify = recipient
-<% if exim_conf_type == "mailman" then -%>
+
+<% if ( exim_enable_mail_relay == "primary" ) or ( exim_enable_mail_relay == "secondary" ) then -%>
+        # Check whether the sender address domain exists
+
+        require verify = sender
 
         # If the destination domain is a domain we relay for,
         # check if the local part exists at the destination,
         # reject if it doesn't.
         # Accept if the destination cannot be reached within 30s.
 
-        deny domains = +relay_domains : +secondary_domains
-             ! verify = recipient/callout=10s,maxwait=30s,defer_ok
-<% end %>
-<% if exim_conf_type == "smtp" then -%>
-
-        # If the destination domain is a domain we relay for,
-        # check if the local part exists at the destination,
-        # reject if it doesn't.
-        # Accept if the destination cannot be reached within 30s.
-
-        deny domains = +relay_domains
+        deny domains = +relay_domains : <% if exim_mail_relay == "secondary" then -%> : +secondary_domains<% end %>
              ! verify = recipient/callout=10s,maxwait=30s,defer_ok
 <% end %>
 
         # Mail can be safely accepted here, but we may want to do more
         # rfc compliance checking and spam filtering.
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
-        # Check whether the sender address domain exists
-
-        require verify = sender
-<% end %>
-<% if exim_conf_type == "imap" then -%>
-# Trust that the mail relay has done all checking
-<% end %>
 
         accept
 <% if exim_conf_type == "smtp" then -%>
 		set acl_m2 = ${if eq{$local_part@$domain}{wiki@wikimedia.org}{skip_spamd}{}}
+<% end %>
 
 acl_check_connect:
 	# Deny external connections to the internal bulk mail submission
 	# interface
 
+<% if exim_conf_type == "smtp" then -%>
 	deny condition = ${if match_ip{$interface_address}{WIKI_INTERFACE}{true}{false}}
 		! hosts = +wikimedia_nets
+<% end %>
 
 	accept
-<% end %>
 <% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
 
 acl_check_data:
@@ -284,7 +232,7 @@ spamassassin:
 <% if exim_conf_type == "mailman" then -%>
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation
-	# threshold of 40 KB	
+	# threshold of 40 KB
 	accept condition = ${if >{$message_size}{400K}}
 
 	# Do not run SpamAssassin if load average is over 10
@@ -320,7 +268,7 @@ spamassassin:
 
 begin routers
 
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mail_relay == "secondary" then -%>
 # Route relay domains only if the higher prio MXes are in the allowed list
 
 secondary:
@@ -333,7 +281,7 @@ secondary:
 
 # Route non-local domains (including +relay_domains) via DNS MX and A records
 <% end %>
-<% if exim_conf_type == "smtp" then -%>
+<% if exim_mediawiki_relay == "true" then -%>
 # Route mail generated by MediaWiki differently
 
 wiki_mail:
@@ -347,15 +295,15 @@ domains = ! +local_domains
 
 # Route non-local domains via DNS MX and A records
 <% end %>
-<% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
+<% if ( exim_enable_mail_relay == "primary" ) or ( exim_enable_mail_relay == "secondary" ) then -%>
 
 dnslookup:
 	driver = dnslookup
 	domains = ! +local_domains
 	transport = remote_smtp
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
-        cannot_route_message = Cannot route to remote domain $domain
-        no_more
+	cannot_route_message = Cannot route to remote domain $domain
+	no_more
 <% end %>
 
 # Use the system aliasfile /etc/aliases for system domains
@@ -369,49 +317,47 @@ system_aliases:
         allow_defer
         forbid_file
 
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mailman == "true" then -%>
 # Mailman list handling.
 
 list_aliases:
 	forbid_pipe
 <% end %>
 <% if exim_conf_type == "smtp" then -%>
-# Mailman list handling.
-
 aliases:
 	pipe_transport = address_pipe
 <% end %>
 <% if ( exim_conf_type == "smtp" ) or ( exim_conf_type == "mailman" ) then -%>
-        driver = redirect
-        domains = +local_domains
-        require_files = CONFDIR/aliases/$domain
-        data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain}}
-        qualify_preserve_domain
-        allow_fail
-        allow_defer
-        forbid_file
-        include_directory = CONFDIR
+	driver = redirect
+	domains = +local_domains
+	require_files = CONFDIR/aliases/$domain
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain}}
+	qualify_preserve_domain
+	allow_fail
+	allow_defer
+	forbid_file
+	include_directory = CONFDIR
 <% end %>
 
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mailman == "true" then -%>
 # Test the mailing list address without suffix
 # first, as a mailing list like wikifi-admin is a valid list name.
 
 list:
-        driver = accept
-        domains = +mailman_domains
-        require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
-        transport = list
+	driver = accept
+	domains = +mailman_domains
+	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
+	transport = list
 
 list_suffix:
-        driver = accept
-        domains = +mailman_domains
-        require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
-        local_part_suffix = -bounces : -bounces+* : \
-                                -confirm+* : -join : -leave : \
-                                -owner : -request : -admin : \
-                                -subscribe : -unsubscribe
-        transport = list
+	driver = accept
+	domains = +mailman_domains
+	require_files = MAILMAN_LISTS_HOME/lists/$local_part/config.pck
+	local_part_suffix = -bounces : -bounces+* : \
+				-confirm+* : -join : -leave : \
+				-owner : -request : -admin : \
+				-subscribe : -unsubscribe
+	transport = list
 <% end %>
 <% if exim_conf_type == "smtp" then -%>
 # Use alias files /etc/exim4/aliases/$domain for domains like
@@ -475,17 +421,6 @@ ldap_alias:
 			ldap:///ou=people,dc=corp,dc=wikimedia,dc=org?mail?sub?(&(objectClass=inetOrgPerson)(initials=${quote_ldap:$local_part}@$domain)(x121Address=1))} \
 			{$value}fail}
 
-# Google Apps testing
-
-google_apps:
-	driver = manualroute
-	domains = wikimedia.org
-	local_parts = lsearch;CONFDIR/google_apps
-	local_part_suffix = +*
-	local_part_suffix_optional
-	transport = remote_smtp
-	route_list = *  aspmx.l.google.com
-
 # Send mail for IMAP accounts to sanger
 
 imap:
@@ -526,7 +461,7 @@ otrs:
 	route_list = *  williams.wikimedia.org  byname
 	transport = remote_smtp
 <% end %>
-<% if exim_conf_type == "imap" then -%>
+<% if exim_enable_imap_delivery == "true" then -%>
 # Run a custom user filter, e.g. to sort mail into subfolders
 # By default Exim filter CONFDIR/default_user_filter is run,
 # which sorts mail classified spam into the Junk folder
@@ -647,7 +582,7 @@ address_pipe:
         driver = pipe
         return_output
 
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mailman == "true" then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
 
@@ -665,7 +600,7 @@ list:
 	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 
 <% end %>
-<% if exim_conf_type == "imap" then -%>
+<% if exim_enable_imap_delivery == "true" then -%>
 # Delivery via Dovecot's "deliver" LDA. The advantage over using Exim's
 # internal Maildir appendfile transport is that it can immediately update
 # Dovecot's internal indexes for better performance.
@@ -691,20 +626,20 @@ maildir_delivery:
 	directory = ${if def:address_file{$address_file}{$home}}
 	create_directory
 	create_file = belowhome
-		delivery_date_add
-		envelope_to_add
-		return_path_add
+	delivery_date_add
+	envelope_to_add
+	return_path_add
 	user = vmail
 	group = vmail
 
 	# Quota support
-		quota = ${if !eq{$received_protocol}{local}{${extract{quota}{$address_data}{${value}K}{0}}}}
-		quota_is_inclusive = false
-		quota_warn_threshold = 100%
-		quota_warn_message = ${expand:${readfile{CONFDIR/quota_warn_message}}}
-		maildir_use_size_file
-		maildir_quota_directory_regex = ^(?:cur|new|\.(?!Trash).*)
-		maildir_tag = ,S=$message_size
+	quota = ${if !eq{$received_protocol}{local}{${extract{quota}{$address_data}{${value}K}{0}}}}
+	quota_is_inclusive = false
+	quota_warn_threshold = 100%
+	quota_warn_message = ${expand:${readfile{CONFDIR/quota_warn_message}}}
+	maildir_use_size_file
+	maildir_quota_directory_regex = ^(?:cur|new|\.(?!Trash).*)
+	maildir_tag = ,S=$message_size
 
 # Autoreply bounce transport for users that have left the organization
 
