@@ -18,15 +18,17 @@ class base::apt::update {
 }
 
 class base::apt {
+	$proxyconfig = "Acquire::http::Proxy::security.ubuntu.com \"http://brewster.wikimedia.org:8080\";
+Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:8080\";
+"
 
 	# security.ubuntu.com should be accessed through a proxy
 	file { "/etc/apt/apt.conf.d/80wikimedia-proxy":
-		mode => 0644,
+		mode => 0444,
 		owner => root,
 		group => root,
 		path => "/etc/apt/apt.conf.d/80wikimedia-proxy",
-		content => "Acquire::http::Proxy::security.ubuntu.com \"http://brewster.wikimedia.org:8080\";",
-		ensure => present;
+		content => $proxyconfig
 	}
 
 	# Setup the APT repositories
@@ -38,7 +40,8 @@ deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main uni
 	file {
 		"/etc/apt/sources.list.d/wikimedia.list":
 			require => Exec[sed-wikimedia-repository],
-			content => $aptrepository;
+			content => $aptrepository,
+			mode => 0444;
 	}
 
 
@@ -53,6 +56,18 @@ deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main uni
 
 	package { apt-show-versions:
 		ensure => latest;
+	}
+	
+	# Point out-of-support distributions to http://old-releases.ubuntu.com
+	if $lsbdistcodename in [ "karmic" ] {
+		$oldrepository = "## Unsupported (old) Ubuntu release
+deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main contrib universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main contrib universe multiverse
+"
+		file { "/etc/apt/sources.list.d/ubuntu-${lsbdistcodename}.list":
+			content => $oldrepository,
+			mode => 0444;
+		}
 	}
 }
 
