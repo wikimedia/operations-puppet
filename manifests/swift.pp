@@ -146,6 +146,22 @@ class swift::proxy::testclusterconf {
 	}
 }
 
+class swift::proxy::testpmtpaclusterconf {
+	# because I can't figure out how to aggregate a list of all proxy servers
+	# within puppet and use that list in a template, I have a different config
+	# file for each swift cluster so that they can use their own memcached 
+	# instances.
+	
+	# FIXME: require /etc/swift to exist
+	file { "/etc/swift/proxy-server.conf":
+			ensure => present,
+			source => "puppet:///files/swift/proxy-server.conf-testpmtpacluster",
+			owner => swift,
+			group => swift,
+			mode => 0444;
+	}
+}
+
 class swift::storage {
 	include swift::base
 	system_role { "swift::storage": description => "swift backend storage brick" }
