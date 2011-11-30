@@ -1855,11 +1855,16 @@ node "sodium.wikimedia.org" {
 	include base,
 		ganglia,
 		nrpe,
-		exim::listserve,
-		mailman::base,
 		spamassassin,
 		backup::client,
 		certificates::star_wikimedia_org
+
+	class { exim::roled:
+		exim_enable_mail_relay => "secondary", 
+		exim_enable_mailman => "true",
+		exim_enable_mail_submission => "true",
+		exim_enable_spamassassin => "true"
+	}
 
 	install_certificate{ "star.wikimedia.org": }
 }
