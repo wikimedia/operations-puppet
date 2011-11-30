@@ -232,11 +232,13 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 		}
 
 		file { "/srv/autoinstall":
-			mode => 0755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			path => "/srv/autoinstall/",
-			ensure => directory;
+			source => "puppet:///files/autoinstall",
+			recurse => true,
+			links => manage
 		}
 	}
 
