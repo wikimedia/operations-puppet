@@ -1,5 +1,9 @@
 # this section from old exim.pp
 
+class exim::constants {
+        $primary_mx => [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
+}
+
 class exim::packages {
 	if ! $exim_install_type {
 		$exim_install_type = 'light'
