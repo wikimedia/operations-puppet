@@ -45,5 +45,12 @@
 		Order allow,deny
 		allow from all
 	</Directory>
+
+	Alias /production/file_content /etc/puppet/files
+	<Directory /etc/puppet/files/>
+		PassengerEnabled off
+	</Directory>
+	
+	CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
 
