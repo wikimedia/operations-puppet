@@ -2264,12 +2264,14 @@ node "srv257.pmtpa.wmnet" {
 }
 
 node "srv258.pmtpa.wmnet" {
+	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
 node "srv259.pmtpa.wmnet" {
+	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
