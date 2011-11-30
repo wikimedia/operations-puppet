@@ -464,7 +464,8 @@ class cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 10000,
-				'probe' => "bits"
+				'probe' => "bits",
+				'retry5x' => 1
 			},
 			enable_geoiplookup => "true"
 		}
@@ -512,7 +513,8 @@ class cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 1000,
-				'probe' => "bits"
+				'probe' => "bits",
+				'retry5x' => 1
 				},
 		}
 		
@@ -529,7 +531,8 @@ class cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
-				'probe' => "bits"
+				'probe' => "bits",
+				'retry5x' => 0
 				},
 		}
 	}
