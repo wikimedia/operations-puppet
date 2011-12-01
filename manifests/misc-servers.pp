@@ -2090,6 +2090,9 @@ class misc::package-builder {
 		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload" ]:
 			ensure => latest;
 		}
+		package { [ "libio-socket-ssl-perl" ]:
+			ensure => present;
+		}
 	}
 	
 	class defaults {
