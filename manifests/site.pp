@@ -1135,6 +1135,7 @@ node "gallium.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		misc::contint::test,
+		misc::contint::test::packages,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
