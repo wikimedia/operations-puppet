@@ -1,0 +1,3 @@
+## Wikimedia mysql APT repository
+deb http://apt.wikimedia.org/wikimedia lucid-wikimedia-mysql main universe
+deb-src http://apt.wikimedia.org/wikimedia lucid-wikimedia-mysql main universe
