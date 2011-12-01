@@ -1137,6 +1137,7 @@ node "gallium.wikimedia.org" {
 		ntp::client,
 		misc::contint::test,
 		misc::contint::test::packages,
+		misc::contint::test::jenkins,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
