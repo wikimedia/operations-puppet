@@ -1463,81 +1463,85 @@ class misc::contint::test {
 
 	}
 
-	# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
-	# package { "jenkins":
-	#	ensure => present,
-	#	require => File["jenkins.list"],
-	#}
-
-	service { 'jenkins':
-		enable => true,
-		ensure => 'running',
-		hasrestart => true,
-		start => '/etc/init.d/jenkins start',
-		stop => '/etc/init.d/jenkins stop';
-	}
-
-	# nagios monitoring
-	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
-
-	file {
-		# Top level jobs folder
-		"/var/lib/jenkins/jobs/":
-			owner => "jenkins",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		# Let wikidev users maintain the homepage
-		 "/srv/org":
-				mode => 0755,
-				owner => www-data,
-				group => wikidev,
-				ensure => directory;
-		 "/srv/org/mediawiki":
-				mode => 0755,
-				owner => www-data,
-				group => wikidev,
-				ensure => directory;
-		 "/srv/org/mediawiki/integration":
-				mode => 0755,
-				owner => www-data,
-				group => wikidev,
-				ensure => directory;
-		"/srv/org/mediawiki/integration/index.html":
-			owner => www-data,
-			group => wikidev,
-			mode => 0555,
-			source => "puppet:///files/misc/jenkins/index.html";
-		# Placing the file in sites-available	
-		"/etc/apache2/sites-available/integration.mediawiki.org":
-			path => "/etc/apache2/sites-available/integration.mediawiki.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/integration.mediawiki.org";
-
-	}
-
-	# run jenkins behind Apache and have pretty URLs / proxy port 80
-	# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
-
-	apache_module { proxy: name => "proxy" }
+	# Common apache configuration
 	apache_module { ssl: name => "ssl" }
-	apache_module { proxy_http: name => "proxy_http" }
 	apache_site { integration: name => "integration.mediawiki.org" }
 
-	file {
-		"/etc/default/jenkins":
-			owner => "root",
-			group => "root",
-			mode => 0444,
-			source => "puppet:///files/misc/jenkins/etc_default_jenkins";
-		"/etc/apache2/conf.d/jenkins_proxy":
-			owner => "root",
-			group => "root",
-			mode => 0444,
-			source => "puppet:///files/misc/jenkins/apache_proxy";
-	}		
+	class jenkins {
+		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
+		# package { "jenkins":
+		#	ensure => present,
+		#	require => File["jenkins.list"],
+		#}
+
+		service { 'jenkins':
+			enable => true,
+			ensure => 'running',
+			hasrestart => true,
+			start => '/etc/init.d/jenkins start',
+			stop => '/etc/init.d/jenkins stop';
+		}
+
+		# nagios monitoring
+		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+
+		file {
+			# Top level jobs folder
+			"/var/lib/jenkins/jobs/":
+				owner => "jenkins",
+				group => "wikidev",
+				mode => 0775,
+				ensure => directory;
+			# Let wikidev users maintain the homepage
+			 "/srv/org":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki/integration":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			"/srv/org/mediawiki/integration/index.html":
+				owner => www-data,
+				group => wikidev,
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/index.html";
+			# Placing the file in sites-available	
+			"/etc/apache2/sites-available/integration.mediawiki.org":
+				path => "/etc/apache2/sites-available/integration.mediawiki.org",
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/apache/sites/integration.mediawiki.org";
+
+		}
+
+		# run jenkins behind Apache and have pretty URLs / proxy port 80
+		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
+
+		apache_module { proxy: name => "proxy" }
+		apache_module { proxy_http: name => "proxy_http" }
+
+		file {
+			"/etc/default/jenkins":
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				source => "puppet:///files/misc/jenkins/etc_default_jenkins";
+			"/etc/apache2/conf.d/jenkins_proxy":
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				source => "puppet:///files/misc/jenkins/apache_proxy";
+		}		
+	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
 
