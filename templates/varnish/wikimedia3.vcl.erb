@@ -150,7 +150,7 @@ sub vcl_fetch {
 	}
 	<% end -%>
 	if (beresp.status > 400) {
-		set beresp.ttl = 0;
+		set beresp.ttl = 0s;
 		return(hit_for_pass);
 	}
 
