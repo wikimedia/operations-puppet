@@ -174,7 +174,7 @@ class svn::server {
 	}
 
 	class conversion {
-		package { "qt4-qmake":
+		package { ['libqt4-dev', 'libsvn-dev']:
 			ensure => latest;
 		}
 	}
