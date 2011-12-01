@@ -1,10 +1,6 @@
 # Varnish VCL include file for mobile backends
 
 sub vcl_fetch {
-	if (beresp.status > 400) {
-		set beresp.ttl = 0s;
-	}
-
 	if (req.url == "/?useformat=mobile") {
 		set beresp.ttl = 60 s;
 	}

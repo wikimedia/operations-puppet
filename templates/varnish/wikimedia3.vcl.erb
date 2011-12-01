@@ -149,6 +149,9 @@ sub vcl_fetch {
 		return(restart);
 	}
 	<% end -%>
+	if (beresp.status > 400) {
+		set beresp.ttl = 0;
+	}
 
 	set beresp.grace = 20m;
 
