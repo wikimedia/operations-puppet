@@ -1159,7 +1159,7 @@ class accounts {
 					ensure  => present,
 					user    => $username,
 					type    => "ssh-rsa",
-					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/M7FcM/RpajWHfGsCgQiXo07cTkC9sQkpPvfInCA16Gk0rLOm1nJb2BKSlg5PhXLuJySS0iu7P95HJaKwoZDHkFc75bHx6ISRHOhgqUr1yR7S0pTdm+ithTi/zVEfc4j3KNQyift4o2pwVgx0CQTZjZL8sgf7XoKbw9YeftDt9Kz/KabNx45uB7qeH2sB7xnqixnb7knKu3rFN932eyFmA+G5+q2sPLjHNoyGhr6sfQi/dbUV1DDyd3zIs2W2Isej38WAX+B+KPT+mAj1uO9TUkY9v6ollDE+N92uQHiLrQDZ+dF4joDTsQu5ydai0QTYs5xNvrim/bMZHg+5F+X";
+					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDA1YPMNuveTkv5+o9lePP0z9805KHICDYfvnPpdthVaLEoA91ETVibYRE9+0gbRVJxegKYzVh9fYcGaMIbxtov9uPQzs6HJHaqipCvkIpvhyeMWOYsO5A6poi1vK6jt+44vjjcKuxBcAQ+C4jl5ykG+j9B77XBkLB49PIitMEh9F458+ZNu2Xg6acJM+7UHXtmbW2ytr+sh7rLPwY7/SZW0cjUSnfX2WCffX23Tz87RNJ6XJUNAmkPmvctJMtxbGoJX57QAfQfysI25OWWdmJQ8+jUz1PSLG8taVSxq51dM8TVJ1Is+estlC2O+NwuGsPa8GCQQjwq4Kl81kOL78xZ";
 			}
 		}
 	}
