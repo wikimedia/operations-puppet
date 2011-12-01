@@ -1536,6 +1536,11 @@ class misc::contint::test {
 		}		
 	}
 
+	class testswarm {
+		# Testswarm is configured using the debian package
+		package { testswarm: ensure => latest; }
+	}
+
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
 
 	class iptables-purges {
