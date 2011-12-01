@@ -16,6 +16,13 @@ class mysql {
 		package { xtrabackup:	
 			ensure => "installed";
 		}
+
+		file { "/etc/apt/sources.list.d/wikimedia-mysql.list":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/mysql/wikimedia-mysql.list"
+		}
 	}
 
 	class ganglia {
