@@ -1601,6 +1601,26 @@ class accounts {
 		}
 	}
 
+	class sara inherits baseaccount {
+		$username = "sara"
+		$realname = "Sara Smollett"
+		$uid = 584
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"sara@Sara-Smolletts-MacBook.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-dss",
+					key	=> "AAAAB3NzaC1kc3MAAACBAJzkjaqCp+VxgB4f1TH8vwYAM5OMKH6LFH8wdW3byMQkAqVYjh3ynSEs/DIqtuHMLKqFxFmOAmBusWeBQ9p2dmbWPN39THRwtIiXRr1ELyxML6oY3NWDm7wWD4hWz0ZdsUT/6X6yzhrVbBStGlORdjBWiA/8gSiOrZHP1UJ2frPjAAAAFQD67sNxyBwcvH/EZKI2Wz2O/hcEfwAAAIEAiaDIoJnkKBMVmxJBqY/r6ko4fnSqqAlkam/41aiEs9OwmX5LPH1kkneUge+bfkX3pp86pKG5xWBw59qJsL4FRwQWtX8wsP6l9xJj7qr2Z7hCJnvrv3rM0mYpL7o/8BDhwauJJ68ObcK2t/2UMqnZ87jUHZBb/l1t3jInrLSJKYgAAACAZKIh1AGbUxixY/V9RdJnQ0/oWbF5PEa149sceIyB8q7LSixUkPi8cfVvOHKNqMwV4InBz2GZyANWRtHbk75UUuuJDklPyQsif58vokJIsVw733Msx49EVSEUVSl3ZQ7c9oLmsXp4UsGW6C9Hh/OwqZA3VrMT0zsZqZYJ6mmZ29M=";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -1650,6 +1670,7 @@ class admins::roots {
 	include accounts::jgreen
 	include accounts::ben
 	include accounts::catrope
+	include accounts::sara
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals { 
