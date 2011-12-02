@@ -1550,6 +1550,7 @@ class misc::contint::test {
 	}
 
 	class testswarm {
+		include generic::webserver::php5
 		# Testswarm is configured using the debian package
 		package { testswarm: ensure => latest; }
 	}
