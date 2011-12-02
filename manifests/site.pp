@@ -1224,7 +1224,8 @@ node "hooper.wikimedia.org" {
 		svn::client,
 		misc::etherpad,
 		misc::blog-wikimedia,
-		certificates::star_wikimedia_org
+		certificates::star_wikimedia_org,
+		misc::racktables
 
 	install_certificate{ "star.wikimedia.org": }
 }

@@ -1032,7 +1032,7 @@ class misc::jenkins {
 	#		owner => jenkins,
 	#		group => nogroup,
 	#		require => Package[jenkins],
-	#		source => "puppet:///private/misc/jenkins.config.xml";		
+	#		source => "puppet:///private/misc/jenkins.config.xml";
 	#}
 }
 
@@ -2108,4 +2108,31 @@ class misc::package-builder {
 	}
 	
 	include packages, defaults
+}
+
+class misc::racktables {
+	system_role { "misc::racktables": description => "Racktables web server" }
+	
+	include generic::webserver::php5,
+		generic::webserver::php5-mysql,
+		certificates::star_wikimedia_org
+
+
+	file {
+		"/etc/apache2/sites-available/racktables.wikimedia.org"
+			mode => 444,
+			owner => root,
+			group => root,
+			notify => Service["apache2"],
+			content => template('apache/sites/racktables.wikimedia.org.erb'),
+			ensure => present;
+	}
+
+	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { proxy: name => "proxy" }
+	$racktables_host = "racktables.wikimedia.org"
+	$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
+	$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
+	install_certificate{ "star.wikimedia.org": }
 }
