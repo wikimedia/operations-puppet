@@ -1081,8 +1081,7 @@ node "fenari.wikimedia.org" {
 		misc::noc-wikimedia,
 		misc::extension-distributor,
 		misc::scripts,
-		# logmsgbot puppetization is broken in hardy
-		#misc::logmsgbot,
+		misc::logmsgbot,
 		misc::l10nupdate,
 		dns::account,
 		exim::simple-mail-sender,
