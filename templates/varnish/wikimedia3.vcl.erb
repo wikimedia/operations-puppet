@@ -101,7 +101,7 @@ director <%= director %> hash {
 # Functions
 
 sub vcl_recv {
-	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE") {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE" && req.request != "POST") {
 		/* We only deal with GET and HEAD by default */
 		error 403 "HTTP method not allowed.";
 	}
