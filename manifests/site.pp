@@ -415,6 +415,15 @@ class cache {
 		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
 		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
+		$varnish_backends = $site ? {
+			/^(pmtpa|eqiad)$/ => $all_backends,
+			# [ bits-lb.pmtpa, bits-lb.eqiad ]
+			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+			# FIXME: add pmtpa back in
+			'esams' => [ "208.80.154.234" ],
+			default => []
+		}
+
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
 		$multiple_backends = {
 			'pmtpa-eqiad' => {
@@ -426,14 +435,6 @@ class cache {
 			}
 		}
 
-		$varnish_backends = $site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
-			# [ bits-lb.pmtpa, bits-lb.eqiad ]
-			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
-			default => []
-		}
 		$varnish_directors = $site ? {
 			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
 			'esams' => $multiple_backends["esams"],
