@@ -1040,7 +1040,8 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf
+		mysql::conf,
+		mysql::packages
 }
 
 node "dobson.wikimedia.org" {

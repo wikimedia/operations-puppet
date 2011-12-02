@@ -16,12 +16,19 @@ class mysql {
 		package { xtrabackup:	
 			ensure => "installed";
 		}
+	}
 
+	class packages {
 		file { "/etc/apt/sources.list.d/wikimedia-mysql.list":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/mysql/wikimedia-mysql.list"
+		}
+
+		package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
+			ensure => "5.1.53-fb3753-wm1",
+			require => File["/etc/apt/sources.list.d/wikimedia-mysql.list"];
 		}
 	}
 
