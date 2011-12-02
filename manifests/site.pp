@@ -1566,7 +1566,7 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	include db::es::slave
+	include standard
 }
 
 node "ms4.pmtpa.wmnet" {
