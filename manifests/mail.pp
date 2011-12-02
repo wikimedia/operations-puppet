@@ -201,10 +201,6 @@ class mailman::base {
 	
 	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 
-	@@file { "/tmp/openports": 
-		content => "$hostname: protocol => tcp, port => 25",
-		tag => "openports", }
-
 }
 
 

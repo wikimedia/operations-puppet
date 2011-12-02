@@ -2119,7 +2119,7 @@ class misc::racktables {
 
 
 	file {
-		"/etc/apache2/sites-available/racktables.wikimedia.org"
+		"/etc/apache2/sites-available/racktables.wikimedia.org":
 			mode => 444,
 			owner => root,
 			group => root,
