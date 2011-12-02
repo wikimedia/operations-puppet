@@ -1566,7 +1566,8 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	include standard
+	include standard,
+		swift::storage
 }
 
 node "ms4.pmtpa.wmnet" {
@@ -1676,7 +1677,9 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard
+	include standard,
+		swift::proxy,
+		swift::proxy::testpmtpaclusterconf
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
