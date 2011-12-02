@@ -546,6 +546,13 @@ class misc::mediawiki-logger {
 		"/etc/logrotate.d/mw-udp2log":
 			source => "puppet:///files/logrotate/mw-udp2log",
 			mode => 0444;
+		"/etc/sysctl.d/99-big-rmem.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			content => "
+net.core.rmem_max = 536870912
+";
 	}
 
 	service { udp2log:
@@ -1623,6 +1630,14 @@ class misc::graphite {
 			group => "www-data",
 			mode => 0755,
 			ensure => directory;
+		"/etc/sysctl.d/99-big-rmem.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			content => "
+net.core.rmem_max = 536870912
+net.core.rmem_default = 536870912
+";
 	}
 
 	apache_module { python: name => "python" }
