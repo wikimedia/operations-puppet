@@ -1566,7 +1566,8 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	include standard
+	include standard,
+		swift::storage
 }
 
 node "ms4.pmtpa.wmnet" {
@@ -1676,7 +1677,13 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard
+	include standard,
+		swift::proxy
+	class { "swift::proxy::config":
+		thumbhost => "ms5.pmtpa.wmnet",
+		memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ]
+	}
+
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
