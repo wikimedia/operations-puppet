@@ -1,3 +1,4 @@
+# vim:ft=apache:
 <VirtualHost *:80>
 	ServerName graphite.wikimedia.org
 
@@ -5,7 +6,7 @@
 		Order allow,deny
 		Allow from all
 
-		AuthName "WMF" 
+		AuthName "WMF Labs"
 		AuthType Basic
 		AuthBasicProvider ldap
 		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
