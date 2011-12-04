@@ -2,9 +2,14 @@ class nrpe::packages {
 	package { [ "opsview-agent" ]:
 		ensure => absent;
 	}
-        package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
+        package { "nagios-nrpe-server":
                 ensure => latest;
         }
+
+	include nagios::packages::plugins,
+		nagios::packages::plugins::basic,
+		nagios::packages::plugins::standard,
+		nagios::packages::plugins::extra
 
         file {
                 "/etc/nagios/nrpe_local.cfg":
