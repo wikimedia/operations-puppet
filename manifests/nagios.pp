@@ -207,7 +207,8 @@ class nagios::monitor {
 	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	include nagios::packages::nagios3,
+	include nagios::packages,
+		nagios::packages::nagios3,
 		nagios::packages::images,
 		nagios::packages::plugins,
 		nagios::packages::plugins::extra

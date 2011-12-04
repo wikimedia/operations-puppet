@@ -6,7 +6,8 @@ class nrpe::packages {
                 ensure => latest;
         }
 
-	include nagios::packages::plugins,
+	include nagios::packages,
+		nagios::packages::plugins,
 		nagios::packages::plugins::basic,
 		nagios::packages::plugins::standard,
 		nagios::packages::plugins::extra
