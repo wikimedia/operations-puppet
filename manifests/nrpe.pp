@@ -1,4 +1,11 @@
 class nrpe::packages {
+	include nagios::packages::plugins
+
+	$nrpe_allowed_hosts = $realm ? {
+		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
+		"labs" => "10.4.0.34"
+	}
+
 	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
 		ensure => latest;
 	}
@@ -14,7 +21,7 @@ class nrpe::packages {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/nagios/nrpe_local.cfg";
+			content => template("nagios/nrpe_local.cfg.erb");
 		"/usr/lib/nagios/plugins/check_dpkg":
 			owner => root,
 			group => root,
