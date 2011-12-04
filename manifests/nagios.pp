@@ -200,7 +200,7 @@ class nagios::monitor {
 			  "${nagios_config_dir}/timeperiods.cfg",
 			  "${nagios_config_dir}/htpasswd.users"]
 
-	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
+	systemuser { nagios: name => "nagios", home => "/var/lib/nagios", groups => [ "nagios", "dialout", "gammu" ] }
 
 	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
 	# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
