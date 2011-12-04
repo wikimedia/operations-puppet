@@ -2138,3 +2138,30 @@ class misc::package-builder {
 	
 	include packages, defaults
 }
+
+class misc::ircecho {
+
+	# To use this class, you must define some variables; here's an example:
+	#  $ircecho_infile = "/var/log/nagios/irc.log"
+	#  $ircecho_nick = "nagios-wm"
+	#  $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	#  $ircecho_server = "irc.freenode.net"
+
+	package { "ircecho":
+		ensure => latest;
+	}
+
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
+	}
+
+}
