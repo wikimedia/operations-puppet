@@ -6,11 +6,7 @@ class nrpe::packages {
                 ensure => latest;
         }
 
-	include nagios::packages,
-		nagios::packages::plugins,
-		nagios::packages::plugins::basic,
-		nagios::packages::plugins::standard,
-		nagios::packages::plugins::extra
+	include nagios::packages::plugins
 
         file {
                 "/etc/nagios/nrpe_local.cfg":
