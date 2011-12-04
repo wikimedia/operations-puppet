@@ -1072,6 +1072,11 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
+        $ircecho_infile = "/var/log/logmsg"
+        $ircecho_nick = "logmsgbot"
+        $ircecho_chans = "#wikimedia-tech"
+        $ircecho_server = "irc.freenode.net"
+
 	include base,
 		ganglia,
 		svn::client,
@@ -1085,6 +1090,7 @@ node "fenari.wikimedia.org" {
 		misc::noc-wikimedia,
 		misc::extension-distributor,
 		misc::scripts,
+		misc::ircecho,
 		misc::l10nupdate,
 		dns::account,
 		exim::simple-mail-sender,
@@ -1871,11 +1877,15 @@ node "spence.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$nagios_server = "true"
 
+        $ircecho_infile = "/var/log/nagios/irc.log"
+        $ircecho_nick = "nagios-wm"
+        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+        $ircecho_server = "irc.freenode.net"
+
 	include base,
 		ganglia,
 		nagios::monitor,
 		nagios::monitor::pager,
-		nagios::bot,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
@@ -1886,6 +1896,7 @@ node "spence.wikimedia.org" {
 		certificates::wmf_ca,
 		backup::client,
 		misc::udpprofile::collector,
+		misc::ircecho,
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }

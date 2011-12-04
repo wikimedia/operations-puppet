@@ -524,32 +524,6 @@ class nagios::ganglia::ganglios {
 	}
 }
 
-class nagios::bot {
-
-        $ircecho_infile = "/var/log/nagios/irc.log"
-        $ircecho_nick = "nagios-wm"
-        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
-        $ircecho_server = "irc.freenode.net"
-
-	package { "ircecho":
-		ensure => latest;
-	}
-
-	service { "ircecho":
-		require => Package[ircecho],
-		ensure => running;
-	}
-
-	file {
-		"/etc/default/ircecho":
-			require => Package[ircecho],
-			content => template('ircecho/default.erb'),
-			owner => root,
-			mode => 0755;
-	}
-
-}
-
 # passive checks / NSCA
 
 # package contains daemon and client script
