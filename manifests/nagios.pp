@@ -207,9 +207,10 @@ class nagios::monitor {
 	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
-		ensure => latest;
-	}
+	include nagios::packages::nagios3,
+		nagios::packages::images,
+		nagios::packages::plugins,
+		nagios::packages::plugins::extra
 
 	service { nagios:
 		require => File[$puppet_files],
@@ -605,4 +606,39 @@ class nagios::nsca::client {
 	service { "nsca":
 		ensure => stopped;
 	}
+}
+
+class nagios::packages {
+
+	class nagios::packages::nagios3 {
+		package { "nagios3":
+			ensure => latest;
+		}
+	}
+	class nagios::packages::images {
+		package { "nagios-images":
+			ensure => latest;
+		}
+	}
+	class nagios::packages::plugins {
+		package { "nagios-plugins":
+			ensure => latest;
+		}
+	}
+        class nagios::packages::plugins::basic {
+		package { "nagios-plugins-basic":
+			ensure => latest;
+		}
+	}
+	class nagios::packages::plugins::extra {
+		package { "nagios-plugins-extra":
+			ensure => latest;
+		}
+	}
+	class nagios::packages::plugins::standard {
+		package { "nagios-plugins-standard":
+			ensure => latest;
+		}
+	}
+
 }
