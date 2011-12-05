@@ -2142,3 +2142,31 @@ class misc::ircecho {
 	}
 
 }
+
+class misc::racktables {
+
+	$racktables_host = "racktables.wikimedia.org"
+	$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
+	$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
+	
+	file {
+		"etc/apache2/sites-available/racktables.wikimedia.org":
+		mode => 444,
+		owner => root,
+		group => root,
+		notify => Service["apache2"],
+		content => template('apache/sites/racktables.wikimedia.org.erb'),
+		ensure => present;
+	}
+
+	service { apache2:
+		enable => true,
+		ensure => running;
+	}
+
+	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { proxy: name => "proxy" }
+	apache_module { ssl: name => "ssl" }
+	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+}
