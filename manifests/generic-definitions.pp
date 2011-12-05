@@ -64,6 +64,27 @@ define apache_module($name) {
 	}
 }
 
+define apache_confd($install="false", $enable="true", $ensure="present") {
+        case $install {
+        "true": {
+                        file { "/etc/apache2/conf.d/${name}":
+                                source => "puppet:///files/apache/conf.d/${name}",
+				mode => 0444,
+				ensure => $ensure;
+                        }
+                }
+        "template": {
+                        file { "/etc/apache2/conf.d/${name}":
+                                content => template("apache/conf.d/${name}.erb"),
+				mode => 0444,
+				ensure => $ensure;
+                        }
+                }
+
+		}
+        }
+}
+
 class generic::apache::no-default-site {
 	file { "/etc/apache2/sites-enabled/000-default":
 		ensure => absent;
