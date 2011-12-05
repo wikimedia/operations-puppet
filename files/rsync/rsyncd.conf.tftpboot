@@ -3,6 +3,8 @@
 ### puppet:///files/rsync/rsyncd.conf.tftpboot
 #####################################################################
 
+hosts allow = 91.198.174.113
+
 [tftpboot]
 read only = yes
 path = /srv/tftpboot
