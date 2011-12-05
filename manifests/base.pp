@@ -356,7 +356,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		}
 		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
 	}
-
+	
 	class generic {
 		class dell {
 			$lom_serial_port = "ttyS1"
@@ -365,32 +365,38 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class sun {
 			$lom_serial_port = "ttyS0"
 			$lom_serial_speed = "9600"
+
+			# Udev rules for Solaris-style disk names
+			@file {
+				"/etc/udev/scripts/solaris-name.sh":
+					source => "puppet:///files/udev/solaris-name.sh",
+					owner => root,
+					group => root,
+					mode => 0555,
+					tag => "thumper-udev";
+				"/etc/udev/rules.d/99-thumper-disks.rules":
+					require => File["/etc/udev/scripts/solaris-name.sh"],
+					source => "puppet:///files/udev/99-thumper-disks.rules",
+					owner => root,
+					group => root,
+					mode => 0444,
+					tag => "thumper-udev";
+			}
 		}
 	}
 
 	class sun-x4500 inherits base::platform::generic::sun {
 		$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
 
-		# Udev rules for Solaris-style disk names
-		file {
-			"/etc/udev/scripts/solaris-name.sh":
-				source => "puppet:///files/udev/solaris-name.sh",
-				owner => root,
-				group => root,
-				mode => 0555;
-			"/etc/udev/rules.d/99-thumper-disks.rules":
-				require => File["/etc/udev/scripts/solaris-name.sh"],
-				source => "puppet:///files/udev/99-thumper-disks.rules",
-				owner => root,
-				group => root,
-				mode => 0444;
-		}
+		File <| tag == "thumper-udev" |>
 
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	class sun-x4540 inherits base::platform::generic::sun {
 		$startup_drives = [ "/dev/sda", "/dev/sdi" ]
+
+		File <| tag == "thumper-udev" |>
 
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
