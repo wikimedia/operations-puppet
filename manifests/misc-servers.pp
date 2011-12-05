@@ -2152,4 +2152,5 @@ class misc::ircecho {
 			owner => root,
 			mode => 0755;
 	}
+}
 
