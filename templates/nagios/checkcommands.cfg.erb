@@ -393,6 +393,12 @@ define command{
 	command_line	$USER3$/check_procs -w 1:20 -c 1:40 -a spamd
 }
 
+# check poolcounterd process
+define command{
+	command_name	check_procs_poolcounter
+	command_line	$USER3$/check_procs -w 1:2 -c 1:5 -a poolcounterd
+}
+
 # check that logging packet loss is not too high
 define command{
 	command_name	check_packet_loss_ave
