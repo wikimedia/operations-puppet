@@ -2116,8 +2116,22 @@ class misc::package-builder {
 	include packages, defaults
 }
 
-class misc::ircecho {
+class misc::racktables {
+	system_role { "misc::racktables": description => "Racktables web server" }
+	
+	require => misc::apache2
+	
+	include generic::webserver::php5,
+		generic::webserver::php5-mysql,
+		apache_site { racktables: name => "racktables.wikimedia.org" }
+		apache_module { rewrite: name => "rewrite" }
+		apache_module { proxy: name => "proxy" }
+		$racktables_host = "racktables.wikimedia.org"
+		$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
+		$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
+}
 
+class misc::ircecho {
 	# To use this class, you must define some variables; here's an example:
 	#  $ircecho_infile = "/var/log/nagios/irc.log"
 	#  $ircecho_nick = "nagios-wm"
@@ -2141,4 +2155,3 @@ class misc::ircecho {
 			mode => 0755;
 	}
 
-}
