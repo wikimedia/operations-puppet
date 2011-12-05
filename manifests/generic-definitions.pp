@@ -64,6 +64,37 @@ define apache_module($name) {
 	}
 }
 
+define apache_confd($install="false", $enable="true") {
+        if ( $enable == "true" ) {
+                file { "/etc/apache2/sites-enabled/${name}":
+                        ensure => "/etc/apache2/sites-available/${name}",
+                }
+        } else {
+                file { "/etc/apache2/sites-enabled/${name}":
+                        ensure => absent;
+                }
+        }
+
+        case $install {
+        "true": {
+                        file { "/etc/apache2/sites-available/${name}":
+                                source => "puppet:///files/apache/sites/${name}";
+                        }
+                }
+        "template": {
+                        file { "/etc/apache2/sites-available/${name}":
+                                content => template("apache/sites/${name}.erb");
+                        }
+                }
+
+		}
+
+	file { "/etc/apache2/conf.d/namevirtualhost":
+		ensure => present,
+		source => "puppet:///files/apache/namevirtualhost";
+        }
+}
+
 class generic::apache::no-default-site {
 	file { "/etc/apache2/sites-enabled/000-default":
 		ensure => absent;
