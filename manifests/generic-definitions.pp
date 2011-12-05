@@ -204,6 +204,20 @@ class generic::sysctl::advanced-routing($ensure="present") {
 	}
 }
 
+class generic::sysctl::ipv6-disable-ra($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { advanced-routing-sysctl:
+			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
 class generic::sysctl::lvs($ensure="present") {
 	file { lvs-sysctl:
 		name => "/etc/sysctl.d/50-lvs.conf",
