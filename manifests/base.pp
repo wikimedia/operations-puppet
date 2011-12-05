@@ -330,6 +330,69 @@ class base::environment {
 	}
 }
 
+#	Class: base::platform
+#
+#	This class implements hardware platform specific configuration
+class base::platform {
+	class common($lom_serial_port, $lom_serial_speed) {
+		$console_upstart_file = "
+# ${lom_serial_port} - getty
+#
+# This service maintains a getty on ${lom_serial_port} from the point the system is
+# started until it is shut down again.
+
+start on stopped rc RUNLEVEL=[2345]
+stop on runlevel [!2345]
+
+respawn
+exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
+"
+
+		file { "/etc/init/${lom_serial_port}":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => $console_upstart_file;
+		}
+		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
+	}
+
+	class generic {
+		class dell {
+			$lom_serial_port = "ttyS1"
+		}
+
+		class sun {
+			$lom_serial_port = "ttyS0"
+			$lom_serial_speed = "9600"
+		}
+	}
+
+	class sun-x4500 inherits base::platform::generic::sun {
+		$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+	}
+
+	class sun-x4540 inherits base::platform::generic::sun {
+		$startup_drives = [ "/dev/sda", "/dev/sdi" ]
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+	}
+
+	case $platform {
+		"Sun Fire X4500": {
+			include sun-x4500
+		}
+		"Sun Fire X4540": {
+			include sun-x4540
+		}
+		default: {
+			# Do nothing
+		}
+	}
+}
+
 class base {
 
 	case $operatingsystem {
@@ -360,6 +423,7 @@ class base {
 		base::standard-packages,
 		base::monitoring::host,
 		base::environment,
+		base::platform,
 		ssh
 
 	if $realm == "labs" {
