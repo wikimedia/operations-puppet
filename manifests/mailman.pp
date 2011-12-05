@@ -24,7 +24,7 @@ class mailman::base {
 
 	}
 
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
+	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
 }
 
 
