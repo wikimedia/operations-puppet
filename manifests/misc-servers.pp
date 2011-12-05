@@ -1055,7 +1055,7 @@ class misc::fundraising {
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
 	require mysql::client
-	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
 }
 
@@ -1317,7 +1317,7 @@ class misc::survey {
 	system_role { "misc::survey": description => "limesurvey server" }
 
 	require mysql::client
-	package { [ "libapache2-mod-php5", "php-pear", "php5-cli", "php5-common", "php5-gd", "php5-mysql" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-gd", "php5-mysql" ]:
 		ensure => latest;
 }
 
