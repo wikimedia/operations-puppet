@@ -1429,8 +1429,8 @@ class misc::contint::test {
 
 		include generic::packages::git-core
 
-		# Prefer the PHP package from Ubuntu
-		generic::apt::pin-package { [ libapache2-mod-php5, php5-common, php5-tidy, php5-intl, php5-pgsql ]: }
+		# Prefer the PHP packages from Ubuntu
+		generic::apt::pin-package { $CI_PHP_packages: }
 
 	}
 
