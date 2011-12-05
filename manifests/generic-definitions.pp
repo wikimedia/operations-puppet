@@ -85,12 +85,12 @@ define nginx_site($install="false", $template="", $enable="true") {
 		$template_name = $template
 	}
 	if ( $enable == "true" ) {
-	        file { "/etc/nginx/sites-enabled/${name}":
-        	        ensure => "/etc/nginx/sites-available/${name}",
+		file { "/etc/nginx/sites-enabled/${name}":
+			ensure => "/etc/nginx/sites-available/${name}",
 		}
 	} else {
-	        file { "/etc/nginx/sites-enabled/${name}":
-        	        ensure => absent;
+		file { "/etc/nginx/sites-enabled/${name}":
+			ensure => absent;
 		}
 	}
 
@@ -127,15 +127,15 @@ class generic::webserver::php5 {
 	# Prefer the PHP package from Ubuntu
 	generic::apt::pin-package { [ libapache2-mod-php5, php5-common ]: }
 
-        package { [ "apache2", "libapache2-mod-php5" ]:
-                ensure => latest;
-        }
+	package { [ "apache2", "libapache2-mod-php5" ]:
+		ensure => latest;
+	}
 
-        service { apache2:
-                require => Package[apache2],
-                subscribe => Package[libapache2-mod-php5],
-                ensure => running;
-        }
+	service { apache2:
+		require => Package[apache2],
+		subscribe => Package[libapache2-mod-php5],
+		ensure => running;
+	}
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
@@ -143,9 +143,9 @@ class generic::webserver::php5 {
 
 class generic::webserver::modproxy {
 
-        package { libapache2-mod-proxy-html:
-                ensure => latest;
-        }
+	package { libapache2-mod-proxy-html:
+		ensure => latest;
+	}
 }
 
 class generic::webserver::php5-mysql {
@@ -176,17 +176,16 @@ define sysctl($value) {
 
 class generic::sysctl::high-http-performance($ensure="present") {
 	if $lsbdistrelease != "8.04" {
-	        file { high-http-performance-sysctl:
-	                name => "/etc/sysctl.d/60-high-http-performance.conf",
-	                owner => root,
-	                group => root,
-	                mode => 444,
+		file { high-http-performance-sysctl:
+			name => "/etc/sysctl.d/60-high-http-performance.conf",
+			owner => root,
+			group => root,
+			mode => 444,
 			notify => Exec["/sbin/start procps"],
-	                source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
+			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
 			ensure => $ensure
-	        }
-	}
-	else {
+		}
+	} else {
 		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
@@ -227,16 +226,16 @@ class generic::geoip {
 
 		file {
 			"/usr/share/GeoIP/GeoIP.dat":
-    	                	mode => 0644,
-        	                owner => root,
-                	        group => root,
-                        	source => "puppet:///files/misc/GeoIP.dat";
-                	"/usr/share/GeoIP/GeoIPCity.dat":
-                		mode => 0644,
-                		owner => root,
-                		group => root,
-                		source => "puppet:///files/misc/GeoIPcity.dat";
-                }
+				mode => 0644,
+				owner => root,
+				group => root,
+				source => "puppet:///files/misc/GeoIP.dat";
+			"/usr/share/GeoIP/GeoIPCity.dat":
+				mode => 0644,
+				owner => root,
+				group => root,
+				source => "puppet:///files/misc/GeoIPcity.dat";
+		}
 	}
 }
 
@@ -327,13 +326,13 @@ define interface_up_command($interface, $command) {
 }
 
 define interface_setting($interface, $setting, $value) {
-        if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
-                # Use augeas to add an 'up' command to the interface
-                augeas { "${interface}_${title}":
-                        context => "/files/etc/network/interfaces/*[. = '${interface}']",
-                        changes => "set ${setting} '${value}'",
-                }
-        }
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		# Use augeas to add an 'up' command to the interface
+		augeas { "${interface}_${title}":
+			context => "/files/etc/network/interfaces/*[. = '${interface}']",
+			changes => "set ${setting} '${value}'",
+		}
+	}
 }
 
 class base::vlan-tools {
@@ -490,31 +489,31 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 }
 
 class generic::rsyncd($config) {
-        package { rsync:
-                ensure => latest;
-        }
+	package { rsync:
+		ensure => latest;
+	}
 
-        file {
-                "/etc/rsyncd.conf":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsyncd.conf.$config",
-                        ensure => present;
-                "/etc/default/rsync":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsync.default",
-                        ensure => present;
-        }
+	file {
+		"/etc/rsyncd.conf":
+			require => Package[rsync],
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsyncd.conf.$config",
+			ensure => present;
+		"/etc/default/rsync":
+			require => Package[rsync],
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsync.default",
+			ensure => present;
+	}
 
-        service { rsync:
-                require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-                ensure => running;
-        }
+	service { rsync:
+		require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+		ensure => running;
+	}
 }
 
 # definition to import gkg keys from a keyserver into apt
