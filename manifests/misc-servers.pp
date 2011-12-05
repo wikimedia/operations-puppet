@@ -2136,3 +2136,19 @@ class misc::ircecho {
 	}
 
 }
+
+# http://planet.wikimedia.org/
+class misc::planet {
+	system_role { "misc::planet": description => "Planet Wikimedia weblog aggregator" }
+
+	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
+
+	require generic::webserver::php5
+
+	apache_module { ssl: name => "ssl" }
+	apache_site { planet: name => "planet.wikimedia.org" }
+
+	package { "python2.6":
+		ensure => latest;
+	}
+}
