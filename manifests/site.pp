@@ -1149,7 +1149,8 @@ node "gallium.wikimedia.org" {
 		accounts::demon,
 		accounts::hashar,
 		accounts::reedy,
-		certificates::star_wikimedia_org
+		certificates::star_wikimedia_org,
+		backup::mysql
 
 	install_certificate{ "star.wikimedia.org": }
 }
