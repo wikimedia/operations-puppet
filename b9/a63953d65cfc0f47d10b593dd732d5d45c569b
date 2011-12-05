@@ -1,0 +1,8 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Petrb <benapetr@gmail.com>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Mon, 05 Dec 2011 21:00:27 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1223
+Project: operations/puppet
+Branch: refs/heads/test
