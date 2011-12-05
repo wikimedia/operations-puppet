@@ -2123,12 +2123,6 @@ class misc::racktables {
 	
 	include generic::webserver::php5,
 		generic::webserver::php5-mysql,
-		apache_site { racktables: name => "racktables.wikimedia.org" }
-		apache_module { rewrite: name => "rewrite" }
-		apache_module { proxy: name => "proxy" }
-		$racktables_host = "racktables.wikimedia.org"
-		$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
-		$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
 }
 
 class misc::ircecho {
@@ -2155,3 +2149,4 @@ class misc::ircecho {
 			mode => 0755;
 	}
 
+}

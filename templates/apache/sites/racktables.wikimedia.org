@@ -1,0 +1,40 @@
+Sir-Lappy:sites lcarr$ cat racktables_lite.wikimedia.org.erb 
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/racktables.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+	ServerName <%= racktables_host %>
+
+	RewriteEngine on
+	RewriteRule ^/(.*)$ https://<%= racktables_host %>/$1 [R=302]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+	ServerName <%= racktables_host %>
+
+	SSLEngine on
+	SSLCertificateFile <%= racktables_ssl_cert %>
+	SSLCertificateKeyFile <%= racktables_ssl_key %>
+
+	RewriteEngine on
+	ProxyVia On
+	ProxyRequests Off
+	ProxyPass / http://<%= racktables_ip %>:<%= racktables_port %>/
+	ProxyPassReverse / http://<%= racktables_ip %>:<%= racktables_port %>/
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Options FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		Allow from all
+	</Proxy>
+
+</VirtualHost>
+
