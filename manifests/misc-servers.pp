@@ -2145,18 +2145,34 @@ class misc::ircecho {
 
 class misc::racktables {
 
-	$racktables_host = "racktables.wikimedia.org"
-	$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
-	$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
-	
+
+	if $realm == "labs" {
+		$racktables_host = "{$instancename}.${domain}"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
+	} else {
+		$racktables_host = "racktables.wikimedia.org"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+	}
+
+	include passwords::misc::scripts
+	$mysql_root_pass = $passwords::misc::scripts::mysql_root_pass
+
 	file {
-		"etc/apache2/sites-available/racktables.wikimedia.org":
-		mode => 444,
-		owner => root,
-		group => root,
-		notify => Service["apache2"],
-		content => template('apache/sites/racktables.wikimedia.org.erb'),
-		ensure => present;
+		"/etc/apache2/sites-available/racktables.wikimedia.org":
+			mode => 444,
+			owner => root,
+			group => root,
+			notify => Service["apache2"],
+			content => template("apache/sites/racktables.wikimedia.org.erb"),
+			ensure => present;
+
+		"/usr/local/bin/mysql_root_pass":
+			owner => root,
+			group => wikidev,
+			mode => 0550,
+			content => template("misc/passwordScripts/mysql_root_pass.erb");
 	}
 
 	service { apache2:
@@ -2165,6 +2181,7 @@ class misc::racktables {
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { ssl: name => "ssl" }

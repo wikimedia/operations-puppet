@@ -130,6 +130,11 @@ class openstack::common {
 		ensure => latest;
 	}
 
+	# For IPv6 support
+	package { [ "python-netaddr", "radvd" ]:
+		ensure => latest;
+	}
+
 	generic::apt::pin-package { [ "libmysqlclient16", "mysql-common" ]: }
 
 	file {
@@ -441,7 +446,8 @@ class openstack::network-service {
 	}
 
 	# Enable IP forwarding
-	include generic::sysctl::advanced-routing
+	include generic::sysctl::advanced-routing,
+		generic::sysctl::ipv6-disable-ra
 }
 
 class openstack::api-service {
