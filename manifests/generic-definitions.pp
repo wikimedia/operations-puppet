@@ -649,9 +649,17 @@ class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
 
+# Definition: git::clone
+# Creates a git clone of a specified origin into a top level directory
+#
+# Parameters:
+# - $title
+#		Should be the repository name
 define git::clone($directory, $origin) {
 	require generic::packages::git-core
-	
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
 	Exec {
 		path => "/usr/bin:/bin",
 		cwd => $directory
@@ -659,6 +667,6 @@ define git::clone($directory, $origin) {
 	exec {
 		"git clone ${title}":
 			command => "git clone ${origin}",
-			creates => "${directory}/.git/config";
+			creates => "${directory}/${suffix}/.git/config";
 	}
 }
