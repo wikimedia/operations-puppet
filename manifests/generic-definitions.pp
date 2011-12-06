@@ -648,3 +648,17 @@ hostname1=${tag}
 class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
+
+define git::clone($directory, $origin) {
+	require generic::packages::git-core
+	
+	Exec {
+		path => "/usr/bin:/bin",
+		cwd => $directory
+	}
+	exec {
+		"git clone ${title}":
+			command => "git clone ${origin}",
+			creates => "${directory}/.git/config";
+	}
+}

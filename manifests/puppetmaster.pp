@@ -126,9 +126,26 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 
+	# Class: puppetmaster::production
+	#
+	# This class handles the Wikimedia Production specific bits of a Puppetmaster
+	class production {
+		file { [ "/var/lib/git", "/var/lib/git/operations"]:
+			ensure => directory,
+			owner => root,
+			group => root
+		}
+		
+		git::clone { "operations/puppet":
+			require => File["/var/lib/git/operations"],
+			directory => "/var/lib/git/operations",
+			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
+		}
+	}
+
 	# Class: puppetmaster::labs
 	#
-	# This class handles the Wikimedia Labs specific buts of a Puppetmaster
+	# This class handles the Wikimedia Labs specific bits of a Puppetmaster
 	class labs {
 		include generic::packages::git-core
 		
