@@ -1,9 +1,7 @@
 #!/bin/sh
-GIT_DIR=/var/lib/git/operations/puppet
 
-rsync -a --delete $GIT_DIR/files/. /etc/puppet/files/.
-rsync -a --delete $GIT_DIR/manifests/. /etc/puppet/manifests/.
-rsync -a --delete $GIT_DIR/templates/. /var/lib/puppet/templates/.
+PATH=/usr/bin:/bin
+export PATH
 
 # Add an apache reload, since puppet is stupid and will botch
 # catalogues in a way that does not show up on the clients and causes

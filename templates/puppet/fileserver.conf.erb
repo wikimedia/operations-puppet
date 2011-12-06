@@ -8,7 +8,7 @@
 # for allow/deny does not matter, allow always takes precedence
 # over deny
 [files]
-	path /etc/puppet/files
+	path <%= scope.lookupvar('puppetmaster::config').fetch('filesdir', "/etc/puppet/files") %>
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
 	allow <%= entry %>
 <% end -%>
@@ -25,7 +25,7 @@
 <% end -%>
 
 [private]
-	path /etc/puppet/private/files
+	path <%= scope.lookupvar('puppetmaster::config').fetch('privatefilesdir', "/etc/puppet/private/files") %>
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
 	allow <%= entry %>
 <% end -%>
