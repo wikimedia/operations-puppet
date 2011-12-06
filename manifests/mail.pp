@@ -124,14 +124,15 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 	}
 
 	file {
-		# TODO: Might want to make this a puppet list instead of a fixed file
 		"/etc/exim4/exim4.conf":
 			require => Package[exim4-config],
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///templates/exim/exim4.conf.exim4.conf.SMTP_IMAP_MM.erb";
-		if ( $exim_enable_mailman == "true" ) {
+	}
+	if ( $exim_enable_mailman == "true" ) {
+		file {
 			"/etc/exim4/aliases/":
 				require => Package[exim4-config],
 				mode => 0755,
@@ -152,7 +153,9 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 				mode => 0444,
 				source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
 		}
-		if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+	}
+	if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+		file {
 			"/etc/exim4/relay_domains":
 				require => Package[exim4-config],
 				owner => root,
@@ -190,7 +193,7 @@ class spamassassin {
 
 	service { "spamassassin":
 			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin] ],
-			subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"],
+			subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
 			ensure => running;
 	}
 
