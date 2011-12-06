@@ -401,7 +401,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
-	case $platform {
+	case $::productname {
 		"Sun Fire X4500": {
 			include sun-x4500
 		}
