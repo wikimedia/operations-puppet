@@ -2145,6 +2145,7 @@ class misc::ircecho {
 
 class misc::racktables {
 
+<<<<<<< HEAD   (45a4d6 adding racktables in to test)
 	$racktables_host = "racktables.wikimedia.org"
 	$racktables_ssl_cert = "/etc/ssl/certs/*.wikimedia.org.crt"
 	$racktables_ssl_key = "/etc/ssl/private/*.wikimedia.org.key"
@@ -2165,6 +2166,36 @@ class misc::racktables {
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
+=======
+	if $realm == "labs" {
+		$racktables_host = "{$instancename}.${domain}"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
+	} else {
+		$racktables_host = "racktables.wikimedia.org"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+	}
+
+	file {
+		"/etc/apache2/sites-available/racktables.wikimedia.org":
+		mode => 444,
+		owner => root,
+		group => root,
+		notify => Service["apache2"],
+		content => template('apache/sites/racktables.wikimedia.org.erb'),
+		ensure => present;
+	}
+
+	service { apache2:
+		enable => true,
+		ensure => running;
+	}
+
+
+	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
+>>>>>>> BRANCH (4802ef Merge "adding racktables in to test" into test)
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { ssl: name => "ssl" }
