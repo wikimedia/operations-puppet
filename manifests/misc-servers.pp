@@ -2146,7 +2146,7 @@ class misc::ircecho {
 class misc::racktables {
 
 	if $realm == "labs" {
-		$racktables_host = "{$instancename}.${domain}"
+		$racktables_host = "$instancename.${domain}"
 		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
 		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
 	} else {
