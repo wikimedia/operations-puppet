@@ -106,6 +106,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				group => root,
 				mode => 0444,
 				content => template('puppet/puppetmaster.erb');
+			"/etc/apache2/ports.conf":
+				owner => root,
+				group => root,
+				mode  => 0444,
+				source => "puppet:///files/puppet/ports.conf";
 		}
 
 		apache_module { "passenger":
@@ -179,11 +184,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/usr/local/sbin/puppetsigner.py":
 				ensure => link,
 				target => "/usr/local/lib/instance-management/puppetsigner.py";
-			"/etc/apache2/ports.conf":
-				owner => root,
-				group => root,
-				mode  => 0444,
-				source => "puppet:///files/puppet/ports.conf";
 		}
 
 		cron {
