@@ -1,0 +1,4 @@
+#!/bin/sh                                                                                                                                                                                                                                             
+
+echo "Local commits are not allowed in this repository. Please push your changes to gerrit, and then merge to this location."
+exit 1
