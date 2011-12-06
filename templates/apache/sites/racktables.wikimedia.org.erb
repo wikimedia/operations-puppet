@@ -1,0 +1,45 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/racktables.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+	ServerName <%= racktables_host %>
+
+	RewriteEngine on
+	RewriteRule ^/(.*)$ https://<%= racktables_host %>/$1 [R=301]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+	ServerName <%= racktables_host %>
+
+	SSLEngine on
+	SSLCertificateFile <%= racktables_ssl_cert %>
+	SSLCertificateKeyFile <%= racktables_ssl_key %>
+
+	DocumentRoot /srv/org/wikimedia/racktables
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /srv/org/wikimedia/racktables/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+        ServerSignature On
+
+</VirtualHost>
