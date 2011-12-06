@@ -684,3 +684,29 @@ define git::init($directory) {
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
+
+# handle locales via puppet
+class generic::packages:locales {
+	package { "locales": ensure => latest; }
+}
+
+# this installs a bunch of international locales, f.e. for "planet" on singer
+class generic::locales::international {
+
+	require generic::packages::locales
+
+	file { "/var/lib/locales/supported.d/local":
+		source => "puppet:///files/locales/local_int",
+		owner => "root",
+		group => "root",
+		mode => 0444,
+		require => Package["locales"],
+	}
+
+	exec { "/usr/sbin/locale-gen":
+		subscribe => File["/var/lib/locales/supported.d/local"],
+		refreshonly => true,
+		require => Package["locales"],
+		require => File["/var/lib/locales/supported.d/local"];
+	}
+}
