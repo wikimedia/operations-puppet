@@ -2155,6 +2155,9 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
+	include passwords::misc::scripts
+	$mysql_root_pass = $passwords::misc::scripts::mysql_root_pass
+
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
 		mode => 444,
@@ -2163,6 +2166,12 @@ class misc::racktables {
 		notify => Service["apache2"],
 		content => template('apache/sites/racktables.wikimedia.org.erb'),
 		ensure => present;
+
+		"/usr/local/bin/mysql_root_pass":
+		owner => root,
+		group => wikidev,
+		mode => 0550,
+		content => template("misc/passwordScripts/mysql_root_pass.erb");
 	}
 
 	service { apache2:
