@@ -24,7 +24,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require config
 
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
 		ensure => latest;
 	}
 	
@@ -145,7 +145,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"$gitdir/operations/private":
 				ensure => directory,
 				owner => root,
-				group => root,
+				group => puppet,
 				mode => 0750;
 		}
 		
