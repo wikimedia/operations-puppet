@@ -71,7 +71,7 @@ class swift::proxy {
 	include swift::base
 	system_role { "swift:base": description => "swift frontend proxy" }
 
-	package { "swift-proxy":
+	package { ["swift-proxy", "python-swauth"]:
 		ensure => present;
 	}
 
