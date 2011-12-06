@@ -6,7 +6,7 @@ workers = 8
 user = swift
 
 [pipeline:main]
-pipeline = rewrite healthcheck cache tempauth proxy-server
+pipeline = rewrite healthcheck cache swauth proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -15,6 +15,11 @@ allow_account_management = true
 [filter:tempauth]
 use = egg:swift#tempauth
 user_system_root = testpass .admin https://copper.wikimedia.org:8080/v1/AUTH_system
+
+[filter:swauth]
+use = egg:swauth#swauth
+set log_name = swauth
+super_admin_key = mymadeupkey
 
 [filter:healthcheck]
 use = egg:swift#healthcheck
