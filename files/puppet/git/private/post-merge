@@ -1,0 +1,7 @@
+#!/bin/sh
+GITDIR=/var/lib/git/operations/private
+
+rsync -a --delete $GITDIR/files/. /etc/puppet/private/files/.
+rsync -a --delete $GITDIR/manifests/. /etc/puppet/private/manifests/.
+
+git log --pretty=format:'From %H %cd%nFrom: %ae%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org

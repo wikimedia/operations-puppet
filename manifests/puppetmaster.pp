@@ -153,11 +153,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		file {
 			"$gitdir/operations/puppet/.git/hooks/post-merge":
 				require => Git::Clone["operations/puppet"],
-				source => "puppet:///files/puppet/git/post-merge",
+				source => "puppet:///files/puppet/git/puppet/post-merge",
 				mode => 0550;
 			"$gitdir/operations/puppet/.git/hooks/pre-commit":
 				require => Git::Clone["operations/puppet"],
-				source => "puppet:///files/puppet/git/pre-commit",
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+			"$gitdir/operations/private/.git/hooks/post-merge":
+				source => "puppet:///files/puppet/git/private/post-merge",
 				mode => 0550;
 		}
 	}

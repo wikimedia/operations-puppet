@@ -1,5 +1,5 @@
 #!/bin/sh
-$GIT_DIR=/var/lib/git/operations/puppet
+GIT_DIR=/var/lib/git/operations/puppet
 
 rsync -a --delete $GIT_DIR/files/. /etc/puppet/files/.
 rsync -a --delete $GIT_DIR/manifests/. /etc/puppet/manifests/.
