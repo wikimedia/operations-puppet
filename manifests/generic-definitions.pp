@@ -670,3 +670,17 @@ define git::clone($directory, $origin) {
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
+
+define git::init($directory) {
+	require generic::packages::git-core
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	exec {
+		"git init ${title}":
+			path => "/usr/bin:/bin",
+			command => "git init",
+			cwd => "${directory}/${suffix}",
+			creates => "${directory}/${suffix}/.git/config";
+	}
+}

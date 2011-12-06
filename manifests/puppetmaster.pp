@@ -132,10 +132,16 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class production {
 		$gitdir = "/var/lib/git"
 		
-		file { [ $gitdir, "$gitdir/operations"]:
-			ensure => directory,
-			owner => root,
-			group => root
+		file {
+			[ $gitdir, "$gitdir/operations"]:
+				ensure => directory,
+				owner => root,
+				group => root;
+			"$gitdir/operations/private":
+				ensure => directory,
+				owner => root,
+				group => root,
+				mode => 0770;
 		}
 		
 		git::clone { "operations/puppet":
@@ -143,7 +149,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			directory => "$gitdir/operations",
 			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
 		}
-		
+
+		git::init { "operations/private":
+			require => File["$gitdir/operations"],
+			directory => "$gitdir/operations"
+		}
+
 		file {
 			"$gitdir/operations/puppet/.git/hooks/post-merge":
 				require => Git::Clone["operations/puppet"],
