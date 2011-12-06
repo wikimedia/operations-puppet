@@ -1834,9 +1834,6 @@ node "singer.wikimedia.org" {
 }
 
 node "sockpuppet.pmtpa.wmnet" {
-	$cluster = "misc"
-	$is_puppet_master = "true"
-
 	include passwords::puppet::database
 
 	include standard,
@@ -2632,11 +2629,28 @@ node /sq(79|8[0-6])\.wikimedia\.org/ {
 	include upload-squid
 }
 
+node "stafford.pmtpa.wmnet" {
+	include passwords::puppet::database
+
+	include standard
+
+	class { puppetmaster:
+		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
+		config => {
+			'ca' => "false",
+			'ca_server' => "sockpuppet.pmtpa.wmnet",
+			'dbadapter' => "mysql",
+			'dbuser' => "puppet",
+			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
+			'dbserver' => "db9.pmtpa.wmnet",
+			'reports' => "store, http",
+			'reporturl' => "http://sockpuppet.pmtpa.wmnet/reports/upload"
+		}
+	}
+}
+
 node "stat1.wikimedia.org" {
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy
