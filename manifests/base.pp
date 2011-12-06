@@ -383,7 +383,13 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 					owner => root,
 					group => root,
 					mode => 0444,
+					notify => Exec["reload udev"],
 					tag => "thumper-udev";
+			}
+			
+			exec { "reload udev":
+				command => "/sbin/udevadm control --reload-rules",
+				refreshonly => true
 			}
 		}
 	}
