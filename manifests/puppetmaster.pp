@@ -32,12 +32,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Move the puppetmaster's SSL files to a separate directory from the client's
 	file {
 		[ "/var/lib/puppet/server", $ssldir ]:
-			require => Package["puppetmaster"],
+			before => Package["puppetmaster"],
 			ensure => directory,
 			owner => puppet,
 			group => root,
 			mode => 0771;
-		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
+		[ "/var/lib/puppet", "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
 			ensure => directory;
 	}
 
