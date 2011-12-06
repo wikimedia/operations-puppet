@@ -2156,7 +2156,8 @@ class misc::racktables {
 	}
 
 	include passwords::misc::racktables,
-		misc::apache2
+		misc::apache2,
+		generic::webserver::php5
 
 	$racktables_mysql_pass = $passwords::misc::racktables::racktables_mysql_pass
 
