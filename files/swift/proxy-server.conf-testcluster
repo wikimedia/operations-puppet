@@ -18,6 +18,7 @@ user_system_root = testpass .admin https://copper.wikimedia.org:8080/v1/AUTH_sys
 
 [filter:swauth]
 use = egg:swauth#swauth
+default_swift_cluster = local#http://127.0.0.1:8080/v1
 set log_name = swauth
 super_admin_key = mymadeupkey
 
