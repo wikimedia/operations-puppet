@@ -2155,7 +2155,9 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
-	include passwords::misc::racktables
+	include passwords::misc::racktables,
+		misc::apache2
+
 	$racktables_mysql_pass = $passwords::misc::racktables::racktables_mysql_pass
 
 	file {
