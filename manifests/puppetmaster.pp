@@ -168,6 +168,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/git/private/post-merge",
 				mode => 0550;
 		}
+		
+		apache_site { "000-default": name => "000-default", ensure => absent }
 	}
 
 	# Class: puppetmaster::labs
