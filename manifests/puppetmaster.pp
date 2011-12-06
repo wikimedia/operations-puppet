@@ -105,8 +105,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => template('puppet/puppetmaster.erb'),
-				require => Package["puppetmaster-passenger"];
+				content => template('puppet/puppetmaster.erb');
 		}
 
 		apache_module { "passenger":
