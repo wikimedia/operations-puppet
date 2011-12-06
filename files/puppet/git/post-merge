@@ -1,0 +1,14 @@
+#!/bin/sh
+$GIT_DIR=/var/lib/git/operations/puppet
+
+rsync -a --delete $GIT_DIR/files/. /etc/puppet/files/.
+rsync -a --delete $GIT_DIR/manifests/. /etc/puppet/manifests/.
+rsync -a --delete $GIT_DIR/templates/. /var/lib/puppet/templates/.
+
+# Add an apache reload, since puppet is stupid and will botch
+# catalogues in a way that does not show up on the clients and causes
+# an insane amount of confusion. A reload makes it regenerate them properly.
+#/etc/init.d/apache2 reload
+
+# This bug has allegedly been fixed, so let's try with touch site.pp again
+touch /etc/puppet/manifests/site.pp

@@ -130,16 +130,29 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class handles the Wikimedia Production specific bits of a Puppetmaster
 	class production {
-		file { [ "/var/lib/git", "/var/lib/git/operations"]:
+		$gitdir = "/var/lib/git"
+		
+		file { [ $gitdir, "$gitdir/operations"]:
 			ensure => directory,
 			owner => root,
 			group => root
 		}
 		
 		git::clone { "operations/puppet":
-			require => File["/var/lib/git/operations"],
-			directory => "/var/lib/git/operations",
+			require => File["$gitdir/operations"],
+			directory => "$gitdir/operations",
 			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
+		}
+		
+		file {
+			"$gitdir/operations/puppet/.git/hooks/post-merge":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/post-merge",
+				mode => 0550;
+			"$gitdir/operations/puppet/.git/hooks/pre-commit":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/pre-commit",
+				mode => 0550;
 		}
 	}
 
