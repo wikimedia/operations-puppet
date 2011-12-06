@@ -2177,11 +2177,6 @@ class misc::racktables {
 		ensure => present;
 	}
 
-	service { apache2:
-		enable => true,
-		ensure => running;
-	}
-
 	apache_site { racktables: name => "racktables.wikimedia.org" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
