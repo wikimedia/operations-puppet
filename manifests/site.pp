@@ -2613,6 +2613,10 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
+node /cp104[1-2].wikimedia.org/ { 
+	include cache::mobile
+}
+
 node /cp104[3-4].wikimedia.org/ { 
 	$ganglia_aggregator = "true"
 	include cache::mobile
