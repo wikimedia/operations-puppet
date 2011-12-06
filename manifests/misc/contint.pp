@@ -182,6 +182,85 @@ class misc::contint::test {
 	class testswarm {
 		# Testswarm is configured using the debian package
 		package { testswarm: ensure => latest; }
+
+		# Create a user to run the cronjob with
+		systemuser { testswarm:
+			name  => "testswarm",
+			home  => "/var/lib/testswarm",
+			shell => "/bin/bash",
+			# And part of web server user group so we can let it access
+			# the SQLite databases
+			groups => [ 'www-data' ];
+		}
+
+		# install scripts
+		file {
+			"/etc/testswarm/fetcher-sample.ini":
+				require => [
+					Systemuser[testswarm],
+					Package["testswarm"]
+				],
+				source  => "puppet:///files/testswarm/fetcher-sample.ini",
+				mode    => 0660,
+				owner   => testswarm,
+				group   => testswarm;
+			"/var/lib/testswarm/script":
+				require => Systemuser[testswarm],
+				ensure  => directory,
+				owner   => testswarm,
+				group   => testswarm;
+			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
+				require => Systemuser[testswarm],
+				ensure  => present,
+				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
+				owner   => testswarm,
+				group   => testswarm;
+			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
+				require => Systemuser[testswarm],
+				ensure  => present,
+				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
+				owner   => testswarm,
+				group   => testswarm;
+			# Directory that hold the mediawiki fetches
+			"/var/lib/testswarm/mediawiki-trunk":
+				require => Systemuser[testswarm],
+				ensure  => directory,
+				owner   => testswarm,
+				group   => testswarm;
+			# SQLite databases files need specific user rights
+			"/var/lib/testswarm/mediawiki-trunk/dbs":
+				require => Systemuser[testswarm],
+				ensure  => directory,
+				mode    => 0774,
+				owner   => testswarm,
+				group   => www-data;
+			# Apache configuration to publish mediawiki fetches
+			"/etc/apache2/sites-enabled/testswarm-checkouts.conf":
+				source => "puppet:///files/testswarm/testswarm-checkouts.conf",
+				ensure => present,
+				owner  => root,
+				group  => root;
+			# Override Apache configuration coming from the testswarm package.
+			"/etc/apache2/conf.d/testswarm.conf":
+				ensure => absent;
+		}
+
+		# Reload apache whenever testswarm checkouts configuration change
+		exec {	"update-testswarm-publish-checkout":
+			command => "/usr/sbin/service apache2 reload",
+			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
+			refreshonly => true,
+			onlyif => "/usr/sbin/apache2ctl configtest"
+		}
+
+		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
+		cron {
+			testswarm-fetcher-mw-trunk:
+				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
+				user => testswarm,
+				ensure => present;
+		}
+
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)

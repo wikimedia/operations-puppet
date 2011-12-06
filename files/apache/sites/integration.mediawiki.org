@@ -50,6 +50,37 @@ NameVirtualHost *:443
 		IndexIgnore "*.css" "*.html" ".."
 	</Directory>
 
+	# Publish testswarm fetcher checkouts to the outside world
+	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
+		AllowOverride All
+		order allow,deny
+		allow from all
+
+		<IfModule mod_php5.c>
+			AddType application/x-httpd-php .php
+			php_value include_path .
+
+			DirectoryIndex index.php
+		</IfModule>
+
+	</Directory>
+
+	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
+
+	<Directory /usr/share/testswarm/site>
+		AllowOverride All
+		order allow,deny
+		allow from all
+		Options +FollowSymLinks
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
+
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
@@ -99,4 +130,35 @@ NameVirtualHost *:443
 		ReadmeName "README.html"
 		IndexIgnore "*.css" "*.html" ".."
 	</Directory>
+
+	# Publish testswarm fetcher checkouts to the outside world
+	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
+		AllowOverride All
+		order allow,deny
+		allow from all
+
+		<IfModule mod_php5.c>
+			AddType application/x-httpd-php .php
+			php_value include_path .
+
+			DirectoryIndex index.php
+		</IfModule>
+
+	</Directory>
+
+	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
+
+	<Directory /usr/share/testswarm/site>
+		AllowOverride All
+		order allow,deny
+		allow from all
+		Options +FollowSymLinks
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
 </VirtualHost>
