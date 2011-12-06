@@ -1279,8 +1279,7 @@ node "kaulen.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
-	sudo_user { demon: user => "demon", privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
-	sudo_user { reedy: user => "reedy", privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
+	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
 # knsq1-7 are Varnish bits servers, 5 has been decommissioned
