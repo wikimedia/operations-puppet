@@ -141,18 +141,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => directory,
 				owner => root,
 				group => root,
-				mode => 0770;
+				mode => 0750;
 		}
 		
 		git::clone { "operations/puppet":
 			require => File["$gitdir/operations"],
 			directory => "$gitdir/operations",
 			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
-		}
-
-		git::init { "operations/private":
-			require => File["$gitdir/operations"],
-			directory => "$gitdir/operations"
 		}
 
 		file {
