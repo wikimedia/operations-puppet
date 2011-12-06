@@ -368,6 +368,8 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 			# Udev rules for Solaris-style disk names
 			@file {
+				"/etc/udev/scripts":
+					ensure => directory;
 				"/etc/udev/scripts/solaris-name.sh":
 					source => "puppet:///files/udev/solaris-name.sh",
 					owner => root,
