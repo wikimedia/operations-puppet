@@ -101,37 +101,6 @@ class misc::install-server {
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
 		}
-
-		## allow other tftp servers to rsync /srv/tftpboot on the master
-
-		if ! $tftpboot_server_type {
-			$tftpboot_server_type = 'slave'
-		}
-
-		if ( $tftpboot_server_type == 'master' ) {
-			class { 'generic::rsyncd': config => "tftpboot" }
-
-			$rsync_iptables_command = "
-				/sbin/iptables -F rsync;
-				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
-				/sbin/iptables -A rsync -s 208.80.154.10 -j ACCEPT;
-				/sbin/iptables -A rsync -j DROP;
-				/sbin/iptables -I INPUT -p tcp --dport 873 -j rsync
-				"
-
-			exec { rsync-firewall-rules:
-				command => $rsync_iptables_command,
-				onlyif => "/sbin/iptables -N rsync",
-				path => "/sbin",
-				timeout => 5,
-				user => root
-			}
-		}
-
-		if ( $tftpboot_server_type == 'slave' ) {
-
-			cron { rsync_tftpboot : command => "rsync -a tftp_mover@brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
-		}
 	}
 
 	class caching-proxy {
