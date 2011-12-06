@@ -1,5 +1,15 @@
 # This file is managed by Puppet!
 
+# Passenger configuration
+PassengerHighPerformance on
+PassengerMaxPoolSize <%= scope.lookupvar('::processorcount').to_i * 4 %>
+PassengerPoolIdleTime 1500
+PassengerMaxRequests 10
+PassengerStatThrottleRate 120
+PassengerUseGlobalQueue on
+RackAutoDetect Off
+RailsAutoDetect Off
+
 <VirtualHost <%= scope.lookupvar('puppetmaster::passenger::bind_address') %>:8140>
 	SSLEngine on
 	SSLProtocol -ALL +SSLv3 +TLSv1
@@ -15,16 +25,6 @@
 	SSLVerifyClient <%= scope.lookupvar('puppetmaster::passenger::verify_client') %>
 	SSLVerifyDepth  1
 	SSLOptions +StdEnvVars
-
-	# Passenger configuration
-	PassengerHighPerformance on
-	PassengerMaxPoolSize <%= scope.lookupvar('::processorcount').to_i * 4 %>
-	PassengerPoolIdleTime 1500
-	PassengerMaxRequests 10
-	PassengerStatThrottleRate 120
-	PassengerUseGlobalQueue on
-	RackAutoDetect Off
-	RailsAutoDetect Off
 
 	RackBaseURI /
 
