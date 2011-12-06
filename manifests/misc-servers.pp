@@ -2136,3 +2136,16 @@ class misc::ircecho {
 	}
 
 }
+
+# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
+class misc::civicrm {
+	system_role { "misc::civicrm": description => "CiviCRM server" }
+
+	require generic::webserver::php5
+
+	apache_module { ssl: name => "ssl" }
+	apache_site { planet: name => "contacts.wikimedia.org" }
+	apache_site { planet: name => "contacts.wikimedia.org-ssl" }
+	
+	systemuser { planet: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
+}
