@@ -2182,5 +2182,4 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { ssl: name => "ssl" }
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
