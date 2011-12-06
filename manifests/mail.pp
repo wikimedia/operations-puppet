@@ -1,4 +1,10 @@
+class exim::constants {
+	$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
+}
+
 # this section from old exim.pp
+
+
 
 class exim::packages {
 	if ! $exim_install_type {
@@ -102,14 +108,20 @@ class exim::smtp {
 	$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
 }
 
-class exim::listserve {
+class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false", $exim_enable_imap_delivery="false", $exim_enable_mail_submission="false", $exim_mediawiki_relay="false", $exim_enable_spamassassin="false" ) {
+
 	$exim_install_type = 'heavy'
 	$exim_queuerunner = 'combined'
-	$exim_conf_type = 'mailman'
 
 	include exim::packages
 	include exim::config
 	include exim::service
+	if ( $exim_enable_mailman == "true" ) {
+		include mailman::listserve
+	}
+	if ( $exim_enable_spamassassin == "true" ) {
+		include spamassassin
+	}
 
 	file {
 		# TODO: Might want to make this a puppet list instead of a fixed file
@@ -118,32 +130,36 @@ class exim::listserve {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///templates/exim/exim4.conf.listserve";
-		"/etc/exim4/relay_domains":
-			require => Package[exim4-config],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
-		"/etc/exim4/aliases/":
-			require => Package[exim4-config],
-			mode => 0755,
-			owner => root,
-			group => root,
-			path => "/etc/exim4/aliases/",
-			ensure => directory;
-		"/etc/exim4/aliases/lists.wikimedia.org":
-			require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/exim/exim4.listserver_aliases.conf";
-		"/etc/exim4/system_filter":
-			require => Package[exim4-config],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
+			source => "puppet:///templates/exim/exim4.conf.exim4.conf.SMTP_IMAP_MM.erb";
+		if ( $exim_enable_mailman == "true" ) {
+			"/etc/exim4/aliases/":
+				require => Package[exim4-config],
+				mode => 0755,
+				owner => root,
+				group => root,
+				path => "/etc/exim4/aliases/",
+				ensure => directory;
+			"/etc/exim4/aliases/lists.wikimedia.org":
+				require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/exim/exim4.listserver_aliases.conf";
+			"/etc/exim4/system_filter":
+				require => Package[exim4-config],
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
+		}
+		if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+			"/etc/exim4/relay_domains":
+				require => Package[exim4-config],
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
+		}
 	}
 
 	# Nagios monitoring
