@@ -1517,6 +1517,41 @@ class misc::contint::test {
 	class testswarm {
 		# Testswarm is configured using the debian package
 		package { testswarm: ensure => latest; }
+
+		# Create a user to run the cronjob with
+		user { testswarm: ensure => present; }
+
+		# install scripts
+		file {
+			"/home/testswarm/script":
+				ensure  => directory,
+				owner   => testswarm,
+				group   => testswarm;
+			"/home/testswarm/script/testswarm-mw-fetcher-run.php":
+				ensure  => present,
+				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
+				owner   => testswarm,
+				group   => testswarm;
+			"/home/testswarm/script/testswarm-mw-fetcher.php":
+				ensure  => present,
+				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
+				owner   => testswarm,
+				group   => testswarm;
+			# Directory that hold the mediawiki fetches
+			"/home/testswarm/mediawiki-trunk":
+				ensure  => directory,
+				owner   => testswarm,
+				group   => testswarm;
+		}
+
+		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
+		cron {
+			testswarm-fetcher-mw-trunk:
+				command => "(php $HOME/script/testswarm-mw-fetcher-run.php --prod) > $HOME/mediawiki-trunk/cron.log 2>&1",
+				user => testswarm,
+				ensure => present;
+		}
+
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
