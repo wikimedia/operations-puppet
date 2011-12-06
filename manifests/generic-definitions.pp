@@ -649,6 +649,10 @@ class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
 
+class generic::packages::mono-runtime {
+	package { "mono-runtime" : ensure => latest; }
+}
+
 # Definition: git::clone
 # Creates a git clone of a specified origin into a top level directory
 #
