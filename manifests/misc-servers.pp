@@ -2105,3 +2105,51 @@ class misc::ircecho {
 	}
 
 }
+
+class misc::racktables {
+
+	system_role { "misc::racktables": description => "Racktables" }
+
+	if $realm == "labs" {
+		$racktables_host = "$instancename.${domain}"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
+	} else {
+		$racktables_host = "racktables.wikimedia.org"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+	}
+
+	include generic::webserver::php5,
+		generic::webserver::php5-mysql,
+		mysql::client
+
+	package { "php5-gd":
+		ensure => latest;
+	}
+
+	$racktables_mysql_pass = $passwords::misc::racktables::racktables_mysql_pass
+
+	file {
+		"/etc/apache2/sites-available/racktables.wikimedia.org":
+		mode => 444,
+		owner => root,
+		group => root,
+		notify => Service["apache2"],
+		content => template('apache/sites/racktables.wikimedia.org.erb'),
+		ensure => present;
+
+		"/usr/local/bin/racktables_mysql_pass":
+		owner => root,
+		group => root,
+		mode => 0550,
+		content => template("misc/passwordScripts/racktables_mysql_pass.erb"),
+		ensure => present;
+	}
+
+	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { proxy: name => "proxy" }
+	apache_module { ssl: name => "ssl" }
+}
