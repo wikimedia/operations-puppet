@@ -1,3 +1,5 @@
+# swift.pp
+
 class swift::base {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
@@ -75,20 +77,7 @@ class swift::proxy {
 		ensure => present;
 	}
 
-	# FIXME: use generic install_cert in /etc/ssl if possible
-	file { "/etc/swift/cert.crt":
-			ensure => present,
-			source => "puppet:///private/swift/cert.crt",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-		"/etc/swift/cert.key":
-			ensure => present,
-			source => "puppet:///private/swift/cert.key",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-	}
+	install_cert { "swift": privatekey => true }
 
 	# use a generic (parameterized) memcached class
 	class { "memcached": memcached_size => '128', memcached_port => '11211' }
@@ -130,35 +119,23 @@ class swift::proxy {
 	}
 }
 
-class swift::proxy::testclusterconf {
-	# because I can't figure out how to aggregate a list of all proxy servers
-	# within puppet and use that list in a template, I have a different config
-	# file for each swift cluster so that they can use their own memcached 
-	# instances.
-	
-	# FIXME: require /etc/swift to exist
-	file { "/etc/swift/proxy-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/proxy-server.conf-testcluster",
-			owner => swift,
-			group => swift,
-			mode => 0444;
-	}
-}
+# Class: swift::proxy::config
+#
+# This class configures a Swift Proxy
+#
+# Parameters:
+# 	- $thumbhost
+#		The host to fetch image thumbnails from
+#	- $memcached_servers
+#		A list of memcached servers ("<servername>:<portnr>") to use
+class swift::proxy::config($thumbhost=undef, $memcached_servers=[]) {
+	require swift::base
 
-class swift::proxy::testpmtpaclusterconf {
-	# because I can't figure out how to aggregate a list of all proxy servers
-	# within puppet and use that list in a template, I have a different config
-	# file for each swift cluster so that they can use their own memcached 
-	# instances.
-	
-	# FIXME: require /etc/swift to exist
 	file { "/etc/swift/proxy-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/proxy-server.conf-testpmtpacluster",
-			owner => swift,
-			group => swift,
-			mode => 0444;
+		owner => swift,
+		group => swift,
+		mode => 0444,
+		content => template("swift/proxy-server.conf.erb")
 	}
 }
 
