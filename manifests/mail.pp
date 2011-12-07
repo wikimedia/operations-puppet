@@ -116,6 +116,11 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 	require exim::packages
 	include exim::config
 	include exim::service
+
+	include exim::smtp
+	include exim::constants
+	include network::constants
+
 	if ( $exim_enable_mailman == "true" ) {
 		include mailman::listserve
 	}
