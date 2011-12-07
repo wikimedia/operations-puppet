@@ -200,12 +200,10 @@ class dns::recursor {
 		file {
 			"/usr/local/powerdnsstats":
 				source => "puppet:///files/powerdns/recursorstats/scripts",
-				recurse => true,
-				ensure => present;
+				recurse => remote;
 			"/var/www/pdns":
 				source => "puppet:///files/powerdns/recursorstats/www",
-				recurse => true,
-				ensure => present;
+				recurse => remote;
 		}
 
 		exec { "/usr/local/powerdnsstats/create":
