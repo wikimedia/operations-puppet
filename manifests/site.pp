@@ -670,11 +670,15 @@ node "carbon.wikimedia.org" {
 		misc::install-server::tftp-server
 }
 
-node "copper.wikimedia.org" {
+node /^(copper|zinc)\.wikimedia\.org$/ {
 	include standard,
 		swift::proxy,
-		swift::proxy::testclusterconf,
 		swift::storage
+
+	class { "swift::proxy::config":
+		thumbhost => "ms5.pmtpa.wmnet",
+		memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ]
+	}
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -2804,13 +2808,6 @@ node "yvon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca
-}
-
-node "zinc.wikimedia.org" {
-	include standard,
-		swift::proxy,
-		swift::proxy::testclusterconf,
-		swift::storage
 }
 
 node default {
