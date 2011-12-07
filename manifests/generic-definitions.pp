@@ -116,7 +116,11 @@ class generic::webserver::static {
 	}
 
 	service { lighttpd:
-		ensure => running;
+		ensure => running,
+		hasstatus => $::lsbdistcodename ? {
+			'hardy' => false,
+			default => true
+		}
 	}
 
 	# Monitoring
