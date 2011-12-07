@@ -1,8 +1,8 @@
 # This file is managed by Puppet!
 
 [DEFAULT]
-cert_file = /etc/ssl/certs/swift.pem
-key_file = /etc/ssl/private/swift.key
+#cert_file = /etc/ssl/certs/swift.pem
+#key_file = /etc/ssl/private/swift.key
 bind_port = 8080
 workers = 8
 user = swift
@@ -16,7 +16,7 @@ allow_account_management = true
 
 [filter:tempauth]
 use = egg:swift#tempauth
-user_system_root = testpass .admin https://copper.wikimedia.org:8080/v1/AUTH_system
+user_system_root = testpass .admin http://copper.wikimedia.org:8080/v1/AUTH_system
 
 [filter:swauth]
 use = egg:swauth#swauth

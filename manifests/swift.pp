@@ -77,7 +77,7 @@ class swift::proxy {
 		ensure => present;
 	}
 
-	install_cert { "swift": privatekey => true }
+	#install_cert { "swift": privatekey => true }
 
 	# use a generic (parameterized) memcached class
 	class { "memcached": memcached_size => '128', memcached_port => '11211' }
