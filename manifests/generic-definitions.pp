@@ -128,8 +128,7 @@ class generic::webserver::static {
 }
 
 class generic::webserver::php5 {
-	# Prefer the PHP package from Ubuntu
-	generic::apt::pin-package { [ libapache2-mod-php5, php5-common ]: }
+	#This will use 5.3.2-2wm1 for php5-common
 
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
