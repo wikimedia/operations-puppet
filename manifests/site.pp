@@ -1876,7 +1876,6 @@ node "sodium.wikimedia.org" {
 		exim_enable_spamassassin => "true"
 	}
 
-	install_certificate{ "star.wikimedia.org": }
 }
 
 node "spence.wikimedia.org" {
