@@ -1250,7 +1250,8 @@ node "hume.wikimedia.org" {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
-		nrpe
+		nrpe,
+		mysql::client
 }
 
 node "ixia.pmtpa.wmnet" {
