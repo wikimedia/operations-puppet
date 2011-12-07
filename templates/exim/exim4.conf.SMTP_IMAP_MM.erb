@@ -678,7 +678,7 @@ begin retry
 begin rewrite
 
 <% end %>
-<% if exim_conf_type == "mailman" then -%>
+<% if exim_enable_mailman == "true" then -%>
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 <% end %>
 <% if ( exim_enable_mail_relay == "primary" ) or (exim_enable_mail_relay == "secondary" ) then -%>
