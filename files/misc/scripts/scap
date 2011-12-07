@@ -68,6 +68,6 @@ echo 'Copying code to apaches...'
 ddsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1'
 echo 'Finished'
 
-DOLOGMSGNOLOG=
+export DOLOGMSGNOLOG=""
 $BINDIR/dologmsg "sync done."
 $BINDIR/deploy2graphite scap
