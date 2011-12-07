@@ -49,7 +49,7 @@ switch( $mode ) {
 	case 'prod':
 		$options = array(
 			'debug'  => false,
-			'root'   => '/home/testswarm/mediawiki-trunk',
+			'root'   => '/var/lib/testswarm/mediawiki-trunk',
 			'svnUrl' => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
 			'minRev' => 105305,
 		);

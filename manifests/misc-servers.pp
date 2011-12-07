@@ -1521,29 +1521,29 @@ class misc::contint::test {
 		# Create a user to run the cronjob with
 		systemuser { testswarm:
 			name  => "testswarm",
-			home  => "/home/testswarm", # homedir changed by another change
+			home  => "/var/lib/testswarm",
 			shell => "/bin/bash",
 			group => "testswarm";
 		}
 
 		# install scripts
 		file {
-			"/home/testswarm/script":
+			"/var/lib/testswarm/script":
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
-			"/home/testswarm/script/testswarm-mw-fetcher-run.php":
+			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
 				ensure  => present,
 				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
 				owner   => testswarm,
 				group   => testswarm;
-			"/home/testswarm/script/testswarm-mw-fetcher.php":
+			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
 				ensure  => present,
 				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
 				owner   => testswarm,
 				group   => testswarm;
 			# Directory that hold the mediawiki fetches
-			"/home/testswarm/mediawiki-trunk":
+			"/var/lib/testswarm/mediawiki-trunk":
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
