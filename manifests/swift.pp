@@ -117,7 +117,7 @@ class swift::proxy::config($thumbhost=undef, $memcached_servers=[]) {
 }
 
 class swift::storage {
-	include swift::base
+	require swift::base
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	package { 
@@ -127,53 +127,16 @@ class swift::storage {
 		ensure => present;
 	}
 
-	# FIXME: use the generic rsync class in generic-definitions
-
-	# set up rsync to allow the storage nodes to share data bits around
-	package { "rsync":
-			ensure => present;
-	}
-	file { "/etc/rsyncd.conf":
-			ensure => present,
-			source => "puppet:///files/swift/storage-rsyncd.conf",
-			owner => root,
-			group => root,
-			mode => 0444,
-			require => Package['rsync'],
-			notify => Service['rsync'];
-		"/etc/default/rsync":
-			ensure => present,
-			source => "puppet:///files/swift/storage-rsyncd.default",
-			owner => root,
-			group => root,
-			mode => 0444,
-			require => Package['rsync'],
-			notify => Service['rsync'];
-	}
-	service { "rsync":
-			ensure => running,
-			enable => true,
-	}
+	class { "generic::rsync": config => "swift" }
 
 	# set up swift specific configs
+	File { owner => swift, group => swift, mode => 0444 }
 	file { "/etc/swift/account-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.account-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			source => "puppet:///files/swift/etc.swift.account-server.conf";
 		"/etc/swift/container-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.container-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			source => "puppet:///files/swift/etc.swift.container-server.conf";
 		"/etc/swift/object-server.conf":
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.object-server.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			source => "puppet:///files/swift/etc.swift.object-server.conf";
 	}
 
 }
