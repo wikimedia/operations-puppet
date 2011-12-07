@@ -1519,7 +1519,12 @@ class misc::contint::test {
 		package { testswarm: ensure => latest; }
 
 		# Create a user to run the cronjob with
-		user { testswarm: ensure => present; }
+		systemuser { testswarm:
+			name  => "testswarm",
+			home  => "/home/testswarm", # homedir changed by another change
+			shell => "/bin/bash",
+			group => "testswarm";
+		}
 
 		# install scripts
 		file {
