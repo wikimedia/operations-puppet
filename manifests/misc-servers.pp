@@ -2142,6 +2142,10 @@ class misc::racktables {
 		generic::webserver::php5,
 		generic::webserver::php5-mysql
 
+	package { "php5-gd":
+		ensure => latest;
+	}
+
 	$racktables_mysql_pass = $passwords::misc::racktables::racktables_mysql_pass
 
 	file {
