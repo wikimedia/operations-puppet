@@ -1,0 +1,10 @@
+Code-Review+1: Demon <chadh@wikimedia.org>
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Hashar <hashar@free.fr>
+Verified+1: Hashar <hashar@free.fr>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Wed, 07 Dec 2011 15:52:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/991
+Project: operations/puppet
+Branch: refs/heads/test
