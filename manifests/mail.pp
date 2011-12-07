@@ -129,7 +129,7 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///templates/exim/exim4.conf.exim4.conf.SMTP_IMAP_MM.erb";
+			source => "puppet:///templates/exim/exim4.conf.SMTP_IMAP_MM.erb";
 	}
 	if ( $exim_enable_mailman == "true" ) {
 		file {
