@@ -2140,7 +2140,8 @@ class misc::racktables {
 
 	include passwords::misc::racktables,
 		generic::webserver::php5,
-		generic::webserver::php5-mysql
+		generic::webserver::php5-mysql,
+		mysql::client
 
 	package { "php5-gd":
 		ensure => latest;
