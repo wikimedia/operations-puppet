@@ -113,7 +113,7 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 	$exim_install_type = 'heavy'
 	$exim_queuerunner = 'combined'
 
-	include exim::packages
+	require exim::packages
 	include exim::config
 	include exim::service
 	if ( $exim_enable_mailman == "true" ) {
@@ -129,7 +129,7 @@ class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false",
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///templates/exim/exim4.conf.SMTP_IMAP_MM.erb";
+			content => template("/exim/exim4.conf.SMTP_IMAP_MM.erb");
 	}
 	if ( $exim_enable_mailman == "true" ) {
 		file {
