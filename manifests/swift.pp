@@ -87,35 +87,12 @@ class swift::proxy {
 	# any changes here hsould flow back there, and those files should
 	# be checked every now and again for more recent versions.
 	# http://svn.wikimedia.org/viewvc/mediawiki/trunk/extensions/SwiftMedia/
-	file { "/usr/local/lib/python2.6/dist-packages/wmf":
-			ensure => directory,
+	file { "/usr/local/lib/python2.6/dist-packages/wmf/":
 			owner => root,
 			group => root,
-			mode => 0644;
-		"/usr/local/lib/python2.6/dist-packages/wmf/client.py":
-			ensure => present,
-			source => "puppet:///files/swift/SwiftMedia/wmf/client.py",
-			owner => root,
-			group => root,
-			mode => 0444;
-		"/usr/local/lib/python2.6/dist-packages/wmf/rewrite.py":
-			ensure => present,
-			source => "puppet:///files/swift/SwiftMedia/wmf/rewrite.py",
-			owner => root,
-			group => root,
-			mode => 0444;
-		"/usr/local/lib/python2.6/dist-packages/wmf/__init__.py":
-			ensure => present,
-			source => "puppet:///files/swift/SwiftMedia/wmf/__init__.py",
-			owner => root,
-			group => root,
-			mode => 0444;
-		"/usr/local/lib/python2.6/dist-packages/wmf/swift.php":
-			ensure => present,
-			source => "puppet:///files/swift/SwiftMedia/wmf/swift.php",
-			owner => root,
-			group => root,
-			mode => 0444;
+			mode => 0444,
+			source => "puppet:///files/swift/SwiftMedia/wmf/",
+			recurse => remote;
 	}
 }
 
