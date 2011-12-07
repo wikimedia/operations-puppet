@@ -143,8 +143,7 @@ class generic::webserver::static {
 }
 
 class generic::webserver::php5 {
-	# Prefer the PHP package from Ubuntu
-	generic::apt::pin-package { [ libapache2-mod-php5, php5-common ]: }
+	#This will use latest package for php5-common
 
         package { [ "apache2", "libapache2-mod-php5" ]:
                 ensure => latest;
@@ -667,4 +666,40 @@ hostname1=${tag}
 
 class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
+}
+
+# Definition: git::clone
+# Creates a git clone of a specified origin into a top level directory
+#
+# Parameters:
+# - $title
+#		Should be the repository name
+define git::clone($directory, $origin) {
+	require generic::packages::git-core
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	Exec {
+		path => "/usr/bin:/bin",
+		cwd => $directory
+	}
+	exec {
+		"git clone ${title}":
+			command => "git clone ${origin}",
+			creates => "${directory}/${suffix}/.git/config";
+	}
+}
+
+define git::init($directory) {
+	require generic::packages::git-core
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	exec {
+		"git init ${title}":
+			path => "/usr/bin:/bin",
+			command => "git init",
+			cwd => "${directory}/${suffix}",
+			creates => "${directory}/${suffix}/.git/config";
+	}
 }
