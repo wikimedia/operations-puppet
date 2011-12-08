@@ -27,8 +27,13 @@ class exim {
 	class service {
 		Class["exim::config"] -> Class[exim::service]
 
+		# The init script's status command exit value only reflects the SMTP service
 		service { exim4:
-			ensure => running;
+			ensure => running,
+			hasstatus => $exim::config::queuerunner ? {
+				"queueonly" => false,
+				default => true
+			}
 		}
 
 		if $exim::config::queuerunner != "queueonly" {
