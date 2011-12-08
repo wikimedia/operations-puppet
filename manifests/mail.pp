@@ -18,6 +18,11 @@ class exim {
 				group => root,
 				mode => 0444,
 				content => template("exim/exim4.default.erb");
+			"/etc/exim4/aliases/":
+				mode => 0755,
+				owner => root,
+				group => root,
+				ensure => directory;
 		}
 	}
 
@@ -66,30 +71,19 @@ class exim {
 	}
 
 	class smtp {
-
 		$otrs_mysql_password = $passwords::exim4::otrs_mysql_password
 		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
 	}
 
-	class roled($exim_enable_mail_relay="false", $exim_enable_mailman="false", $exim_enable_imap_delivery="false", $exim_enable_mail_submission="false", $exim_mediawiki_relay="false", $exim_enable_spamassassin="false" ) {
+	class roled($enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false" ) {
+		class { "exim::packages": install_type => "heavy" }
+		class { "exim::config": queuerunner => "combined" }
 
-		$exim_install_type = 'heavy'
-		$exim_queuerunner = 'combined'
-
-		require exim::packages
-		include exim::config
 		include exim::service
 
 		include exim::smtp
 		include exim::constants
 		include network::constants
-
-		if ( $exim_enable_mailman == "true" ) {
-			include mailman::listserve
-		}
-		if ( $exim_enable_spamassassin == "true" ) {
-			include spamassassin
-		}
 
 		file {
 			"/etc/exim4/exim4.conf":
@@ -99,30 +93,8 @@ class exim {
 				mode => 0444,
 				content => template("exim/exim4.conf.SMTP_IMAP_MM.erb");
 		}
-		if ( $exim_enable_mailman == "true" ) {
-			file {
-				"/etc/exim4/aliases/":
-					require => Package[exim4-config],
-					mode => 0755,
-					owner => root,
-					group => root,
-					path => "/etc/exim4/aliases/",
-					ensure => directory;
-				"/etc/exim4/aliases/lists.wikimedia.org":
-					require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
-					owner => root,
-					group => root,
-					mode => 0444,
-					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
-				"/etc/exim4/system_filter":
-					require => Package[exim4-config],
-					owner => root,
-					group => root,
-					mode => 0444,
-					source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
-			}
-		}
-		if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+
+		class mail_relay {
 			file {
 				"/etc/exim4/relay_domains":
 					require => Package[exim4-config],
@@ -131,6 +103,34 @@ class exim {
 					mode => 0444,
 					source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
 			}
+		}
+
+		class mailman {
+			file {
+				"/etc/exim4/aliases/lists.wikimedia.org":
+					require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
+				# TODO: check if this is only used for Mailman
+				"/etc/exim4/system_filter":
+					require => Package[exim4-config],
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
+			}			
+		}
+		
+		if ( $enable_mailman == "true" ) {
+			include mailman, mailman::listserve
+		}
+		if ( $enable_mail_relay == "primary" ) or ( $enable_mail_relay == "secondary" ) {
+			include mail_relay
+		}
+		if ( $enable_spamassassin == "true" ) {
+			include spamassassin
 		}
 
 		# Nagios monitoring
