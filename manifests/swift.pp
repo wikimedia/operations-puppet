@@ -26,6 +26,11 @@ class swift::base {
 			owner => swift,
 			group => swift,
 			mode => 0444;
+		"/srv/swift-storage":
+			owner => swift,
+			group => swift,
+			mode => 0750,
+			ensure => directory;
 	}
 
 }
