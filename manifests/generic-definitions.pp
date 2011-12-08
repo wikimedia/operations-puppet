@@ -687,3 +687,10 @@ define git::init($directory) {
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
+
+define generic::mysql::client {
+	# This conflicts with class mysql::packages.  DO NOT use them together
+	package { "mysql-client-5.1":
+		ensure => latest;
+	}
+}
