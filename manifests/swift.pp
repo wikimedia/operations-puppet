@@ -149,6 +149,32 @@ class swift::storage {
 
 }
 
+# Definition: swift::create_filesystem
+#
+# Creates a new partition table on a device, and
+# creates a partition and file system for Swift
+#
+# Parameters:
+#	- $title:
+#		The device to partition
+define swift::create_filesystem($partition_nr="1") {
+	require base::platform
+
+	if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) and ! ($title in $base::platform::startup_drives) {
+		$dev = "${title}${partition_nr}"
+		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
+		exec { "swift partitioning $title":
+			path => "/usr/bin:/bin:/usr/sbin:/sbin",
+			command => "parted -s -a optimal mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
+			creates => $dev
+		}
+
+		swift::mount_filesystem { "$dev": require => Exec["swift partitioning $title"] }
+	}
+}
+
+
+
 # Definition: swift::mount_filesystem
 #
 # Mounts a block device ($title) under /srv/swift-storage/$devname

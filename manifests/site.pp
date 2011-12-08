@@ -553,24 +553,6 @@ class protoproxy::ssl {
 } 
 
 
-# FIXME: This is fairly specific, for the Thumpers/Thors
-define create_swift_filesystem($partition_nr="1") {
-	require base::platform
-
-	if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) and ! ($title in $base::platform::startup_drives) {
-		$dev = "${title}${partition_nr}"
-		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
-		exec { "swift partitioning $title":
-			path => "/usr/bin:/bin:/usr/sbin:/sbin",
-			command => "parted -s -a optimal mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
-			creates => $dev
-		}
-
-		swift::mount_filesystem { "$dev": require => Exec["swift partitioning $title"] }
-	}
-}
-
-
 # Default variables
 $cluster = "misc"
 
@@ -1609,7 +1591,7 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
-	create_swift_filesystem{ $all_drives: partition_nr => "1" }
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
 node "ms4.pmtpa.wmnet" {
