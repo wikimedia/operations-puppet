@@ -1580,6 +1580,13 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 	include standard
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+
+	define mount_first_partition() {
+		if ! $title in $startup_drives {
+			swift::mount_filesystem { "${title}1": }
+		}
+	}
+	mount_first_partition { $all_drives: }
 }
 
 node "ms4.pmtpa.wmnet" {
