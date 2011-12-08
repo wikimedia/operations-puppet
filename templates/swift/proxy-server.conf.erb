@@ -34,11 +34,11 @@ memcache_servers = <%= scope.lookupvar('swift::proxy::config::memcached_servers'
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
-account = system
-url = http://127.0.0.1/auth/v1.0
-login = root
+account = AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881
+url = http://127.0.0.1:8080/auth/v1.0
+login = test:tester
 #FIXME: pull into passwords file and use a real password
-key = testpass
+key = testing
 # the name of the scaler cluster.
 thumbhost = <%= scope.lookupvar('swift::proxy::config::thumbhost') %>
 # upload doesn't like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
