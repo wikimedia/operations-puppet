@@ -8,12 +8,12 @@
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
 
-	package { [ lvm2, maatkit, percona-toolkit ]:
+	package { [ lvm2, maatkit ]:
 		ensure => "installed";
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
-		package { xtrabackup:	
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		package { ["xtrabackup", "percona-toolkit" ]:
 			ensure => "installed";
 		}
 	}
