@@ -559,9 +559,10 @@ define create_swift_filesystem($partition_nr="1") {
 
 	if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) and ! ($title in $base::platform::startup_drives) {
 		$dev = "${title}${partition_nr}"
+		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 		exec { "swift partitioning $title":
 			path => "/usr/bin:/bin:/usr/sbin:/sbin",
-			command => "parted -s mklabel gpt mkpart swift-${title} 0% 100% && mkfs -t xfs -L swift-${title} ${dev}",
+			command => "parted -s mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
 			creates => $dev
 		}
 
