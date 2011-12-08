@@ -334,7 +334,7 @@ class base::environment {
 #
 #	This class implements hardware platform specific configuration
 class base::platform {
-	class common($lom_serial_port, $lom_serial_speed) {
+	class common($lom_serial_port, $lom_serial_speed, $last_drive=undef) {
 		$console_upstart_file = "
 # ${lom_serial_port} - getty
 #
@@ -355,6 +355,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			content => $console_upstart_file;
 		}
 		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
+
+		if $last_drive {
+			$all_drives = split(inline_template("<%= ('a'..'${last_drive}').each do |drive| print "/dev/sd"+drive+"," end -%>"), ",")
+		}
 	}
 	
 	class generic {
@@ -399,7 +403,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 		File <| tag == "thumper-udev" |>
 
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed, last_drive => 'av' }
 	}
 
 	class sun-x4540 inherits base::platform::generic::sun {
@@ -407,7 +411,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 		File <| tag == "thumper-udev" |>
 
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed, last_drive => 'av' }
 	}
 
 	case $::productname {
