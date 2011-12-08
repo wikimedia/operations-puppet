@@ -2107,6 +2107,8 @@ class misc::ircecho {
 }
 
 class misc::racktables {
+	# When this class is chosen, ensure that apache is installed on the 
+	# host via another package set.
 
 	system_role { "misc::racktables": description => "Racktables" }
 
@@ -2120,8 +2122,7 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
-	include generic::webserver::php5,
-		generic::webserver::php5-mysql,
+	include generic::webserver::php5-mysql,
 		mysql::client
 
 	package { "php5-gd":
