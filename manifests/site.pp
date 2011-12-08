@@ -1595,7 +1595,7 @@ node "lily.knams.wikimedia.org" {
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
-	$all_drives = split(inline_template("<%= ('a'..'av').each do |drive| print '/dev/sd'+drive+',' end -%>"), ",")
+	$all_drives = split(inline_template("<% ('a'..'av').each do |drive| print '/dev/sd'+drive+',' end -%>"), ",")
 	err("all drives: ${all_drives}")
 	include standard
 
