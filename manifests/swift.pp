@@ -11,13 +11,16 @@ class swift::base {
 		ensure => present;
 	}
 
-	file { "/etc/swift":
+	file {
+		"/etc/swift":
+			require => Package[swift],
 			ensure => directory,
 			recurse => true,
 			owner => swift,
 			group => swift,
 			mode => 0444;
 		"/etc/swift/swift.conf":
+			require => Package[swift],
 			ensure => present,
 			source => "puppet:///files/swift/etc.swift.conf",
 			owner => swift,
