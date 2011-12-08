@@ -5,7 +5,7 @@ class swift::base {
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
 	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
-	include swift::iptables
+	#include swift::iptables
 
 	package { "swift":
 		ensure => present;
