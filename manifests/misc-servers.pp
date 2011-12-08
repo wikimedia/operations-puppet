@@ -2143,7 +2143,7 @@ class misc::racktables {
 		generic::webserver::php5-mysql,
 		mysql::client
 
-	package { "php5-gd":
+	package { [ "php5-gd", "mysql-server" ]:
 		ensure => latest;
 	}
 
