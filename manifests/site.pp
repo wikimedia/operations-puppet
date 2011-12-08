@@ -1580,6 +1580,8 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 	include standard
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+
+	create_swift_filesystem{ $all_drives: }
 }
 
 node "ms4.pmtpa.wmnet" {

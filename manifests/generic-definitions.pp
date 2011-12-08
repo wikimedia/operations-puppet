@@ -687,3 +687,19 @@ define git::init($directory) {
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
+
+# FIXME: This is fairly specific, for the Thumpers/Thors
+define create_swift_filesystem() {
+	if ! $title in $startup_drives {
+		$dev = "${title}1"
+		exec { "swift partitioning $title":
+			path => "/usr/bin:/bin:/usr/sbin:/sbin",
+			command => "parted -s mklabel gpt mkpart swift-${title} 0% 100% && mkfs -t xfs -L swift-${title} ${dev}",
+			creates => $dev
+		}
+
+		swift::mount_filesystem { $dev: }
+
+		Exec["swift partitioning $title"] -> Swift::mount_filesystem[$dev]
+	}
+}
