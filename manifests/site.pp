@@ -1882,10 +1882,10 @@ node "sodium.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	class { exim::roled:
-		exim_enable_mail_relay => "secondary", 
-		exim_enable_mailman => "true",
-		exim_enable_mail_submission => "true",
-		exim_enable_spamassassin => "true"
+		enable_mail_relay => "secondary", 
+		enable_mailman => "true",
+		enable_mail_submission => "false",
+		enable_spamassassin => "true"
 	}
 
 }
