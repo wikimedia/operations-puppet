@@ -8,7 +8,7 @@
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
 
-	package { [ lvm2, maatkit ]:
+	package { [ lvm2, maatkit, percona-toolkit ]:
 		ensure => "installed";
 	}
 
