@@ -555,6 +555,8 @@ class protoproxy::ssl {
 
 # FIXME: This is fairly specific, for the Thumpers/Thors
 define create_swift_filesystem() {
+	require base::platform
+
 	if ! ($title in $base::platform::startup_drives) {
 		$dev = "${title}1"
 		exec { "swift partitioning $title":
