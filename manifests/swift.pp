@@ -127,7 +127,7 @@ class swift::storage {
 		ensure => present;
 	}
 
-	class { "generic::rsync": config => "swift" }
+	class { "generic::rsyncd": config => "swift" }
 
 	# set up swift specific configs
 	File { owner => swift, group => swift, mode => 0444 }
