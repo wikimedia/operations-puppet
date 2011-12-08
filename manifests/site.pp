@@ -552,6 +552,24 @@ class protoproxy::ssl {
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 } 
 
+
+# FIXME: This is fairly specific, for the Thumpers/Thors
+define create_swift_filesystem() {
+	if ! $title in $startup_drives {
+		$dev = "${title}1"
+		exec { "swift partitioning $title":
+			path => "/usr/bin:/bin:/usr/sbin:/sbin",
+			command => "parted -s mklabel gpt mkpart swift-${title} 0% 100% && mkfs -t xfs -L swift-${title} ${dev}",
+			creates => $dev
+		}
+
+		swift::mount_filesystem { $dev: }
+
+		Exec["swift partitioning $title"] -> Swift::mount_filesystem[$dev]
+	}
+}
+
+
 # Default variables
 $cluster = "misc"
 
@@ -1580,6 +1598,8 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 	include standard
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+
+	create_swift_filesystem{ $all_drives: }
 }
 
 node "ms4.pmtpa.wmnet" {
