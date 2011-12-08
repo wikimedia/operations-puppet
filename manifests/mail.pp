@@ -1,141 +1,142 @@
 # mail.pp
 
-class exim::constants {
-	$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
-}
-
-class exim::packages($install_type="light") {
-	package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
-}
-
-class exim::config($queuerunner="queueonly") {
-	require exim::packages
-
-	file {
-		"/etc/default/exim4":
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("exim/exim4.default.erb");
-	}
-}
-
-class exim::service {
-	require exim::packages, exim::config
-
-	service { exim4:
-		ensure => running;
-	}
-}
-
-class exim::simple-mail-sender {
-	require exim::packages
-
-	class { "exim::config": queuerunner => "queueonly" }
-
-	file {
-		"/etc/exim4/exim4.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/exim/exim4.minimal.conf";
+class exim {
+	class constants {
+		$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
 	}
 
-	include exim::service
-}
+	class packages($install_type="light") {
+		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
+	}
 
-class exim::rt {
-	require exim::packages
+	class config($queuerunner="queueonly") {
+		require exim::packages
+
+		file {
+			"/etc/default/exim4":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("exim/exim4.default.erb");
+		}
+	}
+
+	class service {
+		require exim::packages, exim::config
+
+		service { exim4:
+			ensure => running;
+		}
+	}
+
+	class simple-mail-sender {
+		require exim::packages
+
+		class { "exim::config": queuerunner => "queueonly" }
+
+		file {
+			"/etc/exim4/exim4.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/exim/exim4.minimal.conf";
+		}
+
+		include exim::service
+	}
+
+	class rt {
+		require exim::packages
 	
-	class { "exim::config": queuerunner => "combined" }
+		class { "exim::config": queuerunner => "combined" }
 
-	file {
-		"/etc/exim4/exim4.conf":
-			require => Package[exim4-config],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/exim/exim4.rt.conf";
-	}
-
-	include exim::service
-
-	# Nagios monitoring
-	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
-}
-
-class exim::smtp {
-
-	$otrs_mysql_password = $passwords::exim4::otrs_mysql_password
-	$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
-}
-
-class exim::roled($exim_enable_mail_relay="false", $exim_enable_mailman="false", $exim_enable_imap_delivery="false", $exim_enable_mail_submission="false", $exim_mediawiki_relay="false", $exim_enable_spamassassin="false" ) {
-
-	$exim_install_type = 'heavy'
-	$exim_queuerunner = 'combined'
-
-	require exim::packages
-	include exim::config
-	include exim::service
-
-	include exim::smtp
-	include exim::constants
-	include network::constants
-
-	if ( $exim_enable_mailman == "true" ) {
-		include mailman::listserve
-	}
-	if ( $exim_enable_spamassassin == "true" ) {
-		include spamassassin
-	}
-
-	file {
-		"/etc/exim4/exim4.conf":
-			require => Package[exim4-config],
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("exim/exim4.conf.SMTP_IMAP_MM.erb");
-	}
-	if ( $exim_enable_mailman == "true" ) {
 		file {
-			"/etc/exim4/aliases/":
-				require => Package[exim4-config],
-				mode => 0755,
-				owner => root,
-				group => root,
-				path => "/etc/exim4/aliases/",
-				ensure => directory;
-			"/etc/exim4/aliases/lists.wikimedia.org":
-				require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
-				owner => root,
-				group => root,
-				mode => 0444,
-				source => "puppet:///files/exim/exim4.listserver_aliases.conf";
-			"/etc/exim4/system_filter":
+			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
 				owner => root,
 				group => root,
 				mode => 0444,
-				source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
+				source => "puppet:///files/exim/exim4.rt.conf";
 		}
+
+		include exim::service
+
+		# Nagios monitoring
+		monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	}
-	if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+
+	class smtp {
+
+		$otrs_mysql_password = $passwords::exim4::otrs_mysql_password
+		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
+	}
+
+	class roled($exim_enable_mail_relay="false", $exim_enable_mailman="false", $exim_enable_imap_delivery="false", $exim_enable_mail_submission="false", $exim_mediawiki_relay="false", $exim_enable_spamassassin="false" ) {
+
+		$exim_install_type = 'heavy'
+		$exim_queuerunner = 'combined'
+
+		require exim::packages
+		include exim::config
+		include exim::service
+
+		include exim::smtp
+		include exim::constants
+		include network::constants
+
+		if ( $exim_enable_mailman == "true" ) {
+			include mailman::listserve
+		}
+		if ( $exim_enable_spamassassin == "true" ) {
+			include spamassassin
+		}
+
 		file {
-			"/etc/exim4/relay_domains":
+			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
 				owner => root,
 				group => root,
 				mode => 0444,
-				source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
+				content => template("exim/exim4.conf.SMTP_IMAP_MM.erb");
 		}
+		if ( $exim_enable_mailman == "true" ) {
+			file {
+				"/etc/exim4/aliases/":
+					require => Package[exim4-config],
+					mode => 0755,
+					owner => root,
+					group => root,
+					path => "/etc/exim4/aliases/",
+					ensure => directory;
+				"/etc/exim4/aliases/lists.wikimedia.org":
+					require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
+				"/etc/exim4/system_filter":
+					require => Package[exim4-config],
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
+			}
+		}
+		if ( $exim_mail_relay == "primary" ) or ( $exim_mail_relay == "secondary" ) {
+			file {
+				"/etc/exim4/relay_domains":
+					require => Package[exim4-config],
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
+			}
+		}
+
+		# Nagios monitoring
+		monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	}
-
-	# Nagios monitoring
-	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 }
-
 
 # SpamAssassin http://spamassassin.apache.org/
 
