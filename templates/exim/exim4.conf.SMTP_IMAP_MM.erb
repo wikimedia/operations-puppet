@@ -125,12 +125,12 @@ begin acl
 acl_check_rcpt:
 
 <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
-        # If there have been ~4 times as many previous RCPT rejects than
-        # accepts, drop the connection
+	# If there have been ~4 times as many previous RCPT rejects than
+	# accepts, drop the connection
 
-        drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
-             hosts = ! +wikimedia_nets
-             condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
+	drop message = Too many ($rcpt_fail_count) rejected recipients, good bye
+		hosts = ! +wikimedia_nets
+		condition = ${if >={$rcpt_fail_count}{${eval:4*($recipients_count+1)}}}
 <% end -%>
 
 	# Accept if the source is local SMTP (a pipe)
@@ -165,38 +165,38 @@ acl_check_rcpt:
 	# Require recipient domain to be local, or a domain we relay for
 
 	require message = Relay not permitted
-	domains = +local_domains : +relay_domains <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>: +secondary_domains<% end -%>
+		domains = +local_domains : +relay_domains <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>: +secondary_domains<% end %>
 
-        # { recipient domain is under our administrative control }
+	# { recipient domain is under our administrative control }
 
-        # Accept mail for postmaster without further policy checking,
-        # for compliance with the RFCs
+	# Accept mail for postmaster without further policy checking,
+	# for compliance with the RFCs
 
-        accept local_parts = postmaster
+	accept local_parts = postmaster
 
-        # Verify the recipient address for local domains, or require the
-        # recipient domain to exist for remote domains
+	# Verify the recipient address for local domains, or require the
+	# recipient domain to exist for remote domains
 
-        require verify = recipient
+	require verify = recipient
 
 <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
-        # Check whether the sender address domain exists
+	# Check whether the sender address domain exists
 
-        require verify = sender
+	require verify = sender
 
-        # If the destination domain is a domain we relay for,
-        # check if the local part exists at the destination,
-        # reject if it doesn't.
-        # Accept if the destination cannot be reached within 30s.
+	# If the destination domain is a domain we relay for,
+	# check if the local part exists at the destination,
+	# reject if it doesn't.
+	# Accept if the destination cannot be reached within 30s.
 
-        deny domains = +relay_domains : <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%> : +secondary_domains<% end -%>
-             ! verify = recipient/callout=10s,maxwait=30s,defer_ok
+	deny domains = +relay_domains : <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%> : +secondary_domains<% end %>
+		! verify = recipient/callout=10s,maxwait=30s,defer_ok
 <% end -%>
 
-        # Mail can be safely accepted here, but we may want to do more
-        # rfc compliance checking and spam filtering.
+	# Mail can be safely accepted here, but we may want to do more
+	# rfc compliance checking and spam filtering.
 
-        accept
+	accept
 <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
 		set acl_m2 = ${if eq{$local_part@$domain}{wiki@wikimedia.org}{skip_spamd}{}}
 <% end -%>
@@ -220,7 +220,7 @@ acl_check_data:
 
 	# Run through spamassassin
 	accept endpass
-               acl = spamassassin
+		acl = spamassassin
 
 spamassassin:
 
@@ -234,14 +234,14 @@ spamassassin:
 
 	# Add spam headers if score >= 1
 	warn spam = nonexistent:true
-	     condition = ${if >{$spam_score_int}{10}{1}{0}}
-             set acl_m0 = $spam_score ($spam_bar)
-             set acl_m1 = $spam_report
+		condition = ${if >{$spam_score_int}{10}{1}{0}}
+		set acl_m0 = $spam_score ($spam_bar)
+		set acl_m1 = $spam_report
 
 	# Reject spam at high scores (> 12)
 	deny message = This message scored $spam_score spam points.
-	     spam = nonexistent/defer_ok
-	     condition = ${if >{$spam_score_int}{120}{1}{0}}
+		spam = nonexistent/defer_ok
+		condition = ${if >{$spam_score_int}{120}{1}{0}}
 
 	accept
 <% end -%>
@@ -293,13 +293,13 @@ dnslookup:
 # Use the system aliasfile /etc/aliases for system domains
 
 system_aliases:
-        driver = redirect
-        domains = +system_domains
-        data = ${lookup{$local_part}lsearch{/etc/aliases}}
-        pipe_transport = address_pipe
-        allow_fail
-        allow_defer
-        forbid_file
+	driver = redirect
+	domains = +system_domains
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
 
 <% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
 # Mailman list handling.
@@ -524,10 +524,10 @@ smart_route:
 # Redirect postmaster@$domain if it hasn't been accepted before
 
 postmaster:
-        driver = redirect
-        domains = +local_domains
-        local_parts = postmaster
-        data = postmaster@$primary_hostname
+	driver = redirect
+	domains = +local_domains
+	local_parts = postmaster
+	data = postmaster@$primary_hostname
 <% end %>
 <% if scope.lookupvar('exim::roled::enable_mail_mailman') == "true" then -%>
 	cannot_route_message = Mailing list $local_part does not exist.
@@ -554,24 +554,24 @@ remote_smtp:
 # Generic pipe local delivery transport (for use by alias/forward files)
 
 address_pipe:
-        driver = pipe
-        return_output
+	driver = pipe
+	return_output
 
 <% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
 
 list:
-        driver = pipe
-        command = MAILMAN_WRAP \
-                '${if def:local_part_suffix \
-                        {${sg{$local_part_suffix}{-(\\w+)(\\+.*)?}{\$1}}} \
-                        {post}}' \
-                $local_part
-        current_directory = MAILMAN_LISTS_HOME
-        home_directory = MAILMAN_LISTS_HOME
-        user = MAILMAN_UID
-        group = MAILMAN_GID
+	driver = pipe
+	command = MAILMAN_WRAP \
+		'${if def:local_part_suffix \
+			{${sg{$local_part_suffix}{-(\\w+)(\\+.*)?}{\$1}}} \
+			{post}}' \
+		$local_part
+	current_directory = MAILMAN_LISTS_HOME
+	home_directory = MAILMAN_LISTS_HOME
+	user = MAILMAN_UID
+	group = MAILMAN_GID
 	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 
 <% end %>
@@ -662,9 +662,9 @@ plain:
 begin retry
 
 <% if scope.lookupvar('exim::roled::enable_mediawiki_relay') == "true" then -%>
-*       *       senders=wiki@wikimedia.org      F,1h,15m; G,8
+*	*	senders=wiki@wikimedia.org      F,1h,15m; G,8
 <% end -%>
-*       *       F,2h,15m; G,16h,1h,1.5; F,4d,6h
+*	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
 <% if ( scope.lookupvar('exim::roled::enable_mail_relay') != "false" ) -%>
 
 #################
