@@ -395,7 +395,6 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	class sun-x4500 inherits base::platform::generic::sun {
-		$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
 
 		File <| tag == "thumper-udev" |>
 
@@ -403,8 +402,6 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	class sun-x4540 inherits base::platform::generic::sun {
-		$startup_drives = [ "/dev/sda", "/dev/sdi" ]
-
 		File <| tag == "thumper-udev" |>
 
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
@@ -412,9 +409,11 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 	case $::productname {
 		"Sun Fire X4500": {
+			$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
 			include sun-x4500
 		}
 		"Sun Fire X4540": {
+			$startup_drives = [ "/dev/sda", "/dev/sdi" ]
 			include sun-x4540
 		}
 		default: {
