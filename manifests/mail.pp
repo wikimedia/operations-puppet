@@ -1,37 +1,15 @@
+# mail.pp
+
 class exim::constants {
 	$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
 }
 
-# this section from old exim.pp
-
-
-
-class exim::packages {
-	if ! $exim_install_type {
-		$exim_install_type = 'light'
-	}
-
-	package { [ "exim4-config" ]:
-		ensure => latest;
-	}
-
-	if ( $exim_install_type == 'light' ) {
-		package { [ "exim4-daemon-light" ]:
-			ensure => latest;
-		}
-	}
-	if ( $exim_install_type == 'heavy' ) {
-		package { [ "exim4-daemon-heavy" ]:
-			ensure => latest;
-		}
-	}
+class exim::packages($install_type="light") {
+	package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 }
 
-class exim::config {
-
-	if ! $exim_queuerunner {
-		$exim_queuerunner = 'queueonly'
-	}
+class exim::config($queuerunner="queueonly") {
+	require exim::packages
 
 	file {
 		"/etc/default/exim4":
@@ -43,51 +21,33 @@ class exim::config {
 }
 
 class exim::service {
+	require exim::packages, exim::config
 
-	if ( $exim_install_type == 'light' ) {
-		service {
-			"exim4":
-				require => [ File["/etc/default/exim4"], File["/etc/exim4/exim4.conf"], Package[exim4-daemon-light] ],
-				subscribe => [ File["/etc/default/exim4"], File["/etc/exim4/exim4.conf"] ],
-				ensure => running;
-		}
-	}
-	if ( $exim_install_type == 'heavy' ) {
-		service {
-			"exim4":
-				require => [ File["/etc/default/exim4"], File["/etc/exim4/exim4.conf"], Package[exim4-daemon-heavy] ],
-				subscribe => [ File["/etc/default/exim4"], File["/etc/exim4/exim4.conf"] ],
-				ensure => running;
-		}
+	service { exim4:
+		ensure => running;
 	}
 }
 
 class exim::simple-mail-sender {
-	$exim_queuerunner = 'queueonly'
-	$exim_install_type = 'light'
-
 	require exim::packages
-	include exim::config
-	include exim::service
 
+	class { "exim::config": queuerunner => "queueonly" }
 
 	file {
 		"/etc/exim4/exim4.conf":
-			require => Package[exim4-config],
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/exim/exim4.minimal.conf";
 	}
+
+	include exim::service
 }
 
 class exim::rt {
-	$exim_queuerunner = 'combined'
-	$exim_install_type = 'light'
-
 	require exim::packages
-	include exim::config
-	include exim::service
+	
+	class { "exim::config": queuerunner => "combined" }
 
 	file {
 		"/etc/exim4/exim4.conf":
@@ -97,6 +57,8 @@ class exim::rt {
 			mode => 0444,
 			source => "puppet:///files/exim/exim4.rt.conf";
 	}
+
+	include exim::service
 
 	# Nagios monitoring
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
