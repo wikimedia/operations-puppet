@@ -32,6 +32,12 @@ class mysql {
 		}
 	}
 
+	class client {
+		package { "mysql-client-5.1":
+			ensure => latest;
+		}
+	}
+
 	class ganglia {
 
 		include passwords::ganglia
