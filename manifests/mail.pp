@@ -5,20 +5,18 @@ class exim {
 		$primary_mx = [ "208.80.152.186", "2620::860:2:219:b9ff:fedd:c027" ]
 	}
 
-	class packages($install_type="light") {
+	class config($install_type="light", $queuerunner="queueonly") {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
-	}
-
-	class config($queuerunner="queueonly") {
-		require exim::packages
 
 		file {
 			"/etc/default/exim4":
+				require => Package[exim4-config],
 				owner => root,
 				group => root,
 				mode => 0444,
 				content => template("exim/exim4.default.erb");
 			"/etc/exim4/aliases/":
+				require => Package[exim4-config],
 				mode => 0755,
 				owner => root,
 				group => root,
@@ -27,20 +25,25 @@ class exim {
 	}
 
 	class service {
-		require exim::packages, exim::config
+		Class["exim::config"] -> Class[exim::service]
 
 		service { exim4:
 			ensure => running;
 		}
+
+		if $exim::config::queuerunner != "queueonly" {
+			# Nagios monitoring
+			monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
+		}
 	}
 
 	class simple-mail-sender {
-		require exim::packages
-
 		class { "exim::config": queuerunner => "queueonly" }
+		Class["exim::config"] -> Class[exim::simple-mail-sender]
 
 		file {
 			"/etc/exim4/exim4.conf":
+				require => Package[exim4-config],
 				owner => root,
 				group => root,
 				mode => 0444,
@@ -51,9 +54,8 @@ class exim {
 	}
 
 	class rt {
-		require exim::packages
-	
 		class { "exim::config": queuerunner => "combined" }
+		Class["exim::config"] -> Class[exim::rt]
 
 		file {
 			"/etc/exim4/exim4.conf":
@@ -65,9 +67,6 @@ class exim {
 		}
 
 		include exim::service
-
-		# Nagios monitoring
-		monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	}
 
 	class smtp {
@@ -76,8 +75,8 @@ class exim {
 	}
 
 	class roled($enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false" ) {
-		class { "exim::packages": install_type => "heavy" }
-		class { "exim::config": queuerunner => "combined" }
+		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
+		Class["exim::config"] -> Class[exim::roled]
 
 		include exim::service
 
@@ -85,6 +84,7 @@ class exim {
 		include exim::constants
 		include network::constants
 
+		# TODO: check permissions of config files, these contain passwords
 		file {
 			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
@@ -95,9 +95,10 @@ class exim {
 		}
 
 		class mail_relay {
+			Class["exim::config"] -> Class[exim::roled::mail_relay]
+
 			file {
 				"/etc/exim4/relay_domains":
-					require => Package[exim4-config],
 					owner => root,
 					group => root,
 					mode => 0444,
@@ -106,16 +107,16 @@ class exim {
 		}
 
 		class mailman {
+			Class["exim::config"] -> Class[exim::roled::mailman]
+			
 			file {
 				"/etc/exim4/aliases/lists.wikimedia.org":
-					require => [ File["/etc/exim4/aliases"], Package[exim4-config] ],
 					owner => root,
 					group => root,
 					mode => 0444,
 					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
 				# TODO: check if this is only used for Mailman
 				"/etc/exim4/system_filter":
-					require => Package[exim4-config],
 					owner => root,
 					group => root,
 					mode => 0444,
@@ -132,9 +133,6 @@ class exim {
 		if ( $enable_spamassassin == "true" ) {
 			include spamassassin
 		}
-
-		# Nagios monitoring
-		monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	}
 }
 
