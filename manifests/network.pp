@@ -1,7 +1,8 @@
 # network.pp
 
 class network::constants {
-	$external_networks = [ "91.198.174.0/24", "208.80.152.0/22", "2620:0:860::/46" ] 
+	$external_networks = [ "91.198.174.0/24", "208.80.152.0/22", "2620:0:860::/46" ]
+	$all_networks = [ "91.198.174.0/24", "208.80.152.0/22", "2620:0:860::/46", "10.0.0.0/8" ]
 }
 
 class network::checks {
