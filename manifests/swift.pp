@@ -70,7 +70,7 @@ class swift::iptables  {
 }
 
 class swift::proxy {
-	include swift::base
+	require swift::base
 	system_role { "swift:base": description => "swift frontend proxy" }
 
 	package { ["swift-proxy", "python-swauth"]:
@@ -141,4 +141,48 @@ class swift::storage {
 
 }
 
+# Definition: swift::mount_filesystem
+#
+# Mounts a block device ($title) under /srv/swift-storage/$devname
+# as XFS with the appropriate file system options, and updates fstab
+#
+# Parameters:
+#	- $title:
+#		The device to mount (e.g. /dev/sdc1)
+define swift::mount_filesystem() {
+	require swift::base
+
+	$dev = $title
+	$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
+	$mountpath = "/srv/swift-storage/${dev_suffix}"
+
+	# Make sure the mountpoint exists...
+	# This can't be a file resource, as it would become a duplicate.
+	exec { "mkdir $mountpath":
+		path => "/usr/bin:/bin",
+		creates => $mountpath
+	}
+
+	# ...mount the filesystem by label...
+	mount { $mountpath:
+		device => "LABEL=swift-${dev_suffix}",
+		name => $mountpath,
+		ensure => mounted,
+		fstype => "xfs",
+		options => "noatime,nodiratime,nobarrier,logbufs=8",
+		atboot => true,
+		remounts => true
+	}
+
+	# ...and fix the directory attributes.
+	file { "fix attr $mountpath":
+		path => $mountpath,
+		owner => swift,
+		group => swift,
+		mode => 0750,
+		ensure => directory
+	}
+
+	Exec["mkdir $mountpath"] -> Mount[$mountpath] -> File["fix attr $mountpath"]
+}
 
