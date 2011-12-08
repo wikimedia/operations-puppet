@@ -10,6 +10,7 @@ import re
 from eventlet.green import urllib2
 import wmf.client
 import time
+#from swift.common.utils import get_logger
 
 # Copy2 is hairy. If we were only opening a URL, and returning it, we could
 # just return the open file handle, and webob would take care of reading from
@@ -98,6 +99,8 @@ class WMFRewrite(object):
         self.thumbhost = conf['thumbhost'].strip()
         self.writethumb = 'writethumb' in conf
         self.user_agent = conf['user_agent'].strip()
+        self.bind_port = conf['bind_port'].strip()
+        #self.logger = get_logger(conf)
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -129,17 +132,22 @@ class WMFRewrite(object):
         # get the Content-Type.
         uinfo = upcopy.info()
         c_t = uinfo.gettype()
-        last_modified = time.mktime(uinfo.getdate('Last-Modified'))
+        # sometimes Last-Modified isn't present; use now() when that happens.
+        try:
+            last_modified = time.mktime(uinfo.getdate('Last-Modified'))
+        except TypeError:
+            last_modified = time.localtime()
+
         if self.writethumb:
             # Fetch from upload, write into the cluster, and return it
             upcopy = Copy2(upcopy, self.app, url,
                 urllib2.quote(container), obj, self.authurl, self.login,
                 self.key, content_type=c_t, modified=last_modified)
- 
+
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
         resp.headers.add('Last-Modified', uinfo.getheader('Last-Modified'))
         return resp
- 
+
     def __call__(self, env, start_response):
       #try: commented-out while debugging so you can see where stuff happened.
         req = webob.Request(env)
@@ -179,7 +187,8 @@ class WMFRewrite(object):
 
             # save a url with just the account name in it.
             req.path_info = "/v1/%s" % (self.account)
-            req.host = '127.0.0.1'
+            port = self.bind_port
+            req.host = '127.0.0.1:%s' % port
             url = req.url[:]
             # Create a path to our object's name.
             req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
@@ -190,7 +199,6 @@ class WMFRewrite(object):
             app_iter = self.app(env, controller.do_start_response) #01
             status = int(controller.response_args[0].split()[0])
             headers = dict(controller.response_args[1])
-            #self.app.logger.warn( "Status: %d" % status)
 
             if 200 <= status < 300 or status == 304:
                 # We have it! Just return it as usual.
