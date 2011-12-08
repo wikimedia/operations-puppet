@@ -38,20 +38,20 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 
 # Standard lists
 domainlist system_domains = @
-hostlist wikimedia_nets = <; <% scope.lookupvar('network::constants::all_networks').split(" ; ") -%>
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').split(" ; ") %>
 <% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist rt_domains = rt.wikimedia.org
 domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
 domainlist local_domains = +system_domains : +legacy_mailman_domains : lsearch;CONFDIR/local_domains : @mx_primary/ignore=127.0.0.1
-hostlist relay_from_hosts = <; @[] ; <% scope.lookupvar('network::constants::external_networks').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>; 10.0.0.0/16
+hostlist relay_from_hosts = <; @[] ; <%= scope.lookupvar('network::constants::external_networks').split(" ; ") end %>; 10.0.0.0/16
 <% end -%>
 <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>
-hostlist relay_from_hosts = <; <% scope.lookupvar('network::constants::external_networks').split(" ; ") -%> ; 127.0.0.1 ; ::1
+hostlist relay_from_hosts = <; <%= scope.lookupvar('network::constants::external_networks').split(" ; ") %> ; 127.0.0.1 ; ::1
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 # Relay @mx_secondary domains only to these hosts
-hostlist primary_mx = <; <% scope.lookupvar('exim::constants::primary_mx').split(" ; ") -%>
+hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').split(" ; ") %>
 <% end -%>
 <% if scope.lookupvar('exim::roled::enable_mail_mailman') == "true" then -%>
 domainlist mailman_domains = lists.wikimedia.org
