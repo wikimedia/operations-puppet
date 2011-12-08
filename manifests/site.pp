@@ -1596,7 +1596,7 @@ node "lily.knams.wikimedia.org" {
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
 	$all_drives = split(inline_template("<%= ('a'..'av').each do |drive| print '/dev/sd'+drive+',' end -%>"), ",")
-	info("all drives: ${all_drives}")
+	err("all drives: ${all_drives}")
 	include standard
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
