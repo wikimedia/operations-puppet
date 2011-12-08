@@ -5,7 +5,7 @@ class swift::base {
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
 	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
-	#include swift::iptables
+	include swift::iptables
 
 	package { "swift":
 		ensure => present;
@@ -50,6 +50,7 @@ class swift::iptables-accepts {
 	iptables_add_rule{ "swift_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
 	iptables_add_rule{ "swift_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_igmp": service => "igmp", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_icmp": service => "icmp", jump => "ACCEPT" }
 	# swift specific services
