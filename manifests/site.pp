@@ -562,7 +562,7 @@ define create_swift_filesystem($partition_nr="1") {
 		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 		exec { "swift partitioning $title":
 			path => "/usr/bin:/bin:/usr/sbin:/sbin",
-			command => "parted -s mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
+			command => "parted -s -a optimal mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
 			creates => $dev
 		}
 
