@@ -50,7 +50,7 @@ hostlist relay_from_hosts = <<% scope.lookupvar('network::constants::external_ne
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 # Relay @mx_secondary domains only to these hosts
-hostlist primary_mx = <<% scope.lookupvar('exim::constants::priamry_mx').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>
+hostlist primary_mx = <<% scope.lookupvar('exim::constants::primary_mx').each do |entry| -%>; <%= entry.gsub(/^\*/, "") %> <% end -%>
 <% end %>
 <% if exim_enable_mailman == "true" then -%>
 domainlist mailman_domains = lists.wikimedia.org
