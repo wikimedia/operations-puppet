@@ -1577,6 +1577,7 @@ class misc::contint::test {
 			testswarm-fetcher-mw-trunk:
 				command => "(php $HOME/script/testswarm-mw-fetcher-run.php --prod) > $HOME/mediawiki-trunk/cron.log 2>&1",
 				user => testswarm,
+				require => Systemuser[testswarm],
 				ensure => present;
 		}
 
