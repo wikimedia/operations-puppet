@@ -2142,3 +2142,14 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { ssl: name => "ssl" }
 }
+
+
+# outreachcivi
+class misc::outreachcivi {
+	system_role { "misc::outreachcivi": description => "outreachcivi server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "outreachcivi.wikimedia.org" }
+	apache_site { contacts-ssl: name => "outreachcivi.wikimedia.org-ssl" }
+}
