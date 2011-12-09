@@ -2122,6 +2122,12 @@ class misc::racktables {
 	include generic::mysql::client,
 		generic::php5-gd
 
+	service { apache2:
+		require => Package[apache2],
+		subscribe => Package[libapache2-mod-php5],
+		ensure => running;
+	}
+
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
 		mode => 444,
