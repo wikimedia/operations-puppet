@@ -1,0 +1,43 @@
+<VirtualHost *:443>
+	ServerName secure.wikimedia.org
+	ServerAdmin noc@wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	# Proxy secure.wikimedia.org to the Apaches
+	<Proxy *>
+		Allow from all
+	</Proxy>
+
+	ProxyRequests Off
+	ProxyPreserveHost On
+	ProxyPass /otrs !
+	ProxyPass /otrs-2.1.3 !
+	ProxyPass /otrs-web !
+	ProxyPass / http://apaches.pmtpa.wmnet/ retry=3
+	ProxyVia On
+
+	# Old OTRS URLs
+	RewriteEngine On
+	RewriteRule ^/otrs/(.*)$ https://ticket.wikimedia.org/otrs/$1 [R]
+	RewriteRule ^/otrs-web/(.*)$ https://ticket.wikimedia.org/otrs-web/$1 [R]
+
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName secure.wikimedia.org
+
+	RewriteEngine on
+	RewriteRule ^/(.*)$ https://secure.wikimedia.org/$1 [R=302]
+</VirtualHost>
+
