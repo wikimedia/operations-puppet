@@ -149,21 +149,21 @@ class spamassassin {
 		ensure => latest;
 	}
 
+	File {
+		require => Package[spamassasin],
+		owner => root,
+		group => root,
+		mode => 0444
+	}
 	file {
 		"/etc/spamassassin/local.cf":
-			owner => root,
-			group => root,
-			mode => 0444,
 			source => "puppet:///files/spamassassin/local.cf";
 		"/etc/default/spamassassin":
-			owner => root,
-			group => root,
-			mode => 0444,
 			source => "puppet:///files/spamassassin/spamassassin.default";
 	}
 
 	service { "spamassassin":
-			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin] ],
+			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], User[spamd] ],
 			subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
 			ensure => running;
 	}
@@ -173,6 +173,7 @@ class spamassassin {
 	}
 
 	file { "/var/spamd":
+		require => User[spamd],
 		ensure => directory,
 		owner => spamd,
 		group => spamd,
@@ -182,23 +183,20 @@ class spamassassin {
 	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_spamd" }
 }
 
-# basic mailman
 class mailman::base {
 
-	package { [ "mailman" ]:
-		ensure => latest;
-	}
-	
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 
 }
 
 
 # mailman for a list server
 class mailman::listserve {
-
-	require mailman::base
+	# FIXME: why is this required?
 	require lighttpd::mailman
+
+	package { [ "mailman" ]:
+		ensure => latest;
+	}
 
 	file {
 		"/etc/mailman/mm_cfg.py":
@@ -207,8 +205,9 @@ class mailman::listserve {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/mailman/mm_cfg.py";
-
 	}
+
+	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 }
 
 
