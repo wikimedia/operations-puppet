@@ -2142,3 +2142,13 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { ssl: name => "ssl" }
 }
+
+
+# url.wikimedia.org
+class misc::url_wm {
+	system_role { "misc::url_wm": description => "url.wikimedia.org server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "url.wikimedia.org" }
+}
