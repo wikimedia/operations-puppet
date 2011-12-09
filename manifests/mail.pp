@@ -215,30 +215,10 @@ class mailman {
 		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 	}
 
-	# FIXME: put mailman specific config bits in conf.d/ directory files.
-	# move custom stuff to files in /etc/lighttpd/conf-available/
-	# use lighttpd_config to enable
 	class web-ui {
-
-		require	generic::webserver::static
-
-		# FIXME: still some custom stuff in global config
-		file {
-			"mailman-private-archives.conf":
-				mode => 0444,
-				owner => root,
-				group => root,
-				path => "/etc/lighttpd/conf-available/mailman-private-archives.conf",
-				source => "puppet:///files/lighttpd/mailman-private-archives.conf";
-		}
+		require generic::webserver::static
 
 		lighttpd_config { "50-mailman": install => true }
-
-		# shouldn't the generic class also have a source and ensure the file is in conf-available?
-		# currently it is just for enabling it to conf-enabled
-		lighttpd_config	{ "mailman-private-archives":
-				name => "mailman-private-archives.conf";
-		}
 
 		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
