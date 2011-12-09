@@ -1542,8 +1542,7 @@ class misc::contint::test {
 		systemuser { testswarm:
 			name  => "testswarm",
 			home  => "/var/lib/testswarm",
-			shell => "/bin/bash",
-			group => "testswarm";
+			shell => "/bin/bash";
 		}
 
 		# install scripts
