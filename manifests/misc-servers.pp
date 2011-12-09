@@ -2142,3 +2142,31 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { ssl: name => "ssl" }
 }
+
+
+# wm09schols
+class misc::schols::wm09 {
+	system_role { "misc::schols:wm09": description => "wm09schols server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "wm09schols.wikimedia.org" }
+}
+
+# wm10schols
+class misc::schols::wm10 {
+	system_role { "misc::schols:wm10": description => "wm10schols server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "wm10schols.wikimedia.org" }
+}
+
+# wm10reg
+class misc::reg::wm10 {
+	system_role { "misc::reg:wm10": description => "wm10reg server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "wm10reg.wikimedia.org" }
+}
