@@ -688,7 +688,7 @@ define git::init($directory) {
 	}
 }
 
-define generic::mysql::client {
+class generic::mysql::client {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	package { "mysql-client-5.1":
 		ensure => latest;
