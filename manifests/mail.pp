@@ -195,33 +195,28 @@ class mailman {
 
 		system_role { "mailman::listserve": description => "Mailman listserver" }
 
-		# FIXME: why is this required?
-		require lighttpd::mailman
-
 		file {
 			"/etc/mailman/mm_cfg.py":
-				require => Package[mailman],
 				owner => root,
 				group => root,
 				mode => 0444,
 				source => "puppet:///files/mailman/mm_cfg.py";
 		}
 
-		service { mailman:
-			require => Package[mailman],
-			ensure => running
-		}
-		
+		service { mailman: ensure => running }
+
 		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 	}
 
 	class web-ui {
-		require generic::webserver::static
-
-		lighttpd_config { "50-mailman": install => true }
+		require generic::webserver::static, mailman::base
 
 		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
+
+		lighttpd_config { "50-mailman": install => true, notify => Service[lighttpd] }
+
+		Install_certificate["star.wikimedia.org"] -> Lighttpd_config["50-mailman"]
 
 		# monitor SSL cert expiry 
 		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
