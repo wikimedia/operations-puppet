@@ -1,0 +1,8 @@
+<VirtualHost outreachcivi.wikimedia.org:80>
+        ServerAdmin webmaster@localhost
+        ServerName outreachcivi.wikimedia.org
+
+        Redirect / https://outreachcivi.wikimedia.org/
+
+</VirtualHost>
+
