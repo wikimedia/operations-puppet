@@ -695,7 +695,15 @@ class generic::mysql::client {
 	}
 }
 
+<<<<<<< HEAD   (37fa1f moving php5-gd to its own class)
 class generic:php5-gd {
 	package { "php5-gd":
 		ensure => latest;
 	}
+=======
+class generic::php5-gd {
+	package { "php5-gd":
+		ensure => latest;
+	}
+}
+>>>>>>> BRANCH (77e37a moving php5-gd to its own class)
