@@ -2124,7 +2124,7 @@ class misc::racktables {
 
 	include generic::mysql::client
 
-	package { "php5-gd":
+	package { php5-gd:
 		ensure => latest;
 	}
 
