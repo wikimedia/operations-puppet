@@ -242,7 +242,7 @@ class certificates::wmf_labs_ca {
 
 	exec {
 		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			creates => "/etc/ssl/certs/9779bdc4.0",
 			require => File["/etc/ssl/certs/wmf-labs.pem"];
 	}
 
