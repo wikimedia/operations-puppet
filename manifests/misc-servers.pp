@@ -2130,13 +2130,6 @@ class misc::racktables {
 		notify => Service["apache2"],
 		content => template('apache/sites/racktables.wikimedia.org.erb'),
 		ensure => present;
-
-		"/usr/local/bin/racktables_mysql_pass":
-		owner => root,
-		group => root,
-		mode => 0550,
-		content => template("misc/passwordScripts/racktables_mysql_pass.erb"),
-		ensure => present;
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
