@@ -1543,7 +1543,7 @@ class misc::contint::test {
 			name  => "testswarm",
 			home  => "/var/lib/testswarm",
 			shell => "/bin/bash",
-			group => "testswarm";
+			groups => "testswarm";
 		}
 
 		# install scripts
