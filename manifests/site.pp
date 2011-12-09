@@ -989,6 +989,10 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
+		$snapshot_host = true
+	}
+
 	if $hostname =~ /^db(1001|1017|1033|1047)$/ {
 		$db_cluster = "s1"
 	}
