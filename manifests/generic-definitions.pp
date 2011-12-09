@@ -146,11 +146,15 @@ class generic::webserver::static {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
-class generic::webserver::php5 {
+class generic::webserver::php5( $ssl = 'false' ) {
 	#This will use latest package for php5-common
 
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
+	}
+
+	if $ssl == 'true' {
+		apache_module { ssl: name => "ssl" }
 	}
 
 	service { apache2:
