@@ -639,9 +639,8 @@ class misc::rt::server {
 		refreshonly => true;
 	}
 
-	lighttpd_config { rt: 
+	lighttpd_config { "10-rt": 
 		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
-		name => "10-rt.conf"
 	}
 
 	service { lighttpd:

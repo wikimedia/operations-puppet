@@ -230,10 +230,7 @@ class mailman {
 				source => "puppet:///files/lighttpd/mailman-private-archives.conf";
 		}
 
-		lighttpd_config { "50-mailman":
-			name => "50-mailman.conf",
-			install => true
-		}
+		lighttpd_config { "50-mailman": install => true }
 
 		# shouldn't the generic class also have a source and ensure the file is in conf-available?
 		# currently it is just for enabling it to conf-enabled

@@ -90,19 +90,19 @@ class generic::apache::no-default-site {
 }
 
 # Enables a certain Lighttpd config
-define lighttpd_config($name, install="false") {
+define lighttpd_config($install="false") {
 	if $install == "true" {
-		file { "/etc/lighttpd/conf-available/${name}":
-			source => "puppet:///files/lighttpd/${name}",
+		file { "/etc/lighttpd/conf-available/${title}.conf":
+			source => "puppet:///files/lighttpd/${title}.conf",
 			owner => root,
 			group => lighttpd,
 			mode => 0444,
-			before => File["/etc/lighttpd/conf-enabled/${name}"];
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
 		}
 	}
 	
-	file { "/etc/lighttpd/conf-enabled/${name}":
-		ensure => "/etc/lighttpd/conf-available/${name}";
+	file { "/etc/lighttpd/conf-enabled/${title}.conf":
+		ensure => "/etc/lighttpd/conf-available/${title}.conf";
 	}
 }
 
