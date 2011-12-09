@@ -695,7 +695,8 @@ class generic::mysql::client {
 	}
 }
 
-class generic:php5-gd {
+class generic::php5-gd {
 	package { "php5-gd":
 		ensure => latest;
 	}
+}

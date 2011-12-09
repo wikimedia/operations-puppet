@@ -302,11 +302,8 @@ class misc::noc-wikimedia {
 class misc::blog-wikimedia {
 	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
 
-	require apaches::packages
-	
-	package { php5-gd:
-		ensure => latest;
-	}	
+	require apaches::packages,
+		generic::php5-gd
 
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
