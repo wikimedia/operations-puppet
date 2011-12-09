@@ -2123,7 +2123,6 @@ class misc::racktables {
 		generic::php5-gd
 
 	service { apache2:
-		require => Package[apache2],
 		subscribe => Package[libapache2-mod-php5],
 		ensure => running;
 	}
