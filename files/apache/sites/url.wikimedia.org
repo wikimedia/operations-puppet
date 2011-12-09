@@ -1,0 +1,59 @@
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName url.wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+
+	DocumentRoot /srv/org/wikimedia/url/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/wikimedia/url/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName url.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/url/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/wikimedia/url/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+
+
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+</VirtualHost>
