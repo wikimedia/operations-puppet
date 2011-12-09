@@ -1,0 +1,76 @@
+<VirtualHost 208.80.152.162:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName techblog.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/techblog/
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/wikimedia/techblog/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+
+		# For WordPress
+		RewriteEngine On
+		RewriteBase /
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule . /index.php [L]
+		#RedirectMatch 500  ".*" http://techblog.wikimedia.org
+
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+</VirtualHost>
+
+<VirtualHost 208.80.152.162:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName techblog.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/techblog/
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/wikimedia/techblog/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+
+		# For WordPress
+		RewriteEngine On
+		RewriteBase /
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule . /index.php [L]
+
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+</VirtualHost>
