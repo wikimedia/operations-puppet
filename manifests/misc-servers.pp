@@ -2122,11 +2122,8 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
-	include generic::mysql::client
-
-	package { php5-gd:
-		ensure => latest;
-	}
+	include generic::mysql::client,
+		generic::php5-gd
 
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
