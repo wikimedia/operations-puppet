@@ -2142,3 +2142,13 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { ssl: name => "ssl" }
 }
+
+# OCS (Open Conference Systems) - http://pkp.sfu.ca/?q=ocs
+class misc::ocs::wikimania2009 {
+	system_role { "misc::ocs::wikimania2009": description => "Wikimania 2009 OCS server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "ocs.wikimania2009.wikimedia.org" }
+	apache_site { contacts-ssl: name => "ocs.wikimania2009.wikimedia.org-ssl" }
+}
