@@ -183,68 +183,70 @@ class spamassassin {
 	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_spamd" }
 }
 
-class mailman::base {
-
-
-}
-
-
-# mailman for a list server
-class mailman::listserve {
-	# FIXME: why is this required?
-	require lighttpd::mailman
-
-	package { [ "mailman" ]:
-		ensure => latest;
+class mailman {
+	class base {
+		package { "mailman": ensure => latest }
 	}
 
-	file {
-		"/etc/mailman/mm_cfg.py":
+	class listserve {
+		require mailman::base
+
+		system_role { "mailman::listserve": description => "Mailman listserver" }
+
+		# FIXME: why is this required?
+		require lighttpd::mailman
+
+		file {
+			"/etc/mailman/mm_cfg.py":
+				require => Package[mailman],
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/mailman/mm_cfg.py";
+		}
+
+		service { mailman:
 			require => Package[mailman],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/mailman/mm_cfg.py";
+			ensure => running
+		}
+		
+		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 	}
 
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
-}
+	# FIXME: put mailman specific config bits in conf.d/ directory files.
+	# move custom stuff to files in /etc/lighttpd/conf-available/
+	# use lighttpd_config to enable
+	class web-ui {
 
+		require	generic::webserver::static
 
-# FIXME: put mailman specific config bits in conf.d/ directory files.
-# move custom stuff to files in /etc/lighttpd/conf-available/
-# use lighttpd_config to enable
+		# FIXME: still some custom stuff in global config
+		file {
+			"mailman-private-archives.conf":
+				mode => 0444,
+				owner => root,
+				group => root,
+				path => "/etc/lighttpd/conf-available/mailman-private-archives.conf",
+				source => "puppet:///files/lighttpd/mailman-private-archives.conf";
+		}
 
-# lighttpd setup as used by the mailman UI (lists.wm)
-class lighttpd::mailman {
+		lighttpd_config { "50-mailman":
+			name => "50-mailman.conf",
+			install => true
+		}
 
-	require	generic::webserver::static
+		# shouldn't the generic class also have a source and ensure the file is in conf-available?
+		# currently it is just for enabling it to conf-enabled
+		lighttpd_config	{ "mailman-private-archives":
+				name => "mailman-private-archives.conf";
+		}
 
-	# FIXME: still some custom stuff in global config
-	file {
-		"lighttpd.conf":
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/lighttpd/lighttpd.conf",
-			source => "puppet:///files/lighttpd/list-server.conf";
-		"mailman-private-archives.conf":
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/lighttpd/conf-available/mailman-private-archives.conf",
-			source => "puppet:///files/lighttpd/mailman-private-archives.conf";
+		# if we have this we dont need the lists. cert, right? we had them both before
+		install_certificate{ "star.wikimedia.org": }
+
+		# monitor SSL cert expiry 
+		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 	}
 
-	# shouldn't the generic class also have a source and ensure the file is in conf-available?
-	# currently it is just for enabling it to conf-enabled
-	lighttpd_config	{ "mailman-private-archives":
-			name => "mailman-private-archives.conf";
-	}
-
-	# if we have this we dont need the lists. cert, right? we had them both before
-	install_certificate{ "star.wikimedia.org": }
-
-	# monitor SSL cert expiry 
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+	include listserve, web-ui
 }
