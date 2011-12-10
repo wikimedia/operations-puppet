@@ -635,3 +635,9 @@ hostname1=${tag}
 class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
+
+class generic::tor {
+	package { [ "tor" ]:
+		ensure => latest;
+	}
+}
