@@ -1,6 +1,6 @@
 # bots.pp
 
-@monitor_group { "appserver": description => "wmf labs bot servers" }
+@monitor_group { "botserver": description => "wmf labs bot servers" }
 
 class bots::packages {
 	package { [ "mono-runtime", "php5", "php5-cli", "php5-common", "php5-curl", "mysql-client", "ksh", "csh", "lynx" ]:
