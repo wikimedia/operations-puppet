@@ -707,3 +707,9 @@ define git::init($directory) {
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
+
+class generic::tor {
+	package { [ "tor" ]:
+		ensure => latest;
+	}
+}
