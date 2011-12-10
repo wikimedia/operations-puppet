@@ -187,7 +187,7 @@ class mysql {
 		if $snapshot_host {
 			cron { snaprotate:
 				command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G",
-				require => File["/usr/local/sbin/snaprotate.sh"],
+				require => File["/usr/local/sbin/snaprotate.pl"],
 				user => root,
 				minute => 15,
 				hour => '*/8',
