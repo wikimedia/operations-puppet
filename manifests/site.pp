@@ -1846,7 +1846,8 @@ node "singer.wikimedia.org" {
 		certificates::star_wikimedia_org,
 		groups::wikidev,
 		accounts::austin,
-		accounts::awjrichards
+		accounts::awjrichards,
+		generic::mysql::client
 
 
 	install_certificate{ "star.wikimedia.org": }
