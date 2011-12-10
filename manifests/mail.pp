@@ -180,15 +180,13 @@ class spamassassin {
 		mode => 0700;
 	}
 
-	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_generic!1!20!1!40!spamd" }
+	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_spamd" }
 }
 
 class mailman {
 	class base {
 		package { "mailman": ensure => latest }
 	}
-
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
 
 	class listserve {
 		require mailman::base

@@ -2752,8 +2752,6 @@ node /snapshot[1-4]\.pmtpa\.wmnet/ {
 
 node "tarin.wikimedia.org" {
 	include standard
-
-	monitor_service { "poolcounterd": description => "poolcounter", check_command => "check_procs_generic!1!2!1!5!poolcounterd" }
 }
 
 node "thistle.pmtpa.wmnet" {
