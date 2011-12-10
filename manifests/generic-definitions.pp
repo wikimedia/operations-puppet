@@ -242,7 +242,7 @@ class generic::sysctl::advanced-routing($ensure="present") {
 
 class generic::sysctl::ipv6-disable-ra($ensure="present") {
 	if $lsbdistrelease != "8.04" {
-		file { advanced-routing-sysctl:
+		file { ipv6-disable-ra:
 			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
 			owner => root,
 			group => root,
