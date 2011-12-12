@@ -968,7 +968,7 @@ node "db19.pmtpa.wmnet" {
 		mysql::conf
 }
 
-node /db4[4-7]\.pmtpa\.wmnet/ { 
+node /db4[4-9]\.pmtpa\.wmnet/ { 
 	if $hostname =~ /^db(44|45)$/ { 
 		$db_cluster = "s5"
 	}
@@ -977,10 +977,15 @@ node /db4[4-7]\.pmtpa\.wmnet/ {
 		$db_cluster = "s6"
 	}
 
+	if $hostname =~ /^db(48|49)$/ { 
+		$db_cluster = "otrsdb"
+	}
+
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf
+		mysql::conf,
+		mysql::packages
 }
 
 # eqiad dbs
