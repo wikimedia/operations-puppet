@@ -1542,7 +1542,10 @@ class misc::contint::test {
 		systemuser { testswarm:
 			name  => "testswarm",
 			home  => "/var/lib/testswarm",
-			shell => "/bin/bash";
+			shell => "/bin/bash",
+			# And part of web server user group so we can let it access
+			# the SQLite databases
+			groups => [ 'www-data' ];
 		}
 
 		# install scripts
@@ -1570,6 +1573,28 @@ class misc::contint::test {
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
+			# SQLite databases files need specific user rights
+			"/var/lib/testswarm/mediawiki-trunk/dbs":
+				require => Systemuser[testswarm],
+				ensure  => directory,
+				#mode    => 2775, # with setgid
+				mode    => 0774,
+				owner   => testswarm,
+				group   => www-data;
+			# Apache configuration to publish mediawiki fetches
+			"/etc/apache2/sites-enabled/testswarm-checkouts.conf":
+				source => "puppet:///files/testswarm/testswarm-checkouts.conf",
+				ensure => present,
+				owner  => root,
+				group  => root;
+		}
+
+		# Reload apache whenever testswarm checkouts configuration change
+		exec {	"update-testswarm-publish-checkout":
+			command => "/usr/sbin/service apache2 reload",
+			subscribe => "/etc/apache2/sites-enabled/testswarm-checkouts.conf",
+			refreshonly => true,
+			onlyif => "/usr/sbin/apache2ctl configtest"
 		}
 
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
