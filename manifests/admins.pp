@@ -1165,10 +1165,15 @@ class accounts {
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsWDBqUQBaIfJYCslelxUgpx1YVeKGKiAq1OZjGiJZMdjQb6UXPN44CgdamuZY2sFZo7D1mxI0uvxjv+zRfLChHkYQr5vPcPfsNzWAKLo+54rzC3aBhjgZE40H3X0W6x0HgctopCAVLET/tp9/EX5cstGBRw9CfAOrcF6jpCwWg42Y766lpvwcG+JtacuT/BqeO8wh+V1blLBIiF+ai3G173WwVXQ4e1f2/tZ40zKoy4VCMYLl0MtvPt4aPqqHPa+WNdx10aFWNCrDQIQa28EYcj3kw1pY3xlTORyxM02DgqFzqc8dNSU7UhTfL+nKR4kuG0S65e7SXiG48axnv/SOw==";
 				"chad@chadsmac":
-					ensure  => present,
+					ensure  => absent,
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/M7FcM/RpajWHfGsCgQiXo07cTkC9sQkpPvfInCA16Gk0rLOm1nJb2BKSlg5PhXLuJySS0iu7P95HJaKwoZDHkFc75bHx6ISRHOhgqUr1yR7S0pTdm+ithTi/zVEfc4j3KNQyift4o2pwVgx0CQTZjZL8sgf7XoKbw9YeftDt9Kz/KabNx45uB7qeH2sB7xnqixnb7knKu3rFN932eyFmA+G5+q2sPLjHNoyGhr6sfQi/dbUV1DDyd3zIs2W2Isej38WAX+B+KPT+mAj1uO9TUkY9v6ollDE+N92uQHiLrQDZ+dF4joDTsQu5ydai0QTYs5xNvrim/bMZHg+5F+X1";
+				"chad@wmf":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQD74a9VKRGqzCmiWZZUkZoy1XnPgd9nlFTsPrBn8Nnf9mMBbzEArMupuolHOSFhczk5lC9y7KSRKiWJ6sypvVjfGZypr98SA1SEe5AxvBN+8DbWEpxxwbOGCMhHo+GPVucILa5cjzZn2iKlCli39oMa0Dxwzd7v+SuswNtfqjp47RlrJoG5hTZMYcbICjEVGNDvSxSXBX2E17Kxdw3CiPnvZun+twTRYEuTo0GshGjO/2fQaTnyYHfPKOyFYC8HDsaaSaOWzXPXb7ey8s4lY+vEt5Imj5OqHhNOuG+thH/5dxuSv6Jkfi1Ygl2t3j1aYdo5g/0IRQ1lIqhRQuFqxe7j";
 			}
 		}
 	}
