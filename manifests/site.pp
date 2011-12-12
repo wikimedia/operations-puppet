@@ -476,7 +476,7 @@ class cache {
 		$nagios_group = "cache_mobile_${site}"
 
 		$lvs_realserver_ips = $site ? {
-			'eqiad' => [ "208.80.154.236" ],
+			'eqiad' => [ "10.2.2.26" ],
 			default => [ ]
 		}
 

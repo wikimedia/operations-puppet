@@ -107,7 +107,7 @@ class lvs::configuration {
 			},
 			'https' => {
 				'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
-				'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233" },
+				'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233", 'mobilelbsecure' => "208.80.154.236" },
 				'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
 			},
 			'bits' => {
@@ -143,6 +143,9 @@ class lvs::configuration {
 			'search_pool3' => {
 				'pmtpa' => "10.2.1.13",
 				'eqiad' => "10.2.2.13",
+			},
+			'mobile' => {
+				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilesvc' => "10.2.2.26"}
 			}
 		},
 		'labs' => {
@@ -228,7 +231,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => "testing",
-			'ip' => "208.80.154.236",
+			'ip' => $service_ips['mobile'][$site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
