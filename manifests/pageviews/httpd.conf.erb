@@ -1,0 +1,30 @@
+<VirtualHost *:80>
+  ServerName pageviews.wmflabs.org
+  ServerAlias statsgrokse.wmflabs.org
+
+  # Change this to your email address
+  ServerAdmin dvanliere@wikimedia.org
+
+
+#  BandwidthModule On
+#  ForceBandWidthModule On
+#  BandWidth all 0
+#  BandWidth 129.110.5.0/24 10
+#  MaxConnection all 20
+#  MaxConnection 129.110.5.0/24 1
+
+  # Change these to be valid paths for your host.  The DocumentRoot path
+  # isn't very important because we don't actually use it for anything.
+  # For security's sake, it's best that it points to an empty directory,
+  # but that's not critical.
+  DocumentRoot /srv/stats.grok.se
+  ErrorLog /var/log/apache2/stats.grok.se_error.log
+  CustomLog /var/log/apache2/stats.grok.se_access.log combined
+
+  ServerSignature On
+  <Directory /srv/stats.grok.se>
+    SetHandler mod_python
+    PythonHandler index
+    PythonDebug On
+  </Directory>
+</VirtualHost>
