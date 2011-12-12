@@ -13,8 +13,8 @@ class mysql {
 	}
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		package { ["xtrabackup", "percona-toolkit" ]:
-			ensure => "installed";
+		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
+			ensure => latest;
 		}
 	}
 
