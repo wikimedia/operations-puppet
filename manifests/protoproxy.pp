@@ -21,7 +21,7 @@ class protoproxy::proxy_sites {
 
 	$lvs_realserver_ips = $site ? {
 		"pmtpa" => [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "208.80.152.3", "208.80.152.118" ],
-		"eqiad" => [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.235"  ],
+		"eqiad" => [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.235", "208.80.154.236" ],
 		"esams" => [ "91.198.174.224", "91.198.174.225", "91.198.174.233", "91.198.174.234", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.232", "91.198.174.235"  ]
 	}
 
@@ -38,6 +38,7 @@ class protoproxy::proxy_sites {
 
 	install_certificate{ "star.wikimedia.org": }
 	install_certificate{ "star.wikipedia.org": }
+	install_certificate{ "test-star.wikipedia.org": }
 	install_certificate{ "star.wiktionary.org": }
 	install_certificate{ "star.wikiquote.org": }
 	install_certificate{ "star.wikibooks.org": }
@@ -241,7 +242,17 @@ class protoproxy::proxy_sites {
 			},
 		enabled => 'true'
 	}
-
+	proxy_configuration{ mobilewikipedia:
+		proxy_addresses => {
+			"eqiad" => [ "208.80.154.236", "[2620:0:862:3::80:2]" ]
+		},
+		proxy_server_name => '*.m.wikipedia.org',
+		proxy_server_cert_name => 'test-star.wikipedia.org',
+		proxy_backend => {
+			"eqiad" => { "primary" => "10.2.2.26" }
+		},
+		enabled => 'true'
+	}
 	# Misc services
 	proxy_configuration{ gerrit:
 		proxy_addresses => {
