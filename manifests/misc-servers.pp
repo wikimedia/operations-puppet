@@ -1586,6 +1586,9 @@ class misc::contint::test {
 				ensure => present,
 				owner  => root,
 				group  => root;
+			# Override Apache configuration coming from the testswarm package.
+			"/etc/apache2/conf.d/testswarm.conf":
+				ensure => absent;
 		}
 
 		# Reload apache whenever testswarm checkouts configuration change

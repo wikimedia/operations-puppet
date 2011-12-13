@@ -47,6 +47,20 @@ NameVirtualHost *:443
 
 	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
 
+	<Directory /usr/share/testswarm/site>
+		AllowOverride All
+		order allow,deny
+		allow from all
+		Options +FollowSymLinks
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
+
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
@@ -94,4 +108,17 @@ NameVirtualHost *:443
 
 	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
 
+	<Directory /usr/share/testswarm/site>
+		AllowOverride All
+		order allow,deny
+		allow from all
+		Options +FollowSymLinks
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
 </VirtualHost>
