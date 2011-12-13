@@ -141,6 +141,13 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+<% if exim_template_use_dkim_block == "true" then -%>
+	dkim_domain = wikimedia.org
+	dkim_selector = fundraising
+	dkim_private_key = /etc/exim4/wikimedia.org-fundraising-private.key
+	dkim_canon = relaxed
+<% end -%>
+
 
 # Generic pipe local delivery transport (for use by alias/forward files)
 
