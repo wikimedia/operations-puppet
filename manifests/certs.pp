@@ -90,6 +90,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
+		certificates::digicert_ca,
 		certificates::wmf_ca,
 		certs::groups::ssl-cert
 
@@ -270,7 +271,7 @@ class certificates::rapidssl_ca {
 
 }
 
-class certificates::digitcert_ca {
+class certificates::digicert_ca {
 
 	include certificates::packages
 
