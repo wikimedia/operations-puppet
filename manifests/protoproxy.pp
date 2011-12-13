@@ -244,12 +244,16 @@ class protoproxy::proxy_sites {
 	}
 	proxy_configuration{ mobilewikipedia:
 		proxy_addresses => {
-			"eqiad" => [ "208.80.154.236", "[2620:0:862:3::80:2]" ]
+			"pmtpa" => [ "127.0.0.1", "[2620:0:860:2::80:2]" ],
+			"eqiad" => [ "208.80.154.236", "[2620:0:862:3::80:2]" ],
+			"esams" => [ "127.0.0.1", "[2620:0:862:1::80:2]" ]
 		},
 		proxy_server_name => '*.m.wikipedia.org',
 		proxy_server_cert_name => 'test-star.wikipedia.org',
 		proxy_backend => {
-			"eqiad" => { "primary" => "10.2.2.26" }
+			"pmtpa" => { "primary" => "10.2.1.26" },
+			"esams" => { "primary" => "10.2.2.26" },
+			"eqiad" => { "primary" => "10.2.3.26", "secondary" => "208.80.154.236" }
 		},
 		enabled => 'true'
 	}
