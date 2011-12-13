@@ -1185,8 +1185,6 @@ node "gilman.wikimedia.org" {
 		misc::jenkins,
 		misc::fundraising
 
-	$exim_signs_dkim = "false"
-
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
@@ -1219,8 +1217,6 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 	}
 	if $hostname == "grosley" {
 		$exim_signs_dkim = "true"
-	} else {
-		$exim_signs_dkim = "false"
 	}
 
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
