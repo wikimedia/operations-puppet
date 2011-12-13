@@ -71,10 +71,7 @@ class applicationserver {
 			'labs' => [ "10.4.0.254" ],
 		}
 
-		include	base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
+		include	standard,
 			admins::roots,
 			admins::mortals,
 			accounts::l10nupdate,
@@ -89,10 +86,7 @@ class applicationserver {
 	}
 
 	class home-no-service inherits parent {
-		include	base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
+		include	standard,
 			nfs::home,
 			nfs::upload,
 			mediawiki::packages,
@@ -117,10 +111,7 @@ class applicationserver {
 			'labs' => [ "10.4.0.253" ],
 		}
 
-		include base,
-			ganglia,
-			ntp::client,
-			exim::simple-mail-sender,
+		include standard,
 			admins::roots,
 			admins::mortals,
 			accounts::l10nupdate,
@@ -175,7 +166,7 @@ class imagescaler {
 		'labs' => [ "10.4.0.252" ],
 	}
 
-	include	base,
+	include standard,
 		imagescaler::cron,
 		imagescaler::packages,
 		imagescaler::files,
@@ -185,9 +176,6 @@ class imagescaler {
 		apaches::packages,
 		apaches::cron,
 		apaches::service,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -202,10 +190,7 @@ class db {
 
 		system_role { "db::core": description => "Core Database server" }
 
-		include base,
-			ntp::client,
-			ganglia,
-			exim::simple-mail-sender,
+		include standard,
 			mysql
 	}
 
@@ -216,10 +201,7 @@ class db {
 
 		system_role { "db::es": description => "External Storage server (${mysql_role})" }
 
-		include	base,
-			ntp::client,
-			ganglia,
-			exim::simple-mail-sender,
+		include	standard,
 			mysql,
 			mysql::mysqluser,
 			mysql::datadirs,
@@ -295,11 +277,8 @@ class searchserver {
 
 	$lvs_realserver_ips = [ "10.2.1.11", "10.2.1.12", "10.2.1.13" ]
 
-	include	base,
-		ntp::client,
-		ganglia,
+	include	standard,
 		nfs::home,
-		exim::simple-mail-sender,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -316,10 +295,7 @@ class searchindexer {
 
 	$search_indexer = "true"
 
-	include	base,
-		ntp::client,
-		ganglia,
-		exim::simple-mail-sender,
+	include	standard,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -622,10 +598,7 @@ node /(arsenic|niobium)\.wikimedia\.org/ {
 }
 
 node "bayes.wikimedia.org" {
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy,
@@ -637,16 +610,13 @@ node "bast1001.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	include base,
-		ganglia,
+	include standard,
 		svn::client,
-		ntp::client,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
 		misc::scripts,
-		exim::simple-mail-sender,
 		nrpe
 }
 
@@ -654,19 +624,13 @@ node "brewster.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
 	
-	include base,
-		ganglia,
-		ntp::client,
+	include standard,
 		misc::install-server,
-		exim::simple-mail-sender,
 		backup::client
 }
 
 node "carbon.wikimedia.org" {
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		backup::client,
 		misc::install-server::tftp-server
 }
@@ -692,10 +656,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 
 node "ekrem.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		misc::wapsite,
 		misc::apple-dictionary-bridge,
 		misc::irc-server,
@@ -706,10 +667,7 @@ node "emery.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
 	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		exim::simple-mail-sender,
-		ntp::client,
+	include standard,
 		misc::udp2log::aft,
 		misc::udp2log::packetloss,
 		misc::udp2log::emery,
@@ -721,10 +679,7 @@ node "emery.wikimedia.org" {
 }
 
 node "erzurumi.pmtpa.wmnet" {
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include	standard,
 		groups::wikidev,
 		accounts::awjrichards,
 		accounts::tfinc
@@ -755,10 +710,7 @@ node /es[1-4]\.pmtpa\.wmnet/ {
 node "dataset1.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		misc::download-wikimedia
 
@@ -767,10 +719,7 @@ node "dataset1.wikimedia.org" {
 node "dataset2.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		groups::wikidev,
 		accounts::catrope,
@@ -1067,13 +1016,10 @@ node "dobson.wikimedia.org" {
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 
-	include	base,
-		ganglia,
-		ntp::server,
+	include	standard,
 		dns::recursor,
 		dns::recursor::monitoring,
-		dns::recursor::statistics,
-		exim::simple-mail-sender
+		dns::recursor::statistics
 
 	class { "dns::auth-server":
 		ipaddress => "208.80.152.130",
@@ -1086,15 +1032,13 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-        $ircecho_infile = "/var/log/logmsg"
-        $ircecho_nick = "logmsgbot"
-        $ircecho_chans = "#wikimedia-tech"
-        $ircecho_server = "irc.freenode.net"
+	$ircecho_infile = "/var/log/logmsg"
+	$ircecho_nick = "logmsgbot"
+	$ircecho_chans = "#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
 
-	include base,
-		ganglia,
+	include standard,
 		svn::client,
-		ntp::client,
 		nfs::home,
 		admins::roots,
 		admins::mortals,
@@ -1107,7 +1051,6 @@ node "fenari.wikimedia.org" {
 		misc::ircecho,
 		misc::l10nupdate,
 		dns::account,
-		exim::simple-mail-sender,
 		nrpe,
 		drac::management,
 		squid::cachemgr,
@@ -1132,10 +1075,7 @@ node "formey.wikimedia.org" {
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		svn::server,
 		ldap::client::wmf-cluster,
 		backup::client,
@@ -1247,10 +1187,7 @@ node "hooft.esams.wikimedia.org" {
 }
 
 node "hooper.wikimedia.org" {
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		svn::client,
 		misc::etherpad,
@@ -1264,12 +1201,9 @@ node "hooper.wikimedia.org" {
 node "hume.wikimedia.org" {
 	$cluster = "misc"
 
-	include base,
-		ganglia,
-		ntp::client,
+	include standard,
 		nfs::home,
 		misc::scripts,
-		exim::simple-mail-sender,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -1285,10 +1219,7 @@ node "kaulen.wikimedia.org" {
 	system_role { "misc": description => "Bugzilla server" }
 	$gid = 500
 
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
@@ -1358,10 +1289,7 @@ node "locke.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
 	sudo_user { "awjrichards": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		exim::simple-mail-sender,
-		ntp::client,
+	include standard,
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
@@ -1703,10 +1631,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 	$ldap_certificate = "$hostname.pmtpa.wmnet"
 	install_certificate{ "$hostname.pmtpa.wmnet": }
 
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		misc::nfs-server::home,
 		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
@@ -1748,10 +1673,7 @@ node "pdf1.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$cluster = "pdf"
 
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include	standard,
 		groups::wikidev,
 		accounts::file_mover
 }
@@ -1760,10 +1682,7 @@ node "pdf2.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$cluster = "pdf"
 
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include	standard,
 		groups::wikidev,
 		accounts::file_mover
 }
@@ -1771,10 +1690,7 @@ node "pdf2.wikimedia.org" {
 node "pdf3.wikimedia.org" {
 	$cluster = "pdf"
 
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include	standard,
 		groups::wikidev,
 		accounts::file_mover
 }
@@ -1791,19 +1707,13 @@ node "professor.pmtpa.wmnet" {
 node "project1.wikimedia.org" {
 	$cluster = "misc"
 
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender
+	include standard
 }
 
 node "project2.wikimedia.org" {
 	$cluster = "misc"
 
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		groups::wikidev,
 		accounts::reedy
 }
@@ -1852,11 +1762,8 @@ node "searchidx2.pmtpa.wmnet" {
 node "singer.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	include base,
-		ganglia,
+	include standard,
 		svn::client,
-		ntp::client,
-		exim::simple-mail-sender,
 		certificates::star_wikimedia_org,
 		groups::wikidev,
 		accounts::austin,
@@ -1915,21 +1822,18 @@ node "spence.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$nagios_server = "true"
 
-        $ircecho_infile = "/var/log/nagios/irc.log"
-        $ircecho_nick = "nagios-wm"
-        $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
-        $ircecho_server = "irc.freenode.net"
+	$ircecho_infile = "/var/log/nagios/irc.log"
+	$ircecho_nick = "nagios-wm"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_server = "irc.freenode.net"
 
-	include base,
-		ganglia,
+	include standard,
 		nagios::monitor,
 		nagios::monitor::pager,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
-		ntp::client,
 		nfs::home,
-		exim::simple-mail-sender,
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
@@ -2711,10 +2615,7 @@ node "storage1.wikimedia.org" {
 }
 
 node "storage2.wikimedia.org" {
-	include	base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender
+	include standard
 }
 
 node "storage3.pmtpa.wmnet" {
@@ -2782,10 +2683,7 @@ node "thistle.pmtpa.wmnet" {
 }
 
 node "transcode1.wikimedia.org" {
-	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+	include standard,
 		misc::dc-cam-transcoder
 }		
 
@@ -2807,14 +2705,12 @@ node "virt1.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
-		exim::simple-mail-sender,
 		dns::auth-server-ldap,
 		openstack::controller
 }
 
 node /virt[2-4].pmtpa.wmnet/ {
 	include standard,
-		exim::simple-mail-sender,
 		openstack::compute
 }
 
@@ -2829,12 +2725,9 @@ node "williams.wikimedia.org" {
 
 node  "yongle.wikimedia.org" {
 	$gid=500
-	include	base,
-		ganglia,
-		ntp::client,
+	include	standard,
 		groups::wikidev,
-		accounts::catrope,
-		exim::simple-mail-sender
+		accounts::catrope
 }
 
 node "yvon.wikimedia.org" {
