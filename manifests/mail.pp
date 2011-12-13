@@ -203,7 +203,11 @@ class mailman {
 				source => "puppet:///files/mailman/mm_cfg.py";
 		}
 
-		service { mailman: ensure => running }
+		service { mailman:
+			ensure => running,
+			hasstatus => false,
+			pattern => "mailmanctl"
+		}
 
 		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
 	}
