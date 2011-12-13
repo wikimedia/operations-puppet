@@ -1570,6 +1570,9 @@ class misc::contint::test {
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
+			# Override Apache configuration coming from the testswarm package.
+			"/etc/apache2/conf.d/testswarm.conf":
+				ensure => absent;
 		}
 
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
