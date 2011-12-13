@@ -2018,6 +2018,16 @@ class misc::gsbmonitoring {
 	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
+# Bugzilla server - http://wikitech.wikimedia.org/view/Bugzilla
+
+class misc::bugzilla::server {
+
+	system_role { "misc::bugzilla::server": description => "Bugzilla server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { bugzilla: name => "bugzilla.wikimedia.org" }
+}
 
 class misc::bugzilla::crons {
 	cron { bugzilla_whine:
