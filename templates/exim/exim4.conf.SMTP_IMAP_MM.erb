@@ -544,8 +544,10 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
-<% if scope.lookupvar('exim::roled::enable_mailman' == "true" ) -%>
+<% if scope.lookupvar('exim::roled::outbound_ips') != "" %>
 	interface = <; <%= scope.lookupvar('exim::roled::outbound_ips').join(" ; ") %>
+<% end -%>
+<% if scope.lookupvar('exim::roled::enable_mailman' == "true" ) -%>
 	helo_data = lists.wikimedia.org
 <% end -%>
 
