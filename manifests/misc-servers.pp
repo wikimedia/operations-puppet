@@ -2018,7 +2018,6 @@ class misc::gsbmonitoring {
 	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
-
 class misc::bugzilla::crons {
 	cron { bugzilla_whine:
 		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
