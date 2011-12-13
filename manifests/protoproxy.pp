@@ -252,8 +252,8 @@ class protoproxy::proxy_sites {
 		proxy_server_cert_name => 'test-star.wikipedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.26" },
-			"esams" => { "primary" => "10.2.2.26" },
-			"eqiad" => { "primary" => "10.2.3.26", "secondary" => "208.80.154.236" }
+			"eqiad" => { "primary" => "10.2.2.26" },
+			"esams" => { "primary" => "10.2.3.26", "secondary" => "208.80.154.236" }
 		},
 		enabled => 'true'
 	}
