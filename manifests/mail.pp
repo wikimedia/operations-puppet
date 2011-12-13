@@ -79,7 +79,8 @@ class exim {
 		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
 	}
 
-	class roled($enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false", $outbound_ips=[] ) {
+	# TODO: add class documentation
+	class roled($enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false", $outbound_ips=undef ) {
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
 
