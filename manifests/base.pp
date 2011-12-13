@@ -8,6 +8,7 @@ import "nagios.pp"
 import "nrpe.pp"
 import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
+import "../private/manifests/mail.pp"
 
 class base::apt::update {
 	# Make sure puppet runs apt-get update!

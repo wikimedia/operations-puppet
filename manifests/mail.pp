@@ -89,14 +89,18 @@ class exim {
 		include exim::constants
 		include network::constants
 
-		# TODO: check permissions of config files, these contain passwords
 		file {
 			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
 				owner => root,
-				group => root,
-				mode => 0444,
+				group => Debian-exim,
+				mode => 0440,
 				content => template("exim/exim4.conf.SMTP_IMAP_MM.erb");
+			"/etc/exim4/system_filter":
+				owner => root,
+				group => Debian-exim,
+				mode => 0444,
+				content => template("exim/system_filter.conf.erb");
 		}
 
 		class mail_relay {
@@ -120,16 +124,11 @@ class exim {
 					group => root,
 					mode => 0444,
 					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
-				# TODO: check if this is only used for Mailman
-				"/etc/exim4/system_filter":
-					owner => root,
-					group => root,
-					mode => 0444,
-					source => "puppet:///private/exim/exim4.listserver_system_filter.conf.listserve";
-			}			
+			}
 		}
 		
 		if ( $enable_mailman == "true" ) {
+			require exim::listserve::private
 			include mailman, mailman::listserve
 		}
 		if ( $enable_mail_relay == "primary" ) or ( $enable_mail_relay == "secondary" ) {
