@@ -427,11 +427,6 @@ class nagios::monitor {
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_job_queue":
-			source => "puppet:///files/nagios/check_job_queue",
-			owner => root,
-			group => root,
-			mode => 0755;
 		"/usr/local/nagios/libexec/check_longqueries":
 			source => "puppet:///files/nagios/check_longqueries",
 			owner => root,
@@ -453,6 +448,26 @@ class nagios::monitor {
 			group => root,
 			mode => 0755;
 	}
+}
+
+
+class nagios::monitor::jobqueue {
+
+	file {"/usr/local/nagios/libexec/check_job_queue":
+		source => "puppet:///files/nagios/check_job_queue",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+
+	monitor_service { "check_job_queue":
+		description => "check_job_queue",
+		check_command => "check_job_queue",
+		normal_check_interval => 15,
+		retry_check_interval => 15,
+		critical => "true"
+	}
+
 }
 
 class nagios::monitor::pager {
