@@ -1205,6 +1205,12 @@ class misc::fundraising {
 			owner => root,
 			group => root;
 
+		"/etc/exim4/wikimedia.org-fundraising-private.key":
+			mode => 0440,
+			owner => root,
+			group => Debian-exim,
+			source => "puppet:///private/misc/dkim/wikimedia.org-fundraising-private.key";
+
 		"/etc/dovecot/dovecot.conf":
 			source => "puppet:///files/dovecot/dovecot.donate.conf",
 			mode => 0444,
