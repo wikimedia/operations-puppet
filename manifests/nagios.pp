@@ -56,7 +56,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) { 
+define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1) { 
         if ! $host {
                 fail("Parametmer $host not defined!")
         }
@@ -73,8 +73,8 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			service_description => $description,
 			check_command => $check_command,
 			max_check_attempts => $retries,
-			normal_check_interval => 1,
-			retry_check_interval => 1,
+			normal_check_interval => $normal_check_interval,
+			retry_check_interval => $retry_check_interval,
 			check_period => "24x7",
 	                notification_interval => 0,
 			notification_period => "24x7",
@@ -453,6 +453,23 @@ class nagios::monitor {
 			group => root,
 			mode => 0755;
 	}
+}
+
+class nagios::monitor::jobqueue {
+
+	file {"/usr/local/nagios/libexec/check_job_queue":
+		source => "puppet:///files/nagios/check_job_queue",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+
+	monitor_service { "check_job_queue": 
+		description => "check_job_queue",
+		check_command => "check_job_queue",
+		critical => "true"
+	}
+
 }
 
 class nagios::monitor::pager {
