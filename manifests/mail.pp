@@ -88,6 +88,7 @@ class exim {
 		include exim::smtp
 		include exim::constants
 		include network::constants
+		include exim::listserve::private
 
 		file {
 			"/etc/exim4/exim4.conf":
@@ -128,7 +129,6 @@ class exim {
 		}
 		
 		if ( $enable_mailman == "true" ) {
-			require exim::listserve::private
 			include mailman, mailman::listserve
 		}
 		if ( $enable_mail_relay == "primary" ) or ( $enable_mail_relay == "secondary" ) {
