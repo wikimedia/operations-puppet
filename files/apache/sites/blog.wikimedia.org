@@ -6,14 +6,14 @@
 
 NameVirtualHost *:443
 <VirtualHost *:80>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin software@wikimedia.org
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
         RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
         RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
 
-	
+
 	DocumentRoot /srv/org/wikimedia/blog/
 	<Directory />
 		Options FollowSymLinks
@@ -45,13 +45,13 @@ NameVirtualHost *:443
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin software@wikimedia.org
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
         RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
         RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
-	
+
 	DocumentRoot /srv/org/wikimedia/blog/
 
         SSLEngine on

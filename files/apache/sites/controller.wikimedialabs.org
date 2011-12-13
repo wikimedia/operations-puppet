@@ -7,7 +7,7 @@
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
         ServerName controller.labs.wikimedia.org
-	
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
@@ -35,7 +35,7 @@
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName controller.labs.wikimedia.org
 
         SSLEngine on

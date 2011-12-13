@@ -38,7 +38,7 @@ NameVirtualHost *:80
 
 NameVirtualHost *:443
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName gerrit.wikimedia.org
 
 	SSLEngine on

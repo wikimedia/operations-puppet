@@ -14,7 +14,7 @@ for line in $(mysql -e "SHOW SLAVE STATUS" -E -h $HOST)
 	key=${line%:*} # Split off what goes before :
 	key=${key// }  # And trim spaces
 	data=${line#*:} # Split off what goes after :
-	data=${data// } # And trim spaces yet again!!! 
+	data=${data// } # And trim spaces yet again!!!
 
 	case $key in
 		Exec_master_log_pos) LOGPOS=$data;;
@@ -24,10 +24,10 @@ for line in $(mysql -e "SHOW SLAVE STATUS" -E -h $HOST)
 		Master_User) RUSER=$data;;
 		Master_Port) RPORT=$data;;
 	esac
-		
+
  done
 
-if [ -z $LOGPOS -o -z $LOGFILE ]; then echo "OMG FAIL NO POSITIONS KNOWN"; exit; fi 
+if [ -z $LOGPOS -o -z $LOGFILE ]; then echo "OMG FAIL NO POSITIONS KNOWN"; exit; fi
 
 mysql -h $HOST -e "RESET SLAVE"
 mysql -h $HOST -e "CHANGE MASTER TO MASTER_HOST='$RHOST', MASTER_USER='repl', MASTER_PASSWORD='$RPASS', MASTER_LOG_FILE='$LOGFILE', MASTER_LOG_POS=$LOGPOS"

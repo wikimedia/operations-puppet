@@ -6,7 +6,7 @@
 
 <VirtualHost *:80>
         ServerName noc.wikimedia.org
-        
+
 	DocumentRoot /home/wikipedia/htdocs/noc
 
         UserDir public_html

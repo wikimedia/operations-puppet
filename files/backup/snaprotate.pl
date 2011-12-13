@@ -65,7 +65,7 @@ elsif ($ACTION =~ /^m/ and $MAILTO !~ /^[\w\.-]+(@[\w-]+(\.[\w-]+)*)?$/) {
 # More declarations
 my @lvscmd=("/sbin/lvs", "--noheadings", "--options",
     "lv_name,lv_attr,vg_name,origin,snap_percent");
-my @lvcrt=("/sbin/lvcreate", "--snapshot", "--size", $SNSIZE, "--name", 
+my @lvcrt=("/sbin/lvcreate", "--snapshot", "--size", $SNSIZE, "--name",
     "__FOO__", "--permission", "rw", "/dev/$VOLGRP/$SRCLV");
 my @lvrm=("/sbin/lvremove", "-f", "__FOO__");
 my @dfcmd=("/bin/df", "-k");
@@ -162,7 +162,7 @@ else {
             $mailbody .= "ERROR: snapshot $snap->[0] is broken!\n";
         }
         elsif ($snap->[4] >= $TRESHOLD) {
-            $mailbody .= "WARNING: snapshot $snap->[0] is filled " . 
+            $mailbody .= "WARNING: snapshot $snap->[0] is filled " .
                 "above treshold ($snap->[4]\%)\n";
         }
     }
@@ -225,9 +225,9 @@ snaprotate.pl - Use rotating snapshots as a backup means.
 
 B<snaprotate.pl> B<-a>|B<--action> I<s[wap] | m[ail] | r[eport]>
 [B<-A>|B<--all>] B<-V>|B<--volgroup> I<vg>
-B<-s>|B<--sourcelv> I<lv> [B<-L>|B<--size> I<snapsize>] 
-[B<-n>|B<--snapname> I<snapvol>] [B<-m>|B<--mailto> I<user@fqdn>] 
-[B<-t>|B<--treshold> I<value>] [B<-c>|B<--snapcount> I<value>] 
+B<-s>|B<--sourcelv> I<lv> [B<-L>|B<--size> I<snapsize>]
+[B<-n>|B<--snapname> I<snapvol>] [B<-m>|B<--mailto> I<user@fqdn>]
+[B<-t>|B<--treshold> I<value>] [B<-c>|B<--snapcount> I<value>]
 
 B<snaprotate.pl> B<-h>|B<--help>
 
@@ -249,7 +249,7 @@ is created.
 Mandatory option. The I<swap> option will delete the oldest snapshot if
 all snapshots are used (or more oldest if more snapshots are used).
 WARNING: if a snapshot to be deleted is mounted, it will first be unmounted.
-If the filesystem is busy, all processed on the filesystem are killed with a 
+If the filesystem is busy, all processed on the filesystem are killed with a
 SIGKILL.
 
 The <report> and I<mail> options check if a snapshot is used more than
@@ -286,14 +286,14 @@ is ignored unless the I<mail> action is used but is mandatory when it is.
 =item B<-t, --treshold> I<value>
 
 The percentage of snap usage where the report option will generate an warning.
-The default value is 90. This value is only used by the I<mail> and 
+The default value is 90. This value is only used by the I<mail> and
 I<report> actions.
 
-=item B<-c, --snapcount> I<value> 
+=item B<-c, --snapcount> I<value>
 
 The number of snapshots to cycle through. When fewer snapshots are available,
 nothing is deleted. If more than this number are available, the excess plus one
-more are deleted. The default number is 2. This option is only used by the 
+more are deleted. The default number is 2. This option is only used by the
 I<swap> action.
 
 =item B<-o, --options>
