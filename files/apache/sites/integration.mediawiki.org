@@ -30,6 +30,20 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+	<Directory /usr/share/testswarm/site>
+		Options +FollowSymLinks
+		AllowOverride All
+		order allow,deny
+		allow from all
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
+
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
@@ -59,5 +73,19 @@ NameVirtualHost *:443
 		Order allow,deny
 		allow from all
 	</Directory>
+
+	<Directory /usr/share/testswarm/site>
+		Options +FollowSymLinks
+		AllowOverride All
+		order allow,deny
+		allow from all
+
+		AddType application/x-httpd-php .php
+		php_value include_path .
+
+		DirectoryIndex index.php
+	</Directory>
+
+	Alias /testswarm "/usr/share/testswarm/site/"
 
 </VirtualHost>
