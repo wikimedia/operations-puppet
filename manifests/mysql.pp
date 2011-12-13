@@ -163,6 +163,10 @@ class mysql {
 			$large_slave_trans_retries = "false"
 		}
 
+		if ! $skip_name_resolve { 
+			$skip_name_resolve = "true"
+		}
+
 		if $writable { 
 			$read_only = "false"
 		} else { 
