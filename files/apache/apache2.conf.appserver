@@ -88,7 +88,7 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
 </Directory>
 
 
-# Expires for static content
+# Expires and CORS for static content
 # sends max-age and Expires header, time in seconds
 #LoadModule expires_module   mod_expires.c
 #<IfModule mod_expires.c>
@@ -105,6 +105,7 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
             ExpiresByType image/svg+xml A2592000
             ExpiresByType application/vnd.ms-fontobject A2592000
             ExpiresByType application/x-font-ttf A2592000
+            Header add Access-Control-Allow-Origin "*"
         </FilesMatch>
     </Directory>
 #</IfModule>
