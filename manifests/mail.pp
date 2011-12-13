@@ -149,7 +149,7 @@ class spamassassin {
 	}
 
 	File {
-		require => Package[spamassasin],
+		require => Package[spamassassin],
 		owner => root,
 		group => root,
 		mode => 0444
