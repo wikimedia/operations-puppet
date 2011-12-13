@@ -36,32 +36,29 @@ ldap_default_servers = sanger.wikimedia.org
 LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 <% end -%>
 
-# Standard lists
 domainlist system_domains = @
-hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
-<% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
-domainlist relay_domains = lsearch;CONFDIR/relay_domains
-domainlist rt_domains = rt.wikimedia.org
-domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
-domainlist local_domains = +system_domains : +legacy_mailman_domains : lsearch;CONFDIR/local_domains : @mx_primary/ignore=127.0.0.1
-hostlist relay_from_hosts = <; @[] ; <%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/16
-<% end -%>
+domainlist local_domains = <%= scope.lookupvar('exim::roled::local_domains').join(" : ") %>
 <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>
-hostlist relay_from_hosts = <; <%= scope.lookupvar('network::constants::external_networks').join(" ; ") %> ; 127.0.0.1 ; ::1
-domainlist relay_domains = lsearch;CONFDIR/relay_domains
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
+<% end -%>
+<%if scope.lookupvar('exim::roled::enable_mail_relay') != "false "%>
+domainlist relay_domains = lsearch;CONFDIR/relay_domains
+<% end -%>
+
+# Standard lists
+domainlist mx_primary = @mx_primary/ignore=127.0.0.1
+domainlist legacy_mailman_domains = wikimedia.org : wikipedia.org : mail.wikimedia.org : mail.wikipedia.org
+domainlist mailman_domains = lists.wikimedia.org
+domainlist rt_domains = rt.wikimedia.org
+domainlist spamassassin_domains = *
+
+hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
 hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join(" ; ") %>
-<% end -%>
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
-domainlist mailman_domains = lists.wikimedia.org
-domainlist local_domains = +system_domains : +mailman_domains
-<% end -%>
-<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
-domainlist local_domains = +system_domains : wikimedia.org
-domainlist spamassassin_domains = *
-hostlist relay_from_hosts = <; @[]
 
+
+<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
 <% end -%>
@@ -313,7 +310,7 @@ list_aliases:
 	include_directory = CONFDIR
 <% end %>
 
-<% if ( scope.lookupvar('exim::roled::enable_mail_relay') != "false" ) -%>
+<% if ( scope.lookupvar('exim::roled::enable_mail_relay') == "primary" ) -%>
 aliases:
 	driver = redirect
 	domains = +local_domains

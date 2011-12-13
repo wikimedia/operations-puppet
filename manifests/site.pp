@@ -1894,6 +1894,7 @@ node "sodium.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	class { exim::roled:
+		local_domains => [ "+system_domains", "+mailman_domains" ],
 		enable_mail_relay => "secondary", 
 		enable_mailman => "true",
 		enable_mail_submission => "false",
