@@ -1915,6 +1915,7 @@ node "spence.wikimedia.org" {
 		ganglia,
 		nagios::monitor,
 		nagios::monitor::pager,
+		nagios::monitor::jobqueue,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
