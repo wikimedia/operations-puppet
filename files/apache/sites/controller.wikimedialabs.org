@@ -6,19 +6,19 @@
 
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
-        ServerName controller.labs.wikimedia.org
-	
+	ServerName controller.labs.wikimedia.org
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-        <Directory /var/www/>
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
-                Order allow,deny
-                allow from all
-        </Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
 
 	RewriteEngine on
 	RewriteCond %{SERVER_PORT} !^443$
@@ -35,12 +35,12 @@
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName controller.labs.wikimedia.org
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-        SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	RedirectMatch ^/$ http://controller.labs.wikimedia.org/wiki/
 
@@ -49,15 +49,15 @@
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-        <Directory /var/www/>
-                Options Indexes FollowSymLinks MultiViews
-                AllowOverride None
-                Order allow,deny
-                allow from all
-        </Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
 
-        Alias /w /srv/org/wikimedia/controller/wikis/1.18wmf1
-        Alias /wiki /srv/org/wikimedia/controller/wikis/1.18wmf1/index.php
+	Alias /w /srv/org/wikimedia/controller/wikis/1.18wmf1
+	Alias /wiki /srv/org/wikimedia/controller/wikis/1.18wmf1/index.php
 
 	ErrorLog /var/log/apache2/error.log
 

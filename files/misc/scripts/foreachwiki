@@ -6,7 +6,7 @@ DBLIST=`</home/wikipedia/common/all.dblist`
 
 for x in $DBLIST; do
 	echo -----------------------------------------------------------------
-	echo $x 
+	echo $x
 	echo -----------------------------------------------------------------
 	php -ddisplay_errors=On /usr/local/apache/common/multiversion/MWScript.php $CMD $x "$@" | sed -u "s/^/$x:  /"
 done

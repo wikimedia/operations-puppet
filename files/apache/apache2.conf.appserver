@@ -47,7 +47,7 @@ MaxClients 5
 <IfDefine SCALER>
 MaxClients 10
 # Reduce TimeOut to limit the impact of LVS flapping -- TS 2008-08-19
-TimeOut 10 
+TimeOut 10
 </IfDefine>
 
 MaxRequestsPerChild 300

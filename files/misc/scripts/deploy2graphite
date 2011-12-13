@@ -1,6 +1,6 @@
 #! /bin/bash
 
-usage() { 
+usage() {
 	echo "Usage: $0 deploytype"
 	echo "$0 will log an entry at graphite.wikimedia.org indicating that a"
 	echo " deploy event of the type indicated has occurred."
@@ -15,7 +15,7 @@ usage() {
 [ "${1/-h}" != "$1" ] && usage
 
 if [ -z $DOLOGMSGNOLOG ]; then
-	if [ "$1" ] && [ -z "$2" ] ; then 
+	if [ "$1" ] && [ -z "$2" ] ; then
 		utime="$(date +%s)"
 		echo "deploy.$1 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003 || /bin/true
 		echo "deploy.any 1 $utime" | nc -q0 professor.pmtpa.wmnet 2003 || /bin/true

@@ -6,14 +6,14 @@
 
 NameVirtualHost *:443
 <VirtualHost *:80>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName blog.wikimedia.org
 
-        RewriteEngine On
-        RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
-        RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
+	RewriteEngine On
+	RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
+	RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
 
-	
+
 	DocumentRoot /srv/org/wikimedia/blog/
 	<Directory />
 		Options FollowSymLinks
@@ -25,38 +25,38 @@ NameVirtualHost *:443
 		Order allow,deny
 		allow from all
 
-                # For WordPress
-                RewriteEngine On
-                RewriteBase /
-                RewriteCond %{REQUEST_FILENAME} !-f
-                RewriteCond %{REQUEST_FILENAME} !-d
-                RewriteRule . /index.php [L]
+	# For WordPress
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . /index.php [L]
 
 	</Directory>
 
-        ErrorLog /var/log/apache2/error.log
+	ErrorLog /var/log/apache2/error.log
 
-        # Possible values include: debug, info, notice, warn, error, crit,
-        # alert, emerg.
-        LogLevel warn
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
 
-        CustomLog /var/log/apache2/access.log combined
-        ServerSignature On
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName blog.wikimedia.org
 
-        RewriteEngine On
-        RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
-        RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
-	
+	RewriteEngine On
+	RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
+	RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
+
 	DocumentRoot /srv/org/wikimedia/blog/
 
-        SSLEngine on
-        SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-        SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	<Directory />
 		Options FollowSymLinks
@@ -68,61 +68,61 @@ NameVirtualHost *:443
 		Order allow,deny
 		allow from all
 
-                # For WordPress
-                RewriteEngine On
-                RewriteBase /
-                RewriteCond %{REQUEST_FILENAME} !-f
-                RewriteCond %{REQUEST_FILENAME} !-d
-                RewriteRule . /index.php [L]
+	# For WordPress
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . /index.php [L]
 
 	</Directory>
 
-        ErrorLog /var/log/apache2/error.log
+	ErrorLog /var/log/apache2/error.log
 
-        # Possible values include: debug, info, notice, warn, error, crit,
-        # alert, emerg.
-        LogLevel warn
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
 
-        CustomLog /var/log/apache2/access.log combined
-        ServerSignature On
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
 
 </VirtualHost>
 <VirtualHost *:80>
-    ServerAdmin software@wikimedia.org
-    ServerName techblog.wikimedia.org
-    ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
-                    RewriteEngine On
-                    RewriteRule ^/feed/(.*) http://blog.wikimedia.org/c/technology/feed/$1 [R=301]
-                    RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R=301]
-                    RewriteRule ^/20(.*) http://blog.wikimedia.org/20$1 [R=301]
-                    RewriteRule ^/wp-content/(.*) http://blog.wikimedia.org/wp-content/$1 [R=301]
-                    RewriteCond %{HTTP_HOST} ^communityblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/community/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/technology/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^globalblog.wikimedia.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/c/global/ [R=301]
-                    RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
-                    RewriteRule ^/$ http://blog.wikimedia.org/ [R=301]
+	ServerAdmin noc@wikimedia.org
+	ServerName techblog.wikimedia.org
+	ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
+	RewriteEngine On
+	RewriteRule ^/feed/(.*) http://blog.wikimedia.org/c/technology/feed/$1 [R=301]
+	RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R=301]
+	RewriteRule ^/20(.*) http://blog.wikimedia.org/20$1 [R=301]
+	RewriteRule ^/wp-content/(.*) http://blog.wikimedia.org/wp-content/$1 [R=301]
+	RewriteCond %{HTTP_HOST} ^communityblog.wikimedia.org
+	RewriteRule ^/$ http://blog.wikimedia.org/c/community/ [R=301]
+	RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
+	RewriteRule ^/$ http://blog.wikimedia.org/c/technology/ [R=301]
+	RewriteCond %{HTTP_HOST} ^globalblog.wikimedia.org
+	RewriteRule ^/$ http://blog.wikimedia.org/c/global/ [R=301]
+	RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
+	RewriteRule ^/$ http://blog.wikimedia.org/ [R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerAdmin software@wikimedia.org
-    ServerName techblog.wikimedia.org
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-    SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	ServerAdmin noc@wikimedia.org
+	ServerName techblog.wikimedia.org
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
-    ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
-                RewriteEngine On
-                RewriteRule ^/feed/(.*) https://blog.wikimedia.org/c/technology/feed/$1 [R=301]
-                RewriteRule ^/category/(.*) https://blog.wikimedia.org/c/$1 [R=301]
-                RewriteRule ^/20(.*) https://blog.wikimedia.org/20$1 [R=301]
-                RewriteRule ^/wp-content/(.*) https://blog.wikimedia.org/wp-content/$1 [R=301]
-                RewriteCond %{HTTP_HOST} ^communityblog.wikimedia.org
-                RewriteRule ^/$ https://blog.wikimedia.org/c/community/ [R=301]
-                RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
-                RewriteRule ^/$ https://blog.wikimedia.org/c/technology/ [R=301]
-                RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
-                RewriteRule ^/$ https://blog.wikimedia.org/ [R=301]
+	ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
+	RewriteEngine On
+	RewriteRule ^/feed/(.*) https://blog.wikimedia.org/c/technology/feed/$1 [R=301]
+	RewriteRule ^/category/(.*) https://blog.wikimedia.org/c/$1 [R=301]
+	RewriteRule ^/20(.*) https://blog.wikimedia.org/20$1 [R=301]
+	RewriteRule ^/wp-content/(.*) https://blog.wikimedia.org/wp-content/$1 [R=301]
+	RewriteCond %{HTTP_HOST} ^communityblog.wikimedia.org
+	RewriteRule ^/$ https://blog.wikimedia.org/c/community/ [R=301]
+	RewriteCond %{HTTP_HOST} ^techblog.wikimedia.org
+	RewriteRule ^/$ https://blog.wikimedia.org/c/technology/ [R=301]
+	RewriteCond %{HTTP_HOST} ^blog.wikimediafoundation.org
+	RewriteRule ^/$ https://blog.wikimedia.org/ [R=301]
 </VirtualHost>

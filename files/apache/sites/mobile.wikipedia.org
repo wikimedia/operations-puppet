@@ -6,10 +6,10 @@
 
 
 <VirtualHost *:80>
-	ServerAdmin root@wikimedia.org
+	ServerAdmin noc@wikimedia.org
 	ServerName mobile.wikipedia.org
-	ServerAlias *.mobile.wikipedia.org 
-	
+	ServerAlias *.mobile.wikipedia.org
+
 	DocumentRoot /srv/mobile.wikipedia.org
 	<Directory />
 		Options FollowSymLinks

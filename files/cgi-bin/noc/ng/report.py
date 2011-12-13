@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/cgi-bin/noc/ng/report.py
 #####################################################################
 
@@ -45,7 +45,7 @@ if "prefix" in form: prefix=form["prefix"]
 if "compare" in form:
 	compare=form["compare"]
 	compared=store[compare]
-else: 
+else:
 	compare=""
 	compared=None
 
@@ -60,7 +60,7 @@ else:
 
 dbs=fullprofile.keys()
 try: events=fullprofile[db]["-"].items()
-except KeyError: 
+except KeyError:
 	print "<div>OMG YOU DIDNT SELECT DB OR IT DOESNT EXIST</div>"
 	for dbname in dbs:
 	        print " [<a href='report.py?db=%s'>%s</a>] "%(dbname,dbname)
@@ -87,12 +87,12 @@ def surl(stype,stext=None,limit=50):
 print """
 <style>
 table { width: 100%; font-size: 9pt; }
-td { cell-padding: 1px; 
-	text-align: right; 
+td { cell-padding: 1px;
+	text-align: right;
 	vertical-align: top;
 	argin: 2px;
 	border: 1px silver dotted;
-	white-space: nowrap; 
+	white-space: nowrap;
 	background-color: #eeeeee;
 }
 td.name { text-align: left; width: 100%; white-space: normal;}
@@ -165,37 +165,37 @@ comparedformat="""
 
 # This is really really hacky way of reporting percentages
 
-# And this is output of results. 
+# And this is output of results.
 for event in events:
 	(name,event)=event
 	if name=="close": continue
 	if not name.startswith(prefix): continue
 	if compared and name in compared: old=compared[name]
 	else: old=None
-	
+
 	limit-=1
 	if limit<0: break
-	
+
 	callcount=float(event["count"])/total["count"]
 	try: cpupct=event["cpu"]/total["cpu"]
 	except ZeroDivisionError: cpupct=0
 	onecpu=event["onecpu"]
 	realpct=event["real"]/total["real"]
 	onereal=event["onereal"]
-	
+
 	if old:
 		try:
 			oldcount=float(old["count"])/oldtotal["count"]
 			countdiff = (callcount-oldcount)/oldcount
-		
+
 			oldcpupct = old["cpu"]/oldtotal["cpu"]
 			cpupctdiff = (cpupct-oldcpupct)/oldcpupct
-		
+
 			onecpudiff = ( onecpu - old["onecpu"] ) / old["onecpu"]
-		
+
 			oldrealpct = old["real"]/oldtotal["real"]
 			realpctdiff = (realpct-oldrealpct)/oldrealpct
-		
+
 			onerealdiff = ( onereal - old["onereal"] ) / old["onereal"]
 		except ZeroDivisionError:
 			countdiff=0
@@ -209,10 +209,10 @@ for event in events:
 		onecpudiff=0
 		realpctdiff=0
 		onerealdiff=0
-	
+
 	dbg=0
-	
-	if dbg and name=="wfMsgReal": 
+
+	if dbg and name=="wfMsgReal":
 		print old
 		print oldtotal
 		print event
