@@ -27,6 +27,7 @@ class swift::base {
 			group => swift,
 			mode => 0444;
 		"/srv/swift-storage":
+			require => Package[swift],
 			owner => swift,
 			group => swift,
 			mode => 0750,
