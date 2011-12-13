@@ -1209,7 +1209,7 @@ class misc::fundraising {
 			mode => 0440,
 			owner => root,
 			group => Debian-exim,
-			source => "puppet:///private/misc/dkim/wikimedia.org-fundraising-private.key";
+			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
 
 		"/etc/dovecot/dovecot.conf":
 			source => "puppet:///files/dovecot/dovecot.donate.conf",
