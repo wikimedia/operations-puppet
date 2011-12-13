@@ -20,7 +20,10 @@ datadir		= /a/sqldata/
 tmpdir		= /a/tmp/
 
 skip-external-locking
+
+<% if skip_name_resolve == "true" then -%>
 skip-name-resolve
+<% end -%>
 
 key_buffer		= 1M
 max_allowed_packet	= 16M
