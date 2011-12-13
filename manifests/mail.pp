@@ -149,6 +149,8 @@ class spamassassin {
 		ensure => latest;
 	}
 
+	systemuser { "spamd": name => "spamd" }
+
 	File {
 		require => Package[spamassassin],
 		owner => root,
@@ -163,17 +165,13 @@ class spamassassin {
 	}
 
 	service { "spamassassin":
-			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], User[spamd] ],
+			require => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"], Package[spamassassin], Systemuser[spamd] ],
 			subscribe => [ File["/etc/default/spamassassin"], File["/etc/spamassassin/local.cf"] ],
 			ensure => running;
 	}
 
-	user { "spamd":
-		ensure => present;
-	}
-
 	file { "/var/spamd":
-		require => User[spamd],
+		require => Systemuser[spamd],
 		ensure => directory,
 		owner => spamd,
 		group => spamd,
@@ -187,8 +185,6 @@ class mailman {
 	class base {
 		package { "mailman": ensure => latest }
 	}
-
-	monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
 
 	class listserve {
 		require mailman::base
@@ -209,7 +205,7 @@ class mailman {
 			pattern => "mailmanctl"
 		}
 
-		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_mailman" }
+		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
 	}
 
 	class web-ui {
