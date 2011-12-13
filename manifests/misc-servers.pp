@@ -1021,6 +1021,15 @@ class misc::fundraising {
 		ensure => latest;
 }
 
+
+    # use exim's DKIM signing feature
+    if $exim_signs_dkim == "true" {
+    	$exim_template_use_dkim_block = "true"
+    } else {
+    	$exim_template_use_dkim_block = "false"
+    }
+                                 
+
 	# civimail user
 	group { civimail:
 		ensure => "present",
