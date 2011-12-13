@@ -95,12 +95,11 @@ smtp_receive_timeout = 1m
 host_lookup = *
 rfc1413_hosts =
 rfc1413_query_timeout = 5s
-
 <% if scope.lookupvar('exim::roled::enable_spamassassin') == "true" then -%>
+
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
-
 <% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
@@ -159,7 +158,6 @@ acl_check_rcpt:
 		message = This port is restricted to authenticated and encrypted mail submissions
 		condition = ${if eq{$interface_port}{25}}
 <% end -%>
-
 	# Require recipient domain to be local, or a domain we relay for
 
 	require message = Relay not permitted
@@ -185,15 +183,16 @@ acl_check_rcpt:
 
 	deny domains = +relay_domains <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>: +secondary_domains<% end %>
 		! verify = recipient/callout=10s,maxwait=30s,defer_ok
+<% end -%>
+
+	# Mail can be safely accepted here, but we may want to do more
+	# rfc compliance checking and spam filtering.
+	<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
 
 	# Check whether the sender address domain exists
 
 	require verify = sender
 <% end -%>
-
-	# Mail can be safely accepted here, but we may want to do more
-	# rfc compliance checking and spam filtering.
-
 	accept
 <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
 		set acl_m2 = ${if eq{$local_part@$domain}{wiki@wikimedia.org}{skip_spamd}{}}
@@ -309,7 +308,7 @@ list_aliases:
 	forbid_file
 	forbid_pipe
 	include_directory = CONFDIR
-<% end %>
+<% end -%>
 
 <% if ( scope.lookupvar('exim::roled::enable_mail_relay') == "primary" ) -%>
 aliases:
@@ -323,7 +322,7 @@ aliases:
 	forbid_file
 	include_directory = CONFDIR
 	pipe_transport = address_pipe
-<% end %>
+<% end ->
 
 <% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
 # Test the mailing list address without suffix
@@ -344,7 +343,7 @@ list_suffix:
 				-owner : -request : -admin : \
 				-subscribe : -unsubscribe
 	transport = list
-<% end %>
+<% end -%>
 <% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
 # Use alias files /etc/exim4/aliases/$domain for domains like
 # wikimedia.org, wikipedia.org, wiktionary.org etc.
