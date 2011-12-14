@@ -1808,8 +1808,7 @@ node "sodium.wikimedia.org" {
 		nrpe,
 		mailman,
 		spamassassin,
-		backup::client,
-		certificates::star_wikimedia_org
+		backup::client
 
 	class { exim::roled:
 		local_domains => [ "+system_domains", "+mailman_domains" ],
