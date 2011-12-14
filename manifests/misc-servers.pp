@@ -1956,12 +1956,17 @@ class misc::l10nupdate {
 	# Make sure the log directory exists and has adequate permissions.
 	# It's called l10nupdatelog because /var/log/l10nupdate was used
 	# previously so it'll be an existing file on some systems.
-	# Also set up log rotation
+	# Also create the dir for the SVN checkouts, and set up log rotation
 	file {
 		"/var/log/l10nupdatelog/":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
+			ensure => directory;
+		"/var/lib/l10nupdate":
+			owner => l10nupdate
+			group => wikidev,
+			mode => 0755,
 			ensure => directory;
 		"/etc/logrotate.d/l10nupdate":
 			source => "puppet:///files/logrotate/l10nupdate",

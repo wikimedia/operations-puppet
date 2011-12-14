@@ -2,26 +2,48 @@
 # This script belongs in /usr/local/bin/.
 BINDIR=/usr/local/bin
 MWMULTIDIR=/home/wikipedia/common/multiversion
+SVNDIR=/var/lib/l10nupdate/trunk
+SVNURL=http://svn.wikimedia.org/svnroot/mediawiki/trunk
+SVNPATHS="phase3 extensions"
 
 umask 0002
-
-# SVN up i18 messages to /trunk HEAD
 echo "Starting l10nupdate at `date`."
-if svn up --ignore-externals /home/wikipedia/l10n/trunk/phase3 &&
-	svn up --ignore-externals /home/wikipedia/l10n/trunk/extensions
-then
-	echo "SVN update completed."
-else
-	$BINDIR/dologmsg "!log LocalisationUpdate failed"
-	echo "FAILED"
-	exit 1
-fi
+
+# SVN up i18n messages to /trunk HEAD, or create the checkout if it doesn't exist yet
+echo "Updating SVN checkout ..."
+for path in $SVNPATHS
+do
+	if [ -d $SVNDIR/$path ]
+	then
+		# Checkout exists, update it
+		if svn up --ignore-externals $SVNDIR/$path
+		then
+			echo "Updated $path"
+		else
+			$BINDIR/dologmsg "!log LocalisationUpdate failed: SVN update of $path failed"
+			echo "Updating $path FAILED."
+			exit 1
+		fi
+	else
+		# Create the checkout's parent directory
+		if mkdir -p `dirname $SVNDIR/$path` &&
+			svn checkout --ignore-externals $SVNURL/$path $SVNDIR/$path
+		then
+			echo "Checked out $path"
+		else
+			$BINDIR/dologmsg "!log LocalisationUpdate failed: SVN checkout of $path failed"
+			echo "Checking out $path FAILED."
+			exit 1
+		fi
+	fi
+done
+echo "SVN checkout updated."
 
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
 if [ -z "$mwVerDbSets" ]; then
-	$BINDIR/dologmsg "!log LocalisationUpdate failed"
-	echo "FAILED"
+	$BINDIR/dologmsg "!log LocalisationUpdate failed: mwversionsinuse returned empty list"
+	echo "Obtaining MediaWiki version list FAILED"
 	exit 1
 fi
 
@@ -35,6 +57,7 @@ do
 	if l10nupdate-2 \
 		  --wiki="$mwDbName" \
 		  --outdir=/home/wikipedia/common/php-"$mwVerNum"/cache/l10n \
+		  --svnurl=$SVNDIR \
 		  --all \
 		  --quiet
 	then
