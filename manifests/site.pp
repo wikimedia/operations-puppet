@@ -929,6 +929,9 @@ node /db4[4-9]\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db(48|49)$/ { 
 		$db_cluster = "otrsdb"
 		$skip_name_resolve = "false"
+		if $hostname == "db48" { 
+			$writable = "true"
+		}
 	}
 
 	include db::core,
