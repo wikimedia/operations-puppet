@@ -8,95 +8,95 @@
 
 class ganglia {
 
-	#class config {
-		# Variables
-		if $hostname in $decommissioned_servers {
-			$cluster = "decommissioned"
+	
+	# Variables
+	if $hostname in $decommissioned_servers {
+		$cluster = "decommissioned"
+		$deaf = "no"
+	} else {
+		if ! $cluster {
+			$cluster = "misc"
+		}
+		if $ganglia_aggregator {
 			$deaf = "no"
 		} else {
-			if ! $cluster {
-				$cluster = "misc"
-			}
-			if $ganglia_aggregator {
-				$deaf = "no"
-			} else {
-				$deaf = "yes"
-			}
-		}	
-	
-		$location = "unspecified"
-
-		$ip_prefix = $site ? {
-			"pmtpa" => "239.192.0",
-			"eqiad"	=> "239.192.1",
-			"esams"	=> "239.192.20",
+			$deaf = "yes"
 		}
+	}	
 	
-		$name_suffix = " ${site}"
+	$location = "unspecified"
 
-		# NOTE: Do *not* add new clusters *per site* anymore,
-		# the site name will automatically be appended now,
-		# and a different IP prefix will be used.
-		$ganglia_clusters = {
-			"decommissioned" => {
-				"name"		=> "Decommissioned servers",
-				"ip_oct"	=> "1" },
-			"appserver"	=>	{
-				"name"		=> "Application servers",
-				"ip_oct"	=> "11"	},
-			"imagescaler"	=>	{
-				"name"		=> "Image scalers",
-				"ip_oct"	=> "12" },
-			"api_appserver"	=>	{
-				"name"		=> "API application servers",
-				"ip_oct"	=> "13" },
-			"misc"		=>	{
-				"name"		=> "Miscellaneous",
-				"ip_oct"	=> "8" },
-			"mysql"		=>	{
-				"name"		=> "MySQL",
-				"ip_oct"	=> "5" },
-			"pdf"		=>	{
-				"name"		=> "PDF servers",
-				"ip_oct"	=> "15" },
-			"search"	=>	{
-				"name"		=> "Search",
-				"ip_oct"	=> "4" },
-			"squids_text"	=>	{
-				"name"		=> "Text squids",
-				"ip_oct"	=> "7" },
-			"squids_upload"	=>	{
-				"name"		=> "Upload squids",
-				"ip_oct"	=> "6" },
-			"cache_bits"	=> {
-				"name"		=> "Bits caches",
-				"ip_oct"	=> "21" },
-			"payments"	=> {
-				"name"		=> "Fundraiser payments",
-				"ip_oct"	=> "23" },
-			"bits_appserver"	=> {
-				"name"		=> "Bits application servers",
-				"ip_oct"	=> "24" },
-			"squids_api"		=> {
-				"name"		=> "API squids",
-				"ip_oct"	=> "25" },
-			"ssl"		=> {
-				"name"		=> "SSL cluster",
-				"ip_oct"	=> "26" },
-			"cache_mobile"	=> {
-				"name"		=> "Mobile caches",
-				"ip_oct"	=> "28" },
-		}
-		# NOTE: Do *not* add new clusters *per site* anymore,
-		# the site name will automatically be appended now,
-		# and a different IP prefix will be used.
-		
-		# gmond.conf template variables
-		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
-		$mcast_address = "${ip_prefix}.${ipoct}"	
+	$ip_prefix = $site ? {
+		"pmtpa" => "239.192.0",
+		"eqiad"	=> "239.192.1",
+		"esams"	=> "239.192.20",
+	}
+
+	$name_suffix = " ${site}"
+
+	# NOTE: Do *not* add new clusters *per site* anymore,
+	# the site name will automatically be appended now,
+	# and a different IP prefix will be used.
+	$ganglia_clusters = {
+		"decommissioned" => {
+			"name"		=> "Decommissioned servers",
+			"ip_oct"	=> "1" },
+		"appserver"	=>	{
+			"name"		=> "Application servers",
+			"ip_oct"	=> "11"	},
+		"imagescaler"	=>	{
+			"name"		=> "Image scalers",
+			"ip_oct"	=> "12" },
+		"api_appserver"	=>	{
+			"name"		=> "API application servers",
+			"ip_oct"	=> "13" },
+		"misc"		=>	{
+			"name"		=> "Miscellaneous",
+			"ip_oct"	=> "8" },
+		"mysql"		=>	{
+			"name"		=> "MySQL",
+			"ip_oct"	=> "5" },
+		"pdf"		=>	{
+			"name"		=> "PDF servers",
+			"ip_oct"	=> "15" },
+		"search"	=>	{
+			"name"		=> "Search",
+			"ip_oct"	=> "4" },
+		"squids_text"	=>	{
+			"name"		=> "Text squids",
+			"ip_oct"	=> "7" },
+		"squids_upload"	=>	{
+			"name"		=> "Upload squids",
+			"ip_oct"	=> "6" },
+		"cache_bits"	=> {
+			"name"		=> "Bits caches",
+			"ip_oct"	=> "21" },
+		"payments"	=> {
+			"name"		=> "Fundraiser payments",
+			"ip_oct"	=> "23" },
+		"bits_appserver"	=> {
+			"name"		=> "Bits application servers",
+			"ip_oct"	=> "24" },
+		"squids_api"		=> {
+			"name"		=> "API squids",
+			"ip_oct"	=> "25" },
+		"ssl"		=> {
+			"name"		=> "SSL cluster",
+			"ip_oct"	=> "26" },
+		"cache_mobile"	=> {
+			"name"		=> "Mobile caches",
+			"ip_oct"	=> "28" },
+	}
+	# NOTE: Do *not* add new clusters *per site* anymore,
+	# the site name will automatically be appended now,
+	# and a different IP prefix will be used.
 	
-		$clustername = $ganglia_clusters[$cluster][name]
-		$cname = "${clustername}${name_suffix}"
+	# gmond.conf template variables
+	$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
+	$mcast_address = "${ip_prefix}.${ipoct}"	
+
+	$clustername = $ganglia_clusters[$cluster][name]
+	$cname = "${clustername}${name_suffix}"
 	#}
 
 	#include ganglia::config
@@ -109,10 +109,10 @@ class ganglia {
 		$gmond = "gmond"
 	}
 
-        $gmondpath = $gmond ? {
-                "ganglia-monitor"       => "/etc/ganglia/gmond.conf",
-                default                 => "/etc/gmond.conf"
-        }
+	$gmondpath = $gmond ? {
+	"ganglia-monitor"       => "/etc/ganglia/gmond.conf",
+	default                 => "/etc/gmond.conf"
+	}
 
 
 	# Resource definitions
@@ -149,7 +149,7 @@ class ganglia {
 
 	                file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
 				require => Package[ganglia-monitor],
-        	                ensure => directory;
+		                ensure => directory;
 			}
 
 			file { "/etc/gmond.conf":
@@ -180,16 +180,17 @@ class ganglia {
 			ensure => latest;
 		}
 
-		#file { "/etc/ganglia/gmetad.conf":
-		#	require		=> Package[gmetad],
-		#	content		=> template("ganglia/gmetad.conf.erb"),
-		#	mode		=> 0644,
-		#}
-
-		#service { "gmetad":
-		#	require 	=> File["/etc/ganglia/gmetad.conf"],
-		#	ensure		=> running;
-		#}
 	}
 }
 
+class ganglia::web {
+# Class for the ganglia frontend machine
+	require ganglia,
+		ganglia::collector
+
+	package { "ganglia-webfrontend":
+		ensure => latest;
+		"php5-gd":
+		ensure => latest;
+	}
+}
