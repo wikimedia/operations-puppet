@@ -17,6 +17,7 @@ class exim {
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
 				device => "none",
 				fstype => "tmpfs",
+				options => "defaults",
 				ensure => mounted
 			}
 			
