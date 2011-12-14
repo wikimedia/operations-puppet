@@ -154,7 +154,7 @@ class exim {
 		}
 		
 		if ( $enable_mailman == "true" ) {
-			include mailman, mailman::listserve
+			include mailman
 		}
 		if ( $enable_mail_relay == "primary" ) or ( $enable_mail_relay == "secondary" ) {
 			include mail_relay
@@ -233,7 +233,7 @@ class mailman {
 	}
 
 	class web-ui {
-		require generic::webserver::static, mailman::base
+		require generic::webserver::static
 
 		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
