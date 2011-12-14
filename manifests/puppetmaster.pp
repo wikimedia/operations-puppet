@@ -228,6 +228,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				hour => 3,
 				minute => 26,
 				ensure => present;
+			removeoldreports:
+				command => "find /var/lib/puppet/reports -type f -ctime +1 -delete",
+				user => puppet,
+				hour => 4,
+				minute => 27,
+				ensure => present;
 		}
 
 		# Purge decommissioned hosts from the stored configs db		
