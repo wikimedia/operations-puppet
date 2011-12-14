@@ -11,7 +11,8 @@ class exim {
 		if $install_type == "heavy" {
 			exec { "mkdir /var/spool/exim4/scan":
 				require => Package[exim4-daemon-heavy],
-				path => "/bin:/usr/bin"
+				path => "/bin:/usr/bin",
+				creates => "/var/spool/exim4/scan"
 			}
 			
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
