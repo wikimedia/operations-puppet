@@ -8,6 +8,14 @@ class exim {
 	class config($install_type="light", $queuerunner="queueonly") {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 
+		if $install_type == "heavy" {
+			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
+				device => "tmpfs",
+				fstype => "tmpfs",
+				ensure => mounted
+			}
+		}
+
 		file {
 			"/etc/default/exim4":
 				require => Package[exim4-config],
