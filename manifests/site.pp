@@ -1113,6 +1113,7 @@ node "gallium.wikimedia.org" {
 node "gilman.wikimedia.org" {
 
 	$exim_signs_dkim = "false"
+	$exim_bounce_collector = "false"
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1137,8 +1138,10 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	if $hostname == "grosley" {
 		$exim_signs_dkim = "true"
+		$exim_bounce_collector = "true"
 	} else {
 		$exim_signs_dkim = "false"
+		$exim_bounce_collector = "false"
 	}
 
 	install_certificate{ "star.wikimedia.org": }
