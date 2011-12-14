@@ -1109,6 +1109,8 @@ node "gallium.wikimedia.org" {
 
 node "gilman.wikimedia.org" {
 
+	$exim_signs_dkim = "false"
+
 	install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { [ "awjrichards", "rfaulk", "nimishg" ]: privileges => ['ALL = NOPASSWD: ALL'] }
@@ -1125,11 +1127,16 @@ node "gilman.wikimedia.org" {
 		misc::jenkins,
 		misc::fundraising
 
-	$exim_signs_dkim = "false"
 
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
+
+	if $hostname == "grosley" {
+		$exim_signs_dkim = "true"
+	} else {
+		$exim_signs_dkim = "false"
+	}
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1156,11 +1163,6 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	if $hostname == "aluminium" {
 		include misc::jenkins
-	}
-	if $hostname == "grosley" {
-		$exim_signs_dkim = "true"
-	} else {
-		$exim_signs_dkim = "false"
 	}
 
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
