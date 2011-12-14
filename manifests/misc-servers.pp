@@ -1458,6 +1458,23 @@ class misc::contint::test {
 	apache_module { ssl: name => "ssl" }
 	apache_site { integration: name => "integration.mediawiki.org" }
 
+	file {
+		# Placing the file in sites-available
+		"/etc/apache2/sites-available/integration.mediawiki.org":
+			path => "/etc/apache2/sites-available/integration.mediawiki.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/integration.mediawiki.org";
+	}
+	# Reload apache whenever apache configuration change
+	exec {	"reload-apache-on-integration-change":
+		command => "/usr/sbin/service apache2 reload",
+		subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
+		refreshonly => true,
+		onlyif => "/usr/sbin/apache2ctl configtest"
+	}
+
 	class jenkins {
 		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
 		# package { "jenkins":
@@ -1504,14 +1521,6 @@ class misc::contint::test {
 				group => wikidev,
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
-			# Placing the file in sites-available	
-			"/etc/apache2/sites-available/integration.mediawiki.org":
-				path => "/etc/apache2/sites-available/integration.mediawiki.org",
-				mode => 0444,
-				owner => root,
-				group => root,
-				source => "puppet:///files/apache/sites/integration.mediawiki.org";
-
 		}
 
 		# run jenkins behind Apache and have pretty URLs / proxy port 80
@@ -1583,14 +1592,6 @@ class misc::contint::test {
 			# Override Apache configuration coming from the testswarm package.
 			"/etc/apache2/conf.d/testswarm.conf":
 				ensure => absent;
-		}
-
-		# Reload apache whenever testswarm checkouts configuration change
-		exec {	"update-testswarm-publish-checkout":
-			command => "/usr/sbin/service apache2 reload",
-			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
-			refreshonly => true,
-			onlyif => "/usr/sbin/apache2ctl configtest"
 		}
 
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
