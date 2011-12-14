@@ -285,6 +285,7 @@ class misc::noc-wikimedia {
 	apache_module { authnz_ldap: name => "authnz_ldap" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
 
 	apache_site { noc: name => "noc.wikimedia.org" }
 	apache_site { graphiteproxy: name => "graphite.wikimedia.org" }

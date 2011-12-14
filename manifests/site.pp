@@ -1060,6 +1060,8 @@ node "fenari.wikimedia.org" {
 		accounts::awjrichards,
 		mediawiki::packages
 
+	install_certificate{ "star.wikimedia.org": }
+
 	apache_module { php5: name => "php5" }
 }
 

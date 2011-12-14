@@ -5,6 +5,7 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
         ServerName noc.wikimedia.org
         
 	DocumentRoot /home/wikipedia/htdocs/noc
@@ -35,4 +36,38 @@
                 Options ExecCGI
         </Directory>
 </VirtualHost>
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+        ServerName noc.wikimedia.org
 
+	DocumentRoot /home/wikipedia/htdocs/noc
+
+        UserDir public_html
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+        SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+
+        <Directory />
+                Order Deny,Allow
+                AllowOverride All
+        </Directory>
+
+	<Directory /home/wikipedia/htdocs/noc/conf>
+		AddDefaultCharset utf-8
+	</Directory>
+
+        <Directory /home/wikipedia/htdocs/noc/cgi-bin>
+                Order Deny,Allow
+                Options ExecCGI
+        </Directory>
+
+</VirtualHost>
