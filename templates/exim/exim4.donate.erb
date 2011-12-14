@@ -115,15 +115,25 @@ dnslookup:
 # Use the system aliasfile /etc/aliases for system domains
 
 system_aliases:
-        driver = redirect
-        domains = +system_domains
-        data = ${lookup{$local_part}lsearch{/etc/aliases}}
-        pipe_transport = address_pipe
-        allow_fail
-        allow_defer
-        forbid_file
+	driver = redirect
+	domains = +system_domains
+	data = ${lookup{$local_part}lsearch{/etc/aliases}}
+	pipe_transport = address_pipe
+	allow_fail
+	allow_defer
+	forbid_file
+	
+<% if exim_bounce_collector == "true" then -%>
+# Deliver bounce-*@donate.wikimedia.org to mbox
+	
+bounce_mail:
+	driver = accept
+	local_parts = ^bounce-
+	domains = +donation_domains
+	transport = bounce_mail_delivery
+<% end -%>
 
-# Deliver *@donate.wikimedia.org to a Maildir directory
+# Deliver remaining *@donate.wikimedia.org to a Maildir
 
 civimail:
 	driver = accept
@@ -152,8 +162,8 @@ remote_smtp:
 # Generic pipe local delivery transport (for use by alias/forward files)
 
 address_pipe:
-        driver = pipe
-        return_output
+	driver = pipe
+	return_output
 
 # Exim appendfile transport for Maildir delivery
 
@@ -162,11 +172,23 @@ civimail_delivery:
 	maildir_format
 	directory = /var/mail/civimail
 	create_directory
-        delivery_date_add
-        envelope_to_add
-        return_path_add
+	delivery_date_add
+	envelope_to_add
+	return_path_add
 	user = civimail
 	group = civimail
+
+<% if exim_bounce_collector == "true" then -%>
+bounce_mail_delivery:
+	driver = appendfile
+	file = /var/mail/bounce
+	delivery_date_add
+	envelope_to_add
+	return_path_add
+	mode = 0660
+	user = civimail
+	group = wikidev
+<% end -%>
 
 ###############
 # Retry rules #
