@@ -1019,16 +1019,7 @@ class misc::fundraising {
 
 	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
-}
-
-
-    # use exim's DKIM signing feature
-    if $exim_signs_dkim == "true" {
-    	$exim_template_use_dkim_block = "true"
-    } else {
-    	$exim_template_use_dkim_block = "false"
-    }
-                                 
+	}
 
 	# civimail user
 	group { civimail:
