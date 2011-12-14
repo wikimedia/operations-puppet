@@ -1467,7 +1467,29 @@ class misc::contint::test {
 				owner => root,
 				group => root,
 				source => "puppet:///files/apache/sites/integration.mediawiki.org";
+			# Let wikidev users maintain the homepage
+			 "/srv/org":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki/integration":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			"/srv/org/mediawiki/integration/index.html":
+				owner => www-data,
+				group => wikidev,
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/index.html";
 		}
+
 		# Reload apache whenever apache configuration change
 		exec {	"reload-apache-on-integration-change":
 			command => "/usr/sbin/service apache2 reload",
@@ -1504,27 +1526,6 @@ class misc::contint::test {
 				group => "wikidev",
 				mode => 0775,
 				ensure => directory;
-			# Let wikidev users maintain the homepage
-			 "/srv/org":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki/integration":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			"/srv/org/mediawiki/integration/index.html":
-				owner => www-data,
-				group => wikidev,
-				mode => 0555,
-				source => "puppet:///files/misc/jenkins/index.html";
 		}
 
 		# run jenkins behind Apache and have pretty URLs / proxy port 80
