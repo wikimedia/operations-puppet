@@ -1580,18 +1580,12 @@ class misc::contint::test {
 				mode    => 0774,
 				owner   => testswarm,
 				group   => www-data;
-			# Apache configuration to publish mediawiki fetches
-			"/etc/apache2/sites-enabled/testswarm-checkouts.conf":
-				source => "puppet:///files/testswarm/testswarm-checkouts.conf",
-				ensure => present,
-				owner  => root,
-				group  => root;
 		}
 
 		# Reload apache whenever testswarm checkouts configuration change
 		exec {	"update-testswarm-publish-checkout":
 			command => "/usr/sbin/service apache2 reload",
-			subscribe => "/etc/apache2/sites-enabled/testswarm-checkouts.conf",
+			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
 			refreshonly => true,
 			onlyif => "/usr/sbin/apache2ctl configtest"
 		}
