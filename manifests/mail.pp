@@ -238,7 +238,7 @@ class mailman {
 		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
 
-		lighttpd_config { "50-mailman": install => true, notify => Service[lighttpd] }
+		lighttpd_config { "50-mailman": install => true }
 
 		Install_certificate["star.wikimedia.org"] -> Lighttpd_config["50-mailman"]
 
