@@ -9,11 +9,23 @@ class exim {
 		package { [ "exim4-config", "exim4-daemon-${install_type}" ]: ensure => latest }
 
 		if $install_type == "heavy" {
+			exec { "mkdir /var/spool/exim4/scan":
+				path => "bin:/usr/bin"
+			}
+			
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
 				device => "tmpfs",
 				fstype => "tmpfs",
 				ensure => mounted
 			}
+			
+			file { "/var/spool/exim4/scan"
+				ensure => directory,
+				owner => Debian-exim,
+				group => Debian-exim,
+			}
+
+			Exec["mkdir /var/spool/exim4/scan"] -> Mount["/var/spool/exim4/scan"] -> File["/var/spool/exim4/scan"]
 		}
 
 		file {
