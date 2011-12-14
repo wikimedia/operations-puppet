@@ -240,7 +240,7 @@ class mailman {
 
 		lighttpd_config { "50-mailman":
 			require => Class["generic::webserver::static"],
-			install => true
+			install => "true"
 		}
 
 		# monitor SSL cert expiry 
