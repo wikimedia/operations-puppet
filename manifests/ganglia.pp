@@ -186,13 +186,13 @@ class ganglia {
 class ganglia::web {
 # Class for the ganglia frontend machine
 	require ganglia,
-		ganglia::collector
+		ganglia::collector,
+		generic::webserver::php5,
+		generic::webserver::php5-mysql
 
 	package { "ganglia-webfrontend":
 		ensure => latest;
 		"php5-gd":
-		ensure => latest;
-		"ganglia":
 		ensure => latest;
 	}
 }
