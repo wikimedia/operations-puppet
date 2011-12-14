@@ -1,3 +1,0 @@
-#! /bin/bash
-# This script belongs in /usr/local/bin/.
-/usr/local/bin/mwscript extensions/LocalisationUpdate/update.php "$@"
