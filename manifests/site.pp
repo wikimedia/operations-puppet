@@ -1542,7 +1542,9 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdah', '/dev/sdai', '/dev/sdaj', '/dev/sdak', '/dev/sdal',
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
-	include standard
+
+	include standard,
+		swift::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1653,7 +1655,12 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard
+	include standard,
+		swift::proxy
+	class { "swift::proxy::config":
+		thumbhost => "ms5.pmtpa.wmnet",
+		memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ]
+	}
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
