@@ -192,5 +192,7 @@ class ganglia::web {
 		ensure => latest;
 		"php5-gd":
 		ensure => latest;
+		"ganglia":
+		ensure => latest;
 	}
 }
