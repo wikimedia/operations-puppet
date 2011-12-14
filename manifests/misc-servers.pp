@@ -1454,28 +1454,32 @@ class misc::contint::test {
 
 	}
 
-	# Common apache configuration
-	apache_module { ssl: name => "ssl" }
-	apache_site { integration: name => "integration.mediawiki.org" }
+	class virtualhost {
+		# Common apache configuration. Setup integration.mediawiki.org
+		apache_module { ssl: name => "ssl" }
+		apache_site { integration: name => "integration.mediawiki.org" }
 
-	file {
-		# Placing the file in sites-available
-		"/etc/apache2/sites-available/integration.mediawiki.org":
-			path => "/etc/apache2/sites-available/integration.mediawiki.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/integration.mediawiki.org";
-	}
-	# Reload apache whenever apache configuration change
-	exec {	"reload-apache-on-integration-change":
-		command => "/usr/sbin/service apache2 reload",
-		subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
-		refreshonly => true,
-		onlyif => "/usr/sbin/apache2ctl configtest"
+		file {
+			# Placing the file in sites-available
+			"/etc/apache2/sites-available/integration.mediawiki.org":
+				path => "/etc/apache2/sites-available/integration.mediawiki.org",
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/apache/sites/integration.mediawiki.org";
+		}
+		# Reload apache whenever apache configuration change
+		exec {	"reload-apache-on-integration-change":
+			command => "/usr/sbin/service apache2 reload",
+			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
+			refreshonly => true,
+			onlyif => "/usr/sbin/apache2ctl configtest"
+		}
 	}
 
 	class jenkins {
+		require misc::contint::test::virtualhost
+
 		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
 		# package { "jenkins":
 		#	ensure => present,
@@ -1544,6 +1548,8 @@ class misc::contint::test {
 	}
 
 	class testswarm {
+		require misc::contint::test::virtualhost
+
 		# Testswarm is configured using the debian package
 		package { testswarm: ensure => latest; }
 
