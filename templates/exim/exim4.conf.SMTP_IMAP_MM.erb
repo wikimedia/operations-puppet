@@ -28,7 +28,7 @@ MAILMAN_GID = list
 
 <% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
 # MySQL lookups (OTRS)
-hide mysql_servers =  db9.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db10.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
+hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
 # LDAP lookups (Office)
 ldap_default_servers = sanger.wikimedia.org
