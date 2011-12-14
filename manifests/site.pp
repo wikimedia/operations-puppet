@@ -1016,7 +1016,10 @@ node "dobson.wikimedia.org" {
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
 
-	include	standard,
+	include	base,
+		ganglia,
+		exim::simple-mail-sender,
+		ntp::server,
 		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics
@@ -1806,9 +1809,9 @@ node "sodium.wikimedia.org" {
 	include base,
 		ganglia,
 		nrpe,
-		mailman,
 		spamassassin,
-		backup::client
+		backup::client,
+		certificates::star_wikimedia_org
 
 	class { exim::roled:
 		local_domains => [ "+system_domains", "+mailman_domains" ],
