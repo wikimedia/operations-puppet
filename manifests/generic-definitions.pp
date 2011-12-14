@@ -98,7 +98,7 @@ define lighttpd_config($install="false") {
 		file { "/etc/lighttpd/conf-available/${title}.conf":
 			source => "puppet:///files/lighttpd/${title}.conf",
 			owner => root,
-			group => lighttpd,
+			group => www-data,
 			mode => 0444,
 			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
 		}
