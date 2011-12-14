@@ -1806,6 +1806,7 @@ node "sodium.wikimedia.org" {
 	include base,
 		ganglia,
 		nrpe,
+		mailman,
 		spamassassin,
 		backup::client,
 		certificates::star_wikimedia_org
