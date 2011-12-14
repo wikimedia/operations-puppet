@@ -233,6 +233,8 @@ class mailman {
 	}
 
 	class web-ui {
+		include generic::webserver::static
+		
 		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
 
