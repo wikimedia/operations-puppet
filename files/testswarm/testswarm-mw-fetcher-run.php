@@ -51,6 +51,7 @@ switch( $mode ) {
 			'debug'  => false,
 			'root'   => '/var/lib/testswarm/mediawiki-trunk',
 			'svnUrl' => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
+			'testPattern' => '/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2',
 			'minRev' => 105305,
 		);
 		break;
@@ -63,4 +64,15 @@ switch( $mode ) {
 require_once( __DIR__ . '/testswarm-mw-fetcher.php' );
 
 $main = new TestSwarmMWMain( $options );
-$main->tryFetchNextRev();
+
+//$rev = $main->tryFetchNextRev();
+$rev = $main->getLastCheckoutRevId();
+
+$api = new TestSwarmAPI(
+	$main
+	, 'MediaWiki'
+	, 'AuThToKeN'
+	#, 'http://localhost/testswarm/'
+	, 'https://localhost:8443/testswarm/'
+);
+var_dump( $api->doAddJob( $rev ) );

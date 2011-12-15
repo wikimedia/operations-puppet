@@ -54,12 +54,15 @@ class TestSwarmMWMain {
 	/** Path to log file */
 	protected $logPath;
 
+	/** URL pattern to add one test. $1 is rev, $2 testname */
+	protected $testPattern = "/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2";
 
 	/** GETTERS **/
 
 	public function getSvnCmd() { return $this->svnCmd; }
 	public function getSvnUrl() { return $this->svnUrl; }
 	public function getLogPath() { return $this->logPath; }
+	public function getTestPattern() { return $this->testPattern; }
 
 
 	/** SETTERS **/
@@ -114,6 +117,10 @@ class TestSwarmMWMain {
 			$this->minRev = $options['minRev'];
 		}
 
+		if ( isset( $options['testPattern'] ) ) {
+			$this->testPattern = $options['testPattern'];
+		}
+
 		return $this;
 	}
 
@@ -124,18 +131,22 @@ class TestSwarmMWMain {
 	public function tryFetchNextRev() {
 		$this->prepareRootDirs();
 
+		$result = false;
 		// Now find out the next revision in the remote repository
-		$next = $this->getNextCheckoutRevId();
-		if ( !$next ) {
+		$nextRev = $this->getNextCheckoutRevId();
+		if ( !$nextRev ) {
 			$this->debug( 'No next revision', __METHOD__ );
-			return false;
 		} else {
 			// And install it
-			$fetcher = new TestSwarmMWFetcher( &$this, $next );
-			return $fetcher->run();
+			$fetcher = new TestSwarmMWFetcher( &$this, $nextRev );
+			$result = $fetcher->run();
+			if( $result === true ) {
+				return $nextRev;
+			}
 		}
-	}
 
+		return $result;
+	}
 
 	/** SVN REVISION HELPERS **/
 
@@ -247,7 +258,7 @@ class TestSwarmMWMain {
 	 * @return Array of paths relevant for an install.
 	 */
 	public function getPathsForRev( $id ) {
-		if ( !is_int( $id ) ) {
+		if ( !is_numeric( $id ) ) {
 			throw new Exception( __METHOD__ . ': Given non numerical revision' );
 		}
 
@@ -498,6 +509,97 @@ class TestSwarmMWFetcher {
 		 * #$wgDebugLogFile = dirname( __FILE__ ) . '/build/debug.log';
 		 * $wgDebugDumpSql = true;
 		 */
+		return true;
+	}
+}
+
+class TestSwarmAPI {
+	public $URL;
+	private $user;
+	private $authToken;
+
+	/**
+	 * Initialize a testswarm instance
+	 * @param $user String A testswarm username
+	 * @param $authtoken String associated user authentication token
+	 * @param $URL String URL to the testswarm instance. Default:
+	 * http://localhost/testswarm
+	 */
+	public function __construct( TestSwarmMWMain $context, $user, $authtoken,
+		$URL = 'http://localhost/testswarm'
+	) {
+		$this->context   = $context;
+		$this->URL       = $URL;
+		$this->user      = $user;
+		$this->authToken = $authtoken;
+
+		// FIXME check user auth before continuing.
+	}
+
+	/**
+	 * Add a job to the Testswarm instance
+	 * FIXME: lot of hardcoded options there 8-)
+	 */
+	public function doAddJob( $revision ) {
+		$params = array(
+			"state"    => "addjob",
+			"output"   => "dump",
+			"user"     => $this->user,
+			"auth"     => $this->authToken,
+			"max"      => 3,
+			"job_name" => "MediaWiki trunk r{$revision}",
+			"browsers" => "popularbetamobile",
+		);
+		$query = http_build_query( $params );
+
+		$localPaths = $this->context->getPathsForRev( $revision );
+
+		$filenames = array_map( 'basename',
+			glob( $localPaths['mw'] . "/tests/qunit/suites/resources/*/*.js" )
+		);
+
+		# Append each of our test file to the job query submission
+		foreach( $filenames as $filename) {
+            if ( substr( $filename, -8 ) === '.test.js' ) {
+                $suiteName = substr( $filename, 0, -8 );
+				$pattern = $this->context->getTestPattern();
+
+				$testUrl = str_replace( array( '$1', '$2' ),
+					array( rawurlencode($revision), rawurlencode($suiteName) ),
+					$pattern
+				);
+                $query .=
+                    "&suites[]=" . rawurlencode( $suiteName ) .
+                    "&urls[]=" . $testUrl."\n";
+            }
+		}
+
+		//print "Testswarm base URL: {$this->URL}\n";
+		//print "Queries: $query\n";
+
+		# Forge curl request and submit it
+		$ch = curl_init();
+		curl_setopt_array( $ch, array(
+			  CURLOPT_RETURNTRANSFER => 1
+			, CURLOPT_USERAGENT => "TestSwarm-fetcher (ContInt; hashar)"
+			, CURLOPT_SSL_VERIFYHOST => FALSE
+			, CURLOPT_SSL_VERIFYPEER => FALSE
+			, CURLOPT_POST => TRUE
+			, CURLOPT_URL  => $this->URL
+			, CURLOPT_POSTFIELDS => $query
+		));
+		$ret = curl_exec( $ch );
+		$err = curl_errno( $ch );
+		$error = curl_error( $ch );
+
+		if( !$ret ) {
+			$this->context->log(
+				"Curl returned an error: #$err, $error\n"
+			);
+			return false;
+		}
+
+		$this->context->log( $ret );
 		return true;
 	}
 }
