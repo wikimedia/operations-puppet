@@ -1542,12 +1542,12 @@ class misc::contint::test {
 
 		# install scripts
 		file {
-			"/etc/testswarm/fetcher.ini":
+			"/etc/testswarm/fetcher-sample.ini":
 				require => [
 					Systemuser[testswarm],
 					Package["testswarm"]
 				],
-				source  => "puppet:///files/testswarm/fetcher.ini",
+				source  => "puppet:///files/testswarm/fetcher-sample.ini",
 				mode    => 0660,
 				owner   => testswarm,
 				group   => testswarm;
