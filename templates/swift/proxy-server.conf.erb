@@ -29,7 +29,7 @@ use = egg:swift#healthcheck
 
 [filter:cache]
 use = egg:swift#memcache
-memcache_servers = <%= scope.lookupvar("swift::proxy::config::cluster_settings['memcached_servers']").join(",") %>
+memcache_servers = <%= scope.lookupvar('swift::proxy::config::memcached_servers').join(",") %>
 
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.

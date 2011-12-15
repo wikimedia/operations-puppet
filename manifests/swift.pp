@@ -123,6 +123,9 @@ class swift::proxy($cluster_settings=undef) {
 #		a hash with all necessary variables for proxy config populated
 class swift::proxy::config($cluster_settings=undef) {
 
+
+	$memcached_servers = [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3
+.wikimedia.org:11211" ]
 	file { "/etc/swift/proxy-server.conf":
 		owner => swift,
 		group => swift,
