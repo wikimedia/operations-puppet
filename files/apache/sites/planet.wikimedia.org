@@ -1,3 +1,12 @@
+# make all planet requests go to http instead of ssl
+
+<VirtualHost 208.80.152.162:443>
+	ServerName planet.wikimedia.org
+	ServerAlias planet.wikipedia.org planet.wikipedia.com *.planet.wikimedia.org
+
+	RewriteEngine on
+	RewriteRule ^/(.*)$ http://planet.wikimedia.org/$1 [R=301]
+
 <VirtualHost 208.80.152.162:80>
 	ServerName planet.wikimedia.org
 	ServerAlias planet.wikipedia.org planet.wikipedia.com
