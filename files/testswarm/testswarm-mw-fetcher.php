@@ -393,8 +393,8 @@ class TestSwarmMWFetcher {
 		$this->main->log( "Run for r{$this->svnRevId} started", __METHOD__ );
 
 		$this->doCheckout();
-		#$this->doInstall();
-		#$this->doAppendSettings();
+		$this->doInstall();
+		$this->doAppendSettings();
 
 		/**
 		 * @todo FIXME:
