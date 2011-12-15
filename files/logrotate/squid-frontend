@@ -1,3 +1,7 @@
+######################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/logrotate/squid-frontend
+######################################################################
 #
 #	Logrotate fragment for squid.
 #
