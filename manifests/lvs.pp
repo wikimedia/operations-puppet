@@ -150,16 +150,7 @@ class lvs::configuration {
 		},
 		'labs' => {
 			'text' => {
-				'pmtpa' => { 'wikimedialb' => "208.80.153.193", 'wikipedialb' => "208.80.153.197", 'wiktionarylb' => "208.80.153.198", 'wikiquotelb' => "208.80.153.199", 'wikibookslb' => "208.80.153.200", 'wikisourcelb' => "208.80.153.201", 'wikinewslb' => "208.80.153.202", 'wikiversitylb' => "208.80.153.203", 'mediawikilb' => "208.80.153.204", 'foundationlb' => "208.80.153.205" },
-			},
-			'https' => {
-				'pmtpa' => { 'wikimedialbsecure' => "208.80.153.193" },
-			},
-			'bits' => {
-				'pmtpa' => { 'bitslb' => "208.80.153.196" },
-			},
-			'upload' => {
-				'pmtpa' => { 'uploadlb' => "208.80.153.206" },
+				'pmtpa' => "10.4.0.4",
 			},
 			'apaches' => undef,
 			'rendering' => undef,
