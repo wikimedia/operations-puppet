@@ -1589,7 +1589,7 @@ class misc::contint::test {
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
 		cron {
 			testswarm-fetcher-mw-trunk:
-				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) > mediawiki-trunk/cron.log 2>&1",
+				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
 				user => testswarm,
 				require => Systemuser[testswarm],
 				ensure => present;
