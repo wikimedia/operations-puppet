@@ -152,16 +152,19 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
+			'https' => undef,
 			'bits' => {
 				# dummy IP for now
 				'pmtpa' => "208.80.153.196",
 			},
+			'upload' => undef,
 			'apaches' => undef,
 			'rendering' => undef,
 			'api' => undef,
 			'search_pool1' => undef,
 			'search_pool2' => undef,
 			'search_pool3' => undef,
+			'mobile' => undef,
 		}
 	}
 
