@@ -1235,6 +1235,11 @@ class misc::fundraising {
 			mode => 0440,
 			owner => root,
 			group => root;
+		"/usr/local/bin/collect_exim_stats_via_gmetric":
+			source => "puppet:///files/exim/collect_exim_stats_via_gmetric",
+			mode => 0755,
+			owner => root,
+			group => root;
 
 		# other stuff
 		"/etc/php5/cli/php.ini":
