@@ -12,9 +12,9 @@ class mysql {
 		ensure => "installed";
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
-		package { xtrabackup:	
-			ensure => "installed";
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
+			ensure => latest;
 		}
 	}
 
@@ -133,7 +133,7 @@ class mysql {
 			}
 		}
 
-		if $db_cluster { 
+		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
 		} else { 
 			$ibsize = "500M"
@@ -163,6 +163,10 @@ class mysql {
 			$large_slave_trans_retries = "false"
 		}
 
+		if ! $skip_name_resolve { 
+			$skip_name_resolve = "true"
+		}
+
 		if $writable { 
 			$read_only = "false"
 		} else { 
@@ -182,6 +186,21 @@ class mysql {
 				group => root,
 				mode => 0555,
 				source => "puppet:///files/mysql/snaprotate.pl"
+		}
+
+		if $snapshot_host {
+			cron { snaprotate:
+				command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G",
+				require => File["/usr/local/sbin/snaprotate.pl"],
+				user => root,
+				minute => 15,
+				hour => '*/8',
+				ensure => present;
+			}
+		} else { 
+			cron { snaprotate:
+				ensure => absent;
+			}
 		}
 	}
 

@@ -1,6 +1,10 @@
 # Varnish VCL include file for bits
 
 sub vcl_recv {
+	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
+        if (req.request == "POST") {
+                error 403 "HTTP method not allowed.";
+        }
 	/* Only accept requests for domain bits.wikimedia.org at this time */
 	if (req.http.host == "bits.wikimedia.org") {
 		return (lookup);

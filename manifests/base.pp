@@ -8,6 +8,7 @@ import "nagios.pp"
 import "nrpe.pp"
 import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
+import "../private/manifests/mail.pp"
 
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
@@ -335,6 +336,98 @@ class base::environment {
 	}
 }
 
+#	Class: base::platform
+#
+#	This class implements hardware platform specific configuration
+class base::platform {
+	class common($lom_serial_port, $lom_serial_speed) {
+		$console_upstart_file = "
+# ${lom_serial_port} - getty
+#
+# This service maintains a getty on ${lom_serial_port} from the point the system is
+# started until it is shut down again.
+
+start on stopped rc RUNLEVEL=[2345]
+stop on runlevel [!2345]
+
+respawn
+exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
+"
+
+		file { "/etc/init/${lom_serial_port}":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => $console_upstart_file;
+		}
+		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
+	}
+	
+	class generic {
+		class dell {
+			$lom_serial_port = "ttyS1"
+		}
+
+		class sun {
+			$lom_serial_port = "ttyS0"
+			$lom_serial_speed = "9600"
+
+			# Udev rules for Solaris-style disk names
+			@file {
+				"/etc/udev/scripts":
+					ensure => directory,
+					tag => "thumper-udev";
+				"/etc/udev/scripts/solaris-name.sh":
+					source => "puppet:///files/udev/solaris-name.sh",
+					owner => root,
+					group => root,
+					mode => 0555,
+					tag => "thumper-udev";
+				"/etc/udev/rules.d/99-thumper-disks.rules":
+					require => File["/etc/udev/scripts/solaris-name.sh"],
+					source => "puppet:///files/udev/99-thumper-disks.rules",
+					owner => root,
+					group => root,
+					mode => 0444,
+					notify => Exec["reload udev"],
+					tag => "thumper-udev";
+			}
+			
+			exec { "reload udev":
+				command => "/sbin/udevadm control --reload-rules",
+				refreshonly => true
+			}
+		}
+	}
+
+	class sun-x4500 inherits base::platform::generic::sun {
+
+		File <| tag == "thumper-udev" |>
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+	}
+
+	class sun-x4540 inherits base::platform::generic::sun {
+		File <| tag == "thumper-udev" |>
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
+	}
+
+	case $::productname {
+		"Sun Fire X4500": {
+			$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
+			include sun-x4500
+		}
+		"Sun Fire X4540": {
+			$startup_drives = [ "/dev/sda", "/dev/sdi" ]
+			include sun-x4540
+		}
+		default: {
+			# Do nothing
+		}
+	}
+}
+
 class base {
 
 	case $operatingsystem {
@@ -365,6 +458,7 @@ class base {
 		base::standard-packages,
 		base::monitoring::host,
 		base::environment,
+		base::platform,
 		ssh
 
 	if $realm == "labs" {

@@ -23,7 +23,7 @@ NameVirtualHost *:80
 
 	RewriteEngine on
 	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://gerrit.wikimedia.org/$1 [L,R]
+	RewriteRule ^/(.*)$ https://gerrit.wikimedia.org/$1 [L,R,NE]
 
 	ErrorLog /var/log/apache2/error.log
 

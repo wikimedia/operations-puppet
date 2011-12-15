@@ -1,0 +1,12 @@
+#!/bin/sh
+
+PATH=/usr/bin:/bin
+export PATH
+
+# Add an apache reload, since puppet is stupid and will botch
+# catalogues in a way that does not show up on the clients and causes
+# an insane amount of confusion. A reload makes it regenerate them properly.
+#/etc/init.d/apache2 reload
+
+# This bug has allegedly been fixed, so let's try with touch site.pp again
+touch /etc/puppet/manifests/site.pp

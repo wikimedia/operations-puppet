@@ -1,0 +1,21 @@
+# Exim filter
+
+if first_delivery then
+	if $acl_m0 is not "trusted relay" then
+		# Remove any SpamAssassin headers and add local ones
+		headers remove X-Spam-Score:X-Spam-Report:X-Spam-Checker-Version:X-Spam-Status:X-Spam-Level
+	endif
+	if $acl_m0 is not "" and $acl_m0 is not "trusted relay" then
+		headers add "X-Spam-Score: $acl_m0"
+		headers add "X-Spam-Report: $acl_m1"
+	endif
+endif
+
+<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+# Mailing list privacy protection
+if foranyaddress $h_To:,$h_Cc: ( $thisaddress matches "\\N^(<%= scope.lookupvar('exim::listserve::private::mailing_lists').join("|") %>)@(lists\.|mail\.)?wiki[mp]edia\.org$\\N" ) then
+	if foranyaddress $recipients ( $thisaddress matches "\\N@lists\.wikimedia\.org$\\N" and $thisaddress does not match "\\N^(<%= scope.lookupvar('exim::listserve::private::mailing_lists').join("|") %>)@\\N" ) then
+		fail text "Message rejected for privacy protection: The list of recipients contains both private and public mail lists"
+	endif
+endif
+<% end -%>

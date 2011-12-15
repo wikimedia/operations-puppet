@@ -86,37 +86,6 @@ class misc::install-server {
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
 		}
-
-		## allow other tftp servers to rsync /srv/tftpboot on the master
-
-		if ! $tftpboot_server_type {
-			$tftpboot_server_type = 'slave'
-		}
-
-		if ( $tftpboot_server_type == 'master' ) {
-			class { 'generic::rsyncd': config => "tftpboot" }
-
-			$rsync_iptables_command = "
-				/sbin/iptables -F rsync;
-				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
-				/sbin/iptables -A rsync -s 208.80.154.10 -j ACCEPT;
-				/sbin/iptables -A rsync -j DROP;
-				/sbin/iptables -I INPUT -p tcp --dport 873 -j rsync
-				"
-
-			exec { rsync-firewall-rules:
-				command => $rsync_iptables_command,
-				onlyif => "/sbin/iptables -N rsync",
-				path => "/sbin",
-				timeout => 5,
-				user => root
-			}
-		}
-
-		if ( $tftpboot_server_type == 'slave' ) {
-
-			cron { rsync_tftpboot : command => "rsync -a tftp_mover@brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
-		}
 	}
 
 	class caching-proxy {
@@ -301,6 +270,7 @@ class misc::noc-wikimedia {
 	apache_module { authnz_ldap: name => "authnz_ldap" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
 
 	apache_site { noc: name => "noc.wikimedia.org" }
 	apache_site { graphiteproxy: name => "graphite.wikimedia.org" }
@@ -318,12 +288,9 @@ class misc::noc-wikimedia {
 class misc::blog-wikimedia {
 	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
 
-	require apaches::packages
+	require apaches::packages,
+		generic::php5-gd
 	
-	package { php5-gd:
-		ensure => latest;
-	}	
-
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
 			path => "/etc/apache2/sites-available/blog.wikimedia.org",
@@ -658,9 +625,8 @@ class misc::rt::server {
 		refreshonly => true;
 	}
 
-	lighttpd_config { rt: 
+	lighttpd_config { "10-rt": 
 		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
-		name => "10-rt.conf"
 	}
 
 	service { lighttpd:
@@ -1015,7 +981,7 @@ class misc::jenkins {
 	}
 
 	# Nagios monitoring
-	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
 	#file {
 		#jenkins stuffs
@@ -1037,10 +1003,9 @@ class misc::fundraising {
 	#what is currently on grosley
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
-	require mysql::client
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
-}
+	}
 
 	# civimail user
 	group { civimail:
@@ -1226,6 +1191,12 @@ class misc::fundraising {
 			owner => root,
 			group => root;
 
+		"/etc/exim4/wikimedia.org-fundraising-private.key":
+			mode => 0440,
+			owner => root,
+			group => Debian-exim,
+			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
+
 		"/etc/dovecot/dovecot.conf":
 			source => "puppet:///files/dovecot/dovecot.donate.conf",
 			mode => 0444,
@@ -1247,6 +1218,11 @@ class misc::fundraising {
 		"/etc/sudoers.d/nrpe_fundraising":
 			source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
 			mode => 0440,
+			owner => root,
+			group => root;
+		"/usr/local/bin/collect_exim_stats_via_gmetric":
+			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric",
+			mode => 0755,
 			owner => root,
 			group => root;
 
@@ -1375,16 +1351,15 @@ class misc::monitoring::htcp-loss {
 class misc::udp2log::aft {
 	
 	# TODO: add system_role
-	# FIXME: add mw-udp2log-aft logrotate file to the repo
 	file {
 		"/etc/init.d/udp2log-aft":
 			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/udp2log-aft";
-		#"/etc/logrotate.d/mw-udp2log-aft":
-		#	source => "puppet:///files/logrotate/mw-udp2log-aft",
-		#	mode => 0444;
+		"/etc/logrotate.d/aft-udp2log":
+			mode => 0444,
+			source => "puppet:///files/logrotate/aft-udp2log";
 	}
 
 	service {
@@ -1467,6 +1442,7 @@ class misc::contint::test {
 				owner => root,
 				group => root,
 				source => "puppet:///files/apache/sites/integration.mediawiki.org";
+
 			# Let wikidev users maintain the homepage
 			 "/srv/org":
 					mode => 0755,
@@ -2038,12 +2014,17 @@ class misc::l10nupdate {
 	# Make sure the log directory exists and has adequate permissions.
 	# It's called l10nupdatelog because /var/log/l10nupdate was used
 	# previously so it'll be an existing file on some systems.
-	# Also set up log rotation
+	# Also create the dir for the SVN checkouts, and set up log rotation
 	file {
 		"/var/log/l10nupdatelog/":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
+			ensure => directory;
+		"/var/lib/l10nupdate":
+			owner => l10nupdate,
+			group => wikidev,
+			mode => 0755,
 			ensure => directory;
 		"/etc/logrotate.d/l10nupdate":
 			source => "puppet:///files/logrotate/l10nupdate",
@@ -2200,6 +2181,10 @@ class misc::ircecho {
 }
 
 class misc::racktables {
+	# When this class is chosen, ensure that apache, php5-common, php5-mysql are 
+	# installed on the host via another package set.
+
+	system_role { "misc::racktables": description => "Racktables" }
 
 	if $realm == "labs" {
 		$racktables_host = "$instancename.${domain}"
@@ -2211,16 +2196,13 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
-	include passwords::misc::racktables,
-		generic::webserver::php5,
-		generic::webserver::php5-mysql,
-		mysql::client
+	include generic::mysql::client,
+		generic::php5-gd
 
-	package { [ "php5-gd", "mysql-server" ]:
-		ensure => latest;
+	service { apache2:
+		subscribe => Package[libapache2-mod-php5],
+		ensure => running;
 	}
-
-	$racktables_mysql_pass = $passwords::misc::racktables::racktables_mysql_pass
 
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
@@ -2230,18 +2212,46 @@ class misc::racktables {
 		notify => Service["apache2"],
 		content => template('apache/sites/racktables.wikimedia.org.erb'),
 		ensure => present;
-
-		"/usr/local/bin/racktables_mysql_pass":
-		owner => root,
-		group => root,
-		mode => 0550,
-		content => template("misc/passwordScripts/racktables_mysql_pass.erb"),
-		ensure => present;
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
-	apache_module { proxy: name => "proxy" }
 	apache_module { ssl: name => "ssl" }
+}
+
+# http://planet.wikimedia.org/
+class misc::planet {
+	system_role { "misc::planet": description => "Planet weblog aggregator" }
+
+	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	file {
+		"/etc/apache2/sites-available/planet.wikimedia.org":
+			path => "/etc/apache2/sites-available/planet.wikimedia.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/planet.wikimedia.org";
+	}
+
+	apache_site { planet: name => "planet.wikimedia.org" }
+
+	package { "python2.6":
+		ensure => latest;
+	}
+}
+
+# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
+class misc::civicrm {
+	system_role { "misc::civicrm": description => "CiviCRM server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "contacts.wikimedia.org" }
+	apache_site { contacts-ssl: name => "contacts.wikimedia.org-ssl" }
+
+	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
 }

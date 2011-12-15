@@ -1238,32 +1238,6 @@ class accounts {
 		}
         }
 
-	class tftp_mover inherits baseaccount {
-		$username = "tftp_mover"
-		$realname = "tftp_mover"
-		$uid = 10010
-		$gid = 34
-
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
-
-			ssh_authorized_key {
-				"root@carbon":
-					ensure  => present,
-					user    => $username,
-					type    => "ssh-rsa",
-					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEArS8yzB2McGHb1HvIe76G8/lp5X2nBJwMEdIYMgSj5EzAEhWjcbq8imNJzvENdnpfjV4rzmB4csHyesDpFeQGXt6+EyOI9V87x4URbQ4dIyy1iJIc6fsxT7xwELlxjMwBmabdUBL3F2yQWM1ZKUKFgUYolFbyAA5hJqw3KGx3NbGSVaT3IuFAxbiAj6juPoZBgNT/2EP92+Ksvq4KkLSbIN1hTtk9yyb48YLz4MCRrL7SGizSTDVpbPIIEt5DkWbRpfcmtnVk+Kn5xIeGS5QEFbTK9xiu8rR6GTJHJr0qbO4BQMySoFEcqcrx43sDPLDFgRCoV2ILmSFXQDF4WUPVJQ==";
-				"root@hooft":
-					ensure  => present,
-					user    => $username,
-					type    => "ssh-rsa",
-					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAyuHKnUONpEFVOM+dJZEj+ZqpE2hVE7KUFopgrYu+D9KJ/fKuq9SIDN8M5yBiYC7muna76/1E8oYHMUlE8pJDm6vwT9WaaVw3otGChr4tSKdSysnarz1+MfvTB1Y123BF5d4NZbfesWTs40V1goz59R9eTn63CfiivbSfcdLk5YHeBvUUqziBuzVdim5dRGwFDJDg0+2VzaCAqMoDOSw2ULvp1fOEeZYGLMs3b2IYnf7t1c9PupnqggOHlWM4fZsRG6knJKc89jjsm9bxsW6lcuhc9ZVQN2TpQAWHAjqPay69XM55wANMC1b1muf5niif9F2jfEYwpnEDaN6LjBF4hQ==";
-			}
-		}
-        }
-
 	class datasets inherits baseaccount {
 		$username = "datasets"
 		$realname = "datasets"
