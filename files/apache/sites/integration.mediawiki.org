@@ -60,7 +60,7 @@ NameVirtualHost *:443
 			AddType application/x-httpd-php .php
 			php_value include_path .
 
-			DirectoryIndex index.php
+			DirectoryIndex index.html index.php
 		</IfModule>
 
 	</Directory>
@@ -76,7 +76,7 @@ NameVirtualHost *:443
 		AddType application/x-httpd-php .php
 		php_value include_path .
 
-		DirectoryIndex index.php
+		DirectoryIndex index.html index.php
 	</Directory>
 
 	Alias /testswarm "/usr/share/testswarm/site/"
