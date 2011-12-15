@@ -24,7 +24,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require config
 
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
 		ensure => latest;
 	}
 	
@@ -32,25 +32,28 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Move the puppetmaster's SSL files to a separate directory from the client's
 	file {
 		[ "/var/lib/puppet/server", $ssldir ]:
-			require => Package["puppetmaster"],
+			before => Package["puppetmaster"],
 			ensure => directory,
 			owner => puppet,
 			group => root,
 			mode => 0771;
-		[ "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
+		[ "/var/lib/puppet", "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
 			ensure => directory;
 	}
-	
-	exec {
-		"generate hostcert":
+
+	if $config['ca'] != "false" {
+		exec { "generate hostcert":
 			require => File["$ssldir/certs"],
 			command => "/usr/bin/puppet cert generate ${server_name}",
 			creates => "$ssldir/certs/${server_name}.pem";
-		"setup crl dir":
-			require => File["$ssldir/crl"],
-			path => "/usr/sbin:/usr/bin:/sbin:/bin",
-			command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
-			onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
+		}
+	}
+
+	exec { "setup crl dir":
+		require => File["$ssldir/crl"],
+		path => "/usr/sbin:/usr/bin:/sbin:/bin",
+		command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
+		onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
 
 	# Class: puppetmaster::config
@@ -102,8 +105,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => template('puppet/puppetmaster.erb'),
-				require => Package["puppetmaster-passenger"];
+				content => template('puppet/puppetmaster.erb');
+			"/etc/apache2/ports.conf":
+				owner => root,
+				group => root,
+				mode  => 0444,
+				source => "puppet:///files/puppet/ports.conf";
 		}
 
 		apache_module { "passenger":
@@ -124,9 +131,50 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 
+	# Class: puppetmaster::production
+	#
+	# This class handles the Wikimedia Production specific bits of a Puppetmaster
+	class production {
+		$gitdir = "/var/lib/git"
+		
+		file {
+			[ $gitdir, "$gitdir/operations"]:
+				ensure => directory,
+				owner => root,
+				group => root;
+			"$gitdir/operations/private":
+				ensure => directory,
+				owner => root,
+				group => puppet,
+				mode => 0750;
+		}
+		
+		git::clone { "operations/puppet":
+			require => File["$gitdir/operations"],
+			directory => "$gitdir/operations",
+			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
+		}
+
+		file {
+			"$gitdir/operations/puppet/.git/hooks/post-merge":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/post-merge",
+				mode => 0550;
+			"$gitdir/operations/puppet/.git/hooks/pre-commit":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+			"$gitdir/operations/private/.git/hooks/post-merge":
+				source => "puppet:///files/puppet/git/private/post-merge",
+				mode => 0550;
+		}
+		
+		apache_site { "000-default": name => "000-default", ensure => absent }
+	}
+
 	# Class: puppetmaster::labs
 	#
-	# This class handles the Wikimedia Labs specific buts of a Puppetmaster
+	# This class handles the Wikimedia Labs specific bits of a Puppetmaster
 	class labs {
 		include generic::packages::git-core
 		
@@ -138,11 +186,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/usr/local/sbin/puppetsigner.py":
 				ensure => link,
 				target => "/usr/local/lib/instance-management/puppetsigner.py";
-			"/etc/apache2/ports.conf":
-				owner => root,
-				group => root,
-				mode  => 0444,
-				source => "puppet:///files/puppet/ports.conf";
 		}
 
 		cron {
@@ -184,6 +227,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				user => root,
 				hour => 3,
 				minute => 26,
+				ensure => present;
+			removeoldreports:
+				command => "find /var/lib/puppet/reports -type f -ctime +1 -delete",
+				user => puppet,
+				hour => 4,
+				minute => 27,
 				ensure => present;
 		}
 

@@ -105,6 +105,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
+		certificates::digicert_ca,
 		certificates::wmf_ca,
 		certs::groups::ssl-cert
 
@@ -151,6 +152,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 		$cas = $name ? {
 			"star.wikimedia.org" => "Equifax_Secure_CA.pem",
 			"star.wikipedia.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
+			"test-star.wikipedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
 			"star.wiktionary.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikiquote.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikibooks.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
@@ -276,4 +278,24 @@ class certificates::rapidssl_ca {
 	}
 	create_certificate_hash { "RapidSSL_CA": hash => "13b97b27.0" }
 
+}
+
+class certificates::digicert_ca {
+
+	include certificates::packages
+
+	file {
+		"/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/ssl/DigiCertHighAssuranceCA-3.pem",
+			require => Package["openssl"];
+	}
+
+	exec {
+		'/bin/ln -s /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
+			creates => "/etc/ssl/certs/1445ed77.0",
+			require => File["/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem"];
+	}
 }

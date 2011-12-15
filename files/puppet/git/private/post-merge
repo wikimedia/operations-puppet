@@ -1,0 +1,6 @@
+#!/bin/sh
+
+PATH=/usr/bin
+export PATH
+
+git log --pretty=format:'From %H %cd%nFrom: %ae%nDate: %ad%nSubject: [puppet-private] (%h) %s%n%b%n' -1 --name-status | sendmail -i ops@wikimedia.org

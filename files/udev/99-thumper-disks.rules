@@ -1,0 +1,10 @@
+#
+# /etc/udev/rules.d/99-thumper-disks.rules
+# Written on 2009/08/15 by Mark Bergsma <mark@nedworks.org>
+#
+
+# Disk rules
+SUBSYSTEM=="block", KERNEL=="sd*[a-z]", KERNELS=="*:0:0:0", PROGRAM="/etc/udev/scripts/solaris-name.sh %b", ENV{SOLARIS_NAME}="$result", SYMLINK+="disk/by-cntrl/$env{SOLARIS_NAME}"
+
+# Partition rules
+SUBSYSTEM=="block", KERNEL=="sd*[a-z][0-9]*", KERNELS=="*:0:0:0", PROGRAM="/etc/udev/scripts/solaris-name.sh %b %n", ENV{SOLARIS_NAME}="$result", SYMLINK+="disk/by-cntrl/$env{SOLARIS_NAME}"

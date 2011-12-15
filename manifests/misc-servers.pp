@@ -86,37 +86,6 @@ class misc::install-server {
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
 		}
-
-		## allow other tftp servers to rsync /srv/tftpboot on the master
-
-		if ! $tftpboot_server_type {
-			$tftpboot_server_type = 'slave'
-		}
-
-		if ( $tftpboot_server_type == 'master' ) {
-			class { 'generic::rsyncd': config => "tftpboot" }
-
-			$rsync_iptables_command = "
-				/sbin/iptables -F rsync;
-				/sbin/iptables -A rsync -s 91.198.174.113  -j ACCEPT;
-				/sbin/iptables -A rsync -s 208.80.154.10 -j ACCEPT;
-				/sbin/iptables -A rsync -j DROP;
-				/sbin/iptables -I INPUT -p tcp --dport 873 -j rsync
-				"
-
-			exec { rsync-firewall-rules:
-				command => $rsync_iptables_command,
-				onlyif => "/sbin/iptables -N rsync",
-				path => "/sbin",
-				timeout => 5,
-				user => root
-			}
-		}
-
-		if ( $tftpboot_server_type == 'slave' ) {
-
-			cron { rsync_tftpboot : command => "rsync -a tftp_mover@brewster.wikimedia.org:/srv/tftpboot/ /srv/tftp", user => root, minute => 15 }
-		}
 	}
 
 	class caching-proxy {
@@ -301,6 +270,7 @@ class misc::noc-wikimedia {
 	apache_module { authnz_ldap: name => "authnz_ldap" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
 
 	apache_site { noc: name => "noc.wikimedia.org" }
 	apache_site { graphiteproxy: name => "graphite.wikimedia.org" }
@@ -318,12 +288,9 @@ class misc::noc-wikimedia {
 class misc::blog-wikimedia {
 	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
 
-	require apaches::packages
+	require apaches::packages,
+		generic::php5-gd
 	
-	package { php5-gd:
-		ensure => latest;
-	}	
-
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
 			path => "/etc/apache2/sites-available/blog.wikimedia.org",
@@ -658,9 +625,8 @@ class misc::rt::server {
 		refreshonly => true;
 	}
 
-	lighttpd_config { rt: 
+	lighttpd_config { "10-rt": 
 		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
-		name => "10-rt.conf"
 	}
 
 	service { lighttpd:
@@ -1015,7 +981,7 @@ class misc::jenkins {
 	}
 
 	# Nagios monitoring
-	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
 	#file {
 		#jenkins stuffs
@@ -1037,10 +1003,14 @@ class misc::fundraising {
 	#what is currently on grosley
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 	require mysql::client
 	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+=======
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 		ensure => latest;
-}
+	}
 
 	# civimail user
 	group { civimail:
@@ -1226,6 +1196,12 @@ class misc::fundraising {
 			owner => root,
 			group => root;
 
+		"/etc/exim4/wikimedia.org-fundraising-private.key":
+			mode => 0440,
+			owner => root,
+			group => Debian-exim,
+			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
+
 		"/etc/dovecot/dovecot.conf":
 			source => "puppet:///files/dovecot/dovecot.donate.conf",
 			mode => 0444,
@@ -1247,6 +1223,11 @@ class misc::fundraising {
 		"/etc/sudoers.d/nrpe_fundraising":
 			source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
 			mode => 0440,
+			owner => root,
+			group => root;
+		"/usr/local/bin/collect_exim_stats_via_gmetric":
+			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric",
+			mode => 0755,
 			owner => root,
 			group => root;
 
@@ -1299,8 +1280,12 @@ class misc::survey {
 
 	system_role { "misc::survey": description => "limesurvey server" }
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 	require mysql::client
 	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-gd", "php5-mysql" ]:
+=======
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-gd", "php5-mysql", "mysql-client-5.1" ]:
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 		ensure => latest;
 }
 
@@ -1375,16 +1360,15 @@ class misc::monitoring::htcp-loss {
 class misc::udp2log::aft {
 	
 	# TODO: add system_role
-	# FIXME: add mw-udp2log-aft logrotate file to the repo
 	file {
 		"/etc/init.d/udp2log-aft":
 			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/udp2log-aft";
-		#"/etc/logrotate.d/mw-udp2log-aft":
-		#	source => "puppet:///files/logrotate/mw-udp2log-aft",
-		#	mode => 0444;
+		"/etc/logrotate.d/aft-udp2log":
+			mode => 0444,
+			source => "puppet:///files/logrotate/aft-udp2log";
 	}
 
 	service {
@@ -1427,8 +1411,15 @@ class misc::contint::test {
 	class packages {
 		# split up packages into groups a bit for readability and flexibility ("ensure present" vs. "ensure latest" ?)
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 		require generic::webserver::php5
+=======
+		$CI_PHP_packages = [ "libapache2-mod-php5", "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
+		$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
+		$CI_DEV_packages = [ "ant", "imagemagick" ]
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 		$CI_PHP_packages = [ "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
 		$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
 		$CI_DEV_packages = [ "ant", "imagemagick" ]
@@ -1453,12 +1444,24 @@ class misc::contint::test {
 		generic::apt::pin-package { $CI_PHP_packages: }
 
 	}
+=======
+		package { $CI_PHP_packages:
+			ensure => present;
+		}
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 	class virtualhost {
 		# Common apache configuration. Setup integration.mediawiki.org
 		apache_module { ssl: name => "ssl" }
 		apache_site { integration: name => "integration.mediawiki.org" }
+=======
+		package { $CI_DB_packages:
+			ensure => present;
+		}
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 		file {
 			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
@@ -1489,6 +1492,18 @@ class misc::contint::test {
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
 		}
+=======
+		package { $CI_DEV_packages:
+			ensure => present;
+		}
+
+		include svn::client
+
+		include generic::packages::git-core
+
+		# Prefer the PHP packages from Ubuntu
+		generic::apt::pin-package { $CI_PHP_packages: }
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 
 		# Reload apache whenever apache configuration change
 		exec {	"reload-apache-on-integration-change":
@@ -1499,6 +1514,7 @@ class misc::contint::test {
 		}
 	}
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 	class jenkins {
 		require misc::contint::test::virtualhost
 
@@ -1507,7 +1523,13 @@ class misc::contint::test {
 		#	ensure => present,
 		#	require => File["jenkins.list"],
 		#}
+=======
+	# Common apache configuration
+	apache_module { ssl: name => "ssl" }
+	apache_site { integration: name => "integration.mediawiki.org" }
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 		service { 'jenkins':
 			enable => true,
 			ensure => 'running',
@@ -1610,6 +1632,87 @@ class misc::contint::test {
 				ensure => present;
 		}
 
+=======
+	class jenkins {
+		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
+		# package { "jenkins":
+		#	ensure => present,
+		#	require => File["jenkins.list"],
+		#}
+
+		service { 'jenkins':
+			enable => true,
+			ensure => 'running',
+			hasrestart => true,
+			start => '/etc/init.d/jenkins start',
+			stop => '/etc/init.d/jenkins stop';
+		}
+
+		# nagios monitoring
+		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
+
+		file {
+			# Top level jobs folder
+			"/var/lib/jenkins/jobs/":
+				owner => "jenkins",
+				group => "wikidev",
+				mode => 0775,
+				ensure => directory;
+			# Let wikidev users maintain the homepage
+			 "/srv/org":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			 "/srv/org/mediawiki/integration":
+					mode => 0755,
+					owner => www-data,
+					group => wikidev,
+					ensure => directory;
+			"/srv/org/mediawiki/integration/index.html":
+				owner => www-data,
+				group => wikidev,
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/index.html";
+			# Placing the file in sites-available	
+			"/etc/apache2/sites-available/integration.mediawiki.org":
+				path => "/etc/apache2/sites-available/integration.mediawiki.org",
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/apache/sites/integration.mediawiki.org";
+
+		}
+
+		# run jenkins behind Apache and have pretty URLs / proxy port 80
+		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
+
+		apache_module { proxy: name => "proxy" }
+		apache_module { proxy_http: name => "proxy_http" }
+
+		file {
+			"/etc/default/jenkins":
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				source => "puppet:///files/misc/jenkins/etc_default_jenkins";
+			"/etc/apache2/conf.d/jenkins_proxy":
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				source => "puppet:///files/misc/jenkins/apache_proxy";
+		}		
+	}
+
+	class testswarm {
+		# Testswarm is configured using the debian package
+		package { testswarm: ensure => latest; }
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
@@ -2038,12 +2141,17 @@ class misc::l10nupdate {
 	# Make sure the log directory exists and has adequate permissions.
 	# It's called l10nupdatelog because /var/log/l10nupdate was used
 	# previously so it'll be an existing file on some systems.
-	# Also set up log rotation
+	# Also create the dir for the SVN checkouts, and set up log rotation
 	file {
 		"/var/log/l10nupdatelog/":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
+			ensure => directory;
+		"/var/lib/l10nupdate":
+			owner => l10nupdate,
+			group => wikidev,
+			mode => 0755,
 			ensure => directory;
 		"/etc/logrotate.d/l10nupdate":
 			source => "puppet:///files/logrotate/l10nupdate",
@@ -2200,6 +2308,7 @@ class misc::ircecho {
 }
 
 class misc::racktables {
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 
 	if $realm == "labs" {
 		$racktables_host = "$instancename.${domain}"
@@ -2244,4 +2353,79 @@ class misc::racktables {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { ssl: name => "ssl" }
+=======
+	# When this class is chosen, ensure that apache, php5-common, php5-mysql are 
+	# installed on the host via another package set.
+
+	system_role { "misc::racktables": description => "Racktables" }
+
+	if $realm == "labs" {
+		$racktables_host = "$instancename.${domain}"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
+	} else {
+		$racktables_host = "racktables.wikimedia.org"
+		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+	}
+
+	include generic::mysql::client,
+		generic::php5-gd
+
+	service { apache2:
+		subscribe => Package[libapache2-mod-php5],
+		ensure => running;
+	}
+
+	file {
+		"/etc/apache2/sites-available/racktables.wikimedia.org":
+		mode => 444,
+		owner => root,
+		group => root,
+		notify => Service["apache2"],
+		content => template('apache/sites/racktables.wikimedia.org.erb'),
+		ensure => present;
+	}
+
+	apache_site { racktables: name => "racktables.wikimedia.org" }
+	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { ssl: name => "ssl" }
+}
+
+# http://planet.wikimedia.org/
+class misc::planet {
+	system_role { "misc::planet": description => "Planet weblog aggregator" }
+
+	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	file {
+		"/etc/apache2/sites-available/planet.wikimedia.org":
+			path => "/etc/apache2/sites-available/planet.wikimedia.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/planet.wikimedia.org";
+	}
+
+	apache_site { planet: name => "planet.wikimedia.org" }
+
+	package { "python2.6":
+		ensure => latest;
+	}
+}
+
+# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
+class misc::civicrm {
+	system_role { "misc::civicrm": description => "CiviCRM server" }
+
+	class {'generic::webserver::php5': ssl => 'true'; }
+
+	apache_site { contacts: name => "contacts.wikimedia.org" }
+	apache_site { contacts-ssl: name => "contacts.wikimedia.org-ssl" }
+
+	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 }

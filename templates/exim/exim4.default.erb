@@ -1,7 +1,7 @@
 # /etc/default/exim4
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/exim/exim4.default
+### puppet:///templates/exim/exim4.default.erb
 #####################################################################
 
 EX4DEF_VERSION=''
@@ -13,7 +13,7 @@ EX4DEF_VERSION=''
 # 'nodaemon' - no daemon is started at all.
 # 'queueonly' - only a queue running daemon is started, no SMTP listener.
 # setting this to 'no' will also disable queueruns from /etc/ppp/ip-up.d/exim4
-QUEUERUNNER='<%= exim_queuerunner %>'
+QUEUERUNNER='<%= scope.lookupvar('exim::config::queuerunner') %>'
 # how often should we run the queue
 QUEUEINTERVAL='10m'
 # options common to quez-runner and listening daemon

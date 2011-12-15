@@ -24,7 +24,7 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 }
 
 # Creates a system username with associated group, random uid/gid, and /bin/false as shell
-define systemuser($name, $home, $shell="/bin/false", $groups=undef) {
+define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
 	group { $name:
 		name => $name,
 		ensure => present;
@@ -34,7 +34,10 @@ define systemuser($name, $home, $shell="/bin/false", $groups=undef) {
 		require => Group[$name],
 		name => $name,
 		gid => $name,
-		home => $home,
+		home => $home ? {
+			undef => "/var/lib/${name}",
+			default => $home
+		},
 		managehome => true,
 		shell => $shell,
 		groups => $groups,
@@ -65,6 +68,7 @@ define apache_module($name) {
 }
 
 define apache_confd($install="false", $enable="true", $ensure="present") {
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
         case $install {
 	        "true": {
                         file { "/etc/apache2/conf.d/${name}":
@@ -81,6 +85,24 @@ define apache_confd($install="false", $enable="true", $ensure="present") {
                         }
                 }
         }
+=======
+	case $install {
+		"true": {
+			file { "/etc/apache2/conf.d/${name}":
+				source => "puppet:///files/apache/conf.d/${name}",
+				mode => 0444,
+				ensure => $ensure;
+			}
+		}
+		"template": {
+			file { "/etc/apache2/conf.d/${name}":
+				content => template("apache/conf.d/${name}.erb"),
+				mode => 0444,
+				ensure => $ensure;
+			}
+		}
+	}
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 }
 
 class generic::apache::no-default-site {
@@ -90,9 +112,19 @@ class generic::apache::no-default-site {
 }
 
 # Enables a certain Lighttpd config
-define lighttpd_config($name) {
-	file { "/etc/lighttpd/conf-enabled/${name}":
-		ensure => "/etc/lighttpd/conf-available/$name";
+define lighttpd_config($install="false") {
+	if $install == "true" {
+		file { "/etc/lighttpd/conf-available/${title}.conf":
+			source => "puppet:///files/lighttpd/${title}.conf",
+			owner => root,
+			group => www-data,
+			mode => 0444,
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
+		}
+	}
+	
+	file { "/etc/lighttpd/conf-enabled/${title}.conf":
+		ensure => "/etc/lighttpd/conf-available/${title}.conf";
 	}
 }
 
@@ -104,12 +136,12 @@ define nginx_site($install="false", $template="", $enable="true") {
 		$template_name = $template
 	}
 	if ( $enable == "true" ) {
-	        file { "/etc/nginx/sites-enabled/${name}":
-        	        ensure => "/etc/nginx/sites-available/${name}",
+		file { "/etc/nginx/sites-enabled/${name}":
+			ensure => "/etc/nginx/sites-available/${name}",
 		}
 	} else {
-	        file { "/etc/nginx/sites-enabled/${name}":
-        	        ensure => absent;
+		file { "/etc/nginx/sites-enabled/${name}":
+			ensure => absent;
 		}
 	}
 
@@ -135,6 +167,31 @@ class generic::webserver::static {
 	}
 
 	service { lighttpd:
+		ensure => running,
+		hasstatus => $::lsbdistcodename ? {
+			'hardy' => false,
+			default => true
+		}
+	}
+
+	# Monitoring
+	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+}
+
+class generic::webserver::php5( $ssl = 'false' ) {
+	#This will use latest package for php5-common
+
+	package { [ "apache2", "libapache2-mod-php5" ]:
+		ensure => latest;
+	}
+
+	if $ssl == 'true' {
+		apache_module { ssl: name => "ssl" }
+	}
+
+	service { apache2:
+		require => Package[apache2],
+		subscribe => Package[libapache2-mod-php5],
 		ensure => running;
 	}
 
@@ -142,6 +199,7 @@ class generic::webserver::static {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 class generic::webserver::php5 {
 	#This will use latest package for php5-common
 
@@ -159,11 +217,13 @@ class generic::webserver::php5 {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
+=======
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 class generic::webserver::modproxy {
 
-        package { libapache2-mod-proxy-html:
-                ensure => latest;
-        }
+	package { libapache2-mod-proxy-html:
+		ensure => latest;
+	}
 }
 
 class generic::webserver::php5-mysql {
@@ -194,17 +254,16 @@ define sysctl($value) {
 
 class generic::sysctl::high-http-performance($ensure="present") {
 	if $lsbdistrelease != "8.04" {
-	        file { high-http-performance-sysctl:
-	                name => "/etc/sysctl.d/60-high-http-performance.conf",
-	                owner => root,
-	                group => root,
-	                mode => 444,
+		file { high-http-performance-sysctl:
+			name => "/etc/sysctl.d/60-high-http-performance.conf",
+			owner => root,
+			group => root,
+			mode => 444,
 			notify => Exec["/sbin/start procps"],
-	                source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
+			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
 			ensure => $ensure
-	        }
-	}
-	else {
+		}
+	} else {
 		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
@@ -259,16 +318,16 @@ class generic::geoip {
 
 		file {
 			"/usr/share/GeoIP/GeoIP.dat":
-    	                	mode => 0644,
-        	                owner => root,
-                	        group => root,
-                        	source => "puppet:///files/misc/GeoIP.dat";
-                	"/usr/share/GeoIP/GeoIPCity.dat":
-                		mode => 0644,
-                		owner => root,
-                		group => root,
-                		source => "puppet:///files/misc/GeoIPcity.dat";
-                }
+				mode => 0644,
+				owner => root,
+				group => root,
+				source => "puppet:///files/misc/GeoIP.dat";
+			"/usr/share/GeoIP/GeoIPCity.dat":
+				mode => 0644,
+				owner => root,
+				group => root,
+				source => "puppet:///files/misc/GeoIPcity.dat";
+		}
 	}
 }
 
@@ -359,13 +418,13 @@ define interface_up_command($interface, $command) {
 }
 
 define interface_setting($interface, $setting, $value) {
-        if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
-                # Use augeas to add an 'up' command to the interface
-                augeas { "${interface}_${title}":
-                        context => "/files/etc/network/interfaces/*[. = '${interface}']",
-                        changes => "set ${setting} '${value}'",
-                }
-        }
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		# Use augeas to add an 'up' command to the interface
+		augeas { "${interface}_${title}":
+			context => "/files/etc/network/interfaces/*[. = '${interface}']",
+			changes => "set ${setting} '${value}'",
+		}
+	}
 }
 
 class base::vlan-tools {
@@ -522,31 +581,31 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 }
 
 class generic::rsyncd($config) {
-        package { rsync:
-                ensure => latest;
-        }
+	package { rsync:
+		ensure => latest;
+	}
 
-        file {
-                "/etc/rsyncd.conf":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsyncd.conf.$config",
-                        ensure => present;
-                "/etc/default/rsync":
-                        require => Package[rsync],
-                        mode => 0644,
-                        owner => root,
-                        group => root,
-                        source => "puppet:///files/rsync/rsync.default",
-                        ensure => present;
-        }
+	file {
+		"/etc/rsyncd.conf":
+			require => Package[rsync],
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsyncd.conf.$config",
+			ensure => present;
+		"/etc/default/rsync":
+			require => Package[rsync],
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsync.default",
+			ensure => present;
+	}
 
-        service { rsync:
-                require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
-                ensure => running;
-        }
+	service { rsync:
+		require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+		ensure => running;
+	}
 }
 
 # definition to import gkg keys from a keyserver into apt
@@ -668,6 +727,7 @@ class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
 
+<<<<<<< HEAD   (31f1cc use index.html for SSL too)
 class generic::packages::mono-runtime {
 	package { "mono-runtime" : ensure => latest; }
 }
@@ -710,6 +770,53 @@ define git::init($directory) {
 
 class generic::tor {
 	package { [ "tor" ]:
+=======
+# Definition: git::clone
+# Creates a git clone of a specified origin into a top level directory
+#
+# Parameters:
+# - $title
+#		Should be the repository name
+define git::clone($directory, $origin) {
+	require generic::packages::git-core
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	Exec {
+		path => "/usr/bin:/bin",
+		cwd => $directory
+	}
+	exec {
+		"git clone ${title}":
+			command => "git clone ${origin}",
+			creates => "${directory}/${suffix}/.git/config";
+	}
+}
+
+define git::init($directory) {
+	require generic::packages::git-core
+
+	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	exec {
+		"git init ${title}":
+			path => "/usr/bin:/bin",
+			command => "git init",
+			cwd => "${directory}/${suffix}",
+			creates => "${directory}/${suffix}/.git/config";
+	}
+}
+
+class generic::mysql::client {
+	# This conflicts with class mysql::packages.  DO NOT use them together
+	package { "mysql-client-5.1":
+		ensure => latest;
+	}
+}
+
+class generic::php5-gd {
+	package { "php5-gd":
+>>>>>>> BRANCH (e263a0 gar, wrong file location)
 		ensure => latest;
 	}
 }
