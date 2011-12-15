@@ -58,6 +58,12 @@ class standard {
 		exim::simple-mail-sender
 }
 
+#############################
+# Role classes
+#############################
+
+# TODO: Perhaps rename these classes to "role::<class>" to distinguish them
+# from classes inside service manifests
 
 class applicationserver {
 	class parent {
@@ -527,7 +533,77 @@ class protoproxy::ssl {
 		protoproxy::proxy_sites
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
-} 
+}
+
+class swift-cluster {
+	class base {
+		include standard
+
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+
+		# FIXME: replace noop by something better.
+		# We want to define the (default) class parameters for child classes
+		# here, but not actually invoke them. Not all sub classes
+		# want both proxy and storage...
+
+		# Common, default settings for all proxy clusters
+		class { "swift::proxy::config":
+			bind_port => "8080",
+			num_workers => "8",
+			super_admin_key => "thisshouldbesecret",
+			rewrite_account => "placeholder",
+			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+			rewrite_user => "test:tester",
+			rewrite_password => "testing",
+			rewrite_thumb_server => "ms5.pmtpa.wmnet",
+			noop => true
+		}
+		
+		# TODO: pull in iptables rules here, or in the classes below
+	}
+	
+	class eqiad-test inherits swift-cluster::base {
+		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
+		
+		# The eqiad test cluster runs proxy and storage on the same hosts
+
+		# Override settings
+		class { "swift::proxy::config":
+			proxy_address => "http://msfe-test.wikimedia.org:8080",
+			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
+			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
+			noop => false
+		}
+
+		# This class doesn't use any parameters or templates so far
+		include swift::storage
+	}
+	
+	class pmtpa-test inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
+
+		# This cluster uses a different hash_path_suffix - override the
+		# inherited param
+		class { "swift::base": hash_path_suffix => "WHATEVER" }
+
+		# Override settings
+		class { "swift::proxy::config":
+			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+			noop => false
+		}
+		
+		class proxy inherits swift-cluster::pmtpa-test {
+			class { "swift::proxy::config": }
+			
+			include swift::proxy
+		}
+		
+		class storage inherits swift-cluster::pmtpa-test {
+			include swift::storage
+		}
+	}
+}
 
 
 # Default variables
@@ -637,22 +713,7 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
-	include standard
-	$cluster_settings = {
-		bind_port => "8080",
-		num_workers => "8",
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-		proxy_address => "http://msfe-test.wikimedia.org:8080",
-		super_admin_key => "thisshouldbesecret",
-		memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
-		rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
-		rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-		rewrite_user => "test:tester",
-		rewrite_password => "testing",
-		rewrite_thumb_server => "ms5.pmtpa.wmnet"
-	}
-	class { "swift::proxy": cluster_settings => $cluster_settings }
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	include swift-cluster::proxy::eqiad-test
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -1499,11 +1560,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include standard
-	$cluster_settings = {
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-	}
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	include swift-cluster::eqiad-test
 }
 
 node "mchenry.wikimedia.org" {
@@ -1559,12 +1616,8 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdah', '/dev/sdai', '/dev/sdaj', '/dev/sdak', '/dev/sdal',
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
-	$cluster_settings = {
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-	}
-	include standard
 
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	include swift-cluster::pmtpa-test::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1675,22 +1728,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard
-	class { "swift::proxy": 
-		cluster_settings => {
-			bind_port => "8080",
-			num_workers => "8",
-			swift_hash_path_suffix => "fbf7dab9c04865cd",
-			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-			super_admin_key => "thisshouldbesecret",
-			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-			rewrite_account => "placeholder",
-			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-			rewrite_user => "test:tester",
-			rewrite_password => "testing",
-			rewrite_thumb_server => "ms5.pmtpa.wmnet"
-		}
-	}
+	include swift-cluster::pmtpa-test::proxy
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
