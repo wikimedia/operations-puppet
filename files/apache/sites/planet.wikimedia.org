@@ -6,6 +6,7 @@
 
 	RewriteEngine on
 	RewriteRule ^/(.*)$ http://planet.wikimedia.org/$1 [R=301]
+</VirtualHost>
 
 <VirtualHost 208.80.152.162:80>
 	ServerName planet.wikimedia.org
