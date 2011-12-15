@@ -1,6 +1,6 @@
 # swift.pp
 
-class swift::base {
+class swift::base($cluster_settings=undef) {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
@@ -19,19 +19,23 @@ class swift::base {
 			owner => swift,
 			group => swift,
 			mode => 0444;
-		"/etc/swift/swift.conf":
-			require => Package[swift],
-			ensure => present,
-			source => "puppet:///files/swift/etc.swift.conf",
-			owner => swift,
-			group => swift,
-			mode => 0444;
 		"/srv/swift-storage":
 			require => Package[swift],
 			owner => swift,
 			group => swift,
 			mode => 0750,
 			ensure => directory;
+	}
+	if $cluster_settings {
+		file {
+			"/etc/swift/swift.conf":
+				require => Package[swift],
+				ensure => present,
+				content => template("swift/etc.swift.conf.erb")
+				owner => swift,
+				group => swift,
+				mode => 0444;
+		}
 	}
 
 }
@@ -80,14 +84,15 @@ class swift::iptables  {
 	iptables_add_exec{ "swift": service => "swift" }
 }
 
-class swift::proxy {
-	require swift::base
+class swift::proxy($cluster_settings=undef) {
+	class { "swift::base": cluster_settings => $cluster_settings }
 	system_role { "swift:base": description => "swift frontend proxy" }
 
 	package { ["swift-proxy", "python-swauth"]:
 		ensure => present;
 	}
 
+	# we're using http for now; no need for a cert.
 	#install_cert { "swift": privatekey => true }
 
 	# use a generic (parameterized) memcached class
@@ -105,6 +110,8 @@ class swift::proxy {
 			source => "puppet:///files/swift/SwiftMedia/wmf/",
 			recurse => remote;
 	}
+
+	class { "swift::proxy::config": cluster_settings => $cluster_settings }
 }
 
 # Class: swift::proxy::config
@@ -112,12 +119,9 @@ class swift::proxy {
 # This class configures a Swift Proxy
 #
 # Parameters:
-# 	- $thumbhost
-#		The host to fetch image thumbnails from
-#	- $memcached_servers
-#		A list of memcached servers ("<servername>:<portnr>") to use
-class swift::proxy::config($thumbhost=undef, $memcached_servers=[]) {
-	require swift::base
+#	- $cluster_settings
+#		a hash with all necessary variables for proxy config populated
+class swift::proxy::config($cluster_settings=undef) {
 
 	file { "/etc/swift/proxy-server.conf":
 		owner => swift,
@@ -127,8 +131,8 @@ class swift::proxy::config($thumbhost=undef, $memcached_servers=[]) {
 	}
 }
 
-class swift::storage {
-	require swift::base
+class swift::storage($cluster_settings=undef) {
+	class { "swift::base": cluster_settings => $cluster_settings }
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	package { 
