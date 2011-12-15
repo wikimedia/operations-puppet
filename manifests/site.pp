@@ -552,6 +552,7 @@ class swift-cluster {
 			proxy_address => "http://127.0.0.1:8080",
 			num_workers => "8",
 			super_admin_key => "thisshouldbesecret",
+			memcached_servers => [ "127.0.0.1:11211" ],
 			rewrite_account => "placeholder",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
