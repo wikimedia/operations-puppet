@@ -1,6 +1,7 @@
 # swift.pp
 
-class swift::base($cluster_settings=undef) {
+# TODO: document parameters
+class swift::base($hash_path_suffix) {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
@@ -19,25 +20,14 @@ class swift::base($cluster_settings=undef) {
 			owner => swift,
 			group => swift,
 			mode => 0444;
-		"/srv/swift-storage":
+		"/etc/swift/swift.conf":
 			require => Package[swift],
+			ensure => present,
+			content => template("swift/etc.swift.conf.erb"),
 			owner => swift,
 			group => swift,
-			mode => 0750,
-			ensure => directory;
+			mode => 0444;
 	}
-	if $cluster_settings {
-		file {
-			"/etc/swift/swift.conf":
-				require => Package[swift],
-				ensure => present,
-				content => template("swift/etc.swift.conf.erb"),
-				owner => swift,
-				group => swift,
-				mode => 0444;
-		}
-	}
-
 }
 
 # set up iptables rules to protect these hosts
@@ -84,8 +74,9 @@ class swift::iptables  {
 	iptables_add_exec{ "swift": service => "swift" }
 }
 
-class swift::proxy($cluster_settings=undef) {
-	class { "swift::base": cluster_settings => $cluster_settings }
+class swift::proxy {
+	Class[swift::proxy::config] -> Class[swift::proxy] 
+
 	system_role { "swift:base": description => "swift frontend proxy" }
 
 	package { ["swift-proxy", "python-swauth"]:
@@ -110,22 +101,29 @@ class swift::proxy($cluster_settings=undef) {
 			source => "puppet:///files/swift/SwiftMedia/wmf/",
 			recurse => remote;
 	}
-
-	class { "swift::proxy::config": cluster_settings => $cluster_settings }
 }
+
+# TODO: document parameters
 
 # Class: swift::proxy::config
 #
 # This class configures a Swift Proxy
 #
 # Parameters:
-#	- $cluster_settings
-#		a hash with all necessary variables for proxy config populated
-class swift::proxy::config($cluster_settings=undef) {
+class swift::proxy::config(
+	$bind_port="8080",
+	$proxy_address,
+	$memcached_servers,
+	$num_workers,
+	$super_admin_key,
+	$rewrite_account,
+	$rewrite_url,
+	$rewrite_user,
+	$rewrite_password,
+	$rewrite_thumb_server) {
 
-
-	$memcached_servers = [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3
-.wikimedia.org:11211" ]
+	Class[swift::base] -> Class[swift::proxy::config]
+	
 	file { "/etc/swift/proxy-server.conf":
 		owner => swift,
 		group => swift,
@@ -134,8 +132,9 @@ class swift::proxy::config($cluster_settings=undef) {
 	}
 }
 
-class swift::storage($cluster_settings=undef) {
-	class { "swift::base": cluster_settings => $cluster_settings }
+class swift::storage {
+	Class[swift::base] -> Class[swift::storage]
+
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	package { 
@@ -155,6 +154,14 @@ class swift::storage($cluster_settings=undef) {
 			source => "puppet:///files/swift/etc.swift.container-server.conf";
 		"/etc/swift/object-server.conf":
 			source => "puppet:///files/swift/etc.swift.object-server.conf";
+	}
+
+	file { "/srv/swift-storage":
+		require => Package[swift],
+		owner => swift,
+		group => swift,
+		mode => 0750,
+		ensure => directory;
 	}
 
 }
@@ -194,7 +201,8 @@ define swift::create_filesystem($partition_nr="1") {
 #	- $title:
 #		The device to mount (e.g. /dev/sdc1)
 define swift::mount_filesystem() {
-	require swift::base
+	Class[swift::base] -> Definition[swift::mount_filesystem]
+	File["/srv/swift-storage"] -> Definition[swift::mount_filesystem]
 
 	$dev = $title
 	$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
