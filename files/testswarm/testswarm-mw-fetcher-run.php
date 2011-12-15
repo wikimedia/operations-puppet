@@ -64,15 +64,14 @@ switch( $mode ) {
 require_once( __DIR__ . '/testswarm-mw-fetcher.php' );
 
 $main = new TestSwarmMWMain( $options );
+$rev = $main->tryFetchNextRev();
 
-//$rev = $main->tryFetchNextRev();
-$rev = $main->getLastCheckoutRevId();
+$fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
 
 $api = new TestSwarmAPI(
 	$main
-	, 'MediaWiki'
-	, 'AuThToKeN'
-	#, 'http://localhost/testswarm/'
-	, 'https://localhost:8443/testswarm/'
+	, $fetcher_conf['TestSwarmAPI']['username']
+	, $fetcher_conf['TestSwarmAPI']['authtoken']
+	, $fetcher_conf['TestSwarmAPI']['url']
 );
-var_dump( $api->doAddJob( $rev ) );
+$api->doAddJob( $rev );

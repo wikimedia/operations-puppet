@@ -259,7 +259,7 @@ class TestSwarmMWMain {
 	 */
 	public function getPathsForRev( $id ) {
 		if ( !is_numeric( $id ) ) {
-			throw new Exception( __METHOD__ . ': Given non numerical revision' );
+			throw new Exception( __METHOD__ . ": Given non numerical revision " . var_export($id, true) );
 		}
 
 		return array(
@@ -307,7 +307,6 @@ class TestSwarmMWMain {
 	 * @param $path String Path to create ex: /tmp/my/foo/bar
 	 */
 	public function mkdir( $path ) {
-		$this->debug( "Attempting to create directory '$path'...", __METHOD__ );
 		if ( !file_exists( $path ) ) {
 			if ( @mkdir( $path, 0777, true ) ) {
 				$this->debug( "Created directory '$path'", __METHOD__ );
@@ -315,8 +314,6 @@ class TestSwarmMWMain {
 				print "Could not create directory '$path'. Exiting.\n";
 				exit(1);
 			}
-		} else {
-			$this->debug( "Creating directory '$path' aborted. Directory already exist", __METHOD__ );
 		}
 	}
 
@@ -398,8 +395,8 @@ class TestSwarmMWFetcher {
 		$this->main->log( "Run for r{$this->svnRevId} started", __METHOD__ );
 
 		$this->doCheckout();
-		$this->doInstall();
-		$this->doAppendSettings();
+		#$this->doInstall();
+		#$this->doAppendSettings();
 
 		/**
 		 * @todo FIXME:
@@ -407,6 +404,7 @@ class TestSwarmMWFetcher {
 		 * - Make POST request to TestSwarm install to add jobs for these test runs
 		 *   (CURL addjob.php with login/auth token)
 		 */
+		return true;
 	}
 
 	/**
