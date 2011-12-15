@@ -46,8 +46,6 @@ import "stages.pp"
 
 # Initialization
 
-$roles = [ ]
-
 # Base nodes
 
 # Class for *most* servers, standard includes
@@ -67,7 +65,6 @@ class standard {
 
 class applicationserver {
 	class parent {
-		$roles += [ 'appserver' ]
 		$cluster = "appserver"
 		$nagios_group = $cluster
 	}
@@ -109,7 +106,6 @@ class applicationserver {
 	}
 
 	class api inherits parent {
-		$roles += [ 'appserver::api' ]
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
@@ -133,7 +129,6 @@ class applicationserver {
 	}
 
 	class bits inherits parent {
-		$roles += [ 'appserver::bits' ]
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
 
@@ -156,15 +151,12 @@ class applicationserver {
 	}
 
 	class jobrunner {
-		$roles += [ 'appserver::jobrunner' ]
-
 		include jobrunner::packages
 	}
 
 }
 
 class imagescaler {
-	$roles += [ 'imagescaler' ]
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
 	
@@ -192,7 +184,6 @@ class imagescaler {
 
 class db {
 	class core {
-		$roles += [ 'db::core' ]
 		$cluster = "mysql"
 
 		system_role { "db::core": description => "Core Database server" }
@@ -202,7 +193,6 @@ class db {
 	}
 
 	class es {
-		$roles += [ 'db::es' ]
 		$cluster = "mysql"
 		$nagios_group = "es"
 
@@ -245,7 +235,6 @@ class db {
 
 	class fundraising {
 	
-		$roles += [ 'db::fundraising' ]
 		$cluster = "mysql"
 
 		system_role { "db::fundraising": description => "Fundraising Database (${mysql_role})" }
@@ -278,7 +267,6 @@ class db {
 }
 
 class searchserver {
-	$roles += [ 'search' ]
 	$cluster = "search"
 	$nagios_group = "lucene"
 
@@ -296,7 +284,6 @@ class searchserver {
 }
 
 class searchindexer {
-	$roles += [ 'search::indexer' ]
 	$cluster = "search"
 	$nagios_group = "lucene"
 
@@ -314,7 +301,6 @@ class searchindexer {
 }
 
 class text-squid {
-	$roles += [ 'cache::text' ]
 	$cluster = "squids_text"
 
 	if ! $lvs_realserver_ips {
@@ -352,7 +338,6 @@ class text-squid {
 }
 
 class upload-squid {
-	$roles += [ 'cache::upload' ]
 	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
@@ -383,7 +368,6 @@ class upload-squid {
 
 class cache {
 	class bits {
-		$roles += [ 'cache::bits' ]
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${site}"
 
@@ -454,7 +438,6 @@ class cache {
 		}
 	}
 	class mobile { 
-		$roles += [ 'cache::mobile' ]
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
