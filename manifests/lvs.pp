@@ -16,7 +16,7 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => [ "i-00000051" ],
+				'pmtpa' => [ "i-00000057" ],
 				default => undef,
 			},
 			default => undef,
@@ -29,7 +29,7 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => [ "i-00000051" ],
+				'pmtpa' => undef,
 				default => undef,
 			},
 			default => undef,
@@ -44,14 +44,14 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => [ "i-00000051" ],
+				'pmtpa' => undef,
 				default => undef,
 			},
 			default => undef,
 		},
 		'specials' => $realm ? {
 			'production' => [ "lvs1", "lvs2" ],
-			'labs' => [ "i-00000051" ],
+			'labs' => undef,
 		},
 		'low-traffic' => $realm ? {
 			'production' => $site ? {
@@ -61,14 +61,14 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => [ "i-00000051" ],
+				'pmtpa' => undef,
 				default => undef,
 			},
 			default => undef,
 		},
 		'testing' => $realm ? {
 			'production' => [ "lvs1001", "lvs1004" ],
-			'labs' => [ "i-00000051" ],
+			'labs' => undef,
 		},
 	}
 
@@ -151,6 +151,10 @@ class lvs::configuration {
 		'labs' => {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
+			},
+			'bits' => {
+				# dummy IP for now
+				'pmtpa' => "208.80.153.196",
 			},
 			'apaches' => undef,
 			'rendering' => undef,
