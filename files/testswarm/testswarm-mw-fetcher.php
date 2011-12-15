@@ -225,8 +225,6 @@ class TestSwarmMWMain {
 		} else {
 			$next = $this->getNextFollowingRevId( $cur );
 		}
-
-		$this->debug( __METHOD__ . ": Going to use r{$next}" );
 		return $next;
 	}
 

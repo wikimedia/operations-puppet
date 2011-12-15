@@ -66,8 +66,12 @@ require_once( __DIR__ . '/testswarm-mw-fetcher.php' );
 $main = new TestSwarmMWMain( $options );
 $rev = $main->tryFetchNextRev();
 
-$fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
+if( $rev === false ) {
+	print "No new revision, nothing left to do. Exiting.\n";
+	exit;
+}
 
+$fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
 $api = new TestSwarmAPI(
 	$main
 	, $fetcher_conf['TestSwarmAPI']['username']
