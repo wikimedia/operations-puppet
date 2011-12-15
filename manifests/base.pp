@@ -251,6 +251,10 @@ class base::monitoring::host {
 	monitor_host { $hostname: }
 	monitor_service { "ssh": description => "SSH", check_command => "check_ssh" }
 
+	package { "nagios-plugins-basic":
+		ensure => latest;
+	}
+
 	case $lsbdistid {
 		Ubuntu: {
 			# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
