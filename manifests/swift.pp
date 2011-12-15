@@ -79,6 +79,8 @@ class swift::proxy {
 
 	system_role { "swift:base": description => "swift frontend proxy" }
 
+	realize File["/etc/swift/proxy-server.conf"]
+
 	package { ["swift-proxy", "python-swauth"]:
 		ensure => present;
 	}
@@ -107,7 +109,10 @@ class swift::proxy {
 
 # Class: swift::proxy::config
 #
-# This class configures a Swift Proxy
+# This class configures a Swift Proxy.
+#
+# Only put virtual resources in this class, as it's included
+# on non-proxy swift nodes as well.
 #
 # Parameters:
 class swift::proxy::config(
@@ -123,8 +128,9 @@ class swift::proxy::config(
 	$rewrite_thumb_server) {
 
 	Class[swift::base] -> Class[swift::proxy::config]
-	
-	file { "/etc/swift/proxy-server.conf":
+
+	# Virtual resource
+	@file { "/etc/swift/proxy-server.conf":
 		owner => swift,
 		group => swift,
 		mode => 0444,

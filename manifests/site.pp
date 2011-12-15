@@ -541,11 +541,6 @@ class swift-cluster {
 
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 
-		# FIXME: replace noop by something better.
-		# We want to define the (default) class parameters for child classes
-		# here, but not actually invoke them. Not all sub classes
-		# want both proxy and storage...
-
 		# Common, default settings for all proxy clusters
 		class { "swift::proxy::config":
 			bind_port => "8080",
@@ -557,8 +552,7 @@ class swift-cluster {
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
 			rewrite_password => "testing",
-			rewrite_thumb_server => "ms5.pmtpa.wmnet",
-			noop => true
+			rewrite_thumb_server => "ms5.pmtpa.wmnet"
 		}
 		
 		# TODO: pull in iptables rules here, or in the classes below
@@ -574,7 +568,6 @@ class swift-cluster {
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
-			noop => false
 		}
 
 		# This class doesn't use any parameters or templates so far
@@ -592,7 +585,6 @@ class swift-cluster {
 		Class["swift::proxy::config"] {
 			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
 			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-			noop => false
 		}
 		
 		class proxy inherits swift-cluster::pmtpa-test {
