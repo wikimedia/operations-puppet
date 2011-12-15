@@ -33,16 +33,17 @@ acl_smtp_rcpt = acl_check_rcpt
 helo_try_verify_hosts = *
 
 # Resource control
-check_spool_space = 50M
-deliver_queue_load_max = 75.0
-queue_only_load = 50.0
-smtp_accept_max = 100
-smtp_accept_max_per_host = 10
+check_spool_space = 500M
 smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
-smtp_accept_reserve = 20
 smtp_accept_queue_per_connection = 500
-remote_max_parallel = 25
-smtp_connect_backlog = 32
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 100
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
+smtp_accept_reserve = 100
 
 # Lookups
 host_lookup = *
