@@ -636,14 +636,22 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
-	include standard,
-		swift::proxy,
-		swift::storage
-
-	class { "swift::proxy::config":
-		thumbhost => "ms5.pmtpa.wmnet",
-		memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ]
+	include standard
+	$cluster_settings = {
+		bind_port => "8080",
+		num_workers => "8",
+		swift_hash_path_suffix => "fbf7dab9c04865cd",
+		proxy_address => "http://msfe-test.wikimedia.org:8080",
+		super_admin_key => "thisshouldbesecret",
+		memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
+		rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
+		rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+		rewrite_user => "test:tester",
+		rewrite_password => "testing",
+		rewrite_thumb_server => "ms5.pmtpa.wmnet"
 	}
+	class { "swift::proxy": cluster_settings => $cluster_settings }
+	class { "swift::storage": cluster_settings => $cluster_settings }
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -1485,8 +1493,11 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include standard,
-		swift::storage
+	include standard
+	$cluster_settings = {
+		swift_hash_path_suffix => "fbf7dab9c04865cd",
+	}
+	class { "swift::storage": cluster_settings => $cluster_settings }
 }
 
 node "mchenry.wikimedia.org" {
@@ -1542,9 +1553,12 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdah', '/dev/sdai', '/dev/sdaj', '/dev/sdak', '/dev/sdal',
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
+	$cluster_settings = {
+		swift_hash_path_suffix => "fbf7dab9c04865cd",
+	}
+	include standard
 
-	include standard,
-		swift::storage
+	class { "swift::storage": cluster_settings = $cluster_settings }
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1655,12 +1669,21 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard,
-		swift::proxy
-	class { "swift::proxy::config":
-		thumbhost => "ms5.pmtpa.wmnet",
-		memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ]
+	include standard
+	$cluster_settings = {
+		bind_port => "8080",
+		num_workers => "8",
+		swift_hash_path_suffix => "fbf7dab9c04865cd",
+		proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+		super_admin_key => "thisshouldbesecret",
+		memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+		rewrite_account => "placeholder",
+		rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+		rewrite_user => "test:tester",
+		rewrite_password => "testing",
+		rewrite_thumb_server => "ms5.pmtpa.wmnet"
 	}
+	class { "swift::proxy": cluster_settings => $cluster_settings }
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
