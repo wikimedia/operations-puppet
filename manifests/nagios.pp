@@ -56,9 +56,9 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000) { 
+define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1) {
         if ! $host {
-                fail("Parametmer $host not defined!")
+                fail("Parameter $host not defined!")
         }
 
 	if $hostname in $decommissioned_servers {
@@ -73,8 +73,8 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			service_description => $description,
 			check_command => $check_command,
 			max_check_attempts => $retries,
-			normal_check_interval => 1,
-			retry_check_interval => 1,
+			normal_check_interval => $normal_check_interval,
+			retry_check_interval => $retry_check_interval,
 			check_period => "24x7",
 	                notification_interval => 0,
 			notification_period => "24x7",
