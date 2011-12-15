@@ -570,7 +570,7 @@ class swift-cluster {
 		# The eqiad test cluster runs proxy and storage on the same hosts
 
 		# Override settings
-		class { "swift::proxy::config":
+		Class["swift::proxy::config"] {
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
@@ -586,18 +586,16 @@ class swift-cluster {
 
 		# This cluster uses a different hash_path_suffix - override the
 		# inherited param
-		class { "swift::base": hash_path_suffix => "WHATEVER" }
+		Class["swift::base"] { hash_path_suffix => "WHATEVER" }
 
 		# Override settings
-		class { "swift::proxy::config":
+		Class["swift::proxy::config"] {
 			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
 			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
 			noop => false
 		}
 		
 		class proxy inherits swift-cluster::pmtpa-test {
-			class { "swift::proxy::config": }
-			
 			include swift::proxy
 		}
 		
