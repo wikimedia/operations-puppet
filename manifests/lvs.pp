@@ -152,19 +152,37 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'https' => undef,
+			'https' => {
+				'pmtpa' => undef,
+			},
 			'bits' => {
 				# dummy IP for now
 				'pmtpa' => "208.80.153.196",
 			},
-			'upload' => undef,
-			'apaches' => undef,
-			'rendering' => undef,
-			'api' => undef,
-			'search_pool1' => undef,
-			'search_pool2' => undef,
-			'search_pool3' => undef,
-			'mobile' => undef,
+			'upload' => {
+				'pmtpa' => undef,
+			},
+			'apaches' => {
+				'pmtpa' => undef,
+			},
+			'rendering' => {
+				'pmtpa' => undef,
+			},
+			'api' => {
+				'pmtpa' => undef,
+			},
+			'search_pool1' => {
+				'pmtpa' => undef,
+			},
+			'search_pool2' => {
+				'pmtpa' => undef,
+			},
+			'search_pool3' => {
+				'pmtpa' => undef,
+			},
+			'mobile' => {
+				'pmtpa' => undef,
+			},
 		}
 	}
 
