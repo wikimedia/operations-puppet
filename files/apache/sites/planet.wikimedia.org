@@ -5,7 +5,7 @@
 	ServerAlias planet.wikipedia.org planet.wikipedia.com *.planet.wikimedia.org
 
 	RewriteEngine on
-	RewriteRule ^/(.*)$ http://planet.wikimedia.org/$1 [R=301]
+	RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
 </VirtualHost>
 
 <VirtualHost 208.80.152.162:80>
