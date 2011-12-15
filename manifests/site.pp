@@ -1670,20 +1670,21 @@ node /^nfs[12].pmtpa.wmnet/ {
 
 node /^owa[1-3]\.wikimedia\.org$/ {
 	include standard
-	$cluster_settings = {
-		bind_port => "8080",
-		num_workers => "8",
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-		proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-		super_admin_key => "thisshouldbesecret",
-		memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-		rewrite_account => "placeholder",
-		rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-		rewrite_user => "test:tester",
-		rewrite_password => "testing",
-		rewrite_thumb_server => "ms5.pmtpa.wmnet"
+	class { "swift::proxy": 
+		cluster_settings => {
+			bind_port => "8080",
+			num_workers => "8",
+			swift_hash_path_suffix => "fbf7dab9c04865cd",
+			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+			super_admin_key => "thisshouldbesecret",
+			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+			rewrite_account => "placeholder",
+			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+			rewrite_user => "test:tester",
+			rewrite_password => "testing",
+			rewrite_thumb_server => "ms5.pmtpa.wmnet"
+		}
 	}
-	class { "swift::proxy": cluster_settings => $cluster_settings }
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
