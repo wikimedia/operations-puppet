@@ -207,9 +207,6 @@ define swift::create_filesystem($partition_nr="1") {
 #	- $title:
 #		The device to mount (e.g. /dev/sdc1)
 define swift::mount_filesystem() {
-	Class[swift::base] -> Definition[swift::mount_filesystem]
-	File["/srv/swift-storage"] -> Definition[swift::mount_filesystem]
-
 	$dev = $title
 	$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 	$mountpath = "/srv/swift-storage/${dev_suffix}"
@@ -217,6 +214,7 @@ define swift::mount_filesystem() {
 	# Make sure the mountpoint exists...
 	# This can't be a file resource, as it would become a duplicate.
 	exec { "mkdir $mountpath":
+		require => File["/srv/swift-storage"],
 		path => "/usr/bin:/bin",
 		creates => $mountpath
 	}
@@ -234,6 +232,7 @@ define swift::mount_filesystem() {
 
 	# ...and fix the directory attributes.
 	file { "fix attr $mountpath":
+		require => Class[swift::base],
 		path => $mountpath,
 		owner => swift,
 		group => swift,
