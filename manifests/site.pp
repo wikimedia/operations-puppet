@@ -549,6 +549,7 @@ class swift-cluster {
 		# Common, default settings for all proxy clusters
 		class { "swift::proxy::config":
 			bind_port => "8080",
+			proxy_address => "http://127.0.0.1:8080",
 			num_workers => "8",
 			super_admin_key => "thisshouldbesecret",
 			rewrite_account => "placeholder",
