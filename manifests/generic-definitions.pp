@@ -541,6 +541,25 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 	}
 }
 
+define interface_offload($interface="eth0", $setting, $value) {
+	$long_param = $setting ? {
+		'rx' => "rx-checksumming",
+		'tx' => "tx-checksumming",
+		'sg' => "scatter-gather",
+		'tso' => "tcp-segmentation-offload",
+		'ufo' => "udp-fragmentation-offload",
+		'gso' => "generic-segmentation-offload",
+		'gro' => "generic-receive-offload",
+		'lro' => "large-receive-offload"
+	}
+	
+	exec { "ethtool ${interface} -K ${setting} ${value}":
+		path => "/usr/bin:/usr/sbin:/bin:/sbin",
+		command => "ethtool -K ${interface} ${setting} ${value}",
+		unless => "test $(ethtool -k ${interface} ${setting} | awk '/${long_param}:/ { print $2 }') = '${value}'"
+	}
+}
+
 class generic::rsyncd($config) {
 	package { rsync:
 		ensure => latest;
