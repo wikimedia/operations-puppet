@@ -6,7 +6,7 @@
 
 NameVirtualHost *:443
 <VirtualHost *:80>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin noc@wikimedia.org 
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
@@ -45,7 +45,7 @@ NameVirtualHost *:443
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin noc@wikimedia.org 
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
@@ -88,7 +88,7 @@ NameVirtualHost *:443
 
 </VirtualHost>
 <VirtualHost *:80>
-    ServerAdmin software@wikimedia.org
+    ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
     ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
                     RewriteEngine On
@@ -107,7 +107,7 @@ NameVirtualHost *:443
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerAdmin software@wikimedia.org
+    ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
     SSLEngine on
     SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
