@@ -940,6 +940,13 @@ class misc::kiwix-mirror {
 
 }
 
+class misc::contint::jdk {
+# JDK for android continuous integration
+	package { sun-java6-jdk:
+		ensure => latest;
+	}
+}
+
 # FIXME: merge with misc::contint::test, or remove
 class misc::jenkins {
 
