@@ -1289,7 +1289,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	}
 	
 	# Make sure GRO is off
-	interface_setting { "eth0 gro": interface => "eth0", setting => "offload-gro", value => "off" }
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 
 	# LVS configuration moved to lvs.pp
@@ -1399,14 +1398,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	}
 
 	# Make sure GRO is off
-	interface_manual { "eth1": interface => "eth1", before => Interface_setting["eth1 gro"] }
-	interface_manual { "eth2": interface => "eth2", before => Interface_setting["eth2 gro"] }
-	interface_manual { "eth3": interface => "eth3", before => Interface_setting["eth3 gro"] }
-
-	interface_setting { "eth0 gro": interface => "eth0", setting => "offload-gro", value => "off" }
-	interface_setting { "eth1 gro": interface => "eth1", setting => "offload-gro", value => "off" }
-	interface_setting { "eth2 gro": interface => "eth2", setting => "offload-gro", value => "off" }
-	interface_setting { "eth3 gro": interface => "eth3", setting => "offload-gro", value => "off" }
+	interface_manual { "eth1": interface => "eth1", before => Interface_offload["eth1 gro"] }
+	interface_manual { "eth2": interface => "eth2", before => Interface_offload["eth2 gro"] }
+	interface_manual { "eth3": interface => "eth3", before => Interface_offload["eth3 gro"] }
 
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 	interface_offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
