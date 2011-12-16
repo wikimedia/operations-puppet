@@ -1149,6 +1149,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
+		misc::contint::jdk,
 		# Commenting out testswarm since the package is not available yet
 		#misc::contint::test::testswarm,
 		admins::roots,
