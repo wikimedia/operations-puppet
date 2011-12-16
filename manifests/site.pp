@@ -521,59 +521,46 @@ class protoproxy::ssl {
 class swift-cluster {
 	class base {
 		include standard
-
+		# TODO: pull in iptables rules here, or in the classes below
+	}
+	class eqiad-test inherits swift-cluster::base {
+		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
+		
+		# The eqiad test cluster runs proxy and storage on the same hosts
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
-
-		# Common, default settings for all proxy clusters
 		class { "swift::proxy::config":
 			bind_port => "8080",
-			proxy_address => "http://127.0.0.1:8080",
+			proxy_address => "http://msfe-test.wikimedia.org:8080",
+			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => "8",
 			super_admin_key => "thisshouldbesecret",
-			memcached_servers => [ "127.0.0.1:11211" ],
-			rewrite_account => "placeholder",
+			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
 			rewrite_password => "testing",
 			rewrite_thumb_server => "ms5.pmtpa.wmnet"
 		}
-		
-		# TODO: pull in iptables rules here, or in the classes below
-	}
-	
-	class eqiad-test inherits swift-cluster::base {
-		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
-		
-		# The eqiad test cluster runs proxy and storage on the same hosts
-
-		# Override settings
-		Class["swift::proxy::config"] {
-			proxy_address => "http://msfe-test.wikimedia.org:8080",
-			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
-			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
-		}
-
-		# This class doesn't use any parameters or templates so far
 		include swift::storage
+		include swift::proxy
 	}
-	
 	class pmtpa-test inherits swift-cluster::base {
 		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
-
-		# This cluster uses a different hash_path_suffix - override the
-		# inherited param
-		Class["swift::base"] { hash_path_suffix => "WHATEVER" }
-
-		# Override settings
-		Class["swift::proxy::config"] {
-			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-		}
-		
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class proxy inherits swift-cluster::pmtpa-test {
+			class { "swift::proxy::config":
+				bind_port => "8080",
+				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+				num_workers => "8",
+				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+				super_admin_key => "thisshouldbesecret",
+				rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
+				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+				rewrite_user => "test:tester",
+				rewrite_password => "testing",
+				rewrite_thumb_server => "ms5.pmtpa.wmnet"
+			}
 			include swift::proxy
 		}
-		
 		class storage inherits swift-cluster::pmtpa-test {
 			include swift::storage
 		}
