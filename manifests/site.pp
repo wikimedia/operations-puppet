@@ -675,7 +675,7 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
-	include swift-cluster::proxy::eqiad-test
+	include swift-cluster::eqiad-test
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
