@@ -32,7 +32,7 @@
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin software@wikimedia.org
+	ServerAdmin noc@wikimedia.org
         ServerName survey.wikimedia.org
 	
 	DocumentRoot /srv/org/wikimedia/survey/
