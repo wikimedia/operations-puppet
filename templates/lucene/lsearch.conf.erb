@@ -1,9 +1,15 @@
+######################################################
+##### THIS FILE IS MANAGED BY PUPPET              ####
+##### puppet:///templates/search/lsearch.conf.erb ####
+######################################################
+
 # By default, will check /etc/mwsearch.conf
 
 ################################################
 # Global configuration
 ################################################
 
+### TO DO: resturcture so this doesn't depend on nfs
 # URL to global configuration, this is the shared main config file, it can 
 # be on a NFS partition or available somewhere on the network
 MWConfig.global=file:///home/wikipedia/conf/lucene/lsearch-global-2.1.conf
@@ -35,7 +41,7 @@ Search.updatedelay=0
 Search.checkinterval=30
 
 # Disable wordnet aliases
-Search.disablewordnet=true
+Search.disablewordnet=<% if scope.lookupvar('search::searchserver::indexer') == "true" then -%>true<% else -%>false<% end -%>
 
 ################################################
 # Indexer related configuration
@@ -57,7 +63,9 @@ Index.maxqueuecount=5000
 # Maximal time an update can remain in queue before being processed (in seconds)
 Index.maxqueuetimeout=120
 
+<% if scope.lookupvar('search::searchserver::indexer') == "true" then -%>
 Index.delsnapshots=true
+<% end -%>
 
 ################################################
 # Log, ganglia, localization
@@ -65,19 +73,27 @@ Index.delsnapshots=true
 
 SearcherPool.size=6
 
+### TO DO: resturcture so this doesn't depend on nfs
 # URL to message files, {0} is replaced with language code, i.e. En
 Localization.url=file:///home/wikipedia/common/php/languages/messages
 
+<% if scope.lookupvar('search::searchserver::indexer') == "true" then -%>
 # Pattern for OAI repo. {0} is replaced with dbname, {1} with language
 #OAI.repo=http://{1}.wikipedia.org/wiki/Special:OAIRepository
 OAI.username=lsearch2
 OAI.password=<%= lucene_oai_pass %>
+<% end -%>
 # Max queue size on remote indexer after which we wait a bit
 OAI.maxqueue=5000
 
 # Number of docs to buffer before sending to inc updater
 OAI.bufferdocs=500
 
+<% if scope.lookupvar('search::searchserver::indexer') == "true" then -%>
+# UDP Logger config
+UDPLogger.port=51234
+UDPLogger.host=208.80.152.184
+<% end -%>
 
 # RecentUpdateDaemon udp and tcp ports
 #RecentUpdateDaemon.udp=8111

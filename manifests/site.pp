@@ -283,10 +283,11 @@ class searchserver {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
-		search::sudo,
-		search::jvm,
-		search::monitoring,
 		lvs::realserver
+
+	class { search::server:
+		indexer => "true", udplogging => "false"
+	}
 }
 
 class searchindexer {
@@ -294,17 +295,14 @@ class searchindexer {
 	$cluster = "search"
 	$nagios_group = "lucene"
 
-	$search_indexer = "true"
-
 	include	standard,
 		admins::roots,
 		admins::mortals,
-		admins::restricted,
-		search::sudo,
-		search::jvm,
-		search::php,
-		search::monitoring,
-		search::indexer
+		admins::restricted
+
+	class { search::server:
+		indexer => "true", udplogging => "false"
+	}
 }
 
 class text-squid {

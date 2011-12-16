@@ -4,6 +4,30 @@
 @monitor_group { "lucene": description => "pmtpa search servers" }
 
 class search {
+
+	class server($indexer="false", $pool="", $udplogging="true") {
+		Class["search::config"] -> Class[search::server]
+	
+		include search::sudo
+		include search::jvm
+		include search::monitoring
+		
+		if $indexer == "true" {
+			include search::indexer
+		}
+	}
+
+	class config {
+		file {
+			"/etc/lsearch.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("lucene/lsearch.conf.erb"),
+				ensure => present;
+		}
+	}
+
 	class sudo {
 		file { "/etc/sudoers":
 			owner => root,
@@ -11,15 +35,6 @@ class search {
 			mode => 0440,
 			source => "puppet:///files/sudo/sudoers.search",
 			ensure => present;
-		}
-	}
-
-	class php {
-		file { "/etc/php5/apache2/php.ini":
-			owner => root,
-			group => root,
-			mode => 0440,
-			source => "puppet:///files/php/php.ini.appserver";
 		}
 	}
 
@@ -44,7 +59,7 @@ class search {
 	}
 
 	class monitoring {
-		if ! $search_indexer {
+		if $pool {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
 		}
 	}
@@ -54,36 +69,60 @@ class search {
 		include passwords::lucene
 		$lucene_oai_pass = $passwords::lucene::oai_pass
 
-		package { nfs-common:
-			ensure => latest;
+		class { 'generic::rsyncd': config => "searchidx" }
+		
+		file { "/etc/php5/apache2/php.ini":
+			owner => root,
+			group => root,
+			mode => 0440,
+			source => "puppet:///files/php/php.ini.appserver";
 		}
-
-		file {
-			"/etc/lsearch.conf":
-				owner => root,
-				group => root,
-				mode => 0644,
-				content => template("lucene/lsearch.conf.erb"),
+		## TO DO: pull these out of rainman's homedir and into something not on nfs
+		cron {
+			snapshot:
+				#require => ,
+				command => "/home/rainman/scripts/search-snapshot",
+				user => rainman,
+				hour => 4,
+				minute => 30,
 				ensure => present;
-			"/etc/default/rsync":
-				owner => root,
-				group => root,
-				mode => 0644,
-				source => "puppet:///files/rsync/rsync.default",
+			snapshot-precursors:
+				#require => ,
+				command => "/home/rainman/scripts/search-snapshot-precursors",
+				user => rainman,
+				weekday => 5,
+				hour => 9,
+				minute => 30,
+				ensure => present;	
+			indexer-cron:
+				#require => ,
+				command => "/home/rainman/scripts/indexer-cron",
+				user => rainman,
+				weekday => 6,
+				hour => 0,
+				minute => 0,
 				ensure => present;
-			"/etc/rsyncd.conf":
-				owner => root,
-				group => root,
-				mode => 0644,
-				source => "puppet:///files/rsync/rsyncd.conf.searchidx",
+			import-private-cron:
+				#require => ,
+				command => "/home/rainman/scripts/search-import-private-cron",
+				user => rainman,
+				hour => 2,
+				minute => 0,
 				ensure => present;
-		}
-
-		service { "rsync" :
-			ensure => running,
-			enable => true,
-			hasstatus => false,
-			require => [ File["/etc/default/rsync"], File["/etc/rsyncd.conf"] ]
+			import-broken-cron:
+				#require => ,
+				command => "/home/rainman/scripts/search-import-broken-cron",
+				user => rainman,
+				hour => 3,
+				minute => 0,
+				ensure => present;
+			build-prefix:
+				#require => ,
+				command => "/home/rainman/scripts/search-build-prefix",
+				user => rainman,
+				hour => 9,
+				minute => 25,
+				ensure => present;
 		}
 	}
 }
