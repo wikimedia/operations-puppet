@@ -773,35 +773,7 @@ node "dataset2.wikimedia.org" {
 		misc::kiwix-mirror
 }
 
-node "db1.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db2.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db3.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db4.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db5.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db7.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db8.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db9.pmtpa.wmnet" {
+node /^db[1-9]\.pmtpa\.wmnet$/ {
 	include db::core
 }
 
@@ -810,114 +782,27 @@ node "db10.pmtpa.wmnet" {
 		backup::mysql
 }
 
-node "db12.pmtpa.wmnet" {
+node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	include db::core
 }
 
-node "db13.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db14.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db15.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db16.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db17.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db18.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db21.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include db::core
-}
-
-node "db22.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db23.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db24.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db25.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db26.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db27.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db28.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db29.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db30.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+node /^db2[1-9]\.pmtpa\.wmnet$/ {
+	if $hostname == "db21" {
+		$ganglia_aggregator = "true"
+	}
 
 	include db::core
 }
 
-node "db31.pmtpa.wmnet" {
+node /^db3[0-9]\.pmtpa\.wmnet$/ {
+	if $hostname == "db30" {
+		$ganglia_aggregator = "true"
+	}
+
 	include db::core
 }
 
-node "db32.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db33.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db34.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db35.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db36.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db37.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db38.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db39.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db40.pmtpa.wmnet" {
+node /^db4[023]\.pmtpa\.wmnet$/ {
 	include db::core
 }
 
@@ -932,14 +817,6 @@ node "db41.pmtpa.wmnet" {
 		owa::database,
 		groups::wikidev,
 		accounts::nimishg
-}
-
-node "db42.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db43.pmtpa.wmnet" {
-	include db::core
 }
 
 # new pmtpa dbs
@@ -1600,15 +1477,6 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-node "ms4.pmtpa.wmnet" {
-	$cluster = "misc"
-
-	include	base,
-		ntp::client,
-		misc::zfs::monitoring,
-		misc::nfs-server::home::monitoring
-}
-
 node "ms5.pmtpa.wmnet" {
 	include	standard,
 		media-storage::thumbs-server,
@@ -1904,19 +1772,7 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node "srv187.pmtpa.wmnet" {
-	include applicationserver::api,
-		#applicationserver::jobrunner,
-		memcached::disabled
-}
-
-node "srv188.pmtpa.wmnet" {
-	include applicationserver::api,
-		#applicationserver::jobrunner,
-		memcached::disabled
-}
-
-node "srv189.pmtpa.wmnet" {
+node /^srv18[789]\.pmtpa\.wmnet$/ {
 	include applicationserver::api,
 		#applicationserver::jobrunner,
 		memcached::disabled
@@ -1928,14 +1784,7 @@ node "srv190.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv191.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-
-	include applicationserver::bits,
-		memcached
-}
-
-node "srv192.pmtpa.wmnet" {
+node /^srv19[12]\.pmtpa\.wmnet$/ {
 	$ganglia_aggregator = "true"
 
 	include applicationserver::bits,
@@ -1948,480 +1797,74 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv194.pmtpa.wmnet" {
+# srv194-213 are application servers, memcached
+node /^srv(19[4-9]|20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		memcached
 }
 
-node "srv195.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv196.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv197.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv198.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv199.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv200.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv201.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv202.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv203.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv204.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv205.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv206.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv207.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv208.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv209.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv210.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv211.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv212.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv213.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv214.pmtpa.wmnet" {
+# srv214-218 are API application servers, memcached
+node /^srv21[4-8]\.pmtpa\.wmnet$/ {
 	include applicationserver::api,
 		memcached
 }
 
-node "srv215.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
+# srv219-224 are image scalers
+node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
+	if $hostname == "srv219" {
+		$ganglia_aggregator = "true"
+	}
 
-node "srv216.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv217.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv218.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv219.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
 	include imagescaler
 }
 
-node "srv220.pmtpa.wmnet" {
-	include imagescaler
-}
+# srv225-230 are applicationservers, memcached
+node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
+	if $hostname == "srv226" {
+		$ganglia_aggregator = "true"
+	}
 
-node "srv221.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv222.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv223.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv224.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv225.pmtpa.wmnet" {
-	#$dist = "lucid"
 	include applicationserver::homeless,
 		memcached
 }
 
-node "srv226.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv227.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv228.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv229.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv230.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv231.pmtpa.wmnet" {
+# srv231-247 are application servers, jobrunners, memcached
+node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
-node "srv232.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv233.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv234.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv235.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv236.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv237.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv238.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv239.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv240.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv241.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv242.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv243.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv244.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv245.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv246.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv247.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv248.pmtpa.wmnet" {
+node /^srv24[89]\.pmtpa\.wmnet$/ {
 	include applicationserver::bits,
 		memcached
 }
 
-node "srv249.pmtpa.wmnet" {
-	include applicationserver::bits,
-		memcached
-}
-
-node "srv250.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv251.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv252.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv253.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv254.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+# srv250-257 are API application servers, some are memcached
+node /^srv25[0-7]\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^srv25[45]$/ {
+		$ganglia_aggregator = "true"
+	}
 
 	include applicationserver::api
+
+	if $hostname =~ /^srv25[0-3]$/ {
+		include memcached
+	}
 }
 
-node "srv255.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+# srv258 - srv280 are application servers, job runners, memcached
+node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^srv25[89]$/ {
+		$ganglia_aggregator = "true"
+	}
 
-	include applicationserver::api
-}
-
-node "srv256.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv257.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv258.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
-node "srv259.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv260.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv261.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv262.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv263.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv264.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv265.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv266.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv267.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv268.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv269.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv270.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv271.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv272.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv273.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv274.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv275.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv276.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv277.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv278.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv279.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv280.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
+# FIXME: why is srv281 different?
 node "srv281.pmtpa.wmnet" {
 	#include applicationserver::homeless,
 	#	applicationserver::jobrunner,
@@ -2432,49 +1875,7 @@ node "srv281.pmtpa.wmnet" {
 		imagescaler
 }
 
-node "srv282.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv283.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv284.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv285.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv286.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv287.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv288.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv289.pmtpa.wmnet" {
+node /^srv28[2-9]\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
@@ -2485,47 +1886,7 @@ node "srv290.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv291.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv292.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv293.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv294.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv295.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv296.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv297.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv298.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv299.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv300.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv301.pmtpa.wmnet" {
+node /^srv(29[1-9]|30[01])\.pmtpa\.wmnet$/ {
 	include applicationserver::api
 }
 
