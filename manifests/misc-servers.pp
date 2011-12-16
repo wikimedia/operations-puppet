@@ -930,7 +930,7 @@ class misc::contint::jdk {
 # Based off of http://offbytwo.com/2011/07/20/scripted-installation-java-ubuntu.html
 
 	package { "debconf-utils":
-		ensure => installed
+		ensure => latest 
 	}
 
 	exec { "agree-to-jdk-license":
@@ -955,8 +955,11 @@ class misc::contint::jdk {
 		require => [ Exec["agree-to-jre-license"] ],
 	}
 
-}
+	package { "libswt-gtk-3.5-java":
+		ensure => latest
+	}
 
+}
 
 # FIXME: merge with misc::contint::test, or remove
 class misc::jenkins {
@@ -1360,7 +1363,7 @@ class misc::monitoring::htcp-loss {
 		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
 			require => File["/etc/ganglia/conf.d"],
 			source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
-        }
+	}
 }
 
 # TODO: Create a generic udp2log parameterized class and use it for this, and
@@ -2020,7 +2023,7 @@ class misc::torrus {
 
 # FIXME: (increasingly popular) temporary hack
 if $hostname == "spence" {
-        include misc::gsbmonitoring
+	include misc::gsbmonitoring
 }
 
 class misc::gsbmonitoring {
