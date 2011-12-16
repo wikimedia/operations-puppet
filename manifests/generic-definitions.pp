@@ -553,6 +553,10 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 # - $value:
 #	The value (on/off)
 define interface_offload($interface="eth0", $setting, $value) {
+	# Set in /etc/network/interfaces
+	interface_setting { ${title}: interface => $interface, setting => "offload-${setting}", value => $value }
+
+	# And make sure it's always active
 	$long_param = $setting ? {
 		'rx' => "rx-checksumming",
 		'tx' => "tx-checksumming",
