@@ -31,6 +31,23 @@ class misc::contint::jdk {
 
 }
 
+class misc::contint::android::sdk {
+	# Class installing prerequisites to the Android SDK
+	# The SDK itself need to be installed manually for now.
+	#
+	# Help link: http://developer.android.com/sdk/installing.html
+
+	# We really want Sun/Oracle JDK
+	require misc::contint::jdk
+
+	package { [
+		"ia32-libs",
+		"libswt-gtk-3.5-java"
+		]: ensure=>installed;
+	}
+
+}
+
 # CI test server as per RT #1204
 class misc::contint::test {
 
