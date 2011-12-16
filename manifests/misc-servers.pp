@@ -2184,15 +2184,3 @@ class misc::planet {
 		ensure => latest;
 	}
 }
-
-# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
-class misc::civicrm {
-	system_role { "misc::civicrm": description => "CiviCRM server" }
-
-	class {'generic::webserver::php5': ssl => 'true'; }
-
-	apache_site { contacts: name => "contacts.wikimedia.org" }
-	apache_site { contacts-ssl: name => "contacts.wikimedia.org-ssl" }
-
-	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
-}
