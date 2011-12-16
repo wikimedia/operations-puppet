@@ -940,6 +940,39 @@ class misc::kiwix-mirror {
 
 }
 
+class misc::contint::jdk {
+# JDK for android continuous integration
+# extra stuff for license agreement acceptance
+
+	package { "debconf-utils":
+		ensure => installed
+	}
+
+	exec { "agree-to-jdk-license":
+		command => "/bin/echo -e sun-java6-jdk shared/accepted-sun-dlj-v1-1 select true | debconf-set-selections",
+		unless => "debconf-get-selections | grep 'sun-java6-jdk.*shared/accepted-sun-dlj-v1-1.*true'",
+		path => ["/bin", "/usr/bin"], require => Package["debconf-utils"],
+	}
+
+	exec { "agree-to-jre-license":
+		command => "/bin/echo -e sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | debconf-set-selections",
+		unless => "debconf-get-selections | grep 'sun-java6-jre.*shared/accepted-sun-dlj-v1-1.*true'",
+		path => ["/bin", "/usr/bin"], require => Package["debconf-utils"],
+	}
+
+	package { "sun-java6-jdk":
+		ensure => latest,
+		Exec["agree-to-jdk-license"],
+	}
+
+	package { "sun-java6-jre":
+		ensure => latest,
+		Exec["agree-to-jre-license"],
+	}
+
+}
+
+
 # FIXME: merge with misc::contint::test, or remove
 class misc::jenkins {
 
