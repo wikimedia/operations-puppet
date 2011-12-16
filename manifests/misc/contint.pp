@@ -131,6 +131,11 @@ class misc::contint::test {
 				group => wikidev,
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
+			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
+				owner => jenkins,
+				group => wikidev,
+				mode => 0755,
+				ensure => directory;
 			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
 				path => "/etc/apache2/sites-available/integration.mediawiki.org",
