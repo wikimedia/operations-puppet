@@ -3,7 +3,7 @@
 
 # https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
 class misc::outreach::civicrm {
-	system_role { "misc::civicrm": description => "CiviCRM server" }
+	system_role { "misc::outreach::civicrm": description => "CiviCRM server" }
 
 	class {'generic::webserver::php5': ssl => 'true'; }
 
