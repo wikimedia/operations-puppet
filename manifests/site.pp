@@ -553,9 +553,9 @@ class swift-cluster {
 				num_workers => "8",
 				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
 				super_admin_key => "thisshouldbesecret",
-				rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
+				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
 				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-				rewrite_user => "test:tester",
+				rewrite_user => "mw:thumb",
 				rewrite_password => "testing",
 				rewrite_thumb_server => "ms5.pmtpa.wmnet"
 			}
