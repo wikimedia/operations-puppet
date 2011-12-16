@@ -285,22 +285,6 @@ class misc::noc-wikimedia {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
-class misc::blog-wikimedia {
-	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
-
-	require apaches::packages,
-		generic::php5-gd
-	
-	file {
-		"/etc/apache2/sites-available/blog.wikimedia.org":
-			path => "/etc/apache2/sites-available/blog.wikimedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/blog.wikimedia.org";
-	}
-}
-
 class misc::download-wikimedia {
 	system_role { "misc::download-wikimedia": description => "download.wikimedia.org" }
 
