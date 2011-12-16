@@ -1408,10 +1408,10 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	interface_setting { "eth2 gro": interface => "eth2", setting => "offload-gro", value => "off" }
 	interface_setting { "eth3 gro": interface => "eth3", setting => "offload-gro", value => "off" }
 
-	interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
-	interface::offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
-	interface::offload { "eth2 gro": interface => "eth2", setting => "gro", value => "off" }
-	interface::offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
+	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+	interface_offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
+	interface_offload { "eth2 gro": interface => "eth2", setting => "gro", value => "off" }
+	interface_offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
 }
 
 node "maerlant.esams.wikimedia.org" {
