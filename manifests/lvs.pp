@@ -29,7 +29,7 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => undef,
+				'pmtpa' => [],
 				default => undef,
 			},
 			default => undef,
@@ -44,14 +44,14 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => undef,
+				'pmtpa' => [],
 				default => undef,
 			},
 			default => undef,
 		},
 		'specials' => $realm ? {
 			'production' => [ "lvs1", "lvs2" ],
-			'labs' => undef,
+			'labs' => [],
 		},
 		'low-traffic' => $realm ? {
 			'production' => $site ? {
@@ -61,14 +61,14 @@ class lvs::configuration {
 				default => undef,
 			},
 			'labs' => $site ? {
-				'pmtpa' => undef,
+				'pmtpa' => [],
 				default => undef,
 			},
 			default => undef,
 		},
 		'testing' => $realm ? {
 			'production' => [ "lvs1001", "lvs1004" ],
-			'labs' => undef,
+			'labs' => [],
 		},
 	}
 
