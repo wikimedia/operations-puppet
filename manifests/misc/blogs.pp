@@ -24,6 +24,6 @@ class misc::techblog {
 
 	class {'generic::webserver::php5': ssl => 'true'; }
 
-	apache_site { contacts: name => "techblog.wikimedia.org" }
+	apache_site { techblog: name => "techblog.wikimedia.org" }
 
 }
