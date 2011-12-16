@@ -75,7 +75,7 @@ class swift::iptables  {
 }
 
 class swift::proxy {
-	Class[swift::proxy::config] -> Class[swift::proxy] 
+	Class[swift::proxy::config] -> Class[swift::proxy]
 
 	system_role { "swift:base": description => "swift frontend proxy" }
 
