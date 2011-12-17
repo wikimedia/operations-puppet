@@ -1960,7 +1960,7 @@ class misc::l10nupdate {
 	# previously so it'll be an existing file on some systems.
 	# Also create the dir for the SVN checkouts, and set up log rotation
 	file {
-		"/var/log/l10nupdatelog/":
+		"/var/log/l10nupdatelog":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
