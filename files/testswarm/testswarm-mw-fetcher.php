@@ -446,7 +446,7 @@ class TestSwarmMWFetcher {
 
 		// Now simply run the CLI installer:
 		$cmd = "php {$this->paths['mw']}/maintenance/install.php \
-			--dbname=testwarm_mw_r{$this->svnRevId} \
+			--dbname=r{$this->svnRevId} \
 			--dbtype=sqlite \
 			--dbpath={$this->paths['db']} \
 			--showexceptions=true \
