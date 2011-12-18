@@ -74,7 +74,7 @@ if( $rev === false ) {
 $fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
 
 // Fix up database file permission
-$dbFile = "{$main->paths['db']}/r{$rev}.sqlite";
+$dbFile = "{$main->fetcher->paths['db']}/r{$rev}.sqlite";
 chgrp( $dbFile, $fetcher_conf['TestSwarmAPI']['wwwusergroup'] );
 chmod( $dbFile, "0664" );
 

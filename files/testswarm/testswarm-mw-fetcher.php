@@ -138,8 +138,8 @@ class TestSwarmMWMain {
 			$this->debug( 'No next revision', __METHOD__ );
 		} else {
 			// And install it
-			$fetcher = new TestSwarmMWFetcher( &$this, $nextRev );
-			$result = $fetcher->run();
+			$this->fetcher = new TestSwarmMWFetcher( &$this, $nextRev );
+			$result = $this->fetcher->run();
 			if( $result === true ) {
 				return $nextRev;
 			}
