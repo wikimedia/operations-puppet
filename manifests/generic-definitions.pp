@@ -776,6 +776,19 @@ class generic::packages::locales {
 	package { "locales": ensure => latest; }
 }
 
+class generic::packages::ant18 {
+
+	package { [
+		"ant1.8"
+	]: ensure => installed;
+	}
+	package { [
+		"ant",
+		"ant1.7"
+	]: ensure => absent;
+	}
+}
+
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
