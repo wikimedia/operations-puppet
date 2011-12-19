@@ -39,11 +39,12 @@ if [ ! "$1" -o ! "$2" ]; then
 fi
 
 if [ "$buffer" != "b" ];then
-	full=`free | grep Mem | sed -r 's/\ +/\ /g' | cut -d \  -f 2`
+	full=`free | grep Mem | sed -r 's/\ +/\ /g' | cut -d \  -f 3`
 	free=`free | grep Mem | sed -r 's/\ +/\ /g' | cut -d \  -f 4`
 else
-	full=`free | grep 'buffers\/cache' | sed -r 's/\ +/\ /g' | cut -d \  -f 3`
-        free=`free | grep 'buffers\/cache' | sed -r 's/\ +/\ /g' | cut -d \  -f 4`
+        full=`free | grep 'buffers\/cache' | sed 's/\-\/+\sbuffers\/cache\://' | sed -r 's/\ +/\ /g' | cut -d \  -f 2`
+        free=`free | grep 'buffers\/cache' | sed 's/\-\/+\sbuffers\/cache\://' | sed -r 's/\ +/\ /g' | cut -d \  -f 3`
+echo $full
 fi
 
 if [ "$warn" -lt "$crit" -o "$warn" -eq "$crit" ]; then
