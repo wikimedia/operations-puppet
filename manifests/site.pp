@@ -1114,7 +1114,7 @@ node "hooper.wikimedia.org" {
 		admins::roots,
 		svn::client,
 		misc::etherpad,
-		misc::blog-wikimedia,
+		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org,
 		misc::racktables
 

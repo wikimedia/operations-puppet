@@ -1,8 +1,8 @@
 # Wikimedia Blogs
 
 # https://blog.wikimedia.org/
-class misc::blog-wikimedia {
-	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
+class misc::blogs::wikimedia {
+	system_role { "misc::blogs::wikimedia": description => "blog.wikimedia.org" }
 
 	require apaches::packages,
 		generic::php5-gd
@@ -18,9 +18,9 @@ class misc::blog-wikimedia {
 }
 
 # https://techblog.wikimedia.org
-class misc::techblog {
+class misc::blogs::tech {
 
-	system_role { "misc::techblog": description => "Technology blog server" }
+	system_role { "misc::blogs::tech": description => "techblog.wikimedia.org" }
 
 	class {'generic::webserver::php5': ssl => 'true'; }
 
