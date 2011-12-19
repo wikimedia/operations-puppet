@@ -761,12 +761,14 @@ node "dataset2.wikimedia.org" {
 }
 
 node /^db[1-9]\.pmtpa\.wmnet$/ {
-	include db::core
+	include db::core,
+		mysql::packages
 }
 
 node "db10.pmtpa.wmnet" {
 	include db::core, 
-		backup::mysql
+		backup::mysql,
+		mysql::packages
 }
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
