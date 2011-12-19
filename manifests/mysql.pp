@@ -11,6 +11,8 @@ class mysql {
 	package { [ lvm2, maatkit ]:
 		ensure => "installed";
 	}
+# mysql-client required for xtrabackup
+	require mysql::client
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
