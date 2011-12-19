@@ -496,15 +496,24 @@ class TestSwarmMWFetcher {
 
 		// Required, must exist to avoid having to do backwards editing
 		// Make empt file if needed
-		if ( !file_exists( $this->paths['globalsettings'] ) ) {
-			$this->main->debug( "No GlobalSettings.php found at {$this->paths['globalsettings']}. Creating...", __METHOD__ );
-			if ( touch( $this->paths['globalsettings'] ) ) {
-				$this->main->debug( "Created {$this->paths['globalsettings']}", __METHOD__ );
+		$globalSettings = $this->paths['globalsettings'];
+		if ( !file_exists( $globalSettings ) ) {
+			$this->main->debug( "No GlobalSettings.php found at $globalSettings. Creating...", __METHOD__ );
+			if ( touch( $globalSettings ) ) {
+				$this->main->debug( "Created $globalSettings", __METHOD__ );
 			} else {
 				throw new Exception(__METHOD__ . ": Aborting. Unable to create GlobalSettings.php" );
 			}
 		}
-		// @todo
+
+		// Override $wgServer set by the CLI installer and rely on the default autodetection
+		$fh = fopen( $localSettings, 'a' );
+		fwrite( $fh,
+			"\n# /Added by testswarm fetcher/\n"
+			.'$wgServer = WebRequest::detectServer();'."\n"
+			."\n#End /Added by testswarm fetcher/\n"
+		);
+		fclose( $fh );
 
 		/**
 		 * Possible additional common settings to append to LocalSettings after install:
