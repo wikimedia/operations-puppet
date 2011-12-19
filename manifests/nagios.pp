@@ -98,8 +98,8 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			service_description => $description,
 			check_command => $check_command,
 			max_check_attempts => $retries,
-			normal_check_interval => 1,
-			retry_check_interval => 1,
+			normal_check_interval => $normal_check_interval,
+			retry_check_interval => $retry_check_interval,
 			check_period => "24x7",
 			notification_interval => $critical ? {
 					"true" => 240,
