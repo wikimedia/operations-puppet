@@ -136,7 +136,10 @@ class misc::contint::test {
 				group => wikidev,
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
-			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
+			[
+			"/srv/org/mediawiki/integration/WikipediaMobile",
+			"/srv/org/mediawiki/integration/WikipediaMobile/nightly"
+			]:
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
