@@ -74,10 +74,12 @@ if( $rev === false ) {
 $fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
 
 // Fix up database file permission
-$dbFile = "{$main->fetcher->paths['db']}/r{$rev}.sqlite";
+$paths = $main->getPathsForRev( $rev );
+$dbFile = $paths['db'] . "/r{$rev}.sqlite";
 chgrp( $dbFile, $fetcher_conf['TestSwarmAPI']['wwwusergroup'] );
 chmod( $dbFile, "0664" );
 
+// Submit a new job to TestSwarm
 $api = new TestSwarmAPI(
 	$main
 	, $fetcher_conf['TestSwarmAPI']['username']
