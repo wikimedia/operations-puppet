@@ -1741,16 +1741,6 @@ class misc::l10nupdate {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
-		"/usr/local/bin/l10nupdate-2":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-2";
-		"/usr/local/bin/l10nupdate-3":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-3";
 		"/usr/local/bin/sync-l10nupdate":
 			owner => root,
 			group => root,
