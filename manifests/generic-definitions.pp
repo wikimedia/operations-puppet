@@ -794,3 +794,12 @@ class generic::locales::international {
 		require => File["/var/lib/locales/supported.d/local"];
 	}
 }
+
+
+
+class generic::packages::ant18 {
+	# Make sure we use ant version 1.8 which is needed by Android.
+	# We do not want 'ant' which, on lucid, provides 1.7.
+	package { [ "ant1.8" ]: ensure => installed; }
+	package { [ "ant", "ant1.7" ]: ensure => absent; }
+}
