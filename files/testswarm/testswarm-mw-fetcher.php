@@ -105,7 +105,7 @@ class TestSwarmMWMain {
 		}
 
 		if ( isset( $options['debug'] ) ) {
-			$this->debugMode = true;
+			$this->debugMode = $options['debug'];
 		}
 
 		if ( isset( $options['minRev'] ) ) {
