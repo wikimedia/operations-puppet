@@ -39,13 +39,27 @@ class misc::contint::android::sdk {
 
 	# We really want Sun/Oracle JDK
 	require misc::contint::jdk
+	include misc::contint::ant
 
 	package { [
 		"ia32-libs",
-		"ant1.8",
 		"libswt-gtk-3.5-java"
 		]: ensure => installed;
 	}
+}
+
+class misc::contint::ant {
+	# Make sure we use ant version 1.8 which is needed by Android.
+	# We do not want 'ant' which, on lucid, provides 1.7.
+
+	package { [
+		"ant1.8"
+	]: ensure => installed;
+	}
+	package { [
+		"ant",
+		"ant1.7"
+	]: ensure => absent;
 }
 
 # CI test server as per RT #1204
@@ -54,11 +68,14 @@ class misc::contint::test {
 	system_role { "misc::contint::test": description => "continuous integration test server" }
 
 	class packages {
+
+		include misc::contint::ant
+
 		# split up packages into groups a bit for readability and flexibility ("ensure present" vs. "ensure latest" ?)
 
 		$CI_PHP_packages = [ "libapache2-mod-php5", "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
 		$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
-		$CI_DEV_packages = [ "ant", "imagemagick" ]
+		$CI_DEV_packages = [ "imagemagick" ]
 
 		package { $CI_PHP_packages:
 			ensure => present;
