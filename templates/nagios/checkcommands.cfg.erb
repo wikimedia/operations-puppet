@@ -171,6 +171,10 @@ define command{
         command_line    $USER1$/check_tcp -t 30 -w 10 -p 8123 -H $HOSTADDRESS$
         }
 
+define command{
+        command_name    check_lucene_indexer
+        command_line    $USER1$/check_tcp -t 30 -w 10 -p 8321 -H $HOSTADDRESS$
+        }
 
 define command {
 	command_name	check_bgpstate

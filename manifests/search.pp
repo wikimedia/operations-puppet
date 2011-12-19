@@ -25,6 +25,12 @@ class search {
 				mode => 0444,
 				content => template("lucene/lsearch.conf.erb"),
 				ensure => present;
+			"/etc/lsearch-global-2.1.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("lucene/lsearch-global-2.1.conf.erb"),
+				ensure => present;
 		}
 	}
 
@@ -61,6 +67,9 @@ class search {
 	class monitoring {
 		if $pool {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
+		}
+		if $indexer == "true" {
+			monitor_service { "lucene_indexer": description => "Lucene indexer", check_command => "check_lucene_indexer", retries => 6 }
 		}
 	}
 
