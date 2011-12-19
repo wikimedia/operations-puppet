@@ -452,6 +452,11 @@ class nagios::monitor {
 			owner => root,
 			group => root,
 			mode => 0755;
+		"/usr/local/nagios/libexec/check_ram.sh":
+			source => "puppet:///files/nagios/check_ram.sh",
+			owner => root,
+			group => root,
+			mode => 0755;
 	}
 }
 
