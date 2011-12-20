@@ -1026,8 +1026,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
-		# Commenting out testswarm since the package is not available yet
-		#misc::contint::test::testswarm,
+		misc::contint::test::testswarm,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
