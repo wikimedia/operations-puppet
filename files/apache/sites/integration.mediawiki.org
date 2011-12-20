@@ -31,6 +31,25 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressIcon
+		IndexOptions SuppressRules
+		IndexOptions SuppressDescription
+		IndexOptions SuppressHTMLPreamble
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+
+		ServerSignature Off
+
+		IndexStyleSheet "nightly.css"
+		HeaderName "HEADER.html"
+		ReadmeName "README.html"
+		IndexIgnore "*.css" "*.html" ".."
+	</Directory>
+
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
@@ -62,4 +81,22 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressIcon
+		IndexOptions SuppressRules
+		IndexOptions SuppressDescription
+		IndexOptions SuppressHTMLPreamble
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+
+		ServerSignature Off
+
+		IndexStyleSheet "nightly.css"
+		HeaderName "HEADER.html"
+		ReadmeName "README.html"
+		IndexIgnore "*.css" "*.html" ".."
+	</Directory>
 </VirtualHost>

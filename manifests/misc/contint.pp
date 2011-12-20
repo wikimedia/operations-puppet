@@ -144,6 +144,11 @@ class misc::contint::test {
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
+			# Copy HTML/CSS materials for ./WikipediaMobile/nightly/ :
+			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/WikipediaMobile",
+				recurse => "true";
 			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
 				path => "/etc/apache2/sites-available/integration.mediawiki.org",
