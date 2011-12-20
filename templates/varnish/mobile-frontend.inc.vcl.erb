@@ -102,6 +102,12 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
+	if (req.url == "/?useformat=mobile") {
+		set beresp.ttl = 60 s;
+	}
+	if (req.url ~ "&mobileaction=view_normal_site") {
+		set beresp.ttl = 60 s;
+	}
 }
 
 sub vcl_error {
