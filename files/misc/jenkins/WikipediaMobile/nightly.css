@@ -1,0 +1,37 @@
+body {
+	margin:0em;
+	padding: 0 1em;
+	background-color: #FFF;
+	color: #26004D;
+	font-family: monospace, "Courrier New";
+}
+
+a {
+	color:black;
+}
+
+div#footer {
+	text-align:center;
+	margin-top: 3em;
+}
+
+table {
+	font-family: monospace, "Courrier New";
+	margin: 1em;
+	margin-top: 2em;
+	background-color: #F9F9F9;
+	border: 1px #aaa solid;
+	border-collapse: collapse;
+	color:black;
+	margin-left:auto;
+	margin-right:auto;
+}
+table th,
+table td {
+	border: 1px #aaa solid;
+	padding: 0.2em 1em;
+}
+table th {
+	background-color: #F2F2F2;
+	text-align:center;
+}
