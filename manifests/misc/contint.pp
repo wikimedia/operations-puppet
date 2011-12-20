@@ -151,7 +151,13 @@ class misc::contint::test {
 				owner => root,
 				group => root,
 				source => "puppet:///files/apache/sites/integration.mediawiki.org";
-
+			# git configuration for jenkins user
+			"/var/lib/jenkins/.gitconfig":
+				require => Package["jenkins"],
+				mode => 0644,
+				owner => jenkins,
+				group => nogroup,
+				source => "puppet:///files/misc/jenkins/gitconfig";
 		}
 
 		# run jenkins behind Apache and have pretty URLs / proxy port 80

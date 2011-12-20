@@ -1,0 +1,10 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; THIS FILE IS MANAGED BY PUPPET
+;;; puppet:///files/puppet/files/misc/jenkins/gitconfig
+
+; vim: filetype=gitconfig
+[user]
+	email = jenkins@gallium.wikimedia.org
+	name = Jenkins (Wikimedia)
+
+
