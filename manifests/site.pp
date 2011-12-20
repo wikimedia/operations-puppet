@@ -1139,6 +1139,7 @@ node "hume.wikimedia.org" {
 	include standard,
 		nfs::home,
 		misc::scripts,
+		misc::maintenance::foundationwiki,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
