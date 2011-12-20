@@ -1019,6 +1019,8 @@ node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
+	# Android SDK is installed using a GUI
+	$ssh_x11_forwarding = "yes"
 	include base,
 		ganglia,
 		ntp::client,

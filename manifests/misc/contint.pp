@@ -33,7 +33,8 @@ class misc::contint::jdk {
 
 class misc::contint::android::sdk {
 	# Class installing prerequisites to the Android SDK
-	# The SDK itself need to be installed manually for now.
+	# The SDK itself need to be installed manually for now, the host will need
+	# X11 Forwarding enabled so one could use the SDK installer.
 	#
 	# Help link: http://developer.android.com/sdk/installing.html
 
