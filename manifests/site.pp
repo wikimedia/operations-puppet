@@ -1981,6 +1981,8 @@ node /cp104[1-2].wikimedia.org/ {
 node /cp104[3-4].wikimedia.org/ { 
 	$ganglia_aggregator = "true"
 	include cache::mobile
+
+	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "check_procs_generic!2!2!2!2!varnishncsa" }
 }
 
 # sq71-78 are text squids
