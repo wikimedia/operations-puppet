@@ -201,6 +201,11 @@ class misc::contint::test {
 
 		# install scripts
 		file {
+			"/etc/testswarm":
+				ensure => directory,
+				mode   => 0755,
+				owner  => testswarm,
+				group  => testswarm;
 			"/etc/testswarm/fetcher-sample.ini":
 				require => [
 					Package["testswarm"]
