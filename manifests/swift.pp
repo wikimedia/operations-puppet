@@ -156,7 +156,8 @@ class swift::storage {
 
 	# set up swift specific configs
 	File { owner => swift, group => swift, mode => 0444 }
-	file { "/etc/swift/account-server.conf":
+	file {
+		"/etc/swift/account-server.conf":
 			content => template("swift/etc.swift.account-server.conf.erb");
 		"/etc/swift/container-server.conf":
 			content => template("swift/etc.swift.container-server.conf.erb");
