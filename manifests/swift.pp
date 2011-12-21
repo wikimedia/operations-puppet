@@ -8,6 +8,10 @@ class swift::base($hash_path_suffix) {
 	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
 	include swift::iptables
 
+	# include tcp settings
+	include swift::sysctl::tcp-improvements
+	include generic::sysctl::high-http-performance
+
 	package { "swift":
 		ensure => present;
 	}
@@ -75,7 +79,17 @@ class swift::iptables  {
 	## creating iptables rules but not enabling them to test.
 	iptables_add_exec{ "swift": service => "swift" }
 }
-
+class swift::sysctl::tcp-improvements($ensure="present") {
+	file { swift-performance-sysctl:
+		name => "/etc/sysctl.d/60-swift-performance.conf",
+		owner => root,
+		group => root,
+		mode => 444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/swift/60-swift-performance.conf.sysctl",
+		ensure => $ensure
+	}
+}
 class swift::proxy {
 	Class[swift::proxy::config] -> Class[swift::proxy]
 

@@ -1,0 +1,15 @@
+######################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/misc/60-swift-performance.conf.sysctl
+######################################################################
+
+## recommendations from swift
+## http://docs.openstack.org/bexar/openstack-object-storage/admin/content/ch04s06.html#d5e1200
+# disable TIME_WAIT
+net.ipv4.tcp_tw_recycle=1
+net.ipv4.tcp_tw_reuse=1
+# disable syn cookies
+net.ipv4.tcp_syncookies=0
+# double amount of allowed conntrack
+net.ipv4.netfilter.ip_conntrack_max=262144
+
