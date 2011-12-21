@@ -564,7 +564,7 @@ class TestSwarmAPI {
 			"auth"     => $this->authToken,
 			"max"      => 3,
 			"job_name" => "MediaWiki trunk r{$revision}",
-			"browsers" => "popularbetamobile",
+			"browsers" => "popularbeta",
 		);
 		$query = http_build_query( $params );
 
