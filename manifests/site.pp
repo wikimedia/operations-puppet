@@ -521,6 +521,8 @@ class protoproxy::ssl {
 
 class swift-cluster {
 	class base {
+		$cluster = "swift"
+
 		include standard
 		# TODO: pull in iptables rules here, or in the classes below
 	}

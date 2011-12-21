@@ -83,6 +83,9 @@ class ganglia {
 			"ssl"		=> {
 				"name"		=> "SSL cluster",
 				"ip_oct"	=> "26" },
+			"swift" => {
+				"name"		=> "Swift",
+				"ip_oct"	=> "27" },
 			"cache_mobile"	=> {
 				"name"		=> "Mobile caches",
 				"ip_oct"	=> "28" },
