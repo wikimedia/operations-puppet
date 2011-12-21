@@ -179,7 +179,8 @@ class imagescaler {
 		admins::mortals,
 		admins::restricted,
 		apaches::pybal-check,
-		apaches::monitoring
+		apaches::monitoring,
+		accounts::l10nupdate
 }
 
 class db {
