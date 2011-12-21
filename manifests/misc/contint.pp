@@ -180,24 +180,29 @@ class misc::contint::test {
 	}
 
 	class testswarm {
+
+		class systemuser {
+			# Create a user to run the cronjob with
+			systemuser { testswarm:
+				name  => "testswarm",
+				home  => "/var/lib/testswarm",
+				shell => "/bin/bash",
+				# And part of web server user group so we can let it access
+				# the SQLite databases
+				groups => [ 'www-data' ];
+			}
+		}
+
+		# Make sure we have a 'testswarm' user before doing anything else
+		require misc::contint::test::testswarm::systemuser
+
 		# Testswarm is configured using the debian package
 		package { testswarm: ensure => latest; }
-
-		# Create a user to run the cronjob with
-		systemuser { testswarm:
-			name  => "testswarm",
-			home  => "/var/lib/testswarm",
-			shell => "/bin/bash",
-			# And part of web server user group so we can let it access
-			# the SQLite databases
-			groups => [ 'www-data' ];
-		}
 
 		# install scripts
 		file {
 			"/etc/testswarm/fetcher-sample.ini":
 				require => [
-					Systemuser[testswarm],
 					Package["testswarm"]
 				],
 				source  => "puppet:///files/testswarm/fetcher-sample.ini",
@@ -205,31 +210,26 @@ class misc::contint::test {
 				owner   => testswarm,
 				group   => testswarm;
 			"/var/lib/testswarm/script":
-				require => Systemuser[testswarm],
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
-				require => Systemuser[testswarm],
 				ensure  => present,
 				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
 				owner   => testswarm,
 				group   => testswarm;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
-				require => Systemuser[testswarm],
 				ensure  => present,
 				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
 				owner   => testswarm,
 				group   => testswarm;
 			# Directory that hold the mediawiki fetches
 			"/var/lib/testswarm/mediawiki-trunk":
-				require => Systemuser[testswarm],
 				ensure  => directory,
 				owner   => testswarm,
 				group   => testswarm;
 			# SQLite databases files need specific user rights
 			"/var/lib/testswarm/mediawiki-trunk/dbs":
-				require => Systemuser[testswarm],
 				ensure  => directory,
 				mode    => 0774,
 				owner   => testswarm,
