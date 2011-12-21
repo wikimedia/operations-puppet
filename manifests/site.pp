@@ -535,7 +535,7 @@ class swift-cluster {
 			bind_port => "8080",
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
-			num_workers => "8",
+			num_workers => $::processorcount * 2,
 			super_admin_key => "thisshouldbesecret",
 			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
@@ -553,7 +553,7 @@ class swift-cluster {
 			class { "swift::proxy::config":
 				bind_port => "8080",
 				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-				num_workers => "8",
+				num_workers => $::processorcount * 2,
 				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
 				super_admin_key => "thisshouldbesecret",
 				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
