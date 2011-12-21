@@ -463,6 +463,7 @@ class cache {
 
 		include standard,
 			varnish::htcpd,
+			varnish::logging,
 			varnish::monitoring::ganglia,
 			lvs::realserver
 		
