@@ -239,12 +239,6 @@ class misc::contint::test {
 				mode    => 0774,
 				owner   => testswarm,
 				group   => www-data;
-			# Apache configuration to publish mediawiki fetches
-			"/etc/apache2/sites-enabled/testswarm-checkouts.conf":
-				source => "puppet:///files/testswarm/testswarm-checkouts.conf",
-				ensure => present,
-				owner  => root,
-				group  => root;
 			# Override Apache configuration coming from the testswarm package.
 			"/etc/apache2/conf.d/testswarm.conf":
 				ensure => absent;
