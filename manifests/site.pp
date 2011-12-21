@@ -1019,8 +1019,11 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
-	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (testswarm) NOPASSWD: ALL'] }
+	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => [
+		 'ALL = (jenkins) NOPASSWD: ALL'
+		,'ALL = NOPASSWD: /etc/init.d/jenkins'
+		,'ALL = (testswarm) NOPASSWD: ALL'
+	]}
 	include base,
 		ganglia,
 		ntp::client,
