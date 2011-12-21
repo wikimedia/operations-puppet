@@ -136,17 +136,17 @@ class misc::contint::test {
 				group => wikidev,
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
-			[
-			"/srv/org/mediawiki/integration/WikipediaMobile",
-			"/srv/org/mediawiki/integration/WikipediaMobile/nightly"
-			]:
+			"/srv/org/mediawiki/integration/WikipediaMobile":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
 			# Copy HTML/CSS materials for ./WikipediaMobile/nightly/ :
 			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
-				mode => 0555,
+				owner => jenkins,
+				group => wikidev,
+				mode => 0755,
+				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
 				recurse => "true";
 			# Placing the file in sites-available
