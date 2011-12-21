@@ -173,6 +173,15 @@ class swift::storage {
 		ensure => directory;
 	}
 
+	service {
+		[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
+			subscribe => File["/etc/swift-account-server.conf"];
+		[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
+			subscribe => File["/etc/swift-container-server.conf"];
+		[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
+			subscribe => File["/etc/swift-object-server.conf"];
+	}
+
 }
 
 # Definition: swift::create_filesystem
