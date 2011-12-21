@@ -678,6 +678,8 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
+	$ganglia_aggregator = "true"
+
 	include swift-cluster::eqiad-test
 }
 
@@ -1578,6 +1580,10 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
+	if $hostname =~ /^owa[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
 	include swift-cluster::pmtpa-test::proxy
 }
 
