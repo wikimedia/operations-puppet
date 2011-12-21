@@ -166,7 +166,7 @@ class varnish {
 		file {
 			"/etc/init.d/varnishncsa":
 				require => Package[varnish3],
-				content => template("varnish/varnishncsa.init.mobile.erb"),
+				content => template("varnish/varnishncsa.init.erb"),
 				owner => root,
 				group => root,
 				mode => 0555;
