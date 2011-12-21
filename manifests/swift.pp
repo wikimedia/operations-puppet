@@ -157,11 +157,11 @@ class swift::storage {
 	# set up swift specific configs
 	File { owner => swift, group => swift, mode => 0444 }
 	file { "/etc/swift/account-server.conf":
-			source => "puppet:///files/swift/etc.swift.account-server.conf";
+			content => template("swift/etc.swift.account-server.conf.erb");
 		"/etc/swift/container-server.conf":
-			source => "puppet:///files/swift/etc.swift.container-server.conf";
+			content => template("swift/etc.swift.container-server.conf.erb");
 		"/etc/swift/object-server.conf":
-			source => "puppet:///files/swift/etc.swift.object-server.conf";
+			content => template("swift/etc.swift.object-server.conf.erb");
 	}
 
 	file { "/srv/swift-storage":
