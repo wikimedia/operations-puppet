@@ -159,7 +159,23 @@ class varnish {
 		}
 	}
 
-	# FIXME: add varnish logging class
+	## If you want to send udplog traffic to one address,
+	## set $udplogger2="false"
+	class logging($udplogger1="emery.wikimedia.org", $udplogger2="locke.wikimedia.org") {
+
+		file {
+			"/etc/init.d/varnishncsa":
+				require => Package[varnish3],
+				content => template("varnish/varnishncsa.init.mobile.erb"),
+				owner => root,
+				group => root,
+				mode => 0555;
+		}
+
+		service { varnishncsa:
+			require => [ Package[varnish3], File["/etc/init.d/varnishncsa"] ],
+			ensure => running;
+	}
 
 	# Make a default instance
 	instance { "default": }
