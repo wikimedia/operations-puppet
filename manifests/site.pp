@@ -1586,6 +1586,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 	}
 
 	include swift-cluster::pmtpa-test::proxy
+	include swift-cluster::pmtpa-test::storage
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
