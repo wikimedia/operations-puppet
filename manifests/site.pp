@@ -1997,6 +1997,8 @@ node /cp104[1-4].wikimedia.org/ {
 	if $hostname =~ /^cp104[34]$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "check_procs_generic_c!2!2!2!2!varnishncsa" }
 }
 
 # sq71-78 are text squids
