@@ -160,7 +160,7 @@ class varnish {
 	}
 
 	## If you want to send udplog traffic to one address,
-	## set $udplogger2="false"
+	## leave $udplogger2 blank
 	class logging($udplogger1="emery.wikimedia.org", $udplogger2="locke.wikimedia.org") {
 
 		file {
@@ -170,6 +170,12 @@ class varnish {
 				owner => root,
 				group => root,
 				mode => 0555;
+			"/etc/default/varnishncsa":
+				require => Package[varnish3],
+				source => "puppet:///files/varnish/varnishncsa.default",
+				owner => root,
+				group => root,
+				mode => 0444;
 		}
 
 		service { varnishncsa:
