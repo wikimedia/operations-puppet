@@ -161,16 +161,15 @@ class mysql {
 			$long_timeouts = "false"
 			$enable_unsafe_locks = "false"
 			$large_slave_trans_retries = "false"
+			if $writable { 
+				$read_only = "false"
+			} else { 
+				$read_only = "true"
+			}
 		}
 
 		if ! $skip_name_resolve { 
 			$skip_name_resolve = "true"
-		}
-
-		if $writable { 
-			$read_only = "false"
-		} else { 
-			$read_only = "true"
 		}
 
 		file { "/etc/my.cnf":
