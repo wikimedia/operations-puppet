@@ -375,10 +375,22 @@ define command{
 	command_line	$USER1$/check_snmp -H $HOSTADDRESS$ -C $ARG1$ -o $ARG2$ -l '$ARG3$' -w $ARG4$ -c $ARG5$
 }
 
-# generic "check number of procs"
+# generic "check number of procs" 
+# -a, --argument-array=STRING
+# Only scan for processes with args that contain STRING.
+
 define command{
 	command_name	check_procs_generic
 	command_line	$USER3$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -a $ARG5$
+}
+
+# generic "check number of procs"-2
+# -C, --command=COMMAND
+# Only scan for exact matches of COMMAND (without path).
+
+define command{
+	command_name	check_procs_generic_c
+	command_line	$USER3$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
 }
 
 # check that logging packet loss is not too high
