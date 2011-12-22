@@ -5,7 +5,6 @@
 
 /home/wikipedia/logs/*.log {
 	daily
-	olddir /home/wikipedia/logs/archive
 	notifempty
 	maxage 180
 	rotate 1000
