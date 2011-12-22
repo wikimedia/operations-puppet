@@ -3,7 +3,7 @@
 
 class misc::wikistats {
 	system_role { "misc::wikistats": description => "wikistats host" }
-	systemuser { wikistats: name => "wikistats", home => "/home/wikistats", groups => [ "wikistats" ] }
+	systemuser { wikistats: name => "wikistats", home => "/var/lib/wikistats", groups => [ "wikistats" ] }
 
 	# the web UI part (output)
 	class web {
