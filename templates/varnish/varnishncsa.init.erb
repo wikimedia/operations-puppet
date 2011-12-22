@@ -18,13 +18,9 @@ DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/$NAME
 UDPLOGGER1=<%= scope.lookupvar('varnish::logging::udplogger1') %>
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
 UDPLOGGER2=<%= scope.lookupvar('varnish::logging::udplogger2') %>
-<% end %>
 PIDFILE1=/var/run/$NAME/$NAME.$UDPLOGGER1.pid
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-PIDFILE2=/var/run/$NAME/$NAME.$UDPLOGGER2.pid
-<% end %>
+[ $UDPLOGGER2 = "false" ] || PIDFILE2=/var/run/$NAME/$NAME.$UDPLOGGER2.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
@@ -43,68 +39,87 @@ fi
 test -x $DAEMON || exit 0
 
 DAEMON_OPTS1="-n frontend -w $UDPLOGGER1:8420 -D"
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-DAEMON_OPTS2="-n frontend -w $UDPLOGGER2:8420 -D"
-<% end %>
+[ $UDPLOGGER2 = "false" ] || DAEMON_OPTS2="-n frontend -w $UDPLOGGER2:8420 -D"
 
 start_varnishncsa() {
     output=$(/bin/tempfile -s.varnish)
     log_daemon_msg "Starting $DESC" "$NAME"
     create_pid_directory
-    if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
-        --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} \
-        > ${output} 2>&1 \
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-	&& start-stop-daemon --start --quiet --pidfile ${PIDFILE2} \
-	--chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS2} \
-	>> ${output} 2>&1
-<% end %>
-    ;then
-	log_end_msg 0
-    else
-	log_end_msg 1
-	cat $output
-	exit 1
+    if [ $UDPLOGGER2 != "false" ]; then
+        if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
+            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} \
+            > ${output} 2>&1 \
+            && start-stop-daemon --start --quiet --pidfile ${PIDFILE2} \
+            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS2} \
+            >> ${output} 2>&1; then
+                log_end_msg 0
+        else
+            log_end_msg 1
+            cat $output
+            exit 1
+        fi
+   else 
+        if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
+            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} \
+            > ${output} 2>&1; then
+                log_end_msg 0
+        else
+            log_end_msg 1
+            cat $output
+            exit 1
+        fi
     fi
     rm $output
 }
 
 stop_varnishncsa(){
     log_daemon_msg "Stopping $DESC" "$NAME"
-    if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
-        --retry 10 --exec $DAEMON \
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-	&& start-stop-daemon --stop --quiet --pidfile $PIDFILE2 \
-	--retry 10 --exec $DAEMON \
-<% end %>
-    ;then
-	log_end_msg 0
+    if [ $UDPLOGGER2 != "false" ]; then
+        if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
+            --retry 10 --exec $DAEMON \
+            && start-stop-daemon --stop --quiet --pidfile $PIDFILE2 \
+            --retry 10 --exec $DAEMON; then
+                log_end_msg 0
+        else
+	        log_end_msg 1
+        fi
     else
-	log_end_msg 1
+        if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
+            --retry 10 --exec $DAEMON; then
+                log_end_msg 0
+        else
+	        log_end_msg 1
+        fi
     fi
 }
 
 reload_varnishncsa(){
     log_daemon_msg "Reloading $DESC" "$NAME"
-    if kill -HUP $(cat $PIDFILE1) >/dev/null 2>&1 \
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-	&& kill -HUP $(cat $PIDFILE2) >/dev/null 2>&1
-<% end %>
-    ; then
-	log_end_msg 0
+    if [ $UDPLOGGER2 != "false" ]; then
+        if kill -HUP $(cat $PIDFILE1) >/dev/null 2>&1 \
+	    && kill -HUP $(cat $PIDFILE2) >/dev/null 2>&1; then
+	    log_end_msg 0
+        else
+            log_end_msg 1
+            exit 1
+        fi
     else
-	log_end_msg 1
-	exit 1
+        if kill -HUP $(cat $PIDFILE1) >/dev/null 2>&1; then
+	    log_end_msg 0
+        else
+            log_end_msg 1
+            exit 1
+        fi
     fi
 }
 
 status_varnishncsa(){
-<% if scope.lookupvar('varnish::logging::udplogger2') != "false" then -%>
-    status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}" && \
-    status_of_proc -p "${PIDFILE2}" "${DAEMON}" "${NAME}"
-<% else -%>
-    status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}" 
-<% end %>
+    if [ $UDPLOGGER2 != "false" ]; then
+        status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}" && \
+        status_of_proc -p "${PIDFILE2}" "${DAEMON}" "${NAME}"
+    else
+        status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}"
+    fi
 }
 
 create_pid_directory() {

@@ -170,6 +170,12 @@ class varnish {
 				owner => root,
 				group => root,
 				mode => 0555;
+			"/etc/default/varnishncsa":
+				require => Package[varnish3],
+				source => "puppet:///files/varnish/varnishncsa.default",
+				owner => root,
+				group => root,
+				mode => 0444;
 		}
 
 		service { varnishncsa:
