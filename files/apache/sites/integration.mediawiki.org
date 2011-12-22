@@ -89,8 +89,8 @@ NameVirtualHost *:443
 	DocumentRoot /srv/org/mediawiki/integration
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
 
 	ErrorLog /var/log/apache2/error.log
 

@@ -1043,7 +1043,7 @@ node "gallium.wikimedia.org" {
 		accounts::reedy,
 		certificates::star_wikimedia_org
 
-	install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.mediawiki.org": }
 }
 
 node "gilman.wikimedia.org" {
