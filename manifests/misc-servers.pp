@@ -149,7 +149,7 @@ class misc::install-server {
 			minute => 43,
 			ensure => present;
 		}
-	}	
+	}
 
 	class apt-repository {
 		system_role { "misc::apt-repository": description => "APT repository" }
@@ -235,7 +235,7 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 
 class misc::noc-wikimedia {
 	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
-	
+
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
 	}
@@ -322,7 +322,7 @@ class misc::download-wikimedia {
 	}
 
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
-	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" } 
+	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
 
 }
 
@@ -381,7 +381,7 @@ class misc::url-downloader {
 
 class misc::nfs-server::home {
 	system_role { "misc::nfs-server::home": description => "/home NFS" }
-	
+
 	class backup {
 		cron { home-rsync:
 			require => File["/root/.ssh/home-rsync"],
@@ -449,7 +449,7 @@ class misc::images::rsync {
 + /private/
 - **/thumb/
 "
-	
+
 	file { "/etc/rsync.includes":
 		content => $rsync_includes;
 	}
@@ -457,72 +457,9 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
-# TODO: fold most this in a generic, parameterized 'udp2log' class
-class misc::mediawiki-logger {
-	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
-
-	package { udplog:
-		ensure => latest;
-	}
-
-	file {
-		"/etc/udp2log":
-			require => Package[udplog],
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => "flush pipe 1 python /usr/local/bin/demux.py\n";
-		"/usr/local/bin/demux.py":
-			mode => 0544,
-			owner => root,
-			group => root,
-			source => "puppet:///files/misc/demux.py";
-		"/etc/logrotate.d/mw-udp2log":
-			source => "puppet:///files/logrotate/mw-udp2log",
-			mode => 0444;
-		"/etc/sysctl.d/99-big-rmem.conf":
-			owner => "root",
-			group => "root",
-			mode => 0444,
-			content => "
-net.core.rmem_max = 536870912
-";
-	}
-
-	service { udp2log:
-		require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py"] ] ],
-		subscribe => File["/etc/udp2log"],
-		ensure => running;
-	}
-}
-
-class misc::syslog-server {
-	system_role { "misc::syslog-server": description => "central syslog server" }
-	
-	package { syslog-ng:
-		ensure => latest;
-	}
-
-	file {
-		"/etc/syslog-ng/syslog-ng.conf":
-			require => Package[syslog-ng],
-			source => "puppet:///files/syslog-ng/syslog-ng.conf",
-			mode => 0444;
-		"/etc/logrotate.d/remote-logs":
-			source => "puppet:///files/syslog-ng/remote-logs",
-			mode => 0444;
-	}
-
-	service { syslog-ng:
-		require => [ Package[syslog-ng], File["/etc/syslog-ng/syslog-ng.conf"] ],
-		subscribe => File["/etc/syslog-ng/syslog-ng.conf"],
-		ensure => running;
-	}
-}
-
 class misc::extension-distributor {
 	system_role { "misc::extension-distributor": description => "MediaWiki extension distributor" }
-	
+
 	$extdist_working_dir = "/mnt/upload6/private/ExtensionDistributor"
 	$extdist_download_dir = "/mnt/upload6/ext-dist"
 
@@ -567,7 +504,7 @@ class misc::extension-distributor {
 
 class misc::zfs::monitoring {
 	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
-}	
+}
 
 class misc::rt::server {
 	system_role { "misc::rt::server": description => "RT server" }
@@ -609,7 +546,7 @@ class misc::rt::server {
 		refreshonly => true;
 	}
 
-	lighttpd_config { "10-rt": 
+	lighttpd_config { "10-rt":
 		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
 	}
 
@@ -704,7 +641,7 @@ $motd = "
 *******************************************************
 This is the Wikimedia RC->IRC gateway
 *******************************************************
-Sending messages to channels is not allowed. 
+Sending messages to channels is not allowed.
 
 A channel exists for all Wikimedia wikis which have been
 changed since the last time the server was restarted. In
@@ -760,17 +697,6 @@ class misc::mediawiki-irc-relay {
 	}
 }
 
-class misc::squid-logging::multicast-relay {
-	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
-
-	upstart_job { "squid-logging-multicast-relay": install => "true" }
-
-	service { squid-logging-multicast-relay:
-		require => Upstart_job[squid-logging-multicast-relay],
-		ensure => running;
-	}
-}
-
 class misc::dc-cam-transcoder {
 	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
 
@@ -790,7 +716,7 @@ class misc::etherpad {
 	system_role { "misc::etherpad": description => "Etherpad server" }
 
 	require generic::webserver::modproxy
-	
+
 	# NB: this has some GUI going on all up in it. first install must be done by hand.
 	package { etherpad:
 		ensure => latest;
@@ -801,7 +727,7 @@ class misc::etherpad {
 		ensure => running;
 	}
 
-	file { 	
+	file {
 		"/etc/init.d/etherpad":
 			source => "puppet:///files/misc/etherpad/etherpad.init",
 			mode => 0555,
@@ -823,8 +749,8 @@ class misc::etherpad {
 	apache_site { etherpad_proxy: name => "etherpad.proxy" }
 
 	# Nagios monitoring
-	monitor_service { "etherpad http": 
-		description => "Etherpad HTTP", 
+	monitor_service { "etherpad http":
+		description => "Etherpad HTTP",
 		check_command => "check_http_on_port!9000";
 	}
 
@@ -891,7 +817,7 @@ class misc::etherpad_lite {
 
 class misc::kiwix-mirror {
 	# TODO: add system_role
-	
+
 	group { mirror:
 		ensure => "present";
 	}
@@ -900,12 +826,12 @@ class misc::kiwix-mirror {
 		name => "mirror",
 		gid => "mirror",
 		groups => [ "www-data"],
-		membership => "minimum", 
+		membership => "minimum",
 		home => "/data/home",
 		shell => "/bin/bash";
 	}
 
-	file { 
+	file {
 		"/data/xmldatadumps/public/kiwix":
 			ensure => "/data/kiwix";
 		"/data/kiwix":
@@ -935,7 +861,7 @@ class misc::jenkins {
 		'jenkins-apt-repo-key':
 			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
 			command => "/usr/bin/wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | /usr/bin/apt-key add -";
-			
+
 		'jenkins-apt-repo-add':
 			subscribe => Exec['jenkins-apt-repo-key'],
 			refreshonly => true,
@@ -953,9 +879,9 @@ class misc::jenkins {
 
 	user { jenkins:
 		name => "jenkins",
-		groups => [ "wikidev" ]; 
+		groups => [ "wikidev" ];
 	}
-	
+
 	service { 'jenkins':
 		enable => true,
 		ensure => 'running',
@@ -974,7 +900,7 @@ class misc::jenkins {
 	#		owner => jenkins,
 	#		group => nogroup,
 	#		require => Package[jenkins],
-	#		source => "puppet:///private/misc/jenkins.config.xml";		
+	#		source => "puppet:///private/misc/jenkins.config.xml";
 	#}
 }
 
@@ -1000,7 +926,7 @@ class misc::fundraising {
 	user { civimail:
 		name => "civimail",
 		gid => "civimail",
-		groups => [ "civimail" ], 
+		groups => [ "civimail" ],
 		membership => "minimum",
 		password => $passwords::civi::civimail_pass,
 		home => "/home/civimail",
@@ -1008,7 +934,7 @@ class misc::fundraising {
 	}
 
 	file {
-		#civicrm confs 
+		#civicrm confs
 		"/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php":
 			mode => 0440,
 			owner => www-data,
@@ -1069,11 +995,11 @@ class misc::fundraising {
 			group => root,
 			source => "puppet:///private/misc/fundraising/fundraising-misc.update_config.php";
 		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
+			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
+			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";
 		"/srv/org.wikimedia.civicrm/IPNListener_Recurring.php":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php";	
+			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php";
 		"/srv/org.wikimedia.civicrm/files":
 			owner => "www-data",
 			group => "wikidev",
@@ -1167,7 +1093,7 @@ class misc::fundraising {
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
 
 		"/usr/local/bin/drush":
-			ensure => "/opt/drush/drush";	
+			ensure => "/opt/drush/drush";
 
 		# mail stuff
 		"/etc/exim4/exim4.conf":
@@ -1252,7 +1178,7 @@ class misc::fundraising {
 	apache_site { fundraising: name => "006-fundraising" }
 	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
 
-}	
+}
 
 class misc::survey {
 
@@ -1280,7 +1206,7 @@ class misc::survey {
 }
 
 class misc::download-mediawiki {
-	
+
 	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
 
 	# FIXME: require apache
@@ -1331,53 +1257,6 @@ class misc::monitoring::htcp-loss {
 	}
 }
 
-# TODO: Create a generic udp2log parameterized class and use it for this, and
-# for misc::mediawiki-logger above
-class misc::udp2log::aft {
-	
-	# TODO: add system_role
-	file {
-		"/etc/init.d/udp2log-aft":
-			mode => 0555,
-			owner => root,
-			group => root,
-			source => "puppet:///files/udp2log/udp2log-aft";
-		"/etc/logrotate.d/aft-udp2log":
-			mode => 0444,
-			source => "puppet:///files/logrotate/aft-udp2log";
-	}
-
-	service {
-		"udp2log-aft":
-			ensure => running,
-			enable => true,
-			require => File["/etc/init.d/udp2log-aft"];
-	}
-
-}
-# TODO: this is  a hacky short term method to get the config files into
-#       puppet.  The app should be puppetized for real using mediawiki-logger above.
-class misc::udp2log::lockeconfig {
-	include contacts::udp2log
-	file {
-		"/etc/udp2log/squid":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => template("udp2log/locke-etc-squid.erb");
-	}
-}
-class misc::udp2log::emeryconfig {
-	include contacts::udp2log
-	file {
-		"/etc/udp2log/locke-filters":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => template("udp2log/emery-etc-locke-filters.erb");
-	}
-}
-
 class misc::udpprofile::collector {
 	system_role { "misc::udpprofile::collector": description => "MediaWiki UDP profile collector" }
 
@@ -1393,7 +1272,7 @@ class misc::udpprofile::collector {
 	# FIXME: Nagios monitoring
 }
 
-class misc::graphite { 
+class misc::graphite {
 	system_role { "misc::graphite": description => "graphite and carbon services" }
 
 	include misc::apache2
@@ -1406,7 +1285,7 @@ class misc::graphite {
 		ensure => "0.9.9-1";
 	}
 
-	file { 
+	file {
 		"/etc/apache2/sites-available/graphite":
 			owner => "root",
 			group => "root",
@@ -1685,41 +1564,6 @@ class misc::passwordScripts {
 	}
 }
 
-class misc::udp2log::packetloss {
-	package { "ganglia-logtailer":
-		ensure => latest;
-	}
-	file {
-		"PacketLossLogtailer.py":
-			path => "/usr/share/ganglia-logtailer/PacketLossLogtailer.py",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/misc/PacketLossLogtailer.py";
-	}
-}
-
-class misc::udp2log::emery {
-# emery and locke have their log files in different places and therefore need different cron jobs
-	cron { "ganglia-logtailer" :
-		ensure => present,
-		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /var/log/squid/packet-loss.log --mode cron",
-		user => 'root',
-		minute => '*/5';
-	}
-
-	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
-}
-class misc::udp2log::locke {
-# emery and locke have their log files in different places and therefore need different cron jobs
-	cron { "ganglia-logtailer" :
-		ensure => present,
-		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /a/squid/packet-loss.log --mode cron",
-		user => 'root',
-		minute => '*/5';
-	}
-	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
-}
 class misc::l10nupdate {
 	require misc::scripts
 
@@ -1778,11 +1622,11 @@ class misc::l10nupdate {
 
 class misc::torrus {
 	system_role { "misc::torrus": description => "Torrus" }
-	
+
 	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
-	
+
 	File { require => Package["torrus-common"] }
-	
+
 	file {
 		"/etc/torrus/conf/":
 			source => "puppet:///files/torrus/conf/",
@@ -1804,20 +1648,20 @@ class misc::torrus {
 			mode => 0444,
 			recurse => remote;
 	}
-	
+
 	exec { "torrus compile":
 		command => "/usr/sbin/torrus compile --all",
 		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		refreshonly => true
 	}
-	
+
 	service { "torrus-common":
 		require => Exec["torrus compile"],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
 		ensure => running;
 	}
-	
+
 	# TODO: Puppetize the rest of Torrus
 }
 
@@ -1842,18 +1686,18 @@ class misc::gsbmonitoring {
 
 class misc::package-builder {
 	system_role { "misc::package-builder": description => "Debian package builder" }
-	
+
 	include generic::packages::git-core
-	
+
 	class packages {
 		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload", "libio-socket-ssl-perl" ]:
 			ensure => latest;
 		}
 	}
-	
+
 	class defaults {
 		File { mode => 0444 }
-		
+
 		file {
 			"/etc/devscripts.conf":
 				content => template("misc/devscripts.conf.erb");
@@ -1865,7 +1709,7 @@ class misc::package-builder {
 				content => template("misc/dupload.conf.erb");
 		}
 	}
-	
+
 	include packages, defaults
 }
 
@@ -1897,7 +1741,7 @@ class misc::ircecho {
 }
 
 class misc::racktables {
-	# When this class is chosen, ensure that apache, php5-common, php5-mysql are 
+	# When this class is chosen, ensure that apache, php5-common, php5-mysql are
 	# installed on the host via another package set.
 
 	system_role { "misc::racktables": description => "Racktables" }
