@@ -1728,9 +1728,7 @@ node "sockpuppet.pmtpa.wmnet" {
 			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-			'dbserver' => "db9.pmtpa.wmnet",
-			'reports' => "store, http",
-			'reporturl' => "http://localhost/reports/upload"
+			'dbserver' => "db9.pmtpa.wmnet"
 		}
 	}
 
@@ -2032,8 +2030,6 @@ node "stafford.pmtpa.wmnet" {
 			'filesdir' => "/var/lib/git/operations/puppet/files",
 			'privatefilesdir' => "/var/lib/git/operations/private/files",
 			'manifestdir' => "/var/lib/git/operations/puppet/manifests",
-			'reports' => "store, http",
-			'reporturl' => "http://sockpuppet.pmtpa.wmnet/reports/upload",
 			'templatedir' => "/var/lib/git/operations/puppet/templates"
 		}
 	}
