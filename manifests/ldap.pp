@@ -511,7 +511,7 @@ class ldap::client::utils {
 		require => Package["subversion"];
 	}
 	exec { "checkout_instance_ldap_tools":
-		command => "/usr/bin/svn co -r97023 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
+		command => "/usr/bin/svn co -r107038 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
