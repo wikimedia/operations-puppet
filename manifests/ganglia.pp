@@ -190,6 +190,6 @@ class ganglia::web {
 		generic::php5-gd
 
 	package { "ganglia-webfrontend":
-		ensure => latest;
+		ensure => absent;
 	}
 }
