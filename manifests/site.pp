@@ -561,7 +561,7 @@ class swift-cluster {
 				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => "testing",
-				rewrite_thumb_server => "ms5.pmtpa.wmnet"
+				rewrite_thumb_server => "upload.pmtpa.wikimedia.org"
 			}
 			include swift::proxy
 		}
