@@ -32,7 +32,8 @@ $iptables_ports = {
 	beam1 => "33416",
 	beam2 => "5672",
 	gmond_tcp => "8649",
-	gmond_udp => "8649"
+	gmond_udp => "8649",
+	udp => ""
 }
 
 $iptables_protocols = {
@@ -69,7 +70,8 @@ $iptables_protocols = {
 	beam1 => "tcp",
 	beam2 => "tcp",
 	gmond_tcp => "tcp",
-	gmond_udp => "udp"
+	gmond_udp => "udp",
+	udp => "udp"
 }
 
 class iptables::tables {
