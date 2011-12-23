@@ -31,6 +31,7 @@ class misc::wikistats {
 		apache_module { rewrite: name => "rewrite" }
 
 		apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
+		apache_site { no_default: name => "000-default", ensure => absent }
 		apache_site { wikistats: name => "wikistats.wmflabs.org" }
 
 	}
