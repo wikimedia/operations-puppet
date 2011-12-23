@@ -28,6 +28,7 @@ class misc::wikistats {
 			ensure => directory;
 		}
 
+		apache_module { rewrite: name => "rewrite" }
 
 		apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 		apache_site { wikistats: name => "wikistats.wmflabs.org" }
