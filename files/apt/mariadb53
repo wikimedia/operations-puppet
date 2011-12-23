@@ -1,0 +1,9 @@
+# !This file is managed by puppet!
+# !! LABS ONLY - No external repos on production !!
+# MariaDB 5.3 for lucid, official US mirror
+
+# MariaDB repository list - created 2011-12-23 15:14 UTC
+# http://downloads.askmonty.org/mariadb/repositories/
+
+deb http://ftp.osuosl.org/pub/mariadb/repo/5.3/ubuntu lucid main
+deb-src http://ftp.osuosl.org/pub/mariadb/repo/5.3/ubuntu lucid main
