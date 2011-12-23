@@ -442,6 +442,9 @@ class cache {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
+		monitor_service { "varnishncsa": description => "mobile traffic loggers",
+			check_command => "check_procs_generic!1!4!1!4!varnishncsa" }
+
 		$lvs_realserver_ips = $site ? {
 			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
 			default => [ ]
@@ -1988,15 +1991,12 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp104[1-2].wikimedia.org/ { 
-	include cache::mobile
-}
-
-node /cp104[3-4].wikimedia.org/ { 
-	$ganglia_aggregator = "true"
+node /cp104[1-4].wikimedia.org/ {
 	include cache::mobile
 
-	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "check_procs_generic!1!4!1!4!varnishncsa" }
+	if $hostname =~ /^cp104[34]$/ {
+		$ganglia_aggregator = "true"
+	}
 }
 
 # sq71-78 are text squids
