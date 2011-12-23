@@ -180,7 +180,7 @@ class misc::udp2log::iptables-accepts {
 class misc::udp2log::iptables-drops {
 	require "misc::udp2log::iptables-accepts"
 	# Rememeber to place modified or removed rules into purges!
-	iptables_add_service{ "udp2log_drop_udp": service => "udp", jump => "DROP" }
+	iptables_add_service{ "udp2log_drop_udp": service => "udp", source => "0.0.0.0/0", jump => "DROP" }
 }
 
 class misc::udp2log::iptables  {
