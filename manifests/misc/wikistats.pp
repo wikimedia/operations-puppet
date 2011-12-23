@@ -25,7 +25,7 @@ class misc::wikistats {
 			mode => 644,
 			owner => root,
 			group => root,
-			content => file('apache/files/ports.conf'),
+			source => 'puppet:///files/apache/ports.conf',
 			ensure => present;
 			"/var/www/wikistats":
 			mode => 755,
