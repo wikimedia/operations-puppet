@@ -21,6 +21,12 @@ class misc::wikistats {
 			group => root,
 			content => template('apache/sites/wikistats.wmflabs.org.erb'),
 			ensure => present;
+			"/etc/apache2/ports.conf":
+			mode => 644,
+			owner => root,
+			group => root,
+			content => file('apache/files/ports.conf'),
+			ensure => present;
 			"/var/www/wikistats":
 			mode => 755,
 			owner => wikistats,
