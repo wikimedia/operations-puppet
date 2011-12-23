@@ -47,10 +47,10 @@ start_varnishncsa() {
     create_pid_directory
     if [ $UDPLOGGER2 ]; then
         if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
-            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} \
+            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} -P ${PIDFILE1} \
             > ${output} 2>&1 \
             && start-stop-daemon --start --quiet --pidfile ${PIDFILE2} \
-            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS2} \
+            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS2} -P ${PIDFILE2} \
             >> ${output} 2>&1; then
                 log_end_msg 0
         else
@@ -138,6 +138,7 @@ case "$1" in
         ;;
     status)
         status_varnishncsa
+	exit $?
 	;;
     restart|force-reload)
 	$0 stop
