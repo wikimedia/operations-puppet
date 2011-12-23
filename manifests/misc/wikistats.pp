@@ -16,22 +16,29 @@ class misc::wikistats {
 
 		file {
 			"/etc/apache2/sites-available/wikistats.wmflabs.org":
-			mode => 444,
-			owner => root,
-			group => root,
-			content => template('apache/sites/wikistats.wmflabs.org.erb'),
-			ensure => present;
+				mode => 444,
+				owner => root,
+				group => root,
+				content => template('apache/sites/wikistats.wmflabs.org.erb'),
+				ensure => present;
 			"/etc/apache2/ports.conf":
-			mode => 644,
-			owner => root,
-			group => root,
-			source => 'puppet:///files/apache/ports.conf',
-			ensure => present;
+				mode => 644,
+				owner => root,
+				group => root,
+				source => 'puppet:///files/apache/ports.conf',
+				ensure => present;
 			"/var/www/wikistats":
-			mode => 755,
-			owner => wikistats,
-			group => www-data,
-			ensure => directory;
+				mode => 755,
+				owner => wikistats,
+				group => www-data,
+				ensure => directory;
+			"/var/www/wikistats/index.php":
+				mode => 440,
+				owner => wikistats,
+				group => www-data,
+				ensure => present,
+				source => 'puppet:///files/misc/wikistats/index.php',
+				require => File["/var/www/wikistats"];
 		}
 
 		apache_module { rewrite: name => "rewrite" }
