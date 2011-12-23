@@ -539,6 +539,27 @@ class nagios::ganglia::ganglios {
 	}
 }
 
+class nagios::monitor::check_wiki_user_last_edit_time {
+	# Check script relies on libmediawiki-api-perl
+	package { "libmediawiki-api-perl",
+		ensure => latest;
+	}
+	file {"/usr/local/nagios/libexec/check_wiki_user_last_edit_time.pl":
+		source => "puppet:///files/nagios/check_wiki_user_last_edit_time",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+	monitor_service { "check_wiki_user_last_edit_time":
+		description => "check_wiki_user_last_edit_time",
+		check_command => "check_wiki_user_last_edit_time",
+		normal_check_interval => 15,
+		retry_check_interval => 15,
+		critical => "false"
+	}
+
+}
+
 # passive checks / NSCA
 
 # package contains daemon and client script
