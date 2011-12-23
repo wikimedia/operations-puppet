@@ -796,7 +796,8 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 }
 
 node /^db4[023]\.pmtpa\.wmnet$/ {
-	include db::core
+	include db::core,
+		mysql::packages
 }
 
 node "db41.pmtpa.wmnet" {
