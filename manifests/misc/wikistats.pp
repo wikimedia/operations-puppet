@@ -32,11 +32,6 @@ class misc::wikistats {
 		apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 		apache_site { wikistats: name => "wikistats.wmflabs.org" }
 
-		service { apache2:
-			subscribe => Package[libapache2-mod-php5],
-			ensure => running;
-		}
-
 	}
 
 	# the update scripts fetching data (input)
