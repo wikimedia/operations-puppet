@@ -176,6 +176,7 @@ class misc::udp2log::iptables-accepts {
 	iptables_add_service{ "udp2log_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "udp2log_accept_all_US": service => "all", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "udp2log_accept_all_AMS": service => "all", source => "91.198.174.0/24", jump => "ACCEPT" }
+	iptables_add_service{ "udp2log_accept_all_localhost": service => "all", source => "127.0.0.1", jump => "ACCEPT" }
 }
 class misc::udp2log::iptables-drops {
 	require "misc::udp2log::iptables-accepts"
