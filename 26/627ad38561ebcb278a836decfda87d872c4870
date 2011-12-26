@@ -1,0 +1,8 @@
+Change-Id: I26627ad38561ebcb278a836decfda87d872c4870
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Mon, 26 Dec 2011 22:30:12 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1716
+Project: operations/puppet
+Branch: refs/heads/production
