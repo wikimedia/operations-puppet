@@ -79,9 +79,9 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 define create_certificate_hash( $certname="$name", $location="/etc/ssl/certs", $hash ) {
 
 	if versioncmp($lsbdistrelease, "11.04") > 0 {
-		$hashflag = "-subject_hash"
-	} else {
 		$hashflag = "-subject_hash_old"
+	} else {
+		$hashflag = "-subject_hash"
 	}
 	exec {
 		"/bin/ln -s ${location}/${certname}.pem ${location} $(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}).0":
