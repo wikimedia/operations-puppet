@@ -84,7 +84,7 @@ define create_certificate_hash( $certname="$name", $location="/etc/ssl/certs", $
 		$hashflag = "-subject_hash"
 	}
 	exec {
-		"/bin/ln -s ${location}/${certname}.pem ${location} $(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}.pem).0":
+		"/bin/ln -s ${location}/${certname}.pem ${location}/$(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}.pem).0":
 			creates => "${location}/${hash}",
 			require => File["${location}/${certname}.pem"];
 	}
