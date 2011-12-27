@@ -450,6 +450,79 @@ class nagios::monitor {
 	}
 }
 
+class nagios::monitor::percona {
+	file { "/usr/local/nagios/libexec/percona": 
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
+		"/usr/local/nagios/libexec/percona/check_lvs"
+			source => "puppet:///files/nagios/percona/check_lvs",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_deadlocks"
+			source => "puppet:///files/nagios/percona/check_mysql_deadlocks",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_deadlocks"
+			source => "puppet:///files/nagios/percona/check_mysql_deadlocks",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_idle_transactions"
+			source => "puppet:///files/nagios/percona/check_mysql_idle_transactions",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_recent_restart"
+			source => "puppet:///files/nagios/percona/check_mysql_recent_restart",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_slave_delay"
+			source => "puppet:///files/nagios/percona/check_mysql_slave_delay",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_slave_running"
+			source => "puppet:///files/nagios/percona/check_mysql_slave_running",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysql_unauthenticated_users"
+			source => "puppet:///files/nagios/percona/check_mysql_unauthenticated_users",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysqld_deleted_files"
+			source => "puppet:///files/nagios/percona/check_mysqld_deleted_files",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysqld_file_ownership"
+			source => "puppet:///files/nagios/percona/check_mysqld_file_ownership",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysqld_frm_ibd"
+			source => "puppet:///files/nagios/percona/check_mysqld_frm_ibd",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/check_mysqld_pid_file"
+			source => "puppet:///files/nagios/percona/check_mysqld_pid_file",
+			owner => root,
+			group => root,
+			mode => 0555;
+		"/usr/local/nagios/libexec/percona/utils.sh"
+			source => "puppet:///files/nagios/percona/utils.sh",
+			owner => root,
+			group => root,
+			mode => 0555;
+	}
+}
 
 class nagios::monitor::jobqueue {
 
