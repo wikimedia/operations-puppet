@@ -164,7 +164,7 @@ class misc::udp2log::locke {
 class misc::udp2log::iptables-purges {
 	require "iptables::tables"
 	# The deny rule must always be purged, otherwise ACCEPTs can be placed below it
-	iptables_purge_service{ "udp2log_drop_udp": service => "all" }
+	iptables_purge_service{ "udp2log_drop_udp": service => "udp" }
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
 }
