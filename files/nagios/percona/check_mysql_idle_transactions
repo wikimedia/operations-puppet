@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Get command-line options
+for o; do
+   case "${o}" in
+      -l) shift; USER="${1}"; shift; ;;
+      -p) shift; PASS="${1}"; shift; ;;
+      -H) shift; HOST="${1}"; shift; ;;
+      -w) shift; WARN="${1}"; shift; ;;
+      -c) shift; CRIT="${1}"; shift; ;;
+   esac
+done
+
+EXITSTATUS=$STATE_UNKNOWN
+NOTE="UNK long-running blocking idle transactions"
+IDLE="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -e "
+   SELECT COALESCE(MAX(IF(p.command = 'Sleep', p.time, 0)), 0) AS idle_in_trx
+   FROM       INFORMATION_SCHEMA.INNODB_LOCK_WAITS AS w
+   INNER JOIN INFORMATION_SCHEMA.INNODB_TRX        AS b ON  b.trx_id = w.blocking_trx_id
+   INNER JOIN INFORMATION_SCHEMA.INNODB_TRX        AS r ON  r.trx_id = w.requesting_trx_id
+   LEFT JOIN  INFORMATION_SCHEMA.PROCESSLIST       AS p ON  p.id     = b.trx_mysql_thread_id")";
+if [ "${IDLE}" -gt ${CRIT:-600} ]; then
+   EXITSTATUS=$STATE_CRITICAL
+   STAT="CRIT"
+elif [ "${IDLE}" -gt ${WARN:-60} ]; then
+   EXITSTATUS=$STATE_WARNING
+   STAT="WARN"
+else
+   EXITSTATUS=$STATE_OK
+   STAT="OK"
+fi
+NOTE="${STAT} longest blocking idle transaction sleeps for ${IDLE} seconds"
+echo $NOTE
+exit $EXITSTATUS

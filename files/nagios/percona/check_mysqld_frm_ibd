@@ -1,0 +1,60 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# We don't care about an orphaned file until it's N minutes old (helps avoid
+# false-positives, etc).
+FRESHNESS=60
+
+# Find MySQL's data directory from its 'ps' command line.
+CMDLINE="$(ps -fp $(pgrep mysqld) | grep mysqld)"
+# Sample:
+# mysql    13822     1 33 Jan28 ?        1-01:08:37 /usr/sbin/mysqld --defaults-file=/var/lib/mysql/my.cnf --basedir=/usr --datadir=/var/lib/mysql/data/ --pid-file=/var/run/mysqld/mysqld.pid --socket=/var/run/mysqld/mysqld.sock
+for WORD in $CMDLINE; do
+   if echo "${WORD}" | grep datadir >/dev/null 2>&1; then
+      DATADIR="$(echo "${WORD}" | cut -d= -f2)"
+   fi
+done
+
+EXITSTATUS=$STATE_UNKNOWN
+NOTE="UNK could not determine datadir"
+if [ "${DATADIR}" ]; then
+   TEMP="$(mktemp)"
+   EXITSTATUS=$STATE_OK
+   NOTE="OK all .ibd/.frm files match"
+   # Find .frm files that have no associated .ibd files, ignoring #sql temp files.
+   find "${DATADIR}" -mmin +${FRESHNESS} -name '*.frm' | grep -v '#sql-' | while read file; do
+      if [ ! -e "${file%%frm}ibd" ]; then
+         # Skip the file unless it's an InnoDB .frm file.  Note that there could
+         # be a race condition -- the table could be dropped while we're checking.
+         # We /dev/null everything to avoid that.
+         if strings "${file}" 2>/dev/null | grep '^InnoDB$' >/dev/null 2>&1 ; then
+            echo "NO_IBD ${file}" >> "${TEMP}"
+         fi
+      fi
+   done
+
+   # Now find .ibd files without a .frm, ignoring partition ibd files.
+   find "${DATADIR}" -mmin +${FRESHNESS} -name '*.ibd' | grep -v '#P#' | while read file; do
+      if [ ! -e "${file%%ibd}frm" -a -e "${file}" ]; then
+         echo "NO_FRM ${file}" >> "${TEMP}"
+      fi
+   done
+
+   if [ -s "${TEMP}" ]; then
+      EXITSTATUS=$STATE_WARNING
+      NOTE="WARN $(cat "${TEMP}" | wc -l) orphaned .frm or .ibd files: $(head "${TEMP}")"
+   fi
+   rm -f "${TEMP}"
+fi
+echo $NOTE
+exit $EXITSTATUS
