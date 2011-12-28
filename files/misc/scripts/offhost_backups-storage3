@@ -1,0 +1,95 @@
+#!/usr/bin/perl
+use strict;
+use IPC::Open3;
+use IO::Select;
+use Sys::Syslog;
+
+# this is a lame little script to do some simple cron-based backup maintenance
+# jgreen 20111221
+
+# jobs, keep 'em numbered in the order you want them to happen
+my $mirror = {
+	'1' => {
+		# copy fundraising archive to tridge
+		'exec'	=> 'rsync -ar /archive/fundraising/ fundraising@tridge.wikimedia.org:archive/',
+	},
+	'2' => {
+		# sweep udplogs older than 14 days into /archive/udplogs/old so they don't rsync
+		'exec'	=> 'find /archive/udplogs -maxdepth 1 -type f -mtime +14 -exec mv {} /archive/old_udplogs \;',
+	},
+	'3' => {
+		# keep recent udplogs dir in sync with hume location
+		'exec'	=> 'rsync -a --delete /archive/udplogs/ file_mover@hume.wikimedia.org:/a/static/uncompressed/',
+	},
+};
+
+
+# THE WORK STARTS HERE
+
+# my ident string for use in syslog
+my $ident = $0;
+
+for my $m (sort keys %{$mirror}) {
+
+	printlog($mirror->{$m}->{'exec'});
+
+	# open system call using open3 so we can cleanly address stderr vs stdout
+	my $child_pid = open3(*W, *R, *E, $mirror->{$m}->{'exec'});
+
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to step through the output of open3
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+
+	# keep looping through open3 filehandles until there is no more output on any of them
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+		for my $fh (@ready) {
+			my $ffh = fileno($fh);  # identify which handle we're dealing with
+			if (eof ($fh)) {	# close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				printlog($line);
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				failboat($line);
+			}
+		}
+	}
+
+	close (R);
+	close (E);
+
+}
+
+printlog('done!');
+
+exit;
+
+
+#         _	                _   _             
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#                                             
+
+sub failboat {
+	my $msg = shift;
+	print "$ident died: $msg\n";
+	printlog("died: $msg",'warning');
+	exit 1;
+}
+
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'info'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($ident,'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
