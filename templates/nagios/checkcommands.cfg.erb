@@ -327,6 +327,27 @@ define command{
 	command_name	nrpe_check_dpkg
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
+
+define command{
+	command_name	nrpe_check_jenkins
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
+}
+define command{
+	command_name	nrpe_check_mailman
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mailman
+}
+define command{
+	command_name	nrpe_check_spamd
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_spamd
+}
+define command{
+	command_name	nrpe_check_poolcounterd
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
+}
+define command{
+	command_name	nrpe_check_varnishncsa
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
+}
 define command{
 	command_name	check_stomp
 	command_line	/usr/local/nagios/libexec/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
