@@ -162,7 +162,7 @@ define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $m
 				owner => $owner,
 				group => $group,
 				mode => $mode,
-				source => "puppet:///private/ssl/${name}",
+				source => "puppet:///private/ssl/${name}.key",
 				require => Package["openssl"];
 		}
 	}
