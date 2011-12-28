@@ -696,6 +696,7 @@ class openstack::nova_config {
 		"production" => "kvm",
 		"labs" => "qemu",
 	}
+	$nova_live_migration_uri = "qemu+ssh://%s/system"
 
 }
 
