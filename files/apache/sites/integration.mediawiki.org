@@ -91,6 +91,7 @@ NameVirtualHost *:443
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 
 	ErrorLog /var/log/apache2/error.log
 
