@@ -119,7 +119,8 @@ class openstack::common {
 	}
 
 	# FIXME: third party repository
-	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
+	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+	apt::pparepo { "nova-core-release-diablo": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
 
 	package { [ "nova-common" ]:
 		ensure => latest,
@@ -518,12 +519,12 @@ class openstack::compute-service {
 class openstack::glance-service {
 
 	# FIXME: third party repository
-	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
+	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "absent" }
 
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Apt::Pparepo["glance-core-release"],
+		require => Apt::Pparepo["nova-core-release-diablo"],
 		ensure => latest;
 	}
 
@@ -682,7 +683,7 @@ class openstack::nova_config {
 	$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
-	$nova_db_version = "14"
+	$nova_db_version = "46"
 	$nova_puppet_host = "virt1.wikimedia.org"
 	$nova_puppet_db_name = "puppet"
 	$nova_puppet_user = "puppet"
