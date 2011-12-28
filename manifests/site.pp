@@ -2027,6 +2027,8 @@ node "storage3.pmtpa.wmnet" {
 	$db_cluster = "fundraisingdb"
 
 	include db::core,
+		role::db::fundraising::slave,
+		role::db::fundraising::dump,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -2035,8 +2037,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
-		accounts::logmover,
-		role::db::fundraising::slave
+		accounts::logmover
 
 }
 
