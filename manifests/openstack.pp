@@ -175,6 +175,34 @@ class openstack::compute {
 		openstack::gluster-service,
 		openstack::gluster-client
 
+	# tls is a PITA to enable in labs, let's find another way there.
+	if ( $realm == "production" ) {
+		install_certificate{ "${fqdn}": }
+		install_additional_key{ "${fqdn}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
+
+		file {
+			"/var/lib/nova/clientkey.pem":
+				ensure => link,
+				target => "/var/lib/nova/${fqdn}.key",
+				require => Install_additional_key["${fqdn}"];
+			"/var/lib/nova/clientcert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/${fqdn}.pem",
+				require => Install_certificate["${fqdn}"];
+			"/var/lib/nova/cacert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/wmf-ca.pem",
+				require => Install_certificate["${fqdn}"];
+			"/etc/libvirt/libvirtd.conf":
+				notify => Service["libvirt"],
+				owner => "root",
+				group => "root",
+				mode => "444",
+				content => template("openstack/libvirtd.conf.erb"),
+				require => Package["nova-common"];
+		}
+	}
+
 	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
@@ -697,7 +725,7 @@ class openstack::nova_config {
 		"production" => "kvm",
 		"labs" => "qemu",
 	}
-	$nova_live_migration_uri = "qemu+ssh://%s/system"
+	$nova_live_migration_uri = "qemu://%s/system?pkipath=/var/lib/nova"
 
 }
 

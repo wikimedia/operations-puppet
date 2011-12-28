@@ -85,7 +85,6 @@ class certs::groups::ssl-cert {
 		}
 	}
 }
-
 define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 	require certificates::packages,
@@ -153,6 +152,20 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 	}
 	create_chained_cert{ "${name}": ca => $cas }
 
+}
+
+define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $mode="0440" ) {
+
+	if ( $key_loc ) {
+		file {
+			"${key_loc}/${name}.key":
+				owner => $owner,
+				group => $group,
+				mode => $mode,
+				source => "puppet:///private/ssl/${name}",
+				require => Package["openssl"];
+		}
+	}
 }
 
 class certificates::packages {
