@@ -1999,7 +1999,6 @@ node /cp104[1-4].wikimedia.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "nrpe_check_varnishncsa" }
 }
 
 # sq71-78 are text squids
