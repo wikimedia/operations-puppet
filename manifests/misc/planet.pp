@@ -1,5 +1,6 @@
 # http://planet.wikimedia.org/
 class misc::planet {
+	#The host of this role must have the star certificate installed on it
 	system_role { "misc::planet": description => "Planet weblog aggregator" }
 
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
@@ -17,7 +18,6 @@ class misc::planet {
 			source => "puppet:///files/apache/sites/planet.wikimedia.org";
 	}
 
-	install_certificate{ "star.wikimedia.org": }
 	apache_site { planet: name => "planet.wikimedia.org" }
 
 	package { "python2.6":
