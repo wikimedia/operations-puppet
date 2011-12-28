@@ -194,7 +194,7 @@ class openstack::compute {
 				target => "/etc/ssl/certs/wmf-ca.pem",
 				require => Install_certificate["${fqdn}"];
 			"/etc/libvirt/libvirtd.conf":
-				notify => Service["libvirt"],
+				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
 				mode => "444",
@@ -203,7 +203,7 @@ class openstack::compute {
 		}
 	}
 
-	service { "libvirt":
+	service { "libvirt-bin":
 		ensure => running,
 		enable => true,
 		require => Package["nova-common"];
