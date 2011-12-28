@@ -172,7 +172,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
 class certificates::packages {
 
-	package { [ "openssl", "ca-certificates" ]:
+	package { [ "openssl", "ca-certificates", "ssl-cert" ]:
 		ensure => latest;
 	}
 
