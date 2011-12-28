@@ -10,9 +10,9 @@ class misc::wikistats {
 
 		class {'generic::webserver::php5': ssl => 'true'; }
 
-			$wikistats_host = "${instancename}.${domain}"
-			$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
-			$wikistats_ssl_key = '/etc/ssl/private/star.wmflabs.key'
+			$wikistats_host = "wikistats.wmflabs.org"
+			$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
+			$wikistats_ssl_key = '/etc/ssl/private/star.wmflabs.org.key'
 
 		file {
 			'/etc/apache2/sites-available/wikistats.wmflabs.org':
