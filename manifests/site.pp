@@ -34,6 +34,7 @@ import "openstack.pp"
 import "owa.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
+import "role/*.pp"
 import "search.pp"
 import "snapshots.pp"
 import "squid.pp"
@@ -183,88 +184,54 @@ class imagescaler {
 		accounts::l10nupdate
 }
 
-class db {
-	class core {
-		$cluster = "mysql"
+class db::core {
+	$cluster = "mysql"
 
-		system_role { "db::core": description => "Core Database server" }
+	system_role { "db::core": description => "Core Database server" }
 
-		include standard,
-			mysql
+	include standard,
+		mysql
+}
+
+class db::es {
+	$cluster = "mysql"
+
+	$nagios_group = "es"
+
+	system_role { "db::es": description => "External Storage server (${mysql_role})" }
+
+	include	standard,
+		mysql,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::mysqlpath,
+		nrpe
+
+	# Nagios monitoring
+	monitor_service {
+		"mysql status":
+			description => "MySQL ${mysql_role} status",
+			check_command => "check_mysqlstatus!--${mysql_role}";
+		"mysql replication":
+			description => "MySQL replication status",
+			check_command => "check_db_lag",
+			ensure => $mysql_role ? {
+				"master" => absent,
+				"slave" => present
+			};
 	}
 
-	class es {
-		$cluster = "mysql"
-		$nagios_group = "es"
+}
 
-		system_role { "db::es": description => "External Storage server (${mysql_role})" }
+class db::es::master {
+	$mysql_role = "master"
+	include db::es
+}
 
-		include	standard,
-			mysql,
-			mysql::mysqluser,
-			mysql::datadirs,
-			mysql::conf,
-			mysql::mysqlpath,
-			nrpe
-
-		# Nagios monitoring
-		monitor_service {
-			"mysql status":
-				description => "MySQL ${mysql_role} status",
-				check_command => "check_mysqlstatus!--${mysql_role}";
-			"mysql replication":
-				description => "MySQL replication status",
-				check_command => "check_db_lag",
-				ensure => $mysql_role ? {
-					"master" => absent,
-					"slave" => present
-				};
-		}
-
-		class master {
-			$mysql_role = "master"
-
-			include db::es
-		}
-
-		class slave {
-			$mysql_role = "slave"
-
-			include db::es
-		}
-	}
-
-	class fundraising {
-	
-		$cluster = "mysql"
-
-		system_role { "db::fundraising": description => "Fundraising Database (${mysql_role})" }
-
-		monitor_service {
-			"mysql status":
-				description => "MySQL ${mysql_role} status",
-				check_command => "check_mysqlstatus!--${mysql_role}";
-			"mysql replication":
-				description => "MySQL replication status",
-				check_command => "check_db_lag",
-				ensure => $mysql_role ? {
-					"master" => absent,
-					"slave" => present
-				};
-		}
-
-		class master {
-			$mysql_role = "master"
-			include db::fundraising
-		}
-
-		class slave {
-			$mysql_role = "slave"
-			include db::fundraising
-		}
-		
-	}		
-
+class db::es::slave {
+	$mysql_role = "slave"
+	include db::es
 }
 
 class searchserver {
@@ -916,13 +883,13 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 
 	if $hostname =~ /^db1008$/ {
 		$db_cluster = "fundraisingdb"
-		include db::fundraising::master
+		include role::db::fundraising::master
 		$writable = "true"
 	}
 
 	if $hostname =~ /^db1025$/ {
 		$db_cluster = "fundraisingdb"
-		include db::fundraising::slave
+		include role::db::fundraising::slave
 	}
 
 	if $hostname =~ /^(db1042|db1048)$/ {
@@ -2069,7 +2036,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::rfaulk,
 		accounts::awjrichards,
 		accounts::logmover,
-		db::fundraising::slave
+		role::db::fundraising::slave
 
 }
 
