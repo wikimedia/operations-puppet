@@ -88,6 +88,9 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 	}
 	else {
 		# Export the nagios service instance
+		# we keep getting duplicates here because we are not using the default target location
+		# quote from puppet docs: "You can purge Nagios resources using the resources type, but only in the default file locations. "
+		# we need to add something here to delete the file right before it is created (or go back to the single large default file
 		@@nagios_service { "$hostname $title":
 			target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg",
 			host_name => $host,
@@ -288,6 +291,14 @@ class nagios::monitor {
 		owner => root,
 		group => root,
 		mode => 0755;
+	}
+
+	# this is supposed to replace "purge-nagios-resources.py"
+	# http://www.mnxsolutions.com/linux/automatically-purge-old-configuration-from-nagios-deployed-by-puppet.html	
+	# http://dxul.puppetlabs.com/issues/1542
+
+	resources { [ "nagios_service", "nagios_servicegroup", "nagios_host" ]:
+		purge => true;
 	}
 
 	file { "/etc/init.d/nagios":
