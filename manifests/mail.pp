@@ -202,7 +202,7 @@ class spamassassin {
 		mode => 0700;
 	}
 
-	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_generic!1!20!1!40!spamd" }
+	monitor_service { "spamd": description => "spamassassin", check_command => "nrpe_check_spamd" }
 }
 
 class mailman {
@@ -229,7 +229,7 @@ class mailman {
 			pattern => "mailmanctl"
 		}
 
-		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
+		monitor_service { "procs_mailman": description => "mailman", check_command => "nrpe_check_mailman" }
 	}
 
 	class web-ui {

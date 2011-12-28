@@ -443,7 +443,7 @@ class cache {
 		$nagios_group = "cache_mobile_${site}"
 
 		monitor_service { "varnishncsa": description => "mobile traffic loggers",
-			check_command => "check_procs_generic!1!4!1!4!varnishncsa" }
+			check_command => "nrpe_check_varnishncsa" }
 
 		$lvs_realserver_ips = $site ? {
 			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
@@ -1998,7 +1998,7 @@ node /cp104[1-4].wikimedia.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "check_procs_generic_c!2!2!2!2!varnishncsa" }
+	monitor_service { "varnishncsa": description => "mobile traffic loggers", check_command => "nrpe_check_varnishncsa" }
 }
 
 # sq71-78 are text squids
@@ -2111,7 +2111,7 @@ node /snapshot[1-4]\.pmtpa\.wmnet/ {
 node "tarin.wikimedia.org" {
 	include standard
 
-	monitor_service { "poolcounterd": description => "poolcounter", check_command => "check_procs_generic!1!2!1!5!poolcounterd" }
+	monitor_service { "poolcounterd": description => "poolcounter", check_command => "nrpe_check_poolcounterd" }
 }
 
 node "thistle.pmtpa.wmnet" {
