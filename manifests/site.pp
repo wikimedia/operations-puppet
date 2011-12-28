@@ -1992,7 +1992,8 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 
 # eqiad varnish for m.wikipedia.org
 node /cp104[1-4].wikimedia.org/ {
-	include cache::mobile
+	include cache::mobile,
+	nrpe
 
 	if $hostname =~ /^cp104[34]$/ {
 		$ganglia_aggregator = "true"
@@ -2109,7 +2110,8 @@ node /snapshot[1-4]\.pmtpa\.wmnet/ {
 }
 
 node "tarin.wikimedia.org" {
-	include standard
+	include standard,
+	nrpe
 
 	monitor_service { "poolcounterd": description => "poolcounter", check_command => "nrpe_check_poolcounterd" }
 }
