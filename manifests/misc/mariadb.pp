@@ -1,9 +1,10 @@
 # MariaDB - for LABS ONLY
 
 class misc::mariadb($version="5.3") {
-	system_role { "misc::mariadb": description => "host uses external MariaDB repository" }
 
 	class repository {
+		system_role { "misc::mariadb": description => "host uses external MariaDB repository" }
+		$version = misc::mariadb::version
 
 		file { "/etc/apt/sources.list.d/mariadb${version}.list":
 			ensure	=> present,
@@ -28,21 +29,21 @@ class misc::mariadb($version="5.3") {
 
 	class client {
 		system_role { "misc::mariadb::client": description => "MariaDB client" }
-
-		require repository
+		$version = misc::mariadb::version
 
 		package { "mariadb-client-${version}":
-			ensure	=> latest;
+			ensure	=> latest,
+			require => Class['misc::mariadb::repository'];
 		}
 	}
 
 	class server {
 		system_role { "misc::mariadb::server": description => "MariaDB server" }
-
-		require repository
+		$version = misc::mariadb::version
 
 		package { "mariadb-server-${version}":
-			ensure	=> latest;
+			ensure	=> latest,
+			require => Class['misc::mariadb::repository'];
 		}
 	}
 }
