@@ -2118,8 +2118,6 @@ node "virt1.wikimedia.org" {
 node /virt[2-4].pmtpa.wmnet/ {
 	include standard,
 		openstack::compute
-
-	install_certificate{ "${fqdn}": }
 }
 
 node "williams.wikimedia.org" {
