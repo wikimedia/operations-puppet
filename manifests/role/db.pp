@@ -29,6 +29,23 @@ class role::db::fundraising::slave {
 	include role::db::fundraising
 }
 
-#class role::role::db::fundraising::dump {
-#
-#}
+class role::db::fundraising::dump {
+
+	system_role { "role::db::fundraising::dump": description => "Fundraising Database Dump/Backup" }
+
+	file { '/usr/local/bin/dump_fundraisingdb':
+		mode => 0755,
+		owner => root,
+		group => root,
+		source => "puppet:///files/misc/scripts/dump_fundraisingdb";
+	}
+
+	cron { 'dump_fundraising_database':
+		user => root,
+		minute => '35',
+		hour => '1',
+		command => '/usr/local/bin/dump_fundraisingdb',
+		ensure => present,
+	}
+
+}
