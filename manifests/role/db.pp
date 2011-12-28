@@ -33,11 +33,17 @@ class role::db::fundraising::dump {
 
 	system_role { "role::db::fundraising::dump": description => "Fundraising Database Dump/Backup" }
 
-	file { '/usr/local/bin/dump_fundraisingdb':
-		mode => 0755,
-		owner => root,
-		group => root,
-		source => "puppet:///files/misc/scripts/dump_fundraisingdb";
+	file {
+		'/usr/local/bin/dump_fundraisingdb':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => "puppet:///files/misc/scripts/dump_fundraisingdb";
+		'/root/.dump_fundraisingdb':
+			mode => 0400,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/dump_fundraisingdb.conf";
 	}
 
 	cron { 'dump_fundraising_database':
