@@ -203,6 +203,12 @@ class openstack::compute {
 		}
 	}
 
+	service { "libvirt":
+		ensure => running,
+		enable => true,
+		require => Package["nova-common"];
+	}
+
 	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
