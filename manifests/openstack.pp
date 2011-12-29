@@ -207,9 +207,14 @@ class openstack::compute {
 				mode => "444",
 				content => template("openstack/libvirt-bin.default.erb"),
 				require => Package["nova-common"];
+			"/etc/init/libvirt-bin.conf":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => "444",
+				source => "puppet:///files/upstart/libvirt-bin.conf",
+				require => Package["nova-common"];
 		}
-
-		upstart_job{ "libvirt-bin": name => "libvirt-bin", require => Package["nova-common"], install => true }
 	}
 
 	service { "libvirt-bin":
