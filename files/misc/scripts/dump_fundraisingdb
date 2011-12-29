@@ -7,8 +7,8 @@ use Fcntl ':mode';
 
 # This is a quick and dirty script which *does not* do any significant input
 # validation on the config file. There's potential for destruction if the conf
-# file is tampered with. To at prevent that, the script will not run if the
-# conf file is writable by anyone other than the effective user.
+# file is tampered with. To prevent that, the script will not run if the conf
+# file is writable by anyone other than the effective user.
 
 # fetch conf file 
 my $conf = readconf('/root/.dump_fundraisingdb');
