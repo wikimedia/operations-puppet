@@ -3,7 +3,7 @@
 class misc::mariadb($mariadb_version="5.3") {
 
 	class repository {
-		system_role { "misc::mariadb": description => "host uses external MariaDB repository" }
+		system_role { "misc::mariadb::repo": description => "host which uses external MariaDB repository" }
 
 		file { "/etc/apt/sources.list.d/mariadb${mariadb_version}.list":
 			ensure	=> present,
