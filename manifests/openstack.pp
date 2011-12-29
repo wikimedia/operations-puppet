@@ -209,7 +209,7 @@ class openstack::compute {
 				require => Package["nova-common"];
 		}
 
-		upstart_job{ "libvirt-bin": require => Package["nova-common"], install => true }
+		upstart_job{ "libvirt-bin": name => "libvirt-bin", require => Package["nova-common"], install => true }
 	}
 
 	service { "libvirt-bin":
