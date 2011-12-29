@@ -20,6 +20,7 @@
 	SSLEngine on
 	SSLCertificateFile <%= wikistats_ssl_cert %>
 	SSLCertificateKeyFile <%= wikistats_ssl_key %>
+	SSLCACertificateFile <%= wikistats_ssl_cacert %>
 
 	DocumentRoot /var/www/wikistats
         <Directory />

@@ -13,6 +13,7 @@ class misc::wikistats {
 			$wikistats_host = "wikistats.wmflabs.org"
 			$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
 			$wikistats_ssl_key = '/etc/ssl/private/star.wmflabs.org.key'
+			$wikistats_ssl_cacert = '/etc/ssl/certs/wmfs-labs.pem'
 
 		file {
 			'/etc/apache2/sites-available/wikistats.wmflabs.org':
