@@ -34,13 +34,6 @@ class misc::wikistats {
 				mode	=> '0755',
 				owner	=> wikistats,
 				group	=> www-data;
-			'/var/www/wikistats/index.php':
-				ensure	=> present,
-				mode	=> '0440',
-				owner	=> wikistats,
-				group	=> www-data,
-				source	=> 'puppet:///files/misc/wikistats/index.php',
-				require	=> File['/var/www/wikistats'];
 		}
 
 		apache_module { rewrite: name => 'rewrite' }
@@ -50,7 +43,7 @@ class misc::wikistats {
 		apache_site { wikistats: name => 'wikistats.wmflabs.org' }
 
 		exec { "set_www_perms":
-			command => "/bin/chown wikistats:www-data /var/www/wikistats",
+			command => "/bin/chown wikistats:www-data /var/www/wikistats/*.php",
 			notify => Service["apache2"],
 			refreshonly => "true";
 		}
