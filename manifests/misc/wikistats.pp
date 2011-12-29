@@ -9,6 +9,7 @@ class misc::wikistats {
 	class web {
 
 		class {'generic::webserver::php5': ssl => 'true'; }
+		class {'generic::webserver::php5-mysql'}
 
 			$wikistats_host = "wikistats.wmflabs.org"
 			$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
