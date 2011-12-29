@@ -745,7 +745,7 @@ class openstack::nova_config {
 		"production" => "kvm",
 		"labs" => "qemu",
 	}
-	$nova_live_migration_uri = "qemu://%s/system?pkipath=/var/lib/nova"
+	$nova_live_migration_uri = "qemu://%s.pmtpa.wmnet/system?pkipath=/var/lib/nova"
 
 }
 
