@@ -54,7 +54,8 @@ class misc::wikistats {
 	# the update scripts fetching data (input)
 	class updates {
 
-		include generic::mysql::client
+		require generic::mariadb::server
+
 		package { 'php5-cli': ensure => latest; }
 	}
 
