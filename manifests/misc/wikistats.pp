@@ -49,12 +49,18 @@ class misc::wikistats {
 		apache_site { no_default: name => '000-default', ensure => absent }
 		apache_site { wikistats: name => 'wikistats.wmflabs.org' }
 
+		exec { "set_www_perms":
+			command => "/bin/chown wikistats:www-data /var/www/wikistats",
+			notify => Service["apache2"],
+			refreshonly => "true";
+		}
+
 	}
 
 	# the update scripts fetching data (input)
 	class updates {
 
-		require generic::mariadb::server
+		require misc::mariadb::server
 
 		package { 'php5-cli': ensure => latest; }
 	}
