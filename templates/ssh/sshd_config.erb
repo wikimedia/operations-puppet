@@ -84,6 +84,8 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
 
+<% if realm == "production" then %>
 # allow connections from the LAN to use passwords.  
 Match Address 208.80.152.*,91.198.174.0/24,10.*
         PasswordAuthentication yes
+<% end %>
