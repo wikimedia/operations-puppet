@@ -8,23 +8,8 @@ class misc::fundraising {
 
 	require mysql::client
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
 		ensure => latest;
-	}
-
-	# civimail user
-	group { civimail:
-		ensure => "present",
-	}
-
-	user { civimail:
-		name => "civimail",
-		gid => "civimail",
-		groups => [ "civimail" ],
-		membership => "minimum",
-		password => $passwords::civi::civimail_pass,
-		home => "/home/civimail",
-		shell => "/bin/sh";
 	}
 
 	file {
@@ -162,28 +147,6 @@ class misc::fundraising {
 		"/usr/local/bin/drush":
 			ensure => "/opt/drush/drush";
 
-		# mail stuff
-		"/etc/exim4/exim4.conf":
-			content => template("exim/exim4.donate.erb"),
-			mode => 0444,
-			owner => root,
-			group => root;
-		"/etc/exim4/wikimedia.org-fundraising-private.key":
-			mode => 0440,
-			owner => root,
-			group => Debian-exim,
-			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
-		"/etc/dovecot/dovecot.conf":
-			source => "puppet:///files/dovecot/dovecot.donate.conf",
-			mode => 0444,
-			owner => root,
-			group => root;
-		"/var/mail/civimail":
-			owner => "civimail",
-			group => "civimail",
-			mode => 2755,
-			ensure => directory;
-
 		# monitoring stuff
 		"/etc/nagios/nrpe.d/fundraising.cfg":
 			source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
@@ -195,11 +158,6 @@ class misc::fundraising {
 			mode => 0440,
 			owner => root,
 			group => root;
-		"/usr/local/bin/collect_exim_stats_via_gmetric":
-			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric",
-			mode => 0755,
-			owner => root,
-			group => root;
 
 		# other stuff
 		"/etc/php5/cli/php.ini":
@@ -207,11 +165,6 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/php/php.ini.fundraising.cli";
-		"/usr/local/bin/civimail_send":
-			mode => 0710,
-			owner => root,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/civimail_send";
 		"/usr/local/bin/sync_archive_to_storage3":
 			mode => 0500,
 			owner => root,
@@ -286,3 +239,70 @@ class misc::fundraising::jenkins_maintenance {
 
 }
 
+class misc::fundraising::mail {
+
+	system_role { "misc::fundraising::mail": description => "fundraising mail server" }
+
+	package { [ "dovecot-imapd", "exim4-daemon-heavy", "exim4-config" ]:
+		ensure => latest;
+	}
+
+	group { civimail:
+		ensure => "present",
+	}
+
+	user { civimail:
+		name => "civimail",
+		gid => "civimail",
+		groups => [ "civimail" ],
+		membership => "minimum",
+		password => $passwords::civi::civimail_pass,
+		home => "/home/civimail",
+		shell => "/bin/sh";
+	}
+
+	file {
+		"/etc/exim4/exim4.conf":
+			content => template("exim/exim4.donate.erb"),
+			mode => 0444,
+			owner => root,
+			group => root;
+		"/etc/exim4/wikimedia.org-fundraising-private.key":
+			mode => 0440,
+			owner => root,
+			group => Debian-exim,
+			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
+		"/etc/dovecot/dovecot.conf":
+			source => "puppet:///files/dovecot/dovecot.donate.conf",
+			mode => 0444,
+			owner => root,
+			group => root;
+		"/var/mail/civimail":
+			owner => "civimail",
+			group => "civimail",
+			mode => 2755,
+			ensure => directory;
+		"/usr/local/bin/collect_exim_stats_via_gmetric":
+			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric",
+			mode => 0755,
+			owner => root,
+			group => root;
+		"/usr/local/bin/civimail_send":
+			mode => 0710,
+			owner => root,
+			group => wikidev,
+			source => "puppet:///private/misc/fundraising/civimail_send";
+	}
+
+	cron {
+		'collect_exim_stats_via_gmetric':
+			user => root,
+			command => '/usr/local/bin/collect_exim_stats_via_gmetric',
+			ensure => present;
+		'exim_queue_count_for_mailer_script':
+			user => root,
+			command => '/usr/sbin/exim -bpc > /tmp/exim_queue_count.dat',
+			ensure => present;
+	}
+
+}
