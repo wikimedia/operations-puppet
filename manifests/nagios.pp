@@ -537,7 +537,7 @@ class nagios::monitor::jobqueue {
 		description => "check_job_queue",
 		check_command => "check_job_queue",
 		normal_check_interval => 15,
-		retry_check_interval => 15,
+		retry_check_interval => 5,
 		critical => "false"
 	}
 
