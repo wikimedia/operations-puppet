@@ -212,16 +212,6 @@ class misc::fundraising {
 			owner => root,
 			group => wikidev,
 			source => "puppet:///private/misc/fundraising/civimail_send";
-		"/usr/local/bin/jenkins_watcher":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/jenkins_watcher";
-		"/usr/local/bin/jenkins_archiver":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/jenkins_archiver";
 		"/usr/local/bin/sync_archive_to_storage3":
 			mode => 0500,
 			owner => root,
@@ -255,13 +245,44 @@ class misc::fundraising {
 #			source => 'puppet:///files/misc/scripts/offhost_backups-storage3',
 #	}
 #
-#    cron {
+#	cron {
 #		'dump_fundraising_database':
 #			user => root,
 #			minute => '35',
 #			hour => '1',
 #			command => '/usr/local/bin/dump_fundraisingdb',
 #			ensure => present,
-#    }
+#	}
 #
 #}
+
+class misc::fundraising::jenkins_maintenance {
+
+	file {
+		"/usr/local/bin/jenkins_watcher":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/jenkins_watcher";
+		"/usr/local/bin/jenkins_archiver":
+			mode => 0500,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/jenkins_archiver";
+	}
+
+	cron {
+		'jenkins_archiver':
+			user => root,
+			minute => '50',
+			command => '/usr/local/bin/jenkins_archiver',
+			ensure => present,
+		'jenkins_watcher':
+			user => root,
+			minute => '*/5',
+			command => '/usr/local/bin/jenkins_watcher',
+			ensure => present,
+	}
+
+}
+

@@ -1043,13 +1043,10 @@ node "gilman.wikimedia.org" {
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
 
-	#if $hostname == "grosley" {
-		$exim_signs_dkim = "true"
-		$exim_bounce_collector = "true"
-	#} else {
-	#	$exim_signs_dkim = "false"
-	#	$exim_bounce_collector = "false"
-	#}
+	# variables used in fundraising exim template
+	# TODO: properly scope these
+	$exim_signs_dkim = "true"
+	$exim_bounce_collector = "true"
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1075,7 +1072,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		misc::fundraising
 
 	if $hostname == "aluminium" {
-		include misc::jenkins
+		include misc::jenkins,
+			misc::fundraising::jenkins_maintenance
 	}
 
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
