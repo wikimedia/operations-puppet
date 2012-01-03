@@ -793,6 +793,16 @@ class generic::packages::ant18 {
 	}
 }
 
+class generic::packages::maven {
+	# Install Apache Maven, a java build processing tool.
+	# Class can later be used to add additional Maven plugins
+	# http://maven.apache.org/
+	package { [
+		"maven2"
+	]: ensure => lastest;
+	}
+}
+
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
