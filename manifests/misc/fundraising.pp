@@ -187,6 +187,26 @@ class misc::fundraising {
 
 }
 
+class misc::fundraising::impressionlog::compress {
+
+	file { 
+		'/usr/local/bin/gzip_incoming_logs':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/gzip_incoming_logs";
+	}
+
+	cron {
+		'gzip_incoming_impression_logs':
+			user => root,
+			minute => '*/5',
+			command => '/usr/local/bin/gzip_incoming_logs',
+			ensure => present,
+	}
+
+}
+
 
 #class misc::fundraising::storage3 {
 #
@@ -199,11 +219,11 @@ class misc::fundraising {
 #	}
 #
 #	cron {
-#		'dump_fundraising_database':
+#		'storage3_offhost_backups':
 #			user => root,
 #			minute => '35',
 #			hour => '1',
-#			command => '/usr/local/bin/dump_fundraisingdb',
+#			command => '/usr/local/bin/offhost_backups',
 #			ensure => present,
 #	}
 #

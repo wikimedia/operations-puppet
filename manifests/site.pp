@@ -2044,7 +2044,8 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
-		accounts::logmover
+		accounts::logmover,
+		misc::fundraising::impressionlog::compress
 
 }
 
