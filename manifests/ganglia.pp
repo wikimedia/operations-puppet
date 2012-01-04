@@ -112,10 +112,10 @@ class ganglia {
 		$gmond = "gmond"
 	}
 
-        $gmondpath = $gmond ? {
-                "ganglia-monitor"       => "/etc/ganglia/gmond.conf",
-                default                 => "/etc/gmond.conf"
-        }
+	$gmondpath = $gmond ? {
+		"ganglia-monitor"       => "/etc/ganglia/gmond.conf",
+		default                 => "/etc/gmond.conf"
+	}
 
 
 	# Resource definitions
@@ -152,7 +152,7 @@ class ganglia {
 
 	                file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
 				require => Package[ganglia-monitor],
-        	                ensure => directory;
+				ensure => directory;
 			}
 
 			file { "/etc/gmond.conf":
@@ -183,16 +183,20 @@ class ganglia {
 			ensure => latest;
 		}
 
-		#file { "/etc/ganglia/gmetad.conf":
-		#	require		=> Package[gmetad],
-		#	content		=> template("ganglia/gmetad.conf.erb"),
-		#	mode		=> 0644,
-		#}
+	## FIXME this file is a temp hack to get ganglia running. Needs to become
+	## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
-		#service { "gmetad":
-		#	require 	=> File["/etc/ganglia/gmetad.conf"],
-		#	ensure		=> running;
-		#}
+		file { "/etc/ganglia/gmetad.conf":
+			require	=> Package[gmetad],
+			source	=> "puppet:///files/ganglia/gmetad.conf",
+			mode	=> 0644,
+			ensure	=> present
+		}
+
+		service { "gmetad":
+			require => File["/etc/ganglia/gmetad.conf"],
+			ensure	=> running;
+		}
 	}
 }
 
