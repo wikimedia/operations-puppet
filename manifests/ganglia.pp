@@ -202,8 +202,12 @@ class ganglia {
 
 class ganglia::web {
 # Class for the ganglia frontend machine
+	$ssl = true
+
 	require ganglia::collector,
 		generic::webserver::php5,
-		generic::php5-gd
+		generic::php5-gd,
+		generic::webserver::php5-mysql,
+		svn::client
 
 }
