@@ -190,18 +190,18 @@ class misc::fundraising {
 class misc::fundraising::impressionlog::compress {
 
 	file { 
-		'/usr/local/bin/gzip_incoming_logs':
+		'/usr/local/bin/impression_log_rotator':
 			mode => 0755,
 			owner => root,
 			group => root,
-			source => "puppet:///private/misc/fundraising/gzip_incoming_logs";
+			source => "puppet:///private/misc/fundraising/impression_log_rotator";
 	}
 
 	cron {
-		'gzip_incoming_impression_logs':
+		'rotate_impression_logs':
 			user => root,
 			minute => '*/5',
-			command => '/usr/local/bin/gzip_incoming_logs',
+			command => '/usr/local/bin/impression_log_rotator',
 			ensure => present,
 	}
 
