@@ -1464,7 +1464,7 @@ node "ms5.pmtpa.wmnet" {
 
 node "ms6.esams.wikimedia.org" {
 	$thumbs_proxying = "true"
-	$thumbs_proxy_source = "http://208.80.152.3"
+	$thumbs_proxy_source = "http://208.80.152.211"
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
