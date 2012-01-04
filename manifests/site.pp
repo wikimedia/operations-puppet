@@ -1516,7 +1516,11 @@ node "nickel.wikimedia.org" {
 	$ganglia_aggregator = "true"
 
 	include standard,
-		ganglia::web
+		ganglia::web,
+		certificates::star_wikimedia_org,
+		generic::apache::no-default-site
+
+	 install_certificate{ "star.wikimedia.org": }
 }
 
 node "nescio.esams.wikimedia.org" {
