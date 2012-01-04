@@ -1511,6 +1511,14 @@ node /ms100[4]\.eqiad\.wmnet/ {
 		media-storage::htcp-purger
 }
 
+node "nickel.wikimedia.org" {
+	$cluster = "misc"
+	$ganglia_aggregator = "true"
+
+	include standard,
+		ganglia::web
+}
+
 node "nescio.esams.wikimedia.org" {
 	$dns_recursor_ipaddress = "91.198.174.6"
 

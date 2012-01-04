@@ -196,3 +196,10 @@ class ganglia {
 	}
 }
 
+class ganglia::web {
+# Class for the ganglia frontend machine
+	require ganglia::collector,
+		generic::webserver::php5,
+		generic::php5-gd
+
+}
