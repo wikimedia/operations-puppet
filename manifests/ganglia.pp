@@ -220,16 +220,48 @@ class ganglia::web {
 			group => root,
 			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
 			ensure => present;
+		"/usr/local/bin/restore-gmetad-rrds":
+			mode => 755,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/restore-gmetad-rrds",
+			ensure => present;
+		"/usr/local/bin/save-gmetad-rrds":
+			mode => 755,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/save-gmeta-rrds",
+			ensure => present;
+		"/etc/init.d/gmetad":
+			mode => 755,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/gmetad",
+			ensure => present;
+		"/var/lib/ganglia/rrds.pmtpa/":
+			ensure => directory;
+		"/etc/rc.local":
+			mode => 755,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/rc.local",
+			ensure => present;
 	}
 
 	apache_site { ganglia: name => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
-	package{
-		"librrds-perl":
+	package { "librrds-perl":
 		before => Package[rrdtool],
 		ensure => latest;
 		"rrdtool":
 		ensure => latest,
+	}
+
+	cron { "save-rrds":
+		command => "/usr/local/bin/save-gmetad-rrds",
+		user => root,
+		minute => [ 7, 37 ],
+		ensure => present
 	}
 }
