@@ -222,4 +222,11 @@ class ganglia::web {
 	apache_site { ganglia: name => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
+	package{
+		"librrds-perl":
+		before => Package[rrdtool],
+		ensure => latest;
+		"rrdtool":
+		ensure => latest,
+	}
 }
