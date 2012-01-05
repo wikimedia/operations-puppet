@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+chown nobody /mnt/ganglia_tmp/rrds.pmtpa
+/usr/bin/rsync -a --delete /mnt/ganglia_tmp/rrds.pmtpa/ /var/lib/ganglia/rrds.pmtpa/
