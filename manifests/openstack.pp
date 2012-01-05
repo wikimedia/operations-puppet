@@ -482,13 +482,13 @@ class openstack::ajax-console-proxy-service {
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
-		ensure => latest;
+		#require => Apt::Pparepo["nova-core-release"],
+		#subscribe => File['/etc/nova/nova.conf'],
+		ensure => absent;
 	}
 
 	service { "nova-volume":
-		ensure => running,
+		ensure => stopped,
 		subscribe => File['/etc/nova/nova.conf'];
 	}
 
