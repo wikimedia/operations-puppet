@@ -417,7 +417,8 @@ class openstack::scheduler-service {
 
 	service { "nova-scheduler":
 		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-scheduler"];
 	}
 
 }
@@ -436,13 +437,15 @@ class openstack::network-service {
 
 	service { "nova-network":
 		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-network"];
 	}
 
 	# dnsmasq is run manually by nova-network, we don't want the service running
 	service { "dnsmasq":
 		enable => false,
-		ensure => stopped;
+		ensure => stopped,
+		require => Package["dnsmasq"];
 	}
 
 	# Enable IP forwarding
@@ -460,7 +463,8 @@ class openstack::api-service {
 
 	service { "nova-api":
 		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-api"];
 	}
 
 }
@@ -475,7 +479,8 @@ class openstack::ajax-console-proxy-service {
 
 	service { "nova-ajax-console-proxy":
 		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-ajax-console-proxy"];
 	}
 
 }
@@ -489,7 +494,8 @@ class openstack::volume-service {
 
 	service { "nova-volume":
 		ensure => stopped,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-volume"];
 	}
 
 }
@@ -504,13 +510,15 @@ class openstack::compute-service {
 
 	service { "nova-compute":
 		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'];
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-compute"];
 	}
 
 	# ajaxterm is run manually by nova-compute; we don't want the service running
 	service { "ajaxterm":
 		enable => false,
-		ensure => stopped;
+		ensure => stopped,
+		require => Package["ajaxterm"];
 	}
 
 }
@@ -528,11 +536,13 @@ class openstack::glance-service {
 	}
 
 	service { "glance-api":
-		ensure => running;
+		ensure => running,
+		require => Package["glance"];
 	}
 
 	service { "glance-registry":
-		ensure => running;
+		ensure => running,
+		require => Package["glance"];
 	}
 
 	file {
