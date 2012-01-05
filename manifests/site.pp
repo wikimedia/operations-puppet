@@ -2111,6 +2111,7 @@ node "tridge.wikimedia.org" {
 }
 
 node "virt1.wikimedia.org" {
+	$cluster = "virt"
 
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
@@ -2128,6 +2129,11 @@ node "virt1.wikimedia.org" {
 }
 
 node /virt[2-4].pmtpa.wmnet/ {
+	$cluster = "virt"
+	if $hostname =~ /^virt[23]$/ {
+		$ganglia_aggregator = "true"
+	}
+
 	include standard,
 		openstack::compute
 }

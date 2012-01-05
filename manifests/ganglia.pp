@@ -89,6 +89,9 @@ class ganglia {
 			"cache_mobile"	=> {
 				"name"		=> "Mobile caches",
 				"ip_oct"	=> "28" },
+			"virt"	=> {
+				"name"		=> "Virtualization cluster",
+				"ip_oct"	=> "29" },
 		}
 		# NOTE: Do *not* add new clusters *per site* anymore,
 		# the site name will automatically be appended now,
