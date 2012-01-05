@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "Restoring RRDs..."
+[ -d /mnt/ganglia_tmp/rrds.pmtpa ] || mkdir /mnt/ganglia_tmp/rrds.pmtpa
+chown nobody /mnt/ganglia_tmp/rrds.pmtpa
+rsync -a /var/lib/ganglia/rrds.pmtpa/ /mnt/ganglia_tmp/rrds.pmtpa
+echo "Done"
