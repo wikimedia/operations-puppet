@@ -210,4 +210,16 @@ class ganglia::web {
 
 	class {'generic::webserver::php5': ssl => 'true'; }
 
+	file {
+		"/etc/apache2/sites-available/ganglia.wikimedia.org":
+			mode => 644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
+			ensure => present;
+	}
+
+	apache_site { ganglia: name => "ganglia.wikimedia.org" }
+	apache_module { rewrite: name => "rewrite" }
+
 }
