@@ -26,5 +26,7 @@ def main():
 	message = "Change abandoned: " + re.sub(' \(.*', "", options.abandoner) + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
 	helper.log_to_file(options.project, options.branch, message)
 
+	helper.runProjectHook('changeAbandoned', options)
+
 if __name__ == "__main__":
 	main()

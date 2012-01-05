@@ -34,5 +34,7 @@ def main():
 	message = "New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
 	helper.log_to_file(options.project, options.branch, message)
 
+	helper.runProjectHook('commentAdded', options)
+
 if __name__ == "__main__":
 	main()

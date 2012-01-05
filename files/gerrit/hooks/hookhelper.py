@@ -148,3 +148,11 @@ class HookHelper:
 			except urllib2.URLError:
 				sys.stderr.write("Failed to update RT")
 				traceback.print_exc(file=sys.stderr)
+
+	def run_project_hook(this, hook, options):
+		# TODO: what needs to happen in this function is beyond my
+		# virtually nonexistent Python skills
+
+		# Determine which hook class is associated with options.project
+		# Load that class
+		# Dynamically call thatClass.{hook}(this, options) somehow
