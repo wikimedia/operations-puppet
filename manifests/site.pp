@@ -1525,7 +1525,6 @@ node /ms100[4]\.eqiad\.wmnet/ {
 }
 
 node "nickel.wikimedia.org" {
-	$cluster = "misc"
 	$ganglia_aggregator = "true"
 
 	include standard,
