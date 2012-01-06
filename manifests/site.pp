@@ -418,7 +418,8 @@ class cache {
 		}
 
 		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
+				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
 		$varnish_fe_directors = {
