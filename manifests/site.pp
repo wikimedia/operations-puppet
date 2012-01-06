@@ -829,6 +829,9 @@ node /db4[4-9]\.pmtpa\.wmnet/ {
 }
 
 node /db5[0-9]\.pmtpa\.wmnet/ { 
+	if $hostname == "db51" {
+		$db_cluster = "s4"
+	}
 	if $hostname == "db50" {
 		$db_cluster = "s6"
 	}
