@@ -804,6 +804,15 @@ node "db19.pmtpa.wmnet" {
 		mysql::conf
 }
 
+node "db22.pmtpa.wmnet" {
+	$db_cluster = "s4"
+	#include db::core,  # included in db1[1-9] statement above
+	include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
+
 node /db4[4-9]\.pmtpa\.wmnet/ { 
 	if $hostname =~ /^db(44|45)$/ { 
 		$db_cluster = "s5"
