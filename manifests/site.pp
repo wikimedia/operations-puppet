@@ -1919,6 +1919,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	}
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
+		$enable_ipv6_proxy = "true"
 	}
 
 	include protoproxy::ssl
