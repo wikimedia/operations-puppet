@@ -7,10 +7,15 @@
 
 class varnish {
 	class packages {
-		package { varnish3:
-			ensure => "3.0.0-1wmf6";
+		if $hostname =~ /^cp10(41|42)?1$/ {
+			package { [ 'varnish3', 'libvarnishapi1' ]:
+				ensure => "3.0.2-1wmf1";
+			}
+		} else {
+			package { varnish3:
+				ensure => "3.0.0-1wmf6";
+			}
 		}
-
 		package { libworking-daemon-perl: 
 			ensure => present;
 		}
