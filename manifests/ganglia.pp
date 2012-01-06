@@ -230,7 +230,7 @@ class ganglia::web {
 			mode => 755,
 			owner => root,
 			group => root,
-			source => "puppet:///files/ganglia/save-gmeta-rrds",
+			source => "puppet:///files/ganglia/save-gmetad-rrds",
 			ensure => present;
 		"/etc/init.d/gmetad":
 			mode => 755,
