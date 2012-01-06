@@ -1,6 +1,6 @@
 <?php
 
-require_once( '/usr/local/apache/common-local/wmf-config/mc.php' );
+require_once( '/home/w/common/wmf-config/mc.php' );
 #$wgMemCachedServers[] = '10.0.2.101:11000';
 
 $OK=0;
