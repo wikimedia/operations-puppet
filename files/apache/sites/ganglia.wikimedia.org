@@ -13,7 +13,7 @@
 
 	Alias /ganglia /srv/org/wikimedia/gangliaweb
 
-	RedirectMatch ^/$ http://nickel.wikimedia.org/ganglia/
+	RedirectMatch ^/$ http://ganglia.wikimedia.org/ganglia/
 	ErrorLog /var/log/apache2/error.log
 	LogLevel warn
 </VirtualHost>
