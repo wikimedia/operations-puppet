@@ -78,7 +78,8 @@ class mysql {
 		}
 	}
 
-
+	# this is for checks from the percona-nagios-checks project
+	# http://percona-nagios-checks.googlecode.com
 	class monitor::percona {
 		file {
 			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
