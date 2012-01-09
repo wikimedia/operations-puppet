@@ -11,10 +11,10 @@ class misc::wikistats {
 		class {'generic::webserver::php5': ssl => 'true'; }
 		include generic::webserver::php5-mysql
 
-			$wikistats_host = "wikistats.wmflabs.org"
-			$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
-			$wikistats_ssl_key = '/etc/ssl/private/star.wmflabs.org.key'
-			$wikistats_ssl_cacert = '/etc/ssl/certs/wmf-labs.pem'
+		$wikistats_host = "wikistats.wmflabs.org"
+		$wikistats_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
+		$wikistats_ssl_key = '/etc/ssl/private/star.wmflabs.org.key'
+		$wikistats_ssl_cacert = '/etc/ssl/certs/wmf-labs.pem'
 
 		file {
 			'/etc/apache2/sites-available/wikistats.wmflabs.org':
@@ -41,12 +41,6 @@ class misc::wikistats {
 		apache_confd { namevirtualhost: install => 'true', name => 'namevirtualhost' }
 		apache_site { no_default: name => '000-default', ensure => absent }
 		apache_site { wikistats: name => 'wikistats.wmflabs.org' }
-
-		exec { "set_www_perms":
-			command => "/bin/chown wikistats:www-data /var/www/wikistats/*.php",
-			notify => Service["apache2"],
-			refreshonly => "true";
-		}
 
 	}
 
