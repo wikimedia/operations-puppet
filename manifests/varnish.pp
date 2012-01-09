@@ -7,7 +7,7 @@
 
 class varnish {
 	class packages {
-		if $hostname =~ /^cp10(41|42|43)$/ {
+		if $hostname =~ /^cp[13]0(41|42|43|01)$/ {
 			package { [ 'varnish3', 'libvarnishapi1' ]:
 				ensure => "3.0.2-1wmf1";
 			}
