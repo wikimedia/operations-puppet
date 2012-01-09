@@ -282,7 +282,7 @@ class misc::noc-wikimedia {
 	}
 
 	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+	monitor_service { "http": description => "HTTP", check_command => "check_http_url!noc.wikimedia.org!http://noc.wikimedia.org" }
 }
 
 class misc::download-wikimedia {
