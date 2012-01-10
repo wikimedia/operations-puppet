@@ -12,16 +12,10 @@ class varnish {
 			ensure => link,
 			target => "/etc/init.d/varnish";
 		}
-		if $hostname =~ /^cp[13]0(41|42|43|01|02)$/ {
-			package { [ 'varnish3', 'libvarnishapi1' ]:
-				ensure => "3.0.2-1wmf1";
-			}
-		} else {
-			package { varnish3:
-				ensure => installed
-			}
+		package { [ 'varnish3', 'libvarnishapi1' ]:
+			ensure => "3.0.2-1wmf1";
 		}
-		package { libworking-daemon-perl: 
+		package { libworking-daemon-perl:
 			ensure => present;
 		}
 	}
