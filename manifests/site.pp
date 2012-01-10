@@ -283,10 +283,13 @@ class searchserver {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
-		lvs::realserver
+		lvs::realserver,
+		search::sudo,
+		search::jvm,
+		search::monitoring
 
 	class { search::server:
-		indexer => "true", udplogging => "false"
+		udplogging => "false"
 	}
 }
 
@@ -298,7 +301,10 @@ class searchindexer {
 	include	standard,
 		admins::roots,
 		admins::mortals,
-		admins::restricted
+		admins::restricted,
+		search::sudo,
+		search::jvm,
+		search::monitoring
 
 	class { search::server:
 		indexer => "true", udplogging => "false"

@@ -7,10 +7,6 @@ class search {
 
 	class server($indexer="false", $pool="", $udplogging="true") {
 		Class["search::config"] -> Class[search::server]
-	
-		include search::sudo
-		include search::jvm
-		include search::monitoring
 		
 		if $indexer == "true" {
 			include search::indexer
@@ -25,7 +21,7 @@ class search {
 				mode => 0444,
 				content => template("lucene/lsearch.conf.erb"),
 				ensure => present;
-			"/etc/lsearch-global-2.1.conf":
+			"/a/search/conf/lsearch-global-2.1.conf":
 				owner => root,
 				group => root,
 				mode => 0444,
@@ -45,9 +41,13 @@ class search {
 	}
 
 	class jvm {
-		# FIXME: build replacement packages
 
-		# These packages are no longer available in Lucid
+		if ( $lsbdistcodename == "lucid" ) {
+			package { [ "sun-j2sdk1.6" ]:
+				ensure => latest;
+			}
+		}
+
 		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") < 0 {
 			package { ia32-sun-java6-bin:
 				ensure => latest;
@@ -87,47 +87,54 @@ class search {
 			source => "puppet:///files/php/php.ini.appserver";
 		}
 		## TO DO: pull these out of rainman's homedir and into something not on nfs
+
+		file { "/a/search/lucene.jobs.sh":
+			owner => rainman,
+			group => search,
+			mode => 0755,
+			source => "puppet:///files/lucene/lucene.jobs.sh";
+		}
 		cron {
 			snapshot:
-				#require => ,
-				command => "/home/rainman/scripts/search-snapshot",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh snapshot',
 				user => rainman,
 				hour => 4,
 				minute => 30,
 				ensure => present;
 			snapshot-precursors:
-				#require => ,
-				command => "/home/rainman/scripts/search-snapshot-precursors",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh snapshot-precursors',
 				user => rainman,
 				weekday => 5,
 				hour => 9,
 				minute => 30,
 				ensure => present;	
 			indexer-cron:
-				#require => ,
-				command => "/home/rainman/scripts/indexer-cron",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh indexer-cron',
 				user => rainman,
 				weekday => 6,
 				hour => 0,
 				minute => 0,
 				ensure => present;
 			import-private-cron:
-				#require => ,
-				command => "/home/rainman/scripts/search-import-private-cron",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh import-private-cron',
 				user => rainman,
 				hour => 2,
 				minute => 0,
 				ensure => present;
 			import-broken-cron:
-				#require => ,
-				command => "/home/rainman/scripts/search-import-broken-cron",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh import-broken-cron',
 				user => rainman,
 				hour => 3,
 				minute => 0,
 				ensure => present;
 			build-prefix:
-				#require => ,
-				command => "/home/rainman/scripts/search-build-prefix",
+				require => File["/a/search/lucene.jobs.sh"],
+				command => '/a/search/lucene.jobs.sh build-prefix',
 				user => rainman,
 				hour => 9,
 				minute => 25,

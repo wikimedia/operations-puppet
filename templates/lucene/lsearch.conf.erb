@@ -9,10 +9,10 @@
 # Global configuration
 ################################################
 
-### TO DO: resturcture so this doesn't depend on nfs
 # URL to global configuration, this is the shared main config file, it can 
-# be on a NFS partition or available somewhere on the network
-MWConfig.global=file:///home/wikipedia/conf/lucene/lsearch-global-2.1.conf
+# be on a NFS partition or available somewhere on the network or pushed out
+# by puppet or another conf management tool
+MWConfig.global=file:///a/search/conf/lsearch-global-2.1.conf
 
 # Local path to root directory of indexes
 Indexes.path=/a/search/indexes
@@ -73,9 +73,8 @@ Index.delsnapshots=true
 
 SearcherPool.size=6
 
-### TO DO: resturcture so this doesn't depend on nfs
 # URL to message files, {0} is replaced with language code, i.e. En
-Localization.url=file:///home/wikipedia/common/php/languages/messages
+Localization.url=file:///a/search/conf/common/php/languages/messages
 
 <% if scope.lookupvar('search::searchserver::indexer') == "true" then -%>
 # Pattern for OAI repo. {0} is replaced with dbname, {1} with language
