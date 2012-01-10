@@ -7,7 +7,12 @@
 
 class varnish {
 	class packages {
-		if $hostname =~ /^cp[13]0(41|42|43|01)$/ {
+		# TODO: rebuild the package to use varnish as the init script name
+		file { "/etc/init.d/varnish3":
+			ensure => link,
+			target => "/etc/init.d/varnish";
+		}
+		if $hostname =~ /^cp[13]0(41|42|43|01|02)$/ {
 			package { [ 'varnish3', 'libvarnishapi1' ]:
 				ensure => "3.0.2-1wmf1";
 			}
