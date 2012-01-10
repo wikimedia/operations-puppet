@@ -264,4 +264,15 @@ class ganglia::web {
 		minute => [ 7, 37 ],
 		ensure => present
 	}
+
+	# Mount /mnt/ganglia_tmp as tmpfs to avoid Linux flushing mlocked
+	# shm memory to disk
+	mount { "/mnt/ganglia_tmp":
+		device => "tmpfs",
+		fstype => "tmpfs",
+		options => "noatime,defaults,size=3000m",
+		pass => 0,
+		dump => 0,
+		ensure => mounted;
+	}
 }

@@ -11,7 +11,7 @@
 	Allow from all
 	</Directory>
 
-	Alias /ganglia /srv/org/wikimedia/gangliaweb
+	Alias /2.2.0 /srv/org/wikimedia/gangliaweb
 
 	RedirectMatch ^/$ http://ganglia.wikimedia.org/ganglia/
 	ErrorLog /var/log/apache2/error.log
