@@ -1743,6 +1743,7 @@ node "sodium.wikimedia.org" {
 		backup::client
 
 	class { exim::roled:
+		outbound_ips => [ "208.80.154.4" ],
 		local_domains => [ "+system_domains", "+mailman_domains" ],
 		enable_mail_relay => "secondary", 
 		enable_mailman => "true",
@@ -1751,6 +1752,7 @@ node "sodium.wikimedia.org" {
 		hold_domains => [ "*" ]
 	}
 
+	interface_ip { "lists.wikimedia.org": interface => "eth0", address => "208.80.154.4" }
 }
 
 node "spence.wikimedia.org" {
