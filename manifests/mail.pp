@@ -235,13 +235,14 @@ class mailman {
 	class web-ui {
 		include generic::webserver::static
 		
-		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
 
 		lighttpd_config { "50-mailman":
 			require => Class["generic::webserver::static"],
 			install => "true"
 		}
+		
+		# TODO: htdigest file
 
 		# monitor SSL cert expiry 
 		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
