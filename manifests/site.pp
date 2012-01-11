@@ -1012,6 +1012,7 @@ node "gallium.wikimedia.org" {
 		 'ALL = (jenkins) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/jenkins'
 		,'ALL = (testswarm) NOPASSWD: ALL'
+		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
 	]}
 	include base,
 		ganglia,
