@@ -247,7 +247,7 @@ class mailman {
 
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
-			source => "puppet:///private/files/lighttpd/htdigest",
+			source => "puppet:///private/lighttpd/htdigest",
 			owner => root,
 			group => www-data,
 			mode => 0440;
