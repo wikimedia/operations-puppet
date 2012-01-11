@@ -245,13 +245,19 @@ class mailman {
 		
 		install_certificate{ "star.wikimedia.org": }
 
+		# htdigest file for private list archives
+		file { "/etc/lighttpd/htdigest":
+			source => "puppet:///private/files/lighttpd/htdigest",
+			owner => root,
+			group => www-data,
+			mode => 0440;
+		}
+
 		lighttpd_config { "50-mailman":
-			require => Class["generic::webserver::static"],
+			require => [ Class["generic::webserver::static"], File["/etc/lighttpd/htdigest"] ],
 			install => "true"
 		}
 		
-		# TODO: htdigest file
-
 		# monitor SSL cert expiry 
 		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 	}
