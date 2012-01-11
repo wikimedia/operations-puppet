@@ -58,7 +58,7 @@
 
 </VirtualHost>
 
-<VirtualHost 208.80.152.161:80>
+<VirtualHost *:80>
 	ServerName nagios.wikimedia.org
 	ServerAlias spence.wikimedia.org
 	DocumentRoot /usr/local/nagios/share 
@@ -86,13 +86,13 @@
 		AllowOverride AuthConfig
 		Order allow,deny
 		Allow from all
-		#  Order deny,allow
-		#  Deny from all
-		#  Allow from 127.0.0.1
-		#   AuthName "Nagios Access"
-		#   AuthType Basic
-		#   AuthUserFile /usr/local/nagios/etc/htpasswd.users
-		#   Require valid-user
+		# Order deny,allow
+		# Deny from all
+		# Allow from 127.0.0.1
+		# AuthName "Nagios Access"
+		# AuthType Basic
+		# AuthUserFile /usr/local/nagios/etc/htpasswd.users
+		# Require valid-user
 	</Directory>
 
 </VirtualHost>
