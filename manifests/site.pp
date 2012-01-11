@@ -1747,7 +1747,8 @@ node "sodium.wikimedia.org" {
 		enable_mail_relay => "secondary", 
 		enable_mailman => "true",
 		enable_mail_submission => "false",
-		enable_spamassassin => "true"
+		enable_spamassassin => "true",
+		hold_domains => [ "*" ]
 	}
 
 }
