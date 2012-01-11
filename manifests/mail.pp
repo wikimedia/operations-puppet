@@ -104,7 +104,15 @@ class exim {
 	}
 
 	# TODO: add class documentation
-	class roled($local_domains = [ "+system_domains" ], $enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false", $outbound_ips=[ $ipaddress ] ) {
+	class roled($local_domains = [ "+system_domains" ],
+		$enable_mail_relay="false",
+		$enable_mailman="false",
+		$enable_imap_delivery="false",
+		$enable_mail_submission="false",
+		$mediawiki_relay="false",
+		$enable_spamassassin="false",
+		$outbound_ips=[ $ipaddress ],
+		$hold_domains=[] ) {
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
 
