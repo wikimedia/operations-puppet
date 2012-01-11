@@ -253,6 +253,10 @@ class mailman {
 			mode => 0440;
 		}
 
+		# Enable CGI module
+		lighttpd_config { "10-cgi": require => Class["generic::webserver::static"] }
+
+		# Install Mailman specific Lighttpd config file
 		lighttpd_config { "50-mailman":
 			require => [ Class["generic::webserver::static"], File["/etc/lighttpd/htdigest"] ],
 			install => "true"
