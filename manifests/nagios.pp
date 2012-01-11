@@ -241,6 +241,17 @@ class nagios::monitor {
 		ensure => latest;
 	}
 
+	# install the nagios Apache site
+	file { "/etc/apache2/sites-available/nagios":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/apache/sites/nagios.wikimedia.org";
+	}
+
+	apache_site { nagios: name => "nagios" }
+ 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios/puppet_checks.d":
 		ensure => directory,
