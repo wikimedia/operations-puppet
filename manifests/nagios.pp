@@ -189,7 +189,6 @@ class nagios::monitor {
 			  "${nagios_config_dir}/puppet_services.cfg" ]
 
 	$static_files = [ "${nagios_config_dir}/nagios.cfg",
-			  "${nagios_config_dir}/special.cfg",
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
 			  "${nagios_config_dir}/contactgroups.cfg",
@@ -310,13 +309,6 @@ class nagios::monitor {
 
 	file { "/etc/nagios/nagios.cfg":
 		source => "puppet:///files/nagios/nagios.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/special.cfg":
-		source => "puppet:///files/nagios/special.cfg",
 		owner => root,
 		group => root,
 		mode => 0644;
