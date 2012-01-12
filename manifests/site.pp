@@ -1735,10 +1735,14 @@ node "sockpuppet.pmtpa.wmnet" {
 
 node "sodium.wikimedia.org" {
 
+	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+	$dns_recursor_ipaddress = $ipaddress
+
 	include base,
 		ganglia,
 		nrpe,
 		mailman,
+		dns::recursor,
 		spamassassin,
 		backup::client
 
