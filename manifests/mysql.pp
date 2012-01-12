@@ -102,11 +102,6 @@ class mysql {
 				owner => root,
 				group => root,
 				mode => 0555;
-			"/usr/lib/nagios/plugins/percona/check_mysql_deadlocks":
-				source => "puppet:///files/nagios/percona/check_mysql_deadlocks",
-				owner => root,
-				group => root,
-				mode => 0555;
 			"/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions":
 				source => "puppet:///files/nagios/percona/check_mysql_idle_transactions",
 				owner => root,
