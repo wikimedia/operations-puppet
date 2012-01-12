@@ -1,0 +1,12 @@
+# robots.txt for lists.wikimedia.org
+#
+# Disabled crawling for several lists 2005-11-26 to
+# discourage people from complaining about items they
+# post on public mailing lists being the first Google
+# search result about them.
+#
+# Note that list archives remain public.
+#
+
+User-agent: *
+Disallow: /pipermail/
