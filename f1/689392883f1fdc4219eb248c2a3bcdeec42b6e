@@ -1,0 +1,8 @@
+Change-Id: If1689392883f1fdc4219eb248c2a3bcdeec42b6e
+Code-Review+2: Asher <afeldman@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Asher <afeldman@wikimedia.org>
+Submitted-at: Thu, 12 Jan 2012 23:11:46 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1892
+Project: operations/puppet
+Branch: refs/heads/production
