@@ -31,6 +31,10 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 		'2'  => 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/',
 		'3'  => 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/',
 		'4'  => 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/',
+
+		# temporary until loudon logrotate+ssh situation is reorganized
+		'5'  => 'rsync -ar /archive/fundraising/logs/payments_cluster/ fundraising@tridge.wikimedia.org:payments_cluster/',
+
 	};
 
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
