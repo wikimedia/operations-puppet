@@ -1093,6 +1093,15 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 			misc::fundraising::jenkins_maintenance
 	}
 
+	cron {
+		'offhost_backups':
+			user => root,
+			minute => '5',
+			hour => '0',
+			command => '/usr/local/bin/offhost_backups',
+			ensure => present,
+	}
+
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
@@ -2074,6 +2083,15 @@ node "storage3.pmtpa.wmnet" {
 		accounts::logmover,
 		misc::fundraising::impressionlog::compress,
 		misc::fundraising::offhost_backups
+
+	cron {
+		'offhost_backups':
+			user => root,
+			minute => '35',
+			hour => '1',
+			command => '/usr/local/bin/offhost_backups',
+			ensure => present,
+	}
 
 }
 

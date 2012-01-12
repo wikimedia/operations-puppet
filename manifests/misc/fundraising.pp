@@ -219,7 +219,7 @@ class misc::fundraising::offhost_backups {
 	}
 
 	#cron {
-	#	'storage3_offhost_backups':
+	#	'offhost_backups':
 	#		user => root,
 	#		minute => '35',
 	#		hour => '1',
