@@ -689,5 +689,7 @@ begin rewrite
 # Rewrite the envelope From for mails from internal servers in *.pmtpa.wmnet,
 # as they are usually rejected by sender domain address verification.
 *@*.pmtpa.wmnet		root@wikimedia.org	F
+*@*.eqiad.wmnet		root@wikimedia.org	F
+*@*.esams.wmnet		root@wikimedia.org	F
 #*@*.wikimedia.org	root@wikimedia.org	F
 <% end -%>
