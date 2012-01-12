@@ -216,6 +216,9 @@ class spamassassin {
 
 class mailman {
 	class base {
+		# lighttpd needs to be installed first, or the mailman package will pull in apache2
+		require generic::webserver::static
+
 		package { "mailman": ensure => latest }
 	}
 
