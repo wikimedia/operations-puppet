@@ -2079,6 +2079,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
+		accounts::khorn,
 		accounts::logmover,
 		misc::fundraising::impressionlog::compress,
 		misc::fundraising::offhost_backups
