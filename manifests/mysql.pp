@@ -81,6 +81,7 @@ class mysql {
 	# this is for checks from the percona-nagios-checks project
 	# http://percona-nagios-checks.googlecode.com
 	class monitor::percona {
+		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 		file {
 			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
 				owner => root,
