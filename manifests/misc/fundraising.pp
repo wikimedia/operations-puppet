@@ -208,26 +208,26 @@ class misc::fundraising::impressionlog::compress {
 }
 
 
-#class misc::fundraising::storage3 {
-#
-#	file { 
-#		'/usr/local/bin/offhost_backups':
-#			mode => 0755,
-#			owner => root,
-#			group => root,
-#			source => 'puppet:///files/misc/scripts/offhost_backups-storage3',
-#	}
-#
-#	cron {
-#		'storage3_offhost_backups':
-#			user => root,
-#			minute => '35',
-#			hour => '1',
-#			command => '/usr/local/bin/offhost_backups',
-#			ensure => present,
-#	}
-#
-#}
+class misc::fundraising::offhost_backups {
+
+	file { 
+		'/usr/local/bin/offhost_backups':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => 'puppet:///files/misc/scripts/offhost_backups',
+	}
+
+	#cron {
+	#	'storage3_offhost_backups':
+	#		user => root,
+	#		minute => '35',
+	#		hour => '1',
+	#		command => '/usr/local/bin/offhost_backups',
+	#		ensure => present,
+	#}
+
+}
 
 class misc::fundraising::jenkins_maintenance {
 

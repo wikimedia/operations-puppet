@@ -1085,7 +1085,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::pgehres,
 		backup::client,
 		misc::fundraising,
-		misc::fundraising::mail
+		misc::fundraising::mail,
+		misc::fundraising::offhost_backups
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
@@ -2071,7 +2072,8 @@ node "storage3.pmtpa.wmnet" {
 		accounts::rfaulk,
 		accounts::awjrichards,
 		accounts::logmover,
-		misc::fundraising::impressionlog::compress
+		misc::fundraising::impressionlog::compress,
+		misc::fundraising::offhost_backups
 
 }
 
