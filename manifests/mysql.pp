@@ -16,6 +16,10 @@ class mysql {
 		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
 			ensure => latest;
 		}
+	} elsif $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "8.04") == 0 {
+		package { "percona-toolkit":
+			ensure => latest;
+		}
 	}
 
 	class packages {
