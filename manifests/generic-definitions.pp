@@ -834,6 +834,6 @@ define generic::debconf::set($value) {
 	exec { "debconf-communicate set $title":
 		path => "/usr/bin:/usr/sbin:/bin:/sbin",
 		command => "echo set ${title} \"${value}\" | debconf-communicate",
-		unless => "test $(echo get ${title} | debconf-communicate) = \"0 ${value}\"\n"
+		unless => "test (\"$(echo get ${title} | debconf-communicate)\" = \"0 ${value}\"\n)"
 	}
 }
