@@ -226,7 +226,11 @@ class TestSwarmMWMain {
 			$this->debug( 'Checkouts dir empty? Looking up remote repo...', __METHOD__ );
 			$next = $this->minRev;
 		} else {
-			$next = $this->getNextFollowingRevId( $cur );
+			try {
+				$next = $this->getNextFollowingRevId( $cur );
+			} catch ( Exception $e ) {
+				$next = null;
+			}
 		}
 		return $next;
 	}
@@ -608,7 +612,7 @@ class TestSwarmAPI {
 				'user'     => $this->user,
 				'auth'     => $this->authToken,
 				'max'      => 3,
-				'job_name' => 'MediaWiki trunk <a href="//mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '"></a>',
+				'job_name' => 'MediaWiki trunk <a href="//mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '</a>',
 				'browsers' => 'popularbeta',
 			),
 
