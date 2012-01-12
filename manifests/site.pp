@@ -789,14 +789,15 @@ node "db41.pmtpa.wmnet" {
 # DO NOT add old prod db's to new classes unless you
 # know what you're doing! 
 node "db11.pmtpa.wmnet" {
+	$db_cluster = "s3"
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+		mysql::conf
 }
 
-node "db19.pmtpa.wmnet" { # dead
+node "db19.pmtpa.wmnet" {
+	$db_cluster = "s2"
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -804,6 +805,7 @@ node "db19.pmtpa.wmnet" { # dead
 }
 
 node "db22.pmtpa.wmnet" {
+	$db_cluster = "s4"
 	#include db::core,  # included in db1[1-9] statement above
 	include mysql::mysqluser,
 		mysql::datadirs,
@@ -812,6 +814,22 @@ node "db22.pmtpa.wmnet" {
 }
 
 node /db4[4-9]\.pmtpa\.wmnet/ { 
+	if $hostname =~ /^db(44|45)$/ { 
+		$db_cluster = "s5"
+	}
+
+	if $hostname =~ /^db(46|47)$/ { 
+		$db_cluster = "s6"
+	}
+
+	if $hostname =~ /^db(48|49)$/ { 
+		$db_cluster = "otrsdb"
+		$skip_name_resolve = "false"
+		if $hostname == "db48" { 
+			$writable = "true"
+		}
+	}
+
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -820,6 +838,13 @@ node /db4[4-9]\.pmtpa\.wmnet/ {
 }
 
 node /db5[0-9]\.pmtpa\.wmnet/ { 
+	if $hostname == "db51" {
+		$db_cluster = "s4"
+	}
+	if $hostname == "db50" {
+		$db_cluster = "s6"
+	}
+
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -832,6 +857,62 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017)$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
+		$snapshot_host = true
+	}
+
+	if $hostname =~ /^db(1001|1017|1033|1047)$/ {
+		$db_cluster = "s1"
+	}
+
+	if $hostname =~ /^db(1047)$/ {
+		$research_dbs = true
+	}
+
+	if $hostname =~ /^db(1002|1018|1034)$/ {
+		$db_cluster = "s2"
+	}
+
+	if $hostname =~ /^db(1003|1019|1035)$/ {
+		$db_cluster = "s3"
+	}
+
+	if $hostname =~ /^db(1004|1020|1038)$/ {
+		$db_cluster = "s4"
+	}
+
+	if $hostname =~ /^db(1005|1021|1039)$/ {
+		$db_cluster = "s5"
+	}
+
+	if $hostname =~ /^db(1006|1022|1040)$/ {
+		$db_cluster = "s6"
+	}
+
+	if $hostname =~ /^db(1007|1024|1041)$/ {
+		$db_cluster = "s7"
+	}
+
+	if $hostname =~ /^db1008$/ {
+		$db_cluster = "fundraisingdb"
+		include role::db::fundraising::master
+		$writable = "true"
+	}
+
+	if $hostname =~ /^db1025$/ {
+		$db_cluster = "fundraisingdb"
+		include role::db::fundraising::slave
+	}
+
+	if $hostname =~ /^(db1042|db1048)$/ {
+		$db_cluster = "otrsdb"
+	}
+
+	# Here Be Masters
+	if $hostname =~ /^db1047$/ {
+		$writable = "true"
+	} 
 
 	include db::core,
 		mysql::mysqluser,
