@@ -918,7 +918,8 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
-		mysql::packages
+		mysql::packages,
+		mysql::monitor::percona
 }
 
 node "dobson.wikimedia.org" {
