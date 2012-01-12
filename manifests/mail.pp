@@ -176,6 +176,7 @@ class exim {
 # SpamAssassin http://spamassassin.apache.org/
 
 class spamassassin {
+	include network::constants
 
 	package { [ "spamassassin" ]:
 		ensure => latest;
