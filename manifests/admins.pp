@@ -1189,17 +1189,11 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key {
-				"root@grosley":
-					ensure  => present,
-					user    => $username,
-					type    => "ssh-rsa",
-					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsaJuUA5iu3+GoTQ37wq95fXlYTcduZ6nK2tRiWf9N01bhNU7y+uGREoxYMfFZQVxuQ1uXxM7u2GQwEu3Cy0IcCcMB4KZQokFhQ4/PWVFVj9JohIFU8EGBcEKeOX6DV8hnv4n82AINz/bymNf4O9kRAj7i2FLA1g1+zjzOpj5wiUWLFHhJBnW05rD8jAeqSRRYUE11Dmbis4eEb0FmTsv7rvzxZxd+Ky8bATdywlFacIBKzZhjWhsqhDvodNcLIYVUm+VS0nu5bjZyVIYJzjt+ScrME6Gnugz9N9IE1ILnsklrkGPdrnZKMuGDChhGelEKjRYbVA0t+vQ4DO56voMzQ==";
 				"root@loudon":
 					ensure  => present,
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
-
 				"root@aluminium":
 					ensure  => present,
 					user    => $username,
