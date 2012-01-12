@@ -237,17 +237,18 @@ class mailman {
 		generic::debconf::set {
 			"mailman/gate_news":
 				value => "false",
-				notify => Exec["/usr/sbin/dpkg-reconfigure mailman"];
+				notify => Exec["dpkg-reconfigure mailman"];
 			"mailman/used_languages":
 				value => "ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW",
-				notify => Exec["/usr/sbin/dpkg-reconfigure mailman"];
+				notify => Exec["dpkg-reconfigure mailman"];
 			"mailman/default_server_language":
 				value => "en (English)",
-				notify => Exec["/usr/sbin/dpkg-reconfigure mailman"];
+				notify => Exec["dpkg-reconfigure mailman"];
 		}
-		exec { "/usr/sbin/dpkg-reconfigure mailman":
+		exec { "dpkg-reconfigure mailman":
 			require => Class["generic::locales::international"],
 			before => Service[mailman],
+			command => "/usr/sbin/dpkg-reconfigure -fnoninteractive mailman",
 			refreshonly => true
 		}
 
