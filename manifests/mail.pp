@@ -242,7 +242,7 @@ class mailman {
 				value => "ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW",
 				notify => Exec["dpkg-reconfigure mailman"];
 			"mailman/default_server_language":
-				value => "en (English)",
+				value => "en",
 				notify => Exec["dpkg-reconfigure mailman"];
 		}
 		exec { "dpkg-reconfigure mailman":
