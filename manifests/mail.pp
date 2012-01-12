@@ -231,6 +231,23 @@ class mailman {
 				source => "puppet:///files/mailman/mm_cfg.py";
 		}
 
+		# Install as many languages as possible
+		include generic::locales::international
+		
+		Generic::debconf::set { notify => Exec["/usr/sbin/dpkg-reconfigure mailman"] }
+		generic::debconf::set {
+			"mailman/gate_news":
+				value => "false",
+			"mailman/used_languages":
+				value => "ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW",
+			"mailman/default_server_language":
+				value => "en (English)"
+		}
+		exec { "/usr/sbin/dpkg-reconfigure mailman":
+			require => Class["generic::locales::international"],
+			refreshonly => true
+		}
+
 		service { mailman:
 			ensure => running,
 			hasstatus => false,
