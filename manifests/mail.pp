@@ -191,7 +191,7 @@ class spamassassin {
 	}
 	file {
 		"/etc/spamassassin/local.cf":
-			source => "puppet:///files/spamassassin/local.cf";
+			content => template("spamassassin/local.cf");
 		"/etc/default/spamassassin":
 			source => "puppet:///files/spamassassin/spamassassin.default";
 	}
@@ -268,6 +268,7 @@ class mailman {
 
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
+			require => Class["generic::webserver::static"],
 			source => "puppet:///private/lighttpd/htdigest",
 			owner => root,
 			group => www-data,
