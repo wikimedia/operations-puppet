@@ -103,8 +103,34 @@ class exim {
 		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
 	}
 
-	# TODO: add class documentation
-	class roled($local_domains = [ "+system_domains" ],
+	# Class: exim::roled
+	#
+	# This class installs a full featured Exim MTA
+	#
+	# Parameters:
+	#	- $local_domains:
+	#		List of domains Exim will treat as "local", i.e. be responsible
+	#		for
+	#	- $enable_mail_relay:
+	#		Values: primary, secondary
+	#		Whether Exim will act as a primary or secondary mail relay for
+	#		other mail servers
+	#	- $enable_mailman:
+	#		Whether Mailman delivery functionality is enabled (true/false)
+	#	- $enable_imap_delivery:
+	#		Whether IMAP local delivery functional is enabled (true/false)
+	#	- $enable_mail_submission:
+	#		Enable/disable mail submission by users/client MUAs
+	#	- $mediawiki_relay:
+	#		Whether this MTA relays mail for MediaWiki (true/false)
+	#	- $enable_spamasssin:
+	#		Enable/disable SpamAssassin spam checking
+	#	- $outbound_ips:
+	#		IP addresses to use for sending outbound e-mail
+	#	- $hold_domains:
+	#		List of domains to hold on the queue without processing
+	class roled(
+		$local_domains = [ "+system_domains" ],
 		$enable_mail_relay="false",
 		$enable_mailman="false",
 		$enable_imap_delivery="false",
@@ -113,6 +139,7 @@ class exim {
 		$enable_spamassassin="false",
 		$outbound_ips=[ $ipaddress ],
 		$hold_domains=[] ) {
+		
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
 
