@@ -639,7 +639,7 @@ class ldap::client::wmf-test-cluster {
 	include passwords::ldap::wmf_test_cluster
 
 	$basedn = "dc=wikimedia,dc=org"
-	$servernames = [ "virt1.wikimedia.org" ]
+	$servernames = [ "virt0.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_test_cluster::proxypass
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	

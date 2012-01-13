@@ -33,7 +33,7 @@ class openstack::iptables-accepts {
 	# Rememeber to place modified or removed rules into purges!
 	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "virt1_all": source => "208.80.153.131", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "virt0_all": source => "208.80.153.135", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_gerrit": source => "208.80.152.147", service => "mysql", jump => "ACCEPT" }
@@ -312,10 +312,6 @@ class openstack::database-server {
 			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::puppet_db_name};\"",
 			require => [Package["mysql-client"], File["/root/.my.cnf"]],
 			before => Exec['create_puppet_db_user'];
-		'sync_nova_db':
-			unless => "/usr/bin/nova-manage db version | grep \"${openstack::nova_config::nova_db_version}\"",
-			command => "/usr/bin/nova-manage db sync",
-			require => Package["nova-common"];
 		'create_glance_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
@@ -325,6 +321,19 @@ class openstack::database-server {
 			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::glance_config::glance_db_name};\"",
 			require => [Package['mysql-client'], File["/root/.my.cnf"]],
 			before => Exec['create_glance_db_user'];
+	}
+
+	if ( ! $controller_first_master ) {
+		$controller_first_master = "false"
+	}
+
+	if ( $controller_first_master == "true" ) {
+		exec {
+			'sync_nova_db':
+				unless => "/usr/bin/nova-manage db version | grep \"${openstack::nova_config::nova_db_version}\"",
+				command => "/usr/bin/nova-manage db sync",
+				require => Package["nova-common"];
+		}
 	}
 
 	file {
@@ -424,7 +433,7 @@ TLS_REQCERT     never
 		}
 	}
 
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt1.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt0.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
 
 }
 
@@ -667,22 +676,22 @@ class openstack::nova_config {
 	include passwords::openstack::nova
 
 	$nova_db_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$nova_db_name = "nova"
 	$nova_db_user = "nova"
 	$nova_db_pass = $passwords::openstack::nova::nova_db_pass
 	$nova_glance_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$nova_rabbit_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$nova_cc_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$nova_network_host = $realm ? {
@@ -690,7 +699,7 @@ class openstack::nova_config {
 		"labs" => "127.0.0.1",
 	}
 	$nova_api_host = $realm ? {
-		"production" => "virt2.wikimedia.org",
+		"production" => "virt2.pmtpa.wmnet",
 		"labs" => "localhost",
 	}
 	$nova_api_ip = $realm ? {
@@ -730,7 +739,7 @@ class openstack::nova_config {
 		"labs" => "http://${hostname}.${domain}:8000",
 	}
 	$nova_ldap_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$nova_ldap_domain = "labs"
@@ -742,7 +751,7 @@ class openstack::nova_config {
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
 	$nova_db_version = "46"
-	$nova_puppet_host = "virt1.wikimedia.org"
+	$nova_puppet_host = "virt0.wikimedia.org"
 	$nova_puppet_db_name = "puppet"
 	$nova_puppet_user = "puppet"
 	$nova_puppet_user_pass = $passwords::openstack::nova::nova_puppet_user_pass
@@ -764,14 +773,14 @@ class openstack::glance_config {
 	include passwords::openstack::glance
 
 	$glance_db_host = $realm ? {
-		"production" => "virt1.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 	$glance_db_name = "glance"
 	$glance_db_user = "glance"
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
 	$glance_bind_ip = $realm ? {
-		"production" => "208.80.153.131",
+		"production" => "208.80.153.135",
 		"labs" => "127.0.0.1",
 	}
 
