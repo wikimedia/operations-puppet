@@ -172,7 +172,7 @@ class exim {
 					owner => root,
 					group => root,
 					mode => 0444,
-					source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
+					source => "puppet:///files/exim/exim4.secondary_relay_domains.conf";
 			}
 		}
 
