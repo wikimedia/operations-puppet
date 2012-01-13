@@ -1,0 +1,7 @@
+Code-Review+2: Asher <afeldman@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Asher <afeldman@wikimedia.org>
+Submitted-at: Fri, 13 Jan 2012 23:48:55 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1919
+Project: operations/puppet
+Branch: refs/heads/production
