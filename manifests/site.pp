@@ -2010,7 +2010,10 @@ node /cp104[1-4].wikimedia.org/ {
 	include cache::mobile,
 	nrpe
 
-	if $hostname =~ /^cp104[34]$/ {
+	if $hostname == "cp1043" {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname == "cp1044" {
 		$ganglia_aggregator = "true"
 	}
 
