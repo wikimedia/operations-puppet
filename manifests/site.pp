@@ -381,9 +381,8 @@ class cache {
 		require generic::geoip::files
 
 		include standard,
-			lvs::realserver
-		
-		include varnish::monitoring::ganglia
+			lvs::realserver,
+			varnish::monitoring::ganglia
 		
 		varnish::instance { "bits":
 			name => "",
