@@ -195,6 +195,19 @@ class ganglia {
 			ensure	=> running;
 		}
 	}
+
+	class aggregator {
+	# for the machine class which listens on multicast and
+	# collects all the ganglia information from other sources
+
+		# This overrides the default ganglia-monitor script 
+		# with one that starts up multiple instances of gmond
+		file { "/etc/init.d/ganglia-monitor":
+			source => "puppet:///files/ganglia/ganglia-monitor",
+			mode   => 0655,
+			ensure => present
+		}
+	}
 }
 
 class ganglia::web {
