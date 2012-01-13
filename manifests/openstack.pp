@@ -289,7 +289,7 @@ class openstack::database-server {
 		exec {
 			# Don't sync if we aren't the first install
 			'sync_nova_db':
-				command => "/bin/echo 'Skipping nova database sync.",
+				command => "/usr/bin/test true",
 				require => Package["nova-common"];
 		}
 	}
