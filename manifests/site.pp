@@ -1356,7 +1356,7 @@ node "mchenry.wikimedia.org" {
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
 		nrpe,
-		ldap::client::corp-server,
+		ldap::client::wmf-corp-cluster,
 		backup::client,
 		groups::wikidev,
 		accounts::jdavis
