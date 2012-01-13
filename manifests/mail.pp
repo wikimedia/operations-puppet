@@ -153,6 +153,7 @@ class exim {
 		file {
 			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
+				notify => Service[exim4],
 				owner => root,
 				group => Debian-exim,
 				mode => 0440,
