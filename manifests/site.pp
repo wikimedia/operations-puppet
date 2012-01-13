@@ -950,7 +950,8 @@ node "gallium.wikimedia.org" {
 }
 
 node "ganglia1001.eqiad.wmnet" {
-	include standard
+	include standard,
+		ganglia::aggregator
 }
 
 node "gilman.wikimedia.org" {
