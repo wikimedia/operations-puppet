@@ -22,6 +22,69 @@ class mysql {
 		}
 	}
 
+	#######################################################################
+	### MASTERS - make sure to update here whenever changing replication
+	#######################################################################
+	if $hostname =~ /^db(32|30|31|45|34|47|16|48)$/ {
+		$master = "true"
+		$writable = "true"
+	} else {
+		$master = "false"
+	}
+
+	#######################################################################
+	### LVM snapshot hosts - currently only puppet managed in eqiad
+	#######################################################################
+	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
+		$snapshot_host = true
+	}
+
+	#######################################################################
+	### Cluster Definitions - update if changing / building new dbs
+	#######################################################################
+	if $hostname =~ /^db(12|26|32|38|38|42|1001|1017|1033|1047)$/ {
+		$db_cluster = "s1"
+	}
+	elsif $hostname =~ /^db(13|24|30|1002|1018|1034)$/ {
+		$db_cluster = "s2"
+	}
+	elsif $hostname =~ /^db(11|25|34|39|1003|1019|1035)$/ {
+		$db_cluster = "s3"
+	}
+	elsif $hostname =~ /^db(22|31|33|51|1004|1020|1038)$/ {
+		$db_cluster = "s4"
+	}
+	elsif $hostname =~ /^db(35|44|45|1005|1021|1039)$/ {
+		$db_cluster = "s5"
+	}
+	elsif $hostname =~ /^db(46|47|50|1006|1022|1040)$/ {
+		$db_cluster = "s6"
+	}
+	elsif $hostname =~ /^db(16|18|37|1007|1024|1041)$/ {
+		$db_cluster = "s7"
+	}
+
+	if $hostname =~ /^db1008$/ {
+		$db_cluster = "fundraisingdb"
+		include role::db::fundraising::master
+		$writable = "true"
+	}
+
+	if $hostname =~ /^db1025$/ {
+		$db_cluster = "fundraisingdb"
+		include role::db::fundraising::slave
+	}
+
+	if $hostname =~ /^db(48|49|1042|1048)$/ {
+		$db_cluster = "otrsdb"
+		$skip_name_resolve = "false"
+	}
+
+	if $hostname =~ /^db(42|1047)$/ {
+		$research_dbs = true
+		$writable = "true"
+	}
+
 	class packages {
 		file { "/etc/apt/sources.list.d/wikimedia-mysql.list":
 			owner => root,
@@ -187,7 +250,7 @@ class mysql {
 
 	}
 
-	class conf {
+	class conf inherits mysql {
 		$db_clusters = {
 			"fundraisingdb" => { 
 				"innodb_log_file_size" => "500M"
