@@ -195,6 +195,18 @@ class ganglia {
 			ensure	=> running;
 		}
 	}
+
+	class aggregator {
+	# for the machine class which listens on multicast and
+	# collects all the ganglia information from other sources
+	# this class is required to be defined up top	
+
+		file { "/etc/init.d/ganglia-monitor":
+			source => "puppet:///files/ganglia/ganglia-monitor",
+			mode   => 0655,
+			ensure => present
+		}
+	}
 }
 
 class ganglia::web {
