@@ -63,23 +63,33 @@ class mysql {
 	elsif $hostname =~ /^db(16|18|37|1007|1024|1041)$/ {
 		$db_cluster = "s7"
 	}
-
-	if $hostname =~ /^db1008$/ {
+	elsif $hostname =~ /^db(1008|1025)$/ {
 		$db_cluster = "fundraisingdb"
-		include role::db::fundraising::master
-		$writable = "true"
+		if $hostname =~ /^db1008$/ {
+			include role::db::fundraising::master
+			$writable = "true"
+		}
+		elsif $hostname =~ /^db1025$/ {
+			include role::db::fundraising::slave
+		}
 	}
-
-	if $hostname =~ /^db1025$/ {
-		$db_cluster = "fundraisingdb"
-		include role::db::fundraising::slave
-	}
-
-	if $hostname =~ /^db(48|49|1042|1048)$/ {
+	elsif $hostname =~ /^db(48|49|1042|1048)$/ {
 		$db_cluster = "otrsdb"
 		$skip_name_resolve = "false"
 	}
+	else {
+		$db_cluster = undef
+	}
 
+	if ($db_cluster) { 
+		file { "/etc/db.cluster":
+			content => "${db_cluster}";
+		}
+	}
+
+	#######################################################################
+	### Research DB Definitions - should also belong to a cluster above
+	#######################################################################
 	if $hostname =~ /^db(42|1047)$/ {
 		$research_dbs = true
 		$writable = "true"
