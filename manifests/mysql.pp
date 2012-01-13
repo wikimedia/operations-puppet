@@ -87,6 +87,13 @@ class mysql {
 		}
 	}
 
+	file { "/usr/local/bin/master_id.py":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/mysql/master_id.py"
+	}
+
 	#######################################################################
 	### Research DB Definitions - should also belong to a cluster above
 	#######################################################################
