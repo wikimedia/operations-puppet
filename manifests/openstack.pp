@@ -285,7 +285,15 @@ class openstack::database-server {
 				command => "/usr/bin/nova-manage db sync",
 				require => Package["nova-common"];
 		}
+	} else {
+		exec {
+			# Don't sync if we aren't the first install
+			'sync_nova_db':
+				command => "/bin/echo 'Skipping nova database sync.",
+				require => Package["nova-common"];
+		}
 	}
+
 
 	file {
 		"/root/.my.cnf":
