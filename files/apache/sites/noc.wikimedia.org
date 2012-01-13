@@ -4,6 +4,8 @@
 #####################################################################
 # vim: filetype=apache
 
+NameVirtualHost *:443
+
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
         ServerName noc.wikimedia.org
