@@ -1932,10 +1932,6 @@ node /cp104[1-4].wikimedia.org/ {
 	if $hostname =~ /^cp104(3|4)$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname == "cp1044" {
-		$ganglia_aggregator = "true"
-	}
-
 }
 
 # sq71-78 are text squids
