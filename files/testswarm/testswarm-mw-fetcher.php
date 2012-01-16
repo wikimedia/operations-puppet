@@ -612,7 +612,7 @@ class TestSwarmAPI {
 				'user'     => $this->user,
 				'auth'     => $this->authToken,
 				'max'      => 3,
-				'job_name' => 'MediaWiki trunk <a href="//mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '</a>',
+				'job_name' => 'MediaWiki trunk <a href="//www.mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '</a>',
 				'browsers' => 'popularbeta',
 			),
 
