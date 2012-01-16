@@ -262,6 +262,18 @@ class misc::contint::test {
 				ensure => present;
 		}
 
+		# When a browser asks for jobs, it is reserved in the database so that
+		# another similar browser does not run it also. If the client never
+		# comes back with the result, it needs to be released.
+		# ?state=wipe does things like that for entries not touched in over
+		# 5 minutes and some other small maintenance
+		cron {
+			testswarm-state-wipe:
+				require => Package["curl","testswarm"],
+				command => "(/usr/bin/curl -s http://integration.mediawiki.org/testswarm/?state=wipe) > /dev/null",
+				user => testswarm,
+				ensure => present;
+		}
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
