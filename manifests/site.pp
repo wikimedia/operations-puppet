@@ -1054,6 +1054,9 @@ node "marmontel.wikimedia.org" {
 		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org
 
+		class { "memcached":
+			memcached_ip => "127.0.0.1" }
+
 	install_certificate{ "star.wikimedia.org": }
 
 	varnish::instance { "blog":

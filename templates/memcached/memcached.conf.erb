@@ -33,6 +33,7 @@ logfile /var/log/memcached.log
 # This parameter is one of the only security measures that memcached has, so make sure
 # it's listening on a firewalled interface.
 # -l 0.0.0.0
+-l <%= memcached_ip %>
 
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
 -c 20000

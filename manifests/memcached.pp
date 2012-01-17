@@ -3,9 +3,9 @@
 # Virtual resource for monitoring server
 @monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
 
-class memcached ($memcached_size = '2000', $memcached_port = '11000') {
+class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0') {
 
-	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port" }
+	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port", memcached_ip => "$memcached_ip" }
 
 	package { memcached:
 		ensure => latest;
@@ -53,7 +53,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000') {
 	include memcached::monitoring
 }
 
-class memcached::config ($memcached_size, $memcached_port) {
+class memcached::config ($memcached_size, $memcached_port, $memcached_ip) {
 
 	file {
 		"/etc/memcached.conf":
