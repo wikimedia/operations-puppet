@@ -60,6 +60,17 @@ probe upload {
 }
 */
 
+<% if vcl == "blog" -%>
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+<% end -%>
+
 # Backends
 
 # List of Puppet generated backends

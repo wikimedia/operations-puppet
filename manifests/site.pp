@@ -1055,6 +1055,26 @@ node "marmontel.wikimedia.org" {
 		certificates::star_wikimedia_org
 
 	install_certificate{ "star.wikimedia.org": }
+
+	varnish::instance { "blog":
+		name => "",
+		vcl => "blog",
+		port => 81,
+		admin_port => 6082,
+		storage => "-s malloc,1G",
+		backends => [ 'localhost' ],
+		directors => { 'default' => [ 'localhost' ] },
+		backend_options => {
+			'port' => 80,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 100,
+			'probe' => "blog",
+			'retry5x' => 0
+		},
+		enable_geoiplookup => "false"
+	}
 }
 
 node "hooper.wikimedia.org" {
