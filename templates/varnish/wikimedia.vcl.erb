@@ -42,6 +42,15 @@ probe bits {
 		"Connection: close";
 	.timeout = 5s;	
 }
+<% elsif vcl == "blog" -%>
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
 <% else -%>
 probe bits {
 	.request =
@@ -59,17 +68,6 @@ probe upload {
 	.timeout = 5s;
 }
 */
-
-<% if vcl == "blog" -%>
-probe blog {
-	.request =
-		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
-		"Host: blog.wikimedia.org"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 5s;	
-}
-<% end -%>
 
 # Backends
 
