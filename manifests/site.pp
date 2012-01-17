@@ -1063,7 +1063,7 @@ node "marmontel.wikimedia.org" {
 		admin_port => 6082,
 		storage => "-s malloc,1G",
 		backends => [ 'localhost' ],
-		directors => { 'default' => [ 'localhost' ] },
+		directors => { 'backend' => [ 'localhost' ] },
 		backend_options => {
 			'port' => 80,
 			'connect_timeout' => "5s",
