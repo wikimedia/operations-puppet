@@ -24,3 +24,10 @@ class misc::planet {
 		ensure => latest;
 	}
 }
+
+# http://intertwingly.net/code/venus/
+class misc::planet-venus {
+	package { "planet-venus":
+		ensure => latest;
+	}
+}
