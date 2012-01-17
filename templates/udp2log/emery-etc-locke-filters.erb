@@ -14,3 +14,6 @@ pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
 
 # RT 2212
 pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
+
+# SOPA congress-lookup tracking for the blackout 2012-01-18
+pipe 1 /var/log/squid/filters/SOPA-filter >> /var/log/squid/SOPA-blackout.log
