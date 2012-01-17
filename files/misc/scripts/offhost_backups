@@ -12,7 +12,7 @@ my ($mirror,$email);
 # general conf
 my $conf = {
 	'SENDER' => 'root@wikimedia.org',
-	'RECIPIENT' => 'jgreen@wikimedia.org',
+	'RECIPIENT' => 'root@wikimedia.org',
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
 };
