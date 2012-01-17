@@ -258,6 +258,7 @@ class misc::contint::test {
 		cron {
 			testswarm-fetcher-mw-trunk:
 				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
+				minute => '*',
 				user => testswarm,
 				ensure => present;
 		}
@@ -271,6 +272,7 @@ class misc::contint::test {
 			testswarm-state-wipe:
 				require => Package["curl","testswarm"],
 				command => "(/usr/bin/curl -s http://integration.mediawiki.org/testswarm/?state=wipe) > /dev/null",
+				minute => '*',
 				user => testswarm,
 				ensure => present;
 		}
