@@ -111,14 +111,14 @@ class ganglia {
 
 	$gmondpath = $gmond ? {
 	"ganglia-monitor"       => "/etc/ganglia/gmond.conf",
-	default                 => "/etc/gmond.conf"
+#	default                 => "/etc/gmond.conf"
 	}
 
 
 	# Resource definitions
 	file { "gmondconfig":
 		require => Package[$gmond],
-		name	=> $gmondpath,
+		name	=> "/etc/ganglia/gmond-"$cluster".conf"
 		owner	=> "root",
 		group	=> "root",
 		mode	=> 644,
