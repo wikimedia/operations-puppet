@@ -204,7 +204,7 @@ class ganglia {
 		# with one that starts up multiple instances of gmond
 		file { "/etc/init.d/ganglia-monitor":
 			source => "puppet:///files/ganglia/ganglia-monitor",
-			mode   => 0655,
+			mode   => 0755,
 			ensure => present
 		}
 	}
