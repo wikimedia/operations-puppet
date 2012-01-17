@@ -1062,13 +1062,13 @@ node "marmontel.wikimedia.org" {
 	varnish::instance { "blog":
 		name => "",
 		vcl => "blog",
-		port => 81,
+		port => 80,
 		admin_port => 6082,
 		storage => "-s malloc,1G",
 		backends => [ 'localhost' ],
 		directors => { 'backend' => [ 'localhost' ] },
 		backend_options => {
-			'port' => 80,
+			'port' => 81,
 			'connect_timeout' => "5s",
 			'first_byte_timeout' => "35s",
 			'between_bytes_timeout' => "4s",

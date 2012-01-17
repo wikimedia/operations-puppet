@@ -5,7 +5,7 @@
 # vim: filetype=apache
 
 NameVirtualHost *:443
-<VirtualHost *:80>
+<VirtualHost *:81>
 	ServerAdmin noc@wikimedia.org
 	ServerName blog.wikimedia.org
 
@@ -87,7 +87,7 @@ NameVirtualHost *:443
         ServerSignature On
 
 </VirtualHost>
-<VirtualHost *:80>
+<VirtualHost *:81>
     ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
     ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
