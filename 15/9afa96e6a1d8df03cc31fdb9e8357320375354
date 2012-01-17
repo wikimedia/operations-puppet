@@ -1,0 +1,8 @@
+Change-Id: I159afa96e6a1d8df03cc31fdb9e8357320375354
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Tue, 17 Jan 2012 23:36:14 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1939
+Project: operations/puppet
+Branch: refs/heads/test
