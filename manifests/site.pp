@@ -1047,6 +1047,16 @@ node "hooft.esams.wikimedia.org" {
 		ganglia::collector
 }
 
+node "marmontel.wikimedia.org" {
+	include standard,
+		admins::roots,
+		svn::client,
+		misc::blogs::wikimedia,
+		certificates::star_wikimedia_org
+
+	install_certificate{ "star.wikimedia.org": }
+}
+
 node "hooper.wikimedia.org" {
 	include standard,
 		admins::roots,
