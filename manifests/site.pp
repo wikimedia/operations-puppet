@@ -1052,7 +1052,8 @@ node "marmontel.wikimedia.org" {
 		admins::roots,
 		svn::client,
 		misc::blogs::wikimedia,
-		certificates::star_wikimedia_org
+		certificates::star_wikimedia_org,
+		misc::apache2::rpaf
 
 	install_certificate{ "star.wikimedia.org": }
 
