@@ -15,7 +15,7 @@ class ganglia {
 		$deaf = "no"
 	} else {
 		if ! $cluster {
-			$cluster = [ "appserver", "imagescaler" ]
+			$cluster = [ "misc" ]
 		}
 		if $ganglia_aggregator {
 			$deaf = "no"
