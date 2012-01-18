@@ -1960,15 +1960,19 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp10(3[6-9]|4[0-4]).wikimedia.org/ {
+node /cp10(3[6-9]|4[0-2]).wikimedia.org/ {
 	include cache::mobile,
 	nrpe
 
-	if $hostname =~ /^cp104(3|4)$/ {
-		$ganglia_aggregator = "true"
-	}
 }
 
+# eqiad varnish for m.wikipedia.org aggregators
+node /cp104[3-4].wikimedia.org/ {
+	include cache::mobile,
+	nrpe
+
+	$ganglia_aggregator = "true"
+}
 # sq71-78 are text squids
 node /sq7[1-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
