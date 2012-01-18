@@ -1990,7 +1990,8 @@ node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
 		accounts::ezachte,
-		accounts::reedy
+		accounts::reedy,
+		accounts::diederik
 }
 
 node "storage1.wikimedia.org" {
