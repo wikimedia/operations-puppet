@@ -763,6 +763,13 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	}
 
 	include db::core
+
+	if $hostname =~ /^db3(6|8)$/ {
+		include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+	}
 }
 
 node /^db4[023]\.pmtpa\.wmnet$/ {
@@ -802,8 +809,8 @@ node "db19.pmtpa.wmnet" { # dead
 		mysql::conf
 }
 
-node /db(22|36|38)\.pmtpa\.wmnet/ {
-	#include db::core,  # included in db1[1-9] statement above
+node "db22.pmtpa.wmnet" {
+	#include db::core,  # included in db2[1-9] statement above
 	include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
