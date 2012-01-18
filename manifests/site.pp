@@ -1961,12 +1961,13 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 
 # eqiad varnish for m.wikipedia.org
 node /cp10(3[6-9]|4[0-4]).wikimedia.org/ {
-	include cache::mobile,
-	nrpe
 
 	if $hostname =~ /^cp104(3|4)$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	include cache::mobile,
+	nrpe
 }
 
 # sq71-78 are text squids
