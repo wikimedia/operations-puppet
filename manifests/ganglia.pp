@@ -24,6 +24,7 @@ class ganglia {
 		}
 	}	
 	
+	$cluster = [ "appserver", "imagescaler" ]
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
