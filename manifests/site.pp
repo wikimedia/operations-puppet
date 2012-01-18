@@ -764,7 +764,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 
 	include db::core
 
-	if $hostname =~ /^db3(6|8)$/ {
+	if $hostname =~ /^db3(2|6|8)$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
