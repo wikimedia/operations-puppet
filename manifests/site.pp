@@ -802,7 +802,7 @@ node "db19.pmtpa.wmnet" { # dead
 		mysql::conf
 }
 
-node /db(22|36|38).pmtpa.wmnet/ {
+node /db(22|36|38)\.pmtpa\.wmnet/ {
 	#include db::core,  # included in db1[1-9] statement above
 	include mysql::mysqluser,
 		mysql::datadirs,
