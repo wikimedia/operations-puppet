@@ -2604,7 +2604,7 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp104[1-2].wikimedia.org/ { 
+node /cp10(3[6-9]|4[0-4]).wikimedia.org/ { 
 	include cache::mobile
 }
 
