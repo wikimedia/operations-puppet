@@ -199,7 +199,8 @@ class misc::contint::test {
 		require misc::contint::test::testswarm::systemuser
 
 		# Testswarm is configured using the debian package
-		package { testswarm: ensure => latest; }
+		package { "testswarm", "curl":
+			ensure => latest; }
 
 		# install scripts
 		file {
