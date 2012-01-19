@@ -2136,24 +2136,7 @@ node "virt0.wikimedia.org" {
 		openstack::controller
 }
 
-node "virt1.wikimedia.org" {
-	$cluster = "virt"
-
-	$is_puppet_master = "true"
-	$is_labs_puppet_master = "true"
-	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
-	$ldap_certificate = "star.wikimedia.org"
-	$dns_auth_ipaddress = "208.80.153.131"
-	$dns_auth_soa_name = "virt1.wikimedia.org"
-
-	install_certificate{ "star.wikimedia.org": }
-
-	include standard,
-		dns::auth-server-ldap,
-		openstack::controller
-}
-
-node /virt[2-4].pmtpa.wmnet/ {
+node /virt[1-4].pmtpa.wmnet/ {
 	$cluster = "virt"
 	if $hostname =~ /^virt[23]$/ {
 		$ganglia_aggregator = "true"
