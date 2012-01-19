@@ -1,0 +1,7 @@
+Code-Review+2: Asher <afeldman@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Asher <afeldman@wikimedia.org>
+Submitted-at: Thu, 19 Jan 2012 23:26:29 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/1984
+Project: operations/puppet
+Branch: refs/heads/production
