@@ -417,8 +417,8 @@ class cache {
 		}
 
 		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1039.wikimedia.org", "cp1040.wikimedia.org", "cp1041.wikimedia.org", 
-				"cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org", 
+				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
 		$varnish_fe_directors = {
@@ -1966,7 +1966,7 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp10(3[6-9]|4[0-4]).wikimedia.org/ {
+node /cp104[1-4].wikimedia.org/ {
 
 	if $hostname =~ /^cp104(3|4)$/ {
 		$ganglia_aggregator = "true"
