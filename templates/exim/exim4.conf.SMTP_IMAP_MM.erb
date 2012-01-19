@@ -548,8 +548,6 @@ remote_smtp:
 	interface = <; <%= scope.lookupvar('exim::roled::outbound_ips').join(" ; ") %>
 <% if scope.lookupvar('exim::roled::enable_mailman' == "true" ) -%>
 	helo_data = lists.wikimedia.org
-	# FIXME: TEMP! Send failing mail via lily and mchenry for the time being
-	fallback_hosts = 91.198.174.5 : 208.80.152.186
 <% end -%>
 
 <% if scope.lookupvar('exim::roled::enable_mediawiki_relay') == "true" -%>
