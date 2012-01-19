@@ -85,6 +85,17 @@ class mysql {
 		file { "/etc/db.cluster":
 			content => "${db_cluster}";
 		}
+		# this is for the pt-heartbeat daemon, which needs super privs
+		# to write to read_only=1 databases.
+		if ($db_cluster !~ /fund/) {
+			include passwords::misc::scripts
+			file { "/root/.my.cnf":
+				owner => root,
+				group => root,
+				mode => 0400,
+				content => template("mysql/root.my.cnf.erb");
+			}
+		}
 	}
 
 	file { "/usr/local/bin/master_id.py":
