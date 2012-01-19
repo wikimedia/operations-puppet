@@ -56,7 +56,7 @@ class CommitInfo {
 	protected $postCommitPings = array(
 		'notifyMailingList' => array(
 			'mediawiki-cvs@lists.wikimedia.org', /** list **/
-			'lily.knams.wikimedia.org', /** smtp host **/
+			'smtp.pmtpa.wikimedia.org', /** smtp host **/
 		),
 		'notifyIRCBot' => array(
 			'cia_bot.py', /** name of the notifier script **/
