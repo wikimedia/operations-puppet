@@ -2080,7 +2080,7 @@ node "streber.wikimedia.org" {
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
-node /snapshot[1-4]\.pmtpa\.wmnet/ {
+node /^snapshot([1-4]|100[1-4])\.pmtpa\.wmnet/ {
 	$gid=500
 	include base,
 		ntp::client,
