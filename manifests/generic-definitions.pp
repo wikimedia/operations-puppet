@@ -393,16 +393,7 @@ class base::vlan-tools {
 }
 
 class base::bonding-tools {
-	package { "ifenslave-2.6": ensure => latest; }
-
-	file {
-		"/etc/modprobe.d/bonding.conf":
-		mode => 0644,
-		owner => root,
-		group => root,
-		source => "puppet:///files/misc/bonding.conf",
-		ensure => present;
-	}
+	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
 }
 
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
@@ -529,7 +520,9 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			changes => [
 				inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>'"),
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
-				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'"
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'",
+				"set iface[. = '${aggr_interface}']/bond-miimon '100'",
+				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy 'layer2+3'"
 			],
 			notify => Exec["ifup ${aggr_interface}"]
 		}
