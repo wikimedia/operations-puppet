@@ -394,6 +394,15 @@ class base::vlan-tools {
 
 class base::bonding-tools {
 	package { "ifenslave-2.6": ensure => latest; }
+
+	file {
+		"/etc/modprobe.d/bonding.conf":
+		mode => 0644,
+		owner => root,
+		group => root,
+		source => "puppet:///files/misc/bonding.conf",
+		ensure => present;
+	}
 }
 
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
