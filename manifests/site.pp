@@ -512,7 +512,9 @@ class swift-cluster {
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
 			rewrite_password => "testing",
-			rewrite_thumb_server => "ms5.pmtpa.wmnet"
+			rewrite_thumb_server => "ms5.pmtpa.wmnet",
+			shard_containers => "some",
+			shard_container_list => "wikipedia-commons-thumb,wikipedia-en-thumb"
 		}
 		include swift::storage
 		include swift::proxy
@@ -531,7 +533,9 @@ class swift-cluster {
 				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => "testing",
-				rewrite_thumb_server => "upload.wikimedia.org"
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => ""
 			}
 			include swift::proxy
 		}

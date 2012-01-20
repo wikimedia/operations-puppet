@@ -45,6 +45,11 @@ thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
 user_agent = Mozilla/5.0
 # uncomment this if we want to write the 404 handler"s output into Swift.
 writethumb=yes
+# should we shard containers, and if so how many?  all, none, some
+shard_containers = <%= scope.lookupvar("swift::proxy::config::shard_containers") %>
+# if we shard some containers, which ones?  ignored for all and none.
+shard_container_list = <%= scope.lookupvar("swift::proxy::config::shard_container_list") %>
+
 
 paste.filter_factory = wmf.rewrite:filter_factory
 
