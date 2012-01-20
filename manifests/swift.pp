@@ -141,7 +141,9 @@ class swift::proxy::config(
 	$rewrite_url,
 	$rewrite_user,
 	$rewrite_password,
-	$rewrite_thumb_server) {
+	$rewrite_thumb_server,
+	$shard_containers,
+	$shard_container_list ) {
 
 	Class[swift::base] -> Class[swift::proxy::config]
 
