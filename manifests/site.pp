@@ -814,8 +814,8 @@ node "db19.pmtpa.wmnet" { # dead
 }
 
 node "db22.pmtpa.wmnet" {
-	#include db::core,  # included in db2[1-9] statement above
-	include mysql::mysqluser,
+	include db::core,
+		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
