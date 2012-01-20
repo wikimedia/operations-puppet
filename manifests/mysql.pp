@@ -99,7 +99,7 @@ class mysql {
 					owner => root,
 					group => root,
 					mode => 0555,
-					source => "puppet:///files/mysql/files/pt-heartbeat.init";
+					source => "puppet:///files/mysql/pt-heartbeat.init";
 			}
 			service { pt-heartbeat:
 				require => [ File["/etc/init.d/pt-heartbeat"], Package[percona-toolkit] ],
