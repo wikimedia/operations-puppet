@@ -4,6 +4,11 @@ class nrpe::packages {
 	}
 
 	file {
+		"/etc/nagios/nrpe.d":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 		"/etc/nagios/nrpe_local.cfg":
 			require => Package[nagios-nrpe-server],
 			owner => root,
