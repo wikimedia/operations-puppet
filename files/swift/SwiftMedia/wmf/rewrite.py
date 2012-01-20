@@ -59,7 +59,6 @@ class Copy2(object):
             try:
                 self.copyconn.close() #06 or #04 if it fails.
             except wmf.client.ClientException, err:
-                self.app.logger.warn("PUT Status: %d" % err.http_status)
                 if err.http_status == 401:
                     # not worth retrying the write. Thumb will get saved
                     # the next time.
@@ -100,6 +99,13 @@ class WMFRewrite(object):
         self.writethumb = 'writethumb' in conf
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
+        self.shard_containers = conf['shard_containers'].strip() #all, some, none
+        if (self.shard_containers == 'some'):
+            # if we're supposed to shard some containers, get a cleaned list of the containers to shard
+            def striplist(l):
+                return([x.strip() for x in l])
+            self.shard_container_list = striplist(conf['shard_container_list'].split(','))
+
         #self.logger = get_logger(conf)
 
     def handle404(self, reqorig, url, container, obj):
@@ -136,7 +142,7 @@ class WMFRewrite(object):
         try:
             last_modified = time.mktime(uinfo.getdate('Last-Modified'))
         except TypeError:
-            last_modified = time.localtime()
+            last_modified = time.mktime(time.localtime())
 
         if self.writethumb:
             # Fetch from upload, write into the cluster, and return it
@@ -151,47 +157,67 @@ class WMFRewrite(object):
     def __call__(self, env, start_response):
       #try: commented-out while debugging so you can see where stuff happened.
         req = webob.Request(env)
-        # PUT requests never need rewriting.
-        if req.method == 'PUT':
+        # End-users should only do GET/HEAD, nothing else needs a rewrite
+        if req.method != 'GET' and req.method != 'HEAD':
             return self.app(env, start_response)
 
-        # if it already has AUTH, presume that it's good. #07
-        if req.path.startswith('/auth') or req.path.find('AUTH') >= 0:
+        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
+        while(req.path_info != req.path_info.replace('//', '/')):
+            req.path_info = req.path_info.replace('//', '/')
+
+        # If it already has AUTH, presume that it's good. #07. fixes bug 33620
+        hasauth = re.search('/AUTH_[0-9a-fA-F]{32}/', req.path)
+        if req.path.startswith('/auth') or hasauth:
             return self.app(env, start_response)
 
         # keep a copy of the original request so we can ask the scalers for it
         reqorig = req.copy()
-        # match these two URL forms (source files and thumbnails):
-        # http://upload.wikimedia.org/<site>/<lang>/.*
-        # http://upload.wikimedia.org/<site>/<lang>/thumb/.*
-        # example:
-        # http://upload.wikimedia.org/wikipedia/commons/a/aa/000_Finlanda_harta.PNG
-        # http://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/000_Finlanda_harta.PNG/75px-000_Finlanda_harta.PNG
-        match = re.match(r'/(.*?)/(.*?)/(.*)', req.path)
+
+        # Containers have 4 components: project, language, zone, and shard.
+        # Shard is optional (and configurable).  If there's no zone in the URL,
+        # the zone is 'public'.  Project, language, and zone are turned into containers
+        # with the pattern proj-lang-local-zone (or proj-lang-local-zone.shard).
+        # Projects are wikipedia, wikinews, etc.
+        # Languages are en, de, fr, commons, etc.
+        # Zones are public, thumb, and temp.
+        # Shards are stolen from the URL and are 2 digits of hex.
+        # Examples:
+        # Rewrite URLs of these forms (source, temp, and thumbnail files):
+        # (a) http://upload.wikimedia.org/<proj>/<lang>/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/.*
+        # (b) http://upload.wikimedia.org/<proj>/<lang>/archive/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/archive/.*
+        # (c) http://upload.wikimedia.org/<proj>/<lang>/thumb/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/.*
+        # (d) http://upload.wikimedia.org/<proj>/<lang>/thumb/archive/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/archive/.*
+        # (e) http://upload.wikimedia.org/<proj>/<lang>/thumb/temp/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/.*
+        # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/.*
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/.*
+        match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
         if match:
-            # Our target URL is as follows (example):
-            # https://alsted.wikimedia.org:8080/v1/AUTH_6790933748e741268babd69804c6298b/wikipedia-en/2/25/Machinesmith.png
+            # Get the repo zone (if not provided that means "public")
+            zone = (match.group('zone') if match.group('zone') else 'public')
+            # Get the object path relative to the zone (and thus container)
+            obj = match.group('path') # e.g. "archive/a/ab/..."
 
-            # quote slashes in the container name
-            container = "%s-%s" % (match.group(1), match.group(2)) #02
-            obj = match.group(3)
-            # include the thumb in the container.
-            if obj.startswith("thumb/"): #03
-                container += "-thumb"
-                obj = obj[len("thumb/"):]
+            # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
+            container = "%s-%s-local-%s" % (match.group('proj'), match.group('lang'), zone) #02/#03
+            # Add 2-digit shard to the container if it is supposed to be sharded.
+            # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
+            if ( (self.shard_containers == 'all') or \
+                 ((self.shard_containers == 'some') and (container in self.shard_container_list)) ):
+                container += ".%s" % match.group('shard')
 
-            if not obj:
-                # don't let them list the container (it's CRAZY huge) #08
-                resp = webob.exc.HTTPForbidden('No container listing')
-                return resp(env, start_response)
-
-            # save a url with just the account name in it.
+            # Save a url with just the account name in it.
             req.path_info = "/v1/%s" % (self.account)
             port = self.bind_port
             req.host = '127.0.0.1:%s' % port
             url = req.url[:]
             # Create a path to our object's name.
             req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
+            #self.logger.warn("new path is %s" % req.path_info)
 
             controller = ObjectController()
             # do_start_response just remembers what it got called with,
@@ -219,8 +245,6 @@ class WMFRewrite(object):
         else:
             resp = webob.exc.HTTPBadRequest('Regexp failed: "%s"' % (req.path)) #11
             return resp(env, start_response)
-      #except:
-        #return webob.exc.HTTPNotFound('Internal error')(env, start_response)
 
 def filter_factory(global_conf, **local_conf):
     conf = global_conf.copy()
