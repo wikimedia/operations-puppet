@@ -746,3 +746,14 @@ class generic::php5-gd {
 		ensure => latest;
 	}
 }
+
+class generic::export-firewall ($needs_fw_hole = false) {
+	if $needs_fw_hole  == true {
+		@@file { "/var/local/$fqdn" :
+			content => "[$fqdn $ipaddr $port]",
+			tag => "firewall",
+		}
+
+	}
+
+}
