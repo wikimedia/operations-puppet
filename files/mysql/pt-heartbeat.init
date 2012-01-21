@@ -20,7 +20,7 @@ do_start() {
 		--startas /usr/bin/pt-heartbeat --test || return 1
         start-stop-daemon --start --quiet --pidfile /var/run/pt-heartbeat.pid --name pt-heartbeat \
 		--startas /usr/bin/pt-heartbeat -- -D heartbeat --update --interval=1 \
-		--daemon --pid /var/run/pt-heartbeat.pid || return 2
+		--daemon --pid /var/run/pt-heartbeat.pid -S /tmp/mysql.sock || return 2
 }
 
 do_stop() {
