@@ -508,7 +508,7 @@ class swift-cluster {
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => $::processorcount * 2,
 			super_admin_key => "thisshouldbesecret",
-			rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
+			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
 			rewrite_password => "testing",
