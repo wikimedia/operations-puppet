@@ -166,7 +166,7 @@ class WMFRewrite(object):
             req.path_info = req.path_info.replace('//', '/')
 
         # If it already has AUTH, presume that it's good. #07. fixes bug 33620
-        hasauth = re.search('/AUTH_[0-9a-fA-F]{32}/', req.path)
+        hasauth = re.search('/AUTH_[0-9a-fA-F-]{32,36}', req.path)
         if req.path.startswith('/auth') or hasauth:
             return self.app(env, start_response)
 
