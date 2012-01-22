@@ -16,10 +16,10 @@ class firewall::builder {
 
 class firewall { 
   # for each inbound ACL create an exported file on the main server 
-  define inboundacl ($title=$title, $ip_address=$ipaddress, port=$port) {
+  define inboundacl ($ruletitle=$title, $ip_address=$ipaddress, port=$port) {
     @@file { 
-       "/usr/local/fwbuilder.d/$title-$port":
-          content => "$title,$ipaddress,$port\n", 
+       "/usr/local/fwbuilder.d/$ruletitle-$port":
+          content => "$ruletitle,$ipaddress,$port\n", 
           tag => "inboundacl";
     }
   }
