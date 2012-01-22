@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Running a local test parse of puppet..."
+
+/bin/sed -i 's%^import "../private%#LINT#import "../private%' manifests/base.pp
+
+/usr/bin/puppet parser validate manifests/site.pp
+
+/bin/sed -i 's%^#LINT#import "../private%import "../private%' manifests/base.pp
