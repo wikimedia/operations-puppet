@@ -18,7 +18,7 @@ class firewall {
   # for each inbound ACL create an exported file on the main server 
   define inboundacl ($ip_address=$ipaddress, port=$port) {
     @@file { 
-       "/usr/local/fwbuilder.d/$title_$port":
+       "/usr/local/fwbuilder.d/${title}-${port}":
           content => "$title,$ipaddress,$port\n", 
           tag => "inboundacl";
     }
