@@ -5,23 +5,23 @@
 @monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 
-### This is a mess of horrible duplication while migrating to Varnish 3.0 
-### VCL in 3.0 isn't compatible with prior versions in some important ways, this is to be 
-### extra paranoid to avoid accidentally changing anything on bits.  Once fully migrated,
-### This class should be renamed to varnish and everything above deleted.
-class varnish3 {
+class varnish {
 	class packages {
-		package { varnish3:
-			ensure => "3.0.0-1wmf6";
+		# TODO: rebuild the package to use varnish as the init script name
+		file { "/etc/init.d/varnish3":
+			ensure => link,
+			target => "/etc/init.d/varnish";
 		}
-
-		package { libworking-daemon-perl: 
+		package { [ 'varnish3', 'libvarnishapi1' ]:
+			ensure => "3.0.2-1wmf1";
+		}
+		package { libworking-daemon-perl:
 			ensure => present;
 		}
 	}
 	
 	class common {
-		require varnish3::packages
+		require varnish::packages
 		
 		# Tune kernel settings
 		include generic::sysctl::high-http-performance
@@ -29,7 +29,7 @@ class varnish3 {
 		# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
 		# shm memory to disk
 		mount { "/var/lib/varnish":
-			require => Package[varnish3],
+			require => Class["varnish::packages"],
 			device => "tmpfs",
 			fstype => "tmpfs",
 			options => "noatime,defaults,size=512M",
@@ -46,7 +46,7 @@ class varnish3 {
 	}
 	
 	class common-vcl {
-		require "varnish3::common"
+		require "varnish::common"
 		
 		file {
 			"/etc/varnish/geoip.inc.vcl":
@@ -55,7 +55,7 @@ class varnish3 {
 	}
 	
 	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false") {
-		include varnish3::common
+		include varnish::common
 		
 		if $name == "" {
 			$instancesuffix = ""
@@ -76,22 +76,22 @@ class varnish3 {
 		$varnish_backend_options = $backend_options
 				
 		# Install VCL include files shared by all instances
-		require "varnish3::common-vcl"
+		require "varnish::common-vcl"
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":
 				content => template("varnish/varnish.init.erb"),
 				mode => 0555;
 			"/etc/default/varnish${instancesuffix}":
-				content => template("varnish/varnish3-default.erb"),
+				content => template("varnish/varnish-default.erb"),
 				mode => 0444;
 			"/etc/varnish/${vcl}.inc.vcl":
 				content => template("varnish/${vcl}.inc.vcl.erb"),
 				notify => Exec["load-new-vcl-file${instancesuffix}"],
 				mode => 0444;
-			"/etc/varnish/wikimedia3_${vcl}.vcl":
+			"/etc/varnish/wikimedia_${vcl}.vcl":
 				require => File["/etc/varnish/${vcl}.inc.vcl"],
-				content => template("varnish/wikimedia3.vcl.erb"),
+				content => template("varnish/wikimedia.vcl.erb"),
 				mode => 0444;
 		}
 
@@ -101,7 +101,7 @@ class varnish3 {
 						"/etc/default/varnish${instancesuffix}",
 						"/etc/init.d/varnish${instancesuffix}",
 						"/etc/varnish/${vcl}.inc.vcl",
-						"/etc/varnish/wikimedia3_${vcl}.vcl"
+						"/etc/varnish/wikimedia_${vcl}.vcl"
 					],
 					Mount["/var/lib/varnish"]
 				],
@@ -111,8 +111,8 @@ class varnish3 {
 		}
 
 		exec { "load-new-vcl-file${instancesuffix}":
-			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia3_${vcl}.vcl"] ],
-			subscribe => File["/etc/varnish/wikimedia3_${vcl}.vcl"],
+			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia_${vcl}.vcl"] ],
+			subscribe => File["/etc/varnish/wikimedia_${vcl}.vcl"],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
@@ -132,7 +132,7 @@ class varnish3 {
 				notify => Service[gmond];
 			"/etc/ganglia/conf.d/varnish.pyconf":
 				require => File["/etc/ganglia/conf.d"],
-				source => "puppet:///files/ganglia/plugins/varnish3.pyconf",
+				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
 				notify => Service[gmond];
 		}
 	}
@@ -163,7 +163,30 @@ class varnish3 {
 		}
 	}
 
-	# FIXME: add varnish logging class
+	## If you want to send udplog traffic to one address,
+	## leave $udplogger2 blank
+	class logging($udplogger1="emery.wikimedia.org", $udplogger2="locke.wikimedia.org") {
+
+		file {
+			"/etc/init.d/varnishncsa":
+				require => Package[varnish3],
+				content => template("varnish/varnishncsa.init.erb"),
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/etc/default/varnishncsa":
+				require => Package[varnish3],
+				source => "puppet:///files/varnish/varnishncsa.default",
+				owner => root,
+				group => root,
+				mode => 0444;
+		}
+
+		service { varnishncsa:
+			require => [ Package[varnish3], File["/etc/init.d/varnishncsa"] ],
+			ensure => running;
+		}
+	}
 
 	# Make a default instance
 	instance { "default": }

@@ -1,23 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 # nagios plugin to check the mediawiki job queue
 
-if [ $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php enwiki ) -gt 50000 ]; then
-	echo "JOBQUEUE CRITICAL - enwiki has more than 50 000 entries in its job queue"
-	exit 2
-fi
-
-for a in commonswiki enwiktionary dewikinews itwiki ptwiki dewiki plwiki frwiki eswiki jawiki svwiki ; do
-	echo $( php /home/wikipedia/common/multiversion/MWScript.php showJobs.php $a ) $a;
-done | sort -n | tail -3 | head -1 | while read count wiki ; do
-
-	if [ $(echo "$count" | grep -E "^[0-9]+$") ] && [ $count -gt 9999 ]; then
-		echo "JOBQUEUE CRITICAL - $wiki has $count entries in its job queue - 3rd biggest job queue"
-		exit 2
-	elif [ $(echo "$count" | grep -E "^[0-9]+$") ] && [ $count -lt 10000 ]; then
-		echo "JOBQUEUE OK - $wiki has the 3rd biggest job queue, $count entries"
-		exit 0
-	else
+LARGEQUEUES=
+while read wiki count
+do
+	if [ ! $(echo "$count" | grep -E "^[0-9]+$") ]; then
 		echo "JOBQUEUE CRITICAL - check plugin (`basename $0`) or PHP errors - $wiki"
 		exit 2
+	elif [ $count -gt 9999 ]; then
+		LARGEQUEUES="$LARGEQUEUES, $wiki ($count)"
 	fi
-done
+# The line below is a bash-ism that's needed for the LARGEQUEUES variable above to be in the right scope
+# If you do php ... | while read wiki count; do LARGEQUEUE=blah; done , then the LARGEQUEUE variable will
+# be manipulated in a subshell and the changes won't be visible to the if check below
+done < <( php /home/wikipedia/common/multiversion/MWScript.php extensions/WikimediaMaintenance/getJobQueueLengths.php )
+if [ -z "$LARGEQUEUES" ]; then
+	echo "JOBQUEUE OK - all job queues below 10,000"
+	exit 0
+else
+	echo "JOBQUEUE CRITICAL - the following wikis have more than 9,999 jobs: $LARGEQUEUES"
+	exit 2
+fi

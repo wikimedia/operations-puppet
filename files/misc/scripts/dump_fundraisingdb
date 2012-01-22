@@ -1,0 +1,130 @@
+#!/usr/bin/perl
+use strict;
+use Sys::Syslog;
+use IPC::Open3;
+use IO::Select;
+use Fcntl ':mode';
+
+# This is a quick and dirty script which *does not* do any significant input
+# validation on the config file. There's potential for destruction if the conf
+# file is tampered with. To prevent that, the script will not run if the conf
+# file is writable by anyone other than the effective user.
+
+# fetch conf file 
+my $conf = readconf('/root/.dump_fundraisingdb');
+
+# identity for syslog
+my $conf->{'IDENT'} = $0;
+
+$conf->{'HOSTNAME'} = `hostname --short`;
+chomp $conf->{'HOSTNAME'};
+
+for my $key qw(USER PASSWORD DBS LOCALDIR SENDER RECIPIENT MYSQLDUMP) {
+	die "$key is missing from config!?\n" unless defined $conf->{$key};
+}
+
+printlog('start!');
+
+my $e;
+for my $db (split /\s+/, $conf->{'DBS'}) {
+
+	# trivial db name check 
+	unless ($db =~ /^\w+$/) {;
+		$e->{'report'} .= "invalid database name: \"$db\"\n";
+		next;
+	}
+
+	my $date = `date +%Y%m%d-%H%M%S`;
+	chomp $date;
+
+	printlog("start $conf->{'LOCALDIR'}/$db.$date.sql.gz");
+	$e->{'report'} .= "start dump $db to $conf->{'LOCALDIR'}/$db.$date.sql.gz\n";
+
+	# open system call using open3 so we can cleanly address stderr vs stdout
+	my $child_pid = open3(*W, *R, *E, "$conf->{'MYSQLDUMP'} -u$conf->{'USER'} -p\"$conf->{'PASSWORD'}\" $db | gzip > $conf->{'LOCALDIR'}/$db.$date.sql.gz");
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to step through the output of open3
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+
+	# keep looping through open3 filehandles until there is no more output on any of them
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+		for my $fh (@ready) {
+			my $ffh = fileno($fh);  # identify which handle we're dealing with
+			if (eof ($fh)) {	# close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				printlog($line);
+				$e->{'report'} .= "$line\n";
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				printlog($line,'warning');
+				$e->{'report'} .= "$line\n";
+				$e->{'errors'}++;
+			}
+		}
+	}
+
+}
+
+# set the subject line according to the outcome
+if ($e->{'errors'}) {
+	$e->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} fundraisingdb dump had errors";
+} else {
+	$e->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} fundraisingdb dump ran without errors";
+}
+
+# send message
+open MAILER, "|/usr/sbin/exim -i $conf->{'RECIPIENT'}";
+print MAILER "From: $conf->{'SENDER'}\n" .
+		"To: $conf->{'RECIPIENT'}\n" .
+		"Subject: $e->{'subject'}\n\n" .
+        "$e->{'report'}";
+close MAILER;
+
+printlog('done!');
+
+exit;
+
+#         _                 _   _			 
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#   
+
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'info'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($conf->{'IDENT'},'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
+
+sub readconf {
+	my $conf_file = shift;
+	die "$conf_file is missing" unless -e $conf_file;
+	my ($mode,$uid) = (stat($conf_file))[2,4];
+	my $perms = sprintf "%04o", S_IMODE($mode);
+	if (($perms =~ /00$/) and ($uid == $ENV{'EUID'})) {
+		open CONF, $conf_file;
+		while (<CONF>) {
+			next if /^\s*#/;
+			if (/^(\w+)\s+(.*)$/) {
+				$conf->{$1} = $2;
+			}
+		}
+		close CONF;
+	} else {	
+		print "\n $0 will not run to run unless $conf_file is\n" .
+			" owned by the script's effective user and set go-rwx. Please check/fix and rerun.\n\n";
+		exit;
+	}
+	return $conf;
+}

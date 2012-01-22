@@ -293,7 +293,7 @@ define command{
 
 define command{
 	command_name	check_job_queue
-	command_line	$USER1$/nagios/plugins/check_job_queue
+	command_line	$USER1$/check_job_queue
 	}
 
 define command{
@@ -326,6 +326,27 @@ define command{
 define command{
 	command_name	nrpe_check_dpkg
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
+}
+
+define command{
+	command_name	nrpe_check_jenkins
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
+}
+define command{
+	command_name	nrpe_check_mailman
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mailman
+}
+define command{
+	command_name	nrpe_check_spamd
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_spamd
+}
+define command{
+	command_name	nrpe_check_poolcounterd
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
+}
+define command{
+	command_name	nrpe_check_varnishncsa
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
 	command_name	check_wiki_user_last_edit_time
@@ -380,9 +401,21 @@ define command{
 }
 
 # generic "check number of procs"
+# -a, --argument-array=STRING
+# Only scan for processes with args that contain STRING.
+
 define command{
 	command_name	check_procs_generic
 	command_line	$USER3$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -a $ARG5$
+}
+
+# generic "check number of procs"-2
+# -C, --command=COMMAND
+# Only scan for exact matches of COMMAND (without path).
+
+define command{
+	command_name	check_procs_generic_c
+	command_line	$USER3$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
 }
 
 # check that logging packet loss is not too high
@@ -390,3 +423,35 @@ define command{
 	command_name	check_packet_loss_ave
 	command_line	$USER3$/check_ganglios_generic_value -H $HOSTADDRESS$ -m packet_loss_average -w $ARG1$ -c $ARG2$ -o gt
 }
+
+# percona mysql checks
+define command{
+	command_name	nrpe_check_lvs
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_lvs
+}
+
+define command{
+	command_name	nrpe_check_mysql_idle_transactions
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
+}
+
+define command{
+	command_name	nrpe_check_mysql_recent_restart
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_running
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_delay
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_heartbeat
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
+}
+# end percona mysql checks

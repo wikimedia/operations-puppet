@@ -77,7 +77,13 @@ class ssh::config {
 				owner => root,
 				group => root,
 				mode  => 0444,
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 				content => "If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n\n"
+=======
+				content => "
+If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
+"
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 			}
 		}
 	}

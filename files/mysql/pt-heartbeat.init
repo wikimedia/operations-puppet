@@ -1,0 +1,49 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          pt-heartbeat
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: pt-heartbeat
+# Description:       pt-heartbeat
+### END INIT INFO
+
+# Start/stop the pt-heartbeat daemon.
+#
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start() {
+	start-stop-daemon --start --quiet --pidfile /var/run/pt-heartbeat.pid --name pt-heartbeat \
+		--startas /usr/bin/pt-heartbeat --test || return 1
+        start-stop-daemon --start --quiet --pidfile /var/run/pt-heartbeat.pid --name pt-heartbeat \
+		--startas /usr/bin/pt-heartbeat -- -D heartbeat --update --interval=1 \
+		--daemon --pid /var/run/pt-heartbeat.pid -S /tmp/mysql.sock || return 2
+}
+
+do_stop() {
+	start-stop-daemon --stop --quiet --retry 5 --pidfile /var/run/pt-heartbeat.pid --startas /usr/bin/pt-heartbeat \
+		|| return 1
+}
+
+case "$1" in
+start)	log_daemon_msg "Starting pt-heartbeat" "pt-heartbeat"
+	do_start
+        log_end_msg $?
+	;;
+stop)	log_daemon_msg "Stopping pt-heartbeat" "pt-heartbeat"
+	do_stop
+        log_end_msg $?
+        ;;
+restart) log_daemon_msg "Restarting pt-heartbeat" "upd2log" 
+	do_stop
+	do_start
+        log_end_msg $?
+        ;;
+*)	log_action_msg "Usage: /etc/init.d/pt-heartbeat {start|stop|restart}"
+        exit 2
+        ;;
+esac
+exit 0

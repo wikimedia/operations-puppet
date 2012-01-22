@@ -1,0 +1,21 @@
+# Varnish VCL include file for blog
+#
+# This is a terrible hack - W3 cache on our wordpress install is sending
+# varnish purge requests as:
+# GET /uri/to/purge HTTP/1.1
+# Host: 127.0.0.1
+#
+# this seems to be a problem with the http dispatcher being used 
+# (aka curl, etc.) 
+#
+sub vcl_recv {
+	if (req.request == "GET" && client.ip ~ purge &&
+	req.http.host == "127.0.0.1" && req.http.User-Agent ~ "W3 Total Cache") {
+		set req.http.host = "blog.wikimedia.org";
+		set req.request = "PURGE";
+		if (req.url ~ "#comment") {
+			set req.url = regsub ( req.url, "^http://(\S+)#comment\S+$", "\1");
+		}
+		return (lookup);
+	}
+}

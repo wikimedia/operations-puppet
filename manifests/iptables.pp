@@ -30,7 +30,10 @@ $iptables_ports = {
 	glance_registry => "9191",
 	epmd => "4369",
 	beam1 => "33416",
-	beam2 => "5672"
+	beam2 => "5672",
+	gmond_tcp => "8649",
+	gmond_udp => "8649",
+	udp => ""
 }
 
 $iptables_protocols = {
@@ -65,7 +68,10 @@ $iptables_protocols = {
 	glance_registry => "tcp",
 	epmd => "tcp",
 	beam1 => "tcp",
-	beam2 => "tcp"
+	beam2 => "tcp",
+	gmond_tcp => "tcp",
+	gmond_udp => "udp",
+	udp => "udp"
 }
 
 class iptables::tables {

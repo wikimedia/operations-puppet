@@ -24,6 +24,7 @@ class misc::planet {
 		ensure => latest;
 	}
 }
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 
 # http://intertwingly.net/code/venus/
 class misc::planet-venus {
@@ -31,3 +32,5 @@ class misc::planet-venus {
 		ensure => latest;
 	}
 }
+=======
+>>>>>>> BRANCH (41cb7c uh oh, tabs)

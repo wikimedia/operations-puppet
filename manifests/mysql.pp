@@ -16,6 +16,113 @@ class mysql {
 		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
 			ensure => latest;
 		}
+	} elsif $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "8.04") == 0 {
+		package { "percona-toolkit":
+			ensure => latest;
+		}
+	}
+
+	#######################################################################
+	### MASTERS - make sure to update here whenever changing replication
+	#######################################################################
+	if $hostname =~ /^db(36|30|31|45|34|47|16|48)$/ {
+		$master = "true"
+		$writable = "true"
+	} else {
+		$master = "false"
+	}
+
+	#######################################################################
+	### LVM snapshot hosts - currently only puppet managed in eqiad
+	#######################################################################
+	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
+		$snapshot_host = true
+	}
+
+	#######################################################################
+	### Cluster Definitions - update if changing / building new dbs
+	#######################################################################
+	if $hostname =~ /^db(12|26|32|36|38|42|52|53|1001|1017|1033|1047)$/ {
+		$db_cluster = "s1"
+	}
+	elsif $hostname =~ /^db(13|24|30|1002|1018|1034)$/ {
+		$db_cluster = "s2"
+	}
+	elsif $hostname =~ /^db(11|25|34|39|1003|1019|1035)$/ {
+		$db_cluster = "s3"
+	}
+	elsif $hostname =~ /^db(22|31|33|51|1004|1020|1038)$/ {
+		$db_cluster = "s4"
+	}
+	elsif $hostname =~ /^db(35|44|45|1005|1021|1039)$/ {
+		$db_cluster = "s5"
+	}
+	elsif $hostname =~ /^db(46|47|50|1006|1022|1040)$/ {
+		$db_cluster = "s6"
+	}
+	elsif $hostname =~ /^db(16|18|37|1007|1024|1041)$/ {
+		$db_cluster = "s7"
+	}
+	elsif $hostname =~ /^db(1008|1025)$/ {
+		$db_cluster = "fundraisingdb"
+		if $hostname =~ /^db1008$/ {
+			include role::db::fundraising::master
+			$writable = "true"
+		}
+		elsif $hostname =~ /^db1025$/ {
+			include role::db::fundraising::slave
+		}
+	}
+	elsif $hostname =~ /^db(48|49|1042|1048)$/ {
+		$db_cluster = "otrsdb"
+		$skip_name_resolve = "false"
+	}
+	else {
+		$db_cluster = undef
+	}
+
+	if ($db_cluster) { 
+		file { "/etc/db.cluster":
+			content => "${db_cluster}";
+		}
+		# this is for the pt-heartbeat daemon, which needs super privs
+		# to write to read_only=1 databases.
+		if ($db_cluster !~ /fund/) {
+			include passwords::misc::scripts
+			file {
+				"/root/.my.cnf":
+					owner => root,
+					group => root,
+					mode => 0400,
+					content => template("mysql/root.my.cnf.erb");
+				"/etc/init.d/pt-heartbeat":
+					owner => root,
+					group => root,
+					mode => 0555,
+					source => "puppet:///files/mysql/pt-heartbeat.init";
+			}
+			service { pt-heartbeat:
+				require => [ File["/etc/init.d/pt-heartbeat"], Package[percona-toolkit] ],
+				subscribe => File["/etc/init.d/pt-heartbeat"],
+				ensure => running,
+				hasstatus => false;
+			}
+		}
+	}
+
+	file { "/usr/local/bin/master_id.py":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/mysql/master_id.py"
+	}
+
+	#######################################################################
+	### Research DB Definitions - should also belong to a cluster above
+	#######################################################################
+	if $hostname =~ /^db(42|1047)$/ {
+		$research_dbs = true
+		$writable = "true"
 	}
 
 	class packages {
@@ -78,6 +185,87 @@ class mysql {
 		}
 	}
 
+	# this is for checks from the percona-nagios-checks project
+	# http://percona-nagios-checks.googlecode.com
+	class monitor::percona {
+		include passwords::nagios::mysql
+		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+		file {
+			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
+				owner => root,
+				group => nagios,
+				mode => 0440,
+				content => template("nagios/nrpe_percona.cfg.erb");
+			"/usr/lib/nagios/plugins/percona":
+				ensure => directory,
+				owner => root,
+				group => root,
+				mode => 0755;
+			"/usr/lib/nagios/plugins/percona/check_lvs":
+				source => "puppet:///files/nagios/percona/check_lvs",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_deadlocks":
+				source => "puppet:///files/nagios/percona/check_mysql_deadlocks",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions":
+				source => "puppet:///files/nagios/percona/check_mysql_idle_transactions",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_recent_restart":
+				source => "puppet:///files/nagios/percona/check_mysql_recent_restart",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_slave_delay":
+				source => "puppet:///files/nagios/percona/check_mysql_slave_delay",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_slave_running":
+				source => "puppet:///files/nagios/percona/check_mysql_slave_running",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysql_unauthenticated_users":
+				source => "puppet:///files/nagios/percona/check_mysql_unauthenticated_users",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysqld_deleted_files":
+				source => "puppet:///files/nagios/percona/check_mysqld_deleted_files",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysqld_file_ownership":
+				source => "puppet:///files/nagios/percona/check_mysqld_file_ownership",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysqld_frm_ibd":
+				source => "puppet:///files/nagios/percona/check_mysqld_frm_ibd",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/check_mysqld_pid_file":
+				source => "puppet:///files/nagios/percona/check_mysqld_pid_file",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/usr/lib/nagios/plugins/percona/utils.sh":
+				source => "puppet:///files/nagios/percona/utils.sh",
+				owner => root,
+				group => root,
+				mode => 0555;
+		}
+	}
+
+
 	class mysqluser {
 		user { 
 			"mysql": ensure => "present",
@@ -102,7 +290,7 @@ class mysql {
 
 	}
 
-	class conf {
+	class conf inherits mysql {
 		$db_clusters = {
 			"fundraisingdb" => { 
 				"innodb_log_file_size" => "500M"
@@ -161,16 +349,15 @@ class mysql {
 			$long_timeouts = "false"
 			$enable_unsafe_locks = "false"
 			$large_slave_trans_retries = "false"
+			if $writable { 
+				$read_only = "false"
+			} else { 
+				$read_only = "true"
+			}
 		}
 
 		if ! $skip_name_resolve { 
 			$skip_name_resolve = "true"
-		}
-
-		if $writable { 
-			$read_only = "false"
-		} else { 
-			$read_only = "true"
 		}
 
 		file { "/etc/my.cnf":
@@ -213,7 +400,12 @@ class mysql {
 		}
 	}
 
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 	include mysql::ganglia
+=======
+	include mysql::ganglia,
+		mysql::monitor::percona
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 
 	# TODO do we want to have a class for PHP clients (php5-mysql) as well
 	# and rename this to mysql::client-cli?
