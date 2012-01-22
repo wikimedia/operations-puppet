@@ -11,11 +11,6 @@ class nrpe::packages {
 	}
 
         file {
-                "/etc/nagios/nrpe_local.cfg":
-                        owner => root,
-                        group => root,
-                        mode => 0644,
-                        content => template("nagios/nrpe_local.cfg.erb");
 		"/usr/lib/nagios/plugins/check_ram.sh":
 			owner => root,
 			group => root,
