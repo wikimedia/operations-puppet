@@ -102,9 +102,9 @@ tr.head td { text-align: center; }
 
 for dbname in dbs:
     if db == dbname:
-	print " [%s] "% dbname
+        print " [%s] "% dbname
     else:
-	print " [<a href='report.py?db=%s'>%s</a>] " % (dbname, dbname)
+        print " [<a href='report.py?db=%s'>%s</a>] " % (dbname, dbname)
 
 if limit==50:
     print " [ showing %d events, <a href='report.py?db=%s&sort=%s&limit=5000'>show more</a> ] " % (limit, db, sort)
@@ -128,13 +128,13 @@ rowformat = u"""<tr class="data"><td class="name">%s</td><td>%d</td>
 
 for event in events:
     if event[0] == "close":
-	continue
+        continue
     if not event[0].startswith(prefix):
-	continue
-	
+        continue
+        
     limit -= 1
     if limit < 0:
-	break
+        break
     row = rowformat % \
         (event[0].replace(",",", "), event[1]["count"], event[1]["cpu"] / total["cpu"] * 100, event[1]["onecpu"]  *1000,
             event[1]["real"] / total["real"] * 100, event[1]["onereal"] * 1000)
