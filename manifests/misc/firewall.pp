@@ -35,3 +35,12 @@ class testcase1 {
         }
 	    
 }
+
+class testcase2 {
+	include firewall
+	firewall::inboundacl {
+		"test2":
+			ip_address=>"2.3.4.5",
+			port => 80;
+	}
+}
