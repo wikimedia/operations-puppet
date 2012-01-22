@@ -17,6 +17,12 @@ class firewall::builder {
 class firewall { 
 	# for each inbound ACL create an exported file on the main server
 
+	# This is the definition called from all service manifests, e.g.
+	# open_port { "mail": port => 25 }
+
+	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) {
+		}
+
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
 			"/usr/local/fwbuilder.d/${hostname}-${port}":
@@ -27,10 +33,6 @@ class firewall {
 				tag => "inboundacl";
 		}
 	}
-	# This is the definition called from all service manifests, e.g.
-	# open_port { "mail": port => 25 }
-	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) {
-		}
 
 	@@exported_acl_rule { $title: hostname => $hostname, ip_address => $ip_address, protocol => $protocol, port => $port }
 }
