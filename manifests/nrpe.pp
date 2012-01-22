@@ -1,5 +1,5 @@
 class nrpe::packages {
-	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
+	package { "nagios-nrpe-server":
 		ensure => latest;
 	}
 
