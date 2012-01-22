@@ -21,7 +21,13 @@ class firewall {
 	# open_port { "mail": port => 25 }
 
 	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) {
+		@@exported_acl_rule { $title: 
+			hostname => $hostname,
+			ip_address => $ip_address,
+			protocol => $protocol,
+			port => $port 
 		}
+	}
 
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
@@ -34,7 +40,6 @@ class firewall {
 		}
 	}
 
-	@@exported_acl_rule { $title: hostname => $hostname, ip_address => $ip_address, protocol => $protocol, port => $port }
 }
 
 class testcase1 {
