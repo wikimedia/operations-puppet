@@ -32,14 +32,13 @@ class firewall {
 	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) {
 		}
 
-		@@exported_acl_rule { $title: hostname => $hostname, ip_address => $ip_address, protocol => $protocol, port => $port }
+	@@exported_acl_rule { $title: hostname => $hostname, ip_address => $ip_address, protocol => $protocol, port => $port }
 }
 
 class testcase1 {
 	include firewall
-	firewall::inboundacl {
+	firewall::open_port {
 	   "testbox":
-			ip_address=>"1.2.3.4",
 			port => 80;
 	}
 }
