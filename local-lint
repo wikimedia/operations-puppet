@@ -1,12 +1,13 @@
 #!/bin/bash
+# You must have puppet and sed in your paths or this will FAIL!
 
 echo "Running a local test parse of puppet..."
 
-/bin/sed -i 's%^import "../private%#LINT#import "../private%' manifests/base.pp
+sed -i 's%^import "../private%#LINT#import "../private%' manifests/base.pp
 
 # Run the parser validation step, but ignore warnings about storeconfigs not
 # being set, as that is only set on the puppet master.
-/usr/bin/puppet parser validate manifests/site.pp \
+puppet parser validate manifests/site.pp \
     | grep -v "You cannot collect.*storeconfig"
 
-/bin/sed -i 's%^#LINT#import "../private%import "../private%' manifests/base.pp
+sed -i 's%^#LINT#import "../private%import "../private%' manifests/base.pp
