@@ -31,7 +31,7 @@ class firewall {
 
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
-			"/usr/local/fwbuilder.d/${hostname}-${port}":
+			"/usr/local/fwbuilder.d/${ipaddress}-${port}":
 				content => "$hostname,$ipaddress,$protocol,$port\n",
 				ensure => present,
 				owner => root,
