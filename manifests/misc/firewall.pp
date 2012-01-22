@@ -1,39 +1,46 @@
 class firewall::builder {
-  file { 
-    "/usr/local/fwbuilder.d":
-        owner => root,
-	group => root,
-	mode => 0755,
-	ensure => directory;
-  }
+	file { 
+		"/usr/local/fwbuilder.d":
+		owner => root,
+		group => root,
+		mode => 0755,
+		ensure => directory;
+	}
 
-  # collect all fw definitions
-  File <<| tag == 'inboundacl' |>>
+	# collect all fw definitions
+	Exported_acl_rule <<| |>>
 
-  # TODO: add script here that does the work.
-      
+	# TODO: add script here that does the work.
+
 }
 
 class firewall { 
-  # for each inbound ACL create an exported file on the main server 
-  define inboundacl ($ip_address=$ipaddress, port=$port) {
-    @@file { 
-       "/usr/local/fwbuilder.d/${title}-${port}":
-          content => "$title,$ipaddress,$port\n", 
-          tag => "inboundacl";
-    }
-  }
-}
+	# for each inbound ACL create an exported file on the main server
 
+	# This is the definition called from all service manifests, e.g.
+	# open_port { "mail": port => 25 }
+	define open_port ($hostname=$hostname,$ip_address=$ipaddress, $protocol="tcp",$port) 
+	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
+			file {
+				"/usr/local/fwbuilder.d/${hostname}-${port}":
+					content => "$hostname,$ipaddress,$protocol,$port\n",
+					ensure => present,
+					owner => root,
+					group => root,
+					tag => "inboundacl";
+			}
+		}
+
+		@@exported_acl_rule { $title: hostname => $hostname, ip_address => $ip_address, protocol => $protocol, port => $port }
+}
 
 class testcase1 {
 	include firewall
 	firewall::inboundacl {
 	   "testbox":
-	      ip_address=>"1.2.3.4",
-  	      port => 80;
-        }
-	    
+			ip_address=>"1.2.3.4",
+			port => 80;
+	}
 }
 
 class testcase2 {
