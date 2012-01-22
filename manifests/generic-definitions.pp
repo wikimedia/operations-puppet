@@ -393,7 +393,7 @@ class base::vlan-tools {
 }
 
 class base::bonding-tools {
-	package { "ifenslave-2.6": ensure => latest; }
+	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
 }
 
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
@@ -520,7 +520,9 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			changes => [
 				inline_template("set iface[. = '<%= aggr_interface %>']/bond-slaves '<%= members.join(' ') %>'"),
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
-				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'"
+				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'",
+				"set iface[. = '${aggr_interface}']/bond-miimon '100'",
+				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy 'layer2+3'"
 			],
 			notify => Exec["ifup ${aggr_interface}"]
 		}
@@ -538,6 +540,40 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			require => Interface_aggregate_member[$members],
 			refreshonly => true
 		}
+	}
+}
+
+# Definition: interface_offload
+#
+# Sets interface offload parameters (with ethtool)
+#
+# Parameters:
+# - $interface:
+#	The network interface to operate on
+# - $setting:
+#	The (abbreviated) offload setting, e.g. 'gro'
+# - $value:
+#	The value (on/off)
+define interface_offload($interface="eth0", $setting, $value) {
+	# Set in /etc/network/interfaces
+	interface_setting { $title: interface => $interface, setting => "offload-${setting}", value => $value }
+
+	# And make sure it's always active
+	$long_param = $setting ? {
+		'rx' => "rx-checksumming",
+		'tx' => "tx-checksumming",
+		'sg' => "scatter-gather",
+		'tso' => "tcp-segmentation-offload",
+		'ufo' => "udp-fragmentation-offload",
+		'gso' => "generic-segmentation-offload",
+		'gro' => "generic-receive-offload",
+		'lro' => "large-receive-offload"
+	}
+	
+	exec { "ethtool ${interface} -K ${setting} ${value}":
+		path => "/usr/bin:/usr/sbin:/bin:/sbin",
+		command => "ethtool -K ${interface} ${setting} ${value}",
+		unless => "test $(ethtool -k ${interface} | awk '/${long_param}:/ { print \$2 }') = '${value}'"
 	}
 }
 
@@ -747,6 +783,7 @@ class generic::php5-gd {
 	}
 }
 
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 class generic::export-firewall ($needs_fw_hole = false) {
 	if $needs_fw_hole  == true {
 		@@file { "/var/local/$fqdn" :
@@ -756,4 +793,71 @@ class generic::export-firewall ($needs_fw_hole = false) {
 
 	}
 
+=======
+# handle locales via puppet
+class generic::packages::locales {
+	package { "locales": ensure => latest; }
+}
+
+class generic::packages::ant18 {
+	# When specifying 'latest' for package 'ant', it will actually install
+	# ant1.7 which might not be the version we want. This is similar to
+	# the various gcc version packaged in Debian, albeit ant1.7 and ant1.8
+	# are conflicting with each others.
+	# Thus, this let us explicitly install ant version 1.8
+	package { [
+		"ant1.8"
+	]: ensure => installed;
+	}
+	package { [
+		"ant",
+		"ant1.7"
+	]: ensure => absent;
+	}
+}
+
+class generic::packages::maven {
+	# Install Apache Maven, a java build processing tool.
+	# Class can later be used to add additional Maven plugins
+	# http://maven.apache.org/
+	package { [
+		"maven2"
+	]: ensure => latest;
+	}
+}
+
+# this installs a bunch of international locales, f.e. for "planet" on singer
+class generic::locales::international {
+
+	require generic::packages::locales
+
+	file { "/var/lib/locales/supported.d/local":
+		source => "puppet:///files/locales/local_int",
+		owner => "root",
+		group => "root",
+		mode => 0444;
+	}
+
+	exec { "/usr/sbin/locale-gen":
+		subscribe => File["/var/lib/locales/supported.d/local"],
+		refreshonly => true,
+		require => File["/var/lib/locales/supported.d/local"];
+	}
+}
+
+# Definition: generic::debconf::set
+# Changes a debconf value
+#
+# Parameters:
+# - $title
+#		Debconf setting, e.g. mailman/used_languages
+# - $value
+#		The value $title should be set to
+define generic::debconf::set($value) {
+	exec { "debconf-communicate set $title":
+		path => "/usr/bin:/usr/sbin:/bin:/sbin",
+		command => "echo set ${title} \"${value}\" | debconf-communicate",
+		unless => "test \"$(echo get ${title} | debconf-communicate)\" = \"0 ${value}\""
+	}
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 }

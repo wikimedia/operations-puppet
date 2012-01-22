@@ -14,6 +14,7 @@ date_default_timezone_set( 'UTC' );
 $mode = 'dev';
 $mode = 'preprod';
 $mode = 'prod';
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 if( !(count($argv) === 2 && preg_match( '/^--(dev|preprod|prod)$/', $argv[1] ) ) ) {
 	print "$argv[0]: expects exactly one of the following options:\n\n";
 	print "  --dev     : fetch only this script repository.\n";
@@ -86,4 +87,79 @@ $api = new TestSwarmAPI(
 	, $fetcher_conf['TestSwarmAPI']['authtoken']
 	, $fetcher_conf['TestSwarmAPI']['url']
 );
+=======
+if( !( count( $argv ) === 2 && preg_match( '/^--(dev|preprod|prod)$/', $argv[1] ) ) ) {
+	print "$argv[0]: expects exactly one of the following options:\n\n";
+	print "  --dev     : fetch only this script repository.\n";
+	print "  --preprod : fetch part of phase3 in a temp directory with debugging\n";
+	print "  --prod    : fetch phase3 in a real directory without debugging\n";
+	print "\nBehavior is hardcoded in this script.\n";
+	exit(1);
+}
+$mode = substr( $argv[1], 2 );
+
+# Magic stuff for lazy people
+switch( $mode ) {
+	# Options for local debuggings
+	case 'dev':
+		$mainOptions = array(
+			'debug' => true,
+			'root'  => '/tmp/tsmw-trunk-dev',
+			'svnUrl'   => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/testswarm/scripts',
+			'minRev' => 88439,  # will not fetch anything before that rev
+		);
+		break;
+
+	# Options fetching from phase3. Debug on.
+	case 'preprod':
+		$mainOptions = array(
+			'debug' => true,
+			'root'  => '/tmp/tsmw-trunk-preprod',
+			'svnUrl'   => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
+			'minRev' => 101591,
+		);
+		break;
+
+	case 'prod':
+		$mainOptions = array(
+			'debug'  => false,
+			'root'   => '/var/lib/testswarm/mediawiki-trunk',
+			'svnUrl' => 'http://svn.wikimedia.org/svnroot/mediawiki/trunk/phase3',
+			'testPattern' => '/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2',
+			'minRev' => 105305,
+		);
+		break;
+
+	default:
+		print "Mode $mode unimplemented. Please edit ".__FILE__."\n";
+		exit( 1 );
+}
+
+require_once( __DIR__ . '/testswarm-mw-fetcher.php' );
+
+$main = new TestSwarmMWMain( $mainOptions );
+$rev = $main->tryFetchNextRev();
+
+if( $rev === false ) {
+	print "No new revision, nothing left to do. Exiting.\n";
+	exit;
+}
+
+$fetcher_conf = parse_ini_file( "/etc/testswarm/fetcher.ini", true );
+
+// Fix up database file permission
+$paths = $main->getPathsForRev( $rev );
+$dbFile = $paths['db'] . "/r{$rev}.sqlite";
+chgrp( $dbFile, $fetcher_conf['TestSwarmAPI']['wwwusergroup'] );
+chmod( $dbFile, 0664 );
+
+$apiOptions = array(
+	'user' => $fetcher_conf['TestSwarmAPI']['user'],
+	'authToken' => $fetcher_conf['TestSwarmAPI']['authtoken'],
+	'swarmBaseUrl' => $fetcher_conf['TestSwarmAPI']['url']
+);
+
+// Submit a new job to TestSwarm
+$api = new TestSwarmAPI( &$main, $apiOptions );
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 $api->doAddJob( $rev );

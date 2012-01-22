@@ -31,6 +31,28 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
+=======
+	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressIcon
+		IndexOptions SuppressRules
+		IndexOptions SuppressDescription
+		IndexOptions SuppressHTMLPreamble
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+
+		ServerSignature Off
+
+		IndexStyleSheet "nightly.css"
+		HeaderName "HEADER.html"
+		ReadmeName "README.html"
+		IndexIgnore "*.css" "*.html" ".."
+	</Directory>
+
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 	# Publish testswarm fetcher checkouts to the outside world
 	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
 		AllowOverride All
@@ -70,8 +92,9 @@ NameVirtualHost *:443
 	DocumentRoot /srv/org/mediawiki/integration
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 
 	ErrorLog /var/log/apache2/error.log
 
@@ -93,6 +116,28 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
+=======
+	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressIcon
+		IndexOptions SuppressRules
+		IndexOptions SuppressDescription
+		IndexOptions SuppressHTMLPreamble
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+
+		ServerSignature Off
+
+		IndexStyleSheet "nightly.css"
+		HeaderName "HEADER.html"
+		ReadmeName "README.html"
+		IndexIgnore "*.css" "*.html" ".."
+	</Directory>
+
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 	# Publish testswarm fetcher checkouts to the outside world
 	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
 		AllowOverride All

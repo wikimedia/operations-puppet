@@ -623,7 +623,7 @@ class ldap::client::wmf-corp-cluster {
 	include passwords::ldap::wmf_corp_cluster
 
 	$basedn = "dc=corp,dc=wikimedia,dc=org"
-	$servernames = [ "sanger.wikimedia.org" ]
+	$servernames = [ "sanger.wikimedia.org", "sfo-aaa1.corp.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_corp_cluster::proxypass
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=corp,dc=wikimedia,dc=org"
 	$ldap_user_pass = $passwords::ldap::wmf_corp_cluster::ldap_user_pass

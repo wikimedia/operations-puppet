@@ -1,7 +1,8 @@
 class nrpe::packages {
-	package { [ "opsview-agent" ]:
-		ensure => absent;
+	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
+		ensure => latest;
 	}
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
         package { "nagios-nrpe-server":
                 ensure => latest;
         }
@@ -12,7 +13,10 @@ class nrpe::packages {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
 		"labs" => "10.4.0.34"
 	}
+=======
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
         file {
                 "/etc/nagios/nrpe_local.cfg":
                         owner => root,
@@ -25,20 +29,35 @@ class nrpe::packages {
 			mode => 0755,
 			source => "puppet:///files/nagios/check_ram.sh";
 		"/usr/lib/nagios/plugins/check_dpkg":
+=======
+	file {
+		"/etc/nagios/nrpe.d":
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 			owner => root,
 			group => root,
 			mode => 0755,
+			ensure => directory;
+		"/etc/nagios/nrpe_local.cfg":
+			require => Package[nagios-nrpe-server],
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/nagios/nrpe_local.cfg";
+		"/usr/lib/nagios/plugins/check_dpkg":
+			owner => root,
+			group => root,
+			mode => 0555,
 			source => "puppet:///files/nagios/check_dpkg";
-        }
+	}
 }
 
 class nrpe::service {
-        service { nagios-nrpe-server:
-                require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
-                subscribe => File["/etc/nagios/nrpe_local.cfg"],
+	service { nagios-nrpe-server:
+		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
+		subscribe => File["/etc/nagios/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
-                ensure => running;
-        }
+		ensure => running;
+	}
 
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/sudoers.d/nrpe":

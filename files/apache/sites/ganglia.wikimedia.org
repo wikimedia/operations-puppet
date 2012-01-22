@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+	ServerName ganglia.wikimedia.org
+	ServerAlias nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org
+	DocumentRoot /var/www
+	ServerAdmin root@wikimedia.org
+
+	<Directory "/var/www/">
+	Options FollowSymLinks
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+	</Directory>
+
+	Alias /2.2.0 /srv/org/wikimedia/gangliaweb
+
+	RedirectMatch ^/$ http://ganglia.wikimedia.org/2.2.0/
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+</VirtualHost>

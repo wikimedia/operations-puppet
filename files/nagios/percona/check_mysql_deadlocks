@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Get command-line options
+for o; do
+   case "${o}" in
+      -l) shift; USER="${1}"; shift; ;;
+      -p) shift; PASS="${1}"; shift; ;;
+      -H) shift; HOST="${1}"; shift; ;;
+      -w) shift; WARN="${1}"; shift; ;;
+      -c) shift; CRIT="${1}"; shift; ;;
+      -t) shift; TBL="${1}";  shift; ;;
+   esac
+done
+
+EXITSTATUS=$STATE_OK
+NOTE="OK no recent deadlocks"
+LEVEL="$(mysql -h${HOST} -u${USER} -p${PASS} -ss \
+   -e "SELECT IF(COUNT(*) > ${CRIT:-10}, 'CRIT', 'WARN'), COUNT(*)  FROM ${TBL} WHERE ts >= NOW() - INTERVAL 5 MINUTE HAVING COUNT(*) > ${WARN:-5}")"
+if [ "${LEVEL}" ]; then
+   NOTE="${LEVEL} recent deadlocks"
+   if echo "${LEVEL}" | grep CRIT >/dev/null 2>&1 ; then
+      EXITSTATUS=$STATE_CRITICAL
+   else
+      EXITSTATUS=$STATE_WARNING
+   fi
+fi
+echo $NOTE
+exit $EXITSTATUS

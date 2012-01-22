@@ -151,6 +151,7 @@ class lvs::configuration {
 		'labs' => {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 			},
 			'https' => {
 				'pmtpa' => undef,
@@ -161,6 +162,8 @@ class lvs::configuration {
 			},
 			'upload' => {
 				'pmtpa' => undef,
+=======
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
 			},
 			'apaches' => {
 				'pmtpa' => undef,

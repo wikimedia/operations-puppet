@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Get command-line options
+for o; do
+   case "${o}" in
+      -l) shift; USER="${1}"; shift; ;;
+      -p) shift; PASS="${1}"; shift; ;;
+      -H) shift; HOST="${1}"; shift; ;;
+      -w) shift; WARN="${1}"; shift; ;;
+      -c) shift; CRIT="${1}"; shift; ;; # Really this is ignored.
+   esac
+done
+
+EXITSTATUS=$STATE_UNKNOWN
+NOTE="UNK recent restart"
+UPTIME="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -e "SHOW STATUS LIKE 'Uptime'" | awk '{print $2}')"
+if [ "${UPTIME}" -lt ${WARN:-300} ]; then
+   EXITSTATUS=$STATE_WARNING
+   STAT="WARN"
+else
+   EXITSTATUS=$STATE_OK
+   STAT="OK"
+fi
+NOTE="${STAT} ${UPTIME} seconds since restart"
+echo $NOTE
+exit $EXITSTATUS

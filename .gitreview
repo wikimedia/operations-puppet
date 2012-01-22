@@ -2,4 +2,8 @@
 host=gerrit.wikimedia.org
 port=29418
 project=operations/puppet.git
+<<<<<<< HEAD   (8c6996 Ensuring this returns true)
 defaultbranch=test
+=======
+defaultbranch=production
+>>>>>>> BRANCH (41cb7c uh oh, tabs)
