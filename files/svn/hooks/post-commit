@@ -56,7 +56,7 @@ REV="$2"
 
 svnnotify --repos-path "$1" --revision "$2" \
   --to "mediawiki-cvs@lists.wikimedia.org" \
-  --smtp lily.knams.wikimedia.org \
+  --smtp smtp.pmtpa.wmnet \
   --subject-prefix "SVN: " \
   --subject-cx --no-first-line --with-diff \
   --user-domain "svn.wikimedia.org" \

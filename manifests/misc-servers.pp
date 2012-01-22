@@ -14,6 +14,19 @@ class misc::apache2 {
 
 }
 
+class misc::apache2::rpaf {
+	# NOTE: rpaf.conf defaults to just 127.0.01 - may need to
+	# modify to include squid/varnish/nginx ranges depending
+	# on use.
+	package { libapache2-mod-rpaf:
+		ensure => latest;
+	}
+	apache_module { rpaf: 
+		name => "rpaf",
+		require => Package["libapache2-mod-rpaf"]; 
+	}
+}
+
 class misc::install-server {
 	system_role { "misc::install-server": description => "Install server" }
 
@@ -149,7 +162,7 @@ class misc::install-server {
 			minute => 43,
 			ensure => present;
 		}
-	}	
+	}
 
 	class apt-repository {
 		system_role { "misc::apt-repository": description => "APT repository" }
@@ -235,7 +248,7 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 
 class misc::noc-wikimedia {
 	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
-	
+
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
 	}
@@ -282,23 +295,7 @@ class misc::noc-wikimedia {
 	}
 
 	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-}
-
-class misc::blog-wikimedia {
-	system_role { "misc::blog-wikimedia": description => "blog.wikimedia.org" }
-
-	require apaches::packages,
-		generic::php5-gd
-	
-	file {
-		"/etc/apache2/sites-available/blog.wikimedia.org":
-			path => "/etc/apache2/sites-available/blog.wikimedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/blog.wikimedia.org";
-	}
+	monitor_service { "http": description => "HTTP", check_command => "check_http_url!noc.wikimedia.org!http://noc.wikimedia.org" }
 }
 
 class misc::download-wikimedia {
@@ -338,7 +335,7 @@ class misc::download-wikimedia {
 	}
 
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
-	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" } 
+	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
 
 }
 
@@ -397,7 +394,7 @@ class misc::url-downloader {
 
 class misc::nfs-server::home {
 	system_role { "misc::nfs-server::home": description => "/home NFS" }
-	
+
 	class backup {
 		cron { home-rsync:
 			require => File["/root/.ssh/home-rsync"],
@@ -465,7 +462,7 @@ class misc::images::rsync {
 + /private/
 - **/thumb/
 "
-	
+
 	file { "/etc/rsync.includes":
 		content => $rsync_includes;
 	}
@@ -473,72 +470,9 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
-# TODO: fold most this in a generic, parameterized 'udp2log' class
-class misc::mediawiki-logger {
-	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
-
-	package { udplog:
-		ensure => latest;
-	}
-
-	file {
-		"/etc/udp2log":
-			require => Package[udplog],
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => "flush pipe 1 python /usr/local/bin/demux.py\n";
-		"/usr/local/bin/demux.py":
-			mode => 0544,
-			owner => root,
-			group => root,
-			source => "puppet:///files/misc/demux.py";
-		"/etc/logrotate.d/mw-udp2log":
-			source => "puppet:///files/logrotate/mw-udp2log",
-			mode => 0444;
-		"/etc/sysctl.d/99-big-rmem.conf":
-			owner => "root",
-			group => "root",
-			mode => 0444,
-			content => "
-net.core.rmem_max = 536870912
-";
-	}
-
-	service { udp2log:
-		require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py"] ] ],
-		subscribe => File["/etc/udp2log"],
-		ensure => running;
-	}
-}
-
-class misc::syslog-server {
-	system_role { "misc::syslog-server": description => "central syslog server" }
-	
-	package { syslog-ng:
-		ensure => latest;
-	}
-
-	file {
-		"/etc/syslog-ng/syslog-ng.conf":
-			require => Package[syslog-ng],
-			source => "puppet:///files/syslog-ng/syslog-ng.conf",
-			mode => 0444;
-		"/etc/logrotate.d/remote-logs":
-			source => "puppet:///files/syslog-ng/remote-logs",
-			mode => 0444;
-	}
-
-	service { syslog-ng:
-		require => [ Package[syslog-ng], File["/etc/syslog-ng/syslog-ng.conf"] ],
-		subscribe => File["/etc/syslog-ng/syslog-ng.conf"],
-		ensure => running;
-	}
-}
-
 class misc::extension-distributor {
 	system_role { "misc::extension-distributor": description => "MediaWiki extension distributor" }
-	
+
 	$extdist_working_dir = "/mnt/upload6/private/ExtensionDistributor"
 	$extdist_download_dir = "/mnt/upload6/ext-dist"
 
@@ -583,7 +517,7 @@ class misc::extension-distributor {
 
 class misc::zfs::monitoring {
 	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
-}	
+}
 
 class misc::rt::server {
 	system_role { "misc::rt::server": description => "RT server" }
@@ -625,7 +559,7 @@ class misc::rt::server {
 		refreshonly => true;
 	}
 
-	lighttpd_config { "10-rt": 
+	lighttpd_config { "10-rt":
 		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
 	}
 
@@ -720,7 +654,7 @@ $motd = "
 *******************************************************
 This is the Wikimedia RC->IRC gateway
 *******************************************************
-Sending messages to channels is not allowed. 
+Sending messages to channels is not allowed.
 
 A channel exists for all Wikimedia wikis which have been
 changed since the last time the server was restarted. In
@@ -776,17 +710,6 @@ class misc::mediawiki-irc-relay {
 	}
 }
 
-class misc::squid-logging::multicast-relay {
-	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
-
-	upstart_job { "squid-logging-multicast-relay": install => "true" }
-
-	service { squid-logging-multicast-relay:
-		require => Upstart_job[squid-logging-multicast-relay],
-		ensure => running;
-	}
-}
-
 class misc::dc-cam-transcoder {
 	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
 
@@ -806,7 +729,7 @@ class misc::etherpad {
 	system_role { "misc::etherpad": description => "Etherpad server" }
 
 	require generic::webserver::modproxy
-	
+
 	# NB: this has some GUI going on all up in it. first install must be done by hand.
 	package { etherpad:
 		ensure => latest;
@@ -817,7 +740,7 @@ class misc::etherpad {
 		ensure => running;
 	}
 
-	file { 	
+	file {
 		"/etc/init.d/etherpad":
 			source => "puppet:///files/misc/etherpad/etherpad.init",
 			mode => 0555,
@@ -839,8 +762,8 @@ class misc::etherpad {
 	apache_site { etherpad_proxy: name => "etherpad.proxy" }
 
 	# Nagios monitoring
-	monitor_service { "etherpad http": 
-		description => "Etherpad HTTP", 
+	monitor_service { "etherpad http":
+		description => "Etherpad HTTP",
 		check_command => "check_http_on_port!9000";
 	}
 
@@ -907,7 +830,7 @@ class misc::etherpad_lite {
 
 class misc::kiwix-mirror {
 	# TODO: add system_role
-	
+
 	group { mirror:
 		ensure => "present";
 	}
@@ -916,12 +839,12 @@ class misc::kiwix-mirror {
 		name => "mirror",
 		gid => "mirror",
 		groups => [ "www-data"],
-		membership => "minimum", 
+		membership => "minimum",
 		home => "/data/home",
 		shell => "/bin/bash";
 	}
 
-	file { 
+	file {
 		"/data/xmldatadumps/public/kiwix":
 			ensure => "/data/kiwix";
 		"/data/kiwix":
@@ -951,7 +874,7 @@ class misc::jenkins {
 		'jenkins-apt-repo-key':
 			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
 			command => "/usr/bin/wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | /usr/bin/apt-key add -";
-			
+
 		'jenkins-apt-repo-add':
 			subscribe => Exec['jenkins-apt-repo-key'],
 			refreshonly => true,
@@ -973,7 +896,7 @@ class misc::jenkins {
 			groups => [ "wikidev" ]; 
 		}
 	}
-	
+
 	service { 'jenkins':
 		enable => true,
 		ensure => 'running',
@@ -983,7 +906,7 @@ class misc::jenkins {
 	}
 
 	# Nagios monitoring
-	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "nrpe_check_jenkins" }
 
 	#file {
 		#jenkins stuffs
@@ -992,284 +915,10 @@ class misc::jenkins {
 	#		owner => jenkins,
 	#		group => nogroup,
 	#		require => Package[jenkins],
-	#		source => "puppet:///private/misc/jenkins.config.xml";		
+	#		source => "puppet:///private/misc/jenkins.config.xml";
 	#}
 }
 
-# TODO: break this up in different (sub) classes for the different services
-class misc::fundraising {
-
-	#include exim::packages
-	include passwords::civi
-
-	#what is currently on grosley
-	system_role { "misc::fundraising": description => "fundraising sites and operations" }
-
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "mysql-client-5.1", "phpunit", "dovecot-imapd", "exim4-daemon-heavy", "exim4-config", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
-		ensure => latest;
-	}
-
-	# civimail user
-	group { civimail:
-		ensure => "present",
-	}
-
-	user { civimail:
-		name => "civimail",
-		gid => "civimail",
-		groups => [ "civimail" ], 
-		membership => "minimum",
-		password => $passwords::civi::civimail_pass,
-		home => "/home/civimail",
-		shell => "/bin/sh";
-	}
-
-	file {
-		#civicrm confs 
-		"/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/civicrm.civicrm.settings.php";
-		"/srv/org.wikimedia.civicrm/sites/default/default.settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/civicrm.default.settings.php";
-		"/srv/org.wikimedia.civicrm/sites/default/settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/civicrm.settings.php";
-
-		#civicrm dev confs
-		"/srv/org.wikimedia.civicrm-dev/sites/default/civicrm.settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php";
-		"/srv/org.wikimedia.civicrm-dev/sites/default/default.settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/dev.civicrm.default.settings.php";
-		"/srv/org.wikimedia.civicrm-dev/sites/default/settings.php":
-			mode => 0440,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/dev.civicrm.settings.php";
-
-		#misc fundraising confs
-		"/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php":
-			mode => 0444,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/misc.executeStompPFPPendingProcessorSA.php";
-		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php":
-			mode => 0444,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php";
-		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php":
-			mode => 0444,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php";
-		"/opt/fundraising-misc/auditing/paypal-audit/auth.cfg":
-			mode => 0444,
-			owner => www-data,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/fundraising-misc.auth.cfg";
-		"/opt/fundraising-misc/public_reporting/update_config.php":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/fundraising-misc.update_config.php";
-		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
-		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";	
-		"/srv/org.wikimedia.civicrm/IPNListener_Recurring.php":
-			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php";	
-		"/srv/org.wikimedia.civicrm/files":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/srv/org.wikimedia.civicrm-dev/files":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/srv/org.wikimedia.civicrm/fundcore_gateway":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/srv/org.wikimedia.civicrm/fundcore_gateway/.htaccess":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0444,
-			content => "<Files paypal>
-	ForceType application/x-httpd-php
-</Files>";
-
-		#logging stuffs
-		"/etc/logrotate.d/paypal_ipn":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/logrotate.paypal_ipn";
-		"/etc/logrotate.d/pfp_pending_processor":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/logrotate.pfp_pending_processor";
-		"/var/log/fundraising/":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/var/log/fundraising/paypal_ipn/":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-		"/var/log/fundraising/pfp_pending_processing/":
-			owner => "www-data",
-			group => "wikidev",
-			mode => 0775,
-			ensure => directory;
-
-		#apache conf stuffs
-		"/etc/php5/apache2/php.ini":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/php/php.ini.civicrm";
-		"/etc/apache2/sites-available/000-donate":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.donate";
-		"/etc/apache2/sites-available/002-civicrm":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.civicrm";
-		"/etc/apache2/sites-available/003-civicrm-ssl":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-ssl";
-		"/etc/apache2/sites-available/004-civicrm-dev":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev";
-		"/etc/apache2/sites-available/005-civicrm-dev-ssl":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl";
-		"/etc/apache2/sites-available/006-fundraising":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.fundraising";
-		"/etc/apache2/sites-available/007-fundraising-analytics":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
-
-		"/usr/local/bin/drush":
-			ensure => "/opt/drush/drush";	
-
-		# mail stuff
-		"/etc/exim4/exim4.conf":
-			content => template("exim/exim4.donate.erb"),
-			mode => 0444,
-			owner => root,
-			group => root;
-
-		"/etc/exim4/wikimedia.org-fundraising-private.key":
-			mode => 0440,
-			owner => root,
-			group => Debian-exim,
-			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
-
-		"/etc/dovecot/dovecot.conf":
-			source => "puppet:///files/dovecot/dovecot.donate.conf",
-			mode => 0444,
-			owner => root,
-			group => root;
-
-		"/var/mail/civimail":
-			owner => "civimail",
-			group => "civimail",
-			mode => 2755,
-			ensure => directory;
-
-		# monitoring stuff
-		"/etc/nagios/nrpe.d/fundraising.cfg":
-			source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
-			mode => 0444,
-			owner => root,
-			group => root;
-		"/etc/sudoers.d/nrpe_fundraising":
-			source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
-			mode => 0440,
-			owner => root,
-			group => root;
-		"/usr/local/bin/collect_exim_stats_via_gmetric":
-			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric",
-			mode => 0755,
-			owner => root,
-			group => root;
-
-		# other stuff
-		"/etc/php5/cli/php.ini":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///private/php/php.ini.fundraising.cli";
-		"/usr/local/bin/civimail_send":
-			mode => 0710,
-			owner => root,
-			group => wikidev,
-			source => "puppet:///private/misc/fundraising/civimail_send";
-		"/usr/local/bin/jenkins_watcher":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/jenkins_watcher";
-		"/usr/local/bin/jenkins_archiver":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/jenkins_archiver";
-		"/usr/local/bin/sync_archive_to_storage3":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/sync_archive_to_storage3";
-	}
-
-	#enable apache mods
-	apache_module { rewrite: name => "rewrite" }
-	apache_module { ssl: name => "ssl" }
-
-	#enable apache sites
-	apache_site { donate: name => "000-donate" }
-	apache_site { civicrm: name => "002-civicrm" }
-	apache_site { civicrm-ssl: name => "003-civicrm-ssl" }
-	apache_site { civicrm-dev: name => "004-civicrm-dev" }
-	apache_site { civicrm-dev-ssl: name => "005-civicrm-dev-ssl" }
-	apache_site { fundraising: name => "006-fundraising" }
-	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
-
-}	
 
 class misc::survey {
 
@@ -1297,7 +946,7 @@ class misc::survey {
 }
 
 class misc::download-mediawiki {
-	
+
 	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
 
 	# FIXME: require apache
@@ -1345,294 +994,7 @@ class misc::monitoring::htcp-loss {
 		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
 			require => File["/etc/ganglia/conf.d"],
 			source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
-        }
-}
-
-# TODO: Create a generic udp2log parameterized class and use it for this, and
-# for misc::mediawiki-logger above
-class misc::udp2log::aft {
-	
-	# TODO: add system_role
-	file {
-		"/etc/init.d/udp2log-aft":
-			mode => 0555,
-			owner => root,
-			group => root,
-			source => "puppet:///files/udp2log/udp2log-aft";
-		"/etc/logrotate.d/aft-udp2log":
-			mode => 0444,
-			source => "puppet:///files/logrotate/aft-udp2log";
 	}
-
-	service {
-		"udp2log-aft":
-			ensure => running,
-			enable => true,
-			require => File["/etc/init.d/udp2log-aft"];
-	}
-
-}
-# TODO: this is  a hacky short term method to get the config files into
-#       puppet.  The app should be puppetized for real using mediawiki-logger above.
-class misc::udp2log::lockeconfig {
-	include contacts::udp2log
-	file {
-		"/etc/udp2log/squid":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => template("udp2log/locke-etc-squid.erb");
-	}
-}
-class misc::udp2log::emeryconfig {
-	include contacts::udp2log
-	file {
-		"/etc/udp2log/locke-filters":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => template("udp2log/emery-etc-locke-filters.erb");
-	}
-}
-
-
-# CI test server as per RT #1204
-class misc::contint::test {
-
-	system_role { "misc::contint::test": description => "continuous integration test server" }
-
-	class packages {
-		# split up packages into groups a bit for readability and flexibility ("ensure present" vs. "ensure latest" ?)
-
-		require generic::webserver::php5
-
-		$CI_PHP_packages = [ "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
-		$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
-		$CI_DEV_packages = [ "ant", "imagemagick" ]
-
-		package { $CI_PHP_packages:
-			ensure => present;
-		}
-
-		package { $CI_DB_packages:
-			ensure => present;
-		}
-
-		package { $CI_DEV_packages:
-			ensure => present;
-		}
-
-		include svn::client
-
-		include generic::packages::git-core
-
-		# Prefer the PHP packages from Ubuntu
-		generic::apt::pin-package { $CI_PHP_packages: }
-
-	}
-
-	class virtualhost {
-		# Common apache configuration. Setup integration.mediawiki.org
-		apache_module { ssl: name => "ssl" }
-		apache_site { integration: name => "integration.mediawiki.org" }
-
-		file {
-			# Placing the file in sites-available
-			"/etc/apache2/sites-available/integration.mediawiki.org":
-				path => "/etc/apache2/sites-available/integration.mediawiki.org",
-				mode => 0444,
-				owner => root,
-				group => root,
-				source => "puppet:///files/apache/sites/integration.mediawiki.org";
-
-			# Let wikidev users maintain the homepage
-			 "/srv/org":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki/integration":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			"/srv/org/mediawiki/integration/index.html":
-				owner => www-data,
-				group => wikidev,
-				mode => 0555,
-				source => "puppet:///files/misc/jenkins/index.html";
-		}
-
-		# Reload apache whenever apache configuration change
-		exec {	"reload-apache-on-integration-change":
-			command => "/usr/sbin/service apache2 reload",
-			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
-			refreshonly => true,
-			onlyif => "/usr/sbin/apache2ctl configtest"
-		}
-	}
-
-	class jenkins {
-		require misc::contint::test::virtualhost
-
-		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
-		# package { "jenkins":
-		#	ensure => present,
-		#	require => File["jenkins.list"],
-		#}
-
-		service { 'jenkins':
-			enable => true,
-			ensure => 'running',
-			hasrestart => true,
-			start => '/etc/init.d/jenkins start',
-			stop => '/etc/init.d/jenkins stop';
-		}
-
-		# nagios monitoring
-		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_jenkins_service" }
-
-		file {
-			# Top level jobs folder
-			"/var/lib/jenkins/jobs/":
-				owner => "jenkins",
-				group => "wikidev",
-				mode => 0775,
-				ensure => directory;
-		}
-
-		# run jenkins behind Apache and have pretty URLs / proxy port 80
-		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
-
-		apache_module { proxy: name => "proxy" }
-		apache_module { proxy_http: name => "proxy_http" }
-
-		file {
-			"/etc/default/jenkins":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/misc/jenkins/etc_default_jenkins";
-			"/etc/apache2/conf.d/jenkins_proxy":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/misc/jenkins/apache_proxy";
-		}		
-	}
-
-	class testswarm {
-		require misc::contint::test::virtualhost
-
-		# Testswarm is configured using the debian package
-		package { testswarm: ensure => latest; }
-
-		# Create a user to run the cronjob with
-		systemuser { testswarm:
-			name  => "testswarm",
-			home  => "/var/lib/testswarm",
-			shell => "/bin/bash",
-			# And part of web server user group so we can let it access
-			# the SQLite databases
-			groups => [ 'www-data' ];
-		}
-
-		# install scripts
-		file {
-			"/etc/testswarm/fetcher-sample.ini":
-				require => [
-					Systemuser[testswarm],
-					Package["testswarm"]
-				],
-				source  => "puppet:///files/testswarm/fetcher-sample.ini",
-				mode    => 0660,
-				owner   => testswarm,
-				group   => testswarm;
-			"/var/lib/testswarm/script":
-				require => Systemuser[testswarm],
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
-			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
-				require => Systemuser[testswarm],
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
-				owner   => testswarm,
-				group   => testswarm;
-			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
-				require => Systemuser[testswarm],
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
-				owner   => testswarm,
-				group   => testswarm;
-			# Directory that hold the mediawiki fetches
-			"/var/lib/testswarm/mediawiki-trunk":
-				require => Systemuser[testswarm],
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
-			# SQLite databases files need specific user rights
-			"/var/lib/testswarm/mediawiki-trunk/dbs":
-				require => Systemuser[testswarm],
-				ensure  => directory,
-				mode    => 0774,
-				owner   => testswarm,
-				group   => www-data;
-			# Override Apache configuration coming from the testswarm package.
-			"/etc/apache2/conf.d/testswarm.conf":
-				ensure => absent;
-		}
-
-		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
-		cron {
-			testswarm-fetcher-mw-trunk:
-				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
-				user => testswarm,
-				require => Systemuser[testswarm],
-				ensure => present;
-		}
-
-	}
-
-	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
-
-	class iptables-purges {
-
-		require "iptables::tables"
-
-		iptables_purge_service{  "deny_all_http-alt": service => "http-alt" }
-	}
-
-	class iptables-accepts {
-
-		require "misc::contint::test::iptables-purges"
-
-		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "public_all": source => "208.80.154.128/26", service => "all", jump => "ACCEPT" }
-	}
-
-	class iptables-drops {
-
-		require "misc::contint::test::iptables-accepts"
-
-		iptables_add_service{ "deny_all_http-alt": service => "http-alt", jump => "DROP" }
-	}
-
-	class iptables {
-
-		require "misc::contint::test::iptables-drops"
-
-		iptables_add_exec{ "${hostname}": service => "http-alt" }
-	}
-	
-	require "misc::contint::test::iptables"
 }
 
 class misc::udpprofile::collector {
@@ -1650,7 +1012,7 @@ class misc::udpprofile::collector {
 	# FIXME: Nagios monitoring
 }
 
-class misc::graphite { 
+class misc::graphite {
 	system_role { "misc::graphite": description => "graphite and carbon services" }
 
 	include misc::apache2
@@ -1663,7 +1025,7 @@ class misc::graphite {
 		ensure => "0.9.9-1";
 	}
 
-	file { 
+	file {
 		"/etc/apache2/sites-available/graphite":
 			owner => "root",
 			group => "root",
@@ -1942,41 +1304,6 @@ class misc::passwordScripts {
 	}
 }
 
-class misc::udp2log::packetloss {
-	package { "ganglia-logtailer":
-		ensure => latest;
-	}
-	file {
-		"PacketLossLogtailer.py":
-			path => "/usr/share/ganglia-logtailer/PacketLossLogtailer.py",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/misc/PacketLossLogtailer.py";
-	}
-}
-
-class misc::udp2log::emery {
-# emery and locke have their log files in different places and therefore need different cron jobs
-	cron { "ganglia-logtailer" :
-		ensure => present,
-		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /var/log/squid/packet-loss.log --mode cron",
-		user => 'root',
-		minute => '*/5';
-	}
-
-	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
-}
-class misc::udp2log::locke {
-# emery and locke have their log files in different places and therefore need different cron jobs
-	cron { "ganglia-logtailer" :
-		ensure => present,
-		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file /a/squid/packet-loss.log --mode cron",
-		user => 'root',
-		minute => '*/5';
-	}
-	monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
-}
 class misc::l10nupdate {
 	require misc::scripts
 
@@ -2000,16 +1327,6 @@ class misc::l10nupdate {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
-		"/usr/local/bin/l10nupdate-2":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-2";
-		"/usr/local/bin/l10nupdate-3":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-3";
 		"/usr/local/bin/sync-l10nupdate":
 			owner => root,
 			group => root,
@@ -2027,7 +1344,7 @@ class misc::l10nupdate {
 	# previously so it'll be an existing file on some systems.
 	# Also create the dir for the SVN checkouts, and set up log rotation
 	file {
-		"/var/log/l10nupdatelog/":
+		"/var/log/l10nupdatelog":
 			owner => l10nupdate,
 			group => wikidev,
 			mode => 0664,
@@ -2045,11 +1362,11 @@ class misc::l10nupdate {
 
 class misc::torrus {
 	system_role { "misc::torrus": description => "Torrus" }
-	
+
 	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
-	
+
 	File { require => Package["torrus-common"] }
-	
+
 	file {
 		"/etc/torrus/conf/":
 			source => "puppet:///files/torrus/conf/",
@@ -2071,26 +1388,26 @@ class misc::torrus {
 			mode => 0444,
 			recurse => remote;
 	}
-	
+
 	exec { "torrus compile":
 		command => "/usr/sbin/torrus compile --all",
 		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
 		refreshonly => true
 	}
-	
+
 	service { "torrus-common":
 		require => Exec["torrus compile"],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
 		ensure => running;
 	}
-	
+
 	# TODO: Puppetize the rest of Torrus
 }
 
 # FIXME: (increasingly popular) temporary hack
 if $hostname == "spence" {
-        include misc::gsbmonitoring
+	include misc::gsbmonitoring
 }
 
 class misc::gsbmonitoring {
@@ -2107,48 +1424,20 @@ class misc::gsbmonitoring {
 	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
-
-class misc::bugzilla::crons {
-	cron { bugzilla_whine:
-		command => "cd /srv/org/wikimedia/bugzilla/ ; ./whine.pl",
-		user => root,
-		minute => 15
-	}
-
-	# 2 cron jobs to generate charts data
-	# See https://bugzilla.wikimedia.org/29203
-	# 1) get statistics for the day:
-	cron { bugzilla_collectstats:
-		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl",
-		user    => root,
-		hour    => 0,
-		minute  => 5,
-		weekday => [ 1, 2, 3, 4, 5, 6 ] # Monday - Saturday
-	}
-	# 2) on sunday, regenerates the whole statistics data
-	cron { bugzilla_collectstats_regenerate:
-		command => "cd /srv/org/wikimedia/bugzilla/ ; ./collectstats.pl --regenerate",
-		user    => root,
-		hour    => 0,
-		minute  => 5,
-		weekday => 0  # Sunday
-	}
-}
-
 class misc::package-builder {
 	system_role { "misc::package-builder": description => "Debian package builder" }
-	
+
 	include generic::packages::git-core
-	
+
 	class packages {
 		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload", "libio-socket-ssl-perl" ]:
 			ensure => latest;
 		}
 	}
-	
+
 	class defaults {
 		File { mode => 0444 }
-		
+
 		file {
 			"/etc/devscripts.conf":
 				content => template("misc/devscripts.conf.erb");
@@ -2160,7 +1449,7 @@ class misc::package-builder {
 				content => template("misc/dupload.conf.erb");
 		}
 	}
-	
+
 	include packages, defaults
 }
 
@@ -2192,7 +1481,7 @@ class misc::ircecho {
 }
 
 class misc::racktables {
-	# When this class is chosen, ensure that apache, php5-common, php5-mysql are 
+	# When this class is chosen, ensure that apache, php5-common, php5-mysql are
 	# installed on the host via another package set.
 
 	system_role { "misc::racktables": description => "Racktables" }
@@ -2229,40 +1518,4 @@ class misc::racktables {
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { ssl: name => "ssl" }
-}
-
-# http://planet.wikimedia.org/
-class misc::planet {
-	system_role { "misc::planet": description => "Planet weblog aggregator" }
-
-	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
-
-	class {'generic::webserver::php5': ssl => 'true'; }
-
-	file {
-		"/etc/apache2/sites-available/planet.wikimedia.org":
-			path => "/etc/apache2/sites-available/planet.wikimedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/planet.wikimedia.org";
-	}
-
-	apache_site { planet: name => "planet.wikimedia.org" }
-
-	package { "python2.6":
-		ensure => latest;
-	}
-}
-
-# https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
-class misc::civicrm {
-	system_role { "misc::civicrm": description => "CiviCRM server" }
-
-	class {'generic::webserver::php5': ssl => 'true'; }
-
-	apache_site { contacts: name => "contacts.wikimedia.org" }
-	apache_site { contacts-ssl: name => "contacts.wikimedia.org-ssl" }
-
-	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
 }

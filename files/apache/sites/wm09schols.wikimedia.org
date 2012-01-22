@@ -1,0 +1,39 @@
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName wm09schols.wikimedia.org
+	Redirect / https://wm09schols.wikimedia.org/
+</VirtualHost>
+
+
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName wm09schols.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/wm09schols/
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /srv/org/wikimedia/wm09schols/>
+		Options -Indexes FollowSymLinks MultiViews
+		AllowOverride all
+		Order allow,deny
+		allow from all
+
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+</VirtualHost>

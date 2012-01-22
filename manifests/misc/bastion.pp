@@ -9,6 +9,13 @@ class misc::bastionhost {
 	
 	package { "irssi":
 		ensure => absent;
+<<<<<<< HEAD
+=======
+		"traceroute-nanog":
+		ensure => absent;
+		"traceroute":
+		ensure =>latest;
+>>>>>>> production
 	}
 
 	file { "/etc/sudoers":

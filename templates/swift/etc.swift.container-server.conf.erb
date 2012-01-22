@@ -1,0 +1,16 @@
+[DEFAULT]
+bind_ip = 0.0.0.0
+devices = /srv/swift-storage/
+workers = <%= scope.lookupvar("::processorcount") %>
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+
+[container-updater]
+
+[container-auditor]

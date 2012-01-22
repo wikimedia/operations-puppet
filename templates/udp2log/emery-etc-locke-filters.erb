@@ -12,4 +12,5 @@ pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
 # -ben 2011-11-01
 # pipe 1 /var/log/squid/filters/mobile-offline-meta >> /var/log/squid/mobile-offline-meta.log
 
-
+# RT 2212
+pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log

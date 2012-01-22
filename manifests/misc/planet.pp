@@ -24,6 +24,7 @@ class misc::planet {
 		ensure => latest;
 	}
 }
+<<<<<<< HEAD
 
 # http://intertwingly.net/code/venus/
 class misc::planet-venus {
@@ -31,3 +32,5 @@ class misc::planet-venus {
 		ensure => latest;
 	}
 }
+=======
+>>>>>>> production

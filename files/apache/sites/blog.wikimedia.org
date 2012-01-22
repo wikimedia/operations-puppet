@@ -5,8 +5,8 @@
 # vim: filetype=apache
 
 NameVirtualHost *:443
-<VirtualHost *:80>
-	ServerAdmin software@wikimedia.org 
+<VirtualHost *:81>
+	ServerAdmin noc@wikimedia.org
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
@@ -21,7 +21,7 @@ NameVirtualHost *:443
 	</Directory>
 	<Directory /srv/org/wikimedia/blog/>
 		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
+		#AllowOverride None
 		Order allow,deny
 		allow from all
 
@@ -45,7 +45,7 @@ NameVirtualHost *:443
 
 </VirtualHost>
 <VirtualHost *:443>
-	ServerAdmin software@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName blog.wikimedia.org
 
         RewriteEngine On
@@ -87,8 +87,8 @@ NameVirtualHost *:443
         ServerSignature On
 
 </VirtualHost>
-<VirtualHost *:80>
-    ServerAdmin software@wikimedia.org
+<VirtualHost *:81>
+    ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
     ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
                     RewriteEngine On
@@ -107,7 +107,7 @@ NameVirtualHost *:443
 </VirtualHost>
 
 <VirtualHost *:443>
-    ServerAdmin software@wikimedia.org
+    ServerAdmin noc@wikimedia.org
     ServerName techblog.wikimedia.org
     SSLEngine on
     SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem

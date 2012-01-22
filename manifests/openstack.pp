@@ -119,7 +119,8 @@ class openstack::common {
 	}
 
 	# FIXME: third party repository
-	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
+	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+	apt::pparepo { "nova-core-release-diablo": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
 
 	package { [ "nova-common" ]:
 		ensure => latest,
@@ -173,6 +174,54 @@ class openstack::compute {
 		openstack::volume-service,
 		openstack::gluster-service,
 		openstack::gluster-client
+
+	# tls is a PITA to enable in labs, let's find another way there.
+	if ( $realm == "production" ) {
+		install_certificate{ "${fqdn}": }
+		install_additional_key{ "${fqdn}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
+
+		file {
+			"/var/lib/nova/clientkey.pem":
+				ensure => link,
+				target => "/var/lib/nova/${fqdn}.key",
+				require => Install_additional_key["${fqdn}"];
+			"/var/lib/nova/clientcert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/${fqdn}.pem",
+				require => Install_certificate["${fqdn}"];
+			"/var/lib/nova/cacert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/wmf-ca.pem",
+				require => Install_certificate["${fqdn}"];
+			"/etc/libvirt/libvirtd.conf":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => "444",
+				content => template("openstack/libvirtd.conf.erb"),
+				require => Package["nova-common"];
+			"/etc/default/libvirt-bin":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => "444",
+				content => template("openstack/libvirt-bin.default.erb"),
+				require => Package["nova-common"];
+			"/etc/init/libvirt-bin.conf":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => "444",
+				source => "puppet:///files/upstart/libvirt-bin.conf",
+				require => Package["nova-common"];
+		}
+	}
+
+	service { "libvirt-bin":
+		ensure => running,
+		enable => true,
+		require => Package["nova-common"];
+	}
 
 	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
@@ -543,12 +592,12 @@ class openstack::compute-service {
 class openstack::glance-service {
 
 	# FIXME: third party repository
-	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "present" }
+	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "absent" }
 
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Apt::Pparepo["glance-core-release"],
+		require => Apt::Pparepo["nova-core-release-diablo"],
 		ensure => latest;
 	}
 
@@ -723,6 +772,7 @@ class openstack::nova_config {
 		"production" => "kvm",
 		"labs" => "qemu",
 	}
+	$nova_live_migration_uri = "qemu://%s.pmtpa.wmnet/system?pkipath=/var/lib/nova"
 
 }
 

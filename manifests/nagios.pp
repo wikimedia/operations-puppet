@@ -98,8 +98,8 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			service_description => $description,
 			check_command => $check_command,
 			max_check_attempts => $retries,
-			normal_check_interval => 1,
-			retry_check_interval => 1,
+			normal_check_interval => $normal_check_interval,
+			retry_check_interval => $retry_check_interval,
 			check_period => "24x7",
 			notification_interval => $critical ? {
 					"true" => 240,
@@ -189,7 +189,6 @@ class nagios::monitor {
 			  "${nagios_config_dir}/puppet_services.cfg" ]
 
 	$static_files = [ "${nagios_config_dir}/nagios.cfg",
-			  "${nagios_config_dir}/special.cfg",
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
 			  "${nagios_config_dir}/contactgroups.cfg",
@@ -241,6 +240,17 @@ class nagios::monitor {
 		ensure => latest;
 	}
 
+	# install the nagios Apache site
+	file { "/etc/apache2/sites-available/nagios":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/apache/sites/nagios.wikimedia.org";
+	}
+
+	apache_site { nagios: name => "nagios" }
+ 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios/puppet_checks.d":
 		ensure => directory,
@@ -299,13 +309,6 @@ class nagios::monitor {
 
 	file { "/etc/nagios/nagios.cfg":
 		source => "puppet:///files/nagios/nagios.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
-	file { "/etc/nagios/special.cfg":
-		source => "puppet:///files/nagios/special.cfg",
 		owner => root,
 		group => root,
 		mode => 0644;
@@ -427,11 +430,6 @@ class nagios::monitor {
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_job_queue":
-			source => "puppet:///files/nagios/check_job_queue",
-			owner => root,
-			group => root,
-			mode => 0755;
 		"/usr/local/nagios/libexec/check_longqueries":
 			source => "puppet:///files/nagios/check_longqueries",
 			owner => root,
@@ -458,6 +456,25 @@ class nagios::monitor {
 			group => root,
 			mode => 0755;
 	}
+}
+
+class nagios::monitor::jobqueue {
+
+	file {"/usr/local/nagios/libexec/check_job_queue":
+		source => "puppet:///files/nagios/check_job_queue",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+
+	monitor_service { "check_job_queue":
+		description => "check_job_queue",
+		check_command => "check_job_queue",
+		normal_check_interval => 15,
+		retry_check_interval => 5,
+		critical => "false"
+	}
+
 }
 
 class nagios::monitor::pager {

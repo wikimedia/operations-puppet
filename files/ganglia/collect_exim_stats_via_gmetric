@@ -52,7 +52,7 @@ my $metric = {
 		'gmax' => $conf->{'interval'} * 1.5,
 	},
 	'delivery_deferred' => {
-		'name' => 'exim failed delivery',
+		'name' => 'exim deferred delivery',
 		'type' => 'uint32',
 		'units' => 'messages',
 		'value' => 0,

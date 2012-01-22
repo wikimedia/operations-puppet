@@ -34,6 +34,7 @@ import "openstack.pp"
 import "owa.pp"
 import "protoproxy.pp"
 import "puppetmaster.pp"
+import "role/*.pp"
 import "search.pp"
 import "snapshots.pp"
 import "squid.pp"
@@ -46,8 +47,6 @@ import "stages.pp"
 
 # Initialization
 
-$roles = [ ]
-
 # Base nodes
 
 # Class for *most* servers, standard includes
@@ -58,10 +57,15 @@ class standard {
 		exim::simple-mail-sender
 }
 
+#############################
+# Role classes
+#############################
+
+# TODO: Perhaps rename these classes to "role::<class>" to distinguish them
+# from classes inside service manifests
 
 class applicationserver {
 	class parent {
-		$roles += [ 'appserver' ]
 		$cluster = "appserver"
 		$nagios_group = $cluster
 	}
@@ -103,7 +107,6 @@ class applicationserver {
 	}
 
 	class api inherits parent {
-		$roles += [ 'appserver::api' ]
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
@@ -127,7 +130,6 @@ class applicationserver {
 	}
 
 	class bits inherits parent {
-		$roles += [ 'appserver::bits' ]
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
 
@@ -150,15 +152,12 @@ class applicationserver {
 	}
 
 	class jobrunner {
-		$roles += [ 'appserver::jobrunner' ]
-
 		include jobrunner::packages
 	}
 
 }
 
 class imagescaler {
-	$roles += [ 'imagescaler' ]
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
 	
@@ -181,98 +180,61 @@ class imagescaler {
 		admins::mortals,
 		admins::restricted,
 		apaches::pybal-check,
-		apaches::monitoring
+		apaches::monitoring,
+		accounts::l10nupdate
 }
 
-class db {
-	class core {
-		$roles += [ 'db::core' ]
-		$cluster = "mysql"
+class db::core {
+	$cluster = "mysql"
 
-		system_role { "db::core": description => "Core Database server" }
+	system_role { "db::core": description => "Core Database server" }
 
-		include standard,
-			mysql
+	include standard,
+		mysql
+}
+
+class db::es {
+	$cluster = "mysql"
+
+	$nagios_group = "es"
+
+	system_role { "db::es": description => "External Storage server (${mysql_role})" }
+
+	include	standard,
+		mysql,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::mysqlpath,
+		nrpe
+
+	# Nagios monitoring
+	monitor_service {
+		"mysql status":
+			description => "MySQL ${mysql_role} status",
+			check_command => "check_mysqlstatus!--${mysql_role}";
+		"mysql replication":
+			description => "MySQL replication status",
+			check_command => "check_db_lag",
+			ensure => $mysql_role ? {
+				"master" => absent,
+				"slave" => present
+			};
 	}
 
-	class es {
-		$roles += [ 'db::es' ]
-		$cluster = "mysql"
-		$nagios_group = "es"
+}
 
-		system_role { "db::es": description => "External Storage server (${mysql_role})" }
+class db::es::master {
+	$mysql_role = "master"
+	include db::es
+}
 
-		include	standard,
-			mysql,
-			mysql::mysqluser,
-			mysql::datadirs,
-			mysql::conf,
-			mysql::mysqlpath,
-			nrpe
-
-		# Nagios monitoring
-		monitor_service {
-			"mysql status":
-				description => "MySQL ${mysql_role} status",
-				check_command => "check_mysqlstatus!--${mysql_role}";
-			"mysql replication":
-				description => "MySQL replication status",
-				check_command => "check_db_lag",
-				ensure => $mysql_role ? {
-					"master" => absent,
-					"slave" => present
-				};
-		}
-
-		class master {
-			$mysql_role = "master"
-
-			include db::es
-		}
-
-		class slave {
-			$mysql_role = "slave"
-
-			include db::es
-		}
-	}
-
-	class fundraising {
-	
-		$roles += [ 'db::fundraising' ]
-		$cluster = "mysql"
-
-		system_role { "db::fundraising": description => "Fundraising Database (${mysql_role})" }
-
-		monitor_service {
-			"mysql status":
-				description => "MySQL ${mysql_role} status",
-				check_command => "check_mysqlstatus!--${mysql_role}";
-			"mysql replication":
-				description => "MySQL replication status",
-				check_command => "check_db_lag",
-				ensure => $mysql_role ? {
-					"master" => absent,
-					"slave" => present
-				};
-		}
-
-		class master {
-			$mysql_role = "master"
-			include db::fundraising
-		}
-
-		class slave {
-			$mysql_role = "slave"
-			include db::fundraising
-		}
-		
-	}		
-
+class db::es::slave {
+	$mysql_role = "slave"
+	include db::es
 }
 
 class searchserver {
-	$roles += [ 'search' ]
 	$cluster = "search"
 	$nagios_group = "lucene"
 
@@ -290,7 +252,6 @@ class searchserver {
 }
 
 class searchindexer {
-	$roles += [ 'search::indexer' ]
 	$cluster = "search"
 	$nagios_group = "lucene"
 
@@ -308,7 +269,6 @@ class searchindexer {
 }
 
 class text-squid {
-	$roles += [ 'cache::text' ]
 	$cluster = "squids_text"
 
 	if ! $lvs_realserver_ips {
@@ -346,7 +306,6 @@ class text-squid {
 }
 
 class upload-squid {
-	$roles += [ 'cache::upload' ]
 	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
@@ -377,7 +336,6 @@ class upload-squid {
 
 class cache {
 	class bits {
-		$roles += [ 'cache::bits' ]
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${site}"
 
@@ -423,11 +381,10 @@ class cache {
 		require generic::geoip::files
 
 		include standard,
-			lvs::realserver
+			lvs::realserver,
+			varnish::monitoring::ganglia
 		
-		include varnish3::monitoring::ganglia
-		
-		varnish3::instance { "bits":
+		varnish::instance { "bits":
 			name => "",
 			vcl => "bits",
 			port => 80,
@@ -448,9 +405,11 @@ class cache {
 		}
 	}
 	class mobile { 
-		$roles += [ 'cache::mobile' ]
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
+
+		monitor_service { "varnishncsa": description => "mobile traffic loggers",
+			check_command => "nrpe_check_varnishncsa" }
 
 		$lvs_realserver_ips = $site ? {
 			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
@@ -458,7 +417,8 @@ class cache {
 		}
 
 		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org", 
+				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
 		$varnish_fe_directors = {
@@ -472,11 +432,12 @@ class cache {
 		system_role { "cache::mobile": description => "mobile Varnish cache server" }
 
 		include standard,
-			varnish3::htcpd,
-			varnish3::monitoring::ganglia,
+			varnish::htcpd,
+			varnish::logging,
+			varnish::monitoring::ganglia,
 			lvs::realserver
 		
-		varnish3::instance { "mobile-backend":
+		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
 			port => 81,
@@ -495,7 +456,7 @@ class cache {
 				},
 		}
 		
-		varnish3::instance { "mobile-frontend":
+		varnish::instance { "mobile-frontend":
 			name => "frontend",
 			vcl => "mobile-frontend",
 			port => 80,
@@ -527,7 +488,62 @@ class protoproxy::ssl {
 		protoproxy::proxy_sites
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
-} 
+}
+
+class swift-cluster {
+	class base {
+		$cluster = "swift"
+
+		include standard
+		# TODO: pull in iptables rules here, or in the classes below
+	}
+	class eqiad-test inherits swift-cluster::base {
+		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
+		
+		# The eqiad test cluster runs proxy and storage on the same hosts
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "swift::proxy::config":
+			bind_port => "8080",
+			proxy_address => "http://msfe-test.wikimedia.org:8080",
+			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
+			num_workers => $::processorcount * 2,
+			super_admin_key => "thisshouldbesecret",
+			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
+			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+			rewrite_user => "test:tester",
+			rewrite_password => "testing",
+			rewrite_thumb_server => "ms5.pmtpa.wmnet",
+			shard_containers => "some",
+			shard_container_list => "wikipedia-commons-thumb,wikipedia-en-thumb"
+		}
+		include swift::storage
+		include swift::proxy
+	}
+	class pmtpa-test inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class proxy inherits swift-cluster::pmtpa-test {
+			class { "swift::proxy::config":
+				bind_port => "8080",
+				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+				super_admin_key => "thisshouldbesecret",
+				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
+				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => "testing",
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => ""
+			}
+			include swift::proxy
+		}
+		class storage inherits swift-cluster::pmtpa-test {
+			include swift::storage
+		}
+	}
+}
 
 
 # Default variables
@@ -637,22 +653,9 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
-	include standard
-	$cluster_settings = {
-		bind_port => "8080",
-		num_workers => "8",
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-		proxy_address => "http://msfe-test.wikimedia.org:8080",
-		super_admin_key => "thisshouldbesecret",
-		memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
-		rewrite_account => "AUTH_a6eb7b54-dafc-4311-84a2-9ebf12a7d881",
-		rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-		rewrite_user => "test:tester",
-		rewrite_password => "testing",
-		rewrite_thumb_server => "ms5.pmtpa.wmnet"
-	}
-	class { "swift::proxy": cluster_settings => $cluster_settings }
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	$ganglia_aggregator = "true"
+
+	include swift-cluster::eqiad-test
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -737,35 +740,7 @@ node "dataset2.wikimedia.org" {
 		misc::kiwix-mirror
 }
 
-node "db1.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db2.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db3.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db4.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db5.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db7.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db8.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db9.pmtpa.wmnet" {
+node /^db[1-9]\.pmtpa\.wmnet$/ {
 	include db::core
 }
 
@@ -774,115 +749,36 @@ node "db10.pmtpa.wmnet" {
 		backup::mysql
 }
 
-node "db12.pmtpa.wmnet" {
+node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	include db::core
 }
 
-node "db13.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db14.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db15.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db16.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db17.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db18.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db21.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include db::core
-}
-
-node "db22.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db23.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db24.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db25.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db26.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db27.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db28.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db29.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db30.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+node /^db2[1-9]\.pmtpa\.wmnet$/ {
+	if $hostname == "db21" {
+		$ganglia_aggregator = "true"
+	}
 
 	include db::core
 }
 
-node "db31.pmtpa.wmnet" {
+node /^db3[0-9]\.pmtpa\.wmnet$/ {
+	if $hostname == "db30" {
+		$ganglia_aggregator = "true"
+	}
+
 	include db::core
+
+	if $hostname =~ /^db3(2|6|8)$/ {
+		include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+	}
 }
 
-node "db32.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db33.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db34.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db35.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db36.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db37.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db38.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db39.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db40.pmtpa.wmnet" {
-	include db::core
+node /^db4[023]\.pmtpa\.wmnet$/ {
+	include db::core,
+		mysql::packages
 }
 
 node "db41.pmtpa.wmnet" {
@@ -898,51 +794,42 @@ node "db41.pmtpa.wmnet" {
 		accounts::nimishg
 }
 
-node "db42.pmtpa.wmnet" {
-	include db::core
-}
-
-node "db43.pmtpa.wmnet" {
-	include db::core
-}
-
 # new pmtpa dbs
 # New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
 # DO NOT add old prod db's to new classes unless you
 # know what you're doing! 
 node "db11.pmtpa.wmnet" {
-	$db_cluster = "s3"
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
+
+node "db19.pmtpa.wmnet" { # dead
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf
 }
 
-node "db19.pmtpa.wmnet" {
-	$db_cluster = "s2"
+node "db22.pmtpa.wmnet" {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf
+		mysql::conf,
+		mysql::packages
 }
 
 node /db4[4-9]\.pmtpa\.wmnet/ { 
-	if $hostname =~ /^db(44|45)$/ { 
-		$db_cluster = "s5"
-	}
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
 
-	if $hostname =~ /^db(46|47)$/ { 
-		$db_cluster = "s6"
-	}
-
-	if $hostname =~ /^db(48|49)$/ { 
-		$db_cluster = "otrsdb"
-		$skip_name_resolve = "false"
-		if $hostname == "db48" { 
-			$writable = "true"
-		}
-	}
-
+node /db5[0-9]\.pmtpa\.wmnet/ { 
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -955,62 +842,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017)$/ {
 		$ganglia_aggregator = "true"
 	}
-
-	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
-		$snapshot_host = true
-	}
-
-	if $hostname =~ /^db(1001|1017|1033|1047)$/ {
-		$db_cluster = "s1"
-	}
-
-	if $hostname =~ /^db(1047)$/ {
-		$research_dbs = true
-	}
-
-	if $hostname =~ /^db(1002|1018|1034)$/ {
-		$db_cluster = "s2"
-	}
-
-	if $hostname =~ /^db(1003|1019|1035)$/ {
-		$db_cluster = "s3"
-	}
-
-	if $hostname =~ /^db(1004|1020|1038)$/ {
-		$db_cluster = "s4"
-	}
-
-	if $hostname =~ /^db(1005|1021|1039)$/ {
-		$db_cluster = "s5"
-	}
-
-	if $hostname =~ /^db(1006|1022|1040)$/ {
-		$db_cluster = "s6"
-	}
-
-	if $hostname =~ /^db(1007|1024|1041)$/ {
-		$db_cluster = "s7"
-	}
-
-	if $hostname =~ /^db1008$/ {
-		$db_cluster = "fundraisingdb"
-		include db::fundraising::master
-		$writable = "true"
-	}
-
-	if $hostname =~ /^db1025$/ {
-		$db_cluster = "fundraisingdb"
-		include db::fundraising::slave
-	}
-
-	if $hostname =~ /^(db1042|db1048)$/ {
-		$db_cluster = "otrsdb"
-	}
-
-	# Here Be Masters
-	if $hostname =~ /^db1047$/ {
-		$writable = "true"
-	} 
 
 	include db::core,
 		mysql::mysqluser,
@@ -1106,23 +937,32 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (jenkins) NOPASSWD: ALL', 'ALL = NOPASSWD: /etc/init.d/jenkins'] }
-	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => ['ALL = (testswarm) NOPASSWD: ALL'] }
+	sudo_user { [ "demon", "hashar", "reedy" ]: privileges => [
+		 'ALL = (jenkins) NOPASSWD: ALL'
+		,'ALL = NOPASSWD: /etc/init.d/jenkins'
+		,'ALL = (testswarm) NOPASSWD: ALL'
+		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
+	]}
 	include base,
 		ganglia,
 		ntp::client,
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
-		# Commenting out testswarm since the package is not available yet
-		#misc::contint::test::testswarm,
+		misc::contint::android::sdk,
+		misc::contint::test::testswarm,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
 		accounts::reedy,
 		certificates::star_wikimedia_org
 
-	install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.mediawiki.org": }
+}
+
+node "ganglia1001.eqiad.wmnet" {
+	include standard,
+		ganglia::aggregator
 }
 
 node "gilman.wikimedia.org" {
@@ -1151,17 +991,14 @@ node "gilman.wikimedia.org" {
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
 
-	#if $hostname == "grosley" {
-		$exim_signs_dkim = "true"
-		$exim_bounce_collector = "true"
-	#} else {
-	#	$exim_signs_dkim = "false"
-	#	$exim_bounce_collector = "false"
-	#}
+	# variables used in fundraising exim template
+	# TODO: properly scope these
+	$exim_signs_dkim = "true"
+	$exim_bounce_collector = "true"
 
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { [ "awjrichards", "rfaulk", "nimishg" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "awjrichards", "rfaulk", "nimishg", "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
@@ -1180,10 +1017,22 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::jamesofur,
 		accounts::pgehres,
 		backup::client,
-		misc::fundraising
+		misc::fundraising,
+		misc::fundraising::mail,
+		misc::fundraising::offhost_backups
 
 	if $hostname == "aluminium" {
-		include misc::jenkins
+		include misc::jenkins,
+			misc::fundraising::jenkins_maintenance
+	}
+
+	cron {
+		'offhost_backups':
+			user => root,
+			minute => '5',
+			hour => '0',
+			command => '/usr/local/bin/offhost_backups',
+			ensure => present,
 	}
 
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
@@ -1209,12 +1058,46 @@ node "hooft.esams.wikimedia.org" {
 		ganglia::collector
 }
 
+node "marmontel.wikimedia.org" {
+	include standard,
+		admins::roots,
+		svn::client,
+		misc::blogs::wikimedia,
+		certificates::star_wikimedia_org,
+		misc::apache2::rpaf
+
+		class { "memcached":
+			memcached_ip => "127.0.0.1" }
+
+	install_certificate{ "star.wikimedia.org": }
+
+	varnish::instance { "blog":
+		name => "",
+		vcl => "blog",
+		port => 80,
+		admin_port => 6082,
+		storage => "-s malloc,1G",
+		backends => [ 'localhost' ],
+		directors => { 'backend' => [ 'localhost' ] },
+		backend_options => {
+			'port' => 81,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 100,
+			'probe' => "blog",
+			'retry5x' => 0
+		},
+		enable_geoiplookup => "false"
+	}
+}
+
 node "hooper.wikimedia.org" {
 	include standard,
 		admins::roots,
 		svn::client,
 		misc::etherpad,
-		misc::blog-wikimedia,
+		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org,
 		misc::racktables
 
@@ -1227,6 +1110,7 @@ node "hume.wikimedia.org" {
 	include standard,
 		nfs::home,
 		misc::scripts,
+		misc::maintenance::foundationwiki,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -1377,7 +1261,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	}
 	
 	# Make sure GRO is off
-	interface_setting { "eth0 gro": interface => "eth0", setting => "offload-gro", value => "off" }
+	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 
 	# LVS configuration moved to lvs.pp
 }
@@ -1486,14 +1370,14 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	}
 
 	# Make sure GRO is off
-	interface_manual { "eth1": interface => "eth1", before => Interface_setting["eth1 gro"] }
-	interface_manual { "eth2": interface => "eth2", before => Interface_setting["eth2 gro"] }
-	interface_manual { "eth3": interface => "eth3", before => Interface_setting["eth3 gro"] }
+	interface_manual { "eth1": interface => "eth1", before => Interface_offload["eth1 gro"] }
+	interface_manual { "eth2": interface => "eth2", before => Interface_offload["eth2 gro"] }
+	interface_manual { "eth3": interface => "eth3", before => Interface_offload["eth3 gro"] }
 
-	interface_setting { "eth0 gro": interface => "eth0", setting => "offload-gro", value => "off" }
-	interface_setting { "eth1 gro": interface => "eth1", setting => "offload-gro", value => "off" }
-	interface_setting { "eth2 gro": interface => "eth2", setting => "offload-gro", value => "off" }
-	interface_setting { "eth3 gro": interface => "eth3", setting => "offload-gro", value => "off" }
+	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+	interface_offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
+	interface_offload { "eth2 gro": interface => "eth2", setting => "gro", value => "off" }
+	interface_offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
 }
 
 node "maerlant.esams.wikimedia.org" {
@@ -1501,11 +1385,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include standard
-	$cluster_settings = {
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-	}
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	include swift-cluster::eqiad-test
 }
 
 node "mchenry.wikimedia.org" {
@@ -1523,7 +1403,7 @@ node "mchenry.wikimedia.org" {
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
 		nrpe,
-		ldap::client::corp-server,
+		ldap::client::wmf-corp-cluster,
 		backup::client,
 		groups::wikidev,
 		accounts::jdavis
@@ -1561,25 +1441,12 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdah', '/dev/sdai', '/dev/sdaj', '/dev/sdak', '/dev/sdal',
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
-	$cluster_settings = {
-		swift_hash_path_suffix => "fbf7dab9c04865cd",
-	}
-	include standard
 
-	class { "swift::storage": cluster_settings => $cluster_settings }
+	include swift-cluster::pmtpa-test::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
-}
-
-node "ms4.pmtpa.wmnet" {
-	$cluster = "misc"
-
-	include	base,
-		ntp::client,
-		misc::zfs::monitoring,
-		misc::nfs-server::home::monitoring
 }
 
 node "ms5.pmtpa.wmnet" {
@@ -1590,7 +1457,7 @@ node "ms5.pmtpa.wmnet" {
 
 node "ms6.esams.wikimedia.org" {
 	$thumbs_proxying = "true"
-	$thumbs_proxy_source = "http://208.80.152.3"
+	$thumbs_proxy_source = "http://208.80.152.211"
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
@@ -1637,6 +1504,17 @@ node /ms100[4]\.eqiad\.wmnet/ {
 		media-storage::htcp-purger
 }
 
+node "nickel.wikimedia.org" {
+	$ganglia_aggregator = "true"
+
+	include standard,
+		ganglia::web,
+		certificates::star_wikimedia_org,
+		generic::apache::no-default-site
+
+	 install_certificate{ "star.wikimedia.org": }
+}
+
 node "nescio.esams.wikimedia.org" {
 	$dns_recursor_ipaddress = "91.198.174.6"
 
@@ -1677,22 +1555,12 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
-	include standard
-	class { "swift::proxy": 
-		cluster_settings => {
-			bind_port => "8080",
-			num_workers => "8",
-			swift_hash_path_suffix => "fbf7dab9c04865cd",
-			proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
-			super_admin_key => "thisshouldbesecret",
-			memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-			rewrite_account => "placeholder",
-			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
-			rewrite_user => "test:tester",
-			rewrite_password => "testing",
-			rewrite_thumb_server => "ms5.pmtpa.wmnet"
-		}
+	if $hostname =~ /^owa[12]$/ {
+		$ganglia_aggregator = "true"
 	}
+
+	include swift-cluster::pmtpa-test::proxy
+	include swift-cluster::pmtpa-test::storage
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
@@ -1815,7 +1683,8 @@ node "singer.wikimedia.org" {
 		groups::wikidev,
 		accounts::austin,
 		accounts::awjrichards,
-		generic::mysql::client
+		generic::mysql::client,
+		misc::planet
 
 
 	install_certificate{ "star.wikimedia.org": }
@@ -1834,9 +1703,7 @@ node "sockpuppet.pmtpa.wmnet" {
 			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
-			'dbserver' => "db9.pmtpa.wmnet",
-			'reports' => "store, http",
-			'reporturl' => "http://localhost/reports/upload"
+			'dbserver' => "db9.pmtpa.wmnet"
 		}
 	}
 
@@ -1848,14 +1715,19 @@ node "sockpuppet.pmtpa.wmnet" {
 
 node "sodium.wikimedia.org" {
 
+	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+	$dns_recursor_ipaddress = $ipaddress
+
 	include base,
 		ganglia,
 		nrpe,
 		mailman,
+		dns::recursor,
 		spamassassin,
 		backup::client
 
 	class { exim::roled:
+		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
 		local_domains => [ "+system_domains", "+mailman_domains" ],
 		enable_mail_relay => "secondary", 
 		enable_mailman => "true",
@@ -1863,6 +1735,10 @@ node "sodium.wikimedia.org" {
 		enable_spamassassin => "true"
 	}
 
+	interface_ip {
+		"lists.wikimedia.org_v4": interface => "eth0", address => "208.80.154.4", prefixlen => 32;
+		"lists.wikimedia.org_v6": interface => "eth0", address => "2620:0:861:1::2", prefixlen => 128;
+	}
 }
 
 node "spence.wikimedia.org" {
@@ -1877,6 +1753,7 @@ node "spence.wikimedia.org" {
 	include standard,
 		nagios::monitor,
 		nagios::monitor::pager,
+		nagios::monitor::jobqueue,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
@@ -1891,19 +1768,7 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node "srv187.pmtpa.wmnet" {
-	include applicationserver::api,
-		#applicationserver::jobrunner,
-		memcached::disabled
-}
-
-node "srv188.pmtpa.wmnet" {
-	include applicationserver::api,
-		#applicationserver::jobrunner,
-		memcached::disabled
-}
-
-node "srv189.pmtpa.wmnet" {
+node /^srv18[789]\.pmtpa\.wmnet$/ {
 	include applicationserver::api,
 		#applicationserver::jobrunner,
 		memcached::disabled
@@ -1915,14 +1780,7 @@ node "srv190.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv191.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-
-	include applicationserver::bits,
-		memcached
-}
-
-node "srv192.pmtpa.wmnet" {
+node /^srv19[12]\.pmtpa\.wmnet$/ {
 	$ganglia_aggregator = "true"
 
 	include applicationserver::bits,
@@ -1935,480 +1793,74 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv194.pmtpa.wmnet" {
+# srv194-213 are application servers, memcached
+node /^srv(19[4-9]|20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		memcached
 }
 
-node "srv195.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv196.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv197.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv198.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv199.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv200.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv201.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv202.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv203.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv204.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv205.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv206.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv207.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv208.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv209.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv210.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv211.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv212.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv213.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv214.pmtpa.wmnet" {
+# srv214-218 are API application servers, memcached
+node /^srv21[4-8]\.pmtpa\.wmnet$/ {
 	include applicationserver::api,
 		memcached
 }
 
-node "srv215.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
+# srv219-224 are image scalers
+node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
+	if $hostname == "srv219" {
+		$ganglia_aggregator = "true"
+	}
 
-node "srv216.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv217.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv218.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv219.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
 	include imagescaler
 }
 
-node "srv220.pmtpa.wmnet" {
-	include imagescaler
-}
+# srv225-230 are applicationservers, memcached
+node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
+	if $hostname == "srv226" {
+		$ganglia_aggregator = "true"
+	}
 
-node "srv221.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv222.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv223.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv224.pmtpa.wmnet" {
-	include imagescaler
-}
-
-node "srv225.pmtpa.wmnet" {
-	#$dist = "lucid"
 	include applicationserver::homeless,
 		memcached
 }
 
-node "srv226.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv227.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv228.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv229.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv230.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		memcached
-}
-
-node "srv231.pmtpa.wmnet" {
+# srv231-247 are application servers, jobrunners, memcached
+node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
-node "srv232.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv233.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv234.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv235.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv236.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv237.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv238.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv239.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv240.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv241.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv242.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv243.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv244.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv245.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv246.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv247.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv248.pmtpa.wmnet" {
+node /^srv24[89]\.pmtpa\.wmnet$/ {
 	include applicationserver::bits,
 		memcached
 }
 
-node "srv249.pmtpa.wmnet" {
-	include applicationserver::bits,
-		memcached
-}
-
-node "srv250.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv251.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv252.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv253.pmtpa.wmnet" {
-	include applicationserver::api,
-		memcached
-}
-
-node "srv254.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+# srv250-257 are API application servers, some are memcached
+node /^srv25[0-7]\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^srv25[45]$/ {
+		$ganglia_aggregator = "true"
+	}
 
 	include applicationserver::api
+
+	if $hostname =~ /^srv25[0-3]$/ {
+		include memcached
+	}
 }
 
-node "srv255.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+# srv258 - srv280 are application servers, job runners, memcached
+node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^srv25[89]$/ {
+		$ganglia_aggregator = "true"
+	}
 
-	include applicationserver::api
-}
-
-node "srv256.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv257.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv258.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
 }
 
-node "srv259.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv260.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv261.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv262.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv263.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv264.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv265.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv266.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv267.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv268.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv269.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv270.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv271.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv272.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv273.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv274.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv275.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv276.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv277.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv278.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv279.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv280.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
+# FIXME: why is srv281 different?
 node "srv281.pmtpa.wmnet" {
 	#include applicationserver::homeless,
 	#	applicationserver::jobrunner,
@@ -2419,49 +1871,7 @@ node "srv281.pmtpa.wmnet" {
 		imagescaler
 }
 
-node "srv282.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv283.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv284.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv285.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv286.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv287.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv288.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node "srv289.pmtpa.wmnet" {
+node /^srv28[2-9]\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
 		memcached
@@ -2472,47 +1882,7 @@ node "srv290.pmtpa.wmnet" {
 		memcached
 }
 
-node "srv291.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv292.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv293.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv294.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv295.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv296.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv297.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv298.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv299.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv300.pmtpa.wmnet" {
-	include applicationserver::api
-}
-
-node "srv301.pmtpa.wmnet" {
+node /^srv(29[1-9]|30[01])\.pmtpa\.wmnet$/ {
 	include applicationserver::api
 }
 
@@ -2538,6 +1908,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	}
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
+		$enable_ipv6_proxy = "true"
 	}
 
 	include protoproxy::ssl
@@ -2600,13 +1971,14 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp104[1-2].wikimedia.org/ { 
-	include cache::mobile
-}
+node /cp104[1-4].wikimedia.org/ {
 
-node /cp104[3-4].wikimedia.org/ { 
-	$ganglia_aggregator = "true"
-	include cache::mobile
+	if $hostname =~ /^cp104(3|4)$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include cache::mobile,
+	nrpe
 }
 
 # sq71-78 are text squids
@@ -2642,8 +2014,6 @@ node "stafford.pmtpa.wmnet" {
 			'filesdir' => "/var/lib/git/operations/puppet/files",
 			'privatefilesdir' => "/var/lib/git/operations/private/files",
 			'manifestdir' => "/var/lib/git/operations/puppet/manifests",
-			'reports' => "store, http",
-			'reporturl' => "http://sockpuppet.pmtpa.wmnet/reports/upload",
 			'templatedir' => "/var/lib/git/operations/puppet/templates"
 		}
 	}
@@ -2653,7 +2023,8 @@ node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
 		accounts::ezachte,
-		accounts::reedy
+		accounts::reedy,
+		accounts::diederik
 }
 
 node "storage1.wikimedia.org" {
@@ -2670,6 +2041,8 @@ node "storage3.pmtpa.wmnet" {
 	$db_cluster = "fundraisingdb"
 
 	include db::core,
+		role::db::fundraising::slave,
+		role::db::fundraising::dump,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -2678,8 +2051,19 @@ node "storage3.pmtpa.wmnet" {
 		accounts::nimishg,
 		accounts::rfaulk,
 		accounts::awjrichards,
+		accounts::khorn,
 		accounts::logmover,
-		db::fundraising::slave
+		misc::fundraising::impressionlog::compress,
+		misc::fundraising::offhost_backups
+
+	cron {
+		'offhost_backups':
+			user => root,
+			minute => '35',
+			hour => '1',
+			command => '/usr/local/bin/offhost_backups',
+			ensure => present,
+	}
 
 }
 
@@ -2701,7 +2085,7 @@ node "streber.wikimedia.org" {
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
-node /snapshot[1-4]\.pmtpa\.wmnet/ {
+node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 	$gid=500
 	include base,
 		ntp::client,
@@ -2719,9 +2103,10 @@ node /snapshot[1-4]\.pmtpa\.wmnet/ {
 }
 
 node "tarin.wikimedia.org" {
-	include standard
+	include standard,
+	nrpe
 
-	monitor_service { "poolcounterd": description => "poolcounter", check_command => "check_procs_generic!1!2!1!5!poolcounterd" }
+	monitor_service { "poolcounterd": description => "poolcounter", check_command => "nrpe_check_poolcounterd" }
 }
 
 node "thistle.pmtpa.wmnet" {
@@ -2756,23 +2141,12 @@ node "virt0.wikimedia.org" {
 		openstack::controller
 }
 
-node "virt1.wikimedia.org" {
+node /virt[1-4].pmtpa.wmnet/ {
+	$cluster = "virt"
+	if $hostname =~ /^virt[23]$/ {
+		$ganglia_aggregator = "true"
+	}
 
-	$is_puppet_master = "true"
-	$is_labs_puppet_master = "true"
-	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
-	$ldap_certificate = "star.wikimedia.org"
-	$dns_auth_ipaddress = "208.80.153.131"
-	$dns_auth_soa_name = "virt1.wikimedia.org"
-
-	install_certificate{ "star.wikimedia.org": }
-
-	include standard,
-		dns::auth-server-ldap,
-		openstack::controller
-}
-
-node /virt[2-4].pmtpa.wmnet/ {
 	include standard,
 		openstack::compute
 }
