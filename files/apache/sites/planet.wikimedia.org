@@ -1,4 +1,14 @@
-<VirtualHost 208.80.152.162:80>
+# make all planet requests go to http instead of ssl
+
+<VirtualHost *:443>
+	ServerName planet.wikimedia.org
+	ServerAlias planet.wikipedia.org planet.wikipedia.com *.planet.wikimedia.org
+
+	RewriteEngine on
+	RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+</VirtualHost>
+
+<VirtualHost *:80>
 	ServerName planet.wikimedia.org
 	ServerAlias planet.wikipedia.org planet.wikipedia.com
 	php_admin_flag engine off
@@ -13,7 +23,7 @@
 	</Directory>
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/ar/www
 	ServerName ar.planet.wikimedia.org
 	php_admin_flag engine off
@@ -27,7 +37,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/cs/www
 	ServerName cs.planet.wikimedia.org
 	php_admin_flag engine off
@@ -41,13 +51,13 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName da.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/it/www
 	ServerName it.planet.wikimedia.org
 	php_admin_flag engine off
@@ -61,7 +71,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/de/www
 	ServerName de.planet.wikimedia.org
 	php_admin_flag engine off
@@ -75,7 +85,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/en/www
 	ServerName en.planet.wikimedia.org
 	php_admin_flag engine off
@@ -89,7 +99,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/es/www
 	ServerName es.planet.wikimedia.org
 	php_admin_flag engine off
@@ -103,13 +113,13 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName fo.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/fr/www
 	ServerName fr.planet.wikimedia.org
 	php_admin_flag engine off
@@ -123,7 +133,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/gmq/www
 	ServerName gmq.planet.wikimedia.org
 	php_admin_flag engine off
@@ -137,31 +147,31 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName is.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName nb.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName nn.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName no.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/pl/www
 	ServerName pl.planet.wikimedia.org
 	php_admin_flag engine off
@@ -175,7 +185,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/pt/www
 	ServerName pt.planet.wikimedia.org
 	php_admin_flag engine off
@@ -189,7 +199,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/ru/www
 	ServerName ru.planet.wikimedia.org
 	php_admin_flag engine off
@@ -203,7 +213,7 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/sr/www
 	ServerName sr.planet.wikimedia.org
 	php_admin_flag engine off
@@ -217,13 +227,13 @@
 	Alias /shared /usr/local/planet/wikimedia/shared/www
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	ServerName sv.planet.wikimedia.org
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.wikimedia.org/
 </VirtualHost>
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/zh/www
 	ServerName zh.planet.wikimedia.org
 	php_admin_flag engine off
@@ -238,7 +248,7 @@
 </VirtualHost>
 
 
-<VirtualHost 208.80.152.162:80>
+<VirtualHost *:80>
 	DocumentRoot /usr/local/planet/wikimedia/ro/www
 	ServerName ro.planet.wikimedia.org
 	php_admin_flag engine off

@@ -1,0 +1,54 @@
+#!/bin/sh
+
+# ########################################################################
+# Modified to add a serverid switch, which triggers support for 
+# pt-heartbeat's multi-tier compatible schema.
+# 1/2012 - Asher Feldman.. who should probably upstream
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Get command-line options
+for o; do
+   case "${o}" in
+      -l) shift; USER="${1}"; shift; ;;
+      -p) shift; PASS="${1}"; shift; ;;
+      -H) shift; HOST="${1}"; shift; ;;
+      -w) shift; WARN="${1}"; shift; ;;
+      -c) shift; CRIT="${1}"; shift; ;;
+      -t) shift; HEARTBEAT="${1}"; shift; ;; # Enables integration with mk-heartbeat
+      -s) shift; SERVID="${1}"; shift; ;; # server_id of master to check with pt-heartbeat
+   esac
+done
+
+EXITSTATUS=$STATE_UNKNOWN
+NOTE="UNK replication delay"
+
+if [ "${HEARTBEAT}" ] && [ "${SERVID}" ] ; then
+   DELAY="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -e "SELECT UNIX_TIMESTAMP() - UNIX_TIMESTAMP(ts) AS delay FROM ${HEARTBEAT} WHERE server_id = ${SERVID}")"
+elif [ "${HEARTBEAT}" ]; then
+   DELAY="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -e "SELECT UNIX_TIMESTAMP() - UNIX_TIMESTAMP(ts) AS delay FROM ${HEARTBEAT} WHERE id = 1")"
+else
+   DELAY="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -E -e "SHOW SLAVE STATUS" | awk '/Seconds_Behind_Master/{print $2}')"
+fi
+
+if [ "${DELAY}" -gt ${CRIT:-600} ]; then
+   EXITSTATUS=$STATE_CRITICAL
+   STAT="CRIT"
+elif [ "${DELAY}" -gt ${WARN:-300} ]; then
+   EXITSTATUS=$STATE_WARNING
+   STAT="WARN"
+else
+   EXITSTATUS=$STATE_OK
+   STAT="OK"
+fi
+NOTE="${STAT} replication delay ${DELAY} seconds"
+echo $NOTE
+exit $EXITSTATUS

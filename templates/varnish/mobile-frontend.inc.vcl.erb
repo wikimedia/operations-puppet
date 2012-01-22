@@ -1,5 +1,20 @@
 # Varnish VCL include file for mobile frontends
 
+acl wmf_office {
+	"216.38.130.163";
+}
+
+sub tag_carrier {
+	/* For wiki zero project - tags partnered carriers */
+	if (client.ip ~ wmf_office) {
+		set req.http.X-Carrier = "wikimedia";
+	}
+	/* once actuall in prod, ensure users can't make requests
+	with a fake X-Carrier header */
+	/* else {
+		unset req.http.X-Carrier;
+	} */
+}
 
 sub device_detection {
 
@@ -98,10 +113,14 @@ sub vcl_recv {
 	}
 	
 	call device_detection;
+	call tag_carrier;
 }
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
+	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
+		set beresp.ttl = 60 s;
+	}
 }
 
 sub vcl_error {

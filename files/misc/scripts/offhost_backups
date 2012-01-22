@@ -1,0 +1,131 @@
+#!/usr/bin/perl
+use strict;
+use IPC::Open3;
+use IO::Select;
+use Sys::Syslog;
+
+# this is a lame little script to do some simple cron-based backup maintenance
+# jgreen 20111221
+
+my ($mirror,$email);
+
+# general conf
+my $conf = {
+	'SENDER' => 'root@wikimedia.org',
+	'RECIPIENT' => 'root@wikimedia.org',
+	'HOSTNAME' => `hostname --short`,
+	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
+};
+chomp $conf->{'HOSTNAME'};
+
+# jobs, keep 'em numbered in the order you want them to happen
+if ($conf->{'HOSTNAME'} eq 'storage3') {
+
+	# only storage3 executes these commands
+	$mirror = {
+
+		# proxy impression logs, copy whatever we have in 'udplogs' (14 days) to hume as safety for storage3 death
+		'1'  => 'rsync -ar --delete /archive/udplogs/ file_mover@hume.wikimedia.org:/a/static/uncompressed/',
+
+		# copy collected backups from individual hosts to tridge
+		'2'  => 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/',
+		'3'  => 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/',
+		'4'  => 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/',
+
+		# temporary until loudon logrotate+ssh situation is reorganized
+		'5'  => 'rsync -ar /archive/fundraising/logs/payments_cluster/ fundraising@tridge.wikimedia.org:payments_cluster/',
+
+	};
+
+} elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
+
+	# only aluminium/grosley execute these commands
+	$mirror = {
+		
+		# archived jenkins builds
+		'1' => "rsync -ar /archive/jenkins_builds/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/jenkins_builds/",
+
+		# syslog-type stuff from paypal etc.
+		'2' => "rsync -ar --exclude *log /var/log/fundraising/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/logs/",
+
+	};
+
+}
+
+
+for my $m (sort keys %{$mirror}) {
+
+	printlog($mirror->{$m});
+	$email->{'report'} .= "$mirror->{$m}\n";
+
+	# open system call using open3 so we can cleanly address stderr vs stdout
+	my $child_pid = open3(*W, *R, *E, $mirror->{$m});
+
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to step through the output of open3
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+
+	# keep looping through open3 filehandles until there is no more output on any of them
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+		for my $fh (@ready) {
+			my $ffh = fileno($fh);  # identify which handle we're dealing with
+			if (eof ($fh)) {	# close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				printlog($line);
+				$email->{'report'} .= "$line\n";
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				printlog($line,'warning');
+				$email->{'report'} .= "$line\n";
+				$email->{'errors'}++;
+			}
+		}
+	}
+
+	close (R);
+	close (E);
+
+}
+
+# set the subject line according to the outcome
+if ($email->{'errors'}) {
+	$email->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} $conf->{'IDENT'} had errors";
+} else {
+	$email->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} $conf->{'IDENT'} ran without errors";
+}
+
+# send message
+open MAILER, "|/usr/sbin/exim -i $conf->{'RECIPIENT'}";
+print MAILER "From: $conf->{'SENDER'}\n" .
+	"To: $conf->{'RECIPIENT'}\n" .
+	"Subject: $email->{'subject'}\n\n" .
+	"$email->{'report'}";
+close MAILER;
+
+printlog('done!');
+
+exit;
+
+
+#         _                 _   _             
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#                                             
+
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'info'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($conf->{'IDENT'},'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
