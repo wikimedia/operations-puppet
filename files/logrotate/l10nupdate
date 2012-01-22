@@ -5,7 +5,6 @@
 
 /var/log/l10nupdatelog/*.log {
 	daily
-	olddir /var/log/l10nupdatelog/archive
 	notifempty
 	maxage 180
 	rotate 1000

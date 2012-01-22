@@ -103,8 +103,43 @@ class exim {
 		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
 	}
 
-	# TODO: add class documentation
-	class roled($local_domains = [ "+system_domains" ], $enable_mail_relay="false", $enable_mailman="false", $enable_imap_delivery="false", $enable_mail_submission="false", $mediawiki_relay="false", $enable_spamassassin="false", $outbound_ips=[ $ipaddress ] ) {
+	# Class: exim::roled
+	#
+	# This class installs a full featured Exim MTA
+	#
+	# Parameters:
+	#	- $local_domains:
+	#		List of domains Exim will treat as "local", i.e. be responsible
+	#		for
+	#	- $enable_mail_relay:
+	#		Values: primary, secondary
+	#		Whether Exim will act as a primary or secondary mail relay for
+	#		other mail servers
+	#	- $enable_mailman:
+	#		Whether Mailman delivery functionality is enabled (true/false)
+	#	- $enable_imap_delivery:
+	#		Whether IMAP local delivery functional is enabled (true/false)
+	#	- $enable_mail_submission:
+	#		Enable/disable mail submission by users/client MUAs
+	#	- $mediawiki_relay:
+	#		Whether this MTA relays mail for MediaWiki (true/false)
+	#	- $enable_spamasssin:
+	#		Enable/disable SpamAssassin spam checking
+	#	- $outbound_ips:
+	#		IP addresses to use for sending outbound e-mail
+	#	- $hold_domains:
+	#		List of domains to hold on the queue without processing
+	class roled(
+		$local_domains = [ "+system_domains" ],
+		$enable_mail_relay="false",
+		$enable_mailman="false",
+		$enable_imap_delivery="false",
+		$enable_mail_submission="false",
+		$mediawiki_relay="false",
+		$enable_spamassassin="false",
+		$outbound_ips=[ $ipaddress ],
+		$hold_domains=[] ) {
+		
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
 
@@ -118,6 +153,7 @@ class exim {
 		file {
 			"/etc/exim4/exim4.conf":
 				require => Package[exim4-config],
+				notify => Service[exim4],
 				owner => root,
 				group => Debian-exim,
 				mode => 0440,
@@ -137,7 +173,7 @@ class exim {
 					owner => root,
 					group => root,
 					mode => 0444,
-					source => "puppet:///files/exim/exim4.listserver_relay_domains.conf";
+					source => "puppet:///files/exim/exim4.secondary_relay_domains.conf";
 			}
 		}
 
@@ -168,6 +204,7 @@ class exim {
 # SpamAssassin http://spamassassin.apache.org/
 
 class spamassassin {
+	include network::constants
 
 	package { [ "spamassassin" ]:
 		ensure => latest;
@@ -183,7 +220,7 @@ class spamassassin {
 	}
 	file {
 		"/etc/spamassassin/local.cf":
-			source => "puppet:///files/spamassassin/local.cf";
+			content => template("spamassassin/local.cf");
 		"/etc/default/spamassassin":
 			source => "puppet:///files/spamassassin/spamassassin.default";
 	}
@@ -202,11 +239,14 @@ class spamassassin {
 		mode => 0700;
 	}
 
-	monitor_service { "spamd": description => "spamassassin", check_command => "check_procs_generic!1!20!1!40!spamd" }
+	monitor_service { "spamd": description => "spamassassin", check_command => "nrpe_check_spamd" }
 }
 
 class mailman {
 	class base {
+		# lighttpd needs to be installed first, or the mailman package will pull in apache2
+		require generic::webserver::static
+
 		package { "mailman": ensure => latest }
 	}
 
@@ -223,26 +263,68 @@ class mailman {
 				source => "puppet:///files/mailman/mm_cfg.py";
 		}
 
+		# Install as many languages as possible
+		include generic::locales::international
+		
+		generic::debconf::set {
+			"mailman/gate_news":
+				value => "false",
+				notify => Exec["dpkg-reconfigure mailman"];
+			"mailman/used_languages":
+				value => "ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW",
+				notify => Exec["dpkg-reconfigure mailman"];
+			"mailman/default_server_language":
+				value => "en",
+				notify => Exec["dpkg-reconfigure mailman"];
+		}
+		exec { "dpkg-reconfigure mailman":
+			require => Class["generic::locales::international"],
+			before => Service[mailman],
+			command => "/usr/sbin/dpkg-reconfigure -fnoninteractive mailman",
+			refreshonly => true
+		}
+
 		service { mailman:
 			ensure => running,
 			hasstatus => false,
 			pattern => "mailmanctl"
 		}
 
-		monitor_service { "procs_mailman": description => "mailman", check_command => "check_procs_generic!1!25!1!35!mailman" }
+		monitor_service { "procs_mailman": description => "mailman", check_command => "nrpe_check_mailman" }
 	}
 
 	class web-ui {
 		include generic::webserver::static
 		
-		# if we have this we dont need the lists. cert, right? we had them both before
 		install_certificate{ "star.wikimedia.org": }
 
-		lighttpd_config { "50-mailman":
+		# htdigest file for private list archives
+		file { "/etc/lighttpd/htdigest":
 			require => Class["generic::webserver::static"],
-			install => "true"
+			source => "puppet:///private/lighttpd/htdigest",
+			owner => root,
+			group => www-data,
+			mode => 0440;
 		}
 
+		# Enable CGI module
+		lighttpd_config { "10-cgi": require => Class["generic::webserver::static"] }
+
+		# Install Mailman specific Lighttpd config file
+		lighttpd_config { "50-mailman":
+			require => [ Class["generic::webserver::static"], File["/etc/lighttpd/htdigest"] ],
+			install => "true"
+		}
+		
+		# Add files in /var/www (docroot)
+		file { "/var/www":
+			source => "puppet:///files/mailman/docroot/",
+			owner => root,
+			group => root,
+			mode => 0444,
+			recurse => remote;
+		}
+		
 		# monitor SSL cert expiry 
 		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 	}

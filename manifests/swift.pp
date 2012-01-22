@@ -1,11 +1,16 @@
 # swift.pp
 
-class swift::base($cluster_settings=undef) {
+# TODO: document parameters
+class swift::base($hash_path_suffix) {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
 	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
 	include swift::iptables
+
+	# include tcp settings
+	include swift::sysctl::tcp-improvements
+	include generic::sysctl::high-http-performance
 
 	package { "swift":
 		ensure => present;
@@ -19,25 +24,14 @@ class swift::base($cluster_settings=undef) {
 			owner => swift,
 			group => swift,
 			mode => 0444;
-		"/srv/swift-storage":
+		"/etc/swift/swift.conf":
 			require => Package[swift],
+			ensure => present,
+			content => template("swift/etc.swift.conf.erb"),
 			owner => swift,
 			group => swift,
-			mode => 0750,
-			ensure => directory;
+			mode => 0444;
 	}
-	if $cluster_settings {
-		file {
-			"/etc/swift/swift.conf":
-				require => Package[swift],
-				ensure => present,
-				content => template("swift/etc.swift.conf.erb"),
-				owner => swift,
-				group => swift,
-				mode => 0444;
-		}
-	}
-
 }
 
 # set up iptables rules to protect these hosts
@@ -57,6 +51,8 @@ class swift::iptables-accepts {
 	iptables_add_service{ "swift_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/24", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_igmp": service => "igmp", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_icmp": service => "icmp", jump => "ACCEPT" }
 	# swift specific services
@@ -83,10 +79,23 @@ class swift::iptables  {
 	## creating iptables rules but not enabling them to test.
 	iptables_add_exec{ "swift": service => "swift" }
 }
+class swift::sysctl::tcp-improvements($ensure="present") {
+	file { swift-performance-sysctl:
+		name => "/etc/sysctl.d/60-swift-performance.conf",
+		owner => root,
+		group => root,
+		mode => 444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/swift/60-swift-performance.conf.sysctl",
+		ensure => $ensure
+	}
+}
+class swift::proxy {
+	Class[swift::proxy::config] -> Class[swift::proxy]
 
-class swift::proxy($cluster_settings=undef) {
-	class { "swift::base": cluster_settings => $cluster_settings }
 	system_role { "swift:base": description => "swift frontend proxy" }
+
+	realize File["/etc/swift/proxy-server.conf"]
 
 	package { ["swift-proxy", "python-swauth"]:
 		ensure => present;
@@ -110,23 +119,36 @@ class swift::proxy($cluster_settings=undef) {
 			source => "puppet:///files/swift/SwiftMedia/wmf/",
 			recurse => remote;
 	}
-
-	class { "swift::proxy::config": cluster_settings => $cluster_settings }
 }
+
+# TODO: document parameters
 
 # Class: swift::proxy::config
 #
-# This class configures a Swift Proxy
+# This class configures a Swift Proxy.
+#
+# Only put virtual resources in this class, as it's included
+# on non-proxy swift nodes as well.
 #
 # Parameters:
-#	- $cluster_settings
-#		a hash with all necessary variables for proxy config populated
-class swift::proxy::config($cluster_settings=undef) {
+class swift::proxy::config(
+	$bind_port="8080",
+	$proxy_address,
+	$memcached_servers,
+	$num_workers,
+	$super_admin_key,
+	$rewrite_account,
+	$rewrite_url,
+	$rewrite_user,
+	$rewrite_password,
+	$rewrite_thumb_server,
+	$shard_containers,
+	$shard_container_list ) {
 
+	Class[swift::base] -> Class[swift::proxy::config]
 
-	$memcached_servers = [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3
-.wikimedia.org:11211" ]
-	file { "/etc/swift/proxy-server.conf":
+	# Virtual resource
+	@file { "/etc/swift/proxy-server.conf":
 		owner => swift,
 		group => swift,
 		mode => 0444,
@@ -134,8 +156,9 @@ class swift::proxy::config($cluster_settings=undef) {
 	}
 }
 
-class swift::storage($cluster_settings=undef) {
-	class { "swift::base": cluster_settings => $cluster_settings }
+class swift::storage {
+	Class[swift::base] -> Class[swift::storage]
+
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	package { 
@@ -149,12 +172,30 @@ class swift::storage($cluster_settings=undef) {
 
 	# set up swift specific configs
 	File { owner => swift, group => swift, mode => 0444 }
-	file { "/etc/swift/account-server.conf":
-			source => "puppet:///files/swift/etc.swift.account-server.conf";
+	file {
+		"/etc/swift/account-server.conf":
+			content => template("swift/etc.swift.account-server.conf.erb");
 		"/etc/swift/container-server.conf":
-			source => "puppet:///files/swift/etc.swift.container-server.conf";
+			content => template("swift/etc.swift.container-server.conf.erb");
 		"/etc/swift/object-server.conf":
-			source => "puppet:///files/swift/etc.swift.object-server.conf";
+			content => template("swift/etc.swift.object-server.conf.erb");
+	}
+
+	file { "/srv/swift-storage":
+		require => Package[swift],
+		owner => swift,
+		group => swift,
+		mode => 0750,
+		ensure => directory;
+	}
+
+	service {
+		[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
+			subscribe => File["/etc/swift/account-server.conf"];
+		[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
+			subscribe => File["/etc/swift/container-server.conf"];
+		[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
+			subscribe => File["/etc/swift/object-server.conf"];
 	}
 
 }
@@ -194,8 +235,6 @@ define swift::create_filesystem($partition_nr="1") {
 #	- $title:
 #		The device to mount (e.g. /dev/sdc1)
 define swift::mount_filesystem() {
-	require swift::base
-
 	$dev = $title
 	$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 	$mountpath = "/srv/swift-storage/${dev_suffix}"
@@ -203,6 +242,7 @@ define swift::mount_filesystem() {
 	# Make sure the mountpoint exists...
 	# This can't be a file resource, as it would become a duplicate.
 	exec { "mkdir $mountpath":
+		require => File["/srv/swift-storage"],
 		path => "/usr/bin:/bin",
 		creates => $mountpath
 	}
@@ -220,6 +260,7 @@ define swift::mount_filesystem() {
 
 	# ...and fix the directory attributes.
 	file { "fix attr $mountpath":
+		require => Class[swift::base],
 		path => $mountpath,
 		owner => swift,
 		group => swift,

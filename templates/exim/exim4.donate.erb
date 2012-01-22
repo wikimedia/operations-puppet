@@ -15,6 +15,9 @@ hostlist wikimedia_nets = <; 208.80.152.0/22 ; 91.198.174.0/24 ; 203.212.189.192
 domainlist system_domains = @
 domainlist donation_domains = donate.wikimedia.org
 
+# List of domains to run through the aggressive_remote_smtp transport (optional)
+domainlist deadbeat_domains = ${if exists{/etc/exim4/deadbeats} { lsearch;/etc/exim4/deadbeats } {} }
+
 domainlist local_domains = +system_domains : +donation_domains
 hostlist relay_from_hosts = <; @[]
 
@@ -33,16 +36,18 @@ acl_smtp_rcpt = acl_check_rcpt
 helo_try_verify_hosts = *
 
 # Resource control
-check_spool_space = 50M
-deliver_queue_load_max = 75.0
-queue_only_load = 50.0
-smtp_accept_max = 100
-smtp_accept_max_per_host = 10
+check_spool_space = 500M
 smtp_reserve_hosts = <; 127.0.0.1 ; ::1 ; +wikimedia_nets
-smtp_accept_reserve = 20
 smtp_accept_queue_per_connection = 500
-remote_max_parallel = 25
-smtp_connect_backlog = 32
+deliver_queue_load_max = 800.0
+queue_only_load = 100.0
+remote_max_parallel = 100
+queue_run_max = 0
+smtp_connect_backlog = 128
+smtp_receive_timeout = 1m
+smtp_accept_max = 4000
+smtp_accept_max_per_host = ${if match_ip{$sender_host_address}{+wikimedia_nets}{50}{5}}
+smtp_accept_reserve = 100
 
 # Lookups
 host_lookup = *
@@ -61,40 +66,40 @@ begin acl
 
 acl_check_rcpt:
 
-        # Accept if the source is local SMTP (a pipe)
+	# Accept if the source is local SMTP (a pipe)
 
-        accept hosts = :
+	accept hosts = :
 
-        # Deny if the local part contains @, %, /, | or !, or starts with a dot
+	# Deny if the local part contains @, %, /, | or !, or starts with a dot
 
-        deny local_parts = ^.*[@%!/|] : ^\\.
+	deny local_parts = ^.*[@%!/|] : ^\\.
 
-        # Accept relaying from networks we control. Note: no address verification
-        # is done at this point, which is good for mail submission, but may render
-        # recipient callout verification by affected hosts useless.
+	# Accept relaying from networks we control. Note: no address verification
+	# is done at this point, which is good for mail submission, but may render
+	# recipient callout verification by affected hosts useless.
 
-        accept hosts = +relay_from_hosts
+	accept hosts = +relay_from_hosts
 
-        # Require recipient domain to be local, or a domain we relay for
+	# Require recipient domain to be local, or a domain we relay for
 
-        require message = Relay not permitted
-                domains = +local_domains
+	require message = Relay not permitted
+	        domains = +local_domains
 
-        # { recipient domain is under our administrative control }
+	# { recipient domain is under our administrative control }
 
-        # Verify the recipient address for local domains, or require the
-        # recipient domain to exist for remote domains
+	# Verify the recipient address for local domains, or require the
+	# recipient domain to exist for remote domains
 
-        require verify = recipient
+	require verify = recipient
 
-        # Mail can be safely accepted here, but we may want to do more
-        # rfc compliance checking and spam filtering.
-        
-        # Check whether the sender address domain exists
-        
-        require verify = sender
+	# Mail can be safely accepted here, but we may want to do more
+	# rfc compliance checking and spam filtering.
+	
+	# Check whether the sender address domain exists
+	
+	require verify = sender
 
-        accept
+	accept
 
 ###########
 # Routers #
@@ -105,12 +110,13 @@ begin routers
 # Route non-local domains via DNS MX and A records
 
 dnslookup:
-        driver = dnslookup
-        domains = ! +local_domains
-        transport = remote_smtp
-        ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
-        cannot_route_message = Cannot route to remote domain $domain
-        no_more
+	driver = dnslookup
+	domains = ! +local_domains
+	#transport = remote_smtp
+	transport = ${if match_domain{$domain}{+deadbeat_domains}{aggressive_remote_smtp}{remote_smtp}}
+	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
+	cannot_route_message = Cannot route to remote domain $domain
+	no_more
 
 # Use the system aliasfile /etc/aliases for system domains
 
@@ -151,6 +157,7 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	connection_max_messages = 300
 <% if exim_signs_dkim == "true" then -%>
 	dkim_domain = wikimedia.org
 	dkim_selector = fundraising
@@ -158,6 +165,22 @@ remote_smtp:
 	dkim_canon = relaxed
 <% end -%>
 
+# Impatient remote transport for ISPs that tarpit/throttle - use carefully
+
+aggressive_remote_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	connection_max_messages = 300
+	connect_timeout = 30s
+	command_timeout = 30s
+	data_timeout = 30s
+	final_timeout = 1m
+<% if exim_signs_dkim == "true" then -%>
+	dkim_domain = wikimedia.org
+	dkim_selector = fundraising
+	dkim_private_key = /etc/exim4/wikimedia.org-fundraising-private.key
+	dkim_canon = relaxed
+<% end -%>	
 
 # Generic pipe local delivery transport (for use by alias/forward files)
 

@@ -112,6 +112,9 @@ tls_on_connect_ports = 465
 never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
+# Hold mail for these domains (e.g. for testing/debugging)
+hold_domains = <%= scope.lookupvar('exim::roled::hold_domains').join(" : ") %>
+
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
@@ -686,5 +689,7 @@ begin rewrite
 # Rewrite the envelope From for mails from internal servers in *.pmtpa.wmnet,
 # as they are usually rejected by sender domain address verification.
 *@*.pmtpa.wmnet		root@wikimedia.org	F
+*@*.eqiad.wmnet		root@wikimedia.org	F
+*@*.esams.wmnet		root@wikimedia.org	F
 #*@*.wikimedia.org	root@wikimedia.org	F
 <% end -%>

@@ -2,4 +2,8 @@
 host=gerrit.wikimedia.org
 port=29418
 project=operations/puppet.git
+<<<<<<< HEAD
 defaultbranch=test
+=======
+defaultbranch=production
+>>>>>>> production

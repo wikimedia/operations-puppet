@@ -1,6 +1,15 @@
 # vim:ft=apache:
 <VirtualHost *:80>
 	ServerName graphite.wikimedia.org
+	Redirect / "https://graphite.wikimedia.org/"
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName graphite.wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	<Location />
 		Order allow,deny
@@ -14,7 +23,7 @@
 		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?uid"
 		Require valid-user
 
-		RedirectMatch ^/$ "http://graphite.wikimedia.org/dashboard/"
+		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
 
 		ProxyPass http://graphite.pmtpa.wmnet/
 		ProxyPassReverse http://graphite.pmtpa.wmnet/

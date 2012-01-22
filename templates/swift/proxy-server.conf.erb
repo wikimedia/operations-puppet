@@ -3,8 +3,8 @@
 [DEFAULT]
 #cert_file = /etc/ssl/certs/swift.pem
 #key_file = /etc/ssl/private/swift.key
-bind_port = <%= scope.lookupvar("swift::proxy::config::cluster_settings['bind_port']") %>
-workers = <%= scope.lookupvar("swift::proxy::config::cluster_settings['num_workers']") %>
+bind_port = <%= scope.lookupvar("swift::proxy::config::bind_port") %>
+workers = <%= scope.lookupvar("swift::proxy::config::num_workers") %>
 user = swift
 
 [pipeline:main]
@@ -20,31 +20,36 @@ allow_account_management = true
 
 [filter:swauth]
 use = egg:swauth#swauth
-default_swift_cluster = local#<%= scope.lookupvar("swift::proxy::config::cluster_settings['proxy_address']") %>/v1
+default_swift_cluster = local#<%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1
 set log_name = swauth
-super_admin_key = <%= scope.lookupvar("swift::proxy::config::cluster_settings['super_admin_key']") %>
+super_admin_key = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %>
 
 [filter:healthcheck]
 use = egg:swift#healthcheck
 
 [filter:cache]
 use = egg:swift#memcache
-memcache_servers = <%= scope.lookupvar('swift::proxy::config::memcached_servers').join(",") %>
+memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
 
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
-account = <%= scope.lookupvar("swift::proxy::config::cluster_settings['rewrite_account']") %>
-url = <%= scope.lookupvar("swift::proxy::config::cluster_settings['rewrite_url']") %>
-login = <%= scope.lookupvar("swift::proxy::config::cluster_settings['rewrite_user']") %>
+account = <%= scope.lookupvar("swift::proxy::config::rewrite_account") %>
+url = <%= scope.lookupvar("swift::proxy::config::rewrite_url") %>
+login = <%= scope.lookupvar("swift::proxy::config::rewrite_user") %>
 #FIXME: pull into passwords file and use a real password
-key = <%= scope.lookupvar("swift::proxy::config::cluster_settings['rewrite_password']") %>
+key = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %>
 # the name of the scaler cluster.
-thumbhost = <%= scope.lookupvar("swift::proxy::config::cluster_settings['rewrite_thumb_server']") %>
+thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
 # upload doesn"t like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
 # uncomment this if we want to write the 404 handler"s output into Swift.
 writethumb=yes
+# should we shard containers, and if so how many?  all, none, some
+shard_containers = <%= scope.lookupvar("swift::proxy::config::shard_containers") %>
+# if we shard some containers, which ones?  ignored for all and none.
+shard_container_list = <%= scope.lookupvar("swift::proxy::config::shard_container_list") %>
+
 
 paste.filter_factory = wmf.rewrite:filter_factory
 

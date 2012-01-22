@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# ########################################################################
+# This program is part of percona-nagios-checks (http://code.google.com/p/percona-nagios-checks/)
+# License: BSD License (see COPYING)
+# Authors:
+#  Baron Schwartz
+# ########################################################################
+
+# Set up constants, etc.
+PROGPATH="$(dirname "$0")"
+. $PROGPATH/utils.sh
+
+# Generate a list of file handles that MySQL has open, but which are deleted, and
+# are neither /tmp/ib* files (InnoDB) or /tmp/ML* files (binary logging).
+EXITSTATUS=$STATE_OK
+NOTE="OK no deleted files"
+FILES="$(ls -l /proc/$(pidof mysqld)/fd/ | awk '/\(deleted\)/{if($0 !~ /\/tmp\/(ib|ML)/){lf=NF-1;print $lf;}}')"
+if [ "${FILES}" ]; then
+   NOTE="WARN deleted files: ${FILES}"
+   EXITSTATUS=$STATE_WARNING
+fi
+echo $NOTE
+exit $EXITSTATUS

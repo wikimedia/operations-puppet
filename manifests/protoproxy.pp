@@ -1,4 +1,4 @@
-define proxy_configuration( $proxy_addresses, $proxy_server_name, $proxy_server_cert_name, $proxy_backend, $enabled="false", $proxy_listen_flags='', $proxy_port='80' ) {
+define proxy_configuration( $proxy_addresses, $proxy_server_name, $proxy_server_cert_name, $proxy_backend, $enabled="false", $proxy_listen_flags='', $proxy_port='80', $ipv6_enabled='false' ) {
 
 	nginx_site {
 		"${name}":
@@ -105,6 +105,7 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.24" },
 			"esams" => { "primary" => "10.2.3.24", "secondary" => "208.80.152.211" }
 			},
+		ipv6_enabled => 'true',
 		enabled => 'true'
 	}
 	proxy_configuration{ wikipedia:
