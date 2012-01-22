@@ -3,7 +3,7 @@ class nrpe::packages {
 		ensure => latest;
 	}
 
-	include nagios::packages::plugins
+	require nagios::packages::plugins
 
 	$nrpe_allowed_hosts = $realm ? {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
