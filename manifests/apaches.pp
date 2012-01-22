@@ -21,6 +21,9 @@ class apaches::packages {
 			ensure => latest;
 		}
 	}
+	
+	# Explicitly require the Wikimedia version of some packages
+	generic::apt::pin-package{ [ "php-wikidiff2" ]: pin => "release o=Wikimedia" }
 }
 
 class apaches::cron {
