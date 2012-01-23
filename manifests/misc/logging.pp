@@ -123,6 +123,34 @@ class misc::udp2log::emeryconfig {
 	}
 }
 
+class misc::udp2log::monitoring {
+
+	
+
+	file {
+		"/etc/nagios/nrpe.d/nrpe_udp2log.cfg":
+			require => Package[nagios-nrpe-server],
+			mode => 0440,
+			owner => root,
+			group => nagios,
+			source => "puppet:///files/nagios/nrpe_udp2log.cfg";
+		"/usr/lib/nagios/plugins/check_udp2log_log_age":
+			mode => 0555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/nagios/check_udp2log_log_age";
+		"/usr/lib/nagios/plugins/check_udp2log_procs":
+			mode => 0555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/nagios/check_udp2log_procs";
+	}
+
+	monitor_service { "udp2log log age": description => "udp2log log age", check_command => "nrpe_check_udp2log_log_age" }
+	monitor_service { "udp2log procs": description => "udp2log processes", check_command => "nrpe_check_udp2log_procs" }
+
+}
+
 class misc::udp2log::packetloss {
 	include misc::udp2log::iptables
 	package { "ganglia-logtailer":

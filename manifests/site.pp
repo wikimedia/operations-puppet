@@ -687,6 +687,7 @@ node "emery.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		nrpe,
+		misc::udp2log::monitoring,
 		misc::udp2log::emeryconfig
 }
 
@@ -1205,6 +1206,7 @@ node "locke.wikimedia.org" {
 		misc::udp2log::packetloss,
 		misc::udp2log::locke,
 		misc::udp2log::lockeconfig,
+		misc::udp2log::monitoring,
 		nrpe
 }
 

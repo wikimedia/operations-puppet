@@ -1,0 +1,31 @@
+#!/bin/bash
+
+conf_file=`grep "^CONFFILE" /etc/init.d/udp2log | grep -o "/.*$"`
+
+if [ ! -f $conf_file ]; then
+	echo "UNKNOWN: $conf_file cannot be found"
+	exit 3
+fi
+
+missing_list=""
+missing_count=0
+ps_list="/tmp/ps_list"
+
+ps ax > $ps_list
+
+for filter in `egrep -o "^pipe [0-9]*[^/]* /[^ ]*" $conf_file | egrep -o "/.*"`; do
+	if ! grep -q $filter $ps_list; then
+		((missing_count++))
+		missing_list=`echo "$filter, $missing_list"`
+	fi
+done
+
+rm $ps_list
+
+if [ $missing_count -eq 0 ];then
+	echo "OK: all filters present"
+	exit 0
+else 
+	echo "CRITICAL: filters absent: $missing_list"
+	exit 2
+fi

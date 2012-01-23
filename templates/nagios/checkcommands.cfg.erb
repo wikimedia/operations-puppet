@@ -345,6 +345,14 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
 }
 define command{
+	command_name	nrpe_check_udp2log_log_age
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
+}
+define command{
+	command_name	nrpe_check_udp2log_procs
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
+}
+define command{
 	command_name	nrpe_check_varnishncsa
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
