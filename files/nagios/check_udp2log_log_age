@@ -18,7 +18,6 @@ warn_list=""
 crit_list=""
 
 for log_file in `egrep "^(pipe|file)" $conf_file | egrep -o "/[^ \.]*\.log"`; do
-	echo $log_file
 	if [ $log_file -ot $minus_six_hours ]; then
 		((crit_count++))
 		crit_list=`echo "$log_file, $crit_list"`

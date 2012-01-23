@@ -146,8 +146,8 @@ class misc::udp2log::monitoring {
 			source => "puppet:///files/nagios/check_udp2log_procs";
 	}
 
-	monitor_service { "udp2log log age": description => "udp2log log age", check_command => "nrpe_check_udp2log_log_age" }
-	monitor_service { "udp2log procs": description => "udp2log processes", check_command => "nrpe_check_udp2log_procs" }
+	monitor_service { "udp2log log age": description => "udp2log log age", check_command => "nrpe_check_udp2log_log_age", contact_groups => "analytics" }
+	monitor_service { "udp2log procs": description => "udp2log processes", check_command => "nrpe_check_udp2log_procs", contact_groups => "analytics" }
 
 }
 
