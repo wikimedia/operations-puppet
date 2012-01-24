@@ -777,7 +777,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	}
 }
 
-node /^db4[023]\.pmtpa\.wmnet$/ {
+node /^db4[02]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
 }
@@ -822,7 +822,7 @@ node "db22.pmtpa.wmnet" {
 		mysql::packages
 }
 
-node /db4[4-9]\.pmtpa\.wmnet/ { 
+node /db4[3-9]\.pmtpa\.wmnet/ { 
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
