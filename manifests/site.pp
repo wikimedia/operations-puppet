@@ -760,6 +760,13 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 	}
 
 	include db::core
+
+	if $hostname =~ /^db2(6)$/ {
+		include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+	}
 }
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
