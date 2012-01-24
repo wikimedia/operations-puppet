@@ -4,6 +4,7 @@ ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 thin_storeconfigs = true
 templatedir = /var/lib/puppet/templates
+modulepath = /var/lib/git/operations
 
 # puppetmaster($config) settings
 <% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>

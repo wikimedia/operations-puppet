@@ -150,9 +150,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 		
 		git::clone { "operations/puppet":
-			require => File["$gitdir/operations"],
-			directory => "$gitdir/operations",
-			origin => "https://gerrit.wikimedia.org/r/p/operations/puppet"
+				require => File["$gitdir/operations"],
+				directory => "$gitdir/operations",
+				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+			"operations/software":
+				require => File["$gitdir/operations"],
+				directory => "$gitdir/operations",
+				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 		}
 
 		file {
@@ -166,6 +170,10 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				mode => 0550;
 			"$gitdir/operations/private/.git/hooks/post-merge":
 				source => "puppet:///files/puppet/git/private/post-merge",
+				mode => 0550;
+			"$gitdir/operations/software/.git/hooks/pre-commit":
+				require => Git::Clone["operations/software"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
 		}
 		
