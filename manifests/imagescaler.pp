@@ -7,7 +7,7 @@ class imagescaler::cron {
 	cron { removetmpfiles:
 		command => "for dir in /tmp /a/magick-tmp; do find \$dir -type f \\( -name 'gs_*' -o -name 'magick-*' \\) -cmin +15 -exec rm -f {} \\;; done",
 		user => root,
-		minute => '4,34',
+		minute => '*/5',
 		ensure => present
 	}
 }
