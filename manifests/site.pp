@@ -499,7 +499,7 @@ class swift-cluster {
 	}
 	class eqiad-test inherits swift-cluster::base {
 		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
-		
+		include passwords::swift::eqiad-test
 		# The eqiad test cluster runs proxy and storage on the same hosts
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class { "swift::proxy::config":
@@ -507,11 +507,11 @@ class swift-cluster {
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => $::processorcount * 2,
-			super_admin_key => "thisshouldbesecret",
+			super_admin_key => $passwords::swift::eqiad-test::super_admin_key,
 			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
-			rewrite_password => "testing",
+			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
 			shard_containers => "some",
 			shard_container_list => "wikipedia-commons-thumb,wikipedia-en-thumb"
@@ -521,6 +521,7 @@ class swift-cluster {
 	}
 	class pmtpa-test inherits swift-cluster::base {
 		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
+		include passwords::swift::pmtpa-test
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class proxy inherits swift-cluster::pmtpa-test {
 			class { "swift::proxy::config":
@@ -528,11 +529,11 @@ class swift-cluster {
 				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-				super_admin_key => "thisshouldbesecret",
+				super_admin_key => $passwords::swift::pmtpa-test::super_admin_key,
 				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
 				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 				rewrite_user => "mw:thumb",
-				rewrite_password => "testing",
+				rewrite_password => $passwords::swift::pmtpa-test::rewrite_password,
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => ""
