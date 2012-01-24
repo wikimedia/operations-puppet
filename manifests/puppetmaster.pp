@@ -211,6 +211,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				environment => "GIT_SSH=/root/testrepo/ssh",
 				require => Package["git-core"],
 				user    => root;
+			"update_software_puppet_repos":
+				command => "(cd /root/testrepo/software && /usr/bin/git pull) > /dev/null 2>&1",
+				environment => "GIT_SSH=/root/testrepo/ssh",
+				require => Package["git-core"],
+				user => root;
 		}
 	}
 	
