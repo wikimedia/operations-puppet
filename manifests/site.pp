@@ -544,6 +544,31 @@ class swift-cluster {
 			include swift::storage
 		}
 	}
+	class pmtpa-prod inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster" }
+		include passwords::swift::pmtpa-prod
+		class { "swift::base": hash_path_suffix => "bd51d755d4c53773" }
+		class proxy inherits swift-cluster::pmtpa-prod {
+			class { "swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://ms-fe.pmtpa.wmnet",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
+				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
+				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+				rewrite_thumb_server => "ms5.pmtpa.wmnet",
+				shard_containers => "some",
+				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+			}
+			include swift::proxy
+		}
+		class storage inherits swift-cluster::pmtpa-prod {
+			include swift::storage
+		}
+	}
 }
 
 
@@ -1512,6 +1537,14 @@ node /ms100[4]\.eqiad\.wmnet/ {
 	include standard,
 		media-storage::thumbs-server,
 		media-storage::htcp-purger
+}
+
+node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^ms-fe[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include swift-cluster::pmtpa-prod::proxy
 }
 
 node "nickel.wikimedia.org" {
