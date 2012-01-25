@@ -2040,7 +2040,7 @@ node "stafford.pmtpa.wmnet" {
 	include passwords::puppet::database
 
 	include standard,
-		puppetmaster
+		puppetmaster::production
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
@@ -2179,10 +2179,7 @@ node "virt0.wikimedia.org" {
 
 	include standard,
 		dns::auth-server-ldap,
-		openstack::controller,
-		puppetmaster
-
-	#puppetmaster configuration is defined in openstack::puppet-server class
+		openstack::controller
 }
 
 node /virt[1-4].pmtpa.wmnet/ {
