@@ -70,7 +70,7 @@ VARNISH_ADMIN_LISTEN_PORT=<%= varnish_admin_port %>
 	
 #
 # # The minimum number of worker threads to start
-VARNISH_MIN_THREADS=<= (15000 / processorcount.to_i) / 4 %>
+VARNISH_MIN_THREADS=<%= (15000 / processorcount.to_i) / 4 %>
 #
 # # The Maximum number of worker threads to start
 VARNISH_MAX_THREADS=<%= 15000 / processorcount.to_i %>
