@@ -730,10 +730,17 @@ class generic::packages::git-core {
 # Parameters:
 # - $title
 #		Should be the repository name
-define git::clone($directory, $origin) {
+# $branch
+# 	If branch is defined, it must start with -b, i.e. "-b test"
+#
+define git::clone($directory, $isbranch, $branch, $origin) {
 	require generic::packages::git-core
 
 	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	if $branch {
+		$isbranch = "-b"
+	}
 
 	Exec {
 		path => "/usr/bin:/bin",
@@ -741,7 +748,7 @@ define git::clone($directory, $origin) {
 	}
 	exec {
 		"git clone ${title}":
-			command => "git clone ${origin}",
+			command => "git clone ${branch} ${origin}",
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
