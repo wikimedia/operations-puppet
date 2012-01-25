@@ -113,6 +113,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 
 		
+		apache_site { "000-default": name => "000-default", ensure => absent }
 	}
 
 	# Class: puppetmaster::passenger
