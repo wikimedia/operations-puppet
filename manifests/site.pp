@@ -293,6 +293,7 @@ class text-squid {
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_text',
 		'esams' => 'squids_esams_text'
+		'eqiad' => 'squids_eqiad_text'
 	}
 
 	include	standard,
