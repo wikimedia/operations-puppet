@@ -103,7 +103,7 @@ define lighttpd_config($install="false") {
 			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
 		}
 	}
-	
+
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
 		ensure => "/etc/lighttpd/conf-available/${title}.conf";
 	}
@@ -375,7 +375,7 @@ define interface_up_command($interface, $command) {
 			changes => "set up[last()+1] '${command}'",
 			onlyif => "match up[. = '${command}'] size == 0";
 		}
-	}	
+	}
 }
 
 define interface_setting($interface, $setting, $value) {
@@ -418,7 +418,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 	} else {
 		$up_cmd = ""
 	}
-	
+
 	if $remove == 'true' {
 		$augeas_cmd = [	"rm auto[./1 = '$intf']",
 				"rm iface[. = '$intf']"
@@ -489,7 +489,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
 				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
 			]
-			
+
 			# Bring down the old interface after conversion
 			exec { "ip addr flush dev ${orig_interface}":
 				command => "/sbin/ip addr flush dev ${orig_interface}",
@@ -569,7 +569,7 @@ define interface_offload($interface="eth0", $setting, $value) {
 		'gro' => "generic-receive-offload",
 		'lro' => "large-receive-offload"
 	}
-	
+
 	exec { "ethtool ${interface} -K ${setting} ${value}":
 		path => "/usr/bin:/usr/sbin:/bin:/sbin",
 		command => "ethtool -K ${interface} ${setting} ${value}",
@@ -716,7 +716,7 @@ hostname1=${tag}
 			notify => Service["glusterd"],
 			require => Package["glusterfs"];
 
-	} 
+	}
 
 }
 
@@ -730,10 +730,17 @@ class generic::packages::git-core {
 # Parameters:
 # - $title
 #		Should be the repository name
-define git::clone($directory, $origin) {
+# $branch
+# 	Branch you would like to check out
+#
+define git::clone($directory, $branch, $brancharg="", $origin) {
 	require generic::packages::git-core
 
 	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	if $branch {
+		$brancharg = "-b $branch "
+	}
 
 	Exec {
 		path => "/usr/bin:/bin",
@@ -741,7 +748,7 @@ define git::clone($directory, $origin) {
 	}
 	exec {
 		"git clone ${title}":
-			command => "git clone ${origin}",
+			command => "git clone ${brancharg}${origin}",
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
