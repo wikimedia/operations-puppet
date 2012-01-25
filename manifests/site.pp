@@ -469,7 +469,7 @@ class cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
-				'probe' => "bits",
+				'probe' => "varnish",
 				'retry5x' => 0
 				},
 		}
