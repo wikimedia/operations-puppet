@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/ipmitool/mgmt
+#####################################################################
+
+
+
+if [ -z $1 ] # if there is no host, assume they need instructions
+then
+	echo -e "\E[31mSyntax is ./mgmt <host> <commands>"
+	echo "Commands include: power cycle, power up, power down, sol activate (serial console over lan), sel list (system event log)"
+	echo "Dell specific commands include: delloem sysinfo, delloem powermonitor"
+	echo "Listing the host and no arguements will drop you into that system's ipmi shell (useful if you do not want to run the entire script multiple times on a single host)"
+	echo "Disconnect from serial console with ~~, ~."
+else 
+	if [ -z $2 ]
+	then
+		ipmitool -I lanplus -U root -E -H $1 shell #no commands, launch an interactive shell
+	else
+		ipmitool -I lanplus -U root -E -H $1 $2 $3 $4
+	fi
+fi
+
