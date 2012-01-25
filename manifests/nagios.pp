@@ -210,7 +210,7 @@ class nagios::monitor {
 		nagios::packages::images,
 		nagios::packages::plugins
 
-	service { nagios:
+	service { nagios3:
 		require => File[$puppet_files],
 		ensure => running,
 		subscribe => [ File[$puppet_files],
@@ -381,24 +381,24 @@ class nagios::monitor {
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		#before => Service[nagios],
-		notify => Service[nagios],
+		notify => Service[nagios3],
 	}
 	Nagios_hostextinfo <<| |>> {
-		notify => Service[nagios],
+		notify => Service[nagios]3,
 	}
 	Nagios_service <<| |>> {
-		notify => Service[nagios],
+		notify => Service[nagios3],
 	}
 
         # Collect all (virtual) resources
 	Monitor_group <| |> {
-		notify => Service[nagios],
+		notify => Service[nagios3],
 	}
 	Monitor_host <| |> {
-		notify => Service[nagios],
+		notify => Service[nagios3],
 	}
 	Monitor_service <| tag != "nrpe" |> {
-		notify => Service[nagios],
+		notify => Service[nagios3],
 	}
 
 	# Decommission servers
