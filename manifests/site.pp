@@ -2037,10 +2037,8 @@ node /sq(79|8[0-6])\.wikimedia\.org/ {
 }
 
 node "stafford.pmtpa.wmnet" {
-	include passwords::puppet::database
-
 	include standard,
-		puppetmaster::production
+		passwords::puppet::database
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
