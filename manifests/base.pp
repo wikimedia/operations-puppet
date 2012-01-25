@@ -1,4 +1,4 @@
-# base.pp
+G# base.pp
 
 import "decommissioning.pp"
 import "generic-definitions.pp"
@@ -395,6 +395,12 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		}
 	}
 
+	class dell-c2100 inherits base::platformn::generic::dell {
+		$lom_serial_speed = "115200"
+		
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
 	class sun-x4500 inherits base::platform::generic::sun {
 
 		File <| tag == "thumper-udev" |>
@@ -409,6 +415,9 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	case $::productname {
+		"PowerEdge C2100": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+		}
 		"Sun Fire X4500": {
 			$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
 			include sun-x4500
