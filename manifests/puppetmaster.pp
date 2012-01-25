@@ -61,7 +61,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
 	class config {
 		include base::puppet
-		
+		$gitdir = "/var/lib/git"
+
 		file {
 			"/etc/puppet/puppet.conf.d/20-master.conf":
 				require => File["/etc/puppet/puppet.conf.d"],
@@ -74,7 +75,60 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => template("puppet/fileserver.conf.erb")
+				content => template("puppet/fileserver.conf.erb");
+			"$gitdir":
+				ensure => directory,
+				owner => root,
+				group =>root;
+			"$gitdir/operations":
+				ensure => directory,
+				owner => root,
+				group => root;
+			"$gitdir/operations/private":
+				ensure => directory,
+				owner => root,
+				group => puppet,
+				mode => 0750;
+			"$gitdir/operations/puppet/.git/hooks/post-merge":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/post-merge",
+				mode => 0550;
+			"$gitdir/operations/puppet/.git/hooks/pre-commit":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+			"$gitdir/operations/private/.git/hooks/post-merge":
+				source => "puppet:///files/puppet/git/private/post-merge",
+				mode => 0550;
+			"$gitdir/operations/software/.git/hooks/pre-commit":
+				require => Git::Clone["operations/software"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+		}
+
+		if $is_labs_puppet_master {
+			git::clone { "operations/puppet":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					branch => "-b test",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+				"operations/software":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
+			}
+		}
+
+		else {
+			git::clone { "operations/puppet":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+				"operations/software":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+			}
 		}
 	}
 
@@ -131,55 +185,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 
-	# Class: puppetmaster::production
-	#
-	# This class handles the Wikimedia Production specific bits of a Puppetmaster
-	class production {
-		$gitdir = "/var/lib/git"
-		
-		file {
-			[ $gitdir, "$gitdir/operations"]:
-				ensure => directory,
-				owner => root,
-				group => root;
-			"$gitdir/operations/private":
-				ensure => directory,
-				owner => root,
-				group => puppet,
-				mode => 0750;
-		}
-		
-		git::clone { "operations/puppet":
-				require => File["$gitdir/operations"],
-				directory => "$gitdir/operations",
-				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
-			"operations/software":
-				require => File["$gitdir/operations"],
-				directory => "$gitdir/operations",
-				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
-		}
-
-		file {
-			"$gitdir/operations/puppet/.git/hooks/post-merge":
-				require => Git::Clone["operations/puppet"],
-				source => "puppet:///files/puppet/git/puppet/post-merge",
-				mode => 0550;
-			"$gitdir/operations/puppet/.git/hooks/pre-commit":
-				require => Git::Clone["operations/puppet"],
-				source => "puppet:///files/puppet/git/puppet/pre-commit",
-				mode => 0550;
-			"$gitdir/operations/private/.git/hooks/post-merge":
-				source => "puppet:///files/puppet/git/private/post-merge",
-				mode => 0550;
-			"$gitdir/operations/software/.git/hooks/pre-commit":
-				require => Git::Clone["operations/software"],
-				source => "puppet:///files/puppet/git/puppet/pre-commit",
-				mode => 0550;
-		}
-		
-		apache_site { "000-default": name => "000-default", ensure => absent }
-	}
-
 	# Class: puppetmaster::labs
 	#
 	# This class handles the Wikimedia Labs specific bits of a Puppetmaster
@@ -187,7 +192,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		include generic::packages::git-core
 		
 		package { "libldap-ruby1.8": ensure => latest; }
-
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
 		file {
@@ -200,16 +204,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"puppet_certificate_signer":
 				command => "/usr/local/sbin/puppetsigner.py --scriptuser > /dev/null 2>&1",
 				require => File["/usr/local/sbin/puppetsigner.py"],
-				user    => root;
-			"update_private_puppet_repos":
-				command => "(cd /root/testrepo/private && /usr/bin/git pull) > /dev/null 2>&1",
-				environment => "GIT_SSH=/root/testrepo/ssh",
-				require => Package["git-core"],
-				user    => root;
-			"update_public_puppet_repos":
-				command => "(cd /root/testrepo/puppet && /usr/bin/git pull) > /dev/null 2>&1",
-				environment => "GIT_SSH=/root/testrepo/ssh",
-				require => Package["git-core"],
 				user    => root;
 		}
 	}
