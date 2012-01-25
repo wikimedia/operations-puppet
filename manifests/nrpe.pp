@@ -1,9 +1,12 @@
 class nrpe::packages {
-	package { "nagios-nrpe-server":
-		ensure => latest;
+	package { [ "opsview-agent" ]:
+		ensure => absent;
 	}
+        package { "nagios-nrpe-server":
+                ensure => latest;
+        }
 
-	require nagios::packages::plugins
+	include nagios::packages::plugins
 
 	$nrpe_allowed_hosts = $realm ? {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
@@ -11,28 +14,22 @@ class nrpe::packages {
 	}
 
         file {
+                "/etc/nagios/nrpe_local.cfg":
+                        owner => root,
+                        group => root,
+                        mode => 0644,
+                        content => template("nagios/nrpe_local.cfg.erb");
 		"/usr/lib/nagios/plugins/check_ram.sh":
 			owner => root,
 			group => root,
 			mode => 0755,
 			source => "puppet:///files/nagios/check_ram.sh";
-		"/etc/nagios/nrpe.d":
-			owner => root,
-			group => root,
-			mode => 0755,
-			ensure => directory;
-		"/etc/nagios/nrpe_local.cfg":
-			require => Package[nagios-nrpe-server],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/nagios/nrpe_local.cfg";
 		"/usr/lib/nagios/plugins/check_dpkg":
 			owner => root,
 			group => root,
-			mode => 0555,
+			mode => 0755,
 			source => "puppet:///files/nagios/check_dpkg";
-	}
+        }
 }
 
 class nrpe::service {
