@@ -680,15 +680,14 @@ node "emery.wikimedia.org" {
 	system_role { "misc::log-collector": description => "log collector" }
 	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include standard,
-		misc::udp2log::aft,
-		misc::udp2log::packetloss,
-		misc::udp2log::emery,
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
-		nrpe,
-		misc::udp2log::monitoring,
-		misc::udp2log::emeryconfig
+		nrpe
+
+	class { udp2log::logger:
+		log_file => "/var/log/squid/packet-loss.log"
+	}
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -1203,11 +1202,11 @@ node "locke.wikimedia.org" {
 		admins::restricted,
 		accounts::awjrichards,
 		accounts::datasets,
-		misc::udp2log::packetloss,
-		misc::udp2log::locke,
-		misc::udp2log::lockeconfig,
-		misc::udp2log::monitoring,
 		nrpe
+
+	class { udp2log::logger:
+		log_file => "/a/squid/packet-loss.log"
+	}
 }
 
 node "lomaria.pmtpa.wmnet" {
