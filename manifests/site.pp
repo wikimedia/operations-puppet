@@ -1980,6 +1980,16 @@ node /cp104[1-4].wikimedia.org/ {
 	nrpe
 }
 
+node /cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet/ {
+	$squid_coss_disks = [ 'sda5', 'sdb5' ]
+	if $hostname =~ /^1002$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include text-squid,
+		lvs::realserver
+}
+
 # sq71-78 are text squids
 node /sq7[1-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
