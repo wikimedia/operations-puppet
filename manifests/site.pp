@@ -293,6 +293,7 @@ class text-squid {
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_text',
 		'esams' => 'squids_esams_text'
+		'eqiad' => 'squids_eqiad_text'
 	}
 
 	include	standard,
@@ -682,6 +683,27 @@ node /^(copper|zinc)\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 
 	include swift-cluster::eqiad-test
+}
+
+node /cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet/ {
+	$squid_coss_disks = [ 'sda5', 'sdb5' ]
+	if $hostname =~ /^1002$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include text-squid,
+		lvs::realserver
+}
+
+# eqiad varnish for m.wikipedia.org
+node /cp104[1-4].wikimedia.org/ {
+
+	if $hostname =~ /^cp104(3|4)$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include cache::mobile,
+	nrpe
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -2021,27 +2043,6 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	include cache::bits
-}
-
-# eqiad varnish for m.wikipedia.org
-node /cp104[1-4].wikimedia.org/ {
-
-	if $hostname =~ /^cp104(3|4)$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	include cache::mobile,
-	nrpe
-}
-
-node /cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet/ {
-	$squid_coss_disks = [ 'sda5', 'sdb5' ]
-	if $hostname =~ /^1002$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	include text-squid,
-		lvs::realserver
 }
 
 # sq71-78 are text squids
