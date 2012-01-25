@@ -259,7 +259,12 @@ class openstack::puppet-server {
 			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
 			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
 			'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
-			'ldaptls' => true
+			'ldaptls' => true,
+			'filesdir' => "/var/lib/git/operations/puppet/files",
+			'privatefilesdir' => "/var/lib/git/operations/private/files",
+			'manifestdir' => "/var/lib/git/operations/puppet/manifests",
+			'templatedir' => "/var/lib/git/operations/puppet/templates",
+			'softwaredir' => "/var/lib/git/operations/software"
 		};
 	}
 
