@@ -198,7 +198,7 @@ class mysql {
 				group => nagios,
 				mode => 0440,
 				content => template("nagios/nrpe_percona.cfg.erb"),
-				notife => Service[nagios-nrpe-server];
+				notify => Service[nagios-nrpe-server];
 			"/usr/lib/nagios/plugins/percona":
 				ensure => directory,
 				owner => root,
