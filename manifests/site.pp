@@ -1773,8 +1773,7 @@ node "sockpuppet.pmtpa.wmnet" {
 	include passwords::puppet::database
 
 	include standard,
-		backup::client,
-		misc::ipmimgmthost
+		backup::client
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
