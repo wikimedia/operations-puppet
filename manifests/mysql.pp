@@ -1,8 +1,9 @@
 # mysql.pp
 
 # Virtual resource for the monitoring server
-#@monitor_group { "mysql": description => "MySQL core" }
 @monitor_group { "es": description => "External Storage" }
+@monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
+@monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
 
 # TODO should really be named mysql-server, or mysql::server
 class mysql {
@@ -187,7 +188,7 @@ class mysql {
 
 	# this is for checks from the percona-nagios-checks project
 	# http://percona-nagios-checks.googlecode.com
-	class monitor::percona {
+	class monitor::percona::files {
 		include passwords::nagios::mysql
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
@@ -196,7 +197,8 @@ class mysql {
 				owner => root,
 				group => nagios,
 				mode => 0440,
-				content => template("nagios/nrpe_percona.cfg.erb");
+				content => template("nagios/nrpe_percona.cfg.erb"),
+				notife => Service[nagios-nrpe-server];
 			"/usr/lib/nagios/plugins/percona":
 				ensure => directory,
 				owner => root,
@@ -265,6 +267,18 @@ class mysql {
 		}
 	}
 
+	class monitor::percona inherits mysql {
+		$cirt = $master
+		require "mysql::monitor::percona::files"
+
+		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+		monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+		monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
+		monitor_service { "mysql idle transaction": description => "MySQL Idle Transactions", check_command => "nrpe_check_mysql_idle_transactions", critical => false }
+		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+		monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
+		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+	}
 
 	class mysqluser {
 		user { 
@@ -401,7 +415,7 @@ class mysql {
 	}
 
 	include mysql::ganglia,
-		mysql::monitor::percona
+		mysql::monitor::percona::files
 
 	# TODO do we want to have a class for PHP clients (php5-mysql) as well
 	# and rename this to mysql::client-cli?
