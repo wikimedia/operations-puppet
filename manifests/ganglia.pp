@@ -200,7 +200,7 @@ class ganglia {
 	# for the machine class which listens on multicast and
 	# collects all the ganglia information from other sources
 
-		# This overrides the default ganglia-monitor script 
+		# This overrides the default ganglia-monitor script
 		# with one that starts up multiple instances of gmond
 		file { "/etc/init.d/ganglia-monitor":
 			source => "puppet:///files/ganglia/ganglia-monitor",
@@ -214,11 +214,11 @@ class ganglia::web {
 # Class for the ganglia frontend machine
 
 	require ganglia::collector,
-		generic::php5-gd,
-		generic::webserver::php5-mysql,
+		webserver::php5-gd,
+		webserver::php5-mysql,
 		svn::client
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	file {
 		"/etc/apache2/sites-available/ganglia.wikimedia.org":

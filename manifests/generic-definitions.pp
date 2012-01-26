@@ -140,132 +140,6 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 }
 
-# Installs a generic, static web server (lighttpd) with default config, which serves /var/www
-
-class generic::webserver::static {
-	package { lighttpd:
-		ensure => latest;
-	}
-
-	service { lighttpd:
-		ensure => running,
-		hasstatus => $::lsbdistcodename ? {
-			'hardy' => false,
-			default => true
-		}
-	}
-
-	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-}
-
-class generic::webserver::php5( $ssl = 'false' ) {
-	#This will use latest package for php5-common
-
-	package { [ "apache2", "libapache2-mod-php5" ]:
-		ensure => latest;
-	}
-
-	if $ssl == 'true' {
-		apache_module { ssl: name => "ssl" }
-	}
-
-	service { apache2:
-		require => Package[apache2],
-		subscribe => Package[libapache2-mod-php5],
-		ensure => running;
-	}
-
-	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-}
-
-class generic::webserver::modproxy {
-
-	package { libapache2-mod-proxy-html:
-		ensure => latest;
-	}
-}
-
-class generic::webserver::php5-mysql {
-
-	package { php5-mysql:
-		ensure => latest;
-		}
-}
-
-# Sysctl settings
-
-define sysctl($value) {
-/*
-	$quoted_param = shellquote("${title}=${value}")
-
-	alert("current value: ${sysctl.${title}}")
-
-	if ${sysctl.${title}} != ${value} {
-		exec { "sysctl $title":
-			command => "/sbin/sysctl -w ${quoted_param}",
-			user => root;
-		}
-	}
-*/
-
-}
-
-
-class generic::sysctl::high-http-performance($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { high-http-performance-sysctl:
-			name => "/etc/sysctl.d/60-high-http-performance.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
-class generic::sysctl::advanced-routing($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { advanced-routing-sysctl:
-			name => "/etc/sysctl.d/50-advanced-routing.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
-			ensure => $ensure
-		}
-	}
-}
-
-class generic::sysctl::ipv6-disable-ra($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { ipv6-disable-ra:
-			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
-			ensure => $ensure
-		}
-	}
-}
-
-class generic::sysctl::lvs($ensure="present") {
-	file { lvs-sysctl:
-		name => "/etc/sysctl.d/50-lvs.conf",
-		mode => 444,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/50-lvs.conf.sysctl",
-		ensure => $ensure
-	}
-}
 
 class generic::geoip {
 	class packages {
@@ -777,12 +651,6 @@ class generic::mysql::client {
 	}
 }
 
-class generic::php5-gd {
-	package { "php5-gd":
-		ensure => latest;
-	}
-}
-
 # handle locales via puppet
 class generic::packages::locales {
 	package { "locales": ensure => latest; }
@@ -812,6 +680,77 @@ class generic::packages::maven {
 	package { [
 		"maven2"
 	]: ensure => latest;
+	}
+}
+
+# Sysctl settings
+
+define sysctl($value) {
+/*
+	$quoted_param = shellquote("${title}=${value}")
+
+	alert("current value: ${sysctl.${title}}")
+
+	if ${sysctl.${title}} != ${value} {
+		exec { "sysctl $title":
+			command => "/sbin/sysctl -w ${quoted_param}",
+			user => root;
+		}
+	}
+*/
+}
+
+class generic::sysctl::high-http-performance($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { high-http-performance-sysctl:
+			name => "/etc/sysctl.d/60-high-http-performance.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
+			ensure => $ensure
+		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
+	}
+}
+
+class generic::sysctl::advanced-routing($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { advanced-routing-sysctl:
+			name => "/etc/sysctl.d/50-advanced-routing.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
+class generic::sysctl::ipv6-disable-ra($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { ipv6-disable-ra:
+			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
+class generic::sysctl::lvs($ensure="present") {
+	file { lvs-sysctl:
+		name => "/etc/sysctl.d/50-lvs.conf",
+		mode => 444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/misc/50-lvs.conf.sysctl",
+		ensure => $ensure
 	}
 }
 

@@ -211,7 +211,7 @@ class dns::recursor {
 			cwd => "/var/www/pdns",
 			user => root,
 			creates => "/var/www/pdns/pdns_recursor.rrd";
-		}		
+		}
 
 		cron { pdnsstats:
 			command => "cd /var/www/pdns && /usr/local/powerdnsstats/update && /usr/local/powerdnsstats/makegraphs >/dev/null",
@@ -220,7 +220,7 @@ class dns::recursor {
 		}
 
 		# Install a static web server to serve this
-		include generic::webserver::static
+		include webserver::static
 	}
 }
 

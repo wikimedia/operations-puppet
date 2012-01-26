@@ -14,14 +14,14 @@ class exim {
 				path => "/bin:/usr/bin",
 				creates => "/var/spool/exim4/scan"
 			}
-			
+
 			mount { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
 				device => "none",
 				fstype => "tmpfs",
 				options => "defaults",
 				ensure => mounted
 			}
-			
+
 			file { [ "/var/spool/exim4/scan", "/var/spool/exim4/db" ]:
 				ensure => directory,
 				owner => Debian-exim,
@@ -139,7 +139,7 @@ class exim {
 		$enable_spamassassin="false",
 		$outbound_ips=[ $ipaddress ],
 		$hold_domains=[] ) {
-		
+
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
 		Class["exim::config"] -> Class[exim::roled]
 
@@ -179,7 +179,7 @@ class exim {
 
 		class mailman {
 			Class["exim::config"] -> Class[exim::roled::mailman]
-			
+
 			file {
 				"/etc/exim4/aliases/lists.wikimedia.org":
 					owner => root,
@@ -188,7 +188,7 @@ class exim {
 					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
 			}
 		}
-		
+
 		if ( $enable_mailman == "true" ) {
 			include mailman
 		}
@@ -245,7 +245,7 @@ class spamassassin {
 class mailman {
 	class base {
 		# lighttpd needs to be installed first, or the mailman package will pull in apache2
-		require generic::webserver::static
+		require webserver::static
 
 		package { "mailman": ensure => latest }
 	}
@@ -265,7 +265,7 @@ class mailman {
 
 		# Install as many languages as possible
 		include generic::locales::international
-		
+
 		generic::debconf::set {
 			"mailman/gate_news":
 				value => "false",
@@ -294,13 +294,13 @@ class mailman {
 	}
 
 	class web-ui {
-		include generic::webserver::static
-		
+		include webserver::static
+
 		install_certificate{ "star.wikimedia.org": }
 
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
-			require => Class["generic::webserver::static"],
+			require => Class["webserver::static"],
 			source => "puppet:///private/lighttpd/htdigest",
 			owner => root,
 			group => www-data,
@@ -308,14 +308,14 @@ class mailman {
 		}
 
 		# Enable CGI module
-		lighttpd_config { "10-cgi": require => Class["generic::webserver::static"] }
+		lighttpd_config { "10-cgi": require => Class["webserver::static"] }
 
 		# Install Mailman specific Lighttpd config file
 		lighttpd_config { "50-mailman":
-			require => [ Class["generic::webserver::static"], File["/etc/lighttpd/htdigest"] ],
+			require => [ Class["webserver::static"], File["/etc/lighttpd/htdigest"] ],
 			install => "true"
 		}
-		
+
 		# Add files in /var/www (docroot)
 		file { "/var/www":
 			source => "puppet:///files/mailman/docroot/",
@@ -324,8 +324,8 @@ class mailman {
 			mode => 0444,
 			recurse => remote;
 		}
-		
-		# monitor SSL cert expiry 
+
+		# monitor SSL cert expiry
 		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 	}
 

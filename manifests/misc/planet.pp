@@ -5,7 +5,7 @@ class misc::planet {
 
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	include generic::locales::international
 

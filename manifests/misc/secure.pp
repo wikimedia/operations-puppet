@@ -3,7 +3,7 @@
 class misc::secure {
 	system_role { "misc::secure": description => "secure.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }

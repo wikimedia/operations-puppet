@@ -149,7 +149,7 @@ class openstack::common {
 
 }
 
-class openstack::controller { 
+class openstack::controller {
 
 	include openstack::common,
 		openstack::scheduler-service,
@@ -448,7 +448,7 @@ TLS_REQCERT     never
 class openstack::openstack-manager {
 
 	include memcached,
-		misc::apache2,
+		webserver::apache2,
 		openstack::nova_config
 
 	$nova_controller_hostname = $openstack::nova_config::nova_controller_hostname

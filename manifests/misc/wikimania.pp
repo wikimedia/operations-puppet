@@ -4,7 +4,7 @@
 class misc::wikimania::ocs_2009 {
 	system_role { "misc::wikimania::ocs_2009": description => "ocs.wikimania2009.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { ocs_wikimania2009: name => "ocs.wikimania2009.wikimedia.org" }
 }
@@ -13,7 +13,7 @@ class misc::wikimania::ocs_2009 {
 class misc::wikimania::reg_2010 {
 	system_role { "misc::wikimania::reg_2010": description => "wm10reg.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { wm10reg: name => "wm10reg.wikimedia.org" }
 }
@@ -22,7 +22,7 @@ class misc::wikimania::reg_2010 {
 class misc::wikimania::schols_2009 {
 	system_role { "misc::wikimania::schols_2009": description => "wm09schols.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { wm09schols: name => "wm09schols.wikimedia.org" }
 }
@@ -31,7 +31,7 @@ class misc::wikimania::schols_2009 {
 class misc::wikimania::schols_2010 {
 	system_role { "misc::wikimania::schols_2010": description => "wm10schols.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { wm10schols: name => "wm10schols.wikimedia.org" }
 }
