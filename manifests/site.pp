@@ -1571,13 +1571,11 @@ node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^ms-fe[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-
+	$lvs_realserver_ips = [ "10.2.1.27" ]
+	include lvs::realserver
 	include swift-cluster::pmtpa-prod::proxy
 }
 node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
-	if $hostname =~ /^ms-be[12]$/ {
-		$ganglia_aggregator = "true"
-	}
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
 		'/dev/sdl' ]
