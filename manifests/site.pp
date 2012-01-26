@@ -687,14 +687,13 @@ node /^(copper|zinc)\.wikimedia\.org$/ {
 	include swift-cluster::eqiad-test
 }
 
-node /cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet/ {
+node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^1002$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::squid::text
 }
 
 # eqiad varnish for m.wikipedia.org

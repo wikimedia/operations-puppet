@@ -101,6 +101,7 @@ class lvs::configuration {
 	$lvs_service_ips = {
 		'production' => {
 			'text' => {
+				# TODO: remove old text ip addresses
 				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
 				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
 				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
