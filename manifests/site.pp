@@ -41,6 +41,7 @@ import "squid.pp"
 import "svn.pp"
 import "swift.pp"
 import "varnish.pp"
+import "webserver.pp"
 
 # Include stages last
 import "stages.pp"
@@ -160,7 +161,7 @@ class applicationserver {
 class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
-	
+
 	$lvs_realserver_ips = $realm ? {
 		'production' => [ "10.2.1.21" ],
 		'labs' => [ "10.4.0.252" ],
@@ -310,7 +311,7 @@ class upload-squid {
 	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = $site ? { 
+		$lvs_realserver_ips = $site ? {
 			'pmtpa' => [ "208.80.152.211", "10.2.1.24" ],
 			'eqiad' => [ "" ],
 			'esams' => [ "91.198.174.234", "10.2.3.24" ],
@@ -384,7 +385,7 @@ class cache {
 		include standard,
 			lvs::realserver,
 			varnish::monitoring::ganglia
-		
+
 		varnish::instance { "bits":
 			name => "",
 			vcl => "bits",
@@ -405,7 +406,7 @@ class cache {
 			enable_geoiplookup => "true"
 		}
 	}
-	class mobile { 
+	class mobile {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
@@ -418,7 +419,7 @@ class cache {
 		}
 
 		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org", 
+			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
 				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
@@ -437,7 +438,7 @@ class cache {
 			varnish::logging,
 			varnish::monitoring::ganglia,
 			lvs::realserver
-		
+
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
@@ -456,7 +457,7 @@ class cache {
 				'retry5x' => 1
 				},
 		}
-		
+
 		varnish::instance { "mobile-frontend":
 			name => "frontend",
 			vcl => "mobile-frontend",
@@ -635,9 +636,9 @@ node "argon.wikimedia.org" {
 
 node /(arsenic|niobium)\.wikimedia\.org/ {
 	$ganglia_aggregator = "true"
-	
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
-	
+
 	include cache::bits
 }
 
@@ -667,7 +668,7 @@ node "bast1001.wikimedia.org" {
 node "brewster.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
-	
+
 	include standard,
 		misc::install-server,
 		backup::client
@@ -793,7 +794,7 @@ node /^db[1-9]\.pmtpa\.wmnet$/ {
 }
 
 node "db10.pmtpa.wmnet" {
-	include db::core, 
+	include db::core,
 		backup::mysql
 }
 
@@ -854,7 +855,7 @@ node "db41.pmtpa.wmnet" {
 # new pmtpa dbs
 # New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
 # DO NOT add old prod db's to new classes unless you
-# know what you're doing! 
+# know what you're doing!
 node "db11.pmtpa.wmnet" {
 	include db::core,
 		mysql::mysqluser,
@@ -878,7 +879,7 @@ node "db22.pmtpa.wmnet" {
 		mysql::packages
 }
 
-node /db4[3-9]\.pmtpa\.wmnet/ { 
+node /db4[3-9]\.pmtpa\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -886,7 +887,7 @@ node /db4[3-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db5[0-9]\.pmtpa\.wmnet/ { 
+node /db5[0-9]\.pmtpa\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -1122,7 +1123,7 @@ node "marmontel.wikimedia.org" {
 		svn::client,
 		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org,
-		misc::apache2::rpaf
+		webserver::apache2::rpaf
 
 		class { "memcached":
 			memcached_ip => "127.0.0.1" }
@@ -1224,7 +1225,7 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-	
+
 	include text-squid
 }
 
@@ -1294,7 +1295,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	if $hostname == "lvs1" {
 		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
 		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
-	} 
+	}
 	if $hostname == "lvs2" {
 		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
 	}
@@ -1317,7 +1318,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		address => $ips["internal"][$hostname],
 		netmask => "255.255.0.0"
 	}
-	
+
 	# Make sure GRO is off
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 
@@ -1599,7 +1600,7 @@ node "nescio.esams.wikimedia.org" {
 
 	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
-	
+
 	include standard,
 		dns::recursor,
 		dns::recursor::monitoring,
@@ -1808,7 +1809,7 @@ node "sodium.wikimedia.org" {
 	class { exim::roled:
 		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
 		local_domains => [ "+system_domains", "+mailman_domains" ],
-		enable_mail_relay => "secondary", 
+		enable_mail_relay => "secondary",
 		enable_mailman => "true",
 		enable_mail_submission => "false",
 		enable_spamassassin => "true"
@@ -1966,7 +1967,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 	if $hostname =~ /^ssl[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	include protoproxy::ssl
 }
 
@@ -2040,7 +2041,7 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	if $hostname =~ /^sq6[68]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	include cache::bits
@@ -2182,7 +2183,7 @@ node "thistle.pmtpa.wmnet" {
 node "transcode1.wikimedia.org" {
 	include standard,
 		misc::dc-cam-transcoder
-}		
+}
 
 node "tridge.wikimedia.org" {
 	include base,
