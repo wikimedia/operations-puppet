@@ -515,7 +515,7 @@ class swift-cluster {
 			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
 			shard_containers => "some",
-			shard_container_list => "wikipedia-commons-thumb,wikipedia-en-thumb"
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 		}
 		include swift::storage
 		include swift::proxy
