@@ -1,9 +1,9 @@
 command[check_lvs]=/usr/lib/nagios/plugins/percona/check_lvs
-command[check_mysql_idle_transactions]=/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::mysql_check_pass') %>
-command[check_mysql_recent_restart]=/usr/lib/nagios/plugins/percona/check_mysql_recent_restart -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::mysql_check_pass') %>
-command[check_mysql_slave_running]=/usr/lib/nagios/plugins/percona/check_mysql_slave_running -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::mysql_check_pass') %> 
+command[check_mysql_idle_transactions]=/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %>
+command[check_mysql_recent_restart]=/usr/lib/nagios/plugins/percona/check_mysql_recent_restart -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %>
+command[check_mysql_slave_running]=/usr/lib/nagios/plugins/percona/check_mysql_slave_running -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> 
 
 # slave check using mysql's own replag estimate
-command[check_mysql_slave_delay]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::mysql_check_pass') %> -w 30 -c 180
+command[check_mysql_slave_delay]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> -w 30 -c 180
 # slave check using heartbeat
-command[check_mysql_slave_heartbeat]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::mysql_check_pass') %> -t heartbeat.heartbeat -s $(/usr/local/bin/master_id.py) -w 30 -c 180
+command[check_mysql_slave_heartbeat]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> -t heartbeat.heartbeat -s $(/usr/local/bin/master_id.py) -w 30 -c 180
