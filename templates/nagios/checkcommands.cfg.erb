@@ -357,6 +357,10 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
+	command_name	nrpe_check_mysqld
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
+}
+define command{
 	command_name	check_stomp
 	command_line	/usr/local/nagios/libexec/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
 }
