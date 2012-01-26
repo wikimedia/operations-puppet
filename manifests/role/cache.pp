@@ -4,7 +4,11 @@ class role::cache::squid::text {
 	$cluster = "squids_text"
 
 	if ! $lvs_realserver_ips {
-		$sip = $lvs::configuration::lvs_service_ips['production']['text'][$site]
+		include lvs::configuration
+		
+		$sip_prod = $lvs::configuration::lvs_service_ips['production']
+		$sip_prod_text = $sip_prod['text']
+		$sip = $sip_prod_text[$site]
 
 		$lvs_realserver_ips = $realm ? {
 			'production' => $site ? {
