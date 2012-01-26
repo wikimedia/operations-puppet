@@ -2,8 +2,8 @@
 
 # IPMItool mgmt hosts
 
-class misc::mgmthost {
-	system_role { "misc::ipmimgmthost": description => "IPMI Management Host" }
+class misc::management::ipmi {
+	system_role { "misc::management::ipmi": description => "IPMI Management Host" }
 	
 	package { "ipmitool":
 		ensure =>latest;
