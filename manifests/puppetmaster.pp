@@ -22,7 +22,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
-	require config, gitclone
+	require config
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
 		ensure => latest;
@@ -55,6 +55,10 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
 		onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
+
+	#cloning the directories last
+
+	include gitclone
 
 	# Class: puppetmaster::config
 	#
