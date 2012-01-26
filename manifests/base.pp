@@ -427,7 +427,8 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			include sun-x4540
 		}
 		default: {
-			# Do nothing
+			# set something so the logic doesn't puke
+			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
 		}
 	}
 }
