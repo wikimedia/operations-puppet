@@ -2107,6 +2107,7 @@ node "storage3.pmtpa.wmnet" {
 	include db::core,
 		role::db::fundraising::slave,
 		role::db::fundraising::dump,
+		mysql::packages
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
