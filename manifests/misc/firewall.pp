@@ -45,8 +45,12 @@ class firewall {
 class testcase1 {
 	include firewall
 	firewall::open_port {
-	   "testbox":
+		"testbox":
 			port => 80;
+	}
+	firewall::open_port {
+		"test2":
+			port => 443;
 	}
 }
 
