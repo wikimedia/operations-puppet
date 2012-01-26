@@ -1477,7 +1477,7 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
 
-	include swift-cluster::pmtpa-test::storage
+	include swift-cluster::pmtpa-prod::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1615,8 +1615,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include swift-cluster::pmtpa-test::proxy
-	include swift-cluster::pmtpa-test::storage
+	include swift-cluster::pmtpa-prod::proxy
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
