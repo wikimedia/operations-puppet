@@ -141,7 +141,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				"operations/software":
 					require => File["$gitdir/operations"],
 					directory => "$gitdir/operations",
-					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 			}
 		}
 	}
