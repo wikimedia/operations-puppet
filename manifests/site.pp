@@ -832,6 +832,10 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 		mysql::conf,
 		mysql::packages
 	}
+
+	if $hostname =~ /^db3(2|6)$/ {
+		include mysqll::monitor::percona
+	}
 }
 
 node /^db4[02]\.pmtpa\.wmnet$/ {
