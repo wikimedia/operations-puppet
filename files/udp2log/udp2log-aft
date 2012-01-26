@@ -16,7 +16,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="UDP log receiver (udp2log)"
 NAME=udp2log-aft
-DAEMON=/usr/bin/udp2log
+DAEMON=/usr/bin/udp2log-aft
 DAEMON_ARGS="-p 8421"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

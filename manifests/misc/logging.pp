@@ -89,6 +89,9 @@ class misc::udp2log::aft {
 		"/etc/logrotate.d/aft-udp2log":
 			mode => 0444,
 			source => "puppet:///files/logrotate/aft-udp2log";
+		"/usr/bin/udp2log-aft":
+			ensure => link,
+			target => "udp2log";
 	}
 
 	service {
