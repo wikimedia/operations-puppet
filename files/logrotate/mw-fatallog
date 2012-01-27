@@ -1,0 +1,17 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/mw-fatallog
+#####################################################################
+
+/var/log/mw/fatal.log {
+	daily
+	notifempty
+	maxage 180
+	rotate 1000
+	dateext
+	compress
+	postrotate
+		/usr/bin/killall -HUP udp2log
+	endscript
+}
+

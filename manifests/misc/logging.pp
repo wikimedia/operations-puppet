@@ -16,6 +16,11 @@ class misc::mediawiki-logger {
 			owner => root,
 			group => root,
 			content => "flush pipe 1 python /usr/local/bin/demux.py\n";
+		"/etc/udp2log-fatal":
+			mode => 0444,
+			owner => root,
+			group => root,
+			content => "flush file 1 /var/log/mw/fatal.log\n";
 		"/usr/local/bin/demux.py":
 			mode => 0544,
 			owner => root,
@@ -31,12 +36,29 @@ class misc::mediawiki-logger {
 			content => "
 net.core.rmem_max = 536870912
 ";
+		"/etc/init.d/udp2log-fatal":
+			mode => 0555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/udp2log/udp2log-fatal";
+		"/etc/logrotate.d/mw-fatallog":
+			mode => 0444,
+			source => "puppet:///files/logrotate/mw-fatallog";
+		"/var/log/mw":
+			ensure => directory,
+			mode => 0555,
+			owner => root,
+			group => root;
 	}
 
 	service { udp2log:
-		require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py"] ] ],
-		subscribe => File["/etc/udp2log"],
-		ensure => running;
+			require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py"] ] ],
+			subscribe => File["/etc/udp2log"],
+			ensure => running;
+		"udp2log-aft":
+			ensure => running,
+			enable => true,
+			require => File["/etc/init.d/udp2log-aft"];
 	}
 }
 
