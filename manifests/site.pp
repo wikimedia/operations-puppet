@@ -557,7 +557,7 @@ class swift-cluster {
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
 				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
-				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
+				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
