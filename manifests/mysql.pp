@@ -108,6 +108,7 @@ class mysql {
 				ensure => running,
 				hasstatus => false;
 			}
+			include mysql::monitor::percona
 		}
 	}
 
@@ -268,7 +269,7 @@ class mysql {
 	}
 
 	class monitor::percona inherits mysql {
-		$cirt = $master
+		$crit = $master
 		require "mysql::monitor::percona::files"
 
 		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
