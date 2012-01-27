@@ -688,7 +688,7 @@ node /^(copper|zinc)\.wikimedia\.org$/ {
 
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
-	if $hostname =~ /^1002$/ {
+	if $hostname =~ /^cp100(1|2)$/ {
 		$ganglia_aggregator = "true"
 	}
 
