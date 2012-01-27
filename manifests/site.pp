@@ -561,7 +561,7 @@ class swift-cluster {
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
-				rewrite_thumb_server => "ms5.pmtpa.wmnet",
+				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 			}
