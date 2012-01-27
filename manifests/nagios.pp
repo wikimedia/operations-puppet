@@ -7,6 +7,8 @@ $nagios_config_dir = "/etc/nagios"
 
 $ganglia_url = "http://ganglia.wikimedia.org"
 
+$first_service = true
+
 define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=present, $critical="false") {
 	if ! $ip_address {
 		fail("Parameter $ip_address not defined!")
@@ -57,6 +59,14 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 }
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1) {
+	if $::first_service {
+		exec { "remove_svc_file":
+			path => "/usr/bin:/bin",
+			command => "touch ${nagios_config_dir}/puppet_checks.d/${host}.cfg ; rm ${nagios_config_dir}/puppet_checks.d/${host}.cfg"
+		}
+		$::first_service = false
+	}
+
         if ! $host {
                 fail("Parameter $host not defined!")
         }
