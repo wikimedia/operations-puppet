@@ -5,6 +5,10 @@
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
 #  - $mcast_address:		Multicast "cluster" to join and send data on
+#  - $gridname:			Grid name
+#  - $gmetad_conf:		gmetad configuration filename
+#  - $ganglia_servername:	Name used by apache and gmond authority_url
+#  - $ganglia_serveralias:	Server alias(es) used by apache
 
 class ganglia {
 
@@ -21,6 +25,19 @@ class ganglia {
 			$deaf = "yes"
 		}
 	}	
+
+	if $realm == "labs" {
+		$gridname = "wmflabs"
+		$gmetad_conf = "gmetad-labs.conf"
+		$ganglia_servername = "ganglia.wmflabs.org"
+		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+
+	} else {
+		$gridname = "Wikimedia"
+		$gmetad_conf = "gmetad.conf"
+		$ganglia_servername = "ganglia.wikimedia.org"
+		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
+	}
 	
 	$location = "unspecified"
 
@@ -98,6 +115,8 @@ class ganglia {
 
 	$clustername = $ganglia_clusters[$cluster][name]
 	$cname = "${clustername}${name_suffix}"
+
+	$authority_url = "http://${ganglia_servername}"
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
@@ -182,7 +201,7 @@ class ganglia {
 
 		file { "/etc/ganglia/gmetad.conf":
 			require	=> Package[gmetad],
-			source	=> "puppet:///files/ganglia/gmetad.conf",
+			source	=> "puppet:///files/ganglia/${gmetad_conf}",
 			mode	=> 0644,
 			ensure	=> present
 		}
@@ -218,11 +237,11 @@ class ganglia::web {
 	class {'generic::webserver::php5': ssl => 'true'; }
 
 	file {
-		"/etc/apache2/sites-available/ganglia.wikimedia.org":
+		"/etc/apache2/sites-available/${ganglia_servername}":
 			mode => 644,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
+			content => template("apache/sites/ganglia.wikimedia.org.erb")
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
 			mode => 755,
@@ -252,14 +271,15 @@ class ganglia::web {
 			ensure => present;
 	}
 
-	apache_site { ganglia: name => "ganglia.wikimedia.org" }
+	apache_site { ganglia: name => $apache_conf }
 	apache_module { rewrite: name => "rewrite" }
 
-	package { "librrds-perl":
-		before => Package[rrdtool],
-		ensure => latest;
+	package {
+		"librrds-perl":
+			before => Package[rrdtool],
+			ensure => latest;
 		"rrdtool":
-		ensure => latest,
+			ensure => latest;
 	}
 
 	cron { "save-rrds":
