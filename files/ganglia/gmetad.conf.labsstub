@@ -1,8 +1,8 @@
-# Ganglia Meta Daemon for <%= fqdn %>
+# This is an example of a Ganglia Meta Daemon configuration file
+#                http://ganglia.sourceforge.net/
 #
-# This file is managed by Puppet!
+# $Id: gmetad.conf.in 1639 2008-08-09 23:30:32Z carenas $
 #
-
 #-------------------------------------------------------------------------------
 # Setting the debug_level to 1 will keep daemon in the forground and
 # show only error messages. Setting this value higher than 1 will make 
@@ -36,9 +36,8 @@
 # data_source "my grid" 50 1.3.4.7:8655 grid.org:8651 grid-backup.org:8651
 # data_source "another source" 1.3.4.7:8655  1.3.4.8
 
-<% ganglia_clusters.sort.each do |clustername, cluster| -%>
-data_source "<%= cluster['name'] %>" test1 test2
-<% end -%>
+# BEGIN AUTOGEN FROM CRON
+# END AUTOGEN FROM CRON
 
 #
 # Round-Robin Archives
@@ -47,10 +46,6 @@ data_source "<%= cluster['name'] %>" test1 test2
 # RRAs "RRA:AVERAGE:0.5:1:244" "RRA:AVERAGE:0.5:24:244" "RRA:AVERAGE:0.5:168:244" "RRA:AVERAGE:0.5:672:244" \
 #      "RRA:AVERAGE:0.5:5760:374"
 #
-
-# Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
-RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"
-
 
 #
 #-------------------------------------------------------------------------------
@@ -68,7 +63,7 @@ RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" 
 # default: unspecified
 # gridname "MyGrid"
 
-gridname "<%= gridname %>"
+gridname "wmflabs"
 
 #
 #-------------------------------------------------------------------------------
@@ -77,7 +72,10 @@ gridname "<%= gridname %>"
 # website on this machine.
 # default: "http://hostname/ganglia/",
 #   where hostname is the name of this machine, as defined by gethostname().
-authority "<%= authority_url %>"
+# authority "http://mycluster.org/newprefix/"
+
+authority "http://ganglia.wmflabs.org"
+
 #
 #-------------------------------------------------------------------------------
 # List of machines this gmetad will share XML with. Localhost
@@ -104,13 +102,13 @@ authority "<%= authority_url %>"
 #-------------------------------------------------------------------------------
 # The port gmetad will answer requests for XML
 # default: 8651
-# xml_port 8651
+xml_port 8653
 #
 #-------------------------------------------------------------------------------
 # The port gmetad will answer queries for XML. This facility allows
 # simple subtree and summation views of the XML tree.
 # default: 8652
-# interactive_port 8652
+interactive_port 8654
 #
 #-------------------------------------------------------------------------------
 # The number of threads answering XML requests
@@ -121,4 +119,8 @@ authority "<%= authority_url %>"
 # Where gmetad stores its round-robin databases
 # default: "/var/lib/ganglia/rrds"
 # rrd_rootdir "/some/other/place"
+
+rrd_rootdir "/mnt/ganglia_tmp/rrds.pmtpa"
+# Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
+RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"
 
