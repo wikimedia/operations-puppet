@@ -1504,7 +1504,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 		media-storage::htcp-purger
 }
 
-node "nickel.wikimedia.org" {
+node "nickel.wikimedia.org|aggregator1.wmflabs" {
 	$ganglia_aggregator = "true"
 
 	include standard,

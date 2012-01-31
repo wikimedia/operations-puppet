@@ -5,6 +5,10 @@
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
 #  - $mcast_address:		Multicast "cluster" to join and send data on
+#  - $gridname:			Grid name
+#  - $authority_url:		Authority URL for the grid
+#  - $apache_conf:		Apache configuration filename
+#  - $gmetad_conf:		gmetad configuration filename
 
 class ganglia {
 
@@ -21,6 +25,18 @@ class ganglia {
 			$deaf = "yes"
 		}
 	}	
+
+	if $realm == "labs" {
+		gridname = "wmflabs"
+		authority_url = "http://ganglia.wmflabs.org"
+		apache_conf = "ganglia.wmflabs.org"
+		gmetad_conf = "gmetad-labs.conf"
+	} else {
+		gridname = "Wikimedia"
+		authority_url = "http://ganglia.wikimedia.org"
+		apache_conf = "ganglia.wikimedia.org"
+		gmetad_conf = "gmetad.conf"
+	}
 	
 	$location = "unspecified"
 
@@ -98,6 +114,8 @@ class ganglia {
 
 	$clustername = $ganglia_clusters[$cluster][name]
 	$cname = "${clustername}${name_suffix}"
+
+	$authority_url = "http://ganglia.wikimedia.org"
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
@@ -182,7 +200,7 @@ class ganglia {
 
 		file { "/etc/ganglia/gmetad.conf":
 			require	=> Package[gmetad],
-			source	=> "puppet:///files/ganglia/gmetad.conf",
+			source	=> "puppet:///files/ganglia/${gmetad_conf}",
 			mode	=> 0644,
 			ensure	=> present
 		}
@@ -218,11 +236,11 @@ class ganglia::web {
 	class {'generic::webserver::php5': ssl => 'true'; }
 
 	file {
-		"/etc/apache2/sites-available/ganglia.wikimedia.org":
+		"/etc/apache2/sites-available/${apache_conf}":
 			mode => 644,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
+			source => "puppet:///files/apache/sites/${apache_conf}",
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
 			mode => 755,
@@ -252,14 +270,22 @@ class ganglia::web {
 			ensure => present;
 	}
 
-	apache_site { ganglia: name => "ganglia.wikimedia.org" }
+	apache_site { ganglia: name => $apache_conf }
 	apache_module { rewrite: name => "rewrite" }
 
-	package { "librrds-perl":
-		before => Package[rrdtool],
-		ensure => latest;
+	package {
+		"librrds-perl":
+			before => Package[rrdtool],
+			ensure => latest;
 		"rrdtool":
-		ensure => latest,
+			ensure => latest;
+	}
+
+        if $realm == "labs" {
+		package {
+			"ganglia-webfrontend":
+			ensure => latest;
+		}
 	}
 
 	cron { "save-rrds":

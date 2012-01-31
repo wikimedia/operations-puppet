@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+        ServerName ganglia.wmflabs.org
+        ServerAlias aggregator1.pmtpa.wmflabs
+        DocumentRoot /usr/share/ganglia-webfrontend
+        ServerAdmin root@wikimedia.org
+
+        <Directory "/usr/share/ganglia-webfrontend/">
+        Options FollowSymLinks
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+        </Directory>
+
+        ErrorLog /var/log/apache2/error.log
+        LogLevel warn
+</VirtualHost>
