@@ -124,6 +124,11 @@ class base::puppet($server="puppet") {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/puppet.init";
+		"/var/lib/puppet/lib/facter/projectgid.rb":
+			owner => root,
+			group => root,
+			mode => 0755,
+			source => "puppet:///files/puppet/projectgid.rb";
 	}
 
 	# Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
