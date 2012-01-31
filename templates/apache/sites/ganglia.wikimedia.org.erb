@@ -1,6 +1,6 @@
 <VirtualHost *:80>
-	ServerName ganglia.wikimedia.org
-	ServerAlias nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org
+	ServerName <%= ganglia_servername %>
+	ServerAlias <%= ganglia_serveralias %>
 	DocumentRoot /var/www
 	ServerAdmin root@wikimedia.org
 
@@ -14,7 +14,7 @@
 	Alias /2.2.0 /srv/org/wikimedia/gangliaweb
 	Alias /latest /srv/org/wikimedia/gangliaweb
 
-	RedirectMatch ^/$ http://ganglia.wikimedia.org/latest
+	RedirectMatch ^/$ http://<%= ganglia_servername %>/latest
 	ErrorLog /var/log/apache2/error.log
 	LogLevel warn
 </VirtualHost>
