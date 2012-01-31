@@ -1,0 +1,7 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Tim Starling <tstarling@wikimedia.org>
+Submitted-by: Tim Starling <tstarling@wikimedia.org>
+Submitted-at: Tue, 31 Jan 2012 11:52:26 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/2154
+Project: operations/puppet
+Branch: refs/heads/production
