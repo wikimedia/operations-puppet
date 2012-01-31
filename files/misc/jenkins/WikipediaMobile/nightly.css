@@ -35,3 +35,24 @@ table th {
 	background-color: #F2F2F2;
 	text-align:center;
 }
+
+/** Mobile overrides */
+@media only screen and (max-width:480px) {
+	body { padding:0; }
+	h1 {
+		margin:0;
+		font-size:1.5em;
+	}
+	h2 {
+		margin:0.5em 0;
+		text-align:right;
+		font-size:1.2em;
+	}
+	table th,
+	table td {
+		margin:0;
+		font-size:0.8em;
+		padding:0.5em; /** so we can click the right link with large finger */
+	}
+
+}
