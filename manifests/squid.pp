@@ -17,24 +17,19 @@ class squid {
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}
 
-	# Resource definitions
+	File {
+		mode => 0444,
+		owner => root,
+		group => root
+	}
 	file {
 		"frontendsquiddefaultconfig":
 			name => "/etc/default/squid-frontend",
-			owner => "root",
-			group => "root",
-			mode => 644,
 			source => "puppet:///files/squid/squid-frontend";
 		"/etc/logrotate.d/squid-frontend":
-			source => "puppet:///files/logrotate/squid-frontend",
-			owner => root,
-			group => root,
-			mode => 0644;	
+			source => "puppet:///files/logrotate/squid-frontend";
 		"squid-disk-permissions":
 			path => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
-			owner => root,
-			group => root,
-			mode => 0644,
 			content => template("squid/squid-disk-permissions.erb");
 	}
 
@@ -68,9 +63,7 @@ class squid {
 
 	# Fast C External redirect helper 
 	file { "/usr/local/bin/redirector":
-		mode => 755,
-		owner => root,
-		group => root,
+		mode => 0555,
 		source => "puppet:///files/squid/redirector",
 		ensure => present;
 	}
