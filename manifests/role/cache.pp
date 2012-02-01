@@ -6,9 +6,7 @@ class role::cache::squid::text {
 	if ! $lvs_realserver_ips {
 		include lvs::configuration
 		
-		$sip_prod = $lvs::configuration::lvs_service_ips[$::realm]
-		$sip_prod_text = $sip_prod['text']
-		$sip = $sip_prod_text[$::site]
+		$sip = $lvs::configuration::lvs_service_ips[$::realm][text][$::site]
 		
 		$lvs_realserver_ips = [
 			$sip['wikimedialb'],
