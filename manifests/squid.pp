@@ -69,11 +69,9 @@ class squid {
 				group => root;
 		}
 
-		package { "xfsprogs": ensure => latest; }
-
 		# Prepare aufs partition if necessary
 		exec { setup-aufs-cachedirs:
-			require => [ File[ [squid-disk-permissions, "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ], Package["xfsprogs"] ],
+			require => File[ [squid-disk-permissions, "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ],
 			command => "/usr/local/sbin/setup-aufs-cachedirs";
 		}
 	}
