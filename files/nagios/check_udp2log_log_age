@@ -1,9 +1,19 @@
 #!/bin/bash
 
+
 conf_file=`grep "^CONFFILE" /etc/init.d/udp2log | grep -o "/.*$"`
+
+if [ -f /etc/init.d/udp2log-aft ]; then
+	conf_file_aft=`grep "^CONFFILE" /etc/init.d/udp2logi-aft | grep -o "/.*$"`
+fi
 
 if [ ! -f $conf_file ]; then
 	echo "UNKNOWN: $conf_file cannot be found"
+	exit 3
+fi
+
+if [ $conf_file_aft -a ! -f $conf_file_aft ]; then
+	echo "UNKNOWN: $conf_file_aft cannot be found"
 	exit 3
 fi
 
@@ -26,6 +36,18 @@ for log_file in `egrep "^(pipe|file)" $conf_file | egrep -o "/[^ \.]*\.log"`; do
 		warn_list=`echo "$log_file, $warn_list"`
 	fi
 done
+
+if [ $conf_file_aft ]; then
+	for log_file in `egrep "^(pipe|file)" $conf_file_aft | egrep -o "/[^ \.]*\.log"`; do
+		if [ $log_file -ot $minus_six_hours ]; then
+			((crit_count++))
+			crit_list=`echo "$log_file, $crit_list"`
+		elif [ $log_file -ot $minus_three_hours ]; then
+			((warn_count++))
+			warn_list=`echo "$log_file, $warn_list"`
+		fi
+	done
+fi
 
 rm $minus_three_hours&&rm $minus_six_hours
 
