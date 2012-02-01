@@ -13,9 +13,20 @@ import "generic-definitions.pp"
 class squid {
 
 	if $realm == "labs" {
-		# Hack for arrays in LDAP - you suck puppet
+		# FIXME: Hack for arrays in LDAP - you suck puppet
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}
+
+	class packages {
+		package { ["squid", "squid-frontend"]:
+			ensure => latest;
+		}
+
+		# Cleanup of old wikimedia-task-squid package
+		package { "wikimedia-task-squid": ensure => purged }
+	}
+
+	require packages
 
 	File {
 		mode => 0444,
@@ -33,30 +44,41 @@ class squid {
 			content => template("squid/squid-disk-permissions.erb");
 	}
 
-	package { "wikimedia-task-squid":
-		ensure => latest;
-	}
-
 	service {
 		"squid-frontend":
-			require => [ File[frontendsquiddefaultconfig], Package[wikimedia-task-squid] ],
+			require => File[frontendsquiddefaultconfig],
 			subscribe => File[frontendsquiddefaultconfig],
 			hasstatus => false,
 			pattern => "squid-frontend",
 			ensure => running;
 		"squid":
-			require => [ Exec[setup-aufs-cachedirs], Package[wikimedia-task-squid] ],
+			require => Exec[setup-aufs-cachedirs],
 			hasstatus => false,
 			pattern => "/usr/sbin/squid ",
 			ensure => running;
 	}
 
-	# Prepare aufs partition if necessary
-	exec { setup-aufs-cachedirs:
-		command => "/usr/sbin/setup-aufs-cachedirs",
-		path => "/bin:/sbin:/usr/bin:/usr/sbin",
-		require => [ File[squid-disk-permissions], Package[wikimedia-task-squid] ];
+	class aufs {
+		file {
+			"/aufs":
+				ensure => directory;
+			"/usr/local/sbin/setup-aufs-cachedirs":
+				source => "puppet:///files/squid/setup-aufs-cachedirs",
+				mode => 0555,
+				owner => root,
+				group => root;
+		}
+
+		package { "xfsprogs": ensure => latest; }
+
+		# Prepare aufs partition if necessary
+		exec { setup-aufs-cachedirs:
+			require => [ File[ [squid-disk-permissions, "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ], Package["xfsprogs"] ],
+			command => "/usr/local/sbin/setup-aufs-cachedirs";
+		}
 	}
+
+	include aufs
 
 	# Tune kernel settings
 	include generic::sysctl::high-http-performance

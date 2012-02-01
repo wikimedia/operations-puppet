@@ -1,0 +1,78 @@
+#!/bin/bash
+# Script to mkfs and mount Squid AUFS cache dirs as specified
+# in squid.conf
+#
+# Written on 2007/04/17 by Mark Bergsma <mark@wikimedia.org>
+
+set -e
+
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:
+
+# Defaults
+AUFSROOTDIR=/aufs
+PROXY_UID=proxy
+PROXY_GID=proxy
+SQUIDCONF=/etc/squid/squid.conf
+
+PART_TYPE=82
+
+# File system options for mkfs and mount
+FS=xfs
+FS_MOUNT_OPTIONS=noatime,nodiratime
+FS_OPTIONS="-f"
+
+if [ ! -f $SQUIDCONF ]
+then
+	echo File $SQUIDCONF not found. Exiting.
+	exit 1
+fi
+
+AUFS_DIRS=`egrep "^cache_dir aufs $AUFSROOTDIR" $SQUIDCONF | awk '{ print $3 }'`
+
+if [ ! -d $AUFSROOTDIR ]
+then
+	echo AUFS root dir $AUFSROOTDIR does not exist, exiting.
+	exit 1
+fi
+
+for aufsdir in $AUFS_DIRS
+do
+	DEV_FILE=/dev${aufsdir:${#AUFSROOTDIR}}
+	PARENT_DEV=${DEV_FILE/%[0-9]}
+
+	echo Setting up $DEV_FILE on $aufsdir on parent device $PARENT_DEV
+
+	# Check whether the partition has the wanted type, linux-swap
+	if [ $(fdisk -l $PARENT_DEV | egrep "^$DEV_FILE" | awk '{ print $5 }') != "$PART_TYPE" ]
+	then
+		echo Partition $DEV_FILE is not of type $PART_TYPE. Skipping...
+		continue
+	fi
+
+	# Check if the partition is listed in /etc/fstab, and if not, add it
+	if ! egrep -q "^$DEV_FILE[[:space:]]+" /etc/fstab
+	then
+		echo -e "$DEV_FILE\t$aufsdir\t$FS\t$FS_MOUNT_OPTIONS\t0\t0" >> /etc/fstab
+	else
+		if ! egrep -q "^$DEV_FILE[[:space:]]+$aufsdir[[:space:]]+" /etc/fstab
+		then
+			echo Mountpoint $aufsdir is listed in /etc/fstab, but is incorrect. Skipping...
+			continue
+		fi
+	fi
+
+	# Check whether the file system is already mounted
+	if egrep "^[^[:space:]]+[[:space:]]$aufsdir" /proc/mounts
+	then
+		echo File system $aufsdir already mounted! Skipping...
+		continue
+	fi
+
+	# Create the file system
+	mkfs -t $FS $FS_OPTIONS	$DEV_FILE
+
+	# Mount the newly created file system and set user/group
+	[ -d $aufsdir ] || mkdir $aufsdir
+	mount $aufsdir
+	chown $PROXY_UID:$PROXY_GID $aufsdir
+done
