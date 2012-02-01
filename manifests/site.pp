@@ -736,7 +736,8 @@ node "emery.wikimedia.org" {
 		admins::restricted,
 		nrpe,
 		misc::udp2log::monitoring,
-		misc::udp2log::emeryconfig
+		misc::udp2log::emeryconfig,
+		misc::udp2log::udp-filters
 }
 
 node "erzurumi.pmtpa.wmnet" {
