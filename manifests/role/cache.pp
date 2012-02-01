@@ -6,23 +6,22 @@ class role::cache::squid::text {
 	if ! $lvs_realserver_ips {
 		include lvs::configuration
 		
-		$sip_prod = $lvs::configuration::lvs_service_ips['production']
+		$sip_prod = $lvs::configuration::lvs_service_ips[$::realm]
 		$sip_prod_text = $sip_prod['text']
-		$sip = $sip_prod_text[$site]
-
-		$lvs_realserver_ips = $realm ? {
-			'production' => $site ? {
-			 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
-				'eqiad' => [ $sip['wikimedialb'], $sip['wikipedialb'], $sip['wiktionarylb'], $sip['wikiquotelb'], $sip['wikibookslb'],  $sip['wikisourcelb'], $sip['wikinewslb'], $sip['wikiversitylb'], $sip['mediawikilb'], $sip['foundationlb'] ],
-				'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
-			},
-			# TODO: add text svc address
-			'labs' => $site ? {
-			 	'pmtpa' => [ "208.80.153.193", "208.80.153.197", "208.80.153.198", "208.80.153.199", "208.80.153.200", "208.80.153.201", "208.80.153.202", "208.80.153.203", "208.80.153.204", "208.80.153.205" ],
-				'eqiad' => [ "" ],
-				'esams' => [ "" ]
-			}
-		}
+		$sip = $sip_prod_text[$::site]
+		
+		$lvs_realserver_ips = [
+			$sip['wikimedialb'],
+			$sip['wikipedialb'],
+			$sip['wiktionarylb'],
+			$sip['wikiquotelb'],
+			$sip['wikibookslb'],
+			$sip['wikisourcelb'],
+			$sip['wikinewslb'],
+			$sip['wikiversitylb'],
+			$sip['mediawikilb'],
+			$sip['foundationlb']
+		]
 	}
 
 	# FIXME: make coherent with $cluster
