@@ -27,6 +27,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
 		ensure => latest;
 	}
+	
+	# monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
+	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
 
 	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
