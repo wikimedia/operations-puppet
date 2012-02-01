@@ -17,44 +17,44 @@ class squid {
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}
 
-        # Resource definitions
-        file {
+	# Resource definitions
+	file {
 		"frontendsquiddefaultconfig":
-                	name    => "/etc/default/squid-frontend",
-	                owner   => "root",
-	                group   => "root",
-	                mode    => 644,
-	                source  => "puppet:///files/squid/squid-frontend";
+			name => "/etc/default/squid-frontend",
+			owner => "root",
+			group => "root",
+			mode => 644,
+			source => "puppet:///files/squid/squid-frontend";
 		"/etc/logrotate.d/squid-frontend":
-			source	=> "puppet:///files/logrotate/squid-frontend",
-			owner	=> root,
-			group	=> root,
-			mode	=> 0644;	
+			source => "puppet:///files/logrotate/squid-frontend",
+			owner => root,
+			group => root,
+			mode => 0644;	
 		"squid-disk-permissions":
-			path    => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
-			owner	=> root,
-			group	=> root,
-			mode	=> 0644,
+			path => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
+			owner => root,
+			group => root,
+			mode => 0644,
 			content => template("squid/squid-disk-permissions.erb");
-        }
+	}
 
-        package { "wikimedia-task-squid":
-                ensure => latest;
-        }
+	package { "wikimedia-task-squid":
+		ensure => latest;
+	}
 
-        service {
-                "squid-frontend":
-                        require         => [ File[frontendsquiddefaultconfig], Package[wikimedia-task-squid] ],
-                        subscribe       => File[frontendsquiddefaultconfig],
-			hasstatus	=> false,
-			pattern		=> "squid-frontend",
-                        ensure          => running;
+	service {
+		"squid-frontend":
+			require => [ File[frontendsquiddefaultconfig], Package[wikimedia-task-squid] ],
+			subscribe => File[frontendsquiddefaultconfig],
+			hasstatus => false,
+			pattern => "squid-frontend",
+			ensure => running;
 		"squid":
-			require		=> [ Exec[setup-aufs-cachedirs], Package[wikimedia-task-squid] ],
-			hasstatus	=> false,
-			pattern		=> "/usr/sbin/squid ",
-			ensure		=> running;
-        }
+			require => [ Exec[setup-aufs-cachedirs], Package[wikimedia-task-squid] ],
+			hasstatus => false,
+			pattern => "/usr/sbin/squid ",
+			ensure => running;
+	}
 
 	# Prepare aufs partition if necessary
 	exec { setup-aufs-cachedirs:
