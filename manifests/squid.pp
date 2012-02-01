@@ -61,7 +61,8 @@ class squid {
 	class aufs {
 		file {
 			"/aufs":
-				ensure => directory;
+				ensure => directory,
+				mode => 0755;
 			"/usr/local/sbin/setup-aufs-cachedirs":
 				source => "puppet:///files/squid/setup-aufs-cachedirs",
 				mode => 0555,
