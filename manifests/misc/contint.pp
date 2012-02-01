@@ -133,23 +133,42 @@ class misc::contint::test {
 					owner => www-data,
 					group => wikidev,
 					ensure => directory;
+			# Welcome page
 			"/srv/org/mediawiki/integration/index.html":
 				owner => www-data,
 				group => wikidev,
 				mode => 0555,
 				source => "puppet:///files/misc/jenkins/index.html";
+			# Stylesheet used by nightly builds (example: Wiktionary/Wikipedia mobiles apps)
+			"/srv/org/mediawiki/integration/nightly.css":
+				owner => www-data,
+				group => wikidev,
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/nightly.css";
 			"/srv/org/mediawiki/integration/WikipediaMobile":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
-			# Copy HTML/CSS materials for ./WikipediaMobile/nightly/ :
+			# Copy HTML materials for ./WikipediaMobile/nightly/ :
 			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
+				recurse => "true";
+			"/srv/org/mediawiki/integration/WiktionaryMobile":
+				owner => jenkins,
+				group => wikidev,
+				mode => 0755,
+				ensure => directory;
+			"/srv/org/mediawiki/integration/WiktionaryMobile/nightly":
+				owner => jenkins,
+				group => wikidev,
+				mode => 0755,
+				ensure => directory,
+				source => "puppet:///files/misc/jenkins/WiktionaryMobile",
 				recurse => "true";
 			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
