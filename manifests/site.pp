@@ -1789,9 +1789,6 @@ node "sockpuppet.pmtpa.wmnet" {
 		dashboard_environment => "production",
 		db_host => "db9.pmtpa.wmnet"
 	}
-
-	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
-
 }
 
 node "sodium.wikimedia.org" {
@@ -2083,9 +2080,6 @@ node "stafford.pmtpa.wmnet" {
 			'softwaredir' => "/var/lib/git/operations/software"
 		}
 	}
-
-	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
-
 }
 
 node "stat1.wikimedia.org" {
