@@ -3,7 +3,7 @@
 # File that contains generally useful definitions, e.g. for creating system users
 
 # Prints a MOTD message about the role of this system
-define system_role($description) {
+define system_role($description, $ensure=present) {
 	$role_script_content = "#!/bin/sh
 
 echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
@@ -16,9 +16,9 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 		file { $motd_filename:
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			content => $role_script_content,
-			ensure => present;
+			ensure => $ensure;
 		}
 	}
 }
