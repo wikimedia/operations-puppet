@@ -392,7 +392,7 @@ class lvs::configuration {
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'ProxyFetch' => {
-					'url' => [ 'http://ms-fe.pmtpa.wmnet/wikipedia/commons/thumb/2/22/Miedledorpf.jpg/180px-Miedledorpf.jpg' ],
+					'url' => [ 'http://ms-fe.pmtpa.wmnet/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg' ],
 					},
 				'IdleConnection' => $idleconnection_monitor_options,
 				'RunCommand' => $runcommand_monitor_options
