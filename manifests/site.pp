@@ -1789,6 +1789,9 @@ node "sockpuppet.pmtpa.wmnet" {
 		dashboard_environment => "production",
 		db_host => "db9.pmtpa.wmnet"
 	}
+
+	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
+
 }
 
 node "sodium.wikimedia.org" {
