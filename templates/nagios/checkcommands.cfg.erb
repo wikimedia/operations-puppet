@@ -80,6 +80,12 @@ define command{
         command_line    $USER1$/check_http -H $HOSTADDRESS$ -p $ARG1$
         }
 
+# 'check_http' on a puppetmaster (SSL,port 8140,expect 400)
+define command{
+	command_name	check_http_puppetmaster
+	command_line	$USER1$/check_http --ssl -p 8140 -e 400 -H $HOSTADDRESS$
+	}
+
 # 'check_ssl_cert'
 # Verify a SSL certificate is not going to expire in the next 14 days
 # Example usage:  check_ssl_cert!secure.wikimedia.org

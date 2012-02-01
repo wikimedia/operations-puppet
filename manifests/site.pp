@@ -2080,6 +2080,9 @@ node "stafford.pmtpa.wmnet" {
 			'softwaredir' => "/var/lib/git/operations/software"
 		}
 	}
+
+	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
+
 }
 
 node "stat1.wikimedia.org" {
