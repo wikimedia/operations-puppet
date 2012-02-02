@@ -162,7 +162,7 @@ class swift::proxy::config(
 		owner => root,
 		group => root,
 		mode => 0444,
-		source => "puppet:///files/swift/SwiftMedia/wmf/",
+		source => "puppet:///files/swift/SwiftProxyLogtailer.py",
 		require => Package['ganglia-logtailer']
 	}
 	cron { swift-proxy-ganglia:
