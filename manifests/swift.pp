@@ -49,6 +49,7 @@ class swift::iptables-accepts {
 	iptables_add_rule{ "swift_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
 	iptables_add_rule{ "swift_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
 	iptables_add_service{ "swift_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "swift_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
@@ -62,6 +63,7 @@ class swift::iptables-accepts {
 	iptables_add_service{ "swift_storage_rsyncd_tcp": service => "rsyncd_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_storage_rsyncd_udp": service => "rsyncd_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_http_alt": service => "http-alt", jump => "ACCEPT" }
+	iptables_add_service{ "swift_proxy_http": service => "http", jump => "ACCEPT" }
 	iptables_add_service{ "swift_proxy_memcached": service => "memcached-standard", source => "208.80.152.0/22", jump => "ACCEPT" }
 }
 class swift::iptables-drops {

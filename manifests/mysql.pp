@@ -1,8 +1,9 @@
 # mysql.pp
 
 # Virtual resource for the monitoring server
-#@monitor_group { "mysql": description => "MySQL core" }
 @monitor_group { "es": description => "External Storage" }
+@monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
+@monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
 
 # TODO should really be named mysql-server, or mysql::server
 class mysql {
@@ -35,17 +36,17 @@ class mysql {
 	#######################################################################
 	### LVM snapshot hosts - currently only puppet managed in eqiad
 	#######################################################################
-	if $hostname =~ /^db(1005|1007|1018|1020|1022|1033|1035)$/ {
+	if $hostname =~ /^db(26|32|1005|1007|1018|1020|1022|1033|1035)$/ {
 		$snapshot_host = true
 	}
 
 	#######################################################################
 	### Cluster Definitions - update if changing / building new dbs
 	#######################################################################
-	if $hostname =~ /^db(12|26|32|36|38|42|52|53|1001|1017|1033|1047)$/ {
+	if $hostname =~ /^db(12|32|36|38|42|52|53|1001|1017|1033|1047)$/ {
 		$db_cluster = "s1"
 	}
-	elsif $hostname =~ /^db(13|24|30|1002|1018|1034)$/ {
+	elsif $hostname =~ /^db(13|24|30|54|1002|1018|1034)$/ {
 		$db_cluster = "s2"
 	}
 	elsif $hostname =~ /^db(11|25|34|39|1003|1019|1035)$/ {
@@ -54,13 +55,13 @@ class mysql {
 	elsif $hostname =~ /^db(22|31|33|51|1004|1020|1038)$/ {
 		$db_cluster = "s4"
 	}
-	elsif $hostname =~ /^db(35|44|45|1005|1021|1039)$/ {
+	elsif $hostname =~ /^db(35|44|45|55|1005|1021|1039)$/ {
 		$db_cluster = "s5"
 	}
-	elsif $hostname =~ /^db(46|47|50|1006|1022|1040)$/ {
+	elsif $hostname =~ /^db(43|46|47|50|1006|1022|1040)$/ {
 		$db_cluster = "s6"
 	}
-	elsif $hostname =~ /^db(16|18|37|1007|1024|1041)$/ {
+	elsif $hostname =~ /^db(16|18|26|37|56|1007|1024|1041)$/ {
 		$db_cluster = "s7"
 	}
 	elsif $hostname =~ /^db(1008|1025)$/ {
@@ -107,6 +108,7 @@ class mysql {
 				ensure => running,
 				hasstatus => false;
 			}
+			include mysql::monitor::percona
 		}
 	}
 
@@ -187,7 +189,7 @@ class mysql {
 
 	# this is for checks from the percona-nagios-checks project
 	# http://percona-nagios-checks.googlecode.com
-	class monitor::percona {
+	class monitor::percona::files {
 		include passwords::nagios::mysql
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
@@ -196,7 +198,8 @@ class mysql {
 				owner => root,
 				group => nagios,
 				mode => 0440,
-				content => template("nagios/nrpe_percona.cfg.erb");
+				content => template("nagios/nrpe_percona.cfg.erb"),
+				notify => Service[nagios-nrpe-server];
 			"/usr/lib/nagios/plugins/percona":
 				ensure => directory,
 				owner => root,
@@ -265,6 +268,18 @@ class mysql {
 		}
 	}
 
+	class monitor::percona inherits mysql {
+		$crit = $master
+		require "mysql::monitor::percona::files"
+
+		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+		monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+		monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
+		monitor_service { "mysql idle transaction": description => "MySQL Idle Transactions", check_command => "nrpe_check_mysql_idle_transactions", critical => false }
+		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+		monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
+		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+	}
 
 	class mysqluser {
 		user { 
@@ -401,7 +416,7 @@ class mysql {
 	}
 
 	include mysql::ganglia,
-		mysql::monitor::percona
+		mysql::monitor::percona::files
 
 	# TODO do we want to have a class for PHP clients (php5-mysql) as well
 	# and rename this to mysql::client-cli?

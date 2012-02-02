@@ -5,7 +5,7 @@
 
 # rsync conf file for mirror sites of XML files
 #
-max connections = 6
+max connections = 10
 [dumpmirrors]
 dont compress = *
 uid = backup
@@ -14,6 +14,18 @@ read only = yes
 path = /data/xmldatadumps/public
 # added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
 # for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
-hosts allow = sagres.c3sl.ufpr.br
-
-
+# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
+# for wansecurity.com, we manage this, see file in /home/wikipedia/docs 
+hosts allow = sagres.c3sl.ufpr.br 199.47.196.26
+[dumpmirrorseverything]
+dont compress = *
+uid = backup
+gid = backup
+read only = yes
+path = /data/xmldatadumps/public
+exclude = **tmp/ **temp/ **bad/ **save/
+# added your.org, Feb 2 1012 -- atg
+# for your.org, contact: Kevin Day <kevin@your.org>
+# they manage it but we have access; see file in /home/wikipedia/docs
+# we'll narrow down the below as soon as we have more specifics
+hosts allow = *.your.org 

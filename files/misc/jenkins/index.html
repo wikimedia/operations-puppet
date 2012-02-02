@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>MediaWiki Continuous Integration</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<style type="text/css">
 	body {
 		margin: 0;
@@ -15,11 +16,7 @@
 
 	h1 {
 		overflow: hidden;
-	}
-
-	h1 img {
-		float: right;
-		margin: 5px;
+		vertical-align:middle;
 	}
 
 	div {
@@ -33,13 +30,33 @@
 		color: #666;
 	}
 	img.logo {
-		height: 50px;
+		float: right;
+		margin: 5px;
+		width:66px;
+		height:50px;
+	}
+	ul {
+		line-height: 1.5em;
+	}
+
+	/** Mobile overrides */
+	@media only screen and (max-width:480px) {
+		div {
+			width: auto;
+			margin: 0px 10px;
+			padding:0;
+		}
+		h1 { margin:0; }
+		ul {
+			line-height: 2em;
+		}
 	}
 	</style>
 </head>
 <body>
 	<div>
-		<h1><img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Mediawiki-logo.png" class="logo">Welcome!</h1>
+		<img src="https://upload.wikimedia.org/wikipedia/commons/3/3d/Mediawiki-logo.png" class="logo">
+		<h1>Welcome!</h1>
 		<p>This is our continous integration server for MediaWiki.</p>
 		<p>Right now, we are running Jenkins and TestSwarm:</p>
 		<ul>

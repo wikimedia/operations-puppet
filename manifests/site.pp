@@ -41,6 +41,7 @@ import "squid.pp"
 import "svn.pp"
 import "swift.pp"
 import "varnish.pp"
+import "webserver.pp"
 
 # Include stages last
 import "stages.pp"
@@ -160,7 +161,7 @@ class applicationserver {
 class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = "image_scalers"
-	
+
 	$lvs_realserver_ips = $realm ? {
 		'production' => [ "10.2.1.21" ],
 		'labs' => [ "10.4.0.252" ],
@@ -268,6 +269,7 @@ class searchindexer {
 		search::indexer
 }
 
+# TODO: migrate existing hosts to role::cache::squid::text
 class text-squid {
 	$cluster = "squids_text"
 
@@ -275,7 +277,6 @@ class text-squid {
 		$lvs_realserver_ips = $realm ? {
 			'production' => $site ? {
 			 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
-				'eqiad' => [ "" ],
 				'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
 			},
 			# TODO: add text svc address
@@ -292,7 +293,8 @@ class text-squid {
 	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
 		'pmtpa' => 'squids_text',
-		'esams' => 'squids_esams_text'
+		'esams' => 'squids_esams_text',
+		'eqiad' => 'squids_eqiad_text'
 	}
 
 	include	standard,
@@ -305,11 +307,12 @@ class text-squid {
 	}
 }
 
+# TODO: migrate existing hosts to role::cache::squid::upload
 class upload-squid {
 	$cluster = "squids_upload"
 
 	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = $site ? { 
+		$lvs_realserver_ips = $site ? {
 			'pmtpa' => [ "208.80.152.211", "10.2.1.24" ],
 			'eqiad' => [ "" ],
 			'esams' => [ "91.198.174.234", "10.2.3.24" ],
@@ -383,7 +386,7 @@ class cache {
 		include standard,
 			lvs::realserver,
 			varnish::monitoring::ganglia
-		
+
 		varnish::instance { "bits":
 			name => "",
 			vcl => "bits",
@@ -404,7 +407,7 @@ class cache {
 			enable_geoiplookup => "true"
 		}
 	}
-	class mobile { 
+	class mobile {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${site}"
 
@@ -417,7 +420,7 @@ class cache {
 		}
 
 		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org", 
+			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
 				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
@@ -436,7 +439,7 @@ class cache {
 			varnish::logging,
 			varnish::monitoring::ganglia,
 			lvs::realserver
-		
+
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
@@ -455,7 +458,7 @@ class cache {
 				'retry5x' => 1
 				},
 		}
-		
+
 		varnish::instance { "mobile-frontend":
 			name => "frontend",
 			vcl => "mobile-frontend",
@@ -469,7 +472,7 @@ class cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
-				'probe' => "bits",
+				'probe' => "varnish",
 				'retry5x' => 0
 				},
 		}
@@ -499,7 +502,7 @@ class swift-cluster {
 	}
 	class eqiad-test inherits swift-cluster::base {
 		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
-		
+		include passwords::swift::eqiad-test
 		# The eqiad test cluster runs proxy and storage on the same hosts
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class { "swift::proxy::config":
@@ -507,20 +510,21 @@ class swift-cluster {
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => $::processorcount * 2,
-			super_admin_key => "thisshouldbesecret",
+			super_admin_key => $passwords::swift::eqiad-test::super_admin_key,
 			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
-			rewrite_password => "testing",
+			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
 			shard_containers => "some",
-			shard_container_list => "wikipedia-commons-thumb,wikipedia-en-thumb"
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 		}
 		include swift::storage
 		include swift::proxy
 	}
 	class pmtpa-test inherits swift-cluster::base {
 		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
+		include passwords::swift::pmtpa-test
 		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class proxy inherits swift-cluster::pmtpa-test {
 			class { "swift::proxy::config":
@@ -528,11 +532,11 @@ class swift-cluster {
 				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
-				super_admin_key => "thisshouldbesecret",
+				super_admin_key => $passwords::swift::pmtpa-test::super_admin_key,
 				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
 				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 				rewrite_user => "mw:thumb",
-				rewrite_password => "testing",
+				rewrite_password => $passwords::swift::pmtpa-test::rewrite_password,
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => ""
@@ -540,6 +544,31 @@ class swift-cluster {
 			include swift::proxy
 		}
 		class storage inherits swift-cluster::pmtpa-test {
+			include swift::storage
+		}
+	}
+	class pmtpa-prod inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster" }
+		include passwords::swift::pmtpa-prod
+		class { "swift::base": hash_path_suffix => "bd51d755d4c53773" }
+		class proxy inherits swift-cluster::pmtpa-prod {
+			class { "swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://ms-fe.pmtpa.wmnet",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
+				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
+				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "some",
+				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+			}
+			include swift::proxy
+		}
+		class storage inherits swift-cluster::pmtpa-prod {
 			include swift::storage
 		}
 	}
@@ -608,9 +637,9 @@ node "argon.wikimedia.org" {
 
 node /(arsenic|niobium)\.wikimedia\.org/ {
 	$ganglia_aggregator = "true"
-	
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
-	
+
 	include cache::bits
 }
 
@@ -640,7 +669,7 @@ node "bast1001.wikimedia.org" {
 node "brewster.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
-	
+
 	include standard,
 		misc::install-server,
 		backup::client
@@ -656,6 +685,26 @@ node /^(copper|zinc)\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 
 	include swift-cluster::eqiad-test
+}
+
+node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
+	$squid_coss_disks = [ 'sda5', 'sdb5' ]
+	if $hostname =~ /^cp100(1|2)$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include role::cache::squid::text
+}
+
+# eqiad varnish for m.wikipedia.org
+node /cp104[1-4].wikimedia.org/ {
+
+	if $hostname =~ /^cp104(3|4)$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include cache::mobile,
+	nrpe
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -687,7 +736,9 @@ node "emery.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		nrpe,
-		misc::udp2log::emeryconfig
+		misc::udp2log::monitoring,
+		misc::udp2log::emeryconfig,
+		misc::udp2log::udp-filters
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -745,7 +796,7 @@ node /^db[1-9]\.pmtpa\.wmnet$/ {
 }
 
 node "db10.pmtpa.wmnet" {
-	include db::core, 
+	include db::core,
 		backup::mysql
 }
 
@@ -759,6 +810,14 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 	}
 
 	include db::core
+
+	# upgraded hosts
+	if $hostname =~ /^db2(6)$/ {
+		include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+	}
 }
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
@@ -768,7 +827,8 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 
 	include db::core
 
-	if $hostname =~ /^db3(2|6|8)$/ {
+	# upgraded hosts
+	if $hostname =~ /^db3(2|6|7|8)$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -776,7 +836,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	}
 }
 
-node /^db4[023]\.pmtpa\.wmnet$/ {
+node /^db4[02]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
 }
@@ -797,7 +857,7 @@ node "db41.pmtpa.wmnet" {
 # new pmtpa dbs
 # New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
 # DO NOT add old prod db's to new classes unless you
-# know what you're doing! 
+# know what you're doing!
 node "db11.pmtpa.wmnet" {
 	include db::core,
 		mysql::mysqluser,
@@ -821,7 +881,7 @@ node "db22.pmtpa.wmnet" {
 		mysql::packages
 }
 
-node /db4[4-9]\.pmtpa\.wmnet/ { 
+node /db4[3-9]\.pmtpa\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -829,7 +889,7 @@ node /db4[4-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db5[0-9]\.pmtpa\.wmnet/ { 
+node /db5[0-9]\.pmtpa\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -941,6 +1001,7 @@ node "gallium.wikimedia.org" {
 		 'ALL = (jenkins) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/jenkins'
 		,'ALL = (testswarm) NOPASSWD: ALL'
+		,'ALL = NOPASSWD: /etc/init.d/postgresql-8.4'
 		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
 	]}
 	include base,
@@ -1064,7 +1125,7 @@ node "marmontel.wikimedia.org" {
 		svn::client,
 		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org,
-		misc::apache2::rpaf
+		webserver::apache2::rpaf
 
 		class { "memcached":
 			memcached_ip => "127.0.0.1" }
@@ -1167,7 +1228,7 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-	
+
 	include text-squid
 }
 
@@ -1205,6 +1266,7 @@ node "locke.wikimedia.org" {
 		misc::udp2log::packetloss,
 		misc::udp2log::locke,
 		misc::udp2log::lockeconfig,
+		misc::udp2log::monitoring,
 		nrpe
 }
 
@@ -1224,7 +1286,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "208.80.152.210", "208.80.152.211", "208.80.152.212", "208.80.152.213", "10.2.1.23", "10.2.1.24", "10.2.1.25" ]
 	}
 	if $hostname =~ /^lvs[34]$/ {
-		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12", "10.2.1.13", "10.2.1.21", "10.2.1.22" ]
+		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12", "10.2.1.13", "10.2.1.21", "10.2.1.22", "10.2.1.27" ]
 	}
 
 	include base,
@@ -1236,7 +1298,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	if $hostname == "lvs1" {
 		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
 		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
-	} 
+	}
 	if $hostname == "lvs2" {
 		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
 	}
@@ -1259,7 +1321,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		address => $ips["internal"][$hostname],
 		netmask => "255.255.0.0"
 	}
-	
+
 	# Make sure GRO is off
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 
@@ -1442,7 +1504,7 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
 
-	include swift-cluster::pmtpa-test::storage
+	include swift-cluster::pmtpa-prod::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1504,6 +1566,25 @@ node /ms100[4]\.eqiad\.wmnet/ {
 		media-storage::htcp-purger
 }
 
+node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^ms-fe[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	$lvs_realserver_ips = [ "10.2.1.27" ]
+	include lvs::realserver
+	include swift-cluster::pmtpa-prod::proxy
+}
+node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
+	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
+		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
+		'/dev/sdl' ]
+
+	include swift-cluster::pmtpa-prod::storage
+
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+}
+
+
 node "nickel.wikimedia.org" {
 	$ganglia_aggregator = "true"
 
@@ -1520,7 +1601,7 @@ node "nescio.esams.wikimedia.org" {
 
 	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
 	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
-	
+
 	include standard,
 		dns::recursor,
 		dns::recursor::monitoring,
@@ -1559,8 +1640,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include swift-cluster::pmtpa-test::proxy
-	include swift-cluster::pmtpa-test::storage
+	include swift-cluster::pmtpa-prod::proxy
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
@@ -1695,7 +1775,8 @@ node "sockpuppet.pmtpa.wmnet" {
 	include passwords::puppet::database
 
 	include standard,
-		backup::client
+		backup::client,
+		misc::management::ipmi
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
@@ -1711,6 +1792,9 @@ node "sockpuppet.pmtpa.wmnet" {
 		dashboard_environment => "production",
 		db_host => "db9.pmtpa.wmnet"
 	}
+
+	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
+
 }
 
 node "sodium.wikimedia.org" {
@@ -1729,7 +1813,7 @@ node "sodium.wikimedia.org" {
 	class { exim::roled:
 		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
 		local_domains => [ "+system_domains", "+mailman_domains" ],
-		enable_mail_relay => "secondary", 
+		enable_mail_relay => "secondary",
 		enable_mailman => "true",
 		enable_mail_submission => "false",
 		enable_spamassassin => "true"
@@ -1836,17 +1920,14 @@ node /^srv24[89]\.pmtpa\.wmnet$/ {
 		memcached
 }
 
-# srv250-257 are API application servers, some are memcached
+# srv250-257 are API application servers and run memcached
 node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[45]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include applicationserver::api
-
-	if $hostname =~ /^srv25[0-3]$/ {
-		include memcached
-	}
+	include applicationserver::api,
+		memcached
 }
 
 # srv258 - srv280 are application servers, job runners, memcached
@@ -1890,7 +1971,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 	if $hostname =~ /^ssl[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	include protoproxy::ssl
 }
 
@@ -1964,21 +2045,10 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	if $hostname =~ /^sq6[68]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	include cache::bits
-}
-
-# eqiad varnish for m.wikipedia.org
-node /cp104[1-4].wikimedia.org/ {
-
-	if $hostname =~ /^cp104(3|4)$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	include cache::mobile,
-	nrpe
 }
 
 # sq71-78 are text squids
@@ -1997,10 +2067,8 @@ node /sq(79|8[0-6])\.wikimedia\.org/ {
 }
 
 node "stafford.pmtpa.wmnet" {
-	include passwords::puppet::database
-
 	include standard,
-		puppetmaster::production
+		passwords::puppet::database
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
@@ -2018,6 +2086,9 @@ node "stafford.pmtpa.wmnet" {
 			'softwaredir' => "/var/lib/git/operations/software"
 		}
 	}
+
+	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
+
 }
 
 node "stat1.wikimedia.org" {
@@ -2044,6 +2115,7 @@ node "storage3.pmtpa.wmnet" {
 	include db::core,
 		role::db::fundraising::slave,
 		role::db::fundraising::dump,
+		mysql::packages,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -2118,7 +2190,7 @@ node "thistle.pmtpa.wmnet" {
 node "transcode1.wikimedia.org" {
 	include standard,
 		misc::dc-cam-transcoder
-}		
+}
 
 node "tridge.wikimedia.org" {
 	include base,

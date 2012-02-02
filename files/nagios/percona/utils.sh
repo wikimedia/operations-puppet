@@ -12,3 +12,6 @@ STATE_WARNING=1
 STATE_CRITICAL=2
 STATE_UNKNOWN=3
 STATE_DEPENDENT=4
+
+PATH=$PATH:/usr/local/bin
+[ -d /usr/local/mysql/bin ] && PATH=$PATH:/usr/local/mysql/bin

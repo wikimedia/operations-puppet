@@ -1,5 +1,8 @@
 #!/bin/bash
+<<<<<<< HEAD   (43a36c Wrap true in quotes to see if it fixes the upstart job.)
 # You must have puppet and sed in your paths or this will FAIL!
+=======
+>>>>>>> BRANCH (038945 Merge "Add TODO" into production)
 
 echo "Running a local test parse of puppet..."
 

@@ -3,7 +3,7 @@ import "generic-definitions.pp"
 # Class: puppetmaster
 #
 # This class installs a Puppetmaster
-# 
+#
 # Parameters:
 #	- $bind_address:
 #		The IP address Apache will bind to
@@ -27,7 +27,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
 		ensure => latest;
 	}
-	
+
 	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
 	file {
@@ -56,12 +56,16 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
 
+	#cloning the directories last
+
+	include gitclone
+
 	# Class: puppetmaster::config
 	#
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
 	class config {
 		include base::puppet
-		
+
 		file {
 			"/etc/puppet/puppet.conf.d/20-master.conf":
 				require => File["/etc/puppet/puppet.conf.d"],
@@ -74,7 +78,75 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => template("puppet/fileserver.conf.erb")
+				content => template("puppet/fileserver.conf.erb");
+		}
+	}
+
+	# Class: puppetmaster::gitclone
+	#
+	# This class handles the repositories from which the puppetmasters pull
+	#
+
+	class gitclone {
+		$gitdir = "/var/lib/git"
+
+		file {
+			"$gitdir":
+				ensure => directory,
+				owner => root,
+				group =>root;
+			"$gitdir/operations":
+				ensure => directory,
+				owner => root,
+				group => root;
+			"$gitdir/operations/puppet/.git/hooks/post-merge":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/post-merge",
+				mode => 0550;
+			"$gitdir/operations/puppet/.git/hooks/pre-commit":
+				require => Git::Clone["operations/puppet"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+			"$gitdir/operations/software/.git/hooks/pre-commit":
+				require => Git::Clone["operations/software"],
+				source => "puppet:///files/puppet/git/puppet/pre-commit",
+				mode => 0550;
+		}
+		if $is_labs_puppet_master {
+			git::clone {
+				"operations/puppet":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					branch => "test",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+				"operations/software":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
+			}
+		}
+		else {
+			file {
+				"$gitdir/operations/private":
+					ensure => directory,
+					owner => root,
+					group => puppet,
+					mode => 0750;
+
+				"$gitdir/operations/private/.git/hooks/post-merge":
+					source => "puppet:///files/puppet/git/private/post-merge",
+					mode => 0550;
+			}
+			git::clone {
+				"operations/puppet":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+				"operations/software":
+					require => File["$gitdir/operations"],
+					directory => "$gitdir/operations",
+					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
+			}
 		}
 	}
 
@@ -131,6 +203,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 
+<<<<<<< HEAD   (43a36c Wrap true in quotes to see if it fixes the upstart job.)
 	# Class: puppetmaster::production
 	#
 	# This class handles the Wikimedia Production specific bits of a Puppetmaster
@@ -180,14 +253,15 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		apache_site { "000-default": name => "000-default", ensure => absent }
 	}
 
+=======
+>>>>>>> BRANCH (038945 Merge "Add TODO" into production)
 	# Class: puppetmaster::labs
 	#
 	# This class handles the Wikimedia Labs specific bits of a Puppetmaster
 	class labs {
 		include generic::packages::git-core
-		
-		package { "libldap-ruby1.8": ensure => latest; }
 
+		package { "libldap-ruby1.8": ensure => latest; }
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.
 		file {
@@ -201,19 +275,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				command => "/usr/local/sbin/puppetsigner.py --scriptuser > /dev/null 2>&1",
 				require => File["/usr/local/sbin/puppetsigner.py"],
 				user    => root;
-			"update_private_puppet_repos":
-				command => "(cd /root/testrepo/private && /usr/bin/git pull) > /dev/null 2>&1",
-				environment => "GIT_SSH=/root/testrepo/ssh",
-				require => Package["git-core"],
-				user    => root;
-			"update_public_puppet_repos":
-				command => "(cd /root/testrepo/puppet && /usr/bin/git pull) > /dev/null 2>&1",
-				environment => "GIT_SSH=/root/testrepo/ssh",
-				require => Package["git-core"],
-				user    => root;
 		}
 	}
-	
+
 	# Class: puppetmaster::scripts
 	#
 	# This class installs some puppetmaster server side scripts required for the manifests
@@ -244,19 +308,19 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => present;
 		}
 
-		# Purge decommissioned hosts from the stored configs db		
+		# Purge decommissioned hosts from the stored configs db
 		schedule { "nightly":
 			range => "2 - 6",
 			period => daily,
 		}
-		
+
 		exec { "purge decommissioned hosts":
 			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
-			command => "for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+			command => "true; for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
 			schedule => nightly
 		}
 	}
-	
+
 	# Class: puppetmaster::dashboard
 	#
 	# This class installs a Puppet Dashboard interface for managing all Puppet clients
@@ -290,7 +354,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/etc/default/puppet-dashboard-workers":
 				content => template("puppet/dashboard/puppet-dashboard-workers.default.erb");
 		}
-		
+
 		apache_site { "dashboard":
 			name => "dashboard",
 			require => Exec["migrate database"]
@@ -312,7 +376,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		Exec["create database"] -> Exec["migrate database"] -> Service["puppet-dashboard-workers"]
 
 		service { "puppet-dashboard-workers": ensure => running }
-		
+
 		# Temporary fix for dashboard under Lucid
 		# http://projects.puppetlabs.com/issues/8800
 		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") == 0 {
@@ -321,7 +385,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				before => Exec["migrate database"],
 				source => "puppet:///files/puppet/dashboard/dashboard-fix-requirements-lucid.patch"
 			}
-			
+
 			exec { "fix gem-dependency.rb":
 				command => "patch -p0 < /etc/puppet-dashboard/dashboard-fix-requirements-lucid.patch",
 				cwd => "/usr/share/puppet-dashboard/vendor/rails/railties/lib/rails",
@@ -332,13 +396,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			}
 		}
 	}
-	
+
 	class { "puppetmaster::passenger":
 		bind_address => $bind_address,
 		verify_client => $verify_client,
 		allow_from => $allow_from
 	}
-	
+
 	include scripts
 
 	if $is_labs_puppet_master {

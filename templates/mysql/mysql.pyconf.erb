@@ -38,8 +38,8 @@ modules {
 }
 
 collection_group {
-  collect_every = 300
-  time_threshold = 300
+  collect_every = 60
+  time_threshold = 60
 
   metric {
     name = "mysql_innodb_pending_normal_aio_reads"
@@ -251,6 +251,10 @@ collection_group {
 
   metric {
     name = "mysql_connections"
+  }
+
+  metric {
+    name = "mysql_queries"
   }
 
   metric {

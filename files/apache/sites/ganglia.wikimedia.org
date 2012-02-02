@@ -12,8 +12,9 @@
 	</Directory>
 
 	Alias /2.2.0 /srv/org/wikimedia/gangliaweb
+	Alias /latest /srv/org/wikimedia/gangliaweb
 
-	RedirectMatch ^/$ http://ganglia.wikimedia.org/2.2.0/
+	RedirectMatch ^/$ http://ganglia.wikimedia.org/latest
 	ErrorLog /var/log/apache2/error.log
 	LogLevel warn
 </VirtualHost>
