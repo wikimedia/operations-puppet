@@ -283,3 +283,11 @@ class ganglia::web {
 		ensure => mounted;
 	}
 }
+
+class ganglia::logtailer {
+	# this class pulls in everything necessary to get a ganglia-logtailer instance on a machine
+
+	package { "ganglia-logtailer":
+		ensure => latest;
+	}
+}
