@@ -3,6 +3,7 @@
 import "generic-definitions.pp"
 
 # Virtual resources for the monitoring server
+# TODO: remove these after migration
 @monitor_group { "squids_pmtpa": description => "pmtpa text squids" }
 @monitor_group { "squids_upload": description => "pmtpa upload squids" }
 @monitor_group { "squids_text": description => "text squids" }
@@ -87,22 +88,6 @@ class squid {
 		mode => 0555,
 		source => "puppet:///files/squid/redirector",
 		ensure => present;
-	}
-
-	# Monitoring
-	monitor_service { "frontend http":
-		description => "Frontend Squid HTTP",
-		check_command => $nagios_group ? {
-			/_upload$/ => 'check_http_upload',
-			default => 'check_http'
-		};
-	}
-	monitor_service { "backend http":
-		description => "Backend Squid HTTP",
-		check_command => $nagios_group ? {
-			/_upload$/ => 'check_http_upload_on_port!3128',
-			default => 'check_http_on_port!3128'
-		};
 	}
 }
 
