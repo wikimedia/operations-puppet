@@ -468,14 +468,12 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::text
 }
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
