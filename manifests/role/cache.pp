@@ -17,7 +17,7 @@ class role::cache {
 			include	standard,
 				squid
 			
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][text][$::site]
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][text][$::site] }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $site != "esams" {
@@ -41,7 +41,7 @@ class role::cache {
 			include standard,
 				squid
 
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][upload][$::site]
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][upload][$::site] }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $site != "esams" {
