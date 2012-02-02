@@ -1879,7 +1879,7 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::cache::upload
+	include role::cache::text
 }
 
 # sq67-70 are varnishes for bits.wikimedia.org
