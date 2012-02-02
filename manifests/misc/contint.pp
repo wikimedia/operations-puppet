@@ -99,6 +99,11 @@ class misc::contint::test {
 		#	require => File["jenkins.list"],
 		#}
 
+		# Graphiz needed by the plugin that does the projects dependencies graph
+		package { "graphviz":
+			ensure => present
+		}
+
 		service { 'jenkins':
 			enable => true,
 			ensure => 'running',
