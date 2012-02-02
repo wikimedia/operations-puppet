@@ -5,25 +5,7 @@ class role::cache {
 
 			$cluster = "squids_text"
 
-			if ! $lvs_realserver_ips {
-				include lvs::configuration
-		
-				$sip = $lvs::configuration::lvs_service_ips[$::realm][text][$::site]
-
-				$lvs_realserver_ips = [
-					$sip['textsvc'],
-					$sip['wikimedialb'],
-					$sip['wikipedialb'],
-					$sip['wiktionarylb'],
-					$sip['wikiquotelb'],
-					$sip['wikibookslb'],
-					$sip['wikisourcelb'],
-					$sip['wikinewslb'],
-					$sip['wikiversitylb'],
-					$sip['mediawikilb'],
-					$sip['foundationlb']
-				]
-			}
+			include lvs::configuration
 
 			# FIXME: make coherent with $cluster
 			$nagios_group = $site ? {
@@ -33,8 +15,9 @@ class role::cache {
 			}
 
 			include	standard,
-				squid,
-				lvs::realserver
+				squid
+			
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][text][$::site] }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $site != "esams" {
@@ -47,13 +30,7 @@ class role::cache {
 
 			$cluster = "squids_upload"
 
-			if ! $lvs_realserver_ips {
-				include lvs::configuration
-
-				$sip = $lvs::configuration::lvs_service_ips[$::realm][upload][$::site]
-				
-				$lvs_realserver_ips = [ $sip['uploadsvc'], $sip['uploadlb'] ]
-			}
+			include lvs::configuration
 
 			# FIXME: make coherent with $cluster
 			$nagios_group = $site ? {
@@ -62,8 +39,9 @@ class role::cache {
 			}
 
 			include standard,
-				squid,
-				lvs::realserver
+				squid
+
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][upload][$::site] }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $site != "esams" {

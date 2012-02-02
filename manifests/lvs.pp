@@ -8,7 +8,7 @@ import "generic-definitions.pp"
 class lvs::configuration {
 
 	$lvs_class_hosts = {
-		'high-traffic1' => $realm ? {
+		'high-traffic1' => $::realm ? {
 			'production' => $site ? {
 				'pmtpa' => [ "lvs2", "lvs6" ],
 				'eqiad' => [ "lvs1001", "lvs1004" ],
@@ -21,7 +21,7 @@ class lvs::configuration {
 			},
 			default => undef,
 		},
-		'high-traffic2' => $realm ? {
+		'high-traffic2' => $::realm ? {
 			'production' => $site ? {
 				'pmtpa' => [ "lvs1", "lvs5" ],
 				'eqiad' => [ "lvs1002", "lvs1005" ],
@@ -36,7 +36,7 @@ class lvs::configuration {
 		},
 		# class https needs to be present on the same hosts as the corresponding
 		# http services
-		'https' => $realm ? {
+		'https' => $::realm ? {
 			'production' => $site ? {
 				'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
 				'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
@@ -49,11 +49,11 @@ class lvs::configuration {
 			},
 			default => undef,
 		},
-		'specials' => $realm ? {
+		'specials' => $::realm ? {
 			'production' => [ "lvs1", "lvs2" ],
 			'labs' => [ "i-00000051" ],
 		},
-		'low-traffic' => $realm ? {
+		'low-traffic' => $::realm ? {
 			'production' => $site ? {
 				'pmtpa' => [ "lvs3", "lvs4" ],
 				'eqiad' => [ "lvs1003", "lvs1006" ],
@@ -66,7 +66,7 @@ class lvs::configuration {
 			},
 			default => undef,
 		},
-		'testing' => $realm ? {
+		'testing' => $::realm ? {
 			'production' => [ "lvs1001", "lvs1004" ],
 			'labs' => [ "i-00000051" ],
 		},
@@ -165,7 +165,7 @@ class lvs::configuration {
 		}
 	}
 
-	$service_ips = $lvs_service_ips[$realm]
+	$service_ips = $lvs_service_ips[$::realm]
 
 	$lvs_services = {
 		"text" => {
@@ -408,7 +408,7 @@ class lvs::balancer {
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
 	
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		# Hack for arrays in LDAP - you suck puppet
 		$lvs_balancer_ips = split(get_var('lvs_balancer_ips'), ',')
 	}
@@ -467,7 +467,21 @@ class lvs::balancer::runcommand {
 	}
 }
 
-class lvs::realserver {
+# Class: lvs::realserver
+#
+# Sets up a server to be used as a 'real server' by LVS
+#
+# Parameters:
+#	- $realserver_ips
+#		Array or hash (name => ip) of service IPs to answer on
+class lvs::realserver($realserver_ips=$::lvs_realserver_ips) {
+	if $::realm == "labs" {
+		# FIXME: Hack for arrays in LDAP - you suck puppet
+		$ips = split(get_var('lvs_realserver_ips'), ',')
+	}
+	else {
+		$ips = $realserver_ips
+	}
 	file { "/etc/default/wikimedia-lvs-realserver":
 		mode => 0444,
 		owner => root,
