@@ -307,6 +307,7 @@ class text-squid {
 	}
 }
 
+# TODO: migrate existing hosts to role::cache::squid::upload
 class upload-squid {
 	$cluster = "squids_upload"
 
