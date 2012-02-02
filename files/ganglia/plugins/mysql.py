@@ -2,6 +2,7 @@
 The MIT License
 
 Copyright (c) 2008 Gilad Raphaelli <gilad@raphaelli.com>
+Adapted for 5.1+ InnoDB status 2012 Asher Feldman <asher@wikimedia.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -110,7 +111,7 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		if get_innodb:
 			cursor = conn.cursor(MySQLdb.cursors.Cursor)
 			cursor.execute("SHOW /*!50000 ENGINE*/ INNODB STATUS")
-			innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
+			innodb_status = parse_innodb_status(cursor.fetchone()[2].split('\n'))
 			cursor.close()
 			logging.debug('innodb_status: ' + str(innodb_status))
 
@@ -179,6 +180,7 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		'open_files',
 		'open_tables',
 		'opened_tables',
+		'queries',
 		'questions',
 		'select_full_join',
 		'select_full_range_join',

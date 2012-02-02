@@ -2,6 +2,7 @@
 The MIT License
 
 Copyright (c) 2008 Gilad Raphaelli <gilad@raphaelli.com>
+Adapted for 5.1+ InnoDB status 2012 Asher Feldman <asher@wikimedia.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -75,6 +76,15 @@ def longish(x):
 	else:
 		raise ValueError
 
+def hexlongish(x):
+	if len(x):
+		try:
+			return long(str(x), 16)
+		except ValueError:
+			return longish(x[:-1])
+	else:
+		raise ValueError
+
 def parse_innodb_status(innodb_status_raw):
 	def sumof(status):
 		def new(*idxs):
@@ -102,10 +112,10 @@ def parse_innodb_status(innodb_status_raw):
 
 		# TRANSACTIONS
 		elif "Trx id counter" in line:
-			innodb_status['transactions'] += isum(3,4)
+			innodb_status['transactions'] += hexlongish(istatus[3])
 
 		elif "Purge done for trx" in line:
-			innodb_status['transactions_purged'] += isum(6,7)
+			innodb_status['transactions_purged'] += hexlongish(istatus[6])
 
 		elif "History list length" in line:
 			innodb_status['history_list'] = longish(istatus[3])
@@ -155,10 +165,10 @@ def parse_innodb_status(innodb_status_raw):
 			innodb_status['pending_chkp_writes'] = longish(istatus[4])
 		
 		elif "Log sequence number" in line:
-			innodb_status['log_bytes_written'] = isum(3,4)
+			innodb_status['log_bytes_written'] = longish(istatus[3])
 		
 		elif "Log flushed up to" in line:
-			innodb_status['log_bytes_flushed'] = isum(4,5)
+			innodb_status['log_bytes_flushed'] = longish(istatus[4])
 
 		# BUFFER POOL AND MEMORY
 		elif "Buffer pool size" in line:
@@ -173,7 +183,7 @@ def parse_innodb_status(innodb_status_raw):
 		elif "Modified db pages" in line:
 			innodb_status['buffer_pool_pages_dirty'] = longish(istatus[3])
 		
-		elif "Pages read" in line:
+		elif "Pages read" in line and "ahead" not in line:
 			innodb_status['pages_read'] = longish(istatus[2])
 			innodb_status['pages_created'] = longish(istatus[4])
 			innodb_status['pages_written'] = longish(istatus[6])
