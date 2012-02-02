@@ -19,6 +19,6 @@ pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$
 
 #specific country filters - 2012-01-24 through 2012-02-20 then ask Nimish  or Amit if we still need them
 #pipe 1 /var/log/squid/filters/countries-1 >> /var/log/squid/countries-1.log
-#pipe 10 /var/log/squid/filters/countries-10 >> /var/log/squid/countries-10.log
-#pipe 100 /var/log/squid/filters/countries-100 >> /var/log/squid/countries-100.log
+pipe 10 /usr/bin/udp_filter -f -c KH,BW,CM,MG,ML,MU,NE,VU -g -d /var/log/squid/filters/GeoIPLibs/GeoIP.dat >> /var/log/squid/countries-10.log
+pipe 100 /usr/bin/udp_filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -d /var/log/squid/filters/GeoIPLibs/GeoIP.dat >> /var/log/squid/countries-10.lo
 
