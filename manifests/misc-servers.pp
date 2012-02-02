@@ -656,8 +656,16 @@ Wikimedia-related channels on irc.freenode.net.
 			owner => irc,
 			group => irc,
 			content => $motd;
+		"/etc/apache2/sites-available/irc.wikimedia.org":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/irc.wikimedia.org";
 	}
 
+	# redirect http://irc.wikimedia.org to http://meta.wikimedia.org/wiki/IRC
+	apache_site { irc: name => "irc.wikimedia.org" }
+ 
 	# Doesn't work in Puppet 0.25 due to a bug
 	service { ircd:
 		provider => base,
