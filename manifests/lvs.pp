@@ -395,7 +395,6 @@ class lvs::configuration {
 					'url' => [ 'http://ms-fe.pmtpa.wmnet/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg' ],
 					},
 				'IdleConnection' => $idleconnection_monitor_options,
-				'RunCommand' => $runcommand_monitor_options
 			},
 		},
 	}
