@@ -314,28 +314,13 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
-		"new-payments" => {
+		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
 			'ip' => "208.80.152.213",
 			'port' => 443,
 			'scheduler' => 'sh',
 			'bgp' => "yes",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'https://payments.wikimedia.org/index.php' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"payments" => {
-			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.7",
-			'port' => 443,
-			'scheduler' => 'sh',
-			'bgp' => "no",
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'ProxyFetch' => {
