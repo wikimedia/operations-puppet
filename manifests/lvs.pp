@@ -496,10 +496,17 @@ class lvs::balancer::runcommand {
 	}
 }
 
-class lvs::realserver {
+# Class: lvs::realserver
+#
+# Sets up a server to be used as a 'real server' by LVS
+#
+# Parameters:
+#	- $realserver_ips
+#		Array or hash (name => ip) of service IPs to answer on
+class lvs::realserver($realserver_ips=$lvs_realserver_ips) {
 	if $realm == "labs" {
-		# Hack for arrays in LDAP - you suck puppet
-		$lvs_realserver_ips = split(get_var('lvs_realserver_ips'), ',')
+		# FIXME: Hack for arrays in LDAP - you suck puppet
+		$realserver_ips = split(get_var('lvs_realserver_ips'), ',')
 	}
 	file { "/etc/default/wikimedia-lvs-realserver":
 		mode => 0444,
