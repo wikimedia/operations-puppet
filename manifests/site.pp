@@ -1155,14 +1155,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		lvs::balancer,
 		lvs::balancer::runcommand
 
-	if $hostname == "lvs1" {
-		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
-		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
-	}
-	if $hostname == "lvs2" {
-		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
-	}
-
 	$ips = {
 		'internal' => {
 			'lvs1' => "10.0.0.11",
