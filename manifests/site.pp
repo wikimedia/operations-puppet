@@ -602,7 +602,7 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db2(6)$/ {
+	if $hostname =~ /^db2[46]$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
