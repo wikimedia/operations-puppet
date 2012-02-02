@@ -474,7 +474,8 @@ class lvs::balancer::runcommand {
 # Parameters:
 #	- $realserver_ips
 #		Array or hash (name => ip) of service IPs to answer on
-class lvs::realserver($realserver_ips=$::lvs_realserver_ips) {
+# FIXME: dynamic lookup $lvs_realserver_ips
+class lvs::realserver($realserver_ips=$lvs_realserver_ips) {
 	if $::realm == "labs" {
 		# FIXME: Hack for arrays in LDAP - you suck puppet
 		$ips = split(get_var('lvs_realserver_ips'), ',')
