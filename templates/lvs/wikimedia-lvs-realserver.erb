@@ -6,7 +6,11 @@ SYSCTLFILE=/usr/share/wikimedia-lvs-realserver/sysctl.conf
 # LVS service IPs to be bound to the loopback interface,
 # separate using spaces
 <% if scope.lookupvar("lvs::realserver::ips").is_a?(Hash) -%>
+<<<<<<< HEAD   (db5111 Fix syntax errors)
 LVS_SERVICE_IPS="<%= scope.lookupvar("lvs::realserver::ips").values.join(" ") -%>"
+=======
+LVS_SERVICE_IPS="<%= scope.lookupvar("lvs::realserver::ips").values.sort.join(" ") -%>"
+>>>>>>> BRANCH (68ec3b Cleanup: remove obsolete old role classes text-squid and upl)
 <% else -%>
 LVS_SERVICE_IPS="<%= scope.lookupvar("lvs::realserver::ips").join(" ") -%>"
 <% end -%>
