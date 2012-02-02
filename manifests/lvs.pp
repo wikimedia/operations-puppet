@@ -105,7 +105,6 @@ class lvs::configuration {
 			'text' => {
 				# TODO: remove old text ip addresses
 				'pmtpa' => {
-					'text' => "208.80.152.2",
 					'textsvc' => "10.2.1.25",
 					'wikimedialb' => "208.80.152.200",
 					'wikipedialb' => "208.80.152.201",
@@ -132,7 +131,6 @@ class lvs::configuration {
 					'foundationlb' => "208.80.154.233"
 				},
 				'esams' => {
-					'text' => "91.198.174.232",
 					'textsvc' => "10.2.3.25",
 					'wikimedialb' => "91.198.174.224",
 					'wikipedialb' => "91.198.174.225",
@@ -142,6 +140,7 @@ class lvs::configuration {
 					'wikisourcelb' => "91.198.174.229",
 					'wikinewslb' => "91.198.174.230",
 					'wikiversitylb' => "91.198.174.231",
+					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235"
 				},
 			},
@@ -326,34 +325,6 @@ class lvs::configuration {
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'https://payments.wikimedia.org/index.php' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"owa" => {
-			'description' => "OWA analytics, owa.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.6",
-			'bgp' => "no",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'http://owa.wikimedia.org/owa' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"owas" => {
-			'description' => "OWA analytics, HTTPS owa.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.6",
-			'port' => 443,
-			'scheduler' => 'sh',
-			'bgp' => "no",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'https://owa.wikimedia.org/owa' ],
 					},
 				'IdleConnection' => $idleconnection_monitor_options
 			},
@@ -626,8 +597,6 @@ define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $crit
 
 # FIXME: temporary hack
 if $hostname == "spence" {
-	monitor_service_lvs_http { "text.pmtpa.wikimedia.org": ip_address => "208.80.152.2", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "text.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_https_upload", critical => "false" }
 	monitor_service_lvs_http { "m.wikimedia.org": ip_address => "208.80.154.236", check_command => "check_http_mobile" }
