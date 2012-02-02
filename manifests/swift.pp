@@ -156,6 +156,21 @@ class swift::proxy::config(
 		mode => 0444,
 		content => template("swift/proxy-server.conf.erb")
 	}
+
+	include ganglia::logtailer
+	file { "/usr/share/ganglia-logtailer/SwiftProxyLogtailer.py":
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/swift/SwiftMedia/wmf/",
+		require => Package['ganglia-logtailer']
+	}
+	cron { swift-proxy-ganglia:
+		command => "ganglia-logtailer --classname SwiftProxyLogtailer --log_file /var/log/system.log --mode cron",
+		user => root,
+		minute => '*/5',
+		ensure => present
+	}
 }
 
 class swift::storage {
