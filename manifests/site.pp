@@ -477,10 +477,9 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 }
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_u"
 	$squid_coss_disks = [ 'sdb5' ]
 
-	include upload-squid
+	include role::cache::upload
 }
 
 node "argon.wikimedia.org" {
@@ -1073,21 +1072,19 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
  node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_u"
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include upload-squid
+	include role::cache::upload
 }
 
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid
+	include role::cache::text
 }
 
 node "linne.wikimedia.org" {
