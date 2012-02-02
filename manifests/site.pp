@@ -64,7 +64,11 @@ class standard {
 
 # TODO: Perhaps rename these classes to "role::<class>" to distinguish them
 # from classes inside service manifests
+# Update: migration is now in progress, into role/<class>.pp. Classes still here
+# are old, and probably need to be rewritten.
 
+
+# TODO: rewrite this old mess.
 class applicationserver {
 	class parent {
 		$cluster = "appserver"
