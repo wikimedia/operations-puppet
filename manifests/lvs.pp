@@ -9,27 +9,27 @@ class lvs::configuration {
 
 	$lvs_class_hosts = {
 		'high-traffic1' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs2", "lvs6" ],
 				'eqiad' => [ "lvs1001", "lvs1004" ],
 				'esams' => [ "amslvs1", "amslvs3" ],
 				default => undef,
 			},
-			'labs' => $site ? {
-				'pmtpa' => [ "i-00000057" ],
+			'labs' => $::site ? {
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
 		'high-traffic2' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs1", "lvs5" ],
 				'eqiad' => [ "lvs1002", "lvs1005" ],
 				'esams' => [ "amslvs2", "amslvs4" ],
 				default => undef,
 			},
-			'labs' => $site ? {
-				'pmtpa' => [],
+			'labs' => $::site ? {
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
@@ -37,38 +37,38 @@ class lvs::configuration {
 		# class https needs to be present on the same hosts as the corresponding
 		# http services
 		'https' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
 				'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
 				'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
 				default => undef,
 			},
-			'labs' => $site ? {
-				'pmtpa' => [],
+			'labs' => $::site ? {
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
 		'specials' => $::realm ? {
 			'production' => [ "lvs1", "lvs2" ],
-			'labs' => [],
+			'labs' => [ "i-00000051" ],
 		},
 		'low-traffic' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs3", "lvs4" ],
 				'eqiad' => [ "lvs1003", "lvs1006" ],
 				'esams' => [ ],
 				default => undef,
 			},
-			'labs' => $site ? {
-				'pmtpa' => [],
+			'labs' => $::site ? {
+				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
 		'testing' => $::realm ? {
 			'production' => [ "lvs1001", "lvs1004" ],
-			'labs' => [],
+			'labs' => [ "i-00000051" ],
 		},
 	}
 
@@ -98,18 +98,96 @@ class lvs::configuration {
 
 	# Configuration of PyBal LVS services.
 	# NOTE! Double quotation may be needed for passing strings
+	
+	# NOTE! This hash is referenced in many other manifests
 	$lvs_service_ips = {
 		'production' => {
 			'text' => {
 				# TODO: remove old text ip addresses
-				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
-				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
-				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
+				'pmtpa' => {
+					'textsvc' => "10.2.1.25",
+					'wikimedialb' => "208.80.152.200",
+					'wikipedialb' => "208.80.152.201",
+					'wiktionarylb' => "208.80.152.202",
+					'wikiquotelb' => "208.80.152.203",
+					'wikibookslb' => "208.80.152.204",
+					'wikisourcelb' => "208.80.152.205",
+					'wikinewslb' => "208.80.152.206",
+					'wikiversitylb' => "208.80.152.207",
+					'mediawikilb' => "208.80.152.208",
+					'foundationlb' => "208.80.152.209"
+				},
+				'eqiad' => {
+					'textsvc' => "10.2.2.25",
+					'wikimedialb' => "208.80.154.224",
+					'wikipedialb' => "208.80.154.225",
+					'wiktionarylb' => "208.80.154.226",
+					'wikiquotelb' => "208.80.154.227",
+					'wikibookslb' => "208.80.154.228",
+					'wikisourcelb' => "208.80.154.229",
+					'wikinewslb' => "208.80.154.230",
+					'wikiversitylb' => "208.80.154.231",
+					'mediawikilb' => "208.80.154.232",
+					'foundationlb' => "208.80.154.233"
+				},
+				'esams' => {
+					'textsvc' => "10.2.3.25",
+					'wikimedialb' => "91.198.174.224",
+					'wikipedialb' => "91.198.174.225",
+					'wiktionarylb' => "91.198.174.226",
+					'wikiquotelb' => "91.198.174.227",
+					'wikibookslb' => "91.198.174.228",
+					'wikisourcelb' => "91.198.174.229",
+					'wikinewslb' => "91.198.174.230",
+					'wikiversitylb' => "91.198.174.231",
+					'mediawikilb' => "91.198.174.232",
+					'foundationlb' => "91.198.174.235"
+				},
 			},
 			'https' => {
-				'pmtpa' => { 'wikimedialbsecure' => "208.80.152.200", 'wikipedialbsecure' => "208.80.152.201", 'bitslbsecure' => "208.80.152.210", 'uploadlbsecure' => "208.80.152.211", 'wiktionarylbsecure' => "208.80.152.202", 'wikiquotelbsecure' => "208.80.152.203", 'wikibookslbsecure' => "208.80.152.204", 'wikisourcelbsecure' => "208.80.152.205", 'wikinewslbsecure' => "208.80.152.206", 'wikiversitylbsecure' => "208.80.152.207", 'mediawikilbsecure' => "208.80.152.208", 'foundationlbsecure' => "208.80.152.209" },
-				'eqiad' => { 'wikimedialbsecure' => "208.80.154.224", 'wikipedialbsecure' => "208.80.154.225", 'bitslbsecure' => "208.80.154.234", 'uploadlbsecure' => "208.80.154.235", 'wiktionarylbsecure' => "208.80.154.226", 'wikiquotelbsecure' => "208.80.154.227", 'wikibookslbsecure' => "208.80.154.228", 'wikisourcelbsecure' => "208.80.154.229", 'wikinewslbsecure' => "208.80.154.230", 'wikiversitylbsecure' => "208.80.154.231", 'mediawikilbsecure' => "208.80.154.232", 'foundationlbsecure' => "208.80.154.233", 'mobilelbsecure' => "208.80.154.236" },
-				'esams' => { 'wikimedialbsecure' => "91.198.174.224", 'wikipedialbsecure' => "91.198.174.225", 'bitslbsecure' => "91.198.174.233", 'uploadlbsecure' => "91.198.174.234", 'wiktionarylbsecure' => "91.198.174.226", 'wikiquotelbsecure' => "91.198.174.227", 'wikibookslbsecure' => "91.198.174.228", 'wikisourcelbsecure' => "91.198.174.229", 'wikinewslbsecure' => "91.198.174.230", 'wikiversitylbsecure' => "91.198.174.231", 'mediawikilbsecure' => '91.198.174.232', 'foundationlbsecure' => "91.198.174.235" },
+				'pmtpa' => {
+					'wikimedialbsecure' => "208.80.152.200",
+					'wikipedialbsecure' => "208.80.152.201",
+					'bitslbsecure' => "208.80.152.210",
+					'uploadlbsecure' => "208.80.152.211",
+					'wiktionarylbsecure' => "208.80.152.202",
+					'wikiquotelbsecure' => "208.80.152.203",
+					'wikibookslbsecure' => "208.80.152.204",
+					'wikisourcelbsecure' => "208.80.152.205",
+					'wikinewslbsecure' => "208.80.152.206",
+					'wikiversitylbsecure' => "208.80.152.207",
+					'mediawikilbsecure' => "208.80.152.208",
+					'foundationlbsecure' => "208.80.152.209"
+				},
+				'eqiad' => {
+					'wikimedialbsecure' => "208.80.154.224",
+					'wikipedialbsecure' => "208.80.154.225",
+					'bitslbsecure' => "208.80.154.234",
+					'uploadlbsecure' => "208.80.154.235",
+					'wiktionarylbsecure' => "208.80.154.226",
+					'wikiquotelbsecure' => "208.80.154.227",
+					'wikibookslbsecure' => "208.80.154.228",
+					'wikisourcelbsecure' => "208.80.154.229",
+					'wikinewslbsecure' => "208.80.154.230",
+					'wikiversitylbsecure' => "208.80.154.231",
+					'mediawikilbsecure' => "208.80.154.232",
+					'foundationlbsecure' => "208.80.154.233",
+					'mobilelbsecure' => "208.80.154.236"
+				},
+				'esams' => {
+					'wikimedialbsecure' => "91.198.174.224",
+					'wikipedialbsecure' => "91.198.174.225",
+					'bitslbsecure' => "91.198.174.233",
+					'uploadlbsecure' => "91.198.174.234",
+					'wiktionarylbsecure' => "91.198.174.226",
+					'wikiquotelbsecure' => "91.198.174.227",
+					'wikibookslbsecure' => "91.198.174.228",
+					'wikisourcelbsecure' => "91.198.174.229",
+					'wikinewslbsecure' => "91.198.174.230",
+					'wikiversitylbsecure' => "91.198.174.231",
+					'mediawikilbsecure' => '91.198.174.232',
+					'foundationlbsecure' => "91.198.174.235"
+				},
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
@@ -150,47 +228,18 @@ class lvs::configuration {
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
-				'eqiad' => undef,
 			}
 		},
 		'labs' => {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'https' => {
-				'pmtpa' => undef,
-			},
-			'bits' => {
-				# dummy IP for now
-				'pmtpa' => "208.80.153.196",
-			},
-			'upload' => {
-				'pmtpa' => undef,
-			},
-			'apaches' => {
-				'pmtpa' => undef,
-			},
-			'rendering' => {
-				'pmtpa' => undef,
-			},
-			'api' => {
-				'pmtpa' => undef,
-			},
-			'search_pool1' => {
-				'pmtpa' => undef,
-			},
-			'search_pool2' => {
-				'pmtpa' => undef,
-			},
-			'search_pool3' => {
-				'pmtpa' => undef,
-			},
-			'mobile' => {
-				'pmtpa' => undef,
-			},
-			'swift' => {
-				'pmtpa' => undef,
-			}
+			'apaches' => undef,
+			'rendering' => undef,
+			'api' => undef,
+			'search_pool1' => undef,
+			'search_pool2' => undef,
+			'search_pool3' => undef,
 		}
 	}
 
@@ -200,7 +249,7 @@ class lvs::configuration {
 		"text" => {
 			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $service_ips['text'][$site],
+			'ip' => $service_ips['text'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -213,7 +262,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
-			'ip' => $service_ips['https'][$site],
+			'ip' => $service_ips['https'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
 			# These IPs are announced by the corresponding HTTP services
@@ -229,7 +278,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $service_ips['bits'][$site],
+			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -242,7 +291,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'ip' => $service_ips['upload'][$site],
+			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -255,7 +304,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => "testing",
-			'ip' => $service_ips['mobile'][$site],
+			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -265,7 +314,7 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
-		"new-payments" => {
+		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
 			'ip' => "208.80.152.213",
@@ -280,53 +329,10 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
-		"owa" => {
-			'description' => "OWA analytics, owa.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.6",
-			'bgp' => "no",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'http://owa.wikimedia.org/owa' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"owas" => {
-			'description' => "OWA analytics, HTTPS owa.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.6",
-			'port' => 443,
-			'scheduler' => 'sh',
-			'bgp' => "no",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'https://owa.wikimedia.org/owa' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		"payments" => {
-			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
-			'class' => "specials",
-			'ip' => "208.80.152.7",
-			'port' => 443,
-			'scheduler' => 'sh',
-			'bgp' => "no",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'https://payments.wikimedia.org/index.php' ],
-					},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['apaches'][$site],
+			'ip' => $service_ips['apaches'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -340,7 +346,7 @@ class lvs::configuration {
 		"rendering" => {
 			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['rendering'][$site],
+			'ip' => $service_ips['rendering'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".74",
 			'monitors' => {
@@ -354,7 +360,7 @@ class lvs::configuration {
 		"api" => {
 			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['api'][$site],
+			'ip' => $service_ips['api'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -369,7 +375,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool1'][$site],
+			'ip' => $service_ips['search_pool1'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -385,7 +391,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool2'][$site],
+			'ip' => $service_ips['search_pool2'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -401,7 +407,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool3'][$site],
+			'ip' => $service_ips['search_pool3'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -416,7 +422,7 @@ class lvs::configuration {
 		"swift" => {
 			'description' => "Swift object store for thumbnails",
 			'class' => "low-traffic",
-			'ip' => $service_ips['swift'][$site],
+			'ip' => $service_ips['swift'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -503,7 +509,8 @@ class lvs::balancer::runcommand {
 # Parameters:
 #	- $realserver_ips
 #		Array or hash (name => ip) of service IPs to answer on
-class lvs::realserver($realserver_ips=$::lvs_realserver_ips) {
+# FIXME: dynamic lookup $lvs_realserver_ips
+class lvs::realserver($realserver_ips=$lvs_realserver_ips) {
 	if $::realm == "labs" {
 		# FIXME: Hack for arrays in LDAP - you suck puppet
 		$ips = split(get_var('lvs_realserver_ips'), ',')
@@ -575,8 +582,6 @@ define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $crit
 
 # FIXME: temporary hack
 if $hostname == "spence" {
-	monitor_service_lvs_http { "text.pmtpa.wikimedia.org": ip_address => "208.80.152.2", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_http { "text.esams.wikimedia.org": ip_address => "91.198.174.232", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_https_upload", critical => "false" }
 	monitor_service_lvs_http { "m.wikimedia.org": ip_address => "208.80.154.236", check_command => "check_http_mobile" }

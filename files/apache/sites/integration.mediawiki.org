@@ -31,7 +31,7 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressIcon
@@ -44,10 +44,10 @@ NameVirtualHost *:443
 
 		ServerSignature Off
 
-		IndexStyleSheet "nightly.css"
+		IndexStyleSheet "../../nightly.css"
 		HeaderName "HEADER.html"
 		ReadmeName "README.html"
-		IndexIgnore "*.css" "*.html" ".."
+		IndexIgnore "*.html" ".."
 	</Directory>
 
 	# Publish testswarm fetcher checkouts to the outside world
@@ -113,7 +113,7 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration/WikipediaMobile/nightly/>
+	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressIcon
@@ -126,10 +126,9 @@ NameVirtualHost *:443
 
 		ServerSignature Off
 
-		IndexStyleSheet "nightly.css"
 		HeaderName "HEADER.html"
 		ReadmeName "README.html"
-		IndexIgnore "*.css" "*.html" ".."
+		IndexIgnore "*.html" ".."
 	</Directory>
 
 	# Publish testswarm fetcher checkouts to the outside world

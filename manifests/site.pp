@@ -64,7 +64,11 @@ class standard {
 
 # TODO: Perhaps rename these classes to "role::<class>" to distinguish them
 # from classes inside service manifests
+# Update: migration is now in progress, into role/<class>.pp. Classes still here
+# are old, and probably need to be rewritten.
 
+
+# TODO: rewrite this old mess.
 class applicationserver {
 	class parent {
 		$cluster = "appserver"
@@ -269,216 +273,6 @@ class searchindexer {
 		search::indexer
 }
 
-# TODO: migrate existing hosts to role::cache::squid::text
-class text-squid {
-	$cluster = "squids_text"
-
-	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = $realm ? {
-			'production' => $site ? {
-			 	'pmtpa' => [ "208.80.152.2", "208.80.152.200", "208.80.152.201", "208.80.152.202", "208.80.152.203", "208.80.152.204", "208.80.152.205", "208.80.152.206", "208.80.152.207", "208.80.152.208", "208.80.152.209", "10.2.1.25" ],
-				'esams' => [ "91.198.174.232", "91.198.174.233", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.25" ]
-			},
-			# TODO: add text svc address
-			'labs' => $site ? {
-			 	'pmtpa' => [ "208.80.153.193", "208.80.153.197", "208.80.153.198", "208.80.153.199", "208.80.153.200", "208.80.153.201", "208.80.153.202", "208.80.153.203", "208.80.153.204", "208.80.153.205" ],
-				'eqiad' => [ "" ],
-				'esams' => [ "" ]
-			}
-		}
-	}
-
-	system_role { text-squid: description => "text Squid server" }
-
-	# FIXME: make coherent with $cluster
-	$nagios_group = $site ? {
-		'pmtpa' => 'squids_text',
-		'esams' => 'squids_esams_text',
-		'eqiad' => 'squids_eqiad_text'
-	}
-
-	include	standard,
-		squid,
-		lvs::realserver
-
-	# HTCP packet loss monitoring on the ganglia aggregators
-	if $ganglia_aggregator == "true" and $site != "esams" {
-		include misc::monitoring::htcp-loss
-	}
-}
-
-# TODO: migrate existing hosts to role::cache::squid::upload
-class upload-squid {
-	$cluster = "squids_upload"
-
-	if ! $lvs_realserver_ips {
-		$lvs_realserver_ips = $site ? {
-			'pmtpa' => [ "208.80.152.211", "10.2.1.24" ],
-			'eqiad' => [ "" ],
-			'esams' => [ "91.198.174.234", "10.2.3.24" ],
-		}
-	}
-
-	system_role { upload-squid: description => "upload Squid server" }
-
-	# FIXME: make coherent with $cluster
-	$nagios_group = $site ? {
-		'pmtpa' => 'squids_upload',
-		'esams' => 'squids_esams_upload'
-	}
-
-	include standard,
-		squid,
-		lvs::realserver
-
-	# HTCP packet loss monitoring on the ganglia aggregators
-	if $ganglia_aggregator == "true" and $site != "esams" {
-		include misc::monitoring::htcp-loss
-	}
-}
-
-class cache {
-	class bits {
-		$cluster = "cache_bits"
-		$nagios_group = "cache_bits_${site}"
-
-		$lvs_realserver_ips = $site ? {
-			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
-			"eqiad" => [ "208.80.154.234", "10.2.2.23" ],
-			"esams" => [ "91.198.174.233", "10.2.3.23" ],
-		}
-
-		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
-		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
-
-		$varnish_backends = $site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
-			# [ bits-lb.pmtpa, bits-lb.eqiad ]
-			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
-			default => []
-		}
-
-		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
-		$multiple_backends = {
-			'pmtpa-eqiad' => {
-				"backend" => $bits_appservers,
-				"test_wikipedia" => $test_wikipedia
-				},
-			'esams' => {
-				"backend" => $varnish_backends,
-			}
-		}
-
-		$varnish_directors = $site ? {
-			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
-			'esams' => $multiple_backends["esams"],
-		}
-
-		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
-
-		system_role { "cache::bits": description => "bits Varnish cache server" }
-
-		require generic::geoip::files
-
-		include standard,
-			lvs::realserver,
-			varnish::monitoring::ganglia
-
-		varnish::instance { "bits":
-			name => "",
-			vcl => "bits",
-			port => 80,
-			admin_port => 6082,
-			storage => "-s malloc,1G",
-			backends => $varnish_backends,
-			directors => $varnish_directors,
-			backend_options => {
-				'port' => 80,
-				'connect_timeout' => "5s",
-				'first_byte_timeout' => "35s",
-				'between_bytes_timeout' => "4s",
-				'max_connections' => 10000,
-				'probe' => "bits",
-				'retry5x' => 1
-			},
-			enable_geoiplookup => "true"
-		}
-	}
-	class mobile {
-		$cluster = "cache_mobile"
-		$nagios_group = "cache_mobile_${site}"
-
-		monitor_service { "varnishncsa": description => "mobile traffic loggers",
-			check_command => "nrpe_check_varnishncsa" }
-
-		$lvs_realserver_ips = $site ? {
-			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
-			default => [ ]
-		}
-
-		$varnish_fe_backends = $site ? {
-			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
-				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
-			default => []
-		}
-		$varnish_fe_directors = {
-			"pmtpa" => {},
-			"eqiad" => { "backend" => $varnish_fe_backends },
-			"esams" => {},
-		}
-
-		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
-
-		system_role { "cache::mobile": description => "mobile Varnish cache server" }
-
-		include standard,
-			varnish::htcpd,
-			varnish::logging,
-			varnish::monitoring::ganglia,
-			lvs::realserver
-
-		varnish::instance { "mobile-backend":
-			name => "",
-			vcl => "mobile-backend",
-			port => 81,
-			admin_port => 6083,
-			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
-			backends => [ "10.2.1.1" ],
-			directors => { "backend" => [ "10.2.1.1" ] },
-			backend_options => {
-				'port' => 80,
-				'connect_timeout' => "5s",
-				'first_byte_timeout' => "35s",
-				'between_bytes_timeout' => "4s",
-				'max_connections' => 1000,
-				'probe' => "bits",
-				'retry5x' => 1
-				},
-		}
-
-		varnish::instance { "mobile-frontend":
-			name => "frontend",
-			vcl => "mobile-frontend",
-			port => 80,
-			admin_port => 6082,
-			backends => $varnish_fe_backends,
-			directors => $varnish_fe_directors[$site],
-			backend_options => {
-				'port' => 81,
-				'connect_timeout' => "5s",
-				'first_byte_timeout' => "35s",
-				'between_bytes_timeout' => "2s",
-				'max_connections' => 100000,
-				'probe' => "varnish",
-				'retry5x' => 0
-				},
-		}
-	}
-}
-
 class protoproxy::ssl {
 	$cluster = "ssl"
 
@@ -606,21 +400,18 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 
 # amssq31-46 are text squids
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::text
 }
 
 node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_u"
 	$squid_coss_disks = [ 'sdb5' ]
 
-	include upload-squid
+	include role::cache::upload
 }
 
 node "argon.wikimedia.org" {
@@ -640,7 +431,7 @@ node /(arsenic|niobium)\.wikimedia\.org/ {
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
-	include cache::bits
+	include role::cache::bits
 }
 
 node "bayes.wikimedia.org" {
@@ -693,7 +484,7 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::cache::squid::text
+	include role::cache::text
 }
 
 # eqiad varnish for m.wikipedia.org
@@ -703,8 +494,7 @@ node /cp104[1-4].wikimedia.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include cache::mobile,
-	nrpe
+	include role::cache::mobile
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
@@ -712,7 +502,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
-	include cache::bits
+	include role::cache::bits
 }
 
 node "ekrem.wikimedia.org" {
@@ -1215,21 +1005,19 @@ node /knsq([1-7])\.esams\.wikimedia\.org/ {
 
 # knsq8-22 are upload squids, 13 and 14 have been decommissioned
  node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_u"
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include upload-squid
+	include role::cache::upload
 }
 
 # knsq23-30 are text squids
  node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
-	$cluster = "squids_esams_t"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid
+	include role::cache::text
 }
 
 node "linne.wikimedia.org" {
@@ -1294,14 +1082,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		dns::recursor,
 		lvs::balancer,
 		lvs::balancer::runcommand
-
-	if $hostname == "lvs1" {
-		interface_ip { "owa": interface => "eth0", address => "208.80.152.6" }
-		interface_ip { "payments": interface => "eth0", address => "208.80.152.7" }
-	}
-	if $hostname == "lvs2" {
-		interface_ip { "text": interface => "eth0", address => "208.80.152.2" }
-	}
 
 	$ips = {
 		'internal' => {
@@ -1792,9 +1572,6 @@ node "sockpuppet.pmtpa.wmnet" {
 		dashboard_environment => "production",
 		db_host => "db9.pmtpa.wmnet"
 	}
-
-	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
-
 }
 
 node "sodium.wikimedia.org" {
@@ -1997,12 +1774,11 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 #sq31-sq36 are api squids
 node /sq(3[1-6])\.wikimedia\.org/ {
-	$cluster = "squids_api"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^sq3[15]$/ {
 		$ganglia_aggregator = "true"
 	}
-	include text-squid
+	include role::cache::text
 }
 
 
@@ -2010,7 +1786,7 @@ node /sq(3[1-6])\.wikimedia\.org/ {
 node /sq(3[7-9]|40)\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid
+	include role::cache::text
 }
 
 # sq41-50 are old 4 disk upload squids
@@ -2020,13 +1796,13 @@ node /sq(4[1-9]|50)\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include upload-squid
+	include role::cache::upload
 }
 
 # sq51-58 are new ssd upload squids
 node /sq5[0-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5' ]
-	include upload-squid
+	include role::cache::upload
 }
 
 # sq59-66 are text squids
@@ -2036,8 +1812,7 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::text
 }
 
 # sq67-70 are varnishes for bits.wikimedia.org
@@ -2048,22 +1823,21 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
-	include cache::bits
+	include role::cache::bits
 }
 
 # sq71-78 are text squids
 node /sq7[1-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::text
 }
 
 # sq79-86 are upload squids
 node /sq(79|8[0-6])\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5' ]
 
-	include upload-squid
+	include role::cache::upload
 }
 
 node "stafford.pmtpa.wmnet" {
@@ -2086,9 +1860,6 @@ node "stafford.pmtpa.wmnet" {
 			'softwaredir' => "/var/lib/git/operations/software"
 		}
 	}
-
-	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
-
 }
 
 node "stat1.wikimedia.org" {
