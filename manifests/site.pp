@@ -569,7 +569,7 @@ node "dataset1.wikimedia.org" {
 
 }
 
-node "dataset2.wikimedia.org" {
+node /^dataset[2|1001]\.wikimedia\.org/ {
 	$cluster = "misc"
 	$gid=500
 	include standard,
