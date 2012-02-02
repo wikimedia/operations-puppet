@@ -126,7 +126,6 @@ NameVirtualHost *:443
 
 		ServerSignature Off
 
-		IndexStyleSheet "../../nightly.css"
 		HeaderName "HEADER.html"
 		ReadmeName "README.html"
 		IndexIgnore "*.html" ".."
