@@ -3,7 +3,7 @@
 # File that contains generally useful definitions, e.g. for creating system users
 
 # Prints a MOTD message about the role of this system
-define system_role($description) {
+define system_role($description, $ensure=present) {
 	$role_script_content = "#!/bin/sh
 
 echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
@@ -16,9 +16,9 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 		file { $motd_filename:
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0555,
 			content => $role_script_content,
-			ensure => present;
+			ensure => $ensure;
 		}
 	}
 }
@@ -103,7 +103,7 @@ define lighttpd_config($install="false") {
 			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
 		}
 	}
-	
+
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
 		ensure => "/etc/lighttpd/conf-available/${title}.conf";
 	}
@@ -140,132 +140,6 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 }
 
-# Installs a generic, static web server (lighttpd) with default config, which serves /var/www
-
-class generic::webserver::static {
-	package { lighttpd:
-		ensure => latest;
-	}
-
-	service { lighttpd:
-		ensure => running,
-		hasstatus => $::lsbdistcodename ? {
-			'hardy' => false,
-			default => true
-		}
-	}
-
-	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-}
-
-class generic::webserver::php5( $ssl = 'false' ) {
-	#This will use latest package for php5-common
-
-	package { [ "apache2", "libapache2-mod-php5" ]:
-		ensure => latest;
-	}
-
-	if $ssl == 'true' {
-		apache_module { ssl: name => "ssl" }
-	}
-
-	service { apache2:
-		require => Package[apache2],
-		subscribe => Package[libapache2-mod-php5],
-		ensure => running;
-	}
-
-	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-}
-
-class generic::webserver::modproxy {
-
-	package { libapache2-mod-proxy-html:
-		ensure => latest;
-	}
-}
-
-class generic::webserver::php5-mysql {
-
-	package { php5-mysql:
-		ensure => latest;
-		}
-}
-
-# Sysctl settings
-
-define sysctl($value) {
-/*
-	$quoted_param = shellquote("${title}=${value}")
-
-	alert("current value: ${sysctl.${title}}")
-
-	if ${sysctl.${title}} != ${value} {
-		exec { "sysctl $title":
-			command => "/sbin/sysctl -w ${quoted_param}",
-			user => root;
-		}
-	}
-*/
-
-}
-
-
-class generic::sysctl::high-http-performance($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { high-http-performance-sysctl:
-			name => "/etc/sysctl.d/60-high-http-performance.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
-class generic::sysctl::advanced-routing($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { advanced-routing-sysctl:
-			name => "/etc/sysctl.d/50-advanced-routing.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
-			ensure => $ensure
-		}
-	}
-}
-
-class generic::sysctl::ipv6-disable-ra($ensure="present") {
-	if $lsbdistrelease != "8.04" {
-		file { ipv6-disable-ra:
-			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
-			owner => root,
-			group => root,
-			mode => 444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
-			ensure => $ensure
-		}
-	}
-}
-
-class generic::sysctl::lvs($ensure="present") {
-	file { lvs-sysctl:
-		name => "/etc/sysctl.d/50-lvs.conf",
-		mode => 444,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/50-lvs.conf.sysctl",
-		ensure => $ensure
-	}
-}
 
 class generic::geoip {
 	class packages {
@@ -375,7 +249,7 @@ define interface_up_command($interface, $command) {
 			changes => "set up[last()+1] '${command}'",
 			onlyif => "match up[. = '${command}'] size == 0";
 		}
-	}	
+	}
 }
 
 define interface_setting($interface, $setting, $value) {
@@ -418,7 +292,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 	} else {
 		$up_cmd = ""
 	}
-	
+
 	if $remove == 'true' {
 		$augeas_cmd = [	"rm auto[./1 = '$intf']",
 				"rm iface[. = '$intf']"
@@ -489,7 +363,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 				"set auto[./1 = '${orig_interface}']/1 '${aggr_interface}'",
 				"set iface[. = '${orig_interface}'] '${aggr_interface}'"
 			]
-			
+
 			# Bring down the old interface after conversion
 			exec { "ip addr flush dev ${orig_interface}":
 				command => "/sbin/ip addr flush dev ${orig_interface}",
@@ -569,7 +443,7 @@ define interface_offload($interface="eth0", $setting, $value) {
 		'gro' => "generic-receive-offload",
 		'lro' => "large-receive-offload"
 	}
-	
+
 	exec { "ethtool ${interface} -K ${setting} ${value}":
 		path => "/usr/bin:/usr/sbin:/bin:/sbin",
 		command => "ethtool -K ${interface} ${setting} ${value}",
@@ -716,7 +590,7 @@ hostname1=${tag}
 			notify => Service["glusterd"],
 			require => Package["glusterfs"];
 
-	} 
+	}
 
 }
 
@@ -734,10 +608,20 @@ class generic::packages::mono-runtime {
 # Parameters:
 # - $title
 #		Should be the repository name
-define git::clone($directory, $origin) {
+# $branch
+# 	Branch you would like to check out
+#
+define git::clone($directory, $branch="", $origin) {
 	require generic::packages::git-core
 
 	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+
+	if $branch {
+		$brancharg = "-b $branch "
+	}
+	else {
+		$brancharg = ""
+	}
 
 	Exec {
 		path => "/usr/bin:/bin",
@@ -745,7 +629,7 @@ define git::clone($directory, $origin) {
 	}
 	exec {
 		"git clone ${title}":
-			command => "git clone ${origin}",
+			command => "git clone ${brancharg}${origin}",
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
@@ -773,12 +657,6 @@ class generic::tor {
 class generic::mysql::client {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	package { "mysql-client-5.1":
-		ensure => latest;
-	}
-}
-
-class generic::php5-gd {
-	package { "php5-gd":
 		ensure => latest;
 	}
 }
@@ -812,6 +690,77 @@ class generic::packages::maven {
 	package { [
 		"maven2"
 	]: ensure => latest;
+	}
+}
+
+# Sysctl settings
+
+define sysctl($value) {
+/*
+	$quoted_param = shellquote("${title}=${value}")
+
+	alert("current value: ${sysctl.${title}}")
+
+	if ${sysctl.${title}} != ${value} {
+		exec { "sysctl $title":
+			command => "/sbin/sysctl -w ${quoted_param}",
+			user => root;
+		}
+	}
+*/
+}
+
+class generic::sysctl::high-http-performance($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { high-http-performance-sysctl:
+			name => "/etc/sysctl.d/60-high-http-performance.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
+			ensure => $ensure
+		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
+	}
+}
+
+class generic::sysctl::advanced-routing($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { advanced-routing-sysctl:
+			name => "/etc/sysctl.d/50-advanced-routing.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
+class generic::sysctl::ipv6-disable-ra($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { ipv6-disable-ra:
+			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
+			owner => root,
+			group => root,
+			mode => 444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
+class generic::sysctl::lvs($ensure="present") {
+	file { lvs-sysctl:
+		name => "/etc/sysctl.d/50-lvs.conf",
+		mode => 444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/misc/50-lvs.conf.sysctl",
+		ensure => $ensure
 	}
 }
 

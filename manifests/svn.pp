@@ -3,8 +3,8 @@ class svn::server {
 
 	require "svn::users::mwdocs"
 	require "svn::groups::svn"
-	
-	include generic::webserver::php5
+
+	include webserver::php5
 
 	package { [ 'libsvn-notify-perl', 'python-subversion',
 			'libapache2-svn', 'python-pygments' ]:
@@ -74,7 +74,7 @@ class svn::server {
 	}
 
 	apache_site { "svn": name => "svn", prefix => "000-" }
-	
+
 	include generic::apache::no-default-site
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
@@ -109,11 +109,11 @@ class svn::server {
 
 	class viewvc {
 		require "svn::server"
-		
+
 		package { [ 'viewvc', 'graphviz', 'doxygen' ]:
 			ensure => latest;
 		}
-		
+
 		file {
 			"/etc/apache2/svn-authz":
 				owner => root,
@@ -130,7 +130,7 @@ class svn::server {
 
 	class dumps {
 		require "svn::server"
-		
+
 		file {
 			"/svnroot/bak":
 				ensure => directory,
@@ -145,7 +145,7 @@ class svn::server {
 				source => "puppet:///files/svn/svndump.php",
 				require => File["/svnroot/bak"];
 			}
-		
+
 		cron {
 			svndump:
 				command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
@@ -155,7 +155,7 @@ class svn::server {
 				minute => 0;
 		}
 	}
-	
+
 	class hooks {
 		# The commit hooks run PHP5
 		generic::apt::pin-package { "php5-cli": }
@@ -163,7 +163,7 @@ class svn::server {
 			ensure => latest;
 		}
 	}
-	
+
 	class cia {
 		file { "/usr/local/bin/ciabot_svn.py":
 			owner => root,

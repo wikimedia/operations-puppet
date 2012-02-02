@@ -80,6 +80,12 @@ define command{
         command_line    $USER1$/check_http -H $HOSTADDRESS$ -p $ARG1$
         }
 
+# 'check_http' on a puppetmaster (SSL,port 8140,expect 400)
+define command{
+	command_name	check_http_puppetmaster
+	command_line	$USER1$/check_http --ssl -p 8140 -e 400 -H $HOSTADDRESS$
+	}
+
 # 'check_ssl_cert'
 # Verify a SSL certificate is not going to expire in the next 14 days
 # Example usage:  check_ssl_cert!secure.wikimedia.org
@@ -345,12 +351,24 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
 }
 define command{
+	command_name	nrpe_check_udp2log_log_age
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
+}
+define command{
+	command_name	nrpe_check_udp2log_procs
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
+}
+define command{
 	command_name	nrpe_check_varnishncsa
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
 	command_name	check_wiki_user_last_edit_time
 	command_line	/usr/local/nagios/libexec/check_wiki_user_ledit_time.pl --wiki_user $ARG1$ --threashold_warn $ARG2$ --threashold_crit $ARG3$
+}
+define command{
+	command_name	nrpe_check_mysqld
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
 }
 define command{
 	command_name	check_stomp

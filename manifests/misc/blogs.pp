@@ -5,7 +5,7 @@ class misc::blogs::wikimedia {
 	system_role { "misc::blogs::wikimedia": description => "blog.wikimedia.org" }
 
 	require apaches::packages,
-		generic::php5-gd
+		webserver::php5-gd
 
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
@@ -22,7 +22,7 @@ class misc::blogs::tech {
 
 	system_role { "misc::blogs::tech": description => "techblog.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { techblog: name => "techblog.wikimedia.org" }
 

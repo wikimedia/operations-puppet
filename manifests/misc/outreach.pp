@@ -5,7 +5,7 @@
 class misc::outreach::civicrm {
 	system_role { "misc::outreach::civicrm": description => "CiviCRM server" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { contacts: name => "contacts.wikimedia.org" }
 
@@ -16,7 +16,7 @@ class misc::outreach::civicrm {
 class misc::outreach::outreachcivi {
 	system_role { "misc::outreach::outreachcivi": description => "outreachcivi.wikimedia.org" }
 
-	class {'generic::webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { outreachcivi: name => "outreachcivi.wikimedia.org" }
 }

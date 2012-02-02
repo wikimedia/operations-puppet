@@ -99,6 +99,13 @@ class misc::udp2log::aft {
 	}
 }
 
+# class to pull in the package for making nice log filters
+class misc::udp2log::udp-filters {
+	package { udp-filters:
+		ensure => latest;
+	}
+}
+
 # TODO: this is  a hacky short term method to get the config files into
 #       puppet.  The app should be puppetized for real using mediawiki-logger above.
 class misc::udp2log::lockeconfig {
@@ -121,6 +128,34 @@ class misc::udp2log::emeryconfig {
 			group => root,
 			content => template("udp2log/emery-etc-locke-filters.erb");
 	}
+}
+
+class misc::udp2log::monitoring {
+
+	
+
+	file {
+		"/etc/nagios/nrpe.d/nrpe_udp2log.cfg":
+			require => Package[nagios-nrpe-server],
+			mode => 0440,
+			owner => root,
+			group => nagios,
+			source => "puppet:///files/nagios/nrpe_udp2log.cfg";
+		"/usr/lib/nagios/plugins/check_udp2log_log_age":
+			mode => 0555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/nagios/check_udp2log_log_age";
+		"/usr/lib/nagios/plugins/check_udp2log_procs":
+			mode => 0555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/nagios/check_udp2log_procs";
+	}
+
+	monitor_service { "udp2log log age": description => "udp2log log age", check_command => "nrpe_check_udp2log_log_age", contact_group => "admins,analytics" }
+	monitor_service { "udp2log procs": description => "udp2log processes", check_command => "nrpe_check_udp2log_procs", contact_group => "admins,analytics" }
+
 }
 
 class misc::udp2log::packetloss {

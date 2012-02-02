@@ -101,6 +101,7 @@ class lvs::configuration {
 	$lvs_service_ips = {
 		'production' => {
 			'text' => {
+				# TODO: remove old text ip addresses
 				'pmtpa' => { 'text' => "208.80.152.2", 'textsvc' => "10.2.1.25", 'wikimedialb' => "208.80.152.200", 'wikipedialb' => "208.80.152.201", 'wiktionarylb' => "208.80.152.202", 'wikiquotelb' => "208.80.152.203", 'wikibookslb' => "208.80.152.204", 'wikisourcelb' => "208.80.152.205", 'wikinewslb' => "208.80.152.206", 'wikiversitylb' => "208.80.152.207", 'mediawikilb' => "208.80.152.208", 'foundationlb' => "208.80.152.209" },
 				'eqiad' => { 'textsvc' => "10.2.2.25", 'wikimedialb' => "208.80.154.224", 'wikipedialb' => "208.80.154.225", 'wiktionarylb' => "208.80.154.226", 'wikiquotelb' => "208.80.154.227", 'wikibookslb' => "208.80.154.228", 'wikisourcelb' => "208.80.154.229", 'wikinewslb' => "208.80.154.230", 'wikiversitylb' => "208.80.154.231", 'mediawikilb' => "208.80.154.232", 'foundationlb' => "208.80.154.233" },
 				'esams' => { 'text' => "91.198.174.232", 'textsvc' => "10.2.3.25", 'wikimedialb' => "91.198.174.224", 'wikipedialb' => "91.198.174.225", 'wiktionarylb' => "91.198.174.226", 'wikiquotelb' => "91.198.174.227", 'wikibookslb' => "91.198.174.228", 'wikisourcelb' => "91.198.174.229", 'wikinewslb' => "91.198.174.230", 'wikiversitylb' => "91.198.174.231", 'foundationlb' => "91.198.174.235" },
@@ -112,13 +113,13 @@ class lvs::configuration {
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
-				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
-				'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
+				'esams' => { 'bitslb' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
-				'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
+				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
@@ -146,6 +147,9 @@ class lvs::configuration {
 			},
 			'mobile' => {
 				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilesvc' => "10.2.2.26"}
+			},
+			'swift' => {
+				'pmtpa' => "10.2.1.27",
 			}
 		},
 		'labs' => {
@@ -405,6 +409,19 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
+		"swift" => {
+			'description' => "Swift object store for thumbnails",
+			'class' => "low-traffic",
+			'ip' => $service_ips['swift'][$site],
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://ms-fe.pmtpa.wmnet/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
 	}
 }
 
@@ -553,6 +570,7 @@ if $hostname == "spence" {
 	monitor_service_lvs_http { "appservers.svc.pmtpa.wmnet": ip_address => "10.2.1.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!wikipedia/commons/thumb/2/22/Miedledorpf.jpg/180px-Miedledorpf.jpg" }
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool3.svc.pmtpa.wmnet": ip_address => "10.2.1.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }

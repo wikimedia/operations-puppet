@@ -42,6 +42,20 @@ probe bits {
 		"Connection: close";
 	.timeout = 5s;	
 }
+<% elsif /frontend/.match(vcl) -%>
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 500ms;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
 <% elsif vcl == "blog" -%>
 probe blog {
 	.request =
@@ -58,14 +72,17 @@ probe bits {
 		"Host: en.wikipedia.org"
 		"User-agent: Varnish backend check"
 		"Connection: close";
-	.timeout = 5s;	
+	.timeout = 1s;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
 }
 <% end -%>
 
 /*
 probe upload {
 	.url = "/pybaltestfile.txt";
-	.timeout = 5s;
+	.timeout = 2s;
 }
 */
 
@@ -80,7 +97,7 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 <% end -%>
 	.host = "<%= backend %>";
 	.port = "<%= varnish_backend_options.fetch("port", "80") %>";
-	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "5s") %>;
+	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
 	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
@@ -110,6 +127,12 @@ director <%= director %> hash {
 # Functions
 
 sub vcl_recv {
+	if (req.backend.healthy) {
+		set req.grace = 5m;
+	} else {
+		set req.grace = 60m;
+	}
+
 	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE" && req.request != "POST") {
 		/* We only deal with GET and HEAD by default */
 		error 403 "HTTP method not allowed.";
@@ -147,12 +170,12 @@ sub vcl_recv {
 		error 200 "OK"; 
 	}
 
-	set req.grace = 20m;
-
 	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_fetch {
+	set beresp.grace = 60m;
+
 	<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
 	if (beresp.status > 499 && beresp.status < 505) {
 		return(restart);
@@ -162,8 +185,6 @@ sub vcl_fetch {
 		set beresp.ttl = 0s;
 		return(hit_for_pass);
 	}
-
-	set beresp.grace = 20m;
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }

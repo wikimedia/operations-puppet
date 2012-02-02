@@ -5,27 +5,6 @@
 import "generic-definitions.pp"
 import "nagios.pp"
 
-# TODO: perhaps move this to generic-definitions...
-class misc::apache2 {
-
-	package { apache2:
-		ensure => latest;
-	}
-
-}
-
-class misc::apache2::rpaf {
-	# NOTE: rpaf.conf defaults to just 127.0.01 - may need to
-	# modify to include squid/varnish/nginx ranges depending
-	# on use.
-	package { libapache2-mod-rpaf:
-		ensure => latest;
-	}
-	apache_module { rpaf: 
-		name => "rpaf",
-		require => Package["libapache2-mod-rpaf"]; 
-	}
-}
 
 class misc::install-server {
 	system_role { "misc::install-server": description => "Install server" }
@@ -572,7 +551,7 @@ class misc::rt::server {
 class misc::wapsite {
 	system_role { "misc::wapsite": description => "WAP site server" }
 
-	require generic::webserver::php5
+	require webserver::php5
 
 	file {
 		"/etc/apache2/sites-available/mobile.wikipedia.org":
@@ -619,7 +598,7 @@ class misc::wapsite {
 class misc::apple-dictionary-bridge {
 	system_role { "misc::apple-dictionary-bridge": description => "Apple Dictionary to API OpenSearch bridge" }
 
-	require generic::webserver::php5
+	require webserver::php5
 
 	file {
 		"/etc/apache2/sites-available/search.wikimedia.org":
@@ -728,7 +707,7 @@ class misc::etherpad {
 
 	system_role { "misc::etherpad": description => "Etherpad server" }
 
-	require generic::webserver::modproxy
+	require webserver::modproxy
 
 	# NB: this has some GUI going on all up in it. first install must be done by hand.
 	package { etherpad:
@@ -771,7 +750,7 @@ class misc::etherpad {
 
 class misc::etherpad_lite {
 
-	include misc::apache2,
+	include webserver::apache2,
 		passwords::etherpad_lite
 
 	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
@@ -1015,7 +994,7 @@ class misc::udpprofile::collector {
 class misc::graphite {
 	system_role { "misc::graphite": description => "graphite and carbon services" }
 
-	include misc::apache2
+	include webserver::apache2
 
 	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
 		ensure => present;
@@ -1497,7 +1476,7 @@ class misc::racktables {
 	}
 
 	include generic::mysql::client,
-		generic::php5-gd
+		webserver::php5-gd
 
 	service { apache2:
 		subscribe => Package[libapache2-mod-php5],
