@@ -113,13 +113,13 @@ class lvs::configuration {
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitssvc' => "10.2.1.23" },
-				'eqiad' => { 'bits' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
-				'esams' => { 'bits' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
+				'esams' => { 'bitslb' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'upload' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
-				'esams' => { 'upload' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
+				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
+				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
