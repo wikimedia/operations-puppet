@@ -494,6 +494,11 @@ class nagios::monitor::pager {
 			content => template("nagios/gammu-smsdrc.erb"),
 			owner => root,
 			mode => 0644;
+		"/usr/local/sbin/page_all":
+			source => "puppet://files/nagios/page_all",
+			owner => root,
+			group => root,
+			mode => 0550;
 	}
 
 	systemuser { gammu: name => "gammu", home => "/nonexistent", groups => [ "gammu", "dialout" ] }
