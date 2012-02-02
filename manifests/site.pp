@@ -269,7 +269,7 @@ class searchindexer {
 		search::indexer
 }
 
-# TODO: migrate existing hosts to role::cache::squid::text
+# TODO: migrate existing hosts to role::cache::text
 class text-squid {
 	$cluster = "squids_text"
 
@@ -307,7 +307,7 @@ class text-squid {
 	}
 }
 
-# TODO: migrate existing hosts to role::cache::squid::upload
+# TODO: migrate existing hosts to role::cache::upload
 class upload-squid {
 	$cluster = "squids_upload"
 
@@ -693,7 +693,7 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::cache::squid::text
+	include role::cache::text
 }
 
 # eqiad varnish for m.wikipedia.org

@@ -2,21 +2,21 @@
 # cache::squid and cache::varnish role classes
 
 # Virtual resources for the monitoring server
-@monitor_group { "cache_squid_text_pmtpa": description => "text squids pmtpa" }
-@monitor_group { "cache_squid_text_eqiad": description => "text squids eqiad" }
-@monitor_group { "cache_squid_text_esams": description => "text squids esams" }
+@monitor_group { "cache_text_pmtpa": description => "text squids pmtpa" }
+@monitor_group { "cache_text_eqiad": description => "text squids eqiad" }
+@monitor_group { "cache_text_esams": description => "text squids esams" }
 
-@monitor_group { "cache_squid_upload_pmtpa": description => "upload squids pmtpa" }
-@monitor_group { "cache_squid_upload_eqiad": description => "upload squids eqiad" }
-@monitor_group { "cache_squid_upload_esams": description => "upload squids esams" }
+@monitor_group { "cache_upload_pmtpa": description => "upload squids pmtpa" }
+@monitor_group { "cache_upload_eqiad": description => "upload squids eqiad" }
+@monitor_group { "cache_upload_esams": description => "upload squids esams" }
 
 class role::cache {
 	class squid {
 		class common($role) {
-			system_role { "role::cache::squid::${role}": description => "${role} Squid server"}
+			system_role { "role::cache::${role}": description => "${role} Squid cache server"}
 
 			$cluster = "squids_${role}"
-			$nagios_group = "cache_squid_${role}_${::site}"
+			$nagios_group = "cache_${role}_${::site}"
 
 			include lvs::configuration
 
@@ -46,13 +46,13 @@ class role::cache {
 				include misc::monitoring::htcp-loss
 			}
 		}
+	}
 
-		class text {
-			class { "role::cache::squid::common": role => "text" }
-		}
+	class text {
+		class { "role::cache::squid::common": role => "text" }
+	}
 
-		class upload {
-			class { "role::cache::squid::common": role => "upload" }
-		}
+	class upload {
+		class { "role::cache::squid::common": role => "upload" }
 	}
 }
