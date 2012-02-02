@@ -9,26 +9,26 @@ class lvs::configuration {
 
 	$lvs_class_hosts = {
 		'high-traffic1' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs2", "lvs6" ],
 				'eqiad' => [ "lvs1001", "lvs1004" ],
 				'esams' => [ "amslvs1", "amslvs3" ],
 				default => undef,
 			},
-			'labs' => $site ? {
+			'labs' => $::site ? {
 				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
 			default => undef,
 		},
 		'high-traffic2' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs1", "lvs5" ],
 				'eqiad' => [ "lvs1002", "lvs1005" ],
 				'esams' => [ "amslvs2", "amslvs4" ],
 				default => undef,
 			},
-			'labs' => $site ? {
+			'labs' => $::site ? {
 				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
@@ -37,13 +37,13 @@ class lvs::configuration {
 		# class https needs to be present on the same hosts as the corresponding
 		# http services
 		'https' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ 'lvs1', 'lvs2', 'lvs5', 'lvs6' ],
 				'eqiad' => [ 'lvs1001', 'lvs1002', 'lvs1004', 'lvs1005' ],
 				'esams' => [ 'amslvs1', 'amslvs2', 'amslvs3', 'amslvs4' ],
 				default => undef,
 			},
-			'labs' => $site ? {
+			'labs' => $::site ? {
 				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
@@ -54,13 +54,13 @@ class lvs::configuration {
 			'labs' => [ "i-00000051" ],
 		},
 		'low-traffic' => $::realm ? {
-			'production' => $site ? {
+			'production' => $::site ? {
 				'pmtpa' => [ "lvs3", "lvs4" ],
 				'eqiad' => [ "lvs1003", "lvs1006" ],
 				'esams' => [ ],
 				default => undef,
 			},
-			'labs' => $site ? {
+			'labs' => $::site ? {
 				'pmtpa' => [ "i-00000051" ],
 				default => undef,
 			},
@@ -249,7 +249,7 @@ class lvs::configuration {
 		"text" => {
 			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $service_ips['text'][$site],
+			'ip' => $service_ips['text'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -262,7 +262,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
-			'ip' => $service_ips['https'][$site],
+			'ip' => $service_ips['https'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
 			# These IPs are announced by the corresponding HTTP services
@@ -278,7 +278,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 			'class' => "high-traffic1",
-			'ip' => $service_ips['bits'][$site],
+			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -291,7 +291,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${site}.wikimedia.org",
 			'class' => "high-traffic2",
-			'ip' => $service_ips['upload'][$site],
+			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
@@ -304,7 +304,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => "testing",
-			'ip' => $service_ips['mobile'][$site],
+			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -332,7 +332,7 @@ class lvs::configuration {
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['apaches'][$site],
+			'ip' => $service_ips['apaches'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -346,7 +346,7 @@ class lvs::configuration {
 		"rendering" => {
 			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['rendering'][$site],
+			'ip' => $service_ips['rendering'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".74",
 			'monitors' => {
@@ -360,7 +360,7 @@ class lvs::configuration {
 		"api" => {
 			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'ip' => $service_ips['api'][$site],
+			'ip' => $service_ips['api'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
 			'monitors' => {
@@ -375,7 +375,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool1'][$site],
+			'ip' => $service_ips['search_pool1'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -391,7 +391,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool2'][$site],
+			'ip' => $service_ips['search_pool2'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -407,7 +407,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
-			'ip' => $service_ips['search_pool3'][$site],
+			'ip' => $service_ips['search_pool3'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -422,7 +422,7 @@ class lvs::configuration {
 		"swift" => {
 			'description' => "Swift object store for thumbnails",
 			'class' => "low-traffic",
-			'ip' => $service_ips['swift'][$site],
+			'ip' => $service_ips['swift'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
