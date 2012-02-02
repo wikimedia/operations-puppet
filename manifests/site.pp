@@ -288,7 +288,7 @@ class text-squid {
 		}
 	}
 
-	system_role { text-squid: description => "text Squid server" }
+	system_role { text-squid: description => "text Squid server", ensure => absent }
 
 	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
@@ -319,7 +319,7 @@ class upload-squid {
 		}
 	}
 
-	system_role { upload-squid: description => "upload Squid server" }
+	system_role { upload-squid: description => "upload Squid server", ensure => absent }
 
 	# FIXME: make coherent with $cluster
 	$nagios_group = $site ? {
