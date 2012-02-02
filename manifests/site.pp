@@ -1841,12 +1841,11 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 #sq31-sq36 are api squids
 node /sq(3[1-6])\.wikimedia\.org/ {
-	$cluster = "squids_api"
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^sq3[15]$/ {
 		$ganglia_aggregator = "true"
 	}
-	include text-squid
+	include role::cache::text
 }
 
 
@@ -1854,7 +1853,7 @@ node /sq(3[1-6])\.wikimedia\.org/ {
 node /sq(3[7-9]|40)\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
-	include text-squid
+	include role::cache::text
 }
 
 # sq41-50 are old 4 disk upload squids
@@ -1864,13 +1863,13 @@ node /sq(4[1-9]|50)\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include upload-squid
+	include role::cache::upload
 }
 
 # sq51-58 are new ssd upload squids
 node /sq5[0-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5' ]
-	include upload-squid
+	include role::cache::upload
 }
 
 # sq59-66 are text squids
@@ -1880,8 +1879,7 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::upload
 }
 
 # sq67-70 are varnishes for bits.wikimedia.org
@@ -1899,15 +1897,14 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 node /sq7[1-8]\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 
-	include text-squid,
-		lvs::realserver
+	include role::cache::text
 }
 
 # sq79-86 are upload squids
 node /sq(79|8[0-6])\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5' ]
 
-	include upload-squid
+	include role::cache::upload
 }
 
 node "stafford.pmtpa.wmnet" {
