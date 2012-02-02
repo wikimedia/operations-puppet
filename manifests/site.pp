@@ -592,6 +592,14 @@ node "db10.pmtpa.wmnet" {
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	include db::core
+
+	# upgraded hosts
+	if $hostname =~ /^db1[2]$/ {
+		include mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+	}
 }
 
 node /^db2[1-9]\.pmtpa\.wmnet$/ {
