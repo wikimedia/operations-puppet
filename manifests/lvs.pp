@@ -150,6 +150,7 @@ class lvs::configuration {
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
+				'eqiad' => undef,
 			}
 		},
 		'labs' => {
@@ -187,6 +188,9 @@ class lvs::configuration {
 			'mobile' => {
 				'pmtpa' => undef,
 			},
+			'swift' => {
+				'pmtpa' => undef,
+			}
 		}
 	}
 
