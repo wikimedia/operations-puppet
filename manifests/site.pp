@@ -513,7 +513,7 @@ node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db1[2]$/ {
+	if $hostname =~ /^db1[238]$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -529,7 +529,7 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db2[46]$/ {
+	if $hostname =~ /^db2[456]$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -545,7 +545,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db3(2|6|7|8)$/ {
+	if $hostname =~ /^db3[23678]$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
