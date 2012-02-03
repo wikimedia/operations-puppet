@@ -79,7 +79,8 @@ class squid {
 		# Prepare aufs partition if necessary
 		exec { setup-aufs-cachedirs:
 			require => File[ [squid-disk-permissions, "/etc/squid/squid.conf", "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ],
-			command => "/usr/local/sbin/setup-aufs-cachedirs";
+			command => "/usr/local/sbin/setup-aufs-cachedirs",
+			onlyif => "egrep -q "^cache_dir[[:space:]]+aufs" /etc/squid/squid.conf"
 		}
 	}
 
