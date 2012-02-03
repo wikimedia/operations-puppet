@@ -553,7 +553,14 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	}
 }
 
-node /^db4[02]\.pmtpa\.wmnet$/ {
+node "db40.pmtpa.wmnet" {
+	include db::core,
+		mysql::packages
+
+	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
+}
+
+node /^db4[2]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
 }
