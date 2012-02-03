@@ -27,7 +27,7 @@ class snapshots::files {
 	}
 
 	file { 'snapshot-sudoers':
-		path => "/etc/sudoers",
+		path => "/etc/sudoers.d/appserver",
 		owner => root,
 		group => root,
 		mode => 0440,

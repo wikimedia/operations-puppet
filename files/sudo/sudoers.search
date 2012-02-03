@@ -28,7 +28,6 @@ Cmnd_Alias	ADMIN_COMMANDS = \
 	/usr/bin/renice
 	
 # User privilege specification
-root	ALL=(ALL) ALL
 ADMINS  ALL= NOPASSWD: ADMIN_COMMANDS
 WIKIUSER    ALL=NOPASSWD: /home/wikipedia/sbin/wikiuser_pass_real
 

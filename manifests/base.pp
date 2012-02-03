@@ -464,6 +464,7 @@ class base {
 		base::monitoring::host,
 		base::environment,
 		base::platform,
+		sudo::default,
 		ssh
 
 	if $realm == "labs" {
