@@ -203,7 +203,7 @@ class swift::storage {
 		require => Package[swift],
 		owner => swift,
 		group => swift,
-		mode => 0750,
+		mode => 0751, # the 1 is to allow nagios to read the drives for check_disk
 		ensure => directory;
 	}
 
