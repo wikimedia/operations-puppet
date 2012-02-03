@@ -32,6 +32,8 @@ class nrpe::service {
 	}
 
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		include sudo::default
+
 		file { "/etc/sudoers.d/nrpe":
 			owner => root,
 			group => root,
