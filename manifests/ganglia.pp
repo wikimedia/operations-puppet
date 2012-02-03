@@ -121,7 +121,7 @@ class ganglia {
 		name	=> $gmondpath,
 		owner	=> "root",
 		group	=> "root",
-		mode	=> 644,
+		mode	=> 0444,
 		content => template("ganglia/gmond_template.erb"),
 		notify  => Service[gmond],
 		ensure	=> present
@@ -198,10 +198,10 @@ class ganglia {
 		}
 	}
 
-	class aggregator {
+	# Class: ganglia::aggregator
 	# for the machine class which listens on multicast and
 	# collects all the ganglia information from other sources
-
+	class aggregator {
 		# This overrides the default ganglia-monitor script
 		# with one that starts up multiple instances of gmond
 		file { "/etc/init.d/ganglia-monitor":
@@ -260,11 +260,12 @@ class ganglia::web {
 	apache_site { ganglia: name => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
-	package { "librrds-perl":
-		before => Package[rrdtool],
-		ensure => latest;
+	package {
+		"librrds-perl":
+			before => Package[rrdtool],
+			ensure => latest;
 		"rrdtool":
-		ensure => latest,
+			ensure => latest,
 	}
 
 	cron { "save-rrds":
