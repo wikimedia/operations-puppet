@@ -205,7 +205,7 @@ class ganglia {
 		# with one that starts up multiple instances of gmond
 		file { "/etc/init.d/ganglia-monitor":
 			source => "puppet:///files/ganglia/ganglia-monitor",
-			mode   => 0755,
+			mode   => 0555,
 			ensure => present
 		}
 	}
@@ -223,25 +223,25 @@ class ganglia::web {
 
 	file {
 		"/etc/apache2/sites-available/ganglia.wikimedia.org":
-			mode => 644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
-			mode => 755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/restore-gmetad-rrds",
 			ensure => present;
 		"/usr/local/bin/save-gmetad-rrds":
-			mode => 755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/save-gmetad-rrds",
 			ensure => present;
 		"/etc/init.d/gmetad":
-			mode => 755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/gmetad",
@@ -249,7 +249,7 @@ class ganglia::web {
 		"/var/lib/ganglia/rrds.pmtpa/":
 			ensure => directory;
 		"/etc/rc.local":
-			mode => 755,
+			mode => 0555,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/rc.local",
