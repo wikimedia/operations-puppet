@@ -35,6 +35,10 @@ class squid {
 		group => root
 	}
 	file {
+		"/etc/squid/squid.conf":
+			source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
+		"/etc/squid/frontend.conf":
+			source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
 		"frontendsquiddefaultconfig":
 			name => "/etc/default/squid-frontend",
 			source => "puppet:///files/squid/squid-frontend";
@@ -47,13 +51,14 @@ class squid {
 
 	service {
 		"squid-frontend":
-			require => File[frontendsquiddefaultconfig],
-			subscribe => File[frontendsquiddefaultconfig],
+			require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
+			subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
 			hasstatus => false,
 			pattern => "squid-frontend",
 			ensure => running;
 		"squid":
-			require => Exec[setup-aufs-cachedirs],
+			require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
+			subscribe => File["/etc/squid/squid.conf"],
 			hasstatus => false,
 			pattern => "/usr/sbin/squid ",
 			ensure => running;
@@ -73,8 +78,10 @@ class squid {
 
 		# Prepare aufs partition if necessary
 		exec { setup-aufs-cachedirs:
-			require => File[ [squid-disk-permissions, "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ],
-			command => "/usr/local/sbin/setup-aufs-cachedirs";
+			require => File[ [squid-disk-permissions, "/etc/squid/squid.conf", "/aufs", "/usr/local/sbin/setup-aufs-cachedirs"] ],
+			command => "/usr/local/sbin/setup-aufs-cachedirs",
+			path => "/bin:/usr/bin",
+			onlyif => "egrep -q '^cache_dir[[:space:]]+aufs' /etc/squid/squid.conf"
 		}
 	}
 

@@ -42,6 +42,15 @@
 	deny <%= entry %>
 <% end -%>
 
+[volatile]
+	path /var/lib/puppet/volatile
+<% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>
+	allow <%= entry %>
+<% end -%>
+<% scope.lookupvar('puppetmaster::deny_from').each do |entry| -%>
+	deny <%= entry %>
+<% end -%>
+
 [software]
 	path <%= scope.lookupvar('puppetmaster::config').fetch('softwaredir', "/etc/puppet/software") %>
 <% scope.lookupvar('puppetmaster::allow_from').each do |entry| -%>

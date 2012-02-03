@@ -25,7 +25,7 @@ RSYNC_ENABLE=true
 #  Possibilities are:
 #   --address=123.45.67.89		(bind to a specific IP address)
 #   --port=8730				(bind to specified port; default 873)
-RSYNC_OPTS='--bwlimit=10000'
+RSYNC_OPTS='--bwlimit=50000'
 
 # run rsyncd at a nice level?
 #  the rsync daemon can impact performance due to much I/O and CPU usage,
