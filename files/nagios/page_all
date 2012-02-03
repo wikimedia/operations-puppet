@@ -1,9 +1,83 @@
 #!/bin/bash
 # page (SMS) an arbitrary message to ALL Nagios contacts
 
+contacts_file="contacts.cfg"
+
 echo -e "! You are about to page ALL Nagios contacts.! \nWhat's the message? "
 read message
 
-for contact in $(grep -o "+[0-9]*" /etc/nagios/contacts.cfg); do
-	echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
+echo -e "\nIt is $(date +"%l:%M%P"). The following contacts will be paged '$message'.\nTake a look at their local times before you continue.\n"
+
+for contact in $(grep -o "+[0-9]*" $contacts_file); do
+
+	area_code=${contact:1:2}
+
+	contact_name=$(grep -B1 $contact $contacts_file | xargs | cut -d " " -f2)
+
+	case "$area_code" in
+		1[0-9])
+			location="US"
+			us_area_code=${contact:2:3}
+
+			# area code API lookup one-liner :p
+			area_info=$(curl -s "http://www.allareacodes.com/api/1.0/api.xml?npa=${us_area_code}&tracking_email=noc@wikimedia.org&tracking_url=http://nagios.wikimedia.org" | grep -o "<area_codes>.*</area_codes>" | sed -e :a -e 's/<[^>]*>/ /g;/</N;//ba');;
+		30)
+			location="GR"
+			area_info="  XXX  $location EET/EEST $(TZ="Europe/Athens" date +"%l:%M%P")  ";;
+		31)
+			location="NL"
+			area_info="  XXX  $location CET/CEST $(TZ="Europa/Amsterdam" date +"%l:%M%P")  ";;
+		49)
+			location="DE"
+			area_info="  XXX  $location CET/CEST $(TZ="Europe/Berlin" date +"%l:%M%P")  ";;
+		61)
+			location="AU"
+			area_info="  XXX  $location AEST/AED $(TZ="Australia/Sydney" date +"%l:%M%P")  ";;
+		*)
+			location="Unknown"
+			area_info="-";;
+	esac
+
+	printf '\t%-32s %-32s %-32s\n' "$contact_name" "$location" "$area_info"
 done
+
+echo -e "\nWhat do you want to do?\nall - page all anyways\nnous - exclude US\nnoeu - exclude Europe\nnoau - exclude Australia\nq - quit"
+
+read whattodo
+
+case "$whattodo" in
+
+	all)
+
+		for contact in $(grep -o "+[0-9]*" $contacts_file); do
+		        echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
+			contact_name=$(grep -B1 $contact $contacts_file | xargs | cut -d " " -f2)
+			printf '\t%-32s %-32s\n' "$contact_name" "$contact"
+		done;;
+	nous)
+
+		for contact in $(grep -o "+[0-9]*" $contacts_file | grep -v "+1[0-9]*"); do
+		        echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
+			contact_name=$(grep -B1 $contact $contacts_file | xargs |  cut -d " " -f2)
+			printf '\t%-32s %-32s\n' "$contact_name" "$contact"
+		done;;
+
+	noeu)
+
+		for contact in $(grep -o "+[0-9]*" $contacts_file | grep -v "+[34][0-9]*"); do
+		        echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
+			contact_name=$(grep -B1 $contact $contacts_file | xargs | cut -d " " -f2)
+			printf '\t%-32s %-32s\n' "$contact_name" "$contact"
+		done;;
+
+	noau)
+
+		for contact in $(grep -o "+[0-9]*" $contacts_file | grep -v "+[6][0-9]*"); do
+		        echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
+			contact_name=$(grep -B1 $contact $contacts_file | xargs | cut -d " " -f2)
+			printf '\t%-32s %-32s\n' "$contact_name" "$contact"
+		done;;
+	*)
+		echo "Nothing sent. Bye."
+		exit 0;;
+esac
