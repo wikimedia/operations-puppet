@@ -107,6 +107,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				mode => 0550;
 			"/var/lib/puppet/volatile":
 				mode => 0750,
+				owner => root,
+				group => puppet,
 				ensure => directory;
 		}
 		if $is_labs_puppet_master {
