@@ -833,8 +833,8 @@ class misc::kiwix-mirror {
 
 	file {
 		"/data/xmldatadumps/public/kiwix":
-			ensure => "/data/kiwix";
-		"/data/kiwix":
+			ensure => "/data/xmldatadumps/public/other/kiwix";
+		"/data/xmldatadumps/public/other/kiwix":
 			owner => "mirror",
 			group => "mirror",
 			mode => 0644,
@@ -842,7 +842,7 @@ class misc::kiwix-mirror {
 	}
 
 	cron { kiwix-mirror-update:
-		command => "rsync -vzrlptD  download.kiwix.org::download.kiwix.org/zim/0.9/ /data/kiwix/zim/0.9/ >/dev/null 2>&1",
+		command => "rsync -vzrlptD  download.kiwix.org::download.kiwix.org/zim/0.9/ /data/xmldatadumps/public/other/kiwix/zim/0.9/ >/dev/null 2>&1",
 		user => mirror,
 		minute => '*/15',
 		ensure => present;
