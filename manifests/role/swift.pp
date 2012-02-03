@@ -11,8 +11,8 @@ class role::swift {
 		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster", ensure => absent }
 		include passwords::swift::eqiad-test
 		# The eqiad test cluster runs proxy and storage on the same hosts
-		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
-		class { "swift::proxy::config":
+		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "::swift::proxy::config":
 			bind_port => "8080",
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
 			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
@@ -26,17 +26,17 @@ class role::swift {
 			shard_containers => "some",
 			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 		}
-		include swift::storage
-		include swift::proxy
+		include ::swift::storage
+		include ::swift::proxy
 	}
 	
 	class pmtpa-test inherits role::swift::base {
 		system_role { "role::swift::pmtpa-test": description => "Swift testing cluster" }
 		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster", ensure => absent }
 		include passwords::swift::pmtpa-test
-		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
 		class proxy inherits role::swift::pmtpa-test {
-			class { "swift::proxy::config":
+			class { "::swift::proxy::config":
 				bind_port => "8080",
 				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
 				num_workers => $::processorcount * 2,
@@ -50,10 +50,10 @@ class role::swift {
 				shard_containers => "none",
 				shard_container_list => ""
 			}
-			include swift::proxy
+			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-test {
-			include swift::storage
+			include ::swift::storage
 		}
 	}
 
@@ -61,9 +61,9 @@ class role::swift {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
 		include passwords::swift::pmtpa-prod
-		class { "swift::base": hash_path_suffix => "bd51d755d4c53773" }
+		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
 		class proxy inherits role::swift::pmtpa-prod {
-			class { "swift::proxy::config":
+			class { "::swift::proxy::config":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.pmtpa.wmnet",
 				num_workers => $::processorcount * 2,
@@ -77,10 +77,10 @@ class role::swift {
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 			}
-			include swift::proxy
+			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-prod {
-			include swift::storage
+			include ::swift::storage
 		}
 	}
 }
