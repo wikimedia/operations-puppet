@@ -193,6 +193,7 @@ class ganglia {
 		service { "gmetad":
 			require => File["/etc/ganglia/gmetad.conf"],
 			subscribe => File["/etc/ganglia/gmetad.conf"],
+			hasstatus => false,
 			ensure => running;
 		}
 	}
