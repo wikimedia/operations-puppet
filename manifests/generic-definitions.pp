@@ -350,7 +350,7 @@ define interface_aggregate_member($master) {
 	}
 }
 
-define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast") {
+define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast", $hash_policy="layer2+3") {
 	require base::bonding-tools
 
 	# Use the definition title as the destination (aggregated) interface
@@ -396,7 +396,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'",
 				"set iface[. = '${aggr_interface}']/bond-miimon '100'",
-				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy 'layer2+3'"
+				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy '${hash_policy}'"
 			],
 			notify => Exec["ifup ${aggr_interface}"]
 		}
