@@ -1791,7 +1791,8 @@ node "stat1.wikimedia.org" {
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy,
-		accounts::diederik
+		accounts::diederik,
+		accounts::aotto
 }
 
 node "storage1.wikimedia.org" {
