@@ -53,63 +53,63 @@
 				<subtree name="misc">
 					<subtree name="loudon.wikimedia.org">
 						<param name="hostname" value="loudon.wikimedia.org"/>
-                                		<param name="instance" value="back"/>
-		                                <param name="comment" value="%hostname% backend Squid statistics"/>
-		                                <param name="precedence" value="1"/>
-		                                <apply-template name="squid-storagegroup"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
 						<apply-template name="squid-performancegroup"/>
 						<apply-template name="squid-usagegroup"/>
 						<apply-template name="squid-servicetimesgroup"/>
 						<apply-template name="squid-resolvinggroup"/>
 					</subtree>
 
-                                        <subtree name="payments4.pmtpa.wmnet">
-                                                <param name="hostname" value="payments4.pmtpa.wmnet"/>
-                                                <param name="instance" value="back"/>
-                                                <param name="comment" value="%hostname% backend Squid statistics"/>
-                                                <param name="precedence" value="1"/>
-                                                <apply-template name="squid-storagegroup"/>
-                                                <apply-template name="squid-performancegroup"/>
-                                                <apply-template name="squid-usagegroup"/>
-                                                <apply-template name="squid-servicetimesgroup"/>
-                                                <apply-template name="squid-resolvinggroup"/>
-                                        </subtree>
+					<subtree name="payments4.pmtpa.wmnet">
+						<param name="hostname" value="payments4.pmtpa.wmnet"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
 
-                                        <subtree name="payments2.pmtpa.wmnet">
-                                                <param name="hostname" value="payments2.pmtpa.wmnet"/>
-                                                <param name="instance" value="back"/>
-                                                <param name="comment" value="%hostname% backend Squid statistics"/>
-                                                <param name="precedence" value="1"/>
-                                                <apply-template name="squid-storagegroup"/>
-                                                <apply-template name="squid-performancegroup"/>
-                                                <apply-template name="squid-usagegroup"/>
-                                                <apply-template name="squid-servicetimesgroup"/>
-                                                <apply-template name="squid-resolvinggroup"/>
-                                        </subtree>
+					<subtree name="payments2.pmtpa.wmnet">
+						<param name="hostname" value="payments2.pmtpa.wmnet"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
 
-                                        <subtree name="payments3.wikimedia.org">
-                                                <param name="hostname" value="payments3.wikimedia.org"/>
-                                                <param name="instance" value="back"/>
-                                                <param name="comment" value="%hostname% backend Squid statistics"/>
-                                                <param name="precedence" value="1"/>
-                                                <apply-template name="squid-storagegroup"/>
-                                                <apply-template name="squid-performancegroup"/>
-                                                <apply-template name="squid-usagegroup"/>
-                                                <apply-template name="squid-servicetimesgroup"/>
-                                                <apply-template name="squid-resolvinggroup"/>
-                                        </subtree>
+					<subtree name="payments3.wikimedia.org">
+						<param name="hostname" value="payments3.wikimedia.org"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
 
-                                        <subtree name="payments4.wikimedia.org">
-                                                <param name="hostname" value="payments4.wikimedia.org"/>
-                                                <param name="instance" value="back"/>
-                                                <param name="comment" value="%hostname% backend Squid statistics"/>
-                                                <param name="precedence" value="1"/>
-                                                <apply-template name="squid-storagegroup"/>
-                                                <apply-template name="squid-performancegroup"/>
-                                                <apply-template name="squid-usagegroup"/>
-                                                <apply-template name="squid-servicetimesgroup"/>
-                                                <apply-template name="squid-resolvinggroup"/>
-                                        </subtree>
+					<subtree name="payments4.wikimedia.org">
+						<param name="hostname" value="payments4.wikimedia.org"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
 				</subtree>
 
 				<subtree name="text">
@@ -650,13 +650,13 @@
 					<subtree name="knsq6.knams.wikimedia.org">
 						<param name="hostname" value="knsq6.knams.wikimedia.org"/>
 						<param name="precedence" value="894"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq7.knams.wikimedia.org">
 						<param name="hostname" value="knsq7.knams.wikimedia.org"/>
 						<param name="precedence" value="893"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq23.knams.wikimedia.org">
@@ -808,49 +808,49 @@
 					<subtree name="knsq8.knams.wikimedia.org">
 						<param name="hostname" value="knsq8.knams.wikimedia.org"/>
 						<param name="precedence" value="892"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq9.knams.wikimedia.org">
 						<param name="hostname" value="knsq9.knams.wikimedia.org"/>
 						<param name="precedence" value="891"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq10.knams.wikimedia.org">
 						<param name="hostname" value="knsq10.knams.wikimedia.org"/>
 						<param name="precedence" value="890"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq11.knams.wikimedia.org">
 						<param name="hostname" value="knsq11.knams.wikimedia.org"/>
 						<param name="precedence" value="889"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq12.knams.wikimedia.org">
 						<param name="hostname" value="knsq12.knams.wikimedia.org"/>
 						<param name="precedence" value="888"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq13.knams.wikimedia.org">
 						<param name="hostname" value="knsq13.knams.wikimedia.org"/>
 						<param name="precedence" value="887"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq14.knams.wikimedia.org">
 						<param name="hostname" value="knsq14.knams.wikimedia.org"/>
 						<param name="precedence" value="886"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq15.knams.wikimedia.org">
 						<param name="hostname" value="knsq15.knams.wikimedia.org"/>
 						<param name="precedence" value="885"/>
-						<apply-template name="wikimedia-squid-server"/>
+						<apply-template name="decommissioned-squid-server"/>
 					</subtree>
 
 					<subtree name="knsq16.knams.wikimedia.org">
