@@ -99,7 +99,7 @@ extension=wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/wmerrors.ini";
-		"/etc/sudoers.d/appserver":
+		"/etc/sudoers":
 			owner => root,
 			group => root,
 			mode => 0440,

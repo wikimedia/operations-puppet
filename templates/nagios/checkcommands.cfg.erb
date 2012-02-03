@@ -363,10 +363,6 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
-	command_name	check_wiki_user_last_edit_time
-	command_line	/usr/local/nagios/libexec/check_wiki_user_ledit_time.pl --wiki_user $ARG1$ --threashold_warn $ARG2$ --threashold_crit $ARG3$
-}
-define command{
 	command_name	nrpe_check_mysqld
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
 }

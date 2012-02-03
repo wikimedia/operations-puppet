@@ -202,15 +202,10 @@ class base::sysctl {
 
 class base::standard-packages {
 	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf", "atop" ]
-	$purge_packages = [ "popularity-contest" ]
 
 	if $lsbdistid == "Ubuntu" {
 		package { $packages:
 			ensure => latest;
-		}
-
-		package { $purge_packages:
-			ensure => absent;
 		}
 
 		if $network_zone == "internal" {

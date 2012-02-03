@@ -7,13 +7,12 @@ class misc::bastionhost {
 
 	require mysql::client
 	
-	package {
-		"irssi":
-			ensure => absent;
+	package { "irssi":
+		ensure => absent;
 		"traceroute-nanog":
-			ensure => absent;
+		ensure => absent;
 		"traceroute":
-			ensure =>latest;
+		ensure =>latest;
 	}
 
 	file { "/etc/sudoers":

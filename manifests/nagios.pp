@@ -199,18 +199,18 @@ class nagios::monitor {
 			  "${nagios_config_dir}/timeperiods.cfg",
 			  "${nagios_config_dir}/htpasswd.users"]
 
-	systemuser { nagios: name => "nagios", home => "/var/lib/nagios", groups => [ "nagios", "dialout", "gammu" ] }
+	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
 
 	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
 	# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
 	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	include nagios::packages::nagios3,
-		nagios::packages::images,
-		nagios::packages::plugins
+	package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
+		ensure => latest;
+	}
 
-	service { nagios3:
+	service { nagios:
 		require => File[$puppet_files],
 		ensure => running,
 		subscribe => [ File[$puppet_files],
@@ -288,7 +288,7 @@ class nagios::monitor {
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
 		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
-		notify => Service["nagios3"],
+		notify => Service["nagios"],
 		refreshonly => "true";
 	}
 
@@ -321,6 +321,12 @@ class nagios::monitor {
 		mode => 0644;
 	}
 
+	file { "/etc/nagios/nsca_payments.cfg":
+		source => "puppet:///private/nagios/nsca_payments.cfg",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
 
 	file { "/etc/nagios/htpasswd.users":
 		source => "puppet:///private/nagios/htpasswd.users",
@@ -381,24 +387,24 @@ class nagios::monitor {
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		#before => Service[nagios],
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Nagios_hostextinfo <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Nagios_service <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 
         # Collect all (virtual) resources
 	Monitor_group <| |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Monitor_host <| |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Monitor_service <| tag != "nrpe" |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 
 	# Decommission servers
@@ -441,11 +447,6 @@ class nagios::monitor {
 			mode => 0755;
 		"/usr/local/nagios/libexec/check_stomp.pl":
 			source => "puppet:///files/nagios/check_stomp.pl",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/usr/local/nagios/libexec/check_ram.sh":
-			source => "puppet:///files/nagios/check_ram.sh",
 			owner => root,
 			group => root,
 			mode => 0755;
@@ -545,27 +546,6 @@ class nagios::ganglia::ganglios {
 	}
 }
 
-class nagios::monitor::check_wiki_user_last_edit_time {
-	# Check script relies on libmediawiki-api-perl
-	package { "libmediawiki-api-perl":
-		ensure => latest;
-	}
-	file {"/usr/local/nagios/libexec/check_wiki_user_last_edit_time.pl":
-		source => "puppet:///files/nagios/check_wiki_user_last_edit_time",
-		owner => root,
-		group => root,
-		mode => 0755;
-	}
-	monitor_service { "check_wiki_user_last_edit_time":
-		description => "check_wiki_user_last_edit_time",
-		check_command => "check_wiki_user_last_edit_time",
-		normal_check_interval => 15,
-		retry_check_interval => 15,
-		critical => "false"
-	}
-
-}
-
 # passive checks / NSCA
 
 # package contains daemon and client script
@@ -646,30 +626,5 @@ class nagios::nsca::client {
 
 	service { "nsca":
 		ensure => stopped;
-	}
-}
-
-class nagios::packages::nagios3 {
-	package { "nagios3":
-		ensure => latest;
-	}
-}
-class nagios::packages::images {
-	package { "nagios-images":
-		ensure => latest;
-	}
-}
-class nagios::packages::plugins {
-	package { "nagios-plugins":
-		ensure => latest;
-	}
-	package { "nagios-plugins-basic":
-		ensure => latest;
-	}
-	package { "nagios-plugins-extra":
-		ensure => latest;
-	}
-	package { "nagios-plugins-standard":
-		ensure => latest;
 	}
 }
