@@ -615,6 +615,130 @@
 				</subtree>
 			</subtree>
 			
+			<subtree name="eqiad">
+				<subtree name="text">
+					<subtree name="cp1001.eqiad.wmnet">
+						<param name="hostname" value"cp1001.eqiad.wmnet"/>
+						<param name="precedence" value="999"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1002.eqiad.wmnet">
+						<param name="hostname" value"cp1002.eqiad.wmnet"/>
+						<param name="precedence" value="998"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1003.eqiad.wmnet">
+						<param name="hostname" value"cp1003.eqiad.wmnet"/>
+						<param name="precedence" value="997"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1004.eqiad.wmnet">
+						<param name="hostname" value"cp1004.eqiad.wmnet"/>
+						<param name="precedence" value="996"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1005.eqiad.wmnet">
+						<param name="hostname" value"cp1005.eqiad.wmnet"/>
+						<param name="precedence" value="995"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1006.eqiad.wmnet">
+						<param name="hostname" value"cp1006.eqiad.wmnet"/>
+						<param name="precedence" value="994"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1007.eqiad.wmnet">
+						<param name="hostname" value"cp1007.eqiad.wmnet"/>
+						<param name="precedence" value="993"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1008.eqiad.wmnet">
+						<param name="hostname" value"cp1008.eqiad.wmnet"/>
+						<param name="precedence" value="992"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1009.eqiad.wmnet">
+						<param name="hostname" value"cp1009.eqiad.wmnet"/>
+						<param name="precedence" value="991"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1010.eqiad.wmnet">
+						<param name="hostname" value"cp1010.eqiad.wmnet"/>
+						<param name="precedence" value="990"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1011.eqiad.wmnet">
+						<param name="hostname" value"cp1011.eqiad.wmnet"/>
+						<param name="precedence" value="989"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1012.eqiad.wmnet">
+						<param name="hostname" value"cp1012.eqiad.wmnet"/>
+						<param name="precedence" value="988"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1013.eqiad.wmnet">
+						<param name="hostname" value"cp1013.eqiad.wmnet"/>
+						<param name="precedence" value="987"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1014.eqiad.wmnet">
+						<param name="hostname" value"cp1014.eqiad.wmnet"/>
+						<param name="precedence" value="986"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1015.eqiad.wmnet">
+						<param name="hostname" value"cp1015.eqiad.wmnet"/>
+						<param name="precedence" value="985"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1016.eqiad.wmnet">
+						<param name="hostname" value"cp1016.eqiad.wmnet"/>
+						<param name="precedence" value="984"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1017.eqiad.wmnet">
+						<param name="hostname" value"cp1017.eqiad.wmnet"/>
+						<param name="precedence" value="983"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1018.eqiad.wmnet">
+						<param name="hostname" value"cp1018.eqiad.wmnet"/>
+						<param name="precedence" value="982"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1019.eqiad.wmnet">
+						<param name="hostname" value"cp1019.eqiad.wmnet"/>
+						<param name="precedence" value="981"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+
+					<subtree name="cp1020.eqiad.wmnet">
+						<param name="hostname" value"cp1020.eqiad.wmnet"/>
+						<param name="precedence" value="980"/>
+						<apply-template name="wikimedia-squid-server"/>
+					</subtree>
+				</subtree>
+			</subtree>
+
 			<subtree name="esams">
 				<subtree name="text">
 					<subtree name="knsq1.knams.wikimedia.org">
