@@ -927,19 +927,10 @@ node "kaulen.wikimedia.org" {
 	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
-# knsq1-7 are Varnish bits servers, 5 has been decommissioned
-node /knsq([1-7])\.esams\.wikimedia\.org/ {
-	if $hostname =~ /^knsq[4]$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	include standard
-}
-
-# knsq8-22 are upload squids, 13 and 14 have been decommissioned
- node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
+# knsq16-22 are upload squids, 13 and 14 have been decommissioned
+ node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-	if $hostname =~ /^knsq[89]$/ {
+	if $hostname =~ /^knsq1[67]$/ {
 		$ganglia_aggregator = "true"
 	}
 
