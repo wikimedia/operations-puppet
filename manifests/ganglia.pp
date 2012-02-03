@@ -180,19 +180,20 @@ class ganglia {
 			ensure => latest;
 		}
 
-	## FIXME this file is a temp hack to get ganglia running. Needs to become
-	## a template generated from information kept in puppet - Lcarr, 2012/01/03
+		## FIXME this file is a temp hack to get ganglia running. Needs to become
+		## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
 		file { "/etc/ganglia/gmetad.conf":
-			require	=> Package[gmetad],
-			source	=> "puppet:///files/ganglia/gmetad.conf",
-			mode	=> 0644,
+			require => Package[gmetad],
+			source => "puppet:///files/ganglia/gmetad.conf",
+			mode => 0444,
 			ensure	=> present
 		}
 
 		service { "gmetad":
 			require => File["/etc/ganglia/gmetad.conf"],
-			ensure	=> running;
+			subscribe => File["/etc/ganglia/gmetad.conf"],
+			ensure => running;
 		}
 	}
 
