@@ -30,7 +30,7 @@ else
 	then
 		wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 	else
-		scp -P 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
+		scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
 		if [ "$?" != "0" ]
 		then
 			echo "Please download the commit message hook from https://gerrit.wikimedia.org/r/tools/hooks/commit-msg, place it in .git/hooks/commit-msg, and chmod u+x the file."

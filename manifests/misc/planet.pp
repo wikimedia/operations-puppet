@@ -24,19 +24,3 @@ class misc::planet {
 		ensure => latest;
 	}
 }
-
-# http://intertwingly.net/code/venus/
-class misc::planet-venus {
-	package { "planet-venus":
-		ensure => latest;
-	}
-
-	file {
-		"/var/www/index.html":
-			path => "/var/www/index.html",
-			mode => 0444,
-			owner => www-data,
-			group => www-data,
-			source => "puppet:///files/planet/index.html";
-	}
-}

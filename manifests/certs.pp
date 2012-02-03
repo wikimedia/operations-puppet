@@ -76,21 +76,6 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
-define create_certificate_hash( $certname="$name", $location="/etc/ssl/certs", $hash ) {
-
-	if versioncmp($lsbdistrelease, "11.04") > 0 {
-		$hashflag = "-subject_hash_old"
-	} else {
-		$hashflag = "-subject_hash"
-	}
-	exec {
-		"/bin/ln -s ${location}/${certname}.pem ${location}/$(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}.pem).0":
-			creates => "${location}/${hash}",
-			require => File["${location}/${certname}.pem"];
-	}
-
-}
-
 class certs::groups::ssl-cert {
 	# Hardy doesn't have system group ssl-cert, so ensure it exists
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") < 0 {
@@ -185,7 +170,7 @@ define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $m
 
 class certificates::packages {
 
-	package { [ "openssl", "ca-certificates", "ssl-cert" ]:
+	package { [ "openssl", "ca-certificates" ]:
 		ensure => latest;
 	}
 
@@ -203,7 +188,6 @@ class certificates::star_wmflabs {
 
 }
 
-# DO NOT USE THIS CLASS; TODO: delete
 class certificates::star_wikimedia_org {
 
 	include certificates::packages
@@ -250,7 +234,11 @@ class certificates::wmf_ca {
 			require => Package["openssl"];
 	}
 
-	create_certificate_hash { "wmf-ca": hash => "13b97b27.0" }
+	exec {
+		'/bin/ln -s /etc/ssl/certs/wmf-ca.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/wmf-ca.pem"];
+	}
 
 }
 
@@ -267,7 +255,11 @@ class certificates::wmf_labs_ca {
 			require => Package["openssl"];
 	}
 
-	create_certificate_hash { "wmf-labs": hash => "d693bcb4.0" }
+	exec {
+		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/wmf-labs.pem"];
+	}
 
 }
 
@@ -289,7 +281,6 @@ class certificates::rapidssl_ca {
 			creates => "/etc/ssl/certs/13b97b27.0",
 			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
 	}
-	create_certificate_hash { "RapidSSL_CA": hash => "13b97b27.0" }
 
 }
 

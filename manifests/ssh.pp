@@ -77,7 +77,9 @@ class ssh::config {
 				owner => root,
 				group => root,
 				mode  => 0444,
-				content => "If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n\n"
+				content => "
+If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
+"
 			}
 		}
 	}

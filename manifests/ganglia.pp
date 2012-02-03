@@ -20,8 +20,8 @@ class ganglia {
 		} else {
 			$deaf = "yes"
 		}
-	}	
-	
+	}
+
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
@@ -91,6 +91,9 @@ class ganglia {
 			"name"		=> "Virtualization cluster",
 			"ip_oct"	=> "29" },
 	}
+	# NOTE: Do *not* add new clusters *per site* anymore,
+	# the site name will automatically be appended now,
+	# and a different IP prefix will be used.
 
 	# gmond.conf template variables
 	$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
@@ -115,7 +118,7 @@ class ganglia {
 	# Resource definitions
 	file { "gmondconfig":
 		require => Package[$gmond],
-		name	=> "/etc/ganglia/gmond-${cluster}.conf",
+		name	=> $gmondpath,
 		owner	=> "root",
 		group	=> "root",
 		mode	=> 0444,
@@ -166,7 +169,7 @@ class ganglia {
 			ensure		=> running;
 	}
 
-	systemuser { gmetric: name => "gmetric", home => "/var/lib/gmetric", shell => "/bin/sh" }
+	systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
 
 	# Class for setting up the collector (gmetad)
 	class collector {

@@ -1,9 +1,6 @@
-######################################################################
-#### THIS FILE IS MANAGED BY PUPPET                                  #
-#### puppet:///files/logrotate/squid-frontend                        #
-######################################################################
-
-# Logrotate fragment for squid.
+#
+#	Logrotate fragment for squid.
+#
 /var/log/squid-frontend/*.log {
 	daily
 	compress

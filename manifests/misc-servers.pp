@@ -877,11 +877,9 @@ class misc::jenkins {
 		ensure => latest;
 	}
 
-	if ( $realm == 'production' ) {
-		user { jenkins:
-			name => "jenkins",
-			groups => [ "wikidev" ]; 
-		}
+	user { jenkins:
+		name => "jenkins",
+		groups => [ "wikidev" ];
 	}
 
 	service { 'jenkins':
