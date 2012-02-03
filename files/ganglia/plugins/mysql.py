@@ -600,7 +600,6 @@ def metric_init(params):
 		version = {
 			'description': "MySQL Version",
 			'value_type': 'string',
-			'format': '%s',
 		},
 
 		max_connections = {

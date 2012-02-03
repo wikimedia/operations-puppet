@@ -656,16 +656,8 @@ Wikimedia-related channels on irc.freenode.net.
 			owner => irc,
 			group => irc,
 			content => $motd;
-		"/etc/apache2/sites-available/irc.wikimedia.org":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/irc.wikimedia.org";
 	}
 
-	# redirect http://irc.wikimedia.org to http://meta.wikimedia.org/wiki/IRC
-	apache_site { irc: name => "irc.wikimedia.org" }
- 
 	# Doesn't work in Puppet 0.25 due to a bug
 	service { ircd:
 		provider => base,
@@ -833,8 +825,8 @@ class misc::kiwix-mirror {
 
 	file {
 		"/data/xmldatadumps/public/kiwix":
-			ensure => "/data/xmldatadumps/public/other/kiwix";
-		"/data/xmldatadumps/public/other/kiwix":
+			ensure => "/data/kiwix";
+		"/data/kiwix":
 			owner => "mirror",
 			group => "mirror",
 			mode => 0644,
@@ -842,7 +834,7 @@ class misc::kiwix-mirror {
 	}
 
 	cron { kiwix-mirror-update:
-		command => "rsync -vzrlptD  download.kiwix.org::download.kiwix.org/zim/0.9/ /data/xmldatadumps/public/other/kiwix/zim/0.9/ >/dev/null 2>&1",
+		command => "rsync -vzrlptD  download.kiwix.org::download.kiwix.org/zim/0.9/ /data/kiwix/zim/0.9/ >/dev/null 2>&1",
 		user => mirror,
 		minute => '*/15',
 		ensure => present;

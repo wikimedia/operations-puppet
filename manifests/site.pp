@@ -287,6 +287,87 @@ class protoproxy::ssl {
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 }
 
+class swift-cluster {
+	class base {
+		$cluster = "swift"
+
+		include standard
+		# TODO: pull in iptables rules here, or in the classes below
+	}
+	class eqiad-test inherits swift-cluster::base {
+		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster" }
+		include passwords::swift::eqiad-test
+		# The eqiad test cluster runs proxy and storage on the same hosts
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "swift::proxy::config":
+			bind_port => "8080",
+			proxy_address => "http://msfe-test.wikimedia.org:8080",
+			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
+			num_workers => $::processorcount * 2,
+			super_admin_key => $passwords::swift::eqiad-test::super_admin_key,
+			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
+			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+			rewrite_user => "test:tester",
+			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
+			rewrite_thumb_server => "ms5.pmtpa.wmnet",
+			shard_containers => "some",
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+		}
+		include swift::storage
+		include swift::proxy
+	}
+	class pmtpa-test inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster" }
+		include passwords::swift::pmtpa-test
+		class { "swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class proxy inherits swift-cluster::pmtpa-test {
+			class { "swift::proxy::config":
+				bind_port => "8080",
+				proxy_address => "http://msfe-pmtpa-test.wikimedia.org:8080",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "owa1.wikimedia.org:11211", "owa2.wikimedia.org:11211", "owa3.wikimedia.org:11211" ],
+				super_admin_key => $passwords::swift::pmtpa-test::super_admin_key,
+				rewrite_account => "AUTH_205b4c23-6716-4a3b-91b2-5da36ce1d120",
+				rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => $passwords::swift::pmtpa-test::rewrite_password,
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => ""
+			}
+			include swift::proxy
+		}
+		class storage inherits swift-cluster::pmtpa-test {
+			include swift::storage
+		}
+	}
+	class pmtpa-prod inherits swift-cluster::base {
+		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster" }
+		include passwords::swift::pmtpa-prod
+		class { "swift::base": hash_path_suffix => "bd51d755d4c53773" }
+		class proxy inherits swift-cluster::pmtpa-prod {
+			class { "swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://ms-fe.pmtpa.wmnet",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
+				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
+				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "some",
+				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+			}
+			include swift::proxy
+		}
+		class storage inherits swift-cluster::pmtpa-prod {
+			include swift::storage
+		}
+	}
+}
+
 
 # Default variables
 $cluster = "misc"
@@ -394,7 +475,7 @@ node "carbon.wikimedia.org" {
 node /^(copper|zinc)\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 
-	include role::swift::eqiad-test
+	include swift-cluster::eqiad-test
 }
 
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
@@ -488,7 +569,7 @@ node "dataset1.wikimedia.org" {
 
 }
 
-node /^dataset(2|1001)\.wikimedia\.org/ {
+node "dataset2.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	include standard,
@@ -511,14 +592,6 @@ node "db10.pmtpa.wmnet" {
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	include db::core
-
-	# upgraded hosts
-	if $hostname =~ /^db1[2]$/ {
-		include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-	}
 }
 
 node /^db2[1-9]\.pmtpa\.wmnet$/ {
@@ -529,7 +602,7 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db2[46]$/ {
+	if $hostname =~ /^db2(6)$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -553,14 +626,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	}
 }
 
-node "db40.pmtpa.wmnet" {
-	include db::core,
-		mysql::packages
-
-	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
-}
-
-node /^db4[2]\.pmtpa\.wmnet$/ {
+node /^db4[02]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
 }
@@ -928,10 +994,19 @@ node "kaulen.wikimedia.org" {
 	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
-# knsq16-22 are upload squids, 13 and 14 have been decommissioned
- node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
+# knsq1-7 are Varnish bits servers, 5 has been decommissioned
+node /knsq([1-7])\.esams\.wikimedia\.org/ {
+	if $hostname =~ /^knsq[4]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include standard
+}
+
+# knsq8-22 are upload squids, 13 and 14 have been decommissioned
+ node /knsq([8-9]|1[0-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-	if $hostname =~ /^knsq1[67]$/ {
+	if $hostname =~ /^knsq[89]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1152,7 +1227,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "magnesium.wikimedia.org" {
-	include role::swift::eqiad-test
+	include swift-cluster::eqiad-test
 }
 
 node "mchenry.wikimedia.org" {
@@ -1209,7 +1284,7 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
 
-	include role::swift::pmtpa-prod::storage
+	include swift-cluster::pmtpa-prod::storage
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -1277,14 +1352,14 @@ node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
 	}
 	$lvs_realserver_ips = [ "10.2.1.27" ]
 	include lvs::realserver
-	include role::swift::pmtpa-prod::proxy
+	include swift-cluster::pmtpa-prod::proxy
 }
 node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
 		'/dev/sdl' ]
 
-	include role::swift::pmtpa-prod::storage
+	include swift-cluster::pmtpa-prod::storage
 
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
@@ -1345,7 +1420,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::swift::pmtpa-prod::proxy
+	include swift-cluster::pmtpa-prod::proxy
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
@@ -1792,8 +1867,7 @@ node "stat1.wikimedia.org" {
 		admins::roots,
 		accounts::ezachte,
 		accounts::reedy,
-		accounts::diederik,
-		accounts::aotto
+		accounts::diederik
 }
 
 node "storage1.wikimedia.org" {

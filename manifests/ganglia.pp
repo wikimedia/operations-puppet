@@ -118,7 +118,7 @@ class ganglia {
 		name	=> "/etc/ganglia/gmond-${cluster}.conf",
 		owner	=> "root",
 		group	=> "root",
-		mode	=> 0444,
+		mode	=> 644,
 		content => template("ganglia/gmond_template.erb"),
 		notify  => Service[gmond],
 		ensure	=> present
@@ -177,33 +177,31 @@ class ganglia {
 			ensure => latest;
 		}
 
-		## FIXME this file is a temp hack to get ganglia running. Needs to become
-		## a template generated from information kept in puppet - Lcarr, 2012/01/03
+	## FIXME this file is a temp hack to get ganglia running. Needs to become
+	## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
 		file { "/etc/ganglia/gmetad.conf":
-			require => Package[gmetad],
-			source => "puppet:///files/ganglia/gmetad.conf",
-			mode => 0444,
+			require	=> Package[gmetad],
+			source	=> "puppet:///files/ganglia/gmetad.conf",
+			mode	=> 0644,
 			ensure	=> present
 		}
 
 		service { "gmetad":
 			require => File["/etc/ganglia/gmetad.conf"],
-			subscribe => File["/etc/ganglia/gmetad.conf"],
-			hasstatus => false,
-			ensure => running;
+			ensure	=> running;
 		}
 	}
 
-	# Class: ganglia::aggregator
+	class aggregator {
 	# for the machine class which listens on multicast and
 	# collects all the ganglia information from other sources
-	class aggregator {
+
 		# This overrides the default ganglia-monitor script
 		# with one that starts up multiple instances of gmond
 		file { "/etc/init.d/ganglia-monitor":
 			source => "puppet:///files/ganglia/ganglia-monitor",
-			mode   => 0555,
+			mode   => 0755,
 			ensure => present
 		}
 	}
@@ -221,25 +219,25 @@ class ganglia::web {
 
 	file {
 		"/etc/apache2/sites-available/ganglia.wikimedia.org":
-			mode => 0444,
+			mode => 644,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
-			mode => 0555,
+			mode => 755,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/restore-gmetad-rrds",
 			ensure => present;
 		"/usr/local/bin/save-gmetad-rrds":
-			mode => 0555,
+			mode => 755,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/save-gmetad-rrds",
 			ensure => present;
 		"/etc/init.d/gmetad":
-			mode => 0555,
+			mode => 755,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/gmetad",
@@ -247,7 +245,7 @@ class ganglia::web {
 		"/var/lib/ganglia/rrds.pmtpa/":
 			ensure => directory;
 		"/etc/rc.local":
-			mode => 0555,
+			mode => 755,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/rc.local",
@@ -257,12 +255,11 @@ class ganglia::web {
 	apache_site { ganglia: name => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
-	package {
-		"librrds-perl":
-			before => Package[rrdtool],
-			ensure => latest;
+	package { "librrds-perl":
+		before => Package[rrdtool],
+		ensure => latest;
 		"rrdtool":
-			ensure => latest,
+		ensure => latest,
 	}
 
 	cron { "save-rrds":
@@ -281,13 +278,5 @@ class ganglia::web {
 		pass => 0,
 		dump => 0,
 		ensure => mounted;
-	}
-}
-
-class ganglia::logtailer {
-	# this class pulls in everything necessary to get a ganglia-logtailer instance on a machine
-
-	package { "ganglia-logtailer":
-		ensure => latest;
 	}
 }
