@@ -42,11 +42,24 @@ class sudo::labs_project {
 
 class sudo::default {
 
-	file { "/etc/sudoers":
-		owner => root,
-		group => root,
-		mode => 0440,
-		source => "puppet:///files/sudo/sudoers.default";
+	file {
+		"/etc/sudoers":
+			owner => root,
+			group => root,
+			mode => 0440,
+			source => "puppet:///files/sudo/sudoers.default";
+		"/etc/sudoers.d":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0440,
+			recurse => true;
+		"/etc/sudoers.d/placeholder":
+			require => File["/etc/sudoers.d/"],
+			owner => root,
+			group => root,
+			mode => 0440,
+			content => "## DO NOT REMOVE ##";
 	}
 
 }

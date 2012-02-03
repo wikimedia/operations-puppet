@@ -147,18 +147,6 @@ class misc::fundraising {
 		"/usr/local/bin/drush":
 			ensure => "/opt/drush/drush";
 
-		# monitoring stuff
-		"/etc/nagios/nrpe.d/fundraising.cfg":
-			source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
-			mode => 0444,
-			owner => root,
-			group => root;
-		"/etc/sudoers.d/nrpe_fundraising":
-			source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
-			mode => 0440,
-			owner => root,
-			group => root;
-
 		# other stuff
 		"/etc/php5/cli/php.ini":
 			mode => 0444,

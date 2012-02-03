@@ -4,7 +4,7 @@
 @monitor_group { "lucene": description => "pmtpa search servers" }
 
 class search::sudo {
-	file { "/etc/sudoers":
+	file { "/etc/sudoers.d/search":
 		owner => root,
 		group => root,
 		mode => 0440,
