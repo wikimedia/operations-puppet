@@ -28,9 +28,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		ensure => latest;
 	}
 
-	# monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
-	monitor_service { "puppetmaster_http": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
-
 	$ssldir = "/var/lib/puppet/server/ssl"
 	# Move the puppetmaster's SSL files to a separate directory from the client's
 	file {
@@ -59,10 +56,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
 	}
 
-	#cloning the directories last
-
-	include gitclone
-
 	# Class: puppetmaster::config
 	#
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
@@ -88,8 +81,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Class: puppetmaster::gitclone
 	#
 	# This class handles the repositories from which the puppetmasters pull
-	#
-
 	class gitclone {
 		$gitdir = "/var/lib/git"
 
@@ -114,6 +105,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				require => Git::Clone["operations/software"],
 				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
+			"/var/lib/puppet/volatile":
+				mode => 0750,
+				ensure => directory;
 		}
 		if $is_labs_puppet_master {
 			git::clone {
@@ -204,6 +198,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			enable => false,
 			ensure => stopped;
 		}
+
+		# monitor HTTPS on puppetmaster (port 8140, SSL, expect return code 400)
+		monitor_service { "puppetmaster_https": description => "Puppetmaster HTTPS", check_command => "check_http_puppetmaster" }
 	}
 
 	# Class: puppetmaster::labs
@@ -354,7 +351,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		allow_from => $allow_from
 	}
 
-	include scripts
+	include scripts, gitclone
 
 	if $is_labs_puppet_master {
 		include labs
