@@ -173,9 +173,9 @@ class swift::proxy::config(
 		require => Package['ganglia-logtailer']
 	}
 	cron { swift-proxy-ganglia:
-		command => "/usr/sbin/ganglia-logtailer --classname SwiftProxyLogtailer --log_file /var/log/system.log --mode cron > /dev/null 2>&1",
+		command => "/usr/sbin/ganglia-logtailer --classname SwiftProxyLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1",
 		user => root,
-		minute => '*/5',
+		minute => '*',
 		ensure => present
 	}
 }
