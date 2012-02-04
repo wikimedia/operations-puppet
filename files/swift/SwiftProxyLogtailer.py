@@ -14,6 +14,15 @@
 ###    * number of HTTP 500-599 responses
 ###
 
+# cribbed the apachevhost logtailer for use crunching swift logs
+# sample logs (delete, get, head, and put):
+# format: month day time host process ip ip date action path httpver resp - useragent auth - - - - - dur
+#  Feb  2 23:09:30 ms-fe1 proxy-server 10.0.11.21 10.0.11.21 02/Feb/2012/23/09/30 DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.62/6/62/1_single_stroke_roll.svg/150px-1_single_stroke_roll.svg.png HTTP/1.0 204 - PHP-CloudFiles/1.7.10 mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3470
+#  Feb  2 23:08:07 ms-fe1 proxy-server 208.80.152.165 208.80.152.165 02/Feb/2012/23/08/07 GET /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.42/4/42/Grattacielo_pirelli.JPG/220px-Grattacielo_pirelli.JPG HTTP/1.0 404 - Python-urllib/1.17 - - - - - - 0.2195
+#  Feb  2 23:08:24 ms-fe1 proxy-server 10.0.6.210 10.0.6.210 02/Feb/2012/23/08/24 HEAD /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe HTTP/1.0 204 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3117
+#  Feb  2 23:08:08 ms-fe1 proxy-server 127.0.0.1 127.0.0.1 02/Feb/2012/23/08/08 PUT /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.0d/0/0d/Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_lokomotiva_362.087_%252802%2529.jpg/120px-Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_loko HTTP/1.0 201 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc 4037 - - - - 0.1491
+# bhartshorne 2012-02-02
+
 import time
 import threading
 import re
@@ -23,7 +32,7 @@ import copy
 from ganglia_logtailer_helper import GangliaMetricObject
 from ganglia_logtailer_helper import LogtailerParsingException, LogtailerStateException
 
-class ApacheVHostLogtailer(object):
+class SwiftProxyLogtailer(object):
     # only used in daemon mode
     period = 30
     def __init__(self):
@@ -32,43 +41,43 @@ class ApacheVHostLogtailer(object):
         self.reset_state()
         self.lock = threading.RLock()
 
-        # Dict for containing stats on each vhost
+        # Dict for containing stats on each method
         self.stats = {}
-
-        # A vhost must receive at least this % of the hits to be broken out from 'other'
-        self.percentToBeHot = 0.05
+        for m in ['GET', 'PUT', 'HEAD', 'DELETE', 'OTHER']:
+            self.stats[m] = self.getBlankStats()
 
         # this is what will match the apache lines
-        apacheLogFormat = '%v %P %u %{%Y-%m-%dT%H:%M:%S}t %D %s %>s %I %O %B %a \"%{X-Forwarded-For}i\" \"%r\".*'
-        self.reg = re.compile(self.apacheLogToRegex(apacheLogFormat))
+        # see http://wikitech.wikimedia.org/view/Swift/Logging_and_Metrics for more detail
+        # format: month day time host process ip ip date method path httpver resp - useragent auth - - - - - dur
+        swiftLogFormat = '%date %host %process %client %remote_ip %slashdate %method %path %httpver %status %referrer %useragent %authtoken %reqbytes %respbytes %etag %transid %headers %dur'
+        self.reg = re.compile(self.swiftLogToRegex(swiftLogFormat))
 
         # assume we're in daemon mode unless set_check_duration gets called
         self.dur_override = False
 
 
-    def apacheLogToRegex(self, logFormat):
-        logFormatDict = {'%v':      '(?P<server_name>[^ ]+)',
-            '%h':                   '(?P<remote_host>[^ ]+)',
-            '%a':                   '(?P<remote_ip>[^ ]+)',
-            '%P':                   '(?P<pid>[^ ]+)',           # PID
-            '%u':                   '(?P<auth_user>[^ ]+)',     # HTTP-auth username
-            '%t':                   '\[(?P<date>[^\]]+)\]',     # default date format
-            '%{%Y-%m-%dT%H:%M:%S}t':'(?P<date>[^ ]+)',          # custom date format
-            '%D':                   '(?P<req_time>[^ ]+)',      # req time in microsec
-            '%s':                   '(?P<retcode>[^ ]+)',       # initial response code
-            '%>s':                  '(?P<final_retcode>[^ ]+)', # final response code
-            '%b':                   '(?P<req_size_clf>[^ ]+)',  # request size in bytes in CLF
-            '%B':                   '(?P<req_size>[^ ]+)',      # req size in bytes
-            '%I':                   '(?P<req_size_wire>[^ ]+)', # req size in bytes on the wire (+SSL, +compression)
-            '%O':                   '(?P<resp_size_wire>[^ ]+)',# response size in bytes
-            '%X':                   '(?P<conn_status>[^ ]+)',   # connection status
-            '\"%r\"':               '"(?P<request>[^"]+)"',     # request (GET / HTTP/1.0)
-            '\"%q\"':               '"(?P<query_string>[^"]+)"',# the query string
-            '\"%U\"':               '"(?P<url>[^"]+)"',         # the URL requested
-            '\"%{X-Forwarded-For}i\"': '"(?P<xfwd_for>[^"]+)"', # X-Forwarded-For header
-            '\"%{Referer}i\"':      '"(?P<referrer>[^"]+)"',
-            '\"%{User-Agent}i\"':   '"(?P<user_agent>[^"]+)"',
-            '%{cookie}n':           '(?P<cookie>[^ ]+)'}
+    def swiftLogToRegex(self, logFormat):
+        logFormatDict = {
+            '%date':                '(?P<date>[A-Z][a-z]+ +[0-9][0-9]? [0-9:]{8})', #eg "Feb  2 23:08:24"
+            '%host':                '(?P<host>[^ ]+)',
+            '%process':             '(?P<process>[^ ]+)',
+            '%client':              '(?P<client>[^ ]+)',
+            '%remote_ip':           '(?P<remote_ip>[^ ]+)',
+            '%slashdate':           '(?P<slashdate>[^ ]+)',     #eg 02/Feb/2012/23/08/24
+            '%method':              '(?P<method>[A-Z]+)',   #GET, HEAD, PUT, DELETE, etc.
+            '%path':                '(?P<path>[^ ]+)',
+            '%httpver':             '(?P<httpver>[^ ]+)',
+            '%status':              '(?P<status>[^ ]+)',    # 404, 204, 200, etc.
+            '%referrer':            '(?P<referrer>[^ ]+)',
+            '%useragent':           '(?P<useragent>[^ ]+)',
+            '%authtoken':           '(?P<authtoken>[^ ]+)',
+            '%reqbytes':            '(?P<reqbytes>[^ ]+)',
+            '%respbytes':           '(?P<respbytes>[^ ]+)',
+            '%etag':                '(?P<etag>[^ ]+)',
+            '%transid':             '(?P<transid>[^ ]+)',
+            '%headers':             '(?P<headers>[^ ]+)',
+            '%dur':                 '(?P<dur>[^ ]+)',
+        }
 
         for (search, replace) in logFormatDict.iteritems():
             logFormat = logFormat.replace(search, replace)
@@ -83,53 +92,34 @@ class ApacheVHostLogtailer(object):
         '''This function should digest the contents of one line at a time,
         updating the internal state variables.'''
         self.lock.acquire()
-        
+
         try:
             regMatch = self.reg.match(line)
         except Exception, e:
             self.lock.release()
             raise LogtailerParsingException, "regmatch or contents failed with %s" % e
-        
+
         if regMatch:
             lineBits = regMatch.groupdict()
-
-            # For brevity, pull out the servername from the line list
-            server_name = lineBits['server_name']
-            
-            # Make this server_name a key for an empty dict if we have
-            # never seen it before.
-            self.stats[server_name] = \
-                self.stats.get(server_name, self.getBlankStats())
-
-            self.stats[server_name]['num_hits'] += 1
-
-            if( 'GET' in lineBits['request'] ):
-                self.stats[server_name]['num_gets'] += 1
-
-            rescode = int(lineBits['final_retcode'])
-            if( (rescode >= 200) and (rescode < 300) ):
-                self.stats[server_name]['num_200'] += 1
-            elif( (rescode >= 300) and (rescode < 400) ):
-                self.stats[server_name]['num_300'] += 1
-            elif( (rescode >= 400) and (rescode < 500) ):
-                self.stats[server_name]['num_400'] += 1
-            elif( (rescode >= 500) and (rescode < 600) ):
-                self.stats[server_name]['num_500'] += 1
-            
-            # capture request duration
-            req_time = float(lineBits['req_time'])
-            # convert to seconds
-            req_time = req_time / 1000000
-            # Add up the req_time in the req_time_avg field, we'll divide later
-            self.stats[server_name]['req_time_avg'] += req_time
-            
-            # store for 90th % calculation
-            self.stats[server_name]['req_time_90th_list'].append(req_time)
+            # all my stats are keyed off of method (GET, PUT, HEAD, etc)
+            method = lineBits['method']
+            if( method not in ['GET', 'PUT', 'HEAD', 'DELETE'] ):
+                method = 'OTHER'
+            # the only HTTP response codes I care about are 200, 204, and 404
+            status = lineBits['status']
+            if( status not in ['200', '204', '404'] ):
+                status = 'other'
+            statusname = "durlist_%s" % status   # change 204 into 'durist_204'
+            # finally, I want query duration (it's in seconds)
+            req_time = float(lineBits['dur'])
+            # store the query duration in its bucket; everything else will be calcalated from that
+            self.stats[method][statusname].append(req_time)
         else:
+            self.lock.release()
             raise LogtailerParsingException, "regmatch failed to match"
-        
+
         self.lock.release()
-    
+
 
     # Returns a dict of zeroed stats
     def getBlankStats(self):
@@ -137,19 +127,13 @@ class ApacheVHostLogtailer(object):
         a vhost, zereod out.  This helps avoid undeclared keys when
         traversing the dictionary.'''
 
-        blankData = {'num_hits':        0,
-                     'num_gets':        0,
-                     'num_200':         0,
-                     'num_300':         0,
-                     'num_400':         0,
-                     'num_500':         0,
-                     'req_time_avg':    0,
-                     'req_time_90th_list': [],
-                     'req_time_90th':   0,
-                     'req_time_max':    0}
-        
+        blankData = {'durlist_200':   [],
+                     'durlist_204':   [],
+                     'durlist_404':   [],
+                     'durlist_other': []
+                    }
         return blankData
-    
+
     # example function for reset_state
     # takes no arguments
     # returns nothing
@@ -161,11 +145,11 @@ class ApacheVHostLogtailer(object):
         time between calls to get_state is necessary to calculate metrics,
         reset_state should store now() each time it's called, and get_state
         will use the time since that now() to do its calculations'''
-        
+
         self.stats = {}
         self.last_reset_time = time.time()
-    
-    
+
+
     # example for keeping track of runtimes
     # takes no arguments
     # returns float number of seconds for this run
@@ -173,10 +157,10 @@ class ApacheVHostLogtailer(object):
         '''This function only used if logtailer is in cron mode.  If it is
         invoked, get_check_duration should use this value instead of calculating
         it.'''
-        self.duration = dur 
+        self.duration = dur
         self.dur_override = True
-    
-    
+
+
     def get_check_duration(self):
         '''This function should return the time since the last check.  If called
         from cron mode, this must be set using set_check_duration().  If in
@@ -192,8 +176,8 @@ class ApacheVHostLogtailer(object):
             if (duration < acceptable_duration_min or duration > acceptable_duration_max):
                 raise LogtailerStateException, "time calculation problem - duration (%s) > 10%% away from period (%s)" % (duration, self.period)
         return duration
-    
-    
+
+
     # example function for get_state
     # takes no arguments
     # returns a dictionary of (metric => metric_object) pairs
@@ -213,89 +197,78 @@ class ApacheVHostLogtailer(object):
             self.reset_state()
             self.lock.release()
             raise e
-        
+
         combined = {}       # A dict containing stats for broken out & 'other' vhosts
         results  = []       # A list for all the Ganglia Log objects
 
-        # For each "hot" vhost, and for the rest cumulatively, we want to gather:
-        # - num hits
-        # - num gets
-        # - request time: average, max, 90th %
-        # - response codes: 200, 300, 400, 500
-        
-        # Create an 'other' group for non-hot-vhosts
-        combined['other'] = self.getBlankStats()
+        # for each method (get, put, etc.) we want to calculate 
+        # - number of hits total
+        # - avg, 90th, and max duration
+        # - for each status code (200, 204, etc.)
+        # - - number of hits
+        # - - avg, 90th, and max duration
+        # each metric will be named:
+        #   method_hits, method_avg, method_90th, method_max
+        #   method_status_hits, method_status_avg, method_status_90th, method_status_max
+        # if method_status_hist is 0, avg, 90th, and max will not be reported.
+        #   (for example, put will never return 200)
 
-        # Calculate the minimum # of hits that a vhost needs to get broken out
-        # from 'other'
-        totalHits = 0
-        
-        #print mydata
-        
-        for vhost, stats in mydata.iteritems():
-            totalHits += stats['num_hits']
-        numToBeHot = totalHits * self.percentToBeHot
-        
-        otherCount = 0
-
-        for vhost, stats in mydata.iteritems():
-            # see if this is a 'hot' vhost, or an 'other'
-            if stats['num_hits'] >= numToBeHot:
-                key = vhost
-                combined[key] = self.getBlankStats()
-            else:
-                otherCount += 1
-                key = 'other'
-            
-            # Calculate statistics over time & number of hits
-            if check_time > 0:
-                combined[key]['num_hits'] += stats['num_hits'] / check_time
-                combined[key]['num_gets'] += stats['num_gets'] / check_time
-                combined[key]['num_200']  += stats['num_200']  / check_time
-                combined[key]['num_300']  += stats['num_300']  / check_time
-                combined[key]['num_400']  += stats['num_400']  / check_time
-                combined[key]['num_500']  += stats['num_500']  / check_time
-            if stats['num_hits'] > 0:
-                combined[key]['req_time_avg'] = stats['req_time_avg'] / stats['num_hits']
-
-            # calculate 90th % request time
-            ninetieth_list = stats['req_time_90th_list']
-            ninetieth_list.sort()
-            num_entries = len(ninetieth_list)
-            try:
-                combined[key]['req_time_90th'] += ninetieth_list[int(num_entries * 0.9)]
-                # Use this check so that we get the biggest value from all 'other's
-                if ninetieth_list[-1] > combined[key]['req_time_max']:
-                    combined[key]['req_time_max'] = ninetieth_list[-1]
-            except IndexError:
-                combined[key]['req_time_90th'] = 0
-                combined[key]['req_time_max'] = 0
-
-        # The req_time_90th field for the "other" vhosts is now a sum. Need to
-        # divide by the number of "other" vhosts
-        if otherCount > 0:
-            combined['other']['req_time_90th'] /= (otherCount * 1.0)
-        else:
-            combined['other']['req_time_90th'] = 0
-
-        for vhost, stats in combined.iteritems():
-            #print vhost
-            #print "\t", stats
-
-            # skip empty vhosts
-            if stats['num_hits'] == 0:
+        totalhits = 0
+        for (method, stats) in mydata.iteritems():
+            # method = get, put, etc., stats = dict of statuses
+            methodhits = 0
+            methodstats = []
+            for (status, durs) in stats.iteritems():
+                # status = 'durlist_200', etc., durs = list of durations
+                totalhits += len(durs)
+                methodhits += len(durs)
+                statushits = len(durs)
+                if statushits == 0:
+                    # skip calculating durations if the list is empty.
+                    continue
+                # at this point, we know there's stuff in durs
+                # calculate avg, 90th, and max
+                statusnum = status[8:] #turn 'durlist_200' into '200' (string, not int)
+                #print "statusO: %s statusnum %s" % (status, statusnum)
+                durs.sort()
+                try:
+                    combined['%s_%s_hits' % (method, statusnum)] = statushits / check_time
+                except ZeroDivisionError:
+                    # I don't know what it means for statushits > 0 and check_time == 0, but meh.
+                    combined['%s_%s_hits' % (method, statusnum)] = 0
+                #print "istatus 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
+                combined['swift_%s_%s_%s' % (method, statusnum, '90th')] = durs[int(len(durs) * 0.9)]
+                combined['swift_%s_%s_%s' % (method, statusnum, 'max')] = durs[-1]
+                combined['swift_%s_%s_%s' % (method, statusnum, 'avg')] = sum(durs) / len(durs)
+                # combine status data for method stats
+                methodstats = methodstats + durs
+            # ok, all the statuses have been calculated, let's do summary for the method
+            if methodhits == 0:
+                # skip calculating durations if the list is empty
                 continue
+            durs = methodstats
+            durs.sort()
+            try:
+                combined['%s_hits' % (method)] = methodhits / check_time
+            except ZeroDivisionError:
+                combined['%s_hits' % (method)] = 0
+            #print "method 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
+            combined['swift_%s_%s' % (method, '90th')] = durs[int(len(durs) * 0.9)]
+            combined['swift_%s_%s' % (method, 'max')] = durs[-1]
+            #print durs
+            #print ">> %s %s<<" % (sum(durs), len(durs))
+            #combined['%s_%s' % (method, 'avg')] = sum(durs) / len(durs)
+        combined['swift_total_hits'] = totalhits
 
+
+
+        for metricname, metricval in combined.iteritems():
             # package up the data you want to submit
-            results.append(GangliaMetricObject('apache_%s_hits' % vhost, stats['num_hits'], units='hps'))
-            results.append(GangliaMetricObject('apache_%s_gets' % vhost, stats['num_gets'], units='hps'))
-            results.append(GangliaMetricObject('apache_%s_dur_avg' % vhost, stats['req_time_avg'], units='sec'))
-            results.append(GangliaMetricObject('apache_%s_dur_90th' % vhost, stats['req_time_90th'], units='sec'))
-            results.append(GangliaMetricObject('apache_%s_dur_max' % vhost, stats['req_time_max'], units='sec'))
-            results.append(GangliaMetricObject('apache_%s_200' % vhost, stats['num_200'], units='hps'))
-            results.append(GangliaMetricObject('apache_%s_300' % vhost, stats['num_300'], units='hps'))
-            results.append(GangliaMetricObject('apache_%s_400' % vhost, stats['num_400'], units='hps'))
-            results.append(GangliaMetricObject('apache_%s_500' % vhost, stats['num_500'], units='hps'))
-
+            if 'hits' in metricname:
+                #print "metric info %s, %s, %s" % (metricname, metricval, 'hps')
+                results.append(GangliaMetricObject(metricname, metricval, units='hps'))
+            else:
+                #print "metric info %s, %s, %s" % (metricname, metricval, 'sec')
+                results.append(GangliaMetricObject(metricname, metricval, units='sec'))
         # return a list of metric objects
         return results
