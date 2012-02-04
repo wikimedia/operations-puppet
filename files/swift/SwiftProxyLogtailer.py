@@ -232,10 +232,10 @@ class SwiftProxyLogtailer(object):
                 #print "statusO: %s statusnum %s" % (status, statusnum)
                 durs.sort()
                 try:
-                    combined['%s_%s_hits' % (method, statusnum)] = statushits / check_time
+                    combined['swift_%s_%s_hits' % (method, statusnum)] = statushits / check_time
                 except ZeroDivisionError:
                     # I don't know what it means for statushits > 0 and check_time == 0, but meh.
-                    combined['%s_%s_hits' % (method, statusnum)] = 0
+                    combined['swift_%s_%s_hits' % (method, statusnum)] = 0
                 #print "istatus 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
                 combined['swift_%s_%s_%s' % (method, statusnum, '90th')] = durs[int(len(durs) * 0.9)]
                 combined['swift_%s_%s_%s' % (method, statusnum, 'max')] = durs[-1]
@@ -249,16 +249,16 @@ class SwiftProxyLogtailer(object):
             durs = methodstats
             durs.sort()
             try:
-                combined['%s_hits' % (method)] = methodhits / check_time
+                combined['swift_%s_hits' % (method)] = methodhits / check_time
             except ZeroDivisionError:
-                combined['%s_hits' % (method)] = 0
+                combined['swift_%s_hits' % (method)] = 0
             #print "method 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
             combined['swift_%s_%s' % (method, '90th')] = durs[int(len(durs) * 0.9)]
             combined['swift_%s_%s' % (method, 'max')] = durs[-1]
             #print durs
             #print ">> %s %s<<" % (sum(durs), len(durs))
             #combined['%s_%s' % (method, 'avg')] = sum(durs) / len(durs)
-        combined['swift_total_hits'] = totalhits
+        combined['swift_hits'] = totalhits
 
 
 
