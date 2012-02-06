@@ -623,7 +623,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 
 # eqiad dbs
 node /db10[0-9][0-9]\.eqiad\.wmnet/ {
-	if $hostname =~ /^db(1001|1017)$/ {
+	if $hostname =~ /^db(1001|1017|1018|1021)$/ {
 		$ganglia_aggregator = "true"
 	}
 
