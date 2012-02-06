@@ -1,5 +1,5 @@
 pid_file=/var/run/nagios/nrpe.pid
-allowed_hosts=<%= scope.lookupvar("nrpe::packages::nrpe_allowed_hosts) %>
+allowed_hosts=<%= scope.lookupvar("nrpe::packages::nrpe_allowed_hosts") %>
 
 command[check_dpkg]=/usr/lib/nagios/plugins/check_dpkg
 command[check_disk_5_2]=/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e
