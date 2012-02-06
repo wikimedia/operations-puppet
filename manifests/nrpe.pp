@@ -1,6 +1,4 @@
 class nrpe::packages {
-	include nagios::packages::plugins
-
 	$nrpe_allowed_hosts = $::realm ? {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
 		"labs" => "10.4.0.34"
