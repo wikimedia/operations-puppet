@@ -1843,7 +1843,8 @@ node "stafford.pmtpa.wmnet" {
 
 node "stat1.wikimedia.org" {
 	include standard,
-		admins::roots
+		admins::roots,
+		misc::statistics::base
 
 	# special accounts
 	include accounts::ezachte,
