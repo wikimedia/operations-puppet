@@ -843,6 +843,11 @@ node "hooft.esams.wikimedia.org" {
 		ganglia::collector
 }
 
+node "manutius.wikimedia.org" {
+	include standard,
+		misc::torrus
+}
+
 node "marmontel.wikimedia.org" {
 	include standard,
 		admins::roots,
@@ -1844,7 +1849,7 @@ node "streber.wikimedia.org" {
 		ganglia::collector,
 		ntp::client,
 		admins::roots,
-		misc::torrus,
+#		misc::torrus,
 		exim::rt,
 		misc::rt::server,
 		certificates::star_wikimedia_org
