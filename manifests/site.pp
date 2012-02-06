@@ -1792,7 +1792,8 @@ node "stat1.wikimedia.org" {
 		accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
-		accounts::aotto
+		accounts::aotto,
+		misc::statistics::base
 }
 
 node "storage1.wikimedia.org" {
