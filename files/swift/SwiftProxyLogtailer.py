@@ -43,7 +43,7 @@ class SwiftProxyLogtailer(object):
 
         # Dict for containing stats on each method
         self.stats = {}
-        for m in ['GET', 'PUT', 'HEAD', 'DELETE', 'OTHER']:
+        for m in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE', 'OTHER']:
             self.stats[m] = self.getBlankStats()
 
         # this is what will match the apache lines
@@ -103,7 +103,7 @@ class SwiftProxyLogtailer(object):
             lineBits = regMatch.groupdict()
             # all my stats are keyed off of method (GET, PUT, HEAD, etc)
             method = lineBits['method']
-            if( method not in ['GET', 'PUT', 'HEAD', 'DELETE'] ):
+            if( method not in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE'] ):
                 method = 'OTHER'
             # the only HTTP response codes I care about are 200, 204, and 404
             status = lineBits['status']
