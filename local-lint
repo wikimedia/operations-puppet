@@ -1,4 +1,5 @@
 #!/bin/bash
+# You must have puppet and sed in your paths or this will FAIL!
 
 echo "Running a local test parse of puppet..."
 

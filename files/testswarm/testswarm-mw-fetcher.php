@@ -4,7 +4,8 @@
  *
  * As of November 2nd 2011, this is still a work in progress.
  *
- * Latest version can be found in the MediaWiki SVN repository under /trunk/tools/testswarm/
+ * Latest version can be found in the Mediawiki repository under
+ * /trunk/tools/testswarm/
  *
  * Based on http://svn.wikimedia.org/viewvc/mediawiki/trunk/tools/testswarm/scripts/testswarm-mediawiki-svn.php?revision=94359&view=markup
  *
@@ -13,9 +14,7 @@
  */
 
 /**
- * TestSwarmMWMain
- *
- * Main class that prepares everything.
+ * One class doing everything! :D
  *
  * Subversion calls are made using the svn binary so we do not need
  * to install any PECL extension.
@@ -58,7 +57,7 @@ class TestSwarmMWMain {
 	/** URL pattern for $wgScriptPath */
 	protected $scriptPathPattern = "/checkouts/mw/trunk/r$1";
 	/** URL pattern to add one test. $1 is rev, $2 testname */
-	protected $testPattern = '/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2';
+	protected $testPattern = "/checkouts/mw/trunk/r$1/tests/qunit/?filter=$2";
 
 	/** GETTERS **/
 
@@ -93,7 +92,7 @@ class TestSwarmMWMain {
 
 		// Verify we have been given required options
 		if ( !isset( $options['root'] ) || !isset( $options['svnUrl'] ) ) {
-			throw new Exception( __METHOD__ . ': Required options "root" and/or "svnUrl" missing' );
+			throw new Exception( __METHOD__ . ": Required options 'root' and/or 'svnUrl' missing" );
 		}
 
 		$this->root = $options['root'];
@@ -115,7 +114,7 @@ class TestSwarmMWMain {
 			if ( $options['minRev'] < 1 ) {
 				# minRev = 0 will just screw any assumption made in this script.
 				# so we really do not want it.
-				throw new Exception( __METHOD__ . ': Option "minRev" must be >= 1' );
+				throw new Exception( __METHOD__ . ": Option 'minRev' must be >= 1 " );
 			}
 			$this->minRev = $options['minRev'];
 		}
@@ -199,7 +198,7 @@ class TestSwarmMWMain {
 		$output = $this->exec( $cmd, $retval );
 
 		if ( $retval !== 0 ) {
-			throw new Exception( __METHOD__. ': Error running subversion log' );
+			throw new Exception(__METHOD__. ': Error running subversion log' );
 		}
 
 		preg_match( "/r(\d+)/m", $output, $m );
@@ -226,11 +225,7 @@ class TestSwarmMWMain {
 			$this->debug( 'Checkouts dir empty? Looking up remote repo...', __METHOD__ );
 			$next = $this->minRev;
 		} else {
-			try {
-				$next = $this->getNextFollowingRevId( $cur );
-			} catch ( Exception $e ) {
-				$next = null;
-			}
+			$next = $this->getNextFollowingRevId( $cur );
 		}
 		return $next;
 	}
@@ -264,7 +259,7 @@ class TestSwarmMWMain {
 	 */
 	public function getPathsForRev( $id ) {
 		if ( !is_numeric( $id ) ) {
-			throw new Exception( __METHOD__ . ': Given non numerical revision ' . var_export( $id, true ) );
+			throw new Exception( __METHOD__ . ": Given non numerical revision " . var_export($id, true) );
 		}
 
 		return array(
@@ -338,7 +333,7 @@ class TestSwarmMWMain {
 		echo "$msg\n";
 
 		// Append to logfile
-		$fhandle = fopen( $file, 'w+' );
+		$fhandle = fopen( $file, "w+" );
 		fwrite( $fhandle, '[' . date( 'r' ) . '] ' . $msg );
 		fclose( $fhandle );
 	}
@@ -379,7 +374,7 @@ class TestSwarmMWFetcher {
 	public function __construct( TestSwarmMWMain $main, $svnRevId ) {
 		// Basic validation
 		if ( !is_int( $svnRevId ) ) {
-			throw new Exception( __METHOD__ . ': Invalid argument. svnRevId must be an integer' );
+			throw new Exception( __METHOD__ . ": Invalid argument. svnRevId must be an integer" );
 		}
 
 		$this->paths = $main->getPathsForRev( $svnRevId );
@@ -405,9 +400,9 @@ class TestSwarmMWFetcher {
 
 		/**
 		 * @todo FIXME:
-		 * - Get list of tests (see old file for how)
+		 * - Get list of tests (see  old file for how)
 		 * - Make POST request to TestSwarm install to add jobs for these test runs
-		 *  (CURL addjob.php with login/auth token)
+		 *   (CURL addjob.php with login/auth token)
 		 */
 		return true;
 	}
@@ -430,7 +425,7 @@ class TestSwarmMWFetcher {
 		$retval = null;
 		$this->main->exec( $cmd, $retval );
 		if ( $retval !== 0 ) {
-			throw new Exception( __METHOD__ . ': Error running subversion checkout' );
+			throw new Exception(__METHOD__ . ": Error running subversion checkout" );
 		}
 
 		// @todo: Handle errors for above commands.
@@ -478,11 +473,12 @@ class TestSwarmMWFetcher {
 		$this->main->log( "-- MediaWiki installer output: \n$output\n-- End of MediaWiki installer output", __METHOD__ );
 
 		if ( $retval !== 0 ) {
-			throw new Exception( __METHOD__ . ': Error running MediaWiki installer' );
+			throw new Exception(__METHOD__ . ": Error running MediaWiki installer" );
 		}
 	}
 
 	/**
+	 * @todo FIXME: Implement :-)
 	 * @param $id integer: Revision id to append settings to.
 	 */
 	public function doAppendSettings() {
@@ -490,7 +486,7 @@ class TestSwarmMWFetcher {
 
 		$localSettings = "{$this->paths['mw']}/LocalSettings.php";
 		if ( !file_exists( $localSettings ) ) {
-			throw new Exception( __METHOD__ . ": LocalSettings.php missing, expected at {$localSettings}" );
+			throw new Exception(__METHOD__ . ": LocalSettings.php missing, expected at {$localSettings}" );
 		}
 
 		// Optional, only if existant
@@ -506,22 +502,16 @@ class TestSwarmMWFetcher {
 			if ( touch( $globalSettings ) ) {
 				$this->main->debug( "Created $globalSettings", __METHOD__ );
 			} else {
-				throw new Exception( __METHOD__ . ": Aborting. Unable to create GlobalSettings.php" );
+				throw new Exception(__METHOD__ . ": Aborting. Unable to create GlobalSettings.php" );
 			}
 		}
 
 		// Override $wgServer set by the CLI installer and rely on the default autodetection
 		$fh = fopen( $localSettings, 'a' );
 		fwrite( $fh,
-			"\n"
-			."/**\n"
-			." * @name Added by TestSwarm fetcher\n"
-			." * @{\n"
-			." */\n\n"
-
+			"\n# /Added by testswarm fetcher/\n"
 			.'$wgServer = WebRequest::detectServer();'."\n"
-
-			."\n/**@}*/\n\n"
+			."\n#End /Added by testswarm fetcher/\n"
 		);
 		fclose( $fh );
 
@@ -540,93 +530,43 @@ class TestSwarmMWFetcher {
 }
 
 class TestSwarmAPI {
-
-	/**
-	 * @var $context TestSwarmMWMain
-	 */
-	public $context;
-
-	public $swarmBaseUrl; // Why public?
+	public $URL;
 	private $user;
 	private $authToken;
-	private $addJobParams;
 
 	/**
 	 * Initialize a testswarm instance
-	 * @param $context TestSwarmMWMain
-	 * @param $apiOptions array Options for the API.
-	 * Required:
-	 * - user string: A testswarm username
-	 * - authToken string: Associated user authentication token
-	 * Optional:
-	 * - swarmBaseUrl string: Web root of the testswarm instance. Default: http://localhost/testswarm
-	 * - addJobParams array: Default query parameters for use in self::doAddJob. See there for documentation.
+	 * @param $user String A testswarm username
+	 * @param $authtoken String associated user authentication token
+	 * @param $URL String URL to the testswarm instance. Default:
+	 * http://localhost/testswarm
 	 */
-	public function __construct( TestSwarmMWMain $context, array $apiOptions ) {
-
-		// Required options
-		if ( !isset( $apiOptions['user'] ) || !isset( $apiOptions['authToken'] ) ) {
-			throw new Exception( __METHOD__ . ': Required options "user" and/or "authToken" missing' );
-		}
-
+	public function __construct( TestSwarmMWMain $context, $user, $authtoken,
+		$URL = 'http://localhost/testswarm'
+	) {
 		$this->context   = $context;
+		$this->URL       = $URL;
+		$this->user      = $user;
+		$this->authToken = $authtoken;
 
-		$apiOptions = array_merge( array(
-			'swarmBaseUrl' => 'http://localhost/testswarm',
-			'addJobParams' => array(),
-		), $apiOptions );
-
-		$this->user = $apiOptions['user'];
-		$this->authToken = $apiOptions['authToken'];
-		$this->swarmBaseUrl = $apiOptions['swarmBaseUrl'];
-		$this->addJobParams = $apiOptions['addJobParams'];
-
-		// @todo FIXME: Check user auth before continuing.
+		// FIXME check user auth before continuing.
 	}
 
 	/**
 	 * Add a job to the Testswarm instance
-	 * @param $revision int
-	 * @param $params array [optional] We can override some job query parameters:
-	 * - user string:
-	 * - authToken string:
-	 * - max int:
-	 * - job_name string:
-	 * - browsers string:
+	 * FIXME: lot of hardcoded options there 8-)
 	 */
-	public function doAddJob( $revision, $custom = array() ) {
-		if ( !is_int( $revision ) ) {
-			$this->context->log( 'Invalid $revision argument given in ', __METHOD__ );
-			return false;
-		}
-
-		// Filter out bad stuff
-		// @todo: Exit when passing bad stuff ? Silently filtering them out for now
-		// (for backwards compatiblity and flexibility)a.
-		$paramsAllowedKeys = array( 'user', 'auth', 'max', 'job_name', 'browsers' );
-		$customFiltered = array_intersect_key( $custom, array_flip( $paramsAllowedKeys ) );
-
-		$queryParams = array_merge(
-			// defaults
-			array(
-				'user'     => $this->user,
-				'auth'     => $this->authToken,
-				'max'      => 3,
-				'job_name' => 'MediaWiki trunk <a href="//www.mediawiki.org/wiki/Special:Code/MediaWiki/' . $revision . '">r' . $revision . '</a>',
-				'browsers' => 'popularbeta',
-			),
-
-			// custom
-			$customFiltered,
-
-			// forced
-			array(
-				'state'    => 'addjob',
-				'output'   => 'dump',
-			)
+	public function doAddJob( $revision ) {
+		$params = array(
+			"state"    => "addjob",
+			"output"   => "dump",
+			"user"     => $this->user,
+			"auth"     => $this->authToken,
+			"max"      => 3,
+			"job_name" => "MediaWiki trunk r{$revision}",
+			"browsers" => "popularbetamobile",
 		);
-
-		$queryString = http_build_query( $queryParams );
+		$query = http_build_query( $params );
 
 		$localPaths = $this->context->getPathsForRev( $revision );
 
@@ -636,41 +576,46 @@ class TestSwarmAPI {
 
 		# Append each of our test file to the job query submission
 		foreach( $filenames as $filename) {
-			if ( substr( $filename, -8 ) === '.test.js' ) {
-				$suiteName = substr( $filename, 0, -8 );
+            if ( substr( $filename, -8 ) === '.test.js' ) {
+                $suiteName = substr( $filename, 0, -8 );
 				$pattern = $this->context->getTestPattern();
 
 				$testUrl = str_replace( array( '$1', '$2' ),
 					array( rawurlencode($revision), rawurlencode($suiteName) ),
 					$pattern
 				);
-				$queryString .=
-					'&suites[]=' . rawurlencode( $suiteName ) .
-					'&urls[]=' . $testUrl . "\n";
-			}
+                $query .=
+                    "&suites[]=" . rawurlencode( $suiteName ) .
+                    "&urls[]=" . $testUrl."\n";
+            }
 		}
+
+		//print "Testswarm base URL: {$this->URL}\n";
+		//print "Queries: $query\n";
 
 		# Forge curl request and submit it
 		$ch = curl_init();
 		curl_setopt_array( $ch, array(
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_USERAGENT => 'TestSwarm-fetcher (ContInt; hashar)',
-			CURLOPT_SSL_VERIFYHOST => false,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_POST => true,
-			CURLOPT_URL => $this->swarmBaseUrl,
-			CURLOPT_POSTFIELDS => $queryString,
+			  CURLOPT_RETURNTRANSFER => 1
+			, CURLOPT_USERAGENT => "TestSwarm-fetcher (ContInt; hashar)"
+			, CURLOPT_SSL_VERIFYHOST => FALSE
+			, CURLOPT_SSL_VERIFYPEER => FALSE
+			, CURLOPT_POST => TRUE
+			, CURLOPT_URL  => $this->URL
+			, CURLOPT_POSTFIELDS => $query
 		));
 		$ret = curl_exec( $ch );
 		$err = curl_errno( $ch );
 		$error = curl_error( $ch );
 
 		if( !$ret ) {
-			$this->context->log( "Curl returned an error: #$err, $error\n", __METHOD__ );
+			$this->context->log(
+				"Curl returned an error: #$err, $error\n"
+			);
 			return false;
 		}
 
-		$this->context->log( $ret, __METHOD__ );
+		$this->context->log( $ret );
 		return true;
 	}
 }
