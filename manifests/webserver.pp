@@ -82,3 +82,93 @@ class webserver::apache2::rpaf {
 		require => Package["libapache2-mod-rpaf"];
 	}
 }
+
+
+# New style attempt at handling misc web servers
+# - keep independent from the existing stuff
+
+
+class webserver::apache {
+	class packages($mpm="prefork") {
+		package { ["apache2", "apache2-mpm-${title}"]:
+			ensure => latest;
+		}
+	}
+	
+	define virtual_module {
+		Class[webserver::apache::packages] -> Webserver::Apache::Virtual_module[$title] -> Class[webserver::apache::config]
+		
+		package { "libapache2-mod-${title}":
+			ensure => latest;
+		}
+		
+		File {
+			require => Package["libapache2-mod-${title}"],
+			owner => root,
+			group => root,
+			mode => 0444
+		}
+		file {
+			"/etc/apache2/mods-available/${title}.conf":
+				ensure => present;
+			"/etc/apache2/mods-available/${title}.load":
+				ensure => present;
+			"/etc/apache2/mods-enabled/${title}.conf":
+				ensure => "../mods-available/${title}.conf";
+			"/etc/apache2/mods-enabled/${title}.load":
+				ensure => "../mods-available/${title}.load";
+		}
+	}
+	
+	define module {
+		if ! defined(Webserver::Apache::Virtual_module[$title]) {
+			@webserver::apache_virtual_module{ $title: }
+		}
+		
+		# Realize virtual resource
+		realize(webserver::apache::virtual_module[$title])
+	}
+
+	define config {
+		# Realize virtual resources for enabling virtual hosts
+		File <| tag == webserver::apache::site |>
+	}
+
+	define service {
+		service{ apache2:
+			ensure => running;
+		}
+	}
+	
+	# TODO: documentation of parameters
+	define site($aliases=[], $ssl="false", $docroot=undef, $ensure=present) {
+		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
+		
+		if ! $docroot {
+			$subdir = inline_template("scope.lookupvar('webserver::apache::site::title').strip.split.reverse.join('/')")
+			$docroot = "/srv/$subdir"
+		}
+		
+		if $ssl == "true" {
+			webserver::apache::module { ssl: }
+		}
+		
+		file { "/etc/apache2/sites-available/${title}":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("apache/generic_vhost.erb");
+		}
+		
+		@file { "/etc/apache2/sites-enabled/${title}":
+			tag => webserver::apache::site,
+			ensure => $ensure ? {
+					absent => $ensure,
+					default => "link"
+				};
+		}
+	}
+	
+	# Default selection
+	include packages, config, service
+}

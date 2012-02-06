@@ -1,0 +1,66 @@
+# This file is managed by Puppet!
+
+<VirtualHost *:80>
+	ServerName <%= scope.lookupvar("webserver::apache::site::title") %>
+<% if scope.lookupvar("webserver::apache::site::aliases").length > 0 -%>
+	ServerAlias <%= scope.lookupvar("webserver::apache::site::aliases").join(" ") %>
+<% end -%>
+	ServerAdmin root@wikimedia.org
+
+	DocumentRoot <%= scope.lookupvar("webserver::apache::site::docroot") %>
+	<Directory <%= scope.lookupvar("webserver::apache::site::docroot") %> >
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+	
+<% scope.lookupvar("webserver::apache::site::includes").each do |include| -%>
+	Include <%= include %>
+<% end -%>
+</VirtualHost>
+
+<% if scope.lookupvar("webserver::apache::site::ssl") -%>
+<VirtualHost *:443>
+	ServerName <%= scope.lookupvar("webserver::apache::site::title") %>
+	<% if scope.lookupvar("webserver::apache::site::aliases").length > 0 -%>
+		ServerAlias <%= scope.lookupvar("webserver::apache::site::aliases").join(" ") %>
+	<% end -%>
+	ServerAdmin root@wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile <%= racktables_ssl_cert %>
+	SSLCertificateKeyFile <%= racktables_ssl_key %>
+
+	DocumentRoot <%= scope.lookupvar("webserver::apache::site::docroot") %>
+	<Directory <%= scope.lookupvar("webserver::apache::site::docroot") %> >
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
+
+	<% scope.lookupvar("webserver::apache::site::includes").each do |include| -%>
+		Include <%= include %>
+	<% end -%>
+</VirtualHost>
+<% end -%>
+
+
+# vim: filetype=apache
