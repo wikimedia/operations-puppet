@@ -6,6 +6,11 @@
 # rsync conf file for mirror sites of XML files
 #
 max connections = 10
+
+# for rolling rsyncs between dump hosts
+[data]
+read only = yes
+path = /data
 hosts allow = dataset2.wikimedia.org dataset1001.wikimedia.org
 
 [dumpmirrors]
