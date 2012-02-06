@@ -486,6 +486,11 @@ def metric_init(params):
 			'units': 'tables',
 		}, 
 
+		queries = {
+			'description': 'The number of actual queries executed by the server',
+			'units': 'queries',
+		}, 
+
 		questions = {
 			'description': 'The number of statements that clients have sent to the server',
 			'units': 'stmts',
@@ -648,7 +653,6 @@ def metric_init(params):
 
 			slave_io = {
 				'description': "Whether the I/O thread is started and has connected successfully to the master",
-				'value_type': 'uint8',
 				'units': 'True/False',
 				'slope': 'both',
 			},
@@ -667,7 +671,6 @@ def metric_init(params):
 
 			slave_sql = {
 				'description': "Slave SQL Running",
-				'value_type': 'uint8',
 				'units': 'True/False',
 				'slope': 'both',
 			},
