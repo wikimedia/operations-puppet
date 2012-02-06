@@ -6,6 +6,8 @@
 # rsync conf file for mirror sites of XML files
 #
 max connections = 10
+hosts allow = dataset2.wikimedia.org dataset1001.wikimedia.org
+
 [dumpmirrors]
 dont compress = *
 uid = backup
