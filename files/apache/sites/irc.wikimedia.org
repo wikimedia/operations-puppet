@@ -1,0 +1,18 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/irc.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName irc.wikimedia.org
+
+	Redirect permanent / http://meta.wikimedia.org/wiki/IRC
+
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+
+	ServerSignature On
+</VirtualHost>
