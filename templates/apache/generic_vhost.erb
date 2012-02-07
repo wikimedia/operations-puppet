@@ -1,15 +1,15 @@
 # This file is managed by Puppet!
 
-<% if scope.lookupvar("ssl") != "false" -%>
+<% if ssl != "false" -%>
 <VirtualHost *:80>
-	ServerName <%= scope.lookupvar("title") %>
-<% if scope.lookupvar("aliases").length > 0 -%>
-	ServerAlias <%= scope.lookupvar("aliases").join(" ") %>
+	ServerName <%= title %>
+<% if aliases.length > 0 -%>
+	ServerAlias <%= aliases.join(" ") %>
 <% end -%>
 	ServerAdmin root@wikimedia.org
 
-	DocumentRoot <%= scope.lookupvar("docroot") %>
-	<Directory <%= scope.lookupvar("docroot") %> >
+	DocumentRoot <%= docroot %>
+	<Directory <%= docroot %>>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
@@ -24,26 +24,26 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 	
-<% scope.lookupvar("includes").each do |include| -%>
+<% includes.each do |include| -%>
 	Include <%= include %>
 <% end -%>
 </VirtualHost>
 <% end -%>
 
-<% if ["true", "only", "redirected"].include?(scope.lookupvar("ssl")) -%>
+<% if ["true", "only", "redirected"].include?("ssl") -%>
 <VirtualHost *:443>
-	ServerName <%= scope.lookupvar("title") %>
-	<% if scope.lookupvar("aliases").length > 0 -%>
-		ServerAlias <%= scope.lookupvar("aliases").join(" ") %>
+	ServerName <%= title %>
+	<% if aliases.length > 0 -%>
+		ServerAlias <%= aliases.join(" ") %>
 	<% end -%>
 	ServerAdmin root@wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile <%= scope.lookupvar("certfile") %>
-	SSLCertificateKeyFile <%= scope.lookupvar("certkey") %>
+	SSLCertificateFile <%= certfile %>
+	SSLCertificateKeyFile <%= certkey %>
 
-	DocumentRoot <%= scope.lookupvar("docroot") %>
-	<Directory <%= scope.lookupvar("docroot") %> >
+	DocumentRoot <%= docroot %>
+	<Directory <%= docroot %>>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
@@ -58,7 +58,7 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 
-	<% scope.lookupvar("includes").each do |include| -%>
+	<% includes.each do |include| -%>
 		Include <%= include %>
 	<% end -%>
 </VirtualHost>
