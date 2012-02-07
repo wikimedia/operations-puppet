@@ -252,7 +252,7 @@ class webserver::apache {
 			"/etc/apache2/sites-enabled/${title}":
 				ensure => $ensure ? {
 						absent => $ensure,
-						default => "link"
+						default => "/etc/apache2/sites-available/${title}"
 					};
 		}
 	}
