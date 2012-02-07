@@ -95,8 +95,8 @@ class misc::torrus {
 		exec { "torrus-discovery":
 			require => File["/etc/cron.daily/torrus-discovery"],
 			command => "/etc/cron.daily/torrus-discovery",
-			refreshonly => true,
-			notify => Exec["torrus compile"];
+			timeout => 1800,
+			refreshonly => true;
 		}
 	}
 	

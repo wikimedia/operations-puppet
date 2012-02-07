@@ -14,7 +14,7 @@
 	'Network' => {
 		'description'	=> 'Network devices',
 		'info'		=> 'Wikimedia core and access switches',
-		'xmlfiles'	=> [qw(coreswitches.xml accessswitches.xml aggregates.xml)],
+		'xmlfiles'	=> [qw(corerouters.xml accessswitches.xml aggregates.xml)],
 		'run'		=> { 'collector' => 1, 'monitor' => 1 }
 	},
 	'Storage' => {
