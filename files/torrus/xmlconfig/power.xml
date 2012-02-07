@@ -13,7 +13,6 @@
 	
 	<datasources>
 		<subtree name="Power_strips">
-			<param name="snmp-port" value="161"/>
 			<subtree name="pmtpa">
 				<subtree name="ps1-a4-pmtpa">
 					<param name="system-id" value="ps1-a4-pmtpa"/>
