@@ -1896,7 +1896,7 @@ node "streber.wikimedia.org" {
 
 	include base,
 		ganglia,
-		ganglia::collector,
+#		ganglia::collector,
 		ntp::client,
 		admins::roots,
 #		misc::torrus,
