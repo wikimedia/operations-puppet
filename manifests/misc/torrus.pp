@@ -3,7 +3,13 @@
 class misc::torrus {
 	system_role { "misc::torrus": description => "Torrus" }
 
-	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
+	package {
+		"torrus-common":
+			ensure => latest;
+		"torrus-apache2":
+			before => Webserver::Apache::Service,
+			ensure => latest
+	}
 
 	@webserver::apache::module { ["perl", "redirect"]: }
 	@webserver::apache::site { "torrus.wikimedia.org":
