@@ -101,7 +101,7 @@ class webserver::apache {
 
 		$packagename = $operatingsystem ? {
 			Ubuntu => $title ? {
-				perl => "perl2",
+				perl => "libapache2-mod-perl2",
 
 				actions => undef,
 				alias => undef,
