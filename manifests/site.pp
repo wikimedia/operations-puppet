@@ -1788,11 +1788,20 @@ node "stafford.pmtpa.wmnet" {
 
 node "stat1.wikimedia.org" {
 	include standard,
-		admins::roots,
-		accounts::ezachte,
+		admins::roots
+
+	# special accounts
+	include accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
 		accounts::aotto
+
+	# mysql stuff
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node "storage1.wikimedia.org" {
