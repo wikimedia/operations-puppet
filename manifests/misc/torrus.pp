@@ -39,6 +39,11 @@ class misc::torrus {
 				group => root,
 				mode => 0444,
 				recurse => remote;
+			"/usr/share/torrus/sup/webplain/wikimedia.css":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/torrus/wikimedia.css";
 		}
 	}
 
