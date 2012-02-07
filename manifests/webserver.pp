@@ -223,7 +223,7 @@ class webserver::apache {
 	}
 	
 	# TODO: documentation of parameters
-	define site($aliases=[], $ssl="false", $certfile=undef, $certkey=undef, $docroot=undef, $includes=[], $ensure=present) {
+	define site($aliases=[], $ssl="false", $certfile=undef, $certkey=undef, $docroot=undef, $custom=[], $includes=[], $ensure=present) {
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
 		if ! $docroot {
