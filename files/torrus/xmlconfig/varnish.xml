@@ -29,7 +29,7 @@
 			<subtree name="pmtpa">
 				<subtree name="bits">
 					<param name="system-id" value="%hostname%"/>
-					<param name="varnishcluster" value="Bits caches"/>
+					<param name="varnishcluster" value="Bits caches pmtpa"/>
 					<param name="site" value="pmtpa"/>
 
 					<subtree name="sq67.wikimedia.org">
