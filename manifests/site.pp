@@ -844,9 +844,57 @@ node "hooft.esams.wikimedia.org" {
 }
 
 node "manutius.wikimedia.org" {
+	$corerouters = [
+		"cr1-sdtpa.wikimedia.org",
+		"cr2-pmtpa.wikimedia.org",
+		"csw5-pmtpa.wikimedia.org",
+		"csw1-esams.wikimedia.org",
+		"csw1-sdtpa.wikimedia.org",
+		"br1-knams.wikimedia.org",
+		"csw2-esams.wikimedia.org",
+		"cr1-eqiad.wikimedia.org",
+		"cr2-eqiad.wikimedia.org",
+	]
+
+	$accessswitches = [
+		"asw-a4-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-a5-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-b-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-b-pmtpa.mgmt.pmtpa.wmnet",
+		"asw-d1-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-d2-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-d3-sdtpa.mgmt.pmtpa.wmnet",
+		"asw-a-eqiad.mgmt.eqiad.wmnet",
+		"asw-b-eqiad.mgmt.eqiad.wmnet",
+		"asw2-a5-eqiad.mgmt.eqiad.wmnet",
+		"psw1-eqiad.mgmt.eqiad.wmnet",
+		"msw1-eqiad.mgmt.eqiad.wmnet"
+	]
+
+	$storagehosts = [ "nas1-a.pmtpa.wmnet", "nas1-b.pmtpa.wmnet", "nas1001-a.eqiad.wmnet", "nas1001-b.eqiad.wmnet" ]
+
 	include standard,
 		webserver::apache,
 		misc::torrus
+
+	include passwords::network
+	$snmp_ro_community = $passwords::network::snmp_ro_community
+
+	misc::torrus::discovery::ddxfile {
+		"corerouters":
+			subtree => "/Core_routers",
+			snmp_community => $snmp_ro_community,
+			hosts => $corerouters;
+		"accessswitches":
+			subtree => "/Access_switches",
+			snmp_community => $snmp_ro_community,
+			hosts => $accessswitches;
+		"storage":
+			subtree => "/Storage",
+			snmp_community => $snmp_ro_community,
+			hosts => $storagehosts
+	}
+	
 }
 
 node "marmontel.wikimedia.org" {
