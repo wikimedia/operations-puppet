@@ -11,7 +11,7 @@ class misc::torrus {
 			ensure => latest
 	}
 
-	@webserver::apache::module { ["perl2", "redirect"]: }
+	@webserver::apache::module { ["perl", "redirect"]: }
 	@webserver::apache::site { "torrus.wikimedia.org":
 		docroot => "/var/www",
 		includes => ["/etc/torrus/torrus-apache2.conf"]
