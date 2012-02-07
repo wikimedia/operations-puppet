@@ -26,13 +26,6 @@ class misc::torrus {
 			group => root,
 			mode => 0444,
 			recurse => remote;
-		# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
-		"/etc/torrus/xmlconfig/":
-			source => "puppet:///files/torrus/xmlconfig/",
-			owner => root,
-			group => root,
-			mode => 0444,
-			recurse => remote;
 		"/etc/torrus/templates/":
 			source => "puppet:///files/torrus/templates/",
 			owner => root,
@@ -43,8 +36,8 @@ class misc::torrus {
 
 	exec { "torrus compile":
 		command => "/usr/sbin/torrus compile --all",
-		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
-		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
+		require => [ File["/etc/torrus/conf/"], Class[misc::torrus::xmlconfig] ],
+		subscribe => [ File["/etc/torrus/conf/"], Class[misc::torrus::xmlconfig] ],
 		refreshonly => true
 	}
 
@@ -56,7 +49,27 @@ class misc::torrus {
 
 	# TODO: Puppetize the rest of Torrus
 
+	class xmlconfig {
+		include passwords::network
+
+		file {
+			# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
+			"/etc/torrus/xmlconfig/":
+				source => "puppet:///files/torrus/xmlconfig/",
+				owner => root,
+				group => root,
+				mode => 0444,
+				recurse => remote;
+			"/etc/torrus/xmlconfig/site-global.xml",
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("torrus/site-global.xml.erb");
+	}
+
 	class discovery {
+		require misc::torrus::xmlconfig
+		
 		# Definition: misc::torrus::discovery
 		#
 		# This definition generates a torrus discovery DDX file, which Torrus
@@ -101,5 +114,5 @@ class misc::torrus {
 		}
 	}
 	
-	include discovery
+	include xmlconfig, discovery
 }
