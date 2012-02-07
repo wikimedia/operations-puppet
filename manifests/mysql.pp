@@ -310,6 +310,9 @@ class mysql {
 
 	class conf inherits mysql {
 		$db_clusters = {
+			"analytics" => { 
+				"innodb_log_file_size" => "500M"
+			},
 			"fundraisingdb" => { 
 				"innodb_log_file_size" => "500M"
 			},
