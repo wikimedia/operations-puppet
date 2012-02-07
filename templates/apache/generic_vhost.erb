@@ -23,6 +23,10 @@
 
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
+
+<% custom.each do |customconfig| -%>
+	<%= customconfig %>
+<% end -%>
 	
 <% includes.each do |include| -%>
 	Include <%= include %>
@@ -58,9 +62,13 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 
-	<% includes.each do |include| -%>
-		Include <%= include %>
-	<% end -%>
+<% custom.each do |customconfig| -%>
+	<%= customconfig %>
+<% end -%>
+
+<% includes.each do |include| -%>
+	Include <%= include %>
+<% end -%>
 </VirtualHost>
 <% end -%>
 
