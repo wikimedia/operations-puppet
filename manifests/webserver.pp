@@ -121,7 +121,7 @@ class webserver::apache {
 		}
 	}
 
-	define config {
+	class config {
 		# Realize virtual resources for Apache modules
 		Webserver::Apache::Module <| |>
 		
@@ -129,7 +129,7 @@ class webserver::apache {
 		Webserver::Apache::Site <| |>
 	}
 
-	define service {
+	class service {
 		service{ apache2:
 			ensure => running;
 		}
