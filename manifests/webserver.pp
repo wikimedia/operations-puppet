@@ -90,7 +90,7 @@ class webserver::apache2::rpaf {
 
 class webserver::apache {
 	class packages($mpm="prefork") {
-		package { ["apache2", "apache2-mpm-${title}"]:
+		package { ["apache2", "apache2-mpm-${mpm}"]:
 			ensure => latest;
 		}
 	}
