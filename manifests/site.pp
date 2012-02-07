@@ -875,7 +875,8 @@ node "manutius.wikimedia.org" {
 
 	include standard,
 		webserver::apache,
-		misc::torrus
+		misc::torrus,
+		misc::torrus::web
 
 	include passwords::network
 	$snmp_ro_community = $passwords::network::snmp_ro_community

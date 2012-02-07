@@ -6,40 +6,46 @@ class misc::torrus {
 	package {
 		"torrus-common":
 			ensure => latest;
-		"torrus-apache2":
+	}
+
+	class web {
+		package { "torrus-apache2":
 			before => Class[webserver::apache::service],
 			ensure => latest
+		}
+
+		@webserver::apache::module { ["perl", "rewrite"]: }
+		@webserver::apache::site { "torrus.wikimedia.org":
+			require => Webserver::Apache::Module[["perl", "rewrite"]],
+			docroot => "/var/www",
+			custom => ["RedirectMatch ^/$ /torrus"],
+			includes => ["/etc/torrus/torrus-apache2.conf"]
+		}
 	}
 
-	@webserver::apache::module { ["perl", "rewrite"]: }
-	@webserver::apache::site { "torrus.wikimedia.org":
-		require => Webserver::Apache::Module[["perl", "rewrite"]],
-		docroot => "/var/www",
-		custom => ["RedirectMatch ^/$ /torrus"],
-		includes => ["/etc/torrus/torrus-apache2.conf"]
-	}
+	class config {
+		File { require => Package["torrus-common"] }
 
-	File { require => Package["torrus-common"] }
-
-	file {
-		"/etc/torrus/conf/":
-			source => "puppet:///files/torrus/conf/",
-			owner => root,
-			group => root,
-			mode => 0444,
-			recurse => remote;
-		"/etc/torrus/templates/":
-			source => "puppet:///files/torrus/templates/",
-			owner => root,
-			group => root,
-			mode => 0444,
-			recurse => remote;
+		file {
+			"/etc/torrus/conf/":
+				source => "puppet:///files/torrus/conf/",
+				owner => root,
+				group => root,
+				mode => 0444,
+				recurse => remote;
+			"/etc/torrus/templates/":
+				source => "puppet:///files/torrus/templates/",
+				owner => root,
+				group => root,
+				mode => 0444,
+				recurse => remote;
+		}
 	}
 
 	exec { "torrus compile":
 		command => "/usr/sbin/torrus compile --all",
-		require => [ File["/etc/torrus/conf/"], Class[misc::torrus::xmlconfig] ],
-		subscribe => [ File["/etc/torrus/conf/"], Class[misc::torrus::xmlconfig] ],
+		require => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
+		subscribe => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
 		refreshonly => true
 	}
 
@@ -50,6 +56,7 @@ class misc::torrus {
 	}
 
 	class xmlconfig {
+		require misc::torrus::config
 		include passwords::network
 
 		file {
@@ -68,7 +75,7 @@ class misc::torrus {
 	}
 
 	class discovery {
-		require misc::torrus::xmlconfig
+		require misc::torrus::config, misc::torrus::xmlconfig
 		
 		# Definition: misc::torrus::discovery
 		#
