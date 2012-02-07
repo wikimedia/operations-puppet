@@ -5,6 +5,12 @@ class misc::torrus {
 
 	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
 
+	@webserver::apache::module { ["perl", "redirect"]: }
+	@webserver::apache::site { "torrus.wikimedia.org":
+		docroot => "/var/www",
+		includes => ["/etc/torrus/torrus-apache2.conf"]
+	}
+
 	File { require => Package["torrus-common"] }
 
 	file {

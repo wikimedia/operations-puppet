@@ -845,6 +845,7 @@ node "hooft.esams.wikimedia.org" {
 
 node "manutius.wikimedia.org" {
 	include standard,
+		webserver::apache,
 		misc::torrus
 }
 
