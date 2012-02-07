@@ -98,13 +98,26 @@ class webserver::apache {
 	# TODO: documentation of parameters
 	define module {
 		Class[webserver::apache::packages] -> Webserver::Apache::Module[$title] -> Class[webserver::apache::config]
-		
-		package { "libapache2-mod-${title}":
-			ensure => latest;
+
+		$packagename = $operatingsystem ? {
+			Ubuntu => $title ? {
+				rewrite => undef,
+				default => "libapache2-mod-${title}"
+			},
+			default => "libapache2-mod-${title}"
+		}
+
+		if $packagename {
+			package { $packagename:
+				ensure => latest;
+			}
 		}
 		
 		File {
-			require => Package["libapache2-mod-${title}"],
+			require => $packagename ? {
+				undef => undef,
+				default => Package[$packagename]
+			},
 			owner => root,
 			group => root,
 			mode => 0444
