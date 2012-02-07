@@ -191,6 +191,7 @@ class webserver::apache {
 				undef => undef,
 				default => Package[$packagename]
 			},
+			notify => Class[webserver::apache::service],
 			owner => root,
 			group => root,
 			mode => 0444
@@ -245,11 +246,13 @@ class webserver::apache {
 		
 		file {
 			"/etc/apache2/sites-available/${title}":
+				notify => Class[webserver::apache::service],
 				owner => root,
 				group => root,
 				mode => 0444,
 				content => template("apache/generic_vhost.erb");
 			"/etc/apache2/sites-enabled/${title}":
+				notify => Class[webserver::apache::service],
 				ensure => $ensure ? {
 						absent => $ensure,
 						default => "/etc/apache2/sites-available/${title}"
