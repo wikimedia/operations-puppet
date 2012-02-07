@@ -101,7 +101,22 @@ class webserver::apache {
 
 		$packagename = $operatingsystem ? {
 			Ubuntu => $title ? {
-				rewrite => undef,
+				perl => "perl2",
+				actions,alias,apreq,asis,auth_basic,auth_digest => undef,
+				authn_alias,authn_anon,authn_dbd,authn_dbm => undef,
+				authn_default,authn_file,authnz_ldap,authz_dbm => undef,
+				authz_default,authz_groupfile,authz_host => undef,
+				authz_owner,authz_user,autoindex,cache,cern_meta => undef,
+				cgi,cgid,charset_lite,dav,dav_fs => undef,
+				dav_lock,dbd,deflate,dir,disk_cache,dump_io,env => undef,
+				expires,ext_filter,file_cache,filter => undef,
+				headers,ident,imagemap,include,info,ldap => undef,
+				log_forensic,mem_cache,mime,mime_magic => undef,
+				negotiationproxy,proxy_ajp,proxy_balancer => undef,
+				proxy_connect,proxy_ftp,proxy_http,proxy_scgi => undef,
+				reqtimeout,rewrite,setenvif,speling,ssl,status => undef,
+				substitute,suexec,unique_id,userdir => undef,
+				usertrack,version,vhost_alias => undef,
 				default => "libapache2-mod-${title}"
 			},
 			default => "libapache2-mod-${title}"
