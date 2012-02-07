@@ -1,12 +1,10 @@
 #!/bin/sh
 # Script to do automated discovery of torrus data sources, based on
 # a set of DDX files
-# Written on 2008/10/31 by Mark Bergsma <mark@wikimedia.org>
 
-DDXFILES="coreswitches.ddx accessswitches.ddx storage.ddx"
 TREES="Network Storage"
 
-for ddx in $DDXFILES
+for ddx in /etc/torrus/discovery/*.ddx
 do
 	torrus devdiscover --in=$ddx --forcebundle
 done

@@ -860,7 +860,7 @@ node "manutius.wikimedia.org" {
 		"asw-a4-sdtpa.mgmt.pmtpa.wmnet",
 		"asw-a5-sdtpa.mgmt.pmtpa.wmnet",
 		"asw-b-sdtpa.mgmt.pmtpa.wmnet",
-		"asw-b-pmtpa.mgmt.pmtpa.wmnet",
+		"asw-d-pmtpa.mgmt.pmtpa.wmnet",
 		"asw-d1-sdtpa.mgmt.pmtpa.wmnet",
 		"asw-d2-sdtpa.mgmt.pmtpa.wmnet",
 		"asw-d3-sdtpa.mgmt.pmtpa.wmnet",
@@ -893,8 +893,7 @@ node "manutius.wikimedia.org" {
 			subtree => "/Storage",
 			snmp_community => $snmp_ro_community,
 			hosts => $storagehosts
-	}
-	
+	}	
 }
 
 node "marmontel.wikimedia.org" {
