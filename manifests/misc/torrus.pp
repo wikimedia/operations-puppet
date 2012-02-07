@@ -96,7 +96,7 @@ class misc::torrus {
 			require => File["/etc/cron.daily/torrus-discovery"],
 			path => "/etc/cron.daily/torrus-discovery",
 			refreshonly => true,
-			notify => Exec[torrus-compile];
+			notify => Exec["torrus compile"];
 		}
 	}
 	
