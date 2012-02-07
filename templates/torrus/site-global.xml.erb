@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<!-- 
+  Global configuration parameters, applied to every tree.
+  This file is not overwritten by "make install"
+  Uncomment what is needed and add new parameters here
+-->
+
+<configuration>
+
+<datasources>
+
+	<!-- Disperse the collector timeoffsets. Useful in large installations
+	     and/or network devices with plenty interaces -->  
+	<!-- param name="collector-dispersed-timeoffset" value="yes" -->
+
+	<!-- This would replace the 6-hour small graphs with 24-hour ones -->
+	<!-- param name="rrgraph-views">
+		last24h-small,last24h,lastweek,lastmonth,lastyear
+	</param -->
+
+
+	<param name="snmp-community" value="<%= scope.lookupvar("$passwords::network::snmp_ro_community") %>"/>
+	<param name="snmp-port" value="161"/>
+	<param name="snmp-retries" value="2"/>
+	<param name="snmp-timeout" value="10"/>
+	<param name="snmp-max-msg-size" value="6000"/>
+
+	<param name="rrgraph-views">
+		last24h-small,last24h,lastweek,lastmonth,lastyear
+	</param>
+
+</datasources>
+
+<views>
+	<view name="default-dir-html">
+		<param name="html-template" value="default-dir-modified.html"/>
+	</view>
+</views>
+
+</configuration>
