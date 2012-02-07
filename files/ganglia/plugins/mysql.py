@@ -275,8 +275,11 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		#mysql_stats['slave_sql'] = 1 if slave_status['slave_sql_running'].lower() =="yes" else 0
 		if slave_status['slave_sql_running'].lower() == "yes":
 			mysql_stats['slave_sql'] = 1
+			if slave_status['slave_io_running'].lower() == "yes":
+				mysql_stats['slave_running'] = 1
 		else:
 			mysql_stats['slave_sql'] = 0
+			mysql_stats['slave_running'] = 0
 		mysql_stats['slave_lag'] = slave_status['seconds_behind_master']
 		mysql_stats['slave_relay_log_pos'] = slave_status['relay_log_pos']
 		mysql_stats['slave_relay_log_space'] = slave_status['relay_log_space']
@@ -671,6 +674,12 @@ def metric_init(params):
 
 			slave_sql = {
 				'description': "Slave SQL Running",
+				'units': 'True/False',
+				'slope': 'both',
+			},
+
+			slave_running = {
+				'description': "Slave Running",
 				'units': 'True/False',
 				'slope': 'both',
 			},
