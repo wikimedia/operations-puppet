@@ -13,6 +13,7 @@ class misc::torrus {
 
 	@webserver::apache::module { ["perl", "rewrite"]: }
 	@webserver::apache::site { "torrus.wikimedia.org":
+		require => Webserver::Apache::Module[["perl", "rewrite"]],
 		docroot => "/var/www",
 		custom => ["RedirectMatch ^/$ /torrus"],
 		includes => ["/etc/torrus/torrus-apache2.conf"]
