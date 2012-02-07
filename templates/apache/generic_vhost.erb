@@ -30,7 +30,7 @@
 </VirtualHost>
 <% end -%>
 
-<% if ["true", "only", "redirected"].include(scope.lookupvar("webserver::apache::site::ssl")) -%>
+<% if ["true", "only", "redirected"].include?(scope.lookupvar("webserver::apache::site::ssl")) -%>
 <VirtualHost *:443>
 	ServerName <%= scope.lookupvar("webserver::apache::site::title") %>
 	<% if scope.lookupvar("webserver::apache::site::aliases").length > 0 -%>
