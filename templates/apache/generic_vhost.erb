@@ -1,15 +1,15 @@
 # This file is managed by Puppet!
 
-<% if scope.lookupvar("webserver::apache::site::ssl") != "false" -%>
+<% if scope.lookupvar("ssl") != "false" -%>
 <VirtualHost *:80>
-	ServerName <%= scope.lookupvar("webserver::apache::site::title") %>
-<% if scope.lookupvar("webserver::apache::site::aliases").length > 0 -%>
-	ServerAlias <%= scope.lookupvar("webserver::apache::site::aliases").join(" ") %>
+	ServerName <%= scope.lookupvar("title") %>
+<% if scope.lookupvar("aliases").length > 0 -%>
+	ServerAlias <%= scope.lookupvar("aliases").join(" ") %>
 <% end -%>
 	ServerAdmin root@wikimedia.org
 
-	DocumentRoot <%= scope.lookupvar("webserver::apache::site::docroot") %>
-	<Directory <%= scope.lookupvar("webserver::apache::site::docroot") %> >
+	DocumentRoot <%= scope.lookupvar("docroot") %>
+	<Directory <%= scope.lookupvar("docroot") %> >
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
@@ -24,26 +24,26 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 	
-<% scope.lookupvar("webserver::apache::site::includes").each do |include| -%>
+<% scope.lookupvar("includes").each do |include| -%>
 	Include <%= include %>
 <% end -%>
 </VirtualHost>
 <% end -%>
 
-<% if ["true", "only", "redirected"].include?(scope.lookupvar("webserver::apache::site::ssl")) -%>
+<% if ["true", "only", "redirected"].include?(scope.lookupvar("ssl")) -%>
 <VirtualHost *:443>
-	ServerName <%= scope.lookupvar("webserver::apache::site::title") %>
-	<% if scope.lookupvar("webserver::apache::site::aliases").length > 0 -%>
-		ServerAlias <%= scope.lookupvar("webserver::apache::site::aliases").join(" ") %>
+	ServerName <%= scope.lookupvar("title") %>
+	<% if scope.lookupvar("aliases").length > 0 -%>
+		ServerAlias <%= scope.lookupvar("aliases").join(" ") %>
 	<% end -%>
 	ServerAdmin root@wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile <%= scope.lookupvar("webserver::apache::site::certfile") %>
-	SSLCertificateKeyFile <%= scope.lookupvar("webserver::apache::site::certkey") %>
+	SSLCertificateFile <%= scope.lookupvar("certfile") %>
+	SSLCertificateKeyFile <%= scope.lookupvar("certkey") %>
 
-	DocumentRoot <%= scope.lookupvar("webserver::apache::site::docroot") %>
-	<Directory <%= scope.lookupvar("webserver::apache::site::docroot") %> >
+	DocumentRoot <%= scope.lookupvar("docroot") %>
+	<Directory <%= scope.lookupvar("docroot") %> >
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
@@ -58,7 +58,7 @@
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 
-	<% scope.lookupvar("webserver::apache::site::includes").each do |include| -%>
+	<% scope.lookupvar("includes").each do |include| -%>
 		Include <%= include %>
 	<% end -%>
 </VirtualHost>
