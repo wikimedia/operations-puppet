@@ -68,7 +68,7 @@ class misc::torrus {
 		#	- $snmp_community: The SNMP community needed to query
 		#	- $hosts: A list of hosts
 		define ddxfile($subtree, $domain="", $snmp_community="public", $hosts=[]) {
-			file { "/etc/torrus/discovery/${title}":
+			file { "/etc/torrus/discovery/${title}.ddx":
 				require => File["/etc/torrus/discovery"],
 				content => template("torrus/generic.ddx.erb"),
 				owner => root,
@@ -94,7 +94,7 @@ class misc::torrus {
 		
 		exec { "torrus-discovery":
 			require => File["/etc/cron.daily/torrus-discovery"],
-			path => "/etc/cron.daily/torrus-discovery",
+			command => "/etc/cron.daily/torrus-discovery",
 			refreshonly => true,
 			notify => Exec["torrus compile"];
 		}
