@@ -48,13 +48,10 @@ class misc::torrus {
 		ensure => running;
 	}
 
-	# TODO: Puppetize the rest of Torrus
-
 	class xmlconfig {
 		include passwords::network
 
 		file {
-			# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
 			"/etc/torrus/xmlconfig/":
 				source => "puppet:///files/torrus/xmlconfig/",
 				owner => root,
