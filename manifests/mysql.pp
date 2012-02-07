@@ -310,31 +310,34 @@ class mysql {
 
 	class conf inherits mysql {
 		$db_clusters = {
-			"fundraisingdb" => { 
+			"analytics" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"otrsdb" => { 
+			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"s1" => { 
-				"innodb_log_file_size" => "2000M"
-			},
-			"s2" => { 
-				"innodb_log_file_size" => "2000M"
-			},
-			"s3" => { 
+			"otrsdb" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"s4" => { 
+			"s1" => {
 				"innodb_log_file_size" => "2000M"
 			},
-			"s5" => { 
+			"s2" => {
+				"innodb_log_file_size" => "2000M"
+			},
+			"s3" => {
+				"innodb_log_file_size" => "500M"
+			},
+			"s4" => {
+				"innodb_log_file_size" => "2000M"
+			},
+			"s5" => {
 				"innodb_log_file_size" => "1000M"
 			},
-			"s6" => { 
+			"s6" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"s7" => { 
+			"s7" => {
 				"innodb_log_file_size" => "500M"
 			}
 		}
