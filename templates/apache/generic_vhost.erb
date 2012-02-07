@@ -1,6 +1,6 @@
 # This file is managed by Puppet!
 
-<% if ssl != "false" -%>
+<% if ssl != "only" -%>
 <VirtualHost *:80>
 	ServerName <%= title %>
 <% if aliases.length > 0 -%>
