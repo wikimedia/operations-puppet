@@ -39,8 +39,8 @@
 	ServerAdmin root@wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile <%= racktables_ssl_cert %>
-	SSLCertificateKeyFile <%= racktables_ssl_key %>
+	SSLCertificateFile <%= scope.lookupvar("webserver::apache::site::certfile") %>
+	SSLCertificateKeyFile <%= scope.lookupvar("webserver::apache::site::certkey") %>
 
 	DocumentRoot <%= scope.lookupvar("webserver::apache::site::docroot") %>
 	<Directory <%= scope.lookupvar("webserver::apache::site::docroot") %> >

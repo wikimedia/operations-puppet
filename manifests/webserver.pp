@@ -136,7 +136,7 @@ class webserver::apache {
 	}
 	
 	# TODO: documentation of parameters
-	define site($aliases=[], $ssl="false", $docroot=undef, $includes=[], $ensure=present) {
+	define site($aliases=[], $ssl="false", $certfile=undef, $certkey=undef, $docroot=undef, $includes=[], $ensure=present) {
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
 		if ! $docroot {
@@ -146,6 +146,15 @@ class webserver::apache {
 		
 		if $ssl in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
+			
+			# If no cert files are defined, assume a wildcart certificate for the domain
+			$wildcard_domain = regsubst($title, "^[^\.]+", "*")
+			if ! $certfile {
+				$certfile = "/etc/ssl/certs/${wildcard_domain}.pem"
+			}
+			if ! $certkey {
+				$certkey = "/etc/ssl/private/${wildcard_domain}.key"
+			}
 		}
 		
 		file {
