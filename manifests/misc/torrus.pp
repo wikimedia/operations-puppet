@@ -7,7 +7,7 @@ class misc::torrus {
 		"torrus-common":
 			ensure => latest;
 		"torrus-apache2":
-			before => Webserver::Apache::Service,
+			before => Class[webserver::apache::service],
 			ensure => latest
 	}
 
