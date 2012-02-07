@@ -185,7 +185,10 @@ class ganglia {
 
 		file { "/etc/ganglia/gmetad.conf":
 			require => Package[gmetad],
-			source => "puppet:///files/ganglia/gmetad.conf",
+			source => $hostname ? {
+				/^(streber|manutius)$/ => "puppet:///files/ganglia/gmetad.conf.torrus",
+				default => "puppet:///files/ganglia/gmetad.conf"
+			},
 			mode => 0444,
 			ensure	=> present
 		}
