@@ -94,9 +94,10 @@ class webserver::apache {
 			ensure => latest;
 		}
 	}
-	
-	define virtual_module {
-		Class[webserver::apache::packages] -> Webserver::Apache::Virtual_module[$title] -> Class[webserver::apache::config]
+
+	# TODO: documentation of parameters
+	define module {
+		Class[webserver::apache::packages] -> Webserver::Apache::Module[$title] -> Class[webserver::apache::config]
 		
 		package { "libapache2-mod-${title}":
 			ensure => latest;
@@ -119,19 +120,13 @@ class webserver::apache {
 				ensure => "../mods-available/${title}.load";
 		}
 	}
-	
-	define module {
-		if ! defined(Webserver::Apache::Virtual_module[$title]) {
-			@webserver::apache_virtual_module{ $title: }
-		}
-		
-		# Realize virtual resource
-		realize(webserver::apache::virtual_module[$title])
-	}
 
 	define config {
+		# Realize virtual resources for Apache modules
+		Webserver::Apache::Module <| |>
+		
 		# Realize virtual resources for enabling virtual hosts
-		File <| tag == webserver::apache::site |>
+		Webserver::Apache::Site <| |>
 	}
 
 	define service {
@@ -153,19 +148,17 @@ class webserver::apache {
 			webserver::apache::module { ssl: }
 		}
 		
-		file { "/etc/apache2/sites-available/${title}":
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("apache/generic_vhost.erb");
-		}
-		
-		@file { "/etc/apache2/sites-enabled/${title}":
-			tag => webserver::apache::site,
-			ensure => $ensure ? {
-					absent => $ensure,
-					default => "link"
-				};
+		file {
+			"/etc/apache2/sites-available/${title}":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("apache/generic_vhost.erb");
+			"/etc/apache2/sites-enabled/${title}":
+				ensure => $ensure ? {
+						absent => $ensure,
+						default => "link"
+					};
 		}
 	}
 	
