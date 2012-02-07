@@ -6,7 +6,7 @@ TREES="Network Storage"
 
 for ddx in /etc/torrus/discovery/*.ddx
 do
-	torrus devdiscover --in=$ddx --forcebundle
+	torrus devdiscover --in=$ddx --forcebundle --threads=4
 done
 
 for tree in $TREES
