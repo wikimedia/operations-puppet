@@ -4,6 +4,12 @@
 def node_list(role, site)
 	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
 end
+
+def varnish_rpn(role, site)
+	node_list(role, site).each do |node|
+		<%= "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%}," %>
+	end
+	<%= "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",") %>
 %>
 
 <configuration>
@@ -34,19 +40,19 @@ end
 		</param>
 		
 		<param name="expr-Varnish_bits_pmtpa">
-<% node_list('bits', 'pmtpa').each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(node_list('bits', 'pmtpa').length - 1)).join(",") %>
+<%= varnish_rpn('bits', 'pmtpa') %>
 		</param>
 
 		<param name="expr-Varnish_bits_eqiad">
-<% node_list('bits', 'eqiad').each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(node_list('bits', 'eqiad').length - 1)).join(",") %>
+<%= varnish_rpn('bits', 'eqiad') %>
 		</param>
 
 		<param name="expr-Varnish_upload_eqiad">
-<% node_list('upload', 'eqiad').each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(node_list('upload', 'eqiad').length - 1)).join(",") %>
+<%= varnish_rpn('upload', 'eqiad') %>
 		</param>
 
 		<param name="expr-Varnish_bits_esams">
-<% node_list('bits', 'esams').each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(node_list('bits', 'esams').length - 1)).join(",") %>
+<%= varnish_rpn('bits', 'esams') %>
 		</param>
 
 		<template name="squid-cluster">
