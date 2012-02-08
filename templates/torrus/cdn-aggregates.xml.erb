@@ -336,7 +336,7 @@ nodes.each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% e
 				<param name="varnishmetric" value="Clients/client_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,text-eqiad,bits-eqiad,upload-eqiad,text-esams,bits-esams,upload-esams,total"/>
+				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,text-eqiad,bits-eqiad,text-esams,bits-esams,upload-esams,total"/>
 				<param name="comment" value="Total of all client requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -404,7 +404,7 @@ nodes.each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% e
 				<param name="line-color-upload-esams" value="##upload-esams"/>
 				<param name="line-order-upload-esams" value="7"/>
 
-				<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Varnish_bits_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Varnish_upload_eqiad%,%expr-Squid_text_esams%,%expr-Varnish_bits_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
+				<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Varnish_bits_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Squid_text_esams%,%expr-Varnish_bits_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
 				<param name="graph-legend-total" value="Total"/>
 				<param name="line-style-total" value="LINE1"/>
 				<param name="line-stack-total" value="no"/>
