@@ -51,6 +51,7 @@ class misc::torrus {
 		command => "/usr/sbin/torrus compile --all",
 		require => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
 		subscribe => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
+		logoutput => true,
 		refreshonly => true
 	}
 
@@ -147,6 +148,7 @@ class misc::torrus {
 			
 			exec { "torrus compile --tree=CDN":
 				path => "/usr/sbin",
+				logoutput => true,
 				refreshonly => true;
 			}
 		}
