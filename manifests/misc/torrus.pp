@@ -147,7 +147,7 @@ class misc::torrus {
 				"/etc/torrus/xmlconfig/varnish.xml":
 					content => template("torrus/varnish.xml.erb");
 				"/etc/torrus/xmlconfig/cdn-aggregates.xml":
-					content => template("torrus/cdn-aggregates.xml");
+					content => template("torrus/cdn-aggregates.xml.erb");
 			}
 			
 			exec { "torrus compile --tree=CDN":
