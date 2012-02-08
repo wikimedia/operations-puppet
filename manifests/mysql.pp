@@ -78,9 +78,6 @@ class mysql {
 		$db_cluster = "otrsdb"
 		$skip_name_resolve = "false"
 	}
-	elsif $hostname =~ /^stat(1)$/ {
-		$db_cluster = "analytics"
-	}
 	else {
 		$db_cluster = undef
 	}
@@ -310,9 +307,6 @@ class mysql {
 
 	class conf inherits mysql {
 		$db_clusters = {
-			"analytics" => {
-				"innodb_log_file_size" => "500M"
-			},
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
 			},
