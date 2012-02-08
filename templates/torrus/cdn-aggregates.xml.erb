@@ -35,7 +35,9 @@
 		</param>
 
 		<param name="expr-Varnish_upload_eqiad">
-{/Varnish/eqiad/upload/cp1021.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1022.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1023.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1024.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1025.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1026.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1027.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1028.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1029.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1030.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1031.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1032.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1033.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1034.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1035.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1036.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1037.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1038.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1039.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/upload/cp1040.wikimedia.org/%varnishmetric%},%sumsep%%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%
+<%
+nodes = scope.lookupvar("role::cache::configuration::active_nodes")['upload']['eqiad']
+nodes.each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(nodes.length? - 1)).join(",") %>
 		</param>
 
 		<param name="expr-Varnish_bits_esams">
