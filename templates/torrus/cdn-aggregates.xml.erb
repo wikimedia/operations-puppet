@@ -7,18 +7,22 @@ end
 
 def squid_rpn(role, site)
 	result = ""
-	node_list(role, site).each do |node|
+	list = node_list(role, site)
+	list.each do |node|
 		result << "{/Squids/#{site}/#{role}/#{node}/%squidlayer%/%squidmetric%},"
 	end
-	return result + "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",")
+	result << "%sumsep%" + (["%sumfunc%"]*(list.length - 1)).join(",") unless list.empty?
+	return result
 end
 
 def varnish_rpn(role, site)
 	result = ""
-	node_list(role, site).each do |node|
+	list = node_list(role, site)
+	list.each do |node|
 		result << "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%},"
 	end
-	return result + "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",")
+	result << "%sumsep%" + (["%sumfunc%"]*(list.length - 1)).join(",") unless list.empty?
+	return result
 end
 %>
 
