@@ -6,10 +6,11 @@ def node_list(role, site)
 end
 
 def varnish_rpn(role, site)
+	result = ""
 	node_list(role, site).each do |node|
-		<%= "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%}," %>
+		result << "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%},"
 	end
-	<%= "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",") %>
+	return result + "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",")
 end
 %>
 
