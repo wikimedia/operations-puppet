@@ -134,6 +134,8 @@ class misc::torrus {
 		#
 		# Uses role/cache/cache.pp
 		class cdn {
+			require role::cache::configuration
+			
 			file {
 				"/etc/torrus/xmlconfig/varnish.xml":
 					owner => root,
