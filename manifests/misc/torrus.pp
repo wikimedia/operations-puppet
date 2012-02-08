@@ -151,7 +151,7 @@ class misc::torrus {
 			}
 			
 			exec { "torrus compile --tree=CDN":
-				path => "/usr/sbin",
+				path => "/bin:/sbin:/usr/bin:/usr/sbin",
 				logoutput => true,
 				refreshonly => true;
 			}

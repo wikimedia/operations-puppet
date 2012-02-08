@@ -5,9 +5,9 @@ def node_list(role, site)
 	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
 end
 
-def squid_rpn(role, site)
+def squid_rpn(role, site, list=nil)
 	result = ""
-	list = node_list(role, site)
+	list = node_list(role, site) if list == nil
 	list.each do |node|
 		result << "{/Squids/#{site}/#{role}/#{node}/%squidlayer%/%squidmetric%},"
 	end
@@ -15,9 +15,9 @@ def squid_rpn(role, site)
 	return result
 end
 
-def varnish_rpn(role, site)
+def varnish_rpn(role, site, list=nil)
 	result = ""
-	list = node_list(role, site)
+	list = node_list(role, site) if list == nil
 	list.each do |node|
 		result << "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%},"
 	end
@@ -37,7 +37,7 @@ end
 		</param>
 		
 		<param name="expr-Squid_api_pmtpa">
-<%= squid_rpn('api', 'pmtpa') %>
+<%= squid_rpn('text', 'pmtpa', node_list('api', 'pmtpa')) %>
 		</param>
 
 		<param name="expr-Squid_upload_pmtpa">	
