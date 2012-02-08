@@ -16,6 +16,12 @@ class misc::statistics::base {
 			mode => 0750,
 			ensure => directory,
 			recurse => "true";
+		"/mnt/htdocs":
+			ensure => directory;
+		"/mnt/data":
+			ensure => directory;
+		"/mnt/php":
+			ensure => directory;
 	}
 
 	mount {
@@ -24,18 +30,21 @@ class misc::statistics::base {
 			fstype => "nfs",
 			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=10.0.5.8",
 			atboot => true,
+			require => File['/mnt/htdocs'],
 			ensure => mounted;
 		"/mnt/data":
 			device => "208.80.152.185:/data",
 			fstype => "nfs",
 			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.152.185",
 			atboot => true,
+			require => File['/mnt/data'],
 			ensure => mounted;
 		"/mnt/php":
 			device => "10.0.5.8:/home/wikipedia/common/php-1.5",
 			fstype => "nfs",
 			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=10.0.5.8",
 			atboot => true,
+			require => File['/mnt/php'],
 			ensure => mounted;
 	}
 
