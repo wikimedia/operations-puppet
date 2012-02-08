@@ -10,6 +10,7 @@ def varnish_rpn(role, site)
 		<%= "{/Varnish/#{site}/#{role}/#{node}/%varnishmetric%}," %>
 	end
 	<%= "%sumsep%" + (["%sumfunc%"]*(node_list(role, site).length - 1)).join(",") %>
+end
 %>
 
 <configuration>
