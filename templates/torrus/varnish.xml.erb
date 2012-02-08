@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<creator-info>
+		Written by Mark Bergsma &lt;mark@wikimedia.org&gt;
+	</creator-info>
+	<include filename="varnish-mib.xml"/>
+
+	<datasources>
+		<template name="wikimedia-varnish-server">
+			<param name="comment" value="%hostname% Varnish statistics"/>
+
+			<apply-template name="varnish-clientsgroup"/>
+			<apply-template name="varnish-cacheperformancegroup"/>
+			<apply-template name="varnish-backendsgroup"/>
+			<apply-template name="varnish-storagegroup"/>
+			<apply-template name="varnish-workersgroup"/>
+			<apply-template name="varnish-overheadgroup"/>
+		</template>
+
+		<subtree name="Varnish">
+			<param name="ds-type" value="rrd-file"/>
+			<param name="leaf-type" value="rrd-def"/>
+			<param name="rrd-cf"    value="AVERAGE" />
+			<param name="rrd-ds" value="sum"/>
+			<param name="data-dir" value="/var/lib/ganglia/rrds"/>
+			<param name="data-file" value="%varnishcluster%/%hostname%/%metric%.rrd"/>
+
+			<subtree name="pmtpa">
+				<subtree name="bits">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Bits caches pmtpa"/>
+					<param name="site" value="pmtpa"/>
+
+					<subtree name="sq67.wikimedia.org">
+						<param name="hostname" value="sq67.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="sq68.wikimedia.org">
+						<param name="hostname" value="sq68.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="sq69.wikimedia.org">
+						<param name="hostname" value="sq69.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="sq70.wikimedia.org">
+						<param name="hostname" value="sq70.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+			</subtree>
+
+			<subtree name="eqiad">
+				<subtree name="bits">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Bits caches eqiad"/>
+					<param name="site" value="eqiad"/>
+
+					<subtree name="arsenic.wikimedia.org">
+						<param name="hostname" value="arsenic.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="niobium.wikimedia.org">
+						<param name="hostname" value="niobium.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+			
+				<subtree name="upload">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Upload caches eqiad"/>
+					<param name="site" value="eqiad"/>
+					
+<% scope.lookupvar("role::cache::configuration::active_nodes")["upload"]["eqiad"].each do |node| -%>
+					<subtree name="<%= node %>">
+						<param name="hostname" value="<%= node %>"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+					
+<% end -%>
+				</subtree>
+				
+				<subtree name="mobile">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Mobile caches eqiad"/>
+					<param name="site" value="eqiad"/>
+
+					<subtree name="cp1043.wikimedia.org">
+						<param name="hostname" value="cp1043.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp1044.wikimedia.org">
+						<param name="hostname" value="cp1044.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+			</subtree>
+			
+			<subtree name="esams">
+				<subtree name="bits">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Bits caches esams"/>
+					<param name="site" value="esams"/>
+
+					<subtree name="knsq1.esams.wikimedia.org">
+						<param name="hostname" value="knsq1.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="knsq2.esams.wikimedia.org">
+						<param name="hostname" value="knsq2.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="knsq4.esams.wikimedia.org">
+						<param name="hostname" value="knsq4.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="knsq5.esams.wikimedia.org">
+						<param name="hostname" value="knsq5.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="knsq6.esams.wikimedia.org">
+						<param name="hostname" value="knsq6.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="knsq7.esams.wikimedia.org">
+						<param name="hostname" value="knsq7.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp3001.esams.wikimedia.org">
+						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+
+					<subtree name="cp3002.esams.wikimedia.org">
+						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+				</subtree>
+			</subtree>
+		</subtree>
+	</datasources>
+</configuration>
