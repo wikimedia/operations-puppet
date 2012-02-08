@@ -116,7 +116,7 @@ class SwiftProxyLogtailer(object):
                 method = 'OTHER'
             # the only HTTP response codes I care about are 200, 204, and 404
             status = lineBits['status']
-            if( status not in ['200', '201', '204', '404'] ):
+            if( status not in ['200', '201', '204', '304', '404'] ):
                 status = 'other'
             statusname = "durlist_%s" % status   # change 204 into 'durist_204'
             # finally, I want query duration (it's in seconds)
