@@ -24,9 +24,13 @@
 		
 		<param name="expr-Varnish_bits_pmtpa"> {/Varnish/pmtpa/bits/sq67.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq68.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq69.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq70.wikimedia.org/%varnishmetric%},%sumsep%%sumfunc%,%sumfunc%,%sumfunc%
 		</param>
-		
+
+		<param name="expr-Varnish_bits_eqiad">
+{/Varnish/eqiad/bits/arsenic.wikimedia.org/%varnishmetric%},{/Varnish/eqiad/bits/niobium.wikimedia.org/%varnishmetric%},%sumsep%%sumfunc%
+		</param>		
+
 		<param name="expr-Varnish_bits_esams">
-{/Varnish/esams/bits/cp3001.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/cp3002.esams.wikimedia.org/%varnishmetric%},%sumsep%,%sumfunc%
+{/Varnish/esams/bits/cp3001.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/cp3002.esams.wikimedia.org/%varnishmetric%},%sumsep%%sumfunc%
 		</param>
 
 		<template name="squid-cluster">
@@ -217,6 +221,20 @@
 					
 					<subtree name="Totals">
 						<param name="expr-Varnish" value="%expr-Varnish_bits_pmtpa%"/>
+						
+						<apply-template name="varnish-cluster"/>
+					</subtree>
+				</subtree>
+			</subtree>
+
+			<subtree name="eqiad">
+				<param name="site" value="eqiad"/>
+				
+				<subtree name="bits">
+					<param name="cluster" value="bits"/>
+					
+					<subtree name="Totals">
+						<param name="expr-Varnish" value="%expr-Varnish_bits_eqiad%"/>
 						
 						<apply-template name="varnish-cluster"/>
 					</subtree>
