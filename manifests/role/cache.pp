@@ -92,6 +92,17 @@ class role::cache {
 					"amssq46.esams.wikimedia.org",
 					]
 			},
+			"api" => {
+				"pmtpa" => [
+					'sq31.wikimedia.org',   # API
+					'sq33.wikimedia.org',   # API
+					'sq34.wikimedia.org',   # API
+					'sq35.wikimedia.org',   # API
+					'sq36.wikimedia.org',   # API
+				],
+				"eqiad" => [],
+				"esams" => [],
+			},
 			"bits" => {
 				"pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
 				"eqiad" => ["arsenic.wikimedia.org", "niobium.wikimedia.org"],
@@ -181,9 +192,35 @@ class role::cache {
 
 		$decommissioned_nodes = {
 			"text" => {
-				"pmtpa" => ["sq32.wikimedia.org"],
+				"pmtpa" => [
+					'sq16.wikimedia.org',
+					'sq17.wikimedia.org',
+					'sq18.wikimedia.org',
+					'sq19.wikimedia.org',
+					'sq20.wikimedia.org',
+					'sq21.wikimedia.org',
+					'sq22.wikimedia.org',
+					'sq23.wikimedia.org',
+					'sq24.wikimedia.org',
+					'sq25.wikimedia.org',
+					'sq26.wikimedia.org',
+					'sq27.wikimedia.org',
+					'sq28.wikimedia.org',
+					'sq29.wikimedia.org',
+					'sq30.wikimedia.org',
+					
+					"sq32.wikimedia.org"],
 				"eqiad" => [],
-				"esams" => ["knsq30.esams.wikimedia.org"]
+				"esams" => [
+					'knsq1.wikimedia.org',
+					'knsq2.wikimedia.org',
+					'knsq3.wikimedia.org',
+					'knsq4.wikimedia.org',
+					'knsq5.wikimedia.org',
+					'knsq6.wikimedia.org',
+					'knsq7.wikimedia.org',
+				
+					"knsq30.esams.wikimedia.org"]
 			},
 			"bits" => {
 				"pmtpa" => [],
@@ -191,9 +228,34 @@ class role::cache {
 				"esams" => [],
 			},
 			"upload" => {
-				"pmtpa" => [],
+				"pmtpa" => [
+					'sq1.wikimedia.org',
+					'sq2.wikimedia.org',
+					'sq3.wikimedia.org',
+					'sq4.wikimedia.org',
+					'sq5.wikimedia.org',
+					'sq6.wikimedia.org',
+					'sq7.wikimedia.org',
+					'sq8.wikimedia.org',
+					'sq9.wikimedia.org',
+					'sq10.wikimedia.org',
+					'sq11.wikimedia.org',
+					'sq12.wikimedia.org',
+					'sq13.wikimedia.org',
+					'sq14.wikimedia.org',
+					'sq15.wikimedia.org'
+				],
 				"eqiad" => [],
-				"esams" => [],
+				"esams" => [
+					'knsq8.wikimedia.org',
+					'knsq9.wikimedia.org',
+					'knsq10.wikimedia.org',
+					'knsq11.wikimedia.org',
+					'knsq12.wikimedia.org',
+					'knsq13.wikimedia.org',
+					'knsq14.wikimedia.org',
+					'knsq15.wikimedia.org'
+				],
 			},
 		}
 	}
