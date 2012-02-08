@@ -93,9 +93,9 @@ class role::cache {
 					]
 			},
 			"bits" => {
-				"pmtpa" => [],
-				"eqiad" => [],
-				"esams" => [],
+				"pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
+				"eqiad" => ["arsenic.wikimedia.org", "niobium.wikimedia.org"],
+				"esams" => ["cp3001.esams.wikimedia.org", "cp3002.esams.wikimedia.org"],
 			},
 			"upload" => {
 				"pmtpa" => [
