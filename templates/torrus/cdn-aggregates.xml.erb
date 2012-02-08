@@ -17,7 +17,9 @@
 		</param>
 
 		<param name="expr-Squid_text_eqiad">
-{/Squids/eqiad/text/cp1001.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1002.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1003.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1004.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1005.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1006.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1007.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1008.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1009.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1010.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1011.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1012.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1013.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1014.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1015.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1016.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1017.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1018.wikimedia.org/%squidlayer%/%squidmetric%},{/Squids/eqiad/text/cp1019.wikimedia.org/%squidlayer%/%squidmetric%},%sumsep%%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%
+<%
+nodes = scope.lookupvar("role::cache::configuration::active_nodes")['text']['eqiad']
+nodes.each do |node| -%>{/Squids/eqiad/text/<%= node %>/%squidlayer%/%squidmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(nodes.length - 1)).join(",") %>
 		</param>
 
 		<param name="expr-Squid_text_esams">
