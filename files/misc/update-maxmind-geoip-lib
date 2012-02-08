@@ -1,0 +1,6 @@
+#!/bin/bash
+# update MaxMind geo->ip lib (RT 2164)
+
+cd /usr/local/share/GeoIP
+/usr/bin/wget -N -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+/bin/uncompress -f *.gz
