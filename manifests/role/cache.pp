@@ -222,6 +222,11 @@ class role::cache {
 				
 					"knsq30.esams.wikimedia.org"]
 			},
+			"api" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => [],
+			},
 			"bits" => {
 				"pmtpa" => [],
 				"eqiad" => [],
