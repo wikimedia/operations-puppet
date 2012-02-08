@@ -212,15 +212,15 @@ class role::cache {
 					"sq32.wikimedia.org"],
 				"eqiad" => [],
 				"esams" => [
-					'knsq1.esams.wikimedia.org',
-					'knsq2.esams.wikimedia.org',
-					'knsq3.esams.wikimedia.org',
-					'knsq4.esams.wikimedia.org',
-					'knsq5.esams.wikimedia.org',
-					'knsq6.esams.wikimedia.org',
-					'knsq7.esams.wikimedia.org',
+					'knsq1.knams.wikimedia.org',
+					'knsq2.knams.wikimedia.org',
+					'knsq3.knams.wikimedia.org',
+					'knsq4.knams.wikimedia.org',
+					'knsq5.knams.wikimedia.org',
+					'knsq6.knams.wikimedia.org',
+					'knsq7.knams.wikimedia.org',
 				
-					"knsq30.esams.wikimedia.org"]
+					"knsq30.knams.wikimedia.org"]
 			},
 			"api" => {
 				"pmtpa" => [],
@@ -252,14 +252,14 @@ class role::cache {
 				],
 				"eqiad" => [],
 				"esams" => [
-					'knsq8.esams.wikimedia.org',
-					'knsq9.esams.wikimedia.org',
-					'knsq10.esams.wikimedia.org',
-					'knsq11.esams.wikimedia.org',
-					'knsq12.esams.wikimedia.org',
-					'knsq13.esams.wikimedia.org',
-					'knsq14.esams.wikimedia.org',
-					'knsq15.esams.wikimedia.org'
+					'knsq8.knams.wikimedia.org',
+					'knsq9.knams.wikimedia.org',
+					'knsq10.knams.wikimedia.org',
+					'knsq11.knams.wikimedia.org',
+					'knsq12.knams.wikimedia.org',
+					'knsq13.knams.wikimedia.org',
+					'knsq14.knams.wikimedia.org',
+					'knsq15.knams.wikimedia.org'
 				],
 			},
 		}
