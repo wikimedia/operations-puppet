@@ -21,7 +21,13 @@
 #  Feb  2 23:08:07 ms-fe1 proxy-server 208.80.152.165 208.80.152.165 02/Feb/2012/23/08/07 GET /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.42/4/42/Grattacielo_pirelli.JPG/220px-Grattacielo_pirelli.JPG HTTP/1.0 404 - Python-urllib/1.17 - - - - - - 0.2195
 #  Feb  2 23:08:24 ms-fe1 proxy-server 10.0.6.210 10.0.6.210 02/Feb/2012/23/08/24 HEAD /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe HTTP/1.0 204 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3117
 #  Feb  2 23:08:08 ms-fe1 proxy-server 127.0.0.1 127.0.0.1 02/Feb/2012/23/08/08 PUT /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.0d/0/0d/Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_lokomotiva_362.087_%252802%2529.jpg/120px-Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_loko HTTP/1.0 201 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc 4037 - - - - 0.1491
-# bhartshorne 2012-02-02
+#
+# I want to ignore the authentication logs and just focus on images and thumbnails
+# ignore these (swauth in either the process name or useragent spots):
+#Feb  8 18:27:31 ms-fe1 proxy-server - - 08/Feb/2012/18/27/31 GET /v1/AUTH_.auth/mw/.services HTTP/1.0 200 - Swauth - - - - - - 0.0044
+#Feb  8 18:27:31 ms-fe1 swauth - 127.0.0.1 08/Feb/2012/18/27/31 GET /auth/v1.0 HTTP/1.0 200 - - - - - - - - 0.0150
+#
+## bhartshorne 2012-02-02
 
 import time
 import threading
@@ -101,6 +107,9 @@ class SwiftProxyLogtailer(object):
 
         if regMatch:
             lineBits = regMatch.groupdict()
+            # ignore swauth lines
+            if( (lineBits['process'] == 'swauth') or (lineBits['useragent'] == 'Swauth') ):
+                return
             # all my stats are keyed off of method (GET, PUT, HEAD, etc)
             method = lineBits['method']
             if( method not in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE'] ):
