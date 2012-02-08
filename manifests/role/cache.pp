@@ -11,6 +11,172 @@
 @monitor_group { "cache_upload_esams": description => "upload squids esams" }
 
 class role::cache {
+	class configuration {
+		$active_nodes = {
+			"text" => {
+				"pmtpa" => [
+					'sq31.wikimedia.org',   # API
+					'sq33.wikimedia.org',   # API
+					'sq34.wikimedia.org',   # API
+					'sq35.wikimedia.org',   # API
+					'sq36.wikimedia.org',   # API
+					'sq37.wikimedia.org',
+					'sq38.wikimedia.org',
+					'sq39.wikimedia.org',
+					'sq40.wikimedia.org',
+
+					'sq59.wikimedia.org',
+					'sq60.wikimedia.org',
+					'sq61.wikimedia.org',
+					'sq62.wikimedia.org',
+					'sq63.wikimedia.org',
+					'sq64.wikimedia.org',
+					'sq65.wikimedia.org',
+					'sq66.wikimedia.org',
+
+					'sq71.wikimedia.org',
+					'sq72.wikimedia.org',
+					'sq73.wikimedia.org',
+					'sq74.wikimedia.org',
+					'sq75.wikimedia.org',
+					'sq76.wikimedia.org',
+					'sq77.wikimedia.org',
+					'sq78.wikimedia.org',
+					],
+				"eqiad" => [
+					'cp1001.eqiad.wmnet',
+					'cp1002.eqiad.wmnet',
+					'cp1003.eqiad.wmnet',
+					'cp1004.eqiad.wmnet',
+					'cp1005.eqiad.wmnet',
+					'cp1006.eqiad.wmnet',
+					'cp1007.eqiad.wmnet',
+					'cp1008.eqiad.wmnet',
+					'cp1009.eqiad.wmnet',
+					'cp1010.eqiad.wmnet',
+					'cp1011.eqiad.wmnet',
+					'cp1012.eqiad.wmnet',
+					'cp1013.eqiad.wmnet',
+					'cp1014.eqiad.wmnet',
+					'cp1015.eqiad.wmnet',
+					'cp1016.eqiad.wmnet',
+					'cp1017.eqiad.wmnet',
+					'cp1018.eqiad.wmnet',
+					'cp1019.eqiad.wmnet',
+					'cp1020.eqiad.wmnet',
+				],
+				"esams" => [
+					"knsq23.esams.wikimedia.org",
+					"knsq24.esams.wikimedia.org",
+					"knsq25.esams.wikimedia.org",
+					"knsq26.esams.wikimedia.org",
+					"knsq27.esams.wikimedia.org",
+					"knsq28.esams.wikimedia.org",
+					"knsq29.esams.wikimedia.org",
+
+					"amssq31.esams.wikimedia.org",
+					"amssq32.esams.wikimedia.org",
+					"amssq33.esams.wikimedia.org",
+					"amssq34.esams.wikimedia.org",
+					"amssq35.esams.wikimedia.org",
+					"amssq36.esams.wikimedia.org",
+					"amssq37.esams.wikimedia.org",
+					"amssq38.esams.wikimedia.org",
+					"amssq39.esams.wikimedia.org",
+					"amssq40.esams.wikimedia.org",
+					"amssq41.esams.wikimedia.org",
+					"amssq42.esams.wikimedia.org",
+					"amssq43.esams.wikimedia.org",
+					"amssq44.esams.wikimedia.org",
+					"amssq45.esams.wikimedia.org",
+					"amssq46.esams.wikimedia.org",
+					]
+			},
+			"bits" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => [],
+			},
+			"upload" => {
+				"pmtpa" => [
+					'sq41.wikimedia.org',
+					'sq42.wikimedia.org',
+					'sq43.wikimedia.org',
+					'sq44.wikimedia.org',
+					'sq45.wikimedia.org',
+					'sq46.wikimedia.org',
+					'sq47.wikimedia.org',
+					'sq48.wikimedia.org',
+					'sq49.wikimedia.org',
+					'sq50.wikimedia.org',
+
+					'sq51.wikimedia.org',
+					'sq52.wikimedia.org',
+					'sq53.wikimedia.org',
+					'sq54.wikimedia.org',
+					'sq55.wikimedia.org',
+					'sq56.wikimedia.org',
+					'sq57.wikimedia.org',
+					'sq58.wikimedia.org',
+
+					'sq79.wikimedia.org',
+					'sq80.wikimedia.org',
+					'sq81.wikimedia.org',
+					'sq82.wikimedia.org',
+					'sq83.wikimedia.org',
+					'sq84.wikimedia.org',
+					'sq85.wikimedia.org',
+					'sq86.wikimedia.org',
+				],
+				"eqiad" => [],
+				"esams" => [
+					'knsq16.knams.wikimedia.org',
+					'knsq17.knams.wikimedia.org',
+					'knsq18.knams.wikimedia.org',
+					'knsq19.knams.wikimedia.org',
+					'knsq20.knams.wikimedia.org',
+					'knsq21.knams.wikimedia.org',
+					'knsq22.knams.wikimedia.org',
+
+					'amssq47.esams.wikimedia.org',
+					'amssq48.esams.wikimedia.org',
+					'amssq49.esams.wikimedia.org',
+					'amssq50.esams.wikimedia.org',
+					'amssq51.esams.wikimedia.org',
+					'amssq52.esams.wikimedia.org',
+					'amssq53.esams.wikimedia.org',
+					'amssq54.esams.wikimedia.org',
+					'amssq55.esams.wikimedia.org',
+					'amssq56.esams.wikimedia.org',
+					'amssq57.esams.wikimedia.org',
+					'amssq58.esams.wikimedia.org',
+					'amssq59.esams.wikimedia.org',
+					'amssq60.esams.wikimedia.org',
+					'amssq61.esams.wikimedia.org',
+					'amssq62.esams.wikimedia.org',
+				],
+			}
+		}
+
+		$decommissioned_nodes = {
+			"text" => {
+				"pmtpa" => ["sq32.wikimedia.org"],
+				"eqiad" => [],
+				"esams" => ["knsq30.esams.wikimedia.org"]
+			},
+			"bits" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => [],
+			},
+			"upload" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => [],
+			},
+		}
+	}
+
 	class squid {
 		class common($role) {
 			system_role { "role::cache::${role}": description => "${role} Squid cache server"}
