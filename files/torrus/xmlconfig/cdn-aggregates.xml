@@ -25,7 +25,7 @@
 		<param name="expr-Varnish_bits_pmtpa"> {/Varnish/pmtpa/bits/sq67.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq68.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq69.wikimedia.org/%varnishmetric%},{/Varnish/pmtpa/bits/sq70.wikimedia.org/%varnishmetric%},%sumsep%%sumfunc%,%sumfunc%,%sumfunc%
 		</param>
 		
-		<param name="expr-Varnish_bits_esams"> {/Varnish/esams/bits/knsq1.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq2.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq4.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq5.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq6.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq6.esams.wikimedia.org/%varnishmetric%}{/Varnish/esams/bits/cp3001.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/cp3002.esams.wikimedia.org/%varnishmetric%},%sumsep%,%sumsep%,%sumsep%%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%
+		<param name="expr-Varnish_bits_esams"> {/Varnish/esams/bits/knsq1.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq2.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq4.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq5.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq6.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/knsq6.esams.wikimedia.org/%varnishmetric%}{/Varnish/esams/bits/cp3001.esams.wikimedia.org/%varnishmetric%},{/Varnish/esams/bits/cp3002.esams.wikimedia.org/%varnishmetric%},%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%,%sumfunc%
 		</param>
 
 		<template name="squid-cluster">
