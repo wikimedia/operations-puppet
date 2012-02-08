@@ -70,6 +70,20 @@
 						<apply-template name="wikimedia-varnish-server"/>
 					</subtree>
 				</subtree>
+			
+				<subtree name="upload">
+					<param name="system-id" value="%hostname%"/>
+					<param name="varnishcluster" value="Upload caches eqiad"/>
+					<param name="site" value="eqiad"/>
+					
+<% scope.lookupvar("role::cache::configuration::active_nodes")["upload"]["eqiad"].each do |node| -%>
+					<subtree name="<%= node %>">
+						<param name="hostname" value="<%= node %>"/>
+						<apply-template name="wikimedia-varnish-server"/>
+					</subtree>
+					
+<% end -%>
+				</subtree>
 				
 				<subtree name="mobile">
 					<param name="system-id" value="%hostname%"/>

@@ -877,6 +877,7 @@ node "manutius.wikimedia.org" {
 		webserver::apache,
 		misc::torrus,
 		misc::torrus::web,
+		misc::torrus::xml-generation::cdn,
 		ganglia::collector
 
 	include passwords::network

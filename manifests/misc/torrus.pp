@@ -126,5 +126,29 @@ class misc::torrus {
 		}
 	}
 	
+	class xml-generation {
+		# Class: misc::torrus::xml-generation::cdn
+		#
+		# This class automatically generates XML files for
+		# Squid and Varnish servers
+		#
+		# Uses role/cache/cache.pp
+		class cdn {
+			file {
+				"/etc/torrus/xmlconfig/varnish.xml":
+					owner => root,
+					group => root,
+					mode => 0444,
+					content => template("torrus/varnish.xml.erb"),
+					notify => Exec["torrus compile --tree=CDN"];
+			}
+			
+			exec { "torrus compile --tree=CDN":
+				path => "/usr/sbin",
+				refreshonly => true;
+			}
+		}
+	}
+	
 	include xmlconfig, discovery
 }
