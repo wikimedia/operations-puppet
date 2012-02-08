@@ -51,6 +51,7 @@ class misc::torrus {
 		command => "/usr/sbin/torrus compile --all",
 		require => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
 		subscribe => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
+		logoutput => true,
 		refreshonly => true
 	}
 
@@ -135,18 +136,23 @@ class misc::torrus {
 		# Uses role/cache/cache.pp
 		class cdn {
 			require role::cache::configuration
-			
+
+			File { 
+				owner => root,
+				group => root,
+				mode => 0444,
+				notify => Exec["torrus compile --tree=CDN"]
+			}
 			file {
 				"/etc/torrus/xmlconfig/varnish.xml":
-					owner => root,
-					group => root,
-					mode => 0444,
-					content => template("torrus/varnish.xml.erb"),
-					notify => Exec["torrus compile --tree=CDN"];
+					content => template("torrus/varnish.xml.erb");
+				"/etc/torrus/xmlconfig/cdn-aggregates.xml":
+					content => template("torrus/cdn-aggregates.xml");
 			}
 			
 			exec { "torrus compile --tree=CDN":
 				path => "/usr/sbin",
+				logoutput => true,
 				refreshonly => true;
 			}
 		}
