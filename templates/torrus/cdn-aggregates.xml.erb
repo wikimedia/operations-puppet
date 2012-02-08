@@ -37,7 +37,7 @@
 		<param name="expr-Varnish_upload_eqiad">
 <%
 nodes = scope.lookupvar("role::cache::configuration::active_nodes")['upload']['eqiad']
-nodes.each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(nodes.length? - 1)).join(",") %>
+nodes.each do |node| -%>{/Varnish/eqiad/upload/<%= node %>/%varnishmetric%},<% end -%>%sumsep%<%= (["%sumfunc%"]*(nodes.length - 1)).join(",") %>
 		</param>
 
 		<param name="expr-Varnish_bits_esams">
