@@ -54,6 +54,19 @@ class misc::planet-venus {
 			source => "puppet:///files/planet/update-planets";
 	}
 
+	define planet-config {
+		file {
+			"/usr/share/planet-venus/wikimedia/${title}":
+				path => "/usr/share/planet-venus/wikimedia/${title}/config.ini",
+				ensure => present,
+				owner => planet,
+				group => planet,
+				source => "puppet:///files/planet/${title}_config.ini";
+		}
+	}
+
+	planet-config { ["ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh"]: }
+
 	cron {
 		"update-all-planets":
 		ensure => present,
