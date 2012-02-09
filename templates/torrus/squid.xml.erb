@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<%
+def node_lists(role, site)
+	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
+end
+
+def squid_nodes(role, site)
+	decommissioned_nodes, active_nodes = node_lists(role, site)
+	result = []
+
+	decommissioned_nodes.each do |node|
+		result << "<subtree name=\"#{node}\">"
+		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+		result << "\t<apply-template name=\"decommissioned-squid-server\"/>"
+		result << "</subtree>"
+	end
+
+	active_nodes.each do |node|
+		result << "<subtree name=\"#{node}\">"
+		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+		result << "\t<apply-template name=\"wikimedia-squid-server\"/>"
+		result << "</subtree>"
+	end
+	
+	return result
+end
+
+%>
+
+<configuration>
+	<creator-info>
+		Puppet class misc::torrus::xml-generation::cdn in misc/torrus.pp
+	</creator-info>
+	<include filename="squid-mib.xml"/>
+	<include filename="snmp-defs.xml"/>
+	
+	<datasources>
+		<template name="wikimedia-squid-server">
+			<param name="comment" value="%hostname% Squid statistics"/>
+			<subtree name="frontend">
+				<param name="instance" value="front"/>
+				<param name="snmp-port" value="3402"/>
+				<param name="comment" value="%hostname% frontend Squid statistics"/>
+				<param name="precedence" value="2"/>
+				<apply-template name="squid-storagegroup"/>
+				<apply-template name="squid-performancegroup"/>
+				<apply-template name="squid-usagegroup"/>
+				<apply-template name="squid-servicetimesgroup"/>
+				<apply-template name="squid-resolvinggroup"/>
+			</subtree>
+			<subtree name="backend">
+				<param name="instance" value="back"/>
+				<param name="comment" value="%hostname% backend Squid statistics"/>
+				<param name="precedence" value="1"/>
+				<apply-template name="squid-storagegroup"/>
+				<apply-template name="squid-performancegroup"/>
+				<apply-template name="squid-usagegroup"/>
+				<apply-template name="squid-servicetimesgroup"/>
+				<apply-template name="squid-resolvinggroup"/>
+			</subtree>
+		</template>
+		
+		<template name="decommissioned-squid-server">
+			<param name="ds-type" value="rrd-file"/>
+			<param name="hidden" value="yes"/>
+			
+			<apply-template name="wikimedia-squid-server"/>
+		</template>
+		
+		<subtree name="Squids">
+			<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+			<apply-template name="snmp-defaults"/>
+			<param name="snmp-check-sysuptime" value="no"/>
+			<param name="snmp-host" value="%hostname%"/>
+			<param name="snmp-community" value="public"/>
+			<param name="snmp-version" value="2c"/>
+			<param name="system-id" value="%hostname%_%instance%"/>
+		
+			<subtree name="pmtpa">
+				<subtree name="misc">
+					<subtree name="loudon.wikimedia.org">
+						<param name="hostname" value="loudon.wikimedia.org"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
+
+					<subtree name="payments4.pmtpa.wmnet">
+						<param name="hostname" value="payments4.pmtpa.wmnet"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
+
+					<subtree name="payments2.pmtpa.wmnet">
+						<param name="hostname" value="payments2.pmtpa.wmnet"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
+
+					<subtree name="payments3.wikimedia.org">
+						<param name="hostname" value="payments3.wikimedia.org"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
+
+					<subtree name="payments4.wikimedia.org">
+						<param name="hostname" value="payments4.wikimedia.org"/>
+						<param name="instance" value="back"/>
+						<param name="comment" value="%hostname% backend Squid statistics"/>
+						<param name="precedence" value="1"/>
+						<apply-template name="squid-storagegroup"/>
+						<apply-template name="squid-performancegroup"/>
+						<apply-template name="squid-usagegroup"/>
+						<apply-template name="squid-servicetimesgroup"/>
+						<apply-template name="squid-resolvinggroup"/>
+					</subtree>
+				</subtree>
+
+				<subtree name="text">
+<% squid_nodes('text', 'pmtpa').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			
+				<subtree name="upload">
+<% squid_nodes('upload', 'pmtpa').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			</subtree>
+			
+			<subtree name="eqiad">
+				<subtree name="text">
+<% squid_nodes('text', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			</subtree>
+
+			<subtree name="esams">
+				<subtree name="text">
+<% squid_nodes('text', 'esams').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			
+				<subtree name="upload">
+<% squid_nodes('upload', 'esams').each do |line| -%>
+					<%= line %>
+<% end -%>
+				</subtree>
+			</subtree>
+		</subtree>
+	</datasources>
+</configuration>

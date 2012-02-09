@@ -146,6 +146,8 @@ class misc::torrus {
 			file {
 				"/etc/torrus/xmlconfig/varnish.xml":
 					content => template("torrus/varnish.xml.erb");
+				"/etc/torrus/xmlconfig/squid.xml":
+					content => template("torrus/squid.xml.erb");
 				"/etc/torrus/xmlconfig/cdn-aggregates.xml":
 					content => template("torrus/cdn-aggregates.xml.erb");
 			}
