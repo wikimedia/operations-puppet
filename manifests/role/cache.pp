@@ -187,6 +187,11 @@ class role::cache {
 					'amssq61.esams.wikimedia.org',
 					'amssq62.esams.wikimedia.org',
 				],
+			},
+			"mobile" => {
+				"pmtpa" => [],
+				"eqiad" => ["cp1041.wikimedia.org", "cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+				"esams" => []
 			}
 		}
 
@@ -230,7 +235,14 @@ class role::cache {
 			"bits" => {
 				"pmtpa" => [],
 				"eqiad" => [],
-				"esams" => [],
+				"esams" => [
+					"knsq1.knams.wikimedia.org",
+					"knsq2.knams.wikimedia.org",
+					"knsq4.knams.wikimedia.org",
+					"knsq5.knams.wikimedia.org",
+					"knsq6.knams.wikimedia.org",
+					"knsq7.knams.wikimedia.org"
+				],
 			},
 			"upload" => {
 				"pmtpa" => [
@@ -262,6 +274,10 @@ class role::cache {
 					'knsq15.knams.wikimedia.org'
 				],
 			},
+			"mobile" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => []
 		}
 	}
 
