@@ -228,7 +228,7 @@ class lvs::configuration {
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
-				'eqiad' => undef,
+				'eqiad' => "10.2.2.27",
 			}
 		},
 		'labs' => {
