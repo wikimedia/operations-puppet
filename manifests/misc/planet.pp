@@ -75,7 +75,7 @@ class misc::planet-venus {
 		user => 'planet',
 		hour => '0',
 		minute => '0',
-		require => [user['planet'], file['/usr/local/bin/update/planets']];
+		require => [user['planet'], file['/usr/local/bin/update-planets']];
 	}
 
 }
