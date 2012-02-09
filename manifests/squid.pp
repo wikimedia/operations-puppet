@@ -49,27 +49,20 @@ class squid {
 			content => template("squid/squid-disk-permissions.erb");
 	}
 	
-	# Make sure Squid doesn't automatically start at boot,
-	# with a possibly out of date config.
-	file { [ "/etc/rc2.d/S30squid", "/etc/rc3.d/S30squid", "/etc/rc4.d/S30squid",
-			"/etc/rc5.d/S30squid", "/etc/rc2.d/S30squid-frontend",
-			"/etc/rc3.d/S30squid-frontend", "/etc/rc4.d/S30squid-frontend",
-			"/etc/rc5.d/S30squid-frontend" ]:
-			ensure => absent;
-	}
-
 	service {
 		"squid-frontend":
 			require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
 			subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
 			hasstatus => false,
 			pattern => "squid-frontend",
+			enable => false,
 			ensure => running;
 		"squid":
 			require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
 			subscribe => File["/etc/squid/squid.conf"],
 			hasstatus => false,
 			pattern => "/usr/sbin/squid ",
+			enable => false,
 			ensure => running;
 	}
 
