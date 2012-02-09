@@ -9,7 +9,12 @@ def varnish_nodes(role, site)
 	decommissioned_nodes, active_nodes = node_lists(role, site)
 	result = []
 
-	# TODO: decommissioned nodes
+	decommissioned_nodes.each do |node|
+		result << "<subtree name=\"#{node}\">"
+		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+		result << "\t<apply-template name=\"decommissioned-varnish-server\"/>"
+		result << "</subtree>"
+	end
 
 	active_nodes.each do |node|
 		result << "<subtree name=\"#{node}\">"
@@ -41,6 +46,13 @@ end
 			<apply-template name="varnish-overheadgroup"/>
 		</template>
 
+		<template name="decommissioned-varnish-server">
+			<param name="ds-type" value="rrd-file"/>
+			<param name="hidden" value="yes"/>
+			
+			<apply-template name="wikimedia-varnish-server"/>
+		</template>
+
 		<subtree name="Varnish">
 			<param name="ds-type" value="rrd-file"/>
 			<param name="leaf-type" value="rrd-def"/>
@@ -55,25 +67,9 @@ end
 					<param name="varnishcluster" value="Bits caches pmtpa"/>
 					<param name="site" value="pmtpa"/>
 
-					<subtree name="sq67.wikimedia.org">
-						<param name="hostname" value="sq67.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="sq68.wikimedia.org">
-						<param name="hostname" value="sq68.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="sq69.wikimedia.org">
-						<param name="hostname" value="sq69.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="sq70.wikimedia.org">
-						<param name="hostname" value="sq70.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
+<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
 				</subtree>
 			</subtree>
 
@@ -83,15 +79,9 @@ end
 					<param name="varnishcluster" value="Bits caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
-					<subtree name="arsenic.wikimedia.org">
-						<param name="hostname" value="arsenic.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="niobium.wikimedia.org">
-						<param name="hostname" value="niobium.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
+<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
 				</subtree>
 			
 				<subtree name="upload">
@@ -109,15 +99,9 @@ end
 					<param name="varnishcluster" value="Mobile caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
-					<subtree name="cp1043.wikimedia.org">
-						<param name="hostname" value="cp1043.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="cp1044.wikimedia.org">
-						<param name="hostname" value="cp1044.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
+<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
 				</subtree>
 			</subtree>
 			
@@ -127,45 +111,9 @@ end
 					<param name="varnishcluster" value="Bits caches esams"/>
 					<param name="site" value="esams"/>
 
-					<subtree name="knsq1.esams.wikimedia.org">
-						<param name="hostname" value="knsq1.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="knsq2.esams.wikimedia.org">
-						<param name="hostname" value="knsq2.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="knsq4.esams.wikimedia.org">
-						<param name="hostname" value="knsq4.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="knsq5.esams.wikimedia.org">
-						<param name="hostname" value="knsq5.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="knsq6.esams.wikimedia.org">
-						<param name="hostname" value="knsq6.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="knsq7.esams.wikimedia.org">
-						<param name="hostname" value="knsq7.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="cp3001.esams.wikimedia.org">
-						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-
-					<subtree name="cp3002.esams.wikimedia.org">
-						<param name="hostname" value="cp3001.esams.wikimedia.org"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
+<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+					<%= line %>
+<% end -%>
 				</subtree>
 			</subtree>
 		</subtree>
