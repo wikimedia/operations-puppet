@@ -1,0 +1,30 @@
+# THIS FILE IS MANAGED BY PUPPET
+# This file controls which servers may be managed by
+# the cachemgr.cgi script
+#
+# The file consists of one server per line on the format
+#   hostname:port  description
+#
+# Specifying :port is optional. If not specified then
+# the default proxy port is assumed.
+#
+# hostname is matched using shell filename matching, allowing
+# * and other shell wildcards.
+
+<% active_nodes = scope.lookupvar("role::cache::configuration::active_nodes") -%>
+
+<% active_nodes.keys.each do |role| -%>
+<% active_nodes[role].keys.each do |site| -%>
+<% active_nodes[role][site].each do |node| -%>
+<%= node %>:80
+<% end -%>
+<% end -%>
+<% end -%>
+
+<% active_nodes.keys.each do |role| -%>
+<% active_nodes[role].keys.each do |site| -%>
+<% active_nodes[role][site].each do |node| -%>
+<%= node %>:3128
+<% end -%>
+<% end -%>
+<% end -%>

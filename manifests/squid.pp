@@ -102,11 +102,12 @@ class squid {
 
 
 class squid::cachemgr {
+	require role::cache::configuration
 
 	system_role { "squid::cachemgr": description => "Squid Cache Manager" }
 
 	file { "/etc/squid/cachemgr.conf":
-		source => "puppet:///files/squid/cachemgr.conf",
+		content => template("squid/cachemgr.conf.erb"),
 		owner => root,
 		group => root,
 		mode => 0444;
