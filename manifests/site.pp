@@ -1400,7 +1400,9 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::swift::pmtpa-prod::proxy
+# taking owa hosts out of the swift proxy cluster since they're not being used.
+# if we have load issues we can add them back in.
+#	include role::swift::pmtpa-prod::proxy
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
