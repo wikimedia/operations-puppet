@@ -12,10 +12,10 @@ def varnish_nodes(role, site)
 	# TODO: decommissioned nodes
 
 	active_nodes.each do |node|
-		result << "<subtree name=\"#{node}\">\n"
-		result << "\t<param name=\"hostname\" value=\"#{node}\"/>\n"
-		result << "\t<apply-template name=\"wikimedia-varnish-server\"/>\n"
-		result << "</subtree>\n"
+		result << "<subtree name=\"#{node}\">"
+		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+		result << "\t<apply-template name=\"wikimedia-varnish-server\"/>"
+		result << "</subtree>"
 	end
 	
 	return result
