@@ -67,7 +67,7 @@ end
 					<param name="varnishcluster" value="Bits caches pmtpa"/>
 					<param name="site" value="pmtpa"/>
 
-<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+<% varnish_nodes('bits', 'pmtpa').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
@@ -79,7 +79,7 @@ end
 					<param name="varnishcluster" value="Bits caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
-<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+<% varnish_nodes('bits', 'eqiad').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
@@ -99,7 +99,7 @@ end
 					<param name="varnishcluster" value="Mobile caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
-<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+<% varnish_nodes('mobile', 'eqiad').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
@@ -111,7 +111,7 @@ end
 					<param name="varnishcluster" value="Bits caches esams"/>
 					<param name="site" value="esams"/>
 
-<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+<% varnish_nodes('bits', 'esams').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
