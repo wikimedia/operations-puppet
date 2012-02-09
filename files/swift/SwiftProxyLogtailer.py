@@ -139,6 +139,7 @@ class SwiftProxyLogtailer(object):
         blankData = {'durlist_200':   [],
                      'durlist_201':   [],
                      'durlist_204':   [],
+                     'durlist_304':   [],
                      'durlist_404':   [],
                      'durlist_other': []
                     }
