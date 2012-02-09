@@ -99,9 +99,7 @@ end
 					<param name="varnishcluster" value="Upload caches eqiad"/>
 					<param name="site" value="eqiad"/>
 					
-					<% varnish_nodes('upload', 'eqiad').each do |line| -%>
-					<%= line %>
-					<% end -%>
+					<%= varnish_nodes('upload', 'eqiad').join("\n") -%>
 				</subtree>
 				
 				<subtree name="mobile">
