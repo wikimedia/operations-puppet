@@ -156,5 +156,7 @@ interactive_port 8654
 
 #rrd_rootdir "/mnt/ganglia_tmp/rrds.pmtpa"
 # Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
-RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"
+#RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"
 
+# Custom RRA sizes from torrus
+RRAs "RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"
