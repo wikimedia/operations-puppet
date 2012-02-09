@@ -237,12 +237,12 @@ class role::cache {
 				"pmtpa" => [],
 				"eqiad" => [],
 				"esams" => [
-					"knsq1.knams.wikimedia.org",
-					"knsq2.knams.wikimedia.org",
-					"knsq4.knams.wikimedia.org",
-					"knsq5.knams.wikimedia.org",
-					"knsq6.knams.wikimedia.org",
-					"knsq7.knams.wikimedia.org"
+					"knsq1.esams.wikimedia.org",
+					"knsq2.esams.wikimedia.org",
+					"knsq4.esams.wikimedia.org",
+					"knsq5.esams.wikimedia.org",
+					"knsq6.esams.wikimedia.org",
+					"knsq7.esams.wikimedia.org"
 				],
 			},
 			"upload" => {
