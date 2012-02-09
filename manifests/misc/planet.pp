@@ -31,6 +31,8 @@ class misc::planet-venus {
 		ensure => latest;
 	}
 
+	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
+
 	file {
 		"/var/www/index.html":
 			path => "/var/www/index.html",
@@ -38,5 +40,27 @@ class misc::planet-venus {
 			owner => www-data,
 			group => www-data,
 			source => "puppet:///files/planet/index.html";
+		"/var/log/planet":
+			path => "/var/log/planet",
+			mode => 0755,
+			owner => planet,
+			group => planet,
+			ensure => directory;
+		"/usr/local/bin/update-planets":
+			path => "/usr/local/bin/update-planets",
+			mode => 0550,
+			owner => planet,
+			group => planet,
+			source => "puppet:///files/planet/update-planets";
 	}
+
+	cron {
+		"update-all-planets":
+		ensure => present,
+		command => "/usr/local/bin/update-planets",
+		user => 'planet',
+		hour => '0',
+		minute => '0';
+	}
+
 }
