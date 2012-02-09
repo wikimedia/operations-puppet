@@ -27,6 +27,10 @@ class misc::planet {
 
 # http://intertwingly.net/code/venus/
 class misc::planet-venus {
+	system_role { "misc::planet-venus": description => "Planet (venus) weblog aggregator" }
+
+	$planet_languages=["ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh"]
+
 	package { "planet-venus":
 		ensure => latest;
 	}
@@ -67,7 +71,21 @@ class misc::planet-venus {
 		}
 	}
 
-	planetconfig { ["ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh"]: }
+	planetconfig { $planet_languages: }
+
+	define planetwwwdir {
+
+		file {
+			"/var/www/planet/${title}":
+				path => "/var/www/planet/${title}",
+				ensure => directory,
+				owner => planet,
+				group => www-data,
+				mode => 0755,
+		}
+	}
+
+	planetwwwdir { $planet_languages: }
 
 	cron {
 		"update-all-planets":
