@@ -64,6 +64,10 @@ end
 <%= varnish_rpn('bits', 'eqiad') %>
 		</param>
 
+		<param name="expr-Varnish_mobile_eqiad">
+<%= varnish_rpn('mobile', 'eqiad') %>
+		</param>
+
 		<param name="expr-Varnish_upload_eqiad">
 <%= varnish_rpn('upload', 'eqiad') %>
 		</param>
@@ -291,6 +295,17 @@ end
 						<apply-template name="varnish-cluster"/>
 					</subtree>
 				</subtree>
+
+				<subtree name="mobile">
+					<param name="cluster" value="mobile"/>
+					
+					<subtree name="Totals">
+						<param name="expr-Varnish" value="%expr-Varnish_mobile_eqiad%"/>
+						
+						<apply-template name="varnish-cluster"/>
+					</subtree>
+				</subtree>
+
 			</subtree>
 			
 			<subtree name="esams">
