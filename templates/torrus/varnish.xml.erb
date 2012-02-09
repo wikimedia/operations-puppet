@@ -7,7 +7,7 @@ end
 
 def varnish_nodes(role, site)
 	decommissioned_nodes, active_nodes = node_lists(role, site)
-	result = ""
+	result = []
 
 	# TODO: decommissioned nodes
 
@@ -16,7 +16,6 @@ def varnish_nodes(role, site)
 		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
 		result << "\t<apply-template name=\"wikimedia-varnish-server\"/>"
 		result << "</subtree>"
-		result << "\n"
 	end
 	
 	return result
@@ -100,7 +99,9 @@ end
 					<param name="varnishcluster" value="Upload caches eqiad"/>
 					<param name="site" value="eqiad"/>
 					
-					<%= varnish_nodes('upload', 'eqiad') %>
+					<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+					<%= line %>
+					<% end -%>
 				</subtree>
 				
 				<subtree name="mobile">
