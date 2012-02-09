@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<%
+def node_lists(role, site)
+	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
+end
+
+def varnish_nodes(role, site)
+	decommissioned_nodes, active_nodes = node_lists(role, site)
+	result = ""
+
+	# TODO: decommissioned nodes
+
+	active_nodes.each do |node|
+		result << "<subtree name=\"#{node}\">"
+		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
+		result << "\t<apply-template name=\"wikimedia-varnish-server\"/>"
+		result << "</subtree>"
+		result << "\n"
+	end
+	
+	return result
+end
+
+%>
+
 <configuration>
 	<creator-info>
 		Written by Mark Bergsma &lt;mark@wikimedia.org&gt;
@@ -76,13 +100,7 @@
 					<param name="varnishcluster" value="Upload caches eqiad"/>
 					<param name="site" value="eqiad"/>
 					
-<% scope.lookupvar("role::cache::configuration::active_nodes")["upload"]["eqiad"].each do |node| -%>
-					<subtree name="<%= node %>">
-						<param name="hostname" value="<%= node %>"/>
-						<apply-template name="wikimedia-varnish-server"/>
-					</subtree>
-					
-<% end -%>
+					<%= varnish_nodes('upload', 'eqiad') %>
 				</subtree>
 				
 				<subtree name="mobile">
