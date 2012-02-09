@@ -9,5 +9,5 @@ Set($CommentAddress , 'comment@rt.wikimedia.org');
 # THE WEBSERVER:
 
 Set($WebPath , "");
-Set($WebBaseURL , "http://rt.wikimedia.org");
+Set($WebBaseURL , "https://rt.wikimedia.org");
 
