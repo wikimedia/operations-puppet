@@ -1,0 +1,7 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Fri, 10 Feb 2012 23:24:32 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/2520
+Project: operations/puppet
+Branch: refs/heads/test
