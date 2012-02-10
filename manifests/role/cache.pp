@@ -95,7 +95,13 @@ class role::cache {
 					'sq34.wikimedia.org',   # API
 					'sq36.wikimedia.org',   # API
 				],
-				"eqiad" => [],
+				"eqiad" => [
+				'cp1001.eqiad.wmnet',	# API
+				'cp1002.eqiad.wmnet',	# API
+				'cp1003.eqiad.wmnet',	# API
+				'cp1004.eqiad.wmnet',	# API
+				'cp1005.eqiad.wmnet',	# API
+				],
 				"esams" => [],
 			},
 			"bits" => {
