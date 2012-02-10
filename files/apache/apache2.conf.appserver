@@ -23,7 +23,8 @@ Timeout 200
 # turned off -- brion -2004-01-09
 # on for testing -- TS 2005-11-25
 # off again, squid doesn't understand the HTTP/1.1 keepalive protocol -- TS
-KeepAlive Off
+# on again for testing -- mark 2012-02-10
+KeepAlive on
 
 MaxKeepAliveRequests 150
 KeepAliveTimeout 2

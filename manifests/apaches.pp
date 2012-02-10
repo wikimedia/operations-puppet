@@ -68,6 +68,7 @@ extension=wikidiff2.so
 			owner => root,
 			group => root,
 			mode => 0444,
+			notify => Service[apache],
 			source => "puppet:///files/apache/apache2.conf.appserver";
 		"/etc/apache2/envvars":
 			owner => root,
