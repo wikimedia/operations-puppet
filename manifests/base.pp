@@ -128,6 +128,7 @@ class base::puppet($server="puppet") {
 			owner => root,
 			group => root,
 			mode => 0755,
+			recurse => true,
 			source => "puppet:///files/puppet/default_gateway.rb";
 	}
 
