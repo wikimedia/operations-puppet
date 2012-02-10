@@ -3,3 +3,6 @@
 
 # Ignore .project (for eclipse/geppetto)
 .project
+
+# Compiled Python files are useless
+*.pyc
