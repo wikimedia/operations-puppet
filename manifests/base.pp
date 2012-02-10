@@ -124,11 +124,15 @@ class base::puppet($server="puppet") {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/puppet.init";
+		"var/lib/puppet/lib/facter":
+			owner => root,
+			group => root,
+			mode => 0555,
+			ensure => directory;
 		"/var/lib/puppet/lib/facter/default_gateway.rb":
 			owner => root,
 			group => root,
 			mode => 0755,
-			recurse => true,
 			source => "puppet:///files/puppet/default_gateway.rb";
 	}
 
