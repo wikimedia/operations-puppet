@@ -10,6 +10,7 @@ import re
 from eventlet.green import urllib2
 import wmf.client
 import time
+import urlparse
 #from swift.common.utils import get_logger
 
 # Copy2 is hairy. If we were only opening a URL, and returning it, we could
@@ -126,9 +127,15 @@ class WMFRewrite(object):
         # However, someone may have a formerly valid link to a file, so we
         # should do them the favor of giving them a 404.
         try:
-            upcopy = opener.open(reqorig.url)
+            # break apach the url, url-encode it, and put it back together
+            urlobj = list(urlparse.urlsplit(reqorig.url))
+            urlobj[2] = urllib2.quote(urlobj[2], '%/')
+            encodedurl = urlparse.urlunsplit(urlobj)
+            # ok, call the encoded url
+            upcopy = opener.open(encodedurl)
+
         except urllib2.HTTPError,status:
-            if status == 404:
+            if status.code == 404:
                 resp = webob.exc.HTTPNotFound('Expected original file not found')
                 return resp
             else:
