@@ -256,6 +256,7 @@ class gerrit::gerrit_config {
 	$gerrit_pass = $passwords::gerrit::gerrit_pass
 	$gerrit_sshport = "29418"
 	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
+	$gerrit_jenkins_url = 'https://integration.mediawiki.org/ci/git/notifyCommit?url='
 	$gerrit_db_host = "db9.pmtpa.wmnet"
 	$gerrit_db_name = "reviewdb"
 	$gerrit_db_user = "gerrit"

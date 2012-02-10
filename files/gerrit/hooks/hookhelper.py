@@ -148,3 +148,15 @@ class HookHelper:
 			except urllib2.URLError:
 				sys.stderr.write("Failed to update RT")
 				traceback.print_exc(file=sys.stderr)
+
+	def notify_jenkins(this, project):
+		jenkinsurl = hookconfig.jenkinsurl
+		repourl    = hookconfig.gerriturl + 'p/' + project
+		notifyURL  = jenkinsurl + repourl
+		try:
+			response = urllib2.urlopen( jenkinsurl + repourl )
+			html = response.read()
+			if 'Scheduled polling of ' not in html:
+				sys.stderr.write("Unexpected jenkins answer for '" + notifyURL + "'" + html )
+		except urlib2.URLError:
+			sys.stderr.write("Failed to notify Jenkins using '" + notifyURL + "'" )

@@ -1,5 +1,7 @@
 gerrituser = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_username') %>"
 gerritpass = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_pass') %>"
+gerriturl  = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_url') %>"
+jenkinsurl = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_jenkins_url') %>"
 rtresturl = "https://rt.wikimedia.org/REST/1.0/"
 sshhost = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_hostname') %>"
 sshport = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_sshport') %>

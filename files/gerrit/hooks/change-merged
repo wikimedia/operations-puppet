@@ -20,6 +20,8 @@ def main():
 	helper.log_to_file(options.project, options.branch, message)
 	# Resolve any RT tickets that this change mentions as resolved
 	helper.update_rt(options.change, options.changeurl)
+	# Send a notification to Jenkins
+	helper.notify_jenkins(options.project)
 
 if __name__ == "__main__":
 	main()
