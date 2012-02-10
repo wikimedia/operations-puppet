@@ -2,15 +2,6 @@
 
 import "generic-definitions.pp"
 
-# Virtual resources for the monitoring server
-# TODO: remove these after migration
-@monitor_group { "squids_pmtpa": description => "pmtpa text squids" }
-@monitor_group { "squids_upload": description => "pmtpa upload squids" }
-@monitor_group { "squids_text": description => "text squids" }
-@monitor_group { "squids_esams_text": description => "esams text squids" }
-@monitor_group { "squids_esams_upload": description => "esams upload squids" }
-@monitor_group { "squids_eqiad_text": description => "eqiad text squids" }
-
 class squid {
 
 	if $realm == "labs" {
