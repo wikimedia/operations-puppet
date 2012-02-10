@@ -388,7 +388,7 @@ end
 				<param name="varnishmetric" value="Clients/client_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,text-eqiad,bits-eqiad,text-esams,bits-esams,upload-esams,total"/>
+				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,text-eqiad,bits-eqiad,mobile-eqiad,text-esams,bits-esams,upload-esams,total"/>
 				<param name="comment" value="Total of all client requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -435,28 +435,35 @@ end
 				<param name="line-color-text-eqiad" value="##text-eqiad"/>
 				<param name="line-order-text-eqiad" value="5"/>
 
+				<param name="ds-expr-mobile-eqiad" value="%expr-Varnish_mobile_eqiad%,0,1000000,LIMIT"/>
+				<param name="graph-legend-mobile-eqiad" value="mobile.eqiad"/>
+				<param name="line-style-mobile-eqiad" value="STACK"/>
+				<param name="line-stack-mobile-eqiad" value="yes"/>
+				<param name="line-color-mobile-eqiad" value="##mobile-eqiad"/>
+				<param name="line-order-mobile-eqiad" value="6"/>
+
 				<param name="ds-expr-upload-esams" value="%expr-Squid_upload_esams%"/>
 				<param name="graph-legend-upload-esams" value="upload.esams"/>
 				<param name="line-style-upload-esams" value="STACK"/>
 				<param name="line-stack-upload-esams" value="yes"/>
 				<param name="line-color-upload-esams" value="##upload-esams"/>
-				<param name="line-order-upload-esams" value="6"/>
+				<param name="line-order-upload-esams" value="7"/>
 
 				<param name="ds-expr-bits-esams" value="%expr-Varnish_bits_esams%,0,1000000,LIMIT"/>
 				<param name="graph-legend-bits-esams" value="bits.esams"/>
 				<param name="line-style-bits-esams" value="STACK"/>
 				<param name="line-stack-bits-esams" value="yes"/>
 				<param name="line-color-bits-esams" value="##bits-esams"/>
-				<param name="line-order-bits-esams" value="7"/>
+				<param name="line-order-bits-esams" value="8"/>
 
 				<param name="ds-expr-text-esams" value="%expr-Squid_text_esams%"/>
 				<param name="graph-legend-text-esams" value="text.esams"/>
 				<param name="line-style-text-esams" value="STACK"/>
 				<param name="line-stack-text-esams" value="yes"/>
 				<param name="line-color-text-esams" value="##text-esams"/>
-				<param name="line-order-text-esams" value="8"/>
+				<param name="line-order-text-esams" value="9"/>
 
-				<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Varnish_bits_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Squid_text_esams%,%expr-Varnish_bits_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
+				<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Varnish_bits_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_eqiad%,%expr-Varnish_bits_eqiad%,%expr-Varnish_mobile_eqiad%,%expr-Squid_text_esams%,%expr-Varnish_bits_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
 				<param name="graph-legend-total" value="Total"/>
 				<param name="line-style-total" value="LINE1"/>
 				<param name="line-stack-total" value="no"/>
@@ -472,7 +479,7 @@ end
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,api-pmtpa,text-eqiad,bits-eqiad,api-eqiad"/>
+				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,api-pmtpa,text-eqiad,bits-eqiad,mobile-eqiad,api-eqiad"/>
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -513,11 +520,17 @@ end
 				<param name="line-color-bits-eqiad" value="##bits-eqiad"/>
 				<param name="line-order-bits-eqiad" value="6"/>
 
+				<param name="ds-expr-mobile-eqiad" value="%expr-Varnish_mobile_eqiad%"/>
+				<param name="graph-legend-mobile-eqiad" value="mobile.eqiad"/>
+				<param name="line-style-mobile-eqiad" value="LINE2"/>
+				<param name="line-color-mobile-eqiad" value="##mobile-eqiad"/>
+				<param name="line-order-mobile-eqiad" value="7"/>
+
 				<param name="ds-expr-api-eqiad" value="%expr-Squid_api_eqiad%"/>
 				<param name="graph-legend-api-eqiad" value="api.eqiad"/>
 				<param name="line-style-api-eqiad" value="LINE2"/>
 				<param name="line-color-api-eqiad" value="##red"/>
-				<param name="line-order-api-eqiad" value="7"/>
+				<param name="line-order-api-eqiad" value="8"/>
 				
 				<param name="precedence" value="999"/>	
 			</leaf>
@@ -531,7 +544,7 @@ end
 				<param name="squidlayer" value="backend"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-pmtpa,api-pmtpa,upload-pmtpa"/>
+				<param name="ds-names" value="text-pmtpa,api-pmtpa,upload-pmtpa,text-eqiad,api-eqiad"/>
 				<param name="comment" value="Service times"/>
 				<param name="vertical-label" value="seconds"/>
 				<param name="graph-lower-limit" value="0"/>
