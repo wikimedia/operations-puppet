@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ip route change default via <%= default_gateway %> dev eth0  metric 100 initcwnd 10
