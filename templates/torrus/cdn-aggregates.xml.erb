@@ -48,6 +48,11 @@ end
 <%= squid_rpn('text', 'eqiad') %>
 		</param>
 
+		<param name="expr-Squid_api_eqiad">
+<%= squid_rpn('text', 'eqiad', node_list('api', 'eqiad')) %>
+		</param>
+
+
 		<param name="expr-Squid_text_esams">
 <%= squid_rpn('text', 'esams') %>
 		</param>
@@ -221,45 +226,52 @@ end
 					<param name="squidlayer" value="frontend"/>
 					
 					<param name="ds-type" value="rrd-multigraph"/>
-					<param name="ds-names" value="text-pmtpa,upload-pmtpa,text-esams,upload-esams,total"/>
+					<param name="ds-names" value="text-pmtpa,upload-pmtpa,text-eqiad,text-esams,upload-esams,total"/>
 					<param name="comment" value="Total client requests"/>
 					<param name="vertical-label" value="requests/s"/>
 					<param name="graph-lower-limit" value="0"/>
-					
-					<param name="ds-expr-text-pmtpa" value="%expr-Squid_text_pmtpa%"/>
-					<param name="graph-legend-text-pmtpa" value="text.pmtpa"/>
-                    <param name="line-style-text-pmtpa" value="STACK"/>
-					<param name="line-stack-text-pmtpa" value="yes"/>
-                    <param name="line-color-text-pmtpa" value="##text-pmtpa"/>
-                    <param name="line-order-text-pmtpa" value="2"/>
 
 					<param name="ds-expr-upload-pmtpa" value="%expr-Squid_upload_pmtpa%"/>
 					<param name="graph-legend-upload-pmtpa" value="upload.pmtpa"/>
-                    <param name="line-style-upload-pmtpa" value="AREA"/>
+					<param name="line-style-upload-pmtpa" value="AREA"/>
 					<param name="line-stack-upload-pmtpa" value="no"/>
-                    <param name="line-color-upload-pmtpa" value="##upload-pmtpa"/>
-                    <param name="line-order-upload-pmtpa" value="1"/>
+					<param name="line-color-upload-pmtpa" value="##upload-pmtpa"/>
+					<param name="line-order-upload-pmtpa" value="1"/>
 
-					<param name="ds-expr-text-esams" value="%expr-Squid_text_esams%"/>
-					<param name="graph-legend-text-esams" value="text.esams"/>
-                    <param name="line-style-text-esams" value="STACK"/>
-					<param name="line-stack-text-esams" value="yes"/>
-                    <param name="line-color-text-esams" value="##text-esams"/>
-                    <param name="line-order-text-esams" value="4"/>
+					<param name="ds-expr-text-pmtpa" value="%expr-Squid_text_pmtpa%"/>
+					<param name="graph-legend-text-pmtpa" value="text.pmtpa"/>
+					<param name="line-style-text-pmtpa" value="STACK"/>
+					<param name="line-stack-text-pmtpa" value="yes"/>
+					<param name="line-color-text-pmtpa" value="##text-pmtpa"/>
+					<param name="line-order-text-pmtpa" value="2"/>
+
+					<param name="ds-expr-text-eqiad" value="%expr-Squid_text_eqiad%"/>
+					<param name="graph-legend-text-eqiad" value="text.eqiad"/>
+					<param name="line-style-text-eqiad" value="STACK"/>
+					<param name="line-stack-text-eqiad" value="yes"/>
+					<param name="line-color-text-eqiad" value="##text-eqiad"/>
+					<param name="line-order-text-eqiad" value="3"/>
 
 					<param name="ds-expr-upload-esams" value="%expr-Squid_upload_esams%"/>
 					<param name="graph-legend-upload-esams" value="upload.esams"/>
-                    <param name="line-style-upload-esams" value="STACK"/>
+					<param name="line-style-upload-esams" value="STACK"/>
 					<param name="line-stack-upload-esams" value="yes"/>
-                    <param name="line-color-upload-esams" value="##upload-esams"/>
-                    <param name="line-order-upload-esams" value="3"/>
+					<param name="line-color-upload-esams" value="##upload-esams"/>
+					<param name="line-order-upload-esams" value="4"/>
 
-					<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
+					<param name="ds-expr-text-esams" value="%expr-Squid_text_esams%"/>
+					<param name="graph-legend-text-esams" value="text.esams"/>
+					<param name="line-style-text-esams" value="STACK"/>
+					<param name="line-stack-text-esams" value="yes"/>
+					<param name="line-color-text-esams" value="##text-esams"/>
+					<param name="line-order-text-esams" value="5"/>
+
+					<param name="ds-expr-total" value="%expr-Squid_text_pmtpa%,%expr-Squid_upload_pmtpa%,%expr-Squid_text_eqiad%,%expr-Squid_text_esams%,%expr-Squid_upload_esams%,ADDNAN,ADDNAN,ADDNAN,ADDNAN,0,1000000,LIMIT"/>
 					<param name="graph-legend-total" value="Total"/>
-                    <param name="line-style-total" value="LINE1"/>
+					<param name="line-style-total" value="LINE1"/>
 					<param name="line-stack-total" value="no"/>
-                    <param name="line-color-total" value="#000000"/>
-                    <param name="line-order-total" value="5"/>
+					<param name="line-color-total" value="#000000"/>
+					<param name="line-order-total" value="6"/>
 				</leaf>
 			</subtree>
 
@@ -461,7 +473,7 @@ end
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
-				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,api-pmtpa"/>
+				<param name="ds-names" value="text-pmtpa,bits-pmtpa,upload-pmtpa,api-pmtpa,text-eqiad,bits-eqiad,api-eqiad"/>
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
 				<param name="graph-lower-limit" value="0"/>
@@ -490,11 +502,23 @@ end
 				<param name="line-color-api-pmtpa" value="##red"/>
 				<param name="line-order-api-pmtpa" value="4"/>
 
+				<param name="ds-expr-text-eqiad" value="%expr-Squid_text_eqiad%,%expr-Squid_api_eqiad%,-"/>
+				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
+				<param name="line-style-text-eqiad" value="LINE2"/>
+				<param name="line-color-text-eqiad" value="##text-eqiad"/>
+				<param name="line-order-text-eqiad" value="5"/>
+
 				<param name="ds-expr-bits-eqiad" value="%expr-Varnish_bits_eqiad%"/>
 				<param name="graph-legend-bits-eqiad" value="bits.eqiad"/>
 				<param name="line-style-bits-eqiad" value="LINE2"/>
 				<param name="line-color-bits-eqiad" value="##bits-eqiad"/>
-				<param name="line-order-bits-eqiad" value="5"/>
+				<param name="line-order-bits-eqiad" value="6"/>
+
+				<param name="ds-expr-api-eqiad" value="%expr-Squid_api_eqiad%"/>
+				<param name="graph-legend-api-eqiad" value="api.eqoad"/>
+				<param name="line-style-api-eqiad" value="LINE2"/>
+				<param name="line-color-api-eqiad" value="##red"/>
+				<param name="line-order-api-eqiad" value="7"/>
 				
 				<param name="precedence" value="999"/>	
 			</leaf>
@@ -531,7 +555,20 @@ end
 				<param name="line-style-upload-pmtpa" value="LINE2"/>
 				<param name="line-color-upload-pmtpa" value="##upload-pmtpa"/>
 				<param name="line-order-upload-pmtpa" value="3"/>
-				<param name="precedence" value="998"/>			
+
+				<param name="ds-expr-text-eqiad" value="%expr-Squid_text_eqiad%,AVG"/>
+				<param name="graph-legend-text-eqiad" value="text.eqiad"/>
+				<param name="line-style-text-eqiad" value="LINE2"/>
+				<param name="line-color-text-eqiad" value="##text-eqiad"/>
+				<param name="line-order-text-eqiad" value="4"/>
+				
+				<param name="ds-expr-api-eqiad" value="%expr-Squid_api_eqiad%,AVG"/>
+				<param name="graph-legend-api-eqiad" value="api.eqiad"/>
+				<param name="line-style-api-eqiad" value="LINE2"/>
+				<param name="line-color-api-eqiad" value="##red"/>
+				<param name="line-order-api-eqiad" value="5"/>
+
+				<param name="precedence" value="998"/>
 			</leaf>
 		</subtree>
 	</datasources>
