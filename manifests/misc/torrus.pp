@@ -47,12 +47,20 @@ class misc::torrus {
 		}
 	}
 
-	exec { "torrus compile":
-		command => "/usr/sbin/torrus compile --all",
-		require => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
-		subscribe => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
-		logoutput => true,
-		refreshonly => true
+	exec {
+		"torrus clearcache":
+			command => "/usr/sbin/torrus clearcache",
+			require => Class[misc::torrus::config],
+			subscribe => Class[misc::torrus::config],
+			logoutput => true,
+			refreshonly => true,
+			before => Exec["torrus compile"];
+		"torrus compile":
+			command => "/usr/sbin/torrus compile --all",
+			require => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
+			subscribe => Class[ [misc::torrus::config, misc::torrus::xmlconfig] ],
+			logoutput => true,
+			refreshonly => true
 	}
 
 	service { "torrus-common":
