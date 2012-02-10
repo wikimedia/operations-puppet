@@ -41,11 +41,11 @@ class role::cache {
 					'sq78.wikimedia.org',
 					],
 				"eqiad" => [
-					'cp1001.eqiad.wmnet',
-					'cp1002.eqiad.wmnet',
-					'cp1003.eqiad.wmnet',
-					'cp1004.eqiad.wmnet',
-					'cp1005.eqiad.wmnet',
+					'cp1001.eqiad.wmnet',	# API
+					'cp1002.eqiad.wmnet',	# API
+					'cp1003.eqiad.wmnet',	# API
+					'cp1004.eqiad.wmnet',	# API
+					'cp1005.eqiad.wmnet',	# API
 					'cp1006.eqiad.wmnet',
 					'cp1007.eqiad.wmnet',
 					'cp1008.eqiad.wmnet',
@@ -91,10 +91,8 @@ class role::cache {
 			},
 			"api" => {
 				"pmtpa" => [
-					'sq31.wikimedia.org',   # API
 					'sq33.wikimedia.org',   # API
 					'sq34.wikimedia.org',   # API
-					'sq35.wikimedia.org',   # API
 					'sq36.wikimedia.org',   # API
 				],
 				"eqiad" => [],
