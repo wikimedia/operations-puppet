@@ -122,6 +122,17 @@ class misc::contint::test {
 				group => "wikidev",
 				mode => 0775,
 				ensure => directory;
+			"/var/lib/jenkins/bin":
+				owner => "jenkins",
+				group => "wikidev",
+				mode => 0775,
+				ensure => directory;
+			"/var/lib/jenkins/bin/fetch_gerrit_head.sh":
+				owner => "jenkins",
+				group => "wikidev",
+				mode => 0555,
+				source => "puppet:///files/misc/jenkins/fetch_gerrit_head.sh";
+				ensure => present;
 			# Let wikidev users maintain the homepage
 			 "/srv/org":
 					mode => 0755,
