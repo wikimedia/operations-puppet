@@ -66,6 +66,7 @@ class misc::torrus {
 	service { "torrus-common":
 		require => Exec["torrus compile"],
 		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
+		hasrestart => false,
 		ensure => running;
 	}
 
