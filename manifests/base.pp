@@ -124,7 +124,7 @@ class base::puppet($server="puppet") {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/puppet.init";
-		"var/lib/puppet/lib/facter":
+		"/var/lib/puppet/lib/facter":
 			owner => root,
 			group => root,
 			mode => 0555,
