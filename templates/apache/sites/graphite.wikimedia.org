@@ -35,3 +35,14 @@
 	</Location>
 
 </VirtualHost>
+
+<VirtualHost *:80>
+	ServerName gdash.wikimedia.org
+	ServerAlias gdash 
+	<Location />
+		Satisfy Any
+		Allow from all
+		ProxyPass http://gdash.pmtpa.wmnet/
+		ProxyPassReverse http://gdash.pmtpa.wmnet/
+	</Location> 
+</VirtualHost>
