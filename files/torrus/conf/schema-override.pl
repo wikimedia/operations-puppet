@@ -17,5 +17,5 @@ $Torrus::Renderer::graphStyles{'text-pmtpa'}{'color'} = '#5555cc';
 $Torrus::Renderer::graphStyles{'upload-pmtpa'}{'color'} = '#33337a';
 $Torrus::Renderer::graphStyles{'bits-pmtpa'}{'color'} = '#4545a6';
 $Torrus::Renderer::graphStyles{'mobile-pmtpa'}{'color'} = '#4545A6';
-$Torrus::Renderer::graphStyles{'api-eqiad'}{'color'} = '##orange';
+$Torrus::Renderer::graphStyles{'api-pmtpa'}{'color'} = '##orange';
 
