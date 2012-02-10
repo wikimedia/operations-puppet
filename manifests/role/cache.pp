@@ -15,7 +15,6 @@ class role::cache {
 		$active_nodes = {
 			"text" => {
 				"pmtpa" => [
-					'sq31.wikimedia.org',   # API
 					'sq33.wikimedia.org',   # API
 					'sq34.wikimedia.org',   # API
 					'sq35.wikimedia.org',   # API
@@ -210,7 +209,8 @@ class role::cache {
 					'sq28.wikimedia.org',
 					'sq29.wikimedia.org',
 					'sq30.wikimedia.org',
-					
+
+					'sq31.wikimedia.org',
 					"sq32.wikimedia.org",
 					'sq38.wikimedia.org',
 				],
