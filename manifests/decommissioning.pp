@@ -40,6 +40,7 @@ $decommissioned_servers = [
 "searchidx1",
 "sq31",
 "sq32",
+"sq35",
 "sq38",
 "sq46",
 "sq47",

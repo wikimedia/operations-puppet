@@ -17,7 +17,6 @@ class role::cache {
 				"pmtpa" => [
 					'sq33.wikimedia.org',   # API
 					'sq34.wikimedia.org',   # API
-					'sq35.wikimedia.org',   # API
 					'sq36.wikimedia.org',   # API
 					'sq37.wikimedia.org',
 					'sq39.wikimedia.org',
@@ -212,6 +211,7 @@ class role::cache {
 
 					'sq31.wikimedia.org',
 					"sq32.wikimedia.org",
+					"sq35.wikimedia.org",
 					'sq38.wikimedia.org',
 				],
 				"eqiad" => [],
