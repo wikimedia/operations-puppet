@@ -1,0 +1,367 @@
+# This file is managed by Puppet!
+
+LoadModule autoindex_module /usr/lib/apache2/modules/mod_autoindex.so
+LoadModule dir_module /usr/lib/apache2/modules/mod_dir.so
+LoadModule setenvif_module /usr/lib/apache2/modules/mod_setenvif.so
+LoadModule php5_module /usr/lib/apache2/modules/libphp5.so
+LoadModule authz_host_module /usr/lib/apache2/modules/mod_authz_host.so
+LoadModule expires_module /usr/lib/apache2/modules/mod_expires.so
+LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
+LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
+LoadModule alias_module /usr/lib/apache2/modules/mod_alias.so
+LoadModule mime_module /usr/lib/apache2/modules/mod_mime.so
+
+ServerRoot "/etc/apache2"
+#LockFile /usr/local/apache/logs/httpd.lock
+PidFile /var/run/apache2.pid
+LockFile /var/lock/apache2/accept.lock
+
+#ResourceConfig conf/srm.conf
+#AccessConfig conf/access.conf
+Timeout 200
+
+# turned off -- brion -2004-01-09
+# on for testing -- TS 2005-11-25
+# off again, squid doesn't understand the HTTP/1.1 keepalive protocol -- TS
+# on again for testing -- mark 2012-02-10
+KeepAlive on
+
+MaxKeepAliveRequests 150
+KeepAliveTimeout 2
+
+MinSpareServers 5
+MaxSpareServers 20
+
+StartServers 10
+
+#MaxClients 24
+#MaxClients 36
+#MaxClients 50
+#MaxClients 300
+#MaxClients 255
+MaxClients 100
+
+<IfDefine SLOW>
+MaxClients 5
+</IfDefine>
+
+<IfDefine SCALER>
+MaxClients 10
+# Reduce TimeOut to limit the impact of LVS flapping -- TS 2008-08-19
+TimeOut 10 
+</IfDefine>
+
+MaxRequestsPerChild 300
+
+#BindAddress *
+
+# Disabling to test -- 2003-11-30 BV FIXME
+###LoadModule throttle_module    libexec/mod_throttle.so
+#AddModule mod_throttle.c
+
+# Disabled, don't think we use this -- TS 2004-08-01
+#LoadModule vhost_alias_module libexec/mod_vhost_alias.so
+
+
+Listen 80
+
+User apache
+Group apache
+
+ServerAdmin root@wikimedia.org
+
+ServerTokens Prod
+ServerName wikimedia.org
+
+DocumentRoot "/usr/local/apache/common/docroot/default"
+
+<Directory />
+    Options FollowSymLinks
+    AllowOverride None
+</Directory>
+
+<Directory "/usr/local/apache/common/docroot/default">
+    Options -Indexes FollowSymLinks MultiViews
+    AllowOverride None
+
+    Order allow,deny
+    Allow from all
+</Directory>
+
+
+# Expires and CORS for static content
+# sends max-age and Expires header, time in seconds
+#LoadModule expires_module   mod_expires.c
+#<IfModule mod_expires.c>
+    ExpiresActive On
+    <Directory "/usr/local/apache/common/docroot">
+        <FilesMatch "\.(gif|jpe?g|png|css|js|woff|svg|eot|ttf)$">
+            ExpiresByType image/gif A2592000
+            ExpiresByType image/png A2592000
+            ExpiresByType image/jpeg A2592000
+            ExpiresByType text/css A2592000
+            ExpiresByType text/javascript A2592000
+            ExpiresByType application/x-javascript A2592000
+            ExpiresByType application/x-woff A2592000
+            ExpiresByType image/svg+xml A2592000
+            ExpiresByType application/vnd.ms-fontobject A2592000
+            ExpiresByType application/x-font-ttf A2592000
+            Header add Access-Control-Allow-Origin "*"
+        </FilesMatch>
+    </Directory>
+#</IfModule>
+
+<IfModule mod_userdir.c>
+    UserDir disabled
+</IfModule>
+
+DirectoryIndex index.html
+
+AccessFileName .htaccess
+
+<Files ~ "^\.ht">
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+# RT 1666: prevent downloading of .*~ and similar files
+<FilesMatch "(\.bak|\.old|~|#)$">
+	Order allow,deny
+	Deny from all
+	Satisfy All
+</FilesMatch>
+
+UseCanonicalName On
+
+TypesConfig /etc/mime.types
+
+DefaultType application/octet-stream
+
+HostnameLookups Off
+
+ErrorLog syslog
+
+#LogLevel warn
+LogLevel notice
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+ServerSignature Off
+
+<IfModule mod_alias.c>
+
+    Alias /icons/ "/usr/share/apache2/icons/"
+
+    <Directory "/usr/share/apache2/icons/">
+        Options -Indexes MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    #ScriptAlias /cgi-bin/ "/usr/local/apache/cgi-bin/"
+
+#    <Directory "/usr/local/apache/cgi-bin">
+#        AllowOverride None
+#        Options None
+#        Order allow,deny
+#        Allow from all
+#    </Directory>
+</IfModule>
+
+#<IfModule mod_autoindex.c>
+
+    IndexOptions FancyIndexing
+
+    AddIconByEncoding (CMP,/icons/compressed.gif) x-compress x-gzip
+
+    AddIconByType (TXT,/icons/text.gif) text/*
+    AddIconByType (IMG,/icons/image2.gif) image/*
+    AddIconByType (SND,/icons/sound2.gif) audio/*
+    AddIconByType (VID,/icons/movie.gif) video/*
+
+    AddIcon /icons/binary.gif .bin .exe
+    AddIcon /icons/binhex.gif .hqx
+    AddIcon /icons/tar.gif .tar
+    AddIcon /icons/world2.gif .wrl .wrl.gz .vrml .vrm .iv
+    AddIcon /icons/compressed.gif .Z .z .tgz .gz .zip
+    AddIcon /icons/a.gif .ps .ai .eps
+    AddIcon /icons/layout.gif .html .shtml .htm .pdf
+    AddIcon /icons/text.gif .txt
+    AddIcon /icons/c.gif .c
+    AddIcon /icons/p.gif .pl .py
+    AddIcon /icons/f.gif .for
+    AddIcon /icons/dvi.gif .dvi
+    AddIcon /icons/uuencoded.gif .uu
+    AddIcon /icons/script.gif .conf .sh .shar .csh .ksh .tcl
+    AddIcon /icons/tex.gif .tex
+    AddIcon /icons/bomb.gif core
+
+    AddIcon /icons/back.gif ..
+    AddIcon /icons/hand.right.gif README
+    AddIcon /icons/folder.gif ^^DIRECTORY^^
+    AddIcon /icons/blank.gif ^^BLANKICON^^
+
+    DefaultIcon /icons/unknown.gif
+
+    #AddDescription "GZIP compressed document" .gz
+    #AddDescription "tar archive" .tar
+    #AddDescription "GZIP compressed tar archive" .tgz
+
+    ReadmeName README
+    HeaderName HEADER
+
+    IndexIgnore .??* *~ *# HEADER* README* RCS CVS *,v *,t
+
+#</IfModule>
+
+#<IfModule mod_mime.c>
+
+    AddEncoding x-compress Z
+    AddEncoding x-gzip gz tgz
+
+    AddLanguage da .dk
+    AddLanguage nl .nl
+    AddLanguage en .en
+    AddLanguage eo .eo
+    AddLanguage et .ee
+    AddLanguage fr .fr
+    AddLanguage de .de
+    AddLanguage el .el
+    AddLanguage he .he
+    AddCharset ISO-8859-8 .iso8859-8
+    AddLanguage it .it
+    AddLanguage ja .ja
+    AddCharset ISO-2022-JP .jis
+    AddLanguage kr .kr
+    AddCharset ISO-2022-KR .iso-kr
+    AddLanguage nn .nn
+    AddLanguage no .no
+    AddLanguage pl .po
+    AddCharset ISO-8859-2 .iso-pl
+    AddLanguage pt .pt
+    AddLanguage pt-br .pt-br
+    AddLanguage ltz .lu
+    AddLanguage ca .ca
+    AddLanguage es .es
+    AddLanguage sv .sv
+    AddLanguage cz .cz
+    AddLanguage ru .ru
+    AddLanguage zh-tw .tw
+    AddLanguage tw .tw
+    AddCharset Big5         .Big5    .big5
+    AddCharset WINDOWS-1251 .cp-1251
+    AddCharset CP866        .cp866
+    AddCharset ISO-8859-5   .iso-ru
+    AddCharset KOI8-R       .koi8-r
+    AddCharset UCS-2        .ucs2
+    AddCharset UCS-4        .ucs4
+    AddCharset UTF-8        .utf8
+
+    <IfModule mod_negotiation.c>
+        LanguagePriority en eo da nl et fr de el it ja kr no pl pt pt-br ru ltz ca es sv tw
+    </IfModule>
+
+    AddType application/x-tar .tgz
+    AddType text/xml .rdf
+    AddType application/x-bzip2 .bz2
+    AddType application/x-woff .woff
+    AddType application/vnd.ms-fontobject .eot
+    # TTF doesn't have an official MIME type, but I really don't want to use application/octet-stream for it
+    AddType application/x-font-ttf .ttf
+
+    <IfModule mod_php4.c>
+        AddType application/x-httpd-php .php .php4 .php3 .phtml
+        AddType application/x-httpd-php-source .phps
+    </IfModule>
+    <IfModule mod_php5.c>
+        AddType application/x-httpd-php .php .php5 .php4 .php3 .phtml
+        AddType application/x-httpd-php-source .phps
+    </IfModule>
+
+#</IfModule>
+
+#<IfModule mod_setenvif.c>
+
+    BrowserMatch "Mozilla/2" nokeepalive
+    BrowserMatch "MSIE 4\.0b2;" nokeepalive downgrade-1.0 force-response-1.0
+
+    BrowserMatch "RealPlayer 4\.0" force-response-1.0
+    BrowserMatch "Java/1\.0" force-response-1.0
+    BrowserMatch "JDK/1\.0" force-response-1.0
+
+#</IfModule>
+
+#<Location /x-server-status>
+#    SetHandler server-status
+#    Order deny,allow
+#    Deny from all
+#    Allow from .wikipedia.org
+## That's me -- brion
+#    Allow from mark.usc.edu
+#    Allow from 64.165.227.217
+## Jeronim
+#    Allow from 210.49.82.219
+#</Location>
+
+ErrorDocument 503 /503.html
+ErrorDocument 404 /w/404.php
+
+NameVirtualHost *
+
+# Disabling to test -- 2003-11-30 BV FIXME
+####Include /apache/conf/throttle.conf
+
+# Includes
+
+# Note, the order is important
+# In particular, this must be the first virtual subdomain:
+Include /etc/apache2/wmf/nonexistent.conf
+
+# www.wikipedia.org
+Include /etc/apache2/wmf/www.wikipedia.conf
+
+# Redirects also must override *.wikipedia.org
+Include /etc/apache2/wmf/redirects.conf
+
+# Various domains including all the multi-subdomain projects
+# Also some site-wide settings
+Include /etc/apache2/wmf/main.conf
+
+# A few single-subdomain projects
+Include /etc/apache2/wmf/remnant.conf
+
+# Set the bad_bots environment variable based on various criteria
+# Include /usr/local/apache/conf/bots.conf
+
+# boards.wikimedia.org
+# DISABLED 2004-11-18 --brion
+#Include /usr/local/apache/conf/boards.conf
+
+# upload.wikimedia.org
+# DISABLED as this is now done on albert 2005-02-26 --brion
+#Include /usr/local/apache/conf/upload.conf
+
+# secure.wikimedia.org unencrypted backend
+Include /etc/apache2/wmf/wikimedia-ssl-backend.conf
+
+# *.wikimedia.org
+Include /etc/apache2/wmf/wikimedia.conf
+
+# wikimediafoundation.org and its aliases
+Include /etc/apache2/wmf/foundation.conf
+
+# A simple redirect to en, perhaps this once contained the load balancing redirect
+Include /etc/apache2/wmf/en2.conf
+
+# A couple of redirects for www.XXX.wikipedia.org
+Include /etc/apache2/wmf/postrewrites.conf
+
+# Set ETags for files to not be based on inode,
+# since that will be different on each backend server
+# http://bugzilla.wikimedia.org/show_bug.cgi?id=8926
+FileETag MTime Size
