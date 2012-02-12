@@ -28,7 +28,7 @@ use Data::Dumper;
 use IO::Socket::INET;
 use POSIX qw(ceil);
 
-$0 = "sqstat";
+$0 = "/usr/local/bin/sqstat";
 
 my $carbon_server = "10.0.6.30";
 my $carbon_port = 2003;
