@@ -86,7 +86,7 @@ sub send_metrics() {
 		}
 		my ($tp50, $tp99) = &calctp(\@{$e{$key}{'time'}});
 		$carbon->send( "reqstats.edits.$name.tp50 $tp50 $t\n" );
-		$carbon->send( "reqstats.edits.$name.tp99 $tp50 $t\n" );
+		$carbon->send( "reqstats.edits.$name.tp99 $tp99 $t\n" );
 	}
 }
 
