@@ -128,6 +128,13 @@ class misc::udp2log::emeryconfig {
 			group => root,
 			content => template("udp2log/emery-etc-locke-filters.erb");
 	}
+	file {
+		"/usr/local/bin/sqstat":
+			mode => 555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/udp2log/sqstat.pl";
+	}
 }
 
 class misc::udp2log::monitoring {

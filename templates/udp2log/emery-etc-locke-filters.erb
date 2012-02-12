@@ -5,7 +5,7 @@
 file 1000 /var/log/squid/sampled-1000.log
 
 pipe 1000 /var/log/squid/filters/latlongCountry-writer >> /var/log/squid/location-1000.log
-pipe 2 /var/log/squid/filters/sqstat3 2
+pipe 2 /usr/local/bin/sqstat 2
 pipe 10 /var/log/squid/filters/india-filter >> /var/log/squid/india.log
 pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/squid/packet-loss.log
 pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
