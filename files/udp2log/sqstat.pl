@@ -78,8 +78,8 @@ sub send_metrics() {
 		my $name = $key;
 		$name =~ s/\./_/g;
 
-		if ($e{$key}{'hit'}) {
-			$carbon->send( "reqstats.edits.$name.requests $e{$key}{'hit'} $t\n" );
+		if ($e{$key}{'edit'}) {
+			$carbon->send( "reqstats.edits.$name.edit $e{$key}{'edit'} $t\n" );
 		}
 		if ($e{$key}{'submit'}) {
 			$carbon->send( "reqstats.edits.$name.submits $e{$key}{'submit'} $t\n" );
@@ -108,20 +108,28 @@ while ($line = <STDIN>) {
 	}
 	if ($line =~ /^\S+ \S+ \S+ \S+ \S+ \S+ \S+ \S+ http:\/\/upload.wik/) {
 		$d{'upload_requests'} += $mult;
-	} elsif ($line =~ /^\S+ \S+ \S+ (\S+) \S+ \S+ \S+ \S+ http:\/\/([\w.]+)\/wiki\/\S+ /) {
+	} elsif ($line =~ /^\S+ \S+ \S+ (\S+) \S+ \S+ \S+ (GET|POST) http:\/\/([\w.]+org)\/(wiki|w)\/(\S+) /) {
 		my $time = $1;
-		my $wiki = $2;
-		$d{'pageviews'} += $mult;
+		my $method = $2;
+		my $wiki = $3;
+		my $root = $4;
+		my $extra = $5;
+		if ($root eq "wiki") {
+			$d{'pageviews'} += $mult;
+		} elsif ($extra =~ /^index.php/) {
+			$d{'pageviews'} += $mult;
+		} else {
+			next;
+		}
 		if ($wiki =~ /\.m\./) {
 			$d{'mobile_pageviews'} += $mult;
 			$time *= 1000;
 		}
-		#$wiki =~ s/\./_/g;
 		$p{$wiki}{'hit'} += $mult;
-		if ($line =~ /action=(edit|submit)/) {
+		if ($extra =~ /action=(edit|submit)/) {
 			if ($1 eq "edit") {
-				$e{$wiki}{'hit'} += $mult;
-			} else {
+				$e{$wiki}{'edit'} += $mult;
+			} elsif ($method eq "POST") {
 				$e{$wiki}{'submit'} += $mult;
 			}
 			push ( @{$e{$wiki}{'time'}}, $time );
@@ -140,3 +148,4 @@ while ($line = <STDIN>) {
 		}
 	}
 }
+send_metrics();
