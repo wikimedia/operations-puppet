@@ -63,13 +63,21 @@ extension=wikidiff2.so
 	
 	require apaches::packages
 
+	# FIXME: dirty temp hack
+	if $cluster == "api_appserver" {
+		$apache_conf = "puppet:///files/apache/apache2.conf.api_appserver"
+	}
+	else {
+		$apache_conf = "puppet:///files/apache/apache2.conf.appserver"
+	}
+ 
 	file {
 		"/etc/apache2/apache2.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
 			notify => Service[apache],
-			source => "puppet:///files/apache/apache2.conf.appserver";
+			source => $apache_conf;
 		"/etc/apache2/envvars":
 			owner => root,
 			group => root,
