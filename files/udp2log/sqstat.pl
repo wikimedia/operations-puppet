@@ -143,8 +143,8 @@ while ($line = <STDIN>) {
 		if ($t + 60 <= time()) {
 			$t = time();
 			send_metrics();
-			my %p = (); # article page views by wiki
-			my %e = (); # edits by wiki
+			%p = (); # article page views by wiki
+			%e = (); # edits by wiki
 		}
 	}
 }
