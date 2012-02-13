@@ -338,11 +338,8 @@ class role::cache {
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${::site}"
 
-		$lvs_realserver_ips = $::site ? {
-			"pmtpa" => [ "208.80.152.210", "10.2.1.23" ],
-			"eqiad" => [ "208.80.154.234", "10.2.2.23" ],
-			"esams" => [ "91.198.174.233", "10.2.3.23" ],
-		}
+		include lvs::configuration
+		$lvs_realserver_ips = $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site]
 
 		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
