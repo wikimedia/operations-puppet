@@ -134,7 +134,7 @@ class base::puppet($server="puppet") {
 			group => root,
 			mode => 0755,
 			source => "puppet:///files/puppet/default_gateway.rb";
-		"var/lib/puppet/lib/facter/default_interface.rb":
+		"/var/lib/puppet/lib/facter/default_interface.rb":
 			owner => root,
 			group => root,
 			mode => 0755,
