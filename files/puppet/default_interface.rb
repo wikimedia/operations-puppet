@@ -46,15 +46,5 @@ if Facter.value(:kernel) == 'Linux'
     end
   end
 
-  # Sometimes we do not have the default route set at all ...
-  if gateway and not gateway.empty?
-    Facter.add('default_gateway') do
-      confine :kernel => :linux
-      # Reverse from network order ...
-      setcode { gateway.reverse.join('.') }
-    end
-  end
-end
-
 # vim: set ts=2 sw=2 et :
 # encoding: utf-8
