@@ -376,7 +376,6 @@ class role::cache {
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
-		system_role { "cache::bits": description => "bits Varnish cache server", ensure => absent }
 
 		require generic::geoip::files
 
@@ -409,9 +408,6 @@ class role::cache {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
-		monitor_service { "varnishncsa": description => "mobile traffic loggers",
-			check_command => "nrpe_check_varnishncsa" }
-
 		$lvs_realserver_ips = $::site ? {
 			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
 			default => [ ]
@@ -431,7 +427,6 @@ class role::cache {
 		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 
 		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
-		system_role { "cache::mobile": description => "mobile Varnish cache server", ensure => absent }
 
 		include standard,
 			varnish::htcpd,
@@ -475,6 +470,11 @@ class role::cache {
 				'probe' => "varnish",
 				'retry5x' => 0
 				},
+		}
+
+		monitor_service { "varnishncsa":
+			description => "Varnish traffic logger",
+			check_command => "nrpe_check_varnishncsa"
 		}
 	}
 }
