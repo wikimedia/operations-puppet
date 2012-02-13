@@ -12,9 +12,9 @@ acl purge {
 }
 
 # Hosts we trust for XFF
-<% if has_variable?("varnish_xff_sources") -%>
+<% if has_variable?("xff_sources") -%>
 acl allow_xff {
-<% varnish_xff_sources.each do |source| -%>
+<% xff_sources.each do |source| -%>
 	"<%= source["ip"] %>"/<%= source["mask"] %>;
 <% end -%>
 }
@@ -150,7 +150,7 @@ sub vcl_recv {
 		return (lookup);
 	}
 	
-	<% if has_variable?("varnish_xff_sources") -%>
+	<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
 	/* Ensure we only accept Forwarded headers from the SSL proxies */
 	if (client.ip ~ allow_xff) {
 		// Do nothing. It seems you can't do !~ with IP matches

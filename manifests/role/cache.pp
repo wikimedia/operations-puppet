@@ -370,8 +370,6 @@ class role::cache {
 			'esams' => $multiple_backends["esams"],
 		}
 
-		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
-
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
 		require generic::geoip::files
@@ -397,7 +395,8 @@ class role::cache {
 				'probe' => "bits",
 				'retry5x' => 1
 			},
-			enable_geoiplookup => "true"
+			enable_geoiplookup => "true",
+			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 		}
 	}
 
@@ -418,8 +417,6 @@ class role::cache {
 			"eqiad" => { "backend" => $varnish_fe_backends },
 			"esams" => {},
 		}
-
-		$varnish_xff_sources = [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 
 		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
 
@@ -447,6 +444,7 @@ class role::cache {
 				'probe' => "bits",
 				'retry5x' => 1
 				},
+			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 		}
 
 		varnish::instance { "mobile-frontend":
@@ -465,6 +463,7 @@ class role::cache {
 				'probe' => "varnish",
 				'retry5x' => 0
 				},
+			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 		}
 	}
 }
