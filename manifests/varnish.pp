@@ -209,13 +209,21 @@ class varnish {
 	# - $port:
 	#	UDP port (default 8420)
 	# - $varnish_instance:
-	#	Varnish instance name (default: frontend)
-	define udplogger($host, $port=8420, $varnish_instance="frontend") {
+	#	Varnish instance name (default: undefined)
+	define udplogger($host, $port=8420, $varnish_instance=undef) {
 		Class[varnish::packages] -> Varnish::Udplogger[$title]
 		require varnish::varnishncsa
 
 		exec { "varnishncsa $title":
-			command => "/sbin/start varnishncsa LOGGER_NAME=${title} LOG_DEST=\"${host}:${port}\" VARNISH_INSTANCE=\"-n ${varnish_instance}\"",
+			environment => [
+				"LOGGER_NAME=${title}",
+				"LOG_DEST=\"${host}:${port}\"",
+				$varnish_instance ? {
+					undef => "VARNISH_INSTANCE=\"\"",
+					default => "VARNISH_INSTANCE=\"-n ${varnish_instance}\""
+				},
+			],
+			command => "/sbin/start varnishncsa LOGGER_NAME=${title}",
 			unless => "/sbin/status varnishncsa LOGGER_NAME=${title}",
 			logoutput => true
 		}
