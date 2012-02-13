@@ -214,11 +214,13 @@ class varnish {
 		Class[varnish::packages] -> Varnish::Udplogging[$title]
 		require varnish::varnishncsa
 
-		service { "varnishncsa $title":
-			name => "varnishncsa",
-			provider => upstart,
-			start => "/sbin/start varnishncsa LOGGER_NAME=${title} LOG_DEST=\"${host}:${port}\" VARNISH_INSTANCE-\"-n ${varnish_instance}\"",
-			ensure => running
+		exec { "varnishncsa $title":
+			command => "/sbin/start varnishncsa",
+			environment => [
+				"LOGGER_NAME=${title}",
+				"LOG_DEST=\"${host}:${port}\"",
+				"VARNISH_INSTANCE=\"-n ${varnish_instance}\""
+			],
 		}
 		
 		# TODO: monitoring
