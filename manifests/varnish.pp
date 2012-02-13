@@ -224,7 +224,7 @@ class varnish {
 				},
 			],
 			command => "/sbin/start varnishncsa LOGGER_NAME=${title}",
-			unless => "/sbin/status varnishncsa LOGGER_NAME=${title}",
+			unless => "$(/sbin/status varnishncsa LOGGER_NAME=${title} | cut -d ' ' -f 3) == \"start/running,\"",
 			logoutput => true
 		}
 		
