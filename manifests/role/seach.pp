@@ -9,7 +9,7 @@ class role::lucene::indexer {
 		admins::restricted,
 		lucene::sudo
 
-	class { lucene::server:
+	class { "lucene::server":
 		indexer => "true", udplogging => "false"
 	}
 }
@@ -28,7 +28,7 @@ class role::lucene::front-end {
 		lvs::realserver,
 		lucene::sudo
 
-	class { lucene::server:
+	class { "lucene::server":
                 udplogging => "false"
 	}
 }
