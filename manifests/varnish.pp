@@ -186,6 +186,11 @@ class varnish {
 			require => [ Package[varnish3], File["/etc/init.d/varnishncsa"] ],
 			ensure => running;
 		}
+
+		monitor_service { "varnishncsa":
+			description => "Varnish traffic logger",
+			check_command => "nrpe_check_varnishncsa"
+		}
 	}
 
 	# Make a default instance

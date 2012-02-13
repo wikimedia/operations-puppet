@@ -471,10 +471,5 @@ class role::cache {
 				'retry5x' => 0
 				},
 		}
-
-		monitor_service { "varnishncsa":
-			description => "Varnish traffic logger",
-			check_command => "nrpe_check_varnishncsa"
-		}
 	}
 }
