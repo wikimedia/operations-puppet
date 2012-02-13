@@ -1,4 +1,4 @@
-# Wikimedia VCL file for <%= fqdn %>, site <%= site %>
+# Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
 # This file is managed by Puppet!
 
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
@@ -33,7 +33,7 @@ probe text {
 */
 
 # FIXME: need to support checks from pmtpa to backend bits app servers
-<% if vcl == "bits" and site == "esams" -%>
+<% if vcl == "bits" and scope.lookupvar("::site") == "esams" -%>
 probe bits {
 	.request =
 		"GET /images/wikimedia-button.png HTTP/1.1"
