@@ -1510,7 +1510,7 @@ node /search10[0-2][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::lucene::client-server
+	include role::lucene::front-end
 }
 
 node "searchidx1.pmtpa.wmnet" {
