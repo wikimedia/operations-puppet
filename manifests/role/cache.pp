@@ -408,10 +408,8 @@ class role::cache {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
-		$lvs_realserver_ips = $::site ? {
-			'eqiad' => [ "208.80.154.236", "10.2.2.26" ],
-			default => [ ]
-		}
+		include lvs::configuration
+		$lvs_realserver_ips = $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site]
 
 		$varnish_fe_backends = $::site ? {
 			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
