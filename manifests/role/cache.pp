@@ -339,7 +339,7 @@ class role::cache {
 		$nagios_group = "cache_bits_${::site}"
 
 		include lvs::configuration
-		$lvs_realserver_ips = $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site]
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
 		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
@@ -375,7 +375,6 @@ class role::cache {
 		require generic::geoip::files
 
 		include standard,
-			lvs::realserver,
 			varnish::monitoring::ganglia
 
 		varnish::instance { "bits":
@@ -405,7 +404,7 @@ class role::cache {
 		$nagios_group = "cache_mobile_${::site}"
 
 		include lvs::configuration
-		$lvs_realserver_ips = $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site]
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
 		$varnish_fe_backends = $::site ? {
 			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
@@ -424,7 +423,6 @@ class role::cache {
 			varnish::htcpd,
 			varnish::logging,
 			varnish::monitoring::ganglia,
-			lvs::realserver,
 			nrpe
 
 		varnish::instance { "mobile-backend":
