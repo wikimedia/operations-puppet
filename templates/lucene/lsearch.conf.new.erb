@@ -1,0 +1,117 @@
+######################################################
+##### THIS FILE IS MANAGED BY PUPPET              ####
+##### puppet:///templates/search/lsearch.conf.erb ####
+######################################################
+
+# By default, will check /etc/mwsearch.conf
+
+################################################
+# Global configuration
+################################################
+
+# URL to global configuration, this is the shared main config file, it can 
+# be on a NFS partition or available somewhere on the network or pushed out
+# by puppet or another conf management tool
+MWConfig.global=file:///a/search/conf/lsearch-global-2.1.conf
+
+# Local path to root directory of indexes
+Indexes.path=/a/search/indexes
+
+# Path to rsync
+Rsync.path=/usr/bin/rsync
+
+# Extra params for rsync
+#Rsync.params=--bwlimit=8192
+
+################################################
+# Search node related configuration
+################################################
+
+# Port of http daemon, if different from default 8123
+# Search.port=8000
+
+# In minutes, how frequently will the index host be checked for updates
+Search.updateinterval=0.5
+
+# In seconds, delay after which the update will be fetched
+# used to scatter the updates around the hour
+Search.updatedelay=0
+
+# In seconds, how frequently the dead search nodes should be checked
+Search.checkinterval=30
+
+# Disable wordnet aliases
+Search.disablewordnet=<% if scope.lookupvar('lucene::server::indexer') == "true" then -%>true<% else -%>false<% end -%>
+
+################################################
+# Indexer related configuration
+################################################
+
+# In minutes, how frequently is a clean snapshot of index created
+# 2880 = two days
+Index.snapshotinterval=2880   
+
+# Daemon type (http is started by default)
+#Index.daemon=xmlrpc
+
+# Port of daemon (default is 8321)
+#Index.port=8080
+
+# Maximal queue size after which index is being updated
+Index.maxqueuecount=5000
+
+# Maximal time an update can remain in queue before being processed (in seconds)
+Index.maxqueuetimeout=120
+
+<% if scope.lookupvar('lucene::server::indexer') == "true" then -%>
+Index.delsnapshots=true
+<% end -%>
+
+################################################
+# Log, ganglia, localization
+################################################
+
+SearcherPool.size=6
+
+# URL to message files, {0} is replaced with language code, i.e. En
+Localization.url=file:///a/search/conf/common/php/languages/messages
+
+<% if scope.lookupvar('lucene::server::indexer') == "true" then -%>
+# Pattern for OAI repo. {0} is replaced with dbname, {1} with language
+#OAI.repo=http://{1}.wikipedia.org/wiki/Special:OAIRepository
+OAI.username=lsearch2
+OAI.password=<%= lucene_oai_pass %>
+<% end -%>
+# Max queue size on remote indexer after which we wait a bit
+OAI.maxqueue=5000
+
+# Number of docs to buffer before sending to inc updater
+OAI.bufferdocs=500
+
+<% if scope.lookupvar('lucene::server::indexer') == "true" then -%>
+# UDP Logger config
+UDPLogger.port=51234
+UDPLogger.host=208.80.152.184
+<% end -%>
+
+# RecentUpdateDaemon udp and tcp ports
+#RecentUpdateDaemon.udp=8111
+#RecentUpdateDaemon.tcp=8112
+# Hot spare
+#RecentUpdateDaemon.hostspareHost=vega
+#RecentUpdateDaemon.hostspareUdpPort=8111
+#RecentUpdateDaemon.hostspareTcpPort=8112
+
+# Log configuration
+Logging.logconfig=/a/search/lsearch.log4j
+
+# Set debug to true to diagnose problems with log4j configuration
+Logging.debug=false
+
+# Turn this on to broadcast status to a Ganglia reporting system.
+# Requires that 'gmetric' be in the PATH and runnable. You can
+# override the default UDP broadcast port and interface if required.
+Ganglia.report=true
+#Ganglia.port=8649
+#Ganglia.interface=eth0
+

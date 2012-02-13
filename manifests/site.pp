@@ -1505,6 +1505,14 @@ node /search[12]?[0-9]\.pmtpa\.wmnet/ {
 	include searchserver
 }
 
+node /search10[0-2][0-9]\.eqiad\.wmnet/ {
+	if $hostname =~ /^search100(1|2)$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include role::lucene::client-server
+}
+
 node "searchidx1.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 
