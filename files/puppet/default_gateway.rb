@@ -10,6 +10,7 @@ require 'facter'
 if Facter.value(:kernel) == 'Linux'
   # We store information about the default gateway here ...
   gateway = ''
+  interface = ''
 
   #
   # Modern Linux kernels provide "/proc/net/route" in the following format:
@@ -51,6 +52,7 @@ if Facter.value(:kernel) == 'Linux'
     unless sum > 0
       # A default gateway there?  Convert back to Integer ...
       gateway = values[1].unpack('C4')
+      interface = line.split("\t").slice(0)
     else
       # Skip irrelevant entries ...
       next
@@ -63,6 +65,10 @@ if Facter.value(:kernel) == 'Linux'
       confine :kernel => :linux
       # Reverse from network order ...
       setcode { gateway.reverse.join('.') }
+    end
+    Facter.add('default_gateway_interface') do
+      confine :kernel => :linux
+      setcode { interface }
     end
   end
 end
