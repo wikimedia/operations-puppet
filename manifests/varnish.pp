@@ -215,12 +215,9 @@ class varnish {
 		require varnish::varnishncsa
 
 		exec { "varnishncsa $title":
-			command => "/sbin/start varnishncsa",
-			environment => [
-				"LOGGER_NAME=${title}",
-				"LOG_DEST=\"${host}:${port}\"",
-				"VARNISH_INSTANCE=\"-n ${varnish_instance}\""
-			],
+			command => "/sbin/start varnishncsa LOGGER_NAME=${title} LOG_DEST=\"${host}:${port}\" VARNISH_INSTANCE=\"-n ${varnish_instance}\"",
+			unless => "/sbin/status varnishncsa LOGGER_NAME=${title}",
+			logoutput => true
 		}
 		
 		# TODO: monitoring
