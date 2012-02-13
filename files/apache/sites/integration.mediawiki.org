@@ -81,6 +81,12 @@ NameVirtualHost *:443
 
 	Alias /testswarm "/usr/share/testswarm/site/"
 
+	# Force Jenkins request through HTTPS
+	RewriteEngine on
+	RewriteCond %{HTTPS} off
+	RewriteCond %{REQUEST_URI}  ^/ci
+	RewriteRule ^/ci/ https://%{HTTP_HOST}%{REQUEST_URI}
+
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
