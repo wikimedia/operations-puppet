@@ -215,6 +215,7 @@ class varnish {
 		require varnish::varnishncsa
 
 		exec { "varnishncsa $title":
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			environment => [
 				"LOGGER_NAME=${title}",
 				"LOG_DEST=\"${host}:${port}\"",
@@ -223,8 +224,8 @@ class varnish {
 					default => "VARNISH_INSTANCE=\"-n ${varnish_instance}\""
 				},
 			],
-			command => "/sbin/start varnishncsa LOGGER_NAME=${title}",
-			unless => "$(/sbin/status varnishncsa LOGGER_NAME=${title} | cut -d ' ' -f 3) == \"start/running,\"",
+			command => "start varnishncsa LOGGER_NAME=${title}",
+			unless => "$(status varnishncsa LOGGER_NAME=${title} | cut -d ' ' -f 3) == \"start/running,\"",
 			logoutput => true
 		}
 		
