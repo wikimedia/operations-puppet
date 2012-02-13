@@ -24,7 +24,8 @@ class varnish {
 		require varnish::packages
 		
 		# Tune kernel settings
-		include generic::sysctl::high-http-performance
+		include generic::sysctl::high-http-performance,
+			generic::tcptweaks
 
 		# Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
 		# shm memory to disk

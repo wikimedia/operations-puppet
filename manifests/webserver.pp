@@ -5,6 +5,9 @@
 
 # Installs a generic, static web server (lighttpd) with default config, which serves /var/www
 class webserver::static {
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
+
 	package { lighttpd:
 		ensure => latest;
 	}
@@ -23,6 +26,9 @@ class webserver::static {
 
 class webserver::php5( $ssl = 'false' ) {
 	#This will use latest package for php5-common
+
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
 
 	package { [ "apache2", "libapache2-mod-php5" ]:
 		ensure => latest;
@@ -44,6 +50,9 @@ class webserver::php5( $ssl = 'false' ) {
 
 class webserver::modproxy {
 
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
+
 	package { libapache2-mod-proxy-html:
 		ensure => latest;
 	}
@@ -51,18 +60,28 @@ class webserver::modproxy {
 
 class webserver::php5-mysql {
 
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
+
 	package { php5-mysql:
 		ensure => latest;
 		}
 }
 
 class webserver::php5-gd {
+
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
+
 	package { "php5-gd":
 		ensure => latest;
 	}
 }
 
 class webserver::apache2 {
+
+	include generic::sysctl::high-http-performance,
+		generic::tcptweaks
 
 	package { apache2:
 		ensure => latest;
@@ -261,5 +280,9 @@ class webserver::apache {
 	}
 	
 	# Default selection
-	include packages, config, service
+	include packages,
+		config,
+		service,
+		generic::tcptweaks,
+		generic::sysctl::high-http-performance
 }
