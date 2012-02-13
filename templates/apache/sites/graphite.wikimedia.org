@@ -20,7 +20,7 @@
 		AuthBasicProvider ldap
 		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
 		AuthLDAPBindPassword <%= proxypass %>
-		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?uid"
+		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?cn"
 		Require valid-user
 
 		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
