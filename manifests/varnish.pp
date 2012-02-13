@@ -211,7 +211,7 @@ class varnish {
 	# - $varnish_instance:
 	#	Varnish instance name (default: frontend)
 	define udplogger($host, $port=8420, $varnish_instance="frontend") {
-		Class[varnish::packages] -> Varnish::Udplogging[$title]
+		Class[varnish::packages] -> Varnish::Udplogger[$title]
 		require varnish::varnishncsa
 
 		exec { "varnishncsa $title":
