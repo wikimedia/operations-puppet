@@ -192,7 +192,11 @@ class varnish {
 			check_command => "nrpe_check_varnishncsa"
 		}
 	}
-	
+
+	class varnishncsa {
+		upstart_job { "varnishncsa": install => "true" }
+	}
+
 	# Definition: varnish::udplogging
 	#
 	# Sets up a UDP logging instances of varnishncsa
@@ -208,11 +212,9 @@ class varnish {
 	#	Varnish instance name (default: frontend)
 	define udplogger($host, $port=8420, $varnish_instance="frontend") {
 		Class[varnish::packages] -> Varnish::Udplogging[$title]
-
-		upstart_job { "varnishncsa": install => "true" }
+		require varnish::varnishncsa
 
 		service { "varnishncsa $title":
-			require => Upstart_job[varnishncsa],
 			name => "varnishncsa",
 			provider => upstart,
 			start => "/sbin/start varnishncsa LOGGER_NAME=${title} LOG_DEST=\"${host}:${port}\" VARNISH_INSTANCE-\"-n ${varnish_instance}\"",
