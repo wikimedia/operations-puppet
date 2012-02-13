@@ -1,5 +1,5 @@
 class role::lucene::indexer {
-	$roles += [ 'search::indexer' ]
+	system_role { "role::lucene::indexer": description => "Lucene search indexer" }
 	$cluster = "search"
 	$nagios_group = "lucene"
 
@@ -14,8 +14,8 @@ class role::lucene::indexer {
 	}
 }
 
-class role::lucene::client-server {
-	$roles += [ 'search' ]
+class role::lucene::front-end {
+	system_role { "role::lucene::front-end": description => "Front end lucene search server" }
 	$cluster = "search"
 	$nagios_group = "lucene"
 
