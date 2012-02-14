@@ -1,6 +1,6 @@
 # admins.pp
 
-# last used uid 583
+# last used uid 587
 
 # TODO: completely rewrite this file
 
@@ -92,6 +92,26 @@ class baseaccount {
 }
 
 class accounts {
+	class aengels inherits baseaccount {
+		$username = "aengels"
+		$realname = "Andre Engels"
+		$uid = 587
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+                if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname]}
+
+                        ssh_authorized_key {
+				"a_engels@i-000000ba":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAvmCrMfy+q3k/QCG3T72Q1+BhnsLFBSFzkDt2fMouweztuaFEAGA3KqYiJM5P4cm81ObjU2Nt8wac8vRWhGjmI6cOUl6Q3TD8/Cry9ZOQB9aQ80vYuDYCNReD+j0sQdGfb+T5OGsIVz0yB7H/COJ9mNcxqXIjChG17FxJcp4RfhOH0mWQiYQ61ZGMLn1MUOZC/tV6C    ypVFpnuTvVNtmqeBJQYWR9Q8+lLjEG14to/gyYR/3958RGFZgk0Byz0G8E0yYEg6PGZYSMEVTEOEqP6JNflqk4XK94pFmRfHt8rDs7cFTqa2Kn6etAiShvZ5/rQuEoveU6mQtnkaoVvARVgHQ==";
+			}
+		}
+	}
+
 	class aotto inherits baseaccount {
 		$username = "aotto"
 		$realname = "Andrew Otto"
