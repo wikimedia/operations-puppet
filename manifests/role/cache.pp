@@ -398,12 +398,12 @@ class role::cache {
 			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 		}
 
-#		varnish::udplogger {
-#			"linne":
-#				host => "linne.wikimedia.org";
-#			"emery":
-#				host => "emery.wikimedia.org";
-#		}
+		varnish::udplogger {
+			"linne":
+				host => "linne.wikimedia.org";
+			"emery":
+				host => "emery.wikimedia.org";
+		}
 	}
 
 	class mobile {
