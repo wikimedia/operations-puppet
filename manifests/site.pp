@@ -545,7 +545,7 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 	include db::core
 
 	# upgraded hosts
-	if $hostname =~ /^db3[2356789]$/ {
+	if $hostname =~ /^db3[23456789]$/ {
 		include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
