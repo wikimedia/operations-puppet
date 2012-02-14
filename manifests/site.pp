@@ -1861,7 +1861,8 @@ node "stat1.wikimedia.org" {
 	include accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
-		accounts::aotto
+		accounts::aotto,
+		accounts::aengels
 
 # taking this out until stat1 moves to an internal IP
 # might need to use a different class since it's not really part of db core
