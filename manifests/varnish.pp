@@ -223,7 +223,7 @@ class varnish {
 
 		exec { "varnishncsa $title":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
-			command => "start varnishncsa " + inline_template("<%= environment.join(\" \") %>"),
+			command => inline_template("start varnishncsa <%= environment.join(\" \") %>"),
 			logoutput => true
 		}
 		
