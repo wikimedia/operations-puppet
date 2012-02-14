@@ -224,6 +224,7 @@ class varnish {
 		exec { "varnishncsa $title":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			command => inline_template("start varnishncsa <%= environment.join(\" \") %>"),
+			unless => "status LOGGER_NAME=${title}",
 			logoutput => true
 		}
 		
