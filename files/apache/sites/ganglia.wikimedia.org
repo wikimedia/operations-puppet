@@ -1,3 +1,4 @@
+<<<<<<< HEAD   (e4e900 Merge "Add job name" into production)
 <VirtualHost *:80>
 	ServerName ganglia.wikimedia.org
 	ServerAlias nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org
@@ -18,3 +19,5 @@
 	ErrorLog /var/log/apache2/error.log
 	LogLevel warn
 </VirtualHost>
+=======
+>>>>>>> BRANCH (3a3d70 First iteration of adding ganglia for labs.)

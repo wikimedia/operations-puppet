@@ -5,6 +5,10 @@
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
 #  - $mcast_address:		Multicast "cluster" to join and send data on
+#  - $gridname:			Grid name
+#  - $gmetad_conf:		gmetad configuration filename
+#  - $ganglia_servername:	Name used by apache and gmond authority_url
+#  - $ganglia_serveralias:	Server alias(es) used by apache
 
 class ganglia {
 
@@ -20,8 +24,26 @@ class ganglia {
 		} else {
 			$deaf = "yes"
 		}
+<<<<<<< HEAD   (e4e900 Merge "Add job name" into production)
 	}
 
+=======
+	}	
+
+	if $realm == "labs" {
+		$gridname = "wmflabs"
+		$gmetad_conf = "gmetad-labs.conf"
+		$ganglia_servername = "ganglia.wmflabs.org"
+		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+
+	} else {
+		$gridname = "Wikimedia"
+		$gmetad_conf = "gmetad.conf"
+		$ganglia_servername = "ganglia.wikimedia.org"
+		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
+	}
+	
+>>>>>>> BRANCH (3a3d70 First iteration of adding ganglia for labs.)
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
@@ -101,6 +123,8 @@ class ganglia {
 
 	$clustername = $ganglia_clusters[$cluster][name]
 	$cname = "${clustername}${name_suffix}"
+
+	$authority_url = "http://${ganglia_servername}"
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
@@ -184,12 +208,18 @@ class ganglia {
 		## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
 		file { "/etc/ganglia/gmetad.conf":
+<<<<<<< HEAD   (e4e900 Merge "Add job name" into production)
 			require => Package[gmetad],
 			source => $hostname ? {
 				/^(streber|manutius)$/ => "puppet:///files/ganglia/gmetad.conf.torrus",
 				default => "puppet:///files/ganglia/gmetad.conf"
 			},
 			mode => 0444,
+=======
+			require	=> Package[gmetad],
+			source	=> "puppet:///files/ganglia/${gmetad_conf}",
+			mode	=> 0644,
+>>>>>>> BRANCH (3a3d70 First iteration of adding ganglia for labs.)
 			ensure	=> present
 		}
 
@@ -226,11 +256,16 @@ class ganglia::web {
 	class {'webserver::php5': ssl => 'true'; }
 
 	file {
+<<<<<<< HEAD   (e4e900 Merge "Add job name" into production)
 		"/etc/apache2/sites-available/ganglia.wikimedia.org":
 			mode => 0444,
+=======
+		"/etc/apache2/sites-available/${ganglia_servername}":
+			mode => 644,
+>>>>>>> BRANCH (3a3d70 First iteration of adding ganglia for labs.)
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
+			content => template("apache/sites/ganglia.wikimedia.org.erb")
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
 			mode => 0555,
@@ -260,7 +295,7 @@ class ganglia::web {
 			ensure => present;
 	}
 
-	apache_site { ganglia: name => "ganglia.wikimedia.org" }
+	apache_site { ganglia: name => $apache_conf }
 	apache_module { rewrite: name => "rewrite" }
 
 	package {
@@ -268,7 +303,11 @@ class ganglia::web {
 			before => Package[rrdtool],
 			ensure => latest;
 		"rrdtool":
+<<<<<<< HEAD   (e4e900 Merge "Add job name" into production)
 			ensure => latest,
+=======
+			ensure => latest;
+>>>>>>> BRANCH (3a3d70 First iteration of adding ganglia for labs.)
 	}
 
 	cron { "save-rrds":
