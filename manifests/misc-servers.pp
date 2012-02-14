@@ -1037,6 +1037,11 @@ class misc::graphite {
 			group => "root",
 			mode => 0444,
 			source => "puppet:///files/graphite/storage-schemas.conf";
+		"/a/graphite/conf/storage-aggregation.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/storage-aggregation.conf";
 		"/a/graphite/storage":
 			owner => "www-data",
 			group => "www-data",
