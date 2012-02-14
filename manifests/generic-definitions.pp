@@ -790,12 +790,12 @@ define generic::debconf::set($value) {
 }
 
 class generic::tcptweaks {
-	file {
-		"/etc/network/if-up.d/initcwnd":
-			content => template("misc/initcwnd.erb"),
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => present;
-	}
+#	file {
+#		"/etc/network/if-up.d/initcwnd":
+#			content => template("misc/initcwnd.erb"),
+#			mode => 0755,
+#			owner => root,
+#			group => root,
+#			ensure => present;
+#	}
 }
