@@ -1,0 +1,22 @@
+# Set root logger level and its only appender to A1.
+log4j.rootLogger=INFO, A1
+
+# A1 is set to be a ConsoleAppender.
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+
+# A1 uses PatternLayout.
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c %x - %m%n
+
+#log4j.logger.org.wikimedia.lsearch.search.SearchEngine=WARN
+#log4j.logger.org.wikimedia.lsearch.frontend.HttpHandler=WARN
+#log4j.logger.org.wikimedia.lsearch.search.WikiSearcher=ERROR
+#log4j.logger.org.wikimedia.lsearch.index.WikiIndexModifier=DEBUG
+#log4j.logger.org.wikimedia.lsearch.spell.Suggest=DEBUG
+#log4j.logger.org.wikimedia.lsearch.interoperability.RMIMessengerClient=DEBUG
+#log4j.logger.org.wikimedia.lsearch.ranks.Links=DEBUG
+#log4j.logger.org.wikimedia.lsearch.prefix.PrefixIndexBuilder=DEBUG
+#log4j.logger.org.wikimedia.lsearch.spell.CleanIndexWriter=DEBUG
+#log4j.logger.org.wikimedia.lsearch.spell.api.TitleNgramIndexer=DEBUG
+#log4j.logger.org.wikimedia.lsearch.search.NetworkStatusThread=DEBUG
+#log4j.logger.org.wikimedia.lsearch.search.SearcherCache=DEBUG
