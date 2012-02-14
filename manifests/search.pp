@@ -108,7 +108,7 @@ class lucene {
 	}
 
 	class packages {
-		package { ["sun-j2sdk1.6", "lucene-search-2"]:
+		package { ["sun-j2sdk1.6", "lucene-search-2", "liblog4j1.2-java"]:
 			ensure => latest;
 		}
 # need to figure out what the indexer in particular needs.
@@ -126,6 +126,13 @@ class lucene {
 				group => root,
 				mode => 0444,
 				content => template("lucene/lsearch.conf.new.erb"),
+				ensure => present;
+			"/a/search/conf/lsearch.log4j"
+				require => File["/a/search/conf"],
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/lucene/lsearch.log4j";
 				ensure => present;
 			"/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
