@@ -219,7 +219,7 @@ class varnish {
 			"LOGGER_NAME=${title}",
 			"LOG_DEST=\"${host}:${port}\"",
 			"VARNISH_INSTANCE=\"-n ${varnish_instance}\""
-		],
+		]
 
 		exec { "varnishncsa $title":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
