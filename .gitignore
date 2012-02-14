@@ -3,3 +3,6 @@
 
 # Ignore .project (for eclipse/geppetto)
 .project
+
+# vim swap files are unwanted
+*.swp
