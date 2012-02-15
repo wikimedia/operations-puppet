@@ -385,6 +385,12 @@ node "brewster.wikimedia.org" {
 		backup::client
 }
 
+node  "cadmium.eqiad.wmnet" {
+	$gid=500
+	include	standard,
+		accounts::catrope
+}
+
 node "carbon.wikimedia.org" {
 	include standard,
 		backup::client,
