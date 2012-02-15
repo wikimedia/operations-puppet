@@ -1,0 +1,7 @@
+/a/search/log/log {
+    daily
+    copytruncate
+    missingok
+    notifempty
+    rotate 7
+}

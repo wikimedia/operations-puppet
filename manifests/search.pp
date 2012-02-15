@@ -13,6 +13,23 @@ class search::sudo {
 	}
 }
 
+class search::logrotate {
+	file {
+		 "/etc/cron.daily/logrotate":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/logrotate/logrotate.cron.daily.search",
+			ensure => present;
+		 "/etc/logrotate.d/wikimedia-task-search":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/logrotate/search",
+			ensure => present;
+	}
+}
+
 class search::php {
 	file { "/etc/php5/apache2/php.ini":
 		owner => root,
@@ -150,7 +167,21 @@ class lucene {
                                 owner => rainman,
                                 group => search,
 				mode => 0775,
-				require => Package[lucene-search-2]
+				require => Package[lucene-search-2];
+		
+			## log rotation bits and pieces
+			"/etc/logrotate.d/lucene":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/logrotate/search",
+				ensure => present;
+			 "/etc/cron.daily/logrotate":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/logrotate/logrotate.cron.daily.search",
+				ensure => present;
 		}
 	}
 
