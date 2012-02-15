@@ -145,6 +145,7 @@ class lucene {
                                 ensure => directory,
                                 owner => rainman,
                                 group => search,
+				mode => 0775,
 				require => Package[lucene-search-2]
 		}
 	}
