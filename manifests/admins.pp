@@ -103,11 +103,11 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
-				"a_engels@i-000000ba":
+				"aengels-rsa-key-20120215":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAvmCrMfy+q3k/QCG3T72Q1+BhnsLFBSFzkDt2fMouweztuaFEAGA3KqYiJM5P4cm81ObjU2Nt8wac8vRWhGjmI6cOUl6Q3TD8/Cry9ZOQB9aQ80vYuDYCNReD+j0sQdGfb+T5OGsIVz0yB7H/COJ9mNcxqXIjChG17FxJcp4RfhOH0mWQiYQ61ZGMLn1MUOZC/tV6CypVFpnuTvVNtmqeBJQYWR9Q8+lLjEG14to/gyYR/3958RGFZgk0Byz0G8E0yYEg6PGZYSMEVTEOEqP6JNflqk4XK94pFmRfHt8rDs7cFTqa2Kn6etAiShvZ5/rQuEoveU6mQtnkaoVvARVgHQ==";
+					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEA0kG/cHOrVwI14kI+xGgCZuidimqeXyh9vqoI2+EwGFu8o8bq3LmmqElEH7eHwpsOcaJlSMHC2ErbpXSPMiZoulgK6y/Ko9LKl4+0iRhPsQoyiOE/GHgbj025YTkjswNrYmQKwMTGaU+rnGFr82IFDMUoSFilUfcLMNPNo6ZATXs=";
 			}
 		}
 	}
