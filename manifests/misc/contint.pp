@@ -93,11 +93,12 @@ class misc::contint::test {
 	apache_site { integration: name => "integration.mediawiki.org" }
 
 	class jenkins {
-		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
-		# package { "jenkins":
-		#	ensure => present,
-		#	require => File["jenkins.list"],
-		#}
+		# This used to rely on misc::jenkins to add jenkins upstream repo and then
+		# install from there.  contint::misc::jenkins is now independant and will
+		# use whatever Ubuntu version is available
+		package { "jenkins":
+			ensure => present
+		}
 
 		# Graphiz needed by the plugin that does the projects dependencies graph
 		package { "graphviz":
