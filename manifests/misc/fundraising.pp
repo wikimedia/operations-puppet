@@ -189,7 +189,7 @@ class misc::fundraising {
 	apache_site { civicrm-dev-ssl: name => "005-civicrm-dev-ssl" }
 	apache_site { fundraising: name => "006-fundraising" }
 	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
-	apache_site { fundraising-analytics: name => "008-community-analytics" }
+	apache_site { community-analytics: name => "008-community-analytics" }
 
 }
 
