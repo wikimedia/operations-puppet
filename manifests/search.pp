@@ -108,7 +108,11 @@ class lucene {
 	}
 
 	class packages {
-		package { ["sun-j2sdk1.6", "lucene-search-2", "liblog4j1.2-java"]:
+		package { ["sun-j2sdk1.6", "lucene-search-2"]:
+			ensure => latest;
+		}
+		package { ["liblog4j1.2-java"]:
+			require => Package["sun-j2sdk1.6"],
 			ensure => latest;
 		}
 # need to figure out what the indexer in particular needs.
