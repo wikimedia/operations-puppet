@@ -45,8 +45,10 @@ class Copy2(object):
             h = {'!Migration-Timestamp!': '%s' % modified}
         else:
             h = {}
+        full_headers = conn.info()
+        etag = full_headers.getheader('ETag')
         self.copyconn = wmf.client.Put_object_chunked(url, self.token,
-                container, obj, content_type=content_type, headers=h)
+                container, obj, etag=etag, content_type=content_type, headers=h)
 
     def __iter__(self):
         # We're an iterator; we get passed back to wsgi as a consumer.
