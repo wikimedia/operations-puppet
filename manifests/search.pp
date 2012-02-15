@@ -132,7 +132,7 @@ class lucene {
 				owner => root,
 				group => root,
 				mode => 0444,
-				source => "puppet:///files/lucene/lsearch.log4j";
+				source => "puppet:///files/lucene/lsearch.log4j",
 				ensure => present;
 			"/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
