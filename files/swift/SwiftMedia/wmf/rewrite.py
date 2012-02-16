@@ -32,7 +32,7 @@ class Copy2(object):
     token = None
 
     def __init__(self, conn, app, url, container, obj, authurl, login, key,
-            content_type=None, modified=None):
+            content_type=None, modified=None, content_length=None):
         self.app = app
         self.conn = conn
         if self.token is None:
@@ -45,6 +45,10 @@ class Copy2(object):
             h = {'!Migration-Timestamp!': '%s' % modified}
         else:
             h = {}
+
+        if content_length is not None:
+            h['Content-Length'] = content_length
+
         full_headers = conn.info()
         etag = full_headers.getheader('ETag')
         self.copyconn = wmf.client.Put_object_chunked(url, self.token,
@@ -147,6 +151,7 @@ class WMFRewrite(object):
         # get the Content-Type.
         uinfo = upcopy.info()
         c_t = uinfo.gettype()
+        content_length = uinfo.getheader('Content-Length', None)
         # sometimes Last-Modified isn't present; use now() when that happens.
         try:
             last_modified = time.mktime(uinfo.getdate('Last-Modified'))
@@ -157,7 +162,8 @@ class WMFRewrite(object):
             # Fetch from upload, write into the cluster, and return it
             upcopy = Copy2(upcopy, self.app, url,
                 urllib2.quote(container), obj, self.authurl, self.login,
-                self.key, content_type=c_t, modified=last_modified)
+                self.key, content_type=c_t, modified=last_modified,
+                content_length=content_length)
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
         resp.headers.add('Last-Modified', uinfo.getheader('Last-Modified'))
