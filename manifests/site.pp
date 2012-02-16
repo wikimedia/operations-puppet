@@ -251,6 +251,7 @@ class searchserver {
 		admins::mortals,
 		admins::restricted,
 		search::sudo,
+		search::logrotate,
 		search::jvm,
 		search::monitoring,
 		lvs::realserver
