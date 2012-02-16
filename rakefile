@@ -1,0 +1,60 @@
+=begin
+This rakefile is meant to trigger your local puppet-linter. To take
+advantage of that powerful linter, you must have the puppet and
+puppet-lint gems:
+
+  $ sudo gem install puppet
+  $ sudo gem instlal puppet-lint
+
+Then run the linter using rake (a ruby build helper):
+
+  $ rake lint
+
+A list of top errors can be obtained using:
+  rake lint |rev |cut -d\  -f4- | rev | sort | uniq -c | sort -rn
+
+puppet-lint doc is at https://github.com/rodjek/puppet-lint
+
+ -- hashar 20120216
+=end
+
+require 'puppet-lint/tasks/puppet-lint'
+
+# Get possible checks values with: puppet-lint --help
+disabled_checks = [
+
+	# We still use the 2.6 way of referencing variables.
+	# 2.8 will requires $::globalname. Skip for now
+	"variable_scope",
+
+	# We really like nesting classes:
+	"nested_classes_or_defines",
+
+	# Lot of long lines (ssh keys for example)
+	"80chars",
+
+	# Anyone as a different indentation preference
+	"hard_tabs",
+
+	# Misc rules, some of them might use to be enabled later
+	"autoloader_layout",  # unused in our setup?
+	"inherits_across_namespaces",
+	"double_quoted_strings",
+	"unquoted_file_mode",
+	"ensure_first_param",
+	"unquoted_resource_title",
+
+	# FIXME Following test cause a stacktrace ;-(
+	"ensure_not_symlink_target",
+]
+
+# Disable checks referenced above:
+disabled_checks.each { |name|
+	warn "Disabling rule '#{name}' from rakefile"
+	PuppetLint.configuration.send( "disable_#{name}" )
+}
+
+=begin lint
+amass profit
+donate!
+=end
