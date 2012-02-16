@@ -85,6 +85,11 @@ sub vcl_recv {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
+	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" \1.mobile.\2.org);
+	}
+
 	/* Support the old mobile.wikipedia.org wap gateway */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
