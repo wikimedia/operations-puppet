@@ -415,6 +415,9 @@ class ldap::client::nss {
 		package { [ "libnss-ldapd", "nss-updatedb", "libnss-db", "nscd" ]:
 			ensure => latest
 		}
+		package { [ "libnss-ldap" ]:
+			ensure => purged;
+		}
 
 		service {
 			nscd:
