@@ -579,6 +579,7 @@ class generic::gluster {
 
 define gluster::server::peer {
 
+	$cluster = "${cluster}"
 	$host_uuid = generate("/usr/local/bin/uuid-generator", "${tag}")
 	file {
 		"/etc/glusterd/peers/${host_uuid}":
