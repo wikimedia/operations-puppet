@@ -252,33 +252,40 @@ class nagios::monitor {
 	}
 
 	apache_site { nagios: name => "nagios" }
- 
+
 	# make sure the directory for individual service checks exists
-	file { "/etc/nagios/puppet_checks.d":
+	file { "/etc/nagios":
 		ensure => directory,
 		owner => root,
 		group => root,
+		mode => 0755;
+
+		"/etc/nagios/puppet_checks.d":
+		ensure => directory,
+		owner => root,
+		group => root,
+		mode => 0755;
 	}
 
 	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
 		source => "puppet:///files/nagios/submit_check_result",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0755; 
+		owner => root,
+		group => root,
+		mode => 0755; 
 	}
 
 	file { "/etc/snmp/snmptrapd.conf":
 		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0600; 
+		owner => root,
+		group => root,
+		mode => 0600; 
 	}
 
 	file { "/etc/snmp/snmptt.conf":
 		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0644; 
+		owner => root,
+		group => root,
+		mode => 0644; 
 	}
 
 	# Fix permissions
@@ -460,8 +467,6 @@ class nagios::monitor {
 # However, these items may break the existing setup on spence
 
 class nagios::monitor::newmonitor {
-	$ssl => "true"
-
 	include webserver::php5,
 		webserver::php5-gd
 }
