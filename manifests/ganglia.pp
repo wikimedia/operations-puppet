@@ -212,6 +212,76 @@ class ganglia {
 			mode   => 0555,
 			ensure => present
 		}
+		define multiplegmond {
+			file { "/etc/ganglia/gmond.conf":
+				require => Package[$ganglia::gmond],
+				name	=> /etc/ganglia/gmond-${ganglia-clusters}.conf,
+				owner	=> "root",
+				group	=> "root",
+				mode	=> 0444,
+				content => template("ganglia/gmond_template.erb"),
+				notify  => Service[gmond],
+				ensure	=> present
+			}
+		}
+		multiplegmond {
+			$ganglia_clusters = {
+			"decommissioned" => {
+				"name"		=> "Decommissioned servers",
+				"ip_oct"	=> "1" },
+			"appserver"	=>	{
+				"name"		=> "Application servers",
+				"ip_oct"	=> "11"	},
+			"imagescaler"	=>	{
+				"name"		=> "Image scalers",
+				"ip_oct"	=> "12" },
+			"api_appserver"	=>	{
+				"name"		=> "API application servers",
+				"ip_oct"	=> "13" },
+			"misc"		=>	{
+				"name"		=> "Miscellaneous",
+				"ip_oct"	=> "8" },
+			"mysql"		=>	{
+				"name"		=> "MySQL",
+				"ip_oct"	=> "5" },
+			"pdf"		=>	{
+				"name"		=> "PDF servers",
+				"ip_oct"	=> "15" },
+			"search"	=>	{
+				"name"		=> "Search",
+				"ip_oct"	=> "4" },
+			"squids_text"	=>	{
+				"name"		=> "Text squids",
+				"ip_oct"	=> "7" },
+			"squids_upload"	=>	{
+				"name"		=> "Upload squids",
+				"ip_oct"	=> "6" },
+			"cache_bits"	=> {
+				"name"		=> "Bits caches",
+				"ip_oct"	=> "21" },
+			"payments"	=> {
+				"name"		=> "Fundraiser payments",
+				"ip_oct"	=> "23" },
+			"bits_appserver"	=> {
+				"name"		=> "Bits application servers",
+				"ip_oct"	=> "24" },
+			"squids_api"		=> {
+				"name"		=> "API squids",
+				"ip_oct"	=> "25" },
+			"ssl"		=> {
+				"name"		=> "SSL cluster",
+				"ip_oct"	=> "26" },
+			"swift" => {
+				"name"		=> "Swift",
+				"ip_oct"	=> "27" },
+			"cache_mobile"	=> {
+				"name"		=> "Mobile caches",
+				"ip_oct"	=> "28" },
+			"virt"	=> {
+				"name"		=> "Virtualization cluster",
+				"ip_oct"	=> "29" },
+		}
+	}
 	}
 }
 
