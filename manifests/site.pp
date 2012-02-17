@@ -1352,16 +1352,9 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-
-node "nickel.wikimedia.org" {
-	$ganglia_aggregator = "true"
-
+node "neon.eqiad.wmnet" {
 	include standard,
-		ganglia::web,
-		certificates::star_wikimedia_org,
-		generic::apache::no-default-site
-
-	 install_certificate{ "star.wikimedia.org": }
+		ganglia::aggregator
 }
 
 node "nescio.esams.wikimedia.org" {
@@ -1401,6 +1394,17 @@ node /^nfs[12].pmtpa.wmnet/ {
 		backup::client
 
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
+}
+
+node "nickel.wikimedia.org" {
+	$ganglia_aggregator = "true"
+
+	include standard,
+		ganglia::web,
+		certificates::star_wikimedia_org,
+		generic::apache::no-default-site
+
+	 install_certificate{ "star.wikimedia.org": }
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
