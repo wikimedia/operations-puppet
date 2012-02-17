@@ -439,7 +439,6 @@ class ldap::client::nss {
 				content => template("ldap/nss_ldap.erb");
 			"/etc/nslcd.conf":
 				notify => Service[nslcd],
-				notify => Service[nscd],
 				content => template("ldap/nslcd.conf.erb");
 		}
 	} else {
