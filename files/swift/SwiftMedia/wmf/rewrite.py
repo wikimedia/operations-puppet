@@ -166,14 +166,16 @@ class WMFRewrite(object):
         except TypeError:
             last_modified = time.mktime(time.localtime())
 
-        if self.writethumb:
+        if self.writethumb and reqorig.method != 'HEAD':
             # Fetch from upload, write into the cluster, and return it
             upcopy = Copy2(upcopy, self.app, url,
                 urllib2.quote(container), obj, self.authurl, self.login,
                 self.key, content_type=c_t, modified=last_modified,
                 content_length=content_length)
 
+
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
+        resp.headers.add('Content-Length', uinfo.getheader('Content-Length'))
         resp.headers.add('Last-Modified', uinfo.getheader('Last-Modified'))
         return resp
 
