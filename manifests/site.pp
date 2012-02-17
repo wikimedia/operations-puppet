@@ -1354,6 +1354,12 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 
 node "neon.eqiad.wmnet" {
 	include standard,
+		nagios::monitor,
+		nagios::monitor::pager,
+		nagios::monitor::jobqueue,
+		nagios::ganglia::monitor::enwiki,
+		nagios::ganglia::ganglios,
+		nagios::nsca::daemon,
 		ganglia::aggregator
 }
 
