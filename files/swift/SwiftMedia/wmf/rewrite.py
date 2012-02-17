@@ -175,13 +175,10 @@ class WMFRewrite(object):
 
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
-        try:
-            resp.headers.add('Content-Length', uinfo.getheader('Content-Length'))
-            resp.headers.add('Last-Modified', uinfo.getheader('Last-Modified'))
-            resp.headers.add('Accept-Ranges', uinfo.getheader('Accept-Ranges'))
-        except:
-            # grab the headers if we can, no biggy if we can't.
-            pass
+        # add in the headers if we've got them
+        for header in ['Content-Length', 'Last-Modified', 'Accept-Ranges']:
+            if(uinfo.getheader(header)):
+                resp.headers.add(header, uinfo.getheader(header))
         return resp
 
     def __call__(self, env, start_response):
