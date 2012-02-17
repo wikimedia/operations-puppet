@@ -377,8 +377,15 @@ class ldap::server::schema::puppet {
 
 class ldap::client::pam {
 
-	package { [ "libpam-ldap" ]:
-		ensure => latest;
+	# testing replacement of libnss-ldap with libnss-ldapd
+	if $instanceproject == "testing" {
+		package { [ "libpam-ldapd" ]:
+			ensure => latest;
+		}
+	} else {
+		package { [ "libpam-ldap" ]:
+			ensure => latest;
+		}
 	}
 
 	File {
@@ -403,31 +410,64 @@ class ldap::client::pam {
 
 class ldap::client::nss {
 
-	package { [ "libnss-ldap", "nss-updatedb", "libnss-db", "nscd" ]:
-		ensure => latest
-	}
+	# testing replacement of libnss-ldap with libnss-ldapd
+	if $instanceproject == "testing" {
+		package { [ "libnss-ldapd", "nss-updatedb", "libnss-db", "nscd" ]:
+			ensure => latest
+		}
 
-	service {
-		nscd:
-			subscribe => File["/etc/ldap/ldap.conf"],
-			ensure => running;
-	}
+		service {
+			nscd:
+				subscribe => File["/etc/ldap/ldap.conf"],
+				ensure => running;
+			nslcd:
+				ensure => running;
+		}
 
-	File {
-		owner => root,
-		group => root,
-		mode => 0444,
-	}
+		File {
+			owner => root,
+			group => root,
+			mode => 0444,
+		}
 
-	file {
-		"/etc/nsswitch.conf":
-			notify => Service[nscd],
-			source => "puppet:///files/ldap/nsswitch.conf";
-		"/etc/ldap.conf":
-			notify => Service[nscd],
-			content => template("ldap/nss_ldap.erb");
-	}
+		file {
+			"/etc/nsswitch.conf":
+				notify => Service[nscd],
+				source => "puppet:///files/ldap/nsswitch.conf";
+			"/etc/ldap.conf":
+				notify => Service[nscd],
+				content => template("ldap/nss_ldap.erb");
+			"/etc/nslcd.conf":
+				notify => Service[nslcd],
+				notify => Service[nscd],
+				content => template("ldap/nslcd.conf.erb");
+		}
+	} else {
+		package { [ "libnss-ldap", "nss-updatedb", "libnss-db", "nscd" ]:
+			ensure => latest
+		}
 
+		service {
+			nscd:
+				subscribe => File["/etc/ldap/ldap.conf"],
+				ensure => running;
+		}
+
+		File {
+			owner => root,
+			group => root,
+			mode => 0444,
+		}
+
+		file {
+			"/etc/nsswitch.conf":
+				notify => Service[nscd],
+				source => "puppet:///files/ldap/nsswitch.conf";
+			"/etc/ldap.conf":
+				notify => Service[nscd],
+				content => template("ldap/nss_ldap.erb");
+		}
+	}
 }
 
 # It is recommended that ldap::client:nss be included on systems that
@@ -573,13 +613,25 @@ class ldap::client::autofs {
 			content => template("ldap/autofs.default.erb");
 	}
 
-	service { "autofs":
-		enable => true,
-		hasrestart => true,
-		pattern => "automount",
-		require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldap" ],
-		subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf"],
-		ensure => running;
+	# testing replacement of libnss-ldap with libnss-ldapd
+	if $instanceproject == "testing" {
+		service { "autofs":
+			enable => true,
+			hasrestart => true,
+			pattern => "automount",
+			require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldapd" ],
+			subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf"],
+			ensure => running;
+		}
+	} else {
+		service { "autofs":
+			enable => true,
+			hasrestart => true,
+			pattern => "automount",
+			require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldap" ],
+			subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf"],
+			ensure => running;
+		}
 	}
 }
 
@@ -712,10 +764,18 @@ class ldap::client::includes {
 					owner => root,
 					mode => 0755;
 			}
-	
-			cron { "manage-exports":
-				command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
-				require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
+
+			# testing replacement of libnss-ldap with libnss-ldapd
+			if $instanceproject == "testing" {
+				cron { "manage-exports":
+					command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+					require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldapd"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"], File["/etc/nslcd.conf"] ];
+				}
+			} else {
+				cron { "manage-exports":
+					command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+					require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldap"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"] ];
+				}
 			}
 		} else {
 			# This was added to all nodes accidentally
