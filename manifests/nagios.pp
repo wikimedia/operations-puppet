@@ -178,6 +178,8 @@ define decommission_monitor_host {
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
 
+	require nrpe
+
 	include passwords::nagios::mysql
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
@@ -206,7 +208,7 @@ class nagios::monitor {
 	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	package { [ 'nagios3', 'nagios-plugins', 'nagios-plugins-extra', 'nagios-images' ]:
+	package { [ 'nagios3', 'nagios-plugins-extra', 'nagios-images' ]:
 		ensure => latest;
 	}
 
