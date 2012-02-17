@@ -57,9 +57,9 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 }
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
-        if ! $host {
-                fail("Parameter $host not defined!")
-        }
+	if ! $host {
+		fail("Parameter $host not defined!")
+	}
 
 	if $hostname in $decommissioned_servers {
 		# Export the nagios service instance
