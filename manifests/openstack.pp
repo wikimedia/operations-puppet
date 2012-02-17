@@ -640,12 +640,6 @@ class openstack::gluster-service {
 		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info","/etc/init.d/glusterd"], Upstart_job["glusterd"]];
 	}
 
-	# Every host exports its own peer resource
-	@@gluster::server::peer {
-		["${hostname}.${domain}"]:
-			tag => "${hostname}.${domain}",
-	}
-
 	# Put the hosts own uuid in glusterd.info
 	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
 	file {
@@ -657,9 +651,6 @@ class openstack::gluster-service {
 	# TODO: We need to replace the init script with an upstart job that'll ensure
 	# the filesystem gets mounted after gluster is started.
 	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
-
-	# Every host imports all peer resources except its own
-	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" |>>
 
 }
 
