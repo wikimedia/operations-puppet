@@ -208,7 +208,7 @@ class nagios::monitor {
 	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	package { [ 'nagios3', 'nagios-plugins-extra', 'nagios-images' ]:
+	package { [ 'nagios3', 'nagios-images' ]:
 		ensure => latest;
 	}
 
