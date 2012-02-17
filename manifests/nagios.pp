@@ -455,6 +455,16 @@ class nagios::monitor {
 	}
 }
 
+#FIXME - lcarr 2012/02/17
+# nagios::monitor::newmonitor are required items for building a nagios monitoring box
+# However, these items may break the existing setup on spence
+
+class nagios::monitor::newmonitor {
+	$ssl => "true"
+
+	include webserver::php5,
+		webserver::php5-gd
+}
 class nagios::monitor::jobqueue {
 
 	file {"/usr/local/nagios/libexec/check_job_queue":
