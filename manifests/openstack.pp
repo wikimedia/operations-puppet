@@ -640,14 +640,6 @@ class openstack::gluster-service {
 		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info","/etc/init.d/glusterd"], Upstart_job["glusterd"]];
 	}
 
-	# Put the hosts own uuid in glusterd.info
-	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
-	file {
-		"/etc/glusterd/glusterd.info":
-			content => "UUID=${local_host_uuid}",
-			require => Package["glusterfs"];
-	}
-
 	# TODO: We need to replace the init script with an upstart job that'll ensure
 	# the filesystem gets mounted after gluster is started.
 	upstart_job{ "glusterd": require => Package["glusterfs"], install => true }
