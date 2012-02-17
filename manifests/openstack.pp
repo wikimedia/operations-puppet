@@ -637,7 +637,7 @@ class openstack::gluster-service {
 	service { "glusterd":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info","/etc/init.d/glusterd"], Upstart_job["glusterd"]];
+		require => [Package["glusterfs"], File["/etc/init.d/glusterd"], Upstart_job["glusterd"]];
 	}
 
 	# TODO: We need to replace the init script with an upstart job that'll ensure
