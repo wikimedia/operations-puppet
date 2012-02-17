@@ -790,6 +790,8 @@ define generic::debconf::set($value) {
 }
 
 class generic::tcptweaks {
+	require base::puppet
+
 	file {
 		"/etc/network/if-up.d/initcwnd":
 			content => template("misc/initcwnd.erb"),
