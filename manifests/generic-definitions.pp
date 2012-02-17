@@ -577,23 +577,6 @@ class generic::gluster {
 
 }
 
-define gluster::server::peer {
-
-	$host_uuid = generate("/usr/local/bin/uuid-generator", "${tag}")
-	file {
-		"/etc/glusterd/peers/${host_uuid}":
-			content =>
-"uuid=${host_uuid}
-state=3
-hostname1=${tag}
-",
-			notify => Service["glusterd"],
-			require => Package["glusterfs"];
-
-	}
-
-}
-
 class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
