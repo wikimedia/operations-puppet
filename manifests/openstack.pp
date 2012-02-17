@@ -643,8 +643,7 @@ class openstack::gluster-service {
 	# Every host exports its own peer resource
 	@@gluster::server::peer {
 		["${hostname}.${domain}"]:
-			tag => "${hostname}.${domain}",
-			cluster => "$glustercluster";
+			tag => "${hostname}.${domain}";
 	}
 
 	# Put the hosts own uuid in glusterd.info
@@ -660,7 +659,7 @@ class openstack::gluster-service {
 	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
 
 	# Every host imports all peer resources except its own
-	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" and cluster == "$glustercluster" |>>
+	Gluster::Server::Peer<<| tag != "${hostname}.${domain}" |>>
 
 }
 
