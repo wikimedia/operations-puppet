@@ -72,10 +72,10 @@ class imagescaler::packages {
 			ensure => latest;
 		}
 	} else {
-        	package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
-                	ensure => latest
+		package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
+			ensure => latest
 		}
-        }
+	}
 }
 
 class imagescaler::files {
