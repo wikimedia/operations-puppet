@@ -1,7 +1,7 @@
-#################################################################
-##### THIS FILE IS MANAGED BY PUPPET                         ####
-##### puppet:///templates/search/lsearch-global-2.1.conf.erb ####
-#################################################################
+####################################################################
+### THIS FILE IS MANAGED BY PUPPET				 ###
+### puppet:///templates/search/lsearch-global-2.1.conf.pmtpa.erb ###
+####################################################################
 
 # Logical structure, maps different roles to certain db
 [Database]
@@ -147,8 +147,6 @@ ExactCase.suffix=wiktionary jbowiki
 
 # wmf-style init file, attempt to read OAI and lang info from it
 # for sample see http://noc.wikimedia.org/conf/InitialiseSettings.php.html
-#WMF.InitialiseSettings=file:///home/wikipedia/common/php-1.5/InitialiseSettings.php
-#WMF.InitialiseSettings=file:///home/wikipedia/common/wmf-deployment/wmf-config/InitialiseSettings.php
 WMF.InitialiseSettings=file:///a/search/conf/common/wmf-config/InitialiseSettings.php
 
 # Where common images are

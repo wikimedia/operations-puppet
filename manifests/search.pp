@@ -141,26 +141,39 @@ class lucene {
 	}
 
 	class config {
+		if $hostname =~ /^\.pmtpa\.wmnet$/ {
+			file { "/a/search/conf/lsearch-global-2.1.conf":
+				require => File["/a/search/conf"],
+                                owner => rainman,
+                                group => search,
+				mode => 0444,
+				content => template("lucene/lsearch-global-2.1.conf.pmtpa.erb"),
+				ensure => present;
+			}
+		}
+		if $hostname =~ /^\.eqiad\.wmnet$/ {
+			file { "/a/search/conf/lsearch-global-2.1.conf":
+				require => File["/a/search/conf"],
+                                owner => rainman,
+                                group => search,
+				mode => 0444,
+				content => template("lucene/lsearch-global-2.1.conf.eqiad.erb"),
+				ensure => present;
+			}
+		}
 		file {
 			"/etc/lsearch.conf":
-				owner => root,
-				group => root,
+                                owner => rainman,
+                                group => search,
 				mode => 0444,
 				content => template("lucene/lsearch.conf.new.erb"),
 				ensure => present;
 			"/a/search/conf/lsearch.log4j":
 				require => File["/a/search/conf"],
-				owner => root,
-				group => root,
+                                owner => rainman,
+                                group => search,
 				mode => 0444,
 				source => "puppet:///files/lucene/lsearch.log4j",
-				ensure => present;
-			"/a/search/conf/lsearch-global-2.1.conf":
-				require => File["/a/search/conf"],
-				owner => root,
-				group => root,
-				mode => 0444,
-				content => template("lucene/lsearch-global-2.1.conf.erb"),
 				ensure => present;
 			[ "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
                                 ensure => directory,
