@@ -642,7 +642,7 @@ class openstack::gluster-service {
 
 	# TODO: We need to replace the init script with an upstart job that'll ensure
 	# the filesystem gets mounted after gluster is started.
-	upstart_job{ "glusterd": require => Package["glusterfs"], install => true }
+	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
 
 }
 
