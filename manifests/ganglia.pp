@@ -90,6 +90,9 @@ class ganglia {
 		"virt"	=> {
 			"name"		=> "Virtualization cluster",
 			"ip_oct"	=> "29" },
+		"gluster"	=> {
+			"name"		=> "Glusterfs cluster",
+			"ip_oct"	=> "30" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,

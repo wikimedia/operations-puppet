@@ -1008,6 +1008,19 @@ node "kaulen.wikimedia.org" {
 	include role::cache::text
 }
 
+node /labstore(1-4)\.pmtpa\.wmnet/ {
+
+	$cluster = "gluster"
+
+	include standard,
+		openstack::gluster-service
+
+	if $hostname =~ /^labstore[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+}
+
 node "linne.wikimedia.org" {
 	$ntp_servers = [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ]
 	$ntp_peers = [ "dobson.wikimedia.org" ]
