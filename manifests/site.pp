@@ -1366,8 +1366,9 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 }
 
 node "neon.eqiad.wmnet" {
+	$nagios_config_dir = "/etc/nagios3"
 	include standard,
-		nagios::monitor,
+		nagios::monitor::newmonitor,
 		nagios::monitor::pager,
 		nagios::monitor::jobqueue,
 		nagios::ganglia::monitor::enwiki,
