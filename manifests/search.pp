@@ -214,7 +214,7 @@ class lucene {
 	class service {
 		service { lucene-search-2:
 			ensure => running,
-			require => [ File["/etc/lsearch.conf", "/a/search/conf/lsearch-global-2.1.conf", "/a/search/indexes", "/a/search/log"], Package[lucene-search-2] ]
+			require => [ File["/etc/lsearch.conf"], File["/a/search/conf/lsearch-global-2.1.conf"], File["/a/search/indexes"], File["/a/search/log"] ];		
 		}
 
 		monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
