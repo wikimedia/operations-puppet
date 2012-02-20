@@ -199,9 +199,9 @@ class gerrit::ircbot {
 
 	include gerrit::gerrit_config
 
-	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations,#wikimedia-tech;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile"
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile"
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech,#wikimedia-labs,#wikimedia-mobile"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile"
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:
