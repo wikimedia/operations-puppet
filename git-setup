@@ -11,8 +11,8 @@ echo "Type the e-mail address for this username:"
 read email
 
 # Global config
-git config --global user.email "$email"
-git config --global user.name "$name"
+git config user.email "$email"
+git config user.name "$name"
 
 # Setup remotes/aliases
 git remote add puppet ssh://$username@gerrit.wikimedia.org:29418/operations/puppet
@@ -23,17 +23,17 @@ TOPLEVEL=`git rev-parse --show-toplevel`
 which curl
 if [ "$?" == "0" ]
 then
-	curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
+    curl "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" > $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
 else
-	which wget
-	if [ "$?" == "0" ]
-	then
-		wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
-	else
-		scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
-		if [ "$?" != "0" ]
-		then
-			echo "Please download the commit message hook from https://gerrit.wikimedia.org/r/tools/hooks/commit-msg, place it in .git/hooks/commit-msg, and chmod u+x the file."
-		fi
-	fi
+    which wget
+    if [ "$?" == "0" ]
+    then
+        wget "https://gerrit.wikimedia.org/r/tools/hooks/commit-msg" -O $TOPLEVEL/.git/hooks/commit-msg && chmod u+x $TOPLEVEL/.git/hooks/commit-msg
+    else
+        scp -p 29418 gerrit.wikimedia.org:hooks/commit-msg $TOPLEVEL/.git/hooks/commit-msg
+        if [ "$?" != "0" ]
+        then
+            echo "Please download the commit message hook from https://gerrit.wikimedia.org/r/tools/hooks/commit-msg, place it in .git/hooks/commit-msg, and chmod u+x the file."
+        fi
+    fi
 fi
