@@ -11,8 +11,8 @@ echo "Type the e-mail address for this username:"
 read email
 
 # Global config
-git config --global user.email "$email"
-git config --global user.name "$name"
+git config user.email "$email"
+git config user.name "$name"
 
 # Setup remotes/aliases
 git remote add puppet ssh://$username@gerrit.wikimedia.org:29418/operations/puppet
