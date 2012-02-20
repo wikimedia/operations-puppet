@@ -115,6 +115,9 @@ class lucene {
 		Class["lucene::config"] -> Class[lucene::server]
 		Class["lucene::packages"] -> Class[lucene::server]
 
+		include passwords::lucene
+		$lucene_oai_pass = $passwords::lucene::oai_pass
+
 		include lucene::packages,
 			lucene::config,
 			lucene::service
@@ -228,9 +231,6 @@ class lucene {
 	}
 
 	class indexer {
-
-		include passwords::lucene
-		$lucene_oai_pass = $passwords::lucene::oai_pass
 
 		class { 'generic::rsyncd': config => "searchidx" }
 
