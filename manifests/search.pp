@@ -132,12 +132,13 @@ class lucene {
 			require => Package["sun-j2sdk1.6"],
 			ensure => latest;
 		}
-# need to figure out what the indexer in particular needs.
-#		if $indexer == "true" {
-#			package { :
-#				ensure => latest;
-#			}
-#		}
+		if $indexer == "true" {
+			include mediawiki::packages
+
+			service { apache2:
+				ensure => stopped
+			}
+		}
 	}
 
 	class config {
