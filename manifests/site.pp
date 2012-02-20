@@ -1749,7 +1749,7 @@ node "spence.wikimedia.org" {
 
 	$ircecho_infile = "/var/log/nagios/irc.log"
 	$ircecho_nick = "nagios-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
+	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
 
 	include standard,
