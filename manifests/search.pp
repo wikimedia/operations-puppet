@@ -145,7 +145,7 @@ class lucene {
 	}
 
 	class config {
-		if $hostname =~ /^\.pmtpa\.wmnet$/ {
+		if $hostname =~ /\.pmtpa\.wmnet$/ {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
                                 owner => rainman,
@@ -155,7 +155,7 @@ class lucene {
 				ensure => present;
 			}
 		}
-		if $hostname =~ /^\.eqiad\.wmnet$/ {
+		if $hostname =~ /\.eqiad\.wmnet$/ {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
                                 owner => rainman,
