@@ -7,6 +7,8 @@ index="$base/indexes/index" # here indexer keeps it's copy
 dumps="$base/dumps"
 ls2="$base/lucene-search"
 
+MWinstall="/usr/local/apache"
+
 function import-file {
 	echo "Importing $2 ..."
 	# Syntax: import-file <xmldump> <dbname>
@@ -19,9 +21,9 @@ function import-db {
 	dumpfile="$dumps/dump-$dbname.xml"
 	timestamp=`date -u +%Y-%m-%d`
 
-	slave=`php $confs/common/php/maintenance/getSlaveServer.php $dbname`
+	slave=`php $MWinstall/common/php/maintenance/getSlaveServer.php $dbname`
 	echo "Dumping $dbname..."
-	php $confs/common/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile && 
+	php $MWinstall/common/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile && 
 	import-file $dumpfile $dbname &&
 	(
 	  if [ -e $import ]; then
@@ -32,23 +34,23 @@ function import-db {
 	)
 }
 
+function import-private {
+	# Import all dbs in the cluster
+	for dbname in `<$MWinstall/common/private.dblist`;do
+        	import-db $dbname
+	done
+
+	for dbname in `<$MWinstall/common/fishbowl.dblist`;do
+        	import-db $dbname
+	done
+}
+
 function indexer-cron {
 	cd $ls2 && 
 	java -Xmx8000m -cp LuceneSearch.jar org.wikimedia.lsearch.spell.SuggestBuilder -l >> $base/log/log-spell 2>&1 &
 
 	cd $ls2 &&
 	java -Xmx4000m -cp LuceneSearch.jar org.wikimedia.lsearch.related.RelatedBuilder -l >> $base/log/log-related 2>&1 &
-}
-
-function import-private-cron {
-	# Import all dbs in the cluster
-	for dbname in `<$conf/common/private.dblist`;do
-        	import-db $dbname
-	done
-
-	for dbname in `<$conf/common/fishbowl.dblist`;do
-        	import-db $dbname
-	done
 }
 
 function build-prefix {
@@ -68,9 +70,9 @@ elif [ "$1" = "snapshot-precursors" ] ; then
 	curl "http://localhost:8321/snapshotPrecursors?p=*.spell.pre"
 elif [ "$1" = "indexer-cron" ] ; then
 	indexer-cron
-elif [ "$1" = "import-private-cron" ] ; then
-	import-private-cron
-elif [ "$1" = "import-broken-cron" ] ; then
+elif [ "$1" = "import-private" ] ; then
+	import-private
+elif [ "$1" = "import-broken" ] ; then
 	import-db dewikisource >> $base/log/log-dewikisource 2>&1 &
 elif [ "$1" = "build-prefix" ] ; then
 	build-prefix

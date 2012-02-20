@@ -190,12 +190,21 @@ class lucene {
 				mode => 0444,
 				source => "puppet:///files/logrotate/search",
 				ensure => present;
-			 "/etc/cron.daily/logrotate":
-				owner => root,
-				group => root,
-				mode => 0444,
-				source => "puppet:///files/logrotate/logrotate.cron.daily.search",
-				ensure => present;
+			#"/etc/cron.daily/logrotate":
+			#	owner => root,
+			#	group => root,
+			#	mode => 0444,
+			#	source => "puppet:///files/logrotate/logrotate.cron.daily.search",
+			#	ensure => present;
+		}
+		if $indexer == "true" {
+			file {
+				"/etc/php5/apache2/php.ini":
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/php/php.ini.appserver";
+			}
 		}
 	}
 
@@ -224,17 +233,8 @@ class lucene {
 		$lucene_oai_pass = $passwords::lucene::oai_pass
 
 		class { 'generic::rsyncd': config => "searchidx" }
-		
-		file { "/etc/php5/apache2/php.ini":
-			owner => root,
-			group => root,
-			mode => 0440,
-			source => "puppet:///files/php/php.ini.appserver";
-		}
 
 		monitor_service { "lucene_indexer": description => "Lucene indexer", check_command => "check_lucene_indexer", retries => 6 }
-
-		## TO DO: pull these out of rainman's homedir and into something not on nfs
 
 		file { "/a/search/lucene.jobs.sh":
 			owner => rainman,
@@ -267,16 +267,16 @@ class lucene {
 				hour => 0,
 				minute => 0,
 				ensure => present;
-			import-private-cron:
+			import-private:
 				require => File["/a/search/lucene.jobs.sh"],
-				command => '/a/search/lucene.jobs.sh import-private-cron',
+				command => '/a/search/lucene.jobs.sh import-private',
 				user => rainman,
 				hour => 2,
 				minute => 0,
 				ensure => present;
-			import-broken-cron:
+			import-broken:
 				require => File["/a/search/lucene.jobs.sh"],
-				command => '/a/search/lucene.jobs.sh import-broken-cron',
+				command => '/a/search/lucene.jobs.sh import-broken',
 				user => rainman,
 				hour => 3,
 				minute => 0,
