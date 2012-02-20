@@ -234,7 +234,7 @@ class lucene {
 
 		class { 'generic::rsyncd': config => "searchidx" }
 
-		monitor_service { "lucene_indexer": description => "Lucene indexer", check_command => "check_lucene_indexer", retries => 6 }
+		#monitor_service { "lucene_indexer": description => "Lucene indexer", check_command => "check_lucene_indexer", retries => 6 }
 
 		file { "/a/search/lucene.jobs.sh":
 			owner => rainman,
