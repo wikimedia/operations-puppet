@@ -145,7 +145,7 @@ class lucene {
 	}
 
 	class config {
-		if $hostname =~ /search(idx)?[1-2]?[0-9]$/ {
+		if $::site == "pmtpa" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
                                 owner => rainman,
@@ -155,7 +155,7 @@ class lucene {
 				ensure => present;
 			}
 		}
-		if $hostname =~ /search(idx)?10[0-9][0-9]$/ {
+		if $::site == "eqiad" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
                                 owner => rainman,
