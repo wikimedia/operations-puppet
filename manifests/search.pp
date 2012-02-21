@@ -202,6 +202,11 @@ class lucene {
 		}
 		if $indexer == "true" {
 			file {
+				"/etc/php5/conf.d/fss.ini":
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/php/fss.ini.appserver";
 				"/etc/php5/apache2/php.ini":
 					owner => root,
 					group => root,
