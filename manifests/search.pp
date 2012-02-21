@@ -186,20 +186,24 @@ class lucene {
 				mode => 0775,
 				require => Package[lucene-search-2];
 		
-			## log rotation bits and pieces
+			## log rotation
 			"/etc/logrotate.d/lucene":
 				owner => root,
 				group => root,
 				mode => 0444,
 				source => "puppet:///files/logrotate/search",
 				ensure => present;
-			#"/etc/cron.daily/logrotate":
-			#	owner => root,
-			#	group => root,
-			#	mode => 0444,
-			#	source => "puppet:///files/logrotate/logrotate.cron.daily.search",
-			#	ensure => present;
 		}
+
+		## to occassionally poll for mediawiki configs
+		cron { sync-conf-from-common:
+			require => File["/a/search/conf"],
+			command => 'rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/all.dblist /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/wmf-config/InitialiseSettings.php /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/php/languages/messages /a/search/conf/',
+			user => rainman,
+			minute => 5,
+			ensure => present;
+		}
+
 		if $indexer == "true" {
 			file {
 				"/etc/php5/conf.d/fss.ini":
