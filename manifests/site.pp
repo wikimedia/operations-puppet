@@ -1536,12 +1536,27 @@ node /search[12]?[0-9]\.pmtpa\.wmnet/ {
 	include searchserver
 }
 
-node /search10[0-2][0-9]\.eqiad\.wmnet/ {
+node /search100[0-6]\.eqiad\.wmnet/ {
 	if $hostname =~ /^search100(1|2)$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::lucene::front-end
+	include role::lucene::front-end::pool1
+}
+
+node /search10(0[0-7])|(10)\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool2
+}
+
+node /search101[1-4]\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool3
+}
+
+node /search10(1[5-9])|(20)\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool4
 }
 
 node /searchidx100[0-2]\.eqiad\.wmnet/ {

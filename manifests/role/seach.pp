@@ -1,34 +1,54 @@
-class role::lucene::indexer {
-	system_role { "role::lucene::indexer": description => "Lucene search indexer" }
-	$cluster = "search"
-	$nagios_group = "lucene"
+class role::lucene {
+	class indexer {
+		system_role { "role::lucene::indexer": description => "Lucene search indexer" }
+		$cluster = "search"
+		$nagios_group = "lucene"
 
-	include standard,
-		admins::roots,
-		admins::mortals,
-		admins::restricted,
-		lucene::sudo
+		include standard,
+			admins::roots,
+			admins::mortals,
+			admins::restricted,
+			lucene::sudo
 
-	class { "lucene::server":
-		indexer => "true", udplogging => "false"
+		class { "lucene::server":
+			indexer => "true", udplogging => "false"
+		}
 	}
-}
 
-class role::lucene::front-end {
-	system_role { "role::lucene::front-end": description => "Front end lucene search server" }
-	$cluster = "search"
-	$nagios_group = "lucene"
+	class front-end {
+		class common($search_pool) {
+			system_role { "role::lucene::front-end": description => "Front end lucene search server" }
+			$cluster = "search"
+			$nagios_group = "lucene"
 
-	$lvs_realserver_ips = [ "10.2.1.11", "10.2.1.12", "10.2.1.13" ]
+			if ( $search_pool != "false" ) {
+				include lvs::configuration,
+					lvs::realserver
 
-	include standard,
-		admins::roots,
-		admins::mortals,
-		admins::restricted,
-		lvs::realserver,
-		lucene::sudo
+				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] }
+			}
 
-	class { "lucene::server":
-                udplogging => "false"
+			include standard,
+				admins::roots,
+				admins::mortals,
+				admins::restricted,
+				lucene::sudo
+
+			class { "lucene::server":
+        		        udplogging => "false"
+			}
+		}
+		class pool1 {
+			class { "role::lucene::front-end::common": search_pool => "search_pool1" } 
+		}
+		class pool2 {
+			class { "role::lucene::front-end::common": search_pool => "search_pool2" } 
+		}
+		class pool3 {
+			class { "role::lucene::front-end::common": search_pool => "search_pool3" } 
+		}
+		class pool4 {
+			class { "role::lucene::front-end::common": search_pool => "false" } 
+		}
 	}
 }
