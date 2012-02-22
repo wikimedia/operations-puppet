@@ -9,7 +9,7 @@ factpath = $vardir/lib/facter
 
 [agent]
 server = <%= scope.lookupvar('base::puppet::server') %>
-configtimeout = 480
+configtimeout = 960
 splay = true
 prerun_command = /etc/puppet/etckeeper-commit-pre
 postrun_command = /etc/puppet/etckeeper-commit-post
