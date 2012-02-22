@@ -753,11 +753,6 @@ node "gallium.wikimedia.org" {
 	install_certificate{ "star.mediawiki.org": }
 }
 
-node "ganglia1001.eqiad.wmnet" {
-	include standard,
-		ganglia::aggregator
-}
-
 node "gilman.wikimedia.org" {
 
 	$exim_signs_dkim = "false"
