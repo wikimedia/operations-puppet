@@ -589,7 +589,7 @@ $nagios_config_dir = "/etc/nagios3"
 
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
-		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
+		command => "/bin/chmod -R ugo+r /etc/nagios3/puppet_checks.d",
 		notify => Service["nagios3"],
 		refreshonly => "true";
 	}
@@ -689,17 +689,21 @@ $nagios_config_dir = "/etc/nagios3"
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		notify => Service[nagios3],
+		target => "${nagios_config_dir}/puppet_hosts.cfg"
 	}
 	Nagios_hostextinfo <<| |>> {
 		notify => Service[nagios3],
+		target => "${nagios_config_dir}/puppet_hostextinfo.cfg"
 	}
 	Nagios_service <<| |>> {
 		notify => Service[nagios3],
+		target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg"
 	}
 
 	# Collect all (virtual) resources
 	Monitor_group <| |> {
 		notify => Service[nagios3],
+		target => "${nagios_config_dir}/puppet_hostgroups.cfg"
 	}
 	Monitor_host <| |> {
 		notify => Service[nagios3],
