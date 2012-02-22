@@ -24,4 +24,4 @@ tls_cacertfile /etc/ssl/certs/<%= ldap_ca %>
 
 # Group mapping for sudo-ldap.
 map group uniquemember member
-map passwd loginshell "/bin/bash"
+<% if realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
