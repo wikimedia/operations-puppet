@@ -484,7 +484,8 @@ $nagios_config_dir = "/etc/nagios3"
 			  "${nagios_config_dir}/puppet_servicegroups.cfg",
 			  "${nagios_config_dir}/puppet_services.cfg" ]
 
-	$static_files = [ "${nagios_config_dir}/nagios.cfg",
+	$static_files = [ 
+#			  "${nagios_config_dir}/nagios.cfg",
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
 			  "${nagios_config_dir}/contactgroups.cfg",
@@ -546,13 +547,13 @@ $nagios_config_dir = "/etc/nagios3"
 	apache_site { nagios: name => "nagios" }
 
 	# make sure the directory for individual service checks exists
-	file { "/etc/nagios":
+	file { "/etc/nagios3":
 		ensure => directory,
 		owner => root,
 		group => root,
 		mode => 0755;
 
-		"/etc/nagios/puppet_checks.d":
+		"/etc/nagios3/puppet_checks.d":
 		ensure => directory,
 		owner => root,
 		group => root,
