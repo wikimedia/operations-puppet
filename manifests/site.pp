@@ -1374,7 +1374,7 @@ node "neon.eqiad.wmnet" {
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
-		ganglia::aggregator
+#		ganglia::aggregator
 }
 
 node "nescio.esams.wikimedia.org" {
