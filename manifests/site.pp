@@ -1373,8 +1373,8 @@ node "neon.eqiad.wmnet" {
 		nagios::monitor::jobqueue,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
-		nagios::nsca::daemon,
-		ganglia::aggregator
+		nagios::nsca::daemon
+#		ganglia::aggregator
 }
 
 node "nescio.esams.wikimedia.org" {
