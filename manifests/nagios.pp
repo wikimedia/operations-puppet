@@ -689,21 +689,17 @@ $nagios_config_dir = "/etc/nagios3"
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		notify => Service[nagios3],
-		target => "${nagios_config_dir}/puppet_hosts.cfg"
 	}
 	Nagios_hostextinfo <<| |>> {
 		notify => Service[nagios3],
-		target => "${nagios_config_dir}/puppet_hostextinfo.cfg"
 	}
 	Nagios_service <<| |>> {
 		notify => Service[nagios3],
-		target => "${nagios_config_dir}/puppet_checks.d/${host}.cfg"
 	}
 
 	# Collect all (virtual) resources
 	Monitor_group <| |> {
 		notify => Service[nagios3],
-		target => "${nagios_config_dir}/puppet_hostgroups.cfg"
 	}
 	Monitor_host <| |> {
 		notify => Service[nagios3],
