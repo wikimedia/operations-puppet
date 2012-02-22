@@ -1,0 +1,27 @@
+# /etc/nslcd.conf
+# nslcd configuration file. See nslcd.conf(5)
+# for details.
+
+# The user and group nslcd should run as.
+uid nslcd
+gid nslcd
+
+# The location at which the LDAP server(s) should be reachable.
+uri <% servernames.each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+
+# The search base that will be used for all queries.
+base <%= basedn %>
+
+# The DN to bind with for normal lookups.
+binddn cn=proxyagent,ou=profile,<%= basedn %>
+bindpw <%= proxypass %>
+
+# SSL options.
+ssl start_tls
+tls_reqcert demand
+tls_cacertdir /etc/ssl/certs
+tls_cacertfile /etc/ssl/certs/<%= ldap_ca %>
+
+# Group mapping for sudo-ldap.
+map group uniquemember member
+map passwd loginshell "/bin/bash"
