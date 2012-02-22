@@ -23,7 +23,7 @@ function import-db {
 
 	slave=`php $MWinstall/common/php/maintenance/getSlaveServer.php $dbname`
 	echo "Dumping $dbname..."
-	php $MWinstall/common/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile && 
+	php $MWinstall/common/multiversion/MWScript.php "dumpBackup.php $dbname --current" > $dumpfile && 
 	import-file $dumpfile $dbname &&
 	(
 	  if [ -e $import ]; then
