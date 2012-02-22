@@ -2,6 +2,7 @@
 
 BINDIR=/usr/local/bin
 SOURCE=/home/wikipedia/common
+DEST=/usr/local/apache/common-local
 
 if [ ! -S "$SSH_AUTH_SOCK" ]; then
 	echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
@@ -45,6 +46,14 @@ for i in ${mwExtVerDbSets[@]}; do
 	$BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
 		--list-file=$SOURCE/wmf-config/extension-list \
 		--output=$SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
+
+	# Update ExtensionMessages-*.php in the local copy
+	sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
+
+	echo -n "Updating LocalisationCache for $mwVerNum... "
+	$BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
+		--quiet --outdir=$SOURCE/php-$mwVerNum/cache/l10n
+	echo "done"
 done
 
 
