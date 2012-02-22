@@ -589,7 +589,7 @@ $nagios_config_dir = "/etc/nagios3"
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
 		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
-		notify => Service["nagios"],
+		notify => Service["nagios3"],
 		refreshonly => "true";
 	}
 
