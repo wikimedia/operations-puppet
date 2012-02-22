@@ -46,6 +46,7 @@ NameVirtualHost *:443
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	RedirectMatch ^/$ http://gerrit.wikimedia.org/r/
+	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
 
 	ProxyRequests Off
 	ProxyVia Off
