@@ -1006,8 +1006,10 @@ node "kaulen.wikimedia.org" {
 node /labstore([1-4])\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"
+	$ldapincludes = ['openldap', 'nss', 'utils']
 
 	include standard,
+		ldap::client::wmf-cluster,
 		openstack::gluster-service
 
 	if $hostname =~ /^labstore[12]$/ {
@@ -1887,6 +1889,8 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
+		generic::packages::git-core,
+		mysql::client,
 		misc::statistics::base
 
 	# special accounts
