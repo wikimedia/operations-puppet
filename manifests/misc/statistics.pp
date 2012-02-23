@@ -15,7 +15,7 @@ class misc::statistics::base {
 			group => ezachte,
 			mode => 0750,
 			ensure => directory,
-			recurse => "true";
+			recurse => "false";
 		"/mnt/htdocs":
 			ensure => directory;
 		"/mnt/data":
