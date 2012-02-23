@@ -793,9 +793,9 @@ class generic::pythonpip {
 		ensure => latest;
 	}
 	exec { "update_pip":
-			command => "pip install --upgrade pip";
+			command => "/usr/bin/pip install --upgrade pip";
 		"update_virtualenv":
-			command => "pip install --upgrade virtualenv";
+			command => "/usr/bin/pip install --upgrade virtualenv";
 	}
 }
 
