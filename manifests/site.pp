@@ -1900,7 +1900,8 @@ node "stat1.wikimedia.org" {
 		accounts::reedy,
 		accounts::diederik,
 		accounts::aotto,
-		accounts::aengels
+		accounts::aengels,
+		accounts::dsc
 
 }
 
