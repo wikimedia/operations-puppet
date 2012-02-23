@@ -95,7 +95,7 @@ class nrpe::packagesnew {
 
 class nrpe::servicenew {
 	service { nagios-nrpe-server:
-		require => [ Package[nagios-nrpe-server], File["/etc/nagios3/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
+		require => [ Package[nagios-nrpe-server], File["/etc/nagios3/nrpe_local.cfg"], File["/usr/lib/nagios3/plugins/check_dpkg"] ],
 		subscribe => File["/etc/nagios3/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
 		ensure => running;
