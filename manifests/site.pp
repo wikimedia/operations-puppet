@@ -1790,10 +1790,25 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
+<<<<<<< HEAD
 		accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
 		accounts::aotto
+=======
+		generic::packages::git-core,
+		mysql::client,
+		misc::statistics::base,
+		generic::pythonpip
+
+	# special accounts
+	include accounts::ezachte,
+		accounts::reedy,
+		accounts::diederik,
+		accounts::aotto,
+		accounts::aengels
+
+>>>>>>> 8d07fb8... adding class to install pip for stat1 - dev use only.
 }
 
 node "storage1.wikimedia.org" {
