@@ -1790,10 +1790,17 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
-		accounts::ezachte,
+		generic::packages::git-core,
+		mysql::client,
+		misc::statistics::base,
+		generic::pythonpip
+
+	# special accounts
+	include accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
-		accounts::aotto
+		accounts::aotto,
+		accounts::aengels
 }
 
 node "storage1.wikimedia.org" {
