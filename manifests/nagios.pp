@@ -711,7 +711,12 @@ $nagios_config_dir = "/etc/nagios3"
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 
-	file { "/usr/local/nagios/libexec/check_mysql-replication.pl":
+	file { "/usr/local/nagios":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+		"/usr/local/nagios/libexec/check_mysql-replication.pl":
 			source => "puppet:///files/nagios/check_mysql-replication.pl",
 			owner => root,
 			group => root,
