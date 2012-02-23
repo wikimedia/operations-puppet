@@ -79,7 +79,7 @@ class nrpe::packagesnew {
 			group => root,
 			mode => 0755,
 			ensure => directory;
-		"/etc/nagios/3nrpe_local.cfg":
+		"/etc/nagios3/nrpe_local.cfg":
 			require => Package[nagios-nrpe-server],
 			owner => root,
 			group => root,
