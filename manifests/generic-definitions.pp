@@ -784,3 +784,18 @@ class generic::tcptweaks {
 			ensure => present;
 	}
 }
+
+# python pip and virtualenv.
+# only use this on development systems.
+# in order to go to production, all dependencies need to come from debian packages, not pip.
+class generic::pythonpip {
+	package { [ "python-pip", "python-dev", "build-essential" ]:
+		ensure => latest;
+	}
+	exec { "update_pip":
+			command => "pip install --upgrade pip";
+		"update_virtualenv":
+			command => "pip install --upgrade virtualenv";
+	}
+}
+
