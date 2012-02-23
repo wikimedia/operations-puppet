@@ -1,6 +1,7 @@
 --verbose
 --daemonize=1
 --scheduler_driver=nova.scheduler.simple.SimpleScheduler
+--max_cores=80
 --my_ip=<%= scope.lookupvar('openstack::nova_config::nova_my_ip') %>
 --logdir=/var/log/nova
 --state_path=/var/lib/nova
