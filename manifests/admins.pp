@@ -112,6 +112,12 @@ class accounts {
 		}
 	}
 
+
+  # NOTE:  This user is being replaced with 'otto'.
+  # It currently ensures that aotto is absent.
+  # I plan on removing this class altogether
+  # once the new 'otto' user is created 
+  # and 'aotto' is removed.
 	class aotto inherits baseaccount {
 		$username = "aotto"
 		$realname = "Andrew Otto"
@@ -124,7 +130,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"otto@hundchen.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAw+oSU5aOOAxlmjTZvJnOEPbOAOchKKeTi5RO6KIVddIVXspHbBZKhuBmDLbppsB2x/kA5XYC0otA/FD1Ldr7v+OQp3XRTUlxchjGKci91ztPL4WbedCR33DUjjZW4ro2XlvoSLgH0vIZU8B3a7a49BgtXIPxtXw/evmzRmRfguNam/pvVfv6AE+1NGNQGadLNP2nHTjd8B2WEC1aVIblk3ZOsLsGvvFQQvuwLdMsDcK9/6Khy6rE4fYXJGd9ucVYIH0V/487Syg9tvk9xMEX46z4O38EV42CVhBm4ebpQ8roJJwwuD7MGIUeRicylvmVHHd+KxMqB6VkvGYIUXcasQ==";
@@ -823,6 +829,29 @@ class accounts {
                 }
 
 	}
+	
+	
+	class otto inherits baseaccount {
+		$username = "otto"
+		$realname = "Andrew Otto"
+		$uid = 589
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+                if $manage_home {
+                        Ssh_authorized_key { require => Unixaccount[$realname]}
+
+                        ssh_authorized_key {
+				"otto@hundchen.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAw+oSU5aOOAxlmjTZvJnOEPbOAOchKKeTi5RO6KIVddIVXspHbBZKhuBmDLbppsB2x/kA5XYC0otA/FD1Ldr7v+OQp3XRTUlxchjGKci91ztPL4WbedCR33DUjjZW4ro2XlvoSLgH0vIZU8B3a7a49BgtXIPxtXw/evmzRmRfguNam/pvVfv6AE+1NGNQGadLNP2nHTjd8B2WEC1aVIblk3ZOsLsGvvFQQvuwLdMsDcK9/6Khy6rE4fYXJGd9ucVYIH0V/487Syg9tvk9xMEX46z4O38EV42CVhBm4ebpQ8roJJwwuD7MGIUeRicylvmVHHd+KxMqB6VkvGYIUXcasQ==";
+			}
+		}
+	}
+	
+	
 	class rainman inherits baseaccount {
 		require groups::search
 
