@@ -1889,6 +1889,7 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include standard,
 		admins::roots,
+		generic::geoip,
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base
