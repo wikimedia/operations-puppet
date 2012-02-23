@@ -558,23 +558,38 @@ $nagios_config_dir = "/etc/nagios3"
 		owner => root,
 		group => root,
 		mode => 0755;
-	}
 
-	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
+		"/usr/local/nagios":
+		owner => root,
+		group => root,
+		mode => 0755,
+		ensure => directory;
+
+		"/usr/local/nagios/libexec":
+		owner => root,
+		group => root,
+		mode => 0755,
+		ensure => directory;
+
+		"/usr/local/nagios/libexec/eventhandlers":
+		owner => root,
+		group => root,
+		mode => 0755,
+		ensure => directory;
+
+		"/usr/local/nagios/libexec/eventhandlers/submit_check_result":
 		source => "puppet:///files/nagios/submit_check_result",
 		owner => root,
 		group => root,
 		mode => 0755;
-	}
 
-	file { "/etc/snmp/snmptrapd.conf":
+		 "/etc/snmp/snmptrapd.conf":
 		source => "puppet:///files/snmp/snmptrapd.conf",
 		owner => root,
 		group => root,
 		mode => 0600;
-	}
 
-	file { "/etc/snmp/snmptt.conf":
+		 "/etc/snmp/snmptt.conf":
 		source => "puppet:///files/snmp/snmptt.conf",
 		owner => root,
 		group => root,
@@ -711,11 +726,7 @@ $nagios_config_dir = "/etc/nagios3"
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 
-	file { "/usr/local/nagios":
-			owner => root,
-			group => root,
-			mode => 0755,
-			ensure => directory;
+	file { 
 		"/usr/local/nagios/libexec/check_mysql-replication.pl":
 			source => "puppet:///files/nagios/check_mysql-replication.pl",
 			owner => root,
