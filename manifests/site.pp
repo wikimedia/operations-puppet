@@ -1362,7 +1362,7 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-node "neon.eqiad.wmnet" {
+node "neon.wikimedia.org" {
 	$nagios_config_dir = "/etc/nagios3"
 	include standard,
 		nagios::monitor::newmonitor,
