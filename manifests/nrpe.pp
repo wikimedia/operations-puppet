@@ -58,10 +58,6 @@ class nrpe {
 }
 
 class nrpe::new {
-	class { ["nrpe::packages", "nrpe::service" ]:
-		ensure=>"absent";
-	}
-
 	include nrpe::packagesnew
 	include nrpe::servicenew
 
