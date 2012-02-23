@@ -85,7 +85,7 @@ class nrpe::packagesnew {
 			group => root,
 			mode => 0444,
 			content => template("nagios/nrpe_local.cfg.erb");
-		"/usr/lib/nagios3/plugins/check_dpkg":
+		"/usr/lib/nagios/plugins/check_dpkg":
 			owner => root,
 			group => root,
 			mode => 0555,
