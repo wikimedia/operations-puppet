@@ -1900,14 +1900,6 @@ node "stat1.wikimedia.org" {
 		accounts::aotto,
 		accounts::aengels
 
-# taking this out until stat1 moves to an internal IP
-# might need to use a different class since it's not really part of db core
-#	# mysql stuff
-#	include db::core,
-#		mysql::mysqluser,
-#		mysql::datadirs,
-#		mysql::conf,
-#		mysql::packages
 }
 
 node "storage1.wikimedia.org" {
