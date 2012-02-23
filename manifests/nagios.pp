@@ -470,9 +470,9 @@ class nagios::monitor::newmonitor {
 $nagios_config_dir = "/etc/nagios3"
 
 	include webserver::php5,
-		webserver::php5-gd
-
-	require nrpe
+		webserver::php5-gd,
+		mysql,
+		nrpe::new
 
 	include passwords::nagios::mysql
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
