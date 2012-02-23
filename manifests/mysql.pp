@@ -194,7 +194,7 @@ class mysql {
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 		file {
-			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
+			"${nagios_config_dir}/nrpe.d/nrpe_percona.cfg":
 				owner => root,
 				group => nagios,
 				mode => 0440,
