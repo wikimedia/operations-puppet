@@ -243,13 +243,17 @@ class lucene {
 
 		class { 'generic::rsyncd': config => "searchidx" }
 
-		#monitor_service { "lucene_indexer": description => "Lucene indexer", check_command => "check_lucene_indexer", retries => 6 }
-
-		file { "/a/search/lucene.jobs.sh":
-			owner => rainman,
-			group => search,
-			mode => 0755,
-			source => "puppet:///files/lucene/lucene.jobs.sh";
+		file { 
+			"/a/search/conf/nooptimize.dblist":
+				owner => rainman,
+				group => search,
+				mode => 0444,
+				source => "puppet:///files/lucene/nooptimize.dblist";
+			"/a/search/lucene.jobs.sh":
+				owner => rainman,
+				group => search,
+				mode => 0755,
+				source => "puppet:///files/lucene/lucene.jobs.sh";
 		}
 
 		cron {

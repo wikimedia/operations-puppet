@@ -8,6 +8,8 @@ dumps="$base/dumps"
 ls2="$base/lucene-search"
 
 MWinstall="/usr/local/apache"
+dblist="$MWinstall/common/all.dblist"
+pvtlist="$MWinstall/common/private.dblist"
 
 function import-file {
 	echo "Importing $2 ..."
@@ -59,6 +61,20 @@ function build-prefix {
 	java -Xmx4000m -cp LuceneSearch.jar org.wikimedia.lsearch.prefix.PrefixIndexBuilder -l -s >> $base/log/log-prefix 2>&1 &
 }
 
+function inc-updater-start {
+	echo "Starting incremental updater ..."
+
+	if [ -n "$2" ]; then
+        	timestamp="-dt $2"
+	fi
+
+	while true; do
+        	cd $ls2 && 
+        	java -cp $ls2/LuceneSearch.jar -Djava.rmi.server.hostname=$HOSTNAME org.wikimedia.lsearch.oai.IncrementalUpdater -n -f $dblist -ef $pvtlist -e dewikisource $timestamp -nof /a/search/conf/nooptimize.dblist
+        	sleep 15m
+	done >> $base/log/log-all 2>&1 &
+}
+
 if [ -z "$1" ] ; then
 	echo "$0: Requires an argument"
 	exit 42
@@ -76,6 +92,8 @@ elif [ "$1" = "import-broken" ] ; then
 	import-db dewikisource >> $base/log/log-dewikisource 2>&1 &
 elif [ "$1" = "build-prefix" ] ; then
 	build-prefix
+elif [ "$1" = "inc-updater-start" ] ; then
+	inc-updater-start
 else
 	echo "$0: argument not recognized"
 	exit 1
