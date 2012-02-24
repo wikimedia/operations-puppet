@@ -57,9 +57,9 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 }
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
-        if ! $host {
-                fail("Parameter $host not defined!")
-        }
+	if ! $host {
+		fail("Parameter $host not defined!")
+	}
 
 	if $hostname in $decommissioned_servers {
 		# Export the nagios service instance
@@ -484,7 +484,7 @@ $nagios_config_dir = "/etc/nagios3"
 			  "${nagios_config_dir}/puppet_servicegroups.cfg",
 			  "${nagios_config_dir}/puppet_services.cfg" ]
 
-	$static_files = [ 
+	$static_files = [
 #			  "${nagios_config_dir}/nagios.cfg",
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
@@ -631,74 +631,268 @@ $nagios_config_dir = "/etc/nagios3"
 #		mode => 0644;
 #	}
 
+# Nagios check configuration files
+
 	file { "/etc/nagios3/cgi.cfg":
-		source => "puppet:///files/nagios/cgi.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
+			source => "puppet:///files/nagios/cgi.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/nsca_payments.cfg":
+			source => "puppet:///private/nagios/nsca_payments.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/htpasswd.users":
+			source => "puppet:///private/nagios/htpasswd.users",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/checkcommands.cfg":
+			content => template("nagios/checkcommands.cfg.erb"),
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/contactgroups.cfg":
+			source => "puppet:///files/nagios/contactgroups.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/contacts.cfg":
+			source => "puppet:///private/nagios/contacts.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/migration.cfg":
+			source => "puppet:///files/nagios/migration.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/misccommands.cfg":
+			source => "puppet:///files/nagios/misccommands.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/resource.cfg":
+			source => "puppet:///files/nagios/resource.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios3/timeperiods.cfg":
+			source => "puppet:///files/nagios/timeperiods.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
 	}
 
-	file { "/etc/nagios3/nsca_payments.cfg":
-		source => "puppet:///private/nagios/nsca_payments.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+	# Nagios plugin configuration files
+	file {
+		"/etc/nagios-plugins/apt.cfg":
+			source => "puppet:///files/nagios/plugin-config/apt.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/htpasswd.users":
-		source => "puppet:///private/nagios/htpasswd.users",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/breeze.cfg":
+			source => "puppet:///files/nagios/plugin-config/breeze.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/checkcommands.cfg":
-		content => template("nagios/checkcommands.cfg.erb"),
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/dhcp.cfg":
+			source => "puppet:///files/nagios/plugin-config/dhcp.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/contactgroups.cfg":
-		source => "puppet:///files/nagios/contactgroups.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/disk-smb.cfg":
+			source => "puppet:///files/nagios/plugin-config/disk-smb.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/contacts.cfg":
-		source => "puppet:///private/nagios/contacts.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/disk.cfg":
+			source => "puppet:///files/nagios/plugin-config/disk.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/migration.cfg":
-		source => "puppet:///files/nagios/migration.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/dns.cfg":
+			source => "puppet:///files/nagios/plugin-config/dns.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/misccommands.cfg":
-		source => "puppet:///files/nagios/misccommands.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/dummy.cfg":
+			source => "puppet:///files/nagios/plugin-config/dummy.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/resource.cfg":
-		source => "puppet:///files/nagios/resource.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
+		"/etc/nagios-plugins/flexlm.cfg":
+			source => "puppet:///files/nagios/plugin-config/flexlm.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 
-	file { "/etc/nagios3/timeperiods.cfg":
-		source => "puppet:///files/nagios/timeperiods.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
+		"/etc/nagios-plugins/ftp.cfg":
+			source => "puppet:///files/nagios/plugin-config/ftp.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/hppjd.cfg":
+			source => "puppet:///files/nagios/plugin-config/hppjd.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/http.cfg":
+			source => "puppet:///files/nagios/plugin-config/http.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/ifstatus.cfg":
+			source => "puppet:///files/nagios/plugin-config/ifstatus.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/ldap.cfg":
+			source => "puppet:///files/nagios/plugin-config/ldap.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/load.cfg":
+			source => "puppet:///files/nagios/plugin-config/load.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/mail.cfg":
+			source => "puppet:///files/nagios/plugin-config/mail.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/mrtg.cfg":
+			source => "puppet:///files/nagios/plugin-config/mrtg.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/mysql.cfg":
+			source => "puppet:///files/nagios/plugin-config/mysql.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/netware.cfg":
+			source => "puppet:///files/nagios/plugin-config/netware.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/news.cfg":
+			source => "puppet:///files/nagios/plugin-config/news.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/nt.cfg":
+			source => "puppet:///files/nagios/plugin-config/nt.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/ntp.cfg":
+			source => "puppet:///files/nagios/plugin-config/ntp.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/pgsql.cfg":
+			source => "puppet:///files/nagios/plugin-config/pgsql.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/ping.cfg":
+			source => "puppet:///files/nagios/plugin-config/ping.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/procs.cfg":
+			source => "puppet:///files/nagios/plugin-config/procs.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/radius.cfg":
+			source => "puppet:///files/nagios/plugin-config/radius.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/real.cfg":
+			source => "puppet:///files/nagios/plugin-config/real.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/rpc-nfs.cfg":
+			source => "puppet:///files/nagios/plugin-config/rpc-nfs.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/snmp.cfg":
+			source => "puppet:///files/nagios/plugin-config/snmp.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/ssh.cfg":
+			source => "puppet:///files/nagios/plugin-config/ssh.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/tcp_udp.cfg":
+			source => "puppet:///files/nagios/plugin-config/tcp_udp.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/telnet.cfg":
+			source => "puppet:///files/nagios/plugin-config/telnet.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/users.cfg":
+			source => "puppet:///files/nagios/plugin-config/users.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		"/etc/nagios-plugins/vsz.cfg":
+			source => "puppet:///files/nagios/plugin-config/vsz.cfg"
+			owner => root,
+			group => root,
+			mode => 0644;
 	}
 
 	# Collect exported resources
@@ -726,7 +920,8 @@ $nagios_config_dir = "/etc/nagios3"
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 
-	file { 
+	# WMF custom service checks
+	file {
 		"/usr/local/nagios/libexec/check_mysql-replication.pl":
 			source => "puppet:///files/nagios/check_mysql-replication.pl",
 			owner => root,
