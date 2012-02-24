@@ -852,7 +852,7 @@ class nagios::ganglia::ganglios {
 		ensure => latest;
 	}
 	cron { "ganglios-cron":
-		command => "/usr/sbin/ganglia_parser",
+		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
 		user => nagios,
 		ensure => present;
 	}
