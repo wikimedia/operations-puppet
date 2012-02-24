@@ -25,6 +25,9 @@
 	ProxyPass /otrs-2.1.3 !
 	ProxyPass /otrs-web !
 	ProxyPass / http://apaches.pmtpa.wmnet/ retry=3
+	SetEnv force-proxy-request-1.0 1
+	SetEnv proxy-nokeepalive 1
+	SetEnv proxy-initial-not-pooled
 	ProxyVia On
 
 	# Old OTRS URLs
