@@ -185,43 +185,54 @@ class swift::storage {
 
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
-	package { 
-		[ "swift-account",
-		  "swift-container",
-		  "swift-object" ]:
-		ensure => present;
+	class packages {
+		package { 
+			[ "swift-account",
+			  "swift-container",
+			  "swift-object" ]:
+			ensure => present;
+		}
 	}
 
-	class { "generic::rsyncd": config => "swift" }
+	class config {
+		require swift::storage::packages
 
-	# set up swift specific configs
-	File { owner => swift, group => swift, mode => 0444 }
-	file {
-		"/etc/swift/account-server.conf":
-			content => template("swift/etc.swift.account-server.conf.erb");
-		"/etc/swift/container-server.conf":
-			content => template("swift/etc.swift.container-server.conf.erb");
-		"/etc/swift/object-server.conf":
-			content => template("swift/etc.swift.object-server.conf.erb");
+		class { "generic::rsyncd": config => "swift" }
+
+		# set up swift specific configs
+		File { owner => swift, group => swift, mode => 0444 }
+		file {
+			"/etc/swift/account-server.conf":
+				content => template("swift/etc.swift.account-server.conf.erb");
+			"/etc/swift/container-server.conf":
+				content => template("swift/etc.swift.container-server.conf.erb");
+			"/etc/swift/object-server.conf":
+				content => template("swift/etc.swift.object-server.conf.erb");
+		}
+
+		file { "/srv/swift-storage":
+			require => Package[swift],
+			owner => swift,
+			group => swift,
+			mode => 0751, # the 1 is to allow nagios to read the drives for check_disk
+			ensure => directory;
+		}
 	}
 
-	file { "/srv/swift-storage":
-		require => Package[swift],
-		owner => swift,
-		group => swift,
-		mode => 0751, # the 1 is to allow nagios to read the drives for check_disk
-		ensure => directory;
+	class service {
+		require swift::storage::config
+
+		service {
+			[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
+				subscribe => File["/etc/swift/account-server.conf"];
+			[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
+				subscribe => File["/etc/swift/container-server.conf"];
+			[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
+				subscribe => File["/etc/swift/object-server.conf"];
+		}
 	}
 
-	service {
-		[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
-			subscribe => File["/etc/swift/account-server.conf"];
-		[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
-			subscribe => File["/etc/swift/container-server.conf"];
-		[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
-			subscribe => File["/etc/swift/object-server.conf"];
-	}
-
+	include packages, config, service
 }
 
 # Definition: swift::create_filesystem
