@@ -24,7 +24,7 @@ class role::lucene {
 			if ( $search_pool != "false" ) {
 				include lvs::configuration
 
-				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] }
+				class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }
 			}
 
 			include standard,
