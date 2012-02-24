@@ -1,6 +1,8 @@
 # Class: misc::analytics::packages
 #
 # Installs needed packages for analytics tools.
+# Currently these are needed by the pipeline data 
+# transformation tool.  This is a work in progress.
 class misc::analytics::packages
 {
   include generic::mysql::client
