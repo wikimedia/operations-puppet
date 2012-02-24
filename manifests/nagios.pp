@@ -696,6 +696,12 @@ $nagios_config_dir = "/etc/nagios3"
 
 	# Nagios plugin configuration files
 	file {
+		"/etc/nagios-plugins":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+
 		"/etc/nagios-plugins/apt.cfg":
 			source => "puppet:///files/nagios/plugin-config/apt.cfg",
 			owner => root,
