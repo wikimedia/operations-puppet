@@ -222,6 +222,7 @@ class swift::storage {
 	class service {
 		require swift::storage::config
 
+		Service { ensure => running }
 		service {
 			[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
 				subscribe => File["/etc/swift/account-server.conf"];
