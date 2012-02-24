@@ -64,7 +64,7 @@ def lint_test(options, helper):
 	proc.wait()
 	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
 	proc.wait()
-	proc = subprocess.Popen('/usr/bin/puppet parser validate ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
+	proc = subprocess.Popen('/usr/bin/puppet parser validate --color none ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
 	(stdoutdata, stderrdata) = proc.communicate()
 	shutil.rmtree(directory)
 	procstatus = proc.returncode
