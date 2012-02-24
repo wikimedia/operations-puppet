@@ -154,6 +154,7 @@ class WMFRewrite(object):
                 return resp
             else:
                 resp = webob.exc.HTTPNotFound('Unexpected error %s' % status)
+                resp.body = "".join(status.readlines())
                 resp.status = status.code
                 return resp
 
