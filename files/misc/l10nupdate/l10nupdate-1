@@ -2,42 +2,42 @@
 # This script belongs in /usr/local/bin/.
 BINDIR=/usr/local/bin
 MWMULTIDIR=/home/wikipedia/common/multiversion
-GITDIR=/var/lib/l10nupdate/mediawiki
-GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
-GITREPOS="core extensions"
+SVNDIR=/var/lib/l10nupdate/trunk
+SVNURL=http://svn.wikimedia.org/svnroot/mediawiki/trunk
+SVNPATHS="phase3 extensions"
 
 umask 0002
 echo "Starting l10nupdate at `date`."
 
-# Update i18n messages from git to the HEAD of master, or create the clone if it doesn't exist yet
-echo "Updating git clone ..."
-for path in $GITREPOS
+# SVN up i18n messages to /trunk HEAD, or create the checkout if it doesn't exist yet
+echo "Updating SVN checkout ..."
+for path in $SVNPATHS
 do
-	if [ -d $GITDIR/$path ]
+	if [ -d $SVNDIR/$path ]
 	then
 		# Checkout exists, update it
-		if cd $GITDIR/$path && git pull
+		if svn up --ignore-externals $SVNDIR/$path
 		then
 			echo "Updated $path"
 		else
-			$BINDIR/dologmsg "!log LocalisationUpdate failed: git pull of $path failed"
+			$BINDIR/dologmsg "!log LocalisationUpdate failed: SVN update of $path failed"
 			echo "Updating $path FAILED."
 			exit 1
 		fi
 	else
 		# Create the checkout's parent directory
-		if mkdir -p `dirname $GITDIR/$path` &&
-			git clone $GITURL/$path $GITDIR/$path
+		if mkdir -p `dirname $SVNDIR/$path` &&
+			svn checkout --ignore-externals $SVNURL/$path $SVNDIR/$path
 		then
-			echo "Cloned $path"
+			echo "Checked out $path"
 		else
-			$BINDIR/dologmsg "!log LocalisationUpdate failed: git clone of $path failed"
-			echo "Cloning $path FAILED."
+			$BINDIR/dologmsg "!log LocalisationUpdate failed: SVN checkout of $path failed"
+			echo "Checking out $path FAILED."
 			exit 1
 		fi
 	fi
 done
-echo "git clone updated."
+echo "SVN checkout updated."
 
 # Get all MW message cache versions (and a wiki DB name for each)
 mwVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
@@ -59,12 +59,10 @@ do
 	cp --recursive /home/wikipedia/common/php-"$mwVerNum"/cache/l10n/ /var/lib/l10nupdate/cache-"$mwVerNum"
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
-	# --svnurl below is a misnomer, obviously, but LU will take it just fine
-	# Eventually LU should also be changed to be able to use git, for 3rd party usage
 	if /usr/local/bin/mwscript extensions/LocalisationUpdate/update.php \
 		  --wiki="$mwDbName" \
 		  --outdir=/var/lib/l10nupdate/cache-"$mwVerNum" \
-		  --svnurl=$GITDIR \
+		  --svnurl=$SVNDIR \
 		  --all \
 		  --quiet
 	then
