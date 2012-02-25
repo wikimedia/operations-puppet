@@ -52,15 +52,25 @@ for i in ${mwVerDbSets[@]}
 do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
+
+	# Copy the cache directory to /var/lib so we can manipulate it there,
+	# then copy it back to /home
+	rm -rf /var/lib/l10nupdate/cache-"$mwVerNum"
+	cp --recursive /home/wikipedia/common/php-"$mwVerNum"/cache/l10n/ /var/lib/l10nupdate/cache-"$mwVerNum"
+
 	echo "Running updates for $mwVerNum (on $mwDbName)"
 	if /usr/local/bin/mwscript extensions/LocalisationUpdate/update.php \
 		  --wiki="$mwDbName" \
-		  --outdir=/home/wikipedia/common/php-"$mwVerNum"/cache/l10n \
+		  --outdir=/var/lib/l10nupdate/cache-"$mwVerNum" \
 		  --svnurl=$SVNDIR \
 		  --all \
 		  --quiet
 	then
-		echo "Completed. Syncing to Apaches"
+		echo "Completed. Copying back to /home"
+		# Copy back with rsync cause that doesn't create a cache/l10n/cache-foo directory when used correctly
+		rsync --recursive /var/lib/l10nupdate/cache-"$mwVerNum"/ /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
+		rm -rf /var/lib/l10nupdate/cache-"$mwVerNum"
+		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		echo "Clearing message blobs"
 		/usr/local/bin/mwscript maintenance/wmf/clearMessageBlobs.php  --wiki="$mwDbName"
