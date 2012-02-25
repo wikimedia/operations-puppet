@@ -17,8 +17,6 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 		ensure => running;
 	}
 
-    notify{ "Testing out stuff": }
-
 	class monitoring {
 		# Nagios
 		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!$memcached_port" }
