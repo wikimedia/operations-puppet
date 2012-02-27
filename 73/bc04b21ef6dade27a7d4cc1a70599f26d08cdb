@@ -1,0 +1,11 @@
+Code-Review+2: Bhartshorne <ben@wikimedia.org>
+Verified+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Rich Smith <rich@cluenet.org>
+Code-Review+1: Ottomata <otto@wikimedia.org>
+Code-Review+1: Dsc <dschoonover@wikimedia.org>
+Submitted-by: Bhartshorne <ben@wikimedia.org>
+Submitted-at: Mon, 27 Feb 2012 21:43:34 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/2754
+Project: operations/puppet
+Branch: refs/heads/test
