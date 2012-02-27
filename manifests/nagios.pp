@@ -536,15 +536,15 @@ $nagios_config_dir = "/etc/nagios3"
 	}
 
 	# install the nagios Apache site
-	file { "/etc/apache2/sites-available/nagios":
+	file { "/etc/apache2/sites-available/nagios3.wikimedia.org":
 		ensure => present,
 		owner => root,
 		group => root,
 		mode => 0444,
-		source => "puppet:///files/apache/sites/nagios.wikimedia.org";
+		source => "puppet:///files/apache/sites/nagios3.wikimedia.org";
 	}
 
-	apache_site { nagios: name => "nagios" }
+	apache_site { nagios3: name => "nagios3" }
 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios3":
@@ -625,7 +625,7 @@ $nagios_config_dir = "/etc/nagios3"
 #	}
 
 #	file { "/etc/nagios3/nagios.cfg":
-#		source => "puppet:///files/nagios/nagios.cfg",
+#		source => "puppet:///files/nagios/nagios3.cfg",
 #		owner => root,
 #		group => root,
 #		mode => 0644;
