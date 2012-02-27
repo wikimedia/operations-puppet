@@ -120,7 +120,7 @@ class accounts {
   # and 'aotto' is removed.
 	class aotto inherits baseaccount {
 		$username = "aotto"
-		$realname = "Andrew Otto"
+		$realname = "Andrew Wants-to-be Otto"
 		$uid = 586
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -129,7 +129,7 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
-				"otto@hundchen.local":
+				"otto@hundchen.old.local":
 					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
