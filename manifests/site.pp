@@ -1913,6 +1913,7 @@ node "stat1.wikimedia.org" {
 	include accounts::ezachte,
 		accounts::reedy,
 		accounts::diederik,
+		accounts::aotto,  # this will be removed once 'otto' is created and 'aotto' is deleted.
 		accounts::otto,
 		accounts::aengels,
 		accounts::dsc
