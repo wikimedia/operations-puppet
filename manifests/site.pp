@@ -347,7 +347,7 @@ node "argon.wikimedia.org" {
 	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
-node /(arsenic|niobium|strontium|palladium)\.wikimedia\.org/ {
+node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	if $hostname =~ /^(arsenic|niobium)$/ {
 		$ganglia_aggregator = "true"
 	}
