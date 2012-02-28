@@ -468,10 +468,10 @@ class nagios::monitor {
 
 class nagios::monitor::newmonitor {
 $nagios_config_dir = "/etc/nagios3"
-$ssl = "true"
 
-	include webserver::php5,
-		webserver::php5-gd,
+	class {"webserver::php5": ssl => "true";}
+
+	include webserver::php5-gd,
 		mysql,
 		nrpe::new
 
@@ -609,6 +609,21 @@ $ssl = "true"
 
 		"/etc/nagios3/conf.d/timeperiods_nagios2.cfg":
 			ensure => absent;
+
+		"/etc/nagios3/conf.d/services_nagios2.cfg":
+			ensure => absent;
+
+		"/etc/nagios3/conf.d/extinfo_nagios2.cfg":
+			ensure => absent;
+
+		"/etc/nagios3/conf.d/localhost_nagios2.cfg":
+			ensure => absent;
+
+		"/etc/nagios3/conf.d/generic-service_nagios2.cfg":
+			ensure => absent;
+
+		"/etc/nagios3/conf.d/generic-host_nagios2.cfg":
+			ensure => absent;
 	}
 
 	# Fix permissions
@@ -650,7 +665,7 @@ $ssl = "true"
 # Nagios check configuration files
 
 	file { "/etc/nagios3/cgi.cfg":
-			source => "puppet:///files/nagios/cgi.cfg",
+			source => "puppet:///files/nagios3/cgi.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
