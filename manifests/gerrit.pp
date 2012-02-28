@@ -121,37 +121,37 @@ class gerrit::jetty {
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-abandoned",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/hookhelper.py",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/change-merged":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-merged",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/change-restored":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-restored",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/comment-added":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/comment-added",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/patchset-created":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/patchset-created",
-			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 	}
 
 	exec {
