@@ -720,7 +720,9 @@ node "formey.wikimedia.org" {
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
 			'ALL = NOPASSWD: /usr/local/bin/svn-group',
 			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
-	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
+	sudo_user { [ "demon", "hashar", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
+
+	# To enable shell access, one has to modify the loginShell in LDAP
 
 	$cluster = "misc"
 	$gid = 550
