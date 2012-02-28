@@ -347,7 +347,7 @@ node "argon.wikimedia.org" {
 	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
-node /(arsenic|niobium)\.wikimedia\.org/ {
+node /(arsenic|niobium|strontium|palladium)\.wikimedia\.org/ {
 	$ganglia_aggregator = "true"
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
