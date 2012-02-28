@@ -597,6 +597,9 @@ $ssl = "true"
 		owner => root,
 		group => root,
 		mode => 0644;
+
+		"/etc/nagios3/conf.d/contacts_nagios2.cfg":
+		ensure => absent;
 	}
 
 	# Fix permissions
