@@ -618,11 +618,12 @@ $ssl = "true"
 	}
 
 	# also fix permissions on all individual service files
-	exec { "fix_nagios_perms":
-		command => "/bin/chmod -R ugo+r /etc/nagios3/puppet_checks.d",
-		notify => Service["nagios3"],
-		refreshonly => "true";
-	}
+	exec { "fix_nagios3_perms":
+		command => "/bin/chmod -R a+r /etc/nagios3/puppet_checks.d";
+
+		"fix_nagios_perms":
+		command => "/bin/chmod -R a+r /etc/nagios/puppet_checks.d";
+		}
 
 	# Script to purge resources for non-existent hosts
 	file { "/usr/local/sbin/purge-nagios-resources.py":
