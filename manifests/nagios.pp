@@ -551,58 +551,64 @@ $ssl = "true"
 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios3":
-		ensure => directory,
-		owner => root,
-		group => root,
-		mode => 0755;
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
 
 		"/etc/nagios3/puppet_checks.d":
-		ensure => directory,
-		owner => root,
-		group => root,
-		mode => 0755;
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
 
 		"/usr/local/nagios":
-		owner => root,
-		group => root,
-		mode => 0755,
-		ensure => directory;
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 
 		"/usr/local/nagios/libexec":
-		owner => root,
-		group => root,
-		mode => 0755,
-		ensure => directory;
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 
 		"/usr/local/nagios/libexec/eventhandlers":
-		owner => root,
-		group => root,
-		mode => 0755,
-		ensure => directory;
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 
 		"/usr/local/nagios/libexec/eventhandlers/submit_check_result":
-		source => "puppet:///files/nagios/submit_check_result",
-		owner => root,
-		group => root,
-		mode => 0755;
+			source => "puppet:///files/nagios/submit_check_result",
+			owner => root,
+			group => root,
+			mode => 0755;
 
 		 "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,
-		group => root,
-		mode => 0600;
+			source => "puppet:///files/snmp/snmptrapd.conf",
+			owner => root,
+			group => root,
+			mode => 0600;
 
 		 "/etc/snmp/snmptt.conf":
-		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,
-		group => root,
-		mode => 0644;
+			source => "puppet:///files/snmp/snmptt.conf",
+			owner => root,
+			group => root,
+			mode => 0644;
+	}
 
+	# Remove default configuration files that conflict
+	file {
 		"/etc/nagios3/conf.d/contacts_nagios2.cfg":
-		ensure => absent;
+			ensure => absent;
 
-		"/etc/nagios3/conf.d":
-		ensure => absent;
+		"/etc/nagios3/conf.d/hostgroups_nagios2.cfg":
+			ensure => absent;
+
+		"/etc/nagios3/conf.d/timeperiods_nagios2.cfg":
+			ensure => absent;
 	}
 
 	# Fix permissions
