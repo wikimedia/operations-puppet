@@ -17,6 +17,16 @@ class misc::blogs::wikimedia {
 	}
 }
 
+
+class misc::blogs::mysql-server {
+	system_role { "misc::blogs::mysql-server": description => "Simple MYSQL server for blog testing" }
+	
+		service { mysql:
+		subscribe => Package[mysql-server],
+		ensure => running;
+	}
+}
+
 # https://techblog.wikimedia.org
 class misc::blogs::tech {
 
