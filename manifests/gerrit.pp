@@ -110,42 +110,48 @@ class gerrit::jetty {
 			mode => 0444,
 			source => "puppet:///files/gerrit/mail/ChangeSubject.vm",
 			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			ensure => directory,
+			require => Exec["install_gerrit_jetty"];
 		"/var/lib/gerrit2/review_site/hooks/change-abandoned":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-abandoned",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/hookhelper.py",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 		"/var/lib/gerrit2/review_site/hooks/change-merged":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-merged",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 		"/var/lib/gerrit2/review_site/hooks/change-restored":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-restored",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 		"/var/lib/gerrit2/review_site/hooks/comment-added":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/comment-added",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 		"/var/lib/gerrit2/review_site/hooks/patchset-created":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/patchset-created",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks/change-abandoned"];
 	}
 
 	exec {
@@ -172,7 +178,7 @@ class gerrit::jetty {
 
 class gerrit::proxy {
 
-	include webserver::apache
+	require webserver::apache
 
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
