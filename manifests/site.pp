@@ -722,6 +722,7 @@ node "formey.wikimedia.org" {
 		gerrit::proxy,
 		gerrit::jetty,
 		gerrit::ircbot,
+		accounts::hashar,
 		accounts::sumanah
 }
 
