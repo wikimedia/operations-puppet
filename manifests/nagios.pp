@@ -468,6 +468,7 @@ class nagios::monitor {
 
 class nagios::monitor::newmonitor {
 $nagios_config_dir = "/etc/nagios3"
+$ssl = "true"
 
 	include webserver::php5,
 		webserver::php5-gd,
@@ -476,6 +477,8 @@ $nagios_config_dir = "/etc/nagios3"
 
 	include passwords::nagios::mysql
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+	install_certificate{ "star.wikimedia.org": }
 
 	# puppet_hosts.cfg must be first
 	$puppet_files = [ "${nagios_config_dir}/puppet_hosts.cfg",
