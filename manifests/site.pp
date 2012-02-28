@@ -1249,8 +1249,7 @@ node "manganese.wikimedia.org" {
 		backup::client,
 		gerrit::proxy,
 		gerrit::jetty,
-		gerrit::ircbot,
-		accounts::sumanah
+		gerrit::ircbot
 }
 
 node "mchenry.wikimedia.org" {
