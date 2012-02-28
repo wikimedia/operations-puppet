@@ -740,199 +740,199 @@ $nagios_config_dir = "/etc/nagios3"
 			ensure => directory;
 
 		"/etc/nagios-plugins/config/apt.cfg":
-			source => "puppet:///files/nagios/plugin-config/apt.cfg",
+			source => "puppet:///files/nagios3/plugin-config/apt.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/breeze.cfg":
-			source => "puppet:///files/nagios/plugin-config/breeze.cfg",
+			source => "puppet:///files/nagios3/plugin-config/breeze.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dhcp.cfg":
-			source => "puppet:///files/nagios/plugin-config/dhcp.cfg",
+			source => "puppet:///files/nagios3/plugin-config/dhcp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/disk-smb.cfg":
-			source => "puppet:///files/nagios/plugin-config/disk-smb.cfg",
+			source => "puppet:///files/nagios3/plugin-config/disk-smb.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/disk.cfg":
-			source => "puppet:///files/nagios/plugin-config/disk.cfg",
+			source => "puppet:///files/nagios3/plugin-config/disk.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dns.cfg":
-			source => "puppet:///files/nagios/plugin-config/dns.cfg",
+			source => "puppet:///files/nagios3/plugin-config/dns.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dummy.cfg":
-			source => "puppet:///files/nagios/plugin-config/dummy.cfg",
+			source => "puppet:///files/nagios3/plugin-config/dummy.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/flexlm.cfg":
-			source => "puppet:///files/nagios/plugin-config/flexlm.cfg",
+			source => "puppet:///files/nagios3/plugin-config/flexlm.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ftp.cfg":
-			source => "puppet:///files/nagios/plugin-config/ftp.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ftp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/hppjd.cfg":
-			source => "puppet:///files/nagios/plugin-config/hppjd.cfg",
+			source => "puppet:///files/nagios3/plugin-config/hppjd.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/http.cfg":
-			source => "puppet:///files/nagios/plugin-config/http.cfg",
+			source => "puppet:///files/nagios3/plugin-config/http.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ifstatus.cfg":
-			source => "puppet:///files/nagios/plugin-config/ifstatus.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ifstatus.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ldap.cfg":
-			source => "puppet:///files/nagios/plugin-config/ldap.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ldap.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/load.cfg":
-			source => "puppet:///files/nagios/plugin-config/load.cfg",
+			source => "puppet:///files/nagios3/plugin-config/load.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mail.cfg":
-			source => "puppet:///files/nagios/plugin-config/mail.cfg",
+			source => "puppet:///files/nagios3/plugin-config/mail.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mrtg.cfg":
-			source => "puppet:///files/nagios/plugin-config/mrtg.cfg",
+			source => "puppet:///files/nagios3/plugin-config/mrtg.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mysql.cfg":
-			source => "puppet:///files/nagios/plugin-config/mysql.cfg",
+			source => "puppet:///files/nagios3/plugin-config/mysql.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/netware.cfg":
-			source => "puppet:///files/nagios/plugin-config/netware.cfg",
+			source => "puppet:///files/nagios3/plugin-config/netware.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/news.cfg":
-			source => "puppet:///files/nagios/plugin-config/news.cfg",
+			source => "puppet:///files/nagios3/plugin-config/news.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/nt.cfg":
-			source => "puppet:///files/nagios/plugin-config/nt.cfg",
+			source => "puppet:///files/nagios3/plugin-config/nt.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ntp.cfg":
-			source => "puppet:///files/nagios/plugin-config/ntp.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ntp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/pgsql.cfg":
-			source => "puppet:///files/nagios/plugin-config/pgsql.cfg",
+			source => "puppet:///files/nagios3/plugin-config/pgsql.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ping.cfg":
-			source => "puppet:///files/nagios/plugin-config/ping.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ping.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/procs.cfg":
-			source => "puppet:///files/nagios/plugin-config/procs.cfg",
+			source => "puppet:///files/nagios3/plugin-config/procs.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/radius.cfg":
-			source => "puppet:///files/nagios/plugin-config/radius.cfg",
+			source => "puppet:///files/nagios3/plugin-config/radius.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/real.cfg":
-			source => "puppet:///files/nagios/plugin-config/real.cfg",
+			source => "puppet:///files/nagios3/plugin-config/real.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/rpc-nfs.cfg":
-			source => "puppet:///files/nagios/plugin-config/rpc-nfs.cfg",
+			source => "puppet:///files/nagios3/plugin-config/rpc-nfs.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/snmp.cfg":
-			source => "puppet:///files/nagios/plugin-config/snmp.cfg",
+			source => "puppet:///files/nagios3/plugin-config/snmp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ssh.cfg":
-			source => "puppet:///files/nagios/plugin-config/ssh.cfg",
+			source => "puppet:///files/nagios3/plugin-config/ssh.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/tcp_udp.cfg":
-			source => "puppet:///files/nagios/plugin-config/tcp_udp.cfg",
+			source => "puppet:///files/nagios3/plugin-config/tcp_udp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/telnet.cfg":
-			source => "puppet:///files/nagios/plugin-config/telnet.cfg",
+			source => "puppet:///files/nagios3/plugin-config/telnet.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/users.cfg":
-			source => "puppet:///files/nagios/plugin-config/users.cfg",
+			source => "puppet:///files/nagios3/plugin-config/users.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/vsz.cfg":
-			source => "puppet:///files/nagios/plugin-config/vsz.cfg",
+			source => "puppet:///files/nagios3/plugin-config/vsz.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
