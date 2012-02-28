@@ -172,6 +172,8 @@ class gerrit::jetty {
 
 class gerrit::proxy {
 
+	include webserver::apache
+
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
 			mode => 644,
