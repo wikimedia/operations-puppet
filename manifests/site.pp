@@ -1227,6 +1227,30 @@ node "magnesium.wikimedia.org" {
 	include role::swift::eqiad-test
 }
 
+node "manganese.wikimedia.org" {
+	install_certificate{ "star.wikimedia.org": }
+
+	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
+			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
+			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
+			'ALL = NOPASSWD: /usr/local/bin/svn-group',
+			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
+	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
+
+	$cluster = "misc"
+	$gid = 550
+	$ldapincludes = ['openldap', 'nss', 'utils']
+	$ssh_tcp_forwarding = "no"
+	$ssh_x11_forwarding = "no"
+	include standard,
+		ldap::client::wmf-cluster,
+		backup::client,
+		gerrit::proxy,
+		gerrit::jetty,
+		gerrit::ircbot,
+		accounts::sumanah
+}
+
 node "mchenry.wikimedia.org" {
 	$gid = 500
 	$ldapincludes = ['openldap']
