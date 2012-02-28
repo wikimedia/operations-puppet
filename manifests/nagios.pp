@@ -472,6 +472,7 @@ $nagios_config_dir = "/etc/nagios3"
 	class {"webserver::php5": ssl => "true";}
 
 	include webserver::php5-gd,
+		generic::apache::no-default-site,
 		mysql,
 		nrpe::new
 
