@@ -31,6 +31,7 @@
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre
 	heapLimit = 2g
+	<% if has_variable?("gerrit_slave") then %>slave = true<% end %>
 [sshd]
 	listenAddress = *:29418
 	threads = 8
