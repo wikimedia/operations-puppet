@@ -197,6 +197,7 @@ class gerrit::proxy {
 	}
 
 	apache_site { gerrit: name => "gerrit.wikimedia.org" }
+	apache_site { 000_default: name => "000-default", ensure => absent }
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
