@@ -737,6 +737,16 @@ class generic::sysctl::lvs($ensure="present") {
 	}
 }
 
+class generic::sysctl::high-bandwidth-rsync($ensure="present") {
+	file { high-bandwidth-rsync-sysctl:
+		name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
+		mode => 444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/misc/60-high-bandwidth-rsync.conf.sysctl",
+		ensure => $ensure
+	}
+}
+
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
