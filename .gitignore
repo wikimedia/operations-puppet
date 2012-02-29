@@ -6,3 +6,6 @@
 
 # vim swap files are unwanted
 *.swp
+
+# Compiled Python files are useless
+*.pyc
