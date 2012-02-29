@@ -57,6 +57,10 @@ class gerrit::jetty {
 		ensure => latest; 
 	} 
 
+	package { [ "python-paramiko" ]:
+		ensure => latest;
+	}
+
 	file {
 		"/var/lib/gerrit2/gerrit.war":
 			source => "puppet:///files/gerrit/gerrit-2.2.1.war",
