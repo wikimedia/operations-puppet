@@ -49,6 +49,10 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_gerrit_manganese": source => "208.80.154.152", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_gerrit_manganese": source => "208.80.154.152", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_gerrit_manganese": source => "208.80.154.152", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_gerrit_manganese": source => "208.80.154.152", service => "ldaps_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_jenkins": source => "208.80.154.135", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_jenkins": source => "208.80.154.135", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_jenkins": source => "208.80.154.135", service => "ldap_backend", jump => "ACCEPT" }
