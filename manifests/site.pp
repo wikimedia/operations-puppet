@@ -1251,7 +1251,6 @@ node "manganese.wikimedia.org" {
 	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
 
 	$cluster = "misc"
-	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
@@ -1261,7 +1260,6 @@ node "manganese.wikimedia.org" {
 		gerrit::proxy,
 		gerrit::jetty,
 		gerrit::ircbot,
-		groups::wikidev,
 		accounts::sumanah
 }
 
