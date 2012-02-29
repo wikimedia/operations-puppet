@@ -1,0 +1,7 @@
+# THIS FILE IS MANAGED BY PUPPET
+#
+# puppet:///files/svn/docroot/robots.txt
+# https://svn.wikimedia.org/robots.txt
+#
+User-Agent: *
+Disallow: /viewvc/*
