@@ -495,10 +495,9 @@ node "dataset1.wikimedia.org" {
 	include standard,
 		admins::roots,
 		misc::download-wikimedia
-
 }
 
-node /^dataset(2|1001)\.wikimedia\.org/ {
+node "dataset2.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	include standard,
@@ -506,8 +505,19 @@ node /^dataset(2|1001)\.wikimedia\.org/ {
 		groups::wikidev,
 		accounts::catrope,
 		misc::download-wikimedia,
-		misc::download-mirror,
+		misc::download-primary,
 		misc::kiwix-mirror
+}
+
+node "dataset1001.wikimedia.org" {
+	$cluster = "misc"
+	$gid=500
+	include standard,
+		admins::roots,
+		groups::wikidev,
+		accounts::catrope,
+		misc::download-wikimedia,
+		misc::download-mirror
 }
 
 node /^db[1-9]\.pmtpa\.wmnet$/ {

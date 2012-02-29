@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/rsync/rsync.default.downloadmirror
+### puppet:///files/rsync/rsync.default.downloadprimary
 #####################################################################
 
 # defaults file for rsync daemon mode
@@ -31,7 +31,8 @@ RSYNC_OPTS='--bwlimit=50000'
 #  the rsync daemon can impact performance due to much I/O and CPU usage,
 #  so you may want to run it at a nicer priority than the default priority.
 #  Allowed values are 0 - 19 inclusive; 10 is a reasonable value.
-# RSYNC_NICE=
+RSYNC_NICE='10'
+RSYNC_IONICE='-c3'
 
 # Don't forget to create an appropriate config file,
 # else the daemon will not start.

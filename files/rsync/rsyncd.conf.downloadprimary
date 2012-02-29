@@ -1,0 +1,25 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/rsync/rsyncd.conf.downloadprimary
+#####################################################################
+
+# rsync conf file for internal mirroring of XML dumps
+#
+max connections = 5
+
+# for rolling rsyncs between dump hosts
+[data]
+read only = true
+path = /data
+hosts allow = dataset1001.wikimedia.org
+
+# this will go away as soon as the secondary host is stable for rsyncers
+[dumpmirrors]
+dont compress = *
+uid = backup
+gid = backup
+read only = true
+path = /data/xmldatadumps/public
+# added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
+# for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
+hosts allow = sagres.c3sl.ufpr.br

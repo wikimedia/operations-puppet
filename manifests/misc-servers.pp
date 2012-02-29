@@ -324,8 +324,36 @@ class misc::download-wikimedia {
 
 }
 
+class misc::download-primary {
+	system_role { "misc::download-primary": description => "Service for rsync to internal download mirrors" }
+
+	package { rsync:
+		ensure => latest;
+	}
+
+	file {
+		"/etc/rsyncd.conf":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsyncd.conf.downloadprimary";
+		"/etc/default/rsync":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsync.default.downloadprimary";
+	}
+
+	service { rsync:
+		require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+		ensure => running;
+	}
+}
+
 class misc::download-mirror {
-	system_role { "misc::download-mirror": description => "Service for external download mirrors" }
+	system_role { "misc::download-mirror": description => "Service for rsync to external download mirrors" }
 
 	package { rsync:
 		ensure => latest;

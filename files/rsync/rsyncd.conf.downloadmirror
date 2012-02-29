@@ -1,38 +1,39 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/rsync/rsyncd.conf.dataset2
+### puppet:///files/rsync/rsyncd.conf.downloadmirror
 #####################################################################
 
-# rsync conf file for mirror sites of XML files
+# rsync conf file for mirror sites of XML dumps
 #
 max connections = 10
-
-# for rolling rsyncs between dump hosts
-[data]
-read only = yes
-path = /data
-hosts allow = dataset2.wikimedia.org dataset1001.wikimedia.org
-
-[dumpmirrors]
 dont compress = *
 uid = backup
 gid = backup
-read only = yes
+read only = true
+
+[dumpmirrorslastfivedumps]
+# this will include only the last five good dumps. 
+# include/exclude list coming soon...
 path = /data/xmldatadumps/public
 # added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
 # for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
+hosts allow = sagres.c3sl.ufpr.br
+
+[dumpmirrorsalldumps]
+# this includes only dumps, no archives, no other datasets
+path = /data/xmldatadumps/public
+exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 # added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
-# for wansecurity.com, we manage this, see file in /home/wikipedia/docs 
-hosts allow = sagres.c3sl.ufpr.br 199.47.196.26
+# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
+# we manage this, see file in /home/wikipedia/docs 
+hosts allow =  199.47.196.26
+
 [dumpmirrorseverything]
-dont compress = *
-uid = backup
-gid = backup
-read only = yes
+# this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
 # added your.org, Feb 2 1012 -- atg
 # for your.org, contact: Kevin Day <kevin@your.org>
 # they manage it but we have access; see file in /home/wikipedia/docs
-# we'll narrow down the below as soon as we have more specifics
-hosts allow = *.your.org 
+hosts allow = ftpmirror.your.org 
+
