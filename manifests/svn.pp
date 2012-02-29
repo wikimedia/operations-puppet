@@ -28,6 +28,11 @@ class svn::server {
 			mode => 0444,
 			source => "puppet:///files/apache/sites/svn.wikimedia.org",
 			notify => Service[apache2];
+		"/srv/org/wikimedia/svn/robots.txt":
+			owner => root,
+			group => root,
+			mode  => 0444,
+			source => "puppet:///files/svn/docroot/robots.txt";
 		"/var/mwdocs":
 			owner => mwdocs,
 			group => svn,
