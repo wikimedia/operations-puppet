@@ -1917,7 +1917,6 @@ node "stat1.wikimedia.org" {
 		accounts::otto,
 		accounts::aengels,
 		accounts::dsc
-
 }
 
 node "storage1.wikimedia.org" {
