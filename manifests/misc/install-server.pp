@@ -168,7 +168,7 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 
 	class preseed-server {
 		file { "/srv/autoinstall":
-			mode => 0555,
+			mode => 0444,
 			owner => root,
 			group => root,
 			path => "/srv/autoinstall/",
