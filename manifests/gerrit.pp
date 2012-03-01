@@ -182,7 +182,7 @@ class gerrit::jetty {
 
 class gerrit::proxy {
 
-	if $gerrit_no_apache {
+	if !$gerrit_no_apache {
 		require webserver::apache
 	}
 
