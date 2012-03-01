@@ -1260,6 +1260,7 @@ node "manganese.wikimedia.org" {
 		gerrit::proxy,
 		gerrit::jetty,
 		gerrit::ircbot,
+		groups::wikidev,
 		accounts::sumanah
 }
 
