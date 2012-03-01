@@ -182,7 +182,9 @@ class gerrit::jetty {
 
 class gerrit::proxy {
 
-	require webserver::apache
+	if $gerrit_no_apache {
+		require webserver::apache
+	}
 
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
