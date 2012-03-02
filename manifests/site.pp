@@ -1469,6 +1469,13 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 #	include role::swift::pmtpa-prod::proxy
 }
 
+node "oxygen.wikimedia.org" {
+	include standard,
+		misc::squid-logging::multicast-relay,
+		nrpe
+}
+
+
 node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
 	$lvs_realserver_ips = [ "208.80.152.7" ]
