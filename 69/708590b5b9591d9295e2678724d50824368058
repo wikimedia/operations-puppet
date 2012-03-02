@@ -1,0 +1,8 @@
+Change-Id: I69708590b5b9591d9295e2678724d50824368058
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: Mark Bergsma <mark@wikimedia.org>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Fri, 02 Mar 2012 13:19:33 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/2915
+Project: operations/puppet
+Branch: refs/heads/test
