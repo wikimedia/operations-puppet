@@ -40,21 +40,25 @@ net.core.rmem_max = 536870912
 	}
 }
 
-class misc::syslog-server {
-	system_role { "misc::syslog-server": description => "central syslog server" }
+class misc::syslog-server($config="nfs") {
+	system_role { "misc::syslog-server": description => "central syslog server ($config)" }
 
 	package { syslog-ng:
 		ensure => latest;
 	}
 
-	file {
-		"/etc/syslog-ng/syslog-ng.conf":
-			require => Package[syslog-ng],
-			source => "puppet:///files/syslog-ng/syslog-ng.conf",
-			mode => 0444;
-		"/etc/logrotate.d/remote-logs":
+	file { "/etc/syslog-ng/syslog-ng.conf":
+		require => Package[syslog-ng],
+		source => "puppet:///files/syslog-ng/syslog-ng.conf.${config}",
+		mode => 0444;
+	}
+	
+	# FIXME: handle properly
+	if $config == "nfs" {
+		file { "/etc/logrotate.d/remote-logs":
 			source => "puppet:///files/syslog-ng/remote-logs",
 			mode => 0444;
+		}
 	}
 
 	service { syslog-ng:
