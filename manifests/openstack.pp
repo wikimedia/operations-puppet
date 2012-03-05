@@ -245,7 +245,7 @@ class openstack::project-storage {
 
 	include openstack::gluster-service
 
-	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager" }
+	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
 	ssh_authorized_key {
 		"glustermanager":
 			ensure	=> present,
