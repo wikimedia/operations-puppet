@@ -241,6 +241,29 @@ class openstack::compute {
 
 }
 
+class openstack::project-storage {
+
+	include openstack::gluster-service
+
+	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager" }
+	ssh_authorized_key {
+		"glustermanager":
+			ensure	=> present,
+			user	=> "glustermanager",
+			type	=> "ssh-rsa",
+			key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
+			require => Systemuser["glustermanager"];
+	}
+	file {
+		"/var/lib/glustermanager/.ssh/id_rsa":
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0600,
+			source => "puppet:///private/gluster/glustermanager",
+			require => Ssh_authorized_key["glustermanager"];
+	}
+}
+
 class openstack::puppet-server {
 
 	# Only allow puppet access from the instances

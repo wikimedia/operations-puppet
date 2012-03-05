@@ -1022,7 +1022,7 @@ node /labstore([1-4])\.pmtpa\.wmnet/ {
 
 	include standard,
 		ldap::client::wmf-cluster,
-		openstack::gluster-service
+		openstack::project-storage
 
 	if $hostname =~ /^labstore[12]$/ {
 		$ganglia_aggregator = "true"
