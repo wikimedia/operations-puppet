@@ -468,6 +468,7 @@ class nagios::monitor {
 
 class nagios::monitor::newmonitor {
 $nagios_config_dir = "/etc/nagios3"
+@monitor_group { "routers": description => "IP routers" }
 
 	class {"webserver::php5": ssl => "true";}
 
