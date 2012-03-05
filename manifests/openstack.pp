@@ -245,6 +245,10 @@ class openstack::project-storage {
 
 	include openstack::gluster-service
 
+	package { "python-paramiko":
+		ensure => latest;
+	}
+
 	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
 	ssh_authorized_key {
 		"glustermanager":
