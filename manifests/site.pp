@@ -2007,7 +2007,17 @@ node "storage3.pmtpa.wmnet" {
 node "streber.wikimedia.org" {
 	system_role { "misc": description => "network monitoring server" }
 
-	include base,
+	include	passwords::root,
+		base::decommissioned,
+		base::resolving,
+		base::sysctl,
+		base::motd,
+		base::vimconfig,
+		base::standard-packages,
+		base::monitoring::host,
+		base::environment,
+		base::platform,
+		ssh,
 		ganglia,
 #		ganglia::collector,
 		ntp::client,
