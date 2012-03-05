@@ -1400,12 +1400,12 @@ node "neon.wikimedia.org" {
 	$nagios_config_dir = "/etc/nagios3"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 	include standard,
-		nagios::monitor::newmonitor,
-		nagios::monitor::pager,
-		nagios::monitor::jobqueue,
+#		nagios::monitor::newmonitor,
+#		nagios::monitor::pager,
+#		nagios::monitor::jobqueue,
 #		nagios::ganglia::monitor::enwiki,
-		nagios::ganglia::ganglios,
-		nagios::nsca::daemon
+#		nagios::ganglia::ganglios,
+#		nagios::nsca::daemon
 #		ganglia::aggregator
 }
 
