@@ -2017,6 +2017,7 @@ node "streber.wikimedia.org" {
 		misc::rt::server,
 		certificates::star_wikimedia_org
 
+	class { "misc::syslog-server": config => "network" }
 
 	install_certificate{ "star.wikimedia.org": }
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
