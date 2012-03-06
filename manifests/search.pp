@@ -179,12 +179,11 @@ class lucene {
 				mode => 0444,
 				source => "puppet:///files/lucene/lsearch.log4j",
 				ensure => present;
-			[ "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
+			[ "/a/search", "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
 				ensure => directory,
 				owner => rainman,
 				group => search,
-				mode => 0775,
-				require => File["/a/search"];
+				mode => 0775;
 		
 			## log rotation
 			"/etc/logrotate.d/lucene":
