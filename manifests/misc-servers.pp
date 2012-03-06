@@ -868,6 +868,26 @@ net.core.rmem_default = 536870912
 
 	apache_module { python: name => "python" }
 	apache_site { graphite: name => "graphite" }
+
+	varnish::instance { "graphite":
+		name => "",
+		vcl => "graphite",
+		port => 81,
+		admin_port => 6082,
+		storage => "-s malloc,256M",
+		backends => [ 'localhost' ],
+		directors => { 'backend' => [ 'localhost' ] },
+		backend_options => {
+			'port' => 80,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 100,
+			'probe' => "options",
+			'retry5x' => 0
+		},
+		enable_geoiplookup => "false"
+	}
 }
 
 class misc::scripts {
