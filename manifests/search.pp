@@ -184,7 +184,7 @@ class lucene {
                                 owner => rainman,
                                 group => search,
 				mode => 0775,
-				require => Package[lucene-search-2];
+				require => File["/a/search"];
 		
 			## log rotation
 			"/etc/logrotate.d/lucene":
