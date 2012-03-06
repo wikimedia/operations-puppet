@@ -19,6 +19,7 @@ class owa::database::iptables-accepts {
 	iptables_add_service{ "database_owa2": service => "mysql", source => "208.80.152.113", jump => "ACCEPT" }
 	iptables_add_service{ "database_owa3": service => "mysql", source => "208.80.152.114", jump => "ACCEPT" }
 	iptables_add_service{ "database_spence": service => "mysql", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "database_neon": service => "mysql", source => "208.80.154.14", jump => "ACCEPT" }
 
 }
 
@@ -64,6 +65,7 @@ class owa::iptables-accepts {
 	iptables_add_service{ "owa2": service => "memcached", source => "208.80.152.113", jump => "ACCEPT" }
 	iptables_add_service{ "owa3": service => "memcached", source => "208.80.152.114", jump => "ACCEPT" }
 	iptables_add_service{ "spence": service => "memcached", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "neon": service => "memcached", source => "208.80.154.14", jump => "ACCEPT" }
 
 }
 

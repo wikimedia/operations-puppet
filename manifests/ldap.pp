@@ -22,6 +22,7 @@ class ldap::server::iptables-accepts {
 	iptables_add_service{ "ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_neon": service => "ldaps", source => "208.80.154.14", jump => "ACCEPT" }
 
 }
 

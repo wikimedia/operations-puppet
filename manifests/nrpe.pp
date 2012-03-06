@@ -1,6 +1,6 @@
 class nrpe::packages {
 	$nrpe_allowed_hosts = $::realm ? {
-		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
+		"production" => "127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14",
 		"labs" => "10.4.0.34"
 	}
 
@@ -65,7 +65,7 @@ class nrpe::new {
 }
 class nrpe::packagesnew {
 	$nrpe_allowed_hosts = $::realm ? {
-		"production" => "127.0.0.1,208.80.152.185,208.80.152.161",
+		"production" => "127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14",
 		"labs" => "10.4.0.34"
 	}
 
