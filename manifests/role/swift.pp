@@ -62,7 +62,7 @@ class role::swift {
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
 		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
-		class ganglia_reporter {
+		class ganglia_reporter inherits role::swift::pmtpa-prod {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
 				path => "/usr/local/bin/swift-ganglia-report-global-stats",
