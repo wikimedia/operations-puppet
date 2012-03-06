@@ -167,24 +167,24 @@ class lucene {
 		}
 		file {
 			"/etc/lsearch.conf":
-                                owner => rainman,
-                                group => search,
+				owner => rainman,
+				group => search,
 				mode => 0444,
 				content => template("lucene/lsearch.conf.new.erb"),
 				ensure => present;
 			"/a/search/conf/lsearch.log4j":
 				require => File["/a/search/conf"],
-                                owner => rainman,
-                                group => search,
+				owner => rainman,
+				group => search,
 				mode => 0444,
 				source => "puppet:///files/lucene/lsearch.log4j",
 				ensure => present;
 			[ "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
-                                ensure => directory,
-                                owner => rainman,
-                                group => search,
+				ensure => directory,
+				owner => rainman,
+				group => search,
 				mode => 0775,
-				require => Package[lucene-search-2];
+				require => File["/a/search"];
 		
 			## log rotation
 			"/etc/logrotate.d/lucene":
