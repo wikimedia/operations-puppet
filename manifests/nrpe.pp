@@ -19,6 +19,7 @@ class nrpe::packages {
 			owner => root,
 			group => root,
 			mode => 0444,
+			notify => Service[nagios-nrpe-server],
 			content => template("nagios/nrpe_local.cfg.erb");
 		"/usr/lib/nagios/plugins/check_dpkg":
 			owner => root,
