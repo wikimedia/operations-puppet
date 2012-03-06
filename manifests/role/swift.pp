@@ -65,9 +65,9 @@ class role::swift {
 		class proxy inherits role::swift::pmtpa-prod {
 			if $ganglia_global_stats {
 				# one host per cluster should report global stats
-				file { "swift-ganglia-report-global-stats":
+				file { "/usr/local/bin/swift-ganglia-report-global-stats":
 					path => "/usr/local/bin/swift-ganglia-report-global-stats",
-					mode => 0755,
+					mode => 0555,
 					source => "puppet://files/swift/swift-ganglia-report-global-stats",
 					ensure => present;
 				}
