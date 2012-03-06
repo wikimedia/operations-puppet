@@ -720,15 +720,7 @@ node "formey.wikimedia.org" {
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
 			'ALL = NOPASSWD: /usr/local/bin/svn-group',
 			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
-	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
 
-	$cluster = "misc"
-	$gid = 550
-	$ldapincludes = ['openldap', 'nss', 'utils']
-	$ssh_tcp_forwarding = "no"
-	$ssh_x11_forwarding = "no"
-	$gerrit_slave = "true"
-	$gerrit_no_apache = "true"
 	include standard,
 		svn::server,
 		ldap::client::wmf-cluster,
