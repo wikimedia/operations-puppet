@@ -1,0 +1,15 @@
+# Varnish VCL include file for gdash
+#
+# Just some short lived caching for /render and a bit more for everything else
+#
+
+sub vcl_fetch {
+	if (beresp.status == 200) {
+		if (req.url ~ "^/render") {
+			set beresp.ttl = 120 s;
+		} else {
+			set beresp.ttl = 600 s;
+		}
+	}
+}
+

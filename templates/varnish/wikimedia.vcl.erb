@@ -65,6 +65,13 @@ probe blog {
 		"Connection: close";
 	.timeout = 5s;	
 }
+<% elsif varnish_backend_options.fetch("probe") == "options" -%>
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0"
+		"Connection: close";
+	.timeout = 5s;	
+}
 <% else -%>
 probe bits {
 	.request =
