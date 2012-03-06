@@ -1274,5 +1274,4 @@ class misc::racktables {
 	apache_site { racktables: name => "racktables.wikimedia.org" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
-	apache_module { ssl: name => "ssl" }
 }
