@@ -726,9 +726,6 @@ node "formey.wikimedia.org" {
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
-	$ssh_x11_forwarding = "no"
-	$gerrit_slave = "true"
-	$gerrit_no_apache = "true"
 	include standard,
 		svn::server,
 		ldap::client::wmf-cluster,
