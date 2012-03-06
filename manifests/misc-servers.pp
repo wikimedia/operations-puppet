@@ -886,7 +886,8 @@ net.core.rmem_default = 536870912
 			'probe' => "options",
 			'retry5x' => 0
 		},
-		enable_geoiplookup => "false"
+		enable_geoiplookup => "false",
+		xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
 	}
 }
 
