@@ -62,21 +62,21 @@ class role::swift {
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
 		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
-		class proxy inherits role::swift::pmtpa-prod {
-			if $ganglia_global_stats {
-				# one host per cluster should report global stats
-				file { "/usr/local/bin/swift-ganglia-report-global-stats":
-					path => "/usr/local/bin/swift-ganglia-report-global-stats",
-					mode => 0555,
-					source => "puppet://files/swift/swift-ganglia-report-global-stats",
-					ensure => present;
-				}
-				cron { "swift-ganglia-report-global-stats":
-					command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p $passwords::swift::pmtpa-prod::rewrite_password",
-					user => root,
-					ensure => present;
-				}
+		class ganglia_reporter {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				path => "/usr/local/bin/swift-ganglia-report-global-stats",
+				mode => 0555,
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+				ensure => present;
 			}
+			cron { "swift-ganglia-report-global-stats":
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p $passwords::swift::pmtpa-prod::rewrite_password",
+				user => root,
+				ensure => present;
+			}
+		}
+		class proxy inherits role::swift::pmtpa-prod {
 			class { "::swift::proxy::config":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.pmtpa.wmnet",

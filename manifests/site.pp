@@ -1383,7 +1383,7 @@ node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname =~ /^ms-fe1$/ {
-		$ganglia_global_stats = "true"
+		include role::swift::pmtpa-prod::ganglia_reporter
 	}
 	$lvs_realserver_ips = [ "10.2.1.27" ]
 	include lvs::realserver
