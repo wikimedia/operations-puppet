@@ -278,9 +278,15 @@ class SwiftProxyLogtailer(object):
             #print durs
             #print ">> %s %s<<" % (sum(durs), len(durs))
             #combined['%s_%s' % (method, 'avg')] = sum(durs) / len(durs)
-        combined['swift_hits'] = totalhits
-        for (key, val) in statuscounter.items():
-            combined['swift_%s_hits' % key] = val
+        try:
+            combined['swift_hits'] = totalhits / check_time
+            for (key, val) in statuscounter.items():
+                combined['swift_%s_hits' % key] = val / check_time
+                combined['swift_%s_hits_%%' % key] = (val / check_time) / combined['swift_hits'] * 100 # percentage of hits that are 200s etc.
+        except ZeroDivisionError:
+            combined['swift_hits'] = 0
+            for (key, val) in statuscounter.items():
+                combined['swift_%s_hits' % key] = 0
 
 
 
