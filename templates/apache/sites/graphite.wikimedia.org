@@ -25,8 +25,8 @@
 
 		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
 
-		ProxyPass http://graphite.pmtpa.wmnet/
-		ProxyPassReverse http://graphite.pmtpa.wmnet/
+		ProxyPass http://graphite.pmtpa.wmnet:81/
+		ProxyPassReverse http://graphite.pmtpa.wmnet:81/
 	</Location> 
 
 	<Location "/render">
@@ -42,7 +42,22 @@
 	<Location />
 		Satisfy Any
 		Allow from all
-		ProxyPass http://gdash.pmtpa.wmnet/
-		ProxyPassReverse http://gdash.pmtpa.wmnet/
+		ProxyPass http://gdash.pmtpa.wmnet:81/
+		ProxyPassReverse http://gdash.pmtpa.wmnet:81/
+	</Location> 
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName gdash.wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+	<Location />
+		Satisfy Any
+		Allow from all
+		ProxyPass http://gdash.pmtpa.wmnet:81/
+		ProxyPassReverse http://gdash.pmtpa.wmnet:81/
 	</Location> 
 </VirtualHost>
