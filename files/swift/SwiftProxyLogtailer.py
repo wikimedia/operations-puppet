@@ -114,9 +114,9 @@ class SwiftProxyLogtailer(object):
             method = lineBits['method']
             if( method not in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE'] ):
                 method = 'OTHER'
-            # the only HTTP response codes I care about are 200, 204, and 404
+            # I only care about some status codes.
             status = lineBits['status']
-            if( status not in ['200', '201', '204', '304', '404', '500'] ):
+            if( status not in ['200', '201', '204', '304', '404', '500', '503'] ):
                 status = 'other'
             statusname = "durlist_%s" % status   # change 204 into 'durist_204'
             # finally, I want query duration (it's in seconds)
@@ -142,6 +142,7 @@ class SwiftProxyLogtailer(object):
                      'durlist_304':   [],
                      'durlist_404':   [],
                      'durlist_500':   [],
+                     'durlist_503':   [],
                      'durlist_other': []
                     }
         return blankData
