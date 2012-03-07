@@ -1586,7 +1586,7 @@ node /search100[0-6]\.eqiad\.wmnet/ {
 	include role::lucene::front-end::pool1
 }
 
-node /search10(0[0-7])|(10)\.eqiad\.wmnet/ {
+node /search10(0[7-9])|(10)\.eqiad\.wmnet/ {
 
 	include role::lucene::front-end::pool2
 }
