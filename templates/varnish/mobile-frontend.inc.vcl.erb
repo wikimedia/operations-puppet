@@ -1,13 +1,24 @@
 # Varnish VCL include file for mobile frontends
 
 acl wmf_office {
-	"216.38.130.163";
+	"216.38.130.160"/29;
 }
+
+acl carrier_digi {
+	"203.92.128.185";
+	"115.164.0.0"/24;
+	"116.197.0.0"/24;
+}
+
 
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers */
 	if (client.ip ~ wmf_office) {
 		set req.http.X-Carrier = "wikimedia";
+	} else if (client.ip ~ carrier_digi) {
+		if ( req.http.User-Agent ~ "Opera" ) {
+			set req.http.X-Carrier = "DIGI";
+		}
 	}
 	/* once actuall in prod, ensure users can't make requests
 	with a fake X-Carrier header */
@@ -85,13 +96,19 @@ sub vcl_recv {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
+	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
+		call tag_carrier;
+	}
+
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
-	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org", "\1.mobile.\2.org");
 	}
 
 	/* Support the old mobile.wikipedia.org wap gateway */
-	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
 		set req.url = regsub( req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1" );
 	}
@@ -116,9 +133,8 @@ sub vcl_recv {
 	if ( req.url == "/" ) { 
 		set req.url = "/?useformat=mobile";
 	}
-	
+
 	call device_detection;
-	call tag_carrier;
 }
 
 sub vcl_fetch {
