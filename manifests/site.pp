@@ -863,7 +863,6 @@ node "manutius.wikimedia.org" {
 	$corerouters = [
 		"cr1-sdtpa.wikimedia.org",
 		"cr2-pmtpa.wikimedia.org",
-		"csw5-pmtpa.wikimedia.org",
 		"csw1-esams.wikimedia.org",
 		"csw1-sdtpa.wikimedia.org",
 		"br1-knams.wikimedia.org",

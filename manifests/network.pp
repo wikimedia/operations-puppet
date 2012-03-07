@@ -23,9 +23,6 @@ class network::checks {
 	@monitor_host { "csw2-esams": ip_address => "91.198.174.244", group => "routers" }
 	@monitor_service { "csw2-esams bgp status": host => "csw2-esams", group => "routers", description => "BGP status", check_command => "check_bgpstate!${snmp_ro_community}" }
 
-	@monitor_host { "csw5-pmtpa": ip_address => "208.80.152.192", group => "routers" }
-	@monitor_service { "csw5-pmtpa bgp status": host => "csw5-pmtpa", group => "routers", description => "BGP status", check_command => "check_bgpstate!${snmp_ro_community}" }
-
 	@monitor_host { "cr1-eqiad": ip_address => "208.80.154.196", group => "routers" }
 	@monitor_service { "cr1-eqiad interfaces": host => "cr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${snmp_ro_community}" }
 	@monitor_service { "cr1-eqiad bgp status": host => "cr1-eqiad", group => "routers", description => "BGP status", check_command => "check_bgpstate!${snmp_ro_community}" }
