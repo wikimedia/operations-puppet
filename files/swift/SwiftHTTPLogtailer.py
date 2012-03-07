@@ -15,6 +15,7 @@
 ###
 
 # cribbed the apachevhost logtailer for use crunching swift logs
+# though only proxy logs are shown here, this pattern works for both the proxies and the backend storage servers.
 # sample logs (delete, get, head, and put):
 # format: month day time host process ip ip date action path httpver resp - useragent auth - - - - - dur
 #  Feb  2 23:09:30 ms-fe1 proxy-server 10.0.11.21 10.0.11.21 02/Feb/2012/23/09/30 DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.62/6/62/1_single_stroke_roll.svg/150px-1_single_stroke_roll.svg.png HTTP/1.0 204 - PHP-CloudFiles/1.7.10 mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3470
@@ -38,7 +39,7 @@ import copy
 from ganglia_logtailer_helper import GangliaMetricObject
 from ganglia_logtailer_helper import LogtailerParsingException, LogtailerStateException
 
-class SwiftProxyLogtailer(object):
+class SwiftHTTPLogtailer(object):
     # only used in daemon mode
     period = 30
     def __init__(self):

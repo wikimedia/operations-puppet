@@ -32,6 +32,20 @@ class swift::base($hash_path_suffix) {
 			group => swift,
 			mode => 0444;
 	}
+	include ganglia::logtailer
+	file { "/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py":
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/swift/SwiftHTTPLogtailer.py",
+		require => Package['ganglia-logtailer']
+	}
+	cron { swift-proxy-ganglia:
+		command => "/usr/sbin/ganglia-logtailer --classname SwiftHTTPLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1",
+		user => root,
+		minute => '*',
+		ensure => present
+	}
 }
 
 # set up iptables rules to protect these hosts
@@ -164,20 +178,6 @@ class swift::proxy::config(
 		content => template("swift/proxy-server.conf.erb")
 	}
 
-	include ganglia::logtailer
-	file { "/usr/share/ganglia-logtailer/SwiftProxyLogtailer.py":
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/swift/SwiftProxyLogtailer.py",
-		require => Package['ganglia-logtailer']
-	}
-	cron { swift-proxy-ganglia:
-		command => "/usr/sbin/ganglia-logtailer --classname SwiftProxyLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1",
-		user => root,
-		minute => '*',
-		ensure => present
-	}
 }
 
 class swift::storage {
