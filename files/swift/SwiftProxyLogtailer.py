@@ -220,6 +220,8 @@ class SwiftProxyLogtailer(object):
         # - for each status code (200, 204, etc.)
         # - - number of hits
         # - - avg, 90th, and max duration
+        # for each status (200, 204, etc.) we want to calcualte
+        # - number of hits total (across all methods)
         # each metric will be named:
         #   method_hits, method_avg, method_90th, method_max
         #   method_status_hits, method_status_avg, method_status_90th, method_status_max
@@ -227,21 +229,26 @@ class SwiftProxyLogtailer(object):
         #   (for example, put will never return 200)
 
         totalhits = 0
+        statuscounter = {} #this will have counts for each status
         for (method, stats) in mydata.iteritems():
             # method = get, put, etc., stats = dict of statuses
             methodhits = 0
             methodstats = []
             for (status, durs) in stats.iteritems():
                 # status = 'durlist_200', etc., durs = list of durations
+                statusnum = status[8:] #turn 'durlist_200' into '200' (string, not int)
                 totalhits += len(durs)
                 methodhits += len(durs)
                 statushits = len(durs)
+                try: #increment the statuscounter for this status
+                    statuscounter[statusnum] += statushits
+                except KeyError:
+                    statuscounter[statusnum] = statushits
                 if statushits == 0:
                     # skip calculating durations if the list is empty.
                     continue
                 # at this point, we know there's stuff in durs
                 # calculate avg, 90th, and max
-                statusnum = status[8:] #turn 'durlist_200' into '200' (string, not int)
                 #print "statusO: %s statusnum %s" % (status, statusnum)
                 durs.sort()
                 try:
@@ -272,6 +279,8 @@ class SwiftProxyLogtailer(object):
             #print ">> %s %s<<" % (sum(durs), len(durs))
             #combined['%s_%s' % (method, 'avg')] = sum(durs) / len(durs)
         combined['swift_hits'] = totalhits
+        for (key, val) in statuscounter.items():
+            combined['swift_%s_hits' % key] = val
 
 
 
