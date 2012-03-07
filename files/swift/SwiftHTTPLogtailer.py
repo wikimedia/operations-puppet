@@ -15,13 +15,16 @@
 ###
 
 # cribbed the apachevhost logtailer for use crunching swift logs
-# though only proxy logs are shown here, this pattern works for both the proxies and the backend storage servers.
+# sadly the proxy server log line format is slightly different from the container, object, and account server log line format.
 # sample logs (delete, get, head, and put):
-# format: month day time host process ip ip date action path httpver resp - useragent auth - - - - - dur
+# proxy format: month day time host process ip ip date action path httpver resp - useragent auth - - - - - dur
 #  Feb  2 23:09:30 ms-fe1 proxy-server 10.0.11.21 10.0.11.21 02/Feb/2012/23/09/30 DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.62/6/62/1_single_stroke_roll.svg/150px-1_single_stroke_roll.svg.png HTTP/1.0 204 - PHP-CloudFiles/1.7.10 mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3470
 #  Feb  2 23:08:07 ms-fe1 proxy-server 208.80.152.165 208.80.152.165 02/Feb/2012/23/08/07 GET /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.42/4/42/Grattacielo_pirelli.JPG/220px-Grattacielo_pirelli.JPG HTTP/1.0 404 - Python-urllib/1.17 - - - - - - 0.2195
 #  Feb  2 23:08:24 ms-fe1 proxy-server 10.0.6.210 10.0.6.210 02/Feb/2012/23/08/24 HEAD /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe HTTP/1.0 204 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3117
 #  Feb  2 23:08:08 ms-fe1 proxy-server 127.0.0.1 127.0.0.1 02/Feb/2012/23/08/08 PUT /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.0d/0/0d/Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_lokomotiva_362.087_%252802%2529.jpg/120px-Hru%25C5%25A1ovany_u_Brna%252C_%25C5%25BEelezni%25C4%258Dn%25C3%25AD_stanice%252C_loko HTTP/1.0 201 - - mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc 4037 - - - - 0.1491
+# storage, container, and object format: month day time host process ip - - date "action path" resp - "-" "-" "user-agent" dur
+#  Mar  7 19:56:55 ms-be1 container-server 10.0.6.202 - - [07/Mar/2012:19:56:55 +0000] "PUT /path/to/jpg" 201 - "-" "-" "mozilla" 0.0006
+#  Mar  7 19:59:11 ms-be1 object-server 10.0.6.210 - - [07/Mar/2012:19:59:11 +0000] "GET jpg" 200 5969 "-" "-" "'Mozilla/'" 0.0313
 #
 # I want to ignore the authentication logs and just focus on images and thumbnails
 # ignore these (swauth in either the process name or useragent spots):
@@ -56,8 +59,13 @@ class SwiftHTTPLogtailer(object):
         # this is what will match the apache lines
         # see http://wikitech.wikimedia.org/view/Swift/Logging_and_Metrics for more detail
         # format: month day time host process ip ip date method path httpver resp - useragent auth - - - - - dur
-        swiftLogFormat = '%date %host %process %client %remote_ip %slashdate %method %path %httpver %status %referrer %useragent %authtoken %reqbytes %respbytes %etag %transid %headers %dur'
-        self.reg = re.compile(self.swiftLogToRegex(swiftLogFormat))
+        swiftProxyLogFormat = '%date %host %process %client %remote_ip %slashdate %method %path %httpver %status %referrer %useragent %authtoken %reqbytes %respbytes %etag %transid %headers %dur'
+        swiftStorageLogFormat = '%date %host %process %client - - %bracketdate "%method %path" %status %respbytes "%referrer" "-" "%quoteduseragent" %dur'
+        swiftProcessLogFormat = '%date %host %process .*'
+
+        self.proxyreg = re.compile(self.swiftLogToRegex(swiftProxyLogFormat))
+        self.storagereg = re.compile(self.swiftLogToRegex(swiftStorageLogFormat))
+        self.processreg = re.compile(self.swiftLogToRegex(swiftProcessLogFormat))
 
         # assume we're in daemon mode unless set_check_duration gets called
         self.dur_override = False
@@ -71,12 +79,14 @@ class SwiftHTTPLogtailer(object):
             '%client':              '(?P<client>[^ ]+)',
             '%remote_ip':           '(?P<remote_ip>[^ ]+)',
             '%slashdate':           '(?P<slashdate>[^ ]+)',     #eg 02/Feb/2012/23/08/24
+            '%bracketdate':          '(?P<bracketdate>[^ ]+ [^ ]+)',     #eg [07/Mar/2012:19:56:55 +0000]
             '%method':              '(?P<method>[A-Z]+)',   #GET, HEAD, PUT, DELETE, etc.
             '%path':                '(?P<path>[^ ]+)',
             '%httpver':             '(?P<httpver>[^ ]+)',
             '%status':              '(?P<status>[^ ]+)',    # 404, 204, 200, etc.
             '%referrer':            '(?P<referrer>[^ ]+)',
             '%useragent':           '(?P<useragent>[^ ]+)',
+            '%quoteduseragent':     '(?P<useragent>[^"]+)',
             '%authtoken':           '(?P<authtoken>[^ ]+)',
             '%reqbytes':            '(?P<reqbytes>[^ ]+)',
             '%respbytes':           '(?P<respbytes>[^ ]+)',
@@ -100,8 +110,21 @@ class SwiftHTTPLogtailer(object):
         updating the internal state variables.'''
         self.lock.acquire()
 
+        # choose wihch regex to use to parse the log line depending on the process name
         try:
-            regMatch = self.reg.match(line)
+            procMatch = self.processreg.match(line)
+        except Exception, e:
+            self.lock.release()
+            raise LogtailerParsingException, "regmatch or contents failed with %s" % e
+        if procMatch:
+            proc = procMatch.group('process')
+            if(proc == 'proxy-server'):
+                reg = self.proxyreg
+            else:
+                reg = self.storagereg
+        #ok, we've got our regex; go on and match the rest of the line
+        try:
+            regMatch = reg.match(line)
         except Exception, e:
             self.lock.release()
             raise LogtailerParsingException, "regmatch or contents failed with %s" % e
