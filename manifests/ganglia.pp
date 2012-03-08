@@ -25,7 +25,7 @@ class ganglia {
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
-		"pmtpa" => "239.192.0",
+		"pmtpa"	=> "239.192.0",
 		"eqiad"	=> "239.192.1",
 		"esams"	=> "239.192.20",
 	}
@@ -66,9 +66,15 @@ class ganglia {
 		"squids_upload"	=>	{
 			"name"		=> "Upload squids",
 			"ip_oct"	=> "6" },
+		"cache_text"	=> {
+			"name"		=> "Text caches",
+			"ip_oct"	=> "20" },
 		"cache_bits"	=> {
 			"name"		=> "Bits caches",
 			"ip_oct"	=> "21" },
+		"cache_upload"	=> {
+			"name"		=> "Upload caches",
+			"ip_oct"	=> "22" },
 		"payments"	=> {
 			"name"		=> "Fundraiser payments",
 			"ip_oct"	=> "23" },
