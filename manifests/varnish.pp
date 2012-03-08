@@ -147,6 +147,7 @@ class varnish {
 		mount { "/srv/${title}":
 			require => File["/srv/${title}"],
 			device => "/dev/${title}",
+			fstype => "xfs",
 			options => "noatime,nodiratime,nobarrier,logbufs=8",
 			ensure => mounted
 		}
