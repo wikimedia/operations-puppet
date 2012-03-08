@@ -218,15 +218,32 @@ class nagios::monitor {
 			       File["/etc/nagios/puppet_checks.d"] ];
 	}
 
-	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+	class snmp {
 
-	package { "snmpd":
-		ensure => latest;
-	}
+		file { "/etc/snmp/snmptrapd.conf":
+			source => "puppet:///files/snmp/snmptrapd.conf",
+			owner => root,
+			group => root,
+			mode => 0600;
+		}
 
-	package { "snmptt":
-		ensure => latest;
+		file { "/etc/snmp/snmptt.conf":
+			source => "puppet:///files/snmp/snmptt.conf",
+			owner => root,
+			group => root,
+			mode => 0644;
+		}
+
+		# snmp tarp stuff
+		systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+
+		package { "snmpd":
+			ensure => latest;
+		}
+
+		package { "snmptt":
+			ensure => latest;
+		}
 	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
@@ -270,20 +287,6 @@ class nagios::monitor {
 		owner => root,
 		group => root,
 		mode => 0755;
-	}
-
-	file { "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,
-		group => root,
-		mode => 0600;
-	}
-
-	file { "/etc/snmp/snmptt.conf":
-		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,
-		group => root,
-		mode => 0644;
 	}
 
 	# Fix permissions
