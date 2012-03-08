@@ -417,6 +417,14 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 	include role::cache::text
 }
 
+node /^cp102[1-8]\.eqiad\.wmnet$/ {
+	if $hostname =~ /^cp102[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include role::cache::upload
+}
+
 # eqiad varnish for m.wikipedia.org
 node /cp104[1-4].wikimedia.org/ {
 

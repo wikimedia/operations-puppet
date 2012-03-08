@@ -137,6 +137,28 @@ class varnish {
 		}
 	}
 
+	define setup_filesystem() {
+		file { "/srv/${title}":
+			owner => root,
+			group => root,
+			ensure => directory
+		}
+
+		mount { "/srv/${title}":
+			require => File["/srv/${title}"],
+			device => "/dev/${title}",
+			options => "noatime,nodiratime,nobarrier,logbufs=8",
+			ensure => mounted
+		}
+
+		file { "/srv/${title}/varnish.persist":
+			require => Mount["/srv/${title}"],
+			owner => root,
+			group => root,
+			ensure => present
+		}
+	}
+
 	class htcpd {
 		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
 		

@@ -147,18 +147,18 @@ class role::cache {
 					'cp1026.eqiad.wmnet',
 					'cp1027.eqiad.wmnet',
 					'cp1028.eqiad.wmnet',
-					'cp1029.eqiad.wmnet',
-					'cp1030.eqiad.wmnet',
-					'cp1031.eqiad.wmnet',
-					'cp1032.eqiad.wmnet',
-					'cp1033.eqiad.wmnet',
-					'cp1034.eqiad.wmnet',
-					'cp1035.eqiad.wmnet',
-					'cp1036.eqiad.wmnet',
-					'cp1037.eqiad.wmnet',
-					'cp1038.eqiad.wmnet',
-					'cp1039.eqiad.wmnet',
-					'cp1040.eqiad.wmnet'
+					# 'cp1029.eqiad.wmnet',
+					# 'cp1030.eqiad.wmnet',
+					# 'cp1031.eqiad.wmnet',
+					# 'cp1032.eqiad.wmnet',
+					# 'cp1033.eqiad.wmnet',
+					# 'cp1034.eqiad.wmnet',
+					# 'cp1035.eqiad.wmnet',
+					# 'cp1036.eqiad.wmnet',
+					# 'cp1037.eqiad.wmnet',
+					# 'cp1038.eqiad.wmnet',
+					# 'cp1039.eqiad.wmnet',
+					# 'cp1040.eqiad.wmnet'
 				],
 				"esams" => [
 					'knsq16.knams.wikimedia.org',
@@ -331,7 +331,77 @@ class role::cache {
 	}
 
 	class upload {
-		class { "role::cache::squid::common": role => "upload" }
+		if $::site == "eqiad" {
+			# Varnish
+
+			$cluster = "cache_upload"
+			$nagios_group = "cache_upload_${::site}"
+
+			include lvs::configuration, role::cache::configuration
+			
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
+
+			$varnish_fe_directors = {
+				"pmtpa" => {},
+				"eqiad" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
+				"esams" => {},
+			}
+
+			system_role { "role::cache::upload": description => "upload Varnish cache server" }
+
+			include standard,
+				varnish::htcpd,
+				varnish::logging,
+				varnish::monitoring::ganglia,
+				nrpe
+
+			varnish::setup_filesystem{ ["sda3", "sdb3"]:
+				before => Varnish::Instance["upload-backend"]
+			}
+
+			varnish::instance { "upload-backend":
+				name => "",
+				vcl => "upload-backend",
+				port => 81,
+				admin_port => 6083,
+				storage => "-s sdb3=file,/srv/sdb3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
+				backends => [ "10.0.0.246", "10.0.0.252", "10.2.1.27" ],
+				directors => { "backend" => [ "10.0.0.246" ], "ms5" => [ "10.0.0.252" ], "swift-thumbs" => [ "10.2.1.27" ] },
+				backend_options => {
+					'port' => 80,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 1000,
+					'probe' => "upload",
+					'retry5x' => 1
+					},
+				xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+			}
+
+			varnish::instance { "upload-frontend":
+				name => "frontend",
+				vcl => "upload-frontend",
+				port => 80,
+				admin_port => 6082,
+				backends => $role::cache::configuration::active_nodes['upload'][$::site],
+				directors => $varnish_fe_directors[$::site],
+				backend_options => {
+					'port' => 81,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "2s",
+					'max_connections' => 100000,
+					'probe' => "varnish",
+					'retry5x' => 0
+					},
+				xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+			}
+		}
+		else {
+			# Squid
+			class { "role::cache::squid::common": role => "upload" }
+		}
 	}
 
 	class bits {
