@@ -1482,10 +1482,21 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 
 node "oxygen.wikimedia.org" {
 	include standard,
+	$gid=500
+	system_role { "misc::log-collector": description => "log collector" }
+	sudo_user { "awjrichards": privileges => ['ALL = NOPASSWD: ALL'] }
+	include standard,
+		groups::wikidev,
+		admins::restricted,
+		accounts::awjrichards,
+		accounts::datasets,
+		misc::udp2log::packetloss,
+		misc::udp2log::locke,
+		misc::udp2log::lockeconfig,
+		misc::udp2log::monitoring,
 		misc::squid-logging::multicast-relay,
 		nrpe
 }
-
 
 node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
