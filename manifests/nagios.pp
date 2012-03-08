@@ -244,6 +244,41 @@ class nagios::monitor {
 		package { "snmptt":
 			ensure => latest;
 		}
+
+
+		# deny service snmp-trap (port 162) for external networks
+
+		class iptables-purges {
+
+			require "iptables::tables"
+			iptables_purge_service{  "deny_pub_snmp-trap": service => "snmp-trap" }
+		}
+
+		class iptables-accepts {
+
+			require "nagios::monitor::snmp::iptables-purges"
+
+			iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_153": source => "208.80.153.128/26", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_154": source => "208.80.154.0/24", service => "all", jump => "ACCEPT" }
+		}
+
+		class iptables-drops {
+
+			require "nagios::monitor::snmp::iptables-accepts"
+			iptables_add_service{ "deny_pub_snmp-trap": service => "snmp-trap", jump => "DROP" }
+		}
+
+		class iptables {
+
+			require "nagios::monitor::snmp::iptables-drops"
+			iptables_add_exec{ "${hostname}": service => "snmp-trap" }
+		}
+
+		require "nagios::monitor::snmp::iptables"
 	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
