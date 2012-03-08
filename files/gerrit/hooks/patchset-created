@@ -39,7 +39,7 @@ def lint_test(options, helper):
 		sys.stderr.write("tmpdir isn't set in the configuration, not running lint tests.")
 		# Not having tmpdir is dangerous!
 		return
-	if options.project == "operations/private":
+	if options.project != "operations/puppet":
 		# TODO: make this configurable
 		return
 	ref = helper.get_ref(options.change, options.patchset)
