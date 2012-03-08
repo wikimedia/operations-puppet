@@ -557,6 +557,9 @@ class ldap::client::autofs {
 		$nfs_server_name = $instanceproject ? {
 			default => "labs-nfs1",
 		}
+		$gluster_server_name = $instanceproject ? {
+			default => "labstore1.pmtpa.wmnet",
+		}
 	} else {
 		$homedir_location = "/home"
 		$nfs_server_name = "nfs-home.pmtpa.wmnet"
