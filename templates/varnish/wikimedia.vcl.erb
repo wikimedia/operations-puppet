@@ -157,7 +157,7 @@ sub vcl_recv {
 		return (lookup);
 	}
 	
-	<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
+<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
 	/* Ensure we only accept Forwarded headers from the SSL proxies */
 	if (client.ip ~ allow_xff) {
 		// Do nothing. It seems you can't do !~ with IP matches
@@ -168,7 +168,7 @@ sub vcl_recv {
 		set req.http.X-Forwarded-For = client.ip;
 		unset req.http.X-Forwarded-Proto;
 	}
-	<% end -%>
+<% end -%>
 
 	/* Select the default backend(s) */
 	set req.backend = backend;
@@ -183,11 +183,11 @@ sub vcl_recv {
 sub vcl_fetch {
 	set beresp.grace = 60m;
 
-	<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
 	if (beresp.status > 499 && beresp.status < 505) {
 		return(restart);
 	}
-	<% end -%>
+<% end -%>
 	if (beresp.status > 400) {
 		set beresp.ttl = 0s;
 		return(hit_for_pass);
@@ -225,11 +225,11 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-	<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
 	if (obj.status == 503 && req.restarts < 4) {
 		return(restart);
 	}
-	<% end -%>
+<% end -%>
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
