@@ -88,7 +88,7 @@ class svn::server {
 
 	cron {
 		doc_generation:
-			command => "(cd /home/mwdocs/phase3 && svn up && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",
+			command => "(cd /home/mwdocs/phase3 && git fetch && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",
 			user => "mwdocs",
 			hour => 0,
 			minute => 0;
@@ -100,7 +100,7 @@ class svn::server {
 			minute => 0;
 	}
 
-	exec { "/usr/bin/svn co file:///svnroot/mediawiki/trunk/phase3":
+	exec { "/usr/bin/git co https://gerrit.wikimedia.org/r/p/mediawiki/core.git":
 		creates => "/var/mwdocs/phase3",
 		cwd => "/var/mwdocs",
 		user => "mwdocs",
