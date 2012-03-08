@@ -366,7 +366,7 @@ class role::cache {
 				admin_port => 6083,
 				storage => "-s sda3=file,/srv/sdb3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
 				backends => [ "10.0.0.246", "10.0.0.252", "10.2.1.27" ],
-				directors => { "backend" => [ "10.0.0.246" ], "ms5" => [ "10.0.0.252" ], "swift-thumbs" => [ "10.2.1.27" ] },
+				directors => { "backend" => [ "10.0.0.246" ], "ms5" => [ "10.0.0.252" ], "swift_thumbs" => [ "10.2.1.27" ] },
 				backend_options => {
 					'port' => 80,
 					'connect_timeout' => "5s",
