@@ -482,7 +482,8 @@ class base {
 		ssh
 
 	if $realm == "labs" {
-		include base::instance-upstarts
+		include base::instance-upstarts,
+			generic::gluster
 	}
 
 }
