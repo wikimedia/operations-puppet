@@ -392,6 +392,7 @@ node "brewster.wikimedia.org" {
 node  "cadmium.eqiad.wmnet" {
 	$gid=500
 	include	standard,
+		groups::wikidev,
 		accounts::catrope
 }
 
