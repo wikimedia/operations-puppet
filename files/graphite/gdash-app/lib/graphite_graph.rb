@@ -31,6 +31,7 @@ class GraphiteGraph
                    :hide_grid => nil,
                    :ymin => nil,
                    :ymax => nil,
+                   :logbase => nil,
                    :linewidth => nil,
                    :linemode => nil,
                    :fontsize => nil,
@@ -261,6 +262,7 @@ class GraphiteGraph
     url_parts << "hideGrid=#{properties[:hide_grid]}" if properties[:hide_grid]
     url_parts << "yMin=#{properties[:ymin]}" if properties[:ymin]
     url_parts << "yMax=#{properties[:ymax]}" if properties[:ymax]
+    url_parts << "logBase=#{properties[:logbase]}" if properties[:logbase]
     url_parts << "lineWidth=#{properties[:linewidth]}" if properties[:linewidth]
     url_parts << "lineMode=#{properties[:linemode]}" if properties[:linemode]
     url_parts << "fontSize=#{properties[:fontsize]}" if properties[:fontsize]
@@ -291,10 +293,10 @@ class GraphiteGraph
 
         unless target.include?(:subgroup)
           if target[:alias]
-            if target[:alias] == "none"
-            	graphite_target = graphite_target
+            if target[:alias].to_s == "none"
+                graphite_target = graphite_target
             else
-            	graphite_target = "alias(#{graphite_target},\"#{target[:alias]}\")"
+                graphite_target = "alias(#{graphite_target},\"#{target[:alias]}\")"
              end
           else
             graphite_target = "alias(#{graphite_target},\"#{name.to_s.capitalize}\")"
