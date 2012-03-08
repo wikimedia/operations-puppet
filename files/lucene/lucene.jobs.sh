@@ -23,9 +23,11 @@ function import-db {
 	dumpfile="$dumps/dump-$dbname.xml"
 	timestamp=`date -u +%Y-%m-%d`
 
-	slave=`php $MWinstall/common/php/maintenance/getSlaveServer.php $dbname`
+	# not going to compute this param as it's broken in dumpBackup.php
+	#slave=`php $MWinstall/common/multiversion/MWScript.php getSlaveServer.php $dbname`
+
 	echo "Dumping $dbname..."
-	php $MWinstall/common/multiversion/MWScript.php "dumpBackup.php $dbname --current" > $dumpfile && 
+	php $MWinstall/common/multiversion/MWScript.php dumpBackup.php $dbname --current > $dumpfile && 
 	import-file $dumpfile $dbname &&
 	(
 	  if [ -e $import ]; then
