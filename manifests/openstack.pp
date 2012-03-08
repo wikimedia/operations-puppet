@@ -266,6 +266,12 @@ class openstack::project-storage {
 			mode => 0600,
 			source => "puppet:///private/gluster/glustermanager",
 			require => Ssh_authorized_key["glustermanager"];
+		"/var/run/glustermanager":
+			ensure => directory,
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0700,
+			require => Systemuser["glustermanager"];
 	}
 }
 
