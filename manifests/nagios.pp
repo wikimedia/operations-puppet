@@ -462,12 +462,12 @@ class nagios::monitor {
 
 #FIXME - lcarr 2012/02/17
 # nagios::monitor::newmonitor will augment/replace many nagios
-# features and uses nagios3 exclusively
+# features and uses icinga exclusively
 # However, these items may break the existing setup on spence
 # DO NOT FOR ANY REASON put this class on spence
 
 class nagios::monitor::newmonitor {
-$nagios_config_dir = "/etc/nagios3"
+$icinga_config_dir = "/etc/icinga"
 @monitor_group { "routers": description => "IP routers" }
 
 	class {"webserver::php5": ssl => "true";}
@@ -475,7 +475,8 @@ $nagios_config_dir = "/etc/nagios3"
 	include webserver::php5-gd,
 		generic::apache::no-default-site,
 		mysql,
-		nrpe::new
+		nrpe::new,
+		nagios::monitor::jobqueue::new
 
 	include passwords::nagios::mysql
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
@@ -483,43 +484,43 @@ $nagios_config_dir = "/etc/nagios3"
 	install_certificate{ "star.wikimedia.org": }
 
 	# puppet_hosts.cfg must be first
-	$puppet_files = [ "${nagios_config_dir}/puppet_hosts.cfg",
-			  "${nagios_config_dir}/puppet_hostgroups.cfg",
-			  "${nagios_config_dir}/puppet_hostextinfo.cfg",
-			  "${nagios_config_dir}/puppet_servicegroups.cfg",
-			  "${nagios_config_dir}/puppet_services.cfg" ]
+	$puppet_files = [ "${icinga_config_dir}/puppet_hosts.cfg",
+			  "${icinga_config_dir}/puppet_hostgroups.cfg",
+			  "${icinga_config_dir}/puppet_hostextinfo.cfg",
+			  "${icinga_config_dir}/puppet_servicegroups.cfg",
+			  "${icinga_config_dir}/puppet_services.cfg" ]
 
 	$static_files = [
-#			  "${nagios_config_dir}/nagios.cfg",
-			  "${nagios_config_dir}/cgi.cfg",
-			  "${nagios_config_dir}/checkcommands.cfg",
-			  "${nagios_config_dir}/contactgroups.cfg",
-			  "${nagios_config_dir}/contacts.cfg",
-			  "${nagios_config_dir}/migration.cfg",
-			  "${nagios_config_dir}/misccommands.cfg",
-			  "${nagios_config_dir}/resource.cfg",
-			  "${nagios_config_dir}/timeperiods.cfg",
-			  "${nagios_config_dir}/htpasswd.users"]
+			  "${icinga_config_dir}/icinga.cfg",
+			  "${icinga_config_dir}/cgi.cfg",
+			  "${icinga_config_dir}/checkcommands.cfg",
+			  "${icinga_config_dir}/contactgroups.cfg",
+			  "${icinga_config_dir}/contacts.cfg",
+			  "${icinga_config_dir}/migration.cfg",
+			  "${icinga_config_dir}/misccommands.cfg",
+			  "${icinga_config_dir}/resource.cfg",
+			  "${icinga_config_dir}/timeperiods.cfg",
+			  "${icinga_config_dir}/htpasswd.users"]
 
-	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
+	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu" ] }
 
 	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
 	# nagios-images: images and icons for the web frontend
 
-	package { [ 'nagios3', 'nagios-images' ]:
+	package { [ 'icinga', 'icinga-doc' ]:
 		ensure => latest;
 	}
 
-	service { "nagios3":
+	service { "icinga":
 		require => File[$puppet_files],
 		ensure => running,
 		subscribe => [ File[$puppet_files],
 			       File[$static_files],
-			       File["/etc/nagios3/puppet_checks.d"] ];
+			       File["/etc/icinga/puppet_checks.d"] ];
 	}
 
 	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "icinga" ] }
 
 	package { "snmpd":
 		ensure => latest;
@@ -540,49 +541,62 @@ $nagios_config_dir = "/etc/nagios3"
 		ensure => latest;
 	}
 
-	# install the nagios Apache site
-#	file { "/etc/apache2/sites-available/nagios3.wikimedia.org":
-#		ensure => present,
-#		owner => root,
-#		group => root,
-#		mode => 0444,
-#		source => "puppet:///files/apache/sites/nagios3.wikimedia.org";
-#	}
+	# install the icinga Apache site
+	file { "/etc/apache2/sites-available/icinga.wikimedia.org":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/apache/sites/icinga.wikimedia.org";
+	}
 
-#	apache_site { nagios3: name => "nagios3" }
+	apache_site { icinga: name => "icinga" }
 
 	# make sure the directory for individual service checks exists
-	file { "/etc/nagios3":
+	file { 
+		"/etc/icinga":
 			ensure => directory,
 			owner => root,
 			group => root,
 			mode => 0755;
 
-		"/etc/nagios3/puppet_checks.d":
+		"/etc/icinga/puppet_checks.d":
 			ensure => directory,
 			owner => root,
 			group => root,
 			mode => 0755;
 
-		"/usr/local/nagios":
+		"/etc/nagios":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
+
+		"/etc/nagios/puppet_checks.d":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
+
+		"/usr/lib/nagios":
 			owner => root,
 			group => root,
 			mode => 0755,
 			ensure => directory;
 
-		"/usr/local/nagios/libexec":
+		"/usr/lib/nagios/plugins":
 			owner => root,
 			group => root,
 			mode => 0755,
 			ensure => directory;
 
-		"/usr/local/nagios/libexec/eventhandlers":
+		"/usr/lib/nagios/plugins/eventhandlers":
 			owner => root,
 			group => root,
 			mode => 0755,
 			ensure => directory;
 
-		"/usr/local/nagios/libexec/eventhandlers/submit_check_result":
+		"/usr/lib/nagios/plugins/eventhandlers/submit_check_result":
 			source => "puppet:///files/nagios/submit_check_result",
 			owner => root,
 			group => root,
@@ -601,33 +615,6 @@ $nagios_config_dir = "/etc/nagios3"
 			mode => 0644;
 	}
 
-	# Remove default configuration files that conflict
-	file {
-		"/etc/nagios3/conf.d/contacts_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/hostgroups_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/timeperiods_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/services_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/extinfo_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/localhost_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/generic-service_nagios2.cfg":
-			ensure => absent;
-
-		"/etc/nagios3/conf.d/generic-host_nagios2.cfg":
-			ensure => absent;
-	}
-
 	# Fix permissions
 	file { $puppet_files:
 		mode => 0644,
@@ -635,11 +622,12 @@ $nagios_config_dir = "/etc/nagios3"
 	}
 
 	# also fix permissions on all individual service files
-	exec { "fix_nagios3_perms":
-		command => "/bin/chmod -R a+r /etc/nagios3/puppet_checks.d";
-
+	exec {
 		"fix_nagios_perms":
 		command => "/bin/chmod -R a+r /etc/nagios/puppet_checks.d";
+
+		"fix_icinga_perms":
+		command => "/bin/chmod -R a+r /etc/icinga/puppet_checks.d";
 		}
 
 	# Script to purge resources for non-existent hosts
@@ -650,77 +638,64 @@ $nagios_config_dir = "/etc/nagios3"
 		mode => 0755;
 	}
 
-#	file { "/etc/init.d/nagios":
-#		source => "puppet:///files/nagios/nagios-init",
-#		owner => root,
-#		group => root,
-#		mode => 0755;
-#	}
-
-#	file { "/etc/nagios3/nagios.cfg":
-#		source => "puppet:///files/nagios/nagios3.cfg",
-#		owner => root,
-#		group => root,
-#		mode => 0644;
-#	}
 
 # Nagios check configuration files
 
-	file { "/etc/nagios3/cgi.cfg":
-			source => "puppet:///files/nagios3/cgi.cfg",
+	file { "/etc/icinga/cgi.cfg":
+			source => "puppet:///files/icinga/cgi.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/nsca_payments.cfg":
+		"/etc/icinga/nsca_payments.cfg":
 			source => "puppet:///private/nagios/nsca_payments.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/htpasswd.users":
+		"/etc/icinga/htpasswd.users":
 			source => "puppet:///private/nagios/htpasswd.users",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/checkcommands.cfg":
+		"/etc/icinga/checkcommands.cfg":
 			content => template("nagios/checkcommands.cfg.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/contactgroups.cfg":
+		"/etc/icinga/contactgroups.cfg":
 			source => "puppet:///files/nagios/contactgroups.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/contacts.cfg":
+		"/etc/icinga/contacts.cfg":
 			source => "puppet:///private/nagios/contacts.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/migration.cfg":
+		"/etc/icinga/migration.cfg":
 			source => "puppet:///files/nagios/migration.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/misccommands.cfg":
+		"/etc/icinga/misccommands.cfg":
 			source => "puppet:///files/nagios/misccommands.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/resource.cfg":
-			source => "puppet:///files/nagios/resource.cfg",
+		"/etc/icinga/resource.cfg":
+			source => "puppet:///files/icinga/resource.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
-		"/etc/nagios3/timeperiods.cfg":
+		"/etc/icinga/timeperiods.cfg":
 			source => "puppet:///files/nagios/timeperiods.cfg",
 			owner => root,
 			group => root,
@@ -964,45 +939,49 @@ $nagios_config_dir = "/etc/nagios3"
 
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
+	exec { "purge_decommissioned":
+		command => "/usr/local/sbin/purge-nagios-resources.py $puppet_files /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
+		timeout => 60;
+	}
 
 	# WMF custom service checks
 	file {
-		"/usr/local/nagios/libexec/check_mysql-replication.pl":
+		"/usr/lib/nagios/plugins/check_mysql-replication.pl":
 			source => "puppet:///files/nagios/check_mysql-replication.pl",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_cert":
+		"/usr/lib/nagios/plugins/check_cert":
 			owner => root,
 			group => root,
 			mode => 0755,
 			source => "puppet:///files/nagios/check_cert";
-		"/usr/local/nagios/libexec/check_all_memcached.php":
+		"/usr/lib/nagios/plugins/check_all_memcached.php":
 			source => "puppet:///files/nagios/check_all_memcached.php",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_bad_apaches":
+		"/usr/lib/nagios/plugins/check_bad_apaches":
 			source => "puppet:///files/nagios/check_bad_apaches",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_longqueries":
+		"/usr/lib/nagios/plugins/check_longqueries":
 			source => "puppet:///files/nagios/check_longqueries",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_MySQL.php":
+		"/usr/lib/nagios/plugins/check_MySQL.php":
 			source => "puppet:///files/nagios/check_MySQL.php",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check-ssl-cert":
+		"/usr/lib/nagios/plugins/check-ssl-cert":
 			source => "puppet:///files/nagios/check-ssl-cert",
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_stomp.pl":
+		"/usr/lib/nagios/plugins/check_stomp.pl":
 			source => "puppet:///files/nagios/check_stomp.pl",
 			owner => root,
 			group => root,
@@ -1029,6 +1008,26 @@ class nagios::monitor::jobqueue {
 
 }
 
+#this class is for the new icinga install
+# DO NOT install this on spence
+class nagios::monitor::jobqueue::new {
+
+	file {"/usr/lib/nagios/plugins/check_job_queue":
+		source => "puppet:///files/nagios/check_job_queue",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+
+	monitor_service { "check_job_queue":
+		description => "check_job_queue",
+		check_command => "check_job_queue",
+		normal_check_interval => 15,
+		retry_check_interval => 5,
+		critical => "false"
+	}
+
+}
 class nagios::monitor::pager {
 
 	#package { "gammu":
