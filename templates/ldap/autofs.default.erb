@@ -123,5 +123,5 @@ BROWSE_MODE="yes"
 # to "yes" otherwise it will not be used.
 USE_MISC_DEVICE="no"
 #
-OPTIONS="-DSERVNAME=<%= nfs_server_name %> -DHOMEDIRLOC=<%= homedir_location %>"
+OPTIONS="<% if has_variable?("gluster_server_name") then %>-DGSERVNAME=<%= gluster_server_name %> <% end %><% if has_variable?("nfs_server_name") then %>-DSERVNAME=<%= nfs_server_name %> <% end %><% if has_variable?("nfs_server_name") then %>-DHOMEDIRLOC=<%= homedir_location %> <% end %><% if has_variable?("instanceproject") then %>-DPROJECT=<%= instanceproject %> <% end %>"
 #
