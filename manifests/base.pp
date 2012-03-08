@@ -484,6 +484,14 @@ class base {
 	if $realm == "labs" {
 		include base::instance-upstarts,
 			generic::gluster
+
+		# Add directory for data automounts
+		file { "/data":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
+		}
 	}
 
 }
