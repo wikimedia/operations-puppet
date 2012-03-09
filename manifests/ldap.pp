@@ -489,6 +489,9 @@ class ldap::client::utils {
 		"/usr/local/sbin/manage-exports":
 			ensure => link,
 			target => "/usr/local/lib/user-management/manage-exports";
+		"/usr/local/sbin/manage-volumes":
+			ensure => link,
+			target => "/usr/local/lib/user-management/manage-volumes";
 		"/usr/local/sbin/ldapsupportlib.py":
 			ensure => link,
 			target => "/usr/local/lib/user-management/ldapsupportlib.py";
