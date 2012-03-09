@@ -284,8 +284,8 @@ class nagios::monitor {
 		class iptables {
 
 			require "nagios::monitor::firewall::iptables-drops"
-			iptables_add_exec{ "${hostname}": service => "nsca" }
-			iptables_add_exec{ "${hostname}": service => "snmp-trap" }
+			iptables_add_exec{ "${hostname}-nsca": service => "nsca" }
+			iptables_add_exec{ "${hostname}-snmp-trap": service => "snmp-trap" }
 		}
 
 		require "nagios::monitor::firewall::iptables"
