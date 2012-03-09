@@ -1,10 +1,5 @@
 # Varnish VCL include file for mobile backends
 
-probe upload {
-	.url = "/pybaltestfile.txt";
-	.timeout = 2s;
-}
-
 sub vcl_recv {
 	if (client.ip !~ wikimedia_nets) {
 		error 403 "Access denied";
