@@ -278,7 +278,7 @@ class openstack::project-storage {
 
 	include openstack::gluster-service
 
-	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir /a/*',
+	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
 			'ALL = NOPASSWD: /usr/sbin/gluster *' ]
 	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
 
