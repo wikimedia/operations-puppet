@@ -1149,7 +1149,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225", "208.80.154.226", "208.80.154.227", "208.80.154.228", "208.80.154.229", "208.80.154.230", "208.80.154.231", "208.80.154.232", "208.80.154.233", "208.80.154.234", "208.80.154.236", "208.80.154.237", "10.2.2.23", "10.2.2.24", "10.2.2.25", "10.2.2.26" ]
 	}
 	if $hostname =~ /^lvs100[25]$/ {
-		$lvs_balancer_ips = [ $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] ]
+		$lvs_balancer_ips = $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site]
 	}
 	if $hostname =~ /^lvs100[36]$/ {
 		$lvs_balancer_ips = [ "" ]
