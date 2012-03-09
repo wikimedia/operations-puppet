@@ -1,0 +1,9 @@
+title   "EditPage Methods - 90% Time (ms) log(2) -1week"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-1week"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(EditPage.*.tp90,1,2))'

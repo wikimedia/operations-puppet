@@ -1,0 +1,10 @@
+title   "en.wikipedia.org Pageviews/hour -1week"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 week"
+
+field :a, :color => "blue",
+		:alias => "none",
+			:data => 'cactiStyle(alias(hitcount(scale(reqstats.en_wikipedia_org.pageviews, "0.016666"), "1hour"),"reqs/hour"))'
+

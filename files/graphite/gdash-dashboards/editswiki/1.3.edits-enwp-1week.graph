@@ -1,0 +1,13 @@
+title   "en.wikipedia.org edits/hour -1week"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 week"
+
+field :a, :color => "blue",
+		:alias => "none",
+			:data => 'cactiStyle(alias(summarize(reqstats.edits.en_wikipedia_org.edit, "1hour"),"edit requests/hour"))'
+
+field :b, :color => "red",
+		:alias => "none",
+			:data => 'cactiStyle(alias(summarize(reqstats.edits.en_wikipedia_org.submits, "1hour"),"edit submits/hour"))'

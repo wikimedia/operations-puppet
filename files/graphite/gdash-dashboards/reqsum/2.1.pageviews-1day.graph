@@ -1,0 +1,10 @@
+title   "Wiki Pageviews/sec -1day"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 day"
+
+field :a, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(scale(reqstats.pageviews,"0.01666"), "pageviews/sec"))'
+

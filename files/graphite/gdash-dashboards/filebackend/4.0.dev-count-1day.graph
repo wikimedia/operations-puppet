@@ -1,0 +1,8 @@
+title   "8 Most Deviant FileBackend Methods by Call Rate log(2) -1day"
+linewidth 1
+logbase 2
+hide_legend "false"
+from "-1day"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(substr(mostDeviant(8,maximumAbove(FileBackendStore.*.count,1)),0,2))'

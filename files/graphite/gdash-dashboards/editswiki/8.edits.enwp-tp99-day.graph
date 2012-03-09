@@ -1,0 +1,10 @@
+title   "99% latency en.wikipedia.org edits (ms) -1day"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 day"
+
+field :a, :color => "blue",
+		:alias => "none",
+			:data => 'cactiStyle(alias(reqstats.edits.en_wikipedia_org.tp99,"99% edit latency"))'
+

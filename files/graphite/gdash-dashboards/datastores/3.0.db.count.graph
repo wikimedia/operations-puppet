@@ -1,0 +1,17 @@
+title   "Mysql Queries And Memcached Gets Sampled Call Rate -1week"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1week"
+
+field :slave, :color => "blue",
+               :alias => "mysql slave queries",
+               :data  => "DatabaseBase.query.count"
+
+field :master, :color => "yellow",
+               :alias => "mysql master queries",
+               :data  => "DatabaseBase.query-master.count"
+
+field :memc, :color => "grey",
+               :alias => "memcached gets",
+               :data  => "MWMemcached.get.count"

@@ -1,0 +1,10 @@
+title   "Slowest 14 Parser Methods by Max 99% Time (ms) log(2) -8hours"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+hide_legend "false"
+from "-8hours"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(highestMax(maximumAbove(Parser.*.tp99,1),14),1,2))'

@@ -1,0 +1,13 @@
+title   "99th Percentile Latency Of All PHP Requests -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :tp99, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(-total.tp99, "99% PHP Request Latency (ms)"))'
+
+field :tp90, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(-total.tp90, "90% PHP Request Latency (ms)"))'
