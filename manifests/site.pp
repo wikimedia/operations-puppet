@@ -1261,7 +1261,8 @@ node "manganese.wikimedia.org" {
 		gerrit::jetty,
 		gerrit::ircbot,
 		groups::wikidev,
-		accounts::sumanah
+		accounts::sumanah,
+		accounts::demon
 }
 
 node "mchenry.wikimedia.org" {
