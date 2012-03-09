@@ -11,9 +11,9 @@ acl purge {
 	"127.0.0.1";
 }
 
-<% if ! all_networks.empty? -%>
+<% if ! wikimedia_networks.empty? -%>
 acl wikimedia_nets {
-<% all_networks").each do |entry|
+<% wikimedia_networks").each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;

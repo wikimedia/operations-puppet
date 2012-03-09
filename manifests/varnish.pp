@@ -76,7 +76,9 @@ class varnish {
 		$varnish_backend_options = $backend_options
 
 		if ! $all_networks {
-			$all_networks = $network::constants::all_networks
+			$wikimedia_networks = $network::constants::all_networks
+		} else {
+			$wikimedia_networks = []
 		}
 
 		# Install VCL include files shared by all instances
