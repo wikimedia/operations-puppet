@@ -14,6 +14,8 @@ command[check_spamd]=/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spam
 command[check_poolcounterd]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:3 -C poolcounterd
 command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
 command[check_mysqld]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld
-
+command[check_carbon_cache]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C carbon-cache.py
+command[check_profiler_to_carbon]=/usr/lib/nagios/plugins/check_procs -c 1:1 -a profiler-to-carbon
+command[check_profiling_collector]=/usr/lib/nagios/plugins/check_procs -c 1:20 -C collector 
 # this isn't in all /etc/nagios/nrpe.cfg's and is safe to duplicate
 include_dir=/etc/nagios/nrpe.d/

@@ -358,6 +358,18 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
 }
 define command{
+	command_name	nrpe_check_carbon_cache
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
+}
+define command{
+	command_name	nrpe_check_profiler_to_carbon
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_profiler_to_carbon
+}
+define command{
+	command_name	nrpe_check_profiling_collector
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_profiling_collector
+}
+define command{
 	command_name	nrpe_check_udp2log_log_age
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
 }
