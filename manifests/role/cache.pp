@@ -96,11 +96,11 @@ class role::cache {
 					'sq36.wikimedia.org',   # API
 				],
 				"eqiad" => [
-				'cp1001.eqiad.wmnet',	# API
-				'cp1002.eqiad.wmnet',	# API
-				'cp1003.eqiad.wmnet',	# API
-				'cp1004.eqiad.wmnet',	# API
-				'cp1005.eqiad.wmnet',	# API
+					'cp1001.eqiad.wmnet',	# API
+					'cp1002.eqiad.wmnet',	# API
+					'cp1003.eqiad.wmnet',	# API
+					'cp1004.eqiad.wmnet',	# API
+					'cp1005.eqiad.wmnet',	# API
 				],
 				"esams" => [],
 			},
@@ -140,13 +140,13 @@ class role::cache {
 				],
 				"eqiad" => [
 					'cp1021.eqiad.wmnet',
-					'cp1022.eqiad.wmnet',
-					'cp1023.eqiad.wmnet',
-					'cp1024.eqiad.wmnet',
-					'cp1025.eqiad.wmnet',
-					'cp1026.eqiad.wmnet',
-					'cp1027.eqiad.wmnet',
-					'cp1028.eqiad.wmnet',
+					# 'cp1022.eqiad.wmnet',
+					# 'cp1023.eqiad.wmnet',
+					# 'cp1024.eqiad.wmnet',
+					# 'cp1025.eqiad.wmnet',
+					# 'cp1026.eqiad.wmnet',
+					# 'cp1027.eqiad.wmnet',
+					# 'cp1028.eqiad.wmnet',
 					# 'cp1029.eqiad.wmnet',
 					# 'cp1030.eqiad.wmnet',
 					# 'cp1031.eqiad.wmnet',
