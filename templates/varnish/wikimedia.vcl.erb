@@ -11,6 +11,14 @@ acl purge {
 	"127.0.0.1";
 }
 
+acl wikimedia_nets {
+<% scope.lookupvar("::network::constants::all_networks").each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>
+<% end -%>
+}
+
 # Hosts we trust for XFF
 <% if has_variable?("xff_sources") -%>
 acl allow_xff {
