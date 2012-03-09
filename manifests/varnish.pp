@@ -54,7 +54,7 @@ class varnish {
 		}
 	}
 	
-	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false", $xff_sources=[]) {
+	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $backend_options, $enable_geoiplookup="false", $all_networks=undef, $xff_sources=[]) {
 		include varnish::common, network::constants
 		
 		if $name == "" {
@@ -74,7 +74,11 @@ class varnish {
 		$varnish_backends = $backends
 		$varnish_directors = $directors
 		$varnish_backend_options = $backend_options
-				
+
+		if ! $all_networks {
+			$all_networks = $network::constants::all_networks
+		}
+
 		# Install VCL include files shared by all instances
 		require "varnish::common-vcl"
 
