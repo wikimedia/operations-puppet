@@ -1,2 +1,14 @@
 # Varnish VCL include file for mobile backends
 
+sub vcl_recv {
+	if (client.ip !~ wikimedia_nets) {
+		error 403 "Access denied"
+	}
+}
+
+sub vcl_miss {
+	# Send thumbnails to the Swift thumbs cluster
+	if ( req.url ~ "^upload\.wikimedia\.org/+[^/]+/[^/]+/thumb/" ) {
+		set req.backend = swift_thumbs;
+	}
+}

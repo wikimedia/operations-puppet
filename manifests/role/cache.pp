@@ -362,11 +362,11 @@ class role::cache {
 			varnish::instance { "upload-backend":
 				name => "",
 				vcl => "upload-backend",
-				port => 81,
+				port => 3128,
 				admin_port => 6083,
 				storage => "-s sda3=file,/srv/sdb3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
-				backends => [ "10.0.0.246", "10.0.0.252", "10.2.1.27" ],
-				directors => { "backend" => [ "10.0.0.246" ], "ms5" => [ "10.0.0.252" ], "swift_thumbs" => [ "10.2.1.27" ] },
+				backends => [ "10.0.0.246", "10.2.1.27" ],
+				directors => { "backend" => [ "10.0.0.246" ], "swift_thumbs" => [ "10.2.1.27" ] },
 				backend_options => {
 					'port' => 80,
 					'connect_timeout' => "5s",
@@ -376,6 +376,8 @@ class role::cache {
 					'probe' => "upload",
 					'retry5x' => 1
 					},
+				wikimedia_networks => $network::constants::all_networks,
+				# FIXME
 				xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
 			}
 
@@ -387,7 +389,7 @@ class role::cache {
 				backends => $role::cache::configuration::active_nodes['upload'][$::site],
 				directors => $varnish_fe_directors[$::site],
 				backend_options => {
-					'port' => 81,
+					'port' => 3128,
 					'connect_timeout' => "5s",
 					'first_byte_timeout' => "35s",
 					'between_bytes_timeout' => "2s",
