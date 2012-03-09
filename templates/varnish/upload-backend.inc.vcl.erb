@@ -2,7 +2,7 @@
 
 sub vcl_recv {
 	if (client.ip !~ wikimedia_nets) {
-		error 403 "Access denied"
+		error 403 "Access denied";
 	}
 }
 
