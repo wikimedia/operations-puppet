@@ -13,7 +13,7 @@ acl purge {
 
 <% if ! wikimedia_networks.empty? -%>
 acl wikimedia_nets {
-<% wikimedia_networks").each do |entry|
+<% wikimedia_networks.each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
