@@ -41,11 +41,11 @@ function import-db {
 function import-private {
 	# Import all dbs in the cluster
 	for dbname in `<$MWinstall/common/private.dblist`;do
-        	import-db $dbname
+		import-db $dbname >> $base/log/log-private 2>&1
 	done
 
 	for dbname in `<$MWinstall/common/fishbowl.dblist`;do
-        	import-db $dbname
+		import-db $dbname >> $base/log/log-private 2>&1
 	done
 }
 
