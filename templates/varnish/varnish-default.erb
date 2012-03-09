@@ -107,7 +107,7 @@ VARNISH_STORAGE="<%= varnish_storage %>"
 #              -s ${VARNISH_STORAGE}"
 #
 
-EXTRA_OPTS="-p thread_pools=<%= processorcount %> -p thread_pool_add_delay=1 -p send_timeout=30 -p listen_depth=4096"
+EXTRA_OPTS="-p thread_pools=<%= processorcount %> -p thread_pool_add_delay=1 -p send_timeout=30 -p listen_depth=4096 vcc_err_unref=off"
 <% if has_variable?("extraopts") then %>
 EXTRA_OPTS="$EXTRA_OPTS <%= extraopts %>"
 <% end %>
