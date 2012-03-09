@@ -337,7 +337,7 @@ class role::cache {
 			$cluster = "cache_upload"
 			$nagios_group = "cache_upload_${::site}"
 
-			include lvs::configuration, role::cache::configuration
+			include lvs::configuration, role::cache::configuration, network::constants
 			
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
