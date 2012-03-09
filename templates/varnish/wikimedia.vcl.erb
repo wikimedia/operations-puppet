@@ -15,7 +15,7 @@ acl wikimedia_nets {
 <% scope.lookupvar("::network::constants::all_networks").each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
-	"<%= subnet %>"/<%= mask %>
+	"<%= subnet %>"/<%= mask %>;
 <% end -%>
 }
 
