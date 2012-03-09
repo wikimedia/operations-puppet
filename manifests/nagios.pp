@@ -255,7 +255,7 @@ class nagios::monitor {
 		class iptables-purges {
 
 			require "iptables::tables"
-			iptables_purge_service{  "deny_pub_snmp-trap": service => "snmp-trap" }
+			iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
 			iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
 		}
 
@@ -278,14 +278,14 @@ class nagios::monitor {
 
 			require "nagios::monitor::firewall::iptables-accepts"
 			iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
-			iptables_add_service{ "deny_pub_snmp-trap": service => "snmp-trap", jump => "DROP" }
+			iptables_add_service{ "deny_pub_snmptrap": service => "snmptrap", jump => "DROP" }
 		}
 
 		class iptables {
 
 			require "nagios::monitor::firewall::iptables-drops"
-			iptables_add_exec{ "${hostname}-nsca": service => "nsca" }
-			iptables_add_exec{ "${hostname}-snmp-trap": service => "snmp-trap" }
+			iptables_add_exec{ "${hostname}_nsca": service => "nsca" }
+			iptables_add_exec{ "${hostname}_snmptrap": service => "snmptrap" }
 		}
 
 		require "nagios::monitor::firewall::iptables"
