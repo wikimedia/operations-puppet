@@ -242,6 +242,38 @@ class openstack::compute {
 
 }
 
+class openstack::project-storage-cron {
+
+	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
+	$ircecho_nick = "labs-storage-wm"
+	$ircecho_chans = "#wikimedia-labs"
+	$ircecho_server = "irc.freenode.net"
+
+	package { "ircecho":
+		ensure => latest;
+	}
+	
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+	
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
+	}
+
+	cron { "manage-volumes":
+		command => '/usr/bin/python /usr/local/sbin/manage-volumes --logfile=/var/lib/glustermanager/manage-volumes.log',
+		user => 'glustermanager',
+		require => Systemuser["glustermanager"];
+	}
+
+}
+
 class openstack::project-storage {
 
 	include openstack::gluster-service

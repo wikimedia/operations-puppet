@@ -1036,6 +1036,10 @@ node /labstore([1-4])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	if $hostname =~ /^labstore1$/ {
+		include openstack::project-storage-cron
+	}
+
 }
 
 node "linne.wikimedia.org" {
