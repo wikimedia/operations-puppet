@@ -24,7 +24,7 @@ acl wikimedia_nets {
 # Hosts we trust for XFF
 <% if ! xff_sources.empty? -%>
 acl allow_xff {
-<% xff_sources.each do |entry| -%>
+<% xff_sources.each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
