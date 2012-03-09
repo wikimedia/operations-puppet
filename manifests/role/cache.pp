@@ -377,8 +377,7 @@ class role::cache {
 					'retry5x' => 1
 					},
 				wikimedia_networks => $network::constants::all_networks,
-				# FIXME
-				xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+				xff_sources => $network::constants::all_networks
 			}
 
 			varnish::instance { "upload-frontend":
@@ -397,7 +396,7 @@ class role::cache {
 					'probe' => "varnish",
 					'retry5x' => 0
 					},
-				xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+				xff_sources => $network::constants::all_networks
 			}
 		}
 		else {
@@ -407,6 +406,8 @@ class role::cache {
 	}
 
 	class bits {
+		include network::constants
+		
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${::site}"
 
@@ -467,7 +468,7 @@ class role::cache {
 				'retry5x' => 1
 			},
 			enable_geoiplookup => "true",
-			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
+			xff_sources => $network::constants::all_networks
 		}
 
 		#varnish::udplogger {
@@ -479,6 +480,8 @@ class role::cache {
 	}
 
 	class mobile {
+		include network::constants
+		
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
@@ -521,7 +524,7 @@ class role::cache {
 				'probe' => "bits",
 				'retry5x' => 1
 				},
-			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+			xff_sources => $network::constants::all_networks
 		}
 
 		varnish::instance { "mobile-frontend":
@@ -540,7 +543,7 @@ class role::cache {
 				'probe' => "varnish",
 				'retry5x' => 0
 				},
-			xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" } ]
+			xff_sources => $network::constants::all_networks
 		}
 	}
 }

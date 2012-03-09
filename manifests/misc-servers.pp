@@ -869,6 +869,8 @@ net.core.rmem_default = 536870912
 	apache_module { python: name => "python" }
 	apache_site { graphite: name => "graphite" }
 
+	include network::constants
+
 	varnish::instance { "graphite":
 		name => "",
 		vcl => "graphite",
@@ -887,7 +889,7 @@ net.core.rmem_default = 536870912
 			'retry5x' => 0
 		},
 		enable_geoiplookup => "false",
-		xff_sources => [ { "ip" => "208.80.152.0", "mask" => "22" }, { "ip" => "91.198.174.0", "mask" => "24" } ]
+		xff_sources => $network::constants::all_networks
 	}
 }
 
