@@ -245,18 +245,23 @@ class nagios::monitor {
 			ensure => latest;
 		}
 
+	}
 
+	class firewall {
+
+		# deny access to port 5667 TCP (nsca) from external networks
 		# deny service snmp-trap (port 162) for external networks
 
 		class iptables-purges {
 
 			require "iptables::tables"
 			iptables_purge_service{  "deny_pub_snmp-trap": service => "snmp-trap" }
+			iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
 		}
 
 		class iptables-accepts {
 
-			require "nagios::monitor::snmp::iptables-purges"
+			require "nagios::monitor::firewall::iptables-purges"
 
 			iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 			iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
@@ -271,17 +276,19 @@ class nagios::monitor {
 
 		class iptables-drops {
 
-			require "nagios::monitor::snmp::iptables-accepts"
+			require "nagios::monitor::firewall::iptables-accepts"
+			iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
 			iptables_add_service{ "deny_pub_snmp-trap": service => "snmp-trap", jump => "DROP" }
 		}
 
 		class iptables {
 
-			require "nagios::monitor::snmp::iptables-drops"
+			require "nagios::monitor::firewall::iptables-drops"
+			iptables_add_exec{ "${hostname}": service => "nsca" }
 			iptables_add_exec{ "${hostname}": service => "snmp-trap" }
 		}
 
-		require "nagios::monitor::snmp::iptables"
+		require "nagios::monitor::firewall::iptables"
 	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
@@ -1172,43 +1179,6 @@ class nagios::nsca::daemon {
 		ensure => running;
 	}
 
-
-	# deny access to port 5667 TCP (nsca) from external networks
-
-	class iptables-purges {
-
-		require "iptables::tables"
-
-		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
-	}
-
-	class iptables-accepts {
-
-		require "nagios::nsca::daemon::iptables-purges"
-
-		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "public_all": source => "208.80.152.0/22", service => "all", jump => "ACCEPT" }
-	}
-
-	class iptables-drops {
-
-		require "nagios::nsca::daemon::iptables-accepts"
-
-		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
-	}
-
-	class iptables {
-
-		require "nagios::nsca::daemon::iptables-drops"
-
-		# temporarily remove the exec rule so that the ruleset is simply created
-		# and we can inspect the file before allowing puppet to auto-load the rules
-		iptables_add_exec{ "${hostname}": service => "nsca" }
-	}
-
-	require "nagios::nsca::daemon::iptables"
 }
 
 # NSCA - client
