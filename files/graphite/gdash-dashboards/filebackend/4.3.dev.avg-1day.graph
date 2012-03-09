@@ -1,0 +1,8 @@
+title   "Top 8 FileBackend Methods by Max Average Time (ms) log(2) -1day"
+linewidth 1
+logbase 2
+hide_legend "false"
+from "-1day"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(highestMax(FileBackendStore.*.tavg,8),0,2))'

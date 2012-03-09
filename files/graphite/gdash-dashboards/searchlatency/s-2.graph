@@ -1,0 +1,10 @@
+title   "90th Percentile Search Latency -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :la, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(LuceneSearchSet.newFromQuery.tp90,"90% Query Latency (ms)"))'
+		

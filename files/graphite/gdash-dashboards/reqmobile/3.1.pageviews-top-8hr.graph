@@ -1,0 +1,9 @@
+title   "Top 12 Mobile Wikis by Pageviews/sec log(2) -1month"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1month"
+logbase 2
+
+field :a, :alias => "none",
+               :data  => 'cactiStyle(substr(scale(highestMax(exclude(reqstats.*_m_wikipedia_org.pageviews,"(^_|[A-Z])"),12),"0.016666"),1,2))'

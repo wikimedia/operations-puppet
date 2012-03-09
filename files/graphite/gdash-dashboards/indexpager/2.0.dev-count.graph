@@ -1,0 +1,9 @@
+title   "10 Most Deviant Index Pagers by Sampled Call Rate log(2) -1week"
+linewidth 1
+logbase 2
+linemode "connected"
+hide_legend "false"
+from "-1week"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(IndexPager.doQuery.*.count,1)),2,3))'

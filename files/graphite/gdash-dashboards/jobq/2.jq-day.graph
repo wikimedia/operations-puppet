@@ -1,0 +1,13 @@
+title   "Jobs Queue -1day"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-1day"
+
+field :pop, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-insert.count,"Jobs Queued/min"))'
+
+field :run, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-pop.count,"Jobs Run/min"))'

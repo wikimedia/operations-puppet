@@ -1,0 +1,9 @@
+title   "10 Most Deviant MobileFrontend Methods by Call Rate log(2) -1month"
+linewidth 1
+logbase 2
+linemode "connected"
+hide_legend "false"
+from "-1month"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(ExtMobileFrontend.*.count,1)),1,2))'
