@@ -245,18 +245,23 @@ class nagios::monitor {
 			ensure => latest;
 		}
 
+	}
 
+	class firewall {
+
+		# deny access to port 5667 TCP (nsca) from external networks
 		# deny service snmp-trap (port 162) for external networks
-
+		
 		class iptables-purges {
 
 			require "iptables::tables"
 			iptables_purge_service{  "deny_pub_snmp-trap": service => "snmp-trap" }
+			iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
 		}
 
 		class iptables-accepts {
 
-			require "nagios::monitor::snmp::iptables-purges"
+			require "nagios::monitor::firewall::iptables-purges"
 
 			iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 			iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
@@ -271,17 +276,19 @@ class nagios::monitor {
 
 		class iptables-drops {
 
-			require "nagios::monitor::snmp::iptables-accepts"
+			require "nagios::monitor::firewall::iptables-accepts"
+			iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
 			iptables_add_service{ "deny_pub_snmp-trap": service => "snmp-trap", jump => "DROP" }
 		}
 
 		class iptables {
 
-			require "nagios::monitor::snmp::iptables-drops"
+			require "nagios::monitor::firewall::iptables-drops"
+			iptables_add_exec{ "${hostname}": service => "nsca" }
 			iptables_add_exec{ "${hostname}": service => "snmp-trap" }
 		}
 
-		require "nagios::monitor::snmp::iptables"
+		require "nagios::monitor::firewall::iptables"
 	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)

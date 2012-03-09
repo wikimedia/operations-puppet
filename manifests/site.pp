@@ -1718,6 +1718,7 @@ node "spence.wikimedia.org" {
 		nagios::monitor::pager,
 		nagios::monitor::jobqueue,
 		nagios::monitor::snmp,
+		nagios::monitor::firewall,
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
