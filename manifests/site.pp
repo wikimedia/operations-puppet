@@ -975,6 +975,11 @@ node "hume.wikimedia.org" {
 		nfs::home,
 		misc::scripts,
 		misc::maintenance::foundationwiki,
+		# begin added 20120309 temporarily for testing /jgreen
+		mysql::packages,
+		mysql::mysqluser,
+		mysql::datadirs,
+		# end added 20120309
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
