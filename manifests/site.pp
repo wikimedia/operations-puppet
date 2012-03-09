@@ -1036,7 +1036,7 @@ node /labstore([1-4])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	if $hostname =~ /^labstore1$/ {
+	if $hostname =~ /^labstore2$/ {
 		include openstack::project-storage-cron
 	}
 
