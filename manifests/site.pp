@@ -1023,7 +1023,7 @@ node "kaulen.wikimedia.org" {
 	include role::cache::text
 }
 
-node /labstore([1-4])\.pmtpa\.wmnet/ {
+node /labstore[1-4]\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"
 	$ldapincludes = ['openldap', 'nss', 'utils']
@@ -1032,7 +1032,7 @@ node /labstore([1-4])\.pmtpa\.wmnet/ {
 		ldap::client::wmf-cluster,
 		openstack::project-storage
 
-	if $hostname =~ /^labstore[12]$/ {
+	if $hostname =~ /^labstore[1-2]$/ {
 		$ganglia_aggregator = "true"
 	}
 
