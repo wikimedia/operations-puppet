@@ -22,10 +22,12 @@ acl wikimedia_nets {
 <% end -%>
 
 # Hosts we trust for XFF
-<% if has_variable?("xff_sources") -%>
+<% if ! xff_sources.empty? -%>
 acl allow_xff {
-<% xff_sources.each do |source| -%>
-	"<%= source["ip"] %>"/<%= source["mask"] %>;
+<% xff_sources.each do |entry| -%>
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
 <% end -%>
 }
 <% end -%>
