@@ -205,10 +205,12 @@ sub vcl_fetch {
 		return(restart);
 	}
 <% end -%>
+<% if varnish_backend_options.fetch("cache4xx", "0") == "0" -%>
 	if (beresp.status > 400) {
 		set beresp.ttl = 0s;
 		return(hit_for_pass);
 	}
+<% end -%>
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }
@@ -216,7 +218,7 @@ sub vcl_fetch {
 sub vcl_hit {
 	if (req.request == "PURGE") {
 		purge;
-		error 200 "Purged.";
+		error 200 "Purged";
 	}
 	
 	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
