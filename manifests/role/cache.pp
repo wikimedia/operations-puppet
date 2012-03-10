@@ -350,7 +350,6 @@ class role::cache {
 			system_role { "role::cache::upload": description => "upload Varnish cache server" }
 
 			include standard,
-				varnish::htcppurger,
 				varnish::logging,
 				varnish::monitoring::ganglia,
 				nrpe
@@ -358,6 +357,8 @@ class role::cache {
 			varnish::setup_filesystem{ ["sda3", "sdb3"]:
 				before => Varnish::Instance["upload-backend"]
 			}
+
+			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
 
 			varnish::instance { "upload-backend":
 				name => "",
