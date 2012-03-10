@@ -502,10 +502,11 @@ class role::cache {
 		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
 
 		include standard,
-			varnish::htcpd,
 			varnish::logging,
 			varnish::monitoring::ganglia,
 			nrpe
+
+		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
 
 		varnish::instance { "mobile-backend":
 			name => "",

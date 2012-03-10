@@ -160,32 +160,6 @@ class varnish {
 		}
 	}
 
-	class htcpd {
-		require varnish::packages
-
-		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
-
-		file {
-			"/usr/bin/varnishhtcpd":
-				source => "puppet:///files/varnish/varnishhtcpd",
-				owner => root,
-				group => root,
-				mode => 0555;
-			"/etc/init.d/varnishhtcpd":
-				source => "puppet:///files/varnish/varnishhtcpd.init",
-				owner => root,
-				group => root,
-				mode => 0555;
-		}
-		
-		service { varnishhtcpd:
-			require => [ File["/etc/init.d/varnishhtcpd"], Systemuser[varnishhtcpd] ],
-			hasstatus => false,
-			pattern => "varnishhtcpd",
-			ensure => running;
-		}
-	}
-
 	class htcppurger($varnish_instances=["localhost:80"]) {
 		require varnish::packages
 
