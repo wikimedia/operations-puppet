@@ -1023,7 +1023,7 @@ node "kaulen.wikimedia.org" {
 	include role::cache::text
 }
 
-node /labstore([1-4])\.pmtpa\.wmnet/ {
+node /labstore[1-4]\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"
 	$ldapincludes = ['openldap', 'nss', 'utils']
