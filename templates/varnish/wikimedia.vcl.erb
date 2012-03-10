@@ -233,9 +233,9 @@ sub vcl_miss {
 
 sub vcl_deliver {
 	if (obj.hits > 0) {
-		set resp.http.X-Cache<%= instancesuffix %> = server.ip + " hit (" + obj.hits + ")";
+		set resp.http.X-Cache<%= instancesuffix %> = server.hostname + " hit (" + obj.hits + ")";
 	} else {
-		set resp.http.X-Cache<%= instancesuffix %> = server.ip + " miss (0)";
+		set resp.http.X-Cache<%= instancesuffix %> = server.hostname + " miss (0)";
 	}
 
 	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
