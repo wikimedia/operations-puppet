@@ -1032,12 +1032,7 @@ node /labstore([1-4])\.pmtpa\.wmnet/ {
 		ldap::client::wmf-cluster,
 		openstack::project-storage
 
-	if $hostname == "labstore1" {
-		$ganglia_aggregator = "true"
-	}
-	if $hostname == "labstore2" {
-		$ganglia_aggregator = "true"
-	}
+	$ganglia_aggregator = "true"
 
 	if $hostname =~ /^labstore2$/ {
 		include openstack::project-storage-cron
