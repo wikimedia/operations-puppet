@@ -365,15 +365,14 @@ class role::cache {
 				port => 3128,
 				admin_port => 6083,
 				storage => "-s sda3=file,/srv/sdb3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
-				backends => [ "10.0.0.246", "10.2.1.27" ],
-				directors => { "backend" => [ "10.0.0.246" ], "swift_thumbs" => [ "10.2.1.27" ] },
+				backends => [ "10.2.1.24", "10.2.1.27" ],
+				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27" ] },
 				backend_options => {
 					'port' => 80,
 					'connect_timeout' => "5s",
 					'first_byte_timeout' => "35s",
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 1000,
-					'probe' => "upload",
 					'retry5x' => 1
 					},
 				wikimedia_networks => $network::constants::all_networks,

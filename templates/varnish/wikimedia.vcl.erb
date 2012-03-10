@@ -98,6 +98,11 @@ probe bits {
 }
 <% end -%>
 
+probe swift {
+	.url = "/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt";
+	.timeout = 2s;
+}
+
 probe upload {
 	.url = "/pybaltestfile.txt";
 	.timeout = 2s;
@@ -118,7 +123,9 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
 	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
-	.probe = <%= varnish_backend_options.fetch("probe", "bits") %>;
+<% if varnish_backend_options.has_key?("probe") -%>
+	.probe = <%= varnish_backend_options["probe"] %>;
+<% end -%>
 }
 
 <% end -%>
