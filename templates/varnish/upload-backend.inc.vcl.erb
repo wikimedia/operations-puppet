@@ -12,6 +12,11 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_fetch {
+	# Cache media objects for 30 days by default
+	set beresp.ttl = 30d;
+}
+
 sub vcl_miss {
 	# Send thumbnails to the Swift thumbs cluster
 	if ( req.url ~ "^/+[^/]+/[^/]+/thumb/" ) {

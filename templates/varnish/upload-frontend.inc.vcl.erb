@@ -1,2 +1,6 @@
 # Varnish VCL include file for frontend backends
 
+sub vcl_fetch {
+	# Cache media objects for 1 hour by default
+	set beresp.ttl = 1h;
+}
