@@ -1,5 +1,13 @@
 # Varnish VCL include file for frontend backends
 
+sub vcl_recv {
+	if ( req.http.host == "upload.wikimedia.org") {
+		return (lookup);
+	} else {
+		error 403 "Requested target domain not allowed.";
+	}
+}
+
 sub vcl_fetch {
 	# Cache media objects for 1 hour by default
 	set beresp.ttl = 1h;
