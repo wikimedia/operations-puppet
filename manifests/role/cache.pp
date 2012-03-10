@@ -375,7 +375,7 @@ class role::cache {
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 1000,
 					'retry5x' => 1,
-					'cache4xx' => 1
+					'cache4xx' => "5m"
 					},
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
@@ -396,7 +396,7 @@ class role::cache {
 					'max_connections' => 100000,
 					'probe' => "varnish",
 					'retry5x' => 0,
-					'cache4xx' => 1
+					'cache4xx' => "5m"
 					},
 				xff_sources => $network::constants::all_networks
 			}

@@ -205,12 +205,10 @@ sub vcl_fetch {
 		return(restart);
 	}
 <% end -%>
-<% if varnish_backend_options.fetch("cache4xx", "0") == "0" -%>
-	if (beresp.status > 400) {
-		set beresp.ttl = 0s;
+	if (beresp.status >= 400) {
+		set beresp.ttl = <%= varnish_backend_options.fetch("cache4xx", "0s") %>;
 		return(hit_for_pass);
 	}
-<% end -%>
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }
