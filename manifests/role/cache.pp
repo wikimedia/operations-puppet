@@ -350,7 +350,7 @@ class role::cache {
 			system_role { "role::cache::upload": description => "upload Varnish cache server" }
 
 			include standard,
-				varnish::htcpd,
+				varnish::htcppurger,
 				varnish::logging,
 				varnish::monitoring::ganglia,
 				nrpe

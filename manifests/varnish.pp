@@ -161,17 +161,17 @@ class varnish {
 	}
 
 	class htcpd {
+		require varnish::packages
+
 		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
-		
+
 		file {
 			"/usr/bin/varnishhtcpd":
-				require => Package[varnish3],
 				source => "puppet:///files/varnish/varnishhtcpd",
 				owner => root,
 				group => root,
 				mode => 0555;
 			"/etc/init.d/varnishhtcpd":
-				require => Package[varnish3],
 				source => "puppet:///files/varnish/varnishhtcpd.init",
 				owner => root,
 				group => root,
@@ -179,12 +179,44 @@ class varnish {
 		}
 		
 		service { varnishhtcpd:
-			require => [ Package[varnish3], File["/etc/init.d/varnishhtcpd"], Systemuser[varnishhtcpd] ],
+			require => [ File["/etc/init.d/varnishhtcpd"], Systemuser[varnishhtcpd] ],
 			hasstatus => false,
 			pattern => "varnishhtcpd",
 			ensure => running;
 		}
 	}
+
+	class htcppurger($varnish_instances=["localhost:80"]) {
+		require varnish::packages
+
+		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
+
+		file {
+			"/usr/local/bin/varnishhtcpd":
+				source => "puppet:///files/varnish/varnishhtcpd",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/etc/init.d/varnishhtcpd":
+				source => "puppet:///files/varnish/varnishhtcpd.init",
+				owner => root,
+				group => root,
+				mode => 0555;
+			"/etc/default/varnishhtcpd":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => inline_template('DAEMON_OPTS="--mcast_address=239.128.0.112<% varnish_instances.each do |inst| %-> --cache=<%= inst %><% end -%> --name=varnishhtcpd"');
+		}
+
+		service { varnishhtcpd:
+			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/init.d/varnishhtcpd", "/etc/default/varnishhtcpd"]], Systemuser[varnishhtcpd] ],
+			hasstatus => false,
+			pattern => "varnishhtcpd",
+			ensure => running;
+		}
+	}
+
 
 	## If you want to send udplog traffic to one address,
 	## leave $udplogger2 blank
