@@ -206,7 +206,7 @@ class varnish {
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => inline_template('DAEMON_OPTS="--mcast_address=239.128.0.112<% varnish_instances.each do |inst| %-> --cache=<%= inst %><% end -%> --name=varnishhtcpd"');
+				content => inline_template('DAEMON_OPTS="--mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%> --name=varnishhtcpd"');
 		}
 
 		service { varnishhtcpd:
