@@ -213,6 +213,7 @@ class varnish {
 
 		service { varnishncsa:
 			require => [ Package[varnish3], File["/etc/init.d/varnishncsa"] ],
+			subscribe => File[["/etc/init.d/varnishncsa", "/etc/default/varnishncsa"]],
 			ensure => running;
 		}
 
