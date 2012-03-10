@@ -38,8 +38,8 @@ fi
 
 test -x $DAEMON || exit 0
 
-DAEMON_OPTS1="-n frontend -w $UDPLOGGER1:8420 -D"
-[ $UDPLOGGER2 ] && DAEMON_OPTS2="-n frontend -w $UDPLOGGER2:8420 -D"
+DAEMON_OPTS1="-n frontend -m 'RxRequest:^(?!PURGE$)' -w $UDPLOGGER1:8420 -D"
+[ $UDPLOGGER2 ] && DAEMON_OPTS2="-n frontend -m 'RxRequest:^(?!PURGE$)' -w $UDPLOGGER2:8420 -D"
 
 start_varnishncsa() {
     output=$(/bin/tempfile -s.varnish)
