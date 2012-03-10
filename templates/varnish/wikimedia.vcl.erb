@@ -54,36 +54,6 @@ probe bits {
 		"Connection: close";
 	.timeout = 5s;	
 }
-<% elsif /frontend/.match(vcl) -%>
-# frontends in front of other varnish instances should send
-# probes that don't depend on the app backend
-probe varnish {
-	.request =
-		"GET /check HTTP/1.1"
-		"Host: varnishcheck"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 500ms;
-	.interval = 1s;
-	.window = 3;
-	.threshold = 2;
-}
-<% elsif vcl == "blog" -%>
-probe blog {
-	.request =
-		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
-		"Host: blog.wikimedia.org"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 5s;	
-}
-<% elsif varnish_backend_options.fetch("probe") == "options" -%>
-probe options {
-	.request =
-		"OPTIONS * HTTP/1.0"
-		"Connection: close";
-	.timeout = 5s;	
-}
 <% else -%>
 probe bits {
 	.request =
@@ -97,6 +67,36 @@ probe bits {
 	.threshold = 2;
 }
 <% end -%>
+
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 500ms;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0"
+		"Connection: close";
+	.timeout = 5s;	
+}
 
 probe swift {
 	.url = "/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt";
