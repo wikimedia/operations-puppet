@@ -9,7 +9,7 @@ def squid_rpn(role, site, list=nil)
 	result = ""
 	list = node_list(role, site) if list == nil
 	list.each do |node|
-		result << "{/Squids/#{site}/#{role}/#{node}/%squidlayer%/%squidmetric%},"
+		result << "{/Squids/#{site}/#{role}/#{node}/%layer%/%squidmetric%},"
 	end
 	result << "%sumsep%" + (["%sumfunc%"]*(list.length - 1)).join(",") unless list.empty?
 	return result
@@ -17,7 +17,7 @@ end
 
 def varnish_rpn(role, site, dual=false, list=nil)
 	result = ""
-	layer = dual ? "%varnishlayer%/" : ""
+	layer = dual ? "%layer%/" : ""
 	list = node_list(role, site) if list == nil
 	list.each do |node|
 		result << "{/Varnish/#{site}/#{role}/#{node}/#{layer}%varnishmetric%},"
@@ -87,7 +87,7 @@ end
 			
 			<leaf name="Client_requests">
 				<param name="squidmetric" value="Usage/HTTP_requests"/>
-				<param name="squidlayer" value="frontend"/>
+				<param name="layer" value="frontend"/>
 				
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Squid%"/>
@@ -100,7 +100,7 @@ end
 			
 			<leaf name="Backend_requests">
 				<param name="squidmetric" value="Usage/Server_side_HTTP_requests"/>
-				<param name="squidlayer" value="backend"/>
+				<param name="layer" value="backend"/>
 
 				<param name="comment" value="All backend requests"/>
 				<param name="vertical-label" value="requests/s"/>
@@ -119,7 +119,7 @@ end
 				<param name="sumfunc" value="1,+"/>
 				
 				<param name="squidmetric" value="Service_times/Miss_HTTP_requests_service_time"/>
-				<param name="squidlayer" value="backend"/>
+				<param name="layer" value="backend"/>
 				
 				<param name="comment" value="Service times"/>
 				<param name="vertical-label" value="seconds"/>
@@ -164,7 +164,7 @@ end
 			
 			<leaf name="Client_requests">
 				<param name="varnishmetric" value="Clients/client_req"/>
-				<param name="varnishlayer" value="frontend"/>
+				<param name="layer" value="frontend"/>
 
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Varnish%,0,1000000,LIMIT"/>
@@ -175,7 +175,7 @@ end
 			
 			<leaf name="Backend_requests">
 				<param name="varnishmetric" value="Backends/backend_req"/>
-				<param name="varnishlayer" value="backend"/>
+				<param name="layer" value="backend"/>
 				
 				<param name="leaf-type" value="rrd-cdef"/>
 				<param name="rpn-expr" value="%expr-Varnish%"/>
@@ -251,7 +251,7 @@ end
 			
 				<leaf name="All_squid_client_requests">
 					<param name="squidmetric" value="Usage/HTTP_requests"/>
-					<param name="squidlayer" value="frontend"/>
+					<param name="layer" value="frontend"/>
 					
 					<param name="ds-type" value="rrd-multigraph"/>
 					<param name="ds-names" value="text-pmtpa,upload-pmtpa,text-eqiad,text-esams,upload-esams,total"/>
@@ -423,7 +423,7 @@ end
 		
 			<leaf name="All_client_requests">
 				<param name="squidmetric" value="Usage/HTTP_requests"/>
-				<param name="squidlayer" value="frontend"/>
+				<param name="layer" value="frontend"/>
 				<param name="varnishmetric" value="Clients/client_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
@@ -514,7 +514,7 @@ end
 
 			<leaf name="All_backend_requests">
 				<param name="squidmetric" value="Usage/Server_side_HTTP_requests"/>
-				<param name="squidlayer" value="backend"/>
+				<param name="layer" value="backend"/>
 				<param name="varnishmetric" value="Backends/backend_req"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
@@ -586,7 +586,7 @@ end
 				<param name="sumfunc" value="1,+"/>
 				
 				<param name="squidmetric" value="Service_times/Miss_HTTP_requests_service_time"/>
-				<param name="squidlayer" value="backend"/>
+				<param name="layer" value="backend"/>
 				
 				<param name="ds-type" value="rrd-multigraph"/>
 				<param name="ds-names" value="text-pmtpa,api-pmtpa,upload-pmtpa,text-eqiad,api-eqiad"/>
