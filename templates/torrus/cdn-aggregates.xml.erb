@@ -17,7 +17,7 @@ end
 
 def varnish_rpn(role, site, dual=false, list=nil)
 	result = ""
-	layer = dual ? "%varnishlayer/" : ""
+	layer = dual ? "%varnishlayer%/" : ""
 	list = node_list(role, site) if list == nil
 	list.each do |node|
 		result << "{/Varnish/#{site}/#{role}/#{node}/#{layer}%varnishmetric%},"
