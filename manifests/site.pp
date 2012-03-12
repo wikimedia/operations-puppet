@@ -1423,7 +1423,7 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 }
 
 node "neon.wikimedia.org" {
-	$nagios_config_dir = "/etc/nagios3"
+	$nagios_config_dir = "/etc/icinga"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 	include standard
 #		nagios::monitor::newmonitor,

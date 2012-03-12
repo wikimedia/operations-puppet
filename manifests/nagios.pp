@@ -175,6 +175,20 @@ define decommission_monitor_host {
 	}
 }
 
+# Nagios/icinga configuration files
+
+class nagios::configuration {
+
+	#This variable declares the monitoring hosts
+	#It is called master hosts as monitor_host is already
+	#a service.
+
+	$master_hosts = [ "neon.wikimedia.org", "spence.wikimedia.org" ]
+
+	$icinga_config_dir = "/etc/icinga"
+	$nagios_config_dir = "/etc/icinga"
+}
+
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
 
@@ -516,6 +530,7 @@ class nagios::monitor {
 
 class nagios::monitor::newmonitor {
 $icinga_config_dir = "/etc/icinga"
+$nagios_config_dir = "/etc/icinga"
 @monitor_group { "routers": description => "IP routers" }
 
 	class {"webserver::php5": ssl => "true";}
@@ -524,6 +539,7 @@ $icinga_config_dir = "/etc/icinga"
 		generic::apache::no-default-site,
 		mysql,
 		nrpe::new,
+		nagios::configuration,
 		nagios::monitor::jobqueue::new
 
 	include passwords::nagios::mysql
@@ -542,8 +558,8 @@ $icinga_config_dir = "/etc/icinga"
 			  "${icinga_config_dir}/icinga.cfg",
 			  "${icinga_config_dir}/cgi.cfg",
 			  "${icinga_config_dir}/checkcommands.cfg",
-			  "${icinga_config_dir}/contactgroups.cfg",
-			  "${icinga_config_dir}/contacts.cfg",
+#			  "${icinga_config_dir}/contactgroups.cfg",
+#			  "${icinga_config_dir}/contacts.cfg",
 			  "${icinga_config_dir}/migration.cfg",
 			  "${icinga_config_dir}/misccommands.cfg",
 			  "${icinga_config_dir}/resource.cfg",
@@ -661,6 +677,12 @@ $icinga_config_dir = "/etc/icinga"
 			owner => root,
 			group => root,
 			mode => 0644;
+
+		"/etc/init.d/icinga":
+			source => "puppet:///files/icinga/icinga-init",
+			owner => root,
+			group => root,
+			mode => 0755;
 	}
 
 	# Fix permissions
@@ -687,7 +709,7 @@ $icinga_config_dir = "/etc/icinga"
 	}
 
 
-# Nagios check configuration files
+	# Nagios check configuration files
 
 	file { "/etc/icinga/cgi.cfg":
 			source => "puppet:///files/icinga/cgi.cfg",
@@ -712,18 +734,19 @@ $icinga_config_dir = "/etc/icinga"
 			owner => root,
 			group => root,
 			mode => 0644;
+# FIXME - lcarr temporarily disable installation of these files to prevent spamming everyone
 
-		"/etc/icinga/contactgroups.cfg":
-			source => "puppet:///files/nagios/contactgroups.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+#		"/etc/icinga/contactgroups.cfg":
+#			source => "puppet:///files/nagios/contactgroups.cfg",
+#			owner => root,
+#			group => root,
+#			mode => 0644;
 
-		"/etc/icinga/contacts.cfg":
-			source => "puppet:///private/nagios/contacts.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+#		"/etc/icinga/contacts.cfg":
+#			source => "puppet:///private/nagios/contacts.cfg",
+#			owner => root,
+#			group => root,
+#			mode => 0644;
 
 		"/etc/icinga/migration.cfg":
 			source => "puppet:///files/nagios/migration.cfg",
