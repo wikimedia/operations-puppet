@@ -16,13 +16,13 @@ GAUGE_METRICS = set(['n_sess_mem', 'n_sess', 'n_object', 'n_vampireobject', 'n_o
 instances = ['']
 
 def metric_init(params):
-	global varnishstat_path, instances
+	global varnishstat_path, instances, stats_cache
 
 	metrics = []
 
 	varnishstat_path = params.get('varnishstat', "/usr/bin/varnishstat")
 
-	# First get the metrics list from one instances
+	# First get the metrics list from one instance
 	stats = get_stats()
 
 	instances = params.get('instances', "").split(',')
@@ -30,7 +30,7 @@ def metric_init(params):
 	all_metrics = build_dict()
 
 	for metric in stats.keys():
-		if metric.startswith("VBE."): continue
+		if metric.startswith(("SMF.", "VBE.", "LCK.")): continue
 		for instance in instances:
 			metric_properties = {
 				'name': len(instance) and (instance + '.' + metric) or metric,
@@ -43,6 +43,8 @@ def metric_init(params):
 				'description': all_metrics[metric]
 			}
 			metrics.append(metric_properties)
+
+	stats_cache = {}
 
 	return metrics
 
@@ -59,11 +61,10 @@ def get_stats():
 
 	stats_cache = {}
 	for instance in instances:
+		prefix = len(instance) and (instance + '.') or ""
 		for line in Popen([varnishstat_path, "-1", "-n", instance], stdout=PIPE).stdout:
 			key, value, delta = line.split()[0:3]
-			if instance != '':
-				key = instance + '.' + key 
-			stats_cache[key] = value
+			stats_cache[prefix+key] = value
 			if delta.strip() == ".":
 				GAUGE_METRICS.add(key)
 
