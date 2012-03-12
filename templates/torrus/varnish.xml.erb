@@ -5,21 +5,21 @@ def node_lists(role, site)
 	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
 end
 
-def varnish_nodes(role, site)
+def varnish_nodes(role, site, template="varnish-server")
 	decommissioned_nodes, active_nodes = node_lists(role, site)
 	result = []
 
 	decommissioned_nodes.each do |node|
 		result << "<subtree name=\"#{node}\">"
 		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
-		result << "\t<apply-template name=\"decommissioned-varnish-server\"/>"
+		result << "\t<apply-template name=\"decommissioned-#{template}\"/>"
 		result << "</subtree>"
 	end
 
 	active_nodes.each do |node|
 		result << "<subtree name=\"#{node}\">"
 		result << "\t<param name=\"hostname\" value=\"#{node}\"/>"
-		result << "\t<apply-template name=\"wikimedia-varnish-server\"/>"
+		result << "\t<apply-template name=\"wikimedia-#{template}\"/>"
 		result << "</subtree>"
 	end
 	
@@ -46,6 +46,32 @@ end
 			<apply-template name="varnish-overheadgroup"/>
 		</template>
 
+		<template name="wikimedia-dual-layer-varnish-server">
+			<param name="comment" value="%hostname% Squid statistics"/>
+			<subtree name="frontend">
+				<param name="prefix" value="frontend."/>
+				<param name="comment" value="%hostname% frontend Varnish statistics"/>
+				<param name="precedence" value="2"/>
+				<apply-template name="varnish-clientsgroup"/>
+				<apply-template name="varnish-cacheperformancegroup"/>
+				<apply-template name="varnish-backendsgroup"/>
+				<apply-template name="varnish-storagegroup"/>
+				<apply-template name="varnish-workersgroup"/>
+				<apply-template name="varnish-overheadgroup"/>
+			</subtree>
+			<subtree name="backend">
+				<param name="prefix" value=""/>
+				<param name="comment" value="%hostname% backend Varnish statistics"/>
+				<param name="precedence" value="1"/>
+				<apply-template name="varnish-clientsgroup"/>
+				<apply-template name="varnish-cacheperformancegroup"/>
+				<apply-template name="varnish-backendsgroup"/>
+				<apply-template name="varnish-storagegroup"/>
+				<apply-template name="varnish-workersgroup"/>
+				<apply-template name="varnish-overheadgroup"/>
+			</subtree>
+		</template>
+
 		<template name="decommissioned-varnish-server">
 			<param name="ds-type" value="rrd-file"/>
 			<param name="hidden" value="yes"/>
@@ -59,7 +85,7 @@ end
 			<param name="rrd-cf"    value="AVERAGE" />
 			<param name="rrd-ds" value="sum"/>
 			<param name="data-dir" value="/var/lib/ganglia/rrds"/>
-			<param name="data-file" value="%varnishcluster%/%hostname%/%metric%.rrd"/>
+			<param name="data-file" value="%varnishcluster%/%hostname%/%prefix%%metric%.rrd"/>
 
 			<subtree name="pmtpa">
 				<subtree name="bits">
@@ -89,7 +115,7 @@ end
 					<param name="varnishcluster" value="Upload caches eqiad"/>
 					<param name="site" value="eqiad"/>
 					
-<% varnish_nodes('upload', 'eqiad').each do |line| -%>
+<% varnish_nodes('upload', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
@@ -99,7 +125,7 @@ end
 					<param name="varnishcluster" value="Mobile caches eqiad"/>
 					<param name="site" value="eqiad"/>
 
-<% varnish_nodes('mobile', 'eqiad').each do |line| -%>
+<% varnish_nodes('mobile', 'eqiad', 'dual-layer-varnish-server').each do |line| -%>
 					<%= line %>
 <% end -%>
 				</subtree>
