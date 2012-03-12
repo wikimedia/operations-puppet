@@ -62,6 +62,7 @@ data_source "MySQL eqiad" db1017.eqiad.wmnet db1021.eqiad.wmnet
 data_source "Miscellaneous eqiad" carbon.wikimedia.org ms1004.eqiad.wmnet
 data_source "Mobile caches eqiad" cp1043.wikimedia.org cp1044.wikimedia.org
 data_source "Bits caches eqiad" arsenic.wikimedia.org niobium.wikimedia.org
+data_source "Upload caches eqiad" cp1021.eqiad.wmnet cp1022.eqiad.wmnet
 data_source "SSL cluster eqiad" ssl1001.wikimedia.org ssl1002.wikimedia.org
 data_source "Swift eqiad" copper.wikimedia.org zinc.wikimedia.org
 data_source "Text squids eqiad" cp1001.eqiad.wmnet cp1002.eqiad.wmnet
