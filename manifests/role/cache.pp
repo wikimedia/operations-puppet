@@ -507,10 +507,12 @@ class role::cache {
 
 		include standard,
 			varnish::logging,
-			varnish::monitoring::ganglia,
 			nrpe
 
 		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 
 		varnish::instance { "mobile-backend":
 			name => "",
