@@ -30,6 +30,8 @@ class exim {
 
 			Exec["mkdir /var/spool/exim4/scan"] -> Mount["/var/spool/exim4/scan"] -> File["/var/spool/exim4/scan"]
 			Package[exim4-daemon-heavy] -> Mount["/var/spool/exim4/db"] -> File["/var/spool/exim4/db"]
+			# add nagios to the Debian-exim group to allow check_disk tmpfs mounts (puppet still can't manage existing users?! so just Exec)
+			Exec["usermod -a -G Debian-exim nagios"]
 		}
 
 		file {
