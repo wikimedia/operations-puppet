@@ -1,6 +1,11 @@
 # Varnish VCL include file for frontend backends
 
 sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD") {
+		/* We only deal with GET, HEAD at this point */
+		error 403 "HTTP method not allowed.";
+	}
+
 	if ( req.http.host == "upload.wikimedia.org") {
 		return (lookup);
 	} else {

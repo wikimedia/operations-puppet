@@ -151,15 +151,15 @@ director <%= director %> hash {
 # Functions
 
 sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
+		/* We only deal with GET, HEAD and POST by default */
+		error 403 "HTTP method not allowed.";
+	}
+
 	if (req.backend.healthy) {
 		set req.grace = 5m;
 	} else {
 		set req.grace = 60m;
-	}
-
-	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE" && req.request != "POST") {
-		/* We only deal with GET and HEAD by default */
-		error 403 "HTTP method not allowed.";
 	}
 
 	/* Support HTTP PURGE from localhost */
