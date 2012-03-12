@@ -124,7 +124,7 @@ class varnish {
 		}
 	}
 
-	class monitoring::ganglia {
+	class monitoring::ganglia($instances=['']) {
 		file {
 			"/usr/lib/ganglia/python_modules/varnish.py":
 				require => File["/usr/lib/ganglia/python_modules"],
@@ -132,7 +132,7 @@ class varnish {
 				notify => Service[gmond];
 			"/etc/ganglia/conf.d/varnish.pyconf":
 				require => File["/etc/ganglia/conf.d"],
-				source => "puppet:///files/ganglia/plugins/varnish.pyconf",
+				content => template("ganglia/plugins/varnish.pyconf.erb"),
 				notify => Service[gmond];
 		}
 	}
