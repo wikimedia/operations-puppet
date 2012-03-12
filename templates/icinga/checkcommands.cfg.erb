@@ -1,0 +1,478 @@
+################################################################################
+# Sample object config file for Nagios
+#
+# Read the documentation for more information on this configuration file.  I've
+# provided some comments here, but things may not be so clear without further
+# explanation, so make sure to read the HTML documentation!
+#
+# Last Modified: 12-15-2005
+#
+################################################################################
+
+
+################################################################################
+# COMMAND DEFINITIONS
+#
+# SYNTAX:
+#
+#	define command{
+#               template      <templatename>
+#		name          <objectname>
+#               command_name  <commandname>
+#               command_line  <commandline>
+#               }
+#
+# WHERE:
+#
+# <templatename> = object name of another command definition that should be
+#                  used as a template for this definition (optional)
+# <objectname>   = object name of command definition, referenced by other
+#                  command definitions that use it as a template (optional)
+# <commandname>  = name of the command, as recognized/used by Nagios
+# <commandline>  = command line
+#
+################################################################################
+
+
+
+
+################################################################################
+#
+# SAMPLE SERVICE CHECK COMMANDS
+#
+# These are some example service check commands.  They may or may not work on
+# your system, as they must be modified for your plugins.  See the HTML
+# documentation on the plugins for examples of how to configure command definitions.
+#
+################################################################################
+
+
+# 'check_dns' command definition
+define command{
+        command_name    check_dns
+        command_line    $USER1$/check_dns -H $ARG1$ -s $HOSTADDRESS$
+        }
+
+
+# 'check_ftp' command definition
+define command{
+        command_name    check_ftp
+        command_line    $USER1$/check_ftp -H $HOSTADDRESS$
+        }
+
+
+# 'check_hpjd' command definition
+define command{
+        command_name    check_hpjd
+        command_line    $USER1$/check_hpjd -H $HOSTADDRESS$ -C public
+        }
+
+
+# 'check_http' command definition
+define command{
+        command_name    check_http
+        command_line    $USER1$/check_http -H $HOSTADDRESS$
+        }
+
+# 'check_http' command definition
+define command{
+        command_name    check_http_on_port
+        command_line    $USER1$/check_http -H $HOSTADDRESS$ -p $ARG1$
+        }
+
+# 'check_http' on a puppetmaster (SSL,port 8140,expect 400)
+define command{
+	command_name	check_http_puppetmaster
+	command_line	$USER1$/check_http --ssl -p 8140 -e 400 -H $HOSTADDRESS$
+	}
+
+# 'check_ssl_cert'
+# Verify a SSL certificate is not going to expire in the next 14 days
+# Example usage:  check_ssl_cert!secure.wikimedia.org
+define command{
+	command_name	check_ssl_cert
+	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ --ssl --certificate=14
+	}
+
+# 'check_local_disk' command definition
+define command{
+        command_name    check_local_disk
+        command_line    $USER1$/check_disk -w $ARG1$ -c $ARG2$ -p $ARG3$
+        }
+
+
+# 'check_local_load' command definition
+define command{
+        command_name    check_local_load
+        command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
+        }
+
+
+# 'check_local_procs' command definition
+define command{
+        command_name    check_local_procs
+        command_line    $USER1$/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$
+        }
+
+
+# 'check_local_users' command definition
+define command{
+        command_name    check_local_users
+        command_line    $USER1$/check_users -w $ARG1$ -c $ARG2$
+        }
+
+
+# 'check_nntp' command definition
+define command{
+        command_name    check_nntp
+        command_line    $USER1$/check_nntp -H $HOSTADDRESS$
+        }
+
+
+# 'check_ping' command definition
+define command{
+        command_name    check_ping
+        command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$ -p 5
+        }
+
+
+# 'check_pop' command definition
+define command{
+        command_name    check_pop
+        command_line    $USER1$/check_pop -H $HOSTADDRESS$
+        }
+
+
+# 'check_smtp' command definition
+define command{
+        command_name    check_smtp
+        command_line    $USER1$/check_smtp -H $HOSTADDRESS$
+        }
+
+
+# 'check_tcp' command definition
+define command{
+	command_name	check_tcp
+	command_line	$USER1$/check_tcp -H $HOSTADDRESS$ -p $ARG1$
+	}
+
+
+# 'check_telnet' command definition
+define command{
+        command_name    check_telnet
+        command_line    $USER1$/check_tcp -H $HOSTADDRESS$ -p 23
+        }
+
+
+# 'check_udp' command definition
+define command{
+	command_name	check_udp
+	command_line	$USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$
+	}
+
+define command{
+        command_name    check_lucene
+	# :P flappy
+        #command_line    $USER1$/check_http -t 60 -w 10 -p 8123 -u /stats -H $HOSTADDRESS$
+        command_line    $USER1$/check_tcp -t 90 -w 10 -p 8123 -H $HOSTADDRESS$
+        }
+
+
+define command {
+	command_name	check_bgpstate
+	command_line	$USER1$/check_bgpstate -C $ARG1$ $HOSTADDRESS$
+	}
+
+################################################################################
+#
+# SAMPLE HOST CHECK COMMANDS
+#
+################################################################################
+
+
+# This command checks to see if a host is "alive" by pinging it
+# The check must result in a 100% packet loss or 5 second (5000ms) round trip
+# average time to produce a critical error.
+# Note: Only one ICMP echo packet is sent (determined by the '-p 1' argument)
+
+# 'check-host-alive' command definition
+define command{
+        command_name    check-host-alive
+        command_line    $USER1$/check_ping -H $HOSTADDRESS$ -w 3000.0,80% -c 5000.0,100% -p 1
+        }
+
+define command{
+	command_name	by_ssh_check_disk
+	command_line	$USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C "/usr/local/apache/common/nagios-fedora-plugins/check_disk.switch -w $ARG1$ -c $ARG2$ -l -e"
+	}
+
+define command{
+	command_name	by_ssh_check_3ware
+	command_line	$USER1$/check_by_ssh -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/check_3ware.sh
+	}
+
+define command{
+	command_name	by_ssh_check_postfix
+	command_line	$USER1$/check_by_ssh -t 15 -i ~nagios/.ssh/id_dsa -2 -l root -H $HOSTADDRESS$ -C /usr/local/apache/common/nagios-fedora-plugins/contrib/check_postfix
+	}
+
+define command{
+	command_name	check_mysqlstatus
+	command_line	/usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> $ARG1$
+	}
+
+# 'check_http_wikipedia' command definition, querying a different URL
+define command{
+        command_name    check_http_wikipedia
+        command_line    $USER1$/check_http -H en.wikipedia.org -I $HOSTADDRESS$ -u /
+        }
+
+# 'check_http_upload' command definition, querying a different URL
+define command{
+        command_name    check_http_upload
+        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /pybaltestfile.txt
+        }
+
+# 'check_https_upload' command definition, querying a different URL
+define command{
+        command_name    check_https_upload
+        command_line    $USER1$/check_http -H upload.wikimedia.org -S -I $HOSTADDRESS$ -u /pybaltestfile.txt
+        }
+
+# 'check_http_bits' command definition
+define command{
+	command_name	check_http_bits
+	command_line	$USER1$/check_http -H bits.wikimedia.org -I $HOSTADDRESS$ -u /skins-1.5/common/images/poweredby_mediawiki_88x31.png
+	}
+
+# 'check_http_generic' command definition
+define command{
+	command_name	check_http_generic
+	command_line	$USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u /wikimedia-monitoring-test
+	}
+
+# 'check_http_upload' command definition, querying a different URL
+define command{
+        command_name    check_http_upload_on_port
+        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /pybaltestfile.txt -p $ARG1$
+        }
+
+define command{
+	command_name    check_http_donate
+	command_line	$USER1$/check_http -H donate.wikimedia.org -I $HOSTADDRESS$
+	}
+# 'check_http_mobile' command definition
+define command{
+	command_name	check_http_mobile
+	command_line	$USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$  -w 10 -c 20 -t 60 -f warn -r 'Wikimedia Foundation, Inc'
+	}
+
+define command{
+	command_name	check_http_url_for_string
+	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$ -s $ARG3$
+	}
+
+define command{
+	command_name	check_http_url
+	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u $ARG2$
+	}
+
+define command {
+	command_name	check_https_url
+	command_line	$USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u $ARG2$
+	}
+
+define command{
+	command_name	check_http_lvs
+	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u "$ARG2$"
+	}
+	#
+# 'check_http_swift' command definition, querying a thumbnail that exists in swift
+define command{
+        command_name    check_http_swift
+        command_line    $USER1$/check_http -H ms-fe.pmtpa.wmnet -I $HOSTADDRESS$ -u /wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg
+        }
+
+
+define command{
+	command_name	check_ssh
+	command_line	$USER1$/check_ssh $HOSTADDRESS$
+	}
+
+define command{
+	command_name	check_all_memcached
+	command_line	/usr/bin/php $USER1$/check_all_memcached.php
+	}
+
+define command{
+	command_name	check_job_queue
+	command_line	$USER1$/check_job_queue
+	}
+
+define command{
+	command_name	nrpe_check_disk_5_2
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_disk_5_2
+	}
+
+define command{
+	command_name	nrpe_check_disk_6_3
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_3
+	}
+
+define command{
+	command_name	nrpe_check_disk_6_4
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_4
+	}
+
+define command{
+	command_name	nrpe_check_raid
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_raid
+	}
+define command{
+	command_name	check_ircd
+	command_line	$USER1$/check_ircd -H $HOSTADDRESS$ -w 800 -c 1000
+}
+define command{
+	command_name	nrpe_check_zfs
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_zfs
+}
+define command{
+	command_name	nrpe_check_dpkg
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
+}
+
+define command{
+	command_name	nrpe_check_jenkins
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
+}
+define command{
+	command_name	nrpe_check_mailman
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mailman
+}
+define command{
+	command_name	nrpe_check_spamd
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_spamd
+}
+define command{
+	command_name	nrpe_check_poolcounterd
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
+}
+define command{
+	command_name	nrpe_check_udp2log_log_age
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
+}
+define command{
+	command_name	nrpe_check_udp2log_procs
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
+}
+define command{
+	command_name	nrpe_check_varnishncsa
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
+}
+define command{
+	command_name	nrpe_check_mysqld
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
+}
+define command{
+	command_name	check_stomp
+	command_line	/usr/lib/nagios/plugins/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
+}
+define command{
+	command_name	check_longqueries
+	command_line	/usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
+}
+define command{
+	command_name	check_db_lag
+	command_line	$USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= nagios_mysql_check_pass %>  -a lag -w 60 -c 600
+}
+
+define command {
+	command_name	check_ntp_time
+	command_line	$USER1$/check_ntp_time -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$
+}
+
+define command {
+        command_name    check_ntp_peer
+        command_line    $USER1$/check_ntp_peer -H $HOSTADDRESS$ -w $ARG1$ -c $ARG2$
+}
+
+define command {
+	command_name	check_ifstatus
+	command_line	$USER1$/check_ifstatus -H $HOSTADDRESS$ -v 2 -I -C $ARG1$
+}
+
+define command {
+	command_name	ssl-cert-check
+	command_line    $USER1$/ssl-cert-check -s $HOSTADDRESS$ -p
+}
+
+define command{
+        command_name	check_cert
+        command_line	$USER1$/check_cert $ARG1$ $ARG2$ $ARG3$
+}
+
+define command{
+	command_name	puppet-FAIL
+	command_line	echo "Puppet has not run in the last 10 hours" && exit 2
+}
+
+define command{
+	command_name	check_snmp_generic
+	command_line	$USER1$/check_snmp -H $HOSTADDRESS$ -C $ARG1$ -o $ARG2$ -l '$ARG3$' -w $ARG4$ -c $ARG5$
+}
+
+# generic "check number of procs"
+# -a, --argument-array=STRING
+# Only scan for processes with args that contain STRING.
+
+define command{
+	command_name	check_procs_generic
+	command_line	$USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -a $ARG5$
+}
+
+# generic "check number of procs"-2
+# -C, --command=COMMAND
+# Only scan for exact matches of COMMAND (without path).
+
+define command{
+	command_name	check_procs_generic_c
+	command_line	$USER1$/check_procs -w $ARG1$:$ARG2$ -c $ARG3$:$ARG4$ -C $ARG5$
+}
+
+# check that logging packet loss is not too high
+define command{
+	command_name	check_packet_loss_ave
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m packet_loss_average -w $ARG1$ -c $ARG2$ -o gt
+}
+
+# percona mysql checks
+define command{
+	command_name	nrpe_check_lvs
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_lvs
+}
+
+define command{
+	command_name	nrpe_check_mysql_idle_transactions
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
+}
+
+define command{
+	command_name	nrpe_check_mysql_recent_restart
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_running
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_delay
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
+}
+
+define command{
+	command_name	nrpe_check_mysql_slave_heartbeat
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
+}
+# end percona mysql checks
