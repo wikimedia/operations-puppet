@@ -1,3 +1,5 @@
+@monitor_group { "swift": description => "swift production servers" }
+
 class role::swift {
 	class base {
 		$cluster = "swift"
@@ -60,6 +62,7 @@ class role::swift {
 	class pmtpa-prod inherits role::swift::base {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
+		$nagios_group = "swift"
 		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
