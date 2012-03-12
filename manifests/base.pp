@@ -264,7 +264,7 @@ class base::motd {
 }
 
 class base::monitoring::host {
-	monitor_host { $hostname: }
+	monitor_host { $hostname: group => $nagios_group }
 	monitor_service { "ssh": description => "SSH", check_command => "check_ssh" }
 
 	case $lsbdistid {

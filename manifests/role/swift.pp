@@ -1,8 +1,9 @@
-@monitor_group { "swift": description => "swift production servers" }
+@monitor_group { "swift": description => "swift servers" }
 
 class role::swift {
 	class base {
 		$cluster = "swift"
+		$nagios_group = "swift"
 
 		include standard
 		# TODO: pull in iptables rules here, or in the classes below
@@ -62,8 +63,6 @@ class role::swift {
 	class pmtpa-prod inherits role::swift::base {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
-		@monitor_host { $hostname: ip_address => $ip_address, group => "swift", critical => "false" }
-
 		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
