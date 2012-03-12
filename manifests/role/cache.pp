@@ -404,7 +404,8 @@ class role::cache {
 					'max_connections' => 100000,
 					'probe' => "varnish",
 				},
-				xff_sources => $network::constants::all_networks
+				xff_sources => $network::constants::all_networks,
+				before => Class[varnish::logging]
 			}
 		}
 		else {
@@ -560,7 +561,8 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			},
-			xff_sources => $network::constants::all_networks
+			xff_sources => $network::constants::all_networks,
+			before => Class[varnish::logging]
 		}
 	}
 }
