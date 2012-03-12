@@ -37,6 +37,7 @@ end
 	<datasources>
 		<template name="wikimedia-varnish-server">
 			<param name="comment" value="%hostname% Varnish statistics"/>
+			<param name="prefix" value=""/>
 
 			<apply-template name="varnish-clientsgroup"/>
 			<apply-template name="varnish-cacheperformancegroup"/>
@@ -77,6 +78,13 @@ end
 			<param name="hidden" value="yes"/>
 			
 			<apply-template name="wikimedia-varnish-server"/>
+		</template>
+
+		<template name="decommissioned-dual-layer-varnish-server">
+			<param name="ds-type" value="rrd-file"/>
+			<param name="hidden" value="yes"/>
+			
+			<apply-template name="wikimedia-dual-layer-varnish-server"/>
 		</template>
 
 		<subtree name="Varnish">
