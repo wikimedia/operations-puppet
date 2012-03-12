@@ -351,7 +351,6 @@ class role::cache {
 
 			include standard,
 				varnish::logging,
-				varnish::monitoring::ganglia,
 				nrpe
 
 			varnish::setup_filesystem{ ["sda3", "sdb3"]:
@@ -359,6 +358,9 @@ class role::cache {
 			}
 
 			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+
+			# Ganglia monitoring
+			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 
 			varnish::instance { "upload-backend":
 				name => "",
