@@ -883,6 +883,9 @@ net.core.rmem_default = 536870912
 		storage => "-s malloc,256M",
 		backends => [ 'localhost' ],
 		directors => { 'backend' => [ 'localhost' ] },
+		vcl_options => {
+			'retry5xx' => 0
+		},
 		backend_options => {
 			'port' => 80,
 			'connect_timeout' => "5s",
@@ -890,7 +893,6 @@ net.core.rmem_default = 536870912
 			'between_bytes_timeout' => "4s",
 			'max_connections' => 100,
 			'probe' => "options",
-			'retry5x' => 0
 		},
 		enable_geoiplookup => "false",
 		xff_sources => $network::constants::all_networks

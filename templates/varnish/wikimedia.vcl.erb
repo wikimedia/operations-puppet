@@ -200,17 +200,17 @@ sub vcl_recv {
 sub vcl_fetch {
 	set beresp.grace = 60m;
 
-<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (beresp.status > 499 && beresp.status < 505) {
 		return(restart);
 	}
 <% end -%>
 	if (beresp.status >= 400) {
-<% if varnish_backend_options.fetch("cache4xx", "0") == "0" -%>
+<% if vcl_config.fetch("cache4xx", "0") == "0" -%>
 		set beresp.ttl = 0s;
 		return(hit_for_pass);
 <% else -%>
-		set beresp.ttl = <%= varnish_backend_options.fetch("cache4xx", "5m") %>;
+		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
 <% end -%>
 	}
 
@@ -246,7 +246,7 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (obj.status == 503 && req.restarts < 4) {
 		return(restart);
 	}

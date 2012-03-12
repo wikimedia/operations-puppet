@@ -944,6 +944,9 @@ node "marmontel.wikimedia.org" {
 		storage => "-s malloc,1G",
 		backends => [ 'localhost' ],
 		directors => { 'backend' => [ 'localhost' ] },
+		vcl_options => {
+			'retry5xx' => 0
+		},
 		backend_options => {
 			'port' => 81,
 			'connect_timeout' => "5s",
@@ -951,7 +954,6 @@ node "marmontel.wikimedia.org" {
 			'between_bytes_timeout' => "4s",
 			'max_connections' => 100,
 			'probe' => "blog",
-			'retry5x' => 0
 		},
 		enable_geoiplookup => "false"
 	}

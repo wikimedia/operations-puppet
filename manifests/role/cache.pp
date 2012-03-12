@@ -370,15 +370,17 @@ class role::cache {
 				storage => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
 				backends => [ "10.2.1.24", "10.2.1.27" ],
 				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27" ] },
+				vcl_config => {
+					'retry5xx' => 1,
+					'cache4xx' => "5m"
+				},
 				backend_options => {
 					'port' => 80,
 					'connect_timeout' => "5s",
 					'first_byte_timeout' => "35s",
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 1000,
-					'retry5x' => 1,
-					'cache4xx' => "5m"
-					},
+				},
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
 			}
@@ -390,6 +392,10 @@ class role::cache {
 				admin_port => 6082,
 				backends => $role::cache::configuration::active_nodes['upload'][$::site],
 				directors => $varnish_fe_directors[$::site],
+				vcl_config => {
+					'retry5xx' => 0,
+					'cache4xx' => "5m"
+				},
 				backend_options => {
 					'port' => 3128,
 					'connect_timeout' => "5s",
@@ -397,9 +403,7 @@ class role::cache {
 					'between_bytes_timeout' => "2s",
 					'max_connections' => 100000,
 					'probe' => "varnish",
-					'retry5x' => 0,
-					'cache4xx' => "5m"
-					},
+				},
 				xff_sources => $network::constants::all_networks
 			}
 		}
@@ -462,6 +466,9 @@ class role::cache {
 			storage => "-s malloc,1G",
 			backends => $varnish_backends,
 			directors => $varnish_directors,
+			vcl_config => {
+				'retry5xx' => 1,
+			},
 			backend_options => {
 				'port' => 80,
 				'connect_timeout' => "5s",
@@ -469,7 +476,6 @@ class role::cache {
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 10000,
 				'probe' => "bits",
-				'retry5x' => 1
 			},
 			enable_geoiplookup => "true",
 			xff_sources => $network::constants::all_networks
@@ -522,6 +528,9 @@ class role::cache {
 			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			backends => [ "10.2.1.1" ],
 			directors => { "backend" => [ "10.2.1.1" ] },
+			vcl_config => {
+				'retry5xx' => 1,
+			},
 			backend_options => {
 				'port' => 80,
 				'connect_timeout' => "5s",
@@ -529,7 +538,6 @@ class role::cache {
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 1000,
 				'probe' => "bits",
-				'retry5x' => 1
 				},
 			xff_sources => $network::constants::all_networks
 		}
@@ -541,6 +549,9 @@ class role::cache {
 			admin_port => 6082,
 			backends => $varnish_fe_backends,
 			directors => $varnish_fe_directors[$::site],
+			vcl_config => {
+				'retry5xx' => 0,
+			},
 			backend_options => {
 				'port' => 81,
 				'connect_timeout' => "5s",
@@ -548,8 +559,7 @@ class role::cache {
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
 				'probe' => "varnish",
-				'retry5x' => 0
-				},
+			},
 			xff_sources => $network::constants::all_networks
 		}
 	}
