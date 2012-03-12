@@ -175,6 +175,17 @@ define decommission_monitor_host {
 	}
 }
 
+# Nagios/icinga configuration files
+
+class nagios::configuration {
+
+	#This variable declares the monitoring hosts
+	#It is called master hosts as monitor_host is already
+	#a service.
+
+	$master_hosts => [ "neon.wikimedia.org", "spence.wikimedia.org" ]
+}
+
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
 
