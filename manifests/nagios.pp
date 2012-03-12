@@ -529,9 +529,7 @@ class nagios::monitor {
 # DO NOT FOR ANY REASON put this class on spence
 
 class nagios::monitor::newmonitor {
-$icinga_config_dir = "/etc/icinga"
-$nagios_config_dir = "/etc/icinga"
-@monitor_group { "routers": description => "IP routers" }
+	require nagios::configuration
 
 	class {"webserver::php5": ssl => "true";}
 
@@ -539,7 +537,6 @@ $nagios_config_dir = "/etc/icinga"
 		generic::apache::no-default-site,
 		mysql,
 		nrpe::new,
-		nagios::configuration,
 		nagios::monitor::jobqueue::new
 
 	include passwords::nagios::mysql
