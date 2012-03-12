@@ -46,7 +46,8 @@ class network::checks {
 	@monitor_service { "mr1-eqiad interfaces": host => "mr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${snmp_ro_community}" }	
 }
 
-# FIXME: temporary hack
-if $hostname == "spence" {
+# This makes the monitoring host include the router group and
+# perform the above checks
+if $hostname in $nagios::configuration::master_hosts {
 	include network::checks
 }
