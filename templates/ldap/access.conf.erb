@@ -1,5 +1,6 @@
 # Disallow access to all forms of login to all
 # users except for members of the nova project
 # that this instance is a member of:
+<% if has_variable?("restricted_from") %>-:(<%= restricted_from %>) root:ALL<% end %>
 <% if has_variable?("restricted_to") %>-:ALL EXCEPT (<%= restricted_to %>) root:ALL
 <% else %>-:ALL EXCEPT (<%= instanceproject %>) root:ALL<% end %>
