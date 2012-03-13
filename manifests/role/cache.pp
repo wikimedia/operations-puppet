@@ -409,7 +409,7 @@ class role::cache {
 			}
 
 			# HTCP packet loss monitoring on the ganglia aggregators
-			if $::ganglia_aggregator == "true" and $::site != "esams" {
+			if $ganglia_aggregator == "true" and $::site != "esams" {
 				include misc::monitoring::htcp-loss
 			}
 		}
