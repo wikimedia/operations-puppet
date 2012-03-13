@@ -714,6 +714,12 @@ class nagios::monitor::newmonitor {
 			group => root,
 			mode => 0644;
 
+		"/etc/icinga/icinga.cfg":
+			source => "puppet:///files/icinga/icinga.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
+
 		"/etc/icinga/nsca_payments.cfg":
 			source => "puppet:///private/nagios/nsca_payments.cfg",
 			owner => root,
