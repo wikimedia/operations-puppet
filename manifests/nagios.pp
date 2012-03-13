@@ -572,14 +572,6 @@ class nagios::monitor::newmonitor {
 		ensure => latest;
 	}
 
-	service { "icinga":
-		require => File[$puppet_files],
-		ensure => running,
-		subscribe => [ File[$puppet_files],
-			       File[$static_files],
-			       File["/etc/icinga/puppet_checks.d"] ];
-	}
-
 	# snmp tarp stuff
 	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "icinga" ] }
 
@@ -987,6 +979,14 @@ class nagios::monitor::newmonitor {
 			owner => root,
 			group => root,
 			mode => 0644;
+	}
+
+	service { "icinga":
+		require => File[$puppet_files],
+		ensure => running,
+		subscribe => [ File[$puppet_files],
+			       File[$static_files],
+			       File["/etc/icinga/puppet_checks.d"] ];
 	}
 
 	# Collect exported resources
