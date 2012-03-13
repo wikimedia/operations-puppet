@@ -9,5 +9,5 @@ for x in $DBLIST; do
 	echo -----------------------------------------------------------------
 	echo $x 
 	echo -----------------------------------------------------------------
-	php -ddisplay_errors=On $CMD $x "$@" | sed -u "s/^/$x:  /"
+	php -ddisplay_errors=On /usr/local/apache/common/multiversion/MWScript.php $CMD $x "$@" | sed -u "s/^/$x:  /"
 done
