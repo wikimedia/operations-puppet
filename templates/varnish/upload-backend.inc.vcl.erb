@@ -19,7 +19,7 @@ sub vcl_fetch {
 
 sub vcl_miss {
 	# Send thumbnails to the Swift thumbs cluster
-	if ( req.url ~ "^/+[^/]+/[^/]+/thumb/" ) {
-		set req.backend = swift_thumbs;
-	}
+	#if ( req.url ~ "^/+[^/]+/[^/]+/thumb/" ) {
+	#	set req.backend = swift_thumbs;
+	#}
 }
