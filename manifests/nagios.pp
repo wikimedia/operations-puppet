@@ -614,7 +614,7 @@ class nagios::monitor::newmonitor {
 	apache_site { icinga: name => "icinga" }
 
 	# make sure the directory for individual service checks exists
-	file { 
+	file {
 		"/etc/icinga":
 			ensure => directory,
 			owner => root,
