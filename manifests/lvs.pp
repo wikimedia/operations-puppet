@@ -199,6 +199,10 @@ class lvs::configuration {
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
+			'payments' => {
+				'pmtpa' => "208.80.152.213",
+				'eqiad' => "208.80.154.237",
+			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
 				'eqiad' => "10.4.1.1",
@@ -318,7 +322,7 @@ class lvs::configuration {
 		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
-			'ip' => "208.80.152.213",
+			'ip' => $service_ips['payments'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
 			'bgp' => "yes",
