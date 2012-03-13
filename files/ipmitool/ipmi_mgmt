@@ -9,14 +9,13 @@ export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 if [ -z $1 ] # if there is no host, assume they need instructions
 then
-        echo "Syntax is ./mgmt <host> <commands>"
+        echo "Syntax is ipmi_mgmt <host> <commands>"
         echo "Command Listing" 
         echo "Power commands: powercycle, powerdown, powerup, powerstatus, powermonitor"
         echo "Setting one time boot option: bootbios, bootcdrom, bootdisk, bootfloppy, bootpxe"
         echo "Serial Console: console & ~~. to disconnect when done; consoleclose (for unintentional DC that doesn't free the com port)"        
         echo "BMC/LOM specific: bmcinfo, bmcreset."
         echo "Info gathering: fru, id (flash lights on system for local tech ID), log (BMC event log), sdr, sensor, sysinfo"
-        echo "Listing the host and no arguements will drop you into that system's ipmi shell, which requires the full syntax on commands, unlike the script."
 else
 
                 case $2 in
