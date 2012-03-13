@@ -18,8 +18,8 @@
 
 NAME=varnishhtcpd
 DESC="Send Multicast HTCP Purge Messages to local varnish" 
-PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/bin/varnishhtcpd
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+DAEMON=/usr/local/bin/varnishhtcpd
 
 test -x $DAEMON || exit 0
 
