@@ -18,10 +18,7 @@ then
         echo "Info gathering: fru, id (flash lights on system for local tech ID), log (BMC event log), sdr, sensor, sysinfo"
         echo "Listing the host and no arguements will drop you into that system's ipmi shell, which requires the full syntax on commands, unlike the script."
 else
-        if [ -z $2 ]
-        then
-                ipmitool -I lanplus -U root -E -H $1 shell
-        else
+
                 case $2 in
                         bmcinfo) ipmitool -I lanplus -U root -E -H $1 bmc info;;
                         bmcreset) ipmitool -I lanplus -U root -E -H $1 bmc reset cold;;
@@ -45,5 +42,4 @@ else
                         sysinfo) ipmitool -I lanplus -U root -E -H $1 delloem sysinfo ;;
                         *) echo -e '\E[31mYou have not selected a valid option, please use mgmt with no options to see help text.' ;;
                 esac
-        fi
 fi

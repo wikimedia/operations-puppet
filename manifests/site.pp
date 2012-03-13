@@ -988,6 +988,15 @@ node "hume.wikimedia.org" {
 		nrpe
 }
 
+node "iron.wikimedia.org" {
+	$cluster = "misc"
+	
+	include standard,
+	admins::roots,
+	misc::management::ipmi
+
+}
+
 node "ixia.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include db::core
