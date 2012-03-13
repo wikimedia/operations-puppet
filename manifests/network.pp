@@ -48,6 +48,7 @@ class network::checks {
 
 # This makes the monitoring host include the router group and
 # perform the above checks
+include nagios::configuration
 if $hostname in $nagios::configuration::master_hosts {
 	include network::checks
 }
