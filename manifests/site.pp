@@ -920,7 +920,7 @@ node "manutius.wikimedia.org" {
 			subtree => "/Storage",
 			snmp_community => $snmp_ro_community,
 			hosts => $storagehosts
-	}	
+	}
 }
 
 node "marmontel.wikimedia.org" {
@@ -1425,10 +1425,9 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 node "neon.wikimedia.org" {
 	$nagios_config_dir = "/etc/icinga"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
-	include standard
-#		nagios::monitor::newmonitor,
-#		nagios::monitor::pager::new,
-#		nagios::monitor::jobqueue,
+	include standard,
+		nagios::monitor::newmonitor
+#		nagios::monitor::pager
 #		nagios::ganglia::monitor::enwiki,
 #		nagios::ganglia::ganglios,
 #		nagios::nsca::daemon
