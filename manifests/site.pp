@@ -1427,7 +1427,7 @@ node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 	include standard
 #		nagios::monitor::newmonitor,
-#		nagios::monitor::pager,
+#		nagios::monitor::pager::new,
 #		nagios::monitor::jobqueue,
 #		nagios::ganglia::monitor::enwiki,
 #		nagios::ganglia::ganglios,

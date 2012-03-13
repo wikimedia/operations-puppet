@@ -565,8 +565,8 @@ class nagios::monitor::newmonitor {
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu" ] }
 
-	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
-	# nagios-images: images and icons for the web frontend
+	# icinga: icinga itself
+	# icinga-doc: files for the web-frontend
 
 	package { [ 'icinga', 'icinga-doc' ]:
 		ensure => latest;
@@ -785,199 +785,199 @@ class nagios::monitor::newmonitor {
 			ensure => directory;
 
 		"/etc/nagios-plugins/config/apt.cfg":
-			source => "puppet:///files/nagios3/plugin-config/apt.cfg",
+			source => "puppet:///files/icinga/plugin-config/apt.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/breeze.cfg":
-			source => "puppet:///files/nagios3/plugin-config/breeze.cfg",
+			source => "puppet:///files/icinga/plugin-config/breeze.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dhcp.cfg":
-			source => "puppet:///files/nagios3/plugin-config/dhcp.cfg",
+			source => "puppet:///files/icinga/plugin-config/dhcp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/disk-smb.cfg":
-			source => "puppet:///files/nagios3/plugin-config/disk-smb.cfg",
+			source => "puppet:///files/icinga/plugin-config/disk-smb.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/disk.cfg":
-			source => "puppet:///files/nagios3/plugin-config/disk.cfg",
+			source => "puppet:///files/icinga/plugin-config/disk.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dns.cfg":
-			source => "puppet:///files/nagios3/plugin-config/dns.cfg",
+			source => "puppet:///files/icinga/plugin-config/dns.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/dummy.cfg":
-			source => "puppet:///files/nagios3/plugin-config/dummy.cfg",
+			source => "puppet:///files/icinga/plugin-config/dummy.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/flexlm.cfg":
-			source => "puppet:///files/nagios3/plugin-config/flexlm.cfg",
+			source => "puppet:///files/icinga/plugin-config/flexlm.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ftp.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ftp.cfg",
+			source => "puppet:///files/icinga/plugin-config/ftp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/hppjd.cfg":
-			source => "puppet:///files/nagios3/plugin-config/hppjd.cfg",
+			source => "puppet:///files/icinga/plugin-config/hppjd.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/http.cfg":
-			source => "puppet:///files/nagios3/plugin-config/http.cfg",
+			source => "puppet:///files/icinga/plugin-config/http.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ifstatus.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ifstatus.cfg",
+			source => "puppet:///files/icinga/plugin-config/ifstatus.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ldap.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ldap.cfg",
+			source => "puppet:///files/icinga/plugin-config/ldap.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/load.cfg":
-			source => "puppet:///files/nagios3/plugin-config/load.cfg",
+			source => "puppet:///files/icinga/plugin-config/load.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mail.cfg":
-			source => "puppet:///files/nagios3/plugin-config/mail.cfg",
+			source => "puppet:///files/icinga/plugin-config/mail.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mrtg.cfg":
-			source => "puppet:///files/nagios3/plugin-config/mrtg.cfg",
+			source => "puppet:///files/icinga/plugin-config/mrtg.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/mysql.cfg":
-			source => "puppet:///files/nagios3/plugin-config/mysql.cfg",
+			source => "puppet:///files/icinga/plugin-config/mysql.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/netware.cfg":
-			source => "puppet:///files/nagios3/plugin-config/netware.cfg",
+			source => "puppet:///files/icinga/plugin-config/netware.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/news.cfg":
-			source => "puppet:///files/nagios3/plugin-config/news.cfg",
+			source => "puppet:///files/icinga/plugin-config/news.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/nt.cfg":
-			source => "puppet:///files/nagios3/plugin-config/nt.cfg",
+			source => "puppet:///files/icinga/plugin-config/nt.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ntp.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ntp.cfg",
+			source => "puppet:///files/icinga/plugin-config/ntp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/pgsql.cfg":
-			source => "puppet:///files/nagios3/plugin-config/pgsql.cfg",
+			source => "puppet:///files/icinga/plugin-config/pgsql.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ping.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ping.cfg",
+			source => "puppet:///files/icinga/plugin-config/ping.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/procs.cfg":
-			source => "puppet:///files/nagios3/plugin-config/procs.cfg",
+			source => "puppet:///files/icinga/plugin-config/procs.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/radius.cfg":
-			source => "puppet:///files/nagios3/plugin-config/radius.cfg",
+			source => "puppet:///files/icinga/plugin-config/radius.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/real.cfg":
-			source => "puppet:///files/nagios3/plugin-config/real.cfg",
+			source => "puppet:///files/icinga/plugin-config/real.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/rpc-nfs.cfg":
-			source => "puppet:///files/nagios3/plugin-config/rpc-nfs.cfg",
+			source => "puppet:///files/icinga/plugin-config/rpc-nfs.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/snmp.cfg":
-			source => "puppet:///files/nagios3/plugin-config/snmp.cfg",
+			source => "puppet:///files/icinga/plugin-config/snmp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/ssh.cfg":
-			source => "puppet:///files/nagios3/plugin-config/ssh.cfg",
+			source => "puppet:///files/icinga/plugin-config/ssh.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/tcp_udp.cfg":
-			source => "puppet:///files/nagios3/plugin-config/tcp_udp.cfg",
+			source => "puppet:///files/icinga/plugin-config/tcp_udp.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/telnet.cfg":
-			source => "puppet:///files/nagios3/plugin-config/telnet.cfg",
+			source => "puppet:///files/icinga/plugin-config/telnet.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/users.cfg":
-			source => "puppet:///files/nagios3/plugin-config/users.cfg",
+			source => "puppet:///files/icinga/plugin-config/users.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/nagios-plugins/config/vsz.cfg":
-			source => "puppet:///files/nagios3/plugin-config/vsz.cfg",
+			source => "puppet:///files/icinga/plugin-config/vsz.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
@@ -985,24 +985,24 @@ class nagios::monitor::newmonitor {
 
 	# Collect exported resources
 	Nagios_host <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 	Nagios_hostextinfo <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 	Nagios_service <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 
 	# Collect all (virtual) resources
 	Monitor_group <| |> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 	Monitor_host <| |> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 	Monitor_service <| tag != "nrpe" |> {
-		notify => Service[nagios3],
+		notify => Service[icinga],
 	}
 
 	# Decommission servers
