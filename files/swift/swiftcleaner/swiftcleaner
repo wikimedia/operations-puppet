@@ -1,0 +1,410 @@
+#!/usr/bin/python
+
+####
+####   This script goes over a list of swift objects
+####   looking for files to delete.
+####   It should be called with one or more filenames
+####   each file passed in should contain a bunch of lines,
+####   each line containing a container name and an object path
+####   eg:
+####      wikipedia-commons-local-thumb.2b 2/2b/Myfile.jpg/240px-Myfile.jpg
+####   This script will run a bunch of checks against the object:
+####   * does the thumb path match the file name? (with exceptions)
+####     delete files like Myfile.jpg/240px-Myfi (truncated name)
+####     delete files like Myfile.jpg/240px-Myfile.jpg?foo=bar&baz=blerg (extra parameters)
+####     exception: files might have .png or .jpg appended to the thumb (for .tif, .ogv, .svg, etc.)
+####     exception: there's bunches of different stuff between the file and thumb (not just \d+px)
+####        eg 4/4d/Copia_llave_video.ogv/seek=21-Copia_llave_video.ogv.jpg
+####   * is the object 0 bytes?
+####     delete empty files
+####   * is the object a different size from the same object in ms5
+####     delete objects that differ from their counterpart on ms5
+####        or that don't exist on ms5
+####   Any object deleted by this script will also send an HTCP purge
+####   message to the squids
+####
+####   Configuration files:
+####   You can change the number of threads and the delay between
+####   checks by modifying the configuration file.  It will be
+####   re-read live.
+####
+
+import re, urllib2, threading, time, sys, subprocess
+from optparse import OptionParser
+import random
+from swiftcleaner_helper import Token, read_config
+
+class Stats():
+    """create an instance of this, pass it into all the running threads, and
+    they can use it to report their statistics on objects checked, deleted,
+    etc.  Calls to an instance of this class are threadsafe."""
+    def submit_checked_object():
+        return
+    def submit_bad_object():
+        return
+    def get_stats():
+        return
+    def print_stats():
+        return
+
+# subclassing urllib to send HEAD and DELETE requests
+class HeadRequest(urllib2.Request):
+    def get_method(self):
+        return "HEAD"
+class DeleteRequest(urllib2.Request):
+    def get_method(self):
+        return "DELETE"
+
+class CheckObjects(threading.Thread):
+    # objlist should be between 100 and 10,000 objects for best results
+    def __init__(self, objlist, delay):
+        threading.Thread.__init__(self)
+        self.objlist = objlist
+        self.delay = delay
+        self.swift_obj_details = {} # hash for memorizing details
+        self.ms5_obj_details = {} # hash for memorizing details
+        #self.token = 'AUTH_abcd1234' #testing bad token exception catching
+        self.token = None
+        #print "%s initializing." % self.name
+
+    # thread entry
+    def run(self):
+        """runs through the list of (container, object) tuples and checks each one.
+        calls bad_object() on any that need to be deleted.  the list of objects
+        shouldn't be too long (maybe 100) because this doesn't stop until it
+        finishes the list."""
+        for obj in self.objlist:
+            res = self.check_object(obj)
+            print "checked out %s for object %s" % (res, obj[1])
+            if(res == False):
+                # we've found ourselves a bad object!
+                # go clean it up but don't slow us down.
+                threading.Thread(target=bad_object, args=(obj,)).start()
+            # sleep for the delay time between checks
+            if(self.delay != 0):
+                time.sleep(self.delay)
+        return
+
+    def check_object(self, obj):
+        """runs the checks described in the leading comment against the object
+        passed in (obj is a tuple of (container, object)) returns True (object is
+        OK) or False (object should be deleted)"""
+        objok = True
+        # skip checks as soon as one fails
+        for check in [self.check_if_object_exists, self.check_object_filename,
+                      self.check_object_filesize, self.check_object_against_ms5]:
+            if objok:
+                objok = objok & check(obj)
+                if not objok:
+                    # print out which check failed
+                    print "check %s is %s for object %s" % (check.__name__, objok, obj)
+                    # if it was the existence check that failed, we should move on.
+                    if(check == self.check_if_object_exists):
+                        print "skipping file because it doesn't exist in swift: %s" % (obj,)
+                        return "Absent"
+                    # if it was the check against filesize, go ahead and print out the filesize and mod time.
+                    if check == self.check_object_filesize:
+                        print "filesize is %s for %s" % (self.get_object_details_swift(obj), obj[1])
+                    # if it was the check against ms5, let's log more info to see what it was like before it got deleted.
+                    if check == self.check_object_against_ms5:
+                        # print out last mod time
+                        print "deets are %s/%s for %s" % (self.get_object_details_swift(obj), self.get_object_details_ms5(obj), obj[1])
+        return objok
+
+    ##
+    ## object checks
+    ##
+    def check_object_filename(self, obj):
+        """runs regex checks against the object name"""
+        # obj is a tuple of (container, object)
+        objok = True
+        objpath = obj[1]
+        # objpath should look like shard/name/stuff-name(.jpg|.png)?junk
+        match = re.match("(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpg|.png)?(?P<cruft>.*)$", objpath)
+        if match:
+            # any cruft means it's a bad image
+            if(match.group('cruft')):
+                objok = False
+        else:
+            # if the regex didn't match, fail.
+            objok = False
+        return objok
+    def check_if_object_exists(self, obj):
+        """checks to see if the object exists in swift.  If it doesn't exist,
+        we shouldn't do any more checks but we also shouldn't try and delete
+        it."""
+        res = self.get_object_details_swift(obj)
+        if res == None:
+            # no dice.
+            return False
+        return True
+
+    def check_object_filesize(self, obj):
+        """checks to make sure the object size is not zero
+        returns True if the ojbect is OK
+        returns False otherwise"""
+        try:
+            size = int(self.get_object_details_swift(obj)['Content-Length'])
+            if(size == 0):
+                return False
+            return True
+        except KeyError:
+            #object details was a hash but didn't include Content-Length
+            #  I don't know why this would happen, but if it does, purge the sucker
+            return False
+        except TypeError:
+            #get_obj_details returned None
+            return False
+    def check_object_against_ms5(self, obj):
+        """compares attributes of the file against the copy on ms5 (modtime, size)"""
+        swift_deets = self.get_object_details_swift(obj)
+        ms5_deets = self.get_object_details_ms5(obj)
+        #print "  swift deets: %s" % swift_deets
+        #print "  ms5   deets: %s" % ms5_deets
+        try:
+            if(swift_deets['Content-Length'] == ms5_deets['Content-Length']):
+                return True
+        except TypeError:
+            # either swift or ms5 didn't return a Content-Length
+            print "either swift or ms5 didn't retrun Content-Length: %s, %s" % (swift_deets, ms5_deets)
+            return False
+        return False
+
+    ##
+    ##  object check helper functions
+    ##
+    def get_object_details_swift(self, obj):
+        """grabs image details from swift, caching them for a while (so that
+        subsequent calls to get details don't hit swift again)
+        returns a dictionary"""
+        try:
+            # if we've got it memorized, return it.
+            return self.swift_obj_details[obj]
+        except KeyError:
+            # ok, we don't have it, let's go get the details.
+            pass
+        # use the authed version of the URL to bypass rewrite.py and the 404 handler
+        # note that you don't actually need to authenticate to send HEAD requests to the thumb buckets.
+        url = "http://ms-fe.pmtpa.wmnet/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/%s/%s" % (obj[0], obj[1])
+        try:
+            objdetails = self.head_url(url)
+        except urllib2.URLError, e:
+            #print "get_object_details returned %s for %s/%s" % (e.code, obj[0], obj[1])
+            objdetails = None
+        self.swift_obj_details[obj] = objdetails
+        return objdetails
+
+    def head_url(self, url):
+        """performs an HTTP HEAD request against url, returns the headers as a dictionary."""
+        req = HeadRequest(url)
+        req.headers['User-Agent'] = 'swiftcleaner'
+        req.headers['Host'] = 'upload.wikimedia.org'
+        # send that HEAD to the target
+        try:
+            resp = urllib2.urlopen(req)
+        except urllib2.HTTPError, e:
+            # 404 or other 400 error
+            raise
+        except urllib2.URLError:
+            # something else went wrong
+            return None
+        # headers I'm interested in:
+        headers = {}
+        # ms5
+        #HTTP/1.1 200 OK
+        #Server: nginx/0.7.65
+        #Date: Tue, 28 Feb 2012 22:16:24 GMT
+        #Content-Type: image/jpeg
+        #Content-Length: 19136
+        #Last-Modified: Sun, 18 Oct 2009 02:36:02 GMT
+        #Connection: keep-alive
+        #Accept-Ranges: bytes
+        #
+        # swift
+        #HTTP/1.1 200 OK
+        #Last-Modified: Thu, 02 Feb 2012 21:27:01 GMT
+        #Accept-Ranges: bytes
+        #Content-Type: image/jpeg
+        #Content-Length: 19136
+        #Date: Tue, 28 Feb 2012 22:18:18 GMT
+        #
+        headers['Content-Length'] = resp.info()['Content-Length']
+        try:
+            headers['Last-Modified'] = resp.info()['Last-Modified']
+        except KeyError:
+            headers['Last-Modified'] = 'never'
+        return headers
+
+    def get_object_details_ms5(self, obj):
+        url = "http://ms5.pmtpa.wmnet%s" % obj_to_url(obj)
+        try:
+            objdetails = self.head_url(url)
+        except urllib2.URLError:
+            objdetails = None
+        return objdetails
+
+def bad_object(obj):
+    """deletes the object from swift and sends an htcp purge message to squid.
+    To avoid ridiculous performance penalty, this should be called as a
+    separate thread."""
+    try:
+        delete_from_swift(obj)
+    except (urllib2.HTTPError, urllib2.URLError), e:
+        print "deleting from swift failed for obj %s with error %s" % (obj,e)
+    purge_from_squid(obj)
+    time.sleep(0.5)
+    purge_from_squid(obj) #purge a second time just for good measure
+
+def delete_from_swift(obj):
+    #DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.a2/a/a2/Little_kitten_.jpg/56px-Little_kitten_.jpg HTTP/1.1
+    #Host: ms-fe-rr.pmtpa.wmnet
+    #Accept-Encoding: identity
+    #X-Auth-Token: AUTH_xxxxxxxxxxxxxxxxxxx
+    url = "http://ms-fe.pmtpa.wmnet/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/%s/%s" % (obj[0], obj[1])
+    req = DeleteRequest(url)
+    req.headers['User-Agent'] = 'swiftcleaner'
+    req.headers['Host'] = 'upload.wikimedia.org'
+    req.headers['X-Auth-Token'] = Token.get_token()
+    # send that HEAD to the target
+    try:
+        resp = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        #if we're talking to swift and it's a 401, reauth and try once more
+        if(e.code == 401):
+            Token.clear_token()
+            req.headers['X-Auth-Token'] = Token.get_token()
+            try:
+                resp = urllib2.urlopen(req)
+            except urllib2.HTTPError, e:
+                # if we got an error again, give up
+                raise
+            #hooray, we successfully deleted it the second time!
+            return
+        #any other error, return False anyways
+        raise
+    except urllib2.URLError:
+        raise
+
+def purge_from_squid(obj):
+    # call 'php htcp.php http://upload.yaddayadda'
+    url = "http://upload.wikimedia.org%s" % obj_to_url(obj)
+    delete = subprocess.call(['php', './htcp.php', '%s' % url], shell=False)
+    return
+
+def obj_to_url(obj):
+    """translate an object tuple (container, objectpath) into a URL fit for swift or ms5
+    eg (wikipedia-commons-local-thumb.a2, a/a2/L.jpg/420px-L.jpg) => /wikipedia/commons/thumb/a/a2/L.jpg/420-L.jpg"""
+
+    contmatch = re.match("(?P<proj>[^-]+)-(?P<lang>[^-]+)-local-thumb(\.(?P<shard>\d{2}))?", obj[0])
+    if(contmatch):
+        url = "/%s/%s/%s/%s" % (contmatch.group('proj'), contmatch.group('lang'), "thumb", obj[1])
+    else:
+        url = None
+    return url
+
+def delegate(objlistfile, conf):
+    """this is the main control function.  hands out urls 50 at a time to
+    check_objects(), manages the number of checking threads, re-reads the
+    config, etc."""
+
+    threads = []
+    fh = open(objlistfile)
+    fh_has_data = True
+
+    while fh_has_data:
+        # if we've got too many threads, just chill.
+        if(threading.activeCount() >= conf['numthreads']):
+            time.sleep(1)
+            # re-read the config
+            conf = read_config(conf['config'], conf)
+            Token.update_auth_creds(conf)
+            continue
+        # sweet, we've got a thread avaialable.
+        # re-read the config
+        conf = read_config(conf['config'], conf)
+        Token.update_auth_creds(conf)
+        # fill up the objlist
+        try:
+            objcounter = 0
+            objlist = []
+            while(objcounter < conf['objsperthread']):
+                line = fh.next()
+                #print "read line %s" % line
+                try:
+                    (cont, image) = line[:-1].split()
+                except ValueError:
+                    # if there is an unescaped space in the line or no container, skip it
+                    print "skipping line %s" % line,
+                    continue
+                # skip the monitoring container cuz it's special
+                if(cont == 'monitoring'):
+                    continue
+                objlist.append((cont, image))
+                objcounter += 1
+        except StopIteration:
+            # this is the last thread to start.
+            fh_has_data = False
+        # start a thread with objlist
+        checker = CheckObjects(objlist, delay=conf['delay'])
+        checker.start()
+
+def main():
+    # set up command line arguments
+    usage="""usage: %prog [options] objlist [objlist objlist ...]
+
+    Read the comment in the header of the script for more details."""
+    parser = OptionParser(usage)
+    parser.add_option("-c", dest="config", default=None, help="path to config file for runtime changes. NOTE: the config file is re-read during regular operation and overrides command line options.")
+    parser.add_option("-u", dest="user", default="mw:thumb", help="the account:user string to authenticate against swift")
+    parser.add_option("-k", dest="key", default="xxxxxx", help="the account key to use to authenticate against swift")
+    parser.add_option("-a", dest="useragent", default="swiftcleaner", help="the user-agent this scirpt uses to identify itself")
+    parser.add_option("-n", dest="numthreads", default=2, help="number of threads to run")
+    parser.add_option("-o", dest="objsperthread", default=50, help="the number of objects to hand into each thread to check")
+    parser.add_option("-d", dest="delay", default=0, help="delay (in seconds) to wait in between each object checked. This should probably be less than 0.1.")
+    #parser.add_option("-l", dest="logfile", default=0, help="file to which to log messages")
+    parser.add_option("-t", dest="test", default=False, action="store_true", help="test mode - don't actually delete anything")
+    (options, args) = parser.parse_args()
+
+    conf = {}
+    conf['config'] = options.config
+    conf['user'] = options.user
+    conf['key'] = options.key
+    conf['useragent'] = options.useragent
+    conf['numthreads'] = int(options.numthreads)
+    conf['objsperthread'] = int(options.objsperthread)
+    conf['delay'] = float(options.delay)
+    #conf['logfile'] = options.logfile
+    conf['test'] = (True if options.test == True or options.test == 'True' else False)
+
+    # make sure we've got a urllist passed in
+    if not args:
+        print "Error: urllist required"
+        parser.print_help()
+        exit(1)
+
+    # get any config items from the config file
+    # this overrides anything passed in on the command line (including the name of the config file itself!)
+    conf = read_config(conf['config'], conf)
+    Token.update_auth_creds(conf)
+
+    # open the file, seek to the middle if necessary, then set up the UrlCaller class
+    urllists = args
+    try:
+        for urllistfile in urllists:
+            try:
+                delegate(urllistfile, conf)
+            except IOError, e:
+                # if I couldn't open the file, skip it.
+                print "skipping file %s - it triggered an IOError %s" % (urllistfile, e)
+                continue
+    except KeyboardInterrupt:
+        sys.stderr.write("keyboard interrupt caught.  Waiting for threads to finish.\n")
+    for thread in threading.enumerate():
+        if(thread != threading.current_thread()):
+            thread.join()
+
+
+if __name__ == '__main__':
+    main()
+
+# vim: set nu list expandtab tabstop=4 shiftwidth=4 autoindent:

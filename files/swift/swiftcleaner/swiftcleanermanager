@@ -1,0 +1,266 @@
+#!/usr/bin/python -u
+
+##
+##  This script's goal is to call swiftcleaner with all the objects added to Swift
+##  since the last run.  Specifically, this script collects the list of containers
+##  and an object listing of each container.  It keeps these in a cache directory.
+##  It finds the differences from the previous run then calls swiftcleaner with
+##  that listing.
+##
+
+from swiftcleaner_helper import Token, read_config
+from optparse import OptionParser
+import os
+import time
+from random import random
+from time import asctime
+import eventlet
+from eventlet.green import urllib, urllib2, subprocess
+
+## get a listing from swift (list of all containers or list of specific container)
+def get_swift_listing(conf, container=None):
+    swiftlist = []
+    expectedswiftlistlen = 1 #this will get reset by the response header
+    prevswiftlen = len(swiftlist)
+    trycounter = 0 #if we try to get more 3 times without getting any, bail even if we don't have all of them.
+    trycountermax = 3
+    headers = {}
+    headers['X-Auth-Token'] = Token.get_token()
+    headers['X-Auth-User'] = conf['user']
+    # if we were passed a container. append it to the URL
+    if container:
+        conturl = "/%s" % container
+        headercheck = "X-Container-Object-Count"
+    else:
+        conturl = ""
+        headercheck = "X-Account-Container-Count"
+    url = "http://ms-fe.pmtpa.wmnet/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe%s" % conturl
+    while(len(swiftlist) < expectedswiftlistlen):
+        #print "        swiftlist is %s long (wants %s) and requestion url %s" % (len(swiftlist), expectedswiftlistlen, url[70:])
+        req = urllib2.Request(url, headers=headers)
+        try:
+            resp = urllib2.urlopen(req)
+        except urllib2.HTTPError, e:
+            if(e.code == 401):
+                Token.clear_token()
+                headers['X-Auth-Token'] = Token.get_token()
+                req = urllib2.Request(url, headers=headers)
+                try:
+                    resp = urllib2.urlopen(req)
+                except urllib2.HTTPError, e:
+                    # if we fail to auth twice in a row, bail.
+                    print "got a 401 twice.  bummer."
+                    raise
+            else:
+                # we hit some other error.  retry once more then skip this container.  we'll get it next time.
+                try:
+                    resp = urllib2.urlopen(req)
+                except urllib2.HTTPError, e:
+                    print "failed twice to get listing.  skipping container %s" % container
+                    return []
+        except urllib2.URLError, e:
+            print "failed to get swift listing with exception %s" % e
+            raise
+        # find out how many containers we're expecting
+        expectedswiftlistlen = int(resp.info()[headercheck])
+        # snarf up all the containers we got
+        swiftlist = swiftlist + [line.strip() for line in resp]
+        # if we didn't get any more items this time around, increment the try counter
+        if(prevswiftlen == len(swiftlist)):
+            trycounter += 1
+        if(trycounter >= trycountermax):
+            # if we've tried too many times, just return what we've got.
+            # we're probably stuck in some off-by-one loop or a bad marker url
+            return swiftlist
+        prevswiftlen = len(swiftlist)
+
+        # in case there are more still to come, prep the URL with the last seen item
+        # http://docs.openstack.org/api/openstack-object-storage/1.0/content/list-large-number-of-objects.html
+        url = url.rsplit("?marker=", 1)[0]  #strip off the ?marker=.* if it exists
+        try:
+            url = "%s?marker=%s" % (url, urllib.pathname2url(swiftlist[-1]))
+        except IndexError:
+            # swiftlist is empty! if it's supposed to be, cool.  otherwise complain
+            if expectedswiftlistlen == 0:
+                return []
+            else:
+                raise
+    return swiftlist
+
+## read a container listing from the file in the statedir (from last time) if it exists
+def get_old_container_listing(conf, container):
+    objlist = []
+    try:
+        fh = open("%s/%s.prev" % (conf['statedir'], container))
+    except IOError:
+        #print "       failed to open previous run's container listing"
+        # return an empty list (treat nonexistent previous run as empty containers)
+        return objlist
+    # get a list of all the lines in the file minus newlines and spaces
+    #objlist = map(lambda str: str.strip(), fh.readlines())
+    objlist = set(line.strip() for line in fh)
+    fh.close()
+    return objlist
+
+## given two lists (or set)of objects, return the objects that exist in new but not old
+def get_new_objects(old, new):
+    return (set(new) - set(old))
+
+## write the container (or new object) listing to a file
+def write_list(conf, cont, whichlist, objlist):
+    listingfilename = "%s.%s" % (cont, whichlist)
+    try:
+        fh = open("%s/%s" % (conf['statedir'], listingfilename), 'w')
+    except IOError, e:
+        print "couldn't open container listing for writing with exception %s" % e
+        raise
+    for obj in objlist:
+        # regular container listings get only the object name.
+        # new object listings (for feeding into swiftcleaner) get "cont obj" lines instead.
+        line = ("%s %s" % (cont, obj) if (whichlist == 'new') else obj)
+        fh.write("%s\n" % line)
+    print "wrote %s" % listingfilename
+    fh.close()
+
+## figures out the list of new objects and calls cleaner on the container
+def process_container(conf, cont):
+    # ignore the monitoring bucket
+    if cont == 'monitoring':
+        return
+    print "%s: checking cont %s" % (asctime(), cont)
+    try:
+        contlisting = get_swift_listing(conf, cont)
+    except:
+        #anything goes wrong getting the listing, just skip this container.  we'll get it next time.
+        print "getting contlisting failed.  returning empty list."
+        return
+    oldcontlisting = get_old_container_listing(conf, cont)
+    newobjs = get_new_objects(oldcontlisting, contlisting)
+    print "        %s curnum = %s, oldnum = %s, new = %s" % (cont, len(contlisting), len(oldcontlisting), len(newobjs))
+    if(len(contlisting) != 0):
+        write_list(conf, cont, 'curr', contlisting)
+    # for each container that has new objects, call swiftcleaner for that
+    # container, than move the current list to previous so that the next
+    # run only gets new objects.  This protects us against the job stopping
+    # part way through - we won't recheck objects that we've already
+    # covered and we won't miss objects we haven't checked yet.
+    if(len(newobjs) != 0):
+        write_list(conf, cont, 'new', newobjs)
+        print "calling swiftcleaner for %s" % cont
+        sc = subprocess.call(["./swiftcleaner", "-c", conf['config'], "%s/%s.new" % (conf['statedir'], cont)])
+        if(sc == 0):
+            # only move current to prev (aka we successfully checked these objects) if swiftcleaner succeeded.
+            print "swiftcleaner succeeded for %s.  moving container listing from curr to prev." % cont
+            os.rename("%s/%s.curr" % (conf['statedir'], cont), "%s/%s.prev" % (conf['statedir'], cont))
+
+# checks for a pidfile
+# if the pidfile exists, checks to see whether the script is actually running with that pid
+# writes a pidfile if nobody else is running
+# the race condition logic isn't perfect but it's good enough.  It's not the end of the world if it fails and we get two copies running.
+# returns True if another instance is running, False otherwise
+def am_i_alone(conf):
+    pidfile = conf['pidfile']
+    pid = os.getpid()
+    if os.path.isfile(pidfile):
+        otherpid = int(open(pidfile).readline().strip())
+        try:
+            os.kill(otherpid, 0)
+        except OSError:
+            # pid is not running - remove the pidfile and continue on our way (it musta crashed)
+            os.unlink(pidfile)
+        else:
+            # pid is running.  We are not alone.  Return false.
+            print "foo"
+            return False
+    # at this point the pidfile doesn't exist and we're clear to continue
+    try:
+        fh = open(pidfile, 'w')
+        fh.write(str(pid))
+        fh.close()
+    except:
+        # blew up trying to write the pidfile.  log it and fail
+        print "failed to write pidfile."
+        raise
+    # ok, we've declared that we're the only one running.
+    # But wait!  there's a race condition!
+    # so let's pause for 0-0.1 sec and then
+    # let's check again and make sure that we actually put our own pid in that file and someone else didn't jump in the middle.
+    time.sleep(random()/10)
+    otherpid = int(open(pidfile).readline().strip())
+    print "pid is %s, other pid is %s" % (pid, otherpid)
+    if(otherpid == pid):
+        # hooray!  we're really the only one running.
+        print "bar"
+        return True
+    # ruh roh!  at this point, we tried to write in our own pid but someone beat us to it.
+    # let's back off for some time and try again.
+    time.sleep(random())
+    # recurse as many times as necessary to stop fighting.  probably only once.
+    print "baz"
+    return am_i_alone(conf)
+
+
+
+
+def main():
+    parser = OptionParser()
+    parser.add_option("-c", dest="config", default="./swiftcleaner.conf", help="swiftcleaner and swiftcleanermanager use the same config file.  this option specifies the path to the config file.  The long form of any option to either script can be defined in the config file. The config file is re-read throughout execution to dynamically adjust the number of running threads.")
+    parser.add_option("-s", dest="statedir", default="/var/lib/swiftcleaner", help="directory in which to store state (container and object lists).")
+    parser.add_option("-n", dest="nummanagerthreads", default=2, help="number of manager threads to run (multiply this number by the number of cleaner threads to get the total number of threads.)")
+    parser.add_option("-p", dest="pidfile", default="/tmp/swiftcleanermanager.pid", help="location for the pidfile - only one instance will run at a time.")
+    (options, args) = parser.parse_args()
+
+    conf = {}
+    conf['config'] = options.config
+    conf['statedir'] = options.statedir
+    # get the rest of the config from the config file
+    conf = read_config(conf['config'], conf)
+
+    # amke sure there's only one copy of the manager running.
+    # note that pidfile is an option, so you can have multiple instances by specifying separate pid files
+    if not am_i_alone(conf):
+        # I'm already running!  exit with an error.
+        print "Cowardly refusing to run a second instance."
+        exit(1)
+    # make sure the statedir exists
+    if not os.path.isdir(conf['statedir']):
+        try:
+            os.makedirs(conf['statedir'])
+        except os.error:
+            print "failed to make state dir %s" % conf['statedir']
+            raise
+
+    # inintialize our swift token class with the right username / key
+    Token.update_auth_creds(conf)
+
+    # get a list of all containers
+    contlist = get_swift_listing(conf)
+
+    # for each container, get the new and old lists, compare, spit out a comparison file,
+    # then launch swiftcleaner for all the new objects
+    poolsize = int(conf['nummanagerthreads'])
+    pool = eventlet.GreenPool(size=poolsize)
+    results = {}
+    for cont in contlist:
+        # re-read the config for each container to dynamically adjust the number of running threads
+        conf = read_config(conf['config'], conf)
+        # if our config changed, update the number of threads available.
+        if(poolsize != int(conf['nummanagerthreads'])):
+            poolsize = int(conf['nummanagerthreads'])
+            pool.resize(poolsize)
+
+        try:
+            results[cont] = pool.spawn(process_container, conf, cont)
+        except (SystemExit, KeyboardInterrupt):
+            break
+
+    # clear out the pidfile now that we're done
+    os.unlink(conf['pidfile'])
+    # and exit
+    exit(0)
+
+if __name__ == '__main__':
+    main()
+
+# vim: set nu list expandtab tabstop=4 shiftwidth=4 autoindent:
+
