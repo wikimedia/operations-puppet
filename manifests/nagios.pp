@@ -552,7 +552,7 @@ class nagios::monitor::newmonitor {
 			  "${icinga_config_dir}/puppet_services.cfg" ]
 
 	$static_files = [
-			  "${icinga_config_dir}/icinga.cfg",
+#			  "${icinga_config_dir}/icinga.cfg",
 			  "${icinga_config_dir}/cgi.cfg",
 			  "${icinga_config_dir}/checkcommands.cfg",
 #			  "${icinga_config_dir}/contactgroups.cfg",
