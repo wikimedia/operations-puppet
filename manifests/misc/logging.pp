@@ -73,8 +73,10 @@ class misc::squid-logging::multicast-relay {
 
 	upstart_job { "squid-logging-multicast-relay": install => "true" }
 
+	package { "socat": ensure => latest; }
+
 	service { squid-logging-multicast-relay:
-		require => Upstart_job[squid-logging-multicast-relay],
+		require => [ Package[socat], Upstart_job[squid-logging-multicast-relay] ],
 		ensure => running;
 	}
 }
