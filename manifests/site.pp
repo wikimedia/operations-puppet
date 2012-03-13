@@ -1643,6 +1643,16 @@ node /search10(1[5-9])|(20)\.eqiad\.wmnet/ {
 	include role::lucene::front-end::pool4
 }
 
+node /search102[1-2]\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool2
+}
+
+node /search102[3-4]\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool3
+}
+
 node /searchidx100[0-2]\.eqiad\.wmnet/ {
 
 	include role::lucene::indexer
