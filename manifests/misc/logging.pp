@@ -77,6 +77,7 @@ class misc::squid-logging::multicast-relay {
 
 	service { squid-logging-multicast-relay:
 		require => [ Package[socat], Upstart_job[squid-logging-multicast-relay] ],
+		subscribe => Upstart_job[squid-logging-multicast-relay],
 		ensure => running;
 	}
 }
