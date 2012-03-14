@@ -578,7 +578,7 @@ class nagios::monitor::newmonitor {
 		source => "puppet:///files/apache/sites/icinga.wikimedia.org";
 	}
 
-	apache_site { icinga: name => "icinga" }
+	apache_site { icinga: name => "icinga.wikimedia.org" }
 
 	# make sure the directory for individual service checks exists
 	file {

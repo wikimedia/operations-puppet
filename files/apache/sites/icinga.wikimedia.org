@@ -31,7 +31,7 @@ Alias /icinga /usr/share/icinga/htdocs
 		Allow From All
 		AuthName "Icinga Access"
 		AuthType Basic
-		AuthUserFile /etc/nagios3/htpasswd.users
+		AuthUserFile /etc/icinga/htpasswd.users
 		require valid-user
 	</DirectoryMatch>
 	<IfModule !mod_alias.c>
