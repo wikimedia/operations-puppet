@@ -104,6 +104,12 @@ class icinga::monitor {
 			owner => root,
 			group => root,
 			mode => 0644;
+
+		"/etc/icinga/conf.d":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 	}
 
 
