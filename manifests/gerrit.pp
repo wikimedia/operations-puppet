@@ -50,6 +50,7 @@ class gerrit::jetty {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::account,
+		gerrit::crons,
 		gerrit::gerrit_config,
 		generic::packages::git-core
 
@@ -239,7 +240,7 @@ class gerrit::ircbot {
 	}
 }
 
-class gerrit::account { 
+class gerrit::account {
 
 	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
 
@@ -281,5 +282,17 @@ class gerrit::gerrit_config {
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
 	$gerrit_session_timeout = "90 days"
+
+}
+
+class gerrit::crons {
+
+	cron { list_mediawiki_extensions:
+		# Gerrit is missing a public list of projects.
+		# This hack list MediaWiki extensions repositories
+		command => "/bin/ls -1 /var/lib/gerrit2/review_site/git/mediawiki/extensions/*.git",
+		user => root,
+		minute => [0, 15, 30, 45]
+	}
 
 }
