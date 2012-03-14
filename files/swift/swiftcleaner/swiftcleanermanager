@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python
 
 ##
 ##  This script's goal is to call swiftcleaner with all the objects added to Swift
@@ -90,7 +90,7 @@ def get_swift_listing(conf, container=None):
 ## read a container listing from the file in the statedir (from last time) if it exists
 def get_old_container_listing(conf, container):
     objlist = []
-    if conf['scrubstate']:
+    if (conf['scrubstate'] == 'True'):
         # if we're supposed to clean up old state
         # delete the statefile if it exists and return an empty list.
         try:
@@ -210,7 +210,7 @@ def main():
     parser = OptionParser()
     parser.add_option("-c", dest="config", default="./swiftcleaner.conf", help="swiftcleaner and swiftcleanermanager use the same config file.  this option specifies the path to the config file.  The long form of any option to either script can be defined in the config file. The config file is re-read throughout execution to dynamically adjust the number of running threads.")
     parser.add_option("-s", dest="statedir", default="/var/lib/swiftcleaner", help="directory in which to store state (container and object lists).")
-    parser.add_option("-S", dest="scrubstate", action='store_false', help="if defined as True, will remove all state before starting (and do a complete check)")
+    parser.add_option("-S", dest="scrubstate", action='store_const', const='True', default='False', help="if defined as True, will remove all state before starting (and do a complete check)")
     parser.add_option("-n", dest="nummanagerthreads", default=2, help="number of manager threads to run (multiply this number by the number of cleaner threads to get the total number of threads.)")
     parser.add_option("-p", dest="pidfile", default="/tmp/swiftcleanermanager.pid", help="location for the pidfile - only one instance will run at a time.")
     (options, args) = parser.parse_args()
