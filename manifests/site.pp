@@ -995,6 +995,8 @@ node "iron.wikimedia.org" {
 	admins::roots,
 	misc::management::ipmi
 
+	# let's see if the swiftcleaner can run here
+	include swift::cleaner
 }
 
 node "ixia.pmtpa.wmnet" {
