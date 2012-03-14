@@ -202,7 +202,8 @@ class swift::cleaner {
 		$delay_time,
 		$rewrite_user,
 		$rewrite_password,
-		$statedir ) {
+		$statedir,
+		$scrubstate ) {
 
 		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
 			owner => root,
@@ -246,7 +247,8 @@ class swift::cleaner {
 		delay_time => 0.1,
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
-		statedir => "/var/lib/swiftcleaner-incremental"
+		statedir => "/var/lib/swiftcleaner-incremental",
+		scrubstate => "False"
 		}
 	# run the full scan slower
 	swiftcleanercron { "swiftcleaner-full" :
@@ -258,7 +260,8 @@ class swift::cleaner {
 		delay_time => 0.3,
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
-		statedir => "/var/lib/swiftcleaner-full"
+		statedir => "/var/lib/swiftcleaner-full",
+		scrubstate => "True"
 		}
 }
 
