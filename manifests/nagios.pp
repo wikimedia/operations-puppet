@@ -911,8 +911,12 @@ class nagios::monitor::newmonitor {
 
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
+
+	# this command is so long because puppet will not insert a list of files
+	# separated by spaces
+
 	exec { "purge_decommissioned":
-		command => "/usr/local/sbin/purge-nagios-resources.py ${icinga::monitor::puppet_files} /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
+		command => "/usr/local/sbin/purge-nagios-resources.py /etc/icinga/puppet_hosts.cfg /etc/icinga/puppet_hostgroups.cfg /etc/icinga/puppet_hostextinfo.cfg /etc/icinga/puppet_servicegroups.cfg /etc/icinga/puppet_services.cfg /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/*",
 		timeout => 60;
 	}
 
