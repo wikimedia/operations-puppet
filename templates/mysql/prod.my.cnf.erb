@@ -45,12 +45,14 @@ long_query_time = 0.6
 <% if disable_binlogs == "true" then -%>
 #log_bin
 #log_slave_updates
+#sync_binlog = 1
 #binlog_cache_size = 1M
 #max_binlog_size         = 1000M
 #binlog_format=statement
 <% else -%>
 log_bin
 log_slave_updates
+sync_binlog = 1
 binlog_cache_size = 1M
 max_binlog_size         = 1000M
 binlog_format=statement
