@@ -2,6 +2,8 @@
 
 class icinga::monitor {
 
+	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
 	require nagios::configuration
 
 	# puppet_hosts.cfg must be first

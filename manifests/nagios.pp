@@ -188,7 +188,6 @@ class nagios::configuration {
 	$icinga_config_dir = "/etc/icinga"
 	$nagios_config_dir = "/etc/icinga"
 
-	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 }
 
 # Class which implements the monitoring services on the monitor host
@@ -531,6 +530,7 @@ class nagios::monitor {
 # DO NOT FOR ANY REASON put this class on spence
 
 class nagios::monitor::newmonitor {
+
 	require nagios::configuration,
 		icinga::monitor
 
@@ -543,7 +543,6 @@ class nagios::monitor::newmonitor {
 		nagios::monitor::jobqueue::new
 
 	include passwords::nagios::mysql
-	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 	install_certificate{ "star.wikimedia.org": }
 
