@@ -187,6 +187,8 @@ class nagios::configuration {
 
 	$icinga_config_dir = "/etc/icinga"
 	$nagios_config_dir = "/etc/icinga"
+
+	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 }
 
 # Class which implements the monitoring services on the monitor host
