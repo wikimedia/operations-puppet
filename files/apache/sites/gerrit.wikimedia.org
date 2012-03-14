@@ -48,6 +48,18 @@ NameVirtualHost *:443
 	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
 	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
 
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
 	ProxyRequests Off
 	ProxyVia Off
 	ProxyPreserveHost On
