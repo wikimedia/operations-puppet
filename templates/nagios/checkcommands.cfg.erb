@@ -487,3 +487,67 @@ define command{
 	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
 }
 # end percona mysql checks
+
+# swift process checks (RT-2593)
+
+define command{
+	command_name	nrpe_check_swift_account_auditor
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_auditor
+}
+
+define command{
+	command_name	nrpe_check_swift_account_reaper
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_reaper
+}
+
+define command{
+        command_name    nrpe_check_swift_account_replicator
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_account_server
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_server
+}
+
+define command{
+        command_name    nrpe_check_swift_container_auditor
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_auditor
+}
+
+define command{
+        command_name    nrpe_check_swift_container_replicator
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_container_server
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_server
+}
+
+define command{
+        command_name    nrpe_check_swift_container_updater
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_updater
+}
+
+define command{
+        command_name    nrpe_check_swift_object_auditor
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_auditor
+}
+
+define command{
+        command_name    nrpe_check_swift_object_replicator
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_object_server
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_server
+}
+
+define command{
+        command_name    nrpe_check_swift_object_updater
+        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_updater
+}
+
+# end swift process checks
