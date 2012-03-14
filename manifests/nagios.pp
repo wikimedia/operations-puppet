@@ -582,12 +582,6 @@ class nagios::monitor::newmonitor {
 
 	# make sure the directory for individual service checks exists
 	file {
-		"/etc/icinga":
-			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0755;
-
 		"/etc/icinga/puppet_checks.d":
 			ensure => directory,
 			owner => root,
