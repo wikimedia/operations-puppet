@@ -10,7 +10,9 @@ pipeline = object-server
 use = egg:swift#object
 
 [object-replicator]
+concurrency = 4
 
 [object-updater]
+concurrency = 4
 
 [object-auditor]
