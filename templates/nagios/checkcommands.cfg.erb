@@ -390,11 +390,11 @@ define command{
 }
 define command{
 	command_name	check_longqueries
-	command_line	/usr/local/nagios/libexec/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= scope.lookupvar('nagios::configuration::nagios_mysql_check_pass') %> -w 30 -c 66
+	command_line	/usr/local/nagios/libexec/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
 }
 define command{
 	command_name	check_db_lag
-	command_line	$USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= scope.lookupvar('nagios::configuration::nagios_mysql_check_pass') %>  -a lag -w 60 -c 600
+	command_line	$USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= nagios_mysql_check_pass %>  -a lag -w 60 -c 600
 }
 
 define command {
