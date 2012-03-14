@@ -25,6 +25,8 @@ class icinga::monitor {
 			  "${nagios::configuration::icinga_config_dir}/timeperiods.cfg",
 			  "${nagios::configuration::icinga_config_dir}/htpasswd.users"]
 
+	group { "gammu": gid => "124" }
+
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu" ] }
 
 	# icinga: icinga itself
