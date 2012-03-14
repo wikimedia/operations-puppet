@@ -529,7 +529,8 @@ class nagios::monitor {
 # DO NOT FOR ANY REASON put this class on spence
 
 class nagios::monitor::newmonitor {
-	require nagios::configuration
+	require nagios::configuration,
+		icinga::monitor
 
 	class {"webserver::php5": ssl => "true";}
 
@@ -543,34 +544,6 @@ class nagios::monitor::newmonitor {
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 	install_certificate{ "star.wikimedia.org": }
-
-	# puppet_hosts.cfg must be first
-	$puppet_files = [ "${icinga_config_dir}/puppet_hosts.cfg",
-			  "${icinga_config_dir}/puppet_hostgroups.cfg",
-			  "${icinga_config_dir}/puppet_hostextinfo.cfg",
-			  "${icinga_config_dir}/puppet_servicegroups.cfg",
-			  "${icinga_config_dir}/puppet_services.cfg" ]
-
-	$static_files = [
-#			  "${icinga_config_dir}/icinga.cfg",
-			  "${icinga_config_dir}/cgi.cfg",
-			  "${icinga_config_dir}/checkcommands.cfg",
-#			  "${icinga_config_dir}/contactgroups.cfg",
-#			  "${icinga_config_dir}/contacts.cfg",
-			  "${icinga_config_dir}/migration.cfg",
-			  "${icinga_config_dir}/misccommands.cfg",
-			  "${icinga_config_dir}/resource.cfg",
-			  "${icinga_config_dir}/timeperiods.cfg",
-			  "${icinga_config_dir}/htpasswd.users"]
-
-	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu" ] }
-
-	# icinga: icinga itself
-	# icinga-doc: files for the web-frontend
-
-	package { [ 'icinga', 'icinga-doc' ]:
-		ensure => latest;
-	}
 
 	# snmp tarp stuff
 	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "icinga" ] }
@@ -675,7 +648,7 @@ class nagios::monitor::newmonitor {
 	}
 
 	# Fix permissions
-	file { $puppet_files:
+	file { $icinga::monitor::puppet_files:
 		mode => 0644,
 		ensure => present;
 	}
@@ -695,77 +668,6 @@ class nagios::monitor::newmonitor {
 		owner => root,
 		group => root,
 		mode => 0755;
-	}
-
-
-	# Nagios check configuration files
-
-	file { "/etc/icinga/cgi.cfg":
-			source => "puppet:///files/icinga/cgi.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/icinga.cfg":
-			source => "puppet:///files/icinga/icinga.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/nsca_payments.cfg":
-			source => "puppet:///private/nagios/nsca_payments.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/htpasswd.users":
-			source => "puppet:///private/nagios/htpasswd.users",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/checkcommands.cfg":
-			content => template("nagios/checkcommands.cfg.erb"),
-			owner => root,
-			group => root,
-			mode => 0644;
-# FIXME - lcarr temporarily disable installation of these files to prevent spamming everyone
-
-#		"/etc/icinga/contactgroups.cfg":
-#			source => "puppet:///files/nagios/contactgroups.cfg",
-#			owner => root,
-#			group => root,
-#			mode => 0644;
-
-#		"/etc/icinga/contacts.cfg":
-#			source => "puppet:///private/nagios/contacts.cfg",
-#			owner => root,
-#			group => root,
-#			mode => 0644;
-
-		"/etc/icinga/migration.cfg":
-			source => "puppet:///files/nagios/migration.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/misccommands.cfg":
-			source => "puppet:///files/nagios/misccommands.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/resource.cfg":
-			source => "puppet:///files/icinga/resource.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
-		"/etc/icinga/timeperiods.cfg":
-			source => "puppet:///files/nagios/timeperiods.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
 	}
 
 	# Nagios plugin configuration files
@@ -982,10 +884,10 @@ class nagios::monitor::newmonitor {
 	}
 
 	service { "icinga":
-		require => File[$puppet_files],
+		require => File[$icinga::monitor::puppet_files],
 		ensure => running,
-		subscribe => [ File[$puppet_files],
-			       File[$static_files],
+		subscribe => [ File[$icinga::monitor::puppet_files],
+			       File[$icinga::monitor::static_files],
 			       File["/etc/icinga/puppet_checks.d"] ];
 	}
 
@@ -1014,7 +916,7 @@ class nagios::monitor::newmonitor {
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 	exec { "purge_decommissioned":
-		command => "/usr/local/sbin/purge-nagios-resources.py $puppet_files /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
+		command => "/usr/local/sbin/purge-nagios-resources.py $icinga::monitor::puppet_files /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
 		timeout => 60;
 	}
 
