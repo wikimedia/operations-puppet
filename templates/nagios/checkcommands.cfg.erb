@@ -218,7 +218,7 @@ define command{
 
 define command{
 	command_name	check_mysqlstatus
-	command_line	/usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= nagios::configuration::nagios_mysql_check_pass %> $ARG1$
+	command_line	/usr/bin/php $USER1$/check_MySQL.php -h $HOSTADDRESS$ -u nagios -p <%= scope.lookupvar('nagios::configuration::nagios_mysql_check_pass') %> $ARG1$
 	}
 
 # 'check_http_wikipedia' command definition, querying a different URL
