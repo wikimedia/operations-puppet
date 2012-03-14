@@ -287,6 +287,7 @@ class nagios::monitor {
 			iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
 			iptables_add_service{ "public_153": source => "208.80.153.128/26", service => "all", jump => "ACCEPT" }
 			iptables_add_service{ "public_154": source => "208.80.154.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_esams": source => "91.198.174.0./25", service => "all", jump => "ACCEPT" }
 		}
 
 		class iptables-drops {
