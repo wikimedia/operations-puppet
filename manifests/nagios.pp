@@ -571,16 +571,19 @@ class nagios::monitor::newmonitor {
 
 	# install the icinga Apache site
 	file { "/etc/apache2/sites-available/icinga.wikimedia.org":
-		ensure => present,
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/apache/sites/icinga.wikimedia.org";
+			ensure => present,
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/apache/sites/icinga.wikimedia.org";
 	}
 
 	# remove icinga default config
-	file { "/etc/apache2/conf.d/icinga.conf":
-		ensure => absent;
+	file { "/etc/icinga/apache2.conf":
+			ensure => absent;
+
+		"/etc/apache2/conf.d/icinga.conf":
+			ensure => absent;
 	}
 
 	apache_site { icinga: name => "icinga.wikimedia.org" }
