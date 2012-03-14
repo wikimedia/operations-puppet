@@ -50,6 +50,7 @@ class gerrit::jetty {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::account,
+		gerrit::docroot,
 		gerrit::gerrit_config,
 		generic::packages::git-core
 
@@ -239,7 +240,7 @@ class gerrit::ircbot {
 	}
 }
 
-class gerrit::account { 
+class gerrit::account {
 
 	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
 
@@ -259,6 +260,21 @@ class gerrit::account {
 			source => "puppet:///private/gerrit/id_rsa";
 	}
 
+}
+
+# Additional WMF files for https://gerrit.wikimedia.org/
+# Will be placed in a /w/ subdirectory
+class gerrit::docroot {
+	file {
+		"/var/www/w":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode  => 0444,
+			recurse => true;
+		"/var/www/w/ls-projects.php":
+			source => "puppet:///files/gerrit/docroot/ls-projects.php";
+	}
 }
 
 class gerrit::gerrit_config {
