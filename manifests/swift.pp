@@ -185,6 +185,83 @@ class swift::proxy::config(
 
 }
 
+# swift out-of-band file cleaner.
+# looks through all the objects in swift for corrupted thumbnail images.
+# purges them from swift, ms5, and the squids.
+# it is not necessary to run this on a swift host.
+# current setup is running 2 copies of this on iron
+## one copy that checks all recent stuff relatively quickly
+## one copy that continuously checks all objects but slowly.
+class swift::cleaner {
+	define swiftcleanercron(
+		$name,
+		$swiftcleaner_basedir,
+		$config_file_location,
+		$num_manager_threads,
+		$num_threads,
+		$delay_time,
+		$rewrite_user,
+		$rewrite_password,
+		$statedir ) {
+
+		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("swift/swiftcleaner.conf")
+		}
+		file { "$statedir":
+			owner => root,
+			group => root,
+			mode => 0644,
+			ensure => directory;
+		}
+		cron { "swiftcleaner-$name":
+			command => "$swiftcleaner_basedir/swiftcleanermanager -c ./swiftcleaner-$name.conf -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-$name.log",
+			user => root,
+			minute => 1,
+			hour => 22, #the beginning of the daily trough
+			ensure => present
+		}
+	}
+	# install basic app
+	package { ["python-eventlet", "php5-cli"]:
+		ensure => present;
+	}
+	$swiftcleaner_basedir = "/opt/swiftcleaner"
+	file{ "$swiftcleaner_basedir":
+		source => "puppet:///files/swift/swiftcleaner",
+		owner => "root",
+		group => "root",
+		recurse => remote;
+	}
+	include passwords::swift::pmtpa-prod
+	# run the incremental scan at a reasonable rate - it should take 1-4 hours to run or so.
+	swiftcleanercron { "swiftcleaner-incremental" :
+		name => "incremental",
+		swiftcleaner_basedir => $swiftcleaner_basedir,
+		config_file_location => "swiftcleaner-incremental.conf",
+		num_manager_threads => 5,
+		num_threads => 5,
+		delay_time => 0.1,
+		rewrite_user => "mw:thumbnail",
+		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+		statedir => "/var/lib/swiftcleaner-incremental"
+		}
+	# run the full scan slower
+	swiftcleanercron { "swiftcleaner-full" :
+		name => "full",
+		swiftcleaner_basedir => $swiftcleaner_basedir,
+		config_file_location => "swiftcleaner-full.conf",
+		num_manager_threads => 3,
+		num_threads => 3,
+		delay_time => 0.3,
+		rewrite_user => "mw:thumbnail",
+		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+		statedir => "/var/lib/swiftcleaner-full"
+		}
+}
+
 class swift::storage {
 	Class[swift::base] -> Class[swift::storage]
 

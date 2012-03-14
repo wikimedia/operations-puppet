@@ -1,0 +1,7 @@
+This application is managed in git at:
+
+https://gerrit.wikimedia.org/r/gitweb?p=operations/software.git;a=tree;f=swiftcleaner;hb=HEAD
+
+Please check in any changes there and copy them here for distribution by puppet.
+
+
