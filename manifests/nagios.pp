@@ -578,6 +578,11 @@ class nagios::monitor::newmonitor {
 		source => "puppet:///files/apache/sites/icinga.wikimedia.org";
 	}
 
+	# remove icinga default config
+	file { "/etc/apache2/conf.d/icinga.conf":
+		ensure => absent;
+	}
+
 	apache_site { icinga: name => "icinga.wikimedia.org" }
 
 	# make sure the directory for individual service checks exists
