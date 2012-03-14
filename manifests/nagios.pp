@@ -912,7 +912,7 @@ class nagios::monitor::newmonitor {
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 	exec { "purge_decommissioned":
-		command => "/usr/local/sbin/purge-nagios-resources.py $icinga::monitor::puppet_files /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
+		command => "/usr/local/sbin/purge-nagios-resources.py ${icinga::monitor::puppet_files} /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/* ",
 		timeout => 60;
 	}
 
