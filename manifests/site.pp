@@ -521,6 +521,7 @@ node "dataset2.wikimedia.org" {
 node "dataset1001.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
+	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 	include standard,
 		admins::roots,
 		groups::wikidev,
