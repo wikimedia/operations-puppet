@@ -188,6 +188,16 @@ class gerrit::proxy {
 		apache_site { 000_default: name => "000-default", ensure => absent }
 	}
 
+	if $realm == "labs" {
+		$gerrit_host = "$instancename.${domain}"
+		$gerrit_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$gerrit_ssl_key = "/etc/ssl/private/star.wmflabs.key"
+	} else {
+		$gerrit_host = "gerrit.wikimedia.org"
+		$gerrit_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$gerrit_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
+	}
+
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
 			mode => 644,
