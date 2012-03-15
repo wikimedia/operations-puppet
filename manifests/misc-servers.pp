@@ -883,7 +883,7 @@ net.core.rmem_default = 536870912
 		storage => "-s malloc,256M",
 		backends => [ 'localhost' ],
 		directors => { 'backend' => [ 'localhost' ] },
-		vcl_options => {
+		vcl_config => {
 			'retry5xx' => 0
 		},
 		backend_options => {

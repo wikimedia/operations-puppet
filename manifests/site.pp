@@ -944,7 +944,7 @@ node "marmontel.wikimedia.org" {
 		storage => "-s malloc,1G",
 		backends => [ 'localhost' ],
 		directors => { 'backend' => [ 'localhost' ] },
-		vcl_options => {
+		vcl_config => {
 			'retry5xx' => 0
 		},
 		backend_options => {
