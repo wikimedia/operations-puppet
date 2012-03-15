@@ -155,7 +155,7 @@ def process_container(conf, cont):
     if(len(newobjs) != 0):
         write_list(conf, cont, 'new', newobjs)
         print "calling swiftcleaner for %s" % cont
-        sc = subprocess.call(["./swiftcleaner", "-c", conf['config'], "%s/%s.new" % (conf['statedir'], cont)])
+        sc = subprocess.call([conf['swiftcleaner'], "-c", conf['config'], "%s/%s.new" % (conf['statedir'], cont)])
         if(sc == 0):
             # only move current to prev (aka we successfully checked these objects) if swiftcleaner succeeded.
             print "swiftcleaner succeeded for %s.  moving container listing from curr to prev." % cont
