@@ -27,10 +27,12 @@ class misc::package-builder {
 	}
 
 	class pbuilder($dists=["hardy", "lucid"]) {
-		package { "pbuilder": ensure => latest }
+		class packages {
+			package { "pbuilder": ensure => latest }
+		}
 		
 		define image{
-			require pbuilder
+			require packages
 
 			$pbuilder_root = "/var/cache/pbuilder"
 
