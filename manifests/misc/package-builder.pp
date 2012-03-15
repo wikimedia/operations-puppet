@@ -40,7 +40,7 @@ class misc::package-builder {
 
 			exec { "pbuilder --create --distribution ${title}":
 				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${othermirror}",
-				creates => "${pbuilder_root}/${title}.gz",
+				creates => "${pbuilder_root}/${title}.tgz",
 				path => "/bin:/sbin:/usr/bin:/usr/sbin",
 				timeout => 600
 			}
