@@ -50,9 +50,7 @@ search1023: itwiki.nspart2 nlwiki.nspart2 ruwiki.nspart2 svwiki.nspart2  plwiki.
 search1024: svwiki.nspart1.hl svwiki.nspart2.hl plwiki.nspart1.hl plwiki.nspart2.hl ptwiki.nspart1.hl ptwiki.nspart2.hl
 search1024: itwiki.nspart2 nlwiki.nspart2 ruwiki.nspart2 svwiki.nspart2  plwiki.nspart2 ptwiki.nspart2 zhwiki.nspart2
 
-# search 4
-# disable tspart by using a non-existent hostname ending in "x"
-search1015x: *tspart1 *tspart2
+# search 4 
 search1015: commonswiki.nspart1 commonswiki.nspart1.hl commonswiki.nspart2 commonswiki.nspart2.hl *?
 search1016: commonswiki.nspart1 commonswiki.nspart1.hl commonswiki.nspart2 commonswiki.nspart2.hl *?
 search1017: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl *.prefix
@@ -60,8 +58,15 @@ search1018: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|
 search1019: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell
 search1020: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell
 
+# disabled
+search1000x: *tspart1 *tspart2 en-titles* de-titles* ja-titles* it-titles* nl-titles* ru-titles* fr-titles*
+search1000x: sv-titles* pl-titles* pt-titles* es-titles* zh-titles*
+search1000x: commonswiki.spell commonswiki.nspart1.hl commonswiki.nspart1 commonswiki.nspart2.hl commonswiki.nspart2
+
+
 # stuffs to deploy in future
 searchNone: *.related jawiki.nspart1.hl jawiki.nspart2.hl zhwiki.nspart1.hl zhwiki.nspart2.hl
+searchNone: enwiki.spell enwiki.nspart1.sub1.hl enwiki.nspart1.sub2.hl
 
 # Indexers
 [Index]
