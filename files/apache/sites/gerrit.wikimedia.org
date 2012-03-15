@@ -1,0 +1,83 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/gerrit.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+NameVirtualHost *:80
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName gerrit.wikimedia.org
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	RewriteEngine on
+	RewriteCond %{SERVER_PORT} !^443$
+	RewriteRule ^/(.*)$ https://gerrit.wikimedia.org/$1 [L,R,NE]
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature Off
+
+</VirtualHost>
+
+NameVirtualHost *:443
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName gerrit.wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
+	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ProxyRequests Off
+	ProxyVia Off
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Order deny,allow
+		Allow from all
+	</Proxy>
+
+	ProxyPass /r/ http://127.0.0.1:8080/r/
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature Off
+
+</VirtualHost>
