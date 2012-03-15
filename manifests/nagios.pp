@@ -924,9 +924,13 @@ class nagios::monitor::newmonitor {
 	# this command is so long because puppet will not insert a list of files
 	# separated by spaces
 
-	exec { "purge_decommissioned":
-		command => "/usr/local/sbin/purge-nagios-resources.py /etc/icinga/puppet_hosts.cfg /etc/icinga/puppet_hostgroups.cfg /etc/icinga/puppet_hostextinfo.cfg /etc/icinga/puppet_servicegroups.cfg /etc/icinga/puppet_services.cfg /etc/nagios/puppet_checks.d/* /etc/icinga/puppet_checks.d/*",
-		timeout => 60;
+	exec { 
+		"purge_icinga_decommissioned":
+			command => "/usr/local/sbin/purge-nagios-resources.py /etc/icinga/puppet_hosts.cfg /etc/icinga/puppet_hostgroups.cfg /etc/icinga/puppet_hostextinfo.cfg /etc/icinga/puppet_servicegroups.cfg /etc/icinga/puppet_services.cfg /etc/icinga/puppet_checks.d/*",
+			timeout => 60;
+		"purge_nagios_decommissioned":
+			command => "/usr/local/sbin/purge-nagios-resources.py /etc/nagios/puppet_hosts.cfg /etc/nagios/puppet_hostgroups.cfg /etc/nagios/puppet_hostextinfo.cfg /etc/nagios/puppet_servicegroups.cfg  /etc/nagios/puppet_checks.d/*",
+			timeout => 60;
 	}
 
 	# WMF custom service checks
