@@ -26,7 +26,7 @@ class misc::package-builder {
 		}
 	}
 
-	class pbuilder($dists=["hardy", "lucid"]) {
+	class pbuilder($dists=["hardy", "lucid"], $defaultdist="lucid") {
 		class packages {
 			package { "pbuilder": ensure => latest }
 		}
@@ -36,10 +36,10 @@ class misc::package-builder {
 
 			$pbuilder_root = "/var/cache/pbuilder"
 
-			$othermirror = "deb http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe deb-src http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe"
+			$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe'"
 
 			exec { "pbuilder --create --distribution ${title}":
-				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz --othermirror ${othermirror}",
+				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${othermirror}",
 				creates => "${pbuilder_root}/${title}.gz",
 				path => "/bin:/sbin:/usr/bin:/usr/sbin",
 				timeout => 600
@@ -47,6 +47,11 @@ class misc::package-builder {
 		}
 
 		image { $dists: }
+
+		file { "/var/cache/pbuilder/base.tgz":
+			require => Image[$defaultdist],
+			ensure => "/var/cache/pbuilder/${defaultdist}.tgz"
+		}
 	}
 
 	include packages, defaults, pbuilder
