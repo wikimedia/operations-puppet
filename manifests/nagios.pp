@@ -652,20 +652,6 @@ class nagios::monitor::newmonitor {
 			mode => 0755;
 	}
 
-	# Fix permissions
-	file { $icinga::monitor::puppet_files:
-		mode => 0644,
-		ensure => present;
-	}
-
-	# also fix permissions on all individual service files
-	exec {
-		"fix_nagios_perms":
-		command => "/bin/chmod -R a+r /etc/nagios";
-
-		"fix_icinga_perms":
-		command => "/bin/chmod -R a+r /etc/icinga";
-		}
 
 	# Script to purge resources for non-existent hosts
 	file { "/usr/local/sbin/purge-nagios-resources.py":
@@ -921,6 +907,20 @@ class nagios::monitor::newmonitor {
 		notify => Service[icinga],
 	}
 
+	# Fix permissions
+	file { $icinga::monitor::puppet_files:
+		mode => 0644,
+		ensure => present;
+	}
+
+	# also fix permissions on all individual service files
+	exec {
+		"fix_nagios_perms":
+		command => "/bin/chmod -R a+r /etc/nagios";
+
+		"fix_icinga_perms":
+		command => "/bin/chmod -R a+r /etc/icinga";
+		}
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
 
