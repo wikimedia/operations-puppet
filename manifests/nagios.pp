@@ -885,15 +885,12 @@ class nagios::monitor::newmonitor {
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		notify => Service[icinga],
-		mode => 0644,
 	}
 	Nagios_hostextinfo <<| |>> {
 		notify => Service[icinga],
-		mode => 0644,
 	}
 	Nagios_service <<| |>> {
 		notify => Service[icinga],
-		mode => 0644,
 	}
 
 	# Collect all (virtual) resources
