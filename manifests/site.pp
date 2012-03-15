@@ -527,7 +527,16 @@ node "dataset1001.wikimedia.org" {
 		groups::wikidev,
 		accounts::catrope,
 		misc::download-wikimedia,
-		misc::download-mirror
+		misc::download-mirror,
+		generic::gluster
+		mount { "/mnt/glusterpublicdata":
+		      device => "labstore1.pmtpa.wmnet:/publicdata-project",
+		      fstype => "glusterfs",
+		      options => "defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log",
+		      require => Package["glusterfs"],
+		      ensure => mounted;
+		}
+
 }
 
 node /^db[1-9]\.pmtpa\.wmnet$/ {
