@@ -12,9 +12,9 @@ class varnish {
 			ensure => link,
 			target => "/etc/init.d/varnish";
 		}
-		package { [ 'varnish3', 'libvarnishapi1' ]:
-			ensure => "3.0.2-1wmf1";
-		}
+		#package { [ 'varnish3', 'libvarnishapi1' ]:
+		#	ensure => "3.0.2-1wmf1";
+		#}
 		package { libworking-daemon-perl:
 			ensure => present;
 		}
