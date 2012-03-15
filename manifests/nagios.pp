@@ -661,10 +661,10 @@ class nagios::monitor::newmonitor {
 	# also fix permissions on all individual service files
 	exec {
 		"fix_nagios_perms":
-		command => "/bin/chmod -R a+r /etc/nagios/puppet_checks.d";
+		command => "/bin/chmod -R a+r /etc/nagios";
 
 		"fix_icinga_perms":
-		command => "/bin/chmod -R a+r /etc/icinga/puppet_checks.d";
+		command => "/bin/chmod -R a+r /etc/icinga";
 		}
 
 	# Script to purge resources for non-existent hosts
