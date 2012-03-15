@@ -1761,7 +1761,6 @@ node "spence.wikimedia.org" {
 		admins::roots,
 		certificates::wmf_ca,
 		backup::client,
-		misc::udpprofile::collector,
 		misc::ircecho,
 		certificates::star_wikimedia_org
 
