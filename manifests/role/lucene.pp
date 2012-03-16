@@ -34,7 +34,7 @@ class role::lucene {
 				lucene::sudo
 
 			class { "lucene::server":
-        		        udplogging => "false"
+				udplogging => "false"
 			}
 		}
 		class pool1 {
