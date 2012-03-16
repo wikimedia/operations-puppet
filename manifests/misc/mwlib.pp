@@ -17,17 +17,15 @@ class misc::mwlib::packages {
 
 class misc::mwlib::users {
 
-  require misc::mwlib::groups
-
   user { "pp":
     name => "pp",
-    groups => [ "pp" ],
     home => "/opt/pp",
-    shell => "/bin/sh",
+    shell => "/bin/bash",
     ensure => "present",
-    membership => "minimum",
+    groups => [ "pp" ],
     allowdupe => false,
     system => true,
+	require => misc::mwlib::groups,
   }
 
 }
