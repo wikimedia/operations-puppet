@@ -123,9 +123,15 @@ class openstack::common {
 		}
 	}
 
-	# FIXME: third party repository
-	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-	apt::pparepo { "nova-core-release-diablo": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+	# FIXME: third party repositories
+        if openstack_version == "diablo" {
+	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+	    apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+        } elseif openstack_version == "essex" {
+	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+	    apt::pparepo { "nova-core-release-obsolete2": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "absent" }
+	    apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+        }
 
 	package { [ "nova-common" ]:
 		ensure => latest,
@@ -671,7 +677,7 @@ class openstack::glance-service {
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Apt::Pparepo["nova-core-release-diablo"],
+		require => Apt::Pparepo["nova-core-release"],
 		ensure => latest;
 	}
 
