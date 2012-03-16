@@ -17,7 +17,7 @@ class misc::mwlib::packages {
 
 class misc::mwlib::users {
 
-  require => misc::mwlib::groups
+  require misc::mwlib::groups
 
   user { "pp":
     name => "pp",
