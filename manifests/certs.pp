@@ -188,39 +188,6 @@ class certificates::star_wmflabs {
 
 }
 
-class certificates::star_wikimedia_org {
-
-	include certificates::packages
-
-	file {
-		"/etc/ssl/private/*.wikimedia.org.key":
-			owner => root,
-			group => root,
-			mode => 0400,
-			source => "puppet:///private/ssl/*.wikimedia.org.key",
-			require => Package["openssl"];
-		"/etc/ssl/private/*.wikimedia.org.pem":
-			owner => root,
-			group => root,
-			mode => 0400,
-			source => "puppet:///private/ssl/*.wikimedia.org.pem",
-			require => Package["openssl"];
-		"/etc/ssl/certs/*.wikimedia.org.crt":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/ssl/*.wikimedia.org.crt",
-			require => Package["openssl"];
-	}
-
-	exec {
-		'/bin/ln -s /etc/ssl/certs/\*.wikimedia.org.crt /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/\*.wikimedia.org.crt).0':
-			creates => "/etc/ssl/certs/d5663e04.0",
-			require => File["/etc/ssl/certs/*.wikimedia.org.crt"];
-	}
-
-}
-
 class certificates::wmf_ca {
 
 	include certificates::packages

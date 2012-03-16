@@ -4,8 +4,8 @@
 	ServerName planet.wikimedia.org
 	ServerAlias planet.wikipedia.org planet.wikipedia.com *.planet.wikimedia.org
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
-	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	RewriteEngine on
 	RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]

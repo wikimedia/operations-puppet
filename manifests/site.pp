@@ -329,7 +329,6 @@ node "argon.wikimedia.org" {
 	$cluster = "misc"
 	include base,
 		ganglia,
-		certificates::star_wikimedia_org,
 		ntp::client,
 		misc::survey
 
@@ -800,9 +799,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::test::testswarm,
 		admins::roots,
 		admins::dctech,
-		admins::jenkins,
-		certificates::star_wikimedia_org
-
+		admins::jenkins
 
 	install_certificate{ "star.mediawiki.org": }
 }
@@ -949,7 +946,6 @@ node "marmontel.wikimedia.org" {
 		admins::dctech,
 		svn::client,
 		misc::blogs::wikimedia,
-		certificates::star_wikimedia_org,
 		webserver::apache2::rpaf
 
 		class { "memcached":
@@ -986,7 +982,6 @@ node "hooper.wikimedia.org" {
 		admins::dctech,
 		svn::client,
 		misc::etherpad,
-		certificates::star_wikimedia_org,
 		misc::racktables
 
 	install_certificate{ "star.wikimedia.org": }
@@ -1048,8 +1043,7 @@ node "kaulen.wikimedia.org" {
 		accounts::reedy,
 		accounts::robla,
 		misc::download-mediawiki,
-		misc::bugzilla::crons,
-		certificates::star_wikimedia_org
+		misc::bugzilla::crons
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -1390,8 +1384,7 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 
 node "lily.knams.wikimedia.org" {
 	include ganglia,
-		nrpe,
-		certificates::star_wikimedia_org
+		nrpe
 
 	install_certificate{ "star.wikimedia.org": }
 }
@@ -1562,7 +1555,6 @@ node "nickel.wikimedia.org" {
 
 	include standard,
 		ganglia::web,
-		certificates::star_wikimedia_org,
 		generic::apache::no-default-site
 
 	 install_certificate{ "star.wikimedia.org": }
@@ -1783,7 +1775,6 @@ node "singer.wikimedia.org" {
 	$gid=500
 	include standard,
 		svn::client,
-		certificates::star_wikimedia_org,
 		groups::wikidev,
 		accounts::austin,
 		accounts::awjrichards,
@@ -1865,8 +1856,7 @@ node "spence.wikimedia.org" {
 		admins::dctech,
 		certificates::wmf_ca,
 		backup::client,
-		misc::ircecho,
-		certificates::star_wikimedia_org
+		misc::ircecho
 
 	install_certificate{ "star.wikimedia.org": }
 }
@@ -2191,7 +2181,6 @@ node "streber.wikimedia.org" {
 		exim::rt,
 		misc::rt::server,
 		firewall::builder,
-		certificates::star_wikimedia_org
 
 	class { "misc::syslog-server": config => "network" }
 
@@ -2269,8 +2258,7 @@ node /virt[1-5].pmtpa.wmnet/ {
 node "williams.wikimedia.org" {
 	include base,
 		ganglia,
-		ntp::client,
-		certificates::star_wikimedia_org
+		ntp::client
 
 	install_certificate{ "star.wikimedia.org": }
 }
