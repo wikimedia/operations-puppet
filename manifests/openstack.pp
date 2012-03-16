@@ -123,7 +123,7 @@ class openstack::common {
 	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
 	    apt::pparepo { "nova-core-release-obsolete2": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "absent" }
             #  FIXME:  As soon as essex goes gold, this should be openstack-release/2012.3.
-	    apt::pparepo { "nova-core-release": repo_string => "nova-core/trunk", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+	    apt::pparepo { "nova-core-release": repo_string => "nova-core/trunk", apt_key => "2A2356C9", dist => "lucid", ensure => "present" }
         } else {
 	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
 	    apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
