@@ -15,17 +15,16 @@ class misc::mwlib::packages {
 }
 
 
-class misc::mwlib::users {
+class misc::mwlib::users inherits misc::mwlib::groups{
 
   user { "pp":
     name => "pp",
     home => "/opt/pp",
     shell => "/bin/bash",
     ensure => "present",
-    groups => [ "pp" ],
+    groups +> "pp",
     allowdupe => false,
     system => true,
-	require => misc::mwlib::groups,
   }
 
 }
