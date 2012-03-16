@@ -138,6 +138,7 @@ class lucene {
 		if $indexer == "true" {
 			include mediawiki::packages
 
+			# FIXME: what installs apache2? Let's make sure that doesn't happen for search hosts
 			service { apache2:
 				ensure => stopped
 			}
@@ -145,9 +146,11 @@ class lucene {
 	}
 
 	class config {
+		# FIXME: use one template for all sites?
 		if $::site == "pmtpa" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
+				# FIXME: why does rainman own a file that is managed by Puppet?
 				owner => rainman,
 				group => search,
 				mode => 0444,
@@ -165,6 +168,7 @@ class lucene {
 				ensure => present;
 			}
 		}
+		# FIXME: why does rainman own files that are managed by Puppet?
 		file {
 			"/etc/lsearch.conf":
 				owner => rainman,
@@ -203,6 +207,7 @@ class lucene {
 			ensure => present;
 		}
 
+		# FIXME: duplicate of stuff in mediawiki app servers? Pull a class in from there if needed
 		if $indexer == "true" {
 			file {
 				"/etc/php5/conf.d/fss.ini":
@@ -230,6 +235,7 @@ class lucene {
 		}
 	}
 
+	# FIXME: migrate this to sudo_users and stock /etc/sudoers file
 	class sudo {
 		file { "/etc/sudoers":
 			owner => root,
