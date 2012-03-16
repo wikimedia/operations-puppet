@@ -17,6 +17,8 @@ class misc::mwlib::packages {
 
 class misc::mwlib::users {
 
+  require => misc::mwlib::groups
+
   user { "pp":
     name => "pp",
     groups => [ "pp" ],
@@ -24,10 +26,8 @@ class misc::mwlib::users {
     shell => "/bin/sh",
     ensure => "present",
     membership => "minimum",
-    #manages_homedir => false,
     allowdupe => false,
     system => true,
-    require => misc::mwlib::groups,
   }
 
 }
