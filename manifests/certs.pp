@@ -193,30 +193,30 @@ class certificates::star_wikimedia_org {
 	include certificates::packages
 
 	file {
-		"/etc/ssl/private/*.wikimedia.org.key":
+		"/etc/ssl/private/star.wikimedia.org.key":
 			owner => root,
 			group => root,
 			mode => 0400,
-			source => "puppet:///private/ssl/*.wikimedia.org.key",
+			source => "puppet:///private/ssl/star.wikimedia.org.key",
 			require => Package["openssl"];
-		"/etc/ssl/private/*.wikimedia.org.pem":
+		"/etc/ssl/private/star.wikimedia.org.pem":
 			owner => root,
 			group => root,
 			mode => 0400,
-			source => "puppet:///private/ssl/*.wikimedia.org.pem",
+			source => "puppet:///private/ssl/star.wikimedia.org.pem",
 			require => Package["openssl"];
-		"/etc/ssl/certs/*.wikimedia.org.crt":
+		"/etc/ssl/certs/star.wikimedia.org.crt":
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/ssl/*.wikimedia.org.crt",
+			source => "puppet:///files/ssl/star.wikimedia.org.crt",
 			require => Package["openssl"];
 	}
 
 	exec {
-		'/bin/ln -s /etc/ssl/certs/\*.wikimedia.org.crt /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/\*.wikimedia.org.crt).0':
+		'/bin/ln -s /etc/ssl/certs/star.wikimedia.org.crt /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/star.wikimedia.org.crt).0':
 			creates => "/etc/ssl/certs/d5663e04.0",
-			require => File["/etc/ssl/certs/*.wikimedia.org.crt"];
+			require => File["/etc/ssl/certs/star.wikimedia.org.crt"];
 	}
 
 }

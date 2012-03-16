@@ -42,8 +42,8 @@ NameVirtualHost *:443
 	ServerName bugs.wikimedia.org
 	Redirect permanent / https://bugzilla.wikimedia.org/
 	SSLEngine On
-	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
-	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 	RewriteEngine On
 	RewriteRule (.*) https://bugzilla.wikimedia.org%{REQUEST_URI}
 </VirtualHost>
