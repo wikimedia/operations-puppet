@@ -15,13 +15,13 @@ class search::sudo {
 
 class search::logrotate {
 	file {
-		 "/etc/cron.daily/logrotate":
+		"/etc/cron.daily/logrotate":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/logrotate/logrotate.cron.daily.search",
 			ensure => present;
-		 "/etc/logrotate.d/wikimedia-task-search":
+		"/etc/logrotate.d/wikimedia-task-search":
 			owner => root,
 			group => root,
 			mode => 0444,
@@ -71,32 +71,32 @@ class search::indexer {
 	$lucene_oai_pass = $passwords::lucene::oai_pass
 
 	package { nfs-common:
-                ensure => latest;
-        }
+		ensure => latest;
+	}
 
 	file { "/etc/lsearch.conf":
 		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0644,
+		group => root,                                                                                                                                                 
+		mode => 0644,
 		content => template("lucene/lsearch.conf.erb"),
 		ensure => present;
 	}
 
 	file { "/etc/default/rsync":
-                owner => root,
-                group => root,
-                mode => 0644,
-                source => "puppet:///files/rsync/rsync.default",
-                ensure => present;
-        }
+		owner => root,
+		group => root,
+		mode => 0644,
+		source => "puppet:///files/rsync/rsync.default",
+		ensure => present;
+	}
 
 	file { "/etc/rsyncd.conf":
-                owner => root,
-                group => root,
-                mode => 0644,
-                source => "puppet:///files/rsync/rsyncd.conf.searchidx",
-                ensure => present;
-        }
+		owner => root,
+		group => root,
+		mode => 0644,
+		source => "puppet:///files/rsync/rsyncd.conf.searchidx",
+		ensure => present;
+	}
 
 	service { "rsync" :
 		ensure => running,
@@ -148,8 +148,8 @@ class lucene {
 		if $::site == "pmtpa" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
-                                owner => rainman,
-                                group => search,
+				owner => rainman,
+				group => search,
 				mode => 0444,
 				content => template("lucene/lsearch-global-2.1.conf.pmtpa.erb"),
 				ensure => present;
@@ -158,8 +158,8 @@ class lucene {
 		if $::site == "eqiad" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
-                                owner => rainman,
-                                group => search,
+				owner => rainman,
+				group => search,
 				mode => 0444,
 				content => template("lucene/lsearch-global-2.1.conf.eqiad.erb"),
 				ensure => present;
