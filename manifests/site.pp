@@ -1404,6 +1404,10 @@ node "ms8.pmtpa.wmnet" {
 		misc::zfs::monitoring
 }
 
+node "ms1001.eqiad.wmnet" {
+	include standard
+}
+
 node "ms1002.eqiad.wmnet" {
 	include standard,
 		misc::images::rsyncd,
