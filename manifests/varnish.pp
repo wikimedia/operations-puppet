@@ -9,12 +9,11 @@ class varnish {
 	class packages {
 		# TODO: rebuild the package to use varnish as the init script name
 		file { "/etc/init.d/varnish3":
-			ensure => link,
-			target => "/etc/init.d/varnish";
+			ensure => absent,
 		}
-		#package { [ 'varnish3', 'libvarnishapi1' ]:
-		#	ensure => "3.0.2-1wmf1";
-		#}
+		package { [ 'varnish', 'libvarnishapi1', 'varnish-dbg' ]:
+			ensure => "3.0.2-2wm1";
+		}
 		package { libworking-daemon-perl:
 			ensure => present;
 		}
