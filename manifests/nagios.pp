@@ -917,6 +917,9 @@ class nagios::monitor::newmonitor {
 
 		"fix_icinga_perms":
 		command => "/bin/chmod -R a+r /etc/icinga";
+
+		"fix_icinga_temp_files":
+		command => "/bin/chown -R icinga /var/lib/icinga";
 		}
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
