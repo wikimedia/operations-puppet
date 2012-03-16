@@ -323,20 +323,19 @@ class swift::storage {
 		require swift::storage::service
 		$nagios_group = "swift"
 
-		if $hostname =~ /^ms-be[19]$/ {
-			monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
-			monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
-			monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
-			monitor_service { "swift-account-server": description => "swift-account-server", check_command => "nrpe_check_swift_account_server" }
-			monitor_service { "swift-container-auditor": description => "swift-container-auditor", check_command => "nrpe_check_swift_container_auditor" }
-			monitor_service { "swift-container-replicator": description => "swift-container-replicator", check_command => "nrpe_check_swift_container_replicator" }
-			monitor_service { "swift-container-server": description => "swift-container-server", check_command => "nrpe_check_swift_container_server" }
-			monitor_service { "swift-container-updater": description => "swift-container-updater", check_command => "nrpe_check_swift_container_updater" }
-			monitor_service { "swift-object-auditor": description => "swift-object-auditor", check_command => "nrpe_check_swift_object_auditor" }
-			monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
-			monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
-			monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
-		}
+		monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
+		monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
+		monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
+		monitor_service { "swift-account-server": description => "swift-account-server", check_command => "nrpe_check_swift_account_server" }
+		monitor_service { "swift-container-auditor": description => "swift-container-auditor", check_command => "nrpe_check_swift_container_auditor" }
+		monitor_service { "swift-container-replicator": description => "swift-container-replicator", check_command => "nrpe_check_swift_container_replicator" }
+		monitor_service { "swift-container-server": description => "swift-container-server", check_command => "nrpe_check_swift_container_server" }
+		monitor_service { "swift-container-updater": description => "swift-container-updater", check_command => "nrpe_check_swift_container_updater" }
+		monitor_service { "swift-object-auditor": description => "swift-object-auditor", check_command => "nrpe_check_swift_object_auditor" }
+		monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
+		monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
+		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
+
 	}
 	
 	include packages, config, service, monitoring
