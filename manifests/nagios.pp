@@ -650,6 +650,12 @@ class nagios::monitor::newmonitor {
 			owner => root,
 			group => root,
 			mode => 0755;
+
+		"/var/lib/nagios/rm":
+			owner => icinga,
+			group => nagios,
+			mode => 0775,
+			ensure => directory;
 	}
 
 
@@ -913,13 +919,16 @@ class nagios::monitor::newmonitor {
 	# also fix permissions on all individual service files
 	exec {
 		"fix_nagios_perms":
-		command => "/bin/chmod -R a+r /etc/nagios";
+			command => "/bin/chmod -R a+r /etc/nagios";
 
 		"fix_icinga_perms":
-		command => "/bin/chmod -R a+r /etc/icinga";
+			command => "/bin/chmod -R a+r /etc/icinga";
 
 		"fix_icinga_temp_files":
-		command => "/bin/chown -R icinga /var/lib/icinga";
+			command => "/bin/chown -R icinga /var/lib/icinga";
+
+		"fix_nagios_plugins_files":
+			command => "/bin/chmod -R a+w /var/lib/nagios";
 		}
 	# Decommission servers
 	decommission_monitor_host { $decommissioned_servers: }
