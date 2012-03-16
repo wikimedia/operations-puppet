@@ -6,6 +6,8 @@
 #		Nagios version by Sean Finney <seanius@debian.org> and probably others
 #		nagios2 version by Marc Haber <mh+debian-packages@zugschlus.de>
 #		icinga version by Alexander Wirt <formorer@debian.org>
+#
+#		WMF version by Leslie Carr <lcarr@wikimedia.org>
 
 ### BEGIN INIT INFO
 # Provides:          icinga
@@ -130,7 +132,7 @@ start () {
 
   DIRECTORY=$(dirname $THEPIDFILE)
   [ ! -d $DIRECTORY ] && mkdir -p $DIRECTORY
-  chown nagios:nagios $DIRECTORY
+  chown icinga:nagios $DIRECTORY
 
   if ! check_started; then
     if ! check_named_pipe; then
