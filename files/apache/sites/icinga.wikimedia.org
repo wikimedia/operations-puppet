@@ -19,7 +19,6 @@ Alias /icinga /usr/share/icinga/htdocs
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 	DocumentRoot /usr/share/icinga/htdocs
 
-	Alias /icinga "/usr/share/icinga/htdocs"
 	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
 		Options FollowSymLinks
 		SSLRequireSSL
@@ -49,8 +48,8 @@ Alias /icinga /usr/share/icinga/htdocs
 	ServerAlias neon.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	DocumentRoot /usr/share/icinga/htdocs
-	Alias /icinga "/usr/share/icinga/htdocs"
-<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
+
+	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
 		Options FollowSymLinks
 		Options ExecCGI
 		DirectoryIndex index.html
