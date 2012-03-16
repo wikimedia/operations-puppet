@@ -5,6 +5,7 @@
 $decommissioned_servers = [
 "adler",
 "controller",
+"dataset1",
 "db1",
 "db2",
 "db3",
@@ -39,6 +40,7 @@ $decommissioned_servers = [
 "mobile4",
 "mobile5",
 "project1",
+"project2",
 "searchidx1",
 "sq31",
 "sq32",
