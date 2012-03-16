@@ -17,5 +17,21 @@ command[check_mysqld]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld
 command[check_carbon_cache]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C carbon-cache.py
 command[check_profiler_to_carbon]=/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/python /usr/udpprofile/sbin/profiler-to-carbon'
 command[check_profiling_collector]=/usr/lib/nagios/plugins/check_procs -c 1:20 -C collector
+
+# swift process checks (RT-2593)
+command[check_swift_account_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-auditor'
+command[check_swift_account_reaper]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-reaper'
+command[check_swift_account_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-replicator'
+command[check_swift_account_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-server'
+command[check_swift_container_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-auditor'
+command[check_swift_container_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-replicator'
+command[check_swift_container_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-server'
+command[check_swift_container_updater]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-updater'
+command[check_swift_object_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-auditor'
+command[check_swift_object_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-replicator'
+command[check_swift_object_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-server'
+command[check_swift_object_updater]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-updater'
+# end swift process checks
+
 # this isn't in all /etc/nagios/nrpe.cfg's and is safe to duplicate
 include_dir=/etc/nagios/nrpe.d/
