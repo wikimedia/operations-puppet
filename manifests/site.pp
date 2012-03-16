@@ -498,14 +498,6 @@ node /es[1-4]\.pmtpa\.wmnet/ {
 	}
 }
 
-node "dataset1.wikimedia.org" {
-	$cluster = "misc"
-	$gid=500
-	include standard,
-		admins::roots,
-		misc::download-wikimedia
-}
-
 node "dataset2.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
