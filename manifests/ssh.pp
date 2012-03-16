@@ -66,11 +66,20 @@ class ssh::hostkeys::collect {
 
 class ssh::config {
 	if $operatingsystem == "Ubuntu" {
-		file { "/etc/ssh/sshd_config":
-			owner => root,
-			group => root,
-			mode  => 0444,
-			content => template("ssh/sshd_config.erb");
+		if $hostname == "fenari" or $hostname == "bast1001" {
+			file { "/etc/ssh/sshd_config":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => template("ssh/sshd_config_restricted.erb");
+			}
+		} else {
+			file { "/etc/ssh/sshd_config":
+				owner => root,
+				group => root,
+				mode  => 0444,
+				content => template("ssh/sshd_config.erb");
+			}
 		}
 		if ( $realm == "labs" ) {
 			file { "/etc/ssh/sshd_banner":
