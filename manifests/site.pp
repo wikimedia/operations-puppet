@@ -1586,14 +1586,6 @@ node "project1.wikimedia.org" {
 	include standard
 }
 
-node "project2.wikimedia.org" {
-	$cluster = "misc"
-
-	include standard,
-		groups::wikidev,
-		accounts::reedy
-}
-
 node "sanger.wikimedia.org" {
 	$gid = 500
 	$ldapincludes = ['openldap']
