@@ -8,7 +8,7 @@ class network::constants {
 			'eqiad' => {
 				'public' => {
 					'public1-a-eqiad' => {
-					 	'ipv4' => "208.80.154.0/26",
+						'ipv4' => "208.80.154.0/26",
 						'ipv6' => "2620:0:861:1::/64"
 					},
 					'public1-b-eqiad' => {
@@ -37,11 +37,11 @@ class network::constants {
 			},
 			'esams' => {
 				'public' => {
-					'public-services-vlan' => {
+					'public-services' => {
 						'ipv4' => "91.198.174.0/25",
 						'ipv6' => "2620:0:862:1::/64"
 					},
-					'backup-storage-vlan' => {
+					'backup-storage' => {
 						'ipv4' => "91.198.174.128/26",
 						'ipv6' => "2620:0:862:102::/64"
 					},
@@ -64,11 +64,11 @@ class network::constants {
 						'ipv4' => "208.80.152.0/25",
 						'ipv6' => "2620:0:860:1::/64"
 					},
+				},
+				'private' => {
 					'virt-hosts' => {
 						'ipv4' => "10.4.16.0/24"
 					},
-				},
-				'private' => {
 					'private' => {
 						'ipv4' => "10.0.0.0/16"
 					},
