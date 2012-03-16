@@ -62,6 +62,7 @@ case "$1" in
     start-stop-daemon --stop --quiet --oknodo --pidfile $PIDDIR/nrpe.pid
 	log_end_msg $?
     #sometimes deleting the pidfile fails. cleanup afterwards.
+    sleep 10
     test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
 	;;
   reload|force-reload)
