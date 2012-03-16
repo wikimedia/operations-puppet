@@ -24,7 +24,7 @@ class misc::mwlib::users {
     shell => "/bin/sh",
     ensure => "present",
     membership => "minimum",
-    manages_homedir => false,
+    #manages_homedir => false,
     allowdupe => false,
     system => true,
     require => misc::mwlib::groups,
