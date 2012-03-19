@@ -14,7 +14,7 @@ class misc::mwlib::packages {
 
 }
 
-class misc::mwlib::users inherits misc::mwlib::groups{
+class misc::mwlib::users {
 	systemuser { "pp": name => "pp", home => "/opt/pp", shell => "/bin/bash" }
 }
 
