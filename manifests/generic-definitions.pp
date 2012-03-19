@@ -25,6 +25,8 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 
 # Creates a system username with associated group, random uid/gid, and /bin/false as shell
 define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
+	# FIXME: deprecate $name parameter in favor of just using $title
+
 	group { $name:
 		name => $name,
 		ensure => present;
@@ -41,6 +43,7 @@ define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
 		managehome => true,
 		shell => $shell,
 		groups => $groups,
+		system => true,
 		ensure => present;
 	}
 }
