@@ -30,7 +30,7 @@ define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
 		ensure => present;
 	}
 
-	user { $name:
+	systemuser { $name:
 		require => Group[$name],
 		name => $name,
 		gid => $name,

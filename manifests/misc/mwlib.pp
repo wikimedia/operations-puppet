@@ -14,32 +14,35 @@ class misc::mwlib::packages {
 
 }
 
-
 class misc::mwlib::users inherits misc::mwlib::groups{
-
-  user { "pp":
-    name => "pp",
-    home => "/opt/pp",
-    comment => "pediapress system user",
-    shell => "/bin/bash",
-    ensure => "present",
-    gid => "mwlib",
-    allowdupe => false,
-    system => true,
-    managehome => true,
-  }
-
+	systemuser { "pp": name => "pp", home => "/opt/pp", shell => "/bin/bash" }
 }
 
+#class misc::mwlib::users inherits misc::mwlib::groups{
+#
+#  user { "pp":
+#    name => "pp",
+#    home => "/opt/pp",
+#    comment => "pediapress system user",
+#    shell => "/bin/bash",
+#    ensure => "present",
+#    gid => "mwlib",
+#    allowdupe => false,
+#    system => true,
+#    managehome => true,
+#  }
+#
+#}
 
-class misc::mwlib::groups {
 
-  group { "mwlib":
-    name => "mwlib",
-    ensure => "present",
-    allowdupe => false,
-    system => true,
-  }
-
-}
+#class misc::mwlib::groups {
+#
+#  group { "mwlib":
+#    name => "mwlib",
+#    ensure => "present",
+#    allowdupe => false,
+#    system => true,
+#  }
+#
+#}
 
