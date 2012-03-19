@@ -23,10 +23,10 @@ class misc::mwlib::users inherits misc::mwlib::groups{
     comment => "pediapress system user",
     shell => "/bin/bash",
     ensure => "present",
-    gid => "pp",
+    gid => "mwlib",
     allowdupe => false,
     system => true,
-    manages_homedir => true,
+    managehome => true,
   }
 
 }
@@ -34,8 +34,8 @@ class misc::mwlib::users inherits misc::mwlib::groups{
 
 class misc::mwlib::groups {
 
-  group { "pp":
-    name => "pp",
+  group { "mwlib":
+    name => "mwlib",
     ensure => "present",
     allowdupe => false,
     system => true,
