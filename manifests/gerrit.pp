@@ -52,6 +52,7 @@ class gerrit::jetty {
 	include gerrit::account,
 		gerrit::crons,
 		gerrit::gerrit_config,
+		gerrit::skin,
 		generic::packages::git-core
 
 	package { [ "openjdk-6-jre", "gitweb", "git-svn" ]:
@@ -171,7 +172,7 @@ class gerrit::jetty {
 
 	service {
 		"gerrit":
-			subscribe => File["/var/lib/gerrit2/review_site/etc/gerrit.config"],
+			subscribe => File["/var/lib/gerrit2/review_site/etc/gerrit.config", "/var/lib/gerrit2/review_site/etc/GerritSiteHeader.html"],
 			enable => true,
 			ensure => running,
 			hasstatus => false,
@@ -209,6 +210,37 @@ class gerrit::proxy {
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
+}
+
+class gerrit::skin {
+	require gerrit::proxy
+
+	file {
+		"/var/www/resources":
+			ensure => directory,
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555;
+		"/var/www/resources/jquery.min.js":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/skin/jquery.min.js",
+			require => File["/var/www/resources"];
+		"/var/lib/gerrit2/review_site/etc/GerritSiteHeader.html":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/skin/GerritSiteHeader.html",
+			require => File["/var/lib/gerrit2/review_site/etc", "/var/www/resources/jquery.min.js"];
+		"/var/lib/gerrit2/review_site/etc/GerritSite.css":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/skin/GerritSite.css",
+			require => File["/var/lib/gerrit2/review_site/etc", "/var/lib/gerrit2/review_site/etc/GerritSiteHeader.html"];
+	}
+
 }
 
 class gerrit::ircbot {
