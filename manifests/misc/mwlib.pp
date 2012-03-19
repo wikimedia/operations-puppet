@@ -20,9 +20,10 @@ class misc::mwlib::users inherits misc::mwlib::groups{
   user { "pp":
     name => "pp",
     home => "/opt/pp",
+    comment => "pediapress system user",
     shell => "/bin/bash",
     ensure => "present",
-    groups => "pp",
+    gid => "pp",
     allowdupe => false,
     system => true,
   }
