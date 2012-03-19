@@ -259,20 +259,19 @@ class protoproxy::proxy_sites {
 		enabled => 'true'
 	}
 	# Misc services
-	proxy_configuration{ gerrit:
+	proxy_configuration{ videos:
 		proxy_addresses => {
 			"pmtpa" => [ "208.80.152.200", "[2620:0:860:2::80:2]" ],
 			"eqiad" => [ "208.80.154.224", "[2620:0:862:3::80:2]" ],
 			"esams" => [ "91.198.174.224", "[2620:0:862:1::80:2]" ] },
-		proxy_server_name => 'gerrit.wikimedia.org',
+		proxy_server_name => 'videos.wikimedia.org',
 		proxy_server_cert_name => 'star.wikimedia.org',
 		proxy_backend => {
-			"pmtpa" => { "primary" => "208.80.152.147" },
-			"eqiad" => { "primary" => "208.80.152.147" },
+			"pmtpa" => { "primary" => "10.64.16.146" },
+			"eqiad" => { "primary" => "10.64.16.146" },
 			"esams" => { "primary" => "208.80.152.200", "secondary" => "208.80.152.200" }
 			},
-		proxy_port => "8080",
-		enabled => 'false'
+		enabled => 'true'
 	}
 
 }
