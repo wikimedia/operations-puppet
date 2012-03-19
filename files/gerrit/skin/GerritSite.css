@@ -1,0 +1,189 @@
+body {
+	color: #535353 !important;
+	background: url(static/openstack-page-bkg.jpg) no-repeat scroll 0 0 #fff !important;
+	position: static;
+}
+
+/**
+ * Development override for gerrit-dev.wmflabs.org
+ * - hacky basic stuff to get rid of openstack-red
+ * - introduce some mw-vector components
+ * - fix left-over green borders that openstack hasn't fixed yet
+ * UNSTABLE
+ * @{
+ */
+a,
+a:visited {
+	color: #0645AD !important;
+	text-decoration: none;
+}
+.GCLMTUVDNK, .GCLMTUVDFG {
+	color: #777 !important;
+}
+.gwt-TabBar .gwt-TabBarItem {
+	color: #0645AD !important;
+}
+.GCLMTUVDGK .gwt-TabPanelBottom {
+	background: #EEF3F5 !important;
+}
+.gwt-TabBar .gwt-TabBarItem-selected,
+.GCLMTUVDKF .gwt-TabBar .gwt-TabBarItem-selected {
+	color: #000 !important;
+	background: #fff !important;
+	outline: none !important; /* webkit focus */
+	border: 1px solid #C5E2EA !important;
+	border-top: 2px solid #C5E2EA !important;
+	border-bottom: 1px solid #fff !important;
+	position: relative; top: 1px;
+}
+.GCLMTUVDOB .GCLMTUVDGG,
+.GCLMTUVDOB .GCLMTUVDAG {
+	border-right: 0 !important;
+}
+.GCLMTUVDOB .GCLMTUVDGG {
+	border-left: 1px solid #C5E2EA !important; /* overrides left-over green border, missed by openstack I guess */
+}
+body {
+	background: #F5F5F5 url(//bits.wikimedia.org/skins-1.19/vector/images/page-fade.png) repeat-x !important;
+}
+.GCLMTUVDEJ > div > .GCLMTUVDOB:first-child {
+	border-top: 1px solid #C5E2EA;
+}
+/* reinstate some defaults that are too strongly overridden */
+#gerrit_body .GCLMTUVDHR a,
+#gerrit_body .GCLMTUVDHR a:visited,
+#gerrit_body .GCLMTUVDHR a:hover {
+	color: #DD0 !important; /* fix for general a:hover{color:blank!important} which messes up links in dark overlays */
+}
+#gerrit_body.GCLMTUVDJF .GCLMTUVDOB .GCLMTUVDJ,
+#gerrit_body.GCLMTUVDJF .GCLMTUVDE.GCLMTUVDOB .GCLMTUVDJ,
+#gerrit_body.GCLMTUVDJF .GCLMTUVDE.GCLMTUVDOB .GCLMTUVDJ a {
+	background: #FFC !important; /* active rows */
+}
+/**@}*/
+
+a:hover {
+	color: #000 !important;
+	text-decoration: underline;
+}
+
+a.gwt-InlineHyperlink {
+	background: none !important;
+}
+
+#gerrit_header {
+	display: block !important;
+	position: relative;
+	top: -60px;
+	margin-bottom: -60px;
+	width: 400px;
+	padding-left: 17px;
+}
+
+#gerrit_topmenu {
+	background: none;
+	position: relative;
+	top: 0;
+	left: 400px;
+	margin-right: 400px;
+}
+
+#gerrit_topmenu tbody tr td table {
+	border: 0;
+}
+
+#gerrit_body table {
+	background: none;
+}
+
+#gerrit_body:not(.patch) td {
+	border-bottom: 1px solid #C5E2EA;
+	border-right: 1px solid #C5E2EA;
+}
+
+#gerrit_body:not(.patch) tr:nth-child(even) {
+	background: #EEF3F5;
+	color: #353535;
+}
+
+#gerrit_body:not(.patch) tr:nth-child(odd) {
+	background: #FFF;
+	color: #353535;
+}
+
+#gerrit_body.patch tr {
+	background: #FFF;
+	color: #353535;
+}
+
+#gerrit_body:not(.patch) tr:nth-child(even) > td {
+	/* background: #EEF3F5; */
+	color: #353535;
+}
+
+#gerrit_body:not(.patch) tr:nth-child(odd) > td {
+	/* background: #FFF; */
+	color: #353535;
+}
+
+#gerrit_body tr:nth-child(even) > td.header {
+	background: #EEF3F5;
+	font-style: normal;
+	color: #353535;
+	font-weight: 700;
+}
+
+#gerrit_body tr:nth-child(odd) > td.header {
+	background: #FFF;
+	font-style: normal;
+	color: #353535;
+	font-weight: 700;
+}
+
+#gerrit_body tr > td div {
+	background: none;
+	color: #353535;
+}
+
+#gerrit_body tr > td div a {
+	background: none;
+	color: #353535;
+}
+
+#gerrit_body tr:first-child > td {
+	color: #353535;
+	font-size: 16px;
+	font-style: normal;
+	background: #FFF;
+}
+
+#gerrit_topmenu tbody tr td table.gwt-TabBar {
+	color: #353535;
+	border-bottom: 1px solid #C5E2EA;
+}
+
+.gwt-TabBarItem-selected {
+	color: #CF2F19 !important;
+	border-bottom: 3px solid #CF2F19;
+}
+
+.gwt-TabBarItem {
+	color: #353535;
+	border-right: 0 !important;
+}
+
+.gwt-TabBar .gwt-TabBarItem,
+.gwt-TabBar .gwt-TabBarRest,
+.gwt-TabPanelBottom {
+	background: 0 !important;
+}
+
+#gerrit_topmenu .gwt-TextBox {
+	width: 250px;
+}
+
+/* Make the commit summary display not overflow */
+.GCLMTUVDMB {
+	white-space: pre-wrap !important;
+}
+
