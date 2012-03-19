@@ -26,6 +26,7 @@ class misc::mwlib::users inherits misc::mwlib::groups{
     gid => "pp",
     allowdupe => false,
     system => true,
+    manages_homedir => true,
   }
 
 }
