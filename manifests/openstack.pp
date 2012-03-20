@@ -158,7 +158,7 @@ class openstack::common {
 
 class openstack::controller {
 
-        if openstack_version == "essex" {
+        if $openstack_version == "essex" {
 	        include openstack::common,
 		        openstack::scheduler-service,
 		        openstack::glance-service,
