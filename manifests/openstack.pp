@@ -189,7 +189,6 @@ class openstack::compute {
 
 	include openstack::common,
 		openstack::compute-service,
-		openstack::volume-service,
 		openstack::gluster-service,
 		openstack::gluster-client
 
