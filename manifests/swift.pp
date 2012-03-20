@@ -68,7 +68,7 @@ class swift::iptables-accepts {
 	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/24", jump => "ACCEPT" }
+	iptables_add_service{ "swift_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/16", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_igmp": service => "igmp", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_icmp": service => "icmp", jump => "ACCEPT" }
 	# swift specific services
