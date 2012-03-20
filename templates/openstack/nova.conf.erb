@@ -43,7 +43,7 @@
 --node_availability_zone=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --zone_name=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --quota_floating_ips=<%= scope.lookupvar('openstack::nova_config::nova_quota_floating_ips') %>
---multi_host=T
+--multi_host=True
 --api_paste_config=/etc/nova/api-paste.ini
 --use_deprecated_auth=True
 #--use_ipv6=True
