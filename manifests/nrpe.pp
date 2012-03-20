@@ -96,13 +96,20 @@ class nrpe::service {
 	Class[nrpe::packages] -> Class[nrpe::service]
 	
 	service { nagios-nrpe-server:
-		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
+		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"], File["/etc/init.d/nagios-nrpe-server"] ],
 		subscribe => File["/etc/nagios/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
 		ensure => running;
 	}
 
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+	file { "/etc/init.d/nagios-nrpe-server":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/nagios/nrpe-server-init";
+	}
+
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/sudoers.d/nrpe":
 			owner => root,
 			group => root,
