@@ -37,6 +37,13 @@ class nrpe::service {
 		ensure => running;
 	}
 
+	file { "/etc/init.d/nagios-nrpe-server":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/nagios/nrpe-server-init";
+	}
+
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/sudoers.d/nrpe":
 			owner => root,
