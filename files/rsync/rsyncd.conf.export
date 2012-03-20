@@ -3,7 +3,7 @@
 ### puppet:///files/rsync/rsyncd.conf.export
 #####################################################################
 
-hosts allow = ms7.pmtpa.wmnet ms8.pmtpa.wmnet ms1002.eqiad.wmnet
+hosts allow = ms7.pmtpa.wmnet ms8.pmtpa.wmnet ms1002.eqiad.wmnet ms1001.eqiad.wmnet
 
 [export]
 read only=true
