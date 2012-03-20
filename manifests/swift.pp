@@ -257,7 +257,7 @@ class swift::cleaner {
 		swiftcleaner_basedir => $swiftcleaner_basedir,
 		config_file_location => "swiftcleaner-full.conf",
 		num_manager_threads => 5,
-		num_threads => 3,
+		num_threads => 5,
 		delay_time => 0.1,
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
