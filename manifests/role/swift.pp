@@ -21,7 +21,7 @@ class role::swift {
 			memcached_servers => [ "copper.wikimedia.org:11211", "magnesium.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => $::processorcount * 2,
 			super_admin_key => $passwords::swift::eqiad-test::super_admin_key,
-			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
+			rewrite_account => "AUTH_854f8c66-63b6-4965-8b6c-5b2ccfe79aa8",
 			rewrite_url => "http://127.0.0.1:8080/auth/v1.0",
 			rewrite_user => "test:tester",
 			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
