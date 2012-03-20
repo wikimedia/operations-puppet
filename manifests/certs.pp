@@ -84,7 +84,7 @@ define create_certificate_hash( $certname="$name", $location="/etc/ssl/certs", $
 		$hashflag = "-subject_hash"
 	}
 	exec {
-		"/bin/ln -s ${location}/${certname}.pem ${location}/$(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}.pem).0":
+		"/bin/ln -sf ${location}/${certname}.pem ${location}/$(/usr/bin/openssl x509 ${hashflag} -noout -in ${location}/${certname}.pem).0":
 			creates => "${location}/${hash}",
 			require => File["${location}/${certname}.pem"];
 	}
@@ -136,7 +136,7 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 		# the certs directory
 		"${name}_create_hash":
 			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0\" ]",
-			command => "/bin/ln -s /etc/ssl/certs/${name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0",
+			command => "/bin/ln -sf /etc/ssl/certs/${name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0",
 			require => [Package["openssl"], File["/etc/ssl/certs/${name}.pem"]];
 	}
 
@@ -230,7 +230,7 @@ class certificates::star_wikimedia_org {
 	}
 
 	exec {
-		'/bin/ln -s /etc/ssl/certs/\*.wikimedia.org.crt /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/\*.wikimedia.org.crt).0':
+		'/bin/ln -sf /etc/ssl/certs/\*.wikimedia.org.crt /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/\*.wikimedia.org.crt).0':
 			creates => "/etc/ssl/certs/d5663e04.0",
 			require => File["/etc/ssl/certs/*.wikimedia.org.crt"];
 	}
@@ -285,7 +285,7 @@ class certificates::rapidssl_ca {
 	}
 
 	exec {
-		'/bin/ln -s /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
+		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
 			creates => "/etc/ssl/certs/13b97b27.0",
 			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
 	}
@@ -307,7 +307,7 @@ class certificates::digicert_ca {
 	}
 
 	exec {
-		'/bin/ln -s /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
+		'/bin/ln -sf /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
 			creates => "/etc/ssl/certs/1445ed77.0",
 			require => File["/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem"];
 	}
