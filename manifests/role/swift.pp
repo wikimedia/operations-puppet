@@ -18,7 +18,7 @@ class role::swift {
 		class { "::swift::proxy::config":
 			bind_port => "8080",
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
-			memcached_servers => [ "copper.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
+			memcached_servers => [ "copper.wikimedia.org:11211", "magnesium.wikimedia.org:11211", "zinc.wikimedia.org:11211" ],
 			num_workers => $::processorcount * 2,
 			super_admin_key => $passwords::swift::eqiad-test::super_admin_key,
 			rewrite_account => "AUTH_ade95207-9bcc-4bc9-bb67-06b417895b49",
