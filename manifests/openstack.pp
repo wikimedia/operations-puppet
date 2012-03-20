@@ -158,15 +158,26 @@ class openstack::common {
 
 class openstack::controller {
 
-	include openstack::common,
-		openstack::scheduler-service,
-		openstack::ajax-console-proxy-service,
-		openstack::glance-service,
-		openstack::openstack-manager,
-		openstack::database-server,
-		openstack::puppet-server,
-		openstack::ldap-server,
-		openstack::iptables
+        if openstack_version == "essex" {
+	        include openstack::common,
+		        openstack::scheduler-service,
+		        openstack::glance-service,
+		        openstack::openstack-manager,
+		        openstack::database-server,
+		        openstack::puppet-server,
+		        openstack::ldap-server,
+		        openstack::iptables
+        } else {
+	        include openstack::common,
+		        openstack::scheduler-service,
+		        openstack::ajax-console-proxy-service,
+		        openstack::glance-service,
+		        openstack::openstack-manager,
+		        openstack::database-server,
+		        openstack::puppet-server,
+		        openstack::ldap-server,
+		        openstack::iptables
+        }
 
 	package { [ "rabbitmq-server", "euca2ools" ]:
 		ensure => latest;
