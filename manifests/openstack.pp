@@ -660,9 +660,11 @@ class openstack::gluster-service {
 	# Put the hosts own uuid in glusterd.info
 	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
 	file {
+                "/etc/glusterd":
+                        ensure => "directory";
 		"/etc/glusterd/glusterd.info":
 			content => "UUID=${local_host_uuid}",
-			require => Package["glusterfs"];
+			require => [Package["glusterfs"], FILE["/etc/glusterd"]];
 	}
 
 	# TODO: We need to replace the init script with an upstart job that'll ensure
