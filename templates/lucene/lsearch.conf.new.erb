@@ -62,10 +62,10 @@ Index.maxqueuecount=5000
 
 # Maximal time an update can remain in queue before being processed (in seconds)
 Index.maxqueuetimeout=120
-
+<% if $hostname == "search11" then -%>
 # Keep only the most recent update
 Search.deleteOldUpdates=true
-
+<% end -%>
 <% if scope.lookupvar('lucene::server::indexer') == "true" then -%>
 Index.delsnapshots=true
 <% end -%>
