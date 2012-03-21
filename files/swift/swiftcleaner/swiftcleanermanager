@@ -87,6 +87,27 @@ def get_swift_listing(conf, container=None):
                 raise
     return swiftlist
 
+## take a list of containers and prune out the ones we don't want
+## return a new list of the containers we want to keep
+def clean_container_listing(conf, origcontlist):
+    contlist = []
+    for cont in origcontlist:
+        # we should skip the monitoring container
+        if(cont == 'monitoring'):
+            continue
+        # we should keep containers that end with -thumb
+        if(cont.endswith('-thumb')):
+            contlist.append(cont)
+            continue
+        # we should keep containers that end with -thumb.[0-9a-f]{2}
+        if(cont[-9:-3].endswith('-thumb')): #aka cut off the .a2 and then compare
+            contlist.append(cont)
+            continue
+        # we didn't explicitly skip it, but we didn't include it either.
+        # I'm going to default to only checking the -thumb containers
+        # so we'll skip everything that doesn't get caught above
+    return contlist
+
 ## read a container listing from the file in the statedir (from last time) if it exists
 def get_old_container_listing(conf, container):
     objlist = []
@@ -242,6 +263,8 @@ def main():
 
     # get a list of all containers
     contlist = get_swift_listing(conf)
+    # clean the list of containers - we don't actually want to check all of them
+    contlist = clean_container_listing(conf, contlist)
 
     # for each container, get the new and old lists, compare, spit out a comparison file,
     # then launch swiftcleaner for all the new objects
