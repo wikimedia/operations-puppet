@@ -1283,7 +1283,9 @@ node "manganese.wikimedia.org" {
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
 			'ALL = NOPASSWD: /usr/local/bin/svn-group',
-			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user' ]
+			'ALL = NOPASSWD: /usr/local/sbin/add-labs-user',
+			'ALL = (gerrit2) NOPASSWD: ALL' ]
+
 	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
 
 	$cluster = "misc"
