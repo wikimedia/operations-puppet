@@ -1295,9 +1295,7 @@ node "manganese.wikimedia.org" {
 		backup::client,
 		gerrit::proxy,
 		gerrit::jetty,
-		gerrit::ircbot,
-		admins::roots,
-		accounts::demon
+		gerrit::ircbot
 }
 
 node "mchenry.wikimedia.org" {
