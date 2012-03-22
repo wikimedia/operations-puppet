@@ -227,6 +227,14 @@ class lvs::configuration {
 				'pmtpa' => "10.2.1.13",
 				'eqiad' => "10.2.2.13",
 			},
+			'search_pool4' => {
+				'pmtpa' => "10.2.1.14",
+				'eqiad' => "10.2.2.14",
+			},
+			'search_prefix' => {
+				'pmtpa' => "10.2.1.15",
+				'eqiad' => "10.2.2.15",
+			},
 			'mobile' => {
 				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilesvc' => "10.2.2.26"}
 			},
@@ -377,7 +385,7 @@ class lvs::configuration {
 			},
 		},
 		"search_pool1" => {
-			'description' => "Lucene search pool 1, search-pool1.svc.pmtpa.wmnet",
+			'description' => "Lucene search pool 1",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
 			'ip' => $service_ips['search_pool1'][$::site],
@@ -393,7 +401,7 @@ class lvs::configuration {
 			},
 		},
 		"search_pool2" => {
-			'description' => "Lucene search pool 2, search-pool2.svc.pmtpa.wmnet",
+			'description' => "Lucene search pool 2",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
 			'ip' => $service_ips['search_pool2'][$::site],
@@ -409,10 +417,42 @@ class lvs::configuration {
 			},
 		},
 		"search_pool3" => {
-			'description' => "Lucene search pool 3, search-pool3.svc.pmtpa.wmnet",
+			'description' => "Lucene search pool 3",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
 			'ip' => $service_ips['search_pool3'][$::site],
+			'port' => 8123,
+			'scheduler' => "wrr",
+			'bgp' => "yes",
+			'depool-threshold' => "1",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost/stats' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
+		"search_pool4" => {
+			'description' => "Lucene search pool 4",
+			'class' => "low-traffic",
+			'protocol' => "tcp",
+			'ip' => $service_ips['search_pool4'][$::site],
+			'port' => 8123,
+			'scheduler' => "wrr",
+			'bgp' => "yes",
+			'depool-threshold' => "1",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost/stats' ],
+					},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
+		"search_prefix" => {
+			'description' => "Lucene search prefix pool",
+			'class' => "low-traffic",
+			'protocol' => "tcp",
+			'ip' => $service_ips['search_prefix'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
@@ -595,9 +635,17 @@ if $hostname == "spence" {
 	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
 	monitor_service_lvs_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt" }
+
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool3.svc.pmtpa.wmnet": ip_address => "10.2.1.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-pool4.svc.pmtpa.wmnet": ip_address => "10.2.1.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-prefix.svc.pmtpa.wmnet": ip_address => "10.2.1.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-pool4.svc.eqiad.wmnet": ip_address => "10.2.2.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+	monitor_service_lvs_custom { "search-prefix.svc.eqiad.wmnet": ip_address => "10.2.2.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 
 	# pmtpa -lb addresses
 	monitor_service_lvs_http { "wikimedia-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.200", check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page" }

@@ -1638,14 +1638,19 @@ node /search101[1-4]\.eqiad\.wmnet/ {
 	include role::lucene::front-end::pool3
 }
 
-node /search10(1[5-9])|(20)\.eqiad\.wmnet/ {
+node /search101(5|6)\.eqiad\.wmnet/ {
 
 	include role::lucene::front-end::pool4
 }
 
-node /search102[1-2]\.eqiad\.wmnet/ {
+node /search101(7|8)\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool2
+	include role::lucene::front-end::prefix
+}
+
+node /search10(19)|(2[0-2])\.eqiad\.wmnet/ {
+
+	include role::lucene::front-end::pool4
 }
 
 node /search102[3-4]\.eqiad\.wmnet/ {

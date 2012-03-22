@@ -24,19 +24,17 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 [Search-Group]
 # search 1 (enwiki) 
 search1001: enwiki.nspart1.sub1 enwiki.nspart1.sub2 enwiki.spell
-search1002: enwiki.nspart1.sub1 enwiki.nspart1.sub2 enwiki.prefix
+search1002: enwiki.nspart1.sub1 enwiki.nspart1.sub2
 search1003: enwiki.nspart1.sub1 enwiki.nspart1.sub2 enwiki.nspart2*
 search1004: enwiki.nspart1.sub1.hl enwiki.nspart1.sub2.hl
 search1005: enwiki.nspart1.sub1.hl enwiki.nspart1.sub2.hl
-search1006: enwiki.nspart2* enwiki.spell enwiki.prefix
+search1006: enwiki.nspart2* enwiki.spell
 
 # search 2 (de,fr,jawiki)
-search1007: frwiki.nspart1 frwiki.nspart2 jawiki.nspart1 jawiki.nspart2 frwiki.spell
-search1008: frwiki.nspart1 frwiki.nspart2 jawiki.nspart1 jawiki.nspart2 frwiki.spell
-search1009: dewiki.nspart1.hl dewiki.nspart2.hl frwiki.nspart1.hl frwiki.nspart2.hl
-search1010: dewiki.nspart1.hl dewiki.nspart2.hl frwiki.nspart1.hl frwiki.nspart2.hl
-search1021: dewiki.nspart1 dewiki.nspart2 dewiki.spell
-search1022: dewiki.nspart1 dewiki.nspart2 dewiki.spell
+search1007: frwiki.nspart1 frwiki.nspart2 jawiki.nspart1 jawiki.nspart2 dewiki.nspart1 dewiki.nspart2
+search1008: frwiki.nspart1 frwiki.nspart2 jawiki.nspart1 jawiki.nspart2 dewiki.nspart1 dewiki.nspart2
+search1009: dewiki.nspart1.hl dewiki.nspart2.hl frwiki.nspart1.hl frwiki.nspart2.hl frwiki.spell dewiki.spell
+search1010: dewiki.nspart1.hl dewiki.nspart2.hl frwiki.nspart1.hl frwiki.nspart2.hl frwiki.spell dewiki.spell
 
 # search 3 (it,nl,ru,sv,pl,pt,es,zhwiki)
 search1011: eswiki itwiki.nspart1 ruwiki.nspart1 nlwiki.nspart1 svwiki.nspart1 plwiki.nspart1 ptwiki.nspart1 zhwiki.nspart1 eswiki.hl
@@ -53,10 +51,14 @@ search1024: itwiki.nspart2 nlwiki.nspart2 ruwiki.nspart2 svwiki.nspart2  plwiki.
 # search 4 
 search1015: commonswiki.nspart1 commonswiki.nspart1.hl commonswiki.nspart2 commonswiki.nspart2.hl *?
 search1016: commonswiki.nspart1 commonswiki.nspart1.hl commonswiki.nspart2 commonswiki.nspart2.hl *?
-search1017: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl *.prefix
-search1018: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl *.prefix
 search1019: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell
 search1020: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell
+search1021: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl
+search1022: (?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl
+
+# prefix hosts for all pools
+search1017: *.prefix
+search1018: *.prefix
 
 # disabled
 search1000x: *tspart1 *tspart2 en-titles* de-titles* ja-titles* it-titles* nl-titles* ru-titles* fr-titles*
