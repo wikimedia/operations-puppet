@@ -21,11 +21,9 @@ class role::lucene {
 			$cluster = "search"
 			$nagios_group = "lucene"
 
-			if ( $search_pool != "false" ) {
-				include lvs::configuration
+			include lvs::configuration
+			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }
 
-				class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }
-			}
 
 			include standard,
 				admins::roots,
@@ -47,7 +45,10 @@ class role::lucene {
 			class { "role::lucene::front-end::common": search_pool => "search_pool3" } 
 		}
 		class pool4 {
-			class { "role::lucene::front-end::common": search_pool => "false" } 
+			class { "role::lucene::front-end::common": search_pool => "search_pool4" } 
+		}
+		class prefix {
+			class { "role::lucene::front-end::common": search_pool => "search_prefix" } 
 		}
 	}
 }
