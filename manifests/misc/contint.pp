@@ -154,13 +154,13 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/index.html":
 				owner => www-data,
 				group => wikidev,
-				mode => 0555,
+				mode => 0444,
 				source => "puppet:///files/misc/jenkins/index.html";
 			# Stylesheet used by nightly builds (example: Wiktionary/Wikipedia mobiles apps)
 			"/srv/org/mediawiki/integration/nightly.css":
 				owner => www-data,
 				group => wikidev,
-				mode => 0555,
+				mode => 0444,
 				source => "puppet:///files/misc/jenkins/nightly.css";
 			"/srv/org/mediawiki/integration/WikipediaMobile":
 				owner => jenkins,
@@ -171,7 +171,7 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
-				mode => 0755,
+				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
 				recurse => "true";
@@ -183,7 +183,7 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/WiktionaryMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
-				mode => 0755,
+				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WiktionaryMobile",
 				recurse => "true";
