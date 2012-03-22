@@ -5,6 +5,7 @@ command[check_dpkg]=/usr/lib/nagios/plugins/check_dpkg
 command[check_disk_5_2]=/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e
 command[check_disk_6_3]=/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e
 command[check_disk_6_4]=/usr/lib/nagios/plugins/check_disk -w 6% -c 4% -l -e
+command[check_puppet]=sudo /usr/lib/nagios/plugins/check_puppet
 command[check_raid]=sudo /usr/bin/check-raid.py
 command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b
 command[check_users]=/usr/lib/nagios/plugins/check_users -w 50 -c 100
