@@ -36,6 +36,7 @@
 # data_source "my grid" 50 1.3.4.7:8655 grid.org:8651 grid-backup.org:8651
 # data_source "another source" 1.3.4.7:8655  1.3.4.8
 
+
 <% ganglia_clusters.sort.each do |clustername, cluster| -%>
 data_source "<%= cluster['name'] %>" test1 test2
 <% end -%>
@@ -68,7 +69,7 @@ RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" 
 # default: unspecified
 # gridname "MyGrid"
 
-gridname "<%= gridname %>"
+gridname "<% site %>"
 
 #
 #-------------------------------------------------------------------------------
@@ -77,7 +78,7 @@ gridname "<%= gridname %>"
 # website on this machine.
 # default: "http://hostname/ganglia/",
 #   where hostname is the name of this machine, as defined by gethostname().
-authority "<%= authority_url %>"
+# authority "http://mycluster.org/newprefix/"
 #
 #-------------------------------------------------------------------------------
 # List of machines this gmetad will share XML with. Localhost

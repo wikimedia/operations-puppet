@@ -5,11 +5,6 @@
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
 #  - $mcast_address:		Multicast "cluster" to join and send data on
-#  - $gridname:			Grid name
-#  - $gmetad_conf:		gmetad configuration filename
-#  - $ganglia_servername:	Name used by apache and gmond authority_url
-#  - $ganglia_serveralias:	Server alias(es) used by apache
-#  - $gmetad_host:		Hostname or IP of gmetad server (for labs only)
 
 class ganglia {
 
@@ -25,21 +20,7 @@ class ganglia {
 		} else {
 			$deaf = "yes"
 		}
-	}
-
-	if $realm == "labs" {
-		$gridname = "wmflabs"
-		$gmetad_conf = "gmetad.conf.labsstub"
-		$ganglia_servername = "ganglia.wmflabs.org"
-		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
-		$gmetad_host = "10.4.0.79"
-
-	} else {
-		$gridname = "Wikimedia"
-		$gmetad_conf = "gmetad.conf"
-		$ganglia_servername = "ganglia.wikimedia.org"
-		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
-	}
+	}	
 	
 	$location = "unspecified"
 
@@ -110,22 +91,13 @@ class ganglia {
 			"name"		=> "Virtualization cluster",
 			"ip_oct"	=> "29" },
 	}
-	# NOTE: Do *not* add new clusters *per site* anymore,
-	# the site name will automatically be appended now,
-	# and a different IP prefix will be used.
 
 	# gmond.conf template variables
-	if $realm == "labs" {
-		$cname = $instanceproject
-	}
-	else {
-		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
-		$mcast_address = "${ip_prefix}.${ipoct}"
-		$clustername = $ganglia_clusters[$cluster][name]
-		$cname = "${clustername}${name_suffix}"
-	}
+	$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
+	$mcast_address = "${ip_prefix}.${ipoct}"
 
-	$authority_url = "http://${ganglia_servername}"
+	$clustername = $ganglia_clusters[$cluster][name]
+	$cname = "${clustername}${name_suffix}"
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
@@ -143,7 +115,7 @@ class ganglia {
 	# Resource definitions
 	file { "gmondconfig":
 		require => Package[$gmond],
-		name	=> $gmondpath,
+		name	=> "/etc/ganglia/gmond-${cluster}.conf",
 		owner	=> "root",
 		group	=> "root",
 		mode	=> 0444,
@@ -194,7 +166,7 @@ class ganglia {
 			ensure		=> running;
 	}
 
-	systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
+	systemuser { gmetric: name => "gmetric", home => "/var/lib/gmetric", shell => "/bin/sh" }
 
 	# Class for setting up the collector (gmetad)
 	class collector {
@@ -208,39 +180,12 @@ class ganglia {
 		## FIXME this file is a temp hack to get ganglia running. Needs to become
 		## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
-		file { "/etc/ganglia/${gmetad_conf}":
+		file { "/etc/ganglia/gmetad.conf":
 			require => Package[gmetad],
-			source => $hostname ? {
-				/^(streber|manutius)$/ => "puppet:///files/ganglia/gmetad.conf.torrus",
-				default => "puppet:///files/ganglia/${gmetad_conf}"
-			},
+			source => "puppet:///files/ganglia/gmetad.conf",
 			mode => 0444,
 			ensure	=> present
 		}
-
-		# cron job to generate ganglia aggregator confs
-		if $realm == "labs" {
-			exec { "create_gmond_conf_include":
-				creates => "/etc/ganglia/conf.d/labs-aggregator.conf",
-				command => "touch /etc/ganglia/conf.d/labs-aggregator.conf";
-			}
-
-			file { "/usr/local/sbin/generate-ganglia-conf.py":
-				source => "puppet:///files/ganglia/generate-ganglia-conf.py",
-				mode => 0755,
-				ensure => present;
-			}
-
-			cron { generate-ganglia-conf:
-				command => "/usr/local/sbin/generate-ganglia-conf.py",
-				require => [Package[gmetad], Package[$gmond]],
-				user => root,
-				hour => [0, 8, 16],
-				minute => 30,
-				ensure => present;
-			}
-		}
-
 
 		service { "gmetad":
 			require => File["/etc/ganglia/gmetad.conf"],
@@ -275,11 +220,11 @@ class ganglia::web {
 	class {'webserver::php5': ssl => 'true'; }
 
 	file {
-		"/etc/apache2/sites-available/${ganglia_servername}":
+		"/etc/apache2/sites-available/ganglia.wikimedia.org":
 			mode => 0444,
 			owner => root,
 			group => root,
-			content => template("apache/sites/ganglia.wikimedia.org.erb"),
+			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
 			mode => 0555,
@@ -309,7 +254,7 @@ class ganglia::web {
 			ensure => present;
 	}
 
-	apache_site { ganglia: name => $apache_conf }
+	apache_site { ganglia: name => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
 	package {
