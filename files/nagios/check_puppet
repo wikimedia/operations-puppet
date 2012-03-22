@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Created by Petr Bena, licensed under GNU GPL
+criticaldiff=7200
+warningd=2600
+if [ "$#" -gt 2 ];then
+        criticaldiff=$1
+        warningd=$2
+fi
+if [ -f /var/lib/puppet/state/state.yaml ];then
+        ct=`date +%s`
+        pt=`stat --format=%Y /var/lib/puppet/state/state.yaml`
+        warning=OK
+        diff=$(($ct - $pt))
+        if [ "$diff" -gt $warningd ];then
+                warning=WARNING
+        fi
+        if [ "$diff" -gt $criticaldiff ];then
+                warning=CRITICAL
+        fi
+        echo "PUPPET $warning puppet was run before $diff seconds"
+        if [ "$warning" = "CRITICAL" ];then
+                exit 2
+        fi
+        exit 0
+fi
+
+echo "PUPPET UNKNOWN Unable to find the puppet on this system"
+exit 3
