@@ -1,6 +1,6 @@
 # admins.pp
 
-# last used uid 587
+# last used uid 590
 
 # TODO: completely rewrite this file
 
@@ -1729,6 +1729,26 @@ class accounts {
 		}
 	}
 
+	class andrewb inherits baseaccount {
+		$username = "andrewb"
+		$realname = "Andrew Bogott"
+		$uid = 590
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"andrew@AndrewMacbook-5.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAvx17BMqWpcnI5aAl3tVAJ3WI8+geWfF0jTh+/U+kr8ls91tBk94sEJ7xI1T73JepuRlqsNRzzpZxxn0kipVnj7jxW3nbqIGmpXAfb/2W9Fnp65P2u+CKWd5tMwYU7Q/z9zEk4FLoLEVK7Ce1ia0xkbG7oeM7La7sATNl4mx3BZNPUiDCQvEOrePYFUdxP+wS4wsJbZ38RGil01lPFeLuF/3aG+j3xgttwO+WjJYGEAyddUSuK9aw6rBpLOFaMBZqU2U2hK2iIDN6EfiSOpdk7zeNNKOqHfcH5N/rRGBx1niHV3K71WsiAhYApZ8MBiK7iU56+/lahsarstDJ3GKZAQ==";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -1779,6 +1799,7 @@ class admins::roots {
 	include accounts::ben
 	include accounts::catrope
 	include accounts::sara
+	include accounts::andrewb
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals { 
