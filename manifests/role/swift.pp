@@ -14,7 +14,7 @@ class role::swift {
 		system_role { "swift-cluster::eqiad-test": description => "Swift testing cluster", ensure => absent }
 		include passwords::swift::eqiad-test
 		# The eqiad test cluster runs proxy and storage on the same hosts
-		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd", cluster_name => "eqiad-test" }
 		class { "::swift::proxy::config":
 			bind_port => "8080",
 			proxy_address => "http://msfe-test.wikimedia.org:8080",
@@ -37,7 +37,7 @@ class role::swift {
 		system_role { "role::swift::pmtpa-test": description => "Swift testing cluster" }
 		system_role { "swift-cluster::pmtpa-test": description => "Swift testing cluster", ensure => absent }
 		include passwords::swift::pmtpa-test
-		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd" }
+		class { "::swift::base": hash_path_suffix => "fbf7dab9c04865cd", cluster_name => "pmtpa-test" }
 		class proxy inherits role::swift::pmtpa-test {
 			class { "::swift::proxy::config":
 				bind_port => "8080",
@@ -64,7 +64,7 @@ class role::swift {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
 		include passwords::swift::pmtpa-prod
-		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773" }
+		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "pmtpa-prod" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
