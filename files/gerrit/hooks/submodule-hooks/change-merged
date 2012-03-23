@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# This hook is used to automatically update the super module
+# unless opt-out by adding to the commit message.
+#
+# Contact: Ryan Alberts
+#
+#############################################################
+
+#change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <sha1>
+
+python `dirname $0`/change-merged.py "$@"
+

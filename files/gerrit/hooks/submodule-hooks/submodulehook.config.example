@@ -1,0 +1,12 @@
+[core]
+user = username
+email = username@company.com
+superrepopath = /srv/gerrit/cfg/hooks/myRepo
+branches = branch1, branch2
+smtphost = mail.company.com
+sendmailto = ralberts@company.com
+
+[projects]
+SubmoduleProject = /Company/SubmoduleProject
+SubmoduleProject2 = /Company2/SubmoduleProject2
+

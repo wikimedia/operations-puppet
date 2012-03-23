@@ -1,0 +1,16 @@
+Gerrit Submodule Hook
+======================
+
+Simple hook that will automatically update the super project when submitting to submodules individually.
+
+Quick Setup
+===========
+Rename the submodulehook.config.example to submodulehook.config and enter in the correct data for each field.  You may need to edit the change-merge.py to have a fully qualified path to the config file.  You will see a comment in that file towards the top.
+
+
+More Information
+================
+
+I will post up some additional information on the details.  It is a very simple hook that merges the supermodule for you.
+
+
