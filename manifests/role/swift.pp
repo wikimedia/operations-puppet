@@ -57,6 +57,9 @@ class role::swift {
 		}
 		class storage inherits role::swift::pmtpa-test {
 			include ::swift::storage
+			include ::swift::storage::monitoring::account
+			include ::swift::storage::monitoring::container
+			include ::swift::storage::monitoring::object
 		}
 	}
 
