@@ -83,7 +83,7 @@ if [ -z "$1" ] ; then
 fi
 
 if [ "$1" = "snapshot" ] ; then
-	curl http://localhost:8321/snapshot
+	curl http://localhost:8321/snapshot >> $base/log/log-snapshot 2>&1
 elif [ "$1" = "snapshot-precursors" ] ; then
 	curl "http://localhost:8321/snapshotPrecursors?p=*.spell.pre"
 elif [ "$1" = "indexer-cron" ] ; then
