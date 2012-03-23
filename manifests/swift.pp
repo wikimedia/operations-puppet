@@ -18,20 +18,20 @@ class swift::base($hash_path_suffix, $cluster_name) {
 		ensure => present;
 	}
 
+	File {
+		owner => "swift",
+		group => "swift",
+		mode => 0444;
+	}
 	file {
 		"/etc/swift":
 			require => Package[swift],
 			ensure => directory,
-			recurse => true,
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			recurse => true;
 		"/etc/swift/swift.conf":
 			require => Package[swift],
 			ensure => present,
 			content => template("swift/etc.swift.conf.erb");
-	}
-	file {
 		"/etc/swift/account.builder":
 			ensure => present,
 			source => "puppet:///files/swift/${cluster_name}/account.builder";
