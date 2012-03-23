@@ -197,6 +197,16 @@ class lucene {
 				source => "puppet:///files/logrotate/search",
 				ensure => present;
 		}
+		if $indexer == "true" {
+			file {
+				"/etc/logrotate.d/lucene-indexer":
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/logrotate/search-indexer",
+					ensure => present;
+				}
+		}
 
 		## to occassionally poll for mediawiki configs
 		cron { sync-conf-from-common:
