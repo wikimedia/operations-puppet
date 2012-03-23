@@ -88,6 +88,12 @@ class HookHelper:
 		return True
 
 	def log_to_file(self, project, branch, message):
+		filename = self.get_log_filename( project, branch, message)
+		f = open(filename, 'a')
+		f.write(message)
+		f.close()
+
+	def get_log_filename(self, project, branch, message):
 		if hookconfig.logdir and hookconfig.logdir[-1] == '/':
 			hookconfig.logdir = hookconfig.logdir[0:-1]
 		if project in hookconfig.filenames:
@@ -97,9 +103,7 @@ class HookHelper:
 				filename = hookconfig.logdir + "/" + hookconfig.filenames[project]["default"]
 		else:
 			filename = hookconfig.logdir + "/" + hookconfig.filenames["default"]
-		f = open(filename, 'a')
-		f.write(message)
-		f.close()
+		return filename
 
 	def update_rt(self, change, changeurl):
 		messages = []
