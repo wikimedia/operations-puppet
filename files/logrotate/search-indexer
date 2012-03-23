@@ -1,9 +1,9 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/search
+### puppet:///files/logrotate/search-indexer
 #####################################################################
 
-/a/search/log/log {
+/a/search/log/log-*[!.]? {
     daily
     copytruncate
     missingok
