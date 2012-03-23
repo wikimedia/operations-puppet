@@ -82,3 +82,11 @@ class misc::statistics::geoip {
 			require => File['/usr/local/bin/update-maxmind-geoip-lib'];
 	}
 }
+
+# RT-2163
+class misc::statistics::plotting {
+
+	package { [ "ploticus", "libploticus0" ]:
+		ensure => latest;
+	}
+}
