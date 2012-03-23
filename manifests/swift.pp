@@ -112,8 +112,6 @@ class swift::proxy {
 
 	system_role { "swift:base": description => "swift frontend proxy" }
 
-	include swift::proxy::monitoring
-
 	realize File["/etc/swift/proxy-server.conf"]
 
 	package { ["swift-proxy", "python-swauth"]:
@@ -142,12 +140,7 @@ class swift::proxy {
 
 class swift::proxy::monitoring {
 
-	if $hostname =~ /^ms-fe[12]$/ {
-		monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
-	}
-	# else {
-	#	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!8080" }
-	# }
+	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
 }
 
 # TODO: document parameters

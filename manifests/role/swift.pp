@@ -95,6 +95,7 @@ class role::swift {
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 			}
 			include ::swift::proxy
+			include ::swift::proxy::monitoring
 		}
 		class storage inherits role::swift::pmtpa-prod {
 			include ::swift::storage
