@@ -220,7 +220,7 @@ class ganglia {
 		if $realm == "labs" {
 			exec { "create_gmond_conf_include":
 				creates => "/etc/ganglia/conf.d/labs-aggregator.conf",
-				command => "touch /etc/ganglia/conf.d/labs-aggregator.conf";
+				command => "/usr/bin/touch /etc/ganglia/conf.d/labs-aggregator.conf";
 			}
 
 			file { "/usr/local/sbin/generate-ganglia-conf.py":
