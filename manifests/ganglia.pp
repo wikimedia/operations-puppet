@@ -8,8 +8,8 @@
 #  - $gmetad_host:		Hostname or IP of gmetad server (for labs only)
 #  - $authority_url:		URL referenced by gmond
 #  - $gridname:			Grid name
-#  - $gmetad_conf:		gmetad configuration filename
-#  - $ganglia_servername:	Server name used by apache	
+#  - $gmetad_conf:		gmetad configuration filename (or stub for labs)
+#  - $ganglia_servername:	Server name used by apache
 #  - $ganglia_serveralias:	Server alias(es) used by apache
 
 
@@ -231,7 +231,7 @@ class ganglia {
 
 			cron { generate-ganglia-conf:
 				command => "/usr/local/sbin/generate-ganglia-conf.py",
-				require => [Package[gmetad], Package[$gmond]],
+				require => Package[gmetad],
 				user => root,
 				hour => [0, 8, 16],
 				minute => 30,
@@ -239,10 +239,9 @@ class ganglia {
 			}
 		}
 
-
 		service { "gmetad":
-			require => File["/etc/ganglia/gmetad.conf"],
-			subscribe => File["/etc/ganglia/gmetad.conf"],
+			require => File["/etc/ganglia/${gmetad_conf}"],
+			subscribe => File["/etc/ganglia/${gmetad_conf}"],
 			hasstatus => false,
 			ensure => running;
 		}
