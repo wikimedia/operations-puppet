@@ -1,7 +1,9 @@
 # swift.pp
 
-# TODO: document parameters
-class swift::base($hash_path_suffix) {
+# $hash_path_suffix is a unique string per cluster used to hash partitions
+# $cluster_name is a string defining the cluster, eg eqiad-test or pmtpa-prod.
+#               It is used to find the ring files in the puppet files
+class swift::base($hash_path_suffix, $cluster_name) {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
@@ -27,10 +29,27 @@ class swift::base($hash_path_suffix) {
 		"/etc/swift/swift.conf":
 			require => Package[swift],
 			ensure => present,
-			content => template("swift/etc.swift.conf.erb"),
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			content => template("swift/etc.swift.conf.erb");
+	}
+	file {
+		"/etc/swift/account.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/account.builder";
+		"/etc/swift/account.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/account.ring.gz";
+		"/etc/swift/container.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/container.builder";
+		"/etc/swift/container.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/container.ring.gz";
+		"/etc/swift/object.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/object.builder";
+		"/etc/swift/object.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/object.ring.gz";
 	}
 	include ganglia::logtailer
 	file { "/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py":
