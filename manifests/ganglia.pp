@@ -334,7 +334,7 @@ class ganglia::web {
 			ensure => directory;
 	}
 
-	apache_site { ganglia: name => $apache_conf }
+	apache_site { ganglia: name => $ganglia_servername }
 	apache_module { rewrite: name => "rewrite" }
 
 	package {
