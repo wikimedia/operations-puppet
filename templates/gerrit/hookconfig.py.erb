@@ -10,16 +10,21 @@ passmessage = "Lint check passed."
 debug = False
 logdir = "/var/lib/gerrit2/review_site/logs"
 tmpdir = "/var/lib/gerrit2/review_site/tmp"
-filenames = {"operations/puppet": {
-                 "production": "operations.log",
-                 "test": "labs.log",
-                 "default": "labs.log"
-                 },
-             "labs/private": {
-                 "default": "labs.log"
-                 },
-             "operations/software": {
-                 "default": "operations.log"
-                 },
-             "default": "mediawiki.log"
-            }
+
+# Files where Gerrit projects will have their notifications written to
+# See manifests/gerrit.pp $ircecho_infile for actual file/channel map
+filenames = {
+	"operations/puppet": {
+		"production" : "operations.log",
+		"test"       : "labs.log",
+		"default"    : "labs.log"
+	},
+	"labs/private": {
+		"default" : "labs.log"
+	},
+	"operations/software": {
+		"default" : "operations.log"
+	},
+
+	"default": "mediawiki.log"
+}
