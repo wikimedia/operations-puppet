@@ -1398,7 +1398,8 @@ node "ms8.pmtpa.wmnet" {
 }
 
 node "ms1001.eqiad.wmnet" {
-	include standard
+	include standard,
+		generic::sysctl::high-bandwidth-rsync
 }
 
 node "ms1002.eqiad.wmnet" {
