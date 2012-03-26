@@ -202,21 +202,21 @@ class openstack::compute {
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				content => template("openstack/libvirtd.conf.erb"),
 				require => Package["nova-common"];
 			"/etc/default/libvirt-bin":
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				content => template("openstack/libvirt-bin.default.erb"),
 				require => Package["nova-common"];
 			"/etc/init/libvirt-bin.conf":
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				source => "puppet:///files/upstart/libvirt-bin.conf",
 				require => Package["nova-common"];
 		}
@@ -507,7 +507,7 @@ class openstack::ldap-server {
 			content => 'TLS_CHECKPEER   no
 TLS_REQCERT     never
 ',
-			mode => 400,
+			mode => 0400,
 			owner => root,
 			group => root,
 			require => Package["opendj"],
@@ -534,7 +534,7 @@ class openstack::openstack-manager {
 	file {
 		"/etc/apache2/sites-available/${nova_controller_hostname}":
 			require => [ Package[php5] ],
-			mode => 644,
+			mode => 0644,
 			owner => root,
 			group => root,
 			content => template('apache/sites/labsconsole.wikimedia.org'),

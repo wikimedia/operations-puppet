@@ -190,14 +190,14 @@ class gerrit::proxy {
 
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
-			mode => 644,
+			mode => 0644,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/gerrit.wikimedia.org",
 			ensure => present;
 		# Overwrite gitweb's stupid default apache file
 		"/etc/apache2/conf.d/gitweb":
-			mode => 644,
+			mode => 0644,
 			owner => root,
 			group => root,
 			content => "Alias /gitweb /usr/share/gitweb",
@@ -231,7 +231,7 @@ class gerrit::ircbot {
 
 	file {
 		"/etc/default/ircecho":
-			mode => 444,
+			mode => 0444,
 			owner => root,
 			group => root,
 			content => template('ircecho/default.erb'),

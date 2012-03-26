@@ -96,7 +96,7 @@ class imagescaler::files {
 				ensure => directory,
 				owner => apache,
 				group => root,
-				mode => 755;
+				mode => 0755;
 		}
 	}
 

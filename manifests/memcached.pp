@@ -34,7 +34,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 				"/usr/lib/ganglia/python_modules":
 					owner => root,
 					group => root,
-					mode => 755,
+					mode => 0755,
 					ensure => directory;
 			}
 		}
