@@ -77,6 +77,8 @@ def lint_test(options, helper):
 		message = stdoutdata
 	if stderrdata:
 		message = message + stderrdata
+	# Cleanup lonnng paths from the message:
+	message = message.replace( directory, '.' )
 	verifyset = helper.set_verify(status, options.commit, message)
 	if not verifyset:
 		sys.stderr.write("Failed to set verify score")
