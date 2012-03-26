@@ -14,12 +14,12 @@ define unixaccount($username, $uid, $gid, $enabled="true") {
 	} else {
 		$manage_home = "true"
 	}
-	
+
 	if ($myshell) {
 		$shell = $myshell
 	} else {
 		$shell = "/bin/bash"
-	}	
+	}
 
 	user { "${username}":
 		name		=> $username,
@@ -53,6 +53,15 @@ class groups {
 			alias		=> 538,
 			ensure		=> present,
 			allowdupe	=> false;
+		}
+	}
+
+	class jenkins {
+		group { "jenkins":
+			name      => "jenkins",
+			gid       => 561,
+			ensure    => present,
+			allowdupe => false;
 		}
 	}
 
@@ -1802,7 +1811,7 @@ class admins::roots {
 	include accounts::andrewb
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
-class admins::mortals { 
+class admins::mortals {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 
@@ -1854,4 +1863,13 @@ class admins::analinterns {
 	include accounts::diederik
 	include accounts::declerembaul
 	include accounts::whym
+}
+
+class admins::jenkins {
+	$gid = 500  # 'wikidev' by default
+	include groups::jenkins
+
+	include accounts::demon
+	include accounts::hashar
+	include accounts::reedy
 }

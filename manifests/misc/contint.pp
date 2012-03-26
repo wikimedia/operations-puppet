@@ -93,6 +93,8 @@ class misc::contint::test {
 	apache_site { integration: name => "integration.mediawiki.org" }
 
 	class jenkins {
+		include groups::jenkins;
+
 		# This used to rely on misc::jenkins to add the jenkins upstream repo and then
 		# install from there.  contint::misc::jenkins is now independent and will
 		# use whatever Ubuntu version is available
@@ -113,15 +115,27 @@ class misc::contint::test {
 			stop => '/etc/init.d/jenkins stop';
 		}
 
+		systemuser { 'jenkins':
+			name    => 'jenkins',
+			home    => '/var/lib/jenkins',
+			shell   => '/bin/bash',
+			require => Group['jenkins'],
+			groups  => [ 'jenkins' ]
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
 		file {
+			"/var/lib/jenkins/.git":
+				mode   => 2775,  # group sticky bit
+				group  => "jenkins",
+				ensure => directory;
 			# Top level jobs folder
 			"/var/lib/jenkins/jobs/":
 				owner => "jenkins",
-				group => "wikidev",
-				mode => 0775,
+				group => "jenkins",
+				mode  => 2775,  # group sticky bit
 				ensure => directory;
 			"/var/lib/jenkins/bin":
 				owner => "jenkins",
