@@ -588,7 +588,7 @@ class misc::etherpad_lite {
 
 	file {
 		"/etc/apache2/sites-available/etherpad.wikimedia.org":
-			mode => 444,
+			mode => 0444,
 			owner => root,
 			group => root,
 			notify => Service["apache2"],
@@ -1263,7 +1263,7 @@ class misc::racktables {
 
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
-		mode => 444,
+		mode => 0444,
 		owner => root,
 		group => root,
 		notify => Service["apache2"],

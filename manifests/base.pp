@@ -208,7 +208,7 @@ class base::sysctl {
 			name => "/etc/sysctl.d/50-wikimedia-base.conf",
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0644,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
