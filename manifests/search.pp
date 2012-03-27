@@ -246,7 +246,7 @@ class lucene {
 	}
 
 	# FIXME: migrate this to sudo_users and stock /etc/sudoers file
-	class sudo {
+	class users {
 		file { "/etc/sudoers":
 			owner => root,
 			group => root,
@@ -254,6 +254,8 @@ class lucene {
 			source => "puppet:///files/sudo/sudoers.search",
 			ensure => present;
 		}
+
+		systemuser { "lsearch": name => "lsearch", default_group => "search"}
 	}
 
 	class indexer {
