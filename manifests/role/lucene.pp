@@ -8,7 +8,7 @@ class role::lucene {
 			admins::roots,
 			admins::mortals,
 			admins::restricted,
-			lucene::sudo
+			lucene::users
 
 		class { "lucene::server":
 			indexer => "true", udplogging => "false"
@@ -29,7 +29,7 @@ class role::lucene {
 				admins::roots,
 				admins::mortals,
 				admins::restricted,
-				lucene::sudo
+				lucene::users
 
 			class { "lucene::server":
 				udplogging => "false"
