@@ -1,0 +1,129 @@
+#!/usr/bin/python
+
+import re, subprocess, urllib2, time
+from optparse import OptionParser
+
+# swift 'stat' requests are HEADs to the account ID.  Subclass Request to make a HEAD request.
+class HEADRequest(urllib2.Request):
+    def get_method(self):
+        return 'HEAD'
+
+# gets a swift authentication token from username/pass combo
+def get_token(username, password):
+    headers = {}
+    headers['X-Auth-User'] = username
+    headers['X-Auth-Key'] = password
+    headers['User-Agent'] = 'swiftgangliastats'
+    headers['Host'] = 'upload.wikimedia.org'
+    req = urllib2.Request('http://ms-fe.pmtpa.wmnet/auth/v1.0', headers=headers)
+    try:
+        resp = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print "getting token excepted with %s" % e
+        raise
+    authtoken = resp.info()['X-Storage-Token']
+    authurl = resp.info()['X-Storage-Url']
+    #http://msfe-test.wikimedia.org:8080/v1/AUTH_xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    authid = re.match('.*v1/(?P<authid>AUTH_.*)$', authurl).group('authid')
+    return (authid, authtoken)
+
+# connects to swift, gets stats about containers and stuff, returns that data as a hash
+def get_stats(username, password):
+    stats = {}
+    headers = {}
+    (authid, token) = get_token(username, password)
+    headers['X-Auth-Token'] = token
+    headers['X-Auth-User'] = username
+    headers['User-Agent'] = 'swiftgangliastats'
+    # HEAD /v1/AUTH_xxdxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx HTTP/1.0 204 - - mw%3Athumbnail%2CAUTH_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    url = 'http://ms-fe.pmtpa.wmnet/v1/%s' % authid
+    req = HEADRequest(url, headers=headers)
+    try:
+        resp = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print "getting stats excepted with %s" % e
+        raise
+    # X-Account-Object-Count: 41676052
+    # X-Account-Bytes-Used: 1791553588731
+    # X-Account-Container-Count: 3426
+    stats['Objects'] = int(resp.info()['X-Account-Object-Count'])
+    stats['Bytes'] = int(resp.info()['X-Account-Bytes-Used'])
+    stats['Containers'] = int(resp.info()['X-Account-Container-Count'])
+    # add in time for comparisons (one second resolution)
+    stats['Time'] = int(time.time())
+    return stats
+
+# read in the previous run's stats from the statefile (might be empty)
+def get_old_stats(statefile):
+    stats = {}
+    try:
+        fh = open(statefile)
+    except IOError:
+         # the file doesn't exist?  return empty stats.
+         return stats
+    for line in fh.readlines():
+        (key, stat) = line.split(":")
+        stats[key] = int(stat)
+    return stats
+
+# writes existing stats to disk in the statefile (including current time)
+def save_stats(statefile, stats):
+    fh = open(statefile, 'w')
+    for (key,val) in stats.items():
+        fh.write("%s:%s\n" % (key, val))
+
+# return a hash with the deltas normalized across the time delta
+def calculate_changes(current, previous):
+    diff = {}
+    timedelta = current['Time'] - previous['Time']
+    try:
+        for key in ['Objects', 'Bytes', 'Containers']:
+            diff[key] = (current[key] - previous[key]) / timedelta
+    except ZeroDivisionError:
+        # if timedelta is zero, just return the empty hash
+        pass
+    return diff
+
+# submits the metric to ganglia using gmetric, returns the exit code of gmetric
+def submit_to_ganglia(name, value, units, valtype='int32',
+            conf='/etc/ganglia/gmond.conf', spoof='Swift pmtpa prod:Swift pmtpa prod'):
+    retcode = subprocess.call(['/usr/bin/gmetric', '--name', name, '--type', valtype, '--conf', conf,
+            '--spoof', spoof, '--value', str(value), '--units', units])
+    return retcode
+
+def main():
+    parser = OptionParser()
+    parser.add_option("-u", dest="username", default='', help="username to use to authenticate against swift")
+    parser.add_option("-p", dest="password", default='', help="password to use to authenticate against swift")
+    parser.add_option("-s", dest="statefile", default='/tmp/ganglia-report-swift-stats', help="state file to store object count in between invocations")
+    parser.add_option("-v", dest="verbose", action="store_true", default=False, help="print the values submitted to stdout")
+    parser.add_option("-c", dest="clustername", default='unknown', help="name of the cluster for whom to report stats")
+    (options, args) = parser.parse_args()
+
+    if(options.username == '' or options.password == ''):
+        print "username and password options are required."
+        parser.print_help()
+        exit(1)
+
+    stats = get_stats(options.username, options.password)
+    oldstats = get_old_stats(options.statefile)
+    save_stats(options.statefile, stats)
+
+    deltastats = calculate_changes(current=stats, previous=oldstats)
+
+    if options.verbose:
+        print "about to submit stats: %s" % deltastats
+
+    # let's use 'pmtpa prod' instead of 'pmtpa-prod'
+    clustername = clustername.replace('-', ' ')
+
+    submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift object change", value=deltastats['Objects'], units='objects per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift bytes change", value=deltastats['Bytes'], units='bytes per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    # not reporting containers at the moment because it's not very interesting
+
+if __name__ == '__main__':
+    main()
+
+# vim: set nu list expandtab tabstop=4 shiftwidth=4 autoindent:
