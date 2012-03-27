@@ -126,7 +126,7 @@ class role::swift {
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "127.0.0.1:11211" ],
 				super_admin_key => "thiskeyissuper",
-				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
+				rewrite_account => "AUTH_f80b5643-4597-407f-94f5-d2cc051805cf",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumbnail",
 				rewrite_password => "userpassword",
