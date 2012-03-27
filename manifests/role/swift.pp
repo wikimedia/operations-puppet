@@ -131,8 +131,8 @@ class role::swift {
 				rewrite_user => "mw:thumbnail",
 				rewrite_password => "userpassword",
 				rewrite_thumb_server => "upload.wikimedia.org",
-				shard_containers => "some",
-				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+				shard_containers => "none",
+				shard_container_list => ""
 			}
 			include ::swift::proxy
 		}
