@@ -122,7 +122,7 @@ class role::swift {
 		class proxy inherits role::swift::pmtpa-labs {
 			class { "::swift::proxy::config":
 				bind_port => "80",
-				proxy_address => "http://swift-fe.pmtpa.wmflabs",
+				proxy_address => "http://swift-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "127.0.0.1:11211" ],
 				super_admin_key => "thiskeyissuper",
