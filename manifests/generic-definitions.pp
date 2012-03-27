@@ -27,9 +27,11 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef, $default_group=$name) {
 	# FIXME: deprecate $name parameter in favor of just using $title
 
-	group { $default_group:
-		name => $default_group,
-		ensure => present;
+	if $default_group == $name {
+		group { $default_group:
+			name => $default_group,
+			ensure => present;
+		}
 	}
 
 	user { $name:
