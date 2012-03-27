@@ -10,7 +10,9 @@ pipeline = container-server
 use = egg:swift#container
 
 [container-replicator]
+concurrency = 1
 
 [container-updater]
+concurrency = 1
 
 [container-auditor]

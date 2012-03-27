@@ -1,7 +1,9 @@
 # swift.pp
 
-# TODO: document parameters
-class swift::base($hash_path_suffix) {
+# $hash_path_suffix is a unique string per cluster used to hash partitions
+# $cluster_name is a string defining the cluster, eg eqiad-test or pmtpa-prod.
+#               It is used to find the ring files in the puppet files
+class swift::base($hash_path_suffix, $cluster_name) {
 
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
@@ -16,21 +18,52 @@ class swift::base($hash_path_suffix) {
 		ensure => present;
 	}
 
+	File {
+		owner => "swift",
+		group => "swift",
+		mode => 0444
+	}
 	file {
 		"/etc/swift":
 			require => Package[swift],
 			ensure => directory,
-			recurse => true,
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			recurse => true;
 		"/etc/swift/swift.conf":
 			require => Package[swift],
 			ensure => present,
-			content => template("swift/etc.swift.conf.erb"),
-			owner => swift,
-			group => swift,
-			mode => 0444;
+			content => template("swift/etc.swift.conf.erb");
+		"/etc/swift/account.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/account.builder";
+		"/etc/swift/account.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/account.ring.gz";
+		"/etc/swift/container.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/container.builder";
+		"/etc/swift/container.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/container.ring.gz";
+		"/etc/swift/object.builder":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/object.builder";
+		"/etc/swift/object.ring.gz":
+			ensure => present,
+			source => "puppet:///files/swift/${cluster_name}/object.ring.gz";
+	}
+	include ganglia::logtailer
+	file { "/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py":
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/swift/SwiftHTTPLogtailer.py",
+		require => Package['ganglia-logtailer']
+	}
+	cron { swift-proxy-ganglia:
+		command => "/usr/sbin/ganglia-logtailer --classname SwiftHTTPLogtailer --log_file /var/log/syslog --mode cron > /dev/null 2>&1",
+		user => root,
+		minute => '*',
+		ensure => present
 	}
 }
 
@@ -52,8 +85,9 @@ class swift::iptables-accepts {
 	iptables_add_service{ "swift_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
-	iptables_add_service{ "swift_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/24", jump => "ACCEPT" }
+	iptables_add_service{ "swift_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/16", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_igmp": service => "igmp", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_icmp": service => "icmp", jump => "ACCEPT" }
 	# swift specific services
@@ -86,7 +120,7 @@ class swift::sysctl::tcp-improvements($ensure="present") {
 		name => "/etc/sysctl.d/60-swift-performance.conf",
 		owner => root,
 		group => root,
-		mode => 444,
+		mode => 0444,
 		notify => Exec["/sbin/start procps"],
 		source => "puppet:///files/swift/60-swift-performance.conf.sysctl",
 		ensure => $ensure
@@ -96,6 +130,8 @@ class swift::proxy {
 	Class[swift::proxy::config] -> Class[swift::proxy]
 
 	system_role { "swift:base": description => "swift frontend proxy" }
+
+	include swift::proxy::monitoring
 
 	realize File["/etc/swift/proxy-server.conf"]
 
@@ -121,6 +157,16 @@ class swift::proxy {
 			source => "puppet:///files/swift/SwiftMedia/wmf/",
 			recurse => remote;
 	}
+}
+
+class swift::proxy::monitoring {
+
+	if $hostname =~ /^ms-fe[12]$/ {
+		monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
+	}
+	# else {
+	#	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!8080" }
+	# }
 }
 
 # TODO: document parameters
@@ -157,20 +203,86 @@ class swift::proxy::config(
 		content => template("swift/proxy-server.conf.erb")
 	}
 
-	include ganglia::logtailer
-	file { "/usr/share/ganglia-logtailer/SwiftProxyLogtailer.py":
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/swift/SwiftProxyLogtailer.py",
-		require => Package['ganglia-logtailer']
+}
+
+# swift out-of-band file cleaner.
+# looks through all the objects in swift for corrupted thumbnail images.
+# purges them from swift, ms5, and the squids.
+# it is not necessary to run this on a swift host.
+# current setup is running 2 copies of this on iron
+## one copy that checks all recent stuff relatively quickly
+## one copy that continuously checks all objects but slowly.
+class swift::cleaner {
+	define swiftcleanercron(
+		$name,
+		$swiftcleaner_basedir,
+		$config_file_location,
+		$num_manager_threads,
+		$num_threads,
+		$delay_time,
+		$rewrite_user,
+		$rewrite_password,
+		$statedir,
+		$scrubstate ) {
+
+		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("swift/swiftcleaner.conf")
+		}
+		file { "$statedir":
+			owner => root,
+			group => root,
+			mode => 0644,
+			ensure => directory;
+		}
+		cron { "swiftcleaner-$name":
+			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
+			user => root,
+			minute => 1,
+			hour => 22, #the beginning of the daily trough
+			ensure => present
+		}
 	}
-	cron { swift-proxy-ganglia:
-		command => "/usr/sbin/ganglia-logtailer --classname SwiftProxyLogtailer --log_file /var/log/system.log --mode cron > /dev/null 2>&1",
-		user => root,
-		minute => '*/5',
-		ensure => present
+	# install basic app
+	package { ["python-eventlet", "php5-cli"]:
+		ensure => present;
 	}
+	$swiftcleaner_basedir = "/opt/swiftcleaner"
+	file{ "$swiftcleaner_basedir":
+		source => "puppet:///files/swift/swiftcleaner",
+		owner => "root",
+		group => "root",
+		recurse => remote;
+	}
+	include passwords::swift::pmtpa-prod
+	# run the incremental scan at a reasonable rate - it should take 1-4 hours to run or so.
+	swiftcleanercron { "swiftcleaner-incremental" :
+		name => "incremental",
+		swiftcleaner_basedir => $swiftcleaner_basedir,
+		config_file_location => "swiftcleaner-incremental.conf",
+		num_manager_threads => 7,
+		num_threads => 10,
+		delay_time => 0.1,
+		rewrite_user => "mw:thumbnail",
+		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+		statedir => "/var/lib/swiftcleaner-incremental",
+		scrubstate => "False"
+		}
+	# run the full scan slower
+	swiftcleanercron { "swiftcleaner-full" :
+		name => "full",
+		swiftcleaner_basedir => $swiftcleaner_basedir,
+		config_file_location => "swiftcleaner-full.conf",
+		num_manager_threads => 5,
+		num_threads => 5,
+		delay_time => 0.1,
+		rewrite_user => "mw:thumbnail",
+		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
+		statedir => "/var/lib/swiftcleaner-full",
+		scrubstate => "True"
+		}
 }
 
 class swift::storage {
@@ -178,43 +290,74 @@ class swift::storage {
 
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
-	package { 
-		[ "swift-account",
-		  "swift-container",
-		  "swift-object" ]:
-		ensure => present;
+	class packages {
+		package { 
+			[ "swift-account",
+			  "swift-container",
+			  "swift-object" ]:
+			ensure => present;
+		}
 	}
 
-	class { "generic::rsyncd": config => "swift" }
+	class config {
+		require swift::storage::packages
 
-	# set up swift specific configs
-	File { owner => swift, group => swift, mode => 0444 }
-	file {
-		"/etc/swift/account-server.conf":
-			content => template("swift/etc.swift.account-server.conf.erb");
-		"/etc/swift/container-server.conf":
-			content => template("swift/etc.swift.container-server.conf.erb");
-		"/etc/swift/object-server.conf":
-			content => template("swift/etc.swift.object-server.conf.erb");
+		class { "generic::rsyncd": config => "swift" }
+
+		# set up swift specific configs
+		File { owner => swift, group => swift, mode => 0444 }
+		file {
+			"/etc/swift/account-server.conf":
+				content => template("swift/etc.swift.account-server.conf.erb");
+			"/etc/swift/container-server.conf":
+				content => template("swift/etc.swift.container-server.conf.erb");
+			"/etc/swift/object-server.conf":
+				content => template("swift/etc.swift.object-server.conf.erb");
+		}
+
+		file { "/srv/swift-storage":
+			require => Package[swift],
+			owner => swift,
+			group => swift,
+			mode => 0751, # the 1 is to allow nagios to read the drives for check_disk
+			ensure => directory;
+		}
 	}
 
-	file { "/srv/swift-storage":
-		require => Package[swift],
-		owner => swift,
-		group => swift,
-		mode => 0750,
-		ensure => directory;
+	class service {
+		require swift::storage::config
+
+		Service { ensure => running }
+		service {
+			[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
+				subscribe => File["/etc/swift/account-server.conf"];
+			[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
+				subscribe => File["/etc/swift/container-server.conf"];
+			[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
+				subscribe => File["/etc/swift/object-server.conf"];
+		}
 	}
 
-	service {
-		[ swift-account, swift-account-auditor, swift-account-reaper, swift-account-replicator ]:
-			subscribe => File["/etc/swift/account-server.conf"];
-		[ swift-container, swift-container-auditor, swift-container-replicator, swift-container-updater ]:
-			subscribe => File["/etc/swift/container-server.conf"];
-		[ swift-object, swift-object-auditor, swift-object-replicator, swift-object-updater ]:
-			subscribe => File["/etc/swift/object-server.conf"];
-	}
+	class monitoring {
+		require swift::storage::service
+		$nagios_group = "swift"
 
+		monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
+		monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
+		monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
+		monitor_service { "swift-account-server": description => "swift-account-server", check_command => "nrpe_check_swift_account_server" }
+		monitor_service { "swift-container-auditor": description => "swift-container-auditor", check_command => "nrpe_check_swift_container_auditor" }
+		monitor_service { "swift-container-replicator": description => "swift-container-replicator", check_command => "nrpe_check_swift_container_replicator" }
+		monitor_service { "swift-container-server": description => "swift-container-server", check_command => "nrpe_check_swift_container_server" }
+		monitor_service { "swift-container-updater": description => "swift-container-updater", check_command => "nrpe_check_swift_container_updater" }
+		monitor_service { "swift-object-auditor": description => "swift-object-auditor", check_command => "nrpe_check_swift_object_auditor" }
+		monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
+		monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
+		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
+
+	}
+	
+	include packages, config, service, monitoring
 }
 
 # Definition: swift::create_filesystem

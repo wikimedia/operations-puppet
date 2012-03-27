@@ -589,8 +589,6 @@ class Put_object_chunked(object):
             headers['ETag'] = etag.strip('"')
         if content_type is not None:
             headers['Content-Type'] = content_type
-        # http://en.wikipedia.org/wiki/Chunked_transfer_encoding
-        headers['Transfer-Encoding'] = 'chunked'
         conn.putrequest('PUT', path)
         for header, value in headers.iteritems():
             conn.putheader(header, value)
@@ -608,7 +606,7 @@ class Put_object_chunked(object):
         size = len(chunk)
         if size:
             # only send non-null data, and besides, 0 length is EOF
-            self.conn.send('%x\r\n%s\r\n' % (size, chunk))
+            self.conn.send(chunk)
 
     def close(self):
         """

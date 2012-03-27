@@ -10,6 +10,7 @@ import re
 from eventlet.green import urllib2
 import wmf.client
 import time
+import urlparse
 #from swift.common.utils import get_logger
 
 # Copy2 is hairy. If we were only opening a URL, and returning it, we could
@@ -31,7 +32,7 @@ class Copy2(object):
     token = None
 
     def __init__(self, conn, app, url, container, obj, authurl, login, key,
-            content_type=None, modified=None):
+            content_type=None, modified=None, content_length=None):
         self.app = app
         self.conn = conn
         if self.token is None:
@@ -44,8 +45,14 @@ class Copy2(object):
             h = {'!Migration-Timestamp!': '%s' % modified}
         else:
             h = {}
+
+        if content_length is not None:
+            h['Content-Length'] = content_length
+
+        full_headers = conn.info()
+        etag = full_headers.getheader('ETag')
         self.copyconn = wmf.client.Put_object_chunked(url, self.token,
-                container, obj, content_type=content_type, headers=h)
+                container, obj, etag=etag, content_type=content_type, headers=h)
 
     def __iter__(self):
         # We're an iterator; we get passed back to wsgi as a consumer.
@@ -120,38 +127,60 @@ class WMFRewrite(object):
         # upload doesn't like our User-agent, otherwise we could call it
         # using urllib2.url()
         opener = urllib2.build_opener()
-        opener.addheaders = [('User-agent', self.user_agent)]
+        # Pass on certain headers from the caller squid to the scalers
+        opener.addheaders = []
+        if reqorig.headers.get('User-Agent') != None:
+            opener.addheaders.append(('User-Agent', reqorig.headers.get('User-Agent')))
+        else:
+            opener.addheaders.append(('User-Agent', self.user_agent))
+        for header_to_pass in ['X-Forwarded-For', 'X-Original-URI']:
+            if reqorig.headers.get( header_to_pass ) != None:
+                opener.addheaders.append((header_to_pass, reqorig.headers.get( header_to_pass )))
         # At least in theory, we shouldn't be handing out links to originals
         # that we don't have (or in the case of thumbs, can't generate).
         # However, someone may have a formerly valid link to a file, so we
         # should do them the favor of giving them a 404.
         try:
-            upcopy = opener.open(reqorig.url)
+            # break apach the url, url-encode it, and put it back together
+            urlobj = list(urlparse.urlsplit(reqorig.url))
+            urlobj[2] = urllib2.quote(urlobj[2], '%/')
+            encodedurl = urlparse.urlunsplit(urlobj)
+            # ok, call the encoded url
+            upcopy = opener.open(encodedurl)
+
         except urllib2.HTTPError,status:
-            if status == 404:
+            if status.code == 404:
                 resp = webob.exc.HTTPNotFound('Expected original file not found')
                 return resp
             else:
                 resp = webob.exc.HTTPNotFound('Unexpected error %s' % status)
+                resp.body = "".join(status.readlines())
+                resp.status = status.code
                 return resp
 
         # get the Content-Type.
         uinfo = upcopy.info()
         c_t = uinfo.gettype()
+        content_length = uinfo.getheader('Content-Length', None)
         # sometimes Last-Modified isn't present; use now() when that happens.
         try:
             last_modified = time.mktime(uinfo.getdate('Last-Modified'))
         except TypeError:
             last_modified = time.mktime(time.localtime())
 
-        if self.writethumb:
+        if self.writethumb and reqorig.method != 'HEAD':
             # Fetch from upload, write into the cluster, and return it
             upcopy = Copy2(upcopy, self.app, url,
                 urllib2.quote(container), obj, self.authurl, self.login,
-                self.key, content_type=c_t, modified=last_modified)
+                self.key, content_type=c_t, modified=last_modified,
+                content_length=content_length)
+
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
-        resp.headers.add('Last-Modified', uinfo.getheader('Last-Modified'))
+        # add in the headers if we've got them
+        for header in ['Content-Length', 'Last-Modified', 'Accept-Ranges']:
+            if(uinfo.getheader(header)):
+                resp.headers.add(header, uinfo.getheader(header))
         return resp
 
     def __call__(self, env, start_response):
@@ -243,7 +272,7 @@ class WMFRewrite(object):
                 resp = webob.exc.HTTPNotImplemented('Unknown Status: %s' % (status)) #10
                 return resp(env, start_response)
         else:
-            resp = webob.exc.HTTPBadRequest('Regexp failed: "%s"' % (req.path)) #11
+            resp = webob.exc.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path)) #11
             return resp(env, start_response)
 
 def filter_factory(global_conf, **local_conf):

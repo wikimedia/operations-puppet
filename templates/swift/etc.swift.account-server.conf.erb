@@ -10,7 +10,9 @@ pipeline = account-server
 use = egg:swift#account
 
 [account-replicator]
+concurrency = 1
 
 [account-auditor]
+concurrency = 1
 
 [account-reaper]
