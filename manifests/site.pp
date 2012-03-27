@@ -1628,37 +1628,37 @@ node /search100[0-6]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::lucene::front-end::pool1
+	include role::lucene::front_end::pool1
 }
 
 node /search10(0[7-9]|10)\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool2
+	include role::lucene::front_end::pool2
 }
 
 node /search101[1-4]\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool3
+	include role::lucene::front_end::pool3
 }
 
 node /search101[56]\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool4
+	include role::lucene::front_end::pool4
 }
 
 node /search101[78]\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::prefix
+	include role::lucene::front_end::prefix
 }
 
 node /search10(19|2[0-2])\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool4
+	include role::lucene::front_end::pool4
 }
 
 node /search102[3-4]\.eqiad\.wmnet/ {
 
-	include role::lucene::front-end::pool3
+	include role::lucene::front_end::pool3
 }
 
 node /searchidx100[0-2]\.eqiad\.wmnet/ {
