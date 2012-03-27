@@ -8,7 +8,9 @@ class swift::base($hash_path_suffix, $cluster_name) {
 	# FIXME: split these iptables rules apart into common, proxy, and
 	# storage so storage nodes aren't listening on http, etc.
 	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
-	include swift::iptables
+	if $realm != "labs" {
+		include swift::iptables
+	}
 
 	# include tcp settings
 	include swift::sysctl::tcp-improvements
