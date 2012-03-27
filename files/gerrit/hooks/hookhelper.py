@@ -94,16 +94,33 @@ class HookHelper:
 		f.close()
 
 	def get_log_filename(self, project, branch, message):
+		filename     = None;
+		foundproject = None;
 		if hookconfig.logdir and hookconfig.logdir[-1] == '/':
 			hookconfig.logdir = hookconfig.logdir[0:-1]
 		if project in hookconfig.filenames:
-			if branch in hookconfig.filenames[project]:
-				filename = hookconfig.logdir + "/" + hookconfig.filenames[project][branch]
-			else:
-				filename = hookconfig.logdir + "/" + hookconfig.filenames[project]["default"]
+			foundproject = project
+		if foundproject is None:
+			# Attempt to use the wildcard filters
+			for filter,value in hookconfig.filenames.iteritems():
+				if not "*" in filter:
+					# It is a project name, not a filter!
+					continue
+				# Replace wildcard with a proper regex snippet
+				pattern = re.compile( filter.replace( '*', '.+') )
+				if( pattern.match( project ) ):
+					foundproject = filter
+					break
+		if foundproject is None:
+			foundproject = 'default'
+		if branch not in hookconfig.filenames[foundproject]:
+			branch = 'default'
+		if branch in hookconfig.filenames[foundproject]:
+			filename = hookconfig.filenames[foundproject][branch]
 		else:
-			filename = hookconfig.logdir + "/" + hookconfig.filenames["default"]
-		return filename
+			# Direct assignement such as 'default': 'mediawiki.log'
+			filename = hookconfig.filenames[foundproject]
+		return hookconfig.logdir + "/" + filename
 
 	def update_rt(self, change, changeurl):
 		messages = []
