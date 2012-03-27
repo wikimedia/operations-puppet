@@ -18,7 +18,7 @@ class search::logrotate {
 		"/etc/cron.daily/logrotate":
 			owner => root,
 			group => root,
-			mode => 0444,
+			mode => 0555,
 			source => "puppet:///files/logrotate/logrotate.cron.daily.search",
 			ensure => present;
 		"/etc/logrotate.d/wikimedia-task-search":
