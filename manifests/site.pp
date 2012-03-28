@@ -1765,6 +1765,7 @@ node "spence.wikimedia.org" {
 		nagios::ganglia::monitor::enwiki,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
+		nagios::monitor::checkpaging,
 		nfs::home,
 		admins::roots,
 		certificates::wmf_ca,
