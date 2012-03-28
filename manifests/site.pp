@@ -761,6 +761,7 @@ node "gallium.wikimedia.org" {
 		,'ALL = NOPASSWD: /etc/init.d/postgresql-8.4'
 		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
 	]}
+
 	include base,
 		ganglia,
 		ntp::client,
@@ -770,10 +771,9 @@ node "gallium.wikimedia.org" {
 		misc::contint::android::sdk,
 		misc::contint::test::testswarm,
 		admins::roots,
-		accounts::demon,
-		accounts::hashar,
-		accounts::reedy,
+		admins::jenkins,
 		certificates::star_wikimedia_org
+
 
 	install_certificate{ "star.mediawiki.org": }
 }
