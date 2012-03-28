@@ -118,8 +118,7 @@ class misc::contint::test {
 			name    => 'jenkins',
 			home    => '/var/lib/jenkins',
 			shell   => '/bin/bash',
-			require => Group['jenkins'],
-			groups  => [ 'jenkins' ]
+			groups  => [ 'jenkins' ];
 		}
 
 		# nagios monitoring
