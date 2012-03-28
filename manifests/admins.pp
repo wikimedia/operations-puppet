@@ -1868,6 +1868,7 @@ class admins::analinterns {
 
 class admins::jenkins {
 	$gid = 500  # 'wikidev' by default
+	include groups::wikidev
 	include groups::jenkins
 
 	include accounts::demon
