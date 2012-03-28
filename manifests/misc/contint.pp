@@ -114,11 +114,15 @@ class misc::contint::test {
 			stop => '/etc/init.d/jenkins stop';
 		}
 
-		systemuser { 'jenkins':
+		require groups::jenkins
+		user { 'jenkins':
 			name    => 'jenkins',
 			home    => '/var/lib/jenkins',
 			shell   => '/bin/bash',
-			groups  => [ 'jenkins' ];
+			gid     =>  'jenkins',
+			system  => true,
+			managehome => false,
+			require => Group['jenkins'];
 		}
 
 		# nagios monitoring
