@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# this is a dummy test you can use to test paging
+# make it fail by touching the file /tmp/fail-nagios-fail
+# make it pass by removing that file
+
+if [ -e /tmp/fail-nagios-fail ]
+then
+    echo "CRITICAL: /tmp/fail-nagios-fail exists"
+    exit 2
+else
+    echo "OK: /tmp/fail-nagios-fail doesn't exist."
+    exit 0
+fi

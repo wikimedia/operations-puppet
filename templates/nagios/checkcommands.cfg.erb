@@ -551,3 +551,10 @@ define command{
 }
 
 # end swift process checks
+
+# dummy check that's useful to check that paging is working
+define command{
+        command_name    check_to_check_nagios_paging
+        command_line    /usr/local/nagios/libexec/check_to_check_nagios_paging
+}
+
