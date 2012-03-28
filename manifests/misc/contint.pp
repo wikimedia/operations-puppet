@@ -93,7 +93,6 @@ class misc::contint::test {
 	apache_site { integration: name => "integration.mediawiki.org" }
 
 	class jenkins {
-		include groups::jenkins
 
 		# This used to rely on misc::jenkins to add the jenkins upstream repo and then
 		# install from there.  contint::misc::jenkins is now independent and will
