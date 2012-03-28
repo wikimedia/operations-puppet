@@ -60,6 +60,7 @@ class groups {
 		group { "jenkins":
 			name      => "jenkins",
 			gid       => 561,
+			alias	  => 561,
 			ensure    => present,
 			allowdupe => false;
 		}
