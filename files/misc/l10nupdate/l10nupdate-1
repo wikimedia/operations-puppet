@@ -16,7 +16,7 @@ do
 	if [ -d $GITDIR/$path ]
 	then
 		# Checkout exists, update it
-		if cd $GITDIR/$path && git pull
+		if cd $GITDIR/$path && git pull && git submodule update
 		then
 			echo "Updated $path"
 		else
@@ -26,6 +26,7 @@ do
 		fi
 	else
 		# Create the checkout's parent directory
+		# TODO: this doesn't do the submodule setup, but it can't right now, due to the way ls-projects is used
 		if mkdir -p `dirname $GITDIR/$path` &&
 			git clone $GITURL/$path $GITDIR/$path
 		then
@@ -66,7 +67,10 @@ do
 		  --outdir=/var/lib/l10nupdate/cache-"$mwVerNum" \
 		  --svnurl=$GITDIR \
 		  --all \
-		  --quiet
+		  --quiet &&
+		echo "Success, rebuilding localization cache..." &&
+		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
+		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 	then
 		echo "Completed. Copying back to /home"
 		# Copy back with rsync cause that doesn't create a cache/l10n/cache-foo directory when used correctly
