@@ -146,6 +146,10 @@ class lucene {
 	}
 
 	class config {
+		if $indexer == true {
+			include apaches::files
+		}
+		
 		# FIXME: use one template for all sites?
 		if $::site == "pmtpa" {
 			file { "/a/search/conf/lsearch-global-2.1.conf":
@@ -216,21 +220,6 @@ class lucene {
 			ensure => present;
 		}
 
-		# FIXME: duplicate of stuff in mediawiki app servers? Pull a class in from there if needed
-		if $indexer == true {
-			file {
-				"/etc/php5/conf.d/fss.ini":
-					owner => root,
-					group => root,
-					mode => 0444,
-					source => "puppet:///files/php/fss.ini.appserver";
-				"/etc/php5/apache2/php.ini":
-					owner => root,
-					group => root,
-					mode => 0444,
-					source => "puppet:///files/php/php.ini.appserver";
-			}
-		}
 	}
 
 	class service {
@@ -244,15 +233,10 @@ class lucene {
 		}
 	}
 
-	# FIXME: migrate this to sudo_users and stock /etc/sudoers file
 	class users {
-		file { "/etc/sudoers":
-			owner => root,
-			group => root,
-			mode => 0440,
-			source => "puppet:///files/sudo/sudoers.search",
-			ensure => present;
-		}
+		# note: give rainman back limited sudo. although this is currently
+		# incompatible with the /etc/sudoers that apaches::files installs
+		# on the indexer host
 
 		systemuser { "lsearch": name => "lsearch", default_group => "search"}
 	}
