@@ -1,5 +1,12 @@
 # Varnish VCL include file for mobile frontends
 
+C{
+#include <netinet/in.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+}C
+
 acl wmf_office {
 	"216.38.130.160"/29;
 }
@@ -99,7 +106,25 @@ sub vcl_recv {
 	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
+
+		if ( req.http.User-Agent ~ "Opera" ) {
+			C{
+			struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+			struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+			struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
+			char *xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+
+			if (xff_ip != NULL) {
+				inet_pton(AF_INET, xff_ip, client_ip_ia);
+			}
+			}C
+
+			set req.http.X-CLIENT-IP = client.ip;
+			set req.http.X-MAYBE = req.http.rlnclientipaddr;
+		}
+
 		call tag_carrier;
+
 	}
 
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
