@@ -99,8 +99,6 @@ class network::checks {
 	@monitor_group { "routers": description => "IP routers" }
 
 	# Virtual resource for the monitoring host
-	@monitor_host { "br1-knams": ip_address => "91.198.174.245", group => "routers" }
-	@monitor_service { "br1-knams interfaces": host => "br1-knams", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${snmp_ro_community}" }
 
 	@monitor_host { "csw1-esams": ip_address => "91.198.174.247", group => "routers" }
 	@monitor_service { "csw1-esams bgp status": host => "csw1-esams", group => "routers", description => "BGP status", check_command => "check_bgpstate!${snmp_ro_community}" }
