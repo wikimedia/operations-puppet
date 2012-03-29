@@ -1859,7 +1859,7 @@ class admins::restricted {
 class admins::analinterns {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
-
+	
 	include accounts::shawn
 	include accounts::halfak
 	include accounts::diederik
@@ -1875,8 +1875,4 @@ class admins::jenkins {
 	include accounts::demon
 	include accounts::hashar
 	include accounts::reedy
-
-	User["demon"]  { groups +> "jenkins" }
-	User["hashar"] { groups +> "jenkins" }
-	User["reedy"]  { groups +> "jenkins" }
 }
