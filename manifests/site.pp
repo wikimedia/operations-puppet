@@ -2053,6 +2053,7 @@ node "storage3.pmtpa.wmnet" {
 		groups::wikidev,
 		accounts::nimishg,
 		accounts::rfaulk,
+		accounts::zexley,
 		accounts::awjrichards,
 		accounts::pgehres,
 		accounts::khorn,
