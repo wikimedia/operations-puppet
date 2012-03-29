@@ -106,7 +106,7 @@ sub vcl_recv {
 	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
-
+		/* Check that user-agent is "Opera" and if so grab XFF Header and replace client ip value */ 
 		if ( req.http.User-Agent ~ "Opera" ) {
 			C{
 			struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
@@ -120,7 +120,7 @@ sub vcl_recv {
 			}C
 
 			set req.http.X-CLIENT-IP = client.ip;
-			set req.http.X-MAYBE = req.http.rlnclientipaddr;
+			set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
 		}
 
 		call tag_carrier;
