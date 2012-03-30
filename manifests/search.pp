@@ -146,33 +146,20 @@ class lucene {
 	}
 
 	class config {
+		require role::lucene::configuration
+		
 		if $indexer == true {
 			include apaches::files
 		}
 		
-		# FIXME: use one template for all sites?
-		if $::site == "pmtpa" {
-			file { "/a/search/conf/lsearch-global-2.1.conf":
-				require => File["/a/search/conf"],
-				owner => lsearch,
-				group => search,
-				mode => 0444,
-				content => template("lucene/lsearch-global-2.1.conf.pmtpa.erb"),
-				ensure => present;
-			}
-		}
-		if $::site == "eqiad" {
-			file { "/a/search/conf/lsearch-global-2.1.conf":
-				require => File["/a/search/conf"],
-				owner => lsearch,
-				group => search,
-				mode => 0444,
-				content => template("lucene/lsearch-global-2.1.conf.eqiad.erb"),
-				ensure => present;
-			}
-		}
-		
 		file {
+			"/a/search/conf/lsearch-global-2.1.conf":
+				require => File["/a/search/conf"],
+				owner => lsearch,
+				group => search,
+				mode => 0444,
+				content => template("lucene/lsearch-global-2.1.conf.erb"),
+				ensure => present;
 			"/etc/lsearch.conf":
 				owner => lsearch,
 				group => search,
