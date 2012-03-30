@@ -90,8 +90,14 @@ class base::puppet($server="puppet") {
 	# FIXME: remove $hostname from the title, it's already being prepended. Then, purge the existing Nagios resources.
 	monitor_service { "$hostname puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
+	if $realm == "labs" {
+		$nagios_host = "nagios"
+	} else {
+		$nagios_host = "nagios.wikimedia.org"
+	}
+
 	exec { "puppet snmp trap":
-		command => "snmptrap -v 1 -c public nagios.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+		command => "snmptrap -v 1 -c public ${nagios_host} .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
 		path => "/bin:/usr/bin",
 		require => Package["snmp"]
 	}
