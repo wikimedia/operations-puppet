@@ -191,14 +191,6 @@ class lucene {
 				owner => lsearch,
 				group => search,
 				mode => 0775;
-		
-			## log rotation
-			"/etc/logrotate.d/lucene":
-				owner => root,
-				group => root,
-				mode => 0444,
-				source => "puppet:///files/logrotate/search",
-				ensure => present;
 		}
 		if $indexer == true {
 			file {
