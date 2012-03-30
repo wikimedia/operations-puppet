@@ -1020,7 +1020,7 @@ class nagios::monitor::newmonitor {
 	}
 
 	# Fix permissions
-	file { $puppet_files:
+	file { $icinga::monitor::puppet_files:
 		mode => 0644,
 		ensure => present;
 	}
