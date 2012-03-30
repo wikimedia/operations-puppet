@@ -173,6 +173,9 @@ sub vcl_fetch {
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
+	if ( req.http.X-Carrier ) {
+		set beresp.http.X-Carrier = req.http.X-Carrier;
+	}
 }
 
 sub vcl_error {
