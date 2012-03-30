@@ -1598,6 +1598,7 @@ node "project1.wikimedia.org" {
 node "sanger.wikimedia.org" {
 	$gid = 500
 	$ldapincludes = ['openldap']
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "sanger.wikimedia.org"
 	install_certificate{ "sanger.wikimedia.org": }
 
