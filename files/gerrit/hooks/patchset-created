@@ -33,6 +33,7 @@ def main():
 		message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
 		helper.log_to_file(options.project, options.branch, message)
 	lint_test(options, helper)
+	l10n_automerge(options, helper)
 
 def lint_test(options, helper):
 	if not hookconfig.tmpdir:
@@ -82,6 +83,15 @@ def lint_test(options, helper):
 	verifyset = helper.set_verify(status, options.commit, message)
 	if not verifyset:
 		sys.stderr.write("Failed to set verify score")
+
+def l10n_automerge(options, helper):
+	if not options.project.startswith("mediawiki/"):
+		return
+	if options.uploader != hookconfig.l10nuser
+		return
+	verifymerge = helper.automerge(options.commit, hookconfig.l10nsummary)
+	if not verifymerge:
+		sys.stderr.write("Failed to auto-merge commit")
 
 if __name__ == '__main__':
 	main()

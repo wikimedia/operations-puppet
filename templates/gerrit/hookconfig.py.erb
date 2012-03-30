@@ -5,6 +5,9 @@ sshhost = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_hostname') %>"
 sshport = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_sshport') %>
 failscore = "-1"
 passscore = "+1"
+approvescore = "+2"
+l10nsummary = "Auto-approving/merging l10n updates"
+l10nuser = "l10n-bot"
 failmessage = "Change did not pass lint check. You will need to send an amended patchset for this (see: https://labsconsole.wikimedia.org/wiki/Git#Amending_a_change). Below is the output from the lint check:\n\n"
 passmessage = "Lint check passed."
 debug = False
