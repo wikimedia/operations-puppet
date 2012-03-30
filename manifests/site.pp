@@ -763,9 +763,7 @@ node "gallium.wikimedia.org" {
 	]}
 
 	include base,
-		ganglia,
-		ntp::client,
-		exim::simple-mail-sender,
+		standard,
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
