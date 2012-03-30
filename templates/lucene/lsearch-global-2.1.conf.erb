@@ -24,7 +24,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 [Search-Group]
 <% active_nodes = scope.lookupvar("role::lucene::configuration::$::site") -%>
 
-<% active_nodes::front_ends.keys.each do |pool| -%>
+<% active_nodes[front_ends].keys.each do |pool| -%>
 # search <%= pool %>
 <% active_nodes[pool].keys.sort.each do |node| -%>
 <%= node %>: <%= scope.lookupvar("$active_nodes")[pool][node].join(" ") %>
