@@ -38,7 +38,7 @@ class svn::server {
 		"/var/mwdocs":
 			owner => mwdocs,
 			group => svn,
-			mode => 0755,
+			mode => 0775,
 			ensure => directory;
 		"/home/mwdocs/phase3":
 			ensure => link,
