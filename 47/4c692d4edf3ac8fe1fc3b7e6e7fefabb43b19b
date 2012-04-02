@@ -1,0 +1,9 @@
+Change-Id: I474c692d4edf3ac8fe1fc3b7e6e7fefabb43b19b
+Code-Review+2: Bhartshorne <ben@wikimedia.org>
+Verified+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Bhartshorne <ben@wikimedia.org>
+Submitted-at: Mon, 02 Apr 2012 21:40:14 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/4136
+Project: operations/puppet
+Branch: refs/heads/production
