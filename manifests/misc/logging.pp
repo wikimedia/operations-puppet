@@ -107,13 +107,10 @@ class misc::udp2log::aft {
 }
 
 # class to pull in the package for making nice log filters
-class misc::udp2log::udp-filter {
-	package { udp-filter:
+class misc::udp2log::udp-filters {
+	package { udp-filters:
 		ensure => latest;
 	}
-        package { udp-filters:
-                ensure => absent;
-       }
 }
 
 # TODO: this is  a hacky short term method to get the config files into
