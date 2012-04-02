@@ -26,7 +26,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 
 <% active_nodes[scope.lookupvar("::site")]['front_ends'].keys.sort.each do |pool| -%>
 # search <%= pool %>
-<% active_nodes[scope.lookupvar("::site")]['front_ends']['pool'].sort.each do |node, indexes| -%>
+<% active_nodes[scope.lookupvar("::site")]['front_ends'][pool].sort.each do |node, indexes| -%>
 <%= node %>: <%= indexes.join(" ") %>
 <% end -%>
 
