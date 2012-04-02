@@ -24,10 +24,10 @@ pipe 100 /usr/bin/udp-filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m 
 
 #specific Wikipedia Zero filters
 #Digi Malaysia
-pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /var/log/squid/digi-malaysia.log
+/usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /var/log/squid/dig-malaysia.log
 
 #Orange Ivory Coast
-pipe 10 /usr/bin/udp-filter -i 41.66.28.94,41.66.28.95,41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
+/usr/bin/udp-filter -i 41.66.28.94,41.66.28.95,41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
 
 #Teahouse filters
-pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse[a-z0-9//]* -r >> /var/log/squid/teahouse.log
+/usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse[a-z0-9//]* -r >> /var/log/squid/teahouse.log
