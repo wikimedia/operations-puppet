@@ -24,7 +24,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 [Search-Group]
 <% active_nodes = scope.lookupvar("role::lucene::configuration::nodes") -%>
 
-<% active_nodes[$::site][front_ends].keys.sort.each do |pool| -%>
+<% active_nodes[$site][front_ends].keys.sort.each do |pool| -%>
 # search <%= pool %>
 <% active_nodes[$::site][front_ends][pool].keys.sort.each do |node| -%>
 <%= node %>: <%= scope.lookupvar("$active_nodes")[$site][front_ends][pool][node].join(" ") %>
@@ -34,8 +34,8 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 
 # Indexers
 [Index]
-<% active_nodes[indexers].keys.each do |node| -%>
-<%= node %>: <%= scope.lookupvar("$active_nodes")[node].join(" ") %>
+<% active_nodes[$site][indexers].keys.each do |node| -%>
+<%= node %>: <%= scope.lookupvar("$active_nodes")[$site][indexers][node].join(" ") %>
 <% end -%>
 
 # Rsync path where indexes are on hosts, after default value put 
