@@ -1,4 +1,4 @@
-class gerrit::database-server {
+class gerrit::database-server
 
 	include gerrit::gerrit_config
 
