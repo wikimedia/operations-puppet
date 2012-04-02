@@ -17,8 +17,8 @@ class icinga::monitor {
 			  "${nagios::configuration::icinga_config_dir}/icinga.cfg",
 			  "${nagios::configuration::icinga_config_dir}/cgi.cfg",
 			  "${nagios::configuration::icinga_config_dir}/checkcommands.cfg",
-#			  "${nagios::configuration::icinga_config_dir}/contactgroups.cfg",
-#			  "${nagios::configuration::icinga_config_dir}/contacts.cfg",
+			  "${nagios::configuration::icinga_config_dir}/contactgroups.cfg",
+			  "${nagios::configuration::icinga_config_dir}/contacts.cfg",
 			  "${nagios::configuration::icinga_config_dir}/migration.cfg",
 			  "${nagios::configuration::icinga_config_dir}/misccommands.cfg",
 			  "${nagios::configuration::icinga_config_dir}/resource.cfg",
@@ -67,19 +67,18 @@ class icinga::monitor {
 			owner => root,
 			group => root,
 			mode => 0644;
-# FIXME - lcarr temporarily disable installation of these files to prevent spamming everyone
 
-#		"/etc/icinga/contactgroups.cfg":
-#			source => "puppet:///files/nagios/contactgroups.cfg",
-#			owner => root,
-#			group => root,
-#			mode => 0644;
+		"/etc/icinga/contactgroups.cfg":
+			source => "puppet:///files/nagios/contactgroups.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
 
-#		"/etc/icinga/contacts.cfg":
-#			source => "puppet:///private/nagios/contacts.cfg",
-#			owner => root,
-#			group => root,
-#			mode => 0644;
+		"/etc/icinga/contacts.cfg":
+			source => "puppet:///private/nagios/contacts.cfg",
+			owner => root,
+			group => root,
+			mode => 0644;
 
 		"/etc/icinga/migration.cfg":
 			source => "puppet:///files/nagios/migration.cfg",
