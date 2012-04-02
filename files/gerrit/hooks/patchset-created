@@ -76,9 +76,8 @@ def lint_test(options, helper):
 	if stdoutdata:
 		message = stdoutdata
 	if stderrdata:
-		# Prefix error message with a space so gerrit renders it as monospaced:
-		stderrdata = stderrdata.replace( "\n", "\n " )
-		message = message + stderrdata
+		# We want the error message to be "nicely" formatted
+		message = "<pre>\n" + stderrdata + "</pre>\n"
 	# Cleanup lonnng paths from the message:
 	message = message.replace( directory, '.' )
 	verifyset = helper.set_verify(status, options.commit, message)
