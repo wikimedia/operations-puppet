@@ -1169,12 +1169,11 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site]
 	}
 	if $hostname =~ /^lvs100[36]$/ {
-		$lvs_balancer_ips = [ "$lvs::configuration::lvs_service_ips[$::realm]['search_pool1'][$::site]",
-				"$lvs::configuration::lvs_service_ips[$::realm]['search_pool2'][$::site]",
-				"$lvs::configuration::lvs_service_ips[$::realm]['search_pool3'][$::site]",
-				"$lvs::configuration::lvs_service_ips[$::realm]['search_pool4'][$::site]",
-				"$lvs::configuration::lvs_service_ips[$::realm]['search_prefix'][$::site]"
-		]
+		$lvs_balancer_ips = [ $lvs::configuration::lvs_service_ips[$::realm]['search_pool1'][$::site],
+				$lvs::configuration::lvs_service_ips[$::realm]['search_pool2'][$::site],
+				$lvs::configuration::lvs_service_ips[$::realm]['search_pool3'][$::site],
+				$lvs::configuration::lvs_service_ips[$::realm]['search_pool4'][$::site],
+				$lvs::configuration::lvs_service_ips[$::realm]['search_prefix'][$::site] ]
 	}
 
 	include base,
