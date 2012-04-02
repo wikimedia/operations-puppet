@@ -467,7 +467,7 @@ node "emery.wikimedia.org" {
 		generic::sysctl::high-bandwidth-rsync,
 		misc::udp2log::monitoring,
 		misc::udp2log::emeryconfig,
-		misc::udp2log::udp-filter
+		misc::udp2log::udp-filters
 }
 
 node "erzurumi.pmtpa.wmnet" {
