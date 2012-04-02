@@ -76,6 +76,8 @@ def lint_test(options, helper):
 	if stdoutdata:
 		message = stdoutdata
 	if stderrdata:
+		# Prefix error message with a space so gerrit renders it as monospaced:
+		stderrdata = stderrdata.replace( "\n", "\n " )
 		message = message + stderrdata
 	# Cleanup lonnng paths from the message:
 	message = message.replace( directory, '.' )
