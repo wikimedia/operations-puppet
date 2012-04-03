@@ -138,9 +138,11 @@ class lucene {
 		if $indexer == true {
 			include mediawiki::packages
 
-			# FIXME: what installs apache2? Let's make sure that doesn't happen for search hosts
-			service { apache2:
-				ensure => stopped
+			# dependency for wikimedia-task-appserver which indexer needs
+			service { 'apache':
+				name => "apache2",
+				enable => false,
+				ensure => stopped;
 			}
 		}
 	}
@@ -212,7 +214,7 @@ class lucene {
 	class service {
 		service { lucene-search-2:
 			ensure => running,
-			require => [ File["/etc/lsearch.conf"], File["/a/search/conf/lsearch-global-2.1.conf"], File["/a/search/indexes"], File["/a/search/log"] ];		
+			require => [ File["/etc/lsearch.conf"], File["/a/search/conf/lsearch-global-2.1.conf"], File["/a/search/indexes"], File["/a/search/log"] ];
 		}
 
 		if $indexer == false {
