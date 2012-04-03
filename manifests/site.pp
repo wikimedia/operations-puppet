@@ -1002,6 +1002,9 @@ node "iron.wikimedia.org" {
 	admins::roots,
 	misc::management::ipmi
 
+	# search QA scripts for ops use
+	include search::searchqa
+
 	# let's see if the swiftcleaner can run here
 	include swift::cleaner
 }

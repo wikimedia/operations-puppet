@@ -75,8 +75,8 @@ class search::indexer {
 	}
 
 	file { "/etc/lsearch.conf":
-		owner => root,                                                                                                                                                 
-		group => root,                                                                                                                                                 
+		owner => root,
+		group => root,
 		mode => 0644,
 		content => template("lucene/lsearch.conf.erb"),
 		ensure => present;
@@ -283,5 +283,42 @@ class lucene {
 				minute => 25,
 				ensure => present;
 		}
+	}
+}
+
+class search::searchqa::phase1 {
+	file {
+		'/opt/searchqa':
+			ensure => directory,
+			owner => root,
+			group => wikidev,
+			mode  => 0755;
+	}
+}
+
+class search::searchqa {
+	require search::searchqa::phase1
+	file {
+		'/opt/searchqa/bin':
+			recurse => true,
+			purge => true,
+			force => true,
+			owner => root,
+			group => wikidev,
+			mode  => 0555,
+			source => "puppet:///files/searchqa/bin";
+		'/opt/searchqa/lib':
+			recurse => true,
+			purge => true,
+			force => true,
+			owner => root,
+			group => wikidev,
+			mode  => 0644,
+			source => "puppet:///files/searchqa/lib";
+		'/opt/searchqa/data':
+			ensure => directory,
+			owner => root,
+			group => wikidev,
+			mode  => 0774;
 	}
 }
