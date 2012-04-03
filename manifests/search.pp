@@ -135,7 +135,7 @@ class lucene {
 			require => Package["sun-j2sdk1.6"],
 			ensure => latest;
 		}
-		if $indexer == true {
+		if $lucene::server::indexer == true {
 			include mediawiki::packages
 
 			# dependency for wikimedia-task-appserver which indexer needs
@@ -150,7 +150,7 @@ class lucene {
 	class config {
 		require role::lucene::configuration
 		
-		if $indexer == true {
+		if $lucene::server::indexer == true {
 			include apaches::files
 		}
 		
@@ -181,7 +181,7 @@ class lucene {
 				group => search,
 				mode => 0775;
 		}
-		if $indexer == true {
+		if $lucene::server::indexer == true {
 			file {
 				"/etc/logrotate.d/lucene-indexer":
 					owner => root,
