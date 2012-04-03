@@ -459,6 +459,26 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 }
 
+# handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
+class base::syslogs($readable = 'false') {
+	
+	$common_logs = [ "syslog", "messages" ]
+
+	if $readable == 'true' {
+	
+		define syslogs::readable() {
+			
+			file { "/var/log/${name}":
+				owner => 'syslog',
+				group => 'adm',
+				mode => '0644',
+			}
+		}	
+	
+		syslogs::readable { $common_logs: }
+	}
+}
+
 class base {
 
 	case $operatingsystem {
@@ -495,6 +515,9 @@ class base {
 	if $realm == "labs" {
 		include base::instance-upstarts,
 			generic::gluster
+
+		# make common logs readable
+		class {'base::syslogs': readable => 'true'; }
 
 		# Add directory for data automounts
 		file { "/data":
