@@ -190,7 +190,7 @@ class base::remote-syslog {
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
 			ensure => present;
 		}
