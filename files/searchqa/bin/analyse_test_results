@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+use strict;
+use URI::Escape;
+use Getopt::Std;
+use lib '/opt/searchqa/lib';
+use searchqa;
+
+my ($report,$ignore_ips);
+
+our $opt_i; # list of IP addresses to ignore
+getopts ("i:");
+
+unless ($ARGV[0] =~ /^[\w-\/]+$/) {
+	print "\nUsage: $0 [switches] /api_sweep_test_output_log_dir\n" .
+		"  -i ip1,ip2   ignore IP addresses in output report\n\n";
+	exit;
+}
+
+# get the report dir to analyse
+my $dir = @ARGV[0];
+chomp $dir;
+unless (-d $dir) {
+	print "$dir isn't a dir, try harder!\n";
+	exit;
+}
+
+# get a list of IPs we don't care about
+if (defined $opt_i) {
+	for my $ip (split /,/, $opt_i) {
+		$ignore_ips->{$ip} = 1 if $ip =~ /^\d+\.\d+\.\d+\.\d+$/;
+	}
+}
+
+open REPORT, "cat $dir/*|";
+while (<REPORT>) {
+	chomp;
+	my ($status,$api_host_ip,$r) = split(/\t/,$_);
+	next if defined $ignore_ips->{$api_host_ip};
+	$report->{$r}->{$api_host_ip} = $status;
+}
+close REPORT;
+
+
+for my $r (sort keys %{$report}) {
+	my ($print_output,$previous_result,$output);
+	for my $api_host_ip (sort keys %{$report->{$r}}) {
+		$output .= " " . sprintf("%-25s",$api_host_ip) . $report->{$r}->{$api_host_ip} . "\n";
+		$print_output++ if defined $previous_result and ($previous_result ne $report->{$r}->{$api_host_ip});
+		$previous_result = $report->{$r}->{$api_host_ip};
+	}
+	print "$r\n$output" if defined $print_output;
+}
+

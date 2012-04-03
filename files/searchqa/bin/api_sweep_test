@@ -1,0 +1,264 @@
+#!/usr/bin/perl
+use strict;
+no warnings 'threads';
+use threads;
+use threads::shared;
+use LWP::UserAgent;
+use Time::HiRes;
+use URI::Escape;
+use FileHandle;
+use Getopt::Std;
+use lib '/opt/searchqa/lib';
+use searchqa;
+
+# handy variables
+my $out_dir = $searchqa::conf->{'out_dir_prefix'} . searchqa::timestamp(); # where to drop response logs
+my $nb_process = $searchqa::conf->{'perl_threads'}; # number of perl threads to run
+my $datacenter = $searchqa::conf->{'datacenter'}; # default datacenter list
+our $opt_d; # datacenter
+our $opt_h; # help!
+our $opt_v; # verbose
+our $opt_q; # quiet
+our $opt_n; # no summary report
+our $opt_l; # create detailed log
+our $opt_m; # max queries per type
+our $opt_t; # number of perl threads
+my @queue :shared; # we shift stuff off of this as jobs
+my %result :shared; # threads return stuff here
+my %dead_servers :shared; # tracks servers that time out
+my $report; # data structure to walk at output time
+my $unknown_db; # list of hostnames we're skipping
+my $job_id; # counter for assigning jobs ID's
+my $queue_size; # starting queue size
+
+# process command line
+getopts ("hvnqld:m:t:");
+$searchqa::conf->{'max_queries_per_type'} = ($opt_m =~ /^(\d{1,4})$/) ? $1 : $searchqa::conf->{'max_queries_per_type'};
+$nb_process = ($opt_m =~ /^(\d{1,3})$/) ? $1 : $nb_process;
+$datacenter = ($opt_d =~ /^([a-z,]+)$/) ? $1 : $datacenter; # stupid test, don't care
+
+if (defined $opt_h) {
+	usage();
+	exit;
+}
+
+# api_log is a snippet of user searches logged by api.php to rerun for testing
+my $api_log = ($ARGV[0]) ? $ARGV[0] : $searchqa::conf->{'default_api_log'};
+chomp $api_log;
+unless (-e $api_log) {
+	usage();	
+	print "[31mfile '$api_log' does not exist, try again[0m\n\n";
+	exit;
+}
+
+unless (defined $opt_q) {
+	print "running $nb_process threads\n" .
+		"testing lucene cluster(s): $datacenter\n" .
+		"limit $searchqa::conf->{'max_queries_per_type'} queries per method/db\n" .
+		"opening and sorting $api_log\n" .
+		"please wait patiently . . . \n";
+}
+
+open LOG, "$api_log" or die "can't open replay log:$!\n";; 
+while (<LOG>) {
+	chomp;
+	if (/^http:\/\/([^\/]+)\/+w\/+api\.php\?(.*)$/) {
+		my $logged_request = $_;
+		my $q = {
+			'host' => $1,
+			'query_string' => $2,
+			'datacenter' => $datacenter,
+		};
+		
+		# fish out the various GET parameters, we won't use most of them
+		for (split /&/, $q->{'query_string'}) {
+			my ($param_name,$param_value) = split /=/, $_;
+			$q->{$param_name} = $param_value;
+		}
+		$q->{'method'} = (defined $q->{'suggest'}) ? 'prefix' : 'search';
+
+		# try to figure out the right mw database, and don't bother trying an api query if fail
+		$q->{'wgDBname'} = searchqa::determine_database($q);
+		unless ($q->{'wgDBname'} gt '') {
+			$unknown_db->{$q->{'host'}}++;
+			next;
+		}
+
+		# this is the URI that will be requested on each api server.
+		# api details are buried in mediawiki and this does not attempt to perfectly replicate them
+		my $prefix = "$q->{'method'}/$q->{'wgDBname'}";
+
+		# limit test redundancy
+		next if scalar(keys %{$report->{$prefix}}) >= $searchqa::conf->{'max_queries_per_type'};
+		next if defined $report->{$prefix}->{$q->{'search'}};
+
+		# queue a job for each query to each api host
+		for (searchqa::determine_api_host($q)) {
+			$job_id++;
+			my $api_host_ip = searchqa::dig($_);
+			if (defined $opt_n) {
+ 				# populate report data structure only for preventing duplicate tests
+				$report->{$prefix}->{$q->{'search'}} = 1;
+			} else {
+				# populate report data structure fully
+				$report->{$prefix}->{$q->{'search'}}->{$api_host_ip} = $job_id;
+			}
+			push @queue, "$job_id\t$api_host_ip\t$prefix/$q->{'search'}"; # populate jobs queue
+		}
+	}
+}
+close LOG;
+
+$queue_size = $#queue;
+
+# informative foo yayyy
+unless (defined $opt_q) {
+	print "\nskipping these hosts b/c we can't identify the db\n" . join(' ', keys %{$unknown_db}) . "\n\n" if keys %{$unknown_db};
+	print "starting the http request threads to process $queue_size hits total\n";
+}
+
+undef $report if defined $opt_n;
+
+if (defined $opt_l) {
+	mkdir $out_dir or die "cant open $out_dir: $!\n";
+	print "log: $out_dir\n\n" unless defined $opt_q;
+}
+
+# spawn worker threads to do api web requests, code borrowed from threads example
+# http://chicken.genouest.org/perl/multi-threading-with-perl/
+my (@running,@Threads,@a,@b);
+my $i = 0;
+while (defined $queue[0]) {
+	@running = threads->list(threads::running);
+	if (scalar @running < $nb_process) {
+		my $thread = threads->new( sub { process_queue_task() });
+		push (@Threads, $thread);
+		my $tid = $thread->tid;
+	}
+	@running = threads->list(threads::running);
+	for my $thr (@Threads) {
+		if ($thr->is_running()) {
+			my $tid = $thr->tid;
+		} elsif ($thr->is_joinable()) {
+			my $tid = $thr->tid;
+			$thr->join;
+		}
+	}
+	@running = threads->list(threads::running);
+	$i++;
+}
+while (scalar @running gt 0) {
+	sleep 0.1;
+	for my $thr (@Threads) {
+		$thr->join if ($thr->is_joinable());
+	}
+	@running = threads->list(threads::running);
+}
+
+unless (defined $opt_n) {
+	# can't nest hashes with threads::shared so we walk the $report hash and fetch results
+	# from simple shared %result hash based on job_id
+	my $ct;
+
+	for my $prefix (sort keys %{$report}) {
+		for my $search_string (sort keys %{$report->{$prefix}}) {
+			my ($clash,$previous);
+			for my $api_host_ip (sort keys %{$report->{$prefix}->{$search_string}}) {
+				my $job_id = $report->{$prefix}->{$search_string}->{$api_host_ip};
+				next unless defined $result{$job_id}; # didn't get a result? skip it.
+				$clash++ if defined $previous and ($previous ne $result{$job_id});
+				$previous = $result{$job_id};
+			}
+			if (($prefix =~ /^(\w+)\/(\w+)/) and (defined $clash)) {
+				$ct->{$2}->{$1}->{'fail'}++;
+			} else {
+				$ct->{$2}->{$1}->{'pass'}++;
+			}
+		}
+	}
+
+	print sprintf("%-15s",'db') . sprintf("%8s",'search') . sprintf("%10s",'prefix') . "\n";
+	for my $db (sort keys %{$ct}) {
+		print sprintf("%-15s",$db);
+		for my $method (qw(search prefix)) {
+			for (qw(pass fail)) {
+				$ct->{$db}->{$method}->{$_} = (defined $ct->{$db}->{$method}->{$_}) ? $ct->{$db}->{$method}->{$_} : 0;
+			}
+			my $total = $ct->{$db}->{$method}->{'pass'} + $ct->{$db}->{$method}->{'fail'};
+			if ($total > 0) {
+				print sprintf("%4s",(int(100 * $ct->{$db}->{$method}->{'pass'} / $total))) .  '%:' . sprintf("%-4s",$total);
+			} else {
+				print sprintf("%6s",'-') . ' 'x4;
+			}
+		}
+		print "\n";
+	}
+}
+
+exit;
+
+
+# SUBROUTINES
+
+sub process_queue_task {
+	my $name = 'id' . threads->self->tid();
+
+	my $fh;
+	if (defined $opt_l) {
+		$fh = new FileHandle;
+		$fh->open(">$out_dir/$name");
+	}
+
+	while (defined $queue[0]) {
+		my ($job_id,$api_host_ip,$api_query_string) = split('\t', shift @queue);
+		my $http_response;
+
+		# progress indicator
+ 		if ((! defined $opt_q) and ($job_id =~ /000$/)) {
+			print searchqa::timestamp() . " processing job $job_id of $queue_size\n";
+		}
+	
+		next if $dead_servers{$api_host_ip} >= $searchqa::conf->{'server_timeout_limit'}; # skip dead servers
+
+		my $ua = LWP::UserAgent->new(timeout => $searchqa::conf->{'server_timeout'});
+		my $request = HTTP::Request->new(GET => "http://$api_host_ip:$searchqa::conf->{'api_tcp_port'}/$api_query_string");
+		$request->header( 'User_Agent' => $searchqa::conf->{'user_agent'}, );
+		my $r = $ua->simple_request($request);
+		if ($r->is_success) {
+			# this is where we can do meaningful comparisons of the http response in theory
+			$http_response= $r->status_line . ' ' . length(searchqa::sanitize_response($r->content));
+		} elsif (($r->is_error) and ($r->status_line =~ /^500 can't connect/i)) {
+			# simple timeout, drop the data
+			$dead_servers{$api_host_ip}++;
+			if ((! defined $opt_q) and ($dead_servers{$api_host_ip} == $searchqa::conf->{'server_timeout_limit'})) {
+				print "$api_host_ip failed out after $searchqa::conf->{'server_timeout_limit'} timeouts\n";
+			}
+			$http_response = $r->status_line;
+		} elsif ($r->is_error) {
+			# report other errors
+			$http_response = $r->status_line;
+		} else {
+			# probably a redirect
+			$http_response = $r->status_line . ' ' . $r->header('Location');
+		}
+
+		$result{$job_id} = $http_response unless defined $opt_n;
+
+		print $fh "$http_response\t$api_host_ip\t$api_query_string\n" if defined $opt_l;
+
+	}
+
+	undef $fh;
+	return;
+}
+
+sub usage {
+	print "\nSearch API Fast Tester (tm) \n\nUsage: $0 [switches] /path/to/replay_log.gz\n" .
+		"  -d [d1,d2]  datacenter (default $datacenter)\n" .
+		"  -h          help\n" .
+		"  -l          create data logs for later analysis\n" .
+		"  -m [num]    max queries per type (default $searchqa::conf->{'max_queries_per_type'})\n" .
+		"  -n          no summary report\n" .
+		"  -q          quiet\n" .
+		"  -t [num]    number of process threads to run (default $nb_process)\n\n";
+}

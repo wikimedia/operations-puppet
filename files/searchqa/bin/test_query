@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+use strict;
+use LWP::UserAgent;
+use lib '/opt/searchqa/lib';
+use searchqa;
+
+my (%r,$q);
+
+my $api_query_string = $ARGV[0];
+chomp $api_query_string;
+
+if ($api_query_string =~ /^(search|prefix)\/(\w+)\//) {
+	$q->{'suggest'} = 1 if $1 eq 'prefix';
+	$q->{'wgDBname'} = $2;
+} else {
+	print	" Usage:\n" .
+			"  $0 (search|prefix)/(db)/(query)\n" .
+			"  $0 search/enwiki/fruitbats\n" .
+			"  $0 prefix/itwiki/ci\n" .
+			"  $0 '$api_query_string' <-- ain't gonna play\n\n";
+	exit;
+}
+
+$q->{'datacenter'} = 'pmtpa,eqiad'; # always do both datacenters
+
+my @api_host_ips = searchqa::hosts_to_ips(searchqa::determine_api_host($q));
+
+for my $ip (@api_host_ips) {
+	my $ua = LWP::UserAgent->new(timeout => 10);
+	my $request = HTTP::Request->new(GET => "http://$ip:8123/$api_query_string");
+	$request->header('User_Agent' => $0,);
+	my $r = $ua->simple_request($request);
+	@{$r{$ip}} = split /\R/, searchqa::sanitize_response($r->content) if $r->is_success;
+}
+
+for my $n (0..500) {
+	my $y;
+	for my $ip (@api_host_ips) {
+		$y = 1 if defined $r{$ip}->[$n];
+		print sprintf("%-15s","$ip:") . "$r{$ip}->[$n]\n";
+	}
+	last unless defined $y;
+	print "---\n";
+}
+
+exit;

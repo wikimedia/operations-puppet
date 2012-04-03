@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+use strict;
+use lib '/opt/searchqa/lib';
+use searchqa;
+
+print "\n$0 is a dumb little script\n" .
+	"to map the outcome of our search configuration--specifically how indexes are\n" .
+	"sharded across search cluster hosts. The script simply ssh's to each host,\n" .
+	"collects a list of index files that have changed more recently than 24 hours\n" .
+	"ago, and blats out a list of indexes and hosts where they're found. You might\n" .
+	"to redirect the output to a file because there's a lot.\n";
+
+my $proceed = searchqa::affirm('Proceed?','y');
+if ($proceed eq "no") {
+    print "\n[1mEek--punt![0m\n\n";
+    exit;
+}
+
+my $indexes;
+for my $host (@{$searchqa::conf->{'api_hosts'}}) {
+	print STDERR "checking $host\n";
+	open SSH,  "ssh -o StrictHostKeyChecking=no root\@$host \"find /a/search/indexes/update -ctime 0 -type d -name [0-9]* \"|";
+	while (<SSH>) {
+		if (/([^\/]+)\/\d+$/) {
+			$indexes->{$1}->{$host} = 1;
+		}		
+	}	
+	close SSH;
+}
+
+for my $index (sort keys %{$indexes}) {
+	my $count = keys %{$indexes->{$index}};
+	print "$count $index " . join(' ', sort keys %{$indexes->{$index}}) . "\n";
+}
