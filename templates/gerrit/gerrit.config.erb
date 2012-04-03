@@ -18,7 +18,7 @@
 	server = ldaps://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host') %>
 
 	accountBase = ou=people,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
-	accountPattern = (&(objectClass=person)(cn=${username}))
+	accountPattern = (&(objectClass=person)(uid=${username}))
 	accountFullName = cn
 
 	groupBase = ou=groups,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
