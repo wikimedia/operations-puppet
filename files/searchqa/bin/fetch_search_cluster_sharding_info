@@ -8,7 +8,7 @@ print "\n$0 is a dumb little script\n" .
 	"sharded across search cluster hosts. The script simply ssh's to each host,\n" .
 	"collects a list of index files that have changed more recently than 24 hours\n" .
 	"ago, and blats out a list of indexes and hosts where they're found. You might\n" .
-	"to redirect the output to a file because there's a lot.\n";
+	"want to redirect the output to a file because there's a lot.\n";
 
 my $proceed = searchqa::affirm('Proceed?','y');
 if ($proceed eq "no") {
