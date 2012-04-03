@@ -57,6 +57,7 @@ unless (-e $api_log) {
 unless (defined $opt_q) {
 	print "running $nb_process threads\n" .
 		"testing lucene cluster(s): $datacenter\n" .
+		"testing by way of '$pool_mode' IP's\n" . 
 		"limit $searchqa::conf->{'max_queries_per_type'} queries per method/db\n" .
 		"opening and sorting $api_log\n" .
 		"please wait patiently . . . \n";
