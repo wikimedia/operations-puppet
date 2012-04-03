@@ -211,7 +211,6 @@ class apaches::syslog {
 		group => root,
 		mode => 0444,
 		source => "puppet:///files/rsyslog/40-appserver.conf",
-		notify => Service[rsyslog],
 		ensure => present;
 	}
 
