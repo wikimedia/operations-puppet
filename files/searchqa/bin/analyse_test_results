@@ -27,7 +27,7 @@ unless (-d $dir) {
 # get a list of IPs we don't care about
 if (defined $opt_i) {
 	for my $ip (split /,/, $opt_i) {
-		$ignore_ips->{$ip} = 1 if $ip =~ /^\d+\.\d+\.\d+\.\d+$/;
+		$ignore_ips->{$ip} = 1 if searchqa::validate_ip($ip);
 	}
 }
 

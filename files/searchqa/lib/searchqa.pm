@@ -2,6 +2,7 @@ package searchqa;
 use strict;
 use Net::DNS::Resolver;
 use URI::Escape;
+use Socket;
 
 # The $conf variables and routines determine_api_host() and
 # determine_database() combine for a coarse approximation of how lvs pools,
@@ -106,7 +107,7 @@ sub determine_api_host {
 			} elsif ($q->{'wgDBname'} eq 'eswiki') {
 				push @hosts, 'search14.pmtpa.wmnet';
 			} else {
-				push @hosts, 'search11.eqiad.wmnet';
+				push @hosts, 'search11.pmtpa.wmnet';
 			}
 		}
 	}
@@ -127,6 +128,7 @@ sub determine_database {
 sub dig {
 	# simple DNS resolver to grab the first A record, caches for entire script run
 	my $hostname = shift;
+	return $hostname if validate_ip($hostname);
 	return $servers->{$hostname} if defined $servers->{$hostname};
 	my $resolver = Net::DNS::Resolver->new;
 	my $answer = $resolver->search($hostname);
@@ -179,6 +181,10 @@ sub affirm {
 			print "1mHuh? [$string/n]:[0m ";
 		}
 	}
+}
+
+sub validate_ip {
+    return 1 if inet_aton(shift);
 }
 
 1;

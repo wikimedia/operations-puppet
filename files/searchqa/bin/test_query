@@ -27,9 +27,9 @@ $q->{'pool_mode'} = 'host'; # always query individual hosts
 my @api_host_ips = searchqa::hosts_to_ips(searchqa::determine_api_host($q));
 
 for my $ip (@api_host_ips) {
-	my $ua = LWP::UserAgent->new(timeout => 10);
-	my $request = HTTP::Request->new(GET => "http://$ip:8123/$api_query_string");
-	$request->header('User_Agent' => $0,);
+	my $ua = LWP::UserAgent->new(timeout => $searchqa::conf->{'server_timeout'});
+	my $request = HTTP::Request->new(GET => "http://$ip:$searchqa::conf->{'api_tcp_port'}/$api_query_string");
+	$request->header('User_Agent' => $searchqa::conf->{'user_agent'},);
 	my $r = $ua->simple_request($request);
 	@{$r{$ip}} = split /\R/, searchqa::sanitize_response($r->content) if $r->is_success;
 }
