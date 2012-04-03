@@ -107,12 +107,9 @@ class misc::udp2log::aft {
 }
 
 # class to pull in the package for making nice log filters
-class misc::udp2log::udp-filter {
-	package { udp-filter:
-		ensure => latest;
-	}
+class misc::udp2log::udp-filters {
 	package { udp-filters:
-		ensure => absent;
+		ensure => latest;
 	}
 }
 
