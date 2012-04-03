@@ -1,5 +1,7 @@
 #!/bin/bash
-echo "ssh root@emery \"grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'\" |sort|uniq -d|sort -R > /opt/searchqa/data/api-usage.log";
-ssh root@emery "grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'" |sort|uniq -d|sort -R > /opt/searchqa/data/api-usage.log
+#echo "ssh root@emery \"grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'\" |sort|uniq -d|sort -R > /opt/searchqa/data/api-usage.log";
+#ssh root@emery "grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'" |sort|uniq -d|sort -R > /opt/searchqa/data/api-usage.log
+echo "ssh root@emery \"grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'\" |sort -uR > /opt/searchqa/data/api-usage.log";
+ssh root@emery "grep opensearch /var/log/squid/api-usage.log |awk '{print \$9}'" |sort -uR > /opt/searchqa/data/api-usage.log
 chmod ug+rw /opt/searchqa/data/api-usage.log
 echo "done!";

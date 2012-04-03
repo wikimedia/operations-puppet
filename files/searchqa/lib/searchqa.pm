@@ -15,7 +15,7 @@ our $servers; # hostname to ip address cache for api servers
 our $conf = {
 	'out_dir_prefix' => '/tmp/fire_in_the_hole-', # where we'll drop search response logs
 	'default_api_log' => '/opt/searchqa/data/api-usage.log', # list of URLs from api.php
-	'server_timeout' => 5, # seconds to wait for a response from an API server
+	'server_timeout' => 10, # seconds to wait for a response from an API server
 	'server_timeout_limit' => 3, # how many timeouts to tolerate before dropping a server
 	'api_tcp_port' => 8123, # lucene listens here
 	'user_agent' => $0, # user agent for web request, probably don't care
