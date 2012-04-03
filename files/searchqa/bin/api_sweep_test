@@ -15,6 +15,7 @@ use searchqa;
 my $out_dir = $searchqa::conf->{'out_dir_prefix'} . searchqa::timestamp(); # where to drop response logs
 my $nb_process = $searchqa::conf->{'perl_threads'}; # number of perl threads to run
 my $datacenter = $searchqa::conf->{'datacenter'}; # default datacenter list
+my $pool_mode = $searchqa::conf->{'pool_mode'}; # default pool mode
 our $opt_d; # datacenter
 our $opt_h; # help!
 our $opt_v; # verbose
@@ -22,6 +23,7 @@ our $opt_q; # quiet
 our $opt_n; # no summary report
 our $opt_l; # create detailed log
 our $opt_m; # max queries per type
+our $opt_p; # pool mode (query hosts directly, or through lvs)
 our $opt_t; # number of perl threads
 my @queue :shared; # we shift stuff off of this as jobs
 my %result :shared; # threads return stuff here
@@ -32,10 +34,11 @@ my $job_id; # counter for assigning jobs ID's
 my $queue_size; # starting queue size
 
 # process command line
-getopts ("hvnqld:m:t:");
+getopts ("hvnqld:m:t:p:");
 $searchqa::conf->{'max_queries_per_type'} = ($opt_m =~ /^(\d{1,4})$/) ? $1 : $searchqa::conf->{'max_queries_per_type'};
 $nb_process = ($opt_m =~ /^(\d{1,3})$/) ? $1 : $nb_process;
 $datacenter = ($opt_d =~ /^([a-z,]+)$/) ? $1 : $datacenter; # stupid test, don't care
+$pool_mode = ($opt_p =~ /^(lvs|host)$/) ? $1 : $pool_mode;
 
 if (defined $opt_h) {
 	usage();
@@ -68,6 +71,7 @@ while (<LOG>) {
 			'host' => $1,
 			'query_string' => $2,
 			'datacenter' => $datacenter,
+			'pool_mode' => $pool_mode,
 		};
 		
 		# fish out the various GET parameters, we won't use most of them
@@ -254,11 +258,12 @@ sub process_queue_task {
 
 sub usage {
 	print "\nSearch API Fast Tester (tm) \n\nUsage: $0 [switches] /path/to/replay_log.gz\n" .
-		"  -d [d1,d2]  datacenter (default $datacenter)\n" .
+		"  -d [d1,d2]  datacenter (eqiad,pmtpa) (default $datacenter)\n" .
 		"  -h          help\n" .
 		"  -l          create data logs for later analysis\n" .
 		"  -m [num]    max queries per type (default $searchqa::conf->{'max_queries_per_type'})\n" .
 		"  -n          no summary report\n" .
+		"  -p [mode]   pool mode, whether we query individual 'host' or 'lvs' (default $pool_mode)\n" .
 		"  -q          quiet\n" .
 		"  -t [num]    number of process threads to run (default $nb_process)\n\n";
 }
