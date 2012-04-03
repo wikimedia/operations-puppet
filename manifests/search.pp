@@ -217,7 +217,7 @@ class lucene {
 			require => [ File["/etc/lsearch.conf"], File["/a/search/conf/lsearch-global-2.1.conf"], File["/a/search/indexes"], File["/a/search/log"] ];
 		}
 
-		if $indexer == false {
+		if $lucene::server::indexer == false {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
 		}
 	}
