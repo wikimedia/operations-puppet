@@ -21,7 +21,8 @@ if ($api_query_string =~ /^(search|prefix)\/(\w+)\//) {
 	exit;
 }
 
-$q->{'datacenter'} = 'pmtpa,eqiad'; # always do both datacenters
+$q->{'datacenter'} = $searchqa::conf->{'datacenter'}; # always do both datacenters
+$q->{'pool_mode'} = 'host'; # always query individual hosts
 
 my @api_host_ips = searchqa::hosts_to_ips(searchqa::determine_api_host($q));
 

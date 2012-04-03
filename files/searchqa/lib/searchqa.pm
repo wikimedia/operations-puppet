@@ -1,4 +1,3 @@
-<pre>
 package searchqa;
 use strict;
 use Net::DNS::Resolver;
@@ -38,40 +37,40 @@ our $conf = {
 		'eqiad' => {
 			'search_pool1' => {
 				'lvs' => [qw(10.2.2.11)],
-				'host' => [qw(search1001.eqiad.wmnet search1002.eqiad.wmnet search1003.eqiad.wmnet]),
-			}
+				'host' => [qw(search1001.eqiad.wmnet search1002.eqiad.wmnet search1003.eqiad.wmnet)],
+			},
 			'search_pool2' => {
 				'lvs' => [qw(10.2.2.12)],
-				'host' => [qw(search1007.eqiad.wmnet search1008.eqiad.wmnet]),
-			}
+				'host' => [qw(search1007.eqiad.wmnet search1008.eqiad.wmnet)],
+			},
 			'search_pool3' => {
 				'lvs' => [qw(10.2.2.13)],
-				'host' => [qw(search1011.eqiad.wmnet search1012.eqiad.wmnet search1013.eqiad.wmnet]),
-			}
+				'host' => [qw(search1011.eqiad.wmnet search1012.eqiad.wmnet search1013.eqiad.wmnet)],
+			},
 			'search_pool4' => {
 				'lvs' => [qw(10.2.2.14)],
-				'host' => [qw(search1015.eqiad.wmnet search1016.eqiad.wmnet]),
-			}
+				'host' => [qw(search1015.eqiad.wmnet search1016.eqiad.wmnet)],
+			},
 			'search_prefix' => {
 				'lvs' => [qw(10.2.2.15)],
-				'host' => [qw(search1017.eqiad.wmnet search1018.eqiad.wmnet]),
-			}
-		}
+				'host' => [qw(search1017.eqiad.wmnet search1018.eqiad.wmnet)],
+			},
+		},
 		'pmtpa' => {
 			'search_pool1' => {
 				'lvs' => [qw(10.2.1.11)],
 				'host' => [qw(search1.pmtpa.wmnet search3.pmtpa.wmnet search4.pmtpa.wmnet search9.pmtpa.wmnet)],
-			}
-			'search_pool2' => )
+			},
+			'search_pool2' => {
 				'lvs' => [qw(10.2.1.12)],
-				'host' => [qw(search6.pmtpa.wmnet search15.pmtpa.wmnet]),
-			}
+				'host' => [qw(search6.pmtpa.wmnet search15.pmtpa.wmnet)],
+			},
 			'search_pool3' => {
-				'lvs' => [qw[10.2.1.13]),
-				'host' => [qw(search7.pmtpa.wmnet]),
-			}
-		}
-	}	
+				'lvs' => [qw(10.2.1.13)],
+				'host' => [qw(search7.pmtpa.wmnet)],
+			},
+		},
+	},
 };
 
 sub determine_api_host {
@@ -94,7 +93,7 @@ sub determine_api_host {
 				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool4'}->{$mode}};
 			}
 		}  elsif ($dc eq 'pmtpa') {
-			if (defined $q->{'suggest'}) and ($q->{'wgDBname'} eq 'enwiki')) {
+			if ((defined $q->{'suggest'}) and ($q->{'wgDBname'} eq 'enwiki')) {
 				push @hosts, 'search8.pmtpa.wmnet';
 			} elsif (defined $q->{'suggest'}) {
 				push @hosts, 'search18.pmtpa.wmnet';
