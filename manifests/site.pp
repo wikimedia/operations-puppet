@@ -93,6 +93,7 @@ class applicationserver {
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
+			apaches::syslog,
 			generic::geoip::files
 	}
 
@@ -132,6 +133,7 @@ class applicationserver {
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
+			apaches::syslog,
 			generic::geoip::files
 	}
 
@@ -154,6 +156,7 @@ class applicationserver {
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
+			apaches::syslog,
 			generic::geoip::files
 	}
 
@@ -187,6 +190,7 @@ class imagescaler {
 		admins::restricted,
 		apaches::pybal-check,
 		apaches::monitoring,
+		apaches::syslog,
 		accounts::l10nupdate
 }
 

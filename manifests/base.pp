@@ -180,7 +180,13 @@ class base::remote-syslog {
 			ensure => latest;
 		}
 
+		# Remote syslog must be before local syslog (50) so that we can filter out 
+		# apache messages before they go to the local log -- TS
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
+			ensure => absent;
+		}
+
+		file { "/etc/rsyslog.d/30-remote-syslog.conf":
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
