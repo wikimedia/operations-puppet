@@ -814,7 +814,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { [ "awjrichards", "rfaulk", "nimishg", "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "rfaulk", "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
@@ -832,6 +832,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::jpostlethwaite,
 		accounts::jamesofur,
 		accounts::pgehres,
+		accounts::mhernandez,
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,

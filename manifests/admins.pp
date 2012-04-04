@@ -1702,6 +1702,7 @@ class accounts {
 			}
 		}
 	}
+
 	class zexley inherits baseaccount {
 		$username = "zexley"
 		$realname = "Zack Exley"
@@ -1718,6 +1719,26 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAnxY39MUzzNTIfKkR20U/qTl3+ayt5RM3CwoQQKdFMLw6waL3GC7F7XjbY8EOFnm52eDyGWsfdoHfZSOYJADc+Qs/e8T2aqXHcKTYSo2Y8JZRw6qmzthvGJUIGfG/A7BrK3oj1nSwyp75EkU+qSCtnIUfYyg2hwiqNc+IHdRPxp/hJyl2oqrXTLk2+XpOrdWjPMhTPwjzj1i1ZV3HGM4xBTye1W1ZFTH/2SETlSTLRhoczahCKt9g0TdCxMBqNHVSRTmzZ8IcF//LEdQRYxfjyPQpjmcEotXvmB2dXoimq375IM4D/Ml50dCiH2a79vPee/BG2NV9FTlRfCvqOmQuDQ==",
+			}
+		}
+	}
+
+	class mhernandez inherits baseaccount {
+		$username = "mhernandez"
+		$realname = "Megan Hernandez"
+		$uid = 591
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"mhernandez@Megan-Hernandezs-MacBook-Pro.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAxSYJETDFuNBcU0oB+FaZ3scf2rIe1WSm/LGXhjKeMMcSKCW6mLj6+TwtuX+35YF7mauso8XgbyVwAmD2xvbG4/sJo2i/5SErcgs8hk9VVjZTLOQR3gIHpZONzL1We+Gn1dEceQ7oT6NiEw5dR4w0rx8U3IsGETNnMI83xjpX/8pJcUnQZxjbFEeeAI9xY7+apnV1TPlAN7cHxzmL5J3ajfDPOZ45WWUTrmZS/B/Zd06t0t+hI6tnNJSmekWugh05BFJpmhd9e5j2sw7pv8yNZjTks2CnG86O8JaEY9ZlDEBXXCzx3mN19/r579LhvieHN6IhYOWwe17mj8hNwxcLPQ==",
 			}
 		}
 	}
