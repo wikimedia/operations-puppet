@@ -8,6 +8,7 @@ use Time::HiRes;
 use URI::Escape;
 use FileHandle;
 use Getopt::Std;
+use POSIX qw(ceil);
 use lib '/opt/searchqa/lib';
 use searchqa;
 
@@ -16,6 +17,7 @@ my $out_dir = $searchqa::conf->{'out_dir_prefix'} . searchqa::timestamp(); # whe
 my $nb_process = $searchqa::conf->{'perl_threads'}; # number of perl threads to run
 my $datacenter = $searchqa::conf->{'datacenter'}; # default datacenter list
 my $pool_mode = $searchqa::conf->{'pool_mode'}; # default pool mode
+my $max_queries = $searchqa::conf->{'max_queries_per_type'}; # default max queries per type
 our $opt_d; # datacenter
 our $opt_h; # help!
 our $opt_v; # verbose
@@ -27,6 +29,8 @@ our $opt_p; # pool mode (query hosts directly, or through lvs)
 our $opt_t; # number of perl threads
 my @queue :shared; # we shift stuff off of this as jobs
 my %result :shared; # threads return stuff here
+my %total_response_time :shared; # tracks api server response time
+my %total_requests :shared; # tracks requests per api server
 my %dead_servers :shared; # tracks servers that time out
 my $report; # data structure to walk at output time
 my $unknown_db; # list of hostnames we're skipping
@@ -35,9 +39,9 @@ my $queue_size; # starting queue size
 
 # process command line
 getopts ("hvnqld:m:t:p:");
-$searchqa::conf->{'max_queries_per_type'} = ($opt_m =~ /^(\d{1,4})$/) ? $1 : $searchqa::conf->{'max_queries_per_type'};
-$nb_process = ($opt_m =~ /^(\d{1,3})$/) ? $1 : $nb_process;
 $datacenter = ($opt_d =~ /^([a-z,]+)$/) ? $1 : $datacenter; # stupid test, don't care
+$max_queries = ($opt_m =~ /^(\d{1,4})$/) ? $1 : $searchqa::conf->{'max_queries_per_type'};
+$nb_process = ($opt_t =~ /^(\d{1,3})$/) ? $1 : $nb_process;
 $pool_mode = ($opt_p =~ /^(lvs|host)$/) ? $1 : $pool_mode;
 
 if (defined $opt_h) {
@@ -58,8 +62,9 @@ unless (defined $opt_q) {
 	print "running $nb_process threads\n" .
 		"testing lucene cluster(s): $datacenter\n" .
 		"testing by way of '$pool_mode' IP's\n" . 
-		"limit $searchqa::conf->{'max_queries_per_type'} queries per method/db\n" .
-		"opening and sorting $api_log\n" .
+		"limit $max_queries queries per method/db\n";
+	print "log: $out_dir\n" if defined $opt_l;
+	print "opening and sorting $api_log\n" .
 		"please wait patiently . . . \n";
 }
 
@@ -94,7 +99,7 @@ while (<LOG>) {
 		my $prefix = "$q->{'method'}/$q->{'wgDBname'}";
 
 		# limit test redundancy
-		next if scalar(keys %{$report->{$prefix}}) >= $searchqa::conf->{'max_queries_per_type'};
+		next if scalar(keys %{$report->{$prefix}}) >= $max_queries;
 		next if defined $report->{$prefix}->{$q->{'search'}};
 
 		# queue a job for each query to each api host
@@ -126,7 +131,6 @@ undef $report if defined $opt_n;
 
 if (defined $opt_l) {
 	mkdir $out_dir or die "cant open $out_dir: $!\n";
-	print "log: $out_dir\n\n" unless defined $opt_q;
 }
 
 # spawn worker threads to do api web requests, code borrowed from threads example
@@ -182,7 +186,8 @@ unless (defined $opt_n) {
 		}
 	}
 
-	print sprintf("%-15s",'db') . sprintf("%8s",'search') . sprintf("%10s",'prefix') . "\n";
+	print "\nresponse comparison (% match:queries)\n" .
+		 sprintf("%-15s",'db') . sprintf("%8s",'search') . sprintf("%10s",'prefix') . "\n";
 	for my $db (sort keys %{$ct}) {
 		print sprintf("%-15s",$db);
 		for my $method (qw(search prefix)) {
@@ -191,13 +196,18 @@ unless (defined $opt_n) {
 			}
 			my $total = $ct->{$db}->{$method}->{'pass'} + $ct->{$db}->{$method}->{'fail'};
 			if ($total > 0) {
-				print sprintf("%4s",(int(100 * $ct->{$db}->{$method}->{'pass'} / $total))) .  '%:' . sprintf("%-4s",$total);
+				print sprintf("%4s",(ceil(100 * $ct->{$db}->{$method}->{'pass'} / $total))) .  '%:' . sprintf("%-4s",$total);
 			} else {
 				print sprintf("%6s",'-') . ' 'x4;
 			}
 		}
 		print "\n";
 	}
+	print "\naverage response time\n";
+	for my $host (sort keys %total_requests) {
+		print sprintf("%-30s",$host) . ceil($total_response_time{$host} / $total_requests{$host}) . " ms\n";
+	}
+	print "\n";
 }
 
 exit;
@@ -228,7 +238,13 @@ sub process_queue_task {
 		my $ua = LWP::UserAgent->new(timeout => $searchqa::conf->{'server_timeout'});
 		my $request = HTTP::Request->new(GET => "http://$api_host_ip:$searchqa::conf->{'api_tcp_port'}/$api_query_string");
 		$request->header( 'User_Agent' => $searchqa::conf->{'user_agent'}, );
+
+		my $t0 = 1000 * Time::HiRes::time();
 		my $r = $ua->simple_request($request);
+		my $t1 = 1000 * Time::HiRes::time();
+		$total_response_time{$api_host_ip} += ($t1 - $t0);
+		$total_requests{$api_host_ip}++;
+
 		if ($r->is_success) {
 			# this is where we can do meaningful comparisons of the http response in theory
 			$http_response= $r->status_line . ' ' . length(searchqa::sanitize_response($r->content));
@@ -262,7 +278,7 @@ sub usage {
 		"  -d [d1,d2]  datacenter (eqiad,pmtpa) (default $datacenter)\n" .
 		"  -h          help\n" .
 		"  -l          create data logs for later analysis\n" .
-		"  -m [num]    max queries per type (default $searchqa::conf->{'max_queries_per_type'})\n" .
+		"  -m [num]    max queries per type (default $max_queries)\n" .
 		"  -n          no summary report\n" .
 		"  -p [mode]   pool mode, whether we query individual 'host' or 'lvs' (default $pool_mode)\n" .
 		"  -q          quiet\n" .
