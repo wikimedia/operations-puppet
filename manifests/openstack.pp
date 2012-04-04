@@ -797,7 +797,7 @@ class openstack::nova_config {
 	}
 	$nova_controller_hostname = $realm ? {
 		"production" => "labsconsole.wikimedia.org",
-		"labs" => "localhost",
+		"labs" => ${fqdn},
 	}
 	$nova_ajax_proxy_url = $realm ? {
 		"production" => "http://labsconsole.wikimedia.org:8000",
