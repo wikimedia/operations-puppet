@@ -681,9 +681,9 @@ class openstack::gluster-client {
 
 	include generic::gluster
 
-	## mount the gluster volume for the instances; always use the local daemon to mount
+	## mount the gluster volume for the instances
 	mount { "/var/lib/nova/instances":
-		device => "${hostname}.${domain}:/instances",
+		device => "instancestorage.pmtpa.wmnet:/instances1",
 		fstype => "glusterfs",
 		name => "/var/lib/nova/instances",
 		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
