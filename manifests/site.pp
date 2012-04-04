@@ -488,10 +488,10 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 	else {
 		include db::es::slave
 	}
-	if $hostname == "es1004" {
-		# replica of ms3 - currently used for backups
-		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
-	}
+#	if $hostname == "es1004" {
+#		# replica of ms3 - currently used for backups
+#		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
+#	}
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
