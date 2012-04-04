@@ -8,8 +8,27 @@
 
 	ServerName <%= wikistats_host %>
 
-	RewriteEngine on
-	RewriteRule ^/(.*)$ https://<%= wikistats_host %>/$1 [R=301]
+	# RewriteEngine on
+	# RewriteRule ^/(.*)$ https://<%= wikistats_host %>/$1 [R=301]
+
+	DocumentRoot /var/www/wikistats
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+
+	<Directory /var/www/wikistats/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
 
 </VirtualHost>
 
@@ -24,26 +43,21 @@
 
 	DocumentRoot /var/www/wikistats
 
-<Directory />
-	Options FollowSymLinks
-	AllowOverride None
-</Directory>
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
 
-<Directory /var/www/wikistats/>
-	Options Indexes FollowSymLinks MultiViews
-	AllowOverride None
-	Order allow,deny
-	allow from all
-</Directory>
+	<Directory /var/www/wikistats/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
 
-ErrorLog /var/log/apache2/error.log
-
-# Possible values include: debug, info, notice, warn, error, crit,
-# alert, emerg.
-LogLevel warn
-
-CustomLog /var/log/apache2/access.log combined
-
-ServerSignature On
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+	ServerSignature On
 
 </VirtualHost>
