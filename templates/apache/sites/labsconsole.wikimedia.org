@@ -58,6 +58,10 @@
 
         Alias /w /srv/org/wikimedia/controller/wikis/1.18wmf1
         Alias /wiki /srv/org/wikimedia/controller/wikis/1.18wmf1/index.php
+<% if realm == "labs" %>
+        Alias /s /srv/org/wikimedia/controller/wikis/suma
+        Alias /suma /srv/org/wikimedia/controller/wikis/suma/index.php
+<% end %>
 
 	ErrorLog /var/log/apache2/error.log
 
