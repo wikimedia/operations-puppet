@@ -180,17 +180,6 @@ echo "<head><title>WikiStats - $listname</title>\n<link href=\"./css/wikistats_c
 if (isset($_GET['th']) && is_numeric($_GET['th']) && $_GET['th'] >= 0 && $_GET['th'] < 10000000) {
 	$threshold=$_GET['th'];
 	$threshold=mysql_real_escape_string($threshold);
-} elseif (isset($_COOKIE['wikistats_prefs'])) {
-	$cookiedata=explode("-",$_COOKIE['wikistats_prefs']);
-	$name=$cookiedata[0];
-	$threshold=$cookiedata[1];
-	$limit=$cookiedata[2];
-	if ($limit=""){
-		$limit=0;
-	}
-	$color['back']=$cookiedata[2];
-	$color['table']=$cookiedata[3];
-	$color['text']=$cookiedata[4];
 } else {
 	$threshold=0;
 	$color['back']="cccccc";
@@ -201,10 +190,6 @@ if (isset($_GET['th']) && is_numeric($_GET['th']) && $_GET['th'] >= 0 && $_GET['
 if (isset($_GET['lines']) && is_numeric($_GET['lines']) && $_GET['lines'] > 0 && $_GET['lines'] < 10001) {
 	$limit=$_GET['lines'];
 	$limit=mysql_real_escape_string($limit);
-} elseif (isset($_COOKIE['wikistats_prefs'])) {
-	$cookiedata=explode("-",$_COOKIE['wikistats_prefs']);
-	$name=$cookiedata[0];
-	$limit=$cookiedata[2];
 } else {
 	$limit="200";
 }
