@@ -263,6 +263,8 @@ class accounts {
 	class bastique inherits baseaccount {
 		$username = "bastique"
 		$realname = "Cary Bass"
+		$enabled = "false"
+
 		$uid = 539
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -272,7 +274,7 @@ class accounts {
 
                         ssh_authorized_key {
                                 "cbass@Cary-Bass":
-                                        ensure  => present,
+                                        ensure  => absent,
                                         user    => $username,
                                         type    => "ssh-rsa",
                                         key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEA390DUZg46zDR+o7PdEMypqqtCzg6rOj+ZP2FXWi8pof3bsGJ0J/bhRqP5/CPwdoAKsqhfAumYj2RAu1m4ikaQ3Kx7bhyCTqYNYpiqvARd2FgACFLPPhht6cG9sgF3KeQk6I1B8/vfx/fjtANQSxT5oRMle+71n0TmRWptdEVflYOwtBA/huIcrqXWR6Fnb7S6HntsNlWboZq0vdget8eB8WhOIPffeX5kpE2AbmCk4RtxiWif5rFjWPtOHHiBugDGhP7y0ljzimeBCmVFcWQ9ySQcQQbBFYj4QLc8B1U357E6HYSL1xNyCgWzVdjpHUCaXBkk4xoziIRuLbugzfwhw==";
@@ -1397,6 +1399,7 @@ class accounts {
 	class neilk inherits baseaccount {
 		$username = "neilk"
 		$realname = "Neil Kandalgaonkar"
+		$enabled = "false"
 		$uid = 560 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1406,7 +1409,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"neilk@zilpha":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAyVfwM6IreX+fjXaGwuYMgva6acyUdOB9JDrDcIJLIvzD1Ii5ChWDsM5I0bj6/H9hfSZAXEB4o8w2hVQR1zRDbEPR14eg3FbpR/mP9oU8rdchGMZbn/vgVFKVcjYcNb3ADlRiMRv3Jrmov6ZESV9Y09S6vGwssg3dabfT07tBdjohOHfg4HwHTTwhj5O72OMxOk1zf1kMsOKJ2l3bT0O8NavAn4by/w1gcXek445NrGJBMrdMLh1+WCPWsxaGI3J/um0eNXjxLLbz7tngRBP17JepU8EpQfgVRFy1GsOIxYs13TS6pvWZYfuLhugr0MTmHcyrycrOXZOGBHDFG9pg7w==";
@@ -1790,7 +1793,7 @@ class admins::roots {
 	# in addition to adding the user to this list,
 	# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
 	# to actually get them root; that file is not in SVN.
-	include accounts::brion
+	include accounts::brion #shell disabled, svn key still enabled
 	include	accounts::dzahn
 	include accounts::fvassard
 	include accounts::jeluf
@@ -1825,21 +1828,21 @@ class admins::mortals {
 	include accounts::zak
 	include accounts::demon
 	include accounts::hashar
-	include accounts::pdhanda
+	include accounts::pdhanda # access revoked
 	include accounts::reedy
 	include accounts::preilly
 	include accounts::robla
-	include accounts::neilk
+	include accounts::neilk  # revoked access per RT 2345
 }
 
 class admins::restricted {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 
-	include accounts::ashields
+	include accounts::ashields # access revoked
 	include accounts::austin
 	include accounts::avar
-	include accounts::bastique
+	include accounts::bastique # access revoked
 	include accounts::cmjohnson
 	include accounts::dab
 	include accounts::daniel
@@ -1849,7 +1852,7 @@ class admins::restricted {
 	include accounts::ezachte
 	include accounts::jamesofur
 	include accounts::pgehres
-	include accounts::rcole
+	include accounts::rcole # access revoked
 	include accounts::rainman
 	include accounts::tparscal
 	include accounts::khorn
