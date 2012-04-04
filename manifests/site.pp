@@ -704,6 +704,7 @@ node "fenari.wikimedia.org" {
 		admins::restricted,
 		accounts::l10nupdate,
 		misc::bastionhost,
+		misc::deployment-host,
 		misc::noc-wikimedia,
 		misc::extension-distributor,
 		misc::scripts,
