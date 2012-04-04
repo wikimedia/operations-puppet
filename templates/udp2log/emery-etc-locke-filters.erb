@@ -20,7 +20,7 @@ pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$
 #specific country filters - 2012-01-24 through 2012-02-20 then ask Nimish  or Amit if we still need them
 pipe 1 /usr/bin/udp-filter -f -c CD,CF,CI,GQ -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-1.log
 pipe 10 /usr/bin/udp-filter -f -c KH,BW,CM,MG,ML,MU,NE,VU -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-10.log
-pipe 100 /usr/bin/udp-filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/coun$
+pipe 100 /usr/bin/udp-filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-100.log
 
 #specific Wikipedia Zero filters
 #Digi Malaysia
