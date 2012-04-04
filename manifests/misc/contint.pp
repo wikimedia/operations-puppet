@@ -125,6 +125,16 @@ class misc::contint::test {
 			require => Group['jenkins'];
 		}
 
+		file {
+			"/var/lib/jenkins/.gitconfig":
+				mode => 0444,
+				owner => "jenkins",
+				group => "jenkins",
+				ensure => present,
+				source => "puppet:///files/misc/jenkins/gitconfig",
+				require => User['jenkins'];
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 

@@ -1,0 +1,15 @@
+# vim: filetype=gitconfig
+#
+# This file is managed by Puppet!
+# puppet:///files/misc/jenkins/gitconfig
+#
+
+# Jenkins might have to locally merges commits for testing. Git explicitly
+# requires a user name and some email or it will complains, die out and
+# never do the merge.
+# Merge commits are never going to be submitted anyway so we can fill this
+# part with anything we want as long as it looks valid to git.
+
+[user]
+	name = Wikimedia Jenkins Bot
+	email = jenkins@gallium.wikimedia.org
