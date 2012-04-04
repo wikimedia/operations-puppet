@@ -30,7 +30,7 @@ pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.19
 pipe 10 /usr/bin/udp-filter -i 41.66.28.94,41.66.28.95,41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
 
 #Teahouse filters
-#pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse[a-z0-9\/]* -r >> /var/log/squid/teahouse.log
+pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /var/log/squid/teahouse.log
 
 
 
