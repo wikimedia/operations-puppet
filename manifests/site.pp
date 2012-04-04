@@ -1535,11 +1535,11 @@ node "oxygen.wikimedia.org" {
 		accounts::datasets,
 		accounts::dsc,
 		misc::udp2log::packetloss,
-		misc::udp2log::locke,
 		misc::udp2log::lockeconfig,
 		misc::udp2log::monitoring,
 		misc::squid-logging::multicast-relay,
 		nrpe
+		#misc::udp2log::locke, # off this until there's a packetloss log to tail 
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
