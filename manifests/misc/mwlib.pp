@@ -1,4 +1,4 @@
-# Class: misc::mwlib::packages
+# Class: misc::mwlib
 
 # Installs needed packages for pediapress/mwlib.
 class misc::mwlib::packages {
@@ -10,6 +10,5 @@ class misc::mwlib::packages {
 }
 
 class misc::mwlib::users {
-	# not lolling. generic.pp is broken
-	#systemuser { "pp": name => "pp", home => "/opt/pp", shell => "/bin/bash" }
+	systemuser { "pp": name => "pp", home => "/opt/pp", shell => "/bin/bash" }
 }
