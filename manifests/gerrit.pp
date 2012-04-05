@@ -292,7 +292,8 @@ class gerrit::crons {
 		# This hack list MediaWiki extensions repositories
 		command => "/bin/ls -1d /var/lib/gerrit2/review_site/git/mediawiki/extensions/*.git | sed 's#.*/##' | sed 's/\\.git//' > /var/www/mediawiki-extensions.txt",
 		user => root,
-		minute => [0, 15, 30, 45]
+		minute => [0, 15, 30, 45],
+		ensure => absent
 	}
 
 }
