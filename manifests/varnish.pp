@@ -49,7 +49,21 @@ class varnish {
 		}
 	}
 	
-	define instance($name="", $vcl = "", $port="80", $admin_port="6083", $storage="-s malloc,256M", $backends=[], $directors={}, $vcl_config, $backend_options, $enable_geoiplookup="false", $wikimedia_networks=[], $xff_sources=[]) {
+	define instance(
+		$name="",
+		$vcl = "",
+		$port="80",
+		$admin_port="6083",
+		$storage="-s malloc,256M",
+		$backends=[],
+		$directors={},
+		$director_type="hash",
+		$vcl_config,
+		$backend_options,
+		$enable_geoiplookup="false",
+		$wikimedia_networks=[],
+		$xff_sources=[]) {
+
 		include varnish::common
 		
 		if $name == "" {

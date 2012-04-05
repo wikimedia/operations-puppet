@@ -394,6 +394,7 @@ class role::cache {
 				admin_port => 6082,
 				backends => $role::cache::configuration::active_nodes['upload'][$::site],
 				directors => $varnish_fe_directors[$::site],
+				director_type => "chash",
 				vcl_config => {
 					'retry5xx' => 0,
 					'cache4xx' => "5m"
