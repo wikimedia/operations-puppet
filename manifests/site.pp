@@ -24,6 +24,7 @@ import "mediawiki.pp"
 import "memcached.pp"
 import "misc/*.pp"
 import "misc-servers.pp"
+import "mwlib.pp"
 import "mysql.pp"
 import "nagios.pp"
 import "network.pp"
@@ -1444,6 +1445,7 @@ node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
 	include lvs::realserver
 	include role::swift::pmtpa-prod::proxy
 }
+
 node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
@@ -1515,14 +1517,25 @@ node "nickel.wikimedia.org" {
 	 install_certificate{ "star.wikimedia.org": }
 }
 
+node /^ocg[1-3]\.wikimedia\.org$/ {
+
+	system_role { "misc::mwlib": description => "offline collection generator" }
+
+	include	standard,
+		admins::roots,
+		misc::mwlib::packages,
+		misc::mwlib::users
+
+}
+
 node /^owa[1-3]\.wikimedia\.org$/ {
 	if $hostname =~ /^owa[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-# taking owa hosts out of the swift proxy cluster since they're not being used.
-# if we have load issues we can add them back in.
-#	include role::swift::pmtpa-prod::proxy
+	# taking owa hosts out of the swift proxy cluster since they're not being used.
+	# if we have load issues we can add them back in.
+	#include role::swift::pmtpa-prod::proxy
 }
 
 node "oxygen.wikimedia.org" {
