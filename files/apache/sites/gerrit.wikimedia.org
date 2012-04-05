@@ -44,6 +44,7 @@ NameVirtualHost *:443
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
 
 	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
 	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
