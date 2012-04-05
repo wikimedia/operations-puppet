@@ -133,7 +133,7 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.each do |director| -%>
-director <%= director %> hash {
+director <%= director %> <%= director_type %> {
 	.retries = 2;
 <% varnish_directors[director].each do |backend| -%>
 	{
