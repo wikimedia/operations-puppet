@@ -1518,7 +1518,7 @@ node "nickel.wikimedia.org" {
 
 node /^ocg[1-3]\.wikimedia\.org$/ {
 
-	system_role { "misc::mwlib": description => "offline collection generator" }
+	# online content generator 
 
 	include	standard,
 		admins::roots,
