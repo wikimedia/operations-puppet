@@ -6,13 +6,9 @@
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 
 class varnish {
-	class packages {
-		# TODO: rebuild the package to use varnish as the init script name
-		file { "/etc/init.d/varnish3":
-			ensure => absent,
-		}
+	class packages($version="3.0.2-2wm1") {
 		package { [ 'varnish', 'libvarnishapi1', 'varnish-dbg' ]:
-			ensure => "3.0.2-2wm1";
+			ensure => $version;
 		}
 		package { libworking-daemon-perl:
 			ensure => present;
@@ -160,7 +156,7 @@ class varnish {
 	}
 
 	class htcppurger($varnish_instances=["localhost:80"]) {
-		require varnish::packages
+		Class[varnish::packages] -> Class[varnish::htcppurger]
 
 		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
 
