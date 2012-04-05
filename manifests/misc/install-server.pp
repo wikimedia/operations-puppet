@@ -48,16 +48,10 @@ class misc::install-server {
 		}
 
 		file {
-			 "/srv/tftpboot":
+			 ["/srv/tftpboot", "/srv/tftpboot/restricted/" ]:
 				mode => 0755,
 				owner => root,
 				group => root,
-				ensure => directory;
-			 "/srv/tftpboot/restricted/":
-				mode => 0755,
-				owner => root,
-				group => root,
-				path => "/srv/tftpboot/restricted/",
 				ensure => directory;
 			"/tftpboot":
 				ensure => "/srv/tftpboot";
@@ -179,24 +173,14 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 	}
 
 	class dhcp-server {
-		file { "/etc/dhcp3/dhcpd.conf":
+		file { "/etc/dhcp3/" :
 			require => Package[dhcp3-server],
+			ensure => directory,
+			recurse => true,
+			owner => "root",
+			group => "root",
 			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/dhcp3/dhcpd.conf",
-			source => "puppet:///files/dhcpd/dhcpd.conf";
-		}
-
-		file { [ "/etc/dhcp3/linux-host-entries",
-			"/etc/dhcp3/linux-host-entries.ttyS0-57600",
-			"/etc/dhcp3/linux-host-entries.ttyS1-57600",
-			"/etc/dhcp3/linux-host-entries.ttyS1-115200",
-			"/etc/dhcp3/linux-host-entries.ttyS1-9600" ]:
-
-			checksum => md5,
-			ensure => file,
-			notify => Service[dhcp3-server];
+			source => "puppet:///files/dhcpd";
 		}
 
 		package { dhcp3-server:
@@ -204,8 +188,9 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 		}
 
 		service { dhcp3-server:
-			require => [ Package[dhcp3-server], File["/etc/dhcp3/dhcpd.conf"] ],
-			subscribe => File["/etc/dhcp3/dhcpd.conf"],
+			require => [ Package[dhcp3-server],
+			File["/etc/dhcp3" ] ],
+			subscribe => File["/etc/dhcp3" ],
 			ensure => running;
 		}
 	}
