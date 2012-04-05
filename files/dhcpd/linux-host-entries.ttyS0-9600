@@ -1,0 +1,263 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/dhcpd/linux-host-entries.ttyS0-9600
+######################################################################
+
+host scs-c1-pmtpa {
+	hardware ethernet 00:13:c6:00:15:a3;
+	fixed-address scs-c1-pmtpa.mgmt.pmtpa.wmnet;
+}
+
+host bayes {
+	hardware ethernet 00:14:4f:e6:b7:40;
+	fixed-address bayes.wikimedia.org;
+}
+
+host cam1-a-eqiad {
+	hardware ethernet 00:40:8c:a2:61:40;
+	fixed-address cam1-a-eqiad.eqiad.wmnet;
+}
+
+host cam2-a-eqiad {
+	hardware ethernet 00:40:8c:a2:68:ef;
+	fixed-address cam2-a-eqiad.eqiad.wmnet;
+}
+
+host cam1-a-b-eqiad {
+	hardware ethernet 00:40:8c:a2:3b:6e;
+	fixed-address cam1-a-b-eqiad.eqiad.wmnet;
+}
+
+host cam2-a-b-eqiad {
+	hardware ethernet 00:40:8c:a2:68:fa;
+	fixed-address cam2-a-b-eqiad.eqiad.wmnet;
+}
+
+host cam1-c-d-eqiad {
+	hardware ethernet 00:40:8c:a2:69:01;
+	fixed-address cam1-c-d-eqiad.eqiad.wmnet;
+}
+
+host cam2-c-d-eqiad {
+	hardware ethernet 00:40:8c:a2:61:25;
+	fixed-address cam2-c-d-eqiad.eqiad.wmnet;
+}
+
+host cam1-a-sdtpa {
+	hardware ethernet 00:40:8c:b1:a6:6e;
+	fixed-address cam1-a-sdtpa.wikimedia.org;
+}
+
+host cam1-a-b-sdtpa {
+	hardware ethernet 00:40:8c:af:a4:3e;
+	fixed-address cam1-a-b-sdtpa.wikimedia.org;
+}
+
+host cam1-b-c-sdtpa {
+	hardware ethernet 00:40:8c:af:a3:5b;
+	fixed-address cam1-b-c-sdtpa.wikimedia.org;
+}
+
+host cam1-c-d-sdtpa {
+	hardware ethernet 00:40:8c:af:a4:1c;
+	fixed-address cam1-c-d-sdtpa.wikimedia.org;
+}
+
+host cam1-d-sdtpa {
+	hardware ethernet 00:40:8c:af:94:28;
+	fixed-address cam1-d-sdtpa.wikimedia.org;
+}
+
+host db11 {
+	hardware ethernet 00:14:4F:ED:A8:48;
+	fixed-address db11.pmtpa.wmnet;
+}
+
+host db12 {
+	hardware ethernet 00:14:4F:ED:FE:7C;
+	fixed-address db12.pmtpa.wmnet;
+}
+
+host db13 {
+	hardware ethernet 00:14:4F:ED:B8:40;
+	fixed-address db13.pmtpa.wmnet;
+}
+
+host db14 {
+	hardware ethernet 00:14:4f:8d:8e:ba;
+	fixed-address db14.pmtpa.wmnet;
+}
+
+host db15 {
+	hardware ethernet 00:14:4f:8d:88:c2;
+	fixed-address db15.pmtpa.wmnet;
+}
+
+host db16 {
+	hardware ethernet 00:14:4f:ed:a6:80;
+	fixed-address db16.pmtpa.wmnet;
+}
+
+host db17 {
+	hardware ethernet 00:14:4f:ee:00:84;
+	fixed-address db17.pmtpa.wmnet;
+}
+
+host db18 {
+	hardware ethernet 00:14:4f:ed:b4:c4;
+	fixed-address db18.pmtpa.wmnet;
+}
+
+host db19 {
+	hardware ethernet 00:14:4f:ed:ac:c8;
+	fixed-address db19.pmtpa.wmnet;
+}
+
+host db20 {
+	hardware ethernet 00:14:4f:ed:a9:f4;
+	fixed-address db20.pmtpa.wmnet;
+}
+
+host db21 {
+	hardware ethernet 00:14:4F:ED:A6:D8;
+	fixed-address db21.pmtpa.wmnet;
+}
+
+host db22 {
+	hardware ethernet 00:14:4f:ed:b6:d8;
+	fixed-address db22.pmtpa.wmnet;
+}
+
+host db23 {
+	hardware ethernet 00:14:4F:ED:A6:94;
+	fixed-address db23.pmtpa.wmnet;
+}
+
+host db24 {
+	hardware ethernet 00:14:4F:ED:FF:38;
+	fixed-address db24.pmtpa.wmnet;
+}
+
+host db25 {
+	hardware ethernet 00:14:4F:ED:AD:38;
+	fixed-address db25.pmtpa.wmnet;
+}
+
+host db26 {
+	hardware ethernet 00:14:4F:8D:8E:2E;
+	fixed-address db26.pmtpa.wmnet;
+}
+
+host db27 {
+	hardware ethernet 00:14:4F:ED:AE:A0;
+	fixed-address db27.pmtpa.wmnet;
+}
+
+host db28 {
+	hardware ethernet 00:14:4F:8D:51:46;
+	fixed-address db28.pmtpa.wmnet;
+}
+
+host db29 {
+	hardware ethernet 00:14:4F:ED:AC:28;
+	fixed-address db29.pmtpa.wmnet;
+}
+
+host db30 {
+	hardware ethernet 00:14:4F:ED:B5:38;
+	fixed-address db30.pmtpa.wmnet;
+}
+
+host db31 {
+	hardware ethernet 00:21:28:6B:9D:26;
+	fixed-address db31.pmtpa.wmnet;
+}
+
+host db32 {
+	hardware ethernet 00:21:28:6B:9D:CA;
+	fixed-address db32.pmtpa.wmnet;
+}
+
+host db33 {
+	hardware ethernet 00:21:28:6B:9D:86;
+	fixed-address db33.pmtpa.wmnet;
+}
+
+host db34 {
+	hardware ethernet 00:21:28:44:27:CE;
+	fixed-address db34.pmtpa.wmnet;
+}
+
+host db35 {
+	hardware ethernet 00:21:28:6B:CD:52;
+	fixed-address db35.pmtpa.wmnet;
+}
+host db36 {
+	hardware ethernet 00:21:28:6B:9D:BE;
+	fixed-address db36.pmtpa.wmnet;
+}
+
+host db37 {
+	hardware ethernet 00:21:28:6B:CD:CE;
+	fixed-address db37.pmtpa.wmnet;
+}
+
+host db38 {
+	hardware ethernet 00:21:28:6B:9D:B6;
+	fixed-address db38.pmtpa.wmnet;
+}
+
+host db39 {
+	hardware ethernet 00:21:28:6B:CD:9E;
+	fixed-address db39.pmtpa.wmnet;
+}
+
+host db40 {
+	hardware ethernet 00:21:28:6B:CD:C2;
+	fixed-address db40.pmtpa.wmnet;
+}
+
+host gilman {
+	hardware ethernet 00:14:4F:CA:1F:05;
+	fixed-address gilman.wikimedia.org;
+}
+
+host ms1 {
+	hardware ethernet 0:14:4f:a6:d0:a0;
+	fixed-address ms1.pmtpa.wmnet;
+}
+
+host ms2 {
+	hardware ethernet 00:14:4f:a6:ca:e4;
+	fixed-address ms2.pmtpa.wmnet;
+}
+
+host ms3 {
+	hardware ethernet 00:14:4f:f2:c4:1c;
+	fixed-address ms3.pmtpa.wmnet;
+}
+
+host ms4 {
+	hardware ethernet 00:14:4f:f2:91:24;
+	fixed-address ms4.pmtpa.wmnet;
+}
+
+host ms5 {
+	hardware ethernet 0:14:4f:f2:9c:54;
+	fixed-address ms5.pmtpa.wmnet;
+}
+
+host ms6 {
+	hardware ethernet 0:14:4f:f2:a3:10;
+	fixed-address ms6.esams.wikimedia.org;
+}
+
+host statistics1 {
+	hardware ethernet 00:14:4f:e6:b7:40;
+	fixed-address statistics1.wikimedia.org;
+}
+
+host storage1 {
+	hardware ethernet 00:30:48:5D:9E:36;
+	fixed-address storage1.pmtpa.wmnet;
+}
