@@ -1,0 +1,2866 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/dhcpd/linux-host-entries.ttyS1-115200
+######################################################################
+
+
+host aluminium {
+	hardware ethernet 78:2b:cb:09:0d:8c;
+	fixed-address aluminium.wikimedia.org;
+}
+
+host argon {
+	hardware ethernet 78:2b:cb:09:11:f0;
+	fixed-address argon.wikimedia.org;
+}
+
+host arsenic {
+	hardware ethernet 18:03:73:f1:4f:5e;
+	fixed-address arsenic.wikimedia.org;
+}
+
+host amslvs1 {
+	hardware ethernet a4:ba:db:38:e2:5e;
+	fixed-address amslvs1.esams.wikimedia.org;
+}
+
+host amslvs2 {
+	hardware ethernet a4:ba:db:30:d7:82;
+	fixed-address amslvs2.esams.wikimedia.org;
+}
+
+host amslvs3 {
+	hardware ethernet a4:ba:db:30:d8:5c;
+	fixed-address amslvs3.esams.wikimedia.org;
+}
+
+host amslvs4 {
+	hardware ethernet a4:ba:db:38:e4:cb;
+	fixed-address amslvs4.esams.wikimedia.org;
+}
+
+host bast1001 {
+	hardware ethernet 78:2b:cb:09:11:ba;
+	fixed-address bast1001.wikimedia.org;
+}
+
+host bellin {
+        hardware ethernet d4:be:d9:af:66:9f;
+        fixed-address bellin.pmtpa.wmnet;
+}
+
+host blondel {
+        hardware ethernet d4:be:d9:af:66:ba;
+        fixed-address blondel.pmtpa.wmnet;
+}
+
+host cadmium {
+	hardware ethernet 18:03:73:f1:59:5a;
+	fixed-address cadmium.eqiad.wmnet;
+}
+
+host carbon {
+	hardware ethernet 78:2b:cb:09:0e:a0;
+	fixed-address carbon.wikimedia.org;
+}
+
+host copper {
+	hardware ethernet 78:2b:cb:09:0e:9d;
+	fixed-address copper.wikimedia.org;
+}
+
+host cp1001 {
+	hardware ethernet 84:2b:2b:fd:bd:0e;
+	fixed-address cp1001.eqiad.wmnet;
+}
+host cp1002 {
+	hardware ethernet 84:2b:2b:fd:bc:fc;
+	fixed-address cp1002.eqiad.wmnet;
+}
+host cp1003 {
+	hardware ethernet 84:2b:2b:fd:be:a3;
+	fixed-address cp1003.eqiad.wmnet;
+}
+host cp1004 {
+	hardware ethernet 84:2b:2b:fd:bd:56;
+	fixed-address cp1004.eqiad.wmnet;
+}
+host cp1005 {
+	hardware ethernet 84:2b:2b:fd:bd:5f;
+	fixed-address cp1005.eqiad.wmnet;
+}
+host cp1006 {
+	hardware ethernet 84:2b:2b:fd:be:b5;
+	fixed-address cp1006.eqiad.wmnet;
+}
+host cp1007 {
+	hardware ethernet 84:2b:2b:fb:a6:67;
+	fixed-address cp1007.eqiad.wmnet;
+}
+host cp1008 {
+	hardware ethernet 84:2b:2b:fd:bd:05;
+	fixed-address cp1008.eqiad.wmnet;
+}
+host cp1009 {
+	hardware ethernet 84:2b:2b:fd:bd:7a;
+	fixed-address cp1009.eqiad.wmnet;
+}
+host cp1010 {
+	hardware ethernet 84:2b:2b:fd:b9:ff;
+	fixed-address cp1010.eqiad.wmnet;
+}
+host cp1011 {
+	hardware ethernet 84:2b:2b:fd:be:64;
+	fixed-address cp1011.eqiad.wmnet;
+}
+host cp1012 {
+	hardware ethernet 84:2b:2b:fd:be:6d;
+	fixed-address cp1012.eqiad.wmnet;
+}
+host cp1013 {
+	hardware ethernet 84:2b:2b:fc:af:c2;
+	fixed-address cp1013.eqiad.wmnet;
+}
+host cp1014 {
+	hardware ethernet 84:2b:2b:fd:be:52;
+	fixed-address cp1014.eqiad.wmnet;
+}
+host cp1015 {
+	hardware ethernet 84:2b:2b:fd:bd:71;
+	fixed-address cp1015.eqiad.wmnet;
+}
+host cp1016 {
+	hardware ethernet 84:2b:2b:fd:bb:f7;
+	fixed-address cp1016.eqiad.wmnet;
+}
+host cp1017 {
+	hardware ethernet 84:2b:2b:fd:bc:ea;
+	fixed-address cp1017.eqiad.wmnet;
+}
+host cp1018 {
+	hardware ethernet 84:2b:2b:fd:be:1c;
+	fixed-address cp1018.eqiad.wmnet;
+}
+host cp1019 {
+	hardware ethernet 84:2b:2b:fd:be:c7;
+	fixed-address cp1019.eqiad.wmnet;
+}
+host cp1020 {
+	hardware ethernet 84:2b:2b:fd:bf:60;
+	fixed-address cp1020.eqiad.wmnet;
+}
+host cp1021 {
+	hardware ethernet 84:2b:2b:fd:b9:f6;
+	fixed-address cp1021.eqiad.wmnet;
+}
+host cp1022 {
+	hardware ethernet 84:2b:2b:fd:bf:69;
+	fixed-address cp1022.eqiad.wmnet;
+}
+host cp1023 {
+	hardware ethernet 84:2b:2b:fd:bf:72;
+	fixed-address cp1023.eqiad.wmnet;
+}
+host cp1024 {
+	hardware ethernet 84:2b:2b:fd:c0:a4;
+	fixed-address cp1024.eqiad.wmnet;
+}
+host cp1025 {
+	hardware ethernet 84:2b:2b:fd:bd:95;
+	fixed-address cp1025.eqiad.wmnet;
+}
+host cp1026 {
+	hardware ethernet 84:2b:2b:fd:bd:29;
+	fixed-address cp1026.eqiad.wmnet;
+}
+host cp1027 {
+	hardware ethernet 84:2b:2b:fd:bf:33;
+	fixed-address cp1027.eqiad.wmnet;
+}
+host cp1028 {
+	hardware ethernet 84:2b:2b:fd:bf:d5;
+	fixed-address cp1028.eqiad.wmnet;
+}
+host cp1029 {
+	hardware ethernet 84:2b:2b:fd:ab:95;
+	fixed-address cp1029.eqiad.wmnet;
+}
+host cp1030 {
+	hardware ethernet 84:2b:2b:fd:bf:9f;
+	fixed-address cp1030.eqiad.wmnet;
+}
+host cp1031 {
+	hardware ethernet 84:2b:2b:fd:be:9a;
+	fixed-address cp1031.eqiad.wmnet;
+}
+host cp1032 {
+	hardware ethernet 84:2b:2b:fd:bd:9e;
+	fixed-address cp1032.eqiad.wmnet;
+}
+host cp1033 {
+	hardware ethernet 84:2b:2b:fd:bc:5a;
+	fixed-address cp1033.eqiad.wmnet;
+}
+host cp1034 {
+	hardware ethernet 84:2b:2b:fd:be:76;
+	fixed-address cp1034.eqiad.wmnet;
+}
+host cp1035 {
+	hardware ethernet 84:2b:2b:fd:c0:0b;
+	fixed-address cp1035.eqiad.wmnet;
+}
+host cp1036 {
+	hardware ethernet 84:2b:2b:fc:ad:79;
+	fixed-address cp1036.eqiad.wmnet;
+}
+host cp1037 {
+	hardware ethernet 84:2b:2b:fd:bf:2a;
+	fixed-address cp1037.eqiad.wmnet;
+}
+host cp1038 {
+	hardware ethernet 84:2b:2b:fd:be:eb;
+	fixed-address cp1038.eqiad.wmnet;
+}
+host cp1039 {
+	hardware ethernet 84:2b:2b:fd:be:13;
+	fixed-address cp1039.eqiad.wmnet;
+}
+host cp1040 {
+	hardware ethernet 84:2b:2b:fd:be:fd;
+	fixed-address cp1040.eqiad.wmnet;
+}
+host cp1041 {
+	hardware ethernet 84:2b:2b:fd:be:d9;
+	fixed-address cp1041.wikimedia.org;
+}
+host cp1042 {
+	hardware ethernet 84:2b:2b:fd:bf:18;
+	fixed-address cp1042.wikimedia.org;
+}
+host cp1043 {
+	hardware ethernet 84:2b:2b:fd:c0:2f;
+	fixed-address cp1043.wikimedia.org;
+}
+host cp1044 {
+	hardware ethernet 84:2b:2b:fd:bd:f8;
+	fixed-address cp1044.wikimedia.org;
+}
+
+host cp3001 {
+	hardware ethernet 78:2b:cb:45:4a:31;
+	fixed-address cp3001.esams.wikimedia.org;
+}
+
+host cp3002 {
+	hardware ethernet 78:2b:cb:45:3a:7d;
+	fixed-address cp3002.esams.wikimedia.org;
+}
+
+host dataset2 {
+	hardware ethernet 84:2B:2B:6A:F4:60;
+	fixed-address dataset2.wikimedia.org;
+}
+
+host dataset1001 {
+	hardware ethernet 78:2b:cb:76:42:ee;
+	fixed-address dataset1001.wikimedia.org;
+}
+
+host db42 {
+	hardware ethernet e4:1f:13:69:cd:40;
+	fixed-address db42.pmtpa.wmnet;
+}
+
+host db43 {
+	hardware ethernet 78:2b:cb:15:8d:8f;
+	fixed-address db43.pmtpa.wmnet;
+}
+
+host db44 {
+	hardware ethernet 78:2b:cb:15:8a:8d;
+	fixed-address db44.pmtpa.wmnet;
+}
+
+host db45 {
+	hardware ethernet 78:2b:cb:15:8c:b0;
+	fixed-address db45.pmtpa.wmnet;
+}
+
+host db46 {
+	hardware ethernet 78:2b:cb:15:85:56;
+	fixed-address db46.pmtpa.wmnet;
+}
+
+host db47 {
+	hardware ethernet 78:2b:cb:15:8d:ca;
+	fixed-address db47.pmtpa.wmnet;
+}
+
+host db48 {
+	hardware ethernet 78:2b:cb:6b:dd:4c;
+	fixed-address db48.pmtpa.wmnet;
+}
+
+host db49 {
+	hardware ethernet 78:2b:cb:6b:e0:e6;
+	fixed-address db49.pmtpa.wmnet;
+}
+
+host db50 {
+	hardware ethernet 78:2b:cb:6b:d0:f6;
+	fixed-address db50.pmtpa.wmnet;
+}
+
+host db51 {
+	hardware ethernet 78:2b:cb:6b:e2:c4;
+	fixed-address db51.pmtpa.wmnet;
+}
+
+host db52 {
+	hardware ethernet 78:2b:cb:67:fd:1f;
+	fixed-address db52.pmtpa.wmnet;
+}
+
+host db53 {
+	hardware ethernet 78:2b:cb:6b:d2:82;
+	fixed-address db53.pmtpa.wmnet;
+}
+
+host db54 {
+	hardware ethernet 78:2b:cb:6b:aa:33;
+	fixed-address db54.pmtpa.wmnet;
+}
+
+host db55 {
+	hardware ethernet 78:2b:cb:66:ce:4b;
+	fixed-address db55.pmtpa.wmnet;
+}
+
+host db56 {
+	hardware ethernet 78:2b:cb:6b:ce:d0;
+	fixed-address db56.pmtpa.wmnet;
+}
+
+host db57 {
+	hardware ethernet 78:2b:cb:6b:c6:ef;
+	fixed-address db57.pmtpa.wmnet;
+}
+
+host db58 {
+	hardware ethernet 78:2b:cb:66:aa:40;
+	fixed-address db58.pmtpa.wmnet;
+}
+
+host db59 {
+	hardware ethernet d4:ae:52:68:9d:69;
+	fixed-address db59.pmtpa.wmnet;
+}
+
+host db1001 {
+	hardware ethernet 78:2b:cb:03:68:61;
+	fixed-address db1001.eqiad.wmnet;
+}
+
+host db1002 {
+	hardware ethernet 78:2b:cb:03:63:4b;
+	fixed-address db1002.eqiad.wmnet;
+}
+
+host db1003 {
+	hardware ethernet 78:2b:cb:05:02:e3;
+	fixed-address db1003.eqiad.wmnet;
+}
+
+host db1004 {
+	hardware ethernet 78:2b:cb:03:cc:bc;
+	fixed-address db1004.eqiad.wmnet;
+}
+
+host db1005 {
+	hardware ethernet 78:2b:cb:03:60:f9;
+	fixed-address db1005.eqiad.wmnet;
+}
+
+host db1006 {
+	hardware ethernet 78:2b:cb:03:64:8f;
+	fixed-address db1006.eqiad.wmnet;
+}
+
+host db1007 {
+	hardware ethernet 78:2b:cb:04:da:0b;
+	fixed-address db1007.eqiad.wmnet;
+}
+
+host db1008 {
+	hardware ethernet 78:2b:cb:03:d1:44;
+	fixed-address db1008.eqiad.wmnet;
+}
+
+host db1009 {
+	hardware ethernet 78:2b:cb:0a:04:1b;
+	fixed-address db1009.eqiad.wmnet;
+}
+
+host db1010 {
+	hardware ethernet 78:2b:cb:0a:11:f8;
+	fixed-address db1010.eqiad.wmnet;
+}
+
+host db1011 {
+	hardware ethernet 78:2b:cb:0a:0a:9b;
+	fixed-address db1011.eqiad.wmnet;
+}
+
+host db1012 {
+	hardware ethernet 78:2b:cb:0a:0e:fc;
+	fixed-address db1012.eqiad.wmnet;
+}
+
+host db1013 {
+	hardware ethernet 78:2b:cb:0a:04:4e;
+	fixed-address db1013.eqiad.wmnet;
+}
+
+host db1014 {
+	hardware ethernet 78:2b:cb:0a:04:12;
+	fixed-address db1014.eqiad.wmnet;
+}
+
+host db1015 {
+	hardware ethernet 78:2b:cb:0a:05:8e;
+	fixed-address db1015.eqiad.wmnet;
+}
+
+host db1016 {
+	hardware ethernet 78:2b:cb:0a:0c:33;
+	fixed-address db1016.eqiad.wmnet;
+}
+
+host db1017 {
+	hardware ethernet 78:2b:cb:05:03:99;
+	fixed-address db1017.eqiad.wmnet;
+}
+
+host db1018 {
+	hardware ethernet 78:2b:cb:0a:13:12;
+	fixed-address db1018.eqiad.wmnet;
+}
+
+host db1019 {
+	hardware ethernet 78:2b:cb:0a:12:ee;
+	fixed-address db1019.eqiad.wmnet;
+}
+
+host db1020 {
+	hardware ethernet 78:2b:cb:04:fd:a5;
+	fixed-address db1020.eqiad.wmnet;
+}
+
+host db1021 {
+	hardware ethernet 78:2b:cb:03:ca:38;
+	fixed-address db1021.eqiad.wmnet;
+}
+
+host db1022 {
+	hardware ethernet 78:2b:cb:04:ff:8a;
+	fixed-address db1022.eqiad.wmnet;
+}
+
+host db1023 {
+	hardware ethernet 78:2b:cb:0a:0a:5f;
+	fixed-address db1023.eqiad.wmnet;
+}
+
+host db1024 {
+	hardware ethernet 78:2b:cb:04:fe:5f;
+	fixed-address db1024.eqiad.wmnet;
+}
+
+host db1025 {
+	hardware ethernet 78:2b:cb:03:cf:61;
+	fixed-address db1025.eqiad.wmnet;
+}
+
+host db1026 {
+	hardware ethernet 78:2b:cb:04:fc:d4;
+	fixed-address db1026.eqiad.wmnet;
+}
+
+host db1027 {
+	hardware ethernet 78:2b:cb:03:64:8c;
+	fixed-address db1027.eqiad.wmnet;
+}
+
+host db1028 {
+	hardware ethernet 78:2b:cb:03:66:ee;
+	fixed-address db1028.eqiad.wmnet;
+}
+
+host db1029 {
+	hardware ethernet 78:2b:cb:03:dd:32;
+	fixed-address db1029.eqiad.wmnet;
+}
+
+host db1030 {
+	hardware ethernet 78:2b:cb:03:64:de;
+	fixed-address db1030.eqiad.wmnet;
+}
+
+host db1031 {
+	hardware ethernet 78:2b:cb:03:64:53;
+	fixed-address db1031.eqiad.wmnet;
+}
+
+host db1032 {
+	#hardware ethernet unknown;
+	fixed-address db1032.eqiad.wmnet;
+}
+
+
+host db1033 {
+	hardware ethernet 78:2b:cb:0a:0f:c5;
+	fixed-address db1033.eqiad.wmnet;
+}
+
+host db1034 {
+	hardware ethernet 78:2b:cb:0a:04:6c;
+	fixed-address db1034.eqiad.wmnet;
+}
+
+host db1035 {
+	hardware ethernet 78:2b:cb:03:6f:8c;
+	fixed-address db1035.eqiad.wmnet;
+}
+
+host db1036 {
+	hardware ethernet 78:2b:cb:04:fc:5f;
+	fixed-address db1036.eqiad.wmnet;
+}
+
+host db1037 {
+	hardware ethernet 78:2b:cb:0a:04:00;
+	fixed-address db1037.eqiad.wmnet;
+}
+
+host db1038 {
+	hardware ethernet 84:2b:2b:18:59:3e;
+	fixed-address db1038.eqiad.wmnet;
+}
+
+host db1039 {
+	hardware ethernet 78:2b:cb:04:fc:98;
+	fixed-address db1039.eqiad.wmnet;
+}
+
+host db1040 {
+	hardware ethernet 78:2b:cb:03:ca:02;
+	fixed-address db1040.eqiad.wmnet;
+}
+
+host db1041 {
+	hardware ethernet 78:2b:cb:03:6f:71;
+	fixed-address db1041.eqiad.wmnet;
+}
+
+host db1042 {
+	hardware ethernet 78:2b:cb:03:64:56;
+	fixed-address db1042.eqiad.wmnet;
+}
+
+host db1043 {
+	hardware ethernet 78:2b:cb:03:dd:3b;
+	fixed-address db1043.eqiad.wmnet;
+}
+
+host db1044 {
+	hardware ethernet 78:2b:cb:03:63:06;
+	fixed-address db1044.eqiad.wmnet;
+}
+
+host db1045 {
+	hardware ethernet 78:2b:cb:03:cd:be;
+	fixed-address db1045.eqiad.wmnet;
+}
+
+host db1046 {
+	hardware ethernet 78:2b:cb:03:60:c9;
+	fixed-address db1046.eqiad.wmnet;
+}
+
+host db1047 {
+	hardware ethernet 78:2b:cb:03:64:0e;
+	fixed-address db1047.eqiad.wmnet;
+}
+
+host db1048 {
+	hardware ethernet 78:2b:cb:03:66:28;
+	fixed-address db1048.eqiad.wmnet;
+}
+
+host ekrem {
+	hardware ethernet 84:2b:2b:06:49:30;
+	fixed-address ekrem.wikimedia.org;
+}
+
+host emery {
+	hardware ethernet 84:2b:2b:06:47:59;
+	fixed-address emery.wikimedia.org;
+}
+
+host es1 {
+	hardware ethernet 78:2b:cb:61:1b:b5;
+	fixed-address es1.pmtpa.wmnet;
+}
+
+host es2 {
+	hardware ethernet 78:2b:cb:61:1b:5a;
+	fixed-address es2.pmtpa.wmnet;
+}
+
+host es3 {
+	hardware ethernet 78:2b:cb:61:17:fc;
+	fixed-address es3.pmtpa.wmnet;
+}
+
+host es4 {
+	hardware ethernet 78:2b:cb:60:34:26;
+	fixed-address es4.pmtpa.wmnet;
+}
+
+host es1001 {
+	hardware ethernet 78:2b:cb:0b:11:b5;
+	fixed-address es1001.eqiad.wmnet;
+}
+
+host es1002 {
+	hardware ethernet 78:2b:cb:0a:11:7a;
+	fixed-address es1002.eqiad.wmnet;
+}
+
+host es1003 {
+	hardware ethernet 78:2b:cb:0a:12:49;
+	fixed-address es1003.eqiad.wmnet;
+}
+
+host es1004 {
+	hardware ethernet 78:2b:cb:0b:0c:87;
+	fixed-address es1004.eqiad.wmnet;
+}
+
+host fluorine {
+	hardware ethernet 78:2b:cb:08:ba:a9;
+	fixed-address fluorine.wikimedia.org;
+}
+
+host gallium {
+	hardware ethernet 78:2b:cb:09:0e:5b;
+	fixed-address gallium.wikimedia.org;
+}
+
+host gurvin {
+	hardware ethernet 84:2b:2b:06:49:51;
+	fixed-address gurvin.wikimedia.org;
+}
+
+host harmon {
+	hardware ethernet 84:2b:2b:06:36:4f;
+	fixed-address harmon.wikimedia.org;
+}
+
+host hooft {
+        hardware ethernet a4:ba:db:30:d7:70;
+        fixed-address hooft.esams.wikimedia.org;
+}
+
+host hooper {
+	hardware ethernet 84:2b:2b:06:4c:58;
+	fixed-address hooper.wikimedia.org;
+}
+
+host iron {
+	hardware ethernet 78:2b:cb:09:0d:5c;
+	fixed-address iron.wikimedia.org;
+}
+
+host labstore1 {
+	hardware ethernet 78:2b:cb:76:1c:d2;
+	fixed-address 10.0.0.41;
+}
+
+host labstore2 {
+	hardware ethernet 78:2b:cb:75:8e:43;
+	fixed-address 10.0.0.42;
+}
+
+host labstore3 {
+	hardware ethernet 78:2b:cb:76:1b:45;
+	fixed-address 10.0.0.43;
+}
+
+host labstore4 {
+	hardware ethernet 78:2b:cb:76:24:6b;
+	fixed-address 10.0.0.44;
+}
+
+host lvs5 {
+        hardware ethernet 00:21:9B:97:EE:7A;
+        fixed-address lvs5.wikimedia.org;
+}
+
+host lvs6 {
+        hardware ethernet 00:21:9B:97:EE:71;
+        fixed-address lvs6.wikimedia.org;
+}
+
+host lvs1001 {
+	hardware ethernet 18:03:73:f0:89:69;
+	fixed-address lvs1001.wikimedia.org;
+}
+
+host lvs1002 {
+        hardware ethernet 18:03:73:f0:8e:dc;
+        fixed-address lvs1002.wikimedia.org;
+}
+
+host lvs1003 {
+        hardware ethernet 18:03:73:f0:8b:07;
+        fixed-address lvs1003.wikimedia.org;
+}
+
+host lvs1004 {
+	hardware ethernet 18:03:73:f0:8c:30;
+	fixed-address lvs1004.wikimedia.org;
+}
+
+host lvs1005 {
+        hardware ethernet 18:03:73:f0:8e:28;
+        fixed-address lvs1005.wikimedia.org;
+}
+
+host lvs1006 {
+        hardware ethernet 18:03:73:f0:8a:77;
+        fixed-address lvs1006.wikimedia.org;
+}
+
+host maerlant {
+	hardware ethernet a4:ba:db:30:d1:12;
+	fixed-address maerlant.esams.wikimedia.org;
+}
+
+host manganese {
+	hardware ethernet 78:2b:cb:09:0c:5a;
+	fixed-address manganese.wikimedia.org;
+}
+
+host magnesium {
+	hardware ethernet 78:2b:cb:09:0d:d1;
+	fixed-address magnesium.wikimedia.org;
+}
+
+host manutius {
+	hardware ethernet e4:1f:13:69:cd:ec;
+	fixed-address manutius.wikimedia.org;
+}
+
+host marmontel {
+	hardware ethernet d4:be:d9:af:68:bb;
+	fixed-address marmontel.wikimedia.org;
+}
+
+host mc1001 {
+	hardware ethernet 84:2b:2b:fc:41:e6;
+	fixed-address mc1001.eqiad.wmnet;
+}
+
+host mc1002 {
+	hardware ethernet 84:2b:2b:fc:49:d8;
+	fixed-address mc1002.eqiad.wmnet;
+}
+
+host mc1003 {
+	hardware ethernet 84:2b:2b:fc:46:81;
+	fixed-address mc1003.eqiad.wmnet;
+}
+
+host mc1004 {
+	hardware ethernet 84:2b:2b:fc:44:f5;
+	fixed-address mc1004.eqiad.wmnet;
+}
+
+host mc1005 {
+	hardware ethernet 84:2b:2b:fc:4a:44;
+	fixed-address mc1005.eqiad.wmnet;
+}
+
+host mc1006 {
+	hardware ethernet 84:2b:2b:fc:4a:cb;
+	fixed-address mc1006.eqiad.wmnet;
+}
+
+host mc1007 {
+	hardware ethernet 84:2b:2b:fc:39:c7;
+	fixed-address mc1007.eqiad.wmnet;
+}
+
+host mc1008 {
+	hardware ethernet 84:2b:2b:fc:37:90;
+	fixed-address mc1008.eqiad.wmnet;
+}
+
+host ms1001 {
+	hardware ethernet 78:2b:cb:0a:13:f3;
+	fixed-address ms1001.wikimedia.org;
+}
+
+host ms1002 {
+	hardware ethernet 78:2b:cb:0a:16:60;
+	fixed-address ms1002.eqiad.wmnet;
+}
+host ms1003 {
+	hardware ethernet 78:2b:cb:0b:04:c0;
+	fixed-address ms1003.eqiad.wmnet;
+}
+host ms1004 {
+	hardware ethernet 78:2b:cb:0b:15:1b;
+	fixed-address ms1004.eqiad.wmnet;
+}
+
+host ms-be1 {
+	hardware ethernet 04:7D:7B:06:5E:F4;
+	fixed-address ms-be1.pmtpa.wmnet;
+}
+
+host ms-be2 {
+	hardware ethernet E8:9A:8F:D3:3E:44;
+	fixed-address ms-be2.pmtpa.wmnet;
+}
+
+host ms-be3 {
+	hardware ethernet 04:7D:7B:2E:2E:D6;
+	fixed-address ms-be3.pmtpa.wmnet;
+}
+
+host ms-be4 {
+	hardware ethernet 04:7D:7B:2E:2F:52;
+	fixed-address ms-be4.pmtpa.wmnet;
+}
+
+host ms-be5 {
+	hardware ethernet 04:7D:7B:10:D4:90;
+	fixed-address ms-be5.pmtpa.wmnet;
+}
+
+host ms-fe1 {
+	hardware ethernet d4:be:d9:af:84:27;
+	fixed-address ms-fe1.pmtpa.wmnet;
+}
+
+host ms-fe2 {
+	hardware ethernet d4:be:d9:af:67:0b;
+	fixed-address ms-fe2.pmtpa.wmnet;
+}
+
+host msfe1001 {
+	hardware ethernet 18:03:73:f1:58:82;
+	fixed-address msfe1001.wikimedia.org;
+}
+
+host msfe1002 {
+	hardware ethernet 18:03:73:f1:56:d2;
+	fixed-address msfe1002.wikimedia.org;
+}
+
+host mw1 {
+	hardware ethernet 78:2b:cb:2f:cf:57;
+	fixed-address mw1.pmtpa.wmnet;
+}
+
+host mw2 {
+	hardware ethernet 78:2b:cb:2e:04:51;
+	fixed-address mw2.pmtpa.wmnet;
+}
+
+host mw3 {
+	hardware ethernet 78:2b:cb:2f:d2:3c;
+	fixed-address mw3.pmtpa.wmnet;
+}
+
+host mw4 {
+	hardware ethernet 78:2b:cb:2f:d6:e7;
+	fixed-address mw4.pmtpa.wmnet;
+}
+
+host mw5 {
+	hardware ethernet 78:2b:cb:2f:d4:aa;
+	fixed-address mw5.pmtpa.wmnet;
+}
+
+host mw6 {
+	hardware ethernet 78:2b:cb:2f:cd:d9;
+	fixed-address mw6.pmtpa.wmnet;
+}
+
+host mw7{
+	hardware ethernet 78:2b:cb:2e:0a:49;
+	fixed-address mw7.pmtpa.wmnet;
+}
+
+host mw8 {
+	hardware ethernet 78:2b:cb:2f:cf:27;
+	fixed-address mw8.pmtpa.wmnet;
+}
+
+host mw9 {
+	hardware ethernet 78:2b:cb:2d:66:3f;
+	fixed-address mw9.pmtpa.wmnet;
+}
+
+host mw10 {
+	hardware ethernet 78:2b:cb:2d:4d:ae;
+	fixed-address mw10.pmtpa.wmnet;
+}
+
+host mw11 {
+	hardware ethernet 78:2b:cb:2f:bf:d1;
+	fixed-address mw11.pmtpa.wmnet;
+}
+
+host mw12 {
+	hardware ethernet 78:2b:cb:2d:d1:ba;
+	fixed-address mw12.pmtpa.wmnet;
+}
+
+host mw13 {
+	hardware ethernet 78:2b:cb:2e:09:dd;
+	fixed-address mw13.pmtpa.wmnet;
+}
+
+host mw14 {
+	hardware ethernet 78:2b:cb:2f:de:7b;
+	fixed-address mw14.pmtpa.wmnet;
+}
+
+host mw15 {
+	hardware ethernet 78:2b:cb:2e:03:82;
+	fixed-address mw15.pmtpa.wmnet;
+}
+
+host mw16 {
+	hardware ethernet 78:2b:cb:23:5e:a4;
+	fixed-address mw16.pmtpa.wmnet;
+}
+
+host mw17 {
+	hardware ethernet 78:2b:cb:2e:3c:1f;
+	fixed-address mw17.pmtpa.wmnet;
+}
+
+host mw18 {
+	hardware ethernet 78:2b:cb:2d:4a:4f;
+	fixed-address mw18.pmtpa.wmnet;
+}
+
+host mw19 {
+	hardware ethernet 78:2b:cb:2f:f0:a0;
+	fixed-address mw19.pmtpa.wmnet;
+}
+
+host mw20 {
+	hardware ethernet 78:2b:cb:2f:ec:09;
+	fixed-address mw20.pmtpa.wmnet;
+}
+
+host mw21 {
+	hardware ethernet 78:2b:cb:2f:d8:4f;
+	fixed-address mw21.pmtpa.wmnet;
+}
+
+host mw22 {
+	hardware ethernet 78:2b:cb:2e:36:18;
+	fixed-address mw22.pmtpa.wmnet;
+}
+
+host mw23 {
+	hardware ethernet 78:2b:cb:2d:c4:d7;
+	fixed-address mw23.pmtpa.wmnet;
+}
+
+host mw24 {
+	hardware ethernet 78:2b:cb:11:98:f2;
+	fixed-address mw24.pmtpa.wmnet;
+}
+
+host mw25 {
+	hardware ethernet 78:2b:cb:2d:6a:b2;
+	fixed-address mw25.pmtpa.wmnet;
+}
+
+host mw26 {
+	hardware ethernet 78:2b:cb:29:fc:1c;
+	fixed-address mw26.pmtpa.wmnet;
+}
+
+host mw27 {
+	hardware ethernet 78:2b:cb:2f:ed:08;
+	fixed-address mw27.pmtpa.wmnet;
+}
+
+host mw28{
+	hardware ethernet 78:2b:cb:2f:ee:7b;
+	fixed-address mw28.pmtpa.wmnet;
+}
+
+host mw29{
+	hardware ethernet 78:2b:cb:2d:ce:dd;
+	fixed-address mw29.pmtpa.wmnet;
+}
+
+host mw30{
+	hardware ethernet 78:2b:cb:2f:b0:f6;
+	fixed-address mw30.pmtpa.wmnet;
+}
+
+host mw31{
+	hardware ethernet 78:2b:cb:29:d3:f0;
+	fixed-address mw31.pmtpa.wmnet;
+}
+
+host mw32{
+	hardware ethernet 78:2b:cb:2f:e9:41;
+	fixed-address mw32.pmtpa.wmnet;
+}
+
+host mw33{
+	hardware ethernet 78:2b:cb:2f:ea:bf;
+	fixed-address mw33.pmtpa.wmnet;
+}
+
+host mw34{
+	hardware ethernet 78:2b:cb:2f:e9:1d;
+	fixed-address mw34.pmtpa.wmnet;
+}
+
+host mw35{
+	hardware ethernet 78:2b:cb:28:91:22;
+	fixed-address mw35.pmtpa.wmnet;
+}
+
+host mw36{
+	hardware ethernet 78:2b:cb:2d:ce:59;
+	fixed-address mw36.pmtpa.wmnet;
+}
+
+host mw37{
+	hardware ethernet 78:2b:cb:29:54:48;
+	fixed-address mw37.pmtpa.wmnet;
+}
+
+host mw38{
+	hardware ethernet 78:2b:cb:2d:d1:4b;
+	fixed-address mw38.pmtpa.wmnet;
+}
+
+host mw39{
+	hardware ethernet 78:2b:cb:3c:89:eb;
+	fixed-address mw39.pmtpa.wmnet;
+}
+
+host mw40{
+	hardware ethernet 78:2b:cb:2f:ec:00;
+	fixed-address mw40.pmtpa.wmnet;
+}
+
+host mw41{
+	hardware ethernet 78:2b:cb:2d:f7:f1;
+	fixed-address mw41.pmtpa.wmnet;
+}
+
+host mw42{
+	hardware ethernet 78:2b:cb:2d:fd:b6;
+	fixed-address mw42.pmtpa.wmnet;
+}
+
+host mw43{
+	hardware ethernet 78:2b:cb:2f:ee:ba;
+	fixed-address mw43.pmtpa.wmnet;
+}
+
+host mw44{
+	hardware ethernet 78:2b:cb:2d:4b:d9;
+	fixed-address mw44.pmtpa.wmnet;
+}
+
+host mw45{
+	hardware ethernet 78:2b:cb:2d:cb:58;
+	fixed-address mw45.pmtpa.wmnet;
+}
+
+host mw46{
+	hardware ethernet 78:2b:cb:2d:68:2f;
+	fixed-address mw46.pmtpa.wmnet;
+}
+
+host mw47{
+	hardware ethernet 78:2b:cb:2e:03:55;
+	fixed-address mw47.pmtpa.wmnet;
+}
+
+host mw48{
+	hardware ethernet 78:2b:cb:26:88:bc;
+	fixed-address mw48.pmtpa.wmnet;
+}
+
+host mw49{
+	hardware ethernet 78:2b:cb:29:fc:81;
+	fixed-address mw49.pmtpa.wmnet;
+}
+
+host mw50{
+	hardware ethernet 78:2b:cb:2f:ed:ed;
+	fixed-address mw50.pmtpa.wmnet;
+}
+
+host mw51{
+	hardware ethernet 78:2b:cb:2f:d3:74;
+	fixed-address mw51.pmtpa.wmnet;
+}
+
+host mw52{
+	hardware ethernet 78:2b:cb:2f:df:9b;
+	fixed-address mw52.pmtpa.wmnet;
+}
+
+host mw53{
+	hardware ethernet 78:2b:cb:2f:e9:ad;
+	fixed-address mw53.pmtpa.wmnet;
+}
+
+host mw54{
+	hardware ethernet 78:2b:cb:2f:e8:39;
+	fixed-address mw54.pmtpa.wmnet;
+}
+
+host mw55{
+	hardware ethernet 78:2b:cb:2e:2f:66;
+	fixed-address mw55.pmtpa.wmnet;
+}
+
+host mw56{
+	hardware ethernet 78:2b:cb:2f:ee:2d;
+	fixed-address mw56.pmtpa.wmnet;
+}
+
+host mw57{
+	hardware ethernet 78:2b:cb:2d:4d:69;
+	fixed-address mw57.pmtpa.wmnet;
+}
+
+host mw58{
+	hardware ethernet 78:2b:cb:2d:c7:00;
+	fixed-address mw58.pmtpa.wmnet;
+}
+
+host mw59 {
+	hardware ethernet 78:2b:cb:2f:e6:b2;
+	fixed-address mw59.pmtpa.wmnet;
+}
+
+host mw60 {
+	hardware ethernet 78:2b:cb:2d:c3:66;
+	fixed-address mw60.pmtpa.wmnet;
+}
+
+host mw61 {
+	hardware ethernet 78:2b:cb:2f:ec:f6;
+	fixed-address mw61.pmtpa.wmnet;
+}
+
+host mw62 {
+	hardware ethernet 78:2b:cb:2e:1c:26;
+	fixed-address mw62.pmtpa.wmnet;
+}
+
+host mw63 {
+	hardware ethernet 78:2b:cb:29:ce:e0;
+	fixed-address mw63.pmtpa.wmnet;
+}
+
+host mw64 {
+	hardware ethernet 78:2b:cb:2d:5e:ad;
+	fixed-address mw64.pmtpa.wmnet;
+}
+
+host mw65 {
+	hardware ethernet 78:2b:cb:2f:bc:f7;
+	fixed-address mw65.pmtpa.wmnet;
+}
+
+host mw66 {
+	hardware ethernet 78:2b:cb:2d:d1:57;
+	fixed-address mw66.pmtpa.wmnet;
+}
+
+host mw67 {
+	hardware ethernet 78:2b:cb:2f:e9:3e;
+	fixed-address mw67.pmtpa.wmnet;
+}
+
+host mw68 {
+	hardware ethernet 78:2b:cb:29:d6:af;
+	fixed-address mw68.pmtpa.wmnet;
+}
+
+host mw69 {
+	hardware ethernet 78:2b:cb:2f:d1:ac;
+	fixed-address mw69.pmtpa.wmnet;
+}
+
+host mw70 {
+	hardware ethernet 78:2b:cb:2f:d3:f8;
+	fixed-address mw70.pmtpa.wmnet;
+}
+
+host mw71 {
+	hardware ethernet 78:2b:cb:2e:22:2a;
+	fixed-address mw71.pmtpa.wmnet;
+}
+
+host mw72 {
+	hardware ethernet 78:2b:cb:2f:e9:8f;
+	fixed-address mw72.pmtpa.wmnet;
+}
+
+host mw73 {
+	hardware ethernet 78:2b:cb:2f:ee:12;
+	fixed-address mw73.pmtpa.wmnet;
+}
+
+host mw74 {
+	hardware ethernet 78:2b:cb:29:54:5d;
+	fixed-address mw74.pmtpa.wmnet;
+}
+
+host mw1001 {
+	hardware ethernet 84:2b:2b:78:2c:b4;
+	fixed-address mw1001.eqiad.wmnet;
+}
+
+host mw1002 {
+	hardware ethernet 84:2b:2b:78:2a:2c;
+	fixed-address mw1002.eqiad.wmnet;
+}
+
+host mw1003 {
+	hardware ethernet 84:2b:2b:78:28:c8;
+	fixed-address mw1003.eqiad.wmnet;
+}
+
+host mw1004 {
+	hardware ethernet 84:2b:2b:77:29:7a;
+	fixed-address mw1004.eqiad.wmnet;
+}
+
+host mw1005 {
+	hardware ethernet 84:2b:2b:77:e6:f3;
+	fixed-address mw1005.eqiad.wmnet;
+}
+
+host mw1006 {
+	hardware ethernet 84:2b:2b:77:4d:2f;
+	fixed-address mw1006.eqiad.wmnet;
+}
+
+host mw1007 {
+	hardware ethernet 84:2b:2b:77:53:29;
+	fixed-address mw1007.eqiad.wmnet;
+}
+
+host mw1008 {
+	hardware ethernet 84:2b:2b:77:e3:bb;
+	fixed-address mw1008.eqiad.wmnet;
+}
+
+host mw1009 {
+	hardware ethernet 78:2b:cb:08:78:c1;
+	fixed-address mw1009.eqiad.wmnet;
+}
+
+host mw1010 {
+	hardware ethernet 78:2b:cb:08:78:f7;
+	fixed-address mw1010.eqiad.wmnet;
+}
+
+host mw1011 {
+	hardware ethernet 78:2b:cb:08:77:da;
+	fixed-address mw1011.eqiad.wmnet;
+}
+
+host mw1012 {
+	hardware ethernet 78:2b:cb:08:79:66;
+	fixed-address mw1012.eqiad.wmnet;
+}
+
+host mw1013 {
+	hardware ethernet 78:2b:cb:08:79:18;
+	fixed-address mw1013.eqiad.wmnet;
+}
+
+host mw1014 {
+	hardware ethernet 78:2b:cb:07:a8:75;
+	fixed-address mw1014.eqiad.wmnet;
+}
+
+host mw1015 {
+	hardware ethernet 78:2b:cb:08:7b:5a;
+	fixed-address mw1015.eqiad.wmnet;
+}
+
+host mw1016 {
+	hardware ethernet 78:2b:cb:07:28:50;
+	fixed-address mw1016.eqiad.wmnet;
+}
+
+host mw1017 {
+	hardware ethernet 78:2b:cb:08:79:0c;
+	fixed-address mw1017.eqiad.wmnet;
+}
+
+host mw1018 {
+	hardware ethernet 78:2b:cb:08:7b:42;
+	fixed-address mw1018.eqiad.wmnet;
+}
+
+host mw1019 {
+	hardware ethernet 84:2b:2b:77:e4:67;
+	fixed-address mw1019.eqiad.wmnet;
+}
+
+host mw1020 {
+	hardware ethernet 84:2b:2b:77:25:19;
+	fixed-address mw1020.eqiad.wmnet;
+}
+
+host mw1021 {
+	hardware ethernet 84:2b:2b:77:e6:16;
+	fixed-address mw1021.eqiad.wmnet;
+}
+
+host mw1022 {
+	hardware ethernet 84:2b:2b:77:28:05;
+	fixed-address mw1022.eqiad.wmnet;
+}
+
+host mw1023 {
+	hardware ethernet 84:2b:2b:77:d2:93;
+	fixed-address mw1023.eqiad.wmnet;
+}
+
+host mw1024 {
+	hardware ethernet 84:2b:2b:77:27:c9;
+	fixed-address mw1024.eqiad.wmnet;
+}
+
+host mw1025 {
+	hardware ethernet 84:2b:2b:78:28:18;
+	fixed-address mw1025.eqiad.wmnet;
+}
+
+host mw1026 {
+	hardware ethernet 84:2b:2b:77:e7:75;
+	fixed-address mw1026.eqiad.wmnet;
+}
+
+host mw1027 {
+	hardware ethernet 84:2b:2b:77:4a:a0;
+	fixed-address mw1027.eqiad.wmnet;
+}
+
+host mw1028 {
+	hardware ethernet 84:2b:2b:76:67:24;
+	fixed-address mw1028.eqiad.wmnet;
+}
+
+host mw1029 {
+	hardware ethernet 84:2b:2b:77:4d:05;
+	fixed-address mw1029.eqiad.wmnet;
+}
+
+host mw1030 {
+	hardware ethernet 84:2b:2b:77:e6:10;
+	fixed-address mw1030.eqiad.wmnet;
+}
+
+host mw1031 {
+	hardware ethernet 84:2b:2b:77:e4:ed;
+	fixed-address mw1031.eqiad.wmnet;
+}
+
+host mw1032 {
+	hardware ethernet 84:2b:2b:78:27:b3;
+	fixed-address mw1032.eqiad.wmnet;
+}
+
+host mw1033 {
+	hardware ethernet 78:2b:cb:08:7b:60;
+	fixed-address mw1033.eqiad.wmnet;
+}
+
+host mw1034 {
+	hardware ethernet 78:2b:cb:08:79:1e;
+	fixed-address mw1034.eqiad.wmnet;
+}
+
+host mw1035 {
+	hardware ethernet 78:2b:cb:08:7b:3f;
+	fixed-address mw1035.eqiad.wmnet;
+}
+
+host mw1036 {
+	hardware ethernet 78:2b:cb:08:7b:5d;
+	fixed-address mw1036.eqiad.wmnet;
+}
+
+host mw1037 {
+	hardware ethernet 78:2b:cb:08:70:71;
+	fixed-address mw1037.eqiad.wmnet;
+}
+
+host mw1038 {
+	hardware ethernet 78:2b:cb:08:78:2e;
+	fixed-address mw1038.eqiad.wmnet;
+}
+
+host mw1039 {
+	hardware ethernet 78:2b:cb:08:78:fa;
+	fixed-address mw1039.eqiad.wmnet;
+}
+
+host mw1040 {
+	hardware ethernet 78:2b:cb:08:6f:cb;
+	fixed-address mw1040.eqiad.wmnet;
+}
+
+host mw1041 {
+	hardware ethernet 78:2b:cb:07:72:15;
+	fixed-address mw1041.eqiad.wmnet;
+}
+
+host mw1042 {
+	hardware ethernet 78:2b:cb:08:7b:6c;
+	fixed-address mw1042.eqiad.wmnet;
+}
+
+host mw1043 {
+	hardware ethernet 84:2b:2b:78:28:39;
+	fixed-address mw1043.eqiad.wmnet;
+}
+
+host mw1044 {
+	hardware ethernet 84:2b:2b:78:27:a7;
+	fixed-address mw1044.eqiad.wmnet;
+}
+
+host mw1045 {
+	hardware ethernet 84:2b:2b:77:e6:d2;
+	fixed-address mw1045.eqiad.wmnet;
+}
+
+host mw1046 {
+	hardware ethernet 84:2b:2b:78:2a:a0;
+	fixed-address mw1046.eqiad.wmnet;
+}
+
+host mw1047 {
+	hardware ethernet 84:2b:2b:77:e6:74;
+	fixed-address mw1047.eqiad.wmnet;
+}
+
+host mw1048 {
+	hardware ethernet 84:2b:2b:77:e5:f5;
+	fixed-address mw1048.eqiad.wmnet;
+}
+
+host mw1049 {
+	hardware ethernet 84:2b:2b:77:50:02;
+	fixed-address mw1049.eqiad.wmnet;
+}
+
+host mw1050 {
+	hardware ethernet 84:2b:2b:77:e6:fc;
+	fixed-address mw1050.eqiad.wmnet;
+}
+
+host mw1051 {
+	hardware ethernet 84:2b:2b:78:27:a4;
+	fixed-address mw1051.eqiad.wmnet;
+}
+
+host mw1052 {
+	hardware ethernet 84:2b:2b:77:e4:9a;
+	fixed-address mw1052.eqiad.wmnet;
+}
+
+host mw1053 {
+	hardware ethernet 78:2b:cb:08:78:7c;
+	fixed-address mw1053.eqiad.wmnet;
+}
+
+host mw1054 {
+	hardware ethernet 78:2b:cb:08:70:44;
+	fixed-address mw1054.eqiad.wmnet;
+}
+
+host mw1055 {
+	hardware ethernet 78:2b:cb:08:7b:fc;
+	fixed-address mw1055.eqiad.wmnet;
+}
+
+host mw1056 {
+	hardware ethernet 78:2b:cb:08:7b:21;
+	fixed-address mw1056.eqiad.wmnet;
+}
+
+host mw1057 {
+	hardware ethernet 78:2b:cb:08:7f:fd;
+	fixed-address mw1057.eqiad.wmnet;
+}
+
+host mw1058 {
+	hardware ethernet 78:2b:cb:08:78:1c;
+	fixed-address mw1058.eqiad.wmnet;
+}
+
+host mw1059 {
+	hardware ethernet 78:2b:cb:07:27:f6;
+	fixed-address mw1059.eqiad.wmnet;
+}
+
+host mw1060 {
+	hardware ethernet 78:2b:cb:07:2a:1c;
+	fixed-address mw1060.eqiad.wmnet;
+}
+
+host mw1061 {
+	hardware ethernet 78:2b:cb:08:78:34;
+	fixed-address mw1061.eqiad.wmnet;
+}
+
+host mw1062 {
+	hardware ethernet 78:2b:cb:08:7e:2f;
+	fixed-address mw1062.eqiad.wmnet;
+}
+
+host mw1063 {
+	hardware ethernet 84:2b:2b:77:e7:9f;
+	fixed-address mw1063.eqiad.wmnet;
+}
+
+host mw1064 {
+	hardware ethernet 84:2b:2b:78:2a:09;
+	fixed-address mw1064.eqiad.wmnet;
+}
+
+host mw1065 {
+	hardware ethernet 84:2b:2b:77:e6:e4;
+	fixed-address mw1065.eqiad.wmnet;
+}
+
+host mw1066 {
+	hardware ethernet 84:2b:2b:77:d0:33;
+	fixed-address mw1066.eqiad.wmnet;
+}
+
+host mw1067 {
+	hardware ethernet 84:2b:2b:77:e5:f8;
+	fixed-address mw1067.eqiad.wmnet;
+}
+
+host mw1068 {
+	hardware ethernet 84:2b:2b:77:e2:ef;
+	fixed-address mw1068.eqiad.wmnet;
+}
+
+host mw1069 {
+	hardware ethernet 84:2b:2b:78:29:f1;
+	fixed-address mw1069.eqiad.wmnet;
+}
+
+host mw1070 {
+	hardware ethernet 84:2b:2b:78:27:92;
+	fixed-address mw1070.eqiad.wmnet;
+}
+
+host mw1071 {
+	hardware ethernet 78:2b:cb:08:7b:7b;
+	fixed-address mw1071.eqiad.wmnet;
+}
+
+host mw1072 {
+	hardware ethernet 78:2b:cb:08:78:4c;
+	fixed-address mw1072.eqiad.wmnet;
+}
+
+host mw1073 {
+	hardware ethernet 78:2b:cb:08:77:fb;
+	fixed-address mw1073.eqiad.wmnet;
+}
+
+host mw1074 {
+	hardware ethernet 78:2b:cb:07:28:b0;
+	fixed-address mw1074.eqiad.wmnet;
+}
+
+host mw1075 {
+	hardware ethernet 78:2b:cb:08:7c:95;
+	fixed-address mw1075.eqiad.wmnet;
+}
+
+host mw1076 {
+	hardware ethernet 78:2b:cb:08:7b:87;
+	fixed-address mw1076.eqiad.wmnet;
+}
+
+host mw1077 {
+	hardware ethernet 78:2b:cb:07:aa:b6;
+	fixed-address mw1077.eqiad.wmnet;
+}
+
+host mw1078 {
+	hardware ethernet 78:2b:cb:08:72:c3;
+	fixed-address mw1078.eqiad.wmnet;
+}
+
+host mw1079 {
+	hardware ethernet 78:2b:cb:08:7d:04;
+	fixed-address mw1079.eqiad.wmnet;
+}
+
+host mw1080 {
+	hardware ethernet 78:2b:cb:08:70:5f;
+	fixed-address mw1080.eqiad.wmnet;
+}
+
+host mw1081 {
+	hardware ethernet 78:2b:cb:08:78:31;
+	fixed-address mw1081.eqiad.wmnet;
+}
+
+host mw1082 {
+	hardware ethernet 78:2b:cb:08:79:69;
+	fixed-address mw1082.eqiad.wmnet;
+}
+
+host mw1083 {
+	hardware ethernet 78:2b:cb:08:7b:54;
+	fixed-address mw1083.eqiad.wmnet;
+}
+
+host mw1084 {
+	hardware ethernet 78:2b:cb:08:79:4e;
+	fixed-address mw1084.eqiad.wmnet;
+}
+
+host mw1085 {
+	hardware ethernet 78:2b:cb:08:7b:45;
+	fixed-address mw1085.eqiad.wmnet;
+}
+
+host mw1086 {
+	hardware ethernet 84:2b:2b:78:27:9e;
+	fixed-address mw1086.eqiad.wmnet;
+}
+
+host mw1087 {
+	hardware ethernet 84:2b:2b:77:e6:6e;
+	fixed-address mw1087.eqiad.wmnet;
+}
+
+host mw1088 {
+	hardware ethernet 84:2b:2b:77:e6:aa;
+	fixed-address mw1088.eqiad.wmnet;
+}
+
+host mw1089 {
+	hardware ethernet 84:2b:2b:77:e9:10;
+	fixed-address mw1089.eqiad.wmnet;
+}
+
+host mw1090 {
+	hardware ethernet 84:2b:2b:77:e6:3b;
+	fixed-address mw1090.eqiad.wmnet;
+}
+
+host mw1091 {
+	hardware ethernet 84:2b:2b:77:d7:3f;
+	fixed-address mw1091.eqiad.wmnet;
+}
+
+host mw1092 {
+	hardware ethernet 84:2b:2b:77:d8:fc;
+	fixed-address mw1092.eqiad.wmnet;
+}
+
+host mw1093 {
+	hardware ethernet 84:2b:2b:77:25:49;
+	fixed-address mw1093.eqiad.wmnet;
+}
+
+host mw1094 {
+	hardware ethernet 84:2b:2b:78:2b:5d;
+	fixed-address mw1094.eqiad.wmnet;
+}
+
+host mw1095 {
+	hardware ethernet 84:2b:2b:77:29:ce;
+	fixed-address mw1095.eqiad.wmnet;
+}
+
+host mw1096 {
+	hardware ethernet 84:2b:2b:77:29:32;
+	fixed-address mw1096.eqiad.wmnet;
+}
+
+host mw1097 {
+	hardware ethernet 84:2b:2b:77:e9:fa;
+	fixed-address mw1097.eqiad.wmnet;
+}
+
+host mw1098 {
+	hardware ethernet 84:2b:2b:77:e5:c2;
+	fixed-address mw1098.eqiad.wmnet;
+}
+
+host mw1099 {
+	hardware ethernet 84:2b:2b:77:e7:72;
+	fixed-address mw1099.eqiad.wmnet;
+}
+
+host mw1100 {
+	hardware ethernet 84:2b:2b:77:e4:58;
+	fixed-address mw1100.eqiad.wmnet;
+}
+
+host mw1101 {
+	hardware ethernet 84:2b:2b:77:d2:40;
+	fixed-address mw1101.eqiad.wmnet;
+}
+
+host mw1102 {
+	hardware ethernet 84:2b:2b:77:28:1d;
+	fixed-address mw1102.eqiad.wmnet;
+}
+
+host mw1103 {
+	hardware ethernet 84:2b:2b:78:2a:94;
+	fixed-address mw1103.eqiad.wmnet;
+}
+
+host mw1104 {
+	hardware ethernet 84:2b:2b:77:4e:3a;
+	fixed-address mw1104.eqiad.wmnet;
+}
+
+host mw1105 {
+	hardware ethernet 84:2b:2b:78:2b:ab;
+	fixed-address mw1105.eqiad.wmnet;
+}
+
+host mw1106 {
+	hardware ethernet 84:2b:2b:77:e4:9d;
+	fixed-address mw1106.eqiad.wmnet;
+}
+
+host mw1107 {
+	hardware ethernet 84:2b:2b:78:29:cd;
+	fixed-address mw1107.eqiad.wmnet;
+}
+
+host mw1108 {
+	hardware ethernet 84:2b:2b:78:2a:00;
+	fixed-address mw1108.eqiad.wmnet;
+}
+
+host mw1109 {
+	hardware ethernet 84:2b:2b:77:4d:e3;
+	fixed-address mw1109.eqiad.wmnet;
+}
+
+host mw1110 {
+	hardware ethernet 84:2b:2b:78:28:cb;
+	fixed-address mw1110.eqiad.wmnet;
+}
+
+host mw1111 {
+	hardware ethernet 84:2b:2b:78:2b:a5;
+	fixed-address mw1111.eqiad.wmnet;
+}
+
+host mw1112 {
+	hardware ethernet 84:2b:2b:78:2a:1d;
+	fixed-address mw1112.eqiad.wmnet;
+}
+
+host mw1113 {
+	hardware ethernet 84:2b:2b:77:4a:7f;
+	fixed-address mw1113.eqiad.wmnet;
+}
+
+host mw1114 {
+	hardware ethernet 84:2b:2b:78:29:a0;
+	fixed-address mw1114.eqiad.wmnet;
+}
+
+host mw1115 {
+	hardware ethernet 84:2b:2b:77:4f:d8;
+	fixed-address mw1115.eqiad.wmnet;
+}
+
+host mw1116 {
+	hardware ethernet 84:2b:2b:77:4d:f2;
+	fixed-address mw1116.eqiad.wmnet;
+}
+
+host mw1117 {
+	hardware ethernet 84:2b:2b:77:50:73;
+	fixed-address mw1117.eqiad.wmnet;
+}
+
+host mw1118 {
+	hardware ethernet 84:2b:2b:77:d2:bd;
+	fixed-address mw1118.eqiad.wmnet;
+}
+
+host mw1119 {
+	hardware ethernet 78:2b:cb:07:aa:89;
+	fixed-address mw1119.eqiad.wmnet;
+}
+
+host mw1120 {
+	hardware ethernet 84:2b:2b:78:29:bb;
+	fixed-address mw1120.eqiad.wmnet;
+}
+
+host mw1121 {
+	hardware ethernet 84:2b:2b:78:28:a7;
+	fixed-address mw1121.eqiad.wmnet;
+}
+
+host mw1122 {
+	hardware ethernet 78:2b:cb:07:4b:4a;
+	fixed-address mw1122.eqiad.wmnet;
+}
+
+host mw1123 {
+	hardware ethernet 78:2b:cb:01:60:50;
+	fixed-address mw1123.eqiad.wmnet;
+}
+
+host mw1124 {
+	hardware ethernet 78:2b:cb:08:70:47;
+	fixed-address mw1124.eqiad.wmnet;
+}
+
+host mw1125 {
+	hardware ethernet 78:2b:cb:07:28:68;
+	fixed-address mw1125.eqiad.wmnet;
+}
+
+host mw1126 {
+	hardware ethernet 78:2b:cb:08:70:8f;
+	fixed-address mw1126.eqiad.wmnet;
+}
+
+host mw1127 {
+	hardware ethernet 78:2b:cb:07:72:99;
+	fixed-address mw1127.eqiad.wmnet;
+}
+
+host mw1128 {
+	hardware ethernet 84:2b:2b:77:e9:16;
+	fixed-address mw1128.eqiad.wmnet;
+}
+
+host mw1129 {
+	hardware ethernet 78:2b:cb:08:7d:2e;
+	fixed-address mw1129.eqiad.wmnet;
+}
+
+host mw1130 {
+	hardware ethernet 78:2b:cb:08:73:b9;
+	fixed-address mw1130.eqiad.wmnet;
+}
+
+host mw1131 {
+	hardware ethernet 78:2b:cb:06:8d:79;
+	fixed-address mw1131.eqiad.wmnet;
+}
+
+host mw1132 {
+	hardware ethernet 78:2b:cb:08:79:51;
+	fixed-address mw1132.eqiad.wmnet;
+}
+
+host mw1133 {
+	hardware ethernet 78:2b:cb:08:7b:51;
+	fixed-address mw1133.eqiad.wmnet;
+}
+
+host mw1134 {
+	hardware ethernet 84:2b:2b:77:e6:f9;
+	fixed-address mw1134.eqiad.wmnet;
+}
+
+host mw1135 {
+	hardware ethernet 84:2b:2b:77:d7:9c;
+	fixed-address mw1135.eqiad.wmnet;
+}
+
+host mw1136 {
+	hardware ethernet 84:2b:2b:77:54:ab;
+	fixed-address mw1136.eqiad.wmnet;
+}
+
+host mw1137 {
+	hardware ethernet 84:2b:2b:78:27:c2;
+	fixed-address mw1137.eqiad.wmnet;
+}
+
+host mw1138 {
+	hardware ethernet 84:2b:2b:78:28:66;
+	fixed-address mw1138.eqiad.wmnet;
+}
+
+host mw1139 {
+	hardware ethernet 84:2b:2b:78:2a:e5;
+	fixed-address mw1139.eqiad.wmnet;
+}
+
+host mw1140 {
+	hardware ethernet 84:2b:2b:78:28:06;
+	fixed-address mw1140.eqiad.wmnet;
+}
+
+host mw1141 {
+	hardware ethernet 84:2b:2b:78:2a:65;
+	fixed-address mw1141.eqiad.wmnet;
+}
+
+host mw1142 {
+	hardware ethernet 84:2b:2b:77:e4:06;
+	fixed-address mw1142.eqiad.wmnet;
+}
+
+host mw1143 {
+	hardware ethernet 84:2b:2b:77:d8:11;
+	fixed-address mw1143.eqiad.wmnet;
+}
+
+host mw1144 {
+	hardware ethernet 84:2b:2b:77:e6:4a;
+	fixed-address mw1144.eqiad.wmnet;
+}
+
+host mw1145 {
+	hardware ethernet 84:2b:2b:77:e7:96;
+	fixed-address mw1145.eqiad.wmnet;
+}
+
+host mw1146 {
+	hardware ethernet 84:2b:2b:77:23:d4;
+	fixed-address mw1146.eqiad.wmnet;
+}
+
+host mw1147 {
+	hardware ethernet 84:2b:2b:78:27:f8;
+	fixed-address mw1147.eqiad.wmnet;
+}
+
+host mw1148 {
+	hardware ethernet 84:2b:2b:77:d2:6b;
+	fixed-address mw1148.eqiad.wmnet;
+}
+
+host mw1149 {
+	hardware ethernet 84:2b:2b:77:27:24;
+	fixed-address mw1149.eqiad.wmnet;
+}
+
+host mw1150 {
+	hardware ethernet 84:2b:2b:77:e6:8f;
+	fixed-address mw1150.eqiad.wmnet;
+}
+
+host mw1151 {
+	hardware ethernet 84:2b:2b:77:d8:ba;
+	fixed-address mw1151.eqiad.wmnet;
+}
+
+host mw1152 {
+	hardware ethernet 84:2b:2b:77:ea:54;
+	fixed-address mw1152.eqiad.wmnet;
+}
+
+host mw1153 {
+	hardware ethernet 84:2b:2b:77:e7:c3;
+	fixed-address mw1153.eqiad.wmnet;
+}
+
+host mw1154 {
+	hardware ethernet 84:2b:2b:78:2b:f3;
+	fixed-address mw1154.eqiad.wmnet;
+}
+
+host mw1155 {
+	hardware ethernet 84:2b:2b:77:e7:1d;
+	fixed-address mw1155.eqiad.wmnet;
+}
+
+host mw1156 {
+	hardware ethernet 84:2b:2b:77:e9:1c;
+	fixed-address mw1156.eqiad.wmnet;
+}
+
+host mw1157 {
+	hardware ethernet 84:2b:2b:78:28:b0;
+	fixed-address mw1157.eqiad.wmnet;
+}
+
+host mw1158 {
+	hardware ethernet 84:2b:2b:77:4f:9f;
+	fixed-address mw1158.eqiad.wmnet;
+}
+
+host mw1159 {
+	hardware ethernet 84:2b:2b:77:e3:ee;
+	fixed-address mw1159.eqiad.wmnet;
+}
+
+host mw1160 {
+	hardware ethernet 84:2b:2b:77:e2:d1;
+	fixed-address mw1160.eqiad.wmnet;
+}
+
+host neon {
+	hardware ethernet 78:2b:cb:08:a4:2f;
+	fixed-address neon.wikimedia.org;
+}
+
+host nescio {
+	hardware ethernet a4:ba:db:30:d0:df;
+	fixed-address nescio.esams.wikimedia.org;
+}
+
+host nickel {
+	hardware ethernet 78:2b:cb:08:aa:93;
+	fixed-address nickel.wikimedia.org;
+}
+
+host niobium {
+	hardware ethernet 18:03:73:f1:56:39;
+	fixed-address niobium.wikimedia.org;
+}
+
+host ocg1 {
+	hardware ethernet 84:2B:2B:45:B2:74;
+	fixed-address ocg1.wikimedia.org;
+}
+
+host ocg2 {
+	hardware ethernet 78:2b:cb:1f:18:b0;
+	fixed-address ocg2.wikimedia.org;
+}
+
+host ocg3 {
+	hardware ethernet 78:2b:cb:1f:17:48;
+	fixed-address ocg3.wikimedia.org;
+}
+
+host oxygen {
+	hardware ethernet 78:2b:cb:08:a0:e7;
+	fixed-address oxygen.wikimedia.org;
+}
+
+host owa1 {
+	hardware ethernet 84:2b:2b:06:48:81;
+	fixed-address owa1.wikimedia.org;
+}
+
+host owa2 {
+	hardware ethernet 84:2b:2b:55:5a:f1;
+	fixed-address owa2.wikimedia.org;
+}
+
+host owa3 {
+	hardware ethernet 84:2b:2b:55:57:5f;
+	fixed-address owa3.wikimedia.org;
+}
+
+host palladium {
+	hardware ethernet 18:03:73:f1:59:2d;
+	fixed-address palladium.eqiad.wmnet;
+}
+
+host payments1 {
+	hardware ethernet 84:2b:2b:54:91:75;
+	fixed-address payments1.pmtpa.wmnet;
+}
+
+host payments2 {
+	hardware ethernet 84:2b:2b:55:19:25;
+	fixed-address payments2.pmtpa.wmnet;
+}
+
+host payments3 {
+	hardware ethernet 84:2b:2b:55:16:fc;
+	fixed-address payments3.pmtpa.wmnet;
+}
+
+host payments4 {
+	hardware ethernet 84:2b:2b:55:16:ea;
+	fixed-address payments4.pmtpa.wmnet;
+}
+
+host pdf2 {
+	hardware ethernet 00:21:9B:93:CC:34;
+	fixed-address pdf2.wikimedia.org;
+}
+
+host pdf3 {
+	hardware ethernet 00:21:9B:A0:70:6F;
+	fixed-address pdf3.wikimedia.org;
+}
+
+host search13 {
+	hardware ethernet 00:26:B9:53:54:E2;
+	fixed-address search13.pmtpa.wmnet;
+}
+
+host search14 {
+	hardware ethernet 00:26:B9:53:55:A4;
+	fixed-address search14.pmtpa.wmnet;
+}
+
+host search15 {
+	hardware ethernet 00:26:B9:53:3F:82;
+	fixed-address search15.pmtpa.wmnet;
+}
+
+host search16 {
+	hardware ethernet 00:26:B9:53:55:F5;
+	fixed-address search16.pmtpa.wmnet;
+}
+
+host search17 {
+	hardware ethernet 00:26:B9:53:4F:C4;
+	fixed-address search17.pmtpa.wmnet;
+}
+
+host search18 {
+	hardware ethernet 00:26:B9:53:3E:B5;
+	fixed-address search18.pmtpa.wmnet;
+}
+
+host search19 {
+	hardware ethernet 00:26:B9:53:54:DF;
+	fixed-address search19.pmtpa.wmnet;
+}
+
+host search20 {
+	hardware ethernet 00:26:B9:53:52:32;
+	fixed-address search20.pmtpa.wmnet;
+}
+
+host search1001 {
+	hardware ethernet 84:2b:2b:77:50:b2;
+	fixed-address search1001.eqiad.wmnet;
+}
+
+host search1002 {
+	hardware ethernet 84:2b:2b:77:53:3d;
+	fixed-address search1002.eqiad.wmnet;
+}
+
+host search1003 {
+	hardware ethernet 84:2b:2b:77:25:88;
+	fixed-address search1003.eqiad.wmnet;
+}
+
+host search1004 {
+	hardware ethernet 84:2b:2b:77:ce:70;
+	fixed-address search1004.eqiad.wmnet;
+}
+
+host search1005 {
+	hardware ethernet 84:2b:2b:76:cc:ad;
+	fixed-address search1005.eqiad.wmnet;
+}
+
+host search1006 {
+	hardware ethernet 84:2b:2b:77:27:d8;
+	fixed-address search1006.eqiad.wmnet;
+}
+
+host search1007 {
+	hardware ethernet 84:2b:2b:77:d1:50;
+	fixed-address search1007.eqiad.wmnet;
+}
+
+host search1008 {
+	hardware ethernet 84:2b:2b:77:54:7a;
+	fixed-address search1008.eqiad.wmnet;
+}
+
+host search1009 {
+	hardware ethernet 84:2b:2b:76:cc:e0;
+	fixed-address search1009.eqiad.wmnet;
+}
+
+host search1010 {
+	hardware ethernet 84:2b:2b:77:d8:e4;
+	fixed-address search1010.eqiad.wmnet;
+}
+
+host search1011 {
+	hardware ethernet 84:2b:2b:77:4d:f5;
+	fixed-address search1011.eqiad.wmnet;
+}
+
+host search1012 {
+	hardware ethernet 84:2b:2b:77:50:88;
+	fixed-address search1012.eqiad.wmnet;
+}
+
+host search1013 {
+	hardware ethernet 84:2b:2b:77:4a:dc;
+	fixed-address search1013.eqiad.wmnet;
+}
+
+host search1014 {
+	hardware ethernet 78:2b:cb:16:10:bc;
+	fixed-address search1014.eqiad.wmnet;
+}
+
+host search1015 {
+	hardware ethernet 84:2b:2b:77:d0:c5;
+	fixed-address search1015.eqiad.wmnet;
+}
+
+host search1016 {
+	hardware ethernet 84:2b:2b:77:d3:84;
+	fixed-address search1016.eqiad.wmnet;
+}
+
+host search1017 {
+	hardware ethernet 84:2b:2b:77:d6:3a;
+	fixed-address search1017.eqiad.wmnet;
+}
+
+host search1018 {
+	hardware ethernet 84:2b:2b:77:d6:49;
+	fixed-address search1018.eqiad.wmnet;
+}
+
+host search1019 {
+	hardware ethernet 84:2b:2b:77:25:1f;
+	fixed-address search1019.eqiad.wmnet;
+}
+
+host search1020 {
+	hardware ethernet 84:2b:2b:77:50:bb;
+	fixed-address search1020.eqiad.wmnet;
+}
+
+host search1021 {
+	hardware ethernet 84:2b:2b:77:4a:88;
+	fixed-address search1021.eqiad.wmnet;
+}
+
+host search1022 {
+	hardware ethernet 84:2b:2b:77:21:c3;
+	fixed-address search1022.eqiad.wmnet;
+}
+
+host search1023 {
+	hardware ethernet 84:2b:2b:77:2a:16;
+	fixed-address search1023.eqiad.wmnet;
+}
+
+host search1024 {
+	hardware ethernet 84:2b:2b:77:cf:ca;
+	fixed-address search1024.eqiad.wmnet;
+}
+
+host searchidx1001 {
+	hardware ethernet 84:2b:2b:fd:a3:01;
+	fixed-address searchidx1001.eqiad.wmnet;
+}
+
+host searchidx2 {
+	hardware ethernet 14:fe:b5:d2:45:59;
+	fixed-address searchidx2.pmtpa.wmnet;
+}
+
+host silicon {
+	hardware ethernet 78:2b:cb:08:a5:ae;
+	fixed-address silicon.wikimedia.org;
+}
+
+host silver {
+	hardware ethernet 18:03:73:f1:58:67;
+	fixed-address silver.wikimedia.org;
+}
+
+host snapshot1001 {
+	hardware ethernet d0:67:e5:f9:17:a3;
+	fixed-address snapshot1001.eqiad.wmnet;
+}
+
+host snapshot1002 {
+	hardware ethernet 78:2b:cb:74:01:5f;
+	fixed-address snapshot1002.eqiad.wmnet;
+}
+
+host snapshot1003 {
+	hardware ethernet 78:2b:cb:73:fc:44;
+	fixed-address snapshot1003.eqiad.wmnet;
+}
+
+host snapshot1004 {
+	hardware ethernet 78:2b:cb:73:fb:d5;
+	fixed-address snapshot1004.eqiad.wmnet;
+}
+
+host sodium {
+	hardware ethernet 78:2b:cb:08:aa:e1;
+	fixed-address sodium.wikimedia.org;
+}
+
+host sq51 {
+	hardware ethernet 00:21:9B:9A:6C:60;
+	fixed-address sq51.wikimedia.org;
+}
+
+host sq52 {
+	hardware ethernet 00:21:9B:9A:39:D0;
+        fixed-address sq52.wikimedia.org;
+}
+
+host sq53 {
+	hardware ethernet 00:21:9B:9A:37:90;
+    fixed-address sq53.wikimedia.org;
+}
+
+host sq54 {
+	hardware ethernet 00:21:9B:9A:39:1C;
+    fixed-address sq54.wikimedia.org;
+}
+
+host sq55 {
+	hardware ethernet 00:21:9B:9A:0B:8C;
+	fixed-address sq55.wikimedia.org;
+}
+
+host sq56 {
+	hardware ethernet 00:21:9B:9A:0D:0F;
+	fixed-address sq56.wikimedia.org;
+}
+
+host sq57 {
+	hardware ethernet 00:21:9B:9A:2A:97;
+	fixed-address sq57.wikimedia.org;
+}
+
+host sq58 {
+	hardware ethernet 00:21:9B:9A:0B:EF;
+	fixed-address sq58.wikimedia.org;
+}
+
+host sq59 {
+	hardware ethernet 00:21:9B:9A:6C:7B;
+	fixed-address sq59.wikimedia.org;
+}
+
+host sq60 {
+	hardware ethernet 00:21:9B:9A:3F:9D;
+	fixed-address sq60.wikimedia.org;
+}
+
+host sq61 {
+	hardware ethernet 00:21:9B:9A:0C:6D;
+	fixed-address sq61.wikimedia.org;
+}
+
+host sq62 {
+	hardware ethernet 00:21:9B:9A:29:BF;
+	fixed-address sq62.wikimedia.org;
+}
+
+host sq63 {
+	hardware ethernet 00:21:9B:9A:0C:E2;
+	fixed-address sq63.wikimedia.org;
+}
+
+host sq64 {
+	hardware ethernet 00:21:9B:9A:27:BE;
+	fixed-address sq64.wikimedia.org;
+}
+
+host sq65 {
+	hardware ethernet 00:21:9B:9A:72:48;
+	fixed-address sq65.wikimedia.org;
+}
+
+host sq66 {
+	hardware ethernet 00:21:9B:99:EC:E4;
+	fixed-address sq66.wikimedia.org;
+}
+
+host sq67 {
+	hardware ethernet 00:21:9B:9A:63:0F;
+	fixed-address sq67.wikimedia.org;
+}
+
+host sq68 {
+	hardware ethernet 00:21:9B:9A:09:E5;
+	fixed-address sq68.wikimedia.org;
+}
+
+host sq69 {
+	hardware ethernet 00:21:9B:9A:A8:C6;
+	fixed-address sq69.wikimedia.org;
+}
+
+host sq70 {
+	hardware ethernet 00:21:9B:9A:C6:E7;
+	fixed-address sq70.wikimedia.org;
+}
+
+host sq71 {
+	hardware ethernet 00:21:9B:9A:AF:A1;
+	fixed-address sq71.wikimedia.org;
+}
+
+host sq72 {
+	hardware ethernet 00:21:9B:9A:DA:58;
+	fixed-address sq72.wikimedia.org;
+}
+
+host sq73 {
+	hardware ethernet 00:21:9B:9A:D3:35;
+	fixed-address sq73.wikimedia.org;
+}
+
+host sq74 {
+	hardware ethernet 00:21:9B:9A:C8:19;
+	fixed-address sq74.wikimedia.org;
+}
+
+host sq75 {
+	hardware ethernet 00:21:9B:9A:D2:DB;
+	fixed-address sq75.wikimedia.org;
+}
+
+host sq76 {
+	hardware ethernet 00:21:9B:9A:DB:F6;
+	fixed-address sq76.wikimedia.org;
+}
+
+host sq77 {
+	hardware ethernet 00:21:9B:9A:D2:8A;
+	fixed-address sq77.wikimedia.org;
+}
+
+host sq78 {
+	hardware ethernet 00:21:9B:9A:BE:DA;
+	fixed-address sq78.wikimedia.org;
+}
+
+host sq79 {
+	hardware ethernet 00:21:9B:9A:C1:74;
+	fixed-address sq79.wikimedia.org;
+}
+
+host sq80 {
+	hardware ethernet 00:21:9B:9A:A7:0D;
+	fixed-address sq80.wikimedia.org;
+}
+
+host sq81 {
+	hardware ethernet 00:21:9B:9A:C1:59;
+	fixed-address sq81.wikimedia.org;
+}
+
+host sq82 {
+	hardware ethernet 00:21:9B:9A:D0:0B;
+	fixed-address sq82.wikimedia.org;
+}
+
+host sq83 {
+	hardware ethernet 00:21:9B:9A:BA:87;
+	fixed-address sq83.wikimedia.org;
+}
+
+host sq84 {
+	hardware ethernet 00:21:9B:9A:C2:8B;
+	fixed-address sq84.wikimedia.org;
+}
+
+host sq85 {
+	hardware ethernet 00:21:9B:9A:C1:B3;
+	fixed-address sq85.wikimedia.org;
+}
+
+host sq86 {
+	hardware ethernet 00:21:9B:9A:BF:A0;
+	fixed-address sq86.wikimedia.org;
+}
+
+host srv258 {
+	hardware ethernet 00:21:9b:9e:a7:04;
+	fixed-address srv258.pmtpa.wmnet;
+}
+
+host srv259 {
+	hardware ethernet 00:21:9b:9e:a6:23;
+	fixed-address srv259.pmtpa.wmnet;
+}
+
+host srv260 {
+	hardware ethernet 00:21:9b:9f:ac:dc;
+	fixed-address srv260.pmtpa.wmnet;
+}
+
+host srv261 {
+	hardware ethernet 00:21:9b:9f:a5:56;
+	fixed-address srv261.pmtpa.wmnet;
+}
+
+host srv262 {
+	hardware ethernet 00:21:9b:9e:ac:89;
+	fixed-address srv262.pmtpa.wmnet;
+}
+
+host srv263 {
+	hardware ethernet 00:21:9b:9e:ab:2a;
+	fixed-address srv263.pmtpa.wmnet;
+}
+
+host srv264 {
+	hardware ethernet 00:21:9b:9e:aa:b5;
+	fixed-address srv264.pmtpa.wmnet;
+}
+
+host srv265 {
+	hardware ethernet 00:21:9b:9f:ac:43;
+	fixed-address srv265.pmtpa.wmnet;
+}
+
+host srv266 {
+	hardware ethernet 00:21:9b:9f:ab:98;
+	fixed-address srv266.pmtpa.wmnet;
+}
+
+host srv267 {
+	hardware ethernet 00:21:9b:9f:a7:f9;
+	fixed-address srv267.pmtpa.wmnet;
+}
+
+host srv268 {
+	hardware ethernet 00:21:9b:9e:a4:46;
+	fixed-address srv268.pmtpa.wmnet;
+}
+
+host srv269 {
+	hardware ethernet 00:21:9b:9f:a5:d4;
+	fixed-address srv269.pmtpa.wmnet;
+}
+
+host srv270 {
+	hardware ethernet 00:21:9b:9f:d2:83;
+	fixed-address srv270.pmtpa.wmnet;
+}
+
+host srv271 {
+	hardware ethernet 00:21:9b:9e:a5:8a;
+	fixed-address srv271.pmtpa.wmnet;
+}
+
+host srv272 {
+	hardware ethernet 00:21:9b:9e:ac:d1;
+	fixed-address srv272.pmtpa.wmnet;
+}
+
+host srv273 {
+	hardware ethernet 00:21:9b:9f:aa:6f;
+	fixed-address srv273.pmtpa.wmnet;
+}
+
+host srv274 {
+	hardware ethernet 00:21:9b:9e:ac:41;
+	fixed-address srv274.pmtpa.wmnet;
+}
+
+host srv275 {
+	hardware ethernet 00:21:9b:9e:ae:15;
+	fixed-address srv275.pmtpa.wmnet;
+}
+
+host  srv276 {
+	hardware ethernet 00:21:9b:9e:da:e8;
+	fixed-address srv276.pmtpa.wmnet;
+}
+
+host srv277 {
+	hardware ethernet 00:21:9b:9e:c2:55;
+	fixed-address srv277.pmtpa.wmnet;
+}
+
+host srv278 {
+	hardware ethernet 00:21:9b:9e:d8:06;
+	fixed-address srv278.pmtpa.wmnet;
+}
+
+host srv279 {
+	hardware ethernet 00:21:9b:9f:ab:74;
+	fixed-address srv279.pmtpa.wmnet;
+}
+
+host srv280 {
+	hardware ethernet 00:21:9b:9f:ab:50;
+	fixed-address srv280.pmtpa.wmnet;
+}
+
+host srv281 {
+	hardware ethernet 00:21:9b:9e:de:63;
+	fixed-address srv281.pmtpa.wmnet;
+}
+
+host srv282 {
+	hardware ethernet 00:21:9b:9e:a9:95;
+	fixed-address srv282.pmtpa.wmnet;
+}
+
+host srv283 {
+	hardware ethernet 00:21:9b:9f:91:82;
+	fixed-address srv283.pmtpa.wmnet;
+}
+
+host srv284 {
+	hardware ethernet 00:21:9b:a1:17:62;
+	fixed-address srv284.pmtpa.wmnet;
+}
+
+host srv285 {
+	hardware ethernet 00:21:9b:9e:dd:70;
+	fixed-address srv285.pmtpa.wmnet;
+}
+
+host srv286 {
+	hardware ethernet 00:21:9b:9e:da:d6;
+	fixed-address srv286.pmtpa.wmnet;
+}
+
+host srv287 {
+	hardware ethernet 00:21:9b:9e:d7:40;
+	fixed-address srv287.pmtpa.wmnet;
+}
+
+host srv288 {
+	hardware ethernet 00:21:9b:9f:71:60;
+	fixed-address srv288.pmtpa.wmnet;
+}
+
+host srv289 {
+	hardware ethernet 00:21:9b:9f:6f:d4;
+	fixed-address srv289.pmtpa.wmnet;
+}
+
+host srv290 {
+	hardware ethernet 00:21:9b:a6:32:e7;
+	fixed-address srv290.pmtpa.wmnet;
+}
+
+host srv291 {
+	hardware ethernet 00:21:9b:a6:33:38;
+	fixed-address srv291.pmtpa.wmnet;
+}
+
+host srv292 {
+	hardware ethernet 00:21:9b:a6:1c:f7;
+	fixed-address srv292.pmtpa.wmnet;
+}
+
+host srv293 {
+	hardware ethernet 00:21:9b:a6:34:22;
+	fixed-address srv293.pmtpa.wmnet;
+}
+
+host srv294 {
+	hardware ethernet 00:21:9b:a6:33:26;
+	fixed-address srv294.pmtpa.wmnet;
+}
+
+host srv295 {
+	hardware ethernet 00:21:9b:a6:1e:3b;
+	fixed-address srv295.pmtpa.wmnet;
+}
+
+host srv296 {
+	hardware ethernet 00:21:9b:a6:33:c8;
+	fixed-address srv296.pmtpa.wmnet;
+}
+
+host srv297 {
+	hardware ethernet 00:21:9b:a6:32:9f;
+	fixed-address srv297.pmtpa.wmnet;
+}
+
+host srv298 {
+	hardware ethernet 00:21:9b:a6:34:34;
+	fixed-address srv298.pmtpa.wmnet;
+}
+
+host srv299 {
+	hardware ethernet 00:21:9b:a6:1b:c5;
+	fixed-address srv299.pmtpa.wmnet;
+}
+
+host srv300 {
+	hardware ethernet 00:21:9b:a6:33:0b;
+	fixed-address srv300.pmtpa.wmnet;
+}
+
+host srv301 {
+	hardware ethernet 00:21:9b:a6:1e:e6;
+	fixed-address srv301.pmtpa.wmnet;
+}
+host ssl1 {
+	hardware ethernet 78:2b:cb:47:00:6e;
+	fixed-address ssl1.wikimedia.org;
+}
+
+host ssl2 {
+	hardware ethernet 78:2b:cb:48:f9:61;
+	fixed-address ssl2.wikimedia.org;
+}
+
+host ssl3 {
+	hardware ethernet 78:2b:cb:49:00:15;
+	fixed-address ssl3.wikimedia.org;
+}
+
+host ssl4 {
+	hardware ethernet 78:2b:cb:48:f9:58;
+	fixed-address ssl4.wikimedia.org;
+}
+
+host ssl1001 {
+	hardware ethernet 78:2b:cb:09:10:91;
+	fixed-address ssl1001.wikimedia.org;
+}
+
+host ssl1002 {
+	hardware ethernet 78:2b:cb:08:a0:c0;
+	fixed-address ssl1002.wikimedia.org;
+}
+
+host ssl1003 {
+	hardware ethernet 78:2b:cb:08:aa:75;
+	fixed-address ssl1003.wikimedia.org;
+}
+
+host ssl1004 {
+	hardware ethernet 78:2b:cb:08:a4:59;
+	fixed-address ssl1004.wikimedia.org;
+}
+
+host ssl3001 {
+	hardware ethernet 78:2b:cb:45:1d:e0;
+	fixed-address ssl3001.esams.wikimedia.org;
+}
+
+host ssl3002 {
+	hardware ethernet 78:2b:cb:45:6a:4a;
+	fixed-address ssl3002.esams.wikimedia.org;
+}
+
+host ssl3003 {
+	hardware ethernet 78:2b:cb:45:2b:de;
+	fixed-address ssl3003.esams.wikimedia.org;
+}
+
+host ssl3004 {
+	hardware ethernet 78:2b:cb:45:2c:0b;
+	fixed-address ssl3004.esams.wikimedia.org;
+}
+
+host stafford {
+	hardware ethernet 00:21:9b:97:c9:1b;
+	fixed-address stafford.pmtpa.wmnet;
+}
+
+host stat1 {
+	hardware ethernet 78:2b:cb:1e:87:bc;
+	fixed-address stat1.wikimedia.org;
+}
+
+host strontium {
+	hardware ethernet 18:03:73:f4:ef:51;
+	fixed-address strontium.eqiad.wmnet;
+}
+
+host transcode1 {
+	hardware ethernet 00:21:9B:97:ED:C6;
+	fixed-address transcode1.wikimedia.org;
+}
+
+host virt0 {
+	hardware ethernet 00:21:9b:94:63:57;
+	fixed-address virt0.wikimedia.org;
+}
+
+host virt1 {
+	hardware ethernet f0:4d:a2:0b:33:fb;
+	fixed-address virt1.pmtpa.wmnet;
+}
+
+host virt2 {
+	hardware ethernet f0:4d:a2:0b:3e:2d;
+	fixed-address virt2.pmtpa.wmnet;
+}
+
+host virt3 {
+	hardware ethernet f0:4d:a2:0b:33:f2;
+	fixed-address virt3.pmtpa.wmnet;
+}
+
+host virt4 {
+	hardware ethernet f0:4d:a2:0b:3e:5a;
+	fixed-address virt4.pmtpa.wmnet;
+}
+
+host virt5 {
+	hardware ethernet 88:43:e1:c2:86:40;
+	fixed-address virt5.pmtpa.wmnet;
+}
+
+host yttrium {
+	hardware ethernet 18:03:73:f1:4f:82;
+	fixed-address yttrium.wikimedia.org;
+}
+
+host zhen {
+	hardware ethernet d4:be:d9:af:68:4f;
+	fixed-address zhen.wikimedia.org;
+}
+
+host zinc {
+	hardware ethernet 78:2b:cb:09:0e:3d;
+	fixed-address zinc.wikimedia.org;
+}
+
+
+
+
+
+
