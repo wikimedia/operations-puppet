@@ -1,0 +1,9 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET 
+#### puppet:///files/dhcpd/linux-host-entries.ttyS0-115200
+######################################################################
+
+host virt1001 {
+	hardware ethernet 00:22:bd:d3:38:62;
+	fixed-address virt1001.eqiad.wmnet;
+}
