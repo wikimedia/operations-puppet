@@ -1,0 +1,8 @@
+Code-Review+2: Bhartshorne <ben@wikimedia.org>
+Verified+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Bhartshorne <ben@wikimedia.org>
+Submitted-at: Fri, 06 Apr 2012 00:50:49 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/4382
+Project: operations/puppet
+Branch: refs/heads/production
