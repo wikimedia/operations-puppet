@@ -57,7 +57,7 @@ class DeleteRequest(urllib2.Request):
 
 class CheckObjects(threading.Thread):
     # objlist should be between 100 and 10,000 objects for best results
-    def __init__(self, objlist, delay):
+    def __init__(self, objlist, conf, delay):
         threading.Thread.__init__(self)
         self.objlist = objlist
         self.delay = delay
@@ -65,6 +65,7 @@ class CheckObjects(threading.Thread):
         self.ms5_obj_details = {} # hash for memorizing details
         #self.token = 'AUTH_abcd1234' #testing bad token exception catching
         self.token = None
+        self.conf = conf
         #print "%s initializing." % self.name
 
     # thread entry
@@ -79,7 +80,7 @@ class CheckObjects(threading.Thread):
             if(res == False):
                 # we've found ourselves a bad object!
                 # go clean it up but don't slow us down.
-                threading.Thread(target=bad_object, args=(obj,)).start()
+                threading.Thread(target=bad_object, args=(obj,self.conf)).start()
             # sleep for the delay time between checks
             if(self.delay != 0):
                 time.sleep(self.delay)
@@ -243,19 +244,91 @@ class CheckObjects(threading.Thread):
             objdetails = None
         return objdetails
 
-def bad_object(obj):
+def bad_object(obj, conf):
     """deletes the object from swift and sends an htcp purge message to squid.
     To avoid ridiculous performance penalty, this should be called as a
     separate thread."""
+    # if I'm supposed to save a copy, grab it before sending the delete.
+    if(conf['save']):
+        try:
+            download_from_swift_and_ms5(obj, conf)
+        except (urllib2.HTTPError, urllib2.URLError), e:
+            print "retrieving from swift or ms5 failed for obj %s with error %s" % (obj,e)
+    # ok, go on and delete the thing.
     try:
-        delete_from_swift(obj)
+        delete_from_swift(obj, conf)
     except (urllib2.HTTPError, urllib2.URLError), e:
         print "deleting from swift failed for obj %s with error %s" % (obj,e)
     purge_from_squid(obj)
     time.sleep(0.5)
     purge_from_squid(obj) #purge a second time just for good measure
 
-def delete_from_swift(obj):
+def download_from_swift_and_ms5(obj, conf):
+    print "downloading %s from both swift and ms5" % obj_to_url(obj)
+    # make necessary subdirs to store the downloaded file
+    path = re.match('(?P<dirs>.*)/[^/]+$', obj[1])
+    subprocess.call(['mkdir', '-p', '%s/swift/%s' % (conf['savepath'], path.group('dirs'))], shell=False)
+    subprocess.call(['mkdir', '-p', '%s/ms5/%s' % (conf['savepath'], path.group('dirs'))], shell=False)
+    #get object from swift
+    url = "http://ms-fe.pmtpa.wmnet/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/%s/%s" % (obj[0], obj[1])
+    req = urllib2.Request(url)
+    req.headers['User-Agent'] = 'swiftcleaner'
+    req.headers['Host'] = 'upload.wikimedia.org'
+    req.headers['X-Auth-Token'] = Token.get_token()
+    try:
+        resp = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        #if we're talking to swift and it's a 401, reauth and try once more
+        if(e.code == 401):
+            Token.clear_token()
+            req.headers['X-Auth-Token'] = Token.get_token()
+            try:
+                resp = urllib2.urlopen(req)
+            except urllib2.HTTPError, e:
+                print e
+                # if we got an error again, give up
+                raise
+            #hooray, we successfully deleted it the second time!
+        else:
+            #any other error, return False anyways
+            raise
+    except urllib2.URLError:
+        raise
+    # store the swift file
+    of = open('%s/swift/%s' % (conf['savepath'], obj[1]), 'w')
+    for line in resp:
+        of.write(line)
+    of.close()
+    # and headers
+    of = open('%s/swift/%s.header' % (conf['savepath'], obj[1]), 'w')
+    for item in resp.info().headers:
+        of.write(item)
+    of.close()
+    #ok now get the object from ms5
+    url = "http://ms5.pmtpa.wmnet/%s" % obj_to_url(obj)
+    req = urllib2.Request(url)
+    req.headers['User-Agent'] = 'swiftcleaner'
+    req.headers['Host'] = 'upload.wikimedia.org'
+    # send that GET to the target
+    try:
+        resp = urllib2.urlopen(req)
+    except urllib2.HTTPError, e:
+        print e
+        raise
+    except urllib2.URLError:
+        raise
+    # store the ms5 file
+    of = open('%s/ms5/%s' % (conf['savepath'], obj[1]), 'w')
+    for line in resp:
+        of.write(line)
+    of.close()
+    # and headers
+    of = open('%s/ms5/%s.header' % (conf['savepath'], obj[1]), 'w')
+    for item in resp.info().headers:
+        of.write(item)
+    of.close()
+
+def delete_from_swift(obj, conf):
     #DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.a2/a/a2/Little_kitten_.jpg/56px-Little_kitten_.jpg HTTP/1.1
     #Host: ms-fe-rr.pmtpa.wmnet
     #Accept-Encoding: identity
@@ -345,7 +418,7 @@ def delegate(objlistfile, conf):
             # this is the last thread to start.
             fh_has_data = False
         # start a thread with objlist
-        checker = CheckObjects(objlist, delay=conf['delay'])
+        checker = CheckObjects(objlist, conf, delay=conf['delay'])
         checker.start()
 
 def main():
@@ -361,8 +434,10 @@ def main():
     parser.add_option("-n", dest="numthreads", default=2, help="number of threads to run")
     parser.add_option("-o", dest="objsperthread", default=50, help="the number of objects to hand into each thread to check")
     parser.add_option("-d", dest="delay", default=0, help="delay (in seconds) to wait in between each object checked. This should probably be less than 0.1.")
+    parser.add_option("-s", dest="save", default=False, action="store_true", help="Save a copy of deleted objects for later inspection")
+    parser.add_option("-S", dest="savepath", default='.', help="Path to a directory in which to save deleted opjects (only valid with -s)")
     #parser.add_option("-l", dest="logfile", default=0, help="file to which to log messages")
-    parser.add_option("-t", dest="test", default=False, action="store_true", help="test mode - don't actually delete anything")
+    #parser.add_option("-t", dest="test", default=False, action="store_true", help="test mode - don't actually delete anything")
     (options, args) = parser.parse_args()
 
     conf = {}
@@ -373,8 +448,10 @@ def main():
     conf['numthreads'] = int(options.numthreads)
     conf['objsperthread'] = int(options.objsperthread)
     conf['delay'] = float(options.delay)
+    conf['save'] = options.save
+    conf['savepath'] = options.savepath
     #conf['logfile'] = options.logfile
-    conf['test'] = (True if options.test == True or options.test == 'True' else False)
+    #conf['test'] = (True if options.test == True or options.test == 'True' else False)
 
     # make sure we've got a urllist passed in
     if not args:

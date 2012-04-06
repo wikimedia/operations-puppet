@@ -176,7 +176,7 @@ def process_container(conf, cont):
     if(len(newobjs) != 0):
         write_list(conf, cont, 'new', newobjs)
         print "calling swiftcleaner for %s" % cont
-        sc = subprocess.call([conf['swiftcleaner'], "-c", conf['config'], "%s/%s.new" % (conf['statedir'], cont)])
+        sc = subprocess.call([conf['swiftcleaner'], "-c", conf['config'], "%s/%s.new" % (conf['statedir'], cont), "-S", conf['savepath']])
         if(sc == 0):
             # only move current to prev (aka we successfully checked these objects) if swiftcleaner succeeded.
             print "swiftcleaner succeeded for %s.  moving container listing from curr to prev." % cont
@@ -234,6 +234,9 @@ def main():
     parser.add_option("-S", dest="scrubstate", action='store_const', const='True', default='False', help="if defined as True, will remove all state before starting (and do a complete check)")
     parser.add_option("-n", dest="nummanagerthreads", default=2, help="number of manager threads to run (multiply this number by the number of cleaner threads to get the total number of threads.)")
     parser.add_option("-p", dest="pidfile", default="/tmp/swiftcleanermanager.pid", help="location for the pidfile - only one instance will run at a time.")
+    parser.add_option("-s", dest="save", default=False, action="store_true", help="Save a copy of deleted objects for later inspection")
+    parser.add_option("-S", dest="savepath", default='', help="Path to a directory in which to save deleted opjects (only valid with -s)")
+
     (options, args) = parser.parse_args()
 
     conf = {}
@@ -241,6 +244,8 @@ def main():
     conf['statedir'] = options.statedir
     conf['scrubstate'] = options.scrubstate
     conf['pidfile'] = options.pidfile
+    conf['save'] = options.save
+    conf['savepath'] = options.savepath
     # get the rest of the config from the config file
     conf = read_config(conf['config'], conf)
 
