@@ -1,0 +1,12 @@
+SERIAL 0x3F8 9600
+CONSOLE 0
+
+DISPLAY pxelinux.cfg/boot.txt
+
+default server
+prompt 1
+timeout 100
+
+LABEL server
+        kernel ubuntu-installer/amd64/linux
+        append base-installer/kernel/linux/extra-packages-2.6= tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false vga=normal initrd=ubuntu-installer/amd64/initrd.gz preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 debian-installer/locale=en_US kbd-chooser/method=us console-setup/layoutcode=us netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/dhcp_timeout=60 -- console=ttyS0,9600n8

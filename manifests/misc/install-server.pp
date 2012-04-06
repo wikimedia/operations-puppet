@@ -48,10 +48,17 @@ class misc::install-server {
 		}
 
 		file {
-			 ["/srv/tftpboot", "/srv/tftpboot/restricted/" ]:
-				mode => 0755,
-				owner => root,
-				group => root,
+			 "/srv/tftpboot":
+				ensure => directory;
+				recurse => remote;
+				mode => 0755;
+				owner => root;
+				group => root;
+				source => "puppet:///files/tftp";
+			"/srv/tftpboot/restricted/":
+				mode => 0755;
+				owner => root;
+				group => root;
 				ensure => directory;
 			"/tftpboot":
 				ensure => "/srv/tftpboot";
@@ -66,6 +73,10 @@ class misc::install-server {
 			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
 			ensure => latest;
 		}
+	}
+
+	class tftp-server::lucid {
+
 	}
 
 	class caching-proxy {
