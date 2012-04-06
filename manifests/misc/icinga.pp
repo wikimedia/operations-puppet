@@ -109,6 +109,11 @@ class icinga::monitor {
 			group => root,
 			mode => 0755,
 			ensure => directory;
+
+		"/usr/share/icinga/htdocs/images/logos/ubuntu.png":
+			owner => root,
+			group => root,
+			mode => 0644;
 	}
 
 
