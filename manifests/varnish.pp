@@ -194,6 +194,24 @@ class varnish {
 			provider => upstart,
 			ensure => running;
 		}
+		
+		class monitoring {
+			Class [nrpe::packages] -> Class[varnish::htcppurger]
+			
+			# Monitoring
+			file { "/etc/nagios/nrpe.d/varnishhtcpd":
+				mode => 0444,
+				content => "command[check_varnishhtcpd]=/usr/lib/nagios/plugins/check_procs -c 1:1 -u varnishhtcpd -a 'varnishhtcpd worker'"
+			}
+		
+			monitor_service { "varnishhtcpd":
+				require => File["/etc/nagios/nrpe.d/varnishhtcpd"],
+				description => "Varnish HTCP daemon",
+				check_command => "nrpe_check_procs!check_varnishhtcpd"
+			}
+		}
+		
+		include monitoring
 	}
 
 
