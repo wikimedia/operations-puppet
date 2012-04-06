@@ -218,20 +218,6 @@ class db::es {
 		mysql::mysqlpath,
 		nrpe
 
-	# Nagios monitoring
-	monitor_service {
-		"mysql status":
-			description => "MySQL ${mysql_role} status",
-			check_command => "check_mysqlstatus!--${mysql_role}";
-		"mysql replication":
-			description => "MySQL replication status",
-			check_command => "check_db_lag",
-			ensure => $mysql_role ? {
-				"master" => absent,
-				"slave" => present
-			};
-	}
-
 }
 
 class db::es::master {
