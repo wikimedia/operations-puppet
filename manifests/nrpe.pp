@@ -1,3 +1,53 @@
+# Definition: nrpe::check
+#
+# Installs a single NRPE check in /etc/nagios/nrpe.d/
+#
+# Arguments:
+# - $title
+#	Name of the check, referenced by monitor_service and Nagios check_command
+#	e.g. check_varnishhtcpd
+# - $command
+#	Command run by NRPE, e.g. "/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishtcpd"
+define nrpe::check($command) {
+	Class[nrpe::packages] -> Nrpe::Check[$title]
+
+	file { "/etc/nagios/nrpe.d/${title}":
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => "command[${title}]=${command}"
+	}
+}
+
+# Definition: nrpe::monitor_service
+#
+# Defines a Nagios check for a remote service over NRPE
+#
+# Also optionally installs a corresponding NRPE check file
+# using nrpe::check
+#
+# Arguments:
+# - $description
+#	Service check description
+# - $nrpe_command
+#	if defined, installs this NRPE command as check_${title}
+define nrpe::monitor_service($description, $nrpe_command=undef) {
+	if $nrpe_command != undef {
+		nrpe::check { "check_$title}":
+			command => $nrpe_command,
+			before => Monitor_service[$title]
+		}
+	}
+	else {
+		Nrpe::Check["check_${title}"] -> Nrpe::Monitor_service[$title]
+	}
+
+	monitor_service{ $title:
+		description => $description,
+		check_command => "nrpe_check!check_${title}"
+	}
+}
+
 class nrpe::packages {
 	$nrpe_allowed_hosts = $::realm ? {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14",
