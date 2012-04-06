@@ -304,8 +304,25 @@ class misc::contint::test {
 			group => root,
 			content => template( "mysql/innodb_buffer_pool_size.cnf.erb" )
 		}
+
+		# Bug 35028
+		# We have the world largest Testswarm database (yeah another record)
+		# and do need some slow query logging to help improve Testswarm DB
+		# schema.
+		$long_query_time = 2
+		$log_queries_not_using_indexes = false
+		file { "/etc/mysql/conf.d/log_slow_queries.cnf":
+			mode  => 0444,
+			owner => root,
+			group => root,
+			content => template( "mysql/log_slow_queries.cnf.erb" )
+		}
+
 		service { "mysql":
-			subscribe => File["/etc/mysql/conf.d/innodb_buffer_pool_size.cnf"],
+			subscribe => [
+				File["/etc/mysql/conf.d/innodb_buffer_pool_size.cnf"],
+				File["/etc/mysql/conf.d/log_slow_queries.cnf"],
+			],
 			ensure => running;
 		}
 
