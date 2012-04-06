@@ -35,7 +35,7 @@ define nrpe::monitor_service($description, $nrpe_command=undef) {
 	if $nrpe_command != undef {
 		nrpe::check { "check_$title}":
 			command => $nrpe_command,
-			before => Monitor_service[$title]
+			before => ::Monitor_service[$title]
 		}
 	}
 	else {
