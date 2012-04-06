@@ -11,11 +11,11 @@
 define nrpe::check($command) {
 	Class[nrpe::packages] -> Nrpe::Check[$title]
 
-	file { "/etc/nagios/nrpe.d/${title}":
+	file { "/etc/nagios/nrpe.d/${title}.cfg":
 		owner => root,
 		group => root,
 		mode => 0444,
-		content => "command[${title}]=${command}",
+		content => "command[${title}]=${command}\n",
 		notify => Service["nagios-nrpe-server"]
 	}
 }
