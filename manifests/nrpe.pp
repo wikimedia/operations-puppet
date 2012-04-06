@@ -15,7 +15,8 @@ define nrpe::check($command) {
 		owner => root,
 		group => root,
 		mode => 0444,
-		content => "command[${title}]=${command}"
+		content => "command[${title}]=${command}",
+		notify => Service["nagios-nrpe-server"]
 	}
 }
 
@@ -80,6 +81,8 @@ class nrpe::packages {
 }
 
 class nrpe::service {
+	Class[nrpe::packages] -> Class[nrpe::service]
+	
 	service { nagios-nrpe-server:
 		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
 		subscribe => File["/etc/nagios/nrpe_local.cfg"],
@@ -145,6 +148,8 @@ class nrpe::packagesnew {
 }
 
 class nrpe::servicenew {
+	Class[nrpe::packagesnew] -> Class[nrpe::servicenew]
+
 	service { nagios-nrpe-server:
 		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
 		subscribe => File["/etc/icinga/nrpe_local.cfg"],
