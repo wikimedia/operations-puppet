@@ -203,7 +203,7 @@ class db::core {
 		mysql
 }
 
-class db::es {
+class db::es($mysql_role = "slave") {
 	$cluster = "mysql"
 
 	$nagios_group = "es"
@@ -216,32 +216,9 @@ class db::es {
 		mysql::datadirs,
 		mysql::conf,
 		mysql::mysqlpath,
+		monitor::percona::es,
 		nrpe
 
-	# Nagios monitoring
-	monitor_service {
-		"mysql status":
-			description => "MySQL ${mysql_role} status",
-			check_command => "check_mysqlstatus!--${mysql_role}";
-		"mysql replication":
-			description => "MySQL replication status",
-			check_command => "check_db_lag",
-			ensure => $mysql_role ? {
-				"master" => absent,
-				"slave" => present
-			};
-	}
-
-}
-
-class db::es::master {
-	$mysql_role = "master"
-	include db::es
-}
-
-class db::es::slave {
-	$mysql_role = "slave"
-	include db::es
 }
 
 class searchserver {
@@ -483,10 +460,10 @@ node "erzurumi.pmtpa.wmnet" {
 
 node /es100[1-4]\.eqiad\.wmnet/ {
 	if $hostname == "es1001" {
-		include db::es::master
+		class { "db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es::slave
+		include db::es
 	}
 #	if $hostname == "es1004" {
 #		# replica of ms3 - currently used for backups
@@ -496,10 +473,10 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 
 node /es[1-4]\.pmtpa\.wmnet/ {
 	if $hostname == "es3" {
-		include db::es::master
+		class { "db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es::slave
+		include db::es
 	}
 }
 
