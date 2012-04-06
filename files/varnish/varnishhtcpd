@@ -41,6 +41,9 @@ $daemon->parse_options(
 
 
 $daemon->do_action;
+
+$daemon->drop_privs;
+
 use Data::Dumper;
 print Dumper($daemon->options);
 
@@ -152,120 +155,5 @@ while(1) {
 
 exit;
 __END__
-
-
-
-my $ua = LWP::UserAgent->new(keep_alive => 1);
-$ua->agent("HTCP Purger");
-$ua->proxy('http', "http://$config{cache}/");
-my $req = HTTP::Request->new(PURGE => "http://$config{cache}/lvscheck.html");
-$req->header(PurgeURL => "xx");
-my $res = $ua->request($req);
-if($res->code != 200) {
-    die "FAILED @{[$res->status_line]}\n";    
-}
-
-# these are just so those functions are autoloaded
-$res->status_line;
-$res->is_success;
-$res->is_error;
-
-
-{
-    mkdir ("/tmp/varnishhtcpd.$$") || die;
-    chown($uid,$gid, "/tmp/varnishhtcpd.$$") || die;
-    chroot("/tmp/varnishhtcpd.$$") || die;
-    chdir("/");
-    drop_privs();
-    mkdir ("/etc") || die;
-    open(my $protocol, "+>/etc/protocols") || die;
-    print $protocol "tcp     6       TCP\n";
-    close($protocol);
-}
-
-while(1) {
-  my $raw;
-  my ($len, $datalen, $op, $id, $specifier,$extra);
-  my ($method, $url, $version, $nr3);
-  eval {
-    $0 = "$config{name} worker - waiting for net";
-    (my $peer = recv($listen, $raw, 512, 0)) || die "recv: $!";
-    my ($port, $addr) = sockaddr_in($peer);
-    
-    # reverse engineered from mediawiki SquidUpdate.php
-    
-    ($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
-    
-    ($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier); 
-    
-    $0 = "$config{name} worker - purging $url";
-    print "$0\n";
- #   return  unless($url =~/communitytest.wikia.com/);
-    print "Got [[[$url]]] from " . inet_ntoa($addr) . ":$port\n";
-    my $uri = URI->new($url);
-    warn "$url";
-    warn $uri->path_query;
-    warn $uri->host;
-    my $hashed_url = $uri->path_query . "#" . $uri->host . "#";
-    $hashed_url =~ s/\?/\\?/;
-    my $req = HTTP::Request->new(PURGE => "$uri");
-    $req->header("Accept-Encoding" => 'gzip');
-    $req->header(PurgeURL => "$hashed_url");
-    my $res = $ua->request($req);
-    if($res->is_success()) {
-	warn "PURGED";
-    } else {
-	warn "FAILED @{[$res->status_line]}\n";
-    }
-
-  };
-  if($@) {
-    no warnings;
-    warn "$@\n";
-    warn "$len, $datalen, $op, $id, $specifier,$extra\n";
-    warn "$method, $url, $version, $nr3\n";
-    mylog(1, 'alert', "$@");
-    mylog(1, 'alert', "$len, $datalen, $op, $id, $specifier,$extra");
-    mylog(1, 'alert', "$method, $url, $version, $nr3");
-  }
-}
-
-exit;
-
-sub daemonize {
-  use POSIX qw(setsid);
-  defined(my $pid = fork) || die "Can't fork: $!";
-  if ($pid) {
-    print "$config{name} started on $pid\n";
-    exit 0;
-  }
-  setsid() || die "Can't start a new session: $!";
-  open (STDIN , '/dev/null') || die "Can't read /dev/null: $!";
-  open (STDOUT, '>/dev/null') || die "Can't write to /dev/null: $!";
-  open (STDERR, '>/dev/null') || die "Can't write to /dev/null: $!";
-
-}
-
-sub mylog {
-  my ($level, $prio, $msg) = @_;
-  return 1 if ($level > $config{loglevel});
-  if ($config{syslog}) {
-    syslog($prio, $msg) || die "$!";
-  } else {
-    print STDERR "$prio - $msg\n";
-  }
-}
-    
-
-
-
-sub drop_privs {
-  # drop user to nobody
-  $< = $uid;
-  $> = $uid;
-  # drop group to nobody
-  $( = $gid;
-  $) = $gid;
-}
 
 1;
