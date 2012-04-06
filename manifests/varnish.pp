@@ -187,7 +187,7 @@ class varnish {
 				content => inline_template('DAEMON_OPTS="--user=varnishhtcpd --group=varnishhtcpd --mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%>"');
 		}
 
-		upstart_job { "varnishhtcpd": install => true }
+		upstart_job { "varnishhtcpd": install => "true" }
 
 		service { varnishhtcpd:
 			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
