@@ -456,6 +456,12 @@ define command{
 	command_line	$USER3$/check_ganglios_generic_value -H $HOSTADDRESS$ -m packet_loss_average -w $ARG1$ -c $ARG2$ -o gt
 }
 
+# Generic NRPE command for check_projcs
+define command{
+	command_name	nrpe_check_procs
+	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+}
+
 # percona mysql checks
 define command{
 	command_name	nrpe_check_lvs
