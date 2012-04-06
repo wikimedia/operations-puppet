@@ -42,7 +42,7 @@ define nrpe::monitor_service($description, $nrpe_command=undef) {
 		Nrpe::Check["check_${title}"] -> Nrpe::Monitor_service[$title]
 	}
 
-	monitor_service{ $title:
+	::monitor_service{ $title:
 		description => $description,
 		check_command => "nrpe_check!check_${title}"
 	}
