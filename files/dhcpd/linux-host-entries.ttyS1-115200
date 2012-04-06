@@ -2839,11 +2839,6 @@ host virt4 {
 	fixed-address virt4.pmtpa.wmnet;
 }
 
-host virt5 {
-	hardware ethernet 88:43:e1:c2:86:40;
-	fixed-address virt5.pmtpa.wmnet;
-}
-
 host yttrium {
 	hardware ethernet 18:03:73:f1:4f:82;
 	fixed-address yttrium.wikimedia.org;

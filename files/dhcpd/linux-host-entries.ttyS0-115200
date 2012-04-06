@@ -7,3 +7,8 @@ host virt1001 {
 	hardware ethernet 00:22:bd:d3:38:62;
 	fixed-address virt1001.eqiad.wmnet;
 }
+
+host virt5 {
+	hardware ethernet 88:43:e1:c2:86:40;
+	fixed-address virt5.pmtpa.wmnet;
+}
