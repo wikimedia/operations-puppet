@@ -172,7 +172,7 @@ class varnish {
 	class htcppurger($varnish_instances=["localhost:80"]) {
 		Class[varnish::packages] -> Class[varnish::htcppurger]
 
-		systemuser { "varnishhtcpd": name => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
+		systemuser { "varnishhtcpd": name => "varnishhtcpd", default_group => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
 
 		file {
 			"/usr/local/bin/varnishhtcpd":
@@ -181,21 +181,19 @@ class varnish {
 				group => root,
 				mode => 0555;
 			"/etc/init.d/varnishhtcpd":
-				source => "puppet:///files/varnish/varnishhtcpd.init",
-				owner => root,
-				group => root,
-				mode => 0555;
+				ensure => absent;
 			"/etc/default/varnishhtcpd":
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => inline_template('DAEMON_OPTS="--mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%> --name=varnishhtcpd"');
+				content => inline_template('DAEMON_OPTS="--user=varnishhtcpd --group=varnishhtcpd --mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%>"');
 		}
 
+		upstart_job { "varnishhtcpd": install => true }
+
 		service { varnishhtcpd:
-			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/init.d/varnishhtcpd", "/etc/default/varnishhtcpd"]], Systemuser[varnishhtcpd] ],
-			hasstatus => false,
-			pattern => "varnishhtcpd",
+			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
+			provider => upstart,
 			ensure => running;
 		}
 	}
