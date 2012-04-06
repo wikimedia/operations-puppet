@@ -180,8 +180,6 @@ class varnish {
 				owner => root,
 				group => root,
 				mode => 0555;
-			"/etc/init.d/varnishhtcpd":
-				ensure => absent;
 			"/etc/default/varnishhtcpd":
 				owner => root,
 				group => root,
