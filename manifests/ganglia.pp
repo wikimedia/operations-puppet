@@ -31,13 +31,11 @@ class ganglia {
 
 	if $realm == "labs" {
 		$gridname = "wmflabs"
-		$gmetad_conf = "gmetad.conf.labsstub"
 		$authority_url = "http://ganglia.wmflabs.org"
 		$gmetad_host = "10.4.0.79"
 
 	} else {
 		$gridname = "Wikimedia"
-		$gmetad_conf = "gmetad.conf"
 		$authority_url = "http://ganglia.wikimedia.org"
 	}
 	
@@ -196,11 +194,16 @@ class ganglia {
 
 	# Class for setting up the collector (gmetad)
 	class collector {
-
 		system_role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
 
 		package { "gmetad":
 			ensure => latest;
+		}
+
+		if $realm == "labs" {
+			$gmetad_conf = "gmetad.conf.labsstub"
+		} else {
+			$gmetad_conf = "gmetad.conf"
 		}
 
 		## FIXME this file is a temp hack to get ganglia running. Needs to become
