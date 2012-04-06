@@ -113,6 +113,7 @@ my $listen = IO::Socket::INET->new(
                                    LocalPort => $daemon->options->{'mcast_port'},
                                    Type      => SOCK_DGRAM,
                                    Proto     => 'udp',
+                                   ReuseAddr => 1,
                                    ) || die;
 
 
