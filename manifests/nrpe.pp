@@ -144,6 +144,16 @@ class nrpe::packagesnew {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/nagios/check_dpkg";
+		"/etc/init.d/nagios-nrpe-server":
+			owner => root,
+			group => root,
+			mode => 0755,
+			source => "puppet:///files/icinga/nagios-nrpe-server-init";
+		"/etc/icinga/nrpe.cfg":
+			owner => root,
+			group => root,
+			mode => 0644,
+			source => "puppet:///files/icinga/nrpe.cfg";
 	}
 }
 
