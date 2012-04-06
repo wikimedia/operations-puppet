@@ -239,7 +239,7 @@ class swift::cleaner {
 			ensure => directory;
 		}
 		cron { "swiftcleaner-$name":
-			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -S /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S) -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
+			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -A /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S) -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
 			user => root,
 			minute => 1,
 			hour => 22, #the beginning of the daily trough
