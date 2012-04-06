@@ -294,6 +294,21 @@ class misc::contint::test {
 				group  => www-data;
 		}
 
+		# Bug 34886 / RT 2574
+		# Testswarm MySQL tables have a lot of rows which requires to allocate
+		# a bit of RAM to Innodb so it can maintain locks on all the rows.
+		$innodb_buffer_pool_size = "256M"
+		file { "/etc/mysql/conf.d/innodb_buffer_pool_size.cnf":
+			mode  => 0444,
+			owner => root,
+			group => root,
+			content => template( "mysql/innodb_buffer_pool_size.cnf.erb" )
+		}
+		service { "mysql":
+			subscribe => File["/etc/mysql/conf.d/innodb_buffer_pool_size.cnf"],
+			ensure => running;
+		}
+
 		# Reload apache whenever testswarm checkouts configuration change
 		exec {	"update-testswarm-publish-checkout":
 			command => "/usr/sbin/service apache2 reload",
