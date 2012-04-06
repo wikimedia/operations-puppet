@@ -219,8 +219,8 @@ class ganglia {
 			ensure	=> present
 		}
 
-		# cron job to generate ganglia aggregator confs
 		if $realm == "labs" {
+			# cron job to generate ganglia aggregator confs
 			exec { "create_gmond_conf_include":
 				creates => "/etc/ganglia/conf.d/labs-aggregator.conf",
 				command => "/usr/bin/touch /etc/ganglia/conf.d/labs-aggregator.conf";
@@ -238,6 +238,20 @@ class ganglia {
 				user => root,
 				hour => [0, 8, 16],
 				minute => 30,
+				ensure => present;
+			}
+
+			# log gmetad messages to /var/log/ganglia.log 
+			file { "/etc/rsyslog.d/30-ganglia.conf":
+				source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
+				mode => 0444,
+				ensure => present,
+				notify => Service["rsyslog"];
+			}
+
+			file { "/etc/logrotate.d/ganglia":
+				source => "puppet:///files/logrotate/ganglia",
+				mode => 0444,
 				ensure => present;
 			}
 		}

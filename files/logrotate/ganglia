@@ -1,0 +1,9 @@
+/var/log/ganglia.log {
+	rotate 0
+	size 200M
+	missingok
+	compress
+	postrotate
+		/etc/init.d/gmetad restart
+	endscript
+}
