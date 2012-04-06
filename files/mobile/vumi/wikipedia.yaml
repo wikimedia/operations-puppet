@@ -1,0 +1,7 @@
+transport_name: wikipedia_xmpp
+worker_name: wikipedia_worker
+
+content_type: text
+
+sms_transport: wikipedia_xmpp_sms_out
+# override_sms_address: sms_hack@gtalk.com
