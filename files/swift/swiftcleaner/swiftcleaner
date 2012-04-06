@@ -110,6 +110,9 @@ class CheckObjects(threading.Thread):
                     if check == self.check_object_against_ms5:
                         # print out last mod time
                         print "deets are %s/%s for %s" % (self.get_object_details_swift(obj), self.get_object_details_ms5(obj), obj[1])
+                        # if I'm supposed to save a copy, grab it before sending the delete.
+                        if(self.conf['save']):
+                            threading.Thread(target=download_from_swift_and_ms5, args=(obj, self.conf)).start()
         return objok
 
     ##
@@ -248,12 +251,8 @@ def bad_object(obj, conf):
     """deletes the object from swift and sends an htcp purge message to squid.
     To avoid ridiculous performance penalty, this should be called as a
     separate thread."""
-    # if I'm supposed to save a copy, grab it before sending the delete.
-    if(conf['save']):
-        try:
-            download_from_swift_and_ms5(obj, conf)
-        except (urllib2.HTTPError, urllib2.URLError), e:
-            print "retrieving from swift or ms5 failed for obj %s with error %s" % (obj,e)
+    # sleep for a sec to make sure we've had time to download the object if necessary
+    time.sleep(1)
     # ok, go on and delete the thing.
     try:
         delete_from_swift(obj, conf)
@@ -435,7 +434,7 @@ def main():
     parser.add_option("-o", dest="objsperthread", default=50, help="the number of objects to hand into each thread to check")
     parser.add_option("-d", dest="delay", default=0, help="delay (in seconds) to wait in between each object checked. This should probably be less than 0.1.")
     parser.add_option("-s", dest="save", default=False, action="store_true", help="Save a copy of deleted objects for later inspection")
-    parser.add_option("-S", dest="savepath", default='.', help="Path to a directory in which to save deleted opjects (only valid with -s)")
+    parser.add_option("-S", dest="savepath", default='/tmp', help="Path to a directory in which to save deleted opjects (only valid with -s)")
     #parser.add_option("-l", dest="logfile", default=0, help="file to which to log messages")
     #parser.add_option("-t", dest="test", default=False, action="store_true", help="test mode - don't actually delete anything")
     (options, args) = parser.parse_args()
