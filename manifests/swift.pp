@@ -223,7 +223,8 @@ class swift::cleaner {
 		$rewrite_user,
 		$rewrite_password,
 		$statedir,
-		$scrubstate ) {
+		$scrubstate,
+		$save_deletes ) {
 
 		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
 			owner => root,
@@ -238,7 +239,7 @@ class swift::cleaner {
 			ensure => directory;
 		}
 		cron { "swiftcleaner-$name":
-			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
+			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -S /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S) -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
 			user => root,
 			minute => 1,
 			hour => 22, #the beginning of the daily trough
@@ -268,7 +269,8 @@ class swift::cleaner {
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 		statedir => "/var/lib/swiftcleaner-incremental",
-		scrubstate => "False"
+		scrubstate => "False",
+		save_deletes => "True"
 		}
 	# run the full scan slower
 	swiftcleanercron { "swiftcleaner-full" :
@@ -281,7 +283,8 @@ class swift::cleaner {
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 		statedir => "/var/lib/swiftcleaner-full",
-		scrubstate => "True"
+		scrubstate => "True",
+		save_deletes => "True"
 		}
 }
 
