@@ -370,7 +370,7 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
-		file { "/etc/init/${lom_serial_port}":
+		file { "/etc/init/${lom_serial_port}.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
