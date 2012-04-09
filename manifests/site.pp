@@ -2159,7 +2159,7 @@ node "virt0.wikimedia.org" {
 		openstack::controller
 }
 
-node /virt[1-4].pmtpa.wmnet/ {
+node /virt[1-5].pmtpa.wmnet/ {
 	$cluster = "virt"
 	if $hostname =~ /^virt[23]$/ {
 		$ganglia_aggregator = "true"
