@@ -52,7 +52,9 @@ define monitor_pdu_3phase ( $ip, $breaker="30", $redundant="true" ) {
 # Nagios monitoring
 @monitor_group { "pdus": description => "PDUs" }
 
-if $hostname in $nagios::configuration::master_hosts {
+$nagiosmasterhosts = $nagios::configuration::master_hosts
+
+if $hostname in $nagiosmasterhosts {
 	# sdtpa
 	# A
 	monitor_pdu_3phase { "ps1-a1-sdtpa": ip => "10.1.5.1" }
