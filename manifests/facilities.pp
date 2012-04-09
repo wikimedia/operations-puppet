@@ -5,8 +5,6 @@
 
 # TODO: Monitor infeed status
 
-import "nagios.pp"
-
 define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redundant="true") {
 
 	include passwords::nagios::snmp
@@ -52,9 +50,8 @@ define monitor_pdu_3phase ( $ip, $breaker="30", $redundant="true" ) {
 # Nagios monitoring
 @monitor_group { "pdus": description => "PDUs" }
 
-$nagiosmasterhosts = $nagios::configuration::master_hosts
 
-if $hostname in $nagiosmasterhosts {
+class facilities::pdu_monitoring {
 	# sdtpa
 	# A
 	monitor_pdu_3phase { "ps1-a1-sdtpa": ip => "10.1.5.1" }

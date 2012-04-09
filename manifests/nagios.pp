@@ -195,7 +195,9 @@ class nagios::monitor {
 
 	require nrpe
 
-	include passwords::nagios::mysql
+	include passwords::nagios::mysql,
+	facilities::pdu_monitoring
+
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 	# puppet_hosts.cfg must be first
@@ -542,7 +544,8 @@ class nagios::monitor::newmonitor {
 		generic::apache::no-default-site,
 		mysql,
 		nrpe::new,
-		nagios::monitor::jobqueue::new
+		nagios::monitor::jobqueue::new,
+		facilities::pdu_monitoring
 
 	include passwords::nagios::mysql
 
