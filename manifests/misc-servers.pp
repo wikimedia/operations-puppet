@@ -1194,10 +1194,6 @@ class misc::l10nupdate {
 	}
 }
 
-if $hostname in $nagios::configuration::master_hosts {
-	include misc::gsbmonitoring
-}
-
 class misc::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
 

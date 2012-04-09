@@ -197,7 +197,8 @@ class nagios::monitor {
 
 	include passwords::nagios::mysql,
 	facilities::pdu_monitoring,
-	lvs::monitor
+	lvs::monitor,
+	misc::gsbmonitoring
 
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
@@ -547,7 +548,8 @@ class nagios::monitor::newmonitor {
 		nrpe::new,
 		nagios::monitor::jobqueue::new,
 		facilities::pdu_monitoring,
-		lvs::monitor
+		lvs::monitor,
+		misc::gsbmonitoring
 
 	include passwords::nagios::mysql
 
