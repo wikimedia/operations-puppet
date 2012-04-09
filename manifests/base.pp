@@ -376,7 +376,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			mode => 0444,
 			content => $console_upstart_file;
 		}
-		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
+		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 	}
 	
 	class generic {
