@@ -547,7 +547,6 @@ class nagios::monitor::newmonitor {
 		mysql,
 		nrpe::new,
 		nagios::monitor::jobqueue::new,
-		facilities::pdu_monitoring,
 		lvs::monitor,
 		nagios::monitor::newsnmp,
 		nagios::monitor::newfirewall
