@@ -985,6 +985,9 @@ node "iron.wikimedia.org" {
 
 	# let's see if the swiftcleaner can run here
 	include swift::cleaner
+
+	# run a mysqld instance for testing and dev (not replicated or backed up)
+	include mysql
 }
 
 node "ixia.pmtpa.wmnet" {
