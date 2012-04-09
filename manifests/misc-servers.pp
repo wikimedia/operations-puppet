@@ -1194,8 +1194,7 @@ class misc::l10nupdate {
 	}
 }
 
-# FIXME: (increasingly popular) temporary hack
-if $hostname == "spence" {
+if $hostname in $nagios::configuration::master_hosts {
 	include misc::gsbmonitoring
 }
 
