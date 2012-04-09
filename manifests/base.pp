@@ -384,6 +384,11 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			$lom_serial_port = "ttyS1"
 		}
 
+		class cisco {
+			$lom_serial_port = "ttyS0"
+			$lom_serial_speed = "115200"
+		}
+
 		class sun {
 			$lom_serial_port = "ttyS0"
 			$lom_serial_speed = "9600"
@@ -435,6 +440,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
+	class cisco-C250-M1 inherits base::platformn::generic::cisco {
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
 	case $::productname {
 		"PowerEdge C2100": {
 			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
@@ -446,6 +455,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		"Sun Fire X4540": {
 			$startup_drives = [ "/dev/sda", "/dev/sdi" ]
 			include sun-x4540
+		}
+		"R250-2480805": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+			include cisco-C250-M1
 		}
 		default: {
 			# set something so the logic doesn't puke
