@@ -421,7 +421,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		}
 	}
 
-	class dell-c2100 inherits base::platformn::generic::dell {
+	class dell-c2100 inherits base::platform::generic::dell {
 		$lom_serial_speed = "115200"
 		
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
@@ -440,7 +440,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
-	class cisco-C250-M1 inherits base::platformn::generic::cisco {
+	class cisco-C250-M1 inherits base::platform::generic::cisco {
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
 	}
 
