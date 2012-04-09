@@ -428,8 +428,7 @@ class mysql {
 		}
 	}
 
-	include mysql::ganglia,
-		mysql::monitor::percona::files
+	include mysql::ganglia
 
 	# TODO do we want to have a class for PHP clients (php5-mysql) as well
 	# and rename this to mysql::client-cli?
