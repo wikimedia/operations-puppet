@@ -5,6 +5,8 @@
 
 # TODO: Monitor infeed status
 
+import nagios.pp
+
 define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redundant="true") {
 
 	include passwords::nagios::snmp
