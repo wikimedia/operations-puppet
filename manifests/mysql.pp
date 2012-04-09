@@ -190,7 +190,6 @@ class mysql {
 	# this is for checks from the percona-nagios-checks project
 	# http://percona-nagios-checks.googlecode.com
 	class monitor::percona::files {
-		include nrpe
 		include passwords::nagios::mysql
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
