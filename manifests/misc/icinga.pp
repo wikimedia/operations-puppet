@@ -111,6 +111,7 @@ class icinga::monitor {
 			ensure => directory;
 
 		"/usr/share/icinga/htdocs/images/logos/ubuntu.png":
+			source => "puppet:///files/icinga/ubuntu.png",
 			owner => root,
 			group => root,
 			mode => 0644;
