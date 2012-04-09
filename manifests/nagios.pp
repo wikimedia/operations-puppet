@@ -630,18 +630,6 @@ class nagios::monitor::newmonitor {
 			group => root,
 			mode => 0755;
 
-		 "/etc/snmp/snmptrapd.conf":
-			source => "puppet:///files/snmp/snmptrapd.conf",
-			owner => root,
-			group => root,
-			mode => 0600;
-
-		 "/etc/snmp/snmptt.conf":
-			source => "puppet:///files/snmp/snmptt.conf",
-			owner => root,
-			group => root,
-			mode => 0644;
-
 		"/etc/init.d/icinga":
 			source => "puppet:///files/icinga/icinga-init",
 			owner => root,
