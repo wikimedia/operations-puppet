@@ -548,22 +548,13 @@ class nagios::monitor::newmonitor {
 		nrpe::new,
 		nagios::monitor::jobqueue::new,
 		facilities::pdu_monitoring,
-		lvs::monitor
+		lvs::monitor,
+		nagios::monitor::newsnmp,
+		nagios::monitor::newfirewall
 
 	include passwords::nagios::mysql
 
 	install_certificate{ "star.wikimedia.org": }
-
-	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "icinga" ] }
-
-	package { "snmpd":
-		ensure => latest;
-	}
-
-	package { "snmptt":
-		ensure => latest;
-	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
 
@@ -1126,6 +1117,87 @@ class nagios::nsca {
 	}
 
 }
+
+class nagios::monitor::newsnmp {
+
+	file { "/etc/snmp/snmptrapd.conf":
+		source => "puppet:///files/snmp/snmptrapd.conf",
+		owner => root,
+		group => root,
+		mode => 0600;
+	}
+
+	file { "/etc/snmp/snmptt.conf":
+		source => "puppet:///files/snmp/snmptt.conf.icinga",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
+
+	# snmp tarp stuff
+	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+
+	package { "snmpd":
+		ensure => latest;
+	}
+
+	package { "snmptt":
+		ensure => latest;
+	}
+
+	service { snmptt:
+		ensure => running,
+		subscribe => [ File["/etc/snmp/snmptt.conf"]];
+	}
+
+}
+
+class nagios::monitor::newfirewall {
+
+	# deny access to port 5667 TCP (nsca) from external networks
+	# deny service snmp-trap (port 162) for external networks
+
+	class iptables-purges {
+
+		require "iptables::tables"
+		iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
+		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
+	}
+
+	class iptables-accepts {
+
+		require "nagios::monitor::firewall::iptables-purges"
+
+		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_pmtpa_nolabs": source => "10.0.0.0/14", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_esams": source => "10.21.0.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_eqiad1": source => "10.64.0.0/19", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_eqiad2": source => "10.65.0.0/20", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_virt": source => "10.4.16.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_153": source => "208.80.153.128/26", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_154": source => "208.80.154.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_esams": source => "91.198.174.0/25", service => "all", jump => "ACCEPT" }
+	}
+
+	class iptables-drops {
+
+		require "nagios::monitor::firewall::iptables-accepts"
+		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
+		iptables_add_service{ "deny_pub_snmptrap": service => "snmptrap", jump => "DROP" }
+	}
+
+	class iptables {
+
+		require "nagios::monitor::firewall::iptables-drops"
+		iptables_add_exec{ "${hostname}_nsca": service => "nsca" }
+		iptables_add_exec{ "${hostname}_snmptrap": service => "snmptrap" }
+	}
+
+	require "nagios::monitor::firewall::iptables"
+}
+
 # NSCA - daemon
 class nagios::nsca::daemon {
 
