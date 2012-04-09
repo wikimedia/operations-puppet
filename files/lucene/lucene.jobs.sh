@@ -85,7 +85,7 @@ fi
 if [ "$1" = "snapshot" ] ; then
 	curl http://localhost:8321/snapshot >> $base/log/log-snapshot 2>&1
 elif [ "$1" = "snapshot-precursors" ] ; then
-	curl "http://localhost:8321/snapshotPrecursors?p=*.spell.pre"
+	curl "http://localhost:8321/snapshotPrecursors?p=*.spell.pre" >> $base/log/log-snapshot-pre 2>&1
 elif [ "$1" = "indexer-cron" ] ; then
 	indexer-cron
 elif [ "$1" = "import-private" ] ; then
