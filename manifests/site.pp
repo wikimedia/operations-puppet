@@ -216,7 +216,7 @@ class db::es($mysql_role = "slave") {
 		mysql::datadirs,
 		mysql::conf,
 		mysql::mysqlpath,
-		monitor::percona::es,
+		mysql::monitor::percona::es,
 		nrpe
 
 }
