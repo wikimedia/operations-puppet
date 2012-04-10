@@ -68,7 +68,7 @@ unless (defined $opt_q) {
 		"please wait patiently . . . \n";
 }
 
-open LOG, "$api_log" or die "can't open replay log:$!\n";; 
+open LOG, "$api_log" or die "can't open replay log:$!\n";
 while (<LOG>) {
 	chomp;
 	if (/^http:\/\/([^\/]+)\/+w\/+api\.php\?(.*)$/) {
