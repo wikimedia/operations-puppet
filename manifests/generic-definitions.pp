@@ -638,6 +638,13 @@ class generic::mysql::client {
 		ensure => latest;
 	}
 }
+class generic::mysql::server {
+	# This conflicts with class mysql::packages.  DO NOT use them together
+	# if installed on a host with an external IP address, be sure to run a firewall.
+	package { "mysql-server-5.1":
+		ensure => latest;
+	}
+}
 
 # handle locales via puppet
 class generic::packages::locales {
