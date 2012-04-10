@@ -116,11 +116,6 @@ class icinga::monitor {
 			group => root,
 			mode => 0644;
 
-		"/usr/lib/nagios/plugins/check_nrpe":
-			source => "puppet:///files/icinga/check_nrpe",
-			owner => root,
-			group => root,
-			mode => 0755;
 	}
 
 

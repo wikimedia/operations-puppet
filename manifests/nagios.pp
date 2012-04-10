@@ -961,6 +961,11 @@ class nagios::monitor::newmonitor {
 			owner => root,
 			group => root,
 			mode => 0755;
+		"/usr/lib/nagios/plugins/check_nrpe":
+			source => "puppet:///files/icinga/check_nrpe",
+			owner => root,
+			group => root,
+			mode => 0755;
 	}
 
 }
