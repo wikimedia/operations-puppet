@@ -33,7 +33,7 @@ pipe 10 /usr/bin/udp-filter -i 41.66.28.94,41.66.28.95,41.66.28.96,41.66.28.72,4
 pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /var/log/squid/teahouse.log
 
 #Filters for the necromancy experiment by faulkner RT-2805
-pipe 1 /usr/bin/udp-filter -d en.wikipedia.org -p /w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_3mnth=True >> /var/log/squid/e3_necromancy_idle3month.log
-pipe 1 /usr/bin/udp-filter -d en.wikipedia.org -p /w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True >> /var/log/squig/e3_necromancy_idle1year.log
+pipe 1 /usr/bin/udp-filter -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_3mnth=True' >> /var/log/squid/e3_necromancy_idle3month.log
+pipe 1 /usr/bin/udp-filter -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True' >> /var/log/squig/e3_necromancy_idle1year.log
 
 
