@@ -1,51 +1,6 @@
-#!/usr/bin/env php
-<?php
-error_reporting( E_ALL );
-require_once( dirname( __FILE__ ) . '/defines.php' );
-/*
- * Populate wikiversions.cdb file using all the items in wikiversions.dat
- *
- * @return void
- */
-function refreshWikiversionsCDB() {
-	$path = MULTIVER_CDB_DIR_HOME . '/wikiversions.dat';
-	$verList = array_filter( explode( "\n", file_get_contents( $path ) ) );
-	if ( !count( $verList ) ) {
-		die( "Unable to read wikiversions.dat.\n" );
-	}
-
-	$tmpDBPath = MULTIVER_CDB_DIR_HOME . '/wikiversions.cdb.tmp';
-	$finalDBPath = MULTIVER_CDB_DIR_HOME . '/wikiversions.cdb';
-
-	# Build new database at temp location...
-	$db = dba_open( $tmpDBPath, "n", "cdb_make" );
-	if ( !$db ) {
-		die( "Unable to create wikiversions.cdb.tmp.\n" );
-	}
-	foreach ( $verList as $row ) {
-		$items = explode( ' ', $row );
-		$dbName = $items[0];
-		$version = $items[1];
-		$extVersion = isset( $items[2] ) ? $items[2] : '';
-
-		dba_insert( "ver:$dbName", $version, $db );
-		dba_insert( "ext:$dbName", $extVersion, $db );
-	}
-	dba_close( $db );
-
-	# Sanity...
-	if ( !file_exists( $tmpDBPath ) ) {
-		die( "Unable to create wikiversions.cdb.tmp.\n" );
-	}
-
-	# Move to final location only when finished...
-	@unlink( $finalDBPath );
-	if ( !rename( $tmpDBPath, $finalDBPath ) ) {
-		die( "Unable to move wikiversions.cdb.tmp to wikiversions.cdb.\n" );
-	}
-	chmod( $finalDBPath, 0664 ); // rw-rw-r
-
-	print "wikiversions.cdb successfully built.\n";
-}
-
-refreshWikiversionsCDB();
+#!/bin/sh
+# Shell wrapper for the home version of multiversion/refreshWikiVersionsCDB
+# This script belongs in /usr/bin/ and should be in PATH.
+if ! php /home/wikipedia/common/multiversion/refreshWikiVersionsCDB "$@"; then
+	exit 1
+fi
