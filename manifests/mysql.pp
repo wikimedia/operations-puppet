@@ -348,6 +348,9 @@ class mysql {
 			},
 			"s7" => {
 				"innodb_log_file_size" => "500M"
+			},
+			"m1" => {
+				"innodb_log_file_size" => "500M"
 			}
 		}
 
