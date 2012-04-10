@@ -26,7 +26,7 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(38|13|31|35|39|43|37|48)$/ {
+	if $hostname =~ /^db(38|13|31|35|39|43|37|48)|blondel$/ {
 		$master = "true"
 		$writable = "true"
 	} else {
@@ -63,6 +63,9 @@ class mysql {
 	}
 	elsif $hostname =~ /^db(16|18|26|37|56|1007|1024|1041)$/ {
 		$db_cluster = "s7"
+	}
+	elsif $hostname =~ /^blondel|bellin$/ {
+		$db_cluster = "m1"
 	}
 	elsif $hostname =~ /^db(1008|1025)$/ {
 		$db_cluster = "fundraisingdb"
