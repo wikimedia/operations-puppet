@@ -5,7 +5,9 @@ class role::swift {
 		$cluster = "swift"
 		$nagios_group = "swift"
 
-		include standard
+		include standard,
+		nrpe
+
 		# TODO: pull in iptables rules here, or in the classes below
 	}
 	
