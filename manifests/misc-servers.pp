@@ -1257,3 +1257,43 @@ class misc::racktables {
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
 }
+
+
+# this is stupid but I need a firewall on iron so that mysql doesn't accidentally get exposed to the world.
+class iron::iptables-purges {
+	require "iptables::tables"
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
+	iptables_purge_service{ "iron_common_default_deny": service => "all" }
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
+class iron::iptables-accepts {
+	require "iron::iptables-purges"
+	# Rememeber to place modified or removed rules into purges!
+	# common services for all hosts
+	iptables_add_rule{ "iron_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "iron_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/16", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_igmp": service => "igmp", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_icmp": service => "icmp", jump => "ACCEPT" }
+}
+class iron::iptables-drops {
+	require "iron::iptables-accepts"
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "iron_common_default_deny": service => "all", jump => "DROP" }
+}
+class iron::iptables  {
+	# We use the following requirement chain:
+	# iptables -> iptables::drops -> iptables::accepts -> iptables::purges
+	#
+	# This ensures proper ordering of the rules
+	require "iron::iptables-drops"
+	# This exec should always occur last in the requirement chain.
+	iptables_add_exec{ "iron": service => "iron" }
+}
