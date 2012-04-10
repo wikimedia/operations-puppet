@@ -21,13 +21,13 @@ if $ipaddress_eth0 {
 $site = $main_ipaddress ? {
 	/^208\.80\.15[23]\./	=> "pmtpa",
 	/^208\.80\.15[45]\./	=> "eqiad",
-	/^10\.[0-4]\./			=> "pmtpa",
-	/^10\.64\./				=> "eqiad",
-	/^91\.198\.174\./		=> "esams",
-	default					=> "(undefined)"
+	/^10\.[0-4]\./		=> "pmtpa",
+	/^10\.64\./		=> "eqiad",
+	/^91\.198\.174\./	=> "esams",
+	default			=> "(undefined)"
 }
 
-$network_zone = $ipaddress_eth0 ? {
+$network_zone = $main_ipaddress ? {
 	/^10./			=> "internal",
 	default			=> "public"
 }
