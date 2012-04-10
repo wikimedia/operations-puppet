@@ -353,7 +353,7 @@ class role::cache {
 				varnish::logging,
 				nrpe
 
-			class { "varnish::packages": version => "3.0.2-2wm2" }
+			class { "varnish::packages": version => "installed" }
 
 			varnish::setup_filesystem{ ["sda3", "sdb3"]:
 				before => Varnish::Instance["upload-backend"]
