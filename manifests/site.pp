@@ -384,6 +384,22 @@ node "bast1001.wikimedia.org" {
 		nrpe
 }
 
+node "bellin.pmtpa.wmnet"{
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
+
+node "blondel.pmtpa.wmnet" {
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
+
 node "brewster.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
