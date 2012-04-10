@@ -27,7 +27,7 @@ $site = $main_ipaddress ? {
 	default					=> "(undefined)"
 }
 
-$network_zone = $ipaddress_eth0 ? {
+$network_zone = $main_ipaddress ? {
 	/^10./			=> "internal",
 	default			=> "public"
 }
