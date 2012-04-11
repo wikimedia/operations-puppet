@@ -131,6 +131,15 @@ class varnish {
 			description => "Varnish HTTP ${title}",
 			check_command => "check_http_generic!varnishcheck!${port}"
 		}
+		
+		# Restart gmond if this varnish instance has been (re)started later
+		# than gmond was started
+		exec { "restart gmond":
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			command => "true",
+			onlyif => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
+			notify => Service[gmond]
+		}
 	}
 
 	class monitoring::ganglia($varnish_instances=['']) {
