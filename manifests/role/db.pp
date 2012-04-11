@@ -1,20 +1,19 @@
 class role::db::fundraising {
 
+	$crit = $master
 	$cluster = "mysql"
 
 	system_role { "role::db::fundraising": description => "Fundraising Database (${mysql_role})" }
 
+	if $mysql_role == "slave" {
+		monitor_service {"mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+	}
+
 	monitor_service {
-		"mysql status":
-			description => "MySQL ${mysql_role} status",
-			check_command => "check_mysqlstatus!--${mysql_role}";
-		"mysql replication":
-			description => "MySQL replication status",
-			check_command => "check_db_lag",
-			ensure => $mysql_role ? {
-				"master" => absent,
-				"slave" => present
-			};
+		"mysqld":
+			description => "mysqld processes",
+			check_command => "nrpe_check_mysql",
+			critical => $crit;	
 	}
 
 }
