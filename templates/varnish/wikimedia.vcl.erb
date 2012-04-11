@@ -150,6 +150,20 @@ director <%= director %> <%= director_type %> {
 
 # Functions
 
+sub vcl_recv_purge {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") {
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} elsif (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");
+		}
+		return (lookup);
+	}
+}
+
 sub vcl_recv {
 	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
 		/* We only deal with GET, HEAD and POST by default */
