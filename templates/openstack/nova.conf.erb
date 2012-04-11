@@ -49,3 +49,8 @@
 #--use_ipv6=True
 --allow_same_net_traffic=False
 --live_migration_uri=<%= scope.lookupvar('openstack::nova_config::nova_live_migration_uri') %>
+
+<% if openstack_version != "diablo" %>
+--connection_type=libvirt
+--root_helper=nova-rootwrap
+<% end %>
