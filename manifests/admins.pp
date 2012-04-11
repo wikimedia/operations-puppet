@@ -1,6 +1,6 @@
 # admins.pp
 
-# last used uid 590
+# last used uid 592
 
 # TODO: completely rewrite this file
 
@@ -1763,6 +1763,26 @@ class accounts {
 		}
 	}
 
+	class faidon inherits baseaccount {
+		$username = "faidon"
+		$realname = "Faidon Liambotis"
+		$uid = 592
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"faidon@wmf":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/m5mZhy2bpvmBNzaLLhlqhjLuuGd5vNGgAtRKmvfa+nbHi7upm8d/e1RoSGVueXSVdjcVYfqqfNnJQ9GIC9flhgVhTwz1zezCEWREqMQ3XuauqAr+Tb/031BtgLCHfTmUjdsDKTigwTMPOnRG+DNo+ZHyxfpTCP5Oy6TChcK6+Om247eiXEhHZNL8Sk0idSy2mSJxavzs25F/lsGjsl4YyVV3jNqgVqoz3Evl1VO0E3xlbOOeWeJnROq+g2JJqZfoCtdAYidtg8oJ6yBKJHoxynqI6EhBJtnwulIXGTZmdY2cMJwT2YpkqljQFBwtWIy/T+WNkZnLuJXT4DRlBb1F";
+			}
+		}
+	}
+
 	class andrewb inherits baseaccount {
 		$username = "andrewb"
 		$realname = "Andrew Bogott"
@@ -1834,6 +1854,7 @@ class admins::roots {
 	include accounts::catrope
 	include accounts::sara
 	include accounts::andrewb
+	include accounts::faidon
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals {
