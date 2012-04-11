@@ -161,18 +161,6 @@ sub vcl_recv {
 	} else {
 		set req.grace = 60m;
 	}
-
-	/* Support HTTP PURGE from localhost */
-	if (req.request == "PURGE") { 
-		if (!client.ip ~ purge) {
-			error 405 "Denied.";
-		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
-		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
-		} else if (req.url ~ "^http:") {
-			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
-		}
-		return (lookup);
-	}
 	
 <% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
 	/* Ensure we only accept Forwarded headers from the SSL proxies */

@@ -104,6 +104,18 @@ sub device_detection {
 
 
 sub vcl_recv {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") { 
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} else if (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
+		}
+		return (lookup);
+	}
+
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");

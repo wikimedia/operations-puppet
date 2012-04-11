@@ -1,6 +1,18 @@
-# Varnish VCL include file for mobile backends
+# Varnish VCL include file for upload backends
 
 sub vcl_recv {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") { 
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} else if (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
+		}
+		return (lookup);
+	}
+
 	if (client.ip !~ wikimedia_nets) {
 		error 403 "Access denied";
 	}

@@ -9,6 +9,18 @@
 # (aka curl, etc.) 
 #
 sub vcl_recv {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") { 
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} else if (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
+		}
+		return (lookup);
+	}
+
 	if (req.request == "GET" && client.ip ~ purge &&
 	req.http.host == "127.0.0.1" && req.http.User-Agent ~ "W3 Total Cache") {
 		set req.http.host = "blog.wikimedia.org";
