@@ -248,7 +248,7 @@ class webserver::apache {
 			webserver::apache::module { ssl: }
 			
 			# If no cert files are defined, assume a wildcart certificate for the domain
-			$wildcard_domain = regsubst($title, "^[^\.]+", "*")
+			$wildcard_domain = regsubst($title, "^[^.]+", "*")
 			if ! $certfile {
 				$certfile = "/etc/ssl/certs/${wildcard_domain}.pem"
 			}
