@@ -134,7 +134,7 @@ class varnish {
 		
 		# Restart gmond if this varnish instance has been (re)started later
 		# than gmond was started
-		exec { "restart gmond for varnish ${name}":
+		exec { "restart gmond for varnish${instancesuffix}":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			command => "true",
 			onlyif => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
