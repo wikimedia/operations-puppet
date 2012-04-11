@@ -1006,6 +1006,9 @@ node "iron.wikimedia.org" {
 
 	# run a mysqld instance for testing and dev (not replicated or backed up)
 	include generic::mysql::server
+
+	# include the swift cli so I can call out to swift instances
+	include swift::utilities
 }
 
 node "ixia.pmtpa.wmnet" {

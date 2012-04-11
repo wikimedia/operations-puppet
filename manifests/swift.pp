@@ -434,3 +434,9 @@ define swift::mount_filesystem() {
 	Exec["mkdir $mountpath"] -> Mount[$mountpath] -> File["fix attr $mountpath"]
 }
 
+# installs the swift cli for interacting with remote swift installations.
+class swift::utilities {
+	package { "swift":
+		ensure => present;
+	}
+}
