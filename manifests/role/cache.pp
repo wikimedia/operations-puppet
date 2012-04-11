@@ -365,7 +365,10 @@ class role::cache {
 				vcl => "upload-backend",
 				port => 3128,
 				admin_port => 6083,
-				storage => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
+				storage => $hostname ? {
+					/^cp1036$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+					default => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
+				},
 				backends => [ "10.2.1.24", "10.2.1.27" ],
 				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27" ] },
 				vcl_config => {
