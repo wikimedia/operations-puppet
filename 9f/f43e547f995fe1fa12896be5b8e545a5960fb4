@@ -1,0 +1,9 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Dzahn <dzahn@wikimedia.org>
+Verified+1: Dzahn <dzahn@wikimedia.org>
+Code-Review+1: Krinkle <ttijhof@wikimedia.org>
+Submitted-by: Dzahn <dzahn@wikimedia.org>
+Submitted-at: Wed, 11 Apr 2012 15:02:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/4364
+Project: operations/puppet
+Branch: refs/heads/production
