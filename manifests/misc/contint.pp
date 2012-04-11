@@ -258,46 +258,24 @@ class misc::contint::test {
 		package { ["testswarm", "curl"]:
 			ensure => latest; }
 
-		# install scripts
+		# Uninstall scripts
 		file {
 			"/etc/testswarm":
-				ensure => directory,
-				mode   => 0755,
-				owner  => testswarm,
-				group  => testswarm;
+				ensure => absent;
 			"/etc/testswarm/fetcher-sample.ini":
-				require => [
-					Package["testswarm"]
-				],
-				source  => "puppet:///files/testswarm/fetcher-sample.ini",
-				mode    => 0660,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure => absent;
 			"/var/lib/testswarm/script":
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			# Directory that hold the mediawiki fetches
 			"/var/lib/testswarm/mediawiki-trunk":
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			# SQLite databases files need specific user rights
 			"/var/lib/testswarm/mediawiki-trunk/dbs":
-				ensure  => directory,
-				mode    => 0774,
-				owner   => testswarm,
-				group   => www-data;
+				ensure  => absent;
 			# Override Apache configuration coming from the testswarm package.
 			"/etc/apache2/conf.d/testswarm.conf":
 				ensure => absent;
@@ -314,10 +292,7 @@ class misc::contint::test {
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
 		cron {
 			testswarm-fetcher-mw-trunk:
-				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
-				minute => '*',
-				user => testswarm,
-				ensure => present;
+				ensure => absent;
 		}
 
 		# When a browser asks for jobs, it is reserved in the database so that
