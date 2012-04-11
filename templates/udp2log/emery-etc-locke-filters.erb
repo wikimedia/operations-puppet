@@ -8,14 +8,18 @@ pipe 1000 /var/log/squid/filters/latlongCountry-writer >> /var/log/squid/locatio
 pipe 2 /usr/local/bin/sqstat 2
 pipe 10 /var/log/squid/filters/india-filter >> /var/log/squid/india.log
 pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/squid/packet-loss.log
-pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
+
+#pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
+pipe 100 /usr/bin/udp-filter -p /w/api.php >> /var/log/squid/api-usage.log 
 
 # this filter is segfaulting repeatedly.  tomasz says he doesn't need it at the moment
 # -ben 2011-11-01
 # pipe 1 /var/log/squid/filters/mobile-offline-meta >> /var/log/squid/mobile-offline-meta.log
 
 # RT 2212
-pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
+#pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
+pipe 10 /usr/bin/udp-filter -p _NARA_ -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/glam_nara.log
+
 
 #specific country filters - 2012-01-24 through 2012-02-20 then ask Nimish  or Amit if we still need them
 pipe 1 /usr/bin/udp-filter -f -c CD,CF,CI,GQ -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-1.log
@@ -23,11 +27,21 @@ pipe 10 /usr/bin/udp-filter -f -c KH,BW,CM,MG,ML,MU,NE,VU -g -m /var/log/squid/f
 pipe 100 /usr/bin/udp-filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-100.log
 
 #specific Wikipedia Zero filters
+#for detailed instructions see: office.wikimedia.org/wiki/Partner_IP_Ranges
 #Digi Malaysia
 pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /var/log/squid/digi-malaysia.log
 
 #Orange Ivory Coast
-pipe 10 /usr/bin/udp-filter -i 41.66.28.94,41.66.28.95,41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
+pipe 10 /usr/bin/udp-filter -i 41.66.28.94-41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
+
+#Orange Uganda
+pipe 10 /usr/bin/udp-filter -i 41.202.224.0-41.202.255.255,197.157.0.0-197.157.63.255 >> /var/log/squid/orange-uganda.log
+
+#Orange Tunesia
+pipe 10 /usr/bin/udp-filter -i 197.29.192.0-197.30.159.255,197.30.224.0-197.30.255.255 >> /var/log/squid/orange-tunesia.log
+
+#Telenor Montenegro
+pipe 10 /usr/bin/udp-filter -i 79.143.100.0-79.143.100.255,79.143.104.0-79.143.104.255 >> /var/log/squid/telenor-montenegro.log
 
 #Teahouse filters
 pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /var/log/squid/teahouse.log
