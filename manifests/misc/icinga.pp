@@ -7,13 +7,12 @@ class icinga::monitor {
 	require nagios::configuration
 
 	# puppet_hosts.cfg must be first
-	$puppet_files = [ "${nagios::configuration::icinga_config_dir}/puppet_hosts.cfg",
-			  "${nagios::configuration::icinga_config_dir}/puppet_hostgroups.cfg",
-			  "${nagios::configuration::icinga_config_dir}/puppet_hostextinfo.cfg",
-			  "${nagios::configuration::icinga_config_dir}/puppet_servicegroups.cfg",
-			  "${nagios::configuration::icinga_config_dir}/puppet_services.cfg" ]
+	$puppet_files = [ "${nagios::configuration::icinga_config_dir}/puppet_hostgroups.cfg",
+			  "${nagios::configuration::icinga_config_dir}/puppet_servicegroups.cfg"]
 
-	$static_files = [
+	$static_files = [ "${nagios::configuration::icinga_config_dir}/puppet_hosts.cfg",
+			  "${nagios::configuration::icinga_config_dir}/puppet_hostextinfo.cfg",
+			  "${nagios::configuration::icinga_config_dir}/puppet_services.cfg",
 			  "${nagios::configuration::icinga_config_dir}/icinga.cfg",
 			  "${nagios::configuration::icinga_config_dir}/cgi.cfg",
 			  "${nagios::configuration::icinga_config_dir}/checkcommands.cfg",
