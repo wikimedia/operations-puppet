@@ -12,7 +12,7 @@ class role::db::fundraising {
 	monitor_service {
 		"mysqld":
 			description => "mysqld processes",
-			check_command => "nrpe_check_mysql",
+			check_command => "nrpe_check_mysqld",
 			critical => $crit;	
 	}
 
