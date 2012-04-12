@@ -15,8 +15,10 @@ my $conf = {
 	'RECIPIENT' => 'root@wikimedia.org',
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
+	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
 };
 chomp $conf->{'HOSTNAME'};
+chomp $conf->{'DATE'};
 
 # jobs, keep 'em numbered in the order you want them to happen
 if ($conf->{'HOSTNAME'} eq 'storage3') {
@@ -47,6 +49,9 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 		# syslog-type stuff from paypal etc.
 		'2' => "rsync -ar --exclude *log /var/log/fundraising/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/logs/",
+
+		# hacky backup strategy for hacky hacking dir
+		'3' => "tar --rsh-command=/usr/bin/ssh -zcf logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/backups/br.$conf->{'DATE'}.tgz -- /srv/br",
 
 	};
 
@@ -84,6 +89,7 @@ for my $m (sort keys %{$mirror}) {
 				$email->{'report'} .= "$line\n";
 			} elsif ($ffh == fileno (E)) { # output on stderr
 				printlog($line,'warning');
+				next if $line =~ /^tar: Removing leading/;
 				$email->{'report'} .= "$line\n";
 				$email->{'errors'}++;
 			}
