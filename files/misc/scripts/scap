@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 BINDIR=/usr/local/bin
 SOURCE=/home/wikipedia/common
 DEST=/usr/local/apache/common-local
