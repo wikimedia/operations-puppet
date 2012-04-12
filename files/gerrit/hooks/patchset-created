@@ -88,8 +88,11 @@ def lint_test(options, helper):
 
 def l10n_automerge(options, helper):
 	if not options.project.startswith("mediawiki/"):
+		helper.log_to_file(options.project, options.branch, "Project does not begin with mediawiki/" )
 		return
 	if options.uploader != hookconfig.l10nuser:
+		msg = "User (" + options.uploader + ") is not L10n-bot, cannot auto-approve"
+		helper.log_to_file(options.project, options.branch, msg )
 		return
 	verifymerge = helper.automerge(options.commit, hookconfig.l10nsummary)
 	if not verifymerge:
