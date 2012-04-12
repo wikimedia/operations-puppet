@@ -121,17 +121,17 @@ class icinga::monitor {
 	# Using naggin instead of exported resources
 	file {
 		"/etc/icinga/puppet_hosts.cfg":
-			content => generate("/root/naggen --stdout --type host"),
+			content => generate('/root/naggen', '--stdout', '--type', 'host'),
 			owner => root,
 			group => root,
 			mode => 0644;
 		"/etc/icinga/puppet_services.cfg":
-			content => generate("/root/naggen --stdout --type service"),
+			content => generate('/root/naggen', '--stdout', '--type', 'service'),
 			owner => root,
 			group => root,
 			mode => 0644;
 		"/etc/icinga/puppet_hostextinfo.cfg":
-			content => generate("/root/naggen --stdout --type hostextinfo"),
+			content => generate('/root/naggen', '--stdout', '--type', 'hostextinfo'),
 			owner => root,
 			group => root,
 			mode => 0644;
