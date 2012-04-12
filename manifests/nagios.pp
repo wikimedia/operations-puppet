@@ -872,15 +872,15 @@ class nagios::monitor::newmonitor {
 	}
 
 	# Collect exported resources
-	Nagios_host <<| |>> {
-		notify => Service[icinga],
-	}
-	Nagios_hostextinfo <<| |>> {
-		notify => Service[icinga],
-	}
-	Nagios_service <<| |>> {
-		notify => Service[icinga],
-	}
+#	Nagios_host <<| |>> {
+#		notify => Service[icinga],
+#	}
+#	Nagios_hostextinfo <<| |>> {
+#		notify => Service[icinga],
+#	}
+#	Nagios_service <<| |>> {
+#		notify => Service[icinga],
+#	}
 
 	# Collect all (virtual) resources
 	Monitor_group <| |> {
