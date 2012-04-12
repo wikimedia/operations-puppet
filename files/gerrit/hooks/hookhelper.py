@@ -92,7 +92,7 @@ class HookHelper:
 		command += ' --verified "' + hookconfig.passscore + '"'
 		command += ' --code-review "' + hookconfig.approvescore + '"'
 		command += ' --submit'
-		command += ' -m ' + pipes.quote(hookconfig.passmessage)
+		command += ' -m ' + pipes.quote(message)
 		command += ' ' + commit
 		self.ssh_exec_command(command)
 		return True
