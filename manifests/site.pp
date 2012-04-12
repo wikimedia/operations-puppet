@@ -477,17 +477,19 @@ node "emery.wikimedia.org" {
 	system_role { "misc::log-collector": description => "log collector" }
 	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include standard,
-		misc::udp2log::aft,
-		misc::udp2log::packetloss,
-		misc::udp2log::emery,
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
 		nrpe,
 		generic::sysctl::high-bandwidth-rsync,
-		misc::udp2log::monitoring,
-		misc::udp2log::emeryconfig,
-		misc::udp2log::udp-filter
+		udp2log::utilities
+
+	class { udp2log::logger:
+		#FIXME: move this to a more appropriately named file
+			log_file => "/var/log/squid/packet-loss.log",
+			logging_instances => ["emery", "aft"]
+	}
+
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -1119,11 +1121,14 @@ node "locke.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::dsc,
 		accounts::datasets,
-		misc::udp2log::packetloss,
-		misc::udp2log::locke,
-		misc::udp2log::lockeconfig,
-		misc::udp2log::monitoring,
-		nrpe
+		nrpe,
+		udp2log::utilities
+
+	class { udp2log::logger:
+			#FIXME: move this to a more appropriately named file
+			log_file => "/a/squid/packet-loss.log",
+			logging_instances => ["locke", "aft"]
+	}
 }
 
 node "lomaria.pmtpa.wmnet" {
@@ -1565,12 +1570,14 @@ node "oxygen.wikimedia.org" {
 		accounts::awjrichards,
 		accounts::datasets,
 		accounts::dsc,
-		misc::udp2log::packetloss,
-		misc::udp2log::lockeconfig,
-		misc::udp2log::monitoring,
 		misc::squid-logging::multicast-relay,
 		nrpe
-		#misc::udp2log::locke, # off this until there's a packetloss log to tail 
+
+	class { udp2log::logger:
+			log_file => "/a/udp2log/packet-loss.log",
+			logging_instances => ["oxygen"]
+	}
+
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
