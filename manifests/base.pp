@@ -370,18 +370,23 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
-		file { "/etc/init/${lom_serial_port}":
+		file { "/etc/init/${lom_serial_port}.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
 			content => $console_upstart_file;
 		}
-		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
+		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 	}
 	
 	class generic {
 		class dell {
 			$lom_serial_port = "ttyS1"
+		}
+
+		class cisco {
+			$lom_serial_port = "ttyS0"
+			$lom_serial_speed = "115200"
 		}
 
 		class sun {
@@ -416,7 +421,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		}
 	}
 
-	class dell-c2100 inherits base::platformn::generic::dell {
+	class dell-c2100 inherits base::platform::generic::dell {
 		$lom_serial_speed = "115200"
 		
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
@@ -435,6 +440,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
+	class cisco-C250-M1 inherits base::platform::generic::cisco {
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
 	case $::productname {
 		"PowerEdge C2100": {
 			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
@@ -446,6 +455,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		"Sun Fire X4540": {
 			$startup_drives = [ "/dev/sda", "/dev/sdi" ]
 			include sun-x4540
+		}
+		"R250-2480805": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+			include cisco-C250-M1
 		}
 		default: {
 			# set something so the logic doesn't puke

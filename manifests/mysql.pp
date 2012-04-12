@@ -284,6 +284,18 @@ class mysql {
 		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
 	}
 
+	class monitor::percona::es inherits mysql {
+		if $db::es::mysql_role == "master" {
+			$crit = true
+		}
+		require "mysql::monitor::percona::files"
+
+		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+		monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+	}
+
 	class mysqluser {
 		user { 
 			"mysql": ensure => "present",

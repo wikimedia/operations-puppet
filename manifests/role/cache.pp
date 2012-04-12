@@ -140,25 +140,21 @@ class role::cache {
 				],
 				"eqiad" => [
 					'cp1021.eqiad.wmnet',
-					 'cp1022.eqiad.wmnet',
-					 'cp1023.eqiad.wmnet',
-					 'cp1024.eqiad.wmnet',
-					 'cp1025.eqiad.wmnet',
-					 'cp1026.eqiad.wmnet',
-					 'cp1027.eqiad.wmnet',
-					 'cp1028.eqiad.wmnet',
-					# 'cp1029.eqiad.wmnet',
-					# 'cp1030.eqiad.wmnet',
-					# 'cp1031.eqiad.wmnet',
-					# 'cp1032.eqiad.wmnet',
-					# 'cp1033.eqiad.wmnet',
-					# 'cp1034.eqiad.wmnet',
-					# 'cp1035.eqiad.wmnet',
-					# 'cp1036.eqiad.wmnet',
-					# 'cp1037.eqiad.wmnet',
-					# 'cp1038.eqiad.wmnet',
-					# 'cp1039.eqiad.wmnet',
-					# 'cp1040.eqiad.wmnet'
+					'cp1022.eqiad.wmnet',
+					'cp1023.eqiad.wmnet',
+					'cp1024.eqiad.wmnet',
+					'cp1025.eqiad.wmnet',
+					'cp1026.eqiad.wmnet',
+					'cp1027.eqiad.wmnet',
+					'cp1028.eqiad.wmnet',
+					'cp1029.eqiad.wmnet',
+					'cp1030.eqiad.wmnet',
+					'cp1031.eqiad.wmnet',
+					'cp1032.eqiad.wmnet',
+					'cp1033.eqiad.wmnet',
+					'cp1034.eqiad.wmnet',
+					'cp1035.eqiad.wmnet',
+					'cp1036.eqiad.wmnet',
 				],
 				"esams" => [
 					'knsq16.knams.wikimedia.org',
@@ -353,7 +349,7 @@ class role::cache {
 				varnish::logging,
 				nrpe
 
-			class { "varnish::packages": version => "3.0.2-2wm2" }
+			class { "varnish::packages": version => "installed" }
 
 			varnish::setup_filesystem{ ["sda3", "sdb3"]:
 				before => Varnish::Instance["upload-backend"]
@@ -369,7 +365,10 @@ class role::cache {
 				vcl => "upload-backend",
 				port => 3128,
 				admin_port => 6083,
-				storage => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
+				storage => $hostname ? {
+					/^cp1036$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+					default => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
+				},
 				backends => [ "10.2.1.24", "10.2.1.27" ],
 				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27" ] },
 				vcl_config => {

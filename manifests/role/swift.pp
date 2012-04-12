@@ -30,7 +30,8 @@ class role::swift {
 			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 		}
 		include ::swift::storage
-		include ::swift::proxy
+		include	::swift::proxy
+
 	}
 	
 	class pmtpa-test inherits role::swift::base {
@@ -63,7 +64,7 @@ class role::swift {
 	class pmtpa-prod inherits role::swift::base {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
-		include passwords::swift::pmtpa-prod
+		include passwords::swift::pmtpa-prod 
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "pmtpa-prod" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
 			# one host per cluster should report global stats
@@ -95,9 +96,11 @@ class role::swift {
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
 			}
 			include ::swift::proxy
+			include ::swift::proxy::monitoring
 		}
 		class storage inherits role::swift::pmtpa-prod {
 			include ::swift::storage
+			include ::swift::storage::monitoring
 		}
 	}
 }

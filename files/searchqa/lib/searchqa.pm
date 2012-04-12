@@ -2,7 +2,6 @@ package searchqa;
 use strict;
 use Net::DNS::Resolver;
 use URI::Escape;
-use Socket;
 
 # The $conf variables and routines determine_api_host() and
 # determine_database() combine for a coarse approximation of how lvs pools,
@@ -184,7 +183,7 @@ sub affirm {
 }
 
 sub validate_ip {
-    return 1 if inet_aton(shift);
+	return 1 if (shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ and $1<=255 and $2<=255 and $3<=255 and $4<=255);
 }
 
 1;

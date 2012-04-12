@@ -1194,24 +1194,6 @@ class misc::l10nupdate {
 	}
 }
 
-# FIXME: (increasingly popular) temporary hack
-if $hostname == "spence" {
-	include misc::gsbmonitoring
-}
-
-class misc::gsbmonitoring {
-	@monitor_host { "google": ip_address => "74.125.225.84" }
-
-	@monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
-}
 
 class misc::ircecho {
 
@@ -1274,4 +1256,44 @@ class misc::racktables {
 	apache_site { racktables: name => "racktables.wikimedia.org" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
+}
+
+
+# this is stupid but I need a firewall on iron so that mysql doesn't accidentally get exposed to the world.
+class iron::iptables-purges {
+	require "iptables::tables"
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
+	iptables_purge_service{ "iron_common_default_deny": service => "all" }
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
+class iron::iptables-accepts {
+	require "iron::iptables-purges"
+	# Rememeber to place modified or removed rules into purges!
+	# common services for all hosts
+	iptables_add_rule{ "iron_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "iron_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/16", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_igmp": service => "igmp", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_icmp": service => "icmp", jump => "ACCEPT" }
+}
+class iron::iptables-drops {
+	require "iron::iptables-accepts"
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "iron_common_default_deny": service => "all", jump => "DROP" }
+}
+class iron::iptables  {
+	# We use the following requirement chain:
+	# iptables -> iptables::drops -> iptables::accepts -> iptables::purges
+	#
+	# This ensures proper ordering of the rules
+	require "iron::iptables-drops"
+	# This exec should always occur last in the requirement chain.
+	iptables_add_exec{ "iron": service => "iron" }
 }
