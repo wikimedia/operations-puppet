@@ -137,4 +137,24 @@ class icinga::monitor {
 			mode => 0644;
 	}
 
+	# Fix permissions
+
+	file { $icinga::monitor::puppet_files:
+		mode => 0644,
+		ensure => present;
+	}
+	# also fix permissions on all individual service files
+	exec {
+		"fix_nagios_perms":
+			command => "/bin/chmod -R a+r /etc/nagios";
+
+		"fix_icinga_perms":
+			command => "/bin/chmod -R a+r /etc/icinga";
+
+		"fix_icinga_temp_files":
+			command => "/bin/chown -R icinga /var/lib/icinga";
+
+		"fix_nagios_plugins_files":
+			command => "/bin/chmod -R a+w /var/lib/nagios";
+		}
 }
