@@ -261,7 +261,11 @@ class misc::contint::test {
 		# Uninstall scripts
 		file {
 			"/etc/testswarm":
-				ensure => absent;
+				# also used by testswarm debian package.
+				ensure => directory,
+				mode   => 0755,
+				owner  => testswarm,
+				group  => testswarm;
 			"/etc/testswarm/fetcher-sample.ini":
 				ensure => absent;
 			"/var/lib/testswarm/script":
