@@ -2042,7 +2042,8 @@ node "stat1.wikimedia.org" {
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base,
-		generic::pythonpip
+		generic::pythonpip,
+		misc::udp2log::udp-filter
 
 	# special accounts
 	include accounts::ezachte,
