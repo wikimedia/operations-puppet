@@ -238,6 +238,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/position-of-the-moon";
 			"/usr/local/bin/uuid-generator":
 				source => "puppet:///files/puppet/uuid-generator";
+			"/usr/local/bin/naggen":
+				source => "puppet:///files/puppet/naggen";
 			"/usr/local/sbin/puppetstoredconfigclean.rb":
 				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
 		}
