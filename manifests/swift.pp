@@ -294,7 +294,7 @@ class swift::storage {
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	class packages {
-		package { 
+		package {
 			[ "swift-account",
 			  "swift-container",
 			  "swift-object" ]:
@@ -344,7 +344,6 @@ class swift::storage {
 	class monitoring {
 		require swift::storage::service
 		$nagios_group = "swift"
-
 		monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
 		monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
 		monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
@@ -357,10 +356,9 @@ class swift::storage {
 		monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
 		monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
 		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
-
 	}
-	
-	include packages, config, service, monitoring
+
+	include packages, config, service
 }
 
 # Definition: swift::create_filesystem
