@@ -137,12 +137,6 @@ class icinga::monitor {
 			mode => 0644;
 	}
 
-	# Fix permissions
-
-	file { $icinga::monitor::puppet_files:
-		mode => 0644,
-		ensure => present;
-	}
 	# also fix permissions on all individual service files
 	exec {
 		"fix_nagios_perms":
