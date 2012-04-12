@@ -370,7 +370,17 @@ class ganglia::web {
 
 	# Mount /mnt/ganglia_tmp as tmpfs to avoid Linux flushing mlocked
 	# shm memory to disk
-	mount { "/mnt/ganglia_tmp":
+	$ganglia_tmp_mountpoint = "/mnt/ganglia_tmp"
+
+	file { "$ganglia_tmp_mountpoint":
+		mode => 0755,
+		owner => root,
+		group => root,
+		ensure => directory;
+	}
+
+	mount { "$ganglia_tmp_mountpoint":
+		require => File["$ganglia_tmp_mountpoint"],
 		device => "tmpfs",
 		fstype => "tmpfs",
 		options => "noatime,defaults,size=3000m",
@@ -378,6 +388,15 @@ class ganglia::web {
 		dump => 0,
 		ensure => mounted;
 	}
+
+	file { "${ganglia_tmp_mountpoint}/rrds.pmtpa":
+		require => Mount["$ganglia_tmp_mountpoint"],
+		mode => 0755,
+		owner => nobody,
+		group => root,
+		ensure => directory;
+	}
+
 }
 
 class ganglia::logtailer {
