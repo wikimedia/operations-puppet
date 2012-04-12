@@ -1,0 +1,9 @@
+## THIS FILE MANAGED BY PUPPET
+##
+## TO EDIT, LOOK TO ARRAY IN manifests/misc/logging.pp udp2log::configuration
+
+<% active_filters = scope.lookupvar("udp2log::configuration::filters") -%>
+
+<% active_filters[scope.lookupvar("::hostname")_aft].keys.each do |filter| -%>
+<%= filter %>
+<% end -%>
