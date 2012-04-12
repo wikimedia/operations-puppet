@@ -279,6 +279,15 @@ class misc::contint::test {
 			# Override Apache configuration coming from the testswarm package.
 			"/etc/apache2/conf.d/testswarm.conf":
 				ensure => absent;
+
+			# dirs holding MediaWiki snapshots are created by jenkins.
+			# SQLite databases needs to be writable by Apache and thus
+			# needs specific user rights.
+			"/var/lib/testswarm/mediawiki-git/db/":
+				ensure => directory,
+				mode   => 2775, # group sticky bit
+				owner  => jenkins,
+				group  => www-data;
 		}
 
 		# Reload apache whenever testswarm checkouts configuration change
