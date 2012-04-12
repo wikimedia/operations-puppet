@@ -104,6 +104,8 @@ sub device_detection {
 
 
 sub vcl_recv {
+	call vcl_recv_purge;
+
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");

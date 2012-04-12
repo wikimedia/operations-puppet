@@ -195,7 +195,11 @@ class nagios::monitor {
 
 	require nrpe
 
-	include passwords::nagios::mysql
+	include passwords::nagios::mysql,
+	facilities::pdu_monitoring,
+	lvs::monitor,
+	nagios::gsbmonitoring
+
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 	# puppet_hosts.cfg must be first
@@ -542,22 +546,13 @@ class nagios::monitor::newmonitor {
 		generic::apache::no-default-site,
 		mysql,
 		nrpe::new,
-		nagios::monitor::jobqueue::new
+		nagios::monitor::jobqueue::new,
+		nagios::monitor::newsnmp,
+		nagios::monitor::newfirewall
 
 	include passwords::nagios::mysql
 
 	install_certificate{ "star.wikimedia.org": }
-
-	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "icinga" ] }
-
-	package { "snmpd":
-		ensure => latest;
-	}
-
-	package { "snmptt":
-		ensure => latest;
-	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
 
@@ -632,18 +627,6 @@ class nagios::monitor::newmonitor {
 			owner => root,
 			group => root,
 			mode => 0755;
-
-		 "/etc/snmp/snmptrapd.conf":
-			source => "puppet:///files/snmp/snmptrapd.conf",
-			owner => root,
-			group => root,
-			mode => 0600;
-
-		 "/etc/snmp/snmptt.conf":
-			source => "puppet:///files/snmp/snmptt.conf",
-			owner => root,
-			group => root,
-			mode => 0644;
 
 		"/etc/init.d/icinga":
 			source => "puppet:///files/icinga/icinga-init",
@@ -978,6 +961,11 @@ class nagios::monitor::newmonitor {
 			owner => root,
 			group => root,
 			mode => 0755;
+		"/usr/lib/nagios/plugins/check_nrpe":
+			source => "puppet:///files/icinga/check_nrpe",
+			owner => root,
+			group => root,
+			mode => 0755;
 	}
 
 }
@@ -1120,6 +1108,87 @@ class nagios::nsca {
 	}
 
 }
+
+class nagios::monitor::newsnmp {
+
+	file { "/etc/snmp/snmptrapd.conf":
+		source => "puppet:///files/snmp/snmptrapd.conf",
+		owner => root,
+		group => root,
+		mode => 0600;
+	}
+
+	file { "/etc/snmp/snmptt.conf":
+		source => "puppet:///files/snmp/snmptt.conf.icinga",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
+
+	# snmp tarp stuff
+	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+
+	package { "snmpd":
+		ensure => latest;
+	}
+
+	package { "snmptt":
+		ensure => latest;
+	}
+
+	service { snmptt:
+		ensure => running,
+		subscribe => [ File["/etc/snmp/snmptt.conf"]];
+	}
+
+}
+
+class nagios::monitor::newfirewall {
+
+	# deny access to port 5667 TCP (nsca) from external networks
+	# deny service snmp-trap (port 162) for external networks
+
+	class iptables-purges {
+
+		require "iptables::tables"
+		iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
+		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
+	}
+
+	class iptables-accepts {
+
+		require "nagios::monitor::firewall::iptables-purges"
+
+		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_pmtpa_nolabs": source => "10.0.0.0/14", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_esams": source => "10.21.0.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_eqiad1": source => "10.64.0.0/19", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_eqiad2": source => "10.65.0.0/20", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_virt": source => "10.4.16.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_153": source => "208.80.153.128/26", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_154": source => "208.80.154.0/24", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "public_esams": source => "91.198.174.0/25", service => "all", jump => "ACCEPT" }
+	}
+
+	class iptables-drops {
+
+		require "nagios::monitor::firewall::iptables-accepts"
+		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
+		iptables_add_service{ "deny_pub_snmptrap": service => "snmptrap", jump => "DROP" }
+	}
+
+	class iptables {
+
+		require "nagios::monitor::firewall::iptables-drops"
+		iptables_add_exec{ "${hostname}_nsca": service => "nsca" }
+		iptables_add_exec{ "${hostname}_snmptrap": service => "snmptrap" }
+	}
+
+	require "nagios::monitor::firewall::iptables"
+}
+
 # NSCA - daemon
 class nagios::nsca::daemon {
 
@@ -1154,4 +1223,18 @@ class nagios::nsca::client {
 	service { "nsca":
 		ensure => stopped;
 	}
+}
+
+class nagios::gsbmonitoring {
+	@monitor_host { "google": ip_address => "74.125.225.84" }
+
+	@monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }

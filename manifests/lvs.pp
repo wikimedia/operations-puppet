@@ -625,8 +625,11 @@ define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $crit
 	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS", check_command => $check_command, critical => $critical }
 }
 
-# FIXME: temporary hack
-if $hostname == "spence" {
+class lvs::monitor {
+	include lvs::configuration
+
+	$ip = $lvs::configuration::lvs_service_ips['production']
+
 	monitor_service_lvs_http { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.esams.wikimedia.org": ip_address => "91.198.174.234", check_command => "check_https_upload", critical => "false" }
 	monitor_service_lvs_http { "m.wikimedia.org": ip_address => "208.80.154.236", check_command => "check_http_mobile" }
@@ -641,6 +644,7 @@ if $hostname == "spence" {
 	monitor_service_lvs_custom { "search-pool3.svc.pmtpa.wmnet": ip_address => "10.2.1.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool4.svc.pmtpa.wmnet": ip_address => "10.2.1.14", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-prefix.svc.pmtpa.wmnet": ip_address => "10.2.1.15", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
+
 	monitor_service_lvs_custom { "search-pool1.svc.eqiad.wmnet": ip_address => "10.2.2.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.eqiad.wmnet": ip_address => "10.2.2.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool3.svc.eqiad.wmnet": ip_address => "10.2.2.13", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
@@ -672,6 +676,40 @@ if $hostname == "spence" {
 	monitor_service_lvs_https { "bits.pmtpa.wikimedia.org": ip_address => "208.80.152.210", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
+
+	# eqiad -lb addresses
+	# FIXME: add the rest
+	monitor_service_lvs_http {
+		"wikimedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikimedialb'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page";
+		"wikipedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikipedialb'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.eqiad.wikimedia.org":
+			ip_address => $ip['bits']['eqiad']['bitslb'],
+			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.eqiad.wikimedia.org":
+			ip_address => $ip['upload']['eqiad']['uploadlb'],
+			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt";
+	}
+	
+	monitor_service_lvs_https {
+		"wikimedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikimedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page";
+		"wikipedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikipedialb'],
+			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.eqiad.wikimedia.org":
+			ip_address => $ip['bits']['eqiad']['bitslb'],
+			check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
+		"upload-lb.eqiad.wikimedia.org":
+			ip_address => $ip['upload']['eqiad']['uploadlb'],
+			check_command => "check_https_url!upload.wikimedia.org!/pybaltestfile.txt";
+	}
 
 	# esams -lb addresses
 	monitor_service_lvs_http { "wikimedia-lb.esams.wikimedia.org": ip_address => "91.198.174.224", check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page" }

@@ -1,10 +1,10 @@
 ################################################################################
-# Sample object config file for Nagios 
+# Sample object config file for Nagios
 #
 # Read the documentation for more information on this configuration file.  I've
 # provided some comments here, but things may not be so clear without further
 # explanation, so make sure to read the HTML documentation!
-# 
+#
 # Last Modified: 12-15-2005
 #
 ################################################################################
@@ -41,7 +41,7 @@
 # SAMPLE SERVICE CHECK COMMANDS
 #
 # These are some example service check commands.  They may or may not work on
-# your system, as they must be modified for your plugins.  See the HTML 
+# your system, as they must be modified for your plugins.  See the HTML
 # documentation on the plugins for examples of how to configure command definitions.
 #
 ################################################################################
@@ -191,7 +191,7 @@ define command {
 
 
 # This command checks to see if a host is "alive" by pinging it
-# The check must result in a 100% packet loss or 5 second (5000ms) round trip 
+# The check must result in a 100% packet loss or 5 second (5000ms) round trip
 # average time to produce a critical error.
 # Note: Only one ICMP echo packet is sent (determined by the '-p 1' argument)
 
@@ -310,22 +310,22 @@ define command{
 
 define command{
 	command_name	nrpe_check_disk_5_2
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_disk_5_2
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_disk_5_2
 	}
 
 define command{
 	command_name	nrpe_check_disk_6_3
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_3
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_3
 	}
 
 define command{
 	command_name	nrpe_check_disk_6_4
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_4
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_disk_6_4
 	}
 
 define command{
 	command_name	nrpe_check_raid
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_raid
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_raid
 	}
 define command{
 	command_name	check_ircd
@@ -333,64 +333,64 @@ define command{
 }
 define command{
 	command_name	nrpe_check_zfs
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_zfs
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_zfs
 }
 define command{
 	command_name	nrpe_check_dpkg
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
 
 define command{
 	command_name	nrpe_check_jenkins
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
 }
 define command{
 	command_name	nrpe_check_mailman
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mailman
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mailman
 }
 define command{
 	command_name	nrpe_check_spamd
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_spamd
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_spamd
 }
 define command{
 	command_name	nrpe_check_poolcounterd
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
 }
 define command{
 	command_name	nrpe_check_carbon_cache
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
 }
 define command{
 	command_name	nrpe_check_profiler_to_carbon
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_profiler_to_carbon
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiler_to_carbon
 }
 define command{
 	command_name	nrpe_check_profiling_collector
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_profiling_collector
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiling_collector
 }
 define command{
 	command_name	nrpe_check_udp2log_log_age
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
 }
 define command{
 	command_name	nrpe_check_udp2log_procs
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_procs
 }
 define command{
 	command_name	nrpe_check_varnishncsa
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_varnishncsa
 }
 define command{
 	command_name	nrpe_check_mysqld
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
 }
 define command{
 	command_name	check_stomp
-	command_line	/usr/local/nagios/libexec/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
+	command_line	$USER1$/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
 }
 define command{
 	command_name	check_longqueries
-	command_line	/usr/local/nagios/libexec/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
+	command_line	$USER1$/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
 }
 define command{
 	command_name	check_db_lag
@@ -414,7 +414,7 @@ define command {
 
 define command {
 	command_name	ssl-cert-check
-	command_line    $USER1$/ssl-cert-check -s $HOSTADDRESS$ -p 	
+	command_line    $USER1$/ssl-cert-check -s $HOSTADDRESS$ -p
 }
 
 define command{
@@ -459,38 +459,38 @@ define command{
 # Generic NRPE check
 define command{
 	command_name	nrpe_check
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }
 
 # percona mysql checks
 define command{
 	command_name	nrpe_check_lvs
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_lvs
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_lvs
 }
 
 define command{
 	command_name	nrpe_check_mysql_idle_transactions
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_idle_transactions
 }
 
 define command{
 	command_name	nrpe_check_mysql_recent_restart
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_recent_restart
 }
 
 define command{
 	command_name	nrpe_check_mysql_slave_running
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_running
 }
 
 define command{
 	command_name	nrpe_check_mysql_slave_delay
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_delay
 }
 
 define command{
 	command_name	nrpe_check_mysql_slave_heartbeat
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
 }
 # end percona mysql checks
 
@@ -498,62 +498,62 @@ define command{
 
 define command{
 	command_name	nrpe_check_swift_account_auditor
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_auditor
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_auditor
 }
 
 define command{
 	command_name	nrpe_check_swift_account_reaper
-	command_line	/usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_reaper
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_reaper
 }
 
 define command{
         command_name    nrpe_check_swift_account_replicator
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_replicator
 }
 
 define command{
         command_name    nrpe_check_swift_account_server
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_server
 }
 
 define command{
         command_name    nrpe_check_swift_container_auditor
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_auditor
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_auditor
 }
 
 define command{
         command_name    nrpe_check_swift_container_replicator
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_replicator
 }
 
 define command{
         command_name    nrpe_check_swift_container_server
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_server
 }
 
 define command{
         command_name    nrpe_check_swift_container_updater
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_updater
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_updater
 }
 
 define command{
         command_name    nrpe_check_swift_object_auditor
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_auditor
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_auditor
 }
 
 define command{
         command_name    nrpe_check_swift_object_replicator
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_replicator
 }
 
 define command{
         command_name    nrpe_check_swift_object_server
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_server
 }
 
 define command{
         command_name    nrpe_check_swift_object_updater
-        command_line    /usr/local/nagios/libexec/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_updater
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_updater
 }
 
 # end swift process checks
@@ -561,6 +561,6 @@ define command{
 # dummy check that's useful to check that paging is working
 define command{
         command_name    check_to_check_nagios_paging
-        command_line    /usr/local/nagios/libexec/check_to_check_nagios_paging
+        command_line    $USER1$/check_to_check_nagios_paging
 }
 

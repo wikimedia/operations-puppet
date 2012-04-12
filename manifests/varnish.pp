@@ -6,7 +6,7 @@
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 
 class varnish {
-	class packages($version="3.0.2-2wm1") {
+	class packages($version="installed") {
 		package { [ 'varnish', 'libvarnishapi1', 'varnish-dbg' ]:
 			ensure => $version;
 		}
@@ -130,6 +130,15 @@ class varnish {
 		monitor_service { "varnish http ${title}":
 			description => "Varnish HTTP ${title}",
 			check_command => "check_http_generic!varnishcheck!${port}"
+		}
+		
+		# Restart gmond if this varnish instance has been (re)started later
+		# than gmond was started
+		exec { "restart gmond for varnish${instancesuffix}":
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			command => "true",
+			onlyif => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
+			notify => Service[gmond]
 		}
 	}
 

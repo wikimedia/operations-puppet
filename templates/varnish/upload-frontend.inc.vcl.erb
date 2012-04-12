@@ -1,6 +1,20 @@
-# Varnish VCL include file for frontend backends
+# Varnish VCL include file for upload frontends
 
 sub vcl_recv {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") {
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} elsif (req.url ~ "^http://upload.wikimedia.org") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");
+			return (lookup);
+		} else {
+			error 200 "Domain not cached here.";
+		}
+	}
+
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET, HEAD at this point */
 		error 403 "HTTP method not allowed.";

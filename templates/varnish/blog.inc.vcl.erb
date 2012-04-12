@@ -9,6 +9,8 @@
 # (aka curl, etc.) 
 #
 sub vcl_recv {
+	call vcl_recv_purge;
+
 	if (req.request == "GET" && client.ip ~ purge &&
 	req.http.host == "127.0.0.1" && req.http.User-Agent ~ "W3 Total Cache") {
 		set req.http.host = "blog.wikimedia.org";
