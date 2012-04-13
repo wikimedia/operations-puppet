@@ -277,7 +277,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# FIXME: reenable the schedule line once confirmed working
 		exec { "purge decommissioned hosts":
 			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
-			command => "true; for srv in $(cut -d'\"' -f 2 -s $puppetmaster::config::gitdir/operations/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+			command => "for srv in $(cut -d'\"' -f 2 -s $puppetmaster::config::gitdir/operations/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
 #			schedule => rightnow 
 		}
 	}
