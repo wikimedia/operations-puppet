@@ -3,7 +3,7 @@
 
 class udp2log {
 
-	class logger( $log_file, $logging_instances=[] ) {
+	class logger( $log_file, $logging_instances ) {
 
 		include contacts::udp2log,
 			udp2log::monitoring,
@@ -12,9 +12,14 @@ class udp2log {
 			
 		system_role { "misc::mediawiki-logger": description => "udp2log data collection server" }
 
-		udp2log::instance{ $logging_instances: }
+		udp2log::instance { inline_template("<%= logging_instances.keys %>"): }
 
 		file {
+			"/etc/udp2log":
+				ensure => directory,
+				owner => root,
+				group => root,
+				mode => 0775;
 			"/etc/sysctl.d/99-big-rmem.conf":
 				owner => "root",
 				group => "root",
@@ -29,8 +34,10 @@ class udp2log {
 		}
 	}
 
-	define instance( ) {
+	define instance( $port ) {
 		require udp2log::packages
+
+		$port = $udp2log::logger::logging_instances[${name}][port]
 
 		file {
 			"/etc/udp2log/${name}":
