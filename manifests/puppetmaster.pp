@@ -61,6 +61,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
 	class config {
 		include base::puppet
+		$gitdir = "/var/lib/git"
+		$volatiledir = "/var/lib/puppet/volatile"
 
 		file {
 			"/etc/puppet/puppet.conf.d/20-master.conf":
@@ -82,30 +84,34 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class handles the repositories from which the puppetmasters pull
 	class gitclone {
-		$gitdir = "/var/lib/git"
 
 		file {
-			"$gitdir":
+			"$puppetmaster::config::gitdir":
 				ensure => directory,
 				owner => root,
 				group =>root;
-			"$gitdir/operations":
+			"$puppetmaster::config::gitdir/operations":
 				ensure => directory,
 				owner => root,
 				group => root;
-			"$gitdir/operations/puppet/.git/hooks/post-merge":
+			"$puppetmaster::config::gitdir/operations/puppet/.git/hooks/post-merge":
 				require => Git::Clone["operations/puppet"],
 				source => "puppet:///files/puppet/git/puppet/post-merge",
 				mode => 0550;
-			"$gitdir/operations/puppet/.git/hooks/pre-commit":
+			"$puppetmaster::config::gitdir/operations/puppet/.git/hooks/pre-commit":
 				require => Git::Clone["operations/puppet"],
 				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
-			"$gitdir/operations/software/.git/hooks/pre-commit":
+			"$puppetmaster::config::gitdir/operations/software/.git/hooks/pre-commit":
 				require => Git::Clone["operations/software"],
 				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
-			"/var/lib/puppet/volatile":
+			"$puppetmaster::config::volatiledir":
+				mode => 0750,
+				owner => root,
+				group => puppet,
+				ensure => directory;
+			"$puppetmaster::config::volatiledir/misc":
 				mode => 0750,
 				owner => root,
 				group => puppet,
@@ -114,36 +120,36 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		if $is_labs_puppet_master {
 			git::clone {
 				"operations/puppet":
-					require => File["$gitdir/operations"],
-					directory => "$gitdir/operations",
+					require => File["$puppetmaster::config::gitdir/operations"],
+					directory => "$puppetmaster::config::gitdir/operations",
 					branch => "test",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 				"operations/software":
-					require => File["$gitdir/operations"],
-					directory => "$gitdir/operations",
+					require => File["$puppetmaster::config::gitdir/operations"],
+					directory => "$puppetmaster::config::gitdir/operations",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 			}
 		}
 		else {
 			file {
-				"$gitdir/operations/private":
+				"$puppetmaster::config::gitdir/operations/private":
 					ensure => directory,
 					owner => root,
 					group => puppet,
 					mode => 0750;
 
-				"$gitdir/operations/private/.git/hooks/post-merge":
+				"$puppetmaster::config::gitdir/operations/private/.git/hooks/post-merge":
 					source => "puppet:///files/puppet/git/private/post-merge",
 					mode => 0550;
 			}
 			git::clone {
 				"operations/puppet":
-					require => File["$gitdir/operations"],
-					directory => "$gitdir/operations",
+					require => File["$puppetmaster::config::gitdir/operations"],
+					directory => "$puppetmaster::config::gitdir/operations",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 				"operations/software":
-					require => File["$gitdir/operations"],
-					directory => "$gitdir/operations",
+					require => File["$puppetmaster::config::gitdir/operations"],
+					directory => "$puppetmaster::config::gitdir/operations",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 			}
 		}
@@ -232,6 +238,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
+		require puppetmaster::config
+
 		File { mode => 0555 }
 		file {
 			"/usr/local/bin/position-of-the-moon":
@@ -247,7 +255,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		cron {
 			updategeoipdb:
 				environment => "http_proxy=http://brewster.wikimedia.org:8080",
-				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /etc/puppet/files/misc/GeoIP.dat.new && mv /etc/puppet/files/misc/GeoIP.dat.new /etc/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /etc/puppet/files/misc/GeoIPcity.dat.new && mv /etc/puppet/files/misc/GeoIPcity.dat.new /etc/puppet/files/misc/GeoIPcity.dat",
+				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > $puppetmaster::config::volatiledir/misc/GeoIP.dat.new && mv $puppetmaster::config::volatiledir/misc/GeoIP.dat.new $puppetmaster::config::volatiledir/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > $puppetmaster::config::volatiledir/misc/GeoIPcity.dat.new && mv $puppetmaster::config::volatiledir/misc/GeoIPcity.dat.new $puppetmaster::config::volatiledir/misc/GeoIPcity.dat",
 				user => root,
 				hour => 3,
 				minute => 26,
@@ -266,10 +274,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			period => daily,
 		}
 
+		# FIXME: reenable the schedule line once confirmed working
 		exec { "purge decommissioned hosts":
 			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
-			command => "true; for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
-			schedule => nightly
+			command => "true; for srv in $(cut -d'\"' -f 2 -s $puppetmaster::config::gitdir/operations/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+#			schedule => rightnow 
 		}
 	}
 
