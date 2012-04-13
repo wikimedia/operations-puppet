@@ -24,11 +24,7 @@ CONFFILE=/etc/udp2log/<%= name %>
 
 if [ -f /proc/sys/net/core/rmem_max ] ; then
 	rmax=$(cat /proc/sys/net/core/rmem_max)
-	if [ $rmax -ge 134217728 ] ; then
-		queue=131072
-	else
-		queue=$((rmax/1024))
-	fi
+	queue=$((rmax/1024))
 	DAEMON_ARGS="$DAEMON_ARGS --recv-queue=$queue"
 fi
 
