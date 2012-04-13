@@ -161,12 +161,12 @@ class generic::geoip {
 				mode => 0644,
 				owner => root,
 				group => root,
-				source => "puppet:///files/misc/GeoIP.dat";
+				source => "puppet:///volatile/misc/GeoIP.dat";
 			"/usr/share/GeoIP/GeoIPCity.dat":
 				mode => 0644,
 				owner => root,
 				group => root,
-				source => "puppet:///files/misc/GeoIPcity.dat";
+				source => "puppet:///volatile/misc/GeoIPcity.dat";
 		}
 	}
 }
