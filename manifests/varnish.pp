@@ -6,7 +6,7 @@
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
 
 class varnish {
-	class packages($version="installed") {
+	class packages($version="3.0.2-2wm4") {
 		package { [ 'varnish', 'libvarnishapi1', 'varnish-dbg' ]:
 			ensure => $version;
 		}
