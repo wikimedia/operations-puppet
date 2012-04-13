@@ -36,10 +36,8 @@ class udp2log {
 		}
 	}
 
-	define instance( $port ) {
+	define instance( $port = $udp2log::logger::logging_instances[$name][port] ) {
 		require udp2log::packages
-
-		$port = $udp2log::logger::logging_instances[$name][port]
 
 		file {
 			"/etc/udp2log/${name}":
