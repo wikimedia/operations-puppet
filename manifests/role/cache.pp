@@ -371,6 +371,7 @@ class role::cache {
 				},
 				backends => [ "10.2.1.24", "10.2.1.27" ],
 				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27" ] },
+				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 1,
 					'cache4xx' => "5m"
