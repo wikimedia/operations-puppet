@@ -14,7 +14,7 @@ class udp2log {
 			
 		system_role { "misc::mediawiki-logger": description => "udp2log data collection server" }
 
-		udp2log::instance { logging_instances_array: }
+		udp2log::instance { logging_instances_array: port => Logging_instances[$name]["port"] }
 
 		file {
 			"/etc/udp2log":
@@ -38,8 +38,6 @@ class udp2log {
 
 	define instance( $port = 8420 ) {
 		require udp2log::packages
-
-		$port = $udp2log::logger::logging_instances[$name]["port"]
 
 		file {
 			"/etc/udp2log/${name}":
