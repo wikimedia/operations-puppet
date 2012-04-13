@@ -15,6 +15,11 @@ class udp2log {
 		udp2log::instance{ $logging_instances: }
 
 		file {
+			"/etc/udp2log":
+				ensure => directory,
+				owner => root,
+				group => root,
+				mode => 0775;
 			"/etc/sysctl.d/99-big-rmem.conf":
 				owner => "root",
 				group => "root",
@@ -29,8 +34,10 @@ class udp2log {
 		}
 	}
 
-	define instance( ) {
+	define instance( $port ) {
 		require udp2log::packages
+
+		$port = $logging_instances[${name}][port]
 
 		file {
 			"/etc/udp2log/${name}":
