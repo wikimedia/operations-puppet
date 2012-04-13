@@ -12,7 +12,7 @@ define sudo_user( $privileges ) {
 
 }
 
-define sudo_group($privileges, $ensure="present") {
+define sudo_group($privileges=[], $ensure="present") {
 	$group = $title
 
 	file { "/etc/sudoers.d/$group":
