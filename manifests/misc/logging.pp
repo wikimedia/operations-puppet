@@ -36,7 +36,7 @@ class udp2log {
 		}
 	}
 
-	define instance( $port = $logging_instances[$title]["port"] ) {
+	define instance( $port = 8420 ) {
 		require udp2log::packages
 
 		file {
