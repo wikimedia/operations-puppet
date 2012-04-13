@@ -33,13 +33,13 @@
 --ldap_user_dn=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_dn') %>
 --ldap_user_unit=people
 --ldap_user_subtree=ou=people,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_project_subtree=ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---role_project_subtree=ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_cloudadmin=cn=cloudadmins,ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_itsec=cn=itsec,ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_sysadmin=cn=sysadmins,ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_netadmin=cn=netadmins,ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_developer=cn=developers,ou=groups,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--role_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_cloudadmin=cn=cloudadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_itsec=cn=itsec,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_sysadmin=cn=sysadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_netadmin=cn=netadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_developer=cn=developers,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
 --node_availability_zone=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --zone_name=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --quota_floating_ips=<%= scope.lookupvar('openstack::nova_config::nova_quota_floating_ips') %>
