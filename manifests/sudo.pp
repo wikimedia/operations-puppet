@@ -32,7 +32,7 @@ class sudo::labs_project {
 
 	# For all project except ones listed here, give sudo privileges
 	# to all project members
-	if ! ($projectgroup in ['testlabs', 'bastion']) {
+	if ! ($instanceproject in ['testlabs', 'bastion']) {
 		# Paranoia check
 		if $realm == "labs" {
 			sudo_group { $projectgroup: privileges => ['ALL=(ALL) ALL'] }
