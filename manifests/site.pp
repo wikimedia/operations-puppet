@@ -1561,7 +1561,7 @@ node "oxygen.wikimedia.org" {
 
 	class { udp2log::logger:
 			log_file => "/a/udp2log/packet-loss.log",
-			logging_instances => {"oxygen" => { "port" => "8420" } }
+			logging_instances => {"oxygen" => { "port" => "8421" } }
 	}
 
 }
