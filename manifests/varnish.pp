@@ -116,6 +116,7 @@ class varnish {
 				],
 			hasstatus => false,
 			pattern => "/var/run/varnishd${instancesuffix}.pid",
+			subscribe => Package[varnish],
 			ensure => running;
 		}
 
