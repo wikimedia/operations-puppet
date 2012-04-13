@@ -28,7 +28,7 @@ class udp2log {
 				mode => 0444,
 				content => "net.core.rmem_max = 536870912";
 		}
-		if "aft" in $logging_instances {
+		if "aft" in $logging_instances_array {
 			file { "/etc/logrotate.d/aft-udp2log":
 				mode => 0444,
 				source => "puppet:///files/logrotate/aft-udp2log";
