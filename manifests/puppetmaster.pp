@@ -250,6 +250,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/naggen";
 			"/usr/local/sbin/puppetstoredconfigclean.rb":
 				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
+			"/usr/local/bin/decom_servers.sh":
+				template => "puppet:///templates/puppet/decom_servers.sh.erb";
 		}
 
 		cron {
@@ -266,21 +268,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				hour => 4,
 				minute => 27,
 				ensure => present;
+			decomservers:
+				command => "/usr/local/bin/decom_servers.sh",
+				user => root,
+				minute => 17,
+				ensure => present;
 		}
 
-		# Purge decommissioned hosts from the stored configs db
-		schedule { "nightly":
-			range => "2 - 6",
-			period => daily,
-		}
-
-		# FIXME: reenable the schedule line once confirmed working
-		exec { "purge decommissioned hosts":
-			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
-			provider => shell,
-			command => "for srv in $(cut -d'\"' -f 2 -s $puppetmaster::config::gitdir/operations/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done"
-#			schedule => rightnow 
-		}
 	}
 
 	# Class: puppetmaster::dashboard
