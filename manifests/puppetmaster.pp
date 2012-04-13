@@ -251,7 +251,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"/usr/local/sbin/puppetstoredconfigclean.rb":
 				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
 			"/usr/local/bin/decom_servers.sh":
-				template => "puppet:///templates/puppet/decom_servers.sh.erb";
+				content => template("puppet:///templates/puppet/decom_servers.sh.erb");
 		}
 
 		cron {
