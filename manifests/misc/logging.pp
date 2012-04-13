@@ -3,7 +3,7 @@
 
 class udp2log {
 
-	class logger( $log_file, $logging_instances ) {
+	class logger( $log_file, $logging_instances={} ) {
 		$logging_instances_keys = inline_template("<%= logging_instances.keys.join(',') %>") 
 		$logging_instances_array = split($logging_instances_keys,',')
 
