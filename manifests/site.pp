@@ -1549,13 +1549,14 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 node "oxygen.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	sudo_user { "awjrichards": privileges => ['ALL = NOPASSWD: ALL'] }
+
 	include standard,
 		groups::wikidev,
 		admins::restricted,
 		accounts::awjrichards,
 		accounts::datasets,
 		accounts::dsc,
+		accounts::diederik,
 		misc::squid-logging::multicast-relay,
 		nrpe
 
