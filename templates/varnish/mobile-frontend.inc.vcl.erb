@@ -23,6 +23,25 @@ acl carrier_digi {
 	"82.145.208.0"/20;
 }
 
+acl carrier_orange_ivory_coast {
+	"41.66.28.94"/32;
+	"41.66.28.95"/32;
+	"41.66.28.96"/32;
+	"41.66.28.72"/32;
+	"41.66.28.73"/32;
+}
+
+acl carrier_orange_uganda {
+	"41.202.224.0"/19;
+	"197.157.0.0"/18;
+}
+
+acl carrier_orange_tunisia {
+	"197.30.0.0"/17;
+	"197.30.128.0"/19;
+	"197.30.224.0"/19;
+	"197.29.192.0"/18;
+}
 
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers */
@@ -33,6 +52,21 @@ sub tag_carrier {
 			set req.http.X-Carrier = "DIGI";
 		}
 	}
+
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
+		if ( client.ip ~  carrier_orange_ivory_coast ) {
+			set req.http.X-Carrier = "Orange Ivory Coast";
+		} else if ( client.ip ~  carrier_orange_uganda ) {
+			if ( req.http.host ~ ^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m\.([a-zA-Z0-9-]+)\.org ) {
+				set req.http.X-Carrier = "Orange Uganda";
+			}
+		} else if ( client.ip ~  carrier_orange_ivory_tunisia ) {
+			if ( req.http.host ~ ^(ar|en|fr|es|de|it|ru|jp|zh)\.m\.([a-zA-Z0-9-]+)\.org ) {
+				set req.http.X-Carrier = "Orange Tunisia";
+			}
+		}
+	}
+
 	/* once actuall in prod, ensure users can't make requests
 	with a fake X-Carrier header */
 	/* else {
@@ -157,7 +191,15 @@ sub vcl_recv {
 	}
 	
 	if ( req.http.host == "m.wikipedia.org" ) {
-		error 666 "http://en.m.wikipedia.org" + req.url;
+		if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess" + req.url;
+		} else if ( req.http.X-Carrier == "Orange Uganda" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess" + req.url;
+		} else if ( req.http.X-Carrier == "Orange Tunisia" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess" + req.url;
+		} else {
+			error 666 "http://en.m.wikipedia.org" + req.url;
+		}
 	}
 	else if ( req.http.host == "mobile.wikipedia.org" ) {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
