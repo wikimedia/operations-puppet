@@ -1113,7 +1113,7 @@ node "locke.wikimedia.org" {
 	class { udp2log::logger:
 			#FIXME: move this to a more appropriately named file
 			log_file => "/a/squid/packet-loss.log",
-			logging_instances => {"locke" => { "port" => "8420" }, "aft" => { "port" => "8421" } }
+			logging_instances => {"locke" => { "port" => "8420" } }
 	}
 }
 
