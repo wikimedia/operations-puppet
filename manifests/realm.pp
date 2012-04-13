@@ -6,6 +6,14 @@ if !$realm {
 	$realm = "production"
 }
 
+if !$instanceproject {
+	$instanceproject = ''
+}
+
+if !$projectgroup {
+	$projectgroup = "project-$instanceproject"
+}
+
 # TODO: redo this in a much better way
 $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
 
