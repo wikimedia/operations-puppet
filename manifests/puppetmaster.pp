@@ -247,7 +247,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		cron {
 			updategeoipdb:
 				environment => "http_proxy=http://brewster.wikimedia.org:8080",
-				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /etc/puppet/files/misc/GeoIP.dat.new && mv /etc/puppet/files/misc/GeoIP.dat.new /etc/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /etc/puppet/files/misc/GeoIPcity.dat.new && mv /etc/puppet/files/misc/GeoIPcity.dat.new /etc/puppet/files/misc/GeoIPcity.dat",
+				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /var/lib/git/operations/puppet/files/misc/GeoIP.dat.new && mv /var/lib/git/operations/puppet/files/misc/GeoIP.dat.new /var/lib/git/operations/puppet/files/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > /var/lib/git/operations/puppet/files/misc/GeoIPcity.dat.new && mv /var/lib/git/operations/puppet/files/misc/GeoIPcity.dat.new /var/lib/git/operations/puppet/files/misc/GeoIPcity.dat",
 				user => root,
 				hour => 3,
 				minute => 26,
@@ -265,11 +265,16 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			range => "2 - 6",
 			period => daily,
 		}
+		schedule { "rightnow":
+			period => hourly,
+			repeat => 4,
+		}
 
+		# FIXME: scheduling this as "rightnow" to make it run right away, then must switch to nightly ASAP
 		exec { "purge decommissioned hosts":
 			path => "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin/:/sbin",
-			command => "true; for srv in $(cut -d'\"' -f 2 -s /etc/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
-			schedule => nightly
+			command => "true; for srv in $(cut -d'\"' -f 2 -s /var/lib/git/operations/puppet/manifests/decommissioning.pp); do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet; done",
+			schedule => rightnow 
 		}
 	}
 
