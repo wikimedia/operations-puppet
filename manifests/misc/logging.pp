@@ -14,7 +14,7 @@ class udp2log {
 			
 		system_role { "misc::mediawiki-logger": description => "udp2log data collection server" }
 
-		udp2log::instance { logging_instances_array: }
+		udp2log::instance { $logging_instances_array: }
 
 		file {
 			"/etc/udp2log":
