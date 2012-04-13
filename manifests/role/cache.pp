@@ -349,7 +349,9 @@ class role::cache {
 				varnish::logging,
 				nrpe
 
-			class { "varnish::packages": version => "installed" }
+			if $hostname =~ /^cp10[0-9][02468]$/ {
+				class { "varnish::packages": version => "3.0.2-2wm4" }
+			}
 
 			varnish::setup_filesystem{ ["sda3", "sdb3"]:
 				before => Varnish::Instance["upload-backend"]
@@ -366,7 +368,7 @@ class role::cache {
 				port => 3128,
 				admin_port => 6083,
 				storage => $hostname ? {
-					/^cp1036$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+					/^cp10[0-9][02468]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 					default => "-s sda3=file,/srv/sda3/varnish.persist,50% -s sdb3=file,/srv/sdb3/varnish.persist,50%",
 				},
 				backends => [ "10.2.1.24", "10.2.1.27" ],
