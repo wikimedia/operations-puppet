@@ -1,5 +1,5 @@
 #!/bin/bash
 for srv in $(cut -d'"' -f 2 -s <%= scope.lookupvar('puppetmaster::config::gitdir') %>/operations/puppet/manifests/decomissioning.pp)
-	do do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet
+	do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet
 done
 
