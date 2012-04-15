@@ -620,6 +620,7 @@ class ldap::client::wmf-cluster {
 	include passwords::ldap::wmf_cluster
 
 	$basedn = "dc=wikimedia,dc=org"
+	$sudobasedn = "ou=sudoers,${basedn}"
 	$servernames = [ "nfs1.pmtpa.wmnet", "nfs2.pmtpa.wmnet" ]
 	$proxypass = $passwords::ldap::wmf_cluster::proxypass
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=wikimedia,dc=org"
@@ -638,6 +639,7 @@ class ldap::client::wmf-corp-cluster {
 	include passwords::ldap::wmf_corp_cluster
 
 	$basedn = "dc=corp,dc=wikimedia,dc=org"
+	$sudobasedn = "ou=sudoers,${basedn}"
 	$servernames = [ "sanger.wikimedia.org", "sfo-aaa1.corp.wikimedia.org" ]
 	$proxypass = $passwords::ldap::wmf_corp_cluster::proxypass
 	$ldap_user_dn = "cn=scriptuser,ou=profile,dc=corp,dc=wikimedia,dc=org"
@@ -659,6 +661,8 @@ class ldap::client::wmf-test-cluster {
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
 	if ( $realm == "labs" ) {
+		# Per-project sudo
+		$sudobasedn = "ou=sudoers,cn=${instanceproject},ou=projects,${basedn}"
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs']
 		file { "/etc/security/access.conf":
 			owner => root,
@@ -668,6 +672,7 @@ class ldap::client::wmf-test-cluster {
 		}
 		include certificates::wmf_labs_ca
 	} else {
+		$sudobasedn = "ou=sudoers,${basedn}"
 		$ldapincludes = ['openldap', 'utils']
 	}
 	$wikildapdomain = "labs"
@@ -750,6 +755,7 @@ class ldap::client::includes {
 class ldap::client::corp-server {
 
 	$basedn = "dc=corp,dc=wikimedia,dc=org"
+	$sudobasedn = "ou=sudoers,${basedn}"
 	$servernames = [ "sanger.wikimedia.org", "sfo-aaa1.corp.wikimedia.org" ]
 	$ldap_ca = "wmf-ca.pem"
 
