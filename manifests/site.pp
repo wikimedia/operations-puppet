@@ -1504,7 +1504,6 @@ node /^nfs[12].pmtpa.wmnet/ {
 		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
 		misc::syslog-server,
-		misc::mediawiki-logger,
 		ldap::server::wmf-cluster,
 		ldap::client::wmf-cluster,
 		backup::client

@@ -12,7 +12,7 @@ class udp2log {
 			udp2log::iptables,
 			udp2log::packages
 			
-		system_role { "misc::mediawiki-logger": description => "udp2log data collection server" }
+		system_role { "udp2log::logger": description => "udp2log data collection server" }
 
 		udp2log::instance { $logging_instances_array: }
 
