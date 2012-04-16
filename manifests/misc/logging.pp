@@ -3,14 +3,17 @@
 
 class udp2log {
 
-	class logger( $log_file, $logging_instances={} ) {
+	class logger( $log_file, $logging_instances={}, $has_monitoring = true ) {
 		$logging_instances_keys = inline_template("<%= logging_instances.keys.join(',') %>") 
 		$logging_instances_array = split($logging_instances_keys,',')
 
 		include contacts::udp2log,
-			udp2log::monitoring,
-			udp2log::iptables,
 			udp2log::packages
+			
+		if $has_monitoring == true {
+			include udp2log::monitoring,
+				udp2log::iptables
+		}
 			
 		system_role { "udp2log::logger": description => "udp2log data collection server" }
 
