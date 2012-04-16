@@ -436,11 +436,11 @@ class role::cache {
 		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
 		$varnish_backends = $::site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
+			'eqiad' => $all_backends,
 			# [ bits-lb.pmtpa, bits-lb.eqiad ]
 			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
 			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
+			/^(pmtpa|esams)$/ => [ "208.80.154.234" ],
 			default => []
 		}
 
@@ -456,8 +456,8 @@ class role::cache {
 		}
 
 		$varnish_directors = $::site ? {
-			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
-			'esams' => $multiple_backends["esams"],
+			'eqiad' => $multiple_backends["pmtpa-eqiad"],
+			/^(pmtpa|esams)$/ => $multiple_backends["esams"],
 		}
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
