@@ -45,7 +45,7 @@ probe text {
 */
 
 # FIXME: need to support checks from pmtpa to backend bits app servers
-<% if vcl == "bits" and scope.lookupvar("::site") == "esams" -%>
+<% if vcl == "bits" and (scope.lookupvar("::site") == "esams" or scope.lookupvar("::site") == "pmtpa") -%>
 probe bits {
 	.request =
 		"GET /images/wikimedia-button.png HTTP/1.1"
