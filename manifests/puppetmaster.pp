@@ -182,7 +182,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => root,
 				group => root,
 				mode => 0444,
-				content => template('puppet/puppetmaster.erb');
+				content => template("puppet/puppetmaster.erb");
 			"/etc/apache2/ports.conf":
 				owner => root,
 				group => root,
@@ -250,8 +250,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/naggen";
 			"/usr/local/sbin/puppetstoredconfigclean.rb":
 				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
-#			"/usr/local/bin/decom_servers.sh":
-#				content => template("puppet:///templates/puppet/decom_servers.sh.erb");
+			"/usr/local/bin/decom_servers.sh":
+				content => template("puppet/decom_servers.sh.erb");
 		}
 
 		cron {
@@ -268,11 +268,11 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				hour => 4,
 				minute => 27,
 				ensure => present;
-#			decomservers:
-#				command => "/usr/local/bin/decom_servers.sh",
-#				user => root,
-#				minute => 17,
-#				ensure => present;
+			decomservers:
+				command => "/usr/local/bin/decom_servers.sh",
+				user => root,
+				minute => 17,
+				ensure => present;
 		}
 
 	}
