@@ -24,7 +24,7 @@ sub vcl_fetch {
 	return (deliver);
 }
 
-<% if site == "pmtpa" or site == "eqiad" -%>
+<% if site == "eqiad" -%>
 # FIXME: Implement some proper topology code for primary DCs and downstream cache sites
 sub vcl_miss {
 	/* transform backend url: /<sitename>/load.php -> /w/load.php
