@@ -1510,6 +1510,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 		udp2log::utilities
 			
 	class { udp2log::logger:
+		has_monitoring => false,
 		log_file => "/var/log/udp2log/packet-loss.log",
 		logging_instances => {"mw" => { "port" => "8420", "has_logrotate" => true } }
 	}
