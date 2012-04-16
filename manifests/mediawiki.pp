@@ -24,3 +24,24 @@ class mediawiki::sync {
 	}
 
 }
+
+class mediawiki::refreshlinks {
+	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
+
+	define refreshlinks::cronjob() {
+
+		$cluster = regsubst($name, '@.*', '\\1')
+		$hour = regsubst($name, '.*@', '\1')
+
+		cron { "cron-refreshlinks-${name}":
+			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only",
+			user => mwdeploy,
+			hour => $hour,
+			minute => 0,
+			ensure => present,
+		}
+	}
+
+	# simply going 'one per s[1-7] cluster and hour' here, so s1 runs at hour 1 and so on..
+	refreshlinks::cronjob { ['s1@0','s2@2','s3@3','s4@4','s5@5','s6@6','s7@7']: }
+}
