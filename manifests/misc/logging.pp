@@ -28,15 +28,9 @@ class udp2log {
 				mode => 0444,
 				content => "net.core.rmem_max = 536870912";
 		}
-		if "aft" in $logging_instances_array {
-			file { "/etc/logrotate.d/aft-udp2log":
-				mode => 0444,
-				source => "puppet:///files/logrotate/aft-udp2log";
-			}
-		}
 	}
 
-	define instance( $port = $logging_instances[$name]["port"] ) {
+	define instance( $port = $logging_instances[$name]["port"], $has_logrotate = false ) {
 		require udp2log::packages
 
 		file {
@@ -51,6 +45,15 @@ class udp2log {
 				owner => root,
 				group => root,
 				content => template("udp2log/udp2log.init.erb");
+		}
+
+		if $has_logrotate == true {
+			file {"/etc/logrotate.d/${name}-udp2log":
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/logrotate/${name}-udp2log";
+			}
 		}
 
 		service { "udp2log-${name}":

@@ -464,7 +464,7 @@ node "emery.wikimedia.org" {
 	class { udp2log::logger:
 		#FIXME: move this to a more appropriately named file
 			log_file => "/var/log/squid/packet-loss.log",
-			logging_instances => {"emery" => { "port" => "8420" }, "aft" => { "port" => "8421" } }
+			logging_instances => {"emery" => { "port" => "8420" }, "aft" => { "port" => "8421", "has_logrotate" => true } }
 	}
 
 }
@@ -1506,7 +1506,13 @@ node /^nfs[12].pmtpa.wmnet/ {
 		misc::syslog-server,
 		ldap::server::wmf-cluster,
 		ldap::client::wmf-cluster,
-		backup::client
+		backup::client,
+		udp2log::utilities
+			
+	class { udp2log::logger:
+		log_file => "/var/log/udp2log/packet-loss.log",
+		logging_instances => {"mw" => { "port" => "8420", "has_logrotate" => true } }
+	}
 
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
