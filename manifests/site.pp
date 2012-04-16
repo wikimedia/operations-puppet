@@ -1493,7 +1493,7 @@ node "nescio.esams.wikimedia.org" {
 
 node /^nfs[12].pmtpa.wmnet/ {
 
-	$ldap_server_bind_ips = ""
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$cluster = "misc"
 	$ldapincludes = ['openldap']
 	$ldap_certificate = "$hostname.pmtpa.wmnet"
