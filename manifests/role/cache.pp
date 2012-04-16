@@ -19,9 +19,6 @@ class role::cache {
 					'sq34.wikimedia.org',   # API
 					'sq36.wikimedia.org',   # API
 					'sq37.wikimedia.org',
-					'sq39.wikimedia.org',
-					'sq40.wikimedia.org',
-
 					'sq59.wikimedia.org',
 					'sq60.wikimedia.org',
 					'sq61.wikimedia.org',
@@ -30,7 +27,6 @@ class role::cache {
 					'sq64.wikimedia.org',
 					'sq65.wikimedia.org',
 					'sq66.wikimedia.org',
-
 					'sq71.wikimedia.org',
 					'sq72.wikimedia.org',
 					'sq73.wikimedia.org',
@@ -261,8 +257,6 @@ class role::cache {
 					'sq13.wikimedia.org',
 					'sq14.wikimedia.org',
 					'sq15.wikimedia.org',
-
-					'sq46.wikimedia.org',
 					'sq47.wikimedia.org',
 				],
 				"eqiad" => [],

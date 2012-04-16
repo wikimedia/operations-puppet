@@ -51,6 +51,7 @@ $decommissioned_servers = [
 "sq35",
 "sq38",
 "sq39",
+"sq40",
 "sq46",
 "sq47",
 "srv86",
