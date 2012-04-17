@@ -548,7 +548,8 @@ class nagios::monitor::newmonitor {
 		nrpe::new,
 		nagios::monitor::jobqueue::new,
 		nagios::monitor::newsnmp,
-		nagios::monitor::newfirewall
+		nagios::monitor::newfirewall,
+		nagios::nsca::daemon::new
 
 	include passwords::nagios::mysql
 
@@ -1189,6 +1190,24 @@ class nagios::nsca::daemon {
 
 }
 
+class nagios::nsca::daemon::new {
+
+	system_role { "nagios::nsca::daemon": description => "Nagios Service Checks Acceptor Daemon" }
+
+	require nagios::nsca
+
+	file { "/etc/nsca.cfg":
+		source => "puppet:///private/icinga/nsca.cfg",
+		owner => root,
+		mode => 0400;
+	}
+
+
+	service { "nsca":
+		ensure => running;
+	}
+
+}
 # NSCA - client
 class nagios::nsca::client {
 
