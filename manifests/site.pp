@@ -1464,13 +1464,16 @@ node /^ms-be[1-5]\.pmtpa\.wmnet$/ {
 
 node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+
+	$ircecho_infile = "/var/log/nagios/irc.log"
+	$ircecho_nick = "icinga-wm"
+	$ircecho_chans = "#wikimedia-operations"
+	$ircecho_server = "irc.freenode.net"
 	include standard,
-		nagios::monitor::newmonitor
-#		nagios::monitor::pager
+		nagios::monitor::newmonitor,
+		misc::ircecho
 #		nagios::ganglia::monitor::enwiki,
 #		nagios::ganglia::ganglios,
-#		nagios::nsca::daemon
-#		ganglia::aggregator
 }
 
 node "nescio.esams.wikimedia.org" {
