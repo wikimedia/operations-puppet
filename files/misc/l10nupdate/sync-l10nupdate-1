@@ -10,5 +10,6 @@ fi
 echo "Synchronizing /home/wikipedia/common/php-$MWVER/cache/l10n to /usr/local/apache/common-local/php-$MWVER/cache/l10n..."
 echo "mediawiki-installation:"
 
-dsh -o -oPasswordAuthentication=no -cM -g mediawiki-installation \
+# Set forklimit to 30 (-F 30) to prevent NFS from getting overloaded causing some machines to be skipped
+dsh -o -oPasswordAuthentication=no -F 30 -cM -g mediawiki-installation \
   "sudo -u mwdeploy rsync -a 10.0.5.8::common/php-$MWVER/cache/l10n/ /usr/local/apache/common-local/php-$MWVER/cache/l10n"
