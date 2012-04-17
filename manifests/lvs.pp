@@ -185,7 +185,7 @@ class lvs::configuration {
 					'wikisourcelbsecure' => "91.198.174.229",
 					'wikinewslbsecure' => "91.198.174.230",
 					'wikiversitylbsecure' => "91.198.174.231",
-					'mediawikilbsecure' => '91.198.174.232',
+					'mediawikilbsecure' => "91.198.174.232",
 					'foundationlbsecure' => "91.198.174.235"
 				},
 			},
