@@ -492,7 +492,7 @@ class role::cache {
 		#}
 		
 		cron { "session leak":
-			command => "(( $(varnishstat -1 -f n_sess_mem | awk '{ print $2 }') > 150000 )) && service varnish restart",
+			command => "(( $(varnishstat -1 -f n_sess_mem | awk '{ print \$2 }') > 150000 )) && service varnish restart",
 			user => root,
 		}
 	}
