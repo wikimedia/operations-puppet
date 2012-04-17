@@ -362,54 +362,6 @@ class misc::rt::server {
 	}
 }
 
-# TODO: kill.
-class misc::wapsite {
-	system_role { "misc::wapsite": description => "WAP site server" }
-
-	require webserver::php5
-
-	file {
-		"/etc/apache2/sites-available/mobile.wikipedia.org":
-			path => "/etc/apache2/sites-available/mobile.wikipedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/mobile.wikipedia.org";
-		"/etc/apache2/sites-available/wap.wikipedia.org":
-			path => "/etc/apache2/sites-available/wap.wikipedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/wap.wikipedia.org";
-		"/srv/mobile.wikipedia.org/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
-	}
-
-	# Install CURL
-	generic::apt::pin-package { php5-curl: }
-	package { php5-curl: ensure => latest; }
-
-	apache_module { rewrite: name => "rewrite" }
-
-	apache_site {
-		mobile:
-			name => "mobile.wikipedia.org",
-			require => File["/srv/mobile.wikipedia.org/"];
-		wap:
-			name => "wap.wikipedia.org",
-			require => Apache_module[rewrite];
-	 }
-
-	# Monitoring
-	monitor_service { wapsite:
-		check_command => "check_http_url!mobile.wikipedia.org!/about.php",
-		description => "Mobile WAP site"
-	}
-}
-
 class misc::apple-dictionary-bridge {
 	system_role { "misc::apple-dictionary-bridge": description => "Apple Dictionary to API OpenSearch bridge" }
 

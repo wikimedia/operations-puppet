@@ -443,7 +443,6 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 node "ekrem.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 	include standard,
-		misc::wapsite,
 		misc::apple-dictionary-bridge,
 		misc::irc-server,
 		misc::mediawiki-irc-relay
