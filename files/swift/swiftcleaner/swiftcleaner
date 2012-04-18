@@ -367,7 +367,7 @@ def obj_to_url(obj):
     """translate an object tuple (container, objectpath) into a URL fit for swift or ms5
     eg (wikipedia-commons-local-thumb.a2, a/a2/L.jpg/420px-L.jpg) => /wikipedia/commons/thumb/a/a2/L.jpg/420-L.jpg"""
 
-    contmatch = re.match("(?P<proj>[^-]+)-(?P<lang>[^-]+)-local-thumb(\.(?P<shard>\d{2}))?", obj[0])
+    contmatch = re.match("(?P<proj>[^-]+)-(?P<lang>[^-]+)-local-thumb(\.(?P<shard>[0-9a-f]{2}))?", obj[0])
     if(contmatch):
         url = "/%s/%s/%s/%s" % (contmatch.group('proj'), contmatch.group('lang'), "thumb", obj[1])
     else:
