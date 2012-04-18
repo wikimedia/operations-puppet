@@ -11,6 +11,21 @@ MWinstall="/usr/local/apache"
 dblist="$MWinstall/common/all.dblist"
 pvtlist="$MWinstall/common/private.dblist"
 
+function build-new {
+	cd $ls2
+	rm -rf $base/indexes/status/$1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.oai.IncrementalUpdater $1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -p ${1}.links
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.related.RelatedBuilder $1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.oai.IncrementalUpdater $1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -p $1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -p ${1}.hl
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -pre -p ${1}.spell.pre
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.spell.SuggestBuilder -s $1
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -p ${1}.spell
+	java -cp LuceneSearch.jar org.wikimedia.lsearch.prefix.PrefixIndexBuilder $1
+}
+
 function import-file {
 	echo "Importing $2 ..."
 	# Syntax: import-file <xmldump> <dbname>
@@ -96,6 +111,8 @@ elif [ "$1" = "build-prefix" ] ; then
 	build-prefix
 elif [ "$1" = "inc-updater-start" ] ; then
 	inc-updater-start
+elif [ "$1" = "build-new" ] ; then
+	build-new $2
 else
 	echo "$0: argument not recognized"
 	exit 1
