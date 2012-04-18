@@ -12,7 +12,7 @@ define sudo_user( $privileges ) {
 
 }
 
-define sudo_group($privileges=[], $ensure="present") {
+define sudo_group( $privileges=[], $ensure="present" ) {
 	$group = $title
 
 	file { "/etc/sudoers.d/$group":
@@ -26,19 +26,16 @@ define sudo_group($privileges=[], $ensure="present") {
 }
 
 class sudo::labs_project {
+
 	if $realm == labs {
 		include sudo::default
-	}
 
-	# For all project except ones listed here, give sudo privileges
-	# to all project members
-	if ! ($instanceproject in ['testlabs', 'bastion']) {
-		# Paranoia check
-		if $realm == "labs" {
-			sudo_group { $projectgroup: privileges => ['ALL=(ALL) ALL'] }
-			# Old way of handling this.
-			sudo_group { $instanceproject: ensure => absent }
-		}
+		# Was handled via sudo ldap, now handled via puppet
+		sudo_group { ops: privileges => ['ALL=(ALL) ALL'] }
+		# Old way of handling this.
+		sudo_group { $instanceproject: ensure => absent }
+		# Another old way, before per-project sudo
+		sudo_group { $projectgroup: ensure => absent }
 	}
 
 }
