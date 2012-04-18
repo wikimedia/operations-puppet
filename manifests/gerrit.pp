@@ -115,6 +115,11 @@ class gerrit::jetty {
 			mode => 0444,
 			source => "puppet:///files/gerrit/mail/ChangeSubject.vm",
 			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/etc/GerritSite.css":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/skin/GerritSite.css";
 		"/var/lib/gerrit2/review_site/hooks":
 			owner => gerrit2,
 			group => gerrit2,
