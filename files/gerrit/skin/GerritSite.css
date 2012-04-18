@@ -1,0 +1,5 @@
+/* Add word wrapping for commit summaries so horizontal scrolling isn't needed */
+.GCLMTUVDMB {
+	white-space: pre-wrap !important;
+}
+
