@@ -3,7 +3,10 @@
 # Installs needed packages for pediapress/mwlib.
 class misc::mwlib::packages {
 
-	package { [ "gcc", "g++", "make", "python", "python-dev", "python-virtualenv", "libjpeg-dev", "libz-dev", "libfreetype6-dev", "liblcms-dev", "libxml2-dev", "libxslt-dev", "ocaml-nox", "git-core", "python-imaging", "python-lxml", "texlive-latex-recommended", "ploticus", "dvipng", "imagemagick", "pdftk" ]:
+	package { [ "dvipng", "g++", "gcc", "git-core", "imagemagick", "libfreetype6-dev", "libjpeg-dev",
+			"liblcms-dev", "libxml2-dev", "libxslt-dev", "libz-dev", "make", "ocaml-nox", "pdftk",
+			"ploticus", "python", "python-dev", "python-greenlet", "python-imaging", "python-lxml",
+			"python-pyparsing", "python-pypdf", "python-virtualenv", "texlive-latex-recommended" ]:
 		ensure   => 'installed',
 	}
 
