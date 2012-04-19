@@ -8,7 +8,7 @@ class udp2log {
 		$logging_instances_array = split($logging_instances_keys,',')
 
 		include contacts::udp2log,
-			udp2log::packages
+			udp2log::udp_filter
 			
 		if $has_monitoring == true {
 			include udp2log::monitoring,
@@ -30,6 +30,9 @@ class udp2log {
 				group => "root",
 				mode => 0444,
 				content => "net.core.rmem_max = 536870912";
+		}
+		package { udplog:
+			ensure => latest;
 		}
 	}
 
@@ -82,8 +85,8 @@ class udp2log {
 		}
 	}
 
-	class packages {
-		package { ["udplog", "udp-filter"]:
+	class udp_filter {
+		package { udp-filter:
 			ensure => latest;
 		}
 		package { udp-filters:
