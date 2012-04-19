@@ -980,6 +980,7 @@ node "hume.wikimedia.org" {
 		nfs::home,
 		misc::scripts,
 		misc::maintenance::foundationwiki,
+		mediawiki::refreshlinks,
 		# begin added 20120309 temporarily for testing /jgreen
 		mysql::packages,
 		mysql::mysqluser,
