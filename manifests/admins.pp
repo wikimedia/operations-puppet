@@ -1893,6 +1893,7 @@ class admins::restricted {
 	include accounts::erik
 	include accounts::ezachte
 	include accounts::jamesofur
+	include accounts::otto
 	include accounts::pgehres
 	include accounts::rcole # access revoked
 	include accounts::rainman
