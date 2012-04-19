@@ -400,6 +400,7 @@ class role::cache {
 					'between_bytes_timeout' => "2s",
 					'max_connections' => 100000,
 					'probe' => "varnish",
+					'weight' => 10,
 				},
 				xff_sources => $network::constants::all_networks,
 				before => Class[varnish::logging]

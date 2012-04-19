@@ -142,7 +142,7 @@ director <%= director %> <%= director_type %> {
 <% else -%>
 		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
 <% end -%>
-		.weight = 10;
+		.weight = <%= varnish_backend_options.fetch("weight", 10) %>;
 	}
 <% end -%>
 }
