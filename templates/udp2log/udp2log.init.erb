@@ -15,9 +15,9 @@
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="UDP log receiver (udp2log)"
-NAME=udp2log-<%= name %>
+NAME=udp2log-<%= name %> 
 DAEMON=/usr/bin/udp2log
-DAEMON_ARGS="-p <%= port %>"
+DAEMON_ARGS="-p <%= port %><% if multicast_listen == true then -%> --multicast 233.58.59.1<% end %>"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 CONFFILE=/etc/udp2log/<%= name %>

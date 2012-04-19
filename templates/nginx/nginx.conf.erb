@@ -27,6 +27,7 @@ http {
     log_format squid_combined '$hostname $udplog_sequence $udplog_time $request_time $remote_addr FAKE_CACHE_STATUS/$status $bytes_sent $request_method $scheme://$host$uri NONE/$proxy_host $content_type $http_referer $http_x_forwarded_for $udplog_escaped_user_agent';
     access_udplog 208.80.152.138:8420 squid_combined; 
     access_udplog 208.80.152.184:8420 squid_combined; 
+    access_udplog 208.80.154.15:8419 squid_combined; 
     client_max_body_size 100m;
     large_client_header_buffers 4 16k; 
     <% end %>
