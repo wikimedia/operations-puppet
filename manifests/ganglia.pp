@@ -222,7 +222,7 @@ class ganglia {
 		if $realm == "labs" {
 			# cron job to generate ganglia aggregator confs
 			file { "/etc/ganglia/gmond.conf.labsstub":
-				source => "pupppet://files/ganglia/gmond.conf.labsstub",
+				source => "puppet:///files/ganglia/gmond.conf.labsstub",
 				mode => 0444,
 				ensure => present;
 			}
