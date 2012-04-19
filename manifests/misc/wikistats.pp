@@ -50,7 +50,21 @@ class misc::wikistats {
 		require misc::mariadb::server
 
 		package { 'php5-cli': ensure => latest; }
-	}
+
+		define wikistats::cronjob() {
+
+			$hour = regsubst($name, '.*@', '\1')
+
+			cron { "cron-wikistats-update--${name}":
+				command => "/usr/bin/php /var/lib/wikistats/bin/update.php ${name} &> /var/log/wikistats/update_${name}.log",
+				user => wikistats,
+				hour => $hour,
+				minute => 0,
+				ensure => present,
+			}
+		}
+		# update cron jobs: usage: <project prefix>@<hour>
+		wikistats::cronjob { [ 'wp@0','wt@2','ws@3','wn@4','wb@5','wq@6','os@7','gt@8','an@9','wf@10','wv@11','sc@12','ne@13','wr@14','et@15','mt@16','un@17','wx@18',mw@19' ]: }
+	}	
 
 }
-
