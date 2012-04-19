@@ -32,7 +32,7 @@ define nrpe::check($command) {
 #	Service check description
 # - $nrpe_command
 #	if defined, installs this NRPE command as check_${title}
-define nrpe::monitor_service($description, $nrpe_command=undef) {
+define nrpe::monitor_service($description, $nrpe_command=undef, $contact_group="admins") {
 	if $nrpe_command != undef {
 		nrpe::check { "check_${title}":
 			command => $nrpe_command,
@@ -45,7 +45,8 @@ define nrpe::monitor_service($description, $nrpe_command=undef) {
 
 	::monitor_service{ $title:
 		description => $description,
-		check_command => "nrpe_check!check_${title}"
+		check_command => "nrpe_check!check_${title}",
+		contact_group => $contact_group
 	}
 }
 

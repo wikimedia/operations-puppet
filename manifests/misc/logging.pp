@@ -127,9 +127,9 @@ class udp2log {
 				minute => '*/5';
 		}
 
-		nrpe::monitor_service{ "udp2log_log_age": description => "udp2log log age", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_log_age" }
-		nrpe::monitor_service{ "udp2log_procs": description => "udp2log processes", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs" }
-		monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8" }
+		nrpe::monitor_service{ "udp2log_log_age": description => "udp2log log age", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_log_age", contact_group => "admins,analytics" }
+		nrpe::monitor_service{ "udp2log_procs": description => "udp2log processes", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs", contact_group => "admins,analytics" }
+		monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8", contact_group => "admins,analytics" }
 	}
 
 	class iptables_purges {
