@@ -17,10 +17,8 @@ NAME=varnishncsa
 DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/$NAME
-UDPLOGGER1=<%= scope.lookupvar('varnish::logging::udplogger1') %>
-UDPLOGGER2=<%= scope.lookupvar('varnish::logging::udplogger2') %>
-PIDFILE1=/var/run/$NAME/$NAME.$UDPLOGGER1.pid
-[ $UDPLOGGER2 ] && PIDFILE2=/var/run/$NAME/$NAME.$UDPLOGGER2.pid
+DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %>"
+PIDFILE=/var/run/$NAME/$NAME.$UDPLOGGER.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
@@ -38,92 +36,48 @@ fi
 
 test -x $DAEMON || exit 0
 
-DAEMON_OPTS1="-n frontend -m RxRequest:^(?!PURGE\$) -w $UDPLOGGER1:8420 -D"
-[ $UDPLOGGER2 ] && DAEMON_OPTS2="-n frontend -m RxRequest:^(?!PURGE\$) -w $UDPLOGGER2:8420 -D"
-
 start_varnishncsa() {
     output=$(/bin/tempfile -s.varnish)
     log_daemon_msg "Starting $DESC" "$NAME"
     create_pid_directory
-    if [ $UDPLOGGER2 ]; then
-        if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
-            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} -P ${PIDFILE1} \
-            > ${output} 2>&1 \
-            && start-stop-daemon --start --quiet --pidfile ${PIDFILE2} \
-            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS2} -P ${PIDFILE2} \
-            >> ${output} 2>&1; then
-                log_end_msg 0
-        else
-            log_end_msg 1
-            cat $output
-            exit 1
-        fi
-   else 
-        if start-stop-daemon --start --quiet --pidfile ${PIDFILE1} \
-            --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS1} \
-            > ${output} 2>&1; then
-                log_end_msg 0
-        else
-            log_end_msg 1
-            cat $output
-            exit 1
-        fi
+    if start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
+        --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS} \
+        > ${output} 2>&1; then
+            log_end_msg 0
+    else
+        log_end_msg 1
+        cat $output
+        exit 1
     fi
     rm $output
 }
 
 stop_varnishncsa(){
     log_daemon_msg "Stopping $DESC" "$NAME"
-    if [ $UDPLOGGER2 ]; then
-        if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
-            --retry 10 --exec $DAEMON \
-            && start-stop-daemon --stop --quiet --pidfile $PIDFILE2 \
-            --retry 10 --exec $DAEMON; then
-                log_end_msg 0
-        else
-	        log_end_msg 1
-        fi
+    if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
+        --retry 10 --exec $DAEMON; then
+            log_end_msg 0
     else
-        if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
-            --retry 10 --exec $DAEMON; then
-                log_end_msg 0
-        else
-	        log_end_msg 1
-        fi
+     log_end_msg 1
     fi
 }
 
 reload_varnishncsa(){
     log_daemon_msg "Reloading $DESC" "$NAME"
-    if [ $UDPLOGGER2 ]; then
-        if kill -HUP $(cat $PIDFILE1) >/dev/null 2>&1 \
-	    && kill -HUP $(cat $PIDFILE2) >/dev/null 2>&1; then
-	    log_end_msg 0
-        else
-            log_end_msg 1
-            exit 1
-        fi
+    if kill -HUP $(cat $PIDFILE) >/dev/null 2>&1; then
+        log_end_msg 0
     else
-        if kill -HUP $(cat $PIDFILE1) >/dev/null 2>&1; then
-	    log_end_msg 0
-        else
-            log_end_msg 1
-            exit 1
-        fi
+        log_end_msg 1
+        exit 1
     fi
 }
 
 status_varnishncsa(){
-    if [ $UDPLOGGER2 ]; then
-        status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}" && \
-        status_of_proc -p "${PIDFILE2}" "${DAEMON}" "${NAME}"
-    else
-        status_of_proc -p "${PIDFILE1}" "${DAEMON}" "${NAME}"
-    fi
+    status_of_proc -p "${PIDFILE}" "${DAEMON}" "${NAME}"
 }
 
 create_pid_directory() {
-    install -o $USER -g $USER -d $(dirname $PIDFILE1)
+    install -o $USER -g $USER -d $(dirname $PIDFILE)
 }
 
 case "$1" in
