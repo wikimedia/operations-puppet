@@ -41,9 +41,6 @@ udp_send_channel {
   port = 2<%= project_gid %>
   ttl = 3
 }
-<% if instanceproject == "ganglia" then %>
-include ('/etc/ganglia/conf.d/labs-aggregator.conf')
-<% end %>
 <% end %>
 <% else %>
 udp_send_channel {

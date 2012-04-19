@@ -221,9 +221,10 @@ class ganglia {
 
 		if $realm == "labs" {
 			# cron job to generate ganglia aggregator confs
-			exec { "create_gmond_conf_include":
-				creates => "/etc/ganglia/conf.d/labs-aggregator.conf",
-				command => "/usr/bin/touch /etc/ganglia/conf.d/labs-aggregator.conf";
+			file { "/etc/ganglia/gmond.conf.labsstub":
+				source => "pupppet://files/ganglia/gmond.conf.labsstub",
+				mode => 0444,
+				ensure => present;
 			}
 
 			file { "/usr/local/sbin/generate-ganglia-conf.py":
@@ -236,7 +237,7 @@ class ganglia {
 				command => "/usr/local/sbin/generate-ganglia-conf.py",
 				require => Package[gmetad],
 				user => root,
-				hour => [0, 8, 16],
+				hour => [0, 4, 8, 12, 16, 20],
 				minute => 30,
 				ensure => present;
 			}
@@ -291,6 +292,8 @@ class ganglia::web {
 	if $realm == "labs" {
 		$ganglia_servername = "ganglia.wmflabs.org"
 		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+		
+		require ganglia::aggregator
 
 	} else {
 		$ganglia_servername = "ganglia.wikimedia.org"

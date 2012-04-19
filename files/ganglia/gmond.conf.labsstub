@@ -1,0 +1,24 @@
+/* This configuration is as close to 2.5.x default behavior as possible
+   The values closely match ./gmond/metric.h definitions in 2.5.x */
+globals {
+  daemonize = yes
+  setuid = yes
+  user = nobody
+  debug_level = 0
+  max_udp_msg_len = 1472
+  mute = yes
+  deaf = no
+  allow_extra_data = yes
+  host_dmax = 86400 /*secs */
+  cleanup_threshold = 300 /*secs */
+  gexec = no
+  send_metadata_interval = 60
+}
+
+/* The host section describes attributes of the host, like the location */
+host {
+  location = "unspecified"
+}
+
+# BEGIN AUTOGEN FROM CRON
+# END AUTOGEN FROM CRON
