@@ -53,10 +53,11 @@ class misc::wikistats {
 
 		define wikistats::cronjob() {
 
+			$project = regsubst($name, '@.*', '\1')
 			$hour = regsubst($name, '.*@', '\1')
 
-			cron { "cron-wikistats-update--${name}":
-				command => "/usr/bin/php /var/lib/wikistats/bin/update.php ${name} &> /var/log/wikistats/update_${name}.log",
+			cron { "cron-wikistats-update-${name}":
+				command => "/usr/bin/php /var/lib/wikistats/bin/update.php ${project} &> /var/log/wikistats/update_${name}.log",
 				user => wikistats,
 				hour => $hour,
 				minute => 0,
