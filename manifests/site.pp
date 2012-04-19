@@ -2058,7 +2058,7 @@ node "stat1.wikimedia.org" {
 		mysql::client,
 		misc::statistics::base,
 		generic::pythonpip,
-		misc::udp2log::udp-filter
+		udp2log::udp_filter
 
 	# special accounts
 	include accounts::ezachte,
