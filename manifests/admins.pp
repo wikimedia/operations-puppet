@@ -133,7 +133,7 @@ class accounts {
 		$realname = "Andrew Wants-to-be Otto"
 		$uid = 586
 
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => false }
 
                 if $manage_home {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
