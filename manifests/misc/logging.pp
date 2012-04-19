@@ -37,7 +37,6 @@ class udp2log {
 	}
 
 	define instance( $port = $logging_instances[$name]["port"], $has_logrotate = false ) {
-		require udp2log::packages
 
 		file {
 			"/etc/udp2log/${name}":
