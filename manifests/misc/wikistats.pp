@@ -51,6 +51,13 @@ class misc::wikistats {
 
 		package { 'php5-cli': ensure => latest; }
 
+		file { '/var/log/wikistats':
+			ensure => directory,
+			mode => '0664',
+			owner => wikistats,
+			group => wikistats,
+		}
+
 		define wikistats::cronjob() {
 
 			$project = regsubst($name, '@.*', '\1')
