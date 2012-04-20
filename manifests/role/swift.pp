@@ -32,6 +32,10 @@ class role::swift {
 		include ::swift::storage
 		include	::swift::proxy
 
+		# FIXME: split these iptables rules apart into common, proxy, and
+		# storage so storage nodes aren't listening on http, etc.
+		# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
+		include	::swift::iptables
 	}
 	
 	class pmtpa-test inherits role::swift::base {
@@ -59,6 +63,11 @@ class role::swift {
 		class storage inherits role::swift::pmtpa-test {
 			include ::swift::storage
 		}
+
+		# FIXME: split these iptables rules apart into common, proxy, and
+		# storage so storage nodes aren't listening on http, etc.
+		# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
+		include ::swift::iptables
 	}
 
 	class pmtpa-prod inherits role::swift::base {
