@@ -84,7 +84,7 @@ class role::swift {
 			class { "::swift::proxy::config":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.pmtpa.wmnet",
-				num_workers => $::processorcount * 2,
+				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
 				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
 				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
