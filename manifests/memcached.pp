@@ -19,6 +19,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 
 	class monitoring {
 		# Nagios
+		$nagios_group = "memcached"
 		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!$memcached_port" }
 
 		# Ganglia
