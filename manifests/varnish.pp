@@ -212,8 +212,19 @@ class varnish {
 	}
 
 
+	class logging_config {
+		file {
+			"/etc/default/varnishncsa":
+				source => "puppet:///files/varnish/varnishncsa.default",
+				owner => root,
+				group => root,
+				mode => 0444;
+		}
+	}
+
 	define logging($listener_address, $port="8420", $cli_args="", $instance_name="frontend") {
-		require varnish::packages
+		require varnish::packages,
+			varnish::logging_config
 
 		file {
 			"/etc/init.d/varnishncsa-${name}":
@@ -221,12 +232,6 @@ class varnish {
 				owner => root,
 				group => root,
 				mode => 0555;
-			#### FIXME this should probably go somewhere else
-			"/etc/default/varnishncsa":
-				source => "puppet:///files/varnish/varnishncsa.default",
-				owner => root,
-				group => root,
-				mode => 0444;
 		}
 
 		service { varnishncsa:
