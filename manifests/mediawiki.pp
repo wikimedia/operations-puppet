@@ -33,8 +33,15 @@ class mediawiki::refreshlinks {
 		$cluster = regsubst($name, '@.*', '\1')
 		$hour = regsubst($name, '.*@', '\1')
 
+		file { "/home/mwdeploy/refreshLinks":
+			ensure => directory,
+			owner => mwdeploy,
+			group => mwdeploy,
+			mode => 0664,
+		}
+
 		cron { "cron-refreshlinks-${name}":
-			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only",
+			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /home/mwdeploy/refreshLinks/${name}.log 2>&1",
 			user => mwdeploy,
 			hour => $hour,
 			minute => 0,
