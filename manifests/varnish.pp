@@ -234,7 +234,7 @@ class varnish {
 				mode => 0555;
 		}
 
-		service { varnishncsa:
+		service { "varnishncsa-${name}":
 			require => File["/etc/init.d/varnishncsa-${name}"],
 			ensure => running;
 		}
