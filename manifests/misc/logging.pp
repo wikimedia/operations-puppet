@@ -36,7 +36,7 @@ class udp2log {
 		}
 	}
 
-	define instance( $port = $logging_instances[$name]["port"], $has_logrotate = false, $multicast_listen = false ) {
+	define instance( $port = $logging_instances[$name]["port"], $has_logrotate = $logging_instances[$name]["has_logrotate"], multicast_listen = $logging_instances[$name]["multicast_listen"] ) {
 
 		file {
 			"/etc/udp2log/${name}":
