@@ -212,17 +212,16 @@ class varnish {
 	}
 
 
-	## If you want to send udplog traffic to one address,
-	## leave $udplogger2 blank
-	class logging($udplogger1="emery.wikimedia.org", $udplogger2="locke.wikimedia.org") {
-		Class[varnish::packages] -> Class[varnish::logging]
+	define logging($listener_address, $port="8420", $cli_args="", $instance_name="frontend") {
+		require varnish::packages
 
 		file {
-			"/etc/init.d/varnishncsa":
+			"/etc/init.d/varnishncsa-${name}":
 				content => template("varnish/varnishncsa.init.erb"),
 				owner => root,
 				group => root,
 				mode => 0555;
+			#### FIXME this should probably go somewhere else
 			"/etc/default/varnishncsa":
 				source => "puppet:///files/varnish/varnishncsa.default",
 				owner => root,
@@ -231,15 +230,14 @@ class varnish {
 		}
 
 		service { varnishncsa:
-			require => File["/etc/init.d/varnishncsa"],
-			subscribe => File[["/etc/init.d/varnishncsa", "/etc/default/varnishncsa"]],
+			require => File["/etc/init.d/varnishncsa-${name}"],
 			ensure => running;
 		}
-
-		monitor_service { "varnishncsa":
-			description => "Varnish traffic logger",
-			check_command => "nrpe_check_varnishncsa"
-		}
+		## FIXME readd once new function is working properly
+		#monitor_service { "varnishncsa":
+		#	description => "Varnish traffic logger",
+		#	check_command => "nrpe_check_varnishncsa"
+		#}
 	}
 
 	class varnishncsa {
