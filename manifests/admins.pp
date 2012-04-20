@@ -1835,7 +1835,7 @@ class admins::roots {
 	# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
 	# to actually get them root; that file is not in SVN.
 	include accounts::brion #shell disabled, svn key still enabled
-	include	accounts::dzahn
+	include accounts::dzahn
 	include accounts::fvassard
 	include accounts::jeluf
 	include accounts::kate
