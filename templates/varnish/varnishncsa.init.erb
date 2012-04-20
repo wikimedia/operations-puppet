@@ -19,7 +19,7 @@ DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/$DAEMON-NAME
 DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %>"
-PIDFILE=/var/run/$NAME.pid
+PIDFILE=/var/run/$DAEMON-NAME/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
