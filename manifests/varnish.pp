@@ -236,7 +236,9 @@ class varnish {
 
 		service { "varnishncsa-${name}":
 			require => File["/etc/init.d/varnishncsa-${name}"],
-			ensure => running;
+			ensure => running,
+			pattern => "/var/run/varnishncsa-${name}.pid",
+			hasstatus => false;
 		}
 		## FIXME readd once new function is working properly
 		#monitor_service { "varnishncsa":

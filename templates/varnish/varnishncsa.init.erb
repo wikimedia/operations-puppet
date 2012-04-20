@@ -13,18 +13,19 @@
 # Source function library
 . /lib/lsb/init-functions
 
-NAME=varnishncsa
+NAME=varnishncsa-<%= name %>
+DAEMON-NAME=varnishncsa
 DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/bin/$NAME
+DAEMON=/usr/bin/$DAEMON-NAME
 DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %>"
-PIDFILE=/var/run/$NAME/$NAME.$UDPLOGGER.pid
+PIDFILE=/var/run/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
 # Include defaults if available
-if [ -f /etc/default/$NAME ] ; then
-        . /etc/default/$NAME
+if [ -f /etc/default/$DAEMON-NAME ] ; then
+        . /etc/default/$DAEMON-NAME
 fi
 
 # If unset, or set to "0" or "no", exit
