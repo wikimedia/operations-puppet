@@ -464,7 +464,8 @@ node "emery.wikimedia.org" {
 	class { udp2log::logger:
 		#FIXME: move this to a more appropriately named file
 			log_file => "/var/log/squid/packet-loss.log",
-			logging_instances => {"emery" => { "port" => "8420" }, "aft" => { "port" => "8421", "has_logrotate" => true } }
+			logging_instances => {"emery" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => false },
+									"aft" => { "port" => "8421", "multicast_listen" => false, "has_logrotate" => true } }
 	}
 
 }
@@ -1114,7 +1115,7 @@ node "locke.wikimedia.org" {
 	class { udp2log::logger:
 			#FIXME: move this to a more appropriately named file
 			log_file => "/a/squid/packet-loss.log",
-			logging_instances => {"locke" => { "port" => "8420" } }
+			logging_instances => {"locke" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => false } }
 	}
 }
 
@@ -1572,8 +1573,8 @@ node "oxygen.wikimedia.org" {
 
 	class { udp2log::logger:
 			log_file => "/var/log/udp2log/packet-loss.log",
-			logging_instances => {"oxygen" => { "port" => "8421" } },
-			multicast_listen => true
+			logging_instances => {"oxygen" => { "port" => "8420", "multicast_listen" => true, "has_logrotate" => false } },
+
 	}
 
 }
