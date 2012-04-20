@@ -14,18 +14,17 @@
 . /lib/lsb/init-functions
 
 NAME=varnishncsa-<%= name %>
-DAEMON-NAME=varnishncsa
 DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/usr/bin/$DAEMON-NAME
+DAEMON=/usr/bin/varnishncsa
 DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %>"
-PIDFILE=/var/run/$DAEMON-NAME/$NAME.pid
+PIDFILE=/var/run/varnishncsa/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
 # Include defaults if available
-if [ -f /etc/default/$DAEMON-NAME ] ; then
-        . /etc/default/$DAEMON-NAME
+if [ -f /etc/default/varnishncsa ] ; then
+        . /etc/default/varnishncsa
 fi
 
 # If unset, or set to "0" or "no", exit
@@ -55,7 +54,7 @@ start_varnishncsa() {
 
 stop_varnishncsa(){
     log_daemon_msg "Stopping $DESC" "$NAME"
-    if start-stop-daemon --stop --quiet --pidfile $PIDFILE1 \
+    if start-stop-daemon --stop --quiet --pidfile $PIDFILE \
         --retry 10 --exec $DAEMON; then
             log_end_msg 0
     else
