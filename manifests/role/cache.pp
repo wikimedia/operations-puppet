@@ -404,9 +404,9 @@ class role::cache {
 				xff_sources => $network::constants::all_networks,
 			}
 
-			#varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			#varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			#varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $::site != "esams" {
@@ -573,8 +573,8 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 		
-		#varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		#varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		#varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 	}
 }
