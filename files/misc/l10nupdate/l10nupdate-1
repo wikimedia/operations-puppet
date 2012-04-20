@@ -70,15 +70,16 @@ do
 		  --quiet
 	then
 		# Copy the LU files back to /home so the LC rebuild below picks up the changes
+		# Using --force because the l10nupdate user definitely owns the directory, but may not own all of the files in it
 		echo "Completed. Copying LU files back to /home"
-		cp /var/lib/l10nupdate/cache-"$mwVerNum"/l10nupdate-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
+		cp --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10nupdate-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
 		echo "Rebuilding localization cache"
 		# Now rebuild the LC
 		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 		# Copy the LC files
 		echo "Completed. Copying LC files back to /home"
-		cp /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
+		cp --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
 		rm -rf /var/lib/l10nupdate/cache-"$mwVerNum"
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
