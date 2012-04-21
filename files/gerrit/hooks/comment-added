@@ -18,6 +18,8 @@ def main():
 	parser.add_option("--VRIF", dest="verified")
 	parser.add_option("--CRVW", dest="codereview")
 	(options, args) = parser.parse_args()
+	if options.author == "gerrit2":
+	    return
 	helper = HookHelper()
 	comment = options.comment.splitlines()
 	if comment:
