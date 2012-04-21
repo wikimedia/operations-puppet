@@ -29,7 +29,7 @@ def main():
 		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
 	helper = HookHelper()
 	subject = helper.get_subject(options.change)
-	if subject:
+	if subject and options.uploader != hookconfig.l10nuser:
 		message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
 		helper.log_to_file(options.project, options.branch, message)
 	lint_test(options, helper)

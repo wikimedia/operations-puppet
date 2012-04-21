@@ -18,6 +18,8 @@ def main():
 	parser.add_option("--VRIF", dest="verified")
 	parser.add_option("--CRVW", dest="codereview")
 	(options, args) = parser.parse_args()
+	if hookhelper.get_subject(options.change) == "Localisation updates from http://translatewiki.net." and options.author == "gerrit2":
+	    return
 	helper = HookHelper()
 	comment = options.comment.splitlines()
 	if comment:
