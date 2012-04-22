@@ -3,7 +3,7 @@
 
 class misc::wikistats {
 	system_role { 'misc::wikistats': description => 'wikistats host' }
-	systemuser { wikistats: name => 'wikistats', home => '/var/lib/wikistats', groups => [ 'wikistats' ] }
+	systemuser { wikistats: name => 'wikistats', home => '/var/lib/wikistats', groups => [ 'project-wikistats' ] }
 
 	# the web UI part (output)
 	class web {
@@ -55,7 +55,7 @@ class misc::wikistats {
 			ensure => directory,
 			mode => '0664',
 			owner => wikistats,
-			group => wikistats,
+			group => project-wikistats,
 		}
 
 		define wikistats::cronjob() {
