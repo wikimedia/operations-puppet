@@ -2057,6 +2057,7 @@ node "stat1.wikimedia.org" {
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base,
+		misc::statistics::plotting,  # RT 2163
 		generic::pythonpip,
 		udp2log::udp_filter
 
