@@ -1,6 +1,7 @@
 # memcached.pp
 
 # Virtual resource for monitoring server
+@monitor_group { "memcached": description => "all memcached servers" }
 @monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
 
 class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0') {
