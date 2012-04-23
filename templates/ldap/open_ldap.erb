@@ -9,4 +9,4 @@ TLS_REQCERT     demand
 TLS_CACERTDIR   /etc/ssl/certs
 TLS_CACERTFILE  /etc/ssl/certs/<%= ldap_ca %>
 TLS_CACERT      /etc/ssl/certs/<%= ldap_ca %>
-<% if ldapincludes.include?('sudo') then %>SUDOERS_BASE    ou=sudoers,<%= basedn %><% end %>
+<% if ldapincludes.include?('sudo') then %>SUDOERS_BASE    <%= sudobasedn %><% end %>
