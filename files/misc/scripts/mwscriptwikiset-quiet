@@ -3,7 +3,8 @@
 # This script belongs in /usr/bin/ and should be in PATH.
 # Unlike mwscript, the takes a dblist filename as the second argument
 # and runs the maintenance script on each of the wikis in the list.
-# Note that this script prints some status info.
+# This only prints information for wikis thas that the script gives
+# a non-empty result for via STD_OUT.
 COMMONDIR=/usr/local/apache/common-local
 
 SCRIPTFILE=$1
@@ -11,7 +12,7 @@ LISTFILE=$2
 
 # Check that dblist is given and actually exists...
 if [ $# -lt 2 ]; then
-	echo 'Usage: mwscriptwikiset <script path> <filename.dblist> [script args]'
+	echo 'Usage: mwscriptwikiset-quiet <script path> <filename.dblist> [script args]'
 	echo 'Note: No --wiki option or equivalent argument should be given'
 	exit 1
 fi
@@ -30,10 +31,14 @@ SCRIPTARGS="${SCRIPTARGS[@]}"
 # Run the script on all wikis in the dblist
 for DBNAME in $(cat $COMMONDIR/$LISTFILE)
 do
-	echo "-------------------------------------"
-	echo "$DBNAME"
-	echo "-------------------------------------"
-	mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
-	echo "-------------------------------------"
-	echo ""
+	RES=$(mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS)
+	if [ -n "$RES" ]; then
+		echo "-------------------------------------"
+		echo "$DBNAME"
+		echo "-------------------------------------"
+		echo "$RES"
+		echo "-------------------------------------"
+		echo ""
+	fi
 done
+
