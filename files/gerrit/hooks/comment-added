@@ -22,7 +22,7 @@ def main():
 	comment = options.comment.splitlines()
 	if comment:
 		comment = comment[0]
-		if len(comment) > 100:
+		if len(comment) > 103:
 			comment = comment[0:100] + "..."
 	else:
 		comment = "(no comment)"

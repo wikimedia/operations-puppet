@@ -19,7 +19,7 @@ def main():
 	reason = options.reason.splitlines()
 	if reason:
 		reason = reason[0]
-		if len(reason) > 100:
+		if len(reason) > 103:
 			reason = reason[0:100] + "..."
 	else:
 		reason = "(no reason)"
