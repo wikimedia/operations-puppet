@@ -50,5 +50,5 @@ class mediawiki::refreshlinks {
 	}
 
 	# add cron jobs - usage: <cluster>@<hour>
-	refreshlinks::cronjob { ['s1@0','s2@2','s3@3','s4@4','s5@5','s6@6','s7@7']: }
+	refreshlinks::cronjob { ['s1@0']: }
 }
