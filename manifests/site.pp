@@ -452,7 +452,6 @@ node "ekrem.wikimedia.org" {
 node "emery.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
 	include standard,
 		groups::wikidev,
 		admins::mortals,
@@ -1102,7 +1101,6 @@ node "linne.wikimedia.org" {
 node "locke.wikimedia.org" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	sudo_user { "awjrichards": privileges => ['ALL = NOPASSWD: ALL'] }
 	include standard,
 		groups::wikidev,
 		admins::restricted,
