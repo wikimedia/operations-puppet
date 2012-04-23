@@ -17,10 +17,11 @@ NAME=varnishncsa-<%= name %>
 DESC="HTTP accelerator log deamon"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/varnishncsa
-DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %>"
 PIDFILE=/var/run/varnishncsa/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
+
+DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %> -P $PIDFILE"
 
 # Include defaults if available
 if [ -f /etc/default/varnishncsa ] ; then
