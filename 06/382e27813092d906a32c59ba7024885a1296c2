@@ -1,0 +1,8 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Code-Review+1: Demon <chadh@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Mon, 23 Apr 2012 18:02:03 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/5033
+Project: operations/puppet
+Branch: refs/heads/production
