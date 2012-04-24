@@ -61,7 +61,7 @@ class mysql {
 	elsif $hostname =~ /^db(43|46|47|50|1006|1022|1040)$/ {
 		$db_cluster = "s6"
 	}
-	elsif $hostname =~ /^db(16|18|26|37|56|1007|1024|1041)$/ {
+	elsif $hostname =~ /^db(18|26|37|56|58|1007|1024|1041)$/ {
 		$db_cluster = "s7"
 	}
 	elsif $hostname =~ /^blondel|bellin$/ {
