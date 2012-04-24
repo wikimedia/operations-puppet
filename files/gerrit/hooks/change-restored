@@ -2,29 +2,24 @@
 import re
 import sys
 from hookhelper import HookHelper
-from optparse import OptionParser
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
-def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage("change-restored --change <change id> --change-url <change url> --project <project name> --branch <branch> --restorer <restorer> --reason <reason>")
-	parser.add_option("--change", dest="change")
-	parser.add_option("--change-url", dest="changeurl")
-	parser.add_option("--project", dest="project")
-	parser.add_option("--branch", dest="branch")
-	parser.add_option("--restorer", dest="restorer")
-	parser.add_option("--reason", dest="reason")
-	(options, args) = parser.parse_args()
-	helper = HookHelper()
-	reason = options.reason.splitlines()
-	if reason:
-		reason = reason[0]
-		if len(reason) > 100:
-			reason = reason[0:100] + "..."
-	else:
-		reason = "(no reason)"
-	message = "Change restored: " + re.sub(' \(.*', "", options.restorer) + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-	helper.log_to_file(options.project, options.branch, message)
+class ChangeRestored(HookHelper):
+	def run(self):
+		self.parser.set_usage("change-restored --change <change id> --change-url <change url> --project <project name> --branch <branch> --restorer <restorer> --reason <reason>")
+		self.parser.add_option("--restorer", dest="restorer")
+		self.parser.add_option("--reason", dest="reason")
+		(options, args) = self.parser.parse_args()
+		reason = options.reason.splitlines()
+		if reason:
+			reason = reason[0]
+			if len(reason) > 103:
+				reason = reason[0:100] + "..."
+		else:
+			reason = "(no reason)"
+		message = "Change restored: " + re.sub(' \(.*', "", options.restorer) + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+		self.log_to_file(options.project, options.branch, message)
 
 if __name__ == "__main__":
-	main()
+	hook = ChangeRestored()
+	hook.run()
