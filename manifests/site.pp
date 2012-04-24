@@ -460,6 +460,8 @@ node "emery.wikimedia.org" {
 		generic::sysctl::high-bandwidth-rsync,
 		udp2log::utilities
 
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
 	class { udp2log::logger:
 		#FIXME: move this to a more appropriately named file
 			log_file => "/var/log/squid/packet-loss.log",
@@ -1110,6 +1112,8 @@ node "locke.wikimedia.org" {
 		nrpe,
 		udp2log::utilities
 
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
 	class { udp2log::logger:
 			#FIXME: move this to a more appropriately named file
 			log_file => "/a/squid/packet-loss.log",
@@ -1569,6 +1573,8 @@ node "oxygen.wikimedia.org" {
 		accounts::diederik,
 		misc::squid-logging::multicast-relay,
 		nrpe
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
 	class { udp2log::logger:
 			log_file => "/var/log/udp2log/packet-loss.log",
@@ -2059,6 +2065,8 @@ node "stat1.wikimedia.org" {
 		accounts::otto,
 		accounts::aengels,
 		accounts::dsc
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
 }
 
