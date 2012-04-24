@@ -1,0 +1,8 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Code-Review+1: Ottomata <otto@wikimedia.org>
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Tue, 24 Apr 2012 00:21:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/5350
+Project: operations/puppet
+Branch: refs/heads/production
