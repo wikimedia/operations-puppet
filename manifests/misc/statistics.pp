@@ -11,9 +11,9 @@ class misc::statistics::base {
 
 	file {
 		"/a":
-			owner => ezachte,
+			owner => root,
 			group => wikidev,
-			mode => 0750,
+			mode => 0770,
 			ensure => directory,
 			recurse => "false";
 		"/mnt/htdocs":
@@ -57,18 +57,18 @@ class misc::statistics::geoip {
 
 	file {
 		"/usr/local/share/GeoIP":
-			owner => ezachte,
+			owner => root,
 			group => wikidev,
-			mode => 0750,
+			mode => 0770,
 			ensure => directory;
 		"/usr/local/bin/geoiplogtag":
-			owner => ezachte,
+			owner => root,
 			group => wikidev,
 			mode => 0750,
 			source => "puppet:///files/misc/geoiplogtag",
 			ensure => present;
 		"/usr/local/bin/update-maxmind-geoip-lib":
-			owner => ezachte,
+			owner => root,
 			group => wikidev,
 			mode => 0750,
 			source => "puppet:///files/misc/update-maxmind-geoip-lib",
