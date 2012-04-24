@@ -1511,12 +1511,13 @@ node /^nfs[12].pmtpa.wmnet/ {
 		ldap::client::wmf-cluster,
 		backup::client,
 		udp2log::utilities
-			
+
 	class { udp2log::logger:
 		has_monitoring => false,
 		log_file => "/var/log/udp2log/packet-loss.log",
-		logging_instances => {"mw" => { "port" => "8420", "has_logrotate" => true } }
+		logging_instances => {"oxygen" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => true } },
 	}
+
 
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
