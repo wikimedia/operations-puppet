@@ -1515,7 +1515,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 	class { udp2log::logger:
 		has_monitoring => false,
 		log_file => "/var/log/udp2log/packet-loss.log",
-		logging_instances => {"oxygen" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => true } },
+		logging_instances => {"mw" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => true } },
 	}
 
 
