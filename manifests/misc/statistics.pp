@@ -12,7 +12,7 @@ class misc::statistics::base {
 	file {
 		"/a":
 			owner => ezachte,
-			group => ezachte,
+			group => wikidev,
 			mode => 0750,
 			ensure => directory,
 			recurse => "false";
@@ -24,6 +24,8 @@ class misc::statistics::base {
 			ensure => directory;
 	}
 
+	# FIXME - cannot mount block device 208.80.152.185
+	# FIXME - mount: special device 10.0.5.8:/home/wikipedia/common/php-1.5 does not exist
 	mount {
 		"/mnt/htdocs":
 			device => "10.0.5.8:/home/wikipedia/htdocs/wikipedia.org/wikistats",
