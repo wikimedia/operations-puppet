@@ -88,7 +88,13 @@ class misc::statistics::geoip {
 # RT-2163
 class misc::statistics::plotting {
 
-	package { [ "ploticus", "libploticus0" ]:
-		ensure => latest;
+	package { [ 
+	    "ploticus", 
+	    "libploticus0", 
+	    "r-base",
+	    "xorg",
+	    "wdm",
+	  ]:
+		ensure => installed;
 	}
 }
