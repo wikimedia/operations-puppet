@@ -47,7 +47,11 @@ end -%>
 	keepalive_timeout 60;
 
 	location / {
+		<% if ssl_backend.has_key?(site) and ssl_backend[site] == "true" %>
+		proxy_pass https://<%= name %>_fallback;
+		<% else %>
 		proxy_pass http://<%= name %>;
+		<% end %>
 		<% if site == "esams" then -%>
 proxy_intercept_errors on;
 		error_page 502 503 504 = @fallback;
