@@ -654,6 +654,14 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
+node /db6[0-9]\.pmtpa\.wmnet/ {
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+}
+
 # eqiad dbs
 node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
