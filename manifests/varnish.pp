@@ -220,6 +220,11 @@ class varnish {
 				group => root,
 				mode => 0444;
 		}
+
+		nrpe::monitor_service { "varnishncsa":
+			description => "Varnish traffic logger",
+			nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 3:3 -c 3:6 -C varnishncsa"
+		}
 	}
 
 	define logging($listener_address, $port="8420", $cli_args="", $instance_name="frontend") {
@@ -240,11 +245,6 @@ class varnish {
 			pattern => "/var/run/varnishncsa/varnishncsa-${name}.pid",
 			hasstatus => false;
 		}
-		## FIXME readd once new function is working properly
-		#monitor_service { "varnishncsa":
-		#	description => "Varnish traffic logger",
-		#	check_command => "nrpe_check_varnishncsa"
-		#}
 	}
 
 	class varnishncsa {
