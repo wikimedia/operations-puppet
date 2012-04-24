@@ -11,18 +11,28 @@ import cookielib
 import urllib
 import urllib2
 
+from optparse import OptionParser
+
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
 
 class HookHelper:
 	def __init__(self):
 		self.patchsets = {}
+		self.parser = OptionParser(conflict_handler="resolve")
+		self.add_default_options()
+
+	def add_default_options(self):
+		self.parser.add_option("--change", dest="change")
+		self.parser.add_option("--change-url", dest="changeurl")
+		self.parser.add_option("--project", dest="project")
+		self.parser.add_option("--branch", dest="branch")
 
 	def ssh_exec_command(self, command):
 		ssh = paramiko.SSHClient()
-		ssh.load_host_keys('/var/lib/gerrit2/.ssh/known_hosts')
+		ssh.load_host_keys(hookconfig.sshhostkeys)
 		try:
-			ssh.connect(hookconfig.sshhost, hookconfig.sshport, hookconfig.gerrituser, key_filename="/var/lib/gerrit2/.ssh/id_rsa")
+			ssh.connect(hookconfig.sshhost, hookconfig.sshport, hookconfig.gerrituser, key_filename=hookconfig.sshkey)
 			stdin, stdout, stderr = ssh.exec_command(command)
 			out = stdout.readlines()
 			err = stderr.readlines()
