@@ -186,12 +186,35 @@ class base::remote-syslog {
 			ensure => latest;
 		}
 
+		# remote syslog destination
+		case $::realm {
+
+			'production': {
+				if( $::site != '(undefined)' ) {
+					$syslog_server = 'syslog.${::site}.wmnet'
+				}
+			}
+
+			'labs': {
+				# Per labs project syslog:
+				case $::instanceproject {
+					'deployment-prep': {
+						$syslog_server = 'deployment-dbdump.pmtpa.wmflabs'
+					}
+				}
+			}
+		}
+		# Default to avoid blackholing logs
+		if( $syslog_server == '' ) {
+			$syslog_server = 'localhost'
+		}
+
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
 			mode => 0644,
-			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
+			content => "*.info;mail.none;authpriv.none;cron.none	@${syslog_server}\n",
 			ensure => present;
 		}
 
