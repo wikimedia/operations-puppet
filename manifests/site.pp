@@ -345,7 +345,8 @@ node "bayes.wikimedia.org" {
 		accounts::ezachte,
 		accounts::reedy,
 		accounts::nimishg,
-		accounts::diederik
+		accounts::diederik,
+		accounts::otto
 }
 
 node "bast1001.wikimedia.org" {
