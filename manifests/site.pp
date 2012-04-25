@@ -1358,7 +1358,7 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 
 	system_role { "misc::payments": description => "Fundraising payments server" }
 
-	include base::remote-syslog,
+	include base::remote-syslog( $::syslog_server ),
 		base::sysctl,
 		base::resolving,
 		base::motd,

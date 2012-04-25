@@ -180,7 +180,7 @@ class base::puppet($server="puppet") {
 	}
 }
 
-class base::remote-syslog {
+class base::remote-syslog( $server ) {
 	if ($lsbdistid == "Ubuntu") and ($hostname != "nfs1") and ($hostname != "nfs2") {
 		package { rsyslog:
 			ensure => latest;
@@ -191,7 +191,7 @@ class base::remote-syslog {
 			owner => root,
 			group => root,
 			mode => 0644,
-			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
+			content => "*.info;mail.none;authpriv.none;cron.none	@${server}\n",
 			ensure => present;
 		}
 
@@ -499,7 +499,8 @@ class base {
 	include	passwords::root,
 		base::decommissioned,
 		base::resolving,
-		base::remote-syslog,
+		# Set syslog server set in realm.pp
+		base::remote-syslog( $::syslog_server ),
 		base::sysctl,
 		base::motd,
 		base::vimconfig,
