@@ -58,3 +58,23 @@ $domain_search = $domain
 # Default group
 $gid = 500
 
+# remote syslog destination
+# Default one is not really a remote but might avoid blackholing logs
+$syslog_server = 'localhost'
+case $::realm {
+
+	'production': {
+		if( $::site != '(undefined)' ) {
+			$syslog_server = 'syslog.${::site}.wmnet'
+		}
+	}
+
+	'labs': {
+		# Per labs project syslog:
+		case $::instanceproject {
+			'deployment-prep': { $syslog_server = 'deployment-dbdump.pmtpa.wmflabs' }
+		}
+	}
+
+} # end of $::syslog_server selection
+
