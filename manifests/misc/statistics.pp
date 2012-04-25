@@ -53,7 +53,6 @@ class misc::statistics::mediwiki {
 		require => File[$statistics_mediawiki_directory],
 	}
 	
-	
 	# group wikidev and 775 the clone
 	$clone_directory = "$statistics_mediawiki_directory/core"
 	file { $clone_directory: 
@@ -64,14 +63,13 @@ class misc::statistics::mediwiki {
 		recurse => true,
 		require => Mediawiki_clone["statistics"],
 	}
-	
+
 	# set up a cron to pull mediawiki clone once a day
 	cron { "git-pull-${statistics_mediawiki_directory}/core":
 		hour => 0,
 		command => "cd ${statistics_mediawiki_directory}/core && /usr/bin/git pull",
-		require => Mediawiki_clone["statistics_mediawiki"],
+		require => Mediawiki_clone["statistics"],
 	}
-
 }
 
 # RT 2164
