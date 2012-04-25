@@ -93,7 +93,8 @@ class misc::statistics::plotting {
 			"libploticus0",
 			"r-base",
 			"libcairo",
-			"libcairo-dev"
+			"libcairo-dev",
+			"libxt-dev"
 		]:
 		ensure => installed;
 	}
