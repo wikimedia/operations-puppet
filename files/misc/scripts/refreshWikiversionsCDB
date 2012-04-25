@@ -1,6 +1,5 @@
 #!/bin/sh
 # Shell wrapper for the home version of multiversion/refreshWikiVersionsCDB
 # This script belongs in /usr/bin/ and should be in PATH.
-if ! php /home/wikipedia/common/multiversion/refreshWikiVersionsCDB "$@"; then
-	exit 1
-fi
+
+exec php /home/wikipedia/common/multiversion/refreshWikiVersionsCDB "$@"
