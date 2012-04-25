@@ -1249,3 +1249,41 @@ class iron::iptables  {
 	# This exec should always occur last in the requirement chain.
 	iptables_add_exec{ "iron": service => "iron" }
 }
+
+
+
+class misc::translationnotifications {
+	require misc::scripts
+
+	# Should there be crontab entry for each wiki,
+	# or just one which runs the scripts which iterates over
+	# selected set of wikis?
+	cron {
+		translationnotifications-metawiki:
+			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log",
+			user => l10nupdate,  # which user?
+			weekday => 1, # Monday
+			hour => 10,
+			minute => 0,
+			ensure => present;
+
+		translationnotifications-mediawikiwiki:
+			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log",
+			user => l10nupdate, # which user?
+			weekday => 1, # Monday
+			hour => 10,
+			minute => 5,
+			ensure => present;
+	}
+
+	file {
+		"/var/log/translationnotifications":
+			owner => l10nupdate, # user ?
+			group => wikidev,
+			mode => 0664,
+			ensure => directory;
+		"/etc/logrotate.d/l10nupdate":
+			source => "puppet:///files/logrotate/translationnotifications",
+			mode => 0444;
+	}
+}
