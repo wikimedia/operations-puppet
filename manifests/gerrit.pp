@@ -54,9 +54,9 @@ class gerrit::jetty {
 		gerrit::gerrit_config,
 		generic::packages::git-core
 
-	package { [ "openjdk-6-jre", "gitweb", "git-svn" ]:
-		ensure => latest; 
-	} 
+	package { [ "openjdk-6-jre", "git-svn" ]:
+		ensure => latest;
+	}
 
 	package { [ "python-paramiko" ]:
 		ensure => latest;
@@ -195,13 +195,6 @@ class gerrit::proxy {
 			group => root,
 			source => "puppet:///files/apache/sites/gerrit.wikimedia.org",
 			ensure => present;
-		# Overwrite gitweb's stupid default apache file
-		"/etc/apache2/conf.d/gitweb":
-			mode => 0644,
-			owner => root,
-			group => root,
-			content => "Alias /gitweb /usr/share/gitweb",
-			ensure => present;
 	}
 
 	apache_site { gerrit: name => "gerrit.wikimedia.org" }
@@ -209,6 +202,31 @@ class gerrit::proxy {
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
+}
+
+class gerrit::gitweb {
+	package { [ "gitweb" ]:
+		ensure => latest;
+	}
+
+	file {
+		# Overwrite gitweb's stupid default apache file
+		"/etc/apache2/conf.d/gitweb":
+			mode => 0644,
+			owner => root,
+			group => root,
+			content => "Alias /gitweb /usr/share/gitweb",
+			ensure => present,
+			require => Package[gitweb];
+		# Add our own customizations to gitweb
+		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
+			mode => 0644,
+			owner => gerrit2,
+			group => gerrit2,
+			source => "puppet:///files/gerrit/gitweb_config.perl",
+			ensure => present,
+			require => Package[gitweb];
+	}
 }
 
 class gerrit::ircbot {
