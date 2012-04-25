@@ -16,38 +16,60 @@ class misc::statistics::base {
 			mode => 0770,
 			ensure => directory,
 			recurse => "false";
-		"/mnt/htdocs":
-			ensure => directory;
 		"/mnt/data":
-			ensure => directory;
-		"/mnt/php":
 			ensure => directory;
 	}
+	
+	# Mount /data from dataset2 server.
+	# xmldumps and other misc files needed
+	# for generating statistics are here.
+	mount { "/mnt/data":
+		device => "208.80.152.185:/data",
+		fstype => "nfs",
+		options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.152.185",
+		atboot => true,
+		require => File['/mnt/data'],
+		ensure => mounted,
+	}
+}
 
-	# FIXME - cannot mount block device 208.80.152.185
-	# FIXME - mount: special device 10.0.5.8:/home/wikipedia/common/php-1.5 does not exist
-	mount {
-		"/mnt/htdocs":
-			device => "10.0.5.8:/home/wikipedia/htdocs/wikipedia.org/wikistats",
-			fstype => "nfs",
-			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=10.0.5.8",
-			atboot => true,
-			require => File['/mnt/htdocs'],
-			ensure => mounted;
-		"/mnt/data":
-			device => "208.80.152.185:/data",
-			fstype => "nfs",
-			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.152.185",
-			atboot => true,
-			require => File['/mnt/data'],
-			ensure => mounted;
-		"/mnt/php":
-			device => "10.0.5.8:/home/wikipedia/common/php-1.5",
-			fstype => "nfs",
-			options => "rw,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=10.0.5.8",
-			atboot => true,
-			require => File['/mnt/php'],
-			ensure => mounted;
+# clones mediawiki core at /a/mediawiki/core
+# and sets up a cron job to pull once a day.
+# RT 2162
+class misc::statistics::mediwiki {
+	$statistics_mediawiki_directory = "/a/mediawiki"
+	
+	file { $statistics_mediawiki_directory:
+			owner   => root,
+			group   => wikidev,
+			mode    => 0775,
+			ensure  => directory,
+			recurse => "false";
+	}
+
+	# clone mediawiki core to /a/mediawiki
+	mediawiki_clone { "statistics": 
+		path    => $statistics_mediawiki_directory,
+		require => File[$statistics_mediawiki_directory],
+	}
+	
+	
+	# group wikidev and 775 the clone
+	$clone_directory = "$statistics_mediawiki_directory/core"
+	file { $clone_directory: 
+		owner  => 'root',
+		group  => wikidev,
+		mode   => 0664, #  directories will automatically be +x by puppet with recurse
+		ensure => directory,
+		recurse => true,
+		require => Mediawiki_clone["statistics"],
+	}
+	
+	# set up a cron to pull mediawiki clone once a day
+	cron { "git-pull-${statistics_mediawiki_directory}/core":
+		hour => 0,
+		command => "cd ${statistics_mediawiki_directory}/core && /usr/bin/git pull",
+		require => Mediawiki_clone["statistics_mediawiki"],
 	}
 
 }
