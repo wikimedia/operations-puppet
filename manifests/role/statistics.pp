@@ -9,6 +9,7 @@ class role::statistics {
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base,
+		misc::statistics::mediwiki,
 		misc::statistics::plotting,
 		misc::statistics::geoip,
 		generic::pythonpip,
