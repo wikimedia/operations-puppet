@@ -1895,6 +1895,7 @@ class admins::mortals {
 	include accounts::robla
 	include accounts::neilk  # revoked access per RT 2345
 	include accounts::raindrift
+	include accounts::halfak
 }
 
 class admins::restricted {
