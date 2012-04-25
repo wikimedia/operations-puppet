@@ -1,7 +1,7 @@
 # This file is managed by puppet!
 # file:///puppet/templates/mysql/innodb_buffer_pool_size.cnf.erb
 #
-<% if innodb_buffer_pool_size then -%>
+<% if has_variable?('innodb_buffer_pool_size') then -%>
 [mysqld]
 innodb_buffer_pool_size = <%= innodb_buffer_pool_size %>
 <% end -%>
