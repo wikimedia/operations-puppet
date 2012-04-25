@@ -7,6 +7,6 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 export PATH
 
 for srv in $(cut -d'"' -f 2 -s <%= scope.lookupvar('puppetmaster::config::gitdir') %>/operations/puppet/manifests/decommissioning.pp)
-	do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet
+	do puppetstoredconfigclean.rb $srv.wikimedia.org $srv.esams.wikimedia.org $srv.pmtpa.wmnet $srv.eqiad.wmnet > /dev/null
 done
 
