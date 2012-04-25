@@ -186,12 +186,23 @@ class base::remote-syslog {
 			ensure => latest;
 		}
 
+		# Select a remote syslog server
+		$syslog_server = "syslog.${site}.wmnet"
+		if (realm == 'labs') {
+			# Not really remote but might avoid sending logs to a blackhole
+			$syslog_server = 'localhost'
+
+			if( $instanceproject == 'deployment-prep' ) {
+				$syslog_server = 'deployment-dbdump.pmtpa.wmflabs'
+			}
+		}
+
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
 			mode => 0644,
-			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
+			content => "*.info;mail.none;authpriv.none;cron.none	@${syslog_server}\n",
 			ensure => present;
 		}
 
