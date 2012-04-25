@@ -758,6 +758,7 @@ node "formey.wikimedia.org" {
 		backup::client,
 		gerrit::proxy,
 		gerrit::jetty,
+		gerrit::gitweb,
 		gerrit::ircbot
 }
 
