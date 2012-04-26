@@ -48,7 +48,16 @@ class misc::install-server {
 		}
 
 		file {
-			 ["/srv/tftpboot", "/srv/tftpboot/restricted/" ]:
+			"/srv/tftpboot":
+				mode => 0444,
+				owner => root,
+				group => root,
+				recurse => remote,
+				# config files in the puppet repository,
+				# larger files like binary images in volatile
+				source => [ "puppet:///files/tftpboot", "puppet:///volatile/tftpboot" ],
+				sourceselect => all;
+			"/srv/tftpboot/restricted/":
 				mode => 0755,
 				owner => root,
 				group => root,
