@@ -23,3 +23,10 @@ path = /data/xmldatadumps/public
 # added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
 # for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
 hosts allow = sagres.c3sl.ufpr.br
+
+# for erik's stats
+[stats]
+path = /data/xmldatadumps/public/other/pagecounts-ez
+uid = backup
+gid = backup
+hosts allow = stat1.wikimedia.org
