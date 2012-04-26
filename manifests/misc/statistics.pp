@@ -48,7 +48,7 @@ class misc::statistics::mediwiki {
 	}
 
 	# clone mediawiki core to /a/mediawiki
-	mediawiki_clone { "statistics": 
+	mediawiki::clone { "statistics": 
 		path    => $statistics_mediawiki_directory,
 		require => File[$statistics_mediawiki_directory],
 	}
@@ -61,14 +61,14 @@ class misc::statistics::mediwiki {
 		mode   => 0664, #  directories will automatically be +x by puppet with recurse
 		ensure => directory,
 		recurse => true,
-		require => Mediawiki_clone["statistics"],
+		require => Mediawiki::Clone["statistics"],
 	}
 
 	# set up a cron to pull mediawiki clone once a day
 	cron { "git-pull-${statistics_mediawiki_directory}/core":
 		hour => 0,
 		command => "cd ${statistics_mediawiki_directory}/core && /usr/bin/git pull",
-		require => Mediawiki_clone["statistics"],
+		require => Mediawiki::Clone["statistics"],
 	}
 }
 
