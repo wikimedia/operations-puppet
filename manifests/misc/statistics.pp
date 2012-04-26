@@ -3,7 +3,7 @@
 class misc::statistics::base {
 	system_role { "misc::statistics::base": description => "statistics server" }
 
-	$stat_packages = [ "mc", "zip", "p7zip", "p7zip-full" ]
+	$stat_packages = [ "mc", "zip", "p7zip", "p7zip-full", "subversion" ]
 
 	package { $stat_packages:
 		ensure => latest;
