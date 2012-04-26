@@ -2078,6 +2078,9 @@ host ocg2 {
 host ocg3 {
 	hardware ethernet 78:2b:cb:1f:17:48;
 	fixed-address ocg3.wikimedia.org;
+
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host oxygen {
