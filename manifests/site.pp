@@ -2067,6 +2067,9 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include role::statistics
 
+	# host stats.wikimedia.org from stat1 (for now?)
+	include misc::statistics::site
+
 	# special accounts
 	include accounts::ezachte,
 		accounts::reedy,

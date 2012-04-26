@@ -235,8 +235,31 @@ class webserver::apache {
 		}
 	}
 	
-	# TODO: documentation of parameters
-	define site($aliases=[], $ssl="false", $certfile=undef, $certkey=undef, $docroot=undef, $custom=[], $includes=[], $ensure=present) {
+	# Define: site
+	#	Configures and installs an apache virtual host file using generic_vhost.erb.
+	#
+	# Parameters:
+	#	$aliases=[]       - array of ServerAliases
+	#	$ssl="false"      - if true, sets up an ssl certificate for $title
+	#	$certfile=undef   - defaults to /etc/ssl/certs/${wildcard_domain}.pem, based on $title
+	#	$certkey=undef    - defaults to "/etc/ssl/private/${wildcard_domain}.key based on $title
+	#	$docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
+	#	$custom=[]        - custom Apachce config strings to put into virtual host site file
+	#	$includes=[]
+	#	$ensure=present
+	#
+	# Usage:
+	#	webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
+	define site(
+		$aliases=[], 
+		$ssl="false", 
+		$certfile=undef, 
+		$certkey=undef, 
+		$docroot=undef, 
+		$custom=[], 
+		$includes=[], 
+		$ensure=present) {
+
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
 		if ! $docroot {

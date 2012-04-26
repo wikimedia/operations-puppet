@@ -119,3 +119,62 @@ class misc::statistics::plotting {
 		ensure => installed;
 	}
 }
+
+# stats.wikimedia.org
+class misc::statistics::site {
+	$site_name = "stats.wikimedia.org"
+	$docroot = "/srv/$site_name"
+
+	include webserver::apache	
+	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
+	webserver::apache::site { $site_name: 
+		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"]],
+		docroot => $docroot,
+		aliases   => ["stats.wikipedia.org"],
+		custom => [
+			"Alias /extended $docroot/wikipedia.org/wikistats/reportcard/extended",
+			"Alias /staff $docroot/wikipedia.org/wikistats/reportcard/staff \n",
+			"RewriteEngine On",
+
+	# redirect stats.wikipedia.org to stats.wikimedia.org
+	"RewriteCond %{HTTP_HOST} stats.wikipedia.org
+	RewriteRule ^(.*)$ http://$site_name\$1 [R=301,L]\n",
+
+	"<Directory \"$docroot/wikipedia.org/wikistats\">
+		Options Indexes         
+		AllowOverride None
+		Order allow,deny
+		Allow from all
+	</Directory>",
+
+	# Set up htpasswd authorization for some sensitive stuff
+	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/staff\">
+		AllowOverride None              
+		Order allow,deny
+		Allow from all
+		AuthName \"Password protected area\"
+		AuthType Basic
+		AuthUserFile /etc/apache2/htpasswd.stats
+		Require user wmf
+	</Directory>",
+	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/extended\">
+		AllowOverride None              
+		Order allow,deny
+		Allow from all
+		AuthName \"Password protected area\"
+		AuthType Basic
+		AuthUserFile /etc/apache2/htpasswd.stats
+		Require user internal
+	</Directory>",
+	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/pediapress\">
+		AllowOverride None              
+		Order allow,deny
+		Allow from all
+		AuthName \"Password protected area\"
+		AuthType Basic
+		AuthUserFile /etc/apache2/htpasswd.stats
+		Require user pediapress
+	</Directory>",
+	],
+	}
+}
