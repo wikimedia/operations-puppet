@@ -23,16 +23,72 @@ acl carrier_digi {
 	"82.145.208.0"/20;
 }
 
+acl carrier_orange_ivory_coast {
+	"41.66.28.94"/32;
+	"41.66.28.95"/32;
+	"41.66.28.96"/32;
+	"41.66.28.72"/32;
+	"41.66.28.73"/32;
+}
+
+acl carrier_orange_uganda {
+	"41.202.224.0"/19;
+	"197.157.0.0"/18;
+}
+
+acl carrier_orange_tunisia {
+	//"197.30.0.0"/17;
+	//"197.30.128.0"/19;
+	//"197.30.224.0"/19;
+	//"197.29.192.0"/18;
+}
+
+acl carrier_orange_niger {
+	//"41.203.157.1";
+	//"41.203.157.2";
+	//"41.203.159.243";
+}
+
+acl carrier_orange_cameroon {
+	//"193.251.155.0"/25;
+	//"41.202.192.0"/19;
+}
 
 sub tag_carrier {
+
 	/* For wiki zero project - tags partnered carriers */
-	if (client.ip ~ wmf_office) {
-		set req.http.X-Carrier = "wikimedia";
-	} else if (client.ip ~ carrier_digi) {
-		if ( req.http.User-Agent ~ "Opera" ) {
-			set req.http.X-Carrier = "DIGI";
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
+		if (client.ip ~ wmf_office) {
+			set req.http.X-Carrier = "wikimedia";
+		} else if (client.ip ~ carrier_digi) {
+			if ( req.http.User-Agent ~ "Opera" ) {
+				set req.http.X-Carrier = "DIGI";
+			}
 		}
 	}
+
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
+		if ( client.ip ~  carrier_orange_ivory_coast ) {
+			set req.http.X-Carrier = "Orange Ivory Coast";
+		} else if ( client.ip ~  carrier_orange_uganda ) {
+			if ( req.http.host ~ "^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Uganda";
+			}
+		} else if ( client.ip ~  carrier_orange_tunisia ) {
+			if ( req.http.host ~ "^(ar|en|fr|es|de|it|ru|jp|zh)\.m\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Tunisia";
+			}
+		} else if ( client.ip ~  carrier_orange_niger ) {
+				set req.http.X-Carrier = "Orange Niger";
+		} else if ( client.ip ~  carrier_orange_cameroon ) {
+			if ( req.http.host ~ "^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Cameroon";
+			}
+		}
+
+
+	}
+
 	/* once actuall in prod, ensure users can't make requests
 	with a fake X-Carrier header */
 	/* else {
@@ -105,7 +161,7 @@ sub device_detection {
 
 sub vcl_recv {
 	call vcl_recv_purge;
-
+	call tag_carrier;
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
@@ -113,7 +169,6 @@ sub vcl_recv {
 
 	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 		/* Check that user-agent is "Opera" and if so grab XFF Header and replace client ip value */ 
 		if ( req.http.User-Agent ~ "Opera" ) {
 			C{
@@ -130,9 +185,7 @@ sub vcl_recv {
 			set req.http.X-CLIENT-IP = client.ip;
 			set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
 		}
-
-		call tag_carrier;
-
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
@@ -157,7 +210,15 @@ sub vcl_recv {
 	}
 	
 	if ( req.http.host == "m.wikipedia.org" ) {
-		error 666 "http://en.m.wikipedia.org" + req.url;
+		if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Uganda" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Tunisia" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else {
+			error 666 "http://en.m.wikipedia.org" + req.url;
+		}
 	}
 	else if ( req.http.host == "mobile.wikipedia.org" ) {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
