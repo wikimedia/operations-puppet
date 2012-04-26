@@ -192,13 +192,21 @@ class lucene {
 				}
 		}
 
-		## to occassionally poll for mediawiki configs
-		cron { sync-conf-from-common:
-			require => File["/a/search/conf"],
-			command => 'rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/all.dblist /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/wmf-config/InitialiseSettings.php /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/php/languages/messages /a/search/conf/',
-			user => lsearch,
-			minute => 15,
-			ensure => present;
+		cron {
+			## to occassionally poll for mediawiki configs 
+			sync-conf-from-common:
+				require => File["/a/search/conf"],
+				command => 'rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/all.dblist /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/wmf-config/InitialiseSettings.php /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/php/languages/messages /a/search/conf/',
+				user => lsearch,
+				minute => 15,
+				ensure => present;
+			## this is to compliment log4j's log rotation. we want to use log4j's logrotate ability, as it's easier on the system,
+			## but log4j does not yet have "delete old logs" capability :/
+			delete-old-logs:
+				command =>'find /a/search/log/log.* -type f -mtime +3 -exec rm -f {} \;',
+				user => lsearch,
+				hour => 0,
+				ensure => present;
 		}
 
 	}
