@@ -335,7 +335,7 @@ class lvs::configuration {
 		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['payments'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
