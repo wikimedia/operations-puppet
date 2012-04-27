@@ -9,4 +9,4 @@ timeout 100
 
 LABEL server
 	kernel ubuntu-installer/amd64/linux
-	append base-installer/kernel/linux/extra-packages-2.6= tasks=standard pkgsel/language-pack-patterns= pkgsel/install-language-support=false vga=normal initrd=ubuntu-installer/amd64/initrd.gz preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 debian-installer/locale=en_US kbd-chooser/method=us console-setup/layoutcode=us netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/dhcp_timeout=60 -- console=ttyS1,115200n8
+	append debian-installer/locale=en_US console-setup/ask_detect=false console-setup/layoutcode=us keyboard-configuration/layout="English (US)" keyboard-configuration/variant="English (US)" vga=normal initrd=ubuntu-installer/amd64/initrd.gz preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/dhcp_timeout=60 -- console=ttyS1,115200n8
