@@ -13,7 +13,7 @@ class misc::statistics::base {
 		"/a":
 			owner => root,
 			group => wikidev,
-			mode => 0770,
+			mode => 0775,
 			ensure => directory,
 			recurse => "false";
 		"/mnt/data":
@@ -67,6 +67,7 @@ class misc::statistics::mediwiki {
 	# set up a cron to pull mediawiki clone once a day
 	cron { "git-pull-${statistics_mediawiki_directory}/core":
 		hour => 0,
+		minute => 0,
 		command => "cd ${statistics_mediawiki_directory}/core && /usr/bin/git pull",
 		require => Mediawiki_clone["statistics"],
 	}
@@ -123,7 +124,7 @@ class misc::statistics::plotting {
 # stats.wikimedia.org
 class misc::statistics::site {
 	$site_name = "stats.wikimedia.org"
-	$docroot = "/srv/$site_name"
+	$docroot = "/srv/$site_name/htdocs"
 
 	include webserver::apache	
 	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
