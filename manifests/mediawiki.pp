@@ -54,30 +54,30 @@ class mediawiki::refreshlinks {
 }
 
 # Define: mediawiki::clone
+# Uses git::clone to clone a working copy of Mediawiki core.
 #
 # Parameters:
-# $branch = "",   optional
-# $origin_url = "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git", optional.
-#
+#	$directory	-	path to clone the repository into.  Required.
+#	$origin		- 	Origin repository URL.  Default: "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git"
+#	$branch		-	Branch you would like to check out.
+#	$ensure		-   'absent', 'present', or 'latest'.  Defaults to 'present'.  
+#					'latest' will execute a git pull if there are any changes.
+#					'absent' will ensure the directory is deleted.
 # Usage:
-# mediawiki::clone { "name_of_my_clone":
-#   path   =>  '/path/to/mediawiki"
-#   branch => 'crazy_branch',
-# }
-# # This will clone mediawiki core into /path/to/mediawiki/core
+#	mediawiki_clone { "name_of_my_clone": directory =>  '/path/to/mediawiki/core" }
+#	# This will clone mediawiki core into /path/to/mediawiki/core and checkout crazy_branch.
 #
-# TODO: add ensure parameter to ensure absent or present.
-#       absent would delete the $path, ensure would clone.
-#       Need to modify git::clone to do this.
-# TODO: handle owner, group, and mode.
+# TODO: handle owner, group, and mode (recursively?).
 define mediawiki::clone (
-	$path   = "/var/www/mediawiki",
-	$branch = "",
-	$origin_url = "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git") {
+	$directory  = "/var/www/mediawiki/core",
+	$origin     = "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git",
+	$branch     = "",
+	$ensure     = 'present') {
 
 	git::clone { "mediawiki_${title}":
-		directory => $path,
+		directory => $directory,
 		branch    => $branch,
 		origin    => $origin_url,
-	}	
+		ensure    => 'present',
+	}
 }
