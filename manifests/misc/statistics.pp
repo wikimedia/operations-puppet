@@ -34,42 +34,19 @@ class misc::statistics::base {
 }
 
 # clones mediawiki core at /a/mediawiki/core
-# and sets up a cron job to pull once a day.
+# and ensures that it is at the latest revision.
 # RT 2162
 class misc::statistics::mediwiki {
-	$statistics_mediawiki_directory = "/a/mediawiki"
-	
-	file { $statistics_mediawiki_directory:
-			owner   => root,
-			group   => wikidev,
-			mode    => 0775,
-			ensure  => directory,
-			recurse => "false";
-	}
+	include mediawiki::user
 
-	# clone mediawiki core to /a/mediawiki
-	mediawiki::clone { "statistics": 
-		path    => $statistics_mediawiki_directory,
-		require => File[$statistics_mediawiki_directory],
-	}
-	
-	# group wikidev and 775 the clone
-	$clone_directory = "$statistics_mediawiki_directory/core"
-	file { $clone_directory: 
-		owner  => 'root',
-		group  => wikidev,
-		mode   => 0664, #  directories will automatically be +x by puppet with recurse
-		ensure => directory,
-		recurse => true,
-		require => Mediawiki::Clone["statistics"],
-	}
+	$statistics_mediawiki_directory = "/a/mediawiki/core"
 
-	# set up a cron to pull mediawiki clone once a day
-	cron { "git-pull-${statistics_mediawiki_directory}/core":
-		hour => 0,
-		minute => 0,
-		command => "cd ${statistics_mediawiki_directory}/core && /usr/bin/git pull",
-		require => Mediawiki::Clone["statistics"],
+	git::clone { "statistics_mediawiki":
+		directory => $statistics_mediawiki_directory,
+		origin    => "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git",
+		ensure    => 'latest',
+		owner     => 'mwdeploy',
+		group     => 'wikidev',
 	}
 }
 
