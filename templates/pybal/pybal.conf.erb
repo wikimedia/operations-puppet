@@ -12,7 +12,7 @@ bgp-peer-address = <%= pybal['bgp-peer-address'] %>
 #
 
 <% lvs_services.sort.each do |servicename, service| -%>
-<% if lvs_class_hosts[service['class']].include?(hostname) -%>
+<% if lvs_class_hosts[service['class']].include?(hostname) and service['sites'].include?(scope.lookupvar("::site")) then -%>
 <% if service['ip'].class.eql?(String) then
 service['ip'] = { servicename => service['ip'] }
 end -%>
