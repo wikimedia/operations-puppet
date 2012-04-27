@@ -400,6 +400,17 @@ class ganglia::web {
 		ensure => directory;
 	}
 
+	
+	# conf.php for labs is maintained via puppet
+	if $realm == "labs" {
+		file { "/srv/org/wikimedia/gangliaweb/conf.php":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/conf.php",
+			ensure => present;
+		}
+	}
 }
 
 class ganglia::logtailer {
