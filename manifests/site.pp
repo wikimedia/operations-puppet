@@ -347,6 +347,8 @@ node "bayes.wikimedia.org" {
 		accounts::nimishg,
 		accounts::diederik,
 		accounts::otto
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "bast1001.wikimedia.org" {
