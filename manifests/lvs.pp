@@ -262,6 +262,7 @@ class lvs::configuration {
 		"text" => {
 			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
 			'class' => "high-traffic1",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['text'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -275,6 +276,7 @@ class lvs::configuration {
 		"https" => {
 			'description' => "HTTPS services",
 			'class' => "https",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['https'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
@@ -291,6 +293,7 @@ class lvs::configuration {
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
 			'class' => "high-traffic1",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['bits'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -304,6 +307,7 @@ class lvs::configuration {
 		"upload" => {
 			'description' => "Images and other media, upload.${site}.wikimedia.org",
 			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['upload'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
@@ -317,6 +321,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => "testing",
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
@@ -330,6 +335,7 @@ class lvs::configuration {
 		"payments" => {
 			'description' => "Payments cluster, HTTPS payments.wikimedia.org",
 			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['payments'][$::site],
 			'port' => 443,
 			'scheduler' => 'sh',
@@ -345,6 +351,7 @@ class lvs::configuration {
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
+			'sites' => [ "pmtpa" ],
 			'ip' => $service_ips['apaches'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
@@ -359,6 +366,7 @@ class lvs::configuration {
 		"rendering" => {
 			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
+			'sites' => [ "pmtpa" ],
 			'ip' => $service_ips['rendering'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".74",
@@ -373,6 +381,7 @@ class lvs::configuration {
 		"api" => {
 			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
+			'sites' => [ "pmtpa" ],
 			'ip' => $service_ips['api'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
@@ -388,6 +397,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 1",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['search_pool1'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -404,6 +414,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 2",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['search_pool2'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -420,6 +431,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 3",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['search_pool3'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -436,6 +448,7 @@ class lvs::configuration {
 			'description' => "Lucene search pool 4",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['search_pool4'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -452,6 +465,7 @@ class lvs::configuration {
 			'description' => "Lucene search prefix pool",
 			'class' => "low-traffic",
 			'protocol' => "tcp",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['search_prefix'][$::site],
 			'port' => 8123,
 			'scheduler' => "wrr",
@@ -467,6 +481,7 @@ class lvs::configuration {
 		"swift" => {
 			'description' => "Swift object store for thumbnails",
 			'class' => "low-traffic",
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['swift'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
