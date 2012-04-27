@@ -590,15 +590,24 @@ class generic::packages::git-core {
 # Creates a git clone of a specified origin into a top level directory
 #
 # Parameters:
-# - $title
-#		Should be the repository name
-# $branch
-# 	Branch you would like to check out
+#   $directory	-	path to clone the repository into.  Note that
+#					if you clone Mediawiki core, then the Mediawiki 
+#					files will be in $directory/core
+# 	$branch		-	Branch you would like to check out.
+#	$origin		- 	Origin repository URL.  Should end in '.git'.
+# Usage:
+#	git::clone{ "my_clone_name": 
+#		directory => "/path/to/clone/container", 
+#		origin => "http://blabla.org/core.git", 
+#		branch => "the_best_branch" 
+#	}  # clones http://blabla.org/core.git branch 'the_best_branch' at /path/to/clone/container/core
 #
+# TODO:  Allow ensure => absent to delete the working clone copy.
+# TODO:  (Maybe) allow ensure => latest to execute git pull on every puppet run?
 define git::clone($directory, $branch="", $origin) {
 	require generic::packages::git-core
 
-	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+	$suffix = regsubst($origin, '^.*/([^/]*)\.git$', '\1')
 
 	if $branch {
 		$brancharg = "-b $branch "
