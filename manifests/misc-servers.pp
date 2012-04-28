@@ -1146,6 +1146,15 @@ class misc::l10nupdate {
 	}
 }
 
+class misc::mwfatallog {
+	file {
+		"/etc/logrotate.d/mwfatal":
+			source => "puppet:///files/logrotate/mwfatal",
+			owner => root,
+			group => root,
+			mode => 0444;
+	}
+}
 
 class misc::ircecho {
 
