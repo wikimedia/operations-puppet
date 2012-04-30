@@ -43,7 +43,10 @@ pipe 10 awk -f /a/squid/vu.awk | log2udp -h 130.37.198.252 -p 9999
 # Universidad Rey Juan Carlos
 # Contact: <%= scope.lookupvar('contacts::udp2log::universidad_rey_juan_carlos_contact') %>
 # Backup contact: <%= scope.lookupvar('contacts::udp2log::universidad_rey_juan_carlos_backup_contact') %>
-pipe 100 awk -f /a/squid/urjc.awk | log2udp -h wikilogs.libresoft.es -p 10514
+# Disabled by ottomata on April 30, 2012.  
+# This filter is flapping and not stable.  Not sure why.
+# Disabling and emailing  <%= scope.lookupvar('contacts::udp2log::universidad_rey_juan_carlos_contact') %>.
+#pipe 100 awk -f /a/squid/urjc.awk | log2udp -h wikilogs.libresoft.es -p 10514
 
 # University of Minnesota
 # Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
