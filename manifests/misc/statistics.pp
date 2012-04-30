@@ -133,23 +133,16 @@ class misc::statistics::site {
 		docroot => $docroot,
 		aliases   => ["stats.wikipedia.org"],
 		custom => [
-			"Alias /extended $docroot/wikipedia.org/wikistats/reportcard/extended",
-			"Alias /staff $docroot/wikipedia.org/wikistats/reportcard/staff \n",
+			"Alias /extended $docroot/reportcard/extended",
+			"Alias /staff $docroot/reportcard/staff \n",
 			"RewriteEngine On",
 
 	# redirect stats.wikipedia.org to stats.wikimedia.org
 	"RewriteCond %{HTTP_HOST} stats.wikipedia.org
 	RewriteRule ^(.*)$ http://$site_name\$1 [R=301,L]\n",
 
-	"<Directory \"$docroot/wikipedia.org/wikistats\">
-		Options Indexes         
-		AllowOverride None
-		Order allow,deny
-		Allow from all
-	</Directory>",
-
 	# Set up htpasswd authorization for some sensitive stuff
-	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/staff\">
+	"<Directory \"$docroot/reportcard/staff\">
 		AllowOverride None              
 		Order allow,deny
 		Allow from all
@@ -158,7 +151,7 @@ class misc::statistics::site {
 		AuthUserFile /etc/apache2/htpasswd.stats
 		Require user wmf
 	</Directory>",
-	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/extended\">
+	"<Directory \"$docroot/reportcard/extended\">
 		AllowOverride None              
 		Order allow,deny
 		Allow from all
@@ -167,7 +160,7 @@ class misc::statistics::site {
 		AuthUserFile /etc/apache2/htpasswd.stats
 		Require user internal
 	</Directory>",
-	"<Directory \"$docroot/wikipedia.org/wikistats/reportcard/pediapress\">
+	"<Directory \"$docroot/reportcard/pediapress\">
 		AllowOverride None              
 		Order allow,deny
 		Allow from all
