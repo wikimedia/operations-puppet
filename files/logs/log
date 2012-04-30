@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ "$project" = "" ];then
+        echo "Undefined project"
+        exit 0
+fi
+if [ "$1" = "" ]; then
+        echo "No message was logged"
+        exit 1
+fi
+
+echo "$project `whoami`: $*" | nc bots-labs 55252
+echo "`whomai` logged a message to SAL: $*" | wall
+echo "Message logged"
