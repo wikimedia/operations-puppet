@@ -36,7 +36,10 @@ class udp2log {
 		}
 	}
 
-	define instance( $port = $logging_instances[$name]["port"], $has_logrotate = $logging_instances[$name]["has_logrotate"], multicast_listen = $logging_instances[$name]["multicast_listen"] ) {
+	define instance( $port = $logging_instances[$name]["port"],
+					$has_logrotate = $logging_instances[$name]["has_logrotate"], 
+					$multicast_listen = $logging_instances[$name]["multicast_listen"],
+					$monitoring = $has_monitoring ) {
 
 		file {
 			"/etc/udp2log/${name}":
@@ -59,6 +62,13 @@ class udp2log {
 				group => root,
 				source => "puppet:///files/logrotate/${name}-udp2log";
 			}
+		}
+
+		if $monitoring == true {
+			require udp2log::monitoring
+
+			nrpe::monitor_service{ "udp2log_log_age": description => "udp2log log age", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}", contact_group => "admins,analytics" }
+			nrpe::monitor_service{ "udp2log_procs": description => "udp2log processes", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}", contact_group => "admins,analytics" }
 		}
 
 		service { "udp2log-${name}":
@@ -127,8 +137,6 @@ class udp2log {
 				minute => '*/5';
 		}
 
-		nrpe::monitor_service{ "udp2log_log_age": description => "udp2log log age", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_log_age", contact_group => "admins,analytics" }
-		nrpe::monitor_service{ "udp2log_procs": description => "udp2log processes", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs", contact_group => "admins,analytics" }
 		monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8", contact_group => "admins,analytics" }
 	}
 

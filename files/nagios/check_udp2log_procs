@@ -1,18 +1,10 @@
 #!/bin/bash
 
-conf_file=`grep "^CONFFILE" /etc/init.d/udp2log | grep -o "/.*$"`
-
-if [ -f /etc/init.d/udp2log-aft ]; then
-        conf_file_aft=`grep "^CONFFILE" /etc/init.d/udp2logi-aft | grep -o "/.*$"`
-fi
+instance_name=$1
+conf_file=/etc/udp2log/$instance_name
 
 if [ ! -f $conf_file ]; then
         echo "UNKNOWN: $conf_file cannot be found"
-        exit 3
-fi
-
-if [ $conf_file_aft -a ! -f $conf_file_aft ]; then
-        echo "UNKNOWN: $conf_file_aft cannot be found"
         exit 3
 fi
 
@@ -28,15 +20,6 @@ for filter in `egrep -o "^pipe [0-9]*[^/]* /[^ ]*" $conf_file | egrep -o "/.*"`;
 		missing_list=`echo "$filter, $missing_list"`
 	fi
 done
-
-if [ $conf_file_aft ]; then
-	for filter in `egrep -o "^pipe [0-9]*[^/]* /[^ ]*" $conf_file_aft | egrep -o "/.*"`; do
-		if ! grep -q $filter $ps_list; then
-			((missing_count++))
-			missing_list=`echo "$filter, $missing_list"`
-		fi
-	done
-fi
 
 rm $ps_list
 
