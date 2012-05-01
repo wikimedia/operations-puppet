@@ -2143,6 +2143,7 @@ node "streber.wikimedia.org" {
 #		misc::torrus,
 		exim::rt,
 		misc::rt::server,
+		firewall::builder,
 		certificates::star_wikimedia_org
 
 	class { "misc::syslog-server": config => "network" }

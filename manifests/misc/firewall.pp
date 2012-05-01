@@ -5,10 +5,16 @@ class firewall::builder {
 	}
 	file { 
 		"/usr/local/fwconfigtool.d":
-		owner => root,
-		group => root,
-		mode => 0755,
-		ensure => directory;
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+
+		"/usr/share/fwconfigtool":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 	}
 
 	# collect all fw definitions

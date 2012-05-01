@@ -5,7 +5,8 @@
 
 # Installs a generic, static web server (lighttpd) with default config, which serves /var/www
 class webserver::static {
-	include generic::sysctl::high-http-performance
+	include generic::sysctl::high-http-performance,
+		firewall
 
 	package { lighttpd:
 		ensure => latest;
@@ -21,6 +22,12 @@ class webserver::static {
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
+
+	# Firewall
+	firewall::open_port {
+		"http-${host}":
+			port => 80;
+	}
 }
 
 class webserver::php5( $ssl = 'false' ) {
