@@ -157,6 +157,10 @@ class openstack::controller {
 		openstack::ldap-server,
 		openstack::iptables
 
+	if $openstack_release == "essex" {
+		include openstack::keystone-service
+	}
+
 	package { [ "rabbitmq-server", "euca2ools" ]:
 		ensure => latest;
 	}
@@ -291,16 +295,6 @@ class openstack::database-server {
 			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::nova_db_name};\"",
 			require => [Package["mysql-client"], File["/root/.my.cnf"]],
 			before => Exec['create_keystone_db_user'];
-		'create_keystone_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
-			require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]],
-			before => Exec['sync_keystone_db'];
-		'create_keystone_db':
-			unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::keystone_db_name};\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_keystone_db_user'];
 		'create_puppet_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
@@ -321,6 +315,21 @@ class openstack::database-server {
 			before => Exec['create_glance_db_user'];
 	}
 
+	if $openstack_version == "essex" {
+		exec {
+			'create_keystone_db_user':
+				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
+				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]],
+				before => Exec['sync_keystone_db'];
+			'create_keystone_db':
+				unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
+				command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::keystone_db_name};\"",
+				require => [Package["mysql-client"], File["/root/.my.cnf"]],
+				before => Exec['create_keystone_db_user'];
+		}
+	}
+
 	if ( ! $controller_first_master ) {
 		$controller_first_master = "false"
 	}
@@ -331,10 +340,15 @@ class openstack::database-server {
 				unless => "/usr/bin/nova-manage db version | grep \"${openstack::nova_config::nova_db_version}\"",
 				command => "/usr/bin/nova-manage db sync",
 				require => Package["nova-common"];
-			'sync_keystone_db':
-				unless => "/usr/bin/keystone-manage db version | grep \"${openstack::keystone_config::keystone_db_version}\"",
-				command => "/usr/bin/keystone-manage db sync",
-				require => Package["keystone"];
+		}
+		# TODO, use a version compare here
+		if $openstack_version == "essex" {
+			exec {
+				'sync_keystone_db':
+					unless => "/usr/bin/keystone-manage db version | grep \"${openstack::keystone_config::keystone_db_version}\"",
+					command => "/usr/bin/keystone-manage db sync",
+					require => Package["keystone"];
+			}
 		}
 	} else {
 		exec {
@@ -342,9 +356,14 @@ class openstack::database-server {
 			'sync_nova_db':
 				command => "/usr/bin/test true",
 				require => Package["nova-common"];
-			'sync_keystone_db':
-				command => "/usr/bin/test true",
-				require => Package["keystone"];
+		}
+		# TODO, use a version compare here
+		if $openstack_version == "essex" {
+			exec {
+				'sync_keystone_db':
+					command => "/usr/bin/test true",
+					require => Package["keystone"];
+			}
 		}
 	}
 
@@ -373,18 +392,6 @@ class openstack::database-server {
 			group => root,
 			mode => 0640,
 			require => Package["nova-common"];
-		"/etc/keystone/keystone-user.sql":
-			content => template("openstack/keystone-user.sql.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["keystone"];
-		"/etc/keystone/keystone-user.cnf":
-			content => template("openstack/keystone-user.cnf.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["keystone"];
 		"/etc/puppet/puppet-user.sql":
 			content => template("openstack/puppet-user.sql.erb"),
 			owner => root,
@@ -409,6 +416,20 @@ class openstack::database-server {
 			group => root,
 			mode => 0640,
 			require => Package["glance"];
+	}
+	if $openstack_version == "essex" {
+		"/etc/keystone/keystone-user.sql":
+			content => template("openstack/keystone-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
+		"/etc/keystone/keystone-user.cnf":
+			content => template("openstack/keystone-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
 	}
 
 }
@@ -567,22 +588,20 @@ class openstack::vnc-proxy-service {
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		#subscribe => File['/etc/nova/nova.conf'],
 		ensure => absent;
 	}
 
-	service { "nova-volume":
-		ensure => stopped,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-volume"];
-	}
+	#service { "nova-volume":
+	#	ensure => stopped,
+	#	subscribe => File['/etc/nova/nova.conf'],
+	#	require => Package["nova-volume"];
+	#}
 
 }
 
 class openstack::compute-service {
 
 	package { [ "nova-compute" ]:
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -597,6 +616,31 @@ class openstack::compute-service {
 		ensure => running,
 		subscribe => File['/etc/nova/nova.conf'],
 		require => Package["nova-compute"];
+	}
+
+}
+
+class openstack::keystone-service {
+
+	package { [ "keystone" ]:
+		subscribe => File['/etc/keystone/keystone.conf'],
+		ensure => latest;
+	}
+
+	service { "keystone":
+		ensure => running,
+		subscribe => File['/etc/keystone/keystone.conf'],
+		require => Package["keystone"];
+	}
+
+	file {
+		"/etc/keystone/keystone.conf":
+			content => template("openstack/keystone.conf.erb"),
+			owner => root,
+			group => root,
+			notify => Service["keystone"],
+			require => Package["keystone"],
+			mode => 0444;
 	}
 
 }
