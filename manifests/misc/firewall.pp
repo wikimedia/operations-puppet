@@ -4,13 +4,13 @@ class firewall::builder {
 		  ensure => latest;
 	}
 	file { 
-		"/usr/local/fwconfigtool.d":
+		"/var/lib/fwconfigtool":
 			owner => root,
 			group => root,
 			mode => 0755,
 			ensure => directory;
 
-		"/usr/share/fwconfigtool":
+		"/var/lib/fwconfigtool/machineports":
 			owner => root,
 			group => root,
 			mode => 0755,
@@ -23,7 +23,7 @@ class firewall::builder {
 	cron { fwconfigtool_hourly :
 			command => "/usr/bin/fwconfigtool /usr/share/fwconfigtool/junos_fw_output.slax /usr/local/fwconfigtool.d",
 			minute => 30,
-			ensure => present;
+			ensure => absent;
 	} 
 
 }
@@ -45,7 +45,7 @@ class firewall {
 
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
-			"/usr/local/fwconfigtool.d/${ipaddress}-${port}":
+			"/var/lib/fwconfigtool/machineports/${ipaddress}-${port}":
 				content => "$hostname,$ipaddress,$protocol,$port\n",
 				ensure => present,
 				owner => root,
