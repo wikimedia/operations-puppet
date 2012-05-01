@@ -10,7 +10,6 @@ class role::statistics {
 		mysql::client,
 		misc::statistics::base,
 		misc::statistics::plotting,
-		misc::statistics::geoip,
 		generic::pythonpip,
 		udp2log::udp_filter
 
