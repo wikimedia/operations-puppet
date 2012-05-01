@@ -517,6 +517,7 @@ class base {
 
 	include	passwords::root,
 		base::decommissioned,
+		base::grub,
 		base::resolving,
 		base::remote-syslog,
 		base::sysctl,
