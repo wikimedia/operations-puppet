@@ -49,36 +49,3 @@ class misc::statistics::base {
 	}
 
 }
-
-# RT 2164
-class misc::statistics::geoip {
-
-	file {
-		"/usr/local/share/GeoIP":
-			owner => ezachte,
-			group => wikidev,
-			mode => 0750,
-			ensure => directory;
-		"/usr/local/bin/geoiplogtag":
-			owner => ezachte,
-			group => wikidev,
-			mode => 0750,
-			source => "puppet:///files/misc/geoiplogtag",
-			ensure => present;
-		"/usr/local/bin/update-maxmind-geoip-lib":
-			owner => ezachte,
-			group => wikidev,
-			mode => 0750,
-			source => "puppet:///files/misc/update-maxmind-geoip-lib",
-			ensure => present;
-	}
-
-	cron {
-		"update-maxmind-geoip-lib":
-			ensure => present,
-			user => ezachte,
-			command => "/usr/local/bin/update-maxmind-geoip-lib",
-			monthday => 1,
-			require => File['/usr/local/bin/update-maxmind-geoip-lib'];
-	}
-}
