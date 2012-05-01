@@ -298,7 +298,7 @@ class openstack::database-server {
 			before => Exec['sync_keystone_db'];
 		'create_keystone_db':
 			unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::nova_db_name};\"",
+			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::keystone_db_name};\"",
 			require => [Package["mysql-client"], File["/root/.my.cnf"]],
 			before => Exec['create_keystone_db_user'];
 		'create_puppet_db_user':
@@ -373,6 +373,18 @@ class openstack::database-server {
 			group => root,
 			mode => 0640,
 			require => Package["nova-common"];
+		"/etc/keystone/keystone-user.sql":
+			content => template("openstack/keystone-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
+		"/etc/keystone/keystone-user.cnf":
+			content => template("openstack/keystone-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
 		"/etc/puppet/puppet-user.sql":
 			content => template("openstack/puppet-user.sql.erb"),
 			owner => root,
@@ -740,16 +752,18 @@ class openstack::nova_config {
 		"production" => "http://labsconsole.wikimedia.org:8000",
 		"labs" => "http://${hostname}.${domain}:8000",
 	}
-	$nova_ldap_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
+	if $openstack_version == "diablo" {
+		$nova_ldap_host = $realm ? {
+			"production" => "virt0.wikimedia.org",
+			"labs" => "localhost",
+		}
+		$nova_ldap_domain = "labs"
+		$nova_ldap_base_dn = "dc=wikimedia,dc=org"
+		$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+		$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+		$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
+		$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	}
-	$nova_ldap_domain = "labs"
-	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
-	$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
-	$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-	$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
-	$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
 	$nova_db_version = "46"
@@ -782,6 +796,32 @@ class openstack::glance_config {
 	$glance_db_user = "glance"
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
 	$glance_bind_ip = $realm ? {
+		"production" => "208.80.153.135",
+		"labs" => "127.0.0.1",
+	}
+
+}
+
+class openstack::keystone_config {
+
+	include passwords::openstack::keystone
+
+	$keystone_db_host = $realm ? {
+		"production" => "virt0.wikimedia.org",
+		"labs" => "localhost",
+	}
+	$keystone_db_name = "glance"
+	$keystone_db_user = "glance"
+	$keystone_db_pass = $passwords::openstack::keystone::keystone_db_pass
+	$keystone_ldap_host = $realm ? {
+		"production" => "virt0.wikimedia.org",
+		"labs" => "localhost",
+	}
+	$keystone_ldap_domain = "labs"
+	$keystone_ldap_base_dn = "dc=wikimedia,dc=org"
+	$keystone_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+	$keystone_ldap_user_pass = $passwords::openstack::keystone::keystone_ldap_user_pass
+	$keystone_bind_ip = $realm ? {
 		"production" => "208.80.153.135",
 		"labs" => "127.0.0.1",
 	}
