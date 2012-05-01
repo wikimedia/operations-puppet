@@ -11,7 +11,6 @@ class role::statistics {
 		misc::statistics::base,
 		misc::statistics::mediwiki,
 		misc::statistics::plotting,
-		misc::statistics::geoip,
 		generic::pythonpip,
 		udp2log::udp_filter
 
