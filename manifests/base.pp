@@ -74,6 +74,29 @@ deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename}-updates main un
 	}
 }
 
+class base::grub {
+	# Ubuntu Precise Pangolon no longer has a server kernel flavour.
+	# The generic flavour uses the CFQ I/O scheduler, which is rather
+	# suboptimal for some of our I/O work loads. Override with deadline.
+	# (the installer does this too, but not for Lucid->Precise upgrades)
+	
+	# FIXME: support grub1 as well
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
+		exec { "iosched deadline":
+			path => "/bin:/usr/bin",
+			command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\"$/ elevator=deadline\\"/' /etc/default/grub",
+			unless => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
+			onlyif => "test -f /etc/default/grub",
+			notify => Exec["update-grub"]
+		}
+	}
+
+	exec { "update-grub":
+		refreshonly => true,
+		path => "/sbin:/usr/sbin"
+	}
+}
+
 class base::puppet($server="puppet") {
 
 	include passwords::puppet::database
@@ -336,7 +359,7 @@ class base::vimconfig {
 class base::environment {
 
 	# TODO: check for production
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		file {
 			"/etc/bash.bashrc":
 				content => template('environment/bash.bashrc'),
