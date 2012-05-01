@@ -121,12 +121,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			git::clone {
 				"operations/puppet":
 					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations/puppet",
+					directory => "$puppetmaster::config::gitdir/operations",
 					branch => "test",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 				"operations/software":
 					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations/software",
+					directory => "$puppetmaster::config::gitdir/operations",
 					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 			}
 		}

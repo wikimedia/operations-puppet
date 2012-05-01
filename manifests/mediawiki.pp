@@ -53,6 +53,31 @@ class mediawiki::refreshlinks {
 	refreshlinks::cronjob { ['s1@0']: }
 }
 
-class mediawiki::user {
-	systemuser { "mwdeploy": name => "mwdeploy" }
+# Define: mediawiki::clone
+#
+# Parameters:
+# $branch = "",   optional
+# $origin_url = "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git", optional.
+#
+# Usage:
+# mediawiki::clone { "name_of_my_clone":
+#   path   =>  '/path/to/mediawiki"
+#   branch => 'crazy_branch',
+# }
+# # This will clone mediawiki core into /path/to/mediawiki/core
+#
+# TODO: add ensure parameter to ensure absent or present.
+#       absent would delete the $path, ensure would clone.
+#       Need to modify git::clone to do this.
+# TODO: handle owner, group, and mode.
+define mediawiki::clone (
+	$path   = "/var/www/mediawiki",
+	$branch = "",
+	$origin_url = "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git") {
+
+	git::clone { "mediawiki_${title}":
+		directory => $path,
+		branch    => $branch,
+		origin    => $origin_url,
+	}	
 }
