@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= scope.lookupvar('openstack::keystone_config::keystone_db_user') %>'@'%' IDENTIFIED BY '<%= scope.lookupvar('openstack::keystone_config::keystone_db_pass') %>';
+GRANT ALL PRIVILEGES ON <%= scope.lookupvar('openstack::keystone_config::keystone_db_name') %>.* to '<%= scope.lookupvar('openstack::keystone_config::keystone_db_user') %>'@'%';
