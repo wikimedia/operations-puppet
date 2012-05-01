@@ -264,7 +264,7 @@ define command{
 # 'check_http_mobile' command definition
 define command{
 	command_name	check_http_mobile
-	command_line	$USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$  -w 10 -c 20 -t 60 -f warn -r 'Wikimedia Foundation, Inc'
+	command_line	$USER1$/check_http -H en.m.wikipedia.org -I $HOSTADDRESS$  -w 10 -c 20 -t 60 -f warn -r 'Content available under'
 	}
 
 define command{
