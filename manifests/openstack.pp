@@ -294,7 +294,7 @@ class openstack::database-server {
 			unless => "/usr/bin/mysql -uroot ${openstack::nova_config::nova_db_name} -e 'exit'",
 			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::nova_db_name};\"",
 			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_keystone_db_user'];
+			before => Exec['create_nova_db_user'];
 		'create_puppet_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
