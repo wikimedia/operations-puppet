@@ -2050,6 +2050,7 @@ node "stafford.pmtpa.wmnet" {
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
 			'dbserver' => "db9.pmtpa.wmnet",
+			'dbconnections' => "50",
 			'filesdir' => "/var/lib/git/operations/puppet/files",
 			'privatefilesdir' => "/var/lib/git/operations/private/files",
 			'manifestdir' => "/var/lib/git/operations/puppet/manifests",
