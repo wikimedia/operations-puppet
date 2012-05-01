@@ -62,20 +62,13 @@ class gerrit::jetty {
 		ensure => latest;
 	}
 
+	package { [ "gerrit" ]:
+		ensure => 2.3-1;
+	}
+
 	file {
-		"/var/lib/gerrit2/gerrit.war":
-			source => "puppet:///files/gerrit/gerrit-2.2.1.war",
-			owner => root,
-			group => root,
-			mode => 0444,
-			require => Systemuser["gerrit2"];
-		"/etc/init.d/gerrit":
-			source => "puppet:///files/gerrit/gerrit.sh",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/etc/default/gerritcodereview":
-			source => "puppet:///files/gerrit/gerritcodereview",
+		"/etc/default/gerrit":
+			source => "puppet:///files/gerrit/gerrit",
 			owner => root,
 			group => root,
 			mode => 0444;
@@ -84,7 +77,7 @@ class gerrit::jetty {
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0755,
-			require => Systemuser["gerrit2"];
+			require => Package["gerrit"];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
@@ -166,7 +159,7 @@ class gerrit::jetty {
 			group => "gerrit2",
 			cwd => "/var/lib/gerrit2",
 			command => "/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start",
-			require => [File["/var/lib/gerrit2/gerrit.war", "/var/lib/gerrit2/review_site/etc/gerrit.config"], Package["openjdk-6-jre"], Systemuser["gerrit2"]];
+			require => [Package["gerrit"], File["/var/lib/gerrit2/review_site/etc/gerrit.config"], Package["openjdk-6-jre"]];
 	}
 
 	service {
@@ -242,12 +235,11 @@ class gerrit::ircbot {
 
 class gerrit::account {
 
-	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
-
 	ssh_authorized_key { gerrit2:
 		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
 		type => ssh-rsa,
 		user => gerrit2,
+		require => Package["gerrit"],
 		ensure => present;
 	}
 
@@ -256,7 +248,7 @@ class gerrit::account {
 			owner => gerrit2,
 			group => gerrit2,
 			mode  => 0600,
-			require => [Systemuser["gerrit2"], Ssh_authorized_key["gerrit2"]],
+			require => [Package["gerrit"], Ssh_authorized_key["gerrit2"]],
 			source => "puppet:///private/gerrit/id_rsa";
 	}
 
