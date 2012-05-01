@@ -34,7 +34,7 @@ if [ $crit_count -gt 0 ];then
 	echo "CRITICAL: log files $crit_list have not been written to in 6 hours"
 	exit 2
 elif [ $warn_count -gt 0 ];then
-	echo "WARNING: log files $crit_list have not been written to in 3 hours"
+	echo "WARNING: log files $warn_list have not been written to in 3 hours"
 	exit 1
 else 
 	echo "OK: all log files active"
