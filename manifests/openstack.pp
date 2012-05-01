@@ -36,7 +36,6 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "virt0_all": source => "208.80.153.135", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
-	iptables_add_service{ "mysql_gerrit": source => "208.80.152.147", service => "mysql", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
@@ -102,6 +101,11 @@ class openstack::common {
 
 	include openstack::nova_config
 
+	if $openstack_version == "diablo" {
+		apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+		apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+	}
+
 	if $realm == "production" {
 		# Setup eth1 as tagged and created a tagged interface for VLAN 103
 		interface_tagged { "eth1.103":
@@ -118,27 +122,11 @@ class openstack::common {
 		}
 	}
 
-	# FIXME: third party repositories
-        if $openstack_version == "tip" {
-	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-	    apt::pparepo { "nova-core-release-obsolete2": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "absent" }
-	    apt::pparepo { "nova-core-release": repo_string => "openstack-ppa/bleeding-edge", apt_key => "AA8F5DAB", dist => "oneiric", ensure => "present" }
-        } elsif $openstack_version == "essex" {
-	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-	    apt::pparepo { "nova-core-release-obsolete2": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "absent" }
-            #  FIXME:  As soon as essex goes gold, this should be openstack-release/2012.3.
-	    apt::pparepo { "nova-core-release": repo_string => "openstack-ppa/latest-milestone-test", apt_key => "AA8F5DAB", dist => "oneiric", ensure => "present" }
-        } else {
-	    apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-	    apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
-        }
-
 	package { [ "nova-common" ]:
-		ensure => latest,
-		require => Apt::Pparepo["nova-core-release"];
+		ensure => latest;
 	}
 
-	package { [ "unzip", "aoetools", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
+	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
 		ensure => latest;
 	}
 
@@ -146,8 +134,6 @@ class openstack::common {
 	package { [ "python-netaddr", "radvd" ]:
 		ensure => latest;
 	}
-
-	generic::apt::pin-package { [ "libmysqlclient16", "mysql-common" ]: }
 
 	file {
 		"/etc/nova/nova.conf":
@@ -162,26 +148,14 @@ class openstack::common {
 
 class openstack::controller {
 
-        if $openstack_version == "essex" {
-	        include openstack::common,
-		        openstack::scheduler-service,
-		        openstack::glance-service,
-		        openstack::openstack-manager,
-		        openstack::database-server,
-		        openstack::puppet-server,
-		        openstack::ldap-server,
-		        openstack::iptables
-        } else {
-	        include openstack::common,
-		        openstack::scheduler-service,
-		        openstack::ajax-console-proxy-service,
-		        openstack::glance-service,
-		        openstack::openstack-manager,
-		        openstack::database-server,
-		        openstack::puppet-server,
-		        openstack::ldap-server,
-		        openstack::iptables
-        }
+	include openstack::common,
+		openstack::scheduler-service,
+		openstack::glance-service,
+		openstack::openstack-manager,
+		openstack::database-server,
+		openstack::puppet-server,
+		openstack::ldap-server,
+		openstack::iptables
 
 	package { [ "rabbitmq-server", "euca2ools" ]:
 		ensure => latest;
@@ -248,8 +222,6 @@ class openstack::compute {
 		include openstack::network-service,
 			openstack::api-service
 	}
-	if $hostname =~ /^virt[3-4]$/ {
-	}
 
 	file {
 		"/etc/libvirt/qemu/networks/autostart/default.xml":
@@ -290,13 +262,7 @@ class openstack::database-server {
 
 	include openstack::nova_config,
 		openstack::glance_config,
-		gerrit::database-server
-
-	generic::apt::pin-package { [ "mysql-server", "mysql-client" ]: }
-	generic::apt::pin-package { "mysql-server-51": package => "mysql-server-5.1" }
-	generic::apt::pin-package { "mysql-server-core-51": package => "mysql-server-core-5.1" }
-	generic::apt::pin-package { "mysql-client-51": package => "mysql-client-5.1" }
-	generic::apt::pin-package { "mysql-client-core-51": package => "mysql-client-core-5.1" }
+		openstack::keystone_config
 
 	package { "mysql-server":
 		ensure => latest;
@@ -308,6 +274,7 @@ class openstack::database-server {
 		ensure => running;
 	}
 
+	# TODO: This expects the services to be installed in the same location
 	exec {
 		'set_root':
 			onlyif => "/usr/bin/mysql -uroot --password=''",
@@ -323,7 +290,17 @@ class openstack::database-server {
 			unless => "/usr/bin/mysql -uroot ${openstack::nova_config::nova_db_name} -e 'exit'",
 			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::nova_db_name};\"",
 			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_nova_db_user'];
+			before => Exec['create_keystone_db_user'];
+		'create_keystone_db_user':
+			unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+			command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
+			require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]],
+			before => Exec['sync_keystone_db'];
+		'create_keystone_db':
+			unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
+			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::nova_db_name};\"",
+			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			before => Exec['create_keystone_db_user'];
 		'create_puppet_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
@@ -354,6 +331,10 @@ class openstack::database-server {
 				unless => "/usr/bin/nova-manage db version | grep \"${openstack::nova_config::nova_db_version}\"",
 				command => "/usr/bin/nova-manage db sync",
 				require => Package["nova-common"];
+			'sync_keystone_db':
+				unless => "/usr/bin/keystone-manage db version | grep \"${openstack::keystone_config::keystone_db_version}\"",
+				command => "/usr/bin/keystone-manage db sync",
+				require => Package["keystone"];
 		}
 	} else {
 		exec {
@@ -361,6 +342,9 @@ class openstack::database-server {
 			'sync_nova_db':
 				command => "/usr/bin/test true",
 				require => Package["nova-common"];
+			'sync_keystone_db':
+				command => "/usr/bin/test true",
+				require => Package["keystone"];
 		}
 	}
 
@@ -496,8 +480,7 @@ class openstack::openstack-manager {
 
 class openstack::scheduler-service {
 
-	package {  "nova-scheduler":
-		require => Apt::Pparepo["nova-core-release"],
+	package { "nova-scheduler":
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -517,7 +500,6 @@ class openstack::network-service {
 	}
 
 	package {  [ "nova-network", "dnsmasq" ]:
-		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -543,7 +525,6 @@ class openstack::network-service {
 class openstack::api-service {
 
 	package {  [ "nova-api" ]:
-		require => Apt::Pparepo["nova-core-release"],
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
@@ -556,25 +537,24 @@ class openstack::api-service {
 
 }
 
-class openstack::ajax-console-proxy-service {
+class openstack::vnc-proxy-service {
 
-	package {  [ "nova-ajax-console-proxy" ]:
-		require => Apt::Pparepo["nova-core-release"],
+	package {  [ "nova-vncproxy" ]:
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
-	service { "nova-ajax-console-proxy":
+	service { "nova-vncproxy":
 		ensure => running,
 		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-ajax-console-proxy"];
+		require => Package["nova-vncproxy"];
 	}
 
 }
+
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		#require => Apt::Pparepo["nova-core-release"],
 		#subscribe => File['/etc/nova/nova.conf'],
 		ensure => absent;
 	}
@@ -589,10 +569,16 @@ class openstack::volume-service {
 
 class openstack::compute-service {
 
-	package { [ "nova-compute", "ajaxterm" ]:
-		require => Apt::Pparepo["nova-core-release"],
+	package { [ "nova-compute" ]:
 		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
+	}
+
+	if $openstack_version == "essex" {
+		package { [ "nova-compute-kvm" ]:
+			subscribe => File['/etc/nova/nova.conf'],
+			ensure => latest;
+		}
 	}
 
 	service { "nova-compute":
@@ -601,24 +587,13 @@ class openstack::compute-service {
 		require => Package["nova-compute"];
 	}
 
-	# ajaxterm is run manually by nova-compute; we don't want the service running
-	service { "ajaxterm":
-		enable => false,
-		ensure => stopped,
-		require => Package["ajaxterm"];
-	}
-
 }
 
 class openstack::glance-service {
 
-	# FIXME: third party repository
-	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "absent" }
-
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Apt::Pparepo["nova-core-release"],
 		ensure => latest;
 	}
 
@@ -681,9 +656,14 @@ class openstack::gluster-client {
 
 	include generic::gluster
 
+	if $realm == "production" {
+		$device = "instancestorage.pmtpa.wmnet:/instances1"
+	} else {
+		$device = "localhost:/instances1"
+	}
 	## mount the gluster volume for the instances
 	mount { "/var/lib/nova/instances":
-		device => "instancestorage.pmtpa.wmnet:/instances1",
+		device => $device,
 		fstype => "glusterfs",
 		name => "/var/lib/nova/instances",
 		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
