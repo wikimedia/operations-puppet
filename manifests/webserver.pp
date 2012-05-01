@@ -27,6 +27,8 @@ class webserver::static {
 	firewall::open_port {
 		"http-${hostname}":
 			port => 80;
+		"https-${hostname}":
+			port => 443;
 	}
 }
 
