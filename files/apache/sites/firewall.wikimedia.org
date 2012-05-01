@@ -1,0 +1,14 @@
+# MANAGED BY PUPPET
+
+<VirtualHost *:80>
+	ServerName firewall.wikimedia.org
+
+	DocumentRoot /usr/share/fwconfigtool/
+
+	<Directory /usr/local/planet/wikimedia-portal>
+		Order allow,deny
+		Allow from 10.0.0.0/8
+		Allow from 208.80.152.0/22
+		Allow from 127
+	</Directory>
+</VirtualHost>

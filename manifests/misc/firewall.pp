@@ -21,7 +21,7 @@ class firewall::builder {
 	Exported_acl_rule <<| |>>
 
 	cron { fwconfigtool_hourly :
-			command => "/usr/local/bin/fwconfigtool.pyc /usr/share/fwconfigtool/junos_fw_output.slax /usr/local/fwconfigtool.d",
+			command => "/usr/bin/fwconfigtool /usr/share/fwconfigtool/junos_fw_output.slax /usr/local/fwconfigtool.d",
 			minute => 30,
 			ensure => present;
 	} 
