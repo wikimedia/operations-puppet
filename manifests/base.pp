@@ -79,7 +79,7 @@ class base::grub {
 	# The generic flavour uses the CFQ I/O scheduler, which is rather
 	# suboptimal for some of our I/O work loads. Override with deadline.
 	# (the installer does this too, but not for Lucid->Precise upgrades)
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
 		exec {
 			"grub1 iosched deadline":
 				path => "/bin:/usr/bin",
