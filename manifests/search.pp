@@ -120,7 +120,8 @@ class lucene {
 
 		include lucene::packages,
 			lucene::config,
-			lucene::service
+			lucene::service,
+			lucene::monitoring
 
 		if $indexer == true {
 			include lucene::indexer
@@ -220,6 +221,10 @@ class lucene {
 		if $lucene::server::indexer == false {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
 		}
+	}
+
+	class monitoring {
+		monitor_service { "lucene disk space": description => "Lucene disk space", check_command => "nrpe_check_disk_6_3"}
 	}
 
 	class users {
