@@ -28,7 +28,7 @@ hosts allow = sagres.c3sl.ufpr.br
 # Erik Z uses this.  See RT 2162.
 [pagecounts-ez]
 uid = backup
-gid = backup
+gid = wikidev
 read only = false
 path = /data/xmldatadumps/public/other/pagecounts-ez
 hosts allow = stat1.wikimedia.org
