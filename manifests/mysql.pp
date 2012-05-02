@@ -9,20 +9,6 @@
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
 
-	package { [ lvm2, maatkit ]:
-		ensure => "installed";
-	}
-
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		package { ["xtrabackup", "percona-toolkit", "libaio1" ]:
-			ensure => latest;
-		}
-	} elsif $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "8.04") == 0 {
-		package { "percona-toolkit":
-			ensure => latest;
-		}
-	}
-
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
@@ -141,6 +127,11 @@ class mysql {
 		package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
 			ensure => "5.1.53-fb3753-wm1",
 			require => File["/etc/apt/sources.list.d/wikimedia-mysql.list"];
+		}
+
+		package { ["xtrabackup", "percona-toolkit", "libaio1", "maatkit", "lvm2" ]:
+			ensure => latest,
+			require => Package[mysql-client-5.1];
 		}
 	}
 
