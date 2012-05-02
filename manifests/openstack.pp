@@ -465,24 +465,22 @@ class openstack::ldap-server {
 		openstack::nova_config,
 		openstack::keystone_config
 
+	$ldap_certificate_location = "/var/opendj/instance"
+	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	if $openstack_version == "essex" {
-		$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
-		$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
-		$ldap_certificate_location = "/var/opendj/instance"
-		$ldap_cert_pass = $passwords::certs::certs_default_pass
-		$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
-		$ldap_domain = $openstack::nova_config::nova_ldap_domain
-		$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
-		$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
-	} else {
 		$ldap_user_dn = $openstack::keystone_config::keystone_ldap_user_dn
 		$ldap_user_pass = $openstack::keystone_config::keystone_ldap_user_pass
-		$ldap_certificate_location = "/var/opendj/instance"
-		$ldap_cert_pass = $passwords::certs::certs_default_pass
 		$ldap_base_dn = $openstack::keystone_config::keystone_ldap_base_dn
 		$ldap_domain = $openstack::keystone_config::keystone_ldap_domain
 		$ldap_proxyagent = $openstack::keystone_config::keystone_ldap_proxyagent
 		$ldap_proxyagent_pass = $openstack::keystone_config::keystone_ldap_proxyagent_pass
+	} else {
+		$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+		$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+		$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+		$ldap_domain = $openstack::nova_config::nova_ldap_domain
+		$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
+		$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	}
 
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
