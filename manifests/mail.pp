@@ -296,7 +296,9 @@ class mailman {
 	class web-ui {
 		include webserver::static
 
-		install_certificate{ "star.wikimedia.org": }
+		if ( $realm == "production" ) {
+			install_certificate{ "star.wikimedia.org": }
+		}
 
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
@@ -326,7 +328,9 @@ class mailman {
 		}
 
 		# monitor SSL cert expiry
-		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+		if ( $realm == "production" ) {
+			monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+		}
 	}
 
 	include listserve, web-ui
