@@ -1,4 +1,5 @@
 <% if openstack_version == "diablo" %>--auth_driver=nova.auth.ldapdriver.LdapDriver
+--verbose
 --ajax_console_proxy_url=<%= scope.lookupvar('openstack::nova_config::nova_ajax_proxy_url') %>
 --ldap_url=ldap://<%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
 --ldap_password=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_pass') %>
@@ -15,11 +16,11 @@
 --use_deprecated_auth=True
 <% else %>[DEFAULT]
 
+--verbose=True
 --auth_strategy=keystone
 --connection_type=libvirt
 --root_helper=sudo /usr/bin/nova-rootwrap
 --instance_name_template=i-%08x<% end %>
---verbose
 --daemonize=1
 --my_ip=<%= scope.lookupvar('openstack::nova_config::nova_my_ip') %>
 --logdir=/var/log/nova
