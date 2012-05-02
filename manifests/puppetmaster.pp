@@ -117,20 +117,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				group => puppet,
 				ensure => directory;
 		}
-		if $is_labs_puppet_master {
-			git::clone {
-				"operations/puppet":
-					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations",
-					branch => "test",
-					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
-				"operations/software":
-					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations",
-					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
-			}
-		}
-		else {
+
+		if ! $is_labs_puppet_master {
 			file {
 				"$puppetmaster::config::gitdir/operations/private":
 					ensure => directory,
@@ -142,16 +130,21 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 					source => "puppet:///files/puppet/git/private/post-merge",
 					mode => 0550;
 			}
-			git::clone {
-				"operations/puppet":
-					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations",
-					origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
-				"operations/software":
-					require => File["$puppetmaster::config::gitdir/operations"],
-					directory => "$puppetmaster::config::gitdir/operations",
-					origin => "https://gerrit.wikimedia.org/r/p/operations/software";
-			}
+		}
+
+		git::clone {
+			"operations/puppet":
+				require => File["$puppetmaster::config::gitdir/operations"],
+				directory => "$puppetmaster::config::gitdir/operations/puppet",
+				branch => $is_labs_puppet_master ? {
+					true,"true" => "test",
+					default => "production"
+				},
+				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+			"operations/software":
+				require => File["$puppetmaster::config::gitdir/operations"],
+				directory => "$puppetmaster::config::gitdir/operations/software",
+				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 		}
 	}
 
