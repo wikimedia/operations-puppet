@@ -20,12 +20,6 @@ class firewall::builder {
 	# collect all fw definitions
 	Exported_acl_rule <<| |>>
 
-	cron { fwconfigtool_hourly :
-			command => "/usr/bin/fwconfigtool /usr/share/fwconfigtool/junos_fw_output.slax /usr/local/fwconfigtool.d",
-			minute => 30,
-			ensure => absent;
-	} 
-
 }
 
 class firewall { 
@@ -45,8 +39,8 @@ class firewall {
 
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
-			"/var/lib/fwconfigtool/machineports/${ipaddress}-${port}":
-				content => "$hostname,$ipaddress,$protocol,$port\n",
+			"/var/lib/fwconfigtool/machineports/${ip_address}-${port}":
+				content => "$hostname,$ip_address,$protocol,$port\n",
 				ensure => present,
 				owner => root,
 				group => root,
