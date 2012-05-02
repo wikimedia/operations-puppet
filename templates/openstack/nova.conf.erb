@@ -1,3 +1,24 @@
+<% if openstack_version == "diablo" %>--auth_driver=nova.auth.ldapdriver.LdapDriver
+--ajax_console_proxy_url=<%= scope.lookupvar('openstack::nova_config::nova_ajax_proxy_url') %>
+--ldap_url=ldap://<%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
+--ldap_password=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_pass') %>
+--ldap_user_dn=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_dn') %>
+--ldap_user_unit=people
+--ldap_user_subtree=ou=people,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--role_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_cloudadmin=cn=cloudadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_itsec=cn=itsec,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_sysadmin=cn=sysadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_netadmin=cn=netadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--ldap_developer=cn=developers,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
+--use_deprecated_auth=True
+<% else %>[DEFAULT]
+
+--auth_strategy=keystone
+--connection_type=libvirt
+--root_helper=sudo /usr/bin/nova-rootwrap
+--instance_name_template=i-%08x<% end %>
 --verbose
 --daemonize=1
 --my_ip=<%= scope.lookupvar('openstack::nova_config::nova_my_ip') %>
@@ -26,31 +47,11 @@
 --fixed_range=<%= scope.lookupvar('openstack::nova_config::nova_fixed_range') %>
 --public_interface=<%= scope.lookupvar('openstack::nova_config::nova_network_public_interface') %>
 --routing_source_ip=<%= scope.lookupvar('openstack::nova_config::nova_network_public_ip') %>
---ajax_console_proxy_url=<%= scope.lookupvar('openstack::nova_config::nova_ajax_proxy_url') %>
---auth_driver=nova.auth.ldapdriver.LdapDriver
---ldap_url=ldap://<%= scope.lookupvar('openstack::nova_config::nova_ldap_host') %>
---ldap_password=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_pass') %>
---ldap_user_dn=<%= scope.lookupvar('openstack::nova_config::nova_ldap_user_dn') %>
---ldap_user_unit=people
---ldap_user_subtree=ou=people,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---role_project_subtree=ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_cloudadmin=cn=cloudadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_itsec=cn=itsec,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_sysadmin=cn=sysadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_netadmin=cn=netadmins,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
---ldap_developer=cn=developers,ou=projects,<%= scope.lookupvar('openstack::nova_config::nova_ldap_base_dn') %>
 --node_availability_zone=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --zone_name=<%= scope.lookupvar('openstack::nova_config::nova_zone') %>
 --quota_floating_ips=<%= scope.lookupvar('openstack::nova_config::nova_quota_floating_ips') %>
 --multi_host=True
 --api_paste_config=/etc/nova/api-paste.ini
---use_deprecated_auth=True
 #--use_ipv6=True
 --allow_same_net_traffic=False
 --live_migration_uri=<%= scope.lookupvar('openstack::nova_config::nova_live_migration_uri') %>
-
-<% if openstack_version != "diablo" %>
---connection_type=libvirt
---root_helper=sudo /usr/bin/nova-rootwrap
-<% end %>

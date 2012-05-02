@@ -884,8 +884,8 @@ class openstack::keystone_config {
 		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
-	$keystone_db_name = "glance"
-	$keystone_db_user = "glance"
+	$keystone_db_name = "keystone"
+	$keystone_db_user = "keystone"
 	$keystone_db_pass = $passwords::openstack::keystone::keystone_db_pass
 	$keystone_ldap_host = $realm ? {
 		"production" => "virt0.wikimedia.org",
