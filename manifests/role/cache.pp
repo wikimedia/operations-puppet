@@ -471,6 +471,7 @@ class role::cache {
 			directors => $varnish_directors,
 			vcl_config => {
 				'retry5xx' => 1,
+				'cache4xx' => "1m",
 			},
 			backend_options => {
 				'port' => 80,
