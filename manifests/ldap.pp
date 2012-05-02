@@ -390,6 +390,8 @@ class ldap::client::pam {
 	file {
 		"/etc/pam.d/common-auth":
 			source => "puppet:///files/ldap/common-auth";
+		"/etc/pam.d/sshd":
+			source => "puppet:///files/ldap/sshd";
 		"/etc/pam.d/common-account":
 			source => "puppet:///files/ldap/common-account";
 		"/etc/pam.d/common-password":
