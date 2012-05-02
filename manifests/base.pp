@@ -456,7 +456,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	class dell-r300 inherits base::platform::generic::dell {
-		$lom_serial_speed = "115200"
+		$lom_serial_speed = "57600"
 		
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
 	}
