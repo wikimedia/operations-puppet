@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+# Don't even THINK about putting set -e here
+# See https://gerrit.wikimedia.org/r/6404
 
 BINDIR=/usr/local/bin
 SOURCE=/home/wikipedia/common
