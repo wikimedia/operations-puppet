@@ -236,28 +236,51 @@ class openstack::compute {
 
 class openstack::puppet-server {
 
+	include openstack::nova_config,
+		openstack::keystone_config
+
 	# Only allow puppet access from the instances
 	$puppet_passenger_allow_from = $realm ? {
 		"production" => [ "10.4.0.0/24", "10.4.16.3" ],
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
-	class { puppetmaster:
-		server_name => $fqdn,
-		allow_from => $puppet_passenger_allow_from,
-		config => {
-			'dbadapter' => "mysql",
-			'dbuser' => $openstack::nova_config::nova_puppet_user,
-			'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
-			'dbserver' => $openstack::nova_config::nova_db_host,
-			'node_terminus' => "ldap",
-			'ldapserver' => $openstack::nova_config::nova_ldap_host,
-			'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
-			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
-			'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
-			'ldaptls' => true
-		};
+	if $openstack_version == "essex" {
+		class { puppetmaster:
+			server_name => $fqdn,
+			allow_from => $puppet_passenger_allow_from,
+			config => {
+				'dbadapter' => "mysql",
+				'dbuser' => $openstack::nova_config::nova_puppet_user,
+				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
+				'dbserver' => $openstack::nova_config::nova_db_host,
+				'node_terminus' => "ldap",
+				'ldapserver' => $openstack::keystone_config::keystone_ldap_host,
+				'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
+				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
+				'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
+				'ldaptls' => true
+			};
+		}
+	} else {
+		class { puppetmaster:
+			server_name => $fqdn,
+			allow_from => $puppet_passenger_allow_from,
+			config => {
+				'dbadapter' => "mysql",
+				'dbuser' => $openstack::nova_config::nova_puppet_user,
+				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
+				'dbserver' => $openstack::nova_config::nova_db_host,
+				'node_terminus' => "ldap",
+				'ldapserver' => $openstack::nova_config::nova_ldap_host,
+				'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
+				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
+				'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
+				'ldaptls' => true
+			};
+		}
 	}
 
 }
@@ -438,16 +461,29 @@ class openstack::database-server {
 
 class openstack::ldap-server {
 
-	include passwords::certs
+	include passwords::certs,
+		openstack::nova_config,
+		openstack::keystone_config
 
-	$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
-	$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
-	$ldap_certificate_location = "/var/opendj/instance"
-	$ldap_cert_pass = $passwords::certs::certs_default_pass
-	$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
-	$ldap_domain = $openstack::nova_config::nova_ldap_domain
-	$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
-	$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
+	if $openstack_version == "essex" {
+		$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+		$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+		$ldap_certificate_location = "/var/opendj/instance"
+		$ldap_cert_pass = $passwords::certs::certs_default_pass
+		$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+		$ldap_domain = $openstack::nova_config::nova_ldap_domain
+		$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
+		$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
+	} else {
+		$ldap_user_dn = $openstack::keystone_config::keystone_ldap_user_dn
+		$ldap_user_pass = $openstack::keystone_config::keystone_ldap_user_pass
+		$ldap_certificate_location = "/var/opendj/instance"
+		$ldap_cert_pass = $passwords::certs::certs_default_pass
+		$ldap_base_dn = $openstack::keystone_config::keystone_ldap_base_dn
+		$ldap_domain = $openstack::keystone_config::keystone_ldap_domain
+		$ldap_proxyagent = $openstack::keystone_config::keystone_ldap_proxyagent
+		$ldap_proxyagent_pass = $openstack::keystone_config::keystone_ldap_proxyagent_pass
+	}
 
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
@@ -867,6 +903,8 @@ class openstack::keystone_config {
 	$keystone_ldap_base_dn = "dc=wikimedia,dc=org"
 	$keystone_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
 	$keystone_ldap_user_pass = $passwords::openstack::keystone::keystone_ldap_user_pass
+	$keystone_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
+	$keystone_ldap_proxyagent_pass = $passwords::openstack::keystone::keystone_ldap_proxyagent_pass
 	$keystone_bind_ip = $realm ? {
 		"production" => "208.80.153.135",
 		"labs" => "127.0.0.1",
