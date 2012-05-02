@@ -1762,11 +1762,6 @@ node "sockpuppet.pmtpa.wmnet" {
 			'dbserver' => "db9.pmtpa.wmnet"
 		}
 	}
-
-	class { puppetmaster::dashboard:
-		dashboard_environment => "production",
-		db_host => "db9.pmtpa.wmnet"
-	}
 }
 
 node "sodium.wikimedia.org" {
