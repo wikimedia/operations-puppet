@@ -1,6 +1,6 @@
 class firewall::builder {
 
-	package { fwconfigtool:
+	package { ["fwconfigtool", "python-argparse"] :
 		  ensure => latest;
 	}
 	file { 
