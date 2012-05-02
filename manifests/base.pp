@@ -455,6 +455,12 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
 	}
 
+	class dell-r300 inherits base::platform::generic::dell {
+		$lom_serial_speed = "115200"
+		
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
 	class sun-x4500 inherits base::platform::generic::sun {
 
 		File <| tag == "thumper-udev" |>
@@ -475,6 +481,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	case $::productname {
 		"PowerEdge C2100": {
 			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+		}
+		"PowerEdge R300": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb"]
+			include dell-r300
 		}
 		"Sun Fire X4500": {
 			$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
