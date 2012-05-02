@@ -8,10 +8,10 @@ if [ ! -f $conf_file ]; then
 	exit 3
 fi
 
-minus_three_hours=/tmp/minus_three
-minus_six_hours=/tmp/minus_six
-touch -d "3 hours ago" $minus_three_hours
-touch -d "6 hours ago" $minus_six_hours
+minus_twelve_hours=/tmp/minus_twelve
+minus_twentyfour_hours=/tmp/minus_twentyfour
+touch -d "12 hours ago" $minus_twelve_hours
+touch -d "24 hours ago" $minus_twentyfour_hours
 
 warn_count=0
 crit_count=0
@@ -19,22 +19,22 @@ warn_list=""
 crit_list=""
 
 for log_file in `egrep "^(pipe|file)" $conf_file | egrep -o "/[^ \.]*\.log"`; do
-	if [ $log_file -ot $minus_six_hours ]; then
+	if [ $log_file -ot $minus_twentyfour_hours ]; then
 		((crit_count++))
 		crit_list=`echo "$log_file, $crit_list"`
-	elif [ $log_file -ot $minus_three_hours ]; then
+	elif [ $log_file -ot $minus_twelve_hours ]; then
 		((warn_count++))
 		warn_list=`echo "$log_file, $warn_list"`
 	fi
 done
 
-rm $minus_three_hours&&rm $minus_six_hours
+rm $minus_twelve_hours&&rm $minus_twentyfour_hours
 
 if [ $crit_count -gt 0 ];then
-	echo "CRITICAL: log files $crit_list have not been written to in 6 hours"
+	echo "CRITICAL: log files $crit_list have not been written to in 24 hours"
 	exit 2
 elif [ $warn_count -gt 0 ];then
-	echo "WARNING: log files $warn_list have not been written to in 3 hours"
+	echo "WARNING: log files $warn_list have not been written to in 12 hours"
 	exit 1
 else 
 	echo "OK: all log files active"
