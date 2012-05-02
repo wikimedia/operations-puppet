@@ -157,7 +157,7 @@ class openstack::controller {
 		openstack::ldap-server,
 		openstack::iptables
 
-	if $openstack_release == "essex" {
+	if $openstack_version == "essex" {
 		include openstack::keystone-service
 	}
 
@@ -550,7 +550,6 @@ class openstack::openstack-manager {
 class openstack::scheduler-service {
 
 	package { "nova-scheduler":
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -569,7 +568,6 @@ class openstack::network-service {
 	}
 
 	package {  [ "nova-network", "dnsmasq" ]:
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -594,7 +592,6 @@ class openstack::network-service {
 class openstack::api-service {
 
 	package {  [ "nova-api" ]:
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -609,7 +606,6 @@ class openstack::api-service {
 class openstack::vnc-proxy-service {
 
 	package {  [ "nova-vncproxy" ]:
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -643,7 +639,6 @@ class openstack::compute-service {
 
 	if $openstack_version == "essex" {
 		package { [ "nova-compute-kvm" ]:
-			subscribe => File['/etc/nova/nova.conf'],
 			ensure => latest;
 		}
 	}
@@ -659,7 +654,6 @@ class openstack::compute-service {
 class openstack::keystone-service {
 
 	package { [ "keystone" ]:
-		subscribe => File['/etc/keystone/keystone.conf'],
 		ensure => latest;
 	}
 
