@@ -1,5 +1,4 @@
 # here are the per-package modules (the "Primary" block)
-account  required     pam_access.so
 account [success=2 new_authtok_reqd=done default=ignore]        pam_unix.so
 account [success=1 default=ignore]      pam_ldap.so
 # here's the fallback if no module succeeds
