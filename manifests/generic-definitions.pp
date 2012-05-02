@@ -645,8 +645,7 @@ define git::clone(
 			exec { "git_clone_${title}":
 				command => "git clone ${brancharg}${origin} $directory",
 				creates => "$directory/.git/config",
-				user    => $owner,
-				require => File[$directory],
+				user    => $owner
 			}
 			
 			# pull if $ensure == latest and if there are changes to merge in.
