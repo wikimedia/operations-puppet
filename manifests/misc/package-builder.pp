@@ -26,7 +26,7 @@ class misc::package-builder {
 		}
 	}
 
-	class pbuilder($dists=["hardy", "lucid"], $defaultdist="lucid") {
+	class pbuilder($dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
 		class packages {
 			package { "pbuilder": ensure => latest }
 		}
