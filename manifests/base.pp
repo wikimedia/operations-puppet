@@ -434,13 +434,15 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
-		file { "/etc/init/${lom_serial_port}.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => $console_upstart_file;
+		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+			file { "/etc/init/${lom_serial_port}.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => $console_upstart_file;
+			}
+			upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 		}
-		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 	}
 	
 	class generic {
