@@ -8,20 +8,20 @@ pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
 #
 
 # Telenor Montenegro
-pipe 10 /usr/bin/udp-filter -i 79.143.100.0-79.143.100.255,79.143.104.0-79.143.104.255 >> /a/squid/telenor-montenegro.log
+pipe 10 /usr/bin/udp-filter -n 16 -i 79.143.100.0-79.143.100.255,79.143.104.0-79.143.104.255 >> /a/squid/telenor-montenegro.log
 
 # Orange Uganda
-pipe 10 /usr/bin/udp-filter -i 41.202.224.0-41.202.255.255,197.157.0.0-197.157.63.255 >> /a/squid/orange-uganda.log
+pipe 10 /usr/bin/udp-filter -n 16 -i 41.202.224.0-41.202.255.255,197.157.0.0-197.157.63.255 >> /a/squid/orange-uganda.log
 
 # Orange Tunesia
-pipe 10 /usr/bin/udp-filter -i 197.29.192.0-197.30.159.255,197.30.224.0-197.30.255.255 >> /a/squid/orange-tunesia.log
+pipe 10 /usr/bin/udp-filter -n 16 -i 197.29.192.0-197.30.159.255,197.30.224.0-197.30.255.255 >> /a/squid/orange-tunesia.log
 
 # Orange Niger
-#pipe 10 /usr/bin/udp-filter -i 41.203.157.1,41.203.157.2,41.203.159.243 >> /a/squid/orange-niger.log
+#pipe 10 /usr/bin/udp-filter -n 16 -i 41.203.157.1,41.203.157.2,41.203.159.243 >> /a/squid/orange-niger.log
 
 # Orange Cameroon
-#pipe 10 /usr/bin/udp-filter -i 193.251.155.0-193.251.155.126,41.202.192.0-41.202.223.254 >> /a/squid/orange-cameroon.log
+#pipe 10 /usr/bin/udp-filter -n 16 -i 193.251.155.0-193.251.155.126,41.202.192.0-41.202.223.254 >> /a/squid/orange-cameroon.log
 
 # Orange Kenya
-#pipe 10 /usr/bin/udp-filter -i 212.49.88.0-212.49.88.126 >> /a/squid/orange-kenya.log
+#pipe 10 /usr/bin/udp-filter -n 16 -i 212.49.88.0-212.49.88.126 >> /a/squid/orange-kenya.log
 

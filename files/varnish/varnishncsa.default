@@ -6,4 +6,4 @@ VARNISHNCSA_ENABLED=1
 # the Wikimedia default log format, except
 # for the addition of the Content-Type 
 # response header.  See RT 2255.
-LOG_FORMAT="%l %n %t %{Varnish:time_firstbyte}x %h %{Varnish:handling}x/%s %b %m http://%{Host}i%U%q - %{Content-Type}o %{Referer}i %{X-Forwarded-For}i %{User-agent}i"
+LOG_FORMAT="%l %n %t %{Varnish:time_firstbyte}x %h %{Varnish:handling}x/%s %b %m http://%{Host}i%U%q - %{Content-Type}o %{Referer}i %{X-Forwarded-For}i %{User-agent}i %{Accept-Language}i %{x-wap-profile}i|%{Profile}i|%{wap-profile}i"

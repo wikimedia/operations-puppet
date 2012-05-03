@@ -24,7 +24,7 @@ http {
 
     access_log	/var/log/nginx/access.log;
     <% if has_variable?("nginx_use_ssl") then %>
-    log_format squid_combined '$hostname $udplog_sequence $udplog_time $request_time $remote_addr FAKE_CACHE_STATUS/$status $bytes_sent $request_method $scheme://$host$uri NONE/$proxy_host $content_type $http_referer $http_x_forwarded_for $udplog_escaped_user_agent';
+    log_format squid_combined '$hostname $udplog_sequence $udplog_time $request_time $remote_addr FAKE_CACHE_STATUS/$status $bytes_sent $request_method $scheme://$host$uri NONE/$proxy_host $sent_http_content_type $http_referer $http_x_forwarded_for $udplog_escaped_user_agent $http_accept_language $http_x_wap_profile|$http_profile|$http_wap_profile';
     access_udplog 208.80.152.138:8420 squid_combined; 
     access_udplog 208.80.152.184:8420 squid_combined; 
     client_max_body_size 100m;
