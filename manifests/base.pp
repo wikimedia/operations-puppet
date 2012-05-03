@@ -271,7 +271,7 @@ class base::sysctl {
 			name => "/etc/sysctl.d/50-wikimedia-base.conf",
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
@@ -384,9 +384,16 @@ class base::vimconfig {
 	file { "/etc/vim/vimrc.local": 
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		source => "puppet:///files/misc/vimrc.local",
-		ensure => present; 
+		ensure => present;
+	}
+
+	if $lsbdistid == "Ubuntu" {
+		# Joe is for pussies
+		file { "/etc/alternatives/editor":
+			ensure => "/usr/bin/vim"
+		}
 	}
 }
 
