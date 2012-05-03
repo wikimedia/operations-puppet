@@ -1,6 +1,6 @@
 #!/bin/bash
 # Shell wrapper for the local version of multiversion/MWScript.php.
-# This script belongs in /usr/bin/ and should be in PATH.
+# This script belongs in /usr/local/bin/ and should be in PATH.
 # Unlike mwscript, the takes a dblist filename as the second argument
 # and runs the maintenance script on each of the wikis in the list.
 # Note that this script prints some status info.
@@ -8,6 +8,8 @@ COMMONDIR=/usr/local/apache/common-local
 
 SCRIPTFILE=$1
 LISTFILE=$2
+
+MWSCRIPT=$(which mwscript)
 
 # Check that dblist is given and actually exists...
 if [ $# -lt 2 ]; then
@@ -33,7 +35,7 @@ do
 	echo "-------------------------------------"
 	echo "$DBNAME"
 	echo "-------------------------------------"
-	mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
+	$MWSCRIPT "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS
 	echo "-------------------------------------"
 	echo ""
 done
