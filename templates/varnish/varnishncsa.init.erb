@@ -37,12 +37,31 @@ fi
 
 test -x $DAEMON || exit 0
 
+
+# I can't seem to make quoting work properly with 
+# $LOG_FORMAT set from /etc/default/varnishncsa.
+# I have to manually quote the LOG_FORMAT string
+# in the start-stop-daemon line here.  NOT ideal
+# at all.  This means I have to ALWAYS pass the -F
+# option with a hardcoded default LOG_FORMAT.
+# The default is already hardcoded into 
+# Wikimedia's package of varnishncsa, so yuck.
+# I don't like it.
+
+# if LOG_FORMAT is not set in /etc/default/varnishncsa,
+# Then use this as a default.  This is the default
+# currently (2012-05) compiled into Wikimedia's
+# version of varnishncsa.
+DEFAULT_LOG_FORMAT='%l %n %t %{Varnish:time_firstbyte}x %h %{Varnish:handling}x/%s %b %m http://%{Host}i%U%q - - %{Referer}i %{X-Forwarded-For}i %{User-agent}i'
+LOG_FORMAT=${LOG_FORMAT:-${DEFAULT_LOG_FORMAT}}
+
 start_varnishncsa() {
     output=$(/bin/tempfile -s.varnish)
     log_daemon_msg "Starting $DESC" "$NAME"
     create_pid_directory
+    
     if start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
-        --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS} \
+        --chuid $USER --exec ${DAEMON} -- ${DAEMON_OPTS} -F "${LOG_FORMAT}" \
         > ${output} 2>&1; then
             log_end_msg 0
     else
