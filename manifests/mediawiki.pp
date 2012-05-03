@@ -38,19 +38,20 @@ class mediawiki::refreshlinks {
 	define refreshlinks::cronjob() {
 
 		$cluster = regsubst($name, '@.*', '\1')
-		$hour = regsubst($name, '.*@', '\1')
+		$monthday = regsubst($name, '.*@', '\1')
 
 		cron { "cron-refreshlinks-${name}":
 			command => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${cluster}.dblist --dfn-only > /home/mwdeploy/refreshLinks/${name}.log 2>&1",
 			user => mwdeploy,
-			hour => $hour,
+			hour => 0,
 			minute => 0,
+			monthday => $monthday,
 			ensure => present,
 		}
 	}
 
-	# add cron jobs - usage: <cluster>@<hour>
-	refreshlinks::cronjob { ['s1@0']: }
+	# add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly) (note: s1 is temp. deactivated)
+	refreshlinks::cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
 }
 
 class mediawiki::user {
