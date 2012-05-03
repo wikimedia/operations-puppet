@@ -605,6 +605,10 @@ class generic::packages::ack-grep {
 	}
 }
 
+# An utility to show up a file hierarcy using ASCII art
+class generic::packages::tree {
+	package { "tree" : ensure => present; }
+}
 
 # Definition: git::clone
 # Creates a git clone of a specified origin into a top level directory
