@@ -37,6 +37,11 @@ Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:80
 deb http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
 deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
 "
+	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
+Package: *
+Pin: release o=Wikimedia
+Pin-Priority: 1001
+"
 
 	file {
 		"/etc/apt/sources.list.d/wikimedia.list":
@@ -44,7 +49,14 @@ deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main uni
 			content => $aptrepository,
 			mode => 0444;
 	}
-
+	
+	if versioncmp($lsbdistrelease, "10.04") >= 0 {
+		file { "/etc/apt/preferences.d/wikimedia.pref":
+			require => File["/etc/apt/sources.list.d/wikimedia.list"],
+			content => $aptpref,
+			mode => 0444;
+		}
+	}
 
 	# Comment out the old entries in /etc/apt/sources.list
 	exec { 
