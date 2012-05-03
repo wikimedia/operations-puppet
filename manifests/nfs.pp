@@ -66,6 +66,20 @@ class nfs::home {
 	}
 }
 
+# Historical /home/wikipedia
+class nfs::home::wikipedia {
+	if( $::realm == 'production' ) {
+		require nfs::home
+	}
+
+	file { "/home/wikipedia":
+		mode   => 0755,
+		owner  => root,
+		group  => root,
+		ensure => directory;
+	}
+}
+
 class nfs::upload {
 	include nfs::common
 
