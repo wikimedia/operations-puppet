@@ -396,20 +396,30 @@ class base::vimconfig {
 }
 
 class base::environment {
-
-	# TODO: check for production
-	if $::realm == "labs" {
-		file {
-			"/etc/bash.bashrc":
-				content => template('environment/bash.bashrc'),
-				owner => root,
-				group => root,
-				mode => 0444;
-			"/etc/skel/.bashrc":
-				content => template('environment/skel/bashrc'),
-				owner => root,
-				group => root,
-				mode => 0644;
+	case $::realm {
+		'production': {
+			exec { "uncomment root bash aliases":
+				path => "/bin:/usr/bin",
+				command => "sed -i '
+						/^#alias ll=/ s/^#//
+						/^#alias la=/ s/^#//
+					' /root/.bashrc",
+				onlyif => "grep -q '^#alias ll' /root/.bashrc"
+			}
+		}
+		'labs': {
+			file {
+				"/etc/bash.bashrc":
+					content => template('environment/bash.bashrc'),
+					owner => root,
+					group => root,
+					mode => 0444;
+				"/etc/skel/.bashrc":
+					content => template('environment/skel/bashrc'),
+					owner => root,
+					group => root,
+					mode => 0644;
+			}
 		}
 	}
 }
