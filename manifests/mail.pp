@@ -300,6 +300,7 @@ class mailman {
 			install_certificate{ "star.wikimedia.org": }
 		}
 
+		if ( $realm == "production" ) {
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
 			require => Class["webserver::static"],
@@ -307,6 +308,7 @@ class mailman {
 			owner => root,
 			group => www-data,
 			mode => 0440;
+		}
 		}
 
 		# Enable CGI module
