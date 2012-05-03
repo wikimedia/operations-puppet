@@ -213,12 +213,11 @@ class varnish {
 
 
 	class logging_config {
-		file {
-			"/etc/default/varnishncsa":
-				source => "puppet:///files/varnish/varnishncsa.default",
-				owner => root,
-				group => root,
-				mode => 0444;
+		file { "/etc/default/varnishncsa":
+			source => "puppet:///files/varnish/varnishncsa.default",
+			owner => root,
+			group => root,
+			mode => 0444;
 		}
 
 		nrpe::monitor_service { "varnishncsa":
@@ -231,16 +230,17 @@ class varnish {
 		require varnish::packages,
 			varnish::logging_config
 
-		file {
-			"/etc/init.d/varnishncsa-${name}":
-				content => template("varnish/varnishncsa.init.erb"),
-				owner => root,
-				group => root,
-				mode => 0555;
+		file { "/etc/init.d/varnishncsa-${name}":
+			content => template("varnish/varnishncsa.init.erb"),
+			owner => root,
+			group => root,
+			mode => 0555,
+			notify => Service["varnishncsa-${name}"];
 		}
 
 		service { "varnishncsa-${name}":
 			require => File["/etc/init.d/varnishncsa-${name}"],
+			subscribe => File["/etc/default/varnishncsa"],
 			ensure => running,
 			pattern => "/var/run/varnishncsa/varnishncsa-${name}.pid",
 			hasstatus => false;
