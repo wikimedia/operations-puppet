@@ -104,7 +104,7 @@ class base::grub {
 			notify => Exec["update-grub"];
 	}
 
-	# Ubuntu Precise Pangolon no longer has a server kernel flavour.
+	# Ubuntu Precise Pangolin no longer has a server kernel flavour.
 	# The generic flavour uses the CFQ I/O scheduler, which is rather
 	# suboptimal for some of our I/O work loads. Override with deadline.
 	# (the installer does this too, but not for Lucid->Precise upgrades)
