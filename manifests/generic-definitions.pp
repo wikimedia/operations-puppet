@@ -585,6 +585,11 @@ class generic::packages::mono-runtime {
 	package { "mono-runtime" : ensure => latest; }
 }
 
+# The joe editor, which has some fans among labs users
+class generic::packages::joe {
+	package { "joe" : ensure => latest; }
+}
+
 # Definition: git::clone
 # Creates a git clone of a specified origin into a top level directory
 #
