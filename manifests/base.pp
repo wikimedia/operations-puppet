@@ -245,7 +245,7 @@ class base::remote-syslog {
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
-			mode => 0644,
+			mode => 0444,
 			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
 			ensure => present;
 		}
@@ -367,12 +367,14 @@ class base::instance-upstarts {
 
 class base::instance-finish {
 
-	if $realm == "labs" {
-		exec {
-			"/bin/rm /etc/init/runonce-fixpuppet.conf":
-				onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
-			"/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
-				onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
+	if $::realm == "labs" {
+		Class["base::remote-syslog"] -> Class["base::instance-finish"]
+		file {
+			"/etc/init/runonce-fixpuppet.conf":
+				ensure => absent;
+			"/etc/rsyslog.d/60-puppet.conf"
+				ensure => absent,
+				notify => Service[rsyslog];
 		}
 	}
 
