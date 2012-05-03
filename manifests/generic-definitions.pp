@@ -590,6 +590,22 @@ class generic::packages::joe {
 	package { "joe" : ensure => latest; }
 }
 
+# ack-grep a usefull tool
+class generic::packages::ack-grep {
+	package { "ack-grep" : ensure => latest; }
+
+	# Sub class to optionally makes 'ack-grep' available as 'ack'
+	class linked-to-ack {
+		package { "ack" : ensure => absent; }
+		file { '/usr/local/bin/ack':
+			ensure => link,
+			target => '/usr/bin/ack-grep',
+			require => Package['ack-grep'];
+		}
+	}
+}
+
+
 # Definition: git::clone
 # Creates a git clone of a specified origin into a top level directory
 #
