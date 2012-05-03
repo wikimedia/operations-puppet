@@ -277,7 +277,9 @@ class base::sysctl {
 }
 
 class base::standard-packages {
-	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf", "atop", "htop" ]
+	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils",
+				"xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf",
+				"atop", "htop", "vim", "sysstat" ]
 
 	if $lsbdistid == "Ubuntu" {
 		package { $packages:
