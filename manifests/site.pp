@@ -784,27 +784,16 @@ node "gallium.wikimedia.org" {
 }
 
 node "gilman.wikimedia.org" {
-
-	$exim_signs_dkim = "false"
-	$exim_bounce_collector = "false"
-
-	install_certificate{ "star.wikimedia.org": }
-
-	sudo_user { [ "awjrichards", "rfaulk", "nimishg" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
+	# gilman appears dead and useless
+	# it has been put in the decommission queue
 	$cluster = "misc"
 	$gid = 500
 	include	base,
 		ntp::client,
 		nrpe,
 		admins::roots,
-		accounts::rfaulk,
-		accounts::nimishg,
-		accounts::awjrichards,
 		misc::jenkins,
 		misc::fundraising
-
-
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
@@ -816,7 +805,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	install_certificate{ "star.wikimedia.org": }
 
-	sudo_user { [ "rfaulk", "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$cluster = "misc"
 	$gid = 500
@@ -825,16 +814,12 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		ntp::client,
 		nrpe,
 		admins::roots,
-		accounts::rfaulk,
-		accounts::nimishg,
-		accounts::zexley,
-		accounts::khorn,
-		accounts::awjrichards,
-		accounts::kaldari,
 		accounts::jpostlethwaite,
-		accounts::jamesofur,
-		accounts::pgehres,
+		accounts::khorn,
 		accounts::mhernandez,
+		accounts::pgehres,
+		accounts::rfaulk,
+		accounts::zexley,
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,
@@ -2096,13 +2081,11 @@ node "storage3.pmtpa.wmnet" {
 		mysql::conf,
 		svn::client,
 		groups::wikidev,
-		accounts::nimishg,
-		accounts::rfaulk,
-		accounts::zexley,
-		accounts::awjrichards,
-		accounts::pgehres,
 		accounts::khorn,
 		accounts::logmover,
+		accounts::pgehres,
+		accounts::rfaulk,
+		accounts::zexley,
 		misc::fundraising::impressionlog::compress,
 		misc::fundraising::offhost_backups
 
