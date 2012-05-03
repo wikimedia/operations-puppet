@@ -47,6 +47,9 @@ class misc::syslog-server {
 		ensure => latest;
 	}
 
+	# Logging is done in /home/wikipedia
+	require nfs::home::wikipedia
+
 	file {
 		"/etc/syslog-ng/syslog-ng.conf":
 			require => Package[syslog-ng],
