@@ -16,6 +16,13 @@ class misc::bastionhost {
 			ensure =>latest;
 	}
 
+	if $::realm == 'labs' {
+		include generic::packages::ack-grep
+		include generic::packages::ack-grep::linked-to-ack
+		include generic::packages::joe
+		include generic::packages::tree
+	}
+
 	file { "/etc/sudoers":
 		owner => root,
 		group => root,
