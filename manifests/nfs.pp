@@ -66,6 +66,22 @@ class nfs::home {
 	}
 }
 
+# Historical /home/wikipedia
+class nfs::home::wikipedia {
+
+	case $::realm {
+		'production': { require nfs::home }
+		'labs': { systemuser { 'wikipediauser': name => 'wikipedia', home => '/home/wikipedia' } }
+	}
+
+	file { "/home/wikipedia":
+		mode   => 0755,
+		owner  => root,
+		group  => root,
+		ensure => directory;
+	}
+}
+
 class nfs::upload {
 	include nfs::common
 
