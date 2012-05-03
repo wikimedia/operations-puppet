@@ -93,14 +93,12 @@ class base::grub {
 		"grub1 remove quiet":
 			path => "/bin:/usr/bin",
 			command => "sed -i '/^# defoptions.*[= ]quiet /s/quiet //' /boot/grub/menu.lst",
-			unless => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
-			onlyif => "test -f /boot/grub/menu.lst",
+			onlyif => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
 			notify => Exec["update-grub"];
 		"grub2 remove quiet":
 			path => "/bin:/usr/bin",
 			command => "sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"/s/quiet splash//' /etc/default/grub",
-			unless => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
-			onlyif => "test -f /etc/default/grub",
+			onlyif => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
 			notify => Exec["update-grub"];
 	}
 
