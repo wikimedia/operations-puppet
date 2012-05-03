@@ -154,12 +154,7 @@ class swift::proxy {
 
 class swift::proxy::monitoring {
 
-	if $hostname =~ /^ms-fe[12]$/ {
-		monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
-	}
-	# else {
-	#	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!8080" }
-	# }
+	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
 }
 
 # TODO: document parameters
