@@ -34,8 +34,8 @@ Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:80
 
 	# Setup the APT repositories
 	$aptrepository = "## Wikimedia APT repository
-deb http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
-deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
+deb http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
+deb-src http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
 "
 	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
 Package: *
@@ -50,7 +50,7 @@ Pin-Priority: 1001
 			mode => 0444;
 	}
 	
-	if versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/apt/preferences.d/wikimedia.pref":
 			require => File["/etc/apt/sources.list.d/wikimedia.list"],
 			content => $aptpref,
@@ -72,7 +72,7 @@ Pin-Priority: 1001
 	}
 	
 	# Point out-of-support distributions to http://old-releases.ubuntu.com
-	if $lsbdistcodename in [ "karmic" ] {
+	if $::lsbdistcodename in [ "karmic" ] {
 		$oldrepository = "## Unsupported (old) Ubuntu release
 deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
 deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
@@ -106,7 +106,7 @@ class base::grub {
 	# The generic flavour uses the CFQ I/O scheduler, which is rather
 	# suboptimal for some of our I/O work loads. Override with deadline.
 	# (the installer does this too, but not for Lucid->Precise upgrades)
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		exec {
 			"grub1 iosched deadline":
 				path => "/bin:/usr/bin",
@@ -221,7 +221,7 @@ class base::puppet($server="puppet") {
 	}	
 
 	# Report the last puppet run in MOTD
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
 		file { "/etc/update-motd.d/97-last-puppet-run":
 			source => "puppet:///files/misc/97-last-puppet-run",
 			mode => 0555;
@@ -230,7 +230,7 @@ class base::puppet($server="puppet") {
 }
 
 class base::remote-syslog {
-	if ($lsbdistid == "Ubuntu") and ($hostname != "nfs1") and ($hostname != "nfs2") {
+	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") {
 		package { rsyslog:
 			ensure => latest;
 		}
@@ -246,7 +246,7 @@ class base::remote-syslog {
 			owner => root,
 			group => root,
 			mode => 0444,
-			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${site}.wmnet\n",
+			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${::site}.wmnet\n",
 			ensure => present;
 		}
 
@@ -259,7 +259,7 @@ class base::remote-syslog {
 }
 
 class base::sysctl {
-	if ($lsbdistid == "Ubuntu") and ($lsbdistrelease != "8.04") {
+	if ($::lsbdistid == "Ubuntu") and ($::lsbdistrelease != "8.04") {
 		exec { "/sbin/start procps":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			refreshonly => true;
@@ -281,17 +281,17 @@ class base::standard-packages {
 				"xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf",
 				"atop", "htop", "vim", "sysstat" ]
 
-	if $lsbdistid == "Ubuntu" {
+	if $::lsbdistid == "Ubuntu" {
 		package { $packages:
 			ensure => latest;
 		}
 
-		if $network_zone == "internal" {
+		if $::network_zone == "internal" {
 			include nrpe
 		}
 
 		# Run lldpd on all >= Lucid hosts
-		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
 		}
 		
@@ -303,15 +303,15 @@ class base::standard-packages {
 }
 
 class base::resolving {
-	if ! $nameservers {
-		error("Variable $nameservers is not defined!")
+	if ! $::nameservers {
+		error("Variable $::nameservers is not defined!")
 	}
 	else {
-		if $realm != "labs" {
+		if $::realm != "labs" {
 			file { "/etc/resolv.conf":
 				owner => root,
 				group => root,
-				mode => 0644,
+				mode => 0444,
 				content => template("base/resolv.conf.erb");
 			}
 		}
@@ -320,7 +320,7 @@ class base::resolving {
 
 class base::motd {
 	# Remove the standard help text
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/update-motd.d/10-help-text": ensure => absent; }
 	}
 }
@@ -329,7 +329,7 @@ class base::monitoring::host {
 	monitor_host { $hostname: group => $nagios_group }
 	monitor_service { "ssh": description => "SSH", check_command => "check_ssh" }
 
-	case $lsbdistid {
+	case $::lsbdistid {
 		Ubuntu: {
 			# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
 			@monitor_service { "dpkg": description => "DPKG", check_command => "nrpe_check_dpkg", tag => nrpe }
@@ -344,11 +344,11 @@ class base::monitoring::host {
 class base::decommissioned {
 	# There has to be a better way to check for array membership!
 	define decommissioned_host_role {
-		if $hostname == $title {
+		if $::hostname == $title {
 			system_role { "base::decommissioned": description => "DECOMMISSIONED server" }
 		}
 		else {
-			debug("${title} is not ${hostname}, so not decommissioning.")
+			debug("${title} is not ${::hostname}, so not decommissioning.")
 		}
 	}
 
@@ -361,7 +361,7 @@ class base::instance-upstarts {
 	file {"/etc/init/ttyS0.conf":
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		source => 'puppet:///files/upstart/ttyS0.conf';
 	}
 
@@ -391,7 +391,7 @@ class base::vimconfig {
 		ensure => present;
 	}
 
-	if $lsbdistid == "Ubuntu" {
+	if $::lsbdistid == "Ubuntu" {
 		# Joe is for pussies
 		file { "/etc/alternatives/editor":
 			ensure => "/usr/bin/vim"
@@ -446,7 +446,7 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
-		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 			file { "/etc/init/${lom_serial_port}.conf":
 				owner => root,
 				group => root,
@@ -557,7 +557,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 class base {
 
-	case $operatingsystem {
+	case $::operatingsystem {
 		Ubuntu,Debian: {
 			include openstack::nova_config
 			
@@ -565,7 +565,7 @@ class base {
 				base::apt::update
 
 			class { base::puppet:
-				server => $realm ? {
+				server => $::realm ? {
 					'labs' => $openstack::nova_config::nova_puppet_host,
 					default => "puppet"
 				}
@@ -589,7 +589,7 @@ class base {
 		base::platform,
 		ssh
 
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		include base::instance-upstarts,
 			generic::gluster
 
