@@ -9,3 +9,6 @@
 
 # Compiled Python files are useless
 *.pyc
+
+
+private/
