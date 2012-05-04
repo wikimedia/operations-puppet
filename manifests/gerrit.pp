@@ -63,7 +63,7 @@ class gerrit::jetty {
 	}
 
 	package { [ "gerrit" ]:
-		ensure => 2.3-1;
+		ensure => "2.3-1";
 	}
 
 	file {
