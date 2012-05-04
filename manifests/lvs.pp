@@ -507,6 +507,32 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
+		"dns_auth" => {
+			'description' => "Authoritative DNS",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'protocol' => "udp",
+			'ip' => $service_ips['dns_auth'][$::site],
+			'port' => 53,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
+		"dns_rec" => {
+			'description' => "Recursive DNS",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'protocol' => "udp",
+			'ip' => $service_ips['dns_rec'][$::site],
+			'port' => 53,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
 	}
 }
 
