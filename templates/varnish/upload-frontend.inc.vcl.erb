@@ -1,5 +1,7 @@
 # Varnish VCL include file for upload frontends
 
+import std;
+
 sub vcl_recv {
 	/* Support HTTP PURGE from localhost */
 	if (req.request == "PURGE") {
@@ -30,4 +32,9 @@ sub vcl_recv {
 sub vcl_fetch {
 	# Cache media objects for 1 hour by default
 	set beresp.ttl = 1h;
+
+	# Stream large objects, > 64 MB
+	if (std.integer(beresp.http.Content-Length, 0) > 67108864) {
+		set beresp.do_stream = true;
+	}
 }
