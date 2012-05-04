@@ -294,21 +294,20 @@ class mysql {
 	}
 
 	class datadirs { 
-			file {
-				"/a/sqldata":
-					owner => mysql,
-					group => mysql,
-					mode => 0755,
-					ensure => directory,
-					require => User["mysql"];
-				"/a/tmp":
-					owner => mysql,
-					group => mysql,
-					mode => 0755,
-					ensure => directory,
-					require => User["mysql"];
-			}
-
+		file {
+			"/a/sqldata":
+				owner => mysql,
+				group => mysql,
+				mode => 0755,
+				ensure => directory,
+				require => User["mysql"];
+			"/a/tmp":
+				owner => mysql,
+				group => mysql,
+				mode => 0755,
+				ensure => directory,
+				require => User["mysql"];
+		}
 	}
 
 	class conf inherits mysql {
@@ -432,6 +431,21 @@ class mysql {
 	class client {
 		package { "mysql-client-5.1":
 			ensure => latest;
+		}
+	}
+
+	class slow_digest {
+		include passwords::mysql::querydigest
+		$mysql_user = "ops"
+		$digest_host = "db9.pmtpa.wmnet"
+		$digest_db = "query_digests"
+
+		file {
+			"/usr/local/bin/send_query_digest.sh":
+				owner => root,
+				group => root,
+				mode => 0500,
+				content => template("mysql/send_query_digest.sh.erb");
 		}
 	}
 }
