@@ -252,7 +252,7 @@ class base::remote-syslog {
 
 		service { rsyslog:
 			require => Package[rsyslog],
-			subscribe => File["/etc/rsyslog.d/90-remote-syslog.conf"],
+			subscribe => File["/etc/rsyslog.d/30-remote-syslog.conf"],
 			ensure => running;
 		}
 	}
