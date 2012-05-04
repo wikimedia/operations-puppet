@@ -275,7 +275,7 @@ class lvs::configuration {
 
 	$lvs_services = {
 		"text" => {
-			'description' => "Main wiki platform LVS service, text.${site}.wikimedia.org",
+			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
 			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['text'][$::site],
@@ -306,7 +306,7 @@ class lvs::configuration {
 			},
 		},
 		"bits" => {
-			'description' => "Site assets (CSS/JS) LVS service, bits.${site}.wikimedia.org",
+			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
 			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['bits'][$::site],
@@ -320,7 +320,7 @@ class lvs::configuration {
 			},
 		},
 		"upload" => {
-			'description' => "Images and other media, upload.${site}.wikimedia.org",
+			'description' => "Images and other media, upload.${::site}.wikimedia.org",
 			'class' => "high-traffic2",
 			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['upload'][$::site],
@@ -387,6 +387,28 @@ class lvs::configuration {
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
+		"osm" => {
+			'description' => "OpenStreetMap tiles",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'ip' => $service_ips['osm'][$::site],
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
+		"misc_web" => {
+			'description' => "Miscellaneous web sites Varnish cluster",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'ip' => $service_ips['misc_web'][$::site],
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
 		"apaches" => {
