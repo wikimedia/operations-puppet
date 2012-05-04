@@ -103,7 +103,6 @@ class lvs::configuration {
 	$lvs_service_ips = {
 		'production' => {
 			'text' => {
-				# TODO: remove old text ip addresses
 				'pmtpa' => {
 					'textsvc' => "10.2.1.25",
 					'wikimedialb' => "208.80.152.200",
@@ -241,7 +240,23 @@ class lvs::configuration {
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
 				'eqiad' => "10.2.2.27",
-			}
+			},
+			'dns_auth' => {
+				'pmtpa' => "208.80.152.214",
+				'eqiad' => "208.80.154.238",
+			},
+			'dns_rec' => {
+				'pmtpa' => "208.80.152.215",
+				'eqiad' => "208.80.154.239",
+			},
+			'osm' => {
+				'pmtpa' => "208.80.152.216",
+				'eqiad' => "208.80.154.240",
+			},
+			'misc_web' => {
+				'pmtpa' => "208.80.152.217",
+				'eqiad' => "208.80.154.241",
+			},
 		},
 		'labs' => {
 			'text' => {
