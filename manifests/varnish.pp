@@ -54,7 +54,7 @@ class varnish {
 		$vcl = "",
 		$port="80",
 		$admin_port="6083",
-		$storage="-s malloc,256M",
+		$storage="-s malloc,1G",
 		$backends=[],
 		$directors={},
 		$director_type="hash",
