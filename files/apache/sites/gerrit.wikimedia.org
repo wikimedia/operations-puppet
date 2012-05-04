@@ -70,7 +70,7 @@ NameVirtualHost *:443
 		Allow from all
 	</Proxy>
 
-	ProxyPass /r/ http://127.0.0.1:8080/r/
+	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
 
 	ErrorLog /var/log/apache2/error.log
 
