@@ -363,6 +363,32 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		"dns_auth" => {
+			'description' => "Authoritative DNS",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'protocol' => "udp",
+			'ip' => $service_ips['dns_auth'][$::site],
+			'port' => 53,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
+		"dns_rec" => {
+			'description' => "Recursive DNS",
+			'class' => "high-traffic2",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'protocol' => "udp",
+			'ip' => $service_ips['dns_rec'][$::site],
+			'port' => 53,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
@@ -504,32 +530,6 @@ class lvs::configuration {
 				'ProxyFetch' => {
 					'url' => [ 'http://ms-fe.pmtpa.wmnet/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt' ],
 					},
-				'IdleConnection' => $idleconnection_monitor_options,
-			},
-		},
-		"dns_auth" => {
-			'description' => "Authoritative DNS",
-			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad" ],
-			'protocol' => "udp",
-			'ip' => $service_ips['dns_auth'][$::site],
-			'port' => 53,
-			'bgp' => "yes",
-			'depool-threshold' => ".5",
-			'monitors' => {
-				'IdleConnection' => $idleconnection_monitor_options,
-			},
-		},
-		"dns_rec" => {
-			'description' => "Recursive DNS",
-			'class' => "high-traffic2",
-			'sites' => [ "pmtpa", "eqiad" ],
-			'protocol' => "udp",
-			'ip' => $service_ips['dns_rec'][$::site],
-			'port' => 53,
-			'bgp' => "yes",
-			'depool-threshold' => ".5",
-			'monitors' => {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
