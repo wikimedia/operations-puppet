@@ -11,6 +11,10 @@
 	hostname = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>
 	database = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>
 	url = jdbc:mysql://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>/<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+[download]
+  scheme = ssh
+  scheme = http
+  scheme = anon_http
 [auth]
 	type = LDAP
 	cookieSecure = true
