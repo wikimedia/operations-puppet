@@ -84,7 +84,7 @@ do
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		echo "Clearing message blobs"
-		/usr/local/bin/mwscript maintenance/wmf/clearMessageBlobs.php  --wiki="$mwDbName"
+		/usr/local/bin/mwscript extensions/WikimediaMaintenance/clearMessageBlobs.php --wiki="$mwDbName"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
 		echo "All done"
 	else
