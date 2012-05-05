@@ -1,9 +1,9 @@
 #!/bin/bash
 
 pw=<%= scope.lookupvar('passwords::mysql::querydigest::mysql_ops_db') %>
-mysql_user=<%= mysql_user>
-digest_host=<%= digest_host>
-digest_db=<% digest_db>
+mysql_user=<%= mysql_user %>
+digest_host=<%= digest_host %>
+digest_db=<%= digest_db %>
 hostname=$(hostname)
 log=/a/sqldata/${hostname}-slow.log
 
