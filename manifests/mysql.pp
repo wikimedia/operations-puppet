@@ -450,12 +450,12 @@ class mysql {
 		}
 
 		cron { slow_digest:
-			command => "/usr/local/bin/send_query_digest.sh",
-			require => File["/usr/local/bin/send_query_digest.sh"],
-			user => root,
-			minute => 10,
-			hour => '*',
-			ensure => present;
+			#command => "/usr/local/bin/send_query_digest.sh",
+			#require => File["/usr/local/bin/send_query_digest.sh"],
+			#user => root,
+			#minute => 10,
+			#hour => '*',
+			ensure => absent;
 		}
 	}
 }
