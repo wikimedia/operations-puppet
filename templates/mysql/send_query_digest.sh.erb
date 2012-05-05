@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# Track slow queries and their history in a db using pt-query-digest
+# Filters out SELECT MASTER_POS_WAIT queries which would otherwise 
+# rise to the top.
 
 pw=<%= scope.lookupvar('passwords::mysql::querydigest::mysql_ops_db') %>
 mysql_user=<%= mysql_user %>
@@ -7,6 +11,12 @@ digest_db=<%= digest_db %>
 hostname=$(hostname)
 log=/a/sqldata/${hostname}-slow.log
 
-/usr/bin/pt-query-digest --review h=${digest_host},D=${digest_db},t=${hostname}_query_review,u=${mysql_user},p=${pw} --create-review-table --review-history h=${digest_host},D=${digest_db},t=${hostname}_query_review_history,u=${mysql_user},p=${pw} --create-review-history-table --noreport $log
+/usr/bin/pt-query-digest --review h=${digest_host},D=${digest_db},t=${hostname}_query_review,u=${mysql_user},p=${pw} \
+	--create-review-table \
+	--review-history h=${digest_host},D=${digest_db},t=${hostname}_query_review_history,u=${mysql_user},p=${pw} \
+	--create-review-history-table \
+	--noreport \
+	--filter '$event->{fingerprint} !~ m/^select master_pos_wait/' \
+	$log
 
 > $log
