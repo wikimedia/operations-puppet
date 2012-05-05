@@ -11,6 +11,9 @@ digest_db=<%= digest_db %>
 hostname=$(hostname)
 log=/a/sqldata/${hostname}-slow.log
 
+# exit quietly if $log does not exist or is 0 bytes
+[ -s $log ] || exit 0
+
 /usr/bin/pt-query-digest --review h=${digest_host},D=${digest_db},t=${hostname}_query_review,u=${mysql_user},p=${pw} \
 	--create-review-table \
 	--review-history h=${digest_host},D=${digest_db},t=${hostname}_query_review_history,u=${mysql_user},p=${pw} \

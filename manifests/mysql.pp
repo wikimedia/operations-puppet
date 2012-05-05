@@ -448,5 +448,14 @@ class mysql {
 				mode => 0500,
 				content => template("mysql/send_query_digest.sh.erb");
 		}
+
+		cron { slow_digest:
+			command => "/usr/local/bin/send_query_digest.sh",
+			require => File["/usr/local/bin/send_query_digest.sh"],
+			user => root,
+			minute => 10,
+			hour => '*',
+			ensure => present;
+		}
 	}
 }
