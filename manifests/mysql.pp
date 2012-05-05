@@ -98,6 +98,7 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
+			include mysql::slow_digest
 		}
 	}
 
