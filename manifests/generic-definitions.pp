@@ -100,12 +100,14 @@ define lighttpd_config($install="false") {
 			owner => root,
 			group => www-data,
 			mode => 0444,
-			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"],
+			notify => Exec["service-lighttpd-reload"];
 		}
 	}
 
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
-		ensure => "/etc/lighttpd/conf-available/${title}.conf";
+		ensure => "/etc/lighttpd/conf-available/${title}.conf",
+		notify => Exec["service-lighttpd-reload"];
 	}
 }
 
