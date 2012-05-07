@@ -29,6 +29,11 @@ sub vcl_recv {
 sub vcl_fetch {
 	# Cache media objects for 30 days by default
 	set beresp.ttl = 30d;
+
+	# Stream large objects, > 64 MB
+	if (std.integer(beresp.http.Content-Length, 0) > 67108864) {
+		set beresp.do_stream = true;
+	}
 }
 
 sub vcl_miss {
