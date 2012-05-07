@@ -50,9 +50,9 @@ class mysql {
 	elsif $hostname =~ /^db(18|26|37|56|58|1007|1024|1041)$/ {
 		$db_cluster = "s7"
 	}
-#	elsif $hostname =~ /^blondel|bellin$/ {
-#		$db_cluster = "m1"
-#	}
+	elsif $hostname =~ /^blondel|bellin$/ {
+		$db_cluster = "m1"
+	}
 	elsif $hostname =~ /^db(1008|1025)$/ {
 		$db_cluster = "fundraisingdb"
 		if $hostname =~ /^db1008$/ {

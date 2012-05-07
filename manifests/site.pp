@@ -371,7 +371,11 @@ node "bellin.pmtpa.wmnet"{
 }
 
 node "blondel.pmtpa.wmnet" {
-
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node "brewster.wikimedia.org" {
