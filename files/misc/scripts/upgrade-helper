@@ -1,0 +1,335 @@
+#!/bin/bash
+# wmf upgrade helper aka. "UFO" (Upgrades For Operations)
+# a script to help with server upgrades
+# initial version dzahn 20120505
+
+# current features:
+## update node group from nagios config
+## check kernel versions on node groups
+## check package upgrade status on node groups
+## check uptimes on node groups
+
+# this works on fenari (root) as "upgrade-helper"
+# it uses dsh, bc, figlet and cowsay
+# (these were all installed there already)
+
+# config
+
+## the current known-good kernel version
+goodkernel="2.6.32-41-server"
+
+## number of pending package upgrades considered ok (0 for strict checking)
+pkg_limit=0
+
+## number of days of uptime considered to be critical
+uptime_limit=200
+
+## set path to dsh and group files
+DSH=$(which dsh)
+DSH_GROUP_DIR=/etc/dsh/group
+
+# / config
+
+# yay, colors
+DULL=0
+BRIGHT=1
+FG_WHITE=37
+FG_RED=31
+FG_GREEN=32
+FG_VIOLET=35
+BG_NULL=00
+ESC="\033"
+RESET="$ESC[${DULL};${FG_WHITE};${BG_NULL}m"
+BRIGHT_WHITE="$ESC[${BRIGHT};${FG_WHITE}m"
+BRIGHT_RED="$ESC[${BRIGHT};${FG_RED}m"
+BRIGHT_GREEN="$ESC[${BRIGHT};${FG_GREEN}m"
+BRIGHT_VIOLET="$ESC[${BRIGHT};${FG_VIOLET}m"
+
+# yay, figlet
+FIGLET=$(which figlet)" -f mini"
+
+# functions
+
+function menu() {
+
+echo -e "\nHi $(whoami), welcome to ..${BRIGHT_WHITE}"
+echo "wmf upgrade helper" | $FIGLET
+echo -e $RESET
+echo -e "${BRIGHT_WHITE}u${RESET} - (u)pdate a dsh group list from nagios data\n"
+echo -e "${BRIGHT_WHITE}k${RESET} - check (k)ernel versions on a dsh group\n"
+echo -e "${BRIGHT_WHITE}p${RESET} - check (p)ackage upgrades on a dsh group\n"
+echo -e "${BRIGHT_WHITE}t${RESET} - check up(t)imes on a dsh group\n"
+echo -e "${BRIGHT_WHITE}q${RESET} - (q)uit\n"
+
+echo -e "${BRIGHT_WHITE}what do you want to do? ${RESET}\n"
+read -p ">" menuselect
+
+
+case $menuselect in
+	"u")
+		groupselect
+		updategroup $nodegroup ;;
+	"k")
+		groupselect
+		echo -e "which kernel version is good? (string as returned by uname -r) (default (enter): ${goodkernel}) \n"
+		read -p ">" kernelversion
+		if [ -z $kernelversion ]; then kernelversion=$goodkernel; fi
+		kernelcheck $nodegroup $kernelversion;;
+	"p")
+		groupselect
+		echo -e "how many installable packages do you want to tolerate? (default (enter): ${pkg_limit}) \n"
+		read -p ">" threshold
+		if [ -z $threshold ]; then threshold=$pkg_limit; fi
+		pkgcheck $nodegroup $threshold;;
+	"t")
+		groupselect
+		echo -e "is there a certain number of days of uptime you consider critical? (default (enter): ${uptime_limit})\n"
+		read -p ">" maxuptime
+		if [ -z $maxuptime ]; then maxuptime=$uptime_limit; fi
+		uptimecheck $nodegroup $maxuptime;;
+	"q")
+		echo "bye"
+		exit 0;;
+	"*")
+		echo "invalid option. use one of: u k p t q"
+		exit 1;;
+esac
+
+}
+
+function groupselect () {
+	echo -e "which group do you want to check? (name of a dsh group file) \n"
+	read -p ">" nodegroup
+}
+
+function colorize() {
+
+	if [ $uphosts == "100.00" ]; then
+		UCOLOR=$BRIGHT_GREEN
+	else
+		UCOLOR=$BRIGHT_RED
+	fi
+
+	if [ $progress == "100.00" ]; then
+		PCOLOR=$BRIGHT_GREEN
+	else
+		PCOLOR=$BRIGHT_RED
+	fi
+}
+
+function kernelcheck() {
+
+nodegroup=$1
+goodkernel=$2
+
+countup=0
+countgood=0
+countbad=0
+
+echo "" > /tmp/kernel_check_${nodegroup}
+echo "" > /tmp/kernel_check_result_${nodegroup}
+
+echo -e "${BRIGHT_WHITE}checking group '${nodegroup}' for kernel '${goodkernel}' .. gathering info .. ${RESET}\n"
+
+$DSH -M -g $nodegroup "uname -r" | tee /tmp/kernel_check_${nodegroup}
+
+echo -e "\n${BRIGHT_WHITE}sorting results ...${RESET}\n"
+
+while read curline; do
+
+	host_name=$(echo $curline | cut -d ":" -f1 )
+
+	host_kernel=$(echo $curline | cut -d " " -f2)
+
+	if [ "$host_kernel" == "$goodkernel" ]; then
+		HCOLOR=$BRIGHT_GREEN
+		let countgood=countgood+1
+	else
+		HCOLOR=$BRIGHT_RED
+		let countbad=countbad+1
+	fi
+
+	echo -e "${host_kernel} kernel on ${HCOLOR}$host_name${RESET}" >> /tmp/kernel_check_result_${nodegroup}
+
+done < /tmp/kernel_check_${nodegroup}
+
+sort -nr /tmp/kernel_check_result_${nodegroup}
+
+countall=$(wc -l /etc/dsh/group/${nodegroup}| cut -d " " -f1)
+countup=$(wc -l /tmp/upgrade_check_${nodegroup} | cut -d " " -f1)
+
+uphosts=$(echo "scale=2; ${countup}*100/${countall}" | bc)
+progress=$(echo "scale=2; ${countgood}*100/${countup}" | bc)
+lefttogo=$(echo "scale=2; 100-${progress}" | bc)
+
+colorize
+
+echo -e "\n${BRIGHT_WHITE}results for '${nodegroup}':${RESET}\n\nservers in group: ${countall} - servers reached: ${UCOLOR}${countup} (${uphosts}%)${RESET}\nservers up with good kernels: ${PCOLOR}${countgood} (${progress}%)${RESET} - servers up with bad kernels: ${PCOLOR}${countbad} (${lefttogo}%)${RESET}\n\n"
+
+if [ $uphosts == "100.00" ] && [ $progress == "100.00" ]; then
+	echo -e "\n${BRIGHT_GREEN}Yay!${RESET} Looks all ${BRIGHT_GREEN}good${RESET}. Here's your kitten ..:)\n"
+	kitten "purr .. want to mail this to RT now? .."
+else
+	echo -e "\n${BRIGHT_RED}:( keep going.${RESET} There are upgrades left to do, some hosts are down or the node list is outdated.\n"
+fi
+
+}
+
+function pkgcheck () {
+
+nodegroup=$1
+threshold=$2
+
+countgood=0
+countbad=0
+countup=0
+
+echo "" > /tmp/pkg_check_${nodegroup}
+echo "" > /tmp/pkg_check_result_${nodegroup}
+
+echo -e "${BRIGHT_WHITE}checking group '${nodegroup}' for number of installabe package upgrades .. (threshold $threshold) gathering info .. ${RESET}\n\n"
+
+# simulated! -s dist-upgrade, count number of Inst lines
+$DSH -M -g $nodegroup "apt-get -s dist-upgrade | grep ^Inst | wc -l" | tee /tmp/pkg_check_${nodegroup}
+
+echo -e "\n${BRIGHT_WHITE}sorting results ...${RESET}\n"
+
+while read curline; do
+
+	host_name=$(echo $curline | cut -d ":" -f1 )
+
+	num_upgrades=$(echo $curline | cut -d " " -f2)
+
+	if [ $num_upgrades -le $threshold ]; then
+		HCOLOR=$BRIGHT_GREEN
+		let countgood=countgood+1
+	else
+		HCOLOR=$BRIGHT_RED
+		let countbad=countbad+1
+	fi
+
+	echo -e "${num_upgrades} upgrades installable on ${HCOLOR}$host_name${RESET}" >> /tmp/pkg_check_result_${nodegroup}
+
+done < /tmp/pkg_check_${nodegroup}
+
+sort -nr /tmp/pkg_check_result_${nodegroup}
+
+countall=$(wc -l /etc/dsh/group/${nodegroup}| cut -d " " -f1)
+countup=$(wc -l /tmp/pkg_check_${nodegroup} | cut -d " " -f1)
+
+uphosts=$(echo "scale=2; ${countup}*100/${countall}" | bc)
+progress=$(echo "scale=2; ${countgood}*100/${countup}" | bc)
+lefttogo=$(echo "scale=2; 100-${progress}" | bc)
+
+colorize
+
+echo -e "\n${BRIGHT_WHITE}results for '${nodegroup}':${RESET}\n\nservers in group: ${countall} - servers reached: ${UCOLOR}${countup} (${uphosts}%)${RESET}\nservers up with <= ${threshold} installable upgrades: ${PCOLOR}${countgood} (${progress}%)${RESET} - servers up with > ${threshold} installable upgrades: ${PCOLOR}${countbad} (${lefttogo}%)${RESET}\n\n"
+
+if [ $uphosts == "100.00" ] && [ $progress == "100.00" ]; then
+	echo -e "\n${BRIGHT_GREEN}Yay!${RESET} Looks all ${BRIGHT_GREEN}good${RESET}. Here's your kitten ..:)\n"
+	kitten "purr .. want to mail this to RT now? .."
+else
+	echo -e "\n${BRIGHT_RED}:( keep going.${RESET} There are upgrades left to do, some hosts are down or the node list is outdated.\n"
+fi
+
+}
+
+function kitten() {
+	echo -e ${BRIGHT_VIOLET}
+	echo $1 | cowsay -f hellokitty
+	echo -e $RESET
+}
+
+function updategroup() {
+
+nodegroup=$1
+overwrite="no"
+
+echo -e "${BRIGHT_WHITE}fetching puppet_hosts.cfg from nagios on spence via scp .. '${nodegroup}'${RESET}\n"
+
+scp root@spence:/etc/nagios/puppet_hosts.cfg /tmp/puppet_hosts.cfg
+grep host_name /tmp/puppet_hosts.cfg | cut -d " " -f23 | grep "^${nodegroup}" | sort > /tmp/node_group_${nodegroup}
+
+echo -e "\nchecking ... cmp -s ${DSH_GROUP_DIR}/${nodegroup} /tmp/node_group_${nodegroup} \n"
+echo -e "\n! for this to work the node group file must exist and nagios host names need to _start_ with the same string!\n"
+cmp -s ${DSH_GROUP_DIR}/${nodegroup} /tmp/node_group_${nodegroup} > /dev/null
+
+if [ $? -eq 1 ]; then
+
+	echo -e "${BRIGHT_WHITE}diff between old and new group '${nodegroup}'${RESET}\n\n"
+	diff ${DSH_GROUP_DIR}/${nodegroup} /tmp/node_group_${nodegroup}
+	echo -e "${BRIGHT_WHITE}do you want to overwrite? (y/n) '${nodegroup}'${RESET}\n\n"
+	read -p ">" overwrite
+
+	if [ $overwrite == "y" ]; then
+		mv -i /tmp/node_group_${nodegroup} ${DSH_GROUP_DIR}/${nodegroup}
+		echo -e "${BRIGHT_WHITE}done and updated. bye.${RESET}"
+	else
+		echo -e "${BRIGHT_WHITE}NOT written. bye.${RESET}"
+	fi
+else
+	echo -e "${BRIGHT_WHITE}either node group '${nodegroup}' is already up-to-date or it did not exist. nothing to do.${RESET}\n\n"
+fi
+
+}
+
+function uptimecheck() {
+
+nodegroup=$1
+maxuptime=$2
+
+countup=0
+countgood=0
+countbad=0
+
+echo "" > /tmp/uptime_check_${nodegroup}
+echo "" > /tmp/uptime_check_result_${nodegroup}
+
+echo -e "${BRIGHT_WHITE}getting raw uptimes from /proc for '${nodegroup}' (seconds) (max. uptime: $maxuptime days)${RESET}\n"
+$DSH -M -g $nodegroup "cut -d \" \" -f1 /proc/uptime " | tee /tmp/uptime_check_${nodegroup}
+
+echo -e "\n${BRIGHT_WHITE}sorting results ...${RESET}\n"
+
+while read curline; do
+
+	host_name=$(echo $curline | cut -d ":" -f1 )
+	host_uptime=$(echo $curline | cut -d " " -f2)
+	host_uptime=$(echo "scale=0; ${host_uptime}/60/60/24" | bc)
+
+	if [ $host_uptime -lt $maxuptime ]; then
+		HCOLOR=$BRIGHT_GREEN
+		let countgood=countgood+1
+	else
+	HCOLOR=$BRIGHT_RED
+		let countbad=countbad+1
+	fi
+
+	echo -e "${host_uptime} days of uptime on ${HCOLOR}$host_name${RESET}" >> /tmp/uptime_check_result_${nodegroup}
+
+done < /tmp/uptime_check_${nodegroup}
+
+sort -nr /tmp/uptime_check_result_${nodegroup}
+
+countall=$(wc -l /etc/dsh/group/${nodegroup}| cut -d " " -f1)
+countup=$(wc -l /tmp/uptime_check_${nodegroup} | cut -d " " -f1)
+
+uphosts=$(echo "scale=2; ${countup}*100/${countall}" | bc)
+progress=$(echo "scale=2; ${countgood}*100/${countup}" | bc)
+lefttogo=$(echo "scale=2; 100-${progress}" | bc)
+
+colorize
+
+echo -e "\n${BRIGHT_WHITE}results for '${nodegroup}':${RESET}\n\nservers in group: ${countall} - servers reached: ${UCOLOR}${countup} (${uphosts}%)${RESET}\nservers up with good uptime: ${PCOLOR}${countgood} (${progress}%)${RESET} - servers up with bad uptime: ${PCOLOR}${countbad} (${lefttogo}%)${RESET}\n\n"
+
+if [ $uphosts == "100.00" ] && [ $progress == "100.00" ]; then
+	echo -e "\n${BRIGHT_GREEN}Yay!${RESET} Looks all ${BRIGHT_GREEN}good${RESET}. Here's your kitten ..:)\n"
+	kitten "purr .. want to mail this to RT now? .."
+else
+	echo -e "\n${BRIGHT_RED}:( keep going.${RESET} Some hosts still need reboots, are down or the node list is outdated.\n"
+fi
+
+
+}
+
+# main
+menu
