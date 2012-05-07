@@ -37,6 +37,6 @@ sub vcl_fetch {
 	if (std.integer(beresp.http.Content-Length, 0) > 67108864) {
 		set beresp.do_stream = true;
 		/* don't attempt to cache these in the frontend */
-		return (hit-for-pass);
+		return (hit_for_pass);
 	}
 }
