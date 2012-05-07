@@ -19,11 +19,6 @@ class webserver::static {
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-
-	exec {"service-lighttpd-reload":
-		command => "/usr/sbin/service service lighttpd reload",
-		refreshonly => true,
-	}
 }
 
 class webserver::php5( $ssl = 'false' ) {
