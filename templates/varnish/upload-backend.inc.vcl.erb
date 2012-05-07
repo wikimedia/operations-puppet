@@ -1,5 +1,7 @@
 # Varnish VCL include file for upload backends
 
+import std;
+
 sub vcl_recv {
 	/* Support HTTP PURGE from localhost */
 	if (req.request == "PURGE") {
