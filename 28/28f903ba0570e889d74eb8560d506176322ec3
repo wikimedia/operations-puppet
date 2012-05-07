@@ -1,0 +1,8 @@
+Change-Id: I2828f903ba0570e889d74eb8560d506176322ec3
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Mon, 07 May 2012 16:03:53 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/6797
+Project: operations/puppet
+Branch: refs/heads/test
