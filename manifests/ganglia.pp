@@ -11,6 +11,7 @@
 #  - $gmetad_conf:		gmetad configuration filename (or stub for labs)
 #  - $ganglia_servername:	Server name used by apache
 #  - $ganglia_serveralias:	Server alias(es) used by apache
+#  - $ganglia_webdir:		Path of web directory used by apache
 
 
 class ganglia {
@@ -292,12 +293,14 @@ class ganglia::web {
 	if $realm == "labs" {
 		$ganglia_servername = "ganglia.wmflabs.org"
 		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
 		
 		require ganglia::aggregator
 
 	} else {
 		$ganglia_servername = "ganglia.wikimedia.org"
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
+		$ganglia_webdir = "/srv/org/wikimedia/gangliaweb"
 	}
 
 	file {
@@ -336,21 +339,6 @@ class ganglia::web {
 			group => root,
 			source => "puppet:///files/ganglia/rc.local",
 			ensure => present;
-		"/srv/org/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
-		"/srv/org/wikimedia/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
-		"/srv/org/wikimedia/gangliaweb/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
 	}
 
 	apache_site { ganglia: name => $ganglia_servername }
@@ -403,7 +391,7 @@ class ganglia::web {
 	
 	# conf.php for labs is maintained via puppet
 	if $realm == "labs" {
-		file { "/srv/org/wikimedia/gangliaweb/conf.php":
+		file { "/usr/share/ganglia-webfrontend/conf.php":
 			mode => 0444,
 			owner => root,
 			group => root,

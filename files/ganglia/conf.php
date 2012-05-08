@@ -1,11 +1,10 @@
 <?php
-# $Id: conf_default.php.in 2557 2011-04-11 01:51:43Z vvuksan $
 #
 # Gmetad-webfrontend version. Used to check for updates.
 #
-$conf['ganglia_dir'] = dirname(__FILE__);
+$conf['gweb_root'] = dirname(__FILE__);
 
-include_once $conf['ganglia_dir'] . "/version.php";
+include_once $conf['gweb_root'] . "/version.php";
 
 #
 # 'readonly': No authentication is required.  All users may view all resources.  No edits are allowed.
@@ -27,11 +26,12 @@ $conf['template_name'] = "default";
 #
 
 # Where gmetad stores the rrd archives.
-$conf['gmetad_root'] = "/mnt/ganglia_tmp";
-$conf['rrds'] = "${conf['gmetad_root']}/rrds.pmtpa";
+$conf['gmetad_root'] = "/var/lib/ganglia";
+$conf['rrds'] = "/mnt/ganglia_tmp/rrds.pmtpa";
 
 # Where Dwoo (PHP templating engine) store compiled templates
-$conf['dwoo_compiled_dir'] = "${conf['gmetad_root']}/dwoo";
+$conf['dwoo_compiled_dir'] = "${conf['gmetad_root']}/dwoo/compiled";
+$conf['dwoo_cache_dir'] = "${conf['gmetad_root']}/dwoo/cache";
 
 # Where to store web-based configuration
 $conf['views_dir'] = $conf['gmetad_root'] . '/conf';
@@ -46,7 +46,7 @@ $conf['conf_dir'] = $conf['gmetad_root'] . '/conf';
 $conf['rrdtool'] = "/usr/bin/rrdtool";
 
 # Render graphs with rrdtool's --slope-mode option
-$conf['rrdtool_slope_mode'] = false;
+$conf['rrdtool_slope_mode'] = true;
 
 # If rrdcached is being used, this argument must specify the 
 # socket to use.
@@ -200,6 +200,9 @@ $conf['graph_engine'] = "rrdtool";
 #$conf['graph_engine'] = "graphite";
 $conf['graphite_url_base'] = "http://127.0.0.1/render";
 $conf['graphite_rrd_dir'] = "/opt/graphite/storage/rrd";
+# Don't forget a trailing "." when specifying a prefix.
+# Default is empty.
+$conf['graphite_prefix'] = "";
 
 # One of the bottlenecks is that to get individual metrics we query gmetad which
 # returns every single host and all the metrics. If you have lots of hosts and lots of 
@@ -278,6 +281,16 @@ $conf['graph_sizes'] = array(
 $conf['default_graph_size'] = 'default';
 $conf['graph_sizes_keys'] = array_keys( $conf['graph_sizes'] );
 
+# sets a default graph size separate from the regular default graph size. You
+# can also set this default on a per-view basis by setting 'default_size' in 
+# the view .json file.
+$conf['default_view_graph_size'] = 'medium';
+
+# The API can serve up graphs, but the URLs should be fully qualified.
+# The default value is a hack to serve up the called hostname when
+# possible. It is best to define this manually.
+$conf['external_location'] = "http://localhost/ganglia-2";
+
 # In earlier versions of gmetad, hostnames were handled in a case
 # sensitive manner
 # If your hostname directories have been renamed to lower case,
@@ -293,7 +306,7 @@ $conf['metric_groups_initially_collapsed'] = false;
 
 # Overlay events on graphs. Those are defined by specifying all the events
 # in events.json
-$conf['overlay_events'] = false;
+$conf['overlay_events'] = true;
 
 # Settings for allowing the Nagios API to be used as an additional
 # event source. Will only be enabled if overlay_nagios_events is true.
@@ -308,15 +321,21 @@ $conf['overlay_events_exclude_ranges'] = array("month", "year");
 # lines, anything else (including blanks) means a dashed line.
 $conf['overlay_events_line_type'] = "dashed";
 
-# What is the provider use to provide events. Currently only JSON files supported
+# What is the provider use to provide events.
+# Examples: "json", "mdb2"
 $conf['overlay_events_provider'] = "json";
 # Where is the Overlay events file stored
 $conf['overlay_events_file'] = $conf['conf_dir'] . "/events.json";
 
+# If using MDB2, connection string:
+$conf['overlay_events_dsn'] = "mysql://dbuser:dbpassword@localhost/ganglia";
+
+$conf['overlay_events_color_map_file'] = $conf['conf_dir'] . "/event_color.json";
+
 # For event shading.  Value in hex, 'FF' = 100% opaque.
 # the _shade_ value should be less than _tick_
 $conf['overlay_events_tick_alpha']  = '30';
-$conf['overlay_events_shade_alpha'] = '50';
+$conf['overlay_events_shade_alpha'] = '20';
 
 # Colors to use e.g. in graph_colors
 $conf['graph_colors'] = array("0000A3", "FF3300", "FFCC33", "00CC66", "B88A00", "33FFCC", "809900", "FF3366", "FF33CC", "CC33FF", "CCFF33", "FFFF66", "33CCFF");
@@ -329,4 +348,12 @@ $conf['heatmaps_enabled'] = 1;
 # time range items are excluded.
 $conf['decorated_graph_title'] = true;
 
+# If set to yes, will display stacked graph (aggregated metric across hosts) in cluster view
+$conf['show_stacked_graphs'] = 1;
+
+# If set to false the grid view under the main tab will be displayed only if 
+# the grid name is not "unspecified", or a parent grid has been defined.
+# If set to true the grid view will always be displayed even when only a
+# single cluster has been defined.
+$conf['always_display_grid_view'] = true;
 ?>
