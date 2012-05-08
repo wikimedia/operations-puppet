@@ -796,9 +796,7 @@ node "gilman.wikimedia.org" {
 	include	base,
 		ntp::client,
 		nrpe,
-		admins::roots,
-		misc::jenkins,
-		misc::fundraising
+		admins::roots
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
@@ -978,11 +976,6 @@ node "hume.wikimedia.org" {
 		misc::scripts,
 		misc::maintenance::foundationwiki,
 		mediawiki::refreshlinks,
-		# begin added 20120309 temporarily for testing /jgreen
-		mysql::packages,
-		mysql::mysqluser,
-		mysql::datadirs,
-		# end added 20120309
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
