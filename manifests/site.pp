@@ -2072,6 +2072,7 @@ node "stat1.wikimedia.org" {
 		accounts::otto,
 		accounts::aengels,
 		accounts::dsc,
+		accounts::akhanna,
 		accounts::dartar
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }

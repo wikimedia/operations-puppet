@@ -1616,6 +1616,27 @@ class accounts {
 			}
 		}
 	}
+
+	class akhanna inherits baseaccount {
+		$username = "akhanna"
+		$realname = "Ayush Khanna"
+		$uid = 594
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"akhanna@administrators-MacBook-Pro-4.local":
+					ensure => present,
+					user => $username,
+					type => "ssh-dss",
+					key => "AAAAB3NzaC1kc3MAAACBAIfkh5UXiOWGbS5eKsLnedffXz7hyjqHqlkSoxy/f/7tCaZLWvK0zTVZBfBWBPR+8hxkTWGqm5R4Vs4DLpAzb6bXdkm1dJNq/eJmclKrFzbU3Vc9nl+XizgkpadsKbUGF+F9HywBebebBS3KZ4StTzXWMnR8a94F90R7SssntibrAAAAFQDbcWx2byNwngsa35OTUppudr3BCQAAAIBPpv7V0jd4V19fNx8zbKtvAAGFtVGtXhun/5Gk7SLThF+eSAA7zZ21rf1drlfBeW1k1dpGFdTzOaZETcpuhKjQhEZt3bs7wrb0VuSU03bCmEDklIbhj6N4zU41eF4mu8433RpAtk5Fzdh8IWl6BEN+LDSytF19DOwblm4h52+KEAAAAIAm/D3q7wcQUTnRbWZgwwFArkMaE/1IMh+5d2NwuFRNLj1lxnec8lUGX8V9c+gIxqCPMy/PQFFklmLLEec+47pIHtSxht3Gps72Y2WYCN+cR9EJpLoW+uFcjbWp7ljC/naTbwOXvMccaByT0baKMb+Ihgx0fStt5JYyw3TqaXHviQ==";
+			}
+		}
+	}
+
 	##### END ANALYTICS INTERNS #####
 
 	class jgreen inherits baseaccount {
