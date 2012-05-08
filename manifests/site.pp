@@ -189,6 +189,19 @@ class imagescaler {
 		accounts::l10nupdate
 }
 
+class imagescaler::labs {
+	$cluster = "imagescaler"
+
+	include standard,
+		imagescaler::cron,
+		imagescaler::packages,
+		imagescaler::files,
+		mediawiki::packages,
+		apaches::packages,
+		apaches::cron,
+		apaches::service
+}
+
 class db::core {
 	$cluster = "mysql"
 
