@@ -70,16 +70,18 @@ class nfs::home {
 class nfs::home::wikipedia {
 
 	case $::realm {
-		'production': { require nfs::home }
+		'production': {
+			require nfs::home
+			file { "/home/wikipedia":
+				mode   => 0755,
+				owner  => root,
+				group  => root,
+				ensure => directory;
+			}
+		} # /production
 		'labs': { systemuser { 'wikipediauser': name => 'wikipedia', home => '/home/wikipedia' } }
 	}
 
-	file { "/home/wikipedia":
-		mode   => 0755,
-		owner  => root,
-		group  => root,
-		ensure => directory;
-	}
 }
 
 class nfs::upload {
