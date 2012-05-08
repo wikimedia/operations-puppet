@@ -9,7 +9,7 @@ class role::statistics {
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base,
-		misc::statistics::mediwiki,
+		misc::statistics::mediawiki,
 		misc::statistics::plotting,
 		generic::pythonpip,
 		udp2log::udp_filter
