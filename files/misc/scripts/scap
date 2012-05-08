@@ -1,85 +1,88 @@
 #!/bin/bash
 
-# Don't even THINK about putting set -e here
-# See https://gerrit.wikimedia.org/r/6404
+(
+	set -e
 
-BINDIR=/usr/local/bin
-SOURCE=/home/wikipedia/common
-DEST=/usr/local/apache/common-local
+	BINDIR=/usr/local/bin
+	SOURCE=/home/wikipedia/common
+	DEST=/usr/local/apache/common-local
 
-if [ ! -S "$SSH_AUTH_SOCK" ]; then
-	echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
-	echo >&2 "Did you start your ssh-agent?"
-	exit 1
-fi
-
-mwVerDbSets=$($BINDIR/mwversionsinuse --home --withdb)
-if [ -z "$mwVerDbSets" ]; then
-	echo "Unable to read wikiversions.dat or it is empty."
-	exit 1
-fi
-
-# Perform syntax check
-echo Checking syntax...
-if ( ! ( $BINDIR/lint $SOURCE/wmf-config && $BINDIR/lint $SOURCE/multiversion ) ); then
-	echo "Found syntax errors, cannot sync."
-	exit 1
-fi
-# Check syntax for all active MediaWiki versions
-for i in ${mwVerDbSets[@]}; do
-	mwVerNum=${i%=*}
-	if ( ! ( $BINDIR/lint $SOURCE/php-$mwVerNum ) ); then
-		echo "Found syntax errors in $mwVerNum, cannot sync."
+	if [ ! -S "$SSH_AUTH_SOCK" ]; then
+		echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
+		echo >&2 "Did you start your ssh-agent?"
 		exit 1
 	fi
-done
 
-# Update the current machine so that serialization works.
-# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
-# and mwscript work with the right version of the files.
-/usr/bin/sync-common
+	mwVerDbSets=$($BINDIR/mwversionsinuse --home --withdb)
+	if [ -z "$mwVerDbSets" ]; then
+		echo "Unable to read wikiversions.dat or it is empty."
+		exit 1
+	fi
 
+	# Perform syntax check
+	echo Checking syntax...
+	if ( ! ( $BINDIR/lint $SOURCE/wmf-config && $BINDIR/lint $SOURCE/multiversion ) ); then
+		echo "Found syntax errors, cannot sync."
+		exit 1
+	fi
+	# Check syntax for all active MediaWiki versions
+	for i in ${mwVerDbSets[@]}; do
+		mwVerNum=${i%=*}
+		if ( ! ( $BINDIR/lint $SOURCE/php-$mwVerNum ) ); then
+			echo "Found syntax errors in $mwVerNum, cannot sync."
+			exit 1
+		fi
+	done
 
-mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
-# Regenerate the extension message file list for all active MediaWiki versions
-for i in ${mwExtVerDbSets[@]}; do
-	mwVerNum=${i%=*}
-	mwDbName=${i#*=}
-	echo "Updating ExtensionMessages-$mwVerNum.php..."
-	$BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
-		--list-file=$SOURCE/wmf-config/extension-list \
-		--output=$SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
-
-	# Update ExtensionMessages-*.php in the local copy
-	sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
-
-	echo -n "Updating LocalisationCache for $mwVerNum... "
-	$BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-		--quiet --outdir=$SOURCE/php-$mwVerNum/cache/l10n
-	echo "done"
-done
-
-
-# Notify
-$BINDIR/dologmsg "!log $USER synchronizing Wikimedia installation... : $*"
+	# Update the current machine so that serialization works.
+	# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
+	# and mwscript work with the right version of the files.
+	/usr/bin/sync-common
 
 
-# Disable logging
-export DOLOGMSGNOLOG=1
+	mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
+	# Regenerate the extension message file list for all active MediaWiki versions
+	for i in ${mwExtVerDbSets[@]}; do
+		mwVerNum=${i%=*}
+		mwDbName=${i#*=}
+		echo "Updating ExtensionMessages-$mwVerNum.php..."
+		$BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
+			--list-file=$SOURCE/wmf-config/extension-list \
+			--output=$SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
 
-# Set write permissions
-$BINDIR/set-group-write
+		# Update ExtensionMessages-*.php in the local copy
+		sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
 
-# Copy stuff
-sync-wikiversions
+		echo -n "Updating LocalisationCache for $mwVerNum... "
+		$BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
+			--quiet --outdir=$SOURCE/php-$mwVerNum/cache/l10n
+		echo "done"
+	done
 
-echo 'Copying style sheets to apaches...'
-ddsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins'
 
-echo 'Copying code to apaches...'
-ddsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1'
-echo 'Finished'
+	# Notify
+	$BINDIR/dologmsg "!log $USER synchronizing Wikimedia installation... : $*"
 
-export DOLOGMSGNOLOG=""
-$BINDIR/dologmsg "sync done."
-$BINDIR/deploy2graphite scap
+
+	# Disable logging
+	export DOLOGMSGNOLOG=1
+
+	# Set write permissions
+	$BINDIR/set-group-write
+
+	# Copy stuff
+	# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
+	sync-wikiversions
+
+	echo 'Copying style sheets to apaches...'
+	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
+
+	echo 'Copying code to apaches...'
+	dsh -F5 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1' || true
+	echo 'Finished'
+
+	export DOLOGMSGNOLOG=""
+	$BINDIR/dologmsg "sync done."
+	$BINDIR/deploy2graphite scap
+) || echo "sync failed"
+
