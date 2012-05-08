@@ -449,13 +449,15 @@ class mysql {
 				content => template("mysql/send_query_digest.sh.erb");
 		}
 
-		cron { slow_digest:
-			#command => "/usr/local/bin/send_query_digest.sh",
-			#require => File["/usr/local/bin/send_query_digest.sh"],
-			#user => root,
-			#minute => 10,
-			#hour => '*',
-			ensure => absent;
+		if $::site == "pmtpa" {
+			cron { slow_digest:
+				command => "/usr/local/bin/send_query_digest.sh >/dev/null 2>&1",
+				require => File["/usr/local/bin/send_query_digest.sh"],
+				user => root,
+				minute => 10,
+				hour => '*',
+				ensure => present;
+			}
 		}
 	}
 }
