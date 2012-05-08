@@ -14,11 +14,19 @@ log=/a/sqldata/${hostname}-slow.log
 # exit quietly if $log does not exist or is 0 bytes
 [ -s $log ] || exit 0
 
+# kill any running pt-query-digest procs
+# this is paranoia over a potential pileup in the case
+# of very large log files as was previously observed 
+# with mk-query-digest. shouldn't be needed due to
+# --run-time parameter
+/usr/bin/pgrep -f /usr/bin/pt-query-digest >/dev/null && /usr/bin/pkill -9 -f /usr/bin/pt-query-digest
+
 /usr/bin/pt-query-digest --review h=${digest_host},D=${digest_db},t=${hostname}_query_review,u=${mysql_user},p=${pw} \
 	--create-review-table \
 	--review-history h=${digest_host},D=${digest_db},t=${hostname}_query_review_history,u=${mysql_user},p=${pw} \
 	--create-review-history-table \
 	--noreport \
+	--run-time 9m \
 	--filter '$event->{fingerprint} !~ m/^select master_pos_wait/' \
 	$log
 
