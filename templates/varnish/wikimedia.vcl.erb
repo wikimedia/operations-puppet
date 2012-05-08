@@ -130,6 +130,16 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 
 <% end -%>
 
+# for test.* routing
+backend test {
+	.host = "srv193.pmtpa.wmnet";
+	.port = "80";
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
+	.between_bytes_timeout = 2s;
+	.max_connections = 20;
+}
+
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.each do |director| -%>

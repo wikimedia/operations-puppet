@@ -167,6 +167,10 @@ sub vcl_recv {
 		set req.url = "/?useformat=mobile";
 	}
 
+	if ( req.http.host ~ "^test\." ) {
+		set req.backend = test;
+	}
+
 	call device_detection;
 }
 
