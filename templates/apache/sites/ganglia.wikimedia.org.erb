@@ -11,8 +11,8 @@
 	Allow from all
 	</Directory>
 
-	Alias /2.2.0 /srv/org/wikimedia/gangliaweb
-	Alias /latest /srv/org/wikimedia/gangliaweb
+	Alias /2.2.0 <%= ganglia_webdir %>
+	Alias /latest <%= ganglia_webdir %>
 
 	RedirectMatch ^/$ http://<%= ganglia_servername %>/latest
 	ErrorLog /var/log/apache2/error.log
