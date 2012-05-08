@@ -10,6 +10,23 @@ import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
 import "../private/manifests/mail.pp"
 
+
+class base::access::dc-techs {
+	# Add sudoers rules for data center techs
+
+	sudo_user { [ "cmjohnson" ]: privileges => [
+		'ALL = (root) NOPASSWD: /sbin/fdisk',
+		'ALL = (root) NOPASSWD: /sbin/mdadm',
+		'ALL = (root) NOPASSWD: /sbin/parted',
+		'ALL = (root) NOPASSWD: /sbin/sfdisk',
+		'ALL = (root) NOPASSWD: /usr/bin/MegaCli',
+		'ALL = (root) NOPASSWD: /usr/bin/arcconf',
+		'ALL = (root) NOPASSWD: /usr/bin/lshw',
+		'ALL = (root) NOPASSWD: /usr/sbin/grub-install',
+	]}
+
+}
+
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
 	exec { "/usr/bin/apt-get update":
@@ -587,6 +604,7 @@ class base {
 		base::monitoring::host,
 		base::environment,
 		base::platform,
+		base::access::dc-techs,
 		ssh
 
 	if $::realm == "labs" {
