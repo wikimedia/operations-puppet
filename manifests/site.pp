@@ -1677,12 +1677,32 @@ node "sanger.wikimedia.org" {
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.wikimedia.org!636!wmf-ca.pem", critical => "true" }
 }
 
-node /search[12]?[0-9]\.pmtpa\.wmnet/ {
-	if $hostname == "search1.pmtpa.wmnet" {
+node /search1[3-8]\.pmtpa\.wmnet/ {
+	if $hostname =~ /^search1(3|4)$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include searchserver
+	include role::lucene::front_end::pool4
+}
+
+node /search(19|20)\.pmtpa\.wmnet/ {
+
+	include role::lucene::front_end::prefix
+}
+
+node /search2[1-6]\.pmtpa\.wmnet/ {
+
+	include role::lucene::front_end::pool1
+}
+
+node /search(2[7-9]|30)\.pmtpa\.wmnet/ {
+
+	include role::lucene::front_end::pool2
+}
+
+node /search3[1-6]\.pmtpa\.wmnet/ {
+
+	include role::lucene::front_end::pool3
 }
 
 node /search100[0-6]\.eqiad\.wmnet/ {
