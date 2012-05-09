@@ -32,7 +32,7 @@ hosts allow =  199.47.196.26
 # this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
-# added your.org, Feb 2 1012 -- atg
+# added your.org, Feb 2 2012 -- atg
 # for your.org, contact: Kevin Day <kevin@your.org>
 # they manage it but we have access; see file in /home/wikipedia/docs
 hosts allow = ftpmirror.your.org 
