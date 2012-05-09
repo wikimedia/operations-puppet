@@ -41,11 +41,20 @@ class squid {
 		owner => root,
 		group => root
 	}
+
+	if( $::realm == 'production' ) {
+		# We do not use the auto generated squid conf on labs but some hand
+		# crafted one.  That is good enough for now until we switch to varnish
+		file {
+			"/etc/squid/squid.conf":
+				source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
+			"/etc/squid/frontend.conf":
+				source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
+		}
+	}
+
+	# Common files
 	file {
-		"/etc/squid/squid.conf":
-			source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
-		"/etc/squid/frontend.conf":
-			source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
 		"frontendsquiddefaultconfig":
 			name => "/etc/default/squid-frontend",
 			source => "puppet:///files/squid/squid-frontend";
