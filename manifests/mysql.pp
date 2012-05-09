@@ -60,7 +60,8 @@ class mysql {
 			$writable = "true"
 		}
 		elsif $hostname =~ /^db1025$/ {
-			include role::db::fundraising::slave
+			include role::db::fundraising::slave,
+				role::db::fundraising::dump
 		}
 	}
 	elsif $hostname =~ /^db(48|49|1042|1048)$/ {
