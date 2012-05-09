@@ -20,4 +20,60 @@ sub vcl_recv {
 		}
 		return (lookup);
 	}
+	call device_detection;
+}
+
+sub device_detection {
+
+	if (req.http.User-Agent ~ "WebKit"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Android"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "iPhone"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "iPhone OS 2"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Series60"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "webOS"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Opera"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Opera Mini"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Opera Mobi"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Kindle/1.0"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Kindle/2.0"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "Firefox"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "NetFront"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "SEMC-Browser"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "PlayStation Portable"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "PLAYSTATION 3"){
+		set req.http.X-Mobile = "yes";
+	}
+	if (req.http.User-Agent ~ "BlackBerry"){
+		set req.http.X-Mobile = "yes";
+	}
 }
