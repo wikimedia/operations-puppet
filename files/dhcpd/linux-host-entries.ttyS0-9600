@@ -161,6 +161,9 @@ host db28 {
 host db29 {
 	hardware ethernet 00:14:4F:ED:AC:28;
 	fixed-address db29.pmtpa.wmnet;
+
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db30 {
