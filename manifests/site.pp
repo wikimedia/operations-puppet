@@ -567,7 +567,7 @@ node /^db1[2-8]\.pmtpa\.wmnet$/ {
 	}
 }
 
-node /^db2[1-9]\.pmtpa\.wmnet$/ {
+node /^db2[1-8]\.pmtpa\.wmnet$/ {
 	if $hostname == "db21" {
 		$ganglia_aggregator = "true"
 	}
@@ -581,6 +581,10 @@ node /^db2[1-9]\.pmtpa\.wmnet$/ {
 		mysql::conf,
 		mysql::packages
 	}
+}
+
+node "db29.pmtpa.wmnet" {
+	include base
 }
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
