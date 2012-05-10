@@ -84,6 +84,26 @@ class nfs::home::wikipedia {
 
 }
 
+class nfs::apache {
+	if( $::realm == 'labs' ) {
+		include nfs::common
+
+		file { '/usr/local/apache':
+			ensure => directory;
+		}
+
+		mount {
+			"/usr/local/apache":
+				device => 'deployment-nfs-memc:/mnt/export/apache',
+				fstype => 'nfs',
+				name   => '/usr/local/apache',
+				options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
+				require => File['/usr/local/apache'],
+				ensure => mounted;
+		}
+	}
+}
+
 class nfs::upload {
 	include nfs::common
 
