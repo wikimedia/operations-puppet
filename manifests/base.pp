@@ -12,7 +12,8 @@ import "../private/manifests/mail.pp"
 
 
 class base::access::dc-techs {
-	# Add sudoers rules for data center techs
+	# add account and sudoers rules for data center techs
+	include accounts::cmjohnson
 
 	sudo_user { [ "cmjohnson" ]: privileges => [
 		'ALL = (root) NOPASSWD: /sbin/fdisk',
