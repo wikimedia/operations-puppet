@@ -140,6 +140,8 @@ extension=wikidiff2.so
 class apaches::service {
 	include mediawiki::sync
 
+	include nfs::apache
+
 	# Require apaches::files to be in place
 	require apaches::files
 

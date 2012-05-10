@@ -193,6 +193,7 @@ class imagescaler::labs {
 	$cluster = "imagescaler"
 
 	include standard,
+		nfs::apache,
 		imagescaler::cron,
 		imagescaler::packages,
 		imagescaler::files,
