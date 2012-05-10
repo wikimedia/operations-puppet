@@ -1868,7 +1868,6 @@ class admins::restricted {
 	include accounts::austin
 	include accounts::avar
 	include accounts::bastique # access revoked
-	#include accounts::cmjohnson # moved to dctech
 	include accounts::dab
 	include accounts::daniel
 	include accounts::dartar
@@ -1910,5 +1909,5 @@ class admins::dctech {
 	$gid = 501  # 'dctech' by default
 	include groups::dctech
 
-	include accounts::cmjohnson
+	#include accounts::cmjohnson
 }
