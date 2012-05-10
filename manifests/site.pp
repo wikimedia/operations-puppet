@@ -2120,7 +2120,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::pgehres,
 		accounts::rfaulk,
 		accounts::zexley,
-		misc::fundraising::impressionlog::compress,
+		misc::fundraising::impressionlog::archive
 		misc::fundraising::offhost_backups
 
 	cron {
