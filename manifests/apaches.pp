@@ -35,6 +35,7 @@ class apaches::cron {
 			user => root,
 			minute => 26,
 			ensure => present;
+		# TODO: use class misc::geoip for this instead of manually downloading.
 		updategeoipdb:
 			environment => "http_proxy=http://brewster.wikimedia.org:8080",
 			command => "[ -d /usr/share/GeoIP ] && wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /usr/share/GeoIP/GeoIP.dat.new && mv /usr/share/GeoIP/GeoIP.dat.new /usr/share/GeoIP/GeoIP.dat",

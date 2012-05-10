@@ -5,7 +5,8 @@ class role::statistics {
 
 	include standard,
 		admins::roots,
-		generic::geoip,
+		misc::geoip,
+		misc::geoip::python::package,
 		generic::packages::git-core,
 		mysql::client,
 		misc::statistics::base,
