@@ -247,6 +247,7 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
+	set beresp.http.X-Carrier = req.http.X-Carrier;
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
