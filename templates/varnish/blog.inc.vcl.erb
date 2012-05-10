@@ -9,6 +9,7 @@
 # (aka curl, etc.) 
 #
 sub vcl_recv {
+	call device_detection;
 	call vcl_recv_purge;
 
 	if (req.request == "GET" && client.ip ~ purge &&
@@ -20,14 +21,19 @@ sub vcl_recv {
 		}
 		return (lookup);
 	}
-	call device_detection;
+}
+
+sub vcl_fetch {
+	set beresp.http.X-Mobile = req.http.X-Mobile; # for debugging
+	if (!beresp.http.Vary) { # no Vary at all
+		set beresp.http.Vary = "X-Mobile";
+	} elseif (beresp.http.Vary !~ "X-Mobile") { # add to existing Vary
+		set beresp.http.Vary = beresp.http.Vary + ", X-Mobile";
+	}
 }
 
 sub device_detection {
 
-	if (req.http.User-Agent ~ "WebKit"){
-		set req.http.X-Mobile = "yes";
-	}
 	if (req.http.User-Agent ~ "Android"){
 		set req.http.X-Mobile = "yes";
 	}
@@ -43,9 +49,6 @@ sub device_detection {
 	if (req.http.User-Agent ~ "webOS"){
 		set req.http.X-Mobile = "yes";
 	}
-	if (req.http.User-Agent ~ "Opera"){
-		set req.http.X-Mobile = "yes";
-	}
 	if (req.http.User-Agent ~ "Opera Mini"){
 		set req.http.X-Mobile = "yes";
 	}
@@ -56,9 +59,6 @@ sub device_detection {
 		set req.http.X-Mobile = "yes";
 	}
 	if (req.http.User-Agent ~ "Kindle/2.0"){
-		set req.http.X-Mobile = "yes";
-	}
-	if (req.http.User-Agent ~ "Firefox"){
 		set req.http.X-Mobile = "yes";
 	}
 	if (req.http.User-Agent ~ "NetFront"){
