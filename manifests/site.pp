@@ -84,6 +84,7 @@ class applicationserver {
 
 		include	standard,
 			admins::roots,
+			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			nfs::upload,
@@ -103,6 +104,7 @@ class applicationserver {
 			nfs::upload,
 			mediawiki::packages,
 			admins::roots,
+			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			generic::geoip::files
@@ -124,6 +126,7 @@ class applicationserver {
 
 		include standard,
 			admins::roots,
+			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			nfs::upload,
@@ -148,6 +151,7 @@ class applicationserver {
 
 		include standard,
 			admins::roots,
+			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			mediawiki::packages,
@@ -186,6 +190,7 @@ class imagescaler {
 		apaches::cron,
 		apaches::service,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		apaches::pybal-check,
@@ -231,6 +236,7 @@ class searchserver {
 	include	standard,
 		nfs::home,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		search::sudo,
@@ -248,6 +254,7 @@ class searchindexer {
 
 	include	standard,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		search::sudo,
@@ -284,7 +291,8 @@ $dns_auth_master = "ns1.wikimedia.org"
 node "alsted.wikimedia.org" {
 
 	include base,
-		admins::roots
+		admins::roots,
+		admins::dctech
 }
 
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
@@ -342,6 +350,7 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 node "bayes.wikimedia.org" {
 	include standard,
 		admins::roots,
+		admins::dctech,
 		accounts::ezachte,
 		accounts::reedy,
 		accounts::nimishg,
@@ -359,6 +368,7 @@ node "bast1001.wikimedia.org" {
 	include standard,
 		svn::client,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
@@ -505,6 +515,7 @@ node "dataset2.wikimedia.org" {
 	$gid=500
 	include standard,
 		admins::roots,
+		admins::dctech,
 		groups::wikidev,
 		accounts::catrope,
 		misc::download-wikimedia,
@@ -518,6 +529,7 @@ node "dataset1001.wikimedia.org" {
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 	include standard,
 		admins::roots,
+		admins::dctech,
 		groups::wikidev,
 		accounts::catrope,
 		misc::download-wikimedia,
@@ -712,6 +724,7 @@ node "fenari.wikimedia.org" {
 		svn::client,
 		nfs::home,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		accounts::l10nupdate,
@@ -781,6 +794,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::android::sdk,
 		misc::contint::test::testswarm,
 		admins::roots,
+		admins::dctech,
 		admins::jenkins,
 		certificates::star_wikimedia_org
 
@@ -796,7 +810,8 @@ node "gilman.wikimedia.org" {
 	include	base,
 		ntp::client,
 		nrpe,
-		admins::roots
+		admins::roots,
+		admins::dctech
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
@@ -817,6 +832,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		ntp::client,
 		nrpe,
 		admins::roots,
+		admins::dctech,
 		accounts::jpostlethwaite,
 		accounts::khorn,
 		accounts::mhernandez,
@@ -860,6 +876,7 @@ node "hooft.esams.wikimedia.org" {
 	include standard,
 		misc::install-server::tftp-server,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		ganglia::collector
@@ -924,6 +941,7 @@ node "manutius.wikimedia.org" {
 node "marmontel.wikimedia.org" {
 	include standard,
 		admins::roots,
+		admins::dctech,
 		svn::client,
 		misc::blogs::wikimedia,
 		certificates::star_wikimedia_org,
@@ -960,6 +978,7 @@ node "marmontel.wikimedia.org" {
 node "hooper.wikimedia.org" {
 	include standard,
 		admins::roots,
+		admins::dctech,
 		svn::client,
 		misc::etherpad,
 		certificates::star_wikimedia_org,
@@ -977,6 +996,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::foundationwiki,
 		mediawiki::refreshlinks,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		admins::restricted,
 		nrpe,
@@ -988,6 +1008,7 @@ node "iron.wikimedia.org" {
 	
 	include standard,
 	admins::roots,
+	admins::dctech,
 	misc::management::ipmi
 
 	# load a firewall so that anything that speaks on the net is protected (most notably mysql)
@@ -1016,6 +1037,7 @@ node "kaulen.wikimedia.org" {
 
 	include standard,
 		admins::roots,
+		admins::dctech,
 		accounts::demon,
 		accounts::hashar,
 		accounts::reedy,
@@ -1410,6 +1432,7 @@ node "ms7.pmtpa.wmnet" {
 		groups::wikidev,
 		ntp::client,
 		admins::roots,
+		admins::dctech,
 		admins::restricted,
 		misc::zfs::monitoring,
 		misc::nfs-server::home::monitoring
@@ -1832,6 +1855,7 @@ node "spence.wikimedia.org" {
 		nagios::monitor::checkpaging,
 		nfs::home,
 		admins::roots,
+		admins::dctech,
 		certificates::wmf_ca,
 		backup::client,
 		misc::ircecho,
@@ -1935,6 +1959,7 @@ node "srv281.pmtpa.wmnet" {
 	#	applicationserver::jobrunner,
 	#	 memcached
 	include admins::roots,
+		admins::dctech,
 		admins::mortals,
 		apaches::pybal-check,
 		imagescaler
@@ -2153,6 +2178,7 @@ node "streber.wikimedia.org" {
 #		ganglia::collector,
 		ntp::client,
 		admins::roots,
+		admins::dctech,
 #		misc::torrus,
 		exim::rt,
 		misc::rt::server,
@@ -2176,6 +2202,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		snapshots::files,
 		snapshots::noapache,
 		admins::roots,
+		admins::dctech,
 		admins::mortals,
 		accounts::datasets,
 		nfs::data,
