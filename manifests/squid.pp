@@ -51,6 +51,14 @@ class squid {
 			"/etc/squid/frontend.conf":
 				source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
 		}
+	} else {
+		# We need placeholders configured in puppet to satisfy redudancies
+		file {
+			"/etc/squid/squid.conf":
+				ensure  => exist;
+			"/etc/squid/frontend.conf":
+				ensure  => exist;
+		}
 	}
 
 	# Common files
