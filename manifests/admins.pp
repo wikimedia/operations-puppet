@@ -75,6 +75,7 @@ class groups {
 			allowdupe	=> false,
 		}
 	}
+
 	class l10nupdate {
 		group { "l10nupdate":
 			name		=> "l10nupdate",
@@ -84,6 +85,17 @@ class groups {
 			allowdupe	=> false,
 		}
 	}
+
+	class dctech {
+		group { "dctech":
+			name		=> "dctech",
+			gid		=> 501,
+			alias		=> 501,
+			ensure		=> present,
+			allowdupe	=> false,
+		}
+	}
+
 }
 
 class baseaccount {
@@ -1856,7 +1868,7 @@ class admins::restricted {
 	include accounts::austin
 	include accounts::avar
 	include accounts::bastique # access revoked
-	include accounts::cmjohnson
+	#include accounts::cmjohnson # moved to dctech
 	include accounts::dab
 	include accounts::daniel
 	include accounts::dartar
@@ -1895,7 +1907,8 @@ class admins::jenkins {
 }
 
 class admins::dctech {
-	$gid = 500  # 'wikidev' by default
+	$gid = 501  # 'wikidev' by default
+	include groups::dctech
 
 	include accounts::cmjohnson
 }
