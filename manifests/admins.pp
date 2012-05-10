@@ -113,6 +113,32 @@ class baseaccount {
 	}
 }
 
+class accounts::cmjohnson inherits baseaccount {
+	$username = "cmjohnson"
+	$realname = "Chris Johnson"
+	$uid = 579
+
+	unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+	if $manage_home {
+		Ssh_authorized_key { require => Unixaccount[$realname]}
+
+		ssh_authorized_key {
+			"chrisj@ubuntu":
+				ensure	=> absent,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
+			"chrisj@chrisj-VPCEB23FM":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR";
+		}
+	}
+}
+
+
 class accounts {
 	class aengels inherits baseaccount {
 		$username = "aengels"
@@ -310,32 +336,6 @@ class accounts {
 		}
 	}
 	
-	class cmjohnson inherits baseaccount {
-		$username = "cmjohnson"
-		$realname = "Chris Johnson"
-		$uid = 579
-
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
-		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
-
-			ssh_authorized_key {
-				"chrisj@ubuntu":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDnDmdyh5Stw9bMTm7qL1kWuNpazc1m6HiaN0ZlaqwbUIhvtADWobHZcHvTHMwyauU/X6joE+a6pyvYgM2hr6+wRawjmgOuK8cak90weyp+i20HCiPb5GqOLE0uDmDizI8Hb50kxjiXLF6k+7cT7i0Lksa9EKhsYEwCjgnOiGor6wEvN1RlwRuwNBOZcI6OUvV39G/VP/pjpZBeUNoUZHWgpr9nbX+rlctjzK0s8sRbUamvCG3lyeB1pNIVCkY9YOwvf1D2UpRnhIm3XQspojphCFzC6HqRqZOyygweKc98fmvxkbkiyzh9XPtKyV5CtRS+9ECUmZjfmcWZpomCN2tp";
-			}
-			ssh_authorized_key {
-				"chrisj@chrisj-VPCEB23FM":
-					ensure	=> present,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR";
-			}
-		}
-	}
 
 	class jamesofur inherits baseaccount {
 		$username = "jamesofur"
@@ -1906,7 +1906,7 @@ class admins::jenkins {
 }
 
 class admins::dctech {
-	#$gid = 501  #  useless blahrgh
+	$gid = 501  #  useless blahrgh
 	include groups::dctech
 
 	include accounts::cmjohnson
