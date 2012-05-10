@@ -192,6 +192,10 @@ class imagescaler {
 class imagescaler::labs {
 	$cluster = "imagescaler"
 
+	if( $::realm == 'labs' ) {
+		include nfs::apache::labs
+	}
+
 	include standard,
 		imagescaler::cron,
 		imagescaler::packages,

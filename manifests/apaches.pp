@@ -140,6 +140,10 @@ extension=wikidiff2.so
 class apaches::service {
 	include mediawiki::sync
 
+	if( $::realm == 'labs' ) {
+		include nfs::apache::labs
+	}
+
 	# Require apaches::files to be in place
 	require apaches::files
 
