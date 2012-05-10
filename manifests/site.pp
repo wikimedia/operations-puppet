@@ -1547,6 +1547,7 @@ node /^ocg[1-3]\.wikimedia\.org$/ {
 
 	include	standard,
 		admins::roots,
+		admins::dctech,
 		misc::mwlib::packages,
 		misc::mwlib::users
 
