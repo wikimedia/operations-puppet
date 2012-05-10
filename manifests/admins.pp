@@ -1907,7 +1907,7 @@ class admins::jenkins {
 }
 
 class admins::dctech {
-	$gid = 501  # 'wikidev' by default
+	$gid = 501  # 'dctech' by default
 	include groups::dctech
 
 	include accounts::cmjohnson
