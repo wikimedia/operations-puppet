@@ -145,32 +145,6 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 }
 
-
-class generic::geoip {
-	class packages {
-		package { [ "libgeoip1", "libgeoip-dev", "geoip-bin" ]:
-			ensure => latest;
-		}
-	}
-
-	class files {
-		require generic::geoip::packages
-
-		file {
-			"/usr/share/GeoIP/GeoIP.dat":
-				mode => 0644,
-				owner => root,
-				group => root,
-				source => "puppet:///volatile/misc/GeoIP.dat";
-			"/usr/share/GeoIP/GeoIPCity.dat":
-				mode => 0644,
-				owner => root,
-				group => root,
-				source => "puppet:///volatile/misc/GeoIPcity.dat";
-		}
-	}
-}
-
 # APT pinning
 
 define generic::apt::pin-package($pin="release o=Ubuntu", $priority="1001", $package="") {

@@ -95,7 +95,7 @@ class applicationserver {
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
-			generic::geoip::files
+			misc::geoip
 	}
 
 	class home-no-service inherits parent {
@@ -107,7 +107,7 @@ class applicationserver {
 			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
-			generic::geoip::files
+			misc::geoip
 	}
 
 	class home inherits home-no-service {
@@ -137,7 +137,7 @@ class applicationserver {
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
-			generic::geoip::files
+			misc::geoip
 	}
 
 	class bits inherits parent {
@@ -161,7 +161,7 @@ class applicationserver {
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
-			generic::geoip::files
+			misc::geoip
 	}
 
 	class jobrunner {
@@ -468,7 +468,8 @@ node "emery.wikimedia.org" {
 		admins::restricted,
 		nrpe,
 		generic::sysctl::high-bandwidth-rsync,
-		udp2log::utilities
+		udp2log::utilities,
+		misc::geoip
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -1120,7 +1121,8 @@ node "locke.wikimedia.org" {
 		accounts::dsc,
 		accounts::datasets,
 		nrpe,
-		udp2log::utilities
+		udp2log::utilities,
+		misc::geoip
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -1598,7 +1600,8 @@ node "oxygen.wikimedia.org" {
 		accounts::dsc,
 		accounts::diederik,
 		misc::squid-logging::multicast-relay,
-		nrpe
+		nrpe,
+		misc::geoip
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
