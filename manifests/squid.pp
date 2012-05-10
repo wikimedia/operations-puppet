@@ -55,9 +55,9 @@ class squid {
 		# We need placeholders configured in puppet to satisfy redudancies
 		file {
 			"/etc/squid/squid.conf":
-				ensure  => exist;
+				ensure  => present;
 			"/etc/squid/frontend.conf":
-				ensure  => exist;
+				ensure  => present;
 		}
 	}
 
