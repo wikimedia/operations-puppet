@@ -113,27 +113,51 @@ class nfs::upload {
 			ensure => directory;
 	}
 
-	mount { 
-		"/mnt/thumbs":
-			device => "ms5.pmtpa.wmnet:/export/thumbs",
-			fstype => "nfs",
-			name => "/mnt/thumbs",
-			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-			require => File["/mnt/thumbs"],
-			ensure => mounted;
-		"/mnt/upload6":
-			device => "ms7.pmtpa.wmnet:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload6",
-			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-			require => File["/mnt/upload6"],
-			ensure => mounted;
-		"/mnt/upload5":
-			device => "ms1.wikimedia.org:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload5",
-			ensure => absent;
-	}	
+	if( $::realm == 'production' ) {
+		mount {
+			"/mnt/thumbs":
+				device => "ms5.pmtpa.wmnet:/export/thumbs",
+				fstype => "nfs",
+				name => "/mnt/thumbs",
+				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/thumbs"],
+				ensure => mounted;
+			"/mnt/upload6":
+				device => "ms7.pmtpa.wmnet:/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload6",
+				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/upload6"],
+				ensure => mounted;
+			"/mnt/upload5":
+				device => "ms1.wikimedia.org:/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload5",
+				ensure => absent;
+		}
+	}
+	# FIXME : this is hacky, should be done in a better way
+	# Same as above, just use different hostname, export paths
+	if( $::realm == 'labs' ) {
+		mount {
+			"/mnt/thumbs":
+				device => "deployment-nfs-memc:/mnt/export/thumbs",
+				fstype => "nfs",
+				name => "/mnt/thumbs",
+				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/thumbs"],
+				ensure => mounted;
+			"/mnt/upload6":
+				device => "deployment-nfs-memc:/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload6",
+				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/upload6"],
+				ensure => mounted;
+		}
+
+	}
+
 }
 
 class nfs::data {
