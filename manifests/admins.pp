@@ -1909,5 +1909,5 @@ class admins::dctech {
 	$gid = 501  # 'dctech' by default
 	include groups::dctech
 
-	#include accounts::cmjohnson
+	include accounts::cmjohnson
 }
