@@ -1906,7 +1906,7 @@ class admins::jenkins {
 }
 
 class admins::dctech {
-	$gid = 501  # 'dctech' by default
+	#$gid = 501  #  useless blahrgh
 	include groups::dctech
 
 	include accounts::cmjohnson
