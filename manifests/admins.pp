@@ -1893,3 +1893,9 @@ class admins::jenkins {
 	include accounts::hashar
 	include accounts::reedy
 }
+
+class admins::dctech {
+	$gid = 500  # 'wikidev' by default
+
+	include accounts::cmjohnson
+}
