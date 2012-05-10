@@ -975,12 +975,13 @@ node "hume.wikimedia.org" {
 		nfs::home,
 		misc::scripts,
 		misc::maintenance::foundationwiki,
-		misc::fundraising::impressionlog::compress,
 		mediawiki::refreshlinks,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
-		nrpe
+		nrpe,
+		misc::fundraising::impressionlog::compress,
+		accounts::logmover
 }
 
 node "iron.wikimedia.org" {
