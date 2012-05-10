@@ -980,8 +980,7 @@ node "hume.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		nrpe,
-		misc::fundraising::impressionlog::compress,
-		accounts::logmover
+		misc::fundraising::impressionlog::archive
 }
 
 node "iron.wikimedia.org" {

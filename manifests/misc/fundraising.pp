@@ -193,26 +193,6 @@ class misc::fundraising {
 
 }
 
-class misc::fundraising::impressionlog::compress {
-
-	file { 
-		'/usr/local/bin/impression_log_rotator':
-			mode => 0755,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/impression_log_rotator";
-	}
-
-	cron {
-		'rotate_impression_logs':
-			user => root,
-			minute => '*/5',
-			command => '/usr/local/bin/impression_log_rotator',
-			ensure => present,
-	}
-
-}
-
 
 class misc::fundraising::offhost_backups {
 
@@ -329,6 +309,63 @@ class misc::fundraising::mail {
 			user => root,
 			command => '/usr/sbin/exim -bpc > /tmp/exim_queue_count.dat',
 			ensure => present;
+	}
+
+}
+
+class misc::fundraising::impressionlog::archive {
+
+	system_role { "misc::fundraising::impressionlog::archive": description => "fundraising impression/banner log archive" }
+
+	file { 
+		'/usr/local/bin/impression_log_rotator':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/impression_log_rotator";
+	}
+
+	cron {
+		'rotate_impression_logs':
+			user => root,
+			minute => '*/5',
+			command => '/usr/local/bin/impression_log_rotator',
+			ensure => present,
+	}
+
+	systemuser { authdns: name => "logmover", home => "/var/lib/logmover", shell => "/bin/sh" }
+
+	ssh_authorized_key {
+		"root@loudon":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
+		"root@aluminium":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==";
+		"root@grosley":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==";
+		"root@hume":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAt0zYrPQ9uWGikvIQymX30hGeV42aSNnSZ3ClhEVMYHi98IJFFCFJC1UiQdhMV3p0fyVN0KZRTzYDFDsIKZxAN7/ZAyNaAujmRb5FBJ2IxDUaG89n0ZbmMz09BktVbM9jorzkaLatMYs4ouzjuH4EoW7Dbr2EO/cYAzK4Qv0wQnVDbd2bTjcJ48b5QWhQ9PWvytPOv0PgJTql3zUs3lSVAc7sOTU5FmwGIQBehGCvHJvepr/b8omJwTICQUsiICisJELlZesc7QdfiourSZIy3MYSMefhbELPGPBMC132bS8IhaC/3iFA8GAuTuNqaHqJVzrUm2t4r0ZvDJReX0zLdQ==";
+		"file_mover@locke":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==";
+		"file_mover@emery":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA04+NGTd7Vj5Qx7a7IMFfphwlADq67dSCiU7iU1R8rIyDYu0mKioEYjq5JItM0yEE1CyiDYOaYY+L40j11ySlD5+qchg5gMxigNVWcQ3L6lEs1p1MkIm2LtRkqPC5vfLJIuTJlukad6W+G9atdEk9Dw7zK6yVaWq0/zcNXxHiJC7lUqckGwy4A/mLecfiRhPL/4ksID2TiqKfvarpqg43IjycoLX65BGmOumDkzDfR5mvHcOeWsDdhB3b8rIAPfjLg1l5V3CkaGT2xQBSN/YbLB+bIPf7nn3b+HjjxU4JHEsDdogUn/BuaMQcjqfJjZ30h97hkyvTaQQ6DS5JI8eDaQ==";
 	}
 
 }
