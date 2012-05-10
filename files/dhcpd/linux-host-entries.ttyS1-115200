@@ -2141,36 +2141,57 @@ host pdf3 {
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search14 {
 	hardware ethernet 00:26:B9:53:55:A4;
 	fixed-address search14.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search15 {
 	hardware ethernet 00:26:B9:53:3F:82;
 	fixed-address search15.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search16 {
 	hardware ethernet 00:26:B9:53:55:F5;
 	fixed-address search16.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search17 {
 	hardware ethernet 00:26:B9:53:4F:C4;
 	fixed-address search17.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search18 {
 	hardware ethernet 00:26:B9:53:3E:B5;
 	fixed-address search18.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search19 {
 	hardware ethernet 00:26:B9:53:54:DF;
 	fixed-address search19.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search20 {
@@ -2180,6 +2201,136 @@ host search20 {
 	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
+
+host search21 {
+	hardware ethernet d4:ae:52:6e:ea:1c;
+	fixed-address search21.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search22 {
+	hardware ethernet d4:ae:52:6e:ea:4c;
+	fixed-address search22.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search23 {
+	hardware ethernet d4:ae:52:6e:f0:8e;
+	fixed-address search23.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search24 {
+	hardware ethernet d4:ae:52:6e:f1:15;
+	fixed-address search24.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search25 {
+	hardware ethernet d4:ae:52:70:2d:e3;
+	fixed-address search25.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search26 {
+	hardware ethernet d4:ae:52:6e:e9:e0;
+	fixed-address search26.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search27 {
+	hardware ethernet d4:ae:52:70:2d:19;
+	fixed-address search27.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search28 {
+	hardware ethernet d4:ae:52:6e:e7:7e;
+	fixed-address search28.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search29 {
+	hardware ethernet d4:ae:52:64:da:54;
+	fixed-address search29.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search30 {
+	hardware ethernet d4:ae:52:6e:e3:32;
+	fixed-address search30.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search31 {
+	hardware ethernet d4:ae:52:6a:32:b6;
+	fixed-address search31.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search32 {
+	hardware ethernet d4:ae:52:6e:ef:1a;
+	fixed-address search32.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search33 {
+	hardware ethernet d4:ae:52:6e:dc:73;
+	fixed-address search33.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+##### search34-36 don't seem to hvae plugged in management nics yet
+##### will update when I have the data - py
+#host search34 {
+#	hardware ethernet ;
+#	fixed-address search34.pmtpa.wmnet;
+#	
+#	option pxelinux.pathprefix "precise-installer/";
+#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+#}
+
+#host search35 {
+#	hardware ethernet ;
+#	fixed-address search35.pmtpa.wmnet;
+#	
+#	option pxelinux.pathprefix "precise-installer/";
+#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+#}
+
+#host search36 {
+#	hardware ethernet ;
+#	fixed-address search36.pmtpa.wmnet;
+#	
+#	option pxelinux.pathprefix "precise-installer/";
+#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+#}
 
 host search1001 {
 	hardware ethernet 84:2b:2b:77:50:b2;
