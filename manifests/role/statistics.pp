@@ -12,6 +12,7 @@ class role::statistics {
 		misc::statistics::base,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
+		misc::statistics::db,
 		generic::pythonpip,
 		udp2log::udp_filter
 

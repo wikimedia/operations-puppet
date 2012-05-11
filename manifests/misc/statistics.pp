@@ -116,3 +116,13 @@ class misc::statistics::site {
 	],
 	}
 }
+
+
+# installs a generic mysql server
+# for loading and manipulating sql dumps.
+class misc::statitics::db {
+	include mysql::packages,
+		mysql::mysqluser,
+		mysql::mysqlpath,
+		mysql::datadirs
+}
