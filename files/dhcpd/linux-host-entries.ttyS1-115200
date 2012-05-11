@@ -2206,8 +2206,8 @@ host search21 {
 	hardware ethernet d4:ae:52:6e:ea:1c;
 	fixed-address search21.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+#	option pxelinux.pathprefix "precise-installer/";
+#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search22 {
@@ -2306,24 +2306,24 @@ host search33 {
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host search34 {
+	hardware ethernet d4:ae:52:70:2b:f6;
+	fixed-address search34.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host search35 {
+	hardware ethernet d4:ae:52:6e:f1:60;
+	fixed-address search35.pmtpa.wmnet;
+	
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 ##### search34-36 don't seem to hvae plugged in management nics yet
 ##### will update when I have the data - py
-#host search34 {
-#	hardware ethernet ;
-#	fixed-address search34.pmtpa.wmnet;
-#	
-#	option pxelinux.pathprefix "precise-installer/";
-#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-#}
-
-#host search35 {
-#	hardware ethernet ;
-#	fixed-address search35.pmtpa.wmnet;
-#	
-#	option pxelinux.pathprefix "precise-installer/";
-#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
-#}
-
 #host search36 {
 #	hardware ethernet ;
 #	fixed-address search36.pmtpa.wmnet;
