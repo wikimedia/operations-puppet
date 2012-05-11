@@ -34,9 +34,12 @@ class media-storage::thumbs-server {
 
 	service {
 		nginx:
-			require => [ Package[nginx], Nginx_site[thumbs] ],
+			require => [ Package[nginx], Nginx_site[thumbs], Service[noapache] ],
 			subscribe => [ File["/etc/nginx/nginx.conf"], Nginx_site[thumbs] ],
 			ensure => running;
+		"noapache":
+			name => apache,
+			ensure => stopped; # Apache conflicts with nginx
 	}
 
 	# monitoring
