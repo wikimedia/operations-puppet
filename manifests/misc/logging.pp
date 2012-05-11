@@ -18,6 +18,12 @@ class misc::mediawiki-logger {
 			owner => root,
 			group => root,
 			content => "flush pipe 1 python /usr/local/bin/demux.py\n";
+		"/home/wikipedia/logs":
+			owner => root,
+			group => udp2log,
+			mode => 0775,
+			# Logging is done in /home/wikipedia:
+			require => nfs::home::wikipedia;
 		"/usr/local/bin/demux.py":
 			mode => 0544,
 			owner => root,
@@ -49,7 +55,7 @@ net.core.rmem_max = 536870912
 	}
 
 	service { udp2log:
-		require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py"] ] ],
+		require => [ Package[udplog], File[ ["/etc/udp2log", "/usr/local/bin/demux.py", "/home/wikipedia/logs"] ] ],
 		subscribe => File["/etc/udp2log"],
 		ensure => running;
 	}
