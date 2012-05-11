@@ -411,6 +411,16 @@ host db60 {
 	fixed-address db60.pmtpa.wmnet;
 }
 
+host db61 {
+	hardware ethernet D4:AE:52:7C:94:CC;
+	fixed-address db61.pmtpa.wmnet;
+}
+
+host db62 {
+	hardware ethernet D4:AE:52:7C:A6:FF;
+	fixed-address db62.pmtpa.wmnet;
+}
+
 host db1001 {
 	hardware ethernet 78:2b:cb:03:68:61;
 	fixed-address db1001.eqiad.wmnet;
