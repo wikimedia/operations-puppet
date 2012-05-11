@@ -412,12 +412,12 @@ host db60 {
 }
 
 host db61 {
-	hardware ethernet D4:AE:52:7C:94:CC;
+	hardware ethernet D4:AE:52:7C:94:CA;
 	fixed-address db61.pmtpa.wmnet;
 }
 
 host db62 {
-	hardware ethernet D4:AE:52:7C:A6:FF;
+	hardware ethernet D4:AE:52:7C:A6:FD;
 	fixed-address db62.pmtpa.wmnet;
 }
 
