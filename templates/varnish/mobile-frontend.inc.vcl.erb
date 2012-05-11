@@ -220,7 +220,7 @@ sub vcl_recv {
 	if ( req.http.host == "m.wikipedia.org" ) {
 		if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
 			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( reg.http.X-Carrier == "wikimedia" ) {
+		} else if ( req.http.X-Carrier == "wikimedia" ) {
 			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Orange Uganda" ) {
 			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
