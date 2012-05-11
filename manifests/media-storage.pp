@@ -13,6 +13,10 @@ class media-storage::thumbs-server {
 		$thumbs_proxying = "false"
 	}
 
+	if ! $thumbs_server_name {
+		$thumbs_server_name = 'upload.wikimedia.org'
+	}
+
 	include generic::sysctl::high-http-performance
 
 	system_role { "media-storage::thumbs-server": description => "Thumbnail server" }
