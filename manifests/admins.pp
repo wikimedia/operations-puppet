@@ -1511,8 +1511,8 @@ class accounts {
 		}
 	}
 
-	class declerembaul inherits baseaccount {
-		$username = "declerembaul"
+	class declerambaul inherits baseaccount {
+		$username = "declerambaul"
 		$realname = "Fabian Kaelin"
 		$uid = 566
 		$enabled = "false" 
@@ -1531,6 +1531,7 @@ class accounts {
 			}
 		}
 	}
+
 
 	class whym inherits baseaccount {
 		$username = "whym"
@@ -1881,7 +1882,7 @@ class admins::analinterns {
 	include accounts::shawn
 	include accounts::halfak
 	include accounts::diederik
-	include accounts::declerembaul
+	include accounts::declerambaul
 	include accounts::whym
 }
 
