@@ -68,7 +68,7 @@ class udp2log {
 			require udp2log::monitoring
 
 			nrpe::monitor_service{ "udp2log_log_age-${name}": description => "udp2log log age for ${name}", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}", contact_group => "admins,analytics" }
-			nrpe::monitor_service{ "udp2log_procs-${name}": description => "udp2log processes for ${name}", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}", contact_group => "admins,analytics" }
+			nrpe::monitor_service{ "udp2log_procs-${name}": description => "udp2log processes for ${name}", nrpe_command => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}", contact_group => "admins,analytics", retries => 10 }
 		}
 
 		service { "udp2log-${name}":
