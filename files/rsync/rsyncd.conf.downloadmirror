@@ -17,7 +17,9 @@ read only = true
 path = /data/xmldatadumps/public
 # added sagres.c3sl.ufpr.br, Sept 6 2011 -- atg
 # for sagres.c3sl.ufpr.br, contact: Carlos Carvalho <carlos@fisica.ufpr.br>
-hosts allow = sagres.c3sl.ufpr.br
+# added odysseus.fi.muni.cz, May 11, 2012 -- atg
+# for odysseus.fi.muni.cz, contact: Jan Kasprzak <ftp-admin@fi.muni.cz>
+hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz
 
 [dumpmirrorsalldumps]
 # this includes only dumps, no archives, no other datasets
