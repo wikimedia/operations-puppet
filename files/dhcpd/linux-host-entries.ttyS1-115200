@@ -2266,8 +2266,8 @@ host search21 {
 	hardware ethernet d4:ae:52:6e:ea:1c;
 	fixed-address search21.pmtpa.wmnet;
 	
-#	option pxelinux.pathprefix "precise-installer/";
-#	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search22 {
