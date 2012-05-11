@@ -24,3 +24,6 @@ mysql.connect_timeout = 1
 
 session.save_path = /tmp
 
+; Prevent PCRE from going crazy
+pcre.recursion_limit=1000
+
