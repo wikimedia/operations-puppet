@@ -12,7 +12,8 @@ my ($mirror,$email);
 # general conf
 my $conf = {
 	'SENDER' => 'root@wikimedia.org',
-	'RECIPIENT' => 'root@wikimedia.org',
+	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only SUCCESS notices
+	'FAILURE-RECIPIENT' => 'root@wikimedia.org', # this recip gets only FAILURE notices
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
 	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
@@ -107,14 +108,16 @@ for my $m (sort keys %{$mirror}) {
 # set the subject line according to the outcome
 if ($email->{'errors'}) {
 	$email->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} $conf->{'IDENT'} had errors";
+	$email->{'recipient'} = $conf->{'FAILURE-RECIPIENT'};
 } else {
 	$email->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} $conf->{'IDENT'} ran without errors";
+	$email->{'recipient'} = $conf->{'SUCCESS-RECIPIENT'};
 }
 
 # send message
-open MAILER, "|/usr/sbin/exim -i $conf->{'RECIPIENT'}";
+open MAILER, "|/usr/sbin/exim -i $email->{'recipient'}";
 print MAILER "From: $conf->{'SENDER'}\n" .
-	"To: $conf->{'RECIPIENT'}\n" .
+	"To: $email->{'recipient'}\n" .
 	"Subject: $email->{'subject'}\n\n" .
 	"$email->{'report'}";
 close MAILER;
