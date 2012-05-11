@@ -29,7 +29,7 @@
 ####   re-read live.
 ####
 
-import re, urllib2, threading, time, sys, subprocess
+import re, urllib2, urllib, threading, time, sys, subprocess
 from optparse import OptionParser
 import random
 from swiftcleaner_helper import Token, read_config
@@ -403,7 +403,8 @@ def delegate(objlistfile, conf):
                 line = fh.next()
                 #print "read line %s" % line
                 try:
-                    (cont, image) = line[:-1].split()
+                    (cont, image) = line[:-1].split(' ', 1)
+                    image = urllib.quote(image)
                 except ValueError:
                     # if there is an unescaped space in the line or no container, skip it
                     print "skipping line %s" % line,
