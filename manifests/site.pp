@@ -1642,7 +1642,7 @@ node "pdf1.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$cluster = "pdf"
 
-	include	standard,
+	include	role::pdf,
 		groups::wikidev,
 		accounts::file_mover
 }
@@ -1651,7 +1651,7 @@ node "pdf2.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$cluster = "pdf"
 
-	include	standard,
+	include	role::pdf,
 		groups::wikidev,
 		accounts::file_mover
 }
@@ -1659,7 +1659,7 @@ node "pdf2.wikimedia.org" {
 node "pdf3.wikimedia.org" {
 	$cluster = "pdf"
 
-	include	standard,
+	include	role::pdf,
 		groups::wikidev,
 		accounts::file_mover
 }
