@@ -45,13 +45,16 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 	$mirror = {
 		
 		# archived jenkins builds
-		'1' => "rsync -ar /archive/jenkins_builds/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/jenkins_builds/",
+		#'1' => "rsync -ar /archive/jenkins_builds/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/jenkins_builds/",
+		'1' => "rsync -ar /archive/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/",
 
 		# syslog-type stuff from paypal etc.
-		'2' => "rsync -ar --exclude *log /var/log/fundraising/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/logs/",
+		#'2' => "rsync -ar --exclude *log /var/log/fundraising/ logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/logs/",
+		'2' => "rsync -ar --exclude *log /var/log/fundraising/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/logs/",
 
 		# hacky backup strategy for hacky hacking dir
-		'3' => "tar --rsh-command=/usr/bin/ssh -zcf logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/backups/br.$conf->{'DATE'}.tgz -- /srv/br",
+		#'3' => "tar --rsh-command=/usr/bin/ssh -zcf logmover\@storage3.pmtpa.wmnet:/archive/$conf->{'HOSTNAME'}/backups/br.$conf->{'DATE'}.tgz -- /srv/br",
+		'3' => "tar --rsh-command=/usr/bin/ssh -zcf fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/backups/br.$conf->{'DATE'}.tgz -- /srv/br",
 
 	};
 
