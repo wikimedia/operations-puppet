@@ -414,6 +414,8 @@ host db60 {
 host db61 {
 	hardware ethernet D4:AE:52:7C:94:CA;
 	fixed-address db61.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db62 {
