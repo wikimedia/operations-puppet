@@ -61,3 +61,34 @@
 		ProxyPassReverse http://gdash.pmtpa.wmnet:81/
 	</Location> 
 </VirtualHost>
+
+# this doesn't belong here, shh.
+<VirtualHost *:80>
+	ServerName ishmael.wikimedia.org
+	Redirect / "https://ishmael.wikimedia.org/"
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName ishmael.wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+	<Location />
+		Order allow,deny
+		Allow from all
+
+		AuthName "WMF Labs"
+		AuthType Basic
+		AuthBasicProvider ldap
+		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+		AuthLDAPBindPassword <%= proxypass %>
+		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?cn"
+		Require valid-user
+
+		ProxyPass http://ishmael.pmtpa.wmnet/
+		ProxyPassReverse http://ishmael.pmtpa.wmnet/
+	</Location> 
+
+</VirtualHost>
