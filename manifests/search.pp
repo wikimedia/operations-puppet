@@ -101,6 +101,7 @@ class lucene {
 				command =>'find /a/search/log/log.* -type f -mtime +3 -exec rm -f {} \;',
 				user => lsearch,
 				hour => 0,
+				minute => 0,
 				ensure => present;
 		}
 
