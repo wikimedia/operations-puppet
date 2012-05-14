@@ -47,8 +47,7 @@ class icinga::configuration::variables {
 	# puppet_hosts.cfg must be first
 	$puppet_files = [
 			  "${icinga::configuration::variables::icinga_config_dir}/puppet_hostgroups.cfg",
-			  "${icinga::configuration::variables::icinga_config_dir}/puppet_servicegroups.cfg",
-			  "${icinga::configuration::variables::icinga_config_dir}/puppet_hosts.cfg"]
+			  "${icinga::configuration::variables::icinga_config_dir}/puppet_servicegroups.cfg"]
 
 	$static_files = [
 			  "${icinga::configuration::variables::icinga_config_dir}/puppet_hostextinfo.cfg",
@@ -690,7 +689,8 @@ class icinga::monitor::service {
 		require => File[$icinga::configuration::variables::puppet_files],
 		ensure => running,
 		subscribe => [ File[$icinga::configuration::variables::puppet_files],
-			       File[$icinga::configuration::variables::static_files]]; 
+			       File[$icinga::configuration::variables::static_files],
+			       File[/etc/icinga/puppet_hosts.cfg]]; 
 	}
 }
 
