@@ -20,7 +20,7 @@ class icinga::monitor {
 		icinga::monitor::jobqueue,
 		icinga::monitor::snmp,
 		icinga::monitor::naggen,
-		icinga::nsca::daemon,
+		icinga::monitor::nsca::daemon,
 		mysql,
 		nrpe::new,
 		lvs::monitor,
