@@ -2179,7 +2179,6 @@ node "streber.wikimedia.org" {
 		admins::dctech,
 #		misc::torrus,
 		exim::rt,
-		misc::rt::server,
 		firewall::builder
 
 	class { "misc::syslog-server": config => "network" }
