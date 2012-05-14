@@ -2,24 +2,19 @@
 import re
 import sys
 from hookhelper import HookHelper
-from optparse import OptionParser
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
-def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit>")
-	parser.add_option("--change", dest="change")
-	parser.add_option("--change-url", dest="changeurl")
-	parser.add_option("--project", dest="project")
-	parser.add_option("--branch", dest="branch")
-	parser.add_option("--submitter", dest="submitter")
-	parser.add_option("--commit", dest="commit")
-	(options, args) = parser.parse_args()
-	helper = HookHelper()
-	message = "Change merged: " + re.sub(' \(.*', "", options.submitter) + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-	helper.log_to_file(options.project, options.branch, message)
-	# Resolve any RT tickets that this change mentions as resolved
-	helper.update_rt(options.change, options.changeurl)
+class ChangeMerged(HookHelper):
+	def run(self):
+		self.parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit>")
+		self.parser.add_option("--submitter", dest="submitter")
+		self.parser.add_option("--commit", dest="commit")
+		(options, args) = self.parser.parse_args()
+		message = "Change merged: " + re.sub(' \(.*', "", options.submitter) + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+		self.log_to_file(options.project, options.branch, message)
+		# Resolve any RT tickets that this change mentions as resolved
+		self.update_rt(options.change, options.changeurl)
 
 if __name__ == "__main__":
-	main()
+	hook = ChangeMerged()
+	hook.run()

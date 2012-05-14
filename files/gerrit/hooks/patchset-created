@@ -5,95 +5,88 @@ import shutil
 import subprocess
 import re
 from hookhelper import HookHelper
-from optparse import OptionParser
 
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 import hookconfig
 
-global helper
+class PatchsetCreated(HookHelper):
+	def run(self):
+		self.parser.set_usage("patchset-created --change")
+		self.parser.add_option("--uploader", dest="uploader")
+		self.parser.add_option("--commit", dest="commit")
+		self.parser.add_option("--patchset", dest="patchset", type="int")
+		(options, args) = self.parser.parse_args()
+		if not options.change or not options.change.isalnum():
+			self.parser.error("No change id, or changeid invalid")
+		if hookconfig.debug:
+			sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
+		subject = self.get_subject(options.change)
+		if subject:
+			message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+			self.log_to_file(options.project, options.branch, message)
+		self.lint_test(options)
+		self.l10n_automerge(options)
 
-def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage("patchset-created --change")
-	parser.add_option("--change", dest="change")
-	parser.add_option("--change-url", dest="changeurl")
-	parser.add_option("--project", dest="project")
-	parser.add_option("--branch", dest="branch")
-	parser.add_option("--uploader", dest="uploader")
-	parser.add_option("--commit", dest="commit")
-	parser.add_option("--patchset", dest="patchset", type="int")
-	(options, args) = parser.parse_args()
-	if not options.change or not options.change.isalnum():
-		parser.error("No change id, or changeid invalid")
-	if hookconfig.debug:
-		sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
-	helper = HookHelper()
-	subject = helper.get_subject(options.change)
-	if subject:
-		message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		helper.log_to_file(options.project, options.branch, message)
-	lint_test(options, helper)
-	l10n_automerge(options, helper)
+	def lint_test(self,options):
+		if not hookconfig.tmpdir:
+			sys.stderr.write("tmpdir isn't set in the configuration, not running lint tests.")
+			# Not having tmpdir is dangerous!
+			return
+		if options.project != "operations/puppet":
+			# TODO: make this configurable
+			return
+		ref = self.get_ref(options.change, options.patchset)
+		if not ref:
+			return
+		if hookconfig.tmpdir[-1] == '/':
+			hookconfig.tmpdir = hookconfig.tmpdir[0:-1]
+		directory = hookconfig.tmpdir + '/' +	options.change
+		repo = 'ssh://' + hookconfig.gerrituser + '@' + hookconfig.sshhost + ':' + str(hookconfig.sshport) + '/' + options.project
+		command = '/usr/bin/git init ' + directory
+		if hookconfig.debug:
+			sys.stderr.write("Running the following git command: " + command + "\n")
+		proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory + '/.git'})
+		(stdoutdata, stferrdata) = proc.communicate()
+		if hookconfig.debug:
+			sys.stderr.write("git init stdout: " + stdoutdata + "\n")
+			sys.stderr.write("git init stderr: " + stdoutdata + "\n")
+		command = '/usr/bin/git pull ' + repo + ' ' + ref
+		if hookconfig.debug:
+			sys.stderr.write("Running the following git command: " + command + "\n")
+		proc = subprocess.Popen(command, shell=True, cwd=directory, env={"GIT_DIR": directory + '/.git'})
+		proc.wait()
+		proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
+		proc.wait()
+		proc = subprocess.Popen('/usr/bin/puppet parser validate --color none ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
+		(stdoutdata, stderrdata) = proc.communicate()
+		shutil.rmtree(directory)
+		procstatus = proc.returncode
+		if procstatus == 0:
+			status = "pass"
+		else:
+			status = "fail"
+		message = ""
+		if stdoutdata:
+			message = stdoutdata
+		if stderrdata:
+			# Prefix error message with a space so gerrit renders it as monospaced:
+			stderrdata = stderrdata.replace( "\n", "\n " )
+			message = message + stderrdata
+		# Cleanup lonnng paths from the message:
+		message = message.replace( directory, '.' )
+		verifyset = helper.set_verify(status, options.commit, message)
+		if not verifyset:
+			sys.stderr.write("Failed to set verify score")
 
-def lint_test(options, helper):
-	if not hookconfig.tmpdir:
-		sys.stderr.write("tmpdir isn't set in the configuration, not running lint tests.")
-		# Not having tmpdir is dangerous!
-		return
-	if options.project != "operations/puppet":
-		# TODO: make this configurable
-		return
-	ref = helper.get_ref(options.change, options.patchset)
-	if not ref:
-		return
-	if hookconfig.tmpdir[-1] == '/':
-		hookconfig.tmpdir = hookconfig.tmpdir[0:-1]
-	directory = hookconfig.tmpdir + '/' +	options.change
-	repo = 'ssh://' + hookconfig.gerrituser + '@' + hookconfig.sshhost + ':' + str(hookconfig.sshport) + '/' + options.project
-	command = '/usr/bin/git init ' + directory
-	if hookconfig.debug:
-		sys.stderr.write("Running the following git command: " + command + "\n")
-	proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, env={"GIT_DIR": directory + '/.git'})
-	(stdoutdata, stferrdata) = proc.communicate()
-	if hookconfig.debug:
-		sys.stderr.write("git init stdout: " + stdoutdata + "\n")
-		sys.stderr.write("git init stderr: " + stdoutdata + "\n")
-	command = '/usr/bin/git pull ' + repo + ' ' + ref
-	if hookconfig.debug:
-		sys.stderr.write("Running the following git command: " + command + "\n")
-	proc = subprocess.Popen(command, shell=True, cwd=directory, env={"GIT_DIR": directory + '/.git'})
-	proc.wait()
-	proc = subprocess.Popen('/bin/sed -i \'s%import \"../private%#import \"../private%\' ' + 'manifests/base.pp', shell=True, cwd=directory)
-	proc.wait()
-	proc = subprocess.Popen('/usr/bin/puppet parser validate --color none ' + 'manifests/site.pp', shell=True, stdout=subprocess.PIPE, cwd=directory)
-	(stdoutdata, stderrdata) = proc.communicate()
-	shutil.rmtree(directory)
-	procstatus = proc.returncode
-	if procstatus == 0:
-		status = "pass"
-	else:
-		status = "fail"
-	message = ""
-	if stdoutdata:
-		message = stdoutdata
-	if stderrdata:
-		# Prefix error message with a space so gerrit renders it as monospaced:
-		stderrdata = stderrdata.replace( "\n", "\n " )
-		message = message + stderrdata
-	# Cleanup lonnng paths from the message:
-	message = message.replace( directory, '.' )
-	verifyset = helper.set_verify(status, options.commit, message)
-	if not verifyset:
-		sys.stderr.write("Failed to set verify score")
-
-def l10n_automerge(options, helper):
-	if not options.project.startswith("mediawiki/"):
-		return
-	if options.uploader != hookconfig.l10nuser:
-		return
-	verifymerge = helper.automerge(options.commit, hookconfig.l10nsummary)
-	if not verifymerge:
-		sys.stderr.write("Failed to auto-merge commit")
+	def l10n_automerge(self,options):
+		if not options.project.startswith("mediawiki/"):
+			return
+		if options.uploader != hookconfig.l10nuser:
+			return
+		verifymerge = self.automerge(options.commit, hookconfig.l10nsummary)
+		if not verifymerge:
+			sys.stderr.write("Failed to auto-merge commit")
 
 if __name__ == '__main__':
-	main()
+	hook = PatchsetCreated()
+	hook.run();
