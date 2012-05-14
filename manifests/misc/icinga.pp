@@ -625,7 +625,7 @@ class icinga::monitor::naggen {
 
 	# Fix permissions
 
-	file { $icinga::monitor::configuration::variables::puppet_files:
+	file { $icinga::configuration::variables::puppet_files:
 		mode => 0644,
 		ensure => present;
 	}
