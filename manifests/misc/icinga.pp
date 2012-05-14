@@ -23,9 +23,6 @@ class icinga::monitor {
 		icinga::monitor::nsca::daemon,
 		mysql,
 		nrpe::new,
-		lvs::monitor,
-		facilities::pdu_monitoring,
-		nagios::gsbmonitoring,
 		icinga::monitor::files::misc
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu", "nagios" ] }
