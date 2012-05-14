@@ -205,7 +205,7 @@ class icinga::monitor::files::misc {
 # Required files and directories
 # Must be loaded last
 
-	files {
+	file {
 		"/etc/icinga/conf.d":
 			owner => root,
 			group => root,
@@ -224,8 +224,8 @@ class icinga::monitor::files::misc {
 			owner => root,
 			group => root,
 			mode => 0755;
-
 	}
+	
 	# fix permissions on all individual service files
 	exec {
 		"fix_nagios_perms":
@@ -688,8 +688,7 @@ class icinga::monitor::service {
 		require => File[$icinga::configuration::variables::puppet_files],
 		ensure => running,
 		subscribe => [ File[$icinga::configuration::variables::puppet_files],
-			       File[$icinga::configuration::variables::static_files],
-			       File["/etc/icinga/puppet_checks.d"] ];
+			       File[$icinga::configuration::variables::static_files]]; 
 	}
 }
 
