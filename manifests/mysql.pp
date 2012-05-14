@@ -465,7 +465,7 @@ class mysql {
 				command => "/usr/local/bin/send_query_digest.sh tcpdump >/dev/null 2>&1",
 				require => File["/usr/local/bin/send_query_digest.sh"],
 				user => root,
-				minute => '5,25,45',
+				minute => [5, 25, 45]
 				hour => '*',
 				ensure => present;
 			}
