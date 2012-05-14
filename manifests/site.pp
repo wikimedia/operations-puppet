@@ -1505,7 +1505,7 @@ node "neon.wikimedia.org" {
 	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
 	include standard,
-		nagios::monitor::newmonitor,
+		icinga::monitor,
 		misc::ircecho
 #		nagios::ganglia::monitor::enwiki,
 #		nagios::ganglia::ganglios,
