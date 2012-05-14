@@ -455,7 +455,7 @@ class mysql {
 				command => "/usr/local/bin/send_query_digest.sh >/dev/null 2>&1",
 				require => File["/usr/local/bin/send_query_digest.sh"],
 				user => root,
-				minute => '*/10',
+				minute => '*/20',
 				hour => '*',
 				ensure => present;
 			}
