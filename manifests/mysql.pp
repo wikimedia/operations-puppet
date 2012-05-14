@@ -99,7 +99,9 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
-			include mysql::slow_digest
+			if ($db_cluster =~ /^s/) {
+				include mysql::slow_digest
+			}
 		}
 	}
 
@@ -456,6 +458,14 @@ class mysql {
 				require => File["/usr/local/bin/send_query_digest.sh"],
 				user => root,
 				minute => '*/20',
+				hour => '*',
+				ensure => present;
+			}
+			cron { tcp_query_digest:
+				command => "/usr/local/bin/send_query_digest.sh tcpdump >/dev/null 2>&1",
+				require => File["/usr/local/bin/send_query_digest.sh"],
+				user => root,
+				minute => '5,25,45',
 				hour => '*',
 				ensure => present;
 			}
