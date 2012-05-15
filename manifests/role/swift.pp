@@ -27,7 +27,9 @@ class role::swift {
 			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
 			shard_containers => "some",
-			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb",
+			write_thumbs => "all",
+			dont_write_thumb_list => ""
 		}
 		include ::swift::storage
 		include ::swift::proxy
@@ -51,7 +53,9 @@ class role::swift {
 				rewrite_password => $passwords::swift::pmtpa-test::rewrite_password,
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
-				shard_container_list => ""
+				shard_container_list => "",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
 			}
 			include ::swift::proxy
 		}
@@ -92,7 +96,9 @@ class role::swift {
 				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 				rewrite_thumb_server => "ms5.pmtpa.wmnet",
 				shard_containers => "some",
-				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb"
+				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
 			}
 			include ::swift::proxy
 		}
@@ -132,7 +138,9 @@ class role::swift {
 				rewrite_password => "userpassword",
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
-				shard_container_list => ""
+				shard_container_list => "",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
 			}
 			include ::swift::proxy
 		}

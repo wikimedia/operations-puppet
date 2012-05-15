@@ -21,7 +21,7 @@ import urlparse
 # the socket and writing the data to the Swift proxy.
 #     We have to do both at the same time. This requires that we hand over a class which
 # is an iterable which reads, writes one copy to Swift (using put_object_chunked), and
-# returns a copy to webob.  This is controlled by writethumb in /etc/swift/proxy.conf,
+# returns a copy to webob.  This is controlled by write_thumbs in /etc/swift/proxy.conf,
 
 class Copy2(object):
     """
@@ -97,21 +97,24 @@ class WMFRewrite(object):
     """
 
     def __init__(self, app, conf):
+        def striplist(l):
+            return([x.strip() for x in l])
         self.app = app
         self.account = conf['account'].strip()
         self.authurl = conf['url'].strip()
         self.login = conf['login'].strip()
         self.key = conf['key'].strip()
         self.thumbhost = conf['thumbhost'].strip()
-        self.writethumb = 'writethumb' in conf
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
         self.shard_containers = conf['shard_containers'].strip() #all, some, none
         if (self.shard_containers == 'some'):
             # if we're supposed to shard some containers, get a cleaned list of the containers to shard
-            def striplist(l):
-                return([x.strip() for x in l])
             self.shard_container_list = striplist(conf['shard_container_list'].split(','))
+        self.write_thumbs = conf['write_thumbs'].strip() #all, most, none
+        if (self.write_thumbs == 'most'):
+            # if we're supposed to write thumbs for most containers, get a cleaned list of the containers to which we DON'T write
+            self.dont_write_thumb_list = striplist(conf['dont_write_thumb_list'].split(','))
 
         #self.logger = get_logger(conf)
 
@@ -168,7 +171,13 @@ class WMFRewrite(object):
         except TypeError:
             last_modified = time.mktime(time.localtime())
 
-        if self.writethumb and reqorig.method != 'HEAD':
+        # are we suposed to write thumbs for this container? (if most, is the container minus the shard in the list?)
+        if ((self.write_thumbs == 'none') or (self.write_thumbs == 'most' and container.split('.',1)[0] in self.dont_write_thumb_list)):
+            writethumb = False
+        else:
+            writethumb = True
+
+        if writethumb and reqorig.method != 'HEAD':
             # Fetch from upload, write into the cluster, and return it
             upcopy = Copy2(upcopy, self.app, url,
                 urllib2.quote(container), obj, self.authurl, self.login,

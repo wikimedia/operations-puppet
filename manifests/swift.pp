@@ -193,7 +193,9 @@ class swift::proxy::config(
 	$rewrite_password,
 	$rewrite_thumb_server,
 	$shard_containers,
-	$shard_container_list ) {
+	$shard_container_list,
+	$write_thumbs,
+	$dont_write_thumb_list ) {
 
 	Class[swift::base] -> Class[swift::proxy::config]
 
