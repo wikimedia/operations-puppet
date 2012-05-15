@@ -43,12 +43,16 @@ key = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %>
 thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
 # upload doesn"t like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
-# uncomment this if we want to write the 404 handler"s output into Swift.
-writethumb=yes
 # should we shard containers, and if so how many?  all, none, some
 shard_containers = <%= scope.lookupvar("swift::proxy::config::shard_containers") %>
 # if we shard some containers, which ones?  ignored for all and none.
+# this list is the containers that should be sharded
 shard_container_list = <%= scope.lookupvar("swift::proxy::config::shard_container_list") %>
+# should we write thumbs into swift?  all, none, most
+write_thumbs = <%= scope.lookupvar("swift::proxy::config::write_thumbs") %>
+# if we write thumbs to most, which ones do we leave out? ignored for all and none.
+# this list is the containers to which we do NOT write thumbnails
+dont_write_thumb_list = <%= scope.lookupvar("swift::proxy::config::dont_write_thumb_list") %>
 
 
 paste.filter_factory = wmf.rewrite:filter_factory
