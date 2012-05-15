@@ -404,6 +404,9 @@ node  "cadmium.eqiad.wmnet" {
 }
 
 node "carbon.wikimedia.org" {
+	$cluster = "misc"
+	$ganglia_aggregator = "true"
+
 	include standard,
 		backup::client,
 		misc::install-server::tftp-server
