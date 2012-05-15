@@ -21,8 +21,19 @@ class misc::mediawiki-logger {
 			owner => root,
 			group => root,
 			source => "puppet:///files/misc/demux.py";
+		"/home/wikipedia/logs":
+			mode => 0775,
+			owner => root,
+			group => root,
+			require => nfs::home::wikipedia;
+		"/home/wikipedia/logs/archive":
+			mode => 0755,
+			owner => root,
+			group => root,
+			require => File['/home/wikipedia/logs'];
 		"/etc/logrotate.d/mw-udp2log":
 			source => "puppet:///files/logrotate/mw-udp2log",
+			require => File["/home/wikipedia/logs/archive"], # TODO should be a variable
 			mode => 0444;
 		"/etc/sysctl.d/99-big-rmem.conf":
 			owner => "root",
