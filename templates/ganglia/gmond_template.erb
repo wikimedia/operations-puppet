@@ -13,6 +13,11 @@ globals {
   cleanup_threshold = 300 /*secs */
   gexec = no
   send_metadata_interval = 60
+
+<% if realm == "labs" and has_variable?("instancename") then %>
+  override_hostname = <%= instancename %>
+<% end %>
+
 }
 
 /*
