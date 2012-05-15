@@ -23,9 +23,17 @@ class lucene {
 	}
 
 	class packages {
-		package { ["sun-j2sdk1.6", "lucene-search-2"]:
-			ensure => latest;
+		if ( $lsbdistcodename == "precise" ) {
+			package { ["oracle-j2sdk1.6", "lucene-search-2"]:
+				ensure => latest;
+			}
 		}
+		else {
+			package { ["sun-j2sdk1.6", "lucene-search-2"]:
+				ensure => latest;
+			}
+		}
+
 		package { ["liblog4j1.2-java"]:
 			require => Package["sun-j2sdk1.6"],
 			ensure => latest;
