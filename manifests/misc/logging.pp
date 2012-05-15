@@ -31,6 +31,14 @@ class udp2log {
 				mode => 0444,
 				content => "net.core.rmem_max = 536870912";
 		}
+		
+		# refresh sysctl when rmem_max file changes.
+		exec { "rmem_max_sysctl_reload":
+			command => "/sbin/sysctl -p /etc/sysctl.d/99-big-rmem.conf",
+			subscribe => File["/etc/sysctl.d/99-big-rmem.conf"],
+			refreshonly => true,
+		}
+		
 		package { udplog:
 			ensure => latest;
 		}
