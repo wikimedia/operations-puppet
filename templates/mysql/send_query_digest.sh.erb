@@ -31,7 +31,7 @@ if [ "$1" = "tcpdump" ] ; then
 	log="--type tcpdump --limit 100%"
 	runtime=30s
 	table="tcpquery_review"
-	tcpdump -s 65535 -x -nn -q -tttt -i any port 3306 | digestif
+	/usr/sbin/tcpdump -s 65535 -x -nn -q -tttt -i any port 3306 | digestif
 else
 	[ -s $log ] || exit 0
 	# safeguard in case of --run-time failure
