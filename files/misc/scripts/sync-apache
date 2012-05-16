@@ -4,23 +4,23 @@ echo "Synchronizing /home/wikipedia/conf/httpd to /usr/local/apache/conf..."
 #echo "pmtpa apaches:"
 
 #This sync works with both puppet and non-puppet hosts
-ddsh -cM -g apaches -- '
-	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf	
+ddsh -cM -g apaches -o -oSetupTimeout=30 -F30 -- '
+	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf
 	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
 '
 # dont forget the image rending cluster
-ddsh -cM -g image_scalers -- '
-	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf	
+ddsh -cM -g image_scalers -o -oSetupTimeout=30 -F30 -- '
+	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf
 	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
 '
 # while we are at it, might as well do the snapshot boxen
-ddsh -cM -g snapshot -- '
-	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf	
+ddsh -cM -g snapshot -o -oSetupTimeout=30 -F30 -- '
+	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf
 	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
 '
 
 # decided we want search indexers too
-ddsh -cM -g searchidx -- '
-	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf	
+ddsh -cM -g searchidx -o -oSetupTimeout=30 -F30 -- '
+	rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf
 	test -e /etc/apache2/apache2.conf && cp /home/wikipedia/conf/httpd/apache2.conf /etc/apache2/
 '
