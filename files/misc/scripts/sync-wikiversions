@@ -19,11 +19,8 @@ fi
 }
 
 # Copy files to apaches
-echo 'Copying wikiversions dat file to apaches...'
-ddsh -F30 -cM -g mediawiki-installation 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.dat /usr/local/apache/common-local/wikiversions.dat'
-
-echo 'Copying wikiversions cdb file to apaches...'
-ddsh -F30 -cM -g mediawiki-installation 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.cdb /usr/local/apache/common-local/wikiversions.cdb'
+echo 'Copying wikiversions dat and cdb files to apaches...'
+ddsh -F30 -cM -g mediawiki-installation 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.* /usr/local/apache/common-local'
 
 echo 'Finished'
 
