@@ -3,6 +3,8 @@
 
 # TODO: fold most this in a generic, parameterized 'udp2log' class
 class misc::mediawiki-logger {
+	include nfs::home::wikipedia
+
 	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
 
 	package { udplog:
