@@ -1192,7 +1192,7 @@ class misc::racktables {
 
 	class {'webserver::php5': ssl => 'true'; }
 
-	include generic::mysql::client,
+	include generic::mysql::packages::client,
 		webserver::php5-gd
 
 	file {
