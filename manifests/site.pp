@@ -919,7 +919,7 @@ node "hume.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		nrpe,
-		mysql::client
+                mysql::client
 }
 
 node "ixia.pmtpa.wmnet" {
@@ -1487,7 +1487,7 @@ node "singer.wikimedia.org" {
 		groups::wikidev,
 		accounts::austin,
 		accounts::awjrichards,
-		generic::mysql::client,
+		generic::mysql::packages::client,
 		misc::planet
 
 
