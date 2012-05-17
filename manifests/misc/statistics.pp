@@ -120,7 +120,7 @@ class misc::statistics::site {
 
 # installs a generic mysql server
 # for loading and manipulating sql dumps.
-class misc::statitics::db {
+class misc::statistics::db {
 	include generic::mysql::client,
 		generic::mysql::server
 }
