@@ -79,7 +79,17 @@ class nfs::home::wikipedia {
 				ensure => directory;
 			}
 		} # /production
-		'labs': { systemuser { 'wikipediauser': name => 'wikipedia', home => '/home/wikipedia' } }
+		'labs': {
+			systemuser { 'wikipediauser':
+				name => 'wikipedia',
+				home => '/home/wikipedia'
+			}
+
+			file { "/home/wikipedia":
+				ensure => directory,
+				requires => Systemuser['wikipediauser']
+			}
+		}
 	}
 
 }
