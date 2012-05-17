@@ -26,7 +26,7 @@ class misc::mediawiki-logger {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => nfs::home::wikipedia;
+			require => File["/home/wikipedia"];
 		"/home/wikipedia/logs/archive":
 			ensure => directory,
 			mode => 0644,
@@ -73,7 +73,7 @@ class misc::syslog-server {
 			group => root,
 			mode  => 0755,
 			# Logging is done in /home/wikipedia:
-			require => nfs::home::wikipedia;
+			require => File["/home/wikipedia"];
 	}
 
 	service { syslog-ng:
