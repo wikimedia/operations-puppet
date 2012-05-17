@@ -8,7 +8,6 @@ class role::statistics {
 		misc::geoip,
 		misc::geoip::python::package,
 		generic::packages::git-core,
-		mysql::client,
 		misc::statistics::base,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
