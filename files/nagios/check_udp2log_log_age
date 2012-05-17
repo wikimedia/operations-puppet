@@ -8,10 +8,23 @@ if [ ! -f $conf_file ]; then
 	exit 3
 fi
 
-minus_twelve_hours=/tmp/minus_twelve
-minus_twentyfour_hours=/tmp/minus_twentyfour
-touch -d "12 hours ago" $minus_twelve_hours
-touch -d "24 hours ago" $minus_twentyfour_hours
+
+
+# List of log files that are considered 'slow'.
+# These log files get written to much less
+# frequently than all of the other logs.
+# We will only send notices about the age
+# of these log files if they are more than 2 days old.
+# NOTE.  It is too bad that the udp2log conf_file
+# is not a real conf file.  It'd be nice to be able
+# to read that file and have slow_log set there.
+# Oh well :\
+slow_log_files="/var/log/squid/teahouse.log"
+
+# Timestamps will be set on these files for
+# easy log file age comparision with -ot.
+warning_file=/tmp/minus_warning
+critical_file=/tmp/minus_critical
 
 warn_count=0
 crit_count=0
@@ -19,22 +32,34 @@ warn_list=""
 crit_list=""
 
 for log_file in `egrep "^(pipe|file)" $conf_file | egrep -o "/[^ \.]*\.log"`; do
-	if [ $log_file -ot $minus_twentyfour_hours ]; then
+    # default notice times are 1 hour and 4 hours.
+    warning_time_string="1 hour ago"
+    critical_time_string="4 hours ago"
+
+    # if the log file we are examining is
+    # a 'slow log', then don't send a notice
+    # unless the file is older than 2 (warning) or 4 (critical) days.
+    echo "${slow_log_files}" | grep -q "${log_file}" && warning_time_string="2 days ago" && critical_time_string="4 days ago"
+
+    touch -d "${warning_time_string}" $warning_file
+    touch -d "${critical_time_string}" $critical_file
+
+	if [ $log_file -ot $warning_file ]; then
 		((crit_count++))
 		crit_list=`echo "$log_file, $crit_list"`
-	elif [ $log_file -ot $minus_twelve_hours ]; then
+	elif [ $log_file -ot $critical_file ]; then
 		((warn_count++))
 		warn_list=`echo "$log_file, $warn_list"`
 	fi
 done
 
-rm $minus_twelve_hours&&rm $minus_twentyfour_hours
+rm $warning_file && rm $critical_file
 
 if [ $crit_count -gt 0 ];then
-	echo "CRITICAL: log files $crit_list have not been written to in 24 hours"
+	echo "CRITICAL: log files $crit_list have not been written in a critical amount of time.  For most logs, this is 4 hours.  For slow logs, this is 4 days."
 	exit 2
 elif [ $warn_count -gt 0 ];then
-	echo "WARNING: log files $warn_list have not been written to in 12 hours"
+	echo "WARNING: log files $warn_list have not been written to in a while.  For most logs, this is 1 hour. For slow logs, this is 2 days."
 	exit 1
 else 
 	echo "OK: all log files active"
