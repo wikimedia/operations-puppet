@@ -3,6 +3,56 @@
 #### puppet:///files/dhcpd/linux-host-entries.ttyS0-115200
 ######################################################################
 
+host analytics1001 {
+	hardware ethernet 88:43:e1:c2:99:8e;
+	fixed-address analytics1001.eqiad.wmnet;
+}
+
+host analytics1002 {
+	hardware ethernet 00:22:bd:d3:60:58;
+	fixed-address analytics1002.eqiad.wmnet;
+}
+
+host analytics1003 {
+	hardware ethernet 88:43:e1:c2:99:48;
+	fixed-address analytics1003.eqiad.wmnet;
+}
+
+host analytics1004 {
+	hardware ethernet 88:43:e1:c2:86:94;
+	fixed-address analytics1004.eqiad.wmnet;
+}
+
+host analytics1005 {
+	hardware ethernet 88:43:e1:c2:53:9c;
+	fixed-address analytics1005.eqiad.wmnet;
+}
+
+host analytics1006 {
+	hardware ethernet 88:43:e1:c2:85:b4;
+	fixed-address analytics1006.eqiad.wmnet;
+}
+
+host analytics1007 {
+	hardware ethernet 88:43:e1:c2:91:a0;
+	fixed-address analytics1007.eqiad.wmnet;
+}
+
+host analytics1008 {
+	hardware ethernet 88:43:e1:c2:50:7e;
+	fixed-address analytics1008.eqiad.wmnet;
+}
+
+host analytics1009 {
+	hardware ethernet 88:43:e1:c2:86:6a;
+	fixed-address analytics1009.eqiad.wmnet;
+}
+
+host analytics1010 {
+	hardware ethernet 88:43:e1:c2:94:e8;
+	fixed-address analytics1010.eqiad.wmnet;
+}
+
 host virt1001 {
 	hardware ethernet 00:22:bd:d3:38:62;
 	fixed-address virt1001.eqiad.wmnet;
