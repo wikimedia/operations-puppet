@@ -652,17 +652,16 @@ define git::init($directory) {
 	}
 }
 
-class generic::mysql::client {
-	# This conflicts with class mysql::packages.  DO NOT use them together
-	package { "mysql-client-5.1":
-		ensure => latest;
-	}
-}
-class generic::mysql::server {
-	# This conflicts with class mysql::packages.  DO NOT use them together
-	# if installed on a host with an external IP address, be sure to run a firewall.
-	package { "mysql-server-5.1":
-		ensure => present;
+
+# Creating an apparmor service class
+# so we can notify the service when 
+# apparmor files are changed by puppet.
+# This probably isn't included in your
+# class, so if you need to notify this
+# service make sure you include it.
+class generic::apparmor::service {
+	service { "apparmor":
+		ensure => 'running',
 	}
 }
 

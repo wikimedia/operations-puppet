@@ -1029,7 +1029,7 @@ node "iron.wikimedia.org" {
 	include swift::cleaner
 
 	# run a mysqld instance for testing and dev (not replicated or backed up)
-	include generic::mysql::server
+	include generic::mysql::packages::server
 
 	# include the swift cli so I can call out to swift instances
 	include swift::utilities
@@ -1786,7 +1786,7 @@ node "singer.wikimedia.org" {
 		groups::wikidev,
 		accounts::austin,
 		accounts::awjrichards,
-		generic::mysql::client,
+		generic::mysql::packages::client,
 		misc::planet
 
 
