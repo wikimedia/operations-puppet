@@ -121,6 +121,9 @@ class misc::statistics::site {
 # installs a generic mysql server
 # for loading and manipulating sql dumps.
 class misc::statistics::db {
-	include generic::mysql::client,
-		generic::mysql::server
+	# install a mysql server with the
+	# datadir at /a/mysql
+	class { "generic::mysql::server":
+		datadir => "/a/mysql",
+	}
 }
