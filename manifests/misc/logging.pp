@@ -137,7 +137,16 @@ class udp2log {
 				minute => '*/5';
 		}
 
-		monitor_service { "packetloss": description => "Packetloss_Average", check_command => "check_packet_loss_ave!4!8", contact_group => "admins,analytics" }
+		monitor_service { "packetloss": 
+			description => "Packetloss_Average", 
+			check_command => "check_packet_loss_ave!4!8", 
+			contact_group => "admins,analytics", 
+			# ganglia-logtailer only runs every 5.  
+			# Nagios retries every 3 minutes. 
+			# We want to make sure ganglia has enough 
+			# time to refresh before nagios sends out a notice.
+			retries => 6,
+		}
 	}
 
 	class iptables_purges {
