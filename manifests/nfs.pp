@@ -87,7 +87,7 @@ class nfs::home::wikipedia {
 
 			file { "/home/wikipedia":
 				ensure => directory,
-				requires => Systemuser['wikipediauser']
+				require => Systemuser['wikipediauser']
 			}
 		}
 	}
