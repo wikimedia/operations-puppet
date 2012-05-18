@@ -3,7 +3,6 @@
 
 # TODO: fold most this in a generic, parameterized 'udp2log' class
 class misc::mediawiki-logger {
-	include nfs::home::wikipedia
 
 	system_role { "misc::mediawiki-logger": description => "MediaWiki log server" }
 
@@ -28,7 +27,7 @@ class misc::mediawiki-logger {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => File["/home/wikipedia"];
+			require => nfs::home::wikipedia;
 		"/home/wikipedia/logs/archive":
 			ensure => directory,
 			mode => 0644,
@@ -75,7 +74,7 @@ class misc::syslog-server {
 			group => root,
 			mode  => 0755,
 			# Logging is done in /home/wikipedia:
-			require => File["/home/wikipedia"];
+			require => nfs::home::wikipedia;
 	}
 
 	service { syslog-ng:
