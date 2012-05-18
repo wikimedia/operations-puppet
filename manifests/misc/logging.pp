@@ -56,6 +56,8 @@ net.core.rmem_max = 536870912
 }
 
 class misc::syslog-server {
+	include nfs::home::wikipedia
+
 	system_role { "misc::syslog-server": description => "central syslog server" }
 
 	package { syslog-ng:
