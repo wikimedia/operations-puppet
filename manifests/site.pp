@@ -849,6 +849,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::pgehres,
 		accounts::rfaulk,
 		accounts::zexley,
+		accounts::logmover,
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,
