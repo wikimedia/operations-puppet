@@ -240,6 +240,34 @@ class WMFRewrite(object):
             # Get the object path relative to the zone (and thus container)
             obj = match.group('path') # e.g. "archive/a/ab/..."
 
+            # If we can sanitize the object path, let's.  This will eliminate some cruft.
+            justmedia = re.match("(?P<mediapath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/)(?P<prefix>[^-]*)-.*$", obj)
+            thumbpath = re.match("(?P<fullpath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpg|.png)?)(?P<cruft>.*)$", obj)
+            if thumbpath:
+                if (thumbpath.group('cruft')):
+                    # there's cruft on the URL; strip it off.
+                    #oldobj=obj
+                    obj = thumbpath.group('fullpath')
+                    #self.logger.warn("thumpath old: %s new: %s" % (oldobj, obj))
+                else:
+                    # the URL matched the thumbpath without any cruft, which means it's a good URL.
+                    #self.logger.warn("thumpath unchanged: %s " % obj)
+                    pass
+            else:
+                # thumbpath didn't match, which means the URL is invalid for some other reason.  We can try to fix it...
+                if justmedia:
+                    # if we got as far as the pixel number, we can try and construct the correct URL
+                    #oldobj=obj
+                    obj = "%s%s-%s" % (justmedia.group('mediapath'), justmedia.group('prefix'), justmedia.group('media'))
+                    if obj[-4:] == '.svg':
+                        obj = "%s%s" % (obj, '.png')
+                    #self.logger.warn("justmedia old: %s new: %s" % (oldobj, obj))
+                else:
+                    #self.logger.warn("justmedia unchanged: %s " % obj)
+                    # justmedia didn't match either; I have no idea how to fix it.  Let's just try it as is.
+                    pass
+
+
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
             container = "%s-%s-local-%s" % (match.group('proj'), match.group('lang'), zone) #02/#03
             # Add 2-digit shard to the container if it is supposed to be sharded.
