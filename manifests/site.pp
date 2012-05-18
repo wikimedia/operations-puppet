@@ -852,7 +852,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,
-		misc::fundraising::offhost_backups
+		misc::fundraising::backup::offhost,
+		misc::fundraising::backup::archive
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
@@ -2151,7 +2152,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::rfaulk,
 		accounts::zexley,
 		misc::fundraising::impressionlog::archive,
-		misc::fundraising::offhost_backups
+		misc::fundraising::backup::offhost
 
 	cron {
 		'offhost_backups':

@@ -194,7 +194,7 @@ class misc::fundraising {
 }
 
 
-class misc::fundraising::offhost_backups {
+class misc::fundraising::backup::offhost {
 
 	file { 
 		'/usr/local/bin/offhost_backups':
@@ -333,7 +333,7 @@ class misc::fundraising::impressionlog::archive {
 			ensure => present,
 	}
 
-	systemuser { authdns: name => "logmover", home => "/var/lib/logmover", shell => "/bin/sh" }
+	systemuser { logmover: name => "logmover", home => "/var/lib/logmover", shell => "/bin/sh" }
 
 	ssh_authorized_key {
 		"root@loudon":
@@ -366,6 +366,33 @@ class misc::fundraising::impressionlog::archive {
 			user	=> logmover,
 			type	=> "ssh-rsa",
 			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA04+NGTd7Vj5Qx7a7IMFfphwlADq67dSCiU7iU1R8rIyDYu0mKioEYjq5JItM0yEE1CyiDYOaYY+L40j11ySlD5+qchg5gMxigNVWcQ3L6lEs1p1MkIm2LtRkqPC5vfLJIuTJlukad6W+G9atdEk9Dw7zK6yVaWq0/zcNXxHiJC7lUqckGwy4A/mLecfiRhPL/4ksID2TiqKfvarpqg43IjycoLX65BGmOumDkzDfR5mvHcOeWsDdhB3b8rIAPfjLg1l5V3CkaGT2xQBSN/YbLB+bIPf7nn3b+HjjxU4JHEsDdogUn/BuaMQcjqfJjZ30h97hkyvTaQQ6DS5JI8eDaQ==";
+	}
+
+}
+
+
+class misc::fundraising::backup::archive {
+
+	system_role { "misc::fundraising::backup::archive": description => "fundraising backup archive" }
+
+	systemuser { backupmover: name => "backupmover", home => "/var/lib/backupmover", shell => "/bin/sh" }
+
+	ssh_authorized_key {
+		"root@aluminium":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==";
+		"root@grosley":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==";
+		"root@silicon":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAs/tHmvah83UkyjJN/5JTm1Yo7ahh9bfi7Y7bnoryJ+F1QWnY0UNP+d8jGHoirYQoy4KvO+mpGTW2+vheD8+nmvq//2k95KkDmdo6NZul9Tn9vdpZ9VAbfmOhFmT4lhqm8IhMrA6W7+qiiBdAjMYRzdhxuzVZnjqxPWn9rznNy1g44iulFHKHAqjjwf/gMs2nYHdVBC3Re8cKwFcsz06BhvUjnZ94F80aNw8n5JsPv5ud8R8gSFaxEM6STY2mCj5liw+s5fRObgDtAE6xGALsHcOyEbI+FX1x0r/+5WOzEpM2qWLR6WJXi2HsOYfqaiqzSm2Yb3AfGi98gnnWF75e/Q==";
 	}
 
 }
