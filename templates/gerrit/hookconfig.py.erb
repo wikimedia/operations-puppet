@@ -1,3 +1,5 @@
+#configuration file for files/gerrit/hooks/*
+
 gerrituser = "gerrit2"
 gerritpass = "<%= gerrit_pass %>"
 rtresturl = "https://rt.wikimedia.org/REST/1.0/"
@@ -12,7 +14,7 @@ logdir = "/var/lib/gerrit2/review_site/logs"
 
 # Files where Gerrit projects will have their notifications written to
 # See manifests/gerrit.pp $ircecho_infile for actual file/channel map
-filenames = {
+logs = {
 	"operations/puppet": {
 		"production" : "operations.log",
 		"test"       : "labs.log",
