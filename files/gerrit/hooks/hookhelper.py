@@ -28,6 +28,19 @@ class HookHelper:
 		self.parser.add_option("--project", dest="project")
 		self.parser.add_option("--branch", dest="branch")
 
+	@staticmethod
+	def match(patterns, name):
+		if name in patterns:
+			return name
+		# Attempt to use the wildcard patterns.
+		# longest patterns first to allow multiple patterns to match the same name
+		# and make it more deterministic
+		for pattern in sorted(filter(lambda p: "*" in p, patterns.keys()), key=len, reverse=True):
+			# Replace wildcard with a proper regex snippet
+			if re.match(pattern.replace('*','.+'), name):
+				return pattern
+		return 'default'
+
 	def ssh_exec_command(self, command):
 		ssh = paramiko.SSHClient()
 		ssh.load_host_keys(hookconfig.sshhostkeys)
@@ -108,39 +121,22 @@ class HookHelper:
 		return True
 
 	def log_to_file(self, project, branch, message):
-		filename = self.get_log_filename( project, branch, message)
-		f = open(filename, 'a')
-		f.write(message)
-		f.close()
+		logs = self.get_log_filename( project, branch, message)
+		logs = isinstance(logs, basestring) and [logs] or logs
+		for fname in logs:
+			with f = open(fname, 'a'):
+				f.write(message)
 
 	def get_log_filename(self, project, branch, message):
-		filename     = None;
-		foundproject = None;
-		if hookconfig.logdir and hookconfig.logdir[-1] == '/':
-			hookconfig.logdir = hookconfig.logdir[0:-1]
-		if project in hookconfig.filenames:
-			foundproject = project
-		if foundproject is None:
-			# Attempt to use the wildcard filters
-			for filter,value in hookconfig.filenames.iteritems():
-				if not "*" in filter:
-					# It is a project name, not a filter!
-					continue
-				# Replace wildcard with a proper regex snippet
-				pattern = re.compile( filter.replace( '*', '.+') )
-				if( pattern.match( project ) ):
-					foundproject = filter
-					break
-		if foundproject is None:
-			foundproject = 'default'
-		if branch not in hookconfig.filenames[foundproject]:
-			branch = 'default'
-		if branch in hookconfig.filenames[foundproject]:
-			filename = hookconfig.filenames[foundproject][branch]
+		names = hookconfig.logs
+		projectkey = match(names.keys(), project)
+		projectval = names[projectkey]
+		if isinstance(projectval, (basestring, list, tuple)):
+			logs = projectval
 		else:
-			# Direct assignement such as 'default': 'mediawiki.log'
-			filename = hookconfig.filenames[foundproject]
-		return hookconfig.logdir + "/" + filename
+			logs = projectval[match(projectval.keys(), branch)]
+		logs = isinstance(logs, basestring) and [logs] or logs
+		return map(lambda f: os.path.join(hookconfig.logdir,f),logs)
 
 	def update_rt(self, change, changeurl):
 		messages = []
