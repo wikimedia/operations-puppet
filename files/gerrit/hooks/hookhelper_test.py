@@ -14,9 +14,9 @@ class TestLogToFile( unittest.TestCase ):
 		# Ask helper to provide us with the full filename
 		actual = helper.get_log_filename( project, branch, '' )
 		# and now get ride of the common long directory
-		actual = actual.replace( hookconfig.logdir + "/", '' );
+		actual = actual.lstrip( hookconfig.logdir + "/", '' )
 
-		self.assertEqual( filename, actual )
+		self.assertIn( filename, actual )
 
 	def test_operations_puppet( self ):
 		self.assertLogFile( 'operations.log',
