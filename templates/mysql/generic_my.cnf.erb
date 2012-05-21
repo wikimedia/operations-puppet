@@ -2,13 +2,19 @@
 ####    This file managed by puppet.
 ###
 
+#
+# * IMPORTANT
+#   If you make changes to these settings and your system uses apparmor, you may
+#   also need to also adjust /etc/apparmor.d/usr.sbin.mysqld.
+#
+
 
 [mysqld]
-basedir                        = <%= basedir %>
-datadir                        = <%= datadir %>
-tmpdir                         = <%= tmpdir %>
-socket                         = <%= socket %>
-pid-file                       = <%= pid_file %>
+basedir                        = <%= basedir                          %>
+datadir                        = <%= datadir                          %>
+tmpdir                         = <%= tmpdir                           %>
+socket                         = <%= socket                           %>
+pid-file                       = <%= pid_file                         %>
 user                           = mysql
 
 
@@ -16,24 +22,24 @@ user                           = mysql
 # Networking #
 ##############
 
-bind_address                   = <%= bind_adddress %>
-port                           = <%= port %>
+bind_address                   = <%= bind_address                     %>
+port                           = <%= port                             %>
 skip_name_resolve
-max_allowed_packet             = <%= max_allowed_packet %>
-max_connections                = <%= max_connections %>
-wait_timeout                   = <%= wait_timeout %>
-connect_timeout                = <%= connect_timeout %>
+max_allowed_packet             = <%= max_allowed_packet               %>
+max_connections                = <%= max_connections                  %>
+wait_timeout                   = <%= wait_timeout                     %>
+connect_timeout                = <%= connect_timeout                  %>
 
 
 ###########
 # Logging #
 ###########
-log_error                      = <%= log_error %>
+log_error                      = <%= log_error                        %>
 
 <% if slow_query_log_file -%>
 slow_query_log                 = 1
-slow_query_log_file            = <%= slow_query_log_file %>
-long_query_time                = <%= long_query_time %>
+slow_query_log_file            = <%= slow_query_log_file              %>
+long_query_time                = <%= long_query_time                  %>
 <% end -%>
 
 # Character Set
@@ -62,12 +68,10 @@ read_buffer_size               = <%= read_buffer_size                 %>
 sort_buffer_size               = <%= sort_buffer_size                 %>
 
 table_cache                    = <%= table_cache                      %>
-<% if (version.index('5.1') == 0) -%>
 table_definition_cache         = <%= table_definition_cache           %>
-<% end -%>
 open_files_limit               = <%= open_files_limit                 %>
 
-thread_stack                   = <%= thread_statck                    %>
+thread_stack                   = <%= thread_stack                     %>
 thread_cache_size              = <%= thread_cache_size                %>
 thread_concurrency             = <%= thread_concurrency               %>
 
@@ -75,7 +79,6 @@ query_cache_size               = <%= query_cache_size                 %>
 query_cache_limit              = <%= query_cache_limit                %>
 tmp_table_size                 = <%= tmp_table_size                   %>
 read_rnd_buffer_size           = <%= read_rnd_buffer_size             %>
-
 
 ###################
 # MyISAM Settings #
@@ -100,7 +103,6 @@ innodb_thread_concurrency      = <%= innodb_thread_concurrency       %>
 innodb_concurrency_tickets     = <%= innodb_concurrency_tickets      %>
 innodb_doublewrite             = <%= innodb_doublewrite              %>
 
-
 # always enable federated storage engine
 federated                      = 1
 
@@ -122,27 +124,49 @@ report-host=<%= hostname + '.' + port %>
 
 <% #automatically generate a unique master server-id from IP -%>
 <% ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; -%>
-server-id                       = <%= server_id %>
+server-id                      = <%= server_id %>
 
 <% replicate_ignore_db.each do |db| -%>
-replicate_ignore_db             = <%= db %>
+replicate_ignore_db            = <%= db %>
 <% end -%>
 <% replicate_ignore_table.each do |table| -%>
-replicate_ignore_table          = <%= table %>
+replicate_ignore_table         = <%= table %>
 <% end -%>
 <% replicate_do_db.each do |db| -%>
-replicate_do_db                 = <%= db %>
+replicate_do_db                = <%= db %>
 <% end -%>
 <% replicate_do_table.each do |table| -%>
-replicate_do_table              = <%= table %>
+replicate_do_table             = <%= table %>
 <% end -%>
 
 <% end # if replication_enabled -%>
 
-<% # set read_only mode based on read_only variable %>
-read_only                       = <%= read_only ? 1 : 0 %>
+<% # set read_only mode based on read_only variable -%>
+read_only                      = <%= read_only ? 1 : 0 %>
 
 <% # render out any extra_configs as key = value pairs -%>
 <% extra_configs.each do |key, value| -%>
 <%= "#{key} = #{value}" %>
 <% end -%>
+
+# This will be passed to all mysql clients
+# It has been reported that passwords should be enclosed with ticks/quotes
+# escpecially if they contain "#" chars...
+# Remember to edit /etc/mysql/debian.cnf when changing the socket location.
+[client]
+port                           = <%= port %>
+socket                         = <%= socket %>
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet             = <%= max_allowed_packet %>
+
+[mysql]
+#no-auto-rehash # faster start of mysql but no tab completition
+
+#
+# * IMPORTANT: Additional settings that can override those from this file!
+#   The files must end with '.cnf', otherwise they'll be ignored.
+#
+!includedir /etc/mysql/conf.d/
