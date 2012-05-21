@@ -8,7 +8,7 @@
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc", "php-htmlpurifier" ]:
 		ensure => latest;
 	}
 	if ( $lsbdistcodename == "hardy" ) {
