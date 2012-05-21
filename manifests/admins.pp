@@ -807,6 +807,7 @@ class accounts {
 	class nimishg inherits baseaccount {
 		$username = "nimishg"
 		$realname = "Nimish Gautam"
+		$enabled = "false"
 		$uid = 549
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -816,7 +817,7 @@ class accounts {
 
                         ssh_authorized_key {
                                 "Nimish@Nimish-Laptop":
-                                        ensure  => present,
+                                        ensure  => absent,
                                         user    => $username,
                                         type    => "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAvxpHpaUUDrX95CkroBTDEDMpfUj/S/5mgd//+SiVZIuCkbnhT9a1WR/XtX8Z6uUBrv5nya+9MR+Xhw5h8dG4GRM3UP0IDVku3K0M9BBP/3rYMssiqb5oLDBoLh/m7mmYuvMbs9CegFFYj6M+c+eUvu0omrp/koIiWLOE2QXT2sVVooJazKLoCaeIxiw9A31b99gNfl0cCwZMOwY+eqL0TY3G7d0O0fgE0lODwtAyoh3SxvMmyWWatwhEcWb+/knQx+cDquNr+q4TDl5I1B4fzExV+4sVrvrgP2JwM12rmcmF4VRnJOGNpjC0DXMbaFnvaO6TPh5EmGY8GtDRYQtTyQ==";
@@ -1836,7 +1837,7 @@ class admins::mortals {
 	include accounts::awjrichards
 	include accounts::aaron
 	include accounts::nikerabbit
-	include accounts::nimishg
+	include accounts::nimishg # revoked
 	include accounts::rfaulk
 	include accounts::zak
 	include accounts::demon
