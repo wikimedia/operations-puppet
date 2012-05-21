@@ -3,7 +3,7 @@
 
 class misc::wikistats {
 	system_role { 'misc::wikistats': description => 'wikistats host' }
-	systemuser { wikistats: name => 'wikistats', home => '/var/lib/wikistats', groups => [ 'project-wikistats' ] }
+	systemuser { wikistats: name => 'wikistats', home => '/usr/lib/wikistats', groups => [ 'project-wikistats' ] }
 
 	# the web UI part (output)
 	class web {
@@ -64,7 +64,7 @@ class misc::wikistats {
 			$hour = regsubst($name, '.*@', '\1')
 
 			cron { "cron-wikistats-update-${name}":
-				command => "/usr/bin/php /var/lib/wikistats/bin/update.php ${project} > /var/log/wikistats/update_${name}.log 2>&1",
+				command => "/usr/bin/php /usr/lib/wikistats/update.php ${project} > /var/log/wikistats/update_${name}.log 2>&1",
 				user => dzahn,
 				hour => $hour,
 				minute => 0,
