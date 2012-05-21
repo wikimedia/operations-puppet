@@ -5,7 +5,7 @@
 #
 # This is a POSIX shell fragment
 #
-INFILE="<%= ircecho_infile %>"
+INFILE="<%= ircecho_logs.map {|k,v| v = v.map {|c| c.sub(/^#?/,'#') }.join(","); "#{k}:#{v}" }.join(";") %>"
 NICK="<%= ircecho_nick %>"
-CHANS="<%= ircecho_chans %>"
+CHANS="<%= ircecho_logs.values.flatten.map {|c| c.sub(/^#?/,'#') }.uniq.join(",") %>"
 SERVER="<%= ircecho_server %>"

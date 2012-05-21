@@ -226,9 +226,17 @@ class gerrit::ircbot {
 
 	include gerrit::gerrit_config
 
-	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile;/var/lib/gerrit2/review_site/logs/mediawiki.log:#mediawiki;/var/lib/gerrit2/review_site/logs/wikimedia-dev.log:#wikimedia-dev"
+	#target channels can be either strings or arrays.
+	#channels names will get a # prepended if it doesn't already start with one
+	$ircecho_logbase = "/var/lib/gerrit2/review_site/logs"
+	$ircecho_logs = {
+		"${ircecho_logbase}/operations.log"    => "wikimedia-operations",
+		"${ircecho_logbase}/labs.log"          => "wikimedia-labs",
+		"${ircecho_logbase}/mobile.log"        => "wikimedia-mobile",
+		"${ircecho_logbase}/mediawiki.log"     => "mediawiki",
+		"${ircecho_logbase}/wikimedia-dev.log" => "wikimedia-dev",
+	}
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki,#wikimedia-dev"
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:
