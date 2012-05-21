@@ -615,6 +615,7 @@ class nagios::ganglia::ganglios {
 	cron { "ganglios-cron":
 		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
 		user => nagios,
+		minute => "*/2",
 		ensure => present;
 	}
 	file { "/var/lib/ganglia/xmlcache":
