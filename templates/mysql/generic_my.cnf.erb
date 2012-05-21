@@ -9,7 +9,7 @@ datadir                        = <%= datadir %>
 tmpdir                         = <%= tmpdir %>
 socket                         = <%= socket %>
 pid-file                       = <%= pid_file %>
-user                           = <%= user %>
+user                           = mysql
 
 
 ##############
@@ -44,12 +44,6 @@ collation_server               = utf8_general_ci
 ft_min_word_len                = 3
 
 
-
-###########
-# Threads #
-###########
-
-
 ####################################
 # Buffers, Threads, Caches, Limits #
 ####################################
@@ -82,6 +76,7 @@ query_cache_limit              = <%= query_cache_limit                %>
 tmp_table_size                 = <%= tmp_table_size                   %>
 read_rnd_buffer_size           = <%= read_rnd_buffer_size             %>
 
+
 ###################
 # MyISAM Settings #
 ###################
@@ -105,10 +100,12 @@ innodb_thread_concurrency      = <%= innodb_thread_concurrency       %>
 innodb_concurrency_tickets     = <%= innodb_concurrency_tickets      %>
 innodb_doublewrite             = <%= innodb_doublewrite              %>
 
+
 # always enable federated storage engine
 federated                      = 1
 
 <% if replication_enabled -%>
+
 ########################
 # Replication Settings #
 ########################
