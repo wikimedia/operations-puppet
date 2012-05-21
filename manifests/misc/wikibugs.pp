@@ -12,10 +12,13 @@ class misc::irc::wikibugs {
 
 	# Some Bugzilla product have been blessed with their own log files out of the
 	# default one. Values are hardcoded in the Wikibugs perl script
-	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki'
+	$ircecho_logbase = '/var/lib/wikibugs/logs'
+	$ircecho_logs = {
+		"${ircecho_logbase}/wikimedia-labs.log" => '#wikimedia-labs',
+		"${ircecho_logbase}/wikimedia-mobile.log" => '#wikimedia-mobile',
+		"${ircecho_logbase}/mediawiki.log" => '#mediawiki',
+	}
 	$ircecho_nick = "wikibugs"
-	# Add channels defined in $ircecho_infile:
-	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki'
 	$ircecho_server = 'irc.freenode.net'
 
 	include misc::ircecho
