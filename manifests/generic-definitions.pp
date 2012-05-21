@@ -112,6 +112,17 @@ define lighttpd_config($install="false") {
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
 		ensure => "/etc/lighttpd/conf-available/${title}.conf";
 	}
+	
+	# Reload lighttpd if the site config file changes.
+	# This subscribes to both the real file and the symlink.
+	# Not sure if this is the best thing to do.  What's up with the
+	# $install boolean above?
+	exec { "lighttpd_reload_${title}":
+		command     => "/usr/sbin/service service lighttpd reload",
+		refreshonly => true,
+		subscribe   => [File["/etc/lighttpd/conf-enabled/${title}.conf"], 
+						File["/etc/lighttpd/conf-available/${title}.conf"]],
+	}
 }
 
 # Enables a certain NGINX site
