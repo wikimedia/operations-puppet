@@ -1149,10 +1149,13 @@ class misc::l10nupdate {
 
 class misc::ircecho {
 
-	# To use this class, you must define some variables; here's an example:
-	#  $ircecho_infile = "/var/log/nagios/irc.log"
+	# To use this class, you must define some variables; here's an example
+	# (leading hashes on channel names are added for you if missing):
+	#  $ircecho_logs = {
+	#    "/var/log/nagios/irc.log" => ["wikimedia-operations","#wikimedia-tech"],
+	#    "/var/log/nagios/irc2.log" => "#irc2",
+	#  }
 	#  $ircecho_nick = "nagios-wm"
-	#  $ircecho_chans = "#wikimedia-operations,#wikimedia-tech"
 	#  $ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":
