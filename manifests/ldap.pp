@@ -712,9 +712,8 @@ class ldap::client::includes {
 
 	if $realm == "labs" {
 		if $managehome {
-			$ircecho_infile = "/var/log/manage-exports.log"
+			$ircecho_logs = { "/var/log/manage-exports.log" => "#wikimedia-labs" }
 			$ircecho_nick = "labs-home-wm"
-			$ircecho_chans = "#wikimedia-labs"
 			$ircecho_server = "irc.freenode.net"
 	
 			package { "ircecho":
