@@ -150,10 +150,11 @@ class udp2log {
 			check_command => "check_packet_loss_ave!4!8",
 			contact_group => "admins,analytics",
 			# ganglia-logtailer only runs every 5.
-			# Nagios retries every 3 minutes.
-			# We want to make sure ganglia has enough
-			# time to refresh before nagios sends out a notice.
+			# let's make nagios check every 2 minutes (to match ganglia_parser)
+			# and retry 4 times (total 8 minutes) before
+			# declaring a hard failure.
 			normal_check_interval => 2,
+			retry_check_interval => 2,
 			retries => 4,
 		}
 	}
