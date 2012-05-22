@@ -1872,6 +1872,7 @@ class admins::mortals {
 	include accounts::halfak
 	include accounts::kaldari
 	include accounts::bsitu
+	include accounts::khorn
 }
 
 class admins::restricted {

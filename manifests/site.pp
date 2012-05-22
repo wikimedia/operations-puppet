@@ -492,8 +492,7 @@ node "emery.wikimedia.org" {
 node "erzurumi.pmtpa.wmnet" {
 	include	standard,
 		groups::wikidev,
-		accounts::awjrichards,
-		accounts::tfinc
+		accounts::khorn
 }
 
 node /es100[1-4]\.eqiad\.wmnet/ {
@@ -1124,7 +1123,6 @@ node "locke.wikimedia.org" {
 	include standard,
 		groups::wikidev,
 		admins::restricted,
-		accounts::awjrichards,
 		accounts::dsc,
 		accounts::datasets,
 		nrpe,
