@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo /usr/local/sbin/set-group-write2
+exec sudo "$(dirname "$0")"/set-group-write2

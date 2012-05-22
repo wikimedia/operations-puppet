@@ -1,3 +1,2 @@
 #!/bin/sh
-/usr/bin/scap-1
-
+exec /usr/bin/scap-1

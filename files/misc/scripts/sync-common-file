@@ -2,6 +2,12 @@
 ## synchronizes a single file from common on all apaches
 
 BINDIR=/usr/local/bin
+MESSAGE=
+DIR="$1"
+shift
+if [ -n "$1" ]; then
+	MESSAGE="$*"
+fi
 
 [ $# -lt 1 ] && {
 	echo >&2 "usage: sync-common-file file [message]"
@@ -12,14 +18,6 @@ if [ ! -S "$SSH_AUTH_SOCK" ]; then
 	echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
 	echo >&2 "Did you start your ssh-agent?"
 	exit 1
-fi
-
-DIR=$1
-shift
-if [ -n "$1" ]; then
-	MESSAGE=" '"$@"'"
-else
-	MESSAGE=
 fi
 
 [ -e "/home/wikipedia/common/$DIR" ] || {

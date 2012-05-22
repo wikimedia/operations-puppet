@@ -18,7 +18,11 @@ if [ ! -d "/home/wikipedia/common/$FILE" ]; then
 fi
 
 # Perform syntax check
-php -l /home/wikipedia/common/$FILE || {
+find /home/wikipedia/common/$FILE -type f -a \( \
+		-iname '*.php' -o \
+		-iname '*.inc' -o \
+		-iname '*.phtml' \
+		\) -a -print0 | xargs -0 -n 1 -P 2 php -l || {
 	echo >&2 "Aborted due to syntax errors"
 	exit 1
 }

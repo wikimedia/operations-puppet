@@ -1,6 +1,6 @@
 #!/bin/bash
 
-db=$1
+db="$1"
 cluster=`</etc/cluster`
 
 MWMULTIDIR=/home/wikipedia/common/multiversion
@@ -9,22 +9,18 @@ if [ -z $db ];then
 	db=enwiki
 fi
 if [ "$db" == centralauth ]; then
-#	host=`echo 'echo wfGetLB()->getServerName(0);' | php /home/wikipedia/common/php/maintenance/eval.php --wiki=fawiki`
-	host=`echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki=fawiki`
+	host="$(echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki=fawiki)"
 else
 if [ $HOSTNAME == 'fenari' ]; then
-#	host=`echo 'echo wfGetLB()->getServerName(0);' | php /home/wikipedia/common/php/maintenance/eval.php --wiki=$db`
-	host=`echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki="$db"`
+	host="$(echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki="$db")"
 else
 	host=localhost
 fi
 fi
 
 MU=wikiadmin
-MP=`wikiadmin_pass`
-#host=$(grep ^\$wgDBserver /home/wikipedia/common/php/CommonSettings.php | awk 'BEGIN {FS="\"";}{print $2;}')
+MP=$(wikiadmin_pass)
 #echo "Connecting to database $db on $host..."
 
 #echo "$@" 1>&2
-mysql -u $MU -p$MP -h $host -D enwiki "$@"
-
+mysql -u $MU -p$MP -h $host -D "$db" "$@"
