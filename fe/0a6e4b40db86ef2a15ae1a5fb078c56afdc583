@@ -1,0 +1,9 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Platonides <platonides@gmail.com>
+Code-Review+1: Nikerabbit <niklas.laxstrom@gmail.com>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Tue, 22 May 2012 18:22:12 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/8037
+Project: operations/puppet
+Branch: refs/heads/production
