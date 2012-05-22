@@ -1,6 +1,7 @@
 # admins.pp
 
-# last used uid 592
+# NOTE: append new accounts to the bottom of the list
+# make note of the UID here: last used uid 594
 
 # TODO: completely rewrite this file
 
@@ -1775,6 +1776,26 @@ class accounts {
 		}
 	}
 
+	class bsitu inherits baseaccount {
+		$username = "bsitu"
+		$realname = "Benny Situ"
+		$uid = 594
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"bsitu@wikimedia.org":
+					ensure => present,
+					user => $username,
+					type => "ssh-dss",
+					key => "AAAAB3NzaC1kc3MAAACBAPwC55vAiGT1i/GtaqbDjrDv7eBRL85Zzl08k1ywpxwaJrmgfWuZvm7yjfP77jnMFETlo3FNzVPXklX/W7XZOay4wGEmoJxGZ3Xuz4PLDf9MOCxPb7WbkfDaBn11H6llT+nIGER9cmR4GUElFC/omTs5OQXxm2f0pbk1USFYBkD/AAAAFQC+VpAVk5vUqjcjkur5OzNjkMPRAQAAAIBTx1epSxl9tg94Gu4UGeTrzzPOr8ga+CJX+KGi0AjPzpnhUhKuW4hJYhABwItltAvLAT8JL1+jq27++1XggLgAm9uX71zgrv3AUbxIMAMqnBNyub2mNidWzRWtjQ3S/HPeYjIViswGIudxxnA4rvZ/gJjfGdCAjjB1IW5rZuF0HgAAAIBiZffGKUU/TE04J0QjYuCrPQojyvHniicVFVUgRmZedL8b76lkTPgLwQr2hOH6+CqXF5/lvAtuF45+MLVPIKxCax7n6UzeOecIaFHBvfHWXb3ghIL+jf+csDp3rsrD12VxCyK/K5eNr/6xlQPlWoB41z465doAYqkY37K+2We23w==";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -1849,6 +1870,8 @@ class admins::mortals {
 	include accounts::neilk  # revoked access per RT 2345
 	include accounts::raindrift
 	include accounts::halfak
+	include accounts::kaldari
+	include accounts::bsitu
 }
 
 class admins::restricted {
