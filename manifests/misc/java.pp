@@ -67,6 +67,20 @@ class java::jre($package_prefix) {
 	# to install based on the prefix
 	$jre_package = "${package_prefix}-jre"
 
+	# sun-java requires that we accept
+	# Sun/Oracle's license.  If we are using the
+	# sun java packages, then do so.
+	# (Taken from  http://offbytwo.com/2011/07/20/scripted-installation-java-ubuntu.html
+	#  Should this use the generic::debconf::set define from generic-defintions.pp?)
+	if $package_prefix == 'sun-java6' {
+		exec { "agree-to-jre-license":
+			command => "/bin/echo -e sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | debconf-set-selections",
+			unless  => "debconf-get-selections | grep 'sun-java6-jre.*shared/accepted-sun-dlj-v1-1.*true'",
+			path    => ["/bin", "/usr/bin"],
+			before  => Package["java-jre"],
+		}
+	}
+
 	# Install the JRE package, alias it to
 	# 'java-jre' and 'java' so we don't have
 	# to care about the real package name later.
@@ -96,20 +110,6 @@ class java::jre($package_prefix) {
 		# correctly.  Set 0 and 2 as succesful return values.
 		returns => [0,2],
 	}
-
-	# sun-java requires that we accept
-	# Sun/Oracle's license.  If we are using the
-	# sun java packages, then do so.
-	# (Taken from  http://offbytwo.com/2011/07/20/scripted-installation-java-ubuntu.html
-	#  Should this use the generic::debconf::set define from generic-defintions.pp?)
-	if $package_prefix == 'sun-java6' {
-		exec { "agree-to-jre-license":
-			command => "/bin/echo -e sun-java6-jre shared/accepted-sun-dlj-v1-1 select true | debconf-set-selections",
-			unless  => "debconf-get-selections | grep 'sun-java6-jre.*shared/accepted-sun-dlj-v1-1.*true'",
-			path    => ["/bin", "/usr/bin"],
-			require => Package["java-jre"],
-		}
-	}
 }
 
 
@@ -122,22 +122,13 @@ class java::jre($package_prefix) {
 #   default: 'default'
 #
 class java::jdk($package_prefix) {
-
 	# include class java::jre.
 	class { "java::jre": package_prefix => $package_prefix }
 
 	# The name of the jre package we want
 	# to install based on the prefix
 	$jdk_package = "${package_prefix}-jdk"
-	# Install the JDK package, alias it to
-	# 'java-jdk' so we don't have
-	# to care about the real package name later.
-	package { $jdk_package:
-		ensure => installed,
-		alias  => "java-jdk",
-		require => Package["java-jre"],
-	}
-
+	
 	# sun-java requires that we accept
 	# Sun/Oracle's license.  If we are using the
 	# sun java packages, then do so.
@@ -148,7 +139,16 @@ class java::jdk($package_prefix) {
 			command => "/bin/echo -e sun-java6-jdk shared/accepted-sun-dlj-v1-1 select true | debconf-set-selections",
 			unless  => "debconf-get-selections | grep 'sun-java6-jdk.*shared/accepted-sun-dlj-v1-1.*true'",
 			path    => ["/bin", "/usr/bin"],
-			require => Package["java-jdk"],
+			before  => Package["java-jdk"],
 		}
+	}
+	
+	# Install the JDK package, alias it to
+	# 'java-jdk' so we don't have
+	# to care about the real package name later.
+	package { $jdk_package:
+		ensure => installed,
+		alias  => "java-jdk",
+		require => Package["java-jre"],
 	}
 }
