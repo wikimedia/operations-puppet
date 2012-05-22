@@ -19,7 +19,7 @@ fi
 # is not a real conf file.  It'd be nice to be able
 # to read that file and have slow_log set there.
 # Oh well :\
-slow_log_files="/var/log/squid/teahouse.log /a/squid/orange-niger.log /a/squid/saudi-telecom.log"
+slow_log_files="/var/log/squid/teahouse.log /a/squid/orange-niger.log /a/squid/saudi-telecom.log /var/log/squid/orange-ivory-coast.log"
 
 # Timestamps will be set on these files for
 # easy log file age comparision with -ot.
