@@ -25,14 +25,14 @@ class misc::mediawiki-logger {
 			source => "puppet:///files/misc/demux.py";
 		"/home/wikipedia/logs":
 			ensure => directory,
-			mode => 0644,
-			owner => root,
-			group => root,
+			mode => 0664,
+			owner => udp2log,
+			group => root, # FIXME should be `wikidev`, which is not available on labs yet
 			require => File["/home/wikipedia"];
 		"/home/wikipedia/logs/archive":
 			ensure => directory,
-			mode => 0644,
-			owner => root,
+			mode => 0664,
+			owner => udp2log,
 			group => root,
 			require => File['/home/wikipedia/logs'];
 		"/etc/logrotate.d/mw-udp2log":
