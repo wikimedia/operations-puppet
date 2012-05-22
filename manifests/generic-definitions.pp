@@ -98,31 +98,34 @@ class generic::apache::no-default-site {
 }
 
 # Enables a certain Lighttpd config
+#
+# TODO:  ensure => false removes symlink.  ensure => purged removes available file.
 define lighttpd_config($install="false") {
+	# Reload lighttpd if the site config file changes.
+	# This subscribes to both the real file and the symlink.
+	exec { "lighttpd_reload_${title}":
+		command     => "/usr/sbin/service service lighttpd reload",
+		refreshonly => true,
+	}
+	
 	if $install == "true" {
 		file { "/etc/lighttpd/conf-available/${title}.conf":
 			source => "puppet:///files/lighttpd/${title}.conf",
 			owner => root,
 			group => www-data,
 			mode => 0444,
-			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"],
+			notify => Exec["lighttpd_reload_${title}"],
 		}
 	}
 
+	# Create a symlink to the available config file 
+	# in the conf-enabled directory.  Notify 
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
-		ensure => "/etc/lighttpd/conf-available/${title}.conf";
+		ensure => "/etc/lighttpd/conf-available/${title}.conf",
+		notify => Exec["lighttpd_reload_${title}"],
 	}
-	
-	# Reload lighttpd if the site config file changes.
-	# This subscribes to both the real file and the symlink.
-	# Not sure if this is the best thing to do.  What's up with the
-	# $install boolean above?
-	exec { "lighttpd_reload_${title}":
-		command     => "/usr/sbin/service service lighttpd reload",
-		refreshonly => true,
-		subscribe   => [File["/etc/lighttpd/conf-enabled/${title}.conf"], 
-						File["/etc/lighttpd/conf-available/${title}.conf"]],
-	}
+
 }
 
 # Enables a certain NGINX site
