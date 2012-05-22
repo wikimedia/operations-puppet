@@ -1,12 +1,3 @@
 #!/bin/bash
 
-CMD=$1
-shift
-DBLIST=`</home/wikipedia/common/all.dblist`
-
-for x in $DBLIST; do
-	echo -----------------------------------------------------------------
-	echo $x 
-	echo -----------------------------------------------------------------
-	php -ddisplay_errors=On /usr/local/apache/common/multiversion/MWScript.php $CMD $x "$@" | sed -u "s/^/$x:  /"
-done
+exec "$(dirname "$0")/foreachwikiindblist" /home/wikipedia/common/all.dblist "${@}"
