@@ -20,7 +20,7 @@ class misc::install-server {
 				owner => root,
 				group => root,
 				path => "/etc/logrotate.d/lighttpd",
-				source => "puppet::///files/logrotate/lighttpd-install-server";
+				source => "puppet:///files/logrotate/lighttpd-install-server";
 		}
 
 		service { "lighttpd":
