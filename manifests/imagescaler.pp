@@ -19,6 +19,7 @@ class imagescaler::packages {
 				"imagemagick",
 				"ghostscript",
 				"ffmpeg",
+				"ffmpeg2theora",
 				"librsvg2-bin",
 				"djvulibre-bin",
 				"netpbm",
