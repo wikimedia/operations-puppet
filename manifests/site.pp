@@ -156,6 +156,17 @@ class applicationserver {
 			generic::geoip::files
 	}
 
+	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
+	class labs inherits parent {
+		include standard,
+			nfs::upload,
+			mediawiki::packages,
+			apaches::cron,
+			apaches::service,
+			apaches::monitoring::labs,
+			generic::geoip::files
+	}
+
 	class jobrunner {
 		include jobrunner::packages
 	}
