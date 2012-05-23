@@ -69,6 +69,16 @@ class mysql {
 			include role::db::fundraising::slave,
 				role::db::fundraising::dump,
 				misc::fundraising::backup::offhost
+
+			cron {
+				'offhost_backups':
+				user => root,
+				minute => '35',
+				hour => '1',
+				command => '/usr/local/bin/offhost_backups',
+				ensure => present,
+			}
+
 		}
 	}
 	elsif $hostname =~ /^db(48|49|1042|1048)$/ {
