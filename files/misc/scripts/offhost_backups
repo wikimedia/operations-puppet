@@ -42,8 +42,13 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 } elsif ($conf->{'HOSTNAME'} eq 'db1025') {
 
+	# only db1025 executes these commands
+	$mirror = {
+
 		# copy collected backups from individual hosts to tridge
-        '1'  => 'rsync -ar /a/archive/db1025/ fundraising@tridge.wikimedia.org:db1025/',
+		'1'  => 'rsync -ar /a/archive/ fundraising@tridge.wikimedia.org:db1025/',
+
+	}
 
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
 
