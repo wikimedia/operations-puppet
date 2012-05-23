@@ -343,7 +343,8 @@ Include /etc/apache2/wmf/remnant.conf
 
 # upload.wikimedia.org
 # DISABLED as this is now done on albert 2005-02-26 --brion
-#Include /usr/local/apache/conf/upload.conf
+# ENABLED just on wmflabs (bug 37034)
+Include /usr/local/apache/conf/upload.conf
 
 # secure.wikimedia.org unencrypted backend
 Include /etc/apache2/wmf/wikimedia-ssl-backend.conf
