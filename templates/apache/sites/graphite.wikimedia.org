@@ -85,10 +85,11 @@
 		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
 		AuthLDAPBindPassword <%= proxypass %>
 		AuthLDAPURL "ldap://nfs1.pmtpa.wmnet nfs2.pmtpa.wmnet/ou=people,dc=wikimedia,dc=org?cn"
-		Require valid-user
+		Require ldap-group cn=ops,ou=groups,dc=wikimedia,dc=org
+		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
 
 		ProxyPass http://ishmael.pmtpa.wmnet/
 		ProxyPassReverse http://ishmael.pmtpa.wmnet/
-	</Location> 
+	</Location>
 
 </VirtualHost>
