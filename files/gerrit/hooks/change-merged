@@ -3,12 +3,14 @@ import re
 import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
+import hookconfig
 
 class ChangeMerged(HookHelper):
 	def run(self):
-		self.parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit>")
+		self.parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit> --uploader <uploader>")
 		self.parser.add_option("--submitter", dest="submitter")
 		self.parser.add_option("--commit", dest="commit")
+		self.parser.add_option("--uploader", dest="uploader")
 		(options, args) = self.parser.parse_args()
 		if options.uploader != hookconfig.l10nuser:
 			message = "Change merged: " + re.sub(' \(.*', "", options.submitter) + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
