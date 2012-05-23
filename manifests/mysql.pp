@@ -67,7 +67,8 @@ class mysql {
 		}
 		elsif $hostname =~ /^db1025$/ {
 			include role::db::fundraising::slave,
-				role::db::fundraising::dump
+				role::db::fundraising::dump,
+				misc::fundraising::backup::offhost
 		}
 	}
 	elsif $hostname =~ /^db(48|49|1042|1048)$/ {
