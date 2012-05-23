@@ -159,6 +159,7 @@ class applicationserver {
 
 	class jobrunner {
 		include jobrunner::packages
+		include jobrunner::labs
 	}
 
 }
