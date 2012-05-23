@@ -759,8 +759,6 @@ node "fenari.wikimedia.org" {
 }
 
 node "formey.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
-
 	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
