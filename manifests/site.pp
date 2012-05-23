@@ -16,7 +16,6 @@ import "gerrit.pp"
 import "imagescaler.pp"
 import "iptables.pp"
 import "jobrunner.pp"
-import "labs.pp"
 import "ldap.pp"
 import "lvs.pp"
 import "mail.pp"
@@ -159,7 +158,6 @@ class applicationserver {
 
 	class jobrunner {
 		include jobrunner::packages
-		include jobrunner::labs
 	}
 
 }
