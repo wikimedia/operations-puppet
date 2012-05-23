@@ -254,7 +254,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				user => root,
 				hour => 3,
 				minute => 26,
-				ensure => present;
+				ensure => absent;  # this has been replaced by class misc::geoip::data, included below
 			removeoldreports:
 				command => "find /var/lib/puppet/reports -type f -ctime +1 -delete",
 				user => puppet,
@@ -268,6 +268,20 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => present;
 		}
 
+		# Including misc::geoip::data
+		# with provider => maxmind will
+		# install a cron job to download
+		# GeoIP data files from Maxmind weekly.
+		# Setting data_directory will have those
+		# files downloaded into data_directory.
+		# By downloading these files into the
+		# volatiledir they will be available for
+		# other nodes to get via puppet by
+		# including misc::geoip::data with provider => 'puppet'.
+		class { "misc::geoip::data":
+			provider => 'maxmind',
+			data_directory => "$puppetmaster::config::volatiledir/GeoIP",
+		}
 	}
 
 	# Class: puppetmaster::dashboard
