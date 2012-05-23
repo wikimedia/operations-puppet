@@ -1,25 +1,7 @@
-class jobrunner {
+class jobrunner::packages {
 
-	class packages {
-		package { [ 'wikimedia-job-runner' ]:
-			ensure => latest;
-		}
-	}
-
-	# labs specific
-	class labs {
-		if ($::realm == 'labs') and ($::instanceproject == 'deployment-prep') {
-
-			require labs::umount_vdb
-
-			mount { "/tmp":
-				device => "/dev/vdb",
-				name   => "/tmp",
-				fstype   => "ext3",
-				ensure => mounted;
-			}
-
-		}
+	package { [ 'wikimedia-job-runner' ]:
+		ensure => latest;
 	}
 
 }
