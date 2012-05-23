@@ -188,7 +188,17 @@ class apaches::pybal-check {
 }
 
 class apaches::monitoring {
-	monitor_service { "appserver http": description => "Apache HTTP", check_command => "check_http_wikipedia" }
+
+	if ($::cluster == 'labs') and ($::instanceproject == 'deployment-prep') {
+		# bug 37046
+		$check_command = "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page"
+	} else {
+		# default/production
+		$check_command = "check_http_wikipedia"
+	}
+
+	monitor_service { "appserver http": description => "Apache HTTP", check_command => $check_command }
+
 }
 
 class apaches::fonts {
