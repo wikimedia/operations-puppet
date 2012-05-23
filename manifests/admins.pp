@@ -1678,83 +1678,91 @@ class accounts {
 }
 
 class admins::roots {
-	$gid = 500	# 'wikidev' by default
-	include groups::wikidev
+	if( $::realm == 'production' ) {
+		$gid = 500	# 'wikidev' by default
+		include groups::wikidev
 
-	# in addition to adding the user to this list,
-	# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
-	# to actually get them root; that file is not in SVN.
-	include accounts::brion
-	include	accounts::dzahn
-	include accounts::fvassard
-	include accounts::jeluf
-	include accounts::kate
-	include accounts::lcarr
-	include accounts::mark
-	include accounts::midom
-	include accounts::py
-	include accounts::robh
-	include accounts::tfinc
-	include accounts::tstarling
-	include accounts::ariel
-	include accounts::laner
-	include accounts::asher
-	include accounts::jgreen
-	include accounts::ben
-	include accounts::catrope
-	include accounts::sara
+		# in addition to adding the user to this list,
+		# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
+		# to actually get them root; that file is not in SVN.
+		include accounts::brion
+		include	accounts::dzahn
+		include accounts::fvassard
+		include accounts::jeluf
+		include accounts::kate
+		include accounts::lcarr
+		include accounts::mark
+		include accounts::midom
+		include accounts::py
+		include accounts::robh
+		include accounts::tfinc
+		include accounts::tstarling
+		include accounts::ariel
+		include accounts::laner
+		include accounts::asher
+		include accounts::jgreen
+		include accounts::ben
+		include accounts::catrope
+		include accounts::sara
+	}
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals { 
-	$gid = 500	# 'wikidev' by default
-	include groups::wikidev
+	if( $::realm == 'production' ) {
+		$gid = 500	# 'wikidev' by default
+		include groups::wikidev
 
-	include accounts::andrew
-	include accounts::awjrichards
-	include accounts::aaron
-	include accounts::nikerabbit
-	include accounts::nimishg
-	include accounts::rfaulk
-	include accounts::zak
-	include accounts::demon
-	include accounts::hashar
-	include accounts::pdhanda
-	include accounts::reedy
-	include accounts::preilly
-	include accounts::robla
-	include accounts::neilk
+		include accounts::andrew
+		include accounts::awjrichards
+		include accounts::aaron
+		include accounts::nikerabbit
+		include accounts::nimishg
+		include accounts::rfaulk
+		include accounts::zak
+		include accounts::demon
+		include accounts::hashar
+		include accounts::pdhanda
+		include accounts::reedy
+		include accounts::preilly
+		include accounts::robla
+		include accounts::neilk
+	}
 }
 
 class admins::restricted {
-	$gid = 500	# 'wikidev' by default
-	include groups::wikidev
+	if( $::realm == 'production' ) {
+		$gid = 500	# 'wikidev' by default
+		include groups::wikidev
 
-	include accounts::ashields
-	include accounts::austin
-	include accounts::avar
-	include accounts::bastique
-	include accounts::cmjohnson
-	include accounts::dab
-	include accounts::daniel
-	include accounts::dartar
-	include accounts::erik
-	include accounts::ezachte
-	include accounts::jamesofur
-	include accounts::pgehres
-	include accounts::rcole
-	include accounts::rainman
-	include accounts::tparscal
-	include accounts::khorn
-	include accounts::diederik
+		include accounts::ashields
+		include accounts::austin
+		include accounts::avar
+		include accounts::bastique
+		include accounts::cmjohnson
+		include accounts::dab
+		include accounts::daniel
+		include accounts::dartar
+		include accounts::erik
+		include accounts::ezachte
+		include accounts::jamesofur
+		include accounts::pgehres
+		include accounts::rcole
+		include accounts::rainman
+		include accounts::tparscal
+		include accounts::khorn
+		include accounts::diederik
+	}
 }
 
 class admins::analinterns {
-	$gid = 500	# 'wikidev' by default
-	include groups::wikidev
-	
-	include accounts::shawn
-	include accounts::halfak
-	include accounts::diederik
-	include accounts::declerembaul
-	include accounts::whym
+	if( $::realm == 'production' ) {
+		$gid = 500	# 'wikidev' by default
+		include groups::wikidev
+		
+		include accounts::shawn
+		include accounts::halfak
+		include accounts::diederik
+		include accounts::declerembaul
+		include accounts::whym
+	}
 }
