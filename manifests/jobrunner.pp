@@ -15,6 +15,7 @@ class jobrunner {
 			mount { "/tmp":
 				device => "/dev/vdb",
 				name   => "/tmp",
+				type   => "ext3",
 				ensure => mounted;
 			}
 
