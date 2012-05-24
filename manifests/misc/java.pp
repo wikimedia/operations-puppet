@@ -60,7 +60,6 @@ class java($provider = 'default', $distribution = 'jdk') {
 #
 # == Parameters
 # $package_prefix - either 'sun-java6', 'openjdk-6', or 'default'.
-#   default: 'default'
 #
 class java::jre($package_prefix) {
 	# The name of the jre package we want
@@ -119,7 +118,6 @@ class java::jre($package_prefix) {
 #
 # == Parameters
 # $package_prefix - either 'sun-java6', 'openjdk-6', or 'default'.
-#   default: 'default'
 #
 class java::jdk($package_prefix) {
 	# include class java::jre.
