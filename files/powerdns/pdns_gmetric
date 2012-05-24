@@ -1,0 +1,221 @@
+#!/usr/bin/env python
+#
+# pdns gmetric wrapper for Ganglia
+# written using gmetric instead of the python modules because rec_control requires root privs
+#
+# Copyright (C) Wikimedia Foundation
+#
+# Released under the GPLv2 or later
+#
+# Ben Hartshorne <bhartshorne@wikimedia.org>
+# 2012-05-18
+
+## all pdns metrics:
+# all-outqueries      counts the number of outgoing UDP queries since starting
+# answers0-1          counts the number of queries answered within 1 millisecond
+# answers100-1000     counts the number of queries answered within 1 second
+# answers10-100       counts the number of queries answered within 100 milliseconds
+# answers1-10         counts the number of queries answered within 10 milliseconds
+# answers-slow        counts the number of queries answered after 1 second
+# cache-bytes         Size of the cache in bytes (since 3.3.1)
+# cache-entries       shows the number of entries in the cache
+# cache-hits          counts the number of cache hits since starting
+# cache-misses        counts the number of cache misses since starting
+# chain-resends       number of queries chained to existing outstanding query
+# client-parse-errors counts number of client packets that could not be parsed
+# concurrent-queries  shows the number of MThreads currently running
+# dlg-only-drops      number of records dropped because of delegation only setting
+# dont-outqueries     number of outgoing queries dropped because of 'dont-query' setting (since 3.3)
+# ipv6-outqueries     number of outgoing queries over IPv6
+# max-mthread-stack   maximum amount of thread stack ever used
+# negcache-entries    shows the number of entries in the Negative answer cache
+# noerror-answers     counts the number of times it answered NOERROR since starting
+# nsspeeds-entries    shows the number of entries in the NS speeds map
+# nsset-invalidations number of times an nsset was dropped because it no longer worked
+# nxdomain-answers    counts the number of times it answered NXDOMAIN since starting
+# outgoing-timeouts   counts the number of timeouts on outgoing UDP queries since starting
+# over-capacity-drops Questions dropped because over maximum concurrent query limit (since 3.2)
+# packetcache-bytes   Size of the packet cache in bytes (since 3.3.1)
+# packetcache-entries Size of packet cache (since 3.2)
+# packetcache-hits    Packet cache hits (since 3.2)
+# packetcache-misses  Packet cache misses (since 3.2)
+# qa-latency          shows the current latency average, in microseconds
+# questions           counts all End-user initiated queries with the RD bit set
+# resource-limits     counts number of queries that could not be performed because of resource limits
+# server-parse-errors counts number of server replied packets that could not be parsed
+# servfail-answers    counts the number of times it answered SERVFAIL since starting
+# spoof-prevents      number of times PowerDNS considered itself spoofed, and dropped the data
+# sys-msec            number of CPU milliseconds spent in 'system' mode
+# tcp-client-overflow number of times an IP address was denied TCP access because it already had too many connections
+# tcp-outqueries      counts the number of outgoing TCP queries since starting
+# tcp-questions       counts all incoming TCP queries (since starting)
+# throttled-out       counts the number of throttled outgoing UDP queries since starting
+# throttle-entries    shows the number of entries in the throttle map
+# unauthorized-tcp    number of TCP questions denied because of allow-from restrictions
+# unauthorized-udp    number of UDP questions denied because of allow-from restrictions
+# unexpected-packets  number of answers from remote servers that were unexpected (might point to spoofing)
+# uptime              number of seconds process has been running (since 3.1.5)
+# user-msec           number of CPU milliseconds spent in 'user' mode
+
+import subprocess, time, os, pwd, re
+
+# set this to the user as which ganglia runs
+GANGLIA_USER = 'nobody'
+# set the location where this script will store its state file
+STATEDIR = '/var/lib/ganglia/'
+STATEFILE = 'pdns_gmetric.state'
+
+COUNTMETRICS = ['answers0-1', 'answers1-10', 'answers10-100', 'answers100-1000', 'answers-slow',
+        'all-outqueries',
+        'cache-hits', 'cache-misses',
+        'chain-resends', 'client-parse-errors', 'dlg-only-drops','dont-outqueries', 'ipv6-outqueries', 'noerror-answers',
+        'nsspeeds-entries', 'nsset-invalidations', 'nxdomain-answers', 'outgoing-timeouts', 'over-capacity-drops',
+        'packetcache-hits', 'packetcache-misses', 'questions', 'resource-limits', 'server-parse-errors', 'servfail-answers',
+        'spoof-prevents', 'sys-msec', 'tcp-client-overflow', 'tcp-outqueries', 'tcp-questions', 'throttled-out',
+        'unauthorized-tcp', 'unauthorized-udp', 'unexpected-packets', 'user-msec']
+GAUGEMETRICS = ['cache-bytes', 'cache-entries', 'concurrent-queries', 'max-mthread-stack', 'negcache-entries',
+        'packetcache-bytes', 'packetcache-entries', 'qa-latency', 'throttle-entries', 'uptime']
+
+def get_metric(name):
+    rawval = subprocess.Popen(["/usr/bin/rec_control", "get", name], shell=False, stdout=subprocess.PIPE).communicate()[0].strip()
+    try:
+        value = int(rawval)
+    except ValueError:
+        value = 0
+    return value
+
+# read previous run's metrics from the state file
+def read_old_metrics():
+    try:
+        fh = open("%s%s" % (STATEDIR, STATEFILE), 'r')
+    except:
+        print "couldn't open statefile for reading %s%s" % (STATEDIR, STATEFILE)
+        raise
+    # the first line has the timestamp "date 0123456"
+    (datelabel, date) = fh.readline().strip().split(' ', 1)
+    date = int(date)
+    # each additional line is pairs of "type metric value" (space separated) where type is count or gauge
+    metrics = {}
+    metrics['count'] = {}
+    metrics['gauge'] = {}
+    for line in fh.readlines():
+        line = line.strip()
+        (mettype, met, val) = line.split(' ', 2)
+        if not re.match('^[0-9a-zA-Z_-]+$', met):
+            # the metric name has weird stuff.  skip it.
+            # this is here to protect against shell injection
+            continue
+        try:
+            metrics[mettype][met] = int(val)
+        except ValueError:
+            # a non-integer value was reported.  skip this metric
+            continue
+    return (date, metrics)
+
+# write out previous run's metrics to the state file
+def write_old_metrics(date, metrics):
+    try:
+        fh = open("%s%s" % (STATEDIR, STATEFILE), 'w')
+    except:
+        print "couldn't open statefile for writing: %s%s" % (STATEDIR, STATEFILE)
+        raise
+    # the first line has the timestamp "date 0123456"
+    fh.write('date %s\n' % date)
+    # each additional line is pairs of "type metric value" (space separated) where type is count or gauge
+    for metrictype in metrics.keys():
+        for metric in metrics[metrictype].keys():
+            fh.write("%s %s %s\n" % (metrictype, metric, metrics[metrictype][metric]))
+    fh.close()
+
+# diff current metrics from previous metrics, divide by difference in time for metric/second values
+def diff_metrics(olddate, oldmetrics, newdate, newmetrics):
+    timediff = newdate - olddate
+    if(timediff <= 0):
+        # whoops!  this count is invalid
+        # I should probably raise an exception
+        raise Exception('timediff was 0')
+    metdiffs = {}
+    for metric in newmetrics.keys():
+        try:
+            metdiff = newmetrics[metric] - oldmetrics[metric]
+            # if a counter wraps, let's just drop that datapoint.
+            if metdiff < 0:
+                metdiff = 0
+        except KeyError:
+            # metric type in newmetrics is missing in oldmetrics
+            # skip this metric
+            continue
+        metdiffs[metric] = float(metdiff) / timediff
+    return metdiffs
+
+# get the current values from pdns
+def read_current_metrics():
+    metrics = {}
+    metrics['count'] = {}
+    metrics['gauge'] = {}
+    for metric in COUNTMETRICS:
+        metrics['count'][metric] = get_metric(metric)
+    for metric in GAUGEMETRICS:
+        metrics['gauge'][metric] = get_metric(metric)
+    return metrics
+
+# actually submit the metrics to ganglia
+def submit_metrics(metrics):
+    # do we have gmetric groups? (hardy (gmetric version 3.1.2) doesn't, the rest do.)
+    # also, choose the location of the gmond config appropriately
+    gmetricver = subprocess.Popen(['/usr/bin/gmetric', '-V'], shell=False, stdout=subprocess.PIPE)
+    ver = gmetricver.communicate()[0].split()[1]
+    if('3.1.' in ver):
+        group = ["-c", "/etc/gmond.conf"]
+    else:
+        group = ["-g", 'pdns', "-c", "/etc/ganglia/gmond.conf"]
+    # ok, go ahead and call gmetric
+    for metric in metrics['count'].keys():
+        subprocess.Popen(["/usr/bin/gmetric",
+            "-n", "pdns_%s" % metric,
+            "-v", "%s" % metrics['count'][metric],
+            "-t", 'float',
+            "-u", 'qps',
+            "-s", 'both'] + group)
+    for metric in metrics['gauge'].keys():
+        subprocess.Popen(["/usr/bin/gmetric",
+            "-n", "pdns_%s" % metric,
+            "-v", "%s" % metrics['gauge'][metric],
+            "-t", 'float',
+            "-u", 'bytes',
+            "-s", 'both'] + group)
+
+
+def main():
+    date = int(time.time())
+    # make the statedir if necessary and check ownership (should be the user as which ganglia runs - GANGLIA_USER)
+    if not os.path.exists(STATEDIR):
+        os.makedirs(STATEDIR)
+    ganglia_uid = pwd.getpwnam(GANGLIA_USER)[2]
+    if os.stat(STATEDIR)[5] != ganglia_uid:
+        os.chown(STATEDIR, ganglia_uid, -1)
+
+    # cur and old metrics are two level hashes with current values for the count and gauge metrics
+    curmetrics = read_current_metrics()
+
+    # now that we've gotten our metrics, let's drop root privs.
+    os.setuid(ganglia_uid)
+
+    try:
+        (olddate, oldmetrics) = read_old_metrics()
+    except Exception:
+        #maybe it's the first time.  just write out current metrics and exit.
+        write_old_metrics(date, curmetrics)
+        return
+    # write out the current state for the next run
+    write_old_metrics(date, curmetrics)
+    #countmetdiffs is only the count metrics, no gauge metrics
+    countmetdiffs = diff_metrics(olddate, oldmetrics['count'], date, curmetrics['count'])
+    # replace absolute values with qps from the diffs for the count metrics, then submit to ganglia
+    curmetrics['count'] = countmetdiffs
+    submit_metrics(curmetrics)
+    #print curmetrics
+
+if __name__ == '__main__':
+    main()
+
