@@ -185,6 +185,20 @@ class dns::recursor {
 		hasstatus => false,
 		ensure => running;
 	}
+	
+	# install ganglia metrics reporting on pdns_recursor
+	file { "/usr/local/sbin/pdns_gmetric":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppe:///files/powerdns/pdns_gmetric",
+		ensure => present;
+	}
+	cron { pdns_gmetric_cron:
+		command => "/usr/local/sbin/pdns_gmetric",
+		user => root,
+		minute => "*";
+	}
 
 	class monitoring {
 		# Monitoring
