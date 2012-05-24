@@ -279,8 +279,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# other nodes to get via puppet by
 		# including geoip::data with provider => 'puppet'.
 		class { "geoip::data":
-			provider => 'maxmind',
+			provider       => 'maxmind',
 			data_directory => "$puppetmaster::config::volatiledir/GeoIP",
+			environment    => "http_proxy=http://brewster.wikimedia.org:8080",  # use brewster as http proxy, since puppetmaster probably does not have internet access
 		}
 	}
 

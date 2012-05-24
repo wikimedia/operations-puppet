@@ -97,12 +97,14 @@ class geoip::data::symlink($data_directory = "/usr/share/GeoIP") {
 # $data_directory - Where the data files should live.  default: /usr/share/GeoIP
 # $config_file    - the config file for the geoipupdate command.  This will be put in place from puppet:///private/geoip/GeoIP.conf.  This will not be used if the provider is 'puppet'.  default: /etc/GeoIP.conf
 # $source         - puppet file source for data_directory.  This is not used if provider is 'maxmind'. default: puppet:///volatile/GeoIP
+# $environment    - the environment paramter to pass to exec and cron for the geoipupdate download command.  This will not be used if the provider is 'puppet'.  default: ''
 #
 class geoip::data(
 	$provider       = "puppet",
 	$data_directory = "/usr/share/GeoIP",
 	$config_file    = "/etc/GeoIP.conf",
-	$source         = "puppet:///volatile/GeoIP") {
+	$source         = "puppet:///volatile/GeoIP",
+	$environment    = "") {
 
 	# if installing data files from puppet, use
 	# geoip::data::sync class
@@ -118,7 +120,8 @@ class geoip::data(
 	else {
 		class { "geoip::data::download":
 			data_directory => $data_directory,
-			config_file    => $config_file
+			config_file    => $config_file,
+			environment    => $environment,
 		}
 	}
 
@@ -150,8 +153,9 @@ class geoip::data::sync($data_directory = "/usr/share/GeoIP", $source = "puppet:
 # == Parameters
 # $data_directory - Where the data files should live.  default: /usr/share/GeoIP
 # $config_file    - the config file for the geoipupdate command.  This will be put in place from puppet:///private/geoip/GeoIP.conf.  default: /etc/GeoIP.conf
+# $environment    - the environment paramter to pass to exec and cron for the geoipupdate download command.  default: ''
 #
-class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file = "/etc/GeoIP.conf") {
+class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file = "/etc/GeoIP.conf", $environment = "") {
 	# Need this to get /usr/bin/geoipupdate installed.
 	include geoip::packages
 
@@ -176,6 +180,7 @@ class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file =
 	# running this class.
 	exec { "geoipupdate":
 		command     => "$geoipupdate_command",
+		environment => $environment,
 		refreshonly => true,
 		subscribe   => File["$config_file"],
 		require     => [Package["geoip-bin"], File["$data_directory"]],
@@ -188,12 +193,13 @@ class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file =
 	# modify GeoIP.conf and add the Maxmind
 	# product IDs for those files.
 	cron { "geoipupdate":
-		command => "$geoipupdate_command",
-		user    => root,
-		weekday => 0,
-		hour    => 3,
-		minute  => 30,
-		ensure  => present,
-		require => [File["$config_file"], Package["geoip-bin"], File["$data_directory"]],
+		command     => "$geoipupdate_command",
+		environment => $environment,
+		user        => root,
+		weekday     => 0,
+		hour        => 3,
+		minute      => 30,
+		ensure      => present,
+		require     => [File["$config_file"], Package["geoip-bin"], File["$data_directory"]],
 	}
 }
