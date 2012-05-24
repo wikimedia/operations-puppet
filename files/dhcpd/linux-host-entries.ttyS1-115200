@@ -889,6 +889,26 @@ host msfe1002 {
 	fixed-address msfe1002.wikimedia.org;
 }
 
+host ms-fe1001 {
+	hardware ethernet d4:be:d9:ec:df:a7;
+	fixed-address ms-fe1001.eqiad.wmnet;
+}
+
+host ms-fe1002 {
+	hardware ethernet d4:be:d9:ec:d2:27;
+	fixed-address ms-fe1002.eqiad.wmnet;
+}
+
+host ms-fe1003 {
+	hardware ethernet d4:be:d9:ec:e0:49;
+	fixed-address ms-fe1003.eqiad.wmnet;
+}
+
+host ms-fe1004 {
+	hardware ethernet d4:be:d9:ec:e0:52;
+	fixed-address ms-fe1004.eqiad.wmnet;
+}
+
 host mw1 {
 	hardware ethernet 78:2b:cb:2f:cf:57;
 	fixed-address mw1.pmtpa.wmnet;
