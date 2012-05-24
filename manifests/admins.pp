@@ -1,7 +1,7 @@
 # admins.pp
 
 # NOTE: append new accounts to the bottom of the list
-# make note of the UID here: last used uid 594
+# make note of the UID here: last used uid 597
 
 # TODO: completely rewrite this file
 
@@ -1779,7 +1779,7 @@ class accounts {
 	class bsitu inherits baseaccount {
 		$username = "bsitu"
 		$realname = "Benny Situ"
-		$uid = 594
+		$uid = 595
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1792,6 +1792,46 @@ class accounts {
 					user => $username,
 					type => "ssh-dss",
 					key => "AAAAB3NzaC1kc3MAAACBAPwC55vAiGT1i/GtaqbDjrDv7eBRL85Zzl08k1ywpxwaJrmgfWuZvm7yjfP77jnMFETlo3FNzVPXklX/W7XZOay4wGEmoJxGZ3Xuz4PLDf9MOCxPb7WbkfDaBn11H6llT+nIGER9cmR4GUElFC/omTs5OQXxm2f0pbk1USFYBkD/AAAAFQC+VpAVk5vUqjcjkur5OzNjkMPRAQAAAIBTx1epSxl9tg94Gu4UGeTrzzPOr8ga+CJX+KGi0AjPzpnhUhKuW4hJYhABwItltAvLAT8JL1+jq27++1XggLgAm9uX71zgrv3AUbxIMAMqnBNyub2mNidWzRWtjQ3S/HPeYjIViswGIudxxnA4rvZ/gJjfGdCAjjB1IW5rZuF0HgAAAIBiZffGKUU/TE04J0QjYuCrPQojyvHniicVFVUgRmZedL8b76lkTPgLwQr2hOH6+CqXF5/lvAtuF45+MLVPIKxCax7n6UzeOecIaFHBvfHWXb3ghIL+jf+csDp3rsrD12VxCyK/K5eNr/6xlQPlWoB41z465doAYqkY37K+2We23w==";
+			}
+		}
+	}
+
+	class mmullie inherits baseaccount {
+		$username = "mmullie"
+		$realname = "Matthias Mullie"
+		$uid = 596
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"matthias@mullie.eu":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDEq/VIh0GiXv6PIUq45Lbk9jgOmkH9FRN53VGMJmaxyJV8fRpUpdB1rmdqqe9gs5heSyObP9Ci5fEL+8PbXsEygK7g+ZhoRP+XDJDMe1yjMOMgjNaN4pM5FJnqkFgXFPmhOvRizrT3SWenUDlGBhxufekTUVsl/zOF0R2g5jTWbFWPoa4P0c2aXeJgJH3s65Zd+NoWolVrPG8Q1LT2l7xwJdRaS3t4Mt8iusPx1e+Fvdvd5LuO56/zDPQl37ocMeax0lVMbKPbKymhezxotD29sez3sljrHiB8W4Q/oNC9d5jEyCegMYV5Wh+eUkqMIAZ21knjGmWrkB5xGRhsrOVl";
+			}
+		}
+	}
+
+	class maxsem inherits baseaccount {
+		$username = "maxsem"
+		$realname = "Max Semenik"
+		$uid = 597
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"Max@NUXXUBB":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEApYlzRyFB5UNUnmCbN6sKPe53ZRd+P3NW64KmCj8MdcTsdBsOxhd00DBL7h1r3VUCYfkqnJuBgBf>0xFyv/Wx2fEUtZvneQEZUGIPciSkEwkh12VvNYeuTxWqW05B3eZYSnYzKwcziecf6/uFwRfMv4E5eTT91U22YYUzsgzVLVCDqtZWAESHqcZgfq5zxKoeO+PHIBUYYXNLz64Cs9UJNki8sbDX3sJMnRCebztEUjckUssN9K63KNXaQcXJ2GQJmqMG522+VkGMzbUV5yT4tjY8SCPNsPa3ij8af52HJNAz8IMfOvLak9ILxeDDugZJmSdBTEK2R6uCV2fo+vCw==";
 			}
 		}
 	}
@@ -1873,6 +1913,8 @@ class admins::mortals {
 	include accounts::kaldari
 	include accounts::bsitu
 	include accounts::khorn
+	include accounts::maxsem
+	include accounts::mmullie
 }
 
 class admins::restricted {
