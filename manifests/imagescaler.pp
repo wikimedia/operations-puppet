@@ -93,11 +93,17 @@ class imagescaler::files {
 				ensure => absent;
 			"/etc/fonts/conf.d/70-no-bitmaps.conf":
 				ensure => "/etc/fonts/conf.avail/70-no-bitmaps.conf";
+			"/a":
+				ensure => directory,
+				owner => root,
+				group => root,
+				mode => 755;
 			"/a/magick-tmp":
 				ensure => directory,
 				owner => apache,
 				group => root,
-				mode => 0755;
+				mode => 0755,
+				require => File["/a"];
 		}
 	}
 
