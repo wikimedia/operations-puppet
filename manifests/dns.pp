@@ -191,7 +191,7 @@ class dns::recursor {
 		owner => root,
 		group => root,
 		mode => 0555,
-		source => "puppet///files/powerdns/pdns_gmetric",
+		source => "puppet:///files/powerdns/pdns_gmetric",
 		ensure => present;
 	}
 	cron { pdns_gmetric_cron:
