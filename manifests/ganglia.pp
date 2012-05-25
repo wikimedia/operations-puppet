@@ -144,14 +144,14 @@ class ganglia {
 					alias => "gmond-package";
 				"ganglia-monitor":
 					before => Package[gmond],
-					ensure => absent;
+					ensure => purged;
 			}
 		}
 		ganglia-monitor: {
 			package {
 				"gmond":
 					before => Package[ganglia-monitor],
-					ensure => absent;
+					ensure => purged;
 				"ganglia-monitor":
 					ensure => latest,
 					alias => "gmond-package";
