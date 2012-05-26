@@ -389,13 +389,18 @@ class ganglia::web {
 	}
 
 	
-	# conf.php for labs is maintained via puppet
+	# labs only: ganglia-webfrontend package and conf.php
 	if $realm == "labs" {
+		package { "ganglia-webfrontend":
+			ensure => latest;
+		}
+
 		file { "/usr/share/ganglia-webfrontend/conf.php":
 			mode => 0444,
 			owner => root,
 			group => root,
 			source => "puppet:///files/ganglia/conf.php",
+			require => Package[ganglia-webfrontend],
 			ensure => present;
 		}
 	}
