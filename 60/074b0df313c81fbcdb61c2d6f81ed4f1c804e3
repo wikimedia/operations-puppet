@@ -1,0 +1,7 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Sat, 26 May 2012 00:38:29 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/8989
+Project: operations/puppet
+Branch: refs/heads/test
