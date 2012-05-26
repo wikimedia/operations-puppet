@@ -1059,7 +1059,7 @@ node "kaulen.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	monitor_service { "http": description => "Apache HTTP", check_command => "check_http" }
-	monitor_service { "memorysurge": description => "Memory using more than expected", check_command => "check_memory_used!250000!251000" }
+	monitor_service { "memorysurge": description => "Memory using more than expected", check_command => "check_memory_used!500000!510000" }
 	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
