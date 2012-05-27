@@ -32,7 +32,7 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(36|30|31|45|34|47|16|48)$/ {
+	if $hostname =~ /^db(38|52|39|31|35|43|37)$/ {
 		$master = "true"
 		$writable = "true"
 	} else {
