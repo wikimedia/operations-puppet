@@ -1,0 +1,9 @@
+Change-Id: Icc0669e5b1d06c712c88ed634c2b75f34653fe52
+Code-Review+2: Asher <afeldman@wikimedia.org>
+Verified+1: Asher <afeldman@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Asher <afeldman@wikimedia.org>
+Submitted-at: Sun, 27 May 2012 14:24:54 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/9016
+Project: operations/puppet
+Branch: refs/heads/test
