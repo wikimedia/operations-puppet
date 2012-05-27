@@ -62,9 +62,12 @@ NameVirtualHost *:443
 	</Directory>
 
 	<Directory /srv/org/wikimedia/bugzilla/>
+		BrowserMatchNoCase spider nobots
+		BrowserMatchNoCase bot nobots
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
 		Order allow,deny
+		Deny from env=nobots
 		allow from all
 		# This directive allows us to have apache2's default start page
 		# in /apache2-default/, but still have / go to the right place
