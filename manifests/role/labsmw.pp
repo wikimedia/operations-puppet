@@ -9,7 +9,9 @@
 # (Totally unstable and unreliable, for the moment.)
 class role::labs-mediawiki-install {
 
-        require [ "role::labs-mysql-server", "webserver::php5-mysql", "webserver::php5" ]
+        require "role::labs-mysql-server",
+		"webserver::php5-mysql",
+		"webserver::php5"
 
 	git::clone {
 		"mediawiki core":
