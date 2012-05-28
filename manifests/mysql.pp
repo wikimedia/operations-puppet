@@ -595,7 +595,7 @@ class generic::mysql::server(
 	#   will have created that dir already, and nothing at all will happen here.)
         exec {"install_datadir":
 		command => "/usr/bin/mysql_install_db",
-		unless => "test -d $datadir/mysql",
+		unless => "/usr/bin/test -d $datadir/mysql",
 		notify => Service['mysql']
 	}
 }
