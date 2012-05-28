@@ -589,6 +589,8 @@ class generic::mysql::server(
 		# rather than allowing puppet to do it without
 		# your supervision.
 	}
+
+        exec {"install_datadir": command => "mysql_install_db", refreshonly => true, unless => "test -d $datadir/mysql", notify => Service['mysql'] }
 }
 
 
