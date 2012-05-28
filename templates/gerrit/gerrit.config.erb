@@ -51,6 +51,9 @@
 [commentlink "changeid"]
 	match = (I[0-9a-f]{8,40})
 	link = "#q,$1,n,z"
+[commentlink "commit"]
+	match = "\\b([0-9a-f]{40})\\b"
+	link = "#q,$1,n,z"
 [commentlink "bugzilla"]
-	match = "([bB][uU][gG]\\s+#?)(\\d+)"
+	match = "\\b([bB][uU][gG]\\s+#?)(\\d+)\\b"
 	link = https://bugzilla.wikimedia.org/$2
