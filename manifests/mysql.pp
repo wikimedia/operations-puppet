@@ -594,7 +594,7 @@ class generic::mysql::server(
 	#  (If $datadir is left to the default /var/lib/mysql then the .deb mysql package
 	#   will have created that dir already, and nothing at all will happen here.)
         exec {"install_datadir":
-		require => Service["mysql"],
+		require => Package["mysql-server"],
 		command => "/usr/bin/mysql_install_db",
 		unless => "/usr/bin/test -d $datadir/mysql",
 		notify => Service['mysql']
