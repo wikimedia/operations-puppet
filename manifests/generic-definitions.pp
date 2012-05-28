@@ -604,7 +604,10 @@ class generic::packages::tree {
 # $branch
 # 	Branch you would like to check out
 #
-define git::clone($directory, $branch="", $origin) {
+# $ssh
+# 	SSH command/wrapper to use when checking out
+#
+define git::clone($directory, $branch="", $ssh="", $origin) {
 	require generic::packages::git-core
 
 	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
@@ -616,6 +619,10 @@ define git::clone($directory, $branch="", $origin) {
 		$brancharg = ""
 	}
 
+	if $ssh {
+		$env = "GIT_SSH=$ssh"
+	}
+
 	Exec {
 		path => "/usr/bin:/bin",
 		cwd => $directory
@@ -623,6 +630,7 @@ define git::clone($directory, $branch="", $origin) {
 	exec {
 		"git clone ${title}":
 			command => "git clone ${brancharg}${origin}",
+			environment => $env,
 			creates => "${directory}/${suffix}/.git/config";
 	}
 }
