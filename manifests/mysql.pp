@@ -589,6 +589,13 @@ class generic::mysql::server(
 		# rather than allowing puppet to do it without
 		# your supervision.
 	}
+
+	# Explicitly move the mysql datadir to $datadir.
+	#  (If $datadir is left to the default /var/lib/mysql then the .deb mysql package
+	#   will have created that dir already, and nothing at all will happen here.)
+        exec {"install_datadir":
+		command => "/usr/bin/mysql_install_db",
+		unless => "test -d $datadir/mysql",
+		notify => Service['mysql']
+	}
 }
-
-
