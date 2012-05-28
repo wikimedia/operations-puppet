@@ -13,8 +13,7 @@ class role::labs-mediawiki-install {
 
 	git::clone {
 		"mediawiki core":
-		require => webserver::php5-mysql,
-		require => webserver::php5,
+		require => [ webserver::php5-mysql, webserver::php5 ],
 		directory => "/var/www",
 		branch => "master",
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
