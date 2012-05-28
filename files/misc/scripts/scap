@@ -62,7 +62,7 @@
 	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
 
 	echo 'Copying code to apaches...'
-	dsh -F5 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1' || true
+	dsh -F7 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1' || true
 	echo 'Finished'
 
 	export DOLOGMSGNOLOG=""
