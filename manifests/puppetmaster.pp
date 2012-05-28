@@ -368,3 +368,138 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	}
 
 }
+
+class puppetmaster::self {
+
+	class config inherits base::puppet {
+		include openstack::nova_config,
+			openstack::keystone_config
+
+		$config = {
+			'dbadapter' => "sqlite3",
+			'node_terminus' => "ldap",
+			# UGH: $keystone_ldap_host's value depends on realm; we need
+			# production's value, but what we get is labs' which is "localhost" :/
+			# rather than hard-coding, use $keystone_puppet_host (which also sucks)
+			'ldapserver' => $openstack::nova_config::nova_puppet_host,
+			'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
+			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
+			'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
+			'ldaptls' => true
+		}
+
+		File["/etc/puppet/puppet.conf.d/10-main.conf"] {
+			ensure => absent
+		}
+
+		file { "/etc/puppet/puppet.conf.d/10-self.conf":
+			require => File["/etc/puppet/puppet.conf.d"],
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("puppet/puppet.conf.d/10-self.conf.erb"),
+			notify => Exec["compile puppet.conf"];
+		}
+
+		file { "/etc/puppet/fileserver.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("puppet/fileserver-self.conf.erb")
+		}
+
+		$gitdir = "/var/lib/git"
+		file { "/etc/puppet/private":
+			ensure => link,
+			target => "$gitdir/labs/private",
+			force  => true,
+		}
+		file { "/etc/puppet/templates":
+			ensure => link,
+			target => "$gitdir/operations/puppet/templates",
+			force  => true,
+		}
+		file { "/etc/puppet/files":
+			ensure => link,
+			target => "$gitdir/operations/puppet/files",
+			force  => true,
+		}
+		file { "/etc/puppet/manifests":
+			ensure => link,
+			target => "$gitdir/operations/puppet/manifests",
+			force  => true,
+		}
+	}
+
+	class gitclone {
+		$gitdir = "/var/lib/git"
+
+		file { "$gitdir":
+			ensure => directory,
+			owner  => root,
+			group  =>root,
+		}
+		file { "$gitdir/operations":
+			ensure => directory,
+			owner  => root,
+			group  => root,
+		}
+		file { "$gitdir/labs":
+			ensure => directory,
+			# private repo resides here, so enforce some perms
+			owner  => root,
+			group  => puppet,
+			mode   => 0640,
+		}
+
+		file { "$gitdir/ssh":
+			ensure  => file,
+			owner   => root,
+			group   => root,
+			mode    => 0755,
+			content => "#!/bin/sh\nexec ssh -i $gitdir/labs-puppet-key \$*",
+			require => File["$gitdir/labs-puppet-key"],
+		}
+		file { "$gitdir/labs-puppet-key":
+			ensure  => file,
+			owner   => root,
+			group   => root,
+			mode    => 0600,
+			source  => "puppet:///private/ssh/labs-puppet-key",
+		}
+
+		git::clone { "operations/puppet":
+			directory => "$gitdir/operations",
+			branch    => "test",
+			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/operations/puppet.git",
+			ssh       => "$gitdir/ssh",
+			require   => [ File["$gitdir/operations"], File["$gitdir/ssh"] ],
+		}
+		git::clone { "labs/private":
+			directory => "$gitdir/labs",
+			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/labs/private.git",
+			ssh       => "$gitdir/ssh",
+			require   => [ File["$gitdir/labs"], File["$gitdir/ssh"] ],
+		}
+	}
+
+	system_role { "puppetmaster": description => "Puppetmaster for itself" }
+
+	include config
+
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
+		ensure => latest,
+	}
+	package { "libsqlite3-ruby":
+		ensure => present,
+	}
+
+	class { "puppetmaster::ssl":
+		server_name => $fqdn,
+		ca => true
+	}
+
+	include puppetmaster::scripts
+	include puppetmaster::self::gitclone
+}

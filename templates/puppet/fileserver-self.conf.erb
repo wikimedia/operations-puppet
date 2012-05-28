@@ -1,0 +1,29 @@
+# This file consists of arbitrarily named sections/modules
+# defining where files are served from and to whom
+
+# Define a section 'files'
+# Adapt the allow/deny settings to your needs. Order
+# for allow/deny does not matter, allow always takes precedence
+# over deny
+[files]
+	path /etc/puppet/files
+	allow 127.0.0.1
+
+[plugins]
+	allow 127.0.0.1
+
+[private]
+	path /etc/puppet/private/files
+	allow 127.0.0.1
+
+[facts]
+	path /var/lib/puppet/facts
+	allow 127.0.0.1
+
+[volatile]
+	path /var/lib/puppet/volatile
+	allow 127.0.0.1
+
+[software]
+	path /etc/puppet/software
+	allow 127.0.0.1
