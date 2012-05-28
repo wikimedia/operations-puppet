@@ -513,6 +513,12 @@ class base::syslogs($readable = 'false') {
 
 class base {
 
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
+		$run = '/run/'
+	} else {
+		$run = '/var/run/'
+	}
+
 	case $operatingsystem {
 		Ubuntu,Debian: {
 			include openstack::nova_config
