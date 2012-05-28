@@ -61,7 +61,7 @@
 
 
 	# Notify
-	$BINDIR/dologmsg "!log $USER synchronizing Wikimedia installation... : $*"
+	$BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
 
 
 	# Disable logging
@@ -82,7 +82,7 @@
 	echo 'Finished'
 
 	export DOLOGMSGNOLOG=""
-	$BINDIR/dologmsg "sync done."
+	$BINDIR/dologmsg "!log $USER Finished syncing Wikimedia installation... : $*"
 	$BINDIR/deploy2graphite scap
 ) || echo "sync failed"
 
