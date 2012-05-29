@@ -1869,12 +1869,6 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node /^srv18[789]\.pmtpa\.wmnet$/ {
-	include applicationserver::api,
-		#applicationserver::jobrunner,
-		memcached::disabled
-}
-
 node "srv190.pmtpa.wmnet" {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
