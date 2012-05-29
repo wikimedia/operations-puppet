@@ -891,8 +891,7 @@ node "hooft.esams.wikimedia.org" {
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
-		admins::restricted,
-		ganglia::collector
+		admins::restricted
 }
 
 node "manutius.wikimedia.org" {
@@ -2184,7 +2183,6 @@ node "streber.wikimedia.org" {
 		base::platform,
 		ssh,
 		ganglia,
-#		ganglia::collector,
 		ntp::client,
 		admins::roots,
 		admins::dctech,
