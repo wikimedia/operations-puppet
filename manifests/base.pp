@@ -15,16 +15,19 @@ class base::access::dc-techs {
 	# add account and sudoers rules for data center techs
 	#include accounts::cmjohnson
 
-	sudo_user { [ "cmjohnson" ]: privileges => [
-		'ALL = (root) NOPASSWD: /sbin/fdisk',
-		'ALL = (root) NOPASSWD: /sbin/mdadm',
-		'ALL = (root) NOPASSWD: /sbin/parted',
-		'ALL = (root) NOPASSWD: /sbin/sfdisk',
-		'ALL = (root) NOPASSWD: /usr/bin/MegaCli',
-		'ALL = (root) NOPASSWD: /usr/bin/arcconf',
-		'ALL = (root) NOPASSWD: /usr/bin/lshw',
-		'ALL = (root) NOPASSWD: /usr/sbin/grub-install',
-	]}
+	# hardy doesn't support sudoers.d; only do sudo_user for lucid and later
+	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		sudo_user { [ "cmjohnson" ]: privileges => [
+			'ALL = (root) NOPASSWD: /sbin/fdisk',
+			'ALL = (root) NOPASSWD: /sbin/mdadm',
+			'ALL = (root) NOPASSWD: /sbin/parted',
+			'ALL = (root) NOPASSWD: /sbin/sfdisk',
+			'ALL = (root) NOPASSWD: /usr/bin/MegaCli',
+			'ALL = (root) NOPASSWD: /usr/bin/arcconf',
+			'ALL = (root) NOPASSWD: /usr/bin/lshw',
+			'ALL = (root) NOPASSWD: /usr/sbin/grub-install',
+		]}
+	}
 
 }
 
