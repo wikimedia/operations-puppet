@@ -458,7 +458,8 @@ class puppetmaster::self {
 			owner   => root,
 			group   => root,
 			mode    => 0755,
-			content => "#!/bin/sh\nexec ssh -i $gitdir/labs-puppet-key \$*",
+			# FIXME: ok, this sucks. ew. ewww.
+			content => "#!/bin/sh\nexec ssh -o StrictHostKeyChecking=no -i $gitdir/labs-puppet-key \$*\n",
 			require => File["$gitdir/labs-puppet-key"],
 		}
 		file { "$gitdir/labs-puppet-key":
@@ -487,6 +488,7 @@ class puppetmaster::self {
 	system_role { "puppetmaster": description => "Puppetmaster for itself" }
 
 	include config
+	include gitclone
 
 	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
 		ensure => latest,
@@ -501,5 +503,4 @@ class puppetmaster::self {
 	}
 
 	include puppetmaster::scripts
-	include puppetmaster::self::gitclone
 }
