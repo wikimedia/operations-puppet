@@ -2112,6 +2112,9 @@ node "stat1.wikimedia.org" {
 
 	# host stats.wikimedia.org from stat1 (for now?)
 	include misc::statistics::site
+	
+	# amanda backups
+	include backup::client
 
 	# special accounts
 	include accounts::ezachte,
