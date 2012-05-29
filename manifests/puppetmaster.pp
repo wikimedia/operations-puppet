@@ -490,11 +490,24 @@ class puppetmaster::self {
 	include config
 	include gitclone
 
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails" ]:
-		ensure => latest,
-	}
-	package { "libsqlite3-ruby":
+	package { [ "vim-puppet", "puppet-el", "rails" ]:
 		ensure => present,
+	}
+	package { [ "libsqlite3-ruby", "libldap-ruby1.8" ]:
+		ensure => present,
+	}
+
+	# puppetmaster is started when installed, so things must be already set
+	# up by the time postinst runs; add a few require deps
+	package { [ "puppetmaster", "puppetmaster-common" ]:
+		ensure  => latest,
+		require => [
+			Package['rails'],
+			Package['libsqlite3-ruby'],
+			Package['libldap-ruby1.8'],
+			Class['config'],
+			Class['gitclone'],
+		],
 	}
 
 	class { "puppetmaster::ssl":
