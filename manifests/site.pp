@@ -25,6 +25,7 @@ import "mediawiki.pp"
 import "memcached.pp"
 import "misc/*.pp"
 import "misc-servers.pp"
+import "mobile.pp"
 import "mysql.pp"
 import "nagios.pp"
 import "network.pp"
@@ -1781,6 +1782,12 @@ node "searchidx2.pmtpa.wmnet" {
 	include base
 }
 
+node "silver.wikimedia.org" {
+	include standard,
+		accounts::preilly,
+		mobile::vumi
+}
+
 node "singer.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
@@ -2279,6 +2286,12 @@ node "yvon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca
+}
+
+node "zhen.wikimedia.org" {
+	include standard,
+		accounts::preilly,
+		mobile::vumi
 }
 
 node default {
