@@ -4,4 +4,4 @@
 # Ignore .project (for eclipse/geppetto)
 .project
 
-private/
+/private/
