@@ -856,8 +856,7 @@ node "hooft.esams.wikimedia.org" {
 		misc::install-server::tftp-server,
 		admins::roots,
 		admins::mortals,
-		admins::restricted,
-		ganglia::collector
+		admins::restricted
 }
 
 node "marmontel.wikimedia.org" {
@@ -1866,7 +1865,6 @@ node "streber.wikimedia.org" {
 
 	include base,
 		ganglia,
-		ganglia::collector,
 		ntp::client,
 		admins::roots,
 		misc::torrus,
