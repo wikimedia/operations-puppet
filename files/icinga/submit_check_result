@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # SUBMIT_CHECK_RESULT
 # Written by Ethan Galstad (egalstad@nagios.org)
