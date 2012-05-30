@@ -42,12 +42,12 @@ class mobile::vumi {
 			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp.yaml":
 			owner => "root",
-			content => template("mobile/yumi/wikipedia_xmpp.yaml.erb"),
+			content => template("mobile/vumi/wikipedia_xmpp.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp_sms.yaml":
 			owner => "root",
-			content => template("mobile/yumi/wikipedia_xmpp_sms.yaml.erb"),
+			content => template("mobile/vumi/wikipedia_xmpp_sms.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
 		"/usr/local/vumi":
