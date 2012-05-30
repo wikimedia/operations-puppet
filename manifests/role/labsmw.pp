@@ -23,9 +23,9 @@ class role::labs-mediawiki-install {
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
 
-	file { '/var/www/index.php':
-                require => git::clone["core"],
+	file { '/var/www/wiki':
+		require => git::clone["core"],
 		ensure => 'link',
-		target => '/var/www/core/index.php',
+		target => '/var/www/core',
 	}
 }
