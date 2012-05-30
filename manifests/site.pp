@@ -1413,7 +1413,8 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
 
 	include role::swift::pmtpa-test::storage
-	include accounts::darrell,
+	include groups::wikidev,
+		accounts::darrell,
 		accounts::orion,
 		accounts::smerritt
 	sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
@@ -1601,7 +1602,8 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 	# taking owa hosts out of the swift proxy cluster since they're not being used.
 	# if we have load issues we can add them back in.
 	include role::swift::pmtpa-test::proxy
-	include accounts::darrell,
+	include groups::wikidev,
+		accounts::darrell,
 		accounts::orion,
 		accounts::smerritt
 	sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
