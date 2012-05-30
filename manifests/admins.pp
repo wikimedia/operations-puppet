@@ -1836,6 +1836,57 @@ class accounts {
 		}
 	}
 
+	class darrell inherits baseaccount {
+		$username = "darrell"
+		$realname = "Darrell Bishop (SwiftStack)"
+		$uid = 598
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"darrell@localhost":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "fixme";
+			}
+		}
+	}
+
+	class orion inherits baseaccount {
+		$username = "orion"
+		$realname = "Alpha Ori (SwiftStack)"
+		$uid = 599
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"orion@localhost":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "fixme";
+			}
+		}
+	}
+
+	class smerritt inherits baseaccount {
+		$username = "smerritt"
+		$realname = "Samuel Merritt (SwiftStack)"
+		$uid = 600
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"smerritt@localhost":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "fixme";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
