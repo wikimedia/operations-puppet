@@ -13,6 +13,10 @@ class role::labs-mediawiki-install {
 		"webserver::php5-mysql",
 		"webserver::php5"
 
+	package { [ "imagemagick" ] :
+		ensure => latest
+	}
+
 	git::clone { "core":
 		directory => "/var/www",
 		branch => "master",
