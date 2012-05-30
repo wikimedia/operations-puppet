@@ -259,7 +259,7 @@ class icinga::monitor::files::nagios-plugins {
 			ensure => directory;
 
 		"/usr/lib/nagios/plugins/eventhandlers/submit_check_result":
-			source => "puppet:///files/nagios/submit_check_result",
+			source => "puppet:///files/icinga/submit_check_result",
 			owner => root,
 			group => root,
 			mode => 0755;
