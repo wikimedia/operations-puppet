@@ -694,7 +694,7 @@ class icinga::monitor::service {
 class icinga::monitor::snmp {
 
 	file { "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf",
+		source => "puppet:///files/snmp/snmptrapd.conf.icinga",
 		owner => root,
 		group => root,
 		mode => 0600;
