@@ -58,3 +58,13 @@ $domain_search = $domain
 # Default group
 $gid = 500
 
+# Route list for mail coming from MediaWiki mailer
+$exim_mediawiki_route_list = $::realm ? {
+	'production' => 'smtp.pmtpa.wmnet'
+	'labs'       => 'mchenry.wikimedia.org:lists.wikimedia.org'
+}
+# Generic, default servers
+$exim_default_route_list = $::realm ? {
+	'production' => 'mchenry.wikimedia.org:lists.wikimedia.org'
+	'labs'       => 'mchenry.wikimedia.org:lists.wikimedia.org'
+}
