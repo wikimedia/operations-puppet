@@ -148,4 +148,46 @@ class role::swift {
 			include ::swift::storage
 		}
 	}
+	class pmtpa-labs-upgrade inherits role::swift::base {
+		system_role { "role::swift::pmtpa-labs-upgrade": description => "Swift labs cluster to test swift upgrade" }
+		system_role { "swift-cluster::pmtpa-labs-upgrade": description => "Swift labs cluster", ensure => absent }
+		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
+		class { "::swift::base": hash_path_suffix => "f58eaa678b223009", cluster_name => "pmtpa-labs-upgrade" }
+		class ganglia_reporter inherits role::swift::pmtpa-labs-upgrade {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				path => "/usr/local/bin/swift-ganglia-report-global-stats",
+				mode => 0555,
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+				ensure => present;
+			}
+			cron { "swift-ganglia-report-global-stats":
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p userpassword -c pmtpa-labs",
+				user => root,
+				ensure => present;
+			}
+		}
+		class proxy inherits role::swift::pmtpa-labs-upgrade {
+			class { "::swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://up-fe1.pmtpa.wmflabs",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "up-fe1.pmtpa.wmflabs", "up-fe2.pmtpa.wmflabs" ],
+				super_admin_key => "thiskeyissuper",
+				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumbnail",
+				rewrite_password => "userpassword",
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => "",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
+			}
+			include ::swift::proxy
+		}
+		class storage inherits role::swift::pmtpa-labs-upgrade {
+			include ::swift::storage
+		}
+	}
 }
