@@ -618,19 +618,6 @@ node /^db4[2]\.pmtpa\.wmnet$/ {
 		mysql::packages
 }
 
-node "db41.pmtpa.wmnet" {
-	$cluster = "misc"
-	$gid=500
-	sudo_user { "nimishg": privileges => ['ALL = NOPASSWD: ALL'] }
-	include base,
-		ganglia,
-		ntp::client,
-		memcached,
-		owa::database,
-		groups::wikidev,
-		accounts::nimishg
-}
-
 # new pmtpa dbs
 # New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
 # DO NOT add old prod db's to new classes unless you
