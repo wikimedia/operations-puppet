@@ -1593,7 +1593,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 
 	# taking owa hosts out of the swift proxy cluster since they're not being used.
 	# if we have load issues we can add them back in.
-	#include role::swift::pmtpa-prod::proxy
+	include role::swift::pmtpa-test::proxy
 }
 
 node "oxygen.wikimedia.org" {
