@@ -623,6 +623,8 @@ define git::clone($directory, $branch="", $ssh="", $origin) {
 		$env = "GIT_SSH=$ssh"
 	}
 
+	$gitconfig = "${directory}/${suffix}/.git/config"
+
 	Exec {
 		path => "/usr/bin:/bin",
 		cwd => $directory
@@ -630,8 +632,9 @@ define git::clone($directory, $branch="", $ssh="", $origin) {
 	exec {
 		"git clone ${title}":
 			command => "git clone ${brancharg}${origin}",
+			unless => "/usr/bin/test -e $gitconfig",
 			environment => $env,
-			creates => "${directory}/${suffix}/.git/config";
+			creates => "$gitconfig";
 	}
 }
 
