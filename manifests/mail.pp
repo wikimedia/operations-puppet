@@ -76,7 +76,7 @@ class exim {
 				owner => root,
 				group => root,
 				mode => 0444,
-				source => "puppet:///files/exim/exim4.minimal.conf";
+				content => template("exim/exim4.minimal.erb");
 		}
 
 		include exim::service

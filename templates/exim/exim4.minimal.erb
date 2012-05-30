@@ -1,6 +1,6 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/exim/exim4.minimal.conf
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/exim/exim4.minimal.erb
 #####################################################################
 
 
@@ -21,7 +21,7 @@ ignore_bounce_errors_after = 0h
 
 # Logging
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error
-message_logs = false 
+message_logs = false
 
 begin routers
 
@@ -51,14 +51,14 @@ wiki_mail:
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
 	errors_to = wiki@wikimedia.org
 	transport = remote_smtp
-	route_list = *	smtp.pmtpa.wmnet
+	route_list = *	<%= exim_mediawiki_route_list %>
 
 # Send all mail via a set of mail relays ("smart hosts")
 
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *	mchenry.wikimedia.org:lily.esams.wikimedia.org
+	route_list = *	<%= exim_default_route_list %>
 
 
 begin transports
