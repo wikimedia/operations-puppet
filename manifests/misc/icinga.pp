@@ -235,6 +235,9 @@ class icinga::monitor::files::misc {
 
 		"fix_nagios_plugins_files":
 			command => "/bin/chmod -R a+w /var/lib/nagios";
+
+		"fix_icinga_command_file":
+			command => "/bin/chmod a+rw /var/lib/nagios/rw/nagios.cmd";
 	}
 }
 
