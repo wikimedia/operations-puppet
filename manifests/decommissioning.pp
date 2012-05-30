@@ -4,7 +4,6 @@
 
 $decommissioned_servers = [
 "adler",
-"analytics1001",
 "br1-knams",
 "controller",
 "dataset1",
