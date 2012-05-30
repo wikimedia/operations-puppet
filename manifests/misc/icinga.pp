@@ -701,13 +701,16 @@ class icinga::monitor::snmp {
 		owner => root,
 		group => root,
 		mode => 0600;
-	}
-
-	file { "/etc/snmp/snmptt.conf":
+	       "/etc/snmp/snmptt.conf":
 		source => "puppet:///files/snmp/snmptt.conf.icinga",
 		owner => root,
 		group => root,
 		mode => 0644;
+	       "/etc/init.d/snmptt":
+		source => "puppet:///files/snmp/snmptt.init",
+		owner => root,
+		group => root,
+		mode => 0755;
 	}
 
 	# snmp tarp stuff
