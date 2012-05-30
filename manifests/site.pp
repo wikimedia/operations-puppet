@@ -258,12 +258,7 @@ class searchindexer {
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
-		admins::restricted,
-		search::sudo,
-		search::jvm,
-		search::php,
-		search::monitoring,
-		search::indexer
+		admins::restricted
 }
 
 class protoproxy::ssl {
