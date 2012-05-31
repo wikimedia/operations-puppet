@@ -28,15 +28,9 @@ class role::labs-mediawiki-install {
 		ensure => latest
 	}
 
-	git::clone { "core":
+	git::clone { "wiki":
 		directory => "/var/www",
 		branch => "master",
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
-	}
-
-	file { '/var/www/wiki':
-		require => git::clone["core"],
-		ensure => 'link',
-		target => '/var/www/core',
 	}
 }
