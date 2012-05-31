@@ -631,7 +631,7 @@ define git::clone($directory, $branch="", $ssh="", $origin) {
 	}
 	exec {
 		"git clone ${title}":
-			command => "git clone ${brancharg}${origin}",
+			command => "git clone ${brancharg}${origin} $suffix",
 			unless => "/usr/bin/test -e $gitconfig",
 			environment => $env,
 			creates => "$gitconfig";
