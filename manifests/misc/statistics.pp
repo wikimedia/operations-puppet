@@ -127,3 +127,35 @@ class misc::statistics::db {
 		datadir => "/a/mysql",
 	}
 }
+
+# Class: misc::statistics::gerrit_stats
+#
+# Installs diederik's gerrit-stats python
+# scripts, and sets up cron jobs to run them.
+class misc::statistics::gerrit_stats {
+	$gerrit_stats_repo_url = "git://less.ly/gerrit-stats.git"
+	$gerrit_stats_path     = "/a/gerrit-stats"
+
+	# this user need to have access to gerrit
+	# from the node on which this class
+	# is included.  We'll use diederik for now.
+	$gerrit_stats_user     = "diederik"
+
+	# clone the gerrit-stats repository
+	# into a subdir of $gerrit_stats_path
+	git::clone { "gerrit-stats":
+		directory => "$gerrit_stats_path/gerrit-stats",
+		origin    => $gerrit_stats_repo_url,
+		owner     => $gerrit_stats_user,
+	}
+
+	# run a cron job from the $gerrit_stats_path.
+	# This will create a $gerrit_stats_path/data
+	# directory containing stats about gerrit.
+	cron { "gerrit-stats-daily":
+		command => "cd $gerrit_stats_path && /usr/bin/sudo -u $gerrit_stats_user /usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
+		hour    => '23',
+		minute  => '59',
+		require => Git::Clone["gerrit-stats"],
+	}
+}
