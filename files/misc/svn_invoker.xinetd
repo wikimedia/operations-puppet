@@ -15,7 +15,7 @@ service svn_invoker
 	user = extdist
 	instances = 1
 	server = /usr/bin/php
-	server_args = /home/wikipedia/common/php/extensions/ExtensionDistributor/svn-invoker.php
+	server_args = /home/wikipedia/common/wmf-config/extdist/svn-invoker.php
 	only_from = 127.0.0.1 10.0.0.0/16 208.80.152.0/22
 	log_type = FILE /var/log/svn-invoker.log
 }
