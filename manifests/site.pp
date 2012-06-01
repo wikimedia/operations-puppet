@@ -2110,6 +2110,9 @@ node "stat1.wikimedia.org" {
 	# host stats.wikimedia.org from stat1 (for now?)
 	include misc::statistics::site
 
+	# generate gerrit stats from stat1.
+	include misc::statistics::gerrit_stats
+
 	# special accounts
 	include accounts::ezachte,
 		accounts::reedy,
