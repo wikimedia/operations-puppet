@@ -5,6 +5,7 @@ class role::statistics {
 
 	include standard,
 		admins::roots,
+		misc::statistics::user,
 		backup::client,  # amanda backups
 		geoip,
 		geoip::packages::python,
