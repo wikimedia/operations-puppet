@@ -1604,6 +1604,7 @@ node "oxygen.wikimedia.org" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		accounts::rfaulk,
 		misc::squid-logging::multicast-relay,
 		nrpe,
 		geoip
