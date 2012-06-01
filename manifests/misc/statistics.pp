@@ -1,5 +1,14 @@
 # this file is for stat[0-9]/(ex-bayes) statistics servers (per ezachte - RT 2162)
 
+class misc::statistics::user {
+	$username = "stats"
+	systemuser { "$username":
+		name   => "$username",
+		home   => "/var/lib/$username",
+		groups => "wikidev",
+	}
+}
+
 class misc::statistics::base {
 	system_role { "misc::statistics::base": description => "statistics server" }
 
@@ -125,5 +134,42 @@ class misc::statistics::db {
 	# datadir at /a/mysql
 	class { "generic::mysql::server":
 		datadir => "/a/mysql",
+	}
+}
+
+# Class: misc::statistics::gerrit_stats
+#
+# Installs diederik's gerrit-stats python
+# scripts, and sets up cron jobs to run them.
+class misc::statistics::gerrit_stats {
+	$gerrit_stats_repo_url = "https://gerrit.wikimedia.org/r/p/analytics/gerrit-stats.git"
+	$gerrit_stats_path     = "/a/gerrit-stats"
+
+	# This user need to have access to gerrit
+	# from the node on which this class
+	# is included.  We'll use diederik for now.
+	$gerrit_stats_user     = "stats"
+
+	# Clone the gerrit-stats repository
+	# into a subdir of $gerrit_stats_path.
+	# This requires that the $gerrit_stats_user
+	# has an ssh key that is allowed to clone
+	# from git.less.ly.
+	git::clone { "gerrit-stats":
+		directory => "$gerrit_stats_path/gerrit-stats",
+		origin    => $gerrit_stats_repo_url,
+		owner     => $gerrit_stats_user,
+		require   => User[$gerrit_stats_user],
+	}
+
+	# run a cron job from the $gerrit_stats_path.
+	# This will create a $gerrit_stats_path/data
+	# directory containing stats about gerrit.
+	cron { "gerrit-stats-daily":
+		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
+		user    => $gerrit_stats_user,
+		hour    => '23',
+		minute  => '59',
+		require => Git::Clone["gerrit-stats"],
 	}
 }
