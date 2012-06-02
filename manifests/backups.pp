@@ -365,7 +365,7 @@ class backup::mysql {
 
 	cron {
 		snaprotate:
-		command =>	"/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 20G",
+		command =>	"/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 20G -c 1",
 		user	=>	root,
 		hour	=>	1,
 		minute	=>	0;
