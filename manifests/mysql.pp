@@ -420,13 +420,26 @@ class mysql {
 		}
 
 		if $snapshot_host {
-			cron { snaprotate:
-				command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G",
-				require => File["/usr/local/sbin/snaprotate.pl"],
-				user => root,
-				minute => 15,
-				hour => '*/8',
-				ensure => present;
+			if $hostname =~ /^db26$/ {
+				# db26 currently in use, s7 slave, insufficient space for full snapshots
+				# so we reduce the snapshot count to keep until db26 is replaced
+				cron { snaprotate:
+					command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G -c 1",
+					require => File["/usr/local/sbin/snaprotate.pl"],
+					user => root,
+					minute => 15,
+					hour => '*/8',
+					ensure => present;
+				}
+			} else {
+				cron { snaprotate:
+					command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G",
+					require => File["/usr/local/sbin/snaprotate.pl"],
+					user => root,
+					minute => 15,
+					hour => '*/8',
+					ensure => present;
+				}
 			}
 		} else { 
 			cron { snaprotate:
