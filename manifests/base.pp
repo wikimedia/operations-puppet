@@ -91,20 +91,6 @@ Pin-Priority: 1001
 	package { apt-show-versions:
 		ensure => latest;
 	}
-	
-	# Point out-of-support distributions to http://old-releases.ubuntu.com
-	if $::lsbdistcodename in [ "karmic" ] {
-		$oldrepository = "## Unsupported (old) Ubuntu release
-deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
-deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
-deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename}-updates main universe multiverse
-deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename}-updates main universe multiverse
-"
-		file { "/etc/apt/sources.list.d/ubuntu-${lsbdistcodename}.list":
-			content => $oldrepository,
-			mode => 0444;
-		}
-	}
 }
 
 class base::grub {
