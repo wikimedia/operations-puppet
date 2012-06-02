@@ -554,8 +554,8 @@ node /^db[1-9]\.pmtpa\.wmnet$/ {
 }
 
 node "db10.pmtpa.wmnet" {
-	include db::core,
-		backup::mysql
+	include db::core
+		#backup::mysql - no space for lvm snapshots
 }
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
