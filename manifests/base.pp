@@ -50,8 +50,7 @@ Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:80
 		owner => root,
 		group => root,
 		path => "/etc/apt/apt.conf.d/80wikimedia-proxy",
-		content => $proxyconfig,
-		before => Exec['/usr/bin/apt-get update'];
+		content => $proxyconfig
 	}
 
 	# Setup the APT repositories
@@ -69,16 +68,14 @@ Pin-Priority: 1001
 		"/etc/apt/sources.list.d/wikimedia.list":
 			require => Exec[sed-wikimedia-repository],
 			content => $aptrepository,
-			mode => 0444,
-			before => Exec['/usr/bin/apt-get update'];
+			mode => 0444;
 	}
 	
 	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/apt/preferences.d/wikimedia.pref":
 			require => File["/etc/apt/sources.list.d/wikimedia.list"],
 			content => $aptpref,
-			mode => 0444,
-			before => Exec['/usr/bin/apt-get update'];
+			mode => 0444;
 		}
 	}
 
@@ -87,8 +84,7 @@ Pin-Priority: 1001
 		sed-wikimedia-repository:
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			command => "sed -i '/deb.*apt\\.wikimedia\\.org.*-wikimedia main/s/^deb/#deb/g' /etc/apt/sources.list",
-			creates => "/etc/apt/sources.list.d/wikimedia.list",
-			before => Exec['/usr/bin/apt-get update'];
+			creates => "/etc/apt/sources.list.d/wikimedia.list";
 	}
 
 

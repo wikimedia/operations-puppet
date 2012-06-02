@@ -3,7 +3,6 @@ stage { "last": require => Stage[main] }
 
 class {
 	"base::apt::update": stage => first;
-	"base::apt": stage => first;
 	"base::instance-finish": stage => last;
 	"ldap::client::instance-finish": stage => last;
 }
