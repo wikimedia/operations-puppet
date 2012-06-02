@@ -216,19 +216,21 @@ class swift::cleaner {
 		$statedir,
 		$scrubstate,
 		$save_deletes ) {
-
+		# pull in the config file specific to this cluster
 		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
 			content => template("swift/swiftcleaner.conf")
 		}
+		# make sure the statedir for the cleaner exists
 		file { "$statedir":
 			owner => root,
 			group => root,
 			mode => 0644,
 			ensure => directory;
 		}
+		# set up the cronjob itself
 		cron { "swiftcleaner-$name":
 			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -A /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S) -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
 			user => root,
