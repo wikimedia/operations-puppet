@@ -284,15 +284,18 @@ def download_from_swift_and_ms5(obj, conf):
             try:
                 resp = urllib2.urlopen(req)
             except urllib2.HTTPError, e:
-                print e
+                print "HTTPError downloading from swift for %s" % url
                 # if we got an error again, give up
-                raise
+                return
             #hooray, we successfully deleted it the second time!
         else:
             #any other error, return False anyways
-            raise
+            print "Error downloading from swift for %s" % url
+            return
     except urllib2.URLError:
-        raise
+        # fail
+        print "URLError downloading from swift for %s" % url
+        return
     # store the swift file
     of = open('%s/swift/%s' % (conf['savepath'], obj[1]), 'w')
     for line in resp:
@@ -312,10 +315,13 @@ def download_from_swift_and_ms5(obj, conf):
     try:
         resp = urllib2.urlopen(req)
     except urllib2.HTTPError, e:
-        print e
-        raise
+        print "HTTPError downloading from swift for %s" % url
+        # give up
+        return
     except urllib2.URLError:
-        raise
+        # log and give up
+        print "URL error trying to download from ms5 for %s" % url
+        return
     # store the ms5 file
     of = open('%s/ms5/%s' % (conf['savepath'], obj[1]), 'w')
     for line in resp:
