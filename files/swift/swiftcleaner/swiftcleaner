@@ -258,9 +258,9 @@ def bad_object(obj, conf):
         delete_from_swift(obj, conf)
     except (urllib2.HTTPError, urllib2.URLError), e:
         print "deleting from swift failed for obj %s with error %s" % (obj,e)
-    purge_from_squid(obj)
+    purge_from_squid(obj, conf)
     time.sleep(0.5)
-    purge_from_squid(obj) #purge a second time just for good measure
+    purge_from_squid(obj, conf) #purge a second time just for good measure
 
 def download_from_swift_and_ms5(obj, conf):
     print "downloading %s from both swift and ms5" % obj_to_url(obj)
@@ -363,10 +363,10 @@ def delete_from_swift(obj, conf):
     except urllib2.URLError:
         raise
 
-def purge_from_squid(obj):
+def purge_from_squid(obj, conf):
     # call 'php htcp.php http://upload.yaddayadda'
     url = "http://upload.wikimedia.org%s" % obj_to_url(obj)
-    delete = subprocess.call(['php', './htcp.php', '%s' % url], shell=False)
+    delete = subprocess.call(['php', conf['htcppath'], '%s' % url], shell=False)
     return
 
 def obj_to_url(obj):
@@ -456,6 +456,7 @@ def main():
     conf['delay'] = float(options.delay)
     conf['save'] = options.save
     conf['savepath'] = options.savepath
+    #conf['htcppath'] = options.htcppath #this exists in the file but not as a flag
     #conf['logfile'] = options.logfile
     #conf['test'] = (True if options.test == True or options.test == 'True' else False)
 
