@@ -200,19 +200,19 @@ define upstart_job($install="false") {
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
 define interface_ip($interface, $address, $prefixlen="32") {
 	$prefix = "${address}/${prefixlen}"
-	$iptables_command = "ip addr add ${prefix} dev ${interface}"
+	$ipaddr_command = "ip addr add ${prefix} dev ${interface}"
 
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${prefix}":
 			context => "/files/etc/network/interfaces/*[. = '${interface}']",
-			changes => "set up[last()+1] '${iptables_command}'",
-			onlyif => "match up[. = '${iptables_command}'] size == 0";
+			changes => "set up[last()+1] '${ipaddr_command}'",
+			onlyif => "match up[. = '${ipaddr_command}'] size == 0";
 		}
 	}
 
 	# Add the IP address manually as well
-	exec { $iptables_command:
+	exec { $ipaddr_command:
 		path => "/bin:/usr/bin",
 		onlyif => "test -z \"$(ip addr show dev ${interface} to ${prefix})\"";
 	}
@@ -407,6 +407,25 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			require => Interface_aggregate_member[$members],
 			refreshonly => true
 		}
+	}
+}
+
+define interface_add_ip6_mapped($ipv4_address=undef) {
+	$ipv6_auto_address = $::ipaddress6
+	if ! $ipv4_address {
+		$ip4_address = "::${::ipaddress}"
+	}
+	else {
+		$ip4_address = "::${ipv4_address}"
+	}
+	
+	$ipv6_address = inline_template("require 'ipaddr'; (IPAddr.new(ipv6_auto_address)).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s()")
+	$interface = split($::interfaces, ",")[0]
+
+	interface_ip { $title:
+		interface => $interface,
+		address => $ipv6_address,
+		prefixlen => "128"
 	}
 }
 
