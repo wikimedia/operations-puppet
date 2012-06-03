@@ -140,7 +140,7 @@ class base::puppet($server="puppet") {
 
 	include passwords::puppet::database
 
-	package { [ "puppet" ]:
+	package { [ "puppet", "facter" ]:
 		ensure => latest;
 	}
 
