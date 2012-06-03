@@ -2061,7 +2061,15 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
+	interface_aggregate { "bond0":
+		orig_interface => "eth0",
+		members => [ "eth0", "eth1", "eth2", "eth3" ]
+	}
+	
+	interface_add_ip6_mapped { "main":
+		require => Interface_aggregate[bond0],
+		interface => "bond0"
+	}
 
 	include role::cache::bits
 }
