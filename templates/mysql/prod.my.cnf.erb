@@ -28,8 +28,9 @@ skip-name-resolve
 <% if mysql_myisam == true then -%>
 myisam-recover
 key_buffer		= 1024M
-<% end -%>
+<% else %>
 key_buffer		= 1M
+<% end -%>
 max_allowed_packet	= 16M
 thread_stack		= 192K
 thread_cache_size	= 300
