@@ -2341,7 +2341,7 @@ host search33 {
 }
 
 host search34 {
-	hardware ethernet d4:ae:52:70:2b:f6;
+	hardware ethernet d4:ae:52:64:da:69;
 	fixed-address search34.pmtpa.wmnet;
 	
 	option pxelinux.pathprefix "precise-installer/";
@@ -2349,7 +2349,7 @@ host search34 {
 }
 
 host search35 {
-	hardware ethernet d4:ae:52:6e:f1:60;
+	hardware ethernet d4:ae:52:70:2b:f6;
 	fixed-address search35.pmtpa.wmnet;
 	
 	option pxelinux.pathprefix "precise-installer/";
