@@ -3,18 +3,13 @@
 #include "generic-definitions.pp"
 
 
-class apachesetup {
-	apache_module { rewrite: name => "rewrite" }
-}
-
 # A one-step class for setting up a single-node MediaWiki install,
 #  running from a Git tree.
 #
 # (Totally unstable and unreliable, for the moment.)
 class role::mediawiki-install::labs {
 
-        require  "apachesetup",
-		"role::labs-mysql-server",
+        require "role::labs-mysql-server",
 		"webserver::php5-mysql",
 		"webserver::php5"
 
