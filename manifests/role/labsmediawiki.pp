@@ -11,7 +11,7 @@ class apachesetup {
 #  running from a Git tree.
 #
 # (Totally unstable and unreliable, for the moment.)
-class role::labs-mediawiki-install {
+class role::mediawiki-install::labs {
 
         require  "apachesetup",
 		"role::labs-mysql-server",
