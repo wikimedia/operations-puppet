@@ -89,6 +89,12 @@ class mysql {
 		$db_cluster = undef
 	}
 
+	if $hostname =~ /^es/ {
+		$mysql_myisam = true
+	}
+	else {
+		$mysql_myisam = false
+	}
 	if ($db_cluster) { 
 		file { "/etc/db.cluster":
 			content => "${db_cluster}";

@@ -25,6 +25,10 @@ skip-external-locking
 skip-name-resolve
 <% end -%>
 
+<% if mysql_myisam == true then -%>
+myisam-recover
+key_buffer		= 1024M
+<% end -%>
 key_buffer		= 1M
 max_allowed_packet	= 16M
 thread_stack		= 192K
