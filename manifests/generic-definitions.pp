@@ -419,7 +419,7 @@ define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 		$ip4_address = "::${ipv4_address}"
 	}
 	
-	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(ipv6_auto_address)).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
+	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(ipv6_auto_address).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
 
 	if ! $interface {
 		$all_interfaces = split($::interfaces, ",")
