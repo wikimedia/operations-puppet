@@ -158,7 +158,8 @@ class lvs::configuration {
 					'wikinewslbsecure' => "208.80.152.206",
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
-					'foundationlbsecure' => "208.80.152.209"
+					'foundationlbsecure' => "208.80.152.209",
+					'uploadlbsecure' => "2620:0:860:ed1a::b",
 				},
 				'eqiad' => {
 					'wikimedialbsecure' => "208.80.154.224",
@@ -196,7 +197,7 @@ class lvs::configuration {
 				'esams' => { 'bitslb' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
-				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
+				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadlb6' => "2620:0:860:ed1a::b", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
