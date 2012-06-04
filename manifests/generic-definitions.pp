@@ -249,7 +249,7 @@ define interface_setting($interface, $setting, $value) {
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${title}":
-			context => "/files/etc/network/interfaces/*[. = '${interface}']",
+			context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
 			changes => "set ${setting} '${value}'",
 		}
 	}
