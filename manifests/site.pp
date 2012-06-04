@@ -264,9 +264,7 @@ class searchindexer {
 class protoproxy::ssl {
 	$cluster = "ssl"
 
-	if $hostname =~ /^ssl(300)?1$/ {
-		$enable_ipv6_proxy = true
-	}
+	$enable_ipv6_proxy = true
 
 	include standard,
 		certificates::wmf_ca,
@@ -2006,9 +2004,9 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
+
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
-		$enable_ipv6_proxy = "true"
 	}
 
 	include protoproxy::ssl
