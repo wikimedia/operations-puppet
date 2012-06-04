@@ -206,16 +206,12 @@ class ganglia {
 			$gridname = "wmflabs"
 			# for labs, just generate a stub gmetad configuration without data_source lines
 			$gmetad_conf = "gmetad.conf.labsstub"
+			$authority_url = "http://ganglia.wmflabs.org"
 			# TODO: this block is for testing only, remove once tested
 			case $hostname {
 				/^aggregator-test1$/: {
 					$data_sources = {
 					"analytics" => "aggregator1.pmtpa.wmflabs:21164",
-					"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150"
-					}
-				}
-				default: {
-					$data_sources = {
 					"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150"
 					}
 				}
@@ -226,6 +222,7 @@ class ganglia {
 		} else {
 			$gridname = "Wikimedia"
 			$gmetad_conf = "gmetad.conf"
+			$authority_url = "http://ganglia.wikimedia.org"
 			case $hostname {
 				# manutius runs gmetad to get varnish data into torrus
 				/^manutius$/: {
