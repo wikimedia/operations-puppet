@@ -1990,6 +1990,8 @@ node /ssl[1-4]\.wikimedia\.org/ {
 	}
 
 	include protoproxy::ssl
+
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node /ssl100[1-4]\.wikimedia\.org/ {
