@@ -55,7 +55,7 @@ data_source "<%= ds_key %>" <%= ds_value %>
 #
 
 # Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
-<% if has_variable("rra_sizes") then %>
+<% if has_variable?("rra_sizes") then %>
 RRAs <%= rra_sizes %>
 <% end %>
 
@@ -75,7 +75,7 @@ RRAs <%= rra_sizes %>
 # default: unspecified
 # gridname "MyGrid"
 
-<% if has_variable("gridname") then %>
+<% if has_variable?("gridname") then %>
 gridname "<%= gridname %>"
 <% end %>
 
@@ -87,7 +87,7 @@ gridname "<%= gridname %>"
 # default: "http://hostname/ganglia/",
 #   where hostname is the name of this machine, as defined by gethostname().
 
-<% if has_variable("authority_url") then %>
+<% if has_variable?("authority_url") then %>
 authority "<%= authority_url %>"
 <% end %>
 
@@ -135,7 +135,7 @@ interactive_port 8654
 # default: "/var/lib/ganglia/rrds"
 # rrd_rootdir "/some/other/place"
 
-<% if has_variable("rrd_rootdir") then %>
+<% if has_variable?("rrd_rootdir") then %>
 rrd_rootdir "<%= rrd_rootdir %>"
 <% end %>
 
