@@ -214,7 +214,7 @@ define interface_ip($interface, $address, $prefixlen="32") {
 	# Add the IP address manually as well
 	exec { $ipaddr_command:
 		path => "/bin:/usr/bin",
-		onlyif => "test -z \"$(ip addr show dev ${interface} to ${prefix})\"";
+		returns => [0, 2]
 	}
 }
 
