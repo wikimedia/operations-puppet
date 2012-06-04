@@ -278,7 +278,7 @@ class ganglia {
 
 		file { "/etc/ganglia/${gmetad_conf}":
 			require => Package[gmetad],
-			content => template("ganglia/gmetad_template.erb"),
+			content => template("ganglia/gmetad.conf.erb"),
 			mode => 0444,
 			ensure	=> present
 		}
