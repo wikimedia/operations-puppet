@@ -209,6 +209,7 @@ class role::cache {
 					"sq32.wikimedia.org",
 					"sq35.wikimedia.org",
 					'sq38.wikimedia.org',
+					'sq40.wikimedia.org',
 				],
 				"eqiad" => [],
 				"esams" => [
