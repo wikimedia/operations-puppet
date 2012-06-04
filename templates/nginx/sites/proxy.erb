@@ -87,6 +87,7 @@ location @fallback {
 # IPv6 proxying	
 server {
 <% proxy_addresses[site].each do |proxy_address| -%>
+	<% if proxy_address[0].chr != '[' then next end %>
 	listen <%= proxy_address %>:80;
 <% end -%>
 	server_name  <%= proxy_server_name %>;
