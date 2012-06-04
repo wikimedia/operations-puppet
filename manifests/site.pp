@@ -1149,15 +1149,18 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	}
 
 	# NEW
+	include lvs::configuration
+	$sip = $lvs::configuration::lvs_service_ips[$::realm]
+	
 	if $hostname =~ /^lvs[1]$/ {
 		$lvs_balancer_ips = [
-			$lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['ipv6'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['payments'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['dns_auth'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['osm'][$::site],
-			$lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
+			$sip['upload'][$::site],
+			$sip['ipv6'][$::site],
+			$sip['payments'][$::site],
+			$sip['dns_auth'][$::site],
+			$sip['dns_rec'][$::site],
+			$sip['osm'][$::site],
+			$sip['misc_web'][$::site],
 		]
 	}
 
