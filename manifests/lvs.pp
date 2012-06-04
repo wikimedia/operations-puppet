@@ -159,7 +159,7 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
 					'foundationlbsecure' => "208.80.152.209",
-					'uploadlbsecure' => "2620:0:860:ed1a::b",
+					'uploadlbsecure6' => "2620:0:860:ed1a::b",
 				},
 				'eqiad' => {
 					'wikimedialbsecure' => "208.80.154.224",
