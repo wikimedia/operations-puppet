@@ -26,7 +26,7 @@ skip-name-resolve
 <% end -%>
 
 <% if mysql_myisam == true then -%>
-myisam-recover
+myisam-recover = QUICK
 key_buffer		= 1024M
 <% else %>
 key_buffer		= 1M
