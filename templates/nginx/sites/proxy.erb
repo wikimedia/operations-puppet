@@ -90,6 +90,7 @@ server {
 	<% if proxy_address[0].chr != '[' then next end %>
 	listen <%= proxy_address %>:80;
 <% end -%>
+	listen <%= ipaddress %>:80;
 	server_name  <%= proxy_server_name %>;
 
 	error_log   /var/log/nginx/<%= name %>-ipv6.error.log;
