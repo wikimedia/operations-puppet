@@ -411,7 +411,13 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 }
 
 define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
-	$ipv6_auto_address = $::ipaddress6
+	if ! $interface {
+		$all_interfaces = split($::interfaces, ",")
+		$interface = $all_interfaces[0]
+	}
+
+	$ipv6_auto_address = ${::ipaddress6_"${interface}"}
+	
 	if ! $ipv4_address {
 		$ip4_address = "::${::ipaddress}"
 	}
@@ -420,11 +426,6 @@ define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 	}
 	
 	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(ipv6_auto_address).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
-
-	if ! $interface {
-		$all_interfaces = split($::interfaces, ",")
-		$interface = $all_interfaces[0]
-	}
 
 	interface_ip { $title:
 		interface => $interface,
