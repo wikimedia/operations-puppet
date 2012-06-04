@@ -318,6 +318,18 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		"ipv6" => {
+			'description' => "IPv6 proto proxies (for Squid port 80)",
+			'class' => "https",
+			'sites' => [ "pmtpa", "eqiad", "esams" ],
+			'ip' => $service_ips['ipv6'][$::site],
+			'port' => 80,
+			'bgp' => "no",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 		"bits" => {
 			'description' => "Site assets (CSS/JS) LVS service, bits.${::site}.wikimedia.org",
 			'class' => "high-traffic1",
