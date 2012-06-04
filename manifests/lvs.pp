@@ -587,11 +587,6 @@ class lvs::balancer {
 		content => template("pybal/pybal.conf.erb");
 	}
 
-	# Needs an optimized kernel
-	package { "linux-image-2.6.36-1-server":
-		ensure => installed;
-	}
-
 	# Tune the ip_vs conn_tab_bits parameter
 	file { "/etc/modprobe.d/lvs.conf":
 		content => "# This file is managed by Puppet!\noptions ip_vs conn_tab_bits=20\n";
