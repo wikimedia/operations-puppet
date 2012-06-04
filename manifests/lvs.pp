@@ -191,13 +191,23 @@ class lvs::configuration {
 					'foundationlbsecure' => "91.198.174.235"
 				},
 			},
+			'ipv6' => {
+				'pmtpa' => {
+					'uploadlb6' => "2620:0:860:ed1a::b",
+				},
+				'eqiad' => {
+				},
+				'esams' => {
+					'uploadlb6' => "2620:0:862:ed1a::b",
+				},
+			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
 				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
 				'esams' => { 'bitslb' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
-				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadlb6' => "2620:0:860:ed1a::b", 'uploadsvc' => "10.2.1.24" },
+				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
 				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
