@@ -1,4 +1,4 @@
-# Ganglia Meta Daemon for <%= fqdn %>
+# Ganglia Meta Daemon for <%= gridname %>
 #
 # This file is managed by Puppet!
 #
@@ -36,9 +36,15 @@
 # data_source "my grid" 50 1.3.4.7:8655 grid.org:8651 grid-backup.org:8651
 # data_source "another source" 1.3.4.7:8655  1.3.4.8
 
-<% ganglia_clusters.sort.each do |clustername, cluster| -%>
-data_source "<%= cluster['name'] %>" test1 test2
+<% if realm == "labs" then %>
+# BEGIN AUTOGEN FROM CRON
+# END AUTOGEN FROM CRON
+<% end %>
+<% if has_variable?("data_sources") then %>
+<% data_sources.sort.each_pair do |ds_key, ds_value| -%>
+data_source "<%= ds_key %>" <%= ds_value %>
 <% end -%>
+<% end %>
 
 #
 # Round-Robin Archives
@@ -49,8 +55,9 @@ data_source "<%= cluster['name'] %>" test1 test2
 #
 
 # Custom RRA sizes, see http://bugzilla.ganglia.info/cgi-bin/bugzilla/show_bug.cgi?id=119
-RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"
-
+<% if has_variable("rra_sizes") then %>
+RRAs <%= rra_sizes %>
+<% end %>
 
 #
 #-------------------------------------------------------------------------------
@@ -68,7 +75,9 @@ RRAs "RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" 
 # default: unspecified
 # gridname "MyGrid"
 
+<% if has_variable("gridname") then %>
 gridname "<%= gridname %>"
+<% end %>
 
 #
 #-------------------------------------------------------------------------------
@@ -77,7 +86,11 @@ gridname "<%= gridname %>"
 # website on this machine.
 # default: "http://hostname/ganglia/",
 #   where hostname is the name of this machine, as defined by gethostname().
+
+<% if has_variable("authority_url") then %>
 authority "<%= authority_url %>"
+<% end %>
+
 #
 #-------------------------------------------------------------------------------
 # List of machines this gmetad will share XML with. Localhost
@@ -104,13 +117,13 @@ authority "<%= authority_url %>"
 #-------------------------------------------------------------------------------
 # The port gmetad will answer requests for XML
 # default: 8651
-# xml_port 8651
+xml_port 8653
 #
 #-------------------------------------------------------------------------------
 # The port gmetad will answer queries for XML. This facility allows
 # simple subtree and summation views of the XML tree.
 # default: 8652
-# interactive_port 8652
+interactive_port 8654
 #
 #-------------------------------------------------------------------------------
 # The number of threads answering XML requests
@@ -121,4 +134,8 @@ authority "<%= authority_url %>"
 # Where gmetad stores its round-robin databases
 # default: "/var/lib/ganglia/rrds"
 # rrd_rootdir "/some/other/place"
+
+<% if has_variable("rrd_rootdir") then %>
+rrd_rootdir "<%= rrd_rootdir %>"
+<% end %>
 

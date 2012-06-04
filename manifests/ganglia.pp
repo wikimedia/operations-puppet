@@ -4,11 +4,14 @@
 #  - $deaf:			Is the gmond process an aggregator
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
-#  - $mcast_address:		Multicast "cluster" to join and send data on (not for labs)
-#  - $gmetad_host:		Hostname or IP of gmetad server (for labs only)
-#  - $authority_url:		URL referenced by gmond
-#  - $gridname:			Grid name
-#  - $gmetad_conf:		gmetad configuration filename (or stub for labs)
+#  - $mcast_address:		Multicast "cluster" to join and send data on (production only)
+#  - $gmetad_host:		Hostname or IP of gmetad server used by gmond (labs only)
+#  - $authority_url:		URL used by gmond and gmetad
+#  - $gridname:			Grid name used by gmetad
+#  - $data_sources:		Hash of datasources used by gmetad (production only)
+#    $rra_sizes:		Round-robin archives sizes used by gmetad
+#    $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
+#  - $gmetad_conf:		gmetad conf filename (ends in '.labsstub' for labs)
 #  - $ganglia_servername:	Server name used by apache
 #  - $ganglia_serveralias:	Server alias(es) used by apache
 #  - $ganglia_webdir:		Path of web directory used by apache
@@ -31,12 +34,9 @@ class ganglia {
 	}
 
 	if $realm == "labs" {
-		$gridname = "wmflabs"
 		$authority_url = "http://ganglia.wmflabs.org"
 		$gmetad_host = "10.4.0.79"
-
 	} else {
-		$gridname = "Wikimedia"
 		$authority_url = "http://ganglia.wikimedia.org"
 	}
 	
@@ -201,27 +201,90 @@ class ganglia {
 			ensure => latest;
 		}
 
-		if $realm == "labs" {
-			$gmetad_conf = "gmetad.conf.labsstub"
-		} else {
-			$gmetad_conf = "gmetad.conf"
-		}
 
-		## FIXME this file is a temp hack to get ganglia running. Needs to become
-		## a template generated from information kept in puppet - Lcarr, 2012/01/03
+		if $realm == "labs" {
+			$gridname = "wmflabs"
+			# for labs, just generate a stub gmetad configuration without data_source lines
+			$gmetad_conf = "gmetad.conf.labsstub"
+			# TODO: this block is for testing only, remove once tested
+			case $hostname {
+				/^aggregator-test1$/: {
+					$data_sources = {
+					"analytics" => "aggregator1.pmtpa.wmflabs:21164",
+					"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150"
+					}
+				}
+				default: {
+					$data_sources = {
+					"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150"
+					}
+				}
+			}
+			# end of test block
+			$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+			$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+		} else {
+			$gridname = "Wikimedia"
+			$gmetad_conf = "gmetad.conf"
+			case $hostname {
+				# manutius runs gmetad to get varnish data into torrus
+				/^manutius$/: {
+					$data_sources = {
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
+				}
+				default: {
+					$data_sources = {
+						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
+						"Tesla" => "10 208.80.152.247",
+						"Apaches 8 CPU" => "srv153.pmtpa.wmnet srv226.pmtpa.wmnet",
+						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
+						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
+						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
+						"Search" => "search1.pmtpa.wmnet searchidx1.pmtpa.wmnet",
+						"MySQL" => "db21.pmtpa.wmnet db30.pmtpa.wmnet",
+						"Mobile servers" => "mobile1.wikimedia.org mobile2.wikimedia.org",
+						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
+						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
+						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
+						"Miscellaneous" => "spence.wikimedia.org",
+						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
+						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
+						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
+						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
+						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
+						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
+						"Swift pmtpa" => "owa1.wikimedia.org owa2.wikimedia.org",
+						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
+						"MySQL eqiad" => "db1001.eqiad.wmnet",
+						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
+						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
+						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
+						"Swift eqiad" => "copper.wikimedia.org zinc.wikimedia.org",
+						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
+						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
+						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
+						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
+						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
+						"Miscellaneous esams" => "hooft.esams.wikimedia.org"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+					$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+				}
+			}
+		}
 
 		file { "/etc/ganglia/${gmetad_conf}":
 			require => Package[gmetad],
-			source => $hostname ? {
-				/^(streber|manutius)$/ => "puppet:///files/ganglia/gmetad.conf.torrus",
-				default => "puppet:///files/ganglia/${gmetad_conf}"
-			},
+			content => template("ganglia/gmetad_template.erb"),
 			mode => 0444,
 			ensure	=> present
 		}
 
+		# for labs, gmond.conf and gmetad.conf are generated by a cron job
 		if $realm == "labs" {
-			# cron job to generate ganglia aggregator confs
 			file { "/etc/ganglia/gmond.conf.labsstub":
 				source => "puppet:///files/ganglia/gmond.conf.labsstub",
 				mode => 0444,
