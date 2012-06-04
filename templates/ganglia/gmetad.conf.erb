@@ -41,7 +41,7 @@
 # END AUTOGEN FROM CRON
 <% end %>
 <% if has_variable?("data_sources") then %>
-<% data_sources.sort.each_pair do |ds_key, ds_value| -%>
+<% data_sources.sort.each do |ds_key, ds_value| -%>
 data_source "<%= ds_key %>" <%= ds_value %>
 <% end -%>
 <% end %>
