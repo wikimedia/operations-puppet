@@ -1135,7 +1135,8 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
 	$dns_recursor_ipaddress = $ipaddress
 
-	if $hostname =~ /^lvs[1256]$/ {
+	# OLD
+	if $hostname =~ /^lvs[256]$/ {
 		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201",
 			"208.80.152.202", "208.80.152.203", "208.80.152.204",
 			"208.80.152.205", "208.80.152.206", "208.80.152.207",
@@ -1147,6 +1148,19 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	if $hostname =~ /^lvs[34]$/ {
 		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12",
 			"10.2.1.13", "10.2.1.21", "10.2.1.22", "10.2.1.27" ]
+	}
+
+	# NEW
+	if $hostname =~ /^lvs[1]$/ {
+		$lvs_balancer_ips = [
+			$lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['ipv6'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['payments'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['dns_auth'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['osm'][$::site],
+			$lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site],
+		]
 	}
 
 	include base,
@@ -1166,7 +1180,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		},
 	}
 	
-	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		interface_add_ip6_mapped { "main": interface => "eth0" }
 	}
 
