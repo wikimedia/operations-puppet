@@ -26,9 +26,9 @@ class misc::noc-wikimedia {
 		"/etc/apache2/sites-available/graphite.wikimedia.org":
 			path => "/etc/apache2/sites-available/graphite.wikimedia.org",
 			content => template('apache/sites/graphite.wikimedia.org'),
-			mode => 0444,
+			mode => 0440,
 			owner => root,
-			group => root;
+			group => www-data;
 		"/usr/lib/cgi-bin":
 			source => "puppet:///files/cgi-bin/noc/",
 			recurse => true,
