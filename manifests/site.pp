@@ -1165,6 +1165,10 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			'lvs6' => "10.0.0.16",
 		},
 	}
+	
+	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		interface_add_ip6_mapped { "main": interface => "eth0" }
+	}
 
 	# Set up tagged interfaces to all subnets with real servers in them
 	interface_tagged { "eth0.2":
