@@ -425,13 +425,7 @@ class role::cache {
 
 		include lvs::configuration
 		
-		# TEMP: during ipv6 migration
-		if $::site == "pmtpa" {
-			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site], "2620:0:860:ed1a::a" ] }
-		}
-		else {
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
-		}
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
 		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
