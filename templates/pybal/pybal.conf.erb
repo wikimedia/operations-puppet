@@ -17,6 +17,7 @@ bgp-peer-address = <%= pybal['bgp-peer-address'] %>
 service['ip'] = { servicename => service['ip'] }
 end -%>
 <% service['ip'].sort.each do |subservicename, subserviceip| -%>
+<% if ! subserviceip.include?(":") or ipv6_hosts.include?(hostname) -%>
 # SERVICE <%= subservicename %>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
@@ -38,6 +39,7 @@ monitors = <%= service['monitors'].keys.inspect %>
 <% end -%>
 <% end -%>
 
+<% end -%>
 <% end -%>
 
 <% end -%>

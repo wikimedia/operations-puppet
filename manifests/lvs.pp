@@ -71,6 +71,8 @@ class lvs::configuration {
 			'labs' => [ "i-00000051" ],
 		},
 	}
+	
+	$ipv6_hosts = []
 
 	$pybal = { 
 		'bgp' => "yes",
@@ -563,6 +565,7 @@ class lvs::balancer {
 	require "lvs::configuration"
 	
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
+	$ipv6_hosts = $lvs::configuration::ipv6_hosts
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
 	
