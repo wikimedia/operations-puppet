@@ -656,7 +656,7 @@ class lvs::realserver($realserver_ips=$lvs_realserver_ips) {
 	}
 
 	package { wikimedia-lvs-realserver:
-		ensure => present,
+		ensure => latest,
 		require => File["/etc/default/wikimedia-lvs-realserver"];
 	}
 }
