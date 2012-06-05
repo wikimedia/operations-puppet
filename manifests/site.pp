@@ -320,6 +320,10 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 	}
 
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		interface_add_ip6_mapped { "main": interface => "eth0" }
+	}
+
 	include base,
 		ganglia,
 		lvs::balancer
@@ -1389,6 +1393,10 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			# Row C subnets on eth2
 			# Row D subnets on eth3
 		}
+	}
+
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		interface_add_ip6_mapped { "main": interface => "eth0" }
 	}
 
 	# Make sure GRO is off
