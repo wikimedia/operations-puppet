@@ -32,11 +32,15 @@ host amslvs2 {
 host amslvs3 {
 	hardware ethernet a4:ba:db:30:d8:5c;
 	fixed-address amslvs3.esams.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host amslvs4 {
 	hardware ethernet a4:ba:db:38:e4:cb;
 	fixed-address amslvs4.esams.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host bast1001 {
