@@ -413,7 +413,10 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 	if ! $interface {
 		$all_interfaces = split($::interfaces, ",")
-		$interface = $all_interfaces[0]
+		$intf = $all_interfaces[0]
+	}
+	else {
+		$intf = $interface
 	}
 	
 	if ! $ipv4_address {
@@ -423,10 +426,10 @@ define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 		$ip4_address = "::${ipv4_address}"
 	}
 	
-	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\")).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
+	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${intf}\")).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
 
 	interface_ip { $title:
-		interface => $interface,
+		interface => $intf,
 		address => $ipv6_address,
 		prefixlen => "64"
 	}
