@@ -439,6 +439,8 @@ node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
+	interface_add_ip6_mapped { "main": interface => "eth0" }
+
 	include role::cache::upload
 }
 
