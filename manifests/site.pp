@@ -2043,6 +2043,8 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
+	interface_add_ip6_mapped { "main": interface => "eth0" }
+
 	include protoproxy::ssl
 }
 
@@ -2050,6 +2052,8 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	if $hostname =~ /^ssl300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
