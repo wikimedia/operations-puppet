@@ -410,6 +410,12 @@ node  "cadmium.eqiad.wmnet" {
 		accounts::catrope
 }
 
+node "capella.wikimedia.org" {
+
+	include standard,
+		role::ipv6relay
+
+}
 node "carbon.wikimedia.org" {
 	$cluster = "misc"
 	$ganglia_aggregator = "true"
