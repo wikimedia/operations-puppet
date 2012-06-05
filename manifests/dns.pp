@@ -169,6 +169,8 @@ class dns::recursor {
 
 	system_role { "dns::recursor": description => "Recursive DNS server" }
 
+	include network::constants
+
 	file { "/etc/powerdns/recursor.conf":
 		require => Package[pdns-recursor],
 		owner => root,
