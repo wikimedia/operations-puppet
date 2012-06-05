@@ -45,7 +45,7 @@ host bast1001 {
 }
 
 host bellin {
-        hardware ethernet d4:be:d9:af:66:9f;
+        hardware ethernet 18:03:73:ed:d9:95;
         fixed-address bellin.pmtpa.wmnet;
 }
 
