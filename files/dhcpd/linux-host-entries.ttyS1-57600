@@ -16,6 +16,8 @@ host brewster {
 host capella {
 	hardware ethernet 00:21:9b:8e:c0:e6;
 	fixed-address capella.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db9 {
