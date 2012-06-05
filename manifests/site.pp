@@ -293,14 +293,16 @@ node "alsted.wikimedia.org" {
 node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
 
-	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-	# So we'll have every LVS server run their own recursor
-	$nameservers = [ $ipaddress, "91.198.174.6", "208.80.152.131" ]
-	$dns_recursor_ipaddress = $ipaddress
+	if versioncmp($::lsbdistrelease, "12.04") < 0 {
+		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+		# So we'll have every LVS server run their own recursor
+		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+		$dns_recursor_ipaddress = $ipaddress
+		include dns::recursor
+	}
 
 	include base,
 		ganglia,
-		dns::recursor,
 		lvs::balancer
 }
 
@@ -1128,10 +1130,13 @@ node "lomaria.pmtpa.wmnet" {
 node /lvs[1-6]\.wikimedia\.org/ {
 	$cluster = "misc"
 
-	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-	# So we'll have every LVS server run their own recursor
-	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-	$dns_recursor_ipaddress = $ipaddress
+	if versioncmp($::lsbdistrelease, "12.04") < 0 {
+		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+		# So we'll have every LVS server run their own recursor
+		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+		$dns_recursor_ipaddress = $ipaddress
+		include dns::recursor
+	}
 
 	# OLD
 	if $hostname =~ /^lvs[256]$/ {
@@ -1166,7 +1171,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 
 	include base,
 		ganglia,
-		dns::recursor,
 		lvs::balancer,
 		lvs::balancer::runcommand
 
@@ -1202,10 +1206,13 @@ node /lvs[1-6]\.wikimedia\.org/ {
 node /lvs100[1-6]\.wikimedia\.org/ {
 	$cluster = "misc"
 
-	# PyBal is very dependent on recursive DNS, to the point where it is a SPOF
-	# So we'll have every LVS server run their own recursor
-	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-	$dns_recursor_ipaddress = $ipaddress
+	if versioncmp($::lsbdistrelease, "12.04") < 0 {
+		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
+		# So we'll have every LVS server run their own recursor
+		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
+		$dns_recursor_ipaddress = $ipaddress
+		include dns::recursor
+	}
 
 	include lvs::configuration
 
@@ -1231,7 +1238,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 	include base,
 		ganglia,
-		dns::recursor,
 		lvs::balancer,
 		lvs::balancer::runcommand
 
