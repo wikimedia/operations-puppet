@@ -582,7 +582,7 @@ class generic::mysql::server(
 
 	service { "mysql":
 		ensure => "running",
-		require => [Package["mysql-server"], File[$config_file_path]],
+		require => [Package["mysql-server"], File[$config_file_path, $datadir, "/etc/apparmor.d/usr.sbin.mysqld"]],
 		# don't subscribe mysql to its config files.
 		# it is better to be able to restart mysql
 		# manually when you intend for it to happen,
