@@ -1386,6 +1386,11 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDM17PSNhtrXqE8fBSBmv1I79kyBiwy4gNS1WjVqHraDDJ75TJGD9J673LkGgjHAerrG+u5nSjD0X+eJQXaWsZeh2ZZjnTcSyoFxge9t0n88F568h6OdYFMc0Obl9OHFANX4x5p1jsPqM/DBW7McW7QmG699eYdi0na8ubN97DSCSBw++V49x7QMx/2qYjAhJVJt9aCreBInGPa9FMGfXQKHdkS25Xh7PxIhk4XPYstey8FqUtOyIacdEGpQnAuMvKGxyTsvf/SQiMXMSvSvAOk9x83aj9cwcJgfrAJFbsraQ57oaP8/rpvWWW2PZ6xokgTtbdZ6lEK3bp2LVX0Pugd";
+				"ben@bbook.lan":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-dss",
+					key	=> "AAAAB3NzaC1kc3MAAACBAOamBf8php8JgOd67rPGbdsWurdWm68I2/S1rZu3pauudATnYbGcC/y7wQhcjg7RRkOSelXKk3APNkhuriVIo3bumoqZ/u8GtPPqybCLUD0z0vS5pqzHc6maLt358D5bwslMh82DLqEOS2/JeH2rDuMuDbZ0FvV1MVQOjLL0CqV5AAAAFQDda5sy482jO2ZVn8jUm+1YePuF+QAAAIBgACI+v1yENF3ZH49zqXgZWG6aP/tNLjBj+Yrug0m553J/PJHznloWEtwED7v8WgSxGp5G/c7j13qAUYSMaOaXzZBE7yNKJvE0CP6WB0ymXfzD4Dw31N4bfvWdpwtRJvt/7RIkOJPESGrWePjy3429Zo+lk3NjQn2c8f11AefaUwAAAIAQkdQhvBfeDsfMXJxHFej/ElfCfZl8c3TIT5BAjl4fPaPg7ATqUCo/StaD4nVrgJSUKu/s1LgPZuxkfGqiWN7yf65Z5QmsvGncx+UeW+Bp2cbZKoA0B2PH4VRYVfwzIYPNcsSDBvZEu+IfEcS3S0gdv8w72FfP4IkmmdRRtNn1DQ==";
 			}
 		}
 	}
