@@ -65,6 +65,11 @@ class role::mediawiki-install::labs {
         apache_site { controller: name => "wiki" }
         apache_site { 000_default: name => "000-default", ensure => absent }
 
+	exec { 'apache_restart':
+		require => apache_site['controller', '000_default'],
+		command => "/usr/sbin/service apache2 restart"
+	}
+
 	file { '/srv/mediawiki/LocalSettings.php':
 		require => exec["mediawiki_setup"],
 		content => template('mediawiki/labs-localsettings'),
