@@ -383,7 +383,11 @@ node "bast1001.wikimedia.org" {
 }
 
 node "bellin.pmtpa.wmnet"{
-
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node "blondel.pmtpa.wmnet" {
