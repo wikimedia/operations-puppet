@@ -72,7 +72,7 @@ class lvs::configuration {
 		},
 	}
 	
-	$ipv6_hosts = ["lvs1"]
+	$ipv6_hosts = ["lvs1", "lvs2"]
 
 	$pybal = { 
 		'bgp' => "yes",

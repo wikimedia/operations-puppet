@@ -1151,7 +1151,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	}
 
 	# OLD
-	if $hostname =~ /^lvs[256]$/ {
+	if $hostname =~ /^lvs[56]$/ {
 		$lvs_balancer_ips = [ "208.80.152.200", "208.80.152.201",
 			"208.80.152.202", "208.80.152.203", "208.80.152.204",
 			"208.80.152.205", "208.80.152.206", "208.80.152.207",
@@ -1178,6 +1178,12 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			$sip['dns_rec'][$::site],
 			$sip['osm'][$::site],
 			$sip['misc_web'][$::site],
+		]
+	}
+	if $hostname =~ /^lvs[2]$/ {
+		$lvs_balancer_ips = [
+			$sip['text'][$::site],
+			$sip['bits'][$::site],
 		]
 	}
 
