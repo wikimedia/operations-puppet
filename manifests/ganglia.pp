@@ -207,22 +207,6 @@ class ganglia {
 			# for labs, just generate a stub gmetad configuration without data_source lines
 			$gmetad_conf = "gmetad.conf.labsstub"
 			$authority_url = "http://ganglia.wmflabs.org"
-			# TODO: this block is for testing only, remove once tested
-			case $hostname {
-				/^aggregator-test1$/: {
-					$data_sources = {
-						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
-					}
-				}
-				default: {
-					$data_sources = {
-						"analytics" => "aggregator1.pmtpa.wmflabs:21164",
-						"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150",
-						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
-					}
-				}
-			}
-			# end of test block
 			$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
 			$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
 		} else {
