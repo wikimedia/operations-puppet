@@ -211,14 +211,14 @@ class ganglia {
 			case $hostname {
 				/^aggregator-test1$/: {
 					$data_sources = {
-						"analytics" => "aggregator1.pmtpa.wmflabs:21164",
-						"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150",
 						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
 					}
 				}
 				default: {
 					$data_sources = {
-						"analytics" => "aggregator1.pmtpa.wmflabs:21164"
+						"analytics" => "aggregator1.pmtpa.wmflabs:21164",
+						"articlefeedbackv5" => "aggregator1.pmtpa.wmflabs:21150",
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
 					}
 				}
 			}
