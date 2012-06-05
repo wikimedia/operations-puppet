@@ -159,6 +159,7 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
 					'foundationlbsecure' => "208.80.152.209",
+					'bitslbsecure6' => "2620:0:860:ed1a::a",
 					'uploadlbsecure6' => "2620:0:860:ed1a::b",
 				},
 				'eqiad' => {
@@ -174,7 +175,8 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.154.231",
 					'mediawikilbsecure' => "208.80.154.232",
 					'foundationlbsecure' => "208.80.154.233",
-					'mobilelbsecure' => "208.80.154.236"
+					'mobilelbsecure' => "208.80.154.236",
+					'bitslbsecure6' => "2620:0:861:ed1a::a",
 				},
 				'esams' => {
 					'wikimedialbsecure' => "91.198.174.224",
@@ -188,7 +190,8 @@ class lvs::configuration {
 					'wikinewslbsecure' => "91.198.174.230",
 					'wikiversitylbsecure' => "91.198.174.231",
 					'mediawikilbsecure' => '91.198.174.232',
-					'foundationlbsecure' => "91.198.174.235"
+					'foundationlbsecure' => "91.198.174.235",
+					'bitslbsecure6' => "2620:0:862:ed1a::a",
 				},
 			},
 			'ipv6' => {
@@ -203,8 +206,8 @@ class lvs::configuration {
 			},
 			'bits' => {
 				'pmtpa' => { 'bitslb' => "208.80.152.210", 'bitslb6' => "2620:0:860:ed1a::a", 'bitssvc' => "10.2.1.23" },
-				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitssvc' => "10.2.2.23" },
-				'esams' => { 'bitslb' => "91.198.174.233", 'bitssvc' => "10.2.3.23" },
+				'eqiad' => { 'bitslb' => "208.80.154.234", 'bitslb6' => "2620:0:861:ed1a::a", 'bitssvc' => "10.2.2.23" },
+				'esams' => { 'bitslb' => "91.198.174.233", 'bitslb6' => "2620:0:862:ed1a::a", 'bitssvc' => "10.2.3.23" },
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
