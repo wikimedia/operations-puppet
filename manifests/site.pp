@@ -1793,7 +1793,8 @@ node /searchidx100[0-2]\.eqiad\.wmnet/ {
 }
 
 node "searchidx2.pmtpa.wmnet" {
-	include base
+
+	include role::lucene::indexer
 }
 
 node "silver.wikimedia.org" {
