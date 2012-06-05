@@ -754,11 +754,15 @@ host lvs1004 {
 host lvs1005 {
         hardware ethernet 18:03:73:f0:8e:28;
         fixed-address lvs1005.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs1006 {
         hardware ethernet 18:03:73:f0:8a:77;
         fixed-address lvs1006.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host maerlant {
