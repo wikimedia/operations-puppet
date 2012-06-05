@@ -177,6 +177,8 @@ class lvs::configuration {
 					'foundationlbsecure' => "208.80.154.233",
 					'mobilelbsecure' => "208.80.154.236",
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
+					'uploadlbsecure6' => "2620:0:861:ed1a::b",
+					'mobilelbsecure6' => "2620:0:861:ed1a::c",
 				},
 				'esams' => {
 					'wikimedialbsecure' => "91.198.174.224",
@@ -192,6 +194,7 @@ class lvs::configuration {
 					'mediawikilbsecure' => '91.198.174.232',
 					'foundationlbsecure' => "91.198.174.235",
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
+					'uploadlbsecure6' => "2620:0:862:ed1a::b",
 				},
 			},
 			'ipv6' => {
@@ -211,7 +214,7 @@ class lvs::configuration {
 			},
 			'upload' => {
 				'pmtpa' => { 'uploadlb' => "208.80.152.211", 'uploadsvc' => "10.2.1.24" },
-				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadsvc' => "10.2.2.24" },
+				'eqiad' => { 'uploadlb' => "208.80.154.235", 'uploadlb6' => "2620:0:861:ed1a::b", 'uploadsvc' => "10.2.2.24" },
 				'esams' => { 'uploadlb' => "91.198.174.234", 'uploadsvc' => "10.2.3.24" },
 			},
 			'payments' => {
@@ -251,7 +254,7 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.15",
 			},
 			'mobile' => {
-				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilesvc' => "10.2.2.26"}
+				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"}
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
