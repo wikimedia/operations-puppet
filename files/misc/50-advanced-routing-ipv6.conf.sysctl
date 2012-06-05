@@ -1,0 +1,11 @@
+# This file is managed by Puppet!
+
+# Enable router advertisements
+net.ipv6.conf.all.accept_ra=2
+net.ipv6.conf.default.accept_ra=2
+
+# Turn on ip forwarding
+net.ipv4.conf.all.forwarding=1
+net.ipv4.conf.default.forwarding=1
+net.ipv6.conf.all.forwarding=1
+net.ipv6.conf.default.forwarding=1
