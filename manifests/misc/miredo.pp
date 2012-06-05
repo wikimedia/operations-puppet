@@ -9,7 +9,7 @@ class misc::miredo {
 		group => root,
 		mode => 0444,
 		require => Package['miredo'],
-		source => template('miredo/miredo.conf.erb');
+		source => 'puppet:///files/miredo/miredo.conf',
 	}
 
 	service { 'miredo':
