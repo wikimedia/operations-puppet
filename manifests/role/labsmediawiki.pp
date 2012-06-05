@@ -35,6 +35,39 @@ class role::mediawiki-install::labs {
 			ensure => present;
 	}
 
+	file { '/var/www/srv':
+		ensure => 'directory';
+	}
+
+	file { '/var/www/srv/mediawiki':
+		require => File['/var/www/srv'],
+		ensure => 'link',
+		target => '/srv/mediawiki';
+	}
+
+	if $labs_mediawiki_hostname {
+		$mwserver = "http://$labs_mediawiki_hostname"
+	} else {
+		$mwserver = "http://$hostname.pmtpa.wmflabs"
+	}
+
+	file { '/srv/mediawiki/orig':
+		require => git::clone["mediawiki"],
+		ensure => 'directory';
+	}
+
+	exec { 'mediawiki_setup':
+		require => [git::clone["mediawiki"],  File["/srv/mediawiki/orig"]],
+		unless => "/usr/bin/test -e /srv/mediawiki/orig/LocalSettings.php",
+		command => "/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --pass adminpassword --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'",
+	}
+
         apache_site { controller: name => "wiki" }
         apache_site { 000_default: name => "000-default", ensure => absent }
+
+	file { '/srv/mediawiki/LocalSettings.php':
+		require => exec["mediawiki_setup"],
+		content => template('mediawiki/labs-localsettings'),
+		ensure => present,
+	}
 }
