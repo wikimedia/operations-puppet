@@ -62,12 +62,8 @@ class role::mediawiki-install::labs {
 		command => "/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --pass adminpassword --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'",
 	}
 
-        apache_site { '000_default': name => "000-default", ensure => absent }
-        apache_site { 'controller': 
-		require => apache_site['000_default'],
-		name => "wiki",
-		notify => Service["apache2"]
-	}
+        apache_site { controller: name => "wiki" }
+        apache_site { 000_default: name => "000-default", ensure => absent }
 
 	file { '/srv/mediawiki/LocalSettings.php':
 		require => exec["mediawiki_setup"],
