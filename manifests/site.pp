@@ -437,6 +437,16 @@ node  "cadmium.eqiad.wmnet" {
 		accounts::catrope
 }
 
+node "capella.wikimedia.org" {
+
+	include standard,
+		role::ipv6relay
+
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		interface_add_ip6_mapped { "main": interface => "eth0" }
+	}
+
+}
 node "carbon.wikimedia.org" {
 	$cluster = "misc"
 	$ganglia_aggregator = "true"
