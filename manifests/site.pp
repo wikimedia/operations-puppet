@@ -307,6 +307,7 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
+			$sip['ipv6'][$::site],
 		]
 	}
 	elsif $hostname =~ /^amslvs[4]$/ {
@@ -1223,6 +1224,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
+			$sip['ipv6'][$::site],
 		]
 	}
 
@@ -1291,6 +1293,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
+			$sip['ipv6'][$::site],
 		]
 	}
 	if $hostname =~ /^lvs100[2]$/ {
