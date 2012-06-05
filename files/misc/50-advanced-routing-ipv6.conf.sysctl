@@ -1,7 +1,8 @@
 # This file is managed by Puppet!
 
-# Enable router advertisements
-net.ipv6.conf.all.accept_ra=2
+# Enable router advertisements even when forwarding is enabled
+# ("all" doesn't work with accept_ra, add eth0 here as a hack)
+net.ipv6.conf.eth0.accept_ra=2
 net.ipv6.conf.default.accept_ra=2
 
 # Turn on ip forwarding
