@@ -753,6 +753,8 @@ host lvs1003 {
 host lvs1004 {
 	hardware ethernet 18:03:73:f0:8c:30;
 	fixed-address lvs1004.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs1005 {
