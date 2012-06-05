@@ -15,6 +15,7 @@ class misc::miredo {
 	service { 'miredo':
 		ensure => running,
 		enable => true,
+		hasstatus => false,
 		require => Package['miredo'];
 	}
 
