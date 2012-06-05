@@ -159,6 +159,7 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
 					'foundationlbsecure' => "208.80.152.209",
+					'mediawikilbsecure6' => "2620:0:860:ed1a::8",
 					'bitslbsecure6' => "2620:0:860:ed1a::a",
 					'uploadlbsecure6' => "2620:0:860:ed1a::b",
 				},
@@ -176,6 +177,7 @@ class lvs::configuration {
 					'mediawikilbsecure' => "208.80.154.232",
 					'foundationlbsecure' => "208.80.154.233",
 					'mobilelbsecure' => "208.80.154.236",
+					'mediawikilbsecure6' => "2620:0:861:ed1a::8",
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
 					'uploadlbsecure6' => "2620:0:861:ed1a::b",
 					'mobilelbsecure6' => "2620:0:861:ed1a::c",
@@ -193,17 +195,21 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "91.198.174.231",
 					'mediawikilbsecure' => '91.198.174.232',
 					'foundationlbsecure' => "91.198.174.235",
+					'mediawikilbsecure6' => "2620:0:862:ed1a::8",
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
 					'uploadlbsecure6' => "2620:0:862:ed1a::b",
 				},
 			},
 			'ipv6' => {
 				'pmtpa' => {
+					'mediawikilb6' => "2620:0:860:ed1a::8",
 					'uploadlb6' => "2620:0:860:ed1a::b",
 				},
 				'eqiad' => {
+					'mediawikilb6' => "2620:0:861:ed1a::8",
 				},
 				'esams' => {
+					'mediawikilb6' => "2620:0:862:ed1a::8",
 					'uploadlb6' => "2620:0:862:ed1a::b",
 				},
 			},
