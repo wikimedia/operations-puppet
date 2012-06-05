@@ -449,6 +449,8 @@ node /cp104[1-4].wikimedia.org/ {
 		$ganglia_aggregator = "true"
 	}
 
+	interface_add_ip6_mapped { "main": }
+
 	include role::cache::mobile
 }
 
