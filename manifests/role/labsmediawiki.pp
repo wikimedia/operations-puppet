@@ -71,7 +71,6 @@ class role::mediawiki-install::labs {
 	}
 
 	file { '/srv/mediawiki/LocalSettings.php':
-		unless => "/usr/bin/test ! -e /srv/mediawiki/orig/LocalSettings.php",
 		require => exec["mediawiki_setup"],
 		content => template('mediawiki/labs-localsettings'),
 		ensure => present,
