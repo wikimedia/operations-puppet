@@ -785,14 +785,28 @@ define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $
 define monitor_service_lvs_http ( $ip_address, $check_command, $critical="true" ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
-	@monitor_service { $title: host => $title, group => "lvs", description => "LVS HTTP", check_command => $check_command, critical => $critical }
+	@monitor_service { $title: host => $title, group => "lvs", description => "LVS HTTP IPv4", check_command => $check_command, critical => $critical }
 }
 
 define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
 	$title_https = "${title}_https"
 	# Virtual resource for the monitoring host
 	@monitor_host { $title_https: ip_address => $ip_address, group => "lvs", critical => "true" }
-	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS", check_command => $check_command, critical => $critical }
+	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS IPv4", check_command => $check_command, critical => $critical }
+}
+
+define monitor_service_lvs6_http ( $ip_address, $check_command, $critical="true" ) {
+	$title_ipv6 = "${title}_ipv6"
+	# Virtual resource for the monitoring host
+	@monitor_host { $title_ipv6: ip_address => $ip_address, group => "lvs", critical => "true" }
+	@monitor_service { $title_ipv6: host => $title, group => "lvs", description => "LVS HTTP IPv6", check_command => $check_command, critical => $critical }
+}
+
+define monitor_service_lvs6_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
+	$title_https = "${title}_ipv6_https"
+	# Virtual resource for the monitoring host
+	@monitor_host { $title_https: ip_address => $ip_address, group => "lvs", critical => "true" }
+	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS IPv6", check_command => $check_command, critical => $critical }
 }
 
 class lvs::monitor {
@@ -847,14 +861,22 @@ class lvs::monitor {
 	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
 
-	monitor_service_lvs_http {
-		"wikimedia-lb.pmtpa.wikimedia.org_ipv6":
+	monitor_service_lvs6_http {
+		"wikimedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikimedialb6'],
 			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
-		"wikipedia-lb.pmtpa.wikimedia.org_ipv6":
+		"wikipedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.eqiad.wikimedia.org":
+			ip_address => $ip['bits']['pmtpa']['bitslb6'],
+			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			critical => "false";
+		"upload-lb.eqiad.wikimedia.org":
+			ip_address => $ip['upload']['pmtpa']['uploadlb6'],
+			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
 	}
 
