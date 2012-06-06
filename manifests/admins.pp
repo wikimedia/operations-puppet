@@ -1796,10 +1796,23 @@ class accounts {
 		}
 	}
 
-	class mmullie inherits baseaccount {
-		$username = "mmullie"
+	class mmullie {
+		# purge user mmullie, rename homedir to /home/mlitn
+	    user { 'mmullie':
+	        ensure  => absent,
+	    }
+	    exec { "/bin/mv /home/mmullie /home/mlitn":
+	        onlyif => "/usr/bin/test -d /home/mmullie"
+	    }
+	}
+
+	class mlitn inherits baseaccount {
+		$username = "mlitn"
 		$realname = "Matthias Mullie"
 		$uid = 596
+
+		# purge mmullie account so we can recreate as mlitn at same uid
+		require accounts::mmullie
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1965,7 +1978,7 @@ class admins::mortals {
 	include accounts::bsitu
 	include accounts::khorn
 	include accounts::maxsem
-	include accounts::mmullie
+	include accounts::mlitn
 }
 
 class admins::restricted {
