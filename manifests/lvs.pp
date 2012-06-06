@@ -317,7 +317,7 @@ class lvs::configuration {
 				'eqiad' => "10.2.2.15",
 			},
 			'mobile' => {
-				'eqiad' => { 'mobile' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"}
+				'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"}
 			},
 			'swift' => {
 				'pmtpa' => "10.2.1.27",
