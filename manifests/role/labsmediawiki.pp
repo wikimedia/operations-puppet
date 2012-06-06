@@ -58,7 +58,7 @@ class role::mediawiki-install::labs {
 
 	exec { 'mediawiki_setup':
 		require => [git::clone["mediawiki"],  File["/srv/mediawiki/orig"]],
-		unless => "/usr/bin/test -e /srv/mediawiki/orig/LocalSettings.php",
+		creates => "/srv/mediawiki/orig/LocalSettings.php",
 		command => "/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --pass adminpassword --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'",
 	}
 
@@ -71,6 +71,7 @@ class role::mediawiki-install::labs {
 	}
 
 	file { '/srv/mediawiki/LocalSettings.php':
+		unless => "/usr/bin/test ! -e /srv/mediawiki/orig/LocalSettings.php",
 		require => exec["mediawiki_setup"],
 		content => template('mediawiki/labs-localsettings'),
 		ensure => present,
