@@ -911,7 +911,7 @@ class lvs::monitor {
 			ip_address => $ip['bits']['eqiad']['bitslb6'],
 			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
 			critical => "false";
-		"upload-lb.pmtpa.wikimedia.org":
+		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb6'],
 			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
