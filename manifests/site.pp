@@ -1293,6 +1293,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
+			$sip['mobile'][$::site],
 			$sip['ipv6'][$::site],
 		]
 	}
