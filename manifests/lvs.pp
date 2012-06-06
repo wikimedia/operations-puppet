@@ -774,6 +774,8 @@ class lvs::static_labs_ips {
 
 }
 
+# FIXME: This definitely needs some smarter logic and cleaning up.
+
 define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $check_command, $retries=3 ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
@@ -845,6 +847,17 @@ class lvs::monitor {
 	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
 
+	monitor_service_lvs_http {
+		"wikimedia-lb.pmtpa.wikimedia.org_ipv6":
+			ip_address => $ip['ipv6']['pmtpa']['wikimedialb6'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikipedia-lb.pmtpa.wikimedia.org_ipv6":
+			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
+			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+	}
+
 	# eqiad -lb addresses
 	# FIXME: add the rest
 	monitor_service_lvs_http {
@@ -853,7 +866,7 @@ class lvs::monitor {
 			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikipedialb'],
-			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
 			ip_address => $ip['bits']['eqiad']['bitslb'],
