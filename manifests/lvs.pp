@@ -870,12 +870,12 @@ class lvs::monitor {
 			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
 			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
-		"bits-lb.eqiad.wikimedia.org":
+		"bits-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['bits']['pmtpa']['bitslb6'],
 			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
 			critical => "false";
-		"upload-lb.eqiad.wikimedia.org":
-			ip_address => $ip['upload']['pmtpa']['uploadlb6'],
+		"upload-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
 			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
 	}
