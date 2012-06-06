@@ -876,7 +876,6 @@ class lvs::monitor {
 		"wikipedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"wiktionary-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wiktionarylb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
@@ -912,11 +911,9 @@ class lvs::monitor {
 		"bits-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['bits']['pmtpa']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
-			critical => "false";
 		"upload-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
 			uri => "upload.wikimedia.org!/pybaltestfile.txt",
-			critical => "false";
 	}
 
 	# eqiad -lb addresses
@@ -970,7 +967,6 @@ class lvs::monitor {
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
 			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 	}
 
 	monitor_service_lvs6_http_https {
@@ -981,7 +977,6 @@ class lvs::monitor {
 		"wikipedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikipedialb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"wiktionary-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wiktionarylb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
@@ -1017,15 +1012,12 @@ class lvs::monitor {
 		"bits-lb.eqiad.wikimedia.org":
 			ip_address => $ip['bits']['eqiad']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
-			critical => "false";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb6'],
 			uri => "upload.wikimedia.org!/pybaltestfile.txt",
-			critical => "false";
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 	}
 	
 	monitor_service_lvs_https {
@@ -1078,7 +1070,6 @@ class lvs::monitor {
 		"wikipedia-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikipedialb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
-			critical => "false";
 		"wiktionary-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wiktionarylb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
@@ -1114,11 +1105,9 @@ class lvs::monitor {
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb6'],
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
-			critical => "false";
 		"upload-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['uploadlb6'],
 			uri => "upload.wikimedia.org!/pybaltestfile.txt",
-			critical => "false";
 	}
 
 	# Not really LVS but similar:
