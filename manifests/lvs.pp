@@ -811,7 +811,7 @@ define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 		host => $title,
 		group => "lvs",
 		description => "LVS HTTPS IPv6",
-		check_command => "check_https_lvs!${uri}",
+		check_command => "check_https_url!${uri}",
 		critical => $critical
 	}
 }
