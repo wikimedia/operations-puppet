@@ -667,7 +667,7 @@ class mysql::client::default-charset-binary {
 		"/etc/mysql/conf.d/charset.cnf":
 			owner => root,
 			group => root,
-			mode => 0555,
+			mode => 0644,
 			source => "puppet:///files/mysql/charset.cnf";
 	}
 }
