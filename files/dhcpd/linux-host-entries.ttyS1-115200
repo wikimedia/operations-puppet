@@ -73,6 +73,13 @@ host copper {
 	fixed-address copper.wikimedia.org;
 }
 
+host nitrogen {
+	hardware ethernet 78:2b:cb:09:0e:37;
+	fixed-address nitrogen.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host cp1001 {
 	hardware ethernet 84:2b:2b:fd:bd:0e;
 	fixed-address cp1001.eqiad.wmnet;
