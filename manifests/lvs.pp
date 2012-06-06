@@ -897,6 +897,25 @@ class lvs::monitor {
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
 			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt";
 	}
+
+	monitor_service_lvs6_http {
+		"wikimedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['ipv6']['eqiad']['wikimedialb6'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikipedia-lb.eqiad.wikimedia.org":
+			ip_address => $ip['ipv6']['eqiad']['wikipedialb6'],
+			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.eqiad.wikimedia.org":
+			ip_address => $ip['bits']['eqiad']['bitslb6'],
+			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			critical => "false";
+		"upload-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['upload']['eqiad']['uploadlb6'],
+			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
+			critical => "false";
+	}
 	
 	monitor_service_lvs_https {
 		"wikimedia-lb.eqiad.wikimedia.org":
@@ -939,6 +958,25 @@ class lvs::monitor {
 	monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
 	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.213", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
+
+	monitor_service_lvs6_http {
+		"wikimedia-lb.esams.wikimedia.org":
+			ip_address => $ip['ipv6']['esams']['wikimedialb6'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikipedia-lb.esams.wikimedia.org":
+			ip_address => $ip['ipv6']['esams']['wikipedialb6'],
+			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"bits-lb.esams.wikimedia.org":
+			ip_address => $ip['bits']['esams']['bitslb6'],
+			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			critical => "false";
+		"upload-lb.esams.wikimedia.org":
+			ip_address => $ip['ipv6']['esams']['uploadlb6'],
+			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
+			critical => "false";
+	}
 
 	# Not really LVS but similar:
 
