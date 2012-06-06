@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys, stat
+import radix
 
 ALWAYS, MATCH, NOMATCH = range(3)
 
@@ -43,26 +44,28 @@ dnsRecords = {
 
 
 def loadList(filename):
-    netlist = set()
+    netlist = radix.Radix()
     try:
         for line in file(filename, 'r'):
             line = line[:-1].strip()
             if len(line) == 0 or line.startswith('#'): continue # Skip empty lines & comments
-            ip = line.split('#', 2)[0].strip()                  # Allow comments after the IP
-            
-            netlist.add(ip)
+            net = line.split('#', 2)[0].strip()                 # Allow comments after the IP
+            netlist.add(net)
     except:
         print "LOG\tCould not (fully) load netlist file", filename
     
-    return frozenset(netlist)
+    return netlist
 
 def answerRecord(qNameSet, (qName, qClass, qType, qId, remoteIp, localIp), netlist):
     for record in qNameSet:
         selectivity, rQType, ttl, content = record
+        if selectivity != ALWAYS: # no reason to search
+            ip_matched = (netlist.search_best(remoteIp) != None)
+
         if qType in (rQType, 'ANY', 'AXFR'):
             if (selectivity == ALWAYS
-                or (selectivity == MATCH and remoteIp in netlist)
-                or (selectivity == NOMATCH and remoteIp not in netlist)):
+                or (selectivity == MATCH and ip_matched)
+                or (selectivity == NOMATCH and not ip_matched)):
                 
                 # Substitute values in the record content
                 content = content % {'qname': qName,
@@ -79,11 +82,11 @@ def query((qName, qClass, qType, qId, remoteIp, localIp), dnsRecords, netlist):
 
 def axfr(id):
     for qName, qNameSet in dnsRecords.iteritems():
-        answerRecord(qNameSet, (qName, "IN", "AXFR", id, "None", "None"), set())
+        answerRecord(qNameSet, (qName, "IN", "AXFR", id, "None", "None"), radix.Radix())
     print "END"
 
 def main():
-    netlist, lastMTime = set(), 0
+    netlist, lastMTime = radix.Radix(), 0
     # Do not use buffering
     line = sys.stdin.readline()
     while line:        
@@ -104,7 +107,7 @@ def main():
                 pass    # PowerDNS doesn't seem to do anything with this
             else:
                 raise ValueError
-        except IndexError, ValueError:
+        except (IndexError, ValueError):
             print "LOG\tPowerDNS sent an unparseable line: '%s'" % line
             print "FAIL"    # FAIL!
         
@@ -137,7 +140,9 @@ if __name__ == '__main__':
 
     import os
     for fd in range(3, maxfds):
-        try: os.close(fd)
-        except: pass
+        try:
+            os.close(fd)
+        except:
+            pass
     
     main()

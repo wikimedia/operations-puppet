@@ -76,6 +76,10 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 		ensure => latest;
 	}
 
+	package { 'python-radix':
+		ensure => present
+	}
+
 	system_role { "dns::auth-server": description => "Authoritative DNS server" }
 
 	file {
@@ -91,6 +95,7 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/powerdns/selective-answer.py",
+			require => Package['python-radix'],
 			ensure => present;
 		"/etc/powerdns/participants":
 			require => Package[wikimedia-task-dns-auth],
