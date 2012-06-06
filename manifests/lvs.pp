@@ -896,6 +896,10 @@ class lvs::monitor {
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
 			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt";
+		"mobile-lb.eqiad.wikimedia.org":
+			ip_address => $ip['mobile']['eqiad']['mobilelb'],
+			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
 	}
 
 	monitor_service_lvs6_http {
