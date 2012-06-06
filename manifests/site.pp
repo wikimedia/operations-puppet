@@ -437,7 +437,7 @@ node  "cadmium.eqiad.wmnet" {
 		accounts::catrope
 }
 
-node "capella.wikimedia.org" {
+node /^(capella|nitrogen)\.wikimedia\.org$/ {
 
 	include standard,
 		role::ipv6relay
