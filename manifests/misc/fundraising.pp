@@ -1,7 +1,8 @@
 # TODO: break this up in different (sub) classes for the different services
 class misc::fundraising {
 
-	include passwords::civi
+	include passwords::civi,
+		mysql::client::default-charset-binary
 
 	#what is currently on grosley/aluminium
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }

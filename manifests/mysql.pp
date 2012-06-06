@@ -659,3 +659,15 @@ class generic::mysql::server(
 }
 
 
+
+class mysql::client::default-charset-binary {
+	# ubuntu's stock mysql client defaults to latin1 charsets
+	# this overrides it to binary
+	file {
+		"/etc/mysql/conf.d/charset.cnf":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/mysql/charset.cnf";
+	}
+}
