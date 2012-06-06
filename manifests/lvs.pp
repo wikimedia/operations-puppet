@@ -795,18 +795,25 @@ define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $crit
 	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS IPv4", check_command => $check_command, critical => $critical }
 }
 
-define monitor_service_lvs6_http ( $ip_address, $check_command, $critical="true" ) {
-	$title_ipv6 = "${title}_ipv6"
+define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 	# Virtual resource for the monitoring host
-	@monitor_host { $title_ipv6: ip_address => $ip_address, group => "lvs", critical => "true" }
-	@monitor_service { $title_ipv6: host => $title, group => "lvs", description => "LVS HTTP IPv6", check_command => $check_command, critical => $critical }
-}
+	@monitor_host { "${title}_ipv6": ip_address => $ip_address, group => "lvs", critical => "true" }
+	@monitor_service { "${title}_ipv6":
+		host => $title,
+		group => "lvs",
+		description => "LVS HTTP IPv6",
+		check_command => "check_http_lvs!${uri}",
+		critical => $critical
+	}
 
-define monitor_service_lvs6_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
-	$title_https = "${title}_ipv6_https"
-	# Virtual resource for the monitoring host
-	@monitor_host { $title_https: ip_address => $ip_address, group => "lvs", critical => "true" }
-	@monitor_service { $title_https: host => $title, group => "lvs", description => "LVS HTTPS IPv6", check_command => $check_command, critical => $critical }
+	@monitor_host { "${title}_ipv6_https": ip_address => $ip_address, group => "lvs", critical => "true" }
+	@monitor_service { "${title}_ipv6_https":
+		host => $title,
+		group => "lvs",
+		description => "LVS HTTPS IPv6",
+		check_command => "check_https_lvs!${uri}",
+		critical => $critical
+	}
 }
 
 class lvs::monitor {
@@ -861,54 +868,54 @@ class lvs::monitor {
 	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
 
-	monitor_service_lvs6_http {
+	monitor_service_lvs6_http_https {
 		"wikimedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikimedialb6'],
-			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			uri => "meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikipedia-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikipedialb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wiktionarylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikiquotelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikibookslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikisourcelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikinewslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikiversitylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['mediawikilb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['foundationlb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['bits']['pmtpa']['bitslb6'],
-			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
 			critical => "false";
 		"upload-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
-			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
+			uri => "upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
 	}
 
@@ -966,58 +973,58 @@ class lvs::monitor {
 			critical => "false";
 	}
 
-	monitor_service_lvs6_http {
+	monitor_service_lvs6_http_https {
 		"wikimedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikimedialb6'],
-			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			uri => "meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikipedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikipedialb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wiktionarylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikiquotelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikibookslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikisourcelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikinewslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikiversitylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['mediawikilb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['foundationlb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
 			ip_address => $ip['bits']['eqiad']['bitslb6'],
-			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
 			critical => "false";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb6'],
-			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
+			uri => "upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
-			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page",
+			uri => "en.m.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 	}
 	
@@ -1063,54 +1070,54 @@ class lvs::monitor {
 
 	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.213", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:PayflowProGateway?uselang=en", retries => 20 }
 
-	monitor_service_lvs6_http {
+	monitor_service_lvs6_http_https {
 		"wikimedia-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikimedialb6'],
-			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			uri => "meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikipedia-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikipedialb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wiktionary-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wiktionarylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiquote-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikiquotelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikibooks-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikibookslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikisource-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikisourcelb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikinews-lb.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikinewslb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"wikiversity-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikiversitylb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"mediawiki-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['mediawikilb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"foundation-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['foundationlb6'],
-			check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page",
+			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
 		"bits-lb.esams.wikimedia.org":
 			ip_address => $ip['bits']['esams']['bitslb6'],
-			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
+			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png",
 			critical => "false";
 		"upload-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['uploadlb6'],
-			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt",
+			uri => "upload.wikimedia.org!/pybaltestfile.txt",
 			critical => "false";
 	}
 
