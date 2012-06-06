@@ -2082,11 +2082,11 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
+	include protoproxy::ssl
+
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
 	}
-
-	include protoproxy::ssl
 }
 
 #sq31-sq36 are api squids
