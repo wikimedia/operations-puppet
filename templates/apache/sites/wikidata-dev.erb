@@ -1,0 +1,52 @@
+<VirtualHost wikidata-dev-client.wikimedia.de:80>
+        DocumentRoot /var/www/wikidata-dev-client.wikimedia.de
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/wikidata-dev-client.wikimedia.de/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        Alias /w /srv/wikidata-dev-client.wikimedia.de
+        Alias /wiki /srv/wikidata-dev-client.wikimedia.de/index.php
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+        ServerSignature Off
+
+</VirtualHost>
+<VirtualHost wikidata-dev-repo.wikimedia.de:80>
+        DocumentRoot /var/www/wikidata-dev-repo.wikimedia.de
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/wikidata-dev-repo.wikimedia.de/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        Alias /w /srv/wikidata-dev-repo.wikimedia.de
+        Alias /wiki /srv/wikidata-dev-repo.wikimedia.de/index.php
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+        ServerSignature Off
+
+</VirtualHost>

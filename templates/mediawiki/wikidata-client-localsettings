@@ -1,0 +1,23 @@
+<?php
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/mediawiki/labs-localsettings
+###
+###  Changes to this file will be clobbered by Puppet.
+###  If you need to hand-edit local settings, modify
+###  the included orig/LocalSettings.php.
+###
+#####################################################################
+
+require( 'orig/LocalSettings.php' );
+
+$wgArticlePath      = "/wiki/$1";
+
+$wgExtraNamespaces[100] = 'Data';
+$wgExtraNamespaces[101] = 'Data_talk';
+# WikibaseLib
+require_once( "$IP/extensions/WikibaseLib/WikibaseLib.php" );
+$wgSharedDB = 'mw_wbshare'; // The name of your shared database
+$wgSharedPrefix = 'mw_'; // The table prefix to use, which should be set to the same value on both the repo wiki and the clients
+# WikibaseClient
+require_once( "$IP/extensions/WikibaseClient/WikibaseClient.php" );
