@@ -561,9 +561,11 @@ class ldap::client::autofs {
 		$gluster_server_name = $instanceproject ? {
 			default => "projectstorage.pmtpa.wmnet",
 		}
+		$autofs_subscribe = ["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf","/data","/public"]
 	} else {
 		$homedir_location = "/home"
 		$nfs_server_name = "nfs-home.pmtpa.wmnet"
+		$autofs_subscribe = ["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf"]
 	}
 
 	package { [ "autofs5", "autofs5-ldap" ]:
@@ -591,7 +593,7 @@ class ldap::client::autofs {
 		hasrestart => true,
 		pattern => "automount",
 		require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldapd" ],
-		subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf"],
+		subscribe => File[$autofs_subscribe],
 		ensure => running;
 	}
 }
