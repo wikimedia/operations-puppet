@@ -608,6 +608,13 @@ class base {
 			group => root,
 			mode => 0755;
 		}
+		# Add directory for public (ro) automounts
+		file { "/public":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 0755;
+		}
 	}
 
 }
