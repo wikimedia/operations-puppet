@@ -98,7 +98,12 @@ class udp2log {
 				mode => 0555,
 				owner => root,
 				group => root,
-				source => "puppet:///files/udp2log/sqstat.pl"
+				source => "puppet:///files/udp2log/sqstat.pl";
+			"/usr/local/bin/log_demux.sh":
+				mode => 0555,
+				owner => root,
+				group => root,
+				source => "puppet:///files/udp2log/log_demux.sh";
 		}
 	}
 
