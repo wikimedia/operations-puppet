@@ -744,8 +744,11 @@ class misc::monitoring::htcp-loss {
 		"/usr/lib/ganglia/python_modules/compat.py":
 			source => "puppet:///files/ganglia/plugins/compat.py";
 		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
-			require => File["/etc/ganglia/conf.d"],
-			source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
+			# Disabled due to excessive memory and CPU usage -- TS
+			notify => Service[gmond],
+			ensure => absent;
+			#require => File["/etc/ganglia/conf.d"],
+			#source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
 	}
 }
 
