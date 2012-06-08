@@ -60,6 +60,7 @@ class role::mediawiki-install::labs {
 		require => [git::clone["mediawiki"],  File["/srv/mediawiki/orig"]],
 		creates => "/srv/mediawiki/orig/LocalSettings.php",
 		command => "/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --pass adminpassword --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'",
+		logoutput => "on_failure",
 	}
 
         apache_site { controller: name => "wiki" }
