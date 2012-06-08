@@ -28,7 +28,9 @@ exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 # added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
 # for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
 # we manage this, see file in /home/wikipedia/docs 
-hosts allow =  199.47.196.26
+# added mirror.fr.wickedway.nl, June 8 2012 -- atg
+# for mirror.fr.wickedway.nl contact:  mirror@wickedway.nl
+hosts allow =  199.47.196.26 mirror.fr.wickedway.nl
 
 [dumpmirrorseverything]
 # this includes archives, other datasets
