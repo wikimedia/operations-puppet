@@ -26,6 +26,7 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 	# proxy impression logs, copy whatever we have in 'udplogs' (14 days) to hume as safety for storage3 death
 	#$mirror->{'1'} = 'rsync -ar --delete /archive/udplogs/ file_mover@hume.wikimedia.org:/archive/udplogs/';
+	$mirror->{'1'} = 'rsync -ar logmover@hume.wikimedia.org:/archive/udplogs/ /archive/udplogs/';
 
 	# copy collected backups from individual hosts to tridge
 	$mirror->{'2'} = 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/';
