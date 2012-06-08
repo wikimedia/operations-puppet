@@ -367,6 +367,11 @@ class misc::fundraising::impressionlog::archive {
 			user	=> logmover,
 			type	=> "ssh-rsa",
 			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA04+NGTd7Vj5Qx7a7IMFfphwlADq67dSCiU7iU1R8rIyDYu0mKioEYjq5JItM0yEE1CyiDYOaYY+L40j11ySlD5+qchg5gMxigNVWcQ3L6lEs1p1MkIm2LtRkqPC5vfLJIuTJlukad6W+G9atdEk9Dw7zK6yVaWq0/zcNXxHiJC7lUqckGwy4A/mLecfiRhPL/4ksID2TiqKfvarpqg43IjycoLX65BGmOumDkzDfR5mvHcOeWsDdhB3b8rIAPfjLg1l5V3CkaGT2xQBSN/YbLB+bIPf7nn3b+HjjxU4JHEsDdogUn/BuaMQcjqfJjZ30h97hkyvTaQQ6DS5JI8eDaQ==";
+		"root@storage3":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAvJzE9gvWmUzHsTj6MeZi64r35Lqr7wIbvRv0IMPli9nDqjcVFdZB46Hf6hiGpC0RKaxKyNE9dJRZgl+7T7/RAB1dXx4H9TtacnVV/e4UEaJt5/OeLBnIx2NnKc3G7wzZ8rmPfvXlxpw9KRCtZm81/nuaDuIC9+aC1mKVL9wG6EIA6Wl9OwAazhb88sVUbLCZ2+Of+veGVSSfUeliuqTO5AJuS1d8Zh1Ru4RKRckb2y0ONloQRM+t8F+Qe2jP6iVSKD8ctolF1Cxj1wM4akyI7Ce7NbOT6rDv6SgWlm+GS+3L0+Q2DK1cSHuoiumh58eXA/X2lBxQqXMIN/svb2w3jw";
 	}
 
 }
