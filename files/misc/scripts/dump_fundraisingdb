@@ -37,11 +37,11 @@ for my $db (split /\s+/, $conf->{'DBS'}) {
 	my $date = `date +%Y%m%d-%H%M%S`;
 	chomp $date;
 
-	printlog("start $conf->{'LOCALDIR'}/$db.$date.sql.gz");
-	$e->{'report'} .= "start dump $db to $conf->{'LOCALDIR'}/$db.$date.sql.gz\n";
+	printlog("start $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz");
+	$e->{'report'} .= "start dump $db to $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz\n";
 
 	# open system call using open3 so we can cleanly address stderr vs stdout
-	my $child_pid = open3(*W, *R, *E, "$conf->{'MYSQLDUMP'} -u$conf->{'USER'} -p\"$conf->{'PASSWORD'}\" $db | gzip > $conf->{'LOCALDIR'}/$db.$date.sql.gz");
+	my $child_pid = open3(*W, *R, *E, "$conf->{'MYSQLDUMP'} -u$conf->{'USER'} -p\"$conf->{'PASSWORD'}\" $db | gzip > $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz");
 	close (W); # don't need the write handle at all, so we close that
 
 	# use IO::Select to step through the output of open3
