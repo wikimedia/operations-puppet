@@ -2509,6 +2509,9 @@ host searchidx1001 {
 host searchidx2 {
 	hardware ethernet 14:fe:b5:d2:45:59;
 	fixed-address searchidx2.pmtpa.wmnet;
+
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host silicon {
