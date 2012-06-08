@@ -2279,18 +2279,17 @@ node "storage3.pmtpa.wmnet" {
 		groups::wikidev,
 		accounts::khorn,
 		accounts::pgehres,
-		accounts::zexley
-		#misc::fundraising::impressionlog::archive,
-		#misc::fundraising::backup::offhost
+		accounts::zexley,
+		misc::fundraising::backup::offhost
 
-	#cron {
-	#	'offhost_backups':
-	#		user => root,
-	#		minute => '35',
-	#		hour => '1',
-	#		command => '/usr/local/bin/offhost_backups',
-	#		ensure => present,
-	#}
+	cron {
+		'offhost_backups':
+			user => root,
+			minute => '30',
+			hour => '23',
+			command => '/usr/local/bin/offhost_backups',
+			ensure => present,
+	}
 
 }
 
