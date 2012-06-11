@@ -66,12 +66,6 @@ class ssh::hostkeys::collect {
 
 class ssh::config {
 	if $operatingsystem == "Ubuntu" {
-		file { "/etc/ssh/sshd_config":
-			owner => root,
-			group => root,
-			mode  => 0444,
-			content => template("ssh/sshd_config.erb");
-		}
 		if ( $realm == "labs" ) {
 			file { "/etc/ssh/sshd_banner":
 				owner => root,
@@ -79,6 +73,13 @@ class ssh::config {
 				mode  => 0444,
 				content => "If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n\n"
 			}
+			$ssh_authorized_keys_file = "/public/keys/%u/.ssh/authorized_keys"
+		}
+		file { "/etc/ssh/sshd_config":
+			owner => root,
+			group => root,
+			mode  => 0444,
+			content => template("ssh/sshd_config.erb");
 		}
 	}
 }
