@@ -74,6 +74,52 @@ class misc::statistics::plotting {
 	}
 }
 
+
+# reportcard.wikimedia.org
+class misc::statistics::reportcard::site {	
+	require misc::statistics::user
+
+	$site_name = "reportcard.wikimedia.org"
+	$docroot = "/srv/$site_name/dist"
+	$node_port = "8081"
+
+	$reportcard_repo_url = "git://less.ly/kraken-ui.git"
+	$reportcard_path     = "/srv/$site_name"
+	$reportcard_user     = $misc::statistics::user::username
+
+	# Clone the reportcard repository
+	git::clone { "reportcard":
+		directory => $reportcard_path,
+		origin    => $reportcard_repo_url,
+		owner     => $reportcard_user,
+		require   => User[$reportcard_user],
+	}
+
+	# install nodejs and npm for reportcard
+	package { ["nodejs", "npm"]: ensure => latest }
+
+	include webserver::apache
+	# make sure rewrite and proxy modules are enabled
+	webserver::apache::module { ["rewrite", "proxy"]: }
+
+	webserver::apache::site { $site_name: 
+		require => [Class["webserver::apache"], Git::Clone["reportcard"]],
+		docroot => $docroot,
+		custom => [
+"RewriteEngine On",
+"<Proxy *>
+	Order allow,deny
+	Allow from all
+</Proxy>",
+"ProxyRequests Off",
+"# If the request does not map to a real file, then proxy the request to the node app server.
+RewriteEngine On
+RewriteCond ${docroot}/%{REQUEST_FILENAME} !-s
+RewriteRule \"^(.*)\" \"http://${site_name}:${node_port}\$1\" [P,L]",
+	],
+	}
+}
+
 # stats.wikimedia.org
 class misc::statistics::site {
 	$site_name = "stats.wikimedia.org"
