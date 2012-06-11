@@ -173,7 +173,7 @@ class misc::statistics::gerrit_stats {
 	# This will create a $gerrit_stats_path/data
 	# directory containing stats about gerrit.
 	cron { "gerrit-stats-daily":
-		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
+		command => "cd $gerrit_stats_path && /usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
 		user    => $gerrit_stats_user,
 		hour    => '23',
 		minute  => '59',
