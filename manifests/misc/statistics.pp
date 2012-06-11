@@ -149,6 +149,13 @@ class misc::statistics::gerrit_stats {
 	# from the node on which this class
 	# is included.  We'll use diederik for now.
 	$gerrit_stats_user     = "stats"
+	
+	file { $gerrit_stats_path:
+		owner  => $gerrit_stats_user,
+		group  => "wikidev",
+		mode   => 0775,
+		ensure => "directory",
+	}
 
 	# Clone the gerrit-stats repository
 	# into a subdir of $gerrit_stats_path.
