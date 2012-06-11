@@ -73,7 +73,8 @@ class ssh::config {
 				mode  => 0444,
 				content => "If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances\n\n"
 			}
-			$ssh_authorized_keys_file = "/public/keys/%u/.ssh/authorized_keys"
+			$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys"
+			$ssh_authorized_keys_file2 = "/public/keys/%u/.ssh/authorized_keys"
 		}
 		file { "/etc/ssh/sshd_config":
 			owner => root,
