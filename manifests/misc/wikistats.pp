@@ -65,7 +65,7 @@ class misc::wikistats {
 
 			cron { "cron-wikistats-update-${name}":
 				command => "/usr/bin/php /usr/lib/wikistats/update.php ${project} > /var/log/wikistats/update_${name}.log 2>&1",
-				user => dzahn,
+				user => wikistats,
 				hour => $hour,
 				minute => 0,
 				ensure => present,
