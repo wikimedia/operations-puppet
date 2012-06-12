@@ -1387,6 +1387,13 @@ class accounts {
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDM17PSNhtrXqE8fBSBmv1I79kyBiwy4gNS1WjVqHraDDJ75TJGD9J673LkGgjHAerrG+u5nSjD0X+eJQXaWsZeh2ZZjnTcSyoFxge9t0n88F568h6OdYFMc0Obl9OHFANX4x5p1jsPqM/DBW7McW7QmG699eYdi0na8ubN97DSCSBw++V49x7QMx/2qYjAhJVJt9aCreBInGPa9FMGfXQKHdkS25Xh7PxIhk4XPYstey8FqUtOyIacdEGpQnAuMvKGxyTsvf/SQiMXMSvSvAOk9x83aj9cwcJgfrAJFbsraQ57oaP8/rpvWWW2PZ6xokgTtbdZ6lEK3bp2LVX0Pugd";
 			}
+                        ssh_authorized_key {
+				"ben@JDoe-LinuxBookAir-3.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-dsa",
+					key	=> "AAAAB3NzaC1kc3MAAACBAJhFwtno+J3dlFvOeA8qX71RVX9kFvD7zJepLBXOEM2uxkGkiPgipAr/sKriud0nccQkWx0TZ1SxF7lrSjrH0TzzYa27JlkltOXIPskVPdNyLhqesIt/XlbuWrRLRiO+qhGJDhFqxE1owSBfbc+hKFhDCw5RHx/FCCHztIglMs2PAAAAFQDD2AFU6Z1JBs0ZGWrLxNnxWHRcDQAAAIB2pCYum0XaVIwwtUTGfOQeoknEYJADtweZJsz/8rHJTvuNXsl/DUUN406bzQ3Pfkz9eFLplD2I0aFOD3ChPLEQ2DFQ84RUmaqtW137Rxe/uvLne9bNTQDEIqgLfXbpQL/eSTzjAiTWTVBb1dLbnUech4j5U4tiizu7dVxVzk3RgQAAAIEAhPjJoFSvY48+8Nbek8fyePz+TMwgZW+SR/ZwEms+rsmMSHFi0IyUdm+Qg3y5PHWnY7UZkgDIlIza+A7B66G5XEs1ovTHVO4XheqULYHnBV2WClo0clEaiK7N/pJDWfIJIqItZKWIDOCzbSNFD9XQn7qNvzEtKool8oRTMcvu4jY=";
+			}
 		}
 	}
 
