@@ -24,19 +24,16 @@ chomp $conf->{'DATE'};
 # jobs, keep 'em numbered in the order you want them to happen
 if ($conf->{'HOSTNAME'} eq 'storage3') {
 
-	# fetch proxy impression logs from hume
-	$mirror->{'1'} = 'rsync -ar logmover@hume.wikimedia.org:/archive/udplogs/ /archive/udplogs/';
-
 	# copy collected backups from individual hosts to tridge
-	$mirror->{'2'} = 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/';
-	$mirror->{'3'} = 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
-	$mirror->{'4'} = 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
+	$mirror->{'1'} = 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/';
+	$mirror->{'2'} = 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
+	$mirror->{'3'} = 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
 
 	# copy db dumps to tridge
-	$mirror->{'5'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
+	$mirror->{'4'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
 
 	# temporary until loudon logrotate+ssh situation is reorganized
-	$mirror->{'6'} = 'rsync -ar /archive/fundraising/logs/payments_cluster/ fundraising@tridge.wikimedia.org:payments_cluster/';
+	$mirror->{'5'} = 'rsync -ar /archive/fundraising/logs/payments_cluster/ fundraising@tridge.wikimedia.org:payments_cluster/';
 
 } elsif ($conf->{'HOSTNAME'} eq 'db1025') {
 
@@ -53,13 +50,6 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 	# hacky backup strategy for hacky hacking dir
 	$mirror->{'3'} = "tar --rsh-command=/usr/bin/ssh -zcf fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/backups/br.$conf->{'DATE'}.tgz -- /srv/br";
-
-	# fetch any udplogs that have shown up anywhere to both archive disks
-	if ($conf->{'HOSTNAME'} eq 'aluminium') {
-		$mirror->{'4'} = 'rsync -ar logmover@hume.wikimedia.org:/archive/udplogs/ /bfd1/archive/udplogs/';
-		$mirror->{'5'} = 'rsync -ar logmover@storage3.pmtpa.wmnet:/archive/udplogs/ /bfd1/archive/udplogs/';
-		$mirror->{'6'} = 'rsync -ar /bfd1/archive/udplogs/ /bfd2/archive/udplogs/';
-	}
 
 }
 
