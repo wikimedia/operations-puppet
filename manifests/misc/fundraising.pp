@@ -341,7 +341,7 @@ class misc::fundraising::impressionlog::compress {
 
 	cron {
 		'rotate_impression_logs':
-			user => root,
+			user => logmover,
 			minute => '*/5',
 			command => '/usr/local/bin/impression_log_rotator',
 			ensure => present,
