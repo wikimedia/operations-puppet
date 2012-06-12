@@ -28,12 +28,10 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 	$mirror->{'1'} = 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/';
 	$mirror->{'2'} = 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
 	$mirror->{'3'} = 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
+	$mirror->{'4'} = 'rsync -ar /archive/loudon/ fundraising@tridge.wikimedia.org:loudon/';
 
 	# copy db dumps to tridge
-	$mirror->{'4'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
-
-	# temporary until loudon logrotate+ssh situation is reorganized
-	$mirror->{'5'} = 'rsync -ar /archive/fundraising/logs/payments_cluster/ fundraising@tridge.wikimedia.org:payments_cluster/';
+	$mirror->{'5'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
 
 } elsif ($conf->{'HOSTNAME'} eq 'db1025') {
 
