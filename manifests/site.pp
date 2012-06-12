@@ -558,7 +558,7 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
-	if $hostname == "es3" {
+	if $hostname == "es1" {
 		class { "db::es": mysql_role => "master" }
 	}
 	else {
