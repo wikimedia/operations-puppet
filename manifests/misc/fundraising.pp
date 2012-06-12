@@ -205,15 +205,6 @@ class misc::fundraising::backup::offhost {
 			source => 'puppet:///files/misc/scripts/offhost_backups',
 	}
 
-	#cron {
-	#	'offhost_backups':
-	#		user => root,
-	#		minute => '35',
-	#		hour => '1',
-	#		command => '/usr/local/bin/offhost_backups',
-	#		ensure => present,
-	#}
-
 }
 
 class misc::fundraising::jenkins_maintenance {
@@ -317,6 +308,28 @@ class misc::fundraising::mail {
 class misc::fundraising::impressionlog::archive {
 
 	system_role { "misc::fundraising::impressionlog::archive": description => "fundraising impression/banner log archive" }
+
+	file { 
+		'/usr/local/bin/fetch_udplogs':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => 'puppet:///files/misc/scripts/fetch_udplogs',
+	}
+
+	cron {
+		'fetch_udplogs':
+			user => root,
+			minute => '4,9,14,19,24,29,34,39,44,49,54,59',
+			command => '/usr/local/bin/fetch_udplogs',
+			ensure => present,
+	}
+
+}
+
+class misc::fundraising::impressionlog::compress {
+
+	system_role { "misc::fundraising::impressionlog::compress": description => "fundraising impression/banner fetch and compress" }
 
 	file { 
 		'/usr/local/bin/impression_log_rotator':

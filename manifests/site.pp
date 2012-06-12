@@ -889,7 +889,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		misc::fundraising,
 		misc::fundraising::mail,
 		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive
+		misc::fundraising::backup::archive,
+		misc::fundraising::impressionlog::archive
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
@@ -1044,7 +1045,7 @@ node "hume.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		nrpe,
-		misc::fundraising::impressionlog::archive
+		misc::fundraising::impressionlog::compress
 }
 
 node "iron.wikimedia.org" {
@@ -2283,7 +2284,8 @@ node "storage3.pmtpa.wmnet" {
 		accounts::khorn,
 		accounts::pgehres,
 		accounts::zexley,
-		misc::fundraising::backup::offhost
+		misc::fundraising::backup::offhost,
+		misc::fundraising::impressionlog::archive
 
 	cron {
 		'offhost_backups':
