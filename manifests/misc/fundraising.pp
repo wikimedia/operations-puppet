@@ -320,7 +320,7 @@ class misc::fundraising::impressionlog::archive {
 	cron {
 		'fetch_udplogs':
 			user => root,
-			minute => '4,9,14,19,24,29,34,39,44,49,54,59',
+			minute => [4,9,14,19,24,29,34,39,44,49,54,59],
 			command => '/usr/local/bin/fetch_udplogs',
 			ensure => present,
 	}
