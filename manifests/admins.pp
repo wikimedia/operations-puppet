@@ -1941,7 +1941,7 @@ class admins::roots {
 	# to actually get them root; that file is not in SVN.
 	include accounts::brion #shell disabled, svn key still enabled
 	include	accounts::dzahn
-	include accounts::fvassard
+	include accounts::fvassard # disabled
 	include accounts::jeluf
 	include accounts::kate
 	include accounts::lcarr
@@ -2017,11 +2017,11 @@ class admins::analinterns {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 	
-	include accounts::shawn
+	include accounts::shawn # disabled
 	include accounts::halfak
 	include accounts::diederik
 	include accounts::declerambaul
-	include accounts::whym
+	include accounts::whym # disabled
 }
 
 class admins::jenkins {
