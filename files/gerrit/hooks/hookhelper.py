@@ -108,10 +108,12 @@ class HookHelper:
 		return True
 
 	def log_to_file(self, project, branch, message):
-		filename = self.get_log_filename( project, branch, message)
-		f = open(filename, 'a')
-		f.write(message)
-		f.close()
+		filename = self.get_log_filename(project, branch, message)
+		# Don't log new comments if the log is in nocommentlogs
+		if( type(self).__name__ != "CommentAdded" || !filename.endswith(hookconfig.nocommentlogs) ):
+			f = open(filename, 'a')
+			f.write(message)
+			f.close()
 
 	def get_log_filename(self, project, branch, message):
 		filename     = None;
