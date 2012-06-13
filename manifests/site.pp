@@ -1727,6 +1727,16 @@ node "oxygen.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
+
+	# oxygen has wikipedia zero filters that log in their own subdir.
+	# make sure this directory exists.
+	file { "/a/squid/wikipedia_zero":
+		ensure => "directory",
+		mode   => 0775,
+		owner  => 'root',
+		group  => 'wikidev',
+	}
+	
 	class { udp2log::logger:
 			log_file => "/var/log/udp2log/packet-loss.log",
 			logging_instances => {"oxygen" => { "port" => "8420", "multicast_listen" => true, "has_logrotate" => false } },
