@@ -1,0 +1,9 @@
+Code-Review+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: Bhartshorne <ben@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Wed, 13 Jun 2012 18:30:36 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/10729
+Project: operations/puppet
+Branch: refs/heads/production
