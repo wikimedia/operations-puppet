@@ -11,6 +11,15 @@ acl wmf_office {
 	"216.38.130.160"/29;
 }
 
+acl opera_mini {
+	"195.189.142.0"/23;
+	"91.203.96.0"/22;
+	"80.239.242.0"/23;
+	"217.212.230.0"/23;
+	"141.0.8.0"/21;
+	"82.145.208.0"/20;
+}
+
 acl carrier_testing {
 	"208.80.152.165";
 	"208.80.153.194";
@@ -20,12 +29,6 @@ acl carrier_digi {
 	"203.92.128.185";
 	"115.164.0.0"/16;
 	"116.197.0.0"/17;
-	//"195.189.142.0"/23;
-	//"91.203.96.0"/22;
-	//"80.239.242.0"/23;
-	//"217.212.230.0"/23;
-	//"141.0.8.0"/21;
-	//"82.145.208.0"/20;
 }
 
 acl carrier_orange_ivory_coast {
@@ -216,8 +219,9 @@ sub device_detection {
 
 sub vcl_recv {
 	call vcl_recv_purge;
-	/* Check that user-agent is "Opera" and if so grab XFF Header and replace client ip value */
-	if ( req.http.User-Agent ~ "Opera" ) {
+	/* if the request comes from Opera Mini's accelerating proxies, grab
+	 * XFF Header and replace client ip value */
+	if (client.ip ~ opera_mini) {
 		C{
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
 		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
