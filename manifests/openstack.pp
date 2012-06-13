@@ -33,7 +33,7 @@ class openstack::iptables-accepts {
 	# Rememeber to place modified or removed rules into purges!
 	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "virt0_all": source => "208.80.153.135", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "virt0_all": source => "208.80.152.32", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
@@ -845,7 +845,7 @@ class openstack::glance_config {
 	$glance_db_user = "glance"
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
 	$glance_bind_ip = $realm ? {
-		"production" => "208.80.153.135",
+		"production" => "208.80.152.32",
 		"labs" => "127.0.0.1",
 	}
 
