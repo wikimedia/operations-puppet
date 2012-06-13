@@ -1,0 +1,14 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/mwfatal
+#####################################################################
+
+/var/log/mw/fatal.log {
+        daily
+        notifempty
+        maxage 100
+        rotate 30
+        dateext
+        compress
+}
+
