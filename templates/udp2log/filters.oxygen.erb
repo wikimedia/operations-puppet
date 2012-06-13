@@ -8,10 +8,10 @@ pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
 #
 
 #Digi Malaysia
-pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /var/log/squid/digi-malaysia.log
+pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /a/squid/digi-malaysia.log
 
 #Orange Ivory Coast
-pipe 10 /usr/bin/udp-filter -i 41.66.28.94-41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /var/log/squid/orange-ivory-coast.log
+pipe 10 /usr/bin/udp-filter -i 41.66.28.94-41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /a/squid/orange-ivory-coast.log
 
 # Telenor Montenegro
 pipe 10 /usr/bin/udp-filter -i 79.143.100.0-79.143.100.255,79.143.104.0-79.143.104.255 >> /a/squid/telenor-montenegro.log
