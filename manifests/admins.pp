@@ -1767,6 +1767,7 @@ class accounts {
 		$username = "raindrift"
 		$realname = "Ian Baker"
 		$uid = 593
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1775,7 +1776,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"ian@wikimedia.org":
-					ensure => present,
+					ensure => absent,
 					user => $username,
 					type => "ssh-dss",
 					key => "AAAAB3NzaC1kc3MAAACBAM3ttq0+aY9x/2rcqLwIVWo95Iy/4JD7c+GSsqtTlISCtkIkkv7HNzYUiwQqKBVn9DDTO7abdtqeyBmX5e0I938F2c/4mUUYYl/+q8dIiVUKgFIZ5v5T97TQHgUbNQ1N8E8G5Aw3308BCjD1NHzRSFD1VpekpvPMA3DHGrMlwZcRAAAAFQC0LNBLhS9UzgnCkZpw08m5Wm3OVQAAAIA0+93B5D6ShSg33pmTjKbheso7pm8dI5v99crl26QTR0H220tT8ytnJ8n0/xz23nCtelAGO3adI7+3nZS8iKq2d8QpwSqJZa2je47rJuZbxOAL6E+/65GHzXAPEhrhiWmj8mlE22nRRqX4EIspctUi3rNdtrIjMWkyKcF9C9/qaQAAAIB07g9z4M9/cJmFsOoXpvVTEd1XUFN66Eruqz5cMYg2Fpqi7MjkE6mB7IqVVcuxk+m62QpNWNHPPzGJRZg0TsYHIf5X/brv2QejfxFmPFppYfOfdv3d0NMBFEUiX8K/Fakxyfz8jerzLEIM95zQZExKoaJ6ZWMaxo62+YgmrwZXDg==";
