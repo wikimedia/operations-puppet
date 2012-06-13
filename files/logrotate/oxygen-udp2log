@@ -1,0 +1,17 @@
+##################################
+# THIS FILE IS MANAGED BY PUPPET #
+##################################
+
+# Rotate anything in /a/squid/*.log daily
+/a/squid/*.log {
+	daily
+	olddir /a/squid/archive
+	notifempty
+	maxage 180
+	rotate 1000
+	dateext
+	compress
+	postrotate
+		/usr/bin/killall -HUP udp2log
+	endscript
+}
