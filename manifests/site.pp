@@ -2375,7 +2375,7 @@ node "virt0.wikimedia.org" {
 	$is_labs_puppet_master = "true"
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
-	$dns_auth_ipaddress = "208.80.153.135"
+	$dns_auth_ipaddress = "208.80.152.32"
 	$dns_auth_soa_name = "labsconsole.wikimedia.org"
 
 	install_certificate{ "star.wikimedia.org": }
