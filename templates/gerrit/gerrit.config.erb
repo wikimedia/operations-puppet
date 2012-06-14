@@ -73,3 +73,12 @@
 [cache "permission_sort"]
 	memoryLimit = 0
 	maxAge = 1s
+[trackingid "bugzilla"]
+	footer = bug:
+	footer = bugzilla:
+	match = (\\d{1,6})
+	system = Bugzilla
+[trackingid "rt"]
+	footer = rt:
+	match = (\\d{1,6})
+	system = RT
