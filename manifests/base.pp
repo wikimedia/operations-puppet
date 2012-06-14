@@ -563,7 +563,6 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 }
 
 class base {
-
 	case $::operatingsystem {
 		Ubuntu,Debian: {
 			include openstack::nova_config
