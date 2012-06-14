@@ -11,6 +11,15 @@ import "../private/manifests/contacts.pp"
 import "../private/manifests/mail.pp"
 
 
+# /var/run has moved to /run in newer Ubuntu versions.
+# See: http://lwn.net/Articles/436012/
+if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "11.10") >= 0 {
+	$run_directory = '/run/'
+} else {
+	$run_directory = '/var/run/'
+}
+
+
 class base::access::dc-techs {
 	# add account and sudoers rules for data center techs
 	#include accounts::cmjohnson
@@ -563,7 +572,6 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 }
 
 class base {
-
 	case $::operatingsystem {
 		Ubuntu,Debian: {
 			include openstack::nova_config

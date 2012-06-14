@@ -27,12 +27,12 @@
   /usr/share/mysql/** r,
   /var/log/mysql.log rw,
   /var/log/mysql.err rw,
-  <%= datadir %> r,
+  <%= datadir %>/ r,
   <%= datadir %>/** rwk,
   /var/log/mysql/ r,
   /var/log/mysql/* rw,
-  <%= pid_file %> w,
-  <%= socket %> w,
+  <%= pid_path %> w,
+  <%= socket_path %> w,
 
   /sys/devices/system/cpu/ r,
 }

@@ -57,4 +57,3 @@ $domain_search = $domain
 
 # Default group
 $gid = 500
-
