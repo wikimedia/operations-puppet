@@ -365,11 +365,8 @@ class mysql {
 			}
 		}
 
-		$innodb_file_per_table = "false"
-
 		if $hostname =~ /^es/ {
 			$mysql_myisam = true
-			$innodb_file_per_table = "true"
 		}
 		else {
 			$mysql_myisam = false
@@ -382,8 +379,10 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ {
+		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ or $hostname =~ /^es/ {
 			$innodb_file_per_table = "true"
+		} else {
+			$innodb_file_per_table = "false"
 		}
 
 		# collect all the changes to the dbs used by the summer researchers
