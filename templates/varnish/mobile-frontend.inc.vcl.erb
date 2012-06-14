@@ -201,7 +201,7 @@ sub device_detection {
 		set req.http.X-Device = "ps3";
 	} else if( req.http.User-Agent ~ "SAMSUNG" ) {
 		set req.http.X-Device = "capable";
-	} else if( req.http.User-Agent ~ "Blackberry" ) {
+	} else if( req.http.User-Agent ~ "BlackBerry" ) {
 		if( req.http.User-Agent ~ "/1." || req.http.User-Agent ~ "/2." || req.http.User-Agent ~ "/3."
 			|| req.http.User-Agent ~ "/4." ) {
 				set req.http.X-Device = "blackberry-lt5";
