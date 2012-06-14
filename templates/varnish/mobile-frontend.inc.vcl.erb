@@ -131,7 +131,7 @@ sub tag_carrier {
 
 sub device_detection {
 
-	set req.http.X-Device = "html";
+	set req.http.X-Device = "";
 
 	if ( req.http.User-Agent ~ "Android" ){
 		set req.http.X-Device = "android";
@@ -209,9 +209,15 @@ sub device_detection {
 				set req.http.X-Device = "blackberry";
 			}
 	}
-	if (req.http.X-Device == "html") {
-		if (req.http.Accept ~ "vnd.wap.wml"){
+	
+	if ( req.http.X-Device == "" ) {
+		if ( req.http.Accept ~ "application/vnd.wap.xhtml+xml" ) {
+			// Should be wap2
+			set req.http.X-Device = "html";
+		} else if ( req.http.Accept ~ "vnd.wap.wml" ) {
 			set req.http.X-Device = "wml";
+		} else {
+			set req.http.X-Device = "html";
 		}
 	}
 }
