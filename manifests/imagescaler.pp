@@ -13,9 +13,8 @@ class imagescaler::cron {
 }
 
 class imagescaler::packages {
-	if ( $lsbdistcodename == "lucid" ) {
-		package { 
-			[ 
+		package {
+			[
 				"imagemagick",
 				"gs",
 				"ffmpeg",
@@ -72,39 +71,32 @@ class imagescaler::packages {
 				"libvips-tools"]:
 			ensure => latest;
 		}
-	} else {
-        	package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
-                	ensure => latest
-		}
-        }
 }
 
 class imagescaler::files {
 
-	if ( $lsbdistcodename == "lucid" ) {
-		file {
-			"/etc/wikimedia-image-scaler":
-				content => "The presence of this file alters the apache configuration, to be suitable for image scaling.",
-				#notify => Service[apache],
-				owner => root,
-				group => root,
-				mode => 0644;
-			"/etc/fonts/conf.d/70-yes-bitmaps.conf":
-				ensure => absent;
-			"/etc/fonts/conf.d/70-no-bitmaps.conf":
-				ensure => "/etc/fonts/conf.avail/70-no-bitmaps.conf";
-			"/a":
-				ensure => directory,
-				owner => root,
-				group => root,
-				mode => 755;
-			"/a/magick-tmp":
-				ensure => directory,
-				owner => apache,
-				group => root,
-				mode => 755,
-				require => File["/a"];
-		}
+	file {
+		"/etc/wikimedia-image-scaler":
+			content => "The presence of this file alters the apache configuration, to be suitable for image scaling.",
+			#notify => Service[apache],
+			owner => root,
+			group => root,
+			mode => 0644;
+		"/etc/fonts/conf.d/70-yes-bitmaps.conf":
+			ensure => absent;
+		"/etc/fonts/conf.d/70-no-bitmaps.conf":
+			ensure => "/etc/fonts/conf.avail/70-no-bitmaps.conf";
+		"/a":
+			ensure => directory,
+			owner => root,
+			group => root,
+			mode => 755;
+		"/a/magick-tmp":
+			ensure => directory,
+			owner => apache,
+			group => root,
+			mode => 755,
+			require => File["/a"];
 	}
 
 }
