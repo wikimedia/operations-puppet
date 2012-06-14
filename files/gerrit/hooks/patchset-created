@@ -69,9 +69,11 @@ class PatchsetCreated(HookHelper):
 		if stdoutdata:
 			message = stdoutdata
 		if stderrdata:
-			# Prefix error message with a space so gerrit renders it as monospaced:
-			stderrdata = stderrdata.replace( "\n", "\n " )
-			message = message + stderrdata
+			# We want the error message to be "nicely" formatted using a monospace
+			# font. To do that, each line need to be prefixed with a space and the
+			# block separated from the rest of the text using new lines.
+			stderrdata = " " + stderrdata.replace( "\n", "\n " )
+			message = message + "\n" + stderrdata + "\n"
 		# Cleanup lonnng paths from the message:
 		message = message.replace( directory, '.' )
 		verifyset = self.set_verify(status, options.commit, message)
