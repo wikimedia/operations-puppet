@@ -372,6 +372,8 @@ class mysql {
 			}
 		}
 
+		$innodb_file_per_table = "false"
+
 		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
 		} else { 
@@ -381,8 +383,6 @@ class mysql {
 		# enable innodb_file_per_table if it's a fundraising or otrs database
 		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ {
 			$innodb_file_per_table = "true"
-		} else {
-			$innodb_file_per_table = "false"
 		}
 
 		# collect all the changes to the dbs used by the summer researchers
