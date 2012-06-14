@@ -40,7 +40,9 @@ end
 			<param name="comment" value="Squid statistics"/>
 			<subtree name="frontend">
 				<param name="instance" value="front"/>
+				<param name="snmp-host" value="%hostname%"/>
 				<param name="snmp-port" value="3402"/>
+				<param name="system-id" value="%hostname%_front"/>
 				<param name="comment" value="%hostname% frontend Squid statistics"/>
 				<param name="precedence" value="2"/>
 				<apply-template name="squid-storagegroup"/>
@@ -50,8 +52,10 @@ end
 				<apply-template name="squid-resolvinggroup"/>
 			</subtree>
 			<subtree name="backend">
+				<param name="snmp-host" value="%hostname%"/>
 				<param name="instance" value="back"/>
 				<param name="comment" value="%hostname% backend Squid statistics"/>
+				<param name="system-id" value="%hostname%_back"/>
 				<param name="precedence" value="1"/>
 				<apply-template name="squid-storagegroup"/>
 				<apply-template name="squid-performancegroup"/>
@@ -72,10 +76,8 @@ end
 			<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
 			<apply-template name="snmp-defaults"/>
 			<param name="snmp-check-sysuptime" value="no"/>
-			<param name="snmp-host" value="%hostname%"/>
 			<param name="snmp-community" value="public"/>
 			<param name="snmp-version" value="2c"/>
-			<param name="system-id" value="%hostname%_%instance%"/>
 		
 			<subtree name="pmtpa">
 				<subtree name="text">
