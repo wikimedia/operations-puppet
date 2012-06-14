@@ -13,9 +13,8 @@ class imagescaler::cron {
 }
 
 class imagescaler::packages {
-	if ( $lsbdistcodename == "lucid" ) {
-		package { 
-			[ 
+		package {
+			[
 				"imagemagick",
 				"gs",
 				"ffmpeg",
@@ -71,11 +70,6 @@ class imagescaler::packages {
 				"libvips-tools"]:
 			ensure => latest;
 		}
-	} else {
-		package { [ "linux-libertine", "ttf-ubuntu-font-family" ] :
-			ensure => latest
-		}
-	}
 }
 
 class imagescaler::files {
