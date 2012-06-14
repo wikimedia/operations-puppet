@@ -51,7 +51,7 @@ $Torrus::Renderer::companyURL = 'http://wikimediafoundation.org';
 #$Torrus::Renderer::companyLogo = 'http://upload.wikimedia.org/wikipedia/foundation/9/9a/Wikimediafoundation-logo.png';
 # $Torrus::Renderer::siteInfo = `hostname`;
 
-$Torrus::ApacheHandler::authorizeUsers = 0;
+$Torrus::CGI::authorizeUsers = 0;
 
 $Torrus::Renderer::styling{'default'}{'cssoverlay'} = 'wikimedia.css';
 $Torrus::Renderer::stylingProfileOverlay = $Torrus::Global::cfgSiteDir . '/schema-override.pl';
