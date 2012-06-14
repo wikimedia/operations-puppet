@@ -509,23 +509,23 @@ class mysql {
 # are not (yet?) meant for serious production installs.
 
 # Installs the mysql-client package
-class generic::mysql::packages::client {
+class generic::mysql::packages::client($version = "5.1") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
-	package { "mysql-client-5.1":
+	package { "mysql-client-${version}":
 		ensure => latest,
-		alias => "mysql-client",
+		alias  => "mysql-client",
 	}
 	package { "libmysqlclient-dev":
 		ensure => latest,
 	}
 }
 
-class generic::mysql::packages::server {
+class generic::mysql::packages::server($version = "5.1") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
-	package { "mysql-server-5.1":
+	package { "mysql-server-${version}":
 		ensure => present,
-		alias  => "mysql-server",
+		alias  => "mysql-server"
 	}
 }
 
@@ -535,7 +535,8 @@ class generic::mysql::packages::server {
 #
 # Most of these defaults are from the
 # debian install + the default .deb my.cnf
-class generic::mysql::server(	
+class generic::mysql::server(
+	$version                        = "5.1",
 	$datadir                        = "/var/lib/mysql",
 	$port                           = 3306,
 	$bind_address                   = "127.0.0.1",
@@ -611,9 +612,12 @@ class generic::mysql::server(
 	$config_file_path               = "/etc/mysql/my.cnf"
 	)
 {
-	include generic::mysql::packages::server,
-		generic::mysql::packages::client,
-		generic::apparmor::service
+	# make sure mysql-server and mysql-client are
+	# installed with the specified version.
+	class { ["generic::mysql::packages::server, generic::mysql::packages::client"]:
+		version => $version,
+	}
+	include generic::apparmor::service
 
 	
 	# ensure the datadir exists

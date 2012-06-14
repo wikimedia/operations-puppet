@@ -134,6 +134,7 @@ class misc::statistics::db {
 	# datadir at /a/mysql
 	class { "generic::mysql::server":
 		datadir => "/a/mysql",
+		version => "5.5",
 	}
 }
 
