@@ -623,9 +623,6 @@ node /^db1[2-8]\.pmtpa\.wmnet$/ {
 }
 
 node /^db2[1-8]\.pmtpa\.wmnet$/ {
-	if $hostname == "db21" {
-		$ganglia_aggregator = "true"
-	}
 
 	include db::core
 
@@ -643,9 +640,6 @@ node "db29.pmtpa.wmnet" {
 }
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
-	if $hostname == "db30" {
-		$ganglia_aggregator = "true"
-	}
 
 	include db::core
 
@@ -706,6 +700,10 @@ node /db4[3-9]\.pmtpa\.wmnet/ {
 }
 
 node /db5[0-9]\.pmtpa\.wmnet/ {
+	if $hostname =~ /^db(50|51)$/ {
+		$ganglia_aggregator = "true"
+	}
+	
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
