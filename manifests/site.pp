@@ -529,11 +529,25 @@ node "emery.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	class { udp2log::logger:
+	class { "udp2log":
 		#FIXME: move this to a more appropriately named file
-			log_file => "/var/log/squid/packet-loss.log",
-			logging_instances => {"emery" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => false },
-									"aft" => { "port" => "8421", "multicast_listen" => false, "has_logrotate" => true } }
+		packet_loss_log   => "/var/log/squid/packet-loss.log",
+	}
+
+	# emery's udp2log instance
+	# saves logs mainly in /var/log/squid.
+	udp2log::instance { "emery":
+		# TODO: Move this to /var/log/udp2log
+		log_directory => "/var/log/squid",
+		require => Class["udp2log"],
+	}
+
+	# aft (Article Feedback Tool) 
+	# udp2log instance for clicktracking logs.
+	udp2log::instance { "aft": 
+		log_directory => "/var/log/aft",
+		port          => "8421",
+		require => Class["udp2log"],
 	}
 
 }
@@ -1168,10 +1182,18 @@ node "locke.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	class { udp2log::logger:
-			#FIXME: move this to a more appropriately named file
-			log_file => "/a/squid/packet-loss.log",
-			logging_instances => {"locke" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => false } }
+	class { "udp2log":
+		# TODO: move this to a more appropriately named file at
+		# /var/log/udp2log/packet-loss.log.  Need to change filter.
+		packet_loss_log => "/a/squid/packet-loss.log",
+	}
+
+	# locke's udp2log instance stores logs 
+	# mainly in /a/squid.
+	# TODO: Move this to /var/log/udp2log
+	udp2log::instance { "locke":
+		log_directory => "/a/squid",
+		require       => Class["udp2log"],
 	}
 }
 
@@ -1657,10 +1679,16 @@ node /^nfs[12].pmtpa.wmnet/ {
 		backup::client,
 		udp2log::utilities
 
-	class { udp2log::logger:
-		has_monitoring => false,
-		log_file => "/var/log/udp2log/packet-loss.log",
-		logging_instances => {"mw" => { "port" => "8420", "multicast_listen" => false, "has_logrotate" => true } },
+	class { "udp2log":
+		should_monitor    => false,
+		packet_loss_log   => "/var/log/udp2log/packet-loss.log",
+	}
+	
+	udp2log::instance { "mw":
+		should_logrotate => true,
+		log_directory    => "/home/wikipedia/logs",
+		require          => Class["udp2log"],
+		should_monitor   => false,
 	}
 
 
@@ -1725,10 +1753,17 @@ node "oxygen.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	class { udp2log::logger:
-			log_file => "/var/log/udp2log/packet-loss.log",
-			logging_instances => {"oxygen" => { "port" => "8420", "multicast_listen" => true, "has_logrotate" => true } },
-
+	# oxygen uses a sane default for the
+	# packet_loss_log file, so we don't need to use
+	# the parameterized version here.
+	include udp2log
+	
+	# oxygen's udp2log instance
+	# saves logs mainly in /a/squid
+	udp2log::instance { "oxygen":
+		multicast_listen => true,
+		log_directory    => "/a/squid",
+		require => Class["udp2log"],
 	}
 
 }
