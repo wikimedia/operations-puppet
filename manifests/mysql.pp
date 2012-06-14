@@ -511,9 +511,8 @@ class mysql {
 # Installs the mysql-client package
 class generic::mysql::packages::client {
 	# This conflicts with class mysql::packages.  DO NOT use them together
-	package { "mysql-client-5.1":
+	package { "mysql-client":
 		ensure => latest,
-		alias => "mysql-client",
 	}
 	package { "libmysqlclient-dev":
 		ensure => latest,
@@ -523,9 +522,8 @@ class generic::mysql::packages::client {
 class generic::mysql::packages::server {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
-	package { "mysql-server-5.1":
+	package { "mysql-server":
 		ensure => present,
-		alias  => "mysql-server",
 	}
 }
 
