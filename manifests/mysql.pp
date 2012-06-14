@@ -89,13 +89,6 @@ class mysql {
 		$db_cluster = undef
 	}
 
-	if $hostname =~ /^es/ {
-		$mysql_myisam = true
-		$innodb_file_per_table = "true"
-	}
-	else {
-		$mysql_myisam = false
-	}
 	if ($db_cluster) { 
 		file { "/etc/db.cluster":
 			content => "${db_cluster}";
@@ -373,6 +366,14 @@ class mysql {
 		}
 
 		$innodb_file_per_table = "false"
+
+		if $hostname =~ /^es/ {
+			$mysql_myisam = true
+			$innodb_file_per_table = "true"
+		}
+		else {
+			$mysql_myisam = false
+		}
 
 		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
