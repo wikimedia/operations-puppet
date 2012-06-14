@@ -614,9 +614,8 @@ class generic::mysql::server(
 {
 	# make sure mysql-server and mysql-client are
 	# installed with the specified version.
-	class { ["generic::mysql::packages::server, generic::mysql::packages::client"]:
-		version => $version,
-	}
+	class { "generic::mysql::packages::server": version => $version }
+	class { "generic::mysql::packages::client": version => $version }
 	include generic::apparmor::service
 
 	
