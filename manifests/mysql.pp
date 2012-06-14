@@ -540,8 +540,8 @@ class generic::mysql::server(
 	$datadir                        = "/var/lib/mysql",
 	$port                           = 3306,
 	$bind_address                   = "127.0.0.1",
-	$socket                         = "/var/run/mysqld/mysqld.sock",
-	$pid_file                       = "/var/run/mysqld/mysqld.pid",
+	$socket                         = false,
+	$pid_file                       = false,
 
 	# logging
 	$log_error                      = "/var/log/mysql/mysql.err",
@@ -618,7 +618,34 @@ class generic::mysql::server(
 	class { "generic::mysql::packages::client": version => $version }
 	include generic::apparmor::service
 
-	
+	# The 'run' directory has moved from /var/run
+	# to /run in Ubuntu Oneiric.  Expect
+	# to put socket and pid files there
+	# in any Ubuntu version >= 11.
+	if $lsbmajdistrelease >= '11' {
+		$run_directory = '/run'
+	}
+	else {
+		$run_directory = '/var/run'
+	}
+
+	# if $socket was not manually specified,
+	# assume that the socket file should live in
+	# $run_directory/mysqld/mysqld.sock, otherwise
+	# just use the path that was given.
+	$socket_path = $socket ? {
+		false   => "${run_directory}/mysqld/mysqld.sock",
+		default => $socket,
+	}
+	# if $pid_file was not manually specified,
+	# assume that the pid file should live in
+	# $run_directory/mysqld/mysqld.sock, otherwise
+	# just use the path that was given.
+	$pid_path = $pid_file ? {
+		false   => "${run_directory}/mysqld/mysqld.pid",
+		default => $pid_file,
+	}
+
 	# ensure the datadir exists
 	file { $datadir:
 		owner => "mysql",
