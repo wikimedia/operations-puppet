@@ -31,8 +31,8 @@
   <%= datadir %>/** rwk,
   /var/log/mysql/ r,
   /var/log/mysql/* rw,
-  <%= pid_file %> w,
-  <%= socket %> w,
+  <%= pid_path %> w,
+  <%= socket_path %> w,
 
   /sys/devices/system/cpu/ r,
 }

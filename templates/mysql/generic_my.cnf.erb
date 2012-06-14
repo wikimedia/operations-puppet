@@ -13,8 +13,8 @@
 basedir                        = <%= basedir                         %>
 datadir                        = <%= datadir                         %>
 tmpdir                         = <%= tmpdir                          %>
-socket                         = <%= socket                          %>
-pid-file                       = <%= pid_file                        %>
+socket                         = <%= socket_path                     %>
+pid-file                       = <%= pid_path                        %>
 user                           = mysql
 
 
@@ -155,7 +155,7 @@ read_only                      = <%= read_only ? 1 : 0               %>
 # Remember to edit /etc/mysql/debian.cnf when changing the socket location.
 [client]
 port                           = <%= port                            %>
-socket                         = <%= socket                          %>
+socket                         = <%= socket_path                     %>
 
 [mysqldump]
 quick
