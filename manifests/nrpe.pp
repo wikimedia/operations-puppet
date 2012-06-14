@@ -27,12 +27,20 @@ define nrpe::check($command) {
 # Also optionally installs a corresponding NRPE check file
 # using nrpe::check
 #
-# Arguments:
-# - $description
-#	Service check description
-# - $nrpe_command
-#	if defined, installs this NRPE command as check_${title}
-define nrpe::monitor_service($description, $nrpe_command=undef, $contact_group="admins", $retries=3) {
+# Parameters
+#    $description   - Service check description
+#    $nrpe_command  - if defined, installs this NRPE command as check_${title}
+#    $contact_group
+#    $retries
+#    $ensure        - Default: "present"
+#
+define nrpe::monitor_service(
+	$description, 
+	$nrpe_command  = undef, 
+	$contact_group = "admins", 
+	$retries       = 3, 
+	$ensure        = "present") 
+{
 	if $nrpe_command != undef {
 		nrpe::check { "check_${title}":
 			command => $nrpe_command,
@@ -44,10 +52,11 @@ define nrpe::monitor_service($description, $nrpe_command=undef, $contact_group="
 	}
 
 	::monitor_service{ $title:
-		description => $description,
+		description   => $description,
 		check_command => "nrpe_check!check_${title}",
 		contact_group => $contact_group,
-		retries => $retries
+		retries       => $retries,
+		ensure        => $ensure,
 	}
 }
 
