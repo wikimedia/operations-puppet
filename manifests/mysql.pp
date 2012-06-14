@@ -91,6 +91,7 @@ class mysql {
 
 	if $hostname =~ /^es/ {
 		$mysql_myisam = true
+		$innodb_file_per_table = "true"
 	}
 	else {
 		$mysql_myisam = false
