@@ -1063,7 +1063,7 @@
 				</subtree>
 	
 				<subtree name="ps1-c3-sdtpa">
-					<param name="system-id" value="ps1-d1-sdtpa"/>
+					<param name="system-id" value="ps1-c3-sdtpa"/>
 					<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
 					<apply-template name="snmp-defaults"/>
 					<param name="legend">
