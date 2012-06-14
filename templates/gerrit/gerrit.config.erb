@@ -66,6 +66,15 @@
 [mimetype "image/*"]
 	safe = true
 [repository "*"]
-  ownerGroup = Project Creators
+	ownerGroup = Project Creators
 [pack]
 	deltacompression = true
+[trackingid "bugzilla"]
+	footer = bug:
+	footer = bugzilla:
+	match = (\\d{1,6})
+	system = Bugzilla
+[trackingid "rt"]
+	footer = rt:
+	match = (\\d{1,6})
+	system = RT
