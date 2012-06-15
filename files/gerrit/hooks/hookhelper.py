@@ -107,14 +107,11 @@ class HookHelper:
 		self.ssh_exec_command(command)
 		return True
 
-	def log_to_file(self, project, branch, message):
+	def log_to_file(self, project, branch, message, user):
 		filename = self.get_log_filename(project, branch, message)
-		# Don't log new comments if the log is in nocommentlogs
-		if type(self).__name__ == "CommentAdded":
+		# These users are annoying, ignore them
+		if user in hookconfig.spammyusers:
 			return
-		for log in hookconfig.nocommentlogs:
-			if filename.endswith(log):
-				return
 		f = open(filename, 'a')
 		f.write(message)
 		f.close()
