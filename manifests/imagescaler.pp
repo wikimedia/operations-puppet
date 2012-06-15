@@ -16,7 +16,7 @@ class imagescaler::packages {
 		package {
 			[
 				"imagemagick",
-				"gs",
+				"ghostscript",
 				"ffmpeg",
 				"ffmpeg2theora",
 				"librsvg2-bin",
