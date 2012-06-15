@@ -91,11 +91,10 @@ OAI.maxqueue=5000
 # Number of docs to buffer before sending to inc updater
 OAI.bufferdocs=500
 
-<% if scope.lookupvar('lucene::server::indexer') == true then -%>
 # UDP Logger config
+# currently set to send logs to oxygen.w.o:51234
 UDPLogger.port=51234
-UDPLogger.host=208.80.152.184
-<% end -%>
+UDPLogger.host=208.80.154.15
 
 # RecentUpdateDaemon udp and tcp ports
 #RecentUpdateDaemon.udp=8111
