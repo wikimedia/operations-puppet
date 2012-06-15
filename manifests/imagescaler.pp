@@ -25,7 +25,6 @@ class imagescaler::packages {
 			"librsvg2-bin",
 			"djvulibre-bin",
 			"netpbm",
-			"wikimedia-fonts",
 			"libogg0",
 			"libvorbisenc2",
 			"libtheora0",
@@ -41,6 +40,7 @@ class imagescaler::packages::fonts {
 	package {
 		[
 			"gsfonts",
+			"texlive-fonts-recommended",
 			"ttf-alee",
 			"ttf-arabeyes",
 			"ttf-arphic-ukai",
