@@ -3020,6 +3020,13 @@ host stat1 {
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host stat1001 {
+	hardware ethernet 78:2b:cb:1e:79:dd;
+	fixed-address stat1001.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
