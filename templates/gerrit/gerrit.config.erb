@@ -49,23 +49,26 @@
 [user]
 	email = "gerrit@wikimedia.org"
 [commentlink "changeid"]
-	match = (I[0-9a-f]{8,40})
+	match = "(?:^|[^-?=;0-9A-Za-z])(I[0-9a-f]{8,40})(?:[^-?=;0-9A-Za-z]|$)"
 	link = "#q,$1,n,z"
 [commentlink "commit"]
-	match = "\\b([0-9a-f]{40})\\b"
+	match = "(?:^|[^-?=;0-9A-Za-z])([0-9a-f]{40})(?:[^-?=;0-9A-Za-z]|$)"
 	link = "#q,$1,n,z"
 [commentlink "bugzilla"]
-	match = "\\b([bB][uU][gG]\\s+#?)(\\d+)\\b"
-	link = https://bugzilla.wikimedia.org/$2
+	match = "\\b([Bb][Uu][Gg]\\s*\\#?\\s*(\\d+))([\\s,]*[^Cc]|$)"
+	html = <a href="https://bugzilla.wikimedia.org/$2">$1</a>$3
+[commentlink "bugzillacomment"]
+	match = "\\b(?:[Bb][Uu][Gg]\\s*\\#?\\s*(\\d+)\\s*,?\\s*[Cc][Oo][Mm][Mm][Ee][Nn][Tt]\\s*\\#?\\s*(\\d+))\\b"
+	link = https://bugzilla.wikimedia.org/$1#c$2
 [commentlink "codereview"]
-	match = "r(\\d+)"
+	match = "\\br(\\d+)\\b"
 	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
 [commentlink "rt"]
-	match = "\\b[rR][tT]\\s+#?(\\d+)"
+	match = "\\b[rR][tT]\\s*[-#]?\\s*(\\d+)"
 	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
 [mimetype "image/*"]
 	safe = true
 [repository "*"]
-  ownerGroup = Project Creators
+	ownerGroup = Project Creators
 [pack]
 	deltacompression = true
