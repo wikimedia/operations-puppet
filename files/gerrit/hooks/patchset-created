@@ -21,9 +21,9 @@ class PatchsetCreated(HookHelper):
 		if hookconfig.debug:
 			sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
 		subject = self.get_subject(options.change)
-		if subject and options.uploader != hookconfig.l10nuser:
-			message = "New patchset: " + re.sub(' \(.*', "", options.uploader) + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-			self.log_to_file(options.project, options.branch, message)
+		user = re.sub(' \(.*', "", options.uploader)
+		message = "New patchset: " + user + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+		self.log_to_file(options.project, options.branch, message, user)
 		self.lint_test(options)
 		self.l10n_automerge(options)
 

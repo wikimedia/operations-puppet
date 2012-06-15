@@ -27,9 +27,9 @@ class CommentAdded(HookHelper):
 			review = review + "; V: " + options.verified
 		if options.codereview:
 			review = review + " C: " + options.codereview + "; "
-		if options.uploader != hookconfig.l10nuser:
-			message = "New review: " + re.sub(' \(.*', "", options.author) + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
-			self.log_to_file(options.project, options.branch, message)
+		user = re.sub(' \(.*', "", options.author)
+		message = "New review: " + user + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
+		self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
 	hook = CommentAdded()

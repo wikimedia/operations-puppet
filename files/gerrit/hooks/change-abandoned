@@ -17,8 +17,9 @@ class ChangeAbandoned(HookHelper):
 				reason = reason[0:100] + "..."
 		else:
 			reason = "(no reason)"
-		message = "Change abandoned: " + re.sub(' \(.*', "", options.abandoner) + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		self.log_to_file(options.project, options.branch, message)
+		user = re.sub(' \(.*', "", options.abandoner)
+		message = "Change abandoned: " + user + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+		self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
 	hook = ChangeAbandoned()
