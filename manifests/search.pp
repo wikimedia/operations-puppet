@@ -73,7 +73,7 @@ class lucene {
 				owner => lsearch,
 				group => search,
 				mode => 0444,
-				content => template("lucene/lsearch.conf.new.erb"),
+				content => template("lucene/lsearch.conf.erb"),
 				ensure => present;
 			"/a/search/conf/lsearch.log4j":
 				require => File["/a/search/conf"],
