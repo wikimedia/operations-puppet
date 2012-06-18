@@ -3031,7 +3031,7 @@ host transcode1 {
 }
 
 host virt1000 {
-	hardware ethernet 78:2b:cb:08:aa:57;
+	hardware ethernet 18:03:73:f5:2c:2b;
 	fixed-address virt1000.wikimedia.org;
 }
 
