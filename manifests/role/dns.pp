@@ -6,8 +6,7 @@ class role::dns::ldap {
 		include openstack::nova_config
 
 		class { "dns::auth-server::ldap":
-			dns_auth_ipaddress => "208.80.152.33 208.80.152.32 208.80.153.135",
-			dns_auth_query_address => "208.80.152.33",
+			dns_auth_ipaddress => "208.80.152.32 208.80.152.33 208.80.153.135",
 			dns_auth_soa_name => "labs-ns0.wikimedia.org",
 			ldap_host => $openstack::nova_config::nova_ldap_host,
 			ldap_base_dn => $openstack::nova_config::nova_ldap_base_dn,
