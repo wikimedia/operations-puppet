@@ -170,7 +170,7 @@ define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $m
 
 class certificates::packages {
 
-	package { [ "openssl", "ca-certificates" ]:
+	package { [ "openssl", "ca-certificates", "ssl-cert" ]:
 		ensure => latest;
 	}
 
