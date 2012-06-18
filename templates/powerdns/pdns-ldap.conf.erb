@@ -41,8 +41,8 @@ log-dns-details=no
 # Backends to load
 launch=ldap
 
-ldap-host=<%= nova_ldap_host %>
+ldap-host=<%= ldap_host %>
 ldap-method=strict
-ldap-basedn=ou=hosts,<%= nova_ldap_base_dn %>
-ldap-binddn=<%= nova_ldap_user_dn %>
-ldap-secret=<%= nova_ldap_user_pass %>
+ldap-basedn=ou=hosts,<%= ldap_base_dn %>
+ldap-binddn=<%= ldap_user_dn %>
+ldap-secret=<%= ldap_user_pass %>
