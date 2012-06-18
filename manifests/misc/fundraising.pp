@@ -337,6 +337,16 @@ class misc::fundraising::impressionlog::compress {
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/impression_log_rotator";
+		'/archive/udplogs':
+			owner => 'logmover',
+			group => 'logmover',
+			mode => 0755,
+			ensure => directory;
+		'/archive/incoming_udplogs':
+			owner => 'logmover',
+			group => 'logmover',
+			mode => 0755,
+			ensure => directory;
 	}
 
 	cron {
