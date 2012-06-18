@@ -187,7 +187,8 @@ sub device_detection {
 		set req.http.X-Device = "kindle";
 	} else if( req.http.User-Agent ~ "Kindle/2.0" ) {
 		set req.http.X-Device = "kindle2";
-	} else if( req.http.User-Agent ~ "Firefox" ) {
+	} else if( req.http.User-Agent ~ "Firefox"
+		|| req.http.User-Agent ~ "Maemo Browser" ) {
 		set req.http.X-Device = "capable";
 	} else if( req.http.User-Agent ~ "NetFront" ) {
 		set req.http.X-Device = "netfront";
