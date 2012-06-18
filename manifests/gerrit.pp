@@ -286,7 +286,7 @@ class gerrit::gerrit_config {
 	$gerrit_db_name = "reviewdb"
 	$gerrit_db_user = "gerrit"
 	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass
-	$gerrit_ldap_host = $openstack::nova_config::nova_ldap_host
+	$gerrit_ldap_host = ["$openstack::nova_config::nova_ldap_host", "ldaps://virt1000.wikimedia.org"]
 	$gerrit_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
 	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass

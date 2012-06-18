@@ -16,7 +16,7 @@
 	cookieSecure = true
 	registerUrl = http://www.mediawiki.org/wiki/Commit_access
 [ldap]
-	server = ldaps://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host') %>
+	server = <% scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host').each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
 
 	accountBase = ou=people,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
 	accountPattern = (&(objectClass=person)(cn=${username}))
