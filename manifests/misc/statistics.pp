@@ -6,6 +6,20 @@ class misc::statistics::user {
 		name   => "$username",
 		home   => "/var/lib/$username",
 		groups => "wikidev",
+		shell  => "/bin/bash",
+	}
+
+	# stats' ssh key was manually generated on 
+	# stat1 by otto.  This should probably be puppetized somehow.
+	# Since this private key only exists on stat1, this means
+	# that the stats user will only be allowed to use ssh
+	# to other hosts from stat1.
+	ssh_authorized_key { "stats@stat1":
+		ensure  => "present",
+		user    => "$username",
+		type    => "ssh-rsa",
+		key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDG1exFT/Vqy1Yl3uYNJqE4ozbVHCbuyEbtB6R8p28Pltm9wyGhu+RKjMb7WAsT1II58Rz98B0rrR78snhRz1AuA32IbmUj/q+9n2uA5wUDLS9WGb4D2+KkEBLAsYUlybKzq7MUC2k7st/9DzZ4dl8cum9rC59NkfIcUKQ+g/UcEjKdpw4K8bCKbaJF6whsb1pOxKSufc4Xv2jvdJrvUeztP/9Nb5W33kk2ph+rtiH0t5P+Fnq1/r7W8ufhOlas5wydxBtcRC5ruokkiN33NJRuQPdSS9TVDyuc2QqwTdjC7pSyFGhAHX5IfRWA13dnP2/lKqGBnEfO/R9Ny7lEccvb",
+		require => Systemuser["stats"],
 	}
 }
 
@@ -184,5 +198,56 @@ class misc::statistics::gerrit_stats {
 		hour    => '23',
 		minute  => '59',
 		require => Git::Clone["gerrit-stats"],
+	}
+}
+
+
+# Class: misc::statistics::rsync::jobs
+#
+# Sets up daily cron jobs to rsync log files from remote 
+# logging hosts to a local destination for further processing.
+class misc::statistics::rsync::jobs {
+	misc::statistics::rsync_job { "wikipedia_zero":
+		source      => "oxygen.wikimedia.org:/a/squid/archive/zero-*.gz",
+		destination => "/a/squid/archive/zero",
+	}
+
+	misc::statistics::rsync_job { "teahouse":
+		source      => "emery.wikimedia.org:/var/log/squid/archive/teahouse*.gz",
+		destination => "/a/squid/archive/teahouse",
+	}
+}
+
+
+# Define: misc::statistics::rsync_job
+#
+# Sets up a daily cron job to rsync from $source to $destination
+# as the $misc::statistics::user::username user.  This requires
+# that the $misc::statistics::user::username user is installed
+# on both $source and $destination hosts.
+#
+# Parameters:
+#    source      - rsync source argument (including hostname)
+#    destination - rsync destination argument
+#
+define misc::statistics::rsync_job($source, $destination) {
+	require misc::statistics::user
+
+	# ensure that the destination directory exists
+	file { "$destination":
+		ensure  => "directory",
+		owner   => "stats",
+		group   => "wikidev",
+		mode    => 0775,
+	}
+
+	# Create a daily cron job to rsync $source to $destination.
+	# This requires that the $misc::statistics::user::username
+	# user is installed on the source host.
+	cron { "rsync_${name}_logs":
+		command => "/usr/bin/rsync -r $source $destination/",
+		user    => "$misc::statistics::user::username",
+		hour    => 8,
+		minute  => 0,
 	}
 }

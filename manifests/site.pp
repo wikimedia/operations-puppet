@@ -522,6 +522,7 @@ node "emery.wikimedia.org" {
 		groups::wikidev,
 		admins::mortals,
 		admins::restricted,
+		misc::statistics::user, # include stats user to allow for rsyncing of logs to stat1
 		nrpe,
 		generic::sysctl::high-bandwidth-rsync,
 		udp2log::utilities,
@@ -1162,6 +1163,7 @@ node "locke.wikimedia.org" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::dsc,
+		misc::statistics::user, # include stats user to allow for rsyncing of logs to stat1
 		accounts::datasets,
 		nrpe,
 		udp2log::utilities,
@@ -1720,6 +1722,7 @@ node "oxygen.wikimedia.org" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		misc::statistics::user, # include stats user to allow for rsyncing of logs to stat1
 		misc::squid-logging::multicast-relay,
 		nrpe,
 		geoip
@@ -2243,6 +2246,9 @@ node "stat1.wikimedia.org" {
 
 	# generate gerrit stats from stat1.
 	include misc::statistics::gerrit_stats
+
+	# rsync logs from logging hosts over to stat1
+	include misc::statistics::rsync::jobs
 
 	# special accounts
 	include accounts::ezachte,
