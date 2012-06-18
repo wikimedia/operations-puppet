@@ -1043,8 +1043,8 @@ node "hume.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted,
-		nrpe,
-		misc::fundraising::impressionlog::compress
+		nrpe
+		#misc::fundraising::impressionlog::compress
 }
 
 node "iron.wikimedia.org" {
@@ -2285,6 +2285,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::zexley,
 		misc::fundraising::backup::offhost,
 		misc::fundraising::backup::archive,
+		misc::fundraising::impressionlog::compress,
 		misc::fundraising::impressionlog::archive
 
 	cron {
