@@ -40,9 +40,8 @@ class misc::statistics::base {
 		fstype => "nfs",
 		options => "ro,bg,tcp,rsize=8192,wsize=8192,timeo=14,intr,addr=208.80.152.185",
 		atboot => true,
-		require => File['/mnt/data'],
+		require => [File['/mnt/data'], Class["nfs::common"]],
 		ensure => mounted,
-		require => Class["nfs::common"],
 	}
 }
 
