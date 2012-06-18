@@ -2367,6 +2367,19 @@ node "tridge.wikimedia.org" {
 		backup::server
 }
 
+node "virt1000.wikimedia.org" {
+	$cluster = "virt"
+
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$ldap_certificate = "star.wikimedia.org"
+
+	install_certificate{ "star.wikimedia.org": }
+
+	include standard,
+		role::dns::ldap,
+		openstack::ldap-server
+}
+
 node "virt0.wikimedia.org" {
 	$cluster = "virt"
 
@@ -2374,13 +2387,11 @@ node "virt0.wikimedia.org" {
 	$is_labs_puppet_master = "true"
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
-	$dns_auth_ipaddress = "208.80.152.32"
-	$dns_auth_soa_name = "labsconsole.wikimedia.org"
 
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
-		dns::auth-server-ldap,
+		role::dns::ldap,
 		openstack::controller
 }
 
