@@ -3030,6 +3030,11 @@ host transcode1 {
 	fixed-address transcode1.wikimedia.org;
 }
 
+host virt1000 {
+	hardware ethernet 78:2b:cb:08:aa:57;
+	fixed-address virt1000.wikimedia.org;
+}
+
 host virt0 {
 	hardware ethernet 00:21:9b:94:63:57;
 	fixed-address virt0.wikimedia.org;
@@ -3069,9 +3074,3 @@ host zinc {
 	hardware ethernet 78:2b:cb:09:0e:3d;
 	fixed-address zinc.wikimedia.org;
 }
-
-
-
-
-
-
