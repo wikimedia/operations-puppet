@@ -12,15 +12,18 @@ $conf->{'IDENT'} = ($0 =~ /([^\/]+)$/) ? $1 : $0;
 $conf->{'LOCKFILE'} = "/tmp/$conf->{'IDENT'}.lock";
 
 # jobs, keep 'em numbered in the order you want them to happen
+# note: both hume and storage3 can be used to handle udplog compression so we collect from both
 if ($conf->{'HOSTNAME'} eq 'storage3') {
 	# fetch proxy impression logs 'udplogs' from hume
 	$mirror->{'1'} = 'rsync -var --exclude=".*/" logmover@hume.wikimedia.org:/archive/udplogs/ /archive/udplogs/';
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 	# fetch proxy impression logs 'udplogs' from hume
 	$mirror->{'1'} = 'rsync -var --exclude=".*/" logmover@hume.wikimedia.org:/archive/udplogs/ /bfd1/archive/udplogs/';
-	$mirror->{'2'} = 'rsync -var /bfd1/archive/udplogs/ /bfd2/archive/udplogs/';
+	# fetch proxy impression logs 'udplogs' from storage3
+	$mirror->{'2'} = 'rsync -var --exclude=".*/" logmover@storage3.pmtpa.wmnet:/archive/udplogs/ /archive/udplogs/';
+	# sync bfd1 to bfd2, for manual redundancy (they're single disks)
+	$mirror->{'3'} = 'rsync -var /bfd1/archive/udplogs/ /bfd2/archive/udplogs/';
 }
-
 
 # check if already running
 if (my $lock_error = lockfile('set')) { # lockfile returns an error if already locked
