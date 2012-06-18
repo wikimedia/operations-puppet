@@ -20,7 +20,7 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 	# fetch proxy impression logs 'udplogs' from hume
 	$mirror->{'1'} = 'rsync -var --exclude=".*/" logmover@hume.wikimedia.org:/archive/udplogs/ /bfd1/archive/udplogs/';
 	# fetch proxy impression logs 'udplogs' from storage3
-	$mirror->{'2'} = 'rsync -var --exclude=".*/" logmover@storage3.pmtpa.wmnet:/archive/udplogs/ /archive/udplogs/';
+	$mirror->{'2'} = 'rsync -var --exclude=".*/" logmover@storage3.pmtpa.wmnet:/archive/udplogs/ /bfd1/archive/udplogs/';
 	# sync bfd1 to bfd2, for manual redundancy (they're single disks)
 	$mirror->{'3'} = 'rsync -var /bfd1/archive/udplogs/ /bfd2/archive/udplogs/';
 }
