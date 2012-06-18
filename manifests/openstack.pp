@@ -58,7 +58,15 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldaps_jenkins": source => "208.80.154.135", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_jenkins": source => "208.80.154.135", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_jenkins": source => "208.80.154.135", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_virt0": source => "208.80.152.32", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_virt0": source => "208.80.152.32", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_virt0": source => "208.80.152.32", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_virt1000": source => "208.80.154.18", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_virt1000": source => "208.80.154.18", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_virt1000": source => "208.80.154.18", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
 	iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 	iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
