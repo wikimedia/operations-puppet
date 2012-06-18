@@ -1043,8 +1043,9 @@ node "hume.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted,
-		nrpe
-		#misc::fundraising::impressionlog::compress
+		nrpe,
+		misc::fundraising::impressionlog::compress
+
 }
 
 node "iron.wikimedia.org" {
