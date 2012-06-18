@@ -2377,7 +2377,8 @@ node "virt1000.wikimedia.org" {
 
 	include standard,
 		role::dns::ldap,
-		openstack::ldap-server
+		openstack::ldap-server,
+		openstack::iptables
 }
 
 node "virt0.wikimedia.org" {
