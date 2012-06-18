@@ -28,7 +28,10 @@ class misc::statistics::base {
 		"/mnt/data":
 			ensure => directory;
 	}
-	
+
+	# need this for NFS mounts.
+	include nfs::common
+
 	# Mount /data from dataset2 server.
 	# xmldumps and other misc files needed
 	# for generating statistics are here.
@@ -39,6 +42,7 @@ class misc::statistics::base {
 		atboot => true,
 		require => File['/mnt/data'],
 		ensure => mounted,
+		require => Class["nfs::common"],
 	}
 }
 
