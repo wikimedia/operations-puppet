@@ -168,6 +168,7 @@ class misc::statistics::gerrit_stats {
 		origin    => $gerrit_stats_repo_url,
 		owner     => $gerrit_stats_user,
 		require   => User[$gerrit_stats_user],
+		ensure    => "latest",
 	}
 
 	# run a cron job from the $gerrit_stats_path.
