@@ -120,7 +120,7 @@ host virt6 {
 }
 
 host virt7 {
-	hardware ethernet 88:43:E1:C2:77:DE
+	hardware ethernet 88:43:E1:C2:77:DE;
 	fixed-address virt7.pmtpa.wmnet;
 }
 
