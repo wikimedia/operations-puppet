@@ -409,7 +409,8 @@ class base::instance-upstarts {
 class base::instance-finish {
 
 	if $::realm == "labs" {
-		Class["base::remote-syslog"] -> Class["base::instance-finish"]
+		## The following causes a dependency cycle
+		#Class["base::remote-syslog"] -> Class["base::instance-finish"]
 		file {
 			"/etc/init/runonce-fixpuppet.conf":
 				ensure => absent;
