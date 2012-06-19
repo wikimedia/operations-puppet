@@ -2004,6 +2004,7 @@ class admins::mortals {
 	include accounts::khorn
 	include accounts::maxsem
 	include accounts::mlitn
+	include accounts::pgehres
 }
 
 class admins::restricted {
@@ -2022,7 +2023,6 @@ class admins::restricted {
 	include accounts::ezachte
 	include accounts::jamesofur
 	include accounts::otto
-	include accounts::pgehres
 	include accounts::rcole # access revoked
 	include accounts::rainman
 	include accounts::tparscal
