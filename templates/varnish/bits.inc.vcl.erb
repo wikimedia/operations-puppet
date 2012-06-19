@@ -13,6 +13,9 @@ sub vcl_recv {
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
 		error 666 "geoiplookup";
 	}
+	else if (req.http.host == "bits.wikimedia.org" && req.url ~ "^bits\.wikimedia\.org/geoiplookup") {
+		error 666 "geoiplookup";
+	}
 <% end -%>
 	else {
 		error 403 "Requested target domain not allowed."; 
