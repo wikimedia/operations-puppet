@@ -182,5 +182,6 @@ $decommissioned_servers = [
 "thistle",
 "transcode1",
 "transcode2",
+"wikinews-lb.wikimedia.org",
 "yongle",
 ]
