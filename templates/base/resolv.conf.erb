@@ -1,7 +1,0 @@
-# This file is managed by Puppet!
-# Resolver configuration for site <%= site %>
-search <%= domain_search %>
-options timeout:3
-<% nameservers.each do |nameserver| -%>
-nameserver <%= nameserver %>
-<% end -%>

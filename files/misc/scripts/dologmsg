@@ -1,5 +1,0 @@
-#! /bin/sh
-if [ -z $DOLOGMSGNOLOG ]; then
-	echo "$*" >> /var/log/logmsg
-fi
-

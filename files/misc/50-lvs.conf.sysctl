@@ -1,8 +1,0 @@
-# This file is managed by Puppet!
-
-# Turn OFF RP filter
-net.ipv4.conf.default.rp_filter=0
-net.ipv4.conf.all.rp_filter=0
-
-# Turn off ip forwarding for security - LVS servers sit on all subnets
-net.ipv4.ip_forward=0
