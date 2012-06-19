@@ -63,11 +63,6 @@ Package: *
 Pin: release o=Wikimedia
 Pin-Priority: 1001
 "
-	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
-Package: *
-Pin: release o=Wikimedia
-Pin-Priority: 1001
-"
 
 	file {
 		"/etc/apt/sources.list.d/wikimedia.list":
