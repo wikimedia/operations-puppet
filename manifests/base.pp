@@ -151,8 +151,14 @@ class base::puppet($server="puppet") {
 
 	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
-	exec { "spence puppet snmp trap":
-		command => "snmptrap -v 1 -c public nagios.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+	if $realm == "labs" {
+		$nagios_host = "nagios"
+	} else {
+		$nagios_host = "nagios.wikimedia.org"
+	}
+
+	exec { "puppet snmp trap":
+		command => "snmptrap -v 1 -c public ${nagios_host} .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
 		path => "/bin:/usr/bin",
 		require => Package["snmp"]
 	}
@@ -201,6 +207,11 @@ class base::puppet($server="puppet") {
 			group => root,
 			mode => 0755,
 			source => "puppet:///files/puppet/default_gateway.rb";
+		"/var/lib/puppet/lib/facter/projectgid.rb":
+			owner => root,
+			group => root,
+			mode => 0755,
+			source => "puppet:///files/puppet/projectgid.rb";
 	}
 
 	# Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
@@ -242,8 +253,29 @@ class base::remote-syslog {
 			ensure => latest;
 		}
 
-		# Remote syslog must be before local syslog (50) so that we can filter out 
-		# apache messages before they go to the local log -- TS
+		# remote syslog destination
+		case $::realm {
+
+			'production': {
+				if( $::site != '(undefined)' ) {
+					$syslog_server = 'syslog.${::site}.wmnet'
+				}
+			}
+
+			'labs': {
+				# Per labs project syslog:
+				case $::instanceproject {
+					'deployment-prep': {
+						$syslog_server = 'deployment-dbdump.pmtpa.wmflabs'
+					}
+				}
+			}
+		}
+		# Default to avoid blackholing logs
+		if( $syslog_server == '' ) {
+			$syslog_server = 'localhost'
+		}
+
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
 			ensure => absent;
 		}
@@ -377,13 +409,16 @@ class base::instance-upstarts {
 class base::instance-finish {
 
 	if $::realm == "labs" {
-		Class["base::remote-syslog"] -> Class["base::instance-finish"]
+		## The following causes a dependency cycle
+		#Class["base::remote-syslog"] -> Class["base::instance-finish"]
+		#file {
+		#	"/etc/rsyslog.d/60-puppet.conf":
+		#		ensure => absent,
+		#		notify => Service[rsyslog];
+		#}
 		file {
 			"/etc/init/runonce-fixpuppet.conf":
 				ensure => absent;
-			"/etc/rsyslog.d/60-puppet.conf":
-				ensure => absent,
-				notify => Service[rsyslog];
 		}
 	}
 
@@ -562,7 +597,30 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 }
 
+# handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
+class base::syslogs($readable = 'false') {
+
+	$common_logs = [ "syslog", "messages" ]
+
+	define syslogs::readable() {
+
+		file { "/var/log/${name}":
+			mode => '0644',
+		}
+	}
+
+	if $readable == 'true' {
+		syslogs::readable { $common_logs: }
+	}
+}
+
 class base {
+
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
+		$run = '/run/'
+	} else {
+		$run = '/var/run/'
+	}
 
 	case $::operatingsystem {
 		Ubuntu,Debian: {
@@ -600,6 +658,9 @@ class base {
 	if $::realm == "labs" {
 		include base::instance-upstarts,
 			generic::gluster
+
+		# make common logs readable
+		class {'base::syslogs': readable => 'true'; }
 
 		# Add directory for data automounts
 		file { "/data":

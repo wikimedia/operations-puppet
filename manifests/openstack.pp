@@ -37,7 +37,6 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
-	iptables_add_service{ "mysql_gerrit": source => "208.80.152.147", service => "mysql", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
@@ -115,6 +114,11 @@ class openstack::common {
 
 	include openstack::nova_config
 
+	if $openstack_version == "diablo" {
+		apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
+		apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+	}
+
 	if $realm == "production" {
 		# Setup eth1 as tagged and created a tagged interface for VLAN 103
 		interface_tagged { "eth1.103":
@@ -131,16 +135,11 @@ class openstack::common {
 		}
 	}
 
-	# FIXME: third party repository
-	apt::pparepo { "nova-core-release": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-	apt::pparepo { "nova-core-release-diablo": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
-
 	package { [ "nova-common" ]:
-		ensure => latest,
-		require => Apt::Pparepo["nova-core-release"];
+		ensure => latest;
 	}
 
-	package { [ "unzip", "aoetools", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
+	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
 		ensure => latest;
 	}
 
@@ -148,8 +147,6 @@ class openstack::common {
 	package { [ "python-netaddr", "radvd" ]:
 		ensure => latest;
 	}
-
-	generic::apt::pin-package { [ "libmysqlclient16", "mysql-common" ]: }
 
 	file {
 		"/etc/nova/nova.conf":
@@ -166,13 +163,16 @@ class openstack::controller {
 
 	include openstack::common,
 		openstack::scheduler-service,
-		openstack::ajax-console-proxy-service,
 		openstack::glance-service,
 		openstack::openstack-manager,
 		openstack::database-server,
 		openstack::puppet-server,
 		openstack::ldap-server,
 		openstack::iptables
+
+	if $openstack_version == "essex" {
+		include openstack::keystone-service
+	}
 
 	package { [ "rabbitmq-server", "euca2ools" ]:
 		ensure => latest;
@@ -184,7 +184,6 @@ class openstack::compute {
 
 	include openstack::common,
 		openstack::compute-service,
-		openstack::volume-service,
 		openstack::gluster-service,
 		openstack::gluster-client
 
@@ -239,8 +238,6 @@ class openstack::compute {
 	if $hostname == "virt2" or $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
-	}
-	if $hostname =~ /^virt[3-4]$/ {
 	}
 
 	file {
@@ -321,28 +318,51 @@ class openstack::project-storage {
 
 class openstack::puppet-server {
 
+	include openstack::nova_config,
+		openstack::keystone_config
+
 	# Only allow puppet access from the instances
 	$puppet_passenger_allow_from = $realm ? {
 		"production" => [ "10.4.0.0/24", "10.4.16.3" ],
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
-	class { puppetmaster:
-		server_name => $fqdn,
-		allow_from => $puppet_passenger_allow_from,
-		config => {
-			'dbadapter' => "mysql",
-			'dbuser' => $openstack::nova_config::nova_puppet_user,
-			'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
-			'dbserver' => $openstack::nova_config::nova_db_host,
-			'node_terminus' => "ldap",
-			'ldapserver' => $openstack::nova_config::nova_ldap_host,
-			'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
-			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
-			'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
-			'ldaptls' => true
-		};
+	if $openstack_version == "essex" {
+		class { puppetmaster:
+			server_name => $fqdn,
+			allow_from => $puppet_passenger_allow_from,
+			config => {
+				'dbadapter' => "mysql",
+				'dbuser' => $openstack::nova_config::nova_puppet_user,
+				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
+				'dbserver' => $openstack::nova_config::nova_db_host,
+				'node_terminus' => "ldap",
+				'ldapserver' => $openstack::keystone_config::keystone_ldap_host,
+				'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
+				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
+				'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
+				'ldaptls' => true
+			};
+		}
+	} else {
+		class { puppetmaster:
+			server_name => $fqdn,
+			allow_from => $puppet_passenger_allow_from,
+			config => {
+				'dbadapter' => "mysql",
+				'dbuser' => $openstack::nova_config::nova_puppet_user,
+				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
+				'dbserver' => $openstack::nova_config::nova_db_host,
+				'node_terminus' => "ldap",
+				'ldapserver' => $openstack::nova_config::nova_ldap_host,
+				'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
+				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
+				'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
+				'ldaptls' => true
+			};
+		}
 	}
 
 }
@@ -351,13 +371,7 @@ class openstack::database-server {
 
 	include openstack::nova_config,
 		openstack::glance_config,
-		gerrit::database-server
-
-	generic::apt::pin-package { [ "mysql-server", "mysql-client" ]: }
-	generic::apt::pin-package { "mysql-server-51": package => "mysql-server-5.1" }
-	generic::apt::pin-package { "mysql-server-core-51": package => "mysql-server-core-5.1" }
-	generic::apt::pin-package { "mysql-client-51": package => "mysql-client-5.1" }
-	generic::apt::pin-package { "mysql-client-core-51": package => "mysql-client-core-5.1" }
+		openstack::keystone_config
 
 	package { "mysql-server":
 		ensure => latest;
@@ -369,6 +383,7 @@ class openstack::database-server {
 		ensure => running;
 	}
 
+	# TODO: This expects the services to be installed in the same location
 	exec {
 		'set_root':
 			onlyif => "/usr/bin/mysql -uroot --password=''",
@@ -405,6 +420,21 @@ class openstack::database-server {
 			before => Exec['create_glance_db_user'];
 	}
 
+	if $openstack_version == "essex" {
+		exec {
+			'create_keystone_db_user':
+				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
+				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]],
+				before => Exec['sync_keystone_db'];
+			'create_keystone_db':
+				unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
+				command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::keystone_db_name};\"",
+				require => [Package["mysql-client"], File["/root/.my.cnf"]],
+				before => Exec['create_keystone_db_user'];
+		}
+	}
+
 	if ( ! $controller_first_master ) {
 		$controller_first_master = "false"
 	}
@@ -416,12 +446,29 @@ class openstack::database-server {
 				command => "/usr/bin/nova-manage db sync",
 				require => Package["nova-common"];
 		}
+		# TODO, use a version compare here
+		if $openstack_version == "essex" {
+			exec {
+				'sync_keystone_db':
+					unless => "/usr/bin/keystone-manage db version | grep \"${openstack::keystone_config::keystone_db_version}\"",
+					command => "/usr/bin/keystone-manage db sync",
+					require => Package["keystone"];
+			}
+		}
 	} else {
 		exec {
 			# Don't sync if we aren't the first install
 			'sync_nova_db':
 				command => "/usr/bin/test true",
 				require => Package["nova-common"];
+		}
+		# TODO, use a version compare here
+		if $openstack_version == "essex" {
+			exec {
+				'sync_keystone_db':
+					command => "/usr/bin/test true",
+					require => Package["keystone"];
+			}
 		}
 	}
 
@@ -475,21 +522,48 @@ class openstack::database-server {
 			mode => 0640,
 			require => Package["glance"];
 	}
+	if $openstack_version == "essex" {
+		file {
+			"/etc/keystone/keystone-user.sql":
+				content => template("openstack/keystone-user.sql.erb"),
+				owner => root,
+				group => root,
+				mode => 0640,
+				require => Package["keystone"];
+			"/etc/keystone/keystone-user.cnf":
+				content => template("openstack/keystone-user.cnf.erb"),
+				owner => root,
+				group => root,
+				mode => 0640,
+				require => Package["keystone"];
+		}
+	}
 
 }
 
 class openstack::ldap-server {
 
-	include passwords::certs
+	include passwords::certs,
+		openstack::nova_config,
+		openstack::keystone_config
 
-	$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
-	$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_cert_pass = $passwords::certs::certs_default_pass
-	$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
-	$ldap_domain = $openstack::nova_config::nova_ldap_domain
-	$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
-	$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
+	if $openstack_version == "essex" {
+		$ldap_user_dn = $openstack::keystone_config::keystone_ldap_user_dn
+		$ldap_user_pass = $openstack::keystone_config::keystone_ldap_user_pass
+		$ldap_base_dn = $openstack::keystone_config::keystone_ldap_base_dn
+		$ldap_domain = $openstack::keystone_config::keystone_ldap_domain
+		$ldap_proxyagent = $openstack::keystone_config::keystone_ldap_proxyagent
+		$ldap_proxyagent_pass = $openstack::keystone_config::keystone_ldap_proxyagent_pass
+	} else {
+		$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
+		$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
+		$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+		$ldap_domain = $openstack::nova_config::nova_ldap_domain
+		$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
+		$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
+	}
 
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
@@ -557,9 +631,7 @@ class openstack::openstack-manager {
 
 class openstack::scheduler-service {
 
-	package {  "nova-scheduler":
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
+	package { "nova-scheduler":
 		ensure => latest;
 	}
 
@@ -578,8 +650,6 @@ class openstack::network-service {
 	}
 
 	package {  [ "nova-network", "dnsmasq" ]:
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -604,8 +674,6 @@ class openstack::network-service {
 class openstack::api-service {
 
 	package {  [ "nova-api" ]:
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
 		ensure => latest;
 	}
 
@@ -617,43 +685,44 @@ class openstack::api-service {
 
 }
 
-class openstack::ajax-console-proxy-service {
+class openstack::vnc-proxy-service {
 
-	package {  [ "nova-ajax-console-proxy" ]:
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
+	package {  [ "nova-vncproxy" ]:
 		ensure => latest;
 	}
 
-	service { "nova-ajax-console-proxy":
+	service { "nova-vncproxy":
 		ensure => running,
 		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-ajax-console-proxy"];
+		require => Package["nova-vncproxy"];
 	}
 
 }
+
 class openstack::volume-service {
 
 	package { [ "nova-volume" ]:
-		#require => Apt::Pparepo["nova-core-release"],
-		#subscribe => File['/etc/nova/nova.conf'],
 		ensure => absent;
 	}
 
-	service { "nova-volume":
-		ensure => stopped,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-volume"];
-	}
+	#service { "nova-volume":
+	#	ensure => stopped,
+	#	subscribe => File['/etc/nova/nova.conf'],
+	#	require => Package["nova-volume"];
+	#}
 
 }
 
 class openstack::compute-service {
 
-	package { [ "nova-compute", "ajaxterm" ]:
-		require => Apt::Pparepo["nova-core-release"],
-		subscribe => File['/etc/nova/nova.conf'],
+	package { [ "nova-compute" ]:
 		ensure => latest;
+	}
+
+	if $openstack_version == "essex" {
+		package { [ "nova-compute-kvm" ]:
+			ensure => latest;
+		}
 	}
 
 	service { "nova-compute":
@@ -662,24 +731,37 @@ class openstack::compute-service {
 		require => Package["nova-compute"];
 	}
 
-	# ajaxterm is run manually by nova-compute; we don't want the service running
-	service { "ajaxterm":
-		enable => false,
-		ensure => stopped,
-		require => Package["ajaxterm"];
+}
+
+class openstack::keystone-service {
+
+	package { [ "keystone" ]:
+		ensure => latest;
+	}
+
+	service { "keystone":
+		ensure => running,
+		subscribe => File['/etc/keystone/keystone.conf'],
+		require => Package["keystone"];
+	}
+
+	file {
+		"/etc/keystone/keystone.conf":
+			content => template("openstack/keystone.conf.erb"),
+			owner => root,
+			group => root,
+			notify => Service["keystone"],
+			require => Package["keystone"],
+			mode => 0444;
 	}
 
 }
 
 class openstack::glance-service {
 
-	# FIXME: third party repository
-	apt::pparepo { "glance-core-release": repo_string => "glance-core/release", apt_key => "2085FE8D", dist => "lucid", ensure => "absent" }
-
 	include openstack::glance_config
 
 	package { [ "glance" ]:
-		require => Apt::Pparepo["nova-core-release-diablo"],
 		ensure => latest;
 	}
 
@@ -732,9 +814,14 @@ class openstack::gluster-client {
 
 	include generic::gluster
 
+	if $realm == "production" {
+		$device = "instancestorage.pmtpa.wmnet:/instances1"
+	} else {
+		$device = "localhost:/instances1"
+	}
 	## mount the gluster volume for the instances
 	mount { "/var/lib/nova/instances":
-		device => "instancestorage.pmtpa.wmnet:/instances1",
+		device => $device,
 		fstype => "glusterfs",
 		name => "/var/lib/nova/instances",
 		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
@@ -811,16 +898,18 @@ class openstack::nova_config {
 		"production" => "http://labsconsole.wikimedia.org:8000",
 		"labs" => "http://${hostname}.${domain}:8000",
 	}
-	$nova_ldap_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
+	if $openstack_version == "diablo" {
+		$nova_ldap_host = $realm ? {
+			"production" => "virt0.wikimedia.org",
+			"labs" => "localhost",
+		}
+		$nova_ldap_domain = "labs"
+		$nova_ldap_base_dn = "dc=wikimedia,dc=org"
+		$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+		$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+		$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
+		$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	}
-	$nova_ldap_domain = "labs"
-	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
-	$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
-	$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-	$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
-	$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
 	$nova_db_version = "46"
@@ -854,6 +943,34 @@ class openstack::glance_config {
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
 	$glance_bind_ip = $realm ? {
 		"production" => "208.80.152.32",
+		"labs" => "127.0.0.1",
+	}
+
+}
+
+class openstack::keystone_config {
+
+	include passwords::openstack::keystone
+
+	$keystone_db_host = $realm ? {
+		"production" => "virt0.wikimedia.org",
+		"labs" => "localhost",
+	}
+	$keystone_db_name = "keystone"
+	$keystone_db_user = "keystone"
+	$keystone_db_pass = $passwords::openstack::keystone::keystone_db_pass
+	$keystone_ldap_host = $realm ? {
+		"production" => "virt0.wikimedia.org",
+		"labs" => "localhost",
+	}
+	$keystone_ldap_domain = "labs"
+	$keystone_ldap_base_dn = "dc=wikimedia,dc=org"
+	$keystone_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+	$keystone_ldap_user_pass = $passwords::openstack::keystone::keystone_ldap_user_pass
+	$keystone_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
+	$keystone_ldap_proxyagent_pass = $passwords::openstack::keystone::keystone_ldap_proxyagent_pass
+	$keystone_bind_ip = $realm ? {
+		"production" => "208.80.153.135",
 		"labs" => "127.0.0.1",
 	}
 

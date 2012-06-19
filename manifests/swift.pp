@@ -127,6 +127,8 @@ class swift::proxy {
 
 	system_role { "swift:base": description => "swift frontend proxy" }
 
+	include swift::proxy::monitoring
+
 	realize File["/etc/swift/proxy-server.conf"]
 
 	package { ["swift-proxy", "python-swauth"]:
@@ -156,6 +158,7 @@ class swift::proxy {
 class swift::proxy::monitoring {
 
 	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
+
 }
 
 # TODO: document parameters

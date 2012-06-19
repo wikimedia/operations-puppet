@@ -77,7 +77,7 @@ class role::swift {
 	class pmtpa-prod inherits role::swift::base {
 		system_role { "role::swift::pmtpa-prod": description => "Swift pmtpa production cluster" }
 		system_role { "swift-cluster::pmtpa-prod": description => "Swift pmtpa production cluster", ensure => absent }
-		include passwords::swift::pmtpa-prod 
+		include passwords::swift::pmtpa-prod
 		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "pmtpa-prod" }
 		class ganglia_reporter inherits role::swift::pmtpa-prod {
 			# one host per cluster should report global stats
@@ -88,7 +88,7 @@ class role::swift {
 				ensure => present;
 			}
 			cron { "swift-ganglia-report-global-stats":
-				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p $passwords::swift::pmtpa-prod::rewrite_password",
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p $passwords::swift::pmtpa-prod::rewrite_password -c pmtpa-prod",
 				user => root,
 				ensure => present;
 			}
@@ -107,7 +107,7 @@ class role::swift {
 				rewrite_thumb_server => "ms5.pmtpa.wmnet",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb",
-				write_thumbs => "none",
+				write_thumbs => "all",
 				dont_write_thumb_list => ""
 			}
 			include ::swift::proxy
@@ -116,6 +116,48 @@ class role::swift {
 		class storage inherits role::swift::pmtpa-prod {
 			include ::swift::storage
 			include ::swift::storage::monitoring
+		}
+	}
+	class pmtpa-labs inherits role::swift::base {
+		system_role { "role::swift::pmtpa-labs": description => "Swift pmtpa labs cluster" }
+		system_role { "swift-cluster::pmtpa-labs": description => "Swift pmtpa labs cluster", ensure => absent }
+		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
+		class { "::swift::base": hash_path_suffix => "a222ef4c988d7ba2", cluster_name => "pmtpa-labs" }
+		class ganglia_reporter inherits role::swift::pmtpa-labs {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				path => "/usr/local/bin/swift-ganglia-report-global-stats",
+				mode => 0555,
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+				ensure => present;
+			}
+			cron { "swift-ganglia-report-global-stats":
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p userpassword -c pmtpa-labs",
+				user => root,
+				ensure => present;
+			}
+		}
+		class proxy inherits role::swift::pmtpa-labs {
+			class { "::swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://swift-fe1.pmtpa.wmflabs",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "127.0.0.1:11211" ],
+				super_admin_key => "thiskeyissuper",
+				rewrite_account => "AUTH_f80b5643-4597-407f-94f5-d2cc051805cf",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumbnail",
+				rewrite_password => "userpassword",
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => "",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
+			}
+			include ::swift::proxy
+		}
+		class storage inherits role::swift::pmtpa-labs {
+			include ::swift::storage
 		}
 	}
 }

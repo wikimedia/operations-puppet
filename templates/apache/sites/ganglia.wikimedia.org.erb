@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+	ServerName <%= ganglia_servername %>
+	ServerAlias <%= ganglia_serveralias %>
+	DocumentRoot /var/www
+	ServerAdmin root@wikimedia.org
+
+	<Directory "/var/www/">
+	Options FollowSymLinks
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+	</Directory>
+
+	Alias /2.2.0 <%= ganglia_webdir %>
+	Alias /latest <%= ganglia_webdir %>
+
+	RedirectMatch ^/$ http://<%= ganglia_servername %>/latest
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+</VirtualHost>

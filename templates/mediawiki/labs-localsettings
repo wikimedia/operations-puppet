@@ -1,0 +1,14 @@
+<?php
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/mediawiki/labs-localsettings
+###
+###  Changes to this file will be clobbered by Puppet.
+###  If you need to hand-edit local settings, modify
+###  the included orig/LocalSettings.php.
+###
+#####################################################################
+
+require( 'orig/LocalSettings.php' );
+
+$wgArticlePath      = "/wiki/$1";

@@ -16,6 +16,7 @@ DESC="Ganglia Monitor Meta-Daemon"
 
 # making this file also copy rrd's from disk to tmpfs
 
+RRDS_DIR='/mnt/ganglia_tmp/rrds.pmtpa'
 RESTORESCRIPT=/usr/local/bin/restore-gmetad-rrds
 SAVESCRIPT=/usr/local/bin/save-gmetad-rrds
 
@@ -25,7 +26,14 @@ set -e
 
 case "$1" in
   start)
+	echo -n "Copying files to tmpfs: "
+	${RESTORESCRIPT}
+	echo "Done" 
 	echo -n "Starting $DESC: "
+	if [ ! -d "${RRDS_DIR}" ]; then
+		echo "No such directory ${$RRDS_DIR}; aborting."
+		exit 1
+	fi
 	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
 		--exec $DAEMON 
 	echo "$NAME."

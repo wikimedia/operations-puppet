@@ -66,6 +66,56 @@ class nfs::home {
 	}
 }
 
+# Historical /home/wikipedia
+class nfs::home::wikipedia {
+
+	case $::realm {
+		'production': {
+			require nfs::home
+			file { "/home/wikipedia":
+				mode   => 0755,
+				owner  => root,
+				group  => root,
+				ensure => directory;
+			}
+		} # /production
+		'labs': {
+			systemuser { 'wikipediauser':
+				name => 'wikipedia',
+				home => '/home/wikipedia'
+			}
+
+			file { "/home/wikipedia":
+				ensure => directory,
+				require => Systemuser['wikipediauser']
+			}
+		}
+	}
+
+}
+
+# Do some NFS magic for labs stuff. Make it clear it is only for labs
+# usage by adding that to the class name
+class nfs::apache::labs {
+	if( $::realm == 'labs' ) {
+		include nfs::common
+
+		file { '/usr/local/apache':
+			ensure => directory;
+		}
+
+		mount {
+			"/usr/local/apache":
+				device => 'deployment-nfs-memc:/mnt/export/apache',
+				fstype => 'nfs',
+				name   => '/usr/local/apache',
+				options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
+				require => File['/usr/local/apache'],
+				ensure => mounted;
+		}
+	}
+}
+
 class nfs::upload {
 	include nfs::common
 
@@ -73,27 +123,51 @@ class nfs::upload {
 			ensure => directory;
 	}
 
-	mount { 
-		"/mnt/thumbs":
-			device => "ms5.pmtpa.wmnet:/export/thumbs",
-			fstype => "nfs",
-			name => "/mnt/thumbs",
-			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-			require => File["/mnt/thumbs"],
-			ensure => mounted;
-		"/mnt/upload6":
-			device => "ms7.pmtpa.wmnet:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload6",
-			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-			require => File["/mnt/upload6"],
-			ensure => mounted;
-		"/mnt/upload5":
-			device => "ms1.wikimedia.org:/export/upload",
-			fstype => "nfs",
-			name => "/mnt/upload5",
-			ensure => absent;
-	}	
+	if( $::realm == 'production' ) {
+		mount {
+			"/mnt/thumbs":
+				device => "ms5.pmtpa.wmnet:/export/thumbs",
+				fstype => "nfs",
+				name => "/mnt/thumbs",
+				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/thumbs"],
+				ensure => mounted;
+			"/mnt/upload6":
+				device => "ms7.pmtpa.wmnet:/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload6",
+				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/upload6"],
+				ensure => mounted;
+			"/mnt/upload5":
+				device => "ms1.wikimedia.org:/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload5",
+				ensure => absent;
+		}
+	}
+	# FIXME : this is hacky, should be done in a better way
+	# Same as above, just use different hostname, export paths
+	if( $::realm == 'labs' ) {
+		mount {
+			"/mnt/thumbs":
+				device => "deployment-nfs-memc:/mnt/export/thumbs",
+				fstype => "nfs",
+				name => "/mnt/thumbs",
+				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/thumbs"],
+				ensure => mounted;
+			"/mnt/upload6":
+				device => "deployment-nfs-memc:/mnt/export/upload",
+				fstype => "nfs",
+				name => "/mnt/upload6",
+				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+				require => File["/mnt/upload6"],
+				ensure => mounted;
+		}
+
+	}
+
 }
 
 class nfs::data {

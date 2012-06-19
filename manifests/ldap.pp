@@ -391,6 +391,8 @@ class ldap::client::pam {
 	file {
 		"/etc/pam.d/common-auth":
 			source => "puppet:///files/ldap/common-auth";
+		"/etc/pam.d/sshd":
+			source => "puppet:///files/ldap/sshd";
 		"/etc/pam.d/common-account":
 			source => "puppet:///files/ldap/common-account";
 		"/etc/pam.d/common-password":
@@ -437,7 +439,6 @@ class ldap::client::nss {
 			mode => 0440,
 			content => template("ldap/nslcd.conf.erb");
 	}
-
 }
 
 # It is recommended that ldap::client:nss be included on systems that
@@ -564,9 +565,11 @@ class ldap::client::autofs {
 		$gluster_server_name = $instanceproject ? {
 			default => "projectstorage.pmtpa.wmnet",
 		}
+		$autofs_subscribe = ["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf","/data","/public"]
 	} else {
 		$homedir_location = "/home"
 		$nfs_server_name = "nfs-home.pmtpa.wmnet"
+		$autofs_subscribe = ["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf"]
 	}
 
 	package { [ "autofs5", "autofs5-ldap" ]:
@@ -594,7 +597,7 @@ class ldap::client::autofs {
 		hasrestart => true,
 		pattern => "automount",
 		require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldapd" ],
-		subscribe => File["/etc/ldap/ldap.conf", "/etc/ldap.conf", "/etc/nslcd.conf"],
+		subscribe => File[$autofs_subscribe],
 		ensure => running;
 	}
 }
@@ -662,7 +665,7 @@ class ldap::client::wmf-test-cluster {
 	$ldap_ca = "Equifax_Secure_CA.pem"
 	
 	if ( $realm == "labs" ) {
-		# Per-project sudo.
+		# Per-project sudo
 		$sudobasedn = "ou=sudoers,cn=${instanceproject},ou=projects,${basedn}"
 		$ldapincludes = ['openldap', 'pam', 'nss', 'sudo', 'utils', 'autofs']
 		file { "/etc/security/access.conf":
@@ -735,7 +738,7 @@ class ldap::client::includes {
 			}
 
 			cron { "manage-exports":
-				command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log > /dev/null",
+				command => "/usr/sbin/nscd -i passwd; /usr/sbin/nscd -i group; /usr/bin/python /usr/local/sbin/manage-exports --logfile=/var/log/manage-exports.log >/dev/null 2>&1",
 				require => [ File["/usr/local/sbin/manage-exports"], Package["nscd"], Package["libnss-ldapd"], Package["ldap-utils"], File["/etc/ldap.conf"], File["/etc/ldap/ldap.conf"], File["/etc/nsswitch.conf"], File["/etc/nslcd.conf"] ];
 			}
 		} else {

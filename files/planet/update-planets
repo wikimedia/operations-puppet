@@ -1,0 +1,13 @@
+#!/bin/bash
+# update all planets
+
+declare -a planets
+planets=( ar ca cs de en es fr gmq it ja pl pt ro ru sr zh )
+
+logpath="/var/log/planet/"
+
+for planet in "${planets[@]}"; do
+
+	/usr/bin/planet -v /usr/share/planet-venus/wikimedia/${planet}/config.ini > ${logpath}${planet}-planet.log 2>&1
+
+done
