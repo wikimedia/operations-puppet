@@ -5,6 +5,13 @@ import "generic-definitions.pp"
 class squid {
 
 	if $realm == "labs" {
+		# Nova mounts /dev/vdb on /mnt by default. We want to use that device
+		# for coss usage.
+		mount { "/mnt":
+			name => '/mnt',
+			ensure => absent;
+		}
+
 		# FIXME: Hack for arrays in LDAP - you suck puppet
 		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
 	}
@@ -25,11 +32,28 @@ class squid {
 		owner => root,
 		group => root
 	}
+
+	if( $::realm == 'production' ) {
+		# We do not use the auto generated squid conf on labs but some hand
+		# crafted one.  That is good enough for now until we switch to varnish
+		file {
+			"/etc/squid/squid.conf":
+				source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
+			"/etc/squid/frontend.conf":
+				source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
+		}
+	} else {
+		# We need placeholders configured in puppet to satisfy redudancies
+		file {
+			"/etc/squid/squid.conf":
+				ensure  => present;
+			"/etc/squid/frontend.conf":
+				ensure  => present;
+		}
+	}
+
+	# Common files
 	file {
-		"/etc/squid/squid.conf":
-			source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
-		"/etc/squid/frontend.conf":
-			source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
 		"frontendsquiddefaultconfig":
 			name => "/etc/default/squid-frontend",
 			source => "puppet:///files/squid/squid-frontend";

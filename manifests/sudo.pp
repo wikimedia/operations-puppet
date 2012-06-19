@@ -19,7 +19,8 @@ define sudo_group( $privileges=[], $ensure="present" ) {
 		owner => root,
 		group => root,
 		mode => 0440,
-		content => template("sudo/sudoers.erb");
+		content => template("sudo/sudoers.erb"),
+		ensure => $ensure;
 	}
 
 }

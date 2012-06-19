@@ -82,7 +82,7 @@ class exim {
 				owner => root,
 				group => root,
 				mode => 0444,
-				source => "puppet:///files/exim/exim4.minimal.conf";
+				content => template("exim/exim4.minimal.erb");
 		}
 
 		include exim::service
@@ -302,7 +302,9 @@ class mailman {
 	class web-ui {
 		include webserver::static
 
-		install_certificate{ "star.wikimedia.org": }
+		if ( $realm == "production" ) {
+			install_certificate{ "star.wikimedia.org": }
+		}
 
 		# htdigest file for private list archives
 		file { "/etc/lighttpd/htdigest":
@@ -332,7 +334,9 @@ class mailman {
 		}
 
 		# monitor SSL cert expiry
-		monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+		if ( $realm == "production" ) {
+			monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+		}
 	}
 
 	include listserve, web-ui

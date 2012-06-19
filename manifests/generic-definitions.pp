@@ -636,6 +636,16 @@ class generic::packages::git-core {
 }
 
 
+# The joe editor, which has some fans among labs users
+class generic::packages::joe {
+	package { "joe" : ensure => latest; }
+}
+
+# An utility to show up a file hierarcy using ASCII art
+class generic::packages::tree {
+	package { "tree" : ensure => present; }
+}
+
 # Definition: git::clone
 # Creates a git clone of a specified origin into a top level directory
 #
@@ -934,4 +944,3 @@ class generic::pythonpip {
 			require => Package["python-pip"];
 	}
 }
-

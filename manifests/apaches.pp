@@ -150,6 +150,10 @@ extension=wikidiff2.so
 class apaches::service {
 	include mediawiki::sync
 
+	if( $::realm == 'labs' ) {
+		include nfs::apache::labs
+	}
+
 	# Require apaches::files to be in place
 	require apaches::files
 
@@ -196,6 +200,12 @@ class apaches::pybal-check {
 class apaches::monitoring {
 	monitor_service { "appserver http": description => "Apache HTTP", check_command => "check_http_wikipedia" }
 }
+
+class apaches::monitoring::labs {
+	# bug 37046
+	monitor_service { "appserver labs http": description => "Apache HTTP", check_command => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
+}
+
 
 class apaches::fonts {
 	package { [ "texlive-fonts-recommended" ]:

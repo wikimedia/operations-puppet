@@ -166,6 +166,17 @@ class applicationserver {
 			geoip
 	}
 
+	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
+	class labs inherits parent {
+		include standard,
+			nfs::upload,
+			mediawiki::packages,
+			apaches::cron,
+			apaches::service,
+			apaches::monitoring::labs,
+			generic::geoip::files
+	}
+
 	class jobrunner {
 		include jobrunner::packages
 	}
@@ -199,6 +210,23 @@ class imagescaler {
 		apaches::monitoring,
 		apaches::syslog,
 		accounts::l10nupdate
+}
+
+class imagescaler::labs {
+	$cluster = "imagescaler"
+
+	if( $::realm == 'labs' ) {
+		include nfs::apache::labs
+	}
+
+	include standard,
+		imagescaler::cron,
+		imagescaler::packages,
+		imagescaler::files,
+		mediawiki::packages,
+		apaches::packages,
+		apaches::cron,
+		apaches::service
 }
 
 class db::core {

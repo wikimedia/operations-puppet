@@ -215,6 +215,12 @@ class misc::syslog-server($config="nfs") {
 		file { "/etc/logrotate.d/remote-logs":
 			source => "puppet:///files/syslog-ng/remote-logs",
 			mode => 0444;
+		"/home/wikipedia/syslog":
+			owner => root,
+			group => root,
+			mode  => 0755,
+			# Logging is done in /home/wikipedia:
+			require => File["/home/wikipedia"];
 		}
 	}
 

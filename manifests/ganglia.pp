@@ -4,7 +4,18 @@
 #  - $deaf:			Is the gmond process an aggregator
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
-#  - $mcast_address:		Multicast "cluster" to join and send data on
+#  - $mcast_address:		Multicast "cluster" to join and send data on (production only)
+#  - $gmetad_host:		Hostname or IP of gmetad server used by gmond (labs only)
+#  - $authority_url:		URL used by gmond and gmetad
+#  - $gridname:			Grid name used by gmetad
+#  - $data_sources:		Hash of datasources used by gmetad (production only)
+#    $rra_sizes:		Round-robin archives sizes used by gmetad
+#    $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
+#  - $gmetad_conf:		gmetad conf filename (ends in '.labsstub' for labs)
+#  - $ganglia_servername:	Server name used by apache
+#  - $ganglia_serveralias:	Server alias(es) used by apache
+#  - $ganglia_webdir:		Path of web directory used by apache
+
 
 class ganglia {
 
@@ -22,6 +33,13 @@ class ganglia {
 		}
 	}
 
+	if $realm == "labs" {
+		$authority_url = "http://ganglia.wmflabs.org"
+		$gmetad_host = "10.4.0.79"
+	} else {
+		$authority_url = "http://ganglia.wikimedia.org"
+	}
+	
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
@@ -105,11 +123,15 @@ class ganglia {
 	# and a different IP prefix will be used.
 
 	# gmond.conf template variables
-	$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
-	$mcast_address = "${ip_prefix}.${ipoct}"
-
-	$clustername = $ganglia_clusters[$cluster][name]
-	$cname = "${clustername}${name_suffix}"
+	if $realm == "labs" {
+		$cname = $instanceproject
+	}
+	else {
+		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
+		$mcast_address = "${ip_prefix}.${ipoct}"
+		$clustername = $ganglia_clusters[$cluster][name]
+		$cname = "${clustername}${name_suffix}"
+	}
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
@@ -182,29 +204,122 @@ class ganglia {
 
 	# Class for setting up the collector (gmetad)
 	class collector {
-
 		system_role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
 
 		package { "gmetad":
 			ensure => latest;
 		}
 
-		## FIXME this file is a temp hack to get ganglia running. Needs to become
-		## a template generated from information kept in puppet - Lcarr, 2012/01/03
 
-		file { "/etc/ganglia/gmetad.conf":
+		if $realm == "labs" {
+			$gridname = "wmflabs"
+			# for labs, just generate a stub gmetad configuration without data_source lines
+			$gmetad_conf = "gmetad.conf.labsstub"
+			$authority_url = "http://ganglia.wmflabs.org"
+			$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+			$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+		} else {
+			$gridname = "Wikimedia"
+			$gmetad_conf = "gmetad.conf"
+			$authority_url = "http://ganglia.wikimedia.org"
+			case $hostname {
+				# manutius runs gmetad to get varnish data into torrus
+				/^manutius$/: {
+					$data_sources = {
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
+				}
+				default: {
+					$data_sources = {
+						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
+						"Tesla" => "10 208.80.152.247",
+						"Apaches 8 CPU" => "srv153.pmtpa.wmnet srv226.pmtpa.wmnet",
+						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
+						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
+						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
+						"Search" => "search1.pmtpa.wmnet searchidx1.pmtpa.wmnet",
+						"MySQL" => "db21.pmtpa.wmnet db30.pmtpa.wmnet",
+						"Mobile servers" => "mobile1.wikimedia.org mobile2.wikimedia.org",
+						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
+						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
+						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
+						"Miscellaneous" => "spence.wikimedia.org",
+						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
+						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
+						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
+						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
+						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
+						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
+						"Swift pmtpa" => "owa1.wikimedia.org owa2.wikimedia.org",
+						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
+						"MySQL eqiad" => "db1001.eqiad.wmnet",
+						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
+						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
+						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
+						"Swift eqiad" => "copper.wikimedia.org zinc.wikimedia.org",
+						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
+						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
+						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
+						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
+						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
+						"Miscellaneous esams" => "hooft.esams.wikimedia.org"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+					$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+				}
+			}
+		}
+
+		file { "/etc/ganglia/${gmetad_conf}":
 			require => Package[gmetad],
-			source => $hostname ? {
-				/^(streber|manutius)$/ => "puppet:///files/ganglia/gmetad.conf.torrus",
-				default => "puppet:///files/ganglia/gmetad.conf"
-			},
+			content => template("ganglia/gmetad.conf.erb"),
 			mode => 0444,
 			ensure	=> present
 		}
 
+		# for labs, gmond.conf and gmetad.conf are generated by a cron job
+		if $realm == "labs" {
+			file { "/etc/ganglia/gmond.conf.labsstub":
+				source => "puppet:///files/ganglia/gmond.conf.labsstub",
+				mode => 0444,
+				ensure => present;
+			}
+
+			file { "/usr/local/sbin/generate-ganglia-conf.py":
+				source => "puppet:///files/ganglia/generate-ganglia-conf.py",
+				mode => 0755,
+				ensure => present;
+			}
+
+			cron { generate-ganglia-conf:
+				command => "/usr/local/sbin/generate-ganglia-conf.py",
+				require => Package[gmetad],
+				user => root,
+				hour => [0, 4, 8, 12, 16, 20],
+				minute => 30,
+				ensure => present;
+			}
+
+			# log gmetad messages to /var/log/ganglia.log 
+			file { "/etc/rsyslog.d/30-ganglia.conf":
+				source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
+				mode => 0444,
+				ensure => present,
+				notify => Service["rsyslog"];
+			}
+
+			file { "/etc/logrotate.d/ganglia":
+				source => "puppet:///files/logrotate/ganglia",
+				mode => 0444,
+				ensure => present;
+			}
+		}
+
 		service { "gmetad":
-			require => File["/etc/ganglia/gmetad.conf"],
-			subscribe => File["/etc/ganglia/gmetad.conf"],
+			require => File["/etc/ganglia/${gmetad_conf}"],
+			subscribe => File["/etc/ganglia/${gmetad_conf}"],
 			hasstatus => false,
 			ensure => running;
 		}
@@ -234,12 +349,25 @@ class ganglia::web {
 
 	class {'webserver::php5': ssl => 'true'; }
 
+	if $realm == "labs" {
+		$ganglia_servername = "ganglia.wmflabs.org"
+		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
+		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
+		
+		require ganglia::aggregator
+
+	} else {
+		$ganglia_servername = "ganglia.wikimedia.org"
+		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
+		$ganglia_webdir = "/srv/org/wikimedia/gangliaweb"
+	}
+
 	file {
-		"/etc/apache2/sites-available/ganglia.wikimedia.org":
+		"/etc/apache2/sites-available/${ganglia_servername}":
 			mode => 0444,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/ganglia.wikimedia.org",
+			content => template("apache/sites/ganglia.wikimedia.org.erb"),
 			ensure => present;
 		"/usr/local/bin/restore-gmetad-rrds":
 			mode => 0555,
@@ -260,6 +388,9 @@ class ganglia::web {
 			source => "puppet:///files/ganglia/gmetad",
 			ensure => present;
 		"/var/lib/ganglia/rrds.pmtpa/":
+			mode => 0755,
+			owner => nobody,
+			group => root,
 			ensure => directory;
 		"/etc/rc.local":
 			mode => 0555,
@@ -269,7 +400,7 @@ class ganglia::web {
 			ensure => present;
 	}
 
-	apache_site { ganglia: name => "ganglia.wikimedia.org" }
+	apache_site { ganglia: name => $ganglia_servername }
 	apache_module { rewrite: name => "rewrite" }
 
 	package {
@@ -289,13 +420,48 @@ class ganglia::web {
 
 	# Mount /mnt/ganglia_tmp as tmpfs to avoid Linux flushing mlocked
 	# shm memory to disk
-	mount { "/mnt/ganglia_tmp":
+	$ganglia_tmp_mountpoint = "/mnt/ganglia_tmp"
+
+	file { "$ganglia_tmp_mountpoint":
+		mode => 0755,
+		owner => root,
+		group => root,
+		ensure => directory;
+	}
+
+	mount { "$ganglia_tmp_mountpoint":
+		require => File["$ganglia_tmp_mountpoint"],
 		device => "tmpfs",
 		fstype => "tmpfs",
-		options => "noatime,defaults,size=3000m",
+		options => "noauto,noatime,defaults,size=3000m",
 		pass => 0,
 		dump => 0,
 		ensure => mounted;
+	}
+
+	file { "${ganglia_tmp_mountpoint}/rrds.pmtpa":
+		require => Mount["$ganglia_tmp_mountpoint"],
+		mode => 0755,
+		owner => nobody,
+		group => root,
+		ensure => directory;
+	}
+
+	
+	# labs only: ganglia-webfrontend package and conf.php
+	if $realm == "labs" {
+		package { "ganglia-webfrontend":
+			ensure => latest;
+		}
+
+		file { "/usr/share/ganglia-webfrontend/conf.php":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/ganglia/conf.php",
+			require => Package[ganglia-webfrontend],
+			ensure => present;
+		}
 	}
 }
 

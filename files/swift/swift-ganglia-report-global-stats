@@ -86,7 +86,7 @@ def calculate_changes(current, previous):
 
 # submits the metric to ganglia using gmetric, returns the exit code of gmetric
 def submit_to_ganglia(name, value, units, valtype='int32',
-            conf='/etc/ganglia/gmond.conf', spoof='Swift pmtpa prod:Swift pmtp a prod'):
+            conf='/etc/ganglia/gmond.conf', spoof='Swift pmtpa prod:Swift pmtpa prod'):
     retcode = subprocess.call(['/usr/bin/gmetric', '--name', name, '--type', valtype, '--conf', conf,
             '--spoof', spoof, '--value', str(value), '--units', units])
     return retcode
@@ -97,6 +97,7 @@ def main():
     parser.add_option("-p", dest="password", default='', help="password to use to authenticate against swift")
     parser.add_option("-s", dest="statefile", default='/tmp/ganglia-report-swift-stats', help="state file to store object count in between invocations")
     parser.add_option("-v", dest="verbose", action="store_true", default=False, help="print the values submitted to stdout")
+    parser.add_option("-c", dest="clustername", default='unknown', help="name of the cluster for whom to report stats")
     (options, args) = parser.parse_args()
 
     if(options.username == '' or options.password == ''):
@@ -112,10 +113,14 @@ def main():
 
     if options.verbose:
         print "about to submit stats: %s" % deltastats
-    submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects')
-    submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes')
-    submit_to_ganglia(name="swift object change", value=deltastats['Objects'], units='objects per second')
-    submit_to_ganglia(name="swift bytes change", value=deltastats['Bytes'], units='bytes per second')
+
+    # let's use 'pmtpa prod' instead of 'pmtpa-prod'
+    clustername = clustername.replace('-', ' ')
+
+    submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift object change", value=deltastats['Objects'], units='objects per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift bytes change", value=deltastats['Bytes'], units='bytes per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
     # not reporting containers at the moment because it's not very interesting
 
 if __name__ == '__main__':

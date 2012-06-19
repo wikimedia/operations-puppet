@@ -4,7 +4,7 @@
 
 server {
 	listen   80 default;
-	server_name  upload.wikimedia.org;
+	server_name  <%= thumbs_server_name %>;
 
 	#access_log	/var/log/nginx/upload.access.log;
 	access_log	off;

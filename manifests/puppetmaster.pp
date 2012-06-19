@@ -28,32 +28,35 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		ensure => latest;
 	}
 
-	$ssldir = "/var/lib/puppet/server/ssl"
-	# Move the puppetmaster's SSL files to a separate directory from the client's
-	file {
-		[ "/var/lib/puppet/server", $ssldir ]:
-			before => Package["puppetmaster"],
-			ensure => directory,
-			owner => puppet,
-			group => root,
-			mode => 0771;
-		[ "/var/lib/puppet", "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
-			ensure => directory;
-	}
+	class ssl($server_name="puppet", $ca="false") {
+		$ssldir = "/var/lib/puppet/server/ssl"
 
-	if $config['ca'] != "false" {
-		exec { "generate hostcert":
-			require => File["$ssldir/certs"],
-			command => "/usr/bin/puppet cert generate ${server_name}",
-			creates => "$ssldir/certs/${server_name}.pem";
+		# Move the puppetmaster's SSL files to a separate directory from the client's
+		file {
+			[ "/var/lib/puppet/server", $ssldir ]:
+				before => Package["puppetmaster"],
+				ensure => directory,
+				owner => puppet,
+				group => root,
+				mode => 0771;
+			[ "/var/lib/puppet", "$ssldir/ca", "$ssldir/certificate_requests", "$ssldir/certs", "$ssldir/private", "$ssldir/private_keys", "$ssldir/public_keys", "$ssldir/crl" ]:
+				ensure => directory;
 		}
-	}
 
-	exec { "setup crl dir":
-		require => File["$ssldir/crl"],
-		path => "/usr/sbin:/usr/bin:/sbin:/bin",
-		command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
-		onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
+		if $ca != "false" {
+			exec { "generate hostcert":
+				require => File["$ssldir/certs"],
+				command => "/usr/bin/puppet cert generate ${server_name}",
+				creates => "$ssldir/certs/${server_name}.pem";
+			}
+		}
+
+		exec { "setup crl dir":
+			require => File["$ssldir/crl"],
+			path => "/usr/sbin:/usr/bin:/sbin:/bin",
+			command => "ln -s ${ssldir}/ca/ca_crl.pem ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0",
+			onlyif => "test ! -L ${ssldir}/crl/$(openssl crl -in ${ssldir}/ca/ca_crl.pem -hash -noout).0"
+		}
 	}
 
 	# Class: puppetmaster::config
@@ -367,10 +370,164 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		allow_from => $allow_from
 	}
 
+	class { "puppetmaster::ssl":
+		server_name => $server_name,
+		ca => $config['ca']
+	}
+
 	include scripts, gitclone
 
 	if $is_labs_puppet_master {
 		include labs
 	}
 
+}
+
+class puppetmaster::self {
+
+	class config inherits base::puppet {
+		include openstack::nova_config,
+			openstack::keystone_config
+
+		$config = {
+			'dbadapter' => "sqlite3",
+			'node_terminus' => "ldap",
+			# UGH: $keystone_ldap_host's value depends on realm; we need
+			# production's value, but what we get is labs' which is "localhost" :/
+			# rather than hard-coding, use $keystone_puppet_host (which also sucks)
+			'ldapserver' => $openstack::nova_config::nova_puppet_host,
+			'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
+			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
+			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
+			'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
+			'ldaptls' => true
+		}
+
+		File["/etc/puppet/puppet.conf.d/10-main.conf"] {
+			ensure => absent
+		}
+
+		file { "/etc/puppet/puppet.conf.d/10-self.conf":
+			require => File["/etc/puppet/puppet.conf.d"],
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("puppet/puppet.conf.d/10-self.conf.erb"),
+			notify => Exec["compile puppet.conf"];
+		}
+
+		file { "/etc/puppet/fileserver.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("puppet/fileserver-self.conf.erb")
+		}
+
+		$gitdir = "/var/lib/git"
+		file { "/etc/puppet/private":
+			ensure => link,
+			target => "$gitdir/labs/private",
+			force  => true,
+		}
+		file { "/etc/puppet/templates":
+			ensure => link,
+			target => "$gitdir/operations/puppet/templates",
+			force  => true,
+		}
+		file { "/etc/puppet/files":
+			ensure => link,
+			target => "$gitdir/operations/puppet/files",
+			force  => true,
+		}
+		file { "/etc/puppet/manifests":
+			ensure => link,
+			target => "$gitdir/operations/puppet/manifests",
+			force  => true,
+		}
+	}
+
+	class gitclone {
+		$gitdir = "/var/lib/git"
+
+		file { "$gitdir":
+			ensure => directory,
+			owner  => root,
+			group  =>root,
+		}
+		file { "$gitdir/operations":
+			ensure => directory,
+			owner  => root,
+			group  => root,
+		}
+		file { "$gitdir/labs":
+			ensure => directory,
+			# private repo resides here, so enforce some perms
+			owner  => root,
+			group  => puppet,
+			mode   => 0640,
+		}
+
+		file { "$gitdir/ssh":
+			ensure  => file,
+			owner   => root,
+			group   => root,
+			mode    => 0755,
+			# FIXME: ok, this sucks. ew. ewww.
+			content => "#!/bin/sh\nexec ssh -o StrictHostKeyChecking=no -i $gitdir/labs-puppet-key \$*\n",
+			require => File["$gitdir/labs-puppet-key"],
+		}
+		file { "$gitdir/labs-puppet-key":
+			ensure  => file,
+			owner   => root,
+			group   => root,
+			mode    => 0600,
+			source  => "puppet:///private/ssh/labs-puppet-key",
+		}
+
+		git::clone { "operations/puppet":
+			directory => "$gitdir/operations",
+			branch    => "test",
+			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/operations/puppet.git",
+			ssh       => "$gitdir/ssh",
+			require   => [ File["$gitdir/operations"], File["$gitdir/ssh"] ],
+		}
+		git::clone { "labs/private":
+			directory => "$gitdir/labs",
+			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/labs/private.git",
+			ssh       => "$gitdir/ssh",
+			require   => [ File["$gitdir/labs"], File["$gitdir/ssh"] ],
+		}
+	}
+
+	system_role { "puppetmaster": description => "Puppetmaster for itself" }
+
+	include config
+	include gitclone
+
+	package { [ "vim-puppet", "puppet-el", "rails" ]:
+		ensure => present,
+	}
+	package { [ "libsqlite3-ruby", "libldap-ruby1.8" ]:
+		ensure => present,
+	}
+
+	# puppetmaster is started when installed, so things must be already set
+	# up by the time postinst runs; add a few require deps
+	package { [ "puppetmaster", "puppetmaster-common" ]:
+		ensure  => latest,
+		require => [
+			Package['rails'],
+			Package['libsqlite3-ruby'],
+			Package['libldap-ruby1.8'],
+			Class['config'],
+			Class['gitclone'],
+		],
+	}
+
+	class { "puppetmaster::ssl":
+		server_name => $fqdn,
+		ca => true
+	}
+
+	include puppetmaster::scripts
 }
