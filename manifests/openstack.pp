@@ -529,6 +529,8 @@ TLS_REQCERT     never
 
 class openstack::openstack-manager {
 
+	require mediawiki::user
+
 	include memcached,
 		webserver::apache2,
 		openstack::nova_config
@@ -548,6 +550,13 @@ class openstack::openstack-manager {
 			content => template('apache/sites/labsconsole.wikimedia.org'),
 			ensure => present;
 	}
+
+	cron { "run-jobs":
+		user => mwdeploy,
+		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php',
+		ensure => present;
+	}
+
 
 	apache_site { controller: name => "${nova_controller_hostname}" }
 	apache_site { 000_default: name => "000-default", ensure => absent }
