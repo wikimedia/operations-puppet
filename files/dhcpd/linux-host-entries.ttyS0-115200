@@ -113,3 +113,18 @@ host virt5 {
 	hardware ethernet 88:43:e1:c2:86:40;
 	fixed-address virt5.pmtpa.wmnet;
 }
+
+host virt6 {
+	hardware ethernet 88:43:E1:C2:57:EE;
+	fixed-address virt6.pmtpa.wmnet;
+}
+
+host virt7 {
+	hardware ethernet 88:43:E1:C2:77:DE
+	fixed-address virt7.pmtpa.wmnet;
+}
+
+host virt8 {
+	hardware ethernet 00:22:BD:D3:61:7E;
+	fixed-address virt8.pmtpa.wmnet;
+}
