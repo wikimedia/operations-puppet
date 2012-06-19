@@ -4,7 +4,9 @@
 #  - $deaf:			Is the gmond process an aggregator
 #  - $cname:			Cluster / Cloud 's name
 #  - $location:			Machine's location
-#  - $mcast_address:		Multicast "cluster" to join and send data on
+#  - $mcast_address:		Multicast "cluster" to join and send data on (production only)
+#  - $gmetad_host:		Hostname or IP of gmetad server used by gmond (labs only)
+#  - $authority_url:		URL used by gmond and gmetad
 
 class ganglia {
 
@@ -20,6 +22,13 @@ class ganglia {
 		} else {
 			$deaf = "yes"
 		}
+	}
+
+	if $realm == "labs" {
+		$authority_url = "http://ganglia.wmflabs.org"
+		$gmetad_host = "10.4.0.79"
+	} else {
+		$authority_url = "http://ganglia.wikimedia.org"
 	}
 
 	$location = "unspecified"
@@ -105,11 +114,15 @@ class ganglia {
 	# and a different IP prefix will be used.
 
 	# gmond.conf template variables
-	$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
-	$mcast_address = "${ip_prefix}.${ipoct}"
-
-	$clustername = $ganglia_clusters[$cluster][name]
-	$cname = "${clustername}${name_suffix}"
+	if $realm == "labs" {
+		$cname = $instanceproject
+	}
+	else {
+		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
+		$mcast_address = "${ip_prefix}.${ipoct}"
+		$clustername = $ganglia_clusters[$cluster][name]
+		$cname = "${clustername}${name_suffix}"
+	}
 
 	if versioncmp($lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"

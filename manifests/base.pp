@@ -203,6 +203,17 @@ class base::puppet($server="puppet") {
 			source => "puppet:///files/puppet/default_gateway.rb";
 	}
 
+	# Export project_gid, used by ganglia in labs
+	if $::realm == "labs" {
+		file {
+			"/var/lib/puppet/lib/facter/projectgid.rb":
+				owner => root,
+				group => root,
+				mode => 0755,
+				source => "puppet:///files/puppet/projectgid.rb";
+		}
+	}
+
 	# Compile /etc/puppet/puppet.conf from individual files in /etc/puppet/puppet.conf.d
 	exec { "compile puppet.conf":
 		path => "/usr/bin:/bin",
