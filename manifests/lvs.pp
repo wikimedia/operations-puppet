@@ -1086,7 +1086,7 @@ class lvs::monitor {
 			ip_address => $ip['ipv6']['esams']['wikisourcelb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
-		"wikinews-lb.wikimedia.org":
+		"wikinews-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikinewslb6'],
 			uri => "en.wikipedia.org!/wiki/Main_Page",
 			critical => "false";
