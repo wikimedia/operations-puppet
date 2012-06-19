@@ -1,7 +1,5 @@
-######################################################################
-#### THIS FILE IS MANAGED BY PUPPET                                  #
-#### puppet:///files/logrotate/htcp-purger                           #
-######################################################################
+# This file is managed by Puppet!
+#
 
 /var/log/HTCPpurger.log {
 	daily

@@ -1,0 +1,14 @@
+title   "Parser Cache Hit Latency (ms) -8hours"
+vtitle "time in ms"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :hit, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(ParserCache.get.tavg,"Avg"))'
+
+field :cant, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(ParserCache.get.tp99,"99%"))'

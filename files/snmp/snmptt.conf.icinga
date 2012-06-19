@@ -1,0 +1,8 @@
+# wikimedia puppet exec event 
+EVENT enterpriseSpecific .1.3.6.1.4.1.33298.0.1004 "Status Events" Normal
+FORMAT Exec of puppet event from $r.
+EXEC /usr/lib/nagios/plugins/eventhandlers/submit_check_result $r "Puppet freshness" 0 "puppet ran at `date`"
+SDESC
+snmp trap that's sent whenever puppet runs on a wikimedia host.
+EDESC
+#

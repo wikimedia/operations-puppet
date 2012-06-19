@@ -6,7 +6,7 @@
 
 """
 Selective Answer
-A PowerDNS Pipe backend, for selectively answering records to certain participating resolvers.
+A PowerDNS Pipe backend, for selectively answering records to certain resolvers.
 
 Copyright (C) 2008 by Mark Bergsma <mark@nedworks.org>
 
@@ -25,8 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import sys, stat
+import radix
 
-ALWAYS, PARTICIPANT, OTHER = range(3)
+ALWAYS, MATCH, NOMATCH = range(3)
 
 # Configuration variables
 filename = "/etc/powerdns/participants"
@@ -34,35 +35,37 @@ filename = "/etc/powerdns/participants"
 dnsRecords = {
 'upload.esams.wikimedia.org': [
     # (selectivity, qtype, ttl, content)
-    (ALWAYS,      'A',    3600, "91.198.174.234"),
-    (PARTICIPANT, 'AAAA', 3600, "2620:0:862:1::80:2"),
-    (PARTICIPANT, 'TXT',  3600, "DNS resolver ip %(remoteip)s is listed as a AAAA participant. Please contact ipv6@wikimedia.org if you see any problems."),
-    (OTHER,       'TXT',  3600, "DNS resolver ip %(remoteip)s is not listed as a AAAA participant. Please contact ipv6@wikimedia.org if you would like to join in this IPv6 experiment.")
+    (ALWAYS,  'A',    3600, "91.198.174.234"),
+    (MATCH,   'AAAA', 3600, "2620:0:862:1::80:2"),
+    (MATCH,   'TXT',  3600, "DNS resolver ip %(remoteip)s is listed as a AAAA participant. Please contact ipv6@wikimedia.org if you see any problems."),
+    (NOMATCH, 'TXT',  3600, "DNS resolver ip %(remoteip)s is not listed as a AAAA participant. Please contact ipv6@wikimedia.org if you would like to join in this IPv6 experiment.")
     ]
 }
 
 
-def loadParticipants(filename):
-    participants = set()
+def loadList(filename):
+    netlist = radix.Radix()
     try:
         for line in file(filename, 'r'):
             line = line[:-1].strip()
             if len(line) == 0 or line.startswith('#'): continue # Skip empty lines & comments
-            ip = line.split('#', 2)[0].strip()                  # Allow comments after the IP
-            
-            participants.add(ip)
+            net = line.split('#', 2)[0].strip()                 # Allow comments after the IP
+            netlist.add(net)
     except:
-        print "LOG\tCould not (fully) load participants file", filename
+        print "LOG\tCould not (fully) load netlist file", filename
     
-    return frozenset(participants)
+    return netlist
 
-def answerRecord(qNameSet, (qName, qClass, qType, qId, remoteIp, localIp), participants):
+def answerRecord(qNameSet, (qName, qClass, qType, qId, remoteIp, localIp), netlist):
     for record in qNameSet:
         selectivity, rQType, ttl, content = record
+        if selectivity != ALWAYS: # no reason to search
+            ip_matched = (netlist.search_best(remoteIp) != None)
+
         if qType in (rQType, 'ANY', 'AXFR'):
             if (selectivity == ALWAYS
-                or (selectivity == PARTICIPANT and remoteIp in participants)
-                or (selectivity == OTHER and remoteIp not in participants)):
+                or (selectivity == MATCH and ip_matched)
+                or (selectivity == NOMATCH and not ip_matched)):
                 
                 # Substitute values in the record content
                 content = content % {'qname': qName,
@@ -72,18 +75,18 @@ def answerRecord(qNameSet, (qName, qClass, qType, qId, remoteIp, localIp), parti
                                     }
                 print "DATA\t%s\t%s\t%s\t%d\t%d\t%s" % (qName, 'IN', rQType, ttl, int(qId), content)  
 
-def query((qName, qClass, qType, qId, remoteIp, localIp), dnsRecords, participants):
+def query((qName, qClass, qType, qId, remoteIp, localIp), dnsRecords, netlist):
     if qClass == 'IN' and qName.lower() in dnsRecords:
-        answerRecord(dnsRecords[qName.lower()], (qName, qClass, qType, qId, remoteIp, localIp), participants)
+        answerRecord(dnsRecords[qName.lower()], (qName, qClass, qType, qId, remoteIp, localIp), netlist)
     print "END"
 
 def axfr(id):
     for qName, qNameSet in dnsRecords.iteritems():
-        answerRecord(qNameSet, (qName, "IN", "AXFR", id, "None", "None"), set())
+        answerRecord(qNameSet, (qName, "IN", "AXFR", id, "None", "None"), radix.Radix())
     print "END"
 
 def main():
-    participants, lastMTime = set(), 0
+    netlist, lastMTime = radix.Radix(), 0
     # Do not use buffering
     line = sys.stdin.readline()
     while line:        
@@ -97,27 +100,27 @@ def main():
                 else:
                     print "OK\tSelective Answer"
             elif words[0] == "Q":
-                query(words[1:7], dnsRecords, participants)
+                query(words[1:7], dnsRecords, netlist)
             elif words[0] == "AXFR":
                 axfr(words[1])
             elif words[0] == "PING":
                 pass    # PowerDNS doesn't seem to do anything with this
             else:
                 raise ValueError
-        except IndexError, ValueError:
+        except (IndexError, ValueError):
             print "LOG\tPowerDNS sent an unparseable line: '%s'" % line
             print "FAIL"    # FAIL!
         
         sys.stdout.flush()
         
-        # Reload the participants file if it has changed
+        # Reload the netlist file if it has changed
         try:
             curMTime = os.stat(filename)[stat.ST_MTIME]
         except OSError:
             pass
         else:
             if curMTime > lastMTime:
-                participants = loadParticipants(filename)
+                netlist = loadList(filename)
                 lastMTime = curMTime           
                
         line = sys.stdin.readline()
@@ -137,7 +140,9 @@ if __name__ == '__main__':
 
     import os
     for fd in range(3, maxfds):
-        try: os.close(fd)
-        except: pass
+        try:
+            os.close(fd)
+        except:
+            pass
     
     main()

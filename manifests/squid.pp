@@ -2,15 +2,6 @@
 
 import "generic-definitions.pp"
 
-# Virtual resources for the monitoring server
-# TODO: remove these after migration
-@monitor_group { "squids_pmtpa": description => "pmtpa text squids" }
-@monitor_group { "squids_upload": description => "pmtpa upload squids" }
-@monitor_group { "squids_text": description => "text squids" }
-@monitor_group { "squids_esams_text": description => "esams text squids" }
-@monitor_group { "squids_esams_upload": description => "esams upload squids" }
-@monitor_group { "squids_eqiad_text": description => "eqiad text squids" }
-
 class squid {
 
 	if $realm == "labs" {
@@ -72,19 +63,21 @@ class squid {
 			path => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
 			content => template("squid/squid-disk-permissions.erb");
 	}
-
+	
 	service {
 		"squid-frontend":
 			require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
 			subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
 			hasstatus => false,
 			pattern => "squid-frontend",
+			enable => false,
 			ensure => running;
 		"squid":
 			require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
 			subscribe => File["/etc/squid/squid.conf"],
 			hasstatus => false,
 			pattern => "/usr/sbin/squid ",
+			enable => false,
 			ensure => running;
 	}
 
@@ -124,11 +117,12 @@ class squid {
 
 
 class squid::cachemgr {
+	require role::cache::configuration
 
 	system_role { "squid::cachemgr": description => "Squid Cache Manager" }
 
 	file { "/etc/squid/cachemgr.conf":
-		source => "puppet:///files/squid/cachemgr.conf",
+		content => template("squid/cachemgr.conf.erb"),
 		owner => root,
 		group => root,
 		mode => 0444;

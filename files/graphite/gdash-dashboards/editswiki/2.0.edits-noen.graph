@@ -1,0 +1,9 @@
+title   "edits/min Top 10 Wikis After EN.WP -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :a, :alias => "none",
+               #:data  => 'legendValue(substr(highestMax(exclude(reqstats.edits.*.edit,"reqstats.edits.en_wikiped"),10),2,3),"avg")'
+               :data  => 'cactiStyle(substr(highestMax(exclude(reqstats.edits.*.edit,"reqstats.edits.en_wikiped"),10),2,3))'

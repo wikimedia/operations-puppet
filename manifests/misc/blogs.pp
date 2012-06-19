@@ -6,7 +6,11 @@ class misc::blogs::wikimedia {
 
 	require apaches::packages,
 		webserver::php5-gd
-
+		
+	package { "unzip":
+		ensure => latest;
+	}
+	
 	file {
 		"/etc/apache2/sites-available/blog.wikimedia.org":
 			path => "/etc/apache2/sites-available/blog.wikimedia.org",

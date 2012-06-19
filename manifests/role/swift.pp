@@ -32,7 +32,12 @@ class role::swift {
 			dont_write_thumb_list => ""
 		}
 		include ::swift::storage
-		include ::swift::proxy
+		include	::swift::proxy
+
+		# FIXME: split these iptables rules apart into common, proxy, and
+		# storage so storage nodes aren't listening on http, etc.
+		# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
+		include	::swift::iptables
 	}
 	
 	class pmtpa-test inherits role::swift::base {
@@ -62,6 +67,11 @@ class role::swift {
 		class storage inherits role::swift::pmtpa-test {
 			include ::swift::storage
 		}
+
+		# FIXME: split these iptables rules apart into common, proxy, and
+		# storage so storage nodes aren't listening on http, etc.
+		# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
+		include ::swift::iptables
 	}
 
 	class pmtpa-prod inherits role::swift::base {
@@ -87,7 +97,7 @@ class role::swift {
 			class { "::swift::proxy::config":
 				bind_port => "80",
 				proxy_address => "http://ms-fe.pmtpa.wmnet",
-				num_workers => $::processorcount * 2,
+				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe1.pmtpa.wmnet:11211", "ms-fe2.pmtpa.wmnet:11211" ],
 				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
 				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
@@ -101,9 +111,11 @@ class role::swift {
 				dont_write_thumb_list => ""
 			}
 			include ::swift::proxy
+			include ::swift::proxy::monitoring
 		}
 		class storage inherits role::swift::pmtpa-prod {
 			include ::swift::storage
+			include ::swift::storage::monitoring
 		}
 	}
 	class pmtpa-labs inherits role::swift::base {

@@ -25,7 +25,12 @@ skip-external-locking
 skip-name-resolve
 <% end -%>
 
+<% if mysql_myisam == true then -%>
+myisam-recover = QUICK
+key_buffer		= 1024M
+<% else %>
 key_buffer		= 1M
+<% end -%>
 max_allowed_packet	= 16M
 thread_stack		= 192K
 thread_cache_size	= 300
@@ -38,25 +43,19 @@ table_definition_cache = 40000
 query_cache_size        = 0
 
 log_slow_queries
-log_queries_not_using_indexes
+#log_queries_not_using_indexes 
 log_slow_extra
-long_query_time = 0.6
+long_query_time = 0.45
 
-<% if disable_binlogs == "true" then -%>
-#log_bin
-#log_slave_updates
-#binlog_cache_size = 1M
-#max_binlog_size         = 1000M
-#binlog_format=statement
-<% else -%>
+<% if disable_binlogs != "true" then -%>
 log_bin
 log_slave_updates
+sync_binlog = 1
 binlog_cache_size = 1M
 max_binlog_size         = 1000M
 binlog_format=statement
+expire_logs_days = 30
 <% end -%>
-
-expire_logs_days	= 60 
 
 connect_timeout=3
 back_log=1000

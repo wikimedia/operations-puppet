@@ -1,0 +1,8 @@
+title   "Pageviews/hour Top 10 Wikis After EN.WP -1week"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 week"
+
+field :a, :alias => "none",
+               :data  => 'cactiStyle(substr(summarize(highestMax(exclude(reqstats.*edia_org.pageviews,"(en_wikiped|^www|_m_|sq\d)"),10), "1hour"),1,2))'

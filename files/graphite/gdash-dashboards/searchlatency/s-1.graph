@@ -1,0 +1,9 @@
+title   "Average Search Latency -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :a, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(LuceneSearchSet.newFromQuery.tavg,"Avg Query Latency (ms)"))'

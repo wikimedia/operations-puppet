@@ -57,9 +57,9 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 }
 
 define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
-        if ! $host {
-                fail("Parameter $host not defined!")
-        }
+	if ! $host {
+		fail("Parameter $host not defined!")
+	}
 
 	if $hostname in $decommissioned_servers {
 		# Export the nagios service instance
@@ -134,13 +134,13 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 }
 
 define monitor_group ($description, $ensure=present) {
-        # Nagios hostgroup instance
+	# Nagios hostgroup instance
 	nagios_hostgroup { $title:
 		target => "${nagios_config_dir}/puppet_hostgroups.cfg",
 		hostgroup_name => $title,
 		alias => $description,
 		ensure => $ensure;
-        }
+	}
 
 	# Nagios servicegroup instance
 	nagios_servicegroup { $title:
@@ -178,7 +178,13 @@ define decommission_monitor_host {
 # Class which implements the monitoring services on the monitor host
 class nagios::monitor {
 
-	include passwords::nagios::mysql
+	require nrpe
+
+	include passwords::nagios::mysql,
+	facilities::pdu_monitoring,
+	lvs::monitor,
+	nagios::gsbmonitoring
+
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 	# puppet_hosts.cfg must be first
@@ -199,18 +205,16 @@ class nagios::monitor {
 			  "${nagios_config_dir}/timeperiods.cfg",
 			  "${nagios_config_dir}/htpasswd.users"]
 
-	systemuser { nagios: name => "nagios", home => "/var/lib/nagios", groups => [ "nagios", "dialout", "gammu" ] }
+	systemuser { nagios: name => "nagios", home => "/home/nagios", groups => [ "nagios", "dialout", "gammu" ] }
 
 	# nagios3: nagios itself, depends: nagios3-core nagios3-cgi (nagios3-common)
-	# nagios-plugins: the regular plugins as also installed on monitored hosts. depends: nagios-plugins-basic, nagios-plugins-standard
-	# nagios-plugins-extra: plugins, but "extra functionality to be useful on a central nagios host"
 	# nagios-images: images and icons for the web frontend
 
-	include nagios::packages::nagios3,
-		nagios::packages::images,
-		nagios::packages::plugins
+	package { [ 'nagios3', 'nagios-images' ]:
+		ensure => latest;
+	}
 
-	service { nagios3:
+	service { nagios:
 		require => File[$puppet_files],
 		ensure => running,
 		subscribe => [ File[$puppet_files],
@@ -218,19 +222,83 @@ class nagios::monitor {
 			       File["/etc/nagios/puppet_checks.d"] ];
 	}
 
-	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+	class snmp {
 
-	package { "snmpd":
-		ensure => latest;
+		file { "/etc/snmp/snmptrapd.conf":
+			source => "puppet:///files/snmp/snmptrapd.conf",
+			owner => root,
+			group => root,
+			mode => 0600;
+		}
+
+		file { "/etc/snmp/snmptt.conf":
+			source => "puppet:///files/snmp/snmptt.conf",
+			owner => root,
+			group => root,
+			mode => 0644;
+		}
+
+		# snmp tarp stuff
+		systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+
+		package { "snmpd":
+			ensure => latest;
+		}
+
+		package { "snmptt":
+			ensure => latest;
+		}
+
 	}
 
-	package { "snmptt":
-		ensure => latest;
+	class firewall {
+
+		# deny access to port 5667 TCP (nsca) from external networks
+		# deny service snmp-trap (port 162) for external networks
+
+		class iptables-purges {
+
+			require "iptables::tables"
+			iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
+			iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
+		}
+
+		class iptables-accepts {
+
+			require "nagios::monitor::firewall::iptables-purges"
+
+			iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_pmtpa_nolabs": source => "10.0.0.0/14", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_esams": source => "10.21.0.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_eqiad1": source => "10.64.0.0/19", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_eqiad2": source => "10.65.0.0/20", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "private_virt": source => "10.4.16.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_153": source => "208.80.153.128/26", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_154": source => "208.80.154.0/24", service => "all", jump => "ACCEPT" }
+			iptables_add_service{ "public_esams": source => "91.198.174.0/25", service => "all", jump => "ACCEPT" }
+		}
+
+		class iptables-drops {
+
+			require "nagios::monitor::firewall::iptables-accepts"
+			iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
+			iptables_add_service{ "deny_pub_snmptrap": service => "snmptrap", jump => "DROP" }
+		}
+
+		class iptables {
+
+			require "nagios::monitor::firewall::iptables-drops"
+			iptables_add_exec{ "${hostname}_nsca": service => "nsca" }
+			iptables_add_exec{ "${hostname}_snmptrap": service => "snmptrap" }
+		}
+
+		require "nagios::monitor::firewall::iptables"
 	}
-	
+
 	# Stomp Perl module to monitor erzurumi (RT #703)
-	
+
 	package { "libnet-stomp-perl":
 		ensure => latest;
 	}
@@ -250,33 +318,26 @@ class nagios::monitor {
 	}
 
 	apache_site { nagios: name => "nagios" }
- 
+
 	# make sure the directory for individual service checks exists
-	file { "/etc/nagios/puppet_checks.d":
+	file { "/etc/nagios":
 		ensure => directory,
 		owner => root,
 		group => root,
+		mode => 0755;
+
+		"/etc/nagios/puppet_checks.d":
+		ensure => directory,
+		owner => root,
+		group => root,
+		mode => 0755;
 	}
 
 	file { "/usr/local/nagios/libexec/eventhandlers/submit_check_result":
 		source => "puppet:///files/nagios/submit_check_result",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0755; 
-	}
-
-	file { "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0600; 
-	}
-
-	file { "/etc/snmp/snmptt.conf":
-		source => "puppet:///files/snmp/snmptt.conf",
-		owner => root,                                                                                                                                                 
-                group => root,                                                                                                                                                 
-                mode => 0644; 
+		owner => root,
+		group => root,
+		mode => 0755;
 	}
 
 	# Fix permissions
@@ -284,11 +345,11 @@ class nagios::monitor {
 		mode => 0644,
 		ensure => present;
 	}
-	
+
 	# also fix permissions on all individual service files
 	exec { "fix_nagios_perms":
 		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
-		notify => Service["nagios3"],
+		notify => Service["nagios"],
 		refreshonly => "true";
 	}
 
@@ -321,6 +382,12 @@ class nagios::monitor {
 		mode => 0644;
 	}
 
+	file { "/etc/nagios/nsca_payments.cfg":
+		source => "puppet:///private/nagios/nsca_payments.cfg",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
 
 	file { "/etc/nagios/htpasswd.users":
 		source => "puppet:///private/nagios/htpasswd.users",
@@ -381,24 +448,24 @@ class nagios::monitor {
 	# Collect exported resources
 	Nagios_host <<| |>> {
 		#before => Service[nagios],
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Nagios_hostextinfo <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Nagios_service <<| |>> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 
-        # Collect all (virtual) resources
+	# Collect all (virtual) resources
 	Monitor_group <| |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Monitor_host <| |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 	Monitor_service <| tag != "nrpe" |> {
-		notify => Service[nagios3],
+		notify => Service[nagios],
 	}
 
 	# Decommission servers
@@ -444,13 +511,9 @@ class nagios::monitor {
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_ram.sh":
-			source => "puppet:///files/nagios/check_ram.sh",
-			owner => root,
-			group => root,
-			mode => 0755;
 	}
 }
+
 
 class nagios::monitor::jobqueue {
 
@@ -460,7 +523,6 @@ class nagios::monitor::jobqueue {
 		group => root,
 		mode => 0755;
 	}
-
 	monitor_service { "check_job_queue":
 		description => "check_job_queue",
 		check_command => "check_job_queue",
@@ -468,7 +530,24 @@ class nagios::monitor::jobqueue {
 		retry_check_interval => 5,
 		critical => "false"
 	}
+}
 
+# this class is used to check that paging works.
+class nagios::monitor::checkpaging {
+	file {"/usr/local/nagios/libexec/check_to_check_nagios_paging":
+		source => "puppet:///files/nagios/check_to_check_nagios_paging",
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+	monitor_service { "check_to_check_nagios_paging":
+		description => "check_to_check_nagios_paging",
+		check_command => "check_to_check_nagios_paging",
+		normal_check_interval => 1,
+		retry_check_interval => 1,
+		contact_group => "pager_testing",
+		critical => "false"
+	}
 }
 
 class nagios::monitor::pager {
@@ -534,8 +613,9 @@ class nagios::ganglia::ganglios {
 		ensure => latest;
 	}
 	cron { "ganglios-cron":
-		command => "/usr/sbin/ganglia_parser",
+		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
 		user => nagios,
+		minute => "*/2",
 		ensure => present;
 	}
 	file { "/var/lib/ganglia/xmlcache":
@@ -543,27 +623,6 @@ class nagios::ganglia::ganglios {
 		mode => 0755,
 		owner => nagios;
 	}
-}
-
-class nagios::monitor::check_wiki_user_last_edit_time {
-	# Check script relies on libmediawiki-api-perl
-	package { "libmediawiki-api-perl":
-		ensure => latest;
-	}
-	file {"/usr/local/nagios/libexec/check_wiki_user_last_edit_time.pl":
-		source => "puppet:///files/nagios/check_wiki_user_last_edit_time",
-		owner => root,
-		group => root,
-		mode => 0755;
-	}
-	monitor_service { "check_wiki_user_last_edit_time":
-		description => "check_wiki_user_last_edit_time",
-		check_command => "check_wiki_user_last_edit_time",
-		normal_check_interval => 15,
-		retry_check_interval => 15,
-		critical => "false"
-	}
-
 }
 
 # passive checks / NSCA
@@ -576,6 +635,7 @@ class nagios::nsca {
 	}
 
 }
+
 # NSCA - daemon
 class nagios::nsca::daemon {
 
@@ -594,43 +654,6 @@ class nagios::nsca::daemon {
 		ensure => running;
 	}
 
-
-	# deny access to port 5667 TCP (nsca) from external networks
-
-	class iptables-purges {
-
-		require "iptables::tables"
-
-		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
-	}
-
-	class iptables-accepts {
-
-		require "nagios::nsca::daemon::iptables-purges"
-
-		iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "public_all": source => "208.80.152.0/22", service => "all", jump => "ACCEPT" }
-	}
-
-	class iptables-drops {
-
-		require "nagios::nsca::daemon::iptables-accepts"
-
-		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
-	}
-
-	class iptables {
-
-		require "nagios::nsca::daemon::iptables-drops"
-
-		# temporarily remove the exec rule so that the ruleset is simply created
-		# and we can inspect the file before allowing puppet to auto-load the rules
-		iptables_add_exec{ "${hostname}": service => "nsca" }
-	}
-
-	require "nagios::nsca::daemon::iptables"
 }
 
 # NSCA - client
@@ -649,27 +672,16 @@ class nagios::nsca::client {
 	}
 }
 
-class nagios::packages::nagios3 {
-	package { "nagios3":
-		ensure => latest;
-	}
-}
-class nagios::packages::images {
-	package { "nagios-images":
-		ensure => latest;
-	}
-}
-class nagios::packages::plugins {
-	package { "nagios-plugins":
-		ensure => latest;
-	}
-	package { "nagios-plugins-basic":
-		ensure => latest;
-	}
-	package { "nagios-plugins-extra":
-		ensure => latest;
-	}
-	package { "nagios-plugins-standard":
-		ensure => latest;
-	}
+class nagios::gsbmonitoring {
+	@monitor_host { "google": ip_address => "74.125.225.84" }
+
+	@monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
+	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }

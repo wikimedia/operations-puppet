@@ -1,0 +1,15 @@
+title   "en.m.wikipedia.org Pageview Request Latency (ms) log(2) -1month"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1month"
+logbase 2
+
+field :a, :color => "blue",
+		:alias => "none",
+			:data => 'cactiStyle(alias(reqstats.en_m_wikipedia_org.tp99,"99th percentile"))'
+
+field :b, :color => "red",
+		:alias => "none",
+			:data => 'cactiStyle(alias(reqstats.en_m_wikipedia_org.tp50,"50th percentile"))'
+

@@ -1,0 +1,19 @@
+title   "Mysql Queries And Memcached Gets Avg and 99th Percentile Latency (ms) log(2) -1day"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1day"
+logbase 2
+
+field :slave, :alias => "none",
+   :data  => "cactiStyle(DatabaseBase.query*.tp99)"
+
+field :memc, :alias => "none",
+ :data  => "cactiStyle(MWMemcached.get.tp99)"
+
+field :slaveav, :alias => "none",
+   :data  => "cactiStyle(DatabaseBase.query*.tavg)"
+
+field :memcav, :alias => "none",  
+ :data  => "cactiStyle(MWMemcached.get.tavg)"
+

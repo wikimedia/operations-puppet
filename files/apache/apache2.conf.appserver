@@ -23,7 +23,8 @@ Timeout 200
 # turned off -- brion -2004-01-09
 # on for testing -- TS 2005-11-25
 # off again, squid doesn't understand the HTTP/1.1 keepalive protocol -- TS
-KeepAlive Off
+# on again for testing -- mark 2012-02-10
+KeepAlive on
 
 MaxKeepAliveRequests 150
 KeepAliveTimeout 2
@@ -45,7 +46,7 @@ MaxClients 5
 </IfDefine>
 
 <IfDefine SCALER>
-MaxClients 10
+MaxClients 20
 # Reduce TimeOut to limit the impact of LVS flapping -- TS 2008-08-19
 TimeOut 10 
 </IfDefine>
@@ -101,7 +102,7 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
             ExpiresByType text/css A2592000
             ExpiresByType text/javascript A2592000
             ExpiresByType application/x-javascript A2592000
-            ExpiresByType application/x-woff A2592000
+            ExpiresByType application/x-font-woff A2592000
             ExpiresByType image/svg+xml A2592000
             ExpiresByType application/vnd.ms-fontobject A2592000
             ExpiresByType application/x-font-ttf A2592000
@@ -268,7 +269,7 @@ ServerSignature Off
     AddType application/x-tar .tgz
     AddType text/xml .rdf
     AddType application/x-bzip2 .bz2
-    AddType application/x-woff .woff
+    AddType application/x-font-woff .woff
     AddType application/vnd.ms-fontobject .eot
     # TTF doesn't have an official MIME type, but I really don't want to use application/octet-stream for it
     AddType application/x-font-ttf .ttf

@@ -1,0 +1,14 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/translationnotifications
+#####################################################################
+
+/var/log/translationnotifications/*.log {
+	daily
+	notifempty
+	maxage 180
+	rotate 1000
+	dateext
+	compress
+}
+

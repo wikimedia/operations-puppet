@@ -19,6 +19,11 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_fetch {
+	/* Don't run the default vcl_fetch function */
+	return (deliver);
+}
+
 <% if site == "pmtpa" or site == "eqiad" -%>
 # FIXME: Implement some proper topology code for primary DCs and downstream cache sites
 sub vcl_miss {

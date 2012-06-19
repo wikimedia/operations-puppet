@@ -1,41 +1,34 @@
-#!/bin/sh
-#####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
-### puppet:///files/misc/update-ubuntu-mirror
-#####################################################################
+#/bin/dash
 
-#
-# Ubuntu mirror script
+fatal() {
+  echo "$1"
+  exit 1
+}
 
+warn() {
+  echo "$1"
+}
+
+# Find a source mirror near you which supports rsync on
+# https://launchpad.net/ubuntu/+archivemirrors
+# rsync://<iso-country-code>.rsync.archive.ubuntu.com/ubuntu should always work
+RSYNCSOURCE=rsync://us.rsync.archive.ubuntu.com/ubuntu
+
+# Define where you want the mirror-data to be on your mirror
 BASEDIR=/srv/ubuntu
 
-echo "Checking Sanity"
-mkdir -p $BASEDIR
-SRC="rsync://archive.ubuntu.com/ubuntu/"
-# Faster, closer but less up to date mirror:
-#SRC="rsync://ubuntu.osuosl.org/ubuntu/"
-
-echo "Running rsync"
-umask 002
-for ONE in $SRC; do
-echo " * Handling repository: $ONE"
-
-UPDATEHOST=brewster
-touch ${BASEDIR}/Archive-Update-in-Progress-${UPDATEHOST}
+if [ ! -d ${BASEDIR} ]; then
+  fatal "${BASEDIR} doesn't exist."
+fi
 
 rsync --recursive --times --links --hard-links \
-      --exclude "Packages*" --exclude "Sources*" \
-      --exclude "Release*" \
-      --exclude "Archive-Update-in-Progress-${UPDATEHOST}" \
-      ${ONE} ${BASEDIR} || fatal "Could not rsync $ONE, first stage"
+  --stats \
+  --exclude "Packages*" --exclude "Sources*" \
+  --exclude "Release*" \
+  ${RSYNCSOURCE} ${BASEDIR} || fatal "First stage of sync failed."
 
 rsync --recursive --times --links --hard-links \
-      --delete --delete-after \
-      --exclude "Archive-Update-in-Progress-${UPDATEHOST}" \
-      --exclude "project/trace/${HOSTNAME}" \
-      ${ONE} ${BASEDIR} || fatal "Could not rsync $ONE, second stage"
-done
-echo "Done (rsync)"
-echo ""
+  --stats --delete --delete-after \
+  ${RSYNCSOURCE} ${BASEDIR} || fatal "Second stage of sync failed."
 
-rm ${BASEDIR}/Archive-Update-in-Progress-${UPDATEHOST}
+date -u > ${BASEDIR}/project/trace/$(hostname -f)

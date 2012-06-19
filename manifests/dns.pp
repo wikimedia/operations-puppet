@@ -7,27 +7,10 @@
 
 import "generic-definitions.pp"
 
-class dns::auth-server-ldap {
+class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_query_address="", $ldap_host, $ldap_base_dn, $ldap_user_dn, $ldap_user_pass) {
 
 	package { [ "pdns-server", "pdns-backend-ldap" ]:
 		ensure => latest;
-	}
-
-	# FIXME: parameterize, call from a nova role class, remove this include
-	include openstack::nova_config
-
-	$nova_ldap_host = $openstack::nova_config::nova_ldap_host
-	$nova_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
-	$nova_ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
-	$nova_ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
-
-	# FIXME: remove some duplication between this and dns::auth-server
-	if ! $dns_auth_ipaddress {
-		fail("Parametmer $dns_auth_ipaddress not defined!")
-	}
-
-	if ! $dns_auth_soa_name {
-		fail("Parameter $dns_auth_soa_name not defined!")
 	}
 
 	system_role { "dns::auth-server-ldap": description => "Authoritative DNS server (LDAP)" }
@@ -76,6 +59,10 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 		ensure => latest;
 	}
 
+	package { 'python-radix':
+		ensure => present
+	}
+
 	system_role { "dns::auth-server": description => "Authoritative DNS server" }
 
 	file {
@@ -91,6 +78,7 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/powerdns/selective-answer.py",
+			require => Package['python-radix'],
 			ensure => present;
 		"/etc/powerdns/participants":
 			require => Package[wikimedia-task-dns-auth],
@@ -169,6 +157,8 @@ class dns::recursor {
 
 	system_role { "dns::recursor": description => "Recursive DNS server" }
 
+	include network::constants
+
 	file { "/etc/powerdns/recursor.conf":
 		require => Package[pdns-recursor],
 		owner => root,
@@ -184,6 +174,20 @@ class dns::recursor {
 		name => "pdns_recursor",
 		hasstatus => false,
 		ensure => running;
+	}
+
+	# install ganglia metrics reporting on pdns_recursor
+	file { "/usr/local/sbin/pdns_gmetric":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/powerdns/pdns_gmetric",
+		ensure => present;
+	}
+	cron { pdns_gmetric_cron:
+		command => "/usr/local/sbin/pdns_gmetric",
+		user => root,
+		minute => "*";
 	}
 
 	class monitoring {

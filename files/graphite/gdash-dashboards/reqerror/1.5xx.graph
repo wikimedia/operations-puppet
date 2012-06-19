@@ -1,0 +1,14 @@
+title   "HTTP 5xx Responses -8hours"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :a, :color => "red", 
+   :alias => "none",
+   :data  => 'cactiStyle(alias(reqstats.500,"500 resp/min"))'
+
+field :b, :color => "blue",
+   :alias => "none",
+   :data  => 'cactiStyle(alias(reqstats.5xx,"5xx resp/min"))'
+

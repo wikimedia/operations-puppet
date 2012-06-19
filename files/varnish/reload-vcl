@@ -170,7 +170,7 @@ else
 fi 
 
 if [ -n "$exitstatus" ] ; then
-	echo "$vcl_file $vcl_label relaod failed" > $logfile
+	echo "$vcl_file $vcl_label reload failed" > $logfile
 fi
 
 # Blather

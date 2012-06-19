@@ -1,0 +1,14 @@
+title   "Average Jobs Per Day -2months"
+linewidth 1
+linemode "staircase"
+hide_legend "false"
+from "-2month"
+area "first"
+
+field :pop, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(stats.job-pop.count, "1day"),"Jobs Run/day"))'
+
+field :run, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(stats.job-insert.count, "1day"),"Jobs Queued/day"))'

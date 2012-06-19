@@ -1,14 +1,127 @@
 # Varnish VCL include file for mobile frontends
 
+C{
+#include <netinet/in.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+}C
+
 acl wmf_office {
-	"216.38.130.163";
+	"216.38.130.160"/29;
+}
+
+acl opera_mini {
+	"195.189.142.0"/23;
+	"91.203.96.0"/22;
+	"80.239.242.0"/23;
+	"217.212.230.0"/23;
+	"141.0.8.0"/21;
+	"82.145.208.0"/20;
+}
+
+acl carrier_testing {
+	"208.80.152.165";
+	"208.80.153.194";
+}
+
+acl carrier_digi {
+	"203.92.128.185";
+	"115.164.0.0"/16;
+	"116.197.0.0"/17;
+}
+
+acl carrier_orange_ivory_coast {
+	//"41.66.28.94"/32;
+	//"41.66.28.95"/32;
+	//"41.66.28.96"/32;
+	//"41.66.28.72"/32;
+	//"41.66.28.73"/32;
+}
+
+acl carrier_orange_uganda {
+	//"41.202.224.0"/19;
+	//"197.157.0.0"/18;
+}
+
+acl carrier_orange_kenya {
+	//"212.49.88.0"/25;
+}
+
+acl carrier_orange_tunisia {
+	//"197.30.0.0"/17;
+	//"197.30.128.0"/19;
+	//"197.30.224.0"/19;
+	//"197.29.192.0"/18;
+}
+
+acl carrier_orange_niger {
+	//"41.203.157.1";
+	//"41.203.157.2";
+	//"41.203.159.243";
+}
+
+acl carrier_orange_cameroon {
+	//"193.251.155.0"/25;
+	//"41.202.192.0"/19;
+}
+
+acl carrier_grameenphone_bangladesh {
+	//"119.30.38.0"/24;
+	//"119.30.39.0"/24;
+	//"119.30.45.0"/24;
+	//"119.30.47.0"/24;
+}
+
+acl carrier_telenor_montenegro {
+	//"79.143.96.0"/20;
 }
 
 sub tag_carrier {
+
 	/* For wiki zero project - tags partnered carriers */
-	if (client.ip ~ wmf_office) {
-		set req.http.X-Carrier = "wikimedia";
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
+		if (client.ip ~ wmf_office) {
+			set req.http.X-Carrier = "wikimedia";
+		} else if (client.ip ~ carrier_digi) {
+			if ( req.http.User-Agent ~ "Opera" ) {
+				set req.http.X-Carrier = "DIGI";
+			}
+		} else if (client.ip ~ carrier_telenor_montenegro) {
+			set req.http.X-Carrier = "Telenor Montenegro";
+		} else if (client.ip ~ carrier_grameenphone_bangladesh) {
+			if ( req.http.User-Agent ~ "Opera" ) {
+				if ( req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+					set req.http.X-Carrier = "Grameenphone Bangladesh";
+				}
+			}
+		}
+	} else {
+		if ( client.ip ~  carrier_orange_ivory_coast ) {
+			set req.http.X-Carrier = "Orange Ivory Coast";
+		} else if ( client.ip ~  carrier_orange_uganda ) {
+			if ( req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Uganda";
+			}
+		} else if ( client.ip ~  carrier_orange_tunisia ) {
+			if ( req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Tunisia";
+			}
+		} else if ( client.ip ~  carrier_orange_niger ) {
+				set req.http.X-Carrier = "Orange Niger";
+		} else if ( client.ip ~ carrier_orange_kenya ) {
+				set req.http.X-Carrier = "Orange Kenya";
+		} else if ( client.ip ~  carrier_orange_cameroon ) {
+			if ( req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Cameroon";
+			}
+		} else if (client.ip ~ carrier_telenor_montenegro) {
+			set req.http.X-Carrier = "Telenor Montenegro";
+		} else if ( client.ip ~ carrier_testing ) {
+			set req.http.X-Carrier = "wikimedia";
+		}
 	}
+
 	/* once actuall in prod, ensure users can't make requests
 	with a fake X-Carrier header */
 	/* else {
@@ -18,82 +131,143 @@ sub tag_carrier {
 
 sub device_detection {
 
-	set req.http.X-Device = "html";
+	set req.http.X-Device = "";
 
-	if (req.http.User-Agent ~ "WebKit"){
-		set req.http.X-Device = "webkit";
-	}
-	if (req.http.User-Agent ~ "Android"){
+	if ( req.http.User-Agent ~ "Android" ){
 		set req.http.X-Device = "android";
-	}
-	if (req.http.User-Agent ~ "iPhone"){
-		set req.http.X-Device = "iphone";
-	}
-	if (req.http.User-Agent ~ "iPhone OS 2"){
-		set req.http.X-Device = "iphone2";
-	}
-	if (req.http.User-Agent ~ "Series60"){
-		set req.http.X-Device = "nokia";
-	}
-	if (req.http.User-Agent ~ "webOS"){
-		set req.http.X-Device = "palm_pre";
-	}
-	if (req.http.User-Agent ~ "Opera"){
-		set req.http.X-Device = "webkit";
-	}
-	if (req.http.User-Agent ~ "Opera Mini"){
-		set req.http.X-Device = "operamini";
-	}
-	if (req.http.User-Agent ~ "Opera Mobi"){
-		set req.http.X-Device = "iphone";
-	}
-	if (req.http.User-Agent ~ "Kindle/1.0"){
+		if ( req.http.User-Agent ~ "Opera Mini" ) {
+			set req.http.X-Device = "operamini";
+		} else if( req.http.User-Agent ~ "Opera Mobi" ) {
+			set req.http.X-Device = "operamobile";
+		}
+	} else if( req.http.User-Agent ~ "MSIE 9.0" ||
+			req.http.User-Agent ~ "MSIE 8.0"
+		) {
+		set req.http.X-Device = "ie";
+	} else if( req.http.User-Agent ~ "MSIE" ) {
+		set req.http.X-Device = "html";
+	} else if ( req.http.User-Agent ~ "Opera Mobi" ) {
+		set req.http.X-Device = "operamobile";
+	} else if( req.http.User-Agent ~ "Safari" && ( req.http.User-Agent ~ "iPad" ||
+		req.http.User-Agent ~ "iPhone" ) ) {
+		if( req.http.User-Agent ~ "iPad" ) {
+			set req.http.X-Device = "iphone";
+		} else if ( req.http.User-Agent ~ "iPhone" ) {
+			if( req.http.User-Agent ~ "iPhone OS 2" ) {
+				set req.http.X-Device = "iphone2";
+			} else {
+				set req.http.X-Device = "iphone";
+			}
+		} else {
+			set req.http.X-Device = "webkit";
+		}
+	} else if( req.http.User-Agent ~ "iPhone" ) {
+		if( req.http.User-Agent ~ "Opera" ) {
+			set req.http.X-Device = "operamini";
+		} else {
+			set req.http.X-Device = "native_iphone";
+		}
+	} else if( req.http.User-Agent ~ "WebKit" ) {
+		if( req.http.User-Agent ~ "Series60" ) {
+			set req.http.X-Device = "nokia";
+		} else if( req.http.User-Agent ~ "webOS" ) {
+			set req.http.X-Device = "palm_pre";
+		} else {
+			set req.http.X-Device = "webkit";
+		}
+	} else if( req.http.User-Agent ~ "Opera" ) {
+		if( req.http.User-Agent ~ "Nintendo Wii" ) {
+			set req.http.X-Device = "wii";
+		} else if( req.http.User-Agent ~ "Opera Mini" ) {
+			set req.http.X-Device = "operamini";
+		} else {
+			set req.http.X-Device = "operamobile";
+		}
+	} else if( req.http.User-Agent ~ "Kindle/1.0" ) {
 		set req.http.X-Device = "kindle";
-	}
-	if (req.http.User-Agent ~ "Kindle/2.0"){
+	} else if( req.http.User-Agent ~ "Kindle/2.0" ) {
 		set req.http.X-Device = "kindle2";
-	}
-	if (req.http.User-Agent ~ "Firefox"){
+	} else if( req.http.User-Agent ~ "Firefox" ) {
 		set req.http.X-Device = "capable";
-	}
-	if (req.http.User-Agent ~ "NetFront"){
+	} else if( req.http.User-Agent ~ "NetFront" ) {
 		set req.http.X-Device = "netfront";
-	}
-	if (req.http.User-Agent ~ "SEMC-Browser"){
+	} else if( req.http.User-Agent ~ "SEMC-Browser" ) {
 		set req.http.X-Device = "wap2";
-	}
-	if (req.http.User-Agent ~ "PlayStation Portable"){
+	} else if( req.http.User-Agent ~ "Series60" ) {
+		set req.http.X-Device = "wap2";
+	} else if( req.http.User-Agent ~ "PlayStation Portable" ) {
 		set req.http.X-Device = "psp";
-	}
-	if (req.http.User-Agent ~ "PLAYSTATION 3"){
+	} else if( req.http.User-Agent ~ "PLAYSTATION 3" ) {
 		set req.http.X-Device = "ps3";
+	} else if( req.http.User-Agent ~ "SAMSUNG" ) {
+		set req.http.X-Device = "capable";
+	} else if( req.http.User-Agent ~ "BlackBerry" ) {
+		if( req.http.User-Agent ~ "/1." || req.http.User-Agent ~ "/2." || req.http.User-Agent ~ "/3."
+			|| req.http.User-Agent ~ "/4." ) {
+				set req.http.X-Device = "blackberry-lt5";
+			} else {
+				set req.http.X-Device = "blackberry";
+			}
 	}
-	if (req.http.User-Agent ~ "BlackBerry"){
-		set req.http.X-Device = "blackberry";
-	}
-	if (req.http.X-Device == "html") {
-		if (req.http.Accept ~ "vnd.wap.wml"){
+	
+	if ( req.http.X-Device == "" ) {
+		if ( req.http.Accept ~ "application/vnd.wap.xhtml+xml" ) {
+			// Should be wap2
+			set req.http.X-Device = "html";
+		} else if ( req.http.Accept ~ "vnd.wap.wml" ) {
 			set req.http.X-Device = "wml";
+		} else {
+			set req.http.X-Device = "html";
 		}
 	}
 }
 
 
 sub vcl_recv {
+	call vcl_recv_purge;
+	/* if the request comes from Opera Mini's accelerating proxies, grab
+	 * XFF Header and replace client ip value */
+	if (client.ip ~ opera_mini) {
+		C{
+		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
+		char *xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+
+		if (xff_ip != NULL) {
+			inet_pton(AF_INET, xff_ip, client_ip_ia);
+		}
+		}C
+
+		set req.http.X-CLIENT-IP = client.ip;
+		set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
+	}
+
+	call tag_carrier;
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
 
+	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
+	}
+
+	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org", "\1.mobile.\2.org");
+	}
+
 	/* Support the old mobile.wikipedia.org wap gateway */
-	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
 		set req.url = regsub( req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1" );
 	}
 
 	/* FIXME: deploy X-Vary-Options support */
 	set req.http.X-Orig-Cookie = req.http.Cookie;
-	if(req.http.Cookie ~ "disable" || req.http.Cookie ~ "optin") {
+	if(req.http.Cookie ~ "disable" || req.http.Cookie ~ "optin" || req.http.Cookie ~ "session") {
 		/* Do nothing; these are the cookies we pass.
 		 * this is a hack in the absence of X-V-O support
 		 */
@@ -102,24 +276,54 @@ sub vcl_recv {
 	}
 	
 	if ( req.http.host == "m.wikipedia.org" ) {
-		error 666 "http://en.m.wikipedia.org" + req.url;
-	}
-	else if ( req.http.host == "mobile.wikipedia.org" ) {
+		if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Niger" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "wikimedia" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Uganda" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Tunisia" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Kenya" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Telenor Montenegro" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
+			error 666 "http://bn.zero.wikipedia.org";
+		} else {
+			error 666 "http://en.m.wikipedia.org" + req.url;
+		}
+	} else if ( req.http.host == "mobile.wikipedia.org" ) {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
+	} else if ( req.http.host == "zero.wikipedia.org" ) {
+		if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
+			error 666 "http://bn.zero.wikipedia.org";
+		}
 	}
-	
+
 	if ( req.url == "/" ) { 
 		set req.url = "/?useformat=mobile";
 	}
-	
+
+	if ( req.http.host ~ "^test\." ) {
+		set req.backend = test;
+	}
+
 	call device_detection;
-	call tag_carrier;
 }
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
+	set beresp.http.X-Carrier = req.http.X-Carrier;
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
+	}
+
+	# don't cache test.m
+	if ( req.http.host ~ "^test\." ) {
+		return(hit_for_pass);
 	}
 }
 

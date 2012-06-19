@@ -1,0 +1,38 @@
+file 1000 /a/squid/sampled-1000.log
+
+pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
+
+#
+# specific Wikipedia Zero filters
+# for detailed instructions see: office.wikimedia.org/wiki/Partner_IP_Ranges
+#
+
+#Digi Malaysia
+pipe 10 /usr/bin/udp-filter -i 203.92.128.185,115.164.0.0-115.164.255.255,116.197.0.0-116.197.127.255 >> /a/squid/zero-digi-malaysia.log
+
+#Orange Ivory Coast
+pipe 10 /usr/bin/udp-filter -i 41.66.28.94-41.66.28.96,41.66.28.72,41.66.28.73,172.23.0.0-172.23.255.255 >> /a/squid/zero-orange-ivory-coast.log
+
+# Telenor Montenegro
+pipe 10 /usr/bin/udp-filter -i 79.143.100.0-79.143.100.255,79.143.104.0-79.143.104.255 >> /a/squid/zero-telenor-montenegro.log
+
+# Orange Uganda
+pipe 10 /usr/bin/udp-filter -i 41.202.224.0-41.202.255.255,197.157.0.0-197.157.63.255 >> /a/squid/zero-orange-uganda.log
+
+# Orange Tunesia
+pipe 10 /usr/bin/udp-filter -i 197.29.192.0-197.30.159.255,197.30.224.0-197.30.255.255 >> /a/squid/zero-orange-tunesia.log
+
+# Orange Niger
+pipe 10 /usr/bin/udp-filter -i 41.203.157.1,41.203.157.2,41.203.159.243 >> /a/squid/zero-orange-niger.log
+
+# Orange Cameroon
+pipe 10 /usr/bin/udp-filter -i 193.251.155.0-193.251.155.126,41.202.192.0-41.202.223.254 >> /a/squid/zero-orange-cameroon.log
+
+# Orange Kenya
+pipe 10 /usr/bin/udp-filter -i 212.49.88.0-212.49.88.126 >> /a/squid/zero-orange-kenya.log
+
+# Vodaphone India
+pipe 10 /usr/bin/udp-filter -i 203.88.0.0-203.88.31.255,114.31.128.0,114.31.191.255,112.79.0.0-112.79.255.255,1.38.0.0-1.39.255.255,42.104.0.0-42.111.255.255 >> /a/squid/zero-vodaphone-india.log
+
+# Saudi Telecom
+pipe 10 /usr/bin/udp-filter -i 213.181.160.212,90.148.25.250,88.213.38.10,78.93.243.130,77.64.41.186,77.64.121.110,77.64.120.217,77.64.10.50,212.12.184.239,212.118.154.37,212.118.154.34,176.45.91.173 >> /a/squid/zero-saudi-telecom.log

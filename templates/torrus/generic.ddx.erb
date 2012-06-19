@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snmp-discovery>
+	<file-info>
+		<format-version>
+1.0
+		</format-version>
+	</file-info>
+	<creator-info>
+		Puppet class misc::torrus::discovery in manifest misc/torrus.pp
+	</creator-info>
+	<param name="data-dir" value="/var/lib/torrus/collector_rrd"/>
+	<param name="domain-name" value="<%= domain %>"/>
+	<param name="host-subtree" value="<%= subtree %>"/>
+	<param name="output-file" value="<%= title %>.xml"/>
+	<param name="rrd-hwpredict" value="no"/>
+	<param name="snmp-community" value="<%= snmp_community %>"/>
+	<param name="snmp-port" value="161"/>
+	<param name="snmp-retries" value="2"/>
+	<param name="snmp-timeout" value="10"/>
+	<param name="snmp-version" value="2c"/>
+<% hosts.each do |host| -%>
+	<host>
+		<param name="snmp-host" value="<%= host %>"/>
+	</host>
+<% end -%>
+</snmp-discovery>

@@ -93,11 +93,13 @@ class misc::contint::test {
 	apache_site { integration: name => "integration.mediawiki.org" }
 
 	class jenkins {
-		# first had code here to add the jenkins repo and key, but this package should be added to our own repo instead
-		# package { "jenkins":
-		#	ensure => present,
-		#	require => File["jenkins.list"],
-		#}
+
+		# This used to rely on misc::jenkins to add the jenkins upstream repo and then
+		# install from there.  contint::misc::jenkins is now independent and will
+		# use whatever Ubuntu version is available
+		package { "jenkins":
+			ensure => present
+		}
 
 		# Graphiz needed by the plugin that does the projects dependencies graph
 		package { "graphviz":
@@ -112,12 +114,42 @@ class misc::contint::test {
 			stop => '/etc/init.d/jenkins stop';
 		}
 
+		require groups::jenkins
+		user { 'jenkins':
+			name    => 'jenkins',
+			home    => '/var/lib/jenkins',
+			shell   => '/bin/bash',
+			gid     =>  'jenkins',
+			system  => true,
+			managehome => false,
+			require => Group['jenkins'];
+		}
+
+		file {
+			"/var/lib/jenkins/.gitconfig":
+				mode => 0444,
+				owner => "jenkins",
+				group => "jenkins",
+				ensure => present,
+				source => "puppet:///files/misc/jenkins/gitconfig",
+				require => User['jenkins'];
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
 		file {
+			"/var/lib/jenkins/.git":
+				mode   => 2775,  # group sticky bit
+				group  => "jenkins",
+				ensure => directory;
 			# Top level jobs folder
 			"/var/lib/jenkins/jobs/":
+				owner => "jenkins",
+				group => "jenkins",
+				mode  => 2775,  # group sticky bit
+				ensure => directory;
+			"/var/lib/jenkins/bin":
 				owner => "jenkins",
 				group => "wikidev",
 				mode => 0775,
@@ -142,13 +174,13 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/index.html":
 				owner => www-data,
 				group => wikidev,
-				mode => 0555,
+				mode => 0444,
 				source => "puppet:///files/misc/jenkins/index.html";
 			# Stylesheet used by nightly builds (example: Wiktionary/Wikipedia mobiles apps)
 			"/srv/org/mediawiki/integration/nightly.css":
 				owner => www-data,
 				group => wikidev,
-				mode => 0555,
+				mode => 0444,
 				source => "puppet:///files/misc/jenkins/nightly.css";
 			"/srv/org/mediawiki/integration/WikipediaMobile":
 				owner => jenkins,
@@ -159,7 +191,7 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
-				mode => 0755,
+				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
 				recurse => "true";
@@ -171,7 +203,7 @@ class misc::contint::test {
 			"/srv/org/mediawiki/integration/WiktionaryMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
-				mode => 0755,
+				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WiktionaryMobile",
 				recurse => "true";
@@ -226,49 +258,72 @@ class misc::contint::test {
 		package { ["testswarm", "curl"]:
 			ensure => latest; }
 
-		# install scripts
+		# Uninstall scripts
 		file {
 			"/etc/testswarm":
+				# also used by testswarm debian package.
 				ensure => directory,
 				mode   => 0755,
 				owner  => testswarm,
 				group  => testswarm;
 			"/etc/testswarm/fetcher-sample.ini":
-				require => [
-					Package["testswarm"]
-				],
-				source  => "puppet:///files/testswarm/fetcher-sample.ini",
-				mode    => 0660,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure => absent;
 			"/var/lib/testswarm/script":
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher-run.php",
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
-				ensure  => present,
-				source  => "puppet:///files/testswarm/testswarm-mw-fetcher.php",
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			# Directory that hold the mediawiki fetches
 			"/var/lib/testswarm/mediawiki-trunk":
-				ensure  => directory,
-				owner   => testswarm,
-				group   => testswarm;
+				ensure  => absent;
 			# SQLite databases files need specific user rights
 			"/var/lib/testswarm/mediawiki-trunk/dbs":
-				ensure  => directory,
-				mode    => 0774,
-				owner   => testswarm,
-				group   => www-data;
+				ensure  => absent;
 			# Override Apache configuration coming from the testswarm package.
 			"/etc/apache2/conf.d/testswarm.conf":
 				ensure => absent;
+
+			# dirs holding MediaWiki snapshots are created by jenkins.
+			# SQLite databases needs to be writable by Apache and thus
+			# needs specific user rights.
+			"/var/lib/testswarm/mediawiki-git/db/":
+				ensure => directory,
+				mode   => 2775, # group sticky bit
+				owner  => jenkins,
+				group  => www-data;
+		}
+
+		# Bug 34886 / RT 2574
+		# Testswarm MySQL tables have a lot of rows which requires to allocate
+		# a bit of RAM to Innodb so it can maintain locks on all the rows.
+		$innodb_buffer_pool_size = "256M"
+		file { "/etc/mysql/conf.d/innodb_buffer_pool_size.cnf":
+			mode  => 0444,
+			owner => root,
+			group => root,
+			content => template( "mysql/innodb_buffer_pool_size.cnf.erb" )
+		}
+
+		# Bug 35028
+		# We have the world largest Testswarm database (yeah another record)
+		# and do need some slow query logging to help improve Testswarm DB
+		# schema.
+		$long_query_time = 2
+		$log_queries_not_using_indexes = false
+		file { "/etc/mysql/conf.d/log_slow_queries.cnf":
+			mode  => 0444,
+			owner => root,
+			group => root,
+			content => template( "mysql/log_slow_queries.cnf.erb" )
+		}
+
+		service { "mysql":
+			subscribe => [
+				File["/etc/mysql/conf.d/innodb_buffer_pool_size.cnf"],
+				File["/etc/mysql/conf.d/log_slow_queries.cnf"],
+			],
+			ensure => running;
 		}
 
 		# Reload apache whenever testswarm checkouts configuration change
@@ -282,10 +337,7 @@ class misc::contint::test {
 		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
 		cron {
 			testswarm-fetcher-mw-trunk:
-				command => "(cd /var/lib/testswarm; php script/testswarm-mw-fetcher-run.php --prod) >> mediawiki-trunk/cron.log 2>&1",
-				minute => '*',
-				user => testswarm,
-				ensure => present;
+				ensure => absent;
 		}
 
 		# When a browser asks for jobs, it is reserved in the database so that

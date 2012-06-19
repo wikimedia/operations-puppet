@@ -1,0 +1,285 @@
+#!/usr/bin/env ruby
+
+#
+# WARNING: THIS IS NOT THE ORIGINAL NAGGEN
+#
+# This is forward-ported to new puppet APIs and bastardized to output to
+# stdout. --faidon, 2011-08, 2012-04
+#
+
+#
+# = Synopsis
+#
+# Generate Nagios configurations from Puppet Resources in an ActiveRecord database
+#
+# = Usage
+#
+#   naggen [-h|--help] [-d|--debug] [-v|--verbose] [--compare] [-c|--stdout] [-t|--type type]
+#
+
+require 'puppet'
+require 'puppet/application'
+require 'puppet/rails'
+require 'puppet/rails/resource'
+require 'puppet/rails/param_value'
+require 'puppet/parser/collector'
+require 'puppet/provider/naginator'
+require 'getoptlong'
+
+require 'puppet/file_bucket/dipper'
+
+# Monkey-patch the puppet resources so we can easily convert them to nagios
+# config snippets.
+class Puppet::Parser::Resource
+    def to_nagios
+        unless nagios_type = Nagios::Base.type(type.sub("Nagios_", '').to_sym)
+            raise Puppet::DevError, "Could not find nagios type '%s'" % type
+        end
+
+        result = nagios_type.new
+
+        to_hash.each do |param, value|
+            next unless nagios_type.parameter?(param)
+            result[param] = value
+        end
+
+        result[:name] = self.title
+
+        result
+    end
+end
+
+class NagiosWriter
+    class FakeCompiler
+	def add_resource(scope, resource)
+	   nil
+	end
+    end
+
+    class FakeScope
+	attr_accessor :compiler
+
+	def initialize
+	    @compiler = FakeCompiler.new
+	end
+
+        def debug(string)
+            Puppet.debug string
+        end
+
+        def host
+            "this host doesn't exist"
+        end
+
+	def source
+	    nil
+        end
+
+	def findresource(string, name = nil)
+	    false
+	end
+    end
+
+    attr_accessor :nagios_type, :bucket
+
+    def backup(target)
+        return unless FileTest.exist?(target) and File.stat(target).size > 0
+
+        Puppet.info "Backing up %s" % target
+        bucket.backup(target)
+    end
+
+    def collector
+        collector = Puppet::Parser::Collector.new(FakeScope.new, "nagios_" + @nagios_type.to_s, nil, nil, :exported)
+
+        # We don't have a scope, so we're stubbing everything out that would interact
+        # with the scope.
+        class << collector
+            def collect_virtual(*args)
+                []
+            end
+
+            def exported_resource(res)
+                res
+            end
+        end
+
+        collector
+    end
+
+    def rails_resources
+        collector.send(:collect_exported)
+    end
+
+    def default_target
+        "/etc/nagios/nagios_#{nagios_type.to_s}.cfg"
+    end
+
+    def evaluate
+        return unless resources = rails_resources()
+
+        resources_by_target = resources.inject({}) do |hash, resource|
+            target = resource["target"] || default_target
+            hash[target] ||= []
+            hash[target] << resource
+            hash
+        end
+
+        changed = false
+        resources_by_target.each do |target, resources|
+            begin
+                result = write(target, resources)
+            rescue => detail
+                $stderr.puts detail.backtrace
+                Puppet.err "Could not write to %s: %s" % [target, detail]
+            end
+
+            changed = true if result
+        end
+
+        changed
+    end
+
+    def stdout
+        return unless resources = rails_resources()
+
+        count = 0
+        resources.each do |resource|
+            count += 1
+            print resource.to_nagios.to_s.gsub("_naginator_name", Puppet::Provider::Naginator::NAME_STRING)
+        end
+
+        print "\n#\n# ", count, " resources listed\n"
+    end
+
+    def initialize(nagios_type, compare)
+        @nagios_type = nagios_type
+        @compare = compare
+
+        @bucket = Puppet::FileBucket::Dipper.new(:Path => Puppet[:clientbucketdir])
+    end
+
+    def write(target, resources)
+        # Skip the nagios type when we have no resources and no existing
+        # file.
+        return if resources.empty? and ! FileTest.exist?(target)
+
+        dir = File.dirname(target)
+        unless FileTest.exist?(dir)
+            FileUtils.mkdir_p(dir)
+        end
+
+        count = 0
+
+        tempfile = target + ".tmp"
+        File.open(tempfile, "w") do |file|
+            resources.each do |resource|
+                count += 1
+                file.puts resource.to_nagios.to_s.gsub("_naginator_name", Puppet::Provider::Naginator::NAME_STRING)
+            end
+        end
+
+        if @compare
+            if FileTest.exist?(target) and File.read(tempfile) == File.read(target)
+                return false
+            end
+        end
+
+        backup(target)
+
+        # Atomic rename
+        File.rename(tempfile, target)
+
+        Puppet.notice "Wrote %s resources to %s" % [count, target]
+
+        return true
+    ensure
+        File.unlink(tempfile) if tempfile and FileTest.exist?(tempfile)
+    end
+end
+
+class Puppet::Application::Naggen < Puppet::Application
+    should_parse_config
+
+     # HACK: this is needed to run with the global config :(
+    run_mode :master
+
+    option("--debug", "-d")
+    option("--verbose", "-v")
+    option("--compare", "-c")
+    option("--stdout", "-s")
+
+    option("--type type",  "-t type") do |arg|
+        options[:type] = arg
+    end
+
+    def preinit
+        trap(:INT) do
+            $stderr.puts "Aborting"
+            exit(0)
+        end
+    end
+
+    def setup
+	super
+        Puppet::Util::Log.newdestination(:console)
+    end
+
+    def run_command
+	# wtf.
+	# probably related to http://projects.puppetlabs.com/issues/5823
+	Puppet.settings.set_value(:run_mode, Puppet.run_mode.name.to_s, :mutable_defaults)
+	Puppet.settings.set_value(:confdir, Puppet.run_mode.conf_dir, :mutable_defaults)
+	Puppet.settings.set_value(:vardir, Puppet.run_mode.var_dir, :mutable_defaults)
+	Puppet.settings.set_value(:name, Puppet.application_name.to_s, :mutable_defaults)
+	Puppet.settings.set_value(:logdir, Puppet.run_mode.logopts, :mutable_defaults)
+	Puppet.settings.set_value(:rundir, Puppet.run_mode.run_dir, :mutable_defaults)
+
+        if options[:debug]
+            Puppet::Util::Log.level = :debug
+        elsif options[:verbose]
+            Puppet::Util::Log.level = :info
+        end
+
+        if options[:stdout] and not options[:type]
+            Puppet.err "You need to define a type when using --stdout"
+            exit(0)
+        elsif options[:stdout] and options[:compare]
+            Puppet.err "Option --stdout can't be combined with --compare"
+            exit(0)
+        end
+
+        # See if Naginator is installed directly, else load Puppet's version.
+        begin
+            require 'nagios'
+        rescue LoadError
+            require 'puppet/external/nagios'
+        end
+
+        changed = false
+
+        if options[:type]
+            writer = NagiosWriter.new(options[:type], options[:compare])
+            if options[:stdout]
+                writer.stdout
+                exit(0)
+            else
+                changed = true if writer.evaluate
+            end
+        else
+            Nagios::Base.eachtype do |name, type|
+                writer = NagiosWriter.new(name, options[:compare])
+
+                changed = true if writer.evaluate
+            end
+        end
+
+        if options[:compare] and changed
+            exit(1)
+        else
+            exit(0)
+        end
+    end
+end
+
+Puppet::Application::Naggen.new.run

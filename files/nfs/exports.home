@@ -15,4 +15,15 @@
 # /srv/nfs4/homes  gss/krb5i(rw,sync)
 #
 
-/home	208.80.152.0/24(rw,no_root_squash,no_subtree_check) 10.0.0.0/16(rw,no_root_squash,no_subtree_check)
+/home	-rw,no_subtree_check \
+	208.80.152.165(no_root_squash) \
+	208.80.152.190(no_root_squash) \
+	10.0.2.193 \
+	10.0.3.0/24 \
+	208.80.152.141 \
+	208.80.152.146 \
+	208.80.152.149 \
+	208.80.152.156 \
+	208.80.152.161 \
+	208.80.152.168 
+

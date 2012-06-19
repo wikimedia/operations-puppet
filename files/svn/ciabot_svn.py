@@ -111,7 +111,7 @@ class config:
     # The SMTP server to use, only used if the CIA server above is an
     # email address
     #smtpServer = "localhost"
-    smtpServer = "lily.knams.wikimedia.org"
+    smtpServer = "smtp.pmtpa.wmnet"
 
     # The 'from' address to use. If you're delivering commits via email, set
     # this to the address you would normally send email from on this host.

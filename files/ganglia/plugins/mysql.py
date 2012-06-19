@@ -46,7 +46,7 @@ import MySQLdb
 from DBUtil import parse_innodb_status
 
 import logging
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s\t Thread-%(thread)d - %(message)s", filename='/tmp/gmond.log', filemode='w')
+logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(name)s - %(levelname)s\t Thread-%(thread)d - %(message)s", filename='/tmp/gmond.log', filemode='w')
 logging.debug('starting up')
 
 last_update = 0
@@ -275,8 +275,11 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		#mysql_stats['slave_sql'] = 1 if slave_status['slave_sql_running'].lower() =="yes" else 0
 		if slave_status['slave_sql_running'].lower() == "yes":
 			mysql_stats['slave_sql'] = 1
+			if slave_status['slave_io_running'].lower() == "yes":
+				mysql_stats['slave_running'] = 1
 		else:
 			mysql_stats['slave_sql'] = 0
+			mysql_stats['slave_running'] = 0
 		mysql_stats['slave_lag'] = slave_status['seconds_behind_master']
 		mysql_stats['slave_relay_log_pos'] = slave_status['relay_log_pos']
 		mysql_stats['slave_relay_log_space'] = slave_status['relay_log_space']
@@ -486,6 +489,11 @@ def metric_init(params):
 			'units': 'tables',
 		}, 
 
+		queries = {
+			'description': 'The number of actual queries executed by the server',
+			'units': 'queries',
+		}, 
+
 		questions = {
 			'description': 'The number of statements that clients have sent to the server',
 			'units': 'stmts',
@@ -648,7 +656,6 @@ def metric_init(params):
 
 			slave_io = {
 				'description': "Whether the I/O thread is started and has connected successfully to the master",
-				'value_type': 'uint8',
 				'units': 'True/False',
 				'slope': 'both',
 			},
@@ -667,7 +674,12 @@ def metric_init(params):
 
 			slave_sql = {
 				'description': "Slave SQL Running",
-				'value_type': 'uint8',
+				'units': 'True/False',
+				'slope': 'both',
+			},
+
+			slave_running = {
+				'description': "Slave Running",
 				'units': 'True/False',
 				'slope': 'both',
 			},
