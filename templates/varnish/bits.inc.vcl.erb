@@ -7,14 +7,7 @@ sub vcl_recv {
         }
 	/* Only accept requests for domain bits.wikimedia.org at this time */
 	if (req.http.host == "bits.wikimedia.org") {
-<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
-		if (req.url ~ "^/geoiplookup") {
-			error 666 "geoiplookup";
-		}
-<% end -%>
-		else {
-			return (lookup);
-		}
+		return (lookup);
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
