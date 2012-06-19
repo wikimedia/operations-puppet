@@ -1,9 +1,0 @@
-#!/bin/bash
-
-cd /home/wikipedia/common/multiversion
-for db in `</home/wikipedia/common/all.dblist`; do
-	echo $db
-	php MWScript.php updateSpecialPages.php $db
-	echo
-	echo
-done

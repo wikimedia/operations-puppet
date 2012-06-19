@@ -1,6 +1,0 @@
-#spence.wikimedia.org   /etc/nagios daily
-mchenry.wikimedia.org   /root default
-sockpuppet.pmtpa.wmnet /svnroot default
-sockpuppet.pmtpa.wmnet /var/lib/puppet/ssl default
-db10.pmtpa.wmnet /mnt/a default
-grosley.wikimedia.org /var/lib/jenkins/backups default

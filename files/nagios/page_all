@@ -1,9 +1,0 @@
-#!/bin/bash
-# page (SMS) an arbitrary message to ALL Nagios contacts
-
-echo -e "! You are about to page ALL Nagios contacts.! \nWhat's the message? "
-read message
-
-for contact in $(grep -o "+[0-9]*" /etc/nagios/contacts.cfg); do
-	echo "$message - $LC_RUSER" | /usr/local/bin/gammu-smsd-inject TEXT $contact
-done
