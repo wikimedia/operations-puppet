@@ -1,0 +1,3 @@
+# include the local per-project debian repo for labs
+deb file:///data/project/repo/ /
+
