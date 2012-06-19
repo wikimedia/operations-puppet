@@ -11,17 +11,18 @@ class apaches::packages {
 	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc" ]:
 		ensure => latest;
 	}
-	if ( $lsbdistcodename == "hardy" ) {
-		package { [ "php5-wikidiff2", "php5-wmerrors" ]:
-			ensure => latest;
-		}
-	}
 	if ( $lsbdistcodename == "lucid" ) {
 		package { [ "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
 			ensure => latest;
 		}
 	}
-	
+
+	if ( $lsbdistcodename == "precise" ) {
+		package { [ "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
+			ensure => latest;
+		}
+	}
+
 	# Explicitly require the Wikimedia version of some packages
 	generic::apt::pin-package{ [ "php-wikidiff2" ]: pin => "release o=Wikimedia" }
 }
