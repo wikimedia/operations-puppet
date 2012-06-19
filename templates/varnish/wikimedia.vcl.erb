@@ -1,4 +1,4 @@
-# Wikimedia VCL file for <%= fqdn %>, site <%= site %>
+# Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
 # This file is managed by Puppet!
 
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
@@ -11,11 +11,23 @@ acl purge {
 	"127.0.0.1";
 }
 
+<% if ! wikimedia_networks.empty? -%>
+acl wikimedia_nets {
+<% wikimedia_networks.each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+<% end -%>
+
 # Hosts we trust for XFF
-<% if has_variable?("varnish_xff_sources") -%>
+<% if ! xff_sources.empty? -%>
 acl allow_xff {
-<% varnish_xff_sources.each do |source| -%>
-	"<%= source["ip"] %>"/<%= source["mask"] %>;
+<% xff_sources.each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
 <% end -%>
 }
 <% end -%>
@@ -33,34 +45,11 @@ probe text {
 */
 
 # FIXME: need to support checks from pmtpa to backend bits app servers
-<% if vcl == "bits" and site == "esams" -%>
+<% if vcl == "bits" and scope.lookupvar("::site") == "esams" -%>
 probe bits {
 	.request =
 		"GET /images/wikimedia-button.png HTTP/1.1"
 		"Host: bits.wikimedia.org"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 5s;	
-}
-<% elsif /frontend/.match(vcl) -%>
-# frontends in front of other varnish instances should send
-# probes that don't depend on the app backend
-probe varnish {
-	.request =
-		"GET /check HTTP/1.1"
-		"Host: varnishcheck"
-		"User-agent: Varnish backend check"
-		"Connection: close";
-	.timeout = 500ms;
-	.interval = 1s;
-	.window = 3;
-	.threshold = 2;
-}
-<% elsif vcl == "blog" -%>
-probe blog {
-	.request =
-		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
-		"Host: blog.wikimedia.org"
 		"User-agent: Varnish backend check"
 		"Connection: close";
 	.timeout = 5s;	
@@ -79,12 +68,45 @@ probe bits {
 }
 <% end -%>
 
-/*
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 500ms;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe swift {
+	.url = "/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt";
+	.timeout = 2s;
+}
+
 probe upload {
 	.url = "/pybaltestfile.txt";
 	.timeout = 2s;
 }
-*/
 
 # Backends
 
@@ -101,15 +123,27 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
 	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
-	.probe = <%= varnish_backend_options.fetch("probe", "bits") %>;
+<% if varnish_backend_options.has_key?("probe") -%>
+	.probe = <%= varnish_backend_options["probe"] %>;
+<% end -%>
 }
 
 <% end -%>
 
+# for test.* routing
+backend test {
+	.host = "srv193.pmtpa.wmnet";
+	.port = "80";
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
+	.between_bytes_timeout = 2s;
+	.max_connections = 20;
+}
+
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.each do |director| -%>
-director <%= director %> hash {
+director <%= director %> <%= director_type %> {
 	.retries = 2;
 <% varnish_directors[director].each do |backend| -%>
 	{
@@ -118,7 +152,7 @@ director <%= director %> hash {
 <% else -%>
 		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
 <% end -%>
-		.weight = 10;
+		.weight = <%= varnish_backend_options.fetch("weight", 10) %>;
 	}
 <% end -%>
 }
@@ -126,31 +160,33 @@ director <%= director %> hash {
 
 # Functions
 
+sub vcl_recv_purge {
+	/* Support HTTP PURGE from localhost */
+	if (req.request == "PURGE") {
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
+		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
+		} elsif (req.url ~ "^http:") {
+			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");
+		}
+		return (lookup);
+	}
+}
+
 sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
+		/* We only deal with GET, HEAD and POST by default */
+		error 403 "HTTP method not allowed.";
+	}
+
 	if (req.backend.healthy) {
 		set req.grace = 5m;
 	} else {
 		set req.grace = 60m;
 	}
-
-	if (req.request != "GET" && req.request != "HEAD" && req.request != "PURGE" && req.request != "POST") {
-		/* We only deal with GET and HEAD by default */
-		error 403 "HTTP method not allowed.";
-	}
-
-	/* Support HTTP PURGE from localhost */
-	if (req.request == "PURGE") { 
-		if (!client.ip ~ purge) {
-			error 405 "Denied.";
-		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
-		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
-		} else if (req.url ~ "^http:") {
-			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");	
-		}
-		return (lookup);
-	}
 	
-	<% if has_variable?("varnish_xff_sources") -%>
+<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
 	/* Ensure we only accept Forwarded headers from the SSL proxies */
 	if (client.ip ~ allow_xff) {
 		// Do nothing. It seems you can't do !~ with IP matches
@@ -161,7 +197,7 @@ sub vcl_recv {
 		set req.http.X-Forwarded-For = client.ip;
 		unset req.http.X-Forwarded-Proto;
 	}
-	<% end -%>
+<% end -%>
 
 	/* Select the default backend(s) */
 	set req.backend = backend;
@@ -176,14 +212,18 @@ sub vcl_recv {
 sub vcl_fetch {
 	set beresp.grace = 60m;
 
-	<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (beresp.status > 499 && beresp.status < 505) {
 		return(restart);
 	}
-	<% end -%>
-	if (beresp.status > 400) {
-		set beresp.ttl = 0s;
+<% end -%>
+	if (beresp.status >= 400) {
+<% if vcl_config.fetch("cache4xx", "0") == "0" -%>
+		set beresp.ttl = 30s;
 		return(hit_for_pass);
+<% else -%>
+		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
+<% end -%>
 	}
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
@@ -192,7 +232,7 @@ sub vcl_fetch {
 sub vcl_hit {
 	if (req.request == "PURGE") {
 		purge;
-		error 200 "Purged.";
+		error 200 "Purged";
 	}
 	
 	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
@@ -209,20 +249,20 @@ sub vcl_miss {
 
 sub vcl_deliver {
 	if (obj.hits > 0) {
-		set resp.http.X-Cache<%= instancesuffix %> = "hit (" + obj.hits + ")";
+		set resp.http.X-Cache<%= instancesuffix %> = server.hostname + " hit (" + obj.hits + ")";
 	} else {
-		set resp.http.X-Cache<%= instancesuffix %> = "miss (0)";
+		set resp.http.X-Cache<%= instancesuffix %> = server.hostname + " miss (0)";
 	}
 
 	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
 }
 
 sub vcl_error {
-	<% if varnish_backend_options.fetch("retry5x", "0") == "1" -%>
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
 	if (obj.status == 503 && req.restarts < 4) {
 		return(restart);
 	}
-	<% end -%>
+<% end -%>
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 

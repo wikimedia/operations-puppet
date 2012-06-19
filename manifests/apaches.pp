@@ -35,6 +35,7 @@ class apaches::cron {
 			user => root,
 			minute => 26,
 			ensure => present;
+		# TODO: use class geoip for this instead of manually downloading.
 		updategeoipdb:
 			environment => "http_proxy=http://brewster.wikimedia.org:8080",
 			command => "[ -d /usr/share/GeoIP ] && wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /usr/share/GeoIP/GeoIP.dat.new && mv /usr/share/GeoIP/GeoIP.dat.new /usr/share/GeoIP/GeoIP.dat",
@@ -63,12 +64,21 @@ extension=wikidiff2.so
 	
 	require apaches::packages
 
+	# FIXME: dirty temp hack
+	if $cluster == "api_appserver" {
+		$apache_conf = "puppet:///files/apache/apache2.conf.api_appserver"
+	}
+	else {
+		$apache_conf = "puppet:///files/apache/apache2.conf.appserver"
+	}
+ 
 	file {
 		"/etc/apache2/apache2.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/apache/apache2.conf.appserver";
+			notify => Service[apache],
+			source => $apache_conf;
 		"/etc/apache2/envvars":
 			owner => root,
 			group => root,
@@ -99,7 +109,7 @@ extension=wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/wmerrors.ini";
-		"/etc/sudoers.d/appserver":
+		"/etc/sudoers":
 			owner => root,
 			group => root,
 			mode => 0440,
@@ -202,3 +212,25 @@ class apaches::fonts {
 		ensure => latest;
 	}
 }
+
+class apaches::syslog {
+	require base::remote-syslog
+
+	file { "/etc/rsyslog.d/40-appserver.conf":
+		require => Package[rsyslog],
+		owner => root,
+		group => root,
+		mode => 0444,
+		source => "puppet:///files/rsyslog/40-appserver.conf",
+		ensure => present;
+	}
+
+	file { "/usr/local/bin/apache-syslog-rotate":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/misc/scripts/apache-syslog-rotate",
+		ensure => present;
+	}
+}
+

@@ -50,27 +50,25 @@ class gerrit::jetty {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::account,
+		gerrit::crons,
 		gerrit::gerrit_config,
 		generic::packages::git-core
 
-	package { [ "openjdk-6-jre", "gitweb", "git-svn" ]:
-		ensure => latest; 
-	} 
+	package { [ "openjdk-6-jre", "git-svn" ]:
+		ensure => latest;
+	}
+
+	package { [ "python-paramiko" ]:
+		ensure => latest;
+	}
+
+	package { [ "gerrit" ]:
+		ensure => "2.3-1";
+	}
 
 	file {
-		"/var/lib/gerrit2/gerrit.war":
-			source => "puppet:///files/gerrit/gerrit-2.2.1.war",
-			owner => root,
-			group => root,
-			mode => 0444,
-			require => Systemuser["gerrit2"];
-		"/etc/init.d/gerrit":
-			source => "puppet:///files/gerrit/gerrit.sh",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/etc/default/gerritcodereview":
-			source => "puppet:///files/gerrit/gerritcodereview",
+		"/etc/default/gerrit":
+			source => "puppet:///files/gerrit/gerrit",
 			owner => root,
 			group => root,
 			mode => 0444;
@@ -79,7 +77,7 @@ class gerrit::jetty {
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0755,
-			require => Systemuser["gerrit2"];
+			require => Package["gerrit"];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
@@ -110,42 +108,48 @@ class gerrit::jetty {
 			mode => 0444,
 			source => "puppet:///files/gerrit/mail/ChangeSubject.vm",
 			require => Exec["install_gerrit_jetty"];
+		"/var/lib/gerrit2/review_site/hooks":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			ensure => directory,
+			require => Exec["install_gerrit_jetty"];
 		"/var/lib/gerrit2/review_site/hooks/change-abandoned":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-abandoned",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/hookhelper.py",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/change-merged":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-merged",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/change-restored":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/change-restored",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/comment-added":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/comment-added",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 		"/var/lib/gerrit2/review_site/hooks/patchset-created":
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/patchset-created",
-			require => Exec["install_gerrit_jetty"];
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 	}
 
 	exec {
@@ -155,7 +159,7 @@ class gerrit::jetty {
 			group => "gerrit2",
 			cwd => "/var/lib/gerrit2",
 			command => "/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start",
-			require => [File["/var/lib/gerrit2/gerrit.war", "/var/lib/gerrit2/review_site/etc/gerrit.config"], Package["openjdk-6-jre"], Systemuser["gerrit2"]];
+			require => [Package["gerrit"], File["/var/lib/gerrit2/review_site/etc/gerrit.config"]];
 	}
 
 	service {
@@ -172,19 +176,17 @@ class gerrit::jetty {
 
 class gerrit::proxy {
 
+	if !$gerrit_no_apache {
+		require webserver::apache
+		apache_site { 000_default: name => "000-default", ensure => absent }
+	}
+
 	file {
 		"/etc/apache2/sites-available/gerrit.wikimedia.org":
-			mode => 644,
+			mode => 0644,
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/gerrit.wikimedia.org",
-			ensure => present;
-		# Overwrite gitweb's stupid default apache file
-		"/etc/apache2/conf.d/gitweb":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => "Alias /gitweb /usr/share/gitweb",
 			ensure => present;
 	}
 
@@ -195,13 +197,38 @@ class gerrit::proxy {
 	apache_module { ssl: name => "ssl" }
 }
 
+class gerrit::gitweb {
+	package { [ "gitweb" ]:
+		ensure => latest;
+	}
+
+	file {
+		# Overwrite gitweb's stupid default apache file
+		"/etc/apache2/conf.d/gitweb":
+			mode => 0444,
+			owner => root,
+			group => root,
+			content => "Alias /gitweb /usr/share/gitweb",
+			ensure => present,
+			require => Package[gitweb];
+		# Add our own customizations to gitweb
+		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/gerrit/gitweb_config.perl",
+			ensure => present,
+			require => Package[gitweb];
+	}
+}
+
 class gerrit::ircbot {
 
 	include gerrit::gerrit_config
 
-	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations,#wikimedia-tech;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile"
+	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile;/var/lib/gerrit2/review_site/logs/mediawiki.log:#mediawiki;/var/lib/gerrit2/review_site/logs/wikimedia-dev.log:#wikimedia-dev;/var/lib/gerrit2/review_site/logs/semantic-mediawiki.log:#semantic-mediawiki,#mediawiki;/var/lib/gerrit2/review_site/logs/wikidata.log:#wikimedia-wikidata,#mediawiki"
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-tech,#wikimedia-labs,#wikimedia-mobile"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki,#wikimedia-dev,#wikimedia-wikidata,#semantic-mediawiki"
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:
@@ -215,7 +242,7 @@ class gerrit::ircbot {
 
 	file {
 		"/etc/default/ircecho":
-			mode => 444,
+			mode => 0444,
 			owner => root,
 			group => root,
 			content => template('ircecho/default.erb'),
@@ -224,14 +251,13 @@ class gerrit::ircbot {
 	}
 }
 
-class gerrit::account { 
-
-	systemuser { gerrit2: name => "gerrit2", home => "/var/lib/gerrit2", shell => "/bin/bash" }
+class gerrit::account {
 
 	ssh_authorized_key { gerrit2:
 		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
 		type => ssh-rsa,
 		user => gerrit2,
+		require => Package["gerrit"],
 		ensure => present;
 	}
 
@@ -240,7 +266,7 @@ class gerrit::account {
 			owner => gerrit2,
 			group => gerrit2,
 			mode  => 0600,
-			require => [Systemuser["gerrit2"], Ssh_authorized_key["gerrit2"]],
+			require => [Package["gerrit"], Ssh_authorized_key["gerrit2"]],
 			source => "puppet:///private/gerrit/id_rsa";
 	}
 
@@ -260,11 +286,23 @@ class gerrit::gerrit_config {
 	$gerrit_db_name = "reviewdb"
 	$gerrit_db_user = "gerrit"
 	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass
-	$gerrit_ldap_host = $openstack::nova_config::nova_ldap_host
+	$gerrit_ldap_host = ["$openstack::nova_config::nova_ldap_host", "virt1000.wikimedia.org"]
 	$gerrit_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
 	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
 	$gerrit_session_timeout = "90 days"
+
+}
+
+class gerrit::crons {
+
+	cron { list_mediawiki_extensions:
+		# Gerrit is missing a public list of projects.
+		# This hack list MediaWiki extensions repositories
+		command => "/bin/ls -1d /var/lib/gerrit2/review_site/git/mediawiki/extensions/*.git | sed 's#.*/##' | sed 's/\\.git//' > /var/www/mediawiki-extensions.txt",
+		user => root,
+		minute => [0, 15, 30, 45]
+	}
 
 }

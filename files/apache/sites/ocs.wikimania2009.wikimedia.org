@@ -31,8 +31,8 @@
 	ServerName ocs.wikimania2009.wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
-	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	DocumentRoot /srv/org/wikimedia/wikimania2009/ocs/
 	<Directory />

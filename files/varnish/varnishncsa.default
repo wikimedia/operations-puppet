@@ -1,2 +1,9 @@
 ## THIS FILE MANAGED BY PUPPET ##
 VARNISHNCSA_ENABLED=1
+
+# set LOG_FORMAT so that varnishncsa logs
+# the Content-Type.  This is the same as
+# the Wikimedia default log format, except
+# for the addition of the Content-Type 
+# response header.  See RT 2255.
+LOG_FORMAT="%l %n %t %{Varnish:time_firstbyte}x %h %{Varnish:handling}x/%s %b %m http://%{Host}i%U%q - %{Content-Type}o %{Referer}i %{X-Forwarded-For}i %{User-agent}i"

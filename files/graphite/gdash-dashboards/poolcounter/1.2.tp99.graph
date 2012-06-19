@@ -1,0 +1,10 @@
+title   "PoolCounter Client 99th Percentile Latency (ms) log(2) -8hours"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-8hours"
+
+field :tp99, :alias => "none",
+               :data  => 'cactiStyle(PoolCounter.Client.*.tp99)'
+

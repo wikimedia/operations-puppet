@@ -33,8 +33,9 @@ class openstack::iptables-accepts {
 	# Rememeber to place modified or removed rules into purges!
 	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "virt0_all": source => "208.80.153.135", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "virt0_all": source => "208.80.152.32", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
+	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
@@ -48,11 +49,23 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_gerrit_manganese": source => "208.80.154.152", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_gerrit_manganese": source => "208.80.154.152", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_gerrit_manganese": source => "208.80.154.152", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_gerrit_manganese": source => "208.80.154.152", service => "ldaps_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_jenkins": source => "208.80.154.135", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_jenkins": source => "208.80.154.135", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_jenkins": source => "208.80.154.135", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_jenkins": source => "208.80.154.135", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_virt0": source => "208.80.152.32", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_virt0": source => "208.80.152.32", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_virt0": source => "208.80.152.32", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_virt1000": source => "208.80.154.18", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_virt1000": source => "208.80.154.18", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_virt1000": source => "208.80.154.18", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
 	iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 	iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
@@ -196,21 +209,21 @@ class openstack::compute {
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				content => template("openstack/libvirtd.conf.erb"),
 				require => Package["nova-common"];
 			"/etc/default/libvirt-bin":
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				content => template("openstack/libvirt-bin.default.erb"),
 				require => Package["nova-common"];
 			"/etc/init/libvirt-bin.conf":
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
-				mode => "444",
+				mode => 0444,
 				source => "puppet:///files/upstart/libvirt-bin.conf",
 				require => Package["nova-common"];
 		}
@@ -232,6 +245,75 @@ class openstack::compute {
 			ensure => absent;
 	}
 
+}
+
+class openstack::project-storage-cron {
+
+	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
+	$ircecho_nick = "labs-storage-wm"
+	$ircecho_chans = "#wikimedia-labs"
+	$ircecho_server = "irc.freenode.net"
+
+	package { "ircecho":
+		ensure => latest;
+	}
+	
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+	
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
+	}
+
+	cron { "manage-volumes":
+		command => '/usr/bin/python /usr/local/sbin/manage-volumes --logfile=/var/lib/glustermanager/manage-volumes.log',
+		user => 'glustermanager',
+		require => Systemuser["glustermanager"];
+	}
+
+}
+
+class openstack::project-storage {
+
+	include openstack::gluster-service
+
+	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
+			'ALL = NOPASSWD: /usr/sbin/gluster *' ]
+	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
+
+	package { "python-paramiko":
+		ensure => latest;
+	}
+
+	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
+	ssh_authorized_key {
+		"glustermanager":
+			ensure	=> present,
+			user	=> "glustermanager",
+			type	=> "ssh-rsa",
+			key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
+			require => Systemuser["glustermanager"];
+	}
+	file {
+		"/var/lib/glustermanager/.ssh/id_rsa":
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0600,
+			source => "puppet:///private/gluster/glustermanager",
+			require => Ssh_authorized_key["glustermanager"];
+		"/var/run/glustermanager":
+			ensure => directory,
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0700,
+			require => Systemuser["glustermanager"];
+	}
 }
 
 class openstack::puppet-server {
@@ -507,7 +589,7 @@ class openstack::ldap-server {
 			content => 'TLS_CHECKPEER   no
 TLS_REQCERT     never
 ',
-			mode => 400,
+			mode => 0400,
 			owner => root,
 			group => root,
 			require => Package["opendj"],
@@ -534,7 +616,7 @@ class openstack::openstack-manager {
 	file {
 		"/etc/apache2/sites-available/${nova_controller_hostname}":
 			require => [ Package[php5] ],
-			mode => 644,
+			mode => 0644,
 			owner => root,
 			group => root,
 			content => template('apache/sites/labsconsole.wikimedia.org'),
@@ -719,17 +801,7 @@ class openstack::gluster-service {
 	service { "glusterd":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs"], File["/etc/glusterd/glusterd.info","/etc/init.d/glusterd"], Upstart_job["glusterd"]];
-	}
-
-	# Put the hosts own uuid in glusterd.info
-	$local_host_uuid = generate("/usr/local/bin/uuid-generator", "${hostname}.${domain}")
-	file {
-                "/etc/glusterd":
-                        ensure => "directory";
-		"/etc/glusterd/glusterd.info":
-			content => "UUID=${local_host_uuid}",
-			require => [Package["glusterfs"], FILE["/etc/glusterd"]];
+		require => [Package["glusterfs"], File["/etc/init.d/glusterd"], Upstart_job["glusterd"]];
 	}
 
 	# TODO: We need to replace the init script with an upstart job that'll ensure
@@ -870,7 +942,7 @@ class openstack::glance_config {
 	$glance_db_user = "glance"
 	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
 	$glance_bind_ip = $realm ? {
-		"production" => "208.80.153.135",
+		"production" => "208.80.152.32",
 		"labs" => "127.0.0.1",
 	}
 

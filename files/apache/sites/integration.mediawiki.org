@@ -50,8 +50,8 @@ NameVirtualHost *:443
 		IndexIgnore "*.html" ".."
 	</Directory>
 
-	# Publish testswarm fetcher checkouts to the outside world
-	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
+	# Publish MediaWiki clones to the outside world for testswarm
+	<Directory /var/lib/testswarm/mediawiki-git/clone>
 		AllowOverride All
 		order allow,deny
 		allow from all
@@ -65,7 +65,7 @@ NameVirtualHost *:443
 
 	</Directory>
 
-	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
+	Alias /clone/mw/master /var/lib/testswarm/mediawiki-git/clone
 
 	<Directory /usr/share/testswarm/site>
 		AllowOverride All
@@ -80,6 +80,12 @@ NameVirtualHost *:443
 	</Directory>
 
 	Alias /testswarm "/usr/share/testswarm/site/"
+
+	# Force Jenkins request through HTTPS
+	RewriteEngine on
+	RewriteCond %{HTTPS} off
+	RewriteCond %{REQUEST_URI}  ^/ci
+	RewriteRule ^/ci/ https://%{HTTP_HOST}%{REQUEST_URI}
 
 </VirtualHost>
 <VirtualHost *:443>
@@ -131,8 +137,8 @@ NameVirtualHost *:443
 		IndexIgnore "*.html" ".."
 	</Directory>
 
-	# Publish testswarm fetcher checkouts to the outside world
-	<Directory /var/lib/testswarm/mediawiki-trunk/checkouts>
+	# Publish MediaWiki clones to the outside world for testswarm
+	<Directory /var/lib/testswarm/mediawiki-git/clone>
 		AllowOverride All
 		order allow,deny
 		allow from all
@@ -146,7 +152,7 @@ NameVirtualHost *:443
 
 	</Directory>
 
-	Alias /checkouts/mw/trunk /var/lib/testswarm/mediawiki-trunk/checkouts
+	Alias /clone/mw/master /var/lib/testswarm/mediawiki-git/clone
 
 	<Directory /usr/share/testswarm/site>
 		AllowOverride All

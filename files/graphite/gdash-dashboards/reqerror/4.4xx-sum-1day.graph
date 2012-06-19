@@ -1,0 +1,9 @@
+title   "HTTP 4xx Responses -1day"
+linewidth 2
+linemode "staircase"
+hide_legend "false"
+from "-1 day"
+
+field :a, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(reqstats.4xx,"4xx resp/min"))'

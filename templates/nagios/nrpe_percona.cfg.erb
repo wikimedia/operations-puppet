@@ -6,4 +6,4 @@ command[check_mysql_slave_running]=/usr/lib/nagios/plugins/percona/check_mysql_s
 # slave check using mysql's own replag estimate
 command[check_mysql_slave_delay]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> -w 30 -c 180
 # slave check using heartbeat
-command[check_mysql_slave_heartbeat]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> -t heartbeat.heartbeat -s $(/usr/local/bin/master_id.py) -w 30 -c 180
+command[check_mysql_slave_heartbeat]=/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -l nagios -p <%= scope.lookupvar('monitor::percona::files::mysql_check_pass') %> -t heartbeat.heartbeat -s `/usr/local/bin/master_id.py` -w 30 -c 180

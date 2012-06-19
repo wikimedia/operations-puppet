@@ -51,6 +51,8 @@ http {
     ssl_protocols SSLv3 TLSv1;
     # Limit ciphers allowed
     ssl_ciphers RC4-SHA:RC4-MD5:DES-CBC3-SHA:AES128-SHA:AES256-SHA;
+    # Prefer server ciphers (Prefer RC4 first to combat BEAST)
+    ssl_prefer_server_ciphers on;
     <% end %>
 
     include /etc/nginx/conf.d/*.conf;

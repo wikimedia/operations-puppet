@@ -38,14 +38,28 @@ NameVirtualHost *:80
 
 NameVirtualHost *:443
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org 
+	ServerAdmin noc@wikimedia.org
 	ServerName gerrit.wikimedia.org
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
 
-	RedirectMatch ^/$ http://gerrit.wikimedia.org/r/
+	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
+	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
 
 	ProxyRequests Off
 	ProxyVia Off
@@ -56,7 +70,7 @@ NameVirtualHost *:443
 		Allow from all
 	</Proxy>
 
-	ProxyPass /r/ http://127.0.0.1:8080/r/
+	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
 
 	ErrorLog /var/log/apache2/error.log
 

@@ -24,16 +24,20 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 }
 
 # Creates a system username with associated group, random uid/gid, and /bin/false as shell
-define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
-	group { $name:
-		name => $name,
-		ensure => present;
+define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef, $default_group=$name) {
+	# FIXME: deprecate $name parameter in favor of just using $title
+
+	if $default_group == $name {
+		group { $default_group:
+			name => $default_group,
+			ensure => present;
+		}
 	}
 
 	user { $name:
-		require => Group[$name],
+		require => Group[$default_group],
 		name => $name,
-		gid => $name,
+		gid => $default_group,
 		home => $home ? {
 			undef => "/var/lib/${name}",
 			default => $home
@@ -41,6 +45,7 @@ define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef) {
 		managehome => true,
 		shell => $shell,
 		groups => $groups,
+		system => true,
 		ensure => present;
 	}
 }
@@ -93,20 +98,34 @@ class generic::apache::no-default-site {
 }
 
 # Enables a certain Lighttpd config
+#
+# TODO:  ensure => false removes symlink.  ensure => purged removes available file.
 define lighttpd_config($install="false") {
+	# Reload lighttpd if the site config file changes.
+	# This subscribes to both the real file and the symlink.
+	exec { "lighttpd_reload_${title}":
+		command     => "/usr/sbin/service service lighttpd reload",
+		refreshonly => true,
+	}
+	
 	if $install == "true" {
 		file { "/etc/lighttpd/conf-available/${title}.conf":
 			source => "puppet:///files/lighttpd/${title}.conf",
 			owner => root,
 			group => www-data,
 			mode => 0444,
-			before => File["/etc/lighttpd/conf-enabled/${title}.conf"];
+			before => File["/etc/lighttpd/conf-enabled/${title}.conf"],
+			notify => Exec["lighttpd_reload_${title}"],
 		}
 	}
 
+	# Create a symlink to the available config file 
+	# in the conf-enabled directory.  Notify 
 	file { "/etc/lighttpd/conf-enabled/${title}.conf":
-		ensure => "/etc/lighttpd/conf-available/${title}.conf";
+		ensure => "/etc/lighttpd/conf-available/${title}.conf",
+		notify => Exec["lighttpd_reload_${title}"],
 	}
+
 }
 
 # Enables a certain NGINX site
@@ -136,32 +155,6 @@ define nginx_site($install="false", $template="", $enable="true") {
 			file { "/etc/nginx/sites-available/${name}":
 				content => template("nginx/sites/${template_name}.erb");
 			}
-		}
-	}
-}
-
-
-class generic::geoip {
-	class packages {
-		package { [ "libgeoip1", "libgeoip-dev", "geoip-bin" ]:
-			ensure => latest;
-		}
-	}
-
-	class files {
-		require generic::geoip::packages
-
-		file {
-			"/usr/share/GeoIP/GeoIP.dat":
-				mode => 0644,
-				owner => root,
-				group => root,
-				source => "puppet:///files/misc/GeoIP.dat";
-			"/usr/share/GeoIP/GeoIPCity.dat":
-				mode => 0644,
-				owner => root,
-				group => root,
-				source => "puppet:///files/misc/GeoIPcity.dat";
 		}
 	}
 }
@@ -207,21 +200,21 @@ define upstart_job($install="false") {
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
 define interface_ip($interface, $address, $prefixlen="32") {
 	$prefix = "${address}/${prefixlen}"
-	$iptables_command = "ip addr add ${prefix} dev ${interface}"
+	$ipaddr_command = "ip addr add ${prefix} dev ${interface}"
 
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${prefix}":
-			context => "/files/etc/network/interfaces/*[. = '${interface}']",
-			changes => "set up[last()+1] '${iptables_command}'",
-			onlyif => "match up[. = '${iptables_command}'] size == 0";
+			context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = 'inet']",
+			changes => "set up[last()+1] '${ipaddr_command}'",
+			onlyif => "match up[. = '${ipaddr_command}'] size == 0";
 		}
 	}
 
 	# Add the IP address manually as well
-	exec { $iptables_command:
+	exec { $ipaddr_command:
 		path => "/bin:/usr/bin",
-		onlyif => "test -z \"$(ip addr show dev ${interface} to ${prefix})\"";
+		returns => [0, 2]
 	}
 }
 
@@ -256,7 +249,7 @@ define interface_setting($interface, $setting, $value) {
 	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${title}":
-			context => "/files/etc/network/interfaces/*[. = '${interface}']",
+			context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
 			changes => "set ${setting} '${value}'",
 		}
 	}
@@ -268,6 +261,42 @@ class base::vlan-tools {
 
 class base::bonding-tools {
 	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
+}
+
+define interface_tun6to4($remove=undef) {
+	if $remove == 'true' {
+		$augeas_cmd = [	"rm auto[./1 = 'tun6to4']",
+				"rm iface[. = 'tun6to4']"
+			]
+	} else {
+		$augeas_cmd = [	"set auto[./1 = 'tun6to4']/1 'tun6to4'",
+				"set iface[. = 'tun6to4'] 'tun6to4'",
+				"set iface[. = 'tun6to4']/family 'inet6'",
+				"set iface[. = 'tun6to4']/method 'v4tunnel'",
+				"set iface[. = 'tun6to4']/endpoint 'any'",
+				"set iface[. = 'tun6to4']/local '192.88.99.1'",
+				"set iface[. = 'tun6to4']/ttl '64'",
+				"set iface[. = 'tun6to4']/pre-up 'ip address add 192.88.99.1/32 dev lo label lo:6to4'",
+				"set iface[. = 'tun6to4']/down 'ip address del 192.88.99.1/32 dev lo label lo:6to4'",
+				"set iface[. = 'tun6to4']/up 'ip -6 route add 2002::/16 dev \$IFACE'",
+			]
+	}
+
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $remove == 'true' {
+			exec { "/sbin/ifdown tun6to4": before => Augeas["tun6to4"] }
+		}
+
+		# Use augeas
+		augeas { "tun6to4":
+			context => "/files/etc/network/interfaces/",
+			changes => $augeas_cmd;
+		}
+
+		if $remove != 'true' {
+			exec { "/sbin/ifup tun6to4": require => Augeas["tun6to4"] }
+		}
+	}
 }
 
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
@@ -350,7 +379,7 @@ define interface_aggregate_member($master) {
 	}
 }
 
-define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast") {
+define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast", $hash_policy="layer2+3") {
 	require base::bonding-tools
 
 	# Use the definition title as the destination (aggregated) interface
@@ -396,7 +425,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 				"set iface[. = '${aggr_interface}']/bond-mode '802.3ad'",
 				"set iface[. = '${aggr_interface}']/bond-lacp-rate '${lacp_rate}'",
 				"set iface[. = '${aggr_interface}']/bond-miimon '100'",
-				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy 'layer2+3'"
+				"set iface[. = '${aggr_interface}']/bond-xmit-hash-policy '${hash_policy}'"
 			],
 			notify => Exec["ifup ${aggr_interface}"]
 		}
@@ -414,6 +443,31 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			require => Interface_aggregate_member[$members],
 			refreshonly => true
 		}
+	}
+}
+
+define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
+	if ! $interface {
+		$all_interfaces = split($::interfaces, ",")
+		$intf = $all_interfaces[0]
+	}
+	else {
+		$intf = $interface
+	}
+	
+	if ! $ipv4_address {
+		$ip4_address = "::${::ipaddress}"
+	}
+	else {
+		$ip4_address = "::${ipv4_address}"
+	}
+	
+	$ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${intf}\")).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
+
+	interface_ip { $title:
+		interface => $intf,
+		address => $ipv6_address,
+		prefixlen => "64"
 	}
 }
 
@@ -581,9 +635,6 @@ class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
 
-class generic::packages::mono-runtime {
-	package { "mono-runtime" : ensure => latest; }
-}
 
 # The joe editor, which has some fans among labs users
 class generic::packages::joe {
@@ -599,44 +650,78 @@ class generic::packages::tree {
 # Creates a git clone of a specified origin into a top level directory
 #
 # Parameters:
-# - $title
-#		Should be the repository name
-# $branch
-# 	Branch you would like to check out
-#
-# $ssh
-# 	SSH command/wrapper to use when checking out
-#
-define git::clone($directory, $branch="", $ssh="", $origin) {
+#   $directory	-	path to clone the repository into.  Required.
+#	$origin		-	Origin repository URL.
+# 	$branch		-	Branch you would like to check out.
+#   $ensure     -	'absent', 'present', or 'latest'.  Defaults to 'present'.  
+#					'latest' will execute a git pull if there are any changes.
+#					'absent' will ensure the directory is deleted.
+#	$owner		-	owner of $directory, default: 'root'.  git commands will be run by this user.
+#	$group		-	group owner of $directory, default: 'root',
+#	$mode		-	permission mode of $directory, default: 0755
+#   
+# Usage:
+#	git::clone{ "my_clone_name": 
+#		directory => "/path/to/clone/container", 
+#		origin => "http://blabla.org/core.git", 
+#		branch => "the_best_branch" 
+#	}  # clones http://blabla.org/core.git branch 'the_best_branch' at /path/to/clone/container/core
+define git::clone(
+	$directory, 
+	$origin,
+	$branch="", 
+	$ensure='present',
+	$owner="root",
+	$group="root",
+	$mode=0755) {
+		
 	require generic::packages::git-core
+	
+	case $ensure {
+		"absent": {
+			# make sure $directory does not exist
+			file { $directory:
+				ensure  => 'absent',
+				recurse => true,
+				force   => true,
+			}
+		}
 
-	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
+		# otherwise clone the repository
+		default: {
+			# if branch was specified
+			if $branch {
+				$brancharg = "-b $branch "
+			}
+			# else don't checkout a non-default branch
+			else {
+				$brancharg = ""
+			}
 
-	if $branch {
-		$brancharg = "-b $branch "
-	}
-	else {
-		$brancharg = ""
-	}
-
-	if $ssh {
-		$env = "GIT_SSH=$ssh"
-	}
-
-	$gitconfig = "${directory}/${suffix}/.git/config"
-
-	Exec {
-		path => "/usr/bin:/bin",
-		cwd => $directory
-	}
-	exec {
-		"git clone ${title}":
-			command => "git clone ${brancharg}${origin} $suffix",
-			unless => "/usr/bin/test -e $gitconfig",
-			environment => $env,
-			creates => "$gitconfig";
+			# set PATH for following execs
+			Exec { path => "/usr/bin:/bin" }
+			# clone the repository
+			exec { "git_clone_${title}":
+				command => "git clone ${brancharg}${origin} $directory",
+				creates => "$directory/.git/config",
+				user    => $owner
+			}
+			
+			# pull if $ensure == latest and if there are changes to merge in.
+			if $ensure == "latest" {
+				exec { "git_pull_${title}":
+					cwd     => $directory,
+					command => "git pull --quiet",
+					# git diff --quiet will exit 1 (return false) if there are differences
+					unless  => "git fetch && git diff --quiet remotes/origin/HEAD",
+					user    => $owner,
+					require => Exec["git_clone_${title}"],
+				}
+			}
+		}
 	}
 }
+
 
 define git::init($directory) {
 	require generic::packages::git-core
@@ -652,11 +737,6 @@ define git::init($directory) {
 	}
 }
 
-class generic::tor {
-	package { "tor":
-		ensure => latest
-	}
-}
 
 # Creating an apparmor service class
 # so we can notify the service when 
@@ -712,8 +792,8 @@ define sysctl($value) {
 
 	if ${sysctl.${title}} != ${value} {
 		exec { "sysctl $title":
-			command => "/sbin/sysctl -w ${quoted_param}",
-			user => root;
+		command => "/sbin/sysctl -w ${quoted_param}",
+		user => root;
 		}
 	}
 */
@@ -725,7 +805,7 @@ class generic::sysctl::high-http-performance($ensure="present") {
 			name => "/etc/sysctl.d/60-high-http-performance.conf",
 			owner => root,
 			group => root,
-			mode => 444,
+			mode => 0444,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
 			ensure => $ensure
@@ -736,14 +816,28 @@ class generic::sysctl::high-http-performance($ensure="present") {
 }
 
 class generic::sysctl::advanced-routing($ensure="present") {
-	if $lsbdistrelease != "8.04" {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
 		file { advanced-routing-sysctl:
 			name => "/etc/sysctl.d/50-advanced-routing.conf",
 			owner => root,
 			group => root,
-			mode => 444,
+			mode => 0444,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
+			ensure => $ensure
+		}
+	}
+}
+
+class generic::sysctl::advanced-routing-ipv6($ensure="present") {
+	if $lsbdistrelease != "8.04" {
+		file { advanced-routing-sysctl:
+			name => "/etc/sysctl.d/50-advanced-routing-ipv6.conf",
+			owner => root,
+			group => root,
+			mode => 0444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-advanced-routing-ipv6.conf.sysctl",
 			ensure => $ensure
 		}
 	}
@@ -755,7 +849,7 @@ class generic::sysctl::ipv6-disable-ra($ensure="present") {
 			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
 			owner => root,
 			group => root,
-			mode => 444,
+			mode => 0444,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
 			ensure => $ensure
@@ -766,9 +860,19 @@ class generic::sysctl::ipv6-disable-ra($ensure="present") {
 class generic::sysctl::lvs($ensure="present") {
 	file { lvs-sysctl:
 		name => "/etc/sysctl.d/50-lvs.conf",
-		mode => 444,
+		mode => 0444,
 		notify => Exec["/sbin/start procps"],
 		source => "puppet:///files/misc/50-lvs.conf.sysctl",
+		ensure => $ensure
+	}
+}
+
+class generic::sysctl::high-bandwidth-rsync($ensure="present") {
+	file { high-bandwidth-rsync-sysctl:
+		name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
+		mode => 0444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/misc/60-high-bandwidth-rsync.conf.sysctl",
 		ensure => $ensure
 	}
 }
@@ -809,6 +913,8 @@ define generic::debconf::set($value) {
 }
 
 class generic::tcptweaks {
+	require base::puppet
+
 	file {
 		"/etc/network/if-up.d/initcwnd":
 			content => template("misc/initcwnd.erb"),
@@ -827,9 +933,8 @@ class generic::pythonpip {
 		ensure => latest;
 	}
 	exec { "update_pip":
-			command => "pip install --upgrade pip";
+			command => "/usr/bin/pip install --upgrade pip";
 		"update_virtualenv":
-			command => "pip install --upgrade virtualenv";
+			command => "/usr/bin/pip install --upgrade virtualenv";
 	}
 }
-

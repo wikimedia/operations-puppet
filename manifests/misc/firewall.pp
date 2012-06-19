@@ -1,16 +1,24 @@
 class firewall::builder {
+
+	package { ["fwconfigtool", "python-argparse"] :
+		  ensure => latest;
+	}
 	file { 
-		"/usr/local/fwbuilder.d":
-		owner => root,
-		group => root,
-		mode => 0755,
-		ensure => directory;
+		"/var/lib/fwconfigtool":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+
+		"/var/lib/fwconfigtool/machineports":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 	}
 
 	# collect all fw definitions
 	Exported_acl_rule <<| |>>
-
-	# TODO: add script here that does the work.
 
 }
 
@@ -31,8 +39,8 @@ class firewall {
 
 	define exported_acl_rule($hostname=$::hostname, $ip_address=$::ipaddress, $protocol="tcp", $port) {
 		file {
-			"/usr/local/fwbuilder.d/${ipaddress}-${port}":
-				content => "$hostname,$ipaddress,$protocol,$port\n",
+			"/var/lib/fwconfigtool/machineports/${ip_address}-${port}":
+				content => "$hostname,$ip_address,$protocol,$port\n",
 				ensure => present,
 				owner => root,
 				group => root,

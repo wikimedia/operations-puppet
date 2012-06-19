@@ -10,6 +10,12 @@
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# make the larger history file, record a timestamp
+HISTSIZE=1000
+HISTFILESIZE=4000
+HISTTIMEFORMAT='%F %T '
+
+
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)

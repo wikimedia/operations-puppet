@@ -1,14 +1,15 @@
 # TODO: break this up in different (sub) classes for the different services
 class misc::fundraising {
 
-	include passwords::civi
+	include passwords::civi,
+		mysql::client::default-charset-binary
 
 	#what is currently on grosley/aluminium
 	system_role { "misc::fundraising": description => "fundraising sites and operations" }
 
 	require mysql::client
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-dev", "php5-gd", "php5-mysql", "php5-sqlite", "subversion", "phpunit", "python-scipy", "python-matplotlib", "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-urlgrabber", "python-argparse", "python-dev", "python-setuptools", "python-mysqldb", "libapache2-mod-python", "r-base" ]:
 		ensure => latest;
 	}
 
@@ -143,21 +144,26 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
+		"/etc/apache2/sites-available/008-community-analytics":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/apache.conf.community-analytics";
 
 		"/usr/local/bin/drush":
 			ensure => "/opt/drush/drush";
 
 		# monitoring stuff
-		"/etc/nagios/nrpe.d/fundraising.cfg":
-			source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
-			mode => 0444,
-			owner => root,
-			group => root;
-		"/etc/sudoers.d/nrpe_fundraising":
-			source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
-			mode => 0440,
-			owner => root,
-			group => root;
+		#"/etc/nagios/nrpe.d/fundraising.cfg":
+		#	source => "puppet:///files/nagios/nrpe_local.fundraising.cfg",
+		#	mode => 0444,
+		#	owner => root,
+		#	group => root;
+		#"/etc/sudoers.d/nrpe_fundraising":
+		#	source => "puppet:///files/sudo/sudoers.nrpe_fundraising",
+		#	mode => 0440,
+		#	owner => root,
+		#	group => root;
 
 		# other stuff
 		"/etc/php5/cli/php.ini":
@@ -184,31 +190,12 @@ class misc::fundraising {
 	apache_site { civicrm-dev-ssl: name => "005-civicrm-dev-ssl" }
 	apache_site { fundraising: name => "006-fundraising" }
 	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
-
-}
-
-class misc::fundraising::impressionlog::compress {
-
-	file { 
-		'/usr/local/bin/impression_log_rotator':
-			mode => 0755,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/impression_log_rotator";
-	}
-
-	cron {
-		'rotate_impression_logs':
-			user => root,
-			minute => '*/5',
-			command => '/usr/local/bin/impression_log_rotator',
-			ensure => present,
-	}
+	apache_site { community-analytics: name => "008-community-analytics" }
 
 }
 
 
-class misc::fundraising::offhost_backups {
+class misc::fundraising::backup::offhost {
 
 	file { 
 		'/usr/local/bin/offhost_backups':
@@ -217,15 +204,6 @@ class misc::fundraising::offhost_backups {
 			group => root,
 			source => 'puppet:///files/misc/scripts/offhost_backups',
 	}
-
-	#cron {
-	#	'offhost_backups':
-	#		user => root,
-	#		minute => '35',
-	#		hour => '1',
-	#		command => '/usr/local/bin/offhost_backups',
-	#		ensure => present,
-	#}
 
 }
 
@@ -323,6 +301,132 @@ class misc::fundraising::mail {
 			user => root,
 			command => '/usr/sbin/exim -bpc > /tmp/exim_queue_count.dat',
 			ensure => present;
+	}
+
+}
+
+class misc::fundraising::impressionlog::archive {
+
+	system_role { "misc::fundraising::impressionlog::archive": description => "fundraising impression/banner log archive" }
+
+	file { 
+		'/usr/local/bin/fetch_udplogs':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => 'puppet:///files/misc/scripts/fetch_udplogs',
+	}
+
+	cron {
+		'fetch_udplogs':
+			user => root,
+			minute => [4,9,14,19,24,29,34,39,44,49,54,59],
+			command => '/usr/local/bin/fetch_udplogs',
+			ensure => present,
+	}
+
+}
+
+class misc::fundraising::impressionlog::compress {
+
+	system_role { "misc::fundraising::impressionlog::compress": description => "fundraising impression/banner fetch and compress" }
+
+	file { 
+		'/usr/local/bin/impression_log_rotator':
+			mode => 0755,
+			owner => root,
+			group => root,
+			source => "puppet:///private/misc/fundraising/impression_log_rotator";
+		'/archive/udplogs':
+			owner => 'logmover',
+			group => 'logmover',
+			mode => 0755,
+			ensure => directory;
+		'/archive/incoming_udplogs':
+			owner => 'logmover',
+			group => 'logmover',
+			mode => 0755,
+			ensure => directory;
+	}
+
+	cron {
+		'rotate_impression_logs':
+			user => logmover,
+			minute => '*/5',
+			command => '/usr/local/bin/impression_log_rotator',
+			ensure => present,
+	}
+
+	systemuser { logmover: name => "logmover", home => "/var/lib/logmover", shell => "/bin/sh" }
+
+	ssh_authorized_key {
+		"logmover/root@loudon":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
+		"logmover/root@aluminium":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==";
+		"logmover/root@grosley":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==";
+		"logmover/root@hume":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAt0zYrPQ9uWGikvIQymX30hGeV42aSNnSZ3ClhEVMYHi98IJFFCFJC1UiQdhMV3p0fyVN0KZRTzYDFDsIKZxAN7/ZAyNaAujmRb5FBJ2IxDUaG89n0ZbmMz09BktVbM9jorzkaLatMYs4ouzjuH4EoW7Dbr2EO/cYAzK4Qv0wQnVDbd2bTjcJ48b5QWhQ9PWvytPOv0PgJTql3zUs3lSVAc7sOTU5FmwGIQBehGCvHJvepr/b8omJwTICQUsiICisJELlZesc7QdfiourSZIy3MYSMefhbELPGPBMC132bS8IhaC/3iFA8GAuTuNqaHqJVzrUm2t4r0ZvDJReX0zLdQ==";
+		"logmover/file_mover@locke":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==";
+		"logmover/file_mover@emery":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEA04+NGTd7Vj5Qx7a7IMFfphwlADq67dSCiU7iU1R8rIyDYu0mKioEYjq5JItM0yEE1CyiDYOaYY+L40j11ySlD5+qchg5gMxigNVWcQ3L6lEs1p1MkIm2LtRkqPC5vfLJIuTJlukad6W+G9atdEk9Dw7zK6yVaWq0/zcNXxHiJC7lUqckGwy4A/mLecfiRhPL/4ksID2TiqKfvarpqg43IjycoLX65BGmOumDkzDfR5mvHcOeWsDdhB3b8rIAPfjLg1l5V3CkaGT2xQBSN/YbLB+bIPf7nn3b+HjjxU4JHEsDdogUn/BuaMQcjqfJjZ30h97hkyvTaQQ6DS5JI8eDaQ==";
+		"logmover/root@storage3":
+			ensure  => present,
+			user	=> logmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAvJzE9gvWmUzHsTj6MeZi64r35Lqr7wIbvRv0IMPli9nDqjcVFdZB46Hf6hiGpC0RKaxKyNE9dJRZgl+7T7/RAB1dXx4H9TtacnVV/e4UEaJt5/OeLBnIx2NnKc3G7wzZ8rmPfvXlxpw9KRCtZm81/nuaDuIC9+aC1mKVL9wG6EIA6Wl9OwAazhb88sVUbLCZ2+Of+veGVSSfUeliuqTO5AJuS1d8Zh1Ru4RKRckb2y0ONloQRM+t8F+Qe2jP6iVSKD8ctolF1Cxj1wM4akyI7Ce7NbOT6rDv6SgWlm+GS+3L0+Q2DK1cSHuoiumh58eXA/X2lBxQqXMIN/svb2w3jw==";
+	}
+
+}
+
+
+class misc::fundraising::backup::archive {
+
+	system_role { "misc::fundraising::backup::archive": description => "fundraising backup archive" }
+
+	systemuser { backupmover: name => "backupmover", home => "/var/lib/backupmover", shell => "/bin/sh" }
+
+	ssh_authorized_key {
+		"backupmover/root@aluminium":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAv86yzKoTo6pcgfJVQ51FAIcQ8NwUhWd93SKNRTqDmIkkMOe6lVruEManMOqJXGcVWp8WpCvqzkIyx77Y5HZISzVZL3hEfkJL85HyOn8gWB9jF2uNYa16Ik2nXR/HxP0w/xajJM8RL6qlC6x2hkCFsHYWt28ug82auZUHhW2mJwzdbJx5iHw7tHJiwXvBbXFs0WyjOB/J/mh/H+ohlcI5zH9S8pGgypMeFUen3wpgP18auiigARyhCTgtBRoWos9TmM16DMjskronEjvC3ArCBll5nUiuU0mrpPVfADSycMrYR2Glw3KhkwGAxbM3QMAq476U67JctXWPuqBnLazDPQ==";
+		"backupmover/root@grosley":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==";
+		"backupmover/root@silicon":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAQEAs/tHmvah83UkyjJN/5JTm1Yo7ahh9bfi7Y7bnoryJ+F1QWnY0UNP+d8jGHoirYQoy4KvO+mpGTW2+vheD8+nmvq//2k95KkDmdo6NZul9Tn9vdpZ9VAbfmOhFmT4lhqm8IhMrA6W7+qiiBdAjMYRzdhxuzVZnjqxPWn9rznNy1g44iulFHKHAqjjwf/gMs2nYHdVBC3Re8cKwFcsz06BhvUjnZ94F80aNw8n5JsPv5ud8R8gSFaxEM6STY2mCj5liw+s5fRObgDtAE6xGALsHcOyEbI+FX1x0r/+5WOzEpM2qWLR6WJXi2HsOYfqaiqzSm2Yb3AfGi98gnnWF75e/Q==";
+		"backupmover/root@loudon":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=";
 	}
 
 }

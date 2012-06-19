@@ -3,8 +3,8 @@
 	ServerAdmin noc@wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
-	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	ErrorLog /var/log/apache2/error.log
 
@@ -25,6 +25,9 @@
 	ProxyPass /otrs-2.1.3 !
 	ProxyPass /otrs-web !
 	ProxyPass / http://apaches.pmtpa.wmnet/ retry=3
+	SetEnv force-proxy-request-1.0 1
+	SetEnv proxy-nokeepalive 1
+	SetEnv proxy-initial-not-pooled
 	ProxyVia On
 
 	# Old OTRS URLs

@@ -1,6 +1,7 @@
 # memcached.pp
 
 # Virtual resource for monitoring server
+@monitor_group { "memcached": description => "all memcached servers" }
 @monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
 
 class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0') {
@@ -19,6 +20,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 
 	class monitoring {
 		# Nagios
+		$nagios_group = "memcached"
 		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!$memcached_port" }
 
 		# Ganglia
@@ -34,7 +36,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 				"/usr/lib/ganglia/python_modules":
 					owner => root,
 					group => root,
-					mode => 755,
+					mode => 0755,
 					ensure => directory;
 			}
 		}

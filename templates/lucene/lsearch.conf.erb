@@ -1,3 +1,8 @@
+######################################################
+##### THIS FILE IS MANAGED BY PUPPET              ####
+##### puppet:///templates/search/lsearch.conf.erb ####
+######################################################
+
 # By default, will check /etc/mwsearch.conf
 
 ################################################
@@ -5,8 +10,9 @@
 ################################################
 
 # URL to global configuration, this is the shared main config file, it can 
-# be on a NFS partition or available somewhere on the network
-MWConfig.global=file:///home/wikipedia/conf/lucene/lsearch-global-2.1.conf
+# be on a NFS partition or available somewhere on the network or pushed out
+# by puppet or another conf management tool
+MWConfig.global=file:///a/search/conf/lsearch-global-2.1.conf
 
 # Local path to root directory of indexes
 Indexes.path=/a/search/indexes
@@ -35,7 +41,7 @@ Search.updatedelay=0
 Search.checkinterval=30
 
 # Disable wordnet aliases
-Search.disablewordnet=true
+Search.disablewordnet=<% if scope.lookupvar('lucene::server::indexer') == true then -%>true<% else -%>false<% end -%>
 
 ################################################
 # Indexer related configuration
@@ -57,7 +63,12 @@ Index.maxqueuecount=5000
 # Maximal time an update can remain in queue before being processed (in seconds)
 Index.maxqueuetimeout=120
 
+# Keep only the most recent update
+# Search.deleteOldUpdates=true
+
+<% if scope.lookupvar('lucene::server::indexer') == true then -%>
 Index.delsnapshots=true
+<% end -%>
 
 ################################################
 # Log, ganglia, localization
@@ -66,18 +77,24 @@ Index.delsnapshots=true
 SearcherPool.size=6
 
 # URL to message files, {0} is replaced with language code, i.e. En
-Localization.url=file:///home/wikipedia/common/php/languages/messages
+Localization.url=file:///a/search/conf/messages
 
+<% if scope.lookupvar('lucene::server::indexer') == true then -%>
 # Pattern for OAI repo. {0} is replaced with dbname, {1} with language
 #OAI.repo=http://{1}.wikipedia.org/wiki/Special:OAIRepository
 OAI.username=lsearch2
 OAI.password=<%= lucene_oai_pass %>
+<% end -%>
 # Max queue size on remote indexer after which we wait a bit
 OAI.maxqueue=5000
 
 # Number of docs to buffer before sending to inc updater
 OAI.bufferdocs=500
 
+# UDP Logger config
+# currently set to send logs to oxygen.w.o:51234
+UDPLogger.port=51234
+UDPLogger.host=208.80.154.15
 
 # RecentUpdateDaemon udp and tcp ports
 #RecentUpdateDaemon.udp=8111
@@ -88,7 +105,7 @@ OAI.bufferdocs=500
 #RecentUpdateDaemon.hostspareTcpPort=8112
 
 # Log configuration
-Logging.logconfig=/a/search/lsearch.log4j
+Logging.logconfig=/a/search/conf/lsearch.log4j
 
 # Set debug to true to diagnose problems with log4j configuration
 Logging.debug=false

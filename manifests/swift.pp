@@ -5,13 +5,6 @@
 #               It is used to find the ring files in the puppet files
 class swift::base($hash_path_suffix, $cluster_name) {
 
-	# FIXME: split these iptables rules apart into common, proxy, and
-	# storage so storage nodes aren't listening on http, etc.
-	# load iptables rules to allow http-alt, memcached, rsync, swift protocols, ssh, and all ICMP traffic.
-	if $realm != "labs" {
-		include swift::iptables
-	}
-
 	# include tcp settings
 	include swift::sysctl::tcp-improvements
 	include generic::sysctl::high-http-performance
@@ -86,6 +79,7 @@ class swift::iptables-accepts {
 	iptables_add_service{ "swift_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "swift_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "swift_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "swift_common_ssh_all": service => "ssh", jump => "ACCEPT" }
 	iptables_add_service{ "swift_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
 	iptables_add_service{ "swift_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
@@ -163,12 +157,8 @@ class swift::proxy {
 
 class swift::proxy::monitoring {
 
-	if $hostname =~ /^ms-fe[12]$/ {
-		monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
-	}
-	# else {
-	#	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!8080" }
-	# }
+	monitor_service { "swift http": description => "Swift HTTP", check_command => "check_http_swift!80" }
+
 }
 
 # TODO: document parameters
@@ -227,22 +217,25 @@ class swift::cleaner {
 		$rewrite_user,
 		$rewrite_password,
 		$statedir,
-		$scrubstate ) {
-
+		$scrubstate,
+		$save_deletes ) {
+		# pull in the config file specific to this cluster
 		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
 			content => template("swift/swiftcleaner.conf")
 		}
+		# make sure the statedir for the cleaner exists
 		file { "$statedir":
 			owner => root,
 			group => root,
 			mode => 0644,
 			ensure => directory;
 		}
+		# set up the cronjob itself
 		cron { "swiftcleaner-$name":
-			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
+			command => "$swiftcleaner_basedir/swiftcleanermanager -c $swiftcleaner_basedir/swiftcleaner-$name.conf -A /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S) -p /tmp/swiftcleaner-$name.pid >> /tmp/swiftcleaner-${name}-\$(date +\%Y\%m\%dT\%H\%M\%S).log",
 			user => root,
 			minute => 1,
 			hour => 22, #the beginning of the daily trough
@@ -272,7 +265,8 @@ class swift::cleaner {
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 		statedir => "/var/lib/swiftcleaner-incremental",
-		scrubstate => "False"
+		scrubstate => "False",
+		save_deletes => "True"
 		}
 	# run the full scan slower
 	swiftcleanercron { "swiftcleaner-full" :
@@ -285,7 +279,8 @@ class swift::cleaner {
 		rewrite_user => "mw:thumbnail",
 		rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 		statedir => "/var/lib/swiftcleaner-full",
-		scrubstate => "True"
+		scrubstate => "True",
+		save_deletes => "True"
 		}
 }
 
@@ -295,7 +290,7 @@ class swift::storage {
 	system_role { "swift::storage": description => "swift backend storage brick" }
 
 	class packages {
-		package { 
+		package {
 			[ "swift-account",
 			  "swift-container",
 			  "swift-object" ]:
@@ -345,7 +340,6 @@ class swift::storage {
 	class monitoring {
 		require swift::storage::service
 		$nagios_group = "swift"
-
 		monitor_service { "swift-account-auditor": description => "swift-account-auditor", check_command => "nrpe_check_swift_account_auditor" }
 		monitor_service { "swift-account-reaper": description => "swift-account-reaper", check_command => "nrpe_check_swift_account_reaper" }
 		monitor_service { "swift-account-replicator": description => "swift-account-replicator", check_command => "nrpe_check_swift_account_replicator" }
@@ -358,10 +352,9 @@ class swift::storage {
 		monitor_service { "swift-object-replicator": description => "swift-object-replicator", check_command => "nrpe_check_swift_object_replicator" }
 		monitor_service { "swift-object-server": description => "swift-object-server", check_command => "nrpe_check_swift_object_server" }
 		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
-
 	}
-	
-	include packages, config, service, monitoring
+
+	include packages, config, service
 }
 
 # Definition: swift::create_filesystem
@@ -380,7 +373,7 @@ define swift::create_filesystem($partition_nr="1") {
 		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 		exec { "swift partitioning $title":
 			path => "/usr/bin:/bin:/usr/sbin:/sbin",
-			command => "parted -s -a optimal ${title} mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -L swift-${dev_suffix} ${dev}",
+			command => "parted -s -a optimal ${title} mklabel gpt mkpart swift-${dev_suffix} 0% 100% && mkfs -t xfs -i size=1024 -L swift-${dev_suffix} ${dev}",
 			creates => $dev
 		}
 
@@ -435,3 +428,9 @@ define swift::mount_filesystem() {
 	Exec["mkdir $mountpath"] -> Mount[$mountpath] -> File["fix attr $mountpath"]
 }
 
+# installs the swift cli for interacting with remote swift installations.
+class swift::utilities {
+	package { "swift":
+		ensure => present;
+	}
+}

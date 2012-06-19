@@ -1,0 +1,9 @@
+title   "10 Most Deviant API Methods by Call Rate log(2) -1day"
+linewidth 1
+logbase 2
+linemode "connected"
+hide_legend "false"
+from "-1day"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(API.*.count,1)),0,2))'

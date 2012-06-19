@@ -1,0 +1,133 @@
+#!/usr/bin/perl
+use strict;
+use IPC::Open3;
+use IO::Select;
+use Sys::Syslog;
+use Fcntl ':flock';
+
+my ($conf,$mirror);
+$conf->{'HOSTNAME'} = `hostname --short`;
+chomp $conf->{'HOSTNAME'};
+$conf->{'IDENT'} = ($0 =~ /([^\/]+)$/) ? $1 : $0;
+$conf->{'LOCKFILE'} = "/tmp/$conf->{'IDENT'}.lock";
+
+# jobs, keep 'em numbered in the order you want them to happen
+# note: both hume and storage3 can be used to handle udplog compression so we collect from both
+if ($conf->{'HOSTNAME'} eq 'storage3') {
+	# fetch proxy impression logs 'udplogs' from hume
+	$mirror->{'1'} = 'rsync -var --exclude=".*/" logmover@hume.wikimedia.org:/archive/udplogs/ /archive/udplogs/';
+} elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
+	# fetch proxy impression logs 'udplogs' from hume
+	$mirror->{'1'} = 'rsync -var --exclude=".*/" logmover@hume.wikimedia.org:/archive/udplogs/ /bfd1/archive/udplogs/';
+	# fetch proxy impression logs 'udplogs' from storage3
+	$mirror->{'2'} = 'rsync -var --exclude=".*/" logmover@storage3.pmtpa.wmnet:/archive/udplogs/ /bfd1/archive/udplogs/';
+	# sync bfd1 to bfd2, for manual redundancy (they're single disks)
+	$mirror->{'3'} = 'rsync -var /bfd1/archive/udplogs/ /bfd2/archive/udplogs/';
+}
+
+# check if already running
+if (my $lock_error = lockfile('set')) { # lockfile returns an error if already locked
+	printlog($lock_error,'warning');
+	exit;
+}
+
+for my $m (sort {$a<=>$b} keys %{$mirror}) {
+
+	printlog($mirror->{$m});
+
+	# open system call using open3 so we can cleanly address stderr vs stdout
+	my $child_pid = open3(*W, *R, *E, $mirror->{$m});
+
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to step through the output of open3
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+
+	# keep looping through open3 filehandles until there is no more output on any of them
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+			for my $fh (@ready) {
+			my $ffh = fileno($fh);  # identify which handle we're dealing with
+			if (eof ($fh)) {	# close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				next if $line =~ /^(total|sent|sending|receiving)/;
+				printlog($line);
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				printlog($line,'warning');
+			}
+		}
+	}
+
+	close (R);
+	close (E);
+
+}
+
+lockfile('unset');
+
+exit;
+
+
+#         _                 _   _             
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#
+
+# print to syslog
+sub printlog {
+	my $msg = $_[0];
+	my $severity = $_[1] ? $_[1] : 'info'; # notice warning error etc.
+	if ((defined $msg) and ($msg =~ /\w+/)) {
+		Sys::Syslog::setlogsock('unix');
+		Sys::Syslog::openlog($conf->{'IDENT'},'ndelay,pid','user');
+		Sys::Syslog::syslog($severity,$msg);
+		Sys::Syslog::closelog();
+	}
+}
+
+# set/unset a lockfile
+sub lockfile {
+	my $action = shift;
+	if ($action eq 'set') {
+		return("$0 already running") if (running($0));
+		open LOCK, "> $conf->{'LOCKFILE'}";
+		flock (LOCK, 2) or return("$0 already running?");
+		print LOCK $$;
+		close LOCK;
+	} else {
+		unlink $conf->{'LOCKFILE'};
+	}
+	return;
+}
+
+
+# check for lockfile
+#  -> if found, check for process matching PID
+#   -> if no matching process, whack the lockfile
+sub running {
+	my $prog = shift;
+	$prog =~ s/^(.*\/)+//g;
+	if (-e $conf->{'LOCKFILE'}) {
+		open LOCK, $conf->{'LOCKFILE'};
+		my $checkpid = <LOCK>;
+		close LOCK;
+		if ($checkpid) {
+			chomp $checkpid;
+			if (`ps -p $checkpid -o command= | grep $prog`) {
+				return $checkpid;
+			} else {
+				printlog("removed stale lockfile for $prog ($checkpid)",'warning');
+				unlink $conf->{'LOCKFILE'};
+			}
+		}
+	}
+	return;
+}

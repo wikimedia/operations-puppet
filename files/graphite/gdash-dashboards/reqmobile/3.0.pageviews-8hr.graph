@@ -1,0 +1,10 @@
+title   "Mobile Pageviews/day -1month"
+linewidth 1
+linemode "staircase"
+hide_legend "false"
+from "-1month"
+area "first"
+
+field :a, :color => "blue",
+		:alias => "none",
+			:data => 'cactiStyle(alias(summarize(reqstats.mobile_pageviews, "1day"),"reqs/day"))'

@@ -1,0 +1,9 @@
+title   "Article Methods - Average Time (ms) log(2) -1month"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-1month"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(Article.*.tavg,1,2))'

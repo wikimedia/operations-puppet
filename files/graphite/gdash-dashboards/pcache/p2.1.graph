@@ -1,0 +1,23 @@
+title   "Parser Cache Hit Rate -1month"
+vtitle "Percent"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-1 month"
+ymax 100 
+
+field :hit, :color => "green",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(asPercent(stats.pcache_hit.count,sumSeries(stats.pcache_[hm]*.count)),"Hit"))'
+
+field :absent, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_absent.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (absent)"))'
+
+field :expired, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_expired.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (expire)"))'
+
+field :stub, :color => "orange",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(asPercent(stats.pcache_miss_stub.count,sumSeries(stats.pcache_[hm]*.count)),"Miss (stub)"))'

@@ -1,0 +1,14 @@
+title   "HTTP 5xx Responses/hour -1week"
+linewidth 2
+linemode "connected"
+hide_legend "false"
+from "-1 week"
+
+field :a, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(reqstats.500,"1h"),"500 resp/hour"))'
+
+field :b, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(reqstats.5xx,"1h"),"5xx resp/hour"))'
+

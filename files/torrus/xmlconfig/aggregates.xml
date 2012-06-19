@@ -6,8 +6,8 @@
 		<subtree name="Internal_links">
 			<apply-template name="snmp-defaults"/>
 			<subtree name="Transport_pmtpa_eqiad">
-				<param name="expr-Transport-Bytes_In" value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},+"/>
-				<param name="expr-Transport-Bytes_Out" value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},0,+"/>
+				<param name="expr-Transport-Bytes_In" value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},+"/>
+				<param name="expr-Transport-Bytes_Out" value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},0,+"/>
 
 				<leaf name="InOut_bps">
 					<param name="comment" value="Input and Output bits per second graphs" />
@@ -18,25 +18,25 @@
 					<param name="ds-type"          value="rrd-multigraph" />
 					<param name="ds-names"         value="gblx-in,l3-in,gblx-out,l3-out" />
 
-					<param name="ds-expr-gblx-in"       value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},8,*" />
+					<param name="ds-expr-gblx-in"       value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},8,*" />
 					<param name="graph-legend-gblx-in"  value="GBLX Bits per second pmtpa -> eqiad" />
 					<param name="line-style-gblx-in"    value="AREA" />
 					<param name="line-color-gblx-in"    value="#004aa0" />
 					<param name="line-order-gblx-in"    value="1" />
 			
-					<param name="ds-expr-l3-in"       value="{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},8,*" />
+					<param name="ds-expr-l3-in"       value="{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_In},8,*" />
 					<param name="graph-legend-l3-in"  value="L(3) Bits per second pmtpa -> eqiad" />
 					<param name="line-style-l3-in"    value="STACK" />
 					<param name="line-color-l3-in"    value="#f70013" />
 					<param name="line-order-l3-in"    value="2" />
 
-					<param name="ds-expr-gblx-out"      value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},-8,*" />
+					<param name="ds-expr-gblx-out"      value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},-8,*" />
 					<param name="graph-legend-gblx-out" value="GBLX Bits per second eqiad -> pmtpa" />
 					<param name="line-style-gblx-out"   value="AREA" />
 					<param name="line-color-gblx-out"   value="#004aa0" />
 					<param name="line-order-gblx-out"   value="3" />
 
-					<param name="ds-expr-l3-out"      value="{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},-8,*" />
+					<param name="ds-expr-l3-out"      value="{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_2_1/Bytes_Out},-8,*" />
 					<param name="graph-legend-l3-out" value="L(3) Bits per second eqiad -> pmtpa" />
 					<param name="line-style-l3-out"   value="STACK" />
 					<param name="line-color-l3-out"   value="#f70013" />
@@ -50,8 +50,8 @@
 			<apply-template name="snmp-defaults"/>
 			<subtree name="eqiad">
 				<subtree name="Transit">
-					<param name="expr-Transit-Bytes_In" value="{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_3_1/Bytes_In},0,+"/>
-					<param name="expr-Transit-Bytes_Out" value="{/Core_switches/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_3_1/Bytes_Out},0,+"/>
+					<param name="expr-Transit-Bytes_In" value="{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_3_1/Bytes_In},0,+"/>
+					<param name="expr-Transit-Bytes_Out" value="{/Core_routers/cr2-eqiad.wikimedia.org/Interface_Counters/xe_5_3_1/Bytes_Out},0,+"/>
 					
 					<leaf name="InOut_bps">
 						<param name="comment" value="Input and Output bits per second graphs" />
@@ -77,8 +77,8 @@
 				</subtree>
 				
 				<subtree name="Peering">
-					<param name="expr-Peering-Bytes_In" value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_3_3/Bytes_In},0,+"/>
-					<param name="expr-Peering-Bytes_Out" value="{/Core_switches/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_3_3/Bytes_Out},0,+"/>
+					<param name="expr-Peering-Bytes_In" value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_3_3/Bytes_In},0,+"/>
+					<param name="expr-Peering-Bytes_Out" value="{/Core_routers/cr1-eqiad.wikimedia.org/Interface_Counters/xe_5_3_3/Bytes_Out},0,+"/>
 					
 					<leaf name="InOut_bps">
 						<param name="comment" value="Input and Output bits per second graphs" />

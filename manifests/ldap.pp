@@ -22,6 +22,7 @@ class ldap::server::iptables-accepts {
 	iptables_add_service{ "ldap_server_corp": service => "ldap", source => "216.38.130.188", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_server_corp": service => "ldaps", source => "216.38.130.188", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_server_spence": service => "ldaps", source => "208.80.152.161", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_server_neon": service => "ldaps", source => "208.80.154.14", jump => "ACCEPT" }
 
 }
 
@@ -490,6 +491,9 @@ class ldap::client::utils {
 		"/usr/local/sbin/manage-exports":
 			ensure => link,
 			target => "/usr/local/lib/user-management/manage-exports";
+		"/usr/local/sbin/manage-volumes":
+			ensure => link,
+			target => "/usr/local/lib/user-management/manage-volumes";
 		"/usr/local/sbin/ldapsupportlib.py":
 			ensure => link,
 			target => "/usr/local/lib/user-management/ldapsupportlib.py";
@@ -521,7 +525,7 @@ class ldap::client::utils {
 		require => Package["subversion"];
 	}
 	exec { "checkout_instance_ldap_tools":
-		command => "/usr/bin/svn co -r107038 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
+		command => "/usr/bin/svn co -r97023 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}

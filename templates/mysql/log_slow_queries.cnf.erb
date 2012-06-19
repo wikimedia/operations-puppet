@@ -1,0 +1,12 @@
+# This file is managed by puppet!
+# file:///puppet/templates/mysql/log_slow_queries.cnf.erb
+#
+
+[mysqld]
+
+log_slow_queries
+long_query_time = <%= has_variable?("long_query_time") ? long_query_time : 0.6 %>
+<% if has_variable?("log_queries_not_using_indexes") -%>
+log_queries_not_using_indexes
+<% end -%>
+

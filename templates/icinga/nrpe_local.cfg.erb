@@ -1,0 +1,38 @@
+pid_file=/var/run/icinga/nrpe.pid
+allowed_hosts=<%= scope.lookupvar("nrpe::packages::nrpe_allowed_hosts") %>
+
+command[check_dpkg]=/usr/lib/nagios/plugins/check_dpkg
+command[check_disk_5_2]=/usr/lib/nagios/plugins/check_disk -w 5% -c 2% -l -e
+command[check_disk_6_3]=/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e
+command[check_disk_6_4]=/usr/lib/nagios/plugins/check_disk -w 6% -c 4% -l -e
+command[check_raid]=sudo /usr/bin/check-raid.py
+
+# process checks, we can't make this generic because we don't pass args via nrpe (security)
+command[check_jenkins]=/usr/lib/nagios/plugins/check_procs -w 1:3 -c 1:20 -a jenkins
+command[check_mailman]=/usr/lib/nagios/plugins/check_procs -w 1:25 -c 1:35 -a mailman
+command[check_spamd]=/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd
+command[check_poolcounterd]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:3 -C poolcounterd
+command[check_varnishncsa]=/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:6 -C varnishncsa
+command[check_mysqld]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld
+command[check_carbon_cache]=/usr/lib/nagios/plugins/check_procs -c 1:1 -C carbon-cache.py
+command[check_profiler_to_carbon]=/usr/lib/nagios/plugins/check_procs -c 1:1 --ereg-argument-array='^/usr/bin/python /usr/udpprofile/sbin/profiler-to-carbon'
+command[check_profiling_collector]=/usr/lib/nagios/plugins/check_procs -c 1:20 -C collector
+
+# swift process checks (RT-2593)
+command[check_swift_account_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-auditor'
+command[check_swift_account_reaper]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-reaper'
+command[check_swift_account_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-replicator'
+command[check_swift_account_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-account-server'
+command[check_swift_container_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-auditor'
+command[check_swift_container_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-replicator'
+command[check_swift_container_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-server'
+command[check_swift_container_updater]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-container-updater'
+command[check_swift_object_auditor]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-auditor'
+command[check_swift_object_replicator]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-replicator'
+command[check_swift_object_server]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-server'
+command[check_swift_object_updater]=/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array='^/usr/bin/python /usr/bin/swift-object-updater'
+# end swift process checks
+
+# this isn't in all /etc/nagios/nrpe.cfg's and is safe to duplicate
+include_dir=/etc/icinga/nrpe.d/
+include_dir=/etc/nagios/nrpe.d/

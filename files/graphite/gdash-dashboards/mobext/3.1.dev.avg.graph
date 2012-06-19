@@ -1,0 +1,9 @@
+title   "Top 10 MobileFrontend Methods by Max Average Time (ms) log(2) -1month"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-1month"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(highestMax(ExtMobileFrontend.*.tavg,10),1,2))'

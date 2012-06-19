@@ -1,0 +1,13 @@
+title   "External Store Gets - Avg and 99th Percentile Latency (ms) log(2) -1day"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1day"
+logbase 2
+field :tavg, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tavg,"avg (ms)"))'
+
+field :tp99, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(query.SELECT.blob_text_FROM_blobs_clusterN_WHERE_blob_id_X_LIMIT_N.tp99,"99% (ms)"))'

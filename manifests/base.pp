@@ -10,6 +10,27 @@ import "../private/manifests/passwords.pp"
 import "../private/manifests/contacts.pp"
 import "../private/manifests/mail.pp"
 
+
+class base::access::dc-techs {
+	# add account and sudoers rules for data center techs
+	#include accounts::cmjohnson
+
+	# hardy doesn't support sudoers.d; only do sudo_user for lucid and later
+	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		sudo_user { [ "cmjohnson" ]: privileges => [
+			'ALL = (root) NOPASSWD: /sbin/fdisk',
+			'ALL = (root) NOPASSWD: /sbin/mdadm',
+			'ALL = (root) NOPASSWD: /sbin/parted',
+			'ALL = (root) NOPASSWD: /sbin/sfdisk',
+			'ALL = (root) NOPASSWD: /usr/bin/MegaCli',
+			'ALL = (root) NOPASSWD: /usr/bin/arcconf',
+			'ALL = (root) NOPASSWD: /usr/bin/lshw',
+			'ALL = (root) NOPASSWD: /usr/sbin/grub-install',
+		]}
+	}
+
+}
+
 class base::apt::update {
 	# Make sure puppet runs apt-get update!
 	exec { "/usr/bin/apt-get update":
@@ -34,8 +55,13 @@ Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:80
 
 	# Setup the APT repositories
 	$aptrepository = "## Wikimedia APT repository
-deb http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
-deb-src http://apt.wikimedia.org/wikimedia ${lsbdistcodename}-wikimedia main universe
+deb http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
+deb-src http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
+"
+	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
+Package: *
+Pin: release o=Wikimedia
+Pin-Priority: 1001
 "
 	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
 Package: *
@@ -50,7 +76,7 @@ Pin-Priority: 1001
 			mode => 0444;
 	}
 	
-	if versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/apt/preferences.d/wikimedia.pref":
 			require => File["/etc/apt/sources.list.d/wikimedia.list"],
 			content => $aptpref,
@@ -70,19 +96,48 @@ Pin-Priority: 1001
 	package { apt-show-versions:
 		ensure => latest;
 	}
-	
-	# Point out-of-support distributions to http://old-releases.ubuntu.com
-	if $lsbdistcodename in [ "karmic" ] {
-		$oldrepository = "## Unsupported (old) Ubuntu release
-deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
-deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename} main universe multiverse
-deb http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename}-updates main universe multiverse
-deb-src http://old-releases.ubuntu.com/ubuntu ${lsbdistcodename}-updates main universe multiverse
-"
-		file { "/etc/apt/sources.list.d/ubuntu-${lsbdistcodename}.list":
-			content => $oldrepository,
-			mode => 0444;
+}
+
+class base::grub {
+	# Disable the 'quiet' kernel command line option so console messages
+	# will be printed.
+	exec {
+		"grub1 remove quiet":
+			path => "/bin:/usr/bin",
+			command => "sed -i '/^# defoptions.*[= ]quiet /s/quiet //' /boot/grub/menu.lst",
+			onlyif => "grep -q '^# defoptions.*[= ]quiet ' /boot/grub/menu.lst",
+			notify => Exec["update-grub"];
+		"grub2 remove quiet":
+			path => "/bin:/usr/bin",
+			command => "sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"/s/quiet splash//' /etc/default/grub",
+			onlyif => "grep -q '^GRUB_CMDLINE_LINUX_DEFAULT=\"quiet splash\"' /etc/default/grub",
+			notify => Exec["update-grub"];
+	}
+
+	# Ubuntu Precise Pangolin no longer has a server kernel flavour.
+	# The generic flavour uses the CFQ I/O scheduler, which is rather
+	# suboptimal for some of our I/O work loads. Override with deadline.
+	# (the installer does this too, but not for Lucid->Precise upgrades)
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		exec {
+			"grub1 iosched deadline":
+				path => "/bin:/usr/bin",
+				command => "sed -i '/^# kopt=/s/\$/ elevator=deadline/' /boot/grub/menu.lst",
+				unless => "grep -q '^# kopt=.*elevator=deadline' /boot/grub/menu.lst",
+				onlyif => "test -f /boot/grub/menu.lst",
+				notify => Exec["update-grub"];
+			"grub2 iosched deadline":
+				path => "/bin:/usr/bin",
+				command => "sed -i '/^GRUB_CMDLINE_LINUX=/s/\\\"\$/ elevator=deadline\\\"/' /etc/default/grub",
+				unless => "grep -q '^GRUB_CMDLINE_LINUX=.*elevator=deadline' /etc/default/grub",
+				onlyif => "test -f /etc/default/grub",
+				notify => Exec["update-grub"];
 		}
+	}
+
+	exec { "update-grub":
+		refreshonly => true,
+		path => "/bin:/usr/bin:/sbin:/usr/sbin"
 	}
 }
 
@@ -90,7 +145,7 @@ class base::puppet($server="puppet") {
 
 	include passwords::puppet::database
 
-	package { [ "puppet" ]:
+	package { [ "puppet", "facter" ]:
 		ensure => latest;
 	}
 
@@ -99,8 +154,7 @@ class base::puppet($server="puppet") {
 		ensure => latest;
 	}
 
-	# FIXME: remove $hostname from the title, it's already being prepended. Then, purge the existing Nagios resources.
-	monitor_service { "$hostname puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
+	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
 	if $realm == "labs" {
 		$nagios_host = "nagios"
@@ -112,6 +166,12 @@ class base::puppet($server="puppet") {
 		command => "snmptrap -v 1 -c public ${nagios_host} .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
 		path => "/bin:/usr/bin",
 		require => Package["snmp"]
+	}
+
+	exec {	"neon puppet snmp trap":
+			command => "snmptrap -v 1 -c public neon.wikimedia.org .1.3.6.1.4.1.33298 `hostname` 6 1004 `uptime | awk '{ split(\$3,a,\":\"); print (a[1]*60+a[2])*60 }'`",
+			path => "/bin:/usr/bin",
+			require => Package["snmp"]
 	}
 
 	file {
@@ -184,7 +244,7 @@ class base::puppet($server="puppet") {
 	}	
 
 	# Report the last puppet run in MOTD
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
 		file { "/etc/update-motd.d/97-last-puppet-run":
 			source => "puppet:///files/misc/97-last-puppet-run",
 			mode => 0555;
@@ -193,7 +253,7 @@ class base::puppet($server="puppet") {
 }
 
 class base::remote-syslog {
-	if ($lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") and ($::hostname != "deployment-dbdump") {
+	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") {
 		package { rsyslog:
 			ensure => latest;
 		}
@@ -222,24 +282,28 @@ class base::remote-syslog {
 		}
 
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
+			ensure => absent;
+		}
+
+		file { "/etc/rsyslog.d/30-remote-syslog.conf":
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
-			mode => 0644,
-			content => "*.info;mail.none;authpriv.none;cron.none	@${syslog_server}\n",
+			mode => 0444,
+			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${::site}.wmnet\n",
 			ensure => present;
 		}
 
 		service { rsyslog:
 			require => Package[rsyslog],
-			subscribe => File["/etc/rsyslog.d/90-remote-syslog.conf"],
+			subscribe => File["/etc/rsyslog.d/30-remote-syslog.conf"],
 			ensure => running;
 		}
 	}
 }
 
 class base::sysctl {
-	if ($lsbdistid == "Ubuntu") and ($lsbdistrelease != "8.04") {
+	if ($::lsbdistid == "Ubuntu") and ($::lsbdistrelease != "8.04") {
 		exec { "/sbin/start procps":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
 			refreshonly => true;
@@ -249,7 +313,7 @@ class base::sysctl {
 			name => "/etc/sysctl.d/50-wikimedia-base.conf",
 			owner => root,
 			group => root,
-			mode => 644,
+			mode => 0444,
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
@@ -257,24 +321,21 @@ class base::sysctl {
 }
 
 class base::standard-packages {
-	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils", "xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf", "atop" ]
-	$purge_packages = [ "popularity-contest" ]
+	$packages = [ "wikimedia-base", "wipe", "tzdata", "zsh-beta", "jfsutils",
+				"xfsprogs", "wikimedia-raid-utils", "screen", "gdb", "iperf",
+				"atop", "htop", "vim", "sysstat" ]
 
-	if $lsbdistid == "Ubuntu" {
+	if $::lsbdistid == "Ubuntu" {
 		package { $packages:
 			ensure => latest;
 		}
 
-		package { $purge_packages:
-			ensure => absent;
-		}
-
-		if $network_zone == "internal" {
+		if $::network_zone == "internal" {
 			include nrpe
 		}
 
 		# Run lldpd on all >= Lucid hosts
-		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
 		}
 		
@@ -286,15 +347,15 @@ class base::standard-packages {
 }
 
 class base::resolving {
-	if ! $nameservers {
-		error("Variable $nameservers is not defined!")
+	if ! $::nameservers {
+		error("Variable $::nameservers is not defined!")
 	}
 	else {
-		if $realm != "labs" {
+		if $::realm != "labs" {
 			file { "/etc/resolv.conf":
 				owner => root,
 				group => root,
-				mode => 0644,
+				mode => 0444,
 				content => template("base/resolv.conf.erb");
 			}
 		}
@@ -303,16 +364,16 @@ class base::resolving {
 
 class base::motd {
 	# Remove the standard help text
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/update-motd.d/10-help-text": ensure => absent; }
 	}
 }
 
 class base::monitoring::host {
-	monitor_host { $hostname: }
+	monitor_host { $hostname: group => $nagios_group }
 	monitor_service { "ssh": description => "SSH", check_command => "check_ssh" }
 
-	case $lsbdistid {
+	case $::lsbdistid {
 		Ubuntu: {
 			# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
 			@monitor_service { "dpkg": description => "DPKG", check_command => "nrpe_check_dpkg", tag => nrpe }
@@ -327,11 +388,11 @@ class base::monitoring::host {
 class base::decommissioned {
 	# There has to be a better way to check for array membership!
 	define decommissioned_host_role {
-		if $hostname == $title {
+		if $::hostname == $title {
 			system_role { "base::decommissioned": description => "DECOMMISSIONED server" }
 		}
 		else {
-			debug("${title} is not ${hostname}, so not decommissioning.")
+			debug("${title} is not ${::hostname}, so not decommissioning.")
 		}
 	}
 
@@ -344,7 +405,7 @@ class base::instance-upstarts {
 	file {"/etc/init/ttyS0.conf":
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		source => 'puppet:///files/upstart/ttyS0.conf';
 	}
 
@@ -352,12 +413,14 @@ class base::instance-upstarts {
 
 class base::instance-finish {
 
-	if $realm == "labs" {
-		exec {
-			"/bin/rm /etc/init/runonce-fixpuppet.conf":
-				onlyif => "/usr/bin/test -f /etc/init/runonce-fixpuppet.conf";
-			"/bin/rm /etc/rsyslog.d/60-puppet.conf && /etc/init.d/rsyslog restart":
-				onlyif => "/usr/bin/test -f /etc/rsyslog.d/60-puppet.conf";
+	if $::realm == "labs" {
+		Class["base::remote-syslog"] -> Class["base::instance-finish"]
+		file {
+			"/etc/init/runonce-fixpuppet.conf":
+				ensure => absent;
+			"/etc/rsyslog.d/60-puppet.conf":
+				ensure => absent,
+				notify => Service[rsyslog];
 		}
 	}
 
@@ -367,27 +430,44 @@ class base::vimconfig {
 	file { "/etc/vim/vimrc.local": 
 		owner => root,
 		group => root,
-		mode => 0644,
+		mode => 0444,
 		source => "puppet:///files/misc/vimrc.local",
-		ensure => present; 
+		ensure => present;
+	}
+
+	if $::lsbdistid == "Ubuntu" {
+		# Joe is for pussies
+		file { "/etc/alternatives/editor":
+			ensure => "/usr/bin/vim"
+		}
 	}
 }
 
 class base::environment {
-
-	# TODO: check for production
-	if $realm == "labs" {
-		file {
-			"/etc/bash.bashrc":
-				content => template('environment/bash.bashrc'),
-				owner => root,
-				group => root,
-				mode => 0444;
-			"/etc/skel/.bashrc":
-				content => template('environment/skel/bashrc'),
-				owner => root,
-				group => root,
-				mode => 0644;
+	case $::realm {
+		'production': {
+			exec { "uncomment root bash aliases":
+				path => "/bin:/usr/bin",
+				command => "sed -i '
+						/^#alias ll=/ s/^#//
+						/^#alias la=/ s/^#//
+					' /root/.bashrc",
+				onlyif => "grep -q '^#alias ll' /root/.bashrc"
+			}
+		}
+		'labs': {
+			file {
+				"/etc/bash.bashrc":
+					content => template('environment/bash.bashrc'),
+					owner => root,
+					group => root,
+					mode => 0444;
+				"/etc/skel/.bashrc":
+					content => template('environment/skel/bashrc'),
+					owner => root,
+					group => root,
+					mode => 0644;
+			}
 		}
 	}
 }
@@ -410,18 +490,25 @@ respawn
 exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 "
 
-		file { "/etc/init/${lom_serial_port}":
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => $console_upstart_file;
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+			file { "/etc/init/${lom_serial_port}.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => $console_upstart_file;
+			}
+			upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 		}
-		upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}"] }
 	}
 	
 	class generic {
 		class dell {
 			$lom_serial_port = "ttyS1"
+		}
+
+		class cisco {
+			$lom_serial_port = "ttyS0"
+			$lom_serial_speed = "115200"
 		}
 
 		class sun {
@@ -456,8 +543,14 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		}
 	}
 
-	class dell-c2100 inherits base::platformn::generic::dell {
+	class dell-c2100 inherits base::platform::generic::dell {
 		$lom_serial_speed = "115200"
+		
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
+	class dell-r300 inherits base::platform::generic::dell {
+		$lom_serial_speed = "57600"
 		
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
 	}
@@ -475,9 +568,17 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
+	class cisco-C250-M1 inherits base::platform::generic::cisco {
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+	}
+
 	case $::productname {
 		"PowerEdge C2100": {
 			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+		}
+		"PowerEdge R300": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb"]
+			include dell-r300
 		}
 		"Sun Fire X4500": {
 			$startup_drives = [ "/dev/sdy", "/dev/sdac" ]
@@ -486,6 +587,10 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 		"Sun Fire X4540": {
 			$startup_drives = [ "/dev/sda", "/dev/sdi" ]
 			include sun-x4540
+		}
+		"R250-2480805": {
+			$startup_drives = [ "/dev/sda", "/dev/sdb" ]
+			include cisco-C250-M1
 		}
 		default: {
 			# set something so the logic doesn't puke
@@ -519,7 +624,7 @@ class base {
 		$run = '/var/run/'
 	}
 
-	case $operatingsystem {
+	case $::operatingsystem {
 		Ubuntu,Debian: {
 			include openstack::nova_config
 			
@@ -527,7 +632,7 @@ class base {
 				base::apt::update
 
 			class { base::puppet:
-				server => $realm ? {
+				server => $::realm ? {
 					'labs' => $openstack::nova_config::nova_puppet_host,
 					default => "puppet"
 				}
@@ -539,6 +644,7 @@ class base {
 
 	include	passwords::root,
 		base::decommissioned,
+		base::grub,
 		base::resolving,
 		base::remote-syslog,
 		base::sysctl,
@@ -548,9 +654,10 @@ class base {
 		base::monitoring::host,
 		base::environment,
 		base::platform,
+		base::access::dc-techs,
 		ssh
 
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		include base::instance-upstarts,
 			generic::gluster
 

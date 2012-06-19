@@ -2,14 +2,14 @@
 
 class ntp {
 	file { "ntp.conf":
-	        mode => 644,
-                owner => root,
-                group => root,
-                path => $operatingsystem ? {
-			"Solaris"	=> "/etc/inet/ntp.conf",
-			default		=> "/etc/ntp.conf",
+		mode => 0644,
+		owner => root,
+		group => root,
+		path => $operatingsystem ? {
+			"Solaris" => "/etc/inet/ntp.conf",
+			default   => "/etc/ntp.conf",
 		},
-                content => template("ntp/ntp-server.erb");
+		content => template("ntp/ntp-server.erb");
 	}
 
 	$packagename = $operatingsystem ? {

@@ -5,230 +5,10 @@
 import "generic-definitions.pp"
 import "nagios.pp"
 
-
-class misc::install-server {
-	system_role { "misc::install-server": description => "Install server" }
-
-	class web-server {
-		package { "lighttpd":
-			ensure => latest;
-		}
-
-		file { "lighttpd.conf":
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/lighttpd/lighttpd.conf",
-			source => "puppet:///files/lighttpd/install-server.conf";
-		}
-
-		service { "lighttpd":
-			require => [ File["lighttpd.conf"], Package[lighttpd] ],
-			subscribe => File["lighttpd.conf"],
-			ensure => running;
-		}
-
-		# Monitoring
-		monitor_service { "http": description => "HTTP", check_command => "check_http" }
-	}
-
-	class tftp-server {
-		system_role { "misc::tftp-server": description => "TFTP server" }
-
-		# TODO: replace this by iptables.pp definitions
-		$iptables_command = "
-			/sbin/iptables -F tftp;
-			/sbin/iptables -A tftp -s 10.0.0.0/8 -j ACCEPT;
-			/sbin/iptables -A tftp -s 208.80.152.0/22 -j ACCEPT;
-			/sbin/iptables -A tftp -s 91.198.174.0/24 -j ACCEPT;
-			/sbin/iptables -A tftp -j DROP;
-			/sbin/iptables -I INPUT -p udp --dport tftp -j tftp
-			"
-
-		exec { tftp-firewall-rules:
-			command => $iptables_command,
-			onlyif => "/sbin/iptables -N tftp",
-			path => "/sbin",
-			timeout => 5,
-			user => root
-		}
-
-		file {
-			 "/srv/tftpboot":
-				mode => 0755,
-				owner => root,
-				group => root,
-				ensure => directory;
-			 "/srv/tftpboot/restricted/":
-				mode => 0755,
-				owner => root,
-				group => root,
-				path => "/srv/tftpboot/restricted/",
-				ensure => directory;
-			"/tftpboot":
-				ensure => "/srv/tftpboot";
-		}
-
-		package { openbsd-inetd:
-			ensure => latest;
-		}
-
-		# Started by inetd
-		package { "atftpd":
-			require => [ Package[openbsd-inetd], Exec[tftp-firewall-rules] ],
-			ensure => latest;
-		}
-	}
-
-	class caching-proxy {
-		system_role { "misc::caching-proxy": description => "Caching proxy server" }
-
-		file { "/etc/squid/squid.conf":
-			require => Package[squid],
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/squid/squid.conf",
-			source => "puppet:///files/squid/apt-proxy.conf",
-			ensure => present;
-		}
-
-		package { squid:
-			ensure => latest;
-		}
-
-		service { squid:
-			require => [ File["/etc/squid/squid.conf"], Package[squid] ],
-			subscribe => File["/etc/squid/squid.conf"],
-			ensure => running;
-		}
-
-		# Monitoring
-		monitor_service { "squid": description => "Squid", check_command => "check_tcp!8080" }
-	}
-
-	class ubuntu-mirror {
-		system_role { "misc::ubuntu-mirror": description => "Public Ubuntu mirror" }
-
-		# Top level directory must exist
-		file { "/srv/ubuntu/":
-			require => Systemuser[mirror],
-			mode => 0755,
-			owner => mirror,
-			group => mirror,
-			path => "/srv/ubuntu/",
-			ensure => directory;
-		}
-
-		# Update script
-		file { "update-ubuntu-mirror":
-			mode => 0555,
-			owner => root,
-			group => root,
-			path => "/usr/local/sbin/update-ubuntu-mirror",
-			source => "puppet:///files/misc/update-ubuntu-mirror";
-		}
-
-		# System user and group for mirroring
-		systemuser { mirror: name => "mirror", home => "/var/lib/mirror" }
-
-		# Mirror update cron entry
-		cron { update-ubuntu-mirror:
-			require => [ Systemuser[mirror], File["update-ubuntu-mirror"] ],
-			command => "/usr/local/sbin/update-ubuntu-mirror > /dev/null",
-			user => mirror,
-			hour => '*/6',
-			minute => 43,
-			ensure => present;
-		}
-	}
-
-	class apt-repository {
-		system_role { "misc::apt-repository": description => "APT repository" }
-
-		package { [ "dpkg-dev", "gnupg", "reprepro" ]:
-			ensure => latest;
-		}
-
-		# TODO: add something that sets up /etc/environment for reprepro
-
-		file {
-			"/srv/wikimedia/":
-				mode => 0755,
-				owner => root,
-				group => root,
-				path => "/srv/wikimedia/",
-				ensure => directory;
-			"/usr/local/sbin/update-repository":
-				mode => 0555,
-				owner => root,
-				group => root,
-				path => "/usr/local/sbin/update-repository",
-				content => "#! /bin/bash
-echo 'update-repository is no longer used; the Wikimedia APT repository is now managed using 'reprepro'. See [[wikitech:reprepro]] for more information.'
-"
-		}
-
-		alert("The Wikimedia Archive Signing GPG keys need to be installed manually on this host.")
-	}
-
-	class preseed-server {
-		file { "/srv/autoinstall":
-			mode => 0555,
-			owner => root,
-			group => root,
-			path => "/srv/autoinstall/",
-			source => "puppet:///files/autoinstall",
-			recurse => true,
-			links => manage
-		}
-	}
-
-	class dhcp-server {
-		file { "/etc/dhcp3/dhcpd.conf":
-			require => Package[dhcp3-server],
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/dhcp3/dhcpd.conf",
-			source => "puppet:///files/dhcpd/dhcpd.conf";
-		}
-
-		file { [ "/etc/dhcp3/linux-host-entries",
-			"/etc/dhcp3/linux-host-entries.ttyS0-57600",
-			"/etc/dhcp3/linux-host-entries.ttyS1-57600",
-			"/etc/dhcp3/linux-host-entries.ttyS1-115200",
-			"/etc/dhcp3/linux-host-entries.ttyS1-9600" ]:
-
-			checksum => md5,
-			ensure => file,
-			notify => Service[dhcp3-server];
-		}
-
-		package { dhcp3-server:
-			ensure => latest;
-		}
-
-		service { dhcp3-server:
-			require => [ Package[dhcp3-server], File["/etc/dhcp3/dhcpd.conf"] ],
-			subscribe => File["/etc/dhcp3/dhcpd.conf"],
-			ensure => running;
-		}
-	}
-
-	include misc::install-server::ubuntu-mirror,
-		misc::install-server::apt-repository,
-		misc::install-server::preseed-server,
-		misc::install-server::tftp-server,
-		misc::install-server::caching-proxy,
-		misc::install-server::web-server,
-		misc::install-server::dhcp-server
-}
-
 class misc::noc-wikimedia {
 	system_role { "misc::noc-wikimedia": description => "noc.wikimedia.org" }
 
-	package { [ "apache2", "libapache2-mod-php5" ]:
+	package { [ "apache2", "libapache2-mod-php5", "libapache2-mod-passenger", "libsinatra-ruby", "rails" ]:
 		ensure => latest;
 	}
 
@@ -246,13 +26,19 @@ class misc::noc-wikimedia {
 		"/etc/apache2/sites-available/graphite.wikimedia.org":
 			path => "/etc/apache2/sites-available/graphite.wikimedia.org",
 			content => template('apache/sites/graphite.wikimedia.org'),
-			mode => 0444,
+			mode => 0440,
 			owner => root,
-			group => root;
+			group => www-data;
 		"/usr/lib/cgi-bin":
 			source => "puppet:///files/cgi-bin/noc/",
 			recurse => true,
 			ignore => ".svn",
+			ensure => present;
+		"/home/wikipedia/htdocs/noc/index.html":
+			source => "puppet:///files/misc/noc/index.html",
+			mode => 0664,
+			owner => hashar,
+			group => wikidev,
 			ensure => present;
 	}
 
@@ -313,13 +99,42 @@ class misc::download-wikimedia {
 		require => [ Package[nfs-kernel-server], File["/etc/exports"] ],
 	}
 
+        include generic::sysctl::high-bandwidth-rsync
+
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
+}
 
+class misc::download-primary {
+	system_role { "misc::download-primary": description => "Service for rsync to internal download mirrors" }
+
+	package { rsync:
+		ensure => latest;
+	}
+
+	file {
+		"/etc/rsyncd.conf":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsyncd.conf.downloadprimary";
+		"/etc/default/rsync":
+			require => Package[rsync],
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/rsync/rsync.default.downloadprimary";
+	}
+
+	service { rsync:
+		require => [ Package[rsync], File["/etc/rsyncd.conf"], File["/etc/default/rsync"] ],
+		ensure => running;
+	}
 }
 
 class misc::download-mirror {
-	system_role { "misc::download-mirror": description => "Service for external download mirrors" }
+	system_role { "misc::download-mirror": description => "Service for rsync to external download mirrors" }
 
 	package { rsync:
 		ensure => latest;
@@ -547,54 +362,6 @@ class misc::rt::server {
 	}
 }
 
-# TODO: kill.
-class misc::wapsite {
-	system_role { "misc::wapsite": description => "WAP site server" }
-
-	require webserver::php5
-
-	file {
-		"/etc/apache2/sites-available/mobile.wikipedia.org":
-			path => "/etc/apache2/sites-available/mobile.wikipedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/mobile.wikipedia.org";
-		"/etc/apache2/sites-available/wap.wikipedia.org":
-			path => "/etc/apache2/sites-available/wap.wikipedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/wap.wikipedia.org";
-		"/srv/mobile.wikipedia.org/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
-	}
-
-	# Install CURL
-	generic::apt::pin-package { php5-curl: }
-	package { php5-curl: ensure => latest; }
-
-	apache_module { rewrite: name => "rewrite" }
-
-	apache_site {
-		mobile:
-			name => "mobile.wikipedia.org",
-			require => File["/srv/mobile.wikipedia.org/"];
-		wap:
-			name => "wap.wikipedia.org",
-			require => Apache_module[rewrite];
-	 }
-
-	# Monitoring
-	monitor_service { wapsite:
-		check_command => "check_http_url!mobile.wikipedia.org!/about.php",
-		description => "Mobile WAP site"
-	}
-}
-
 class misc::apple-dictionary-bridge {
 	system_role { "misc::apple-dictionary-bridge": description => "Apple Dictionary to API OpenSearch bridge" }
 
@@ -773,7 +540,7 @@ class misc::etherpad_lite {
 
 	file {
 		"/etc/apache2/sites-available/etherpad.wikimedia.org":
-			mode => 444,
+			mode => 0444,
 			owner => root,
 			group => root,
 			notify => Service["apache2"],
@@ -877,11 +644,9 @@ class misc::jenkins {
 		ensure => latest;
 	}
 
-	if ( $realm == 'production' ) {
-		user { jenkins:
-			name => "jenkins",
-			groups => [ "wikidev" ]; 
-		}
+	user { jenkins:
+		name => "jenkins",
+		groups => [ "wikidev" ];
 	}
 
 	service { 'jenkins':
@@ -979,8 +744,11 @@ class misc::monitoring::htcp-loss {
 		"/usr/lib/ganglia/python_modules/compat.py":
 			source => "puppet:///files/ganglia/plugins/compat.py";
 		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
-			require => File["/etc/ganglia/conf.d"],
-			source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
+			# Disabled due to excessive memory and CPU usage -- TS
+			notify => Service[gmond],
+			ensure => absent;
+			#require => File["/etc/ganglia/conf.d"],
+			#source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
 	}
 }
 
@@ -996,7 +764,11 @@ class misc::udpprofile::collector {
 		ensure => running;
 	}
 
-	# FIXME: Nagios monitoring
+	# Nagios monitoring (RT-2367)
+	monitor_service { "carbon-cache": description => "carbon-cache.py", check_command => "nrpe_check_carbon_cache" }
+	monitor_service { "profiler-to-carbon": description => "profiler-to-carbon", check_command => "nrpe_check_profiler_to_carbon" }
+	monitor_service { "profiling collector": description => "profiling collector", check_command => "nrpe_check_profiling_collector" }
+
 }
 
 class misc::graphite {
@@ -1033,6 +805,11 @@ class misc::graphite {
 			group => "root",
 			mode => 0444,
 			source => "puppet:///files/graphite/storage-schemas.conf";
+		"/a/graphite/conf/storage-aggregation.conf":
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			source => "puppet:///files/graphite/storage-aggregation.conf";
 		"/a/graphite/storage":
 			owner => "www-data",
 			group => "www-data",
@@ -1050,6 +827,31 @@ net.core.rmem_default = 536870912
 
 	apache_module { python: name => "python" }
 	apache_site { graphite: name => "graphite" }
+
+	include network::constants
+
+	varnish::instance { "graphite":
+		name => "",
+		vcl => "graphite",
+		port => 81,
+		admin_port => 6082,
+		storage => "-s malloc,256M",
+		backends => [ 'localhost' ],
+		directors => { 'backend' => [ 'localhost' ] },
+		vcl_config => {
+			'retry5xx' => 0
+		},
+		backend_options => {
+			'port' => 80,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 100,
+			'probe' => "options",
+		},
+		enable_geoiplookup => "false",
+		xff_sources => $network::constants::all_networks
+	}
 }
 
 class misc::scripts {
@@ -1347,68 +1149,14 @@ class misc::l10nupdate {
 	}
 }
 
-class misc::torrus {
-	system_role { "misc::torrus": description => "Torrus" }
-
-	package { ["torrus-common", "torrus-apache2"]: ensure => latest }
-
-	File { require => Package["torrus-common"] }
-
+class misc::mwfatallog {
 	file {
-		"/etc/torrus/conf/":
-			source => "puppet:///files/torrus/conf/",
+		"/etc/logrotate.d/mwfatal":
+			source => "puppet:///files/logrotate/mwfatal",
 			owner => root,
 			group => root,
-			mode => 0444,
-			recurse => remote;
-		# TODO: remaining files in xmlconfig, which need to be templates (passwords etc)
-		"/etc/torrus/xmlconfig/":
-			source => "puppet:///files/torrus/xmlconfig/",
-			owner => root,
-			group => root,
-			mode => 0444,
-			recurse => remote;
-		"/etc/torrus/templates/":
-			source => "puppet:///files/torrus/templates/",
-			owner => root,
-			group => root,
-			mode => 0444,
-			recurse => remote;
+			mode => 0444;
 	}
-
-	exec { "torrus compile":
-		command => "/usr/sbin/torrus compile --all",
-		require => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
-		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/xmlconfig/"] ],
-		refreshonly => true
-	}
-
-	service { "torrus-common":
-		require => Exec["torrus compile"],
-		subscribe => File[ ["/etc/torrus/conf/", "/etc/torrus/templates/"]],
-		ensure => running;
-	}
-
-	# TODO: Puppetize the rest of Torrus
-}
-
-# FIXME: (increasingly popular) temporary hack
-if $hostname == "spence" {
-	include misc::gsbmonitoring
-}
-
-class misc::gsbmonitoring {
-	@monitor_host { "google": ip_address => "74.125.225.84" }
-
-	@monitor_service { "GSB_mediawiki": description => "check google safe browsing for mediawiki.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=mediawiki.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikibooks": description => "check google safe browsing for wikibooks.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikibooks.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikimedia": description => "check google safe browsing for wikimedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikimedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikinews": description => "check google safe browsing for wikinews.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikinews.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikipedia": description => "check google safe browsing for wikipedia.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikipedia.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikiquotes": description => "check google safe browsing for wikiquotes.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiquotes.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikisource": description => "check google safe browsing for wikisource.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikisource.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
-	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
 class misc::ircecho {
@@ -1454,17 +1202,14 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
+	class {'webserver::php5': ssl => 'true'; }
+
 	include generic::mysql::packages::client,
 		webserver::php5-gd
 
-	service { apache2:
-		subscribe => Package[libapache2-mod-php5],
-		ensure => running;
-	}
-
 	file {
 		"/etc/apache2/sites-available/racktables.wikimedia.org":
-		mode => 444,
+		mode => 0444,
 		owner => root,
 		group => root,
 		notify => Service["apache2"],
@@ -1475,5 +1220,82 @@ class misc::racktables {
 	apache_site { racktables: name => "racktables.wikimedia.org" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
-	apache_module { ssl: name => "ssl" }
+}
+
+
+# this is stupid but I need a firewall on iron so that mysql doesn't accidentally get exposed to the world.
+class iron::iptables-purges {
+	require "iptables::tables"
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
+	iptables_purge_service{ "iron_common_default_deny": service => "all" }
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
+class iron::iptables-accepts {
+	require "iron::iptables-purges"
+	# Rememeber to place modified or removed rules into purges!
+	# common services for all hosts
+	iptables_add_rule{ "iron_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "iron_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_ntp_udp": service => "ntp_udp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_nrpe": service => "nrpe", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_tcp": service => "gmond_tcp", source => "208.80.152.0/22", jump => "ACCEPT" }
+	iptables_add_service{ "iron_gmond_udp": service => "gmond_udp", destination => "239.192.0.0/16", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_igmp": service => "igmp", jump => "ACCEPT" }
+	iptables_add_service{ "iron_common_icmp": service => "icmp", jump => "ACCEPT" }
+}
+class iron::iptables-drops {
+	require "iron::iptables-accepts"
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "iron_common_default_deny": service => "all", jump => "DROP" }
+}
+class iron::iptables  {
+	# We use the following requirement chain:
+	# iptables -> iptables::drops -> iptables::accepts -> iptables::purges
+	#
+	# This ensures proper ordering of the rules
+	require "iron::iptables-drops"
+	# This exec should always occur last in the requirement chain.
+	iptables_add_exec{ "iron": service => "iron" }
+}
+
+
+
+class misc::translationnotifications {
+	require misc::scripts
+
+	# Should there be crontab entry for each wiki,
+	# or just one which runs the scripts which iterates over
+	# selected set of wikis?
+	cron {
+		translationnotifications-metawiki:
+			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log",
+			user => l10nupdate,  # which user?
+			weekday => 1, # Monday
+			hour => 10,
+			minute => 0,
+			ensure => present;
+
+		translationnotifications-mediawikiwiki:
+			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log",
+			user => l10nupdate, # which user?
+			weekday => 1, # Monday
+			hour => 10,
+			minute => 5,
+			ensure => present;
+	}
+
+	file {
+		"/var/log/translationnotifications":
+			owner => l10nupdate, # user ?
+			group => wikidev,
+			mode => 0664,
+			ensure => directory;
+		"/etc/logrotate.d/l10nupdate":
+			source => "puppet:///files/logrotate/translationnotifications",
+			mode => 0444;
+	}
 }

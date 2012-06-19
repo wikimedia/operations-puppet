@@ -1,0 +1,8 @@
+title   "edit submits/min Top 10 Non-Wikipedia Wikis -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :a, :alias => "none",
+               :data  => 'cactiStyle(substr(highestMax(exclude(reqstats.edits.*.submits,"wikiped"),10),2,3))'

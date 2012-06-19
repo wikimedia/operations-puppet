@@ -1,0 +1,9 @@
+title   "HTTP Requests/hour (excludes bits.wikimedia.org: css/js) -1week"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-1 week"
+
+field :a, :color => "blue",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(hitcount(scale(reqstats.requests,"0.01666"), "1hour"), "requests/hour"))'

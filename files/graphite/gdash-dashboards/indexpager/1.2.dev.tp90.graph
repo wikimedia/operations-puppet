@@ -1,0 +1,9 @@
+title   "Top 10 Index Pagers by Max 90% Time (ms) log(2) -8hours"
+linewidth 1
+linemode "connected"
+logbase 2
+hide_legend "false"
+from "-8hours"
+
+field :devavg, :alias => "none",
+               :data  => 'cactiStyle(substr(highestMax(IndexPager.doQuery.*.tp90,10),2,3))'

@@ -10,12 +10,13 @@
 	type = MYSQL
 	hostname = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>
 	database = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>
+	url = jdbc:mysql://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>/<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
 	type = LDAP
 	cookieSecure = true
 	registerUrl = http://www.mediawiki.org/wiki/Commit_access
 [ldap]
-	server = ldaps://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host') %>
+	server = <% scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host').each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
 
 	accountBase = ou=people,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
 	accountPattern = (&(objectClass=person)(cn=${username}))
@@ -31,6 +32,7 @@
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre
 	heapLimit = 2g
+	<% if has_variable?("gerrit_slave") then %>slave = true<% end %>
 [sshd]
 	listenAddress = *:29418
 	threads = 8
@@ -46,3 +48,24 @@
 	url = /r/gitweb
 [user]
 	email = "gerrit@wikimedia.org"
+[commentlink "changeid"]
+	match = (I[0-9a-f]{8,40})
+	link = "#q,$1,n,z"
+[commentlink "commit"]
+	match = "\\b([0-9a-f]{40})\\b"
+	link = "#q,$1,n,z"
+[commentlink "bugzilla"]
+	match = "\\b([bB][uU][gG]\\s+#?)(\\d+)\\b"
+	link = https://bugzilla.wikimedia.org/$2
+[commentlink "codereview"]
+	match = "r(\\d+)"
+	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
+[commentlink "rt"]
+	match = "\\b[rR][tT]\\s+#?(\\d+)"
+	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
+[mimetype "image/*"]
+	safe = true
+[repository "*"]
+  ownerGroup = Project Creators
+[pack]
+	deltacompression = true

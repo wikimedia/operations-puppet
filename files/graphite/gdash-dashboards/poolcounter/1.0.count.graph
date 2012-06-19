@@ -1,0 +1,9 @@
+title   "PoolCounter Client Sampled Call Rate -8hours"
+linewidth 1
+linemode "connected"
+hide_legend "false"
+from "-8hours"
+
+field :count, :alias => "none",
+               :data  => 'cactiStyle(PoolCounter.Client.*.count)'
+

@@ -1,5 +1,9 @@
 # Varnish VCL include file for mobile backends
 
+sub vcl_recv {
+	call vcl_recv_purge;
+}
+
 sub vcl_fetch {
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
