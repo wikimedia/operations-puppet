@@ -91,6 +91,27 @@ Pin-Priority: 1001
 	package { apt-show-versions:
 		ensure => latest;
 	}
+
+
+	package { 'python-apt':
+		ensure => present,
+	}
+	file { '/usr/local/bin/apt2xml':
+		ensure  => present,
+		owner   => root,
+		group   => root,
+		mode    => 0755,
+		source  => 'puppet:///files/apt/apt2xml.py',
+		require => Package['python-apt'],
+	}
+	file { '/var/lib/puppet/lib/facter/apt.rb':
+		ensure  => present,
+		owner   => root,
+		group   => root,
+		mode    => 0755,
+		source  => 'puppet:///files/apt/apt.rb',
+		require => File['/var/lib/puppet/lib/facter'],
+	}
 }
 
 class base::grub {
@@ -195,6 +216,7 @@ class base::puppet($server="puppet") {
 			owner => root,
 			group => root,
 			mode => 0555,
+			require => Package['facter'],
 			ensure => directory;
 		"/var/lib/puppet/lib/facter/default_gateway.rb":
 			owner => root,
