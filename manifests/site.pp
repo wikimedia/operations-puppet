@@ -906,7 +906,6 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		nrpe,
 		admins::roots,
 		admins::dctech,
-		accounts::jpostlethwaite,
 		accounts::khorn,
 		accounts::mhernandez,
 		accounts::pgehres,
