@@ -690,6 +690,9 @@ node "db40.pmtpa.wmnet" {
 node /^db4[2]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
+	
+	# RT 3119
+	include accounts::erosen
 }
 
 # new pmtpa dbs
@@ -758,6 +761,9 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
+	
+	# RT 3119
+	include accounts::erosen
 }
 
 node "dobson.wikimedia.org" {
@@ -2282,7 +2288,9 @@ node "stat1.wikimedia.org" {
 		accounts::dartar,
 		accounts::declerambaul,
 		accounts::jmorgan,
-		accounts::rfaulk
+		accounts::rfaulk,
+		# RT 3119
+		accounts::erosen
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
