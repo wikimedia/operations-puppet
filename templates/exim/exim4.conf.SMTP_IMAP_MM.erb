@@ -144,7 +144,8 @@ acl_check_rcpt:
 	# is done at this point, which is good for mail submission, but may render
 	# recipient callout verification by affected hosts useless.
 
-	accept hosts = +relay_from_hosts
+	accept domains = ! +local_domains
+		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
 <% if scope.lookupvar('exim::roled::enable_mail_submission') == "true" then -%>
