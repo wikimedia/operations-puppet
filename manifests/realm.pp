@@ -66,7 +66,7 @@ $exim_mediawiki_route_list = $::realm ? {
 }
 # Generic, default servers
 $exim_default_route_list = $::realm ? {
-	'production' => 'mchenry.wikimedia.org:lily.esams.wikipedia.org',
+	'production' => 'mchenry.wikimedia.org:lists.wikimedia.org',
 	# FIXME: find some SMTP servers for labs
-	'labs'       => 'mchenry.wikimedia.org:lily.esams.wikimedia.org'
+	'labs'       => 'mchenry.wikimedia.org:lists.wikimedia.org',
 }
