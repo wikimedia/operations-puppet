@@ -233,7 +233,6 @@ class ganglia {
 					$data_sources = {
 						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
 						"Tesla" => "10 208.80.152.247",
-						"Apaches 8 CPU" => "srv153.pmtpa.wmnet srv226.pmtpa.wmnet",
 						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
 						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
