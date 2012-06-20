@@ -932,9 +932,15 @@ class generic::pythonpip {
 	package { [ "python-pip", "python-dev", "build-essential" ]:
 		ensure => latest;
 	}
+
+	# pip could be in /usr/bin/ or in /usr/local/bin
 	exec { "update_pip":
-			command => "/usr/bin/pip install --upgrade pip";
+			command => "pip install --upgrade pip",
+			path    => ["/usr/bin", "/usr/local/bin"],
+			require => Package["python-pip"];
 		"update_virtualenv":
-			command => "/usr/bin/pip install --upgrade virtualenv";
+			command => "pip install --upgrade virtualenv",
+			path    => ["/usr/bin", "/usr/local/bin"],
+			require => Package["python-pip"];
 	}
 }

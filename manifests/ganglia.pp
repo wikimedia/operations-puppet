@@ -9,8 +9,13 @@
 #  - $authority_url:		URL used by gmond and gmetad
 #  - $gridname:			Grid name used by gmetad
 #  - $data_sources:		Hash of datasources used by gmetad (production only)
+<<<<<<< HEAD   (2ed2c0 Merge "production doesn't write thumbs anymore." into test)
 #    $rra_sizes:		Round-robin archives sizes used by gmetad
 #    $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
+=======
+#  - $rra_sizes:		Round-robin archives sizes used by gmetad
+#  - $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
+>>>>>>> BRANCH (a50393 Merge "Don't blindly accept mail for non-local domains, to f)
 #  - $gmetad_conf:		gmetad conf filename (ends in '.labsstub' for labs)
 #  - $ganglia_servername:	Server name used by apache
 #  - $ganglia_serveralias:	Server alias(es) used by apache
@@ -31,6 +36,13 @@ class ganglia {
 		} else {
 			$deaf = "yes"
 		}
+	}
+
+	if $realm == "labs" {
+		$authority_url = "http://ganglia.wmflabs.org"
+		$gmetad_host = "10.4.0.79"
+	} else {
+		$authority_url = "http://ganglia.wikimedia.org"
 	}
 
 	if $realm == "labs" {
@@ -210,7 +222,72 @@ class ganglia {
 			ensure => latest;
 		}
 
+<<<<<<< HEAD   (2ed2c0 Merge "production doesn't write thumbs anymore." into test)
+=======
+		if $realm == "labs" {
+			$gridname = "wmflabs"
+			# for labs, just generate a stub gmetad configuration without data_source lines
+			$gmetad_conf = "gmetad.conf.labsstub"
+			$authority_url = "http://ganglia.wmflabs.org"
+			$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+			$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+		} else {
+			$gridname = "Wikimedia"
+			$gmetad_conf = "gmetad.conf"
+			$authority_url = "http://ganglia.wikimedia.org"
+			case $hostname {
+				# manutius runs gmetad to get varnish data into torrus
+				/^manutius$/: {
+					$data_sources = {
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0:1:4032" "RRA:AVERAGE:0.17:6:2016" "RRA:MAX:0.17:6:2016" "RRA:AVERAGE:0.042:288:732" "RRA:MAX:0.042:288:732"'
+				}
+				default: {
+					$data_sources = {
+						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
+						"Tesla" => "10 208.80.152.247",
+						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
+						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
+						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
+						"Search pmtpa" => "search13.pmtpa.wmnet search14.pmtpa.wmnet",
+						"MySQL" => "db50.pmtpa.wmnet db51.pmtpa.wmnet",
+						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
+						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
+						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
+						"Miscellaneous" => "spence.wikimedia.org",
+						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
+						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
+						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
+						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
+						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
+						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
+						"Swift pmtpa" => "owa1.wikimedia.org owa2.wikimedia.org",
+						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
+						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
+						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
+						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
+						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
+						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet",
+						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
+						"Swift eqiad" => "copper.wikimedia.org zinc.wikimedia.org",
+						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
+						"Search eqiad" => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
+						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
+						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
+						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
+						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
+						"Miscellaneous esams" => "hooft.esams.wikimedia.org"
+					}
+					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
+					$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
+				}
+			}
+		}
+>>>>>>> BRANCH (a50393 Merge "Don't blindly accept mail for non-local domains, to f)
 
+<<<<<<< HEAD   (2ed2c0 Merge "production doesn't write thumbs anymore." into test)
 		if $realm == "labs" {
 			$gridname = "wmflabs"
 			# for labs, just generate a stub gmetad configuration without data_source lines
@@ -272,6 +349,8 @@ class ganglia {
 			}
 		}
 
+=======
+>>>>>>> BRANCH (a50393 Merge "Don't blindly accept mail for non-local domains, to f)
 		file { "/etc/ganglia/${gmetad_conf}":
 			require => Package[gmetad],
 			content => template("ganglia/gmetad.conf.erb"),
