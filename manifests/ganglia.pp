@@ -9,8 +9,8 @@
 #  - $authority_url:		URL used by gmond and gmetad
 #  - $gridname:			Grid name used by gmetad
 #  - $data_sources:		Hash of datasources used by gmetad (production only)
-#    $rra_sizes:		Round-robin archives sizes used by gmetad
-#    $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
+#  - $rra_sizes:		Round-robin archives sizes used by gmetad
+#  - $rrd_rootdir:		Directory to store round-robin dbs used by gmetad
 #  - $gmetad_conf:		gmetad conf filename (ends in '.labsstub' for labs)
 #  - $ganglia_servername:	Server name used by apache
 #  - $ganglia_serveralias:	Server alias(es) used by apache
@@ -39,7 +39,7 @@ class ganglia {
 	} else {
 		$authority_url = "http://ganglia.wikimedia.org"
 	}
-	
+
 	$location = "unspecified"
 
 	$ip_prefix = $site ? {
@@ -210,7 +210,6 @@ class ganglia {
 			ensure => latest;
 		}
 
-
 		if $realm == "labs" {
 			$gridname = "wmflabs"
 			# for labs, just generate a stub gmetad configuration without data_source lines
@@ -234,13 +233,11 @@ class ganglia {
 					$data_sources = {
 						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
 						"Tesla" => "10 208.80.152.247",
-						"Apaches 8 CPU" => "srv153.pmtpa.wmnet srv226.pmtpa.wmnet",
 						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
 						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
-						"Search" => "search1.pmtpa.wmnet searchidx1.pmtpa.wmnet",
-						"MySQL" => "db21.pmtpa.wmnet db30.pmtpa.wmnet",
-						"Mobile servers" => "mobile1.wikimedia.org mobile2.wikimedia.org",
+						"Search pmtpa" => "search13.pmtpa.wmnet search14.pmtpa.wmnet",
+						"MySQL" => "db50.pmtpa.wmnet db51.pmtpa.wmnet",
 						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
 						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
 						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
@@ -253,13 +250,16 @@ class ganglia {
 						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
 						"Swift pmtpa" => "owa1.wikimedia.org owa2.wikimedia.org",
 						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
-						"MySQL eqiad" => "db1001.eqiad.wmnet",
+						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
+						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
 						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
 						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
 						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
+						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet",
 						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
 						"Swift eqiad" => "copper.wikimedia.org zinc.wikimedia.org",
 						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
+						"Search eqiad" => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
 						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
 						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
 						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
