@@ -26,15 +26,6 @@ class snapshots::files {
 		ensure => present;
 	}
 
-	file { 'snapshot-sudoers':
-		path => "/etc/sudoers",
-		owner => root,
-		group => root,
-		mode => 0440,
-		source => "puppet:///files/sudo/sudoers.appserver",
-		ensure => present;
-	}
-
 }
 
 class snapshots::sync {

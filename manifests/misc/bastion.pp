@@ -6,7 +6,9 @@ class misc::bastionhost {
 	system_role { "misc::bastionhost": description => "Bastion" }
 
 	require mysql::client
-	
+
+	include sudo::appserver
+
 	package { "irssi":
 		ensure => absent;
 		"traceroute-nanog":
@@ -15,10 +17,4 @@ class misc::bastionhost {
 		ensure =>latest;
 	}
 
-	file { "/etc/sudoers":
-		owner => root,
-		group => root,
-		mode => 0440,
-		source => "puppet:///files/sudo/sudoers.appserver";
-	}
 }

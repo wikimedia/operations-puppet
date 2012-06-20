@@ -138,6 +138,7 @@ class lucene {
 		# note: give rainman back limited sudo. although this is currently
 		# incompatible with the /etc/sudoers that apaches::files installs
 		# on the indexer host
+		# FIXME: apache sudoers is installed in /etc/sudoers.d/ nowadays
 
 		systemuser { "lsearch": name => "lsearch", default_group => "search"}
 	}
