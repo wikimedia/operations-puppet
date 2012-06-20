@@ -799,7 +799,7 @@ define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 	# Virtual resource for the monitoring host
 	@monitor_host { "${title}_ipv6": ip_address => $ip_address, group => "lvs", critical => "true" }
 	@monitor_service { "${title}_ipv6":
-		host => $title,
+		host => "${title}_ipv6",
 		group => "lvs",
 		description => "LVS HTTP IPv6",
 		check_command => "check_http_lvs!${uri}",
@@ -808,7 +808,7 @@ define monitor_service_lvs6_http_https ( $ip_address, $uri, $critical="true" ) {
 
 	@monitor_host { "${title}_ipv6_https": ip_address => $ip_address, group => "lvs", critical => "true" }
 	@monitor_service { "${title}_ipv6_https":
-		host => $title,
+		host => "${title}_ipv6",
 		group => "lvs",
 		description => "LVS HTTPS IPv6",
 		check_command => "check_https_url!${uri}",
