@@ -907,18 +907,16 @@ class openstack::nova_config {
 		"production" => "http://labsconsole.wikimedia.org:8000",
 		"labs" => "http://${hostname}.${domain}:8000",
 	}
-	if $openstack_version == "diablo" {
-		$nova_ldap_host = $realm ? {
-			"production" => "virt0.wikimedia.org",
-			"labs" => "localhost",
-		}
-		$nova_ldap_domain = "labs"
-		$nova_ldap_base_dn = "dc=wikimedia,dc=org"
-		$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
-		$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-		$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
-		$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
+	$nova_ldap_host = $realm ? {
+		"production" => "virt0.wikimedia.org",
+		"labs" => "localhost",
 	}
+	$nova_ldap_domain = "labs"
+	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
+	$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+	$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
+	$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
+	$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
 	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
 	# When doing upgrades, you'll want to up this to the new version
 	$nova_db_version = "46"
