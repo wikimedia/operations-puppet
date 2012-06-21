@@ -557,25 +557,21 @@ node "emery.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	class { "misc::udp2log":
-		#FIXME: move this to a more appropriately named file
-		packet_loss_log   => "/var/log/squid/packet-loss.log",
-	}
+	include misc::udp2log
 
 	# emery's udp2log instance
 	# saves logs mainly in /var/log/squid.
-	misc::udp2log::instance { "emery":
-		# TODO: Move this to /var/log/udp2log
-		log_directory => "/var/log/squid",
-		require => Class["misc::udp2log"],
-	}
+	# TODO: Move this to /var/log/udp2log
+	misc::udp2log::instance { "emery": log_directory => "/var/log/squid" }
 
 	# aft (Article Feedback Tool) 
 	# udp2log instance for clicktracking logs.
 	misc::udp2log::instance { "aft": 
-		log_directory => "/var/log/aft",
-		port          => "8421",
-		require => Class["misc::udp2log"],
+		log_directory       => "/var/log/aft",
+		port                => "8421",
+		# packet-loss.log is not generated for clicktracking logs,
+		# so packet loss monitoring is disabled.
+		monitor_packet_loss => false,
 	}
 
 }
@@ -1210,19 +1206,12 @@ node "locke.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	class { "misc::udp2log":
-		# TODO: move this to a more appropriately named file at
-		# /var/log/udp2log/packet-loss.log.  Need to change filter.
-		packet_loss_log => "/a/squid/packet-loss.log",
-	}
+	include misc::udp2log
 
 	# locke's udp2log instance stores logs 
 	# mainly in /a/squid.
-	# TODO: Move this to /var/log/udp2log
-	misc::udp2log::instance { "locke":
-		log_directory => "/a/squid",
-		require       => Class["misc::udp2log"],
-	}
+	# TODO: Move log_directory to /var/log/udp2log
+	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
 }
 
 node "lomaria.pmtpa.wmnet" {
@@ -1707,15 +1696,15 @@ node /^nfs[12].pmtpa.wmnet/ {
 		backup::client,
 		misc::udp2log::utilities
 
-	class { "misc::udp2log":
-		# don't need udp2log monitoring on nfs hosts
-		monitor           => false,
-	}
+	# don't need udp2log monitoring on nfs hosts
+	class { "misc::udp2log": monitor => false }
 	
+	# mediawiki udp2log instance.  Doesn't use monitoring.
 	misc::udp2log::instance { "mw":
-		monitor          => false,
-		log_directory    => "/home/wikipedia/logs",
-		require          => Class["misc::udp2log"],
+		log_directory       => "/home/wikipedia/logs",
+		monitor_log_age     => false,
+		monitor_processes   => false,
+		monitor_packet_loss => false,
 	}
 
 
@@ -1780,18 +1769,13 @@ node "oxygen.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	# oxygen uses a sane default for the
-	# packet_loss_log file, so we don't need to use
-	# the parameterized version here.
 	include misc::udp2log
-	
 	# oxygen's udp2log instance
 	# saves logs mainly in /a/squid
 	misc::udp2log::instance { "oxygen":
 		multicast     => true,
 		# TODO: Move this to /var/log/udp2log
 		log_directory => "/a/squid",
-		require       => Class["misc::udp2log"],
 	}
 
 }
