@@ -96,7 +96,7 @@ class role::swift {
 				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
 			}
 			cron { "swift-ganglia-report-global-stats":
-				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumbnail' -c pmtpa-prod",
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumb' -c pmtpa-prod",
 				user => root,
 				ensure => present;
 			}
@@ -110,7 +110,7 @@ class role::swift {
 				super_admin_key => $passwords::swift::pmtpa-prod::super_admin_key,
 				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
-				rewrite_user => "mw:thumbnail",
+				rewrite_user => "mw:thumb",
 				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
 				rewrite_thumb_server => "ms5.pmtpa.wmnet",
 				shard_containers => "some",
