@@ -1779,7 +1779,11 @@ node "oxygen.wikimedia.org" {
 		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
 		packet_loss_log => "/var/log/udp2log/packet-loss.log",
 	}
-
+	misc::udp2log::instance { "lucene":
+		port	=> "51234",
+		log_directory => "/a/log/lucene",
+		monitor_packet_loss => false,
+	}
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
