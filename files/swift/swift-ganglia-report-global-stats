@@ -115,7 +115,7 @@ def main():
         print "about to submit stats: %s" % deltastats
 
     # let's use 'pmtpa prod' instead of 'pmtpa-prod'
-    clustername = clustername.replace('-', ' ')
+    clustername = options.clustername.replace('-', ' ')
 
     submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
     submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
