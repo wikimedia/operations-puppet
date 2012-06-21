@@ -6,7 +6,7 @@ class misc::package-builder {
 	include generic::packages::git-core
 
 	class packages {
-		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload", "libio-socket-ssl-perl" ]:
+		package { [ "build-essential", "fakeroot", "debhelper", "git-buildpackage", "dupload", "libio-socket-ssl-perl", "quilt" ]:
 			ensure => latest;
 		}
 	}
