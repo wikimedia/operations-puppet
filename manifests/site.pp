@@ -567,7 +567,7 @@ node "emery.wikimedia.org" {
 	misc::udp2log::instance { "emery":
 		# TODO: Move this to /var/log/udp2log
 		log_directory => "/var/log/squid",
-		require => Class["udp2log"],
+		require => Class["misc::udp2log"],
 	}
 
 	# aft (Article Feedback Tool) 
@@ -575,7 +575,7 @@ node "emery.wikimedia.org" {
 	misc::udp2log::instance { "aft": 
 		log_directory => "/var/log/aft",
 		port          => "8421",
-		require => Class["udp2log"],
+		require => Class["misc::udp2log"],
 	}
 
 }
@@ -1221,7 +1221,7 @@ node "locke.wikimedia.org" {
 	# TODO: Move this to /var/log/udp2log
 	misc::udp2log::instance { "locke":
 		log_directory => "/a/squid",
-		require       => Class["udp2log"],
+		require       => Class["misc::udp2log"],
 	}
 }
 
@@ -1715,7 +1715,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 	misc::udp2log::instance { "mw":
 		monitor          => false,
 		log_directory    => "/home/wikipedia/logs",
-		require          => Class["udp2log"],
+		require          => Class["misc::udp2log"],
 	}
 
 
@@ -1791,7 +1791,7 @@ node "oxygen.wikimedia.org" {
 		multicast     => true,
 		# TODO: Move this to /var/log/udp2log
 		log_directory => "/a/squid",
-		require       => Class["udp2log"],
+		require       => Class["misc::udp2log"],
 	}
 
 }
