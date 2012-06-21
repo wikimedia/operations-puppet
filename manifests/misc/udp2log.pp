@@ -103,7 +103,7 @@ define misc::udp2log::instance(
 			mode    => 0444,
 			owner   => root,
 			group   => root,
-			content => template('logrotate/udp2log.erb'),
+			content => template('udp2log/logrotate_udp2log.erb'),
 		}
 	}
 
