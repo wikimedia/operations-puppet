@@ -14,9 +14,9 @@ import "../private/manifests/mail.pp"
 # /var/run has moved to /run in newer Ubuntu versions.
 # See: http://lwn.net/Articles/436012/
 if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "11.10") >= 0 {
-	$run_directory = '/run/'
+	$run_directory = '/run'
 } else {
-	$run_directory = '/var/run/'
+	$run_directory = '/var/run'
 }
 
 
