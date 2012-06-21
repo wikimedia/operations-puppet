@@ -445,12 +445,16 @@ Wikimedia-related channels on irc.freenode.net.
 }
 
 class misc::mediawiki-irc-relay {
+	include passwords::udpmxircecho
+
+	$udpmxircecho_pass = $passwords::udpmxircecho::udpmxircecho_pass
+
 	system_role { "misc::mediawiki-irc-relay": description => "MediaWiki RC to IRC relay" }
 
 	package { "python-irclib": ensure => latest; }
 
 	file { "/usr/local/bin/udpmxircecho.py":
-		source => "puppet:///private/misc/udpmxircecho.py",
+		content => template("misc/udpmxircecho.py.erb"),
 		mode => 0555,
 		owner => irc,
 		group => irc;
