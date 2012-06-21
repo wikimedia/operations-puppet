@@ -61,7 +61,7 @@ define misc::udp2log::instance(
 	$port                = "8420",
 	$log_directory       = "/var/log/udp2log",
 	$logrotate           = true,
-	$multicast           = undef,
+	$multicast           = false,
 	$ensure              = "running",
 	$packet_loss_log     = undef,
 	$monitor_packet_loss = true,
