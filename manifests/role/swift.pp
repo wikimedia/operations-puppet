@@ -87,8 +87,15 @@ class role::swift {
 				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
 				ensure => present;
 			}
+			# config file to hold the password
+			file { "/etc/swift-ganglia-report-global-stats.conf":
+				mode => 0440,
+				owner => root,
+				group => root,
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+			}
 			cron { "swift-ganglia-report-global-stats":
-				command => "/usr/local/bin/swift-ganglia-report-global-stats -u 'mw:thumbnail' -p $passwords::swift::pmtpa-prod::rewrite_password -c pmtpa-prod",
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumbnail' -c pmtpa-prod",
 				user => root,
 				ensure => present;
 			}

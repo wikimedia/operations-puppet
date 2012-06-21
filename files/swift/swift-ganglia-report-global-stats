@@ -91,31 +91,64 @@ def submit_to_ganglia(name, value, units, valtype='int32',
             '--spoof', spoof, '--value', str(value), '--units', units])
     return retcode
 
+def read_config(conffile, conf):
+    #try and pull in options from the config file
+    try:
+        configfh = open(conffile)
+        for line in configfh.readlines():
+            if "#" in line:
+                # throw away the part after the comment character
+                (line, comment) = line.split("#", 1)
+            try:
+                (opt,val) = line.split("=")
+            except ValueError:
+                # no = sign in the line, skip this line
+                continue
+            opt = opt.strip().lower()
+            val = val.strip()
+            conf[opt] = val
+        configfh.close()
+    except (IOError, TypeError), e:
+        # if the conf file doesn't exist, that's cool.  no biggy.
+        #print "passing with exp %s" % e
+        pass
+    return conf
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-u", dest="username", default='', help="username to use to authenticate against swift")
     parser.add_option("-p", dest="password", default='', help="password to use to authenticate against swift")
     parser.add_option("-s", dest="statefile", default='/tmp/ganglia-report-swift-stats', help="state file to store object count in between invocations")
+    parser.add_option("-C", dest="conffile", default='./ganglia-report-swift-stats.conf', help="configuration file for setting config options. The config file overrides command line arguments")
     parser.add_option("-v", dest="verbose", action="store_true", default=False, help="print the values submitted to stdout")
     parser.add_option("-c", dest="clustername", default='unknown', help="name of the cluster for whom to report stats")
     (options, args) = parser.parse_args()
 
-    if(options.username == '' or options.password == ''):
+    conf = {}
+    conf['username'] = options.username
+    conf['password'] = options.password
+    conf['statefile'] = options.statefile
+    conf['verbose'] = options.verbose
+    conf['clustername'] = options.clustername
+    read_config(options.conffile, conf)
+
+    if(conf['username'] == '' or conf['password'] == ''):
         print "username and password options are required."
         parser.print_help()
         exit(1)
 
-    stats = get_stats(options.username, options.password)
-    oldstats = get_old_stats(options.statefile)
-    save_stats(options.statefile, stats)
+    stats = get_stats(conf['username'], conf['password'])
+    oldstats = get_old_stats(conf['statefile'])
+    save_stats(conf['statefile'], stats)
 
     deltastats = calculate_changes(current=stats, previous=oldstats)
 
-    if options.verbose:
+    if conf['verbose']:
         print "about to submit stats: %s" % deltastats
 
     # let's use 'pmtpa prod' instead of 'pmtpa-prod'
-    clustername = options.clustername.replace('-', ' ')
+    clustername = conf['clustername'].replace('-', ' ')
 
     submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
     submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
