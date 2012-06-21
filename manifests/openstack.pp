@@ -318,8 +318,7 @@ class openstack::project-storage {
 
 class openstack::puppet-server {
 
-	include openstack::nova_config,
-		openstack::keystone_config
+	include openstack::nova_config
 
 	# Only allow puppet access from the instances
 	$puppet_passenger_allow_from = $realm ? {
@@ -328,6 +327,7 @@ class openstack::puppet-server {
 	}
 
 	if $openstack_version == "essex" {
+		include openstack::keystone_config
 		class { puppetmaster:
 			server_name => $fqdn,
 			allow_from => $puppet_passenger_allow_from,
@@ -370,8 +370,7 @@ class openstack::puppet-server {
 class openstack::database-server {
 
 	include openstack::nova_config,
-		openstack::glance_config,
-		openstack::keystone_config
+		openstack::glance_config
 
 	package { "mysql-server":
 		ensure => latest;
@@ -421,6 +420,7 @@ class openstack::database-server {
 	}
 
 	if $openstack_version == "essex" {
+		include openstack::keystone_config
 		exec {
 			'create_keystone_db_user':
 				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
@@ -544,12 +544,12 @@ class openstack::database-server {
 class openstack::ldap-server {
 
 	include passwords::certs,
-		openstack::nova_config,
-		openstack::keystone_config
+		openstack::nova_config
 
 	$ldap_certificate_location = "/var/opendj/instance"
 	$ldap_cert_pass = $passwords::certs::certs_default_pass
 	if $openstack_version == "essex" {
+		include openstack::keystone_config
 		$ldap_user_dn = $openstack::keystone_config::keystone_ldap_user_dn
 		$ldap_user_pass = $openstack::keystone_config::keystone_ldap_user_pass
 		$ldap_base_dn = $openstack::keystone_config::keystone_ldap_base_dn
