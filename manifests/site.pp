@@ -1776,6 +1776,8 @@ node "oxygen.wikimedia.org" {
 		multicast     => true,
 		# TODO: Move this to /var/log/udp2log
 		log_directory => "/a/squid",
+		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
+		packet_loss_log => "/var/log/udp2log/packet-loss.log",
 	}
 
 }
