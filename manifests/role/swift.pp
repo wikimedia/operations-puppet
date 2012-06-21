@@ -88,6 +88,7 @@ class role::swift {
 				ensure => present;
 			}
 			# config file to hold the password
+			$password = $passwords::swift::pmtpa-prod::rewrite_password
 			file { "/etc/swift-ganglia-report-global-stats.conf":
 				mode => 0440,
 				owner => root,
