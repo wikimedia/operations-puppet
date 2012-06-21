@@ -151,9 +151,9 @@ class openstack::common {
 	file {
 		"/etc/nova/nova.conf":
 			content => template("openstack/nova.conf.erb"),
-			owner => root,
-			group => root,
-			mode => 0444,
+			owner => nova,
+			group => nova,
+			mode => 0440,
 			require => Package['nova-common'];
 	}
 
@@ -757,11 +757,11 @@ class openstack::keystone-service {
 	file {
 		"/etc/keystone/keystone.conf":
 			content => template("openstack/keystone.conf.erb"),
-			owner => root,
-			group => root,
+			owner => keystone,
+			group => keystone,
 			notify => Service["keystone"],
 			require => Package["keystone"],
-			mode => 0444;
+			mode => 0440;
 	}
 
 }
@@ -787,18 +787,18 @@ class openstack::glance-service {
 	file {
 		"/etc/glance/glance-api.conf":
 			content => template("openstack/glance-api.conf.erb"),
-			owner => root,
-			group => root,
+			owner => glance,
+			group => glance,
 			notify => Service["glance-api"],
 			require => Package["glance"],
-			mode => 0444;
+			mode => 0440;
 		"/etc/glance/glance-registry.conf":
 			content => template("openstack/glance-registry.conf.erb"),
-			owner => root,
-			group => root,
+			owner => glance,
+			group => glance,
 			notify => Service["glance-registry"],
 			require => Package["glance"],
-			mode => 0444;
+			mode => 0440;
 	}
 
 }
