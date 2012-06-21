@@ -1950,6 +1950,23 @@ class accounts {
 		}
 	}
 
+	class john inherits baseaccount {
+		$username = "john"
+		$realname = "John Dickinson (SwiftStack)"
+		$uid = 603
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"john@triton.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCwhOmG/MCs3r7qQs+rDWDOiOnk81zyGKQayfhRIrL2e+WKg5emGblBKMhAao992PK8DTImhKD/6RR4FAOYjjFhl5j/KOWPleExE1cjX+2GhUWRQSPBlwn2bHHjCD6BsmdJANxBIB70NV3r0rj7+rC5AX+EgKLO78rsgWMBYoKXBkSgssmJOZRGKrYzDqxMrP5q6hnaqD9J9aODX4JbrC4UAFwi0LcksGe6AU7kpDrgpuw4Bd/4f6PRGgUHSmo1SXtZwSzIIyMH6thhdWd/uxTfvktB/LzwaaJAGbW5L/oADeSOMHF/1xiqQX8qfoYA5wmnVFhUnTM265xr4Si7g3xf";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
