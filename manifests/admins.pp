@@ -1,7 +1,6 @@
 # admins.pp
 
 # NOTE: append new accounts to the bottom of the list
-# make note of the UID here: last used uid 597
 
 # TODO: completely rewrite this file
 
@@ -1946,6 +1945,23 @@ class accounts {
 					user   => $username,
 					type   => "ssh-rsa",
 					key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDGV+SyDPodS8lRJBv/JndZJ7pbM3mlqMN2bbE8ABUj5P5YYOiJDoLjPr8hczeYt1qMhbepp89nLSqUD8BgoJVNoiUokmi4lKK0PnPhqGVN+RFnamlHCibAPjbEBWaBWEl0u/9EtU4S0r7uQaKEnNJwcr7/8lu4KzDznViUVACGDdGpyRLZ388Phu93HOK2KPXtyxZPlwjW6wKIN3nyhew0X7LxzYF8rINl3Nf4lUF1fnK2NbfEq3S0bQfVcyWwRrgMUMA+w0plJQpHdLr+agvZo/SdtFrNFugQrMk1d+FNzEFnoDshwHfcmwjSaU+M8ZdbS+jq97X8HoL22yXFyD/B",
+			}
+		}
+	}
+
+	class john inherits baseaccount {
+		$username = "john"
+		$realname = "John Dickinson (SwiftStack)"
+		$uid = 603
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"john@triton.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCwhOmG/MCs3r7qQs+rDWDOiOnk81zyGKQayfhRIrL2e+WKg5emGblBKMhAao992PK8DTImhKD/6RR4FAOYjjFhl5j/KOWPleExE1cjX+2GhUWRQSPBlwn2bHHjCD6BsmdJANxBIB70NV3r0rj7+rC5AX+EgKLO78rsgWMBYoKXBkSgssmJOZRGKrYzDqxMrP5q6hnaqD9J9aODX4JbrC4UAFwi0LcksGe6AU7kpDrgpuw4Bd/4f6PRGgUHSmo1SXtZwSzIIyMH6thhdWd/uxTfvktB/LzwaaJAGbW5L/oADeSOMHF/1xiqQX8qfoYA5wmnVFhUnTM265xr4Si7g3xf";
 			}
 		}
 	}

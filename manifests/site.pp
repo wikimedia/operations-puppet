@@ -1560,10 +1560,12 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 	include groups::wikidev,
 		accounts::darrell,
 		accounts::orion,
-		accounts::smerritt
+		accounts::smerritt,
+		accounts::john
 	sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { [ "orion" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { [ "smerritt" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "john" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
@@ -1754,10 +1756,12 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 	include groups::wikidev,
 		accounts::darrell,
 		accounts::orion,
-		accounts::smerritt
+		accounts::smerritt,
+		accounts::john
 	sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { [ "orion" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { [ "smerritt" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "john" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "oxygen.wikimedia.org" {
