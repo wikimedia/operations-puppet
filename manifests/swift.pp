@@ -16,7 +16,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
 	File {
 		owner => "swift",
 		group => "swift",
-		mode => 0444
+		mode => 0440
 	}
 	file {
 		"/etc/swift":
@@ -193,7 +193,7 @@ class swift::proxy::config(
 	@file { "/etc/swift/proxy-server.conf":
 		owner => swift,
 		group => swift,
-		mode => 0444,
+		mode => 0440,
 		content => template("swift/proxy-server.conf.erb")
 	}
 
@@ -223,7 +223,7 @@ class swift::cleaner {
 		file { "$swiftcleaner_basedir/swiftcleaner-$name.conf":
 			owner => root,
 			group => root,
-			mode => 0444,
+			mode => 0440,
 			content => template("swift/swiftcleaner.conf")
 		}
 		# make sure the statedir for the cleaner exists
@@ -304,7 +304,7 @@ class swift::storage {
 		class { "generic::rsyncd": config => "swift" }
 
 		# set up swift specific configs
-		File { owner => swift, group => swift, mode => 0444 }
+		File { owner => swift, group => swift, mode => 0440 }
 		file {
 			"/etc/swift/account-server.conf":
 				content => template("swift/etc.swift.account-server.conf.erb");
