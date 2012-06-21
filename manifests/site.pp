@@ -2440,6 +2440,7 @@ node "virt0.wikimedia.org" {
 	$is_labs_puppet_master = "true"
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
+	$openstack_version = "diablo"
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -2453,6 +2454,7 @@ node /virt[1-8].pmtpa.wmnet/ {
 	if $hostname =~ /^virt[23]$/ {
 		$ganglia_aggregator = "true"
 	}
+	$openstack_version = "diablo"
 
 	include standard,
 		openstack::compute
