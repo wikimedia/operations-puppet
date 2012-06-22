@@ -2095,3 +2095,10 @@ class admins::jenkins {
 class admins::dctech {
 	include accounts::cmjohnson
 }
+
+class admins::globaldev {
+	$gid = 500	# 'wikidev' by default
+	include groups::wikidev
+
+	include accounts::erosen	
+}
