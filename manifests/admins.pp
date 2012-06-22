@@ -1136,6 +1136,7 @@ class accounts {
 		$username = "zak"
 		$realname = "Zak Greant"
 		$uid = 551
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1143,7 +1144,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "zak":
-				ensure 	=> present,
+				ensure 	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAwu/7oKLKRTpxp0fLluRb09aJQ0LzFkN9mT1R5AhJHJ85x/UimXayTdZ67oJ72pteDEbLuGFGtJ3KsCs7a+L1e+YmRXKETap4Wy0ALsPQs7Dwvlp0AnOBcLXiWYtrdnAp21SKOSjIdw4Gd3RlcHAvWCAMKBodXLwInrSH7YLgD3JHwFyCBjqSqamfz5MPeoaFd8dEAPwTQUOHZfCHny9ljqTDrznIQTMKslM4TImw4WBYIfFtgokgBNTsZdRkJDqy4C8FztzphdVbPuRVvOPALWES12At2KlauofjM3wNMYB64jn5luqa8LcMMwdyz5MlXLfVV7MBpN3F6rlVdxob0w=="
@@ -2030,7 +2031,7 @@ class admins::mortals {
 	include accounts::nikerabbit
 	include accounts::nimishg # revoked
 	include accounts::rfaulk
-	include accounts::zak
+	include accounts::zak # access revoked
 	include accounts::demon
 	include accounts::hashar
 	include accounts::pdhanda # access revoked
