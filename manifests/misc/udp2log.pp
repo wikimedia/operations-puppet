@@ -44,6 +44,36 @@ class misc::udp2log($monitor = true) {
 }
 
 
+# Class: misc::udp2log::rsyncd
+#
+# Sets up an rsync daemon to allow statistics 
+# and analytics servers to copy logs off of a
+# udp2log host.
+#
+# NOTE: I would much rather have generic::rsyncd to be a
+# more generic define, and allow for configuration of multiple
+# rsync modules from different places.  This would allow for
+# the misc::udp2log::instance to set up rsync-ability.  This
+# will do for now :\
+#
+# TODO: Allow allow_hosts to be an array.
+#
+# Parameters:
+#   $path        - path to udp2log logrotated archive directory
+#   $allow_hosts - IP address of host from which to allow rsync
+#
+class misc::udp2log::rsyncd(
+	$path = "/var/log/udp2log/archive",
+	$allow_hosts = "208.80.152.146") {
+
+	# Set up an rsync daemon module for $path.
+	# This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "generic::rsyncd":
+		content => template("udp2log/rsyncd.conf.erb"),
+	}
+}
+
 # Define: misc::udp2log::instance
 #
 # Sets up a udp2log daemon instance.
