@@ -666,7 +666,7 @@ class generic::mysql::server(
 		group => 'root',
 		mode  => 0644,
 		content => template('mysql/generic_my.cnf.erb'),
-		require => Package["mysql-server"],
+		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
 	}
 	
 	# mysql is protected by apparmor.  Need to
@@ -682,7 +682,7 @@ class generic::mysql::server(
 	
 	service { "mysql":
 		ensure => "running",
-		require => [Package["mysql-server"], File[$config_file_path]],
+		require => [Package["mysql-server"], File[$config_file_path, "/etc/apparmor.d/usr.sbin.mysqld"]],
 		# don't subscribe mysql to its config files.
 		# it is better to be able to restart mysql
 		# manually when you intend for it to happen,
