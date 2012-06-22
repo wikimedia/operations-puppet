@@ -64,7 +64,7 @@ class misc::udp2log($monitor = true) {
 #
 class misc::udp2log::rsyncd(
 	$path = "/var/log/udp2log/archive",
-	$allow_hosts = "208.80.152.146") {
+	$hosts_allow = "208.80.152.146") {
 
 	# Set up an rsync daemon module for $path.
 	# This allows stat1 to copy logs from the
