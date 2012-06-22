@@ -564,6 +564,14 @@ node "emery.wikimedia.org" {
 	# TODO: Move this to /var/log/udp2log
 	misc::udp2log::instance { "emery": log_directory => "/var/log/squid" }
 
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/var/log/squid/archive",
+		require => Misc::Udp2log::Instance["emery"],
+	}
+
 	# aft (Article Feedback Tool) 
 	# udp2log instance for clicktracking logs.
 	misc::udp2log::instance { "aft": 
@@ -1220,6 +1228,14 @@ node "locke.wikimedia.org" {
 	# mainly in /a/squid.
 	# TODO: Move log_directory to /var/log/udp2log
 	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["locke"],
+	}
 }
 
 node "lomaria.pmtpa.wmnet" {
@@ -1793,6 +1809,7 @@ node "oxygen.wikimedia.org" {
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
 	include misc::udp2log
+
 	# oxygen's udp2log instance
 	# saves logs mainly in /a/squid
 	misc::udp2log::instance { "oxygen":
@@ -1802,9 +1819,21 @@ node "oxygen.wikimedia.org" {
 		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
 		packet_loss_log => "/var/log/udp2log/packet-loss.log",
 	}
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["oxygen"],
+	}
+
+	# udp2log-lucene instance for
+	# lucene search logs.  Don't need 
+	# to monitor packet loss here.
 	misc::udp2log::instance { "lucene":
-		port	=> "51234",
-		log_directory => "/a/log/lucene",
+		port                => "51234",
+		log_directory       => "/a/log/lucene",
 		monitor_packet_loss => false,
 	}
 }
@@ -2318,6 +2347,9 @@ node "stat1.wikimedia.org" {
 
 	# generate gerrit stats from stat1.
 	include misc::statistics::gerrit_stats
+
+	# rsync logs from logging hosts over to stat1
+	include misc::statistics::rsync::jobs
 
 	# special accounts
 	include accounts::ezachte,
