@@ -1,0 +1,9 @@
+# This file is managed by Puppet
+
+# udp2log log directory readonly rsync module
+[udp2log]
+comment = "udp2log log files"
+path = <%= path %>
+read only = true
+# only allow stat1
+hosts allow = <%= hosts_allow.class == Array ? hosts_allow.join(' ') : hosts_allow %>
