@@ -6,6 +6,7 @@ class misc::statistics::user {
 		name   => "$username",
 		home   => "/var/lib/$username",
 		groups => "wikidev",
+		shell  => "/bin/bash",
 	}
 }
 
@@ -183,5 +184,60 @@ class misc::statistics::gerrit_stats {
 		hour    => '23',
 		minute  => '59',
 		require => Git::Clone["gerrit-stats"],
+	}
+}
+
+
+# Class: misc::statistics::rsync::jobs
+#
+# Sets up daily cron jobs to rsync log files from remote 
+# logging hosts to a local destination for further processing.
+class misc::statistics::rsync::jobs {	
+	# rsync wikipedia zero logs from the oxygen
+	# udp2log rsync module.
+	misc::statistics::rsync_job { "wikipedia_zero":
+		source      => "oxygen.wikimedia.org::udp2log/zero-*.gz",
+		destination => "/a/squid/archive/zero",
+	}
+
+	# rsync teahouse logs from the emery
+	# udp2log rsync module.
+	misc::statistics::rsync_job { "teahouse":
+		source      => "emery.wikimedia.org::udp2log/teahouse*.gz",
+		destination => "/a/squid/archive/teahouse",
+	}
+}
+
+
+# Define: misc::statistics::rsync_job
+#
+# Sets up a daily cron job to rsync from $source to $destination
+# as the $misc::statistics::user::username user.  This requires
+# that the $misc::statistics::user::username user is installed
+# on both $source and $destination hosts.
+#
+# Parameters:
+#    source      - rsync source argument (including hostname)
+#    destination - rsync destination argument
+#
+define misc::statistics::rsync_job($source, $destination) {
+	require misc::statistics::user
+
+	# ensure that the destination directory exists
+	file { "$destination":
+		ensure  => "directory",
+		owner   => "stats",
+		group   => "wikidev",
+		mode    => 0775,
+	}
+
+	# Create a daily cron job to rsync $source to $destination.
+	# This requires that the $misc::statistics::user::username
+	# user is installed on the source host.
+	cron { "rsync_${name}_logs":
+		command => "/usr/bin/rsync -r $source $destination/",
+		user    => "$misc::statistics::user::username",
+		hour    => 8,
+		minute  => 0,
 	}
 }
