@@ -52,9 +52,9 @@ NameVirtualHost *:443
 	ServerAdmin webmaster@wikimedia.org
 	ServerName bugzilla.wikimedia.org
 	DocumentRoot /srv/org/wikimedia/bugzilla/
-	SSLEngineOn
-	SSLCertificateFile/etc/ssl/certs/*.wikimedia.org.crt
-	SSLCertificateKeyFile/etc/ssl/private/*.wikimedia.org.key
+	SSLEngine On
+	SSLCertificateFile /etc/ssl/certs/*.wikimedia.org.crt
+	SSLCertificateKeyFile /etc/ssl/private/*.wikimedia.org.key
 
 	<Directory />
 		Options FollowSymLinks
