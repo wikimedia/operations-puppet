@@ -122,7 +122,7 @@ class openstack::common {
 			dist        => "lucid",
 		}
 		generic::apt::pin-package { "python-eventlet":
-			pin => "release LP-PPA-openstack-release-2011.3",
+			pin => "release o=LP-PPA-openstack-release-2011.3",
 		}
 	}
 
