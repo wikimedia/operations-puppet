@@ -182,10 +182,8 @@ class openstack::controller {
 
 class openstack::compute {
 
-	include openstack::common,
-		openstack::compute-service,
-		openstack::gluster-service,
-		openstack::gluster-client
+	include openstack::common
+	include openstack::compute-service
 
 	# tls is a PITA to enable in labs, let's find another way there.
 	if ( $realm == "production" ) {
