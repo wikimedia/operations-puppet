@@ -673,7 +673,7 @@ class openstack::network-service {
 
 	if $openstack_version == "diablo" {
 		file { "/usr/share/pyshared/nova/network/linux_net.py":
-			source => "puppet://files/openstack/linux_net.py",
+			source => "puppet:///files/openstack/linux_net.py",
 			mode => 0644,
 			owner => root,
 			group => root,
