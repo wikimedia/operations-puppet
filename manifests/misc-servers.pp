@@ -977,7 +977,8 @@ class misc::scripts {
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-apache-simulated";
+			ensure => link,
+			target => "/usr/local/bin/sync-apache";
 		"/usr/local/bin/sync-common-all":
 			owner => root,
 			group => root,
