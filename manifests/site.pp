@@ -61,6 +61,13 @@ class standard {
 		exim::simple-mail-sender
 }
 
+class newstandard {
+	include base,
+		ganglia,
+		ntp::client,
+		generic::tcptweaks
+}
+
 #############################
 # Role classes
 #############################
@@ -410,12 +417,20 @@ node "bellin.pmtpa.wmnet"{
 		mysql::packages
 }
 
+node "beryllium.wikimedia.org" {
+	include newstandard
+}
+
 node "blondel.pmtpa.wmnet" {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
+}
+
+node "boron.wikimedia.org" {
+	include newstandard
 }
 
 node "brewster.wikimedia.org" {
@@ -451,6 +466,14 @@ node "carbon.wikimedia.org" {
 	include standard,
 		backup::client,
 		misc::install-server::tftp-server
+}
+
+node "calcium.wikimedia.org" {
+	include newstandard
+}
+
+node "chromium.wikimedia.org" {
+	include newstandard
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
@@ -503,82 +526,6 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	include role::cache::bits
 }
 
-node "ekrem.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
-	include standard,
-		misc::apple-dictionary-bridge,
-		misc::irc-server,
-		misc::mediawiki-irc-relay
-}
-
-node "emery.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
-	include standard,
-		groups::wikidev,
-		admins::mortals,
-		admins::restricted,
-		nrpe,
-		generic::sysctl::high-bandwidth-rsync,
-		misc::udp2log::utilities,
-		geoip
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
-
-	# emery's udp2log instance
-	# saves logs mainly in /var/log/squid.
-	# TODO: Move this to /var/log/udp2log
-	misc::udp2log::instance { "emery": log_directory => "/var/log/squid" }
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/var/log/squid/archive",
-		require => Misc::Udp2log::Instance["emery"],
-	}
-
-	# aft (Article Feedback Tool) 
-	# udp2log instance for clicktracking logs.
-	misc::udp2log::instance { "aft": 
-		log_directory       => "/var/log/aft",
-		port                => "8421",
-		# packet-loss.log is not generated for clicktracking logs,
-		# so packet loss monitoring is disabled.
-		monitor_packet_loss => false,
-	}
-
-}
-
-node "erzurumi.pmtpa.wmnet" {
-	include	standard,
-		groups::wikidev,
-		accounts::khorn
-}
-
-node /es100[1-4]\.eqiad\.wmnet/ {
-	if $hostname == "es1001" {
-		class { "db::es": mysql_role => "master" }
-	}
-	else {
-		include db::es
-	}
-#	if $hostname == "es1004" {
-#		# replica of ms3 - currently used for backups
-#		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
-#	}
-}
-
-node /es[1-4]\.pmtpa\.wmnet/ {
-	if $hostname == "es1" {
-		class { "db::es": mysql_role => "master" }
-	}
-	else {
-		include db::es
-	}
-}
 
 node "dataset2.wikimedia.org" {
 	$cluster = "misc"
@@ -778,6 +725,82 @@ node "dobson.wikimedia.org" {
 	}
 }
 
+node "ekrem.wikimedia.org" {
+	install_certificate{ "star.wikimedia.org": }
+	include standard,
+		misc::apple-dictionary-bridge,
+		misc::irc-server,
+		misc::mediawiki-irc-relay
+}
+
+node "emery.wikimedia.org" {
+	$gid=500
+	system_role { "misc::log-collector": description => "log collector" }
+	include standard,
+		groups::wikidev,
+		admins::mortals,
+		admins::restricted,
+		nrpe,
+		generic::sysctl::high-bandwidth-rsync,
+		misc::udp2log::utilities,
+		geoip
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
+	include misc::udp2log
+
+	# emery's udp2log instance
+	# saves logs mainly in /var/log/squid.
+	# TODO: Move this to /var/log/udp2log
+	misc::udp2log::instance { "emery": log_directory => "/var/log/squid" }
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/var/log/squid/archive",
+		require => Misc::Udp2log::Instance["emery"],
+	}
+
+	# aft (Article Feedback Tool) 
+	# udp2log instance for clicktracking logs.
+	misc::udp2log::instance { "aft": 
+		log_directory       => "/var/log/aft",
+		port                => "8421",
+		# packet-loss.log is not generated for clicktracking logs,
+		# so packet loss monitoring is disabled.
+		monitor_packet_loss => false,
+	}
+
+}
+
+node "erzurumi.pmtpa.wmnet" {
+	include	standard,
+		groups::wikidev,
+		accounts::khorn
+}
+
+node /es100[1-4]\.eqiad\.wmnet/ {
+	if $hostname == "es1001" {
+		class { "db::es": mysql_role => "master" }
+	}
+	else {
+		include db::es
+	}
+#	if $hostname == "es1004" {
+#		# replica of ms3 - currently used for backups
+#		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
+#	}
+}
+
+node /es[1-4]\.pmtpa\.wmnet/ {
+	if $hostname == "es1" {
+		class { "db::es": mysql_role => "master" }
+	}
+	else {
+		include db::es
+	}
+}
 node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
@@ -937,6 +960,10 @@ node "gurvin.wikimedia.org" {
 		certificates::wmf_ca
 }
 
+node "helium.wikimedia.org" {
+	include newstandard
+}
+
 node "hooft.esams.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
@@ -947,6 +974,14 @@ node "hooft.esams.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted
+}
+
+node "hydrogen.wikimedia.org" {
+	include newstandard
+}
+
+node "lithium.wikimedia.org" {
+	include newstandard
 }
 
 node "manutius.wikimedia.org" {
@@ -1119,7 +1154,7 @@ node "kaulen.wikimedia.org" {
 }
 
 # knsq16-22 are upload squids, 13 and 14 have been decommissioned
- node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
+node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq1[67]$/ {
 		$ganglia_aggregator = "true"
@@ -1129,10 +1164,14 @@ node "kaulen.wikimedia.org" {
 }
 
 # knsq23-30 are text squids
- node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
+node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
 	include role::cache::text
+}
+
+node "krypton.wikimedia.org" {
+	include newstandard
 }
 
 node /labstore[1-4]\.pmtpa\.wmnet/ {
@@ -1508,25 +1547,8 @@ node "mchenry.wikimedia.org" {
 		accounts::jdavis
 }
 
-node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
-		memcached
-}
-
-node /mw6[0-1]\.pmtpa\.wmnet/ {
-	include applicationserver::bits
-}
-
-node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
-	include applicationserver::api
-}
-
-node "lily.knams.wikimedia.org" {
-	include ganglia,
-		nrpe
-
-	install_certificate{ "star.wikimedia.org": }
+node /mobile100[1-4]\.wikimedia\.org/ {
+	include newstandard
 }
 
 node /ms[1-3]\.pmtpa\.wmnet/ {
@@ -1651,6 +1673,21 @@ node /^ms-be[5-9]\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
+node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
+	include applicationserver::homeless,
+		applicationserver::jobrunner,
+		memcached
+}
+
+node /mw6[0-1]\.pmtpa\.wmnet/ {
+	include applicationserver::bits
+}
+
+node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
+	include applicationserver::api
+}
+
+
 node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
@@ -1738,6 +1775,10 @@ node /^ocg[1-3]\.wikimedia\.org$/ {
 		misc::mwlib::packages,
 		misc::mwlib::users
 
+}
+
+node /^osm-cp100[1-4]\.wikimedia\.org$/ {
+	include newstandard
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
@@ -1860,6 +1901,10 @@ node "professor.pmtpa.wmnet" {
 		ntp::client,
 		misc::udpprofile::collector,
 		misc::graphite
+}
+
+node "potassium.wikimedia.org" {
+	include newstandard
 }
 
 node "project1.wikimedia.org" {
@@ -2448,6 +2493,10 @@ node "tridge.wikimedia.org" {
 		backup::server
 }
 
+node "vanadium.wikimedia.org" {
+	include newstandard
+}
+
 node "virt1000.wikimedia.org" {
 	$cluster = "virt"
 
@@ -2526,6 +2575,10 @@ node "zhen.wikimedia.org" {
 	include standard,
 		accounts::preilly,
 		mobile::vumi
+}
+
+node "zirconium.wikimedia.org" {
+	include newstandard
 }
 
 node default {
