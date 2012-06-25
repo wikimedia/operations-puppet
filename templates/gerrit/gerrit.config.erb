@@ -69,3 +69,7 @@
   ownerGroup = Project Creators
 [pack]
 	deltacompression = true
+# Workaround for permissions bug until we upgrade to 2.3.1 or 2.4.2
+[cache "permission_sort"]
+	memoryLimit = 0
+	maxAge = 1s
