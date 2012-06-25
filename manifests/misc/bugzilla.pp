@@ -8,8 +8,8 @@ class misc::bugzilla::server {
 
 	apache_site { bugzilla: name => "bugzilla.wikimedia.org" }
 	file {
-		"/etc/apache2/sites-available/search.wikimedia.org":
-			path => "/etc/apache2/sites-available/search.wikimedia.org",
+		"/etc/apache2/sites-available/bugzilla.wikimedia.org":
+			source => "puppet:///files/apache/sites/bugzilla.wikimedia.org",
 			mode => 0444,
 			owner => root,
 			group => www-data,
