@@ -2,7 +2,7 @@ NameVirtualHost *:80
 NameVirtualHost *:443
 
 <VirtualHost *:80>
-	ServerAdmin noc@wikimedia.org
+	ServerAdmin webmaster@wikimedia.org
 	ServerName bugzilla.wikimedia.org
 	Redirect permanent / https://bugzilla.wikimedia.org/
 	RewriteEngine On
@@ -11,7 +11,7 @@ NameVirtualHost *:443
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerAdmin noc@wikimedia.org
+	ServerAdmin webmaster@wikimedia.org
 	ServerName bugs.wikimedia.org
 	Redirect permanent / https://bugzilla.wikimedia.org/
 	RewriteEngine On
