@@ -7,6 +7,14 @@ class misc::bugzilla::server {
 	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { bugzilla: name => "bugzilla.wikimedia.org" }
+	file {
+		"/etc/apache2/sites-available/search.wikimedia.org":
+			path => "/etc/apache2/sites-available/search.wikimedia.org",
+			mode => 0444,
+			owner => root,
+			group => www-data,
+			ensure => present;
+	}
 }
 
 class misc::bugzilla::crons {
