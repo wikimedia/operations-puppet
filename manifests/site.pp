@@ -710,7 +710,7 @@ node /^db4[2]\.pmtpa\.wmnet$/ {
 		mysql::packages
 	
 	# RT 3119
-	include accounts::erosen
+	include admins::globaldev
 }
 
 # new pmtpa dbs
@@ -782,7 +782,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 
 	# RT 3119
 	if $hostname == "db1047" {
-		include accounts::erosen
+		include admins::globaldev
 	}
 }
 
@@ -2364,7 +2364,7 @@ node "stat1.wikimedia.org" {
 		accounts::jmorgan,
 		accounts::rfaulk,
 		# RT 3119
-		accounts::erosen
+		admins::globaldev
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
