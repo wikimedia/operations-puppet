@@ -747,6 +747,17 @@ class openstack::compute-service {
 		require => Package["nova-compute"];
 	}
 
+	if $openstack_version == "diablo" {
+		file { "/usr/share/pyshared/nova/compute/api.py":
+			source => "puppet:///files/openstack/api.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			notify => Service["nova-compute"],
+			require => Package["nova-compute"];
+		}
+	}
+
 }
 
 class openstack::keystone-service {
