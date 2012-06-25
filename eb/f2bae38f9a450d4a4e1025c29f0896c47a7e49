@@ -1,0 +1,10 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Code-Review+1: Demon <chadh@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Krinkle <ttijhof@wikimedia.org>
+Code-Review+1: Trevor Parscal <tparscal@wikimedia.org>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Mon, 25 Jun 2012 15:14:33 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/5289
+Project: operations/puppet
+Branch: refs/heads/production
