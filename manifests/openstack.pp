@@ -671,6 +671,17 @@ class openstack::network-service {
 		require => Package["dnsmasq"];
 	}
 
+	if $openstack_version == "diablo" {
+		file { "/usr/share/pyshared/nova/network/linux_net.py":
+			source => "puppet://files/openstack/linux_net.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			notify => Service["nova-network"],
+			require => Package["nova-network"];
+		}
+	}
+
 	# Enable IP forwarding
 	include generic::sysctl::advanced-routing,
 		generic::sysctl::ipv6-disable-ra
