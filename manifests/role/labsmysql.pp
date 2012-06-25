@@ -1,19 +1,19 @@
 #include "mysql.db"
 
 class role::labs-mysql-server {
-	if !$::mysql_datadir {
-		$datadir = "/mnt/mysql"
-	} else {
-		$datadir = $mysql_datadir
-	}
-	if !$::mysql_file_per_table {
-		$file_per_table = "1"
-	} else {
-		$file_per_table = $mysql_file_per_table
-	}
 	class { "generic::mysql::server":
 		# Move mysql data to a place where there's actually space.
-		datadir => $datadir,
-		innodb_file_per_table => $file_per_table,
+		datadir => $::mysql_datadir ? {
+			false => "/mnt/mysql",
+			default => $::mysql_datadir,
+		},
+		innodb_file_per_table => $::mysql_file_per_table ? {
+			false => "1",
+			default => $::mysql_file_per_table,
+		},
+		version => $lsbdistrelease ? {
+			"12.04" => "5.5",
+			default => false,
+		},
 	}
 }
