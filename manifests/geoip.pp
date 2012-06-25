@@ -193,7 +193,7 @@ class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file =
 	# modify GeoIP.conf and add the Maxmind
 	# product IDs for those files.
 	cron { "geoipupdate":
-		command     => "$geoipupdate_command",
+		command     => "$geoipupdate_command > /dev/null",
 		environment => $environment,
 		user        => root,
 		weekday     => 0,
