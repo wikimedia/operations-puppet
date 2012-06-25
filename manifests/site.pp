@@ -2512,18 +2512,20 @@ node "virt0.wikimedia.org" {
 
 node /virt[1-8].pmtpa.wmnet/ {
 	$cluster = "virt"
-	if $hostname =~ /^virt1$/ {
-		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.193" }
-	}
-	if $hostname =~ /^virt2$/ {
-		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
-	}
 	if $hostname =~ /^virt[23]$/ {
 
 		$ganglia_aggregator = "true"
 	}
 	$openstack_version = "diablo"
-
+	if $hostname =~ /^virt1$/ {
+		include openstack::network-service
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.193" }
+	}
+	if $hostname =~ /^virt2$/ {
+		include openstack::network-service,
+			openstack::api-service
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
+	}
 	include standard,
 		openstack::compute
 }
