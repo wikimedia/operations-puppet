@@ -1144,6 +1144,7 @@ node "kaulen.wikimedia.org" {
 		accounts::reedy,
 		accounts::robla,
 		misc::download-mediawiki,
+		misc::bugzilla::server,
 		misc::bugzilla::crons
 
 	install_certificate{ "star.wikimedia.org": }
