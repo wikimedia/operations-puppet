@@ -115,8 +115,15 @@ class openstack::common {
 	include openstack::nova_config
 
 	if $openstack_version == "diablo" {
-		apt::pparepo { "nova-core-release-obsolete1": repo_string => "nova-core/release", apt_key => "2A2356C9", dist => "lucid", ensure => "absent" }
-		apt::pparepo { "nova-core-release": repo_string => "openstack-release/2011.3", apt_key => "3D1B4472", dist => "lucid", ensure => "present" }
+		apt::pparepo { "nova-core-release":
+			ensure      => "present",
+			repo_string => "openstack-release/2011.3",
+			apt_key     => "3D1B4472",
+			dist        => "lucid",
+		}
+		generic::apt::pin-package { "python-eventlet":
+			pin => "release LP-PPA-openstack-release-2011.3",
+		}
 	}
 
 	if $realm == "production" {
