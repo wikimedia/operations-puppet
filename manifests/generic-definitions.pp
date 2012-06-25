@@ -891,7 +891,7 @@ define sysctl(
 }
 
 class generic::sysctl::high-http-performance($ensure="present") {
-	if $lsbdistrelease != "8.04" {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { high-http-performance-sysctl:
 			name => "/etc/sysctl.d/60-high-http-performance.conf",
 			owner => root,
@@ -907,7 +907,7 @@ class generic::sysctl::high-http-performance($ensure="present") {
 }
 
 class generic::sysctl::advanced-routing($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "12.04") >= 0 {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { advanced-routing-sysctl:
 			name => "/etc/sysctl.d/50-advanced-routing.conf",
 			owner => root,
@@ -917,11 +917,13 @@ class generic::sysctl::advanced-routing($ensure="present") {
 			source => "puppet:///files/misc/50-advanced-routing.conf.sysctl",
 			ensure => $ensure
 		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
 
 class generic::sysctl::advanced-routing-ipv6($ensure="present") {
-	if $lsbdistrelease != "8.04" {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { advanced-routing-sysctl:
 			name => "/etc/sysctl.d/50-advanced-routing-ipv6.conf",
 			owner => root,
@@ -931,11 +933,13 @@ class generic::sysctl::advanced-routing-ipv6($ensure="present") {
 			source => "puppet:///files/misc/50-advanced-routing-ipv6.conf.sysctl",
 			ensure => $ensure
 		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
 
 class generic::sysctl::ipv6-disable-ra($ensure="present") {
-	if $lsbdistrelease != "8.04" {
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
 		file { ipv6-disable-ra:
 			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
 			owner => root,
@@ -945,26 +949,36 @@ class generic::sysctl::ipv6-disable-ra($ensure="present") {
 			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
 			ensure => $ensure
 		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
 
 class generic::sysctl::lvs($ensure="present") {
-	file { lvs-sysctl:
-		name => "/etc/sysctl.d/50-lvs.conf",
-		mode => 0444,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/50-lvs.conf.sysctl",
-		ensure => $ensure
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		file { lvs-sysctl:
+			name => "/etc/sysctl.d/50-lvs.conf",
+			mode => 0444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/50-lvs.conf.sysctl",
+			ensure => $ensure
+		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
 
 class generic::sysctl::high-bandwidth-rsync($ensure="present") {
-	file { high-bandwidth-rsync-sysctl:
-		name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
-		mode => 0444,
-		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/60-high-bandwidth-rsync.conf.sysctl",
-		ensure => $ensure
+	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+		file { high-bandwidth-rsync-sysctl:
+			name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
+			mode => 0444,
+			notify => Exec["/sbin/start procps"],
+			source => "puppet:///files/misc/60-high-bandwidth-rsync.conf.sysctl",
+			ensure => $ensure
+		}
+	} else {
+		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
 	}
 }
 
