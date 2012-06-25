@@ -12,8 +12,7 @@ class misc::bugzilla::server {
 			source => "puppet:///files/apache/sites/bugzilla.wikimedia.org",
 			mode => 0444,
 			owner => root,
-			group => www-data,
-			ensure => present;
+			group => www-data;
 	}
 }
 
