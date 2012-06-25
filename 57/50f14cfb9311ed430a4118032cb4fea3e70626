@@ -1,0 +1,8 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Mon, 25 Jun 2012 18:50:28 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/12903
+Project: operations/puppet
+Branch: refs/heads/production
