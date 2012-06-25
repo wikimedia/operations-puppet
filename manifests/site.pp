@@ -257,38 +257,6 @@ class db::es($mysql_role = "slave") {
 
 }
 
-class searchserver {
-	$cluster = "search"
-	$nagios_group = "lucene"
-
-	$lvs_realserver_ips = [ "10.2.1.11", "10.2.1.12", "10.2.1.13" ]
-
-	include	standard,
-		nfs::home,
-		admins::roots,
-		admins::dctech,
-		admins::mortals,
-		admins::restricted,
-		search::sudo,
-		search::logrotate,
-		search::jvm,
-		search::monitoring,
-		lvs::realserver
-}
-
-class searchindexer {
-	$cluster = "search"
-	$nagios_group = "lucene"
-
-	$search_indexer = "true"
-
-	include	standard,
-		admins::roots,
-		admins::dctech,
-		admins::mortals,
-		admins::restricted
-}
-
 class protoproxy::ssl {
 	$cluster = "ssl"
 
