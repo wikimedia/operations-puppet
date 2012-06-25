@@ -654,10 +654,6 @@ class openstack::scheduler-service {
 
 class openstack::network-service {
 
-	if $realm == "production" {
-		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
-	}
-
 	package {  [ "nova-network", "dnsmasq" ]:
 		ensure => latest;
 	}
