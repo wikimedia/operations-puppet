@@ -2483,11 +2483,6 @@ node "thistle.pmtpa.wmnet" {
 	include db::core
 }
 
-node "transcode1.wikimedia.org" {
-	include standard,
-		misc::dc-cam-transcoder
-}
-
 node "tridge.wikimedia.org" {
 	include base,
 		backup::server
