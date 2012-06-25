@@ -299,7 +299,7 @@ define interface_tun6to4($remove=undef) {
 	}
 }
 
-define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $remove=undef) {
+define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $down=undef, $remove=undef) {
 	require base::vlan-tools
 
 	$intf = "${base_interface}.${vlan_id}"
@@ -321,6 +321,11 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 	} else {
 		$up_cmd = ""
 	}
+	if $down {
+		$down_cmd = "set iface[. = '$intf']/down '$down'"
+	} else {
+		$down_cmd = ""
+	}
 
 	if $remove == 'true' {
 		$augeas_cmd = [	"rm auto[./1 = '$intf']",
@@ -334,6 +339,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 				$addr_cmd,
 				$netmask_cmd,
 				$up_cmd,
+				$down_cmd,
 			]
 	}
 

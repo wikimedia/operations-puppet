@@ -124,14 +124,18 @@ class openstack::common {
 		interface_tagged { "eth1.103":
 			base_interface => "eth1",
 			vlan_id => "103",
-			method => "manual";
+			method => "manual",
+			up => 'ip link set $IFACE up',
+			down => 'ip link set $IFACE down',
 		}
 	} elsif $realm == "labs" {
 		# Setup eth1 as tagged and created a tagged interface for VLAN 103
 		interface_tagged { "eth0.103":
 			base_interface => "eth0",
 			vlan_id => "103",
-			method => "manual";
+			method => "manual",
+			up => 'ip link set $IFACE up',
+			down => 'ip link set $IFACE down',
 		}
 	}
 
