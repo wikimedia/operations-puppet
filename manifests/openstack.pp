@@ -235,7 +235,7 @@ class openstack::compute {
 		require => Package["nova-common"];
 	}
 
-	if $hostname == "virt2" or $realm == "labs" {
+	if $realm == "labs" {
 		include openstack::network-service,
 			openstack::api-service
 	}
