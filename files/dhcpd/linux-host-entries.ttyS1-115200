@@ -59,13 +59,18 @@ host beryllium {
 }
 
 host blondel {
-        hardware ethernet d4:be:d9:af:66:ba;
-        fixed-address blondel.pmtpa.wmnet;
+	hardware ethernet d4:be:d9:af:66:ba;
+	fixed-address blondel.pmtpa.wmnet;
+}
+
+host boron {
+	hardware ethernet 78:2b:cb:09:0a:33;
+	fixed-address boron.wikimedia.org;
 }
 
 host calcium {
 	hardware ethernet 78:2b:cb:08:b9:e9;
-	fixed-address caclium.wikimedia.org;
+	fixed-address calcium.wikimedia.org;
 }
 
 host cadmium {
