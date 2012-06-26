@@ -37,12 +37,12 @@ class role::db::fundraising::dump {
 			mode => 0755,
 			owner => root,
 			group => root,
-			source => "puppet:///files/misc/scripts/dump_fundraisingdb-${hostname}";
+			source => "puppet:///files/misc/scripts/dump_fundraisingdb";
 		'/root/.dump_fundraisingdb':
 			mode => 0400,
 			owner => root,
 			group => root,
-			source => "puppet:///private/misc/fundraising/dump_fundraisingdb.conf";
+			source => "puppet:///private/misc/fundraising/dump_fundraisingdb-${hostname}";
 	}
 
 	cron { 'dump_fundraising_database':
