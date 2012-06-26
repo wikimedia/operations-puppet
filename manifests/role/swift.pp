@@ -128,7 +128,6 @@ class role::swift {
 	}
 	class pmtpa-labs inherits role::swift::base {
 		system_role { "role::swift::pmtpa-labs": description => "Swift pmtpa labs cluster" }
-		system_role { "swift-cluster::pmtpa-labs": description => "Swift pmtpa labs cluster", ensure => absent }
 		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
 		class { "::swift::base": hash_path_suffix => "a222ef4c988d7ba2", cluster_name => "pmtpa-labs" }
 		class ganglia_reporter inherits role::swift::pmtpa-labs {
@@ -165,6 +164,55 @@ class role::swift {
 			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-labs {
+			include ::swift::storage
+		}
+	}
+	class pmtpa-labsupgrade inherits role::swift::base {
+		system_role { "role::swift::pmtpa-labsupgrade": description => "Swift pmtpa labs upgradecluster" }
+		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
+		class { "::swift::base": hash_path_suffix => "153afbcc873d20e8", cluster_name => "pmtpa-labsupgrade" }
+		class ganglia_reporter inherits role::swift::pmtpa-labsupgrade {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				path => "/usr/local/bin/swift-ganglia-report-global-stats",
+				mode => 0555,
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+				ensure => present;
+			}
+			# config file to hold the password (which isn't secret in labs)
+			$password = "userpassword"
+			file { "/etc/swift-ganglia-report-global-stats.conf":
+				mode => 0440,
+				owner => root,
+				group => root,
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+			}
+			cron { "swift-ganglia-report-global-stats":
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumbnail' -c pmtpa-labsupgrade",
+				user => root,
+				ensure => present;
+			}
+		}
+		class proxy inherits role::swift::pmtpa-labsupgrade {
+			class { "::swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://su-fe1.pmtpa.wmflabs",
+				num_workers => $::processorcount * 2,
+				memcached_servers => [ "127.0.0.1:11211" ],
+				super_admin_key => "notsoseekritkey",
+				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumbnail",
+				rewrite_password => "userpassword",
+				rewrite_thumb_server => "upload.wikimedia.org",
+				shard_containers => "none",
+				shard_container_list => "",
+				write_thumbs => "all",
+				dont_write_thumb_list => ""
+			}
+			include ::swift::proxy
+		}
+		class storage inherits role::swift::pmtpa-labsupgrade {
 			include ::swift::storage
 		}
 	}
