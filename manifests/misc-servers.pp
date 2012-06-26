@@ -867,6 +867,8 @@ class misc::scripts {
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
 
+	package { "php5-parsekit": ensure => present; }
+
 	file {
 		"/usr/local/bin/clear-profile":
 			owner => root,
@@ -907,6 +909,7 @@ class misc::scripts {
 			owner => root,
 			group => root,
 			mode => 0555,
+			require => Package[ 'php5-parsekit' ], # bug 37076
 			source => "puppet:///files/misc/scripts/lint";
 		"/usr/local/bin/lint.php":
 			owner => root,
