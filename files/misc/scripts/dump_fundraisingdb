@@ -24,8 +24,23 @@ for my $key qw(USER PASSWORD DBS LOCALDIR SENDER RECIPIENT MYSQLDUMP) {
 }
 
 printlog('start!');
-
 my $e;
+
+# purge old files if KEEPDAYS is set
+if ($conf->{'KEEPDAYS'} =~ /^(\d+)$/) {
+	$e->{'report'} .= "purge files in $conf->{'LOCALDIR'} older than $conf->{'KEEPDAYS'} days\n";
+	opendir DIR, $conf->{'LOCALDIR'} or die "can't open $conf->{'LOCALDIR'}: $!";
+	for my $file (sort readdir DIR) {
+		next if $file =~ /^\./;
+		my $file_date = (stat("$conf->{'LOCALDIR'}/$file"))[9];
+		if ( (time - $file_date)/86400 > $conf->{'KEEPDAYS'}) {
+			printlog("rm $conf->{'LOCALDIR'}/$file");
+			unlink "$conf->{'LOCALDIR'}/$file";
+		}	
+	}	
+	close DIR;
+}
+
 for my $db (split /\s+/, $conf->{'DBS'}) {
 
 	# trivial db name check 
