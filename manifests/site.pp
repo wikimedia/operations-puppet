@@ -331,6 +331,10 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 	include base,
 		ganglia,
 		lvs::balancer
+
+	# Make sure GRO is off
+	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+
 }
 
 # amssq31-46 are text squids
