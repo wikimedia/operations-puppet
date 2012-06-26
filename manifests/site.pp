@@ -980,10 +980,6 @@ node "hydrogen.wikimedia.org" {
 	include newstandard
 }
 
-node "lithium.wikimedia.org" {
-	include newstandard
-}
-
 node "manutius.wikimedia.org" {
 	$corerouters = [
 		"cr1-sdtpa.wikimedia.org",
@@ -1168,10 +1164,6 @@ node /knsq(2[3-9]|30)\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
 	include role::cache::text
-}
-
-node "krypton.wikimedia.org" {
-	include newstandard
 }
 
 node /labstore[1-4]\.pmtpa\.wmnet/ {

@@ -49,13 +49,23 @@ host bast1001 {
 }
 
 host bellin {
-        hardware ethernet 18:03:73:ed:d9:95;
-        fixed-address bellin.pmtpa.wmnet;
+	hardware ethernet 18:03:73:ed:d9:95;
+	fixed-address bellin.pmtpa.wmnet;
+}
+
+host beryllium {
+	hardware ethernet 78:2b:cb:08:a3:ab;
+	fixed-address beryllium.wikimedia.org;
 }
 
 host blondel {
         hardware ethernet d4:be:d9:af:66:ba;
         fixed-address blondel.pmtpa.wmnet;
+}
+
+host calcium {
+	hardware ethernet 78:2b:cb:08:b9:e9;
+	fixed-address caclium.wikimedia.org;
 }
 
 host cadmium {
@@ -66,6 +76,11 @@ host cadmium {
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
+}
+
+host chromium {
+	hardware ethernet 78:2b:cb:08:aa:48;
+	fixed-address chromium.wikimedia.org;
 }
 
 host copper {
@@ -697,14 +712,24 @@ host harmon {
 	fixed-address harmon.wikimedia.org;
 }
 
+host helium {
+	hardware ethernet 78:2b:cb:09:0f:c8;
+	fixed-address helium.wikimedia.org;
+}
+
 host hooft {
-        hardware ethernet a4:ba:db:30:d7:70;
-        fixed-address hooft.esams.wikimedia.org;
+	hardware ethernet a4:ba:db:30:d7:70;
+	fixed-address hooft.esams.wikimedia.org;
 }
 
 host hooper {
 	hardware ethernet 84:2b:2b:06:4c:58;
 	fixed-address hooper.wikimedia.org;
+}
+
+host hydrogen {
+	hardware ethernet 78:2b:cb:09:0c:21;
+	fixed-address hydrogen.wikimedia.org;
 }
 
 host iron {
@@ -2778,6 +2803,11 @@ host pdf3 {
 	fixed-address pdf3.wikimedia.org;
 }
 
+host potassium {
+	hardware ethernet 78:2b:cb:08:ac:78;
+	fixed-address potassium.wikimedia.org;
+}
+
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
@@ -3669,4 +3699,9 @@ host zhen {
 host zinc {
 	hardware ethernet 78:2b:cb:09:0e:3d;
 	fixed-address zinc.wikimedia.org;
+}
+
+host zirconium {
+	hardware ethernet 18:03:73:f1:4f:4c;
+	fixed-address zirconium.wikimedia.org;
 }
