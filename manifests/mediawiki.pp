@@ -1,7 +1,7 @@
 # mediawiki.pp
 
 class mediawiki::packages {
-	package { wikimedia-task-appserver:
+	package { 'wikimedia-task-appserver':
 		ensure => latest;
 	}
 }
@@ -13,11 +13,11 @@ class mediawiki::sync {
 	require mediawiki::packages
 
 	exec { 	'mw-sync':
-		command => "/usr/bin/sync-common",
-		cwd => "/tmp",
+		command => '/usr/bin/sync-common',
+		cwd => '/tmp',
 		user => root,
 		group => root,
-		path => "/usr/bin:/usr/sbin",
+		path => '/usr/bin:/usr/sbin',
 		refreshonly => true,
 		timeout => 60,
 		logoutput => on_failure;
@@ -28,7 +28,7 @@ class mediawiki::sync {
 class mediawiki::refreshlinks {
 	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
-	file { "/home/mwdeploy/refreshLinks":
+	file { '/home/mwdeploy/refreshLinks':
 		ensure => directory,
 		owner => mwdeploy,
 		group => mwdeploy,
@@ -55,5 +55,12 @@ class mediawiki::refreshlinks {
 }
 
 class mediawiki::user {
-	systemuser { "mwdeploy": name => "mwdeploy" }
+	systemuser { 'mwdeploy': name => 'mwdeploy' }
+}
+
+# is installed on pdf servers - https://launchpad.net/ubuntu/+source/mediawiki-math
+class mediawiki::math {
+	package { 'mediawiki-math':
+		ensure => latest;
+	}
 }
