@@ -907,6 +907,7 @@ class misc::scripts {
 			owner => root,
 			group => root,
 			mode => 0555,
+			require => Package[ 'php5-parsekit' ], # bug 37076
 			source => "puppet:///files/misc/scripts/lint";
 		"/usr/local/bin/lint.php":
 			owner => root,
