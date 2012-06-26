@@ -37,7 +37,7 @@ class role::db::fundraising::dump {
 			mode => 0755,
 			owner => root,
 			group => root,
-			source => "puppet:///files/misc/scripts/dump_fundraisingdb";
+			source => "puppet:///files/misc/scripts/dump_fundraisingdb-${hostname}";
 		'/root/.dump_fundraisingdb':
 			mode => 0400,
 			owner => root,
