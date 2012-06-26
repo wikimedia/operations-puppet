@@ -676,9 +676,6 @@ node "db40.pmtpa.wmnet" {
 node /^db4[2]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages
-	
-	# RT 3119
-	include admins::globaldev
 }
 
 # new pmtpa dbs
@@ -747,11 +744,6 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
-
-	# RT 3119
-	if $hostname == "db1047" {
-		include admins::globaldev
-	}
 }
 
 node "dobson.wikimedia.org" {
