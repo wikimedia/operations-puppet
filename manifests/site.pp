@@ -1659,10 +1659,10 @@ node /^ms-be[1-4]\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-be[5-9]\.pmtpa\.wmnet$/ {
-	# the ms-be hosts with ssds have the OS on sdc and sdd
-	$all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sde',
+	# the ms-be hosts with ssds have two more disks
+	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
-		'/dev/sdl' ]
+		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
 
 	include role::swift::pmtpa-prod::storage
 
