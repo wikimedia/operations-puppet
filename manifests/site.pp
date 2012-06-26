@@ -800,6 +800,7 @@ node "fenari.wikimedia.org" {
 		drac::management,
 		squid::cachemgr,
 		accounts::awjrichards,
+		admins::globaldev,
 		mediawiki::packages
 
 	install_certificate{ "star.wikimedia.org": }
