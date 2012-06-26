@@ -827,7 +827,7 @@ node "fenari.wikimedia.org" {
 		drac::management,
 		squid::cachemgr,
 		accounts::awjrichards,
-		admins::globaldev,
+		accounts::erosen,
 		mediawiki::packages
 
 	install_certificate{ "star.wikimedia.org": }
