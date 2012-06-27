@@ -726,6 +726,7 @@ class icinga::monitor::snmp {
 
 	service { snmptt:
 		ensure => running,
+		hasstatus => false,
 		subscribe => [ File["/etc/snmp/snmptt.conf"],
 			       File["/etc/init.d/snmptt"],
 			       File["/etc/snmp/snmptrapd.conf"]];
