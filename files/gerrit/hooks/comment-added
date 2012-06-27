@@ -21,6 +21,8 @@ class CommentAdded(HookHelper):
 			if len(comment) > 103:
 				comment = comment[0:100] + "..."
 		else:
+			# Pointless to notify on empty comments
+			return
 			comment = "(no comment)"
 		review = ""
 		if options.verified:
