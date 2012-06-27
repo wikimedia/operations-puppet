@@ -4,6 +4,8 @@
 #####################################################################
 # vim: filetype=apache
 
+LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
+
 NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
@@ -31,7 +33,7 @@ NameVirtualHost *:80
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined
+	CustomLog /var/log/apache2/access.log combined_time
 	ServerSignature Off
 
 </VirtualHost>
@@ -78,7 +80,7 @@ NameVirtualHost *:443
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined
+	CustomLog /var/log/apache2/access.log combined_time
 	ServerSignature Off
 
 </VirtualHost>
