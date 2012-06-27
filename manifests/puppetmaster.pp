@@ -235,8 +235,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class installs some puppetmaster server side scripts required for the manifests
 	class scripts {
-		include puppetmaster::config
-
 		File { mode => 0555 }
 		file {
 			"/usr/local/bin/position-of-the-moon":
