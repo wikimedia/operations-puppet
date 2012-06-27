@@ -352,6 +352,11 @@ class base::sysctl {
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
+		
+		# Disable IPv6 privacy extensions, we rather not see our servers hide
+		file { "/etc/sysctl.d/10-ipv6-privacy.conf":
+			ensure => absent
+		}
 	}
 }
 
