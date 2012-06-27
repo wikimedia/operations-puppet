@@ -21,7 +21,7 @@ class CommentAdded(HookHelper):
 			if len(comment) > 103:
 				comment = comment[0:100] + "..."
 		else:
-			comment = "(no comment)"
+			return
 		review = ""
 		if options.verified:
 			review = review + "; V: " + options.verified
