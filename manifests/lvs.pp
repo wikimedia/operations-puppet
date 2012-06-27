@@ -84,7 +84,10 @@ class lvs::configuration {
 			/^amslvs[12]$/ => "91.198.174.247",
 			/^amslvs[34]$/ => "91.198.174.244",
 			default => "(unspecified)"
-			}
+			},
+		'bgp-nexthop-ipv4' => $::ipaddress_eth0,
+		# FIXME: make a Puppet function, or fix facter
+		'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_eth0\")).mask(64) | IPAddr.new(scope.lookupvar(\"::ipaddress_eth0\").gsub('.', ':'))).to_s() %>")
 	}
 
 	$idleconnection_monitor_options = {

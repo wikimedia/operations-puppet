@@ -6,18 +6,22 @@ bgp = <%= pybal.fetch('bgp', "no") %>
 bgp-local-asn = 64600
 bgp-peer-address = <%= pybal['bgp-peer-address'] %>
 #bgp-as-path = 64600 64601
+bgp-nexthop-ipv4 = <%= pybal['bgp-nexthop-ipv4'] %>
+<% if ipv6_hosts.include?(scope.lookupvar("::hostname")) -%>
+bgp-nexthop-ipv6 = <%= pybal['bgp-nexthop-ipv6'] %>
+<% end -%>
 
 #
 # LVS service definitions
 #
 
 <% lvs_services.sort.each do |servicename, service| -%>
-<% if lvs_class_hosts[service['class']].include?(hostname) and service['sites'].include?(scope.lookupvar("::site")) then -%>
+<% if lvs_class_hosts[service['class']].include?(scope.lookupvar("::hostname")) and service['sites'].include?(scope.lookupvar("::site")) then -%>
 <% if service['ip'].class.eql?(String) then
 service['ip'] = { servicename => service['ip'] }
 end -%>
 <% service['ip'].sort.each do |subservicename, subserviceip| -%>
-<% if ! subserviceip.include?(":") or ipv6_hosts.include?(hostname) -%>
+<% if ! subserviceip.include?(":") or ipv6_hosts.include?(scope.lookupvar("::hostname")) -%>
 # SERVICE <%= subservicename %>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
