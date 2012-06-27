@@ -485,7 +485,7 @@ class puppetmaster::self {
 
 		git::clone { "operations/puppet":
 			directory => "$gitdir/operations",
-			branch    => "test",
+			branch    => "production",
 			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/operations/puppet.git",
 			ssh       => "$gitdir/ssh",
 			require   => [ File["$gitdir/operations"], File["$gitdir/ssh"] ],
