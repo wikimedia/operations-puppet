@@ -686,15 +686,16 @@ class generic::packages::tree {
 # Creates a git clone of a specified origin into a top level directory
 #
 # Parameters:
-#   $directory	-	path to clone the repository into.  Required.
+#	$directory	-	path to clone the repository into.  Required.
 #	$origin		-	Origin repository URL.
 # 	$branch		-	Branch you would like to check out.
-#   $ensure     -	'absent', 'present', or 'latest'.  Defaults to 'present'.  
+#	$ensure		-	'absent', 'present', or 'latest'.  Defaults to 'present'.
 #					'latest' will execute a git pull if there are any changes.
 #					'absent' will ensure the directory is deleted.
 #	$owner		-	owner of $directory, default: 'root'.  git commands will be run by this user.
 #	$group		-	group owner of $directory, default: 'root',
 #	$mode		-	permission mode of $directory, default: 0755
+#	$ssh		-	SSH command/wrapper to use when checking out (optional)
 #   
 # Usage:
 #	git::clone{ "my_clone_name": 
@@ -706,6 +707,7 @@ define git::clone(
 	$directory, 
 	$origin,
 	$branch="", 
+	$ssh="",
 	$ensure='present',
 	$owner="root",
 	$group="root",
@@ -733,14 +735,18 @@ define git::clone(
 			else {
 				$brancharg = ""
 			}
+			if $ssh {
+				$env = "GIT_SSH=$ssh"
+			}
 
 			# set PATH for following execs
 			Exec { path => "/usr/bin:/bin" }
 			# clone the repository
 			exec { "git_clone_${title}":
-				command => "git clone ${brancharg}${origin} $directory",
-				creates => "$directory/.git/config",
-				user    => $owner
+				command     => "git clone ${brancharg}${origin} $directory",
+				environment => $env,
+				creates     => "$directory/.git/config",
+				user        => $owner,
 			}
 			
 			# pull if $ensure == latest and if there are changes to merge in.
