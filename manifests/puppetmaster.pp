@@ -21,6 +21,9 @@ import "generic-definitions.pp"
 class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="optional", $allow_from=[], $deny_from=[], $config={}) {
 	system_role { "puppetmaster": description => "Puppetmaster" }
 
+	$gitdir = "/var/lib/git"
+	$volatiledir = "/var/lib/puppet/volatile"
+
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require config
 
@@ -64,8 +67,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
 	class config {
 		include base::puppet
-		$gitdir = "/var/lib/git"
-		$volatiledir = "/var/lib/puppet/volatile"
 
 		file {
 			"/etc/puppet/puppet.conf.d/20-master.conf":
@@ -89,32 +90,32 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class gitclone {
 
 		file {
-			"$puppetmaster::config::gitdir":
+			"$puppetmaster::gitdir":
 				ensure => directory,
 				owner => root,
 				group =>root;
-			"$puppetmaster::config::gitdir/operations":
+			"$puppetmaster::gitdir/operations":
 				ensure => directory,
 				owner => root,
 				group => root;
-			"$puppetmaster::config::gitdir/operations/puppet/.git/hooks/post-merge":
+			"$puppetmaster::gitdir/operations/puppet/.git/hooks/post-merge":
 				require => Git::Clone["operations/puppet"],
 				source => "puppet:///files/puppet/git/puppet/post-merge",
 				mode => 0550;
-			"$puppetmaster::config::gitdir/operations/puppet/.git/hooks/pre-commit":
+			"$puppetmaster::gitdir/operations/puppet/.git/hooks/pre-commit":
 				require => Git::Clone["operations/puppet"],
 				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
-			"$puppetmaster::config::gitdir/operations/software/.git/hooks/pre-commit":
+			"$puppetmaster::gitdir/operations/software/.git/hooks/pre-commit":
 				require => Git::Clone["operations/software"],
 				source => "puppet:///files/puppet/git/puppet/pre-commit",
 				mode => 0550;
-			"$puppetmaster::config::volatiledir":
+			"$puppetmaster::volatiledir":
 				mode => 0750,
 				owner => root,
 				group => puppet,
 				ensure => directory;
-			"$puppetmaster::config::volatiledir/misc":
+			"$puppetmaster::volatiledir/misc":
 				mode => 0750,
 				owner => root,
 				group => puppet,
@@ -123,13 +124,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 		if ! $is_labs_puppet_master {
 			file {
-				"$puppetmaster::config::gitdir/operations/private":
+				"$puppetmaster::gitdir/operations/private":
 					ensure => directory,
 					owner => root,
 					group => puppet,
 					mode => 0750;
 
-				"$puppetmaster::config::gitdir/operations/private/.git/hooks/post-merge":
+				"$puppetmaster::gitdir/operations/private/.git/hooks/post-merge":
 					source => "puppet:///files/puppet/git/private/post-merge",
 					mode => 0550;
 			}
@@ -137,16 +138,16 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 		git::clone {
 			"operations/puppet":
-				require => File["$puppetmaster::config::gitdir/operations"],
-				directory => "$puppetmaster::config::gitdir/operations/puppet",
+				require => File["$puppetmaster::gitdir/operations"],
+				directory => "$puppetmaster::gitdir/operations/puppet",
 				branch => $is_labs_puppet_master ? {
 					true => "test",
 					default => "production"
 				},
 				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 			"operations/software":
-				require => File["$puppetmaster::config::gitdir/operations"],
-				directory => "$puppetmaster::config::gitdir/operations/software",
+				require => File["$puppetmaster::gitdir/operations"],
+				directory => "$puppetmaster::gitdir/operations/software",
 				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 		}
 	}
@@ -253,7 +254,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		cron {
 			updategeoipdb:
 				environment => "http_proxy=http://brewster.wikimedia.org:8080",
-				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > $puppetmaster::config::volatiledir/misc/GeoIP.dat.new && mv $puppetmaster::config::volatiledir/misc/GeoIP.dat.new $puppetmaster::config::volatiledir/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > $puppetmaster::config::volatiledir/misc/GeoIPcity.dat.new && mv $puppetmaster::config::volatiledir/misc/GeoIPcity.dat.new $puppetmaster::config::volatiledir/misc/GeoIPcity.dat",
+				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > $puppetmaster::volatiledir/misc/GeoIP.dat.new && mv $puppetmaster::volatiledir/misc/GeoIP.dat.new $puppetmaster::volatiledir/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > $puppetmaster::volatiledir/misc/GeoIPcity.dat.new && mv $puppetmaster::volatiledir/misc/GeoIPcity.dat.new $puppetmaster::volatiledir/misc/GeoIPcity.dat",
 				user => root,
 				hour => 3,
 				minute => 26,
@@ -283,7 +284,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# including geoip::data with provider => 'puppet'.
 		class { "geoip::data":
 			provider       => 'maxmind',
-			data_directory => "$puppetmaster::config::volatiledir/GeoIP",
+			data_directory => "$puppetmaster::volatiledir/GeoIP",
 			environment    => "http_proxy=http://brewster.wikimedia.org:8080",  # use brewster as http proxy, since puppetmaster probably does not have internet access
 		}
 	}
