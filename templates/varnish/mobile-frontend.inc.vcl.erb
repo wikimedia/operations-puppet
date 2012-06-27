@@ -297,6 +297,8 @@ sub vcl_recv {
 			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Orange Kenya" ) {
 			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Cameroon" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Telenor Montenegro" ) {
 			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
