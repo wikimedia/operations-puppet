@@ -731,4 +731,8 @@ class icinga::monitor::snmp {
 			       File["/etc/init.d/snmptt"],
 			       File["/etc/snmp/snmptrapd.conf"]];
 	}
+
+	service { snmpd:
+		ensure => running;
+	}
 }
