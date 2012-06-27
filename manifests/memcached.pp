@@ -14,6 +14,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 
 	service { memcached:
 		require => Package[memcached],
+		subscribe => File["/etc/memcached.conf"],
 		enable     => true,
 		ensure => running;
 	}
