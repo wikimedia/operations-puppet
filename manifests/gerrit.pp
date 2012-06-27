@@ -224,6 +224,13 @@ class gerrit::gitweb {
 			source => "puppet:///files/gerrit/gitweb_config.perl",
 			ensure => present,
 			require => Package[gitweb];
+		# Spiders make gitweb cry when they request tarballs
+		"/var/www/robots.txt":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/misc/robots-txt-disallow",
+			ensure => present;
 	}
 }
 
