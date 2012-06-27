@@ -352,6 +352,10 @@ class base::sysctl {
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
+		
+		file { "/etc/sysctl.d/10-ipv6-privacy.conf":
+			ensure => absent
+		}
 	}
 }
 
