@@ -270,7 +270,7 @@ sub vcl_recv {
 
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
 	if ( req.http.host ~ "^m\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^m\.([a-zA-Z0-9-]+)\.org", "\1.org");
+		set req.http.host = regsub( req.http.host, "^m\.([a-zA-Z0-9-]+)\.org", "www.\1.org");
 	}
 
 	/* Support the old mobile.wikipedia.org wap gateway */
