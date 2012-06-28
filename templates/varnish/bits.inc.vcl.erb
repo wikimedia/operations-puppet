@@ -6,7 +6,11 @@ sub vcl_recv {
                 error 403 "HTTP method not allowed.";
         }
 	/* Only accept requests for domain bits.wikimedia.org at this time */
+<% if realm == "wmflabs" and instanceproject == "deployment-prep" -%>
+	if (req.http.host == "bits.beta.wmflabs.org") {
+<% else -%>
 	if (req.http.host == "bits.wikimedia.org") {
+<% end -%>
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
@@ -38,7 +42,11 @@ sub vcl_miss {
 	/* transform backend url: /<sitename>/load.php -> /w/load.php
 	   set host header for backend to <sitename>
 	*/
+<% if realm == "wmflabs" and instanceproject == "deployment-prep" -%>
+	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\beta\.wmflabs\.org/load\.php" ) {
+<% else -%>
 	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.org/load\.php" ) {
+<% end -%>
 		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
 		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
 <% if has_variable?("test_wikipedia") -%>
