@@ -160,7 +160,7 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 
 # for test.* routing
 backend test {
-	.host = "srv193.pmtpa.wmnet";
+	.host = "<%= cluster_options.fetch( 'test_server', 'srv193.pmtpa.wmnet' ) %>";
 	.port = "80";
 	.connect_timeout = 5s;
 	.first_byte_timeout = 35s;
