@@ -66,7 +66,7 @@ acl opera_mini {
 probe text {
 	.request =
 		"GET /wiki/Main_Page HTTP/1.1"
-		"Host: en.wikipedia.org"
+		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
 		"User-agent: Varnish backend check"
 		"Connection: close";	
 }
@@ -77,16 +77,16 @@ probe text {
 probe bits {
 	.request =
 		"GET /images/wikimedia-button.png HTTP/1.1"
-		"Host: bits.wikimedia.org"
+		"Host: <%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" ) %>"
 		"User-agent: Varnish backend check"
 		"Connection: close";
-	.timeout = 5s;	
+	.timeout = 5s;
 }
 <% else -%>
 probe bits {
 	.request =
 		"GET /w/load.php HTTP/1.1"
-		"Host: en.wikipedia.org"
+		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
 		"User-agent: Varnish backend check"
 		"Connection: close";
 	.timeout = 1s;
@@ -160,7 +160,7 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 
 # for test.* routing
 backend test {
-	.host = "srv193.pmtpa.wmnet";
+	.host = "<%= cluster_options.fetch( 'test_server', 'srv193.pmtpa.wmnet' ) %>";
 	.port = "80";
 	.connect_timeout = 5s;
 	.first_byte_timeout = 35s;
