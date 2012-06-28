@@ -73,3 +73,8 @@
 [cache "permission_sort"]
 	memoryLimit = 0
 	maxAge = 1s
+# Workaround for user/groups performance hit until issue 1285 is fixed
+[cache "accounts"]
+	memoryLimit = 4096
+[cache "accounts_byname"]
+	memoryLimit = 4096
