@@ -1,0 +1,31 @@
+# Varnish VCL include file for bits
+
+sub vcl_recv {
+	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
+        if (req.request == "POST") {
+                error 403 "HTTP method not allowed.";
+        }
+	/* Only accept requests for domain bits.beta.wmflabs.org at this time */
+	if (req.http.host == "bits.beta.wmflabs.org") {
+			return (lookup);
+	}
+	else {
+		error 403 "Requested target domain not allowed.";
+	}
+}
+
+sub vcl_fetch {
+	/* Don't run the default vcl_fetch function */
+	return (deliver);
+}
+
+# FIXME: Implement some proper topology code for primary DCs and downstream cache sites
+sub vcl_miss {
+	/* transform backend url: /<sitename>/load.php -> /w/load.php
+	   set host header for backend to <sitename>
+	*/
+	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\beta\.wmflabs\.org/load\.php" ) {
+		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
+		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
+	}
+}
