@@ -180,8 +180,7 @@ class applicationserver {
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,
-			apaches::monitoring::labs,
-			generic::geoip::files
+			apaches::monitoring::labs
 	}
 
 	class jobrunner {
