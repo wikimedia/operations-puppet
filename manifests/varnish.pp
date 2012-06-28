@@ -62,6 +62,8 @@ class varnish {
 		$backend_options,
 		$cluster_options={},
 		$wikimedia_networks=[],
+		$top_domain = "org", # Example: "beta.wmflabs.org"
+		$bits_domain = "bits.wikimedia.org",
 		$xff_sources=[]) {
 
 		include varnish::common
