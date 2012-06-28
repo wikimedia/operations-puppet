@@ -371,6 +371,21 @@ class lvs::configuration {
 			'search_pool1' => {},
 			'search_pool2' => {},
 			'search_pool3' => {},
+			'dns_auth' => {},
+			'dns_rec' => {},
+			'https' => {},
+			'ipv6' => {},
+			'misc_web' => {},
+			'mobile' => {},
+			'osm' => {},
+			'search_pool1' => {},
+			'search_pool2' => {},
+			'search_pool3' => {},
+			'search_pool4' => {},
+			'search_prefix' => {},
+			'swift' => {},
+			'payments' => {},
+			'upload' => {},
 		}
 	}
 
