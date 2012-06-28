@@ -700,6 +700,8 @@ host es1004 {
 host fluorine {
 	hardware ethernet 78:2b:cb:08:ba:a9;
 	fixed-address fluorine.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host gallium {
