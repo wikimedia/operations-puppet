@@ -1,9 +1,17 @@
 # sudoers file.
+
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/sudo/sudoers.appserver
+#### Installed by the sudo::appserver puppet class
+######################################################################
+
 #
 # *******************************************
 # WIKIMEDIA SYSTEM ADMINISTRATORS PLEASE NOTE
 # *******************************************
-# Please edit /home/config/others/etc/sudoers and copy to /etc on all machines with dshroot
+# Please edit /home/config/others/etc/sudoers and copy to /etc on all machines
+# with dshroot
 #
 # See the sudoers man page for the details on how to write a sudoers file.
 #

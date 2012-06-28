@@ -110,11 +110,6 @@ extension=wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/wmerrors.ini";
-		"/etc/sudoers":
-			owner => root,
-			group => root,
-			mode => 0440,
-			source => "puppet:///files/sudo/sudoers.appserver";
 		"/etc/php5/conf.d/mail.ini":
 			mode => 0444,
 			owner => root,
@@ -158,7 +153,9 @@ class apaches::service {
 	# Require apaches::files to be in place
 	require apaches::files
 
-        # Sync the server when we see apache is not running 
+	include sudo::appserver
+
+	# Sync the server when we see apache is not running
 	exec { 'apache-trigger-mw-sync':
 		command => '/bin/true',
 		notify => Exec['mw-sync'],

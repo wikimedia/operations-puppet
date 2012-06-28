@@ -2452,6 +2452,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		snapshots::sync,
 		snapshots::files,
 		snapshots::noapache,
+		sudo::appserver,
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
