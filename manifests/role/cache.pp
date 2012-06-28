@@ -431,13 +431,25 @@ class role::cache {
 		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
 		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-		$varnish_backends = $::site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
-			# [ bits-lb.pmtpa, bits-lb.eqiad ]
-			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
-			default => []
+		$varnish_backends = $::realm ? {
+			'production' => $::site ? {
+				/^(pmtpa|eqiad)$/ => $all_backends,
+				# [ bits-lb.pmtpa, bits-lb.eqiad ]
+				#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+				# FIXME: add pmtpa back in
+				'esams' => [ "208.80.154.234" ],
+				default => []
+			},
+			'labs' => [
+				'10.4.0.166', # deployment-apache32
+				'10.4.0.187', # deployment-apache33
+			]
+		}
+
+		$varnish_backend_max_connections = $::realm ? {
+			'production' => 10000,
+			'labs'       => 50,
+			default      => 10000,
 		}
 
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
@@ -457,9 +469,19 @@ class role::cache {
 			default => false,
 		}
 
-		$varnish_directors = $::site ? {
-			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
-			'esams' => $multiple_backends["esams"],
+		$cluster_options = {
+			'production' => {
+				'test_hostname' => $test_hostname,
+				'enable_geoiplookup' => true,
+				},
+			'labs' => {
+				'test_hostname' => $test_hostname,
+				'enable_geoiplookup' => true,
+
+				# Labs specific options:
+				'top_domain' => 'beta.wmflabs.org',
+				'bits_domain' => 'bits.beta.wmflabs.org',
+				}
 		}
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
@@ -476,7 +498,13 @@ class role::cache {
 			admin_port => 6082,
 			storage => "-s malloc,1G",
 			backends => $varnish_backends,
-			directors => $varnish_directors,
+			directors => $::realm ? {
+				'production' => $::site ? {
+					/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
+					'esams' => $multiple_backends["esams"],
+				},
+				'labs' => { "backend" => $varnish_backends }
+			},
 			vcl_config => {
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
@@ -486,13 +514,10 @@ class role::cache {
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
-				'max_connections' => 10000,
+				'max_connections' => $varnish_backend_max_connections,
 				'probe' => "bits",
 			},
-			cluster_options => {
-				'test_hostname' => $test_hostname,
-				'enable_geoiplookup' => true,
-			},
+			cluster_options => $cluster_options[$::realm],
 			xff_sources => $network::constants::all_networks
 		}
 
