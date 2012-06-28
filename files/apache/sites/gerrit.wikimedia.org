@@ -51,16 +51,18 @@ NameVirtualHost *:443
 	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
 	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
 
+	SetEnvIf User-Agent 80legs bad_browser
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
+		Order deny,allow
+		deny from env=bad_browser
 	</Directory>
 	<Directory /var/www/>
 		Options Indexes FollowSymLinks MultiViews
 		AllowOverride None
-		Order allow,deny
-		allow from all
 	</Directory>
 
 	ProxyRequests Off
@@ -69,7 +71,7 @@ NameVirtualHost *:443
 
 	<Proxy *>
 		Order deny,allow
-		Allow from all
+		deny from env=bad_browser
 	</Proxy>
 
 	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
