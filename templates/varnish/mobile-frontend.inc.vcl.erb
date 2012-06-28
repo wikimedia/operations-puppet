@@ -49,8 +49,24 @@ acl carrier_orange_ivory_coast {
 }
 
 acl carrier_orange_uganda {
-	//"41.202.224.0"/19;
-	//"197.157.0.0"/18;
+	"41.202.224.0"/19;
+	"197.157.0.0"/18;
+}
+
+acl carrier_saudi_telecom {
+	"213.181.160.212";
+	"90.148.25.250";
+	"88.213.38.10";
+	"78.93.243.130";
+	"77.64.41.186";
+	"77.64.121.110";
+	"77.64.120.217";
+	"77.64.10.50";
+	"212.12.184.239";
+	"212.118.154.37";
+	"212.118.154.34";
+	"176.45.91.173";
+	"212.49.88.0"/25;
 }
 
 acl carrier_orange_kenya {
@@ -108,6 +124,10 @@ sub tag_carrier {
 	} else {
 		if ( client.ip ~  carrier_orange_ivory_coast ) {
 			set req.http.X-Carrier = "Orange Ivory Coast";
+		} else if (client.ip ~ carrier_saudi_telecom) {
+			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Saudi Telecom";
+			}
 		} else if ( client.ip ~  carrier_orange_uganda ) {
 			if ( req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Orange Uganda";
@@ -308,6 +328,8 @@ sub vcl_recv {
 			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
 			error 666 "http://bn.zero.wikipedia.org";
+		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
+			error 666 "http://ar.m.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
 		} else {
 			error 666 "http://en.m.wikipedia.org" + req.url;
 		}
