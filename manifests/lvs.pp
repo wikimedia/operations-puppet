@@ -360,9 +360,14 @@ class lvs::configuration {
 			'rendering' => "10.4.0.252",
 			'api' => "10.4.0.253",
 			'bits' => "10.4.0.252",
+			'misc_web' => undef,
+			'osm' => undef,
 			'search_pool1' => undef,
 			'search_pool2' => undef,
 			'search_pool3' => undef,
+			'search_pool4' => undef,
+			'search_prefix' => undef,
+			'swift' => undef,
 		}
 	}
 
