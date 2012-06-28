@@ -235,7 +235,7 @@ define misc::statistics::rsync_job($source, $destination) {
 	# This requires that the $misc::statistics::user::username
 	# user is installed on the source host.
 	cron { "rsync_${name}_logs":
-		command => "/usr/bin/rsync -r $source $destination/",
+		command => "/usr/bin/rsync -rt $source $destination/",
 		user    => "$misc::statistics::user::username",
 		hour    => 8,
 		minute  => 0,
