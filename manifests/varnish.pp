@@ -48,7 +48,7 @@ class varnish {
 				content => template("varnish/geoip.inc.vcl.erb");
 		}
 	}
-	
+
 	define instance(
 		$name="",
 		$vcl = "",
@@ -62,10 +62,12 @@ class varnish {
 		$backend_options,
 		$enable_geoiplookup="false",
 		$wikimedia_networks=[],
+		$top_domain = ".org", # Example: "beta.wmflabs.org"
+		$bits_domain = "bits.wikimedia.org",
 		$xff_sources=[]) {
 
 		include varnish::common
-		
+
 		if $name == "" {
 			$instancesuffix = ""
 			$extraopts = ""
