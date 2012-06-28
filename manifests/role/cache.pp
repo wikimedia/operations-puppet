@@ -428,16 +428,27 @@ class role::cache {
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
 		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
-		$test_wikipedia = [ "srv193.pmtpa.wmnet" ]
+		$test_wikipedia = $::realm ? {
+			"production" => [ "srv193.pmtpa.wmnet" ],
+			"labs" => [ '10.4.0.166' ],
+		}
 		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
-		$varnish_backends = $::site ? {
-			/^(pmtpa|eqiad)$/ => $all_backends,
-			# [ bits-lb.pmtpa, bits-lb.eqiad ]
-			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: switched from eqiad to pmtpa during Aug 6th 2012 outage
-			'esams' => [ "208.80.152.210" ],
-			default => []
+		if( $::realm == 'production' ) {
+			$varnish_backends = $::site ? {
+				/^(pmtpa|eqiad)$/ => $all_backends,
+				# [ bits-lb.pmtpa, bits-lb.eqiad ]
+				#'esams' => [ "208.80.152.210", "208.80.154.234" ],
+				# FIXME: switched from eqiad to pmtpa during Aug 6th 2012 outage
+				'esams' => [ "208.80.152.210" ],
+				default => []
+			}
+		} else {
+			# beta on labs
+			$varnish_backends = [
+				'10.4.0.166', # deployment-apache32
+				'10.4.0.187', # deployment-apache33
+			]
 		}
 
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
@@ -457,9 +468,36 @@ class role::cache {
 			default => false,
 		}
 
-		$varnish_directors = $::site ? {
-			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
-			'esams' => $multiple_backends["esams"],
+		if( $::realm == 'production' ) {
+			# Whenever altering this options, please reflect the modification
+			#	to the labs options too.
+			$cluster_options = {
+				'test_hostname' => $test_hostname,
+				'enable_geoiplookup' => true,
+			}
+		} else {
+			$cluster_options = {
+				'test_hostname' => $test_hostname,
+				'test_server' => $test_wikipedia,
+				'enable_geoiplookup' => true,
+
+				# Labs specific options:
+				'top_domain' => 'beta.wmflabs.org',
+				'bits_domain' => 'bits.beta.wmflabs.org',
+			}
+		}
+
+		if( $::realm == 'production' ) {
+			$varnish_directors = $::site ? {
+				/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
+				'esams' => $multiple_backends["esams"],
+			}
+		} else {
+			# beta on labs
+			$varnish_directors = {
+				"test_wikipedia" => $test_wikipedia,
+				"backend" => $varnish_backends
+			}
 		}
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
@@ -489,10 +527,7 @@ class role::cache {
 				'max_connections' => 10000,
 				'probe' => "bits",
 			},
-			cluster_options => {
-				'test_hostname' => $test_hostname,
-				'enable_geoiplookup' => true,
-			},
+			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks
 		}
 
