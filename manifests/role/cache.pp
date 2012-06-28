@@ -511,6 +511,33 @@ class role::cache {
 		}
 	}
 
+	class bits::labs {
+		system_role { "role::cache::bits::labs": description => "bits cache server for labs" }
+
+		$labs_beta_apaches = [
+			'10.4.0.141', # deployment-apache30
+			'10.4.0.181'  # deployment-apache31
+		]
+
+		varnish::instance { "bits-labs":
+			name => "",
+			vcl => "bits-labs",
+			backends => $labs_beta_apaches,
+			directors => { "backend" => $labs_beta_apaches },
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 30,
+			},
+			vcl_config => {
+				'retry5xx' => 0,
+				'cache4xx' => '5m'
+			},
+		}
+	}
+
 	class mobile {
 		include network::constants
 		
