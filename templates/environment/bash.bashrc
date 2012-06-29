@@ -30,6 +30,10 @@ PS1='${debian_chroot:+($debian_chroot)}\u@${INSTANCENAME}:\w\$ '
 PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 <% end %>
 
+<% if has_variable?("instanceproject") then %>
+export INSTANCEPROJECT=<%= instanceproject %>
+<% end %>
+
 # Commented out, don't overwrite xterm -T "title" -n "icontitle" by default.
 # If this is an xterm set the title to user@host:dir
 #case "$TERM" in
