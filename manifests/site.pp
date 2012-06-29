@@ -299,7 +299,6 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 		# So we'll have every LVS server run their own recursor
 		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-		$dns_recursor_ipaddress = $ipaddress
 		include dns::recursor
 	}
 
@@ -701,18 +700,19 @@ node "dobson.wikimedia.org" {
 	$ntp_servers = [ "173.9.142.98", "66.250.45.2", "169.229.70.201", "69.31.13.207", "72.167.54.201" ]
 	$ntp_peers = [ "linne.wikimedia.org" ]
 
-	$dns_recursor_ipaddress = "208.80.152.131"
-
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
-	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
+	interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
 	include	base,
 		ganglia,
 		exim::simple-mail-sender,
 		ntp::server,
-		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics
+
+	class { "dns::recursor":
+		listen_address => "208.80.152.131"
+	}
 
 	class { "dns::auth-server":
 		ipaddress => "208.80.152.130",
@@ -1245,7 +1245,6 @@ node /lvs[1-6]\.wikimedia\.org/ {
 		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 		# So we'll have every LVS server run their own recursor
 		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-		$dns_recursor_ipaddress = $ipaddress
 		include dns::recursor
 	}
 
@@ -1328,7 +1327,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 		# So we'll have every LVS server run their own recursor
 		$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-		$dns_recursor_ipaddress = $ipaddress
 		include dns::recursor
 	}
 
@@ -1519,14 +1517,11 @@ node "mchenry.wikimedia.org" {
 	$gid = 500
 	$ldapincludes = ['openldap']
 
-	$dns_recursor_ipaddress = "208.80.152.132"
-
-	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
+	interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.132" }
 
 	include base,
 		ganglia,
 		ntp::client,
-		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics,
 		nrpe,
@@ -1534,6 +1529,8 @@ node "mchenry.wikimedia.org" {
 		backup::client,
 		groups::wikidev,
 		accounts::jdavis
+
+	class { "dns::recursor": listen_address => "208.80.152.132" }
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
@@ -1692,13 +1689,10 @@ node "neon.wikimedia.org" {
 }
 
 node "nescio.esams.wikimedia.org" {
-	$dns_recursor_ipaddress = "91.198.174.6"
-
 	interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
-	interface_ip { "dns::recursor": interface => "eth0", address => $dns_recursor_ipaddress }
+	interface_ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
 	include standard,
-		dns::recursor,
 		dns::recursor::monitoring,
 		dns::recursor::statistics
 
@@ -1707,6 +1701,8 @@ node "nescio.esams.wikimedia.org" {
 			soa_name => "ns2.wikimedia.org",
 			master => $dns_auth_master
 		}
+		
+		class { "dns::recursor": listen_address => "91.198.174.6" }
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
@@ -2044,7 +2040,6 @@ node "sockpuppet.pmtpa.wmnet" {
 node "sodium.wikimedia.org" {
 
 	$nameservers = [ $ipaddress, "208.80.152.131", "208.80.152.132" ]
-	$dns_recursor_ipaddress = $ipaddress
 
 	include base,
 		ganglia,
