@@ -711,7 +711,7 @@ node "dobson.wikimedia.org" {
 		dns::recursor::statistics
 
 	class { "dns::recursor":
-		listen_address => "208.80.152.131"
+		listen_addresses => "208.80.152.131"
 	}
 
 	class { "dns::auth-server":
@@ -1530,7 +1530,7 @@ node "mchenry.wikimedia.org" {
 		groups::wikidev,
 		accounts::jdavis
 
-	class { "dns::recursor": listen_address => "208.80.152.132" }
+	class { "dns::recursor": listen_addresses => "208.80.152.132" }
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
@@ -1702,7 +1702,7 @@ node "nescio.esams.wikimedia.org" {
 			master => $dns_auth_master
 		}
 		
-		class { "dns::recursor": listen_address => "91.198.174.6" }
+		class { "dns::recursor": listen_addresses => "91.198.174.6" }
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
