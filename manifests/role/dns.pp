@@ -38,14 +38,15 @@ class role::dns::ldap {
 class role::dns::recursor {
 	system_role { "role::dns::recursor": description => "Recursive DNS server" }
 	
-	include lvs::configuration
+	include lvs::configuration, network::constants
 
 	class {
 		"lvs::realserver":
 			realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
 		"::dns::recursor":
 			require => Class["lvs::realserver"],
-			listen_addresses => [ $::ipaddress, $::ipaddress6_eth0, $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site] ];
+			listen_addresses => [ $::ipaddress, $::ipaddress6_eth0, $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site] ],
+			allow_from => $network::constants::all_networks;
 	}
 	
 	::dns::recursor::monitor { [ $::ipaddress, $::ipaddress6_eth0 ]: }
