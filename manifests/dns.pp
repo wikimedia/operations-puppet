@@ -189,6 +189,7 @@ class dns::recursor($listen_addresses=[$::ipaddress], $allow_from=[]) {
 			ensure => present;
 		}
 		cron { pdns_gmetric_cron:
+			require => File["/usr/local/sbin/pdns_gmetric"],
 			command => "/usr/local/sbin/pdns_gmetric",
 			user => root,
 			minute => "*";
