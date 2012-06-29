@@ -478,6 +478,8 @@ node "calcium.wikimedia.org" {
 node "chromium.wikimedia.org" {
 	include standard,
 			role::dns::recursor
+
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
