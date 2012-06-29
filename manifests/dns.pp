@@ -198,7 +198,7 @@ class dns::recursor($listen_addresses=[$::ipaddress], $allow_from=[]) {
 
 	define monitor {
 		# Monitoring
-		monitor_host { $dns_recursor_ipaddress: ip_address => $title }
+		monitor_host { $title: ip_address => $title }
 		monitor_service { "recursive dns": host => $title, description => "Recursive DNS", check_command => "check_dns!www.wikipedia.org" }
 	}
 
