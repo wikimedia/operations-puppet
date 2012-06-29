@@ -5,6 +5,7 @@
 $decommissioned_servers = [
 "adler",
 "br1-knams",
+"chromium",
 "controller",
 "dataset1",
 "db1",
