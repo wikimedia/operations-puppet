@@ -386,6 +386,16 @@ class base::standard-packages {
 	}
 }
 
+# Class: base::packages::emacs
+#
+# Installs emacs package
+class base::packages::emacs {
+	package { "emacs32":
+		ensure => "installed",
+		alias  => "emacs",
+	}
+}
+
 class base::resolving {
 	if ! $::nameservers {
 		error("Variable $::nameservers is not defined!")

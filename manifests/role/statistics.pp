@@ -15,6 +15,7 @@ class role::statistics {
 		misc::statistics::plotting,
 		misc::statistics::db,
 		generic::pythonpip,
-		misc::udp2log::udp_filter
+		misc::udp2log::udp_filter,
+		base::packages::emacs
 
 }
