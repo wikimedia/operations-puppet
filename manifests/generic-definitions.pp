@@ -54,7 +54,6 @@ define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef, $defau
 define apache_site($name, $prefix="", $ensure="link") {
 	file { "/etc/apache2/sites-enabled/${prefix}${name}":
 		target => "/etc/apache2/sites-available/$name",
-		notify => Service["apache2"],
 		ensure => $ensure;
 	}
 }
@@ -79,7 +78,6 @@ define apache_confd($install="false", $enable="true", $ensure="present") {
 			file { "/etc/apache2/conf.d/${name}":
 				source => "puppet:///files/apache/conf.d/${name}",
 				mode => 0444,
-				notify => Service["apache2"],
 				ensure => $ensure;
 			}
 		}
@@ -87,7 +85,6 @@ define apache_confd($install="false", $enable="true", $ensure="present") {
 			file { "/etc/apache2/conf.d/${name}":
 				content => template("apache/conf.d/${name}.erb"),
 				mode => 0444,
-				notify => Service["apache2"],
 				ensure => $ensure;
 			}
 		}
