@@ -146,11 +146,12 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!www.wikipedia.org" }
 }
 
-class dns::recursor {
-	if ! $dns_recursor_ipaddress {
-		fail("Parameter $dns_recursor_ipaddress not defined!")
-	}
-
+# Class: Dns::Recursor
+# Parameters:
+# - $listen_address:
+#		Address the DNS recursor should listen on for queries
+#		(default: $::ipaddress)
+class dns::recursor($listen_address=$::ipaddress) {
 	package { pdns-recursor:
 		ensure => latest;
 	}
@@ -176,18 +177,20 @@ class dns::recursor {
 		ensure => running;
 	}
 
-	# install ganglia metrics reporting on pdns_recursor
-	file { "/usr/local/sbin/pdns_gmetric":
-		owner => root,
-		group => root,
-		mode => 0555,
-		source => "puppet:///files/powerdns/pdns_gmetric",
-		ensure => present;
-	}
-	cron { pdns_gmetric_cron:
-		command => "/usr/local/sbin/pdns_gmetric",
-		user => root,
-		minute => "*";
+	class metrics {
+		# install ganglia metrics reporting on pdns_recursor
+		file { "/usr/local/sbin/pdns_gmetric":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/powerdns/pdns_gmetric",
+			ensure => present;
+		}
+		cron { pdns_gmetric_cron:
+			command => "/usr/local/sbin/pdns_gmetric",
+			user => root,
+			minute => "*";
+		}
 	}
 
 	class monitoring {
@@ -226,6 +229,8 @@ class dns::recursor {
 		# Install a static web server to serve this
 		include webserver::static
 	}
+	
+	include metrics
 }
 
 class dns::account {
