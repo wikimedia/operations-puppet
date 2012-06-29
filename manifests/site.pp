@@ -708,12 +708,12 @@ node "dobson.wikimedia.org" {
 		ganglia,
 		exim::simple-mail-sender,
 		ntp::server,
-		dns::recursor::monitoring,
 		dns::recursor::statistics
 
 	class { "dns::recursor":
 		listen_addresses => "208.80.152.131"
 	}
+	dns::recursor::monitor { "208.80.152.131": }
 
 	class { "dns::auth-server":
 		ipaddress => "208.80.152.130",
@@ -1523,7 +1523,6 @@ node "mchenry.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-		dns::recursor::monitoring,
 		dns::recursor::statistics,
 		nrpe,
 		ldap::client::wmf-corp-cluster,
@@ -1531,7 +1530,8 @@ node "mchenry.wikimedia.org" {
 		groups::wikidev,
 		accounts::jdavis
 
-	class { "dns::recursor": listen_addresses => "208.80.152.132" }
+	class { "dns::recursor": listen_addresses => ["208.80.152.132"] }
+	dns::recursor::monitor { "208.80.152.132": }
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
@@ -1694,16 +1694,17 @@ node "nescio.esams.wikimedia.org" {
 	interface_ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
 	include standard,
-		dns::recursor::monitoring,
 		dns::recursor::statistics
 
-		class { "dns::auth-server":
-			ipaddress => "91.198.174.4",
-			soa_name => "ns2.wikimedia.org",
-			master => $dns_auth_master
-		}
-		
-		class { "dns::recursor": listen_addresses => "91.198.174.6" }
+	class { "dns::auth-server":
+		ipaddress => "91.198.174.4",
+		soa_name => "ns2.wikimedia.org",
+		master => $dns_auth_master
+	}
+	
+	class { "dns::recursor": listen_addresses => "91.198.174.6" }
+	dns::recursor::monitor { "91.198.174.6": }
+
 }
 
 node /^nfs[12].pmtpa.wmnet/ {
