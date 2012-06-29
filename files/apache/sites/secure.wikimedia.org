@@ -32,8 +32,12 @@
 
 	# Old OTRS URLs
 	RewriteEngine On
-	RewriteRule ^/otrs/(.*)$ https://ticket.wikimedia.org/otrs/$1 [R]
-	RewriteRule ^/otrs-web/(.*)$ https://ticket.wikimedia.org/otrs-web/$1 [R]
+	RewriteRule ^/otrs/(.*)$ https://ticket.wikimedia.org/otrs/$1 [R=301,L]
+	RewriteRule ^/otrs-web/(.*)$ https://ticket.wikimedia.org/otrs-web/$1 [R=301,L]
+
+	# old URLs, redirect them to proper SSL
+	RewriteRule ^/wikipedia/(meta|commons|incubator|species|outreach|strategy|usability|wikimania|survey)/(w|wiki)/(.*)$ https://$1.wikimedia.org/$2/$3 [R=301,L]
+	RewriteRule ^/(wikipedia|wikinews|wikisource|wikibooks|wikiquote|wikiversity|wiktionary)/([^@:/]+)/(w|wiki)/(.*)$ https://$2.$1.org/$3/$4 [R=301,L]
 
 </VirtualHost>
 
