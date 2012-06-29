@@ -156,7 +156,7 @@ class dns::recursor($listen_address=$::ipaddress) {
 		ensure => latest;
 	}
 
-	system_role { "dns::recursor": description => "Recursive DNS server" }
+	system_role { "dns::recursor": description => "Recursive DNS server", ensure => "absent" }
 
 	include network::constants
 
