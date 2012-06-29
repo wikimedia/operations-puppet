@@ -86,6 +86,8 @@ host carbon {
 host chromium {
 	hardware ethernet 78:2b:cb:08:aa:48;
 	fixed-address chromium.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host copper {

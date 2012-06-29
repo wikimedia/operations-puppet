@@ -477,7 +477,7 @@ node "calcium.wikimedia.org" {
 }
 
 node "chromium.wikimedia.org" {
-	include newstandard
+	include standard
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
