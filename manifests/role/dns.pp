@@ -45,6 +45,8 @@ class role::dns::recursor {
 			realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
 		"::dns::recursor":
 			require => Class["lvs::realserver"],
-			listen_addresses => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
+			listen_addresses => [ $::ipaddress, $::ipaddress6_eth0, $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site] ];
 	}
+	
+	::dns::recursor::monitor { [ $::ipaddress, $::ipaddress6_eth0] }
 }
