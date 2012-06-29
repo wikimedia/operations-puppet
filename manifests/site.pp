@@ -709,8 +709,11 @@ node "dobson.wikimedia.org" {
 		ntp::server,
 		dns::recursor::statistics
 
+	include network::constants
+
 	class { "dns::recursor":
-		listen_addresses => "208.80.152.131"
+		listen_addresses => "208.80.152.131",
+		allow_from => $network::constants::all_networks
 	}
 	dns::recursor::monitor { "208.80.152.131": }
 
@@ -1529,7 +1532,13 @@ node "mchenry.wikimedia.org" {
 		groups::wikidev,
 		accounts::jdavis
 
-	class { "dns::recursor": listen_addresses => ["208.80.152.132"] }
+	include network::constants
+
+	class { "dns::recursor":
+		listen_addresses => ["208.80.152.132"],
+		allow_from => $network::constants::all_networks
+	}
+
 	dns::recursor::monitor { "208.80.152.132": }
 }
 
@@ -1700,8 +1709,14 @@ node "nescio.esams.wikimedia.org" {
 		soa_name => "ns2.wikimedia.org",
 		master => $dns_auth_master
 	}
+
+	include network::constants
 	
-	class { "dns::recursor": listen_addresses => "91.198.174.6" }
+	class { "dns::recursor":
+		listen_addresses => "91.198.174.6",
+		allow_from => $network::constants::all_networks
+	}
+
 	dns::recursor::monitor { "91.198.174.6": }
 
 }
