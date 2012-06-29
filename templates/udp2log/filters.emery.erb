@@ -27,7 +27,7 @@ pipe 100 /usr/bin/udp-filter -f -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m 
 pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /var/log/squid/teahouse.log
 
 # Arabic Wikipedia Banner Pages - Siko Bouterse <sbouterse@wikimedia.org>, Haitham Shammaa <hshammaa@wikimedia.org>
-pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D8%A8%D9%88%D8%A7%D8%A8%D8%A9_%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9'
+pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D8%A8%D9%88%D8%A7%D8%A8%D8%A9_%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9' >> /var/log/squid/arabic-banner.log
 
 
 
