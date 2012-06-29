@@ -3,14 +3,14 @@ class gerrit::database-server {
 	include gerrit::gerrit_config
 
 	## mysql server package and service are currently being handled by the openstack server
-	#package { "mysql-server":
-	#	ensure => latest;
-	#}
-	#
-	#service { "mysql":
-	#	enable => true,
-	#	ensure => running;
-	#}
+	package { "mysql-server":
+		ensure => latest;
+	}
+
+	service { "mysql":
+		enable => true,
+		ensure => running;
+	}
 
 	exec {
 		'create_gerrit_db_user':
