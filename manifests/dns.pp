@@ -172,7 +172,7 @@ class dns::recursor($listen_addresses=[$::ipaddress]) {
 	service { pdns-recursor:
 		require => [ Package[pdns-recursor], File["/etc/powerdns/recursor.conf"] ],
 		subscribe => File["/etc/powerdns/recursor.conf"],
-		name => "pdns_recursor",
+		pattern => "pdns_recursor",
 		hasstatus => false,
 		ensure => running;
 	}
