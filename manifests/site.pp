@@ -476,7 +476,8 @@ node "calcium.wikimedia.org" {
 }
 
 node "chromium.wikimedia.org" {
-	include standard
+	include standard,
+			role::dns::recursor
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
