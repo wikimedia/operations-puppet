@@ -3,14 +3,14 @@ class gerrit::database-server {
 	include gerrit::gerrit_config
 
 	## mysql server package and service are currently being handled by the openstack server
-	#package { "mysql-server":
-	#	ensure => latest;
-	#}
-	#
-	#service { "mysql":
-	#	enable => true,
-	#	ensure => running;
-	#}
+	package { "mysql-server":
+		ensure => latest;
+	}
+
+	service { "mysql":
+		enable => true,
+		ensure => running;
+	}
 
 	exec {
 		'create_gerrit_db_user':
@@ -77,7 +77,7 @@ class gerrit::jetty {
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0755,
-			require => Package["gerrit"];
+			require => [Package["gerrit"], Systemuser["gerrit2"]];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
@@ -199,7 +199,9 @@ class gerrit::proxy {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	apache_module { ssl: name => "ssl" }
+	if $realm == 'production' {
+		apache_module { ssl: name => "ssl" }
+	}
 }
 
 class gerrit::gitweb {
@@ -264,6 +266,8 @@ class gerrit::ircbot {
 }
 
 class gerrit::account {
+
+	systemuser { gerrit2: name => 'gerrit2' }
 
 	ssh_authorized_key { gerrit2:
 		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
