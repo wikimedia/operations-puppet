@@ -1,3 +1,5 @@
+# role/dns.pp
+
 class role::dns::ldap {
 	if $site == "pmtpa" {
 		interface_ip { "role::dns::ldap": interface => "eth0", address => "208.80.152.33" }
@@ -30,5 +32,15 @@ class role::dns::ldap {
 			ldap_user_dn => $openstack::nova_config::nova_ldap_user_dn,
 			ldap_user_pass => $openstack::nova_config::nova_ldap_user_pass
 		}
+	}
+}
+
+class role::dns::recursor {
+	system_role { "role::dns::recursor": description => "Recursive DNS server" }
+	
+	include lvs::configuration
+
+	class { "dns::recursor":
+		listen_address => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site]
 	}
 }
