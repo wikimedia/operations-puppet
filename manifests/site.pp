@@ -714,7 +714,7 @@ node "dobson.wikimedia.org" {
 	include network::constants
 
 	class { "dns::recursor":
-		listen_addresses => "208.80.152.131",
+		listen_addresses => [ "208.80.152.131" ],
 		allow_from => $network::constants::all_networks
 	}
 	dns::recursor::monitor { "208.80.152.131": }
@@ -1715,7 +1715,7 @@ node "nescio.esams.wikimedia.org" {
 	include network::constants
 	
 	class { "dns::recursor":
-		listen_addresses => "91.198.174.6",
+		listen_addresses => [ "91.198.174.6" ],
 		allow_from => $network::constants::all_networks
 	}
 
