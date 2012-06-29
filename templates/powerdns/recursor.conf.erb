@@ -1,6 +1,25 @@
 # recursor.conf
 # This file is managed by puppet - don't edit it locally!
 
+<%
+	def flatten_ips(ips)
+		result = []
+
+		if ips.is_a?(Hash) then
+			ips.values.each do |v|
+				result += flatten_ips(v)
+			end
+		elsif ips.is_a?(Array) then
+			ips.each do |v|
+				result += flatten_ips(v)
+			end
+		else
+			result << ips
+		end
+
+		return result
+	end
+-%>
 #################################
 # aaaa-additional-processing	turn on to do AAAA additional processing (slow)
 #
@@ -72,7 +91,7 @@ forward-zones= wmnet=208.80.152.130;208.80.152.142;91.198.174.4, 10.in-addr.arpa
 #################################
 # local-address	IP addresses to listen on, separated by spaces or commas
 #
-local-address=<%= listen_address %>
+local-address=<%= flatten_ips(listen_addresses).sort.join(" ") %>
 
 #################################
 # local-port	port to listen on

@@ -148,10 +148,10 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 
 # Class: Dns::Recursor
 # Parameters:
-# - $listen_address:
-#		Address the DNS recursor should listen on for queries
-#		(default: $::ipaddress)
-class dns::recursor($listen_address=$::ipaddress) {
+# - $listen_addresses:
+#		Addresses the DNS recursor should listen on for queries
+#		(default: [$::ipaddress])
+class dns::recursor($listen_addresses=[$::ipaddress]) {
 	package { pdns-recursor:
 		ensure => latest;
 	}
