@@ -43,7 +43,7 @@ class role::dns::recursor {
 	class {
 		"lvs::realserver":
 			realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
-		"dns::recursor":
+		"::dns::recursor":
 			require => Class["lvs::realserver"],
 			listen_addresses => $lvs::configuration::lvs_service_ips[$::realm]['dns_rec'][$::site];
 	}
