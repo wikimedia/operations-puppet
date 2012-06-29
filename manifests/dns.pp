@@ -151,7 +151,9 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 # - $listen_addresses:
 #		Addresses the DNS recursor should listen on for queries
 #		(default: [$::ipaddress])
-class dns::recursor($listen_addresses=[$::ipaddress]) {
+# - $allow_from:
+#		Prefixes from which to allow recursive DNS queries
+class dns::recursor($listen_addresses=[$::ipaddress], $allow_from=[]) {
 	package { pdns-recursor:
 		ensure => latest;
 	}
