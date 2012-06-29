@@ -497,7 +497,7 @@ class base::environment {
 					' /root/.bashrc",
 				onlyif => "grep -q '^#alias ll' /root/.bashrc"
 			}
-		}
+		} # /production
 		'labs': {
 			file {
 				"/etc/bash.bashrc":
@@ -511,8 +511,10 @@ class base::environment {
 					group => root,
 					mode => 0644;
 			}
-		}
+		} # /labs
 	}
+
+	### Settings commons to all realms
 
 	file { "/etc/wikimedia-realm":
 		owner => root,
