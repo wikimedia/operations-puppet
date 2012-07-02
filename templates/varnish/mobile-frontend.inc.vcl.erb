@@ -81,9 +81,9 @@ acl carrier_orange_tunisia {
 }
 
 acl carrier_orange_niger {
-	//"41.203.157.1";
-	//"41.203.157.2";
-	//"41.203.159.243";
+	"41.203.157.1";
+	"41.203.157.2";
+	"41.203.159.243";
 }
 
 acl carrier_orange_cameroon {
@@ -106,6 +106,7 @@ sub tag_carrier {
 
 	/* For wiki zero project - tags partnered carriers */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.X-Subdomain = "ZERO";
 		if (client.ip ~ wmf_office) {
 			set req.http.X-Carrier = "wikimedia";
 		} else if (client.ip ~ carrier_digi) {
@@ -122,6 +123,7 @@ sub tag_carrier {
 			}
 		}
 	} else {
+		set req.http.X-Subdomain = "M";
 		if ( client.ip ~  carrier_orange_ivory_coast ) {
 			set req.http.X-Carrier = "Orange Ivory Coast";
 		} else if (client.ip ~ carrier_saudi_telecom) {
