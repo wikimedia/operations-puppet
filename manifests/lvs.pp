@@ -347,9 +347,10 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'apaches' => undef,
-			'rendering' => undef,
-			'api' => undef,
+			'apaches' => "10.4.0.254",
+			'rendering' => "10.4.0.252",
+			'api' => "10.4.0.253",
+			'bits' => "10.4.0.252",
 			'search_pool1' => undef,
 			'search_pool2' => undef,
 			'search_pool3' => undef,
