@@ -858,14 +858,9 @@ node "formey.wikimedia.org" {
 	$ssh_x11_forwarding = "no"
 	$gerrit_slave = "true"
 	$gerrit_no_apache = "true"
-	include standard,
+	include role::gerrit::noapache,
 		svn::server,
-		ldap::client::wmf-cluster,
-		backup::client,
-		gerrit::proxy,
-		gerrit::jetty,
-		gerrit::gitweb,
-		gerrit::ircbot
+		backup::client
 }
 
 
@@ -1505,17 +1500,12 @@ node "manganese.wikimedia.org" {
 			'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
 	sudo_user { [ "demon", "robla", "reedy" ]: privileges => $sudo_privs }
 
-	$cluster = "misc"
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-	include standard,
-		ldap::client::wmf-cluster,
-		backup::client,
-		gerrit::proxy,
-		gerrit::jetty,
-		gerrit::gitweb,
-		gerrit::ircbot
+
+	include role::gerrit,
+		backup::client
 }
 
 node "mchenry.wikimedia.org" {
