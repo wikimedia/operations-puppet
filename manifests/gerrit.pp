@@ -1,16 +1,47 @@
+# manifests/gerrit.pp
+# Manifest to setup a Gerrit instance
+
+class gerrit {
+
+	class common {
+		include standard,
+			ldap::client::wmf-cluster,
+			gerrit::jetty,
+			gerrit::gitweb,
+			gerrit::crons
+	}
+
+	define instance(
+		$no_apache=false,
+		$apache_ssl=false,
+		$create_account=false,
+		$ircbot=false,
+		$self_db=false,
+		$slave=false,
+	) {
+		include gerrit::common
+		include gerrit::gerrit_config
+		class {'gerrit::proxy':
+			no_apache => $no_apache,
+			apache_ssl => $apache_ssl
+		}
+
+		if $ircbot { include gerrit::ircbot }
+		if $create_account { include gerrit::account }
+		if $self_db { include gerrit::database-server }
+	}
+
+}
+
+# Setup a database server and a Gerrit database.
+# XXX: should not be used on production
 class gerrit::database-server {
+	if $::realm == 'production' {
+		fail( "gerrit::database-server must not be used on production realm" )
+	}
 
-	include gerrit::gerrit_config
-
-	## mysql server package and service are currently being handled by the openstack server
-	#package { "mysql-server":
-	#	ensure => latest;
-	#}
-	#
-	#service { "mysql":
-	#	enable => true,
-	#	ensure => running;
-	#}
+	include gerrit::gerrit_config,
+		role::labs-mysql-server
 
 	exec {
 		'create_gerrit_db_user':
@@ -30,16 +61,16 @@ class gerrit::database-server {
 			owner => root,
 			group => root,
 			mode => 0640;
-		"/etc/gerrit2/gerrit-user.sql": 
+		"/etc/gerrit2/gerrit-user.sql":
 			content => template("gerrit/gerrit-user.sql.erb"),
-			owner => root, 
+			owner => root,
 			group => root,
 			mode => 0640,
 			require => File["/etc/gerrit2"];
-		"/etc/gerrit2/gerrit-user.cnf": 
+		"/etc/gerrit2/gerrit-user.cnf":
 			content => template("gerrit/gerrit-user.cnf.erb"),
-			owner => root, 
-			group => root, 
+			owner => root,
+			group => root,
 			mode => 0640,
 			require => File["/etc/gerrit2"];
 	}
@@ -179,9 +210,9 @@ class gerrit::jetty {
 
 }
 
-class gerrit::proxy {
+class gerrit::proxy( $no_apache = true, $apache_ssl = false ) {
 
-	if !$gerrit_no_apache {
+	if !$no_apache {
 		require webserver::apache
 		apache_site { 000_default: name => "000-default", ensure => absent }
 	}
@@ -199,7 +230,9 @@ class gerrit::proxy {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	apache_module { ssl: name => "ssl" }
+	if $apache_ssl {
+		apache_module { ssl: name => "ssl" }
+	}
 }
 
 class gerrit::gitweb {
@@ -263,6 +296,7 @@ class gerrit::ircbot {
 	}
 }
 
+# A `gerrit2` account for production usage
 class gerrit::account {
 
 	ssh_authorized_key { gerrit2:

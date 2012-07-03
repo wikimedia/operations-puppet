@@ -710,3 +710,20 @@ class generic::mysql::server(
 	}
 }
 
+class generic::mysql::root {
+
+	# Set the mysql password whenever it is not set
+	exec { "initialize-mysql-root-password":
+		unless => "mysqladmin -uroot -p${mysql_root_password} status",
+		command => "mysqladmin -uroot password $mysql_password",
+		require => Service["mysqld"],
+	}
+
+	# Update the related file
+	file { "/root/.my.cnf":
+		owner => root,
+		group => root,
+		mode => 0400,
+		content => template( "mysql/root.my.cnf/erb" );
+	}
+}
