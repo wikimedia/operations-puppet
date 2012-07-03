@@ -1,5 +1,5 @@
 [database]
-	username = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_user') %>
+	username = <%= scope.lookupvar('gerrit::instance::dbuser') %>
 	password = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_pass') %>
 
 [ldap]
