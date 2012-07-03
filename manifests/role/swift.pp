@@ -200,7 +200,7 @@ class role::swift {
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "10.4.0.167:11211", "10.4.0.175:11211" ],
 				super_admin_key => "notsoseekritkey",
-				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
+				rewrite_account => "AUTH_6cd395ff-467c-45af-a720-eb369a40062e",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumbnail",
 				rewrite_password => "userpassword",
