@@ -104,14 +104,24 @@ class nfs::apache::labs {
 			ensure => directory;
 		}
 
-		mount {
-			"/usr/local/apache":
-				device => 'deployment-nfs-memc:/mnt/export/apache',
-				fstype => 'nfs',
-				name   => '/usr/local/apache',
-				options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
-				require => File['/usr/local/apache'],
-				ensure => mounted;
+		# Select the NFS device per project
+		$nfs_device = $::instanceproject ? {
+			deployment-prep => 'deployment-nfs-memc:/mnt/export/apache',
+
+			# No mount by default
+			default         => undef
+		}
+
+		if( $nfs_device ) {
+			mount {
+				"/usr/local/apache":
+					device => $nfs_device,
+					fstype => 'nfs',
+					name   => '/usr/local/apache',
+					options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
+					require => File['/usr/local/apache'],
+					ensure => mounted;
+			}
 		}
 	}
 }
