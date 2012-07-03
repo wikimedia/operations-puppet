@@ -325,7 +325,7 @@ class base::remote-syslog {
 			owner => root,
 			group => root,
 			mode => 0444,
-			content => "*.info;mail.none;authpriv.none;cron.none	@syslog.${::site}.wmnet\n",
+			content => "*.info;mail.none;authpriv.none;cron.none	@${::syslog_server}\n",
 			ensure => present;
 		}
 
