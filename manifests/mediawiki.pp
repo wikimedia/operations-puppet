@@ -1,7 +1,7 @@
 # mediawiki.pp
 
 class mediawiki::packages {
-	package { 'wikimedia-task-appserver':
+	package { [ 'wikimedia-task-appserver', 'clamav' ]:
 		ensure => latest;
 	}
 }
