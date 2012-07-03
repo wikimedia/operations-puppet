@@ -34,15 +34,15 @@
 	heapLimit = 2g
 	<% if has_variable?("gerrit_slave") then %>slave = true<% end %>
 [sshd]
-	listenAddress = *:29418
+	listenAddress = *:<%= scope.lookupvar('gerrit::instance::sshport')
 	threads = 8
 	batchThreads = 2
 [httpd]
-	listenUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_listen_url') %>
+	listenUrl = proxy-https://127.0.0.1:8080/r/
 [cache]
 	directory = cache
 [cache "web_sessions"]
-	maxAge = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_session_timeout') %>
+	maxAge = 90 days
 [gitweb]
 	cgi = /usr/lib/cgi-bin/gitweb.cgi
 	url = /r/gitweb

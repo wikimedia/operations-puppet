@@ -2,7 +2,7 @@ gerrituser = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_username') %>"
 gerritpass = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_pass') %>"
 rtresturl = "https://rt.wikimedia.org/REST/1.0/"
 sshhost = "<%= scope.lookupvar('gerrit::gerrit_config::gerrit_hostname') %>"
-sshport = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_sshport') %>
+sshport = <%= scope.lookupvar('gerrit::instance::sshport') %>
 sshhostkeys = "/var/lib/gerrit2/.ssh/known_hosts"
 sshkey = "/var/lib/gerrit2/.ssh/id_rsa"
 failscore = "-1"

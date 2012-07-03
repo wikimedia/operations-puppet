@@ -1,4 +1,8 @@
 [client]
 user=root
+<% if @mysql_root_password %>
+password=<%= @mysql_root_password %>
+<% else %>
 password=<%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+<% end %>
 socket=/tmp/mysql.sock
