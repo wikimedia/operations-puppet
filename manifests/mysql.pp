@@ -709,4 +709,3 @@ class generic::mysql::server(
 		# your supervision.
 	}
 }
-
