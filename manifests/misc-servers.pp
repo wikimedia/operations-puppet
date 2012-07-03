@@ -295,7 +295,7 @@ class misc::extension-distributor {
 	}
 
 	cron { extdist_updateall:
-		command => "php /home/wikipedia/common/php/extensions/ExtensionDistributor/cron.php 2>&1 >/dev/null",
+		command => "php /home/wikipedia/common/wmf-config/extdist/cron.php 2>&1 >/dev/null",
 		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
 		hour => 3,
 		user => extdist,
