@@ -170,7 +170,7 @@ class role::swift {
 	class pmtpa-labsupgrade inherits role::swift::base {
 		system_role { "role::swift::pmtpa-labsupgrade": description => "Swift pmtpa labs upgradecluster" }
 		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
-		class { "::swift::base": hash_path_suffix => "153afbcc873d20e8", cluster_name => "pmtpa-labsupgrade" }
+		class { "::swift::base": hash_path_suffix => "e67dec345de3173a", cluster_name => "pmtpa-labsupgrade" }
 		class ganglia_reporter inherits role::swift::pmtpa-labsupgrade {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
@@ -198,7 +198,7 @@ class role::swift {
 				bind_port => "80",
 				proxy_address => "http://su-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
-				memcached_servers => [ "127.0.0.1:11211" ],
+				memcached_servers => [ "10.4.0.167:11211", "10.4.0.175:11211" ],
 				super_admin_key => "notsoseekritkey",
 				rewrite_account => "AUTH_00000000-0000-0000-0000-000000000000",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
