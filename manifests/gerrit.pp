@@ -1,47 +1,30 @@
-class gerrit::database-server {
+# manifests/gerrit.pp
+# Manifest to setup a Gerrit instance
 
-	include gerrit::gerrit_config
+class gerrit {
 
-	## mysql server package and service are currently being handled by the openstack server
-	#package { "mysql-server":
-	#	ensure => latest;
-	#}
-	#
-	#service { "mysql":
-	#	enable => true,
-	#	ensure => running;
-	#}
-
-	exec {
-		'create_gerrit_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/gerrit2/gerrit-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/gerrit2/gerrit-user.sql",
-			require => [Package["mysql-client"],File["/etc/gerrit2/gerrit-user.sql", "/etc/gerrit2/gerrit-user.cnf", "/root/.my.cnf"]];
-		'create_gerrit_db':
-			unless => "/usr/bin/mysql -uroot ${gerrit::gerrit_config::gerrit_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${gerrit::gerrit_config::gerrit_db_name}; ALTER DATABASE reviewdb charset=latin1;\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_gerrit_db_user'];
+	class common {
+		include standard,
+			ldap::client::wmf-cluster,
+			gerrit::jetty,
+			gerrit::gitweb,
+			gerrit::crons
 	}
 
-	file {
-		"/etc/gerrit2":
-			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0640;
-		"/etc/gerrit2/gerrit-user.sql": 
-			content => template("gerrit/gerrit-user.sql.erb"),
-			owner => root, 
-			group => root,
-			mode => 0640,
-			require => File["/etc/gerrit2"];
-		"/etc/gerrit2/gerrit-user.cnf": 
-			content => template("gerrit/gerrit-user.cnf.erb"),
-			owner => root, 
-			group => root, 
-			mode => 0640,
-			require => File["/etc/gerrit2"];
+	define instance(
+		$no_apache=false,
+		$apache_ssl=false,
+		$ircbot=false,
+		$slave=false
+	) {
+		include gerrit::common
+		include gerrit::gerrit_config
+		class {'gerrit::proxy':
+			no_apache => $no_apache,
+			apache_ssl => $apache_ssl
+		}
+
+		if $ircbot { include gerrit::ircbot }
 	}
 
 }
@@ -179,9 +162,9 @@ class gerrit::jetty {
 
 }
 
-class gerrit::proxy {
+class gerrit::proxy( $no_apache = true, $apache_ssl = false ) {
 
-	if !$gerrit_no_apache {
+	if !$no_apache {
 		require webserver::apache
 		apache_site { 000_default: name => "000-default", ensure => absent }
 	}
@@ -199,7 +182,9 @@ class gerrit::proxy {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	apache_module { ssl: name => "ssl" }
+	if $apache_ssl {
+		apache_module { ssl: name => "ssl" }
+	}
 }
 
 class gerrit::gitweb {
@@ -263,6 +248,8 @@ class gerrit::ircbot {
 	}
 }
 
+# Setup the `gerrit2` account for gerrit to run as
+# The gerrit package already creates the user itself
 class gerrit::account {
 
 	ssh_authorized_key { gerrit2:
