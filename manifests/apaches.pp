@@ -155,6 +155,9 @@ class apaches::service {
 
 	include sudo::appserver
 
+	# Adjust nice levels
+	require apaches::nice
+
 	# Sync the server when we see apache is not running
 	exec { 'apache-trigger-mw-sync':
 		command => '/bin/true',
@@ -232,3 +235,20 @@ class apaches::syslog {
 	}
 }
 
+class apaches::nice {
+	# Adjust sshd nice level per RT #664.
+	#
+	# Has to be less than apache, and apache has to be nice 0 or less to be 
+	# blue in ganglia. 
+	#
+	# Upstart requires that the job be stopped and started, not just restarted, 
+	# since restarting will use the old configuration.
+	#
+	# In precise this can be replaced with creation of /etc/init/ssh.override
+	exec {
+		"adjust ssh nice":
+			path => "/usr/sbin:/usr/bin:/sbin:/bin",
+			unless => "grep -q ^nice /etc/init/ssh.conf",
+			command => "echo 'nice -10' >> /etc/init/ssh.conf && (stop ssh ; start ssh)";
+	}
+}
