@@ -2,7 +2,7 @@
 # This file is managed by Puppet!
 # vim: ft=sh :
 
-HTTPD="nice -n0 /usr/sbin/apache2 -DPHP5"
+HTTPD="nice -n10 /usr/sbin/apache2 -DPHP5"
 
 # Image scaler detection
 if [ -e /etc/wikimedia-image-scaler ]; then
