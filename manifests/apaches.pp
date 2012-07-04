@@ -84,6 +84,7 @@ extension=wikidiff2.so
 			owner => root,
 			group => root,
 			mode => 0444,
+			notify => Service[apache],
 			source => "puppet:///files/apache/envvars.appserver";
 		"/etc/php5/apache2/php.ini":
 			owner => root,
