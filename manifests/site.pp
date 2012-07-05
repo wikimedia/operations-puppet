@@ -902,18 +902,6 @@ node "gallium.wikimedia.org" {
 	install_certificate{ "star.mediawiki.org": }
 }
 
-node "gilman.wikimedia.org" {
-	# gilman appears dead and useless
-	# it has been put in the decommission queue
-	$cluster = "misc"
-	$gid = 500
-	include	base,
-		ntp::client,
-		nrpe,
-		admins::roots,
-		admins::dctech
-}
-
 node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	# variables used in fundraising exim template
