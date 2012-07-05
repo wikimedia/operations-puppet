@@ -1030,6 +1030,41 @@ host ms-be5 {
 	fixed-address ms-be5.pmtpa.wmnet;
 }
 
+host ms-be6 {
+	hardware ethernet 04:7D:7B:2E:2E:50;
+	fixed-address ms-be6.pmtpa.wmnet;
+}
+
+host ms-be7 {
+	hardware ethernet 04:7D:7B:2E:2D:92;
+	fixed-address ms-be7.pmtpa.wmnet;
+}
+
+host ms-be8 {
+	hardware ethernet 04:7D:7B:2E:2E:56;
+	fixed-address ms-be8.pmtpa.wmnet;
+}
+
+host ms-be9 {
+	hardware ethernet 04:7D:7B:00:00:00;
+	fixed-address ms-be9.pmtpa.wmnet;
+}
+
+host ms-be10 {
+	hardware ethernet 04:7D:7B:00:00:00;
+	fixed-address ms-be10.pmtpa.wmnet;
+}
+
+host ms-be11 {
+	hardware ethernet 04:7D:7B:00:00:00;
+	fixed-address ms-be11.pmtpa.wmnet;
+}
+
+host ms-be12 {
+	hardware ethernet 04:7D:7B:00:00:00;
+	fixed-address ms-be12.pmtpa.wmnet;
+}
+
 host ms-fe1 {
 	hardware ethernet d4:be:d9:af:84:27;
 	fixed-address ms-fe1.pmtpa.wmnet;
