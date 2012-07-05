@@ -34,7 +34,7 @@ class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_
 
 	# Monitoring
 	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
-	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!www.wikipedia.wmflabs.org" }
+	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!nagiostest.beta.wmflabs.org" }
 
 }
 
