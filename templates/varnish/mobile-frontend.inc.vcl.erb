@@ -50,21 +50,21 @@ acl carrier_digi {
 }
 
 acl carrier_orange_ivory_coast {
-	//"41.66.28.94"/32;
-	//"41.66.28.95"/32;
-	//"41.66.28.96"/32;
-	//"41.66.28.72"/32;
-	//"41.66.28.73"/32;
+	"41.66.28.94"/32;
+	"41.66.28.95"/32;
+	"41.66.28.96"/32;
+	"41.66.28.72"/32;
+	"41.66.28.73"/32;
 }
 
 acl carrier_orange_uganda {
-	//"41.202.224.0"/19;
-	//"197.157.0.0"/18;
+	"41.202.224.0"/19;
+	"197.157.0.0"/18;
 }
 
 acl carrier_saudi_telecom {
-	//"212.118.140.0"/22;
-	//"84.235.72.0"/22;
+	"212.118.140.0"/22;
+	"84.235.72.0"/22;
 }
 
 acl carrier_orange_kenya {
@@ -97,7 +97,7 @@ acl carrier_grameenphone_bangladesh {
 }
 
 acl carrier_telenor_montenegro {
-	//"79.143.96.0"/20;
+	"79.143.96.0"/20;
 }
 
 sub tag_carrier {
@@ -119,7 +119,11 @@ sub tag_carrier {
 					set req.http.X-Carrier = "Grameenphone Bangladesh";
 				}
 			}
-		}
+		} else if (client.ip ~ carrier_saudi_telecom) {
+			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Saudi Telecom";
+			}
+		} 
 	} else {
 		set req.http.X-Subdomain = "M";
 		if ( client.ip ~  carrier_orange_ivory_coast ) {
