@@ -48,6 +48,8 @@ $nameservers = $site ? {
 	"eqiad"	=> [ "208.80.154.239", "208.80.152.131" ],
 	default	=> [ "208.80.152.131", "208.80.152.132" ]
 }
+# Allow per-server nameserver prefixes
+$nameservers_prefix = []
 $domain_search = $domain
 
 # TODO: SMTP settings
