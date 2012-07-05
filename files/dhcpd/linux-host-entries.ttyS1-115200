@@ -2720,6 +2720,9 @@ host mw1160 {
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
+
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host nescio {
