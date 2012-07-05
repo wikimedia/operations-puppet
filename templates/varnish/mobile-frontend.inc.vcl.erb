@@ -119,7 +119,7 @@ sub tag_carrier {
 				}
 			}
 		} else if (client.ip ~ carrier_saudi_telecom) {
-			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Saudi Telecom";
 			}
 		}
