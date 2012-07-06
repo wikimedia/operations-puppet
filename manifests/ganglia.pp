@@ -61,6 +61,9 @@ class ganglia {
 		"decommissioned" => {
 			"name"		=> "Decommissioned servers",
 			"ip_oct"	=> "1" },
+		"lvs" => {
+			"name"		=> "LVS loadbalancers",
+			"ip_oct"	=> "2" },
 		"appserver"	=>	{
 			"name"		=> "Application servers",
 			"ip_oct"	=> "11"	},
@@ -247,6 +250,7 @@ class ganglia {
 						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
 						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
 						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
+						"LVS loadbalancers pmtpa" => "lvs1.wikimedia.org lvs2.wikimedia.org",
 						"Miscellaneous" => "spence.wikimedia.org",
 						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
 						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
@@ -258,6 +262,7 @@ class ganglia {
 						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
 						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
 						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
+						"LVS loadbalancers eqiad" => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
 						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
 						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
 						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
@@ -270,6 +275,7 @@ class ganglia {
 						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
 						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
 						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
+						"LVS loadbalancers esams" => "amslvs1.wikimedia.org amslv2.wikimedia.org",
 						"Miscellaneous esams" => "hooft.esams.wikimedia.org"
 					}
 					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
