@@ -2491,19 +2491,19 @@ node "vanadium.wikimedia.org" {
 	system_role { "misc::log-collector": description => "log collector" }
 
 	include standard,
-		groups::wikidev,
+#		groups::wikidev,
 		admins::restricted,
-		accounts::awjrichards,
-		accounts::datasets,
-		accounts::dsc,
-		accounts::diederik,
+#		accounts::awjrichards,
+#		accounts::datasets,
+#		accounts::dsc,
+#		accounts::diederik,
 		misc::squid-logging::multicast-relay,
 		nrpe,
-		geoip
+		geoip,
+		misc::udp2log
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	include misc::udp2log
 
 	# vanadium's udp2log instance
 	# saves logs mainly in /a/squid
