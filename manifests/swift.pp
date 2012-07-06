@@ -29,22 +29,22 @@ class swift::base($hash_path_suffix, $cluster_name) {
 			content => template("swift/etc.swift.conf.erb");
 		"/etc/swift/account.builder":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/account.builder";
+			source => "puppet:///volatile/swift/${cluster_name}/account.builder";
 		"/etc/swift/account.ring.gz":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/account.ring.gz";
+			source => "puppet:///volatile/swift/${cluster_name}/account.ring.gz";
 		"/etc/swift/container.builder":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/container.builder";
+			source => "puppet:///volatile/swift/${cluster_name}/container.builder";
 		"/etc/swift/container.ring.gz":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/container.ring.gz";
+			source => "puppet:///volatile/swift/${cluster_name}/container.ring.gz";
 		"/etc/swift/object.builder":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/object.builder";
+			source => "puppet:///volatile/swift/${cluster_name}/object.builder";
 		"/etc/swift/object.ring.gz":
 			ensure => present,
-			source => "puppet:///files/swift/${cluster_name}/object.ring.gz";
+			source => "puppet:///volatile/swift/${cluster_name}/object.ring.gz";
 	}
 	include ganglia::logtailer
 	file { "/usr/share/ganglia-logtailer/SwiftHTTPLogtailer.py":
