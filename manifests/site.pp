@@ -2496,6 +2496,7 @@ node "vanadium.wikimedia.org" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		accounts::olivneh,
 		misc::squid-logging::multicast-relay,
 		nrpe,
 		geoip
