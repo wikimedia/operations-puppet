@@ -2486,7 +2486,50 @@ node "tridge.wikimedia.org" {
 }
 
 node "vanadium.wikimedia.org" {
-	include newstandard
+	$gid=500
+	system_role { "misc::log-collector": description => "log collector" }
+
+	include standard,
+		groups::wikidev,
+		admins::restricted,
+		accounts::awjrichards,
+		accounts::datasets,
+		accounts::dsc,
+		accounts::diederik,
+		misc::squid-logging::multicast-relay,
+		nrpe,
+		geoip
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
+	include misc::udp2log
+
+	# vanadium's udp2log instance
+	# saves logs mainly in /a/squid
+	misc::udp2log::instance { "oxygen":
+		multicast     => true,
+		# TODO: Move this to /var/log/udp2log
+		log_directory => "/a/squid",
+		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
+		packet_loss_log => "/var/log/udp2log/packet-loss.log",
+	}
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["oxygen"],
+	}
+
+	# udp2log-lucene instance for
+	# lucene search logs.  Don't need
+	# to monitor packet loss here.
+	misc::udp2log::instance { "lucene":
+		port                => "51234",
+		log_directory       => "/a/log/lucene",
+		monitor_packet_loss => false,
+	}
 }
 
 node "virt1000.wikimedia.org" {
