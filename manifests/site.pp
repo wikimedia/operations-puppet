@@ -2491,12 +2491,12 @@ node "vanadium.wikimedia.org" {
 	system_role { "misc::log-collector": description => "log collector" }
 
 	include standard,
-#		groups::wikidev,
+		groups::wikidev,
 		admins::restricted,
-#		accounts::awjrichards,
-#		accounts::datasets,
-#		accounts::dsc,
-#		accounts::diederik,
+		accounts::awjrichards,
+		accounts::datasets,
+		accounts::dsc,
+		accounts::diederik,
 		misc::squid-logging::multicast-relay,
 		nrpe,
 		geoip,
