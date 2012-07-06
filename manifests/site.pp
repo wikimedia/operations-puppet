@@ -2492,11 +2492,11 @@ node "vanadium.wikimedia.org" {
 
 	include standard,
 		groups::wikidev,
-		admins::restricted,
-		accounts::awjrichards,
-		accounts::datasets,
-		accounts::dsc,
-		accounts::diederik,
+#		admins::restricted,
+#		accounts::awjrichards,
+#		accounts::datasets,
+#		accounts::dsc,
+#		accounts::diederik,
 		misc::squid-logging::multicast-relay,
 		nrpe,
 		geoip
