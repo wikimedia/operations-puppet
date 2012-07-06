@@ -3704,6 +3704,8 @@ host transcode1 {
 host vanadium {
 	hardware ethernet 78:2b:cb:08:a4:3b;
 	fixed-address vanadium.eqiad.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host virt1000 {
