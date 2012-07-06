@@ -162,6 +162,9 @@ class misc::statistics::gerrit_stats {
 		ensure => "directory",
 	}
 
+	# gerrit-stats requires this packages
+	package { "python-mysqldb": ensure => "installed" }
+
 	# Clone the gerrit-stats repository
 	# into a subdir of $gerrit_stats_path.
 	# This requires that the $gerrit_stats_user
@@ -171,7 +174,7 @@ class misc::statistics::gerrit_stats {
 		directory => "$gerrit_stats_path/gerrit-stats",
 		origin    => $gerrit_stats_repo_url,
 		owner     => $gerrit_stats_user,
-		require   => User[$gerrit_stats_user],
+		require   => [User[$gerrit_stats_user], Package["python-mysqldb"]],
 		ensure    => "latest",
 	}
 
