@@ -5,3 +5,6 @@
 [ldap]
 	username = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_proxyagent') %>
 	password = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_proxyagent_pass') %>
+
+[auth]
+	registerEmailPrivateKey = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_email_key') %>
