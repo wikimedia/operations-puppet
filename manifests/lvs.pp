@@ -99,7 +99,7 @@ class lvs::configuration {
 
 	$idleconnection_monitor_options = {
 		'timeout-clean-reconnect' => 3,
-	        'max-delay' => 300
+		'max-delay' => 300
 	}
 	$runcommand_monitor_options = {
 		'command' => "/bin/sh",
@@ -491,6 +491,10 @@ class lvs::configuration {
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
+				'DNSQuery' => {
+					'hostnames' => [ 'en.wikipedia.org', 'www.google.com' ],
+					'fail-on-nxdomain' => "no"
+				},
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
