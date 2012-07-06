@@ -2486,7 +2486,7 @@ node "tridge.wikimedia.org" {
 		backup::server
 }
 
-node "vanadium.wikimedia.org" {
+node "vanadium.eqiad.wmnet" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
 
