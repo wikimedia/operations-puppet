@@ -1356,6 +1356,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	if $hostname =~ /^lvs100[2]$/ {
 		$lvs_balancer_ips = [
 			$sip['upload'][$::site],
+			$sip['dns_rec'][$::site],
 		]
 	}
 	if $hostname =~ /^lvs100[5]$/ {
