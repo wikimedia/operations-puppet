@@ -74,6 +74,13 @@ class lvs::configuration {
 	
 	$ipv6_hosts = ["lvs1", "lvs2", "lvs1004", "lvs1005", "amslvs3", "amslvs4"]
 
+	if $::ipaddress6_eth0 {
+		$v6_ip = $::ipaddress6_eth0
+	}
+	else {
+		$v6_ip = "::"
+	}
+
 	$pybal = { 
 		'bgp' => "yes",
 		'bgp-peer-address' => $hostname ? {
@@ -87,7 +94,7 @@ class lvs::configuration {
 			},
 		'bgp-nexthop-ipv4' => $::ipaddress_eth0,
 		# FIXME: make a Puppet function, or fix facter
-		'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_eth0\")).mask(64) | IPAddr.new(\"::\" + scope.lookupvar(\"::ipaddress_eth0\").gsub('.', ':'))).to_s() %>")
+		'bgp-nexthop-ipv6' => inline_template("<%= require 'ipaddr'; (IPAddr.new(v6_ip).mask(64) | IPAddr.new(\"::\" + scope.lookupvar(\"::ipaddress_eth0\").gsub('.', ':'))).to_s() %>")
 	}
 
 	$idleconnection_monitor_options = {
