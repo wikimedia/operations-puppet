@@ -2503,6 +2503,7 @@ node "vanadium.eqiad.wmnet" {
 		misc::udp2log
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "olivneh": privileges => ['ALL = NOPASSWD: ALL'] }
 
 
 	# vanadium's udp2log instance
