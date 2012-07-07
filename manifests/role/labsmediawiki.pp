@@ -21,7 +21,7 @@ class role::mediawiki-install::labs {
 		memcached_ip => "127.0.0.1" }
 
 	git::clone { "mediawiki":
-		directory => "/srv/",
+		directory => "/srv/mediawiki",
 		branch => "master",
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
