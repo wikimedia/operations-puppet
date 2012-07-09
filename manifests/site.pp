@@ -623,6 +623,16 @@ node "db40.pmtpa.wmnet" {
 	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
 }
 
+node /pc1[0-9]\.pmtpa\.wmnet/ {
+	include db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
+
+	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
+}
+
 node /^db4[2]\.pmtpa\.wmnet$/ {
 	include db::core,
 		mysql::packages

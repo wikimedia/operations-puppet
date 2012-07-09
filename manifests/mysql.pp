@@ -446,6 +446,15 @@ class mysql {
 		}
 	}
 
+	class pc::conf inherits mysql {
+		file { "/etc/my.cnf":
+			content => template("mysql/paresercache.my.cnf.erb")
+		}
+		file { "/etc/mysql/my.cnf":
+			source => "puppet:///files/mysql/empty-my.cnf"
+		}
+	}
+
 	class mysqlpath {
 		file { "/etc/profile.d/mysqlpath.sh":
 			owner => root,
