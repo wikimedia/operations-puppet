@@ -1048,22 +1048,22 @@ host ms-be8 {
 }
 
 host ms-be9 {
-	hardware ethernet 04:7D:7B:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2D:E8;
 	fixed-address ms-be9.pmtpa.wmnet;
 }
 
 host ms-be10 {
-	hardware ethernet 04:7D:7B:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2E:B6;
 	fixed-address ms-be10.pmtpa.wmnet;
 }
 
 host ms-be11 {
-	hardware ethernet 04:7D:7B:00:00:00;
+	hardware ethernet E8:9A:8F:74:48:78;
 	fixed-address ms-be11.pmtpa.wmnet;
 }
 
 host ms-be12 {
-	hardware ethernet 04:7D:7B:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2E:7A;
 	fixed-address ms-be12.pmtpa.wmnet;
 }
 
