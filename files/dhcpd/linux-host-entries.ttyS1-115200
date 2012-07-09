@@ -737,6 +737,8 @@ host hooper {
 host hydrogen {
 	hardware ethernet 78:2b:cb:09:0c:21;
 	fixed-address hydrogen.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iron {
