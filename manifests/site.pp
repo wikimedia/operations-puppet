@@ -472,7 +472,7 @@ node "calcium.wikimedia.org" {
 	include newstandard
 }
 
-node "chromium.wikimedia.org" {
+node /^chromium|helium)\.wikimedia\.org$/ {
 	include standard,
 			role::dns::recursor
 
@@ -958,10 +958,6 @@ node "gurvin.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		certificates::wmf_ca
-}
-
-node "helium.wikimedia.org" {
-	include newstandard
 }
 
 node "hooft.esams.wikimedia.org" {
