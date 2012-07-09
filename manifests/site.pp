@@ -472,7 +472,7 @@ node "calcium.wikimedia.org" {
 	include newstandard
 }
 
-node /^(chromium|helium)\.wikimedia\.org$/ {
+node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 	include standard,
 			role::dns::recursor
 
@@ -970,10 +970,6 @@ node "hooft.esams.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted
-}
-
-node "hydrogen.wikimedia.org" {
-	include newstandard
 }
 
 node "manutius.wikimedia.org" {
