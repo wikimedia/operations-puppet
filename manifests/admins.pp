@@ -1967,6 +1967,7 @@ class accounts {
 		}
 	}
 
+
 	class olivneh inherits baseaccount {
 		$username = "olivneh"
 		$realname = "Ori Livneh"
@@ -1983,6 +1984,25 @@ class accounts {
 			}
 		}
 	}
+
+
+	class mwalker inherits baseaccount {
+		$username = "mwalker"
+		$realname = "Matt Walker"
+		$uid = 605
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"mwalker@mwalker-t420s":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDs1a/cRZMNw1DerltODiEFOWoCM1YJpPcdYDFnEIEvl9dz3X68nBnfHMfAWbQcOxD3f8tCTjrQ4i4M079kawGkm+jEc7priWm5Ww6TFeyA7B2jTuPqRHWfJ6AsPvXnrvJF/RMuG6NwdOluunipbb0sbHpPreBMYwu6KifvEnQNLYDp6Y0c31PYC22Nr7jZTcCkr7P72t0yhxpuDUV4p7vhEsTKAI59wHSdM17ViJRU4DwDIs43ZBKulCwjuiwJ47oc903c4iVeA37D2jV6nrNbao4huJRyrApfpTYm6RwCnKkOOCBNSB4MndZikSpYXGjNgUHWJxj7vquumje4AsGb";
+			}
+		}
+	}
+
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -2076,18 +2096,19 @@ class admins::restricted {
 	include accounts::dab
 	include accounts::daniel
 	include accounts::dartar
+	include accounts::diederik
 	include accounts::dsc
 	include accounts::erik
 	include accounts::ezachte
 	include accounts::jamesofur
+	include accounts::khorn
+	include accounts::mwalker
+	include accounts::olivneh
 	include accounts::otto
 	include accounts::pgehres
 	include accounts::rcole # access revoked
 	include accounts::rainman
 	include accounts::tparscal
-	include accounts::khorn
-	include accounts::olivneh
-	include accounts::diederik
 }
 
 class admins::analinterns {

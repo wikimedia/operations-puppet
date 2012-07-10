@@ -923,6 +923,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		admins::dctech,
 		accounts::khorn,
 		accounts::mhernandez,
+		accounts::mwalker,
 		accounts::pgehres,
 		accounts::rfaulk,
 		accounts::zexley,
