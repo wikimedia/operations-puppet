@@ -17,7 +17,7 @@ class icinga::monitor {
 #		icinga::monitor::files::nagios-plugins,
 		icinga::monitor::snmp,
 		icinga::monitor::checkpaging,
-		icinga::monitor::service,
+#		icinga::monitor::service,
 		icinga::monitor::jobqueue,
 		icinga::monitor::snmp,
 #		icinga::monitor::naggen,
