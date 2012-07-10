@@ -742,21 +742,37 @@ node "ekrem.wikimedia.org" {
 		misc::mediawiki-irc-relay
 }
 
-node "emery.wikimedia.org" {
-	$gid=500
+
+
+# base node definition from which logging nodes inherit.
+# Note that there is no real node named "base_logging_node".
+node "base_logging_node" {
 	system_role { "misc::log-collector": description => "log collector" }
-	include standard,
+	
+	# include analytics in nagios_contact_group.
+	# This is used by class base::monitoring::host for
+	# notifications when a host or important service goes down.
+	$nagios_contact_group = "admins,analytics"
+	
+	# default gid
+	$gid=500
+	
+	include 
+		standard,
 		groups::wikidev,
-		admins::mortals,
 		admins::restricted,
 		nrpe,
-		generic::sysctl::high-bandwidth-rsync,
-		misc::udp2log::utilities,
 		geoip
+}
 
+node "emery.wikimedia.org" inherits "base_logging_node" {
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	include misc::udp2log
+	include
+		admins::mortals,
+		generic::sysctl::high-bandwidth-rsync,
+		misc::udp2log::utilities,
+		misc::udp2log
 
 	# emery's udp2log instance
 	# saves logs mainly in /var/log/squid.
@@ -780,7 +796,69 @@ node "emery.wikimedia.org" {
 		# so packet loss monitoring is disabled.
 		monitor_packet_loss => false,
 	}
+}
 
+node "locke.wikimedia.org" inherits "base_logging_node" {
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+	
+	include
+		accounts::dsc,
+		accounts::datasets,
+		misc::udp2log::utilities,
+		misc::udp2log
+
+	# locke's udp2log instance stores logs 
+	# mainly in /a/squid.
+	# TODO: Move log_directory to /var/log/udp2log
+	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["locke"],
+	}
+}
+
+
+node "oxygen.wikimedia.org"  inherits "base_logging_node" {
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+	
+	include
+		accounts::awjrichards,
+		accounts::datasets,
+		accounts::dsc,
+		accounts::diederik,
+		misc::squid-logging::multicast-relay,
+		misc::udp2log
+
+	# oxygen's udp2log instance
+	# saves logs mainly in /a/squid
+	misc::udp2log::instance { "oxygen":
+		multicast     => true,
+		# TODO: Move this to /var/log/udp2log
+		log_directory => "/a/squid",
+		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
+		packet_loss_log => "/var/log/udp2log/packet-loss.log",
+	}
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["oxygen"],
+	}
+
+	# udp2log-lucene instance for
+	# lucene search logs.  Don't need
+	# to monitor packet loss here.
+	misc::udp2log::instance { "lucene":
+		port                => "51234",
+		log_directory       => "/a/log/lucene",
+		monitor_packet_loss => false,
+	}
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -1206,37 +1284,6 @@ node "linne.wikimedia.org" {
 			soa_name => "ns1.wikimedia.org",
 			master => $dns_auth_master
 		}
-}
-# Why would Locke be getting apaches::files for the sudoers... that is just silly...
-# removing apaches::files.
-node "locke.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
-	include standard,
-		groups::wikidev,
-		admins::restricted,
-		accounts::dsc,
-		accounts::datasets,
-		nrpe,
-		misc::udp2log::utilities,
-		geoip
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
-
-	# locke's udp2log instance stores logs 
-	# mainly in /a/squid.
-	# TODO: Move log_directory to /var/log/udp2log
-	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid/archive",
-		require => Misc::Udp2log::Instance["locke"],
-	}
 }
 
 node "lomaria.pmtpa.wmnet" {
@@ -1800,52 +1847,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 	sudo_user { [ "john" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
-node "oxygen.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
 
-	include standard,
-		groups::wikidev,
-		admins::restricted,
-		accounts::awjrichards,
-		accounts::datasets,
-		accounts::dsc,
-		accounts::diederik,
-		misc::squid-logging::multicast-relay,
-		nrpe,
-		geoip
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
-
-	# oxygen's udp2log instance
-	# saves logs mainly in /a/squid
-	misc::udp2log::instance { "oxygen":
-		multicast     => true,
-		# TODO: Move this to /var/log/udp2log
-		log_directory => "/a/squid",
-		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
-		packet_loss_log => "/var/log/udp2log/packet-loss.log",
-	}
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid/archive",
-		require => Misc::Udp2log::Instance["oxygen"],
-	}
-
-	# udp2log-lucene instance for
-	# lucene search logs.  Don't need
-	# to monitor packet loss here.
-	misc::udp2log::instance { "lucene":
-		port                => "51234",
-		log_directory       => "/a/log/lucene",
-		monitor_packet_loss => false,
-	}
-}
 
 node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
