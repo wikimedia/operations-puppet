@@ -1623,7 +1623,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 		media-storage::htcp-purger
 }
 
-node /^ms-fe[1-3]\.pmtpa\.wmnet$/ {
+node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^ms-fe[12]$/ {
 		$ganglia_aggregator = "true"
 	}
