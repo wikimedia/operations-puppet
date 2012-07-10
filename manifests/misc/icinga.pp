@@ -25,7 +25,7 @@ class icinga::monitor {
 		nrpe::new,
 		icinga::monitor::files::misc
 
-	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "gammu", "nagios" ] }
+	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 }
 
 # Nagios/icinga configuration files
