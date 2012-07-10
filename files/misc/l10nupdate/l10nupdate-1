@@ -54,33 +54,25 @@ do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 
-	# Copy the cache directory to /var/lib so we can manipulate it there,
-	# then copy it back to /home
-	rm -rf /var/lib/l10nupdate/cache-"$mwVerNum"
-	cp --recursive /home/wikipedia/common/php-"$mwVerNum"/cache/l10n/ /var/lib/l10nupdate/cache-"$mwVerNum"
+	if [ ! -d /var/lib/l10nupdate/cache-"$mwVerNum" ]; then
+		mkdir /var/lib/l10nupdate/cache-"$mwVerNum"
+	fi
 
 	echo "Running updates for $mwVerNum (on $mwDbName)"
 	# --svnurl below is a misnomer, obviously, but LU will take it just fine
 	# Eventually LU should also be changed to be able to use git, for 3rd party usage
 	if /usr/local/bin/mwscript extensions/LocalisationUpdate/update.php \
 		  --wiki="$mwDbName" \
-		  --outdir=/var/lib/l10nupdate/cache-"$mwVerNum" \
 		  --svnurl=$GITDIR \
 		  --all \
 		  --quiet
 	then
-		# Copy the LU files back to /home so the LC rebuild below picks up the changes
-		# Using --force because the l10nupdate user definitely owns the directory, but may not own all of the files in it
-		echo "Completed. Copying LU files back to /home"
-		cp --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10nupdate-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
 		echo "Rebuilding localization cache"
-		# Now rebuild the LC
 		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 		# Copy the LC files
-		echo "Completed. Copying LC files back to /home"
+		echo "Completed. Copying LC files to /home"
 		cp --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
-		rm -rf /var/lib/l10nupdate/cache-"$mwVerNum"
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		echo "Clearing message blobs"

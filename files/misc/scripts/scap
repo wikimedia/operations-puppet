@@ -54,7 +54,7 @@
 		sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
 
 		echo -n "Updating LocalisationCache for $mwVerNum... "
-		$BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
+		sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 			--quiet --outdir=$SOURCE/php-$mwVerNum/cache/l10n
 		echo "done"
 	done
