@@ -8,19 +8,9 @@
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl",
+			"php5-mysql", "php5-xmlrpc", "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl"]:
 		ensure => latest;
-	}
-	if ( $lsbdistcodename == "lucid" ) {
-		package { [ "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
-			ensure => latest;
-		}
-	}
-
-	if ( $lsbdistcodename == "precise" ) {
-		package { [ "php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
-			ensure => latest;
-		}
 	}
 
 	# Explicitly require the Wikimedia version of some packages
@@ -28,7 +18,7 @@ class apaches::packages {
 }
 
 class apaches::cron {
-        cron {
+	cron {
 		synclocalisation:
 			ensure => absent;
 		cleanupipc:
@@ -127,29 +117,10 @@ extension=wikidiff2.so
 			group => root, 
 			content => $site;
 	}
-
-	# local run of sync-apache for initial deploy
-	exec { 
-		'local_sync_apache':
-			unless => '/usr/bin/test -d "/usr/local/apache/conf" ',
-			command => "/usr/bin/rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf";
-		'local_sync_common':
-			subscribe => Exec['local_sync_apache'],
-			refreshonly => true,
-			command => "/usr/bin/sync-common";
-		'apache_graceful':
-			subscribe => Exec['local_sync_common'],
-			refreshonly => true,
-			command => "/usr/sbin/apache2ctl graceful";
-	}	
 }
 
 class apaches::service {
 	include mediawiki::sync
-
-	if( $::realm == 'labs' ) {
-		include nfs::apache::labs
-	}
 
 	# Require apaches::files to be in place
 	require apaches::files
@@ -218,21 +189,20 @@ class apaches::fonts {
 class apaches::syslog {
 	require base::remote-syslog
 
-	file { "/etc/rsyslog.d/40-appserver.conf":
-		require => Package[rsyslog],
-		owner => root,
-		group => root,
-		mode => 0444,
-		source => "puppet:///files/rsyslog/40-appserver.conf",
-		ensure => present;
-	}
-
-	file { "/usr/local/bin/apache-syslog-rotate":
-		owner => root,
-		group => root,
-		mode => 0555,
-		source => "puppet:///files/misc/scripts/apache-syslog-rotate",
-		ensure => present;
+	file { 
+		"/etc/rsyslog.d/40-appserver.conf":
+			require => Package[rsyslog],
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/rsyslog/40-appserver.conf",
+			ensure => present;
+		"/usr/local/bin/apache-syslog-rotate":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/apache-syslog-rotate",
+			ensure => present;
 	}
 }
 
