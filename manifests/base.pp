@@ -419,9 +419,28 @@ class base::motd {
 	}
 }
 
-class base::monitoring::host {
-	monitor_host { $hostname: group => $nagios_group }
-	monitor_service { "ssh": description => "SSH", check_command => "check_ssh" }
+
+# == Class base::monitoring::host
+# Sets up base Nagios monitoring for the host.  This includes
+# - ping
+# - ssh
+# - dpkg
+# - disk space
+# - raid
+#
+# Note that this class is probably already included for your node
+# by the class base.  If you want to change the contact_group, set
+# the variable $nagios_contact_group in your node definition.
+# class base will use this variable as the $contact_group argument
+# when it includes this class.
+#
+# == Parameters
+# $contact_group - Nagios contact_group to use for notifications.
+#                  contact groups are defined in contactgroups.cfg.  Default: "admins"
+#
+class base::monitoring::host($contact_group = "admins") {
+	monitor_host { $hostname: group => $nagios_group, contact_group => $contact_group }
+	monitor_service { "ssh": description => "SSH", check_command => "check_ssh", contact_group => $contact_group }
 
 	case $::lsbdistid {
 		Ubuntu: {
@@ -431,8 +450,8 @@ class base::monitoring::host {
 	}
 
 	# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
-	@monitor_service { "disk space": description => "Disk space", check_command => "nrpe_check_disk_6_3", tag => nrpe }
-	@monitor_service { "raid": description => "RAID", check_command => "nrpe_check_raid", tag => nrpe }
+	@monitor_service { "disk space": description => "Disk space", check_command => "nrpe_check_disk_6_3", tag => nrpe, contact_group => $contact_group }
+	@monitor_service { "raid": description => "RAID", check_command => "nrpe_check_raid", tag => nrpe, contact_group => $contact_group }
 }
 
 class base::decommissioned {
@@ -706,6 +725,8 @@ class base {
 		}
 	}
 
+
+
 	include	passwords::root,
 		base::decommissioned,
 		base::grub,
@@ -715,11 +736,20 @@ class base {
 		base::motd,
 		base::vimconfig,
 		base::standard-packages,
-		base::monitoring::host,
 		base::environment,
 		base::platform,
 		base::access::dc-techs,
 		ssh
+
+	# include base::monitor::host.
+	# if $nagios_contact_group is set, then use it
+	# as the monitor host's contact group.
+	class { "base::monitoring::host":
+		contact_group => $nagios_contact_group ? {
+			undef   => "admins",
+			default => $nagios_contact_group,
+		}
+	}
 
 	if $::realm == "labs" {
 		include base::instance-upstarts,
