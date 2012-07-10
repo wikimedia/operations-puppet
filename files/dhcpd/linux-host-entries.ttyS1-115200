@@ -1077,6 +1077,16 @@ host ms-fe2 {
 	fixed-address ms-fe2.pmtpa.wmnet;
 }
 
+host ms-fe3 {
+	hardware ethernet d4:be:d9:ed:09:23;
+	fixed-address ms-fe3.pmtpa.wmnet;
+}
+
+host ms-fe4 {
+	hardware ethernet d4:be:d9:ed:0c:44;
+	fixed-address ms-fe4.pmtpa.wmnet;
+}
+
 host msfe1001 {
 	hardware ethernet 18:03:73:f1:58:82;
 	fixed-address msfe1001.wikimedia.org;
