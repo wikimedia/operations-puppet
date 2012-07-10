@@ -627,7 +627,7 @@ node /pc[1-9]\.pmtpa\.wmnet/ {
 	include db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf,
+		mysql::pc::conf,
 		mysql::packages
 
 	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
