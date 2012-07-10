@@ -1657,6 +1657,17 @@ node /^ms-be[5-9]\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
+node /^ms-be1[0-9]\.pmtpa\.wmnet$/ {
+	# the ms-be hosts with ssds have two more disks
+	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
+		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
+		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
+
+	include role::swift::pmtpa-prod::storage
+
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+}
+
 node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
 	include applicationserver::homeless,
 		applicationserver::jobrunner,
