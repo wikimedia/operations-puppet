@@ -10,16 +10,17 @@ class icinga::monitor {
 
 	include
 
+		icinga::monitor::packages,
 		passwords::nagios::mysql,
 		icinga::monitor::firewall,
-		icinga::monitor::files::configuration,
-		icinga::monitor::files::nagios-plugins,
+#		icinga::monitor::files::configuration,
+#		icinga::monitor::files::nagios-plugins,
 		icinga::monitor::snmp,
 		icinga::monitor::checkpaging,
 		icinga::monitor::service,
 		icinga::monitor::jobqueue,
 		icinga::monitor::snmp,
-		icinga::monitor::naggen,
+#		icinga::monitor::naggen,
 		icinga::monitor::nsca::daemon,
 		mysql,
 		nrpe::new,
