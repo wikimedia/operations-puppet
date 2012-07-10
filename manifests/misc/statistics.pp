@@ -178,8 +178,12 @@ class misc::statistics::gerrit_stats {
 	# run a cron job from the $gerrit_stats_path.
 	# This will create a $gerrit_stats_path/data
 	# directory containing stats about gerrit.
+	# Note: gerrit-stats requires mysql access to 
+	# the gerrit stats database.  This mysql user creds
+	# configured in /home/$gerrit_stats_user/.my.cnf, 
+	# which is not puppetized in order to keep pw private.
 	cron { "gerrit-stats-daily":
-		command => "cd $gerrit_stats_path && /usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
+		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py --dataset $gerrit_stats_path/data --toolkit dygraphs | tee -a $gerrit_stats_path/gerrit-stats.log",
 		user    => $gerrit_stats_user,
 		hour    => '23',
 		minute  => '59',
