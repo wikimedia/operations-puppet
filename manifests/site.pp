@@ -283,6 +283,37 @@ $cluster = "misc"
 # FIXME: check if this is still correct, this was temp for a migration
 $dns_auth_master = "ns1.wikimedia.org"
 
+
+# base node definition from which logging nodes (emery, locke, oxygen, etc) 
+# inherit. Note that there is no real node named "base_analytics_logging_node".
+node "base_analytics_logging_node" {
+	system_role { "misc::log-collector": description => "log collector" }
+
+	# include analytics in nagios_contact_group.
+	# This is used by class base::monitoring::host for
+	# notifications when a host or important service goes down.
+	# NOTE:  This cannot be a fully qualified var
+	# (i.e. $base::nagios_contact_group) because puppet does not
+	# allow setting variables in other namespaces.  I could
+	# parameterize class base AND class stanrdard and pass
+	# the var down the chain, but that seems like too much 
+	# modification for just this.  Instead this overrides
+	# the default contact_group of 'admins' set in class base.
+	$nagios_contact_group = "admins,analytics"
+
+	# default gid
+	$gid=500
+
+	include 
+		standard,
+		groups::wikidev,
+		admins::restricted,
+		nrpe,
+		geoip
+}
+
+
+
 # Node definitions (alphabetic order)
 
 node "alsted.wikimedia.org" {
@@ -742,21 +773,14 @@ node "ekrem.wikimedia.org" {
 		misc::mediawiki-irc-relay
 }
 
-node "emery.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
-	include standard,
-		groups::wikidev,
+node "emery.wikimedia.org" inherits "base_logging_node" {
+	include
 		admins::mortals,
-		admins::restricted,
-		nrpe,
 		generic::sysctl::high-bandwidth-rsync,
 		misc::udp2log::utilities,
-		geoip
+		misc::udp2log
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
 
 	# emery's udp2log instance
 	# saves logs mainly in /var/log/squid.
@@ -780,7 +804,6 @@ node "emery.wikimedia.org" {
 		# so packet loss monitoring is disabled.
 		monitor_packet_loss => false,
 	}
-
 }
 
 node "erzurumi.pmtpa.wmnet" {
@@ -968,6 +991,29 @@ node "hooft.esams.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted
+}
+
+node "locke.wikimedia.org" inherits "base_logging_node" {
+	include
+		accounts::dsc,
+		accounts::datasets,
+		misc::udp2log::utilities,
+		misc::udp2log
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
+	# locke's udp2log instance stores logs
+	# mainly in /a/squid.
+	# TODO: Move log_directory to /var/log/udp2log
+	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { "misc::udp2log::rsyncd":
+		path    => "/a/squid/archive",
+		require => Misc::Udp2log::Instance["locke"],
+	}
 }
 
 node "manutius.wikimedia.org" {
@@ -1194,37 +1240,6 @@ node "linne.wikimedia.org" {
 			soa_name => "ns1.wikimedia.org",
 			master => $dns_auth_master
 		}
-}
-# Why would Locke be getting apaches::files for the sudoers... that is just silly...
-# removing apaches::files.
-node "locke.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
-	include standard,
-		groups::wikidev,
-		admins::restricted,
-		accounts::dsc,
-		accounts::datasets,
-		nrpe,
-		misc::udp2log::utilities,
-		geoip
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
-
-	# locke's udp2log instance stores logs 
-	# mainly in /a/squid.
-	# TODO: Move log_directory to /var/log/udp2log
-	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid/archive",
-		require => Misc::Udp2log::Instance["locke"],
-	}
 }
 
 node "lomaria.pmtpa.wmnet" {
@@ -1788,24 +1803,16 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 	sudo_user { [ "john" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
-node "oxygen.wikimedia.org" {
-	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
-
-	include standard,
-		groups::wikidev,
-		admins::restricted,
+node "oxygen.wikimedia.org"  inherits "base_logging_node" {
+	include
 		accounts::awjrichards,
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
 		misc::squid-logging::multicast-relay,
-		nrpe,
-		geoip
+		misc::udp2log
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	include misc::udp2log
 
 	# oxygen's udp2log instance
 	# saves logs mainly in /a/squid
