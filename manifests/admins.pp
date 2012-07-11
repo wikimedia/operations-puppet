@@ -2003,6 +2003,25 @@ class accounts {
 		}
 	}
 
+	class haithams inherits baseaccount {
+		$username = "haithams"
+		$realname = "Haitham Shammaa"
+		$uid = 606
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key  {
+				"haitham":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=";
+			}
+		}
+	}
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -2137,8 +2156,8 @@ class admins::dctech {
 }
 
 class admins::globaldev {
-	$gid = 500	# 'wikidev' by default
+	$gid = 500   # 'wikidev' by default
 	include groups::wikidev
 
-	include accounts::erosen	
+	include accounts::erosen
 }

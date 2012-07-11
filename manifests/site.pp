@@ -2354,6 +2354,8 @@ node "stat1.wikimedia.org" {
 		accounts::declerambaul,
 		accounts::jmorgan,
 		accounts::rfaulk,
+		# RT 3219
+		admins::haithams,
 		# RT 3119
 		admins::globaldev
 
