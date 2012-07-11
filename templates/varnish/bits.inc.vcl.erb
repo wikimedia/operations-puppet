@@ -10,11 +10,12 @@ sub vcl_recv {
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
-		}
-<% end -%>
-		else {
+		} else {
 			return (lookup);
 		}
+<% else -%>
+		return (lookup);
+<% end -%>
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
@@ -22,7 +23,7 @@ sub vcl_recv {
 	}
 <% end -%>
 	else {
-		error 403 "Requested target domain not allowed."; 
+		error 403 "Requested target domain not allowed.";
 	}
 }
 
@@ -40,14 +41,17 @@ sub vcl_miss {
 	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.org/load\.php" ) {
 		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
 		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
+<% if has_variable?("test_wikipedia") -%>
 
 		# Send test.wikipedia.org to the right backend server
 		if ( req.url ~ "^/test\.wikipedia\.org/load\.php" ) {
 			set req.backend = test_wikipedia;
 		}
+<% end -%>
 	}
 }
 <% end -%>
+<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 
 sub vcl_error {
 	/* Support geoiplookup */
@@ -56,4 +60,5 @@ sub vcl_error {
 		set obj.status = 200;
 		return(deliver);
 	}
+<% end -%>
 }
