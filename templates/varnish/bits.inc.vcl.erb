@@ -10,11 +10,12 @@ sub vcl_recv {
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
-		}
-<% end -%>
-		else {
+		} else {
 			return (lookup);
 		}
+<% else -%>
+		return (lookup);
+<% end -%>
 	}
 <% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
@@ -22,7 +23,7 @@ sub vcl_recv {
 	}
 <% end -%>
 	else {
-		error 403 "Requested target domain not allowed."; 
+		error 403 "Requested target domain not allowed.";
 	}
 }
 
