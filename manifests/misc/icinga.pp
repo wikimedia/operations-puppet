@@ -534,6 +534,13 @@ class icinga::monitor::files::nagios-plugins {
 			mode => 0755;
 	}
 
+	# some default configuration files conflict and should be removed
+
+	file {
+		"/etc/nagios-plugins/config/mailq.cfg":
+			ensure => absent;
+	}
+
 }
 
 
