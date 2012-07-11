@@ -390,7 +390,7 @@ class base::standard-packages {
 #
 # Installs emacs package
 class base::packages::emacs {
-	package { "emacs32":
+	package { "emacs23":
 		ensure => "installed",
 		alias  => "emacs",
 	}
