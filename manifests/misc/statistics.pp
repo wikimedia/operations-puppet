@@ -2,11 +2,20 @@
 
 class misc::statistics::user {
 	$username = "stats"
+	$homedir  = "/var/lib/$username"
+
 	systemuser { "$username":
 		name   => "$username",
-		home   => "/var/lib/$username",
+		home   => "$homedir",
 		groups => "wikidev",
 		shell  => "/bin/bash",
+	}
+
+	# create a .gitconfig file for stats user
+	file { "$homedir/.gitconfig":
+		mode    => 0664,
+		owner   => $username,
+		content => "[user]\n\temail = otto@wikimedia.org\n\tname = Statistics User",
 	}
 }
 
@@ -142,18 +151,21 @@ class misc::statistics::db {
 	}
 }
 
-# Class: misc::statistics::gerrit_stats
+# == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
-# scripts, and sets up cron jobs to run them.
+# scripts, and sets a cron job to run it and
+# to commit and push generated data into
+# a repository.
+#
 class misc::statistics::gerrit_stats {
-	$gerrit_stats_repo_url = "https://gerrit.wikimedia.org/r/p/analytics/gerrit-stats.git"
-	$gerrit_stats_path     = "/a/gerrit-stats"
+	$gerrit_stats_repo_url      = "https://gerrit.wikimedia.org/r/p/analytics/gerrit-stats.git"
+	$gerrit_stats_data_repo_url = "ssh://stats@gerrit.wikimedia.org:29418/analytics/gerrit-stats/data.git"
+	$gerrit_stats_path          = "/a/gerrit-stats"
 
-	# This user need to have access to gerrit
-	# from the node on which this class
-	# is included.  We'll use diederik for now.
-	$gerrit_stats_user     = "stats"
+	# use the stats user
+	$gerrit_stats_user          = $misc::statistics::user::username
+	$gerrit_stats_user_home     = $misc::statistics::user::homedir
 	
 	file { $gerrit_stats_path:
 		owner  => $gerrit_stats_user,
@@ -165,11 +177,12 @@ class misc::statistics::gerrit_stats {
 	# gerrit-stats requires this packages
 	package { "python-mysqldb": ensure => "installed" }
 
-	# Clone the gerrit-stats repository
-	# into a subdir of $gerrit_stats_path.
+	# Clone the gerrit-stats and gerrit-stats/data
+	# repositories into subdirs of $gerrit_stats_path.
 	# This requires that the $gerrit_stats_user
 	# has an ssh key that is allowed to clone
 	# from git.less.ly.
+
 	git::clone { "gerrit-stats":
 		directory => "$gerrit_stats_path/gerrit-stats",
 		origin    => $gerrit_stats_repo_url,
@@ -178,15 +191,41 @@ class misc::statistics::gerrit_stats {
 		ensure    => "latest",
 	}
 
-	# run a cron job from the $gerrit_stats_path.
+	git::clone { "gerrit-stats/data":
+		directory => "$gerrit_stats_path/data",
+		origin    => $gerrit_stats_data_repo_url,
+		owner     => $gerrit_stats_user,
+		require   => User[$gerrit_stats_user],
+		ensure    => "latest",
+	}
+
+	# Make sure ~/.my.cnf is only readable by stats user.
+	# The gerrit stats script requires this file to
+	# connect to gerrit MySQL database.
+	file { "$gerrit_stats_user_home/.my.cnf":
+		mode  => 0600,
+		owner => stats,
+		group => stats,
+	}
+
+	# Run a cron job from the $gerrit_stats_path.
 	# This will create a $gerrit_stats_path/data
 	# directory containing stats about gerrit.
+	#
+	# Note: gerrit-stats requires mysql access to
+	# the gerrit stats database.  The mysql user creds
+	# are configured in /home/$gerrit_stats_user/.my.cnf,
+	# which is not puppetized in order to keep pw private.
+	#
+	# Once gerrit-stats has run, the newly generated
+	# data in $gerrit_stats_path/data will be commited
+	# and pushed to the gerrit-stats/data repository.
 	cron { "gerrit-stats-daily":
-		command => "cd $gerrit_stats_path && /usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py",
+		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py --dataset $gerrit_stats_data_path --toolkit dygraphs | tee -a $gerrit_stats_path/gerrit-stats.log && (cd $gerrit_stats_path/data && git add . && git commit -m \"Updating gerrit-stats data after gerrit-stats run at $(date)\"",
 		user    => $gerrit_stats_user,
 		hour    => '23',
 		minute  => '59',
-		require => Git::Clone["gerrit-stats"],
+		require => [Git::Clone["gerrit-stats"], Git::Clone["gerrit-stats/data"], File["$gerrit_stats_user_home/.my.cnf"]],
 	}
 }
 
