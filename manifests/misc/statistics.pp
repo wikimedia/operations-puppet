@@ -196,18 +196,22 @@ class misc::statistics::gerrit_stats {
 # Sets up daily cron jobs to rsync log files from remote
 # logging hosts to a local destination for further processing.
 class misc::statistics::rsync::jobs {
-	# rsync wikipedia zero logs from the oxygen
-	# udp2log rsync module.
+	# wikipedia zero logs from oxygen
 	misc::statistics::rsync_job { "wikipedia_zero":
 		source      => "oxygen.wikimedia.org::udp2log/zero-*.gz",
 		destination => "/a/squid/archive/zero",
 	}
 
-	# rsync teahouse logs from the emery
-	# udp2log rsync module.
+	# teahouse logs from emery
 	misc::statistics::rsync_job { "teahouse":
 		source      => "emery.wikimedia.org::udp2log/teahouse*.gz",
 		destination => "/a/squid/archive/teahouse",
+	}
+
+	# arabic banner logs from emery
+	misc::statistics::rsync_job { "arabic_banner":
+		source      => "emery.wikimedia.org::udp2log/arabic-banner*.gz",
+		destination => "/a/squid/archive/arabic-banner",
 	}
 }
 
