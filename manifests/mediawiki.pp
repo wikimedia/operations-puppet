@@ -12,7 +12,7 @@ class mediawiki::sync {
 	# the sync happens each time just before apache is started
 	require mediawiki::packages
 
-	exec { 	'mw-sync':
+	exec { 'mw-sync':
 		command => '/usr/bin/sync-common',
 		cwd => '/tmp',
 		user => root,

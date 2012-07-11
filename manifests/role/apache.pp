@@ -18,6 +18,7 @@ class role::applicationserver {
 			admins::roots,
 			admins::dctech,
 			admins::mortals,
+			mediawiki::packages,
 			accounts::l10nupdate
 
 		if $lvsrealserver == true {
