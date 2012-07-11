@@ -10,11 +10,12 @@ sub vcl_recv {
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
-		}
-<% end -%>
-		else {
+		} else {
 			return (lookup);
 		}
+<% else -%>
+		return (lookup);
+<% end -%>
 	}
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 	else if (req.http.host == "geoiplookup.wikimedia.org" ) {
@@ -40,14 +41,17 @@ sub vcl_miss {
 	if ( req.url ~ "^/([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+\.)?([a-zA-Z0-9-]+)\.org/load\.php" ) {
 		set bereq.http.host = regsub( req.url, "^/([^/]+)/(.*)$", "\1" );
 		set bereq.url = regsub( req.url, "^/([^/]+)/load\.php(.*)?", "/w/load.php\2" );
+<% if cluster_options.fetch( "test_hostname", false ) -%>
 
 		# Send test.wikipedia.org to the right backend server
-		if ( req.url ~ "^/test\.wikipedia\.org/load\.php" ) {
+		if ( req.url ~ "^/<%= Regexp.escape( cluster_options.fetch( "test_hostname" ) ) %>/load\.php" ) {
 			set req.backend = test_wikipedia;
 		}
+<% end -%>
 	}
 }
 <% end -%>
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 
 sub vcl_error {
 	/* Support geoiplookup */
@@ -57,3 +61,4 @@ sub vcl_error {
 		return(deliver);
 	}
 }
+<% end -%>
