@@ -456,6 +456,12 @@ class role::cache {
 				"backend" => $varnish_backends,
 			}
 		}
+		$has_test_host = $::site ? {
+			'pmtpa' => true,
+			'eqiad' => true,
+			'esams' => false,
+			default => false,
+		}
 
 		$varnish_directors = $::site ? {
 			/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
@@ -495,7 +501,7 @@ class role::cache {
 				'probe' => "bits",
 			},
 			cluster_options => {
-				'test_hostname' => $test_wikipedia,
+				'has_test_host' => $has_test_host,
 				'enable_geoiplookup' => true,
 			},
 			xff_sources => $network::constants::all_networks
