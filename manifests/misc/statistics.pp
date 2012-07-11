@@ -221,7 +221,7 @@ class misc::statistics::gerrit_stats {
 	# data in $gerrit_stats_path/data will be commited
 	# and pushed to the gerrit-stats/data repository.
 	cron { "gerrit-stats-daily":
-		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py --dataset $gerrit_stats_data_path --toolkit dygraphs | tee -a $gerrit_stats_path/gerrit-stats.log && (cd $gerrit_stats_path/data && git add . && git commit -m \"Updating gerrit-stats data after gerrit-stats run at $(date)\"",
+		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py --dataset $gerrit_stats_data_path --toolkit dygraphs | tee -a $gerrit_stats_path/gerrit-stats.log && (cd $gerrit_stats_path/data && git add . && git commit -m \"Updating gerrit-stats data after gerrit-stats run at $(date)\" && git push)",
 		user    => $gerrit_stats_user,
 		hour    => '23',
 		minute  => '59',
