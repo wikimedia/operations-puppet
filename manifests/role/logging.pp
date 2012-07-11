@@ -5,7 +5,6 @@
 # This is done as a base node primarily so that we can override the
 # $nagios_contact_group variable.
 node "base_analytics_logging_node" {
-	system_role { "misc::log-collector": description => "log collector" }
 
 	# include analytics in nagios_contact_group.
 	# This is used by class base::monitoring::host for
