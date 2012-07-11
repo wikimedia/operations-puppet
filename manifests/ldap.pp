@@ -195,7 +195,6 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
 
 	monitor_service { "ldap": description => "LDAP", check_command => "check_tcp!389" }
 	monitor_service { "ldaps": description => "LDAPS", check_command => "check_tcp!636" }
-	monitor_service { "ldap cert": description => "Certificate expiration", check_command => "check_cert!${fqdn}!636!Equifax_Secure_CA.pem", critical => "true" }
 
 }
 

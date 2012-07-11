@@ -417,6 +417,7 @@ class ganglia::web {
 	}
 
 	apache_site { ganglia: name => $ganglia_servername }
+	install_certificate { "star.wikimedia.org": hostname => "ganglia.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 
 	package {

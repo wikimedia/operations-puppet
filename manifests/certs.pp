@@ -76,18 +76,19 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
-define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
+# When using install_certificate, PLEASE PLEASE provide a hostname.
+# This is used to set up a Nagios check for the certificate, and generally you
+# should be explicit about what service you're installing the cert for.
+# Also, PLEASE do not use install_certificate in site.pp, invoke it in a role
+# class or service class instead.
+define install_certificate( $hostname="", $port=443, $group="ssl-cert", $ca="" ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::digicert_ca,
 		certificates::wmf_ca
 
-	if ( $privatekey == "false" ) {
-		$key_loc = "puppet:///files/ssl/${name}"
-	} else {
-		$key_loc = "puppet:///private/ssl/${name}"
-	}
+	$key_loc = "puppet:///files/ssl/${name}"
 
 	file {
 		# Public key
@@ -142,6 +143,10 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 	}
 	create_chained_cert{ "${name}": ca => $cas }
 
+	# Monitor the cert
+	if ( $hostname ) {
+		monitor_service { "${name} cert": description => "${name} SSL certificate", check_command => "check_cert!${hostname}!${port}!${cas}", critical => "true" }
+	}
 }
 
 define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $mode="0440" ) {

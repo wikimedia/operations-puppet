@@ -263,6 +263,7 @@ class gerrit::proxy( $no_apache = true,
 	apache_module { proxy_http: name => "proxy_http" }
 	if $apache_ssl {
 		apache_module { ssl: name => "ssl" }
+		install_certificate { "star.wikimedia.org": hostname => "gerrit.wikimedia.org" }
 	}
 }
 

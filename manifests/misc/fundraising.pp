@@ -192,6 +192,8 @@ class misc::fundraising {
 	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
 	apache_site { community-analytics: name => "008-community-analytics" }
 
+	install_certificate { "star.wikimedia.org": hostname => "civicrm.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "civicrm-dev.wikimedia.org" }
 }
 
 

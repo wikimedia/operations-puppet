@@ -19,5 +19,7 @@ class misc::blogs::wikimedia {
 			group => root,
 			source => "puppet:///files/apache/sites/blog.wikimedia.org";
 	}
+
+	install_certificate { "star.wikimedia.org": hostname => "blog.wikimedia.org" }
 }
 

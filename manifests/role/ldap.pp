@@ -99,7 +99,7 @@ class role::ldap::server::labs {
 		"production" => "star.wikimedia.org",
 		"labs" => "star.wmflabs",
 	}
-	install_certificate{ $certificate: }
+	install_certificate{ $certificate: hostname => $fqdn, port => 636 }
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
 	create_pkcs12{ "${certificate}.opendj":
@@ -158,7 +158,7 @@ class role::ldap::server::production {
 	$proxypass = $role::ldap::config::production::ldapconfig["proxypass"]
 
 	$certificate = "$hostname.pmtpa.wmnet"
-	install_certificate{ $certificate: }
+	install_certificate{ $certificate: hostname => $fqdn, port => 636 }
 	create_pkcs12{ "${certificate}.opendj":
 		certname => "${certificate}",
 		user => "opendj",
@@ -200,7 +200,7 @@ class role::ldap::server::corp {
 	$proxypass = $role::ldap::config::corp::ldapconfig["proxypass"]
 
 	$certificate = "$hostname.pmtpa.wmnet"
-	install_certificate{ $certificate: }
+	install_certificate{ $certificate: hostname => $fqdn, port => 636 }
 	create_pkcs12{ "${certificate}.opendj":
 		certname => "${certificate}",
 		user => "opendj",
