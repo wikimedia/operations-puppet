@@ -318,6 +318,7 @@ class nagios::monitor {
 	}
 
 	apache_site { nagios: name => "nagios" }
+	install_certificate { "star.wikimedia.org": hostname => "nagios.wikimedia.org" }
 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios":

@@ -271,8 +271,6 @@ class protoproxy::ssl {
 	include standard,
 		certificates::wmf_ca,
 		protoproxy::proxy_sites
-
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 }
 
 
@@ -284,6 +282,9 @@ $cluster = "misc"
 $dns_auth_master = "ns1.wikimedia.org"
 
 # Node definitions (alphabetic order)
+
+# NOTE: Please do not introduce new uses of install_certificate in node definitions
+#       They should be in role classes or service classes instead
 
 node "alsted.wikimedia.org" {
 
@@ -360,9 +361,6 @@ node "argon.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		misc::survey
-
-	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
@@ -836,14 +834,10 @@ node "fenari.wikimedia.org" {
 		accounts::erosen,
 		mediawiki::packages
 
-	install_certificate{ "star.wikimedia.org": }
-
 	apache_module { php5: name => "php5" }
 }
 
 node "formey.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
-
 	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
@@ -891,8 +885,6 @@ node "gallium.wikimedia.org" {
 		admins::roots,
 		admins::dctech,
 		admins::jenkins
-
-	install_certificate{ "star.mediawiki.org": }
 }
 
 node /(grosley|aluminium)\.wikimedia\.org/ {
@@ -901,8 +893,6 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 	# TODO: properly scope these
 	$exim_signs_dkim = "true"
 	$exim_bounce_collector = "true"
-
-	install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -1054,8 +1044,6 @@ node "marmontel.wikimedia.org" {
 		class { "memcached":
 			memcached_ip => "127.0.0.1" }
 
-	install_certificate{ "star.wikimedia.org": }
-
 	varnish::instance { "blog":
 		name => "",
 		vcl => "blog",
@@ -1086,8 +1074,6 @@ node "hooper.wikimedia.org" {
 		svn::client,
 		misc::etherpad,
 		misc::racktables
-
-	install_certificate{ "star.wikimedia.org": }
 }
 
 node "hume.wikimedia.org" {
@@ -1150,8 +1136,6 @@ node "kaulen.wikimedia.org" {
 		misc::download-mediawiki,
 		misc::bugzilla::server,
 		misc::bugzilla::crons
-
-	install_certificate{ "star.wikimedia.org": }
 
 	monitor_service { "memorysurge": description => "Memory using more than expected", check_command => "check_memory_used!500000!510000" }
 	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
@@ -1467,8 +1451,6 @@ node "magnesium.wikimedia.org" {
 }
 
 node "manganese.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
-
 	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
@@ -1712,7 +1694,8 @@ node /^nfs[12].pmtpa.wmnet/ {
 	$cluster = "misc"
 	$ldapincludes = ['openldap']
 	$ldap_certificate = "$hostname.pmtpa.wmnet"
-	install_certificate{ "$hostname.pmtpa.wmnet": }
+	# TODO move into ldap::server::wmf-cluster or something
+	install_certificate{ "$hostname.pmtpa.wmnet": hostname => "$hostname.pmtpa.wmnet", port => 636 }
 
 	include standard,
 		misc::nfs-server::home,
@@ -1734,9 +1717,6 @@ node /^nfs[12].pmtpa.wmnet/ {
 		monitor_processes   => false,
 		monitor_packet_loss => false,
 	}
-
-
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
 
 node "nickel.wikimedia.org" {
@@ -1745,8 +1725,6 @@ node "nickel.wikimedia.org" {
 	include standard,
 		ganglia::web,
 		generic::apache::no-default-site
-
-	 install_certificate{ "star.wikimedia.org": }
 }
 
 node /^ocg[1-3]\.wikimedia\.org$/ {
@@ -1844,6 +1822,7 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		lvs::realserver,
 		ganglia
 
+	# FIXME can't use install_certificate here because the payments cert isn't listed in certs.pp
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
 
@@ -1897,7 +1876,8 @@ node "sanger.wikimedia.org" {
 	$ldapincludes = ['openldap']
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "sanger.wikimedia.org"
-	install_certificate{ "sanger.wikimedia.org": }
+	# TODO move into ldap::server::wmf-corp-cluster or something
+	install_certificate{ "sanger.wikimedia.org": hostname => "sanger.wikimedia.org", port => 636 }
 
 	include base,
 		ganglia,
@@ -1911,8 +1891,6 @@ node "sanger.wikimedia.org" {
 
 	## hardy doesn't support augeas, so we can't do this. /stab
 	#include ldap::server::iptables
-
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.wikimedia.org!636!wmf-ca.pem", critical => "true" }
 }
 
 node /search1[3-8]\.pmtpa\.wmnet/ {
@@ -2008,10 +1986,6 @@ node "singer.wikimedia.org" {
 		generic::mysql::packages::client,
 		misc::planet,
 		misc::secure
-
-
-	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
 node "sockpuppet.pmtpa.wmnet" {
@@ -2084,8 +2058,6 @@ node "spence.wikimedia.org" {
 		certificates::wmf_ca,
 		backup::client,
 		misc::ircecho
-
-	install_certificate{ "star.wikimedia.org": }
 }
 
 node "srv190.pmtpa.wmnet" {
@@ -2429,9 +2401,6 @@ node "streber.wikimedia.org" {
 		firewall::builder
 
 	class { "misc::syslog-server": config => "network" }
-
-	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
 node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
@@ -2524,7 +2493,8 @@ node "virt1000.wikimedia.org" {
 	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$ldap_certificate = "star.wikimedia.org"
 
-	install_certificate{ "star.wikimedia.org": }
+	# TODO move this into openstack::ldap-server or something
+	install_certificate{ "star.wikimedia.org": hostname => "virt1000.wikimedia.org", port => 636 }
 
 	include standard,
 		role::dns::ldap,
@@ -2541,7 +2511,8 @@ node "virt0.wikimedia.org" {
 	$ldap_certificate = "star.wikimedia.org"
 	$openstack_version = "diablo"
 
-	install_certificate{ "star.wikimedia.org": }
+	# TODO move this into role::dns::ldap or something
+	install_certificate{ "star.wikimedia.org": hostname => "virt0.wikimedia.org", port => 636 }
 
 	include standard,
 		role::dns::ldap,
@@ -2575,7 +2546,8 @@ node "williams.wikimedia.org" {
 		ganglia,
 		ntp::client
 
-	install_certificate{ "star.wikimedia.org": }
+	# TODO puppetize OTRS and move this call out of site.pp
+	install_certificate{ "star.wikimedia.org": hostname => "ticket.wikimedia.org" }
 }
 
 node  "yongle.wikimedia.org" {

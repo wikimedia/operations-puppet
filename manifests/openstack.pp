@@ -198,6 +198,7 @@ class openstack::compute {
 
 	# tls is a PITA to enable in labs, let's find another way there.
 	if ( $realm == "production" ) {
+		# TODO pass hostname and port to install_certificate so the cert is monitored
 		install_certificate{ "${fqdn}": }
 		install_additional_key{ "${fqdn}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
 
@@ -605,9 +606,6 @@ TLS_REQCERT     never
 			before => Exec["start_opendj"];
 		}
 	}
-
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt0.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
-
 }
 
 class openstack::openstack-manager {

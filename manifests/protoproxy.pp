@@ -36,17 +36,17 @@ class protoproxy::proxy_sites {
 	$nginx_worker_connections = '32768'
 	$nginx_use_ssl = true
 
-	install_certificate{ "star.wikimedia.org": }
-	install_certificate{ "star.wikipedia.org": }
-	install_certificate{ "test-star.wikipedia.org": }
-	install_certificate{ "star.wiktionary.org": }
-	install_certificate{ "star.wikiquote.org": }
-	install_certificate{ "star.wikibooks.org": }
-	install_certificate{ "star.wikisource.org": }
-	install_certificate{ "star.wikinews.org": }
-	install_certificate{ "star.wikiversity.org": }
-	install_certificate{ "star.mediawiki.org": }
-	install_certificate{ "star.wikimediafoundation.org": }
+	install_certificate{ "star.wikimedia.org": hostname => "commons.wikimedia.org" }
+	install_certificate{ "star.wikipedia.org": hostname => "en.wikipedia.org" }
+	install_certificate{ "test-star.wikipedia.org": hostname => "en.m.wikipedia.org" }
+	install_certificate{ "star.wiktionary.org": hostname => "en.wiktionary.org" }
+	install_certificate{ "star.wikiquote.org": hostname => "en.wikiquote.org" }
+	install_certificate{ "star.wikibooks.org": hostname => "en.wikibooks.org" }
+	install_certificate{ "star.wikisource.org": hostname => "en.wikisource.org" }
+	install_certificate{ "star.wikinews.org": hostname => "en.wikinews.org" }
+	install_certificate{ "star.wikiversity.org": hostname => "en.wikiversity.org" }
+	install_certificate{ "star.mediawiki.org": hostname => "www.mediawiki.org" }
+	install_certificate{ "star.wikimediafoundation.org": hostname => "wikimediafoundation.org" }
 	
 	file {
 		"/etc/nginx/nginx.conf":
