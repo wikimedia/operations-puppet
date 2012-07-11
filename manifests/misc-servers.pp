@@ -53,6 +53,13 @@ class misc::noc-wikimedia {
 	apache_site { noc: name => "noc.wikimedia.org" }
 	apache_site { graphiteproxy: name => "graphite.wikimedia.org" }
 
+	# Install the certificate multiple times so all different domains are monitored
+	install_certificate { "star.wikimedia.org": hostname => "noc.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "graphite.wikimedia.org" }
+	# The graphite.wikimedia.org Apache site also sets up gdash.wm.o and ishmael.wm.o
+	install_certificate { "star.wikimedia.org": hostname => "gdash.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "ishmael.wikimedia.org" }
+
 	service { apache2:
 		require => [ Package[apache2], Apache_module[userdir], Apache_module[cgi], Apache_site[noc] ],
 		subscribe => [ Package[libapache2-mod-php5], Apache_module[userdir], Apache_module[cgi], Apache_site[noc], File["/etc/apache2/sites-available/noc.wikimedia.org"] ],
@@ -360,6 +367,10 @@ class misc::rt::server {
 	service { lighttpd:
 		ensure => running;
 	}
+
+	install_certificate { "star.wikimedia.org": hostname => "rt.wikimedia.org" }
+
+	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
 class misc::apple-dictionary-bridge {
@@ -518,6 +529,8 @@ class misc::etherpad {
 
 	apache_module { proxy: name => "proxy" }
 	apache_site { etherpad_proxy: name => "etherpad.proxy" }
+	install_certificate { "star.wikimedia.org": hostname => "etherpad.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "eiximenis.wikimedia.org" }
 
 	# Nagios monitoring
 	monitor_service { "etherpad http":
@@ -699,6 +712,8 @@ class misc::survey {
 	apache_site { survey: name => "survey.wikimedia.org" }
 
 	apache_module { ssl: name => "ssl" }
+
+	install_certificate { "star.wikimedia.org": hostname => "survey.wikimedia.org" }
 }
 
 class misc::download-mediawiki {
@@ -1200,10 +1215,12 @@ class misc::racktables {
 	if $realm == "labs" {
 		$racktables_host = "$instancename.${domain}"
 		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
+		$racktables_ssl_certname = "star.wmflabs.org"
 		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
 	} else {
 		$racktables_host = "racktables.wikimedia.org"
 		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
+		$racktables_ssl_certname = "star.wikimedia.org"
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
@@ -1223,6 +1240,7 @@ class misc::racktables {
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
+	install_certificate { "${racktables_ssl_certname}": hostname => "${racktables_host}" }
 	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
 }

@@ -10,4 +10,6 @@ class misc::secure {
 	apache_module { proxy_http: name => "proxy_http" }
 
 	apache_site { secure: name => "secure.wikimedia.org" }
+
+	install_certificate { "star.wikimedia.org": hostname => "secure.wikimedia.org" }
 }

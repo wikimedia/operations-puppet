@@ -200,6 +200,8 @@ class gerrit::proxy {
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
+
+	install_certificate { "star.wikimedia.org": "hostname" => "gerrit.wikimedia.org" }
 }
 
 class gerrit::gitweb {

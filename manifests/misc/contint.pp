@@ -91,6 +91,7 @@ class misc::contint::test {
 	# Common apache configuration
 	apache_module { ssl: name => "ssl" }
 	apache_site { integration: name => "integration.mediawiki.org" }
+	install_certificate { "star.mediawiki.org": hostname => "integration.mediawiki.org" }
 
 	class jenkins {
 

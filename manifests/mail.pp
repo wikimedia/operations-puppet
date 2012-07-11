@@ -303,7 +303,7 @@ class mailman {
 		include webserver::static
 
 		if ( $realm == "production" ) {
-			install_certificate{ "star.wikimedia.org": }
+			install_certificate{ "star.wikimedia.org": hostname => "lists.wikimedia.org" }
 		}
 
 		# htdigest file for private list archives
@@ -331,11 +331,6 @@ class mailman {
 			group => root,
 			mode => 0444,
 			recurse => remote;
-		}
-
-		# monitor SSL cert expiry
-		if ( $realm == "production" ) {
-			monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
 		}
 	}
 

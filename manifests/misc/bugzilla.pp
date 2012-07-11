@@ -7,6 +7,7 @@ class misc::bugzilla::server {
 	class {'webserver::php5': ssl => 'true'; }
 
 	apache_site { bugzilla: name => "bugzilla.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "bugzilla.wikimedia.org" }
 	file {
 		"/etc/apache2/sites-available/bugzilla.wikimedia.org":
 			source => "puppet:///files/apache/sites/bugzilla.wikimedia.org",

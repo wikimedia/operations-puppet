@@ -84,7 +84,7 @@ class svn::server {
 
 	include generic::apache::no-default-site
 
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
+	install_certificate { "star.wikimedia.org": hostname => "svn.wikimedia.org" }
 
 	cron {
 		doc_generation:
