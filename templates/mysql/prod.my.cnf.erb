@@ -31,7 +31,11 @@ key_buffer		= 1024M
 <% else %>
 key_buffer		= 1M
 <% end -%>
+<% if @mysql_max_allowed_packet %>
+max_allowed_packet	= <%= @mysql_max_allowed_packet %>
+<% else %>
 max_allowed_packet	= 16M
+<% end -%>
 thread_stack		= 192K
 thread_cache_size	= 300
 

@@ -84,6 +84,7 @@ class mysql {
 	elsif $hostname =~ /^db(48|49|1048)$/ {
 		$db_cluster = "otrsdb"
 		$skip_name_resolve = "false"
+		$mysql_max_allowed_packet = 1073741824
 	}
 	else {
 		$db_cluster = undef
@@ -116,7 +117,7 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
-			if ($db_cluster =~ /^s/) {
+			if ($db_cluster =~ /^[s]/) {
 				include mysql::slow_digest
 			}
 		}
