@@ -6,7 +6,6 @@ $decommissioned_servers = [
 "adler",
 "br1-knams",
 "controller",
-"cp1041", # TEMP
 "dataset1",
 "db1",
 "db2",
