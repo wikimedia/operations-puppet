@@ -18,7 +18,7 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(38|52|39|31|35|47|37|48)|blondel$/ {
+	if $hostname =~ /^db(38|52|39|31|35|47|37|48|1048)|blondel$/ {
 		$master = "true"
 		$writable = "true"
 	} else {
@@ -81,8 +81,8 @@ class mysql {
 
 		}
 	}
-	elsif $hostname =~ /^db(48|49|1048)$/ {
-		$db_cluster = "otrsdb"
+	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
+		$db_cluster = "m2"
 		$skip_name_resolve = "false"
 		$mysql_max_allowed_packet = 1073741824
 	}
@@ -337,9 +337,6 @@ class mysql {
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"otrsdb" => {
-				"innodb_log_file_size" => "500M"
-			},
 			"s1" => {
 				"innodb_log_file_size" => "2000M"
 			},
@@ -363,7 +360,10 @@ class mysql {
 			},
 			"m1" => {
 				"innodb_log_file_size" => "500M"
-			}
+			},
+			"m2" => {
+				"innodb_log_file_size" => "500M"
+			},
 		}
 
 		if $hostname =~ /^es/ {
@@ -380,7 +380,7 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster =~ /^(fundraisingdb|otrsdb)$/ or $hostname =~ /^es/ {
+		if $db_cluster =~ /^(fundraisingdb|m|es)/ {
 			$innodb_file_per_table = "true"
 		} else {
 			$innodb_file_per_table = "false"
