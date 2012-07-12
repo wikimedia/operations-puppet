@@ -84,7 +84,7 @@ class role::applicationserver::labs {
 			apaches::service,
 			apaches::monitoring::labs,
 			nfs::apache::labs,
-			nfs::upload
+			nfs::upload::labs
 
 		if $cluster == "imagesclager" {
 			include	imagescaler::cron,
