@@ -536,6 +536,13 @@ class role::cache {
 		include standard,
 			nrpe
 
+		# FIXME: remove after precise migration
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			varnish::setup_filesystem{ ["sda3", "sdb3"]:
+				before => Varnish::Instance["mobile-backend"]
+			}
+		}
+
 		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
 
 		# Ganglia monitoring
