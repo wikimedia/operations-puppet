@@ -184,6 +184,10 @@ class varnish {
 
 		systemuser { "varnishhtcpd": name => "varnishhtcpd", default_group => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
 
+		$packages = ["liburi-perl", "liblwp-useragent-determined-perl"]
+
+		package { $packages: ensure => latest; }
+
 		file {
 			"/usr/local/bin/varnishhtcpd":
 				source => "puppet:///files/varnish/varnishhtcpd",
@@ -200,7 +204,7 @@ class varnish {
 		upstart_job { "varnishhtcpd": install => "true" }
 
 		service { varnishhtcpd:
-			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
+			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Package[$packages], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
 			provider => upstart,
 			ensure => running;
 		}
