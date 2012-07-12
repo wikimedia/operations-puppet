@@ -553,7 +553,10 @@ class role::cache {
 			vcl => "mobile-backend",
 			port => 81,
 			admin_port => 6083,
-			storage => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
+			storage => $::hostname ? {
+				/^cp104[1]$/ => "-s file,/srv/sda3/varnish.persist,50% -s file,/srv/sdb3/varnish.persist,50%",
+				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
+			},
 			backends => [ "10.2.1.1" ],
 			directors => { "backend" => [ "10.2.1.1" ] },
 			vcl_config => {
