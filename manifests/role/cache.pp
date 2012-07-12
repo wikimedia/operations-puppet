@@ -181,7 +181,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => ["cp1041.wikimedia.org", "cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+				"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
 				"esams" => []
 			}
 		}
@@ -521,7 +521,7 @@ class role::cache {
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
 		$varnish_fe_backends = $::site ? {
-			"eqiad" => [ "cp1041.wikimedia.org", "cp1042.wikimedia.org",
+			"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.wikimedia.org",
 				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
