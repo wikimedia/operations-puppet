@@ -106,7 +106,7 @@ class nfs::apache::labs {
 
 		mount {
 			"/usr/local/apache":
-				device => 'deployment-nfs-memc:/mnt/export/apache',
+				device => "projectstorage.pmtpa.wmnet:/{$::instanceproject}/apache",
 				fstype => 'nfs',
 				name   => '/usr/local/apache',
 				options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
@@ -116,58 +116,61 @@ class nfs::apache::labs {
 	}
 }
 
-class nfs::upload {
-	include nfs::common
-
-	file { [ "/mnt/thumbs", "/mnt/upload6" ]:
+# Ensure we have local directories to use as mount points
+class nfs::common-upload {
+	file { [ "/mnt/thumbs", "/mnt/upload5", "/mnt/upload6" ]:
 			ensure => directory;
 	}
+}
 
-	if( $::realm == 'production' ) {
-		mount {
-			"/mnt/thumbs":
-				device => "ms5.pmtpa.wmnet:/export/thumbs",
-				fstype => "nfs",
-				name => "/mnt/thumbs",
-				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/thumbs"],
-				ensure => mounted;
-			"/mnt/upload6":
-				device => "ms7.pmtpa.wmnet:/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload6",
-				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/upload6"],
-				ensure => mounted;
-			"/mnt/upload5":
-				device => "ms1.wikimedia.org:/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload5",
-				ensure => absent;
-		}
+class nfs::upload {
+	include nfs::common,
+		nfs::common-upload
+
+	mount {
+		"/mnt/thumbs":
+			device => "ms5.pmtpa.wmnet:/export/thumbs",
+			fstype => "nfs",
+			name => "/mnt/thumbs",
+			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/thumbs"],
+			ensure => mounted;
+		"/mnt/upload6":
+			device => "ms7.pmtpa.wmnet:/export/upload",
+			fstype => "nfs",
+			name => "/mnt/upload6",
+			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/upload6"],
+			ensure => mounted;
+		"/mnt/upload5":
+			device => "ms1.wikimedia.org:/export/upload",
+			fstype => "nfs",
+			name => "/mnt/upload5",
+			ensure => absent;
 	}
-	# FIXME : this is hacky, should be done in a better way
-	# Same as above, just use different hostname, export paths
-	if( $::realm == 'labs' ) {
-		mount {
-			"/mnt/thumbs":
-				device => "deployment-nfs-memc:/mnt/export/thumbs",
-				fstype => "nfs",
-				name => "/mnt/thumbs",
-				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/thumbs"],
-				ensure => mounted;
-			"/mnt/upload6":
-				device => "deployment-nfs-memc:/mnt/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload6",
-				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/upload6"],
-				ensure => mounted;
-		}
+}
 
+class nfs::upload::labs {
+	include nfs::common,
+		nfs::common-upload
+
+	mount {
+		"/mnt/thumbs":
+			device => "projectstorage.pmtpa.wmnet:/{$::instanceproject}/thumbs",
+			fstype => "nfs",
+			name => "/mnt/thumbs",
+			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/thumbs"],
+			ensure => mounted;
+		"/mnt/upload6":
+			device => "projectstorage.pmtpa.wmnet:/{$::instanceproject}/thumbs",
+			fstype => "nfs",
+			name => "/mnt/upload6",
+			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/upload6"],
+			ensure => mounted;
+		# /mnt/upload5 is unused
 	}
-
 }
 
 class nfs::data {
@@ -184,8 +187,8 @@ class nfs::data {
 			name => "/mnt/data",
 			options => "bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3",
 			require => File["/mnt/data"],
-			remounts => false, 
+			remounts => false,
 			ensure => mounted;
 	}
 }
-	
+
