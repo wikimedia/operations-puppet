@@ -505,7 +505,7 @@ node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
 }
 
 # eqiad varnish for m.wikipedia.org
-node /cp104[1-4].wikimedia.org/ {
+node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 
 	if $hostname =~ /^cp104(3|4)$/ {
 		$ganglia_aggregator = "true"
