@@ -174,7 +174,7 @@ class applicationserver {
 	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
 	class labs inherits parent {
 		include standard,
-			nfs::upload,
+			nfs::upload::labs,
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,

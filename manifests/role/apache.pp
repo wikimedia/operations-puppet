@@ -48,7 +48,11 @@ class role::applicationserver {
 		}
 
 		if $upload == true {
-			include	nfs::upload
+			if( $::realm == 'production' ) {
+				include	nfs::upload
+			} else {
+				include nfs::upload::labs
+			}
 		}
 
 		if $lvsrealserver == true {
@@ -77,4 +81,3 @@ class role::applicationserver {
 		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, lvsrealserver => false, apache => false }
 	}
 }
-
