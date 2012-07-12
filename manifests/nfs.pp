@@ -101,18 +101,10 @@ class nfs::apache::labs {
 		include nfs::common
 
 		file { '/usr/local/apache':
-			ensure => directory;
+			ensure => link,
+			target => "/data/project/apache";
 		}
 
-		mount {
-			"/usr/local/apache":
-				device => 'deployment-nfs-memc:/mnt/export/apache',
-				fstype => 'nfs',
-				name   => '/usr/local/apache',
-				options => 'bg,soft,tcp,timeo=14,intr,nfsvers=3',
-				require => File['/usr/local/apache'],
-				ensure => mounted;
-		}
 	}
 }
 
@@ -123,51 +115,40 @@ class nfs::upload {
 			ensure => directory;
 	}
 
-	if( $::realm == 'production' ) {
-		mount {
-			"/mnt/thumbs":
-				device => "ms5.pmtpa.wmnet:/export/thumbs",
-				fstype => "nfs",
-				name => "/mnt/thumbs",
-				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/thumbs"],
-				ensure => mounted;
-			"/mnt/upload6":
-				device => "ms7.pmtpa.wmnet:/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload6",
-				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/upload6"],
-				ensure => mounted;
-			"/mnt/upload5":
-				device => "ms1.wikimedia.org:/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload5",
-				ensure => absent;
-		}
+	mount {
+		"/mnt/thumbs":
+			device => "ms5.pmtpa.wmnet:/export/thumbs",
+			fstype => "nfs",
+			name => "/mnt/thumbs",
+			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/thumbs"],
+			ensure => mounted;
+		"/mnt/upload6":
+			device => "ms7.pmtpa.wmnet:/export/upload",
+			fstype => "nfs",
+			name => "/mnt/upload6",
+			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
+			require => File["/mnt/upload6"],
+			ensure => mounted;
+		"/mnt/upload5":
+			device => "ms1.wikimedia.org:/export/upload",
+			fstype => "nfs",
+			name => "/mnt/upload5",
+			ensure => absent;
 	}
-	# FIXME : this is hacky, should be done in a better way
-	# Same as above, just use different hostname, export paths
-	if( $::realm == 'labs' ) {
-		mount {
-			"/mnt/thumbs":
-				device => "deployment-nfs-memc:/mnt/export/thumbs",
-				fstype => "nfs",
-				name => "/mnt/thumbs",
-				options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/thumbs"],
-				ensure => mounted;
-			"/mnt/upload6":
-				device => "deployment-nfs-memc:/mnt/export/upload",
-				fstype => "nfs",
-				name => "/mnt/upload6",
-				options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
-				require => File["/mnt/upload6"],
-				ensure => mounted;
-		}
+}
 
+# Setup /mnt/{thumbs,upload6} as symlink to /data/project/<subdir>
+class nfs::upload::labs {
+	file {
+		"/mnt/thumbs":
+			ensure => link,
+			target => "/data/project/thumbs";
+
+		"/mnt/upload6":
+			ensure => link,
+			target => "/data/project/upload6";
 	}
-
 }
 
 class nfs::data {
@@ -184,8 +165,8 @@ class nfs::data {
 			name => "/mnt/data",
 			options => "bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3",
 			require => File["/mnt/data"],
-			remounts => false, 
+			remounts => false,
 			ensure => mounted;
 	}
 }
-	
+
