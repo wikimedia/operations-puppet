@@ -678,6 +678,25 @@ host es4 {
 	hardware ethernet 78:2b:cb:60:34:26;
 	fixed-address es4.pmtpa.wmnet;
 }
+host es5 {
+	hardware ethernet d4:ae:52:93:43:23;
+	fixed-address es5.pmtpa.wmnet;
+}
+
+host es6 {
+	hardware ethernet  d4:ae:52:93:3b:3d;
+	fixed-address es6.pmtpa.wmnet;
+}
+
+host es7 {
+	hardware ethernet d4:ae:52:8b:d2:0a;
+	fixed-address es7.pmtpa.wmnet;
+}
+
+host es8 {
+	hardware ethernet d4:ae:52:93:47:03;
+	fixed-address es8.pmtpa.wmnet;
+}
 
 host es1001 {
 	hardware ethernet 78:2b:cb:0b:11:b5;
