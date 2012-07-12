@@ -554,7 +554,7 @@ class role::cache {
 			port => 81,
 			admin_port => 6083,
 			storage => $::hostname ? {
-				/^cp104[1]$/ => "-s file,/srv/sda3/varnish.persist,50% -s file,/srv/sdb3/varnish.persist,50%",
+				/^cp104[1]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			},
 			backends => [ "10.2.1.1" ],
