@@ -14,3 +14,6 @@ apt-install wikimedia-base openssh-server puppet
 
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
+
+# Disable IPv6 privacy extensions before the first boot
+[ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
