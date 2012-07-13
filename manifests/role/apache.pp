@@ -1,7 +1,9 @@
-
+# role/apache.pp
+# cache::applicationserver role class
 
 class role::applicationserver {
 	class common(
+		$labs=false,
 		$cluster,
 # notes about $cluster and $nagios_group
 # current clusters		: appserver, api_appserver, bits_appserver, imagescaler
@@ -15,11 +17,17 @@ class role::applicationserver {
 		) {
 
 		include	standard,
-			admins::roots,
-			admins::dctech,
-			admins::mortals,
 			mediawiki::packages,
-			accounts::l10nupdate
+
+		if $labs == false {
+			include	admins::roots,
+				admins::dctech,
+				admins::mortals,
+				accounts::l10nupdate
+		}
+		else {
+			include	nfs::apache::labs
+		}
 
 		if $lvsrealserver == true {
 			include lvs::configuration
@@ -32,6 +40,7 @@ class role::applicationserver {
 				apaches::pybal-check,
 				apaches::monitoring,
 				apaches::syslog
+			class { "apaches::monitoring": labs => $labs }
 		}
 
 		if $cluster == "imagesclager" {
@@ -46,7 +55,12 @@ class role::applicationserver {
 		}
 
 		if $geoip == true {
-			include	geoip
+			if $labs == false {
+				include	geoip
+			}
+			else {
+				include generic::geoip::files
+			}
 		}
 	
 		if $jobrunner == true {
@@ -54,10 +68,10 @@ class role::applicationserver {
 		}	
 	}
 
+	## prod role classes
 	class appserver{
 		class {"role::applicationserver::common": cluster => "appserver"}
 	}
-
 	class api_appserver{
 		class {"role::applicationserver::common": cluster => "api_appserver"}
 	}
@@ -70,39 +84,13 @@ class role::applicationserver {
 	class jobrunner{
 		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, lvsrealserver => false, apache => false }
 	}
-}
 
-class role::applicationserver::labs {
-	class common(
-		$cluster,
-		$geoip=true
-		){
-
-		include standard,
-			mediawiki::packages,
-			apaches::cron,
-			apaches::service,
-			apaches::monitoring::labs,
-			nfs::apache::labs,
-			nfs::upload
-
-		if $cluster == "imagesclager" {
-			include	imagescaler::cron,
-				imagescaler::packages,
-				imagescaler::files
-		}
-
-		if $geoip == true {
-			include	generic::geoip::files
-		}
+	## labs role classes
+	class labs::appserver{ 
+		class {"role::applicationserver::common": cluster => "appserver", labs => true }
 	}
-
-	class appserver{ 
-		class {"role::applicationserver::labs::common": cluster => "appserver" }
-	}
-	class imagescaler{ 
-		class {"role::applicationserver::labs::common": cluster => "imagescaler", geoip => false }
+	class labs::imagescaler{ 
+		class {"role::applicationserver::common": cluster => "imagescaler", labs => true, geoip => false }
 	}
 }
-
 

@@ -182,10 +182,14 @@ class apaches::pybal-check {
 	}
 }
 
-class apaches::monitoring {
-	monitor_service { "appserver http": description => "Apache HTTP", check_command => "check_http_wikipedia" }
+class apaches::monitoring( $labs=false ) {
+	monitor_service { "appserver http": description => "Apache HTTP",
+		check_command => $labs ? { false => "check_http_wikipedia",
+				true => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
+	}
 }
 
+## this should be removed. can now use above.
 class apaches::monitoring::labs {
 	# bug 37046
 	monitor_service { "appserver labs http": description => "Apache HTTP", check_command => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
