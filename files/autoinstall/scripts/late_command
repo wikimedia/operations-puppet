@@ -12,14 +12,5 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 # openssh-server just to be sure
 apt-install wikimedia-base openssh-server puppet
 
-# Enable serial console (this has changed in Edgy with upstart)
-SUITE=$(debconf-get mirror/suite)
-if [ "$SUITE" = "hardy" && -f /target/etc/inittab ]
-then
-	# Do not let Ubuntu installer disable the console
-	rm -f /usr/lib/prebaseconfig.d/90console
-	sed -i -e "s/^#T0:/T0:/" /target/etc/inittab
-fi
-
 # Change /etc/motd to read the auto-install date
 chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
