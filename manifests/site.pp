@@ -191,7 +191,7 @@ class applicationserver {
 
 class imagescaler {
 	$cluster = "imagescaler"
-	$nagios_group = "image_scalers"
+	$nagios_group = $cluster
 
 	$lvs_realserver_ips = $realm ? {
 		'production' => [ "10.2.1.21" ],
