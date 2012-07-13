@@ -22,11 +22,4 @@ then
 fi
 
 # Change /etc/motd to read the auto-install date
-if [ -f /target/etc/motd.tail ]
-then
-	# Edgy
-	chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
-else
-	# Dapper
-	chroot /target /bin/sh -c 'echo -e \\n$(cat /etc/issue.net) auto-installed on $(date). > /etc/motd'
-fi
+chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date). > /etc/motd.tail'
