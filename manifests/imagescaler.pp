@@ -1,7 +1,7 @@
 # imagescaler.pp
 
 # Virtual resource for the monitoring server
-@monitor_group { "image_scalers": description => "image scalers" }
+@monitor_group { "imagescaler": description => "image scalers" }
 
 ## need to move the /a/magick-tmp stuff to /tmp/magick-tmp this will require a mediaiwiki change, it would seem
 

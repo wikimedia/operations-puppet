@@ -4,9 +4,6 @@
 class role::applicationserver {
 	class common(
 		$cluster,
-# notes about $cluster and $nagios_group
-# current clusters		: appserver, api_appserver, bits_appserver, imagescaler
-# current nagios_ groups: appserver, api_appserver, bits_appserver, image_scalers <- this has gotta be renamed
 		$nagios_group=$cluster,
 		$apache=true,
 		$lvsrealserver=true,
@@ -77,7 +74,7 @@ class role::applicationserver {
 		class {"role::applicationserver::common": cluster => "bits_appserver", upload => false}
 	}
 	class imagescaler{
-		class {"role::applicationserver::common": cluster => "imagescaler", geoip => false, nagios_group => "image_scalers" } ##will change name of nagios group, but just recreating for now
+		class {"role::applicationserver::common": cluster => "imagescaler", geoip => false }
 	}
 	class jobrunner{
 		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, lvsrealserver => false, apache => false }
