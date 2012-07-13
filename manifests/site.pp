@@ -827,7 +827,6 @@ node "fenari.wikimedia.org" {
 		misc::scripts,
 		misc::ircecho,
 		misc::l10nupdate,
-		misc::mwfatallog,
 		dns::account,
 		nrpe,
 		drac::management,
