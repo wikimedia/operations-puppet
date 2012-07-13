@@ -22,6 +22,7 @@ class icinga::monitor {
 		icinga::monitor::snmp,
 		icinga::monitor::naggen,
 		icinga::monitor::nsca::daemon,
+		icinga::monitor::apache,
 		mysql,
 		nrpe::new,
 		icinga::monitor::files::misc
