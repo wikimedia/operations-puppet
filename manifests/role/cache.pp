@@ -580,6 +580,7 @@ class role::cache {
 			admin_port => 6082,
 			backends => $varnish_fe_backends,
 			directors => $varnish_fe_directors[$::site],
+			director_type => "chash",
 			vcl_config => {
 				'retry5xx' => 0,
 			},
