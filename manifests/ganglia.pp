@@ -373,7 +373,7 @@ class ganglia::web {
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
 		# TODO(ssmollett): when switching to ganglia-webfrontend
 		# package, use /usr/share/ganglia-webfrontend
-		$ganglia_webdir = "/srv/org/wikimedia/gangliaweb"
+		$ganglia_webdir = "/srv/org/wikimedia/ganglia-web-3.5.1
 	}
 
 	file {
