@@ -216,6 +216,12 @@ class icinga::monitor::files::misc {
 			group => root,
 			mode => 0755;
 
+		"/var/lib/nagios/rw":
+			ensure => directory,
+			owner => icinga,
+			group => nagios,
+			mode => 0777;
+
 		# Script to purge resources for non-existent hosts
 		 "/usr/local/sbin/purge-nagios-resources.py":
 			source => "puppet:///files/nagios/purge-nagios-resources.py",
