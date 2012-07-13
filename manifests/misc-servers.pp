@@ -42,6 +42,7 @@ class misc::noc-wikimedia {
 			ensure => present;
 	}
 
+	apache_module { php5: name => "php5" }
 	apache_module { userdir: name => "userdir" }
 	apache_module { cgi: name => "cgi" }
 	apache_module { ldap: name => "ldap" }

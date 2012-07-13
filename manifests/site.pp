@@ -837,8 +837,6 @@ node "fenari.wikimedia.org" {
 		mediawiki::packages
 
 	install_certificate{ "star.wikimedia.org": }
-
-	apache_module { php5: name => "php5" }
 }
 
 node "formey.wikimedia.org" {
