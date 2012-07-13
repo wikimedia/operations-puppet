@@ -13,7 +13,7 @@
 
 <% active_nodes = scope.lookupvar("role::cache::configuration::active_nodes") -%>
 
-<% active_nodes.keys.each do |role| -%>
+<% active_nodes.keys.sort.each do |role| -%>
 <% active_nodes[role].keys.sort.each do |site| -%>
 <% active_nodes[role][site].sort.each do |node| -%>
 <%= node %>:80
@@ -21,7 +21,7 @@
 <% end -%>
 <% end -%>
 
-<% active_nodes.keys.each do |role| -%>
+<% active_nodes.keys.sort.each do |role| -%>
 <% active_nodes[role].keys.sort.each do |site| -%>
 <% active_nodes[role][site].sort.each do |node| -%>
 <%= node %>:3128
