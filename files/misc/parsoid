@@ -1,0 +1,18 @@
+#! /bin/bash
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/misc/parsoid
+#####################################################################
+
+# Script to start Parsoid
+
+(
+	cd /var/lib/parsoid/Parsoid/modules/parser
+	export NODE_PATH=/var/lib/parsoid/Parsoid/modules/parser/node_modules
+	sudo -E -u parsoid nohup node /var/lib/parsoid/Parsoid/api/server.js > /var/lib/parsoid/nohup.out 2>&1 &
+	PARSOIDPID=$!
+	echo $PARSOIDPID > /var/run/parsoid.pid
+	wait $PARSOIDPID
+	rm /var/run/parsoid.pid
+) &
