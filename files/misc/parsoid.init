@@ -1,0 +1,75 @@
+#! /bin/sh
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/misc/parsoid.init
+#####################################################################
+
+### BEGIN INIT INFO
+# Provides:          parsoid
+# Required-Start:    $network $named $remote_fs $syslog
+# Required-Stop:     $network $named $remote_fs $syslog
+# Should-Start:      parsoid
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/parsoid
+NAME=parsoid
+DESC=parsoid
+PIDFILE="/var/run/${NAME}.pid"
+
+test -x $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+reload_parsoid() {
+	# SIGHUP isn't supported by the Parsoid server yet, but this should be easy to implement
+	# See https://groups.google.com/forum/?fromgroups#!topic/nodejs/3e-eo0y9ZLI
+	start-stop-daemon --stop --quiet --signal HUP --pidfile $PIDFILE
+}
+
+start_parsoid() {
+	start-stop-daemon --start --quiet --pidfile $PIDFILE --startas $DAEMON -- $NAME
+}
+
+stop_parsoid() {
+	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+}
+
+status_parsoid() {
+	status_of_proc -p "${PIDFILE}" "${DAEMON}" "${NAME}"
+}
+
+case "$1" in
+    start)
+	log_begin_msg "Starting $DESC"
+	start_parsoid
+	log_end_msg $?
+	;;
+    stop)
+	log_begin_msg "Stopping $DESC"
+	stop_parsoid
+	log_end_msg $?
+	;;
+    reload)
+	log_begin_msg "Reloading $DESC"
+	reload_parsoid
+	log_end_msg $?
+	;;
+    status)
+	status_parsoid
+	;;
+    restart|force-reload)
+	log_begin_msg "Restarting $DESC"
+	stop_parsoid
+	sleep 1
+	start_parsoid
+	log_end_msg $?
+	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart|force-reload|reload}" >&2
+	exit 1
+	;;
+esac
