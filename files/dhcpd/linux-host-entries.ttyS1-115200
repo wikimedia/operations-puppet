@@ -408,6 +408,111 @@ host db62 {
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+host db63 {
+	hardware ethernet d4:ae:52:90:39:8c;
+	fixed-address db63.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db64 {
+	hardware ethernet d4:ae:52:95:4a:d7;
+	fixed-address db64.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db65 {
+	hardware ethernet d4:ae:52:8b:9f:b3;
+	fixed-address db65.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db66 {
+	hardware ethernet d4:ae:52:90:3b:53;
+	fixed-address db66.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db67 {
+	hardware ethernet d4:ae:52:95:4a:e0;
+	fixed-address db67.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db68 {
+	hardware ethernet d4:ae:52:8b:eb:2e;
+	fixed-address db68.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db69 {
+	hardware ethernet d4:ae:52:90:3e:dc;
+	fixed-address db69.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db70 {
+	hardware ethernet d4:ae:52:90:39:98;
+	fixed-address db70.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db71 {
+	hardware ethernet d4:ae:52:8d:c1:1a;
+	fixed-address db71.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db72 {
+	hardware ethernet d4:ae:52:90:3a:de;
+	fixed-address db72.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db73 {
+	hardware ethernet d4:ae:52:8b:a4:ea;
+	fixed-address db73.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/wpxelinux.0";
+}
+
+host db74 {
+	hardware ethernet d4:ae:52:90:3b:5c;
+	fixed-address db74.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db75 {
+	hardware ethernet d4:ae:52:95:4d:9e;
+	fixed-address db75.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db76 {
+	hardware ethernet d4:ae:52:8f:21:24;
+	fixed-address db76.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
+host db77 {
+	hardware ethernet d4:ae:52:93:41:6d;
+	fixed-address db77.pmtpa.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host db1001 {
 	hardware ethernet 78:2b:cb:03:68:61;
 	fixed-address db1001.eqiad.wmnet;
