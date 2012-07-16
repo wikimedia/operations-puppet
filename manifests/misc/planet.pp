@@ -35,6 +35,8 @@ class misc::planet-venus {
 		ensure => latest;
 	}
 
+	include generic::locales::international
+
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
 
 	file {
