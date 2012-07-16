@@ -115,6 +115,18 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 			cursor.close()
 			logging.debug('innodb_status: ' + str(innodb_status))
 
+			# if the ganglia mysql users has been granted select access to an innodb table
+			# in the global space, this will report data_free for the global space.
+			cursor = conn.cursor(MySQLdb.cursors.Cursor)
+			cursor.execute('SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
+			ibdata_free = ""
+			res = cursor.fetchone()
+			if res:
+				ibdata_free = res[0]
+			else:
+				ibdata_free = False
+			cursor.close()
+
 		if get_master:
 			cursor = conn.cursor(MySQLdb.cursors.Cursor)
 			cursor.execute("SHOW MASTER LOGS")
@@ -253,6 +265,9 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 
 			else:
 				mysql_stats[key] = innodb_status[istat]
+		if ibdata_free:
+			mysql_stats['innodb_free_space'] = long(ibdata_free) / 1048576
+
 
 	# process master logs
 	if get_master:
@@ -283,7 +298,6 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		mysql_stats['slave_lag'] = slave_status['seconds_behind_master']
 		mysql_stats['slave_relay_log_pos'] = slave_status['relay_log_pos']
 		mysql_stats['slave_relay_log_space'] = slave_status['relay_log_space']
-
 
 	logging.debug('success updating stats')
 	logging.debug('mysql_stats: ' + str(mysql_stats))
@@ -754,6 +768,12 @@ def metric_init(params):
 				'description': "InnoDB",
 				'value_type':'uint',
 				'units': 'merges',
+			},
+
+			innodb_free_space = {
+				'description': "InnoDB",
+				'value_type':'uint',
+				'units': 'Mbytes',
 			},
 
 			innodb_log_bytes_flushed = {
