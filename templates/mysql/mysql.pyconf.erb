@@ -34,6 +34,14 @@ modules {
     param get_slave {
       value = True
     }
+    # This returns the innodb free space on the first table returned by
+    # 'SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1'
+    # for use on servers without file_per_table, where ibdata = the full disk.
+    # Only collects data on servers where the dbstats user has been granted SELECT
+    # access to an innodb table.
+    param get_ibdata_free {
+      value = True
+    }
   }
 }
 
@@ -443,6 +451,10 @@ collection_group {
 
   metric {
     name = "mysql_aborted_clients"
+  }
+
+  metric {
+    name = "mysql_ibdata_free"
   }
 }
 
