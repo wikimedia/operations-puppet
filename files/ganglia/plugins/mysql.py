@@ -133,17 +133,6 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 				get_slave = False
 			cursor.close()
 
-		if get_innodb and get_ibdata_free:
-			cursor = conn.cursor(MySQLdb.cursors.Cursor)
-			cursor.execute('SELECT DATA_FREE FROM information_schema.TABLES WHERE ENGINE="InnoDB" LIMIT 1')
-			ibdata_free = ""
-			res = cursor.fetchone()
-			if res:
-				ibdata_free = res[0]
-			else:
-				ibdata_free = False
-			cursor.close()
-
 		cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 		cursor.execute("SELECT RELEASE_LOCK('gmetric-mysql') as ok")
 		cursor.close()
@@ -295,8 +284,6 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 		mysql_stats['slave_relay_log_pos'] = slave_status['relay_log_pos']
 		mysql_stats['slave_relay_log_space'] = slave_status['relay_log_space']
 
-	if ibdata_free:
-		mysql_stats['ibdata_free'] = ibdata_free
 
 	logging.debug('success updating stats')
 	logging.debug('mysql_stats: ' + str(mysql_stats))
