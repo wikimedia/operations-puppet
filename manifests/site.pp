@@ -1223,18 +1223,11 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	$nameservers_prefix = [ $ipaddress ]
 	include dns::recursor
 
-	# OLD
-	if $hostname =~ /^lvs[34]$/ {
-		$lvs_balancer_ips = [ "10.2.1.1", "10.2.1.11", "10.2.1.12",
-			"10.2.1.13", "10.2.1.21", "10.2.1.22", "10.2.1.27" ]
-	}
-
-	# NEW
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
 	
-	if $hostname =~ /^lvs[15]$/ {
-		$lvs_balancer_ips = [
+	$lvs_balancer_ips = $::hostname ? {
+		/^lvs[15]$/ => [
 			$sip['upload'][$::site],
 			$sip['ipv6'][$::site],
 			$sip['payments'][$::site],
@@ -1242,14 +1235,23 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			$sip['dns_rec'][$::site],
 			$sip['osm'][$::site],
 			$sip['misc_web'][$::site],
-		]
-	}
-	if $hostname =~ /^lvs[26]$/ {
-		$lvs_balancer_ips = [
+			],
+		/^lvs[26]$/ => [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
 			$sip['ipv6'][$::site],
-		]
+			],
+		/^lvs[34]$/ => [
+			$sip['apaches'][$::site],
+			$sip['rendering'][$::site],
+			$sip['api'][$::site],
+			$sip['search_pool1'][$::site],
+			$sip['search_pool2'][$::site],
+			$sip['search_pool3'][$::site],
+			$sip['search_pool4'][$::site],
+			$sip['search_prefix'][$::site],
+			$sip['swift'][$::site]
+			]
 	}
 
 	include base,
