@@ -1,4 +1,6 @@
 # http://planet.wikimedia.org/
+
+# old planet
 class misc::planet {
 	#The host of this role must have the star certificate installed on it
 	system_role { "misc::planet": description => "Planet weblog aggregator" }
@@ -25,14 +27,10 @@ class misc::planet {
 	}
 }
 
-# http://intertwingly.net/code/venus/
-class misc::planet-venus {
-	system_role { "misc::planet-venus": description => "Planet (venus) weblog aggregator" }
+# new planet
+class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
-	# When updating this array, make sure to modify files/planet/update-planets
-	# script as well
-	$planet_languages=["ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh"]
-
+	# http://intertwingly.net/code/venus/
 	package { "planet-venus":
 		ensure => latest;
 	}
@@ -69,7 +67,7 @@ class misc::planet-venus {
 				owner => planet,
 				group => planet,
 				mode => 0444,
-				source => "puppet:///files/planet/${title}_config.ini";
+				source => "puppet:///templates/planet/${title}_config.ini";
 		}
 	}
 
