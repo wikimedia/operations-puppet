@@ -292,7 +292,7 @@ node "alsted.wikimedia.org" {
 		admins::dctech
 }
 
-node /amslvs[1-4]\.esams\.wikimedia\.org/ {
+node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
@@ -309,7 +309,7 @@ node /amslvs[1-4]\.esams\.wikimedia\.org/ {
 			$sip['ipv6'][$::site],
 		]
 	}
-	elsif $hostname =~ /^amslvs[4]$/ {
+	elsif $hostname =~ /^amslvs[24]$/ {
 		$lvs_balancer_ips = [
 			$sip['upload'][$::site],
 			$sip['ipv6'][$::site],
