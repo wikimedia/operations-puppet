@@ -63,6 +63,16 @@ MaxRequestsPerChild 300
 #LoadModule vhost_alias_module libexec/mod_vhost_alias.so
 
 
+# Thanks to an envvars hack, you can enable core dumps with:
+#
+#    echo 500000 > /etc/apache2/core-dump-max-size
+#
+# Then restart apache
+#
+<IfDefine CORE_DUMPS>
+	CoreDumpDirectory /usr/local/apache/core
+</IfDefine>
+
 Listen 80
 
 User apache
