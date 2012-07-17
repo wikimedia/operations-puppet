@@ -1297,11 +1297,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['mobile'][$::site],
 			$sip['ipv6'][$::site],
 			],
-		/^lvs100[2]$/ => [
-			$sip['upload'][$::site],
-			$sip['dns_rec'][$::site],
-			],
-		/^lvs100[5]$/ => [
+		/^lvs100[25]$/ => [
 			$sip['upload'][$::site],
 			$sip['ipv6'][$::site],
 			$sip['payments'][$::site],
