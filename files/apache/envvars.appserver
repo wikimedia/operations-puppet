@@ -10,6 +10,15 @@ if [ -e /etc/wikimedia-image-scaler ]; then
 	HTTPD="$HTTPD -DSCALER"
 fi
 
+# Core dump support
+if [ -e /etc/apache2/core-dump-max-size ]; then
+	ulimit -c "`cat /etc/apache2/core-dump-max-size`"
+	HTTPD="$HTTPD -DCORE_DUMPS"
+	mkdir -p /usr/local/apache/core
+	chown apache:apache /usr/local/apache/core
+	chmod 700 /usr/local/apache/core
+fi
+
 # For Ubuntu 8.04+
 APACHE_HTTPD="$HTTPD"
 
