@@ -1288,22 +1288,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	include dns::recursor
 
 	include lvs::configuration
-
-	# OLD
-	if $hostname =~ /^lvs100[1]$/ {
-		$lvs_balancer_ips = [ "208.80.154.224", "208.80.154.225",
-			"208.80.154.226", "208.80.154.227", "208.80.154.228",
-			"208.80.154.229", "208.80.154.230", "208.80.154.231",
-			"208.80.154.232", "208.80.154.233", "208.80.154.234",
-			"208.80.154.236", "208.80.154.237", "208.80.154.238",
-			"208.80.154.239", "208.80.154.240", "208.80.154.241",
-			"10.2.2.23", "10.2.2.24", "10.2.2.25", "10.2.2.26" ]
-	}
-	
-	# NEW
-	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
-	if $hostname =~ /^lvs100[4]$/ {
+
+	if $hostname =~ /^lvs100[14]$/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
