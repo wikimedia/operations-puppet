@@ -313,53 +313,7 @@ ErrorDocument 404 /w/404.php
 
 NameVirtualHost *
 
-# Disabling to test -- 2003-11-30 BV FIXME
-####Include /apache/conf/throttle.conf
-
-# Includes
-
-# Note, the order is important
-# In particular, this must be the first virtual subdomain:
-Include /etc/apache2/wmf/nonexistent.conf
-
-# www.wikipedia.org
-Include /etc/apache2/wmf/www.wikipedia.conf
-
-# Redirects also must override *.wikipedia.org
-Include /etc/apache2/wmf/redirects.conf
-
-# Various domains including all the multi-subdomain projects
-# Also some site-wide settings
-Include /etc/apache2/wmf/main.conf
-
-# A few single-subdomain projects
-Include /etc/apache2/wmf/remnant.conf
-
-# Set the bad_bots environment variable based on various criteria
-# Include /usr/local/apache/conf/bots.conf
-
-# boards.wikimedia.org
-# DISABLED 2004-11-18 --brion
-#Include /usr/local/apache/conf/boards.conf
-
-# upload.wikimedia.org
-# DISABLED as this is now done on albert 2005-02-26 --brion
-#Include /usr/local/apache/conf/upload.conf
-
-# secure.wikimedia.org unencrypted backend
-Include /etc/apache2/wmf/wikimedia-ssl-backend.conf
-
-# *.wikimedia.org
-Include /etc/apache2/wmf/wikimedia.conf
-
-# wikimediafoundation.org and its aliases
-Include /etc/apache2/wmf/foundation.conf
-
-# A simple redirect to en, perhaps this once contained the load balancing redirect
-Include /etc/apache2/wmf/en2.conf
-
-# A couple of redirects for www.XXX.wikipedia.org
-Include /etc/apache2/wmf/postrewrites.conf
+Include /etc/apache2/wmf/all.conf
 
 # Set ETags for files to not be based on inode,
 # since that will be different on each backend server
