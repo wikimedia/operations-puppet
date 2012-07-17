@@ -1401,9 +1401,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		}
 	}
 
-	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-		interface_add_ip6_mapped { "main": interface => "eth0" }
-	}
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	# Make sure GRO is off
 	interface_manual { "eth1": interface => "eth1", before => Interface_offload["eth1 gro"] }
