@@ -15,13 +15,14 @@ class role::applicationserver {
 		include	standard,
 			mediawiki::packages
 
-		if $realm == 'production' {
+		if $::realm == 'production' {
 			include	admins::roots,
 				admins::dctech,
 				admins::mortals,
 				accounts::l10nupdate
-		} else {
-			include	nfs::apache::labs
+				if $geoip == true {
+					include	geoip
+				}
 		}
 
 		if $lvsrealserver == true {
@@ -42,6 +43,9 @@ class role::applicationserver {
 			include	imagescaler::cron,
 				imagescaler::packages,
 				imagescaler::files
+				if $::realm == 'labs' {
+					include	nfs::apache::labs
+				}
 		}
 
 		if $lvsrealserver == true {
@@ -49,15 +53,6 @@ class role::applicationserver {
 			include	nfs::upload
 		}
 
-		if $geoip == true {
-			if $realm == 'production' {
-				include	geoip
-			}
-			else {
-				include	generic::geoip::files
-			}
-		}
-	
 		if $jobrunner == true {
 			include	jobrunner::packages
 		}	
