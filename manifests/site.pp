@@ -302,7 +302,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	# NEW
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
-	if $hostname =~ /^amslvs[3]$/ {
+	if $hostname =~ /^amslvs[13]$/ {
 		$lvs_balancer_ips = [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
