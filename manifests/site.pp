@@ -706,19 +706,20 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 }
 
 node "dobson.wikimedia.org" {
-	$ntp_servers = [ "173.9.142.98", "66.250.45.2", "169.229.70.201", "69.31.13.207", "72.167.54.201" ]
-	$ntp_peers = [ "linne.wikimedia.org" ]
-
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
 	interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
 	include	base,
 		ganglia,
 		exim::simple-mail-sender,
-		ntp::server,
 		dns::recursor::statistics
 
 	include network::constants
+
+	class { 'ntp::server':
+		servers => [ "173.9.142.98", "66.250.45.2", "169.229.70.201", "69.31.13.207", "72.167.54.201" ],
+		peers => [ "linne.wikimedia.org" ],
+	}
 
 	class { "dns::recursor":
 		listen_addresses => [ "208.80.152.131" ],
@@ -1190,18 +1191,19 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 }
 
 node "linne.wikimedia.org" {
-	$ntp_servers = [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ]
-	$ntp_peers = [ "dobson.wikimedia.org" ]
-
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
 	interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
 	include base,
 		ganglia,
 		exim::simple-mail-sender,
-		ntp::server,
 		misc::url-downloader,
 		misc::squid-logging::multicast-relay
+
+	class { 'ntp::server':
+		servers => [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ],
+		peers => [ "dobson.wikimedia.org" ],
+	}
 
 		class { "dns::auth-server":
 			ipaddress => "208.80.152.142",

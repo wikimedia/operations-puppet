@@ -17,19 +17,19 @@ filegen clockstats file clockstats type day enable
 # yet supported by this version of ntpd
 
 <% if operatingsystem != "Solaris" -%>
-<% ntp_servers.each do |val| -%>
+<% servers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 server <%= val %>
 
 <% end -%>
-<% ntp_peers.each do |val| -%>
+<% peers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 peer <%= val %>
 
 <% end -%>
 <% else -%>
 restrict 208.80.152.128 mask 255.255.255.192 notrap noquery
-<% ntp_servers.each do |val| -%>
+<% servers.each do |val| -%>
 server <%= val %>
 <% end -%>
 <% end -%>
