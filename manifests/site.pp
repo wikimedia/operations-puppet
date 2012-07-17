@@ -299,30 +299,22 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	$nameservers_prefix = [ $ipaddress ]
 	include dns::recursor
 
-	# NEW
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
-	if $hostname =~ /^amslvs[13]$/ {
-		$lvs_balancer_ips = [
+
+	$lvs_balancer_ips = $::hostname ? {
+		/^amslvs[13]$/ => [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
 			$sip['ipv6'][$::site],
-		]
-	}
-	elsif $hostname =~ /^amslvs[24]$/ {
-		$lvs_balancer_ips = [
+			],
+		/^amslvs[24]$/ => [
 			$sip['upload'][$::site],
 			$sip['ipv6'][$::site],
-		]
-	}
-	else {
-		# OLD
-		$lvs_balancer_ips = [ "91.198.174.232", "91.198.174.233", "91.198.174.234", "91.198.174.224", "91.198.174.225", "91.198.174.226", "91.198.174.227", "91.198.174.228", "91.198.174.229", "91.198.174.230", "91.198.174.231", "91.198.174.235", "10.2.3.23", "10.2.3.24", "10.2.3.25" ]
+			]
 	}
 
-	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-		interface_add_ip6_mapped { "main": interface => "eth0" }
-	}
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	include base,
 		ganglia,
@@ -330,7 +322,6 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 	# Make sure GRO is off
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
-
 }
 
 # amssq31-46 are text squids
