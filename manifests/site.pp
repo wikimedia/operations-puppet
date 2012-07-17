@@ -1290,22 +1290,18 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
 
-	if $hostname =~ /^lvs100[14]$/ {
-		$lvs_balancer_ips = [
+	$lvs_balancer_ips = $::hostname? {
+		/^lvs100[14]$/ => [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
 			$sip['mobile'][$::site],
 			$sip['ipv6'][$::site],
-		]
-	}
-	if $hostname =~ /^lvs100[2]$/ {
-		$lvs_balancer_ips = [
+			],
+		/^lvs100[2]$/ => [
 			$sip['upload'][$::site],
 			$sip['dns_rec'][$::site],
-		]
-	}
-	if $hostname =~ /^lvs100[5]$/ {
-		$lvs_balancer_ips = [
+			],
+		/^lvs100[5]$/ => [
 			$sip['upload'][$::site],
 			$sip['ipv6'][$::site],
 			$sip['payments'][$::site],
@@ -1313,16 +1309,14 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['dns_rec'][$::site],
 			$sip['osm'][$::site],
 			$sip['misc_web'][$::site],
-		]
-	}
-	
-	# OLD
-	if $hostname =~ /^lvs100[36]$/ {
-		$lvs_balancer_ips = [ $lvs::configuration::lvs_service_ips[$::realm]['search_pool1'][$::site],
-				$lvs::configuration::lvs_service_ips[$::realm]['search_pool2'][$::site],
-				$lvs::configuration::lvs_service_ips[$::realm]['search_pool3'][$::site],
-				$lvs::configuration::lvs_service_ips[$::realm]['search_pool4'][$::site],
-				$lvs::configuration::lvs_service_ips[$::realm]['search_prefix'][$::site] ]
+			],
+		/^lvs100[36]$/ => [ 
+			$sip['search_pool1'][$::site],
+			$sip['search_pool2'][$::site],
+			$sip['search_pool3'][$::site],
+			$sip['search_pool4'][$::site],
+			$sip['search_prefix'][$::site]
+			]
 	}
 
 	include base,
