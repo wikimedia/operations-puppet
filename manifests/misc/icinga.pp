@@ -585,6 +585,7 @@ class icinga::monitor::firewall {
 		require "icinga::monitor::firewall::iptables-accepts"
 		iptables_add_service{ "deny_pub_nsca": service => "nsca", jump => "DROP" }
 		iptables_add_service{ "deny_pub_snmptrap": service => "snmptrap", jump => "DROP" }
+		iptables_add_service{ "TEMP_deny_smtp": service => "smtp", jump => "DROP" }
 	}
 
 	class iptables {
