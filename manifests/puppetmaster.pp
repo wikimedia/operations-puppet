@@ -444,6 +444,11 @@ class puppetmaster::self {
 			target => "$gitdir/operations/puppet/manifests",
 			force  => true,
 		}
+		file { "/etc/puppet/modules":
+			ensure => link,
+			target => "$gitdir/operations/puppet/modules",
+			force  => true,
+		}
 	}
 
 	class gitclone {
