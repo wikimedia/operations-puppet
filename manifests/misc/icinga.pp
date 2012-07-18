@@ -13,7 +13,7 @@ class icinga::monitor {
 		icinga::monitor::packages,
 		passwords::nagios::mysql,
 		icinga::monitor::firewall,
-		icinga::monitor::files::configuration,
+#		icinga::monitor::files::configuration,
 		icinga::monitor::files::nagios-plugins,
 		icinga::monitor::snmp,
 		icinga::monitor::checkpaging,
