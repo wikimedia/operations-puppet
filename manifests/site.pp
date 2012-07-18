@@ -182,10 +182,23 @@ node /analytics102[12]\.eqiad\.wmnet/ {
     include role::analytics::kafka::server
 }
 
+<<<<<<< HEAD
 # analytics1023-1025 are zookeeper server nodes
 node /analytics102[345].eqiad.wmnet/ {
     include role::analytics
     include role::analytics::zookeeper::server
+=======
+	include standard,
+		svn::client,
+		admins::roots,
+		admins::dctech,
+		admins::mortals,
+		admins::restricted,
+		misc::bastionhost,
+		misc::scripts,
+		nrpe,
+		ssh::hostkeys-collect
+>>>>>>> 7fdaac7... ssh: move to a module & reorganize/cleanup
 }
 
 # analytics1026 is not yet assigned a role.
@@ -951,12 +964,12 @@ node "fluorine.eqiad.wmnet" {
         admins::mortals,
         admins::restricted,
         nrpe
+        ssh::hostkeys-collect   
 
     class { "role::logging::mediawiki":
         monitor => false,
         log_directory => "/a/mw-log"
     }
-
 }
 
 node "formey.wikimedia.org" {
@@ -2913,11 +2926,43 @@ node 'hafnium.wikimedia.org' {
     }
 }
 
+<<<<<<< HEAD
 # StatsD & Graphite host for eqiad. Slotted to replace professor.pmtpa.
 # RT #5871
 node 'tungsten.eqiad.wmnet' {
     # services
     include standard, role::statsd
+=======
+node "streber.wikimedia.org" {
+	system_role { "misc": description => "network monitoring server" }
+
+	include	passwords::root,
+		base::decommissioned,
+		base::resolving,
+		base::sysctl,
+		base::motd,
+		base::vimconfig,
+		base::standard-packages,
+		base::monitoring::host,
+		base::environment,
+		base::platform,
+		ssh::client,
+		ssh::server,
+		ganglia,
+		ntp::client,
+		admins::roots,
+		admins::dctech,
+#		misc::torrus,
+		exim::rt,
+		misc::rt::server,
+		firewall::builder
+
+	class { "misc::syslog-server": config => "network" }
+
+	install_certificate{ "star.wikimedia.org": }
+	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
+}
+>>>>>>> 7fdaac7... ssh: move to a module & reorganize/cleanup
 
     # access
     include groups::wikidev, accounts::olivneh
