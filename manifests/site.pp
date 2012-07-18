@@ -2059,8 +2059,12 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
+node "srv194.pmtpa.wmnet" {
+	include	role::applicationserver::appserver
+}
+
 # srv194-213 are application servers, memcached
-node /^srv(19[4-9]|20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
+node /^srv(19[5-9]|20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
 	include applicationserver::homeless,
 		memcached
 }
