@@ -2314,6 +2314,7 @@ node "stafford.pmtpa.wmnet" {
 			'filesdir' => "/var/lib/git/operations/puppet/files",
 			'privatefilesdir' => "/var/lib/git/operations/private/files",
 			'manifestdir' => "/var/lib/git/operations/puppet/manifests",
+			'modulepath' => "/var/lib/git/operations/puppet/modules",
 			'templatedir' => "/var/lib/git/operations/puppet/templates",
 			'softwaredir' => "/var/lib/git/operations/software"
 		}
