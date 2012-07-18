@@ -71,6 +71,7 @@ $iptables_protocols = {
 	puppetmaster => "tcp",
 	rsyncd_tcp => "tcp",
 	rsyncd_udp => "udp",
+	smtp => "tcp",
 	snmptrap => "udp",
 	ssh => "tcp",
 	swift_account => "tcp",
