@@ -328,98 +328,92 @@ class role::cache {
 	}
 
 	class upload {
-		if $::site == "eqiad" {
-			# Varnish
+		# Varnish
 
-			$cluster = "cache_upload"
-			$nagios_group = "cache_upload_${::site}"
+		$cluster = "cache_upload"
+		$nagios_group = "cache_upload_${::site}"
 
-			include lvs::configuration, role::cache::configuration, network::constants
-			
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
+		include lvs::configuration, role::cache::configuration, network::constants
 
-			$varnish_fe_directors = {
-				"pmtpa" => {},
-				"eqiad" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
-				"esams" => {},
-			}
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
-			system_role { "role::cache::upload": description => "upload Varnish cache server" }
-
-			include standard,
-				nrpe
-
-			#class { "varnish::packages": version => "3.0.2-2wm4" }
-
-			varnish::setup_filesystem{ ["sda3", "sdb3"]:
-				before => Varnish::Instance["upload-backend"]
-			}
-
-			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
-
-			# Ganglia monitoring
-			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
-
-			varnish::instance { "upload-backend":
-				name => "",
-				vcl => "upload-backend",
-				port => 3128,
-				admin_port => 6083,
-				storage => "-s sda3=file,/srv/sda3/varnish.persist,100G -s sdb3=file,/srv/sdb3/varnish.persist,100G",
-				backends => [ "10.2.1.24", "10.2.1.27" ],
-				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27", "10.2.1.24" ] },
-				director_type => "random",
-				vcl_config => {
-					'retry5xx' => 1,
-					'cache4xx' => "5m"
-				},
-				backend_options => {
-					'port' => 80,
-					'connect_timeout' => "5s",
-					'first_byte_timeout' => "35s",
-					'between_bytes_timeout' => "4s",
-					'max_connections' => 1000,
-				},
-				wikimedia_networks => $network::constants::all_networks,
-				xff_sources => $network::constants::all_networks
-			}
-
-			varnish::instance { "upload-frontend":
-				name => "frontend",
-				vcl => "upload-frontend",
-				port => 80,
-				admin_port => 6082,
-				backends => $role::cache::configuration::active_nodes['upload'][$::site],
-				directors => $varnish_fe_directors[$::site],
-				director_type => "chash",
-				vcl_config => {
-					'retry5xx' => 0,
-					'cache4xx' => "5m"
-				},
-				backend_options => {
-					'port' => 3128,
-					'connect_timeout' => "5s",
-					'first_byte_timeout' => "35s",
-					'between_bytes_timeout' => "2s",
-					'max_connections' => 100000,
-					'probe' => "varnish",
-					'weight' => 20,
-				},
-				xff_sources => $network::constants::all_networks,
-			}
-
-			varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-
-			# HTCP packet loss monitoring on the ganglia aggregators
-			if $ganglia_aggregator == "true" and $::site != "esams" {
-				include misc::monitoring::htcp-loss
-			}
+		$varnish_fe_directors = {
+			"pmtpa" => {},
+			"eqiad" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
+			"esams" => {},
 		}
-		else {
-			# Squid
-			class { "role::cache::squid::common": role => "upload" }
+
+		system_role { "role::cache::upload": description => "upload Varnish cache server" }
+
+		include standard,
+			nrpe
+
+		#class { "varnish::packages": version => "3.0.2-2wm4" }
+
+		varnish::setup_filesystem{ ["sda3", "sdb3"]:
+			before => Varnish::Instance["upload-backend"]
+		}
+
+		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+		varnish::instance { "upload-backend":
+			name => "",
+			vcl => "upload-backend",
+			port => 3128,
+			admin_port => 6083,
+			storage => "-s sda3=file,/srv/sda3/varnish.persist,100G -s sdb3=file,/srv/sdb3/varnish.persist,100G",
+			backends => [ "10.2.1.24", "10.2.1.27" ],
+			directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27", "10.2.1.24" ] },
+			director_type => "random",
+			vcl_config => {
+				'retry5xx' => 1,
+				'cache4xx' => "5m"
+			},
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 1000,
+			},
+			wikimedia_networks => $network::constants::all_networks,
+			xff_sources => $network::constants::all_networks
+		}
+
+		varnish::instance { "upload-frontend":
+			name => "frontend",
+			vcl => "upload-frontend",
+			port => 80,
+			admin_port => 6082,
+			backends => $role::cache::configuration::active_nodes['upload'][$::site],
+			directors => $varnish_fe_directors[$::site],
+			director_type => "chash",
+			vcl_config => {
+				'retry5xx' => 0,
+				'cache4xx' => "5m"
+			},
+			backend_options => {
+				'port' => 3128,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "2s",
+				'max_connections' => 100000,
+				'probe' => "varnish",
+				'weight' => 20,
+			},
+			xff_sources => $network::constants::all_networks,
+		}
+
+		varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+
+		# HTCP packet loss monitoring on the ganglia aggregators
+		if $ganglia_aggregator == "true" and $::site != "esams" {
+			include misc::monitoring::htcp-loss
 		}
 	}
 
