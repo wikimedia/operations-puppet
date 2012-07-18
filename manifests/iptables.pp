@@ -31,6 +31,7 @@ $iptables_ports = {
 	rsyncd_tcp => "873",
 	rsyncd_udp => "873",
 	snmptrap => "162",
+	smtp => "25",
 	ssh => "22",
 	swift_account => "6002",
 	swift_container => "6001",
