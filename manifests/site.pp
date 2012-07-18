@@ -396,7 +396,8 @@ node "bast1001.wikimedia.org" {
 		admins::restricted,
 		misc::bastionhost,
 		misc::scripts,
-		nrpe
+		nrpe,
+		ssh::hostkeys-collect
 }
 
 node "bellin.pmtpa.wmnet"{
@@ -824,7 +825,8 @@ node "fenari.wikimedia.org" {
 		squid::cachemgr,
 		accounts::awjrichards,
 		accounts::erosen,
-		mediawiki::packages
+		mediawiki::packages,
+		ssh::hostkeys-collect
 
 	install_certificate{ "star.wikimedia.org": }
 }
@@ -2371,7 +2373,8 @@ node "streber.wikimedia.org" {
 		base::monitoring::host,
 		base::environment,
 		base::platform,
-		ssh,
+		ssh::client,
+		ssh::server,
 		ganglia,
 		ntp::client,
 		admins::roots,

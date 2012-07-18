@@ -2,7 +2,6 @@
 
 import "decommissioning.pp"
 import "generic-definitions.pp"
-import "ssh.pp"
 import "sudo.pp"
 import "nagios.pp"
 import "nrpe.pp"
@@ -739,7 +738,8 @@ class base {
 		base::environment,
 		base::platform,
 		base::access::dc-techs,
-		ssh
+		ssh::client,
+		ssh::server
 
 	# include base::monitor::host.
 	# if $nagios_contact_group is set, then use it
