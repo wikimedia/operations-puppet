@@ -50,6 +50,7 @@ flags.DECLARE('vncproxy_topic', 'nova.vnc')
 flags.DEFINE_integer('find_host_timeout', 30,
                      'Timeout after NN seconds when looking for a host.')
 
+FULL_IPV4_ADDRESS_RE = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
 
 def generate_default_hostname(instance):
     """Default function to generate a hostname given an instance reference."""
@@ -871,9 +872,14 @@ class API(base.Base):
             filters['instance_type_id'] = instance_type['id']
 
         def _remap_fixed_ip_filter(fixed_ip):
-            # Turn fixed_ip into a regexp match. Since '.' matches
-            # any character, we need to use regexp escaping for it.
-            filters['ip'] = '^%s$' % fixed_ip.replace('.', '\\.')
+            # If we are provided a full IP address, don't create
+            # a regex match so that an exact filter can be used.
+            if FULL_IPV4_ADDRESS_RE.match(fixed_ip):
+                filters['ip'] = fixed_ip
+            else:
+                # Turn fixed_ip into a regexp match. Since '.' matches
+                # any character, we need to use regexp escaping for it.
+                filters['ip_re'] = '^%s$' % fixed_ip.replace('.', '\\.')
 
         # search_option to filter_name mapping.
         filter_mapping = {

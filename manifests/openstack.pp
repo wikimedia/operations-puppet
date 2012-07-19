@@ -758,7 +758,15 @@ class openstack::compute-service {
 
 	if $openstack_version == "diablo" {
 		file { "/usr/share/pyshared/nova/compute/api.py":
-			source => "puppet:///files/openstack/api.py",
+			source => "puppet:///files/openstack/compute-api.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			notify => Service["nova-compute"],
+			require => Package["nova-compute"];
+		}
+		file { "/usr/share/pyshared/nova/db/sqlalchemy/api.py":
+			source => "puppet:///files/openstack/sqlalchemy-api.py",
 			mode => 0644,
 			owner => root,
 			group => root,
