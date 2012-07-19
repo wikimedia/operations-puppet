@@ -341,6 +341,8 @@ class openstack::puppet-server {
 			server_name => $fqdn,
 			allow_from => $puppet_passenger_allow_from,
 			config => {
+				'ca' => "false",
+				'ca_server' => "${fqdn}",
 				'dbadapter' => "mysql",
 				'dbuser' => $openstack::nova_config::nova_puppet_user,
 				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
