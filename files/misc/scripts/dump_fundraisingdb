@@ -10,6 +10,13 @@ use Fcntl ':mode';
 # file is tampered with. To prevent that, the script will not run if the conf
 # file is writable by anyone other than the effective user.
 
+# allow invoking user to choose specific db's from the list
+my $requested_db;
+for (@ARGV) {
+	chomp;
+	$requested_db->{$_}++;
+}	
+
 # fetch conf file 
 my $conf = readconf('/root/.dump_fundraisingdb');
 
@@ -48,6 +55,11 @@ for my $db (split /\s+/, $conf->{'DBS'}) {
 		$e->{'report'} .= "invalid database name: \"$db\"\n";
 		next;
 	}
+
+	# limit by $requested_db
+	if ((defined $requested_db) and (! defined $requested_db->{$db})) {
+		next;
+	}	
 
 	my $date = `date +%Y%m%d-%H%M%S`;
 	chomp $date;
