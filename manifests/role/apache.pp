@@ -5,8 +5,8 @@ class role::applicationserver {
 	class common(
 		$cluster,
 		$nagios_group=$cluster,
+		$lvs_pool,
 		$apache=true,
-		$lvsrealserver=true,
 		$upload=true,
 		$geoip=true,
 		$jobrunner=false
@@ -25,9 +25,9 @@ class role::applicationserver {
 				}
 		}
 
-		if $lvsrealserver == true {
+		if $lvs_pool {
 			include lvs::configuration
-			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$cluster][$::site] ] }
+			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] ] }
 		}
 
 		if $apache == true {
@@ -60,16 +60,16 @@ class role::applicationserver {
 
 	## prod role classes
 	class appserver{
-		class {"role::applicationserver::common": cluster => "appserver"}
+		class {"role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches"}
 	}
 	class api_appserver{
-		class {"role::applicationserver::common": cluster => "api_appserver"}
+		class {"role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api"}
 	}
 	class bits_appserver{
-		class {"role::applicationserver::common": cluster => "bits_appserver", upload => false}
+		class {"role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches", upload => false}
 	}
 	class imagescaler{
-		class {"role::applicationserver::common": cluster => "imagescaler", geoip => false }
+		class {"role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering", geoip => false }
 	}
 	class jobrunner{
 		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, lvsrealserver => false, apache => false }
