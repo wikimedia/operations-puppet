@@ -5,7 +5,7 @@ class timedmediahandler::web {
 
     if ( $lsbdistcodename == "lucid" ) {
         apt::pparepo {
-            "timedmediahandler": 
+            "timedmediahandler":
                 repo_string => "j/timedmediahandler",
                 apt_key => "01975EF3",
                 dist => "lucid",
@@ -18,7 +18,10 @@ class timedmediahandler::web {
             ]:
             ensure => latest,
             notify => Service["apache2"],
-            require => Apt::Pparepo["timedmediahandler"], Exec[add-mimetype-webm];
+            require => [
+							Apt::Pparepo["timedmediahandler"],
+							Exec[add-mimetype-webm]
+							]
         }
     }
     exec {

@@ -1,5 +1,5 @@
 class thumbs::server {
-  require "thumbs::users::apache",
+  require "thumbs::users::apache"
 }
 
 class thumbs::users {
@@ -25,7 +25,7 @@ class thumbs::users {
   }
 
 }
-          
+
 class thumbs::groups {
 
   class www-data {
@@ -49,4 +49,3 @@ class thumbs::groups {
   }
 
 }
-    
