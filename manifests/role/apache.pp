@@ -34,7 +34,6 @@ class role::applicationserver {
 			include	apaches::cron,
 				apaches::service,
 				apaches::pybal-check,
-				apaches::monitoring,
 				apaches::syslog
 			class { "apaches::monitoring": realm => $realm }
 		}
