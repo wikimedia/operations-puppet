@@ -1,5 +1,6 @@
 # imagescaler.pp
 
+# FIXME: move to role class
 # Virtual resource for the monitoring server
 @monitor_group { "imagescaler": description => "image scalers" }
 
@@ -95,7 +96,7 @@ class imagescaler::files {
 			#notify => Service[apache],
 			owner => root,
 			group => root,
-			mode => 0644;
+			mode => 0444;
 		"/etc/fonts/conf.d/70-yes-bitmaps.conf":
 			ensure => absent;
 		"/etc/fonts/conf.d/70-no-bitmaps.conf":

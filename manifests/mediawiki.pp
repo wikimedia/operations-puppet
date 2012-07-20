@@ -25,6 +25,7 @@ class mediawiki::sync {
 
 }
 
+# FIXME: rename to mediawiki::cron::refreshlinks or something
 class mediawiki::refreshlinks {
 	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
@@ -35,6 +36,7 @@ class mediawiki::refreshlinks {
 		mode => 0664,
 	}
 
+	# FIXME: rename, remove double 'refreshlinks'
 	define refreshlinks::cronjob() {
 
 		$cluster = regsubst($name, '@.*', '\1')

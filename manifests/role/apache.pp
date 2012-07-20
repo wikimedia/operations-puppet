@@ -1,6 +1,9 @@
 # role/apache.pp
 # cache::applicationserver role class
 
+# FIXME: rename file to match the class name
+
+# FIXME: add documentation for parameters
 class role::applicationserver {
 	class common(
 		$cluster,
@@ -12,6 +15,9 @@ class role::applicationserver {
 		$jobrunner=false
 		) {
 
+# FIXME: is there any reason NOT to install geoip on a host?
+# FIXME: what does $upload do?
+
 		include	standard,
 			mediawiki::packages
 
@@ -19,25 +25,34 @@ class role::applicationserver {
 			include	admins::roots,
 				admins::dctech,
 				admins::mortals,
+				# FIXME: l10nupdate should move out of accounts::
 				accounts::l10nupdate
 				if $geoip == true {
 					include	geoip
 				}
 		}
 
+		# FIXME: $lvs_pool is always set. Do you mean to have a default value 'undef'?
 		if $lvs_pool {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] ] }
 		}
 
+		# FIXME: split this off to a separate (sub)class, remove parameter
+		# In general it's not good style to put everything in one "common" class
+		# just to enable/disable bits. In that case, it's not "common" :)
 		if $apache == true {
 			include	apaches::cron,
 				apaches::service,
 				apaches::pybal-check,
 				apaches::syslog
+			# FIXME: why pass a global variable as a parameter?
+			# FIXME: move the monitoring stuff here
 			class { "apaches::monitoring": realm => $realm }
 		}
 
+		# FIXME: cluster name has a typo
+		# FIXME: move to a different (sub)class
 		if $cluster == "imagesclager" {
 			include	imagescaler::cron,
 				imagescaler::packages,
@@ -47,11 +62,13 @@ class role::applicationserver {
 				}
 		}
 
+		# FIXME: where does this variable come from? And what does it do?
 		if $lvsrealserver == true {
 			## need to replace this with swift stuff
 			include	nfs::upload
 		}
 
+		# FIXME: move to different (sub)class
 		if $jobrunner == true {
 			include	jobrunner::packages
 		}	
