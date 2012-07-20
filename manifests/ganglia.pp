@@ -258,7 +258,7 @@ class ganglia {
 						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
 						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
-						"Swift pmtpa" => "owa1.wikimedia.org owa2.wikimedia.org",
+						"Swift pmtpa" => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
 						"Virt pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
 						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
 						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
