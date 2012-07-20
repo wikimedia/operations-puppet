@@ -782,6 +782,11 @@ host hooper {
 	fixed-address hooper.wikimedia.org;
 }
 
+host hydrogen {
+	hardware ethernet 78:2b:cb:09:0c:21;
+	fixed-address hydrogen.wikimedia.org;
+}
+
 host iron {
 	hardware ethernet 78:2b:cb:09:0d:5c;
 	fixed-address iron.wikimedia.org;
