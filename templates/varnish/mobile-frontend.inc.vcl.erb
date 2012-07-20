@@ -261,11 +261,12 @@ sub vcl_recv {
 	 * XFF Header and replace client ip value */
 	if (client.ip ~ opera_mini) {
 		C{
+		char *last;
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
 		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
 		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
 
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
+		char *xff_ip = strtok_r(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",", &last);
 		if (xff_ip == NULL) {
 			char *xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		}
