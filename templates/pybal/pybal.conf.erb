@@ -7,9 +7,7 @@ bgp-local-asn = 64600
 bgp-peer-address = <%= pybal['bgp-peer-address'] %>
 #bgp-as-path = 64600 64601
 bgp-nexthop-ipv4 = <%= pybal['bgp-nexthop-ipv4'] %>
-<% if ipv6_hosts.include?(scope.lookupvar("::hostname")) -%>
 bgp-nexthop-ipv6 = <%= pybal['bgp-nexthop-ipv6'] %>
-<% end -%>
 
 #
 # LVS service definitions
@@ -21,7 +19,6 @@ bgp-nexthop-ipv6 = <%= pybal['bgp-nexthop-ipv6'] %>
 service['ip'] = { servicename => service['ip'] }
 end -%>
 <% service['ip'].sort.each do |subservicename, subserviceip| -%>
-<% if ! subserviceip.include?(":") or ipv6_hosts.include?(scope.lookupvar("::hostname")) -%>
 # SERVICE <%= subservicename %>
 # Class: <%= service['class'] %>
 # Description: <%= service['description'] %>
@@ -43,7 +40,6 @@ monitors = <%= service['monitors'].keys.inspect %>
 <% end -%>
 <% end -%>
 
-<% end -%>
 <% end -%>
 
 <% end -%>
