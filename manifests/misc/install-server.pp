@@ -187,13 +187,13 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 				mode => 0755,
 				owner => root,
 				group => root,
-				source => "file:///puppet/misc/reprepro/log";
+				source => "puppet:///files/misc/reprepro/log";
 			"/srv/wikimedia/conf/distributions":
 				mode => 0444,
-				source => "file:///puppet/misc/reprepro/distributions";
+				source => "puppet:///files/misc/reprepro/distributions";
 			"/srv/wikimedia/conf/incoming":
 				mode => 0444,
-				source => "file:///puppet/misc/reprepro/incoming";
+				source => "puppet:///files/misc/reprepro/incoming";
 		}
 
 		alert("The Wikimedia Archive Signing GPG keys need to be installed manually on this host.")
