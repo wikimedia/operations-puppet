@@ -406,7 +406,7 @@ class lvs::configuration {
 			'sites' => [ "pmtpa", "eqiad", "esams" ],
 			'ip' => $service_ips['ipv6'][$::site],
 			'port' => 80,
-			'bgp' => "no",
+			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'IdleConnection' => $idleconnection_monitor_options
