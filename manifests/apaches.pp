@@ -1,5 +1,6 @@
 # apaches.pp
 
+# FIXME: move to role classes
 # Virtual monitor group resources for the monitoring server
 @monitor_group { "appserver": description => "pmtpa application servers" }
 @monitor_group { "api_appserver": description => "pmtpa API application servers" }
@@ -14,6 +15,8 @@ class apaches::packages {
 		ensure => latest;
 	}
 
+	# FIXME: so what happens when we install the next Ubuntu release?
+	# FIXME: also, fully qualify global variables
 	if ( $lsbdistcodename == "precise" ) {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
 		# install an unneeded fast CGI server.
@@ -183,6 +186,8 @@ class apaches::pybal-check {
 	}
 }
 
+# FIXME: remove parameter
+# FIXME: move to role classes
 class apaches::monitoring( $realm='production' ) {
 	monitor_service { "appserver http": description => "Apache HTTP",
 		check_command => $realm ? { 'production' => "check_http_wikipedia",
