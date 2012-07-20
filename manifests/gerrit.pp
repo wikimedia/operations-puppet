@@ -294,12 +294,12 @@ class gerrit::gerrit_config {
 	$gerrit_pass = $passwords::gerrit::gerrit_pass
 	$gerrit_sshport = "29418"
 	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
-	$gerrit_db_host = "db9.pmtpa.wmnet"
+	$gerrit_db_host = "db1048.pmtpa.wmnet"
 	$gerrit_db_name = "reviewdb"
 	$gerrit_db_user = "gerrit"
 	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass
 	$gerrit_email_key = $passwords::gerrit::gerrit_email_key
-	$gerrit_ldap_host = ["$openstack::nova_config::nova_ldap_host", "virt1000.wikimedia.org"]
+	$gerrit_ldap_host = ["virt1000.wikimedia.org", "$openstack::nova_config::nova_ldap_host"]
 	$gerrit_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
 	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
 	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
