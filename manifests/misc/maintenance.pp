@@ -21,3 +21,17 @@ class misc::maintenance::foundationwiki {
 	}
 
 }
+
+class misc::maintenance::pagetriage {
+
+	system_role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
+
+	cron { 'pagetriage_cleanup':
+		user => apache,
+		minute => 55,
+		hour => 20,
+		monthday => '*/2',
+		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php',
+		ensure => present,
+	}
+}

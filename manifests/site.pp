@@ -1086,6 +1086,7 @@ node "hume.wikimedia.org" {
 		nfs::home,
 		misc::scripts,
 		misc::maintenance::foundationwiki,
+		misc::maintenance::pagetriage,
 		misc::translationnotifications,
 		mediawiki::refreshlinks,
 		admins::roots,
