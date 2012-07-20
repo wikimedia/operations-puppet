@@ -2,54 +2,22 @@
 
 import "generic-definitions.pp"
 
+# Main entry point simply.
 class squid {
-
-	if $realm == "labs" {
-		# Nova mounts /dev/vdb on /mnt by default. We want to use that device
-		# for coss usage.
-		mount { "/mnt":
-			name => '/mnt',
-			ensure => absent;
-		}
-
-		# FIXME: Hack for arrays in LDAP - you suck puppet
-		$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
+	require squid::commons
+	if( $::realm == 'labs' ) {
+		require squid::labs
+	} else {
+		require squid::production
 	}
+}
 
-	class packages {
-		package { ["squid", "squid-frontend"]:
-			ensure => latest;
-		}
-
-		# Cleanup of old wikimedia-task-squid package
-		package { "wikimedia-task-squid": ensure => purged }
-	}
-
-	require packages
-
+class squid::commons {
+	# Make sure all your file are belong to root
 	File {
 		mode => 0444,
 		owner => root,
 		group => root
-	}
-
-	if( $::realm == 'production' ) {
-		# We do not use the auto generated squid conf on labs but some hand
-		# crafted one.  That is good enough for now until we switch to varnish
-		file {
-			"/etc/squid/squid.conf":
-				source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
-			"/etc/squid/frontend.conf":
-				source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
-		}
-	} else {
-		# We need placeholders configured in puppet to satisfy redudancies
-		file {
-			"/etc/squid/squid.conf":
-				ensure  => present;
-			"/etc/squid/frontend.conf":
-				ensure  => present;
-		}
 	}
 
 	# Common files
@@ -62,23 +30,57 @@ class squid {
 		"squid-disk-permissions":
 			path => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
 			content => template("squid/squid-disk-permissions.erb");
+		# Fast C External redirect helper
+		"/usr/local/bin/redirector":
+			mode => 0555,
+			source => "puppet:///files/squid/redirector",
+			ensure => present;
 	}
-	
-	service {
-		"squid-frontend":
-			require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
-			subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
-			hasstatus => false,
-			pattern => "squid-frontend",
-			enable => false,
-			ensure => running;
-		"squid":
-			require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
-			subscribe => File["/etc/squid/squid.conf"],
-			hasstatus => false,
-			pattern => "/usr/sbin/squid ",
-			enable => false,
-			ensure => running;
+
+	class packages {
+		package { ["squid", "squid-frontend"]:
+			ensure => latest;
+		}
+
+		# Cleanup of old wikimedia-task-squid package
+		package { "wikimedia-task-squid": ensure => purged }
+	}
+	require packages
+
+	# Tune kernel settings
+	include generic::sysctl::high-http-performance
+
+}
+
+# labs specific configuration
+class squid::labs {
+	# Nova mounts /dev/vdb on /mnt by default. We want to use that device
+	# for coss usage.
+	mount { "/mnt":
+		name => '/mnt',
+		ensure => absent;
+	}
+
+	# FIXME: Hack for arrays in LDAP - you suck puppet
+	$squid_coss_disks = split(get_var('squid_coss_disks'), ',')
+
+	# We need placeholders configured in puppet to satisfy redudancies
+	file {
+		"/etc/squid/squid.conf":
+			ensure  => present;
+		"/etc/squid/frontend.conf":
+			ensure  => present;
+	}
+
+}
+
+# production specific configuration
+class squid::production {
+	file {
+		"/etc/squid/squid.conf":
+			source => "puppet:///volatile/squid/squid.conf/${::fqdn}";
+		"/etc/squid/frontend.conf":
+			source => "puppet:///volatile/squid/frontend.conf/${::fqdn}";
 	}
 
 	class aufs {
@@ -101,20 +103,63 @@ class squid {
 			onlyif => "egrep -q '^cache_dir[[:space:]]+aufs' /etc/squid/squid.conf"
 		}
 	}
-
 	include aufs
 
-	# Tune kernel settings
-	include generic::sysctl::high-http-performance
+	class services {
 
-	# Fast C External redirect helper 
-	file { "/usr/local/bin/redirector":
-		mode => 0555,
-		source => "puppet:///files/squid/redirector",
-		ensure => present;
+		squid_service { 'squid':
+			requisites => Exec[setup-aufs-cachedirs]
+		}
+		squid_service { 'frontend':
+			requisites => frontendsquiddefaultconfig
+		}
+
+		service {
+			"squid":
+				require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
+				subscribe => File["/etc/squid/squid.conf"],
+				hasstatus => false,
+				pattern => "/usr/sbin/squid ",
+				enable => false,
+				ensure => running;
+			"squid-frontend":
+				require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
+				subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
+				hasstatus => false,
+				pattern => "squid-frontend",
+				enable => false,
+				ensure => running;
+		}
 	}
+	include services
 }
 
+define squid_service(
+		$name=$title,
+	  $conf="/etc/squid/${title}.conf",
+		$requisites=File[$conf]
+) {
+
+	# Make sure to look for the correct process
+	$process_name = $name ? {
+		'squid' => '/usr/bin/squid',
+		default => $name,
+	}
+	$service_name = $name ? {
+		'squid' => squid,
+		default => "squid-${name}",
+	}
+
+	service { $service_name:
+			ensure    => running,
+			enabled   => false,
+			hasstatus => false,
+			pattern   => $process_name,
+			require   => [ $requisites, File[$conf] ],
+			subscribe => $requisites;
+	}
+
+}
 
 class squid::cachemgr {
 	require role::cache::configuration

@@ -423,6 +423,18 @@ class role::cache {
 		}
 	}
 
+	# labs is so different that we end up using our own class
+	class upload::labs {
+			system_role { "role::cache::upload::labs": description => "Labs upload Squid cache server"}
+
+			$cluster = "squids_upload_labs"
+			$nagios_group = "cache_upload_labs_${::site}"
+
+			include standard,
+				::squid
+
+	}
+
 	class bits {
 		include network::constants
 		
