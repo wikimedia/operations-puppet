@@ -53,6 +53,7 @@ $decommissioned_servers = [
 "mobile3",
 "mobile4",
 "mobile5",
+"msfe1001",
 "ms1",
 "ms2",
 "ms3",
