@@ -44,7 +44,7 @@ class ssh::hostkeys::publish {
 
 	# Store this hosts's host key
 	case $sshrsakey {
-		"": { 
+		"": {
 			err("No sshrsakey on $fqdn")
 		}
 		default: {
@@ -55,12 +55,14 @@ class ssh::hostkeys::publish {
 }
 
 class ssh::hostkeys::collect {
-	# Do this about twice a day
-	if $hostname == "fenari" or $hostname == "bast1001" or generate("/usr/local/bin/position-of-the-moon") == "True" {
-		notice("Collecting SSH host keys on $hostname.")
+	if( !$testing_in_rspec ) {
+		# Do this about twice a day
+		if $hostname == "fenari" or $hostname == "bast1001" or generate("/usr/local/bin/position-of-the-moon") == "True" {
+			notice("Collecting SSH host keys on $hostname.")
 
-		# Install all collected ssh host keys
-		Sshhostkey <<| |>>
+			# Install all collected ssh host keys
+			Sshhostkey <<| |>>
+		}
 	}
 }
 

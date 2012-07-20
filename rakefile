@@ -18,6 +18,14 @@ puppet-lint doc is at https://github.com/rodjek/puppet-lint
  -- hashar 20120216
 =end
 
+# rspec-puppet
+require 'rake'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+	  spec.pattern = 'spec/*/*_spec.rb'
+	  spec.rspec_opts = ['--color']
+end
+
 # Since we are going to use puppet internal stuff, we might as
 # well reuse their colorization utility:
 require'puppet/util/colors'
@@ -34,16 +42,12 @@ Welcome #{ENV['USER']} in WMF wonderful rake helper to play with puppet.
 ---[Command line options]----------------------------------------------
 `rake -T` : list available tasks
 `rake -P` : shows tasks dependencies
-
----[Available rake tasks]----------------------------------------------"
+----[Available rake tasks]----------------------------------------------"
 
 	# show our tasks list
 	system "rake -T"
 
-puts "-----------------------------------------------------------------------"
-puts "
-Examples:
-
+puts "---[Examples]----------------------------------------------------------
 Validate syntax for all puppet manifests:
   rake validate
 
