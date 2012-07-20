@@ -1,0 +1,4 @@
+Name: default
+IncomingDir: incoming
+TempDir: /tmp
+Allow: hardy-wikimedia karmic-wikimedia lucid-wikimedia lucid-wikimedia-mysql hardy>hardy-wikimedia karmic>karmic-wikimedia lucid>lucid-wikimedia precise>precise-wikimedia
