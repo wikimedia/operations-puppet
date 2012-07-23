@@ -1485,7 +1485,8 @@ node /ms[1-3]\.pmtpa\.wmnet/ {
 		'/dev/sdam', '/dev/sdan', '/dev/sdao', '/dev/sdap', '/dev/sdaq',
 		'/dev/sdar', '/dev/sdas', '/dev/sdat', '/dev/sdau', '/dev/sdav' ]
 
-	include role::swift::pmtpa-test::storage
+	# the hosts are still doing swift storage, but I'm taking out the class to avoid clobbering local perf testing changes
+	#include role::swift::pmtpa-test::storage
 	include groups::wikidev,
 		accounts::darrell,
 		accounts::orion,
@@ -1716,7 +1717,8 @@ node /^osm-cp100[1-4]\.wikimedia\.org$/ {
 node /^owa[1-3]\.wikimedia\.org$/ {
 	# taking owa hosts out of the swift proxy cluster since they're not being used.
 	# if we have load issues we can add them back in.
-	include role::swift::pmtpa-test::proxy
+	### the hosts are still doing pmtpa-test, but I'm taking out the role to not overwrite local perf testing changes.
+	#include role::swift::pmtpa-test::proxy
 	include groups::wikidev,
 		accounts::darrell,
 		accounts::orion,
