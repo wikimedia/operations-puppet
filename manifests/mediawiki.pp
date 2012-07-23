@@ -25,8 +25,7 @@ class mediawiki::sync {
 
 }
 
-# FIXME: rename to mediawiki::cron::refreshlinks or something
-class mediawiki::refreshlinks {
+class mediawiki::cron::refreshlinks {
 	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
 	file { '/home/mwdeploy/refreshLinks':
@@ -36,8 +35,7 @@ class mediawiki::refreshlinks {
 		mode => 0664,
 	}
 
-	# FIXME: rename, remove double 'refreshlinks'
-	define refreshlinks::cronjob() {
+	define cronjob() {
 
 		$cluster = regsubst($name, '@.*', '\1')
 		$monthday = regsubst($name, '.*@', '\1')
@@ -53,7 +51,7 @@ class mediawiki::refreshlinks {
 	}
 
 	# add cron jobs - usage: <cluster>@<day of month> (these are just needed monthly) (note: s1 is temp. deactivated)
-	refreshlinks::cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
+	cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
 }
 
 class mediawiki::user {

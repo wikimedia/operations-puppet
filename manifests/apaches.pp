@@ -178,7 +178,7 @@ class apaches::pybal_check {
 	}
 }
 
-# FIXME: move to role classes
+# FIXME: remove all monitoring from here once everything migrated to role class
 class apaches::monitoring {
 	monitor_service { "appserver http": description => "Apache HTTP",
 		check_command => $::realm ? { 'production' => "check_http_wikipedia",
@@ -186,7 +186,6 @@ class apaches::monitoring {
 	}
 }
 
-## this should be removed. can now use above.
 class apaches::monitoring::labs {
 	# bug 37046
 	monitor_service { "appserver labs http": description => "Apache HTTP", check_command => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }

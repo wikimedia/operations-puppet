@@ -1,7 +1,5 @@
 # imagescaler.pp
 
-## need to move the /a/magick-tmp stuff to /tmp/magick-tmp this will require a mediaiwiki change, it would seem
-
 class imagescaler::cron {
 	cron { removetmpfiles:
 		command => "for dir in /tmp /a/magick-tmp; do find \$dir -ignore_readdir_race -type f \\( -name 'gs_*' -o -name 'magick-*' \\) -cmin +15 -exec rm -f {} \\;; done",

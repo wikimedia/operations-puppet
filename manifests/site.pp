@@ -1087,7 +1087,7 @@ node "hume.wikimedia.org" {
 		misc::scripts,
 		misc::maintenance::foundationwiki,
 		misc::translationnotifications,
-		mediawiki::refreshlinks,
+		mediawiki::cron::refreshlinks,
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
