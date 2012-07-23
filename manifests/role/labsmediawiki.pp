@@ -67,7 +67,7 @@ class role::mediawiki-install::labs {
         apache_site { 000_default: name => "000-default", ensure => absent }
 
 	exec { 'apache_restart':
-		require => apache_site['controller', '000_default'],
+		require => [Apache_site['controller'], Apache_site['000_default']],
 		command => "/usr/sbin/service apache2 restart"
 	}
 
