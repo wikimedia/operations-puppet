@@ -99,7 +99,7 @@ class applicationserver {
 			lvs::realserver,
 			apaches::cron,
 			apaches::service,
-			apaches::pybal-check,
+			apaches::pybal_check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
@@ -119,7 +119,7 @@ class applicationserver {
 
 	class home inherits home-no-service {
 		include apaches::service,
-			apaches::pybal-check
+			apaches::pybal_check
 	}
 
 	class api inherits parent {
@@ -141,7 +141,7 @@ class applicationserver {
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,
-			apaches::pybal-check,
+			apaches::pybal_check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
@@ -165,7 +165,7 @@ class applicationserver {
 			lvs::realserver,
 			apaches::cron,
 			apaches::service,
-			apaches::pybal-check,
+			apaches::pybal_check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
@@ -211,7 +211,7 @@ class imagescaler {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted,
-		apaches::pybal-check,
+		apaches::pybal_check,
 		apaches::monitoring,
 		apaches::syslog,
 		accounts::l10nupdate
@@ -1087,7 +1087,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
 		misc::translationnotifications,
-		mediawiki::refreshlinks,
+		mediawiki::cron::refreshlinks,
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
@@ -2149,7 +2149,7 @@ node "srv281.pmtpa.wmnet" {
 	include admins::roots,
 		admins::dctech,
 		admins::mortals,
-		apaches::pybal-check,
+		apaches::pybal_check,
 		imagescaler
 }
 
