@@ -40,7 +40,6 @@ import "snapshots.pp"
 import "squid.pp"
 import "svn.pp"
 import "swift.pp"
-import "varnish.pp"
 import "webserver.pp"
 
 # Include stages last
