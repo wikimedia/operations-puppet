@@ -19,7 +19,7 @@ class mediawiki::sync {
 		group => root,
 		path => '/usr/bin:/usr/sbin',
 		refreshonly => true,
-		timeout => 60,
+		timeout => 600,
 		logoutput => on_failure;
 	}
 
