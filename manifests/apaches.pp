@@ -1,12 +1,5 @@
 # apaches.pp
 
-# FIXME: move to role classes
-# Virtual monitor group resources for the monitoring server
-@monitor_group { "appserver": description => "pmtpa application servers" }
-@monitor_group { "api_appserver": description => "pmtpa API application servers" }
-@monitor_group { "bits_appserver": description => "pmtpa Bits application servers" }
-@monitor_group { "jobrunner": description => "jobrunner application servers" }
-
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
@@ -16,8 +9,7 @@ class apaches::packages {
 	}
 
 	# FIXME: so what happens when we install the next Ubuntu release?
-	# FIXME: also, fully qualify global variables
-	if ( $lsbdistcodename == "precise" ) {
+	if ( $::lsbdistcodename == "precise" ) {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
 		# install an unneeded fast CGI server.
 		package { [ "php5-fpm" ]:
@@ -164,7 +156,7 @@ class apaches::service {
 	Exec['apache-trigger-mw-sync'] -> Service['apache']
 }
 
-class apaches::pybal-check {
+class apaches::pybal_check {
 	$authorized_key = 'command="uptime; touch /var/tmp/pybal-check.stamp" ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwyiL/ImTNOjoP/8k1UFQRM9pcspHp3yIsH/8TYXH/HJ1rQVjMleq6IQ6ZwAXhKfw/v1xV28SbkctB8pISZoR4rcCqOIN+osXkCB419JydCEb5abPS4mB5Gkn2bZAF43DGr5kaW+HYIsgtZ+QEC+nS4j3NA/Bjb7lAbHUtHVuC6BCOaZfGf+Q2FO4Z6xC7zc/1ngaDgvrXYzyCvXzTAQmcZH0d2/GoS1DQoLdLzqu66aZK1dmn9TAHV4a3R4gp7El7OzVHqDp1E6y0sopd+qKNAw/3GgXC91XJ3XO22h+ZnVovIpIS01CJ6GiBig/55Xrh//9Wuw5GFQuCptYbPQr4Q== root@lvs4'
 
 	# Create pybal-check user account	
@@ -186,11 +178,10 @@ class apaches::pybal-check {
 	}
 }
 
-# FIXME: remove parameter
 # FIXME: move to role classes
-class apaches::monitoring( $realm='production' ) {
+class apaches::monitoring {
 	monitor_service { "appserver http": description => "Apache HTTP",
-		check_command => $realm ? { 'production' => "check_http_wikipedia",
+		check_command => $::realm ? { 'production' => "check_http_wikipedia",
 				'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
 	}
 }

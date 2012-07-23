@@ -1,7 +1,13 @@
-# role/apache.pp
+# role/apaches.pp
 # cache::applicationserver role class
 
-# FIXME: rename file to match the class name
+# Virtual monitor group resources for the monitoring server
+@monitor_group { "appserver": description => "pmtpa application servers" }
+@monitor_group { "api_appserver": description => "pmtpa API application servers" }
+@monitor_group { "bits_appserver": description => "pmtpa Bits application servers" }
+@monitor_group { "imagescaler": description => "image scalers" }
+@monitor_group { "jobrunner": description => "jobrunner application servers" }
+
 
 # FIXME: add documentation for parameters
 class role::applicationserver {
