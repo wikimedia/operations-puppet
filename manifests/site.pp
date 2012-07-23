@@ -1677,7 +1677,6 @@ node /^nfs[12].pmtpa.wmnet/ {
 		ldap::server::wmf-cluster,
 		ldap::client::wmf-cluster,
 		backup::client,
-		misc::udp2log::utilities,
 		role::logging::mediawiki
 
 	# don't need udp2log monitoring on nfs hosts

@@ -41,6 +41,9 @@ class role::logging
 class role::logging::mediawiki {
 	system_role { "role::logging:mediawiki": description => "MediaWiki log collector" }
 
+	include misc::udp2log,
+		misc::udp2log::utilities
+
 	misc::udp2log::instance { "mw":
 		log_directory	=>	"/home/wikipedia/logs",
 		monitor_log_age	=>	false,
