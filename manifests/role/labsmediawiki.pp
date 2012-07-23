@@ -72,7 +72,7 @@ class role::mediawiki-install::labs {
 	}
 
 	file { '/srv/mediawiki/LocalSettings.php':
-		require => exec["mediawiki_setup"],
+		require => Exec["mediawiki_setup"],
 		content => template('mediawiki/labs-localsettings'),
 		ensure => present,
 	}
