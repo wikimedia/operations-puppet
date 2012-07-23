@@ -22,6 +22,9 @@ tls_reqcert demand
 tls_cacertdir /etc/ssl/certs
 tls_cacertfile /etc/ssl/certs/<%= ldap_ca %>
 
+# Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
+validnames /^[a-z][a-z0-9\-_]*$/
+
 # Group mapping for sudo-ldap.
 <% if scope.function_versioncmp(lsbdistrelease, "12.04") < 0 %>map group uniquemember member<% end %>
 <% if realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
