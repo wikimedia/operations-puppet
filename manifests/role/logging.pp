@@ -25,7 +25,7 @@ node "base_analytics_logging_node" {
 
 class role::logging
 {
-	system_role { "misc::log-collector": description => "log collector" }
+	system_role { "role::logging": description => "log collector" }
 
 	# default gid
 	$gid=500
@@ -39,7 +39,7 @@ class role::logging
 
 # mediawiki udp2log instance.  Does not use monitoring.
 class role::logging::mediawiki {
-	system_role { "misc::log-collector": description => "MediaWiki log collector" }
+	system_role { "role::logging:mediawiki": description => "MediaWiki log collector" }
 
 	misc::udp2log::instance { "mw":
 		log_directory	=>	"/home/wikipedia/logs",
