@@ -1,4 +1,4 @@
-# FIXME: move to app server role class, remove this file.
+# this file to be removed once we switch to role classes
 
 class jobrunner::packages {
 
