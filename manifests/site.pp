@@ -1576,6 +1576,19 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	include role::swift::pmtpa-prod::proxy
 }
 
+node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+	if $hostname =~ /^ms-fe100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	if $hostname =~ /^ms-fe1001$/ {
+		include role::swift::eqiad-prod::ganglia_reporter
+	}
+	# FIXME put in the right IP address here
+	$lvs_realserver_ips = [ "10.2.2.27" ]
+	include lvs::realserver
+	include role::swift::eqiad-prod::proxy
+}
+
 node /^ms-be[1-4]\.pmtpa\.wmnet$/ {
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
@@ -1604,6 +1617,17 @@ node /^ms-be1[0-9]\.pmtpa\.wmnet$/ {
 		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
 
 	include role::swift::pmtpa-prod::storage
+
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+}
+
+node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
+	# the ms-be hosts with ssds have two more disks
+	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
+		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
+		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
+
+	include role::swift::eqiad-prod::storage
 
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }

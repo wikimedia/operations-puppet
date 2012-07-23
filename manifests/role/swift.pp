@@ -126,6 +126,58 @@ class role::swift {
 			include ::swift::storage::monitoring
 		}
 	}
+	class eqiad-prod inherits role::swift::base {
+		system_role { "role::swift::eqiad-prod": description => "Swift eqiad production cluster" }
+		system_role { "swift-cluster::eqiad-prod": description => "Swift eqiad production cluster", ensure => absent }
+		include passwords::swift::eqiad-prod
+		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "eqiad-prod" }
+		class ganglia_reporter inherits role::swift::eqiad-prod {
+			# one host per cluster should report global stats
+			file { "/usr/local/bin/swift-ganglia-report-global-stats":
+				path => "/usr/local/bin/swift-ganglia-report-global-stats",
+				mode => 0555,
+				source => "puppet:///files/swift/swift-ganglia-report-global-stats",
+				ensure => present;
+			}
+			# config file to hold the password
+			$password = $passwords::swift::eqiad-prod::rewrite_password
+			file { "/etc/swift-ganglia-report-global-stats.conf":
+				mode => 0440,
+				owner => root,
+				group => root,
+				content => template("swift/swift-ganglia-report-global-stats.conf.erb");
+			}
+			cron { "swift-ganglia-report-global-stats":
+				command => "/usr/local/bin/swift-ganglia-report-global-stats -C /etc/swift-ganglia-report-global-stats.conf -u 'mw:thumb' -c eqiad-prod",
+				user => root,
+				ensure => present;
+			}
+		}
+		class proxy inherits role::swift::eqiad-prod {
+			class { "::swift::proxy::config":
+				bind_port => "80",
+				proxy_address => "http://ms-fe.eqiad.wmnet",
+				num_workers => $::processorcount,
+				memcached_servers => [ "ms-fe1001.eqiad.wmnet:11211", "ms-fe1002.eqiad.wmnet:11211", "ms-fe1003.eqiad.wmnet:11211", "ms-fe1004.eqiad.wmnet:11211" ],
+				super_admin_key => $passwords::swift::eqiad-prod::super_admin_key,
+				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
+				rewrite_url => "http://127.0.0.1/auth/v1.0",
+				rewrite_user => "mw:thumb",
+				rewrite_password => $passwords::swift::eqiad-prod::rewrite_password,
+				rewrite_thumb_server => "ms5.pmtpa.wmnet",
+				shard_containers => "some",
+				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb",
+				write_thumbs => "none",
+				dont_write_thumb_list => ""
+			}
+			include ::swift::proxy
+			include ::swift::proxy::monitoring
+		}
+		class storage inherits role::swift::eqiad-prod {
+			include ::swift::storage
+			include ::swift::storage::monitoring
+		}
+	}
 	class pmtpa-labs inherits role::swift::base {
 		system_role { "role::swift::pmtpa-labs": description => "Swift pmtpa labs cluster" }
 		#include passwords::swift::pmtpa-labs #passwords inline because they're not secret in labs
