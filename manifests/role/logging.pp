@@ -37,4 +37,14 @@ class role::logging
 		geoip
 }
 
+# mediawiki udp2log instance.  Does not use monitoring.
+class role::logging::mediawiki {
+	system_role { "misc::log-collector": description => "MediaWiki log collector" }
 
+	misc::udp2log::instance { "mw":
+		log_directory	=>	"/home/wikipedia/logs",
+		monitor_log_age	=>	false,
+		monitor_processes	=>	false,
+		monitor_packet_loss	=>	false,
+	}
+}

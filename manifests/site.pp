@@ -1676,19 +1676,11 @@ node /^nfs[12].pmtpa.wmnet/ {
 		ldap::server::wmf-cluster,
 		ldap::client::wmf-cluster,
 		backup::client,
-		misc::udp2log::utilities
+		misc::udp2log::utilities,
+		role::logging::mediawiki
 
 	# don't need udp2log monitoring on nfs hosts
 	class { "misc::udp2log": monitor => false }
-	
-	# mediawiki udp2log instance.  Doesn't use monitoring.
-	misc::udp2log::instance { "mw":
-		log_directory       => "/home/wikipedia/logs",
-		monitor_log_age     => false,
-		monitor_processes   => false,
-		monitor_packet_loss => false,
-	}
-
 
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
