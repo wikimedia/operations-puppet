@@ -15,6 +15,7 @@ import "ganglia.pp"
 import "geoip.pp"
 import "gerrit.pp"
 import "imagescaler.pp"
+import "videoscaler.pp"
 import "iptables.pp"
 import "jobrunner.pp"
 import "ldap.pp"
@@ -228,6 +229,23 @@ class imagescaler::labs {
 		imagescaler::cron,
 		imagescaler::packages,
 		imagescaler::files,
+		mediawiki::packages,
+		apaches::packages,
+		apaches::cron,
+		apaches::service
+}
+
+class videoscaler {
+	$cluster = "videoscaler"
+
+	if( $::realm == 'labs' ) {
+		include nfs::apache::labs
+	}
+
+	include standard,
+		videoscaler::cron,
+		videoscaler::packages,
+		videoscaler::files,
 		mediawiki::packages,
 		apaches::packages,
 		apaches::cron,
