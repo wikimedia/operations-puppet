@@ -37,4 +37,11 @@ class role::logging
 		geoip
 }
 
+class role::logging::labs {
+	$log_directory = $instanceproject ? {
+		'deployment-prep' => '/home/wikipedia/logs',
+		default           => '/var/log/udp2log',
+	}
 
+	misc::udp2log::instance { $instanceproject: log_directory => $log_directory }
+}
