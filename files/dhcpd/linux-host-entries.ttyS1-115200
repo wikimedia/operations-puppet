@@ -49,13 +49,28 @@ host bast1001 {
 }
 
 host bellin {
-        hardware ethernet 18:03:73:ed:d9:95;
-        fixed-address bellin.pmtpa.wmnet;
+	hardware ethernet 18:03:73:ed:d9:95;
+	fixed-address bellin.pmtpa.wmnet;
+}
+
+host beryllium {
+	hardware ethernet 78:2b:cb:08:a3:ab;
+	fixed-address beryllium.wikimedia.org;
 }
 
 host blondel {
-        hardware ethernet d4:be:d9:af:66:ba;
-        fixed-address blondel.pmtpa.wmnet;
+	hardware ethernet d4:be:d9:af:66:ba;
+	fixed-address blondel.pmtpa.wmnet;
+}
+
+host boron {
+	hardware ethernet 78:2b:cb:09:0a:33;
+	fixed-address boron.wikimedia.org;
+}
+
+host calcium {
+	hardware ethernet 78:2b:cb:08:b9:e9;
+	fixed-address calcium.wikimedia.org;
 }
 
 host cadmium {
@@ -66,6 +81,13 @@ host cadmium {
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
+}
+
+host chromium {
+	hardware ethernet 78:2b:cb:08:aa:48;
+	fixed-address chromium.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host copper {
@@ -242,7 +264,7 @@ host cp1040 {
 }
 host cp1041 {
 	hardware ethernet 84:2b:2b:fd:be:d9;
-	fixed-address cp1041.wikimedia.org;
+	fixed-address cp1041.eqiad.wmnet;
 }
 host cp1042 {
 	hardware ethernet 84:2b:2b:fd:bf:18;
@@ -731,14 +753,13 @@ host es4 {
 	hardware ethernet 78:2b:cb:60:34:26;
 	fixed-address es4.pmtpa.wmnet;
 }
-
 host es5 {
 	hardware ethernet d4:ae:52:93:43:23;
 	fixed-address es5.pmtpa.wmnet;
 }
 
 host es6 {
-	hardware ethernet d4:ae:52:93:3b:3d;
+	hardware ethernet  d4:ae:52:93:3b:3d;
 	fixed-address es6.pmtpa.wmnet;
 }
 
@@ -792,9 +813,14 @@ host harmon {
 	fixed-address harmon.wikimedia.org;
 }
 
+host helium {
+	hardware ethernet 78:2b:cb:09:0f:c8;
+	fixed-address helium.wikimedia.org;
+}
+
 host hooft {
-        hardware ethernet a4:ba:db:30:d7:70;
-        fixed-address hooft.esams.wikimedia.org;
+	hardware ethernet a4:ba:db:30:d7:70;
+	fixed-address hooft.esams.wikimedia.org;
 }
 
 host hooper {
@@ -805,6 +831,8 @@ host hooper {
 host hydrogen {
 	hardware ethernet 78:2b:cb:09:0c:21;
 	fixed-address hydrogen.wikimedia.org;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iron {
@@ -906,128 +934,112 @@ host marmontel {
 host mc1 {
 	hardware ethernet d4:be:d9:fa:4e:b0;
 	fixed-address mc1.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc2 {
 	hardware ethernet d4:be:d9:f7:bc:f4;
 	fixed-address mc2.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc3 {
 	hardware ethernet d4:be:d9:fa:4f:91;
 	fixed-address mc15.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc4 {
 	hardware ethernet d4:be:d9:f4:59:eb;
 	fixed-address mc4.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc5 {
 	hardware ethernet d4:be:d9:f4:5b:2f;
 	fixed-address mc5.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc6 {
 	hardware ethernet d4:be:d9:f7:bd:21;
 	fixed-address mc6.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc7 {
 	hardware ethernet d4:be:d9:f4:5a:7b;
 	fixed-address mc7.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc8 {
 	hardware ethernet d4:be:d9:f7:be:9b;
 	fixed-address mc8.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc9 {
 	hardware ethernet d4:be:d9:fa:4e:e6;
 	fixed-address mc9.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc10 {
 	hardware ethernet d4:be:d9:f7:c2:ca;
 	fixed-address mc10.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc11 {
 	hardware ethernet d4:be:d9:f7:c2:ca;
 	fixed-address mc11.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc12 {
 	hardware ethernet d4:be:d9:f7:c4:9e;
 	fixed-address mc12.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc13 {
 	hardware ethernet d4:be:d9:f4:5a:60;
 	fixed-address mc13.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc14 {
 	hardware ethernet d4:be:d9:f7:c1:8f;
 	fixed-address mc14.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc15 {
 	hardware ethernet d4:be:d9:f4:5b:77;
 	fixed-address mc15.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc16 {
 	hardware ethernet d4:be:d9:f7:bf:7c;
 	fixed-address mc16.pmtpa.wmnet;
-
-option pxelinux.pathprefix "precise-installer/";
+	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
@@ -1114,6 +1126,41 @@ host ms-be5 {
 	fixed-address ms-be5.pmtpa.wmnet;
 }
 
+host ms-be6 {
+	hardware ethernet 04:7D:7B:2E:2E:50;
+	fixed-address ms-be6.pmtpa.wmnet;
+}
+
+host ms-be7 {
+	hardware ethernet 04:7D:7B:2E:2D:92;
+	fixed-address ms-be7.pmtpa.wmnet;
+}
+
+host ms-be8 {
+	hardware ethernet 04:7D:7B:2E:2E:56;
+	fixed-address ms-be8.pmtpa.wmnet;
+}
+
+host ms-be9 {
+	hardware ethernet 04:7D:7B:2E:2D:E8;
+	fixed-address ms-be9.pmtpa.wmnet;
+}
+
+host ms-be10 {
+	hardware ethernet 04:7D:7B:2E:2E:B6;
+	fixed-address ms-be10.pmtpa.wmnet;
+}
+
+host ms-be11 {
+	hardware ethernet E8:9A:8F:74:48:78;
+	fixed-address ms-be11.pmtpa.wmnet;
+}
+
+host ms-be12 {
+	hardware ethernet 04:7D:7B:2E:2E:7A;
+	fixed-address ms-be12.pmtpa.wmnet;
+}
+
 host ms-fe1 {
 	hardware ethernet d4:be:d9:af:84:27;
 	fixed-address ms-fe1.pmtpa.wmnet;
@@ -1122,6 +1169,16 @@ host ms-fe1 {
 host ms-fe2 {
 	hardware ethernet d4:be:d9:af:67:0b;
 	fixed-address ms-fe2.pmtpa.wmnet;
+}
+
+host ms-fe3 {
+	hardware ethernet d4:be:d9:ed:09:23;
+	fixed-address ms-fe3.pmtpa.wmnet;
+}
+
+host ms-fe4 {
+	hardware ethernet d4:be:d9:ed:0c:44;
+	fixed-address ms-fe4.pmtpa.wmnet;
 }
 
 host msfe1001 {
@@ -2330,7 +2387,7 @@ host mw1101 {
 }
 
 host mw1102 {
-	hardware ethernet 84:2b:2b:77:28:1d;
+	hardware ethernet a4:ba:db:4e:b7:04;
 	fixed-address mw1102.eqiad.wmnet;
 
 	option pxelinux.pathprefix "precise-installer/";
@@ -2804,6 +2861,9 @@ host mw1160 {
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
+
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host nescio {
@@ -2892,6 +2952,11 @@ host pdf2 {
 host pdf3 {
 	hardware ethernet 00:21:9B:A0:70:6F;
 	fixed-address pdf3.wikimedia.org;
+}
+
+host potassium {
+	hardware ethernet 78:2b:cb:08:ac:78;
+	fixed-address potassium.wikimedia.org;
 }
 
 host search13 {
@@ -3742,6 +3807,13 @@ host transcode1 {
 	fixed-address transcode1.wikimedia.org;
 }
 
+host vanadium {
+	hardware ethernet 78:2b:cb:08:a4:3b;
+	fixed-address vanadium.eqiad.wmnet;
+	option pxelinux.pathprefix "precise-installer/";
+	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+}
+
 host virt1000 {
 	hardware ethernet 18:03:73:f5:2c:2b;
 	fixed-address virt1000.wikimedia.org;
@@ -3785,4 +3857,9 @@ host zhen {
 host zinc {
 	hardware ethernet 78:2b:cb:09:0e:3d;
 	fixed-address zinc.wikimedia.org;
+}
+
+host zirconium {
+	hardware ethernet 18:03:73:f1:4f:4c;
+	fixed-address zirconium.wikimedia.org;
 }
