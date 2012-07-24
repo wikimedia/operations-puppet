@@ -292,6 +292,11 @@ node "alsted.wikimedia.org" {
 }
 
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
+	$cluster = "lvs"
+
+	if $hostname =~ /^amslvs[12]$/ {
+		$ganglia_aggregator = "true"
+	}
 	
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
@@ -1209,7 +1214,11 @@ node "lomaria.pmtpa.wmnet" {
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
-	$cluster = "misc"
+	$cluster = "lvs"
+
+	if $hostname =~ /^lvs[12]$/ {
+		$ganglia_aggregator = "true"
+	}
 
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
@@ -1278,7 +1287,11 @@ node /lvs[1-6]\.wikimedia\.org/ {
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
-	$cluster = "misc"
+	$cluster = "lvs"
+
+	if $hostname =~ /^lvs100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
 
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
