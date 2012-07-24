@@ -1063,7 +1063,6 @@ node "marmontel.wikimedia.org" {
 			'max_connections' => 100,
 			'probe' => "blog",
 		},
-		enable_geoiplookup => "false"
 	}
 }
 

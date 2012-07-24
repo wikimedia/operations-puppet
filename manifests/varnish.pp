@@ -48,7 +48,7 @@ class varnish {
 				content => template("varnish/geoip.inc.vcl.erb");
 		}
 	}
-	
+
 	define instance(
 		$name="",
 		$vcl = "",
@@ -60,12 +60,12 @@ class varnish {
 		$director_type="hash",
 		$vcl_config,
 		$backend_options,
-		$enable_geoiplookup="false",
+		$cluster_options={},
 		$wikimedia_networks=[],
 		$xff_sources=[]) {
 
 		include varnish::common
-		
+
 		if $name == "" {
 			$instancesuffix = ""
 			$extraopts = ""
@@ -76,13 +76,14 @@ class varnish {
 		}
 
 		# Initialize variables for templates
+		# FIXME: get rid of the $varnish_* below and update the templates
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
-		$varnish_enable_geoiplookup = $enable_geoiplookup
 		$varnish_backends = $backends
 		$varnish_directors = $directors
 		$varnish_backend_options = $backend_options
+		# $cluster_option is referenced directly
 
 		# Install VCL include files shared by all instances
 		require "varnish::common-vcl"
