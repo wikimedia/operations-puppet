@@ -8,13 +8,14 @@
 @monitor_group { "jobrunner": description => "jobrunner application servers" }
 
 
-# FIXME: add documentation for parameters
 class role::applicationserver {
 	class common(
+		## $cluster: used for ganglia
+		## $nagios_ group: used for nagios
+		## $lvs_pool: used for lvs realserver IP
 		$cluster,
 		$nagios_group=$cluster,
-		$lvs_pool,
-		$upload=true
+		$lvs_pool
 		) {
 
 		include	standard,
@@ -25,18 +26,12 @@ class role::applicationserver {
 				admins::dctech,
 				admins::mortals,
 				geoip,
-				# FIXME: l10nupdate should move out of accounts::
-				accounts::l10nupdate
+				mediawiki::user::l10nupdate
 		}
 
 		if $lvs_pool != undef {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] ] }
-		}
-
-		if $upload == true {
-			## need to replace this with swift stuff
-			include	nfs::upload
 		}
 	}
 
@@ -52,19 +47,26 @@ class role::applicationserver {
 		}
 	}
 
+	## Still needed to pmtpa testing. can be deleted once we're using swift fully
+	class upload_nfs {
+		include	nfs::upload
+	}
+
 	## prod role classes
 	class appserver{
-		class {"role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches"}
+		class {"role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches" }
 		
 		include role::applicationserver::apache
+		include role::applicationserver::upload_nfs
 	}
 	class api_appserver{
-		class {"role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api"}
+		class {"role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api" }
 			
 		include role::applicationserver::apache
+		include role::applicationserver::upload_nfs
 	}
 	class bits_appserver{
-		class {"role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches", upload => false}
+		class {"role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches" }
 		
 		include role::applicationserver::apache
 	}
@@ -72,16 +74,14 @@ class role::applicationserver {
 		class {"role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering" }
 
 		include role::applicationserver::apache
+		include role::applicationserver::upload_nfs
 
 		include	imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
-			if $::realm == 'labs' {
-				include	nfs::apache::labs
-			}
 	}
 	class jobrunner{
-		class {"role::applicationserver::common": cluster => "jobrunner", upload => false }
+		class {"role::applicationserver::common": cluster => "jobrunner" }
 
 		package { [ 'wikimedia-job-runner' ]:
 			ensure => latest;
