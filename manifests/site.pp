@@ -2585,6 +2585,11 @@ node "zirconium.wikimedia.org" {
 	include newstandard
 }
 
+node "wlm.wikimedia.org" {
+	include standard,
+		misc::wlm
+}
+
 node default {
 	include	standard
 }
