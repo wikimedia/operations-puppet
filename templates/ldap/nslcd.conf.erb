@@ -23,7 +23,7 @@ tls_cacertdir /etc/ssl/certs
 tls_cacertfile /etc/ssl/certs/<%= ldap_ca %>
 
 
-<% if scope.function_versioncmp(lsbdistrelease, "12.04") > 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
+<% if scope.function_versioncmp(lsbdistrelease, "12.04") >= 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
 validnames /^[a-z][a-z0-9_-]*$/<% end %>
 
 # Group mapping for sudo-ldap.
