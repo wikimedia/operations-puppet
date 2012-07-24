@@ -1,0 +1,8 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: awjrichards <arichards@wikimedia.org>
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Tue, 24 Jul 2012 11:54:37 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/14287
+Project: operations/puppet
+Branch: refs/heads/production
