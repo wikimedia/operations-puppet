@@ -309,9 +309,10 @@ class base::remote-syslog {
 				}
 			}
 		}
-		# Default to avoid blackholing logs
-		if( $::syslog_remote_server == '' ) {
-			$syslog_remote_real = 'localhost'
+
+		$ensure_remote = $syslog_remote_real ? {
+			''	=> absent,
+			default	=> present,
 		}
 
 		file { "/etc/rsyslog.d/90-remote-syslog.conf":
@@ -319,12 +320,12 @@ class base::remote-syslog {
 		}
 
 		file { "/etc/rsyslog.d/30-remote-syslog.conf":
+			ensure => $ensure_remote,
 			require => Package[rsyslog],
 			owner => root,
 			group => root,
 			mode => 0444,
 			content => "*.info;mail.none;authpriv.none;cron.none	@${syslog_remote_real}\n",
-			ensure => present;
 		}
 
 		service { rsyslog:
