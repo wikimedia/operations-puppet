@@ -638,7 +638,7 @@ class openstack::openstack-manager {
 
 	cron { "run-jobs":
 		user => mwdeploy,
-		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php',
+		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
 		ensure => present;
 	}
 
