@@ -14,7 +14,7 @@ class apaches::packages {
 		ensure => latest;
 	}
 
-	if ( $lsbdistcodename == "precise" ) {
+	if ($::lsbdistcodename == "precise") {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
 		# install an unneeded fast CGI server.
 		package { [ "php5-fpm" ]:

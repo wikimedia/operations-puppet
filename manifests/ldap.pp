@@ -52,7 +52,7 @@ class ldap::server( $ldap_certificate_location, $ldap_cert_pass, $ldap_base_dn )
 
 	include passwords::ldap::initial_setup
 
-	if $lsbdistcodename == "hardy" {
+	if $::lsbdistcodename == "hardy" {
 
 		exec {
 			"/bin/echo \"sun-java6-bin shared/accepted-sun-dlj-v1-1 boolean true\" | /usr/bin/debconf-set-selections":

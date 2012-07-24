@@ -102,7 +102,7 @@ class nrpe::service {
 		ensure => running;
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/sudoers.d/nrpe":
 			owner => root,
 			group => root,
@@ -179,7 +179,7 @@ class nrpe::servicenew {
 		ensure => running;
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { "/etc/sudoers.d/nrpe":
 			owner => root,
 			group => root,

@@ -3,7 +3,7 @@
 class timedmediahandler::web {
     include webserver::php5
 
-    if ( $lsbdistcodename == "lucid" ) {
+    if ( $::lsbdistcodename == "lucid" ) {
         apt::pparepo {
             "timedmediahandler":
                 repo_string => "j/timedmediahandler",

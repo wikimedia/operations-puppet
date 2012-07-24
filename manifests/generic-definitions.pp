@@ -12,7 +12,7 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 	$rolename = regsubst($title, ":", "-", "G")
 	$motd_filename = "/etc/update-motd.d/05-role-${rolename}"
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "9.10") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
 		file { $motd_filename:
 			owner => root,
 			group => root,
@@ -202,7 +202,7 @@ define interface_ip($interface, $address, $prefixlen="32") {
 	$prefix = "${address}/${prefixlen}"
 	$ipaddr_command = "ip addr add ${prefix} dev ${interface}"
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${prefix}":
 			context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = 'inet']",
@@ -219,7 +219,7 @@ define interface_ip($interface, $address, $prefixlen="32") {
 }
 
 define interface_manual($interface, $family="inet") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to create a new manually setup interface
 		$augeas_cmd = [	"set auto[./1 = '$interface']/1 '$interface'",
 				"set iface[. = '$interface'] '$interface'",
@@ -235,7 +235,7 @@ define interface_manual($interface, $family="inet") {
 }
 
 define interface_up_command($interface, $command) {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${title}":
 			context => "/files/etc/network/interfaces/*[. = '${interface}']",
@@ -246,7 +246,7 @@ define interface_up_command($interface, $command) {
 }
 
 define interface_setting($interface, $setting, $value) {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
 		augeas { "${interface}_${title}":
 			context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
@@ -282,7 +282,7 @@ define interface_tun6to4($remove=undef) {
 			]
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		if $remove == 'true' {
 			exec { "/sbin/ifdown tun6to4": before => Augeas["tun6to4"] }
 		}
@@ -343,7 +343,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 			]
 	}
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		if $remove == 'true' {
 			exec { "/sbin/ifdown $intf": before => Augeas["$intf"] }
 		}
@@ -365,7 +365,7 @@ define interface_aggregate_member($master) {
 
 	$interface = $title
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		augeas { "aggregate member ${interface}":
 			context => "/files/etc/network/interfaces/",
 			changes => [
@@ -391,7 +391,7 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 	# Use the definition title as the destination (aggregated) interface
 	$aggr_interface = $title
 
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		if $orig_interface != "" {
 			# Convert an existing interface, e.g. from eth0 to bond0
 			$augeas_changes = [
@@ -903,7 +903,7 @@ define sysctl(
 }
 
 class generic::sysctl::high-http-performance($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { high-http-performance-sysctl:
 			name => "/etc/sysctl.d/60-high-http-performance.conf",
 			owner => root,
@@ -919,7 +919,7 @@ class generic::sysctl::high-http-performance($ensure="present") {
 }
 
 class generic::sysctl::advanced-routing($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { advanced-routing-sysctl:
 			name => "/etc/sysctl.d/50-advanced-routing.conf",
 			owner => root,
@@ -935,7 +935,7 @@ class generic::sysctl::advanced-routing($ensure="present") {
 }
 
 class generic::sysctl::advanced-routing-ipv6($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { advanced-routing-sysctl:
 			name => "/etc/sysctl.d/50-advanced-routing-ipv6.conf",
 			owner => root,
@@ -951,7 +951,7 @@ class generic::sysctl::advanced-routing-ipv6($ensure="present") {
 }
 
 class generic::sysctl::ipv6-disable-ra($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { ipv6-disable-ra:
 			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
 			owner => root,
@@ -967,7 +967,7 @@ class generic::sysctl::ipv6-disable-ra($ensure="present") {
 }
 
 class generic::sysctl::lvs($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { lvs-sysctl:
 			name => "/etc/sysctl.d/50-lvs.conf",
 			mode => 0444,
@@ -981,7 +981,7 @@ class generic::sysctl::lvs($ensure="present") {
 }
 
 class generic::sysctl::high-bandwidth-rsync($ensure="present") {
-	if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "10.04") >= 0 {
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { high-bandwidth-rsync-sysctl:
 			name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
 			mode => 0444,

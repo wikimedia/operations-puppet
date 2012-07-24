@@ -141,7 +141,7 @@ class ganglia {
 		$cname = "${clustername}${name_suffix}"
 	}
 
-	if versioncmp($lsbdistrelease, "9.10") >= 0 {
+	if versioncmp($::lsbdistrelease, "9.10") >= 0 {
 		$gmond = "ganglia-monitor"
 	}
 	else {

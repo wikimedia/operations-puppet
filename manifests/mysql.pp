@@ -168,7 +168,7 @@ class mysql {
 		}
 
 		# FIXME: this belongs in ganglia.pp, not here.
-		if $lsbdistid == "Ubuntu" and versioncmp($lsbdistrelease, "8.04") == 0 {
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "8.04") == 0 {
 			file {
 				"/etc/ganglia":
 					owner => root,

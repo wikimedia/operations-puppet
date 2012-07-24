@@ -11,7 +11,7 @@ class role::labs-mysql-server {
 			false => "1",
 			default => $::mysql_file_per_table,
 		},
-		version => $lsbdistrelease ? {
+		version => $::lsbdistrelease ? {
 			"12.04" => "5.5",
 			default => false,
 		},

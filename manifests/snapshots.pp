@@ -13,7 +13,7 @@ class snapshots::files {
 		mode => 0644,
 		owner => root,
 		group => root,
-		source => "puppet:///files/php/php.ini.cli.snaps.$lsbdistcodename",
+		source => "puppet:///files/php/php.ini.cli.snaps.${::lsbdistcodename}",
 		ensure => present;
 	}
 
@@ -22,7 +22,7 @@ class snapshots::files {
 		mode => 0644,
 		owner => root,
 		group => root,
-		source => "puppet:///files/php/fss.ini.snaps.$lsbdistcodename",
+		source => "puppet:///files/php/fss.ini.snaps.${::lsbdistcodename}",
 		ensure => present;
 	}
 
