@@ -297,7 +297,7 @@ class base::remote-syslog {
 		case $::realm {
 			'production': {
 				if( $::site != '(undefined)' ) {
-					$syslog_remote_real = 'syslog.${::site}.wmnet'
+					$syslog_remote_real = "syslog.${::site}.wmnet"
 				}
 			}
 			'labs': {
