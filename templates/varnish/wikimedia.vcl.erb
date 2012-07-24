@@ -1,7 +1,7 @@
 # Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
 # This file is managed by Puppet!
 
-<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" -%>
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 include "geoip.inc.vcl";
 <% end -%>
 
