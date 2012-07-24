@@ -40,7 +40,7 @@ ulimit -l ${MEMLOCK:-82000}
 # installed application server.)
 DAEMON_OPTS=${DAEMON_OPTS:--b localhost}
 
-<% if has_variable?("enable_geoiplookup") and enable_geoiplookup == "true" %>
+<% if varnish_cluster_options.fetch( "enable_geoiplookup", false ) -%>
 # Bash sucks
 CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -lGeoIP -o %o %s"
 <% end %>

@@ -494,7 +494,10 @@ class role::cache {
 				'max_connections' => 10000,
 				'probe' => "bits",
 			},
-			enable_geoiplookup => "true",
+			cluster_options => {
+				'test_hostname' => $test_wikipedia,
+				'enable_geoiplookup' => true,
+			},
 			xff_sources => $network::constants::all_networks
 		}
 
