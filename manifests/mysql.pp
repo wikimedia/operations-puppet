@@ -145,13 +145,23 @@ class mysql {
 			mode => 0444,
 			source => "puppet:///files/mysql/wikimedia-mysql.list"
 		}
-
-		package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
-			ensure => "5.1.53-fb3753-wm1",
-			require => File["/etc/apt/sources.list.d/wikimedia-mysql.list"];
+		exec {
+			subscribe => File['/etc/apt/sources.list.d/wikimedia-mysql.list'],
+			command => "/usr/bin/apt-get update",
+			refreshonly => true;
 		}
-
-		package { ["xtrabackup", "percona-toolkit", "libaio1", "maatkit", "lvm2" ]:
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") == 0 {
+			package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
+				ensure => "5.1.53-fb3753-wm1",
+				require => File["/etc/apt/sources.list.d/wikimedia-mysql.list"];
+			}
+		}
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
+				ensure => "5.1.53-fb3875-wm1",
+			}
+		}
+		package { ["xtrabackup", "percona-toolkit", "libaio1",  "lvm2" ]:
 			ensure => latest,
 			require => Package["mysql-client-5.1"];
 		}
