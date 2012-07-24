@@ -139,18 +139,18 @@ class mysql {
 	}
 
 	class packages {
-		file { "/etc/apt/sources.list.d/wikimedia-mysql.list":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/mysql/wikimedia-mysql.list"
-		}
-		exec { "update_mysql_apt":
-			subscribe => File['/etc/apt/sources.list.d/wikimedia-mysql.list'],
-			command => "/usr/bin/apt-get update",
-			refreshonly => true;
-		}
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") == 0 {
+			file { "/etc/apt/sources.list.d/wikimedia-mysql.list":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/mysql/wikimedia-mysql.list"
+			}
+			exec { "update_mysql_apt":
+				subscribe => File['/etc/apt/sources.list.d/wikimedia-mysql.list'],
+				command => "/usr/bin/apt-get update",
+				refreshonly => true;
+			}
 			package { [ 'mysql-client-5.1', 'mysql-server-core-5.1', 'mysql-server-5.1', 'libmysqlclient16' ]:
 				ensure => "5.1.53-fb3753-wm1",
 				require => File["/etc/apt/sources.list.d/wikimedia-mysql.list"];
@@ -161,9 +161,8 @@ class mysql {
 				ensure => "5.1.53-fb3875-wm1",
 			}
 		}
-		package { ["xtrabackup", "percona-toolkit", "libaio1",  "lvm2" ]:
+		package { ["percona-xtrabackup", "percona-toolkit", "libaio1",  "lvm2" ]:
 			ensure => latest,
-			require => Package["mysql-client-5.1"];
 		}
 	}
 
