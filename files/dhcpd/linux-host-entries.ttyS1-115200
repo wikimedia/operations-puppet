@@ -1186,6 +1186,41 @@ host ms-be1005 {
 	fixed-address ms-be1005.eqiad.wmnet;
 }
 
+host ms-be1006 {
+	hardware ethernet 04:7D:7B:2E:2C:0E;
+	fixed-address ms-be1006.eqiad.wmnet;
+}
+
+host ms-be1007 {
+	hardware ethernet 00:00:00:00:00:00;
+	fixed-address ms-be1007.eqiad.wmnet;
+}
+
+host ms-be1008 {
+	hardware ethernet 04:7D:7B:2E:2C:08;
+	fixed-address ms-be1008.eqiad.wmnet;
+}
+
+host ms-be1009 {
+	hardware ethernet 00:00:00:00:00:00;
+	fixed-address ms-be1009.eqiad.wmnet;
+}
+
+host ms-be1010 {
+	hardware ethernet 00:00:00:00:00:00;
+	fixed-address ms-be1010.eqiad.wmnet;
+}
+
+host ms-be1011 {
+	hardware ethernet 00:00:00:00:00:00;
+	fixed-address ms-be1011.eqiad.wmnet;
+}
+
+host ms-be1012 {
+	hardware ethernet 00:00:00:00:00:00;
+	fixed-address ms-be1012.eqiad.wmnet;
+}
+
 host ms-fe1 {
 	hardware ethernet d4:be:d9:af:84:27;
 	fixed-address ms-fe1.pmtpa.wmnet;
