@@ -854,7 +854,9 @@ net.core.rmem_default = 536870912
 			'max_connections' => 100,
 			'probe' => "options",
 		},
-		enable_geoiplookup => "false",
+		cluster_options => {
+			'enable_geoiplookup' => "false",
+		},
 		xff_sources => $network::constants::all_networks
 	}
 }
