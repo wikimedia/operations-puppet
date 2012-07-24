@@ -1163,27 +1163,27 @@ host ms-be12 {
 
 host ms-be1001 {
 	hardware ethernet 04:7D:7B:2E:2E:14;
-	fixed-address ms-be1001.pmtpa.wmnet;
+	fixed-address ms-be1001.eqiad.wmnet;
 }
 
 host ms-be1002 {
 	hardware ethernet 04:7D:7B:2E:2E:36;
-	fixed-address ms-be1002.pmtpa.wmnet;
+	fixed-address ms-be1002.eqiad.wmnet;
 }
 
 host ms-be1003 {
 	hardware ethernet 04:7D:7B:2E:2E:5E;
-	fixed-address ms-be1003.pmtpa.wmnet;
+	fixed-address ms-be1003.eqiad.wmnet;
 }
 
 host ms-be1004 {
 	hardware ethernet 04:7D:7B:44:C3:E2;
-	fixed-address ms-be1004.pmtpa.wmnet;
+	fixed-address ms-be1004.eqiad.wmnet;
 }
 
 host ms-be1005 {
 	hardware ethernet 04:7D:7B:2E:2E:0C;
-	fixed-address ms-be1005.pmtpa.wmnet;
+	fixed-address ms-be1005.eqiad.wmnet;
 }
 
 host ms-fe1 {
