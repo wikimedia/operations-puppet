@@ -29,6 +29,8 @@ class misc::planet {
 class misc::planet-venus {
 	system_role { "misc::planet-venus": description => "Planet (venus) weblog aggregator" }
 
+	# When updating this array, make sure to modify files/planet/update-planets
+	# script as well
 	$planet_languages=["ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh"]
 
 	package { "planet-venus":
