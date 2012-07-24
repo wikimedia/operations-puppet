@@ -1592,10 +1592,10 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 	if $hostname =~ /^ms-fe100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	if $hostname =~ /^ms-fe1001$/ {
-		include role::swift::eqiad-prod::ganglia_reporter
-	}
-	# FIXME put in the right IP address here
+	# disabling cluster reportingc stats until the cluster is up
+	#if $hostname =~ /^ms-fe1001$/ {
+	#	include role::swift::eqiad-prod::ganglia_reporter
+	#}
 	$lvs_realserver_ips = [ "10.2.2.27" ]
 	include lvs::realserver
 	include role::swift::eqiad-prod::proxy
