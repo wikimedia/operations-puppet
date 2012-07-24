@@ -183,7 +183,7 @@ class applicationserver {
 	}
 
 	class jobrunner {
-		include jobrunner::packages
+		class {"jobrunner": }
 	}
 
 }
