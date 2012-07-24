@@ -275,7 +275,7 @@ class ganglia {
 						"Bits caches esams" => "cp3001.esams.wikimedia.org cp3002.esams.wikimedia.org",
 						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
 						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
-						"LVS loadbalancers esams" => "amslvs1.esams.wikimedia.org amslv2.esams.wikimedia.org",
+						"LVS loadbalancers esams" => "amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
 						"Miscellaneous esams" => "hooft.esams.wikimedia.org"
 					}
 					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
