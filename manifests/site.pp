@@ -2585,6 +2585,11 @@ node "zirconium.wikimedia.org" {
 	include newstandard
 }
 
+node "i-000002bc.pmtpa.wmflabs" {
+	include standard,
+		misc::wlm
+}
+
 node default {
 	include	standard
 }
