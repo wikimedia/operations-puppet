@@ -185,21 +185,18 @@ define misc::udp2log::instance(
 	# Monitor that each filter process defined in 
 	# /etc/udp2log/$name is running
 	if ($ensure_monitor_processes == true and $ensure == "running") {
-		$ensure_monitor_processes = "present"
+		nrpe::monitor_service { "udp2log_procs-${name}":
+			description   => "udp2log processes for ${name}",
+			nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
+			contact_group => "admins,analytics",
+			retries       => 10,
+			require       => Class["misc::udp2log::monitoring"],
+			ensure        => "present";
+		}
 	}
 	else {
-		$ensure_monitor_processes = "absent"
+		nrpe::monitor_service{ "udp2log_procs-${name}": ensure => absent }
 	}
-
-	nrpe::monitor_service { "udp2log_procs-${name}":
-		description   => "udp2log processes for ${name}",
-		nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
-		contact_group => "admins,analytics",
-		retries       => 10,
-		require       => Class["misc::udp2log::monitoring"],
-		ensure        => $ensure_monitor_processes,
-	}
-
 
 
 
