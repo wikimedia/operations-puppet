@@ -1,3 +1,4 @@
+import "../nfs.pp"
 # misc/logging.pp
 # any logging hosts
 
