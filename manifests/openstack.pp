@@ -161,11 +161,22 @@ class openstack::common {
 
 	file {
 		"/etc/nova/nova.conf":
-			content => template("openstack/nova.conf.erb"),
+			content => template("openstack/${$openstack_version}/nova.conf.erb"),
 			owner => nova,
 			group => nogroup,
 			mode => 0440,
 			require => Package['nova-common'];
+	}
+
+	if $openstack_version == "essex" {
+		file {
+			"/etc/nova/api-paste.ini":
+				content => template("openstack/essex/nova-api-paste.ini.erb"),
+				owner => nova,
+				group => nogroup,
+				mode => 0440,
+				require => Package['nova-common'];
+		}
 	}
 
 }
@@ -793,7 +804,7 @@ class openstack::keystone-service {
 
 	file {
 		"/etc/keystone/keystone.conf":
-			content => template("openstack/keystone.conf.erb"),
+			content => template("openstack/essex/keystone.conf.erb"),
 			owner => keystone,
 			group => nogroup,
 			notify => Service["keystone"],
@@ -823,14 +834,14 @@ class openstack::glance-service {
 
 	file {
 		"/etc/glance/glance-api.conf":
-			content => template("openstack/glance-api.conf.erb"),
+			content => template("openstack/${$openstack_version}/glance-api.conf.erb"),
 			owner => glance,
 			group => nogroup,
 			notify => Service["glance-api"],
 			require => Package["glance"],
 			mode => 0440;
 		"/etc/glance/glance-registry.conf":
-			content => template("openstack/glance-registry.conf.erb"),
+			content => template("openstack/${$openstack_version}/glance-registry.conf.erb"),
 			owner => glance,
 			group => nogroup,
 			notify => Service["glance-registry"],
@@ -1010,6 +1021,9 @@ class openstack::keystone_config {
 	$keystone_ldap_domain = "labs"
 	$keystone_ldap_base_dn = "dc=wikimedia,dc=org"
 	$keystone_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
+	$keystone_ldap_user_id_attribute = "uid"
+	$keystone_ldap_tenant_id_attribute = "cn"
+	$keystone_admin_token = $passwords::openstack::keystone::keystone_admin_token
 	$keystone_ldap_user_pass = $passwords::openstack::keystone::keystone_ldap_user_pass
 	$keystone_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
 	$keystone_ldap_proxyagent_pass = $passwords::openstack::keystone::keystone_ldap_proxyagent_pass
