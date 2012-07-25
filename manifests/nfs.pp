@@ -54,7 +54,8 @@ class nfs::server {
 }
 
 class nfs::home {
-	include nfs::common
+	include nfs::common,
+		nfs::home::wikipedia
 
 	# Class admins tests whether Mount["/home"] is defined
 	mount { "/home":
