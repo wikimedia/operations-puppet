@@ -1,4 +1,3 @@
-import "../nfs.pp"
 # misc/logging.pp
 # any logging hosts
 
@@ -23,9 +22,7 @@ class misc::syslog-server($config="nfs") {
 		"/home/wikipedia/syslog":
 			owner => root,
 			group => root,
-			mode  => 0755,
-			# Logging is done in /home/wikipedia:
-			require => File["/home/wikipedia"];
+			mode  => 0755;
 		}
 	}
 
