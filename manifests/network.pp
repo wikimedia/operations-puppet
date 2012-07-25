@@ -16,7 +16,7 @@ class network::constants {
 						'ipv6' => "2620:0:861:2::/64"
 					},
 					'public1-c-eqiad' => {
-						'ipv4' => "208.80.155.0/26",
+						'ipv4' => "208.80.154.64/26",
 						'ipv6' => "2620:0:861:3::/64"
 					},
 				},
@@ -33,6 +33,20 @@ class network::constants {
 						'ipv4' => "10.64.32.0/22",
 						'ipv6' => "2620:0:861:103::/64"
 					},
+					'labs-hosts1-a-eqiad' => {
+						'ipv4' => "10.64.4.0/24"
+					},
+					'labs-hosts1-b-eqiad' => {
+						'ipv4' => "10.64.20.0/24"
+					},
+					'analytics1-b-eqiad' => {
+						'ipv4' => "10.64.21.0/24",
+						'ipv6' => "2620:0:861:105::/64"
+					},
+					'analytics1-c-eqiad' => {
+						'ipv4' => "10.64.22.0/24",
+						'ipv6' => "2620:0:861:106::/64"
+					}
 				},
 			},
 			'esams' => {
@@ -71,18 +85,6 @@ class network::constants {
 					},
 					'private' => {
 						'ipv4' => "10.0.0.0/16"
-					},
-				},
-			},
-		},
-		'labs' => {
-			'eqiad' => {
-				'private' => {
-					'labs-hosts1-a-eqiad' => {
-						'ipv4' => "10.64.4.0/24"
-					},
-					'labs-hosts1-b-eqiad' => {
-						'ipv4' => "10.64.20.0/24"
 					},
 				},
 			},
