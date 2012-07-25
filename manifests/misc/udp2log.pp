@@ -173,13 +173,7 @@ define misc::udp2log::instance(
 			ensure        => "present";
 		}
 	}
-	else {
-		nrpe::monitor_service { "udp2log_log_age-${name}":
-			description => "udp2log log age for ${name}",
-			ensure => "absent";
-		}
-	}
-
+	# TODO else ensure absent, can't do this right now due to missing dependencies
 
 
 
@@ -195,12 +189,7 @@ define misc::udp2log::instance(
 			ensure        => "present";
 		}
 	}
-	else {
-		nrpe::monitor_service{ "udp2log_procs-${name}":
-			description => "udp2log processes for ${name}",
-			ensure => absent;
-		}
-	}
+	# TODO else ensure absent, can't do this right now due to missing dependencies
 
 
 
