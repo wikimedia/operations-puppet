@@ -202,6 +202,16 @@ class misc::deployment::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write2";
+
+		# Manpages
+		# Need to be generated manually using make in files/misc/scripts
+		"/usr/local/share/man/man1":
+			ensure => 'directory',
+			recurse => true,
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/misc/scripts/man";
 	}
 }
 

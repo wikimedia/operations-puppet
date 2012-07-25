@@ -1,0 +1,42 @@
+set-group-write(1)
+==================
+
+NAME
+----
+set-group-write, set-group-write2 - Make common writable by wikidev members
+
+SYNOPSIS
+--------
+[verse]
+'set-group-write'
+'sudo set-group-write2'
+
+DESCRIPTION
+-----------
+The `set-group-write` script will fix group permission on the common directory
+so wikidev members can write to it. The script is a wrapper to call
+`set-group-write2` with sufficient privileges.
+
+`set-group-write2` is only acting on files owned by the wikidev group. It will
+make sure they are group writable.
+
+On the *fenari* host, the target is `/home/wikipedia/common`, on any other host
+it will be the rsynced copy `/apache/common-local`.
+
+OPTIONS
+-------
+The scripts have no options.
+
+EXAMPLE
+-------
+
+---------------------------------------
+unpriviledgeduser@host$ set-group-write
+---------------------------------------
+
+EXIT STATUS
+-----------
+Nothing set really.
+
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:
