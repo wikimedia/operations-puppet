@@ -192,8 +192,7 @@ class apaches::monitoring( $realm='production' ) {
 
 ## this should be removed. can now use above.
 class apaches::monitoring::labs {
-	# bug 37046
-	monitor_service { "appserver labs http": description => "Apache HTTP", check_command => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
+	class { "apaches::monitoring": realm => 'labs' }
 }
 
 
