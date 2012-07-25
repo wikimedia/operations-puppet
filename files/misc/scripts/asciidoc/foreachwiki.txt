@@ -1,0 +1,44 @@
+foreachwiki(1)
+==============
+
+NAME
+----
+foreachwiki - run a command on all the wiki
+
+SYNOPSIS
+--------
+[verse]
+'foreachwiki' SCRIPTNAME
+
+DESCRIPTION
+-----------
+foreachwiki(8) is a simple wrapper around MediaWiki multiversion to run a
+MediaWiki maintenance script on all the wiki we are hosting. `SCRIPTNAME` should
+be the name of a script relative to the MediaWiki `maintenance` directory on
+all the wiki. It acquires the list of wiki using the hardcoded dblist
+`/home/wikipedia/common/all.dblist`.
+
+Output is prefixed with the entry listed in `all.dblist`.
+
+The PHP invocation of MediaWiki multiversion is hardcoded to have PHP report
+errors (display_errors=On).
+
+The script will not abort on errors and will keep proceeding.
+
+OPTIONS
+-------
+This script has no options.
+
+EXAMPLE
+-------
+
+--------------------------
+$ foreachwiki showstat.php
+--------------------------
+
+EXIT STATUS
+-----------
+It would be the result status of the last command run.
+
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:
