@@ -165,18 +165,19 @@ define misc::udp2log::instance(
 
 	# Monitor age of log udp2log files.
 	if ($monitor_log_age == true and $ensure == "running") {
-		$ensure_monitor_log_age = "present"
+		nrpe::monitor_service { "udp2log_log_age-${name}":
+			description   => "udp2log log age for ${name}",
+			nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
+			contact_group => "admins,analytics",
+			require       => Class["misc::udp2log::monitoring"],
+			ensure        => "present";
+		}
 	}
 	else {
-		$ensure_monitor_log_age = "absent"
-	}
-
-	nrpe::monitor_service { "udp2log_log_age-${name}":
-		description   => "udp2log log age for ${name}",
-		nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
-		contact_group => "admins,analytics",
-		require       => Class["misc::udp2log::monitoring"],
-		ensure        => $ensure_monitor_log_age,
+		nrpe::monitor_service { "udp2log_log_age-${name}":
+			description => "udp2log log age for ${name}",
+			ensure => "absent";
+		}
 	}
 
 
@@ -195,7 +196,10 @@ define misc::udp2log::instance(
 		}
 	}
 	else {
-		nrpe::monitor_service{ "udp2log_procs-${name}": ensure => absent }
+		nrpe::monitor_service{ "udp2log_procs-${name}":
+			description => "udp2log processes for ${name}",
+			ensure => absent;
+		}
 	}
 
 
