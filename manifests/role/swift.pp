@@ -130,7 +130,7 @@ class role::swift {
 		system_role { "role::swift::eqiad-prod": description => "Swift eqiad production cluster" }
 		system_role { "swift-cluster::eqiad-prod": description => "Swift eqiad production cluster", ensure => absent }
 		include passwords::swift::eqiad-prod
-		class { "::swift::base": hash_path_suffix => "bd51d755d4c53773", cluster_name => "eqiad-prod" }
+		class { "::swift::base": hash_path_suffix => "4f93c548a5903a13", cluster_name => "eqiad-prod" }
 		class ganglia_reporter inherits role::swift::eqiad-prod {
 			# one host per cluster should report global stats
 			file { "/usr/local/bin/swift-ganglia-report-global-stats":
