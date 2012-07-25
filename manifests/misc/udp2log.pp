@@ -225,20 +225,23 @@ define misc::udp2log::instance(
 
 	# Set up nagios monitoring of packet loss
 	# for this udp2log instance.
-	monitor_service { "udp2log-${name}-packetloss": 
-		description           => "Packetloss_Average",
-		check_command         => "check_packet_loss_ave!4!8",
-		contact_group         => "admins,analytics",
-		# ganglia-logtailer only runs every 5.
-		# let's make nagios check every 2 minutes (to match ganglia_parser)
-		# and retry 4 times (total 8 minutes) before
-		# declaring a hard failure.
-		normal_check_interval => 2,
-		retry_check_interval  => 2,
-		retries               => 4,
-		require               => Class["misc::udp2log::monitoring"],
-		ensure                => $ensure_monitor_packet_loss,
+	if ($monitor_packet_loss == true) {
+		monitor_service { "udp2log-${name}-packetloss":
+			description           => "Packetloss_Average",
+			check_command         => "check_packet_loss_ave!4!8",
+			contact_group         => "admins,analytics",
+			# ganglia-logtailer only runs every 5.
+			# let's make nagios check every 2 minutes (to match ganglia_parser)
+			# and retry 4 times (total 8 minutes) before
+			# declaring a hard failure.
+			normal_check_interval => 2,
+			retry_check_interval  => 2,
+			retries               => 4,
+			require               => Class["misc::udp2log::monitoring"],
+			ensure                => $ensure_monitor_packet_loss,
+		}
 	}
+	# TODO else ensure absent, can't do this right now due to missing dependencies
 }
 
 class misc::udp2log::utilities {
