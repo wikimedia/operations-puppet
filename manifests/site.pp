@@ -1003,6 +1003,7 @@ node "manutius.wikimedia.org" {
 		"asw-d3-sdtpa.mgmt.pmtpa.wmnet",
 		"asw-a-eqiad.mgmt.eqiad.wmnet",
 		"asw-b-eqiad.mgmt.eqiad.wmnet",
+		"asw-c-eqiad.mgmt.eqiad.wmnet",
 		"asw2-a5-eqiad.mgmt.eqiad.wmnet",
 		"psw1-eqiad.mgmt.eqiad.wmnet",
 		"msw1-eqiad.mgmt.eqiad.wmnet"
