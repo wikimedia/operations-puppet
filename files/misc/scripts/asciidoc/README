@@ -1,0 +1,20 @@
+On Mac OS X with homebrew:
+
+ $ brew install asciidoc
+
+Should also install docbook
+
+IMPORTANT Edit your ~/.bashrc to add:
+export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
+
+ $ a2x --doctype manpage --format manpage
+
+You can pass --verbose to get more details about what is being done.
+
+
+FAQ
+
+If you get an error like:
+a2x: ERROR: "xmllint" --nonet --noout --valid "/Users/amusso/projects/operations/puppet/files/misc/scripts/asciidoc/_annotated.1.xml" returned non-zero exit status 4
+
+That is most probably because `xmllint` is unable to find the docbook catalog. You can use XML_CATALOG_FILES to add a XML catalog.
