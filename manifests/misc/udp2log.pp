@@ -213,19 +213,19 @@ define misc::udp2log::instance(
 		default => $packet_loss_log,
 	}
 
-	# Set up a cron to tail the packet loss log for this
-	# instance into ganglia.  
-	cron { "ganglia-logtailer-udp2log-${name}":
-		command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file ${packet_loss_log_file} --mode cron",
-		user    => 'root',
-		minute  => '*/5',
-		require => Class["misc::udp2log::monitoring"],
-		ensure  => $ensure_monitor_packet_loss,
-	}
-
-	# Set up nagios monitoring of packet loss
-	# for this udp2log instance.
 	if ($monitor_packet_loss == true) {
+		# Set up a cron to tail the packet loss log for this
+		# instance into ganglia.
+		cron { "ganglia-logtailer-udp2log-${name}":
+			command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file ${packet_loss_log_file} --mode cron",
+			user    => 'root',
+			minute  => '*/5',
+			require => Class["misc::udp2log::monitoring"],
+			ensure  => $ensure_monitor_packet_loss,
+		}
+
+		# Set up nagios monitoring of packet loss
+		# for this udp2log instance.
 		monitor_service { "udp2log-${name}-packetloss":
 			description           => "Packetloss_Average",
 			check_command         => "check_packet_loss_ave!4!8",
