@@ -1202,22 +1202,22 @@ host ms-be1008 {
 }
 
 host ms-be1009 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2E:88;
 	fixed-address ms-be1009.eqiad.wmnet;
 }
 
 host ms-be1010 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2E:2E;
 	fixed-address ms-be1010.eqiad.wmnet;
 }
 
 host ms-be1011 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2B:FE;
 	fixed-address ms-be1011.eqiad.wmnet;
 }
 
 host ms-be1012 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2E:16;
 	fixed-address ms-be1012.eqiad.wmnet;
 }
 
