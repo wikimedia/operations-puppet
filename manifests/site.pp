@@ -1712,11 +1712,10 @@ node /^nfs[12].pmtpa.wmnet/ {
 		misc::syslog-server,
 		ldap::server::wmf-cluster,
 		ldap::client::wmf-cluster,
-		backup::client,
-		role::logging::mediawiki
+		backup::client
 
 	# don't need udp2log monitoring on nfs hosts
-	class { "misc::udp2log": monitor => false }
+	class { "role::logging::mediawiki": monitor => false }
 
 	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
