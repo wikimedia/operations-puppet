@@ -161,13 +161,16 @@ class misc::statistics::db {
 class misc::statistics::gerrit_stats {
 	$gerrit_stats_repo_url      = "https://gerrit.wikimedia.org/r/p/analytics/gerrit-stats.git"
 	$gerrit_stats_data_repo_url = "ssh://stats@gerrit.wikimedia.org:29418/analytics/gerrit-stats/data.git"
-	$gerrit_stats_path          = "/a/gerrit-stats"
+	$gerrit_stats_base          = "/a/gerrit-stats"
+	$gerrit_stats_path          = "$gerrit_stats_base/gerrit-stats"
+	$gerrit_stats_data_path     = "$gerrit_stats_base/data"
+	
 
 	# use the stats user
 	$gerrit_stats_user          = $misc::statistics::user::username
 	$gerrit_stats_user_home     = $misc::statistics::user::homedir
 	
-	file { $gerrit_stats_path:
+	file { $gerrit_stats_base:
 		owner  => $gerrit_stats_user,
 		group  => "wikidev",
 		mode   => 0775,
@@ -184,7 +187,7 @@ class misc::statistics::gerrit_stats {
 	# from git.less.ly.
 
 	git::clone { "gerrit-stats":
-		directory => "$gerrit_stats_path/gerrit-stats",
+		directory => "$gerrit_stats_path",
 		origin    => $gerrit_stats_repo_url,
 		owner     => $gerrit_stats_user,
 		require   => [User[$gerrit_stats_user], Package["python-mysqldb"]],
@@ -192,7 +195,7 @@ class misc::statistics::gerrit_stats {
 	}
 
 	git::clone { "gerrit-stats/data":
-		directory => "$gerrit_stats_path/data",
+		directory => "$gerrit_stats_data_path",
 		origin    => $gerrit_stats_data_repo_url,
 		owner     => $gerrit_stats_user,
 		require   => User[$gerrit_stats_user],
@@ -221,7 +224,7 @@ class misc::statistics::gerrit_stats {
 	# data in $gerrit_stats_path/data will be commited
 	# and pushed to the gerrit-stats/data repository.
 	cron { "gerrit-stats-daily":
-		command => "/usr/bin/python $gerrit_stats_path/gerrit-stats/gerritstats/stats.py --dataset $gerrit_stats_data_path --toolkit dygraphs | tee -a $gerrit_stats_path/gerrit-stats.log && (cd $gerrit_stats_path/data && git add . && git commit -m \"Updating gerrit-stats data after gerrit-stats run at $(date)\" && git push)",
+		command => "/usr/bin/python $gerrit_stats_path/gerritstats/stats.py --dataset $gerrit_stats_data_path --toolkit dygraphs | tee -a $gerrit_stats_base/gerrit-stats.log && (cd $gerrit_stats_data_path && git add . && git commit -m \"Updating gerrit-stats data after gerrit-stats run at $(date)\" && git push)",
 		user    => $gerrit_stats_user,
 		hour    => '23',
 		minute  => '59',
