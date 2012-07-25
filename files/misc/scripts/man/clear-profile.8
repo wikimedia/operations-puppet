@@ -1,0 +1,59 @@
+'\" t
+.\"     Title: clear-profile
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 09/11/2012
+.\"    Manual: Wikimedia Manual
+.\"    Source: Puppet 1.0
+.\"  Language: English
+.\"
+.TH "CLEAR\-PROFILE" "8" "09/11/2012" "Puppet 1\&.0" "Wikimedia Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+clear-profile \- delete graphite profiling data
+.SH "SYNOPSIS"
+.sp
+\fBclear\-profile\fR
+.SH "DESCRIPTION"
+.sp
+\fBclear\-profile\fR will ping the graphite installation and ask it to remove the profiling data\&.
+.SH "OPTIONS"
+.sp
+This script has no option\&.
+.SH "COMMANDS"
+.sp
+Describe commands, you can give some synopsis there such as:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+clear\-profile
+.fi
+.if n \{\
+.RE
+.\}
+.SH "BUGS"
+.sp
+This script does not handle any error while sending the ping back and will always assume the command worked successfuly\&.
+.SH "RESOURCES"
+.sp
+https://wikitech\&.wikimedia\&.org/view/Graphite

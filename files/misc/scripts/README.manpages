@@ -1,0 +1,56 @@
+Man pages for our scripts are written using asciidoc which is way easier to
+manage than the awkward man syntax. They are located in the ./asciidoc sub
+directory.
+
+Originally written by Antoine Musso, July 2012.
+
+Editing asciidocs:
+------------------
+The syntax is really straightforward, you should be fine by just looking at the
+existing asciidocs. A cheatsheet is available online:
+  http://powerman.name/doc/asciidoc
+
+Manpages requires some specific sections, see:
+  http://www.methods.co.nz/asciidoc/userguide.html#X1
+
+If you need shadow manpages (an alias to another manpage), simply pass both
+titles in the NAME section (see asciidoc/set-group-write.txt for an example.
+
+Refresh manpages:
+-----------------
+You will need the asciidoc software, see below in this documentation for
+installation instructions.
+
+Once you are happy with your change, run `make` to generate the manpage out of
+the asciidoc. You should review your change using man ./man/somefile.1. When
+you are done, git add both the asciidoc AND the resulting man page.
+
+Vim configuration:
+------------------
+When using vim, it is highly recommended to use the following third party
+syntax file:
+   https://github.com/dagwieers/asciidoc-vim
+
+Files should have a vim modeline to make vim load the syntax automatically:
+   // vim: set syntax=asciidoc:
+
+Installing asciidoc:
+--------------------
+On Mac OS X, with homebrew:
+
+ $ brew install asciidoc
+
+Should also install docbook
+
+IMPORTANT: Edit your ~/.bashrc to add:
+export XML_CATALOG_FILES="/usr/local/etc/xml/catalog"
+
+ $ a2x --doctype manpage --format manpage
+
+FAQ:
+----
+If you get an error like:
+a2x: ERROR: "xmllint" --nonet --noout --valid "/Users/amusso/projects/operations/puppet/files/misc/scripts/asciidoc/_annotated.1.xml" returned non-zero exit status 4
+
+That is most probably because `xmllint` is unable to find the docbook catalog.
+You can use XML_CATALOG_FILES to add a XML catalog.
