@@ -264,14 +264,12 @@ sub vcl_recv {
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
 		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
 		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-
-		size_t len = strcspn(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-		char xff_ip[len+1];
-		memcpy(xff_ip, VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), len);
-		xff_ip[len] = '\0';
-
+		char *last;
+		
+		char *xff_ip = strtok_r(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",", &last);
+		
 		if (xff_ip == NULL) {
-			char *xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		}
 
 		if (xff_ip != NULL) {
