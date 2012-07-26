@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- This is schema file for TTMServer using Solr as backend -->
+<schema name="ttmserver" version="1.5">
+	<types>
+		<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+		<fieldType name="tint" class="solr.TrieIntField" precisionStep="50" positionIncrementGap="0"/>
+		<fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
+			<analyzer type="index">
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.EnglishPossessiveFilterFactory"/>
+				<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+	<!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+				<filter class="solr.EnglishMinimalStemFilterFactory"/>
+	-->
+				<filter class="solr.PorterStemFilterFactory"/>
+			</analyzer>
+			<analyzer type="query">
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.EnglishPossessiveFilterFactory"/>
+				<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+				<filter class="solr.PorterStemFilterFactory"/>
+			</analyzer>
+		</fieldType>
+		<fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+			</analyzer>
+		</fieldType>
+	</types>
+
+	<fields>
+		<!-- If multiple wikies are using the same server, this will tell which one owns this document -->
+		<field name="wiki" type="string" indexed="true" stored="true" required="true" />
+		<!-- URL or something to the source document. It is assumed that
+				 translations can be found by appending /langcode to the url
+				 -->
+		<field name="uri" type="string" indexed="true" stored="true" required="true" />
+		<field name="messageid" type="string" indexed="true" stored="true" required="true" />
+		<field name="globalid" type="string" indexed="true" stored="true" required="true" />
+
+		<!--Original language of the translation-->
+		<field name="language" type="string" indexed="true" stored="true" required="true" />
+		<!-- For now assuming that content is always in English -->
+		<field name="content" type="text_en" indexed="true" stored="true" required="true" />
+
+		<!-- For filtering suggestions which are way too long or short -->
+		<field name="charcount" type="tint" indexed="true" stored="true" />
+		<!-- This is the field used for searching -->
+		<field name="text" type="string" indexed="true" stored="false" />
+		<copyField source="content" dest="text" />
+
+		<!-- Fields for translations. -->
+		<dynamicField name="text_*" type="string" indexed="true" stored="true" />
+	</fields>
+
+	<uniqueKey>globalid</uniqueKey>
+</schema>
+
