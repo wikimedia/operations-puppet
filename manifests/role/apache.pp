@@ -47,14 +47,13 @@ class role::applicationserver {
 				}
 		}
 
-		if $lvsrealserver == true {
-			## need to replace this with swift stuff
+		if $upload == true {
 			include	nfs::upload
 		}
 
 		if $jobrunner == true {
 			include	jobrunner::packages
-		}	
+		}
 	}
 
 	## prod role classes
