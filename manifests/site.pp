@@ -464,7 +464,10 @@ node "carbon.wikimedia.org" {
 }
 
 node "calcium.wikimedia.org" {
-	include newstandard
+	$cluster = "misc"
+
+	include standard,
+		misc::smokeping
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
