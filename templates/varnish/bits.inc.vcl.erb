@@ -22,6 +22,14 @@ sub vcl_recv {
 		error 666 "geoiplookup";
 	}
 <% end -%>
+        <% if site == "eqiad" -%>
+        /* Return an empty HTTP 204 ("No Content") response to event tracking
+           calls. Currently restricted to eqiad for the sake of vanadium (the
+           designated log collector) which can't connect to esams. */
+        else if (req.http.host == "bits-lb.eqiad.wikimedia.org" && req.url ~ "^/event.gif") {
+                error 204;
+        }
+        <% end -%>
 	else {
 		error 403 "Requested target domain not allowed.";
 	}
