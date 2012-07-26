@@ -1,0 +1,23 @@
+*** Probes ***
+
++ FPing
+
+binary = /usr/bin/fping
+
++ FPing6
+
+binary = /usr/bin/fping6
+
++ DNS
+binary = /usr/bin/dig
+lookup = wikipedia.org
+pings = 5
+step = 180
+
++ Curl
+# probe-specific variables
+binary = /usr/bin/curl
+step = 60
+
+# a default for this target-specific variable
+urlformat = http://%host%/
