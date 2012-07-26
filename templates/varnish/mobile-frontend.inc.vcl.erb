@@ -264,7 +264,7 @@ sub vcl_recv {
 		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
 		char *last;
 
-		char *xff_ip = strtok_r(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",", &last);
+		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
 		
 		if (xff_ip == NULL) {
 			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
