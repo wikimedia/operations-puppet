@@ -1,9 +1,31 @@
-/* Local overrides for Wikimedia. Tested on Gerrit 2.3 */
+/* Local overrides for Wikimedia. Tested on Gerrit 2.4.2 */
 
 /**
  * Add word wrapping for commit messages, so horizontal scrolling isn't needed.
  * --2012-06-09
  */
-.GJEA35ODNB {
+.GJEA35ODLB {
 	white-space: pre-wrap !important;
 }
+
+/** Skin */
+body {color: #484848 !important; background: url("static/openstack-page-bkg.jpg") no-repeat scroll 0 0 white !important; position: static}
+a,a:visited {color: #264D69 !important; text-decoration: none;}
+a:hover {color: #000 !important; text-decoration: underline}
+
+a.gwt-InlineHyperlink {background: none !important}
+
+#gerrit_header {display: block !important; position: relative; top: -60px; margin-bottom: -60px; width: 400px; padding-left: 17px}
+#gerrit_header h1 {font-family: 'PT Sans', sans-serif; font-weight: normal; letter-spacing: -1px}
+
+#gerrit_topmenu {background: none; position:relative; top: 0px; left: 400px; margin-right: 400px}
+
+#gerrit_topmenu tbody tr td table {border: 0}
+
+#gerrit_topmenu tbody tr td table.gwt-TabBar {color: #353535; border-bottom: 1px solid #C5E2EA;}
+#gerrit_topmenu .gwt-Button {padding: 3px 6px}
+.gwt-TabBarItem-selected {color: #990000 !important; border-bottom: 3px solid #990000;}
+.gwt-TabBarItem {color: #353535; border-right: 0 !important}
+.gwt-TabBar .gwt-TabBarItem, .gwt-TabBar .gwt-TabBarRest, .gwt-TabPanelBottom {background: 0 !important;}
+
+#gerrit_topmenu .gwt-TextBox {width: 250px}
