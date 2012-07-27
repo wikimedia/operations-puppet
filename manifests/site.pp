@@ -2580,6 +2580,11 @@ node "zhen.wikimedia.org" {
 		mobile::vumi
 }
 
+node "wlm.wikimedia.org" {
+	include standard,
+		misc::wlm
+}
+
 node default {
 	include	standard
 }
