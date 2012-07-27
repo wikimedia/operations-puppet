@@ -11,7 +11,7 @@ from eventlet.green import urllib2
 import wmf.client
 import time
 import urlparse
-#from swift.common.utils import get_logger
+from swift.common.utils import get_logger
 
 # Copy2 is hairy. If we were only opening a URL, and returning it, we could
 # just return the open file handle, and webob would take care of reading from
@@ -115,8 +115,11 @@ class WMFRewrite(object):
         if (self.write_thumbs == 'most'):
             # if we're supposed to write thumbs for most containers, get a cleaned list of the containers to which we DON'T write
             self.dont_write_thumb_list = striplist(conf['dont_write_thumb_list'].split(','))
+        # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
+        # converted  and only the path sent back (eg en.wikipedia/thumb).
+        self.backend_url_format = conf['backend_url_format'].strip() #'asis', 'sitelang'
 
-        #self.logger = get_logger(conf)
+        self.logger = get_logger(conf)
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -129,7 +132,8 @@ class WMFRewrite(object):
         reqorig.host = self.thumbhost
         # upload doesn't like our User-agent, otherwise we could call it
         # using urllib2.url()
-        opener = urllib2.build_opener()
+        proxy_handler = urllib2.ProxyHandler({'http': self.thumbhost})
+        opener = urllib2.build_opener(proxy_handler)
         # Pass on certain headers from the caller squid to the scalers
         opener.addheaders = []
         if reqorig.headers.get('User-Agent') != None:
@@ -146,8 +150,46 @@ class WMFRewrite(object):
         try:
             # break apach the url, url-encode it, and put it back together
             urlobj = list(urlparse.urlsplit(reqorig.url))
+            # encode the URL but don't encode %s and /s
             urlobj[2] = urllib2.quote(urlobj[2], '%/')
             encodedurl = urlparse.urlunsplit(urlobj)
+
+            # if sitelang, we're supposed to mangle the URL so that
+            # http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
+            # changes to
+            # http://commons.wikipedia.org/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
+            if self.backend_url_format == 'sitelang':
+                match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
+                if match:
+                    proj = match.group('proj')
+                    lang = match.group('lang')
+                    # and here are all the legacy special cases, imported from thumb_handler.php
+                    if(proj == 'wikipedia'):
+                        if(lang in ['meta', 'commons', 'internal', 'grants', 'wikimania2006']):
+                            proj = 'wikimedia'
+                        if(lang in ['mediawiki']):
+                            lang = 'www'
+                            proj = 'mediawiki'
+                    hostname = '%s.%s.org' % (lang, proj)
+                    if(proj == 'wikipedia' and lang == 'sources'):
+                        #yay special case
+                        hostname = 'wikisource.org'
+                    # ok, replace the URL with just the projectname as the host
+                    # and the part after thumb/ passed to thumb_handler.php
+                    encodedurl = 'http://%s/w/thumb_handler.php/%s' % (hostname, match.group('path'))
+                    # add in the original URL that swift got (minus the hostname) as X-Original-URI
+                    opener.addheaders.append(('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
+            else:
+                # log the result of the match here to test and see if we're missing cases
+                match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
+                if match:
+                    proj = match.group('proj')
+                    lang = match.group('lang')
+                    self.logger.warn("sitelang match has proj %s lang %s encodedurl %s" % (proj, lang, encodedurl))
+                else:
+                    self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
+
+
             # ok, call the encoded url
             upcopy = opener.open(encodedurl)
 
@@ -319,4 +361,6 @@ def filter_factory(global_conf, **local_conf):
     def wmfrewrite_filter(app):
         return WMFRewrite(app, conf)
     return wmfrewrite_filter
+
+# vim: set nu list expandtab tabstop=4 shiftwidth=4 autoindent:
 
