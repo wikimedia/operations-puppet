@@ -1864,10 +1864,6 @@ node "professor.pmtpa.wmnet" {
 		misc::graphite
 }
 
-node "potassium.wikimedia.org" {
-	include newstandard
-}
-
 node "project1.wikimedia.org" {
 	$cluster = "misc"
 
@@ -2582,10 +2578,6 @@ node "zhen.wikimedia.org" {
 	include standard,
 		accounts::preilly,
 		mobile::vumi
-}
-
-node "zirconium.wikimedia.org" {
-	include newstandard
 }
 
 node default {
