@@ -3016,7 +3016,7 @@ host pdf3 {
 
 host potassium {
 	hardware ethernet 78:2b:cb:08:ac:78;
-	fixed-address potassium.wikimedia.org;
+	fixed-address potassium.eqiad.wmnet;
 }
 
 host search13 {
@@ -3931,5 +3931,5 @@ host zinc {
 
 host zirconium {
 	hardware ethernet 18:03:73:f1:4f:4c;
-	fixed-address zirconium.wikimedia.org;
+	fixed-address zirconium.eqiad.wmnet;
 }
