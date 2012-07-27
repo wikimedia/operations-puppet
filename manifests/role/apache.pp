@@ -74,6 +74,6 @@ class role::applicationserver {
 		class {"role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering", geoip => false }
 	}
 	class jobrunner{
-		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, lvsrealserver => false, apache => false }
+		class {"role::applicationserver::common": cluster => "jobrunner", geoip => false, upload => false, apache => false }
 	}
 }
