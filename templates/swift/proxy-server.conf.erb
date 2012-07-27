@@ -53,6 +53,12 @@ write_thumbs = <%= scope.lookupvar("swift::proxy::config::write_thumbs") %>
 # if we write most thumbs to swift, which ones do we leave out? ignored for all and none.
 # this list is the containers to which we do NOT write thumbnails
 dont_write_thumb_list = <%= scope.lookupvar("swift::proxy::config::dont_write_thumb_list") %>
+# backend_url_format controls whether we pass the URL through to the thumbhost unmolested
+# or mangle it to be consumed by mediawiki.  ms5 takes URLs unmolested, mediawiki wants them
+# transformed to something more palatable (specifically, turning http://upload/proj/lang/ into http://lang.proj/
+# valid options are 'asis' (leave it alone) and 'sitelang' (change upload to lang.site.org)
+backend_url_format = <%= scope.lookupvar("swift::proxy::config::backend_url_format") %>
+
 
 
 paste.filter_factory = wmf.rewrite:filter_factory
