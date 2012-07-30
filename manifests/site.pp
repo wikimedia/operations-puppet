@@ -1557,6 +1557,11 @@ node "ms8.pmtpa.wmnet" {
 		misc::zfs::monitoring
 }
 
+node "ms10.pmtpa.wmnet" {
+	include standard,
+		generic::sysctl::high-bandwidth-rsync
+}
+
 node "ms1001.eqiad.wmnet" {
 	include standard,
 		generic::sysctl::high-bandwidth-rsync
