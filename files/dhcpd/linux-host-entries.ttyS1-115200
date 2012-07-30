@@ -1083,6 +1083,11 @@ host mc1008 {
 	fixed-address mc1008.eqiad.wmnet;
 }
 
+host ms10 {
+	hardware ethernet d4:ae:52:93:48:d3;
+	fixed-address ms10.pmtpa.wmnet;
+}
+
 host ms1001 {
 	hardware ethernet 78:2b:cb:0a:13:f3;
 	fixed-address ms1001.wikimedia.org;
