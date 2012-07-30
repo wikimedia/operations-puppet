@@ -2585,7 +2585,7 @@ node "zhen.wikimedia.org" {
 		mobile::vumi
 }
 
-node "wlm.wikimedia.org" {
+node "yttrium.wikimedia.org" {
 	include standard,
 		misc::wlm
 }
