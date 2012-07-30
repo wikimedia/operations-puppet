@@ -29,9 +29,9 @@ class role::applicationserver {
 				mediawiki::user::l10nupdate
 		}
 
-		if $lvs_pool != undef {
+		if $lvs_pool {
 			include lvs::configuration
-			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] ] }
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] }
 		}
 	}
 
@@ -39,7 +39,13 @@ class role::applicationserver {
 		include	apaches::cron,
 			apaches::service,
 			apaches::pybal_check,
-			apaches::syslog
+			apaches::syslog,
+			apaches::nice,
+			sudo::appserver
+
+		if( $::realm == 'labs' ) {
+			include	nfs::apache::labs
+		}
 
 		monitor_service { "appserver http": description => "Apache HTTP",
 			check_command => $::realm ? { 'production' => "check_http_wikipedia",

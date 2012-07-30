@@ -70,13 +70,13 @@ class mediawiki::user::l10nupdate {
 			require => Systemuser["l10nupdate"],
 			owner => l10nupdate,
 			group => l10nupdate,
-			mode => 0700,
+			mode => 0500,
 			ensure => directory;
 		"/home/l10nupdate/.ssh/authorized_keys":
 			require => File["/home/l10nupdate/.ssh"],
 			owner => l10nupdate,
 			group => l10nupdate,
-			mode => 0600,
+			mode => 0400,
 			content => $authorized_key;
 	}
 }

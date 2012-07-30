@@ -8,8 +8,7 @@ class apaches::packages {
 		ensure => latest;
 	}
 
-	# FIXME: so what happens when we install the next Ubuntu release?
-	if ( $::lsbdistcodename == "precise" ) {
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
 		# install an unneeded fast CGI server.
 		package { [ "php5-fpm" ]:
@@ -126,17 +125,8 @@ extension=wikidiff2.so
 class apaches::service {
 	include mediawiki::sync
 
-	if( $::realm == 'labs' ) {
-		include nfs::apache::labs
-	}
-
 	# Require apaches::files to be in place
 	require apaches::files
-
-	include sudo::appserver
-
-	# Adjust nice levels
-	require apaches::nice
 
 	# Sync the server when we see apache is not running
 	exec { 'apache-trigger-mw-sync':
@@ -167,13 +157,13 @@ class apaches::pybal_check {
 			require => Systemuser["pybal-check"],
 			owner => pybal-check,
 			group => pybal-check,
-			mode => 0750,
+			mode => 0550,
 			ensure => directory;
 		"/var/lib/pybal-check/.ssh/authorized_keys":
 			require => File["/var/lib/pybal-check/.ssh"],
 			owner => pybal-check,
 			group => pybal-check,
-			mode => 0640,
+			mode => 0440,
 			content => $authorized_key;
 	}
 }
