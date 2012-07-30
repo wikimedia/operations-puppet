@@ -9,6 +9,9 @@ class misc::bastionhost {
 
 	include sudo::appserver
 
+	# Bastion is used to regenerate our captchas:
+	include misc::captcha
+
 	package { "irssi":
 		ensure => absent;
 		"traceroute-nanog":
