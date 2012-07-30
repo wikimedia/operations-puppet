@@ -23,7 +23,7 @@ class apaches::packages {
 	}
 
 	# Explicitly require the Wikimedia version of some packages
-	generic::apt::pin-package{ [ "php-wikidiff2" ]: pin => "release o=Wikimedia" }
+	generic::apt::pin-package{ [ "php-wikidiff2", "php5-common" ]: pin => "release o=Wikimedia" }
 }
 
 class apaches::cron {
