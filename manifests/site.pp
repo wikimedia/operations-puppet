@@ -399,7 +399,7 @@ node "bast1001.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted,
-		misc::bastionhost,
+		role::bastion::production,
 		misc::scripts,
 		nrpe
 }
@@ -819,7 +819,7 @@ node "fenari.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		accounts::l10nupdate,
-		misc::bastionhost,
+		role::bastion::production,
 		misc::deployment-host,
 		misc::noc-wikimedia,
 		misc::extension-distributor,
