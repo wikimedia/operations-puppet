@@ -79,6 +79,8 @@ class misc::contint::test {
 			ensure => present;
 		}
 
+		package { "rake": ensure => present; }
+
 		include svn::client
 
 		include generic::packages::git-core
