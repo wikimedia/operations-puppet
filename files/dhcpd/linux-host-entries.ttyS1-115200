@@ -3877,11 +3877,6 @@ host tmh2 {
 	fixed-address tmh2.pmtpa.wmnet;
 }
 
-host transcode1 {
-	hardware ethernet 00:21:9B:97:ED:C6;
-	fixed-address transcode1.wikimedia.org;
-}
-
 host vanadium {
 	hardware ethernet 78:2b:cb:08:a4:3b;
 	fixed-address vanadium.eqiad.wmnet;
@@ -3917,6 +3912,11 @@ host virt3 {
 host virt4 {
 	hardware ethernet f0:4d:a2:0b:3e:5a;
 	fixed-address virt4.pmtpa.wmnet;
+}
+
+host wtp1 {
+	hardware ethernet 00:21:9B:97:ED:C6;
+	fixed-address wtp1.pmtpa.wmnet;
 }
 
 host yttrium {
