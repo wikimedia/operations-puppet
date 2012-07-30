@@ -318,4 +318,12 @@ class gerrit::crons {
 		minute => [0, 15, 30, 45]
 	}
 
+	cron { clear_gerrit_logs:
+		# Gerrit rotates their own logs, but doesn't clean them out
+		# Delete logs older than a week
+		command => "find /var/lib/gerrit2/review_site/logs/*.gz -mtime +7 -exec rm {} \\;",
+		user => root,
+		hour => 1
+	}
+
 }
