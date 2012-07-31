@@ -530,7 +530,7 @@ class role::cache {
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
 		$varnish_fe_backends = $::site ? {
-			"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.wikimedia.org",
+			"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet",
 				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
 			default => []
 		}
@@ -563,7 +563,7 @@ class role::cache {
 			port => 81,
 			admin_port => 6083,
 			storage => $::hostname ? {
-				/^cp104[1]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+				/^cp104[12]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			},
 			backends => [ "10.2.1.1" ],

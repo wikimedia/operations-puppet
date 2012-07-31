@@ -268,7 +268,7 @@ host cp1041 {
 }
 host cp1042 {
 	hardware ethernet 84:2b:2b:fd:bf:18;
-	fixed-address cp1042.wikimedia.org;
+	fixed-address cp1042.eqiad.wmnet;
 }
 host cp1043 {
 	hardware ethernet 84:2b:2b:fd:c0:2f;
