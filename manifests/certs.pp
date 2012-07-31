@@ -191,9 +191,14 @@ class certificates::wmf_ca {
 			require => Package["openssl"];
 	}
 
+	$creates = $::lsbdistcodename ? {
+		lucid => "/etc/ssl/certs/13b97b27.0",
+		precise => "/etc/ssl/certs/dda55890.0",
+		default => fail("no cert id defined for release=$::lsbdistcodename"),
+	}
 	exec {
 		'/bin/ln -s /etc/ssl/certs/wmf-ca.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			creates => $creates,
 			require => File["/etc/ssl/certs/wmf-ca.pem"];
 	}
 
@@ -212,9 +217,14 @@ class certificates::wmf_labs_ca {
 			require => Package["openssl"];
 	}
 
+	$creates = $::lsbdistcodename ? {
+		lucid => "/etc/ssl/certs/d693bcb4.0",
+		precise => "/etc/ssl/certs/9779bdc4.0",
+		default => fail("no cert id defined for this release=$::lsbdistcodename"),
+	}
 	exec {
 		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			creates => $creates,
 			require => File["/etc/ssl/certs/wmf-labs.pem"];
 	}
 
@@ -233,9 +243,14 @@ class certificates::rapidssl_ca {
 			require => Package["openssl"];
 	}
 
+	$creates = $::lsbdistcodename ? {
+		lucid => "/etc/ssl/certs/2f2c2f7c.0",
+		precise => "/etc/ssl/certs/f131b364.0",
+		default => fail("no cert id defined for this release=$::lsbdistcodename"),
+	}
 	exec {
 		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			creates => $creates,
 			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
 	}
 
@@ -254,9 +269,14 @@ class certificates::digicert_ca {
 			require => Package["openssl"];
 	}
 
+	$creates = $::lsbdistcodename ? {
+		lucid => "/etc/ssl/certs/1445ed77.0",
+		precise => "/etc/ssl/certs/02b2d53d.0",
+		default => fail("no cert id defined for this release=$::lsbdistcodename"),
+	}
 	exec {
 		'/bin/ln -sf /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
-			creates => "/etc/ssl/certs/1445ed77.0",
+			creates => $creates,
 			require => File["/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem"];
 	}
 }
