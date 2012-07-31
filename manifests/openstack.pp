@@ -169,6 +169,8 @@ class openstack::common {
 	}
 
 	if $openstack_version == "essex" {
+		include openstack::keystone_config
+
 		file {
 			"/etc/nova/api-paste.ini":
 				content => template("openstack/essex/nova-api-paste.ini.erb"),
