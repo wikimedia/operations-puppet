@@ -5,8 +5,10 @@ sub vcl_recv {
         if (req.request == "POST") {
                 error 403 "HTTP method not allowed.";
         }
-	/* Only accept requests for domain bits.wikimedia.org at this time */
 	if (req.http.host == "bits.wikimedia.org") {
+		if (req.url ~ "^/event.gif") {
+			error 204;
+		}
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 		if (req.url == "/geoiplookup") {
 			error 666 "geoiplookup";
