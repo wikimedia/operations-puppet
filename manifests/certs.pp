@@ -215,6 +215,7 @@ class certificates::rapidssl_ca {
 			group => root,
 			mode => 0444,
 			notify => Exec['c_rehash'],
+			source => "puppet:///files/ssl/RapidSSL_CA.pem",
 			require => Package["openssl"];
 	}
 }
