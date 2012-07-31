@@ -283,6 +283,8 @@ ServerSignature Off
     AddType application/vnd.ms-fontobject .eot
     # TTF doesn't have an official MIME type, but I really don't want to use application/octet-stream for it
     AddType application/x-font-ttf .ttf
+    #add webm, lucid does not have this by default
+    AddType video/webm .webm
 
     <IfModule mod_php4.c>
         AddType application/x-httpd-php .php .php4 .php3 .phtml
