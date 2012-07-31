@@ -62,5 +62,9 @@ sub vcl_error {
 		set obj.status = 200;
 		return(deliver);
 	}
+	/* 204 responses shouldn't contain a body */
+	if (obj.status == 204) {
+		return(deliver);
+	}
 }
 <% end -%>
