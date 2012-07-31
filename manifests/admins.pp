@@ -2102,6 +2102,7 @@ class admins::mortals {
 	include accounts::khorn
 	include accounts::maxsem
 	include accounts::mlitn
+	include accounts::olivneh
 }
 
 class admins::restricted {
@@ -2122,7 +2123,6 @@ class admins::restricted {
 	include accounts::jamesofur
 	include accounts::khorn
 	include accounts::mwalker
-	include accounts::olivneh
 	include accounts::otto
 	include accounts::pgehres
 	include accounts::rcole # access revoked
