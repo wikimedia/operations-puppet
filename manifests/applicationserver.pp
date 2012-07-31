@@ -29,13 +29,6 @@ class apaches::cron {
 			user => root,
 			minute => 26,
 			ensure => present;
-		# TODO: use class geoip for this instead of manually downloading.
-		updategeoipdb:
-			environment => "http_proxy=http://brewster.wikimedia.org:8080",
-			command => "[ -d /usr/share/GeoIP ] && wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > /usr/share/GeoIP/GeoIP.dat.new && mv /usr/share/GeoIP/GeoIP.dat.new /usr/share/GeoIP/GeoIP.dat",
-			user => root,
-			minute => 26,
-			ensure => absent;
 		cleantmpphp:
 			command => "find /tmp -name 'php*' -type f -ctime +1 -exec rm -f {} \\;",
 			user => root,
@@ -46,79 +39,82 @@ class apaches::cron {
 }
 
 class apaches::files {
-	$file_mail_ini = "
-// Force the envelope sender address to empty, since we don't want to receive bounces
-mail.force_extra_parameters=\"-f <>\"
-"
 
-	$file_wikidiff2_ini = "
-; This file is managed by Puppet!
-extension=wikidiff2.so
-"
-	
 	require apaches::packages
 
-	# FIXME: dirty temp hack
-	if $cluster == "api_appserver" {
-		$apache_conf = "puppet:///files/apache/apache2.conf.api_appserver"
+	class config::php{
+		file {
+			"/etc/php5/apache2/php.ini":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/php/php.ini.appserver";
+			"/etc/php5/cli/php.ini":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/php/php.ini.cli.appserver";
+			"/etc/php5/conf.d/fss.ini":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/php/fss.ini.appserver";
+			"/etc/php5/conf.d/apc.ini":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/php/apc.ini";
+			"/etc/php5/conf.d/wmerrors.ini":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/php/wmerrors.ini";
+			"/etc/php5/conf.d/wikidiff2.ini":
+				mode => 0444,
+				owner => root,
+				group => root,
+				content => "
+; This file is managed by Puppet!
+extension=wikidiff2.so
+";
+		}
 	}
-	else {
-		$apache_conf = "puppet:///files/apache/apache2.conf.appserver"
+
+	class config::apache{
+		Class["role::applicationserver::common"] -> Class[apache::files::config::apache]
+
+		file {
+			"/etc/apache2/apache2.conf":
+				owner => root,
+				group => root,
+				mode => 0444,
+				notify => Service[apache],
+				content => template("apache/apache2.conf.erb");
+			"/etc/apache2/envvars":
+				owner => root,
+				group => root,
+				mode => 0444,
+				notify => Service[apache],
+				source => "puppet:///files/apache/envvars.appserver";
+			"/etc/cluster":
+				mode => 0444,
+				owner => root, 
+				group => root, 
+				content => $site;
+		}
 	}
- 
-	file {
-		"/etc/apache2/apache2.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			notify => Service[apache],
-			source => $apache_conf;
-		"/etc/apache2/envvars":
-			owner => root,
-			group => root,
-			mode => 0444,
-			notify => Service[apache],
-			source => "puppet:///files/apache/envvars.appserver";
-		"/etc/php5/apache2/php.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/php/php.ini.appserver";
-		"/etc/php5/cli/php.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/php/php.ini.cli.appserver";
-		"/etc/php5/conf.d/fss.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/php/fss.ini.appserver";
-		"/etc/php5/conf.d/apc.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/php/apc.ini";
-		"/etc/php5/conf.d/wmerrors.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/php/wmerrors.ini";
-		"/etc/php5/conf.d/mail.ini":
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => $file_mail_ini;
-		"/etc/php5/conf.d/wikidiff2.ini":
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => $file_wikidiff2_ini;
-		"/etc/cluster":
-			mode => 0444,
-			owner => root, 
-			group => root, 
-			content => $site;
+
+	class config::mail{
+		file {
+			"/etc/php5/conf.d/mail.ini":
+				mode => 0444,
+				owner => root,
+				group => root,
+				content => "
+// Force the envelope sender address to empty, since we don't want to receive bounces
+mail.force_extra_parameters=\"-f <>\"
+";
+		}
 	}
 }
 
@@ -126,7 +122,9 @@ class apaches::service {
 	include mediawiki::sync
 
 	# Require apaches::files to be in place
-	require apaches::files
+	require apaches::files::config::php,
+		apaches::files::config::apache,
+		apaches::files::config::mail
 
 	# Sync the server when we see apache is not running
 	exec { 'apache-trigger-mw-sync':
@@ -218,10 +216,23 @@ class apaches::nice {
 	# since restarting will use the old configuration.
 	#
 	# In precise this can be replaced with creation of /etc/init/ssh.override
-	exec {
-		"adjust ssh nice":
-			path => "/usr/sbin:/usr/bin:/sbin:/bin",
-			unless => "grep -q ^nice /etc/init/ssh.conf",
-			command => "echo 'nice -10' >> /etc/init/ssh.conf && (stop ssh ; start ssh)";
+
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		file {
+			"/etc/init/ssh.override": 
+				owner => root,
+				group => root,
+				mode => 0444,
+				content => "nice -10",
+				ensure => present;
+		}
+
+	} else {
+		exec {
+			"adjust ssh nice":
+				path => "/usr/sbin:/usr/bin:/sbin:/bin",
+				unless => "grep -q ^nice /etc/init/ssh.conf",
+				command => "echo 'nice -10' >> /etc/init/ssh.conf && (stop ssh ; start ssh)";
+		}
 	}
 }

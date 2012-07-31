@@ -1,20 +1,37 @@
 # role/apaches.pp
 
 # Virtual monitor group resources for the monitoring server
-@monitor_group { "appserver": description => "pmtpa application servers" }
-@monitor_group { "api_appserver": description => "pmtpa API application servers" }
-@monitor_group { "bits_appserver": description => "pmtpa Bits application servers" }
-@monitor_group { "imagescaler": description => "image scalers" }
-@monitor_group { "jobrunner": description => "jobrunner application servers" }
-
+@monitor_group { "appserver_eqiad": description => "eqiad application servers" }
+@monitor_group { "appserver_pmtpa": description => "pmtpa application servers" }
+@monitor_group { "api_appserver_eqiad": description => "eqiad API application servers" }
+@monitor_group { "api_appserver_pmtpa": description => "pmtpa API application servers" }
+@monitor_group { "bits_appserver_eqiad": description => "eqiad Bits application servers" }
+@monitor_group { "bits_appserver_pmtpa": description => "pmtpa Bits application servers" }
+@monitor_group { "imagescaler_eqiad": description => "eqiad image scalers" }
+@monitor_group { "imagescaler_pmtpa": description => "pmtpa image scalers" }
+@monitor_group { "jobrunner_eqiad": description => "eqiad jobrunner application servers" }
+@monitor_group { "jobrunner_pmtpa": description => "pmtpa jobrunner application servers" }
 
 class role::applicationserver {
+# Class: role::applicationserver
+#
+# This class installs a mediawiki application server
+#
+# Parameters:
+#	- $cluster:
+#		Determines what logical group the host will be a 
+#		part of. Used for ganglia. Possibilities are:
+#		appserver, api_appserver, bits_appserver, imagescaler, jobrunner
+#	- $nagios_ group:
+#		Determines what nagios monitoring group the host will be a 
+#		part of. Possibilities are:
+#		appserver, api_appserver, bits_appserver, imagescaler, jobrunner
+#	- $lvs_pool:
+#		Determines lvsrealserver IP(s) that the host will receive.
+#		From lvs::configuration::$lvs_service_ips
 	class common(
-		## $cluster: used for ganglia
-		## $nagios_ group: used for nagios
-		## $lvs_pool: used for lvs realserver IP
 		$cluster,
-		$nagios_group=$cluster,
+		$nagios_group="${cluster}_${::site}",
 		$lvs_pool
 		) {
 
@@ -35,6 +52,7 @@ class role::applicationserver {
 		}
 	}
 
+	# This class installs everything necessary for an apache webserver
 	class apache {
 		include	apaches::cron,
 			apaches::service,
@@ -49,7 +67,7 @@ class role::applicationserver {
 
 		monitor_service { "appserver http": description => "Apache HTTP",
 			check_command => $::realm ? { 'production' => "check_http_wikipedia",
-				'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
+								'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
 		}
 	}
 
@@ -65,13 +83,13 @@ class role::applicationserver {
 		include role::applicationserver::apache
 		include role::applicationserver::upload_nfs
 	}
-	class api_appserver{
+	class appserver::api{
 		class {"role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api" }
 
 		include role::applicationserver::apache
 		include role::applicationserver::upload_nfs
 	}
-	class bits_appserver{
+	class appserver::bits{
 		class {"role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::apache
