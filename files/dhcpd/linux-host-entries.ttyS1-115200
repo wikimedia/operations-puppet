@@ -1197,7 +1197,7 @@ host ms-be1006 {
 }
 
 host ms-be1007 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2B:E2;
 	fixed-address ms-be1007.eqiad.wmnet;
 }
 
