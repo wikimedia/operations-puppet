@@ -114,12 +114,12 @@ class role::swift {
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => $passwords::swift::pmtpa-prod::rewrite_password,
-				rewrite_thumb_server => "ms5.pmtpa.wmnet",
+				rewrite_thumb_server => "rendering.svc.pmtpa.wmnet",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb",
 				write_thumbs => "none",
 				dont_write_thumb_list => "",
-				backend_url_format => "asis"
+				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
 			include ::swift::proxy::monitoring
