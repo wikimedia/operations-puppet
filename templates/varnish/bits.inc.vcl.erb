@@ -57,6 +57,9 @@ sub vcl_miss {
 
 sub vcl_error {
 	/* Support geoiplookup */
+	if (obj.status == 204) {
+		return(deliver);
+	}
 	if (obj.status == 666) {
 		call geoip_lookup;
 		set obj.status = 200;
