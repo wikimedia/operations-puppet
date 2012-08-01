@@ -2,7 +2,8 @@
 # db::core and db::es
 
 # Virtual resource for the monitoring server
-@monitor_group { "es": description => "External Storage" }
+@monitor_group { "es_pmtpa": description => "pmtpa External Storage" }
+@monitor_group { "es_eqiad": description => "eqiad External Storage" }
 @monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
 @monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
 
@@ -18,7 +19,7 @@ class role::db::core {
 class role::db::es($mysql_role = "slave") {
 	$cluster = "mysql"
 
-	$nagios_group = "es"
+	$nagios_group = "es_${::site}"
 
 	system_role { "db::es": description => "External Storage server (${mysql_role})" }
 
