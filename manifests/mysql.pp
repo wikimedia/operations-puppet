@@ -5,12 +5,6 @@
 # class at the bottom of this file.  The configs closer to the
 # top are meant for production wikimedia mysql installations.
 
-
-# Virtual resource for the monitoring server
-@monitor_group { "es": description => "External Storage" }
-@monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
-@monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
-
 # TODO should really be named mysql-server, or mysql::server
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }

@@ -234,34 +234,6 @@ class imagescaler::labs {
 		apaches::service
 }
 
-class db::core {
-	$cluster = "mysql"
-
-	system_role { "db::core": description => "Core Database server" }
-
-	include standard,
-		mysql
-}
-
-class db::es($mysql_role = "slave") {
-	$cluster = "mysql"
-
-	$nagios_group = "es"
-
-	system_role { "db::es": description => "External Storage server (${mysql_role})" }
-
-	include	standard,
-		mysql,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::mysqlpath,
-		mysql::monitor::percona::es,
-		mysql::packages,
-		nrpe
-
-}
-
 class protoproxy::ssl {
 	$cluster = "ssl"
 
@@ -405,7 +377,7 @@ node "bast1001.wikimedia.org" {
 }
 
 node "bellin.pmtpa.wmnet"{
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -417,7 +389,7 @@ node "beryllium.wikimedia.org" {
 }
 
 node "blondel.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -564,16 +536,16 @@ node "dataset1001.wikimedia.org" {
 }
 
 node /^db[1-9]\.pmtpa\.wmnet$/ {
-	include db::core
+	include role::db::core
 }
 
 node "db10.pmtpa.wmnet" {
-	include db::core
+	include role::db::core
 		#backup::mysql - no space for lvm snapshots
 }
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db1[2368]$/ {
@@ -586,7 +558,7 @@ node /^db1[2-8]\.pmtpa\.wmnet$/ {
 
 node /^db2[1-8]\.pmtpa\.wmnet$/ {
 
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db2[456]$/ {
@@ -603,7 +575,7 @@ node "db29.pmtpa.wmnet" {
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
 
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db3[123456789]$/ {
@@ -615,14 +587,14 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 }
 
 node "db40.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::packages
 
 	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
 }
 
 node /pc[1-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::pc::conf,
@@ -632,7 +604,7 @@ node /pc[1-9]\.pmtpa\.wmnet/ {
 }
 
 node /^db4[2]\.pmtpa\.wmnet$/ {
-	include db::core,
+	include role::db::core,
 		mysql::packages
 }
 
@@ -641,7 +613,7 @@ node /^db4[2]\.pmtpa\.wmnet$/ {
 # DO NOT add old prod db's to new classes unless you
 # know what you're doing!
 node "db11.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -649,14 +621,14 @@ node "db11.pmtpa.wmnet" {
 }
 
 node "db19.pmtpa.wmnet" { # dead
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf
 }
 
 node "db22.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -664,7 +636,7 @@ node "db22.pmtpa.wmnet" {
 }
 
 node /db4[3-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -676,7 +648,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -684,7 +656,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 }
 
 node /db6[0-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -697,7 +669,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -783,10 +755,10 @@ node "erzurumi.pmtpa.wmnet" {
 
 node /es100[1-4]\.eqiad\.wmnet/ {
 	if $hostname == "es1001" {
-		class { "db::es": mysql_role => "master" }
+		class { "role::db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es
+		include role::db::es
 	}
 #	if $hostname == "es1004" {
 #		# replica of ms3 - currently used for backups
@@ -796,10 +768,10 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 
 node /es[1-4]\.pmtpa\.wmnet/ {
 	if $hostname == "es1" {
-		class { "db::es": mysql_role => "master" }
+		class { "role::db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es
+		include role::db::es
 	}
 }
 node "fenari.wikimedia.org" {
@@ -1130,7 +1102,7 @@ node "iron.wikimedia.org" {
 
 node "ixia.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
-	include db::core
+	include role::db::core
 }
 
 node "kaulen.wikimedia.org" {
@@ -1213,7 +1185,7 @@ node "linne.wikimedia.org" {
 }
 
 node "lomaria.pmtpa.wmnet" {
-	include db::core
+	include role::db::core
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
@@ -2364,7 +2336,7 @@ node "storage3.pmtpa.wmnet" {
 
 	$db_cluster = "fundraisingdb"
 
-	include db::core,
+	include role::db::core,
 		role::db::fundraising::slave,
 		role::db::fundraising::dump,
 		mysql::packages,
@@ -2449,7 +2421,7 @@ node "tarin.wikimedia.org" {
 
 node "thistle.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
-	include db::core
+	include role::db::core
 }
 
 node "tridge.wikimedia.org" {
