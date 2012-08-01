@@ -8,6 +8,13 @@ class ntp::client(
 
   include ntp
 
+  # Restart NTP if hit by the erroneous leap second
+  exec { "/bin/true":
+    path => "/bin:/sbin:/usr/bin:/usr/sbin",
+    notify => Service[ntp],
+    onlyif => "ntpq -c 'rv 0 leap' | grep -q leap=01"
+  }
+
   monitor_service { 'ntp':
     description   => 'NTP',
     check_command => 'check_ntp_time!0.5!1',
