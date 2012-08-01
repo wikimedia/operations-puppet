@@ -1,0 +1,27 @@
+; Wikimedia PHP configuration for PHP 5 Apache module in Ubuntu
+; This file is managed by Puppet!
+
+default_socket_timeout = 1
+max_execution_time = 180
+memory_limit = 100M
+display_errors = Off
+log_errors = On
+error_log = syslog
+
+; Maximum file size (also in squid)
+post_max_size = 100M
+upload_max_filesize = 100M
+
+; Magic quotes are a tool of the devil! You know, a torture tool. That the
+; devil uses to torture programmers. Like me. I don't like that.
+magic_quotes_gpc = Off
+
+; Including both FC and Ubuntu paths here
+include_path = ".:/usr/share/php:/usr/local/apache/common/php"
+
+; Don't care about MySQL down too much
+mysql.connect_timeout = 1
+
+session.save_path = /tmp
+
+display_errors = On
