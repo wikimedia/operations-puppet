@@ -78,7 +78,7 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 
 define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 
-	require certificates::base,
+	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::digicert_ca,
 		certificates::wmf_ca
@@ -96,7 +96,6 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 			group => $group,
 			mode => 0444,
 			source => "puppet:///files/ssl/${name}.pem",
-			notify => Exec['c_rehash'],
 			require => Package["openssl"];
 		# Private key
 		"/etc/ssl/private/${name}.key":
@@ -105,6 +104,15 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 			mode => 0440,
 			source => "${key_loc}.key",
 			require => Package["openssl"];
+	}
+
+	exec {
+		# Many services require certificates to be found by a hash in
+		# the certs directory
+		"${name}_create_hash":
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0\" ]",
+			command => "/bin/ln -sf /etc/ssl/certs/${name}.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/${name}.pem).0",
+			require => [Package["openssl"], File["/etc/ssl/certs/${name}.pem"]];
 	}
 
 	create_pkcs12{ "${name}": }
@@ -150,16 +158,12 @@ define install_additional_key( $key_loc="", $owner="root", $group="ssl-cert", $m
 	}
 }
 
-class certificates::base {
+class certificates::packages {
+
 	package { [ "openssl", "ca-certificates", "ssl-cert" ]:
 		ensure => latest;
 	}
 
-	exec { 'c_rehash':
-		command => '/usr/bin/c_rehash /etc/ssl/certs',
-		refreshonly => true,
-		require => Package['openssl'],
-	}
 }
 
 class certificates::star_wmflabs_org {
@@ -176,7 +180,7 @@ class certificates::star_wmflabs {
 
 class certificates::wmf_ca {
 
-	include certificates::base
+	include certificates::packages
 
 	file {
 		"/etc/ssl/certs/wmf-ca.pem":
@@ -184,15 +188,20 @@ class certificates::wmf_ca {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/ssl/wmf-ca.pem",
-			notify => Exec['c_rehash'],
 			require => Package["openssl"];
+	}
+
+	exec {
+		'/bin/ln -s /etc/ssl/certs/wmf-ca.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/wmf-ca.pem"];
 	}
 
 }
 
 class certificates::wmf_labs_ca {
 
-	include certificates::base
+	include certificates::packages
 
 	file {
 		"/etc/ssl/certs/wmf-labs.pem":
@@ -200,28 +209,41 @@ class certificates::wmf_labs_ca {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/ssl/wmf-labs.pem",
-			notify => Exec['c_rehash'],
 			require => Package["openssl"];
 	}
+
+	exec {
+		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/wmf-labs.pem"];
+	}
+
 }
 
 class certificates::rapidssl_ca {
 
-	include certificates::base
+	include certificates::packages
 
 	file {
 		"/etc/ssl/certs/RapidSSL_CA.pem":
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Exec['c_rehash'],
+			source => "puppet:///files/ssl/RapidSSL_CA.pem",
 			require => Package["openssl"];
 	}
+
+	exec {
+		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
+			creates => "/etc/ssl/certs/13b97b27.0",
+			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
+	}
+
 }
 
 class certificates::digicert_ca {
 
-	include certificates::base
+	include certificates::packages
 
 	file {
 		"/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem":
@@ -229,7 +251,12 @@ class certificates::digicert_ca {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/ssl/DigiCertHighAssuranceCA-3.pem",
-			notify => Exec['c_rehash'],
 			require => Package["openssl"];
+	}
+
+	exec {
+		'/bin/ln -sf /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
+			creates => "/etc/ssl/certs/1445ed77.0",
+			require => File["/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem"];
 	}
 }
