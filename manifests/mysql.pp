@@ -117,7 +117,7 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
-			if ($db_cluster =~ /^[s]/) {
+			if ($db_cluster =~ /^[sm]/) {
 				include mysql::slow_digest
 			}
 		}
