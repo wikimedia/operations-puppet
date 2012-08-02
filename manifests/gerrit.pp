@@ -117,7 +117,7 @@ class gerrit::jetty {
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0444,
-			source => "puppet:///files/gerrit/skin/GerritSite.html";
+			source => "puppet:///files/gerrit/skin/GerritSiteHeader.html";
 		"/var/lib/gerrit2/review_site/hooks":
 			owner => gerrit2,
 			group => gerrit2,
