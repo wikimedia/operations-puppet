@@ -250,6 +250,7 @@ sub vcl_recv {
 		}C
 
 		set req.http.X-CLIENT-IP = client.ip;
+		set req.http.X-Forwarded-For = client.ip;
 		set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
 	}
 
