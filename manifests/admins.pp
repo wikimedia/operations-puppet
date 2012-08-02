@@ -2149,6 +2149,7 @@ class admins::jenkins {
 	include accounts::demon
 	include accounts::hashar
 	include accounts::reedy
+	include accounts::dsc
 }
 
 class admins::dctech {
