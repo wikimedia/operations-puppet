@@ -50,6 +50,16 @@ NameVirtualHost *:443
 		IndexIgnore "*.html" ".."
 	</Directory>
 
+	# Generic nightly builds, no specific HTML there
+	<Directory /srv/org/mediawiki/integration/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressDescription
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
+	</Directory>
+
 	# Publish MediaWiki clones to the outside world for testswarm
 	<Directory /var/lib/testswarm/mediawiki-git/clone>
 		AllowOverride All
@@ -135,6 +145,16 @@ NameVirtualHost *:443
 		HeaderName "HEADER.html"
 		ReadmeName "README.html"
 		IndexIgnore "*.html" ".."
+	</Directory>
+
+	# Generic nightly builds, no specific HTML there
+	<Directory /srv/org/mediawiki/integration/nightly/>
+		Options +Indexes
+		IndexOptions FancyIndexing
+		IndexOptions SuppressDescription
+		IndexOptions HTMLTable
+		IndexOptions VersionSort
+		IndexOptions NameWidth=*
 	</Directory>
 
 	# Publish MediaWiki clones to the outside world for testswarm
