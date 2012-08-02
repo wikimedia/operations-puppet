@@ -167,7 +167,7 @@ class misc::contint::test {
 					ensure => directory;
 			 "/srv/org/mediawiki/integration":
 					mode => 0755,
-					owner => www-data,
+					owner => jenkins,
 					group => wikidev,
 					ensure => directory;
 			# Welcome page
