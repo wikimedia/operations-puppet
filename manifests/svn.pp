@@ -7,7 +7,9 @@ class svn::server {
 	include webserver::php5
 
 	package { [ 'libsvn-notify-perl', 'python-subversion',
-			'libapache2-svn', 'python-pygments' ]:
+		'libapache2-svn', 'python-pygments',
+		'php5-curl', 'php5-intl', 'php5-mysql', 'php5-mysqli', 'php5-xmlrpc'
+	 ]:
 		ensure => latest;
 	}
 
