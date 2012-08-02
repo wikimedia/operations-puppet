@@ -416,6 +416,13 @@ node  "cadmium.eqiad.wmnet" {
 		accounts::catrope
 }
 
+node  "calcium.wikimedia.org" {
+	$cluster = "misc"
+
+	include standard,
+		misc::smokeping
+}
+
 node /^(capella|nitrogen)\.wikimedia\.org$/ {
 
 	include standard,
