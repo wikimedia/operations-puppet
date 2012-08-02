@@ -9,8 +9,8 @@
 }
 
 /** Skin */
-body {color: #484848 !important; background: url("static/page-bkg.jpg") no-repeat scroll 0 0 white !important; position: static}
-a,a:visited {color: #264D69 !important; text-decoration: none;}
+body {color: #000000 !important; background: url("static/page-bkg.jpg") no-repeat scroll 0 0 white !important; position: static}
+a,a:visited {color: #306286 !important; text-decoration: none;}
 a:hover {color: #000 !important; text-decoration: underline}
 
 a.gwt-InlineHyperlink {background: none !important}
