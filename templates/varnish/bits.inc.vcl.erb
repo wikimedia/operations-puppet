@@ -6,7 +6,7 @@ sub vcl_recv {
                 error 403 "HTTP method not allowed.";
         }
 	if (req.http.host == "bits.wikimedia.org") {
-		if (req.url ~ "^/event.gif") {
+		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
