@@ -124,7 +124,7 @@ class CheckObjects(threading.Thread):
         objok = True
         objpath = obj[1]
         # objpath should look like shard/name/stuff-name(.jpg|.png)?junk
-        match = re.match("(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpg|.png)?(?P<cruft>.*)$", objpath)
+        match = re.match("(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpeg|.jpg|.png)?(?P<cruft>.*)$", objpath)
         if match:
             # any cruft means it's a bad image
             if(match.group('cruft')):
