@@ -84,11 +84,6 @@ class applicationserver {
 	}
 
 	class homeless inherits parent {
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.1" ],
-			'labs' => [ "10.4.0.254" ],
-		}
-
 		include	standard,
 			admins::roots,
 			admins::dctech,
@@ -96,13 +91,20 @@ class applicationserver {
 			accounts::l10nupdate,
 			nfs::upload,
 			mediawiki::packages,
-			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.1" ],
+				'labs' => [ "10.4.0.254" ],
+			}
+		}
 	}
 
 	class home-no-service inherits parent {
@@ -126,18 +128,12 @@ class applicationserver {
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.22", "10.2.1.1" ],
-			'labs' => [ "10.4.0.253" ],
-		}
-
 		include standard,
 			admins::roots,
 			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			nfs::upload,
-			lvs::realserver,
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,
@@ -145,16 +141,19 @@ class applicationserver {
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.22", "10.2.1.1" ],
+				'labs' => [ "10.4.0.253" ],			
+			}
+		}
 	}
 
 	class bits inherits parent {
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
-
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.1" ],
-			'labs' => [ "10.4.0.252" ],
-		}
 
 		include standard,
 			admins::roots,
@@ -162,13 +161,20 @@ class applicationserver {
 			admins::mortals,
 			accounts::l10nupdate,
 			mediawiki::packages,
-			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.1" ],
+				'labs' => [ "10.4.0.252" ],
+			}
+		}
 	}
 
 	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
@@ -192,18 +198,12 @@ class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = $cluster
 
-	$lvs_realserver_ips = $realm ? {
-		'production' => [ "10.2.1.21" ],
-		'labs' => [ "10.4.0.252" ],
-	}
-
 	include standard,
 		imagescaler::cron,
 		imagescaler::packages,
 		imagescaler::files,
 		nfs::upload,
 		mediawiki::packages,
-		lvs::realserver,
 		apaches::packages,
 		apaches::cron,
 		apaches::service,
@@ -215,6 +215,14 @@ class imagescaler {
 		apaches::monitoring,
 		apaches::syslog,
 		accounts::l10nupdate
+
+	# FIXME: pull from lvs::configuration
+	class { "lvs::realserver":
+		realserver_ips => $::realm ? {
+			'production' => [ "10.2.1.21" ],
+			'labs' => [ "10.4.0.252" ],
+		}
+	}
 }
 
 class imagescaler::labs {
@@ -1567,8 +1575,9 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^ms-fe1$/ {
 		include role::swift::pmtpa-prod::ganglia_reporter
 	}
-	$lvs_realserver_ips = [ "10.2.1.27" ]
-	include lvs::realserver
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.1.27" ] }
+
 	include role::swift::pmtpa-prod::proxy
 }
 
@@ -1580,8 +1589,9 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 	#if $hostname =~ /^ms-fe1001$/ {
 	#	include role::swift::eqiad-prod::ganglia_reporter
 	#}
-	$lvs_realserver_ips = [ "10.2.2.27" ]
-	include lvs::realserver
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
+
 	include role::swift::eqiad-prod::proxy
 }
 
@@ -1790,7 +1800,6 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 
 node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
-	$lvs_realserver_ips = [ "208.80.152.7" ]
 
 	if $hostname =~ /^payments[12]$/ {
 		$ganglia_aggregator = "true"
@@ -1803,8 +1812,9 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		base::resolving,
 		base::motd,
 		base::monitoring::host,
-		lvs::realserver,
 		ganglia
+
+	class { "lvs::realserver": realserver_ips => [ "208.80.152.7" ] }
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
