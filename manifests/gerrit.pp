@@ -123,6 +123,11 @@ class gerrit::jetty {
 			group => gerrit2,
 			mode => 0444,
 			source => "puppet:///files/gerrit/skin/page-bkg.jpg";
+		"/var/lib/gerrit2/review_site/static/wikimedia-codereview-logo.png":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0444,
+			source => "puppet:///files/gerrit/skin/wikimedia-codereview-logo.png";
 		"/var/lib/gerrit2/review_site/hooks":
 			owner => gerrit2,
 			group => gerrit2,
