@@ -9,7 +9,10 @@ class misc::wlm {
 		generic::apache::no-default-site
 
 	if ( $::realm == "production" ) {
-		include groups::wikidev
+		include groups::wikidev,
+			admins::roots,
+			admins::dctech,
+			admins::mortals
 	}
 
 	class { "generic::mysql::server": version => "5.5" }
