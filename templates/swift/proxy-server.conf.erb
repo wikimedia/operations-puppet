@@ -37,7 +37,6 @@ memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers"
 account = <%= scope.lookupvar("swift::proxy::config::rewrite_account") %>
 url = <%= scope.lookupvar("swift::proxy::config::rewrite_url") %>
 login = <%= scope.lookupvar("swift::proxy::config::rewrite_user") %>
-#FIXME: pull into passwords file and use a real password
 key = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %>
 # the name of the scaler cluster.
 thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
