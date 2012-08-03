@@ -2579,7 +2579,10 @@ node "zhen.wikimedia.org" {
 
 node "yttrium.wikimedia.org" {
 	include standard,
-		misc::wlm
+		misc::wlm,
+		admins::roots,
+		admins::dctech,
+		admins::mortals
 }
 
 node default {
