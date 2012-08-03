@@ -669,8 +669,13 @@ class lvs::configuration {
 	}
 }
 
+# Class: lvs::balancer
+# Parameters:
+#	- $service_ips: list of service IPs to bind to loopback
+class lvs::balancer(
+	$service_ips=[]
+	) {
 
-class lvs::balancer {
 	require "lvs::configuration"
 	
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
@@ -678,12 +683,6 @@ class lvs::balancer {
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
 	
-	if $::realm == "labs" {
-		# Hack for arrays in LDAP - you suck puppet
-		$lvs_balancer_ips = split(get_var('lvs_balancer_ips'), ',')
-	}
-	$lvs_realserver_ips = $lvs_balancer_ips
-
 	system_role { "lvs::balancer": description => "LVS balancer" }
 
 	package { [ ipvsadm, pybal, ethtool ]:
@@ -702,7 +701,7 @@ class lvs::balancer {
 	}
 
 	# Bind balancer IPs to the loopback interface 
-	include lvs::realserver
+	class { "lvs::realserver": realserver_ips => $service_ips }
 
 	# Sysctl settings
 	class { "generic::sysctl::advanced-routing": ensure => absent }

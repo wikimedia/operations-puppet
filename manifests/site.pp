@@ -293,8 +293,9 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	include base,
-		ganglia,
-		lvs::balancer
+		ganglia
+
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	# Make sure GRO is off
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
@@ -1233,8 +1234,9 @@ node /lvs[1-6]\.wikimedia\.org/ {
 
 	include base,
 		ganglia,
-		lvs::balancer,
 		lvs::balancer::runcommand
+
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	$ips = {
 		'internal' => {
@@ -1303,8 +1305,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 	include base,
 		ganglia,
-		lvs::balancer,
 		lvs::balancer::runcommand
+
+		class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	$ips = {
 		'public1-a-eqiad' => {
