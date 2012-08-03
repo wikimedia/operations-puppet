@@ -710,7 +710,7 @@ class lvs::balancer(
 
 # Supporting the PyBal RunCommand monitor
 class lvs::balancer::runcommand {
-	require lvs::balancer
+	Class[lvs::balancer] -> Class[lvs::balancer::runcommand]
 
 	file {
 		"/etc/pybal/runcommand":

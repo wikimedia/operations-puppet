@@ -1307,7 +1307,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 		ganglia,
 		lvs::balancer::runcommand
 
-		class { "lvs::balancer": service_ips => $lvs_balancer_ips }
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	$ips = {
 		'public1-a-eqiad' => {
