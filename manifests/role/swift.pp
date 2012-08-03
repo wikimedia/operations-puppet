@@ -163,16 +163,16 @@ class role::swift {
 				num_workers => $::processorcount,
 				memcached_servers => [ "ms-fe1001.eqiad.wmnet:11211", "ms-fe1002.eqiad.wmnet:11211", "ms-fe1003.eqiad.wmnet:11211", "ms-fe1004.eqiad.wmnet:11211" ],
 				super_admin_key => $passwords::swift::eqiad-prod::super_admin_key,
-				rewrite_account => "AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe",
+				rewrite_account => "AUTH_60c17d04-176d-4717-861b-90b20917b1c0",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
 				rewrite_user => "mw:thumb",
 				rewrite_password => $passwords::swift::eqiad-prod::rewrite_password,
-				rewrite_thumb_server => "ms5.pmtpa.wmnet",
+				rewrite_thumb_server => "rendering.svc.pmtpa.wmnet",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb",
-				write_thumbs => "none",
+				write_thumbs => "all",
 				dont_write_thumb_list => "",
-				backend_url_format => "asis"
+				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
 			include ::swift::proxy::monitoring
