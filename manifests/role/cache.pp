@@ -475,10 +475,8 @@ class role::cache {
 		include standard,
 			varnish::monitoring::ganglia
 
-		# Labs has no LVS supports for now
-		if ( $::realm == "production" ) {
-			include lvs::realserver
-		}
+		include lvs::configuration
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
 		varnish::instance { "bits":
 			name => "",
