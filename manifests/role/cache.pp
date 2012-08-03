@@ -287,18 +287,12 @@ class role::cache {
 			$cluster = "squids_${role}"
 			$nagios_group = "cache_${role}_${::site}"
 
-			# Labs has no LVS supports for now
-			if( $::realm == "production" ) {
-				include lvs::configuration
-			}
+			include lvs::configuration
 
 			include	standard,
 				::squid
 
-			# Labs has no LVS supports for now
-			if( $::realm == "production" ) {
-				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
-			}
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
 
 			# Monitoring
 			monitor_service {
@@ -474,9 +468,6 @@ class role::cache {
 
 		include standard,
 			varnish::monitoring::ganglia
-
-		include lvs::configuration
-		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
 		varnish::instance { "bits":
 			name => "",
