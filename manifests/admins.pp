@@ -701,6 +701,25 @@ class accounts {
 		}
 	}
 	
+	class krinkle inherits baseaccount {
+		$username = "krinkle"
+		$realname = "Timo Tijhof"
+		$uid = 607
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "Timo Tijhof":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCm44jLSJBG8Qul5VNqrgvfUCjOACM0v1RzehkF7XMYRr+yBzBGJlRSHOs6/aUoBauJDPdM2VSb1LR3PCALwczYmA4Slnm/9rTfq0U/CAeFjHKBiQey4cntKFrYIUM0Qf+XsaDBQ2uK9C2GOw3Lo9RIYfq8Kz7keS+xtkk/6t1oypAcdG6Yt4Wi9z8Mgwmtd08mmT17yszxCf9emq5fo8otUC5nxWmXhAtnL5baaPDbi/0CpX6jm4BIAMm2jhGN6raYHLPIBhqk/uUa3k2EqkQ2gncY1judpyiUHmNB7dg9rDpbHF9pR+EvdE+tGRq8iirJzEbP4ErF0Vw461swIOB5"
+			}
+		}
+	}
+
 	class lcarr inherits baseaccount {
 		$username = "lcarr"
 		$realname = "Leslie Carr"
@@ -2102,6 +2121,7 @@ class admins::mortals {
 	include accounts::khorn
 	include accounts::maxsem
 	include accounts::mlitn
+	include accounts::krinkle
 }
 
 class admins::restricted {
@@ -2148,6 +2168,7 @@ class admins::jenkins {
 
 	include accounts::demon
 	include accounts::hashar
+	include accounts::krinkle
 	include accounts::reedy
 }
 
