@@ -181,7 +181,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+				"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
 				"esams" => []
 			}
 		}
