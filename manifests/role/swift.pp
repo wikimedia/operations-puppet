@@ -257,16 +257,16 @@ class role::swift {
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "10.4.0.167:11211", "10.4.0.175:11211" ],
 				super_admin_key => "notsoseekritkey",
-				rewrite_account => "AUTH_6cd395ff-467c-45af-a720-eb369a40062e",
+				rewrite_account => "AUTH_28e2c57d-458d-4d9e-b543-17a395f632f8",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
-				rewrite_user => "mw:thumbnail",
+				rewrite_user => "mw:thumb",
 				rewrite_password => "userpassword",
-				rewrite_thumb_server => "su-aux1",
+				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => "",
 				write_thumbs => "all",
 				dont_write_thumb_list => "",
-				backend_url_format => "sitelang"
+				backend_url_format => "asis"
 			}
 			include ::swift::proxy
 		}
