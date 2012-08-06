@@ -47,7 +47,7 @@ a.gwt-InlineHyperlink {
 
 .wm-gerrit-heading {
 	margin: 0;
-	padding: 14px 17px;
+	padding: 14px 0 0 17px;
 	font-family: 'PT Sans', sans-serif;
 	font-weight: normal;
 	letter-spacing: -1px;
