@@ -1542,11 +1542,15 @@ node "ms8.pmtpa.wmnet" {
 
 node "ms10.pmtpa.wmnet" {
 	include standard,
+		misc::images::rsyncd,
+		misc::images::rsync
 		generic::sysctl::high-bandwidth-rsync
 }
 
 node "ms1001.eqiad.wmnet" {
 	include standard,
+		misc::images::rsyncd,
+		misc::images::rsync
 		generic::sysctl::high-bandwidth-rsync
 }
 
