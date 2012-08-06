@@ -2550,6 +2550,13 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
+node "wtp1.pmtpa.wmnet" {
+	include standard,
+		admins::roots,
+		admins::dctech,
+		misc::parsoid
+}
+
 node  "yongle.wikimedia.org" {
 	$gid=500
 	include	standard,
