@@ -435,8 +435,8 @@ class role::cache {
 			/^(pmtpa|eqiad)$/ => $all_backends,
 			# [ bits-lb.pmtpa, bits-lb.eqiad ]
 			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
+			# FIXME: switched from eqiad to pmtpa during Aug 6th 2012 outage
+			'esams' => [ "208.80.152.210" ],
 			default => []
 		}
 
