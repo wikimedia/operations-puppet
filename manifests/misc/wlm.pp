@@ -12,6 +12,10 @@ class misc::wlm {
 		include groups::wikidev
 	}
 
+	package { [ "git", "git-svn" ]:
+		ensure => latest;
+	}
+
 	class { "generic::mysql::server": version => "5.5" }
 
 	file {
