@@ -7,9 +7,8 @@ class jobrunner (
 	$timeout = 300,
 	$extra_args = ""
 ) {
-	package { [ 'wikimedia-task-appserver' ]:
-		ensure => latest;
-	}
+	include mediawiki::packages
+
 	package { [ 'wikimedia-job-runner' ]:
 		ensure => absent;
 	}

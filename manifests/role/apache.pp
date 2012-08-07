@@ -56,7 +56,7 @@ class role::applicationserver {
 		}
 
 		if $jobrunner == true {
-			class {"jobrunner": }
+			class {"::jobrunner": }
 		}
 	}
 

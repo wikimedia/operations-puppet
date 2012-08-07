@@ -189,7 +189,7 @@ class applicationserver {
 	}
 
 	class jobrunner {
-		class {"jobrunner": }
+		class {"::jobrunner": }
 	}
 
 }
