@@ -33,6 +33,11 @@ class misc::wlm {
 			group => wikidev,
 			ensure => directory,
 			mode => 0775;
+		"/var/wlm/data":
+			owner => root,
+			group => wikidev,
+			ensure => directory,
+			mode => 0775;
 		# WLM API directories
 		"/srv/org":
 			owner => root,
