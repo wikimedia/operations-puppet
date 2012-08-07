@@ -1974,6 +1974,7 @@ node "singer.wikimedia.org" {
 		groups::wikidev,
 		accounts::austin,
 		accounts::awjrichards,
+		accounts::jamesofur,
 		generic::mysql::packages::client,
 		misc::planet
 
