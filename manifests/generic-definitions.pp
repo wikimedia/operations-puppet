@@ -662,7 +662,7 @@ define apt::pparepo($repo_string = "", $apt_key = "", $dist = "lucid", $ensure =
 class generic::gluster {
 
 	package { "glusterfs":
-		ensure => latest;
+		ensure => present;
 	}
 
 }

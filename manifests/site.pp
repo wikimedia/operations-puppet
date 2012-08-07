@@ -84,11 +84,6 @@ class applicationserver {
 	}
 
 	class homeless inherits parent {
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.1" ],
-			'labs' => [ "10.4.0.254" ],
-		}
-
 		include	standard,
 			admins::roots,
 			admins::dctech,
@@ -96,13 +91,20 @@ class applicationserver {
 			accounts::l10nupdate,
 			nfs::upload,
 			mediawiki::packages,
-			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.1" ],
+				'labs' => [ "10.4.0.254" ],
+			}
+		}
 	}
 
 	class home-no-service inherits parent {
@@ -126,18 +128,12 @@ class applicationserver {
 		$cluster = "api_appserver"
 		$nagios_group = $cluster
 
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.22", "10.2.1.1" ],
-			'labs' => [ "10.4.0.253" ],
-		}
-
 		include standard,
 			admins::roots,
 			admins::dctech,
 			admins::mortals,
 			accounts::l10nupdate,
 			nfs::upload,
-			lvs::realserver,
 			mediawiki::packages,
 			apaches::cron,
 			apaches::service,
@@ -145,16 +141,19 @@ class applicationserver {
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.22", "10.2.1.1" ],
+				'labs' => [ "10.4.0.253" ],
+			}
+		}
 	}
 
 	class bits inherits parent {
 		$cluster = "bits_appserver"
 		$nagios_group = $cluster
-
-		$lvs_realserver_ips = $realm ? {
-			'production' => [ "10.2.1.1" ],
-			'labs' => [ "10.4.0.252" ],
-		}
 
 		include standard,
 			admins::roots,
@@ -162,13 +161,20 @@ class applicationserver {
 			admins::mortals,
 			accounts::l10nupdate,
 			mediawiki::packages,
-			lvs::realserver,
 			apaches::cron,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
 			apaches::syslog,
 			geoip
+
+		# FIXME: pull from lvs::configuration
+		class { "lvs::realserver":
+			realserver_ips => $::realm ? {
+				'production' => [ "10.2.1.1" ],
+				'labs' => [ "10.4.0.252" ],
+			}
+		}
 	}
 
 	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
@@ -183,7 +189,7 @@ class applicationserver {
 	}
 
 	class jobrunner {
-		include jobrunner::packages
+		class {"::jobrunner": }
 	}
 
 }
@@ -192,18 +198,12 @@ class imagescaler {
 	$cluster = "imagescaler"
 	$nagios_group = $cluster
 
-	$lvs_realserver_ips = $realm ? {
-		'production' => [ "10.2.1.21" ],
-		'labs' => [ "10.4.0.252" ],
-	}
-
 	include standard,
 		imagescaler::cron,
 		imagescaler::packages,
 		imagescaler::files,
 		nfs::upload,
 		mediawiki::packages,
-		lvs::realserver,
 		apaches::packages,
 		apaches::cron,
 		apaches::service,
@@ -215,6 +215,14 @@ class imagescaler {
 		apaches::monitoring,
 		apaches::syslog,
 		accounts::l10nupdate
+
+	# FIXME: pull from lvs::configuration
+	class { "lvs::realserver":
+		realserver_ips => $::realm ? {
+			'production' => [ "10.2.1.21" ],
+			'labs' => [ "10.4.0.252" ],
+		}
+	}
 }
 
 class imagescaler::labs {
@@ -232,34 +240,6 @@ class imagescaler::labs {
 		apaches::packages,
 		apaches::cron,
 		apaches::service
-}
-
-class db::core {
-	$cluster = "mysql"
-
-	system_role { "db::core": description => "Core Database server" }
-
-	include standard,
-		mysql
-}
-
-class db::es($mysql_role = "slave") {
-	$cluster = "mysql"
-
-	$nagios_group = "es"
-
-	system_role { "db::es": description => "External Storage server (${mysql_role})" }
-
-	include	standard,
-		mysql,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::mysqlpath,
-		mysql::monitor::percona::es,
-		mysql::packages,
-		nrpe
-
 }
 
 class protoproxy::ssl {
@@ -321,8 +301,9 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	include base,
-		ganglia,
-		lvs::balancer
+		ganglia
+
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	# Make sure GRO is off
 	interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
@@ -405,7 +386,7 @@ node "bast1001.wikimedia.org" {
 }
 
 node "bellin.pmtpa.wmnet"{
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -417,7 +398,7 @@ node "beryllium.wikimedia.org" {
 }
 
 node "blondel.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -444,6 +425,13 @@ node  "cadmium.eqiad.wmnet" {
 		accounts::catrope
 }
 
+node "calcium.wikimedia.org" {
+	$cluster = "misc"
+
+	include standard,
+		misc::smokeping
+}
+
 node /^(capella|nitrogen)\.wikimedia\.org$/ {
 
 	include standard,
@@ -461,13 +449,6 @@ node "carbon.wikimedia.org" {
 	include standard,
 		backup::client,
 		misc::install-server::tftp-server
-}
-
-node "calcium.wikimedia.org" {
-	$cluster = "misc"
-
-	include standard,
-		misc::smokeping
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
@@ -564,16 +545,16 @@ node "dataset1001.wikimedia.org" {
 }
 
 node /^db[1-9]\.pmtpa\.wmnet$/ {
-	include db::core
+	include role::db::core
 }
 
 node "db10.pmtpa.wmnet" {
-	include db::core
+	include role::db::core
 		#backup::mysql - no space for lvm snapshots
 }
 
 node /^db1[2-8]\.pmtpa\.wmnet$/ {
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db1[2368]$/ {
@@ -586,7 +567,7 @@ node /^db1[2-8]\.pmtpa\.wmnet$/ {
 
 node /^db2[1-8]\.pmtpa\.wmnet$/ {
 
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db2[456]$/ {
@@ -603,7 +584,7 @@ node "db29.pmtpa.wmnet" {
 
 node /^db3[0-9]\.pmtpa\.wmnet$/ {
 
-	include db::core
+	include role::db::core
 
 	# upgraded hosts
 	if $hostname =~ /^db3[123456789]$/ {
@@ -615,14 +596,14 @@ node /^db3[0-9]\.pmtpa\.wmnet$/ {
 }
 
 node "db40.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::packages
 
 	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
 }
 
 node /pc[1-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::pc::conf,
@@ -632,7 +613,7 @@ node /pc[1-9]\.pmtpa\.wmnet/ {
 }
 
 node /^db4[2]\.pmtpa\.wmnet$/ {
-	include db::core,
+	include role::db::core,
 		mysql::packages
 }
 
@@ -641,7 +622,7 @@ node /^db4[2]\.pmtpa\.wmnet$/ {
 # DO NOT add old prod db's to new classes unless you
 # know what you're doing!
 node "db11.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -649,14 +630,14 @@ node "db11.pmtpa.wmnet" {
 }
 
 node "db19.pmtpa.wmnet" { # dead
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf
 }
 
 node "db22.pmtpa.wmnet" {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -664,7 +645,7 @@ node "db22.pmtpa.wmnet" {
 }
 
 node /db4[3-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -676,7 +657,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -684,7 +665,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 }
 
 node /db6[0-9]\.pmtpa\.wmnet/ {
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -697,7 +678,7 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include db::core,
+	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
@@ -783,10 +764,10 @@ node "erzurumi.pmtpa.wmnet" {
 
 node /es100[1-4]\.eqiad\.wmnet/ {
 	if $hostname == "es1001" {
-		class { "db::es": mysql_role => "master" }
+		class { "role::db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es
+		include role::db::es
 	}
 #	if $hostname == "es1004" {
 #		# replica of ms3 - currently used for backups
@@ -796,10 +777,10 @@ node /es100[1-4]\.eqiad\.wmnet/ {
 
 node /es[1-4]\.pmtpa\.wmnet/ {
 	if $hostname == "es1" {
-		class { "db::es": mysql_role => "master" }
+		class { "role::db::es": mysql_role => "master" }
 	}
 	else {
-		include db::es
+		include role::db::es
 	}
 }
 node "fenari.wikimedia.org" {
@@ -1130,7 +1111,7 @@ node "iron.wikimedia.org" {
 
 node "ixia.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
-	include db::core
+	include role::db::core
 }
 
 node "kaulen.wikimedia.org" {
@@ -1213,7 +1194,7 @@ node "linne.wikimedia.org" {
 }
 
 node "lomaria.pmtpa.wmnet" {
-	include db::core
+	include role::db::core
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
@@ -1261,8 +1242,9 @@ node /lvs[1-6]\.wikimedia\.org/ {
 
 	include base,
 		ganglia,
-		lvs::balancer,
 		lvs::balancer::runcommand
+
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	$ips = {
 		'internal' => {
@@ -1325,14 +1307,16 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['search_pool2'][$::site],
 			$sip['search_pool3'][$::site],
 			$sip['search_pool4'][$::site],
-			$sip['search_prefix'][$::site]
+			$sip['search_prefix'][$::site],
+			$sip['swift'][$::site]
 			]
 	}
 
 	include base,
 		ganglia,
-		lvs::balancer,
 		lvs::balancer::runcommand
+
+	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
 	$ips = {
 		'public1-a-eqiad' => {
@@ -1592,8 +1576,9 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^ms-fe1$/ {
 		include role::swift::pmtpa-prod::ganglia_reporter
 	}
-	$lvs_realserver_ips = [ "10.2.1.27" ]
-	include lvs::realserver
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.1.27" ] }
+
 	include role::swift::pmtpa-prod::proxy
 }
 
@@ -1605,8 +1590,9 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 	#if $hostname =~ /^ms-fe1001$/ {
 	#	include role::swift::eqiad-prod::ganglia_reporter
 	#}
-	$lvs_realserver_ips = [ "10.2.2.27" ]
-	include lvs::realserver
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
+
 	include role::swift::eqiad-prod::proxy
 }
 
@@ -1815,7 +1801,6 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 
 node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
-	$lvs_realserver_ips = [ "208.80.152.7" ]
 
 	if $hostname =~ /^payments[12]$/ {
 		$ganglia_aggregator = "true"
@@ -1828,8 +1813,9 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 		base::resolving,
 		base::motd,
 		base::monitoring::host,
-		lvs::realserver,
 		ganglia
+
+	class { "lvs::realserver": realserver_ips => [ "208.80.152.7" ] }
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
 }
@@ -2364,7 +2350,7 @@ node "storage3.pmtpa.wmnet" {
 
 	$db_cluster = "fundraisingdb"
 
-	include db::core,
+	include role::db::core,
 		role::db::fundraising::slave,
 		role::db::fundraising::dump,
 		mysql::packages,
@@ -2449,7 +2435,7 @@ node "tarin.wikimedia.org" {
 
 node "thistle.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
-	include db::core
+	include role::db::core
 }
 
 node "tridge.wikimedia.org" {
@@ -2565,6 +2551,13 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
+node "wtp1.pmtpa.wmnet" {
+	include standard,
+		admins::roots,
+		admins::dctech,
+		misc::parsoid
+}
+
 node  "yongle.wikimedia.org" {
 	$gid=500
 	include	standard,
@@ -2587,7 +2580,10 @@ node "zhen.wikimedia.org" {
 
 node "yttrium.wikimedia.org" {
 	include standard,
-		misc::wlm
+		misc::wlm,
+		admins::roots,
+		admins::dctech,
+		admins::mortals
 }
 
 node default {

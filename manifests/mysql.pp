@@ -5,12 +5,6 @@
 # class at the bottom of this file.  The configs closer to the
 # top are meant for production wikimedia mysql installations.
 
-
-# Virtual resource for the monitoring server
-@monitor_group { "es": description => "External Storage" }
-@monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
-@monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
-
 # TODO should really be named mysql-server, or mysql::server
 class mysql {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
@@ -117,7 +111,7 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
-			if ($db_cluster =~ /^[s]/) {
+			if ($db_cluster =~ /^[sm]/) {
 				include mysql::slow_digest
 			}
 		}
@@ -499,7 +493,7 @@ class mysql {
 				content => template("mysql/send_query_digest.sh.erb");
 		}
 
-		if $::site == "pmtpa" {
+		if $mysql::db_cluster {
 			cron { slow_digest:
 				command => "/usr/local/bin/send_query_digest.sh >/dev/null 2>&1",
 				require => File["/usr/local/bin/send_query_digest.sh"],
