@@ -105,8 +105,6 @@ class role::applicationserver {
 	class jobrunner{
 		class {"role::applicationserver::common": cluster => "jobrunner" }
 
-		package { [ 'wikimedia-job-runner' ]:
-			ensure => latest;
-		}
+		include ::jobrunner
 	}
 }
