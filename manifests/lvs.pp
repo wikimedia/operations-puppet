@@ -356,13 +356,21 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'apaches' => "10.4.0.254",
-			'rendering' => "10.4.0.252",
-			'api' => "10.4.0.253",
-			'bits' => "10.4.0.252",
-			'search_pool1' => undef,
-			'search_pool2' => undef,
-			'search_pool3' => undef,
+			'apaches' => {
+				'pmtpa' => "10.4.0.254",
+			},
+			'rendering' => {
+				'pmtpa' => "10.4.0.252",
+			},
+			'api' => {
+				'pmtpa' => "10.4.0.253",
+			},
+			'bits' => {
+				'pmtpa' => "10.4.0.252",
+			},
+			'search_pool1' => {},
+			'search_pool2' => {},
+			'search_pool3' => {},
 		}
 	}
 
@@ -669,8 +677,13 @@ class lvs::configuration {
 	}
 }
 
+# Class: lvs::balancer
+# Parameters:
+#	- $service_ips: list of service IPs to bind to loopback
+class lvs::balancer(
+	$service_ips=[]
+	) {
 
-class lvs::balancer {
 	require "lvs::configuration"
 	
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
@@ -678,12 +691,6 @@ class lvs::balancer {
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
 	
-	if $::realm == "labs" {
-		# Hack for arrays in LDAP - you suck puppet
-		$lvs_balancer_ips = split(get_var('lvs_balancer_ips'), ',')
-	}
-	$lvs_realserver_ips = $lvs_balancer_ips
-
 	system_role { "lvs::balancer": description => "LVS balancer" }
 
 	package { [ ipvsadm, pybal, ethtool ]:
@@ -702,7 +709,7 @@ class lvs::balancer {
 	}
 
 	# Bind balancer IPs to the loopback interface 
-	include lvs::realserver
+	class { "lvs::realserver": realserver_ips => $service_ips }
 
 	# Sysctl settings
 	class { "generic::sysctl::advanced-routing": ensure => absent }
@@ -711,7 +718,7 @@ class lvs::balancer {
 
 # Supporting the PyBal RunCommand monitor
 class lvs::balancer::runcommand {
-	require lvs::balancer
+	Class[lvs::balancer] -> Class[lvs::balancer::runcommand]
 
 	file {
 		"/etc/pybal/runcommand":
@@ -739,15 +746,8 @@ class lvs::balancer::runcommand {
 # Parameters:
 #	- $realserver_ips
 #		Array or hash (name => ip) of service IPs to answer on
-# FIXME: dynamic lookup $lvs_realserver_ips
-class lvs::realserver($realserver_ips=$lvs_realserver_ips) {
-	if $::realm == "labs" {
-		# FIXME: Hack for arrays in LDAP - you suck puppet
-		$ips = split(get_var('lvs_realserver_ips'), ',')
-	}
-	else {
-		$ips = $realserver_ips
-	}
+class lvs::realserver($realserver_ips=[]) {
+
 	file { "/etc/default/wikimedia-lvs-realserver":
 		mode => 0444,
 		owner => root,

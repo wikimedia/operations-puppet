@@ -181,7 +181,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.wikimedia.org", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+				"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
 				"esams" => []
 			}
 		}
@@ -287,18 +287,12 @@ class role::cache {
 			$cluster = "squids_${role}"
 			$nagios_group = "cache_${role}_${::site}"
 
-			# Labs has no LVS supports for now
-			if( $::realm == "production" ) {
-				include lvs::configuration
-			}
+			include lvs::configuration
 
 			include	standard,
 				::squid
 
-			# Labs has no LVS supports for now
-			if( $::realm == "production" ) {
-				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
-			}
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
 
 			# Monitoring
 			monitor_service {
@@ -441,8 +435,8 @@ class role::cache {
 			/^(pmtpa|eqiad)$/ => $all_backends,
 			# [ bits-lb.pmtpa, bits-lb.eqiad ]
 			#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-			# FIXME: add pmtpa back in
-			'esams' => [ "208.80.154.234" ],
+			# FIXME: switched from eqiad to pmtpa during Aug 6th 2012 outage
+			'esams' => [ "208.80.152.210" ],
 			default => []
 		}
 
@@ -474,11 +468,6 @@ class role::cache {
 
 		include standard,
 			varnish::monitoring::ganglia
-
-		# Labs has no LVS supports for now
-		if ( $::realm == "production" ) {
-			include lvs::realserver
-		}
 
 		varnish::instance { "bits":
 			name => "",

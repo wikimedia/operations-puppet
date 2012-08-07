@@ -724,6 +724,16 @@ host db1048 {
 	fixed-address db1048.eqiad.wmnet;
 }
 
+host db1049 {
+	hardware ethernet d4:ae:52:65:92:e7;
+	fixed-address db1049.eqiad.wmnet;
+}
+
+host db1050 {
+	hardware ethernet d4:ae:52:65:92:b1;
+	fixed-address db1050.eqiad.wmnet;
+}
+
 host ekrem {
 	hardware ethernet 84:2b:2b:06:49:30;
 	fixed-address ekrem.wikimedia.org;
@@ -1197,7 +1207,7 @@ host ms-be1006 {
 }
 
 host ms-be1007 {
-	hardware ethernet 00:00:00:00:00:00;
+	hardware ethernet 04:7D:7B:2E:2B:E2;
 	fixed-address ms-be1007.eqiad.wmnet;
 }
 

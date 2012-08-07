@@ -207,6 +207,10 @@ class swift::proxy::config(
 # current setup is running 2 copies of this on iron
 ## one copy that checks all recent stuff relatively quickly
 ## one copy that continuously checks all objects but slowly.
+#
+##  NOTE  this class is now ensuring the cron is absent.
+##        Since ms5 is now out of rotation and mediawiki is writing
+##        directly to sift, we don't need it anymore.
 class swift::cleaner {
 	define swiftcleanercron(
 		$name,
@@ -240,7 +244,7 @@ class swift::cleaner {
 			user => root,
 			minute => 1,
 			hour => 22, #the beginning of the daily trough
-			ensure => present
+			ensure => absent
 		}
 	}
 	# install basic app

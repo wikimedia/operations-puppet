@@ -70,7 +70,7 @@ acl carrier_grameenphone_bangladesh {
 }
 
 acl carrier_telenor_montenegro {
-	"79.143.96.0"/20;
+	//"79.143.96.0"/20;
 }
 
 sub tag_carrier {
@@ -250,6 +250,7 @@ sub vcl_recv {
 		}C
 
 		set req.http.X-CLIENT-IP = client.ip;
+		set req.http.X-Forwarded-For = client.ip;
 		set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
 	}
 

@@ -25,4 +25,4 @@ SYSCTLFILE=/usr/share/wikimedia-lvs-realserver/sysctl.conf
 
 # LVS service IPs to be bound to the loopback interface,
 # separate using spaces
-LVS_SERVICE_IPS="<%= flatten_ips(scope.lookupvar("lvs::realserver::ips")).sort.join(" ") -%>"
+LVS_SERVICE_IPS="<%= flatten_ips(scope.lookupvar("lvs::realserver::realserver_ips")).sort.join(" ") -%>"

@@ -170,4 +170,10 @@ menu = DNS latency
 title = Service latency (DNS)
  
 +++ dns1
-host = 10.4.0.1
+host = 208.80.152.131
+
++++ dns2
+host = 208.80.152.142
+
++++ dns3
+host = 91.198.174.4
