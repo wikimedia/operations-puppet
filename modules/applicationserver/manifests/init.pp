@@ -8,17 +8,5 @@ class applicationserver {
 		}
 	}
 
-	# Require apaches::files to be in place
-	require applicationserver::config::php,
-		applicationserver::config::apache,
-		applicationserver::config::mail,
-		applicationserver::cron,
-		applicationserver::nice
-
-	# Start apache but not at boot
-	service { 'apache':
-		name => "apache2",
-		enable => false,
-		ensure => running;
-	}
+	include packages, config, service, cron
 }
