@@ -49,13 +49,15 @@ class role::applicationserver {
 	}
 
 	# This class installs everything necessary for an apache webserver
-	class webserver {
+	class webserver($maxclients="40") {
 		include	::applicationserver,
 			sudo::appserver,
 			applicationserver::pybal_check,
 			applicationserver::sync,
 			applicationserver::syslog,
 			applicationserver::config::php
+
+		class { "applicationserver::config::apache": }
 
 		if( $::realm == 'labs' ) {
 			include	nfs::apache::labs
@@ -79,30 +81,22 @@ class role::applicationserver {
 	class appserver{
 		class { "role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches" }
 
-		class { "applicationserver::config::apache": }
-
 		include role::applicationserver::webserver
 		include role::applicationserver::upload_nfs
 	}
 	class appserver::api{
 		class { "role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api" }
 
-		class { "applicationserver::config::apache": maxclients => "100" }
-
-		include role::applicationserver::webserver
+		class { "role::applicationserver::webserver": maxclients => "100" }
 		include role::applicationserver::upload_nfs
 	}
 	class appserver::bits{
 		class { "role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches" }
 
-		class { "applicationserver::config::apache": }
-
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
 		class { "role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering" }
-
-		class { "applicationserver::config::apache": }
 
 		include role::applicationserver::webserver
 		include role::applicationserver::upload_nfs
