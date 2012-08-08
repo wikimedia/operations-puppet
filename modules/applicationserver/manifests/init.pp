@@ -13,7 +13,8 @@ class applicationserver {
 		applicationserver::config::apache,
 		applicationserver::config::mail,
 		applicationserver::cron,
-		applicationserver::nice
+		applicationserver::nice,
+		applicationserver::sudo
 
 	# Start apache but not at boot
 	service { 'apache':
