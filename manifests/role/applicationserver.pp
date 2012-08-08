@@ -18,22 +18,19 @@ class role::applicationserver {
 # This class installs a mediawiki application server
 #
 # Parameters:
-#	- $cluster:
+#	- $group:
 #		Determines what logical group the host will be a
 #		part of. Used for ganglia. Possibilities are:
-#		appserver, api_appserver, bits_appserver, imagescaler, jobrunner
-#	- $nagios_ group:
-#		Determines what nagios monitoring group the host will be a
-#		part of. Possibilities are:
 #		appserver, api_appserver, bits_appserver, imagescaler, jobrunner
 #	- $lvs_pool:
 #		Determines lvsrealserver IP(s) that the host will receive.
 #		From lvs::configuration::$lvs_service_ips
 	class common(
-		$cluster,
-		$nagios_group="${cluster}_${::site}",
+		$group,
 		$lvs_pool
 		) {
+
+		$nagios_group = "${::cluster_${::site}"
 
 		include	standard,
 			mediawiki
