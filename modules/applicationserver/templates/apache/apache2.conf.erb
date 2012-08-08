@@ -34,19 +34,13 @@ MaxSpareServers 20
 
 StartServers 10
 
-#MaxClients 24
-#MaxClients 36
-#MaxClients 50
-#MaxClients 300
-#MaxClients 255
-<% if $cluster == "api_appserver" then -%>MaxClients 100<% else -%>MaxClients 40<% end -%>
+MaxClients <%= maxclients %>
 
 <IfDefine SLOW>
 MaxClients 5
 </IfDefine>
 
 <IfDefine SCALER>
-<% if $cluster == "api_appserver" then -%>MaxClients 10<% else -%>MaxClients 20<% end -%>
 # Reduce TimeOut to limit the impact of LVS flapping -- TS 2008-08-19
 TimeOut 10 
 </IfDefine>
@@ -112,11 +106,8 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
             ExpiresByType text/css A2592000
             ExpiresByType text/javascript A2592000
             ExpiresByType application/x-javascript A2592000
-<% if $cluster == "api_appserver" then -%><% else -%>MaxClients 40<% end -%>
             ExpiresByType application/x-woff A2592000
-<% else -%>
             ExpiresByType application/x-font-woff A2592000
-<% end -%>
             ExpiresByType image/svg+xml A2592000
             ExpiresByType application/vnd.ms-fontobject A2592000
             ExpiresByType application/x-font-ttf A2592000
@@ -283,11 +274,8 @@ ServerSignature Off
     AddType application/x-tar .tgz
     AddType text/xml .rdf
     AddType application/x-bzip2 .bz2
-<% if $cluster == "api_appserver" then -%><% else -%>MaxClients 40<% end -%>
     AddType application/x-woff .woff
-<% else -%>
     AddType application/x-font-woff .woff
-<% end -%>
     AddType application/vnd.ms-fontobject .eot
     # TTF doesn't have an official MIME type, but I really don't want to use application/octet-stream for it
     AddType application/x-font-ttf .ttf

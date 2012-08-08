@@ -8,5 +8,5 @@ class applicationserver {
 		}
 	}
 
-	include packages, config, service, cron
+	include packages, service, cron
 }
