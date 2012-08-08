@@ -2400,6 +2400,7 @@ node "streber.wikimedia.org" {
 #		misc::torrus,
 		exim::rt,
 		misc::rt::server,
+		misc::rancid,
 		firewall::builder
 
 	class { "misc::syslog-server": config => "network" }
