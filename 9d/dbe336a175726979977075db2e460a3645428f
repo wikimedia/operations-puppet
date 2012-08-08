@@ -1,0 +1,10 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Code-Review+1: Demon <chadh@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Hashar <hashar@free.fr>
+Code-Review+1: Nikerabbit <niklas.laxstrom@gmail.com>
+Submitted-by: Ryan Lane <rlane@wikimedia.org>
+Submitted-at: Wed, 08 Aug 2012 00:08:45 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/6905
+Project: operations/puppet
+Branch: refs/heads/production
