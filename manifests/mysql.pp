@@ -32,22 +32,22 @@ class mysql {
 	if $hostname =~ /^db(12|32|36|38|42|59|60|61|62|63|1001|1017|1033|1042|1043|1047|1049|1050)$/ {
 		$db_cluster = "s1"
 	}
-	elsif $hostname =~ /^db(52|53|54|57|1002|1018|1034)$/ {
+	elsif $hostname =~ /^db(52|53|54|57|1002|1009|1018|1034)$/ {
 		$db_cluster = "s2"
 	}
-	elsif $hostname =~ /^db(11|25|34|39|1003|1019|1035)$/ {
+	elsif $hostname =~ /^db(11|25|34|39|1003|1010|1019|1035)$/ {
 		$db_cluster = "s3"
 	}
-	elsif $hostname =~ /^db(22|31|33|51|1004|1020|1038)$/ {
+	elsif $hostname =~ /^db(22|31|33|51|1004|1011|1020|1038)$/ {
 		$db_cluster = "s4"
 	}
-	elsif $hostname =~ /^db(35|44|45|55|1005|1021|1039)$/ {
+	elsif $hostname =~ /^db(35|44|45|55|1005|1021|1026|1039)$/ {
 		$db_cluster = "s5"
 	}
-	elsif $hostname =~ /^db(43|46|47|50|1006|1022|1040)$/ {
+	elsif $hostname =~ /^db(43|46|47|50|1006|1022|1027|1040)$/ {
 		$db_cluster = "s6"
 	}
-	elsif $hostname =~ /^db(18|26|37|56|58|1007|1024|1041)$/ {
+	elsif $hostname =~ /^db(18|26|37|56|58|1007|1024|1028|1041)$/ {
 		$db_cluster = "s7"
 	}
 	elsif $hostname =~ /^blondel|bellin$/ {
