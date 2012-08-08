@@ -838,11 +838,11 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
-				"otto@hundchen.local":
+				"otto@klein.local":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAw+oSU5aOOAxlmjTZvJnOEPbOAOchKKeTi5RO6KIVddIVXspHbBZKhuBmDLbppsB2x/kA5XYC0otA/FD1Ldr7v+OQp3XRTUlxchjGKci91ztPL4WbedCR33DUjjZW4ro2XlvoSLgH0vIZU8B3a7a49BgtXIPxtXw/evmzRmRfguNam/pvVfv6AE+1NGNQGadLNP2nHTjd8B2WEC1aVIblk3ZOsLsGvvFQQvuwLdMsDcK9/6Khy6rE4fYXJGd9ucVYIH0V/487Syg9tvk9xMEX46z4O38EV42CVhBm4ebpQ8roJJwwuD7MGIUeRicylvmVHHd+KxMqB6VkvGYIUXcasQ==";
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCyYwXitC3hSK+Gwfq3y0PlGlQMRHaqsTtJcDbgoxuE0kzEEKwSVpyXIxoUdUK0Luh2eVkR+CZ8+5lLVDJOhrGpBT6r/Z9p+o+9rVopNEkHM8QxqbhDoS5gbSEngISM+Zcyo1wTK+bB4tbzCcX7eJEVlxmPv4Tb85zDcMWSR2ZWV+jPMai9/3uO61Q3n9GOX94+3qIWmZE55AIjLT/lw3iGffwSMffO9/8UC9U2sVW3v3daXuvDgmjKkAiGaJp+Evq82ahQEOgOWPDuLXYo1DyFuqsL67CDA1hYZfA9FJRfUhOW9I32mGmFpjdJsFeWSU4VIOHO//Blpy0j6h4IPacJ==";
 			}
 		}
 	}
