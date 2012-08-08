@@ -1975,7 +1975,8 @@ node "singer.wikimedia.org" {
 		accounts::austin,
 		accounts::awjrichards,
 		generic::mysql::packages::client,
-		misc::planet
+		misc::planet,
+		misc::secure
 
 
 	install_certificate{ "star.wikimedia.org": }

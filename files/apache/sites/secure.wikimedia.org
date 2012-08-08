@@ -1,3 +1,8 @@
+#####################################################################
+#### THIS FILE IS MANAGED BY PUPPET
+#### puppet:///files/apache/sites/secure.wikimedia.org
+######################################################################
+
 <VirtualHost *:443>
 	ServerName secure.wikimedia.org
 	ServerAdmin noc@wikimedia.org
