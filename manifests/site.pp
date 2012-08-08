@@ -338,7 +338,7 @@ node "argon.wikimedia.org" {
 		misc::survey
 
 	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "survey cert": description => "Certificate expiration", check_command => "check_cert!survey.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
