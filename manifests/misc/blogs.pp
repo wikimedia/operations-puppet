@@ -21,13 +21,3 @@ class misc::blogs::wikimedia {
 	}
 }
 
-# https://techblog.wikimedia.org
-class misc::blogs::tech {
-
-	system_role { "misc::blogs::tech": description => "techblog.wikimedia.org" }
-
-	class {'webserver::php5': ssl => 'true'; }
-
-	apache_site { techblog: name => "techblog.wikimedia.org" }
-
-}
