@@ -16,7 +16,7 @@ do
 	if [ -d $GITDIR/$path ]
 	then
 		# Checkout exists, update it
-		if cd $GITDIR/$path && git pull && git submodule update
+		if cd $GITDIR/$path && git pull && git submodule update --init
 		then
 			echo "Updated $path"
 		else
@@ -26,9 +26,10 @@ do
 		fi
 	else
 		# Create the checkout's parent directory
-		# TODO: this doesn't do the submodule setup, but it can't right now, due to the way ls-projects is used
 		if mkdir -p `dirname $GITDIR/$path` &&
-			git clone $GITURL/$path $GITDIR/$path
+			git clone $GITURL/$path $GITDIR/$path &&
+			cd $GITDIR/$path &&
+			git submodule update --init
 		then
 			echo "Cloned $path"
 		else
