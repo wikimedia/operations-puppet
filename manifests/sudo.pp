@@ -51,15 +51,3 @@ class sudo::default {
 
 }
 
-class sudo::appserver {
-
-	file { "/etc/sudoers.d/appserver":
-		path => "/etc/sudoers.d/appserver",
-		owner => root,
-		group => root,
-		mode => 0440,
-		source => "puppet:///files/sudo/sudoers.appserver",
-		ensure => present;
-	}
-
-}

@@ -24,4 +24,8 @@ class mediawiki::users {
 			mode => 0400,
 			content => $authorized_key;
 	}
+
+	## sudo definitions
+	sudo_group {"wikidev": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'] }
+	sudo_user { "l10nupdate": privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
