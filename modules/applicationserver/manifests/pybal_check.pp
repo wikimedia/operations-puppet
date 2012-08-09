@@ -8,14 +8,13 @@ class applicationserver::pybal_check {
 	file {
 		"/var/lib/pybal-check/.ssh":
 			require => Systemuser["pybal-check"],
-			owner => pybal-check,
-			group => pybal-check,
+			owner => "pybal-check",
+			group => "pybal-check",
 			mode => 0550,
 			ensure => directory;
 		"/var/lib/pybal-check/.ssh/authorized_keys":
-			require => File["/var/lib/pybal-check/.ssh"],
-			owner => pybal-check,
-			group => pybal-check,
+			owner => "pybal-check",
+			group => "pybal-check",
 			mode => 0440,
 			content => $authorized_key;
 	}
