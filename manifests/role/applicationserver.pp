@@ -51,7 +51,6 @@ class role::applicationserver {
 	# This class installs everything necessary for an apache webserver
 	class webserver($maxclients="40") {
 		include	::applicationserver,
-			sudo::appserver,
 			applicationserver::pybal_check,
 			applicationserver::sync,
 			applicationserver::syslog,
