@@ -64,9 +64,12 @@ class role::applicationserver {
 			include	nfs::apache::labs
 		}
 
-		monitor_service { "appserver http": description => "Apache HTTP",
-			check_command => $::realm ? { 'production' => "check_http_wikipedia",
-					'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page" }
+		monitor_service { "appserver http":
+			description => "Apache HTTP",
+			check_command => $::realm ? {
+				'production' => "check_http_wikipedia",
+				'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page"
+				}
 		}
 	}
 
@@ -77,7 +80,7 @@ class role::applicationserver {
 
 	## prod role classes
 	class appserver{
-		class {"role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches" }
+		class { "role::applicationserver::common": cluster => "appserver", lvs_pool => "apaches" }
 
 		class { "applicationserver::config::apache": }
 
@@ -85,7 +88,7 @@ class role::applicationserver {
 		include role::applicationserver::upload_nfs
 	}
 	class appserver::api{
-		class {"role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api" }
+		class { "role::applicationserver::common": cluster => "api_appserver", lvs_pool => "api" }
 
 		class { "applicationserver::config::apache": maxclients => "100" }
 
@@ -93,14 +96,14 @@ class role::applicationserver {
 		include role::applicationserver::upload_nfs
 	}
 	class appserver::bits{
-		class {"role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches" }
+		class { "role::applicationserver::common": cluster => "bits_appserver", lvs_pool => "apaches" }
 
 		class { "applicationserver::config::apache": }
 
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
-		class {"role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering" }
+		class { "role::applicationserver::common": cluster => "imagescaler", lvs_pool => "rendering" }
 
 		class { "applicationserver::config::apache": }
 
@@ -112,7 +115,7 @@ class role::applicationserver {
 			imagescaler::files
 	}
 	class jobrunner{
-		class {"role::applicationserver::common": cluster => "jobrunner" }
+		class { "role::applicationserver::common": cluster => "jobrunner" }
 
 		include ::jobrunner
 	}
