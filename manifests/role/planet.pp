@@ -7,6 +7,8 @@ class role::planet {
 	include standard,
 		generic::locales::international
 
+	class {'webserver::php5': ssl => 'true'; }
+
 	case $::realm {
 		labs: {
 			$planet_domain_name = 'wmflabs.org'

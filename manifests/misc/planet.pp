@@ -38,6 +38,12 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
 
 	file {
+		"/var/www/planet/":
+			path => "/var/www/",
+			mode => 0755,
+			owner => planet,
+			group => www-data,
+			ensure => directory;
 		"/var/www/index.html":
 			path => "/var/www/index.html",
 			mode => 0444,
