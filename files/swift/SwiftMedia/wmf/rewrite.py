@@ -12,6 +12,7 @@ import wmf.client
 import time
 import urlparse
 from swift.common.utils import get_logger
+from swift.common.wsgi import WSGIContext
 
 # Copy2 is hairy. If we were only opening a URL, and returning it, we could
 # just return the open file handle, and webob would take care of reading from
@@ -76,20 +77,7 @@ class Copy2(object):
         self.copyconn.write(data)
         return data
 
-class ObjectController(object):
-    """
-    We're an object controller that doesn't actually do anything, but we
-    will need these arguments later
-    """
-
-    def __init__(self):
-        self.response_args = []
-
-    def do_start_response(self, *args):
-        """ Remember our arguments but do nothing with them """
-        self.response_args.extend(args)
-
-class WMFRewrite(object):
+class WMFRewrite(WSGIContext):
     """
     Rewrite Media Store URLs so that swift knows how to deal.
 
@@ -174,13 +162,13 @@ class WMFRewrite(object):
                     if(proj == 'wikipedia' and lang == 'sources'):
                         #yay special case
                         hostname = 'wikisource.org'
-                    # ok, replace the URL with just the projectname as the host
-                    # and the part after thumb/ passed to thumb_handler.php
+                    #ok, replace the URL with just the part starting with thumb/
+                    # take off the first two parts of the path (eg /wikipedia/commons/); make sure the string starts with a /
                     encodedurl = 'http://%s/w/thumb_handler.php/%s' % (hostname, match.group('path'))
-                    # add in the original URL that swift got (minus the hostname) as X-Original-URI
+                    # add in the X-Original-URI with the swift got (minus the hostname)
                     opener.addheaders.append(('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
             else:
-                # log the result of the match here to test and see if we're missing cases
+                # log the result of the match here to test and make sure it's sane before enabling the config
                 match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
                 if match:
                     proj = match.group('proj')
@@ -327,12 +315,11 @@ class WMFRewrite(object):
             req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
             #self.logger.warn("new path is %s" % req.path_info)
 
-            controller = ObjectController()
             # do_start_response just remembers what it got called with,
             # because our 404 handler will generate a different response.
-            app_iter = self.app(env, controller.do_start_response) #01
-            status = int(controller.response_args[0].split()[0])
-            headers = dict(controller.response_args[1])
+            app_iter = self._app_call(env) #01
+            status = self._get_status_int()
+            headers = self._response_headers
 
             if 200 <= status < 300 or status == 304:
                 # We have it! Just return it as usual.

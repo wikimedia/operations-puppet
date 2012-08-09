@@ -9,7 +9,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
 	include swift::sysctl::tcp-improvements
 	include generic::sysctl::high-http-performance
 
-	package { "swift":
+	package { ["swift", "python-ss-statsd", "swift-doc", "python-swift"]:
 		ensure => present;
 	}
 
