@@ -1,9 +1,9 @@
 ## triggers for syncing application servers
+
+# ensure that the sync happens each time before apache is started
 class applicationserver::sync {
-	# Include this for syncinc mw installation
-	# Include applicationserver::apache-trigger-mw-sync to ensure that
-	# the sync happens each time just before apache is started
-	require mediawiki::sync
+	Class["mediawiki::sync"] -> Class["applicationserver::sync"]
+	Class["applicationserver::service"] -> Class["applicationserver::sync"]
 
 	# Sync the server when we see apache is not running
 	exec { 'apache-trigger-mw-sync':

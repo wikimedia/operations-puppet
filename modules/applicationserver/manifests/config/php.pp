@@ -3,7 +3,7 @@
 # requires applicationserver::packages to be in place
 class applicationserver::config::php {
 
-	require applicationserver::packages
+	Class["applicationserver::packages"] -> Class["applicationserver::config::php"]
 
 	file {
 		"/etc/php5/apache2/php.ini":

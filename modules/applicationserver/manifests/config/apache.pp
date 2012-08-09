@@ -4,10 +4,11 @@
 # requires applicationserver::packages to be in place
 class applicationserver::config::apache( $cluster ) {
 
-	require applicationserver::packages
+	Class["applicationserver::packages"] -> Class["applicationserver::config::apache"]
 
 	## FIXME: this is probably a crime against modules. need to redo.
-	Class["role::applicationserver::common"] -> Class[apache::files::config::apache]
+	# FIXME: perhaps it's not a crime, but why is it here? What's it for?
+	Class["role::applicationserver::common"] -> Class["applicationserver::config::apache"]
 
 	file {
 		"/etc/apache2/apache2.conf":
@@ -26,6 +27,6 @@ class applicationserver::config::apache( $cluster ) {
 			mode => 0444,
 			owner => root,
 			group => root,
-			content => $site;
+			content => $::site;
 	}
 }
