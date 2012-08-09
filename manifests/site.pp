@@ -2431,9 +2431,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 
 node "tarin.wikimedia.org" {
 	include standard,
-	nrpe
-
-	monitor_service { "poolcounterd": description => "poolcounter", check_command => "nrpe_check_poolcounterd" }
+		role::poolcounter
 }
 
 node "thistle.pmtpa.wmnet" {
