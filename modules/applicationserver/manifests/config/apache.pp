@@ -2,13 +2,11 @@
 # note: it uses $cluster for the apache2.conf
 #
 # requires applicationserver::packages to be in place
-class applicationserver::config::apache( $cluster ) {
+class applicationserver::config::apache(
+	$maxclients="40"
+	) {
 
 	Class["applicationserver::packages"] -> Class["applicationserver::config::apache"]
-
-	## FIXME: this is probably a crime against modules. need to redo.
-	# FIXME: perhaps it's not a crime, but why is it here? What's it for?
-	Class["role::applicationserver::common"] -> Class["applicationserver::config::apache"]
 
 	file {
 		"/etc/apache2/apache2.conf":
@@ -29,4 +27,6 @@ class applicationserver::config::apache( $cluster ) {
 			group => root,
 			content => $::site;
 	}
+
+	Class["applicationserver::config::apache"] -> Class["applicationserver::config"]
 }

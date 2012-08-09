@@ -1,5 +1,6 @@
 # applicationserver::config
 
 class applicationserver::config {
-	require apache, php
+	# Other classes can depend on this to ensure all configuration
+	# is complete
 }
