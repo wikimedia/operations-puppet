@@ -6,9 +6,15 @@
 bind_port = <%= scope.lookupvar("swift::proxy::config::bind_port") %>
 workers = <%= scope.lookupvar("swift::proxy::config::num_workers") %>
 user = swift
+# You can enable default statsD logging here and/or override it in sections
+# below:
+log_statsd_host = localhost
+log_statsd_port = 8125
+log_statsd_default_sample_rate = 1
+log_statsd_metric_prefix =
 
 [pipeline:main]
-pipeline = rewrite healthcheck cache swauth proxy-server
+pipeline = rewrite healthcheck cache swauth proxy-logging proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -30,6 +36,9 @@ use = egg:swift#healthcheck
 [filter:cache]
 use = egg:swift#memcache
 memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
+
+[filter:proxy-logging]
+use = egg:swift#proxy_logging
 
 [filter:rewrite]
 # the auth system turns our login and key into an account / token pair.
