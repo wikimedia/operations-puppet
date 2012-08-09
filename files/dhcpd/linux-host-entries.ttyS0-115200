@@ -53,6 +53,67 @@ host analytics1010 {
 	fixed-address analytics1010.eqiad.wmnet;
 }
 
+host analytics1011 {
+	hardware ethernet 04:7d:7b:a5:e1:b2;
+	fixed:address analytics1011.eqiad.wmnet;
+}
+
+host analytics1012 {
+	hardware ethernet 04:7d:7b:a5:e6:94;
+	fixed-address analytics1012.eqiad.wmnet;
+}
+
+host analytics1013 {
+	hardware ethernet 04:7d:7b:a5:e1:8e;
+	fixed-address analytics1013.eqiad.wmnet;
+}
+
+host analytics1014 {
+	hardware ethernet 04:7d:7b:a5:e4:96;
+	fixed-address analytics1014.eqiad.wmnet;
+}
+
+host analytics1015 {
+	hardware ethernet 04:7d:7b:a5:e4:76;
+	fixed-address analytics1015.eqiad.wmnet;
+}
+
+host analytics1016 {
+	hardware ethernet 04:7d:7b:a5:e1:46;
+	fixed-address analytics1016.eqiad.wmnet;
+}
+
+host analytics1017 {
+	hardware ethernet 04:7d:7b:a5:e4:ce;
+	fixed-address analytics1017.eqiad.wmnet;
+}
+
+host analytics1018 {
+	hardware ethernet 04:7d:7b:a5:e7:98;
+	fixed-address analytics1018.eqiad.wmnet;
+}
+
+host analytics1019 {
+	hardware ethernet 04:7d:7b:a5:e7:be;
+	fixed-address analytics1019.eqiad.wmnet;
+}
+
+host analytics1020 {
+	hardware ethernet 04:7d:7b:a5:e7:82;
+	fixed-address analytics1020.eqiad.wmnet;
+}
+
+host analytics1021 {
+	hardware ethernet 04:7d:7b:a5:e8:04;
+	fixed-address analytics1021.eqiad.wmnet;
+}
+
+host analytics1022 {
+	hardware ethernet 04:7d:7b:a5:e7:5c;
+	fixed-address analytics1022.eqiad.wmnet;
+}
+
+
 host pc1 {
 	hardware ethernet 88:43:E1:C2:4C:AA;
 	fixed-address pc1.pmtpa.wmnet;
