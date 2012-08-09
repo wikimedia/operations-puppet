@@ -39,6 +39,9 @@ class network::constants {
 					'labs-hosts1-b-eqiad' => {
 						'ipv4' => "10.64.20.0/24"
 					},
+					'labs-hosts1-c-eqiad' => {
+						'ipv4' => "10.64.37.0/24"
+					},
 					'analytics1-b-eqiad' => {
 						'ipv4' => "10.64.21.0/24",
 						'ipv6' => "2620:0:861:105::/64"
