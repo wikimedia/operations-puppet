@@ -55,7 +55,7 @@ host analytics1010 {
 
 host analytics1011 {
 	hardware ethernet 04:7d:7b:a5:e1:b2;
-	fixed:address analytics1011.eqiad.wmnet;
+	fixed-address analytics1011.eqiad.wmnet;
 }
 
 host analytics1012 {
