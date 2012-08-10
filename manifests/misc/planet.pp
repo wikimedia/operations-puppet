@@ -17,7 +17,7 @@ class misc::planet {
 			mode => 0444,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/planet.wikimedia.org";
+			content	=> template('apache/sites/planet.erb');
 	}
 
 	apache_site { planet: name => "planet.wikimedia.org" }
@@ -79,7 +79,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 				owner => planet,
 				group => planet,
 				mode => 0444,
-				source => "puppet:///templates/planet/${title}_config.ini";
+				content => template("planet/${title}_config.erb"),
 		}
 	}
 
