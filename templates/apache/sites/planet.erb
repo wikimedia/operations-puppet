@@ -1,0 +1,209 @@
+# make all planet requests go to http instead of ssl
+# <-from old planet, changes once we get a star cert
+
+<VirtualHost *:443>
+	ServerName planet.<%= planet_domain_name %>
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.<%= planet_domain_name %>.crt
+	SSLCertificateKeyFile /etc/ssl/private/star.<%= planet_domain_name %>.key
+
+	RewriteEngine on
+	RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	DocumentRoot /var/www/planet
+
+	<Directory /var/www/planet>
+		Allow from all
+		Redirect /atom.xml http://en.planet.<%= planet_domain_name %>/atom.xml
+		Redirect /rss10.xml http://en.planet.<%= planet_domain_name %>/rss10.xml
+		Redirect /rss20.xml http://en.planet.<%= planet_domain_name %>/rss20.xml
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/ar/www
+	ServerName ar.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/ar/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/cs/www
+	ServerName cs.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/cs/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName da.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/it/www
+	ServerName it.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/it/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/de/www
+	ServerName de.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/de/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/en/www
+	ServerName en.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/en/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/es/www
+	ServerName es.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/es/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName fo.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/fr/www
+	ServerName fr.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/fr/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/gmq/www
+	ServerName gmq.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/gmq/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName is.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName nb.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName nn.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName no.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/pl/www
+	ServerName pl.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/pl/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/pt/www
+	ServerName pt.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/pt/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/ru/www
+	ServerName ru.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/ru/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/sr/www
+	ServerName sr.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/sr/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName sv.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/zh/www
+	ServerName zh.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/zh/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
+
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/planet/ro/www
+	ServerName ro.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+
+	<Directory /var/www/planet/ro/www>
+		Allow from all
+	</Directory>
+</VirtualHost>
