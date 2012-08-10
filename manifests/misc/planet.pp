@@ -38,8 +38,14 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
 
 	file {
+		"/etc/apache2/sites-available/planet.wikimedia.org":
+			path => "/etc/apache2/sites-available/planet.wikimedia.org",
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/sites/planet.wikimedia.org";
 		"/var/www/planet/":
-			path => "/var/www/",
+			path => "/var/www/planet",
 			mode => 0755,
 			owner => planet,
 			group => www-data,
@@ -92,6 +98,8 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 	}
 
 	planetwwwdir { $planet_languages: }
+
+	apache_site { planet: name => "planet.wikimedia.org" }
 
 	cron {
 		"update-all-planets":
