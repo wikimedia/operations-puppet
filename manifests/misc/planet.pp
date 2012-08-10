@@ -43,7 +43,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			mode => 0444,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/planet.${planet_domain_name}";
+			content => template('apache/sites/planet.erb');
 		"/var/www/planet/":
 			path => "/var/www/planet",
 			mode => 0755,
@@ -62,6 +62,12 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			owner => planet,
 			group => planet,
 			ensure => directory;
+		"/usr/share/planet-venus/wikimedia":
+			path => "/usr/share/planet-venus/wikimedia",
+			mode => 0755,
+			owner => planet,
+			group => planet,
+			ensure => directory;
 		"/usr/local/bin/update-planets":
 			path => "/usr/local/bin/update-planets",
 			mode => 0550,
@@ -73,7 +79,13 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 	define planetconfig {
 
 		file {
-			"/usr/share/planet-venus/config/${title}":
+			"/usr/share/planet-venus/wikimedia/${title}":
+				path => "/usr/share/planet-venus/wikimedia/${title}",
+				mode => 0755,
+				owner => planet,
+				group => planet,
+				ensure => directory;
+			"/usr/share/planet-venus/wikimedia/${title}/config.ini":
 				path => "/usr/share/planet-venus/wikimedia/${title}/config.ini",
 				ensure => present,
 				owner => planet,
