@@ -23,7 +23,7 @@ class misc::maintenance::foundationwiki {
 
 class misc::maintenance::refreshlinks {
 
-	require mediawiki
+	require mediawiki_new
 
 	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
