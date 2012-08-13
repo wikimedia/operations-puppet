@@ -1544,7 +1544,7 @@ node "ms8.pmtpa.wmnet" {
 		misc::zfs::monitoring
 }
 
-node "ms10.pmtpa.wmnet" {
+node "ms10.wikimedia.org" {
 	include standard,
 		generic::sysctl::high-bandwidth-rsync
 }
