@@ -79,7 +79,7 @@ class newstandard {
 
 
 # TODO: rewrite this old mess.
-class applicationserver {
+class applicationserver_old {
 	class parent {
 		$cluster = "appserver"
 		$nagios_group = $cluster
@@ -1654,17 +1654,17 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 }
 
 node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
+	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
 }
 
 node /mw6[0-1]\.pmtpa\.wmnet/ {
-	include applicationserver::bits
+	include applicationserver_old::bits
 }
 
 node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
-	include applicationserver::api
+	include applicationserver_old::api
 }
 
 
@@ -2072,21 +2072,21 @@ node "spence.wikimedia.org" {
 }
 
 node "srv190.pmtpa.wmnet" {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
+	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
 }
 
 node /^srv19[12]\.pmtpa\.wmnet$/ {
 	$ganglia_aggregator = "true"
 
-	include applicationserver::bits,
+	include applicationserver_old::bits,
 		memcached
 }
 
 # srv193 is test.wikipedia.org
 node "srv193.pmtpa.wmnet" {
-	include applicationserver::home,
+	include applicationserver_old::home,
 		memcached
 }
 
@@ -2096,13 +2096,13 @@ node "srv194.pmtpa.wmnet" {
 
 # srv194-213 are application servers, memcached
 node /^srv(19[5-9]|20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
-	include applicationserver::homeless,
+	include applicationserver_old::homeless,
 		memcached
 }
 
 # srv214-218 are API application servers, memcached
 node /^srv21[4-8]\.pmtpa\.wmnet$/ {
-	include applicationserver::api,
+	include applicationserver_old::api,
 		memcached
 }
 
@@ -2121,19 +2121,19 @@ node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include applicationserver::homeless,
+	include applicationserver_old::homeless,
 		memcached
 }
 
 # srv231-247 are application servers, jobrunners, memcached
 node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
+	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
 }
 
 node /^srv24[89]\.pmtpa\.wmnet$/ {
-	include applicationserver::bits,
+	include applicationserver_old::bits,
 		memcached
 }
 
@@ -2143,7 +2143,7 @@ node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include applicationserver::api,
+	include applicationserver_old::api,
 		memcached
 }
 
@@ -2153,8 +2153,8 @@ node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
+	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
 }
 
@@ -2171,18 +2171,18 @@ node "srv281.pmtpa.wmnet" {
 }
 
 node /^srv28[2-9]\.pmtpa\.wmnet$/ {
-	include applicationserver::homeless,
-		applicationserver::jobrunner,
+	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
 }
 
 node "srv290.pmtpa.wmnet" {
-	include applicationserver::api,
+	include applicationserver_old::api,
 		memcached
 }
 
 node /^srv(29[1-9]|30[01])\.pmtpa\.wmnet$/ {
-	include applicationserver::api
+	include applicationserver_old::api
 }
 
 node /ssl[1-4]\.wikimedia\.org/ {
