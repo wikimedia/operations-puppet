@@ -862,7 +862,7 @@ class misc::scripts {
 	require misc::passwordScripts
 
 	# scap requires sync-common, which is in the wikimedia-task-appserver package
-	require mediawiki::packages
+	require mediawiki_new
 
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?

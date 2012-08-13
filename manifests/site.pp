@@ -801,7 +801,6 @@ node "fenari.wikimedia.org" {
 		admins::dctech,
 		admins::mortals,
 		admins::restricted,
-		accounts::l10nupdate,
 		misc::bastionhost,
 		misc::deployment-host,
 		misc::noc-wikimedia,
@@ -815,7 +814,7 @@ node "fenari.wikimedia.org" {
 		squid::cachemgr,
 		accounts::awjrichards,
 		accounts::erosen,
-		mediawiki::packages
+		mediawiki_new
 
 	install_certificate{ "star.wikimedia.org": }
 }
