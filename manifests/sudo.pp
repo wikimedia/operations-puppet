@@ -12,10 +12,9 @@ define sudo_user( $privileges ) {
 
 }
 
-define sudo_group( $privileges=[], $ensure="present" ) {
-	$group = $title
+define sudo_group( $privileges=[], $ensure="present", $group = $title ) {
 
-	file { "/etc/sudoers.d/$group":
+	file { "/etc/sudoers.d/$title":
 		owner => root,
 		group => root,
 		mode => 0440,

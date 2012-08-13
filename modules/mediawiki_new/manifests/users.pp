@@ -27,6 +27,6 @@ class mediawiki_new::users {
 	}
 
 	## sudo definitions
-	sudo_group {"wikidev": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'] }
+	sudo_group {"wikidev_deploy": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'], group => "wikidev" }
 	sudo_user { "l10nupdate": privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
