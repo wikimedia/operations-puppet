@@ -7,8 +7,6 @@ class role::planet {
 	include standard,
 		generic::locales::international
 
-	class {'webserver::php5': ssl => 'true'; }
-
 	case $::realm {
 		labs: {
 			$planet_domain_name = 'wmflabs.org'
@@ -21,6 +19,11 @@ class role::planet {
 		}
 	}
 
+	install_certificate{ "star.${planet_domain_name}": }
+	class {'webserver::php5': ssl => 'true'; }
+	
+	Install_certificate["star.${planet_domain_name}"] -> Class['webserver::php5']
+	
 	$planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
 
 	class {'misc::planet-venus':
