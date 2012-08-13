@@ -12,6 +12,5 @@ class mediawiki {
 		ensure => latest;
 	}
 
-	include mediawiki::users
-	include mediawiki::sync
+	include users, sync
 }
