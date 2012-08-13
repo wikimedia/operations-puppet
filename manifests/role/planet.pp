@@ -7,6 +7,7 @@ class role::planet {
 	include standard,
 		generic::locales::international
 
+	install_certificate{ "star.${planet_domain_name}": }
 	class {'webserver::php5': ssl => 'true'; }
 
 	case $::realm {
