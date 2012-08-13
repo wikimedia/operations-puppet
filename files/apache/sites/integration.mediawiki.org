@@ -32,7 +32,7 @@ NameVirtualHost *:443
 	</Directory>
 
 	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
-		Options +Indexes
+		Options +Indexes -FollowSymLinks +SymLinksIfOwnerMatch
 		IndexOptions FancyIndexing
 		IndexOptions SuppressIcon
 		IndexOptions SuppressRules
