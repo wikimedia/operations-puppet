@@ -1,6 +1,6 @@
 class misc::parsoid {
 	package { [ "nodejs", "npm" ]:
-		ensure => latest
+		ensure => "0.6.12~dfsg1-1ubuntu1"
 	}
 
 	file {
