@@ -411,7 +411,7 @@ node "boron.wikimedia.org" {
 	include newstandard
 }
 
-node "brewster.wikimedia.org" {
+node "brewster`.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
 
@@ -818,6 +818,17 @@ node "fenari.wikimedia.org" {
 		mediawiki::packages
 
 	install_certificate{ "star.wikimedia.org": }
+}
+
+node "fluorine.wikimedia.org" {
+	$cluster = "misc"
+
+	include standard,
+		admins::roots,
+		admins::mortals,
+		admins::restricted,
+		nrpe
+
 }
 
 node "formey.wikimedia.org" {
