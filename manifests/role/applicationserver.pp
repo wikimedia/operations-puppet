@@ -33,7 +33,8 @@ class role::applicationserver {
 		$nagios_group = "${::cluster}_${::site}"
 
 		include	standard,
-			mediawiki
+		## TODO: rename to just mediawiki after full transition to module
+			mediawiki_new
 
 		if $::realm == 'production' {
 			include	admins::roots,

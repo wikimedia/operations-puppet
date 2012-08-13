@@ -1,5 +1,6 @@
 # mediawiki-related users. used for deploy.
-class mediawiki::users {
+## TODO: rename to just mediawiki::users after full transition to module
+class mediawiki_new::users {
 	## mwdeploy user
 	systemuser { 'mwdeploy': name => 'mwdeploy' }
 

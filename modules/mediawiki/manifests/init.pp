@@ -1,5 +1,6 @@
 # mediawiki installation base class
-class mediawiki {
+## TODO: rename to just mediawiki after full transition to module
+class mediawiki_new {
 	case $::operatingsystem {
 		debian, ubuntu: {
 		}

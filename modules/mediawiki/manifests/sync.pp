@@ -1,5 +1,6 @@
 # mediawiki syncing class
-class mediawiki::sync {
+## TODO: rename to just mediawiki::sync after full transition to module
+class mediawiki_new::sync {
 
 	exec { 'mw-sync':
 		command => '/usr/bin/sync-common',
