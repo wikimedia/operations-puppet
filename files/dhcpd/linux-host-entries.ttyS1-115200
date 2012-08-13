@@ -49,7 +49,7 @@ host analytics1011 {
 }
 
 host analytics1012 {
-	hardware ethernet 04:7d:7b:a5:e1:8e;
+	hardware ethernet 04:7d:7b:a5:e6:94;
 	fixed-address analytics1012.eqiad.wmnet;
 }
 
