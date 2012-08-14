@@ -9,8 +9,9 @@
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc",
-			"php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", 
+			"php5-curl", "php5-mysql", "php5-xmlrpc", "php5", "php-wikidiff2", 
+			"php5-wmerrors", "php5-intl", "php-luasandbox" ]:
 		ensure => latest;
 	}
 
