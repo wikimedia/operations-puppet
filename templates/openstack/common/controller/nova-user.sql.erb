@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= nova_db_user %>'@'%' IDENTIFIED BY '<%=nova_db_pass %>';
+GRANT ALL PRIVILEGES ON <%= nova_db_name %>.* to '<%= nova_db_user %>'@'%';
