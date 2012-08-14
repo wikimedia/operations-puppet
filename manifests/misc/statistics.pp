@@ -35,16 +35,18 @@ class misc::statistics::base {
 			mode => 0775,
 			ensure => directory,
 			recurse => "false";
-		"/mnt/data":
-			ensure => directory;
 	}
+}
 
+# Mounts /data from dataset2 server.
+# xmldumps and other misc files needed
+# for generating statistics are here.
+class misc::statistics::dataset_mount {	
 	# need this for NFS mounts.
 	include nfs::common
 
-	# Mount /data from dataset2 server.
-	# xmldumps and other misc files needed
-	# for generating statistics are here.
+	file { "/mnt/data": ensure => directory }
+
 	mount { "/mnt/data":
 		device => "208.80.152.185:/data",
 		fstype => "nfs",

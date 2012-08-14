@@ -17,6 +17,7 @@ class role::statistics::cruncher inherits role::statistics {
 	# include classes needed for crunching data on stat1.
 	include geoip,
 		geoip::packages::python,
+		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
 		misc::statistics::db,
