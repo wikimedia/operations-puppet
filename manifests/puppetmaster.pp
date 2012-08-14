@@ -386,20 +386,19 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 class puppetmaster::self {
 
 	class config inherits base::puppet {
-		include openstack::nova_config,
-			openstack::keystone_config
+		include role::ldap::config::labs
+
+		$ldapconfig = $role::ldap::config::labs::ldapconfig
+		$basedn = $ldapconfig["basedn"]
 
 		$config = {
 			'dbadapter' => "sqlite3",
 			'node_terminus' => "ldap",
-			# UGH: $keystone_ldap_host's value depends on realm; we need
-			# production's value, but what we get is labs' which is "localhost" :/
-			# rather than hard-coding, use $keystone_puppet_host (which also sucks)
-			'ldapserver' => $openstack::nova_config::nova_puppet_host,
-			'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
+			'ldapserver' => $ldapconfig["servernames"][0],
+			'ldapbase' => "ou=hosts,${basedn}",
 			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-			'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
-			'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
+			'ldapuser' => $ldapconfig["proxyagent"],
+			'ldappassword' => $ldapconfig["proxypass"],
 			'ldaptls' => true
 		}
 

@@ -2,7 +2,7 @@
 #bind_host = 0.0.0.0
 public_port = 5000
 admin_port = 35357
-admin_token = <%= scope.lookupvar('openstack::keystone_config::keystone_admin_token') %>
+admin_token = <%= keystoneconfig["admin_token"] %>
 compute_port = 8774
 verbose = True
 debug = True
@@ -17,19 +17,19 @@ use_syslog = False
 # syslog_log_facility = LOG_LOCAL0
 
 [sql]
-connection = mysql://<%= scope.lookupvar('openstack::keystone_config::keystone_db_user') %>:<%= scope.lookupvar('openstack::keystone_config::keystone_db_pass') %>@<%= scope.lookupvar('openstack::keystone_config::keystone_db_host') %>/<%= scope.lookupvar('openstack::keystone_config::keystone_db_name') %>
+connection = mysql://<%= keystoneconfig["db_user"] %>:<%= keystoneconfig["db_pass"] %>@<%= keystoneconfig["db_host"] %>/<%= keystoneconfig["db_name"] %>
 idle_timeout = 200
 
 [ldap]
-url = ldap://<%= scope.lookupvar('openstack::keystone_config::keystone_ldap_host') %>
-tree_dn = <%= scope.lookupvar('openstack::keystone_config::keystone_ldap_base_dn') %>
-user_tree_dn = ou=people,<%= scope.lookupvar('openstack::keystone_config::keystone_ldap_base_dn') %>
-role_tree_dn = ou=roles,<%= scope.lookupvar('openstack::keystone_config::keystone_ldap_base_dn') %>
-tenant_tree_dn = ou=projects,<%= scope.lookupvar('openstack::keystone_config::keystone_ldap_base_dn') %>
-user_id_attribute = <%= scope.lookupvar('openstack::keystone_config::keystone_ldap_user_id_attribute') %>
-tenant_id_attribute = <%= scope.lookupvar('openstack::keystone_config::keystone_ldap_tenant_id_attribute') %>
-user = <%= scope.lookupvar('openstack::keystone_config::keystone_ldap_user_dn') %>
-password = <%= scope.lookupvar('openstack::keystone_config::keystone_ldap_user_pass') %>
+url = ldap://<%= keystoneconfig["ldap_host"] %>
+tree_dn = <%= keystoneconfig["ldap_base_dn"] %>
+user_tree_dn = ou=people,<%= keystoneconfig["ldap_base_dn"] %>
+role_tree_dn = ou=roles,<%= keystoneconfig["ldap_base_dn"] %>
+tenant_tree_dn = ou=projects,<%= keystoneconfig["ldap_base_dn"] %>
+user_id_attribute = <%= keystoneconfig["ldap_user_id_attribute"] %>
+tenant_id_attribute = <%= keystoneconfig["ldap_tenant_id_attribute"] %>
+user = <%= keystoneconfig["ldap_user_dn"] %>
+password = <%= keystoneconfig["ldap_user_pass"] %>
 #suffix = cn=example,cn=com
 
 [identity]
