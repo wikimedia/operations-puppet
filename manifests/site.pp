@@ -1707,25 +1707,20 @@ node "nescio.esams.wikimedia.org" {
 
 node /^nfs[12].pmtpa.wmnet/ {
 
-	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$cluster = "misc"
-	$ldapincludes = ['openldap']
-	$ldap_certificate = "$hostname.pmtpa.wmnet"
-	install_certificate{ "$hostname.pmtpa.wmnet": }
 
 	include standard,
 		misc::nfs-server::home,
 		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
 		misc::syslog-server,
-		ldap::server::wmf-cluster,
-		ldap::client::wmf-cluster,
+		ldap::server::production,
+		ldap::client::production,
 		backup::client
 
 	# don't need udp2log monitoring on nfs hosts
 	class { "role::logging::mediawiki": monitor => false }
-
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
 
 node "nickel.wikimedia.org" {
