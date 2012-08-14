@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= keystone_db_user %>'@'%' IDENTIFIED BY '<%= keystone_db_pass %>';
+GRANT ALL PRIVILEGES ON <%= keystone_db_name %>.* to '<%= keystone_db_user %>'@'%';
