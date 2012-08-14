@@ -82,7 +82,7 @@ class newstandard {
 class applicationserver_old {
 	class parent {
 		$cluster = "appserver"
-		$nagios_group = $cluster
+		$nagios_group = "${cluster}_${::site}"
 	}
 
 	class homeless inherits parent {
@@ -128,7 +128,7 @@ class applicationserver_old {
 
 	class api inherits parent {
 		$cluster = "api_appserver"
-		$nagios_group = $cluster
+		$nagios_group = "${cluster}_${::site}"
 
 		include standard,
 			admins::roots,
@@ -155,7 +155,7 @@ class applicationserver_old {
 
 	class bits inherits parent {
 		$cluster = "bits_appserver"
-		$nagios_group = $cluster
+		$nagios_group = "${cluster}_${::site}"
 
 		include standard,
 			admins::roots,
@@ -198,7 +198,7 @@ class applicationserver_old {
 
 class imagescaler {
 	$cluster = "imagescaler"
-	$nagios_group = $cluster
+	$nagios_group = "${cluster}_${::site}"
 
 	include standard,
 		imagescaler::cron,
