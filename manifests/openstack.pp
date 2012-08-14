@@ -1,5 +1,4 @@
 class openstack::iptables-purges {
-
 	require "iptables::tables"
 
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
@@ -23,11 +22,9 @@ class openstack::iptables-purges {
 	iptables_purge_service{ "nova_os_api_private": service => "nova_openstack_api" }
 	iptables_purge_service{ "deny_all_nova_ec2_api": service => "nova_ec2_api" }
 	iptables_purge_service{ "deny_all_nova_openstack_api": service => "nova_openstack_api" }
-
 }
 
 class openstack::iptables-accepts {
-
 	require "openstack::iptables-purges"
 
 	# Rememeber to place modified or removed rules into purges!
@@ -69,11 +66,9 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
 	iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 	iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
-
 }
 
 class openstack::iptables-drops {
-
 	require "openstack::iptables-accepts"
 
 	# Deny by default
@@ -90,11 +85,9 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_beam1": service => "beam1", jump => "DROP" }
 	iptables_add_service{ "deny_all_beam2": service => "beam2", jump => "DROP" }
 	iptables_add_service{ "deny_all_epmd": service => "epmd", jump => "DROP" }
-
 }
 
 class openstack::iptables  {
-
 	if $realm == "production" {
 		# We use the following requirement chain:
 		# iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
@@ -107,50 +100,28 @@ class openstack::iptables  {
 	}
 
 	# Labs has security groups, and as such, doesn't need firewall rules
-
 }
 
-class openstack::common {
-
-	include openstack::nova_config
-
+class openstack::common($openstack_version="diablo", $novaconfig) {
 	if $openstack_version == "diablo" {
-#		apt::pparepo { "nova-core-release":
-#			ensure      => "present",
-#			repo_string => "openstack-release/2011.3",
-#			apt_key     => "3D1B4472",
-#			dist        => "lucid",
-#		}
 		generic::apt::pin-package { "python-eventlet":
 			pin => "release o=LP-PPA-openstack-release-2011.3",
 		}
 	}
 
-	if $realm == "production" {
-		# Setup eth1 as tagged and created a tagged interface for VLAN 103
-		interface_tagged { "eth1.103":
-			base_interface => "eth1",
-			vlan_id => "103",
-			method => "manual",
-			up => 'ip link set $IFACE up',
-			down => 'ip link set $IFACE down',
-		}
-	} elsif $realm == "labs" {
-		# Setup eth1 as tagged and created a tagged interface for VLAN 103
-		interface_tagged { "eth0.103":
-			base_interface => "eth0",
-			vlan_id => "103",
-			method => "manual",
-			up => 'ip link set $IFACE up',
-			down => 'ip link set $IFACE down',
-		}
+	interface_tagged { $novaconfig["network_flat_interface"]:
+		base_interface => $novaconfig["network_flat_interface_name"],
+		vlan_id => $novaconfig["network_flat_interface_vlan"],
+		method => "manual",
+		up => 'ip link set $IFACE up',
+		down => 'ip link set $IFACE down',
 	}
 
 	package { [ "nova-common" ]:
 		ensure => latest;
 	}
 
-	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "libmysqlclient16", "mysql-client", "mysql-common" ]:
+	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-client", "mysql-common" ]:
 		ensure => latest;
 	}
 
@@ -161,7 +132,7 @@ class openstack::common {
 
 	file {
 		"/etc/nova/nova.conf":
-			content => template("openstack/${$openstack_version}/nova.conf.erb"),
+			content => template("openstack/${$openstack_version}/nova/nova.conf.erb"),
 			owner => nova,
 			group => nogroup,
 			mode => 0440,
@@ -169,46 +140,350 @@ class openstack::common {
 	}
 
 	if $openstack_version == "essex" {
-		include openstack::keystone_config
-
 		file {
 			"/etc/nova/api-paste.ini":
-				content => template("openstack/essex/nova-api-paste.ini.erb"),
+				content => template("openstack/essex/nova/nova-api-paste.ini.erb"),
 				owner => nova,
 				group => nogroup,
 				mode => 0440,
 				require => Package['nova-common'];
 		}
 	}
-
 }
 
-class openstack::controller {
+class openstack::queue-server($openstack_version, $novaconfig) {
+	package { [ "rabbitmq-server" ]:
+		ensure => latest;
+	}
+}
 
-	include openstack::common,
-		openstack::scheduler-service,
-		openstack::glance-service,
-		openstack::openstack-manager,
-		openstack::database-server,
-		openstack::puppet-server,
-		openstack::ldap-server,
-		openstack::iptables
+class openstack::project-storage-cron {
+	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
+	$ircecho_nick = "labs-storage-wm"
+	$ircecho_chans = "#wikimedia-labs"
+	$ircecho_server = "irc.freenode.net"
 
-	if $openstack_version == "essex" {
-		include openstack::keystone-service
+	package { "ircecho":
+		ensure => latest;
+	}
+	
+	service { "ircecho":
+		require => Package[ircecho],
+		ensure => running;
+	}
+	
+	file {
+		"/etc/default/ircecho":
+			require => Package[ircecho],
+			content => template('ircecho/default.erb'),
+			owner => root,
+			mode => 0755;
 	}
 
-	package { [ "rabbitmq-server", "euca2ools" ]:
+	cron { "manage-volumes":
+		command => '/usr/bin/python /usr/local/sbin/manage-volumes --logfile=/var/lib/glustermanager/manage-volumes.log',
+		user => 'glustermanager',
+		require => Systemuser["glustermanager"];
+	}
+}
+
+class openstack::project-storage {
+	include openstack::gluster-service
+
+	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
+			'ALL = NOPASSWD: /usr/sbin/gluster *' ]
+	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
+
+	package { "python-paramiko":
 		ensure => latest;
 	}
 
+	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
+	ssh_authorized_key {
+		"glustermanager":
+			ensure	=> present,
+			user	=> "glustermanager",
+			type	=> "ssh-rsa",
+			key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
+			require => Systemuser["glustermanager"];
+	}
+	file {
+		"/var/lib/glustermanager/.ssh/id_rsa":
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0600,
+			source => "puppet:///private/gluster/glustermanager",
+			require => Ssh_authorized_key["glustermanager"];
+		"/var/run/glustermanager":
+			ensure => directory,
+			owner => glustermanager,
+			group => glustermanager,
+			mode => 0700,
+			require => Systemuser["glustermanager"];
+	}
 }
 
-class openstack::compute {
+class openstack::gluster-service {
+	include generic::gluster
 
-	include openstack::common
-	include openstack::compute-service
+	service { "glusterd":
+		enable => true,
+		ensure => running,
+		require => [Package["glusterfs"], File["/etc/init.d/glusterd"], Upstart_job["glusterd"]];
+	}
 
+	# TODO: We need to replace the init script with an upstart job that'll ensure
+	# the filesystem gets mounted after gluster is started.
+	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
+}
+
+class openstack::database-server($openstack_version="diablo", $novaconfig, $keystoneconfig, $glanceconfig) {
+	$nova_db_name = $novaconfig["db_name"]
+	$nova_db_user = $novaconfig["db_user"]
+	$nova_db_pass = $novaconfig["db_pass"]
+	$controller_mysql_root_pass = $novaconfig["controller_mysql_root_pass"]
+	$puppet_db_name = $novaconfig["puppet_db_name"]
+	$puppet_db_user = $novaconfig["puppet_db_user"]
+	$puppet_db_pass = $novaconfig["puppet_db_pass"]
+	$glance_db_name = $glanceconfig["db_name"]
+	$glance_db_user = $glanceconfig["db_user"]
+	$glance_db_pass = $glanceconfig["db_pass"]
+	$keystone_db_name = $keystoneconfig["db_name"]
+	$keystone_db_user = $keystoneconfig["db_user"]
+	$keystone_db_pass = $keystoneconfig["db_pass"]
+
+	package { "mysql-server":
+		ensure => latest;
+	}
+
+	service { "mysql":
+		enable => true,
+		require => Package["mysql-server"],
+		ensure => running;
+	}
+
+	# TODO: This expects the services to be installed in the same location
+	exec {
+		'set_root':
+			onlyif => "/usr/bin/mysql -uroot --password=''",
+			command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
+			require => [Package["mysql-client"],File["/etc/nova/mysql.sql"]],
+			before => Exec['create_nova_db'];
+		'create_nova_db_user':
+			unless => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
+			command => "/usr/bin/mysql -uroot < /etc/nova/nova-user.sql",
+			require => [Package["mysql-client"],File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"]];
+		'create_nova_db':
+			unless => "/usr/bin/mysql -uroot $nova_db_name -e 'exit'",
+			command => "/usr/bin/mysql -uroot -e \"create database $nova_db_name;\"",
+			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			before => Exec['create_nova_db_user'];
+		'create_puppet_db_user':
+			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
+			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
+			require => [Package["mysql-client"],File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"]];
+		'create_puppet_db':
+			unless => "/usr/bin/mysql -uroot $puppet_db_name -e 'exit'",
+			command => "/usr/bin/mysql -uroot -e \"create database $puppet_db_name;\"",
+			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			before => Exec['create_puppet_db_user'];
+		'create_glance_db_user':
+			unless => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
+			command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
+			require => [Package['mysql-client'], File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"]];
+		'create_glance_db':
+			unless => "/usr/bin/mysql -uroot $glance_db_name -e 'exit'",
+			command => "/usr/bin/mysql -uroot -e \"create database $glance_db_name;\"",
+			require => [Package['mysql-client'], File["/root/.my.cnf"]],
+			before => Exec['create_glance_db_user'];
+	}
+
+	if $openstack_version == "essex" {
+		exec {
+			'create_keystone_db_user':
+				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
+				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
+			'create_keystone_db':
+				unless => "/usr/bin/mysql -uroot $keystone_db_name -e 'exit'",
+				command => "/usr/bin/mysql -uroot -e \"create database $keystone_db_name;\"",
+				require => [Package["mysql-client"], File["/root/.my.cnf"]],
+				before => Exec['create_keystone_db_user'];
+		}
+	}
+
+	file {
+		"/root/.my.cnf":
+			content => template("openstack/common/controller/my.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640;
+		"/etc/nova/mysql.sql":
+			content => template("openstack/common/controller/mysql.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["nova-common"];
+		"/etc/nova/nova-user.sql":
+			content => template("openstack/common/controller/nova-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["nova-common"];
+		"/etc/nova/nova-user.cnf":
+			content => template("openstack/common/controller/nova-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["nova-common"];
+		"/etc/puppet/puppet-user.sql":
+			content => template("openstack/common/controller/puppet-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["puppetmaster"];
+		"/etc/puppet/puppet-user.cnf":
+			content => template("openstack/common/controller/puppet-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["puppetmaster"];
+		"/etc/glance/glance-user.sql":
+			content => template("openstack/common/controller/glance-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["glance"];
+		"/etc/glance/glance-user.cnf":
+			content => template("openstack/common/controller/glance-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["glance"];
+	}
+	if $openstack_version == "essex" {
+		file {
+			"/etc/keystone/keystone-user.sql":
+				content => template("openstack/common/controller/keystone-user.sql.erb"),
+				owner => root,
+				group => root,
+				mode => 0640,
+				require => Package["keystone"];
+			"/etc/keystone/keystone-user.cnf":
+				content => template("openstack/common/controller/keystone-user.cnf.erb"),
+				owner => root,
+				group => root,
+				mode => 0640,
+				require => Package["keystone"];
+		}
+	}
+}
+
+class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
+	require mediawiki::user
+
+	include memcached,
+		webserver::apache2
+
+	$controller_hostname = $novaconfig["controller_hostname"]
+
+	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'imagemagick' ]:
+		ensure => latest;
+	}
+
+	file {
+		"/etc/apache2/sites-available/${controller_hostname}":
+			require => [ Package[php5] ],
+			mode => 0644,
+			owner => root,
+			group => root,
+			content => template('apache/sites/labsconsole.wikimedia.org'),
+			ensure => present;
+	}
+
+	cron { "run-jobs":
+		user => mwdeploy,
+		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
+		ensure => present;
+	}
+
+
+	apache_site { controller: name => "${controller_hostname}" }
+	apache_site { 000_default: name => "000-default", ensure => absent }
+	apache_module { rewrite: name => "rewrite" }
+}
+
+class openstack::scheduler-service($openstack_version="diablo", $novaconfig) {
+	package { "nova-scheduler":
+		ensure => latest;
+	}
+
+	service { "nova-scheduler":
+		ensure => running,
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-scheduler"];
+	}
+}
+
+class openstack::network-service($openstack_version="diablo", $novaconfig) {
+	package {  [ "nova-network", "dnsmasq" ]:
+		ensure => latest;
+	}
+
+	service { "nova-network":
+		ensure => running,
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-network"];
+	}
+
+	# dnsmasq is run manually by nova-network, we don't want the service running
+	service { "dnsmasq":
+		enable => false,
+		ensure => stopped,
+		require => Package["dnsmasq"];
+	}
+
+	if $openstack_version == "diablo" {
+		file { "/usr/share/pyshared/nova/network/linux_net.py":
+			source => "puppet:///files/openstack/diablo/nova/linux_net.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			notify => Service["nova-network"],
+			require => Package["nova-network"];
+		}
+	}
+
+	# Enable IP forwarding
+	include generic::sysctl::advanced-routing,
+		generic::sysctl::ipv6-disable-ra
+}
+
+class openstack::api-service($openstack_version="diablo", $novaconfig) {
+	package {  [ "nova-api" ]:
+		ensure => latest;
+	}
+
+	service { "nova-api":
+		ensure => running,
+		subscribe => File['/etc/nova/nova.conf'],
+		require => Package["nova-api"];
+	}
+}
+
+class openstack::volume-service($openstack_version="diablo", $novaconfig) {
+	package { [ "nova-volume" ]:
+		ensure => absent;
+	}
+
+	#service { "nova-volume":
+	#	ensure => stopped,
+	#	subscribe => File['/etc/nova/nova.conf'],
+	#	require => Package["nova-volume"];
+	#}
+}
+
+class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 	# tls is a PITA to enable in labs, let's find another way there.
 	if ( $realm == "production" ) {
 		install_certificate{ "${fqdn}": }
@@ -257,504 +532,6 @@ class openstack::compute {
 		require => Package["nova-common"];
 	}
 
-	if $realm == "labs" {
-		include openstack::network-service,
-			openstack::api-service
-	}
-
-	file {
-		"/etc/libvirt/qemu/networks/autostart/default.xml":
-			ensure => absent;
-	}
-
-}
-
-class openstack::project-storage-cron {
-
-	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
-	$ircecho_nick = "labs-storage-wm"
-	$ircecho_chans = "#wikimedia-labs"
-	$ircecho_server = "irc.freenode.net"
-
-	package { "ircecho":
-		ensure => latest;
-	}
-	
-	service { "ircecho":
-		require => Package[ircecho],
-		ensure => running;
-	}
-	
-	file {
-		"/etc/default/ircecho":
-			require => Package[ircecho],
-			content => template('ircecho/default.erb'),
-			owner => root,
-			mode => 0755;
-	}
-
-	cron { "manage-volumes":
-		command => '/usr/bin/python /usr/local/sbin/manage-volumes --logfile=/var/lib/glustermanager/manage-volumes.log',
-		user => 'glustermanager',
-		require => Systemuser["glustermanager"];
-	}
-
-}
-
-class openstack::project-storage {
-
-	include openstack::gluster-service
-
-	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /a/*',
-			'ALL = NOPASSWD: /usr/sbin/gluster *' ]
-	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
-
-	package { "python-paramiko":
-		ensure => latest;
-	}
-
-	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
-	ssh_authorized_key {
-		"glustermanager":
-			ensure	=> present,
-			user	=> "glustermanager",
-			type	=> "ssh-rsa",
-			key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAuE328+IMmMOoqFhti58rBBxkJy2u+sgxcKuJ4B5248f73YqfZ3RkEWvBGb3ce3VCptrrXJAMCw55HsMyhT8A7chBGLdjhPjol+3Vh2+mc6EkjW0xscX39gh1Fn1jVqrx+GMIuwid7zxGytaKyQ0vko4FP64wDbm1rfVc1jsLMQ+gdAG/KNGYtwjLMEQk8spydckAtkWg3YumMl7e4NQYpYlkTXgVIQiZGpslu5LxKBmXPPF4t2h17p+rNr9ZAVII4av8vRiyQa2/MaH4QZoGYGbkQXifbhBD438NlgZrvLANYuT78zPj4n1G061s7n9nmvVMH3W7QyXS8MpftLnegw==",
-			require => Systemuser["glustermanager"];
-	}
-	file {
-		"/var/lib/glustermanager/.ssh/id_rsa":
-			owner => glustermanager,
-			group => glustermanager,
-			mode => 0600,
-			source => "puppet:///private/gluster/glustermanager",
-			require => Ssh_authorized_key["glustermanager"];
-		"/var/run/glustermanager":
-			ensure => directory,
-			owner => glustermanager,
-			group => glustermanager,
-			mode => 0700,
-			require => Systemuser["glustermanager"];
-	}
-}
-
-class openstack::puppet-server {
-
-	include openstack::nova_config
-
-	# Only allow puppet access from the instances
-	$puppet_passenger_allow_from = $realm ? {
-		"production" => [ "10.4.0.0/24", "10.4.16.3" ],
-		"labs" => [ "192.168.0.0/24" ],
-	}
-
-	if $openstack_version == "essex" {
-		include openstack::keystone_config
-		class { puppetmaster:
-			server_name => $fqdn,
-			allow_from => $puppet_passenger_allow_from,
-			config => {
-				'ca' => "false",
-				'ca_server' => "${fqdn}",
-				'dbadapter' => "mysql",
-				'dbuser' => $openstack::nova_config::nova_puppet_user,
-				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
-				'dbserver' => $openstack::nova_config::nova_db_host,
-				'node_terminus' => "ldap",
-				'ldapserver' => $openstack::keystone_config::keystone_ldap_host,
-				'ldapbase' => "ou=hosts,${openstack::keystone_config::keystone_ldap_base_dn}",
-				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::keystone_config::keystone_ldap_base_dn}",
-				'ldappassword' => $openstack::keystone_config::keystone_ldap_proxyagent_pass,
-				'ldaptls' => true
-			};
-		}
-	} else {
-		class { puppetmaster:
-			server_name => $fqdn,
-			allow_from => $puppet_passenger_allow_from,
-			config => {
-				'dbadapter' => "mysql",
-				'dbuser' => $openstack::nova_config::nova_puppet_user,
-				'dbpassword' => $openstack::nova_config::nova_puppet_user_pass,
-				'dbserver' => $openstack::nova_config::nova_db_host,
-				'node_terminus' => "ldap",
-				'ldapserver' => $openstack::nova_config::nova_ldap_host,
-				'ldapbase' => "ou=hosts,${openstack::nova_config::nova_ldap_base_dn}",
-				'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-				'ldapuser' => "cn=proxyagent,ou=profile,${openstack::nova_config::nova_ldap_base_dn}",
-				'ldappassword' => $openstack::nova_config::nova_ldap_proxyagent_pass,
-				'ldaptls' => true
-			};
-		}
-	}
-
-}
-
-class openstack::database-server {
-
-	include openstack::nova_config,
-		openstack::glance_config
-
-	package { "mysql-server":
-		ensure => latest;
-	}
-
-	service { "mysql":
-		enable => true,
-		require => Package["mysql-server"],
-		ensure => running;
-	}
-
-	# TODO: This expects the services to be installed in the same location
-	exec {
-		'set_root':
-			onlyif => "/usr/bin/mysql -uroot --password=''",
-			command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
-			require => [Package["mysql-client"],File["/etc/nova/mysql.sql"]],
-			before => Exec['create_nova_db'];
-		'create_nova_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/nova/nova-user.sql",
-			require => [Package["mysql-client"],File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"]],
-			before => Exec['sync_nova_db'];
-		'create_nova_db':
-			unless => "/usr/bin/mysql -uroot ${openstack::nova_config::nova_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::nova_db_name};\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_nova_db_user'];
-		'create_puppet_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
-			require => [Package["mysql-client"],File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"]];
-		'create_puppet_db':
-			unless => "/usr/bin/mysql -uroot ${openstack::nova_config::puppet_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::nova_config::puppet_db_name};\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_puppet_db_user'];
-		'create_glance_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
-			require => [Package['mysql-client'], File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"]];
-		'create_glance_db':
-			unless => "/usr/bin/mysql -uroot ${openstack::glance_config::glance_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${openstack::glance_config::glance_db_name};\"",
-			require => [Package['mysql-client'], File["/root/.my.cnf"]],
-			before => Exec['create_glance_db_user'];
-	}
-
-	if $openstack_version == "essex" {
-		include openstack::keystone_config
-		exec {
-			'create_keystone_db_user':
-				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
-				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
-				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]],
-				before => Exec['sync_keystone_db'];
-			'create_keystone_db':
-				unless => "/usr/bin/mysql -uroot ${openstack::keystone_config::keystone_db_name} -e 'exit'",
-				command => "/usr/bin/mysql -uroot -e \"create database ${openstack::keystone_config::keystone_db_name};\"",
-				require => [Package["mysql-client"], File["/root/.my.cnf"]],
-				before => Exec['create_keystone_db_user'];
-		}
-	}
-
-	if ( ! $controller_first_master ) {
-		$controller_first_master = "false"
-	}
-
-	if ( $controller_first_master == "true" ) {
-		exec {
-			'sync_nova_db':
-				unless => "/usr/bin/nova-manage db version | grep \"${openstack::nova_config::nova_db_version}\"",
-				command => "/usr/bin/nova-manage db sync",
-				require => Package["nova-common"];
-		}
-		# TODO, use a version compare here
-		if $openstack_version == "essex" {
-			exec {
-				'sync_keystone_db':
-					unless => "/usr/bin/keystone-manage db version | grep \"${openstack::keystone_config::keystone_db_version}\"",
-					command => "/usr/bin/keystone-manage db sync",
-					require => Package["keystone"];
-			}
-		}
-	} else {
-		exec {
-			# Don't sync if we aren't the first install
-			'sync_nova_db':
-				command => "/usr/bin/test true",
-				require => Package["nova-common"];
-		}
-		# TODO, use a version compare here
-		if $openstack_version == "essex" {
-			exec {
-				'sync_keystone_db':
-					command => "/usr/bin/test true",
-					require => Package["keystone"];
-			}
-		}
-	}
-
-
-	file {
-		"/root/.my.cnf":
-			content => template("openstack/my.cnf.erb"),
-			owner => root,
-			group => root,
-			mode => 0640;
-		"/etc/nova/mysql.sql":
-			content => template("openstack/mysql.sql.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["nova-common"];
-		"/etc/nova/nova-user.sql":
-			content => template("openstack/nova-user.sql.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["nova-common"];
-		"/etc/nova/nova-user.cnf":
-			content => template("openstack/nova-user.cnf.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["nova-common"];
-		"/etc/puppet/puppet-user.sql":
-			content => template("openstack/puppet-user.sql.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["puppetmaster"];
-		"/etc/puppet/puppet-user.cnf":
-			content => template("openstack/puppet-user.cnf.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["puppetmaster"];
-		"/etc/glance/glance-user.sql":
-			content => template("openstack/glance-user.sql.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["glance"];
-		"/etc/glance/glance-user.cnf":
-			content => template("openstack/glance-user.cnf.erb"),
-			owner => root,
-			group => root,
-			mode => 0640,
-			require => Package["glance"];
-	}
-	if $openstack_version == "essex" {
-		file {
-			"/etc/keystone/keystone-user.sql":
-				content => template("openstack/keystone-user.sql.erb"),
-				owner => root,
-				group => root,
-				mode => 0640,
-				require => Package["keystone"];
-			"/etc/keystone/keystone-user.cnf":
-				content => template("openstack/keystone-user.cnf.erb"),
-				owner => root,
-				group => root,
-				mode => 0640,
-				require => Package["keystone"];
-		}
-	}
-
-}
-
-class openstack::ldap-server {
-
-	include passwords::certs,
-		openstack::nova_config
-
-	$ldap_certificate_location = "/var/opendj/instance"
-	$ldap_cert_pass = $passwords::certs::certs_default_pass
-	if $openstack_version == "essex" {
-		include openstack::keystone_config
-		$ldap_user_dn = $openstack::keystone_config::keystone_ldap_user_dn
-		$ldap_user_pass = $openstack::keystone_config::keystone_ldap_user_pass
-		$ldap_base_dn = $openstack::keystone_config::keystone_ldap_base_dn
-		$ldap_domain = $openstack::keystone_config::keystone_ldap_domain
-		$ldap_proxyagent = $openstack::keystone_config::keystone_ldap_proxyagent
-		$ldap_proxyagent_pass = $openstack::keystone_config::keystone_ldap_proxyagent_pass
-	} else {
-		$ldap_user_dn = $openstack::nova_config::nova_ldap_user_dn
-		$ldap_user_pass = $openstack::nova_config::nova_ldap_user_pass
-		$ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
-		$ldap_domain = $openstack::nova_config::nova_ldap_domain
-		$ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
-		$ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
-	}
-
-	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
-	# Add it into the instance location, and ensure opendj can read it.
-	create_pkcs12{ "${ldap_certificate}.opendj": certname => "${ldap_certificate}", user => "opendj", group => "opendj", location => $ldap_certificate_location, password => $ldap_cert_pass, require => Package["opendj"] }
-
-	include openstack::nova_config,
-		openstack::glance_config,
-		ldap::server::schema::sudo,
-		ldap::server::schema::ssh,
-		ldap::server::schema::openstack,
-		ldap::server::schema::puppet,
-		ldap::client::wmf-test-cluster
-
-	class { "ldap::server":
-		ldap_certificate_location => $ldap_certificate_location,
-		ldap_cert_pass => $ldap_cert_pass,
-		ldap_base_dn => $ldap_base_dn;
-	}
-
-	if $realm == "labs" {
-		# server is on localhost
-		file { "/var/opendj/.ldaprc":
-			content => 'TLS_CHECKPEER   no
-TLS_REQCERT     never
-',
-			mode => 0400,
-			owner => root,
-			group => root,
-			require => Package["opendj"],
-			before => Exec["start_opendj"];
-		}
-	}
-
-	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!virt0.wikimedia.org!636!Equifax_Secure_CA.pem", critical => "true" }
-
-}
-
-class openstack::openstack-manager {
-
-	require mediawiki::user
-
-	include memcached,
-		webserver::apache2,
-		openstack::nova_config
-
-	$nova_controller_hostname = $openstack::nova_config::nova_controller_hostname
-
-	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'imagemagick' ]:
-		ensure => latest;
-	}
-
-	file {
-		"/etc/apache2/sites-available/${nova_controller_hostname}":
-			require => [ Package[php5] ],
-			mode => 0644,
-			owner => root,
-			group => root,
-			content => template('apache/sites/labsconsole.wikimedia.org'),
-			ensure => present;
-	}
-
-	cron { "run-jobs":
-		user => mwdeploy,
-		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
-		ensure => present;
-	}
-
-
-	apache_site { controller: name => "${nova_controller_hostname}" }
-	apache_site { 000_default: name => "000-default", ensure => absent }
-	apache_module { rewrite: name => "rewrite" }
-
-}
-
-class openstack::scheduler-service {
-
-	package { "nova-scheduler":
-		ensure => latest;
-	}
-
-	service { "nova-scheduler":
-		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-scheduler"];
-	}
-
-}
-
-class openstack::network-service {
-
-	package {  [ "nova-network", "dnsmasq" ]:
-		ensure => latest;
-	}
-
-	service { "nova-network":
-		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-network"];
-	}
-
-	# dnsmasq is run manually by nova-network, we don't want the service running
-	service { "dnsmasq":
-		enable => false,
-		ensure => stopped,
-		require => Package["dnsmasq"];
-	}
-
-	if $openstack_version == "diablo" {
-		file { "/usr/share/pyshared/nova/network/linux_net.py":
-			source => "puppet:///files/openstack/linux_net.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			notify => Service["nova-network"],
-			require => Package["nova-network"];
-		}
-	}
-
-	# Enable IP forwarding
-	include generic::sysctl::advanced-routing,
-		generic::sysctl::ipv6-disable-ra
-}
-
-class openstack::api-service {
-
-	package {  [ "nova-api" ]:
-		ensure => latest;
-	}
-
-	service { "nova-api":
-		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-api"];
-	}
-
-}
-
-class openstack::vnc-proxy-service {
-
-	package {  [ "nova-vncproxy" ]:
-		ensure => latest;
-	}
-
-	service { "nova-vncproxy":
-		ensure => running,
-		subscribe => File['/etc/nova/nova.conf'],
-		require => Package["nova-vncproxy"];
-	}
-
-}
-
-class openstack::volume-service {
-
-	package { [ "nova-volume" ]:
-		ensure => absent;
-	}
-
-	#service { "nova-volume":
-	#	ensure => stopped,
-	#	subscribe => File['/etc/nova/nova.conf'],
-	#	require => Package["nova-volume"];
-	#}
-
-}
-
-class openstack::compute-service {
-
 	package { [ "nova-compute" ]:
 		ensure => latest;
 	}
@@ -773,7 +550,7 @@ class openstack::compute-service {
 
 	if $openstack_version == "diablo" {
 		file { "/usr/share/pyshared/nova/compute/api.py":
-			source => "puppet:///files/openstack/compute-api.py",
+			source => "puppet:///files/openstack/diablo/nova/compute-api.py",
 			mode => 0644,
 			owner => root,
 			group => root,
@@ -781,7 +558,7 @@ class openstack::compute-service {
 			require => Package["nova-compute"];
 		}
 		file { "/usr/share/pyshared/nova/db/sqlalchemy/api.py":
-			source => "puppet:///files/openstack/sqlalchemy-api.py",
+			source => "puppet:///files/openstack/diablo/nova/sqlalchemy-api.py",
 			mode => 0644,
 			owner => root,
 			group => root,
@@ -790,10 +567,13 @@ class openstack::compute-service {
 		}
 	}
 
+	file {
+		"/etc/libvirt/qemu/networks/autostart/default.xml":
+			ensure => absent;
+	}
 }
 
-class openstack::keystone-service {
-
+class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 	package { [ "keystone" ]:
 		ensure => latest;
 	}
@@ -806,20 +586,16 @@ class openstack::keystone-service {
 
 	file {
 		"/etc/keystone/keystone.conf":
-			content => template("openstack/essex/keystone.conf.erb"),
+			content => template("openstack/${openstack_version}/keystone/keystone.conf.erb"),
 			owner => keystone,
-			group => nogroup,
+			group => keystone,
 			notify => Service["keystone"],
 			require => Package["keystone"],
 			mode => 0440;
 	}
-
 }
 
-class openstack::glance-service {
-
-	include openstack::glance_config
-
+class openstack::glance-service($openstack_version="diablo", $glanceconfig) {
 	package { [ "glance" ]:
 		ensure => latest;
 	}
@@ -836,202 +612,36 @@ class openstack::glance-service {
 
 	file {
 		"/etc/glance/glance-api.conf":
-			content => template("openstack/${$openstack_version}/glance-api.conf.erb"),
+			content => template("openstack/${$openstack_version}/glance/glance-api.conf.erb"),
 			owner => glance,
 			group => nogroup,
 			notify => Service["glance-api"],
 			require => Package["glance"],
 			mode => 0440;
 		"/etc/glance/glance-registry.conf":
-			content => template("openstack/${$openstack_version}/glance-registry.conf.erb"),
+			content => template("openstack/${$openstack_version}/glance/glance-registry.conf.erb"),
 			owner => glance,
 			group => nogroup,
 			notify => Service["glance-registry"],
 			require => Package["glance"],
 			mode => 0440;
 	}
-
-}
-
-class openstack::gluster-service {
-
-	include generic::gluster
-
-	service { "glusterd":
-		enable => true,
-		ensure => running,
-		require => [Package["glusterfs"], File["/etc/init.d/glusterd"], Upstart_job["glusterd"]];
+	if ($openstack_version == "essex") {
+		file {
+			"/etc/glance/glance-api-paste.ini":
+				content => template("openstack/${$openstack_version}/glance/glance-api-paste.ini.erb"),
+				owner => glance,
+				group => glance,
+				notify => Service["glance-api"],
+				require => Package["glance"],
+				mode => 0440;
+			"/etc/glance/glance-registry-paste.ini":
+				content => template("openstack/${$openstack_version}/glance/glance-registry-paste.ini.erb"),
+				owner => glance,
+				group => glance,
+				notify => Service["glance-registry"],
+				require => Package["glance"],
+				mode => 0440;
+		}
 	}
-
-	# TODO: We need to replace the init script with an upstart job that'll ensure
-	# the filesystem gets mounted after gluster is started.
-	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
-
-}
-
-class openstack::gluster-client {
-
-	include generic::gluster
-
-	if $realm == "production" {
-		$device = "instancestorage.pmtpa.wmnet:/instances1"
-	} else {
-		$device = "localhost:/instances1"
-	}
-	## mount the gluster volume for the instances
-	mount { "/var/lib/nova/instances":
-		device => $device,
-		fstype => "glusterfs",
-		name => "/var/lib/nova/instances",
-		options => "defaults,_netdev=eth0,log-level=WARNING,log-file=/var/log/gluster.log",
-		require => Package["glusterfs"],
-		ensure => mounted;
-	}
-
-}
-
-class openstack::nova_config {
-
-	include passwords::openstack::nova
-
-	$nova_db_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$nova_db_name = "nova"
-	$nova_db_user = "nova"
-	$nova_db_pass = $passwords::openstack::nova::nova_db_pass
-	$nova_glance_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$nova_rabbit_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$nova_cc_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$nova_network_host = $realm ? {
-		"production" => "10.4.0.1",
-		"labs" => "127.0.0.1",
-	}
-	$nova_api_host = $realm ? {
-		"production" => "virt2.pmtpa.wmnet",
-		"labs" => "localhost",
-	}
-	$nova_api_ip = $realm ? {
-		"production" => "10.4.0.1",
-		"labs" => "127.0.0.1",
-	}
-	$nova_network_flat_interface = $realm ? {
-		"production" => "eth1.103",
-		"labs" => "eth0.103",
-	}
-	$nova_flat_network_bridge = "br103"
-	$nova_fixed_range = $realm ? {
-		"production" => "10.4.0.0/24",
-		"labs" => "192.168.0.0/24",
-	}
-	$nova_dhcp_start = $realm ? {
-		"production" => "10.4.0.4",
-		"labs" => "192.168.0.4",
-	}
-	$nova_dhcp_domain = "pmtpa.wmflabs"
-	$nova_network_public_interface = "eth0"
-	$nova_my_ip = $ipaddress_eth0
-	$nova_network_public_ip = $realm ? {
-		"production" => "208.80.153.192",
-		"labs" => "127.0.0.1",
-	}
-	$nova_dmz_cidr = $realm ? {
-		"production" => "208.80.153.0/22,10.0.0.0/8",
-		"labs" => "10.4.0.0/24",
-	}
-	$nova_controller_hostname = $realm ? {
-		"production" => "labsconsole.wikimedia.org",
-		"labs" => $fqdn,
-	}
-	$nova_ajax_proxy_url = $realm ? {
-		"production" => "http://labsconsole.wikimedia.org:8000",
-		"labs" => "http://${hostname}.${domain}:8000",
-	}
-	$nova_ldap_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$nova_ldap_domain = "labs"
-	$nova_ldap_base_dn = "dc=wikimedia,dc=org"
-	$nova_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
-	$nova_ldap_user_pass = $passwords::openstack::nova::nova_ldap_user_pass
-	$nova_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
-	$nova_ldap_proxyagent_pass = $passwords::openstack::nova::nova_ldap_proxyagent_pass
-	$controller_mysql_root_pass = $passwords::openstack::nova::controller_mysql_root_pass
-	# When doing upgrades, you'll want to up this to the new version
-	$nova_db_version = "46"
-	$nova_puppet_host = "virt0.wikimedia.org"
-	$nova_puppet_db_name = "puppet"
-	$nova_puppet_user = "puppet"
-	$nova_puppet_user_pass = $passwords::openstack::nova::nova_puppet_user_pass
-	$nova_zone = "pmtpa"
-	# By default, don't allow projects to allocate public IPs; this way we can
-	# let users have network admin rights, for firewall rules and such, and can
-	# give them public ips by increasing their quota
-	$nova_quota_floating_ips = "0"
-	$nova_libvirt_type = $realm ? {
-		"production" => "kvm",
-		"labs" => "qemu",
-	}
-	$nova_live_migration_uri = "qemu://%s.pmtpa.wmnet/system?pkipath=/var/lib/nova"
-
-}
-
-class openstack::glance_config {
-
-	include passwords::openstack::glance
-
-	$glance_db_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$glance_db_name = "glance"
-	$glance_db_user = "glance"
-	$glance_db_pass = $passwords::openstack::glance::glance_db_pass
-	$glance_bind_ip = $realm ? {
-		"production" => "208.80.152.32",
-		"labs" => "127.0.0.1",
-	}
-
-}
-
-class openstack::keystone_config {
-
-	include passwords::openstack::keystone
-
-	$keystone_db_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$keystone_db_name = "keystone"
-	$keystone_db_user = "keystone"
-	$keystone_db_pass = $passwords::openstack::keystone::keystone_db_pass
-	$keystone_ldap_host = $realm ? {
-		"production" => "virt0.wikimedia.org",
-		"labs" => "localhost",
-	}
-	$keystone_ldap_domain = "labs"
-	$keystone_ldap_base_dn = "dc=wikimedia,dc=org"
-	$keystone_ldap_user_dn = "uid=novaadmin,ou=people,dc=wikimedia,dc=org"
-	$keystone_ldap_user_id_attribute = "uid"
-	$keystone_ldap_tenant_id_attribute = "cn"
-	$keystone_admin_token = $passwords::openstack::keystone::keystone_admin_token
-	$keystone_ldap_user_pass = $passwords::openstack::keystone::keystone_ldap_user_pass
-	$keystone_ldap_proxyagent = "cn=proxyagent,ou=profile,dc=wikimedia,dc=org"
-	$keystone_ldap_proxyagent_pass = $passwords::openstack::keystone::keystone_ldap_proxyagent_pass
-	$keystone_bind_ip = $realm ? {
-		"production" => "208.80.153.135",
-		"labs" => "127.0.0.1",
-	}
-
 }

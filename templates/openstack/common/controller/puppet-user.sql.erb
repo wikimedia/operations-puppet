@@ -1,0 +1,2 @@
+GRANT USAGE ON *.* to '<%= puppet_db_user %>'@'%' IDENTIFIED BY '<%= puppet_db_pass %>';
+GRANT ALL PRIVILEGES ON <%= puppet_db_name %>.* to '<%= puppet_db_user %>'@'%';
