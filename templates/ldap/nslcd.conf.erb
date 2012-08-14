@@ -7,20 +7,20 @@ uid nslcd
 gid nslcd
 
 # The location at which the LDAP server(s) should be reachable.
-uri <% servernames.each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+uri <% ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
 # The search base that will be used for all queries.
-base <%= basedn %>
+base <%= ldapconfig["basedn"] %>
 
 # The DN to bind with for normal lookups.
-binddn cn=proxyagent,ou=profile,<%= basedn %>
-bindpw <%= proxypass %>
+binddn cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
+bindpw <%= ldapconfig["proxypass"] %>
 
 # SSL options.
 ssl start_tls
 tls_reqcert demand
 tls_cacertdir /etc/ssl/certs
-tls_cacertfile /etc/ssl/certs/<%= ldap_ca %>
+tls_cacertfile /etc/ssl/certs/<%= ldapconfig["ca"] %>
 
 
 <% if scope.function_versioncmp(lsbdistrelease, "12.04") >= 0 %># Limit user names to this regex. This needs to be kept in sync with OpenStackManager's regex.
