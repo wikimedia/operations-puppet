@@ -1975,6 +1975,7 @@ node "searchidx2.pmtpa.wmnet" {
 
 node "silver.wikimedia.org" {
 	include standard,
+		groups::wikidev,
 		accounts::preilly,
 		mobile::vumi
 }
@@ -2587,6 +2588,7 @@ node "yvon.wikimedia.org" {
 
 node "zhen.wikimedia.org" {
 	include standard,
+		groups::wikidev,
 		accounts::preilly,
 		mobile::vumi
 }
