@@ -4,6 +4,6 @@
         tlsrequired="yes"
         authrequired="yes"
         authtype="PLAIN"
-	user="dn:cn=proxyagent,ou=profile,<%= basedn %>"
-	secret="<%= proxypass %>"
+	user="dn:cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>"
+	secret="<%= ldapconfig["proxypass"] %>"
 />
