@@ -359,6 +359,25 @@ class swift::storage {
 		monitor_service { "swift-object-updater": description => "swift-object-updater", check_command => "nrpe_check_swift_object_updater" }
 	}
 
+	# this class installs swift-drive-audit as a cronjob; it checks the disks every 60 minutes
+	# and unmounts failed disks. It logs its actions to /var/log/syslog.
+	class driveaudit {
+		require swift::storage::service
+		file { "/etc/swift/swift-drive-audit.conf":
+			owner => root,
+			group => root,
+			mode => 0440,
+			source => "puppet:///files/swift/etc.swift.swift-drive-audit.conf"
+		}
+		cron { "swift-drive-audit":
+			require => Package[python-swift],
+			command => "/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf",
+			user => root,
+			minute => 1,
+			ensure => present
+		}
+	}
+
 	include packages, config, service
 }
 
