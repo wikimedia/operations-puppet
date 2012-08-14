@@ -2,6 +2,7 @@
 
 class mobile::vumi {
 
+	include passwords::mobile::vumi
 	$testvumi_pw = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
 	$vumi_pw = $passwords::mobile::vumi::wikipedia_xmpp
 
