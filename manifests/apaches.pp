@@ -1,11 +1,5 @@
 # apaches.pp
 
-# Virtual monitor group resources for the monitoring server
-@monitor_group { "appserver": description => "pmtpa application servers" }
-@monitor_group { "api_appserver": description => "pmtpa API application servers" }
-@monitor_group { "bits_appserver": description => "pmtpa Bits application servers" }
-@monitor_group { "jobrunner": description => "jobrunner application servers" }
-
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
