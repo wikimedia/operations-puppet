@@ -1,6 +1,10 @@
 # This file is for mobile classes
 
 class mobile::vumi {
+
+	$testvumi_pw = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
+	$vumi_pw = $passwords::mobile::vumi::wikipedia_xmpp
+
 	package {
 		"python-iso8601":
 			ensure => "0.1.4-0";
