@@ -342,5 +342,4 @@ $decommissioned_servers = [
 "mw1159",
 "mw1160",
 "potassium",
-"zirconium",
 ]
