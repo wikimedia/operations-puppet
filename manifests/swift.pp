@@ -370,7 +370,6 @@ class swift::storage {
 			source => "puppet:///files/swift/etc.swift.swift-drive-audit.conf"
 		}
 		cron { "swift-drive-audit":
-			require => Package[python-swift],
 			command => "/usr/bin/swift-drive-audit /etc/swift/swift-drive-audit.conf",
 			user => root,
 			minute => 1,
