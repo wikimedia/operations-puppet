@@ -7,15 +7,7 @@ class role::statistics {
 		admins::roots,
 		misc::statistics::user,
 		backup::client,  # amanda backups
-		geoip,
-		geoip::packages::python,
 		generic::packages::git-core,
 		misc::statistics::base,
-		misc::statistics::mediawiki,
-		misc::statistics::plotting,
-		misc::statistics::db,
-		generic::pythonpip,
-		misc::udp2log::udp_filter,
 		base::packages::emacs
-
 }

@@ -2322,7 +2322,16 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include role::statistics
 
-	# host stats.wikimedia.org from stat1 (for now?)
+	# include classes needed for crunching data on stat1.
+	include geoip,
+		geoip::packages::python,
+		misc::statistics::mediawiki,
+		misc::statistics::plotting,
+		misc::statistics::db,
+		generic::pythonpip,
+		misc::udp2log::udp_filter
+
+	# host stats.wikimedia.org from stat1 (This will be moved to stat1001 soon.)
 	include misc::statistics::site
 
 	# generate gerrit stats from stat1.
@@ -2350,6 +2359,18 @@ node "stat1.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
+}
+
+node "stat1001.wikimedia.org" {
+	include role::statistics
+
+	# special accounts
+	include accounts::ezachte,
+		accounts::diederik,
+		accounts::otto,
+		accounts::dsc
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "storage1.wikimedia.org" {
