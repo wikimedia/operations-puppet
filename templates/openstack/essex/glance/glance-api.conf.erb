@@ -11,7 +11,7 @@ debug = False
 default_store = file
 
 # Address to bind the API server
-bind_host = <%= scope.lookupvar('openstack::glance_config::glance_bind_ip') %>
+bind_host = <%= glanceconfig["bind_ip"] %>
 
 # Port the bind the API server to
 bind_port = 9292
@@ -60,7 +60,7 @@ use_syslog = False
 # ============ Registry Options ===============================
 
 # Address to find the registry server
-registry_host = <%= scope.lookupvar('openstack::glance_config::glance_bind_ip') %>
+registry_host = <%= glanceconfig["bind_ip"] %>
 
 # Port the registry server is listening on
 registry_port = 9191

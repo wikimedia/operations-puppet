@@ -1,2 +1,0 @@
-UPDATE user set password=PASSWORD('<%= scope.lookupvar('openstack::nova_config::controller_mysql_root_pass') %>') WHERE user='root';
-FLUSH PRIVILEGES;
