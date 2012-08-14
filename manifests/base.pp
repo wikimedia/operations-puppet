@@ -708,14 +708,15 @@ class base::syslogs($readable = 'false') {
 class base {
 	case $::operatingsystem {
 		Ubuntu,Debian: {
-			include openstack::nova_config
-			
 			include	base::apt,
 				base::apt::update
 
 			class { base::puppet:
 				server => $::realm ? {
-					'labs' => $openstack::nova_config::nova_puppet_host,
+					'labs' => $::site ? {
+						"pmtpa" => $role::nova::config::pmtpa::puppet_host,
+						"eqiad" => $role::nova::config::eqiad::puppet_host,
+					},
 					default => "puppet"
 				}
 			}
