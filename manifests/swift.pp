@@ -363,6 +363,14 @@ class swift::storage {
 	# and unmounts failed disks. It logs its actions to /var/log/syslog.
 	class driveaudit {
 		require swift::storage::service
+		# this file comes from the python-swift package but there are local improvements
+		# that are not yet merged upstream.
+		file { "/usr/bin/swift-drive-audit":
+			owner => root,
+			group => root,
+			mode => 755,
+			source => "puppet:///files/swift/usr.bin.swift-drive-audit"
+		}
 		file { "/etc/swift/swift-drive-audit.conf":
 			owner => root,
 			group => root,
