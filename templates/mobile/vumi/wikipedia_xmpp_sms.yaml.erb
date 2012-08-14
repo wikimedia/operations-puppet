@@ -1,6 +1,6 @@
 transport_name: wikipedia_xmpp_sms_out
 username: "wikipediavumitest@gmail.com"
-password: <%= REPLACE_ME %>
+password: <%= scope.lookupvar('passwords::mobile::vumi::wikipedia_xmpp_sms_out') %>
 host: talk.google.com
 port: 5222
 debug: true
