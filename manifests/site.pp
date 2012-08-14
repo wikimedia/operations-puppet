@@ -2320,16 +2320,10 @@ node "stafford.pmtpa.wmnet" {
 }
 
 node "stat1.wikimedia.org" {
-	include role::statistics
+	include role::statistics::cruncher
 
-	# host stats.wikimedia.org from stat1 (for now?)
+	# host stats.wikimedia.org from stat1 (This will be moved to role::statistics::www soon)
 	include misc::statistics::site
-
-	# generate gerrit stats from stat1.
-	include misc::statistics::gerrit_stats
-
-	# rsync logs from logging hosts over to stat1
-	include misc::statistics::rsync::jobs
 
 	# special accounts
 	include accounts::ezachte,
@@ -2349,7 +2343,18 @@ node "stat1.wikimedia.org" {
 		admins::globaldev
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+}
 
+node "stat1001.wikimedia.org" {
+	include role::statistics::www
+
+	# special accounts
+	include accounts::ezachte,
+		accounts::diederik,
+		accounts::otto,
+		accounts::dsc
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "storage1.wikimedia.org" {
