@@ -53,7 +53,6 @@ class role::applicationserver {
 	class webserver($maxclients="40") {
 		include	::applicationserver,
 			applicationserver::pybal_check,
-			applicationserver::sync,
 			applicationserver::syslog,
 			applicationserver::config::php
 
