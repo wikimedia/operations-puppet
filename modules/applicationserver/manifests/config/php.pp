@@ -49,5 +49,5 @@ mail.force_extra_parameters=\"-f <>\"
 ";
 	}
 	
-	Class["applicationserver::config::php"] -> Class["applicationserver::config"]
+	Class["applicationserver::config::php"] -> Class["applicationserver::config::base"]
 }

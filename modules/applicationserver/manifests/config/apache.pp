@@ -28,5 +28,5 @@ class applicationserver::config::apache(
 			content => $::site;
 	}
 
-	Class["applicationserver::config::apache"] -> Class["applicationserver::config"]
+	Class["applicationserver::config::apache"] -> Class["applicationserver::config::base"]
 }
