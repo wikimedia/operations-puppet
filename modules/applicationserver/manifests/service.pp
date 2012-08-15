@@ -2,6 +2,7 @@
 
 class applicationserver::service {
 	Class["applicationserver::packages"] -> Class["applicationserver::service"]
+	Class["mediawiki_new::sync"] -> Class["applicationserver::service"]
 
 	# Start apache but not at boot
 	service { 'apache':
@@ -9,6 +10,16 @@ class applicationserver::service {
 		enable => false,
 		ensure => running;
 	}
+
+	# Sync the server when we see apache is not running
+	exec { 'apache-trigger-mw-sync':
+		command => '/bin/true',
+		notify => Exec['mw-sync'],
+		unless => "/bin/ps -C apache2 > /dev/null"
+	}
+
+	# trigger sync, then start apache (if not running)
+	Exec['apache-trigger-mw-sync'] -> Service['apache']
 
 	# Has to be less than apache, and apache has to be nice 0 or less to be
 	# blue in ganglia.
