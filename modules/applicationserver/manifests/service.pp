@@ -8,6 +8,7 @@ class applicationserver::service {
 	service { 'apache':
 		name => "apache2",
 		enable => false,
+		subscribe => Exec['mw-sync'],
 		ensure => running;
 	}
 
@@ -17,9 +18,6 @@ class applicationserver::service {
 		notify => Exec['mw-sync'],
 		unless => "/bin/ps -C apache2 > /dev/null"
 	}
-
-	# trigger sync, then start apache (if not running)
-	Exec['apache-trigger-mw-sync'] -> Service['apache']
 
 	# Has to be less than apache, and apache has to be nice 0 or less to be
 	# blue in ganglia.
