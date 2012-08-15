@@ -26,7 +26,6 @@ class role::nova::config {
 		puppet_db_name => "puppet",
 		puppet_db_user => "puppet",
 		puppet_db_pass => $passwords::openstack::nova::nova_puppet_user_pass,
-		zone => "nova",
 		# By default, don't allow projects to allocate public IPs; this way we can
 		# let users have network admin rights, for firewall rules and such, and can
 		# give them public ips by increasing their quota
@@ -93,6 +92,7 @@ class role::nova::config::pmtpa inherits role::nova::config {
 		ldap_host => $controller_hostname,
 		puppet_host => "virt0.wikimedia.org",
 		live_migration_uri => "qemu://%s.pmtpa.wmnet/system?pkipath=/var/lib/nova",
+		zone => "pmtpa",
 		keystone_admin_token => $keystoneconfig["admin_token"],
 		keystone_auth_host => $keystoneconfig["bind_ip"],
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
@@ -155,6 +155,7 @@ class role::nova::config::eqiad inherits role::nova::config {
 		ldap_host => $controller_hostname,
 		puppet_host => "virt1000.wikimedia.org",
 		live_migration_uri => "qemu://%s.eqiad.wmnet/system?pkipath=/var/lib/nova",
+		zone => "eqiad",
 		keystone_admin_token => $keystoneconfig["admin_token"],
 		keystone_auth_host => $keystoneconfig["bind_ip"],
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
