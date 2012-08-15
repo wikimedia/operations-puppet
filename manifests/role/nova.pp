@@ -43,7 +43,7 @@ class role::nova::config::pmtpa inherits role::nova::config {
 
 	$keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
 	$controller_hostname = $realm ? {
-		"production" => "virt1000.wikimedia.org",
+		"production" => "virt0.wikimedia.org",
 		"labs" => "localhost",
 	}
 
