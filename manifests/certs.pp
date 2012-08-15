@@ -193,7 +193,7 @@ class certificates::wmf_ca {
 
 	exec {
 		'/bin/ln -s /etc/ssl/certs/wmf-ca.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-ca.pem).0\" ]",
 			require => File["/etc/ssl/certs/wmf-ca.pem"];
 	}
 
@@ -214,7 +214,7 @@ class certificates::wmf_labs_ca {
 
 	exec {
 		'/bin/ln -s /etc/ssl/certs/wmf-labs.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/wmf-labs.pem).0\" ]",
 			require => File["/etc/ssl/certs/wmf-labs.pem"];
 	}
 
@@ -235,7 +235,7 @@ class certificates::rapidssl_ca {
 
 	exec {
 		'/bin/ln -sf /etc/ssl/certs/RapidSSL_CA.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0':
-			creates => "/etc/ssl/certs/13b97b27.0",
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/RapidSSL_CA.pem).0\" ]",
 			require => File["/etc/ssl/certs/RapidSSL_CA.pem"];
 	}
 
@@ -256,7 +256,7 @@ class certificates::digicert_ca {
 
 	exec {
 		'/bin/ln -sf /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem /etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0':
-			creates => "/etc/ssl/certs/1445ed77.0",
+			unless => "/usr/bin/[ -f \"/etc/ssl/certs/$(/usr/bin/openssl x509 -hash -noout -in /etc/ssl/certs/DigiCertHighAssuranceCA-3.pem).0\" ]",
 			require => File["/etc/ssl/certs/DigiCertHighAssuranceCA-3.pem"];
 	}
 }
