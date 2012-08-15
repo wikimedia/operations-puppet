@@ -57,12 +57,21 @@ class misc::maintenance::pagetriage {
 
 	system_role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
 
-	cron { 'pagetriage_cleanup':
+	cron { 'pagetriage_cleanup_en':
 		user => apache,
 		minute => 55,
-		hour => 20,
+ 		hour => 20,
 		monthday => '*/2',
-		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php',
+		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /tmp/updatePageTriageQueue.en.log',
+		ensure => present,
+	}
+
+	cron { 'pagetriage_cleanup_testwiki':
+		user => apache,
+		minute => 55,
+		hour => 14,
+		monthday => '*/2',
+		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php testwiki > /tmp/updatePageTriageQueue.test.log',
 		ensure => present,
 	}
 }
