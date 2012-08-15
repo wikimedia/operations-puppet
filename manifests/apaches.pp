@@ -104,6 +104,7 @@ extension=wikidiff2.so
 			owner => root,
 			group => root,
 			mode => 0444,
+			notify => Service[apache],
 			source => "puppet:///files/php/wmerrors.ini";
 		"/etc/php5/conf.d/mail.ini":
 			mode => 0444,
