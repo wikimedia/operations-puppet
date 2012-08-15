@@ -507,14 +507,14 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 				owner => "root",
 				group => "root",
 				mode => 0444,
-				content => template("openstack/libvirtd.conf.erb"),
+				content => template("openstack/common/nova/libvirtd.conf.erb"),
 				require => Package["nova-common"];
 			"/etc/default/libvirt-bin":
 				notify => Service["libvirt-bin"],
 				owner => "root",
 				group => "root",
 				mode => 0444,
-				content => template("openstack/libvirt-bin.default.erb"),
+				content => template("openstack/common/nova/libvirt-bin.default.erb"),
 				require => Package["nova-common"];
 			"/etc/init/libvirt-bin.conf":
 				notify => Service["libvirt-bin"],
