@@ -301,10 +301,8 @@ class gerrit::account {
 
 class gerrit::gerrit_config {
 
-	include passwords::gerrit,
-		role::ldap::config::labs
-
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	include openstack::nova_config,
+		passwords::gerrit
 
 	$gerrit_hostname = "gerrit.wikimedia.org"
 	$gerrit_username = "gerrit2"
@@ -316,10 +314,10 @@ class gerrit::gerrit_config {
 	$gerrit_db_user = "gerrit"
 	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass
 	$gerrit_email_key = $passwords::gerrit::gerrit_email_key
-	$gerrit_ldap_host = $ldapconfig["servernames"]
-	$gerrit_ldap_base_dn = $ldapconfig["basedn"]
-	$gerrit_ldap_proxyagent = $ldapconfig["proxyagent"]
-	$gerrit_ldap_proxyagent_pass = $ldapconfig["proxypass"]
+	$gerrit_ldap_host = ["virt1000.wikimedia.org", "$openstack::nova_config::nova_ldap_host"]
+	$gerrit_ldap_base_dn = $openstack::nova_config::nova_ldap_base_dn
+	$gerrit_ldap_proxyagent = $openstack::nova_config::nova_ldap_proxyagent
+	$gerrit_ldap_proxyagent_pass = $openstack::nova_config::nova_ldap_proxyagent_pass
 	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
 	$gerrit_session_timeout = "90 days"
 
