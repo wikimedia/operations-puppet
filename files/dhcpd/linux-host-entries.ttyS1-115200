@@ -843,6 +843,16 @@ host es8 {
 	fixed-address es8.pmtpa.wmnet;
 }
 
+host es9 {
+	hardware ethernet d4:ae:52:b0:4e:b5;
+	fixed-address es7.pmtpa.wmnet;
+}
+
+host es10 {
+	hardware ethernet d4:ae:52:b0:3a:ca;
+	fixed-address es8.pmtpa.wmnet;
+}
+
 host es1001 {
 	hardware ethernet 78:2b:cb:0b:11:b5;
 	fixed-address es1001.eqiad.wmnet;
