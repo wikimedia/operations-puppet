@@ -140,10 +140,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"operations/puppet":
 				require => File["$puppetmaster::gitdir/operations"],
 				directory => "$puppetmaster::gitdir/operations/puppet",
-				branch => $is_labs_puppet_master ? {
-					true => "test",
-					default => "production"
-				},
+				branch => "production",
 				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 			"operations/software":
 				require => File["$puppetmaster::gitdir/operations"],
