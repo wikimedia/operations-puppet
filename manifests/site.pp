@@ -853,16 +853,14 @@ node "formey.wikimedia.org" {
 	$ssh_x11_forwarding = "no"
 	$gerrit_slave = "true"
 	$gerrit_no_apache = "true"
-
 	include standard,
 		svn::server,
+		ldap::client::wmf-cluster,
 		backup::client,
 		gerrit::proxy,
 		gerrit::jetty,
 		gerrit::gitweb,
 		gerrit::ircbot
-
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
 
@@ -1182,9 +1180,8 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 	}
 
 	include standard,
+		ldap::client::wmf-cluster,
 		openstack::project-storage
-
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 
 	if $hostname =~ /^labstore2$/ {
 		include openstack::project-storage-cron
@@ -1457,17 +1454,17 @@ node "manganese.wikimedia.org" {
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
 	include standard,
+		ldap::client::wmf-cluster,
 		backup::client,
 		gerrit::proxy,
 		gerrit::jetty,
 		gerrit::gitweb,
 		gerrit::ircbot
-
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
 node "mchenry.wikimedia.org" {
 	$gid = 500
+	$ldapincludes = ['openldap']
 
 	interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.132" }
 
@@ -1476,7 +1473,7 @@ node "mchenry.wikimedia.org" {
 		ntp::client,
 		dns::recursor::statistics,
 		nrpe,
-		role::ldap::client::corp,
+		ldap::client::wmf-corp-cluster,
 		backup::client,
 		groups::wikidev,
 		accounts::jdavis
@@ -1715,16 +1712,19 @@ node "nescio.esams.wikimedia.org" {
 
 node /^nfs[12].pmtpa.wmnet/ {
 
-	$server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
 	$cluster = "misc"
+	$ldapincludes = ['openldap']
+	$ldap_certificate = "$hostname.pmtpa.wmnet"
+	install_certificate{ "$hostname.pmtpa.wmnet": }
 
 	include standard,
 		misc::nfs-server::home,
 		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
 		misc::syslog-server,
-		role::ldap::server::production,
-		role::ldap::client::production,
+		ldap::server::wmf-cluster,
+		ldap::client::wmf-cluster,
 		backup::client
 
 	# don't need udp2log monitoring on nfs hosts
@@ -1733,6 +1733,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 		log_directory => "/home/wikipedia/logs"
 	}
 
+	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.pmtpa.wmnet!636!wmf-ca.pem", critical => "true" }
 }
 
 node "nickel.wikimedia.org" {
@@ -1883,19 +1884,25 @@ node "project1.wikimedia.org" {
 
 node "sanger.wikimedia.org" {
 	$gid = 500
+	$ldapincludes = ['openldap']
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$ldap_certificate = "sanger.wikimedia.org"
+	install_certificate{ "sanger.wikimedia.org": }
 
 	include base,
 		ganglia,
 		ntp::client,
 		nrpe,
-		role::ldap::server::corp,
-		role::ldap::client::corp,
+		ldap::server::wmf-corp-cluster,
+		ldap::client::wmf-corp-cluster,
 		groups::wikidev,
 		accounts::jdavis,
 		backup::client
 
 	## hardy doesn't support augeas, so we can't do this. /stab
 	#include ldap::server::iptables
+
+	monitor_service { "$hostname ldap cert": description => "Certificate expiration", check_command => "check_cert!$hostname.wikimedia.org!636!wmf-ca.pem", critical => "true" }
 }
 
 node /search1[3-8]\.pmtpa\.wmnet/ {
@@ -2513,13 +2520,15 @@ node "vanadium.eqiad.wmnet" {
 
 node "virt1000.wikimedia.org" {
 	$cluster = "virt"
-	$is_puppet_master = "true"
-	$is_labs_puppet_master = "true"
-	$openstack_version = "essex"
+
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$ldap_certificate = "star.wikimedia.org"
+
+	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
 		role::dns::ldap,
-		role::ldap::server::labs,
+		openstack::ldap-server,
 		openstack::iptables
 }
 
@@ -2528,12 +2537,15 @@ node "virt0.wikimedia.org" {
 
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
+	$ldap_server_bind_ips = "127.0.0.1 $ipaddress_eth0"
+	$ldap_certificate = "star.wikimedia.org"
 	$openstack_version = "diablo"
+
+	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
 		role::dns::ldap,
-		role::ldap::server::labs,
-		role::nova::controller
+		openstack::controller
 }
 
 node /virt[1-8].pmtpa.wmnet/ {
@@ -2546,12 +2558,16 @@ node /virt[1-8].pmtpa.wmnet/ {
 	include standard
 
 	$openstack_version = "diablo"
+	if $hostname =~ /^virt1$/ {
+		include openstack::network-service
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.193" }
+	}
 	if $hostname =~ /^virt2$/ {
-		include role::nova::network,
-			role::nova::api
+		include openstack::network-service,
+			openstack::api-service
 		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
 	}
-	include	role::nova::compute
+	include	openstack::compute
 }
 
 node "williams.wikimedia.org" {
