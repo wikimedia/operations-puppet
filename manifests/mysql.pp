@@ -662,15 +662,16 @@ class generic::mysql::server(
 		default => $pid_file,
 	}
 
-	# ensure the datadir exists
-	file { $datadir:
-		owner => "mysql",
-		group => "mysql",
-		mode  => 0755,
-		ensure => "directory",	
-		require => Package["mysql-server"],
+	# This is needed because reconfigure creates $datadir and the necessary files inside.
+	#  The sleep is to avoid mysql getting canned for speedy respawn;
+	#   the retry is to give apparmor a chance to settle in.
+	exec { "dpkg-reconfigure mysql-server":
+		command => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive mysql-server-${version}",
+		require => [File["/etc/apparmor.d/usr.sbin.mysqld"]],
+		tries => 2,
+		refreshonly => true,
 	}
-	
+
 	# Put my.cnf in place from the generic_my.cnf.erb template.
 	# The values in this file are filled in from the 
 	# passed in parameters.
@@ -680,6 +681,7 @@ class generic::mysql::server(
 		mode  => 0644,
 		content => template('mysql/generic_my.cnf.erb'),
 		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
+		notify => [exec["dpkg-reconfigure mysql-server"]]
 	}
 	
 	# mysql is protected by apparmor.  Need to
