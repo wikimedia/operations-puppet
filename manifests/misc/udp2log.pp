@@ -125,8 +125,8 @@ define misc::udp2log::instance(
 	# primary directory where udp2log log files will be stored.
 	file { ["${log_directory}", "${log_directory}/archive"]:
 		mode    => 0755,
-		owner   => root,
-		group   => root,
+		owner   => udp2log,
+		group   => udp2log,
 		ensure  => "directory",
 	}
 
