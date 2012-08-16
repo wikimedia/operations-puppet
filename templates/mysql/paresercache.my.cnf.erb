@@ -54,7 +54,7 @@ ram = ram.round; ram = String(ram) + "G"; %>
 innodb-adaptive-flushing=1
 innodb-buffer-pool-size=<%= ram %>
 innodb-flush-method=O_DIRECT
-innodb-io-capacity=1000
+innodb-io-capacity=20000
 innodb-log-file-size=2000M
 innodb-old-blocks-pct=80
 innodb-old-blocks-time=1000
@@ -65,6 +65,10 @@ innodb-use-sys-malloc
 innodb-write-io-threads=8
 innodb-checksums=1
 innodb-flush-log-at-trx-commit=0
+
+# disabling these helped prevent write stalls during heavier write loads with ssd's
+innodb-flush-neighbors-on-checkpoint=0
+innodb-flush-neighbors-for-lru=0
 
 innodb_data_file_path=ibdata1:1500G
 
