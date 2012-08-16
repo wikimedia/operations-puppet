@@ -4016,5 +4016,5 @@ host zinc {
 
 host zirconium {
 	hardware ethernet 18:03:73:f1:4f:4c;
-	fixed-address zirconium.eqiad.wmnet;
+	fixed-address zirconium.wikimedia.org;
 }
