@@ -22,7 +22,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="UDP log receiver (udp2log)"
 NAME=udp2log-<%= name %>
 DAEMON=/usr/bin/udp2log
-DAEMON_ARGS="-p <%= port %><% if multicast then -%> --multicast <%= (multicast.class == String) ? multicast : '233.58.59.1' %><% end %>"
+DAEMON_ARGS="--daemon -p <%= port %><% if multicast then -%> --multicast <%= (multicast.class == String) ? multicast : '233.58.59.1' %><% end %>"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 CONFFILE=/etc/udp2log/<%= name %>
