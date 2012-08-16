@@ -67,6 +67,58 @@ class nfs::home {
 	}
 }
 
+# Classes for NetApp mounts used on multiple servers
+
+class nfs::netapp::common {
+	include nfs::common
+
+ 	$device = $::site ? {
+		pmtpa => "nas1-a.pmtpa.wmnet",
+		eqiad => "nas1001-a.pmtpa.wmnet",
+		default => undef,
+	}
+		
+	$options = "bg,tcp,rsize=8192,wsize=8192,timeo=14,intr"
+}
+
+class nfs::netapp::home($ensure="mounted", $mountpoint="/home") {
+	include common
+
+	file { $mountpoint: ensure => directory }
+	
+	mount { $mountpoint:
+		require => File[$mountpoint],
+		device => "${nfs::netapp::common::device}:home_${::site}",
+		fstype => nfs,
+		options => $nfs::netapp::common::options,
+		ensure => $ensure
+	}
+}
+
+class nfs::netapp::home::othersite($ensure="mounted", $mountpoint=undef) {
+	include common
+
+	$peersite = $::site ? {
+		'pmtpa' => "eqiad",
+		'eqiad' => "pmtpa",
+		default => undef
+	}
+	$path = $mountpoint ?
+		undef => "/srv/home_${peersite}",
+		default => $mountpoint
+	}
+
+	file { $path: ensure => directory }
+
+	mount { $path:
+		require => File[$path],
+		device => "${nfs::netapp::common::device}:home_${peersite}",
+		fstype => nfs,
+		options => $nfs::netapp::common::options,
+		ensure => $ensure
+	}
+}
+
 # Historical /home/wikipedia
 class nfs::home::wikipedia {
 
