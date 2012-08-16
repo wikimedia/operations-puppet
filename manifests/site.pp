@@ -2520,7 +2520,7 @@ node "virt1000.wikimedia.org" {
 		role::dns::ldap,
 		role::ldap::server::labs,
 		role::ldap::client::labs,
-		openstack::iptables
+		role::nova::controller
 }
 
 node "virt0.wikimedia.org" {
