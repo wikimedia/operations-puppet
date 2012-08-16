@@ -4,7 +4,7 @@
 <VirtualHost *:443>
 	ServerName planet.<%= planet_domain_name %>
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.<%= planet_domain_name %>.crt
+	SSLCertificateFile /etc/ssl/certs/star.<%= planet_domain_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.<%= planet_domain_name %>.key
 
 	RewriteEngine on
@@ -26,21 +26,21 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/ar/www
+	DocumentRoot /var/www/planet/ar
 	ServerName ar.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/ar/www>
+	<Directory /var/www/planet/ar>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/cs/www
+	DocumentRoot /var/www/planet/cs
 	ServerName cs.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/cs/www>
+	<Directory /var/www/planet/cs>
 		Allow from all
 	</Directory>
 </VirtualHost>
@@ -52,41 +52,41 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/it/www
+	DocumentRoot /var/www/planet/it
 	ServerName it.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/it/www>
+	<Directory /var/www/planet/it>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/de/www
+	DocumentRoot /var/www/planet/de
 	ServerName de.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/de/www>
+	<Directory /var/www/planet/de>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/en/www
+	DocumentRoot /var/www/planet/en
 	ServerName en.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/en/www>
+	<Directory /var/www/planet/en>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/es/www
+	DocumentRoot /var/www/planet/es
 	ServerName es.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/es/www>
+	<Directory /var/www/planet/es>
 		Allow from all
 	</Directory>
 </VirtualHost>
@@ -98,21 +98,21 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/fr/www
+	DocumentRoot /var/www/planet/fr
 	ServerName fr.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/fr/www>
+	<Directory /var/www/planet/fr>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/gmq/www
+	DocumentRoot /var/www/planet/gmq
 	ServerName gmq.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/gmq/www>
+	<Directory /var/www/planet/gmq>
 		Allow from all
 	</Directory>
 </VirtualHost>
@@ -142,41 +142,41 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/pl/www
+	DocumentRoot /var/www/planet/pl
 	ServerName pl.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/pl/www>
+	<Directory /var/www/planet/pl>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/pt/www
+	DocumentRoot /var/www/planet/pt
 	ServerName pt.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/pt/www>
+	<Directory /var/www/planet/pt>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/ru/www
+	DocumentRoot /var/www/planet/ru
 	ServerName ru.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/ru/www>
+	<Directory /var/www/planet/ru>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/sr/www
+	DocumentRoot /var/www/planet/sr
 	ServerName sr.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/sr/www>
+	<Directory /var/www/planet/sr>
 		Allow from all
 	</Directory>
 </VirtualHost>
@@ -188,22 +188,22 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/zh/www
+	DocumentRoot /var/www/planet/zh
 	ServerName zh.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/zh/www>
+	<Directory /var/www/planet/zh>
 		Allow from all
 	</Directory>
 </VirtualHost>
 
 
 <VirtualHost *:80>
-	DocumentRoot /var/www/planet/ro/www
+	DocumentRoot /var/www/planet/ro
 	ServerName ro.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 
-	<Directory /var/www/planet/ro/www>
+	<Directory /var/www/planet/ro>
 		Allow from all
 	</Directory>
 </VirtualHost>
