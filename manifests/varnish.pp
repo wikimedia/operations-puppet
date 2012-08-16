@@ -216,6 +216,10 @@ class varnish {
 		}
 	}
 
+	class varnish_zmq_pub {
+		package { "zpubsub": ensure => latest }
+		upstart_job { "zpub": install => "true" }
+	}
 
 	class logging_config {
 		file { "/etc/default/varnishncsa":
