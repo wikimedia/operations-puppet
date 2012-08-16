@@ -74,7 +74,7 @@ class nfs::netapp::common {
 
  	$device = $::site ? {
 		pmtpa => "nas1-a.pmtpa.wmnet",
-		eqiad => "nas1001-a.pmtpa.wmnet",
+		eqiad => "nas1001-a.eqiad.wmnet",
 		default => undef,
 	}
 		
