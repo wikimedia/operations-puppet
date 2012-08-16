@@ -24,8 +24,6 @@ class role::puppet::server::labs {
 		server_name => $fqdn,
 		allow_from => $puppet_passenger_allow_from,
 		config => {
-			'ca' => "false",
-			'ca_server' => "${fqdn}",
 			'dbadapter' => "mysql",
 			'dbuser' => $novaconfig["puppet_db_user"],
 			'dbpassword' => $novaconfig["puppet_db_pass"],
