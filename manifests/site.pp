@@ -2570,6 +2570,23 @@ node /virt[1-8].pmtpa.wmnet/ {
 	include	role::nova::compute
 }
 
+node /virt100(5|7|8).pmtpa.wmnet/ {
+	#$cluster = "virt"
+	#if $hostname =~ /^virt100[57]$/ {
+	#	$ganglia_aggregator = "true"
+	#}
+
+	include standard
+
+	$openstack_version = "essex"
+	if $hostname =~ /^virt1005$/ {
+		include role::nova::network,
+			role::nova::api
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.193" }
+	}
+	include	role::nova::compute
+}
+
 node "williams.wikimedia.org" {
 	include base,
 		ganglia,

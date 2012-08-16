@@ -122,7 +122,7 @@ class role::nova::config::eqiad inherits role::nova::config {
 			"labs" => "127.0.0.1",
 		},
 		api_host => $realm ? {
-			"production" => "virt1002.pmtpa.wmnet",
+			"production" => "virt1005.pmtpa.wmnet",
 			"labs" => "localhost",
 		},
 		api_ip => $realm ? {
