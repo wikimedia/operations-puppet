@@ -772,10 +772,6 @@ node /es10[0-2][0-9]\.eqiad\.wmnet/ {
 	else {
 		include role::db::es
 	}
-#	if $hostname == "es1004" {
-#		# replica of ms3 - currently used for backups
-#		cron { snapshot_mysql: command => "/root/backup.sh", user => root, minute => 15, hour => 4 }
-#	}
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
@@ -786,6 +782,25 @@ node /es[1-4]\.pmtpa\.wmnet/ {
 		include role::db::es
 	}
 }
+
+node /es([5-9]|10)\.pmtpa\.wmnet/ {
+	if $hostname =~ /^es[58]$/ {
+		class { "role::db::es": mysql_role => "master" }
+	}
+	else {
+		include role::db::es
+	}
+}
+
+node /es10[0-1][0-9])\.eqiad\.wmnet/ {
+	if $hostname =~ /^es100[58]$/ {
+		class { "role::db::es": mysql_role => "master" }
+	}
+	else {
+		include role::db::es
+	}
+}
+
 node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
