@@ -18,10 +18,6 @@ class openstack::iptables-purges {
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
-	iptables_purge_service{ "nova_ec2_api_private": service => "nova_ec2_api" }
-	iptables_purge_service{ "nova_os_api_private": service => "nova_openstack_api" }
-	iptables_purge_service{ "deny_all_nova_ec2_api": service => "nova_ec2_api" }
-	iptables_purge_service{ "deny_all_nova_openstack_api": service => "nova_openstack_api" }
 }
 
 class openstack::iptables-accepts {
@@ -34,32 +30,15 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_private": source => "10.4.0.0/16", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_private": source => "10.4.0.0/16", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_private": source => "10.4.0.0/16", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_private": source => "10.4.0.0/16", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_floating": source => "208.80.153.192/28", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_floating": source => "208.80.153.192/28", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_floating": source => "208.80.153.192/28", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_floating": source => "208.80.153.192/28", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_gerrit": source => "208.80.152.147", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_gerrit": source => "208.80.152.147", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_gerrit": source => "208.80.152.147", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_gerrit": source => "208.80.152.147", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_gerrit_manganese": source => "208.80.154.152", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_gerrit_manganese": source => "208.80.154.152", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_gerrit_manganese": source => "208.80.154.152", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_gerrit_manganese": source => "208.80.154.152", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_jenkins": source => "208.80.154.135", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_jenkins": source => "208.80.154.135", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_jenkins": source => "208.80.154.135", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_backend_jenkins": source => "208.80.154.135", service => "ldaps_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_virt0": source => "208.80.152.32", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_virt0": source => "208.80.152.32", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_virt0": source => "208.80.152.32", service => "ldap_backend", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_virt1000": source => "208.80.154.18", service => "ldap", jump => "ACCEPT" }
-	iptables_add_service{ "ldaps_virt1000": source => "208.80.154.18", service => "ldaps", jump => "ACCEPT" }
-	iptables_add_service{ "ldap_backend_virt1000": source => "208.80.154.18", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_private": source => "10.0.0.0/8", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_private": source => "10.0.0.0/8", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_private": source => "10.0.0.0/8", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_private": source => "10.0.0.0/8", service => "ldaps_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_public": source => "208.80.152.0/22", service => "ldap", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_public": source => "208.80.152.0/22", service => "ldaps", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_backend_public": source => "208.80.152.0/22", service => "ldap_backend", jump => "ACCEPT" }
+	iptables_add_service{ "ldaps_backend_public": source => "208.80.152.0/22", service => "ldaps_backend", jump => "ACCEPT" }
+	
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
