@@ -88,7 +88,7 @@ class nfs::netapp::home($ensure="mounted", $mountpoint="/home") {
 	
 	mount { $mountpoint:
 		require => File[$mountpoint],
-		device => "${nfs::netapp::common::device}:home_${::site}",
+		device => "${nfs::netapp::common::device}:/vol/home_${::site}",
 		fstype => nfs,
 		options => $nfs::netapp::common::options,
 		ensure => $ensure
@@ -112,7 +112,7 @@ class nfs::netapp::home::othersite($ensure="mounted", $mountpoint=undef) {
 
 	mount { $path:
 		require => File[$path],
-		device => "${nfs::netapp::common::device}:home_${peersite}",
+		device => "${nfs::netapp::common::device}:/vol/home_${peersite}",
 		fstype => nfs,
 		options => "${nfs::netapp::common::options},ro",
 		ensure => $ensure
