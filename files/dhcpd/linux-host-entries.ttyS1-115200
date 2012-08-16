@@ -873,6 +873,36 @@ host es1004 {
 	fixed-address es1004.eqiad.wmnet;
 }
 
+host es1005 {
+	hardware ethernet d4:ae:52:b0:39:c5;
+	fixed-address es1005.eqiad.wmnet;
+}
+
+host es1006 {
+	hardware ethernet d4:ae:52:b0:35:d3;
+	fixed-address es1006.eqiad.wmnet;
+}
+
+host es1007 {
+	hardware ethernet d4:ae:52:93:46:0e;
+	fixed-address es1007.eqiad.wmnet;
+}
+
+host es1008 {
+	hardware ethernet d4:ae:52:93:41:d9;
+	fixed-address es1008.eqiad.wmnet;
+}
+
+host es1009 {
+	hardware ethernet d4:ae:52:93:41:10;
+	fixed-address es1009.eqiad.wmnet;
+}
+
+host es1010 {
+	hardware ethernet d4:ae:52:93:3e:54;
+	fixed-address es1010.eqiad.wmnet;
+}
+
 host fluorine {
 	hardware ethernet 78:2b:cb:08:ba:a9;
 	fixed-address fluorine.wikimedia.org;

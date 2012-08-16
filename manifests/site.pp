@@ -765,7 +765,7 @@ node "erzurumi.pmtpa.wmnet" {
 		accounts::khorn
 }
 
-node /es100[1-4]\.eqiad\.wmnet/ {
+node /es10[0-2][0-9]\.eqiad\.wmnet/ {
 	if $hostname == "es1001" {
 		class { "role::db::es": mysql_role => "master" }
 	}
