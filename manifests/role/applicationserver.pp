@@ -11,7 +11,6 @@
 @monitor_group { "imagescaler_pmtpa": description => "pmtpa image scalers" }
 @monitor_group { "jobrunner_eqiad": description => "eqiad jobrunner application servers" }
 @monitor_group { "jobrunner_pmtpa": description => "pmtpa jobrunner application servers" }
-@monitor_group { "misc_pmtpa": description => "misc pmtpa application servers" }
 
 class role::applicationserver {
 # Class: role::applicationserver
@@ -31,7 +30,7 @@ class role::applicationserver {
 		$lvs_pool
 		) {
 
-		$nagios_group = "${::cluster}_${::site}"
+		$nagios_group = "${::group}_${::site}"
 
 		include	standard,
 		## TODO: rename to just mediawiki after full transition to module
