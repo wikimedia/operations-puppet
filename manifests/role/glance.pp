@@ -37,7 +37,7 @@ class role::glance::config::eqiad inherits role::glance::config {
 
 	$eqiadglanceconfig = {
 		db_host => $realm ? {
-			"production" => "virt0.wikimedia.org",
+			"production" => "virt1000.wikimedia.org",
 			"labs" => "localhost",
 		},
 		bind_ip => $realm ? {
