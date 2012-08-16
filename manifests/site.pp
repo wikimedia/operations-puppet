@@ -384,7 +384,8 @@ node "bast1001.wikimedia.org" {
 		admins::restricted,
 		misc::bastionhost,
 		misc::scripts,
-		nrpe
+		nrpe,
+		nfs::netapp::home::othersite
 }
 
 node "bellin.pmtpa.wmnet"{
