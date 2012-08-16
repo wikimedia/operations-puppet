@@ -30,7 +30,7 @@ class role::applicationserver {
 		$lvs_pool
 		) {
 
-		$nagios_group = "${::group}_${::site}"
+		$nagios_group = "${group}_${::site}"
 
 		include	standard,
 		## TODO: rename to just mediawiki after full transition to module
