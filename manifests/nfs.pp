@@ -114,7 +114,7 @@ class nfs::netapp::home::othersite($ensure="mounted", $mountpoint=undef) {
 		require => File[$path],
 		device => "${nfs::netapp::common::device}:home_${peersite}",
 		fstype => nfs,
-		options => $nfs::netapp::common::options,
+		options => "${nfs::netapp::common::options},ro",
 		ensure => $ensure
 	}
 }
