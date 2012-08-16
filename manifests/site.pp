@@ -2599,6 +2599,12 @@ node "yttrium.wikimedia.org" {
 		admins::mortals
 }
 
+node "zirconium.wikimedia.org" {
+	include standard,
+		admins::roots,
+		role::planet
+}
+
 node default {
 	include	standard
 }
