@@ -920,8 +920,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		misc::fundraising,
 		misc::fundraising::mail,
 		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive,
-		misc::fundraising::impressionlog::archive
+		misc::fundraising::backup::archive
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
