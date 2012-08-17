@@ -905,7 +905,7 @@ host es1010 {
 
 host fluorine {
 	hardware ethernet 78:2b:cb:08:ba:a9;
-	fixed-address fluorine.wikimedia.org;
+	fixed-address fluorine.eqiad.wmnet;
 }
 
 host gallium {
