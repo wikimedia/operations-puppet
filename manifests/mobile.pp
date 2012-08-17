@@ -8,7 +8,7 @@ class mobile::vumi {
 
 	package {
 		"python-iso8601":
-			ensure => "0.1.4-0";
+			ensure => "0.1.4-1";
 		"python-redis":
 			ensure => "2.4.5-1";
 		"python-smpp":
@@ -20,9 +20,9 @@ class mobile::vumi {
 		"python-txamqp":
 			ensure => "0.6.1-0";
 		"vumi":
-			ensure => "0.4.0~a+git2012040612-0";
+			ensure => "0.5.0~a+99-0";
 		"vumi-wikipedia":
-			ensure => "0.1~a+git2012040614-0";
+			ensure => "0.1~a+9-0";
 		"python-twisted":
 			ensure => "latest";
 		"python-tz":
