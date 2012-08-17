@@ -103,6 +103,31 @@ host analytics1022 {
 	fixed-address analytics1022.eqiad.wmnet;
 }
 
+host analytics1023 {
+	hardware ethernet d4:ae:52:73:60:e6;
+	fixed-address analytics1023.eqiad.wmnet;
+}
+
+host analytics1024 {
+	hardware ethernet d4:ae:52:7c:c9:ec;
+	fixed-address analytics1024.eqiad.wmnet;
+}
+
+host analytics1025 {
+	hardware ethernet d4:ae:52:7c:b5:ed;
+	fixed-address analytics1025.eqiad.wmnet;
+}
+
+host analytics1026 {
+	hardware ethernet d4:ae:52:7c:c2:70;
+	fixed-address analytics1026.eqiad.wmnet;
+}
+
+host analytics1027 {
+	hardware ethernet d4:ae:52:7a:b9:e5;
+	fixed-address analytics1027.eqiad.wmnet;
+}
+
 host bast1001 {
 	hardware ethernet 78:2b:cb:09:11:ba;
 	fixed-address bast1001.wikimedia.org;
