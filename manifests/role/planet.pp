@@ -21,8 +21,9 @@ class role::planet {
 
 	install_certificate{ "star.${planet_domain_name}": }
 	class {'webserver::php5': ssl => 'true'; }
+	apache_module { rewrite: name => "rewrite" }
 
-	Install_certificate["star.${planet_domain_name}"] -> Class['webserver::php5']
+	Install_certificate["star.${planet_domain_name}"] -> apache_module { rewrite: name => "rewrite" } -> Class['webserver::php5']
 
 	$planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
 
