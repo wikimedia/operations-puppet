@@ -105,7 +105,7 @@ class role::nova::config::pmtpa inherits role::nova::config {
 class role::nova::config::eqiad inherits role::nova::config {
 	include role::keystone::config::eqiad
 
-	$keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
+	$keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
 	$controller_hostname = $realm ? {
 		"production" => "virt1000.wikimedia.org",
 		"labs" => "localhost",

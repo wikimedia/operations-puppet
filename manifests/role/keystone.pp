@@ -30,7 +30,7 @@ class role::keystone::config::pmtpa inherits role::keystone::config {
 			"labs" => "localhost",
 		},
 		bind_ip => $realm ? {
-			"production" => "208.80.153.135",
+			"production" => "208.80.152.32",
 			"labs" => "127.0.0.1",
 		},
 	}
