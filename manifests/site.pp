@@ -2570,7 +2570,7 @@ node /virt[1-8].pmtpa.wmnet/ {
 	include	role::nova::compute
 }
 
-node /virt100(5|7|8).pmtpa.wmnet/ {
+node /virt100(5|7|8).eqiad.wmnet/ {
 	#$cluster = "virt"
 	#if $hostname =~ /^virt100[57]$/ {
 	#	$ganglia_aggregator = "true"
