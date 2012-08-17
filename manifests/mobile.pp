@@ -45,6 +45,31 @@ class mobile::vumi {
 			source => "puppet:///files/mobile/vumi/wikipedia.yaml",
 			require => File["/etc/vumi"],
 			mode => 0444;
+		"/etc/vumi/tata_ussd_hyd.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_ussd_hyd.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+		"/etc/vumi/tata_sms_outgoing.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_sms_outgoing.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/tata_ussd_delhi.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_ussd_delhi.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/tata_sms_incoming.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_sms_incoming.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/supervisord.wikipedia.conf":
+			owner => "root",
+			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf",
+			require => File["/etc/vumi"],
+			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp.yaml":
 			owner => "root",
 			content => template("mobile/vumi/wikipedia_xmpp.yaml.erb"),
