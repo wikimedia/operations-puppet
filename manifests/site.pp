@@ -1097,7 +1097,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
 		misc::maintenance::refreshlinks,
-		misc::translationnotifications,
+		misc::maintenance::translationnotifications,
 		admins::roots,
 		admins::dctech,
 		admins::mortals,
