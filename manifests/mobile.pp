@@ -60,17 +60,17 @@ class mobile::vumi {
 			content => template("mobile/vumi/tata_sms_outgoing.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
-			"/etc/vumi/tata_ussd_delhi.yaml":
+		"/etc/vumi/tata_ussd_delhi.yaml":
 			owner => "root",
 			content => template("mobile/vumi/tata_ussd_delhi.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
-			"/etc/vumi/tata_sms_incoming.yaml":
+		"/etc/vumi/tata_sms_incoming.yaml":
 			owner => "root",
 			content => template("mobile/vumi/tata_sms_incoming.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
-			"/etc/vumi/supervisord.wikipedia.conf":
+		"/etc/vumi/supervisord.wikipedia.conf":
 			owner => "root",
 			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf",
 			require => File["/etc/vumi"],
@@ -93,11 +93,6 @@ class mobile::vumi {
 			mode => 0555,
 			require => File["/usr/local/vumi"],
 			source => "puppet:///files/mobile/vumi/rabbitmq.setup.sh";
-		"/etc/vumi/supervisord.wikipedia.conf":
-			owner => "root",
-			mode => 0555,
-			require => File["/etc/vumi"],
-			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf";
 	}
 
 	exec {
