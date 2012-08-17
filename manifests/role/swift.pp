@@ -26,8 +26,8 @@ class role::swift {
 			rewrite_user => "test:tester",
 			rewrite_password => $passwords::swift::eqiad-test::rewrite_password,
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
-			shard_containers => "none",
-			shard_container_list => "",
+			shard_containers => "some",
+			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb",
 			write_thumbs => "all",
 			dont_write_thumb_list => "",
 			backend_url_format => "asis"
