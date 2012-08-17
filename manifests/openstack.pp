@@ -455,6 +455,16 @@ class openstack::api-service($openstack_version="diablo", $novaconfig) {
 		subscribe => File['/etc/nova/nova.conf'],
 		require => Package["nova-api"];
 	}
+	if $openstack_version == "essex" {
+		file { "/etc/nova/policy.json":
+			source => "puppet:///files/openstack/essex/nova/policy.json",
+			mode => 0644,
+			owner => root,
+			group => root,
+			notify => Service["nova-api"],
+			require => Package["nova-api"];
+		}
+	}
 }
 
 class openstack::volume-service($openstack_version="diablo", $novaconfig) {
