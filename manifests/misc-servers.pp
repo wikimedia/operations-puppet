@@ -859,61 +859,6 @@ net.core.rmem_default = 536870912
 }
 
 
-class misc::l10nupdate {
-	require misc::deployment::scripts
-
-	cron {
-		l10nupdate:
-			command => "/usr/local/bin/l10nupdate-1 >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
-			user => l10nupdate,
-			hour => 2,
-			minute => 0,
-			ensure => present;
-	}
-
-	file {
-		"/usr/local/bin/l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate";
-		"/usr/local/bin/l10nupdate-1":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
-		"/usr/local/bin/sync-l10nupdate":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate";
-		"/usr/local/bin/sync-l10nupdate-1":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
-	}
-
-	# Make sure the log directory exists and has adequate permissions.
-	# It's called l10nupdatelog because /var/log/l10nupdate was used
-	# previously so it'll be an existing file on some systems.
-	# Also create the dir for the SVN checkouts, and set up log rotation
-	file {
-		"/var/log/l10nupdatelog":
-			owner => l10nupdate,
-			group => wikidev,
-			mode => 0664,
-			ensure => directory;
-		"/var/lib/l10nupdate":
-			owner => l10nupdate,
-			group => wikidev,
-			mode => 0755,
-			ensure => directory;
-		"/etc/logrotate.d/l10nupdate":
-			source => "puppet:///files/logrotate/l10nupdate",
-			mode => 0444;
-	}
-}
 
 
 class misc::ircecho {

@@ -808,7 +808,7 @@ node "fenari.wikimedia.org" {
 		misc::extension-distributor,
 		misc::deployment::scripts,
 		misc::ircecho,
-		misc::l10nupdate,
+		misc::deployment::l10nupdate,
 		dns::account,
 		nrpe,
 		drac::management,
