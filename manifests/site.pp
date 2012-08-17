@@ -835,7 +835,7 @@ node "fenari.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node "fluorine.wikimedia.org" {
+node "fluorine.eqiad.wmnet" {
 	$cluster = "misc"
 
 	include standard,
