@@ -383,7 +383,7 @@ node "bast1001.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
-		misc::scripts,
+		misc::deployment::scripts,
 		nrpe,
 		nfs::netapp::home::othersite
 }
@@ -803,10 +803,10 @@ node "fenari.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
-		misc::deployment-host,
+		misc::deployment,
 		misc::noc-wikimedia,
 		misc::extension-distributor,
-		misc::scripts,
+		misc::deployment::scripts,
 		misc::ircecho,
 		misc::l10nupdate,
 		dns::account,
@@ -1093,7 +1093,7 @@ node "hume.wikimedia.org" {
 
 	include standard,
 		nfs::home,
-		misc::scripts,
+		misc::deployment::scripts,
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
 		misc::maintenance::refreshlinks,
