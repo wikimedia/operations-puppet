@@ -9,6 +9,8 @@ class role::keystone::config {
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
 		ldap_user_id_attribute => "uid",
 		ldap_tenant_id_attribute => "cn",
+		ldap_user_name_attribute => "uid",
+		ldap_tenant_name_attribute => "cn",
 		ldap_user_pass => $passwords::openstack::keystone::keystone_ldap_user_pass,
 		ldap_proxyagent => "cn=proxyagent,ou=profile,dc=wikimedia,dc=org",
 		ldap_proxyagent_pass => $passwords::openstack::keystone::keystone_ldap_proxyagent_pass,
