@@ -9,7 +9,6 @@ class mobile::vumi {
 	$tata_sms_outgoing_pw = $passwords::mobile::vumi::tata_sms_outgoing_pw
 	$tata_ussd_pw = $passwords::mobile::vumi::tata_ussd_pw
 	$tata_hyd_ussd_pw = $passwords::mobile::vumi::tata_hyd_ussd_pw
-	$testvumi_pw = $passwords::mobile::vumi::testvumi_pw
 
 
 	package {
