@@ -79,7 +79,9 @@ $iptables_protocols = {
 	swift_account => "tcp",
 	swift_container => "tcp",
 	swift_object => "tcp",
-	udp => "udp"
+	udp => "udp",
+	keystone_service => "tcp",
+	keystone_admin => "tcp",
 }
 
 class iptables::tables {
