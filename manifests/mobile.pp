@@ -13,27 +13,27 @@ class mobile::vumi {
 
 	package {
 		"python-iso8601":
-			ensure => "0.1.4-1";
+			ensure => "0.1.4-1ubuntu1";
 		"python-redis":
-			ensure => "2.4.5-1";
+			ensure => "2.4.9-1";
 		"python-smpp":
-			ensure => "0.1-0";
+			ensure => "0.1-0~ppa3";
 		"python-ssmi":
-			ensure => "0.0.4-0";
+			ensure => "0.0.4-1~ppa3";
 		"redis-server":
 			ensure => "latest";
 		"python-txamqp":
-			ensure => "0.6.1-0";
+			ensure => "0.6.1-1~ppa3";
 		"vumi":
-			ensure => "0.5.0~a+99-0";
+			ensure => "0.5.0~a+99-0~ppa3";
 		"vumi-wikipedia":
-			ensure => "0.1~a+9-0";
+			ensure => "0.1~a+9-0~ppa3";
 		"python-twisted":
 			ensure => "latest";
 		"python-tz":
 			ensure => "latest";
 		"python-wokkel":
-			ensure => "0.6.3-1";
+			ensure => "0.7.0-1";
 		"rabbitmq-server":
 			ensure => "latest";
 	}
