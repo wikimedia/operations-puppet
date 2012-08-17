@@ -324,9 +324,15 @@ class accounts {
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDP7wD7CRHLh4V9Sjn72a/eh3hTQhprQ3fPxUX+G7oCGuRXmWAwHcoB2Rm7vZxiAEa6hA151YOEorYN8e6bYP0eqcpEu9G9cbDirnaAhKHf+r+n9OgJmpA8hDQQ0H4MuWH9W6uQLEi1Xl9Z41/u/LlfrmD9F77ed2jXCYAYgVwuNuO5lnOevMxLWH+aCtfYdp/QtEA9a+o2j0Dc0JveqXNFlCdcacLAME2q7ZHnyRwFndMgTiljnOSb3SjV/1tkNtq3Dkhnp1T3LXgSIX7gtxbfVd2u5b8HoaQYmpXSlRhyL+ulVJDJAEFVA+tp5lbcGK4kglNnBNKrQO9Bng+FlKwR";
 			}
+			ssh_authorized_key {
+				"chrisj@chrisjohnson":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC+Jo3tA/18DWcwOQH7O3vSUwwf0v284aHUF1EE+8AlkcAUFE1QfiHJciqayOdriFQiUQ/rLUdkhXgDGenpQGJYxOm8Vy/wJkHX6OPv2i3y4YXGPfAljS64EzXpBizLaZsVMcxeg8iyoBOSh5H5H/odgoWbebAXUMxHHYBpfGXPVFvfh5FwqTQNP4yVJ5HqoZEgYDDUhgrhnh/aHrTxTkH3M9oerIPY30b3catfrzF/7sZvQW2+XdKGPnedLsDA30Qh7HSIwfsCDpqXI0I4zcufxCI2J9l5fll062y5gDfmb4bleKBqfuej2yHd74tDDoBdNO1qc6GYPzyVKsgL75Xf";
+			}
 		}
 	}
-
 	class jamesofur inherits baseaccount {
 		$username = "jamesofur"
 		$realname = "James Alexander"
