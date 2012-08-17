@@ -926,6 +926,9 @@ class misc::racktables {
 
 
 # this is stupid but I need a firewall on iron so that mysql doesn't accidentally get exposed to the world.
+
+# FIXME: what's a mysqld doing on iron? Shouldn't that be on the misc DBs cluster?
+# FIXME: rename to something more appropriate, put in the appropriate manifests
 class iron::iptables-purges {
 	require "iptables::tables"
 	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
