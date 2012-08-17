@@ -29,6 +29,7 @@ $decommissioned_servers = [
 "db30",
 "db41",
 "eiximenis",
+"fluorine",
 "ixia",
 "ganglia1001",
 "gilman",
