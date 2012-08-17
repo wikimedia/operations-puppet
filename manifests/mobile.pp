@@ -5,6 +5,12 @@ class mobile::vumi {
 	include passwords::mobile::vumi
 	$testvumi_pw = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
 	$vumi_pw = $passwords::mobile::vumi::wikipedia_xmpp
+	$tata_sms_incoming_pw = $passwords::mobile::vumi::tata_sms_incoming_pw
+	$tata_sms_outgoing_pw = $passwords::mobile::vumi::tata_sms_outgoing_pw
+	$tata_ussd_pw = $passwords::mobile::vumi::tata_ussd_pw
+	$tata_hyd_ussd_pw = $passwords::mobile::vumi::tata_hyd_ussd_pw
+	$testvumi_pw = $passwords::mobile::vumi::testvumi_pw
+
 
 	package {
 		"python-iso8601":
@@ -43,6 +49,31 @@ class mobile::vumi {
 		"/etc/vumi/wikipedia.yaml":
 			owner => "root",
 			source => "puppet:///files/mobile/vumi/wikipedia.yaml",
+			require => File["/etc/vumi"],
+			mode => 0444;
+		"/etc/vumi/tata_ussd_hyd.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_ussd_hyd.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+		"/etc/vumi/tata_sms_outgoing.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_sms_outgoing.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/tata_ussd_delhi.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_ussd_delhi.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/tata_sms_incoming.yaml":
+			owner => "root",
+			content => template("mobile/vumi/tata_sms_incoming.yaml.erb"),
+			require => File["/etc/vumi"],
+			mode => 0444;
+			"/etc/vumi/supervisord.wikipedia.conf":
+			owner => "root",
+			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf",
 			require => File["/etc/vumi"],
 			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp.yaml":
