@@ -15,6 +15,8 @@ class openstack::iptables-purges {
 	iptables_purge_service{ "deny_all_beam1": service => "beam1" }
 	iptables_purge_service{ "deny_all_beam2": service => "beam2" }
 	iptables_purge_service{ "deny_all_epmd": service => "epmd" }
+	iptables_purge_service{ "deny_all_keystone_service": service => "keystone_service" }
+	iptables_purge_service{ "deny_all_keystone_admin": service => "keystone_admin" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -42,15 +44,23 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
+	iptables_add_service{ "keystone_service_nova_virt0": source => "208.80.152.32", service => "keystone_service", jump => "ACCEPT" }
+	iptables_add_service{ "keystone_admin_nova_virt0": source => "208.80.152.32", service => "keystone_admin", jump => "ACCEPT" }
+	iptables_add_service{ "keystone_service_nova_virt1000": source => "208.80.154.18", service => "keystone_service", jump => "ACCEPT" }
+	iptables_add_service{ "keystone_admin_nova_virt1000": source => "208.80.154.18", service => "keystone_admin", jump => "ACCEPT" }
 	if ($site == "pmtpa") {
 		iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
+		iptables_add_service{ "keystone_service_nova": source => "10.4.16.0/24", service => "keystone_service", jump => "ACCEPT" }
+		iptables_add_service{ "keystone_admin_nova": source => "10.4.16.0/24", service => "keystone_admin", jump => "ACCEPT" }
 	}
 	if ($site == "eqiad") {
 		iptables_add_service{ "mysql_nova": source => "10.64.20.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.64.20.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.64.20.0/24", service => "beam2", jump => "ACCEPT" }
+		iptables_add_service{ "keystone_service_nova": source => "10.64.20.0/24", service => "keystone_service", jump => "ACCEPT" }
+		iptables_add_service{ "keystone_admin_nova": source => "10.64.20.0/24", service => "keystone_admin", jump => "ACCEPT" }
 	}
 }
 
@@ -71,6 +81,8 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_beam1": service => "beam1", jump => "DROP" }
 	iptables_add_service{ "deny_all_beam2": service => "beam2", jump => "DROP" }
 	iptables_add_service{ "deny_all_epmd": service => "epmd", jump => "DROP" }
+	iptables_add_service{ "deny_all_keystone_service": service => "keystone_service", jump => "DROP" }
+	iptables_add_service{ "deny_all_keystone_admin": service => "keystone_admin", jump => "DROP" }
 }
 
 class openstack::iptables  {

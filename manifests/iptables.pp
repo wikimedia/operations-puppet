@@ -36,7 +36,9 @@ $iptables_ports = {
 	swift_account => "6002",
 	swift_container => "6001",
 	swift_object => "6000",
-	udp => ""
+	udp => "",
+	keystone_service => "5000",
+	keystone_admin => "35357",
 }
 
 $iptables_protocols = {
