@@ -1347,11 +1347,11 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
-				"py@trap.local":
-					ensure	=> absent,
+				"py@odin":
+					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAo6QSWqR2j6bS3c0WzlekW9d5n3DlxhwKhHHd4GJScPiTwztyVCN8wj+flb7qfrXKx0CT+UY1z8VlnoktuTK7OyvifQAvyIrkeAbX2JoOP+8NVB3a/bsnqLjKqdvbrlndBtD0cbdqvd4XJd9OU2BoJtxNNpcBn/LEUK8LJ+PiAMO1PVEN5+UY3hqm+LM7syMxrWugGEVg7gHDpOzmQmhmqUQ3kXNfabjsgG9xyXa6TNqyKHvP0bhdWXAYjgMMeNU+IufDQdNJMFBKblo0QFqEO7/vgDQTnkc60/fvJSekRchSl9skeiE/nFw8O7s4h6fF1iZ4J4kiAF7nDgfvVCNi9Q==";
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQDXGX1nI4wyGR2JjZ6+TZ4Ip2fueE0zlpR8Tr0Pt6A733UWKw7PUv0fCIjkOMbYXzbSdnmDRwckqlOSV5MK3ibNvshA/TzxDRLUkHdiTjmJXT8SHmo6RfGp/LLihZq0q6QSnslIGKRPvSejnpn4Y2DvYKsYi4Oto0qkhmbnetrg2vi2WNeUONbtgLA+xlvs/3Ql9iaoYLvbUVrMgd/2PVKRTJsuFplGeIRk5Ff/a++lKH+EerS9x52ooPLCMvPc1ptBWG7/tZlmOryAcWuvqvjZufeEGQ+TrXJ0XRZS9jAgovGJgUPLGl3Qpp5dqXjwXfqhH+xz72Dah+59bmgz6mx4dVDWTlQi1CjFEYUWfw2/4L/bGKabMZ14RObmoGWgZxziZ1Q1g0A66KIAqyQk2v9pI3Os5ngczjKwEMAJgCveBf+tDluURMzwg2S9nfr2t4cOXSp3S7tFwGZrmZVqjQv9AkpcPdXuWg/5AU7NrknCVS37+8N0DqDw0UVJ8EwDHKlC5+ZoldX4WZP394m3O6WqjcqFaCn7SGoiR/sbrNWAtKFd4MsUuXm7NF57TofWr6JJjr284ZTg09874xO9fIkngIyJzqjdzEd+awKErJBy0Ymfxn6qIQz6Nj1qjHLz6JCV1JT4EfZXxL5WTI6JYS/mQ3jdgk6TcBoaJhXKZCMnaQ==";
 				"py@tarp":
 					ensure	=> present,
 					user	=> $username,
