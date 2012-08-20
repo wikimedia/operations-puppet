@@ -302,8 +302,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
-	include base,
-		ganglia
+	include standard
 
 	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
@@ -1275,8 +1274,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			]
 	}
 
-	include base,
-		ganglia,
+	include standard,
 		lvs::balancer::runcommand
 
 	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
@@ -1347,8 +1345,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			]
 	}
 
-	include base,
-		ganglia,
+	include standard,
 		lvs::balancer::runcommand
 
 	class { "lvs::balancer": service_ips => $lvs_balancer_ips }
