@@ -14,6 +14,9 @@ class role::analytics {
 	
 	sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 
-	# Install Sun Java JDK on analytics cluster
-	class { "java": provider => 'sun' }
+	# Install Sun/Oracle Java JDK on analytics cluster
+	java { "java-6-oracle": 
+		distribution => 'oracle',
+		version      => 6,
+	}
 }
