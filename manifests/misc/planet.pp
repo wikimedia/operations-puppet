@@ -37,43 +37,37 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	systemuser { planet: name => "planet", home => "/var/lib/planet", groups => [ "planet" ] }
 
+	File {
+		owner => "planet",
+		group => "planet",
+		mode => 0644,
+	}
+
+	file { [ "/var/www/planet", "/var/log/planet", "/usr/share/planet-venus/wikimedia", "/usr/share/planet-venus/theme/wikimedia", ]
+		ensure => "directory",
+		mode => 0755,
+	}
+
 	file {
 		"/etc/apache2/sites-available/planet.${planet_domain_name}":
-			path => "/etc/apache2/sites-available/planet.${planet_domain_name}",
 			mode => 0444,
 			owner => root,
 			group => root,
 			content => template('apache/sites/planet.erb');
-		"/var/www/planet/":
-			path => "/var/www/planet",
-			mode => 0755,
-			owner => planet,
-			group => www-data,
-			ensure => directory;
 		"/var/www/index.html":
-			path => "/var/www/index.html",
 			mode => 0444,
 			owner => www-data,
 			group => www-data,
 			source => "puppet:///files/planet/index.html";
-		"/var/log/planet":
-			path => "/var/log/planet",
-			mode => 0755,
-			owner => planet,
-			group => planet,
-			ensure => directory;
-		"/usr/share/planet-venus/wikimedia":
-			path => "/usr/share/planet-venus/wikimedia",
-			mode => 0755,
-			owner => planet,
-			group => planet,
-			ensure => directory;
 		"/usr/local/bin/update-planets":
-			path => "/usr/local/bin/update-planets",
 			mode => 0550,
-			owner => planet,
-			group => planet,
 			source => "puppet:///files/planet/update-planets";
+		"/usr/share/planet-venus/theme/wikimedia/config.ini":
+			source => "puppet:///files/planet/theme/config.ini";
+		"/usr/share/planet-venus/theme/wikimedia/index.html.tmpl":
+			source => "puppet:///files/planet/theme/index.html.tmpl";
+		"/usr/share/planet-venus/theme/wikimedia/planet.css":
+			source => "puppet:///files/planet/theme/planet.css";
 	}
 
 	define planetconfig {
