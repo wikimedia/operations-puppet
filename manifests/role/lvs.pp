@@ -48,8 +48,7 @@ class role::lvs::balancer {
             ],
     }
 
-    include base,
-        ganglia
+    include standard
 
     class { "::lvs::balancer":
         service_ips => $lvs_balancer_ips,
