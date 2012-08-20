@@ -182,6 +182,10 @@ class misc::statistics::gerrit_stats {
 	# gerrit-stats requires this packages
 	package { "python-mysqldb": ensure => "installed" }
 
+	# We also need pyyaml aka python-yaml.  
+	# (This will also install libyaml as a dependency.)
+	package { "python-yaml": ensure => "installed" }
+
 	# Clone the gerrit-stats and gerrit-stats/data
 	# repositories into subdirs of $gerrit_stats_path.
 	# This requires that the $gerrit_stats_user
@@ -192,7 +196,7 @@ class misc::statistics::gerrit_stats {
 		directory => "$gerrit_stats_path",
 		origin    => $gerrit_stats_repo_url,
 		owner     => $gerrit_stats_user,
-		require   => [User[$gerrit_stats_user], Package["python-mysqldb"]],
+		require   => [User[$gerrit_stats_user], [Package["python-mysqldb"], Package["python-yaml"]],
 		ensure    => "latest",
 	}
 
