@@ -1654,7 +1654,6 @@ node /^lvs300[1-4]\.esams\.wmnet$/ {
     $cluster = 'lvs'
     include admin
     include role::lvs::balancer
-    include role::diamond
 
     interface::add_ip6_mapped { 'main':
         interface => 'eth0',
