@@ -68,7 +68,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			source => "puppet:///files/planet/theme/index.html.tmpl";
 		"/usr/share/planet-venus/theme/wikimedia/planet.css":
 			source => "puppet:///files/planet/theme/planet.css";
-		"/usr/share/planet-venus/theme/common/images/planet-wm2.png";
+		"/usr/share/planet-venus/theme/common/images/planet-wm2.png":
 			source => "puppet:///files/planet/images/planet-wm2.png";
 	}
 
