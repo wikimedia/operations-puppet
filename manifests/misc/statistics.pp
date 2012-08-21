@@ -257,6 +257,12 @@ class misc::statistics::rsync::jobs {
 		source      => "emery.wikimedia.org::udp2log/arabic-banner*.gz",
 		destination => "/a/squid/archive/arabic-banner",
 	}
+
+	# sampled-1000 logs from emery
+	misc::statistics::rsync_job { "sampled_1000":
+		source      => "emery.wikimedia.org::udp2log/sampled-1000*.gz",
+		destination => "/a/squid/archive/arabic-banner",
+	}
 }
 
 
