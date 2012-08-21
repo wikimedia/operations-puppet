@@ -8,4 +8,5 @@ stat1.wikimedia.org     /home default
 stat1.wikimedia.org     /a {
 	default
 	exclude file "./mysql"
+	exclude file "./squid"
 }
