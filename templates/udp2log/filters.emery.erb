@@ -2,20 +2,32 @@
 ####    This file managed by puppet.
 ###
 
-file 1000 /var/log/squid/sampled-1000.log
-
-pipe 1000 /var/log/squid/filters/latlongCountry-writer >> /var/log/squid/location-1000.log
-pipe 2 /usr/local/bin/sqstat 2
-pipe 10 /var/log/squid/filters/india-filter >> /var/log/squid/india.log
+# udp2log packet loss monitoring
 pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/squid/packet-loss.log
 
-#pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
+# 0.0001 of all udp2log messages
+# This log file is also on locke for redundancy
+file 1000 /var/log/squid/sampled-1000.log
+
+
+# India
+pipe 10 /usr/bin/udp-filter -c IN -b country -g >> /var/log/squid/india.log
+
+# API Usage
 pipe 100 /usr/bin/udp-filter -p /w/api.php >> /var/log/squid/api-usage.log 
 
-
-# RT 2212
-#pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
+# GLAM NARA / National Archives - RT 2212
 pipe 10 /usr/bin/udp-filter -p _NARA_ -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/glam_nara.log
+
+
+# Geocodes IP address and prepends log line with <country> <lat>,<lon> 
+# I would like to replace this with udp-filter, since udp-filter can now
+# geocode inline.  However, this would change the format of location-1000.log,
+# so we'd need to make sure Erik Zachte and other consumers are ok with this first.
+pipe 1000 /var/log/squid/filters/latlongCountry-writer >> /var/log/squid/location-1000.log
+
+# process wmf cache server log lines via stdin and report to ganglia
+pipe 2 /usr/local/bin/sqstat 2
 
 
 # specific country filters - 2012-01-24 through 2012-02-20 then ask Nimish  or Amit if we still need them
@@ -36,6 +48,11 @@ pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%
 
 
 
+
+
+
+
+
 # DISABLED FILTERS
 
 # this filter is segfaulting repeatedly.  tomasz says he doesn't need it at the moment
@@ -48,3 +65,11 @@ pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%
 #pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True' >> /var/log/squid/e3_necromancy_idle1year_10.log
 
 
+
+
+
+# CUSTOM FILTERS REPLACED WITH udp-filter
+
+# pipe 10 /var/log/squid/filters/india-filter >> /var/log/squid/india.log
+# pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
+# pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
