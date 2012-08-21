@@ -36,6 +36,8 @@ class mobile::vumi {
 			ensure => "0.7.0-1";
 		"rabbitmq-server":
 			ensure => "latest";
+		"supervisor":
+			ensure => "latest";
 	}
 
 	file {
