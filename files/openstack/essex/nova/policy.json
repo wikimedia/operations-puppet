@@ -70,8 +70,8 @@
     "network:delete_network": [["role:netadmin"]],
     "network:disassociate_network": [["role:netadmin"]],
     "network:get_vifs_by_instance": [],
-    "network:allocate_for_instance": [["role:netadmin"]],
-    "network:deallocate_for_instance": [["role:netadmin"]],
+    "network:allocate_for_instance": [["role:sysadmin"]],
+    "network:deallocate_for_instance": [["role:sysadmin"]],
     "network:validate_networks": [],
     "network:get_instance_uuids_by_ip_filter": [],
 
@@ -86,8 +86,8 @@
     "network:disassociate_floating_ip": [["role:netadmin"]],
 
     "network:get_fixed_ip": [],
-    "network:add_fixed_ip_to_instance": [["role:netadmin"]],
-    "network:remove_fixed_ip_from_instance": [["role:netadmin"]],
+    "network:add_fixed_ip_to_instance": [["role:sysadmin"]],
+    "network:remove_fixed_ip_from_instance": [["role:sysadmin"]],
     "network:add_network_to_project": [["role:netadmin"]],
     "network:get_instance_nw_info": [],
 
