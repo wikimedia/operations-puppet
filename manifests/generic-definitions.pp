@@ -711,6 +711,7 @@ define git::clone(
 	$ensure='present',
 	$owner="root",
 	$group="root",
+	$timeout="300",
 	$mode=0755) {
 		
 	require generic::packages::git-core
@@ -747,6 +748,7 @@ define git::clone(
 				environment => $env,
 				creates     => "$directory/.git/config",
 				user        => $owner,
+				timeout     => $timeout,
 			}
 			
 			# pull if $ensure == latest and if there are changes to merge in.

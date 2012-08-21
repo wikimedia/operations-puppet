@@ -23,6 +23,7 @@ class role::mediawiki-install::labs {
 	git::clone { "mediawiki":
 		directory => "/srv/mediawiki",
 		branch => "master",
+		timeout => 1800,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
 
@@ -40,7 +41,7 @@ class role::mediawiki-install::labs {
 	}
 
 	file { '/var/www/srv/mediawiki':
-		require => File['/var/www/srv'],
+		require => [File['/var/www/srv'], git::clone['mediawiki']],
 		ensure => 'link',
 		target => '/srv/mediawiki';
 	}
