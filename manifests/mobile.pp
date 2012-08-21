@@ -50,6 +50,11 @@ class mobile::vumi {
 			source => "puppet:///files/mobile/vumi/wikipedia.yaml",
 			require => File["/etc/vumi"],
 			mode => 0444;
+		"/etc/vumi/tata_ussd_dispatcher.yaml":
+			owner => "root",
+			source => "puppet:///files/mobile/vumi/tata_ussd_dispatcher.yaml",
+			require => File["/etc/vumi"],
+			mode => 0444;
 		"/etc/vumi/tata_ussd_hyd.yaml":
 			owner => "root",
 			content => template("mobile/vumi/tata_ussd_hyd.yaml.erb"),

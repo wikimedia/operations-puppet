@@ -4,8 +4,11 @@ transport_name: tata_ussd
 sms_transport: tata_sms_outgoing
 incoming_sms_transport: tata_sms_incoming
 
-max_sms_content_length: 306
+max_sms_content_length: 300
 max_sms_unicode_length: 120
+
+content_cache_time: 0
+max_ussd_session_length: 1800
 
 more_content_postfix: " (Reply for more, price 50p)"
 no_more_content_postfix: " (End of section)"

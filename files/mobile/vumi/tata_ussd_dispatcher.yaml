@@ -1,0 +1,14 @@
+transport_names:
+  - tata_ussd_delhi
+  - tata_ussd_hyd
+
+exposed_names:
+  - tata_ussd
+
+router_class: vumi.dispatchers.SimpleDispatchRouter
+
+route_mappings:
+    tata_ussd_delhi:
+      - tata_ussd
+    tata_ussd_hyd:
+      - tata_ussd
