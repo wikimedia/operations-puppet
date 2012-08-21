@@ -156,7 +156,7 @@ class accounts {
 
                         ssh_authorized_key {
                                 "austin@constantinople.local":
-                                        ensure  => present,
+                                        ensure  => absent,
                                         user    => $username,
                                         type    => "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA7DUF4Y5YNJpMJsjuaXkJ3yQlamEWIahV9l0ASjcQJOmokjg78bThu5jqOMK7+ekqmlPRrURP7qskh4fi3KMwltJpWDunKKRSd9iwpB/19MNhB7KOQITPz6XgaSTQYLhxjzVgZVrIbbAdw60uv/BIaYCEae0FPVz6qxEx6Y0Az4rZ9kA1NODXOM42Bimg/VWetXPaBEEhcm6D9v4Ut0ZF7dE7FG9vUVAAwNwLyJWWAozxm2tVyOKTtSVKkzv7w3X8tH6nXC8blO94h37oIX+c+AHzMoswsuj9avdMEEQ7/7KC8DQAbkyrZtItqWCiRnBXcHls1kABaGGdobpeeKt0Aw==";
