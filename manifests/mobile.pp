@@ -83,10 +83,10 @@ class mobile::vumi {
 			content => template("mobile/vumi/tata_sms_incoming.yaml.erb"),
 			require => File["/etc/vumi"],
 			mode => 0444;
-		"/etc/vumi/supervisord.wikipedia.conf":
+		"/etc/supervisor/conf.d/supervisord.wikipedia.conf":
 			owner => "root",
 			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf",
-			require => File["/etc/vumi"],
+			require => File["etc/supervisor/conf.d"],
 			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp.yaml":
 			owner => "root",
