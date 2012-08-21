@@ -1,8 +1,8 @@
 # mysql.pp
 
-# NOTE.  If you are looking to install a standalone
+# NOTE.	If you are looking to install a standalone
 # non-production mysql server, see the generic::mysql::server
-# class at the bottom of this file.  The configs closer to the
+# class at the bottom of this file.	The configs closer to the
 # top are meant for production wikimedia mysql installations.
 
 # TODO should really be named mysql-server, or mysql::server
@@ -20,7 +20,7 @@ class mysql {
 	}
 
 	#######################################################################
-	### LVM snapshot hosts 
+	### LVM snapshot hosts
 	#######################################################################
 	if $hostname =~ /^db(26|32|33|44|46|49|53|64|1005|1007|1018|1020|1022|1035|1046|1050)$/ {
 		$snapshot_host = true
@@ -148,7 +148,7 @@ class mysql {
 				ensure => "5.1.53-fb3875-wm1",
 			}
 		}
-		package { ["percona-xtrabackup", "percona-toolkit", "libaio1",  "lvm2" ]:
+		package { ["percona-xtrabackup", "percona-toolkit", "libaio1",	"lvm2" ]:
 			ensure => latest,
 		}
 	}
@@ -306,12 +306,12 @@ class mysql {
 	}
 
 	class mysqluser {
-		user { 
+		user {
 			"mysql": ensure => "present",
 		}
 	}
 
-	class datadirs { 
+	class datadirs {
 		file {
 			"/a/sqldata":
 				owner => mysql,
@@ -380,7 +380,7 @@ class mysql {
 
 		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
-		} else { 
+		} else {
 			$ibsize = "500M"
 		}
 
@@ -445,7 +445,7 @@ class mysql {
 				hour => '*/8',
 				ensure => present;
 			}
-		} else { 
+		} else {
 			cron { snaprotate:
 				ensure => absent;
 			}
@@ -516,6 +516,72 @@ class mysql {
 	}
 }
 
+class mysql::coredb::ganglia{
+
+	include passwords::ganglia
+	$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
+
+	# Ganglia
+	package { python-mysqldb:
+		ensure => present;
+	}
+
+	file {
+		"/usr/lib/ganglia/python_modules":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+		"/usr/lib/ganglia/python_modules/DBUtil.py":
+			require => File["/usr/lib/ganglia/python_modules"],
+			source => "puppet:///files/ganglia/plugins/DBUtil.py",
+			notify => Service[gmond];
+		"/usr/lib/ganglia/python_modules/mysql.py":
+			require => File["/usr/lib/ganglia/python_modules"],
+			source => "puppet:///files/ganglia/plugins/mysql.py",
+			notify => Service[gmond];
+		"/etc/ganglia/conf.d/mysql.pyconf":
+			require => File["/usr/lib/ganglia/python_modules"],
+			content => template("mysql/mysql.pyconf.erb"),
+			notify => Service[gmond];
+	}
+}
+
+class mysql::coredb::monitoring( $crit = false ) {
+
+		include passwords::nagios::mysql
+		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+		# this is for checks from the percona-nagios-checks project
+		# http://percona-nagios-checks.googlecode.com
+		file {
+			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
+				owner => root,
+				group => nagios,
+				mode => 0440,
+				content => template("nagios/nrpe_percona.cfg.erb"),
+				notify => Service[nagios-nrpe-server];
+			"/usr/lib/nagios/plugins/percona":
+				ensure => directory,
+				recurse => true,
+				owner => root,
+				group => root,
+				mode => 0555,
+				source => "puppet:///files/nagios/percona";
+		}
+
+	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
+	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+	monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+	monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
+	monitor_service { "mysql idle transaction": description => "MySQL Idle Transactions", check_command => "nrpe_check_mysql_idle_transactions", critical => false }
+	monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
+
+	if $role::coredb::config::topology[$::shard][master] {
+		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+	}
+}
 
 class mysql::client::default-charset-binary {
 	# ubuntu's stock mysql client defaults to latin1 charsets
@@ -532,15 +598,15 @@ class mysql::client::default-charset-binary {
 
 
 # The mysql classes below can be used for installing
-# generic mysql servers and clients.  These
+# generic mysql servers and clients.	These
 # are not (yet?) meant for serious production installs.
 
 # Installs the mysql-client package
 class generic::mysql::packages::client($version = "5.1") {
-	# This conflicts with class mysql::packages.  DO NOT use them together
+	# This conflicts with class mysql::packages.	DO NOT use them together
 	package { "mysql-client-${version}":
 		ensure => latest,
-		alias  => "mysql-client",
+		alias	=> "mysql-client",
 	}
 	package { "libmysqlclient-dev":
 		ensure => latest,
@@ -548,95 +614,95 @@ class generic::mysql::packages::client($version = "5.1") {
 }
 
 class generic::mysql::packages::server($version = "5.1") {
-	# This conflicts with class mysql::packages.  DO NOT use them together
+	# This conflicts with class mysql::packages.	DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
 	package { "mysql-server-${version}":
 		ensure => present,
-		alias  => "mysql-server"
+		alias	=> "mysql-server"
 	}
 }
 
 
-# installs mysql-server, configures app armor 
+# installs mysql-server, configures app armor
 # and my.cnf, starts mysqld.
 #
 # Most of these defaults are from the
 # debian install + the default .deb my.cnf
 class generic::mysql::server(
-	$version                        = "5.1",
-	$datadir                        = "/var/lib/mysql",
-	$port                           = 3306,
-	$bind_address                   = "127.0.0.1",
-	$socket                         = false,
-	$pid_file                       = false,
+	$version				                = "5.1",
+	$datadir				                = "/var/lib/mysql",
+	$port				                   = 3306,
+	$bind_address				           = "127.0.0.1",
+	$socket				                 = false,
+	$pid_file				               = false,
 
 	# logging
-	$log_error                      = "/var/log/mysql/mysql.err",
-	$slow_query_log_file            = false,
-	$long_query_time                = 10,
+	$log_error				              = "/var/log/mysql/mysql.err",
+	$slow_query_log_file				    = false,
+	$long_query_time				        = 10,
 
-	$basedir                        = "/usr",
-	$tmpdir                         = "/tmp",
+	$basedir				                = "/usr",
+	$tmpdir				                 = "/tmp",
 
 	# Buffers, Threads, Caches, Limits
-	$tmp_table_size                 = '16M',
-	$max_heap_table_size            = '16M',
-	$max_tmp_tables                 = '32',
+	$tmp_table_size				         = '16M',
+	$max_heap_table_size				    = '16M',
+	$max_tmp_tables				         = '32',
 
-	$join_buffer_size               = '3M',
-	$read_buffer_size               = '4M',
-	$sort_buffer_size               = '4M',
+	$join_buffer_size				       = '3M',
+	$read_buffer_size				       = '4M',
+	$sort_buffer_size				       = '4M',
 
-	$table_cache                    = '64',
-	$table_definition_cache         = '256',
-	$open_files_limit               = '1024',
+	$table_cache				            = '64',
+	$table_definition_cache				 = '256',
+	$open_files_limit				       = '1024',
 
-	$thread_stack                   = '192K',
-	$thread_cache_size              = '8',
-	$thread_concurrency             = '10',
+	$thread_stack				           = '192K',
+	$thread_cache_size				      = '8',
+	$thread_concurrency				     = '10',
 
-	$query_cache_size               = '16M',
-	$query_cache_limit              = '1M',
-	$tmp_table_size                 = '16M',
-	$read_rnd_buffer_size           = '256K',
-	
-	$key_buffer_size                = '16M',
-	$myisam_sort_buffer_size        = '8M',
-	$myisam_max_sort_file_size      = '512M',
+	$query_cache_size				       = '16M',
+	$query_cache_limit				      = '1M',
+	$tmp_table_size				         = '16M',
+	$read_rnd_buffer_size				   = '256K',
+
+	$key_buffer_size				        = '16M',
+	$myisam_sort_buffer_size				= '8M',
+	$myisam_max_sort_file_size			= '512M',
 
 	# Networking
-	$max_allowed_packet             = "16M",
-	$max_connections                = '151',
-	$wait_timeout                   = "28800",
-	$connect_timeout                = "10",
+	$max_allowed_packet				     = "16M",
+	$max_connections				        = '151',
+	$wait_timeout				           = "28800",
+	$connect_timeout				        = "10",
 
 	# InnoDB settings.
-	$innodb_file_per_table          = '1',
-	$innodb_status_file             = '0',
-	$innodb_support_xa              = '0',
+	$innodb_file_per_table				  = '1',
+	$innodb_status_file				     = '0',
+	$innodb_support_xa				      = '0',
 	$innodb_flush_log_at_trx_commit = '0',
-	$innodb_buffer_pool_size        = '8M',
-	$innodb_log_file_size           = '5M',
-	$innodb_flush_method            = 'O_DIRECT',
-	$innodb_thread_concurrency      = '8',
-	$innodb_concurrency_tickets     = '500',
-	$innodb_doublewrite             = '1',
+	$innodb_buffer_pool_size				= '8M',
+	$innodb_log_file_size				   = '5M',
+	$innodb_flush_method				    = 'O_DIRECT',
+	$innodb_thread_concurrency			= '8',
+	$innodb_concurrency_tickets		 = '500',
+	$innodb_doublewrite				     = '1',
 
 	# set read_only to true if you want this instance to be read_only
-	$read_only                      = false,
+	$read_only				              = false,
 
 	# set replication_enabled to false if you don't want to enable binary logging
-	$replication_enabled            = false,
+	$replication_enabled				    = false,
 	# These settings won't matter if replication_enabled is false.
 
-	$expire_logs_days               = '10',
-	$replicate_ignore_table         = [],
-	$replicate_ignore_db            = [],
-	$replicate_do_table             = [],
-	$replicate_do_db                = [],
+	$expire_logs_days				       = '10',
+	$replicate_ignore_table				 = [],
+	$replicate_ignore_db				    = [],
+	$replicate_do_table				     = [],
+	$replicate_do_db				        = [],
 
-	$extra_configs                  = {},
-	$config_file_path               = "/etc/mysql/my.cnf"
+	$extra_configs				          = {},
+	$config_file_path				       = "/etc/mysql/my.cnf"
 	)
 {
 	# make sure mysql-server and mysql-client are
@@ -652,7 +718,7 @@ class generic::mysql::server(
 	# $::run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$socket_path = $socket ? {
-		false   => "$::run_directory/mysqld/mysqld.sock",
+		false	 => "$::run_directory/mysqld/mysqld.sock",
 		default => $socket,
 	}
 	# if $pid_file was not manually specified,
@@ -660,13 +726,13 @@ class generic::mysql::server(
 	# $::run_directory/mysqld/mysqld.sock, otherwise
 	# just use the path that was given.
 	$pid_path = $pid_file ? {
-		false   => "$::run_directory/mysqld/mysqld.pid",
+		false	 => "$::run_directory/mysqld/mysqld.pid",
 		default => $pid_file,
 	}
 
 	# This is needed because reconfigure creates $datadir and the necessary files inside.
-	#  The sleep is to avoid mysql getting canned for speedy respawn;
-	#   the retry is to give apparmor a chance to settle in.
+	#	The sleep is to avoid mysql getting canned for speedy respawn;
+	#	 the retry is to give apparmor a chance to settle in.
 	exec { "dpkg-reconfigure mysql-server":
 		command => "/bin/sleep 30; /usr/sbin/dpkg-reconfigure -fnoninteractive mysql-server-${version}",
 		require => [File["/etc/apparmor.d/usr.sbin.mysqld"]],
@@ -675,18 +741,18 @@ class generic::mysql::server(
 	}
 
 	# Put my.cnf in place from the generic_my.cnf.erb template.
-	# The values in this file are filled in from the 
+	# The values in this file are filled in from the
 	# passed in parameters.
-	file { $config_file_path: 
+	file { $config_file_path:
 		owner => 'root',
 		group => 'root',
-		mode  => 0644,
+		mode	=> 0644,
 		content => template('mysql/generic_my.cnf.erb'),
 		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
 		notify => [exec["dpkg-reconfigure mysql-server"]]
 	}
-	
-	# mysql is protected by apparmor.  Need to
+
+	# mysql is protected by apparmor.	Need to
 	# reload apparmor if the file changes.
 	file { "/etc/apparmor.d/usr.sbin.mysqld":
 		owner => 'root',
@@ -696,7 +762,7 @@ class generic::mysql::server(
 		require => Package["mysql-server"],
 		notify => Service["apparmor"],
 	}
-	
+
 	service { "mysql":
 		ensure => "running",
 		require => [Package["mysql-server"], File[$config_file_path, "/etc/apparmor.d/usr.sbin.mysqld"]],
