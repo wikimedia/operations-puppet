@@ -1,0 +1,7 @@
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Tue, 21 Aug 2012 10:37:09 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/20873
+Project: operations/puppet
+Branch: refs/heads/production
