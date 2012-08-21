@@ -5,17 +5,6 @@ class role::nova::config {
 		db_name => "nova",
 		db_user => "nova",
 		db_pass => $passwords::openstack::nova::nova_db_pass,
-		network_flat_interface => $realm ? {
-			"production" => "eth1.103",
-			"labs" => "eth0.103",
-		},
-		network_flat_interface_name => $realm ? {
-			"production" => "eth1",
-			"labs" => "eth0",
-		},
-		network_flat_interface_vlan => "103",
-		flat_network_bridge => "br103",
-		network_public_interface => "eth0",
 		my_ip => $ipaddress_eth0,
 		ldap_base_dn => "dc=wikimedia,dc=org",
 		ldap_user_dn => "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
@@ -53,6 +42,17 @@ class role::nova::config::pmtpa inherits role::nova::config {
 		glance_host => $controller_hostname,
 		rabbit_host => $controller_hostname,
 		cc_host => $controller_hostname,
+		network_flat_interface => $realm ? {
+			"production" => "eth1.103",
+			"labs" => "eth0.103",
+		},
+		network_flat_interface_name => $realm ? {
+			"production" => "eth1",
+			"labs" => "eth0",
+		},
+		network_flat_interface_vlan => "103",
+		flat_network_bridge => "br103",
+		network_public_interface => "eth0",
 		network_host => $realm ? {
 			"production" => "10.4.0.1",
 			"labs" => "127.0.0.1",
@@ -117,8 +117,19 @@ class role::nova::config::eqiad inherits role::nova::config {
 		glance_host => $controller_hostname,
 		rabbit_host => $controller_hostname,
 		cc_host => $controller_hostname,
+		network_flat_interface => $realm ? {
+			"production" => "eth1.1118",
+			"labs" => "eth0.1118",
+		},
+		network_flat_interface_name => $realm ? {
+			"production" => "eth1",
+			"labs" => "eth0",
+		},
+		network_flat_interface_vlan => "1118",
+		flat_network_bridge => "br1118",
+		network_public_interface => "eth0",
 		network_host => $realm ? {
-			"production" => "10.4.125.1",
+			"production" => "10.68.16.1",
 			"labs" => "127.0.0.1",
 		},
 		api_host => $realm ? {
@@ -126,23 +137,23 @@ class role::nova::config::eqiad inherits role::nova::config {
 			"labs" => "localhost",
 		},
 		api_ip => $realm ? {
-			"production" => "10.4.125.1",
+			"production" => "10.68.16.1",
 			"labs" => "127.0.0.1",
 		},
 		fixed_range => $realm ? {
-			"production" => "10.4.125.0/24",
+			"production" => "10.68.16.0/24",
 			"labs" => "192.168.0.0/24",
 		},
 		dhcp_start => $realm ? {
-			"production" => "10.4.125.4",
+			"production" => "10.68.16.4",
 			"labs" => "192.168.0.4",
 		},
 		network_public_ip => $realm ? {
-			"production" => "208.80.153.193",
+			"production" => "208.80.155.255",
 			"labs" => "127.0.0.1",
 		},
 		dmz_cidr => $realm ? {
-			"production" => "208.80.153.0/22,10.0.0.0/8",
+			"production" => "208.80.155.0/22,10.0.0.0/8",
 			"labs" => "10.4.0.0/24",
 		},
 		controller_hostname => $realm ? {
