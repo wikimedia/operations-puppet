@@ -86,7 +86,7 @@ class mobile::vumi {
 		"/etc/supervisor/conf.d/supervisord.wikipedia.conf":
 			owner => "root",
 			source => "puppet:///files/mobile/vumi/supervisord.wikipedia.conf",
-			require => File["/etc/supervisor/conf.d"],
+			require => Package["supervisor"],
 			mode => 0444;
 		"/etc/vumi/wikipedia_xmpp.yaml":
 			owner => "root",
