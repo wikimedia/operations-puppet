@@ -1,8 +1,8 @@
 # mysql.pp
 
-# NOTE.  If you are looking to install a standalone
+# NOTE. If you are looking to install a standalone
 # non-production mysql server, see the generic::mysql::server
-# class at the bottom of this file.  The configs closer to the
+# class at the bottom of this file. The configs closer to the
 # top are meant for production wikimedia mysql installations.
 
 # TODO should really be named mysql-server, or mysql::server
@@ -20,7 +20,7 @@ class mysql {
 	}
 
 	#######################################################################
-	### LVM snapshot hosts 
+	### LVM snapshot hosts
 	#######################################################################
 	if $hostname =~ /^db(26|32|33|44|46|49|53|64|1005|1007|1018|1020|1022|1035|1046|1050)$/ {
 		$snapshot_host = true
@@ -148,7 +148,7 @@ class mysql {
 				ensure => "5.1.53-fb3875-wm1",
 			}
 		}
-		package { ["percona-xtrabackup", "percona-toolkit", "libaio1",  "lvm2" ]:
+		package { ["percona-xtrabackup", "percona-toolkit", "libaio1", "lvm2" ]:
 			ensure => latest,
 		}
 	}
@@ -306,12 +306,12 @@ class mysql {
 	}
 
 	class mysqluser {
-		user { 
+		user {
 			"mysql": ensure => "present",
 		}
 	}
 
-	class datadirs { 
+	class datadirs {
 		file {
 			"/a/sqldata":
 				owner => mysql,
@@ -380,7 +380,7 @@ class mysql {
 
 		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
-		} else { 
+		} else {
 			$ibsize = "500M"
 		}
 
@@ -445,7 +445,7 @@ class mysql {
 				hour => '*/8',
 				ensure => present;
 			}
-		} else { 
+		} else {
 			cron { snaprotate:
 				ensure => absent;
 			}
@@ -516,6 +516,72 @@ class mysql {
 	}
 }
 
+class mysql::coredb::ganglia{
+
+	include passwords::ganglia
+	$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
+
+	# Ganglia
+	package { python-mysqldb:
+		ensure => present;
+	}
+
+	file {
+		"/usr/lib/ganglia/python_modules":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
+		"/usr/lib/ganglia/python_modules/DBUtil.py":
+			require => File["/usr/lib/ganglia/python_modules"],
+			source => "puppet:///files/ganglia/plugins/DBUtil.py",
+			notify => Service[gmond];
+		"/usr/lib/ganglia/python_modules/mysql.py":
+			require => File["/usr/lib/ganglia/python_modules"],
+			source => "puppet:///files/ganglia/plugins/mysql.py",
+			notify => Service[gmond];
+		"/etc/ganglia/conf.d/mysql.pyconf":
+			require => File["/usr/lib/ganglia/python_modules"],
+			content => template("mysql/mysql.pyconf.erb"),
+			notify => Service[gmond];
+	}
+}
+
+class mysql::coredb::monitoring( $crit = false ) {
+
+		include passwords::nagios::mysql
+		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+		# this is for checks from the percona-nagios-checks project
+		# http://percona-nagios-checks.googlecode.com
+		file {
+			"/etc/nagios/nrpe.d/nrpe_percona.cfg":
+				owner => root,
+				group => nagios,
+				mode => 0440,
+				content => template("nagios/nrpe_percona.cfg.erb"),
+				notify => Service[nagios-nrpe-server];
+			"/usr/lib/nagios/plugins/percona":
+				ensure => directory,
+				recurse => true,
+				owner => root,
+				group => root,
+				mode => 0555,
+				source => "puppet:///files/nagios/percona";
+		}
+
+	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
+	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+	monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+	monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
+	monitor_service { "mysql idle transaction": description => "MySQL Idle Transactions", check_command => "nrpe_check_mysql_idle_transactions", critical => false }
+	monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
+
+	if $role::coredb::config::topology[$::shard][master] {
+		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+	}
+}
 
 class mysql::client::default-charset-binary {
 	# ubuntu's stock mysql client defaults to latin1 charsets
