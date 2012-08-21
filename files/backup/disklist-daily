@@ -17,5 +17,6 @@ sodium.wikimedia.org	/var/lib/mailman	default
 stat1.wikimedia.org     /home default
 stat1.wikimedia.org     /a {
 	default
-	exclude file "./mysql"
+	exclude file "./mysql/archive"
+	exclude file "./squid/archive"
 }
