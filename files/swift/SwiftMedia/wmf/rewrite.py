@@ -179,6 +179,11 @@ class WMFRewrite(object):
                     encodedurl = 'http://%s/w/thumb_handler.php/%s' % (hostname, match.group('path'))
                     # add in the original URL that swift got (minus the hostname) as X-Original-URI
                     opener.addheaders.append(('X-Original-URI', list(urlparse.urlsplit(reqorig.url))[2]))
+                else:
+                    # ASSERT this code should never be hit since only thumbs should call the 404 handler
+                    self.logger.warn("non-thumb in 404 handler! encodedurl = %s" % encodedurl)
+                    resp = webob.exc.HTTPNotFound('Unexpected error')
+                    return resp
             else:
                 # log the result of the match here to test and see if we're missing cases
                 match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
@@ -341,8 +346,12 @@ class WMFRewrite(object):
                 return webob.Response(status=status, headers=headers,
                         app_iter=app_iter)(env, start_response) #01a
             elif status == 404: #4
-                resp = self.handle404(reqorig, url, container, obj)
-                return resp(env, start_response)
+                # only send thumbs to the 404 handler; just return a 404 for everything else.
+                if zone == 'thumb':
+                    resp = self.handle404(reqorig, url, container, obj)
+                    return resp(env, start_response)
+                else:
+                    return webob.exc.HTTPNotFound('File not found: %s' % req.path)
             elif status == 401:
                 # if the Storage URL is invalid or has expired we'll get this error.
                 resp = webob.exc.HTTPUnauthorized('Token may have timed out') #05
