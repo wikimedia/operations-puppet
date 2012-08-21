@@ -341,8 +341,12 @@ class WMFRewrite(object):
                 return webob.Response(status=status, headers=headers,
                         app_iter=app_iter)(env, start_response) #01a
             elif status == 404: #4
-                resp = self.handle404(reqorig, url, container, obj)
-                return resp(env, start_response)
+                # only send thumbs to the 404 handler; just return a 404 for everything else.
+                if zone == 'thumb':
+                    resp = self.handle404(reqorig, url, container, obj)
+                    return resp(env, start_response)
+                else:
+                    return webob.exc.HTTPNotFound('File not found: %s' % req.path)
             elif status == 401:
                 # if the Storage URL is invalid or has expired we'll get this error.
                 resp = webob.exc.HTTPUnauthorized('Token may have timed out') #05
