@@ -2582,7 +2582,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
 	if $hostname =~ /^virt1005$/ {
 		include role::nova::network,
 			role::nova::api
-		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.193" }
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.155.255" }
 	}
 	include	role::nova::compute
 }
