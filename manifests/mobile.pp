@@ -40,6 +40,12 @@ class mobile::vumi {
 			ensure => "latest";
 	}
 
+	 service { "supervisor":
+			enable    => true,
+			ensure    => running,
+			require    => [ Package['supervisor']];
+	}
+
 	file {
 		"/etc/vumi":
 			ensure => "directory",
