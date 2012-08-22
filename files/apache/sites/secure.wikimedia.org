@@ -8,7 +8,7 @@
 	ServerAdmin noc@wikimedia.org
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	ErrorLog /var/log/apache2/error.log

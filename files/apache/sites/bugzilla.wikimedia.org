@@ -42,7 +42,7 @@ NameVirtualHost *:443
 	ServerName bugs.wikimedia.org
 	Redirect permanent / https://bugzilla.wikimedia.org/
 	SSLEngine On
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 	RewriteEngine On
 	RewriteRule (.*) https://bugzilla.wikimedia.org%{REQUEST_URI}
@@ -53,7 +53,7 @@ NameVirtualHost *:443
 	ServerName bugzilla.wikimedia.org
 	DocumentRoot /srv/org/wikimedia/bugzilla/
 	SSLEngine On
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	<Directory />

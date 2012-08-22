@@ -12,7 +12,7 @@
 	DocumentRoot /srv/org/wikimedia/wm09schols/
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 
 	<Directory />
