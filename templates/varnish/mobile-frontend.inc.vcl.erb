@@ -374,7 +374,7 @@ sub vcl_recv {
 		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
 			error 666 "http://ar.m.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "TATA" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		}
 	}
 
