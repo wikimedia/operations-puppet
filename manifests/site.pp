@@ -2102,7 +2102,8 @@ node /^srv19[12]\.pmtpa\.wmnet$/ {
 
 # srv193 is test.wikipedia.org
 node "srv193.pmtpa.wmnet" {
-	include applicationserver_old::home,
+	include	role::applicationserver::appserver
+	include nfs::home,
 		memcached
 }
 
