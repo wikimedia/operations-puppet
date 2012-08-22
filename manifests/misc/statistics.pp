@@ -244,6 +244,18 @@ class misc::statistics::gerrit_stats {
 # Sets up daily cron jobs to rsync log files from remote
 # logging hosts to a local destination for further processing.
 class misc::statistics::rsync::jobs {
+
+	# Make sure destination directories exist.
+	# Too bad I can't do this with recurse => true.
+	# See: https://projects.puppetlabs.com/issues/86
+	# for a much too long discussion on why I can't.
+	file { ["/a/squid", "/a/squid/archive", "/a/aft", "/a/aft/archive"]:
+		ensure  => "directory",
+		owner   => "stats",
+		group   => "wikidev",
+		mode    => 0775,
+	}
+
 	# wikipedia zero logs from oxygen
 	misc::statistics::rsync_job { "wikipedia_zero":
 		source      => "oxygen.wikimedia.org::udp2log/archive/zero-*.gz",
@@ -266,6 +278,12 @@ class misc::statistics::rsync::jobs {
 	misc::statistics::rsync_job { "sampled_1000":
 		source      => "emery.wikimedia.org::udp2log/archive/sampled-1000*.gz",
 		destination => "/a/squid/archive/arabic-banner",
+	}
+
+	# AFT clicktracking logs
+	misc::statistics::rsync_job { "clicktracking":
+		source      => "emery.wikimedia.org::udp2log/aft/archive/clicktracking*.gz",
+		destination => "/a/aft/archive/clicktracking",
 	}
 }
 
