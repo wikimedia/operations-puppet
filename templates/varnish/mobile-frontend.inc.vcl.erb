@@ -158,8 +158,6 @@ sub tag_carrier {
 			if ( req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Orange Tunisia";
 			}
-		} else if (client.ip ~ carrier_tata) {
-			set req.http.X-Carrier = "TATA";
 		} else if ( client.ip ~  carrier_orange_niger ) {
 				set req.http.X-Carrier = "Orange Niger";
 		} else if ( client.ip ~ carrier_orange_kenya ) {
@@ -361,8 +359,6 @@ sub vcl_recv {
 			error 666 "http://bn.zero.wikipedia.org";
 		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
 			error 666 "http://ar.m.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "TATA" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else {
 			error 666 "http://en.m.wikipedia.org" + req.url;
 		}
