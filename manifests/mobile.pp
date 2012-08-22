@@ -25,9 +25,9 @@ class mobile::vumi {
 		"python-txamqp":
 			ensure => "0.6.1-1~ppa3";
 		"vumi":
-			ensure => "0.5.0~a+99-0~ppa3";
+			ensure => "0.5.0~a+105-0~ppa3";
 		"vumi-wikipedia":
-			ensure => "0.1~a+9-0~ppa3";
+			ensure => "0.1~a+10-0~ppa3";
 		"python-twisted":
 			ensure => "latest";
 		"python-tz":
