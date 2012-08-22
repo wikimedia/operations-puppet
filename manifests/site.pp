@@ -751,7 +751,7 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	# aft (Article Feedback Tool) 
 	# udp2log instance for clicktracking logs.
 	misc::udp2log::instance { "aft": 
-		log_directory       => "/var/log/aft",
+		log_directory       => "/var/log/squid/aft",
 		port                => "8421",
 		# packet-loss.log is not generated for clicktracking logs,
 		# so packet loss monitoring is disabled.
