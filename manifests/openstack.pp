@@ -56,7 +56,7 @@ class openstack::iptables-accepts {
 		iptables_add_service{ "keystone_admin_nova": source => "10.4.16.0/24", service => "keystone_admin", jump => "ACCEPT" }
 	}
 	if ($site == "eqiad") {
-		iptables_add_service{ "puppet_private": source => "10.68.16.0/16", service => "puppetmaster", jump => "ACCEPT" }
+		iptables_add_service{ "puppet_private": source => "10.68.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
 		iptables_add_service{ "mysql_nova": source => "10.64.20.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.64.20.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.64.20.0/24", service => "beam2", jump => "ACCEPT" }
