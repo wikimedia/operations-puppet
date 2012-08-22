@@ -27,7 +27,7 @@ class role::planet {
 	apache_module { rewrite: name => "rewrite" }
 
 	# dependencies
-	Install_certificate["star.${planet_domain_name}"] -> apache_module["rewrite"] -> Class['webserver::php5']
+	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.${planet_domain_name}"]
 
 	# list all planet languages here, cronjobs are auto-created from this array
 	$planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
