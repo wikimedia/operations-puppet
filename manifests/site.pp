@@ -744,7 +744,7 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	# archives.  This allows stat1 to copy logs from the
 	# logrotated archive directory
 	class { "misc::udp2log::rsyncd":
-		path    => "/var/log/squid/archive",
+		path    => "/var/log/squid",
 		require => Misc::Udp2log::Instance["emery"],
 	}
 
@@ -993,7 +993,7 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	# archives.  This allows stat1 to copy logs from the
 	# logrotated archive directory
 	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid/archive",
+		path    => "/a/squid",
 		require => Misc::Udp2log::Instance["locke"],
 	}
 }
@@ -1820,7 +1820,7 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 	# archives.  This allows stat1 to copy logs from the
 	# logrotated archive directory
 	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid/archive",
+		path    => "/a/squid",
 		require => Misc::Udp2log::Instance["oxygen"],
 	}
 

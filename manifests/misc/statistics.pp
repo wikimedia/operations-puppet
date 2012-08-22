@@ -246,25 +246,25 @@ class misc::statistics::gerrit_stats {
 class misc::statistics::rsync::jobs {
 	# wikipedia zero logs from oxygen
 	misc::statistics::rsync_job { "wikipedia_zero":
-		source      => "oxygen.wikimedia.org::udp2log/zero-*.gz",
+		source      => "oxygen.wikimedia.org::udp2log/archive/zero-*.gz",
 		destination => "/a/squid/archive/zero",
 	}
 
 	# teahouse logs from emery
 	misc::statistics::rsync_job { "teahouse":
-		source      => "emery.wikimedia.org::udp2log/teahouse*.gz",
+		source      => "emery.wikimedia.org::udp2log/archive/teahouse*.gz",
 		destination => "/a/squid/archive/teahouse",
 	}
 
 	# arabic banner logs from emery
 	misc::statistics::rsync_job { "arabic_banner":
-		source      => "emery.wikimedia.org::udp2log/arabic-banner*.gz",
+		source      => "emery.wikimedia.org::udp2log/archive/arabic-banner*.gz",
 		destination => "/a/squid/archive/arabic-banner",
 	}
 
 	# sampled-1000 logs from emery
 	misc::statistics::rsync_job { "sampled_1000":
-		source      => "emery.wikimedia.org::udp2log/sampled-1000*.gz",
+		source      => "emery.wikimedia.org::udp2log/archive/sampled-1000*.gz",
 		destination => "/a/squid/archive/arabic-banner",
 	}
 }
