@@ -2481,6 +2481,7 @@ node "tridge.wikimedia.org" {
 node "vanadium.eqiad.wmnet" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
+	system_role { "solr": description => "ttm solr backend"}
 
 	include standard,
 		groups::wikidev,
@@ -2493,6 +2494,8 @@ node "vanadium.eqiad.wmnet" {
 		nrpe,
 		geoip,
 		misc::udp2log
+
+	class { "solr": schema => "puppet:///modules/solr/schema-ttmserver.xml" }
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { "olivneh": privileges => ['ALL = NOPASSWD: ALL'] }
