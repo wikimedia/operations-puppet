@@ -78,7 +78,7 @@ class nfs::netapp::common {
 		default => undef,
 	}
 		
-	$options = "bg,tcp,rsize=8192,wsize=8192,timeo=14,intr"
+	$options = "bg,intr"
 }
 
 class nfs::netapp::home($ensure="mounted", $mountpoint="/home") {
