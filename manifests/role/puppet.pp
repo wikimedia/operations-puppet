@@ -16,7 +16,7 @@ class role::puppet::server::labs {
 
 	# Only allow puppet access from the instances
 	$puppet_passenger_allow_from = $realm ? {
-		"production" => [ "10.4.0.0/24", "10.4.125.0", "10.4.16.3" ],
+		"production" => [ "10.4.0.0/24", "10.68.16.0/24", "10.4.16.3", "10.64.20.8", "208.80.152.161", "208.80.154.14" ],
 		"labs" => [ "192.168.0.0/24" ],
 	}
 
