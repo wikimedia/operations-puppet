@@ -32,7 +32,7 @@ class role::planet {
 	# list all planet languages here, cronjobs are auto-created from this array
 	$planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
 
-	# the actual planet-venus class doing all the reset
+	# the actual planet-venus class doing all the rest
 	class {'misc::planet-venus':
 		planet_domain_name => $planet_domain_name,
 		planet_languages => $planet_languages,

@@ -59,9 +59,6 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			owner => www-data,
 			group => www-data,
 			source => "puppet:///files/planet/index.html";
-		"/usr/local/bin/update-planets":
-			mode => 0550,
-			source => "puppet:///files/planet/update-planets";
 		"/usr/share/planet-venus/theme/wikimedia/config.ini":
 			source => "puppet:///files/planet/theme/config.ini";
 		"/usr/share/planet-venus/theme/wikimedia/index.html.tmpl":
@@ -107,16 +104,22 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	planetwwwdir { $planet_languages: }
 
-	apache_site { planet: name => "planet.${planet_domain_name}" }
+	define planetcronjob {
 
-	cron {
-		"update-all-planets":
-		ensure => present,
-		command => "/usr/local/bin/update-planets",
-		user => 'planet',
-		hour => '0',
-		minute => '0',
-		require => [User['planet'], File['/usr/local/bin/update-planets']];
+		cron { 
+			"update-${title}-planet":
+			ensure => present,
+			command => "/usr/bin/planet -v /usr/share/planet-venus/wikimedia/${title}/config.ini > /var/log/planet/${title}-planet.log 2>&1",
+			user => 'planet',
+			hour => '0',
+			minute => '0',
+			require => [User['planet']];
+		}
+
 	}
+
+	planetcronjob { $planet_languages: }
+
+	apache_site { planet: name => "planet.${planet_domain_name}" }
 
 }
