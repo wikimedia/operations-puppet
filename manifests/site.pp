@@ -2080,6 +2080,7 @@ node "spence.wikimedia.org" {
 		nfs::home,
 		admins::roots,
 		admins::dctech,
+		admins::mortals,
 		certificates::wmf_ca,
 		backup::client,
 		misc::ircecho
