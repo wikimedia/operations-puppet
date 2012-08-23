@@ -27,7 +27,7 @@ class solr::config ( $schema = undef ) {
   File {
     owner => 'jetty',
     group => 'root',
-    mode  => '0644'
+    mode  => '0644',
     require => Class["solr::install"],
     notify  => Class["solr::service"],
   }
