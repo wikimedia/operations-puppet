@@ -43,7 +43,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 		mode => 0644,
 	}
 
-	file { [ "/var/www/planet", "/var/log/planet", "/usr/share/planet-venus/wikimedia", "/usr/share/planet-venus/theme/wikimedia" ]:
+	file { [ "/var/www/planet", "/var/log/planet", "/usr/share/planet-venus/wikimedia", "/usr/share/planet-venus/theme/wikimedia", "/usr/share/planet-venus/theme/common", "/var/cache/planet" ]:
 		ensure => "directory",
 		mode => 0755,
 	}
