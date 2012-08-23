@@ -44,7 +44,8 @@ driver = keystone.catalog.backends.sql.Catalog
 driver = keystone.token.backends.sql.Token
 
 # Amount of time a token should remain valid (in seconds)
-expiration = 86400
+# Using 7.1 days, as we'll set MediaWiki to 7 days
+expiration = 613440
 
 [policy]
 driver = keystone.policy.backends.rules.Policy
