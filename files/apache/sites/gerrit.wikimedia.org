@@ -43,10 +43,12 @@ NameVirtualHost *:443
 	ServerAdmin noc@wikimedia.org
 	ServerName gerrit.wikimedia.org
 
-	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-	SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
+	<IfModule mod_ssl.c>
+		SSLEngine on
+		SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+		SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+		SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
+	</IfModule>
 
 	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
 	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
