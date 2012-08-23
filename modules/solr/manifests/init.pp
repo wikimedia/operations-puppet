@@ -28,14 +28,14 @@ class solr::config ( $schema = undef ) {
     owner => 'jetty',
     group => 'root',
     mode  => '0644'
+    require => Class["solr::install"],
+    notify  => Class["solr::service"],
   }
 
   file { "/etc/default/jetty":
     ensure  => present,
     source  => "puppet:///modules/solr/jetty",
     owner   => 'root',
-    require => Class["solr::install"],
-    notify  => Class["solr::service"],
   }
 
   if $schema != undef {
@@ -43,8 +43,6 @@ class solr::config ( $schema = undef ) {
       ensure  => present,
       path    => "/etc/solr/conf/schema.xml",
       source  => $schema,
-      require => Class["solr::install"],
-      notify  => Class["solr::service"],
     }
   }
 
