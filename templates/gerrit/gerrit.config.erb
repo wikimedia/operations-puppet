@@ -1,6 +1,6 @@
 [gerrit]
 	basePath = git
-	canonicalWebUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_url') %>
+	canonicalWebUrl = <%= url %>
 [core]
 	packedGitOpenFiles = 4096
 	packedGitLimit = 500m
@@ -8,21 +8,21 @@
 	streamFileThreshold = 100m
 [database]
 	type = MYSQL
-	hostname = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>
-	database = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>
-	url = jdbc:mysql://<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_host') %>/<%= scope.lookupvar('gerrit::gerrit_config::gerrit_db_name') %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
+	hostname = <%= dbhost %>
+	database = <%= dbname %>
+	url = jdbc:mysql://<%= dbhost %>/<%= dbname %>?characterSetResults=utf8&characterEncoding=utf8&connectionCollation=utf8_unicode_ci
 [auth]
 	type = LDAP
 	cookieSecure = true
 	registerUrl = http://www.mediawiki.org/wiki/Commit_access
 [ldap]
-	server = <% scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_host').each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
+	server = <% ldap_hosts.each do |ldap_host| %>ldaps://<%= ldap_host %> <% end %>
 
-	accountBase = ou=people,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
+	accountBase = ou=people,<%= ldap_base_dn %>
 	accountPattern = (&(objectClass=person)(cn=${username}))
 	accountFullName = cn
 
-	groupBase = ou=groups,<%= scope.lookupvar('gerrit::gerrit_config::gerrit_ldap_base_dn') %>
+	groupBase = ou=groups,<%= ldap_base_dn %>
 	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
 	groupScope = one
 [sendemail]
@@ -34,15 +34,15 @@
 	heapLimit = 2g
 	<% if has_variable?("gerrit_slave") then %>slave = true<% end %>
 [sshd]
-	listenAddress = *:29418
+	listenAddress = *:<%= sshport %>
 	threads = 8
 	batchThreads = 2
 [httpd]
-	listenUrl = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_listen_url') %>
+	listenUrl = proxy-https://127.0.0.1:8080/r/
 [cache]
 	directory = cache
 [cache "web_sessions"]
-	maxAge = <%= scope.lookupvar('gerrit::gerrit_config::gerrit_session_timeout') %>
+	maxAge = 90 days
 [gitweb]
 	cgi = /usr/lib/cgi-bin/gitweb.cgi
 	url = /r/gitweb
