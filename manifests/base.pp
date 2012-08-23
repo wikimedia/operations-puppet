@@ -166,7 +166,7 @@ class base::grub {
 	}
 }
 
-class base::puppet($server="puppet", $certname=undef) {
+class base::puppet($server="puppet") {
 
 	include passwords::puppet::database
 
@@ -713,19 +713,9 @@ class base {
 
 			class { base::puppet:
 				server => $::realm ? {
-					'labs' => $::site ? {
-						'pmtpa' => 'virt0.wikimedia.org',
-						'eqiad' => 'virt1000.wikimedia.org',
-					},
-					default => "puppet",
-				},
-				certname => $::realm ? {
-					# For labs, use instanceid.domain rather than the fqdn
-					# to ensure we're always using a unique certname.
-					# dc is an attribute from LDAP, it's set as the instanceid.
-					'labs' => "${dc}.${domain}",
-					default => undefined,
-				},
+					'labs' => 'virt0.wikimedia.org',
+					default => "puppet"
+				}
 			}
 		}
 		Solaris: {
