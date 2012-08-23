@@ -29,10 +29,10 @@ class role::planet {
 	# dependencies
 	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.${planet_domain_name}"]
 
-	# list all planet languages here, cronjobs are auto-created from this array
+	# list all planet languages here, configs,dirs,cronjobs are auto-created from this array
 	$planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
 
-	# the actual planet-venus class doing all the reset
+	# the actual planet-venus class doing all the rest
 	class {'misc::planet-venus':
 		planet_domain_name => $planet_domain_name,
 		planet_languages => $planet_languages,
