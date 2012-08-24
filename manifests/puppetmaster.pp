@@ -383,7 +383,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 }
 
-class puppetmaster::self {
+class puppetmaster::self($gitdir="/var/lib/git") {
 
 	class config inherits base::puppet {
 		include role::ldap::config::labs
@@ -422,7 +422,6 @@ class puppetmaster::self {
 			content => template("puppet/fileserver-self.conf.erb")
 		}
 
-		$gitdir = "/var/lib/git"
 		file { "/etc/puppet/private":
 			ensure => link,
 			target => "$gitdir/labs/private",
@@ -451,8 +450,6 @@ class puppetmaster::self {
 	}
 
 	class gitclone {
-		$gitdir = "/var/lib/git"
-
 		file { "$gitdir":
 			ensure => directory,
 			owner  => root,
