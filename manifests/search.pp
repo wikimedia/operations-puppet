@@ -23,13 +23,22 @@ class lucene {
 	}
 
 	class packages {
-		if ( $lsbdistcodename == "precise" ) {
-			package { ["oracle-j2sdk1.6", "lucene-search-2"]:
+		if ( $::lsbdistcodename == "precise" ) {
+			package { ["oracle-j2sdk1.6"]:
 				ensure => latest;
 			}
 			package { ["liblog4j1.2-java"]:
 				require => Package["oracle-j2sdk1.6"],
 				ensure => latest;
+			}
+			if $::site =="pmtpa" {
+				package { "lucene-search-2":
+					ensure => "2.1.3wm2";
+				}
+			} else {
+				package { "lucene-search-2":
+					ensure => latest;
+				}
 			}
 		}
 		else {
