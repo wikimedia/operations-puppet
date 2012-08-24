@@ -60,7 +60,7 @@ class SwiftHTTPLogtailer(object):
         # see http://wikitech.wikimedia.org/view/Swift/Logging_and_Metrics for more detail
         # format: month day time host process ip ip date method path httpver resp - useragent auth - - - - - dur
         swiftProxyLogFormat = '%date %host %process %client %remote_ip %slashdate %method %path %httpver %status %referrer %useragent %authtoken %reqbytes %respbytes %etag %transid %headers %dur.*'
-        swiftStorageLogFormat = '%date %host %process %client - - %bracketdate "%method %path" %status %respbytes "%referrer" "-" "%quoteduseragent" %dur'
+        swiftStorageLogFormat = '%date %host %process %client - - %bracketdate "%method %path" %status %respbytes "%referrer" "%transid" "%quoteduseragent" %dur'
         swiftProcessLogFormat = '%date %host %process .*'
 
         self.proxyreg = re.compile(self.swiftLogToRegex(swiftProxyLogFormat))
