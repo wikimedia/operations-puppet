@@ -277,7 +277,7 @@ class misc::statistics::rsync::jobs {
 	# sampled-1000 logs from emery
 	misc::statistics::rsync_job { "sampled_1000":
 		source      => "emery.wikimedia.org::udp2log/archive/sampled-1000*.gz",
-		destination => "/a/squid/archive/arabic-banner",
+		destination => "/a/squid/archive/sampled",
 	}
 
 	# AFT clicktracking logs
