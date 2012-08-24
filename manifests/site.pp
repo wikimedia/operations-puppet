@@ -2002,7 +2002,6 @@ node "singer.wikimedia.org" {
 	include standard,
 		svn::client,
 		groups::wikidev,
-		accounts::austin,
 		accounts::awjrichards,
 		generic::mysql::packages::client,
 		misc::planet,
