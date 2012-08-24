@@ -718,7 +718,6 @@ node "dobson.wikimedia.org" {
 }
 
 node "ekrem.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
 	include standard,
 		misc::apple-dictionary-bridge,
 		misc::irc-server,
