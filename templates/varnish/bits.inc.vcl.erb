@@ -53,18 +53,18 @@ sub vcl_miss {
 	}
 }
 <% end -%>
-<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 
 sub vcl_error {
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 	/* Support geoiplookup */
 	if (obj.status == 666) {
 		call geoip_lookup;
 		set obj.status = 200;
 		return(deliver);
 	}
+<% end -%>
 	/* 204 responses shouldn't contain a body */
 	if (obj.status == 204) {
 		return(deliver);
 	}
 }
-<% end -%>
