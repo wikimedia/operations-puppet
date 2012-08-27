@@ -148,6 +148,7 @@ class accounts {
 		$username = "austin"
 		$realname = "Austin Hair"
 		$uid = 548
+		$enabled = "false"
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2144,7 +2145,7 @@ class admins::restricted {
 	include groups::wikidev
 
 	include accounts::ashields # access revoked
-	include accounts::austin
+	include accounts::austin # access revoked
 	include accounts::avar
 	include accounts::bastique # access revoked
 	include accounts::dab
