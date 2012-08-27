@@ -266,18 +266,12 @@ class misc::contint::test {
 		# Make sure we have a 'testswarm' user before doing anything else
 		require misc::contint::test::testswarm::systemuser
 
-		# Testswarm is configured using the debian package
-		package { ["testswarm", "curl"]:
-			ensure => latest; }
+		package { "testswarm": ensure => absent; }
 
 		# Uninstall scripts
 		file {
 			"/etc/testswarm":
-				# also used by testswarm debian package.
-				ensure => directory,
-				mode   => 0755,
-				owner  => testswarm,
-				group  => testswarm;
+				ensure => absent;
 			"/etc/testswarm/fetcher-sample.ini":
 				ensure => absent;
 			"/var/lib/testswarm/script":
@@ -300,70 +294,26 @@ class misc::contint::test {
 			# SQLite databases needs to be writable by Apache and thus
 			# needs specific user rights.
 			"/var/lib/testswarm/mediawiki-git/db/":
-				ensure => directory,
-				mode   => 2775, # group sticky bit
-				owner  => jenkins,
-				group  => www-data;
+				ensure => absent;
 		}
 
-		# Bug 34886 / RT 2574
-		# Testswarm MySQL tables have a lot of rows which requires to allocate
-		# a bit of RAM to Innodb so it can maintain locks on all the rows.
-		$innodb_buffer_pool_size = "256M"
+		# Was for Bug 34886 / RT 2574
 		file { "/etc/mysql/conf.d/innodb_buffer_pool_size.cnf":
-			mode  => 0444,
-			owner => root,
-			group => root,
-			content => template( "mysql/innodb_buffer_pool_size.cnf.erb" )
+			ensure => absent;
 		}
 
-		# Bug 35028
-		# We have the world largest Testswarm database (yeah another record)
-		# and do need some slow query logging to help improve Testswarm DB
-		# schema.
-		$long_query_time = 2
-		$log_queries_not_using_indexes = false
+		# Was for Bug 35028
 		file { "/etc/mysql/conf.d/log_slow_queries.cnf":
-			mode  => 0444,
-			owner => root,
-			group => root,
-			content => template( "mysql/log_slow_queries.cnf.erb" )
+			ensure => absent;
 		}
 
-		service { "mysql":
-			subscribe => [
-				File["/etc/mysql/conf.d/innodb_buffer_pool_size.cnf"],
-				File["/etc/mysql/conf.d/log_slow_queries.cnf"],
-			],
-			ensure => running;
-		}
-
-		# Reload apache whenever testswarm checkouts configuration change
-		exec {	"update-testswarm-publish-checkout":
-			command => "/usr/sbin/service apache2 reload",
-			subscribe => File['/etc/apache2/sites-available/integration.mediawiki.org'],
-			refreshonly => true,
-			onlyif => "/usr/sbin/apache2ctl configtest"
-		}
-
-		# Finally setup cronjob to fetch our files and setup a MediaWiki instance
 		cron {
 			testswarm-fetcher-mw-trunk:
 				ensure => absent;
 		}
-
-		# When a browser asks for jobs, it is reserved in the database so that
-		# another similar browser does not run it also. If the client never
-		# comes back with the result, it needs to be released.
-		# ?state=wipe does things like that for entries not touched in over
-		# 5 minutes and some other small maintenance
 		cron {
 			testswarm-state-wipe:
-				require => Package["curl","testswarm"],
-				command => "(/usr/bin/curl -s http://integration.mediawiki.org/testswarm/?state=wipe) > /dev/null",
-				minute => '*',
-				user => testswarm,
-				ensure => present;
+				ensure => absent;
 		}
 	}
 
