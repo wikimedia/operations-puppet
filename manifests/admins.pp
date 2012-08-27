@@ -2107,6 +2107,7 @@ class admins::roots {
 	include accounts::sara
 	include accounts::andrewb
 	include accounts::faidon
+	include accounts::cmjohnson
 }
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals {
@@ -2183,10 +2184,6 @@ class admins::jenkins {
 	include accounts::hashar
 	include accounts::krinkle
 	include accounts::reedy
-}
-
-class admins::dctech {
-	include accounts::cmjohnson
 }
 
 class admins::globaldev {
