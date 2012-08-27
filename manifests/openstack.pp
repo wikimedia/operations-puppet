@@ -116,7 +116,7 @@ class openstack::common($openstack_version="diablo", $novaconfig) {
 		down => 'ip link set $IFACE down',
 	}
 
-	package { [ "nova-common" ]:
+	package { [ "nova-common", "python-keystone" ]:
 		ensure => latest;
 	}
 
