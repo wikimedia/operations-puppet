@@ -338,7 +338,8 @@ class WMFRewrite(WSGIContext):
                     resp = self.handle404(reqorig, url, container, obj)
                     return resp(env, start_response)
                 else:
-                    return webob.exc.HTTPNotFound('File not found: %s' % req.path)
+                    resp = webob.exc.HTTPNotFound('File not found: %s' % req.path)
+                    return resp(env, start_response)
             elif status == 401:
                 # if the Storage URL is invalid or has expired we'll get this error.
                 resp = webob.exc.HTTPUnauthorized('Token may have timed out') #05
