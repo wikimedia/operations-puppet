@@ -2523,7 +2523,7 @@ node /virt[1-8].pmtpa.wmnet/ {
 
 	include standard
 
-	$openstack_version = "diablo"
+	$openstack_version = "essex"
 	if $hostname =~ /^virt2$/ {
 		include role::nova::network,
 			role::nova::api
