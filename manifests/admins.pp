@@ -2128,7 +2128,7 @@ class admins::mortals {
 	include accounts::preilly
 	include accounts::robla
 	include accounts::neilk  # revoked access per RT 2345
-	include accounts::raindrift
+	include accounts::raindrift # access revoked per RT 3088
 	include accounts::halfak
 	include accounts::kaldari
 	include accounts::bsitu
