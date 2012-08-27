@@ -2505,7 +2505,7 @@ node "virt0.wikimedia.org" {
 
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
-	$openstack_version = "diablo"
+	$openstack_version = "essex"
 
 	include standard,
 		role::dns::ldap,
