@@ -41,6 +41,7 @@ class imagescaler::packages {
 class imagescaler::packages::fonts {
 	package {
 		[
+			"culmus", # bug 38946
 			"gsfonts",
 			"texlive-fonts-recommended",
 			"ttf-alee",
