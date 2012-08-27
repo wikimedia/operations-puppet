@@ -2302,9 +2302,6 @@ node "stafford.pmtpa.wmnet" {
 node "stat1.wikimedia.org" {
 	include role::statistics::cruncher
 
-	# host stats.wikimedia.org from stat1 (This will be moved to role::statistics::www soon)
-	include misc::statistics::site
-
 	# special accounts
 	include accounts::ezachte,
 		accounts::reedy,

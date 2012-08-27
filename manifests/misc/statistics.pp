@@ -94,10 +94,18 @@ class misc::statistics::site {
 	$site_name = "stats.wikimedia.org"
 	$docroot = "/srv/$site_name/htdocs"
 
+	# add htpasswd file for stats.wikimedia.org
+	file { "/etc/apache2/htpasswd.stats":
+		owner   => "root",
+		group   => "root",
+		mode    => 0644,
+		source  => "puppet:///private/apache/htpasswd.stats",
+	}
+
 	include webserver::apache	
 	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
 	webserver::apache::site { $site_name: 
-		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"]],
+		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
 		docroot => $docroot,
 		aliases   => ["stats.wikipedia.org"],
 		custom => [
