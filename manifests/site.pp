@@ -358,20 +358,6 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	include role::cache::bits
 }
 
-node "bayes.wikimedia.org" {
-	include standard,
-		admins::roots,
-		admins::dctech,
-		accounts::ezachte,
-		accounts::reedy,
-		accounts::nimishg,
-		accounts::diederik,
-		accounts::otto
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-	sudo_user { "ezachte": privileges => ['ALL = NOPASSWD: ALL'] }
-}
-
 node "bast1001.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"

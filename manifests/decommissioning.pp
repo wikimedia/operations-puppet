@@ -4,6 +4,7 @@
 
 $decommissioned_servers = [
 "adler",
+"bayes",
 "br1-knams",
 "controller",
 "dataset1",
