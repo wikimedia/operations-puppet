@@ -121,6 +121,7 @@ class network::checks {
 
 	# Nagios monitoring
 	@monitor_group { "routers": description => "IP routers" }
+	@monitor_group { "storage": description => "Storage equipment" }
 
 	# Virtual resource for the monitoring host
 
@@ -154,6 +155,14 @@ class network::checks {
 
 	@monitor_host { "mr1-eqiad": ip_address => "10.65.0.1", group => "routers" }
 	@monitor_service { "mr1-eqiad interfaces": host => "mr1-eqiad", group => "routers", description => "Router interfaces", check_command => "check_ifstatus!${snmp_ro_community}" }	
+
+
+	@monitor_host {
+		"nas1-a.pmtpa.wmnet": ip_address => "10.0.0.253", group => "storage", critical => "true";
+		"nas1-b.pmtpa.wmnet": ip_address => "10.0.0.254", group => "storage", critical => "true";
+		"nas1001-a.eqiad.wmnet": ip_address => "10.64.16.4", group => "storage", critical => "true";
+		"nas1001-b.eqiad.wmnet": ip_address => "10.64.16.5", group => "storage", critical => "true";
+	}
 }
 
 # This makes the monitoring host include the router group and
