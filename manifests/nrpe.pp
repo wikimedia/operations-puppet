@@ -89,6 +89,11 @@ class nrpe::packages {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/nagios/check_dpkg";
+		"/usr/lib/nagios/plugins/check_ram.sh":
+			source => "puppet:///files/nagios/check_ram.sh",
+			owner => root,
+			group => root,
+			mode => 0555;
 	}
 }
 
