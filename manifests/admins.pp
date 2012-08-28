@@ -1407,6 +1407,7 @@ class accounts {
 		$username = "ben"
 		$realname = "Ben Hartshorne"
 		$uid = 576 
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1422,7 +1423,7 @@ class accounts {
 			}
                         ssh_authorized_key {
 				"ben@JDoe-LinuxBookAir-3.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAJhFwtno+J3dlFvOeA8qX71RVX9kFvD7zJepLBXOEM2uxkGkiPgipAr/sKriud0nccQkWx0TZ1SxF7lrSjrH0TzzYa27JlkltOXIPskVPdNyLhqesIt/XlbuWrRLRiO+qhGJDhFqxE1owSBfbc+hKFhDCw5RHx/FCCHztIglMs2PAAAAFQDD2AFU6Z1JBs0ZGWrLxNnxWHRcDQAAAIB2pCYum0XaVIwwtUTGfOQeoknEYJADtweZJsz/8rHJTvuNXsl/DUUN406bzQ3Pfkz9eFLplD2I0aFOD3ChPLEQ2DFQ84RUmaqtW137Rxe/uvLne9bNTQDEIqgLfXbpQL/eSTzjAiTWTVBb1dLbnUech4j5U4tiizu7dVxVzk3RgQAAAIEAhPjJoFSvY48+8Nbek8fyePz+TMwgZW+SR/ZwEms+rsmMSHFi0IyUdm+Qg3y5PHWnY7UZkgDIlIza+A7B66G5XEs1ovTHVO4XheqULYHnBV2WClo0clEaiK7N/pJDWfIJIqItZKWIDOCzbSNFD9XQn7qNvzEtKool8oRTMcvu4jY=";
