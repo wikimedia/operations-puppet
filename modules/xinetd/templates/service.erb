@@ -1,0 +1,21 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+service <%= name %>
+{
+        port            = <%= port %>
+        disable         = <%= disable %>
+        socket_type     = <%= socket_type %>
+        protocol        = <%= protocol %>
+        wait            = <%= mywait %>
+        user            = <%= user %>
+        group           = <%= group %>
+        server          = <%= server %>
+        bind            = <%= bind %>
+<% if server_args != :undef %>        server_args     = <%= server_args %><% end %>
+<% if per_source != :undef %>        per_source      = <%= per_source %><% end %>
+<% if log_on_failure != :undef %>       log_on_failure      += <%= log_on_failure %><% end %>
+<% if cps != :undef %>        cps             = <%= cps %><% end %>
+<% if flags != :undef %>        flags           = <%= flags %><% end %>
+<% if service_type != :undef %>        type     = <%= service_type %><% end %>
+}

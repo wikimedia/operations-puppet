@@ -1,0 +1,9 @@
+* 2012-06-07 1.1.0
+- Add port and bind options to services
+- make services deletable
+
+1.0.1 - 20100812
+    * added documentation
+
+1.0.0 - 20100624
+    * initial release

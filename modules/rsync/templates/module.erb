@@ -1,0 +1,21 @@
+# This file is being maintained by Puppet.
+# DO NOT EDIT
+
+[ <%= name %> ]
+path            = <%= path %>
+read only       = <%= read_only %>
+write only      = <%= write_only %>
+list            = <%= list %>
+uid             = <%= uid %>
+gid             = <%= gid %>
+incoming chmod  = <%= incoming_chmod %>
+outgoing chmod  = <%= outgoing_chmod %>
+max connections = <%= max_connections %>
+<% if Integer(max_connections) > 0 %>lock file =     <%= lock_file %><% end %>
+<% if comment != :undef %>comment               = <%= comment %><% end %>
+<% if secrets_file != :undef %>secrets file = <%= secrets_file %><% end %>
+<% if auth_users != :undef %>auth users = <%= auth_users.to_a.join(', ')%><% end %>
+<% if hosts_allow != :undef %>hosts allow = <%= hosts_allow.to_a.join(' ')%><% end %>
+<% if hosts_deny != :undef %>hosts deny = <%= hosts_deny.to_a.join(' ')%><% end %>
+
+

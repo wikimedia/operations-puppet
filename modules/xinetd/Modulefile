@@ -1,0 +1,8 @@
+name    'puppetlabs-xinetd'
+version '1.1.0'
+source  'https://github.com/puppetlabs/puppetlabs-xinetd'
+author  'Puppet Labs'
+license 'Apache License 2.0'
+summary 'Puppet Labs Xinetd Module'
+description 'Puppet module to configure xinetd services'
+project_page 'https://github.com/puppetlabs/puppetlabs-xinetd'
