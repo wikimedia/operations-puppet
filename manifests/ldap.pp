@@ -392,7 +392,7 @@ class ldap::client::utils($ldapconfig) {
 	# Use a specific revision for the checkout, to ensure we are using
 	# a known and approved version of this script.
 	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r115666 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
+		command => "/usr/bin/svn co -r115695 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
 		cwd => "/usr/local/lib",
 		require => Package["subversion"];
 	}
