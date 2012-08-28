@@ -182,7 +182,7 @@ class base::puppet($server="puppet", $certname=undef) {
 	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 	
 	if $realm == "labs" {
-		$nagios_host = "nagios"
+		$nagios_host = "nagios-main"
 	} else {
 		$nagios_host = "nagios.wikimedia.org"
 	}
