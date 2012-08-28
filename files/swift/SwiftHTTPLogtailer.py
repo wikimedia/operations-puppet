@@ -7,6 +7,7 @@
 ###    * number of GET requests
 ###    * average duration of each hit
 ###    * 90th percentile of hit durations
+###    * 50th percentile of hit durations
 ###    * maximum hit duration
 ###    * number of HTTP 200-299 responses
 ###    * number of HTTP 300-399 responses
@@ -240,16 +241,16 @@ class SwiftHTTPLogtailer(object):
 
         # for each method (get, put, etc.) we want to calculate 
         # - number of hits total
-        # - avg, 90th, and max duration
+        # - avg, 90th, 50th, and max duration
         # - for each status code (200, 204, etc.)
         # - - number of hits
-        # - - avg, 90th, and max duration
+        # - - avg, 90th, 50th, and max duration
         # for each status (200, 204, etc.) we want to calcualte
         # - number of hits total (across all methods)
         # each metric will be named:
-        #   method_hits, method_avg, method_90th, method_max
-        #   method_status_hits, method_status_avg, method_status_90th, method_status_max
-        # if method_status_hist is 0, avg, 90th, and max will not be reported.
+        #   method_hits, method_avg, method_90th, method_50th, method_max
+        #   method_status_hits, method_status_avg, method_status_90th, method_status_50th, method_status_max
+        # if method_status_hist is 0, avg, 90th, 50th, and max will not be reported.
         #   (for example, put will never return 200)
 
         totalhits = 0
@@ -272,7 +273,7 @@ class SwiftHTTPLogtailer(object):
                     # skip calculating durations if the list is empty.
                     continue
                 # at this point, we know there's stuff in durs
-                # calculate avg, 90th, and max
+                # calculate avg, 90th, 50th, and max
                 #print "statusO: %s statusnum %s" % (status, statusnum)
                 durs.sort()
                 try:
@@ -282,6 +283,7 @@ class SwiftHTTPLogtailer(object):
                     combined['swift_%s_%s_hits' % (method, statusnum)] = 0
                 #print "istatus 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
                 combined['swift_%s_%s_%s' % (method, statusnum, '90th')] = durs[int(len(durs) * 0.9)]
+                combined['swift_%s_%s_%s' % (method, statusnum, '50th')] = durs[int(len(durs) * 0.5)]
                 combined['swift_%s_%s_%s' % (method, statusnum, 'max')] = durs[-1]
                 combined['swift_%s_%s_%s' % (method, statusnum, 'avg')] = sum(durs) / len(durs)
                 # combine status data for method stats
@@ -298,6 +300,7 @@ class SwiftHTTPLogtailer(object):
                 combined['swift_%s_hits' % (method)] = 0
             #print "method 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
             combined['swift_%s_%s' % (method, '90th')] = durs[int(len(durs) * 0.9)]
+            combined['swift_%s_%s' % (method, '50th')] = durs[int(len(durs) * 0.5)]
             combined['swift_%s_%s' % (method, 'max')] = durs[-1]
             #print durs
             #print ">> %s %s<<" % (sum(durs), len(durs))
