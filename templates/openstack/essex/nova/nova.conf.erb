@@ -7,7 +7,7 @@ root_helper=sudo /usr/bin/nova-rootwrap
 instance_name_template=i-%08x
 daemonize=1
 scheduler_driver=nova.scheduler.simple.SimpleScheduler
-max_cores=80
+max_cores=200
 my_ip=<%= novaconfig["my_ip"] %>
 logdir=/var/log/nova
 state_path=/var/lib/nova
