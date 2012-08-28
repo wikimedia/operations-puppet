@@ -566,7 +566,7 @@ class accounts {
 
 	class hashar inherits baseaccount {
 		$username = "hashar"
-		$realname = "Ashar Voultoiz"
+		$realname = "Antoine Musso"
 		$uid = 519
 		$gid = 500
 
