@@ -8,6 +8,12 @@ class role::statistics {
 		generic::packages::git-core,
 		misc::statistics::base,
 		base::packages::emacs
+
+	# manually set a list of statistics servers for
+	# use in configs later.  
+	# 208.80.152.146 - stat1
+	# 208.80.154.155 - stat1001
+	$servers = ["208.80.152.146", "208.80.154.155"]
 }
 
 

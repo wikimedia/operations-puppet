@@ -57,6 +57,28 @@ class misc::statistics::dataset_mount {
 	}
 }
 
+# Sets up rsyncd and common modules
+# for statistic servers.  Currently
+# this is read/write between statistic
+# servers in /a.
+class misc::statistics::rsyncd {
+	# this uses modules/rsync and 
+	# modules/xinetd to set
+	# up an rsync service managed
+	# by xinetd.
+	include rsync::server
+
+	# set up an rsync module
+	# (in /etc/rsync.conf) for /a
+	rsync::server::module { "a": 
+		path      => "/a",
+		read_only => "no",
+		list      => "yes",
+		# allow only statistics servers (stat1, stat1001)
+		hosts_allow => $role::statistics::servers,
+	}
+}
+
 # clones mediawiki core at /a/mediawiki/core
 # and ensures that it is at the latest revision.
 # RT 2162
