@@ -1699,8 +1699,6 @@ node /^nfs[12].pmtpa.wmnet/ {
 	$cluster = "misc"
 
 	include standard,
-		misc::nfs-server::home,
-		misc::nfs-server::home::backup,
 		misc::nfs-server::home::rsyncd,
 		misc::syslog-server,
 		role::ldap::server::production,
