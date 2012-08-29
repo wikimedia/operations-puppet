@@ -53,7 +53,8 @@ class gerrit::instance($no_apache=false,
 	# Common setup
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
-		apache_ssl => $apache_ssl
+		apache_ssl => $apache_ssl,
+		host => $host
 	}
 
 	class {'gerrit::jetty':
@@ -234,7 +235,9 @@ class gerrit::jetty ($ldap_hosts,
 
 }
 
-class gerrit::proxy( $no_apache = true, $apache_ssl = false ) {
+class gerrit::proxy( $no_apache = true,
+		$apache_ssl = false,
+		$host = "") {
 
 	if !$no_apache {
 		require webserver::apache
@@ -246,7 +249,7 @@ class gerrit::proxy( $no_apache = true, $apache_ssl = false ) {
 			mode => 0644,
 			owner => root,
 			group => root,
-			source => "puppet:///files/apache/sites/gerrit.wikimedia.org",
+			content => template('apache/sites/gerrit.wikimedia.org.erb'),
 			ensure => present;
 	}
 
