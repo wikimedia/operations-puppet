@@ -2139,15 +2139,8 @@ node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 		memcached
 }
 
-# FIXME: why is srv281 different?
 node "srv281.pmtpa.wmnet" {
-	#include applicationserver::homeless,
-	#	applicationserver::jobrunner,
-	#	 memcached
-	include admins::roots,
-		admins::mortals,
-		apaches::pybal-check,
-		imagescaler
+	include	role::applicationserver::appserver
 }
 
 node /^srv28[2-9]\.pmtpa\.wmnet$/ {
