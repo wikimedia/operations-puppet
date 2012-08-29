@@ -25,19 +25,19 @@ hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus
 # this includes only dumps, no archives, no other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
-# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
-# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
-# we manage this, see file in /home/wikipedia/docs 
 # added mirror.fr.wickedway.nl, June 8 2012 -- atg
 # for mirror.fr.wickedway.nl contact:  mirror@wickedway.nl
-hosts allow =  199.47.196.26 mirror.fr.wickedway.nl
+hosts allow = mirror.fr.wickedway.nl
 
 [dumpmirrorseverything]
 # this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
+# added 199.47.196.26 (wansecurity hosted), Jan 25 2012 -- atg
+# for wansecurity, contact: Robert Smith <rtsmith@wansecurity.com>
+# we manage this, see file in /home/wikipedia/docs/mirrors
 # added your.org, Feb 2 2012 -- atg
 # for your.org, contact: Kevin Day <kevin@your.org>
-# they manage it but we have access; see file in /home/wikipedia/docs
-hosts allow = ftpmirror.your.org 
+# they manage it but we have access; see file in /home/wikipedia/docs/mirrors
+hosts allow = 199.47.196.26 ftpmirror.your.org
 
