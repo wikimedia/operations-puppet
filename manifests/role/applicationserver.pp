@@ -38,7 +38,6 @@ class role::applicationserver {
 
 		if $::realm == 'production' {
 			include	admins::roots,
-				admins::dctech,
 				admins::mortals,
 				geoip
 		}
