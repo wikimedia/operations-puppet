@@ -2070,6 +2070,7 @@ node "srv193.pmtpa.wmnet" {
 }
 
 node "srv194.pmtpa.wmnet" {
+	$ganglia_aggregator = "true"
 	include	role::applicationserver::appserver
 }
 
