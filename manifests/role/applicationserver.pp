@@ -31,7 +31,7 @@ class role::applicationserver {
 		) {
 
 		$nagios_group = "${group}_${::site}"
-		$cluster = "${group}_${::site}"
+		$cluster = "${group}"
 
 		include	standard,
 		## TODO: rename to just mediawiki after full transition to module
