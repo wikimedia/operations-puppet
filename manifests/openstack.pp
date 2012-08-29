@@ -402,7 +402,7 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 
 	cron { "run-jobs":
 		user => mwdeploy,
-		command => 'cd /srv/org/wikimedia/controller/wikis/1.20wmf2; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
+		command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
 		ensure => present;
 	}
 
