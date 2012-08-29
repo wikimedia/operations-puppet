@@ -837,21 +837,13 @@ node "formey.wikimedia.org" {
 			'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
 	sudo_user { [ "demon", "robla", "sumanah", "reedy" ]: privileges => $sudo_privs }
 
-	$cluster = "misc"
 	$gid = 550
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-	$gerrit_slave = "true"
-	$gerrit_no_apache = "true"
-
-	include standard,
+	include role::gerrit::production::slave,
 		svn::server,
-		backup::client,
-		gerrit::proxy,
-		gerrit::jetty,
-		gerrit::gitweb,
-		gerrit::ircbot
+		backup::client
 
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
@@ -1433,16 +1425,11 @@ node "manganese.wikimedia.org" {
 			'ALL = NOPASSWD: /var/lib/gerrit2/review_site/bin/gerrit.sh' ]
 	sudo_user { [ "demon", "robla", "reedy" ]: privileges => $sudo_privs }
 
-	$cluster = "misc"
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-	include standard,
-		backup::client,
-		gerrit::proxy,
-		gerrit::jetty,
-		gerrit::gitweb,
-		gerrit::ircbot
+	include role::gerrit::production,
+		backup::client
 
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }

@@ -1,58 +1,98 @@
-class gerrit::database-server {
+# manifests/gerrit.pp
+# Manifest to setup a Gerrit instance
 
-	include gerrit::gerrit_config
+class gerrit::instance($no_apache=false,
+		$apache_ssl=false,
+		$ircbot=false,
+		$slave=false,
+		$ssh_port="29418",
+		$db_host="",
+		$db_name="reviewdb",
+		$host="",
+		$db_user="gerrit",
+		$ssh_key="") {
 
-	## mysql server package and service are currently being handled by the openstack server
-	#package { "mysql-server":
-	#	ensure => latest;
-	#}
-	#
-	#service { "mysql":
-	#	enable => true,
-	#	ensure => running;
-	#}
+	include standard,
+		role::ldap::config::labs,
+		generic::packages::git-core
 
-	exec {
-		'create_gerrit_db_user':
-			unless => "/usr/bin/mysql --defaults-file=/etc/gerrit2/gerrit-user.cnf -e 'exit'",
-			command => "/usr/bin/mysql -uroot < /etc/gerrit2/gerrit-user.sql",
-			require => [Package["mysql-client"],File["/etc/gerrit2/gerrit-user.sql", "/etc/gerrit2/gerrit-user.cnf", "/root/.my.cnf"]];
-		'create_gerrit_db':
-			unless => "/usr/bin/mysql -uroot ${gerrit::gerrit_config::gerrit_db_name} -e 'exit'",
-			command => "/usr/bin/mysql -uroot -e \"create database ${gerrit::gerrit_config::gerrit_db_name}; ALTER DATABASE reviewdb charset=latin1;\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
-			before => Exec['create_gerrit_db_user'];
+	# TODO: Move this to the gerrit .deb
+	group { "gerrit2":
+		name => "gerrit2",
+		ensure => present,
+		allowdupe => false;
 	}
 
-	file {
-		"/etc/gerrit2":
-			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0640;
-		"/etc/gerrit2/gerrit-user.sql": 
-			content => template("gerrit/gerrit-user.sql.erb"),
-			owner => root, 
-			group => root,
-			mode => 0640,
-			require => File["/etc/gerrit2"];
-		"/etc/gerrit2/gerrit-user.cnf": 
-			content => template("gerrit/gerrit-user.cnf.erb"),
-			owner => root, 
-			group => root, 
-			mode => 0640,
-			require => File["/etc/gerrit2"];
+	# Main config
+	include passwords::gerrit
+	$gerrit_pass = $passwords::gerrit::gerrit_pass
+	$email_key = $passwords::gerrit::gerrit_email_key
+	$sshport = $ssh_port
+	$dbhost = $db_host
+	$dbname = $db_name
+	$dbuser = $db_user
+	$dbpass = $passwords::gerrit::gerrit_db_pass
+
+	# Setup LDAP
+	include role::ldap::config::labs
+	$ldapconfig = $role::ldap::config::labs::ldapconfig
+
+	$ldap_hosts = $ldapconfig["servernames"]
+	$ldap_base_dn = $ldapconfig["basedn"]
+	$ldap_proxyagent = $ldapconfig["proxyagent"]
+	$ldap_proxyagent_pass = $ldapconfig["proxypass"]
+
+	# Configure SSL for some hosts
+	if $apache_ssl {
+		$url = "https://${host}/r"
+	}
+	if !$apache_ssl {
+		$url = "http://${host}/r"
 	}
 
+	# Common setup
+	class {'gerrit::proxy':
+		no_apache => $no_apache,
+		apache_ssl => $apache_ssl
+	}
+
+	class {'gerrit::jetty':
+		ldap_hosts => $ldap_hosts,
+		ldap_base_dn => $ldap_base_dn,
+		url => $url,
+		dbhost => $dbhost,
+		dbname => $dbname,
+		dbuser => $dbuser,
+		hostname => $host,
+		ldap_proxyagent => $ldap_proxyagent,
+		ldap_proxyagent_pass => $ldap_proxyagent_pass,
+		sshport => $sshport,
+		ssh_key => $ssh_key
+	}
+
+	# Optional modules
+	if $ircbot { include gerrit::ircbot }
 }
 
-class gerrit::jetty {
+class gerrit::jetty ($ldap_hosts,
+		$ldap_base_dn,
+		$url,
+		$dbhost,
+		$dbname,
+		$dbuser,
+		$hostname,
+		$sshport,
+		$ldap_proxyagent,
+		$ldap_proxyagent_pass,
+		$ssh_key) {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
-	include gerrit::account,
-		gerrit::crons,
-		gerrit::gerrit_config,
-		generic::packages::git-core
+	include gerrit::crons,
+		gerrit::gitweb
+
+	class { "gerrit::account":
+		ssh_key => $ssh_key
+	}
 
 	package { [ "openjdk-6-jre", "git-svn" ]:
 		ensure => latest;
@@ -194,9 +234,9 @@ class gerrit::jetty {
 
 }
 
-class gerrit::proxy {
+class gerrit::proxy( $no_apache = true, $apache_ssl = false ) {
 
-	if !$gerrit_no_apache {
+	if !$no_apache {
 		require webserver::apache
 		apache_site { 000_default: name => "000-default", ensure => absent }
 	}
@@ -214,7 +254,9 @@ class gerrit::proxy {
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	apache_module { ssl: name => "ssl" }
+	if $apache_ssl {
+		apache_module { ssl: name => "ssl" }
+	}
 }
 
 class gerrit::gitweb {
@@ -251,8 +293,6 @@ class gerrit::gitweb {
 
 class gerrit::ircbot {
 
-	include gerrit::gerrit_config
-
 	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile;/var/lib/gerrit2/review_site/logs/mediawiki.log:#mediawiki;/var/lib/gerrit2/review_site/logs/wikimedia-dev.log:#wikimedia-dev;/var/lib/gerrit2/review_site/logs/semantic-mediawiki.log:#semantic-mediawiki,#mediawiki;/var/lib/gerrit2/review_site/logs/wikidata.log:#wikimedia-wikidata,#mediawiki"
 	$ircecho_nick = "gerrit-wm"
 	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki,#wikimedia-dev,#wikimedia-wikidata,#semantic-mediawiki"
@@ -278,50 +318,37 @@ class gerrit::ircbot {
 	}
 }
 
-class gerrit::account {
+# Setup the `gerrit2` account for gerrit to run as
+# The gerrit package already creates the user itself
+class gerrit::account( $ssh_key ) {
 
 	ssh_authorized_key { gerrit2:
-		key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
-		type => ssh-rsa,
+		key => $ssh_key,
+		type => "ssh-rsa",
 		user => gerrit2,
-		require => Package["gerrit"],
+		require => [Package["gerrit"],
+				File["/var/lib/gerrit2/.ssh"]],
 		ensure => present;
 	}
 
 	file {
+		"/var/lib/gerrit2":
+			mode  => 0600,
+			owner => "gerrit2",
+			ensure => directory;
+		"/var/lib/gerrit2/.ssh":
+			mode  => 0600,
+			owner => "gerrit2",
+			ensure => directory,
+			require => File["/var/lib/gerrit2"];
 		"/var/lib/gerrit2/.ssh/id_rsa":
 			owner => gerrit2,
 			group => gerrit2,
 			mode  => 0600,
-			require => [Package["gerrit"], Ssh_authorized_key["gerrit2"]],
+			require => [Package["gerrit"],
+				Ssh_authorized_key["gerrit2"]],
 			source => "puppet:///private/gerrit/id_rsa";
 	}
-
-}
-
-class gerrit::gerrit_config {
-
-	include passwords::gerrit,
-		role::ldap::config::labs
-
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
-
-	$gerrit_hostname = "gerrit.wikimedia.org"
-	$gerrit_username = "gerrit2"
-	$gerrit_pass = $passwords::gerrit::gerrit_pass
-	$gerrit_sshport = "29418"
-	$gerrit_url = 'https://gerrit.wikimedia.org/r/'
-	$gerrit_db_host = "db1048.eqiad.wmnet"
-	$gerrit_db_name = "reviewdb"
-	$gerrit_db_user = "gerrit"
-	$gerrit_db_pass = $passwords::gerrit::gerrit_db_pass
-	$gerrit_email_key = $passwords::gerrit::gerrit_email_key
-	$gerrit_ldap_host = $ldapconfig["servernames"]
-	$gerrit_ldap_base_dn = $ldapconfig["basedn"]
-	$gerrit_ldap_proxyagent = $ldapconfig["proxyagent"]
-	$gerrit_ldap_proxyagent_pass = $ldapconfig["proxypass"]
-	$gerrit_listen_url = 'proxy-https://127.0.0.1:8080/r/'
-	$gerrit_session_timeout = "90 days"
 
 }
 
