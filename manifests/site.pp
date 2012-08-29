@@ -110,7 +110,7 @@ class applicationserver_old {
 
 	class home-no-service inherits parent {
 		include	standard,
-			nfs::home,
+			nfs::netapp::home,
 			nfs::upload,
 			mediawiki::packages,
 			admins::roots,
@@ -788,7 +788,7 @@ node "fenari.wikimedia.org" {
 
 	include standard,
 		svn::client,
-		nfs::home,
+		nfs::netapp::home,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -1075,7 +1075,7 @@ node "hume.wikimedia.org" {
 	$cluster = "misc"
 
 	include standard,
-		nfs::home,
+		nfs::netapp::home,
 		misc::deployment::scripts,
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
@@ -2041,7 +2041,7 @@ node "spence.wikimedia.org" {
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
 		nagios::monitor::checkpaging,
-		nfs::home,
+		nfs::netapp::home,
 		admins::roots,
 		admins::mortals,
 		certificates::wmf_ca,
@@ -2067,7 +2067,7 @@ node /^srv19[12]\.pmtpa\.wmnet$/ {
 # srv193 is test.wikipedia.org
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver
-	include nfs::home,
+	include nfs::netapp::home,
 		memcached
 }
 
