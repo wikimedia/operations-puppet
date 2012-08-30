@@ -112,6 +112,10 @@ class gerrit::jetty ($ldap_hosts,
 			owner => root,
 			group => root,
 			mode => 0444;
+		"/var/lib/gerrit2":
+			mode  => 0755,
+			owner => "gerrit2",
+			ensure => directory;
 		"/var/lib/gerrit2/review_site":
 			ensure => directory,
 			owner => gerrit2,
@@ -332,10 +336,6 @@ class gerrit::account( $ssh_key ) {
 	}
 
 	file {
-		"/var/lib/gerrit2":
-			mode  => 0600,
-			owner => "gerrit2",
-			ensure => directory;
 		"/var/lib/gerrit2/.ssh":
 			mode  => 0600,
 			owner => "gerrit2",
