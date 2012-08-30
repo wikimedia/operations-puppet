@@ -59,15 +59,23 @@ our $conf = {
 		'pmtpa' => {
 			'search_pool1' => {
 				'lvs' => [qw(10.2.1.11)],
-				'host' => [qw(search1.pmtpa.wmnet search3.pmtpa.wmnet search4.pmtpa.wmnet search9.pmtpa.wmnet)],
+				'host' => [qw(search21.pmtpa.wmnet search22.pmtpa.wmnet search23.pmtpa.wmnet search26.pmtpa.wmnet)],
 			},
 			'search_pool2' => {
 				'lvs' => [qw(10.2.1.12)],
-				'host' => [qw(search6.pmtpa.wmnet search15.pmtpa.wmnet)],
+				'host' => [qw(search27.pmtpa.wmnet search28.pmtpa.wmnet)],
 			},
 			'search_pool3' => {
 				'lvs' => [qw(10.2.1.13)],
-				'host' => [qw(search7.pmtpa.wmnet)],
+				'host' => [qw(search31.pmtpa.wmnet)],
+			},
+			'search_pool4' => {
+				'lvs' => [qw(10.2.1.14)],
+				'host' => [qw(search13.pmtpa.wmnet search14.pmtpa.wmnet)],
+			},
+			'search_prefix' => {
+				'lvs' => [qw(10.2.1.15)],
+				'host' => [qw(search19.pmtpa.wmnet search20.pmtpa.wmnet)],
 			},
 		},
 	},
@@ -79,37 +87,19 @@ sub determine_api_host {
 	my $q = shift;
 	my @hosts;
 	my $mode = $q->{'pool_mode'};
-	for my $dc (split /,/, $q->{'datacenter'}) {
-		if ($dc eq 'eqiad') {
-			if (defined $q->{'suggest'}) {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_prefix'}->{$mode}}
-			} elsif ($q->{'wgDBname'} eq 'enwiki') {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool1'}->{$mode}};
-			} elsif ($q->{'wgDBname'} =~ /^(dewiki|frwiki|jawiki)$/) {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool2'}->{$mode}};
-			} elsif ($q->{'wgDBname'} =~ /^(eswiki|itwiki|ptwiki|plwiki|nlwiki|ruwiki|svwiki|zhwiki)$/) {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool3'}->{$mode}};
-			} else {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool4'}->{$mode}};
-			}
-		}  elsif ($dc eq 'pmtpa') {
-			if ((defined $q->{'suggest'}) and ($q->{'wgDBname'} eq 'enwiki')) {
-				push @hosts, 'search8.pmtpa.wmnet';
-			} elsif (defined $q->{'suggest'}) {
-				push @hosts, 'search18.pmtpa.wmnet';
-			} elsif ($q->{'wgDBname'} eq 'enwiki') {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool1'}->{$mode}};
-			} elsif ($q->{'wgDBname'} =~ /^(dewiki|frwiki|jawiki)$/) {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool2'}->{$mode}};
-			} elsif ($q->{'wgDBname'} =~ /^(itwiki|ptwiki|plwiki|nlwiki|ruwiki|svwiki|zhwiki)$/) {
-				push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool3'}->{$mode}};
-			} elsif ($q->{'wgDBname'} eq 'eswiki') {
-				push @hosts, 'search14.pmtpa.wmnet';
-			} else {
-				push @hosts, 'search11.pmtpa.wmnet';
-			}
-		}
-	}
+        for my $dc (split /,/, $q->{'datacenter'}) {
+                        if (defined $q->{'suggest'}) {
+                                push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_prefix'}->{$mode}}
+                        } elsif ($q->{'wgDBname'} eq 'enwiki') {
+                                push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool1'}->{$mode}};
+                        } elsif ($q->{'wgDBname'} =~ /^(dewiki|frwiki|jawiki)$/) {
+                                push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool2'}->{$mode}};
+                        } elsif ($q->{'wgDBname'} =~ /^(eswiki|itwiki|ptwiki|plwiki|nlwiki|ruwiki|svwiki|zhwiki)$/) {
+                                push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool3'}->{$mode}};
+                        } else {
+                                push @hosts, @{$conf->{'lvs'}->{$dc}->{'search_pool4'}->{$mode}};
+                        }
+        }
 	return @hosts;
 }
 
