@@ -1,0 +1,7 @@
+#######################################################################
+# WARNING: this file is managed by Puppet
+# puppet:///files/misc/beta/wmf-beta-autoupdate.default
+#######################################################################
+
+# Enable verbose mode while we pretest this script
+VERBOSE=yes
