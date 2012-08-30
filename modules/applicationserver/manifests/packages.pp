@@ -2,7 +2,7 @@
 class applicationserver::packages {
 
 	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc",
-			"php5", "php-wikidiff2", "php5-wmerrors", "php5-intl" ]:
+			"php5", "php-wikidiff2", "php5-wmerrors", "php5-intl", "php-luasandbox" ]:
 		ensure => latest;
 	}
 
