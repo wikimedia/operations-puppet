@@ -1,2 +1,5 @@
+* 2012-08-30 0.1.0-wmf
+- Removed xinetd support (otto@wikimedia.org)
+
 * 2012-06-07 0.1.0
 - Initial release

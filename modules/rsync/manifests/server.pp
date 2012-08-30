@@ -3,11 +3,15 @@
 # The rsync server. Supports both standard rsync as well as rsync over ssh
 #
 # Requires:
-#   class xinetd if use_xinetd is set to true
+# #   class xinetd if use_xinetd is set to true
 #   class rsync
 #
+# NOTE:  I have removed xinetd support, since we have
+# not imported https://github.com/puppetlabs/puppetlabs-xinetd
+# into the WMF puppet repository. - otto
+
 class rsync::server(
-  $use_xinetd = true,
+  # $use_xinetd = true,
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
   $use_chroot = 'yes'
@@ -15,22 +19,22 @@ class rsync::server(
 
   $rsync_fragments = '/etc/rsync.d'
 
-  if($use_xinetd) {
-    include xinetd
-    xinetd::service { 'rsync':
-      bind        => $address,
-      port        => '873',
-      server      => '/usr/bin/rsync',
-      server_args => '--daemon --config /etc/rsync.conf',
-      require     => Package['rsync'],
-    }
-  } else {
+  # if($use_xinetd) {
+  #   include xinetd
+  #   xinetd::service { 'rsync':
+  #     bind        => $address,
+  #     port        => '873',
+  #     server      => '/usr/bin/rsync',
+  #     server_args => '--daemon --config /etc/rsync.conf',
+  #     require     => Package['rsync'],
+  #   }
+  # } else {
     service { 'rsync':
       ensure    => running,
       enable    => true,
       subscribe => Exec['compile fragments'],
     }
-  }
+  # }
 
   if $motd_file != 'UNSET' {
     file { '/etc/rsync-motd':
