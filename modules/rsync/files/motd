@@ -1,9 +1,2 @@
- __________________ 
-< I <3 Puppet Labs >
- ------------------ 
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-
+You are using WMF's version of the PuppetLabs
+rsync module from: https://github.com/puppetlabs/puppetlabs-rsync

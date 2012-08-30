@@ -1,5 +1,7 @@
 * 2012-08-30 0.1.0-wmf
 - Removed xinetd support (otto@wikimedia.org)
+- Removed '< I <3 Puppet Labs >' default motd.
+
 
 * 2012-06-07 0.1.0
 - Initial release
