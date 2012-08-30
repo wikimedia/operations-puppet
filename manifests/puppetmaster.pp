@@ -256,11 +256,21 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				hour => 4,
 				minute => 27,
 				ensure => present;
+		}
+
+
+		if( $::realm == 'production' ) {
+			$decomservercron = "present";
+		} else {
+			$decomservercron = "absent";
+		}
+
+		cron {
 			decomservers:
 				command => "/usr/local/bin/decom_servers.sh",
 				user => root,
 				minute => 17,
-				ensure => present;
+				ensure => $decomservercron;
 		}
 	}
 
