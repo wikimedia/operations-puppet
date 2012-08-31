@@ -2019,7 +2019,6 @@ class accounts {
 		}
 	}
 
-
 	class mwalker inherits baseaccount {
 		$username = "mwalker"
 		$realname = "Matt Walker"
@@ -2053,6 +2052,23 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=";
+			}
+		}
+	}
+
+	class spage inherits baseaccount {
+		$username = "spage"
+		$realname = "S Page"
+		$uid = 607
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"spage@wikimedia.org":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCxtHW7OHjikPa2sSCn5OmROXWEMHy1vHgXgRHWZwJz47PSEa3D6dbintic/3E9yt0/zBz3S2aTjQl+USzPG5fGDLxuudyER8BOcmhRG6w1FLvI/6iEocjhZLZijgv36RolSorafMyX3mMU9nDtIznWINhWS9cbtRPrFx1E8t/T4xj5VstMxtSFab3jDNzIoeRjrXeHMaJf273oZ6hUQGeMrTpUMRJ+orEeQis2Lha0aoUTms/Hp6xplQV3VtoAgAnZwt7HaiyBJGd+LVSg8AJz6zVol5r8ktTgYTHWR51D/jufXz0PTbCcxfxoQ6akfPR5pDzPApRO0JDGjW5Lemm1";
 			}
 		}
 	}
