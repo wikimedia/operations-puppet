@@ -30,7 +30,8 @@ class role::gerrit {
 			ssl_cert_file => "/etc/ssl/certs/star.wikimedia.org.pem",
 			replication => {
 				"formey" => 'gerrit2@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git'
-			}
+			},
+			smtp_host => "smtp.pmtpa.wmnet"
 		}
 	}
 
