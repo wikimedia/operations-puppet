@@ -1,5 +1,5 @@
 class misc::parsoid {
-	package { [ "nodejs", "npm" ]:
+	package { [ "nodejs", "npm", "build-essential" ]:
 		ensure => latest
 	}
 
