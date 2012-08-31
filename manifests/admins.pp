@@ -1501,10 +1501,9 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
-
-                        ssh_authorized_key {
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
+			ssh_authorized_key {
 				"halfak":
 					ensure	=> present,
 					user	=> $username,
