@@ -37,9 +37,15 @@ class misc::statistics::base {
 			recurse => "false";
 	}
 
+	
+	# Manually set a list of statistics servers.
+	# 208.80.152.146 - stat1
+	# 208.80.154.155 - stat1001
+	$servers = ["208.80.152.146", "208.80.154.155"]
+
 	# set up rsync modules for copying files
 	# on statistic servers in /a
-	include misc::statistics::rsyncd
+	class { "misc::statistics::rsyncd": hosts_allow => $servers }
 }
 
 # Mounts /data from dataset2 server.
@@ -255,7 +261,10 @@ class misc::statistics::gerrit_stats {
 # for statistic servers.  Currently
 # this is read/write between statistic
 # servers in /a.
-class misc::statistics::rsyncd {
+#
+# Parameters:
+#   hosts_allow - array.  Hosts to grant rsync access.
+class misc::statistics::rsyncd($hosts_allow = undef) {
 	# this uses modules/rsync to
 	# set up an rsync daemon service
 	include rsync::server
@@ -267,7 +276,7 @@ class misc::statistics::rsyncd {
 		read_only   => "no",
 		list        => "yes",
 		# allow only statistics servers (stat1, stat1001)
-		hosts_allow => $role::statistics::servers,
+		hosts_allow => $hosts_allow,
 	}
 }
 
