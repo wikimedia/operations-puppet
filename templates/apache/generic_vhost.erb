@@ -6,7 +6,7 @@
 <% if aliases.length > 0 -%>
 	ServerAlias <%= aliases.join(" ") %>
 <% end -%>
-	ServerAdmin root@wikimedia.org
+	ServerAdmin <%= server_admin %>
 
 	DocumentRoot <%= docroot %>
 	<Directory <%= docroot %>>

@@ -267,7 +267,8 @@ class webserver::apache {
 		$docroot=undef, 
 		$custom=[], 
 		$includes=[], 
-		$ensure=present) {
+		$ensure=present,
+		$server_admin="root@wikimedia.org") {
 
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
