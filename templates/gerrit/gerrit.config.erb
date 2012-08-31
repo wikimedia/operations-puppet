@@ -25,8 +25,12 @@
 	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
 	groupScope = one
 [sendemail]
-	smtpServer = smtp.pmtpa.wmnet
 	smtpServerPort = 25
+<% if smtp_server != "" then %>
+	smtpServer = <%= smtp_server %>
+<% else %>
+	enable = false
+<% end %>
 [container]
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre
