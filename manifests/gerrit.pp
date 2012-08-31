@@ -10,7 +10,8 @@ class gerrit::instance($no_apache=false,
 		$db_name="reviewdb",
 		$host="",
 		$db_user="gerrit",
-		$ssh_key="") {
+		$ssh_key="",
+		$smtp_host="") {
 
 	include standard,
 		role::ldap::config::labs,
@@ -67,7 +68,8 @@ class gerrit::instance($no_apache=false,
 		ldap_proxyagent => $ldap_proxyagent,
 		ldap_proxyagent_pass => $ldap_proxyagent_pass,
 		sshport => $sshport,
-		ssh_key => $ssh_key
+		ssh_key => $ssh_key,
+		smtp_host => $smtp_host
 	}
 
 	# Optional modules
@@ -84,7 +86,8 @@ class gerrit::jetty ($ldap_hosts,
 		$sshport,
 		$ldap_proxyagent,
 		$ldap_proxyagent_pass,
-		$ssh_key) {
+		$ssh_key,
+		$smtp_host) {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,

@@ -24,9 +24,14 @@
 	groupBase = ou=groups,<%= ldap_base_dn %>
 	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
 	groupScope = one
+<% if smtp_server != "" then %>
 [sendemail]
-	smtpServer = smtp.pmtpa.wmnet
+	smtpServer = <%= smtp_server %>
 	smtpServerPort = 25
+<% else %>
+[sendemail]
+	enable = false
+<% end %>
 [container]
 	user = gerrit2
 	javaHome = /usr/lib/jvm/java-6-openjdk/jre
