@@ -45,7 +45,7 @@ class misc::statistics::base {
 # Mounts /data from dataset2 server.
 # xmldumps and other misc files needed
 # for generating statistics are here.
-class misc::statistics::dataset_mount {	
+class misc::statistics::dataset_mount {
 	# need this for NFS mounts.
 	include nfs::common
 
@@ -81,7 +81,7 @@ class misc::statistics::mediawiki {
 # RT-2163
 class misc::statistics::plotting {
 
-	package { [ 
+	package { [
 			"ploticus",
 			"libploticus0",
 			"r-base",
@@ -94,7 +94,7 @@ class misc::statistics::plotting {
 }
 
 # stats.wikimedia.org
-class misc::statistics::site {
+class misc::statistics::sites::stats {
 	$site_name = "stats.wikimedia.org"
 	$docroot = "/srv/$site_name/htdocs"
 
@@ -106,9 +106,9 @@ class misc::statistics::site {
 		source  => "puppet:///private/apache/htpasswd.stats",
 	}
 
-	include webserver::apache	
+	include webserver::apache
 	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
-	webserver::apache::site { $site_name: 
+	webserver::apache::site { $site_name:
 		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
 		docroot => $docroot,
 		aliases   => ["stats.wikipedia.org"],
@@ -123,7 +123,7 @@ class misc::statistics::site {
 
 	# Set up htpasswd authorization for some sensitive stuff
 	"<Directory \"$docroot/reportcard/staff\">
-		AllowOverride None              
+		AllowOverride None
 		Order allow,deny
 		Allow from all
 		AuthName \"Password protected area\"
@@ -132,7 +132,7 @@ class misc::statistics::site {
 		Require user wmf
 	</Directory>",
 	"<Directory \"$docroot/reportcard/extended\">
-		AllowOverride None              
+		AllowOverride None
 		Order allow,deny
 		Allow from all
 		AuthName \"Password protected area\"
@@ -141,7 +141,7 @@ class misc::statistics::site {
 		Require user internal
 	</Directory>",
 	"<Directory \"$docroot/reportcard/pediapress\">
-		AllowOverride None              
+		AllowOverride None
 		Order allow,deny
 		Allow from all
 		AuthName \"Password protected area\"
@@ -152,6 +152,51 @@ class misc::statistics::site {
 	],
 	}
 }
+
+# community-analytics.wikimedia.org
+class misc::statistics::sites::community_analytics {
+	$site_name = "community-analytics.wikimedia.org"
+	$docroot = "/srv/org.wikimedia.community-analytics/community-analytics/web_interface"
+
+	# org.wikimedia.community-analytics is kinda big,
+	# it really lives on /a.
+	# Symlink /srv/a/org.wikimedia.community-analytics to it.
+	file { "/srv/org.wikimedia.community-analytics":
+		ensure => "/a/srv/org.wikimedia.community-analytics"
+	}
+
+	include webserver::apache
+	webserver::apache::site { $site_name:
+		require => Class["webserver::apache"],
+		docroot => $docroot,
+		server_admin => "noc@wikimedia.org",
+		custom => [
+			"SetEnv MPLCONFIGDIR /srv/org.wikimedia.community-analytics/mplconfigdir",
+
+	"<Location \"/\">
+		SetHandler python-program
+		PythonHandler django.core.handlers.modpython
+		SetEnv DJANGO_SETTINGS_MODULE web_interface.settings
+		PythonOption django.root /community-analytics/web_interface
+		PythonDebug On
+		PythonPath \"['/srv/org.wikimedia.community-analytics/community-analytics'] + sys.path\"
+	</Location>",
+
+	"<Location \"/media\">
+		SetHandler None
+	</Location>",
+
+	"<Location \"/static\">
+		SetHandler None
+	</Location>",
+
+	"<LocationMatch \"\\.(jpg|gif|png)$\">
+		SetHandler None
+	</LocationMatch>",
+	],
+	}
+}
+
 
 
 # installs a generic mysql server
@@ -183,7 +228,7 @@ class misc::statistics::gerrit_stats {
 	# use the stats user
 	$gerrit_stats_user          = $misc::statistics::user::username
 	$gerrit_stats_user_home     = $misc::statistics::user::homedir
-	
+
 	file { $gerrit_stats_base:
 		owner  => $gerrit_stats_user,
 		group  => "wikidev",
@@ -194,7 +239,7 @@ class misc::statistics::gerrit_stats {
 	# gerrit-stats requires this packages
 	package { "python-mysqldb": ensure => "installed" }
 
-	# We also need pyyaml aka python-yaml.  
+	# We also need pyyaml aka python-yaml.
 	# (This will also install libyaml as a dependency.)
 	package { "python-yaml": ensure => "installed" }
 
