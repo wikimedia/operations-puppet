@@ -8,8 +8,12 @@ class role::statistics {
 		generic::packages::git-core,
 		misc::statistics::base,
 		base::packages::emacs
+		
+		# Manually set a list of statistics servers.
+		# 208.80.152.146 - stat1
+		# 208.80.154.155 - stat1001
+		$servers = ["208.80.152.146", "208.80.154.155"]
 }
-
 
 class role::statistics::cruncher inherits role::statistics {
 	system_role { "role::statistics": description => "statistics number crunching server" }

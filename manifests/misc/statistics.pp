@@ -36,6 +36,10 @@ class misc::statistics::base {
 			ensure => directory,
 			recurse => "false";
 	}
+
+	# set up rsync modules for copying files
+	# on statistic servers in /a
+	include misc::statistics::rsyncd
 }
 
 # Mounts /data from dataset2 server.
@@ -245,6 +249,28 @@ class misc::statistics::gerrit_stats {
 		require => [Git::Clone["gerrit-stats"], Git::Clone["gerrit-stats/data"], File["$gerrit_stats_user_home/.my.cnf"]],
 	}
 }
+
+
+# Sets up rsyncd and common modules
+# for statistic servers.  Currently
+# this is read/write between statistic
+# servers in /a.
+class misc::statistics::rsyncd {
+	# this uses modules/rsync to	
+	# set up an rsync daemon service
+	include rsync::server
+
+	# set up an rsync module
+	# (in /etc/rsync.conf) for /a
+	rsync::server::module { "a": 
+		path        => "/a",
+		read_only   => "no",
+		list        => "yes",
+		# allow only statistics servers (stat1, stat1001)
+		hosts_allow => $role::statistics::servers,
+	}
+}
+
 
 
 # Class: misc::statistics::rsync::jobs
