@@ -9,7 +9,7 @@ LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" c
 NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
-	ServerName gerrit.wikimedia.org
+	ServerName <%= host %>
 
 	DocumentRoot /var/www
 	<Directory />
@@ -23,10 +23,6 @@ NameVirtualHost *:80
 		allow from all
 	</Directory>
 
-	RewriteEngine on
-	RewriteCond %{SERVER_PORT} !^443$
-	RewriteRule ^/(.*)$ https://gerrit.wikimedia.org/$1 [L,R,NE]
-
 	ErrorLog /var/log/apache2/error.log
 
 	# Possible values include: debug, info, notice, warn, error, crit,
@@ -36,12 +32,34 @@ NameVirtualHost *:80
 	CustomLog /var/log/apache2/access.log combined_time
 	ServerSignature Off
 
+<% if !apache_ssl then %>
+	RedirectMatch ^/$ http://<%= host %>/r/
+	RedirectMatch ^/gitweb/(.*)$ http://<%= host %>/r/gitweb?p=$1
+
+	SetEnvIf User-Agent 80legs bad_browser
+
+	ProxyRequests Off
+	ProxyVia Off
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Order deny,allow
+		deny from env=bad_browser
+	</Proxy>
+
+	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
+</VirtualHost>
+<% end %>
+<% if apache_ssl then %>
+	RewriteEngine on
+	RewriteCond %{SERVER_PORT} !^443$
+	RewriteRule ^/(.*)$ https://<%= host %>/$1 [L,R,NE]
 </VirtualHost>
 
 NameVirtualHost *:443
 <VirtualHost *:443>
 	ServerAdmin noc@wikimedia.org
-	ServerName gerrit.wikimedia.org
+	ServerName <%= host %>
 
 	<IfModule mod_ssl.c>
 		SSLEngine on
@@ -50,8 +68,8 @@ NameVirtualHost *:443
 		SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
 	</IfModule>
 
-	RedirectMatch ^/$ https://gerrit.wikimedia.org/r/
-	RedirectMatch ^/gitweb/(.*)$ https://gerrit.wikimedia.org/r/gitweb?p=$1
+	RedirectMatch ^/$ https://<%= host %>/r/
+	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
 
 	SetEnvIf User-Agent 80legs bad_browser
 
@@ -88,3 +106,4 @@ NameVirtualHost *:443
 	ServerSignature Off
 
 </VirtualHost>
+<% end %>
