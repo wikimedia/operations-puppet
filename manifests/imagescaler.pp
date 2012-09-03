@@ -86,6 +86,19 @@ class imagescaler::packages::fonts {
 			"xfonts-scalable"]:
 		ensure => latest;
 	}
+
+	# bug 38299 alias 'cmr10' to 'Computer Modern' family
+	file {
+		"/etc/fonts/conf.d/conf.avail/39-wmf-computer-modern.conf":
+			source => "puppet:///files/misc/fontconfig/39-wmf-computer-modern.conf",
+			ensure => present,
+			owner => root,
+			group => root,
+			mode => 0644;
+		"/etc/fonts/conf.d/conf.d/39-wmf-computer-modern.conf":
+			ensure => link,
+			target => '../conf.avail/39-wmf-computer-modern.conf';
+	}
 }
 
 
