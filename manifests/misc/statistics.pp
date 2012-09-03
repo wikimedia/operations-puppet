@@ -22,11 +22,7 @@ class misc::statistics::user {
 class misc::statistics::base {
 	system_role { "misc::statistics::base": description => "statistics server" }
 
-	$stat_packages = [ "mc", "zip", "p7zip", "p7zip-full", "subversion" ]
-
-	package { $stat_packages:
-		ensure => latest;
-	}
+	include misc::statistics::packages
 
 	file {
 		"/a":
@@ -45,6 +41,29 @@ class misc::statistics::base {
 	# set up rsync modules for copying files
 	# on statistic servers in /a
 	class { "misc::statistics::rsyncd": hosts_allow => $servers }
+}
+
+
+class misc::statistics::packages {
+	package { ["mc", "zip", "p7zip", "p7zip-full", "subversion"]:
+		ensure => latest;
+	}
+
+	include misc::statistics::packages::python
+}
+
+# Packages needed for various python stuffs
+# on statistics servers.
+class misc::statistics::packages::python {
+	package { [
+		"libapache2-mod-python",
+		"python-django",
+		"python-mysqldb",
+		"python-yaml",
+		"python-dateutil"
+	]:
+		ensure => 'installed',
+	}
 }
 
 # Mounts /data from dataset2 server.
@@ -172,7 +191,7 @@ class misc::statistics::sites::community_analytics {
 
 	include webserver::apache
 	webserver::apache::site { $site_name:
-		require => Class["webserver::apache"],
+		require => [Class["webserver::apache"], Class["misc::statistics::packages::python"]],
 		docroot => $docroot,
 		server_admin => "noc@wikimedia.org",
 		custom => [
@@ -241,12 +260,7 @@ class misc::statistics::gerrit_stats {
 		ensure => "directory",
 	}
 
-	# gerrit-stats requires this packages
-	package { "python-mysqldb": ensure => "installed" }
 
-	# We also need pyyaml aka python-yaml.
-	# (This will also install libyaml as a dependency.)
-	package { "python-yaml": ensure => "installed" }
 
 	# Clone the gerrit-stats and gerrit-stats/data
 	# repositories into subdirs of $gerrit_stats_path.
@@ -258,7 +272,7 @@ class misc::statistics::gerrit_stats {
 		directory => "$gerrit_stats_path",
 		origin    => $gerrit_stats_repo_url,
 		owner     => $gerrit_stats_user,
-		require   => [User[$gerrit_stats_user], Package["python-mysqldb"], Package["python-yaml"]],
+		require   => [User[$gerrit_stats_user], Class["misc::statistics::packages::python"]],
 		ensure    => "latest",
 	}
 
