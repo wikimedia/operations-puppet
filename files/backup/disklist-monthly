@@ -9,4 +9,6 @@ stat1.wikimedia.org     /a {
 	default
 	exclude file "./mysql"
 	exclude file "./squid/archive"
+	exclude file "./wikistats/tmp"
+	exclude file "./wikistats/backup"
 }
