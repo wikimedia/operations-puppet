@@ -81,6 +81,11 @@ class misc::deployment::scripts {
 			mode => 0555,
 			require => Package[ 'php5-parsekit' ], # bug 37076
 			source => "puppet:///files/misc/scripts/lint.php";
+		"/usr/local/bin/mw-update-l10n":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/mw-update-l10n";
 		"/usr/local/bin/mwscript":
 			owner => root,
 			group => root,
