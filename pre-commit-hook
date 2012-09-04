@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# Git pre-commit hook for Puppet manifests
+#
+# Validates modified Puppet manifests using "puppet parser validate",
+# if available. If not available, outputs warning and continues. If
+# available and validation fails, aborts commit.
+#
+# Author: Ori Livneh
+
+
+if ! $(hash puppet &>/dev/null) ; then
+    echo "WARNING: puppet not found; skipping syntax checks" >&2
+    exit 0
+fi
+
+# Read names of modified manifests (*.pp files) into a Bash array
+mapfile -t diff < <(git diff --cached --name-only --diff-filter=ACM -- '*.pp')
+
+for file in "${diff[@]}"; do
+    # Validate; ignore warnings about storeconfigs not being set
+    # because it is only set on puppetmaster. Use PIPESTATUS to
+    # get the exit status of puppet rather than grep.
+    puppet parser validate "${file}" 2>&1 | grep -v "without storeconfigs"
+    if [[ ${PIPESTATUS[0]} != 0 ]] ; then
+        exit 2
+    fi
+done
