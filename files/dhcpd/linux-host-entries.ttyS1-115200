@@ -950,7 +950,7 @@ host harmon {
 
 host helium {
 	hardware ethernet 78:2b:cb:09:0f:c8;
-	fixed-address helium.wikimedia.org;
+	fixed-address helium.eqiad.wmnet;
 }
 
 host hooft {

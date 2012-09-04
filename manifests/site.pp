@@ -927,6 +927,12 @@ node "gurvin.wikimedia.org" {
 		certificates::wmf_ca
 }
 
+
+node "helium.eqiad.wmnet" {
+	include standard,
+		role::poolcounter
+}
+
 node "hooft.esams.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
@@ -1016,40 +1022,6 @@ node "manutius.wikimedia.org" {
 			subtree => "/Storage",
 			snmp_community => $snmp_ro_community,
 			hosts => $storagehosts
-	}
-}
-
-node "marmontel.wikimedia.org" {
-	include standard,
-		admins::roots,
-		svn::client,
-		misc::blogs::wikimedia,
-		webserver::apache2::rpaf
-
-		class { "memcached":
-			memcached_ip => "127.0.0.1" }
-
-	install_certificate{ "star.wikimedia.org": }
-
-	varnish::instance { "blog":
-		name => "",
-		vcl => "blog",
-		port => 80,
-		admin_port => 6082,
-		storage => "-s malloc,1G",
-		backends => [ 'localhost' ],
-		directors => { 'backend' => [ 'localhost' ] },
-		vcl_config => {
-			'retry5xx' => 0
-		},
-		backend_options => {
-			'port' => 81,
-			'connect_timeout' => "5s",
-			'first_byte_timeout' => "35s",
-			'between_bytes_timeout' => "4s",
-			'max_connections' => 100,
-			'probe' => "blog",
-		},
 	}
 }
 
@@ -1432,6 +1404,40 @@ node "manganese.wikimedia.org" {
 		backup::client
 
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
+}
+
+node "marmontel.wikimedia.org" {
+	include standard,
+		admins::roots,
+		svn::client,
+		misc::blogs::wikimedia,
+		webserver::apache2::rpaf
+
+		class { "memcached":
+			memcached_ip => "127.0.0.1" }
+
+	install_certificate{ "star.wikimedia.org": }
+
+	varnish::instance { "blog":
+		name => "",
+		vcl => "blog",
+		port => 80,
+		admin_port => 6082,
+		storage => "-s malloc,1G",
+		backends => [ 'localhost' ],
+		directors => { 'backend' => [ 'localhost' ] },
+		vcl_config => {
+			'retry5xx' => 0
+		},
+		backend_options => {
+			'port' => 81,
+			'connect_timeout' => "5s",
+			'first_byte_timeout' => "35s",
+			'between_bytes_timeout' => "4s",
+			'max_connections' => 100,
+			'probe' => "blog",
+		},
+	}
 }
 
 node "mchenry.wikimedia.org" {
@@ -1844,6 +1850,11 @@ node "project1.wikimedia.org" {
 	$cluster = "misc"
 
 	include standard
+}
+
+node "potassium.eqiad.wmnet" {
+	include standard,
+		role::poolcounter
 }
 
 node "sanger.wikimedia.org" {
