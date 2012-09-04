@@ -10,7 +10,10 @@ class gerrit::instance($no_apache=false,
 		$db_name="reviewdb",
 		$host="",
 		$db_user="gerrit",
-		$ssh_key="") {
+		$ssh_key="",
+		$ssl_cert_file="/etc/ssl/certs/ssl-cert-snakeoil.pem",
+		$ssl_cert_key_file="/etc/ssl/private/ssl-cert-snakeoil.key"
+		) {
 
 	include standard,
 		role::ldap::config::labs,
@@ -53,7 +56,8 @@ class gerrit::instance($no_apache=false,
 	# Common setup
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
-		apache_ssl => $apache_ssl,
+		ssl_cert_file => $ssl_cert_file,
+		ssl_cert_key_file => $ssl_cert_key_file,
 		host => $host
 	}
 

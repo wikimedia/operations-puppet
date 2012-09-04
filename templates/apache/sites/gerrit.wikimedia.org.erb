@@ -32,25 +32,6 @@ NameVirtualHost *:80
 	CustomLog /var/log/apache2/access.log combined_time
 	ServerSignature Off
 
-<% if !apache_ssl then %>
-	RedirectMatch ^/$ http://<%= host %>/r/
-	RedirectMatch ^/gitweb/(.*)$ http://<%= host %>/r/gitweb?p=$1
-
-	SetEnvIf User-Agent 80legs bad_browser
-
-	ProxyRequests Off
-	ProxyVia Off
-	ProxyPreserveHost On
-
-	<Proxy *>
-		Order deny,allow
-		deny from env=bad_browser
-	</Proxy>
-
-	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
-</VirtualHost>
-<% end %>
-<% if apache_ssl then %>
 	RewriteEngine on
 	RewriteCond %{SERVER_PORT} !^443$
 	RewriteRule ^/(.*)$ https://<%= host %>/$1 [L,R,NE]
@@ -61,12 +42,10 @@ NameVirtualHost *:443
 	ServerAdmin noc@wikimedia.org
 	ServerName <%= host %>
 
-	<IfModule mod_ssl.c>
-		SSLEngine on
-		SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
-		SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-		SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
-	</IfModule>
+	SSLEngine on
+	SSLCertificateFile <%= ssl_cert_file %>
+	SSLCertificateKeyFile <%= ssl_cert_key_file %>
+	SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
 
 	RedirectMatch ^/$ https://<%= host %>/r/
 	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
