@@ -27,7 +27,10 @@ class role::gerrit {
 			host => "gerrit.wikimedia.org",
 			ssh_key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAxOlshfr3UaPr8gQ8UVskxHAGG9xb55xDyfqlK7vsAs/p+OXpRB4KZOxHWqI40FpHhW+rFVA0Ugk7vBK13oKCB435TJlHYTJR62qQNb2DVxi5rtvZ7DPnRRlAvdGpRft9JsoWdgsXNqRkkStbkA5cqotvVHDYAgzBnHxWPM8REokQVqil6S/yHkIGtXO5J7F6I1OvYCnG1d1GLT5nDt+ZeyacLpZAhrBlyFD6pCwDUhg4+H4O3HGwtoh5418U4cvzRgYOQQXsU2WW5nBQHE9LXVLoL6UeMYY4yMtaNw207zN6kXcMFKyTuF5qlF5whC7cmM4elhAO2snwIw4C3EyQgw==",
 			ssl_key_file => "/etc/ssl/private/star.wikimedia.org.key",
-			ssl_cert_file => "/etc/ssl/certs/star.wikimedia.org.pem"
+			ssl_cert_file => "/etc/ssl/certs/star.wikimedia.org.pem",
+			replication => {
+				"formey" => 'gerrit2@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git'
+			}
 		}
 	}
 
