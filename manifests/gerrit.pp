@@ -10,7 +10,10 @@ class gerrit::instance($no_apache=false,
 		$db_name="reviewdb",
 		$host="",
 		$db_user="gerrit",
-		$ssh_key="") {
+		$ssh_key="",
+		$ssl_cert_file="/etc/ssl/certs/ssl-cert-snakeoil.pem",
+		$ssl_key_file="/etc/ssl/private/ssl-cert-snakeoil.key"
+		) {
 
 	include standard,
 		role::ldap::config::labs,
@@ -42,18 +45,14 @@ class gerrit::instance($no_apache=false,
 	$ldap_proxyagent = $ldapconfig["proxyagent"]
 	$ldap_proxyagent_pass = $ldapconfig["proxypass"]
 
-	# Configure SSL for some hosts
-	if $apache_ssl {
-		$url = "https://${host}/r"
-	}
-	if !$apache_ssl {
-		$url = "http://${host}/r"
-	}
+	# Configure the base URL
+	$url = "https://${host}/r"
 
 	# Common setup
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
-		apache_ssl => $apache_ssl,
+		ssl_cert_file => $ssl_cert_file,
+		ssl_key_file => $ssl_key_file,
 		host => $host
 	}
 
@@ -240,8 +239,9 @@ class gerrit::jetty ($ldap_hosts,
 }
 
 class gerrit::proxy( $no_apache = true,
-		$apache_ssl = false,
-		$host = "") {
+		$host = "",
+		$ssl_cert_file="",
+		$ssl_key_file="") {
 
 	if !$no_apache {
 		require webserver::apache
@@ -261,9 +261,7 @@ class gerrit::proxy( $no_apache = true,
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	if $apache_ssl {
-		apache_module { ssl: name => "ssl" }
-	}
+	apache_module { ssl: name => "ssl" }
 }
 
 class gerrit::gitweb {
