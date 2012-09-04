@@ -13,7 +13,8 @@ class gerrit::instance($no_apache=false,
 		$ssh_key="",
 		$ssl_cert_file="/etc/ssl/certs/ssl-cert-snakeoil.pem",
 		$ssl_key_file="/etc/ssl/private/ssl-cert-snakeoil.key",
-		$replication="") {
+		$replication="",
+		$smtp_host="") {
 
 	include standard,
 		role::ldap::config::labs,
@@ -68,7 +69,8 @@ class gerrit::instance($no_apache=false,
 		ldap_proxyagent_pass => $ldap_proxyagent_pass,
 		sshport => $sshport,
 		ssh_key => $ssh_key,
-		replication => $replication
+		replication => $replication,
+		smtp_host => $smtp_host
 	}
 
 	# Optional modules
@@ -86,7 +88,8 @@ class gerrit::jetty ($ldap_hosts,
 		$ldap_proxyagent,
 		$ldap_proxyagent_pass,
 		$ssh_key,
-		$replication) {
+		$replication,
+		$smtp_host) {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,
