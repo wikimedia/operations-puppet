@@ -39,8 +39,13 @@ sub vcl_fetch {
 }
 
 sub vcl_miss {
-	# Send thumbnails to the Swift thumbs cluster
-	if ( req.url ~ "^/+[^/]+/[^/]+/thumb/" ) {
-		set req.backend = swift_thumbs;
+	# Send originals to the Swift cluster
+	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
+		set req.backend = swift;
+	}
+	
+	# Send thumbnails to the Swift cluster
+	if ( req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/" ) {
+		set req.backend = swift;
 	}
 }

@@ -361,7 +361,7 @@ class role::cache {
 				admin_port => 6083,
 				storage => "-s sda3=file,/srv/sda3/varnish.persist,100G -s sdb3=file,/srv/sdb3/varnish.persist,100G",
 				backends => [ "10.2.1.24", "10.2.1.27" ],
-				directors => { "backend" => [ "10.2.1.24" ], "swift_thumbs" => [ "10.2.1.27", "10.2.1.24" ] },
+				directors => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
 				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 1,
