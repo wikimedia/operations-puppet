@@ -159,7 +159,7 @@ class openstack::queue-server($openstack_version, $novaconfig) {
 class openstack::project-storage-cron {
 	$ircecho_logs = { "/var/lib/glustermanager/manage-volumes.log" => "wikimedia-labs" }
 	$ircecho_nick = "labs-storage-wm"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 
 	package { "ircecho":
 		ensure => latest;
