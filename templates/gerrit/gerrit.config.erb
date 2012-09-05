@@ -26,8 +26,8 @@
 	groupScope = one
 [sendemail]
 	smtpServerPort = 25
-<% if smtp_server != "" then %>
-	smtpServer = <%= smtp_server %>
+<% if smtp_host != "" then %>
+	smtpServer = <%= smtp_host %>
 <% else %>
 	enable = false
 <% end %>
