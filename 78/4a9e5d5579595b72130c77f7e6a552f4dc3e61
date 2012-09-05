@@ -1,0 +1,9 @@
+Change-Id: I784a9e5d5579595b72130c77f7e6a552f4dc3e61
+Code-Review+2: Jgreen <jgreen@wikimedia.org>
+Verified+1: Jgreen <jgreen@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Jgreen <jgreen@wikimedia.org>
+Submitted-at: Wed, 05 Sep 2012 21:52:08 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/22834
+Project: operations/puppet
+Branch: refs/heads/production
