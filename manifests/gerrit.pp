@@ -322,7 +322,7 @@ class gerrit::ircbot {
 		"${ircecho_logbase}/wikidata.log" => [ "wikimedia-wikidata", "mediawiki", ],
 	}
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 
 	package { ['ircecho']:
 		ensure => latest;
