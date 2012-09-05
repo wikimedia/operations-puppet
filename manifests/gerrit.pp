@@ -382,4 +382,12 @@ class gerrit::crons {
 		hour => 1
 	}
 
+	cron { clean_jgit_mess:
+		# JGit is retarded and does not do any sort of repacking of its repos
+		# So do what it should already do...sigh
+		command => "for d in `find /var/lib/gerrit2/review_site/git -type d -name "*.git"`; do cd $d; git gc --quiet; done",
+		user => gerrit2,
+		hour => 2
+	}
+
 }
