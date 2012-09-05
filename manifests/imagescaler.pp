@@ -59,6 +59,7 @@ class imagescaler::packages::fonts {
 			"ttf-lao",
 			"ttf-liberation",
 			"ttf-linux-libertine",
+			"ttf-lyx", # "Computer Modern" - bug 38299
 			"ttf-malayalam-fonts",
 			"ttf-manchufont",
 			"ttf-mgopen",
