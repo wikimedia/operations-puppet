@@ -10,7 +10,7 @@ class bots::logbot( $ensure = 'present',
 			     #  are not puppetized.  Instead, insert them into this
 			     #  file and it will be included in the config, python-style.
 			     $password_include_file = '',
-			     $network = 'irc.freenode.net',
+			     $network = 'chat.freenode.net',
 			     $port = 6667,
 			     $author_map = '{}',
 			     $title_map = '{}',

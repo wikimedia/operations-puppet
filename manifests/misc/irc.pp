@@ -84,7 +84,7 @@ class misc::ircecho {
 	#    "/var/log/nagios/irc2.log" => "#irc2",
 	#  }
 	#  $ircecho_nick = "nagios-wm"
-	#  $ircecho_server = "irc.freenode.net"
+	#  $ircecho_server = "chat.freenode.net"
 
 	package { "ircecho":
 		ensure => latest;
