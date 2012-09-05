@@ -223,3 +223,22 @@ class nfs::data {
 	}
 }
 
+
+class nfs::netapp::fr_archive(
+		$ensure='mounted',
+		$mountpoint='/archive/udplogs'
+	) {
+
+	include nfs::common
+
+	file { $mountpoint: ensure => directory }
+	
+	mount { $mountpoint:
+		require => File[$mountpoint],
+		device => "${nfs::netapp::common::device}:/vol/fr_archive",
+		fstype => nfs,
+		options => $nfs::netapp::common::options,
+		ensure => $ensure
+	}
+}
+

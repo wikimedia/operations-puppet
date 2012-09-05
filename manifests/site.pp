@@ -950,7 +950,8 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 		accounts::dsc,
 		accounts::datasets,
 		misc::udp2log::utilities,
-		misc::udp2log
+		misc::udp2log,
+		nfs::netapp::fr_archive
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
