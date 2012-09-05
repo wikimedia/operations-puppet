@@ -783,7 +783,7 @@ node "fenari.wikimedia.org" {
 
 	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-tech" }
 	$ircecho_nick = "logmsgbot"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 
 	include standard,
 		svn::client,
@@ -1652,7 +1652,7 @@ node "neon.wikimedia.org" {
 
 	$ircecho_logs = { "/var/log/nagios/irc.log" => "#wikimedia-operations" }
 	$ircecho_nick = "icinga-wm"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 	include standard,
 		icinga::monitor,
 		misc::ircecho
@@ -2022,7 +2022,7 @@ node "spence.wikimedia.org" {
 
 	$ircecho_logs = { "/var/log/nagios/irc.log" => "#wikimedia-operations" }
 	$ircecho_nick = "nagios-wm"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 
 	include standard,
 		nagios::monitor,
