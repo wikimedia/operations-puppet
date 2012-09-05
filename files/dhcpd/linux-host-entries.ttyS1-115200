@@ -1212,7 +1212,7 @@ host ms-be5 {
 }
 
 host ms-be6 {
-	hardware ethernet 04:7D:7B:2E:2E:50;
+	hardware ethernet 04:7D:7B:44:C7:94;
 	fixed-address ms-be6.pmtpa.wmnet;
 }
 
