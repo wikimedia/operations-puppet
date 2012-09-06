@@ -959,6 +959,9 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	# TODO: Move log_directory to /var/log/udp2log
 	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
 
+	# mount netapp to inject to fundraising banner log pipeline
+    class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
+
 	# Set up an rsync daemon module for udp2log logrotated
 	# archives.  This allows stat1 to copy logs from the
 	# logrotated archive directory
