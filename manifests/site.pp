@@ -2316,7 +2316,7 @@ node "stat1.wikimedia.org" {
 		accounts::spage,
 		# RT 3460
 		accounts::giovanni,
-		accounts::aaron
+		accounts::halfak
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
