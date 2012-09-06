@@ -239,6 +239,11 @@ class varnish {
 		require varnish::packages,
 			varnish::logging_config
 
+		$varnishservice = $instance_name ? {
+			"" => "varnish",
+			default => "varnish-${instance_name}"
+		}
+
 		file { "/etc/init.d/varnishncsa-${name}":
 			content => template("varnish/varnishncsa.init.erb"),
 			owner => root,
@@ -248,7 +253,7 @@ class varnish {
 		}
 
 		service { "varnishncsa-${name}":
-			require => File["/etc/init.d/varnishncsa-${name}"],
+			require => [ File["/etc/init.d/varnishncsa-${name}"], Service[$varnishservice] ],
 			subscribe => File["/etc/default/varnishncsa"],
 			ensure => running,
 			pattern => "/var/run/varnishncsa/varnishncsa-${name}.pid",
