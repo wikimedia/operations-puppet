@@ -1447,7 +1447,7 @@ host mw7{
 }
 
 host mw8 {
-	hardware ethernet 78:2b:cb:2f:cf:27;
+	hardware ethernet 78:2b:cb:2d:f0:54;
 	fixed-address mw8.pmtpa.wmnet;
 }
 
