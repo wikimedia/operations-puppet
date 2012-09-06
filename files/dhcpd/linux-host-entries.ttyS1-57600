@@ -37,7 +37,7 @@ host dobson {
 
 host ersch {
 	hardware ethernet A4:BA:DB:0E:09:43;
-	fixed-address ersch.wikimedia.org;
+	fixed-address ersch.pmtpa.wmnet;
 }
 
 host erzurumi {
