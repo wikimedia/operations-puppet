@@ -387,7 +387,8 @@ class gerrit::crons {
 		# So do what it should already do...sigh
 		command => 'for d in `find /var/lib/gerrit2/review_site/git -type d -name "*.git"`; do cd $d; git gc --quiet; done',
 		user => gerrit2,
-		hour => 2
+		hour => 2,
+		ensure => absent
 	}
 
 }
