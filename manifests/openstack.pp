@@ -386,7 +386,7 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 
 	$controller_hostname = $novaconfig["controller_hostname"]
 
-	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'imagemagick' ]:
+	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick' ]:
 		ensure => latest;
 	}
 
