@@ -261,7 +261,7 @@ class misc::udp2log::utilities {
 
 class misc::udp2log::udp_filter {
 	package { udp-filter:
-		ensure => latest;
+		ensure => "installed";
 	}
 	package { udp-filters:
 		ensure => absent;
