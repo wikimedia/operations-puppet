@@ -41,7 +41,6 @@ class imagescaler::packages {
 class imagescaler::packages::fonts {
 	package {
 		[
-			"cm-super", # Computer Modern fonts (bug 38299)
 			"culmus", # bug 38946
 			"gsfonts",
 			"texlive-fonts-recommended",
