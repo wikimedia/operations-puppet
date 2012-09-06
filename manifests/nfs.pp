@@ -229,7 +229,7 @@ class nfs::netapp::fr_archive(
         $mountpoint="/archive/udplogs"
     ) {
 
-    include nfs::common
+    include common
 
     file { $mountpoint: ensure => directory }
 
