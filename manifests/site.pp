@@ -261,12 +261,6 @@ $dns_auth_master = "ns1.wikimedia.org"
 
 # Node definitions (alphabetic order)
 
-node "alsted.wikimedia.org" {
-
-	include base,
-		admins::roots
-}
-
 node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	$cluster = "lvs"
 
@@ -733,6 +727,11 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 		# so packet loss monitoring is disabled.
 		monitor_packet_loss => false,
 	}
+}
+
+node "ersch.pmtpa.wmnet" {
+	include standard,
+		role::poolcounter
 }
 
 node "erzurumi.pmtpa.wmnet" {
