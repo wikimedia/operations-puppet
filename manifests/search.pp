@@ -24,7 +24,7 @@ class lucene {
 
 	class packages {
 		if ( $::lsbdistcodename == "precise" ) {
-			package { ["oracle-j2sdk1.6"]:
+			package { ["oracle-j2sdk1.6", "libudp2log-log4j-java"]:
 				ensure => latest;
 			}
 			package { ["liblog4j1.2-java"]:

@@ -1,5 +1,5 @@
 # Set root logger level and its only appender to A1.
-log4j.rootLogger=WARN, A1, udp2log
+log4j.rootLogger=INFO, A1, udp2log
 
 # A1 is set to be a ConsoleAppender.
 #log4j.appender.A1=org.apache.log4j.ConsoleAppender
@@ -8,6 +8,7 @@ log4j.rootLogger=WARN, A1, udp2log
 log4j.appender.A1=org.apache.log4j.DailyRollingFileAppender
 log4j.appender.A1.File=/a/search/log/log
 log4j.appender.A1.Append=true
+log4j.appender.A1.Threshold=WARN
 log4j.appender.A1.MaxBackupIndex=6
 
 # A1 uses PatternLayout.
