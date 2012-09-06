@@ -1050,8 +1050,7 @@ node "hume.wikimedia.org" {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
-		nrpe,
-		misc::fundraising::impressionlog::compress
+		nrpe
 
 }
 
@@ -2358,8 +2357,7 @@ node "storage3.pmtpa.wmnet" {
 		accounts::pgehres,
 		accounts::zexley,
 		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive,
-		misc::fundraising::impressionlog::compress
+		misc::fundraising::backup::archive
 
 	cron {
 		'offhost_backups':
