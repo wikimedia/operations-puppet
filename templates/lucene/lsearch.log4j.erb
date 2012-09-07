@@ -1,5 +1,5 @@
 # Set root logger level and its only appender to A1.
-log4j.rootLogger=INFO, A1, udp2log
+log4j.rootLogger=INFO, A1<% if udplogging == true then -%>, udp2log<% end -%>
 
 # A1 is set to be a ConsoleAppender.
 #log4j.appender.A1=org.apache.log4j.ConsoleAppender
@@ -15,6 +15,7 @@ log4j.appender.A1.MaxBackupIndex=6
 log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c %x - %m%n
 
+<% if udplogging == true then -%>
 # udp2log log4j appender.
 # Logs to Oxygen's udp2log-lucene instance on port 51234
 log4j.appender.udp2log=org.wikimedia.log4j.Udp2LogAppender
@@ -23,6 +24,7 @@ log4j.appender.udp2log.remotePort=51234
 log4j.appender.udp2log.layout=org.apache.log4j.PatternLayout
 log4j.appender.udp2log.layout.ConversionPattern=%d{yyyy-MM-dd'T'HH:mm:ss'Z'}\t%m%n
 log4j.appender.udp2log.errorhandler.logger.appender-ref=stdout
+<% end -%>
 
 #log4j.logger.org.wikimedia.lsearch.search.SearchEngine=WARN
 #log4j.logger.org.wikimedia.lsearch.frontend.HttpHandler=WARN

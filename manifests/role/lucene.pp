@@ -151,7 +151,10 @@ class role::lucene {
 				lucene::users
 
 			class { "lucene::server":
-				udplogging => false
+				udplogging => $search_pool ? {
+					"search_prefix" => false,
+					default => true
+				}
 			}
 		}
 		class pool1 {
