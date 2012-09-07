@@ -89,7 +89,7 @@ class lucene {
 				owner => lsearch,
 				group => search,
 				mode => 0444,
-				source => "puppet:///files/lucene/lsearch.log4j",
+				content => template("lucene/lsearch.log4.erb")
 				ensure => present;
 			[ "/a/search", "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
 				ensure => directory,
