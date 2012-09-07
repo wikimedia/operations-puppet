@@ -246,79 +246,91 @@ class WMFRewrite(WSGIContext):
         # keep a copy of the original request so we can ask the scalers for it
         reqorig = req.copy()
 
-        # Containers have 4 components: project, language, zone, and shard.
-        # Shard is optional (and configurable).  If there's no zone in the URL,
-        # the zone is 'public'.  Project, language, and zone are turned into containers
-        # with the pattern proj-lang-local-zone (or proj-lang-local-zone.shard).
-        # Projects are wikipedia, wikinews, etc.
-        # Languages are en, de, fr, commons, etc.
-        # Zones are public, thumb, and temp.
-        # Shards are stolen from the URL and are 2 digits of hex.
-        # Examples:
-        # Rewrite URLs of these forms (source, temp, and thumbnail files):
-        # (a) http://upload.wikimedia.org/<proj>/<lang>/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/.*
-        # (b) http://upload.wikimedia.org/<proj>/<lang>/archive/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/archive/.*
-        # (c) http://upload.wikimedia.org/<proj>/<lang>/thumb/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/.*
-        # (d) http://upload.wikimedia.org/<proj>/<lang>/thumb/archive/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/archive/.*
-        # (e) http://upload.wikimedia.org/<proj>/<lang>/thumb/temp/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/.*
-        # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/.*
-        match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+        req.path_info = None
+        zone = None
+
+        # monitoring urls start with /monitoring/   handle them as separate case
+        match = re.match(r'^/(?P<path>monitoring/.+)$', req.path)
         if match:
-            # Get the repo zone (if not provided that means "public")
-            zone = (match.group('zone') if match.group('zone') else 'public')
-            # Get the object path relative to the zone (and thus container)
-            obj = match.group('path') # e.g. "archive/a/ab/..."
+            path = (match.group('path') if match.group('path') else '')
+            req.path_info = "/v1/%s/%s" % (self.account, urllib2.unquote(path))
+            
 
-            # If we can sanitize the object path, let's.  This will eliminate some cruft.
-            justmedia = re.match("(?P<mediapath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/)(?P<prefix>[^-]*)-.*$", obj)
-            thumbpath = re.match("(?P<fullpath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpg|.png)?)(?P<cruft>.*)$", obj)
-            if thumbpath:
-                if (thumbpath.group('cruft')):
-                    # there's cruft on the URL; strip it off.
-                    #oldobj=obj
-                    obj = thumbpath.group('fullpath')
-                    #self.logger.warn("thumpath old: %s new: %s" % (oldobj, obj))
+        if not req.path_info:
+            # Containers have 4 components: project, language, zone, and shard.
+            # Shard is optional (and configurable).  If there's no zone in the URL,
+            # the zone is 'public'.  Project, language, and zone are turned into containers
+            # with the pattern proj-lang-local-zone (or proj-lang-local-zone.shard).
+            # Projects are wikipedia, wikinews, etc.
+            # Languages are en, de, fr, commons, etc.
+            # Zones are public, thumb, and temp.
+            # Shards are stolen from the URL and are 2 digits of hex.
+            # Examples:
+            # Rewrite URLs of these forms (source, temp, and thumbnail files):
+            # (a) http://upload.wikimedia.org/<proj>/<lang>/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/.*
+            # (b) http://upload.wikimedia.org/<proj>/<lang>/archive/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/archive/.*
+            # (c) http://upload.wikimedia.org/<proj>/<lang>/thumb/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/.*
+            # (d) http://upload.wikimedia.org/<proj>/<lang>/thumb/archive/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/archive/.*
+            # (e) http://upload.wikimedia.org/<proj>/<lang>/thumb/temp/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/.*
+            # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/.*
+            #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/.*
+            match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+            if match:
+                # Get the repo zone (if not provided that means "public")
+                zone = (match.group('zone') if match.group('zone') else 'public')
+                # Get the object path relative to the zone (and thus container)
+                obj = match.group('path') # e.g. "archive/a/ab/..."
+
+                # If we can sanitize the object path, let's.  This will eliminate some cruft.
+                justmedia = re.match("(?P<mediapath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/)(?P<prefix>[^-]*)-.*$", obj)
+                thumbpath = re.match("(?P<fullpath>(temp/|archive/)?./../(\d+!)?(?P<media>[^/]*)/(?P<prefix>.*)-(?P=media)(.jpg|.png)?)(?P<cruft>.*)$", obj)
+                if thumbpath:
+                    if (thumbpath.group('cruft')):
+                        # there's cruft on the URL; strip it off.
+                        #oldobj=obj
+                        obj = thumbpath.group('fullpath')
+                        #self.logger.warn("thumpath old: %s new: %s" % (oldobj, obj))
+                    else:
+                        # the URL matched the thumbpath without any cruft, which means it's a good URL.
+                        #self.logger.warn("thumpath unchanged: %s " % obj)
+                        pass
                 else:
-                    # the URL matched the thumbpath without any cruft, which means it's a good URL.
-                    #self.logger.warn("thumpath unchanged: %s " % obj)
-                    pass
-            else:
-                # thumbpath didn't match, which means the URL is invalid for some other reason.  We can try to fix it...
-                if justmedia:
-                    # if we got as far as the pixel number, we can try and construct the correct URL
-                    #oldobj=obj
-                    obj = "%s%s-%s" % (justmedia.group('mediapath'), justmedia.group('prefix'), justmedia.group('media'))
-                    if obj[-4:] == '.svg':
-                        obj = "%s%s" % (obj, '.png')
-                    #self.logger.warn("justmedia old: %s new: %s" % (oldobj, obj))
-                else:
-                    #self.logger.warn("justmedia unchanged: %s " % obj)
-                    # justmedia didn't match either; I have no idea how to fix it.  Let's just try it as is.
-                    pass
+                    # thumbpath didn't match, which means the URL is invalid for some other reason.  We can try to fix it...
+                    if justmedia:
+                        # if we got as far as the pixel number, we can try and construct the correct URL
+                        #oldobj=obj
+                        obj = "%s%s-%s" % (justmedia.group('mediapath'), justmedia.group('prefix'), justmedia.group('media'))
+                        if obj[-4:] == '.svg':
+                            obj = "%s%s" % (obj, '.png')
+                        #self.logger.warn("justmedia old: %s new: %s" % (oldobj, obj))
+                    else:
+                        #self.logger.warn("justmedia unchanged: %s " % obj)
+                        # justmedia didn't match either; I have no idea how to fix it.  Let's just try it as is.
+                        pass
 
 
-            # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
-            container = "%s-%s-local-%s" % (match.group('proj'), match.group('lang'), zone) #02/#03
-            # Add 2-digit shard to the container if it is supposed to be sharded.
-            # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
-            if ( (self.shard_containers == 'all') or \
-                 ((self.shard_containers == 'some') and (container in self.shard_container_list)) ):
-                container += ".%s" % match.group('shard')
+                # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
+                container = "%s-%s-local-%s" % (match.group('proj'), match.group('lang'), zone) #02/#03
+                # Add 2-digit shard to the container if it is supposed to be sharded.
+                # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
+                if ( (self.shard_containers == 'all') or \
+                         ((self.shard_containers == 'some') and (container in self.shard_container_list)) ):
+                    container += ".%s" % match.group('shard')
+
+                # Create a path to our object's name.
+                req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
+                #self.logger.warn("new path is %s" % req.path_info)
 
             # Save a url with just the account name in it.
             req.path_info = "/v1/%s" % (self.account)
             port = self.bind_port
             req.host = '127.0.0.1:%s' % port
             url = req.url[:]
-            # Create a path to our object's name.
-            req.path_info = "/v1/%s/%s/%s" % (self.account, container, urllib2.unquote(obj))
-            #self.logger.warn("new path is %s" % req.path_info)
 
             # do_start_response just remembers what it got called with,
             # because our 404 handler will generate a different response.
