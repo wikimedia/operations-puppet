@@ -1773,7 +1773,7 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 	# rsync archived lucene logs over to dataset2
 	# These are available for download at http://dumps.wikimedia.org/other/search/
 	cron { "search_logs_rsync":
-		command => "rsync -rv /a/log/lucene/archive/lucene.log*.gz dataset2::search-logs/",
+		command => "rsync -r /a/log/lucene/archive/lucene.log*.gz dataset2::search-logs/",
 		hour    => '8',
 		minute  => '0',
 		user    => 'backup',
