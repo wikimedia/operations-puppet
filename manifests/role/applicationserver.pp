@@ -71,23 +71,16 @@ class role::applicationserver {
 		}
 	}
 
-	## TODO: Still needed to pmtpa testing. can be deleted once we're using swift fully
-	class upload_nfs {
-		include	nfs::upload
-	}
-
 	## prod role classes
 	class appserver{
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
-		include role::applicationserver::upload_nfs
 	}
 	class appserver::api{
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
-		include role::applicationserver::upload_nfs
 	}
 	class appserver::bits{
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
@@ -98,7 +91,6 @@ class role::applicationserver {
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
 		include role::applicationserver::webserver
-		include role::applicationserver::upload_nfs
 
 		include	imagescaler::cron,
 			imagescaler::packages,

@@ -1648,6 +1648,37 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::api
 }
 
+node /mw1(0[0-9][0-9]|10[0-9])\.eqiad\.wmnet/ {
+	if $hostname =~ /^mw100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include	role::applicationserver::appserver
+}
+
+node /mw11([1-3][0-9]|4[0-4])\.eqaid\.wmnet/ {
+	if $hostname =~ /^mw111[01]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include	role::applicationserver::appserver::api
+}
+
+node /mw11(4[5-9]|50)\.eqiad\.wmnet/ {
+	if $hostname =~ /^mw114[56]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include	role::applicationserver::appserver::bits
+}
+
+#node /mw11(5[1-9]|60)\.eqaid\.wmnet/ {
+#	if $hostname =~ /^mw115[12]$/ {
+#		$ganglia_aggregator = "true"
+#	}
+#
+#	include	role::applicationserver::imagescaler
+#}
 
 node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
@@ -2064,6 +2095,7 @@ node /^srv19[12]\.pmtpa\.wmnet$/ {
 # srv193 is test.wikipedia.org
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver
+	include	nfs::upload
 	include nfs::netapp::home,
 		memcached
 }
@@ -2071,6 +2103,7 @@ node "srv193.pmtpa.wmnet" {
 node "srv194.pmtpa.wmnet" {
 	$ganglia_aggregator = "true"
 	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 # srv194-213 are application servers, memcached
