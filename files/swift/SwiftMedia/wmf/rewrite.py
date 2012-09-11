@@ -329,7 +329,6 @@ class WMFRewrite(WSGIContext):
             if 200 <= status < 300 or status == 304:
                 # We have it! Just return it as usual.
                 #headers['X-Swift-Proxy']= `headers`
-                if 'etag' in headers: del headers['etag']
                 return webob.Response(status=status, headers=headers,
                         app_iter=app_iter)(env, start_response) #01a
             elif status == 404: #4
