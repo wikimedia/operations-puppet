@@ -34,12 +34,6 @@ class misc::noc-wikimedia {
 			recurse => true,
 			ignore => ".svn",
 			ensure => present;
-		"/home/wikipedia/htdocs/noc/index.html":
-			source => "puppet:///files/misc/noc/index.html",
-			mode => 0664,
-			owner => hashar,
-			group => wikidev,
-			ensure => present;
 	}
 
 	apache_module { php5: name => "php5" }
