@@ -1516,26 +1516,6 @@ node "ms6.esams.wikimedia.org" {
 		media-storage::htcp-purger
 }
 
-node "ms7.pmtpa.wmnet" {
-	$cluster = "misc"
-
-	include	base,
-		groups::wikidev,
-		ntp::client,
-		admins::roots,
-		admins::restricted,
-		misc::zfs::monitoring,
-		misc::nfs-server::home::monitoring
-}
-
-node "ms8.pmtpa.wmnet" {
-	$cluster = "misc"
-
-	include	base,
-		ntp::client,
-		misc::zfs::monitoring
-}
-
 node "ms10.wikimedia.org" {
 	include standard,
 		generic::sysctl::high-bandwidth-rsync
