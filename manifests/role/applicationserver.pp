@@ -101,6 +101,7 @@ class role::applicationserver {
 
 		include ::jobrunner
 		include applicationserver::config::php,
+			applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::cron,
 			applicationserver::sudo
