@@ -39,6 +39,8 @@ $iptables_ports = {
 	udp => "",
 	keystone_service => "5000",
 	keystone_admin => "35357",
+	salt_publish => "4505",
+	salt_ret => "4506",
 }
 
 $iptables_protocols = {
@@ -82,6 +84,8 @@ $iptables_protocols = {
 	udp => "udp",
 	keystone_service => "tcp",
 	keystone_admin => "tcp",
+	salt_publish => "tcp",
+	salt_ret => "tcp",
 }
 
 class iptables::tables {
