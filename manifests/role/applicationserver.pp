@@ -100,7 +100,10 @@ class role::applicationserver {
 		class { "role::applicationserver::common": group => "jobrunner" }
 
 		include ::jobrunner
-		include applicationserver::config::php
+		include applicationserver::config::php,
+			applicationserver::packages,
+			applicationserver::cron,
+			applicationserver::sudo
 
 		# dependency for wikimedia-task-appserver
 			service { 'apache':
