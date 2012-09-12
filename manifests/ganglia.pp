@@ -73,6 +73,9 @@ class ganglia {
 		"api_appserver"	=>	{
 			"name"		=> "API application servers",
 			"ip_oct"	=> "13" },
+		"jobrunner"	=>	{
+			"name"		=> "Jobrunners",
+			"ip_oct"	=> "31" },
 		"misc"		=>	{
 			"name"		=> "Miscellaneous",
 			"ip_oct"	=> "8" },
