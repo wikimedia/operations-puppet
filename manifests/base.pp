@@ -736,6 +736,10 @@ class base {
 					default => undef,
 				},
 			}
+
+			if ($realm == "labs") {
+				include role::salt::minion
+			}
 		}
 		Solaris: {
 		}
