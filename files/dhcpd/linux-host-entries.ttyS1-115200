@@ -1074,7 +1074,7 @@ host mc1 {
 }
 
 host mc2 {
-	hardware ethernet d4:be:d9:f7:bc:f4;
+	hardware ethernet 90:e2:ba:19:4e:c8;
 	fixed-address mc2.pmtpa.wmnet;
 	option pxelinux.pathprefix "precise-installer/";
 	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
