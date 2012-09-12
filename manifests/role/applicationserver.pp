@@ -27,7 +27,7 @@ class role::applicationserver {
 #		From lvs::configuration::$lvs_service_ips
 	class common(
 		$group,
-		$lvs_pool
+		$lvs_pool = undef
 		) {
 
 		$nagios_group = "${group}_${::site}"
