@@ -1614,7 +1614,15 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-node /mw[1-5]?[0-9]\.pmtpa\.wmnet/ {
+# mw1-16 are application servers for jobrunners only
+node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
+	if $hostname =~ /^mw[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	include	role::applicationserver::jobrunner
+}
+
+node /mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
 		applicationserver_old::jobrunner,
 		memcached
