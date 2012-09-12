@@ -1,0 +1,8 @@
+Code-Review+2: Jgreen <jgreen@wikimedia.org>
+Verified+1: Jgreen <jgreen@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Jgreen <jgreen@wikimedia.org>
+Submitted-at: Wed, 12 Sep 2012 21:12:20 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/23518
+Project: operations/puppet
+Branch: refs/heads/production
