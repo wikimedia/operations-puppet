@@ -7,7 +7,13 @@ class jobrunner (
 	$timeout = 300,
 	$extra_args = ""
 ) {
+
+## TODO: get rid of this awfulness after full transition to module/precise
+	if ( $::lsbdistcodename == "precise" ) {
+	include mediawiki_new
+	} else {
 	include mediawiki::packages
+	}
 
 	package { [ 'wikimedia-job-runner' ]:
 		ensure => absent;
