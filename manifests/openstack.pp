@@ -17,6 +17,8 @@ class openstack::iptables-purges {
 	iptables_purge_service{ "deny_all_epmd": service => "epmd" }
 	iptables_purge_service{ "deny_all_keystone_service": service => "keystone_service" }
 	iptables_purge_service{ "deny_all_keystone_admin": service => "keystone_admin" }
+	iptables_purge_service{ "deny_all_salt_publish": service => "salt_publish" }
+	iptables_purge_service{ "deny_all_salt_ret": service => "salt_ret" }
 
 	# When removing or modifying a rule, place the old rule here, otherwise it won't
 	# be purged, and will stay in the iptables forever
@@ -49,6 +51,8 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "keystone_admin_nova_virt1000": source => "208.80.154.18", service => "keystone_admin", jump => "ACCEPT" }
 	if ($site == "pmtpa") {
 		iptables_add_service{ "puppet_private": source => "10.4.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
+		iptables_add_service{ "salt_publish_private": source => "10.4.0.0/16", service => "salt_publish", jump => "ACCEPT" }
+		iptables_add_service{ "salt_ret_private": source => "10.4.0.0/16", service => "salt_ret", jump => "ACCEPT" }
 		iptables_add_service{ "mysql_nova": source => "10.4.16.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.4.16.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.4.16.0/24", service => "beam2", jump => "ACCEPT" }
@@ -57,6 +61,8 @@ class openstack::iptables-accepts {
 	}
 	if ($site == "eqiad") {
 		iptables_add_service{ "puppet_private": source => "10.68.0.0/16", service => "puppetmaster", jump => "ACCEPT" }
+		iptables_add_service{ "salt_publish_private": source => "10.68.0.0/16", service => "salt_publish", jump => "ACCEPT" }
+		iptables_add_service{ "salt_ret_private": source => "10.68.0.0/16", service => "salt_ret", jump => "ACCEPT" }
 		iptables_add_service{ "mysql_nova": source => "10.64.20.0/24", service => "mysql", jump => "ACCEPT" }
 		iptables_add_service{ "glance_api_nova": source => "10.64.20.0/24", service => "glance_api", jump => "ACCEPT" }
 		iptables_add_service{ "beam2_nova": source => "10.64.20.0/24", service => "beam2", jump => "ACCEPT" }
@@ -84,6 +90,8 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_epmd": service => "epmd", jump => "DROP" }
 	iptables_add_service{ "deny_all_keystone_service": service => "keystone_service", jump => "DROP" }
 	iptables_add_service{ "deny_all_keystone_admin": service => "keystone_admin", jump => "DROP" }
+	iptables_add_service{ "deny_all_salt_publish": service => "salt_publish", jump => "DROP" }
+	iptables_add_service{ "deny_all_salt_ret": service => "salt_ret", jump => "DROP" }
 }
 
 class openstack::iptables  {
