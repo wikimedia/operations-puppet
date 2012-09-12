@@ -100,5 +100,12 @@ class role::applicationserver {
 		class { "role::applicationserver::common": group => "jobrunner" }
 
 		include ::jobrunner
+
+		# dependency for wikimedia-task-appserver
+			service { 'apache':
+				name => "apache2",
+				enable => false,
+				ensure => stopped;
+		}
 	}
 }
