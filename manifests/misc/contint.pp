@@ -88,6 +88,13 @@ class misc::contint::test {
 		# Prefer the PHP packages from Ubuntu
 		generic::apt::pin-package { $CI_PHP_packages: }
 
+		package { 'rubygems': ensure => present; }
+
+		package { 'puppet-lint':
+			ensure => latest,
+			provider => gem,
+			require => Package['rubygems'];
+		}
 	}
 
 	# Common apache configuration
@@ -354,3 +361,4 @@ class misc::contint::test {
 
 	require "misc::contint::test::iptables"
 }
+
