@@ -2080,7 +2080,7 @@ class accounts {
 	class spage inherits baseaccount {
 		$username = "spage"
 		$realname = "S Page"
-		$uid = 607
+		$uid = 608
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
