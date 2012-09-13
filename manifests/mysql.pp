@@ -50,6 +50,15 @@ class mysql {
 	elsif $hostname =~ /^db(18|26|37|56|58|1007|1024|1028|1041)$/ {
 		$db_cluster = "s7"
 	}
+	elsif $hostname =~ /^es([1-4]|100[1-4])$/ {
+		$db_cluster = "es1"
+	}
+	elsif $hostname =~ /^es([5-7]|100[5-7])$/ {
+		$db_cluster = "es2"
+	}
+	elsif $hostname =~ /^es([8-9]|10|100[8-9]|1010)$/ {
+		$db_cluster = "es3"
+	}
 	elsif $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
@@ -367,9 +376,18 @@ class mysql {
 			"m2" => {
 				"innodb_log_file_size" => "500M"
 			},
+			"es1" => {
+				"innodb_log_file_size" => "500M"
+			},
+			"es2" => {
+				"innodb_log_file_size" => "500M"
+			},
+			"es3" => {
+				"innodb_log_file_size" => "500M"
+			},
 		}
 
-		if $hostname =~ /^es/ {
+		if $db_cluster == "es1" {
 			$mysql_myisam = true
 		}
 		else {
