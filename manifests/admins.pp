@@ -334,6 +334,28 @@ class accounts {
 			}
 		}
 	}
+
+
+	class csteipp inherits baseaccount {
+		$username = "csteipp"
+		$realname = "Chris Steipp"
+		$uid = 609
+		$enabled = true
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "Chris Steipp":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDsUn5XTWrJ8ojk6O7kF7kdQS1RrKtjkaMk2QtsdYOOCPo3YbK+70Q3Dy6gVBNOhsRWHeCimzfH2Uv/pVb0wNkrwenmBeD7nQyNICudewEANcnt5YF2znlke3lsW6TGzKUzrXIncdhDh4LWjmpJR/+hnKyGz7uQKXm8xWw9LGk1PEpeHpt+0TH/bUWzWjpYXfbt5W4GbYPwnHo1Pn27pcGwqgsgb8whX9ufDjw5qyLPTVW3AqP4XPRXYDB5Ui7udQeuCk4Omou9CirtC36o4ih2NrZ4CsacHyIMJf09HZo6yLE9EeGM06SO7qYqjYwapKGv6csZGney84udKaCHcdm/"
+			}
+		}
+	}
+
 	class jamesofur inherits baseaccount {
 		$username = "jamesofur"
 		$realname = "James Alexander"
@@ -2154,6 +2176,7 @@ class admins::mortals {
 	include accounts::mlitn
 	include accounts::krinkle
 	include accounts::olivneh
+	include accounts::csteipp
 }
 
 class admins::restricted {
