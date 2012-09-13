@@ -256,8 +256,6 @@ hash_type: <%= salt_hash_type %>
 #test.baz: {spam: sausage, cheese: bread}
 
 <% if salt_grains != {} %>
-grains:<% salt_grains.each do |salt_name, salt_values| %><% if salt_values.kind_of?(Array) %>
-  <%= salt_name %>:<% salt_values.each do |salt_value| %>
-    - <%= salt_value %>
-<% end %><% else %><%= salt_name %>: <%= salt_values %>
-<% end %><% end %><% end %>
+grains:<% salt_grains.each do |salt_name, salt_values| %>
+<% if salt_values.kind_of?(Array) %>  <%= salt_name %>:<% salt_values.each do |salt_value| %>
+    - <%= salt_value %><% end %><% else %>  <%= salt_name %>: <%= salt_values %><% end %><% end %><% end %>
