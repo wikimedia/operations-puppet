@@ -2125,58 +2125,60 @@ class admins::roots {
 	# in addition to adding the user to this list,
 	# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
 	# to actually get them root; that file is not in SVN.
+
+	include accounts::andrewb
+	include accounts::ariel
+	include accounts::asher
+	include accounts::ben
 	include accounts::brion #shell disabled, svn key still enabled
+	include accounts::catrope
+	include accounts::cmjohnson
 	include accounts::dzahn
+	include accounts::faidon
 	include accounts::fvassard # disabled
 	include accounts::jeluf
+	include accounts::jgreen
 	include accounts::kate
+	include accounts::laner
 	include accounts::lcarr
 	include accounts::mark
 	include accounts::midom
 	include accounts::py
 	include accounts::robh
+	include accounts::sara
 	include accounts::tfinc
 	include accounts::tstarling
-	include accounts::ariel
-	include accounts::laner
-	include accounts::asher
-	include accounts::jgreen
-	include accounts::ben
-	include accounts::catrope
-	include accounts::sara
-	include accounts::andrewb
-	include accounts::faidon
-	include accounts::cmjohnson
 }
+
 # mortals are the software deployment group, we should rename and rewrite this someday
 class admins::mortals {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 
+	include accounts::aaron
 	include accounts::andrew
 	include accounts::awjrichards
-	include accounts::aaron
-	include accounts::nikerabbit
-	include accounts::nimishg # revoked
-	include accounts::rfaulk
-	include accounts::zak # access revoked
-	include accounts::demon
-	include accounts::hashar
-	include accounts::pdhanda # access revoked
-	include accounts::reedy
-	include accounts::preilly
-	include accounts::robla
-	include accounts::neilk  # revoked access per RT 2345
-	include accounts::raindrift # access revoked per RT 3088
-	include accounts::halfak
-	include accounts::kaldari
 	include accounts::bsitu
+	include accounts::csteipp
+	include accounts::demon
+	include accounts::halfak
+	include accounts::hashar
+	include accounts::kaldari
 	include accounts::khorn
+	include accounts::krinkle
 	include accounts::maxsem
 	include accounts::mlitn
-	include accounts::krinkle
+	include accounts::neilk  # revoked access per RT 2345
+	include accounts::nikerabbit
+	include accounts::nimishg # revoked
 	include accounts::olivneh
-	include accounts::csteipp
+	include accounts::pdhanda # access revoked
+	include accounts::preilly
+	include accounts::raindrift # access revoked per RT 3088
+	include accounts::reedy
+	include accounts::rfaulk
+	include accounts::robla
+	include accounts::zak # access revoked
 }
 
 class admins::restricted {
@@ -2207,12 +2209,13 @@ class admins::restricted {
 class admins::analinterns {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
-	
-	include accounts::shawn # disabled
-	include accounts::halfak
-	include accounts::diederik
+
 	include accounts::declerambaul
+	include accounts::diederik
+	include accounts::halfak
+	include accounts::shawn # disabled
 	include accounts::whym # disabled
+
 }
 
 class admins::jenkins {
@@ -2221,10 +2224,11 @@ class admins::jenkins {
 	include groups::jenkins
 
 	include accounts::demon
+	include accounts::dsc
 	include accounts::hashar
 	include accounts::krinkle
 	include accounts::reedy
-	include accounts::dsc
+
 }
 
 class admins::globaldev {
