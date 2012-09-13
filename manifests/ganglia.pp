@@ -248,6 +248,7 @@ class ganglia {
 						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
 						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
+						"Jobrunners pmtpa" => "smw2.pmtpa.wmnet mw2.pmtpa.wmnet",
 						"Search pmtpa" => "search13.pmtpa.wmnet search14.pmtpa.wmnet",
 						"MySQL" => "db50.pmtpa.wmnet db51.pmtpa.wmnet",
 						"PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
