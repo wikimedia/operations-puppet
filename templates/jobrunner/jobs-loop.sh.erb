@@ -83,7 +83,7 @@ while [ 1 ];do
 			db=`php -n MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
 			if [ -n "$db" ]; then
 				echo "$db $type"
-				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=5 --type="$type" --maxtime=$maxtime &
+				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$maxtime &
 				wait
 				moreprio=y
 			fi
@@ -96,7 +96,7 @@ while [ 1 ];do
 
 		if [ ! -z "$db" ];then
 			echo "$db"
-			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=5 --maxtime=$maxtime &
+			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$maxtime &
 			wait
 		fi
 	fi

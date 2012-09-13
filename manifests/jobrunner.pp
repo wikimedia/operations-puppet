@@ -5,7 +5,8 @@ class jobrunner (
 	$script = "/usr/local/bin/jobs-loop.sh",
 	$pid_file = "/var/run/mw-jobs.pid",
 	$timeout = 300,
-	$extra_args = ""
+	$extra_args = "",
+	$procs = 5
 ) {
 
 ## TODO: get rid of this awfulness after full transition to module/precise
@@ -34,7 +35,7 @@ class jobrunner (
 			owner => root,
 			group => root,
 			mode => 0755,
-			source => "puppet:///files/jobrunner/jobs-loop.sh";
+			content => template("jobrunner/jobs-loop.sh.erb");
 	}
 	service {
 		"mw-job-runner":
