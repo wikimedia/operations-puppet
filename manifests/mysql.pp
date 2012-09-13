@@ -99,7 +99,7 @@ class mysql {
 		}
 		# this is for the pt-heartbeat daemon, which needs super privs
 		# to write to read_only=1 databases.
-		if ($db_cluster !~ /fund/) {
+		if ($db_cluster !~ /(fund|es)/) {
 			include passwords::misc::scripts
 			file {
 				"/root/.my.cnf":
