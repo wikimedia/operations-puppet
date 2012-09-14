@@ -2026,6 +2026,7 @@ node "sodium.wikimedia.org" {
 
 	include base,
 		ganglia,
+		ntp::client,
 		nrpe,
 		mailman,
 		dns::recursor,
