@@ -2264,7 +2264,7 @@ class admins::roots {
 	include accounts::andrewb
 	include accounts::ariel
 	include accounts::asher
-	include accounts::ben
+	include accounts::ben # disabled
 	include accounts::brion #shell re-enabled dz 20121004
 	include accounts::catrope
 	include accounts::cmjohnson
