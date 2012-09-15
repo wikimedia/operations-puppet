@@ -68,6 +68,11 @@ class memcached::config ($memcached_size, $memcached_port, $memcached_ip, $memca
 			owner => root,
 			group => root,
 			mode => 0644;
+		"/etc/default/memcached":
+			source => "puppet:///files/memcached/memcached.default",
+			owner => root,
+			group => root,
+			mode => 0444;
 	}
 
 }
