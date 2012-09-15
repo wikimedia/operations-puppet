@@ -1,0 +1,2 @@
+ENABLE_MEMCACHED=yes
+ulimit -l unlimited
