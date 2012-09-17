@@ -19,7 +19,7 @@ fi
 # is not a real conf file.  It'd be nice to be able
 # to read that file and have slow_log set there.
 # Oh well :\
-slow_log_files="/var/log/squid/teahouse.log /a/squid/zero-telenor-montenegro.log /a/squid/zero-orange-uganda.log /a/squid/zero-orange-tunesia.log /a/squid/zero-orange-niger.log /a/squid/zero-orange-cameroon.log /a/zero-squid/zero-orange-kenya.log /a/squid/zero-vodaphone-india.log /a/squid/zero-saudi-telecom.log /a/squid/zero-digi-malaysia.log /a/squid/zero-orange-ivory-coast.log /a/squid/zero-orange-ivory-coast.log /a/squid/zero-grameenphone-bangladesh.log /a/squid/zero-tata-india.log /var/log/squid/arabic-banner.log /a/squid/fundraising/bi-filter"
+slow_log_files="/var/log/squid/teahouse.log /a/squid/zero-telenor-montenegro.log /a/squid/zero-orange-uganda.log /a/squid/zero-orange-tunesia.log /a/squid/zero-orange-niger.log /a/squid/zero-orange-cameroon.log /a/zero-squid/zero-orange-kenya.log /a/squid/zero-vodaphone-india.log /a/squid/zero-saudi-telecom.log /a/squid/zero-digi-malaysia.log /a/squid/zero-orange-ivory-coast.log /a/squid/zero-orange-ivory-coast.log /a/squid/zero-grameenphone-bangladesh.log /a/squid/zero-tata-india.log /var/log/squid/arabic-banner.log /a/squid/fundraising/logs/bannerImpressions-sampled100.log"
 
 # Timestamps will be set on these files for
 # easy log file age comparision with -ot.
