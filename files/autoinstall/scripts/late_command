@@ -17,3 +17,6 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 
 # Disable IPv6 privacy extensions before the first boot
 [ -f /target/etc/sysctl.d/10-ipv6-privacy.conf ] && rm -f /target/etc/sysctl.d/10-ipv6-privacy.conf
+
+# Install patched intel ixgbe kernel module
+[ -d /sys/module/ixgbe ] && apt-install ixgbe-dkms
