@@ -1614,7 +1614,7 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-# mw1-16 are application servers for jobrunners only
+# mw1-16 are application servers for jobrunners only (precise)
 node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mw[12]$/ {
 		$ganglia_aggregator = "true"
@@ -1622,10 +1622,16 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	include	role::applicationserver::jobrunner
 }
 
-node /mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet/ {
+node /mw(1[7-9]|[2-5][0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
 		applicationserver_old::jobrunner,
 		memcached
+}
+
+# mw55-59 are application servers (precise)
+node /mw5[5-9]\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 node /mw6[0-1]\.pmtpa\.wmnet/ {
@@ -2077,10 +2083,10 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
+# srv190 is an application server (precise)
 node "srv190.pmtpa.wmnet" {
-	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
-		memcached
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 node /^srv19[12]\.pmtpa\.wmnet$/ {
@@ -2098,7 +2104,7 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
-# srv194-199 are application servers
+# srv194-199 are application servers (precise)
 node /^srv19[4-9]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv19[45]$/ {
 		$ganglia_aggregator = "true"
