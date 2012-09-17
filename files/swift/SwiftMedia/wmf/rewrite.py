@@ -228,55 +228,88 @@ class WMFRewrite(WSGIContext):
         return resp
 
     def __call__(self, env, start_response):
-      #try: commented-out while debugging so you can see where stuff happened.
         req = webob.Request(env)
         # End-users should only do GET/HEAD, nothing else needs a rewrite
         if req.method != 'GET' and req.method != 'HEAD':
             return self.app(env, start_response)
 
-        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
+        # Double (or triple, etc.) slashes in the URL should be ignored; collapse them (bug 32864)
         while(req.path_info != req.path_info.replace('//', '/')):
             req.path_info = req.path_info.replace('//', '/')
 
-        # If it already has AUTH, presume that it's good. #07. fixes bug 33620
+        # If it already has AUTH, presume that it's good. #07. (bug 33620)
         hasauth = re.search('/AUTH_[0-9a-fA-F-]{32,36}', req.path)
         if req.path.startswith('/auth') or hasauth:
             return self.app(env, start_response)
 
-        # keep a copy of the original request so we can ask the scalers for it
+        # Keep a copy of the original request so we can ask the scalers for it
         reqorig = req.copy()
 
-        # Containers have 4 components: project, language, zone, and shard.
-        # Shard is optional (and configurable).  If there's no zone in the URL,
-        # the zone is 'public'.  Project, language, and zone are turned into containers
-        # with the pattern proj-lang-local-zone (or proj-lang-local-zone.shard).
+        # Containers have 5 components: project, language, repo, zone, and shard.
+        # If there's no zone in the URL, the zone is assumed to be 'public' (for b/c).
+        # Shard is optional (and configurable), and is only used for large containers.
+        #
         # Projects are wikipedia, wikinews, etc.
         # Languages are en, de, fr, commons, etc.
-        # Zones are public, thumb, and temp.
-        # Shards are stolen from the URL and are 2 digits of hex.
-        # Examples:
-        # Rewrite URLs of these forms (source, temp, and thumbnail files):
-        # (a) http://upload.wikimedia.org/<proj>/<lang>/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/.*
-        # (b) http://upload.wikimedia.org/<proj>/<lang>/archive/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/archive/.*
-        # (c) http://upload.wikimedia.org/<proj>/<lang>/thumb/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/.*
-        # (d) http://upload.wikimedia.org/<proj>/<lang>/thumb/archive/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/archive/.*
-        # (e) http://upload.wikimedia.org/<proj>/<lang>/thumb/temp/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/.*
-        # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/.*
-        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/.*
+        # Repos are local, timeline, etc.
+        # Zones are public, thumb, temp, etc.
+        # Shard is extracted from "hash paths" in the URL and is 2 hex digits.
+        #
+        # These attributes are mapped to container names in the form of either:
+        # (a) proj-lang-repo-zone (if not sharded)
+        # (b) proj-lang-repo-zone.shard (if sharded)
+        # (c) global-data-repo-zone (if not sharded)
+        # (d) global-data-repo-zone.shard (if sharded)
+        #
+        # Rewrite wiki-global URLs of these forms:
+        # (a) http://upload.wikimedia.org/math/.*
+        #         => http://msfe/v1/AUTH_<hash>/global-data-math-render/.*
+        #
+        # Rewrite wiki-relative URLs of these forms:
+        # (a) http://upload.wikimedia.org/<proj>/<lang>/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/<relpath>
+        # (b) http://upload.wikimedia.org/<proj>/<lang>/archive/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-public/archive/<relpath>
+        # (c) http://upload.wikimedia.org/<proj>/<lang>/thumb/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/<relpath>
+        # (d) http://upload.wikimedia.org/<proj>/<lang>/thumb/archive/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/archive/<relpath>
+        # (e) http://upload.wikimedia.org/<proj>/<lang>/thumb/temp/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/<relpath>
+        # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/<relpath>
+        # (g) http://upload.wikimedia.org/<proj>/<lang>/timeline/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-timeline-render/<relpath>
         match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
-        if match:
+        if match: # uploaded files
+            proj = match.group('proj')
+            lang = match.group('lang')
+            repo = 'local' # the upload repo name is "local"
             # Get the repo zone (if not provided that means "public")
             zone = (match.group('zone') if match.group('zone') else 'public')
             # Get the object path relative to the zone (and thus container)
-            obj = match.group('path') # e.g. "archive/a/ab/..."
+            obj  = match.group('path') # e.g. "archive/a/ab/..."
+        if match is None:
+            match = re.match(r'^/(?P<repo>math)/(?<path>[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+            if match: # math renderings
+                proj = 'global'
+                lang = 'data'
+                repo = match.group('repo')
+                zone = 'render'
+                obj  = match.group('path') # e.g. "a/ab/..."
+        if match is None:
+            match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/(?P<repo>timeline)/(?P<path>[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+            if match: # timeline renderings
+                proj = match.group('proj')
+                lang = match.group('lang')
+                repo = match.group('repo')
+                zone = 'render'
+                obj  = match.group('path') # e.g. "a/ab/..."
 
+        # Internally rewrite the URL based on the regex it matched...
+        if match:
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
-            container = "%s-%s-local-%s" % (match.group('proj'), match.group('lang'), zone) #02/#03
+            container = "%s-%s-%s-%s" % (proj, lang, repo, zone) #02/#03
             # Add 2-digit shard to the container if it is supposed to be sharded.
             # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
             if ( (self.shard_containers == 'all') or \
@@ -306,7 +339,7 @@ class WMFRewrite(WSGIContext):
                         app_iter=app_iter)(env, start_response) #01a
             elif status == 404: #4
                 # only send thumbs to the 404 handler; just return a 404 for everything else.
-                if zone == 'thumb':
+                if repo == 'local' and zone == 'thumb':
                     resp = self.handle404(reqorig, url, container, obj)
                     return resp(env, start_response)
                 else:
