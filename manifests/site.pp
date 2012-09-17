@@ -2475,6 +2475,8 @@ node "vanadium.eqiad.wmnet" {
 		groups::wikidev,
 		admins::restricted,
 		accounts::datasets,
+		accounts::dsc,
+		accounts::diederik,
 		nrpe
 
 	class { "solr": schema => "puppet:///modules/solr/schema-ttmserver.xml" }
