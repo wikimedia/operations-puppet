@@ -2094,6 +2094,40 @@ class accounts {
 		}
 	}
 
+	class maryana inherits baseaccount {
+		$username = "maryana"
+		$realname = "Maryana Pinchuk"
+		$uid = 609
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"mpinchuk@wikimedia.org":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCzAIOjRumh6RQKFOkab+4Yjw7Vr4fFyKoufw1h5grtjsq0ruuqgf7IiBlFA1eJ/DXVYax1YVGGJw5LhyZ1XABxXU9LaBfTb7zYC/XUM8rrAyu3N6MoycjY011yhesNa7s8PF0EkN+tOVBSG27cFoOATv6qM/vPEdc69gLb8HlVZyPB6TQuzJLJzRNBNe7UscIIw8eTwd9DDUuaTsColByNPzUaDdd8BS4Lr+vQlg0CzNGeTShkgcK3iRLYfKD0Cd+k3PN25pI3tYzybfrwDCi4WEQHHOO7TvWudkdywMu9GN3QylRT/E5JpYl37r9gS7mC5p5Hzi7II0ujDHFyfmIl";
+			}
+		}
+	}
+
+	class dandreescu inherits baseaccount {
+		$username = "dandreescu"
+		$realname = "Dan Andreescu"
+		$uid = 610
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"dan@DAndreescu-ThinkPad-T420s":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
