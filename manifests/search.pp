@@ -33,11 +33,11 @@ class lucene {
 			}
 			if $::site =="pmtpa" {
 				package { "lucene-search-2":
-					ensure => "2.1.3wm2";
+					ensure => latest;
 				}
 			} else {
 				package { "lucene-search-2":
-					ensure => latest;
+					ensure => "2.1.4wm2";
 				}
 			}
 		}
