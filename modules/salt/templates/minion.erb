@@ -137,7 +137,7 @@ state_verbose: <%= salt_state_verbose %>
 # when running states, but the environment can be isolated on the minion side
 # by statically setting it. Remember that the recommended way to manage
 # environments is to isolate via the top file.
-environment: <%= salt_environment %>
+<% if salt_environment != "None" %>environment: <%= salt_environment %><% else %>#environment: None<% end %>
 #
 # If using the local file directory, then the state top file name needs to be
 # defined, by default this is top.sls.
