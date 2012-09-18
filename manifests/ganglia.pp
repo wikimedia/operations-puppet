@@ -127,6 +127,9 @@ class ganglia {
 		"gluster"	=> {
 			"name"		=> "Glusterfs cluster",
 			"ip_oct"	=> "30" },
+		"fundraiser_misc"	=> {
+			"name"		=> "Fundraiser misc",
+			"ip_oct"	=> "31" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
@@ -258,7 +261,8 @@ class ganglia {
 						"Miscellaneous" => "spence.wikimedia.org",
 						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
 						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
-						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
+						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org payments1001.frack.eqiad.wmnet payments1002.frack.eqiad.wmnet payments1003.frack.eqiad.wmnet payments1004.frack.eqiad.wmnet",
+						"Fundraiser misc" => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet boron.frack.eqiad.wmnet indium.frack.eqiad.wmnet",
 						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
 						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
