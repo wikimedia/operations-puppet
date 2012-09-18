@@ -1642,7 +1642,17 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::api
 }
 
-node /mw1(0[0-9][0-9]|10[0-9])\.eqiad\.wmnet/ {
+# mw 1001-1016 are jobrunners (precise)
+node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
+	if $hostname =~ /^mw100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include	role::applicationserver::jobrunner
+}
+
+# mw 1017-1113 are apaches (precise)
+node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
@@ -1650,24 +1660,27 @@ node /mw1(0[0-9][0-9]|10[0-9])\.eqiad\.wmnet/ {
 	include	role::applicationserver::appserver
 }
 
-node /mw11([1-3][0-9]|4[0-4])\.eqaid\.wmnet/ {
-	if $hostname =~ /^mw111[01]$/ {
+# mw 1114-1148 are api apaches (precise)
+node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqaid\.wmnet/ {
+	if $hostname =~ /^mw111[45]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::appserver::api
 }
 
-node /mw11(4[5-9]|50)\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw114[56]$/ {
+# mw 1149-1152 are bits apaches (precise)
+node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
+	if $hostname =~ /^mw115[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::appserver::bits
 }
 
-#node /mw11(5[1-9]|60)\.eqaid\.wmnet/ {
-#	if $hostname =~ /^mw115[12]$/ {
+# mw 1153-1160 are imagescalers (precise)
+#node /mw11(5[3-9]|60)\.eqaid\.wmnet/ {
+#	if $hostname =~ /^mw115[34]$/ {
 #		$ganglia_aggregator = "true"
 #	}
 #
