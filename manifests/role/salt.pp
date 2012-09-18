@@ -3,7 +3,7 @@ class role::salt::masters::labs {
 	class { "salt::master":
 		salt_runner_dirs => "['/srv/runners']",
 		salt_peer_run => {
-			"i-00000276" => ['deploy.*'],
+			"i-00000276.pmtpa.wmflabs" => ['deploy.*'],
 		},
 	}
 
