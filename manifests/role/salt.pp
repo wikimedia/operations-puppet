@@ -14,6 +14,9 @@ class role::salt::minions {
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
 		}
+		$salt_peer_run = {
+			"i-00000276" => ['deploy.*'],
+		}
 	} else {
 		$salt_master = "sockpuppet.pmtpa.wmnet"
 		$salt_client_id = undef
