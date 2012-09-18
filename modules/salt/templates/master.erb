@@ -122,7 +122,7 @@ runner_dirs: <%= salt_runner_dirs %>
 # placed in a top file. The external_nodes option is the executable that will
 # return the ENC data. Remember that Salt will look for external nodes AND top
 # files and combine the results if both are enabled!
-<% if external_nodes != "None" %>external_nodes: <%= salt_external_nodes %><% else %>#external_nodes: None<% end %>
+<% if salt_external_nodes != "None" %>external_nodes: <%= salt_external_nodes %><% else %>#external_nodes: None<% end %>
 #
 # The renderer to use on the minions to render the state data
 renderer: <%= salt_renderer %>
