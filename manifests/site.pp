@@ -2119,9 +2119,6 @@ node "srv193.pmtpa.wmnet" {
 
 # srv194-199 are application servers (precise)
 node /^srv19[4-9]\.pmtpa\.wmnet$/ {
-	if $hostname =~ /^srv19[45]$/ {
-		$ganglia_aggregator = "true"
-	}
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
@@ -2149,10 +2146,6 @@ node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 
 # srv225-230 are applicationservers, memcached
 node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
-	if $hostname == "srv226" {
-		$ganglia_aggregator = "true"
-	}
-
 	include applicationserver_old::homeless,
 		memcached
 }
