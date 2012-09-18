@@ -11,8 +11,8 @@ class gerrit::instance($no_apache=false,
 		$host="",
 		$db_user="gerrit",
 		$ssh_key="",
-		$ssl_cert_file="/etc/ssl/certs/ssl-cert-snakeoil.pem",
-		$ssl_key_file="/etc/ssl/private/ssl-cert-snakeoil.key",
+		$ssl_cert="ssl-cert-snakeoil",
+		$ssl_ca="wmf-ca.pem",
 		$replication="",
 		$smtp_host="") {
 
@@ -52,8 +52,8 @@ class gerrit::instance($no_apache=false,
 	# Common setup
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
-		ssl_cert_file => $ssl_cert_file,
-		ssl_key_file => $ssl_key_file,
+		ssl_cert => $ssl_cert,
+		ssl_ca => $ssl_ca,
 		host => $host
 	}
 
@@ -251,8 +251,8 @@ class gerrit::jetty ($ldap_hosts,
 
 class gerrit::proxy( $no_apache = true,
 		$host = "",
-		$ssl_cert_file="",
-		$ssl_key_file="") {
+		$ssl_cert="",
+		$ssl_ca="") {
 
 	if !$no_apache {
 		require webserver::apache
