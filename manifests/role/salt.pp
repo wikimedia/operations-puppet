@@ -1,7 +1,10 @@
-class role::salt::masters {
+class role::salt::masters::labs {
 
 	class { "salt::master":
 		salt_runner_dirs => "['/srv/runners']",
+		salt_peer_run => {
+			"i-00000276" => ['deploy.*'],
+		},
 	}
 
 }
@@ -14,14 +17,12 @@ class role::salt::minions {
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
 		}
-		$salt_peer_run = {
-			"i-00000276" => ['deploy.*'],
-		}
 	} else {
 		$salt_master = "sockpuppet.pmtpa.wmnet"
 		$salt_client_id = undef
 		$salt_grains = {}
 	}
+
 	class { "salt::minion":
 		salt_master => $salt_master,
 		salt_client_id => $salt_client_id,

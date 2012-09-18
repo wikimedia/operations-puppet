@@ -2527,7 +2527,7 @@ node "virt0.wikimedia.org" {
 		role::ldap::server::labs,
 		role::ldap::client::labs,
 		role::nova::controller,
-		role::salt::masters
+		role::salt::masters::labs
 }
 
 node /virt[1-8].pmtpa.wmnet/ {
