@@ -1622,7 +1622,7 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	include	role::applicationserver::jobrunner
 }
 
-node /mw(1[7-9]|[2-5][0-4])\.pmtpa\.wmnet/ {
+node /mw(1[7-9]|[2-4][0-9]|5[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
 		applicationserver_old::jobrunner,
 		memcached
