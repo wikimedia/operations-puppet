@@ -127,8 +127,8 @@ class ganglia {
 		"gluster"	=> {
 			"name"		=> "Glusterfs cluster",
 			"ip_oct"	=> "30" },
-		"fundraiser_misc"	=> {
-			"name"		=> "Fundraiser misc",
+		"fundraising"	=> {
+			"name"		=> "Fundraising",
 			"ip_oct"	=> "31" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
