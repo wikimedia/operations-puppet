@@ -235,8 +235,7 @@ class WMFRewrite(WSGIContext):
             return self.app(env, start_response)
 
         # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
-        while(req.path_info != req.path_info.replace('//', '/')):
-            req.path_info = req.path_info.replace('//', '/')
+        req.path_info = re.sub( r'/{2,}', '/', req.path_info )
 
         # If it already has AUTH, presume that it's good. #07. fixes bug 33620
         hasauth = re.search('/AUTH_[0-9a-fA-F-]{32,36}', req.path)
