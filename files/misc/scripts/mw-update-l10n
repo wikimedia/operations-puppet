@@ -1,0 +1,29 @@
+#!/bin/bash
+(
+
+set -e
+BINDIR=/usr/local/bin
+SOURCE=/home/wikipedia/common
+DEST=/usr/local/apache/common-local
+
+mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
+# Regenerate the extension message file list for all active MediaWiki versions
+for i in ${mwExtVerDbSets[@]}; do
+	mwVerNum=${i%=*}
+	mwDbName=${i#*=}
+	echo "Updating ExtensionMessages-$mwVerNum.php..."
+	$BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
+		--list-file=$SOURCE/wmf-config/extension-list \
+		--output=$SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
+
+	# Update ExtensionMessages-*.php in the local copy
+	sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
+
+	echo -n "Updating LocalisationCache for $mwVerNum... "
+	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
+		--quiet --outdir=$SOURCE/php-$mwVerNum/cache/l10n
+	echo "done"
+done
+
+
+) || echo "Update of MediaWiki localisation messages failed"
