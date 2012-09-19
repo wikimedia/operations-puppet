@@ -137,6 +137,10 @@ class openstack::common($openstack_version="diablo", $novaconfig) {
 		ensure => latest;
 	}
 
+        include passwords::misc::scripts
+        $wiki_user = $passwords::misc::scripts::wikinotifier_user
+        $wiki_pass = $passwords::misc::scripts::wikinotifier_pass
+
 	file {
 		"/etc/nova/nova.conf":
 			content => template("openstack/${$openstack_version}/nova/nova.conf.erb"),

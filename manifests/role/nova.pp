@@ -177,9 +177,20 @@ class role::nova::config::eqiad inherits role::nova::config {
 	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
 }
 
+class role::nova::wikiupdates {
+        file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
+                source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+                mode => 0644,
+                owner => root,
+                group => root,
+                require => package["python-mwclient"]
+        }
+}
+
 class role::nova::common {
 	include role::nova::config::pmtpa,
-		role::nova::config::eqiad
+		role::nova::config::eqiad,
+		role::nova::wikiupdates
 
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
