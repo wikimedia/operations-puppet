@@ -109,7 +109,14 @@ class openstack::iptables  {
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class openstack::common($openstack_version="diablo", $novaconfig) {
+class openstack::common($openstack_version="diablo", 
+			$novaconfig,
+        		$instance_status_wiki_host,
+        		$instance_status_wiki_domain,
+        		$instance_status_wiki_page_prefix,
+			$instance_status_wiki_user,
+			$instance_status_wiki_pass) {
+
 	if $openstack_version == "diablo" {
 		generic::apt::pin-package { "python-eventlet":
 			pin => "release o=LP-PPA-openstack-release-2011.3",
