@@ -206,6 +206,11 @@ class role::swift {
 				proxy_address => "http://swift-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "127.0.0.1:11211" ],
+				allowed_sync_hosts => [
+					'10.4.0.179', # su-be1.pmtpa.wmflabs
+					'10.4.0.183', # su-be2.pmtpa.wmflabs
+					'10.4.0.191', # su-be3.pmtpa.wmflabs
+					],
 				super_admin_key => "thiskeyissuper",
 				rewrite_account => "AUTH_f80b5643-4597-407f-94f5-d2cc051805cf",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
@@ -221,7 +226,12 @@ class role::swift {
 			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-labs {
-			include ::swift::storage
+			class { "::swift::storage":
+				allowed_sync_hosts => [
+					'su-fe1.pmtpa.wmflabs',
+					'su-fe2.pmtpa.wmflabs',
+					],
+			}
 		}
 	}
 	class pmtpa-labsupgrade inherits role::swift::base {
@@ -256,6 +266,12 @@ class role::swift {
 				proxy_address => "http://su-fe1.pmtpa.wmflabs",
 				num_workers => $::processorcount * 2,
 				memcached_servers => [ "10.4.0.167:11211", "10.4.0.175:11211" ],
+				allowed_sync_hosts => [
+					'10.4.0.107', # swift-be1.pmtpa.wmflabs
+					'10.4.0.112', # swift-be2.pmtpa.wmflabs
+					'10.4.0.124', # swift-be3.pmtpa.wmflabs
+					'10.4.0.127', # swift-be4.pmtpa.wmflabs
+					],
 				super_admin_key => "notsoseekritkey",
 				rewrite_account => "AUTH_28e2c57d-458d-4d9e-b543-17a395f632f8",
 				rewrite_url => "http://127.0.0.1/auth/v1.0",
@@ -271,7 +287,9 @@ class role::swift {
 			include ::swift::proxy
 		}
 		class storage inherits role::swift::pmtpa-labsupgrade {
-			include ::swift::storage
+			class { "::swift::storage":
+				allowed_sync_hosts => [ 'swift-fe1.pmtpa.wmflabs' ],
+			}
 		}
 	}
 }
