@@ -109,7 +109,12 @@ class openstack::iptables  {
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class openstack::common($openstack_version="diablo", $novaconfig) {
+class openstack::common($openstack_version="diablo", 
+			$novaconfig,
+        		$instance_status_wiki_host,
+        		$instance_status_wiki_domain,
+        		$instance_status_wiki_page_prefix) {
+
 	if $openstack_version == "diablo" {
 		generic::apt::pin-package { "python-eventlet":
 			pin => "release o=LP-PPA-openstack-release-2011.3",
@@ -136,6 +141,10 @@ class openstack::common($openstack_version="diablo", $novaconfig) {
 	package { [ "python-netaddr", "radvd" ]:
 		ensure => latest;
 	}
+
+        include passwords::misc::scripts
+        $instance_status_wiki_user = $passwords::misc::scripts::wikinotifier_user
+        $instance_status_wiki_pass = $passwords::misc::scripts::wikinotifier_pass
 
 	file {
 		"/etc/nova/nova.conf":

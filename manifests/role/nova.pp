@@ -177,16 +177,53 @@ class role::nova::config::eqiad inherits role::nova::config {
 	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
 }
 
+class role::nova::wikiupdates {
+
+ 	if ($::lsbdistcodename == "lucid") {
+		file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
+			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			require => package["python-mwclient"]
+        	}
+	} else {
+		file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
+			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			require => package["python-mwclient"]
+        	}
+	}
+}
+
 class role::nova::common {
 	include role::nova::config::pmtpa,
-		role::nova::config::eqiad
+		role::nova::config::eqiad,
+		role::nova::wikiupdates
 
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
 		"eqiad" => $role::nova::config::eqiad::novaconfig,
 	}
 
-	class { "openstack::common": openstack_version => $openstack_version, novaconfig => $novaconfig }
+	class { "openstack::common":
+		openstack_version => $openstack_version,
+		novaconfig => $novaconfig,
+		instance_status_wiki_host => $::instance_status_wiki_host ? {
+                       	undef => "localhost",
+                       	default => $::instance_status_wiki_host,
+               	},
+		instance_status_wiki_domain => $::instance_status_wiki_domain ? {
+                       	undef => "labs",
+                       	default => $::instance_status_wiki_domain,
+               	},
+		instance_status_wiki_page_prefix => $::instance_status_wiki_page_prefix ? {
+                       	undef => "Nova_Resource:",
+                       	default => $::instance_status_wiki_page_prefix,
+               	}
+	}
 }
 
 class role::nova::controller {
