@@ -32,8 +32,12 @@
 #
 class geoip($data_directory = "/usr/share/GeoIP") {
 	class { "geoip::packages":                                        }
-	class { "geoip::data":          data_directory => $data_directory }
-	class { "geoip::data::symlink": data_directory => $data_directory }
+
+	# Maxmind files are private and never made available outside of production
+	if $::realm == 'production' {
+		class { "geoip::data":          data_directory => $data_directory }
+		class { "geoip::data::symlink": data_directory => $data_directory }
+	}
 }
 
 
