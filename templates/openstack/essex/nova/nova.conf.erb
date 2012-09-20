@@ -42,3 +42,14 @@ api_paste_config=/etc/nova/api-paste.ini
 #use_ipv6=True
 allow_same_net_traffic=False
 live_migration_uri=<%= novaconfig["live_migration_uri"] %>
+
+# Settings for wikistatus, the add-on that updates OSM with instance status:
+notification_driver=nova.notifier.list_notifier
+list_notifier_drivers=wikinotifier.WikiStatus
+
+wiki_host=labsconsole.wikimedia.org
+wiki_domain=labs
+wiki_page_prefix=Nova_Resource:
+wiki_login=<%= wiki_user %>
+wiki_password=<%= wiki_pass %>
+wiki_use_keystone=False
