@@ -12,17 +12,20 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(63|52|34|31|45|47|37|48|1048)|blondel$/ {
-		$master = "true"
-		$writable = "true"
+	if $hostname =~ /^db(63|52|34|31|45|47|37|48|1048)|blondel|^es(5|8)$/ {
+		$master = true
+		$writable = true
 	} else {
-		$master = "false"
+		$master = false
 	}
 
 	#######################################################################
 	### LVM snapshot hosts 
 	#######################################################################
 	if $hostname =~ /^db(25|26|32|33|44|46|49|53|1005|1007|1018|1020|1022|1035|1046|1050)$/ {
+		$snapshot_host = true
+	}
+	if $hostname =~ /^es(7|10|1007|1010)$/ {
 		$snapshot_host = true
 	}
 
@@ -66,7 +69,7 @@ class mysql {
 		$db_cluster = "fundraisingdb"
 		if $hostname =~ /^db1008$/ {
 			include role::db::fundraising::master
-			$writable = "true"
+			$writable = true
 		}
 		elsif $hostname =~ /^db1025$/ {
 			include role::db::fundraising::slave,
@@ -86,20 +89,20 @@ class mysql {
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
 		$db_cluster = "m2"
-		$skip_name_resolve = "false"
+		$skip_name_resolve = false
 		$mysql_max_allowed_packet = 1073741824
 	}
 	else {
 		$db_cluster = undef
 	}
 
-	if ($db_cluster) { 
+	if ($db_cluster) {
 		file { "/etc/db.cluster":
 			content => "${db_cluster}";
 		}
 		# this is for the pt-heartbeat daemon, which needs super privs
 		# to write to read_only=1 databases.
-		if ($db_cluster !~ /(fund|es)/) {
+		if ($db_cluster !~ /(fund|es1)/) {
 			include passwords::misc::scripts
 			file {
 				"/root/.my.cnf":
@@ -138,7 +141,7 @@ class mysql {
 	#######################################################################
 	if $hostname =~ /^db(42|1047)$/ {
 		$research_dbs = true
-		$writable = "true"
+		$writable = true
 	}
 
 	class packages {
@@ -402,9 +405,9 @@ class mysql {
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
 		if $db_cluster =~ /^(fundraisingdb|m|es)/ {
-			$innodb_file_per_table = "true"
+			$innodb_file_per_table = true
 		} else {
-			$innodb_file_per_table = "false"
+			$innodb_file_per_table = false
 		}
 
 		# collect all the changes to the dbs used by the summer researchers
@@ -412,25 +415,25 @@ class mysql {
 		# FIXME: please qualify these globals with something descriptive, e.g. $mysql_read_only
 		# FIXME: defaults aren't set, so template expansion is currently broken
 		if $research_dbs {
-			$disable_binlogs = "true"
-			$read_only = "false"
-			$long_timeouts = "true"
-			$enable_unsafe_locks = "true"
-			$large_slave_trans_retries = "true"
+			$disable_binlogs = true
+			$read_only = false
+			$long_timeouts = true
+			$enable_unsafe_locks = true
+			$large_slave_trans_retries = true
 		} else {
-			$disable_binlogs = "false"
-			$long_timeouts = "false"
-			$enable_unsafe_locks = "false"
-			$large_slave_trans_retries = "false"
+			$disable_binlogs = false
+			$long_timeouts = false
+			$enable_unsafe_locks = false
+			$large_slave_trans_retries = false
 			if $writable { 
-				$read_only = "false"
+				$read_only = false
 			} else { 
-				$read_only = "true"
+				$read_only = true
 			}
 		}
 
 		if ! $skip_name_resolve { 
-			$skip_name_resolve = "true"
+			$skip_name_resolve = true
 		}
 
 		file { "/etc/my.cnf":

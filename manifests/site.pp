@@ -759,21 +759,19 @@ node /es[1-4]\.pmtpa\.wmnet/ {
 }
 
 node /es([5-9]|10)\.pmtpa\.wmnet/ {
-	if $hostname =~ /^es[58]$/ {
-		class { "role::db::es": mysql_role => "master" }
-	}
-	else {
-		include role::db::es
-	}
+	include role::db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node /es10[0-1][0-9]\.eqiad\.wmnet/ {
-	if $hostname =~ /^es100[58]$/ {
-		class { "role::db::es": mysql_role => "master" }
-	}
-	else {
-		include role::db::es
-	}
+	include role::db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node "fenari.wikimedia.org" {
