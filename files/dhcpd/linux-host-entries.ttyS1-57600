@@ -16,8 +16,6 @@ host brewster {
 host capella {
 	hardware ethernet 00:21:9b:8e:c0:e6;
 	fixed-address capella.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db9 {
@@ -314,29 +312,9 @@ host spence {
 	fixed-address spence.wikimedia.org;
 }
 
-host sq31 {
-	hardware ethernet 00:19:B9:DF:48:5A;
-	fixed-address sq31.wikimedia.org;
-}
-
-host sq32 {
-	hardware ethernet 00:19:b9:dd:d7:ef;
-	fixed-address sq32.wikimedia.org;
-}
-
 host sq33 {
 	hardware ethernet 00:19:b9:dd:ef:a9;
 	fixed-address sq33.wikimedia.org;
-}
-
-host sq34 {
-	hardware ethernet 00:19:b9:dd:ef:3b;
-	fixed-address sq34.wikimedia.org;
-}
-
-host sq35 {
-	hardware ethernet 00:19:B9:DF:25:EE;
-	fixed-address sq35.wikimedia.org;
 }
 
 host sq36 {
@@ -347,21 +325,6 @@ host sq36 {
 host sq37 {
 	hardware ethernet 00:19:B9:DD:EF:B3;
 	fixed-address sq37.wikimedia.org;
-}
-
-host sq38 {
-	hardware ethernet 00:19:B9:DF:43:28;
-	fixed-address sq38.wikimedia.org;
-}
-
-host sq39 {
-	hardware ethernet 00:19:B9:DD:EE:DC;
-	fixed-address sq39.wikimedia.org;
-}
-
-host sq40 {
-	hardware ethernet 00:15:C5:F2:D8:79;
-	fixed-address sq40.wikimedia.org;
 }
 
 host sq41 {
@@ -389,16 +352,6 @@ host sq45 {
 	fixed-address sq45.wikimedia.org;
 }
 
-host sq46 {
-	hardware ethernet 00:15:C5:F2:E1:23;
-	fixed-address sq46.wikimedia.org;
-}
-
-host sq47 {
-	hardware ethernet 00:19:B9:DD:D8:1C;
-	fixed-address sq47.wikimedia.org;
-}
-
 host sq48 {
 	hardware ethernet 00:19:B9:DF:48:A5;
 	fixed-address sq48.wikimedia.org;
@@ -412,206 +365,6 @@ host sq49 {
 host sq50 {
 	hardware ethernet 00:15:C5:F2:D8:92;
 	fixed-address sq50.wikimedia.org;
-}
-
-host srv151 {
-	hardware ethernet 00:15:C5:EF:09:22;
-	fixed-address srv151.pmtpa.wmnet;
-}
-
-host srv152 {
-	hardware ethernet 00:15:C5:EF:09:40;
-	fixed-address srv152.pmtpa.wmnet;
-}
-
-host srv153 {
-	hardware ethernet 00:15:C5:EF:09:63;
-	fixed-address srv153.pmtpa.wmnet;
-}
-
-host srv154 {
-	hardware ethernet 00:19:B9:DD:C0:54;
-	fixed-address srv154.pmtpa.wmnet;
-}
-
-host srv155 {
-	hardware ethernet 00:19:B9:DD:9D:3E;
-	fixed-address srv155.pmtpa.wmnet;
-}
-
-host srv156 {
-	hardware ethernet 00:15:C5:F2:DB:04;
-	fixed-address srv156.pmtpa.wmnet;
-}
-
-host srv157 {
-	hardware ethernet 00:19:B9:DD:C8:24;
-	fixed-address srv157.pmtpa.wmnet;
-}
-
-host srv158 {
-	hardware ethernet 00:15:C5:F2:DA:64;
-	fixed-address srv158.pmtpa.wmnet;
-}
-
-host srv159 {
-	hardware ethernet 00:19:B9:DD:EF:2C;
-	fixed-address srv159.pmtpa.wmnet;
-}
-
-host srv160 {
-	hardware ethernet 00:15:C5:F2:DB:5E;
-	fixed-address srv160.pmtpa.wmnet;
-}
-
-host srv161 {
-	hardware ethernet 00:19:B9:DD:C8:1A;
-	fixed-address srv161.pmtpa.wmnet;
-}
-
-host srv162 {
-	hardware ethernet 00:19:B9:DD:D8:58;
-	fixed-address srv162.pmtpa.wmnet;
-}
-
-host srv163 {
-	hardware ethernet 00:19:B9:DD:EF:18;
-	fixed-address srv163.pmtpa.wmnet;
-}
-
-host srv164 {
-	hardware ethernet 00:15:C5:F2:DA:04;
-	fixed-address srv164.pmtpa.wmnet;
-}
-
-host srv165 {
-	hardware ethernet 00:19:B9:DD:C8:B0;
-	fixed-address srv165.pmtpa.wmnet;
-}
-
-host srv166 {
-	hardware ethernet 00:19:B9:DD:EF:68;
-	fixed-address srv166.pmtpa.wmnet;
-}
-
-host srv167 {
-	hardware ethernet 00:19:B9:DD:F7:88;
-	fixed-address srv167.pmtpa.wmnet;
-}
-
-host srv168 {
-	hardware ethernet 00:19:B9:DD:F1:66;
-	fixed-address srv168.pmtpa.wmnet;
-}
-
-host srv169 {
-	hardware ethernet 00:19:B9:DF:43:82;
-	fixed-address srv169.pmtpa.wmnet;
-}
-
-host srv170 {
-	hardware ethernet 00:19:B9:DD:EE:AF;
-	fixed-address srv170.pmtpa.wmnet;
-}
-
-host srv171 {
-	hardware ethernet 00:19:B9:DD:EF:22;
-	fixed-address srv171.pmtpa.wmnet;
-}
-
-host srv172 {
-	hardware ethernet 00:19:B9:DD:EF:77;
-	fixed-address srv172.pmtpa.wmnet;
-}
-
-host srv173 {
-	hardware ethernet 00:15:C5:F2:DB:27;
-	fixed-address srv173.pmtpa.wmnet;
-}
-
-host srv174 {
-	hardware ethernet 00:15:C5:F2:DB:09;
-	fixed-address srv174.pmtpa.wmnet;
-}
-
-host srv175 {
-	hardware ethernet 00:19:B9:DD:C0:40;
-	fixed-address srv175.pmtpa.wmnet;
-}
-
-host srv176 {
-	hardware ethernet 00:19:B9:DD:BF:AA;
-	fixed-address srv176.pmtpa.wmnet;
-}
-
-host srv177 {
-	hardware ethernet 00:19:B9:DD:C0:45;
-	fixed-address srv177.pmtpa.wmnet;
-}
-
-host srv178 {
-	hardware ethernet 00:19:B9:DF:43:37;
-	fixed-address srv178.pmtpa.wmnet;
-}
-
-host srv179 {
-	hardware ethernet 00:19:B9:DD:ED:79;
-	fixed-address srv179.pmtpa.wmnet;
-}
-
-host srv180 {
-	hardware ethernet 00:19:B9:DD:C8:65;
-	fixed-address srv180.pmtpa.wmnet;
-}
-
-host srv181 {
-	hardware ethernet 00:19:B9:DD:F7:4C;
-	fixed-address srv181.pmtpa.wmnet;
-}
-
-host srv182 {
-	hardware ethernet 00:19:B9:DD:D8:CB;
-	fixed-address srv182.pmtpa.wmnet;
-}
-
-host srv183 {
-	hardware ethernet 00:15:C5:F2:D6:A1;
-	fixed-address srv183.pmtpa.wmnet;
-}
-
-host srv184 {
-	hardware ethernet 00:19:B9:DD:F6:89;
-	fixed-address srv184.pmtpa.wmnet;
-}
-
-host srv185 {
-	hardware ethernet 00:19:b9:dd:d8:85;
-	fixed-address srv185.pmtpa.wmnet;
-}
-
-host srv186 {
-	hardware ethernet 00:19:b9:df:43:46;
-	fixed-address srv186.pmtpa.wmnet;
-}
-
-host srv187 {
-	hardware ethernet 00:19:b9:dd:c7:a7;
-	fixed-address srv187.pmtpa.wmnet;
-}
-
-host srv188 {
-	hardware ethernet 00:19:b9:dd:c1:cb;
-	fixed-address srv188.pmtpa.wmnet;
-}
-
-host srv189 {
-	hardware ethernet 00:19:b9:e2:cd:27;
-	fixed-address srv189.pmtpa.wmnet;
-}
-
-host srv190 {
-	hardware ethernet 00:21:9b:8b:ed:b1;
-	fixed-address srv190.pmtpa.wmnet;
 }
 
 host srv191 {
@@ -689,11 +442,6 @@ host srv205 {
 	fixed-address srv205.pmtpa.wmnet;
 }
 
-host srv206 {
-	hardware ethernet 00:21:9B:8B:D7:59;
-	fixed-address srv206.pmtpa.wmnet;
-}
-
 host srv207 {
 	hardware ethernet 00:21:9B:8B:D7:63;
 	fixed-address srv207.pmtpa.wmnet;
@@ -742,11 +490,6 @@ host srv215 {
 host srv216 {
 	hardware ethernet 00:21:9B:8B:ED:BB;
 	fixed-address srv216.pmtpa.wmnet;
-}
-
-host srv217 {
-	hardware ethernet 00:22:19:66:BF:3B;
-	fixed-address srv217.pmtpa.wmnet;
 }
 
 host srv218 {
