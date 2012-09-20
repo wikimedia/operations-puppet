@@ -1835,6 +1835,7 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		hour    => '8',
 		minute  => '0',
 		user    => 'backup',
+		ensure => absent,
 	}
 }
 
