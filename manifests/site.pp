@@ -2522,6 +2522,7 @@ node "virt0.wikimedia.org" {
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
 	$openstack_version = "essex"
+	$instance_status_wiki_host = "labsconsole.wikimedia.org"
 
 	include standard,
 		role::dns::ldap,
@@ -2541,6 +2542,7 @@ node /virt[1-8].pmtpa.wmnet/ {
 	include standard
 
 	$openstack_version = "essex"
+	$instance_status_wiki_host = "labsconsole.wikimedia.org"
 	if $hostname =~ /^virt2$/ {
 		include role::nova::network,
 			role::nova::api
