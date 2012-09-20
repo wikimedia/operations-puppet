@@ -213,18 +213,9 @@ class role::nova::common {
 	class { "openstack::common":
 		openstack_version => $openstack_version,
 		novaconfig => $novaconfig,
-		instance_status_wiki_host => $::instance_status_wiki_host ? {
-                       	undef => "localhost",
-                       	default => $::instance_status_wiki_host,
-               	},
-		instance_status_wiki_domain => $::instance_status_wiki_domain ? {
-                       	undef => "labs",
-                       	default => $::instance_status_wiki_domain,
-               	},
-		instance_status_wiki_page_prefix => $::instance_status_wiki_page_prefix ? {
-                       	undef => "Nova_Resource:",
-                       	default => $::instance_status_wiki_page_prefix,
-               	},
+		instance_status_wiki_host => "labsconsole.wikimedia.org",
+		instance_status_wiki_domain => "labs",
+		instance_status_wiki_page_prefix => "Nova_Resource:",
 		instance_status_wiki_user => $passwords::misc::scripts::wikinotifier_user,
 		instance_status_wiki_pass => $passwords::misc::scripts::wikinotifier_pass
 	}
