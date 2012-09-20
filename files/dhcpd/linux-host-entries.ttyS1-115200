@@ -1117,9 +1117,8 @@ host mc10 {
 	fixed-address mc10.pmtpa.wmnet;
 }
 
-### mac still onboard nic not 10g card
 host mc11 {
-	hardware ethernet d4:be:d9:f7:c2:ca;
+	hardware ethernet 90:e2:ba:19:53:fc;
 	fixed-address mc11.pmtpa.wmnet;
 }
 
