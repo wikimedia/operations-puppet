@@ -222,7 +222,7 @@ class WMFRewrite(WSGIContext):
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
         # add in the headers if we've got them
-        for header in ['Content-Length', 'Last-Modified', 'Accept-Ranges']:
+        for header in ['Content-Length', 'Content-Disposition', 'Last-Modified', 'Accept-Ranges']:
             if(uinfo.getheader(header)):
                 resp.headers.add(header, uinfo.getheader(header))
         return resp
