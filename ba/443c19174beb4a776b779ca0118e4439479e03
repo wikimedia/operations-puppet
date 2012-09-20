@@ -1,0 +1,8 @@
+Verified+1: gerrit2 <noc@wikimedia.org>
+Code-Review+1: Aaron Schulz <aschulz@wikimedia.org>
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Thu, 20 Sep 2012 00:34:52 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/24396
+Project: operations/puppet
+Branch: refs/heads/production
