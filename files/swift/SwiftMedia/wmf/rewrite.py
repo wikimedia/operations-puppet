@@ -77,6 +77,15 @@ class Copy2(object):
         self.copyconn.write(data)
         return data
 
+
+class DumbRedirectHandler(urllib2.HTTPRedirectHandler):
+    def http_error_301(self, req, fp, code, msg, headers):
+        return None
+
+    def http_error_302(self, req, fp, code, msg, headers):
+        return None
+
+
 class WMFRewrite(WSGIContext):
     """
     Rewrite Media Store URLs so that swift knows how to deal.
@@ -121,7 +130,8 @@ class WMFRewrite(WSGIContext):
         # upload doesn't like our User-agent, otherwise we could call it
         # using urllib2.url()
         proxy_handler = urllib2.ProxyHandler({'http': self.thumbhost})
-        opener = urllib2.build_opener(proxy_handler)
+        redirect_handler = DumbRedirectHandler()
+        opener = urllib2.build_opener(redirect_handler, proxy_handler)
         # Pass on certain headers from the caller squid to the scalers
         opener.addheaders = []
         if reqorig.headers.get('User-Agent') != None:
@@ -189,12 +199,16 @@ class WMFRewrite(WSGIContext):
         except urllib2.HTTPError,status:
             if status.code == 404:
                 resp = webob.exc.HTTPNotFound('Expected original file not found')
-                return resp
+            elif status.code == 301 and 'Location' in status.headers:
+                resp = webob.exc.HTTPMovedPermanently(location=status.headers['Location'])
+            elif status.code == 302 and 'Location' in status.headers:
+                resp = webob.exc.HTTPFound(location=status.headers['Location'])
             else:
                 resp = webob.exc.HTTPNotFound('Unexpected error %s' % status)
                 resp.body = "".join(status.readlines())
                 resp.status = status.code
-                return resp
+
+            return resp
 
         # get the Content-Type.
         uinfo = upcopy.info()
