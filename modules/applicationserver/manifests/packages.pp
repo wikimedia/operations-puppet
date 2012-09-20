@@ -5,7 +5,7 @@ class applicationserver::packages {
 			"php5", "php5-intl" ]:
 		ensure => "5.3.10-1ubuntu3.2+wmf1";
 	}
-	package { [ "php-wikidiff2", "php5-wmerrors",  "php-luasandbox" ]:
+	package { [ "php-wikidiff2", "php5-wmerrors",  "php-luasandbox", "php5-redis" ]:
 		ensure => latest;
 	}
 
