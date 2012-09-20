@@ -32,8 +32,29 @@
 #
 class geoip($data_directory = "/usr/share/GeoIP") {
 	class { "geoip::packages":                                        }
-	class { "geoip::data":          data_directory => $data_directory }
-	class { "geoip::data::symlink": data_directory => $data_directory }
+
+	# Maxmind files are private and never made available outside of production
+	if $::realm == 'production' {
+		class { "geoip::data":          data_directory => $data_directory }
+		class { "geoip::data::symlink": data_directory => $data_directory }
+	} else {
+
+		# Fallback to files provided by Ubuntu
+		package { "geoip-database": ensure => latest; }
+
+		# The geoip-database package always installs files under /usr/share
+		# Make sure $data_directory is filled with GeoIP files as requested.
+		if( $data_directory != '/usr/share/GeoIP' ) {
+			file { $data_directory:
+				owner => root,
+				group => root,
+				mode => 0644,
+				source => "/usr/share/GeoIP",
+				recurse => true,
+				require => Package["geoip-database"];
+			}
+		}
+	}
 }
 
 
