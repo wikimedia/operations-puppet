@@ -117,12 +117,18 @@ class geoip::data(
 
 	# else install the files from the maxmind download
 	# by including geoip::data::download
-	else {
+	# but only on production since they are private versions
+	elsif $::realm == "production" {
 		class { "geoip::data::download":
 			data_directory => $data_directory,
 			config_file    => $config_file,
 			environment    => $environment,
 		}
+	}
+
+	# Fallback to files provided by Ubuntu
+	else {
+		package { "geoip-database": ensure => present }
 	}
 
 }
