@@ -320,8 +320,9 @@ class ldap::client::nss($ldapconfig) {
 # ldap database will then be listed as users of the system, so use care.
 class ldap::client::utils($ldapconfig) {
 	include svn::client
+	include base::mwclient
 
-	package { [ "python-ldap", "python-pycurl", "python-mwclient" ]:
+	package { [ "python-ldap", "python-pycurl" ]:
 		ensure => latest;
 	}
 

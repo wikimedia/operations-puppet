@@ -263,6 +263,10 @@ class base::bonding-tools {
 	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
 }
 
+class base::mwclient {
+    package { python-mwclient: ensure => latest; }
+}
+
 define interface_tun6to4($remove=undef) {
 	if $remove == 'true' {
 		$augeas_cmd = [	"rm auto[./1 = 'tun6to4']",

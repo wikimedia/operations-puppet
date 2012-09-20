@@ -179,6 +179,8 @@ class role::nova::config::eqiad inherits role::nova::config {
 
 class role::nova::wikiupdates {
 
+    include base::mwclient
+
     if ($::lsbdistcodename == "lucid") {
 		file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
 			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
