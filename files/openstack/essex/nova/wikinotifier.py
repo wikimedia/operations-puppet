@@ -206,9 +206,13 @@ class WikiStatus(object):
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        page_string = "\n%s\n{{InstanceStatus%s}}\n%s\n" % (begin_comment,
-                                                            fields_string,
-                                                            end_comment)
+        if event_type == 'compute.instance.delete.start':
+            page_string = "\n%s\nThis instance has been deleted.\n%s\n" % (begin_comment,
+                                                                           end_comment)
+        else:
+            page_string = "\n%s\n{{InstanceStatus%s}}\n%s\n" % (begin_comment,
+                                                                fields_string,
+                                                                end_comment)
 
         self._wiki_login()
         pagename = "%s%s" % (FLAGS.wiki_page_prefix, ec2_id)
