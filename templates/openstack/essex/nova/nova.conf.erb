@@ -47,9 +47,9 @@ live_migration_uri=<%= novaconfig["live_migration_uri"] %>
 notification_driver=nova.notifier.list_notifier
 list_notifier_drivers=wikinotifier.WikiStatus
 
-wiki_host=labsconsole.wikimedia.org
-wiki_domain=labs
-wiki_page_prefix=Nova_Resource:
-wiki_login=<%= wiki_user %>
-wiki_password=<%= wiki_pass %>
+wiki_host=<%= instance_status_wiki_host %>
+wiki_domain=<%= instance_status_wiki_domain %>
+wiki_page_prefix=<%= instance_status_wiki_page_prefix %>
+wiki_login=<%= instance_status_wiki_user %>
+wiki_password=<%= instance_status_wiki_pass %>
 wiki_use_keystone=False
