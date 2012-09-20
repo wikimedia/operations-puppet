@@ -1,16 +1,23 @@
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/misc/demux.py
 #####################################################################
 
 # Simple python script for demultiplexing MediaWiki log files
 
-import sys, os, string, re
+import sys, os, string, re, argparse
+
 
 transTable = string.maketrans("./", "__")
 openFiles = {}
 baseDir = '/a/mw-log';
 nameRegex = re.compile(r"^[\040-\176]*$")
+
+parser = argparse.ArgumentParser()
+parser.add_argument( '--basedir', help='destination path of log files' )
+args = parser.parse_args()
+if args.basedir:
+	baseDir = args.basedir
 
 while True:
 	# Use readline() not next() to avoid python's buffering
