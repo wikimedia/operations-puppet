@@ -1066,116 +1066,86 @@ host marmontel {
 	fixed-address marmontel.wikimedia.org;
 }
 
+### mac still onboard nic not 10g card
 host mc1 {
 	hardware ethernet d4:be:d9:fa:4e:b0;
 	fixed-address mc1.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc2 {
 	hardware ethernet 90:e2:ba:19:4e:c8;
 	fixed-address mc2.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc3 {
-	hardware ethernet d4:be:d9:fa:4f:91;
-	fixed-address mc15.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
+	hardware ethernet 90:e2:ba:19:54:10;
+	fixed-address mc3.pmtpa.wmnet;
 }
 
 host mc4 {
-	hardware ethernet d4:be:d9:f4:59:eb;
+	hardware ethernet 90:e2:ba:19:56:50;
 	fixed-address mc4.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc5 {
-	hardware ethernet d4:be:d9:f4:5b:2f;
+	hardware ethernet 90:e2:ba:19:56:f4;
 	fixed-address mc5.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc6 {
-	hardware ethernet d4:be:d9:f7:bd:21;
+	hardware ethernet 90:e2:ba:19:4e:30;
 	fixed-address mc6.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc7 {
-	hardware ethernet d4:be:d9:f4:5a:7b;
+	hardware ethernet 90:e2:ba:19:51:d8;
 	fixed-address mc7.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc8 {
-	hardware ethernet d4:be:d9:f7:be:9b;
+	hardware ethernet 90:e2:ba:19:58:9c;
 	fixed-address mc8.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc9 {
-	hardware ethernet d4:be:d9:fa:4e:e6;
+	hardware ethernet 90:e2:ba:19:56:70;
 	fixed-address mc9.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc10 {
-	hardware ethernet d4:be:d9:f7:c2:ca;
+	hardware ethernet 90:e2:ba:19:50:dc;
 	fixed-address mc10.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
+### mac still onboard nic not 10g card
 host mc11 {
 	hardware ethernet d4:be:d9:f7:c2:ca;
 	fixed-address mc11.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc12 {
-	hardware ethernet d4:be:d9:f7:c4:9e;
+	hardware ethernet 90:e2:ba:19:4f:b4;
 	fixed-address mc12.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc13 {
-	hardware ethernet d4:be:d9:f4:5a:60;
+	hardware ethernet 90:e2:ba:19:50:b8;
 	fixed-address mc13.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc14 {
-	hardware ethernet d4:be:d9:f7:c1:8f;
+	hardware ethernet 90:e2:ba:19:55:b8;
 	fixed-address mc14.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc15 {
-	hardware ethernet d4:be:d9:f4:5b:77;
+	hardware ethernet 90:e2:ba:19:51:b8;
 	fixed-address mc15.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc16 {
-	hardware ethernet d4:be:d9:f7:bf:7c;
+	hardware ethernet 90:e2:ba:19:4e:48;
 	fixed-address mc16.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mc1001 {
