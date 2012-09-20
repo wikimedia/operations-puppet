@@ -233,6 +233,7 @@ class misc::contint::test {
 
 		# run jenkins behind Apache and have pretty URLs / proxy port 80
 		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
+		require webserver::apache2
 
 		apache_module { proxy: name => "proxy" }
 		apache_module { proxy_http: name => "proxy_http" }
