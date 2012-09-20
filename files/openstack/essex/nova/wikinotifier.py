@@ -190,6 +190,7 @@ class WikiStatus(object):
         template_param_dict['public_ip'] = inst.access_ip_v4
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
+        template_param_dict['project_name'] = inst.project_id
 
         try:
             fixed_ips = db.fixed_ip_get_by_instance(ctxt, old_school_id)
