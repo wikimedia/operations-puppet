@@ -50,18 +50,18 @@
 	cgi = /usr/lib/cgi-bin/gitweb.cgi
 	url = /r/gitweb
 [user]
-	email = "gerrit@wikimedia.org"
+	email = gerrit@wikimedia.org
 [commentlink "changeid"]
 	match = (I[0-9a-f]{8,40})
 	link = "#q,$1,n,z"
 [commentlink "commit"]
-	match = "\\b([0-9a-f]{40})\\b"
+	match = \\b([0-9a-f]{40})\\b
 	link = "#q,$1,n,z"
 [commentlink "bugzilla"]
 	match = "\\b([bB][uU][gG]\\s+#?)(\\d+)\\b"
 	link = https://bugzilla.wikimedia.org/$2
 [commentlink "codereview"]
-	match = "r(\\d+)"
+	match = r(\\d+)
 	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
 [commentlink "rt"]
 	match = "\\b[rR][tT]\\s+#?(\\d+)"
