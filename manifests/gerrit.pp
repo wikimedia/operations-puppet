@@ -20,13 +20,6 @@ class gerrit::instance($no_apache=false,
 		role::ldap::config::labs,
 		generic::packages::git-core
 
-	# TODO: Move this to the gerrit .deb
-	group { "gerrit2":
-		name => "gerrit2",
-		ensure => present,
-		allowdupe => false;
-	}
-
 	# Main config
 	include passwords::gerrit
 	$gerrit_pass = $passwords::gerrit::gerrit_pass
@@ -50,6 +43,10 @@ class gerrit::instance($no_apache=false,
 	$url = "https://${host}/r"
 
 	# Common setup
+	class { "gerrit::account":
+		ssh_key => $ssh_key
+	}
+
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
 		ssl_cert_file => $ssl_cert_file,
@@ -87,17 +84,12 @@ class gerrit::jetty ($ldap_hosts,
 		$sshport,
 		$ldap_proxyagent,
 		$ldap_proxyagent_pass,
-		$ssh_key,
 		$replication,
 		$smtp_host) {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,
 		gerrit::gitweb
-
-	class { "gerrit::account":
-		ssh_key => $ssh_key
-	}
 
 	package { [ "openjdk-6-jre", "git-svn" ]:
 		ensure => latest;
@@ -117,16 +109,20 @@ class gerrit::jetty ($ldap_hosts,
 			owner => root,
 			group => root,
 			mode => 0444;
-		"/var/lib/gerrit2":
-			mode  => 0755,
-			owner => "gerrit2",
-			ensure => directory;
+		"/var/lib/gerrit2/.ssh/id_rsa":
+			owner => gerrit2,
+			group => gerrit2,
+			mode  => 0600,
+			require => [Package["gerrit"],
+				Ssh_authorized_key["gerrit2"]],
+			source => "puppet:///private/gerrit/id_rsa";
 		"/var/lib/gerrit2/review_site":
 			ensure => directory,
 			owner => gerrit2,
 			group => gerrit2,
 			mode => 0755,
-			require => Package["gerrit"];
+			require => [File["/var/lib/gerrit2"],
+				Package["gerrit2"]];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
@@ -334,34 +330,45 @@ class gerrit::ircbot {
 	}
 }
 
-# Setup the `gerrit2` account for gerrit to run as
-# The gerrit package already creates the user itself
+# Setup the `gerrit2` account for gerrit to run as or for
+# gerrit to recieve replication
 class gerrit::account( $ssh_key ) {
+	group { "gerrit2":
+		name => "gerrit2",
+		ensure => present,
+		allowdupe => false;
+	}
 
-	ssh_authorized_key { gerrit2:
-		key => $ssh_key,
-		type => "ssh-rsa",
-		user => gerrit2,
-		require => [Package["gerrit"],
-				File["/var/lib/gerrit2/.ssh"]],
-		ensure => present;
+	user { "gerrit2":
+		name => "gerrit2",
+		gid => "gerrit2",
+		home => "/var/lib/gerrit2",
+		uid => 479,
+		ensure => present,
+		allowdupe => false,
+		require => Group["gerrit2"];
 	}
 
 	file {
+		"/var/lib/gerrit2/":
+			mode  => 0755,
+			owner => "gerrit2",
+			ensure => directory,
+			require => User["gerrit2"];
 		"/var/lib/gerrit2/.ssh":
 			mode  => 0600,
 			owner => "gerrit2",
 			ensure => directory,
 			require => File["/var/lib/gerrit2"];
-		"/var/lib/gerrit2/.ssh/id_rsa":
-			owner => gerrit2,
-			group => gerrit2,
-			mode  => 0600,
-			require => [Package["gerrit"],
-				Ssh_authorized_key["gerrit2"]],
-			source => "puppet:///private/gerrit/id_rsa";
 	}
 
+	ssh_authorized_key { gerrit2:
+		key => $ssh_key,
+		type => "ssh-rsa",
+		user => gerrit2,
+		require => File["/var/lib/gerrit2/.ssh"],
+		ensure => present;
+	}
 }
 
 class gerrit::crons {
