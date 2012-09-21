@@ -1,0 +1,39 @@
+;; Global options
+[deploy]
+	;; Force users to have this umask
+	restrict-umask = <%= deployment_restrict_umask %>
+
+	;; If this file exists all rollouts are blocked
+	block-file = <%= deployment_block_file %>
+
+	;; E-Mail addresses to complain to when stuff goes wrong
+	<% if deployment_support_email %>support-email = <%= deployment_support_email %><% else %>;;support-email = admin@example.org<% end %>
+
+	;; What strategy should we use to detect the repo name?
+	repo-name-detection = <%= deployment_repo_name_detection %>
+
+	;; Where should the mail configured below go?
+	<% if deployment_announce_email %>announce-mail = <%= deployment_announce_email %><% else %>;;announce-mail = admin@examp
+le.org<% end %>
+
+	;; When should we send an E-Mail?
+	send-mail-on-sync   = <%= deployment_send_mail_on_sync %>
+	send-mail-on-revert = <%= deployment_send_mail_on_revert %>
+
+	;; Where to store the timing information
+	log-directory = <%= deployment_log_directory %>
+
+	;; We want timing information
+	log-timing-data = <%= deployment_log_timing_data %>
+
+	;; Global hook dir
+	<% if deployment_global_hook_dir %>hook-dir = <%= deployment_global_hook_dir %><% else %>;;hoor-dir = /var/lib/git-deploy/hooks<% end %>
+
+;; Per-repo options, keys here override equivalent keys in the
+;; global options
+<% if deployment_per_repo_config %><% deployment_per_repo_config.each do |repo, options| %>
+[deploy "repository <%= repo %>"]
+<% options.each do |option, value| %>
+	<%= option %> = <%= value %>
+<% end %><% end %>
+<% end %>
