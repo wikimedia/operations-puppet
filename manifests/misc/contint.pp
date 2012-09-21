@@ -298,7 +298,71 @@ class misc::contint::test {
 				mode => 0444,
 				source => "puppet:///files/zuul/apache_proxy";
 		}
+
+		include jenkins::job_builder
+
 	}
+
+	class jenkins::job_builder {
+
+		package { [
+				"python-jenkins",
+				"python-yaml",
+			]: ensure => latest,
+		}
+
+		file { [
+				"/var/lib/git/integration",
+			]: ensure => directory;
+		}
+
+		# Fetch source code from the WMF repository
+		git::clone {
+			"integration/jenkins-job-builder":
+			require => File["/var/lib/git/integration"],
+			directory => "/var/lib/git/integration/jenkins-job-builder",
+			origin => "https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder";
+		}
+
+		# Install the python script. Snippet from OpenStack CI
+		require generic::pythonpip
+		exec { "install_jenkins_job_builder":
+			cwd => "/var/lib/git/integration/jenkins-job-builder",
+			command => "python setup.py install",
+			path => "/bin:/usr/bin",
+			refreshonly => true,
+			subscribe => Git::Clone["integration/jenkins-job-builder"],
+			require => [
+				Package['python-pip'],
+				Package['python-jenkins'],
+				Package['python-yaml'],
+			],
+		}
+
+		# Base directory for configuration files
+		file { "/etc/jenkins_jobs":
+			ensure => "directory",
+		}
+
+		# Jenkins job builder own configuration
+		# Requires a Jenkins API key
+		require passwords::misc::contint::jenkins
+		$jobbuilder_user_apikey = $passwords::misc::contint::jenkins::jobbuilder_user_apikey
+		file { "/etc/jenkins_jobs/jenkins_jobs.ini":
+			content => template("misc/jenkins_jobs.ini.erb"),
+			require => File["/etc/jenkins_jobs"],
+		}
+
+		# Jobs configuration files are hold in another repository and are
+		# maintained by continuous integration people.
+		git::clone { "integration/jenkins-job-builder-config":
+			directory => "/etc/jenkins_jobs/config",
+			origin => "https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder-config",
+			branch => "master",
+			require => File["/etc/jenkins_jobs"],
+		}
+
+	} ### class jenkins::job_builder
 
 	class testswarm {
 
