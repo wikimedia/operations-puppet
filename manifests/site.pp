@@ -2348,6 +2348,9 @@ node "stat1.wikimedia.org" {
 		# RT 3219
 		accounts::haithams,
 		# RT 3119
+		accounts::hfung,
+		# RT 3577
+
 		admins::globaldev
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
