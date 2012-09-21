@@ -99,7 +99,7 @@ class role::applicationserver {
 	class jobrunner{
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "::jobrunner": procs => 12 }
+		class { "::jobrunner": procs => 5 }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
