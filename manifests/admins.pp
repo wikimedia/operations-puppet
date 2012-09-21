@@ -2207,6 +2207,7 @@ class admins::mortals {
 	include accounts::nimishg # revoked
 	include accounts::olivneh
 	include accounts::pdhanda # access revoked
+	include accounts::pgehres
 	include accounts::preilly
 	include accounts::raindrift # access revoked per RT 3088
 	include accounts::reedy
@@ -2234,7 +2235,6 @@ class admins::restricted {
 	include accounts::khorn
 	include accounts::mwalker
 	include accounts::otto
-	include accounts::pgehres
 	include accounts::rcole # access revoked
 	include accounts::rainman
 	include accounts::tparscal
