@@ -252,6 +252,48 @@ class misc::contint::test {
 		}
 	}
 
+	class jenkins::job_builder {
+
+		package { [
+				"python-jenkins",
+				"python-yaml",
+			]: ensure => latest,
+		}
+
+		# Fetch source code from the WMF repository
+		git::clone {
+			"integration/jenkins-job-builder":
+			require => File["$puppetmaster::gitdir/integration"],
+			directory => "$puppetmaster::gitdir/integration/jenkins-job-builder",
+			origin => "https://gerrit.wikimedia.org/r/p/integration/jenkins-job-builder";
+		}
+
+		# Install the python script. Snippet from OpenStack CI
+		exec { "install_jenkins_job_builder":
+			cwd => "$puppetmaster::gitdir/integration/jenkins-job-builder",
+			command => "python setup.py install",
+			refreshonly => true,
+			subscribe => Git::Clone["integration/jenkins-job-builder"],
+			require => [
+				Package['python-jenkins'],
+				Package['python-yaml'],
+			],
+		}
+
+		file { "/etc/jenkins_jobs":
+			ensure => "directory",
+		}
+
+		# TODO: fill it with some repository content
+		file { "/etc/jenkins_jobs/config":
+			owner => 'root',
+			group => 'root',
+			mode => 0755,
+			ensure => "directory",
+		}
+
+	} ### class jenkins::job_builder
+
 	class testswarm {
 
 		class systemuser {
