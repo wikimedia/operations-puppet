@@ -72,7 +72,7 @@ wiki_opts = [
                         'compute.instance.suspend',
                         'compute.instance.resume',
                         'compute.instance.exists',
-			'compute.instance.metadatachange',
+                        'compute.instance.forcewikistatusupdate',
                         'compute.instance.reboot.start',
                         'compute.instance.reboot.end',
                        ],
