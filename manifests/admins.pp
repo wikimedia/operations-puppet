@@ -2039,9 +2039,7 @@ class accounts {
 		$username = "haithams"
 		$realname = "Haitham Shammaa"
 		$uid = 606
-
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
@@ -2051,6 +2049,23 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAzIL4+oaq/jC6cUsF/Pd9xwOJQLOXLrhPs825Z5sdlK8jM3rfkKNGiVhvDu8sv2FEjDnOFcaTUrPnsA7QFUM+QkO9U3XfIxnn/CHgXUwUCAvX1/GOuM2bMGKNrzNa+R5qOYYAYE1I0MalQCH2jfdsbe9hEKxS3IygzzmQEsbvMvE=";
+			}
+		}
+	}
+
+	class hfung inherits baseaccount {
+		$username = "hfung"
+		$realname = "Howie Fung"
+		$uid = 611
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+			ssh_authorized_key {
+				"howiefung@Macintosh.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC6xDAibCed4gMnNdknhU3v+f/82vyi+UcUL8fgsLqs9ADyVP5tjB86kKS5HV1RbA7A7RbE+DBJY/Y/hpjmtrnoYjxAXG1u75PMYiiEO5cNoXu45HBqKKnlEeqOTDhKkN65WtSeBzBQu092vXpMyTMMfKrtp0cnLxZz3Z9nNCmYv8pETaDEVVnJqAgfxn3XORowtiYgBCjskDV0oqUbqXwnxHeua1a2OLQk78QySWxJhFN+lvbqtnH8RWIH/YZJolrGHaLS1PEAhsc8rS1giJVcXsSccGbrMNAoCHNDJOXWNjjLAeHomX55vqkxxjmoiuEy3B0ykUmFO4objzNibUa9";
 			}
 		}
 	}
