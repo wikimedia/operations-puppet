@@ -368,8 +368,8 @@ host sq50 {
 }
 
 host srv190 {
-»       hardware ethernet 00:21:9b:8b:ed:b1;
-»       fixed-address srv190.pmtpa.wmnet;
+	hardware ethernet 00:21:9b:8b:ed:b1;
+	fixed-address srv190.pmtpa.wmnet;
 }
 
 host srv191 {
