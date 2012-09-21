@@ -2097,9 +2097,9 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-# srv190 is an application server (precise)
+# TESTING
 node "srv190.pmtpa.wmnet" {
-	include	role::applicationserver::appserver
+	include	role::applicationserver::imagescaler
 	include	nfs::upload
 }
 
