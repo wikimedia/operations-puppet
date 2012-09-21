@@ -367,6 +367,11 @@ host sq50 {
 	fixed-address sq50.wikimedia.org;
 }
 
+host srv190 {
+»       hardware ethernet 00:21:9b:8b:ed:b1;
+»       fixed-address srv190.pmtpa.wmnet;
+}
+
 host srv191 {
 	hardware ethernet 00:21:9b:8b:d9:7f;
 	fixed-address srv191.pmtpa.wmnet;
