@@ -40,6 +40,9 @@ wiki_opts = [
     cfg.StrOpt('wiki_page_prefix',
                default='InstanceStatus_',
                help='Created pages will have form <prefix>_<instancename>.'),
+    cfg.StrOpt('wiki_instance_region',
+               default='Unknown',
+               help='Hard-coded region name for wiki page.  A bit of a hack.'),
     cfg.StrOpt('wiki_login',
                 default='login',
                 help='Account used to edit wiki pages.'),
@@ -191,6 +194,7 @@ class WikiStatus(object):
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
         template_param_dict['project_name'] = inst.project_id
+        template_param_dict['region'] = FLAGS.wiki_instance_region
 
         try:
             fixed_ips = db.fixed_ip_get_by_instance(ctxt, old_school_id)
