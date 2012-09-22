@@ -187,7 +187,8 @@ class role::nova::wikiupdates {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => package["python-mwclient"]
+			require => package["python-mwclient"],
+			notify => Service["nova-compute"]
 		}
 	} else {
 		file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
@@ -195,7 +196,8 @@ class role::nova::wikiupdates {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => package["python-mwclient"]
+			require => package["python-mwclient"],
+			notify => Service["nova-compute"]
 		}
 	}
 }
