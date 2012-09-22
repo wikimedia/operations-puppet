@@ -1,3 +1,7 @@
+#####  This file is obsolete; please direct your attention to labsmediawiki.pp instead.
+
+
+
 #include "labsmysql.pp"
 #include "webserver.pp"
 #include "generic-definitions.pp"
