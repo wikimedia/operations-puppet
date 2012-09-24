@@ -173,7 +173,7 @@ backend test {
 <% varnish_directors.keys.each do |director| -%>
 director <%= director %> <%= director_type %> {
 <% director_options.each_pair do |option,value| -%>
-	.<%= option %> = "<%= value %>";
+	.<%= option %> = <%= value.inspect %>;
 <% end -%>
 <% varnish_directors[director].each do |backend| -%>
 	{
