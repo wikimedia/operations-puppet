@@ -1,0 +1,17 @@
+[jenkins]
+server=<%= jenkins_server %>
+user=<%= jenkins_user %>
+apikey=<%= jenkins_apikey %>
+
+[gerrit]
+server=<%= gerrit_server %>
+user=<%= gerrit_user %>
+sshkey=/var/lib/jenkins/.ssh/id_rsa
+
+[zuul]
+layout_config=/etc/zuul/layout.yaml
+log_config=/etc/zuul/logging.conf
+state_dir=/var/lib/zuul
+git_dir=/var/lib/zuul/git
+push_change_refs=true
+url_pattern=<%= url_pattern %>
