@@ -599,7 +599,7 @@ class lvs::configuration {
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
-			'depool-threshold' => ".5",
+			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://localhost/stats' ],
@@ -616,7 +616,7 @@ class lvs::configuration {
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
-			'depool-threshold' => "1",
+			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://localhost/stats' ],
@@ -633,7 +633,7 @@ class lvs::configuration {
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
-			'depool-threshold' => "1",
+			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://localhost/stats' ],
@@ -650,7 +650,7 @@ class lvs::configuration {
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
-			'depool-threshold' => "1",
+			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://localhost/stats' ],
@@ -667,7 +667,7 @@ class lvs::configuration {
 			'port' => 8123,
 			'scheduler' => "wrr",
 			'bgp' => "yes",
-			'depool-threshold' => "1",
+			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://localhost/stats' ],
