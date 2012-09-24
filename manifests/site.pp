@@ -1619,13 +1619,15 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mw[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	include	role::applicationserver::jobrunner
+	# removed due to bug 40462 -- TS
+	#include	role::applicationserver::jobrunner
 }
 
 node /mw(1[7-9]|[2-4][0-9]|5[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
 		memcached
+	# removed due to bug 40462 -- TS
+	#include	role::applicationserver::jobrunner
 }
 
 # mw55-59 are application servers (precise)
@@ -1648,7 +1650,8 @@ node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include	role::applicationserver::jobrunner
+	# removed due to bug 40462 -- TS
+	#include	role::applicationserver::jobrunner
 }
 
 # mw 1017-1113 are apaches (precise)
