@@ -386,6 +386,12 @@ class misc::statistics::rsync::jobs {
 		source      => "emery.wikimedia.org::udp2log/aft/archive/clicktracking*.gz",
 		destination => "/a/aft/archive/clicktracking",
 	}
+
+	# edit logs from locke
+	misc::statistics::rsync_job { "edits":
+		source      => "locke.wikimedia.org::udp2log/archive/edits*.gz",
+		destination => "/a/squid/archive/edits",
+	}
 }
 
 
@@ -406,7 +412,7 @@ define misc::statistics::rsync_job($source, $destination) {
 	# ensure that the destination directory exists
 	file { "$destination":
 		ensure  => "directory",
-		owner   => "stats",
+		owner   => "$misc::statistics::user::username",
 		group   => "wikidev",
 		mode    => 0775,
 	}
