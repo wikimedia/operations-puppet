@@ -592,6 +592,9 @@ class role::cache {
 			},
 			backends => [ "10.2.1.1" ],
 			directors => { "backend" => [ "10.2.1.1" ] },
+			director_options => {
+				'retries' => 2,
+			},
 			vcl_config => {
 				'retry5xx' => 1,
 			},
