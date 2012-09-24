@@ -172,7 +172,9 @@ backend test {
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.each do |director| -%>
 director <%= director %> <%= director_type %> {
-	.retries = 2;
+<% director_options.each_pair do |option,value| -%>
+	.<%= option %> = "<%= value %>";
+<% end -%>
 <% varnish_directors[director].each do |backend| -%>
 	{
 <% if backend =~ /^[0-9\.]+$/ -%>

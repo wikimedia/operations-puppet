@@ -58,6 +58,7 @@ class varnish {
 		$backends=[],
 		$directors={},
 		$director_type="hash",
+		$director_options={},
 		$vcl_config,
 		$backend_options,
 		$cluster_options={},
