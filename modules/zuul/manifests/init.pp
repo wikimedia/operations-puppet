@@ -17,7 +17,7 @@ class zuul (
 ) {
 
 	# Dependencies as mentionned in zuul:tools/pip-requires
-	packages { [
+	package { [
 			'python-yaml',
 			# Missing: python-jenkins
 			'python-paste',
@@ -36,6 +36,10 @@ class zuul (
 		origin => 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
 		branch => 'dev',
 		ensure => 'latest',
+	}
+
+	file { "/etc/zuul":
+		ensure => "directory",
 	}
 
 	exec { "install_zuul":
