@@ -96,6 +96,18 @@ probe bits {
 }
 <% end -%>
 
+# This is intended for backends of a single LVS vip,
+# where pybal performs actual health checks and we typically
+# don't want a backend marked down unless it's very down.
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0";
+	.timeout = 2s;
+	.interval = 2s;
+	.window = 6;
+	.threshold = 2;
+}
+
 # frontends in front of other varnish instances should send
 # probes that don't depend on the app backend
 probe varnish {
