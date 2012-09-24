@@ -1138,7 +1138,7 @@ host mc14 {
 }
 
 host mc15 {
-	hardware ethernet 90:e2:ba:19:51:b8;
+	hardware ethernet 90:e2:ba:1d:47:c0;
 	fixed-address mc15.pmtpa.wmnet;
 }
 
