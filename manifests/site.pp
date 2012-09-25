@@ -2342,6 +2342,7 @@ node "stafford.pmtpa.wmnet" {
 	}
 }
 
+
 node "stat1.wikimedia.org" {
 	include role::statistics::cruncher
 
