@@ -31,21 +31,19 @@ class misc::deployment::scripts {
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
 
+	# Bug 37076
 	package { "php5-parsekit": ensure => present; }
 
 	$scriptpath = "/usr/local/bin"
 
 	file { $scriptpath:
+		require => Package["php5-parsekit"],
 		owner => root,
 		group => root,
 		mode => 0555,
 		recurse => remote,
 		source => "puppet:///files/misc/deployment-scripts/bin/";
 	}
-
-	# Bug 37076
-	Package['php5-parsekit'] -> File["${scriptpath}/lint"]
-	Package['php5-parsekit'] -> File["${scriptpath}/lint.php"]
 
 	file {
 		"${scriptpath}/sync-apache-simulated":
