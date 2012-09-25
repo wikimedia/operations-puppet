@@ -2370,7 +2370,11 @@ node "stat1.wikimedia.org" {
 		# RT 3517
 		accounts::maryana,
 		# RT 3540
-		accounts::dandreescu
+		accounts::dandreescu,
+		# RT 3576
+		accounts::howief,
+		# RT 3584
+		accounts::spetrea
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
