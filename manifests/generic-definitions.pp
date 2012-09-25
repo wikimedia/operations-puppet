@@ -59,16 +59,16 @@ define apache_site($name, $prefix="", $ensure="link") {
 }
 
 # Enables a certain Apache 2 module
-define apache_module($name) {
+define apache_module($module) {
 	file {
-		"/etc/apache2/mods-available/${name}.conf":
+		"/etc/apache2/mods-available/${module}.conf":
 			ensure => present;
-		"/etc/apache2/mods-available/${name}.load":
+		"/etc/apache2/mods-available/${module}.load":
 			ensure => present;
-		"/etc/apache2/mods-enabled/${name}.conf":
-			ensure => "../mods-available/${name}.conf";
-		"/etc/apache2/mods-enabled/${name}.load":
-			ensure => "../mods-available/${name}.load";
+		"/etc/apache2/mods-enabled/${module}.conf":
+			ensure => "../mods-available/${module}.conf";
+		"/etc/apache2/mods-enabled/${module}.load":
+			ensure => "../mods-available/${module}.load";
 	}
 }
 
@@ -669,6 +669,10 @@ class generic::gluster {
 		ensure => present;
 	}
 
+}
+
+class generic::packages::apache2 {
+	package { "apache2": ensure => latest; }
 }
 
 class generic::packages::git-core {

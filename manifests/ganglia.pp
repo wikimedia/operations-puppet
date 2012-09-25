@@ -425,7 +425,7 @@ class ganglia::web {
 	}
 
 	apache_site { ganglia: name => $ganglia_servername }
-	apache_module { rewrite: name => "rewrite" }
+	apache_module { rewrite: module => "rewrite" }
 
 	package {
 		"librrds-perl":
