@@ -1066,9 +1066,8 @@ host marmontel {
 	fixed-address marmontel.wikimedia.org;
 }
 
-### mac still onboard nic not 10g card
 host mc1 {
-	hardware ethernet d4:be:d9:fa:4e:b0;
+	hardware ethernet 90:e2:ba:19:55:f0;
 	fixed-address mc1.pmtpa.wmnet;
 }
 
