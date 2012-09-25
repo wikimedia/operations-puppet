@@ -64,66 +64,23 @@ class misc::deployment::scripts {
 
 class misc::deployment::passwordscripts {
 	include passwords::misc::scripts
-	$cachemgr_pass = $passwords::misc::scripts::cachemgr_pass
-	$mysql_root_pass = $passwords::misc::scripts::mysql_root_pass
-	$nagios_sql_pass = $passwords::misc::scripts::nagios_sql_pass
-	$webshop_pass = $passwords::misc::scripts::webshop_pass
-	$wikiadmin_pass = $passwords::misc::scripts::wikiadmin_pass
-	$wikiuser2_pass = $passwords::misc::scripts::wikiuser2_pass
-	$wikiuser_pass = $passwords::misc::scripts::wikiuser_pass
-	$wikiuser_pass_nagios = $passwords::misc::scripts::wikiuser_pass_nagios
-	$wikiuser_pass_real = $passwords::misc::scripts::wikiuser_pass_real
 
-	$scriptpath = "/usr/local/bin"
-
-	file {
-		"${scriptpath}/cachemgr_pass":
+	define passwordscript($scriptpath="/usr/local/bin") {
+		$password = inline_template("scope.lookupvar(\"passwords::misc::scripts::${title}\")")
+		
+		file { "${scriptpath}/${title}":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
-			content => template("misc/passwordScripts/cachemgr_pass.erb");
-		"${scriptpath}/mysql_root_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/mysql_root_pass.erb");
-		"${scriptpath}/nagios_sql_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/nagios_sql_pass.erb");
-		"${scriptpath}/webshop_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/webshop_pass.erb");
-		"${scriptpath}/wikiadmin_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/wikiadmin_pass.erb");
-		"${scriptpath}/wikiuser2_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/wikiuser2_pass.erb");
-		"${scriptpath}/wikiuser_pass":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/wikiuser_pass.erb");
-		"${scriptpath}/wikiuser_pass_nagios":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/wikiuser_pass_nagios.erb");
-		"${scriptpath}/wikiuser_pass_real":
-			owner => root,
-			group => wikidev,
-			mode => 0550,
-			content => template("misc/passwordScripts/wikiuser_pass_real.erb");
+			content => "#!/bin/bash\necho -n \"${password}\"\n"
+		}
 	}
-}
+	
+	$passwords = [ 'cachemgr_pass', 'mysql_root_pass', 'nagios_sql_pass', 'webshop_pass', 'wikiadmin_pass',
+		'wikiuser2_pass', 'wikiuser_pass', 'wikiuser_pass_nagios', 'wikiuser_pass_real' ]
+	
+	passwordscript { $passwords: }
+
 
 class misc::deployment::l10nupdate {
 	require misc::deployment::scripts
