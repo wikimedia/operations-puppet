@@ -17,6 +17,19 @@ class role::gerrit {
 		}
 	}
 
+	# Install of Gerrit for Jenkins developpement
+	class labs::jenkins {
+		system_role { "role::gerrit:labs::jenkins": description => "Gerrit on Jenkins dev instance" }
+
+		class { "gerrit::instance":
+			ircbot => false,
+			db_host => localhost,
+			host => "integration.wmflabs.org",
+			ssh_key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC920PnWt3nTsGy7C/A9evATC2HHB4nelBS//LqquEKGfwRuLvNkQdxymhJgfwmTR692OcYcVToJnUYLKrhiGgS6I0nOjVV77xpB/ckymOqbf4B3LmYuEi2MmtyoCb6RB7tjBcoAA/7CtK2WHKdUz1mRhEbPA16eD99PhVftIvu/4pNfvcTpZ/kTP5FmmSqoeHPGWZI+meWlL1BRp2lpF7Xg2ahJHBU6Qs+HDh6LNJCtVrfzz9xa+dLtFxBXQTdQwIuBw9Pn4mNdzBDtMG32lwtp7qpojqRYqCjpiJu9SkI1jmjmqIn6MdnoS+2n1OskpX3cVJDGlCcjfOoCQfOFIpL",
+			ssl_cert => "star.wmflabs.org",
+			ssl_ca => "wmf-labs"
+		}
+	}
 
 	class production {
 		system_role { "role::gerrit::production": description => "Gerrit master" }
