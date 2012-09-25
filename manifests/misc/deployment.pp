@@ -35,175 +35,25 @@ class misc::deployment::scripts {
 
 	$scriptpath = "/usr/local/bin"
 
+	file { $scriptpath:
+		owner => root,
+		group => root,
+		mode => 0555,
+		recurse => remote,
+		source => "puppet:///files/misc/deployment-scripts/bin/";
+	}
+
+	# Bug 37076
+	Package['php5-parsekit'] -> File["${scriptpath}/lint"]
+	Package['php5-parsekit'] -> File["${scriptpath}/lint.php"]
+
 	file {
-		"${scriptpath}/clear-profile":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/clear-profile";
-		"${scriptpath}/configchange":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/configchange";
-		"${scriptpath}/dologmsg":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/dologmsg";
-		"${scriptpath}/deploy2graphite":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/deploy2graphite";
-		"${scriptpath}/fatalmonitor":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/fatalmonitor";
-		"${scriptpath}/foreachwiki":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/foreachwiki";
-		"${scriptpath}/foreachwikiindblist":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/foreachwikiindblist";
-		"${scriptpath}/lint":
-			owner => root,
-			group => root,
-			mode => 0555,
-			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint";
-		"${scriptpath}/lint.php":
-			owner => root,
-			group => root,
-			mode => 0555,
-			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint.php";
-		"${scriptpath}/mw-update-l10n":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/mw-update-l10n";
-		"${scriptpath}/mwscript":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwscript";
-		"${scriptpath}/mwscriptwikiset":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwscriptwikiset";
-		"${scriptpath}/mwversionsinuse":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwversionsinuse";
-		"${scriptpath}/notifyNewProjects":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/notifyNewProjects";
-		"${scriptpath}/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/purge-checkuser";
-		"${scriptpath}/purge-varnish":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/purge-varnish";
-		"${scriptpath}/refreshWikiversionsCDB":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/refreshWikiversionsCDB";
-		"${scriptpath}/reset-mysql-slave":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/reset-mysql-slave";
-		"${scriptpath}/scap":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/scap";
-		"${scriptpath}/set-group-write":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/set-group-write";
-		"${scriptpath}/sql":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sql";
-		"${scriptpath}/sync-apache":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-apache";
 		"${scriptpath}/sync-apache-simulated":
 			owner => root,
 			group => root,
 			mode => 0555,
 			ensure => link,
 			target => "${scriptpath}/sync-apache";
-		"${scriptpath}/sync-common-all":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-common-all";
-		"${scriptpath}/sync-common-file":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-common-file";
-		"${scriptpath}/sync-dblist":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-dblist";
-		"${scriptpath}/sync-dir":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-dir";
-		"${scriptpath}/sync-docroot":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-docroot";
-		"${scriptpath}/sync-file":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-file";
-		"${scriptpath}/sync-wikiversions":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-wikiversions";
-		"${scriptpath}/udprec":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/udprec";
-		"${scriptpath}/update-special-pages": # FIXME hume cron job
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/update-special-pages";
-		"${scriptpath}/update-special-pages-small": # FIXME hume cron job
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/update-special-pages-small";
 		"/usr/local/sbin/set-group-write2":
 			owner => root,
 			group => root,
