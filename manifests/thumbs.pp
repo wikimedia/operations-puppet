@@ -17,7 +17,7 @@ class thumbs::users {
       shell => "/bin/sh",
       ensure => "present",
       membership => "minimum",
-      manages_homedir => false,
+      managehome => false,
       allowdupe => false,
       system => true,
       require => thumbs::groups,

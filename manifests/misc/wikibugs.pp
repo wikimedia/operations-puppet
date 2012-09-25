@@ -24,7 +24,7 @@ class misc::irc::wikibugs {
 
 	file {
 		"/var/lib/wikibugs/log":
-			user  => wikibugs,
+			owner  => wikibugs,
 			group => wikidev,
 			mode  => 0775,
 			require => User['wikibugs'];
