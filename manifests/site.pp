@@ -981,6 +981,8 @@ node "manutius.wikimedia.org" {
 		"csw2-esams.wikimedia.org",
 		"cr1-eqiad.wikimedia.org",
 		"cr2-eqiad.wikimedia.org",
+		"mr1-pmtpa.mgmt.pmtpa.wmnet",
+		"pfw1-eqiad.wikimedia.org"
 	]
 
 	$accessswitches = [
@@ -996,7 +998,9 @@ node "manutius.wikimedia.org" {
 		"asw-c-eqiad.mgmt.eqiad.wmnet",
 		"asw2-a5-eqiad.mgmt.eqiad.wmnet",
 		"psw1-eqiad.mgmt.eqiad.wmnet",
-		"msw1-eqiad.mgmt.eqiad.wmnet"
+		"msw1-eqiad.mgmt.eqiad.wmnet",
+		"msw2-pmtpa.mgmt.pmtpa.wmnet",
+		"msw2-sdtpa.mgmt.pmpta.wmnet"
 	]
 
 	$storagehosts = [ "nas1-a.pmtpa.wmnet", "nas1-b.pmtpa.wmnet", "nas1001-a.eqiad.wmnet", "nas1001-b.eqiad.wmnet" ]
