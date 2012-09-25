@@ -1,0 +1,8 @@
+Change-Id: I1fd5c971d25de045fa58be7011f0e32b1ba30f6c
+Code-Review+2: Mark Bergsma <mark@wikimedia.org>
+Verified+1: gerrit2 <noc@wikimedia.org>
+Submitted-by: Mark Bergsma <mark@wikimedia.org>
+Submitted-at: Tue, 25 Sep 2012 14:38:36 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/25011
+Project: operations/puppet
+Branch: refs/heads/production
