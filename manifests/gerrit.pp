@@ -271,8 +271,8 @@ class gerrit::proxy( $no_apache = true,
 
 	apache_site { gerrit: name => "gerrit.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
-	apache_module { proxy: name => "proxy" }
-	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { "proxy for gerrit": name => "proxy" }
+	apache_module { "proxy_http for gerrit": name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
 }
 
