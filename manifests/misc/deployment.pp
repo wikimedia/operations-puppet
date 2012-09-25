@@ -33,171 +33,173 @@ class misc::deployment::scripts {
 
 	package { "php5-parsekit": ensure => present; }
 
+	$scriptpath = "/usr/local/bin"
+
 	file {
-		"/usr/local/bin/clear-profile":
+		"${scriptpath}/clear-profile":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/clear-profile";
-		"/usr/local/bin/configchange":
+		"${scriptpath}/configchange":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/configchange";
-		"/usr/local/bin/dologmsg":
+		"${scriptpath}/dologmsg":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/dologmsg";
-		"/usr/local/bin/deploy2graphite":
+		"${scriptpath}/deploy2graphite":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/deploy2graphite";
-		"/usr/local/bin/fatalmonitor":
+		"${scriptpath}/fatalmonitor":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/fatalmonitor";
-		"/usr/local/bin/foreachwiki":
+		"${scriptpath}/foreachwiki":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/foreachwiki";
-		"/usr/local/bin/foreachwikiindblist":
+		"${scriptpath}/foreachwikiindblist":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/foreachwikiindblist";
-		"/usr/local/bin/lint":
+		"${scriptpath}/lint":
 			owner => root,
 			group => root,
 			mode => 0555,
 			require => Package[ 'php5-parsekit' ], # bug 37076
 			source => "puppet:///files/misc/scripts/lint";
-		"/usr/local/bin/lint.php":
+		"${scriptpath}/lint.php":
 			owner => root,
 			group => root,
 			mode => 0555,
 			require => Package[ 'php5-parsekit' ], # bug 37076
 			source => "puppet:///files/misc/scripts/lint.php";
-		"/usr/local/bin/mw-update-l10n":
+		"${scriptpath}/mw-update-l10n":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/mw-update-l10n";
-		"/usr/local/bin/mwscript":
+		"${scriptpath}/mwscript":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/mwscript";
-		"/usr/local/bin/mwscriptwikiset":
+		"${scriptpath}/mwscriptwikiset":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/mwscriptwikiset";
-		"/usr/local/bin/mwversionsinuse":
+		"${scriptpath}/mwversionsinuse":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/mwversionsinuse";
-		"/usr/local/bin/notifyNewProjects":
+		"${scriptpath}/notifyNewProjects":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/notifyNewProjects";
-		"/usr/local/bin/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
+		"${scriptpath}/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/purge-checkuser";
-		"/usr/local/bin/purge-varnish":
+		"${scriptpath}/purge-varnish":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/purge-varnish";
-		"/usr/local/bin/refreshWikiversionsCDB":
+		"${scriptpath}/refreshWikiversionsCDB":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/refreshWikiversionsCDB";
-		"/usr/local/bin/reset-mysql-slave":
+		"${scriptpath}/reset-mysql-slave":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/reset-mysql-slave";
-		"/usr/local/bin/scap":
+		"${scriptpath}/scap":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/scap";
-		"/usr/local/bin/set-group-write":
+		"${scriptpath}/set-group-write":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write";
-		"/usr/local/bin/sql":
+		"${scriptpath}/sql":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sql";
-		"/usr/local/bin/sync-apache":
+		"${scriptpath}/sync-apache":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-apache";
-		"/usr/local/bin/sync-apache-simulated":
+		"${scriptpath}/sync-apache-simulated":
 			owner => root,
 			group => root,
 			mode => 0555,
 			ensure => link,
-			target => "/usr/local/bin/sync-apache";
-		"/usr/local/bin/sync-common-all":
+			target => "${scriptpath}/sync-apache";
+		"${scriptpath}/sync-common-all":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-common-all";
-		"/usr/local/bin/sync-common-file":
+		"${scriptpath}/sync-common-file":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-common-file";
-		"/usr/local/bin/sync-dblist":
+		"${scriptpath}/sync-dblist":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-dblist";
-		"/usr/local/bin/sync-dir":
+		"${scriptpath}/sync-dir":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-dir";
-		"/usr/local/bin/sync-docroot":
+		"${scriptpath}/sync-docroot":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-docroot";
-		"/usr/local/bin/sync-file":
+		"${scriptpath}/sync-file":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-file";
-		"/usr/local/bin/sync-wikiversions":
+		"${scriptpath}/sync-wikiversions":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sync-wikiversions";
-		"/usr/local/bin/udprec":
+		"${scriptpath}/udprec":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/udprec";
-		"/usr/local/bin/update-special-pages": # FIXME hume cron job
+		"${scriptpath}/update-special-pages": # FIXME hume cron job
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/update-special-pages";
-		"/usr/local/bin/update-special-pages-small": # FIXME hume cron job
+		"${scriptpath}/update-special-pages-small": # FIXME hume cron job
 			owner => root,
 			group => root,
 			mode => 0555,
@@ -222,48 +224,50 @@ class misc::deployment::passwordscripts {
 	$wikiuser_pass_nagios = $passwords::misc::scripts::wikiuser_pass_nagios
 	$wikiuser_pass_real = $passwords::misc::scripts::wikiuser_pass_real
 
+	$scriptpath = "/usr/local/bin"
+
 	file {
-		"/usr/local/bin/cachemgr_pass":
+		"${scriptpath}/cachemgr_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/cachemgr_pass.erb");
-		"/usr/local/bin/mysql_root_pass":
+		"${scriptpath}/mysql_root_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/mysql_root_pass.erb");
-		"/usr/local/bin/nagios_sql_pass":
+		"${scriptpath}/nagios_sql_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/nagios_sql_pass.erb");
-		"/usr/local/bin/webshop_pass":
+		"${scriptpath}/webshop_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/webshop_pass.erb");
-		"/usr/local/bin/wikiadmin_pass":
+		"${scriptpath}/wikiadmin_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiadmin_pass.erb");
-		"/usr/local/bin/wikiuser2_pass":
+		"${scriptpath}/wikiuser2_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiuser2_pass.erb");
-		"/usr/local/bin/wikiuser_pass":
+		"${scriptpath}/wikiuser_pass":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiuser_pass.erb");
-		"/usr/local/bin/wikiuser_pass_nagios":
+		"${scriptpath}/wikiuser_pass_nagios":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
 			content => template("misc/passwordScripts/wikiuser_pass_nagios.erb");
-		"/usr/local/bin/wikiuser_pass_real":
+		"${scriptpath}/wikiuser_pass_real":
 			owner => root,
 			group => wikidev,
 			mode => 0550,
@@ -274,8 +278,10 @@ class misc::deployment::passwordscripts {
 class misc::deployment::l10nupdate {
 	require misc::deployment::scripts
 
+	$scriptpath = "/usr/local/bin"
+
 	cron { 'l10nupdate':
-		command => "/usr/local/bin/l10nupdate-1 >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
+		command => "${scriptpath}/l10nupdate-1 >> /var/log/l10nupdatelog/l10nupdate.log 2>&1",
 		user => 'l10nupdate',
 		hour => 2,
 		minute => 0,
@@ -283,22 +289,22 @@ class misc::deployment::l10nupdate {
 	}
 
 	file {
-		"/usr/local/bin/l10nupdate":
+		"${scriptpath}/l10nupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/l10nupdate";
-		"/usr/local/bin/l10nupdate-1":
+		"${scriptpath}/l10nupdate-1":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/l10nupdate-1";
-		"/usr/local/bin/sync-l10nupdate":
+		"${scriptpath}/sync-l10nupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate";
-		"/usr/local/bin/sync-l10nupdate-1":
+		"${scriptpath}/sync-l10nupdate-1":
 			owner => root,
 			group => root,
 			mode => 0555,
