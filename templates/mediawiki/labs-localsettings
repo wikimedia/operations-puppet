@@ -12,3 +12,10 @@
 require( 'orig/LocalSettings.php' );
 
 $wgArticlePath      = "/wiki/$1";
+
+require_once( "$IP/extensions/Nuke/Nuke.php" );
+require_once( "$IP/extensions/SpamBlacklist/SpamBlacklist.php" );
+require_once( "$IP/extensions/ConfirmEdit/QuestyCaptcha.php" );
+
+$wgCaptchaClass = 'QuestyCaptcha';
+$wgCaptchaQuestions[] = array( 'question' => 'What is the name of Wikipedia\'s predecessor (check History of Wikipedia if you don\'t know)?', 'answer' => 'Nupedia', 'nupedia', 'NUPEDIA', 'NuPedia' );

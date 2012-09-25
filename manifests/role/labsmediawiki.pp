@@ -27,6 +27,27 @@ class role::mediawiki-install::labs {
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
 
+	git::clone { "nuke" :
+		require => git::clone["mediawiki"],
+		directory => "/srv/mediawiki/extensions/Nuke",
+		branch => "master",
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Nuke.git";
+	}
+
+	git::clone { "SpamBlacklist" :
+		require => git::clone["mediawiki"],
+		directory => "/srv/mediawiki/extensions/SpamBlacklist",
+		branch => "master",
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.git";
+	}
+
+	git::clone { "ConfirmEdit" :
+		require => git::clone["mediawiki"],
+		directory => "/srv/mediawiki/extensions/ConfirmEdit",
+		branch => "master",
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ConfirmEdit.git";
+	}
+
 	file {
 		"/etc/apache2/sites-available/wiki":
 			mode => 644,
