@@ -93,7 +93,8 @@ class gerrit::jetty ($ldap_hosts,
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,
-		gerrit::gitweb
+		gerrit::gitweb,
+		gerrit::backup
 
 	class { "gerrit::account":
 		ssh_key => $ssh_key
@@ -390,5 +391,24 @@ class gerrit::crons {
 		hour => 2,
 		ensure => absent
 	}
+}
 
+# Tar and gzip the git directory daily so amanda can pick it up
+class gerrit::backup {
+
+	file {
+		"/var/lib/gerrit2/review_site/backup":
+			mode  => 0644,
+			owner => "gerrit2",
+			ensure => directory,
+			require => Package["gerrit"];
+	}
+
+	cron { backup_git_data:
+		command => 'tar -czf /var/lib/gerrit2/review_site/backup/gerrit-latest.tar.gz /var/lib/gerrit2/review_site/git',
+		user => gerrit2,
+		hour => 3,
+		ensure => present,
+		require => File["/var/lib/gerrit2/review_site/backup"]
+	}
 }
