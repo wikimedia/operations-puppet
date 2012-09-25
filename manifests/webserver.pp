@@ -85,10 +85,7 @@ class webserver::php5-gd {
 class webserver::apache2 {
 
 	include generic::sysctl::high-http-performance
-
-	package { apache2:
-		ensure => latest;
-	}
+	include generic::packages::apache2
 
 }
 
@@ -112,9 +109,8 @@ class webserver::apache2::rpaf {
 
 class webserver::apache {
 	class packages($mpm="prefork") {
-		package { ["apache2", "apache2-mpm-${mpm}"]:
-			ensure => latest;
-		}
+		include generic::packages::apache2
+		package { "apache2-mpm-${mpm}": ensure => latest; }
 	}
 
 	# TODO: documentation of parameters

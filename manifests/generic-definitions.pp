@@ -671,6 +671,10 @@ class generic::gluster {
 
 }
 
+class generic::packages::apache2 {
+	package { "apache2": ensure => latest; }
+}
+
 class generic::packages::git-core {
 	package { "git-core": ensure => latest; }
 }
