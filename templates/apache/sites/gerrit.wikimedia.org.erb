@@ -43,9 +43,9 @@ NameVirtualHost *:443
 	ServerName <%= host %>
 
 	SSLEngine on
-	SSLCertificateFile <%= ssl_cert_file %>
-	SSLCertificateKeyFile <%= ssl_key_file %>
-	SSLCACertificateFile /etc/ssl/certs/wmf-ca.pem
+	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert %>.key
+	SSLCACertificateFile /etc/ssl/certs/<%= ssl_ca %>.pem
 
 	RedirectMatch ^/$ https://<%= host %>/r/
 	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
