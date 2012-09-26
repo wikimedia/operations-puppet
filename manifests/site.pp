@@ -2541,7 +2541,7 @@ node "virt0.wikimedia.org" {
 		role::salt::masters::labs
 }
 
-node /virt[1-8].pmtpa.wmnet/ {
+node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
 	if $hostname =~ /^virt[23]$/ {
 
