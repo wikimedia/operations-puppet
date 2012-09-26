@@ -19,4 +19,7 @@ class role::analytics {
 		distribution => 'oracle',
 		version      => 6,
 	}
+
+	# We want to be able to geolocate IP addresses
+	include geoip
 }
