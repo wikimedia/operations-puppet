@@ -65,7 +65,6 @@ class gerrit::instance($no_apache=false,
 		ldap_proxyagent => $ldap_proxyagent,
 		ldap_proxyagent_pass => $ldap_proxyagent_pass,
 		sshport => $sshport,
-		ssh_key => $ssh_key,
 		replication => $replication,
 		smtp_host => $smtp_host
 	}
