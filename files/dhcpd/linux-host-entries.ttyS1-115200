@@ -2606,7 +2606,7 @@ host mw1102 {
 }
 
 host mw1103 {
-	hardware ethernet 84:2b:2b:78:2a:94;
+	hardware ethernet 78:2b:cb:4b:0f:66;
 	fixed-address mw1103.eqiad.wmnet;
 
 	option pxelinux.pathprefix "precise-installer/";
