@@ -14,77 +14,12 @@ import urlparse
 from swift.common.utils import get_logger
 from swift.common.wsgi import WSGIContext
 
-# Copy2 is hairy. If we were only opening a URL, and returning it, we could
-# just return the open file handle, and webob would take care of reading from
-# the socket and returning the data to the client machine. If we were only
-# opening a URL and writing its contents out to Swift, we could call
-# put_object with the file handle and it would take care of reading from
-# the socket and writing the data to the Swift proxy.
-#     We have to do both at the same time. This requires that we hand over a class which
-# is an iterable which reads, writes one copy to Swift (using put_object_chunked), and
-# returns a copy to webob.  This is controlled by write_thumbs in /etc/swift/proxy.conf,
-
-class Copy2(object):
-    """
-    Given an open file and a Swift object, we hand back an iterator which
-    reads from the file, writes a copy into a Swift object, and returns
-    what it read.
-    """
-    token = None
-
-    def __init__(self, conn, app, url, container, obj, authurl, login, key,
-            content_type=None, modified=None, content_length=None):
-        self.app = app
-        self.conn = conn
-        if self.token is None:
-            (account, self.token) = wmf.client.get_auth(authurl, login, key)
-        if modified is not None:
-            # The issue here is that we need to keep the timestamp between the
-            # thumb server and us. The Migration-Timestamp header was in 1.2,
-            # but was deprecated. They likely have a different solution for
-            # setting the timestamp on an uploaded file.
-            h = {'!Migration-Timestamp!': '%s' % modified}
-        else:
-            h = {}
-
-        if content_length is not None:
-            h['Content-Length'] = content_length
-
-        full_headers = conn.info()
-        etag = full_headers.getheader('ETag')
-        self.copyconn = wmf.client.Put_object_chunked(url, self.token,
-                container, obj, etag=etag, content_type=content_type, headers=h)
-
-    def __iter__(self):
-        # We're an iterator; we get passed back to wsgi as a consumer.
-        return self
-
-    def next(self):
-        # We read from the thumb server, write out to Swift, and return it.
-        data = self.conn.read(4096)
-        if not data:
-            # if we get a 401 error, it's okay, but we should re-auth.
-            try:
-                self.copyconn.close() #06 or #04 if it fails.
-            except wmf.client.ClientException, err:
-                if err.http_status == 401:
-                    # not worth retrying the write. Thumb will get saved
-                    # the next time.
-                    self.token = None
-                else:
-                    raise
-            raise StopIteration
-        self.copyconn.write(data)
-        return data
-
-
 class DumbRedirectHandler(urllib2.HTTPRedirectHandler):
     def http_error_301(self, req, fp, code, msg, headers):
         return None
 
     def http_error_302(self, req, fp, code, msg, headers):
         return None
-
 
 class WMFRewrite(WSGIContext):
     """
@@ -108,10 +43,6 @@ class WMFRewrite(WSGIContext):
         if (self.shard_containers == 'some'):
             # if we're supposed to shard some containers, get a cleaned list of the containers to shard
             self.shard_container_list = striplist(conf['shard_container_list'].split(','))
-        self.write_thumbs = conf['write_thumbs'].strip() #all, most, none
-        if (self.write_thumbs == 'most'):
-            # if we're supposed to write thumbs for most containers, get a cleaned list of the containers to which we DON'T write
-            self.dont_write_thumb_list = striplist(conf['dont_write_thumb_list'].split(','))
         # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
         # converted  and only the path sent back (eg en.wikipedia/thumb).
         self.backend_url_format = conf['backend_url_format'].strip() #'asis', 'sitelang'
@@ -121,9 +52,8 @@ class WMFRewrite(WSGIContext):
     def handle404(self, reqorig, url, container, obj):
         """
         Return a webob.Response which fetches the thumbnail from the thumb
-        host, potentially writes it out to Swift so we don't 404 next time,
-        and returns it. Note also that the thumb host might write it out
-        to Swift so we don't have to.
+        host and returns it. Note also that the thumb host might write it out
+        to Swift so it won't 404 next time.
         """
         # go to the thumb media store for unknown files
         reqorig.host = self.thumbhost
@@ -154,8 +84,7 @@ class WMFRewrite(WSGIContext):
 
             # if sitelang, we're supposed to mangle the URL so that
             # http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
-            # changes to
-            # http://commons.wikipedia.org/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
+            # changes to http://commons.wikipedia.org/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
             if self.backend_url_format == 'sitelang':
                 match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
                 if match:
@@ -192,10 +121,8 @@ class WMFRewrite(WSGIContext):
                 else:
                     self.logger.warn("no sitelang match on encodedurl: %s" % encodedurl)
 
-
             # ok, call the encoded url
             upcopy = opener.open(encodedurl)
-
         except urllib2.HTTPError,status:
             if status.code == 404:
                 msg = "".join(status.readlines())
@@ -220,20 +147,6 @@ class WMFRewrite(WSGIContext):
             last_modified = time.mktime(uinfo.getdate('Last-Modified'))
         except TypeError:
             last_modified = time.mktime(time.localtime())
-
-        # are we suposed to write thumbs for this container? (if most, is the container minus the shard in the list?)
-        if ((self.write_thumbs == 'none') or (self.write_thumbs == 'most' and container.split('.',1)[0] in self.dont_write_thumb_list)):
-            writethumb = False
-        else:
-            writethumb = True
-
-        if writethumb and reqorig.method != 'HEAD':
-            # Fetch from upload, write into the cluster, and return it
-            upcopy = Copy2(upcopy, self.app, url,
-                urllib2.quote(container), obj, self.authurl, self.login,
-                self.key, content_type=c_t, modified=last_modified,
-                content_length=content_length)
-
 
         resp = webob.Response(app_iter=upcopy, content_type=c_t)
         # add in the headers if we've got them
@@ -386,6 +299,7 @@ def filter_factory(global_conf, **local_conf):
 
     def wmfrewrite_filter(app):
         return WMFRewrite(app, conf)
+
     return wmfrewrite_filter
 
 # vim: set expandtab tabstop=4 shiftwidth=4 autoindent:
