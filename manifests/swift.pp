@@ -214,8 +214,6 @@ class swift::proxy::config(
 	$rewrite_thumb_server,
 	$shard_containers,
 	$shard_container_list,
-	$write_thumbs,
-	$dont_write_thumb_list,
 	$backend_url_format ) {
 
 	Class[swift::base] -> Class[swift::proxy::config]

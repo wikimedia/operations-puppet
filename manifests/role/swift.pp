@@ -28,8 +28,6 @@ class role::swift {
 			rewrite_thumb_server => "ms5.pmtpa.wmnet",
 			shard_containers => "some",
 			shard_container_list => "wikipedia-commons-local-thumb,wikipedia-en-local-thumb",
-			write_thumbs => "all",
-			dont_write_thumb_list => "",
 			backend_url_format => "asis"
 		}
 		include ::swift::storage
@@ -60,8 +58,6 @@ class role::swift {
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => "",
-				write_thumbs => "all",
-				dont_write_thumb_list => "",
 				backend_url_format => "asis"
 			}
 			include ::swift::proxy
@@ -131,8 +127,6 @@ class role::swift {
 				rewrite_thumb_server => "rendering.svc.pmtpa.wmnet",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,global-data-math-render",
-				write_thumbs => "none",
-				dont_write_thumb_list => "",
 				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
@@ -200,8 +194,6 @@ class role::swift {
 				rewrite_thumb_server => "rendering.svc.pmtpa.wmnet",
 				shard_containers => "some",
 				shard_container_list => "wikipedia-commons-local-thumb,wikipedia-de-local-thumb,wikipedia-en-local-thumb,wikipedia-fi-local-thumb,wikipedia-fr-local-thumb,wikipedia-he-local-thumb,wikipedia-hu-local-thumb,wikipedia-id-local-thumb,wikipedia-it-local-thumb,wikipedia-ja-local-thumb,wikipedia-ro-local-thumb,wikipedia-ru-local-thumb,wikipedia-th-local-thumb,wikipedia-tr-local-thumb,wikipedia-uk-local-thumb,wikipedia-zh-local-thumb,wikipedia-commons-local-public,wikipedia-de-local-public,wikipedia-en-local-public,wikipedia-fi-local-public,wikipedia-fr-local-public,wikipedia-he-local-public,wikipedia-hu-local-public,wikipedia-id-local-public,wikipedia-it-local-public,wikipedia-ja-local-public,wikipedia-ro-local-public,wikipedia-ru-local-public,wikipedia-th-local-public,wikipedia-tr-local-public,wikipedia-uk-local-public,wikipedia-zh-local-public,wikipedia-commons-local-temp,wikipedia-de-local-temp,wikipedia-en-local-temp,wikipedia-fi-local-temp,wikipedia-fr-local-temp,wikipedia-he-local-temp,wikipedia-hu-local-temp,wikipedia-id-local-temp,wikipedia-it-local-temp,wikipedia-ja-local-temp,wikipedia-ro-local-temp,wikipedia-ru-local-temp,wikipedia-th-local-temp,wikipedia-tr-local-temp,wikipedia-uk-local-temp,wikipedia-zh-local-temp,global-data-math-render",
-				write_thumbs => "all",
-				dont_write_thumb_list => "",
 				backend_url_format => "sitelang"
 			}
 			include ::swift::proxy
@@ -251,8 +243,6 @@ class role::swift {
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => "",
-				write_thumbs => "all",
-				dont_write_thumb_list => "",
 				backend_url_format => "asis"
 			}
 			include ::swift::proxy
@@ -312,8 +302,6 @@ class role::swift {
 				rewrite_thumb_server => "upload.wikimedia.org",
 				shard_containers => "none",
 				shard_container_list => "",
-				write_thumbs => "all",
-				dont_write_thumb_list => "",
 				backend_url_format => "asis"
 			}
 			include ::swift::proxy
