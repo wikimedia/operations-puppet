@@ -69,6 +69,8 @@ wiki_opts = [
                         'compute.instance.rebuild.end',
                         'compute.instance.resize.start',
                         'compute.instance.resize.end',
+                        'compute.instance.create_ip.end',
+                        'compute.instance.delete_ip.end',
                         'compute.instance.suspend',
                         'compute.instance.resume',
                         'compute.instance.exists',
@@ -192,7 +194,6 @@ class WikiStatus(object):
         template_param_dict['reservation_id'] = inst.reservation_id
         template_param_dict['availability_zone'] = inst.availability_zone
         template_param_dict['original_host'] = inst.launched_on
-        template_param_dict['public_ip'] = inst.access_ip_v4
         template_param_dict['fqdn'] = fqdn
         template_param_dict['ec2_id'] = ec2_id
         template_param_dict['project_name'] = inst.project_id
@@ -202,8 +203,15 @@ class WikiStatus(object):
             fixed_ips = db.fixed_ip_get_by_instance(ctxt, old_school_id)
         except exception.FixedIpNotFoundForInstance:
             fixed_ips = []
-        ips = [ip.address for ip in fixed_ips]
+	ips = []
+	floating_ips = []
+	for fixed_ip in fixed_ips:
+	    ips.append(fixed_ip.address)
+	    for floating_ip in db.floating_ip_get_by_fixed_ip_id(ctxt, fixed_ip.id):
+	        floating_ips.append(floating_ip.address)
+
         template_param_dict['private_ip'] = ','.join(ips)
+        template_param_dict['public_ip'] = ','.join(floating_ips)
 
         sec_groups = db.security_group_get_by_instance(ctxt, old_school_id)
         grps = [grp.name for grp in sec_groups]
