@@ -20,6 +20,7 @@ $decommissioned_servers = [
 "db14",
 "db15",
 "db16",
+"db17",
 "db18",
 "db19",
 "db20",
