@@ -30,6 +30,8 @@ class misc::planet {
 # new planet
 class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
+	$planet_languages_keys = split(",", inline_template("<%= planet_languages.keys.join(',') %>"))
+
 	# http://intertwingly.net/code/venus/
 	package { "planet-venus":
 		ensure => latest;
@@ -88,7 +90,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 		}
 	}
 
-	planetconfig { $planet_languages: }
+	planetconfig { $planet_languages_keys: }
 
 	define planetwwwdir {
 
@@ -102,7 +104,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 		}
 	}
 
-	planetwwwdir { $planet_languages: }
+	planetwwwdir { $planet_languages_keys: }
 
 	define planetcronjob {
 
@@ -118,7 +120,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	}
 
-	planetcronjob { $planet_languages: }
+	planetcronjob { $planet_languages_keys: }
 
 	define planettheme {
 
@@ -133,7 +135,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	}
 
-	planettheme { $planet_languages: }
+	planettheme { $planet_languages_keys: }
 
 	apache_site { planet: name => "planet.${planet_domain_name}" }
 
