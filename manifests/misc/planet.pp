@@ -120,6 +120,21 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	planetcronjob { $planet_languages: }
 
+	define planettheme {
+
+		file {
+			"/usr/share/planet-venus/theme/wikimedia/${title}":
+				ensure => directory;
+			"/usr/share/planet-venus/theme/wikimedia/${title}/index.html.tmpl":
+				ensure => present,
+				content => template("planet/index.html.tmpl.erb");
+		}
+
+
+	}
+
+	planettheme { $planet_languages: }
+
 	apache_site { planet: name => "planet.${planet_domain_name}" }
 
 }
