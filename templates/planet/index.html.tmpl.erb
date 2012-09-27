@@ -1,5 +1,3 @@
-<% planet_languages[$title].each do |key,value| -%>
-<% end -%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 ### ! This file is managed by puppet ! 
@@ -93,13 +91,13 @@
 <div class="sidebar">
 <img src="images/planet-wm2.png" width="135" height="135" alt="Planet Wikimedia">
 
-<h2><%= value['subscribe'] %></h2>
+<h2><%= planet_languages[$title]['subscribe'] %></h2>
 <ul>
 <li>
 <a href="<TMPL_VAR feed ESCAPE="HTML">" title="<TMPL_VAR channel_title_plain ESCAPE="HTML">"><TMPL_VAR feedtype></a>
 </li>
 </ul>
-<h2><%= value['subscriptions'] %></h2>
+<h2><%= planet_languages[$title]['subscriptions'] %></h2>
 <ul>
 <TMPL_LOOP Channels>
 <li>
@@ -109,7 +107,7 @@
 </ul>
 
 <p>
-<strong><%= value['lastupdated'] %>:</strong><br>
+<strong><%= planet_languages[$title]['lastupdated'] %>:</strong><br>
 <TMPL_VAR date><br>
 <em>All times are UTC.</em><br>
 <br>
