@@ -20,6 +20,21 @@ acl carrier_dtac {
 	"103.1.164.0"/22;
 }
 
+acl carrier_dialog_sri_lanka {
+	//"175.157.0.0"/16;
+	//"111.223.128.0"/18;
+	//"103.2.148.0"/22;
+	//"123.231.8.0"/21;
+	//"123.231.40.0"/21;
+	//"123.231.48.0"/21;
+	//"123.231.56.0"/21;
+	//"123.231.120.0"/21;
+	//"182.161.0.0"/19;
+	//"122.255.52.0"/24;
+	//"122.255.53.0"/24;
+	//"122.255.54.0"/24;
+}
+
 acl carrier_tata {
 	"182.156.0.0"/16;
 	"27.107.0.0"/16;
@@ -156,6 +171,8 @@ sub tag_carrier {
 			if ( req.http.User-Agent ~ "Opera" ) {
 				set req.http.X-Carrier = "DIGI";
 			}
+		} else if (client.ip ~ carrier_dialog_sri_lanka) {
+			set req.http.X-Carrier = "Dialog Sri Lanka";
 		} else if (client.ip ~ carrier_dtac) {
 			set req.http.X-Carrier = "DTAC";
 		} else if (client.ip ~ carrier_tata) {
@@ -402,7 +419,9 @@ sub vcl_recv {
 		} else if ( req.http.X-Carrier == "TATA" ) {
 			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else if( req.http.X-Carrier == "DTAC" ) {
-		        error 666 "http://th.zero.wikipedia.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:ZeroRatedMobileAccess";
+			error 666 "http://th.zero.wikipedia.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Dialog Sri Lanka" ) {
+			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		}
 	}
 
