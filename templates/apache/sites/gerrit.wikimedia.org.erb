@@ -44,7 +44,7 @@ NameVirtualHost *:443
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
-	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert %>.key
+	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
 	SSLCACertificateFile /etc/ssl/certs/<%= ssl_ca %>.pem
 
 	RedirectMatch ^/$ https://<%= host %>/r/

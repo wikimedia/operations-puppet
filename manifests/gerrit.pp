@@ -12,6 +12,7 @@ class gerrit::instance($no_apache=false,
 		$db_user="gerrit",
 		$ssh_key="",
 		$ssl_cert="ssl-cert-snakeoil",
+		$ssl_cert_key="ssl-cert-snakeoil",
 		$ssl_ca="wmf-ca.pem",
 		$replication="",
 		$smtp_host="") {
@@ -50,6 +51,7 @@ class gerrit::instance($no_apache=false,
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
 		ssl_cert => $ssl_cert,
+		ssl_cert_key => $ssl_cert_key,
 		ssl_ca => $ssl_ca,
 		host => $host
 	}
@@ -122,7 +124,7 @@ class gerrit::jetty ($ldap_hosts,
 			group => gerrit2,
 			mode => 0755,
 			require => [File["/var/lib/gerrit2"],
-				Package["gerrit2"]];
+				Package["gerrit"]];
 		"/var/lib/gerrit2/review_site/etc":
 			ensure => directory,
 			owner => gerrit2,
@@ -248,6 +250,7 @@ class gerrit::jetty ($ldap_hosts,
 class gerrit::proxy( $no_apache = true,
 		$host = "",
 		$ssl_cert="",
+		$ssl_cert_key="",
 		$ssl_ca="") {
 
 	if !$no_apache {
@@ -333,20 +336,10 @@ class gerrit::ircbot {
 # Setup the `gerrit2` account for gerrit to run as or for
 # gerrit to recieve replication
 class gerrit::account( $ssh_key ) {
-	group { "gerrit2":
+	systemuser { "gerrit2":
 		name => "gerrit2",
-		ensure => present,
-		allowdupe => false;
-	}
-
-	user { "gerrit2":
-		name => "gerrit2",
-		gid => "gerrit2",
 		home => "/var/lib/gerrit2",
-		uid => 479,
-		ensure => present,
-		allowdupe => false,
-		require => Group["gerrit2"];
+		default_group => "gerrit2",;
 	}
 
 	file {
@@ -354,7 +347,7 @@ class gerrit::account( $ssh_key ) {
 			mode  => 0755,
 			owner => "gerrit2",
 			ensure => directory,
-			require => User["gerrit2"];
+			require => Systemuser["gerrit2"];
 		"/var/lib/gerrit2/.ssh":
 			mode  => 0600,
 			owner => "gerrit2",
