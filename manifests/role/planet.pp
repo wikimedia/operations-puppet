@@ -6,7 +6,7 @@ class role::planet {
 
 	# locales are essential for planet. if a new language is added check these too
 	include standard,
-		generic::locales::international
+	generic::locales::international
 
 	# be flexible about labs vs. prod
 	case $::realm {
