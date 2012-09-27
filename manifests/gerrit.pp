@@ -43,11 +43,6 @@ class gerrit::instance($no_apache=false,
 	# Configure the base URL
 	$url = "https://${host}/r"
 
-	# Common setup
-	class { "gerrit::account":
-		ssh_key => $ssh_key
-	}
-
 	class {'gerrit::proxy':
 		no_apache => $no_apache,
 		ssl_cert => $ssl_cert,
@@ -68,7 +63,8 @@ class gerrit::instance($no_apache=false,
 		ldap_proxyagent_pass => $ldap_proxyagent_pass,
 		sshport => $sshport,
 		replication => $replication,
-		smtp_host => $smtp_host
+		smtp_host => $smtp_host,
+		ssh_key => $ssh_key,
 	}
 
 	# Optional modules
@@ -86,7 +82,8 @@ class gerrit::jetty ($ldap_hosts,
 		$ldap_proxyagent,
 		$ldap_proxyagent_pass,
 		$replication,
-		$smtp_host) {
+		$smtp_host,
+		$ssh_key) {
 	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,
@@ -105,18 +102,36 @@ class gerrit::jetty ($ldap_hosts,
 		ensure => "2.4.2-1";
 	}
 
+	# TODO: Make this go away -- need to stop using gerrit2 for hook actions
+	ssh_authorized_key { $name:
+		key => $ssh_key,
+		type => "ssh-rsa",
+		user => "gerrit2",
+		require => Package["gerrit"],
+		ensure => present;
+	}
+
 	file {
 		"/etc/default/gerrit":
 			source => "puppet:///files/gerrit/gerrit",
 			owner => root,
 			group => root,
 			mode => 0444;
+		"/var/lib/gerrit2/":
+			mode  => 0755,
+			owner => "gerrit2",
+			ensure => directory,
+			require => Package["gerrit2"];
+		"/var/lib/gerrit2/.ssh":
+			mode  => 0600,
+			owner => "gerrit2",
+			ensure => directory,
+			require => File["/var/lib/gerrit2"];
 		"/var/lib/gerrit2/.ssh/id_rsa":
 			owner => gerrit2,
 			group => gerrit2,
 			mode  => 0600,
-			require => [Package["gerrit"],
-				Ssh_authorized_key["gerrit2"]],
+			require => File["/var/lib/gerrit2/.ssh"],
 			source => "puppet:///private/gerrit/id_rsa";
 		"/var/lib/gerrit2/review_site":
 			ensure => directory,
@@ -335,37 +350,6 @@ class gerrit::ircbot {
 	}
 }
 
-# Setup the `gerrit2` account for gerrit to run as or for
-# gerrit to recieve replication
-class gerrit::account( $ssh_key ) {
-	systemuser { "gerrit2":
-		name => "gerrit2",
-		home => "/var/lib/gerrit2",
-		default_group => "gerrit2",;
-	}
-
-	file {
-		"/var/lib/gerrit2/":
-			mode  => 0755,
-			owner => "gerrit2",
-			ensure => directory,
-			require => Systemuser["gerrit2"];
-		"/var/lib/gerrit2/.ssh":
-			mode  => 0600,
-			owner => "gerrit2",
-			ensure => directory,
-			require => File["/var/lib/gerrit2"];
-	}
-
-	ssh_authorized_key { gerrit2:
-		key => $ssh_key,
-		type => "ssh-rsa",
-		user => gerrit2,
-		require => File["/var/lib/gerrit2/.ssh"],
-		ensure => present;
-	}
-}
-
 class gerrit::crons {
 
 	cron { list_mediawiki_extensions:
@@ -412,4 +396,20 @@ class gerrit::backup {
 		ensure => present,
 		require => File["/var/lib/gerrit2/review_site/backup"]
 	}
+}
+
+# Setup the `gerritslave` account on any host that wants to receive
+# replication. See role::gerrit::production::replicationdest
+class gerrit::replicationdest( $sshkey, $name = "gerritslave" ) {
+  systemuser { $name:
+    name => $name;
+  }
+
+  ssh_authorized_key { $name:
+    key => $sshkey,
+    type => "ssh-rsa",
+    user => $name,
+    require => Systemuser[$name],
+    ensure => present;
+  }
 }
