@@ -313,6 +313,11 @@ class misc::fundraising::backup::archive {
 	systemuser { backupmover: name => "backupmover", home => "/var/lib/backupmover", shell => "/bin/sh" }
 
 	ssh_authorized_key {
+		"backupmover/root@boron":
+			ensure  => present,
+			user	=> backupmover,
+			type	=> "ssh-rsa",
+			key	 => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDIljE3d12L8SEO1pkiBBJplyBDCR6zRewQ+SpGWC9pe5X/gob92Yx4P0ZELFrpC+fkZlYFh0ebe0sJilBEzpLr/BFwafXZ6RvNBhU8pMSTUkb6DN9c3jG+gSyq6UIECEuF8uqOVk+1uaFg1ve9ODVfgHGiVQISS8YW/W9dFXCi9wo8gkH4L7nxptV2lkGLcjq60OoMDuS4iOzOdeQt5jguOG43XDqgyRN4tvqG54KtIjGUQP6KNpL2kGCA4WNrPnkeiNRLV9+RyLKFDjWOTT7ELk6HifuN2pn46E1DURNL6mlfw1uaoClhMruRijpZKj9wHB4awBWk0/VwPf8rpjFp";
 		"backupmover/root@aluminium":
 			ensure  => present,
 			user	=> backupmover,
