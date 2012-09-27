@@ -232,7 +232,9 @@ class gerrit::jetty ($ldap_hosts,
 			group => "gerrit2",
 			cwd => "/var/lib/gerrit2",
 			command => "/usr/bin/java -jar gerrit.war init -d review_site --batch --no-auto-start",
-			require => [Package["gerrit"], File["/var/lib/gerrit2/review_site/etc/gerrit.config"]];
+			require => [Package["gerrit"], File["/var/lib/gerrit2/review_site/etc/gerrit.config"],
+			  File["/var/lib/gerrit2/review_site/etc/secure.config"]
+			];
 	}
 
 	service {
