@@ -30,7 +30,7 @@ class misc::planet {
 # new planet
 class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
-	$planet_languages_keys = split(",", inline_template("<%= planet_languages.keys.join(',') %>"))
+	$planet_languages_keys = keys($planet_languages)
 
 	# http://intertwingly.net/code/venus/
 	package { "planet-venus":
