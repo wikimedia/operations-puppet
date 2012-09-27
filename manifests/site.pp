@@ -896,7 +896,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,
-		misc::fundraising::backup::offhost
+		misc::fundraising::backup::offhost,
+		misc::fundraising::backup::archive
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
