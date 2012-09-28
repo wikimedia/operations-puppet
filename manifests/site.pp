@@ -652,8 +652,10 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+		mysql::conf
+	if $hostname != "db1047" {
+		include mysql::packages
+	}
 }
 
 node "dobson.wikimedia.org" {
