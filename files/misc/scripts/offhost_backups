@@ -41,7 +41,7 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
 
 	# archived jenkins builds
-	$mirror->{'1'} = "rsync -ar /archive/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
+	$mirror->{'1'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
 
 	# syslog-type stuff from paypal etc.
 	$mirror->{'2'} = "rsync -ar --exclude *log /var/log/fundraising/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/logs/";
