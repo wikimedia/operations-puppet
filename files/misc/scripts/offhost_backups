@@ -48,7 +48,7 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir
 	$mirror->{'3'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
-	$mirror->{'4'} = "/usr/bin/rsync -var --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
+	$mirror->{'4'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
 	$mirror->{'5'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
 
 }
