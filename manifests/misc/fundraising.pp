@@ -171,11 +171,6 @@ class misc::fundraising {
 			owner => root,
 			group => root,
 			source => "puppet:///private/php/php.ini.fundraising.cli";
-		"/usr/local/bin/sync_archive_to_storage3":
-			mode => 0500,
-			owner => root,
-			group => root,
-			source => "puppet:///private/misc/fundraising/sync_archive_to_storage3";
 	}
 
 	#enable apache mods
