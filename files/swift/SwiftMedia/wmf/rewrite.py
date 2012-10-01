@@ -198,7 +198,8 @@ class WMFRewrite(WSGIContext):
 
         except urllib2.HTTPError,status:
             if status.code == 404:
-                resp = webob.exc.HTTPNotFound('Expected original file not found')
+                msg = "".join(status.readlines())
+                resp = webob.exc.HTTPNotFound(msg)
             elif status.code == 301 and 'location' in status.hdrs:
                 resp = webob.exc.HTTPMovedPermanently(location=status.hdrs['location'])
             elif status.code == 302 and 'location' in status.hdrs:
