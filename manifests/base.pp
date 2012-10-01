@@ -62,6 +62,19 @@ Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:80
 		content => $proxyconfig
 	}
 
+	$unattendedconfig ="APT::Periodic::Update-Package-Lists \"1\";
+APT::Periodic::Unattended-Upgrade \"1\";
+"
+	if $realm == "labs" {
+		file { "/etc/apt/apt.conf.d/20auto-upgrades":
+			mode => 0444,
+			owner => root,
+			group => root,
+			path => "/etc/apt/apt.conf.d/20auto-upgrades",
+			content => $unattendedconfig
+		}
+	}
+
 	# Setup the APT repositories
 	$aptrepository = "## Wikimedia APT repository
 deb http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
