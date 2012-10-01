@@ -177,35 +177,9 @@ class role::nova::config::eqiad inherits role::nova::config {
 	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
 }
 
-class role::nova::wikiupdates {
-
-    include base::mwclient
-
-    if ($::lsbdistcodename == "lucid") {
-		file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
-			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			require => package["python-mwclient"],
-			notify => Service["nova-compute"]
-		}
-	} else {
-		file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
-			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			require => package["python-mwclient"],
-			notify => Service["nova-compute"]
-		}
-	}
-}
-
 class role::nova::common {
 	include role::nova::config::pmtpa,
-		role::nova::config::eqiad,
-		role::nova::wikiupdates
+		role::nova::config::eqiad
 
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
@@ -301,16 +275,41 @@ class role::nova::network {
 	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 }
 
+class role::nova::wikiupdates {
+
+    include base::mwclient
+
+    if ($::lsbdistcodename == "lucid") {
+		file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
+			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			require => package["python-mwclient"],
+			notify => Service["nova-compute"]
+		}
+	} else {
+		file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
+			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			mode => 0644,
+			owner => root,
+			group => root,
+			require => package["python-mwclient"],
+			notify => Service["nova-compute"]
+		}
+	}
+}
+
 class role::nova::compute {
 	include role::nova::config::pmtpa,
-		role::nova::config::eqiad
+		role::nova::config::eqiad,
+		role::nova::wikiupdates,
+ 		role::nova::common
 
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
 		"eqiad" => $role::nova::config::eqiad::novaconfig,
 	}
-
-	include role::nova::common
 
 	class { "openstack::compute-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 
