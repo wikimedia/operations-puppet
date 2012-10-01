@@ -40,11 +40,12 @@ if ($conf->{'HOSTNAME'} eq 'storage3') {
 
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
 
-	# archived jenkins builds
-	$mirror->{'1'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
+	# collect syslog stuff from paypal in local archive, and copy that to tridge
+    $mirror->{'1'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+    $mirror->{'2'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/logs/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/logs/";
 
-	# syslog-type stuff from paypal etc.
-	$mirror->{'2'} = "rsync -ar --exclude *log /var/log/fundraising/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/logs/";
+    # copy archived (by separate script) jenkins builds to tridge
+    $mirror->{'3'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir
 	$mirror->{'3'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
