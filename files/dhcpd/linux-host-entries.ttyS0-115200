@@ -5,7 +5,7 @@
 
 host analytics1001 {
 	hardware ethernet 88:43:e1:c2:99:8e;
-	fixed-address analytics1001.eqiad.wmnet;
+	fixed-address analytics1001.wikimedia.org;
 }
 
 host analytics1002 {
