@@ -394,14 +394,14 @@ class gerrit::crons {
 	}
 }
 
-# Tar and gzip the git directory daily so amanda can pick it up
+# Junk
 class gerrit::backup {
 
 	file {
 		"/var/lib/gerrit2/review_site/backup":
 			mode  => 0644,
 			owner => "gerrit2",
-			ensure => directory,
+			ensure => absent,
 			require => Package["gerrit"];
 	}
 
@@ -409,7 +409,7 @@ class gerrit::backup {
 		command => 'tar -czf /var/lib/gerrit2/review_site/backup/gerrit-latest.tar.gz /var/lib/gerrit2/review_site/git',
 		user => gerrit2,
 		hour => 3,
-		ensure => present,
+		ensure => absent,
 		require => File["/var/lib/gerrit2/review_site/backup"]
 	}
 }
