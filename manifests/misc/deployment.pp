@@ -42,10 +42,7 @@ class misc::deployment::scripts {
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/clear-profile";
 		"${scriptpath}/configchange":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/configchange";
+			ensure => absent;
 		"${scriptpath}/dologmsg":
 			owner => root,
 			group => root,
