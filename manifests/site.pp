@@ -267,7 +267,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	if $hostname =~ /^amslvs[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
 	# So we'll have every LVS server run their own recursor
 	$nameservers_prefix = [ $ipaddress ]
@@ -717,9 +717,9 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 		require => Misc::Udp2log::Instance["emery"],
 	}
 
-	# aft (Article Feedback Tool) 
+	# aft (Article Feedback Tool)
 	# udp2log instance for clicktracking logs.
-	misc::udp2log::instance { "aft": 
+	misc::udp2log::instance { "aft":
 		log_directory       => "/var/log/squid/aft",
 		port                => "8421",
 		# packet-loss.log is not generated for clicktracking logs,
@@ -1061,7 +1061,7 @@ node "hume.wikimedia.org" {
 
 node "iron.wikimedia.org" {
 	$cluster = "misc"
-	
+
 	include standard,
 	admins::roots,
 	misc::management::ipmi
@@ -1183,7 +1183,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]
-	
+
 	$lvs_balancer_ips = $::hostname ? {
 		/^lvs[15]$/ => [
 			$sip['upload'][$::site],
@@ -1228,7 +1228,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			'lvs6' => "10.0.0.16",
 		},
 	}
-	
+
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
 	# Set up tagged interfaces to all subnets with real servers in them
@@ -1630,9 +1630,8 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 
 node /mw(1[7-9]|[2-4][0-9]|5[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
+		applicationserver_old::jobrunner,
 		memcached
-	# removed due to bug 40462 -- TS
-	#include	role::applicationserver::jobrunner
 }
 
 # mw55-59 are application servers (precise)
@@ -1723,7 +1722,7 @@ node "nescio.esams.wikimedia.org" {
 	}
 
 	include network::constants
-	
+
 	class { "dns::recursor":
 		listen_addresses => [ "91.198.174.6" ],
 		allow_from => $network::constants::all_networks
@@ -1766,7 +1765,7 @@ node "nickel.wikimedia.org" {
 
 node /^ocg[1-3]\.wikimedia\.org$/ {
 
-	# online collection generator 
+	# online collection generator
 
 	system_role { "misc::mwlib": description => "offline collection generator" }
 
@@ -2298,7 +2297,7 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
 		orig_interface => "eth0",
 		members => [ "eth0", "eth1", "eth2", "eth3" ]
 	}
-	
+
 	interface_add_ip6_mapped { "main":
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
