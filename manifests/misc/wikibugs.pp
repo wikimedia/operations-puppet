@@ -30,12 +30,13 @@ class misc::irc::wikibugs {
 			require => User['wikibugs'];
 	}
 
-	exec {
-		"Clone wikibugs":
-			command => "svn co -r115412 https://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/wikibugs /var/lib/wikibugs/script",
-			cwd => "/var/lib/wikibugs",
-			creates => "/var/lib/wikibugs/script",
-			require => [ Package['subversion', 'libemail-mime-perl'], File['/var/lib/wikibugs'] ];
+	git::clone { "Clone wikibugs":
+		directory => '/var/lib/wikibugs/script',
+		origin => 'https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git',
+		branch => '81ff9f8ecc9f9ab8ed7c3d07b76d07d61eb50c54',
+		owner => 'mwdeploy',
+		group => 'wikidev',
+		require => [ Package['libemail-mime-perl'], File['/var/lib/wikibugs'] ];
 	}
 
 }
