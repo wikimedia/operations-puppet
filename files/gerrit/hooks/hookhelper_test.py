@@ -22,7 +22,7 @@ helper = HookHelper()
 
 class TestLogToFile( unittest.TestCase ):
 
-	def assertLogFile( self, filename, project, branch ):
+	def assertLogFile( self, filename, project, branch = 'master' ):
 
 		# Ask helper to provide us with the full filename
 		actual = helper.get_log_filename( project, branch, '' )
@@ -44,32 +44,61 @@ class TestLogToFile( unittest.TestCase ):
 
 	def test_labs_private_to_labs( self ):
 		self.assertLogFile( 'labs.log',
-			'labs/private',
-			'a_branch' )
+			'labs/private' )
 
-	def test_labs_default_to_mediawiki( self ):
-		self.assertLogFile( 'mediawiki.log',
-			'labs/someproject',
-			'a_branch' )
+	def test_labs_to_wikimedia_labs( self ):
+		self.assertLogFile( 'labs.log',
+			'labs/someproject' )
 
 	def test_operations_software_to_operations( self ):
 		self.assertLogFile( 'operations.log',
-			'operations/software',
-			'a_branch' )
+			'operations/software' )
 
 	def test_operations_dumps_to_operations( self ):
 		self.assertLogFile( 'operations.log',
-			'operations/dumps',
-			'a_branch' )
+			'operations/dumps' )
 
 	def test_operations_to_operations( self ):
 		self.assertLogFile( 'operations.log',
-			'operations/someProject',
-			'a_branch' )
+			'operations/someProject' )
+
+	# Some very specific WMF projects
+	def test_parsoid( self ):
+		self.assertLogFile( 'parsoid.log',
+			'mediawiki/extensions/Parsoid' )
+
+	def test_mobile( self ):
+		self.assertLogFile( 'mobile.log',
+			'mediawiki/extensions/MobileFrontend' )
+
+	# Semantic MediaWiki related
+	def test_semantic_mediawiki( self ):
+		for repo in [
+			'SemanticFoobar',
+			'Validator',
+			'Maps',
+			'RDFIO',
+			'SolrStore',
+			'SMWFoobar',
+			]:
+			self.assertLogFile( 'semantic-mediawiki.log',
+				'mediawiki/extensions/%s' % repo
+			)
+
+	# Wikidata related
+	def test_wikidata_extensions( self ):
+		for repo in [
+			'Wikibase',
+			'Diff',
+			'DataValues',
+			]:
+			self.assertLogFile( 'wikidata.log',
+				'mediawiki/extensions/%s' % repo
+			)
 
 	def test_catchall_to_mediawiki( self ):
 		self.assertLogFile( 'mediawiki.log',
-			'departement/project',
-			'a_branch' )
+			'department/project' )
 
-unittest.main()
+if __name__ == '__main__':
+	unittest.main()
