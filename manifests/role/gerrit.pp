@@ -34,6 +34,11 @@ class role::gerrit {
 				"formey" => {
 				  "url" => 'gerrit2@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git',
 				  "threads" => "4"
+				},
+				"github" => {
+				  "url" => "git@github.com:mediawiki/core.git",
+				  "threads" => "4",
+				  "authGroup" => "mediawiki-replication"
 				}
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
