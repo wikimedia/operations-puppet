@@ -45,7 +45,17 @@ sub vcl_miss {
 	}
 	
 	# Send thumbnails to the Swift cluster
-	if ( req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/" ) {
+	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
+		set req.backend = swift;
+	}
+
+	# math to swift
+	} elsif (req.url ~ "^/math/") {
+		set req.backend = swift;
+	}
+
+	# timeline to swift
+	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/timeline/") {
 		set req.backend = swift;
 	}
 }
