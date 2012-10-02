@@ -42,18 +42,12 @@ sub vcl_miss {
 	# Send originals to the Swift cluster
 	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
 		set req.backend = swift;
-	}
-	
 	# Send thumbnails to the Swift cluster
 	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
 		set req.backend = swift;
-	}
-
 	# math to swift
 	} elsif (req.url ~ "^/math/") {
 		set req.backend = swift;
-	}
-
 	# timeline to swift
 	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/timeline/") {
 		set req.backend = swift;
