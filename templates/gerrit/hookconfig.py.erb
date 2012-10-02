@@ -15,6 +15,12 @@ filenames = {
 		"default"    : "labs.log"
 	},
 
+	"mediawiki/core": {
+		"Wikidata" : "wikidata.log",
+		# Explicitly define a default, hookhelper does not fallback properly
+		"default"  : "mediawiki.log",
+	},
+
 	# WMF projects
 	"mediawiki/extensions/MobileFrontend" : "mobile.log",
 	"mediawiki/extensions/Parsoid": "parsoid.log",
