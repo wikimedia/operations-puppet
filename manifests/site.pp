@@ -635,7 +635,7 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db6([0-1]|[3-9])\.pmtpa\.wmnet/ {
+node /db6([0-9])\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
