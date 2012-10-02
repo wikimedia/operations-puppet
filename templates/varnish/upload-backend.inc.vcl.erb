@@ -35,6 +35,11 @@ sub vcl_fetch {
 	# Stream large objects, > 64 MB
 	if (std.integer(beresp.http.Content-Length, 0) > 67108864) {
 		set beresp.do_stream = true;
+		set beresp.http.X-Varnish-Streaming = "length";
+	}
+	elsif (beresp.http.Content-Type == "application/ogg") {
+		set beresp.do_stream = true;
+		set beresp.http.X-Varnish-Streaming = "content-type";
 	}
 }
 
