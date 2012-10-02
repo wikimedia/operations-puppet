@@ -24,18 +24,24 @@ class misc::irc::wikibugs {
 
 	file {
 		"/var/lib/wikibugs/log":
-			owner  => wikibugs,
+			owner => wikibugs,
 			group => wikidev,
 			mode  => 0775,
-			require => User['wikibugs'];
+			require => Systemuser['wikibugs'];
 	}
 
-	exec {
-		"Clone wikibugs":
-			command => "svn co -r115412 https://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/wikibugs /var/lib/wikibugs/script",
-			cwd => "/var/lib/wikibugs",
-			creates => "/var/lib/wikibugs/script",
-			require => [ Package['subversion', 'libemail-mime-perl'], File['/var/lib/wikibugs'] ];
+	package {	"libemail-mime-perl": ensure => present }
+
+	git::clone { "Clone wikibugs":
+		directory => '/var/lib/wikibugs/script',
+		origin => 'https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git',
+		ensure => '81ff9f8ecc9f9ab8ed7c3d07b76d07d61eb50c54',
+		owner => 'wikibugs',
+		group => 'wikidev',
+		require => [
+			Package['libemail-mime-perl'],
+			Systemuser['wikibugs'],  # provides home dir /var/lib/wikibugs
+		];
 	}
 
 }
