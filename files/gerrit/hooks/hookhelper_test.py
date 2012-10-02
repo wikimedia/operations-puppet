@@ -96,6 +96,18 @@ class TestLogToFile( unittest.TestCase ):
 				'mediawiki/extensions/%s' % repo
 			)
 
+	def test_core_wikidata_branch( self ):
+		# Wikidata branch is sent to a specific log
+		self.assertLogFile( 'wikidata.log',
+			'mediawiki/core',
+			'Wikidata'
+		)
+		# Make sure mediawiki/core.git@master is still sent to #mediawiki
+		self.assertLogFile( 'mediawiki.log',
+			'mediawiki/core',
+			'master'
+		)
+
 	def test_catchall_to_mediawiki( self ):
 		self.assertLogFile( 'mediawiki.log',
 			'department/project' )
