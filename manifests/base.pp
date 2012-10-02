@@ -349,6 +349,30 @@ class base::remote-syslog {
 	}
 }
 
+class base::logstash {
+	# Directs logs to the logstash server
+	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") and ($::realm == "labs") {
+		package { rsyslog:
+			ensure => latest;
+		}
+		
+		file { "/etc/rsyslog.d/10-logstash.conf":
+			require => Package[rsyslog],
+			source => "puppet:///files/rsyslog/10-logstash.conf",
+			ensure => present,
+			owner => root,
+			group => root,
+			mode => 0444;
+		}
+
+		service { rsyslog:
+			require => Package[rsyslog],
+			subscribe => File["/etc/rsyslog.d/10-logstash.conf"],
+			ensure => running;
+		}
+	}
+}
+
 class base::sysctl {
 	if ($::lsbdistid == "Ubuntu") and ($::lsbdistrelease != "8.04") {
 		exec { "/sbin/start procps":
@@ -765,6 +789,7 @@ class base {
 		base::grub,
 		base::resolving,
 		base::remote-syslog,
+		base::logstash,
 		base::sysctl,
 		base::motd,
 		base::vimconfig,
