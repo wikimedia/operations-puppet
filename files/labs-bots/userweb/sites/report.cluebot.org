@@ -1,0 +1,4 @@
+<VirtualHost *:80>
+        ServerName report.cluebot.cluenet.org
+        DocumentRoot /data/project/public_html/damian/
+</VirtualHost>
