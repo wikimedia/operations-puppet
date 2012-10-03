@@ -38,7 +38,9 @@ class role::gerrit {
 				"github" => {
 				  "url" => 'git@github.com:${name}',
 				  "threads" => "4",
-				  "authGroup" => "mediawiki-replication"
+				  "authGroup" => "mediawiki-replication",
+				  "push" => "+refs/heads/*:refs/heads/*
+  push = +refs/tags/*:refs/tags/*"
 				}
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
