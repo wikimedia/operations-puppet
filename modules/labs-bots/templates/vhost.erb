@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName <%= server_name %>
+    <% if @alias.length > 0 %>ServerAlias <%= @alias.join(' ') %><% end -%>
+
+    DocumentRoot <%= document_root %>
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory <%= document_root %>>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    </Directory>
+</VirtualHost>
