@@ -781,7 +781,7 @@ node "fenari.wikimedia.org" {
 
 	$ircecho_infile = "/var/log/logmsg"
 	$ircecho_nick = "logmsgbot"
-	$ircecho_chans = "#wikimedia-tech"
+	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
 
 	include standard,
