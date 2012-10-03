@@ -37,10 +37,11 @@ sub vcl_fetch {
 		set beresp.do_stream = true;
 		set beresp.http.X-Varnish-Streaming = "length";
 	}
-	elsif (beresp.http.Content-Type == "application/ogg") {
-		set beresp.do_stream = true;
-		set beresp.http.X-Varnish-Streaming = "content-type";
-	}
+
+	// elsif (beresp.http.Content-Type == "application/ogg") {
+	// 	set beresp.do_stream = true;
+	// 	set beresp.http.X-Varnish-Streaming = "content-type";
+	// }
 }
 
 sub vcl_miss {
