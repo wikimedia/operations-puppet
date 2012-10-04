@@ -323,6 +323,9 @@ class base::remote-syslog {
 				case $::instanceproject {
 					'deployment-prep': {
 						$syslog_remote_real = 'deployment-dbdump.pmtpa.wmflabs'
+					},
+					default: {
+						$syslog_remote_real = 'i-000003a9.pmtpa.wmflabs:5544'
 					}
 				}
 			}
@@ -351,7 +354,6 @@ class base::remote-syslog {
 			subscribe => File["/etc/rsyslog.d/30-remote-syslog.conf"],
 			ensure => running;
 		}
-	}
 }
 
 class base::sysctl {
