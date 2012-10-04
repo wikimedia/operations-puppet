@@ -320,7 +320,7 @@ class base::remote-syslog {
 						$syslog_remote_real = 'deployment-dbdump.pmtpa.wmflabs'
 					}
 					default: {
-						$syslog_remote_real = 'i-000003a9.pmtpa.wmflabs'
+						$syslog_remote_real = 'i-000003a9.pmtpa.wmflabs:5544'
 					}
 				}
 			}
@@ -331,39 +331,27 @@ class base::remote-syslog {
 			default	=> present,
 		}
 		
-		if $syslog_remote_real == 'i-000003a9.pmtpa.wmflabs' {
-				file { "/etc/rsyslog.d/z-logstash.conf":
-                        		require => Package[rsyslog],
-                        		source => "puppet:///files/rsyslog/z-logstash.conf",
-                        		ensure => present,
-                        		owner => root,
-                        		group => root,
-                       			mode => 0444;
-                		}
 
-		}
-
-		else {
-			file { "/etc/rsyslog.d/90-remote-syslog.conf":
+		file { "/etc/rsyslog.d/90-remote-syslog.conf":
 				ensure => absent;
-			}
-
-			file { "/etc/rsyslog.d/30-remote-syslog.conf":
-				ensure => $ensure_remote,
-				require => Package[rsyslog],
-				owner => root,
-				group => root,
-				mode => 0444,
-				content => "*.info;mail.none;authpriv.none;cron.none	@${syslog_remote_real}\n",
-			}
 		}
+
+		file { "/etc/rsyslog.d/30-remote-syslog.conf":
+			ensure => $ensure_remote,
+			require => Package[rsyslog],
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => "*.info;mail.none;authpriv.none;cron.none    @${syslog_remote_real}\n";
+		}
+		
 
 		service { rsyslog:
 			require => Package[rsyslog],
 			subscribe => File["/etc/rsyslog.d/30-remote-syslog.conf"],
 			ensure => running;
 		}
-	}
+	
 }
 
 class base::sysctl {
