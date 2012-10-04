@@ -264,10 +264,7 @@ class accounts {
 		$username = "brion"
 		$realname = "Brion Vibber"
 		$uid = 500
-		$enabled = $svnkey ? {
-			"true" => 'true',
-			default => 'false'
-			}
+		$enabled = true
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
@@ -288,6 +285,12 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEArC590xpWpe26evaQ424SBC3AnfHy7yb5M84F/3Wa/Pwb2Uh1ujHYmVHHnYee0ChWfsNXc3lHDlH278v//hMDagxR/O2sCjCjq9loyQQnb/t+f2INvrtna/YPRNO8nxH7dMT1mi4+i0LFlIkxwjwvNWoqJpZQouwckXzV44Ssx61IWR7S1s6Q9jthUa4O9U8Ffc75IQ4NgsGMcZoKS7lpqn7xQoVcQQ+RsfNLcmekUZ4tSdh3qp8R//Me6dg0h62VWucvjey6uLie/TW9y2TgT2XRxxLGZKWyp0YqVzZF2r2AZLvB0yxlb30+/qxTKzs9g51dUg+d8M7w8gAURggjwQ==";
+				"brion@Hawkeye.local":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe5ARdfajt7cDlcK6Fn3uFf5d5hvFdefqdr3L4Q2qeojQYioEvgcbZfVXRzpoSuPPx1cl/tDZCdfYityJiZWaE3T+gDZqYh/zO4M/JkiRp0vfnHKQeRbW7ledlitPKi9ZoEGE0e8FX17V9DNxnSolI3wBrEOOHxmBnnqS2Q04bM1/MRuMH/jxkcOWEp/SG5TOJtlSqKMAOrui7vU0gycQ9Kn6bwB0csuRA2IUwAnn07oVlCoBLR4nDTzj+iXF9j3aB2nyuZE0huXJM4ys3oL5CSDVTDow42vLyH4jwMlugxsgC2QBwUuCPLGz0uTVOvdFG5PstXBEWJnr6lL/0D13";
+
 			}
 		}
 		
@@ -2198,7 +2201,7 @@ class admins::roots {
 	include accounts::ariel
 	include accounts::asher
 	include accounts::ben
-	include accounts::brion #shell disabled, svn key still enabled
+	include accounts::brion #shell re-enabled dz 20121004
 	include accounts::catrope
 	include accounts::cmjohnson
 	include accounts::dzahn
