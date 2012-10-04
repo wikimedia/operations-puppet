@@ -264,10 +264,7 @@ class accounts {
 		$username = "brion"
 		$realname = "Brion Vibber"
 		$uid = 500
-		$enabled = $svnkey ? {
-			"true" => 'true',
-			default => 'false'
-			}
+		$enabled = true
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
@@ -2198,7 +2195,7 @@ class admins::roots {
 	include accounts::ariel
 	include accounts::asher
 	include accounts::ben
-	include accounts::brion #shell disabled, svn key still enabled
+	include accounts::brion #shell re-enabled
 	include accounts::catrope
 	include accounts::cmjohnson
 	include accounts::dzahn
