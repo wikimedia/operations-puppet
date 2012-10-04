@@ -220,7 +220,7 @@ class role::cache {
 					'knsq5.knams.wikimedia.org',
 					'knsq6.knams.wikimedia.org',
 					'knsq7.knams.wikimedia.org',
-				
+
 					"knsq30.knams.wikimedia.org"
 				]
 			},
@@ -329,7 +329,7 @@ class role::cache {
 			$nagios_group = "cache_upload_${::site}"
 
 			include lvs::configuration, role::cache::configuration, network::constants
-			
+
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
 			$varnish_fe_directors = {
@@ -419,20 +419,20 @@ class role::cache {
 
 	class bits {
 		include network::constants
-		
+
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${::site}"
 
 		include lvs::configuration
-		
+
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
-		$bits_appservers = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+		$bits_appservers = [ "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
 		$test_wikipedia = $::realm ? {
 			"production" => [ "srv193.pmtpa.wmnet" ],
 			"labs" => [ '10.4.0.166' ],
 		}
-		$all_backends = [ "srv191.pmtpa.wmnet", "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+		$all_backends = [ "srv192.pmtpa.wmnet", "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
 
 		if( $::realm == 'production' ) {
 			$varnish_backends = $::site ? {
@@ -537,7 +537,7 @@ class role::cache {
 		#	"emery":
 		#		host => "emery.wikimedia.org";
 		#}
-		
+
 		cron { "session leak":
 			command => "test $(varnishstat -1 -f n_sess_mem | awk '{ print \$2 }') -gt 150000 && service varnish restart > /var/log/varnish-restarts",
 			user => root,
@@ -546,7 +546,7 @@ class role::cache {
 
 	class mobile {
 		include network::constants
-		
+
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
@@ -633,7 +633,7 @@ class role::cache {
 			},
 			xff_sources => $network::constants::all_networks,
 		}
-		
+
 		varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
