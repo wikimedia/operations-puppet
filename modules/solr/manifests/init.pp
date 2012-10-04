@@ -23,7 +23,7 @@ class solr::install {
   }
 }
 
-class solr::config ( $schema = undef ) {
+class solr::config ( $schema = undef, $replication_master = undef ) {
   File {
     owner => 'jetty',
     group => 'root',
@@ -32,10 +32,15 @@ class solr::config ( $schema = undef ) {
     notify  => Class["solr::service"],
   }
 
-  file { "/etc/default/jetty":
-    ensure  => present,
-    source  => "puppet:///modules/solr/jetty",
-    owner   => 'root',
+  file {
+    "/etc/default/jetty":
+      ensure  => present,
+      source  => "puppet:///modules/solr/jetty",
+      owner   => 'root';
+    "/etc/solr/conf/solrconfig.xml":
+      ensure  => present,
+      owner   => 'root',
+      content => template("solr/solrconfig.xml.erb"),
   }
 
   if $schema != undef {
@@ -62,9 +67,10 @@ class solr::service {
   }
 }
 
-class solr ($schema = undef) {
+class solr ($schema = undef, $replication_master = undef) {
   include solr::install, solr::service
   class { "solr::config":
     schema => $schema,
+    replication_master => $replication_master,
   }
 }
