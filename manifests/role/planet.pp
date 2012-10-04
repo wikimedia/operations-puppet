@@ -35,9 +35,9 @@ class role::planet {
 	# languages and translations for the index.html.tmlp
 	$planet_languages = {
 		ar => {
-			'subscribe' => 'Subscribe',
-			'subscriptions' => 'Subscriptions',
-			'lastupdated' => 'Last updated',
+			'subscribe' => 'اشترك',
+			'subscriptions' => 'الاشتراكات',
+			'lastupdated' => 'اخر تحديث',
 		},
 		ca => {
 			'subscribe' => 'Subscribe',
@@ -64,9 +64,9 @@ class role::planet {
 			'lastupdated' => 'Last updated',
 		},
 		fr => {
-			'subscribe' => 'Subscribe',
-			'subscriptions' => 'Subscriptions',
-			'lastupdated' => 'Last updated',
+			'subscribe' => 'S\'abonner',
+			'subscriptions' => 'Abonnements',
+			'lastupdated' => 'Dernière mise à jour',
 		},
 		gmq => {
 			'subscribe' => 'Subscribe',
@@ -109,9 +109,9 @@ class role::planet {
 			'lastupdated' => 'Last updated',
 		},
 		zh => {
-			'subscribe' => 'Subscribe',
-			'subscriptions' => 'Subscriptions',
-			'lastupdated' => 'Last updated'
+			'subscribe' => '訂閱',
+			'subscriptions' => '收錄',
+			'lastupdated' => '最近更新'
 		},
 	}
 
