@@ -59,9 +59,9 @@ class role::planet {
 			'subscriptions' => 'Subscriptions',
 			'lastupdated' => 'Last updated',
 		},
-		es => { 'subscribe' => 'Suscribir',
+		es => { 'subscribe' => 'Suscribirse',
 			'subscriptions' => 'Suscripciones',
-			'lastupdated' => 'Last updated',
+			'lastupdated' => 'Última actualización',
 		},
 		fr => {
 			'subscribe' => 'S\'abonner',
