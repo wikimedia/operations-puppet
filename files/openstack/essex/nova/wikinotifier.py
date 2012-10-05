@@ -43,6 +43,9 @@ wiki_opts = [
     cfg.StrOpt('wiki_instance_region',
                default='Unknown',
                help='Hard-coded region name for wiki page.  A bit of a hack.'),
+    cfg.StrOpt('wiki_instance_dns_domain',
+               default='',
+               help='Hard-coded domain for wiki page. E.g. pmtpa.wmflabs'),
     cfg.StrOpt('wiki_login',
                 default='login',
                 help='Account used to edit wiki pages.'),
@@ -165,8 +168,8 @@ class WikiStatus(object):
         instance_name = payload['display_name']
         uuid = payload['instance_id']
 
-        if FLAGS.instance_dns_domain:
-            fqdn = "%s.%s" % (instance_name, FLAGS.instance_dns_domain)
+        if FLAGS.wiki_instance_dns_domain:
+            fqdn = "%s.%s" % (instance_name, FLAGS.wiki_instance_dns_domain)
         else:
             fqdn = instance_name
 
