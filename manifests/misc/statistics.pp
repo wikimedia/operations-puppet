@@ -234,6 +234,46 @@ class misc::statistics::db {
 	}
 }
 
+# Installs MongoDB and ensures that it is running.
+# TODO: Make this more generic.
+class misc::statistics::mongodb($dbpath = "/a/mongodb") {
+	package { "mongodb": 
+		ensure => "installed"
+	}
+
+	file { "$dbpath":
+		ensure  => "directory",
+		owner   => "mongodb",
+		group   => "mongodb",
+		mode    => 0755,
+		require => Package["mongodb"],
+
+	}
+
+	file { "/etc/mongodb.conf":
+		content => template('mongodb/mongodb.conf.erb'),
+		require => Package["mongodb"],
+	}
+
+	service { "mongodb": 
+		ensure    => "running",
+		subscribe => File["/etc/mongodb.conf"],
+	}
+
+
+	# Remove the default dbpath that
+	# is installed by the mongodb package
+	# if it is not manually set to $dbpath
+	if ($dbpath != "/var/lib/mongodb") {
+		file { "/var/lib/mongodb":
+			ensure  => absent,
+			recurse => true,
+			force   => true,
+			require => Service['mongodb'],
+		}
+	}
+}
+
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
