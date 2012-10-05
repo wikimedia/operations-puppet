@@ -481,6 +481,25 @@ class accounts {
 		}
 	}
 
+	class swalling inherits baseaccount {
+		$username = "swalling"
+		$realname = "Steven Walling"
+		$uid = 613
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "swalling@wikimedia.org":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key 	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDmsa2kRWHxgjNbw51CafupOENyZF6aTC7uuWeaPQZpVAK7epFoyjdajAnIBq9q81rJ6JUWwVNyiwsC4VuNlpk29v5y7PmsbLvQU0nXHQ0VEDeorGfSdbYrv5I1/JhHQCFIPIGdsoiamTlnM6jqlRFSnUaTVtpLnQVJAkjnh6xZxZNBPhkplHgj31/XOTw0KUVnrVhWLdkyYzgT4452/EF1arPaPWgh6SczGTOkNkK0kUlzXYTST/jdTX7NiYJ+N6via64Ccro1hu6w+gTc0WdA9gg1TaaASzKpQtutddo0xMInzp3EIs6gsfoICRgbYiO5NuHluFd73UBQ2FTmaw6T"
+			}
+		}
+	}
+
 
 	class jpostlethwaite inherits baseaccount {
 		$username = "jpostlethwaite"
