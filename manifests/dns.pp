@@ -7,7 +7,7 @@
 
 import "generic-definitions.pp"
 
-class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_query_address="", $ldap_host, $ldap_base_dn, $ldap_user_dn, $ldap_user_pass) {
+class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_query_address="", $ldap_hosts, $ldap_base_dn, $ldap_user_dn, $ldap_user_pass) {
 
 	package { [ "pdns-server", "pdns-backend-ldap" ]:
 		ensure => latest;
