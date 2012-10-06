@@ -64,7 +64,7 @@ class icinga::configuration::variables {
 
 }
 class icinga::monitor::apache {
-	class {"webserver::php5": ssl => "true";}
+	class {"webserver::php5": ssl => true;}
 
 	include webserver::php5-gd,
 		generic::apache::no-default-site
@@ -112,7 +112,7 @@ class icinga::monitor::checkpaging {
 		normal_check_interval => 1,
 		retry_check_interval => 1,
 		contact_group => "pager_testing",
-		critical => "false"
+		critical => false
 	}
 }
 
@@ -612,7 +612,7 @@ class icinga::monitor::jobqueue {
 		check_command => "check_job_queue",
 		normal_check_interval => 15,
 		retry_check_interval => 5,
-		critical => "false"
+		critical => false
 	}
 }
 

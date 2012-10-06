@@ -5,7 +5,7 @@
 
 # TODO: Monitor infeed status
 
-define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redundant="true") {
+define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redundant=true) {
 
 	include passwords::nagios::snmp
 
@@ -15,7 +15,7 @@ define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redund
 
 	# The value of infeedLoadValue is given in _hundredths of Amps_, thats why we multiply here
 
-	if $redundant == "false" {
+	if $redundant == false {
 		$warn_hi = $breaker * 0.8 * 100
 		$crit_hi = $breaker * 0.85 * 100
 	} else {
@@ -33,14 +33,14 @@ define monitor_pdu_service ( $host, $ip, $tower, $infeed, $breaker="30", $redund
 
 }
 
-define monitor_pdu_3phase ( $ip, $breaker="30", $redundant="true" ) {
+define monitor_pdu_3phase ( $ip, $breaker="30", $redundant=true ) {
 	@monitor_host { "$title": ip_address => "$ip", group => "pdus" }
 
 	monitor_pdu_service { "${title}-infeed-load-tower-A-phase-X": host => $title, ip => $ip, tower => "1", infeed => "1", breaker => $breaker, redundant => $redundant }
 	monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Y": host => $title, ip => $ip, tower => "1", infeed => "2", breaker => $breaker, redundant => $redundant }
 	monitor_pdu_service { "${title}-infeed-load-tower-A-phase-Z": host => $title, ip => $ip, tower => "1", infeed => "3", breaker => $breaker, redundant => $redundant }
 
-	if $redundant == "true" {
+	if $redundant == true {
 		monitor_pdu_service { "${title}-infeed-load-tower-B-phase-X": host => $title, ip => $ip, tower => "2", infeed => "1", breaker => $breaker, redundant => $redundant }
 		monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Y": host => $title, ip => $ip, tower => "2", infeed => "2", breaker => $breaker, redundant => $redundant }
 		monitor_pdu_service { "${title}-infeed-load-tower-B-phase-Z": host => $title, ip => $ip, tower => "2", infeed => "3", breaker => $breaker, redundant => $redundant }
@@ -56,23 +56,23 @@ class facilities::pdu_monitoring {
 	# A
 	monitor_pdu_3phase { "ps1-a1-sdtpa": ip => "10.1.5.1" }
 	monitor_pdu_3phase { "ps1-a2-sdtpa": ip => "10.1.5.2" }
-	monitor_pdu_3phase { "ps1-a3-sdtpa": ip => "10.1.5.3", redundant => "false" }
-	monitor_pdu_3phase { "ps1-a4-sdtpa": ip => "10.1.5.4", redundant => "false" }
-	monitor_pdu_3phase { "ps1-a5-sdtpa": ip => "10.1.5.5", redundant => "false" }
+	monitor_pdu_3phase { "ps1-a3-sdtpa": ip => "10.1.5.3", redundant => false }
+	monitor_pdu_3phase { "ps1-a4-sdtpa": ip => "10.1.5.4", redundant => false }
+	monitor_pdu_3phase { "ps1-a5-sdtpa": ip => "10.1.5.5", redundant => false }
 	# B
 	monitor_pdu_3phase { "ps1-b1-sdtpa": ip => "10.1.5.6" }
 	monitor_pdu_3phase { "ps1-b2-sdtpa": ip => "10.1.5.7" }
-	monitor_pdu_3phase { "ps1-b3-sdtpa": ip => "10.1.5.8", redundant => "false" }
-	monitor_pdu_3phase { "ps1-b4-sdtpa": ip => "10.1.5.9", redundant => "false" }
-	monitor_pdu_3phase { "ps1-b5-sdtpa": ip => "10.1.5.10", redundant => "false" }
+	monitor_pdu_3phase { "ps1-b3-sdtpa": ip => "10.1.5.8", redundant => false }
+	monitor_pdu_3phase { "ps1-b4-sdtpa": ip => "10.1.5.9", redundant => false }
+	monitor_pdu_3phase { "ps1-b5-sdtpa": ip => "10.1.5.10", redundant => false }
 	# C
 	monitor_pdu_3phase { "ps1-c1-sdtpa": ip => "10.1.5.11" }
 	monitor_pdu_3phase { "ps1-c2-sdtpa": ip => "10.1.5.12" }
 	monitor_pdu_3phase { "ps1-c3-sdtpa": ip => "10.1.5.13" }
 	# D
-	monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => "false" }
+	monitor_pdu_3phase { "ps1-d1-sdtpa": ip => "10.1.5.14", redundant => false }
 	monitor_pdu_3phase { "ps1-d2-sdtpa": ip => "10.1.5.15" }
-	monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
+	monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => false }
 
 	# pmtpa
 	# D

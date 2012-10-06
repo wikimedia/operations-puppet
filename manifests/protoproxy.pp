@@ -1,4 +1,4 @@
-define proxy_configuration( $proxy_addresses, $proxy_server_name, $proxy_server_cert_name, $proxy_backend, $enabled="false", $proxy_listen_flags='', $proxy_port='80', $ipv6_enabled='false', $ssl_backend={} ) {
+define proxy_configuration( $proxy_addresses, $proxy_server_name, $proxy_server_cert_name, $proxy_backend, $enabled=false, $proxy_listen_flags='', $proxy_port='80', $ipv6_enabled=false, $ssl_backend={} ) {
 
 	nginx_site {
 		"${name}":
@@ -75,8 +75,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.200" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true',
+		ipv6_enabled => true,
+		enabled => true,
 		proxy_listen_flags => 'default ssl'
 	}
 	proxy_configuration{ bits:
@@ -92,8 +92,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.23" },
 			"esams" => { "primary" => "10.2.3.23", "secondary" => "208.80.152.210" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ upload:
 		proxy_addresses => {
@@ -108,8 +108,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.24" },
 			"esams" => { "primary" => "10.2.3.24", "secondary" => "208.80.152.211" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikipedia:
 		proxy_addresses => {
@@ -124,8 +124,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.201" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wiktionary:
 		proxy_addresses => {
@@ -140,8 +140,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.202" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikiquote:
 		proxy_addresses => {
@@ -156,8 +156,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.203" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikibooks:
 		proxy_addresses => {
@@ -172,8 +172,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.204" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikisource:
 		proxy_addresses => {
@@ -188,8 +188,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.205" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikinews:
 		proxy_addresses => {
@@ -204,8 +204,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.206" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikiversity:
 		proxy_addresses => {
@@ -220,8 +220,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.207" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ mediawiki:
 		proxy_addresses => {
@@ -236,8 +236,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.208" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ wikimediafoundation:
 		proxy_addresses => {
@@ -252,8 +252,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25", "secondary" => "208.80.152.209" }
 			},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	proxy_configuration{ mobilewikipedia:
 		proxy_addresses => {
@@ -268,8 +268,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.26" },
 			"esams" => { "primary" => "10.2.3.26", "secondary" => "208.80.154.236" }
 		},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+		ipv6_enabled => true,
+		enabled => true
 	}
 	# Misc services
 	proxy_configuration{ videos:
@@ -284,8 +284,8 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.64.16.146" },
 			"esams" => { "primary" => "208.80.152.200", "secondary" => "208.80.152.200" }
 			},
-		ssl_backend => { "esams" => "true" },
-		enabled => 'true'
+		ssl_backend => { "esams" => true },
+		enabled => true
 	}
 
 }

@@ -158,10 +158,10 @@ class network::checks {
 
 
 	@monitor_host {
-		"nas1-a.pmtpa.wmnet": ip_address => "10.0.0.253", group => "storage", critical => "true";
-		"nas1-b.pmtpa.wmnet": ip_address => "10.0.0.254", group => "storage", critical => "true";
-		"nas1001-a.eqiad.wmnet": ip_address => "10.64.16.4", group => "storage", critical => "true";
-		"nas1001-b.eqiad.wmnet": ip_address => "10.64.16.5", group => "storage", critical => "true";
+		"nas1-a.pmtpa.wmnet": ip_address => "10.0.0.253", group => "storage", critical => true;
+		"nas1-b.pmtpa.wmnet": ip_address => "10.0.0.254", group => "storage", critical => true;
+		"nas1001-a.eqiad.wmnet": ip_address => "10.64.16.4", group => "storage", critical => true;
+		"nas1001-b.eqiad.wmnet": ip_address => "10.64.16.5", group => "storage", critical => true;
 	}
 }
 

@@ -137,12 +137,12 @@ class exim {
 	#		List of domains to hold on the queue without processing
 	class roled(
 		$local_domains = [ "+system_domains" ],
-		$enable_mail_relay="false",
-		$enable_mailman="false",
-		$enable_imap_delivery="false",
-		$enable_mail_submission="false",
-		$mediawiki_relay="false",
-		$enable_spamassassin="false",
+		$enable_mail_relay=false,
+		$enable_mailman=false,
+		$enable_imap_delivery=false,
+		$enable_mail_submission=false,
+		$mediawiki_relay=false,
+		$enable_spamassassin=false,
 		$outbound_ips=[ $ipaddress ],
 		$hold_domains=[] ) {
 
@@ -195,13 +195,13 @@ class exim {
 			}
 		}
 
-		if ( $enable_mailman == "true" ) {
+		if ( $enable_mailman == true ) {
 			include mailman
 		}
 		if ( $enable_mail_relay == "primary" ) or ( $enable_mail_relay == "secondary" ) {
 			include mail_relay
 		}
-		if ( $enable_spamassassin == "true" ) {
+		if ( $enable_spamassassin == true ) {
 			include spamassassin
 		}
 	}
@@ -274,7 +274,7 @@ class mailman {
 
 		generic::debconf::set {
 			"mailman/gate_news":
-				value => "false",
+				value => false,
 				notify => Exec["dpkg-reconfigure mailman"];
 			"mailman/used_languages":
 				value => "ar big5 ca cs da de en es et eu fi fr gb hr hu ia it ja ko lt nl no pl pt pt_BR ro ru sl sr sv tr uk vi zh_CN zh_TW",
@@ -321,7 +321,7 @@ class mailman {
 		# Install Mailman specific Lighttpd config file
 		lighttpd_config { "50-mailman":
 			require => [ Class["webserver::static"], File["/etc/lighttpd/htdigest"] ],
-			install => "true"
+			install => true
 		}
 
 		# Add files in /var/www (docroot)

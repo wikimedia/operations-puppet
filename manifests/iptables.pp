@@ -164,7 +164,7 @@ define iptables_purge_service( $service ) {
 	iptables_purge_rule{ $service_title: table => "filter" }
 }
 
-define iptables_add_rule( $table, $chain, $source="", $destination="", $protocol, $source_port="", $destination_port="", $interface="", $accept_established="false", $jump ) {
+define iptables_add_rule( $table, $chain, $source="", $destination="", $protocol, $source_port="", $destination_port="", $interface="", $accept_established=false, $jump ) {
 
 	$path_exact = "table[. = \"$table\"]/append[./comment = \"$title\"]"
 
@@ -216,7 +216,7 @@ define iptables_add_rule( $table, $chain, $source="", $destination="", $protocol
 		}
 	}
 
-	if $accept_established == "true" {
+	if $accept_established == true {
 		augeas { "iptables $title accept_established":
 			context => "/files/etc/iptables-save",
 			onlyif  => "match $path_exact/ctstate size == 0",

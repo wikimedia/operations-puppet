@@ -192,7 +192,7 @@ class base::puppet($server="puppet", $certname=undef) {
 		ensure => latest;
 	}
 
-	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
+	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => true, freshness => 36000, retries => 1 ; }
 	
 	case $::realm {
 		'production': {
@@ -719,7 +719,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 }
 
 # handle syslog permissions (e.g. 'make common logs readable by normal users (RT-2712)')
-class base::syslogs($readable = 'false') {
+class base::syslogs($readable = false) {
 
 	$common_logs = [ "syslog", "messages" ]
 
@@ -730,7 +730,7 @@ class base::syslogs($readable = 'false') {
 		}
 	}
 
-	if $readable == 'true' {
+	if $readable == true {
 		syslogs::readable { $common_logs: }
 	}
 }
@@ -797,7 +797,7 @@ class base {
 			generic::gluster
 
 		# make common logs readable
-		class {'base::syslogs': readable => 'true'; }
+		class {'base::syslogs': readable => true; }
 
 		# Add directory for data automounts
 		file { "/data":

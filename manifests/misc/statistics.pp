@@ -30,7 +30,7 @@ class misc::statistics::base {
 			group => wikidev,
 			mode => 0775,
 			ensure => directory,
-			recurse => "false";
+			recurse => false;
 	}
 
 	# Manually set a list of statistics servers.

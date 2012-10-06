@@ -10,7 +10,7 @@ class media-storage::thumbs-server {
 	}
 
 	if ! $thumbs_proxying {
-		$thumbs_proxying = "false"
+		$thumbs_proxying = false
 	}
 
 	if ! $thumbs_server_name {
@@ -57,7 +57,7 @@ class media-storage::thumbs-handler {
 		ensure => latest;
 	}
 
-        upstart_job { "fcgi-thumb-handler": install => "true" }
+        upstart_job { "fcgi-thumb-handler": install => true }
 
 	service { fcgi-thumb-handler:
 		require => [ Package[php5-cgi], Package[php5-curl], Package[spawn-fcgi], Upstart_job["fcgi-thumb-handler"] ],
@@ -69,7 +69,7 @@ class media-storage::thumbs-handler {
 class media-storage::htcp-purger {
 	system_role { "media-storage::htcp-purger": description => "HTCP thumbs purger" }
 
-	upstart_job { "htcp-purger": install => "true" }
+	upstart_job { "htcp-purger": install => true }
 
 	service { "htcp-purger": ensure => running }
 

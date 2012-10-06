@@ -7,7 +7,7 @@ $nagios_config_dir = "/etc/nagios"
 
 $ganglia_url = "http://ganglia.wikimedia.org"
 
-define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=present, $critical="false", $contact_group="admins") {
+define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=present, $critical=false, $contact_group="admins") {
 	if ! $ip_address {
 		fail("Parameter $ip_address not defined!")
 	}
@@ -25,7 +25,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 		check_period => "24x7",
 		max_check_attempts => 2,
 		contact_groups => $critical ? {
-					"true" => "admins,sms",
+					true => "admins,sms",
 					default => $contact_group
 				},
 		notification_interval => 0,
@@ -56,7 +56,7 @@ define monitor_host ($ip_address=$ipaddress, $group=$nagios_group, $ensure=prese
 	}
 }
 
-define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical="false", $passive="false", $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
+define monitor_service ($description, $check_command, $host=$hostname, $retries=3, $group=$nagios_group, $ensure=present, $critical=false, $passive=false, $freshness=36000, $normal_check_interval=1, $retry_check_interval=1, $contact_group="admins") {
 	if ! $host {
 		fail("Parameter $host not defined!")
 	}
@@ -80,7 +80,7 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			notification_period => "24x7",
 			notification_options => "c,r,f",
 			contact_groups => $critical ? {
-						"true" => "admins,sms",
+						true => "admins,sms",
 						default => $contact_group
 					},
 			ensure => absent;
@@ -102,30 +102,30 @@ define monitor_service ($description, $check_command, $host=$hostname, $retries=
 			retry_check_interval => $retry_check_interval,
 			check_period => "24x7",
 			notification_interval => $critical ? {
-					"true" => 240,
+					true => 240,
 					default => 0
 					},
 			notification_period => "24x7",
 			notification_options => "c,r,f",
 			contact_groups => $critical ? {
-						"true" => "admins,sms",
+						true => "admins,sms",
 						default => $contact_group
 					},
 			passive_checks_enabled => 1,
 			active_checks_enabled => $passive ? {
-					"true" => 0,
+					true => 0,
 					default => 1
 					},
 			is_volatile => $passive ? {
-					"true" => 1,
+					true => 1,
 					default => 0
 					},
 			check_freshness => $passive ? {
-					"true" => 1,
+					true => 1,
 					default => 0
 					},
 			freshness_threshold => $passive ? {
-					"true" => $freshness,
+					true => $freshness,
 					default => undef
 					},
 			ensure => $ensure;
@@ -350,7 +350,7 @@ class nagios::monitor {
 	exec { "fix_nagios_perms":
 		command => "/bin/chmod -R ugo+r /etc/nagios/puppet_checks.d",
 		notify => Service["nagios"],
-		refreshonly => "true";
+		refreshonly => true;
 	}
 
 	# Script to purge resources for non-existent hosts
@@ -533,7 +533,7 @@ class nagios::monitor::jobqueue {
 		check_command => "check_job_queue",
 		normal_check_interval => 15,
 		retry_check_interval => 5,
-		critical => "false"
+		critical => false
 	}
 }
 
@@ -551,7 +551,7 @@ class nagios::monitor::checkpaging {
 		normal_check_interval => 1,
 		retry_check_interval => 1,
 		contact_group => "pager_testing",
-		critical => "false"
+		critical => false
 	}
 }
 

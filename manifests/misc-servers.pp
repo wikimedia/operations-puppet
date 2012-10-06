@@ -262,7 +262,7 @@ class misc::images::rsync {
 		content => $rsync_includes;
 	}
 
-	upstart_job { "rsync-images": install => "true" }
+	upstart_job { "rsync-images": install => true }
 }
 
 class misc::extension-distributor {
@@ -904,7 +904,7 @@ class misc::racktables {
 		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
 
-	class {'webserver::php5': ssl => 'true'; }
+	class {'webserver::php5': ssl => true; }
 
 	include generic::mysql::packages::client,
 		webserver::php5-gd
@@ -920,7 +920,7 @@ class misc::racktables {
 	}
 
 	apache_site { racktables: name => "racktables.wikimedia.org" }
-	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
+	apache_confd { namevirtualhost: install => true, name => "namevirtualhost" }
 	apache_module { rewrite: name => "rewrite" }
 }
 
@@ -940,8 +940,8 @@ class iron::iptables-accepts {
 	require "iron::iptables-purges"
 	# Rememeber to place modified or removed rules into purges!
 	# common services for all hosts
-	iptables_add_rule{ "iron_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => "true", jump => "ACCEPT" }
-	iptables_add_rule{ "iron_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => "true", jump => "ACCEPT" }
+	iptables_add_rule{ "iron_common_established_tcp": table => "filter", chain => "INPUT", protocol => "tcp", accept_established => true, jump => "ACCEPT" }
+	iptables_add_rule{ "iron_common_established_udp": table => "filter", chain => "INPUT", protocol => "udp", accept_established => true, jump => "ACCEPT" }
 	iptables_add_service{ "iron_accept_all_private": service => "all", source => "10.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "iron_accept_all_localhost": service => "all", source => "127.0.0.0/8", jump => "ACCEPT" }
 	iptables_add_service{ "iron_common_ssh": service => "ssh", source => "208.80.152.0/22", jump => "ACCEPT" }

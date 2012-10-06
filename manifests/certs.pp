@@ -76,14 +76,14 @@ define create_combined_cert( $certname="$name", $user="root", $group="ssl-cert",
 	}
 }
 
-define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
+define install_certificate( $group="ssl-cert", $ca="", $privatekey=true ) {
 
 	require certificates::packages,
 		certificates::rapidssl_ca,
 		certificates::digicert_ca,
 		certificates::wmf_ca
 
-	if ( $privatekey == "false" ) {
+	if ( $privatekey == true ) {
 		$key_loc = "puppet:///files/ssl/${name}"
 	} else {
 		$key_loc = "puppet:///private/ssl/${name}"

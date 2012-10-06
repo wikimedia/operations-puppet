@@ -31,7 +31,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		ensure => latest;
 	}
 
-	class ssl($server_name="puppet", $ca="false") {
+	class ssl($server_name="puppet", $ca=false) {
 		$ssldir = "/var/lib/puppet/server/ssl"
 
 		# Move the puppetmaster's SSL files to a separate directory from the client's
@@ -46,7 +46,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => directory;
 		}
 
-		if $ca != "false" {
+		if $ca != false {
 			exec { "generate hostcert":
 				require => File["$ssldir/certs"],
 				command => "/usr/bin/puppet cert generate ${server_name}",

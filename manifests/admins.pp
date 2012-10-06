@@ -5,14 +5,14 @@
 # TODO: completely rewrite this file
 
 # NOTE: To completely disable an account, you should
-# 1) set variable $enabled = "false"
+# 1) set variable $enabled = false
 # 2) set all ssh authorized keys to ensure => absent
 
-define unixaccount($username, $uid, $gid, $enabled="true") {
+define unixaccount($username, $uid, $gid, $enabled=true) {
 	if defined(Class["nfs::home"]) {
-		$manage_home = "false"
+		$manage_home = false
 	} else {
-		$manage_home = "true"
+		$manage_home = true
 	}
 
 	if ($myshell) {
@@ -28,7 +28,7 @@ define unixaccount($username, $uid, $gid, $enabled="true") {
 		comment		=> $title,
 		shell		=> $shell,
 		ensure		=> $enabled ? {
-					"false" => 'absent',
+					false => 'absent',
 					default => 'present',
 				},
 		managehome	=> $manage_home,
@@ -37,7 +37,7 @@ define unixaccount($username, $uid, $gid, $enabled="true") {
 	}
 }
 
-define account_ssh_key($user, $type, $key, $enabled="true") {
+define account_ssh_key($user, $type, $key, $enabled=true) {
 	ssh_authorized_key { $title:
 		user => $user,
 		type => $type,
@@ -89,15 +89,15 @@ class groups {
 }
 
 class baseaccount {
-	$enabled = "true"
+	$enabled = true
 
         if !defined(Class["nfs::home"]) {
-                $manage_home = "true"
+                $manage_home = true
         }	
 
 	Ssh_authorized_key {
 		ensure => $enabled ? {
-			"false" => 'absent',
+			false => 'absent',
 			 default => 'present',
 			}
 	}
@@ -128,7 +128,7 @@ class accounts {
 		$username = "ashields"
 		$realname = "Andrew Shields"
 		$uid = 569
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -148,11 +148,11 @@ class accounts {
 		$username = "austin"
 		$realname = "Austin Hair"
 		$uid = 548
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
-		if $enabled == "true" and $manage_home {
+		if $enabled == true and $manage_home {
                         Ssh_authorized_key { require => Unixaccount[$realname] }
 
                         ssh_authorized_key {
@@ -240,7 +240,7 @@ class accounts {
 	class bastique inherits baseaccount {
 		$username = "bastique"
 		$realname = "Cary Bass"
-		$enabled = "false"
+		$enabled = false
 
 		$uid = 539
 
@@ -268,7 +268,7 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
-		if $enabled == "true" and $manage_home {
+		if $enabled == true and $manage_home {
 			ssh_authorized_key {
 				"brion@Verda-Majo.local.":
 					ensure	=> absent,
@@ -592,13 +592,13 @@ class accounts {
 		$username = "fvassard"
 		$realname = "Fred Vassard"
 		$myshell = "/usr/bin/zsh"
-		$enabled = "false"
+		$enabled = false
 
 		$uid = 542
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
-		if $enabled == "true" and $manage_home {
+		if $enabled == true and $manage_home {
 			ssh_authorized_key { "fred@depthstar.polanet.net":
 				ensure	=> absent,
 				user	=> $username,
@@ -641,7 +641,7 @@ class accounts {
 		$username = "hcatlin"
 		$realname = "Hampton Catlin"
 		$uid = 550
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -662,7 +662,7 @@ class accounts {
                 $username = "jdavis"
                 $realname = "Jon Davis"
 		$uid = 1004
-		$enabled = "false"
+		$enabled = false
 
                 unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -877,7 +877,7 @@ class accounts {
 	class nimishg inherits baseaccount {
 		$username = "nimishg"
 		$realname = "Nimish Gautam"
-		$enabled = "false"
+		$enabled = false
 		$uid = 549
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1193,7 +1193,7 @@ class accounts {
 		$username = "pdhanda"
 		$realname = "Priyanka Dhanda"
 		$uid = 547
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1213,7 +1213,7 @@ class accounts {
 		$username = "zak"
 		$realname = "Zak Greant"
 		$uid = 551
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1251,12 +1251,12 @@ class accounts {
 	class rcole inherits baseaccount {
 		$username = "rcole"
 		$realname = "Richard Cole"
-		$enabled = "false"
+		$enabled = false
 		$uid = 554
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
-		if $enabled == "true" and $manage_home {
+		if $enabled == true and $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
 
 			ssh_authorized_key { "rcole":
@@ -1409,7 +1409,7 @@ class accounts {
 	class neilk inherits baseaccount {
 		$username = "neilk"
 		$realname = "Neil Kandalgaonkar"
-		$enabled = "false"
+		$enabled = false
 		$uid = 560 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1521,7 +1521,7 @@ class accounts {
 		$username = "shawn"
 		$realname = "Shawn Walker"
 		$uid = 563
-		$enabled = "false" 
+		$enabled = false 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1622,7 +1622,7 @@ class accounts {
 		$username = "whym"
 		$realname = "Yusuke Matsubara"
 		$uid = 567
-		$enabled = "false" 
+		$enabled = false 
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1643,7 +1643,7 @@ class accounts {
 		$username = "giovanni"
 		$realname = "Giovanni Luca Ciampaglia"
 		$uid = 568 
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1852,7 +1852,7 @@ class accounts {
 		$username = "raindrift"
 		$realname = "Ian Baker"
 		$uid = 593
-		$enabled = "false"
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 

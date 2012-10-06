@@ -78,7 +78,7 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
 			require => Package['opendj'];
 	}
 
-	if ( $first_master == "true" ) {
+	if ( $first_master == true ) {
 		$create_ldap_db_command = "/usr/opendj/setup -i -b ${base_dn} -a -S -w ${initial_password} -O -n --noPropertiesFile --usePkcs12keyStore ${certificate_location}/${certificate}.p12 -W ${cert_pass} -Z 1636"
 	} else {
 		$create_ldap_db_command = "/usr/opendj/setup -i -b ${base_dn} -l /etc/ldap/base.ldif -S -w ${initial_password} -O -n --noPropertiesFile --usePkcs12keyStore ${certificate_location}/${certificate}.p12 -W ${cert_pass} -Z 1636"
@@ -195,7 +195,7 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
 
 	monitor_service { "ldap": description => "LDAP", check_command => "check_tcp!389" }
 	monitor_service { "ldaps": description => "LDAPS", check_command => "check_tcp!636" }
-	monitor_service { "ldap cert": description => "Certificate expiration", check_command => "check_cert!${fqdn}!636!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "ldap cert": description => "Certificate expiration", check_command => "check_cert!${fqdn}!636!Equifax_Secure_CA.pem", critical => true }
 
 }
 

@@ -32,7 +32,7 @@ class webserver::static {
 	}
 }
 
-class webserver::php5( $ssl = 'false' ) {
+class webserver::php5( $ssl = false ) {
 	#This will use latest package for php5-common
 
 	include generic::sysctl::high-http-performance
@@ -41,7 +41,7 @@ class webserver::php5( $ssl = 'false' ) {
 		ensure => latest;
 	}
 
-	if $ssl == 'true' {
+	if $ssl == true {
 		apache_module { ssl: name => "ssl" }
 	}
 
@@ -249,7 +249,7 @@ class webserver::apache {
 	#
 	# Parameters:
 	#	$aliases=[]       - array of ServerAliases
-	#	$ssl="false"      - if true, sets up an ssl certificate for $title
+	#	$ssl=false      - if true, sets up an ssl certificate for $title
 	#	$certfile=undef   - defaults to /etc/ssl/certs/${wildcard_domain}.pem, based on $title
 	#	$certkey=undef    - defaults to "/etc/ssl/private/${wildcard_domain}.key based on $title
 	#	$docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
@@ -261,7 +261,7 @@ class webserver::apache {
 	#	webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
 	define site(
 		$aliases=[], 
-		$ssl="false", 
+		$ssl=false, 
 		$certfile=undef, 
 		$certkey=undef, 
 		$docroot=undef, 
@@ -277,7 +277,7 @@ class webserver::apache {
 			$docroot = "/srv/$subdir"
 		}
 		
-		if $ssl in ["true", "only", "redirected"] {
+		if $ssl in [true, "only", "redirected"] {
 			webserver::apache::module { ssl: }
 			
 			# If no cert files are defined, assume a wildcart certificate for the domain

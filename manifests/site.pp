@@ -265,7 +265,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 	$cluster = "lvs"
 
 	if $hostname =~ /^amslvs[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
@@ -303,7 +303,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^amssq3[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::cache::text
@@ -328,12 +328,12 @@ node "argon.wikimedia.org" {
 		misc::survey
 
 	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "survey cert": description => "Certificate expiration", check_command => "check_cert!survey.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "survey cert": description => "Certificate expiration", check_command => "check_cert!survey.wikimedia.org!443!Equifax_Secure_CA.pem", critical => true }
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	if $hostname =~ /^(arsenic|niobium)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
@@ -417,7 +417,7 @@ node /^(capella|nitrogen)\.wikimedia\.org$/ {
 }
 node "carbon.wikimedia.org" {
 	$cluster = "misc"
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
 	include standard,
 		backup::client,
@@ -432,7 +432,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
 	include role::swift::eqiad-test
 }
@@ -440,7 +440,7 @@ node /^(copper|zinc)\.wikimedia\.org$/ {
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^cp100(1|2)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::cache::text
@@ -448,7 +448,7 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 
 node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
 	if $hostname =~ /^cp102[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
@@ -460,7 +460,7 @@ node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
 node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 
 	if $hostname =~ /^cp104(3|4)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_add_ip6_mapped { "main": }
@@ -469,7 +469,7 @@ node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
@@ -625,7 +625,7 @@ node /db4[3-9]\.pmtpa\.wmnet/ {
 
 node /db5[0-9]\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db(50|51)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::db::core,
@@ -646,7 +646,7 @@ node /db6([0-9])\.pmtpa\.wmnet/ {
 # eqiad dbs
 node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::db::core,
@@ -875,8 +875,8 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	# variables used in fundraising exim template
 	# TODO: properly scope these
-	$exim_signs_dkim = "true"
-	$exim_bounce_collector = "true"
+	$exim_signs_dkim = true
+	$exim_bounce_collector = true
 
 	install_certificate{ "star.wikimedia.org": }
 
@@ -933,7 +933,7 @@ node "helium.eqiad.wmnet" {
 }
 
 node "hooft.esams.wikimedia.org" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"
 
 	include standard,
@@ -1082,7 +1082,7 @@ node "iron.wikimedia.org" {
 }
 
 node "ixia.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 	include role::db::core
 }
 
@@ -1110,7 +1110,7 @@ node "kaulen.wikimedia.org" {
 node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^knsq1[67]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::cache::upload
@@ -1129,7 +1129,7 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 	$ldapincludes = ['openldap', 'nss', 'utils']
 
 	if $hostname =~ /^labstore[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include standard,
@@ -1173,7 +1173,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 	$cluster = "lvs"
 
 	if $hostname =~ /^lvs[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
@@ -1247,7 +1247,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 	$cluster = "lvs"
 
 	if $hostname =~ /^lvs100[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	# Older PyBal is very dependent on recursive DNS, to the point where it is a SPOF
@@ -1511,7 +1511,7 @@ node "ms5.pmtpa.wmnet" {
 }
 
 node "ms6.esams.wikimedia.org" {
-	$thumbs_proxying = "true"
+	$thumbs_proxying = true
 	$thumbs_proxy_source = "http://208.80.152.211"
 
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
@@ -1539,9 +1539,9 @@ node "ms1002.eqiad.wmnet" {
 
 node /ms100[4]\.eqiad\.wmnet/ {
 	$cluster = "misc"
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
-	$thumbs_proxying = "true"
+	$thumbs_proxying = true
 	$thumbs_proxy_source = "http://10.0.0.252"
 
 	include standard,
@@ -1551,7 +1551,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 
 node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^ms-fe[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 	if $hostname =~ /^ms-fe1$/ {
 		include role::swift::pmtpa-prod::ganglia_reporter
@@ -1564,7 +1564,7 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 	if $hostname =~ /^ms-fe100[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 	# disabling cluster reportingc stats until the cluster is up
 	#if $hostname =~ /^ms-fe1001$/ {
@@ -1622,7 +1622,7 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 # mw1-16 are application servers for jobrunners only (precise)
 node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mw[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include	role::applicationserver::jobrunner
@@ -1651,7 +1651,7 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
 # mw 1001-1016 are jobrunners (precise)
 node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw100[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include	role::applicationserver::jobrunner
@@ -1660,7 +1660,7 @@ node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 # mw 1017-1113 are apaches (precise)
 node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw101[78]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include	role::applicationserver::appserver
@@ -1669,7 +1669,7 @@ node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
 # mw 1114-1148 are api apaches (precise)
 node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqaid\.wmnet/ {
 	if $hostname =~ /^mw111[45]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include	role::applicationserver::appserver::api
@@ -1678,7 +1678,7 @@ node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqaid\.wmnet/ {
 # mw 1149-1152 are bits apaches (precise)
 node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw115[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include	role::applicationserver::appserver::bits
@@ -1687,7 +1687,7 @@ node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
 # mw 1153-1160 are imagescalers (precise)
 #node /mw11(5[3-9]|60)\.eqaid\.wmnet/ {
 #	if $hostname =~ /^mw115[34]$/ {
-#		$ganglia_aggregator = "true"
+#		$ganglia_aggregator = true
 #	}
 #
 #	include	role::applicationserver::imagescaler
@@ -1753,7 +1753,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 }
 
 node "nickel.wikimedia.org" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
 	include standard,
 		ganglia::web,
@@ -1849,7 +1849,7 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 	$cluster = "payments"
 
 	if $hostname =~ /^payments[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	system_role { "misc::payments": description => "Fundraising payments server" }
@@ -1867,7 +1867,7 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 }
 
 node "pdf1.wikimedia.org" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 	$cluster = "pdf"
 
 	include	role::pdf,
@@ -1876,7 +1876,7 @@ node "pdf1.wikimedia.org" {
 }
 
 node "pdf2.wikimedia.org" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 	$cluster = "pdf"
 
 	include	role::pdf,
@@ -1931,7 +1931,7 @@ node "sanger.wikimedia.org" {
 
 node /search1[3-8]\.pmtpa\.wmnet/ {
 	if $hostname =~ /^search1(3|4)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::lucene::front_end::pool4
@@ -1959,7 +1959,7 @@ node /search3[1-6]\.pmtpa\.wmnet/ {
 
 node /search100[0-6]\.eqiad\.wmnet/ {
 	if $hostname =~ /^search100(1|2)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::lucene::front_end::pool1
@@ -2025,7 +2025,7 @@ node "singer.wikimedia.org" {
 
 
 	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => true }
 }
 
 node "sockpuppet.pmtpa.wmnet" {
@@ -2063,9 +2063,9 @@ node "sodium.wikimedia.org" {
 		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
 		local_domains => [ "+system_domains", "+mailman_domains" ],
 		enable_mail_relay => "secondary",
-		enable_mailman => "true",
-		enable_mail_submission => "false",
-		enable_spamassassin => "true"
+		enable_mailman => true,
+		enable_mail_submission => false,
+		enable_spamassassin => true
 	}
 
 	interface_ip {
@@ -2075,8 +2075,8 @@ node "sodium.wikimedia.org" {
 }
 
 node "spence.wikimedia.org" {
-	$ganglia_aggregator = "true"
-	$nagios_server = "true"
+	$ganglia_aggregator = true
+	$nagios_server = true
 
 	$ircecho_infile = "/var/log/nagios/irc.log"
 	$ircecho_nick = "nagios-wm"
@@ -2110,7 +2110,7 @@ node "srv190.pmtpa.wmnet" {
 }
 
 node /^srv19[12]\.pmtpa\.wmnet$/ {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 
 	include applicationserver_old::bits,
 		memcached
@@ -2145,7 +2145,7 @@ node /^srv21[4-8]\.pmtpa\.wmnet$/ {
 # srv219-224 are image scalers
 node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 	if $hostname == "srv219" {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include imagescaler
@@ -2172,7 +2172,7 @@ node /^srv24[89]\.pmtpa\.wmnet$/ {
 # srv250-257 are API application servers and run memcached
 node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[45]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include applicationserver_old::api,
@@ -2182,7 +2182,7 @@ node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 # srv258 - srv280 are application servers, job runners, memcached
 node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[89]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include applicationserver_old::homeless,
@@ -2211,7 +2211,7 @@ node /^srv(29[1-9]|30[01])\.pmtpa\.wmnet$/ {
 
 node /ssl[1-4]\.wikimedia\.org/ {
 	if $hostname =~ /^ssl[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include protoproxy::ssl
@@ -2221,7 +2221,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 
 node /ssl100[1-4]\.wikimedia\.org/ {
 	if $hostname =~ /^ssl100[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
@@ -2231,7 +2231,7 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	if $hostname =~ /^ssl300[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
@@ -2247,7 +2247,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 node /sq(3[1-6])\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^sq3[15]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 	include role::cache::text
 }
@@ -2264,7 +2264,7 @@ node /sq(3[7-9]|40)\.wikimedia\.org/ {
 node /sq(4[1-9]|50)\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
 	if $hostname =~ /^sq4[12]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::cache::upload
@@ -2280,7 +2280,7 @@ node /sq5[0-8]\.wikimedia\.org/ {
 node /sq(59|6[0-6])\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^sq(59|60)$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include role::cache::text
@@ -2289,7 +2289,7 @@ node /sq(59|6[0-6])\.wikimedia\.org/ {
 # sq67-70 are varnishes for bits.wikimedia.org
 node /sq(6[7-9]|70)\.wikimedia\.org/ {
 	if $hostname =~ /^sq6[68]$/ {
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	interface_aggregate { "bond0":
@@ -2326,7 +2326,7 @@ node "stafford.pmtpa.wmnet" {
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		config => {
-			'ca' => "false",
+			'ca' => false,
 			'ca_server' => "sockpuppet.pmtpa.wmnet",
 			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
@@ -2488,7 +2488,7 @@ node "tarin.wikimedia.org" {
 }
 
 node "thistle.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
+	$ganglia_aggregator = true
 	include role::db::core
 }
 
@@ -2518,8 +2518,8 @@ node "vanadium.eqiad.wmnet" {
 
 node "virt1000.wikimedia.org" {
 	$cluster = "virt"
-	$is_puppet_master = "true"
-	$is_labs_puppet_master = "true"
+	$is_puppet_master = true
+	$is_labs_puppet_master = true
 	$openstack_version = "essex"
 
 	include standard,
@@ -2532,8 +2532,8 @@ node "virt1000.wikimedia.org" {
 node "virt0.wikimedia.org" {
 	$cluster = "virt"
 
-	$is_puppet_master = "true"
-	$is_labs_puppet_master = "true"
+	$is_puppet_master = true
+	$is_labs_puppet_master = true
 	$openstack_version = "essex"
 
 	include standard,
@@ -2548,7 +2548,7 @@ node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
 	if $hostname =~ /^virt[23]$/ {
 
-		$ganglia_aggregator = "true"
+		$ganglia_aggregator = true
 	}
 
 	include standard
@@ -2565,7 +2565,7 @@ node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 node /virt100(5|7|8).eqiad.wmnet/ {
 	#$cluster = "virt"
 	#if $hostname =~ /^virt100[57]$/ {
-	#	$ganglia_aggregator = "true"
+	#	$ganglia_aggregator = true
 	#}
 
 	include standard

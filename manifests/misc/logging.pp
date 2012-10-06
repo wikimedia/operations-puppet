@@ -36,7 +36,7 @@ class misc::syslog-server($config="nfs") {
 class misc::squid-logging::multicast-relay {
 	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
 
-	upstart_job { "squid-logging-multicast-relay": install => "true" }
+	upstart_job { "squid-logging-multicast-relay": install => true }
 
 	package { "socat": ensure => latest; }
 

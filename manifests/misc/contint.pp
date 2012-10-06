@@ -196,7 +196,7 @@ class misc::contint::test {
 				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
-				recurse => "true";
+				recurse => true;
 			"/srv/org/mediawiki/integration/WiktionaryMobile":
 				owner => jenkins,
 				group => wikidev,
@@ -208,7 +208,7 @@ class misc::contint::test {
 				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WiktionaryMobile",
-				recurse => "true";
+				recurse => true;
 			"/srv/org/mediawiki/integration/WLMMobile":
 				owner => jenkins,
 				group => wikidev,
@@ -220,7 +220,7 @@ class misc::contint::test {
 				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WLMMobile",
-				recurse => "true";
+				recurse => true;
 			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
 				path => "/etc/apache2/sites-available/integration.mediawiki.org",

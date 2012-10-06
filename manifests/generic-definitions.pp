@@ -72,9 +72,9 @@ define apache_module($name) {
 	}
 }
 
-define apache_confd($install="false", $enable="true", $ensure="present") {
+define apache_confd($install=false, $enable=true, $ensure="present") {
 	case $install {
-		"true": {
+		true: {
 			file { "/etc/apache2/conf.d/${name}":
 				source => "puppet:///files/apache/conf.d/${name}",
 				mode => 0444,
@@ -100,7 +100,7 @@ class generic::apache::no-default-site {
 # Enables a certain Lighttpd config
 #
 # TODO:  ensure => false removes symlink.  ensure => purged removes available file.
-define lighttpd_config($install="false") {
+define lighttpd_config($install=false) {
 	# Reload lighttpd if the site config file changes.
 	# This subscribes to both the real file and the symlink.
 	exec { "lighttpd_reload_${title}":
@@ -108,7 +108,7 @@ define lighttpd_config($install="false") {
 		refreshonly => true,
 	}
 	
-	if $install == "true" {
+	if $install == true {
 		file { "/etc/lighttpd/conf-available/${title}.conf":
 			source => "puppet:///files/lighttpd/${title}.conf",
 			owner => root,
@@ -129,13 +129,13 @@ define lighttpd_config($install="false") {
 }
 
 # Enables a certain NGINX site
-define nginx_site($install="false", $template="", $enable="true") {
+define nginx_site($install=false, $template="", $enable=true) {
 	if ( $template == "" ) {
 		$template_name = $name
 	} else {
 		$template_name = $template
 	}
-	if ( $enable == "true" ) {
+	if ( $enable == true ) {
 		file { "/etc/nginx/sites-enabled/${name}":
 			ensure => "/etc/nginx/sites-available/${name}",
 		}
@@ -146,7 +146,7 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 
 	case $install {
-	"true": {
+	true: {
 			file { "/etc/nginx/sites-available/${name}":
 				source => "puppet:///files/nginx/sites/${name}";
 			}
@@ -184,13 +184,13 @@ Pin-Priority: ${priority}
 
 # Create a symlink in /etc/init.d/ to a generic upstart init script
 
-define upstart_job($install="false") {
+define upstart_job($install=false) {
 	# Create symlink
 	file { "/etc/init.d/${title}":
 		ensure => "/lib/init/upstart-job";
 	}
 
-	if $install == "true" {
+	if $install == true {
 		file { "/etc/init/${title}.conf":
 			source => "puppet:///files/upstart/${title}.conf"
 		}
@@ -268,7 +268,7 @@ class base::mwclient {
 }
 
 define interface_tun6to4($remove=undef) {
-	if $remove == 'true' {
+	if $remove == true {
 		$augeas_cmd = [	"rm auto[./1 = 'tun6to4']",
 				"rm iface[. = 'tun6to4']"
 			]
@@ -287,7 +287,7 @@ define interface_tun6to4($remove=undef) {
 	}
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		if $remove == 'true' {
+		if $remove == true {
 			exec { "/sbin/ifdown tun6to4": before => Augeas["tun6to4"] }
 		}
 
@@ -297,7 +297,7 @@ define interface_tun6to4($remove=undef) {
 			changes => $augeas_cmd;
 		}
 
-		if $remove != 'true' {
+		if $remove != true {
 			exec { "/sbin/ifup tun6to4": require => Augeas["tun6to4"] }
 		}
 	}
@@ -331,7 +331,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 		$down_cmd = ""
 	}
 
-	if $remove == 'true' {
+	if $remove == true {
 		$augeas_cmd = [	"rm auto[./1 = '$intf']",
 				"rm iface[. = '$intf']"
 			]
@@ -348,7 +348,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 	}
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		if $remove == 'true' {
+		if $remove == true {
 			exec { "/sbin/ifdown $intf": before => Augeas["$intf"] }
 		}
 
@@ -358,7 +358,7 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 			changes => $augeas_cmd;
 		}
 
-		if $remove != 'true' {
+		if $remove != true {
 			exec { "/sbin/ifup $intf": require => Augeas["$intf"] }
 		}
 	}

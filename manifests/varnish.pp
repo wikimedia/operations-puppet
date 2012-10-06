@@ -139,7 +139,7 @@ class varnish {
 		# than gmond was started
 		exec { "restart gmond for varnish${instancesuffix}":
 			path => "/bin:/sbin:/usr/bin:/usr/sbin",
-			command => "true",
+			command => true,
 			onlyif => "test /var/run/varnishd${instancesuffix}.pid -nt /var/run/gmond.pid",
 			notify => Service[gmond]
 		}
@@ -203,7 +203,7 @@ class varnish {
 				content => inline_template('DAEMON_OPTS="--user=varnishhtcpd --group=varnishhtcpd --mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%>"');
 		}
 
-		upstart_job { "varnishhtcpd": install => "true" }
+		upstart_job { "varnishhtcpd": install => true }
 
 		service { varnishhtcpd:
 			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Package[$packages], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
@@ -219,7 +219,7 @@ class varnish {
 
 	class varnish_zmq_pub {
 		package { "zpubsub": ensure => latest }
-		upstart_job { "zpub": install => "true" }
+		upstart_job { "zpub": install => true }
 	}
 
 	class logging_config {
@@ -263,7 +263,7 @@ class varnish {
 	}
 
 	class varnishncsa {
-		upstart_job { "varnishncsa": install => "true" }
+		upstart_job { "varnishncsa": install => true }
 	}
 
 	# Definition: varnish::udplogging
