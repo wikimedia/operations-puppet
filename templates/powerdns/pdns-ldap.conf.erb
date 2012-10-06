@@ -41,7 +41,7 @@ log-dns-details=no
 # Backends to load
 launch=ldap
 
-ldap-host=<%= ldap_host %>
+ldap-host=<% ldap_hosts.each do |ldap_host| -%><%= ldap_host -%> <% end -%>
 ldap-method=strict
 ldap-basedn=ou=hosts,<%= ldap_base_dn %>
 ldap-binddn=<%= ldap_user_dn %>
