@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# WARNING: make sure to run any PHP scripts coming from MediaWiki under a
+# dedicated user such as `mwdeploy`. This script is running as user `root` on
+# the beta cluster.
+
 (
 
 set -e
@@ -12,7 +17,7 @@ for i in ${mwExtVerDbSets[@]}; do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 	echo "Updating ExtensionMessages-$mwVerNum.php..."
-	$BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
+	sudo -u mwdeploy $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
 		--list-file=$SOURCE/wmf-config/extension-list \
 		--output=$SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
 
