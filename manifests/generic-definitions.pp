@@ -589,11 +589,13 @@ class generic::packages::tree {
 #
 # === Optional parameters
 #
-# $+branch+:: Branch you would like to check out.
-# $+ensure+:: _absent_, _present_, or _latest_.  Defaults to _present_.
+# $+branch+:: Branch you would like to check out. Can not be used whenever you
+#             want to ensure a specific commit sha1 (in $ensure, see below).
+# $+ensure+:: _absent_, _present_,  _latest_ or a commit sha1.  Defaults to _present_.
 #             - _present_ (default) will just clone once.
 #             - _latest_ will execute a git pull if there are any changes.
 #             - _absent_ will ensure the directory is deleted.
+#             - _some commit sha1_ will git checkout specified commit.
 # $+owner+:: Owner of $directory, default: _root_.  git commands will be run by this user.
 # $+group+:: Group owner of $directory, default: 'root'
 # $+mode+:: Permission mode of $directory, default: 0755
@@ -622,7 +624,14 @@ define git::clone(
 	$mode=0755) {
 
 	require generic::packages::git-core
-	
+
+	if( $ensure != 'absent' and $ensure != 'latest' and $ensure != 'present' ) {
+		# commit sha1 given, we do not want a branch specifier
+		if $branch {
+			fail( "git::clone given a specific commit and thus must not be given a branch. Either remove the 'branch' parameter or use ensure => 'latest'" )
+		}
+	}
+
 	case $ensure {
 		"absent": {
 			# make sure $directory does not exist
@@ -664,7 +673,7 @@ define git::clone(
 				group       => $group,
 				timeout     => $timeout,
 			}
-			
+
 			# pull if $ensure == latest and if there are changes to merge in.
 			if $ensure == "latest" {
 				exec { "git_pull_${title}":
@@ -677,7 +686,31 @@ define git::clone(
 					group   => $group,
 					require => Exec["git_clone_${title}"],
 				}
+			} elsif( $ensure != 'present' ) {
+
+				# Sync with upstream whenever we do not know the requested commit
+				exec { "git_remote_update_${title}":
+					cwd => $directory,
+					command => "git remote update",
+					unless => "git show ${ensure}",
+					require => Exec["git_clone_${title}"],
+					environment => $env,
+					user => $owner,
+					timeout => $timeout,
+				}
+
+				# Whenever HEAD is not the requested sha1, checkout the good sha1
+				exec { "git_checkout_${title}":
+					cwd => $directory,
+					command => "git checkout ${ensure}",
+					unless => '[ $(git rev-parse HEAD) != "${ensure}" ]',
+					require => Exec["git_remote_update_${title}"],
+					environment => $env,
+					user => $owner,
+					timeout => $timeout,
+				}
 			}
+
 		}
 	}
 }
