@@ -1,0 +1,127 @@
+# mongo.conf - generated from Puppet
+
+#where to log
+logpath=<%= logpath %>
+logappend=<%= logappend -%>
+
+# fork and run in background
+fork = <%= mongofork %>
+port = <%= port %>
+dbpath= <%= dbpath %>
+
+<% if @bind_ip -%>
+bind_ip = <%= bind_ip %>
+<% end -%>
+
+<% if @pidfilepath -%>
+pidfilepath = <%= pidfilepath %>
+<% end -%>
+
+<% if @nojournal -%>
+# Disables write-ahead journaling
+nojournal = <%= nojournal %>
+
+<% end -%>
+<% if @cpu -%>
+# Enables periodic logging of CPU utilization and I/O wait
+cpu = <%= cpu %>
+
+<% end -%>
+<% if @noauth -%>
+# Turn on/off security.  Off is currently the default
+noauth = <%= noauth %>
+
+<% end -%>
+<% if @auth -%>
+auth = <%= auth %>
+
+<% end -%>
+<% if @verbose -%>
+# Verbose logging output.
+verbose = <%= verbose %>
+
+<% end -%>
+<% if @objcheck -%>
+# Inspect all client data for validity on receipt (useful for
+# developing drivers)
+objcheck = <%= objcheck %>
+
+<% end -%>
+<% if @quota -%>
+# Enable db quota management
+quota = <%= quota %>
+
+<% end -%>
+<% if @oplog -%>
+# Set oplogging level where n is
+#   0=off (default)
+#   1=W
+#   2=R
+#   3=both
+#   7=W+some reads
+oplog = <%= oplog %>
+
+<% end -%>
+<% if @nohints -%>
+# Ignore query hints
+nohints = <%= nohints %>
+
+<% end -%>
+<% if @nohttpinterface -%>
+# Disable the HTTP interface (Defaults to localhost:27018).
+nohttpinterface = <%= nohttpinterface %>
+
+<% end -%>
+<% if @noscripting -%>
+# Turns off server-side scripting.  This will result in greatly limited
+# functionality
+noscripting = <%= noscripting %>
+
+<% end -%>
+<% if @notablescan -%>
+# Turns off table scans.  Any query that would do a table scan fails.
+notablescan = <%= notablescan %>
+
+<% end -%>
+<% if @noprealloc -%>
+# Disable data file preallocation.
+noprealloc = <%= noprealloc %>
+
+<% end -%>
+<% if @nssize -%>
+# Specify .ns file size for new databases.
+ nssize = <%= nssize %>
+ 
+<% end -%>
+<% if @mms_token -%>
+# Accout token for Mongo monitoring server.
+mms-token = <%= mms_token %>
+
+<% end -%>
+<% if @mms_name -%>
+# Server name for Mongo monitoring server.
+mms-name = <%= mms_name %>
+
+<% end -%>
+<% if @mms_interval -%>
+# Ping interval for Mongo monitoring server.
+mms-interval = <%= mms_interval %>
+
+<% end -%>
+<% if @slave -%>
+slave = <%= slave %>
+
+<% end -%>
+<% if @mongosource -%>
+source = <%= mongosource %>
+
+<% end -%>
+<% if @only -%>
+# Slave only: specify a single database to replicate
+only = <%= only %>
+
+<% end -%>
+<% if @master -%>
+master = <%= master %>
+
+<% end -%>
