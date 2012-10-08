@@ -45,7 +45,7 @@ class misc::statistics::base {
 
 
 class misc::statistics::packages {
-	package { ["mc", "zip", "p7zip", "p7zip-full", "subversion"]:
+	package { ["mc", "zip", "p7zip", "p7zip-full", "subversion", "mercurial" ]:
 		ensure => latest;
 	}
 
