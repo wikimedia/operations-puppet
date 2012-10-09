@@ -9,10 +9,6 @@ pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
 # This will be disabled after 24 hours.
 pipe 1 /usr/bin/udp-filter -p BannerLoader\&banner=B12 >> /a/squid/bannerImpressions-sampled1.log
 
-# Temporarily catch all logs for one banner and for bn.wikipedia.org for fr-tech to study
-pipe 1 /usr/bin/udp-filter -p banner=BN_Wikipedia_Help_Page_Pilot  >> /a/squid/BN_Wikipedia_Help_Page_Pilot.log
-pipe 1 /usr/bin/udp-filter -d bn.wikipedia.org >> /a/squid/bn.wikipedia.org.log
-
 #
 # specific Wikipedia Zero filters
 # for detailed instructions see: https://office.wikimedia.org/wiki/Partner_IP_Ranges
