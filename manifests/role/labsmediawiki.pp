@@ -87,7 +87,7 @@ class role::mediawiki-install::labs {
 	exec { 'mediawiki_setup':
 		require => [git::clone["mediawiki"],  File["/srv/mediawiki/orig"], exec['password_gen']],
 		creates => "/srv/mediawiki/orig/LocalSettings.php",
-		command => "/bin/sh -c \"/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --pass '`cat /srv/mediawiki/orig/adminpass`' --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'\"",
+		command => "/usr/bin/php /srv/mediawiki/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --passfile '/srv/mediawiki/orig/adminpass' --server $mwserver --scriptpath '/srv/mediawiki' --confpath '/srv/mediawiki/orig/'",
 		logoutput => "on_failure",
 	}
 
