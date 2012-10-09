@@ -1640,8 +1640,12 @@ node /mw5[5-9]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-node /mw6[0-1]\.pmtpa\.wmnet/ {
+node /mw6[0]\.pmtpa\.wmnet/ {
 	include applicationserver_old::bits
+}
+
+node /mw6[1]\.pmtpa\.wmnet/ {
+  include role::applicationserver::appserver::bits
 }
 
 node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
