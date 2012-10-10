@@ -299,6 +299,7 @@ class misc::extension-distributor {
 		command => "php /home/wikipedia/common/wmf-config/extdist/cron.php 2>&1 >/dev/null",
 		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
 		hour => 3,
+		minute => 0,
 		user => extdist,
 		ensure => present;
 	}
@@ -433,7 +434,7 @@ Wikimedia-related channels on irc.freenode.net.
 
 	# redirect http://irc.wikimedia.org to http://meta.wikimedia.org/wiki/IRC
 	apache_site { irc: name => "irc.wikimedia.org" }
- 
+
 	# Doesn't work in Puppet 0.25 due to a bug
 	service { ircd:
 		provider => base,
