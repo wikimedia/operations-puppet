@@ -65,9 +65,9 @@ class mysql {
 	elsif $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
-	elsif $hostname =~ /^db(1008|1025)$/ {
+	elsif $hostname =~ /^(db1008|db1013|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		if $hostname =~ /^db1008$/ {
+		if $hostname =~ /^(db1008|db1013)$/ {
 			include role::db::fundraising::master
 			$writable = true
 		}
