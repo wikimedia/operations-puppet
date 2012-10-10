@@ -1630,7 +1630,6 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 
 node /mw(1[7-9]|[2-4][0-9]|5[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
 		memcached
 }
 
@@ -2161,10 +2160,9 @@ node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
 		memcached
 }
 
-# srv231-247 are application servers, jobrunners, memcached
+# srv231-247 are application servers, memcached
 node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
 		memcached
 }
 
@@ -2190,7 +2188,6 @@ node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 	}
 
 	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
 		memcached
 }
 
@@ -2200,7 +2197,6 @@ node "srv281.pmtpa.wmnet" {
 
 node /^srv28[2-9]\.pmtpa\.wmnet$/ {
 	include applicationserver_old::homeless,
-		applicationserver_old::jobrunner,
 		memcached
 }
 
