@@ -224,7 +224,9 @@ class varnish {
 			group => root,
 			mode => 0444;
 		}
+	}
 
+	class logging_monitor {
 		nrpe::monitor_service { "varnishncsa":
 			description => "Varnish traffic logger",
 			nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 3:3 -c 3:6 -C varnishncsa"
@@ -232,9 +234,10 @@ class varnish {
 	}
 
 	define logging($listener_address, $port="8420", $cli_args="", $log_fmt=undef, $instance_name="frontend", $monitor=true) {
-		require varnish::packages
+		require varnish::packages,
+			varnish::logging_config
 		if $monitor {
-			require varnish::logging_config
+			require varnish::logging_monitor
 		}
 		$varnishservice = $instance_name ? {
 			"" => "varnish",
