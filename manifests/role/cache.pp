@@ -506,8 +506,8 @@ class role::cache {
 				'esams' => '208.80.154.15', # oxygen
 			}
 			varnish::logging { "vanadium" : listener_address => $event_listener,
-				$port => "8422",
-				$instance_name => "",
+				port => "8422",
+				instance_name => "",
 				cli_args => "-m RxURL:^/event\.gif -D",
 				log_fmt => "%q %l %n %t"
 			}
