@@ -1403,6 +1403,8 @@ node "manganese.wikimedia.org" {
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
+	# Note: whenever moving Gerrit out of manganese, you will need
+	# to update the role::zuul::production
 	include role::gerrit::production,
 		backup::client
 
