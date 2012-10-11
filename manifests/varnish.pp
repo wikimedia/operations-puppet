@@ -236,7 +236,7 @@ class varnish {
 		}
 	}
 
-	define logging($listener_address, $port="8420", $cli_args="", $instance_name="frontend") {
+	define logging($listener_address, $port="8420", $cli_args="", $log_fmt=undef, $instance_name="frontend") {
 		require varnish::packages,
 			varnish::logging_config
 
