@@ -10,7 +10,7 @@ NameVirtualHost *:443
 	ServerAdmin noc@wikimedia.org
         ServerName noc.wikimedia.org
         
-	DocumentRoot /home/wikipedia/htdocs/noc
+	DocumentRoot /h/w/common/docroot/noc/
 
         UserDir public_html
 
