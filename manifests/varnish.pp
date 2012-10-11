@@ -239,9 +239,15 @@ class varnish {
 		if $monitor {
 			require varnish::logging_monitor
 		}
+
 		$varnishservice = $instance_name ? {
 			"" => "varnish",
 			default => "varnish-${instance_name}"
+		}
+
+		$shm_name = $instance_name ? {
+			"" => $hostname,
+			default => $instance_name
 		}
 
 		file { "/etc/init.d/varnishncsa-${name}":
