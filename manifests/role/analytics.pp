@@ -5,6 +5,8 @@
 class role::analytics {
 	system_role { "role::analytics": description => "analytics server" }
 	$nagios_group = "analytics-eqiad"
+	# ganglia cluster name.
+	$cluster = "analytics"
 
 	include standard,
 		admins::roots,
