@@ -231,10 +231,11 @@ class varnish {
 		}
 	}
 
-	define logging($listener_address, $port="8420", $cli_args="", $log_fmt=undef, $instance_name="frontend") {
-		require varnish::packages,
-			varnish::logging_config
-
+	define logging($listener_address, $port="8420", $cli_args="", $log_fmt=undef, $instance_name="frontend", $monitor=true) {
+		require varnish::packages
+		if $monitor {
+			require varnish::logging_config
+		}
 		$varnishservice = $instance_name ? {
 			"" => "varnish",
 			default => "varnish-${instance_name}"

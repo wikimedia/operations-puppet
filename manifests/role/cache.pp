@@ -508,8 +508,9 @@ class role::cache {
 			varnish::logging { "vanadium" : listener_address => $event_listener,
 				port => "8422",
 				instance_name => "",
-				cli_args => "-m RxURL:^/event\.gif -D",
-				log_fmt => "%q %l %n %t"
+				cli_args => '-m RxURL:^/event\.gif -D',
+				log_fmt => "%q %l %n %t",
+				monitor => false,
 			}
 		}
 
