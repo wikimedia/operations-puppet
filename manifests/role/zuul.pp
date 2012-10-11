@@ -50,4 +50,28 @@ class role::zuul {
 
 	} # /role::zuul::labs
 
+	class production {
+
+		system_role { "role::zuul::production": description => "Zuul on production" }
+
+		# Load Wikimedia zuul configuration:
+		include role::zuul::config
+
+		# Zuul needs an API key to interact with Jenkins:
+		include passwords::misc::contint::jenkins
+		$jenkins_apikey = $::passwords::misc::contint::jenkins::zuul_user_apikey
+
+		# Setup the instance for labs usage
+		class { "::zuul":
+			jenkins_server => 'https://integration.mediawiki.org/ci',
+			jenkins_user => 'zuul',
+			jenkins_apikey => $jenkins_apikey,
+			gerrit_server => 'manganese.wikimedia.org',
+			gerrit_user => 'jenkins',
+			# Not enabled yet but we need a pattern anyway
+			url_pattern => 'http://integration.mediawiki.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
+		}
+
+	} # /role::zuul::production
+
 } # /role::zuul
