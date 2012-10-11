@@ -21,6 +21,9 @@ PIDFILE=/var/run/varnishncsa/$NAME.pid
 LOGFILE=/var/log/varnish/varnishncsa.log
 USER=varnishlog
 
+<% if has_variable?("log_fmt") then %>
+LOG_FORMAT='<%= log_fmt %>'
+<% end %>
 DAEMON_OPTS="-n <%= instance_name %> -w <%= listener_address %>:<%= port %> <%= cli_args %> -P $PIDFILE"
 
 # Include defaults if available
