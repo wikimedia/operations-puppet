@@ -28,8 +28,8 @@ if [ -f /etc/default/varnishncsa ] ; then
         . /etc/default/varnishncsa
 fi
 
-<% if has_variable?("log_fmt") then %>
-LOG_FORMAT='<%= log_fmt %>'
+<% if log_fmt != false then %>
+LOG_FORMAT="<%= log_fmt %>"
 <% end %>
 
 # If unset, or set to "0" or "no", exit
