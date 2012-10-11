@@ -58,6 +58,16 @@ host pc1 {
 	fixed-address pc1.pmtpa.wmnet;
 }
 
+host pc2 {
+	hardware ethernet 88:43:E1:C2:5B:52;
+	fixed-address pc2.pmtpa.wmnet;
+}
+
+host pc3 {
+	hardware ethernet 88:43:E1:C2:4C:AA;
+	fixed-address pc3.pmtpa.wmnet;
+}
+
 host virt1001 {
 	hardware ethernet 00:22:bd:d3:38:62;
 	fixed-address virt1001.eqiad.wmnet;
