@@ -315,9 +315,16 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 	include role::cache::upload
 }
 
-node /analytics(10[0-9][0-9])\.(wikimedia\.org|eqiad\.wmnet)/ {
 
+node /analytics(10[0-9][0-9])\.(wikimedia\.org|eqiad\.wmnet)/ {
 	include role::analytics
+
+	# analytics1001 and analytics 1010
+	# are set up as ganglia aggregators
+	# for the Analytics cluster.
+	if $hostname =~ /^analytics10(01|10)$/ {
+		$ganglia_aggregator = "true"
+	}
 }
 
 node "argon.wikimedia.org" {
