@@ -20,7 +20,7 @@ SYNOPSIS
 DESCRIPTION
 -----------
 
-'dologmsg' will simply appends 'MESSAGE' to the `/var/log/logmsg` file.
+'dologmsg' will simply append 'MESSAGE' to the `/var/log/logmsg` file.
 This is in turn read by an ircecho long running process which happily
 relay the message on IRC.
 
