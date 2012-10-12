@@ -225,7 +225,7 @@ class misc::statistics::sites::community_analytics {
 
 # installs a generic mysql server
 # for loading and manipulating sql dumps.
-class misc::statistics::db {
+class misc::statistics::db::mysql {
 	# install a mysql server with the
 	# datadir at /a/mysql
 	class { "generic::mysql::server":
@@ -235,8 +235,8 @@ class misc::statistics::db {
 }
 
 # installs MonogDB on stat1
-class misc::statistics::mongodb {
-	class { "mongodb": 
+class misc::statistics::db::mongo {
+	class { "mongodb":
 		dbpath => "/a/mongodb",
 	}
 }
