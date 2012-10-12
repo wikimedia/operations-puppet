@@ -33,12 +33,16 @@ class misc::syslog-server($config="nfs") {
 	}
 }
 
+class misc::socat {
+	package { "socat": ensure => latest; }
+}
+
 class misc::squid-logging::multicast-relay {
+	require misc::socat
+
 	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
 
 	upstart_job { "squid-logging-multicast-relay": install => "true" }
-
-	package { "socat": ensure => latest; }
 
 	service { squid-logging-multicast-relay:
 		require => [ Package[socat], Upstart_job[squid-logging-multicast-relay] ],
@@ -47,3 +51,16 @@ class misc::squid-logging::multicast-relay {
 	}
 }
 
+class misc::logging::vanadium-relay {
+	require misc::socat
+
+	system_role { "misc::logging::vanadium-relay": description => "esams bits event logging to vanadium relay" }
+
+	upstart_job { "event-logging-vanadium-relay": install => "true" }
+
+	service { event-logging-vanadium-relay:
+		require => [ Package[socat], Upstart_job[event-logging-vanadium-relay] ],
+		subscribe => Upstart_job[event-logging-vanadium-relay],
+		ensure => running;
+	}
+}
