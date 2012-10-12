@@ -1,13 +1,17 @@
 class misc::beta::scripts {
 
 	require misc::deployment::scripts
+	include generic::packages::git-core
 
 	file {
 		"/usr/local/bin/wmf-beta-autoupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
-			require => File["/usr/local/bin/mw-update-l10n"],
+			require => [
+				File["/usr/local/bin/mw-update-l10n"],
+				Package["git-core"],
+			],
 			source => "puppet:///files/misc/beta/wmf-beta-autoupdate";
 		"/etc/default/wmf-beta-autoupdate":
 			owner => root,
