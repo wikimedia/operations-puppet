@@ -9,7 +9,7 @@ if ( isset( $argv[1] ) ) {
 } else {
 	$dir = '.';
 }
-	
+
 if ( !check_dir( $dir ) ){
 	exit( 1 );
 } else {
