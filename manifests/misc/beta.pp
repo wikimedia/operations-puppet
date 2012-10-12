@@ -19,6 +19,10 @@ class misc::beta::scripts {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/upstart/wmf-beta-autoupdate.conf";
+		"/var/log/wmf-beta-autoupdate.log":
+			owner => mwdeploy,
+			group => mwdeploy,
+			mode => 0664;
 	}
 
 	# Make sure wmf-beta-autoupdate can run the l10n updater as l10nupdate
