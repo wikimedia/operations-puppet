@@ -1,10 +1,11 @@
 <VirtualHost *:80>
-    DocumentRoot /var/www/
+    ServerName <%= server_name %>
+    DocumentRoot <%= document_root %>
     <Directory />
         Options FollowSymLinks
         AllowOverride None
     </Directory>
-    <Directory /var/www/>
+    <Directory <%= document_root %>>
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Order allow,deny

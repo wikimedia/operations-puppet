@@ -2,6 +2,32 @@ class labs-bots::userweb {
     # Common stuff
     include labs-bots::common
 
+    # Vhost stuff
+    define vhost($server_name, $document_root, $server_alias=[], $ensure="present") {
+        file {
+            '/etc/apache2/sites-enabled/report.cluebot.org':
+                require => [ Package[libapache2-mod-php5] ],
+                source => template('labs-bots/userweb/vhost.erb'),
+                mode => 0440,
+                owner => root,
+                group => www-data,
+                ensure => $ensure,
+                notify => Service[ apache2 ];
+        }
+    }
+
+    # Vhosts
+    vhost {
+        'bots.wmflabs.org':
+            $server_name => 'bots.wmflabs.org',
+            $document_root => '/var/www/';
+
+        'report.cluebot.org:
+            $server_name => 'report.cluebot.org',
+            $document_root => '/data/project/public_html/damian/';
+    }
+
+
     # Apache/PHP
     package { [ 'apache2', 'libapache2-mod-php5', 'php5', 'php5-cli', 'php5-mysql' ]:
         ensure => latest;
@@ -15,9 +41,7 @@ class labs-bots::userweb {
                             File["/etc/apache2/mods-enabled/userdir.conf"],
                             File["/etc/apache2/mods-enabled/userdir.load"],
                             File["/etc/apache2/conf.d/namevirtualhost"],
-                            File["/etc/apache2/sites-enabled/000_default"],
-                            File["/etc/apache2/sites-enabled/bots.wmflabs.org"],
-                            File["/etc/apache2/sites-enabled/report.cluebot.org"] ],
+                            File["/etc/apache2/sites-enabled/000_default"], ],
             ensure => running;
     }
 
@@ -34,14 +58,14 @@ class labs-bots::userweb {
             ensure => link,
             target => '../mods-available/userdir.load';
 
-        # Default site
+        # bots.wmflabs.org site content
         '/var/www/index.html':
             ensure => present,
-            source => 'puppet:///modules/labs-bots/userweb/index/index.html';
+            source => 'puppet:///modules/labs-bots/userweb/bots.wmflabs.org/index.html';
 
         '/var/www/robots.txt':
             ensure => present,
-            source => 'puppet:///modules/labs-bots/userweb/index/robots.txt';
+            source => 'puppet:///modules/labs-bots/userweb/bots.wmflabs.org/robots.txt';
 
         # Update script
         '/usr/local/bin/update_userdirs.py':
@@ -58,20 +82,6 @@ class labs-bots::userweb {
         # vhosts
         '/etc/apache2/sites-enabled/000_default':
             ensure => absent;
-
-        '/etc/apache2/sites-enabled/bots.wmflabs.org':
-            require => [ Package[libapache2-mod-php5] ],
-            source => 'puppet:///modules/labs-bots/userweb/sites/bots.wmflabs.org',
-            mode => 0440,
-            owner => root,
-            group => www-data;
-
-        '/etc/apache2/sites-enabled/report.cluebot.org':
-            require => [ Package[libapache2-mod-php5] ],
-            source => 'puppet:///modules/labs-bots/userweb/sites/report.cluebot.org',
-            mode => 0440,
-            owner => root,
-            group => www-data;
     }
 
     # Update cronjob
