@@ -5,6 +5,7 @@ import "generic-definitions.pp"
 import "base.pp"
 
 import "admins.pp"
+import "analytics.pp"
 import "apaches.pp"
 import "backups.pp"
 import "certs.pp"
@@ -315,14 +316,24 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 	include role::cache::upload
 }
 
+# analytics1001.wikimedia.org is the analytics cluster master.
+node "analytics1001.wikimedia.org" {
+	include role::analytics::master
 
-node /analytics(10[0-9][0-9])\.(wikimedia\.org|eqiad\.wmnet)/ {
+	# analytics1001 and analytics 1010
+	# are set up as ganglia aggregators
+	# for the Analytics cluster.
+	$ganglia_aggregator = "true"
+}
+
+# analytics1002 - analytics1099
+node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
 	include role::analytics
 
 	# analytics1001 and analytics 1010
 	# are set up as ganglia aggregators
 	# for the Analytics cluster.
-	if ($hostname == "analytics1001" or $hostname == "analytics1010") {
+	if $hostname == "analytics1010" {
 		$ganglia_aggregator = "true"
 	}
 }
