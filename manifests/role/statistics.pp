@@ -20,6 +20,8 @@ class role::statistics::cruncher inherits role::statistics {
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
 		misc::statistics::db,
+		# Aaron Halfaker (halfak) wants MongoDB for his project.
+		misc::statistics::mongodb,
 		generic::pythonpip,
 		misc::udp2log::udp_filter,
 		# generate gerrit stats from stat1.

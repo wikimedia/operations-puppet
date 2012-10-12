@@ -234,6 +234,13 @@ class misc::statistics::db {
 	}
 }
 
+# installs MonogDB on stat1
+class misc::statistics::mongodb {
+	class { "mongodb": 
+		dbpath => "/a/mongodb",
+	}
+}
+
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
