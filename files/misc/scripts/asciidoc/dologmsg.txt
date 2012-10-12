@@ -3,7 +3,7 @@
 :man manual: Wikimedia Manual
 
 dologmsg(1)
-============
+===========
 :doctype: manpage
 
 NAME
