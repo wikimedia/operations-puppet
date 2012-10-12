@@ -54,7 +54,7 @@ Listen 8085
 	RewriteEngine On
 	RewriteLog /var/log/apache2/rewrite.log
 	RewriteLogLevel 9
-	RewriteRule \"^(.*)\" \"http://%{HTTP_HOST}$1\" [P]
+	RewriteRule \"^(.*)\" \"http://%{HTTP_HOST}\$1\" [P]
 
 	<Location />
 		Order deny,allow
