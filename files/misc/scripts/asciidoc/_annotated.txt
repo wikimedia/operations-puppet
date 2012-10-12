@@ -1,0 +1,73 @@
+:man source: Puppet
+:man version: 1.0
+:man manual: Wikimedia Manual
+
+commandname(8)
+==============
+:doctype: manpage
+
+NAME
+----
+
+commandname - here you shoud enter a short summary
+
+SYNOPSIS
+--------
+
+*commandname* ['OPTIONS'] 'COMMANDS'
+
+DESCRIPTION
+-----------
+
+That is where you describe commandname(8), *be bold* and take advantage of
+asciidoc inline formatting.
+
+OPTIONS
+-------
+*-f, --file*='ATTRIBUTE'::
+	Describe the --file parameter usage there as well as the 'ATTRIBUTE'
+
+COMMANDS
+--------
+Describe commands, you can give some synopsis there such as:
+
+  commandname OPTIONS command1 ON_FILE [SOME_OPTIONAL_ARG]
+  commandname OPTIONS help
+
+*OPTIONS*::
+  Oh really amazing :-]
+
+EXIT STATUS
+-----------
+*0*::
+	Success
+
+*1*::
+	Failure
+
+BUGS
+----
+
+Any outstanding bug, possible enhancements, design issue, culprits.
+
+AUTHOR
+------
+
+Fill in some author name, merely so we know who to contact or blame.
+
+RESOURCES
+---------
+
+Maybe consider adding a link to wikitech.
+
+COPYING
+-------
+
+Copyright \(C) XXXX-YYYYY Some Author. Free use of this software is
+granted under the terms of the GNU Genereal Public License (GPL).
+
+
+// For vim users:
+// Syntax file is availaible on github at:
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:

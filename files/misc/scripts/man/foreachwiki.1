@@ -1,0 +1,62 @@
+'\" t
+.\"     Title: foreachwiki
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 08/29/2012
+.\"    Manual: \ \&
+.\"    Source: \ \&
+.\"  Language: English
+.\"
+.TH "FOREACHWIKI" "1" "08/29/2012" "\ \&" "\ \&"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+foreachwiki \- run a command on all the wiki
+.SH "SYNOPSIS"
+.sp
+.nf
+\fIforeachwiki\fR SCRIPTNAME
+.fi
+.SH "DESCRIPTION"
+.sp
+foreachwiki(8) is a simple wrapper around MediaWiki multiversion to run a MediaWiki maintenance script on all the wiki we are hosting\&. SCRIPTNAME should be the name of a script relative to the MediaWiki maintenance directory on all the wiki\&. It acquires the list of wiki using the hardcoded dblist /home/wikipedia/common/all\&.dblist\&.
+.sp
+Output is prefixed with the entry listed in all\&.dblist\&.
+.sp
+The PHP invocation of MediaWiki multiversion is hardcoded to have PHP report errors (display_errors=On)\&.
+.sp
+The script will not abort on errors and will keep proceeding\&.
+.SH "OPTIONS"
+.sp
+This script has no options\&.
+.SH "EXAMPLE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+$ foreachwiki showstat\&.php
+.fi
+.if n \{\
+.RE
+.\}
+.SH "EXIT STATUS"
+.sp
+It would be the result status of the last command run\&.

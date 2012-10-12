@@ -1,0 +1,50 @@
+:man source: Puppet
+:man version: 1.0
+:man manual: Wikimedia Manual
+
+clear-profile(8)
+==============
+:doctype: manpage
+
+NAME
+----
+
+clear-profile - delete graphite profiling data
+
+SYNOPSIS
+--------
+
+[verse]
+'clear-profile'
+
+DESCRIPTION
+-----------
+
+The `clear-profile` script will ping the graphite installation and ask it
+to remove the profiling data.
+
+OPTIONS
+-------
+This script has no options.
+
+COMMANDS
+--------
+Describe commands, you can give some synopsis there such as:
+
+  clear-profile
+
+BUGS
+----
+
+This script does not handle any error while sending the ping back and
+always assumes the command worked successfuly.
+
+RESOURCES
+---------
+
+https://wikitech.wikimedia.org/view/Graphite
+
+// For vim users:
+// Syntax file is availaible on github at:
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:

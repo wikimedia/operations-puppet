@@ -1,0 +1,55 @@
+:man source: Puppet
+:man version: 1.0
+:man manual: Wikimedia Manual
+
+lint(1)
+=======
+:doctype: manpage
+
+NAME
+----
+
+lint, lint.php - run a fast PHP linter against a directory content
+
+SYNOPSIS
+--------
+
+[verse]
+'lint' directory
+'php lint.php' directory
+
+DESCRIPTION
+-----------
+
+'lint' is simply a wrapper around 'php lint.php' which make sure the
+PHP `parsekit` extension is loaded. The 'lint.php' accepts a directory
+as argument, it will recursively look for PHP files and apply a PHP
+tokenizer to it, any error is reported.
+
+This script is way faster than running `php -l` on a list of files since
+it saves up the PHP initialization overhead.
+
+OPTIONS
+-------
+This script has no options.
+
+EXIT STATUS
+-----------
+
+*0*::
+success, when all files in 'directory' are valid PHP files.
+
+*1*::
+failure, whenever any of the PHP file under 'directory' is not valid PHP.
+
+EXAMPLE
+-------
+
+---------------------------------------
+lint /home/wikipedia/commons/wmf-config
+---------------------------------------
+
+// For vim users:
+// Syntax file is availaible on github at:
+// https://github.com/dagwieers/asciidoc-vim
+// vim: set syntax=asciidoc:

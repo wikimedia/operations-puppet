@@ -1,0 +1,71 @@
+'\" t
+.\"     Title: lint
+.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 10/01/2012
+.\"    Manual: Wikimedia Manual
+.\"    Source: Puppet 1.0
+.\"  Language: English
+.\"
+.TH "LINT" "1" "10/01/2012" "Puppet 1\&.0" "Wikimedia Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+lint, lint.php \- run a fast PHP linter against a directory content
+.SH "SYNOPSIS"
+.sp
+.nf
+\fIlint\fR directory
+\fIphp lint\&.php\fR directory
+.fi
+.SH "DESCRIPTION"
+.sp
+\fIlint\fR is simply a wrapper around \fIphp lint\&.php\fR which make sure the PHP parsekit extension is loaded\&. The \fIlint\&.php\fR accepts a directory as argument, it will recursively look for PHP files and apply a PHP tokenizer to it, any error is reported\&.
+.sp
+This script is way faster than running php \-l on a list of files since it saves up the PHP initialization overhead\&.
+.SH "OPTIONS"
+.sp
+This script has no options\&.
+.SH "EXIT STATUS"
+.PP
+\fB0\fR
+.RS 4
+success, when all files in
+\fIdirectory\fR
+are valid PHP files\&.
+.RE
+.PP
+\fB1\fR
+.RS 4
+failure, whenever any of the PHP file under
+\fIdirectory\fR
+is not valid PHP\&.
+.RE
+.SH "EXAMPLE"
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+lint /home/wikipedia/commons/wmf\-config
+.fi
+.if n \{\
+.RE
+.\}
