@@ -85,9 +85,6 @@ class misc::contint::test {
 
 		include generic::packages::git-core
 
-		# Prefer the PHP packages from Ubuntu
-		generic::apt::pin-package { $CI_PHP_packages: }
-
 	}
 
 	# Common apache configuration
