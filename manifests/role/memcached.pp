@@ -1,6 +1,3 @@
-@monitor_group { "mc_eqiad": description => "eqiad memcached servers" }
-@monitor_group { "mc_pmtpa": description => "pmtpa memcached servers" }
-
 class role::memcached {
 
 	$nagios_group = "$mc_${::site}"
