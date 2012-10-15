@@ -132,8 +132,10 @@ class ganglia {
 			"ip_oct"	=> "31" },
 		"analytics"		=> {
 			"name"		=> "Analytics cluster",
-			"ip_oct"	=> "32",
-		}
+			"ip_oct"	=> "32" },
+		"memcached"		=> {
+			"name"		=> "Memcached",
+			"ip_oct"	=> "33" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
