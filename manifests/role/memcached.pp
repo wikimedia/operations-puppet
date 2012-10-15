@@ -8,7 +8,7 @@ class role::memcached {
 	include standard,
 		generic::sysctl::high-http-performance
 
-	class { "memcached":
+	class { "::memcached":
 		memcached_size => '89088',
 		memcached_port => '11211',
 		memcached_options => {
