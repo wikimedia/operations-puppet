@@ -2131,7 +2131,7 @@ class accounts {
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCxtHW7OHjikPa2sSCn5OmROXWEMHy1vHgXgRHWZwJz47PSEa3D6dbintic/3E9yt0/zBz3S2aTjQl+USzPG5fGDLxuudyER8BOcmhRG6w1FLvI/6iEocjhZLZijgv36RolSorafMyX3mMU9nDtIznWINhWS9cbtRPrFx1E8t/T4xj5VstMxtSFab3jDNzIoeRjrXeHMaJf273oZ6hUQGeMrTpUMRJ+orEeQis2Lha0aoUTms/Hp6xplQV3VtoAgAnZwt7HaiyBJGd+LVSg8AJz6zVol5r8ktTgYTHWR51D/jufXz0PTbCcxfxoQ6akfPR5pDzPApRO0JDGjW5Lemm1";
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQColhx7+65SMkm4j4iPu2WmHoeO3TpC5Iabvr5neBmqQbSQB0PE7AImy1p3+Sd5e8Seqdi0QIPyu2Jw3NqlOibn81snUExcRBaV8cKvN+c6oBJWVL/OILopKNS1MZynNPVOSjVzmpLNID5U3slEpopyS3aNMhI0BD93QAq0xE3/5kaFf19mkOEjJbaUcEevWTwI95NQKVovJ3y1R5v8e+GaFk86F+EJ4i99GZ+TzmN3VFMy5HfnjMOVGcR+WYyZ87Oa2CTdF1lbV6W9EwZD3eTbuDPZH1VW215Spw8MpFPQznJSkDLhwrg6GH14XuDOA9edf+npYsnYgnWUWF/k1syDlZgQvK3xp9or9Ld4fumAw7a2lQijbrP1SBn14H6tSBK4XGN5ciKPbfj9c9z3C0WVjXZsaQn1hmF1kWu4Kdnx7uYh3RlFnImpvGSRESHN/xuqhdF6o8/KiF7ByDion6ac5VKX40PplUFindsDiJ5GPnsbQWZ+0FbRcMCjE37t5P5NRR/Vfhr0X6fJHqlw1DXGciURVsCXF1E645ZqGZ2jC3PjgxgEVnGgSoaYWoWcX3vpwBIz5syglOgq7k1VDA3F0zitcIkem5uRFlwWgDo/y9DdIW4HNb9cVgMN2dZYQRlNnvKudLni3mjk+R8nie5C13lNHfgz7HMFwufrcxaMkQ==";
 			}
 		}
 	}
@@ -2290,6 +2290,7 @@ class admins::mortals {
 	include accounts::rfaulk
 	include accounts::rmoen
 	include accounts::robla
+	include accounts::spage
 	include accounts::zak # access revoked
 }
 
