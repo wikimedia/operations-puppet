@@ -11,7 +11,8 @@ class misc::udp2log($monitor = true) {
 
 	include 
 		contacts::udp2log,
-		misc::udp2log::udp_filter
+		misc::udp2log::udp_filter,
+		misc::udp2log::sysctl
 
 	# include the monitoring scripts
 	# required for monitoring udp2log instances
@@ -31,15 +32,21 @@ class misc::udp2log($monitor = true) {
 		mode   => 0775
 	}
 
-	# set a large net rmem_max
-	sysctl { "big-rmem":
-		content       => "net.core.rmem_max = 536870912",
-		number_prefix => "99",   # Only setting this for historical reasons.  This file already exists on some servers, and I dont' want to recreate the file.
-	}
-
 	# make sure the udplog package is installed
 	package { udplog:
 		ensure => latest;
+	}
+}
+
+class misc::udp2log::sysctl($ensure="present") {
+	file { big-rmem-sysctl:
+		name => "/etc/sysctl.d/99-big-rmem.conf",
+		owner => root,
+		group => root,
+		mode => 0444,
+		notify => Exec["/sbin/start procps"],
+		source => "puppet:///files/misc/99-big-rmem.conf.sysctl",
+		ensure => $ensure
 	}
 }
 
