@@ -1470,6 +1470,13 @@ node "marmontel.wikimedia.org" {
 	}
 }
 
+node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
+	if $hostname =~ /^mc[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	include role::mcserver
+}
+
 node "mchenry.wikimedia.org" {
 	$gid = 500
 

@@ -36,7 +36,7 @@ logfile /var/log/memcached.log
 -l <%= memcached_ip %>
 
 # Limit the number of simultaneous incoming connections. The daemon default is 1024
--c 20000
+-c 25000
 
 # Lock down all paged memory. Consult with the README and homepage before you do this
 # -k
@@ -52,3 +52,8 @@ logfile /var/log/memcached.log
 
 # Chunk growth factor - allows more steps and better memory efficiency too
 -f 1.05
+
+<% memcached_options.each_pair do |option,value| -%>
+<%= option %> <%= value %>;
+<% end -%>
+
