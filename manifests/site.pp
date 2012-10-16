@@ -2539,6 +2539,12 @@ node "tridge.wikimedia.org" {
 		backup::server
 }
 
+# tmh1/tmh2 video encoding server (precise only)
+node /^tmh[12]\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::videoscaler,
+		nfs::upload
+}
+
 node "vanadium.eqiad.wmnet" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
