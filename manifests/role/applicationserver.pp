@@ -11,6 +11,7 @@
 @monitor_group { "imagescaler_pmtpa": description => "pmtpa image scalers" }
 @monitor_group { "jobrunner_eqiad": description => "eqiad jobrunner application servers" }
 @monitor_group { "jobrunner_pmtpa": description => "pmtpa jobrunner application servers" }
+@monitor_group { "videoscaler_pmtpa": description => "pmtpa video scaler" }
 
 class role::applicationserver {
 # Class: role::applicationserver
@@ -111,6 +112,33 @@ class role::applicationserver {
 				name => "apache2",
 				enable => false,
 				ensure => stopped;
+		}
+	}
+	class videoscaler{
+		class { "role::applicationserver::common": group => "videoscaler" }
+
+		include	imagescaler::cron,
+			imagescaler::packages,
+			imagescaler::files
+
+		class {"::jobrunner":
+			procs => 5,
+			type => "webVideoTranscode",
+			timeout => 14400,
+			extra_args => "-v 0"
+		}
+
+		include applicationserver::config::php,
+			applicationserver::config::base,
+			applicationserver::packages,
+			applicationserver::cron,
+			applicationserver::sudo
+
+		# dependency for wikimedia-task-appserver
+		service { 'apache':
+			name => "apache2",
+			enable => false,
+			ensure => stopped;
 		}
 	}
 }
