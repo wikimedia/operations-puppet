@@ -22,12 +22,10 @@ C{
 	#include <netdb.h>
 	#include <arpa/inet.h>
 
-	pthread_mutex_t geoip_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 	GeoIP *gi;
 	void geo_init () {
 		if (!gi) {
-			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MEMORY_CACHE);
+			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
 		}
 	}
 	getaddrfamily(const char *addr) {
@@ -74,8 +72,6 @@ sub geoip_lookup {
 			ip = VRT_IP_string(sp, VRT_r_client_ip(sp));
 		}
 
-		pthread_mutex_lock(&geoip_mutex);
-
 		if (!gi) { geo_init(); }
 		GeoIPRecord *record = GeoIP_record_by_addr(gi, ip);
 		if (record) {
@@ -87,11 +83,9 @@ sub geoip_lookup {
 				ip,
 				GeoIP_last_netmask(gi)
 			);
-			pthread_mutex_unlock(&geoip_mutex);
 			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
 			GeoIPRecord_delete(record);
 		} else {
-			pthread_mutex_unlock(&geoip_mutex);
 			VRT_synth_page(sp, 0, "Geo = {}",  vrt_magic_string_end);
 		}
 		TIM_format(TIM_real(), date);
