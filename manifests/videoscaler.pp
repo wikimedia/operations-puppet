@@ -4,6 +4,9 @@
 @monitor_group { "videoscaler": description => "transcode videos and create video thumbnails" }
 
 class mediawiki::videoscaler {
+	if( $::realm == 'labs' ) {
+		include	nfs::apache::labs
+	}
 	include imagescaler::packages,
 		imagescaler::cron,
 		imagescaler::files
