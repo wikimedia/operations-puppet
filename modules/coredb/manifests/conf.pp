@@ -1,7 +1,9 @@
 # coredb required packages
 class coredb::conf {
 
-		file { 
+		file {
+		  "/etc/db.cluster":
+        content => "${::shard}";
 			"/etc/my.cnf":
 				content => template("coredb/prod.my.cnf.erb");
 			"/etc/mysql/my.cnf":

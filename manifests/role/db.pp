@@ -7,6 +7,7 @@
 @monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
 @monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
 
+
 class role::db::core {
 	$cluster = "mysql"
 
@@ -50,7 +51,7 @@ class role::db::fundraising {
 		"mysqld":
 			description => "mysqld processes",
 			check_command => "nrpe_check_mysqld",
-			critical => $crit;	
+			critical => $crit;
 	}
 
 }

@@ -1,7 +1,10 @@
 class coredb {
-	
+
+  include coredb::base
+  include coredb::conf
+  include coredb::heartbeat
 	include coredb::packages
-	include coredb::users
-	include coredb::conf
-	include coredb::datadirs
+	include coredb::slow_digest
+	include coredb::snapshot
+	include coredb::utils
 }

@@ -8,7 +8,8 @@ class coredb::snapshot {
 			source => "puppet:///modules/coredb/utils/snaprotate.pl"
 	}
 
-	if $snapshot_host {
+	if $role::coredb::config::topology[$::shard][snapshot][$::hostname] {
+	  # TODO: shame. this will stay for now.
 		$snaprotate_extraparams = $::hostname ? {
 			'db26' => "-c 1",
 			default => ""
@@ -21,7 +22,7 @@ class coredb::snapshot {
 			hour => '*/8',
 			ensure => present;
 		}
-	} else { 
+	} else {
 		cron { snaprotate:
 			ensure => absent;
 		}
