@@ -20,7 +20,7 @@ class mysql {
 	}
 
 	#######################################################################
-	### LVM snapshot hosts 
+	### LVM snapshot hosts
 	#######################################################################
 	if $hostname =~ /^db(25|26|32|33|44|46|49|53|1005|1007|1018|1020|1022|1035|1046|1050)$/ {
 		$snapshot_host = true
@@ -84,7 +84,7 @@ class mysql {
 		$db_cluster = undef
 	}
 
-	if ($db_cluster) { 
+	if ($db_cluster) {
 		file { "/etc/db.cluster":
 			content => "${db_cluster}";
 		}
@@ -313,12 +313,12 @@ class mysql {
 	}
 
 	class mysqluser {
-		user { 
+		user {
 			"mysql": ensure => "present",
 		}
 	}
 
-	class datadirs { 
+	class datadirs {
 		file {
 			"/a/sqldata":
 				owner => mysql,
@@ -378,7 +378,7 @@ class mysql {
 
 		if $db_cluster {
 			$ibsize = $db_clusters[$db_cluster]["innodb_log_file_size"]
-		} else { 
+		} else {
 			$ibsize = "500M"
 		}
 
@@ -404,14 +404,14 @@ class mysql {
 			$long_timeouts = "false"
 			$enable_unsafe_locks = "false"
 			$large_slave_trans_retries = "false"
-			if $writable { 
+			if $writable {
 				$read_only = "false"
-			} else { 
+			} else {
 				$read_only = "true"
 			}
 		}
 
-		if ! $skip_name_resolve { 
+		if ! $skip_name_resolve {
 			$skip_name_resolve = "true"
 		}
 
@@ -443,7 +443,7 @@ class mysql {
 				hour => '*/8',
 				ensure => present;
 			}
-		} else { 
+		} else {
 			cron { snaprotate:
 				ensure => absent;
 			}
@@ -514,6 +514,72 @@ class mysql {
 	}
 }
 
+class mysql::coredb::ganglia{
+
+  include passwords::ganglia
+  $ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
+
+  # Ganglia
+  package { python-mysqldb:
+    ensure => present;
+  }
+
+  file {
+    "/usr/lib/ganglia/python_modules":
+      owner => root,
+      group => root,
+      mode => 0755,
+      ensure => directory;
+    "/usr/lib/ganglia/python_modules/DBUtil.py":
+      require => File["/usr/lib/ganglia/python_modules"],
+      source => "puppet:///files/ganglia/plugins/DBUtil.py",
+      notify => Service[gmond];
+    "/usr/lib/ganglia/python_modules/mysql.py":
+      require => File["/usr/lib/ganglia/python_modules"],
+      source => "puppet:///files/ganglia/plugins/mysql.py",
+      notify => Service[gmond];
+    "/etc/ganglia/conf.d/mysql.pyconf":
+      require => File["/usr/lib/ganglia/python_modules"],
+      content => template("mysql/mysql.pyconf.erb"),
+      notify => Service[gmond];
+  }
+}
+
+class mysql::coredb::monitoring( $crit = false ) {
+
+    include passwords::nagios::mysql
+    $mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+    # this is for checks from the percona-nagios-checks project
+    # http://percona-nagios-checks.googlecode.com
+    file {
+      "/etc/nagios/nrpe.d/nrpe_percona.cfg":
+        owner => root,
+        group => nagios,
+        mode => 0440,
+        content => template("nagios/nrpe_percona.cfg.erb"),
+        notify => Service[nagios-nrpe-server];
+      "/usr/lib/nagios/plugins/percona":
+        ensure => directory,
+        recurse => true,
+        owner => root,
+        group => root,
+        mode => 0555,
+        source => "puppet:///files/nagios/percona";
+    }
+
+  monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
+  monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
+  monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
+  monitor_service { "full lvs snapshot": description => "Full LVS Snapshot", check_command => "nrpe_check_lvs", critical => false }
+  monitor_service { "mysql idle transaction": description => "MySQL Idle Transactions", check_command => "nrpe_check_mysql_idle_transactions", critical => false }
+  monitor_service { "mysql replication heartbeat": description => "MySQL Replication Heartbeat", check_command => "nrpe_check_mysql_slave_heartbeat", critical => false }
+
+  if $role::coredb::config::topology[$::shard][master] {
+    monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+    monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
+  }
+}
 
 class mysql::client::default-charset-binary {
 	# ubuntu's stock mysql client defaults to latin1 charsets
@@ -555,7 +621,7 @@ class generic::mysql::packages::server($version = "5.1") {
 }
 
 
-# installs mysql-server, configures app armor 
+# installs mysql-server, configures app armor
 # and my.cnf, starts mysqld.
 #
 # Most of these defaults are from the
@@ -597,7 +663,7 @@ class generic::mysql::server(
 	$query_cache_limit              = '1M',
 	$tmp_table_size                 = '16M',
 	$read_rnd_buffer_size           = '256K',
-	
+
 	$key_buffer_size                = '16M',
 	$myisam_sort_buffer_size        = '8M',
 	$myisam_max_sort_file_size      = '512M',
@@ -673,9 +739,9 @@ class generic::mysql::server(
 	}
 
 	# Put my.cnf in place from the generic_my.cnf.erb template.
-	# The values in this file are filled in from the 
+	# The values in this file are filled in from the
 	# passed in parameters.
-	file { $config_file_path: 
+	file { $config_file_path:
 		owner => 'root',
 		group => 'root',
 		mode  => 0644,
@@ -683,7 +749,7 @@ class generic::mysql::server(
 		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
 		notify => [exec["dpkg-reconfigure mysql-server"]]
 	}
-	
+
 	# mysql is protected by apparmor.  Need to
 	# reload apparmor if the file changes.
 	file { "/etc/apparmor.d/usr.sbin.mysqld":
@@ -694,7 +760,7 @@ class generic::mysql::server(
 		require => Package["mysql-server"],
 		notify => Service["apparmor"],
 	}
-	
+
 	service { "mysql":
 		ensure => "running",
 		require => [Package["mysql-server"], File[$config_file_path, "/etc/apparmor.d/usr.sbin.mysqld"]],

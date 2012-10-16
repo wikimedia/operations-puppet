@@ -1,5 +1,11 @@
 # coredb required directories
-class coredb::datadirs { 
+class coredb::base {
+  require coredb::packages
+
+  systemuser {
+    "mysql": shell => "/bin/bash"
+  }
+
 	file {
 		"/a/sqldata":
 			owner => mysql,
