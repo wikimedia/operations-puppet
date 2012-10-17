@@ -15,11 +15,14 @@ class PatchsetCreated(HookHelper):
 		self.parser.add_option("--uploader", dest="uploader")
 		self.parser.add_option("--commit", dest="commit")
 		self.parser.add_option("--patchset", dest="patchset", type="int")
+		self.parser.add_option("--is-draft", dest="draft")
 		(options, args) = self.parser.parse_args()
 		if not options.change or not options.change.isalnum():
 			self.parser.error("No change id, or changeid invalid")
 		if hookconfig.debug:
 			sys.stderr.write("Patchset passed in: " + str(options.patchset) + "\n")
+		if options.draft == "true"
+			return
 		subject = self.get_subject(options.change)
 		user = re.sub(' \(.*', "", options.uploader)
 		message = "New patchset: " + user + '; "' + subject + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
