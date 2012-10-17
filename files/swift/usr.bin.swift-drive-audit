@@ -82,8 +82,12 @@ def get_errors(minutes):
             continue
         log_time_string = '%s %s' % (start_time.year,
                                      ' '.join(line.split()[:3]))
-        log_time = datetime.datetime.strptime(
-            log_time_string, '%Y %b %d %H:%M:%S')
+        try:
+            # don't die on bad log lines.
+            log_time = datetime.datetime.strptime(
+                log_time_string, '%Y %b %d %H:%M:%S')
+        except:
+            continue
         if log_time > start_time:
             for err in error_re:
                 for device in err.findall(line):
