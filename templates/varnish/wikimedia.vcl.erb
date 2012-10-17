@@ -171,6 +171,15 @@ backend test {
 	.max_connections = 20;
 }
 
+backend api_pmtpa {
+	.host = "10.2.1.22";
+	.port = "80";
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
+	.between_bytes_timeout = 4s;
+	.max_connections = 1000;
+}
+
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.each do |director| -%>
