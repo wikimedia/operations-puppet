@@ -164,6 +164,13 @@ class swift::proxy {
 			recurse => remote;
 		}
 	}
+
+	# Quick hack to fix memory leak -- TS
+	cron { restart-proxy:
+		command => "/etc/init.d/swift-proxy restart",
+		user => root,
+		minute => fqdn_rand(60);
+	}
 }
 
 class swift::proxy::monitoring {
