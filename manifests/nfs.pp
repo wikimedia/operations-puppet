@@ -200,7 +200,12 @@ class nfs::upload::labs {
 
 		"/mnt/upload6":
 			ensure => link,
-			target => "/data/project/upload6";
+			target => "/data/project/upload7";
+
+		# Production started using upload7 on its config on mediawiki-config:158e6540
+		"/mnt/upload7":
+			ensure => link,
+			target => "/data/project/upload7";
 	}
 }
 
