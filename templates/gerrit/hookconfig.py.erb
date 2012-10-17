@@ -5,16 +5,10 @@ sshhost = "<%= hostname %>"
 sshport = <%= sshport %>
 sshhostkeys = "/var/lib/gerrit2/.ssh/known_hosts"
 sshkey = "/var/lib/gerrit2/.ssh/id_rsa"
-failscore = "-1"
-passscore = "+1"
-approvescore = "+2"
-l10nsummary = "Auto-approving/merging l10n updates"
-l10nuser = "Translation updater bot (L10n-bot@translatewiki.net)"
 failmessage = "Change did not pass lint check. You will need to send an amended patchset for this (see: https://labsconsole.wikimedia.org/wiki/Git#Amending_a_change). Below is the output from the lint check:\n\n"
 passmessage = "Lint check passed."
 debug = False
 logdir = "/var/lib/gerrit2/review_site/logs"
-tmpdir = "/var/lib/gerrit2/review_site/tmp"
 
 # Files where Gerrit projects will have their notifications written to
 # See manifests/gerrit.pp $ircecho_infile for actual file/channel map

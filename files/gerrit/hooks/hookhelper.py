@@ -87,26 +87,6 @@ class HookHelper:
 			if not patchsets_fetched:
 				return None
 
-	def set_verify(self, status, commit, message):
-		command = 'gerrit review'
-		if status == "pass":
-			command = command + ' --verified "' + hookconfig.passscore + '" -m ' + pipes.quote(hookconfig.passmessage)
-		else:
-			command = command + ' --verified "' + hookconfig.failscore + '" -m ' + pipes.quote(hookconfig.failmessage) + pipes.quote(message)
-		command = command + ' ' + commit
-		self.ssh_exec_command(command)
-		return True
-
-	def automerge(self, commit, message):
-		command = 'gerrit review'
-		command += ' --verified "' + hookconfig.passscore + '"'
-		command += ' --code-review "' + hookconfig.approvescore + '"'
-		command += ' --submit'
-		command += ' -m ' + pipes.quote(message)
-		command += ' ' + commit
-		self.ssh_exec_command(command)
-		return True
-
 	def log_to_file(self, project, branch, message, user):
 		filename = self.get_log_filename(project, branch, message)
 		# These users are annoying, ignore them
