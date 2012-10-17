@@ -59,7 +59,8 @@ class role::applicationserver {
 		class { "applicationserver::config::apache": }
 
 		if( $::realm == 'labs' ) {
-			include	nfs::apache::labs
+			include	nfs::apache::labs,
+				nfs::upload::labs
 		}
 
 		monitor_service { "appserver http":
