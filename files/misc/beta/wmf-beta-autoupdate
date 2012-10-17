@@ -15,9 +15,9 @@
 MW_CORE_PATH=${MW_CORE_PATH:-"/home/wikipedia/common/php-master"}
 MW_EXTENSIONS_PATH=${MW_EXTENSIONS_PATH:-"$MW_CORE_PATH/extensions"}
 WMF_BETA_AUTOUPDATE_SLEEP=${WMF_BETA_AUTOUPDATE_SLEEP:-180}
-VERBOSE=${VERBOSE:-no}
+VERBOSE=${VERBOSE:-"no"}
 
-if [ "$VERBOSE" != no ]; then
+if [ "$VERBOSE" != "no" ]; then
 	GIT_QUIET=""
 else
 	GIT_QUIET="--quiet"
