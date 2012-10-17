@@ -618,7 +618,6 @@ class role::cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 1000,
-				'probe' => "options",
 				},
 			xff_sources => $network::constants::all_networks
 		}
