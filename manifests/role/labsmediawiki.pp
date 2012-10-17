@@ -105,3 +105,46 @@ class role::mediawiki-install::labs {
 		ensure => present,
 	}
 }
+
+class role::mediawiki-update::labs {
+	require role::mediawiki-install::labs
+
+	git::clone { "mediawiki-update":
+		directory => "/srv/mediawiki",
+		branch => "master",
+		timeout => 1800,
+		ensure => 'latest',
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
+	}
+
+	git::clone { "nuke-update" :
+		require => git::clone["mediawiki-update"],
+		directory => "/srv/mediawiki/extensions/Nuke",
+		branch => "master",
+		ensure => 'latest',
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Nuke.git";
+	}
+
+	git::clone { "SpamBlacklist-update" :
+		require => git::clone["mediawiki-update"],
+		directory => "/srv/mediawiki/extensions/SpamBlacklist",
+		branch => "master",
+		ensure => 'latest',
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.git";
+	}
+
+	git::clone { "ConfirmEdit-update" :
+		require => git::clone["mediawiki-update"],
+		directory => "/srv/mediawiki/extensions/ConfirmEdit",
+		branch => "master",
+		ensure => 'latest',
+		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ConfirmEdit.git";
+	}
+
+	exec { 'mediawiki_update':
+		require => [git::clone["mediawiki-update"], git::clone["nuke-update"], git::clone["SpamBlacklist-update"],
+			git::clone["ConfirmEdit-update"], File["/srv/mediawiki/LocalSettings.php"]],
+		command => "/usr/bin/php /srv/mediawiki/maintenance/update.php --quick --conf '/srv/mediawiki/LocalSettings.php'",
+		logoutput => " ",
+	}
+}
