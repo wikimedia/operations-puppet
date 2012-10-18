@@ -128,7 +128,9 @@ class lvs::configuration {
 					'wikinewslb' => "208.80.152.206",
 					'wikiversitylb' => "208.80.152.207",
 					'mediawikilb' => "208.80.152.208",
-					'foundationlb' => "208.80.152.209"
+					'foundationlb' => "208.80.152.209",
+					'wikidatalb' => "208.80.152.218",
+					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
 					'textsvc' => "10.2.2.25",
@@ -141,7 +143,9 @@ class lvs::configuration {
 					'wikinewslb' => "208.80.154.230",
 					'wikiversitylb' => "208.80.154.231",
 					'mediawikilb' => "208.80.154.232",
-					'foundationlb' => "208.80.154.233"
+					'foundationlb' => "208.80.154.233",
+					'wikidatalb' => "208.80.154.242",
+					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
 					'textsvc' => "10.2.3.25",
@@ -171,6 +175,8 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
 					'foundationlbsecure' => "208.80.152.209",
+					'wikidatalbsecure' => "208.80.152.218",
+					'wikivoyagelbsecure' => "208.80.152.219",
 
 					'wikimedialbsecure6' => "2620:0:860:ed1a::0",
 					'wikipedialbsecure6' => "2620:0:860:ed1a::1",
@@ -199,7 +205,9 @@ class lvs::configuration {
 					'mediawikilbsecure' => "208.80.154.232",
 					'foundationlbsecure' => "208.80.154.233",
 					'mobilelbsecure' => "208.80.154.236",
-					
+					'wikidatalbsecure' => "208.80.154.242",
+					'wikivoyagelbsecure' => "208.80.154.243",
+
 					'wikimedialbsecure6' => "2620:0:861:ed1a::0",
 					'wikipedialbsecure6' => "2620:0:861:ed1a::1",
 					'wiktionarylbsecure6' => "2620:0:861:ed1a::2",
@@ -899,6 +907,10 @@ class lvs::monitor {
 	monitor_service_lvs_https { "bits.pmtpa.wikimedia.org": ip_address => "208.80.152.210", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 	monitor_service_lvs_http { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_http_upload" }
 	monitor_service_lvs_https { "upload.pmtpa.wikimedia.org": ip_address => "208.80.152.211", check_command => "check_https_upload", critical => "false" }
+	monitor_service_lvs_http { "wikidata-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.218", check_command => "check_http_lvs!www.wikidata.org!/" }
+	monitor_service_lvs_https { "wikidata-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.218", check_command => "check_https_url!www.wikidata.org!/", critical => "false" }
+	monitor_service_lvs_http { "wikivoyage-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.219", check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page" }
+	monitor_service_lvs_https { "wikivoyage-lb.pmtpa.wikimedia.org": ip_address => "208.80.152.219", check_command => "check_https_url!wikivoyage.org!/wiki/Main_Page", critical => "false" }
 
 	monitor_service_lvs6_http_https {
 		"wikimedia-lb.pmtpa.wikimedia.org":
@@ -999,6 +1011,12 @@ class lvs::monitor {
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
 			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikidatalb'],
+			check_command => "check_http_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 
 	monitor_service_lvs6_http_https {
