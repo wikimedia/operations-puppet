@@ -70,6 +70,16 @@ class role::applicationserver {
 				'labs' => "check_http_url!commons.wikimedia.beta.wmflabs.org|http://commons.wikimedia.beta.wmflabs.org/wiki/Main_Page"
 				}
 		}
+
+		## ganglia module for apache webservers
+		file {
+			"/usr/lib/ganglia/python_modules/apache_status.py":
+				source => "puppet:///files/ganglia/plugins/apache_status.py",
+				notify => Service[gmond];
+			"/etc/ganglia/conf.d/apache_status.pyconf":
+				content => "puppet:///files/ganglia/plugins/apache_status.pyconf",
+				notify => Service[gmond];
+		}
 	}
 
 	## prod role classes

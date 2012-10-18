@@ -10,6 +10,7 @@ LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
 LoadModule headers_module /usr/lib/apache2/modules/mod_headers.so
 LoadModule alias_module /usr/lib/apache2/modules/mod_alias.so
 LoadModule mime_module /usr/lib/apache2/modules/mod_mime.so
+LoadModule status_module /usr/lib/apache2/modules/mod_status.so
 
 ServerRoot "/etc/apache2"
 #LockFile /usr/local/apache/logs/httpd.lock
@@ -296,17 +297,18 @@ ServerSignature Off
 
 #</IfModule>
 
-#<Location /x-server-status>
-#    SetHandler server-status
-#    Order deny,allow
-#    Deny from all
-#    Allow from .wikipedia.org
+ExtendedStatus On
+<Location /server-status>
+    SetHandler server-status
+    Order deny,allow
+    Deny from all
+    Allow from 127.0.0.1
 ## That's me -- brion
 #    Allow from mark.usc.edu
 #    Allow from 64.165.227.217
 ## Jeronim
 #    Allow from 210.49.82.219
-#</Location>
+</Location>
 
 ErrorDocument 503 /503.html
 ErrorDocument 404 /w/404.php

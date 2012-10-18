@@ -183,6 +183,17 @@ class apaches::monitoring( $realm='production' ) {
 	}
 }
 
+class apaches::ganglia {
+	file {
+		"/usr/lib/ganglia/python_modules/apache_status.py":
+			source => "puppet:///files/ganglia/plugins/apache_status.py",
+			notify => Service[gmond];
+		"/etc/ganglia/conf.d/apache_status.pyconf":
+			content => "puppet:///files/ganglia/plugins/apache_status.pyconf",
+			notify => Service[gmond];
+	}
+}
+
 ## this should be removed. can now use above.
 class apaches::monitoring::labs {
 	class { "apaches::monitoring": realm => 'labs' }

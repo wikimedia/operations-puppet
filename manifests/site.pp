@@ -93,6 +93,7 @@ class applicationserver_old {
 			nfs::upload,
 			mediawiki::packages,
 			apaches::cron,
+			apaches::ganglia,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
