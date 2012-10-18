@@ -128,7 +128,8 @@ class lvs::configuration {
 					'wikinewslb' => "208.80.152.206",
 					'wikiversitylb' => "208.80.152.207",
 					'mediawikilb' => "208.80.152.208",
-					'foundationlb' => "208.80.152.209"
+					'foundationlb' => "208.80.152.209",
+					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
 					'textsvc' => "10.2.2.25",
@@ -141,7 +142,8 @@ class lvs::configuration {
 					'wikinewslb' => "208.80.154.230",
 					'wikiversitylb' => "208.80.154.231",
 					'mediawikilb' => "208.80.154.232",
-					'foundationlb' => "208.80.154.233"
+					'foundationlb' => "208.80.154.233",
+					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
 					'textsvc' => "10.2.3.25",
@@ -171,6 +173,7 @@ class lvs::configuration {
 					'wikiversitylbsecure' => "208.80.152.207",
 					'mediawikilbsecure' => "208.80.152.208",
 					'foundationlbsecure' => "208.80.152.209",
+					'wikivoyagelbsecure' => "208.80.152.219",
 
 					'wikimedialbsecure6' => "2620:0:860:ed1a::0",
 					'wikipedialbsecure6' => "2620:0:860:ed1a::1",
@@ -199,7 +202,8 @@ class lvs::configuration {
 					'mediawikilbsecure' => "208.80.154.232",
 					'foundationlbsecure' => "208.80.154.233",
 					'mobilelbsecure' => "208.80.154.236",
-					
+					'wikivoyagelbsecure' => "208.80.154.243",
+						
 					'wikimedialbsecure6' => "2620:0:861:ed1a::0",
 					'wikipedialbsecure6' => "2620:0:861:ed1a::1",
 					'wiktionarylbsecure6' => "2620:0:861:ed1a::2",
