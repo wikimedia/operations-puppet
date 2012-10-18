@@ -73,3 +73,15 @@ Listen 8085
 		notify => Service["apache2"],
 	}
 }
+
+
+# == Class analytics::db::mysql
+# 
+class analytics::db::mysql {
+	# install a mysql server with the
+	# datadir at /a/mysql
+	class { "generic::mysql::server":
+		datadir => "/a/mysql",
+		version => "5.5",
+	}
+}

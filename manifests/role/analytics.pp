@@ -36,4 +36,7 @@ class role::analytics::master inherits role::analytics {
 
 	# set up an HTTP proxy for internal Hadoop HTTP interfaces.
 	include analytics::web::proxy
+
+	# include a mysql database for Sqoop and Oozie
+	include analytics::db::mysql
 }
