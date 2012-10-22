@@ -187,7 +187,7 @@ class applicationserver_old {
 	}
 
 	class jobrunner {
-		class {"::jobrunner": }
+		class {"mediawiki::jobrunner": }
 	}
 
 }
