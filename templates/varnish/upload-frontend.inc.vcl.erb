@@ -29,14 +29,36 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_miss {
+	/* Convert range requests into pass */
+	if (req.http.Range) {
+		set bereq.http.Range = req.http.Range;
+		return (pass);
+	}
+}
+
 sub vcl_fetch {
 	# Cache media objects for 1 hour by default
 	set beresp.ttl = 1h;
+
+	if (beresp.http.Content-Range) {
+		/* Varnish itself doesn't ask for ranges, so this must have been
+		 * a passed range request
+		 */
+		set beresp.http.X-Content-Range = beresp.http.Content-Range;
+	}
 
 	# Stream large objects, > 64 MB
 	if (std.integer(beresp.http.Content-Length, 0) > 67108864 || beresp.http.Content-Length ~ "^[0-9]{8}") {
 		set beresp.do_stream = true;
 		/* don't attempt to cache these in the frontend */
 		return (hit_for_pass);
+	}
+}
+
+sub vcl_deliver {
+	if (resp.http.X-Content-Range) {
+		set resp.http.Content-Range = resp.http.X-Content-Range;
+		remove resp.http.X-Content-Range;
 	}
 }
