@@ -13,13 +13,11 @@ class applicationserver::config::apache(
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			content => template("applicationserver/apache/apache2.conf.erb");
 		"/etc/apache2/envvars":
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			source => "puppet:///modules/applicationserver/apache/envvars.appserver";
 		"/etc/cluster":
 			mode => 0444,
