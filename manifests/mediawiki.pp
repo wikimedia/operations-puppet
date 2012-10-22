@@ -1,7 +1,7 @@
 # mediawiki.pp
 
 class mediawiki::packages {
-	package { [ 'wikimedia-task-appserver', 'php5-redis' ]:
+	package { [ 'wikimedia-task-appserver', 'php5-redis', 'php5-memcached', 'libmemcached10', 'php5-igbinary' ]:
 		ensure => latest;
 	}
 }
