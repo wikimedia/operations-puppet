@@ -41,6 +41,15 @@ sub vcl_fetch {
 		set beresp.do_stream = true;
 		set beresp.http.X-Varnish-Streaming = "length (str)";
     }
+
+	/* Select a random big object storage backend for objects >= 100 MB */
+	if (beresp.http.Content-Length ~ "^[0-9]{9}") {
+		if (std.random(0, 2) < 1) {
+			set beresp.storage = "bigobj-sda3";
+		} else {
+			set beresp.storage = "bigobj-sdb3";
+		}
+	}
 	
 	if (beresp.http.Content-Range) {
 		/* Varnish itself doesn't ask for ranges, so this must have been
