@@ -100,7 +100,7 @@ class role::applicationserver {
 	class jobrunner{
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "::jobrunner": procs => 12 }
+		class { "mediawiki_new::jobrunner": procs => 12 }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
@@ -121,7 +121,7 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 
-		class {"::jobrunner":
+		class {"mediawiki_new::jobrunner":
 			procs => 5,
 			type => "webVideoTranscode",
 			timeout => 14400,

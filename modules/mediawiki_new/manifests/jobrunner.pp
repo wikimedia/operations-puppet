@@ -1,4 +1,4 @@
-class jobrunner (
+class mediawiki_new::jobrunner (
 	$user = "apache",
 	$type = "",
 	$nice = 20,
