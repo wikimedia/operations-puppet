@@ -359,7 +359,7 @@ class role::cache {
 				vcl => "upload-backend",
 				port => 3128,
 				admin_port => 6083,
-				storage => "-s sda3=file,/srv/sda3/varnish.persist,100G -s sdb3=file,/srv/sdb3/varnish.persist,100G",
+				storage => "-s main-sda3=file,/srv/sda3/varnish.persist,100G -s main-sdb3=file,/srv/sdb3/varnish.persist,100G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,10G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,10G",
 				backends => [ "10.2.1.24", "10.2.1.27" ],
 				directors => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
 				director_type => "random",
