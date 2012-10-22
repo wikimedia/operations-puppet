@@ -30,7 +30,6 @@ class applicationserver::config::php {
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			source => "puppet:///modules/applicationserver/php/wmerrors.ini";
 		"/etc/php5/conf.d/wikidiff2.ini":
 			mode => 0444,
@@ -49,6 +48,6 @@ extension=wikidiff2.so
 mail.force_extra_parameters=\"-f <>\"
 ";
 	}
-	
+
 	Class["applicationserver::config::php"] -> Class["applicationserver::config::base"]
 }

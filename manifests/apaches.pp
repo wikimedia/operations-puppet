@@ -3,8 +3,8 @@
 class apaches::packages {
 	# wikimedia-task-appserver moved to mediawiki.pp
 
-	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common", 
-			"php5-curl", "php5-mysql", "php5-xmlrpc", "php5", "php-wikidiff2", 
+	package { [ "libapache2-mod-php5", "php5-cli", "php-pear", "php5-common",
+			"php5-curl", "php5-mysql", "php5-xmlrpc", "php5", "php-wikidiff2",
 			"php5-wmerrors", "php5-intl", "php-luasandbox" ]:
 		ensure => latest;
 	}
@@ -56,7 +56,7 @@ mail.force_extra_parameters=\"-f <>\"
 ; This file is managed by Puppet!
 extension=wikidiff2.so
 "
-	
+
 	require apaches::packages
 
 	# FIXME: dirty temp hack
@@ -66,19 +66,17 @@ extension=wikidiff2.so
 	else {
 		$apache_conf = "puppet:///files/apache/apache2.conf.appserver"
 	}
- 
+
 	file {
 		"/etc/apache2/apache2.conf":
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			source => $apache_conf;
 		"/etc/apache2/envvars":
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			source => "puppet:///files/apache/envvars.appserver";
 		"/etc/php5/apache2/php.ini":
 			owner => root,
@@ -104,7 +102,6 @@ extension=wikidiff2.so
 			owner => root,
 			group => root,
 			mode => 0444,
-			notify => Service[apache],
 			source => "puppet:///files/php/wmerrors.ini";
 		"/etc/php5/conf.d/mail.ini":
 			mode => 0444,
@@ -118,8 +115,8 @@ extension=wikidiff2.so
 			content => $file_wikidiff2_ini;
 		"/etc/cluster":
 			mode => 0444,
-			owner => root, 
-			group => root, 
+			owner => root,
+			group => root,
 			content => $site;
 	}
 }
@@ -160,7 +157,7 @@ class apaches::service {
 class apaches::pybal-check {
 	$authorized_key = 'command="uptime; touch /var/tmp/pybal-check.stamp" ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAwyiL/ImTNOjoP/8k1UFQRM9pcspHp3yIsH/8TYXH/HJ1rQVjMleq6IQ6ZwAXhKfw/v1xV28SbkctB8pISZoR4rcCqOIN+osXkCB419JydCEb5abPS4mB5Gkn2bZAF43DGr5kaW+HYIsgtZ+QEC+nS4j3NA/Bjb7lAbHUtHVuC6BCOaZfGf+Q2FO4Z6xC7zc/1ngaDgvrXYzyCvXzTAQmcZH0d2/GoS1DQoLdLzqu66aZK1dmn9TAHV4a3R4gp7El7OzVHqDp1E6y0sopd+qKNAw/3GgXC91XJ3XO22h+ZnVovIpIS01CJ6GiBig/55Xrh//9Wuw5GFQuCptYbPQr4Q== root@lvs4'
 
-	# Create pybal-check user account	
+	# Create pybal-check user account
 	systemuser { "pybal-check": name => "pybal-check", home => "/var/lib/pybal-check", shell => "/bin/sh" }
 
 	file {
@@ -221,10 +218,10 @@ class apaches::syslog {
 class apaches::nice {
 	# Adjust sshd nice level per RT #664.
 	#
-	# Has to be less than apache, and apache has to be nice 0 or less to be 
-	# blue in ganglia. 
+	# Has to be less than apache, and apache has to be nice 0 or less to be
+	# blue in ganglia.
 	#
-	# Upstart requires that the job be stopped and started, not just restarted, 
+	# Upstart requires that the job be stopped and started, not just restarted,
 	# since restarting will use the old configuration.
 	#
 	# In precise this can be replaced with creation of /etc/init/ssh.override
