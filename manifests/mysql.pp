@@ -67,9 +67,13 @@ class mysql {
 	}
 	elsif $hostname =~ /^(db1008|db1013|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		if $hostname =~ /^(db1008|db1013)$/ {
+		if $hostname =~ /^db1008$/ {
 			include role::db::fundraising::master
 			$writable = true
+		}
+		elsif $hostname =~ /^db1013$/ {
+			# temporary extra slave db for 2012 fundraiser
+			include role::db::fundraising::slave
 		}
 		elsif $hostname =~ /^db1025$/ {
 			include role::db::fundraising::slave,
@@ -84,7 +88,6 @@ class mysql {
 				command => '/usr/local/bin/offhost_backups',
 				ensure => present,
 			}
-
 		}
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
