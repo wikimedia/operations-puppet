@@ -254,7 +254,7 @@ class ganglia {
 					$data_sources = {
 						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
 						"Tesla" => "10 208.80.152.247",
-						"Image scalers" => "srv100.pmtpa.wmnet srv219.pmtpa.wmnet",
+						"Image scalers" => "srv220.pmtpa.wmnet srv219.pmtpa.wmnet",
 						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
 						"Jobrunners pmtpa" => "smw2.pmtpa.wmnet mw2.pmtpa.wmnet",
@@ -329,7 +329,7 @@ class ganglia {
 				ensure => present;
 			}
 
-			# log gmetad messages to /var/log/ganglia.log 
+			# log gmetad messages to /var/log/ganglia.log
 			file { "/etc/rsyslog.d/30-ganglia.conf":
 				source => "puppet:///files/ganglia/rsyslog.d/30-ganglia.conf",
 				mode => 0444,
@@ -380,7 +380,7 @@ class ganglia::web {
 		$ganglia_servername = "ganglia.wmflabs.org"
 		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
 		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
-		
+
 		require ganglia::aggregator
 
 	} else {
@@ -479,7 +479,7 @@ class ganglia::web {
 		ensure => directory;
 	}
 
-	
+
 	# TODO(ssmollett): install ganglia-webfrontend package in production,
 	# using appropriate conf.php
 	if $realm == "labs" {

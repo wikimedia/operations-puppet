@@ -2178,7 +2178,7 @@ node /^srv21[4-8]\.pmtpa\.wmnet$/ {
 
 # srv219-220 are precise image scalers
 node /^srv(219|220)\.pmtpa\.wmnet$/ {
-	if $hostname == "srv219" {
+	if $hostname =~ /^srv219|srv220$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -2186,7 +2186,7 @@ node /^srv(219|220)\.pmtpa\.wmnet$/ {
 	include nfs::upload
 }
 
-# srv219-224 are image scalers
+# srv221-224 are image scalers
 node /^srv22[1-4]\.pmtpa\.wmnet$/ {
 
 	include imagescaler
