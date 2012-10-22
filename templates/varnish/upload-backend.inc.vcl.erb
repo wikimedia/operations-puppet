@@ -37,15 +37,10 @@ sub vcl_fetch {
 		set beresp.do_stream = true;
 		set beresp.http.X-Varnish-Streaming = "length";
 	}
-	elsif (beresp.http.Content-Length ~ "^[0-9]{8}") {
+	elsif (beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 		set beresp.http.X-Varnish-Streaming = "length (str)";
     }
-
-	// elsif (beresp.http.Content-Type == "application/ogg") {
-	// 	set beresp.do_stream = true;
-	// 	set beresp.http.X-Varnish-Streaming = "content-type";
-	// }
 	
 	if (beresp.http.Content-Range) {
 		/* Varnish itself doesn't ask for ranges, so this must have been
@@ -73,7 +68,7 @@ sub vcl_miss {
 	/* Convert range requests into pass when over a certain threshold */
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9])*-", "\1"), 0) > 67108864
-			|| req.http.Range ~ "^bytes=([0-9]{8})-")) {
+			|| req.http.Range ~ "^bytes=([0-9]{9})-")) {
 				set bereq.http.Range = req.http.Range;
 				return (pass);
 	}
