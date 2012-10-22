@@ -64,7 +64,7 @@ host pc2 {
 }
 
 host pc3 {
-	hardware ethernet 88:43:E1:C2:4C:AA;
+	hardware ethernet 88:43:E1:C2:5B:52;
 	fixed-address pc3.pmtpa.wmnet;
 }
 
