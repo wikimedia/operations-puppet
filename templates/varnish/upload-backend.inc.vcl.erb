@@ -88,7 +88,7 @@ sub vcl_miss {
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 67108864
 			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
 				set bereq.http.Range = req.http.Range;
-				std.log("Passing high range request: " + req.http.Range)
+				std.log("Passing high range request: " + req.http.Range);
 				return (pass);
 	}
 }
