@@ -67,4 +67,6 @@ sub vcl_deliver {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
 	}
+	
+	std.collect(resp.http.Via);
 }
