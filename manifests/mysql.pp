@@ -41,7 +41,7 @@ class mysql {
 	elsif $hostname =~ /^db(11|34|39|64|1003|1010|1019|1035)$/ {
 		$db_cluster = "s3"
 	}
-	elsif $hostname =~ /^db(22|31|33|51|1004|1011|1020|1038)$/ {
+	elsif $hostname =~ /^db(22|31|33|51|65|1004|1011|1020|1038)$/ {
 		$db_cluster = "s4"
 	}
 	elsif $hostname =~ /^db(35|44|45|55|1005|1021|1026|1039)$/ {
