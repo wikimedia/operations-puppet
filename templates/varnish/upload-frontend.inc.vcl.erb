@@ -54,8 +54,8 @@ sub vcl_fetch {
 		}
 	}
 
-	# Stream large objects, > 64 MB
-	if (std.integer(beresp.http.Content-Length, 0) > 67108864 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+	# Stream large objects, > 32 MB
+	if (std.integer(beresp.http.Content-Length, 0) > 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
 		/* don't attempt to cache these in the frontend */
 		return (hit_for_pass);
