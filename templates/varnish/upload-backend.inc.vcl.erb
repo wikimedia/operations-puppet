@@ -49,13 +49,8 @@ sub vcl_fetch {
 	set beresp.ttl = 30d;
 
 	# Stream large objects, > 64 MB
-	if (std.integer(beresp.http.Content-Length, 0) > 67108864) {
+	if (std.integer(beresp.http.Content-Length, 0) > 67108864 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
-		set beresp.http.X-Varnish-Streaming = "length";
-	}
-	elsif (beresp.http.Content-Length ~ "^[0-9]{9}") {
-		set beresp.do_stream = true;
-		set beresp.http.X-Varnish-Streaming = "length (str)";
     }
 
 	/* Select a random big object storage backend for objects >= 100 MB */
@@ -93,6 +88,7 @@ sub vcl_miss {
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9])*-", "\1"), 0) > 67108864
 			|| req.http.Range ~ "^bytes=([0-9]{9})-")) {
 				set bereq.http.Range = req.http.Range;
+				std.log("Passing high range request: " + req.http.Range)
 				return (pass);
 	}
 }
