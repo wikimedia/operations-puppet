@@ -71,6 +71,69 @@ class role::applicationserver {
 				}
 		}
 	}
+	# This class installs everything necessary to process jobs
+	class jobs (
+		$user = "apache",
+		$type = "",
+		$nice = 20,
+		$script = "/usr/local/bin/jobs-loop.sh",
+		$pid_file = "/var/run/mw-jobs.pid",
+		$timeout = 300,
+		$extra_args = "",
+		$procs = 5
+	) {
+
+		## TODO: get rid of this awfulness after full transition to module/precise
+		if ( $::lsbdistcodename == "precise" ) {
+		include mediawiki_new
+		} else {
+		include mediawiki::packages
+		}
+
+		package { [ 'wikimedia-job-runner' ]:
+			ensure => absent;
+		}
+		file {
+			"/etc/init.d/mw-job-runner":
+				owner => root,
+				group => root,
+				mode => 0755,
+				source => "puppet:///files/jobrunner/mw-job-runner.init";
+		}
+		file {
+			"/etc/default/mw-job-runner":
+				content => template("jobrunner/mw-job-runner.default.erb");
+		}
+		file {
+			"/usr/local/bin/jobs-loop.sh":
+				owner => root,
+				group => root,
+				mode => 0755,
+				content => template("jobrunner/jobs-loop.sh.erb");
+		}
+		service {
+			"mw-job-runner":
+				require => [
+					File[
+						"/etc/default/mw-job-runner",
+						"/etc/init.d/mw-job-runner",
+						"/usr/local/bin/jobs-loop.sh"
+					],
+					Package[
+						"wikimedia-job-runner",
+						"wikimedia-task-appserver"
+					],
+				],
+				subscribe => File[
+					"/etc/default/mw-job-runner",
+					"/etc/init.d/mw-job-runner",
+					"/usr/local/bin/jobs-loop.sh"
+				],
+				hasstatus => false,
+				pattern => $script,
+				ensure => running;
+		}
+	}
 
 	## prod role classes
 	class appserver{
@@ -100,7 +163,7 @@ class role::applicationserver {
 	class jobrunner{
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "::jobrunner": procs => 12 }
+		class { "role::applicationserver::jobs": procs => 12 }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
@@ -121,7 +184,7 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 
-		class {"::jobrunner":
+		class {"role::applicationserver::jobs":
 			procs => 5,
 			type => "webVideoTranscode",
 			timeout => 14400,
