@@ -122,6 +122,7 @@ class applicationserver_old {
 
 	class home inherits home-no-service {
 		include apaches::service,
+			apaches::ganglia,
 			apaches::pybal-check
 	}
 
@@ -136,6 +137,7 @@ class applicationserver_old {
 			nfs::upload,
 			mediawiki::packages,
 			apaches::cron,
+			apaches::ganglia,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
@@ -161,6 +163,7 @@ class applicationserver_old {
 			accounts::l10nupdate,
 			mediawiki::packages,
 			apaches::cron,
+			apaches::ganglia,
 			apaches::service,
 			apaches::pybal-check,
 			apaches::monitoring,
@@ -205,6 +208,7 @@ class imagescaler {
 		mediawiki::packages,
 		apaches::packages,
 		apaches::cron,
+		apaches::ganglia,
 		apaches::service,
 		admins::roots,
 		admins::mortals,
