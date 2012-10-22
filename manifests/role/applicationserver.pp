@@ -77,7 +77,7 @@ class role::applicationserver {
 				source => "puppet:///files/ganglia/plugins/apache_status.py",
 				notify => Service[gmond];
 			"/etc/ganglia/conf.d/apache_status.pyconf":
-				content => "puppet:///files/ganglia/plugins/apache_status.pyconf",
+				source => "puppet:///files/ganglia/plugins/apache_status.pyconf",
 				notify => Service[gmond];
 		}
 	}
