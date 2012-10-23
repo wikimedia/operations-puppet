@@ -4,6 +4,18 @@
 
 $decommissioned_servers = [
 "adler",
+"analytics1011",
+"analytics1012",
+"analytics1013",
+"analytics1014",
+"analytics1011",
+"analytics1016",
+"analytics1017",
+"analytics1018",
+"analytics1019",
+"analytics1020",
+"analytics1021",
+"analytics1022",
 "bayes",
 "br1-knams",
 "controller",
