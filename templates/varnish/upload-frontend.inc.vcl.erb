@@ -23,7 +23,12 @@ sub vcl_recv {
 	}
 
 	if ( req.http.host == "upload.wikimedia.org") {
-		return (lookup);
+		if (req.url ~ "\.ogv$") {
+			return (pipe);
+		}
+		else {
+			return (lookup);
+		}
 	} else {
 		error 403 "Requested target domain not allowed.";
 	}
@@ -40,9 +45,6 @@ sub vcl_miss {
 sub vcl_fetch {
 	# Cache media objects for 1 hour by default
 	set beresp.ttl = 1h;
-
-	std.collect(beresp.http.Content-Length);
-	std.collect(beresp.http.Via);
 
 	if (beresp.http.Content-Range) {
 		/* Varnish itself doesn't ask for ranges, so this must have been
