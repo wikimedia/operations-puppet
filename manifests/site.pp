@@ -2598,7 +2598,7 @@ node "virt0.wikimedia.org" {
 
 node /virt([2]|[5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
-	if $hostname =~ /^virt[59]$/ {
+	if $hostname =~ /^virt[56]$/ {
 
 		$ganglia_aggregator = "true"
 	}
