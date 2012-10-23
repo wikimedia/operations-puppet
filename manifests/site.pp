@@ -2596,9 +2596,9 @@ node "virt0.wikimedia.org" {
 		role::salt::masters::labs
 }
 
-node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
+node /virt([2]|[5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
-	if $hostname =~ /^virt[23]$/ {
+	if $hostname =~ /^virt[59]$/ {
 
 		$ganglia_aggregator = "true"
 	}
