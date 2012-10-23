@@ -277,7 +277,7 @@ class ganglia {
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
 						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
 						"Swift pmtpa" => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
-						"Virtualization cluster pmtpa" => "virt2.pmtpa.wmnet virt3.pmtpa.wmnet",
+						"Virtualization cluster pmtpa" => "virt5.pmtpa.wmnet virt6.pmtpa.wmnet",
 						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
 						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
 						"LVS loadbalancers eqiad" => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
