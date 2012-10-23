@@ -35,7 +35,7 @@ error() { ts_echo "$*" >&2; }
 # Params: $exitcode, $output
 handle_command_result() {
 	local exitcode=$1
-	local output=$2
+	local output="$2"
 	if [ $exitcode -eq 0 ]; then
 		return 0
 	fi
@@ -64,16 +64,16 @@ while [ 1 ]; do
 	else
 		# Update the generic repository holding all submodules
 		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_PULL 2>&1)`
-		handle_command_result $? $OUTPUT
+		handle_command_result $? "$OUTPUT"
 		# Update submodules
-		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_FOREACH $GIT_PULL 2>&1)`
-		handle_command_result $? $OUTPUT
+		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_FOREACH "$GIT_PULL || :" 2>&1)`
+		handle_command_result $? "$OUTPUT"
 	fi
 
 	# Update localisation cache
 	ts_echo "updating localisation cache"
 	OUTPUT=`(mw-update-l10n)`
-	handle_command_result $? $OUTPUT
+	handle_command_result $? "$OUTPUT"
 
 	ts_echo "Sleeping for ${WMF_BETA_AUTOUPDATE_SLEEP} seconds"
 	sleep $WMF_BETA_AUTOUPDATE_SLEEP;
