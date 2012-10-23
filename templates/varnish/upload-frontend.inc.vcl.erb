@@ -67,4 +67,10 @@ sub vcl_deliver {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
 	}
+
+	/* Remove duplicate Accept-Ranges header */
+	if (resp.http.Accept-Ranges) {
+		unset resp.http.Accept-Ranges;
+		set resp.http.Accept-Ranges = "bytes";
+	}
 }
