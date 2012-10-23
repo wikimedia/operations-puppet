@@ -23,12 +23,7 @@ sub vcl_recv {
 	}
 
 	if ( req.http.host == "upload.wikimedia.org") {
-		if (req.url ~ "\.ogv$") {
-			return (pipe);
-		}
-		else {
-			return (lookup);
-		}
+		return (lookup);
 	} else {
 		error 403 "Requested target domain not allowed.";
 	}
