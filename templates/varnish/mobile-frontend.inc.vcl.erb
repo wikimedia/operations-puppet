@@ -20,19 +20,62 @@ acl carrier_dtac {
 	"202.91.16.0"/21;
 }
 
+acl carrier_orange_congo {
+	//"91.151.146.64"/27;
+	//"203.222.206.112"/28;
+	//"203.222.195.80"/28;
+	//"81.199.62.88"/29;
+	//"81.199.62.128"/26;
+}
+
+acl carrier_orange_botswana {
+	//"41.223.141.160"/29;
+	//"41.223.141.80"/29;
+	//"41.223.141.81"/29;
+	//"41.223.141.82"/29;
+	//"41.223.141.83"/29;
+	//"41.223.141.84"/29;
+	//"41.223.141.85"/29;
+	//"41.223.141.86"/29;
+	//"41.223.142.92"/32;
+}
+
+acl carrier_hello_cambodia {
+	//"117.20.116.83";
+	//"117.20.116.84"/30;
+	//"117.20.116.88"/30;
+	//"117.20.116.92"/31;
+}
+
+acl carrier_celcom_malaysia {
+	//"203.82.80.0"/24;
+	//"203.82.81.0"/24;
+	//"203.82.82.0"/24;
+	//"203.82.87.0"/24;
+	//"183.171.64.0"/18;
+	//"203.82.95.0"/24;
+	//"183.171.128.0"/19;
+	//"203.82.90.0"/24;
+	//"203.82.91.0"/24;
+	//"203.82.92.0"/24;
+	//"203.82.93.0"/24;
+	//"203.82.94.0"/24;
+	//"183.171.0.0"/18;
+}
+
 acl carrier_dialog_sri_lanka {
-	//"175.157.0.0"/16;
-	//"111.223.128.0"/18;
-	//"103.2.148.0"/22;
-	//"123.231.8.0"/21;
-	//"123.231.40.0"/21;
-	//"123.231.48.0"/21;
-	//"123.231.56.0"/21;
-	//"123.231.120.0"/21;
-	//"182.161.0.0"/19;
-	//"122.255.52.0"/24;
-	//"122.255.53.0"/24;
-	//"122.255.54.0"/24;
+	"175.157.0.0"/16;
+	"111.223.128.0"/18;
+	"103.2.148.0"/22;
+	"123.231.8.0"/21;
+	"123.231.40.0"/21;
+	"123.231.48.0"/21;
+	"123.231.56.0"/21;
+	"123.231.120.0"/21;
+	"182.161.0.0"/19;
+	"122.255.52.0"/24;
+	"122.255.53.0"/24;
+	"122.255.54.0"/24;
 }
 
 acl carrier_tata {
@@ -188,7 +231,11 @@ sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers */
 	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.X-Subdomain = "ZERO";
-		if (client.ip ~ wmf_office) {
+		if ( client.ip ~ carrier_celcom_malaysia ) {
+			 set req.http.X-Carrier = "Celcom Malaysia";
+		} else if ( client.ip ~ carrier_hello_cambodia ) {
+			set req.http.X-Carrier = "Hello Cambodia";
+		} else if (client.ip ~ wmf_office) {
 			set req.http.X-Carrier = "wikimedia";
 		} else if (client.ip ~ carrier_digi) {
 			if ( req.http.User-Agent ~ "Opera" ) {
@@ -213,7 +260,11 @@ sub tag_carrier {
 		}
 	} else {
 		set req.http.X-Subdomain = "M";
-		if ( client.ip ~  carrier_orange_ivory_coast ) {
+		if ( client.ip ~ carrier_orange_botswana ) {
+			 set req.http.X-Carrier = "Orange Botswana";
+		} else if ( client.ip ~  carrier_orange_congo ) {
+			set req.http.X-Carrier = "Orange Congo";
+		} else if ( client.ip ~  carrier_orange_ivory_coast ) {
 			set req.http.X-Carrier = "Orange Ivory Coast";
 		} else if (client.ip ~ carrier_saudi_telecom) {
 			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
@@ -409,7 +460,11 @@ sub vcl_recv {
 	}
 	
 	if ( req.http.host == "m.wikipedia.org" ) {
-		if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
+		if ( req.http.X-Carrier == "Orange Congo" ) {
+			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Botswana" ) {
+			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
 			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Orange Niger" ) {
 			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
@@ -435,7 +490,11 @@ sub vcl_recv {
 	} else if ( req.http.host == "mobile.wikipedia.org" ) {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
 	} else if ( req.http.host == "zero.wikipedia.org" ) {
-		if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
+		if ( req.http.X-Carrier == "Hello Cambodia" ) {
+			error 666 "http://en.zero.wikipedia.org";
+		} else if ( req.http.X-Carrier == "Celcom Malaysia" ) {
+			error 666 "http://en.zero.wikipedia.org";
+		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
 			error 666 "http://bn.zero.wikipedia.org";
 		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
 			error 666 "http://ar.zero.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
