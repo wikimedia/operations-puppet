@@ -555,6 +555,14 @@ class base::environment {
 					mode => 0444,
 					source => "puppet:///files/environment/umask-wikidev-profile-d.sh";
 			}
+			file {
+				"/etc/profile.d/mysql-ps1.sh":
+					ensure => present,
+					owner => root,
+					group => root,
+					mode => 0444,
+					source => "puppet:///files/environment/mysql-ps1.sh";
+			}
 		} # /production
 		'labs': {
 			file {
