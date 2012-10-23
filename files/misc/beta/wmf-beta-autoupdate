@@ -66,7 +66,7 @@ while [ 1 ]; do
 		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_PULL 2>&1)`
 		handle_command_result $? $OUTPUT
 		# Update submodules
-		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_FOREACH $GIT_PULL 2>&1)`
+		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_FOREACH "$GIT_PULL || :" 2>&1)`
 		handle_command_result $? $OUTPUT
 	fi
 
