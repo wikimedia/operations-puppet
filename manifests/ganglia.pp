@@ -136,6 +136,9 @@ class ganglia {
 		"memcached"		=> {
 			"name"		=> "Memcached",
 			"ip_oct"	=> "33" },
+		"videoscaler"		=> {
+			"name"		=> "Video scalers",
+			"ip_oct"	=> "34" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
@@ -255,6 +258,7 @@ class ganglia {
 						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
 						"Tesla" => "10 208.80.152.247",
 						"Image scalers" => "srv220.pmtpa.wmnet srv219.pmtpa.wmnet",
+						"Video scalers" => "tmh1.pmtpa.wmnet tmh2.pmtpa.wmnet",
 						"API application servers" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",
 						"Jobrunners pmtpa" => "smw2.pmtpa.wmnet mw2.pmtpa.wmnet",

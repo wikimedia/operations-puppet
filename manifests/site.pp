@@ -2541,6 +2541,10 @@ node "tridge.wikimedia.org" {
 
 # tmh1/tmh2 video encoding server (precise only)
 node /^tmh[12]\.pmtpa\.wmnet$/ {
+	if $hostname =~ /^tmh[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
 	include	role::applicationserver::videoscaler,
 		nfs::upload
 }
