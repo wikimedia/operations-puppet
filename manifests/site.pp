@@ -17,7 +17,6 @@ import "geoip.pp"
 import "gerrit.pp"
 import "imagescaler.pp"
 import "iptables.pp"
-import "jobrunner.pp"
 import "ldap.pp"
 import "lvs.pp"
 import "mail.pp"
@@ -191,7 +190,7 @@ class applicationserver_old {
 	}
 
 	class jobrunner {
-		class {"::jobrunner": }
+		class {"mediawiki_new::jobrunner": }
 	}
 
 }
