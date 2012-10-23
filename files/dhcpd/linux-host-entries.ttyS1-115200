@@ -528,6 +528,11 @@ host db69 {
 	fixed-address db69.pmtpa.wmnet;
 }
 
+host db78 {
+	hardware ethernet d4:ae:52:88:cf:16;
+	fixed-address db78.pmtpa.wmnet;
+}
+
 host ms-be13 {
 	hardware ethernet d4:ae:52:90:39:98;
 	fixed-address ms-be13.pmtpa.wmnet;
