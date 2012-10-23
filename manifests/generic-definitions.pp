@@ -726,6 +726,7 @@ define git::clone(
 	$owner="root",
 	$group="root",
 	$timeout="300",
+	$depth="full",
 	$mode=0755) {
 
 	require generic::packages::git-core
@@ -754,11 +755,16 @@ define git::clone(
 				$env = "GIT_SSH=$ssh"
 			}
 
+			$deptharg = $depth ?  {
+				"full" => "",
+				default => " --depth=$depth" 
+			}
+
 			# set PATH for following execs
 			Exec { path => "/usr/bin:/bin" }
 			# clone the repository
 			exec { "git_clone_${title}":
-				command     => "git clone ${brancharg}${origin} $directory",
+				command     => "git clone ${brancharg}${origin}${deptharg} $directory",
 				environment => $env,
 				creates     => "$directory/.git/config",
 				user        => $owner,
@@ -769,7 +775,7 @@ define git::clone(
 			if $ensure == "latest" {
 				exec { "git_pull_${title}":
 					cwd     => $directory,
-					command => "git pull --quiet",
+					command => "git pull --quiet${deptharg}",
 					# git diff --quiet will exit 1 (return false) if there are differences
 					unless  => "git fetch && git diff --quiet remotes/origin/HEAD",
 					user    => $owner,
