@@ -2174,20 +2174,14 @@ node /^srv21[4-8]\.pmtpa\.wmnet$/ {
 		memcached
 }
 
-# srv219-222 are precise image scalers
-node /^srv(219|22[0-2])\.pmtpa\.wmnet$/ {
+# srv219-224 are precise image scalers
+node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv219|srv220$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include role::applicationserver::imagescaler
 	include nfs::upload
-}
-
-# srv223-224 are image scalers
-node /^srv22[3-4]\.pmtpa\.wmnet$/ {
-
-	include imagescaler
 }
 
 # srv225-230 are applicationservers, memcached
