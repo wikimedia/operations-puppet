@@ -51,9 +51,29 @@ sub vcl_recv {
 	return (lookup);
 }
 
+sub vcl_hash {
+	/* Hash thumbnails to the associated original media object */
+	if (req.url ~ "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/([0-9]+)px-.*$") {
+		hash_data(regsub(req.url, "^(/+[^/]+/[^/]+/)thumb/([^/]+/[^/]+/[^/]+).*$", "\1\2"));
+		set req.http.X-Thumb-Width = regsub(req.url, "^/+[^/]+/[^/]+/thumb/[^/]+/[^/]+/[^/]+/([0-9]+)px-.*$", "\1");
+		return (hash);
+	} else {
+		unset req.http.X-Thumb-Width;
+		if (req.url ~ "^/+[^/]+/[^/]+/[^/]+/[^/]+/[^/]+") {
+			hash_data(regsub(req.url, "^(/+[^/]+/[^/]+/[^/]+/[^/]+/[^/]+)(/.*)?$", "\1"));
+			return (hash);
+		}	
+	}
+}
+
 sub vcl_fetch {
 	# Cache media objects for 30 days by default
 	set beresp.ttl = 30d;
+
+	/* Vary over thumb sizes for the associated original media object */
+	if (req.url ~ "^/+[^/]+/[^/]+/thumb/") {
+		set beresp.http.Vary = "X-Thumb-Width";
+	}
 
 	# Stream large objects, > 32 MB
 	if (std.integer(beresp.http.Content-Length, 0) > 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
