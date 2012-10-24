@@ -2204,6 +2204,26 @@ class accounts {
 		}
 	}
 
+	class rmoen inherits baseaccount {
+		$username = "pcoombe"
+		$realname = "Peter Coombe"
+		$uid = 615
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"pcoombe@rsa-key-20121022":
+					ensure  => present,
+					user  => $username,
+					type  => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABJQAAAIB6yfQHRmMOTJUnS1mcS9VLCw+aLgT4z3eNx+tnj43+PtrS38s4S+7P7HcryL6dSh8yF+Nme4tb+57WaxnjPZbJBVrR72BOXfGv/Lje05ZV5if1JSk5PenuMSMpu9VmMl+HeJaqDmY/gW579n5eaLwQSTbThFu2dfCobWtRicFTaw==";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2226,6 +2246,11 @@ class accounts {
 			}
 		}
 	}
+
+
+
+
+
 }
 
 class admins::roots {

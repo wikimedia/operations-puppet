@@ -911,6 +911,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 		accounts::mhernandez,
 		accounts::mwalker,
 		accounts::pgehres,
+		accounts::pcoombe,
 		accounts::rfaulk,
 		accounts::zexley,
 		backup::client,
