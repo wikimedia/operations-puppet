@@ -322,20 +322,14 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics::master
-
-	# analytics1001 and analytics 1010
-	# are set up as ganglia aggregators
-	# for the Analytics cluster.
-	$ganglia_aggregator = "true"
 }
 
 # analytics1002 - analytics1099
 node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
 	include role::analytics
 
-	# analytics1001 and analytics 1010
-	# are set up as ganglia aggregators
-	# for the Analytics cluster.
+	# analytics 1010 is set up as a ganglia 
+	# aggregator for the Analytics cluster.
 	if $hostname == "analytics1010" {
 		$ganglia_aggregator = "true"
 	}
