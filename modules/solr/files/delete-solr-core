@@ -1,0 +1,22 @@
+#!/bin/sh
+# This file is maintained by Puppet
+# puppet:///modules/solr/remove-solr-core
+
+set -e
+
+core=$1
+
+if [ "$core" = "" ] ; then
+	echo 'Usage: delete-solr-core <core name>\n'
+	exit 1
+fi
+
+if [ "$core" = "collection1" ] ; then
+	echo "Error: '$core' is a reserved core\n"
+	exit 1
+fi
+
+curl "http://localhost:8983/solr/admin/cores?action=UNLOAD&core=$core"
+
+echo '\nNote: data for this core has not been deleted, you need to do it manually\n'
+
