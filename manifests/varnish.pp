@@ -195,7 +195,8 @@ class varnish {
 				source => "puppet:///files/varnish/varnishhtcpd",
 				owner => root,
 				group => root,
-				mode => 0555;
+				mode => 0555,
+				notify => Service[varnishhtcpd];
 			"/etc/default/varnishhtcpd":
 				owner => root,
 				group => root,
