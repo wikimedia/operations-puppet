@@ -1,0 +1,23 @@
+#!/bin/sh
+# This file is maintained by Puppet
+# puppet:///modules/solr/add-solr-core
+
+set -e
+
+core=$1
+
+if [ "$core" = "" ] ; then
+	echo 'Usage: create-solr-core <core name>\n'
+	exit 1
+fi
+
+if [ "$core" = "admin" ] || [ "$core" = "collection1" ] ; then
+	echo "Error: core name '$core' is reserved\n"
+	exit 1
+fi
+
+mkdir -m 700 /var/lib/solr/cores/$core
+chown jetty:jetty /var/lib/solr/cores/$core
+
+curl "http://localhost:8983/solr/admin/cores?action=CREATE&name=$core&instanceDir=.&dataDir=/var/lib/solr/cores/$core"
+
