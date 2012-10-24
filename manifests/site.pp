@@ -325,14 +325,13 @@ node "analytics1001.wikimedia.org" {
 }
 
 # analytics1002 - analytics1099
-node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
-	include role::analytics
-
-	# analytics 1010 is set up as a ganglia 
+node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {# analytics 1010 is set up as a ganglia 
 	# aggregator for the Analytics cluster.
 	if $hostname == "analytics1010" {
 		$ganglia_aggregator = "true"
 	}
+
+	include role::analytics
 }
 
 node "argon.wikimedia.org" {
