@@ -37,10 +37,19 @@ sub vcl_recv {
 		error 403 "Access denied";
 	}
 
-	if ( req.http.host == "upload.wikimedia.org") {
-		return (lookup);
-	} else {
+	if ( req.http.host != "upload.wikimedia.org") {
 		error 403 "Requested target domain not allowed.";
+	}
+
+	return (lookup);
+}
+
+sub vcl_hash {
+	/* Make sure high range requests don't block on large objects being retrieved */
+	if (req.http.Range
+		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
+			|| req.http.Range ~ "^bytes=([0-9]{9,})-")) {
+		set req.hash_ignore_busy = true;
 	}
 }
 
