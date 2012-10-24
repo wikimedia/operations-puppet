@@ -107,11 +107,17 @@ class squid {
 	# Tune kernel settings
 	include generic::sysctl::high-http-performance
 
-	# Fast C External redirect helper 
-	file { "/usr/local/bin/redirector":
-		mode => 0555,
-		source => "puppet:///files/squid/redirector",
-		ensure => present;
+	file {
+		# Fast C External redirect helper 
+		"/usr/local/bin/redirector":
+			mode => 0555,
+			source => "puppet:///files/squid/redirector",
+			ensure => present;
+		# ...and its configuration
+		"/etc/squid/redirector.conf":
+			mode => 0444,
+			source => "puppet:///files/squid/redirector.conf",
+			ensure => present;
 	}
 }
 
