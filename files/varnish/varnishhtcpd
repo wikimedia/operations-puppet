@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# varnishhtpcd      Translates multicast htcp to varnish local http purge
+# varnishhtpcd	Translates multicast htcp to varnish local http purge
 #
 # chkconfig: - 90 10
 # description: HTCP2Varnish purger
@@ -22,21 +22,21 @@ use LWP::UserAgent;
 
 my $ip_add_membership;
 if($^O eq 'linux') {
-    $ip_add_membership = 35;
+	$ip_add_membership = 35;
 } else {
-    die "no constants for non linux platforms";
+	die "no constants for non linux platforms";
 }
 
 use Working::Daemon;
 my $daemon = Working::Daemon->new();
 
 $daemon->parse_options(
-    'mcast_port=i' => 4827 => "htcp multicast port to listen to",
-    'mcast_address=s' => "224.0.0.85" => "htcp multicast port",
-    'cache=s@' => [] => 'Where to purge',
-    'address=s'=> '0.0.0.0' => 'Interface to listen to',
-    'debug'    => 0 =>  "Debugging",
-    );
+	'mcast_port=i' => 4827 => "htcp multicast port to listen to",
+	'mcast_address=s' => "224.0.0.85" => "htcp multicast port",
+	'cache=s@' => [] => 'Where to purge',
+	'address=s' => '0.0.0.0' => 'Interface to listen to',
+	'debug' => 0 => "Debugging",
+	);
 
 
 
@@ -56,101 +56,100 @@ my @errors : shared;
 use Thread::Queue;
 
 foreach my $cache (@{$daemon->options->{cache}}) {
-    my $queue = $servers{$cache}->{queue} = Thread::Queue->new;
-    $servers{$cache}->{thread} = threads->create(\&worker, $cache, $queue);
+	my $queue = $servers{$cache}->{queue} = Thread::Queue->new;
+	$servers{$cache}->{thread} = threads->create(\&worker, $cache, $queue);
 }
 
 my $admin = threads->create(sub {
-    my $sock = IO::Socket::INET->new
-        (Listen    => 5,
-         LocalAddr => 'localhost',
-         LocalPort => 9001,
-         Proto     => 'tcp',
-         Reuse     => 1
-        );
-    while(my $connection = $sock->accept) {
-	$connection->print("# Server\tPending\tDelivered\tFailed\n");
-	foreach my $server (keys %servers) {
-	    $connection->print("$server: \t" . $servers{$server}->{queue}->pending . "\t$servers_count_success{$server}\t$servers_count_fail{$server}\n");
+	my $sock = IO::Socket::INET->new
+		(Listen => 5,
+		 LocalAddr => 'localhost',
+		 LocalPort => 9001,
+		 Proto => 'tcp',
+		 Reuse => 1
+		);
+	while(my $connection = $sock->accept) {
+		$connection->print("# Server\tPending\tDelivered\tFailed\n");
+		foreach my $server (keys %servers) {
+			$connection->print("$server: \t" . $servers{$server}->{queue}->pending . "\t$servers_count_success{$server}\t$servers_count_fail{$server}\n");
+		}
+		$connection->print("#######  ERRORS  ##########\n");
+		$connection->print(@errors);
+		close($connection);
 	}
-	$connection->print("#######   ERRORS  ##########\n");
-	$connection->print(@errors);
-        close($connection);
-    }
-    		});
+});
 
 
 sub worker {
-    my ($cache, $queue) = @_;
-    print "Starting worker for $cache\n";
-    $servers_count_success{$cache} = 0;
-    $servers_count_fail{$cache} = 0;
-    my $ua = LWP::UserAgent->new(keep_alive => 1);
-    $ua->agent("HTCP Purger");
-    $ua->proxy('http', "http://$cache/");
-    while(my $url = $queue->dequeue) {
-	my $uri = URI->new($url);
-	my $req = HTTP::Request->new(PURGE => "$uri");
-	$req->header("Accept-Encoding" => 'gzip');
+	my ($cache, $queue) = @_;
+	print "Starting worker for $cache\n";
+	$servers_count_success{$cache} = 0;
+	$servers_count_fail{$cache} = 0;
+	my $ua = LWP::UserAgent->new(keep_alive => 1);
+	$ua->agent("HTCP Purger");
+	$ua->proxy('http', "http://$cache/");
+	while(my $url = $queue->dequeue) {
+		my $uri = URI->new($url);
+		my $req = HTTP::Request->new(PURGE => "$uri");
+		$req->header("Accept-Encoding" => 'gzip');
 	
-	my $res = $ua->request($req);
-	if($res->is_success()) {
-	    #warn "Purged $uri\n";
-	    $servers_count_success{$cache}++;
-	} else {
-	    #warn "Purging $uri failed: @{[$res->status_line]}\n";
-	    $servers_count_fail{$cache}++;
-	    lock(@errors);
-	    if (@errors > 20) {
-		pop @errors;
-	    }
-	    my $error = scalar gmtime;
-	    $error .= " $cache: '@{[$res->status_line]}' $uri\n";
-	    push @errors, $error;
+		my $res = $ua->request($req);
+		if($res->is_success()) {
+			#warn "Purged $uri\n";
+			$servers_count_success{$cache}++;
+		} else {
+			#warn "Purging $uri failed: @{[$res->status_line]}\n";
+			$servers_count_fail{$cache}++;
+			lock(@errors);
+			if (@errors > 20) {
+				pop @errors;
+			}
+			my $error = scalar gmtime;
+			$error .= " $cache: '@{[$res->status_line]}' $uri\n";
+			push @errors, $error;
+		}
 	}
-    }
 }
 
 
 my $listen = IO::Socket::INET->new(
                                    LocalPort => $daemon->options->{'mcast_port'},
-                                   Type      => SOCK_DGRAM,
-                                   Proto     => 'udp',
+                                   Type => SOCK_DGRAM,
+                                   Proto => 'udp',
                                    ReuseAddr => 1,
                                    ) || die;
 
 
 setsockopt($listen, 0, $ip_add_membership,,
            pack("a4 a4", inet_aton($daemon->options->{'mcast_address'}), inet_aton($daemon->options->{address})))
-    || die "IP_ADD_MEMBERSHIP: $!"; 
+           || die "IP_ADD_MEMBERSHIP: $!"; 
 
 while(1) {
-  my $raw;
-  my ($len, $datalen, $op, $id, $specifier,$extra);
-  my ($method, $url, $version, $nr3);
-  eval {
-    $0 = $daemon->name . " worker - waiting for net";
+	my $raw;
+	my ($len, $datalen, $op, $id, $specifier,$extra);
+	my ($method, $url, $version, $nr3);
+	eval {
+		$0 = $daemon->name . " worker - waiting for net";
 
-    (my $peer = recv($listen, $raw, 4096, 0)) || die "recv: $!";
-    my ($port, $addr) = sockaddr_in($peer);
+		(my $peer = recv($listen, $raw, 4096, 0)) || die "recv: $!";
+		my ($port, $addr) = sockaddr_in($peer);
 
-    # reverse engineered from mediawiki SquidUpdate.php
-    ($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);    
-    ($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier); 
-    
-    $0 = $daemon->name ." worker - purging $url";
+		# reverse engineered from mediawiki SquidUpdate.php
+		($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
+		($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier);
 
-    foreach my $server (values %servers) {
-	$server->{queue}->enqueue("$url");
-    }
+		$0 = $daemon->name ." worker - purging $url";
 
-  };
-  if($@) {
-    no warnings;
-    warn "$@\n";
-    warn "$len, $datalen, $op, $id, $specifier,$extra\n";
-    warn "$method, $url, $version, $nr3\n";
-  }
+		foreach my $server (values %servers) {
+			$server->{queue}->enqueue("$url");
+		}
+	};
+	if($@) {
+		no warnings;
+		warn "$@\n";
+		warn "$len, $datalen, $op, $id, $specifier,$extra\n";
+		warn "$method, $url, $version, $nr3\n";
+	}
 }
 
 exit;
