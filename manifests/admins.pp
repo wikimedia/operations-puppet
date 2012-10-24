@@ -2204,7 +2204,7 @@ class accounts {
 		}
 	}
 
-	class rmoen inherits baseaccount {
+	class pcoombe inherits baseaccount {
 		$username = "pcoombe"
 		$realname = "Peter Coombe"
 		$uid = 615
