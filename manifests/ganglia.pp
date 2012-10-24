@@ -296,6 +296,7 @@ class ganglia {
 						"LVS loadbalancers esams" => "amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
 						"Miscellaneous esams" => "hooft.esams.wikimedia.org",
 						"Analytics cluster eqiad" => "analytics1001.wikimedia.org analytics1010.eqiad.wmnet",
+						"Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
 					}
 					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
 					$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
