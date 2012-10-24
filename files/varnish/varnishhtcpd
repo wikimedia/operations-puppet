@@ -85,7 +85,7 @@ sub worker {
 	print "Starting worker for $cache\n";
 	$servers_count_success{$cache} = 0;
 	$servers_count_fail{$cache} = 0;
-	my $ua = LWP::UserAgent->new(keep_alive => 1);
+	my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
 	$ua->agent("HTCP Purger");
 	$ua->proxy('http', "http://$cache/");
 	while(my $url = $queue->dequeue) {
@@ -107,6 +107,7 @@ sub worker {
 			my $error = scalar gmtime;
 			$error .= " $cache: '@{[$res->status_line]}' $uri\n";
 			push @errors, $error;
+			my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
 		}
 	}
 }
