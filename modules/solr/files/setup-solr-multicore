@@ -1,0 +1,31 @@
+#!/usr/sh
+
+changes=0
+
+# Although it's the other way around in the Debian package, Solr will
+# overwrite the version from /usr/share/solr/ ignoring and destroying the symlink
+if ![ -L /etc/solr/solr.xml ] ; then
+	changes=1
+	mv -f /etc/solr/solr.xml /usr/share/solr/solr.xml
+	ln -s /usr/share/solr/solr.xml /etc/solr/
+
+	# Allow Solr to save configuration changes
+	chown jetty:jetty /usr/share/solr
+	chown jetty:jetty /usr/share/solr/solr.xml
+	chmod 644 /usr/share/solr/solr.xml
+fi
+
+# We can't store this file in Puppet because Solr modifies it in runtime
+if grep -xqe '<solr persistent="true">' -- /usr/share/solr/solr.xml ; then
+	changes=1
+	sed -i 's/<solr [^>]*>/<solr persistent="true">/g' /usr/share/solr/solr.xml
+fi
+
+if ![ -d /var/lib/solr/cores ] ; then
+	changes=1
+	mkdir -m 700 /var/lib/solr/cores
+	chown jetty:jetty /var/lib/solr/cores
+fi
+
+exit $changes
+

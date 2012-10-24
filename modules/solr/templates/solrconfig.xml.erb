@@ -2,6 +2,10 @@
 <!--
 	This file is managed by Puppet!
 	puppet:///modules/solr/templates/solrconfig.xml.erb
+
+	WMF changes to 3.6.0+dfsg-1:
+	* Replication
+	* <dataDir>
 -->
 <!--
  Licensed to the Apache Software Foundation (ASF) under one or more
@@ -118,7 +122,7 @@
        replication is in use, this should match the replication
        configuration.
     -->
-  <dataDir>/var/lib/solr/data</dataDir>
+  <dataDir>${solr.core.dataDir:/var/lib/solr/data}</dataDir>
 
 
   <!-- The DirectoryFactory to use for indexes.
