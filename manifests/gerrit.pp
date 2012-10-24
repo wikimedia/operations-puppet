@@ -102,7 +102,7 @@ class gerrit::jetty ($ldap_hosts,
 	}
 
 	package { [ "gerrit" ]:
-		ensure => "2.4.2-1";
+		ensure => present;
 	}
 
 	file {
