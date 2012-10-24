@@ -31,6 +31,11 @@ class applicationserver::config::php {
 			group => root,
 			mode => 0444,
 			source => "puppet:///modules/applicationserver/php/wmerrors.ini";
+		"/etc/php5/conf.d/igbinary.ini":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/php/igbinary.ini";
 		"/etc/php5/conf.d/wikidiff2.ini":
 			mode => 0444,
 			owner => root,

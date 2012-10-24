@@ -103,6 +103,11 @@ extension=wikidiff2.so
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/php/wmerrors.ini";
+		"/etc/php5/conf.d/igbinary.ini":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/php/igbinary.ini";
 		"/etc/php5/conf.d/mail.ini":
 			mode => 0444,
 			owner => root,
