@@ -1,5 +1,7 @@
 # site.pp
 
+import "fakefile.pp"
+
 import "realm.pp"	# These ones first
 import "generic-definitions.pp"
 import "base.pp"
