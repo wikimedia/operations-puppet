@@ -1,0 +1,25 @@
+#!/usr/sh
+
+if [ -d /var/lib/solr/cores ] && [ -L /etc/solr/solr.xml ] ; then
+	echo 'Multicore support has already been installed'
+	exit 1
+fi
+
+# Although it's the other way around in the Debian package, Solr will
+# overwrite the version from /usr/share/solr/ ignoring and destroying the symlink
+if ![ -L /etc/solr/solr.xml ] ; then
+	mv -f /etc/solr/solr.xml /usr/share/solr/solr.xml
+	ln -s /usr/share/solr/solr.xml /etc/solr/
+
+	# Allow Solr to save configuration changes
+	chown jetty:jetty /usr/share/solr
+	chown jetty:jetty /usr/share/solr/solr.xml
+	chmod 644 /usr/share/solr/solr.xml
+fi
+
+# We can't store this file in Puppet because Solr modifies it in runtime
+sed -i 's/<solr [^>]*>/<solr persistent="true" shareSchema="true">/g' /usr/share/solr/solr.xml
+
+mkdir -m 700 /var/lib/solr/cores
+chown jetty:jetty /var/lib/solr/cores
+
