@@ -1,7 +1,7 @@
 
 # Virtual resource for monitoring server
 @monitor_group { "memcached_pmtpa": description => "pmtpa memcached" }
-@monitor_group { "memcached_eqiad": description => "pmtpa memcached" }
+@monitor_group { "memcached_eqiad": description => "eqiad memcached" }
 
 class role::memcached {
 
