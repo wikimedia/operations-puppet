@@ -64,6 +64,21 @@ class ganglia {
 		"lvs" => {
 			"name"		=> "LVS loadbalancers",
 			"ip_oct"	=> "2" },
+		"search"	=>	{
+			"name"		=> "Search",
+			"ip_oct"	=> "4" },
+		"mysql"		=>	{
+			"name"		=> "MySQL",
+			"ip_oct"	=> "5" },
+		"squids_upload"	=>	{
+			"name"		=> "Upload squids",
+			"ip_oct"	=> "6" },
+		"squids_text"	=>	{
+			"name"		=> "Text squids",
+			"ip_oct"	=> "7" },
+		"misc"		=>	{
+			"name"		=> "Miscellaneous",
+			"ip_oct"	=> "8" },
 		"appserver"	=>	{
 			"name"		=> "Application servers",
 			"ip_oct"	=> "11"	},
@@ -73,27 +88,9 @@ class ganglia {
 		"api_appserver"	=>	{
 			"name"		=> "API application servers",
 			"ip_oct"	=> "13" },
-		"jobrunner"	=>	{
-			"name"		=> "Jobrunners",
-			"ip_oct"	=> "31" },
-		"misc"		=>	{
-			"name"		=> "Miscellaneous",
-			"ip_oct"	=> "8" },
-		"mysql"		=>	{
-			"name"		=> "MySQL",
-			"ip_oct"	=> "5" },
 		"pdf"		=>	{
 			"name"		=> "PDF servers",
 			"ip_oct"	=> "15" },
-		"search"	=>	{
-			"name"		=> "Search",
-			"ip_oct"	=> "4" },
-		"squids_text"	=>	{
-			"name"		=> "Text squids",
-			"ip_oct"	=> "7" },
-		"squids_upload"	=>	{
-			"name"		=> "Upload squids",
-			"ip_oct"	=> "6" },
 		"cache_text"	=> {
 			"name"		=> "Text caches",
 			"ip_oct"	=> "20" },
@@ -127,8 +124,8 @@ class ganglia {
 		"gluster"	=> {
 			"name"		=> "Glusterfs cluster",
 			"ip_oct"	=> "30" },
-		"fundraising"	=> {
-			"name"		=> "Fundraising",
+		"jobrunner"	=>	{
+			"name"		=> "Jobrunners",
 			"ip_oct"	=> "31" },
 		"analytics"		=> {
 			"name"		=> "Analytics cluster",
@@ -139,6 +136,9 @@ class ganglia {
 		"videoscaler"		=> {
 			"name"		=> "Video scalers",
 			"ip_oct"	=> "34" },
+		"fundraising"	=> {
+			"name"		=> "Fundraising",
+			"ip_oct"	=> "35" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
