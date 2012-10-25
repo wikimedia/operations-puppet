@@ -1,6 +1,10 @@
+
+# Virtual resource for monitoring server
+@monitor_group { "memcached_pmtpa": description => "pmtpa memcached" }
+@monitor_group { "memcached_eqiad": description => "pmtpa memcached" }
+
 class role::memcached {
 
-	$nagios_group = "$mc_${::site}"
 	$cluster = "memcached"
 
 	system_role { "role::memcached": description => "memcached server" }

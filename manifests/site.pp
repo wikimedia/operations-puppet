@@ -1468,6 +1468,7 @@ node "marmontel.wikimedia.org" {
 }
 
 node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
+	$cluster = "memcached"
 	if $hostname =~ /^mc[12]$/ {
 		$ganglia_aggregator = "true"
 	}
