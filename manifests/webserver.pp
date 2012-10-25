@@ -35,6 +35,8 @@ class webserver::static {
 class webserver::php5( $ssl = 'false' ) {
 	#This will use latest package for php5-common
 
+	require php5::core
+
 	include generic::sysctl::high-http-performance
 
 	package { [ "apache2", "libapache2-mod-php5" ]:
@@ -56,7 +58,6 @@ class webserver::php5( $ssl = 'false' ) {
 }
 
 class webserver::modproxy {
-
 	include generic::sysctl::high-http-performance
 
 	package { libapache2-mod-proxy-html:
@@ -65,21 +66,15 @@ class webserver::modproxy {
 }
 
 class webserver::php5-mysql {
-
 	include generic::sysctl::high-http-performance
 
-	package { php5-mysql:
-		ensure => latest;
-		}
+	include php5::mysql
 }
 
 class webserver::php5-gd {
-
 	include generic::sysctl::high-http-performance
 
-	package { "php5-gd":
-		ensure => latest;
-	}
+	include php5::gd
 }
 
 class webserver::apache2 {
@@ -207,7 +202,7 @@ class webserver::apache {
 				ensure => latest;
 			}
 		}
-		
+
 		File {
 			require => $packagename ? {
 				undef => undef,
@@ -233,7 +228,7 @@ class webserver::apache {
 	class config {
 		# Realize virtual resources for Apache modules
 		Webserver::Apache::Module <| |>
-		
+
 		# Realize virtual resources for enabling virtual hosts
 		Webserver::Apache::Site <| |>
 	}
@@ -243,7 +238,7 @@ class webserver::apache {
 			ensure => running;
 		}
 	}
-	
+
 	# Define: site
 	#	Configures and installs an apache virtual host file using generic_vhost.erb.
 	#
@@ -260,26 +255,26 @@ class webserver::apache {
 	# Usage:
 	#	webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
 	define site(
-		$aliases=[], 
-		$ssl="false", 
-		$certfile=undef, 
-		$certkey=undef, 
-		$docroot=undef, 
-		$custom=[], 
-		$includes=[], 
+		$aliases=[],
+		$ssl="false",
+		$certfile=undef,
+		$certkey=undef,
+		$docroot=undef,
+		$custom=[],
+		$includes=[],
 		$ensure=present,
 		$server_admin="root@wikimedia.org") {
 
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
-		
+
 		if ! $docroot {
 			$subdir = inline_template("scope.lookupvar('webserver::apache::site::title').strip.split.reverse.join('/')")
 			$docroot = "/srv/$subdir"
 		}
-		
+
 		if $ssl in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
-			
+
 			# If no cert files are defined, assume a wildcart certificate for the domain
 			$wildcard_domain = regsubst($title, '^[^\.]+', "*")
 			if ! $certfile {
@@ -289,7 +284,7 @@ class webserver::apache {
 				$certkey = "/etc/ssl/private/${wildcard_domain}.key"
 			}
 		}
-		
+
 		file {
 			"/etc/apache2/sites-available/${title}":
 				notify => Class[webserver::apache::service],
@@ -305,7 +300,7 @@ class webserver::apache {
 					};
 		}
 	}
-	
+
 	# Default selection
 	include packages,
 		config,
