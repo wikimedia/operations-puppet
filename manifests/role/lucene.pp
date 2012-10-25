@@ -129,6 +129,9 @@ class role::lucene {
 			admins::restricted,
 			lucene::users
 
+		sudo_group {"wikidev_deploy": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'], group => "wikidev" }
+		sudo_user { "l10nupdate": privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
+
 		class { "lucene::server":
 			indexer => true, udplogging => false
 		}
@@ -158,19 +161,19 @@ class role::lucene {
 			}
 		}
 		class pool1 {
-			class { "role::lucene::front_end::common": search_pool => "search_pool1" } 
+			class { "role::lucene::front_end::common": search_pool => "search_pool1" }
 		}
 		class pool2 {
-			class { "role::lucene::front_end::common": search_pool => "search_pool2" } 
+			class { "role::lucene::front_end::common": search_pool => "search_pool2" }
 		}
 		class pool3 {
-			class { "role::lucene::front_end::common": search_pool => "search_pool3" } 
+			class { "role::lucene::front_end::common": search_pool => "search_pool3" }
 		}
 		class pool4 {
-			class { "role::lucene::front_end::common": search_pool => "search_pool4" } 
+			class { "role::lucene::front_end::common": search_pool => "search_pool4" }
 		}
 		class prefix {
-			class { "role::lucene::front_end::common": search_pool => "search_prefix" } 
+			class { "role::lucene::front_end::common": search_pool => "search_prefix" }
 		}
 	}
 }
