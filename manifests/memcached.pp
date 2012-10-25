@@ -1,10 +1,5 @@
 # memcached.pp
 
-# Virtual resource for monitoring server
-@monitor_group { "memcached": description => "all memcached servers" }
-@monitor_group { "mc_pmtpa": description => "pmtpa memcached" }
-@monitor_group { "mc_eqiad": description => "pmtpa memcached" }
-
 class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0', $memcached_options = {}) {
 
 	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port", 
@@ -22,7 +17,6 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 
 	class monitoring {
 		# Nagios
-		$nagios_group = "memcached"
 		monitor_service { "memcached": description => "Memcached", check_command => "check_tcp!$memcached_port" }
 
 		# Ganglia
