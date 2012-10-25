@@ -18,10 +18,22 @@ puppet-lint doc is at https://github.com/rodjek/puppet-lint
  -- hashar 20120216
 =end
 
-# Since we are going to use puppet internal stuff, we might as
-# well reuse their colorization utility:
-require'puppet/util/colors'
-include Puppet::Util::Colors
+# Only care about color when using a tty
+if Rake.application.tty_output?
+	# Since we are going to use puppet internal stuff, we might as
+	# well reuse their colorization utility:
+	require'puppet/util/colors'
+	include Puppet::Util::Colors
+
+	puppetcolor = '--color true'
+else
+	# define our own colorization method that simply output the message
+	def console_color( level, message )
+		return message
+	end
+
+	puppetcolor = '--color none'
+end
 
 task :default => [:help]
 
@@ -101,7 +113,7 @@ desc "Validate puppet syntax (default: manifests/site.pp)"
 task :validate, [:files ] do |t, args|
 	args.with_defaults( :files => 'manifests/site.pp' )
 	puts console_color( :info, "Validating " + args.files.inspect )
-	sh "puppet parser validate #{args.files}" do |ok, res|
+	sh "puppet parser validate #{puppetcolor} #{args.files}" do |ok, res|
 		if ok
 			puts "[OK] " + console_color( :info,  "files looks fine!" )
 		else
