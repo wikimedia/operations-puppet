@@ -190,6 +190,8 @@ class lvs::configuration {
 					'foundationlbsecure6' => "2620:0:860:ed1a::9",
 					'bitslbsecure6' => "2620:0:860:ed1a::a",
 					'uploadlbsecure6' => "2620:0:860:ed1a::b",
+					'wikidatalbsecure6' => "2620:0:860:ed1a::12",
+					'wikivoyagelbsecure6' => "2620:0:860:ed1a::13"
 				},
 				'eqiad' => {
 					'wikimedialbsecure' => "208.80.154.224",
@@ -221,6 +223,8 @@ class lvs::configuration {
 					'bitslbsecure6' => "2620:0:861:ed1a::a",
 					'uploadlbsecure6' => "2620:0:861:ed1a::b",
 					'mobilelbsecure6' => "2620:0:861:ed1a::c",
+					'wikidatalbsecure6' => "2620:0:861:ed1a::12",
+					'wikivoyagelbsecure6' => "2620:0:861:ed1a::13"
 				},
 				'esams' => {
 					'wikimedialbsecure' => "91.198.174.224",
@@ -263,6 +267,8 @@ class lvs::configuration {
 					'mediawikilb6' => "2620:0:860:ed1a::8",
 					'foundationlb6' => "2620:0:860:ed1a::9",
 					'uploadlb6' => "2620:0:860:ed1a::b",
+					'wikidatalb6' => "2620:0:860:ed1a::12",
+					'wikivoyagelb6' => "2620:0:860:ed1a::13"
 				},
 				'eqiad' => {
 					'wikimedialb6' => "2620:0:861:ed1a::0",
@@ -275,6 +281,8 @@ class lvs::configuration {
 					'wikiversitylb6' => "2620:0:861:ed1a::7",
 					'mediawikilb6' => "2620:0:861:ed1a::8",
 					'foundationlb6' => "2620:0:861:ed1a::9",
+					'wikidatalb6' => "2620:0:861:ed1a::12",
+					'wikivoyagelb6' => "2620:0:861:ed1a::13"
 				},
 				'esams' => {
 					'wikimedialb6' => "2620:0:862:ed1a::0",
