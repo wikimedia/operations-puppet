@@ -966,6 +966,13 @@ class lvs::monitor {
 		"upload-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
 			uri => "upload.wikimedia.org!/pybaltestfile.txt";
+		"wikidata-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text']['pmtpa']['wikidatalb6'],
+			check_command => "check_http_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.pmtpa.wikimedia.org":
+			ip_address => $ip['text']['pmtpa']['wikivoyagelb6'],
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+
 	}
 
 	# eqiad -lb addresses
@@ -1076,6 +1083,12 @@ class lvs::monitor {
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikidatalb6'],
+			check_command => "check_http_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikivoyagelb6'],
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 	
 	monitor_service_lvs_https {
