@@ -275,8 +275,8 @@ class protoproxy::proxy_sites {
 	# wikidata.org
 	proxy_configuration{ wikidata:
 		proxy_addresses => {
-			"pmtpa" => [ "208.80.152.218" ],
-			"eqiad" => [ "208.80.154.242" ],
+			"pmtpa" => [ "208.80.152.218", "[2620:0:860:ed1a::12]" ],
+			"eqiad" => [ "208.80.154.242", "[2620:0:861:ed1a::12]" ],
 			"esams" => [ "127.0.0.1" ]
 		},
 		proxy_server_name => '*.m.wikidata.org',
@@ -286,7 +286,7 @@ class protoproxy::proxy_sites {
 			"eqiad" => { "primary" => "10.2.2.25" },
 			"esams" => { "primary" => "10.2.3.25" }
 		},
-		ipv6_enabled => 'false',
+		ipv6_enabled => 'true',
 		enabled => 'true'
 	}
 	# Misc services
