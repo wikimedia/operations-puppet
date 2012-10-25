@@ -31,9 +31,9 @@ class misc::deployment::scripts {
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
 
-	package { "php5-parsekit": ensure => present; }
-
 	$scriptpath = "/usr/local/bin"
+
+	class { 'wmfscripts::phplinter': scriptpath => $scriptpath }
 
 	file {
 		"${scriptpath}/clear-profile":
@@ -71,18 +71,6 @@ class misc::deployment::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/foreachwikiindblist";
-		"${scriptpath}/lint":
-			owner => root,
-			group => root,
-			mode => 0555,
-			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint";
-		"${scriptpath}/lint.php":
-			owner => root,
-			group => root,
-			mode => 0555,
-			require => Package[ 'php5-parsekit' ], # bug 37076
-			source => "puppet:///files/misc/scripts/lint.php";
 		"${scriptpath}/mw-update-l10n":
 			owner => root,
 			group => root,
