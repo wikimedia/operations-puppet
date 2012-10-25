@@ -71,7 +71,7 @@ class lvs::configuration {
 			'labs' => [ "i-00000051" ],
 		},
 	}
-	
+
 	# This needs to stay in place until the esams MX80 is in production
 	# amslvs1 and amslvs2 currently can't have ipv6 enabled
 	$ipv6_hosts = ["lvs1", "lvs2", "lvs3", "lvs4", "lvs5", "lvs6", "lvs1001", "lvs1002", "lvs1003", "lvs1004", "lvs1005", "lvs1006", "amslvs3", "amslvs4"]
@@ -83,7 +83,7 @@ class lvs::configuration {
 		$v6_ip = "::"
 	}
 
-	$pybal = { 
+	$pybal = {
 		'bgp' => "yes",
 		'bgp-peer-address' => $hostname ? {
 			/^lvs[1-3]$/ => "208.80.152.197",
@@ -112,7 +112,7 @@ class lvs::configuration {
 
 	# Configuration of PyBal LVS services.
 	# NOTE! Double quotation may be needed for passing strings
-	
+
 	# NOTE! This hash is referenced in many other manifests
 	$lvs_service_ips = {
 		'production' => {
@@ -716,12 +716,12 @@ class lvs::balancer(
 	) {
 
 	require "lvs::configuration"
-	
+
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
 	$ipv6_hosts = $lvs::configuration::ipv6_hosts
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
-	
+
 	system_role { "lvs::balancer": description => "LVS balancer" }
 
 	package { [ ipvsadm, pybal, ethtool ]:
@@ -739,7 +739,7 @@ class lvs::balancer(
 		content => "# This file is managed by Puppet!\noptions ip_vs conn_tab_bits=20\n";
 	}
 
-	# Bind balancer IPs to the loopback interface 
+	# Bind balancer IPs to the loopback interface
 	class { "lvs::realserver": realserver_ips => $service_ips }
 
 	# Sysctl settings
@@ -801,7 +801,7 @@ class lvs::realserver($realserver_ips=[]) {
 
 class lvs::static_labs_ips {
 	require "lvs::configuration"
-	
+
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
 	$pybal = $lvs::configuration::pybal
 	$lvs_services = $lvs::configuration::lvs_services
@@ -968,10 +968,10 @@ class lvs::monitor {
 			uri => "upload.wikimedia.org!/pybaltestfile.txt";
 		"wikidata-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['text']['pmtpa']['wikidatalb6'],
-			check_command => "check_http_lvs!www.wikidata.org!/";
+			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['text']['pmtpa']['wikivoyagelb6'],
-			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+			uri => "en.wikivoyage.org!/wiki/Main_Page";
 
 	}
 
@@ -1085,12 +1085,12 @@ class lvs::monitor {
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikidatalb6'],
-			check_command => "check_http_lvs!www.wikidata.org!/";
+			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikivoyagelb6'],
-			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
-	
+
 	monitor_service_lvs_https {
 		"wikimedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikimedialb'],
