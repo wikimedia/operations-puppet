@@ -967,10 +967,10 @@ class lvs::monitor {
 			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
 			uri => "upload.wikimedia.org!/pybaltestfile.txt";
 		"wikidata-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikidatalb6'],
+			ip_address => $ip['ipv6']['pmtpa']['wikidatalb6'],
 			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.pmtpa.wikimedia.org":
-			ip_address => $ip['text']['pmtpa']['wikivoyagelb6'],
+			ip_address => $ip['ipv6']['pmtpa']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 
 	}
@@ -1084,10 +1084,10 @@ class lvs::monitor {
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikidatalb6'],
+			ip_address => $ip['ipv6']['eqiad']['wikidatalb6'],
 			uri => "www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikivoyagelb6'],
+			ip_address => $ip['ipv6']['eqiad']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
