@@ -32,14 +32,46 @@ class webserver::static {
 	}
 }
 
+class webserver::apache2 {
+	include generic::sysctl::high-http-performance
+
+	package { apache2:
+		ensure => latest;
+	}
+}
+
+class webserver::apache2::modproxy {
+	include generic::sysctl::high-http-performance
+
+	require webserver::apache2
+
+	package { libapache2-mod-proxy-html:
+		ensure => latest;
+	}
+}
+
+class webserver::apache2::rpaf {
+	require webserver::apache2
+
+	# NOTE: rpaf.conf defaults to just 127.0.01 - may need to
+	# modify to include squid/varnish/nginx ranges depending
+	# on use.
+	package { libapache2-mod-rpaf:
+		ensure => latest;
+	}
+	apache_module { rpaf:
+		name => "rpaf",
+		require => Package["libapache2-mod-rpaf"];
+	}
+}
+
 class webserver::php5( $ssl = 'false' ) {
 	#This will use latest package for php5-common
 
 	include generic::sysctl::high-http-performance
 
-	package { [ "apache2", "libapache2-mod-php5" ]:
-		ensure => latest;
-	}
+	require webserver::apache2
+	require php::apache2module
 
 	if $ssl == 'true' {
 		apache_module { ssl: name => "ssl" }
@@ -55,54 +87,25 @@ class webserver::php5( $ssl = 'false' ) {
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
-class webserver::modproxy {
-
-	include generic::sysctl::high-http-performance
-
-	package { libapache2-mod-proxy-html:
-		ensure => latest;
-	}
-}
-
 class webserver::php5-mysql {
-
 	include generic::sysctl::high-http-performance
 
-	package { php5-mysql:
-		ensure => latest;
-		}
+	require webserver::php5
+
+	include php::mysql
 }
 
 class webserver::php5-gd {
-
 	include generic::sysctl::high-http-performance
 
-	package { "php5-gd":
-		ensure => latest;
-	}
+	require webserver::php5
+
+	include php::gd
 }
 
-class webserver::apache2 {
-
-	include generic::sysctl::high-http-performance
-
-	package { apache2:
-		ensure => latest;
-	}
-
-}
-
-class webserver::apache2::rpaf {
-	# NOTE: rpaf.conf defaults to just 127.0.01 - may need to
-	# modify to include squid/varnish/nginx ranges depending
-	# on use.
-	package { libapache2-mod-rpaf:
-		ensure => latest;
-	}
-	apache_module { rpaf:
-		name => "rpaf",
-		require => Package["libapache2-mod-rpaf"];
-	}
+# Only for not breaking old config, use webserver::apache2::modproxy now
+class webserver::modproxy {
+	require webserver::apache2::modproxy
 }
 
 
@@ -207,7 +210,7 @@ class webserver::apache {
 				ensure => latest;
 			}
 		}
-		
+
 		File {
 			require => $packagename ? {
 				undef => undef,
@@ -233,7 +236,7 @@ class webserver::apache {
 	class config {
 		# Realize virtual resources for Apache modules
 		Webserver::Apache::Module <| |>
-		
+
 		# Realize virtual resources for enabling virtual hosts
 		Webserver::Apache::Site <| |>
 	}
@@ -243,7 +246,7 @@ class webserver::apache {
 			ensure => running;
 		}
 	}
-	
+
 	# Define: site
 	#	Configures and installs an apache virtual host file using generic_vhost.erb.
 	#
@@ -260,26 +263,26 @@ class webserver::apache {
 	# Usage:
 	#	webserver::apache::site { "mysite.wikimedia.org": aliases = ["mysite.wikimedia.com"] }
 	define site(
-		$aliases=[], 
-		$ssl="false", 
-		$certfile=undef, 
-		$certkey=undef, 
-		$docroot=undef, 
-		$custom=[], 
-		$includes=[], 
+		$aliases=[],
+		$ssl="false",
+		$certfile=undef,
+		$certkey=undef,
+		$docroot=undef,
+		$custom=[],
+		$includes=[],
 		$ensure=present,
 		$server_admin="root@wikimedia.org") {
 
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
-		
+
 		if ! $docroot {
 			$subdir = inline_template("scope.lookupvar('webserver::apache::site::title').strip.split.reverse.join('/')")
 			$docroot = "/srv/$subdir"
 		}
-		
+
 		if $ssl in ["true", "only", "redirected"] {
 			webserver::apache::module { ssl: }
-			
+
 			# If no cert files are defined, assume a wildcart certificate for the domain
 			$wildcard_domain = regsubst($title, '^[^\.]+', "*")
 			if ! $certfile {
@@ -289,7 +292,7 @@ class webserver::apache {
 				$certkey = "/etc/ssl/private/${wildcard_domain}.key"
 			}
 		}
-		
+
 		file {
 			"/etc/apache2/sites-available/${title}":
 				notify => Class[webserver::apache::service],
@@ -305,7 +308,7 @@ class webserver::apache {
 					};
 		}
 	}
-	
+
 	# Default selection
 	include packages,
 		config,
