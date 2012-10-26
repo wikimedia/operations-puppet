@@ -279,7 +279,7 @@ class protoproxy::proxy_sites {
 			"eqiad" => [ "208.80.154.242", "[2620:0:861:ed1a::12]" ],
 			"esams" => [ "127.0.0.1" ]
 		},
-		proxy_server_name => '*.m.wikidata.org',
+		proxy_server_name => '*.wikidata.org',
 		proxy_server_cert_name => 'star.wikidata.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
