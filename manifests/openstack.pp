@@ -447,21 +447,21 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 			user => root,
 			hour => 1,
 			minute => 0,
-			command => '/usr/local/sbin/db-bak.sh',
+			command => '/usr/local/sbin/db-bak.sh > /dev/null 2>&1',
 			require => File["/a/backup"],
 			ensure => present;
 		"mw-xml":
 			user => root,
 			hour => 1,
 			minute => 30,
-			command => '/usr/local/sbin/mw-xml.sh',
+			command => '/usr/local/sbin/mw-xml.sh > /dev/null 2>&1',
 			require => File["/a/backup"],
 			ensure => present;
 		"mw-files":
 			user => root,
 			hour => 2,
 			minute => 0,
-			command => '/usr/local/sbin/mw-files.sh',
+			command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
 			require => File["/a/backup"],
 			ensure => present;
 	}
