@@ -134,16 +134,16 @@ class openstack::common($openstack_version="diablo",
 	}
 
 	package { [ "nova-common", "python-keystone" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-client", "mysql-common" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	# For IPv6 support
 	package { [ "python-netaddr", "radvd" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	file {
@@ -169,7 +169,7 @@ class openstack::common($openstack_version="diablo",
 
 class openstack::queue-server($openstack_version, $novaconfig) {
 	package { [ "rabbitmq-server" ]:
-		ensure => latest;
+		ensure => present;
 	}
 }
 
@@ -180,7 +180,7 @@ class openstack::project-storage-cron {
 	$ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":
-		ensure => latest;
+		ensure => present;
 	}
 	
 	service { "ircecho":
@@ -212,7 +212,7 @@ class openstack::project-storage {
 	sudo_user { [ "glustermanager" ]: privileges => $sudo_privs, require => Systemuser["glustermanager"] }
 
 	package { "python-paramiko":
-		ensure => latest;
+		ensure => present;
 	}
 
 	systemuser { "glustermanager": name => "glustermanager", home => "/var/lib/glustermanager", shell => "/bin/bash" }
@@ -270,7 +270,7 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 	$keystone_db_pass = $keystoneconfig["db_pass"]
 
 	package { "mysql-server":
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "mysql":
@@ -405,7 +405,7 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 	$controller_hostname = $novaconfig["controller_hostname"]
 
 	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick' ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	file {
@@ -474,7 +474,7 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 
 class openstack::scheduler-service($openstack_version="diablo", $novaconfig) {
 	package { "nova-scheduler":
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "nova-scheduler":
@@ -486,7 +486,7 @@ class openstack::scheduler-service($openstack_version="diablo", $novaconfig) {
 
 class openstack::network-service($openstack_version="diablo", $novaconfig) {
 	package {  [ "nova-network", "dnsmasq" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "nova-network":
@@ -520,7 +520,7 @@ class openstack::network-service($openstack_version="diablo", $novaconfig) {
 
 class openstack::api-service($openstack_version="diablo", $novaconfig) {
 	package {  [ "nova-api" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "nova-api":
@@ -603,12 +603,12 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 	}
 
 	package { [ "nova-compute" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	if $openstack_version == "essex" {
 		package { [ "nova-compute-kvm" ]:
-			ensure => latest;
+			ensure => present;
 		}
 	}
 
@@ -645,7 +645,7 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 
 class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 	package { [ "keystone" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "keystone":
@@ -682,7 +682,7 @@ class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 
 class openstack::glance-service($openstack_version="diablo", $glanceconfig) {
 	package { [ "glance" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	service { "glance-api":
