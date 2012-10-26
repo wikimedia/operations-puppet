@@ -103,7 +103,7 @@ DocumentRoot "/usr/local/apache/common/docroot/default"
             ExpiresByType text/css A2592000
             ExpiresByType text/javascript A2592000
             ExpiresByType application/x-javascript A2592000
-            ExpiresByType application/x-woff A2592000
+            ExpiresByType application/x-font-woff A2592000
             ExpiresByType image/svg+xml A2592000
             ExpiresByType application/vnd.ms-fontobject A2592000
             ExpiresByType application/x-font-ttf A2592000
