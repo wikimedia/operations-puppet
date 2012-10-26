@@ -20,3 +20,4 @@ stat1.wikimedia.org     /a {
 	exclude file "./mysql/archive"
 	exclude file "./squid/archive"
 }
+virt0.wikimedia.org	/a/backup default
