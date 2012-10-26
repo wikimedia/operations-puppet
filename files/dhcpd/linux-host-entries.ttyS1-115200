@@ -3693,6 +3693,8 @@ host sq81 {
 host sq82 {
 	hardware ethernet 00:21:9B:9A:D0:0B;
 	fixed-address sq82.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq83 {
