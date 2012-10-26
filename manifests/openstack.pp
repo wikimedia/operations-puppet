@@ -416,12 +416,54 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 			group => root,
 			content => template('apache/sites/labsconsole.wikimedia.org'),
 			ensure => present;
+		"/a/backup":
+			mode => 755,
+			owner => root,
+			group => root,
+			ensure => directory;
+		"/usr/local/sbin/db-bak.sh":
+			mode => 555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/openstack/db-bak.sh";
+		"/usr/local/sbin/mw-files.sh":
+			mode => 555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/openstack/mw-files.sh";
+		"/usr/local/sbin/mw-xml.sh":
+			mode => 555,
+			owner => root,
+			group => root,
+			source => "puppet:///files/openstack/mw-xml.sh";
 	}
 
-	cron { "run-jobs":
-		user => mwdeploy,
-		command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
-		ensure => present;
+	cron {
+		"run-jobs":
+			user => mwdeploy,
+			command => 'cd /srv/org/wikimedia/controller/wikis/w; /usr/bin/php maintenance/runJobs.php > /dev/null 2>&1',
+			ensure => present;
+		"db-bak":
+			user => root,
+			hour => 1,
+			minute => 0,
+			command => '/usr/local/sbin/db-bak.sh',
+			require => File["/a/backup"],
+			ensure => present;
+		"mw-xml":
+			user => root,
+			hour => 1,
+			minute => 30,
+			command => '/usr/local/sbin/mw-xml.sh',
+			require => File["/a/backup"],
+			ensure => present;
+		"mw-files":
+			user => root,
+			hour => 2,
+			minute => 0,
+			command => '/usr/local/sbin/mw-files.sh',
+			require => File["/a/backup"],
+			ensure => present;
 	}
 
 
