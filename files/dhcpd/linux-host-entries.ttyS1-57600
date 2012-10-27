@@ -231,15 +231,11 @@ host loudon {
 host lvs1 {
 	hardware ethernet 00:1e:c9:ab:80:4e;
 	fixed-address lvs1.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs2 {
 	hardware ethernet 00:1E:C9:AB:7F:C2;
 	fixed-address lvs2.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs3 {

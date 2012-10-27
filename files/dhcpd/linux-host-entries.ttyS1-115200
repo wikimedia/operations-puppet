@@ -32,15 +32,11 @@ host amslvs2 {
 host amslvs3 {
 	hardware ethernet a4:ba:db:30:d8:5c;
 	fixed-address amslvs3.esams.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host amslvs4 {
 	hardware ethernet a4:ba:db:38:e4:cb;
 	fixed-address amslvs4.esams.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host analytics1011 {
@@ -171,8 +167,6 @@ host carbon {
 host chromium {
 	hardware ethernet 78:2b:cb:08:aa:48;
 	fixed-address chromium.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host copper {
@@ -183,8 +177,6 @@ host copper {
 host nitrogen {
 	hardware ethernet 78:2b:cb:09:0e:37;
 	fixed-address nitrogen.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host cp1001 {
@@ -482,15 +474,11 @@ host db60 {
 host db61 {
 	hardware ethernet D4:AE:52:7C:94:CA;
 	fixed-address db61.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db62 {
 	hardware ethernet D4:AE:52:7C:A6:FD;
 	fixed-address db62.pmtpa.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host db63 {
@@ -971,8 +959,6 @@ host hooper {
 host hydrogen {
 	hardware ethernet 78:2b:cb:09:0c:21;
 	fixed-address hydrogen.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host iron {
@@ -1028,22 +1014,16 @@ host lvs1003 {
 host lvs1004 {
 	hardware ethernet 18:03:73:f0:8c:30;
 	fixed-address lvs1004.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs1005 {
         hardware ethernet 18:03:73:f0:8e:28;
         fixed-address lvs1005.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host lvs1006 {
         hardware ethernet 18:03:73:f0:8a:77;
         fixed-address lvs1006.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host maerlant {
@@ -1800,105 +1780,66 @@ host mw74 {
 host mw1001 {
 	hardware ethernet 84:2b:2b:78:2c:b4;
 	fixed-address mw1001.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1002 {
 	hardware ethernet 84:2b:2b:78:2a:2c;
 	fixed-address mw1002.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1003 {
 	hardware ethernet 84:2b:2b:78:28:c8;
 	fixed-address mw1003.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1004 {
 	hardware ethernet 84:2b:2b:77:29:7a;
 	fixed-address mw1004.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1005 {
 	hardware ethernet 84:2b:2b:77:e6:f3;
 	fixed-address mw1005.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1006 {
 	hardware ethernet 84:2b:2b:77:4d:2f;
 	fixed-address mw1006.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1007 {
 	hardware ethernet 84:2b:2b:77:53:29;
 	fixed-address mw1007.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1008 {
 	hardware ethernet 84:2b:2b:77:e3:bb;
 	fixed-address mw1008.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1009 {
 	hardware ethernet 78:2b:cb:08:78:c1;
 	fixed-address mw1009.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1010 {
 	hardware ethernet 78:2b:cb:08:78:f7;
 	fixed-address mw1010.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1011 {
 	hardware ethernet 78:2b:cb:08:77:da;
 	fixed-address mw1011.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1012 {
 	hardware ethernet 78:2b:cb:08:79:66;
 	fixed-address mw1012.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1013 {
 	hardware ethernet 78:2b:cb:08:79:18;
 	fixed-address mw1013.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1014 {
@@ -1909,1177 +1850,736 @@ host mw1014 {
 host mw1015 {
 	hardware ethernet 78:2b:cb:08:7b:5a;
 	fixed-address mw1015.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1016 {
 	hardware ethernet 78:2b:cb:07:28:50;
 	fixed-address mw1016.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1017 {
 	hardware ethernet 78:2b:cb:08:79:0c;
 	fixed-address mw1017.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1018 {
 	hardware ethernet 78:2b:cb:08:7b:42;
 	fixed-address mw1018.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1019 {
 	hardware ethernet 84:2b:2b:77:e4:67;
 	fixed-address mw1019.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1020 {
 	hardware ethernet 84:2b:2b:77:25:19;
 	fixed-address mw1020.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1021 {
 	hardware ethernet 84:2b:2b:77:e6:16;
 	fixed-address mw1021.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1022 {
 	hardware ethernet 84:2b:2b:77:28:05;
 	fixed-address mw1022.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1023 {
 	hardware ethernet 84:2b:2b:77:d2:93;
 	fixed-address mw1023.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1024 {
 	hardware ethernet 84:2b:2b:77:27:c9;
 	fixed-address mw1024.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1025 {
 	hardware ethernet 84:2b:2b:78:28:18;
 	fixed-address mw1025.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1026 {
 	hardware ethernet 84:2b:2b:77:e7:75;
 	fixed-address mw1026.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1027 {
 	hardware ethernet 84:2b:2b:77:4a:a0;
 	fixed-address mw1027.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1028 {
 	hardware ethernet 84:2b:2b:76:67:24;
 	fixed-address mw1028.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1029 {
 	hardware ethernet 84:2b:2b:77:4d:05;
 	fixed-address mw1029.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1030 {
 	hardware ethernet 84:2b:2b:77:e6:10;
 	fixed-address mw1030.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1031 {
 	hardware ethernet 84:2b:2b:77:e4:ed;
 	fixed-address mw1031.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1032 {
 	hardware ethernet 84:2b:2b:78:27:b3;
 	fixed-address mw1032.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1033 {
 	hardware ethernet 78:2b:cb:08:7b:60;
 	fixed-address mw1033.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1034 {
 	hardware ethernet 78:2b:cb:08:79:1e;
 	fixed-address mw1034.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1035 {
 	hardware ethernet 78:2b:cb:08:7b:3f;
 	fixed-address mw1035.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1036 {
 	hardware ethernet 78:2b:cb:08:7b:5d;
 	fixed-address mw1036.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1037 {
 	hardware ethernet 78:2b:cb:08:70:71;
 	fixed-address mw1037.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1038 {
 	hardware ethernet 78:2b:cb:08:78:2e;
 	fixed-address mw1038.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1039 {
 	hardware ethernet 78:2b:cb:08:78:fa;
 	fixed-address mw1039.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1040 {
 	hardware ethernet 78:2b:cb:08:6f:cb;
 	fixed-address mw1040.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1041 {
 	hardware ethernet 78:2b:cb:07:72:15;
 	fixed-address mw1041.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1042 {
 	hardware ethernet 78:2b:cb:08:7b:6c;
 	fixed-address mw1042.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1043 {
 	hardware ethernet 84:2b:2b:78:28:39;
 	fixed-address mw1043.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1044 {
 	hardware ethernet 84:2b:2b:78:27:a7;
 	fixed-address mw1044.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1045 {
 	hardware ethernet 84:2b:2b:77:e6:d2;
 	fixed-address mw1045.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1046 {
 	hardware ethernet 84:2b:2b:78:2a:a0;
 	fixed-address mw1046.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1047 {
 	hardware ethernet 84:2b:2b:77:e6:74;
 	fixed-address mw1047.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1048 {
 	hardware ethernet 84:2b:2b:77:e5:f5;
 	fixed-address mw1048.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1049 {
 	hardware ethernet 84:2b:2b:77:50:02;
 	fixed-address mw1049.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1050 {
 	hardware ethernet 84:2b:2b:77:e6:fc;
 	fixed-address mw1050.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1051 {
 	hardware ethernet 84:2b:2b:78:27:a4;
 	fixed-address mw1051.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1052 {
 	hardware ethernet 84:2b:2b:77:e4:9a;
 	fixed-address mw1052.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1053 {
 	hardware ethernet 78:2b:cb:08:78:7c;
 	fixed-address mw1053.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1054 {
 	hardware ethernet 78:2b:cb:08:70:44;
 	fixed-address mw1054.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1055 {
 	hardware ethernet 78:2b:cb:08:7b:fc;
 	fixed-address mw1055.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1056 {
 	hardware ethernet 78:2b:cb:08:7b:21;
 	fixed-address mw1056.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1057 {
 	hardware ethernet 78:2b:cb:08:7f:fd;
 	fixed-address mw1057.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1058 {
 	hardware ethernet 78:2b:cb:08:78:1c;
 	fixed-address mw1058.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1059 {
 	hardware ethernet 78:2b:cb:07:27:f6;
 	fixed-address mw1059.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1060 {
 	hardware ethernet 78:2b:cb:07:2a:1c;
 	fixed-address mw1060.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1061 {
 	hardware ethernet 78:2b:cb:08:78:34;
 	fixed-address mw1061.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1062 {
 	hardware ethernet 78:2b:cb:08:7e:2f;
 	fixed-address mw1062.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1063 {
 	hardware ethernet 84:2b:2b:77:e7:9f;
 	fixed-address mw1063.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1064 {
 	hardware ethernet 84:2b:2b:78:2a:09;
 	fixed-address mw1064.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1065 {
 	hardware ethernet 84:2b:2b:77:e6:e4;
 	fixed-address mw1065.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1066 {
 	hardware ethernet 84:2b:2b:77:d0:33;
 	fixed-address mw1066.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1067 {
 	hardware ethernet 84:2b:2b:77:e5:f8;
 	fixed-address mw1067.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1068 {
 	hardware ethernet 84:2b:2b:77:e2:ef;
 	fixed-address mw1068.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1069 {
 	hardware ethernet 84:2b:2b:78:29:f1;
 	fixed-address mw1069.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1070 {
 	hardware ethernet 84:2b:2b:78:27:92;
 	fixed-address mw1070.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1071 {
 	hardware ethernet 78:2b:cb:08:7b:7b;
 	fixed-address mw1071.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1072 {
 	hardware ethernet 78:2b:cb:08:78:4c;
 	fixed-address mw1072.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1073 {
 	hardware ethernet 78:2b:cb:08:77:fb;
 	fixed-address mw1073.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1074 {
 	hardware ethernet 78:2b:cb:07:28:b0;
 	fixed-address mw1074.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1075 {
 	hardware ethernet 78:2b:cb:08:7c:95;
 	fixed-address mw1075.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1076 {
 	hardware ethernet 78:2b:cb:08:7b:87;
 	fixed-address mw1076.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1077 {
 	hardware ethernet 78:2b:cb:07:aa:b6;
 	fixed-address mw1077.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1078 {
 	hardware ethernet 78:2b:cb:08:72:c3;
 	fixed-address mw1078.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1079 {
 	hardware ethernet 78:2b:cb:08:7d:04;
 	fixed-address mw1079.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1080 {
 	hardware ethernet 78:2b:cb:08:70:5f;
 	fixed-address mw1080.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1081 {
 	hardware ethernet 78:2b:cb:08:78:31;
 	fixed-address mw1081.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1082 {
 	hardware ethernet 78:2b:cb:08:79:69;
 	fixed-address mw1082.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1083 {
 	hardware ethernet 78:2b:cb:08:7b:54;
 	fixed-address mw1083.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1084 {
 	hardware ethernet 78:2b:cb:08:79:4e;
 	fixed-address mw1084.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1085 {
 	hardware ethernet 78:2b:cb:08:7b:45;
 	fixed-address mw1085.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1086 {
 	hardware ethernet 84:2b:2b:78:27:9e;
 	fixed-address mw1086.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1087 {
 	hardware ethernet 84:2b:2b:77:e6:6e;
 	fixed-address mw1087.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1088 {
 	hardware ethernet 84:2b:2b:77:e6:aa;
 	fixed-address mw1088.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1089 {
 	hardware ethernet 84:2b:2b:77:e9:10;
 	fixed-address mw1089.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1090 {
 	hardware ethernet 84:2b:2b:77:e6:3b;
 	fixed-address mw1090.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1091 {
 	hardware ethernet 84:2b:2b:77:d7:3f;
 	fixed-address mw1091.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1092 {
 	hardware ethernet 84:2b:2b:77:d8:fc;
 	fixed-address mw1092.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1093 {
 	hardware ethernet 84:2b:2b:77:25:49;
 	fixed-address mw1093.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1094 {
 	hardware ethernet 84:2b:2b:78:2b:5d;
 	fixed-address mw1094.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1095 {
 	hardware ethernet 84:2b:2b:77:29:ce;
 	fixed-address mw1095.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1096 {
 	hardware ethernet 84:2b:2b:77:29:32;
 	fixed-address mw1096.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1097 {
 	hardware ethernet 84:2b:2b:77:e9:fa;
 	fixed-address mw1097.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1098 {
 	hardware ethernet 84:2b:2b:77:e5:c2;
 	fixed-address mw1098.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1099 {
 	hardware ethernet 84:2b:2b:77:e7:72;
 	fixed-address mw1099.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1100 {
 	hardware ethernet 84:2b:2b:77:e4:58;
 	fixed-address mw1100.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1101 {
 	hardware ethernet 84:2b:2b:77:d2:40;
 	fixed-address mw1101.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1102 {
 	hardware ethernet a4:ba:db:4e:b7:04;
 	fixed-address mw1102.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1103 {
 	hardware ethernet 78:2b:cb:4b:0f:66;
 	fixed-address mw1103.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1104 {
 	hardware ethernet 84:2b:2b:77:4e:3a;
 	fixed-address mw1104.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1105 {
 	hardware ethernet 84:2b:2b:78:2b:ab;
 	fixed-address mw1105.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1106 {
 	hardware ethernet 84:2b:2b:77:e4:9d;
 	fixed-address mw1106.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1107 {
 	hardware ethernet 84:2b:2b:78:29:cd;
 	fixed-address mw1107.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1108 {
 	hardware ethernet 84:2b:2b:78:2a:00;
 	fixed-address mw1108.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1109 {
 	hardware ethernet 84:2b:2b:77:4d:e3;
 	fixed-address mw1109.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1110 {
 	hardware ethernet 84:2b:2b:78:28:cb;
 	fixed-address mw1110.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1111 {
 	hardware ethernet 84:2b:2b:78:2b:a5;
 	fixed-address mw1111.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1112 {
 	hardware ethernet 84:2b:2b:78:2a:1d;
 	fixed-address mw1112.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1113 {
 	hardware ethernet 84:2b:2b:77:4a:7f;
 	fixed-address mw1113.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1114 {
 	hardware ethernet 84:2b:2b:78:29:a0;
 	fixed-address mw1114.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1115 {
 	hardware ethernet 84:2b:2b:77:4f:d8;
 	fixed-address mw1115.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1116 {
 	hardware ethernet 84:2b:2b:77:4d:f2;
 	fixed-address mw1116.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1117 {
 	hardware ethernet 84:2b:2b:77:50:73;
 	fixed-address mw1117.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1118 {
 	hardware ethernet 84:2b:2b:77:d2:bd;
 	fixed-address mw1118.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1119 {
 	hardware ethernet 78:2b:cb:07:aa:89;
 	fixed-address mw1119.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1120 {
 	hardware ethernet 84:2b:2b:78:29:bb;
 	fixed-address mw1120.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1121 {
 	hardware ethernet 84:2b:2b:78:28:a7;
 	fixed-address mw1121.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1122 {
 	hardware ethernet 78:2b:cb:07:4b:4a;
 	fixed-address mw1122.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1123 {
 	hardware ethernet 78:2b:cb:01:60:50;
 	fixed-address mw1123.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1124 {
 	hardware ethernet 78:2b:cb:08:70:47;
 	fixed-address mw1124.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1125 {
 	hardware ethernet 78:2b:cb:07:28:68;
 	fixed-address mw1125.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1126 {
 	hardware ethernet 78:2b:cb:08:70:8f;
 	fixed-address mw1126.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1127 {
 	hardware ethernet 78:2b:cb:07:72:99;
 	fixed-address mw1127.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1128 {
 	hardware ethernet 84:2b:2b:77:e9:16;
 	fixed-address mw1128.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1129 {
 	hardware ethernet 78:2b:cb:08:7d:2e;
 	fixed-address mw1129.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1130 {
 	hardware ethernet 78:2b:cb:08:73:b9;
 	fixed-address mw1130.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1131 {
 	hardware ethernet 78:2b:cb:06:8d:79;
 	fixed-address mw1131.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1132 {
 	hardware ethernet 78:2b:cb:08:79:51;
 	fixed-address mw1132.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1133 {
 	hardware ethernet 78:2b:cb:08:7b:51;
 	fixed-address mw1133.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1134 {
 	hardware ethernet 84:2b:2b:77:e6:f9;
 	fixed-address mw1134.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1135 {
 	hardware ethernet 84:2b:2b:77:d7:9c;
 	fixed-address mw1135.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1136 {
 	hardware ethernet 84:2b:2b:77:54:ab;
 	fixed-address mw1136.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1137 {
 	hardware ethernet 84:2b:2b:78:27:c2;
 	fixed-address mw1137.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1138 {
 	hardware ethernet 84:2b:2b:78:28:66;
 	fixed-address mw1138.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1139 {
 	hardware ethernet 84:2b:2b:78:2a:e5;
 	fixed-address mw1139.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1140 {
 	hardware ethernet 84:2b:2b:78:28:06;
 	fixed-address mw1140.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1141 {
 	hardware ethernet 84:2b:2b:78:2a:65;
 	fixed-address mw1141.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1142 {
 	hardware ethernet 84:2b:2b:77:e4:06;
 	fixed-address mw1142.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1143 {
 	hardware ethernet 84:2b:2b:77:d8:11;
 	fixed-address mw1143.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1144 {
 	hardware ethernet 84:2b:2b:77:e6:4a;
 	fixed-address mw1144.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1145 {
 	hardware ethernet 84:2b:2b:77:e7:96;
 	fixed-address mw1145.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1146 {
 	hardware ethernet 84:2b:2b:77:23:d4;
 	fixed-address mw1146.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1147 {
 	hardware ethernet 84:2b:2b:78:27:f8;
 	fixed-address mw1147.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1148 {
 	hardware ethernet 84:2b:2b:77:d2:6b;
 	fixed-address mw1148.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1149 {
 	hardware ethernet 84:2b:2b:77:27:24;
 	fixed-address mw1149.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1150 {
 	hardware ethernet 84:2b:2b:77:e6:8f;
 	fixed-address mw1150.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1151 {
 	hardware ethernet 84:2b:2b:77:d8:ba;
 	fixed-address mw1151.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1152 {
 	hardware ethernet 84:2b:2b:77:ea:54;
 	fixed-address mw1152.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1153 {
 	hardware ethernet 84:2b:2b:77:e7:c3;
 	fixed-address mw1153.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1154 {
 	hardware ethernet 84:2b:2b:78:2b:f3;
 	fixed-address mw1154.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1155 {
 	hardware ethernet 84:2b:2b:77:e7:1d;
 	fixed-address mw1155.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1156 {
 	hardware ethernet 84:2b:2b:77:e9:1c;
 	fixed-address mw1156.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1157 {
 	hardware ethernet 84:2b:2b:78:28:b0;
 	fixed-address mw1157.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1158 {
 	hardware ethernet 84:2b:2b:77:4f:9f;
 	fixed-address mw1158.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1159 {
 	hardware ethernet 84:2b:2b:77:e3:ee;
 	fixed-address mw1159.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host mw1160 {
 	hardware ethernet 84:2b:2b:77:e2:d1;
 	fixed-address mw1160.eqiad.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host nescio {
@@ -3110,9 +2610,6 @@ host ocg2 {
 host ocg3 {
 	hardware ethernet 78:2b:cb:1f:17:48;
 	fixed-address ocg3.wikimedia.org;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host oxygen {
@@ -3179,192 +2676,144 @@ host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search14 {
 	hardware ethernet 00:26:B9:53:55:A4;
 	fixed-address search14.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search15 {
 	hardware ethernet 00:26:B9:53:3F:82;
 	fixed-address search15.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search16 {
 	hardware ethernet 00:26:B9:53:55:F5;
 	fixed-address search16.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search17 {
 	hardware ethernet 00:26:B9:53:4F:C4;
 	fixed-address search17.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search18 {
 	hardware ethernet 00:26:B9:53:3E:B5;
 	fixed-address search18.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search19 {
 	hardware ethernet 00:26:B9:53:54:DF;
 	fixed-address search19.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search20 {
 	hardware ethernet 00:26:B9:53:52:32;
 	fixed-address search20.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search21 {
 	hardware ethernet d4:ae:52:6e:ea:1c;
 	fixed-address search21.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search22 {
 	hardware ethernet d4:ae:52:6e:ea:4c;
 	fixed-address search22.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search23 {
 	hardware ethernet d4:ae:52:6e:f0:8e;
 	fixed-address search23.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search24 {
 	hardware ethernet d4:ae:52:6e:f1:15;
 	fixed-address search24.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search25 {
 	hardware ethernet d4:ae:52:70:2d:e3;
 	fixed-address search25.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search26 {
 	hardware ethernet d4:ae:52:6e:e9:e0;
 	fixed-address search26.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search27 {
 	hardware ethernet d4:ae:52:70:2d:19;
 	fixed-address search27.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search28 {
 	hardware ethernet d4:ae:52:6e:e7:7e;
 	fixed-address search28.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search29 {
 	hardware ethernet d4:ae:52:64:da:54;
 	fixed-address search29.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search30 {
 	hardware ethernet d4:ae:52:6e:e3:32;
 	fixed-address search30.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search31 {
 	hardware ethernet d4:ae:52:6a:32:b6;
 	fixed-address search31.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search32 {
 	hardware ethernet d4:ae:52:70:46:da;
 	fixed-address search32.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search33 {
 	hardware ethernet d4:ae:52:6e:dc:73;
 	fixed-address search33.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search34 {
 	hardware ethernet d4:ae:52:64:da:69;
 	fixed-address search34.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search35 {
 	hardware ethernet d4:ae:52:70:2b:f6;
 	fixed-address search35.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search36 {
 	hardware ethernet d4:ae:52:6e:f1:60;
 	fixed-address search36.pmtpa.wmnet;
 	
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host search1001 {
@@ -3495,9 +2944,6 @@ host searchidx1001 {
 host searchidx2 {
 	hardware ethernet 14:fe:b5:d2:45:59;
 	fixed-address searchidx2.pmtpa.wmnet;
-
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host silicon {
@@ -4004,15 +3450,11 @@ host stafford {
 host stat1 {
 	hardware ethernet 78:2b:cb:1e:87:bc;
 	fixed-address stat1.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
 	fixed-address stat1001.wikimedia.org;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host strontium {
@@ -4033,8 +3475,6 @@ host tmh2 {
 host vanadium {
 	hardware ethernet 78:2b:cb:08:a4:3b;
 	fixed-address vanadium.eqiad.wmnet;
-	option pxelinux.pathprefix "precise-installer/";
-	filename "precise-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host virt1000 {
