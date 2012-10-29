@@ -1,7 +1,11 @@
+@monitor_group { "fundraising_eqiad": description => "fundraising eqiad" }
+@monitor_group { "fundraising_pmtpa": description => "fundraising pmtpa" }
+
+
 class role::fundraising::messaging {
+	system_role { "fundraiser messaging": description => "fundraiser messaging" }
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
-	@monitor_group { "${cluster}_${::site}": description => "${cluster} ${::site}" }
 	include standard,
 		groups::wikidev,
 		accounts::khorn
@@ -9,9 +13,8 @@ class role::fundraising::messaging {
 
 
 class role::fundraising::logger {
-	$cluster = "fundraising"
+	system_role { "fundraiser logging": description => "fundraiser logging" }
 	$nagios_group = "${cluster}_${::site}"
-	@monitor_group { "${cluster}_${::site}": description => "${cluster} ${::site}" }
 	include standard,
 		groups::wikidev,
 		accounts::khorn,
@@ -20,6 +23,7 @@ class role::fundraising::logger {
 
 
 class role::fundraising::civicrm {
+	system_role { "fundraiser civicrm": description => "fundraiser civicrm" }
 
 	# variables used in fundraising exim template
 	# TODO: properly scope these
@@ -66,7 +70,6 @@ class role::fundraising::civicrm {
 			ensure => present,
 	}
 
-	@monitor_group { "${cluster}_${::site}": description => "${cluster}_${::site}"}
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
@@ -75,6 +78,8 @@ class role::fundraising::civicrm {
 # this is from storage3 and will probably just be removed
 # moved it here to get it out of site.pp in the meantime
 class role::fundraising::database {
+
+	system_role { "fundraiser database": description => "fundraiser database" }
 
 	$db_cluster = "fundraisingdb"
 
