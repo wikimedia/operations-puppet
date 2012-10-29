@@ -3,7 +3,6 @@
 
 
 class role::fundraising::messaging {
-	system_role { "fundraiser messaging": description => "fundraiser messaging" }
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 	include standard,
@@ -13,7 +12,6 @@ class role::fundraising::messaging {
 
 
 class role::fundraising::logger {
-	system_role { "fundraiser logging": description => "fundraiser logging" }
 	$nagios_group = "${cluster}_${::site}"
 	include standard,
 		groups::wikidev,
@@ -23,7 +21,6 @@ class role::fundraising::logger {
 
 
 class role::fundraising::civicrm {
-	system_role { "fundraiser civicrm": description => "fundraiser civicrm" }
 
 	# variables used in fundraising exim template
 	# TODO: properly scope these
@@ -78,8 +75,6 @@ class role::fundraising::civicrm {
 # this is from storage3 and will probably just be removed
 # moved it here to get it out of site.pp in the meantime
 class role::fundraising::database {
-
-	system_role { "fundraiser database": description => "fundraiser database" }
 
 	$db_cluster = "fundraisingdb"
 
