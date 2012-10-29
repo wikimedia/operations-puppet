@@ -747,7 +747,9 @@ node "ersch.pmtpa.wmnet" {
 		role::poolcounter
 }
 
-node "erzurumi.pmtpa.wmnet" {
+node /^(erzurumi.pmtpa.wmnet|loudon.wikimedia.org)$/ {
+	$cluster = "fundraising"
+	$nagios_group = "${cluster}_${::site}"
 	include	standard,
 		groups::wikidev,
 		accounts::khorn
@@ -899,7 +901,9 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
-	$cluster = "misc"
+	$cluster = "fundraising"
+	$nagios_group = "${cluster}_${::site}"
+
 	$gid = 500
 	include	base,
 		ganglia,
