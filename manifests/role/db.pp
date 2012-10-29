@@ -38,7 +38,9 @@ class role::db::es($mysql_role = "slave") {
 class role::db::fundraising {
 
 	$crit = $master
-	$cluster = "mysql"
+	$cluster = "fundraising"
+    $nagios_group = "${cluster}_${::site}"
+
 
 	system_role { "role::db::fundraising": description => "Fundraising Database (${mysql_role})" }
 

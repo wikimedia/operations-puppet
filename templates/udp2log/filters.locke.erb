@@ -28,8 +28,8 @@ pipe 100 /usr/bin/udp-filter -d "m.wikipedia.org" >> /a/squid/mobile.log
 pipe 1 /usr/bin/udp-filter -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.log
 
 # Banner Impressions
-#pipe 100 /usr/bin/udp-filter -p BannerLoader\&banner=B12,BannerController,RecordImpression\&banner= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
-pipe 100 /usr/bin/udp-filter -p BannerLoader\&banner=,BannerController,RecordImpression\&banner= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
+#pipe 100 /usr/bin/udp-filter -p BannerLoader\&banner=B12,BannerController,RecordImpression\&banner=,BannerRandom >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
+pipe 100 /usr/bin/udp-filter -p BannerLoader\&banner=,BannerController,RecordImpression\&banner=,BannerRandom >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
 
 
 # Vrije Universiteit

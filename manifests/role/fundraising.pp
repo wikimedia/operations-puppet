@@ -1,6 +1,5 @@
 @monitor_group { "fundraising_eqiad": description => "fundraising eqiad" }
-@monitor_group { "fundraising_pmtpa": description => "fundraising pmtpa" }
-
+@monitor_group { "fundraising_ptmpa": description => "fundraising pmtpa" }
 
 class role::fundraising::messaging {
 	$cluster = "fundraising"
@@ -12,6 +11,7 @@ class role::fundraising::messaging {
 
 
 class role::fundraising::logger {
+	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 	include standard,
 		groups::wikidev,
