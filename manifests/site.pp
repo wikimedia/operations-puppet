@@ -758,6 +758,7 @@ node "ersch.pmtpa.wmnet" {
 node /^(erzurumi.pmtpa.wmnet|loudon.wikimedia.org)$/ {
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
+	@monitor_group { "${cluster}_${::site}": description => "${cluster}_${::site}"}
 	include	standard,
 		groups::wikidev,
 		accounts::khorn
@@ -911,6 +912,7 @@ node /(grosley|aluminium)\.wikimedia\.org/ {
 
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
+	@monitor_group { "${cluster}_${::site}": description => "${cluster}_${::site}"}
 
 	$gid = 500
 	include	base,
