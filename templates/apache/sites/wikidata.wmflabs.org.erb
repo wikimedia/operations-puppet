@@ -1,0 +1,37 @@
+<VirtualHost *:80>
+    # ServerName example.org
+    # ServerAlias *.example.org
+    ServerAdmin silke.meyer@wikimedia.de
+
+    RewriteEngine On
+    # The following lines are an example that allow users to place "wikipedia" with "wikidata" in a URL. They will be led to the Wikidata item (e.g. http://en.wikipedia.org/wiki/Ada_Lovelace and http://en.wikidata.org/wiki/Ada_Lovelace)
+    # RewriteCond %{HTTP_HOST} ^(en|de|hu|he)\.example\.org$
+    # RewriteRule ^/(wiki|title)/(.*)$ http://example.org/title/%1wiki:$2 [R,QSA]
+    # RewriteRule ^/title/(de|en|he|hu)wiki:(.*)$ /w/index.php?title=Special:ItemByTitle/$1wiki/$2 [L,QSA]
+
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    Alias /w /srv/mediawiki
+    Alias /wiki /srv/mediawiki/index.php
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+</VirtualHost>
