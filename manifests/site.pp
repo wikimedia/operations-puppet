@@ -43,6 +43,7 @@ import "svn.pp"
 import "swift.pp"
 import "varnish.pp"
 import "webserver.pp"
+import "wikidata.pp"
 
 # Include stages last
 import "stages.pp"
