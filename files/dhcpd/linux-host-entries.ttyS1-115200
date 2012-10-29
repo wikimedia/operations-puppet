@@ -366,6 +366,106 @@ host cp3002 {
 	fixed-address cp3002.esams.wikimedia.org;
 }
 
+host cp3003 {
+	hardware ethernet D4:AE:52:8C:8B:7E;
+	fixed-address cp3003.esams.wikimedia.org;
+}
+
+host cp3004 {
+	hardware ethernet D4:AE:52:8C:66:70;
+	fixed-address cp3004.esams.wikimedia.org;
+}
+
+host cp3005 {
+	hardware ethernet D4:AE:52:8C:6A:18;
+	fixed-address cp3005.esams.wikimedia.org;
+}
+
+host cp3006 {
+	hardware ethernet D4:AE:52:8A:6B:33;
+	fixed-address cp3006.esams.wikimedia.org;
+}
+
+host cp3007 {
+	hardware ethernet D4:AE:52:88:66:2F;
+	fixed-address cp3007.esams.wikimedia.org;
+}
+
+host cp3008 {
+	hardware ethernet D4:AE:52:8C:61:E3;
+	fixed-address cp3008.esams.wikimedia.org;
+}
+
+host cp3009 {
+	hardware ethernet D4:AE:52:8A:70:FA;
+	fixed-address cp3009.esams.wikimedia.org;
+}
+
+host cp3010 {
+	hardware ethernet D4:AE:52:8A:7E:6E;
+	fixed-address cp3010.esams.wikimedia.org;
+}
+
+host cp3011 {
+	hardware ethernet 24:B6:FD:F5:B2:D4;
+	fixed-address cp3011.esams.wikimedia.org;
+}
+
+host cp3012 {
+	hardware ethernet 24:B6:FD:F5:AB:B4;
+	fixed-address cp3012.esams.wikimedia.org;
+}
+
+host cp3013 {
+	hardware ethernet 24:B6:FD:F5:AD:9C;
+	fixed-address cp3013.esams.wikimedia.org;
+}
+
+host cp3014 {
+	hardware ethernet 24:B6:FD:F5:7C:38;
+	fixed-address cp3014.esams.wikimedia.org;
+}
+
+host cp3015 {
+	hardware ethernet D4:AE:52:8C:7C:E9;
+	fixed-address cp3015.esams.wikimedia.org;
+}
+
+host cp3016 {
+	hardware ethernet D4:AE:52:7A:C4:AB;
+	fixed-address cp3016.esams.wikimedia.org;
+}
+
+host cp3017 {
+	hardware ethernet D4:AE:52:7A:C3:CE;
+	fixed-address cp3017.esams.wikimedia.org;
+}
+
+#host cp3018 {
+#	hardware ethernet ;
+#	fixed-address cp3018.esams.wikimedia.org;
+#}
+
+host cp3019 {
+	hardware ethernet D4:AE:52:8A:73:9A;
+	fixed-address cp3019.esams.wikimedia.org;
+}
+
+host cp3020 {
+	hardware ethernet D4:AE:52:8A:75:62;
+	fixed-address cp3020.esams.wikimedia.org;
+}
+
+host cp3021 {
+	hardware ethernet D4:AE:52:8A:70:82;
+	fixed-address cp3021.esams.wikimedia.org;
+}
+
+host cp3022 {
+	hardware ethernet D4:AE:52:8A:6E:03;
+	fixed-address cp3022.esams.wikimedia.org;
+}
+
 host dataset2 {
 	hardware ethernet 84:2B:2B:6A:F4:60;
 	fixed-address dataset2.wikimedia.org;
@@ -1357,6 +1457,26 @@ host ms-be1012 {
 	fixed-address ms-be1012.eqiad.wmnet;
 }
 
+host ms-be3001 {
+	hardware ethernet 24:B6:FD:F6:13:AC;
+	fixed-address ms-be3001.esams.wikimedia.org;
+}
+
+host ms-be3002 {
+	hardware ethernet 24:B6:FD:F6:17:3C;
+	fixed-address ms-be3002.esams.wikimedia.org;
+}
+
+host ms-be3003 {
+	hardware ethernet 24:B6:FD:F6:17:38;
+	fixed-address ms-be3003.esams.wikimedia.org;
+}
+
+#host ms-be3004 {
+#	hardware ethernet ;
+#	fixed-address ms-be3004.esams.wikimedia.org;
+#}
+
 host ms-fe1 {
 	hardware ethernet d4:be:d9:af:84:27;
 	fixed-address ms-fe1.pmtpa.wmnet;
@@ -1405,6 +1525,16 @@ host ms-fe1003 {
 host ms-fe1004 {
 	hardware ethernet d4:be:d9:ec:e0:52;
 	fixed-address ms-fe1004.eqiad.wmnet;
+}
+
+host ms-fe3001 {
+	hardware ethernet 24:B6:FD:F5:B2:84;
+	fixed-address ms-fe3001.esams.wikimedia.org;
+}
+
+host ms-fe3002 {
+	hardware ethernet 24:B6:FD:F5:B3:E4;
+	fixed-address ms-fe3002.esams.wikimedia.org;
 }
 
 host mw1 {
