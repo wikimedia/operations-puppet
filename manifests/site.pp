@@ -495,6 +495,12 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	include role::cache::bits
 }
 
+node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
+	$ganglia_aggregator = "true"
+
+	include role::cache::bits
+}
+
 
 node "dataset2.wikimedia.org" {
 	$cluster = "misc"
