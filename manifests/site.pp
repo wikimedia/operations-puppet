@@ -755,14 +755,18 @@ node "ersch.pmtpa.wmnet" {
 		role::poolcounter
 }
 
-node /^(erzurumi.pmtpa.wmnet|loudon.wikimedia.org)$/ {
-	$cluster = "fundraising"
-	$nagios_group = "${cluster}_${::site}"
-	@monitor_group { "${cluster}_${::site}": description => "${cluster}_${::site}"}
-	include	standard,
-		groups::wikidev,
-		accounts::khorn
+node "erzurumi.pmtpa.wmnet" {
+	include	role::fundraising::messaging
 }
+
+node "loudon.wikimedia.org" {
+	include	role::fundraising::logger
+}
+
+node /^(grosley|aluminium)\.wikimedia\.org$/ {
+	include role::fundraising::civicrm
+}
+
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
@@ -897,58 +901,6 @@ node "gallium.wikimedia.org" {
 		admins::jenkins
 
 	install_certificate{ "star.mediawiki.org": }
-}
-
-node /(grosley|aluminium)\.wikimedia\.org/ {
-
-	# variables used in fundraising exim template
-	# TODO: properly scope these
-	$exim_signs_dkim = "true"
-	$exim_bounce_collector = "true"
-
-	install_certificate{ "star.wikimedia.org": }
-
-	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
-
-	$cluster = "fundraising"
-	$nagios_group = "${cluster}_${::site}"
-	@monitor_group { "${cluster}_${::site}": description => "${cluster}_${::site}"}
-
-	$gid = 500
-	include	base,
-		ganglia,
-		ntp::client,
-		nrpe,
-		admins::roots,
-		accounts::khorn,
-		accounts::mhernandez,
-		accounts::mwalker,
-		accounts::pgehres,
-		accounts::pcoombe,
-		accounts::rfaulk,
-		accounts::zexley,
-		backup::client,
-		misc::fundraising,
-		misc::fundraising::mail,
-		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive
-
-	if $hostname == "aluminium" {
-		include misc::jenkins,
-			misc::fundraising::jenkins_maintenance
-	}
-
-	cron {
-		'offhost_backups':
-			user => root,
-			minute => '5',
-			hour => '0',
-			command => '/usr/local/bin/offhost_backups',
-			ensure => present,
-	}
-
-	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
 
 node "gurvin.wikimedia.org" {
@@ -2451,33 +2403,7 @@ node "storage2.wikimedia.org" {
 }
 
 node "storage3.pmtpa.wmnet" {
-
-	$db_cluster = "fundraisingdb"
-
-	include role::db::core,
-		role::db::fundraising::slave,
-		role::db::fundraising::dump,
-		mysql::packages,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		svn::client,
-		groups::wikidev,
-		accounts::khorn,
-		accounts::pgehres,
-		accounts::zexley,
-		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive
-
-	cron {
-		'offhost_backups':
-			user => root,
-			minute => '30',
-			hour => '23',
-			command => '/usr/local/bin/offhost_backups',
-			ensure => present,
-	}
-
+	include role::fundraising::database
 }
 
 node "streber.wikimedia.org" {
