@@ -42,7 +42,7 @@ DAEMON_OPTS=${DAEMON_OPTS:--b localhost}
 
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 # Bash sucks
-CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -lGeoIP -o %o %s"
+CC_COMMAND="exec cc -fpic -shared -Wl,-x -L/usr/local/lib/ -o %o %s -lGeoIP"
 <% end %>
 
 case "$1" in
