@@ -327,7 +327,7 @@ node "analytics1001.wikimedia.org" {
 # analytics1002 - analytics1099
 node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
-	if $hostname == "analytics1003" {
+	if ($hostname == "analytics1003" or $hostname == "analytics1010") {
 		$ganglia_aggregator = "true"
 	}
 
