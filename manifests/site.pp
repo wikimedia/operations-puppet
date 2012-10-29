@@ -496,7 +496,9 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
-	$ganglia_aggregator = "true"
+	if $::hostname =~ /^cp(3019|3020)$/ {
+		$ganglia_aggregator = "true"
+	}
 
 	include role::cache::bits
 }
