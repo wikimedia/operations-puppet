@@ -24,12 +24,17 @@ C{
 
 	pthread_mutex_t geoip_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-	GeoIP *gi;
+	GeoIP *gi4, *gi6;
 	void geo_init () {
-		if (!gi) {
-			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MEMORY_CACHE);
+		if (!gi4) {
+			gi4 = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MEMORY_CACHE);
+		}
+		if (!gi6) {
+			/*  no GeoIPCity for IPv6 yet */
+			gi6 = GeoIP_open("/usr/share/GeoIP/GeoLiteCityv6.dat", GEOIP_MEMORY_CACHE);
 		}
 	}
+
 	getaddrfamily(const char *addr) {
 		struct addrinfo hint, *info=0;
 		memset(&hint, 0, sizeof(hint));
@@ -54,6 +59,9 @@ sub geoip_lookup {
 		char *last;
 		char date[40];
 		char json[255];
+		int is_ipv6;
+		GeoIPRecord *record;
+		int netmask;
 
 		// XFF can be a comma delimited list of IPs
 		char *xff_ip_str = strtok_r(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",", &last);
@@ -76,8 +84,17 @@ sub geoip_lookup {
 
 		pthread_mutex_lock(&geoip_mutex);
 
-		if (!gi) { geo_init(); }
-		GeoIPRecord *record = GeoIP_record_by_addr(gi, ip);
+		geo_init();
+
+		is_ipv6 = (strchr(ip, '.') == NULL);
+		if (!is_ipv6) {
+			record = GeoIP_record_by_addr(gi4, ip);
+			netmask = GeoIP_last_netmask(gi4);
+		} else {
+			record = GeoIP_record_by_addr_v6(gi6, ip);
+			netmask = 64; /* no GeoIP_last_netmask for IPv6 */
+		}
+
 		if (record) {
 			snprintf(json, 255, "Geo = {\"city\":\"%s\",\"country\":\"%s\",\"lat\":\"%f\",\"lon\":\"%f\",\"IP\":\"%s\",\"netmask\":\"%d\"}",
 				record->city,
@@ -85,7 +102,7 @@ sub geoip_lookup {
 				record->latitude,
 				record->longitude,
 				ip,
-				GeoIP_last_netmask(gi)
+				netmask
 			);
 			pthread_mutex_unlock(&geoip_mutex);
 			VRT_synth_page(sp, 0, json,  vrt_magic_string_end);
