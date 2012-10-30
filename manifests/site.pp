@@ -500,6 +500,8 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 		$ganglia_aggregator = "true"
 	}
 
+	interface_add_ip6_mapped { "main": }
+
 	include role::cache::bits
 }
 
