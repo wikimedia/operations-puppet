@@ -39,7 +39,6 @@ class protoproxy::proxy_sites {
 
 	install_certificate{ "star.wikimedia.org": }
 	install_certificate{ "star.wikipedia.org": }
-	install_certificate{ "test-star.wikipedia.org": }
 	install_certificate{ "star.wiktionary.org": }
 	install_certificate{ "star.wikiquote.org": }
 	install_certificate{ "star.wikibooks.org": }
@@ -119,7 +118,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.225", "[2620:0:862:ed1a::1]" ]
 			},
 		proxy_server_name => '*.wikipedia.org',
-		proxy_server_cert_name => 'test-star.wikipedia.org',
+		proxy_server_cert_name => 'star.wikipedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -263,7 +262,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "127.0.0.1", "[2620:0:862:ed1a::c]" ]
 		},
 		proxy_server_name => '*.m.wikipedia.org',
-		proxy_server_cert_name => 'test-star.wikipedia.org',
+		proxy_server_cert_name => 'star.wikipedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.26" },
 			"eqiad" => { "primary" => "10.2.2.26" },
