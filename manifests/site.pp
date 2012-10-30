@@ -669,9 +669,21 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::db::core,
-		mysql::mysqluser,
+	include mysql::mysqluser,
 		mysql::datadirs
+
+	if $hostname == "db1008" {
+		include role::fundraising::database::master
+	}
+	elsif $hostname == "db1013" {
+		include role::fundraising::database::slave
+	}
+	elsif $hostname == "db1025" {
+		include role::fundraising::database::dump_slave
+	}
+	else {
+		include role::db::core
+	}
 	if $hostname != "db1047" {
 		include mysql::packages,
 			mysql::conf
