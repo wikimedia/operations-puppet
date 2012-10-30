@@ -83,6 +83,10 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 		"/etc/powerdns/participants":
 			require => Package[wikimedia-task-dns-auth],
 			ensure => present;
+		"/etc/powerdns/domain-maplist":
+			require => Package[wikimedia-task-dns-auth],
+			mode => 0444,
+			source => "puppet:///files/powerdns/domain-maplist";
 		"/root/.ssh/wikimedia-task-dns-auth":
 			owner => root,
 			group => root,
