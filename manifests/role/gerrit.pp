@@ -40,7 +40,8 @@ class role::gerrit {
 				  "threads" => "4",
 				  "authGroup" => "mediawiki-replication",
 				  "push" => "+refs/heads/*:refs/heads/*
-  push = +refs/tags/*:refs/tags/*"
+  push = +refs/tags/*:refs/tags/*",
+				  "isGithubRepo" => "true",
 				}
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
