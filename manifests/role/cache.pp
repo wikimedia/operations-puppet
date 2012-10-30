@@ -527,7 +527,7 @@ class role::cache {
 			storage => "-s malloc,1G",
 			backends => $varnish_backends,
 			directors => $varnish_directors,
-			director_type => "round-robin",
+			director_type => "random",
 			vcl_config => {
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
