@@ -438,9 +438,7 @@ class role::cache {
 			$varnish_backends = $::site ? {
 				/^(pmtpa|eqiad)$/ => $all_backends,
 				# [ bits-lb.pmtpa, bits-lb.eqiad ]
-				#'esams' => [ "208.80.152.210", "208.80.154.234" ],
-				# FIXME: switched from eqiad to pmtpa during Aug 6th 2012 outage
-				'esams' => [ "208.80.152.210" ],
+				'esams' => [ "208.80.152.210", "208.80.154.234" ],
 				default => []
 			}
 		} else {
@@ -529,6 +527,7 @@ class role::cache {
 			storage => "-s malloc,1G",
 			backends => $varnish_backends,
 			directors => $varnish_directors,
+			director_type => "round-robin",
 			vcl_config => {
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
