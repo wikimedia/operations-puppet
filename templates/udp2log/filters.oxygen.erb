@@ -6,7 +6,7 @@
 pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
 
 # Temporarily catch all logs for banner impressions.
-pipe 1 /usr/bin/udp-filter -p BannerLoader\&banner=B12,RecordImpression\&banner=B12,BannerRandom >> /a/squid/bannerImpressions-sampled1.log
+pipe 1 /usr/bin/udp-filter -p BannerLoader\&banner=B12,RecordImpression\?banner=B12,BannerRandom >> /a/squid/bannerImpressions-sampled1.log
 
 #
 # specific Wikipedia Zero filters
