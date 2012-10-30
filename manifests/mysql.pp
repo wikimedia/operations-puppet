@@ -67,28 +67,9 @@ class mysql {
 	}
 	elsif $hostname =~ /^(db1008|db1013|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		if $hostname =~ /^db1008$/ {
-			include role::fundraising::database::master
-			$writable = true
-		}
-		elsif $hostname =~ /^db1013$/ {
-			# temporary extra slave db for 2012 fundraiser
-			include role::fundraising::database::slave
-		}
-		elsif $hostname =~ /^db1025$/ {
-			include role::fundraising::database::slave,
-				role::fundraising::database::dump,
-				misc::fundraising::backup::offhost
-
-			cron {
-				'offhost_backups':
-				user => root,
-				minute => '35',
-				hour => '1',
-				command => '/usr/local/bin/offhost_backups',
-				ensure => present,
-			}
-		}
+		#if $hostname =~ /^db1008$/ {
+		#	$writable = true
+		#}
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
 		$db_cluster = "m2"
