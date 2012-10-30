@@ -93,7 +93,7 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 	}
 
 	git::clone { "nuke" :
-		require => git::clone["mediawiki"],
+		require => Git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/Nuke",
 		branch => "master",
 		ensure => $keep_up_to_date ? {
@@ -104,7 +104,7 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 	}
 
 	git::clone { "SpamBlacklist" :
-		require => git::clone["mediawiki"],
+		require => Git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/SpamBlacklist",
 		branch => "master",
 		ensure => $keep_up_to_date ? {
@@ -115,7 +115,7 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 	}
 
 	git::clone { "ConfirmEdit" :
-		require => git::clone["mediawiki"],
+		require => Git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/ConfirmEdit",
 		branch => "master",
 		ensure => $keep_up_to_date ? {
@@ -139,7 +139,7 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 	}
 
 	file { '/var/www/srv/mediawiki':
-		require => [File['/var/www/srv'], git::clone['mediawiki']],
+		require => [File['/var/www/srv'], Git::clone['mediawiki']],
 		ensure => 'link',
 		target => '/srv/mediawiki';
 	}
@@ -156,7 +156,7 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 	}
 
         exec { 'password_gen':
-		require => [git::clone["mediawiki"],  File["/srv/mediawiki/orig"]],
+		require => [Git::clone["mediawiki"],  File["/srv/mediawiki/orig"]],
 		creates => "/srv/mediawiki/orig/adminpass",
 		command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > /srv/mediawiki/orig/adminpass"
 	}
@@ -170,10 +170,10 @@ class mediawiki::singlenode( $keep_up_to_date = false ) {
 
 	if $keep_up_to_date == 'true' {
 		exec { 'mediawiki_update':
-			require => [git::clone["mediawiki"],
-				git::clone["nuke"],
-				git::clone["SpamBlacklist"],
-				git::clone["ConfirmEdit"],
+			require => [Git::clone["mediawiki"],
+				Git::clone["nuke"],
+				Git::clone["SpamBlacklist"],
+				Git::clone["ConfirmEdit"],
 				File["/srv/mediawiki/LocalSettings.php"]],
 			command => "/usr/bin/php /srv/mediawiki/maintenance/update.php --quick --conf '/srv/mediawiki/LocalSettings.php'",
 			logoutput => " ",
