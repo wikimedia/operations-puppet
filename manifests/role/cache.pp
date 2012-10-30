@@ -524,7 +524,7 @@ class role::cache {
 			vcl => "bits",
 			port => 80,
 			admin_port => 6082,
-			storage => "-s malloc,1G",
+			storage => "-s malloc,2G",
 			backends => $varnish_backends,
 			directors => $varnish_directors,
 			director_type => "random",
