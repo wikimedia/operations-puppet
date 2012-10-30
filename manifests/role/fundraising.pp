@@ -1,5 +1,5 @@
 @monitor_group { "fundraising_eqiad": description => "fundraising eqiad" }
-@monitor_group { "fundraising_ptmpa": description => "fundraising pmtpa" }
+@monitor_group { "fundraising_pmtpa": description => "fundraising pmtpa" }
 
 class role::fundraising::messaging {
 	$cluster = "fundraising"
