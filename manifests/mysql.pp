@@ -68,16 +68,16 @@ class mysql {
 	elsif $hostname =~ /^(db1008|db1013|db1025)$/ {
 		$db_cluster = "fundraisingdb"
 		if $hostname =~ /^db1008$/ {
-			include role::db::fundraising::master
+			include role::fundraising::database::master
 			$writable = true
 		}
 		elsif $hostname =~ /^db1013$/ {
 			# temporary extra slave db for 2012 fundraiser
-			include role::db::fundraising::slave
+			include role::fundraising::database::slave
 		}
 		elsif $hostname =~ /^db1025$/ {
-			include role::db::fundraising::slave,
-				role::db::fundraising::dump,
+			include role::fundraising::database::slave,
+				role::fundraising::database::dump,
 				misc::fundraising::backup::offhost
 
 			cron {
