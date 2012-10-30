@@ -67,9 +67,6 @@ class mysql {
 	}
 	elsif $hostname =~ /^(db1008|db1013|db1025)$/ {
 		$db_cluster = "fundraisingdb"
-		#if $hostname =~ /^db1008$/ {
-		#	$writable = true
-		#}
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
 		$db_cluster = "m2"

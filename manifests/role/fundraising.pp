@@ -73,7 +73,6 @@ class role::fundraising::civicrm {
 class role::fundraising::database {
 	$crit = $master
 	$cluster = "fundraising"
-	$db_cluster = "fundraisingdb"
 	$nagios_group = "${cluster}_${::site}"
 
 	system_role { "role::fundraising::database": description => "Fundraising Database (${mysql_role})" }
@@ -146,60 +145,3 @@ class role::fundraising::database::dump_slave {
 			ensure => present;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# this is from storage3 and will probably just be removed
-# moved it here to get it out of site.pp in the meantime
-#class role::fundraising::database {
-#
-#	$db_cluster = "fundraisingdb"
-#
-#	include role::db::core,
-#		role::fundraising::database::slave,
-#		role::fundraising::database::dump,
-#		mysql::packages,
-#		mysql::mysqluser,
-#		mysql::datadirs,
-#		mysql::conf,
-#		svn::client,
-#		groups::wikidev,
-#		accounts::khorn,
-#		accounts::pgehres,
-#		accounts::zexley,
-#		misc::fundraising::backup::offhost,
-#		misc::fundraising::backup::archive
-#
-#	cron {
-#		'offhost_backups':
-#			user => root,
-#			minute => '30',
-#			hour => '23',
-#			command => '/usr/local/bin/offhost_backups',
-#			ensure => present,
-#	}
-#
-#}
