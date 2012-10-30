@@ -71,7 +71,6 @@ class role::fundraising::civicrm {
 
 
 class role::fundraising::database {
-	$crit = $master
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 
@@ -84,12 +83,6 @@ class role::fundraising::database {
 		mysql::packages,
 		mysql::conf
 
-	monitor_service {
-		"mysqld":
-			description => "mysqld processes",
-			check_command => "nrpe_check_mysqld",
-			critical => $crit;
-	}
 }
 
 
@@ -97,18 +90,15 @@ class role::fundraising::database::master {
 	$mysql_role = "master"
 	$writable = true
 	include role::fundraising::database
+	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => true }
 }
 
 
 class role::fundraising::database::slave {
 	$mysql_role = "slave"
 	include role::fundraising::database
-	monitor_service {
-		"mysql slave delay":
-			description => "MySQL Slave Delay",
-			check_command => "nrpe_check_mysql_slave_delay",
-			critical => false
-	}
+	monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
+	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => false }
 }
 
 
