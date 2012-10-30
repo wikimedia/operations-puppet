@@ -590,6 +590,14 @@ class base::environment {
 
 	### Settings commons to all realms
 
+	# Once upon a time provided by wikimedia-base debian package
+	file { "/etc/wikimedia-cluster":
+		owner => root,
+		group => root,
+		mode  => 0444,
+		content => "${::cluster}\n" ;
+	}
+
 	file { "/etc/wikimedia-realm":
 		owner => root,
 		group => root,
