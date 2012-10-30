@@ -338,6 +338,11 @@ class role::cache {
 				"esams" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
 			}
 
+			$varnish_be_directors = {
+				"eqiad" => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
+				"esams" => { "backend" => "208.80.154.235" }
+			}
+
 			if $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
@@ -368,8 +373,11 @@ class role::cache {
 				port => 3128,
 				admin_port => 6083,
 				storage => "-s main-sda3=file,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=file,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
-				backends => [ "10.2.1.24", "10.2.1.27" ],
-				directors => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
+				backends => $::site ? {
+					'eqiad' => [ "10.2.1.24", "10.2.1.27" ],
+					'esams' => [ "208.80.154.235" ],
+				},
+				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 1,
