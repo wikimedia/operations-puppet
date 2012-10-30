@@ -483,16 +483,12 @@ node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
-	$ganglia_aggregator = "true"
-
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
 	interface_add_ip6_mapped { "main":
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
 	}
-
-	include role::cache::bits
 }
 
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {

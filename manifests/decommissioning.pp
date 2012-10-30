@@ -7,6 +7,8 @@ $decommissioned_servers = [
 "bayes",
 "br1-knams",
 "controller",
+"cp3001",
+"cp3002",
 "dataset1",
 "db1",
 "db2",
