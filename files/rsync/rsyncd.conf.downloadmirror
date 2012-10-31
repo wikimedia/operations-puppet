@@ -39,5 +39,8 @@ exclude = **tmp/ **temp/ **bad/ **save/
 # added your.org, Feb 2 2012 -- atg
 # for your.org, contact: Kevin Day <kevin@your.org>
 # they manage it but we have access; see file in /home/wikipedia/docs/mirrors
-hosts allow = 199.47.196.26 ftpmirror.your.org
+# added amazonaws.com, Oct 31 2012 -- atg
+# we are still in the process of setting it up, for access see file in /home/w/docs/mirrors
+# it will eventually be managed by folks at amazon
+hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com
 
