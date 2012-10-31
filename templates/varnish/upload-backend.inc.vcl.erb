@@ -8,7 +8,6 @@ import std;
 # List of Puppet generated backends
 
 <% vcl_config.fetch("upstream_directors", {}).values.flatten.sort.each do |backend| -%>
-<% if backend =~ /^[0-9\.]+$/ -%>
 backend <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_") %> {
 	.host = "<%= backend %>";
 	.port = 3128;
