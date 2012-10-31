@@ -70,6 +70,8 @@ sub vcl_recv {
 		error 403 "Requested target domain not allowed.";
 	}
 
+	set req.backend = eqiad;
+
 	/* Make sure high range requests don't block on large objects being retrieved */
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
