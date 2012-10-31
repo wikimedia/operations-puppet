@@ -9,7 +9,8 @@ class zuulwikimedia {
 		$jenkins_user,
 		$gerrit_server,
 		$gerrit_user,
-		$url_pattern
+		$url_pattern,
+		$status_url
 	) {
 
 			# Zuul needs an API key to interact with Jenkins:
@@ -25,6 +26,7 @@ class zuulwikimedia {
 				gerrit_server  => $gerrit_server,
 				gerrit_user    => $gerrit_user,
 				url_pattern    => $url_pattern,
+				status_url    => $status_url,
 			}
 
 			# Deploy Wikimedia Zuul configuration files.
