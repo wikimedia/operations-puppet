@@ -335,12 +335,17 @@ class role::cache {
 			$varnish_fe_directors = {
 				"pmtpa" => {},
 				"eqiad" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
-				"esams" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
+				# TODO: replace after removing Squid
+				"esams" => { "backend" => [ "cp3003.esams.wikimedia.org"], "squid" => $role::cache::configuration::active_nodes['upload'][$::site] },
 			}
 
 			$varnish_be_directors = {
 				"eqiad" => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
-				"esams" => { "backend" => "208.80.154.235" }
+				"esams" => {
+					"backend" => "208.80.154.235",
+					"pmtpa" => $role::cache::configuration::active_nodes['upload']['pmtpa'],
+					"eqiad" => $role::cache::configuration::active_nodes['upload']['eqiad'],
+				}
 			}
 
 			if $::site == "eqiad" {
