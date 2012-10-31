@@ -2,6 +2,45 @@
 
 import std;
 
+<% if vcl_config.fetch("cluster_tier", "1") == "2" -%>
+# Define backends and directors specific for upload
+
+# List of Puppet generated backends
+/*
+
+<% vcl_config.fetch("upstream_directors", {}).values.flatten.sort.each do |backend| -%>
+<% if backend =~ /^[0-9\.]+$/ -%>
+backend ipv4_<%= backend.gsub(".", "_") %> {
+<% else -%>
+backend <%= backend.split(".")[0].gsub("-", "_") %> {
+<% end -%>
+	.host = "<%= backend %>";
+	.port = 3128;
+	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
+	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
+	.probe = varnish;
+<% end -%>
+
+# Directors
+<% vcl_config.fetch("upstream_directors", {}).each_pair do |director,backends| -%>
+director <%= director %> chash {
+<% backends.sort.each do |backend| -%>
+	{
+<% if backend =~ /^[0-9\.]+$/ -%>
+		.backend = ipv4_<%= backend.gsub(".", "_") %>;
+<% else -%>
+		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
+<% end -%>
+		.weight = 10;
+	}
+<% end -%>
+}
+<% end -%>
+*/
+<% end -%>
+
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "main-sda3";
