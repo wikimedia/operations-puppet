@@ -22,10 +22,10 @@ chomp $conf->{'HOSTNAME'};
 chomp $conf->{'DATE'};
 
 # jobs, keep 'em numbered in the order you want them to happen
-if ($conf->{'HOSTNAME'} eq 'storage3') {
+if ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy collected backups from individual hosts to tridge
-	$mirror->{'1'} = 'rsync -ar /archive/storage3/ fundraising@tridge.wikimedia.org:storage3/';
+	$mirror->{'1'} = 'rsync -ar /archive/db78/ fundraising@tridge.wikimedia.org:db78/';
 	$mirror->{'2'} = 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
 	$mirror->{'3'} = 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
 	$mirror->{'4'} = 'rsync -ar /archive/loudon/ fundraising@tridge.wikimedia.org:loudon/';
