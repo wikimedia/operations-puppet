@@ -6,14 +6,10 @@ import std;
 # Define backends and directors specific for upload
 
 # List of Puppet generated backends
-/*
 
 <% vcl_config.fetch("upstream_directors", {}).values.flatten.sort.each do |backend| -%>
 <% if backend =~ /^[0-9\.]+$/ -%>
-backend ipv4_<%= backend.gsub(".", "_") %> {
-<% else -%>
-backend <%= backend.split(".")[0].gsub("-", "_") %> {
-<% end -%>
+backend <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_") %> {
 	.host = "<%= backend %>";
 	.port = 3128;
 	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
@@ -21,24 +17,19 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
 	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
 	.probe = varnish;
+}
 <% end -%>
 
 # Directors
 <% vcl_config.fetch("upstream_directors", {}).each_pair do |director,backends| -%>
 director <%= director %> chash {
 <% backends.sort.each do |backend| -%>
-	{
-<% if backend =~ /^[0-9\.]+$/ -%>
-		.backend = ipv4_<%= backend.gsub(".", "_") %>;
-<% else -%>
-		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
-<% end -%>
+	{	.backend = <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_") %>;
 		.weight = 10;
 	}
 <% end -%>
 }
 <% end -%>
-*/
 <% end -%>
 
 sub pick_main_stevedore {
