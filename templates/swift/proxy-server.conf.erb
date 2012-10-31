@@ -40,6 +40,7 @@ use = egg:swift#healthcheck
 [filter:cache]
 use = egg:swift#memcache
 memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
+memcache_serialization_support = 0
 
 [filter:proxy-logging]
 use = egg:swift#proxy_logging
