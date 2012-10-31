@@ -352,11 +352,9 @@ class role::cache {
 			if $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
-				$cluster_tier = 1
 			} else {
 				$storage_size_main = 500
 				$storage_size_bigobj = 50
-				$cluster_tier = 2
 			}
 
 			system_role { "role::cache::upload": description => "upload Varnish cache server" }
@@ -389,8 +387,7 @@ class role::cache {
 				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 1,
-					'cache4xx' => "5m",
-					'cluster_tier' => $cluster_tier
+					'cache4xx' => "5m"
 				},
 				backend_options => {
 					'port' => 80,
