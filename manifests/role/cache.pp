@@ -381,7 +381,7 @@ class role::cache {
 				storage => "-s main-sda3=file,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=file,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				backends => $::site ? {
 					'eqiad' => [ "10.2.1.24", "10.2.1.27" ],
-					'esams' => [ "208.80.154.235" ],
+					'esams' => flatten(["208.80.154.235", $role::cache::configuration::active_nodes['upload']['pmtpa'], $role::cache::configuration::active_nodes['upload']['eqiad'] ]),
 				},
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
