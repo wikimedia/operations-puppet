@@ -223,7 +223,7 @@ sub vcl_recv {
 	}
 
 	/* Select the default backend/director */
-	set req.backend = <%= vcl_config.get("default_backend", "backend" %>;
+	set req.backend = <%= vcl_config.get("default_backend", "backend") %>;
 
 	if (req.backend.healthy) {
 		set req.grace = 5m;
