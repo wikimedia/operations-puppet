@@ -409,7 +409,7 @@ class role::cache {
 				port => 80,
 				admin_port => 6082,
 				backends => $::site ? { # FIXME
-					"esams" => flatten([$varnish_fe_directors['backend'], $varnish_fe_directors['squid']]),
+					"esams" => flatten(values($varnish_fe_directors[$::site])),
 					default => $role::cache::configuration::active_nodes['upload'][$::site],
 				},
 				directors => $varnish_fe_directors[$::site],
