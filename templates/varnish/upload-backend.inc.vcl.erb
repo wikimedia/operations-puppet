@@ -90,6 +90,8 @@ sub vcl_miss {
 	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/timeline/") {
 		set req.backend = swift;
 	}
+<% elsif vcl_config.fetch("cluster_tier", "1") == "2" -%>
+	set req.backend = eqiad;
 <% end -%>
 
 	/* Convert range requests into pass when over a certain threshold */
