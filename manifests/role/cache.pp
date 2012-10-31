@@ -380,7 +380,7 @@ class role::cache {
 				vcl => "upload-backend",
 				port => 3128,
 				admin_port => 6083,
-				storage => "-s main-sda3=file,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=file,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				storage => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				backends => $::site ? {
 					'eqiad' => [ "10.2.1.24", "10.2.1.27" ],
 					'esams' => flatten(["208.80.154.235", $role::cache::configuration::active_nodes['upload']['pmtpa'], $role::cache::configuration::active_nodes['upload']['eqiad'] ]),
