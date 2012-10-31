@@ -1,0 +1,11 @@
+# rsync rules for syncing files
+
+# Exclude SVN
+- .svn/
+
+# Exclude L10n cache
+- cache/l10n/
+
+# Sync .git/HEAD, .git/config and .git/refs/*
+- .git/objects/
+- .git/modules/**/objects/

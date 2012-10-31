@@ -207,6 +207,13 @@ class misc::deployment::scripts {
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write2";
 
+                # Rsync filter rules for sync-common-file
+                "/home/wikipedia/sync-rules":
+                        owner => root,
+                        group => root,
+                        mode => 0444,
+                        source => "puppet:///files/misc/sync-rules";
+
 		# Manpages
 		# Need to be generated manually using make in files/misc/scripts
 		"/usr/local/share/man/man1":
