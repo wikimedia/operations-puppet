@@ -769,6 +769,7 @@ define git::clone(
 				environment => $env,
 				creates     => "$directory/.git/config",
 				user        => $owner,
+				group       => $group,
 				timeout     => $timeout,
 			}
 			
@@ -781,6 +782,7 @@ define git::clone(
 					# git diff --quiet will exit 1 (return false) if there are differences
 					unless  => "git fetch && git diff --quiet remotes/origin/HEAD",
 					user    => $owner,
+					group   => $group,
 					require => Exec["git_clone_${title}"],
 				}
 			}
