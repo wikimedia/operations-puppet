@@ -26,7 +26,7 @@ my $conf->{'IDENT'} = $0;
 $conf->{'HOSTNAME'} = `hostname --short`;
 chomp $conf->{'HOSTNAME'};
 
-for my $key qw(USER PASSWORD DBS LOCALDIR SENDER RECIPIENT MYSQLDUMP) {
+for my $key (qw(USER PASSWORD DBS LOCALDIR SENDER RECIPIENT MYSQLDUMP)) {
 	die "$key is missing from config!?\n" unless defined $conf->{$key};
 }
 
