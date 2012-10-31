@@ -182,7 +182,7 @@ backend api_pmtpa {
 
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
-<% varnish_directors.keys.each do |director| -%>
+<% varnish_directors.keys.sort.each do |director| -%>
 director <%= director %> <%= director_type %> {
 <% director_options.each_pair do |option,value| -%>
 	.<%= option %> = <%= value %>;
