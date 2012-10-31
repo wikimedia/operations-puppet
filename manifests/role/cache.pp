@@ -350,11 +350,13 @@ class role::cache {
 			if $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
+				$default_backend = "backend"
 				$cluster_tier = 1
 				$upstream_directors = {}
 			} else {
 				$storage_size_main = 500
 				$storage_size_bigobj = 50
+				$default_backend = "eqiad"
 				$cluster_tier = 2
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes['upload']['eqiad'] }
 			}
@@ -390,6 +392,7 @@ class role::cache {
 				vcl_config => {
 					'retry5xx' => 1,
 					'cache4xx' => "5m",
+					'default_backend' => $default_backend,
 					'cluster_tier' => $cluster_tier,
 					'upstream_directors' => $upstream_directors
 				},
