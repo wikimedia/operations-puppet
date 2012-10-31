@@ -10,7 +10,7 @@ import std;
 <% vcl_config.fetch("upstream_directors", {}).values.flatten.sort.each do |backend| -%>
 backend <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_") %> {
 	.host = "<%= backend %>";
-	.port = 3128;
+	.port = "3128";
 	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
 	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
 	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
