@@ -344,8 +344,6 @@ class role::cache {
 				"eqiad" => { "backend" => [ "10.2.1.24" ], "swift" => [ "10.2.1.27" ] },
 				"esams" => {
 					"backend" => "208.80.154.235",
-					"pmtpa" => $role::cache::configuration::active_nodes['upload']['pmtpa'],
-					"eqiad" => $role::cache::configuration::active_nodes['upload']['eqiad'],
 				}
 			}
 
@@ -354,11 +352,15 @@ class role::cache {
 				$storage_size_bigobj = 10
 				$default_backend = "backend"
 				$cluster_tier = 1
+				$upstream_clusters = []
+				$varnish_be_backends = []
 			} else {
 				$storage_size_main = 500
 				$storage_size_bigobj = 50
 				$default_backend = "eqiad"
 				$cluster_tier = 2
+				$upstream_clusters = [ "eqiad" ]
+				$varnish_be_backends = $role::cache::configuration::active_nodes['upload']['eqiad']
 			}
 
 			system_role { "role::cache::upload": description => "upload Varnish cache server" }
@@ -385,7 +387,7 @@ class role::cache {
 				storage => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				backends => $::site ? {
 					'eqiad' => [ "10.2.1.24", "10.2.1.27" ],
-					'esams' => flatten(["208.80.154.235", $role::cache::configuration::active_nodes['upload']['pmtpa'], $role::cache::configuration::active_nodes['upload']['eqiad'] ]),
+					'esams' => ["208.80.154.235"],
 				},
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
@@ -393,7 +395,9 @@ class role::cache {
 					'retry5xx' => 1,
 					'cache4xx' => "5m",
 					'default_backend' => $default_backend,
-					'cluster_tier' => $cluster_tier
+					'cluster_tier' => $cluster_tier,
+					'upstream_clusters' => $upstream_clusters,
+					'varnish_backends' => $varnish_be_backends
 				},
 				backend_options => {
 					'port' => 80,
