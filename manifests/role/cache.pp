@@ -408,7 +408,10 @@ class role::cache {
 				vcl => "upload-frontend",
 				port => 80,
 				admin_port => 6082,
-				backends => $role::cache::configuration::active_nodes['upload'][$::site],
+				backends => $::site ? { # FIXME
+					"esams" => flatten([$varnish_fe_directors['backend'], $varnish_fe_directors['squid']]),
+					default => $role::cache::configuration::active_nodes['upload'][$::site],
+				},
 				directors => $varnish_fe_directors[$::site],
 				director_type => "chash",
 				vcl_config => {
