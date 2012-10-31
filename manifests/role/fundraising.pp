@@ -78,10 +78,10 @@ class role::fundraising::database {
 
 	include standard,
 		mysql,
-		mysql::mysqluser,
+		mysql::conf,
 		mysql::datadirs,
-		mysql::packages,
-		mysql::conf
+		mysql::mysqluser,
+		mysql::packages
 
 }
 

@@ -663,6 +663,10 @@ node /db6([0-9])\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
+node "db78.pmtpa.wmnet" {
+	include role::fundraising::database::slave
+}
+
 # eqiad dbs
 node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
