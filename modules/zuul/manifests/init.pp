@@ -7,24 +7,27 @@
 # vcsrepo by our git::clone class.
 #
 
+# == Class: zuul
 class zuul (
     $jenkins_server,
     $jenkins_user,
     $jenkins_apikey,
     $gerrit_server,
     $gerrit_user,
-    $url_pattern
+    $url_pattern,
+    $status_url = "https://${::fqdn}/zuul/status",
+    $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
 ) {
 
 	# Dependencies as mentionned in zuul:tools/pip-requires
-	package { [
+	$packages = [
 			'python-yaml',
-			'python-paste',
 			'python-webob',
-			'python-paramiko',
-			'python-lockfile',
 			'python-daemon',
+			'python-lockfile',
+			'python-paramiko',
 			'python-jenkins',
+			'python-paste',
 
 			# GitPython at least 0.3.2RC1 which is neither in Lucid nor in Precise
 			# We had to backport it and its dependencies from Quantal:
@@ -32,68 +35,79 @@ class zuul (
 			'python-gitdb',
 			'python-async',
 			'python-smmap',
+	]
 
-		]: ensure => present,
+	package { $packages:
+		ensure => present,
 	}
 
 	$zuul_source_dir = '/var/lib/git/integration/zuul'
 
 	git::clone { 'integration/zuul':
 		directory => $zuul_source_dir,
-		origin => 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
+		origin => $git_source_repo,
 		branch => 'master',
 		ensure => 'latest',
 	}
 
-	file { "/etc/zuul":
-		ensure => "directory",
-	}
-
-	exec { "install_zuul":
-		command => "python setup.py install",
+	exec { 'install_zuul':
+		command => 'python setup.py install',
 		cwd => $zuul_source_dir,
-		path => "/bin:/usr/bin",
+		path => '/bin:/usr/bin',
 		refreshonly => true,
-		subscribe => Git::Clone["integration/zuul"],
+		subscribe => Git::Clone['integration/zuul'],
 	}
 
-	file { "/etc/zuul/zuul.conf":
+	file { '/etc/zuul':
+		ensure => directory,
+	}
+
+	# TODO: We should put in  notify either Service['zuul'] or Exec['zuul-reload']
+	#       at some point, but that still has some problems.
+	file { '/etc/zuul/zuul.conf':
+		ensure => present,
 		owner => 'jenkins',
-		mode => 0400,
-		ensure => 'present',
+		mode => '0400',
 		content => template('zuul/zuul.conf.erb'),
-		require => File["/etc/zuul"],
+		require => [
+			File['/etc/zuul'],
+			Package['jenkins'],
+		],
 	}
 
-	file { "/var/log/zuul":
-		ensure => "directory",
-		owner => 'jenkins'
+	file { '/var/log/zuul':
+		ensure => directory,
+		owner => 'jenkins',
+		require => Package['jenkins'],
 	}
 
-	file { "/var/run/zuul":
-		ensure => "directory",
-		owner => 'jenkins'
+	file { '/var/run/zuul':
+		ensure => directory,
+		owner => 'jenkins',
+		require => Package['jenkins'],
 	}
 
-	file { "/var/lib/zuul":
-		ensure => "directory",
-		owner => 'jenkins'
+	file { '/var/lib/zuul':
+		ensure => directory,
+		owner => 'jenkins',
+		require => Package['jenkins'],
 	}
 
-	file { "/var/lib/zuul/git":
-		ensure => "directory",
-		owner => 'jenkins'
+	file { '/var/lib/zuul/git':
+		ensure => directory,
+		owner => 'jenkins',
+		require => Package['jenkins'],
 	}
 
-	file { "/etc/init.d/zuul/":
+	file { '/etc/init.d/zuul/':
+		ensure => present,
 		owner => 'root',
 		group => 'root',
-		mode => 555,
-		ensure => 'present',
+		mode => '0555',
 		source => 'puppet:///modules/zuul/zuul.init',
 	}
 
-	exec { "zuul-reload":
+	exec { 'zuul-reload':
 		command => '/etc/init.d/zuul reload',
 		require => File['/etc/init.d/zuul'],
 		refreshonly => true,
@@ -102,7 +116,7 @@ class zuul (
 	service { 'zuul':
 		name => 'zuul',
 		enable => true,
+		hasrestart => true,
 		require => File['/etc/init.d/zuul'],
 	}
-
 }

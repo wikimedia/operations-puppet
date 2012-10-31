@@ -246,6 +246,11 @@ class misc::contint::test {
 				group => "root",
 				mode => 0444,
 				source => "puppet:///files/misc/jenkins/apache_proxy";
+			"/etc/apache2/conf.d/zuul_proxy":
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				source => "puppet:///files/zuul/apache_proxy";
 		}
 	}
 
