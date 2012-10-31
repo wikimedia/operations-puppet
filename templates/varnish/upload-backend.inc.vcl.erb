@@ -76,6 +76,7 @@ sub vcl_fetch {
 }
 
 sub vcl_miss {
+<% if cluster_tier == 1 -%>
 	# Send originals to the Swift cluster
 	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
 		set req.backend = swift;
@@ -89,6 +90,7 @@ sub vcl_miss {
 	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/timeline/") {
 		set req.backend = swift;
 	}
+<% end -%>
 
 	/* Convert range requests into pass when over a certain threshold */
 	if (req.http.Range
