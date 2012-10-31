@@ -765,6 +765,7 @@ define git::clone(
 			# clone the repository
 			exec { "git_clone_${title}":
 				command     => "git clone ${brancharg}${origin}${deptharg} $directory",
+				logoutput   => on_failure,
 				environment => $env,
 				creates     => "$directory/.git/config",
 				user        => $owner,
@@ -776,6 +777,7 @@ define git::clone(
 				exec { "git_pull_${title}":
 					cwd     => $directory,
 					command => "git pull --quiet${deptharg}",
+					logoutput => on_failure,
 					# git diff --quiet will exit 1 (return false) if there are differences
 					unless  => "git fetch && git diff --quiet remotes/origin/HEAD",
 					user    => $owner,
