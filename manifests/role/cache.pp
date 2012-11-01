@@ -337,7 +337,7 @@ class role::cache {
 				"pmtpa" => {},
 				"eqiad" => { "backend" => $role::cache::configuration::active_nodes['upload'][$::site] },
 				# TODO: replace after removing Squid
-				"esams" => { "backend" => [ "cp3003.esams.wikimedia.org"], "squid" => $role::cache::configuration::active_nodes['upload'][$::site] },
+				"esams" => { "backend" => [ "cp3003.esams.wikimedia.org"] },
 			}
 
 			$varnish_be_directors = {
