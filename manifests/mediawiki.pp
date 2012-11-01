@@ -68,7 +68,18 @@ class mediawiki::math {
 
 # A one-step class for setting up a single-node MediaWiki install,
 #  running from a Git tree.
-class mediawiki::singlenode( $keep_up_to_date = false ) {
+#
+#  Roles can insert additional lines into LocalSettings.php via the
+#  $role_requires and $role_config_lines vars.
+#
+#  Members of $role_requires will be inserted wrapped with 'require_once()'.
+#
+#  Members of $role_config_lines will get inserted into the file verbatim -- be careful about
+#  quoting and escaping!  Note that if you're inserting a bunch of lines you'll be better
+#  served by creating an additional template and including that via $role_requires.
+class mediawiki::singlenode( $keep_up_to_date = false,
+                             $role_requires = [],
+                             $role_config_lines = []) {
         require "role::labs-mysql-server",
 		"webserver::php5-mysql",
 		"webserver::php5"
