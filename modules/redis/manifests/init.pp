@@ -1,7 +1,6 @@
 # application server base class
 class redis (
 	$port = 6379,
-	$name = "redis",
 	$dir = "/a/redis",
 	$dbfilename = "dump.rdb",
 	$maxmemory = "1GB",
