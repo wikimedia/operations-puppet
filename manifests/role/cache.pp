@@ -418,7 +418,8 @@ class role::cache {
 				director_type => "chash",
 				vcl_config => {
 					'retry5xx' => 0,
-					'cache4xx' => "5m"
+					'cache4xx' => "5m",
+					'cluster_tier' => $cluster_tier,
 				},
 				backend_options => {
 					'port' => 3128,
