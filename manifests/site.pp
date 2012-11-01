@@ -493,7 +493,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 }
 
 node /^cp300[3]\.esams\.wikimedia\.org$/ {
-	if $::hostname =~ /^cp30[34]$/ {
+	if $::hostname =~ /^cp300[34]$/ {
 		$ganglia_aggregator = "true"
 	}
 
