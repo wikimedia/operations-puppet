@@ -2625,13 +2625,6 @@ node "zhen.wikimedia.org" {
 		mobile::vumi
 }
 
-node "yttrium.wikimedia.org" {
-	include standard,
-		misc::wlm,
-		admins::roots,
-		admins::mortals
-}
-
 node "zirconium.wikimedia.org" {
 	include standard,
 		admins::roots,
