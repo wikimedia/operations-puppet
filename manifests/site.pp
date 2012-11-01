@@ -1465,6 +1465,10 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	}
 	include role::memcached
 
+	file { "/a":
+		ensure => directory;
+	}
+
 	class { "redis":
 		maxmemory => "500Mb",
 	}
