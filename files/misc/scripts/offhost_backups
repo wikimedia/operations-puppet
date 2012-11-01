@@ -13,7 +13,7 @@ my ($mirror,$email);
 my $conf = {
 	'SENDER' => 'root@wikimedia.org',
 	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only SUCCESS notices
-	'FAILURE-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only FAILURE notices
+	'FAILURE-RECIPIENT' => 'root@wikimedia.org', # this recip gets only FAILURE notices
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
 	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
@@ -22,21 +22,10 @@ chomp $conf->{'HOSTNAME'};
 chomp $conf->{'DATE'};
 
 # jobs, keep 'em numbered in the order you want them to happen
-if ($conf->{'HOSTNAME'} eq 'db78') {
-
-	# copy collected backups from individual hosts to tridge
-	$mirror->{'1'} = 'rsync -ar /a/archive/db78/ fundraising@tridge.wikimedia.org:db78/';
-	$mirror->{'2'} = 'rsync -ar /a/archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
-	$mirror->{'3'} = 'rsync -ar /a/archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
-	$mirror->{'4'} = 'rsync -ar /a/archive/loudon/ fundraising@tridge.wikimedia.org:loudon/';
+if ($conf->{'HOSTNAME'} =~ /^(db78|db1025)$/) {
 
 	# copy db dumps to tridge
-	$mirror->{'5'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
-
-} elsif ($conf->{'HOSTNAME'} eq 'db1025') {
-
-	# copy db dumps to tridge
-	$mirror->{'1'} = 'rsync -ar /a/archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
+	$mirror->{'1'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
 
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
 
@@ -48,9 +37,12 @@ if ($conf->{'HOSTNAME'} eq 'db78') {
     $mirror->{'3'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir
-	$mirror->{'3'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
-	$mirror->{'4'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
-	$mirror->{'5'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
+	## remote: make a hard-link copy of the most recent rsync destination
+	$mirror->{'4'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
+	## rsync over the hard-link copy to clobber whatever has changed 
+	$mirror->{'5'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
+	## remote: adjust the modified timestamp on the remote rsync dir, so next run will see it as most recent
+	$mirror->{'6'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
 
 }
 
