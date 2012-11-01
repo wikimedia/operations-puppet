@@ -1064,13 +1064,18 @@ define generic::debconf::set($value) {
 class generic::tcptweaks {
 	require base::puppet
 
-	file {
-		"/etc/network/if-up.d/initcwnd":
-			content => template("misc/initcwnd.erb"),
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => present;
+	file { "/etc/network/if-up.d/initcwnd":
+		content => template("misc/initcwnd.erb"),
+		mode => 0555,
+		owner => root,
+		group => root,
+		ensure => present;
+	}
+	
+	exec { "/etc/network/if-up.d/initcwnd":
+		require => File["/etc/network/if-up.d/initcwnd"],
+		subscribe => File["/etc/network/if-up.d/initcwnd"],
+		refreshonly => true;
 	}
 }
 
