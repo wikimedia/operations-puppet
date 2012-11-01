@@ -54,11 +54,14 @@ sub vcl_fetch {
 		}
 	}
 
-	# Stream large objects, > 32 MB
-	if (std.integer(beresp.http.Content-Length, 0) > 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
+	# Stream large objects, >= 1 or 32 MB
+	<% stream_threshold = vcl_config.fetch("cluster_tier", "1") == "1" ? 33554432 : 1048576 -%>
+	if (std.integer(beresp.http.Content-Length, 33554432) >= <%= stream_threshold %>) {
 		set beresp.do_stream = true;
-		/* don't attempt to cache these in the frontend */
-		return (hit_for_pass);
+		if (std.integer(beresp.http.Content-Length, 33554432) >= 33554432) {
+			/* don't attempt to cache these in the frontend */
+			return (hit_for_pass);
+		}
 	}
 }
 
