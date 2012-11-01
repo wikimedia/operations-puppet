@@ -9,6 +9,7 @@ class redis (
 	$redis_options = {},
 	$package = "redis-server",
 	$package_version = "2:2.6.0-rc7-wmf1",
+	$servicename = $package,
 ) {
 	case $::operatingsystem {
 		debian, ubuntu: {
@@ -40,6 +41,7 @@ class redis (
 	}
 
 	service { 'redis':
+		name => $servicename,
 		enable => true,
 		ensure => running,
 		require => File['/etc/redis/redis.conf'];
