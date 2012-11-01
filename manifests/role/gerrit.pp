@@ -36,7 +36,7 @@ class role::gerrit {
 				  "threads" => "4"
 				},
 				"github" => {
-				  "url" => 'git@github.com:${name}',
+				  "url" => 'git@github.com:wikimedia/${name}',
 				  "threads" => "4",
 				  "authGroup" => "mediawiki-replication",
 				  "push" => "+refs/heads/*:refs/heads/*
