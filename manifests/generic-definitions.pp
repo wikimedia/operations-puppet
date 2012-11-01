@@ -1061,24 +1061,6 @@ define generic::debconf::set($value) {
 	}
 }
 
-class generic::tcptweaks {
-	require base::puppet
-
-	file { "/etc/network/if-up.d/initcwnd":
-		content => template("misc/initcwnd.erb"),
-		mode => 0555,
-		owner => root,
-		group => root,
-		ensure => present;
-	}
-	
-	exec { "/etc/network/if-up.d/initcwnd":
-		require => File["/etc/network/if-up.d/initcwnd"],
-		subscribe => File["/etc/network/if-up.d/initcwnd"],
-		refreshonly => true;
-	}
-}
-
 # python pip and virtualenv.
 # only use this on development systems.
 # in order to go to production, all dependencies need to come from debian packages, not pip.

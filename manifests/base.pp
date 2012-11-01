@@ -751,11 +751,31 @@ class base::syslogs($readable = 'false') {
 	}
 }
 
+
+class base::tcptweaks {
+	require base::puppet
+
+	file { "/etc/network/if-up.d/initcwnd":
+		content => template("misc/initcwnd.erb"),
+		mode => 0555,
+		owner => root,
+		group => root,
+		ensure => present;
+	}
+	
+	exec { "/etc/network/if-up.d/initcwnd":
+		require => File["/etc/network/if-up.d/initcwnd"],
+		subscribe => File["/etc/network/if-up.d/initcwnd"],
+		refreshonly => true;
+	}
+}
+
 class base {
 	case $::operatingsystem {
 		Ubuntu,Debian: {
 			include	base::apt,
-				base::apt::update
+				base::apt::update,
+				base::tcptweaks
 
 			class { base::puppet:
 				server => $::realm ? {
@@ -774,7 +794,7 @@ class base {
 				},
 			}
 
-			if ($realm == "labs") {
+			if ($::realm == "labs") {
 				include role::salt::minions
 			}
 		}

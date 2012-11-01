@@ -57,15 +57,13 @@ class standard {
 	include base,
 		ganglia,
 		ntp::client,
-		generic::tcptweaks,
 		exim::simple-mail-sender
 }
 
 class newstandard {
 	include base,
 		ganglia,
-		ntp::client,
-		generic::tcptweaks
+		ntp::client
 }
 
 #############################
