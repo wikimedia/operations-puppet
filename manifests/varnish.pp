@@ -71,11 +71,11 @@ class varnish {
 		$runtime_params = join(prefix($runtime_parameters, "-p "), " ")
 		if $name == "" {
 			$instancesuffix = ""
-			$extraopts = $runtime_params
+			$extraopts = ""
 		}
 		else {
 			$instancesuffix = "-${name}"
-			$extraopts = "-n ${name} ${runtime_params}"
+			$extraopts = "-n ${name}"
 		}
 
 		# Initialize variables for templates
