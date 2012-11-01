@@ -40,7 +40,7 @@ class redis (
 	}
 
 	service { 'redis':
-		enabled => true,
+		enable => true,
 		ensure => running,
 		require => File['/etc/redis/redis.conf'];
 		# subscribe => not doing this deliberately
