@@ -24,7 +24,7 @@ backend <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backen
 director <%= director %> chash {
 <% backends.sort.each do |backend| -%>
 	{	.backend = <%= backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_") %>;
-		.weight = 10;
+		.weight = 20;
 	}
 <% end -%>
 }
@@ -91,7 +91,7 @@ sub vcl_fetch {
 	# Stream large objects, > 32 MB
 	if (std.integer(beresp.http.Content-Length, 0) > 33554432 || beresp.http.Content-Length ~ "^[0-9]{9}") {
 		set beresp.do_stream = true;
-    }
+	}
 
 	/* Select a random big object storage backend for objects >= 100 MB */
 	if (beresp.http.Content-Length ~ "^[0-9]{9}") {
