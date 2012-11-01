@@ -10,6 +10,7 @@ class redis (
 	$package = "redis-server",
 	$package_version = "2:2.6.0-rc7-wmf1",
 	$servicename = "redis-server",
+	$monitor = true,
 ) {
 	case $::operatingsystem {
 		debian, ubuntu: {
@@ -46,5 +47,9 @@ class redis (
 		ensure => running,
 		require => File['/etc/redis/redis.conf'];
 		# subscribe => not doing this deliberately
+	}
+
+	if $monitor {
+		monitor_service { $servicename: description => "Redis", check_command => "check_tcp!$port" }
 	}
 }
