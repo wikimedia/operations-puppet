@@ -753,7 +753,7 @@ class base::syslogs($readable = 'false') {
 
 
 class base::tcptweaks {
-	require base::puppet
+	Class[base::puppet] -> Class[base::tcptweaks]
 
 	file { "/etc/network/if-up.d/initcwnd":
 		content => template("misc/initcwnd.erb"),
