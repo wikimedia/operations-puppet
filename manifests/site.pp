@@ -2510,10 +2510,8 @@ node "zhen.wikimedia.org" {
 }
 
 node "yttrium.wikimedia.org" {
-	include standard,
-		misc::wlm,
-		admins::roots,
-		admins::mortals
+	# Was used for wlm.wikimedia.org, now remains allocated to the mobile team
+	include standard
 }
 
 node "zirconium.wikimedia.org" {
