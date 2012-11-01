@@ -9,7 +9,7 @@ class redis (
 	$redis_options = {},
 	$package = "redis-server",
 	$package_version = "2:2.6.0-rc7-wmf1",
-	$servicename = $package,
+	$servicename = "redis-server",
 ) {
 	case $::operatingsystem {
 		debian, ubuntu: {
