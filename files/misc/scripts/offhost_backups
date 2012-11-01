@@ -25,10 +25,10 @@ chomp $conf->{'DATE'};
 if ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy collected backups from individual hosts to tridge
-	$mirror->{'1'} = 'rsync -ar /archive/db78/ fundraising@tridge.wikimedia.org:db78/';
-	$mirror->{'2'} = 'rsync -ar /archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
-	$mirror->{'3'} = 'rsync -ar /archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
-	$mirror->{'4'} = 'rsync -ar /archive/loudon/ fundraising@tridge.wikimedia.org:loudon/';
+	$mirror->{'1'} = 'rsync -ar /a/archive/db78/ fundraising@tridge.wikimedia.org:db78/';
+	$mirror->{'2'} = 'rsync -ar /a/archive/aluminium/ fundraising@tridge.wikimedia.org:aluminium/';
+	$mirror->{'3'} = 'rsync -ar /a/archive/grosley/ fundraising@tridge.wikimedia.org:grosley/';
+	$mirror->{'4'} = 'rsync -ar /a/archive/loudon/ fundraising@tridge.wikimedia.org:loudon/';
 
 	# copy db dumps to tridge
 	$mirror->{'5'} = 'rsync -ar /archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
