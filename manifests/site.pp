@@ -1466,6 +1466,10 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 	include role::memcached
+
+	class { "redis":
+		maxmemory => "500Mb",
+	}
 }
 
 node "mchenry.wikimedia.org" {
