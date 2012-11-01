@@ -88,6 +88,13 @@ sub vcl_fetch {
 	# Cache media objects for 30 days by default
 	set beresp.ttl = 30d;
 
+	/* If the backend sends an error response with a Retry-After header,
+	 * cache the response for the duration
+	 */
+	if (beresp.status >= 500 && beresp.http.Retry-After) {
+		set beresp.ttl = std.duration(beresp.http.Retry-After, 10s);
+	}
+
 	# Stream large objects, >= 1 MB
 	if (std.integer(beresp.http.Content-Length, 1048576) >= 1048576) {
 		set beresp.do_stream = true;
