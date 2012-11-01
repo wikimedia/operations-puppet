@@ -392,7 +392,7 @@ class role::cache {
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
-					'retry5xx' => 1,
+					'retry5xx' => 0,
 					'cache4xx' => "5m",
 					'cluster_tier' => $cluster_tier,
 					'upstream_directors' => $upstream_directors
