@@ -55,6 +55,7 @@ class varnish {
 		$port="80",
 		$admin_port="6083",
 		$storage="-s malloc,1G",
+		$runtime_parameters=[],
 		$backends=[],
 		$directors={},
 		$director_type="hash",
@@ -69,11 +70,11 @@ class varnish {
 
 		if $name == "" {
 			$instancesuffix = ""
-			$extraopts = ""
+			$extraopts = join(prefix($runtime_parameters, "-p "), " ")
 		}
 		else {
 			$instancesuffix = "-${name}"
-			$extraopts = "-n ${name}"
+			$extraopts = "-n ${name} " + join(prefix($runtime_parameters, "-p "), " ")
 		}
 
 		# Initialize variables for templates
