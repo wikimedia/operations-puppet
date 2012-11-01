@@ -68,13 +68,14 @@ class varnish {
 
 		include varnish::common
 
+		$runtime_params = join(prefix($runtime_parameters, "-p "), " ")
 		if $name == "" {
 			$instancesuffix = ""
-			$extraopts = join(prefix($runtime_parameters, "-p "), " ")
+			$extraopts = $runtime_params
 		}
 		else {
 			$instancesuffix = "-${name}"
-			$extraopts = "-n ${name} " + join(prefix($runtime_parameters, "-p "), " ")
+			$extraopts = "-n ${name} ${runtime_params}"
 		}
 
 		# Initialize variables for templates
