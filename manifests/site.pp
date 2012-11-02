@@ -673,7 +673,8 @@ node /db6([0-9])\.pmtpa\.wmnet/ {
 }
 
 node "db78.pmtpa.wmnet" {
-	include role::fundraising::database::dump_slave
+	include role::fundraising::database::dump_slave,
+		misc::fundraising::backup::archive
 }
 
 # eqiad dbs
