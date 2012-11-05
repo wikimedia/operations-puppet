@@ -361,7 +361,7 @@ class role::cache {
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes['upload']['eqiad'] }
 			}
 
-			if to_bytes($::memorytotal) > 34359738368 {
+			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
 				$memory_storage_size = 4
 			} else {
 				$memory_storage_size = 1
