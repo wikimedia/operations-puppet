@@ -1,4 +1,4 @@
-class misc::beta::scripts {
+class misc::beta::autoupdater {
 
 	require misc::deployment::scripts
 	include generic::packages::git-core
