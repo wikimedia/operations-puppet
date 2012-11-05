@@ -101,7 +101,7 @@ class role::applicationserver {
 	class imagescaler{
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
-		include role::applicationserver::webserver
+		class { "role::applicationserver::webserver": maxclients => "18" }
 
 		include	imagescaler::cron,
 			imagescaler::packages,
