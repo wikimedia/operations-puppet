@@ -94,7 +94,7 @@ while [ 1 ];do
 
 	if $dodefault; then
 		# Do the remaining types
-		db=`php -n MWScript.php nextJobDB.php --wiki=aawiki`
+		db=`php MWScript.php nextJobDB.php --wiki=aawiki`
 
 		if [ ! -z "$db" ];then
 			echo "$db"
