@@ -82,7 +82,7 @@ while [ 1 ];do
 	while [ -n "$moreprio" ] ; do
 		moreprio=
 		for type in $types; do
-			db=`php -n MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
+			db=`php MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
 			if [ -n "$db" ]; then
 				echo "$db $type"
 				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$maxtime &
