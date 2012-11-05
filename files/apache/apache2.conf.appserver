@@ -52,7 +52,7 @@ MaxClients 18
 TimeOut 10 
 </IfDefine>
 
-MaxRequestsPerChild 4
+MaxRequestsPerChild 300
 
 #BindAddress *
 
