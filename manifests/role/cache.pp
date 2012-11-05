@@ -329,6 +329,8 @@ class role::cache {
 			$cluster = "cache_upload"
 			$nagios_group = "cache_upload_${::site}"
 
+			system_role { "role::cache::upload": description => "upload Varnish cache server" }
+
 			include lvs::configuration, role::cache::configuration, network::constants
 
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
@@ -359,7 +361,11 @@ class role::cache {
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes['upload']['eqiad'] }
 			}
 
-			system_role { "role::cache::upload": description => "upload Varnish cache server" }
+			if to_bytes($::memorytotal) > 34359738368 {
+				$memory_storage_size = 4
+			} else {
+				$memory_storage_size = 1
+			}
 
 			include standard,
 				nrpe
@@ -413,6 +419,7 @@ class role::cache {
 				vcl => "upload-frontend",
 				port => 80,
 				admin_port => 6082,
+				storage => "-s malloc,${memory_storage_size}G",
 				backends => flatten(values($varnish_fe_directors[$::site])),
 				directors => $varnish_fe_directors[$::site],
 				director_type => "chash",
