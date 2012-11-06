@@ -41,8 +41,8 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 				require => File["/usr/lib/ganglia/python_modules"],
 				source => "puppet:///files/ganglia/plugins/memcached.py",
 				notify => Service[gmond];
-			"/usr/lib/ganglia/python_modules/memcached.pyconf":
-				require => File["/usr/lib/ganglia/python_modules"],
+			"/etc/ganglia/conf.d/memcached.pyconf":
+				require => File["usr/lib/ganglia/python_modules/memcached.py"],
 				source => "puppet:///files/ganglia/plugins/memcached.pyconf",
 				notify => Service[gmond];
 		}

@@ -1,52 +1,109 @@
 modules {
-	module {
-		name = "memcache"
-		language = "python"
-		path = "memcache.py"
-	}
+  module {
+    name     = "memcached"
+    language = "python"
+
+    param host {
+      value = "localhost"
+    }
+    param port {
+      value = 11211
+    }
+    param type {
+      value = "memcached"
+    }
+
+    param refresh_rate {
+      value = 15
+    }
+
+    # param metrix_prefix {
+    #   value = "mc"
+    # }
+    # param spoof_host {
+    #   value = "__IPADDRESS__:__HOSTNAME__"
+    # }
+  }
 }
 
 collection_group {
-	collect_every = 15
-	time_threshold = 15
+  collect_every  = 20
+  time_threshold = 90
 
-        metric {
-                name = 'curr_connectons'
-                title = 'Number of clients connected'
-        }
+  metric {
+    name  = "mc_curr_items"
+    title = "Current number of items stored"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_cmd_get"
+    title = "Cumulative number of retrieval reqs"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_cmd_set"
+    title = "Cumulative number of storage reqs"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_cmd_get_rate"
+    title = "Retrieval reqs/sec"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_cmd_set_rate"
+    title = "Storage reqs/sec"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_bytes_read"
+    title = "Total number of bytes read by this server from network"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_bytes_written"
+    title = "Total number of bytes sent by this server to network"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_bytes"
+    title = "Current number of bytes used to store items"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_limit_maxbytes"
+    title = "Number of bytes this server is allowed to use for storage"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_curr_connections"
+    title = "Number of open connections"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_evictions"
+    title = "Number of valid items removed from cache to free memory for new items"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_get_hits"
+    title = "Number of keys that have been requested and found present "
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_get_misses"
+    title = "Number of items that have been requested and not found"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_get_hits_rate"
+    title = "Hits/sec"
+    value_threshold = 0
+  }
+  metric {
+    name  = "mc_get_misses_rate"
+    title = "Misses/sec"
+    value_threshold = 0
+  }
 
-        metric {
-                name = 'evictions'
-                title = 'Number of valid items removed from cache to free memoy for new items'
-        }
-
-        metric {
-                name = 'threads'
-                title = 'Number of worker threads requested'
-        }
-
-        metric {
-                name = 'cmd_flush'
-                title = 'Number of times flush_all has been called'
-        }
-
-        metric {
-                name = 'listen_disabled_num'
-                title = 'Number of times memcached has hit connection limit'
-        }
-
-        metric {
-                name = 'curr_items'
-                title = 'Current number of items stored'
-        }
-
-        metric {
-                name = 'global_hitrate'
-                title = 'Percentage of hits vs misses (get_hits / (get_hits + get_misses))'
-        }
-
-        metric {
-                name = 'bytes'
-                title = 'Current number of bytes used to store items'
-        }
 }
