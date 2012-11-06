@@ -377,7 +377,6 @@ define interface_aggregate_member($master) {
 					"set iface[. = '$interface'] '$interface'",
 					"set iface[. = '$interface']/family 'inet'",
 					"set iface[. = '$interface']/method 'manual'",
-					"set iface[. = '$interface']/bond-master '$master'",
 			],
 			notify => Exec["ifup $interface"]
 		}
