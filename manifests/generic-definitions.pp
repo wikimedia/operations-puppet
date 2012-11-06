@@ -383,7 +383,7 @@ define interface_aggregate_member($master) {
 		}
 
 		exec { "ifup $interface":
-			command => "/sbin/ifup --force $interface",
+			command => "/sbin/ifup --force $interface; /sbin/ip link set dev $interface up",
 			require => Augeas["aggregate member ${interface}"],
 			refreshonly => true
 		}
