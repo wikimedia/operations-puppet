@@ -1,0 +1,13 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/wikidata-replication
+#####################################################################
+
+/var/log/wikidata-replication {
+  weekly
+  rotate 2
+  compress
+  missingok
+  notifempty
+  create 644 www-data www-data
+}
