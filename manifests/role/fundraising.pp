@@ -6,7 +6,7 @@ class role::fundraising::messaging {
 	$nagios_group = "${cluster}_${::site}"
 	include standard,
 		groups::wikidev,
-		accounts::khorn
+		admins::fr-tech
 }
 
 
@@ -15,8 +15,7 @@ class role::fundraising::logger {
 	$nagios_group = "${cluster}_${::site}"
 	include standard,
 		groups::wikidev,
-		accounts::khorn,
-		accounts::pgehres
+		admins::fr-tech
 }
 
 
@@ -38,13 +37,11 @@ class role::fundraising::civicrm {
 		ntp::client,
 		nrpe,
 		admins::roots,
-		accounts::khorn,
 		accounts::mhernandez,
-		accounts::mwalker,
-		accounts::pgehres,
 		accounts::pcoombe,
 		accounts::rfaulk,
 		accounts::zexley,
+		admins::fr-tech,
 		backup::client,
 		misc::fundraising,
 		misc::fundraising::mail,

@@ -2224,6 +2224,26 @@ class accounts {
 		}
 	}
 
+	class awight inherits baseaccount {
+		$username = "awight"
+		$realname = "Adam Wight"
+		$uid = 616
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"adamw@sting":
+					ensure  => present,
+					user  => $username,
+					type  => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCTng4vgEtyrjtl3JDNv1Q6M1PVvHWIomE17fqODCvFx6eClupAmY1XExdj3x6sPBtZd2ZStwH0IopkKgF6172b+0fl/ReMUq9gOiywKMOc8/wf/fYuWTI2TSR8MfdYrkq6k4rkn/6WMUayHcHrYl610Wi77WJ5a6PF83QRo1D3VAy69Z8PA+P73tTur846iOgfuDBfKw8aTb6mvwnq3hELuuYFaj8cVkveqEi9m2TYDZF/TWvLRbNTQvh9MloTjpOYhtyNYqeWj4xxjVWlr++RPeFa92TeePzKag87O+k/g74tUSfTqrqjhGGK615JPHVWNWMmNUHeFcajltKAf67N";
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2373,4 +2393,15 @@ class admins::globaldev {
 	include groups::wikidev
 
 	include accounts::erosen
+}
+
+class admins::fr-tech {
+	$gid = 500   # 'wikidev' by default
+	include groups::wikidev
+
+	include accounts::khorn
+	include accounts::awight
+	include accounts::pgehres
+	include accounts::mwalker
+
 }
