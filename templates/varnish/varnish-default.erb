@@ -67,10 +67,10 @@ VARNISH_ADMIN_LISTEN_PORT=<%= varnish_admin_port %>
 	
 #
 # # The minimum number of worker threads to start
-VARNISH_MIN_THREADS=<%= (15000 / processorcount.to_i) / 4 %>
+VARNISH_MIN_THREADS=<%= 8000 / 2 / 4 %>
 #
 # # The Maximum number of worker threads to start
-VARNISH_MAX_THREADS=<%= 15000 / processorcount.to_i %>
+VARNISH_MAX_THREADS=<%= 8000 / 2 %>
 #
 # # Idle timeout for worker threads
 VARNISH_THREAD_TIMEOUT=120
@@ -104,7 +104,7 @@ VARNISH_STORAGE="<%= varnish_storage %>"
 #              -s ${VARNISH_STORAGE}"
 #
 
-EXTRA_OPTS="-p user=varnish -p thread_pools=<%= processorcount %> -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p send_timeout=30 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 <%= runtime_params %>"
+EXTRA_OPTS="-p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p send_timeout=30 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 <%= runtime_params %>"
 <% if has_variable?("extraopts") then %>
 EXTRA_OPTS="$EXTRA_OPTS <%= extraopts %>"
 <% end %>
