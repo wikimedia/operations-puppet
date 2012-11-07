@@ -16,6 +16,7 @@ class role::zuul {
 			gerrit_user => 'jenkins',
 			# Not enabled yet but we need a pattern anyway:
 			url_pattern => 'http://jenkinslogs.wmflabs.org/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
+			status_url => 'http://integration.wmflabs.org/zuul/status'
 		}
 
 	} # /role::zuul::labs
@@ -30,7 +31,9 @@ class role::zuul {
 			gerrit_server => 'manganese.wikimedia.org',
 			gerrit_user => 'jenkins-bot',
 			# Not enabled yet but we need a pattern anyway:
-			url_pattern => 'http://integration.mediawiki.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
+			#url_pattern => 'http://integration.mediawiki.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
+			url_pattern => 'http://integration.mediawiki.org/ci/job/{job.name}/${build.number}/console',
+			status_url => 'http://integration.mediawiki.org/zuul/status'
 		}
 
 	} # /role::zuul::production
