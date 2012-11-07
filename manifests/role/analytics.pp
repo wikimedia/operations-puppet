@@ -2,6 +2,13 @@
 
 @monitor_group { "analytics-eqiad": description => "analytics servers in eqiad" }
 
+class role::analytics::libanon {
+	system_role { "role::analytics::libanon": description => "analytics libanon project" }
+
+	package { ["openssl"]: ensure => latest; }
+}
+
+
 class role::analytics {
 	system_role { "role::analytics": description => "analytics server" }
 	$nagios_group = "analytics-eqiad"
