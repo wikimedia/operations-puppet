@@ -44,6 +44,7 @@ import "swift.pp"
 import "varnish.pp"
 import "webserver.pp"
 import "zuul.pp"
+import "wikidata.pp"
 
 # Include stages last
 import "stages.pp"
