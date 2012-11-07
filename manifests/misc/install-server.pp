@@ -97,8 +97,11 @@ class misc::install-server {
 			ensure => present;
 		}
 
-		generic::apt::pin-package{ ["squid", "squid-common", "squid-langpack"]:
-			before => Package[squid]
+		# pin package to the default, Ubuntu version, instead of our own
+		apt::pin { [ 'squid', 'squid-common', 'squid-langpack' ]:
+			pin      => 'release o=Ubuntu',
+			priority => '1001',
+			before   => Package['squid'],
 		}
 
 		package { squid:

@@ -168,7 +168,12 @@ class misc::url-downloader {
 		source => "puppet:///files/squid/copy-by-url-proxy.conf";
 	}
 
-	generic::apt::pin-package { [ "squid", "squid-common" ]: }
+	# pin package to the default, Ubuntu version, instead of our own
+	apt::pin { [ 'squid', 'squid-common' ]:
+		pin      => 'release o=Ubuntu',
+		priority => '1001',
+		before   => Package['squid'],
+	}
 
 	package { squid:
 		ensure => latest;
