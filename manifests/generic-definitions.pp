@@ -159,29 +159,6 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 }
 
-# APT pinning
-
-define generic::apt::pin-package($pin="release o=Ubuntu", $priority="1001", $package="") {
-	if $package == "" {
-		$packagename = $title
-	} else {
-		$packagename = $package
-	}
-	$packagepin = "
-Package: ${packagename}
-Pin: ${pin}
-Pin-Priority: ${priority}
-"
-
-	file { "/etc/apt/preferences.d/${title}":
-		content => $packagepin,
-		before => defined(Package[$title]) ? {
-			true => Package[$title],
-			default => undef
-		};
-	}
-}
-
 # Create a symlink in /etc/init.d/ to a generic upstart init script
 
 define upstart_job($install="false") {

@@ -97,10 +97,6 @@ class misc::install-server {
 			ensure => present;
 		}
 
-		generic::apt::pin-package{ ["squid", "squid-common", "squid-langpack"]:
-			before => Package[squid]
-		}
-
 		package { squid:
 			ensure => latest;
 		}

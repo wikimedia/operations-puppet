@@ -168,8 +168,6 @@ class misc::url-downloader {
 		source => "puppet:///files/squid/copy-by-url-proxy.conf";
 	}
 
-	generic::apt::pin-package { [ "squid", "squid-common" ]: }
-
 	package { squid:
 		ensure => latest;
 	}

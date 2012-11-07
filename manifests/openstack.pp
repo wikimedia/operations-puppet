@@ -119,12 +119,6 @@ class openstack::common($openstack_version="diablo",
 			$instance_status_wiki_user,
 			$instance_status_wiki_pass) {
 
-	if $openstack_version == "diablo" {
-		generic::apt::pin-package { "python-eventlet":
-			pin => "release o=LP-PPA-openstack-release-2011.3",
-		}
-	}
-
 	interface_tagged { $novaconfig["network_flat_interface"]:
 		base_interface => $novaconfig["network_flat_interface_name"],
 		vlan_id => $novaconfig["network_flat_interface_vlan"],
