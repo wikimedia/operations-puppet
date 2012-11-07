@@ -40,102 +40,6 @@ class base::access::dc-techs {
 
 }
 
-class base::apt::update {
-	# Make sure puppet runs apt-get update!
-	exec { "/usr/bin/apt-get update":
-		timeout => 240,
-		returns => [ 0, 100 ];
-	}
-}
-
-class base::apt {
-	$proxyconfig = "Acquire::http::Proxy::security.ubuntu.com \"http://brewster.wikimedia.org:8080\";
-Acquire::http::Proxy::old-releases.ubuntu.com \"http://brewster.wikimedia.org:8080\";
-"
-
-	# security.ubuntu.com should be accessed through a proxy
-	file { "/etc/apt/apt.conf.d/80wikimedia-proxy":
-		mode => 0444,
-		owner => root,
-		group => root,
-		path => "/etc/apt/apt.conf.d/80wikimedia-proxy",
-		content => $proxyconfig
-	}
-
-	$unattendedconfig ="APT::Periodic::Update-Package-Lists \"1\";
-APT::Periodic::Unattended-Upgrade \"1\";
-"
-	if $realm == "labs" {
-		file { "/etc/apt/apt.conf.d/20auto-upgrades":
-			mode => 0444,
-			owner => root,
-			group => root,
-			path => "/etc/apt/apt.conf.d/20auto-upgrades",
-			content => $unattendedconfig
-		}
-	}
-
-	# Setup the APT repositories
-	$aptrepository = "## Wikimedia APT repository
-deb http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
-deb-src http://apt.wikimedia.org/wikimedia ${::lsbdistcodename}-wikimedia main universe
-"
-	$aptpref = "Explanation: Prefer Wikimedia APT repository packages in all cases
-Package: *
-Pin: release o=Wikimedia
-Pin-Priority: 1001
-"
-
-	file {
-		"/etc/apt/sources.list.d/wikimedia.list":
-			require => Exec[sed-wikimedia-repository],
-			content => $aptrepository,
-			mode => 0444;
-	}
-	
-	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { "/etc/apt/preferences.d/wikimedia.pref":
-			require => File["/etc/apt/sources.list.d/wikimedia.list"],
-			content => $aptpref,
-			mode => 0444;
-		}
-	}
-
-	# Comment out the old entries in /etc/apt/sources.list
-	exec { 
-		sed-wikimedia-repository:
-			path => "/bin:/sbin:/usr/bin:/usr/sbin",
-			command => "sed -i '/deb.*apt\\.wikimedia\\.org.*-wikimedia main/s/^deb/#deb/g' /etc/apt/sources.list",
-			creates => "/etc/apt/sources.list.d/wikimedia.list";
-	}
-
-
-	package { apt-show-versions:
-		ensure => latest;
-	}
-
-
-	package { 'python-apt':
-		ensure => present,
-	}
-	file { '/usr/local/bin/apt2xml':
-		ensure  => present,
-		owner   => root,
-		group   => root,
-		mode    => 0755,
-		source  => 'puppet:///files/apt/apt2xml.py',
-		require => Package['python-apt'],
-	}
-	file { '/var/lib/puppet/lib/facter/apt.rb':
-		ensure  => present,
-		owner   => root,
-		group   => root,
-		mode    => 0755,
-		source  => 'puppet:///files/apt/apt.rb',
-		require => File['/var/lib/puppet/lib/facter'],
-	}
-}
-
 class base::grub {
 	# Disable the 'quiet' kernel command line option so console messages
 	# will be printed.
@@ -773,9 +677,14 @@ class base::tcptweaks {
 class base {
 	case $::operatingsystem {
 		Ubuntu,Debian: {
-			include	base::apt,
-				base::apt::update,
-				base::tcptweaks
+			include	apt
+			include apt::update
+
+			if ($::realm == "labs") {
+				include apt::unattended-upgrades
+			}
+
+			include base::tcptweaks
 
 			class { base::puppet:
 				server => $::realm ? {
