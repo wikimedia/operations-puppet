@@ -218,7 +218,7 @@ if __name__ == '__main__':
 		conn = MySQLdb.connect(user=options.user, host=options.host, passwd=options.passwd)
 
 		cursor = conn.cursor(MySQLdb.cursors.Cursor)
-		cursor.execute("SHOW ENGINE INNODB STATUS")
+		cursor.execute("SHOW /*!50000 ENGINE*/ INNODB STATUS")
 		innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
 		cursor.close()
 

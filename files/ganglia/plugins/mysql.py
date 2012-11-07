@@ -110,7 +110,7 @@ def update_stats(get_innodb=True, get_master=True, get_slave=True):
 
 		if get_innodb:
 			cursor = conn.cursor(MySQLdb.cursors.Cursor)
-			cursor.execute("SHOW ENGINE INNODB STATUS")
+			cursor.execute("SHOW /*!50000 ENGINE*/ INNODB STATUS")
 			innodb_status = parse_innodb_status(cursor.fetchone()[2].split('\n'))
 			cursor.close()
 			logging.debug('innodb_status: ' + str(innodb_status))
