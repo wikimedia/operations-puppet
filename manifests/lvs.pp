@@ -669,7 +669,7 @@ class lvs::configuration {
 			'depool-threshold' => ".4",
 			'monitors' => {
 				'ProxyFetch' => {
-					'url' => [ 'http://localhost/stats' ],
+					'url' => [ 'http://localhost/search/enwikinews/us?limit=1' ],
 					},
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
