@@ -1626,6 +1626,18 @@ node /^ms-be([5-9])\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
+node /^ms-be([6])\.pmtpa\.wmnet$/ {
+	# the ms-be hosts that are 720xds with ssds have two more disks
+	# but they show up as m and n, those get the OS
+	$all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
+		'/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
+		'/dev/sdk', '/dev/sdl' ]
+
+	include role::swift::pmtpa-prod::storage
+
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+}
+
 node /^ms-be1([0-2]|[4-9])\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
