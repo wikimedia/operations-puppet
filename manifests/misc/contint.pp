@@ -81,6 +81,8 @@ class misc::contint::test {
 
 		package { "rake": ensure => present; }
 
+		package { "nodejs": ensure => present; }
+
 		include svn::client
 
 		include generic::packages::git-core
