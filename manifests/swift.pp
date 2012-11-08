@@ -413,7 +413,7 @@ class swift::storage(
 define swift::create_filesystem($partition_nr="1") {
 	require base::platform
 
-	if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) and ! ($title in $base::platform::startup_drives) {
+	if ($title =~ /^\/dev\/([hvs]d[a-z]+|md[0-9]+)$/) {
 		$dev = "${title}${partition_nr}"
 		$dev_suffix = regsubst($dev, '^\/dev\/(.*)$', '\1')
 		exec { "swift partitioning $title":
