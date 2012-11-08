@@ -13,7 +13,7 @@ class gerrit::instance($no_apache=false,
 		$ssh_key="",
 		$ssl_cert="ssl-cert-snakeoil",
 		$ssl_cert_key="ssl-cert-snakeoil",
-		$ssl_ca="wmf-ca.pem",
+		$ssl_ca="wmf-ca",
 		$replication="",
 		$smtp_host="") {
 
