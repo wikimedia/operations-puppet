@@ -293,21 +293,23 @@ class protoproxy::proxy_sites {
 		}
 	}
 	# wikivoyage.org
-	proxy_configuration{ wikivoyage:
-		proxy_addresses => {
-			"pmtpa" => [ "208.80.152.219", "[2620:0:860:ed1a::13]" ],
-			"eqiad" => [ "208.80.154.243", "[2620:0:861:ed1a::13]" ],
-			# "esams" => [ "127.0.0.1" ]
-		},
-		proxy_server_name => '*.wikivoyage.org',
-		proxy_server_cert_name => 'star.wikivoyage.org',
-		proxy_backend => {
-			"pmtpa" => { "primary" => "10.2.1.25" },
-			"eqiad" => { "primary" => "10.2.2.25" },
-			# "esams" => { "primary" => "10.2.3.25" }
-		},
-		ipv6_enabled => 'true',
-		enabled => 'true'
+	if $::site != "esams" {
+		proxy_configuration{ wikivoyage:
+			proxy_addresses => {
+				"pmtpa" => [ "208.80.152.219", "[2620:0:860:ed1a::13]" ],
+				"eqiad" => [ "208.80.154.243", "[2620:0:861:ed1a::13]" ],
+				# "esams" => [ "127.0.0.1" ]
+			},
+			proxy_server_name => '*.wikivoyage.org',
+			proxy_server_cert_name => 'star.wikivoyage.org',
+			proxy_backend => {
+				"pmtpa" => { "primary" => "10.2.1.25" },
+				"eqiad" => { "primary" => "10.2.2.25" },
+				# "esams" => { "primary" => "10.2.3.25" }
+			},
+			ipv6_enabled => 'true',
+			enabled => 'true'
+		}
 	}
 	# Misc services
 	proxy_configuration{ videos:
