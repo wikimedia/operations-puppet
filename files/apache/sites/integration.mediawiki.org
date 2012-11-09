@@ -60,6 +60,10 @@ NameVirtualHost *:443
 		IndexOptions NameWidth=*
 	</Directory>
 
+	<Directory /srv/org/mediawiki/integration/nightly/mediawiki/core>
+		IndexOrderDefault Descending Date
+	</Directory>
+
 	# Publish MediaWiki clones to the outside world for testswarm
 	<Directory /var/lib/testswarm/mediawiki-git/clone>
 		AllowOverride All
