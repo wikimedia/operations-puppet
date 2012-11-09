@@ -7,6 +7,8 @@ class role::gerrit {
 	class labs {
 		system_role { "role::gerrit::production": description => "Gerrit in labs!" }
 
+		include certificates::star_wmflabs_org
+
 		class { "gerrit::instance":
 			ircbot => false,
 			db_host => "gerrit-db",
