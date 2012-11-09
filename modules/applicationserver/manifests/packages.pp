@@ -17,7 +17,4 @@ class applicationserver::packages {
 			ensure => absent;
 		}
 	}
-
-	# Explicitly require the Wikimedia version of some packages
-	generic::apt::pin-package{ [ "php-wikidiff2" ]: pin => "release o=Wikimedia" }
 }
