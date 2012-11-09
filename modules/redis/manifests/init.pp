@@ -51,5 +51,16 @@ class redis (
 
 	if $monitor {
 		monitor_service { $servicename: description => "Redis", check_command => "check_tcp!$port" }
+		file { '/etc/ganglia/conf.d/redis.pyconf':
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => 'puppet:///modules/redis/ganglia/redis.pyconf';
+			'/usr/lib/ganglia/python_modules/redis.py':
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => 'puppet:///modules/redis/ganglia/redis.py';
+		}
 	}
 }
