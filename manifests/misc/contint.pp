@@ -142,6 +142,11 @@ class misc::contint::test {
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
 		file {
+			"/var/lib/jenkins":
+				mode  => 2775,  # group sticky bit
+				owner => "jenkins",
+				group => "jenkins",
+				ensure => directory;
 			"/var/lib/jenkins/.git":
 				mode   => 2775,  # group sticky bit
 				group  => "jenkins",
