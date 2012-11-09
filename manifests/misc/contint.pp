@@ -81,6 +81,10 @@ class misc::contint::test {
 
 		package { "rake": ensure => present; }
 
+		# Node.js evolves quickly so we want to update it
+		# automatically.
+		package { "nodejs": ensure => latest; }
+
 		include svn::client
 
 		include generic::packages::git-core
