@@ -1473,6 +1473,7 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	class { "redis":
 		maxmemory => "500Mb",
 	}
+	include redis::ganglia
 }
 
 node "mchenry.wikimedia.org" {
