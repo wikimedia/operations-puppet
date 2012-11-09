@@ -40,62 +40,62 @@ host amslvs4 {
 }
 
 host analytics1011 {
-	hardware ethernet 04:7d:7b:a5:e1:b2;
+	hardware ethernet 90:b1:1c:06:bf:01;
 	fixed-address analytics1011.eqiad.wmnet;
 }
 
 host analytics1012 {
-	hardware ethernet 04:7d:7b:a5:e6:94;
+	hardware ethernet 90:b1:1c:06:a9:5d;
 	fixed-address analytics1012.eqiad.wmnet;
 }
 
 host analytics1013 {
-	hardware ethernet 04:7d:7b:a5:e1:8e;
+	hardware ethernet 90:b1:1c:06:7f:ee;
 	fixed-address analytics1013.eqiad.wmnet;
 }
 
 host analytics1014 {
-	hardware ethernet 04:7d:7b:a5:e4:96;
+	hardware ethernet 90:b1:1c:06:75:01;
 	fixed-address analytics1014.eqiad.wmnet;
 }
 
 host analytics1015 {
-	hardware ethernet 04:7d:7b:a5:e4:76;
+	hardware ethernet 90:b1:1c:09:7f:f6;
 	fixed-address analytics1015.eqiad.wmnet;
 }
 
 host analytics1016 {
-	hardware ethernet 04:7d:7b:a5:e1:46;
+	hardware ethernet 90:b1:1c:12:68:32;
 	fixed-address analytics1016.eqiad.wmnet;
 }
 
 host analytics1017 {
-	hardware ethernet 04:7d:7b:a5:e4:ce;
+	hardware ethernet 90:b1:1c:12:8f:9a;
 	fixed-address analytics1017.eqiad.wmnet;
 }
 
 host analytics1018 {
-	hardware ethernet 04:7d:7b:a5:e7:98;
+	hardware ethernet 90:b1:1c:12:8f:26;
 	fixed-address analytics1018.eqiad.wmnet;
 }
 
 host analytics1019 {
-	hardware ethernet 04:7d:7b:a5:e7:be;
+	hardware ethernet 90:b1:1c:12:88:48;
 	fixed-address analytics1019.eqiad.wmnet;
 }
 
 host analytics1020 {
-	hardware ethernet 04:7d:7b:a5:e7:82;
+	hardware ethernet 90:b1:1c:12:98:d9;
 	fixed-address analytics1020.eqiad.wmnet;
 }
 
 host analytics1021 {
-	hardware ethernet 04:7d:7b:a5:e8:04;
+	hardware ethernet 90:b1:1c:06:c9:a2;
 	fixed-address analytics1021.eqiad.wmnet;
 }
 
 host analytics1022 {
-	hardware ethernet 04:7d:7b:a5:e7:5c;
+	hardware ethernet 90:b1:1c:12:88:3c;
 	fixed-address analytics1022.eqiad.wmnet;
 }
 
