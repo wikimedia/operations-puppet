@@ -113,6 +113,8 @@ elif [ "$1" = "inc-updater-start" ] ; then
 	inc-updater-start
 elif [ "$1" = "build-new" ] ; then
 	build-new $2
+elif [ "$1" = "import-db" ] ; then
+        import-db $2
 else
 	echo "$0: argument not recognized"
 	exit 1
