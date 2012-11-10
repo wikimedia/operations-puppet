@@ -7,6 +7,7 @@
 @monitor_group { "mysql_pmtpa": description => "pmtpa mysql core" }
 @monitor_group { "mysql_eqiad": description => "eqiad mysql core" }
 
+
 class role::db::core {
 	$cluster = "mysql"
 
