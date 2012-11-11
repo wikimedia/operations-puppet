@@ -4,6 +4,7 @@
 sub device_detection {
 
 	set req.http.X-Device = "";
+	set req.http.X-WAP = "no";
 
 	if ( req.http.User-Agent ~ "Android" ){
 		set req.http.X-Device = "android";
@@ -76,6 +77,7 @@ sub device_detection {
 			set req.http.X-Device = "html";
 		} else if ( req.http.Accept ~ "vnd.wap.wml" ) {
 			set req.http.X-Device = "wml";
+			set req.http.X-WAP = "yes";
 		} else {
 			set req.http.X-Device = "html";
 		}
