@@ -111,7 +111,7 @@ sub vcl_fetch {
 sub vcl_miss {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	# Send originals to the Swift cluster
-	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
+	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
 		set req.backend = swift;
 	# Send thumbnails to the Swift cluster
 	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
@@ -120,7 +120,7 @@ sub vcl_miss {
 	} elsif (req.url ~ "^/math/") {
 		set req.backend = swift;
 	# timeline to swift
-	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary)/[^/]+/timeline/") {
+	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/timeline/") {
 		set req.backend = swift;
 	}
 <% end -%>
