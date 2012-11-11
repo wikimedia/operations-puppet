@@ -37,7 +37,7 @@
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.crt
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
-                                                                                                           
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
