@@ -20,16 +20,11 @@ filegen clockstats file clockstats type day enable
 restrict <%= val %> kod notrap noquery
 server <%= val %>
 
+<% end -%>
 <% peers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 peer <%= val %>
 
-<% end -%>
-<% else -%>
-restrict 208.80.152.128 mask 255.255.255.192 notrap noquery
-<% servers.each do |val| -%>
-server <%= val %>
-<% end -%>
 <% end -%>
 
 # Access control configuration; see /usr/share/doc/ntp-doc/html/accopt.html for
