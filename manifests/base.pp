@@ -679,7 +679,7 @@ class base {
 	include apt::update
 
 	if ($::realm == "labs") {
-		include apt::unattended-upgrades
+		include apt::unattendedupgrades
 	}
 
 	include base::tcptweaks

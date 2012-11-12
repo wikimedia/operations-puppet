@@ -1,10 +1,10 @@
 class apt {
 	# Directory to hold the repository signing keys
 	file { '/var/lib/apt/keys':
-		ensure	=> directory,
-		owner	=> root,
-		group	=> root,
-		mode	=> '0700',
+		ensure  => directory,
+		owner   => root,
+		group   => root,
+		mode    => '0700',
 		recurse => true,
 		purge   => true,
 	}
@@ -22,7 +22,7 @@ class apt {
 		owner   => root,
 		group   => root,
 		mode    => '0755',
-		source	=> 'puppet:///modules/apt/apt2xml.py',
+		source  => 'puppet:///modules/apt/apt2xml.py',
 		require => Package['python-apt'],
 	}
 
