@@ -675,43 +675,35 @@ class base::tcptweaks {
 }
 
 class base {
-	case $::operatingsystem {
-		Ubuntu,Debian: {
-			include	apt
-			include apt::update
+	include	apt
+	include apt::update
 
-			if ($::realm == "labs") {
-				include apt::unattended-upgrades
-			}
-
-			include base::tcptweaks
-
-			class { base::puppet:
-				server => $::realm ? {
-					'labs' => $::site ? {
-						'pmtpa' => 'virt0.wikimedia.org',
-						'eqiad' => 'virt1000.wikimedia.org',
-					},
-					default => "puppet",
-				},
-				certname => $::realm ? {
-					# For labs, use instanceid.domain rather than the fqdn
-					# to ensure we're always using a unique certname.
-					# dc is an attribute from LDAP, it's set as the instanceid.
-					'labs' => "${dc}.${domain}",
-					default => undef,
-				},
-			}
-
-			if ($::realm == "labs") {
-				include role::salt::minions
-			}
-		}
-		Solaris: {
-		}
+	if ($::realm == "labs") {
+		include apt::unattended-upgrades
 	}
 
+	include base::tcptweaks
 
+	class { base::puppet:
+		server => $::realm ? {
+			'labs' => $::site ? {
+				'pmtpa' => 'virt0.wikimedia.org',
+				'eqiad' => 'virt1000.wikimedia.org',
+			},
+			default => "puppet",
+		},
+		certname => $::realm ? {
+			# For labs, use instanceid.domain rather than the fqdn
+			# to ensure we're always using a unique certname.
+			# dc is an attribute from LDAP, it's set as the instanceid.
+			'labs' => "${dc}.${domain}",
+			default => undef,
+		},
+	}
+
+	if ($::realm == "labs") {
+		include role::salt::minions
+	}
 
 	include	passwords::root,
 		base::decommissioned,

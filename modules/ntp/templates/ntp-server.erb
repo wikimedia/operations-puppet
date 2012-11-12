@@ -16,12 +16,10 @@ filegen clockstats file clockstats type day enable
 # Specify servers explicitly for access control, as the "pool" keyword is not
 # yet supported by this version of ntpd
 
-<% if operatingsystem != "Solaris" -%>
 <% servers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 server <%= val %>
 
-<% end -%>
 <% peers.each do |val| -%>
 restrict <%= val %> kod notrap noquery
 peer <%= val %>
@@ -44,9 +42,7 @@ server <%= val %>
 
 # Local users may interrogate the ntp server more closely.
 restrict 127.0.0.1
-<% if operatingsystem != "Solaris" -%>
 restrict ::1
-<% end -%>
 
 <% if ntp_server == true then -%>
 # Clients from our own IP ranges are allowed to exchange time
