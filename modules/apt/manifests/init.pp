@@ -27,9 +27,10 @@ class apt {
 	}
 
 	apt::repository { 'wikimedia':
-		uri        => 'http://apt.wikimedia.org/wikimedia',
-		dist       => "${::lsbdistcodename}-wikimedia",
-		components => 'main universe',
+		uri         => 'http://apt.wikimedia.org/wikimedia',
+		dist        => "${::lsbdistcodename}-wikimedia",
+		components  => 'main universe',
+		comment_old => true,
 	}
 
 	# prefer Wikimedia APT repository packages in all cases

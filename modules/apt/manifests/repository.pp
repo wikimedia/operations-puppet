@@ -3,6 +3,7 @@ define apt::repository(
 	$dist,
 	$components,
 	$source=true,
+	$comment_old=false,
 	$keyfile='',
 	$ensure=present
 ) {
@@ -18,6 +19,18 @@ define apt::repository(
 		group	=> root,
 		mode 	=> '0444',
 		content	=> "${binline}${srcline}",
+	}
+
+	if $comment_old {
+		$escuri = regsubst(regsubst($uri, '/', '\/', 'G'), '\.', '\.', 'G')
+		$binre = "deb(-src)?\s+$escuri\s+$dist\s+$components"
+
+		# comment out the old entries in /etc/apt/sources.list
+		exec { "apt-$name-sources":
+			command => "/bin/sed -ri '/$binre/s/^deb/#deb/' /etc/apt/sources.list",
+			creates => "/etc/apt/sources.list.d/$name.list",
+			before  => File["/etc/apt/sources.list.d/$name.list"],
+		}
 	}
 
 	if $keyfile {
