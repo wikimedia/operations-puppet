@@ -19,7 +19,6 @@ class swift::base($hash_path_suffix, $cluster_name) {
 			components => 'main',
 			keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
 			before     => Package['swift'],
-			notify     => Exec['apt-get update'],
 		}
 	}
 
