@@ -9,7 +9,26 @@ class swift::base($hash_path_suffix, $cluster_name) {
 	include swift::sysctl::tcp-improvements
 	include generic::sysctl::high-http-performance
 
-	package { ["swift", "python-ss-statsd", "swift-doc", "python-swift"]:
+	# this is on purpose not a >=. the cloud archive only exists for
+	# precise right now, and will perhaps exist for the next LTS, but
+	# surely not for the intermediate releases.
+	if ($::lsbdistcodename == 'precise') {
+		apt::repository { 'ubuntucloud':
+			uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+			dist       => 'precise-updates/folsom',
+			components => 'main',
+			keyfile    => 'puppet:///files/misc/ubuntu-cloud.key',
+			before     => Package['swift'],
+			notify     => Exec['apt-get update'],
+		}
+	}
+
+	package { [
+		'swift',
+		'swift-doc',
+		'python-swift',
+		'python-ss-statsd',
+		]:
 		ensure => present;
 	}
 
@@ -131,7 +150,7 @@ class swift::proxy {
 
 	realize File["/etc/swift/proxy-server.conf"]
 
-	package { ["swift-proxy", "python-swauth"]:
+	package { ['swift-proxy', 'python-swauth', 'python-swiftclient']:
 		ensure => present;
 	}
 
