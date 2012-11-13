@@ -207,14 +207,14 @@ class nfs::upload {
 			name => "/mnt/thumbs",
 			options => "bg,soft,tcp,timeo=14,intr,nfsvers=3",
 			require => File["/mnt/thumbs"],
-			ensure => mounted;
+			ensure => absent;
 		"/mnt/upload6":
 			device => "ms7.pmtpa.wmnet:/export/upload",
 			fstype => "nfs",
 			name => "/mnt/upload6",
 			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
 			require => File["/mnt/upload6"],
-			ensure => mounted;
+			ensure => absent;
 		"/mnt/upload5":
 			device => "ms1.wikimedia.org:/export/upload",
 			fstype => "nfs",
@@ -227,8 +227,7 @@ class nfs::upload {
 class nfs::upload::labs {
 	file {
 		"/mnt/thumbs":
-			ensure => link,
-			target => "/data/project/thumbs";
+			ensure => absent;
 
 		"/mnt/upload6":
 			ensure => link,
