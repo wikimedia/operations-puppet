@@ -133,6 +133,20 @@ class nfs::netapp::originals($ensure="mounted", $mountpoint="/mnt/upload7") {
 	}
 }
 
+class nfs::netapp::thumbs($ensure="mounted", $mountpoint="/mnt/thumbs2") {
+	include common
+	
+	file { $mountpoint: ensure => directory }
+	
+	mount { $mountpoint:
+		require => File[$mountpoint],
+		device => "${nfs::netapp::common::device}:/vol/thumbs",
+		fstype => nfs,
+		options => $nfs::netapp::common::options,
+		ensure => $ensure
+	}
+}
+
 # Historical /home/wikipedia
 class nfs::home::wikipedia {
 
@@ -180,6 +194,7 @@ class nfs::upload {
 
 	# NetApp migration
 	include nfs::netapp::originals
+	include nfs::netapp::thumbs
 
 	file { [ "/mnt/thumbs", "/mnt/upload6" ]:
 			ensure => directory;
