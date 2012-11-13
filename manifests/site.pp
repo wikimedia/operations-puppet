@@ -2523,12 +2523,14 @@ node "vanadium.eqiad.wmnet" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		accounts::spage,
 		nrpe
 
 	class { "solr": schema => "puppet:///modules/solr/schema-ttmserver.xml" }
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { "olivneh": privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "spage": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "virt1000.wikimedia.org" {
