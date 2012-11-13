@@ -2529,6 +2529,7 @@ node "vanadium.eqiad.wmnet" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 	sudo_user { "olivneh": privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { "spage": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
 node "virt1000.wikimedia.org" {
