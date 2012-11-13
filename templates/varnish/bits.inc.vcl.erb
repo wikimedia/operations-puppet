@@ -16,6 +16,12 @@ sub vcl_recv {
 			return (lookup);
 		}
 <% else -%>
+	/* For https-only wikis, the redirect from http to https for bits assets should occur
+		in varnish instead of apache, since the apache redirect and mediawiki doesn't
+		vary by protocol. This can result in a redirect loop and assets not loading. */
+	if ( req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https" ) {
+		error 301 "https://<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>" + req.url;
+	}
 		return (lookup);
 <% end -%>
 	}
@@ -65,6 +71,12 @@ sub vcl_error {
 <% end -%>
 	/* 204 responses shouldn't contain a body */
 	if (obj.status == 204) {
+		return(deliver);
+	}
+	/* 301 redirects for https-only wikis */
+	if (obj.status == 301) {
+		set obj.http.Location = obj.response;
+		set obj.status = 301;
 		return(deliver);
 	}
 }
