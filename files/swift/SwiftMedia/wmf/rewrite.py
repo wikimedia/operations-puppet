@@ -124,17 +124,21 @@ class WMFRewrite(WSGIContext):
             # ok, call the encoded url
             upcopy = opener.open(encodedurl)
         except urllib2.HTTPError, error:
-            if error.code == 404:
-                msg = "".join(error.readlines())
-                resp = webob.exc.HTTPNotFound(msg)
-            elif error.code == 301 and 'location' in error.hdrs:
-                resp = webob.exc.HTTPMovedPermanently(location=error.hdrs['location'])
-            elif error.code == 302 and 'location' in error.hdrs:
-                resp = webob.exc.HTTPFound(location=error.hdrs['location'])
-            else:
-                resp = webob.exc.HTTPNotFound('Unexpected error %s' % error)
-                resp.body = "".join(error.readlines())
-                resp.error = error.code
+            # copy the urllib2 HTTPError into a webob HTTPError class as-is
+            class CopiedHTTPError(webob.exc.HTTPError):
+                code = error.code
+                title = error.msg
+
+                def html_body(self, environ):
+                    return self.detail
+
+                def __init__(self):
+                    super(CopiedHTTPError, self).__init__(
+                            detail="".join(error.readlines()),
+                            headers=error.hdrs.items()
+                        )
+
+            resp = CopiedHTTPError()
             return resp
         except urllib2.URLError, error:
             msg = 'There was a problem while contacting the image scaler: %s' % \
