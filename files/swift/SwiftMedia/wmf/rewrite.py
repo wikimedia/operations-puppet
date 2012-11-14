@@ -68,7 +68,8 @@ class WMFRewrite(WSGIContext):
             opener.addheaders.append(('User-Agent', reqorig.headers.get('User-Agent')))
         else:
             opener.addheaders.append(('User-Agent', self.user_agent))
-        for header_to_pass in ['X-Forwarded-For', 'X-Original-URI']:
+        for header_to_pass in ['X-Forwarded-For', 'X-Forwarded-Proto',
+                'Accept', 'Accept-Encoding', 'X-Original-URI']:
             if reqorig.headers.get( header_to_pass ) != None:
                 opener.addheaders.append((header_to_pass, reqorig.headers.get( header_to_pass )))
         # At least in theory, we shouldn't be handing out links to originals
