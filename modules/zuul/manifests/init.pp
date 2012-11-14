@@ -35,6 +35,8 @@ class zuul (
 			'python-gitdb',
 			'python-async',
 			'python-smmap',
+
+			'python-setuptools',
 	]
 
 	package { $packages:
@@ -56,6 +58,7 @@ class zuul (
 		path => '/bin:/usr/bin',
 		refreshonly => true,
 		subscribe => Git::Clone['integration/zuul'],
+		require => Package['python-setuptools'],
 	}
 
 	file { '/etc/zuul':
