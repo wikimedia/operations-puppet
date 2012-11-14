@@ -157,7 +157,7 @@ class misc::install-server {
 	class apt-repository {
 		system_role { "misc::apt-repository": description => "APT repository" }
 
-		package { [ "dpkg-dev", "gnupg", "reprepro" ]:
+		package { [ "dpkg-dev", "gnupg", "reprepro", "dctrl-tools" ]:
 			ensure => latest;
 		}
 
@@ -194,6 +194,9 @@ echo 'update-repository is no longer used; the Wikimedia APT repository is now m
 			"/srv/wikimedia/conf/distributions":
 				mode => 0444,
 				source => "puppet:///files/misc/reprepro/distributions";
+			"/srv/wikimedia/conf/updates":
+				mode => 0444,
+				source => "puppet:///files/misc/reprepro/updates";
 			"/srv/wikimedia/conf/incoming":
 				mode => 0444,
 				source => "puppet:///files/misc/reprepro/incoming";
