@@ -37,8 +37,16 @@
 
 	# Old OTRS URLs
 	RewriteEngine On
-	RewriteRule ^/otrs/(.*)$ https://ticket.wikimedia.org/otrs/$1 [R]
-	RewriteRule ^/otrs-web/(.*)$ https://ticket.wikimedia.org/otrs-web/$1 [R]
+	RewriteRule ^/otrs/(.*)$ https://ticket.wikimedia.org/otrs/$1 [R=301,L]
+	RewriteRule ^/otrs-web/(.*)$ https://ticket.wikimedia.org/otrs-web/$1 [R=301,L]
+
+	# old URLs, redirect them to proper SSL
+	RewriteRule ^/wikipedia/(advisory|auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|commons|donate|exec|grants|incubator|internal|meta|movementroles|office|otrs-wiki|outreach|quality|searchcom|spcom|species|steward|strategy|usability|wikimania\d+|wikimaniateam)/(.*)$ https://$1.wikimedia.org/$2 [R=302,L]
+	RewriteRule ^/wikipedia/foundation/(.*)$ https://wikimediafoundation.org/$1 [R=302,L]
+	RewriteRule ^/wikipedia/mediawiki/(.*)$ https://www.mediawiki.org/$1 [R=302,L]
+	RewriteRule ^/wikipedia/sources/(.*)$ https://wikisource.org/$1 [R=302,L]
+	RewriteRule ^/wikipedia/wikidata/(.*)$ https://www.wikidata.org/$1 [R=302,L]
+	RewriteRule ^/(wikipedia|wikinews|wikisource|wikibooks|wikiquote|wikiversity|wiktionary|wikimedia)/([^@:/]+)/(.*)$ https://$2.$1.org/$3 [R=302,L]
 
 </VirtualHost>
 
