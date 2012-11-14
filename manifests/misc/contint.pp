@@ -48,6 +48,16 @@ class misc::contint::android::sdk {
 	}
 }
 
+# Includes packages needed for building
+# analytics and statistics related packages.
+# E.g. udp-filter, etc.
+class misc::contint::analytics::packages {
+	# these are needed to build libanon and udp-filter
+	package { ["pkg-config", "libpcap-dev"]:
+		ensure => "installed",
+	}
+}
+
 # CI test server as per RT #1204
 class misc::contint::test {
 

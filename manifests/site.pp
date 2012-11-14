@@ -930,6 +930,7 @@ node "gallium.wikimedia.org" {
 		standard,
 		misc::contint::test,
 		misc::contint::test::packages,
+		misc::contine::analytics::packages,
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
 		misc::contint::test::testswarm,
