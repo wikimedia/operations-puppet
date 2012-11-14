@@ -135,7 +135,11 @@ class WMFRewrite(WSGIContext):
                 resp = webob.exc.HTTPNotFound('Unexpected error %s' % status)
                 resp.body = "".join(status.readlines())
                 resp.status = status.code
-
+            return resp
+        except urllib2.URLError, error:
+            msg = 'There was a problem while contacting the image scaler: %s' % \
+                    error.reason
+            resp = webob.exc.HTTPServiceUnavailable(msg)
             return resp
 
         # get the Content-Type.
