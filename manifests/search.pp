@@ -91,7 +91,7 @@ class lucene {
 				mode => 0444,
 				content => template("lucene/lsearch.log4j.erb"),
 				ensure => present;
-			[ "/a/search", "/a/search/indexes", "/a/search/log", "/a/search/conf" ]:
+			[ "/a/search", "/a/search/indexes", "/a/search/log", "/a/search/conf", "/a/search/dumps" ]:
 				ensure => directory,
 				owner => lsearch,
 				group => search,
