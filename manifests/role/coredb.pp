@@ -1,7 +1,7 @@
 class role::coredb::config {
 	$topology = {
 		's1' => {
-			'hosts' => ['db32', 'db36', 'db38', 'db42', 'db59', 'db60', 'db63',
+			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db61', 'db63', 'db67',
 				'db1001', 'db1017', 'db1042', 'db1043', 'db1047', 'db1049', 'db1050'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db63", 'eqiad' => "db1017"},
@@ -14,13 +14,13 @@ class role::coredb::config {
 			'snapshot' => ["db53", "db1018"],
 		},
 		's3' => {
-			'hosts' => ['db11', 'db25', 'db34', 'db39', 'db1003', 'db1010', 'db1019', 'db1035'],
+			'hosts' => ['db11', 'db34', 'db39', 'db64', 'db1003', 'db1010', 'db1019', 'db1035'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db34", 'eqiad' => "db1019"},
-			'snapshot' => ["db25", "db1035"],
+			'snapshot' => ["db64", "db1035"],
 		},
 		's4' => {
-			'hosts' => ['db22', 'db31', 'db33', 'db51', 'db1004', 'db1011', 'db1020', 'db1038'],
+			'hosts' => ['db31', 'db33', 'db51', 'db65', 'db1004', 'db1011', 'db1020', 'db1038'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db31", 'eqiad' => "db1038"},
 			'snapshot' => ["db33", "db1020"],
@@ -38,7 +38,7 @@ class role::coredb::config {
 			'snapshot' => ["db46", "db1022"],
 		},
 		's7' => {
-			'hosts' => ['db18', 'db26', 'db37', 'db56', 'db58', 'db1007', 'db1024', 'db1028', 'db1041'],
+			'hosts' => ['db26', 'db37', 'db56', 'db58', 'db1007', 'db1024', 'db1028', 'db1041'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db37", 'eqiad' => "db1041"},
 			'snapshot' => ["db26", "db1007"],
