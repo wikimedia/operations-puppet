@@ -111,10 +111,10 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
+			if $manage_home {
+				Ssh_authorized_key { require => Unixaccount[$realname]}
 
-                        ssh_authorized_key {
+				ssh_authorized_key {
 				"aengels-rsa-key-20120215":
 					ensure	=> present,
 					user	=> $username,
@@ -123,7 +123,26 @@ class accounts {
 			}
 		}
 	}
+	class anomie inherits baseaccount {
+		$username = "anomie"
+		$realname = "Brad Jorsch"
+		$uid = 617
+		$enabled = true
 
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+			if $enabled == true and $manage_home {
+				Ssh_authorized_key { require => Unixaccount[$realname]}
+
+				ssh_authorized_key {
+				"bjorsch@wikimedia.org":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDN9+TME+RHccrQypKmHUXdRdlr1TVQkhCEL6DJ4dMA2CaWIsqwIkfqIjzBzVoqLUxNVjVPh+AF8ahrtSnx5qQKrPn3icv1G1J1J9d4pagHuFcNQiYWS+7xk5P/rz8GETOcNkKOl4ZaCJf1KGvSiFv67mC8ERqY3238UIougv74uTm8u6KHfJQoNMMgtQ0YlGD5pD5HjKMMkzSG2Li6a9gR7nXQ4WKHDKyZW1lt8v4U4v79ZcTTIDk8jie6DNOgJLq6NHpurosfMjZI7d7wWi84mqQTazTpgNvRtaAyO3dg+iZYGrc0d642e+kBA6izMlz8QpWOiem5tR1PGN2itTrL";
+			}
+		}
+	}
 	class ashields inherits baseaccount {
 		$username = "ashields"
 		$realname = "Andrew Shields"
@@ -2312,6 +2331,7 @@ class admins::mortals {
 
 	include accounts::aaron
 	include accounts::andrew
+	include accounts::anomie
 	include accounts::awjrichards
 	include accounts::bsitu
 	include accounts::csteipp
