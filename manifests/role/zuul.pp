@@ -10,9 +10,9 @@ class role::zuul {
 
 		# Setup the instance for labs usage
 		zuulwikimedia::instance { "zuul-labs":
-			jenkins_server => 'http://10.4.0.227:8080/ci',
+			jenkins_server => 'http://10.4.0.172:8080/ci',
 			jenkins_user => 'zuul',
-			gerrit_server => '10.4.0.227',
+			gerrit_server => '10.4.0.172',
 			gerrit_user => 'jenkins',
 			# Not enabled yet but we need a pattern anyway:
 			url_pattern => 'http://jenkinslogs.wmflabs.org/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
