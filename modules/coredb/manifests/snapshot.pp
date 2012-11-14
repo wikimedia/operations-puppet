@@ -8,7 +8,7 @@ class coredb::snapshot {
 			source => "puppet:///modules/coredb/utils/snaprotate.pl"
 	}
 
-	if $role::coredb::config::topology[$::shard][snapshot][$::hostname] {
+	if $role::coredb::config::topology[$role::coredb::common::shard][snapshot][$::hostname] {
 		# TODO: shame. this will stay for now.
 		$snaprotate_extraparams = $::hostname ? {
 			'db26' => "-c 1",
