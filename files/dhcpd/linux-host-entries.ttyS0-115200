@@ -83,19 +83,19 @@ host pc3 {
 	fixed-address pc3.pmtpa.wmnet;
 }
 
-host virt1001 {
+host pc1001 {
 	hardware ethernet 00:22:bd:d3:38:62;
-	fixed-address virt1001.eqiad.wmnet;
+	fixed-address pc1001.eqiad.wmnet;
 }
 
-host virt1002 {
+host pc1002 {
 	hardware ethernet 00:22:BD:D3:60:4A;
-	fixed-address virt1002.eqiad.wmnet;
+	fixed-address pc1002.eqiad.wmnet;
 }
 
-host virt1003 {
+host pc1003 {
 	hardware ethernet 88:43:E1:C2:51:50;
-	fixed-address virt1003.eqiad.wmnet;
+	fixed-address pc1003.eqiad.wmnet;
 }
 
 host virt1004 {
