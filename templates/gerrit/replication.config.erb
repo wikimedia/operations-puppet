@@ -3,13 +3,13 @@
 ####################################
 <%
 # replication is a hash which maps remote "names" to their URLs
-# and other settings
+# and other settings.
 
 if replication != "" then
-  replication.each { |remote,settings|
+  replication.sort.each { |remote,settings|
     %>[remote "<%= remote %>"]
 <%
-    settings.each { |option,value|
+    settings.sort.each { |option,value|
       %>  <%= option %> = <%= value %>
 <%
     }
