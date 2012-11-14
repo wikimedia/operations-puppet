@@ -123,19 +123,23 @@ class WMFRewrite(WSGIContext):
 
             # ok, call the encoded url
             upcopy = opener.open(encodedurl)
-        except urllib2.HTTPError,status:
-            if status.code == 404:
-                msg = "".join(status.readlines())
+        except urllib2.HTTPError, error:
+            if error.code == 404:
+                msg = "".join(error.readlines())
                 resp = webob.exc.HTTPNotFound(msg)
-            elif status.code == 301 and 'location' in status.hdrs:
-                resp = webob.exc.HTTPMovedPermanently(location=status.hdrs['location'])
-            elif status.code == 302 and 'location' in status.hdrs:
-                resp = webob.exc.HTTPFound(location=status.hdrs['location'])
+            elif error.code == 301 and 'location' in error.hdrs:
+                resp = webob.exc.HTTPMovedPermanently(location=error.hdrs['location'])
+            elif error.code == 302 and 'location' in error.hdrs:
+                resp = webob.exc.HTTPFound(location=error.hdrs['location'])
             else:
-                resp = webob.exc.HTTPNotFound('Unexpected error %s' % status)
-                resp.body = "".join(status.readlines())
-                resp.status = status.code
-
+                resp = webob.exc.HTTPNotFound('Unexpected error %s' % error)
+                resp.body = "".join(error.readlines())
+                resp.error = error.code
+            return resp
+        except urllib2.URLError, error:
+            msg = 'There was a problem while contacting the image scaler: %s' % \
+                    error.reason
+            resp = webob.exc.HTTPServiceUnavailable(msg)
             return resp
 
         # get the Content-Type.
