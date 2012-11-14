@@ -1,0 +1,9 @@
+# track the testing Ceph release train for now
+Name: ceph
+Method: http://ceph.com/debian-testing/
+Components: main>main
+UDebComponents:
+Suite: precise
+Architectures: amd64 source
+VerifyRelease: 7EBFDD5D17ED316D
+ListShellHook: grep-dctrl -X -S ceph || [ $? -eq 1 ]
