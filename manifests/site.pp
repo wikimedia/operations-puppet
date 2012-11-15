@@ -2179,8 +2179,8 @@ node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 
 # srv225-230 are applicationservers, memcached
 node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
-	include applicationserver_old::homeless,
-		memcached
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 # srv231-247 are application servers, memcached
