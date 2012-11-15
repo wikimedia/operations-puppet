@@ -295,7 +295,7 @@ class ganglia {
 						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
 						"LVS loadbalancers esams" => "amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
 						"Miscellaneous esams" => "hooft.esams.wikimedia.org",
-						"Analytics cluster eqiad" => "analytics1003.eqiad.wmnet",
+						"Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
 						"Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
 						"Upload caches esams" => "cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org"
 					}
