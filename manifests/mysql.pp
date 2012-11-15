@@ -371,7 +371,7 @@ class mysql {
 			},
 		}
 
-		if $db_cluster == "es1" {
+		if $db_cluster =~ /^(es1|fundraisingdb)$/ {
 			$mysql_myisam = true
 		}
 		else {
@@ -385,10 +385,7 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster =~ /^fundraisingdb/ {
-			$innodb_file_per_table = true
-			$mysql_myisam = true
-		} elsif $db_cluster =~ /^(m|es)/ {
+		if $db_cluster =~ /^(fundraisingdb|m|es)/ {
 			$innodb_file_per_table = true
 		} else {
 			$innodb_file_per_table = false
