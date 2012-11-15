@@ -2162,10 +2162,10 @@ node /^srv19[4-9]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# srv200-213 are application servers, memcached
+# srv200-213 are application servers (precise)
 node /^srv(20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
-	include applicationserver_old::homeless,
-		memcached
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 # srv214-218 are API application servers, memcached
