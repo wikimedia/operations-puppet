@@ -42,12 +42,12 @@
 
 	# old URLs, redirect them to proper SSL
 	RewriteRule ^/$ https://www.wikimedia.org/ [R=302,L]
-	RewriteRule ^/wikipedia/(advisory|auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|commons|donate|exec|grants|incubator|internal|meta|movementroles|office|otrs-wiki|outreach|quality|searchcom|spcom|species|steward|strategy|usability|wikimania\d+|wikimaniateam)/(.*)$ https://$1.wikimedia.org/$2 [R=302,L]
-	RewriteRule ^/wikipedia/foundation/(.*)$ https://wikimediafoundation.org/$1 [R=302,L]
-	RewriteRule ^/wikipedia/mediawiki/(.*)$ https://www.mediawiki.org/$1 [R=302,L]
-	RewriteRule ^/wikipedia/sources/(.*)$ https://wikisource.org/$1 [R=302,L]
-	RewriteRule ^/wikipedia/wikidata/(.*)$ https://www.wikidata.org/$1 [R=302,L]
-	RewriteRule ^/(wikipedia|wikinews|wikisource|wikibooks|wikiquote|wikiversity|wiktionary|wikimedia)/([^@:/]+)/(.*)$ https://$2.$1.org/$3 [R=302,L]
+	RewriteRule ^/wikipedia/(advisory|auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|commons|donate|exec|grants|incubator|internal|meta|movementroles|office|otrs-wiki|outreach|quality|searchcom|spcom|species|steward|strategy|usability|wikimania\d+|wikimaniateam)/(.*)$ https://$1.wikimedia.org/$2 [R=302,L,NE]
+	RewriteRule ^/wikipedia/foundation/(.*)$ https://wikimediafoundation.org/$1 [R=302,L,NE]
+	RewriteRule ^/wikipedia/mediawiki/(.*)$ https://www.mediawiki.org/$1 [R=302,L,NE]
+	RewriteRule ^/wikipedia/sources/(.*)$ https://wikisource.org/$1 [R=302,L,NE]
+	RewriteRule ^/wikipedia/wikidata/(.*)$ https://www.wikidata.org/$1 [R=302,L,NE]
+	RewriteRule ^/(wikipedia|wikinews|wikisource|wikibooks|wikiquote|wikiversity|wiktionary|wikimedia)/([^@:/]+)/(.*)$ https://$2.$1.org/$3 [R=302,L,NE]
 
 </VirtualHost>
 
