@@ -2197,12 +2197,15 @@ node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 }
 
 node /^srv24[89]\.pmtpa\.wmnet$/ {
-	include applicationserver_old::bits,
-		memcached
+  include role::applicationserver::appserver::bits
 }
 
 # srv250-257 are API application servers and run memcached
-node /^srv25[0-7]\.pmtpa\.wmnet$/ {
+node /^srv25[0]\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver
+	include	nfs::upload
+}
+node /^srv25[1-7]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[45]$/ {
 		$ganglia_aggregator = "true"
 	}
