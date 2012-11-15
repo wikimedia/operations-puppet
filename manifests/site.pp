@@ -2201,17 +2201,12 @@ node /^srv24[89]\.pmtpa\.wmnet$/ {
 }
 
 # srv250-257 are API application servers and run memcached
-node /^srv25[0]\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-node /^srv25[1-7]\.pmtpa\.wmnet$/ {
+node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[45]$/ {
 		$ganglia_aggregator = "true"
 	}
-
-	include applicationserver_old::api,
-		memcached
+	include	role::applicationserver::appserver::api
+	include	nfs::upload
 }
 
 # srv258 - srv280 are application servers, job runners, memcached
