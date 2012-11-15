@@ -30,9 +30,6 @@ use = egg:swauth#swauth
 default_swift_cluster = local#<%= scope.lookupvar("swift::proxy::config::proxy_address") %>/v1
 set log_name = swauth
 super_admin_key = <%= scope.lookupvar("swift::proxy::config::super_admin_key") %>
-<% if @allowed_sync_hosts -%>
-allowed_sync_hosts = <%= allowed_sync_hosts.join(",") %>
-<% end -%>
 
 [filter:healthcheck]
 use = egg:swift#healthcheck

@@ -206,7 +206,6 @@ class swift::proxy::config(
 	$memcached_servers,
 	$num_workers,
 	$super_admin_key,
-	$allowed_sync_hosts=undef,
 	$rewrite_account,
 	$rewrite_thumb_server,
 	$shard_containers,
@@ -314,9 +313,7 @@ class swift::cleaner {
 		}
 }
 
-class swift::storage(
-	$allowed_sync_hosts=undef
-) {
+class swift::storage {
 	Class[swift::base] -> Class[swift::storage]
 
 	system_role { "swift::storage": description => "swift backend storage brick" }
