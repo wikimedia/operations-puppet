@@ -67,7 +67,6 @@ class mysql {
 	}
 	elsif $hostname =~ /^(db1008|db1013|db1025|db78)$/ {
 		$db_cluster = "fundraisingdb"
-		$mysql_myisam = true
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
 		$db_cluster = "m2"
@@ -386,7 +385,10 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster =~ /^(fundraisingdb|m|es)/ {
+		if $db_cluster =~ /^fundraisingdb/ {
+			$innodb_file_per_table = true
+			$mysql_myisam = true
+		} elsif $db_cluster =~ /^(m|es)/ {
 			$innodb_file_per_table = true
 		} else {
 			$innodb_file_per_table = false
