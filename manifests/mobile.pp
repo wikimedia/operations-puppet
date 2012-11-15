@@ -17,6 +17,7 @@ class mobile::vumi {
 	class { "redis":
 		maxmemory => "1024Mb",
 	}
+	include redis::ganglia
 	package {
 		"python-iso8601":
 			ensure => "0.1.4-1ubuntu1";
