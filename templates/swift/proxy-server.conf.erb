@@ -49,9 +49,6 @@ use = egg:swift#proxy_logging
 # the auth system turns our login and key into an account / token pair.
 # the account remains valid forever, but the token times out.
 account = <%= scope.lookupvar("swift::proxy::config::rewrite_account") %>
-url = <%= scope.lookupvar("swift::proxy::config::rewrite_url") %>
-login = <%= scope.lookupvar("swift::proxy::config::rewrite_user") %>
-key = <%= scope.lookupvar("swift::proxy::config::rewrite_password") %>
 # the name of the scaler cluster.
 thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
 # upload doesn"t like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
