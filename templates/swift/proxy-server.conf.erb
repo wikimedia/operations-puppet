@@ -15,7 +15,7 @@ user = swift
 #log_statsd_metric_prefix =
 
 [pipeline:main]
-pipeline = rewrite healthcheck cache swauth proxy-logging proxy-server
+pipeline = rewrite healthcheck cache swauth cors proxy-logging proxy-server
 
 [app:proxy-server]
 use = egg:swift#proxy
@@ -41,6 +41,9 @@ use = egg:swift#healthcheck
 use = egg:swift#memcache
 memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
 memcache_serialization_support = 0
+
+[filter:cors]
+paste.filter_factory = wmf.cors:filter_factory
 
 [filter:proxy-logging]
 use = egg:swift#proxy_logging
