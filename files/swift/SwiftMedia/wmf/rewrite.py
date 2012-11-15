@@ -8,7 +8,6 @@ import webob
 import webob.exc
 import re
 from eventlet.green import urllib2
-import wmf.client
 import time
 import urlparse
 from swift.common.utils import get_logger
@@ -35,9 +34,6 @@ class _WMFRewriteContext(WSGIContext):
         self.logger = rewrite.logger
 
         self.account = conf['account'].strip()
-        self.authurl = conf['url'].strip()
-        self.login = conf['login'].strip()
-        self.key = conf['key'].strip()
         self.thumbhost = conf['thumbhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
