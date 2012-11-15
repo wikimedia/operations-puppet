@@ -649,12 +649,12 @@ host srv248 {
 }
 
 host srv249 {
-	hardware ethernet 00:21:9B:8E:93:43;
+	hardware ethernet 00:21:9B:8E:AC:4F;
 	fixed-address srv249.pmtpa.wmnet;
 }
 
 host srv250 {
-	hardware ethernet 00:21:9B:8E:AC:4F;
+	hardware ethernet 00:21:9B:8E:93:43;
 	fixed-address srv250.pmtpa.wmnet;
 }
 
