@@ -314,55 +314,6 @@ class misc::zfs::monitoring {
 	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
 }
 
-class misc::rt::server {
-	system_role { "misc::rt::server": description => "RT server" }
-
-	package { [ "request-tracker3.8", "rt3.8-db-mysql", "rt3.8-clients", "libcgi-fast-perl", "lighttpd" ]:
-		ensure => latest;
-	}
-
-	$rtconf = "# This file is for the command-line client, /usr/bin/rt.\n\nserver http://localhost/rt\n"
-
-	file {
-		"/etc/lighttpd/conf-available/10-rt.conf":
-			source => "puppet:///files/rt/10-rt.lighttpd.conf";
-		"/var/run/fastcgi":
-			ensure => directory,
-			owner => "www-data",
-			group => "www-data",
-			mode => 0750;
-		"/etc/request-tracker3.8/RT_SiteConfig.d/50-debconf":
-			source => "puppet:///files/rt/50-debconf",
-			notify => Exec["update-rt-siteconfig"];
-		"/etc/request-tracker3.8/RT_SiteConfig.d/80-wikimedia":
-			source => "puppet:///files/rt/80-wikimedia",
-			notify => Exec["update-rt-siteconfig"];
-		"/etc/request-tracker3.8/RT_SiteConfig.pm":
-			owner => "root",
-			group => "www-data",
-			mode => 0440;
-		"/etc/request-tracker3.8/rt.conf":
-			require => Package["request-tracker3.8"],
-			content => $rtconf;
-		"/etc/cron.d/mkdir-var-run-fastcgi":
-			content => "@reboot	root	mkdir /var/run/fastcgi";
-	}
-
-	exec { "update-rt-siteconfig":
-		command => "update-rt-siteconfig-3.8",
-		path => "/usr/sbin",
-		refreshonly => true;
-	}
-
-	lighttpd_config { "10-rt":
-		require => [ Package["request-tracker3.8"], File["/etc/lighttpd/conf-available/10-rt.conf"] ],
-	}
-
-	service { lighttpd:
-		ensure => running;
-	}
-}
-
 class misc::apple-dictionary-bridge {
 	system_role { "misc::apple-dictionary-bridge": description => "Apple Dictionary to API OpenSearch bridge" }
 
@@ -887,43 +838,6 @@ class misc::ircecho {
 	}
 
 }
-
-class misc::racktables {
-	# When this class is chosen, ensure that apache, php5-common, php5-mysql are
-	# installed on the host via another package set.
-
-	system_role { "misc::racktables": description => "Racktables" }
-
-	if $realm == "labs" {
-		$racktables_host = "$instancename.${domain}"
-		$racktables_ssl_cert = "/etc/ssl/certs/star.wmflabs.pem"
-		$racktables_ssl_key = "/etc/ssl/private/star.wmflabs.key"
-	} else {
-		$racktables_host = "racktables.wikimedia.org"
-		$racktables_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
-		$racktables_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
-	}
-
-	class {'webserver::php5': ssl => 'true'; }
-
-	include generic::mysql::packages::client,
-		webserver::php5-gd
-
-	file {
-		"/etc/apache2/sites-available/racktables.wikimedia.org":
-		mode => 0444,
-		owner => root,
-		group => root,
-		notify => Service["apache2"],
-		content => template('apache/sites/racktables.wikimedia.org.erb'),
-		ensure => present;
-	}
-
-	apache_site { racktables: name => "racktables.wikimedia.org" }
-	apache_confd { namevirtualhost: install => "true", name => "namevirtualhost" }
-	apache_module { rewrite: name => "rewrite" }
-}
-
 
 # this is stupid but I need a firewall on iron so that mysql doesn't accidentally get exposed to the world.
 
