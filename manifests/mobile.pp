@@ -10,7 +10,13 @@ class mobile::vumi {
 	$tata_ussd_pw = $passwords::mobile::vumi::tata_ussd_pw
 	$tata_hyd_ussd_pw = $passwords::mobile::vumi::tata_hyd_ussd_pw
 
+	file { "/a":
+		ensure => directory;
+	}
 
+	class { "redis":
+		maxmemory => "1024Mb",
+	}
 	package {
 		"python-iso8601":
 			ensure => "0.1.4-1ubuntu1";
@@ -20,8 +26,6 @@ class mobile::vumi {
 			ensure => "0.1-0~ppa3";
 		"python-ssmi":
 			ensure => "0.0.4-1~ppa3";
-		"redis-server":
-			ensure => "latest";
 		"python-txamqp":
 			ensure => "0.6.1-1~ppa3";
 		"vumi":
