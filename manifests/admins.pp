@@ -2366,6 +2366,7 @@ class admins::restricted {
 	include accounts::ashields # access revoked
 	include accounts::austin # access revoked
 	include accounts::avar
+	include accounts::awight
 	include accounts::bastique # access revoked
 	include accounts::dab
 	include accounts::daniel
@@ -2419,8 +2420,8 @@ class admins::fr-tech {
 	$gid = 500   # 'wikidev' by default
 	include groups::wikidev
 
-	include accounts::khorn
 	include accounts::awight
+	include accounts::khorn
 	include accounts::pgehres
 	include accounts::mwalker
 
