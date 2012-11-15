@@ -21,17 +21,19 @@ class DumbRedirectHandler(urllib2.HTTPRedirectHandler):
     def http_error_302(self, req, fp, code, msg, headers):
         return None
 
-class WMFRewrite(WSGIContext):
+class _WMFRewriteContext(WSGIContext):
     """
-    Rewrite Media Store URLs so that swift knows how to deal.
-
-    Mostly it's a question of inserting the AUTH_ string, and changing / to - in the container section.
+    Rewrite Media Store URLs so that swift knows how to deal with them.
     """
 
-    def __init__(self, app, conf):
+    def __init__(self, rewrite, conf):
         def striplist(l):
             return([x.strip() for x in l])
-        self.app = app
+
+        WSGIContext.__init__(self, rewrite.app)
+        self.app = rewrite.app
+        self.logger = rewrite.logger
+
         self.account = conf['account'].strip()
         self.authurl = conf['url'].strip()
         self.login = conf['login'].strip()
@@ -46,8 +48,6 @@ class WMFRewrite(WSGIContext):
         # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
         # converted  and only the path sent back (eg en.wikipedia/thumb).
         self.backend_url_format = conf['backend_url_format'].strip() #'asis', 'sitelang'
-
-        self.logger = get_logger(conf)
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -164,19 +164,11 @@ class WMFRewrite(WSGIContext):
                 resp.headers.add(header, uinfo.getheader(header))
         return resp
 
-    def __call__(self, env, start_response):
+    def handle_request(self, env, start_response):
         req = webob.Request(env)
-        # End-users should only do GET/HEAD, nothing else needs a rewrite
-        if req.method != 'GET' and req.method != 'HEAD':
-            return self.app(env, start_response)
 
         # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
         req.path_info = re.sub( r'/{2,}', '/', req.path_info )
-
-        # If it already has AUTH, presume that it's good. #07. (bug 33620)
-        hasauth = re.search('/AUTH_[0-9a-fA-F-]{32,36}', req.path)
-        if req.path.startswith('/auth') or hasauth:
-            return self.app(env, start_response)
 
         # Keep a copy of the original request so we can ask the scalers for it
         reqorig = req.copy()
@@ -314,6 +306,27 @@ class WMFRewrite(WSGIContext):
         else:
             resp = webob.exc.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path)) #11
             return resp(env, start_response)
+
+
+class WMFRewrite(object):
+    def __init__(self, app, conf):
+        self.app = app
+        self.conf = conf
+        self.logger = get_logger(conf)
+
+    def __call__(self, env, start_response):
+        # end-users should only do GET/HEAD, nothing else needs a rewrite
+        if env['REQUEST_METHOD'] not in ('HEAD', 'GET'):
+            return self.app(env, start_response)
+
+        # do nothing on authenticated and authentication requests
+        path = env['PATH_INFO']
+        if path.startswith('/auth') or path.startswith('/v1/AUTH_'):
+            return self.app(env, start_response)
+
+        context = _WMFRewriteContext(self, self.conf)
+        return context.handle_request(env, start_response)
+
 
 def filter_factory(global_conf, **local_conf):
     conf = global_conf.copy()
