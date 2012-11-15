@@ -2135,16 +2135,10 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-# TESTING
-node "srv190.pmtpa.wmnet" {
-	include	role::applicationserver::imagescaler
+# srv190-192 are application servers (precise)
+node /^srv19[0-2]\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver
 	include	nfs::upload
-}
-
-node /^srv19[12]\.pmtpa\.wmnet$/ {
-
-	include applicationserver_old::bits,
-		memcached
 }
 
 # srv193 is test.wikipedia.org
