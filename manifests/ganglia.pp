@@ -273,7 +273,7 @@ class ganglia {
 						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
 						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
 						"Fundraising eqiad" => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
-						"Bits application servers" => "srv191.pmtpa.wmnet srv192.pmtpa.wmnet",
+						"Bits application servers" => "srv248.pmtpa.wmnet srv249.pmtpa.wmnet",
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
 						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
 						"Swift pmtpa" => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",

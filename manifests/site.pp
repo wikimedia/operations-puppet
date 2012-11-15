@@ -1672,7 +1672,7 @@ node /mw5[5-9]\.pmtpa\.wmnet$/ {
 }
 
 node /mw6[01]\.pmtpa\.wmnet/ {
-  include role::applicationserver::appserver::bits
+	include role::applicationserver::appserver::bits
 }
 
 node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet/ {
@@ -2142,7 +2142,6 @@ node "srv190.pmtpa.wmnet" {
 }
 
 node /^srv19[12]\.pmtpa\.wmnet$/ {
-	$ganglia_aggregator = "true"
 
 	include applicationserver_old::bits,
 		memcached
@@ -2197,7 +2196,8 @@ node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 }
 
 node /^srv24[89]\.pmtpa\.wmnet$/ {
-  include role::applicationserver::appserver::bits
+	$ganglia_aggregator = "true"
+	include role::applicationserver::appserver::bits
 }
 
 # srv250-257 are API application servers and run memcached
