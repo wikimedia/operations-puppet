@@ -1173,6 +1173,8 @@ node "hume.wikimedia.org" {
 		admins::restricted,
 		nrpe
 
+	# To be run against PMTPA slaves
+	class { misc::maintenance::updatequerypages: enabled => true }
 
 	# Moved to terbium
 	class { misc::maintenance::foundationwiki: enabled => false }
