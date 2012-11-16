@@ -13,7 +13,7 @@ pvtlist="$MWinstall/common/private.dblist"
 
 function build-new {
 	cd $ls2
-	rm -rf $base/indexes/status/$1
+	rm -f $base/indexes/status/$1
 	java -cp LuceneSearch.jar org.wikimedia.lsearch.oai.IncrementalUpdater $1
 	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -p ${1}.links
 	java -cp LuceneSearch.jar org.wikimedia.lsearch.related.RelatedBuilder $1
@@ -111,9 +111,9 @@ elif [ "$1" = "build-prefix" ] ; then
 	build-prefix
 elif [ "$1" = "inc-updater-start" ] ; then
 	inc-updater-start
-elif [ "$1" = "build-new" ] ; then
+elif [ "$1" = "build-new" ] && [ "$2" ] ; then
 	build-new $2
-elif [ "$1" = "import-db" ] ; then
+elif [ "$1" = "import-db" ] && [ "$2" ] ; then
         import-db $2
 else
 	echo "$0: argument not recognized"
