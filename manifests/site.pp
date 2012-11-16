@@ -2161,13 +2161,13 @@ node /^srv(20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# srv214-218 are API application servers, memcached
+# srv214-218 are API application servers (precise)
 node /^srv21[4-8]\.pmtpa\.wmnet$/ {
-	include applicationserver_old::api,
-		memcached
+	include	role::applicationserver::appserver::api
+	include	nfs::upload
 }
 
-# srv219-224 are precise image scalers
+# srv219-224 are precise image scalers (precise)
 node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv219|srv220$/ {
 		$ganglia_aggregator = "true"
@@ -2177,16 +2177,16 @@ node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
 	include nfs::upload
 }
 
-# srv225-230 are applicationservers, memcached
+# srv225-230 are applicationservers (precise)
 node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
 
-# srv231-247 are application servers, memcached
+# srv231-247 are application servers (precise)
 node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
-	include applicationserver_old::homeless,
-		memcached
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 node /^srv24[89]\.pmtpa\.wmnet$/ {
@@ -2194,7 +2194,7 @@ node /^srv24[89]\.pmtpa\.wmnet$/ {
 	include role::applicationserver::appserver::bits
 }
 
-# srv250-257 are API application servers and run memcached
+# srv250-257 are API application servers (precise)
 node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[45]$/ {
 		$ganglia_aggregator = "true"
