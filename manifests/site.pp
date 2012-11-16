@@ -1173,6 +1173,8 @@ node "hume.wikimedia.org" {
         admins::restricted,
         nrpe
 
+	# To be run against PMTPA slaves
+	class { misc::maintenance::updatequerypages: enabled => true }
 
     # These cron jobs were left behind for some reason:
 
