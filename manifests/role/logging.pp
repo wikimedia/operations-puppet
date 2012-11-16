@@ -52,3 +52,17 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 		monitor_packet_loss	=>	false,
 	}
 }
+
+class role::beta::logging::mediawiki {
+
+	class { 'role::logging::mediawiki':
+		log_directory => '/data/project/logs';
+	}
+
+	# Shortcut
+	file { '/home/wikipedia/logs':
+		ensure => 'link',
+		target => '/data/project/logs';
+	}
+
+}
