@@ -54,6 +54,86 @@ class mediawiki::refreshlinks {
 	refreshlinks::cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
 }
 
+class mediawiki::updatequerypages {
+	# Include this to add cron jobs calling updateSpecialPages.php on all clusters.
+
+	file { '/home/mwdeploy/updateSpecialPages':
+		ensure => directory,
+		owner => mwdeploy,
+		group => mwdeploy,
+		mode => 0664,
+	}
+
+	define updatequerypages::cronjob() {
+
+		$cluster = regsubst($name, '@.*', '\1')
+		$monthday = regsubst($name, '.*@', '\1')
+
+		cron { "cron-updatequerypages-ancientpages-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=AncientPages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [1, 7]
+			monthday => $monthday,
+			ensure => present,
+		}
+
+		cron { "cron-updatequerypages-deadendpages-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=DeadendPages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [2, 8]
+			monthday => $monthday,
+			ensure => present,
+		}
+
+		cron { "cron-updatequerypages-mostlinked-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=MostLinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [3, 9]
+			monthday => $monthday,
+			ensure => present,
+		}
+
+		cron { "cron-updatequerypages-mostrevisions-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=MostRevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [4, 10]
+			monthday => $monthday,
+			ensure => present,
+		}
+
+		cron { "cron-updatequerypages-wantedpages-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=WantedPages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [5, 11]
+			monthday => $monthday,
+			ensure => present,
+		}
+
+		cron { "cron-updatequerypages-fewestrevisions-${name}":
+			command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=FewestRevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
+			user => mwdeploy,
+			hour => 1,
+			minute => 0,
+			month => [6, 12]
+			monthday => $monthday,
+			ensure => present,
+		}
+	}
+
+	# add cron jobs - usage: <cluster>@<day of month>
+	updatequerypages::cronjob { ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17']: }
+}
+
 class mediawiki::user {
 	systemuser { 'mwdeploy': name => 'mwdeploy' }
 }
