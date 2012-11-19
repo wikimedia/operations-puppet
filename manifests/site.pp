@@ -868,7 +868,8 @@ node "fenari.wikimedia.org" {
 		squid::cachemgr,
 		accounts::awjrichards,
 		accounts::erosen,
-		mediawiki_new
+		mediawiki_new,
+		generic::wikidev-umask
 
 	install_certificate{ "star.wikimedia.org": }
 }
