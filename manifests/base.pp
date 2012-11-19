@@ -459,6 +459,17 @@ class base::environment {
 					mode => 0444,
 					source => "puppet:///files/environment/umask-wikidev-profile-d.sh";
 			}
+			# if lucid or earlier /etc/profile would overwrite umask after incl. above
+			if versioncmp($::lsbdistrelease, "10.04") <= 0 {
+				file {
+					"/etc/profile":
+						ensure => present,
+						owner => root,
+						group => root,
+						source => "puppet:///files/environment/profile-lucid";
+				}
+			}
+
 			file {
 				"/etc/profile.d/mysql-ps1.sh":
 					ensure => present,
