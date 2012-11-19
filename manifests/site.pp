@@ -1654,6 +1654,10 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 	$cluster = "ceph"
 	
+	if $::hostname =~ /^ms-be300[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	
 	include standard
 }
 
