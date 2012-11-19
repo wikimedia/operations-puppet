@@ -2244,12 +2244,13 @@ node /^srv28[2-9]\.pmtpa\.wmnet$/ {
 		memcached
 }
 
-node "srv290.pmtpa.wmnet" {
-	include applicationserver_old::api,
-		memcached
+# srv290-295 are API application servers (precise)
+node /^srv29[0-5]\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver::api
+	include	nfs::upload
 }
 
-node /^srv(29[1-9]|30[01])\.pmtpa\.wmnet$/ {
+node /^srv(29[6-9]|30[01])\.pmtpa\.wmnet$/ {
 	include applicationserver_old::api
 }
 
