@@ -320,11 +320,20 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
-	include role::analytics::master
+	include role::analytics
+	# set up an HTTP proxy for internal Hadoop HTTP interfaces.
+	include analytics::web::proxy
+
 }
 
-# analytics1002 - analytics1099
-node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
+# analytics1027 hosts the frontend
+# interfaces to Kraken and Hadoop.
+node "analytics1027.eqiad.wmnet" {
+	include role::analytics::frontend
+}
+
+# analytics1002 - analytics1026
+node /analytics10(0[2-9]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1003" or $hostname == "analytics1011") {
 		$ganglia_aggregator = "true"
@@ -332,6 +341,9 @@ node /analytics10(0[2-9]|[1-9][0-9])\.eqiad\.wmnet/ {
 
 	include role::analytics
 }
+
+
+
 
 node "argon.wikimedia.org" {
 	$cluster = "misc"

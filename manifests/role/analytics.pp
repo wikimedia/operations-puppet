@@ -29,14 +29,8 @@ class role::analytics {
 	include misc::udp2log::udp_filter
 }
 
-# inherit everything form role::analytics, and then
-# add extra configs specific to Analytics cluster master(s)
-class role::analytics::master inherits role::analytics {
-	system_role { "role::analytics::master": description => "analytics master server" }
-
-	# set up an HTTP proxy for internal Hadoop HTTP interfaces.
-	include analytics::web::proxy
-
+# front end interfaces for Kraken and Hadoop
+class role::analytics::frontend inherits role::analytics {
 	# include a mysql database for Sqoop and Oozie
 	include analytics::db::mysql
 }
