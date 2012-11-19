@@ -1,15 +1,10 @@
 #!/usr/bin/python
-import os
 import sys
 import re
 import paramiko
 import socket
 import json
-import pipes
 import traceback
-import cookielib
-import urllib
-import urllib2
 
 from optparse import OptionParser
 
@@ -67,26 +62,6 @@ class HookHelper:
 			subject = "(no subject)"
 		return subject
 
-	def get_ref(self, change, patchset):
-		if change not in self.patchsets:
-			patchsets_fetched = self.get_patchsets(change)
-			if not patchsets_fetched:
-				return None
-		ref = str(self.patchsets[change]['patchSets'][patchset - 1]['ref'])
-		if hookconfig.debug:
-			sys.stderr.write("Ref fetched: " + ref + "\n")
-		if not ref:
-			sys.stderr.write("Failed to find a ref for self change")
-			return None
-		return ref
-
-	def get_comments(self, change):
-		# Not functional, support isn't in Gerrit yet
-		if change not in self.patchsets[change]:
-			patchsets_fetched = self.get_patchsets(change)
-			if not patchsets_fetched:
-				return None
-
 	def log_to_file(self, project, branch, message, user):
 		filename = self.get_log_filename(project, branch, message)
 		# These users are annoying, ignore them
@@ -125,39 +100,3 @@ class HookHelper:
 			filename = hookconfig.filenames[foundproject]
 		return hookconfig.logdir + "/" + filename
 
-	def update_rt(self, change, changeurl):
-		messages = []
-		messages.append(self.get_subject(change))
-		# TODO: add self in when it's possible to get comments from gerrit's query api
-		#messages.extend(self.get_comments(change))
-		ticketid = None
-		for message in messages:
-			match = re.search('resolves?:?\s?RT\s?#?\s?(\d+)', message, re.I)
-			if match:
-				ticketid = match.group(1)
-		if ticketid:
-			COOKIEFILE = os.path.expanduser('~/.rt_cookies.txt')
-			cj = cookielib.LWPCookieJar(COOKIEFILE)
-			opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-			urllib2.install_opener(opener)
-			try:
-				cj.load(ignore_discard=True, ignore_expires=True)
-			except IOError:
-				pass
-			data = {'user': hookconfig.gerrituser, 'pass': hookconfig.gerritpass}
-			data = urllib.urlencode(data)
-			try:
-				opener.open(hookconfig.rtresturl, data)
-				cj.save(COOKIEFILE, ignore_discard=True, ignore_expires=True)
-				uri = hookconfig.rtresturl + 'ticket/' + ticketid + '/comment'
-				message = 'Resolved in change ' + change + ' (' + changeurl + ').'
-				data = {'content': 'id: ' + ticketid + '\nAction: comment\nText: ' + message}
-				data = urllib.urlencode(data)
-				opener.open(uri, data)
-				uri = hookconfig.rtresturl + 'ticket/edit'
-				data = {'content': 'id: ' + ticketid + '\nStatus: resolved'}
-				data = urllib.urlencode(data)
-				opener.open(uri, data)
-			except urllib2.URLError:
-				sys.stderr.write("Failed to update RT")
-				traceback.print_exc(file=sys.stderr)

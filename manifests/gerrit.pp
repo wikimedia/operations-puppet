@@ -23,7 +23,6 @@ class gerrit::instance($no_apache=false,
 
 	# Main config
 	include passwords::gerrit
-	$gerrit_pass = $passwords::gerrit::gerrit_pass
 	$email_key = $passwords::gerrit::gerrit_email_key
 	$sshport = $ssh_port
 	$dbhost = $db_host
