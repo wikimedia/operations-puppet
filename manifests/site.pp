@@ -2225,14 +2225,14 @@ node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# srv258 - srv280 are application servers, job runners, memcached
+# srv258-280 are applicationservers (precise)
 node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[89]$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include applicationserver_old::homeless,
-		memcached
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 node "srv281.pmtpa.wmnet" {
