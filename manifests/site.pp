@@ -1651,6 +1651,12 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
+node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
+	$cluster = "ceph"
+	
+	include standard
+}
+
 # mw1-16 are application servers for jobrunners only (precise)
 node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mw[12]$/ {

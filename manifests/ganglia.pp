@@ -139,6 +139,9 @@ class ganglia {
 		"fundraising"	=> {
 			"name"		=> "Fundraising",
 			"ip_oct"	=> "35" },
+		"ceph"			=> {
+			"name"		=> "Ceph",
+			"ip_oct"	=> "36" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
@@ -297,7 +300,8 @@ class ganglia {
 						"Miscellaneous esams" => "hooft.esams.wikimedia.org",
 						"Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
 						"Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
-						"Upload caches esams" => "cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org"
+						"Upload caches esams" => "cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
+						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org"
 					}
 					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
 					$rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
