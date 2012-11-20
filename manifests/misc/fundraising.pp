@@ -16,9 +16,9 @@ class misc::fundraising {
 	file {
 
 		"/etc/logrotate.d/fundraising-civicrm":
-			owner => www-data,
-			group => wikidev,
-			mode => 0440,
+			owner => root,
+			group => root,
+			mode => 0644,
 			source => "puppet:///private/misc/fundraising/logrotate.fundraising-civicrm";
 
 		#civicrm confs
