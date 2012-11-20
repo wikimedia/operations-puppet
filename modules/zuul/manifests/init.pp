@@ -17,6 +17,7 @@ class zuul (
     $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
+    $push_change_refs,
 ) {
 
 	# Dependencies as mentionned in zuul:tools/pip-requires
