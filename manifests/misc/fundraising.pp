@@ -13,37 +13,61 @@ class misc::fundraising {
 		ensure => latest;
 	}
 
-	File {
-		owner => www-data,
-		group => wikidev,
-		mode => 0440,
-	}
-
 	file {
 		#civicrm confs
 		"/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/civicrm.civicrm.settings.php";
 		"/srv/org.wikimedia.civicrm/sites/default/default.settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/civicrm.default.settings.php";
 		"/srv/org.wikimedia.civicrm/sites/default/settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/civicrm.settings.php";
 
 		#civicrm dev confs
 		"/srv/org.wikimedia.civicrm-dev/sites/default/civicrm.settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php";
 		"/srv/org.wikimedia.civicrm-dev/sites/default/default.settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.default.settings.php";
 		"/srv/org.wikimedia.civicrm-dev/sites/default/settings.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/dev.civicrm.settings.php";
 
 		#misc fundraising confs
 		"/opt/fundraising-misc/queue_handling/payflowpro/executeStompPFPPendingProcessorSA.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/misc.executeStompPFPPendingProcessorSA.php";
 		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/misc.IPNListener_Recurring.php";
 		"/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/misc.IPNListener_Standalone.php";
 		"/opt/fundraising-misc/auditing/paypal-audit/auth.cfg":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			source => "puppet:///private/misc/fundraising/fundraising-misc.auth.cfg";
 		"/opt/fundraising-misc/public_reporting/update_config.php":
 			owner => root,
@@ -51,21 +75,38 @@ class misc::fundraising {
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/fundraising-misc.update_config.php";
 		"/srv/org.wikimedia.fundraising/IPNListener_Standalone.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/paypal":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php";
 		"/srv/org.wikimedia.civicrm/IPNListener_Recurring.php":
+			owner => www-data,
+			group => wikidev,
+			mode => 0440,
 			ensure => "/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php";
 		"/srv/org.wikimedia.civicrm/files":
+			owner => www-data,
+			group => wikidev,
 			mode => 0775,
 			ensure => directory;
 		"/srv/org.wikimedia.civicrm-dev/files":
+			owner => www-data,
+			group => wikidev,
 			mode => 0775,
 			ensure => directory;
 		"/srv/org.wikimedia.civicrm/fundcore_gateway":
+			owner => www-data,
+			group => wikidev,
 			mode => 0775,
 			ensure => directory;
 		"/srv/org.wikimedia.civicrm/fundcore_gateway/.htaccess":
+			owner => www-data,
+			group => wikidev,
 			mode => 0444,
 			content => "<Files paypal>
 	ForceType application/x-httpd-php
@@ -73,49 +114,49 @@ class misc::fundraising {
 
 		#apache conf stuffs
 		"/etc/php5/apache2/php.ini":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/php/php.ini.civicrm";
 		"/etc/apache2/sites-available/000-donate":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.donate";
 		"/etc/apache2/sites-available/002-civicrm":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm";
 		"/etc/apache2/sites-available/003-civicrm-ssl":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-ssl";
 		"/etc/apache2/sites-available/004-civicrm-dev":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev";
 		"/etc/apache2/sites-available/005-civicrm-dev-ssl":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl";
 		"/etc/apache2/sites-available/006-fundraising":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising";
 		"/etc/apache2/sites-available/007-fundraising-analytics":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-analytics";
 		"/etc/apache2/sites-available/008-community-analytics":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.community-analytics";
 
 		"/usr/local/bin/drush":
@@ -123,9 +164,9 @@ class misc::fundraising {
 
 		# other stuff
 		"/etc/php5/cli/php.ini":
-			mode => 0444,
 			owner => root,
 			group => root,
+			mode => 0444,
 			source => "puppet:///private/php/php.ini.fundraising.cli";
 	}
 
@@ -160,16 +201,16 @@ class misc::fundraising::backup::offhost {
 
 class misc::fundraising::jenkins_maintenance {
 
-	File {
-		mode => 0500,
-		owner => root,
-		group => root,
-	}
-
 	file {
 		"/usr/local/bin/jenkins_watcher":
+			owner => root,
+			group => root,
+			mode => 0500,
 			source => "puppet:///private/misc/fundraising/jenkins_watcher";
 		"/usr/local/bin/jenkins_archiver":
+			owner => root,
+			group => root,
+			mode => 0500,
 			source => "puppet:///private/misc/fundraising/jenkins_archiver";
 	}
 
@@ -210,20 +251,20 @@ class misc::fundraising::mail {
 		shell => "/bin/sh";
 	}
 
-	File {
-		owner => root,
-		group => root,
-	}
-
 	file {
 		"/etc/exim4/exim4.conf":
+			owner => root,
+			group => root,
 			mode => 0444,
 			content => template("exim/exim4.donate.erb");
 		"/etc/exim4/wikimedia.org-fundraising-private.key":
+			owner => root,
 			group => Debian-exim,
 			mode => 0440,
 			source => "puppet:///private/dkim/wikimedia.org-fundraising-private.key";
 		"/etc/dovecot/dovecot.conf":
+			owner => root,
+			group => root,
 			mode => 0444,
 			source => "puppet:///files/dovecot/dovecot.donate.conf";
 		"/var/mail/civimail":
@@ -232,11 +273,14 @@ class misc::fundraising::mail {
 			mode => 2755,
 			ensure => directory;
 		"/usr/local/bin/collect_exim_stats_via_gmetric":
+			owner => root,
+			group => root,
 			mode => 0755,
 			source => "puppet:///files/ganglia/collect_exim_stats_via_gmetric";
 		"/usr/local/bin/civimail_send":
-			mode => 0710,
+			owner => root,
 			group => wikidev,
+			mode => 0710,
 			source => "puppet:///private/misc/fundraising/civimail_send";
 	}
 
