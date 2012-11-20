@@ -13,5 +13,12 @@ class mediawiki_new {
 		ensure => latest;
 	}
 
+	# Disable timidity-daemon
+	# It's recommended by timidity and there's no simple way to avoid installing it
+	service { 'timidity':
+		enable => false,
+		ensure => stopped;
+	}
+
 	include users, sync
 }

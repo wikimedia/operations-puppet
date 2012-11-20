@@ -4,10 +4,17 @@ class mediawiki::packages {
 	package { [ 'wikimedia-task-appserver', 'php5-redis', 'php5-memcached', 'libmemcached10', 'php5-igbinary' ]:
 		ensure => latest;
 	}
+
+	# Disable timidity-daemon
+	# It's recommended by timidity and there's no simple way to avoid installing it
+	service { 'timidity':
+		enable => false,
+		ensure => stopped;
+	}
 }
 
 class mediawiki::sync {
-	# Include this for syncinc mw installation
+	# Include this for syncing mw installation
 	# Include apache::apache-trigger-mw-sync to ensure that
 	# the sync happens each time just before apache is started
 	require mediawiki::packages

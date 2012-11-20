@@ -117,7 +117,7 @@ sub vcl_miss {
 	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
 		set req.backend = swift;
 	# math to swift
-	} elsif (req.url ~ "^/math/") {
+	} elsif (req.url ~ "^/(math|score)/") {
 		set req.backend = swift;
 	# timeline to swift
 	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/timeline/") {
