@@ -2163,7 +2163,7 @@ node /^srv19[0-2]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# srv193 is test.wikipedia.org
+# srv193 is test.wikipedia.org (precise)
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver
 	include	nfs::upload
@@ -2211,6 +2211,7 @@ node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
+# srv248-249 are bits application servers (precise)
 node /^srv24[89]\.pmtpa\.wmnet$/ {
 	$ganglia_aggregator = "true"
 	include role::applicationserver::appserver::bits
@@ -2225,8 +2226,8 @@ node /^srv25[0-7]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# srv258-280 are applicationservers (precise)
-node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
+# srv258-289 are applicationservers (precise)
+node /^srv(25[89]|2[6-8][0-9])\.pmtpa\.wmnet$/ {
 	if $hostname =~ /^srv25[89]$/ {
 		$ganglia_aggregator = "true"
 	}
@@ -2235,23 +2236,10 @@ node /^srv(25[89]|2[67][0-9]|280)\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-node "srv281.pmtpa.wmnet" {
-	include	role::applicationserver::appserver
-}
-
-node /^srv28[2-9]\.pmtpa\.wmnet$/ {
-	include applicationserver_old::homeless,
-		memcached
-}
-
-# srv290-295 are API application servers (precise)
-node /^srv29[0-5]\.pmtpa\.wmnet$/ {
+# srv290-301 are API application servers (precise)
+node /^srv(29[0-9]|30[01])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver::api
 	include	nfs::upload
-}
-
-node /^srv(29[6-9]|30[01])\.pmtpa\.wmnet$/ {
-	include applicationserver_old::api
 }
 
 node /ssl[1-4]\.wikimedia\.org/ {
