@@ -321,9 +321,6 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics
-	# set up an HTTP proxy for internal Hadoop HTTP interfaces.
-	include analytics::web::proxy
-
 }
 
 # analytics1027 hosts the frontend
