@@ -64,6 +64,13 @@ class protoproxy::proxy_sites {
 			require => Package['nginx'];
 	}
 
+	nginx_site {
+		"localhost.conf":
+			install => "true",
+			enable => "true",
+			require => Package["nginx"];
+	}
+
 	proxy_configuration{ wikimedia:
 		proxy_addresses => {
 			"pmtpa" => [ "208.80.152.200", "[2620:0:860:ed1a::]" ],
