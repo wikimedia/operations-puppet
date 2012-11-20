@@ -32,21 +32,38 @@ class role::fundraising::civicrm {
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$gid = 500
-	include base,
-		ganglia,
-		ntp::client,
-		nrpe,
-		admins::roots,
+	include
 		accounts::mhernandez,
 		accounts::pcoombe,
 		accounts::rfaulk,
 		accounts::zexley,
 		admins::fr-tech,
+		admins::roots,
+		apt,
 		backup::client,
+		ganglia,
 		misc::fundraising,
-		misc::fundraising::mail,
+		misc::fundraising::backup::archive,
 		misc::fundraising::backup::offhost,
-		misc::fundraising::backup::archive
+		misc::fundraising::mail,
+		nrpe,
+		ntp::client,
+        apt::update,
+        base::access::dc-techs,
+        base::decommissioned,
+        base::environment,
+        base::grub,
+        base::monitoring::host,
+        base::motd,
+        base::platform,
+        base::puppet,
+        base::resolving,
+        base::standard-packages,
+        base::sysctl,
+        base::tcptweaks,
+        base::vimconfig,
+        passwords::root,
+        ssh
 
 	if $hostname == "aluminium" {
 		include misc::jenkins,
@@ -104,16 +121,17 @@ class role::fundraising::database::dump_slave {
 	include role::fundraising::database::slave,
 		misc::fundraising::backup::offhost
 
+	File {
+		mode => 0755,
+		owner => root,
+		group => root,
+	}
+
 	file {
 		'/usr/local/bin/dump_fundraisingdb':
-			mode => 0755,
-			owner => root,
-			group => root,
 			source => "puppet:///files/misc/scripts/dump_fundraisingdb";
 		'/root/.dump_fundraisingdb':
 			mode => 0400,
-			owner => root,
-			group => root,
 			source => "puppet:///private/misc/fundraising/dump_fundraisingdb-${hostname}";
 	}
 
