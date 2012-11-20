@@ -331,6 +331,19 @@ class WMFRewrite(WSGIContext):
                 obj   = match.group('path') # c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
                 shard = match.group('shard1') + match.group('shard2') # c9
 
+        # score renderings
+        if match is None:
+            # /score/j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
+            # /score/override-midi/8/i/8i9pzt87wtpy45lpz1rox8wusjkt7ki.ogg
+            match = re.match(r'^/(?P<repo>lilypond)/(?P<path>.+)$', req.path)
+            if match:
+                proj  = 'global'
+                lang  = 'data'
+                repo  = match.group('repo') # score
+                zone  = 'render'
+                obj   = match.group('path') # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
+                shard = ''
+
         # Internally rewrite the URL based on the regex it matched...
         if match:
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
