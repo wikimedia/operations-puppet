@@ -255,6 +255,8 @@ hash_type: <%= salt_hash_type %>
 # A dict for the test module:
 #test.baz: {spam: sausage, cheese: bread}
 
+<%if @salt_master_finger %>master_finger: <%= salt_master_finger %><% end %>
+
 <% if salt_grains != {} %>
 grains:<% salt_grains.each do |salt_name, salt_values| %>
 <% if salt_values.kind_of?(Array) %>  <%= salt_name %>:<% salt_values.each do |salt_value| %>
