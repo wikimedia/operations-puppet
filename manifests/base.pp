@@ -701,10 +701,6 @@ class base {
 		},
 	}
 
-	if ($::realm == "labs") {
-		include role::salt::minions
-	}
-
 	include	passwords::root,
 		base::decommissioned,
 		base::grub,
@@ -717,7 +713,9 @@ class base {
 		base::environment,
 		base::platform,
 		base::access::dc-techs,
-		ssh
+		ssh,
+		role::salt::minions
+
 
 	# include base::monitor::host.
 	# if $nagios_contact_group is set, then use it

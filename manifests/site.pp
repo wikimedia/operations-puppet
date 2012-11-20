@@ -2087,7 +2087,8 @@ node "sockpuppet.pmtpa.wmnet" {
 
 	include standard,
 		backup::client,
-		misc::management::ipmi
+		misc::management::ipmi,
+		role::salt::masters::labs
 
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],

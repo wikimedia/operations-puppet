@@ -1,3 +1,11 @@
+class role::salt::masters::production {
+
+	class { "salt::master":
+		salt_runner_dirs => "['/srv/runners']",
+	}
+
+}
+
 class role::salt::masters::labs {
 
 	class { "salt::master":
