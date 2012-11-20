@@ -158,6 +158,10 @@ class _WMFRewriteContext(WSGIContext):
         for header in ['Content-Length', 'Content-Disposition', 'Last-Modified', 'Accept-Ranges']:
             if(uinfo.getheader(header)):
                 resp.headers.add(header, uinfo.getheader(header))
+
+        # also add CORS; see also our CORS middleware
+        resp.headers.add('Access-Control-Allow-Origin', '*')
+
         return resp
 
     def handle_request(self, env, start_response):
