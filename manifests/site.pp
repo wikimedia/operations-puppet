@@ -1685,13 +1685,13 @@ node /mw1[7-9]\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-node /mw[2-4][0-9]\.pmtpa\.wmnet/ {
+node /mw(2[0-9]|3[0-4])\.pmtpa\.wmnet/ {
 	include applicationserver_old::homeless,
 		memcached
 }
 
-# mw50-59 are application servers (precise)
-node /mw5[0-9]\.pmtpa\.wmnet$/ {
+# mw35-59 are application servers (precise)
+node /mw(3[5-9]|[4-5][0-9])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
@@ -1701,13 +1701,13 @@ node /mw6[01]\.pmtpa\.wmnet/ {
 	include role::applicationserver::appserver::bits
 }
 
-# mw62-65 are api application servers (precise)
-node /mw6[2-5]\.pmtpa\.wmnet$/ {
+# mw62-69 are api application servers (precise)
+node /mw6[2-9]\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver::api
 	include	nfs::upload
 }
 
-node /mw(6[6-9]|7[0-4])\.pmtpa\.wmnet/ {
+node /mw7[0-4]\.pmtpa\.wmnet/ {
 	include applicationserver_old::api
 }
 
