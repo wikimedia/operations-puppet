@@ -483,6 +483,33 @@ define swift::mount_filesystem() {
 	Exec["mkdir $mountpath"] -> Mount[$mountpath] -> File["fix attr $mountpath"]
 }
 
+
+# Definition: swift::label_filesystem
+#
+# labels an XFS fileststem on a block device ($title) as
+# swift-xxxx (example: swift-sdm3), only if the device is
+# unmounted, has an xfs filesystem on it, and the filesystem
+# does not already have a pre-existing swift label
+# (so we don't accidentally relabel devices that show up with
+# a changed device id)
+#
+# this would typically be used for devices partitioned and
+# with xfs filesystems created at install time but no labels
+#
+# Parameters:
+#	- $title:
+#		The device to label (e.g. /dev/sdc1)
+define swift::label_filesystem() {
+	$device = $title
+	$dev_suffix = regsubst($device, '^\/dev\/(.*)$', '\1')
+
+	$label = "swift-${dev_suffix}"
+	exec { "/usr/sbin/xfs_admin -L $label $device":
+		unless => "/usr/bin/test $(mount | /bin/grep $device | /usr/bin/wc -l) -eq 0 && /usr/bin/test $(/usr/sbin/grub-probe -t fs -d  $device) = 'xfs' && /usr/bin/test $(/usr/sbin/xfs_admin -l $device | /bin/grep swift | /usr/bin/wc -l) -eq 0"
+	}
+}
+
+
 # installs the swift cli for interacting with remote swift installations.
 class swift::utilities {
 	package { "swift":
