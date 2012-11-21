@@ -377,7 +377,8 @@ filter f_nojunk {
 	not (
 		program("apache2") and
 		match("File does not exist:") or
-		match("File name too long:")
+		match("File name too long:") or
+		match("Directory index forbidden")
 	);
 };
 
