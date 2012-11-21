@@ -376,7 +376,8 @@ destination df_swift {
 filter f_nojunk {
 	not (
 		program("apache2") and
-		match("File does not exist:")
+		match("File does not exist:") or
+		match("File name too long:")
 	);
 };
 
