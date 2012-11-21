@@ -30,6 +30,7 @@ class protoproxy::proxy_sites {
 
 	require protoproxy::package
 	include protoproxy::service
+	include protoproxy::ganglia
 	
 	# Tune kernel settings
 	include generic::sysctl::high-http-performance
@@ -356,6 +357,17 @@ class protoproxy::service {
 	service { ['nginx']:
 		enable => true,
 		ensure => running;
+	}
+}
+
+class protoproxy::ganglia {
+	file {
+		"/usr/lib/ganglia/python_modules/apache_status.py":
+			source => "puppet:///files/ganglia/plugins/apache_status.py",
+			notify => Service[gmond];
+		"/etc/ganglia/conf.d/apache_status.pyconf":
+			source => "puppet:///files/ganglia/plugins/apache_status.pyconf",
+			notify => Service[gmond];
 	}
 }
 
