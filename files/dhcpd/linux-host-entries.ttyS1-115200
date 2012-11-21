@@ -1373,7 +1373,7 @@ host ms-be7 {
 }
 
 host ms-be8 {
-	hardware ethernet 04:7D:7B:2E:2E:56;
+	hardware ethernet 90:B1:1C:18:AD:2C;
 	fixed-address ms-be8.pmtpa.wmnet;
 }
 
@@ -1383,7 +1383,7 @@ host ms-be9 {
 }
 
 host ms-be10 {
-	hardware ethernet 04:7D:7B:2E:2E:B6;
+	hardware ethernet 90:B1:1C:18:BC:7D;
 	fixed-address ms-be10.pmtpa.wmnet;
 }
 
