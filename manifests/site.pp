@@ -1679,19 +1679,8 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 	include	role::applicationserver::jobrunner
 }
 
-# mw17-19 are application servers (precise)
-node /mw1[7-9]\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-
-node /mw(2[0-9]|3[0-4])\.pmtpa\.wmnet/ {
-	include applicationserver_old::homeless,
-		memcached
-}
-
-# mw35-59 are application servers (precise)
-node /mw(3[5-9]|[4-5][0-9])\.pmtpa\.wmnet$/ {
+# mw17-59 are application servers (precise)
+node /mwi(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
@@ -1701,14 +1690,10 @@ node /mw6[01]\.pmtpa\.wmnet/ {
 	include role::applicationserver::appserver::bits
 }
 
-# mw62-69 are api application servers (precise)
-node /mw6[2-9]\.pmtpa\.wmnet$/ {
+# mw62-74 are api application servers (precise)
+node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver::api
 	include	nfs::upload
-}
-
-node /mw7[0-4]\.pmtpa\.wmnet/ {
-	include applicationserver_old::api
 }
 
 # mw 1001-1016 are jobrunners (precise)
