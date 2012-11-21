@@ -31,6 +31,9 @@ class zuulwikimedia {
 				push_change_refs => $push_change_refs,
 			}
 
+			# nagios monitoring
+			monitor_service { "jenkins": description => "zuul_service_running", check_command => "check_procs_generic!1!3!1!20!zuul-server" }
+
 			# Deploy Wikimedia Zuul configuration files.
 
 			# Describe the behaviors and jobs
