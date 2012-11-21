@@ -401,17 +401,17 @@ class gerrit::backup {
 
 # Setup the `gerritslave` account on any host that wants to receive
 # replication. See role::gerrit::production::replicationdest
-class gerrit::replicationdest( $sshkey, $extra_groups = undef, $name = "gerritslave" ) {
-  systemuser { $name:
-    name => $name,
-    groups => $groups;
+class gerrit::replicationdest( $sshkey, $extra_groups = undef, $slaveuser = "gerritslave" ) {
+  systemuser { $slaveuser:
+    name => $slaveuser,
+    groups => $extra_groups;
   }
 
-  ssh_authorized_key { $name:
+  ssh_authorized_key { $slaveuser:
     key => $sshkey,
     type => "ssh-rsa",
-    user => $name,
-    require => Systemuser[$name],
+    user => $slaveuser,
+    require => Systemuser[$slaveuser],
     ensure => present;
   }
 
