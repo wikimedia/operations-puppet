@@ -228,69 +228,89 @@ acl carrier_telenor_montenegro {
 }
 
 sub tag_carrier {
-
 	/* For wiki zero project - tags partnered carriers */
 	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.X-Subdomain = "ZERO";
 		if ( client.ip ~ carrier_celcom_malaysia ) {
-			 set req.http.X-Carrier = "Celcom Malaysia";
+			set req.http.X-Carrier = "Celcom Malaysia";
+			set req.http.X-CS = "CL";
 		} else if ( client.ip ~ carrier_hello_cambodia ) {
 			set req.http.X-Carrier = "Hello Cambodia";
+			set req.http.X-CS = "HL";
 		} else if (client.ip ~ wmf_office) {
 			set req.http.X-Carrier = "wikimedia";
+			set req.http.X-CS = "WMF";
 		} else if (client.ip ~ carrier_digi) {
 			if ( req.http.User-Agent ~ "Opera" ) {
 				set req.http.X-Carrier = "DIGI";
+				set req.http.X-CS = "DG";
 			}
 		} else if (client.ip ~ carrier_dialog_sri_lanka) {
 			set req.http.X-Carrier = "Dialog Sri Lanka";
+			set req.http.X-CS = "DL";
 		} else if (client.ip ~ carrier_dtac) {
 			set req.http.X-Carrier = "DTAC";
+			set req.http.X-CS = "DT";
 		} else if (client.ip ~ carrier_tata) {
 			set req.http.X-Carrier = "TATA";
+			set req.http.X-CS = "TA";
 		} else if (client.ip ~ carrier_telenor_montenegro) {
 			set req.http.X-Carrier = "Telenor Montenegro";
+			set req.http.X-CS = "TN";
 		} else if (client.ip ~ carrier_grameenphone_bangladesh) {
 			if ( req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Grameenphone Bangladesh";
+				set req.http.X-CS = "GP";
 			}
 		} else if (client.ip ~ carrier_saudi_telecom) {
 			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Saudi Telecom";
+				set req.http.X-CS = "ST";
 			}
 		}
 	} else {
 		set req.http.X-Subdomain = "M";
 		if ( client.ip ~ carrier_orange_botswana ) {
 			 set req.http.X-Carrier = "Orange Botswana";
+			set req.http.X-CS = "OB";
 		} else if ( client.ip ~  carrier_orange_congo ) {
 			set req.http.X-Carrier = "Orange Congo";
+			set req.http.X-CS = "CD";
 		} else if ( client.ip ~  carrier_orange_ivory_coast ) {
 			set req.http.X-Carrier = "Orange Ivory Coast";
+			set req.http.X-CS = "OR";
 		} else if (client.ip ~ carrier_saudi_telecom) {
 			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Saudi Telecom";
+				set req.http.X-CS = "ST";
 			}
 		} else if ( client.ip ~  carrier_orange_uganda ) {
 			if ( req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Orange Uganda";
+				set req.http.X-CS = "OR";
 			}
 		} else if ( client.ip ~  carrier_orange_tunisia ) {
 			if ( req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Orange Tunisia";
+				set req.http.X-CS = "OR";
 			}
 		} else if ( client.ip ~  carrier_orange_niger ) {
 				set req.http.X-Carrier = "Orange Niger";
+				set req.http.X-CS = "OR";
 		} else if ( client.ip ~ carrier_orange_kenya ) {
 				set req.http.X-Carrier = "Orange Kenya";
+				set req.http.X-CS = "OR";
 		} else if ( client.ip ~  carrier_orange_cameroon ) {
 			if ( req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Orange Cameroon";
+				set req.http.X-CS = "OR";
 			}
 		} else if (client.ip ~ carrier_telenor_montenegro) {
 			set req.http.X-Carrier = "Telenor Montenegro";
+			set req.http.X-CS = "TN";
 		} else if ( client.ip ~ carrier_testing ) {
 			set req.http.X-Carrier = "wikimedia";
+			set req.http.X-CS = "WMF";
 		}
 	}
 
@@ -298,7 +318,8 @@ sub tag_carrier {
 	with a fake X-Carrier header */
 	/* else {
 		unset req.http.X-Carrier;
-	} */
+	}
+	*/
 }
 
 sub device_detection {
@@ -382,7 +403,7 @@ sub device_detection {
 				set req.http.X-Device = "blackberry";
 			}
 	}
-	
+
 	if ( req.http.X-Device == "" ) {
 		if ( req.http.Accept ~ "application/vnd.wap.xhtml+xml" ) {
 			// Should be wap2
@@ -394,7 +415,6 @@ sub device_detection {
 		}
 	}
 }
-
 
 sub vcl_recv {
 	call vcl_recv_purge;
@@ -459,7 +479,7 @@ sub vcl_recv {
 	} else {
 		unset req.http.Cookie;
 	}
-	
+
 	if ( req.http.host == "m.wikipedia.org" ) {
 		if ( req.http.X-Carrier == "Orange Congo" ) {
 			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
@@ -522,6 +542,7 @@ sub vcl_recv {
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
 	set beresp.http.X-Carrier = req.http.X-Carrier;
+	set beresp.http.X-CS = req.http.X-CS;
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
