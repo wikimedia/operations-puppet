@@ -84,100 +84,6 @@ class applicationserver_old {
 		$nagios_group = "${cluster}_${::site}"
 	}
 
-	class homeless inherits parent {
-		include	standard,
-			admins::roots,
-			admins::mortals,
-			accounts::l10nupdate,
-			nfs::upload,
-			mediawiki::packages,
-			apaches::cron,
-			apaches::ganglia,
-			apaches::service,
-			apaches::pybal-check,
-			apaches::monitoring,
-			apaches::syslog,
-			geoip
-
-		# FIXME: pull from lvs::configuration
-		class { "lvs::realserver":
-			realserver_ips => $::realm ? {
-				'production' => [ "10.2.1.1" ],
-				'labs' => [ "10.4.0.254" ],
-			}
-		}
-	}
-
-	class home-no-service inherits parent {
-		include	standard,
-			nfs::netapp::home,
-			nfs::upload,
-			mediawiki::packages,
-			admins::roots,
-			admins::mortals,
-			accounts::l10nupdate,
-			geoip
-	}
-
-	class home inherits home-no-service {
-		include apaches::service,
-			apaches::ganglia,
-			apaches::pybal-check
-	}
-
-	class api inherits parent {
-		$cluster = "api_appserver"
-		$nagios_group = "${cluster}_${::site}"
-
-		include standard,
-			admins::roots,
-			admins::mortals,
-			accounts::l10nupdate,
-			nfs::upload,
-			mediawiki::packages,
-			apaches::cron,
-			apaches::ganglia,
-			apaches::service,
-			apaches::pybal-check,
-			apaches::monitoring,
-			apaches::syslog,
-			geoip
-
-		# FIXME: pull from lvs::configuration
-		class { "lvs::realserver":
-			realserver_ips => $::realm ? {
-				'production' => [ "10.2.1.22", "10.2.1.1" ],
-				'labs' => [ "10.4.0.253" ],
-			}
-		}
-	}
-
-	class bits inherits parent {
-		$cluster = "bits_appserver"
-		$nagios_group = "${cluster}_${::site}"
-
-		include standard,
-			admins::roots,
-			admins::mortals,
-			accounts::l10nupdate,
-			mediawiki::packages,
-			apaches::cron,
-			apaches::ganglia,
-			apaches::service,
-			apaches::pybal-check,
-			apaches::monitoring,
-			apaches::syslog,
-			geoip
-
-		# FIXME: pull from lvs::configuration
-		class { "lvs::realserver":
-			realserver_ips => $::realm ? {
-				'production' => [ "10.2.1.1" ],
-				'labs' => [ "10.4.0.252" ],
-			}
-		}
-	}
-
 	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
 	class labs inherits parent {
 		include standard,
@@ -193,37 +99,6 @@ class applicationserver_old {
 		class {"mediawiki_new::jobrunner": }
 	}
 
-}
-
-class imagescaler {
-	$cluster = "imagescaler"
-	$nagios_group = "${cluster}_${::site}"
-
-	include standard,
-		imagescaler::cron,
-		imagescaler::packages,
-		imagescaler::files,
-		nfs::upload,
-		mediawiki::packages,
-		apaches::packages,
-		apaches::cron,
-		apaches::ganglia,
-		apaches::service,
-		admins::roots,
-		admins::mortals,
-		admins::restricted,
-		apaches::pybal-check,
-		apaches::monitoring,
-		apaches::syslog,
-		accounts::l10nupdate
-
-	# FIXME: pull from lvs::configuration
-	class { "lvs::realserver":
-		realserver_ips => $::realm ? {
-			'production' => [ "10.2.1.21" ],
-			'labs' => [ "10.4.0.252" ],
-		}
-	}
 }
 
 class imagescaler::labs {
