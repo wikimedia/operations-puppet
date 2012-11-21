@@ -1680,7 +1680,7 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 }
 
 # mw17-59 are application servers (precise)
-node /mwi(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
+node /mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
