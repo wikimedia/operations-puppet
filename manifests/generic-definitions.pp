@@ -678,6 +678,11 @@ define git::clone(
 					require => Exec["git_clone_${title}"],
 				}
 			}
+
+			file { $directory:
+				mode => $mode,
+			}
+
 		}
 	}
 }
