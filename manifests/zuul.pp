@@ -42,7 +42,7 @@ class zuulwikimedia {
 			git::clone {
 				"integration/zuul-config":
 					directory => "/etc/zuul/wikimedia",
-					owner => root,
+					owner => jenkins,
 					group => jenkins,
 					mode => 0775,
 					origin => "https://gerrit.wikimedia.org/r/p/integration/zuul-config.git",
