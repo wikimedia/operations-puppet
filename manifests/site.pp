@@ -1502,23 +1502,7 @@ node /^ms-be(5|9)\.pmtpa\.wmnet$/ {
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
 }
 
-node /^ms-be([6-7])\.pmtpa\.wmnet$/ {
-	# the ms-be hosts that are 720xds with ssds have two more disks
-	# but they show up as m and n, those get the OS
-	$all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
-		'/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
-		'/dev/sdk', '/dev/sdl' ]
-
-	include role::swift::pmtpa-prod::storage
-
-	swift::create_filesystem{ $all_drives: partition_nr => "1" }
-	# these are already partitioned and xfs formatted by the installer
-	swift::mount_filesystem{ '/dev/sdm3': }
-	swift::mount_filesystem{ '/dev/sdn3': }
-}
-
-node /^ms-be8\.pmtpa\.wmnet$/ {
-	# stanza temporary for testing
+node /^ms-be([6-8]|10)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts that are 720xds with ssds have two more disks
 	# but they show up as m and n, those get the OS
 	$all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
@@ -1535,7 +1519,8 @@ node /^ms-be8\.pmtpa\.wmnet$/ {
 	swift::mount_filesystem{ '/dev/sdn3': }
 }
 
-node /^ms-be1([0-2]|[4-9])\.pmtpa\.wmnet$/ {
+
+node /^ms-be1([1-2]|[4-9])\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
