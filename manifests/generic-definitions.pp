@@ -664,7 +664,7 @@ define git::clone(
 				group       => $group,
 				timeout     => $timeout,
 			}
-			
+
 			# pull if $ensure == latest and if there are changes to merge in.
 			if $ensure == "latest" {
 				exec { "git_pull_${title}":
@@ -678,6 +678,13 @@ define git::clone(
 					require => Exec["git_clone_${title}"],
 				}
 			}
+
+			file { $directory:
+				mode => $mode,
+				owner => $owner,
+				group => $group,
+			}
+
 		}
 	}
 }
