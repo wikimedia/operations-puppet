@@ -119,6 +119,10 @@ class misc::contint::test {
 			ensure => present
 		}
 
+		# Get several OpenJDK packages including jdk:
+		class { 'generic::packages::openjdk': version => '1.6', jdk => true, }
+		class { 'generic::packages::openjdk': version => '1.7', jdk => true, }
+
 		service { 'jenkins':
 			enable => true,
 			ensure => 'running',
