@@ -148,6 +148,33 @@ class misc::contint::test {
 				require => User['jenkins'];
 		}
 
+		# Setup tmpfs to write SQLite files to
+
+		# old mount point:
+		mount { '/mnt/jenkins-tmp':
+			ensure => absent,
+			require => Mount['/var/lib/jenkins/tmpfs'];
+		}
+
+		# new mount point:
+		mount { '/var/lib/jenkins/tmpfs':
+			ensure => mounted,
+			device => 'tmpfs',
+			fstype => 'tmpfs',
+			options => 'noatime,defaults,size=512M,mode=755,uid=jenkins,gid=jenkins',
+			require => User['jenkins'];
+		}
+
+		# Back compatibility symlink for Jenkins/Ant
+		file { '/mnt/jenkins-tmp':
+			ensure => 'link',
+			target => '/var/lib/jenkins/tmpfs/',
+			require => [
+				Mount['/var/lib/jenkins/tmpfs'],
+				Mount['/mnt/jenkins-tmp']
+			];
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
