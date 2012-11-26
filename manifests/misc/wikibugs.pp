@@ -12,10 +12,10 @@ class misc::irc::wikibugs {
 
 	# Some Bugzilla product have been blessed with their own log files out of the
 	# default one. Values are hardcoded in the Wikibugs perl script
-	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki'
+	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki-parsoid.log:#mediawiki-parsoid;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki'
 	$ircecho_nick = "wikibugs"
 	# Add channels defined in $ircecho_infile:
-	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki'
+	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki,#mediawiki-parsoid'
 	$ircecho_server = 'irc.freenode.net'
 
 	include misc::ircecho
@@ -30,12 +30,16 @@ class misc::irc::wikibugs {
 			require => User['wikibugs'];
 	}
 
-	exec {
-		"Clone wikibugs":
-			command => "svn co -r115412 https://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/wikibugs /var/lib/wikibugs/script",
-			cwd => "/var/lib/wikibugs",
-			creates => "/var/lib/wikibugs/script",
-			require => [ Package['subversion', 'libemail-mime-perl'], File['/var/lib/wikibugs'] ];
+	git::clone { 'wikibugs':
+		require => [ Package[ 'libemail-mime-perl' ], File[ '/var/lib/wikibugs' ] ],
+		directory => '/var/lib/wikibugs/script/wikibugs',
+		branch => 'master',
+		timeout => 1800,
+		depth => 1,
+		ensure => $keep_up_to_date ? {
+			true => latest,
+			default => present
+		},
+		origin => 'https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git';
 	}
-
 }
