@@ -84,7 +84,7 @@ class mediawiki::math {
 #  Members of $role_config_lines will get inserted into the file verbatim -- be careful about
 #  quoting and escaping!  Note that if you're inserting a bunch of lines you'll be better
 #  served by creating an additional template and including that via $role_requires.
-class mediawiki::singlenode( $keep_up_to_date = false,
+class mediawiki::singlenode( $ensure = 'present',
                              $role_requires = [],
                              $role_config_lines = []) {
         require "role::labs-mysql-server",
@@ -103,10 +103,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 		branch => "master",
 		timeout => 1800,
 		depth => 1,
-		ensure => $keep_up_to_date ? {
-			true => latest,
-			default => present
-		},
+		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
 
@@ -114,10 +111,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 		require => git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/Nuke",
 		branch => "master",
-		ensure => $keep_up_to_date ? {
-			true => latest,
-			default => present
-		},
+		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Nuke.git";
 	}
 
@@ -125,10 +119,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 		require => git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/SpamBlacklist",
 		branch => "master",
-		ensure => $keep_up_to_date ? {
-			true => latest,
-			default => present
-		},
+		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.git";
 	}
 
@@ -136,10 +127,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 		require => git::clone["mediawiki"],
 		directory => "/srv/mediawiki/extensions/ConfirmEdit",
 		branch => "master",
-		ensure => $keep_up_to_date ? {
-			true => latest,
-			default => present
-		},
+		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ConfirmEdit.git";
 	}
 
@@ -186,7 +174,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 		logoutput => "on_failure",
 	}
 
-	if $keep_up_to_date == 'true' {
+	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
 			require => [git::clone["mediawiki"],
 				git::clone["nuke"],
@@ -194,7 +182,7 @@ class mediawiki::singlenode( $keep_up_to_date = false,
 				git::clone["ConfirmEdit"],
 				File["/srv/mediawiki/LocalSettings.php"]],
 			command => "/usr/bin/php /srv/mediawiki/maintenance/update.php --quick --conf '/srv/mediawiki/LocalSettings.php'",
-			logoutput => " ",
+			logoutput => "on_failure",
 		}
 	}
 
