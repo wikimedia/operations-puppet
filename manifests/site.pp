@@ -494,7 +494,7 @@ node /pc[1-9]\.pmtpa\.wmnet/ {
 		mysql::pc::conf,
 		mysql::packages
 
-	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
+	system_role { "mysql::pc::conf": description => "parser cache mysql server" }
 }
 
 node /^db4[2]\.pmtpa\.wmnet$/ {
