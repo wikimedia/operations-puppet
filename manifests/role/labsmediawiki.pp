@@ -2,7 +2,7 @@
 class role::mediawiki-install-latest::labs {
 
 	class { "mediawiki::singlenode":
-		keep_up_to_date => true
+		ensure => latest
 	}
 }
 
@@ -10,7 +10,7 @@ class role::mediawiki-install-latest::labs {
 class role::mediawiki-install::labs {
 
 	class { "mediawiki::singlenode":
-		keep_up_to_date => false
+		ensure => present
 	}
 }
 
@@ -20,7 +20,7 @@ class role::wikidata-repo-latest::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
-		keep_up_to_date => true,
+		ensure => latest,
 		# require_once stuff for repo
 		role_requires => [ '"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"', '"$IP/extensions/Wikibase/repo/Wikibase.php"', '"$IP/extensions/Wikibase/repo/ExampleSettings.php"' ],
 		# additional config lines
@@ -34,7 +34,7 @@ class role::wikidata-repo::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
-		keep_up_to_date => false,
+		ensure => present,
 		role_requires => [ '"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"', '"$IP/extensions/Wikibase/repo/Wikibase.php"', '"$IP/extensions/Wikibase/repo/ExampleSettings.php"' ],
 		# additional config lines
 		role_config_lines => [ '$wgShowExceptionDetails = true' ]
@@ -47,7 +47,7 @@ class role::wikidata-client-latest::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
-		keep_up_to_date => true,
+		ensure => latest,
 		role_requires => [ '"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"', '"$IP/extensions/Wikibase/client/WikibaseClient.php"' ],
 		# additional config lines
 		role_config_lines => [ '$wgShowExceptionDetails = true', '$wgWBSettings[\'namespaces\'] = array( NS_MAIN, NS_CATEGORY )', '$wgWBSettings[\'siteGroup\'] = \'wiki\'', '$wgWBSettings[\'sort\'] = \'code\'' ]
@@ -60,7 +60,7 @@ class role::wikidata-client::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
-		keep_up_to_date => false,
+		ensure => present,
 		role_requires => [ '"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"', '"$IP/extensions/Wikibase/client/WikibaseClient.php"' ],
 		# additional config lines
 		role_config_lines => [ '$wgShowExceptionDetails = true', '$wgWBSettings[\'namespaces\'] = array( NS_MAIN, NS_CATEGORY )', '$wgWBSettings[\'siteGroup\'] = \'wiki\'', '$wgWBSettings[\'sort\'] = \'code\'' ]
