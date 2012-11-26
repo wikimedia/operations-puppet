@@ -175,6 +175,15 @@ class misc::contint::test {
 				require => User['jenkins'];
 		}
 
+		# Setup tmpfs to write SQLite files to
+		mount { '/var/lib/jenkins/tmpfs':
+			ensure => mounted,
+			device => 'tmpfs',
+			fstype => 'tmpfs',
+			options => 'noatime,defaults,size=512M,mode=755,uid=jenkins,gid=jenkins',
+			require => [ User['jenkins'], Group['jenkins'] ];
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
