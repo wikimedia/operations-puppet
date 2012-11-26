@@ -56,6 +56,9 @@ class misc::contint::analytics::packages {
 	package { ["pkg-config", "libpcap-dev"]:
 		ensure => "installed",
 	}
+
+	# need geoip to build udp-filter
+	include geoip
 }
 
 # CI test server as per RT #1204
