@@ -6,6 +6,7 @@ apikey=<%= jenkins_apikey %>
 [gerrit]
 server=<%= gerrit_server %>
 user=<%= gerrit_user %>
+<% if gerrit_baseurl %>baseurl=<%= gerrit_baseurl %><% end %>
 sshkey=/var/lib/jenkins/.ssh/id_rsa
 
 [zuul]
