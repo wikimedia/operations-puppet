@@ -697,6 +697,104 @@ define git::init($directory) {
 	}
 }
 
+# Definition: git::extension
+#
+# Creates a git clone of a mediawiki extensions into the default extensions directory.
+#
+# === Required parameters
+# none
+#
+# === Optional parameters
+#
+# $+directory+:: path to clone the repository into (default: /srv/mediawiki/extensions).
+# $+origin+:: Origin repository URL (default: gerrit path in the format https://gerrit.wikimedia.org/r/p/mediawiki/extensions/${title}.git.
+# $+branch+:: Branch you would like to check out (default: master).
+# $+ensure+:: _absent_, _present_, or _latest_.  Defaults to _present_.
+#             - _present_ (default) will just clone once.
+#             - _latest_ will execute a git pull if there are any changes.
+#             - _absent_ will ensure the directory is deleted.
+# $+owner+:: Owner of $directory, default: _root_.  git commands will be run by this user.
+# $+group+:: Group owner of $directory, default: 'root'
+# $+mode+:: Permission mode of $directory, default: 0755
+# $+ssh+:: SSH command/wrapper to use when checking out, default: ''
+# $+timeout+:: Time out in seconds for the exec command, default: 300
+#
+# === Example usage for git clone to default path
+#
+#	git::extension{ "my_extension": }
+#
+define git::extension(
+	$directory="/srv/mediawiki/extensions/${title}",
+	$origin="https://gerrit.wikimedia.org/r/p/mediawiki/extensions/${title}.git",
+	$branch="master",
+	$ssh="",
+	$ensure='present',
+	$owner="root",
+	$group="root",
+	$timeout="300",
+	$depth="full",
+	$mode=0755) {
+
+	require generic::packages::git-core
+	
+	case $ensure {
+		"absent": {
+			# make sure $directory does not exist
+			file { $directory:
+				ensure  => 'absent',
+				recurse => true,
+				force   => true,
+			}
+		}
+
+		# otherwise clone the repository
+		default: {
+			# if branch was specified
+			if $branch {
+				$brancharg = "-b $branch "
+			}
+			# else don't checkout a non-default branch
+			else {
+				$brancharg = ""
+			}
+			if $ssh {
+				$env = "GIT_SSH=$ssh"
+			}
+
+			$deptharg = $depth ?  {
+				"full" => "",
+				default => " --depth=$depth" 
+			}
+
+			# set PATH for following execs
+			Exec { path => "/usr/bin:/bin" }
+			# clone the repository
+			exec { "git_extension${title}":
+				command     => "git clone ${brancharg}${origin}${deptharg} $directory",
+				logoutput   => on_failure,
+				environment => $env,
+				creates     => "$directory/.git/config",
+				user        => $owner,
+				group       => $group,
+				timeout     => $timeout,
+			}
+			
+			# pull if $ensure == latest and if there are changes to merge in.
+			if $ensure == "latest" {
+				exec { "git_pull_${title}":
+					cwd     => $directory,
+					command => "git pull --quiet${deptharg}",
+					logoutput => on_failure,
+					# git diff --quiet will exit 1 (return false) if there are differences
+					unless  => "git fetch && git diff --quiet remotes/origin/HEAD",
+					user    => $owner,
+					group   => $group,
+					require => Exec["git_extension${title}"],
+				}
+			}
+		}
+	}
+}
 
 # Creating an apparmor service class
 # so we can notify the service when 

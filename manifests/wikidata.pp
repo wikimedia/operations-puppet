@@ -20,66 +20,54 @@ class wikidata::singlenode( $keep_up_to_date = true,
 # install either Wikibase repo or client to /srv/mediawiki/extensions
 
 # get the Wikibase extensions and dependencies
-	git::clone { "Diff" :
+	git::extension { "Diff":
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/Diff",
-			branch => "master",
 			ensure => $keep_up_to_date ? {
 				true => latest,
 				default => present
 			},
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Diff.git",
 	}
 
-	git::clone { "DataValues" :
+	git::extension { "DataValues":
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/DataValues",
-			branch => "master",
 			ensure => $keep_up_to_date ? {
 				true => latest,
 				default => present
 			},
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git",
 	}
 
-	git::clone { "UniversalLanguageSelector" :
+	git::extension { "UniversalLanguageSelector":
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/UniversalLanguageSelector",
-			branch => "master",
 			ensure => $keep_up_to_date ? {
 				true => latest,
 				default => present
 			},
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
 	}
 
-	git::clone { "Wikibase" :
-		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
-		directory => "/srv/mediawiki/extensions/Wikibase",
-		branch => "master",
+	git::extension { "Wikibase":
+		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Extension["Diff"], Git::Extension["DataValues"]],
 		ensure => $keep_up_to_date ? {
 				true => latest,
 				default => present
 			},
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
 	}
 
 	exec { "populateSitesTable":
-			require => [Git::Clone["Wikibase"], File["/srv/mediawiki/LocalSettings.php"]],
+			require => [Git::Extension["Wikibase"], File["/srv/mediawiki/LocalSettings.php"]],
 			cwd => "/srv/mediawiki/extensions/Wikibase/lib/maintenance",
 			command => "/usr/bin/php populateSitesTable.php",
 			logoutput => "on_failure",
 	}
 
 	exec { "update-script":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"]],
+			require => [Git::Extension["Wikibase"], Exec["populateSitesTable"]],
 			cwd => "/srv/mediawiki",
 			command => "/usr/bin/php maintenance/update.php --quick",
 			logoutput => "on_failure",
 	}
 
 	exec { "localisation-cache":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Git::Extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "/srv/mediawiki",
 			command => "/usr/bin/php maintenance/rebuildLocalisationCache.php",
 			logoutput => "on_failure",
@@ -88,7 +76,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 # Wikibase repo only:
 	if $install_repo == true {
 		exec { "populate_repo":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Git::Extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "/srv/mediawiki/extensions/Wikibase/repo/maintenance",
 			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv",
 			logoutput => "on_failure",
@@ -124,10 +112,10 @@ class wikidata::singlenode( $keep_up_to_date = true,
 	if $keep_up_to_date == true {
 		exec { 'wikidata_update':
 			require => [Git::Clone["mediawiki"],
-				Git::Clone["Diff"],
-				Git::Clone["DataValues"],
-				Git::Clone["UniversalLanguageSelector"],
-				Git::Clone["Wikibase"],
+				Git::Extension["Diff"],
+				Git::Extension["DataValues"],
+				Git::Extension["UniversalLanguageSelector"],
+				Git::Extension["Wikibase"],
 				File["/srv/mediawiki/LocalSettings.php"]],
 			command => "/usr/bin/php /srv/mediawiki/maintenance/update.php --quick --conf '/srv/mediawiki/LocalSettings.php'",
 			logoutput => "on_failure",
