@@ -148,6 +148,14 @@ class misc::contint::test {
 				require => User['jenkins'];
 		}
 
+		mount { '/mnt/jenkins-tmp':
+			ensure => mounted,
+			device => 'tmpfs',
+			fstype => 'tmpfs',
+			options => 'noatime,defaults,size=512M,mode=755,uid=jenkins,gid=jenkins',
+			require => User['jenkins'];
+		}
+
 		# nagios monitoring
 		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
 
