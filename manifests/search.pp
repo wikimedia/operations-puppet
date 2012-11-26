@@ -23,33 +23,14 @@ class lucene {
 	}
 
 	class packages {
-		if ( $::lsbdistcodename == "precise" ) {
+
 			package { ["oracle-j2sdk1.6", "libudp2log-log4j-java"]:
 				ensure => latest;
 			}
-			package { ["liblog4j1.2-java"]:
+			package { ["liblog4j1.2-java", "lucene-search-2"]:
 				require => Package["oracle-j2sdk1.6"],
 				ensure => latest;
 			}
-			if $::site =="pmtpa" {
-				package { "lucene-search-2":
-					ensure => latest;
-				}
-			} else {
-				package { "lucene-search-2":
-					ensure => "2.1.4wm2";
-				}
-			}
-		}
-		else {
-			package { ["sun-j2sdk1.6", "lucene-search-2"]:
-				ensure => latest;
-			}
-			package { ["liblog4j1.2-java"]:
-				require => Package["sun-j2sdk1.6"],
-				ensure => latest;
-			}
-		}
 
 		if $lucene::server::indexer == true {
 			include mediawiki::packages
@@ -65,11 +46,11 @@ class lucene {
 
 	class config {
 		require role::lucene::configuration
-		
+
 		if $lucene::server::indexer == true {
 			include apaches::files
 		}
-		
+
 		file {
 			"/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
@@ -109,7 +90,7 @@ class lucene {
 		}
 
 		cron {
-			## to occassionally poll for mediawiki configs 
+			## to occassionally poll for mediawiki configs
 			sync-conf-from-common:
 				require => File["/a/search/conf"],
 				command => 'rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/all.dblist /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/wmf-config/InitialiseSettings.php /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/php/languages/messages /a/search/conf/',
@@ -156,7 +137,7 @@ class lucene {
 
 		class { 'generic::rsyncd': config => "searchidx" }
 
-		file { 
+		file {
 			"/a/search/conf/nooptimize.dblist":
 				owner => lsearch,
 				group => search,
@@ -184,7 +165,7 @@ class lucene {
 				weekday => 5,
 				hour => 9,
 				minute => 30,
-				ensure => present;	
+				ensure => present;
 			indexer-cron:
 				require => File["/a/search/lucene.jobs.sh"],
 				command => '/a/search/lucene.jobs.sh indexer-cron',
