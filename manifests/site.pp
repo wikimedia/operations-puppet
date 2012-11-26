@@ -1432,7 +1432,7 @@ node "ms10.wikimedia.org" {
 		generic::sysctl::high-bandwidth-rsync
 }
 
-node "ms1001.eqiad.wmnet" {
+node "ms1001.wikimedia.org" {
 	include standard,
 		generic::sysctl::high-bandwidth-rsync
 }
