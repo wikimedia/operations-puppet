@@ -1304,11 +1304,11 @@ host mc1014 {
 	fixed-address mc1014.eqiad.wmnet;
 }
 
-#host mc1015 {
-#	hardware ethernet 00:1b:21:70:8d:45;
-#	fixed-address mc1015.eqiad.wmnet;
-#}
-#
+host mc1015 {
+	hardware ethernet 90:e2:ba:18:96:7c;
+	fixed-address mc1015.eqiad.wmnet;
+}
+
 #host mc1016 {
 #	hardware ethernet 00:1b:21:70:8d:3f;
 #	fixed-address mc1016.eqiad.wmnet;
