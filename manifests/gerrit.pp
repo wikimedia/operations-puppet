@@ -83,7 +83,6 @@ class gerrit::jetty ($ldap_hosts,
 		$replication,
 		$smtp_host,
 		$ssh_key) {
-	system_role { "gerrit::jetty": description => "Wikimedia gerrit (git) server" }
 
 	include gerrit::crons,
 		gerrit::gitweb,

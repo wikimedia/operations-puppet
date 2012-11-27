@@ -1,11 +1,8 @@
 # manifests/role/gerrit.pp
 
 class role::gerrit {
-
-	system_role { "role::gerrit": description => "Gerrit installation" }
-
 	class labs {
-		system_role { "role::gerrit::production": description => "Gerrit in labs!" }
+		system_role { "role::gerrit::labs": description => "Gerrit in labs!" }
 
 		class { "gerrit::instance":
 			ircbot => false,
