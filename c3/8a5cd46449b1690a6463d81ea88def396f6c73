@@ -1,0 +1,8 @@
+Code-Review+1: Demon <chadh@wikimedia.org>
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+1: jenkins-bot
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Tue, 27 Nov 2012 20:20:05 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/35415
+Project: operations/puppet
+Branch: refs/heads/production
