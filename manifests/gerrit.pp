@@ -367,35 +367,6 @@ class gerrit::crons {
 		user => root,
 		hour => 1
 	}
-
-	cron { clean_jgit_mess:
-		# JGit is retarded and does not do any sort of repacking of its repos
-		# So do what it should already do...sigh
-		command => 'for d in `find /var/lib/gerrit2/review_site/git -type d -name "*.git"`; do cd $d; git gc --quiet; done',
-		user => gerrit2,
-		hour => 2,
-		ensure => absent
-	}
-}
-
-# Junk
-class gerrit::backup {
-
-	file {
-		"/var/lib/gerrit2/review_site/backup":
-			mode  => 0644,
-			owner => "gerrit2",
-			ensure => absent,
-			require => Package["gerrit"];
-	}
-
-	cron { backup_git_data:
-		command => 'tar -czf /var/lib/gerrit2/review_site/backup/gerrit-latest.tar.gz /var/lib/gerrit2/review_site/git',
-		user => gerrit2,
-		hour => 3,
-		ensure => absent,
-		require => File["/var/lib/gerrit2/review_site/backup"]
-	}
 }
 
 # Setup the `gerritslave` account on any host that wants to receive
