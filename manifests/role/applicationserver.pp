@@ -132,7 +132,7 @@ class role::applicationserver {
 			imagescaler::files
 
 		class {"mediawiki_new::jobrunner":
-			procs => 5,
+			procs => 10,
 			type => "webVideoTranscode",
 			timeout => 14400,
 			extra_args => "-v 0"
