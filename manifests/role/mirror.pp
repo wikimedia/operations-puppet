@@ -1,7 +1,7 @@
 # role/mirror.pp
 # mirror::media and mirror::dumps role classes
 
-class role::mirror {
+class role::mirror::common {
 
 	$cluster = "misc"
 
@@ -9,26 +9,28 @@ class role::mirror {
 		ensure => latest;
 	}
 
-	class role::mirror::media {
-		system_role { "role::mirror::media": description => "Media mirror (rsync access for external mirrors)" }
+	include generic::sysctl::high-bandwidth-rsync
+}
 
-		include generic::sysctl::high-bandwidth-rsync
+class role::mirror::media {
+	include role::mirror::common
 
-		file {
-			'/root/backups/rsync-media-cron.sh':
-				mode => 0755,
-				source => "puppet:///files/misc/mirror/rsync-media-cron.sh",
-				ensure => present;
-		}
+	system_role { "role::mirror::media": description => "Media mirror (rsync access for external mirrors)" }
 
-		cron {
-			'media_rsync':
-				user => root,
-				minute => '20',
-				hour => '3',
-				command => '/root/backups/rsync-media-cron.sh',
-				environment => 'MAILTO:ops-dumps@wikimedia.org',
-				ensure => present;
-		}
+	file {
+		'/root/backups/rsync-media-cron.sh':
+			mode => 0755,
+			source => "puppet:///files/misc/mirror/rsync-media-cron.sh",
+			ensure => present;
+	}
+
+	cron {
+		'media_rsync':
+			user => root,
+			minute => '20',
+			hour => '3',
+			command => '/root/backups/rsync-media-cron.sh',
+			environment => 'MAILTO:ops-dumps@wikimedia.org',
+			ensure => present;
 	}
 }
