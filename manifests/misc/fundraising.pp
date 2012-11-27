@@ -346,13 +346,12 @@ class misc::fundraising::backup::archive {
 
 }
 
-# FIXME: merge with misc::contint::test, or remove
-class misc::jenkins {
 
-	system_role { "misc::jenkins": description => "jenkins integration server" }
+class misc::fundraising::jenkins {
 
-	# FIXME: third party repository
-	# This needs to removed, and changed to use Jenkins from our own WMF repository instead.
+	system_role { "misc::fundraising::jenkins": description => "fundraising jenkins server" }
+
+	# FIXME: remove and use Jenkins from the WMF repository
 	exec {
 		'jenkins-apt-repo-key':
 			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
@@ -386,16 +385,6 @@ class misc::jenkins {
 		stop => '/etc/init.d/jenkins stop';
 	}
 
-	# Nagios monitoring
 	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "nrpe_check_jenkins" }
 
-	#file {
-		#jenkins stuffs
-	#	"/var/lib/jenkins/config.xml":
-	#		mode => 0750,
-	#		owner => jenkins,
-	#		group => nogroup,
-	#		require => Package[jenkins],
-	#		source => "puppet:///private/misc/jenkins.config.xml";
-	#}
 }
