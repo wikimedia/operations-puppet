@@ -14,6 +14,13 @@ class role::mirror {
 
 		include generic::sysctl::high-bandwidth-rsync
 
+		file {
+			'/root/backups/rsync-media-cron.sh':
+				mode => 0755,
+				source => "puppet:///files/misc/mirror/rsync-media-cron.sh",
+				ensure => present;
+		}
+
 		cron {
 			'media_rsync':
 				user => root,
@@ -21,7 +28,7 @@ class role::mirror {
 				hour => '3',
 				command => '/root/backups/rsync-media-cron.sh',
 				environment => 'MAILTO:ops-dumps@wikimedia.org',
-				ensure => present,
+				ensure => present;
 		}
 	}
 }
