@@ -345,3 +345,57 @@ class misc::fundraising::backup::archive {
 	}
 
 }
+
+# FIXME: merge with misc::contint::test, or remove
+class misc::jenkins {
+
+	system_role { "misc::jenkins": description => "jenkins integration server" }
+
+	# FIXME: third party repository
+	# This needs to removed, and changed to use Jenkins from our own WMF repository instead.
+	exec {
+		'jenkins-apt-repo-key':
+			unless => '/bin/grep "deb http://pkg.jenkins-ci.org/debian-stable binary/" /etc/apt/sources.list.d/*',
+			command => "/usr/bin/wget -q -O - http://pkg.jenkins-ci.org/debian-stable/jenkins-ci.org.key | /usr/bin/apt-key add -";
+
+		'jenkins-apt-repo-add':
+			subscribe => Exec['jenkins-apt-repo-key'],
+			refreshonly => true,
+			command => "/bin/echo 'deb http://pkg.jenkins-ci.org/debian-stable binary/' > /etc/apt/sources.list.d/jenkins.list";
+
+		'do-an-apt-get-update':
+			subscribe => Exec['jenkins-apt-repo-add'],
+			refreshonly => true,
+			command => "/usr/bin/apt-get update";
+	}
+
+	package { jenkins:
+		ensure => latest;
+	}
+
+	user { jenkins:
+		name => "jenkins",
+		groups => [ "wikidev" ];
+	}
+
+	service { 'jenkins':
+		enable => true,
+		ensure => 'running',
+		hasrestart => true,
+		start => '/etc/init.d/jenkins start',
+		stop => '/etc/init.d/jenkins stop';
+	}
+
+	# Nagios monitoring
+	monitor_service { "jenkins": description => "jenkins_service_running", check_command => "nrpe_check_jenkins" }
+
+	#file {
+		#jenkins stuffs
+	#	"/var/lib/jenkins/config.xml":
+	#		mode => 0750,
+	#		owner => jenkins,
+	#		group => nogroup,
+	#		require => Package[jenkins],
+	#		source => "puppet:///private/misc/jenkins.config.xml";
+	#}
+}
