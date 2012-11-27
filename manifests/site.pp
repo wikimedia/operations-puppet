@@ -743,7 +743,7 @@ node "fenari.wikimedia.org" {
 		misc::bastionhost,
 		misc::deployment,
 		misc::noc-wikimedia,
-		misc::extension-distributor,
+		mediawiki::extension-distributor,
 		misc::deployment::scripts,
 		misc::ircecho,
 		misc::deployment::l10nupdate,
