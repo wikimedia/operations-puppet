@@ -1,5 +1,18 @@
+# vim: set noet:
+
 # Python testing module:
 import unittest
+
+# Interpret the 'templates/gerrit/hookconfig.py.erb' template to generate
+# a local 'hookconfig' python module with variables filled with test data.
+# We shell out to ruby since there is no easy way to expand an erb template
+# using python.
+import os
+ruby_exit_code = os.system( "./generatehookconfig.rb > hookconfig.py" );
+if ruby_exit_code != 0:
+	import sys
+	sys.exit( "Could not execute generatehookconfig.rb" );
+
 # Class we are going to test:
 from hookhelper import HookHelper
 # Config need to be global in the test suite too:
