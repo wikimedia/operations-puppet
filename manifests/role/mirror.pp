@@ -30,7 +30,7 @@ class role::mirror::media {
 			minute => '20',
 			hour => '3',
 			command => '/root/backups/rsync-media-cron.sh',
-			environment => 'MAILTO:ops-dumps@wikimedia.org',
+			environment => 'MAILTO=ops-dumps@wikimedia.org',
 			ensure => present;
 	}
 }
