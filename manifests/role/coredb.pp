@@ -204,20 +204,25 @@ class role::coredb::common(
 	$enable_unsafe_locks = false,
 	$large_slave_trans_retries = false
 	) {
-		$cluster = "mysql"
 
-		system_role { "dbcore": description => "Shard ${shard} Core Database server" }
+	$cluster = "mysql"
 
-		include coredb
-		include standard,
-			mysql::coredb::ganglia
+	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
-		Class["role::coredb::common"] -> Class["coredb::conf"]
-		Class["role::coredb::common"] -> Class["coredb::snapshot"]
+	include standard,
+		mysql::coredb::ganglia
 
-		if $role::coredb::config::topology[$shard][masters][$::site] == $::hostname {
-			class { "mysql::coredb::monitoring": crit => true }
-		} else {
-			class { "mysql::coredb::monitoring": crit => false }
-		}
+	if $::hostname in $role::coredb::config::topology[$shard][snapshot] {
+		class { "coredb": snapshot => true }
+	} else {
+		class { "coredb": }
+	}
+
+	Class["role::coredb::common"] -> Class["coredb"]
+
+	if $role::coredb::config::topology[$shard][masters][$::site] == $::hostname {
+		class { "mysql::coredb::monitoring": crit => true }
+	} else {
+		class { "mysql::coredb::monitoring": crit => false }
+	}
 }
