@@ -85,8 +85,7 @@ class gerrit::jetty ($ldap_hosts,
 		$ssh_key) {
 
 	include gerrit::crons,
-		gerrit::gitweb,
-		gerrit::backup
+		gerrit::gitweb
 
 	package { [ "openjdk-6-jre", "git-svn" ]:
 		ensure => latest;
