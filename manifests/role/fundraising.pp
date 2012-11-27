@@ -138,14 +138,14 @@ class role::fundraising::database::dump_slave {
 	cron {
 		'dump_fundraising_database':
 			user => root,
-			minute => '35',
-			hour => '1',
+			minute => '0',
+			hour => '8',
 			command => '/usr/local/bin/dump_fundraisingdb',
 			ensure => present;
 		'offhost_backups':
 			user => root,
-			minute => '35',
-			hour => '1',
+			minute => '0',
+			hour => '11',
 			command => '/usr/local/bin/offhost_backups',
 			ensure => present;
 	}
