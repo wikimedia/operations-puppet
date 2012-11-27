@@ -1428,12 +1428,7 @@ node "ms6.esams.wikimedia.org" {
 		media-storage::htcp-purger
 }
 
-node "ms10.wikimedia.org" {
-	include standard,
-		generic::sysctl::high-bandwidth-rsync
-}
-
-node "ms1001.wikimedia.org" {
+node /^ms(10|1001)\.wikimedia\.org$/ {
 	include standard,
 		role::mirror::media
 }
