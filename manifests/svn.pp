@@ -135,6 +135,11 @@ class svn::server {
 				group => root,
 				mode => 0444,
 				source => "puppet:///files/svn/viewvc.conf";
+			"/etc/viewvc/templates/revision.ezt":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///files/svn/revision.ezt";
 		}
 	}
 
