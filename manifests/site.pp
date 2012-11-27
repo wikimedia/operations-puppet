@@ -1435,7 +1435,7 @@ node "ms10.wikimedia.org" {
 
 node "ms1001.wikimedia.org" {
 	include standard,
-		generic::sysctl::high-bandwidth-rsync
+		role::mirror::media
 }
 
 node "ms1002.eqiad.wmnet" {
