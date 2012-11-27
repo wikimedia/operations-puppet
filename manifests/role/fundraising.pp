@@ -66,7 +66,7 @@ class role::fundraising::civicrm {
         ssh
 
 	if $hostname == "aluminium" {
-		include misc::jenkins,
+		include misc::fundraising::jenkins,
 			misc::fundraising::jenkins_maintenance
 	}
 
