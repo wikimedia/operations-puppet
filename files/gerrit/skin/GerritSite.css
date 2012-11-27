@@ -103,10 +103,6 @@ a:hover {
 	background: 0 !important;
 }
 
-#gerrit_topmenu .gwt-TextBox {
-	width: 250px;
-}
-
 /**
  * Top menu (user + search)
  */
