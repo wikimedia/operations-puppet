@@ -7,7 +7,13 @@
 #              package {} directive (default: present).
 #  $jdk      - Whether to include the JDK (default: false).
 #
-class java::openjdk(
+
+class java::openjdk::applyboth {
+	java::openjdk { 'jdk6': version => '1.6', jdk => true, }
+  java::openjdk { 'jdk7': version => '1.7', jdk => true, }
+}
+
+define java::openjdk(
 	$version='ubuntu',
 	$ensure='present',
 	$jdk=false,
