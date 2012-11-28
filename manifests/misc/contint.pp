@@ -74,6 +74,8 @@ class misc::contint::test {
 
 		include generic::packages::maven
 
+		include python::pep8
+
 		# split up packages into groups a bit for readability and flexibility ("ensure present" vs. "ensure latest" ?)
 
 		$CI_PHP_packages = [ "libapache2-mod-php5", "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
