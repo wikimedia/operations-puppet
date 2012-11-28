@@ -34,7 +34,6 @@ $decommissioned_servers = [
 "db28",
 "db30",
 "db41",
-"db42", #This server is offline to be repurposed, added to remove from nagios, can come back out by 11/27/12
 "eiximenis",
 "ixia",
 "ganglia1001",
@@ -351,4 +350,5 @@ $decommissioned_servers = [
 "mw1159",
 "mw1160",
 "potassium",
+"yttrium", #Can come back out on 11/29/12, per rt 3983
 ]
