@@ -3,34 +3,34 @@ import re
 import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
-import hookconfig
+
 
 class CommentAdded(HookHelper):
-	def run(self):
-		self.parser.set_usage("comment-added --change <change id> --project <project name> --branch <branch> --author <comment author> --uploader <uploader> --commit <commit> --comment <comment> [--<approval category id> <score> --<approval category id> <score> ...]")
-		self.parser.add_option("--author", dest="author")
-		self.parser.add_option("--uploader", dest="uploader")
-		self.parser.add_option("--commit", dest="commit")
-		self.parser.add_option("--comment", dest="comment")
-		self.parser.add_option("--VRIF", dest="verified")
-		self.parser.add_option("--CRVW", dest="codereview")
-		(options, args) = self.parser.parse_args()
-		comment = options.comment.splitlines()
-		if comment:
-			comment = comment[0]
-			if len(comment) > 103:
-				comment = comment[0:100] + "..."
-		else:
-			return
-		review = ""
-		if options.verified:
-			review = review + "; V: " + options.verified
-		if options.codereview:
-			review = review + " C: " + options.codereview + "; "
-		user = re.sub(' \(.*', "", options.author)
-		message = "New review: " + user + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
-		self.log_to_file(options.project, options.branch, message, user)
+    def run(self):
+        self.parser.set_usage("comment-added --change <change id> --project <project name> --branch <branch> --author <comment author> --uploader <uploader> --commit <commit> --comment <comment> [--<approval category id> <score> --<approval category id> <score> ...]")
+        self.parser.add_option("--author", dest="author")
+        self.parser.add_option("--uploader", dest="uploader")
+        self.parser.add_option("--commit", dest="commit")
+        self.parser.add_option("--comment", dest="comment")
+        self.parser.add_option("--VRIF", dest="verified")
+        self.parser.add_option("--CRVW", dest="codereview")
+        (options, args) = self.parser.parse_args()
+        comment = options.comment.splitlines()
+        if comment:
+            comment = comment[0]
+            if len(comment) > 103:
+                comment = comment[0:100] + "..."
+        else:
+            return
+        review = ""
+        if options.verified:
+            review = review + "; V: " + options.verified
+        if options.codereview:
+            review = review + " C: " + options.codereview + "; "
+        user = re.sub(' \(.*', "", options.author)
+        message = "New review: " + user + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
+        self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
-	hook = CommentAdded()
-	hook.run()
+    hook = CommentAdded()
+    hook.run()

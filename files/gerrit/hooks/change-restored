@@ -4,23 +4,24 @@ import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
+
 class ChangeRestored(HookHelper):
-	def run(self):
-		self.parser.set_usage("change-restored --change <change id> --change-url <change url> --project <project name> --branch <branch> --restorer <restorer> --reason <reason>")
-		self.parser.add_option("--restorer", dest="restorer")
-		self.parser.add_option("--reason", dest="reason")
-		(options, args) = self.parser.parse_args()
-		reason = options.reason.splitlines()
-		if reason:
-			reason = reason[0]
-			if len(reason) > 103:
-				reason = reason[0:100] + "..."
-		else:
-			reason = "(no reason)"
-		user = re.sub(' \(.*', "", options.restorer)
-		message = "Change restored: " + user + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		self.log_to_file(options.project, options.branch, message, user)
+    def run(self):
+        self.parser.set_usage("change-restored --change <change id> --change-url <change url> --project <project name> --branch <branch> --restorer <restorer> --reason <reason>")
+        self.parser.add_option("--restorer", dest="restorer")
+        self.parser.add_option("--reason", dest="reason")
+        (options, args) = self.parser.parse_args()
+        reason = options.reason.splitlines()
+        if reason:
+            reason = reason[0]
+            if len(reason) > 103:
+                reason = reason[0:100] + "..."
+        else:
+            reason = "(no reason)"
+        user = re.sub(' \(.*', "", options.restorer)
+        message = "Change restored: " + user + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+        self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
-	hook = ChangeRestored()
-	hook.run()
+    hook = ChangeRestored()
+    hook.run()
