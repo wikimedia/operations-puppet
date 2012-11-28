@@ -1,4 +1,4 @@
-# Class used to install an OpenJDK package
+# Definition used to install an OpenJDK package
 #
 # Parameters:
 #  $version  - An OpenJDK version such as 6, 1.7 (default: ubuntu)
@@ -7,7 +7,12 @@
 #              package {} directive (default: present).
 #  $jdk      - Whether to include the JDK (default: false).
 #
-class java::openjdk(
+# Usage examples:
+#
+#	java::openjdk { 'jdk6': version => '1.6', jdk => true, }
+# java::openjdk { 'jdk7': version => '1.7', jdk => true, }
+#
+define java::openjdk(
 	$version='ubuntu',
 	$ensure='present',
 	$jdk=false,
