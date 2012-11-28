@@ -13,8 +13,10 @@ class role::analytics {
 		accounts::diederik,
 		accounts::dsc,
 		accounts::otto,
-		accounts::dartar
-	
+		accounts::dartar,
+		accounts::erosen,
+		accounts::olivneh
+
 	sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 
 	# Install Sun/Oracle Java JDK on analytics cluster
