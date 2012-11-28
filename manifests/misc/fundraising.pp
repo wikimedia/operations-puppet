@@ -130,31 +130,36 @@ class misc::fundraising {
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.donate";
-		"/etc/apache2/sites-available/002-civicrm":
+		"/etc/apache2/sites-available/001-civicrm":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm";
-		"/etc/apache2/sites-available/003-civicrm-ssl":
+		"/etc/apache2/sites-available/002-civicrm-ssl":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-ssl";
-		"/etc/apache2/sites-available/004-civicrm-dev":
+		"/etc/apache2/sites-available/003-civicrm-dev":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev";
-		"/etc/apache2/sites-available/005-civicrm-dev-ssl":
+		"/etc/apache2/sites-available/004-civicrm-dev-ssl":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.civicrm-dev-ssl";
-		"/etc/apache2/sites-available/006-fundraising":
+		"/etc/apache2/sites-available/005-fundraising":
 			owner => root,
 			group => root,
 			mode => 0444,
 			source => "puppet:///private/misc/fundraising/apache.conf.fundraising";
+		"/etc/apache2/sites-available/006-fundraising-ssl":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///private/misc/fundraising/apache.conf.fundraising-ssl";
 		"/etc/apache2/sites-available/007-fundraising-analytics":
 			owner => root,
 			group => root,
@@ -183,11 +188,12 @@ class misc::fundraising {
 
 	#enable apache sites
 	apache_site { donate: name => "000-donate" }
-	apache_site { civicrm: name => "002-civicrm" }
-	apache_site { civicrm-ssl: name => "003-civicrm-ssl" }
-	apache_site { civicrm-dev: name => "004-civicrm-dev" }
-	apache_site { civicrm-dev-ssl: name => "005-civicrm-dev-ssl" }
-	apache_site { fundraising: name => "006-fundraising" }
+	apache_site { civicrm: name => "001-civicrm" }
+	apache_site { civicrm-ssl: name => "002-civicrm-ssl" }
+	apache_site { civicrm-dev: name => "003-civicrm-dev" }
+	apache_site { civicrm-dev-ssl: name => "004-civicrm-dev-ssl" }
+	apache_site { fundraising: name => "005-fundraising" }
+	apache_site { fundraising: name => "006-fundraising-ssl" }
 	apache_site { fundraising-analytics: name => "007-fundraising-analytics" }
 	apache_site { community-analytics: name => "008-community-analytics" }
 
