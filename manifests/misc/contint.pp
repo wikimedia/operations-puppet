@@ -122,9 +122,11 @@ class misc::contint::test {
 			ensure => present
 		}
 
-		# Get several OpenJDK packages including the jdk:
-		java::openjdk { 'jdk6': version => '1.6', jdk => true, }
-		java::openjdk { 'jdk7': version => '1.7', jdk => true, }
+		# Get several OpenJDK packages including the jdk.
+		# (openjdk is the default distribution for the java define.
+		# The java define is found in modules/java/manifests/init.pp )
+		java { 'java-6-openjdk': version => 6, alternative => true  }
+		java { 'java-7-openjdk': version => 7, alternative => false }
 
 		service { 'jenkins':
 			enable => true,

@@ -91,9 +91,13 @@ define java($distribution = 'openjdk', $jdk = true, $version = 'default', $ensur
 
 	# Below is a set of conditionals that set $package_prefix
 	# based on $distribution, $version, and $::lsbdistrelease.
+
 	# TODO:  What is the proper $::lsbdistrelease?
 	# I am using 11.10.  Is this correct?  It will
 	# work for our main differentiation: Lucid vs. Precise.
+	# The proper thing to do would be to inspect the default-jre
+	# and default-jdk package aliases provided by Ubuntu, and use
+	# that to determine the proper default.
 
 	# Choose 'openjdk' distribution as the default
 	if ($distribution == 'openjdk') {
