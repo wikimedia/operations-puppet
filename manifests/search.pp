@@ -24,12 +24,16 @@ class lucene {
 
 	class packages {
 
-			package { ["oracle-j2sdk1.6", "libudp2log-log4j-java"]:
-				ensure => latest;
-			}
-			package { ["liblog4j1.2-java", "lucene-search-2"]:
-				require => Package["oracle-j2sdk1.6"],
-				ensure => latest;
+			package { 
+				["oracle-j2sdk1.6", "libudp2log-log4j-java"]:
+					ensure => latest;
+				"liblog4j1.2-java":
+					require => Package["oracle-j2sdk1.6"],
+					ensure => latest;
+				"lucene-search-2":
+					require => Package["oracle-j2sdk1.6"],
+					# Present instead of latest for controlled upgrade
+					ensure => present;
 			}
 
 		if $lucene::server::indexer == true {
