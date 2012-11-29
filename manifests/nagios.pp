@@ -691,3 +691,8 @@ class nagios::gsbmonitoring {
 	@monitor_service { "GSB_wikiversity": description => "check google safe browsing for wikiversity.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wikiversity.org/!'This site is not currently listed as suspicious'", host => "google" }
 	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
+
+
+class misc::zfs::monitoring {
+	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
+}

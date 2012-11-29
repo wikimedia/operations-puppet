@@ -84,10 +84,6 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
-class misc::zfs::monitoring {
-	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
-}
-
 class misc::dc-cam-transcoder {
 	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
 
@@ -121,33 +117,6 @@ class misc::survey {
 	apache_site { survey: name => "survey.wikimedia.org" }
 
 	apache_module { ssl: name => "ssl" }
-}
-
-class misc::monitoring::htcp-loss {
-	system_role { "misc::monitoring::htcp-loss": description => "HTCP packet loss monitor" }
-
-	File {
-		require => File["/usr/lib/ganglia/python_modules"],
-		notify => Service[gmond]
-	}
-
-	# Ganglia
-	file {
-		"/usr/lib/ganglia/python_modules/htcpseqcheck.py":
-			source => "puppet:///files/ganglia/plugins/htcpseqcheck.py";
-		"/usr/lib/ganglia/python_modules/htcpseqcheck_ganglia.py":
-			source => "puppet:///files/ganglia/plugins/htcpseqcheck_ganglia.py";
-		"/usr/lib/ganglia/python_modules/util.py":
-			source => "puppet:///files/ganglia/plugins/util.py";
-		"/usr/lib/ganglia/python_modules/compat.py":
-			source => "puppet:///files/ganglia/plugins/compat.py";
-		"/etc/ganglia/conf.d/htcpseqcheck.pyconf":
-			# Disabled due to excessive memory and CPU usage -- TS
-			notify => Service[gmond],
-			ensure => absent;
-			#require => File["/etc/ganglia/conf.d"],
-			#source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
-	}
 }
 
 class misc::udpprofile::collector {
