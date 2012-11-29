@@ -1398,7 +1398,7 @@ host ms-be12 {
 }
 
 host ms-be1001 {
-	hardware ethernet 04:7D:7B:2E:2E:14;
+	hardware ethernet 90:B1:1C:14:C9:FF;
 	fixed-address ms-be1001.eqiad.wmnet;
 }
 
@@ -1408,7 +1408,7 @@ host ms-be1002 {
 }
 
 host ms-be1003 {
-	hardware ethernet 04:7D:7B:2E:2E:5E;
+	hardware ethernet 90:B1:1C:1B:8F:F0;
 	fixed-address ms-be1003.eqiad.wmnet;
 }
 
