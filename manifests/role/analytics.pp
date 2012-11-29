@@ -36,5 +36,9 @@ class role::analytics {
 # front end interfaces for Kraken and Hadoop
 class role::analytics::frontend inherits role::analytics {
 	# include a mysql database for Sqoop and Oozie
-	include analytics::db::mysql
+	# with the datadir at /a/mysql
+	class { "generic::mysql::server":
+		datadir => "/a/mysql",
+		version => "5.5",
+	}
 }
