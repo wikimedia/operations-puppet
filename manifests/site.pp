@@ -197,6 +197,9 @@ node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics
+	# analytics1001 will get event.gif UDP stream traffic.
+	# include udp2log iptables rules.
+	include misc::udp2log::iptables
 }
 
 # analytics1027 hosts the frontend
