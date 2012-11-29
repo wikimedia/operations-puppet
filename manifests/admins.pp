@@ -357,7 +357,6 @@ class accounts {
 		}
 	}
 
-
 	class csteipp inherits baseaccount {
 		$username = "csteipp"
 		$realname = "Chris Steipp"
@@ -1082,6 +1081,26 @@ class accounts {
                         }
                 }
         }
+
+	class sbernardin inherits baseaccount {
+		$username = "sbernardin"
+		$realname = "Steve Bernardin"
+		$uid = 618
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
+
+			ssh_authorized_key {
+				"sbernardin@administrator-ThinkPad-X220":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCjegqSa+EXwVFeeNU/vBWj/h/cQyDg9eUKGhuSVQt57klqZHU0c/QfACx+bIuNNsfP7x03TeukA9AoGk4wpXyyLT9bgaBNPTjjDMz0p3FHzCTdjGTlTx/Lq8cOPaiVd0jgRFnVhny1PJ4ml8KrKw+57oIA0n8LYzrT79QN6AEe/egvd3lvdutopQtKbrw7u9zvw5xvdv8s/u3fibvNlrHaBwYUPahOa77FuqS6rZDeIcOBVFxqYNYawSmPRQUWqVXgntQUOqI3sCaodsbcXnw3wVO03wEWTzjnG7WnHApAHZ4fbRpDrgtJIn1EhrxXJtf2A/sA13sdXx8Uk1uIyLqn";
+			}
+		}
+	}
 
 	class tfinc inherits baseaccount {
 		$username = "tfinc"
@@ -2406,7 +2425,10 @@ class admins::jenkins {
 	include accounts::hashar
 	include accounts::krinkle
 	include accounts::reedy
+}
 
+class admins::dctech {
+	include accounts::sbernardin
 }
 
 class admins::globaldev {
