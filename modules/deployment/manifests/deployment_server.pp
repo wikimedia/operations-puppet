@@ -11,7 +11,7 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy.conf",
         owner => root,
         group => root;
       "${$deployment_global_hook_dir}/shared.py":
-        source => "salt:///deployment/git-deploy/shared.py",
+        source => "puppet:///deployment/git-deploy/shared.py",
         mode => 0555,
         owner => root,
         group => root,
