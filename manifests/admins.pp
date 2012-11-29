@@ -2317,6 +2317,7 @@ class admins::roots {
 	include accounts::lcarr
 	include accounts::mark
 	include accounts::midom
+	include accounts::preilly
 	include accounts::py
 	include accounts::robh
 	include accounts::sara
@@ -2349,7 +2350,6 @@ class admins::mortals {
 	include accounts::olivneh
 	include accounts::pdhanda # access revoked
 	include accounts::pgehres
-	include accounts::preilly
 	include accounts::raindrift # access revoked per RT 3088
 	include accounts::reedy
 	include accounts::rfaulk
