@@ -5,7 +5,6 @@ import "generic-definitions.pp"
 import "base.pp"
 
 import "admins.pp"
-import "analytics.pp"
 import "apaches.pp"
 import "backups.pp"
 import "certs.pp"
