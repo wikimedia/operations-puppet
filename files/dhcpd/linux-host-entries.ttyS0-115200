@@ -64,8 +64,18 @@ host labsdb2 {
 }
 
 host labsdb3 {
-        hardware ethernet 88:43:E1:C2:5A:C6;
-        fixed-address labsdb3.pmtpa.wmnet;
+	hardware ethernet 88:43:E1:C2:5A:C6;
+	fixed-address labsdb3.pmtpa.wmnet;
+}
+
+host labsdb1001 {
+	hardware ethernet 00:22:BD:D3:61:8C;
+	fixed-address labsdb1001.eqiad.wmnet;
+}
+
+host labsdb1002 {
+	hardware ethernet 00:22:BD:D3:63:F4;
+	fixed-address labsdb1002.eqiad.wmnet;
 }
 
 host pc1 {
