@@ -2511,8 +2511,11 @@ node "zhen.wikimedia.org" {
 }
 
 node "yttrium.wikimedia.org" {
-	# Was used for wlm.wikimedia.org, now remains allocated to the mobile team
+	system_role { "solr-geodata": description => "Solr server for GeoData"}
+
 	include standard
+
+	class { "solr": schema => "puppet:///modules/solr/schema-geodata.xml" }
 }
 
 node "zirconium.wikimedia.org" {
