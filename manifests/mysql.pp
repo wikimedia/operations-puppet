@@ -406,14 +406,14 @@ class mysql {
 			$long_timeouts = false
 			$enable_unsafe_locks = false
 			$large_slave_trans_retries = false
-			if $writable { 
+			if $writable {
 				$read_only = false
-			} else { 
+			} else {
 				$read_only = true
 			}
 		}
 
-		if ! $skip_name_resolve { 
+		if ! $skip_name_resolve {
 			$skip_name_resolve = true
 		}
 
@@ -527,11 +527,6 @@ class mysql::coredb::ganglia{
 	}
 
 	file {
-		"/usr/lib/ganglia/python_modules":
-			owner => root,
-			group => root,
-			mode => 0755,
-			ensure => directory;
 		"/usr/lib/ganglia/python_modules/DBUtil.py":
 			require => File["/usr/lib/ganglia/python_modules"],
 			source => "puppet:///files/ganglia/plugins/DBUtil.py",
@@ -623,7 +618,7 @@ class generic::mysql::packages::server($version = "5.1") {
 }
 
 
-# installs mysql-server, configures app armor 
+# installs mysql-server, configures app armor
 # and my.cnf, starts mysqld.
 #
 # Most of these defaults are from the
@@ -665,7 +660,7 @@ class generic::mysql::server(
 	$query_cache_limit              = '1M',
 	$tmp_table_size                 = '16M',
 	$read_rnd_buffer_size           = '256K',
-	
+
 	$key_buffer_size                = '16M',
 	$myisam_sort_buffer_size        = '8M',
 	$myisam_max_sort_file_size      = '512M',
@@ -741,9 +736,9 @@ class generic::mysql::server(
 	}
 
 	# Put my.cnf in place from the generic_my.cnf.erb template.
-	# The values in this file are filled in from the 
+	# The values in this file are filled in from the
 	# passed in parameters.
-	file { $config_file_path: 
+	file { $config_file_path:
 		owner => 'root',
 		group => 'root',
 		mode  => 0644,
@@ -751,7 +746,7 @@ class generic::mysql::server(
 		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
 		notify => [exec["dpkg-reconfigure mysql-server"]]
 	}
-	
+
 	# mysql is protected by apparmor.  Need to
 	# reload apparmor if the file changes.
 	file { "/etc/apparmor.d/usr.sbin.mysqld":
@@ -762,7 +757,7 @@ class generic::mysql::server(
 		require => Package["mysql-server"],
 		notify => Service["apparmor"],
 	}
-	
+
 	service { "mysql":
 		ensure => "running",
 		require => [Package["mysql-server"], File[$config_file_path, "/etc/apparmor.d/usr.sbin.mysqld"]],
