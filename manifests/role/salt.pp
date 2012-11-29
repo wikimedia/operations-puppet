@@ -1,7 +1,17 @@
 class role::salt::masters::production {
 
+	$salt_file_roots = {"base"=>["/srv/salt"]}
+	$salt_pillar_roots = {"base"=>["/srv/pillar"]}
+	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
+
 	class { "salt::master":
-		salt_runner_dirs => "['/srv/runners']",
+		salt_runner_dirs => ["/srv/runners"],
+	}
+
+	salt::master_environment{ "base":
+		salt_file_roots => $salt_file_roots,
+		salt_pillar_roots => $salt_pillar_roots,
+		salt_module_roots => $salt_module_roots,
 	}
 
 }
@@ -13,7 +23,7 @@ class role::salt::masters::labs {
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
 
 	class { "salt::master":
-		salt_runner_dirs => "['/srv/runners']",
+		salt_runner_dirs => ["/srv/runners"],
 		salt_peer_run => {
 			"i-00000276.pmtpa.wmflabs" => ['deploy.*'],
 		},
