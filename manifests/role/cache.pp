@@ -548,6 +548,14 @@ class role::cache {
 				log_fmt => "%q %l %n %t",
 				monitor => false,
 			}
+			varnish::logging { "kraken" :
+				listener_address => '208.80.154.154', # analytics1001
+				port => "8422",
+				instance_name => "",
+				cli_args => '-m RxURL:^/event\.gif -D',
+				log_fmt => "%U %q %{Host}i %t %h %{X-Forwarded-For}i %{Referer}i %{Accept-Language}i %{Cookie}i %{X-WAP-Profile}i %{User-agent}i %l %n",
+				monitor => false,
+			}
 		}
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
