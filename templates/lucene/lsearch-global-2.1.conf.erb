@@ -99,6 +99,10 @@ WMF.InitialiseSettings=file:///a/search/conf/InitialiseSettings.php
 # Where common images are
 Commons.wiki=commonswiki.nspart1
 
+# Set a high RMI read timeout to avoid breaking indexing
+Search.rmiReadTimeout=7200
+
+
 # Syntax: <prefix_name> : <coma separated list of namespaces>
 # <all> is a special keyword meaning all namespaces
 # E.g. all_talk : 1,3,5,7,9,11,13,15
