@@ -974,16 +974,11 @@ node "iron.wikimedia.org" {
 	admins::roots,
 	misc::management::ipmi
 
-	# load a firewall so that anything that speaks on the net is protected (most notably mysql)
-	include iron::iptables
 	# search QA scripts for ops use
 	include search::searchqa
 
 	# let's see if the swiftcleaner can run here
 	include swift::cleaner
-
-	# run a mysqld instance for testing and dev (not replicated or backed up)
-	include generic::mysql::packages::server
 
 	# include the swift cli so I can call out to swift instances
 	include swift::utilities
