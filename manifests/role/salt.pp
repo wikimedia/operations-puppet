@@ -1,7 +1,7 @@
 class role::salt::masters::production {
 
 	$salt_file_roots = {"base"=>["/srv/salt"]}
-	$salt_pillar_roots = {"base"=>["/srv/pillar"]}
+	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
 
 	class { "salt::master":
@@ -19,7 +19,7 @@ class role::salt::masters::production {
 class role::salt::masters::labs {
 
 	$salt_file_roots = {"base"=>["/srv/salt"]}
-	$salt_pillar_roots = {"base"=>["/srv/pillar"]}
+	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
 
 	class { "salt::master":
