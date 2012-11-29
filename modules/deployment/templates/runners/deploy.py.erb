@@ -7,7 +7,7 @@ import salt.client
 import re
 
 # TODO: make this configurable
-reg = 'mw*.eqiad.wmnet'
+reg = '<%= deployment_minion_regex %>'
 
 def fetch(repo):
     '''

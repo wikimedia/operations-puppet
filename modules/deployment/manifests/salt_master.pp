@@ -31,11 +31,13 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
   exec {
     "refresh_deployment_pillars":
       command => "/usr/bin/salt -P '${deployment_minion_regex}' saltutil.refresh_pillar",
-      watch => [File["${pillar_dir}/deployment/init.sls"]],
+      subscribe => [File["${pillar_dir}/deployment/init.sls"]],
+      refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_modules":
       command => "/usr/bin/salt -P '${deployment_minion_regex}' saltutil.sync_modules",
-      watch => [File["${module_dir}/modules/deploy.py"]],
+      subscribe => [File["${module_dir}/modules/deploy.py"]],
+      refreshonly => true,
       require => [Package["salt-master"]];
   }
 }
