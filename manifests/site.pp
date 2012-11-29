@@ -225,7 +225,7 @@ node "argon.wikimedia.org" {
 	include base,
 		ganglia,
 		ntp::client,
-		misc::survey
+		misc::limesurvey
 
 	install_certificate{ "star.wikimedia.org": }
 	monitor_service { "survey cert": description => "Certificate expiration", check_command => "check_cert!survey.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
