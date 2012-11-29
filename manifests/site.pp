@@ -2372,6 +2372,16 @@ node "thistle.pmtpa.wmnet" {
 	include role::db::core
 }
 
+node "tin.eqiad.wmnet" {
+	$cluster = "misc"
+	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+
+	include standard,
+		admins::roots,
+		admins::mortals,
+		role::deployment::deployment_servers
+}
+
 node "tridge.wikimedia.org" {
 	include base,
 		backup::server

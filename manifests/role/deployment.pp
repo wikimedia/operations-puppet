@@ -1,7 +1,7 @@
 class role::deployment::salt_masters::production {
   class { "deployment::salt_master":
-    deployment_servers => ['fenari.wikimedia.org', 'bast1000.wikimedia.org'],
-    deployment_minion_regex => '(mw|srv).*',
+    deployment_servers => ['tin.eqiad.wmnet'],
+    deployment_minion_regex => '(mw).*eqiad.*',
     deployment_repo_urls => {
       'pmtpa' => {
         'common' => 'http://deployment.pmtpa.wmnet/deployment/common',
