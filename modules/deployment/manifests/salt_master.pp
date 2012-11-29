@@ -6,7 +6,7 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
       owner => root,
       group => root,
       notify => [Service["salt-master"]],
-      require => [File["${runner_dir}"], Service["salt-master"]];
+      require => File["${runner_dir}"],
     "${pillar_dir}/deployment":
       ensure => directory,
       mode => 555,
