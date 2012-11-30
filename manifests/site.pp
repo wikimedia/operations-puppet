@@ -2495,6 +2495,12 @@ node "wtp1.pmtpa.wmnet" {
 		misc::parsoid
 }
 
+node "wtp1001.eqiad.wmnet" {
+	include standard,
+		admins::roots,
+		misc::parsoid
+}
+
 node  "yongle.wikimedia.org" {
 	$gid=500
 	include	standard,

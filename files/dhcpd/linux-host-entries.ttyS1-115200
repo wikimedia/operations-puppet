@@ -3647,6 +3647,11 @@ host wtp1 {
 	fixed-address wtp1.pmtpa.wmnet;
 }
 
+host wtp1001 {
+	hardware ethernet 90:B1:1C:00:A2:97;
+	fixed-address wtp1001.eqiad.wmnet;
+}
+
 host yttrium {
 	hardware ethernet 18:03:73:f1:4f:82;
 	fixed-address yttrium.wikimedia.org;
