@@ -1236,9 +1236,8 @@ host mc1001 {
 	fixed-address mc1001.eqiad.wmnet;
 }
 
-## mac not correct. not 10g nic.
 host mc1002 {
-	hardware ethernet 84:2b:2b:fc:49:d8;
+	hardware ethernet 00:1b:21:70:8e:de;
 	fixed-address mc1002.eqiad.wmnet;
 }
 
@@ -1257,9 +1256,8 @@ host mc1005 {
 	fixed-address mc1005.eqiad.wmnet;
 }
 
-## mac not correct. not 10g nic.
 host mc1006 {
-	hardware ethernet 84:2b:2b:fc:4a:cb;
+	hardware ethernet 00:1b:21:70:8d:e2;
 	fixed-address mc1006.eqiad.wmnet;
 }
 
