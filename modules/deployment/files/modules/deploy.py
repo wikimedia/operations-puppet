@@ -69,6 +69,8 @@ def checkout(repo):
     # Transform .gitmodules file based on defined seds
     for sed in sed_list:
         for before,after in sed.items():
+            if after == "__REPO_URL__":
+                after = repourl
             __salt__['file.sed'](gitmodules, before, after)
 
     # Sync the .gitmodules config
