@@ -31,16 +31,6 @@ class misc::images::rsync {
 	upstart_job { "rsync-images": install => "true" }
 }
 
-class misc::dc-cam-transcoder {
-	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
-
-	systemuser { video: name => "video", home => "/var/lib/video" }
-
-	package { "vlc-nox":
-		ensure => latest;
-	}
-}
-
 class misc::udpprofile::collector {
 	system_role { "misc::udpprofile::collector": description => "MediaWiki UDP profile collector" }
 

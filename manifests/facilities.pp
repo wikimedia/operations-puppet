@@ -100,3 +100,15 @@ class facilities::pdu_monitoring {
 	monitor_pdu_3phase { "ps1-b7-eqiad": ip => "10.65.0.46" }
 	monitor_pdu_3phase { "ps1-b8-eqiad": ip => "10.65.0.47" }
 }
+
+
+class facilities::dc-cam-transcoder {
+	system_role { "misc::dc-cam-transcoder": description => "Data center camera transcoder" }
+
+	systemuser { video: name => "video", home => "/var/lib/video" }
+
+	package { "vlc-nox":
+		ensure => latest;
+	}
+}
+
