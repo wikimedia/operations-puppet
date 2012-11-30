@@ -37,7 +37,7 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
   exec {
     "refresh_deployment_pillars":
       command => "/usr/bin/salt -E '${deployment_minion_regex}' saltutil.refresh_pillar",
-      subscribe => [File["${pillar_dir}/deployment/init.sls"]],
+      subscribe => [File["${pillar_dir}/deployment/init.sls"], File["${pillar_dir}"]],
       refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_modules":
