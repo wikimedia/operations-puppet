@@ -39,6 +39,10 @@ class misc::udp2log($monitor = true) {
 }
 
 class misc::udp2log::sysctl($ensure="present") {
+	# make sure base::sysctl is here so that
+	# start procps can be notified.
+	include base::sysctl
+
 	file { big-rmem-sysctl:
 		name => "/etc/sysctl.d/99-big-rmem.conf",
 		owner => root,
