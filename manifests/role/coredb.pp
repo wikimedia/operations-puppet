@@ -213,12 +213,12 @@ class role::coredb::common(
 		mysql::coredb::ganglia
 
 	if $::hostname in $topology[$shard]['snapshot'] {
-		class { "coredb": snapshot => true }
+		class { "::coredb": snapshot => true }
 	} else {
-		class { "coredb": snapshot => false }
+		class { "::coredb": snapshot => false }
 	}
 
-	Class["role::coredb::common"] -> Class["coredb"]
+	Class["role::coredb::common"] -> Class["::coredb"]
 
 	if $topology[$shard]['masters'][$::site] == $::hostname {
 		class { "mysql::coredb::monitoring": crit => true }
