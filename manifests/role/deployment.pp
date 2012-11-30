@@ -26,9 +26,9 @@ class role::deployment::salt_masters::production {
       },
     },
     deployment_repo_locations => {
-      'common' => '/usr/local/apache/common',
-      'slot0' => '/usr/local/apache/common/slot0',
-      'slot1' => '/usr/local/apache/common/slot1',
+      'common' => '/srv/deployment/mediawiki/common',
+      'slot0' => '/srv/deployment/mediawiki/common/slot0',
+      'slot1' => '/srv/deployment/mediawiki/common/slot1',
     },
   }
 }
