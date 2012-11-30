@@ -18,3 +18,4 @@ class passwords::network { }
 class passwords::openstack::glance { }
 class passwords::openstack::nova { }
 class passwords::puppet::database { }
+class passwords::osm::database { }
