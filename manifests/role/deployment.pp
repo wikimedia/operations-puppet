@@ -9,9 +9,9 @@ class role::deployment::salt_masters::production {
         'slot1' => 'http://deployment.pmtpa.wmnet/deployment/common/slot1',
       },
       'eqiad' => {
-        'common' => 'http://deployment.eqiad.wmnet/deployment/common',
-        'slot0' => 'http://deployment.eqiad.wmnet/deployment/common/slot0',
-        'slot1' => 'http://deployment.eqiad.wmnet/deployment/common/slot1',
+        'common' => 'http://tin.eqiad.wmnet/deployment/common',
+        'slot0' => 'http://tin.eqiad.wmnet/deployment/common/slot0',
+        'slot1' => 'http://tin.eqiad.wmnet/deployment/common/slot1',
       },
     },
     deployment_repo_regex => {
@@ -28,7 +28,7 @@ class role::deployment::salt_masters::production {
     deployment_repo_locations => {
       'common' => '/usr/local/apache/common',
       'slot0' => '/usr/local/apache/common/slot0',
-      'slot1' => '/usr/local/apache/common/slot0',
+      'slot1' => '/usr/local/apache/common/slot1',
     },
   }
 }
