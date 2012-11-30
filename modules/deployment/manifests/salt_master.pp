@@ -19,6 +19,12 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
       owner => root,
       group => root,
       require => [File["${pillar_dir}/deployment"]];
+    "${pillar_dir}/top.sls":
+      content => template("deployment/pillars/top.sls.erb"),
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [File["${pillar_dir}"]];
     "${module_dir}/deploy.py":
       source => "puppet:///deployment/modules/deploy.py",
       mode => 0555,
