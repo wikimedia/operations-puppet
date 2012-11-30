@@ -16,6 +16,7 @@ define postgresql::sqlexec($database, $sql, $sqlcheck) {
 	exec{ "echo \"$sql\" | psql $database":
 		timeout => 600,
 		user => "postgres",
+		path => "/usr/bin:/bin",
 		unless => "echo \"$sqlcheck\" | psql $database\" | grep \"(1 row)\"",
 		require => Class["postgresql"],
 	}
@@ -26,6 +27,7 @@ define postgresql::sqlfileexec($database, $sql, $sqlcheck) {
     exec{ "psql -d $database -f $sql\"":
         timeout => 600,
         user => "postgres",
+        path => "/usr/bin:/bin",
         unless => "echo \"$sqlcheck\" | psql $database | grep \"(1 row)\"",
         require => Class["postgresql"],
     }
