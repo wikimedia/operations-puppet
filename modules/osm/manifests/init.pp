@@ -1,0 +1,4 @@
+# Dummy
+class osm {
+}
+
