@@ -5,14 +5,14 @@
 #  running from a Git tree.
 
 # The following are defaults, the exact specifications are in the role definitions
-class wikidata::singlenode( $keep_up_to_date = true,
+class wikidata::singlenode( $ensure = latest,
 							$install_repo = true,
 							$install_client = true,
 							$role_requires = ['"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"'],
 							$role_config_lines = [ '$wgShowExceptionDetails = true' ]) {
 
 	class { mediawiki::singlenode:
-		keep_up_to_date => $keep_up_to_date,
+		ensure => $ensure,
 		role_requires => $role_requires,
 		role_config_lines => $role_config_lines
 	}
@@ -24,10 +24,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 			directory => "/srv/mediawiki/extensions/Diff",
 			branch => "master",
-			ensure => $keep_up_to_date ? {
-				true => latest,
-				default => present
-			},
+			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Diff.git",
 	}
 
@@ -35,10 +32,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 			directory => "/srv/mediawiki/extensions/DataValues",
 			branch => "master",
-			ensure => $keep_up_to_date ? {
-				true => latest,
-				default => present
-			},
+			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git",
 	}
 
@@ -46,10 +40,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 			directory => "/srv/mediawiki/extensions/UniversalLanguageSelector",
 			branch => "master",
-			ensure => $keep_up_to_date ? {
-				true => latest,
-				default => present
-			},
+			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
 	}
 
@@ -57,10 +48,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
 		directory => "/srv/mediawiki/extensions/Wikibase",
 		branch => "master",
-		ensure => $keep_up_to_date ? {
-				true => latest,
-				default => present
-			},
+		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
 	}
 
@@ -121,7 +109,7 @@ class wikidata::singlenode( $keep_up_to_date = true,
 	}
 
 # longterm stuff
-	if $keep_up_to_date == true {
+	if $ensure == 'latest' {
 		exec { 'wikidata_update':
 			require => [Git::Clone["mediawiki"],
 				Git::Clone["Diff"],
