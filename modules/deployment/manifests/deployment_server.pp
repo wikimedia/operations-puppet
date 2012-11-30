@@ -1,4 +1,4 @@
-class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-deploy.conf", $deployment_restrict_umask="002", $deployment_block_file="/etc/ROLLOUTS_BLOCKED", $deployment_support_email="", $deployment_repo_name_detection="dot-git-parent-dir", $deployment_announce_email="", $deployment_send_mail_on_sync="false", $deployment_send_mail_on_revert="false", $deployment_log_directory="/var/log/deploy", $deployment_log_timing_data="false", $deployment_global_hook_dir="/usr/local/bin/git-deploy", $deployment_per_repo_config={}) {
+class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-deploy.conf", $deployment_restrict_umask="002", $deployment_block_file="/etc/ROLLOUTS_BLOCKED", $deployment_support_email="", $deployment_repo_name_detection="dot-git-parent-dir", $deployment_announce_email="", $deployment_send_mail_on_sync="false", $deployment_send_mail_on_revert="false", $deployment_log_directory="/var/log/git-deploy", $deployment_log_timing_data="false", $deployment_global_hook_dir="/var/git-deploy/hooks", $deployment_per_repo_config={}) {
   package { ["git-deploy", "git-core"]:
     ensure => present;
   }
