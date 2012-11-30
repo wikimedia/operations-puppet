@@ -35,7 +35,26 @@ class role::deployment::salt_masters::production {
 
 class role::deployment::deployment_servers {
   class { "deployment::deployment_server": }
+
   deployment::deployment_repo_sync_hook_link { "common": }
   deployment::deployment_repo_sync_hook_link { "slot0": }
   deployment::deployment_repo_sync_hook_link { "slot1": }
+
+  class { "apache": }
+  class {'apache::mod::dav': }
+  class {'apache::mod::dav_fs': }
+
+  apache::vhost { "tin.eqiad.wmnet":
+    priority		=> 10,
+    vhost_name		=> "10.64.0.196",
+    port		=> 80,
+    docroot		=> "/usr/local/apache",
+    serveradmin		=> "noc@wikimedia.org",
+    configure_firewall 	=> false,
+  }
+
+  apache::vhost { "default":
+    priority		=> 000,
+    ensure		=> absent,
+  }
 }
