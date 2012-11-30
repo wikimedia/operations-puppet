@@ -4,14 +4,14 @@ class role::deployment::salt_masters::production {
     deployment_minion_regex => '(mw).*eqiad.*',
     deployment_repo_urls => {
       'pmtpa' => {
-        'common' => 'http://deployment.pmtpa.wmnet/deployment/common',
-        'slot0' => 'http://deployment.pmtpa.wmnet/deployment/common/slot0',
-        'slot1' => 'http://deployment.pmtpa.wmnet/deployment/common/slot1',
+        'common' => 'http://deployment.pmtpa.wmnet/mediawiki/common',
+        'slot0' => 'http://deployment.pmtpa.wmnet/mediawiki/common/slot0',
+        'slot1' => 'http://deployment.pmtpa.wmnet/mediawiki/common/slot1',
       },
       'eqiad' => {
-        'common' => 'http://tin.eqiad.wmnet/deployment/common',
-        'slot0' => 'http://tin.eqiad.wmnet/deployment/common/slot0',
-        'slot1' => 'http://tin.eqiad.wmnet/deployment/common/slot1',
+        'common' => 'http://tin.eqiad.wmnet/mediawiki/common',
+        'slot0' => 'http://tin.eqiad.wmnet/mediawiki/common/slot0',
+        'slot1' => 'http://tin.eqiad.wmnet/mediawiki/common/slot1',
       },
     },
     deployment_repo_regex => {
@@ -48,7 +48,7 @@ class role::deployment::deployment_servers {
     priority		=> 10,
     vhost_name		=> "10.64.0.196",
     port		=> 80,
-    docroot		=> "/usr/local/apache",
+    docroot		=> "/srv/deployment",
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
   }
