@@ -1,9 +1,3 @@
-# misc-servers.pp
-
-# Resource definitions for miscellaneous servers
-
-import "generic-definitions.pp"
-import "nagios.pp"
 
 class misc::images::rsyncd {
 	system_role { "misc::images::rsyncd": description => "images rsync daemon" }
