@@ -1,0 +1,146 @@
+#!/bin/bash
+# loads the diffs for the interval read from configuration.txt
+# may be executed every 5 minutes or so
+
+PIDFILE=`basename $0`.pid
+PIDEXPIREFILE=/tmp/expiry.pid
+
+TILEDIR=/var/lib/mod_tile
+MOD_TILE_SOCKET=/var/run/renderd/renderd.sock
+
+OSMOSIS=/usr/bin/osmosis
+OSMOSIS_WORKDIR=$TILEDIR/.osmosis
+
+OSM2PGSQL=/usr/bin/osm2pgsql
+
+RENDER_EXPIRED=/usr/bin/render_expired
+STYLE=/usr/share/osm2pgsql/osm2pgsql/default.style
+
+# java proxy settings for osmosis
+#JAVACMD_OPTIONS="-Dhttp.proxyHost=ha-proxy.esi -Dhttp.proxyPort=8080"
+#export JAVACMD_OPTIONS
+
+OSMOSISLOG=/var/log/osm/osmosis.log
+PSQLLOG=/var/log/osm/osm2pgsql.log
+EXPIRYLOG=/var/log/osm/expiry.log
+RUNLOG=/var/log/osm/run.log
+
+CURRENT=/tmp/osm-load-next.$$.osc
+EXPIRE=1
+EXPIRE_LIST=/tmp/osm-load-next.$$.expire
+EXPIRE_DAILY=/tmp/osm-load-daily.expire
+EXPIRE_WEEKLY=/tmp/osm-load-weekly.expire
+
+#############################################################
+
+m_info()
+{
+	echo "[`date +"%Y-%m-%d %H:%M:%S"`] $$ $1" >> "$RUNLOG"
+}
+
+m_error()
+{
+	echo "[`date +"%Y-%m-%d %H:%M:%S"`] $$ [error] $1" >> "$RUNLOG"
+	
+	m_info "resetting state"
+	/bin/cp $OSMOSIS_WORKDIR/last.state.txt $OSMOSIS_WORKDIR/state.txt
+	
+	rm "$PIDFILE"
+	exit 1
+}
+
+m_ok()
+{
+	echo "[`date +"%Y-%m-%d %H:%M:%S"`] $$ $1" >> "$RUNLOG"
+}
+
+getlock()
+{
+	if [ -s $1 ]; then
+		if [ "$(ps -p `cat $1` | wc -l)" -gt 1 ]; then
+			return 1 #false
+		fi
+	fi
+	
+	echo $$ >"$1"
+	return 0 #true
+}
+
+freelock()
+{
+	rm "$1"
+}
+
+WDIR=`dirname $0`
+pushd $WDIR >/dev/null
+#m_info "Workingdir $WDIR"
+
+if ! getlock "$PIDFILE"; then
+	m_info "pid `cat $PIDFILE` still running"
+	exit 3
+fi
+
+if [ -e $OSMOSIS_WORKDIR/stop -o -e $OSMOSIS_WORKDIR/stop.txt ]; then
+	m_info "stopped"
+	exit 2
+fi
+
+
+seq=`cat $OSMOSIS_WORKDIR/state.txt | grep sequenceNumber | cut -d= -f2`
+
+#m_ok "start import from seq-nr $seq, replag is `./replag -h`"
+#echo $$ >"$PIDFILE"
+
+/bin/cp $OSMOSIS_WORKDIR/state.txt $OSMOSIS_WORKDIR/last.state.txt
+m_ok "downloading diff"
+if ! $OSMOSIS --read-replication-interval workingDirectory=$OSMOSIS_WORKDIR --simplify-change --write-xml-change "$CURRENT" 1>&2 2> "$OSMOSISLOG"; then
+	m_error "osmosis error"
+fi
+
+NODES=`grep '<node' < "$CURRENT" |wc -l`
+WAYS=`grep '<way' < "$CURRENT" |wc -l`
+RELS=`grep '<rel' < "$CURRENT" |wc -l`
+
+m_info "expecting Node("$((NODES / 1000))"k) Way("$((WAYS / 1000))"k) Relation("$((RELS / 1))")"
+
+m_ok "importing diff"
+
+if ! $OSM2PGSQL --append --slim --cache 1024 --merc --prefix planet_osm --style $STYLE --database osm_mapnik --hstore-all --expire-tiles 16 --expire-output "$EXPIRE_LIST" --verbose --number-processes=3 "$CURRENT" 1>&2 2>> "$PSQLLOG"; then
+	m_error "osm2pgsql error"
+fi
+
+m_ok "import done"
+freelock "$PIDFILE"
+
+m_ok "expiring tiles"
+echo "$EXPIRE_LIST" 
+
+cp /dev/null "$EXPIRYLOG"
+
+for STYLE in 'default' ; do
+	echo -e "\nexpiring style $STYLE" >> "$EXPIRYLOG"
+	
+ 	if ! $RENDER_EXPIRED --map=$STYLE --socket=$MOD_TILE_SOCKET --min-zoom=12 --touch-from=12 --tile-dir=$TILEDIR < "$EXPIRE_LIST" 2>&1 | tail -8 >> "$EXPIRYLOG"; then
+ 		m_error "tile_expiry error"
+ 	fi
+done
+
+while ! getlock "$PIDEXPIREFILE"; do
+    echo -e "Expiry lock still held by `cat $PIDEXPIREFILE` " >> "$EXPIRYLOG"
+    sleep 10
+done
+cat "$EXPIRE_LIST" >> "$EXPIRE_DAILY"
+cat "$EXPIRE_LIST" >> "$EXPIRE_WEEKLY"
+/bin/rm -f "$EXPIRE_LIST" 
+freelock "$PIDEXPIREFILE"
+m_ok "expire done"
+
+/bin/rm -f "$CURRENT"
+
+if [ `wc -l < "$RUNLOG"` -gt 1000 ]; then
+	m_ok "truncating runlog"
+	tail -n500 "$RUNLOG" > "$RUNLOG".tmp
+	mv "$RUNLOG".tmp "$RUNLOG"
+fi
+
+popd >/dev/null

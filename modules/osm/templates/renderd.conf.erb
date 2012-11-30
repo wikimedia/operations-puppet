@@ -1,0 +1,19 @@
+[renderd]
+stats_file=/var/run/renderd/renderd.stats
+socketname=/var/run/renderd/renderd.sock
+num_threads=4
+tile_dir=/var/lib/mod_tile
+
+[mapnik]
+plugins_dir=/usr/lib/mapnik/2.0/input
+font_dir=/usr/share/fonts/truetype/ttf-dejavu
+font_dir_recurse=false
+
+[default]
+URI=/osm/
+XML=/etc/mapnik-osm-data/osm.xml
+
+<% if htcp_host != :undef then %>
+HOST=<%= osm_host %>
+HTCPHOST=<%= htcp_host %>
+<% end %>

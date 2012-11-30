@@ -201,6 +201,7 @@ class role::cache {
 				'mobile' => { 'pmtpa' => '127.0.0.1', },
 				'text'   => { 'pmtpa' => '127.0.0.1', },
 				'upload' => { 'pmtpa' => '127.0.0.1', },
+				'osm'    => { 'pmtpa' => '127.0.0.1', },
 			},
 		}
 
@@ -315,7 +316,11 @@ class role::cache {
 				],
 				'test_appservers' => {
 					'pmtpa' => [ '10.4.0.166' ],
-				}
+				},
+				'osm_tileservers' => [
+					'maps-tiles1',
+					'maps-tiles2',
+				]
 			}
 		}
 	}
@@ -707,5 +712,86 @@ class role::cache {
 		varnish::logging { "locke" :           listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "emery" :           listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+	}
+
+	class mobile {
+		include network::constants
+
+		$cluster = "cache_osm"
+		$nagios_group = "cache_osm_${::site}"
+
+		include lvs::configuration, role::cache::configuration
+
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['osm'][$::site] }
+
+		system_role { "role::cache::osm": description => "OSM Varnish cache server" }
+
+		include standard,
+			nrpe
+
+		varnish::setup_filesystem{ ["sda3", "sdb3"]:
+			before => Varnish::Instance["osm-backend"]
+		}
+
+		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+		varnish::instance { "osm-backend":
+			name => "",
+			vcl => "osm-backend",
+			port => 81,
+			admin_port => 6083,
+			#storage => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+			directors => {
+				"backend" => $::role::cache::configuration::backends[$::realm]['osm_tileservers']
+				#$lvs::configuration::lvs_service_ips[$::realm]['osm_tileservers'][$::mw_primary],
+			},
+			director_options => {
+				'retries' => 2,
+			},
+			vcl_config => {
+				'retry5xx' => 1,
+			},
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "10s",
+				'between_bytes_timeout' => "4s",
+				'max_connections' => 600,
+				},
+			xff_sources => $network::constants::all_networks
+		}
+
+		varnish::instance { "osm-frontend":
+			name => "frontend",
+			vcl => "osm-frontend",
+			port => 80,
+			admin_port => 6082,
+			directors => {
+				"backend" => $::role::cache::configuration::active_nodes[$::realm]['osm'][$::site],
+			},
+			director_options => {
+				'retries' => 40,
+			},
+			director_type => "chash",
+			vcl_config => {
+				'retry5xx' => 0,
+			},
+			backend_options => {
+				'port' => 81,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "10s",
+				'between_bytes_timeout' => "2s",
+				'max_connections' => 10000,
+				'probe' => "varnish",
+			},
+			xff_sources => $network::constants::all_networks,
+		}
+
+		#varnish::logging { "locke" :           listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		#varnish::logging { "emery" :           listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		#varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 	}
 }

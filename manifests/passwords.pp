@@ -21,4 +21,4 @@ class passwords::puppet::database { }
 class passwords::analytics { }
 class passwords::bugzilla { }
 class passwords::mysql::eventlogging { }
-
+class passwords::osm::database { }

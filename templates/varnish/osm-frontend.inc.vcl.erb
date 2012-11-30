@@ -1,0 +1,14 @@
+# Varnish VCL include file for OSM
+
+sub vcl_recv {
+	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
+	if (req.request == "POST") {
+		error 403 "HTTP method not allowed.";
+	}
+	call vcl_recv_purge;
+
+	if ( req.host ~ "^[abcd]\.<%= osm_domain %>" ) {
+		req.host = "<%= osm_domain %>";
+	}
+}
+

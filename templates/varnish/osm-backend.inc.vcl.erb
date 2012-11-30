@@ -1,0 +1,6 @@
+# Varnish VCL include file for OSM
+
+sub vcl_recv {
+	call vcl_recv_purge;
+}
+
