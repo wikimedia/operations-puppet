@@ -38,7 +38,7 @@ def checkout(repo):
     repoloc = repolocs[repo]
     repourls = __pillar__.get('repo_urls')
     repourl = repourls[repo]
-    sed_lists = __pillar__.get('gitmodules_seds')
+    sed_lists = __pillar__.get('repo_regex')
     sed_list = sed_lists[repo]
     gitmodules = repoloc + '/.gitmodules'
 
@@ -69,6 +69,8 @@ def checkout(repo):
     # Transform .gitmodules file based on defined seds
     for sed in sed_list:
         for before,after in sed.items():
+            if after == "__REPO_URL__":
+                after = repourl
             __salt__['file.sed'](gitmodules, before, after)
 
     # Sync the .gitmodules config
