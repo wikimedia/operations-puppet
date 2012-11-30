@@ -55,6 +55,8 @@ class role::deployment::deployment_servers {
 
   apache::vhost { "default":
     priority		=> 000,
+    port		=> 80,
+    docroot		=> "/var/www",
     ensure		=> absent,
   }
 }
