@@ -1822,7 +1822,7 @@ node "professor.pmtpa.wmnet" {
 	include base,
 		ganglia,
 		ntp::client,
-		misc::udpprofile::collector,
+		mediawiki::udpprofile::collector,
 		misc::graphite
 }
 
