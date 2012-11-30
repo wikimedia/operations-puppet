@@ -31,11 +31,11 @@ class role::deployment::salt_masters::production {
       'slot1' => '/usr/local/apache/common/slot0',
     },
   }
-  deployment::deployment_repo_sync_hook_link { "common": }
-  deployment::deployment_repo_sync_hook_link { "slot0": }
-  deployment::deployment_repo_sync_hook_link { "slot1": }
 }
 
 class role::deployment::deployment_servers {
   class { "deployment::deployment_server": }
+  deployment::deployment_repo_sync_hook_link { "common": }
+  deployment::deployment_repo_sync_hook_link { "slot0": }
+  deployment::deployment_repo_sync_hook_link { "slot1": }
 }
