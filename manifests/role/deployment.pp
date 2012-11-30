@@ -58,5 +58,6 @@ class role::deployment::deployment_servers {
     port		=> 80,
     docroot		=> "/var/www",
     ensure		=> absent,
+    configure_firewall 	=> false,
   }
 }
