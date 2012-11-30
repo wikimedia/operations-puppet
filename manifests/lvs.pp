@@ -406,6 +406,7 @@ class lvs::configuration {
 			'swift' => {},
 			'payments' => {},
 			'upload' => {},
+			'parsoid' => {},
 		}
 	}
 
