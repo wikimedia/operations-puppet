@@ -367,6 +367,10 @@ class lvs::configuration {
 				'pmtpa' => "208.80.152.217",
 				'eqiad' => "208.80.154.241",
 			},
+			'parsoid' => {
+				'pmpta' => "10.2.1.28",
+				'eqiad' => "10.2.2.28",
+			},
 		},
 		'labs' => {
 			'text' => {
@@ -705,6 +709,21 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
+		"parsoid" => {
+			'description' => "Parsoid wikitext parser for VisualEditor",
+			'class' => "low-traffic",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'ip' => $service_ips['parsoid'][$::site],
+			'port' => 8000,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost:8000/_html/' ],
+				},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
 	}
 }
 
@@ -877,6 +896,8 @@ class lvs::monitor {
 	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
 	monitor_service_lvs_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt" }
+	monitor_service_lvs_http { "parsoid.svc.pmpta.wmnet": ip_address => "10.2.1.28", check_command => "check_http_lvs_on_port!parsoid.svc.pmpta.wmnet!8000!/_html/" }
+	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_lvs_on_port!parsoid.svc.eqiad.wmnet!8000!/_html/" }
 
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }

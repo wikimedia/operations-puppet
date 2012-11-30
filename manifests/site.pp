@@ -2493,12 +2493,18 @@ node "wtp1.pmtpa.wmnet" {
 	include standard,
 		admins::roots,
 		misc::parsoid
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.1.28" ] }
+
 }
 
 node "wtp1001.eqiad.wmnet" {
 	include standard,
 		admins::roots,
 		misc::parsoid
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
+
 }
 
 node  "yongle.wikimedia.org" {
