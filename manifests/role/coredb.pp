@@ -203,7 +203,7 @@ class role::coredb::common(
 	$long_timeouts = false,
 	$enable_unsafe_locks = false,
 	$large_slave_trans_retries = false
-	) {
+	) inherits role::coredb::config {
 
 	$cluster = "mysql"
 
@@ -212,7 +212,7 @@ class role::coredb::common(
 	include standard,
 		mysql::coredb::ganglia
 
-	if $::hostname in $role::coredb::config::topology[$shard][snapshot] {
+	if $::hostname in $topology[$shard]['snapshot'] {
 		class { "coredb": snapshot => true }
 	} else {
 		class { "coredb": snapshot => false }
@@ -220,7 +220,7 @@ class role::coredb::common(
 
 	Class["role::coredb::common"] -> Class["coredb"]
 
-	if $role::coredb::config::topology[$shard][masters][$::site] == $::hostname {
+	if $topology[$shard]['masters'][$::site] == $::hostname {
 		class { "mysql::coredb::monitoring": crit => true }
 	} else {
 		class { "mysql::coredb::monitoring": crit => false }
