@@ -17,12 +17,12 @@ class wikidata::singlenode( $ensure = latest,
 		role_config_lines => $role_config_lines
 	}
 
-# install either Wikibase repo or client to /srv/mediawiki/extensions
+# install either Wikibase repo or client to $install_path/extensions
 
 # get the Wikibase extensions and dependencies
 	git::clone { "Diff" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/Diff",
+			directory => "${install_path}/extensions/Diff",
 			branch => "master",
 			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Diff.git",
@@ -30,7 +30,7 @@ class wikidata::singlenode( $ensure = latest,
 
 	git::clone { "DataValues" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/DataValues",
+			directory => "${install_path}/extensions/DataValues",
 			branch => "master",
 			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git",
@@ -38,7 +38,7 @@ class wikidata::singlenode( $ensure = latest,
 
 	git::clone { "UniversalLanguageSelector" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "/srv/mediawiki/extensions/UniversalLanguageSelector",
+			directory => "{$install_path}/extensions/UniversalLanguageSelector",
 			branch => "master",
 			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
@@ -46,29 +46,29 @@ class wikidata::singlenode( $ensure = latest,
 
 	git::clone { "Wikibase" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
-		directory => "/srv/mediawiki/extensions/Wikibase",
+		directory => "${install_path}/extensions/Wikibase",
 		branch => "master",
 		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
 	}
 
 	exec { "populateSitesTable":
-			require => [Git::Clone["Wikibase"], File["/srv/mediawiki/LocalSettings.php"]],
-			cwd => "/srv/mediawiki/extensions/Wikibase/lib/maintenance",
+			require => [Git::Clone["Wikibase"], File["${install_path}/LocalSettings.php"]],
+			cwd => "${install_path}/extensions/Wikibase/lib/maintenance",
 			command => "/usr/bin/php populateSitesTable.php",
 			logoutput => "on_failure",
 	}
 
 	exec { "update-script":
 			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"]],
-			cwd => "/srv/mediawiki",
+			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/update.php --quick",
 			logoutput => "on_failure",
 	}
 
 	exec { "localisation-cache":
 			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
-			cwd => "/srv/mediawiki",
+			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/rebuildLocalisationCache.php",
 			logoutput => "on_failure",
 	}
@@ -77,7 +77,7 @@ class wikidata::singlenode( $ensure = latest,
 	if $install_repo == true {
 		exec { "populate_repo":
 			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
-			cwd => "/srv/mediawiki/extensions/Wikibase/repo/maintenance",
+			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
 			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv",
 			logoutput => "on_failure",
 			}
@@ -102,7 +102,7 @@ class wikidata::singlenode( $ensure = latest,
 
 		cron {"pollForChanges":
 			ensure => present,
-			command => "/usr/bin/php /srv/mediawiki/extensions/Wikibase/lib/maintenance/pollForChanges.php > /var/log/wikidata-replication.log",
+			command => "/usr/bin/php ${install_path}/extensions/Wikibase/lib/maintenance/pollForChanges.php > /var/log/wikidata-replication.log",
 			user => 'www-data',
 			minute => '*/10',
 		}
@@ -116,8 +116,8 @@ class wikidata::singlenode( $ensure = latest,
 				Git::Clone["DataValues"],
 				Git::Clone["UniversalLanguageSelector"],
 				Git::Clone["Wikibase"],
-				File["/srv/mediawiki/LocalSettings.php"]],
-			command => "/usr/bin/php /srv/mediawiki/maintenance/update.php --quick --conf '/srv/mediawiki/LocalSettings.php'",
+				File["${install_path}/LocalSettings.php"]],
+			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
 			logoutput => "on_failure",
 		}
 	}
