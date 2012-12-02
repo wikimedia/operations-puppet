@@ -368,7 +368,7 @@ class lvs::configuration {
 				'eqiad' => "208.80.154.241",
 			},
 			'parsoid' => {
-				'pmpta' => "10.2.1.28",
+				'pmtpa' => "10.2.1.28",
 				'eqiad' => "10.2.2.28",
 			},
 		},
