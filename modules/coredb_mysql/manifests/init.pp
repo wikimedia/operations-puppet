@@ -1,4 +1,4 @@
-class coredb(
+class coredb_mysql(
 	$snapshot,
 	$shard,
 	$read_only,
@@ -12,16 +12,16 @@ class coredb(
 	$enable_unsafe_locks,
 	$large_slave_trans_retries) {
 
-	include coredb::base,
-		coredb::conf,
-		coredb::heartbeat,
-		coredb::packages,
-		coredb::slow_digest,
-		coredb::utils
+	include coredb_mysql::base,
+		coredb_mysql::conf,
+		coredb_mysql::heartbeat,
+		coredb_mysql::packages,
+		coredb_mysql::slow_digest,
+		coredb_mysql::utils
 
 	if $snapshot == true {
-		include coredb::snapshot
+		include coredb_mysql::snapshot
 	}
 
-	Class["coredb"] -> Class["coredb::conf"]
+	Class["coredb_mysql"] -> Class["coredb_mysql::conf"]
 }

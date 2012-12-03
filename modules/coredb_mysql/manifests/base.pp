@@ -1,6 +1,6 @@
-# coredb required directories
-class coredb::base {
-	require coredb::packages
+# coredb_mysql required directories
+class coredb_mysql::base {
+	require coredb_mysql::packages
 
 	systemuser {
 		"mysql": shell => "/bin/bash"
