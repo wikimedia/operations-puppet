@@ -1,7 +1,7 @@
-# coredb heartbeat capability
-class coredb::heartbeat {
+# coredb_mysql heartbeat capability
+class coredb_mysql::heartbeat {
 
-	require coredb::packages
+	require coredb_mysql::packages
 	include passwords::misc::scripts
 
 	file {
@@ -9,12 +9,12 @@ class coredb::heartbeat {
 			owner => root,
 			group => root,
 			mode => 0400,
-			content => template("coredb/root.my.cnf.erb");
+			content => template("coredb_mysql/root.my.cnf.erb");
 		"/etc/init.d/pt-heartbeat":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///modules/coredb/utils/pt-heartbeat.init";
+			source => "puppet:///modules/coredb_mysql/utils/pt-heartbeat.init";
 	}
 
 	service { pt-heartbeat:

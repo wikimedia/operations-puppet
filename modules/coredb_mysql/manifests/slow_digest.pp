@@ -1,5 +1,5 @@
 # class for sending sending slow query digest logs
-class coredb::slow_digest {
+class coredb_mysql::slow_digest {
 	include passwords::mysql::querydigest
 	$mysql_user = "ops"
 	$digest_host = "db9.pmtpa.wmnet"
@@ -10,7 +10,7 @@ class coredb::slow_digest {
 			owner => root,
 			group => root,
 			mode => 0500,
-			content => template("coredb/send_query_digest.sh.erb");
+			content => template("coredb_mysql/send_query_digest.sh.erb");
 	}
 
 	cron {

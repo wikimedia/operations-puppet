@@ -1,11 +1,11 @@
-class coredb::snapshot {
+class coredb_mysql::snapshot {
 
 	file {
 		"/usr/local/sbin/snaprotate.pl":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///modules/coredb/utils/snaprotate.pl"
+			source => "puppet:///modules/coredb_mysql/utils/snaprotate.pl"
 	}
 
 	cron {
