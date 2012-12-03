@@ -2499,18 +2499,32 @@ node "williams.wikimedia.org" {
 }
 
 node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
+	$cluster = "parsoid"
+	$nagios_group = "{$cluster}_{$::site}"
+
 	include standard,
 		admins::roots,
 		misc::parsoid
+
+	if $hostname == "wtp1.pmtpa.wmnet" {
+		$ganglia_aggregator = "true"
+	}
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.1.28" ] }
 
 }
 
 node "wtp1001.eqiad.wmnet" {
+	$cluster = "parsoid"
+	$nagios_group = "{$cluster}_{$::site}"
+
 	include standard,
 		admins::roots,
 		misc::parsoid
+
+	if $hostname == "wtp1001.eqiad.wmnet" {
+		$ganglia_aggregator = "true"
+	}
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
 
