@@ -540,3 +540,36 @@ class puppetmaster::self {
 
 	include puppetmaster::scripts
 }
+
+class puppetmaster::docs {
+
+	file { '/srv/www':
+		ensure => 'directory';
+	}
+
+	require "webserver::php5"
+
+	git::clone { "puppetsource":
+		directory => "/srv/www/puppetsource",
+		branch => "master",
+		ensure => latest,
+		origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
+	}
+
+
+	exec { "generate docsite":
+		require => [ file['/srv/www'], git::clone['puppetsource'] ],
+		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/www/puppetdoc --manifestdir /srv/www/puppetsource/manifests",
+	}
+
+	file { "/etc/apache2/sites-available/puppetdoc":
+		mode => 644,
+		owner => root,
+		group => root,
+		content => template('apache/sites/puppetdoc.wmflabs.org'),
+		ensure => present;
+	}
+
+        apache_site { controller: name => "puppetdoc" }
+        apache_site { 000_default: name => "000-default", ensure => absent }
+}
