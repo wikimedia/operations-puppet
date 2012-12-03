@@ -82,7 +82,7 @@ class role::coredb::s1 {
 		innodb_log_file_size => "2000M"
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s2 {
@@ -91,7 +91,7 @@ class role::coredb::s2 {
 		innodb_log_file_size => "2000M"
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s3 {
@@ -99,7 +99,7 @@ class role::coredb::s3 {
 		shard => "s3",
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s4 {
@@ -108,7 +108,7 @@ class role::coredb::s4 {
 		innodb_log_file_size => "2000M"
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s5 {
@@ -117,7 +117,7 @@ class role::coredb::s5 {
 		innodb_log_file_size => "1000M"
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s6 {
@@ -125,7 +125,7 @@ class role::coredb::s6 {
 		shard => "s6",
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::s7 {
@@ -133,7 +133,7 @@ class role::coredb::s7 {
 		shard => "s7",
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::m1 {
@@ -142,7 +142,7 @@ class role::coredb::m1 {
 		innodb_file_per_table => true,
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::m2 {
@@ -153,7 +153,7 @@ class role::coredb::m2 {
 		mysql_max_allowed_packet => 1073741824,
 	}
 
-	include coredb::slow_digest
+	include coredb_mysql::slow_digest
 }
 
 class role::coredb::es1 {
@@ -210,12 +210,11 @@ class role::coredb::common(
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
+		coredb_mysql,
 		mysql::coredb::ganglia
 
 	if $::hostname in $topology[$shard]['snapshot'] {
-		class { "coredb_mysql": snapshot => true }
-	} else {
-		class { "coredb_mysql": snapshot => false }
+		include coredb_mysql::snapshot
 	}
 
 	Class["role::coredb::common"] -> Class["coredb_mysql"]
