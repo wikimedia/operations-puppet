@@ -2,8 +2,28 @@
 Run git deployment commands
 '''
 
-#import salt.pillar
 import urllib
+
+def sync_all():
+    '''
+    Sync all repositories. If a repo doesn't exist on target, clone as well.
+
+    CLI Example::
+
+	salt -G 'cluster:appservers' deploy.sync_all
+    '''
+    repourls = __pillar__.get('repo_urls')
+    repolocs = __pillar__.get('repo_locations')
+    status = 0
+
+    for repo,repourl in repourls.items():
+        repoloc = repolocs[repo]
+        __salt__['git.clone'](repoloc,repourl)
+        ret = __salt__['deploy.checkout'](repo)
+        if ret != 0:
+            status = 1
+
+    return status
 
 def fetch(repo):
     '''
