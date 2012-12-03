@@ -25,7 +25,7 @@ chomp $conf->{'DATE'};
 if ($conf->{'HOSTNAME'} =~ /^(db78|db1025)$/) {
 
 	# copy db dumps to tridge
-	$mirror->{'1'} = 'rsync -ar /a/archive/database_dumps/ fundraising@tridge.wikimedia.org:database_dumps/';
+	$mirror->{'1'} = 'rsync -ar /a/archive/database_dumps/*.gz fundraising@tridge.wikimedia.org:database_dumps/';
 
 } elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
 
