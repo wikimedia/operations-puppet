@@ -78,7 +78,7 @@ class misc::contint::test {
 
 		$CI_PHP_packages = [ "libapache2-mod-php5", "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
 		$CI_DB_packages  = [ "mysql-server", "sqlite3", "postgresql" ]
-		$CI_DEV_packages = [ "imagemagick" ]
+		$CI_DEV_packages = [ "imagemagick", "librsvg2-bin" ]
 
 		package { $CI_PHP_packages:
 			ensure => present;
