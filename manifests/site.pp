@@ -1185,7 +1185,8 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['search_pool3'][$::site],
 			$sip['search_pool4'][$::site],
 			$sip['search_prefix'][$::site],
-			$sip['swift'][$::site]
+			$sip['swift'][$::site],
+			$sip['parsoid'][$::site]
 			]
 	}
 
