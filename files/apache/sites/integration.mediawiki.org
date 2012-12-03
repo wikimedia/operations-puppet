@@ -7,6 +7,7 @@
 NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
+	ServerAlias integration.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 
 	DocumentRoot /srv/org/mediawiki/integration
