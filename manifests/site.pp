@@ -2492,6 +2492,9 @@ node "williams.wikimedia.org" {
 }
 
 node "wtp1.pmtpa.wmnet" {
+	$cluster = "parsoid"
+	$nagios_group = "{$cluster}_{$::site}"
+
 	include standard,
 		admins::roots,
 		misc::parsoid
@@ -2501,6 +2504,9 @@ node "wtp1.pmtpa.wmnet" {
 }
 
 node "wtp1001.eqiad.wmnet" {
+	$cluster = "parsoid"
+	$nagios_group = "{$cluster}_{$::site}"
+
 	include standard,
 		admins::roots,
 		misc::parsoid
