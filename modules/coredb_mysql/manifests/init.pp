@@ -1,5 +1,4 @@
 class coredb_mysql(
-	$snapshot,
 	$shard,
 	$read_only,
 	$skip_name_resolve,
@@ -18,10 +17,6 @@ class coredb_mysql(
 		coredb_mysql::packages,
 		coredb_mysql::slow_digest,
 		coredb_mysql::utils
-
-	if $snapshot == true {
-		include coredb_mysql::snapshot
-	}
 
 	Class["coredb_mysql"] -> Class["coredb_mysql::conf"]
 }
