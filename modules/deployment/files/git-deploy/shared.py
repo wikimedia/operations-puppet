@@ -36,6 +36,7 @@ def main():
 	if err:
 		print err
 	# Ensure the fetch will work for the extensions
+	#TODO: make this generic for submodules - it doesn't need to be specific to extensions
 	if os.path.isdir(repodir + '/extensions'):
 		extensiondir = repodir + '/extensions'
 		p = subprocess.Popen('git submodule foreach "git tag %s"' % tag, cwd=repodir, shell=True, stderr=subprocess.PIPE)
