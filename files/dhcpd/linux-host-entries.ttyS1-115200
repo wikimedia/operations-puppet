@@ -1346,7 +1346,7 @@ host ms-be2 {
 }
 
 host ms-be3 {
-	hardware ethernet 04:7D:7B:2E:2E:D6;
+	hardware ethernet 90:B1:1C:18:EE:F1;
 	fixed-address ms-be3.pmtpa.wmnet;
 }
 
