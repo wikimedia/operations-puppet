@@ -1,7 +1,5 @@
 class misc::docsite {
 
-	class {'webserver::php5': ssl => 'true'; }
-
 	file {
 		'/etc/apache2/sites-available/doc.wikimedia.org':
 			path => '/etc/apache2/sites-available/doc.wikimedia.org',
