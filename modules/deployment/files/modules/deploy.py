@@ -14,13 +14,14 @@ def sync_all():
     '''
     repourls = __pillar__.get('repo_urls')
     site = __salt__['grains.item']('site')
-    repourls = repourls[site]
+    repourls = repourls[site][0]
     repolocs = __pillar__.get('repo_locations')
     status = 0
 
     for repo,repourl in repourls.items():
         repoloc = repolocs[repo]
-        __salt__['git.clone'](repoloc,repourl)
+        cmd = '/usr/bin/git clone %s' % repourl + '/.git'
+        __salt__['cmd.retcode'](cmd,repoloc)
         ret = __salt__['deploy.checkout'](repo)
         if ret != 0:
             status = 1
@@ -35,7 +36,9 @@ def fetch(repo):
 
 	salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
+    site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
+    repourls = repourls[site][0]
     repourl = repourls[repo]
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
@@ -58,7 +61,9 @@ def checkout(repo):
     #TODO: replace the cmd.retcode calls with git module calls, where appropriate
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
+    site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
+    repourls = repourls[site][0]
     repourl = repourls[repo]
     sed_lists = __pillar__.get('repo_regex')
     sed_list = sed_lists[repo]
