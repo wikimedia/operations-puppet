@@ -22,6 +22,8 @@ def sync_all():
         repoloc = repolocs[repo]
         if not __salt__['file.directory_exists'](repoloc + '/.git'):
             __salt__['git.clone'](repoloc,repourl + '/.git')
+        else:
+            ret = __salt__['deploy.checkout'](repo)
         ret = __salt__['deploy.checkout'](repo)
         if ret != 0:
             status = 1
