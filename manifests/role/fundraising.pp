@@ -121,18 +121,12 @@ class role::fundraising::database::dump_slave {
 	include role::fundraising::database::slave,
 		misc::fundraising::backup::offhost
 
-	File {
-		mode => 0755,
-		owner => root,
-		group => root,
-	}
-
 	file {
 		'/usr/local/bin/dump_fundraisingdb':
+			mode => 0755,
+			owner => root,
+			group => root,
 			source => "puppet:///files/misc/scripts/dump_fundraisingdb";
-		'/root/.dump_fundraisingdb':
-			mode => 0400,
-			source => "puppet:///private/misc/fundraising/dump_fundraisingdb-${hostname}";
 	}
 
 	cron {
