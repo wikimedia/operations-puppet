@@ -559,7 +559,7 @@ class puppetmaster::docs {
 
 	exec { "generate docsite":
 		require => [ file['/srv/www'], git::clone['puppetsource'] ],
-		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --manifestdir /srv/org/wikimedia/doc/puppetsource/manifests",
+		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --modulepath /srv/org/wikimedia/doc/puppetsource/modules --manifestdir /srv/org/wikimedia/doc/puppetsource/manifests",
 	}
 
 	file { "/etc/apache2/sites-available/puppetdoc":
