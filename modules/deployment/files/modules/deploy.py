@@ -13,6 +13,8 @@ def sync_all():
 	salt -G 'cluster:appservers' deploy.sync_all
     '''
     repourls = __pillar__.get('repo_urls')
+    site = __salt__['grains.item']('site')
+    repourls = repourls[site]
     repolocs = __pillar__.get('repo_locations')
     status = 0
 
