@@ -477,7 +477,7 @@ class mysql {
 	# and rename this to mysql::client-cli?
 	class client {
 		if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			package { "mysqlfb-client-5.1":
+			package { "mysql-client-5.5":
 				ensure => latest;
 			}
 		} else {
