@@ -3,44 +3,58 @@ use strict;
 use Sys::Syslog;
 use IPC::Open3;
 use IO::Select;
-use Fcntl ':mode';
 
-# This is a quick and dirty script which *does not* do any significant input
-# validation on the config file. There's potential for destruction if the conf
-# file is tampered with. To prevent that, the script will not run if the conf
-# file is writable by anyone other than the effective user.
+my $conf = {
+	'LOCALDIR' => '/a/archive/database_dumps',
+	'KEEPDAYS' => {
+		'db1025' => 7,
+	},
+	'SENDER' => 'root@wikimedia.org',
+	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org',
+	'FAILURE-RECIPIENT' => 'jgreen@wikimedia.org',
+	'DB' => {
+		'civicrm' => 'civicrm',
+		'drupal' => 'drupal',
+		'dev_civicrm' => 'dev_civicrm',
+		'dev_drupal' => 'dev_drupal',
+		'dev_fundraising'  => 'dev_fundraising',
+		'faulkner' => 'faulkner --single_transaction',
+		'pgehres' => 'pgehres --single_transaction',
+		'fundraising' => 'fundraising --single_transaction',
+	},
+	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
+	'HOSTNAME' => `hostname --short`,
+};
 
-# allow invoking user to choose specific db's from the list
-my $requested_db;
-for (@ARGV) {
-	chomp;
-	$requested_db->{$_}++;
-}	
-
-# fetch conf file 
-my $conf = readconf('/root/.dump_fundraisingdb');
-
-# identity for syslog
-my $conf->{'IDENT'} = $0;
-
-$conf->{'HOSTNAME'} = `hostname --short`;
 chomp $conf->{'HOSTNAME'};
 
-for my $key (qw(USER PASSWORD DBS LOCALDIR SENDER RECIPIENT MYSQLDUMP)) {
-	die "$key is missing from config!?\n" unless defined $conf->{$key};
+# invoking user chooses specific db's from the list
+my ($e,@requested_dbs);
+if (defined @ARGV[0]) {
+	for (@ARGV) {
+		chomp;
+		if (defined $conf->{'DB'}->{$_}) {
+			push @requested_dbs, $_;
+		} else {
+			printlog("no database '$_' configured in $conf->{'IDENT'}");
+			$e->{'report'} .= "no database '$_' configured in $conf->{'IDENT'}\n";
+			$e->{'errors'}++;
+		}
+	}
+} else {
+	@requested_dbs = keys %{$conf->{'DB'}};	
 }
 
 printlog('start!');
-my $e;
 
 # purge old files if KEEPDAYS is set
-if ($conf->{'KEEPDAYS'} =~ /^(\d+)$/) {
-	$e->{'report'} .= "purge files in $conf->{'LOCALDIR'} older than $conf->{'KEEPDAYS'} days\n";
+if ($conf->{'KEEPDAYS'}->{$conf->{'HOSTNAME'}} =~ /^(\d+)$/) {
+	$e->{'report'} .= "purge files in $conf->{'LOCALDIR'} older than $conf->{'KEEPDAYS'}->{$conf->{'HOSTNAME'}} days\n";
 	opendir DIR, $conf->{'LOCALDIR'} or die "can't open $conf->{'LOCALDIR'}: $!";
 	for my $file (sort readdir DIR) {
 		next if $file =~ /^\./;
 		my $file_date = (stat("$conf->{'LOCALDIR'}/$file"))[9];
-		if ( (time - $file_date)/86400 > $conf->{'KEEPDAYS'}) {
+		if ( (time - $file_date)/86400 > $conf->{'KEEPDAYS'}->{$conf->{'HOSTNAME'}}) {
 			printlog("rm $conf->{'LOCALDIR'}/$file");
 			unlink "$conf->{'LOCALDIR'}/$file";
 		}	
@@ -48,27 +62,55 @@ if ($conf->{'KEEPDAYS'} =~ /^(\d+)$/) {
 	close DIR;
 }
 
-for my $db (split /\s+/, $conf->{'DBS'}) {
 
-	# trivial db name check 
-	unless ($db =~ /^\w+$/) {;
-		$e->{'report'} .= "invalid database name: \"$db\"\n";
-		next;
-	}
-
-	# limit by $requested_db
-	if ((defined $requested_db) and (! defined $requested_db->{$db})) {
-		next;
-	}	
-
+for my $db (@requested_dbs) {
 	my $date = `date +%Y%m%d-%H%M%S`;
 	chomp $date;
-
 	printlog("start $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz");
 	$e->{'report'} .= "start dump $db to $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz\n";
+	monitor_shell_call("mysqldump $conf->{'DB'}->{$db} > $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql");
+	if (-e "$conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql") {
+		monitor_shell_call("gzip $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql");
+	} else {
+		printlog("no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql to gzip?");
+		$e->{'report'} .= "no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql to gzip?\n";
+		$e->{'errors'}++;
+	}
+}
+
+# set the subject line according to the outcome
+if ($e->{'errors'}) {
+	$e->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} $conf->{'IDENT'} dump had errors";
+	$conf->{'RECIPIENT'} = $conf->{'FAILURE-RECIPIENT'};
+} else {
+	$e->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} $conf->{'IDENT'} ran without errors";
+	$conf->{'RECIPIENT'} = $conf->{'SUCCESS-RECIPIENT'};
+}
+
+# send message
+open MAILER, "|/usr/sbin/exim -i $conf->{'RECIPIENT'}";
+print MAILER "From: $conf->{'SENDER'}\n" .
+		"To: $conf->{'RECIPIENT'}\n" .
+		"Subject: $e->{'subject'}\n\n" .
+		"$e->{'report'}";
+close MAILER;
+
+printlog('done!');
+
+exit;
+
+#         _                 _   _			 
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#   
+
+sub monitor_shell_call {
+
+	my $command = shift;
 
 	# open system call using open3 so we can cleanly address stderr vs stdout
-	my $child_pid = open3(*W, *R, *E, "$conf->{'MYSQLDUMP'} -u$conf->{'USER'} -p\"$conf->{'PASSWORD'}\" $db | gzip > $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz");
+	my $child_pid = open3(*W, *R, *E, $command);
 	close (W); # don't need the write handle at all, so we close that
 
 	# use IO::Select to step through the output of open3
@@ -97,33 +139,11 @@ for my $db (split /\s+/, $conf->{'DBS'}) {
 			}
 		}
 	}
+	close(R);
+	close(E);
 
 }
 
-# set the subject line according to the outcome
-if ($e->{'errors'}) {
-	$e->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} fundraisingdb dump had errors";
-} else {
-	$e->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} fundraisingdb dump ran without errors";
-}
-
-# send message
-open MAILER, "|/usr/sbin/exim -i $conf->{'RECIPIENT'}";
-print MAILER "From: $conf->{'SENDER'}\n" .
-		"To: $conf->{'RECIPIENT'}\n" .
-		"Subject: $e->{'subject'}\n\n" .
-        "$e->{'report'}";
-close MAILER;
-
-printlog('done!');
-
-exit;
-
-#         _                 _   _			 
-# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
-#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
-#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
-#   
 
 sub printlog {
 	my $msg = $_[0] ? $_[0] : '';
@@ -132,26 +152,4 @@ sub printlog {
 	Sys::Syslog::openlog($conf->{'IDENT'},'ndelay,pid','user');
 	Sys::Syslog::syslog($severity,$msg);
 	Sys::Syslog::closelog();
-}
-
-sub readconf {
-	my $conf_file = shift;
-	die "$conf_file is missing" unless -e $conf_file;
-	my ($mode,$uid) = (stat($conf_file))[2,4];
-	my $perms = sprintf "%04o", S_IMODE($mode);
-	if (($perms =~ /00$/) and ($uid == $ENV{'EUID'})) {
-		open CONF, $conf_file;
-		while (<CONF>) {
-			next if /^\s*#/;
-			if (/^(\w+)\s+(.*)$/) {
-				$conf->{$1} = $2;
-			}
-		}
-		close CONF;
-	} else {	
-		print "\n $0 will not run to run unless $conf_file is\n" .
-			" owned by the script's effective user and set go-rwx. Please check/fix and rerun.\n\n";
-		exit;
-	}
-	return $conf;
 }
