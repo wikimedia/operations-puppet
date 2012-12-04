@@ -46,12 +46,19 @@ class role::salt::minions {
 		$salt_client_id = "${dc}.${domain}"
 		$salt_grains = {
 			"instanceproject" => $instanceproject,
+			"realm" => $realm,
+			"site" => $site,
+			"cluster" => $cluster,
 		}
 		$salt_master_finger = "5d:07:fb:28:21:60:fb:db:46:ff:e8:1c:91:a2:1a:f9"
 	} else {
 		$salt_master = "sockpuppet.pmtpa.wmnet"
 		$salt_client_id = undef
-		$salt_grains = {}
+		$salt_grains = {
+			"realm" => $realm,
+			"site" => $site,
+			"cluster" => $cluster,
+		}
 		$salt_master_finger = "e6:f5:71:f5:b0:5c:45:7b:b1:f2:1d:06:4e:b9:98:9f"
 	}
 
