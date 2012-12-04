@@ -40,8 +40,8 @@ def main():
 		extensiondir = repodir + '/extensions'
 		p = subprocess.Popen('git submodule foreach "git tag %s"' % tag, cwd=repodir, shell=True, stderr=subprocess.PIPE)
 		out = p.communicate()[0]
-		for extension in os.listdir(repodir + '/extensions'):
-			p = subprocess.Popen('git update-server-info', cwd=extensiondir + '/' + extension + '/.git/', shell=True, stderr=subprocess.PIPE)
+		for extension in os.listdir(repodir + '/.git/modules/extensions'):
+			p = subprocess.Popen('git update-server-info', cwd=extensiondir + '/' + extension, shell=True, stderr=subprocess.PIPE)
 			out = p.communicate()[0]
 	print "Running: sudo salt-call publish.runner deploy.fetch '%s'" % (prefix)
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)

@@ -17,12 +17,12 @@ class role::deployment::salt_masters::production {
     deployment_repo_regex => {
       'common' => {},
       'slot0' => {
-        'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__',
-        '.git' => '/.git',
+        'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+        '.git' => '',
       },
       'slot1' => {
-        'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__',
-        '.git' => '/.git',
+        'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
+        '.git' => '',
       },
     },
     deployment_repo_locations => {

@@ -1,3 +1,3 @@
 repo_locations: {<% deployment_repo_locations.sort.each do |repo, location| %>"<%= repo %>": "<%= location %>",<% end %>}
-repo_urls: {<% deployment_repo_urls.sort.each do |site, repos| %>"<%= site %>": [<% repos.sort.each do |repo, url| %>"<%= repo %>": "<%= url %>",<% end %>],<% end %>}
+repo_urls: {<% deployment_repo_urls.sort.each do |site, repos| %>"<%= site %>": {<% repos.sort.each do |repo, url| %>"<%= repo %>": "<%= url %>",<% end %>},<% end %>}
 repo_regex: {<% deployment_repo_regex.sort.each do |repo, regexes| %>"<%= repo %>": [<% regexes.sort.each do |before, after| %>{"<%= before %>": "<%= after %>"},<% end %>],<% end %>}
