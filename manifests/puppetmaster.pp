@@ -550,7 +550,7 @@ class puppetmaster::docs {
 	require "webserver::php5"
 
 	git::clone { "puppetsource":
-		directory => "/srv/www/puppetsource",
+		directory => "/srv/org/wikimedia/doc/puppetsource",
 		branch => "master",
 		ensure => latest,
 		origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
@@ -559,7 +559,7 @@ class puppetmaster::docs {
 
 	exec { "generate docsite":
 		require => [ file['/srv/www'], git::clone['puppetsource'] ],
-		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/www/puppetdoc --manifestdir /srv/www/puppetsource/manifests",
+		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --manifestdir /srv/org/wikimedia/doc/puppetsource/manifests",
 	}
 
 	file { "/etc/apache2/sites-available/puppetdoc":
@@ -571,5 +571,4 @@ class puppetmaster::docs {
 	}
 
         apache_site { controller: name => "puppetdoc" }
-        apache_site { 000_default: name => "000-default", ensure => absent }
 }
