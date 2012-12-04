@@ -82,6 +82,8 @@ class role::coredb::s1 {
 		innodb_log_file_size => "2000M"
 	}
 
+  Class["role::coredb::common"] -> Class["coredb_mysql"]
+
 	include coredb_mysql::slow_digest
 }
 
@@ -216,8 +218,6 @@ class role::coredb::common(
 	if $::hostname in $topology[$shard]['snapshot'] {
 		include coredb_mysql::snapshot
 	}
-
-	Class["role::coredb::common"] -> Class["coredb_mysql"]
 
 	if $topology[$shard]['masters'][$::site] == $::hostname {
 		class { "mysql::coredb::monitoring": crit => true }
