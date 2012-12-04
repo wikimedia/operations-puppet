@@ -1,0 +1,12 @@
+#include <tunables/global>
+
+/usr/bin/avconv {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  network inet stream,
+  network inet6 stream,
+
+  /usr/bin/avconv mr,
+  /tmp/* rw,
+}
