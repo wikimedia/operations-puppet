@@ -821,6 +821,8 @@ node "gallium.wikimedia.org" {
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
 		misc::contint::test::testswarm,
+		misc::docsite,
+		misc::docs::puppet,
 		role::zuul::production,
 		admins::roots,
 		admins::jenkins
