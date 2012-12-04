@@ -1,0 +1,16 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/doc.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName doc.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/doc
+
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+</VirtualHost>
