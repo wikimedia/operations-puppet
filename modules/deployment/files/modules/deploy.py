@@ -20,7 +20,7 @@ def sync_all():
 
     for repo,repourl in repourls.items():
         repoloc = repolocs[repo]
-        if not __salt__['file.directory_exists'](repoloc):
+        if not __salt__['file.directory_exists'](repoloc + '/.git'):
             __salt__['git.clone'](repoloc,repourl + '/.git')
         ret = __salt__['deploy.checkout'](repo)
         if ret != 0:
@@ -50,7 +50,7 @@ def fetch(repo):
 
     return __salt__['cmd.retcode'](cmd,repoloc)
 
-def checkout(repo):
+def checkout(repo,reset=False):
     '''
     Checkout the current deployment tag. Assumes a fetch has been run.
 
@@ -81,11 +81,12 @@ def checkout(repo):
     if not tag:
         return 10
 
-    # The last deploy modified .gitmodules, we need to reset it
-    #cmd = '/usr/bin/git checkout .gitmodules'
-    #ret = __salt__['cmd.retcode'](cmd,repoloc)
-    #if ret != 0:
-    #    return 20
+    if reset:
+        # User requested we hard reset the repo to the tag
+        cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return 20
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
