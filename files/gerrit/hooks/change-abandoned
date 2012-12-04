@@ -4,23 +4,24 @@ import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
+
 class ChangeAbandoned(HookHelper):
-	def run(self):
-		self.parser.set_usage("change-abandoned --change <change id> --change-url <change url> --project <project name> --branch <branch> --abandoner <abandoner> --reason <reason>")
-		self.parser.add_option("--abandoner", dest="abandoner")
-		self.parser.add_option("--reason", dest="reason")
-		(options, args) = self.parser.parse_args()
-		reason = options.reason.splitlines()
-		if reason:
-			reason = reason[0]
-			if len(reason) > 103:
-				reason = reason[0:100] + "..."
-		else:
-			reason = "(no reason)"
-		user = re.sub(' \(.*', "", options.abandoner)
-		message = "Change abandoned: " + user + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		self.log_to_file(options.project, options.branch, message, user)
+    def run(self):
+        self.parser.set_usage("change-abandoned --change <change id> --change-url <change url> --project <project name> --branch <branch> --abandoner <abandoner> --reason <reason>")
+        self.parser.add_option("--abandoner", dest="abandoner")
+        self.parser.add_option("--reason", dest="reason")
+        (options, args) = self.parser.parse_args()
+        reason = options.reason.splitlines()
+        if reason:
+            reason = reason[0]
+            if len(reason) > 103:
+                reason = reason[0:100] + "..."
+        else:
+            reason = "(no reason)"
+        user = re.sub(' \(.*', "", options.abandoner)
+        message = "Change abandoned: " + user + '; "' + reason + '" [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+        self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
-	hook = ChangeAbandoned()
-	hook.run()
+    hook = ChangeAbandoned()
+    hook.run()

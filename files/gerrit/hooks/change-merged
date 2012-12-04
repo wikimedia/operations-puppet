@@ -4,17 +4,18 @@ import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
 
+
 class ChangeMerged(HookHelper):
-	def run(self):
-		self.parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit> --uploader <uploader>")
-		self.parser.add_option("--submitter", dest="submitter")
-		self.parser.add_option("--commit", dest="commit")
-		self.parser.add_option("--uploader", dest="uploader")
-		(options, args) = self.parser.parse_args()
-		user = re.sub(' \(.*', "", options.submitter)
-		message = "Change merged: " + user + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
-		self.log_to_file(options.project, options.branch, message, user)
+    def run(self):
+        self.parser.set_usage("change-merged --change <change id> --change-url <change url> --project <project name> --branch <branch> --submitter <submitter> --commit <commit> --uploader <uploader>")
+        self.parser.add_option("--submitter", dest="submitter")
+        self.parser.add_option("--commit", dest="commit")
+        self.parser.add_option("--uploader", dest="uploader")
+        (options, args) = self.parser.parse_args()
+        user = re.sub(' \(.*', "", options.submitter)
+        message = "Change merged: " + user + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"
+        self.log_to_file(options.project, options.branch, message, user)
 
 if __name__ == "__main__":
-	hook = ChangeMerged()
-	hook.run()
+    hook = ChangeMerged()
+    hook.run()
