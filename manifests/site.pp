@@ -1958,7 +1958,7 @@ node "sockpuppet.pmtpa.wmnet" {
 	include standard,
 		backup::client,
 		misc::management::ipmi,
-		role::salt::masters::labs,
+		role::salt::masters::production,
 		role::deployment::salt_masters::production
 
 	class { puppetmaster:

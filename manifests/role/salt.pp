@@ -6,6 +6,9 @@ class role::salt::masters::production {
 
 	class { "salt::master":
 		salt_runner_dirs => ["/srv/runners"],
+		salt_peer_run => {
+			"tin.eqiad.wmnet" => ['deploy.*'],
+		},
 	}
 
 	salt::master_environment{ "base":
