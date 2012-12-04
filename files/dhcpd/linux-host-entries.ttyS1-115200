@@ -300,7 +300,7 @@ host cp1030 {
 	fixed-address cp1030.eqiad.wmnet;
 }
 host cp1031 {
-	hardware ethernet d4:be:d9:f4:c8:0e;
+	hardware ethernet 18:03:73:f7:73:c9;
 	fixed-address cp1031.eqiad.wmnet;
 }
 host cp1032 {
