@@ -106,6 +106,10 @@ class role::applicationserver {
 		include	imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
+
+		if $::realm == 'production' {
+			include	mediawiki_new::apparmor
+		}
 	}
 	class jobrunner{
 		class { "role::applicationserver::common": group => "jobrunner" }
@@ -130,6 +134,10 @@ class role::applicationserver {
 		include imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
+
+		if $::realm == 'production' {
+			include	mediawiki_new::apparmor
+		}
 
 		class {"mediawiki_new::jobrunner":
 			procs => 10,

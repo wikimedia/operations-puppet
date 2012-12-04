@@ -1,0 +1,8 @@
+#include <tunables/global>
+
+/usr/bin/ffmpeg2theora {
+  #include <abstractions/base>
+
+  /usr/bin/ffmpeg2theora mr,
+  /tmp/* rw,
+}
