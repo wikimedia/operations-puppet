@@ -75,6 +75,10 @@ class facilities::pdu_monitoring {
 	monitor_pdu_3phase { "ps1-d3-sdtpa": ip => "10.1.5.16", redundant => "false" }
 
 	# pmtpa
+	# C
+	monitor_pdu_3phase { "ps1-c1-pmtpa": ip=> "10.1.5.20" }
+	monitor_pdu_3phase { "ps1-c2-pmtpa": ip=> "10.1.5.21" }
+	monitor_pdu_3phase { "ps1-c3-pmtpa": ip=> "10.1.5.22" }
 	# D
 	monitor_pdu_3phase { "ps1-d1-pmtpa": ip=> "10.1.5.17" }
 	monitor_pdu_3phase { "ps1-d2-pmtpa": ip=> "10.1.5.18" }
@@ -99,6 +103,15 @@ class facilities::pdu_monitoring {
 	monitor_pdu_3phase { "ps1-b6-eqiad": ip => "10.65.0.45" }
 	monitor_pdu_3phase { "ps1-b7-eqiad": ip => "10.65.0.46" }
 	monitor_pdu_3phase { "ps1-b8-eqiad": ip => "10.65.0.47" }
+	# C
+	monitor_pdu_3phase { "ps1-c1-eqiad": ip => "10.65.0.48" }
+	monitor_pdu_3phase { "ps1-c2-eqiad": ip => "10.65.0.49" }
+	monitor_pdu_3phase { "ps1-c3-eqiad": ip => "10.65.0.50" }
+	monitor_pdu_3phase { "ps1-c4-eqiad": ip => "10.65.0.51" }
+	monitor_pdu_3phase { "ps1-c5-eqiad": ip => "10.65.0.52" }
+	monitor_pdu_3phase { "ps1-c6-eqiad": ip => "10.65.0.53" }
+	monitor_pdu_3phase { "ps1-c7-eqiad": ip => "10.65.0.54" }
+	monitor_pdu_3phase { "ps1-c8-eqiad": ip => "10.65.0.55" }
 }
 
 
