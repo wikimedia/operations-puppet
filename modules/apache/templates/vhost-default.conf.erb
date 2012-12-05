@@ -18,8 +18,13 @@ NameVirtualHost <%= vhost_name %>:<%= port %>
   <Directory <%= docroot %>>
     Options <%= options %>
     AllowOverride <%= Array(override).join(' ') %>
-    Order allow,deny
-    allow from all
+    Order <%= docroot_dir_order %>
+    <% if docroot_dir_allows.is_a? Array %>
+    allow from <%= docroot_dir_allows.join(',') %>
+    <% end %>
+    <% if docroot_dir_denies.is_a? Array %>
+    deny from <%= docroot_dir_denies.join(',') %>
+    <% end %>
   </Directory>
   ErrorLog <%= logroot %>/<%= name %>_error.log
   LogLevel warn
