@@ -44,6 +44,8 @@ class role::deployment::deployment_servers {
   class {'apache::mod::dav': }
   class {'apache::mod::dav_fs': }
 
+  class { "applicationserver::packages": }
+
   apache::vhost { "tin.eqiad.wmnet":
     priority		=> 10,
     vhost_name		=> "10.64.0.196",
