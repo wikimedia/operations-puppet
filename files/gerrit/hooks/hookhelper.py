@@ -65,8 +65,8 @@ class HookHelper:
 
     def log_to_file(self, project, branch, message, user):
         filename = self.get_log_filename(project, branch, message)
-        # These users are annoying, ignore them
-        if user in hookconfig.spammyusers:
+        # These users are REALLY annoying, ignore them
+        if user in hookconfig.reallyspammyusers:
             return
         f = open(filename, 'a')
         f.write(message)

@@ -3,6 +3,7 @@ import re
 import sys
 from hookhelper import HookHelper
 sys.path.append('/var/lib/gerrit2/review_site/etc')
+import hookconfig
 
 
 class CommentAdded(HookHelper):
@@ -28,6 +29,9 @@ class CommentAdded(HookHelper):
         if options.codereview:
             review = review + " C: " + options.codereview + "; "
         user = re.sub(' \(.*', "", options.author)
+        # These users are annoying, ignore them
+        if user in hookconfig.spammyusers:
+            return
         message = "New review: " + user + '; "' + comment + '" [' + options.project + "] (" + options.branch + ")" + review + " - " + options.changeurl + "\n"
         self.log_to_file(options.project, options.branch, message, user)
 
