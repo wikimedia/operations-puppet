@@ -1,5 +1,5 @@
 class misc::docsite {
-
+	system_role { "misc::docsite": description => "doc site server" }
 	file {
 		'/etc/apache2/sites-available/doc.wikimedia.org':
 			path => '/etc/apache2/sites-available/doc.wikimedia.org',
