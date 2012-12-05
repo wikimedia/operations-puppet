@@ -304,7 +304,7 @@ class ganglia {
 						"Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
 						"Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
 						"Upload caches esams" => "cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
-						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org"
+						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
 						"Parsoid pmtpa" => "wtp1.pmtpa.wmnet",
 						"Parsoid eqiad" => "wtp1001.eqiad.wmnet",
 					}
