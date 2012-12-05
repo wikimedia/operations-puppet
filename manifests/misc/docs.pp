@@ -28,9 +28,16 @@ class misc::docs::puppet {
 		origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 	}
 
+	#  This is here to fool 'puppet doc' into placing web-relative
+	#  source paths in the docs.  A welcome a less stupid solution to this.
+	file { "/puppetsource":
+		ensure => link,
+		target => "/srv/org/wikimedia/doc/puppetsource";
+	}
+
 	exec { "generate puppet docsite":
 		require => git::clone['puppetsource'],
-		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --modulepath /srv/org/wikimedia/doc/puppetsource/modules --manifestdir /srv/org/wikimedia/doc/puppetsource/manifests",
+		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --modulepath /puppetsource/modules --manifestdir /puppetsource/manifests",
 	}
 
 }
