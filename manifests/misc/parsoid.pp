@@ -34,7 +34,7 @@ class misc::parsoid {
 			hasrestart => true,
 			enable => true,
 			ensure => running,
-			require => [File["/etc/init.d/parsoid"], Exec["parsoid-npm-install"]];
+			require => [File["/etc/init.d/parsoid"]];
 	}
 
 	monitor_service { "parsoid": description => "Parsoid", check_command => "check_http_lvs_on_port!{$hostname}!8000!/_html/" }
