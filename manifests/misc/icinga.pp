@@ -6,7 +6,7 @@ import "../nagios.pp"
 
 class icinga::monitor {
 
-	require icinga::configuration::variables
+#	require icinga::configuration::variables
 
 	include
 
@@ -28,6 +28,9 @@ class icinga::monitor {
 		icinga::monitor::files::misc
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
+
+	Class['icinga::monitor'] -> Class['icinga::monitor::packages'] -> Class['icinga::monitor::service'] -> Class['icinga::monitor::service'] -> Class['icinga::configuration::variables']
+
 }
 
 # Nagios/icinga configuration files
@@ -699,8 +702,6 @@ class icinga::monitor::packages {
 }
 
 class icinga::monitor::service {
-	require icinga::configuration::variables,
-		icinga::monitor::packages
 
 	service { "icinga":
 		require => File[$icinga::configuration::variables::puppet_files],
