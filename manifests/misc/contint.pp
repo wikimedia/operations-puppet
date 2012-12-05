@@ -42,7 +42,11 @@ class misc::contint::android::sdk {
 	include generic::packages::ant18
 
 	package { [
-		"ia32-libs",
+		"libstdc++6:i386",
+		"libgcc1:i386",
+		"zlib1g:i386",
+		"libncurses5:i386",
+		"libsdl1.2debian:i386",
 		"libswt-gtk-3.5-java"
 		]: ensure => installed;
 	}
