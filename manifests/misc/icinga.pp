@@ -6,10 +6,7 @@ import "../nagios.pp"
 
 class icinga::monitor {
 
-#	require icinga::configuration::variables
-
 	include
-
 		icinga::monitor::packages,
 		passwords::nagios::mysql,
 		icinga::monitor::firewall,
@@ -704,7 +701,6 @@ class icinga::monitor::packages {
 class icinga::monitor::service {
 
 	service { "icinga":
-		require => File[$icinga::configuration::variables::puppet_files],
 		ensure => running,
 		subscribe => [ File[$icinga::configuration::variables::puppet_files],
 			       File[$icinga::configuration::variables::static_files],
