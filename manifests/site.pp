@@ -2493,7 +2493,7 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node "wtp1.pmtpa.wmnet" {
+node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 	include standard,
 		admins::roots,
 		misc::parsoid
