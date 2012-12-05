@@ -14,7 +14,7 @@ class icinga::monitor {
 		icinga::monitor::files::nagios-plugins,
 		icinga::monitor::snmp,
 		icinga::monitor::checkpaging,
-		icinga::monitor::service,
+#		icinga::monitor::service,
 		icinga::monitor::jobqueue,
 		icinga::monitor::snmp,
 		icinga::monitor::naggen,
@@ -26,8 +26,8 @@ class icinga::monitor {
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 
-	Class['icinga::monitor'] -> Class['icinga::monitor::packages'] -> Class['icinga::monitor::service'] -> Class['icinga::monitor::service'] -> Class['icinga::configuration::variables']
-
+	Class['icinga::monitor'] -> Class['icinga::monitor::packages'] -> Class['icinga::configuration::variables'] -> Class['icinga::monitor::service']
+		
 }
 
 # Nagios/icinga configuration files
