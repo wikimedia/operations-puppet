@@ -699,7 +699,8 @@ class icinga::monitor::packages {
 }
 
 class icinga::monitor::service {
-	require icinga::configuration::variables
+	require icinga::configuration::variables,
+		icinga::monitor::packages
 
 	service { "icinga":
 		require => File[$icinga::configuration::variables::puppet_files],
