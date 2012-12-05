@@ -59,7 +59,7 @@ class misc::contint::android::sdk {
 # E.g. udp-filter, etc.
 class misc::contint::analytics::packages {
 	# these are needed to build libanon and udp-filter
-	package { ["pkg-config", "libpcap-dev"]:
+	package { ["pkg-config", "libpcap-dev", "libdb-dev"]:
 		ensure => "installed",
 	}
 
