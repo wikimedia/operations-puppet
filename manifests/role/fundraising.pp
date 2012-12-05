@@ -133,13 +133,13 @@ class role::fundraising::database::dump_slave {
 		'dump_fundraising_database':
 			user => root,
 			minute => '0',
-			hour => '8',
+			hour => '9',
 			command => '/usr/local/bin/dump_fundraisingdb',
 			ensure => present;
 		'offhost_backups':
 			user => root,
 			minute => '0',
-			hour => '11',
+			hour => '15',
 			command => '/usr/local/bin/offhost_backups',
 			ensure => present;
 	}
