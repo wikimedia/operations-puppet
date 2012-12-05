@@ -9,6 +9,11 @@ class misc::docsite {
 			source => 'puppet:///files/apache/sites/doc.wikimedia.org';
 		'/srv/org/wikimedia/doc':
 			ensure => 'directory';
+		'/srv/org/wikimediaq/doc/index.html':
+			mode => 0444,
+			ensure => 'present',
+			source => 'puppet:///files/misc/jenkins/doc_index.html',
+			require => File["/srv/org/wikimedia/doc"];
 	}
 
 	apache_site { docs: name => 'doc.wikimedia.org' }
