@@ -16,7 +16,7 @@ read only = false
 lock file = /var/lock/container.lock
 
 [object]
-max connections = 2
+max connections = 3
 path = /srv/swift-storage/
 read only = false
 lock file = /var/lock/object.lock
