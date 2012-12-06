@@ -328,6 +328,11 @@ node "carbon.wikimedia.org" {
 		misc::install-server::tftp-server
 }
 
+node /^(celsus|constable)\.wikimedia\.org$/ {
+	include standard,
+
+}
+
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 	include standard,
 			role::dns::recursor
