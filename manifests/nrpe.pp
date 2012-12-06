@@ -9,7 +9,7 @@
 # - $command
 #	Command run by NRPE, e.g. "/usr/lib/nagios/plugins/check_procs -c 1:1 -C varnishtcpd"
 define nrpe::check($command) {
-	Class[nrpe::packages] -> Nrpe::Check[$title]
+	require nrpe::packages
 
 	file { "/etc/nagios/nrpe.d/${title}.cfg":
 		owner => root,
