@@ -7,7 +7,7 @@ class misc::parsoid {
 		"/var/lib/parsoid":
 			ensure => directory,
 			owner => parsoid,
-			group => parsoid,
+			group => wikidev,
 			mode => 0755;
 		"/etc/init.d/parsoid":
 			source => "puppet:///files/misc/parsoid.init",
