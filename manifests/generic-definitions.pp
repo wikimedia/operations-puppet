@@ -563,11 +563,6 @@ class generic::gluster {
 
 }
 
-class generic::packages::git-core {
-	package { "git-core": ensure => latest; }
-}
-
-
 # The joe editor, which has some fans among labs users
 class generic::packages::joe {
 	package { "joe" : ensure => latest; }
@@ -621,8 +616,6 @@ define git::clone(
 	$depth="full",
 	$mode=0755) {
 
-	require generic::packages::git-core
-	
 	case $ensure {
 		"absent": {
 			# make sure $directory does not exist
@@ -663,6 +656,7 @@ define git::clone(
 				user        => $owner,
 				group       => $group,
 				timeout     => $timeout,
+				require     => Package["git-core"],
 			}
 			
 			# pull if $ensure == latest and if there are changes to merge in.
@@ -684,8 +678,6 @@ define git::clone(
 
 
 define git::init($directory) {
-	require generic::packages::git-core
-
 	$suffix = regsubst($title, '^([^/]+\/)*([^/]+)$', '\2')
 
 	exec {
@@ -693,7 +685,8 @@ define git::init($directory) {
 			path => "/usr/bin:/bin",
 			command => "git init",
 			cwd => "${directory}/${suffix}",
-			creates => "${directory}/${suffix}/.git/config";
+			creates => "${directory}/${suffix}/.git/config",
+			require => Package["git-core"];
 	}
 }
 

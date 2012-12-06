@@ -110,9 +110,6 @@ class misc::contint::test {
 		package { "nodejs": ensure => latest; }
 
 		include svn::client
-
-		include generic::packages::git-core
-
 	}
 
 	# Common apache configuration

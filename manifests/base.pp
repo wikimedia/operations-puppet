@@ -294,6 +294,8 @@ class base::standard-packages {
 			ensure => latest;
 		}
 
+		include base::packages::git
+
 		if $::network_zone == "internal" {
 			include nrpe
 		}
@@ -318,6 +320,10 @@ class base::packages::emacs {
 		ensure => "installed",
 		alias  => "emacs",
 	}
+}
+
+class base::packages::git {
+	package { "git-core": ensure => present; }
 }
 
 class base::resolving {

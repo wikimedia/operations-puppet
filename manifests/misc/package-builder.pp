@@ -3,8 +3,6 @@
 class misc::package-builder {
 	system_role { "misc::package-builder": description => "Debian package builder" }
 
-	include generic::packages::git-core
-
 	class packages {
 		package { [
 			"build-essential",

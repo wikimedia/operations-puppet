@@ -1,7 +1,6 @@
 class misc::beta::autoupdater {
 
 	require misc::deployment::scripts
-	include generic::packages::git-core
 
 	file {
 		"/usr/local/bin/wmf-beta-autoupdate":
