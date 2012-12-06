@@ -2480,7 +2480,7 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
-	if $hostname == "wtp1.pmtpa.wmnet" {
+	if $hostname == "wtp1" {
 		$ganglia_aggregator = "true"
 	}
 
@@ -2496,7 +2496,7 @@ node "wtp1001.eqiad.wmnet" {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
-	if $hostname == "wtp1001.eqiad.wmnet" {
+	if $hostname == "wtp1001" {
 		$ganglia_aggregator = "true"
 	}
 
