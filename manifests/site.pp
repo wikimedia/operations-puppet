@@ -2500,7 +2500,7 @@ node "williams.wikimedia.org" {
 
 node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 	$cluster = "parsoid"
-	$nagios_group = "{$cluster}_{$::site}"
+	$nagios_group = "${cluster}_$::site"
 
 	include standard,
 		admins::roots,
@@ -2516,7 +2516,7 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 
 node "wtp1001.eqiad.wmnet" {
 	$cluster = "parsoid"
-	$nagios_group = "{$cluster}_{$::site}"
+	$nagios_group = "${cluster}_$::site"
 
 	include standard,
 		admins::roots,
