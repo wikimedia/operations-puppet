@@ -2480,13 +2480,13 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
-	include standard,
-		admins::roots,
-		misc::parsoid
-
 	if $hostname == "wtp1.pmtpa.wmnet" {
 		$ganglia_aggregator = "true"
 	}
+
+	include standard,
+		admins::roots,
+		misc::parsoid
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.1.28" ] }
 
