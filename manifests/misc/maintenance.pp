@@ -116,15 +116,15 @@ class misc::maintenance::wikidata {
 	cron {
 		wikibase-repo-prune:
 			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki 2>&1 >> /var/log/wikidata/prune.log",
-			user => wikidev,
+			user => mwdeploy,
 			minute => [0,15,30,45],
 			ensure => present;
 	}
 
 	file {
 		"/var/log/wikidata":
-			owner => wikidev,
-			group => wikidev,
+			owner => mwdeploy,
+			group => mwdeploy,
 			mode => 0664,
 			ensure => directory;
 		"/etc/logrotate.d/wikidata":
