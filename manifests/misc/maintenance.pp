@@ -111,3 +111,24 @@ class misc::maintenance::translationnotifications {
 			mode => 0444;
 	}
 }
+
+class misc::maintenance::wikidata {
+	cron {
+		wikibase-repo-prune:
+			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki 2>&1 >> /var/log/wikidata/prune.log",
+			user => wikidev,
+			minute => "0,15,30,45",
+			ensure => present;
+	}
+
+	file {
+		"/var/log/wikidata":
+			owner => wikidev,
+			group => wikidev,
+			mode => 0664,
+			ensure => directory;
+		"/etc/logrotate.d/wikidata":
+			source => "puppet:///files/logrotate/wikidata",
+			mode => 0444;
+	}
+}

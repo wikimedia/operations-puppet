@@ -972,6 +972,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::pagetriage,
 		misc::maintenance::refreshlinks,
 		misc::maintenance::translationnotifications,
+		misc::maintenance::wikidata,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
