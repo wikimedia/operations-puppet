@@ -3672,7 +3672,7 @@ host wtp1001 {
 
 host yttrium {
 	hardware ethernet 18:03:73:f1:4f:82;
-	fixed-address yttrium.wikimedia.org;
+	fixed-address yttrium.eqiad.wmnet;
 }
 
 host zhen {

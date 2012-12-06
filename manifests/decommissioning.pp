@@ -350,5 +350,4 @@ $decommissioned_servers = [
 "mw1159",
 "mw1160",
 "potassium",
-"yttrium", #Can come back out on 11/29/12, per rt 3983
 ]

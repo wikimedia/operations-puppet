@@ -2551,7 +2551,7 @@ node "zhen.wikimedia.org" {
 		mobile::vumi
 }
 
-node "yttrium.wikimedia.org" {
+node "yttrium.eqiad.wmnet" {
 	# Was used for wlm.wikimedia.org, now remains allocated to the mobile team
 	include standard
 }
