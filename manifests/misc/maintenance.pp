@@ -85,7 +85,7 @@ class misc::maintenance::translationnotifications {
 	cron {
 		translationnotifications-metawiki:
 			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki 2>&1 >> /var/log/translationnotifications/digests.log",
-			user => l10nupdate,  # which user?
+			user => mwdeploy,  # which user?
 			weekday => 1, # Monday
 			hour => 10,
 			minute => 0,
@@ -93,7 +93,7 @@ class misc::maintenance::translationnotifications {
 
 		translationnotifications-mediawikiwiki:
 			command => "/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki 2>&1 >> /var/log/translationnotifications/digests.log",
-			user => l10nupdate, # which user?
+			user => mwdeploy, # which user?
 			weekday => 1, # Monday
 			hour => 10,
 			minute => 5,
@@ -101,13 +101,31 @@ class misc::maintenance::translationnotifications {
 	}
 
 	file {
-		"/var/log/translationnotifications":
-			owner => l10nupdate, # user ?
+		"/var/log/wikibase/prune.log":
+			owner => mwdeploy,
+			group => mwdeploy,
+			mode => 0664,
+			ensure => directory;
+	}
+}
+
+class misc::maintenance::wikibaseprune {
+	cron {
+		wikibase-repo-prune:
+			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki 2>&1 >> /var/log/wikibase/prune.log",
+			user => wikidev,
+			minute => "0,15,30,45",
+			ensure => present;
+	}
+
+	file {
+		"/var/log/wikibase":
+			owner => wikidev,
 			group => wikidev,
 			mode => 0664,
 			ensure => directory;
-		"/etc/logrotate.d/l10nupdate":
-			source => "puppet:///files/logrotate/translationnotifications",
+		"/etc/logrotate.d/wikibase-prune":
+			source => "puppet:///files/logrotate/wikibase-prune",
 			mode => 0444;
 	}
 }
