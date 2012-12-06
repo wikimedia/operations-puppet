@@ -117,7 +117,7 @@ class misc::maintenance::wikidata {
 		wikibase-repo-prune:
 			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki 2>&1 >> /var/log/wikidata/prune.log",
 			user => wikidev,
-			minute => "0,15,30,45",
+			minute => [0,15,30,45],
 			ensure => present;
 	}
 
