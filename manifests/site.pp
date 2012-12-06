@@ -2496,13 +2496,13 @@ node "wtp1001.eqiad.wmnet" {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
-	include standard,
-		admins::roots,
-		misc::parsoid
-
 	if $hostname == "wtp1001.eqiad.wmnet" {
 		$ganglia_aggregator = "true"
 	}
+
+	include standard,
+		admins::roots,
+		misc::parsoid
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
 
