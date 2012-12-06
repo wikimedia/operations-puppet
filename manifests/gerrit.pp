@@ -18,8 +18,7 @@ class gerrit::instance($no_apache=false,
 		$smtp_host="") {
 
 	include standard,
-		role::ldap::config::labs,
-		generic::packages::git-core
+		role::ldap::config::labs
 
 	# Main config
 	include passwords::gerrit
@@ -393,7 +392,4 @@ class gerrit::replicationdest( $sshkey, $extra_groups = undef, $slaveuser = "ger
     require => Systemuser[$slaveuser],
     ensure => present;
   }
-
-  # Make sure we've got git.
-  include generic::packages::git-core
 }

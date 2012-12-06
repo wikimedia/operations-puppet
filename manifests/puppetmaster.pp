@@ -209,8 +209,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	#
 	# This class handles the Wikimedia Labs specific bits of a Puppetmaster
 	class labs {
-		include generic::packages::git-core
-
 		package { "libldap-ruby1.8": ensure => latest; }
 		# Use a specific revision for the checkout, to ensure we are using
 		# a known and approved version of this script.

@@ -5,7 +5,6 @@ class role::statistics {
 		admins::roots,
 		misc::statistics::user,
 		backup::client,  # amanda backups
-		generic::packages::git-core,
 		misc::statistics::base,
 		base::packages::emacs
 }
