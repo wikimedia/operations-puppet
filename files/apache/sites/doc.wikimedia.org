@@ -14,3 +14,19 @@
 	LogLevel warn
 	CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
+
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName doc.wikimedia.org
+
+	DocumentRoot /srv/org/wikimedia/doc
+
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+</VirtualHost>

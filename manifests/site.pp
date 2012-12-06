@@ -837,6 +837,7 @@ node "gallium.wikimedia.org" {
 		admins::jenkins
 
 	install_certificate{ "star.mediawiki.org": }
+	install_certificate{ "star.wikimedia.org": }
 }
 
 node "gurvin.wikimedia.org" {
