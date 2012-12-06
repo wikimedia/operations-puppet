@@ -48,9 +48,9 @@ class misc::blogs::wikimedia {
 	}
 
 	# TODO: DRY this.  It is used for the firehose request log stream for all Wikimedia web requets logs.
-	varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-	varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+	varnish::logging { "locke" :           listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false }
+	varnish::logging { "emery" :           listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false }
+	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15"  , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false, port => "8419" }
 	
 }
 
