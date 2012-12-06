@@ -210,14 +210,25 @@ class role::coredb::common(
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
-		coredb_mysql,
 		mysql::coredb::ganglia
 
 	if $::hostname in $topology[$shard]['snapshot'] {
 		include coredb_mysql::snapshot
 	}
 
-	Class["role::coredb::common"] -> Class["coredb_mysql"]
+	class { "coredb_mysql":
+		shard => $shard,
+		read_only => $read_only,
+		skip_name_resolve => $skip_name_resolve,
+		mysql_myisam => $mysql_myisam,
+		mysql_max_allowed_packet => $mysql_max_allowed_packet,
+		disable_binlogs => $disable_binlogs,
+		innodb_log_file_size => $innodb_log_file_size,
+		innodb_file_per_table => $innodb_file_per_table,
+		long_timeouts => $long_timeouts,
+		enable_unsafe_locks => $enable_unsafe_locks,
+		large_slave_trans_retries => $large_slave_trans_retries
+	}
 
 	if $topology[$shard]['masters'][$::site] == $::hostname {
 		class { "mysql::coredb::monitoring": crit => true }
