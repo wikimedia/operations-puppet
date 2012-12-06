@@ -329,8 +329,7 @@ node "carbon.wikimedia.org" {
 }
 
 node /^(celsus|constable)\.wikimedia\.org$/ {
-	include standard,
-
+	include standard
 }
 
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
