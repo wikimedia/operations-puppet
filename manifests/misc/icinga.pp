@@ -126,7 +126,7 @@ class icinga::monitor::configuration::files {
 
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
-  Class['icinga::monitor::configuration::files'] -> Class['icinga::configuration::variables']
+  Class['icinga::monitor::configuration::variables'] -> Class['icinga::configuration::files']
 
 	# Icinga configuration files
 
