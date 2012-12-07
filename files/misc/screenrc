@@ -1,0 +1,13 @@
+#change the hardstatus settings to give an window list at the bottom of the
+##screen, with the time and date and with the current window highlighted
+term screen-256color
+attrcolor b ".I"
+startup_message off
+hardstatus alwayslastline
+hardstatus string '%{kG}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{kG}%?%+Lw%?'
+hardstatus string '%{gk}[ %{G}%H %{g}][%= %{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{g}]%{=b C}[ %m/%d %c:%s ]%{W}'
+
+# set the scrollback to 9000 lines
+defscrollback 9000
+#make scrollbar work on os x
+termcapinfo xterm* ti@:te@
