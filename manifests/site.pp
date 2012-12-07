@@ -996,6 +996,7 @@ node "hume.wikimedia.org" {
 		nfs::netapp::home,
 		nfs::upload,
 		misc::deployment::scap_scripts,
+		misc::monitoring::jobqueue,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
@@ -2219,6 +2220,7 @@ node "spence.wikimedia.org" {
 		nfs::netapp::home,
 		admins::roots,
 		backup::client
+		nagios::ganglia::monitor::enwiki,
 
 	install_certificate{ "star.wikimedia.org": }
 }
