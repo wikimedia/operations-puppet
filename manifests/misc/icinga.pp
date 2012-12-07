@@ -41,7 +41,7 @@ class icinga::monitor::configuration::variables {
 	$master_hosts = [ "neon.wikimedia.org", "spence.wikimedia.org" ]
 
 	$icinga_config_dir = "/etc/icinga"
-	$nagios_config_dir = "/etc/icinga"
+	$nagios_config_dir = "/etc/nagios"
 
 	# puppet_hosts.cfg must be first
 	$puppet_files = [
