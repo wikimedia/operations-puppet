@@ -12,11 +12,13 @@ class role::deployment::salt_masters::production {
         'common' => 'http://deployment.pmtpa.wmnet/mediawiki/common',
         'slot0' => 'http://deployment.pmtpa.wmnet/mediawiki/slot0',
         'slot1' => 'http://deployment.pmtpa.wmnet/mediawiki/slot1',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid',
       },
       'eqiad' => {
         'common' => 'http://tin.eqiad.wmnet/mediawiki/common',
         'slot0' => 'http://tin.eqiad.wmnet/mediawiki/slot0',
         'slot1' => 'http://tin.eqiad.wmnet/mediawiki/slot1',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid',
       },
     },
     deployment_repo_regex => {
@@ -34,6 +36,7 @@ class role::deployment::salt_masters::production {
       'common' => '/srv/deployment/mediawiki/common',
       'slot0' => '/srv/deployment/mediawiki/slot0',
       'slot1' => '/srv/deployment/mediawiki/slot1',
+      'parsoid' => '/srv/deployment/parsoid',
     },
   }
 }
@@ -44,6 +47,7 @@ class role::deployment::deployment_servers {
   deployment::deployment_repo_sync_hook_link { "common": }
   deployment::deployment_repo_sync_hook_link { "slot0": }
   deployment::deployment_repo_sync_hook_link { "slot1": }
+  deployment::deployment_repo_sync_hook_link { "parsoid": }
 
   class { "apache": }
   class {'apache::mod::dav': }
