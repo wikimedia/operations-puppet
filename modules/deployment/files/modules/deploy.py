@@ -121,7 +121,7 @@ def checkout(repo,reset=False):
     ret = __salt__['cmd.retcode'](cmd,repoloc)
     # Call modules on the repo's behalf ignore the return on these
     for call in module_calls:
-      __salt__[call]
+      __salt__[call](repo)
     if ret != 0:
         return 50
     else:
