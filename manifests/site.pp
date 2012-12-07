@@ -1,6 +1,6 @@
 # site.pp
 
-import "realm.pp"	# These ones first
+IAMAFAILURE "realm.pp"	# These ones first
 import "generic-definitions.pp"
 import "base.pp"
 
