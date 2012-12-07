@@ -7,7 +7,7 @@ import salt.client
 import re
 
 # TODO: make this configurable
-reg = '<%= deployment_minion_regex %>'
+reg = {<% deployment_minion_regex.each do |repo,regex| %><%= repo %>: <%= regex %>,<% end %>}
 
 def fetch(repo):
     '''
@@ -15,14 +15,17 @@ def fetch(repo):
     '''
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.fetch'
+    if repo not in reg:
+        return "Error: repo isn't defined"
+    regex = reg[repo]
     arg = (repo,)
     minions = {}
-    ret = client.cmd_cli(reg, cmd, expr_form='pcre', arg=arg, timeout=120)
+    ret = client.cmd_cli(regex, cmd, expr_form='pcre', arg=arg, timeout=120)
     for minion in ret:
         minions = dict(minions.items() + minion.items())
     key = salt.key.Key(__opts__)
     keys = key.list_keys()
-    return report(minions,keys)
+    return report(minions,keys,repo)
 
 def checkout(repo):
     '''
@@ -30,16 +33,19 @@ def checkout(repo):
     '''
     client = salt.client.LocalClient(__opts__['conf_file'])
     cmd = 'deploy.checkout'
+    if repo not in reg:
+        return "Error: repo isn't defined"
+    regex = reg[repo]
     arg = (repo,)
     minions = {}
-    ret = client.cmd_cli(reg, cmd, expr_form='pcre', arg=arg, timeout=120)
+    ret = client.cmd_cli(regex, cmd, expr_form='pcre', arg=arg, timeout=120)
     for minion in ret:
         minions = dict(minions.items() + minion.items())
     key = salt.key.Key(__opts__)
     keys = key.list_keys()
-    return report(minions,keys)
+    return report(minions,keys,repo)
 
-def report(minions,keys):
+def report(minions,keys,repo):
     success = []
     didnotrun = []
     fail = {}
@@ -57,7 +63,7 @@ def report(minions,keys):
                     fail[minion] = ret
     ret = sorted(set(keys['minions_pre']) - set(minions))
     for minion in ret:
-        if re.search(reg,minion):
+        if re.search(reg[repo],minion):
             didnotrun.append(minion)
     report = [{'success': success}, {'didnotrun': didnotrun}, {'fail': fail}]
     print report
