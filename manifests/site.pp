@@ -930,7 +930,7 @@ node "manutius.wikimedia.org" {
 		"psw1-eqiad.mgmt.eqiad.wmnet",
 		"msw1-eqiad.mgmt.eqiad.wmnet",
 		"msw2-pmtpa.mgmt.pmtpa.wmnet",
-		"msw2-sdtpa.mgmt.pmpta.wmnet"
+		"msw2-sdtpa.mgmt.pmtpa.wmnet"
 	]
 
 	$storagehosts = [ "nas1-a.pmtpa.wmnet", "nas1-b.pmtpa.wmnet", "nas1001-a.eqiad.wmnet", "nas1001-b.eqiad.wmnet" ]
