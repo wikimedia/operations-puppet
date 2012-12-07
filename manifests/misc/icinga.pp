@@ -10,7 +10,7 @@ class icinga::monitor {
 		icinga::monitor::packages,
 		passwords::nagios::mysql,
 		icinga::monitor::firewall,
-#		icinga::monitor::files::configuration,
+		icinga::monitor::configuration::files,
 		icinga::monitor::files::nagios-plugins,
 		icinga::monitor::snmp,
 		icinga::monitor::checkpaging,
@@ -26,7 +26,7 @@ class icinga::monitor {
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 
-	Class['icinga::monitor'] -> Class['icinga::monitor::packages'] -> Class['icinga::monitor::service'] -> Class['icinga::monitor::service'] -> Class['icinga::configuration::variables']
+	Class['icinga::monitor::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 
 }
 
@@ -100,6 +100,8 @@ class icinga::monitor::apache {
 
 class icinga::monitor::checkpaging {
 
+  require icinga::monitor::packages
+
 	file {"/usr/lib/nagios/plugins/check_to_check_nagios_paging":
 		source => "puppet:///files/nagios/check_to_check_nagios_paging",
 		owner => root,
@@ -116,12 +118,15 @@ class icinga::monitor::checkpaging {
 	}
 }
 
-class icinga::monitor::files::configuration {
+class icinga::monitor::configuration::files {
 	# For all files dealing with icinga configuration
 
+  require icinga::monitor::packages
 	require passwords::nagios::mysql
 
 	$nagios_mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
+
+  Class['icinga::monitor::configuration::files'] -> Class['icinga::configuration::variables']
 
 	# Icinga configuration files
 
@@ -229,7 +234,7 @@ class icinga::monitor::files::misc {
 			group => root,
 			mode => 0755;
 	}
-	
+
 	# fix permissions on all individual service files
 	exec {
 		"fix_nagios_perms":
@@ -250,6 +255,9 @@ class icinga::monitor::files::misc {
 }
 
 class icinga::monitor::files::nagios-plugins {
+
+  require icinga::monitor::packages
+
 	file {
 		"/usr/lib/nagios":
 			owner => root,
@@ -600,6 +608,8 @@ class icinga::monitor::firewall {
 
 class icinga::monitor::jobqueue {
 
+  require icinga::monitor::packages
+
 	file {"/usr/lib/nagios/plugins/check_job_queue":
 		source => "puppet:///files/nagios/check_job_queue",
 		owner => root,
@@ -619,6 +629,8 @@ class icinga::monitor::jobqueue {
 class icinga::monitor::naggen {
 
 	# Naggen takes exported resources from hosts and creates nagios configuration files
+
+  require icinga::monitor::packages
 
 	file {
 		"/etc/icinga/puppet_hosts.cfg":
@@ -700,11 +712,13 @@ class icinga::monitor::packages {
 
 class icinga::monitor::service {
 
+  require icinga::monitor::apache
+
 	service { "icinga":
 		ensure => running,
 		subscribe => [ File[$icinga::configuration::variables::puppet_files],
 			       File[$icinga::configuration::variables::static_files],
-			       File["/etc/icinga/puppet_hosts.cfg"]]; 
+			       File["/etc/icinga/puppet_hosts.cfg"]];
 	}
 }
 
