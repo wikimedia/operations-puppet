@@ -117,7 +117,7 @@ task :validate, [:files ] do |t, args|
 		if ok
 			puts "[OK] " + console_color( :info,  "files looks fine!" )
 		else
-			puts console_color( :alert, "puppet failed to validate files (exit: #{res.exitstatus}" )
+			raise console_color( :alert, "puppet failed to validate files (exit: #{res.exitstatus}" )
 		end
 	end
 end
