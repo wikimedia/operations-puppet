@@ -594,6 +594,10 @@ node /db10[0-9][0-9]\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	if $hostname == "db1043" {
+		$mariadb = true
+	}
+
 	include mysql::mysqluser,
 		mysql::datadirs
 
