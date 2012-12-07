@@ -44,7 +44,6 @@ query_cache_size				= 0
 
 log_slow_queries
 #log_queries_not_using_indexes 
-log_slow_extra
 long_query_time = 0.45
 
 <% if disable_binlogs != true then -%>
@@ -66,7 +65,7 @@ temp-pool
 rpl_transaction_enabled
 reserved_super_connections=20
 
-<% ram = memorysize.split[0]; ram = Float(ram) * 0.8; 
+<% ram = memorysize.split[0]; ram = Float(ram) * 0.75; 
 ram = ram.round; ram = String(ram) + "G"; %>
 
 innodb-adaptive-flushing=1
@@ -78,7 +77,6 @@ innodb-old-blocks-pct=80
 innodb-old-blocks-time=1000
 innodb-read-io-threads=16
 innodb-thread-concurrency=0
-innodb-thread-lifo=1
 innodb-use-sys-malloc
 innodb-write-io-threads=8
 innodb-checksums=1
