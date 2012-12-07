@@ -652,7 +652,7 @@ class icinga::monitor::naggen {
 
 	# Fix permissions
 
-	file { $icinga::configuration::variables::puppet_files:
+	file { $icinga::monitor::configuration::variables::puppet_files:
 		mode => 0644,
 		ensure => present;
 	}
@@ -716,8 +716,8 @@ class icinga::monitor::service {
 
 	service { "icinga":
 		ensure => running,
-		subscribe => [ File[$icinga::configuration::variables::puppet_files],
-			       File[$icinga::configuration::variables::static_files],
+		subscribe => [ File[$icinga::monitor::configuration::variables::puppet_files],
+			       File[$icinga::monitor::configuration::variables::static_files],
 			       File["/etc/icinga/puppet_hosts.cfg"]];
 	}
 }
