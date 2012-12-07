@@ -31,6 +31,7 @@ class role::deployment::salt_masters::production {
         'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
         '.git' => '',
       },
+      'parsoid' => {},
     },
     deployment_repo_locations => {
       'common' => '/srv/deployment/mediawiki/common',
