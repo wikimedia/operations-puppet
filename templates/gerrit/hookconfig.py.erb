@@ -1,3 +1,7 @@
+# This file is managed by puppet
+# puppet:///templates/gerrit/hookconfig.py.erb
+#
+
 gerrituser = "gerrit2"
 sshhost = "<%= hostname %>"
 sshport = <%= sshport %>
@@ -24,6 +28,7 @@ filenames = {
 	# WMF projects
 	"mediawiki/extensions/MobileFrontend" : "mobile.log",
 	"mediawiki/extensions/Parsoid": "parsoid.log",
+	"mediawiki/extensions/VisualEditor": "visualeditor.log",
 	"analytics/*"   : "wikimedia-dev.log",
 	"integration/*" : "wikimedia-dev.log",
 	"labs/*"      : "labs.log",

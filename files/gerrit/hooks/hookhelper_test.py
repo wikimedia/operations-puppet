@@ -71,6 +71,10 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('mobile.log',
             'mediawiki/extensions/MobileFrontend')
 
+    def test_visualeditor(self):
+        self.assertLogFile('visualeditor.log',
+            'mediawiki/extensions/VisualEditor')
+
     # Semantic MediaWiki related
     def test_semantic_mediawiki(self):
         for repo in [
