@@ -1,7 +1,3 @@
 base:
-  '<%= deployment_minion_regex %>':
-    - match: pcre
-    - deployment
-  '(<%= deployment_servers.join("|") %>)':
-    - match: pcre
+  '*':
     - deployment
