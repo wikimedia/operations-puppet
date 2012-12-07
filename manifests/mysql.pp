@@ -144,9 +144,14 @@ class mysql {
 			}
 		}
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			package { [ 'mysqlfb-client-5.1', 'mysqlfb-server-core-5.1', 'mysqlfb-server-5.1', 'libmysqlfbclient16' ]:
-				ensure => "5.1.53-fb3875-wm1",
-			}
+			if $::mariadb == true {
+				package { [ 'mariadb-client-5.5', 'mariadb-server-core-5.5', 'mariadb-server-5.5', 'libmariadbclient18' ]:
+					ensure => "5.5.28-mariadb-wmf201212041~precise",
+				}
+			} else {
+				package { [ 'mysqlfb-client-5.1', 'mysqlfb-server-core-5.1', 'mysqlfb-server-5.1', 'libmysqlfbclient16' ]:
+					ensure => "5.1.53-fb3875-wm1",
+				}
 		}
 		package { ["percona-xtrabackup", "percona-toolkit", "libaio1", "lvm2" ]:
 			ensure => latest,
@@ -329,6 +334,7 @@ class mysql {
 	}
 
 	class conf inherits mysql {
+		$mariadb = $::mariadb
 		$db_clusters = {
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
@@ -421,7 +427,7 @@ class mysql {
 			content => template("mysql/prod.my.cnf.erb")
 		}
 		file { "/etc/mysql/my.cnf":
-			source => "puppet:///files/mysql/empty-my.cnf"
+			ensure => "/etc/my.cnf"
 		}
 
 		file {
