@@ -439,6 +439,17 @@ class base::vimconfig {
 	}
 }
 
+class base::screenconfig {
+	if $::lsbdistid == "Ubuntu" {
+		file {  "/root/.screenrc":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/misc/vimrc.local",
+			ensure => present;
+		}
+	}
+
 class base::environment {
 	case $::realm {
 		'production': {
@@ -706,6 +717,7 @@ class base {
 		base::environment,
 		base::platform,
 		base::access::dc-techs,
+		base::screenconfig,
 		ssh,
 		role::salt::minions
 
