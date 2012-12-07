@@ -2012,6 +2012,7 @@ node "spence.wikimedia.org" {
 		nagios::monitor::snmp,
 		nagios::monitor::firewall,
 		nagios::ganglia::monitor::enwiki,
+		nagios::ganglia::monitor::jobqueue,
 		nagios::ganglia::ganglios,
 		nagios::nsca::daemon,
 		nagios::monitor::checkpaging,
