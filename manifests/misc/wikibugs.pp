@@ -6,6 +6,13 @@
 # Sourcecode: svn /trunk/tools/wikibugs
 #
 
+# Package dependencies for the wikibugs script
+class misc::irc::wikibugs::packages {
+	package { 'libemail-mime-perl':
+		ensure => present;
+	}
+}
+
 class misc::irc::wikibugs {
 
 	# We are an IRC bot!
@@ -19,6 +26,7 @@ class misc::irc::wikibugs {
 	$ircecho_server = 'irc.freenode.net'
 
 	include misc::ircecho
+	include misc::irc::wikibugs::packages
 
 	systemuser { wikibugs: name => 'wikibugs' }
 
@@ -29,6 +37,8 @@ class misc::irc::wikibugs {
 			mode  => 0775,
 			require => User['wikibugs'];
 	}
+
+	include svn::client
 
 	exec {
 		"Clone wikibugs":
