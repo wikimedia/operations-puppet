@@ -2,6 +2,7 @@
 Run git deployment commands
 '''
 
+import re
 import urllib
 
 def sync_all():
@@ -13,13 +14,19 @@ def sync_all():
 	salt -G 'cluster:appservers' deploy.sync_all
     '''
     repourls = __pillar__.get('repo_urls')
+    minion_regexes = __pillar__.get('repo_minion_regex')
     site = __salt__['grains.item']('site')
     repourls = repourls[site]
     repolocs = __pillar__.get('repo_locations')
     status = 0
 
+    minion = __salt__['grains.item'](id)
+    minion = minion.strip()
     for repo,repourl in repourls.items():
         repoloc = repolocs[repo]
+	minion_regex = minion_regexes[repo]
+        if not re.search(minion_regex,minion):
+            continue
         if not __salt__['file.directory_exists'](repoloc + '/.git'):
             __salt__['git.clone'](repoloc,repourl + '/.git')
         else:
