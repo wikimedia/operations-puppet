@@ -152,6 +152,7 @@ class mysql {
 				package { [ 'mysqlfb-client-5.1', 'mysqlfb-server-core-5.1', 'mysqlfb-server-5.1', 'libmysqlfbclient16' ]:
 					ensure => "5.1.53-fb3875-wm1",
 				}
+			}
 		}
 		package { ["percona-xtrabackup", "percona-toolkit", "libaio1", "lvm2" ]:
 			ensure => latest,
