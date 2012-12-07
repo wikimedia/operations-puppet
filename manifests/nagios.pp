@@ -175,7 +175,6 @@ define decommission_monitor_host {
 	}
 }
 
-
 class nagios::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
 
