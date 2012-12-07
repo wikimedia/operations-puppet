@@ -25,9 +25,15 @@ class misc::blogs::wikimedia {
 	class { "memcached": memcached_ip => "127.0.0.1" }
 	install_certificate{ "star.wikimedia.org": }
 
+	# There's not really a good reason for this to be "",
+	# except that it was like that when I found it.
+	# I need to pass this to varnish::logging too, so it
+	# knows which varnish service to notify.
+	$varnish_blog_instance_name = ""
+
 	# varnish cache instance for blog.wikimedia.org
 	varnish::instance { "blog":
-		name => "",
+		name => $varnish_blog_instance_name,
 		vcl => "blog",
 		port => 80,
 		admin_port => 6082,
@@ -47,10 +53,15 @@ class misc::blogs::wikimedia {
 		},
 	}
 
-	# TODO: DRY this.  It is used for the firehose request log stream for all Wikimedia web requets logs.
-	varnish::logging { "locke" :           listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false }
-	varnish::logging { "emery" :           listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false }
-	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15"  , cli_args => "-m RxRequest:^(?!PURGE\$) -D", monitor => false, port => "8419" }
-	
+	# DRY this by setting defaults for varnish::logging define.
+	Varnish::Logging {
+		cli_args      => "-m RxRequest:^(?!PURGE\$) -D",
+		instance_name => $varnish_blog_instance_name,
+		monitor       => false,
+	}
+	# send blog access logs to udp2log instances.
+	varnish::logging { "locke" :           listener_address => "208.80.152.138" }
+	varnish::logging { "emery" :           listener_address => "208.80.152.184" }
+	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419" }
 }
 
