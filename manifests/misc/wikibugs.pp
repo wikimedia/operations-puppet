@@ -1,3 +1,4 @@
+#
 # Wikibugs - homegrown perl script feed with bugzilla email notification
 # will write some oneliner notification in a file to be processed by
 # ircecho.
@@ -19,10 +20,10 @@ class misc::irc::wikibugs {
 
 	# Some Bugzilla product have been blessed with their own log files out of the
 	# default one. Values are hardcoded in the Wikibugs perl script
-	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki'
+	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki-visualeditor.log:#mediawiki-visualeditor;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki'
 	$ircecho_nick = "wikibugs"
 	# Add channels defined in $ircecho_infile:
-	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki'
+	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki-visualeditor,#mediawiki'
 	$ircecho_server = 'irc.freenode.net'
 
 	include misc::ircecho
