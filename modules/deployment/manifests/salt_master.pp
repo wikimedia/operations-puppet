@@ -31,6 +31,12 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
       owner => root,
       group => root,
       require => [File["${module_dir}"]];
+    "${module_dir}/parsoid.py":
+      source => "puppet:///deployment/modules/parsoid.py",
+      mode => 0555,
+      owner => root,
+      group => root,
+      require => [File["${module_dir}"]];
   }
 
   # If pillars or modules change, we need to sync them to the deployment hosts
