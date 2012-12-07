@@ -144,7 +144,7 @@ class mysql {
 			}
 		}
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			if $::mariadb == true {
+			if $::mariadb {
 				package { [ 'mariadb-client-5.5', 'mariadb-server-core-5.5', 'mariadb-server-5.5', 'libmariadbclient18' ]:
 					ensure => "5.5.28-mariadb-wmf201212041~precise",
 				}
