@@ -1,7 +1,12 @@
 class role::deployment::salt_masters::production {
   class { "deployment::salt_master":
     deployment_servers => ['tin.eqiad.wmnet'],
-    deployment_minion_regex => '(mw).*eqiad.*',
+    deployment_minion_regex => {
+      'common'  => '^(mw).*eqiad.*',
+      'slot0'   => '^(mw).*eqiad.*',
+      'slot1'   => '^(mw).*eqiad.*',
+      'parsoid' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
+    }
     deployment_repo_urls => {
       'pmtpa' => {
         'common' => 'http://deployment.pmtpa.wmnet/mediawiki/common',
