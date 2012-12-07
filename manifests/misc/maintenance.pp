@@ -115,7 +115,7 @@ class misc::maintenance::translationnotifications {
 class misc::maintenance::wikidata {
 	cron {
 		wikibase-repo-prune:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki 2>&1 >> /var/log/wikidata/prune.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=1 2>&1 >> /var/log/wikidata/prune.log",
 			user => mwdeploy,
 			minute => [0,15,30,45],
 			ensure => present;
