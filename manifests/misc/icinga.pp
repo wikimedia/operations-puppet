@@ -672,11 +672,22 @@ class icinga::monitor::naggen {
 	decommission_monitor_host { $decommissioned_servers: }
 }
 
+# NSCA - Nagios Service Check Acceptor
+# package contains daemon and client script
+class icinga::nsca {
+
+	package { "nsca":
+		ensure => latest;
+	}
+
+}
+
+# NSCA - daemon config
 class icinga::monitor::nsca::daemon {
 
 	system_role { "icinga::nsca::daemon": description => "Nagios Service Checks Acceptor Daemon" }
 
-	require nagios::nsca
+	require icinga::nsca
 
 	file { "/etc/nsca.cfg":
 		source => "puppet:///private/icinga/nsca.cfg",
