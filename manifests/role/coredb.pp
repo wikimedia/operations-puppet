@@ -14,7 +14,7 @@ class role::coredb::config {
 			'snapshot' => ["db53", "db1018"],
 		},
 		's3' => {
-			'hosts' => ['db11', 'db34', 'db39', 'db64', 'db1003', 'db1010', 'db1019', 'db1035'],
+			'hosts' => ['db34', 'db39', 'db64', 'db66', 'db1003', 'db1010', 'db1019', 'db1035'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db34", 'eqiad' => "db1019"},
 			'snapshot' => ["db64", "db1035"],
@@ -38,10 +38,10 @@ class role::coredb::config {
 			'snapshot' => ["db46", "db1022"],
 		},
 		's7' => {
-			'hosts' => ['db26', 'db37', 'db56', 'db58', 'db1007', 'db1024', 'db1028', 'db1041'],
+			'hosts' => ['db37', 'db56', 'db58', 'db68', 'db1007', 'db1024', 'db1028', 'db1041'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db37", 'eqiad' => "db1041"},
-			'snapshot' => ["db26", "db1007"],
+			'snapshot' => ["db56", "db1007"],
 		},
 		'm1' => {
 			'hosts' => ['bellin', 'blondel'],
