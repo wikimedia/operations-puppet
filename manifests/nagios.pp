@@ -175,6 +175,27 @@ define decommission_monitor_host {
 	}
 }
 
+class nagios::ganglia::monitor::enwiki {
+
+	include passwords::nagios::mysql
+	$ganglia_mysql_enwiki_pass = $passwords::nagios::mysql::mysql_enwiki_pass
+	$ganglia_mysql_enwiki_user = $passwords::nagios::mysql::mysql_enwiki_user
+	# Password is actually the same for all clusters and wikis, not en.wiki only
+	cron {
+		enwiki_jobqueue_length:
+			command => "/usr/bin/gmetric --name='enwiki JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(mysql --batch --skip-column-names -u $ganglia_mysql_enwiki_user -p$ganglia_mysql_enwiki_pass -h db36.pmtpa.wmnet enwiki -e 'select count(*) from job') > /dev/null 2>&1",
+			user => root,
+			ensure => present;
+	}
+	# duplicating the above job to experiment with gmetric's host spoofing so as to
+	#  gather these metrics in a fake host called "en.wikipedia.org"
+	cron {
+		enwiki_jobqueue_length_spoofed:
+			command => "/usr/bin/gmetric --name='enwiki JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'en.wikipedia.org:en.wikipedia.org' --value=$(mysql --batch --skip-column-names -u $ganglia_mysql_enwiki_user -p$ganglia_mysql_enwiki_pass -h db36.pmtpa.wmnet enwiki -e 'select count(*) from job') > /dev/null 2>&1",
+			user => root,
+			ensure => present;
+	}
+}
 
 class nagios::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
