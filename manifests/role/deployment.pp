@@ -5,20 +5,23 @@ class role::deployment::salt_masters::production {
       'common'  => '^(mw).*eqiad.*',
       'slot0'   => '^(mw).*eqiad.*',
       'slot1'   => '^(mw).*eqiad.*',
-      'parsoid' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
+      'parsoid/Parsoid' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
+      'parsoid/config' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
     },
     deployment_repo_urls => {
       'pmtpa' => {
         'common' => 'http://deployment.pmtpa.wmnet/mediawiki/common',
         'slot0' => 'http://deployment.pmtpa.wmnet/mediawiki/slot0',
         'slot1' => 'http://deployment.pmtpa.wmnet/mediawiki/slot1',
-        'parsoid' => 'http://tin.eqiad.wmnet/parsoid',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid/Parsoid',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid/config',
       },
       'eqiad' => {
         'common' => 'http://tin.eqiad.wmnet/mediawiki/common',
         'slot0' => 'http://tin.eqiad.wmnet/mediawiki/slot0',
         'slot1' => 'http://tin.eqiad.wmnet/mediawiki/slot1',
-        'parsoid' => 'http://tin.eqiad.wmnet/parsoid',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid/Parsoid',
+        'parsoid' => 'http://tin.eqiad.wmnet/parsoid/config',
       },
     },
     deployment_repo_regex => {
@@ -31,20 +34,23 @@ class role::deployment::salt_masters::production {
         'https://gerrit.wikimedia.org/r/p/mediawiki' => '__REPO_URL__/.git/modules',
         '.git' => '',
       },
-      'parsoid' => {},
+      'parsoid/Parsoid' => {},
+      'parsoid/config' => {},
     },
     # Maybe turn this into a hash so that modules can specify args too
     deployment_repo_checkout_module_calls => {
       'common' => [],
       'slot0' => [],
       'slot1' => [],
-      'parsoid' => ['parsoid.config'],
+      'parsoid/Parsoid' => ['parsoid.config_symlink'],
+      'parsoid/config' => [],
     },
     deployment_repo_locations => {
       'common' => '/srv/deployment/mediawiki/common',
       'slot0' => '/srv/deployment/mediawiki/slot0',
       'slot1' => '/srv/deployment/mediawiki/slot1',
-      'parsoid' => '/srv/deployment/parsoid',
+      'parsoid/Parsoid' => '/srv/deployment/parsoid/Parsoid',
+      'parsoid/config' => '/srv/deployment/parsoid/config',
     },
   }
 }
