@@ -119,7 +119,8 @@ class role::fundraising::database::slave {
 class role::fundraising::database::dump_slave {
 	system_role { "role::fundraising::database::dump": description => "Fundraising Database Dump/Backup" }
 	include role::fundraising::database::slave,
-		misc::fundraising::backup::offhost
+		misc::fundraising::backup::offhost,
+		misc::fundraising::backup::archive
 
 	file {
 		'/usr/local/bin/dump_fundraisingdb':
