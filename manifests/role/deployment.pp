@@ -33,6 +33,13 @@ class role::deployment::salt_masters::production {
       },
       'parsoid' => {},
     },
+    # Maybe turn this into a hash so that modules can specify args too
+    deployment_repo_checkout_module_calls => {
+      'common' => [],
+      'slot0' => [],
+      'slot1' => [],
+      'parsoid' => ['parsoid.config'],
+    },
     deployment_repo_locations => {
       'common' => '/srv/deployment/mediawiki/common',
       'slot0' => '/srv/deployment/mediawiki/slot0',

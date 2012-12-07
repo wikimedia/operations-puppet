@@ -69,6 +69,8 @@ def checkout(repo,reset=False):
     repoloc = repolocs[repo]
     sed_lists = __pillar__.get('repo_regex')
     sed_list = sed_lists[repo]
+    module_calls = __pillar__.get('repo_checkout_module_calls')
+    module_calls = module_calls[repo]
     gitmodules = repoloc + '/.gitmodules'
 
     # Fetch the .deploy file from the server and get the current tag
@@ -117,6 +119,9 @@ def checkout(repo,reset=False):
     # Update the submodules to match this tag
     cmd = '/usr/bin/git submodule update --init'
     ret = __salt__['cmd.retcode'](cmd,repoloc)
+    # Call modules on the repo's behalf ignore the return on these
+    for call in module_calls:
+      __salt__[call]
     if ret != 0:
         return 50
     else:
