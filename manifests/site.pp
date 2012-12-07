@@ -568,7 +568,11 @@ node /db6[0]\.pmtpa\.wmnet/ {
 }
 
 node /db6[1]\.pmtpa\.wmnet/ {
-	include role::coredb::s1
+	 include role::db::core,
+    mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages
 }
 
 node /db6([2-9])\.pmtpa\.wmnet/ {
@@ -1525,11 +1529,11 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 	$cluster = "ceph"
-	
+
 	if $::hostname =~ /^ms-be300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	include standard
 }
 
