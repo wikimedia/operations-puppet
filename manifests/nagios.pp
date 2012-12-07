@@ -593,6 +593,7 @@ class nagios::monitor::pager {
 		ensure => running;
 	}
 }
+
 class nagios::ganglia::monitor::enwiki {
 
 	include passwords::nagios::mysql
@@ -610,6 +611,33 @@ class nagios::ganglia::monitor::enwiki {
 		enwiki_jobqueue_length_spoofed:
 			command => "/usr/bin/gmetric --name='enwiki JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'en.wikipedia.org:en.wikipedia.org' --value=$(mysql --batch --skip-column-names -u $ganglia_mysql_enwiki_user -p$ganglia_mysql_enwiki_pass -h db36.pmtpa.wmnet enwiki -e 'select count(*) from job') > /dev/null 2>&1",
 			user => root,
+			ensure => present;
+	}
+}
+
+class nagios::ganglia::monitor::mediawikipackages {
+    # Needed to run the maintenance script below with the local MediaWiki install
+    # (should be everything needed on spence)
+    package { [ 'php5-memcached', 'php5-redis' ]:
+        ensure => present;
+    }
+}
+
+# Copied from above
+class nagios::ganglia::monitor::jobqueue {
+
+	cron {
+		all_jobqueue_length:
+			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(mwscript getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+			user => mwdeploy,
+			ensure => present;
+	}
+	# duplicating the above job to experiment with gmetric's host spoofing so as to
+	# gather these metrics in a fake host called "www.wikimedia.org"
+	cron {
+		all_jobqueue_length_spoofed:
+			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+			user => mwdeploy,
 			ensure => present;
 	}
 }
