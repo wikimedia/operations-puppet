@@ -144,7 +144,7 @@ class mysql {
 			}
 		}
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			if $::mariadb {
+			if $mariadb {
 				package { [ 'mariadb-client-5.5', 'mariadb-server-core-5.5', 'mariadb-server-5.5', 'libmariadbclient18' ]:
 					ensure => "5.5.28-mariadb-wmf201212041~precise",
 				}
@@ -335,7 +335,6 @@ class mysql {
 	}
 
 	class conf inherits mysql {
-		$mariadb = $::mariadb
 		$db_clusters = {
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
