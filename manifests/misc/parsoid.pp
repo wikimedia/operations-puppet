@@ -3,7 +3,7 @@
 @monitor_group { "parsoid_pmtpa": description => "pmtpa parsoid servers" }
 
 class misc::parsoid {
-	package { [ "nodejs", "npm", "build-essential" ]:
+	package { [ "nodejs", "npm", "build-essential", "git-core" ]:
 		ensure => latest
 	}
 
