@@ -20,8 +20,7 @@ def sync_all():
     repolocs = __pillar__.get('repo_locations')
     status = 0
 
-    minion = __salt__['grains.item'](id)
-    minion = minion.strip()
+    minion = __grains__.get('id', '')
     for repo,repourl in repourls.items():
         repoloc = repolocs[repo]
 	minion_regex = minion_regexes[repo]
