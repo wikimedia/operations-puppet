@@ -981,6 +981,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::tor_exit_node,
 		misc::maintenance::update_flaggedrev_stats,
 		misc::maintenance::update_special_pages,
+		misc::maintenance::cleanup_upload_stash,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
