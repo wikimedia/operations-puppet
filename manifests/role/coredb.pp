@@ -193,7 +193,7 @@ class role::coredb::researchdb{
 
 class role::coredb::common(
 	$shard,
-	$read_only = false,
+	$read_only = true,
 	$skip_name_resolve = true,
 	$mysql_myisam = false,
 	$mysql_max_allowed_packet = "16M",

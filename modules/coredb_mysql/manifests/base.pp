@@ -3,7 +3,7 @@ class coredb_mysql::base {
 	require coredb_mysql::packages
 
 	systemuser {
-		"mysql": name => "mysql", shell => "/bin/bash"
+		"mysql": name => "mysql", shell => "/bin/sh", home => "/home/mysql"
 	}
 
 	file {
