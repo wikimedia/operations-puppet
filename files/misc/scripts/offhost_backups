@@ -4,16 +4,11 @@ use IPC::Open3;
 use IO::Select;
 use Sys::Syslog;
 
-# this is a lame little script to do some simple cron-based backup maintenance
-# jgreen 20111221
-
-my ($mirror,$email);
-
 # general conf
 my $conf = {
 	'SENDER' => 'root@wikimedia.org',
 	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only SUCCESS notices
-	'FAILURE-RECIPIENT' => 'root@wikimedia.org', # this recip gets only FAILURE notices
+	'FAILURE-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only FAILURE notices
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
 	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
@@ -21,28 +16,54 @@ my $conf = {
 chomp $conf->{'HOSTNAME'};
 chomp $conf->{'DATE'};
 
-# jobs, keep 'em numbered in the order you want them to happen
-if ($conf->{'HOSTNAME'} =~ /^(db78|db1025)$/) {
+# jobs, if it matters, keep 'em numbered in the order you want them to happen
+# --ignore-existing to prevent a 'rogue' db box from clobbering previously collected dumps
+my ($mirror,$email);
+if ($conf->{'HOSTNAME'} eq 'indium') {
 
-	# copy db dumps to tridge
-	$mirror->{'1'} = 'rsync -ar /a/archive/database_dumps/*.gz fundraising@tridge.wikimedia.org:database_dumps/';
+	# copy from archive peers and fundraising db dumpers
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /a/archive/';
 
-} elsif ($conf->{'HOSTNAME'} =~ /^(aluminium|grosley)/) {
+	# copy local logs to archive peers
+	$mirror->{'3'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@aluminium.wikimedia.org:/archive/indium/logs/';
+	$mirror->{'4'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@db78.pmtpa.wmnet:/a/archive/indium/logs/';
 
-	# collect syslog stuff from paypal in local archive, and copy that to tridge
-    $mirror->{'1'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
-    $mirror->{'2'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/logs/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/logs/";
+} elsif ($conf->{'HOSTNAME'} eq 'db78'/) {
 
-    # copy archived (by separate script) jenkins builds to tridge
-    $mirror->{'3'} = "rsync -ar /archive/$conf->{'HOSTNAME'}/jenkins_builds/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/jenkins_builds/";
+	# copy from archive peers and db dumpers
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
 
-	# hacky remote snapshot strategy for Zack's script-hacking dir
+} elsif ($conf->{'HOSTNAME'} eq 'aluminium'/) {
+
+	# copy from archive peers and db dumpers
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /archive/';
+
+	# collect local syslog stuff from paypal to archive
+	$mirror->{'3'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+
+	# hacky remote snapshot strategy for Zack's script-hacking dir (probably switch this to copy to grosley...)
 	## remote: make a hard-link copy of the most recent rsync destination
 	$mirror->{'4'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
 	## rsync over the hard-link copy to clobber whatever has changed 
 	$mirror->{'5'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
 	## remote: adjust the modified timestamp on the remote rsync dir, so next run will see it as most recent
 	$mirror->{'6'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
+
+} elsif ($conf->{'HOSTNAME'} eq 'grosley'/) {
+
+	# collect local syslog stuff from paypal to archive
+	$mirror->{'1'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+
+	# hacky remote snapshot strategy for Zack's script-hacking dir (probably switch this to copy to grosley...)
+	## remote: make a hard-link copy of the most recent rsync destination
+	$mirror->{'2'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
+	## rsync over the hard-link copy to clobber whatever has changed 
+	$mirror->{'3'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
+	## remote: adjust the modified timestamp on the remote rsync dir, so next run will see it as most recent
+	$mirror->{'4'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
 
 }
 
@@ -100,7 +121,7 @@ if ($email->{'errors'}) {
 }
 
 # send message
-open MAILER, "|/usr/sbin/exim -i $email->{'recipient'}";
+open MAILER, "|/usr/sbin/sendmail -f $conf->{'SENDER'} $email->{'recipient'}";
 print MAILER "From: $conf->{'SENDER'}\n" .
 	"To: $email->{'recipient'}\n" .
 	"Subject: $email->{'subject'}\n\n" .
