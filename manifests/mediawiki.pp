@@ -30,6 +30,9 @@ class mediawiki::sync {
 		logoutput => on_failure;
 	}
 
+	# l10nupdate account required for syncing
+	include admins::acounts::l10nupdate
+
 }
 
 class mediawiki::refreshlinks {
