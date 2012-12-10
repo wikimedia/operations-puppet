@@ -29,13 +29,13 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 	$mirror->{'3'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@aluminium.wikimedia.org:/archive/indium/logs/';
 	$mirror->{'4'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@db78.pmtpa.wmnet:/a/archive/indium/logs/';
 
-} elsif ($conf->{'HOSTNAME'} eq 'db78'/) {
+} elsif ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy from archive peers and db dumpers
 	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
 	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
 
-} elsif ($conf->{'HOSTNAME'} eq 'aluminium'/) {
+} elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
 	# copy from archive peers and db dumpers
 	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /archive/';
@@ -52,7 +52,7 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 	## remote: adjust the modified timestamp on the remote rsync dir, so next run will see it as most recent
 	$mirror->{'6'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
 
-} elsif ($conf->{'HOSTNAME'} eq 'grosley'/) {
+} elsif ($conf->{'HOSTNAME'} eq 'grosley') {
 
 	# collect local syslog stuff from paypal to archive
 	$mirror->{'1'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
