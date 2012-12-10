@@ -63,6 +63,11 @@ class misc::contint::analytics::packages {
 		ensure => "installed",
 	}
 
+        # these packages are used by the tests for wikistats to parse the
+        # generated reports to see if they are correct
+	package { ["libhtml-treebuilder-xpath-perl","libweb-scraper-perl"]:
+		ensure => "installed",
+	}
 	# need geoip to build udp-filter
 	include geoip
 }
