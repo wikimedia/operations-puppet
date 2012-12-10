@@ -62,18 +62,20 @@ if ($conf->{'KEEPDAYS'}->{$conf->{'HOSTNAME'}} =~ /^(\d+)$/) {
 	close DIR;
 }
 
-
+# cycle through db's and dump-compress them
 for my $db (@requested_dbs) {
 	my $date = `date +%Y%m%d-%H%M%S`;
 	chomp $date;
 	printlog("start $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz");
 	$e->{'report'} .= "start dump $db to $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz\n";
-	monitor_shell_call("mysqldump $conf->{'DB'}->{$db} > $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql");
-	if (-e "$conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql") {
-		monitor_shell_call("gzip $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql");
+	# use .tmp suffix on uncompressed and in-progress .gz so we can ignore them for rsync jobs
+	monitor_shell_call("mysqldump $conf->{'DB'}->{$db} > $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp");
+	if (-e "$conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp") {
+		monitor_shell_call("gzip --suffix .gz.tmp $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp");
+		rename "$conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp.gz.tmp", "$conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.gz";
 	} else {
-		printlog("no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql to gzip?");
-		$e->{'report'} .= "no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql to gzip?\n";
+		printlog("no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp to gzip?");
+		$e->{'report'} .= "no $conf->{'LOCALDIR'}/$db.$date.$conf->{'HOSTNAME'}.sql.tmp to gzip?\n";
 		$e->{'errors'}++;
 	}
 }
