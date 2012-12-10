@@ -925,6 +925,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::update_special_pages,
 		misc::maintenance::parsercachepurging,
 		misc::maintenance::geodata,
+		misc::maintenance::cleanup_upload_stash,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
