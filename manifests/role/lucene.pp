@@ -127,6 +127,7 @@ class role::lucene {
 			admins::roots,
 			admins::mortals,
 			admins::restricted,
+			admins::accounts::l10nupdate,
 			lucene::users
 
 		sudo_group {"wikidev_deploy": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'], group => "wikidev" }
