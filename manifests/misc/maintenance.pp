@@ -142,6 +142,17 @@ class misc::maintenance::update_flaggedrev_stats{
 	}
 }
 
+class misc::maintenance::cleanup_upload_stash {
+	cron {
+		cleanup_upload_stash:
+			command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php",
+			user => "apache",
+			hour => "*/2",
+			minute => "0",
+			ensure => present;
+	}
+}
+
 class misc::maintenance::update_special_pages {
 	cron {
 		update_special_pages:
