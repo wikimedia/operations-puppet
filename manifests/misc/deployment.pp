@@ -191,16 +191,6 @@ class misc::deployment::scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/udprec";
-		"${scriptpath}/update-special-pages": # FIXME hume cron job
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/update-special-pages";
-		"${scriptpath}/update-special-pages-small": # FIXME hume cron job
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/update-special-pages-small";
 		"/usr/local/sbin/set-group-write2":
 			owner => root,
 			group => root,
