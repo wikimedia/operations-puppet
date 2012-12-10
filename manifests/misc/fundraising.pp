@@ -295,6 +295,11 @@ class misc::fundraising::mail {
 			group => wikidev,
 			mode => 0710,
 			source => "puppet:///private/misc/fundraising/civimail_send";
+		"/etc/amazon-audit.cfg":
+			owner => root,
+			group => wikidev,
+			mode => 0740,
+			source => "puppet:///private/misc/fundraising/amazon-audit.cfg";
 	}
 
 	cron {
