@@ -203,7 +203,7 @@ class misc::fundraising::backup::dump_fundraising_database(
 		$user = 'root',
 		$hour,
 		$minute,
-		$weekday = [0, 1, 2, 3, 4, 5, 6],
+		$weekday = '*',
 	) {
 
 	file { 
@@ -230,8 +230,8 @@ class misc::fundraising::backup::archive_sync(
 		$user = 'root',
 		$hour,
 		$minute,
-		$weekday = [0, 1, 2, 3, 4, 5, 6],
-		$email = 'quiet', # quiet|errors|all
+		$weekday = '*',
+		$email = 'errors', # quiet|errors|all
 	) {
 
 	if $email == 'quiet' {
@@ -362,16 +362,16 @@ class misc::fundraising::backup::backupmover_user {
 			user	=> backupmover,
 			type	=> 'ssh-rsa',
 			key	 => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAxFTyC11zMrjacT0aXzAbBUKDkUYpQrxQFC/lnb7vO4aQkAZx3eC3IU0Xe5dDTK97CSOeuexkHOU4++dUXcbeBmsXX0lr/za7M5mb0IKRTxvk8+arls+WhPCZctimhsIHg/vfhGT0s57LHQHAXVmGTumYdQ3rbOVfsHubgjhyT7u2nlLLUi/cG2yP5S4nKF16wiXljrdcUdjNSXN5jsW6U0M/hNgFcz2uI33s6hNWPUcOfaHCwfI0FgOBdsNTlRyCqFydKoa9kd2NKVbdO3L3q0xOdugaUsnRuEKNi3pEQKVOxWy1o62oR1gL9NUwzJJiOA9dahDZ2z9ej696aEBW4w==';
-		'backupmover/root@silicon':
-			ensure  => present,
-			user	=> backupmover,
-			type	=> 'ssh-rsa',
-			key	 => 'AAAAB3NzaC1yc2EAAAABIwAAAQEAs/tHmvah83UkyjJN/5JTm1Yo7ahh9bfi7Y7bnoryJ+F1QWnY0UNP+d8jGHoirYQoy4KvO+mpGTW2+vheD8+nmvq//2k95KkDmdo6NZul9Tn9vdpZ9VAbfmOhFmT4lhqm8IhMrA6W7+qiiBdAjMYRzdhxuzVZnjqxPWn9rznNy1g44iulFHKHAqjjwf/gMs2nYHdVBC3Re8cKwFcsz06BhvUjnZ94F80aNw8n5JsPv5ud8R8gSFaxEM6STY2mCj5liw+s5fRObgDtAE6xGALsHcOyEbI+FX1x0r/+5WOzEpM2qWLR6WJXi2HsOYfqaiqzSm2Yb3AfGi98gnnWF75e/Q==';
 		'backupmover/root@loudon':
 			ensure  => present,
 			user	=> backupmover,
 			type	=> 'ssh-rsa',
 			key	 => 'AAAAB3NzaC1yc2EAAAABIwAAAgEAxrFa52jnHKDphkJBJWENCvBdopcnW74PI4dCQ39uUgSHqcbsy44peDOuTlIOoRG/uyYxRF7akR6Zd3ejgS9loVrF6dJB8VMwt7NMPqMwhmbTpZSrO+Yqu2v53Wx6ntTB+FJ1mhIJYFAzvJ3Cp3UGbd1whK1iIzi9t+x1rBg7VvChnmYogSTKuN8CzR9O4hA2hT+qFlWCcQJDBn7GaA3vwrtpCNu8kjdSs3N3ld1IazI9w0HRmso4qMRqP1vayUrPlGf1eEJZjZJ4CbLwiwhRh0orNAuERtUMOb3JWsIhTjj8F5zKW2ktUkxLZEgbBoj0nNvPwRIBPE8hXZP2SgjcArocJYTGsx0uyAT8DI5+F0aUScuxYhYf/59j4U1YQ43VvIArgMkXHG6/WXXsSeMqWOWfWPK8O1GYWUk1EfJ3elkBZFT8WnGB8OtJTaK//sIEWJpevElPKSxD74s1/TKP0Br/itkeuAFxv7z4UQI4NVU+WfCdI17NS/aasnRQeaVFCkQV+LSPVX8mLpky8j0U/B5y0oTChggZMymjjAhsa6N1CVIgHbugcM6+k4NHFBFU+l6pCbq206Q+MTq3hgSEzu6dd52XP1zMvqDmrp0G5sFK0Obo7YTx7EMhimttvsEUZ4NFWYDCfF57CYPjpaEXKmlSdbnCDE0MF71YWE1Yiik=';
+		'backupmover/root@db78':
+			ensure  => present,
+			user	=> backupmover,
+			type	=> 'ssh-rsa',
+			key	 => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC3f6OaJUZInlh35vv5qfCvOk8RA40Jsa76MFqoHAJeLXeFwMexZCbXWz/FeyXEOuvel6i9NCeu5C3tTxv1fTSylahCUg1CuOTwNVpIfZ15ZkeAwiPwEyaDCa9vfwHzI52sOHikCja9ah2OLuvqoV/tv0HdxtZlIc9QnOBwXe7jqwX9LfNynltl3um6+3Z85fo5Vfs/nPBzqet8lQw2XsJ1um26C0gIwfOtjxNN43+Q5jIRZj9ggLgil0ucFCITGJlUKGbQ5VueQaJs5JgAGKLbYMq6jl9j5kdtDSu0szlKKDwJQepoRcags5m2nJBFG06clwOuKi8urTfvpZb5B7mp';
 	}
 
 }
