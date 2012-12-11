@@ -38,7 +38,7 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# copy from archive peers and db dumpers
 	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
 
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
