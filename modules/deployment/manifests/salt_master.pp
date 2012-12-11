@@ -48,7 +48,7 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
       require => [Package["salt-master"]];
     "refresh_deployment_modules":
       command => "/usr/bin/salt -E '${deployment_minion_regex}' saltutil.sync_modules",
-      subscribe => [File["${module_dir}/deploy.py"]],
+      subscribe => [File["${module_dir}/deploy.py"],[File["${module_dir}/parsoid.py"]],
       refreshonly => true,
       require => [Package["salt-master"]];
   }
