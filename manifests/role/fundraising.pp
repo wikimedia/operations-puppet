@@ -113,5 +113,5 @@ class role::fundraising::database::dump_slave {
 	include role::fundraising::database::slave,
 		misc::fundraising::backup::backupmover_user
 
-	class { 'misc::fundraising::backup::dump_fundraising_database': hour => 9, min => 0 }
+	class { 'misc::fundraising::backup::dump_fundraising_database': hour => 9, minute => 0 }
 }
