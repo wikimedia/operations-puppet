@@ -3,6 +3,7 @@ use strict;
 use IPC::Open3;
 use IO::Select;
 use Sys::Syslog;
+use Getopt::Std;
 
 # general conf
 my $conf = {
@@ -12,18 +13,22 @@ my $conf = {
 	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
 	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
+	'LOCKFILE' => '/tmp/offhost_backups.lock',
 };
 chomp $conf->{'HOSTNAME'};
 chomp $conf->{'DATE'};
 
 # jobs, if it matters, keep 'em numbered in the order you want them to happen
 # --ignore-existing to prevent a 'rogue' db box from clobbering previously collected dumps
+# try local boxes first, especially those with few other jobs
+# then cross-site boxes
 my ($mirror,$email);
 if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# copy from archive peers and fundraising db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /a/archive/';
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
+	$mirror->{'3'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /a/archive/';
 
 	# copy local logs to archive peers
 	$mirror->{'3'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@aluminium.wikimedia.org:/archive/indium/logs/';
@@ -32,14 +37,14 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 } elsif ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy from archive peers and db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
 
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
 	# copy from archive peers and db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /archive/';
+	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /archive/';
+	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /archive/';
 
 	# collect local syslog stuff from paypal to archive
 	$mirror->{'3'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
@@ -67,6 +72,15 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 
 }
 
+# lock to prevent collisions
+my $lock_error = setlockfile('set');
+printlog("already running? $lock_error") if defined $lock_error;
+
+# collect command-line options
+# opt_e = email only for errors
+# opt_q = don't email at all
+our ($opt_q,$opt_e);
+getopts ("qe");
 
 for my $m (sort {$a<=>$b} keys %{$mirror}) {
 
@@ -112,21 +126,25 @@ for my $m (sort {$a<=>$b} keys %{$mirror}) {
 }
 
 # set the subject line according to the outcome
-if ($email->{'errors'}) {
+if (($email->{'errors'}) and (! defined $opt_q)) {
 	$email->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} $conf->{'IDENT'} had errors";
 	$email->{'recipient'} = $conf->{'FAILURE-RECIPIENT'};
-} else {
+} elsif ((! defined $opt_e) and (! defined $opt_q)) {
 	$email->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} $conf->{'IDENT'} ran without errors";
 	$email->{'recipient'} = $conf->{'SUCCESS-RECIPIENT'};
 }
 
 # send message
-open MAILER, "|/usr/sbin/sendmail -f $conf->{'SENDER'} $email->{'recipient'}";
-print MAILER "From: $conf->{'SENDER'}\n" .
-	"To: $email->{'recipient'}\n" .
-	"Subject: $email->{'subject'}\n\n" .
-	"$email->{'report'}";
-close MAILER;
+if (defined $email->{'recipient'}) {
+	open MAILER, "|/usr/sbin/sendmail -f $conf->{'SENDER'} $email->{'recipient'}";
+	print MAILER "From: $conf->{'SENDER'}\n" .
+		"To: $email->{'recipient'}\n" .
+		"Subject: $email->{'subject'}\n\n" .
+		"$email->{'report'}";
+	close MAILER;
+}
+
+setlockfile('unset');
 
 printlog('done!');
 
@@ -147,3 +165,44 @@ sub printlog {
 	Sys::Syslog::syslog($severity,$msg);
 	Sys::Syslog::closelog();
 }
+
+
+# set lockfile
+sub setlockfile {
+    my $action = shift;
+    if ($action eq 'set') {
+        return("$0 already running") if (running($0));
+        open LOCK, "> $conf->{'LOCKFILE'}";
+        flock (LOCK, 2) or return("$0 already running?");
+        print LOCK $$;
+        close LOCK;
+    } else {
+        unlink $conf->{'LOCKFILE'};
+    }
+    return;
+}
+
+
+# check for lockfile
+#  -> if found, check for process matching PID
+#   -> if no matching process, whack the lockfile
+sub running {
+    my $prog = shift;
+    $prog =~ s/^(.*\/)+//g;
+    if (-e $conf->{'LOCKFILE'}) {
+        open LOCK, $conf->{'LOCKFILE'};
+        my $checkpid = <LOCK>;
+        close LOCK;
+        if ($checkpid) {
+            chomp $checkpid;
+            if (`ps -p $checkpid -o command= | grep $prog`) {
+                return $checkpid;
+            } else {
+                printlog("removed stale lockfile for $prog ($checkpid)",'warning');
+                unlink $conf->{'LOCKFILE'};
+            }
+        }
+    }
+    return;
+}
+
