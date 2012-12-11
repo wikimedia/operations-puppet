@@ -581,7 +581,7 @@ node /db6([2-9])\.pmtpa\.wmnet/ {
 
 node "db78.pmtpa.wmnet" {
 	include role::fundraising::database::dump_slave
-	class { 'misc::fundraising::backup::archive_sync': hour => 4, minute => 5 }
+	class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
 }
 
 # eqiad dbs
@@ -706,7 +706,7 @@ node "grosley.wikimedia.org" {
 node "aluminium.wikimedia.org" {
 	include role::fundraising::civicrm,
 		misc::fundraising::jenkins
-	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
+	class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
 }
 
 
