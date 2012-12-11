@@ -193,7 +193,7 @@ class misc::maintenance::wikidata {
 			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki test2wiki --statefile=/home/wikipedia/common/wikibase-test2-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.test2wiki.log",
 			user => mwdeploy,
 			minute => "*/5",
-			ensure => absent;
+			ensure => present;
 	}
 
 	file {
