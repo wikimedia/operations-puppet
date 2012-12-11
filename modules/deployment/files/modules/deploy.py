@@ -75,6 +75,8 @@ def checkout(repo,reset=False):
     repoloc = repolocs[repo]
     sed_lists = __pillar__.get('repo_regex')
     sed_list = sed_lists[repo]
+    checkout_submodules = __pillar__.get('repo_checkout_submodules')
+    checkout_submodules = checkout_submodules[repo]
     module_calls = __pillar__.get('repo_checkout_module_calls')
     module_calls = module_calls[repo]
     gitmodules = repoloc + '/.gitmodules'
@@ -110,25 +112,26 @@ def checkout(repo,reset=False):
     if ret != 0:
         return 30
 
-    # Transform .gitmodules file based on defined seds
-    for sed in sed_list:
-        for before,after in sed.items():
-            after = after.replace('__REPO_URL__',repourl)
-            __salt__['file.sed'](gitmodules, before, after)
+    if checkout_submodule:
+        # Transform .gitmodules file based on defined seds
+        for sed in sed_list:
+            for before,after in sed.items():
+                after = after.replace('__REPO_URL__',repourl)
+                __salt__['file.sed'](gitmodules, before, after)
 
-    # Sync the .gitmodules config
-    cmd = '/usr/bin/git submodule sync'
-    ret = __salt__['cmd.retcode'](cmd,repoloc)
-    if ret != 0:
-        return 40
+        # Sync the .gitmodules config
+        cmd = '/usr/bin/git submodule sync'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return 40
 
-    # Update the submodules to match this tag
-    cmd = '/usr/bin/git submodule update --init'
-    ret = __salt__['cmd.retcode'](cmd,repoloc)
+        # Update the submodules to match this tag
+        cmd = '/usr/bin/git submodule update --init'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            ret = 50
+
     # Call modules on the repo's behalf ignore the return on these
     for call in module_calls:
-      __salt__[call](repo)
-    if ret != 0:
-        return 50
-    else:
-        return ret
+        __salt__[call](repo)
+    return 0
