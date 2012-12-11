@@ -85,7 +85,7 @@ def hexlongish(x):
 	else:
 		raise ValueError
 
-def parse_innodb_status(innodb_status_raw):
+def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
 	def sumof(status):
 		def new(*idxs):
 			return sum(map(lambda x: longish(status[x]), idxs))
@@ -107,8 +107,16 @@ def parse_innodb_status(innodb_status_raw):
 			innodb_status['os_waits'] += longish(istatus[8])
 
 		elif "RW-shared spins" in line:
-			innodb_status['spin_waits'] += isum(2,8)
-			innodb_status['os_waits'] += isum(5,11)
+			if innodb_version == "51fb":
+				innodb_status['spin_waits'] += isum(2,8)
+				innodb_status['os_waits'] += isum(5,11)
+			elif innodb_version == "55xdb":
+				innodb_status['spin_waits'] += longish(istatus[2])
+				innodb_status['os_waits'] += longish(istatus[7])
+
+		elif "RW-excl spins" in line and innodb_version == "55xdb":
+			innodb_status['spin_waits'] += longish(istatus[2])
+			innodb_status['os_waits'] += longish(istatus[7])
 
 		# TRANSACTIONS
 		elif "Trx id counter" in line:
@@ -151,10 +159,20 @@ def parse_innodb_status(innodb_status_raw):
 			innodb_status['pending_buffer_pool_flushes'] = longish(istatus[7])
 
 		# INSERT BUFFER AND ADAPTIVE HASH INDEX
-		elif 'merged recs' in line:
+		elif 'merged recs' in line and innodb_version == "51fb":
 			innodb_status['ibuf_inserts'] = longish(istatus[0])
 			innodb_status['ibuf_merged'] = longish(istatus[2])
 			innodb_status['ibuf_merges'] = longish(istatus[5])
+
+		elif 'Ibuf: size' in line and innodb_version == "55xdb":
+			innodb_status['ibuf_merges'] = longish(istatus[10])
+
+		elif 'merged operations' in line and innodb_version == "55xdb":
+			in_merged = 1
+
+		elif 'delete mark' in line and 'in_merged' in vars() and innodb_version == "55xdb":
+			innodb_status['ibuf_inserts'] = longish(istatus[1])
+			del in_merged
 
 		# LOG
 		elif "log i/o's done" in line:
@@ -171,7 +189,7 @@ def parse_innodb_status(innodb_status_raw):
 			innodb_status['log_bytes_flushed'] = longish(istatus[4])
 
 		# BUFFER POOL AND MEMORY
-		elif "Buffer pool size" in line:
+		elif "Buffer pool size" in line and "bytes" not in line:
 			innodb_status['buffer_pool_pages_total'] = longish(istatus[3])
 		
 		elif "Free buffers" in line:

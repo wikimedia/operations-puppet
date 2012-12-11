@@ -34,6 +34,11 @@ modules {
     param get_slave {
       value = True
     }
+    <% if has_variable?("innodb_version") and inodb_version != "51fb" then -%>
+    param innodb_version {
+      value = <%= innodb_version %>
+    }
+    <% end -%>
   }
 }
 
