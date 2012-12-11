@@ -5,8 +5,8 @@ class role::deployment::salt_masters::production {
       'common'  => '^(mw).*eqiad.*',
       'slot0'   => '^(mw).*eqiad.*',
       'slot1'   => '^(mw).*eqiad.*',
-      'parsoid/Parsoid' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
-      'parsoid/config' => '^(wtp1|mexia|tola|lardner|kuo|wtp1001)\..*',
+      'parsoid/Parsoid' => '^(wtp1|mexia|tola|lardner|kuo|celsus|constablewtp1001)\..*',
+      'parsoid/config' => '^(wtp1|mexia|tola|lardner|kuo|celsus|constable|wtp1001)\..*',
     },
     deployment_repo_urls => {
       'pmtpa' => {
