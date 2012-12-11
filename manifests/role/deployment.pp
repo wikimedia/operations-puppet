@@ -45,6 +45,14 @@ class role::deployment::salt_masters::production {
       'parsoid/Parsoid' => ['parsoid.config_symlink'],
       'parsoid/config' => [],
     },
+    # Should this repo also do a submodule update --init?
+    deployment_repo_checkout_submodules => {
+      'common' => 'False',
+      'slot0' => 'True',
+      'slot1' => 'True',
+      'parsoid/Parsoid' => 'False'
+      'parsoid/config' => 'False',
+    },
     deployment_repo_locations => {
       'common' => '/srv/deployment/mediawiki/common',
       'slot0' => '/srv/deployment/mediawiki/slot0',
