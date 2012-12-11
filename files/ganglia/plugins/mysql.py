@@ -59,10 +59,11 @@ mysql_stats_last = {}
 REPORT_INNODB = True
 REPORT_MASTER = True
 REPORT_SLAVE  = True
+INNODB_VERSION = '51fb'
 
 MAX_UPDATE_TIME = 15
 
-def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_version="51fb"):
+def update_stats(get_innodb=True, get_master=True, get_slave=True, innodb_version='51fb'):
 	logging.debug('updating stats')
 	global last_update
 	global mysql_stats, mysql_stats_last
@@ -312,8 +313,9 @@ def get_stat(name):
 	global REPORT_INNODB
 	global REPORT_MASTER
 	global REPORT_SLAVE
+	global INNODB_VERSION
 
-	ret = update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE)
+	ret = update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE, INNODB_VERSION)
 
 	if ret:
 		if name.startswith('mysql_'):
@@ -338,6 +340,7 @@ def metric_init(params):
 	global REPORT_INNODB
 	global REPORT_MASTER
 	global REPORT_SLAVE
+	global INNODB_VERSION
 
 	REPORT_INNODB = str(params.get('get_innodb', True)) == "True"
 	REPORT_MASTER = str(params.get('get_master', True)) == "True"
@@ -977,7 +980,7 @@ def metric_init(params):
 	update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE, INNODB_VERSION)
 
 	time.sleep(MAX_UPDATE_TIME)
-	update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE)
+	update_stats(REPORT_INNODB, REPORT_MASTER, REPORT_SLAVE, INNODB_VERSION)
 
 	for stats_descriptions in (innodb_stats_descriptions, master_stats_descriptions, misc_stats_descriptions, slave_stats_descriptions):
 		for label in stats_descriptions:
