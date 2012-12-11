@@ -7,7 +7,7 @@ class coredb_mysql::conf {
 			"/etc/my.cnf":
 				content => template("coredb_mysql/prod.my.cnf.erb");
 			"/etc/mysql/my.cnf":
-				source => "puppet:///modules/coredb_mysql/confs/empty-my.cnf";
+				ensure => "/etc/my.cnf"
 		}
 
 
