@@ -2483,7 +2483,7 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node /(wtp1|kuo|lardner|mexia|tola|celsus|constable)\.pmtpa\.wmnet/ {
+node /((wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet)|((celsus|constable)\.wikimedia\.org)/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
