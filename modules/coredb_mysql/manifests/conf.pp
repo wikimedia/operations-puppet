@@ -6,8 +6,8 @@ class coredb_mysql::conf {
 				content => $coredb_mysql::shard;
 			"/etc/my.cnf":
 				content => template("coredb_mysql/prod.my.cnf.erb");
-			"/etc/mysql/my.cnf":
-				source => "puppet:///modules/coredb_mysql/confs/empty-my.cnf";
+      "/etc/mysql/my.cnf":
+        ensure => "/etc/my.cnf"
 		}
 
 
