@@ -25,14 +25,14 @@ if Rake.application.tty_output?
 	require'puppet/util/colors'
 	include Puppet::Util::Colors
 
-	puppetcolor = '--color true'
+	$puppetcolor = '--color true'
 else
 	# define our own colorization method that simply output the message
 	def console_color( level, message )
 		return message
 	end
 
-	puppetcolor = '--color none'
+	$puppetcolor = '--color none'
 end
 
 task :default => [:help]
@@ -111,15 +111,34 @@ task :lint => :run_puppet_lint
 
 desc "Validate puppet syntax (default: manifests/site.pp)"
 task :validate, [:files ] do |t, args|
-	args.with_defaults( :files => 'manifests/site.pp' )
-	puts console_color( :info, "Validating " + args.files.inspect )
-	sh "puppet parser validate #{puppetcolor} #{args.files}" do |ok, res|
-		if ok
-			puts "[OK] " + console_color( :info,  "files looks fine!" )
-		else
-			raise console_color( :alert, "puppet failed to validate files (exit: #{res.exitstatus}" )
+
+	success = true
+
+	if args.files
+		puts console_color( :info, "Validating " + args.files.inspect )
+		ok = puppet_parser_validate args.files
+	else
+		ok = puppet_parser_validate 'manifests/site.pp'
+		success = success && ok
+
+		Dir.glob("modules/*").each do |dir|
+			puts console_color( :info, "Validating manifests in '#{dir}'" )
+			ok = puppet_parser_validate Dir.glob( "#{dir}/**/*.pp" )
+			success = success && ok
 		end
 	end
+
+	if success
+		puts "[OK] " + console_color( :info,  "files looks fine!" )
+	else
+		raise console_color( :alert, "puppet failed to validate files (exit: #{res.exitstatus}" )
+	end
+end
+
+# Validate manifests passed as an array of filenames
+def puppet_parser_validate(*manifests)
+	manifests = manifests.join(' ')
+	sh "puppet parser validate #{$puppetcolor} #{manifests}"
 end
 
 =begin lint
