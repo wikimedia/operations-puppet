@@ -64,13 +64,6 @@ class role::fundraising::civicrm {
         passwords::root,
         ssh
 
-	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
-
-	if $hostname == "aluminium" {
-		include misc::fundraising::jenkins,
-			misc::fundraising::jenkins_maintenance
-	}
-
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }

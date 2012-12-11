@@ -580,8 +580,8 @@ node /db6([2-9])\.pmtpa\.wmnet/ {
 }
 
 node "db78.pmtpa.wmnet" {
-	include role::fundraising::database::dump_slave,
-		misc::fundraising::backup::archive
+	include role::fundraising::database::dump_slave
+	class { 'misc::fundraising::backup::archive_sync': hour => 4, minute => 5 }
 }
 
 # eqiad dbs
@@ -698,8 +698,15 @@ node "loudon.wikimedia.org" {
 	include	role::fundraising::logger
 }
 
-node /^(grosley|aluminium)\.wikimedia\.org$/ {
+node "grosley.wikimedia.org" {
 	include role::fundraising::civicrm
+	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
+}
+
+node "aluminium.wikimedia.org" {
+	include role::fundraising::civicrm,
+		misc::fundraising::jenkins
+	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
 }
 
 
@@ -2303,10 +2310,6 @@ node "storage1.wikimedia.org" {
 
 node "storage2.wikimedia.org" {
 	include standard
-}
-
-node "storage3.pmtpa.wmnet" {
-	include role::fundraising::database
 }
 
 node "streber.wikimedia.org" {
