@@ -164,6 +164,10 @@ class mysql {
 		include passwords::ganglia
 		$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
 
+		if $mariadb {
+			$innodb_version = "55xdb"
+		}
+
 		# Ganglia
 		package { python-mysqldb:
 			ensure => present;
@@ -532,6 +536,10 @@ class mysql::coredb::ganglia{
 
 	include passwords::ganglia
 	$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
+
+	if $mariadb {
+		$innodb_version = "55xdb"
+	}
 
 	# Ganglia
 	package { python-mysqldb:
