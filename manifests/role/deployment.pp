@@ -42,7 +42,7 @@ class role::deployment::salt_masters::production {
       'common' => [],
       'slot0' => [],
       'slot1' => [],
-      'parsoid/Parsoid' => ['parsoid.config_symlink'],
+      'parsoid/Parsoid' => ['parsoid.config_symlink','parsoid.restart_parsoid'],
       'parsoid/config' => [],
     },
     # Should this repo also do a submodule update --init?
