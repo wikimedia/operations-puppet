@@ -34,11 +34,11 @@ modules {
     param get_slave {
       value = True
     }
-    <% if has_variable?("innodb_version") then -%>
+<% if has_variable?("innodb_version") then -%>
     param innodb_version {
-      value = <%= innodb_version %>
+      value = '<%= innodb_version %>'
     }
-    <% end -%>
+<% end -%>
   }
 }
 
