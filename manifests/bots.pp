@@ -2,6 +2,7 @@
 #  at the moment, only one bot per instance, and only one
 #  log page per bot will work.
 class bots::logbot( $ensure = 'present',
+			     $enable_projects = "False",
 			     $targets = '()',
 			     $nick = '("anonbot")',
 			     $nickserv = 'nickserv',
