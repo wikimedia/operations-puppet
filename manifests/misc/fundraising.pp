@@ -262,35 +262,6 @@ class misc::fundraising::backup::archive_sync(
 
 }
 
-class misc::fundraising::jenkins_maintenance {
-
-	file {
-		'/usr/local/bin/jenkins_watcher':
-			owner => root,
-			group => root,
-			mode => 0500,
-			source => 'puppet:///private/misc/fundraising/jenkins_watcher';
-		'/usr/local/bin/jenkins_archiver':
-			owner => root,
-			group => root,
-			mode => 0500,
-			source => 'puppet:///private/misc/fundraising/jenkins_archiver';
-	}
-
-	cron {
-		'jenkins_archiver':
-			user => root,
-			minute => '50',
-			command => '/usr/local/bin/jenkins_archiver',
-			ensure => present;
-		'jenkins_watcher':
-			user => root,
-			minute => '*/5',
-			command => '/usr/local/bin/jenkins_watcher',
-			ensure => present;
-	}
-
-}
 
 class misc::fundraising::mail {
 
@@ -445,5 +416,38 @@ class misc::fundraising::jenkins {
 	}
 
 	monitor_service { 'jenkins': description => 'jenkins_service_running', check_command => 'nrpe_check_jenkins' }
+
+	include misc::fundraising::jenkins_maintenance
+
+}
+
+
+class misc::fundraising::jenkins_maintenance {
+
+	file {
+		'/usr/local/bin/jenkins_watcher':
+			owner => root,
+			group => root,
+			mode => 0500,
+			source => 'puppet:///private/misc/fundraising/jenkins_watcher';
+		'/usr/local/bin/jenkins_archiver':
+			owner => root,
+			group => root,
+			mode => 0500,
+			source => 'puppet:///private/misc/fundraising/jenkins_archiver';
+	}
+
+	cron {
+		'jenkins_archiver':
+			user => root,
+			minute => '50',
+			command => '/usr/local/bin/jenkins_archiver',
+			ensure => present;
+		'jenkins_watcher':
+			user => root,
+			minute => '*/5',
+			command => '/usr/local/bin/jenkins_watcher',
+			ensure => present;
+	}
 
 }
