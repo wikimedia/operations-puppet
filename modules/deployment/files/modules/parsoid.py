@@ -19,3 +19,12 @@ def config_symlink(repo):
             return 1
 
     return 0
+
+def restart_parsoid(repo):
+    '''
+    restart the parsoid service
+    '''
+    if __salt__['service.restart']('parsoid'):
+        return 0
+    else:
+        return 1
