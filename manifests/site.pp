@@ -548,6 +548,10 @@ node /db5[0-9]\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	if $hostname == "db59" {
+		$mariadb = true
+	}
+
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
