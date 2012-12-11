@@ -112,7 +112,7 @@ def checkout(repo,reset=False):
     if ret != 0:
         return 30
 
-    if checkout_submodule:
+    if checkout_submodules:
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
             for before,after in sed.items():
