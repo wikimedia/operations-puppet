@@ -328,10 +328,6 @@ node "carbon.wikimedia.org" {
 		misc::install-server::tftp-server
 }
 
-node /^(celsus|constable)\.wikimedia\.org$/ {
-	include standard
-}
-
 node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 	include standard,
 			role::dns::recursor
@@ -2487,7 +2483,7 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
+node /(wtp1|kuo|lardner|mexia|tola|celsus|constable)\.pmtpa\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
