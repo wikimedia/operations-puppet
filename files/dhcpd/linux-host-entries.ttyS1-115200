@@ -3332,7 +3332,7 @@ host srv265 {
 }
 
 host srv266 {
-	hardware ethernet 00:21:9b:9f:ab:98;
+	hardware ethernet  00:22:19:6b:cd:6a;
 	fixed-address srv266.pmtpa.wmnet;
 }
 
