@@ -17,6 +17,10 @@ class bots::logbot( $ensure = 'present',
 			     $wiki_connection = '("https","labsconsole.wikimedia.org")',
 			     $wiki_path = "/w/",
 			     $wiki_user = "anon",
+			     # The page for viewing logs doesn't necessarily
+			     # follow from wiki_path, so roles need to set it explicitly
+			     # here.  This setting is only used in the bot's help message.
+			     $log_url = "(unknown)",
 			     $wiki_domain = "",
 			     $wiki_page = "",
 			     $wiki_header_depth = 3,
@@ -32,11 +36,17 @@ class bots::logbot( $ensure = 'present',
 			owner => root,
 			group => root,
 			content => template('adminbot/config.py.erb'),
-			ensure => present;
+			ensure => present,
+			notify => Service[adminbot];
 		"/var/run/adminbot":
 			mode => 644,
 			owner => adminbot,
 			group => root,
 			ensure => directory;
+	}
+
+	service { 'adminbot':
+		name => "adminbot",
+		ensure => running;
 	}
 }
