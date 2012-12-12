@@ -207,3 +207,19 @@ class misc::maintenance::wikidata {
 			mode => 0444;
 	}
 }
+
+class misc::maintenance::parsercachepurging {
+
+	system_role { "misc::maintenance::parsercachepurging": description => "Misc - Maintenance Server: parser cache purging" }
+
+	cron { 'parser_cache_purging':
+		user => apache,
+		minute => 0,
+		hour => 18,
+		monthday => 5,
+		# Purge entries older than 30d * 86400s/d = 2592000s
+		command => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --age=2592000 >/dev/null 2>&1',
+		ensure => present,
+	}
+
+}
