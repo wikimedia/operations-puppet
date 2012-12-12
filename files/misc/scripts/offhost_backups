@@ -22,32 +22,35 @@ chomp $conf->{'DATE'};
 # --ignore-existing to prevent a 'rogue' db box from clobbering previously collected dumps
 # try local boxes first, especially those with few other jobs
 # then cross-site boxes
+
+my $archive_args = "-rltd --chmod=Fg-w,o-rwx --exclude='*.tmp' --exclude='.*' --exclude='udplogs/' --ignore-existing";
+
 my ($mirror,$email);
 if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# copy from archive peers and fundraising db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
-	$mirror->{'3'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /a/archive/';
+	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
+	$mirror->{'2'} = "rsync $archive_args backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
+	$mirror->{'3'} = "rsync $archive_args backupmover\@db78.pmtpa.wmnet:/a/archive/ /a/archive/";
 
 	# copy local logs to archive peers
-	$mirror->{'3'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@aluminium.wikimedia.org:/archive/indium/logs/';
-	$mirror->{'4'} = 'rsync -rltd --chmod=Fug-w,o-rwx /a/archive/indium/logs/ backupmover@db78.pmtpa.wmnet:/a/archive/indium/logs/';
+	$mirror->{'3'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@aluminium.wikimedia.org:/archive/indium/logs/";
+	$mirror->{'4'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@db78.pmtpa.wmnet:/a/archive/indium/logs/";
 
 } elsif ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy from archive peers and db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /a/archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing --exclude udplogs backupmover@aluminium.wikimedia.org:/archive/ /a/archive/';
+	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
+	$mirror->{'2'} = "rsync $archive_args backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
 
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
 	# copy from archive peers and db dumpers
-	$mirror->{'1'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db1025.eqiad.wmnet:/a/archive/ /archive/';
-	$mirror->{'2'} = 'rsync -rltd --chmod=Fg-w,o-rwx --exclude *.tmp --ignore-existing backupmover@db78.pmtpa.wmnet:/a/archive/ /archive/';
+	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /archive/";
+	$mirror->{'2'} = "rsync $archive_args backupmover\@db78.pmtpa.wmnet:/a/archive/ /archive/";
 
 	# collect local syslog stuff from paypal to archive
-	$mirror->{'3'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+	$mirror->{'3'} = "rsync -ar --exclude=*log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir (probably switch this to copy to grosley...)
 	## remote: make a hard-link copy of the most recent rsync destination
@@ -60,7 +63,7 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 } elsif ($conf->{'HOSTNAME'} eq 'grosley') {
 
 	# collect local syslog stuff from paypal to archive
-	$mirror->{'1'} = "rsync -ar --exclude *log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+	$mirror->{'1'} = "rsync -ar --exclude=*log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir (probably switch this to copy to grosley...)
 	## remote: make a hard-link copy of the most recent rsync destination
