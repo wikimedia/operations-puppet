@@ -39,7 +39,11 @@ class role::gerrit {
 				  "push" => "+refs/heads/*:refs/heads/*
   push = +refs/tags/*:refs/tags/*",
 				  "isGithubRepo" => "true",
-				}
+				},
+				'gallium' => {
+					'url' => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
+					'threads' => '4',
+				},
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
 		}
