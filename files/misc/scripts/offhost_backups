@@ -3,29 +3,26 @@ use strict;
 use IPC::Open3;
 use IO::Select;
 use Sys::Syslog;
-use Getopt::Std;
+use Storable qw(nstore retrieve);
 
 # general conf
 my $conf = {
 	'SENDER' => 'root@wikimedia.org',
 	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only SUCCESS notices
 	'FAILURE-RECIPIENT' => 'jgreen@wikimedia.org', # this recip gets only FAILURE notices
-	'HOSTNAME' => `hostname --short`,
 	'IDENT' => ($0 =~ /([^\/]+)$/) ? $1 : $0,
-	'DATE' => `/bin/date "+%Y%m%d-%H%M%S"`,
 	'LOCKFILE' => '/tmp/offhost_backups.lock',
+	'STATEFILE' => '/tmp/offhost_backups.state',
 };
-chomp $conf->{'HOSTNAME'};
-chomp $conf->{'DATE'};
+chomp($conf->{'HOSTNAME'} = `hostname --short`);
+chomp($conf->{'DATE'} = `/bin/date "+%Y%m%d-%H%M%S"`);
 
-# jobs, if it matters, keep 'em numbered in the order you want them to happen
-# --ignore-existing to prevent a 'rogue' db box from clobbering previously collected dumps
-# try local boxes first, especially those with few other jobs
-# then cross-site boxes
-
+# --ignore-existing to prevent a 'rogue' box from clobbering previously collected files (some risk of transferring half-written files)
 my $archive_args = "-rltd --chmod=Fg-w,o-rwx --exclude='*.tmp' --exclude='.*' --exclude='udplogs/' --ignore-existing";
 
-my ($mirror,$email);
+# jobs, if it matters, keep 'em numbered in the order you want them to happen
+# try local boxes first, especially those with few other jobs, then cross-site boxes
+my $mirror;
 if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# copy from archive peers and fundraising db dumpers
@@ -79,12 +76,12 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 my $lock_error = setlockfile('set');
 printlog("already running? $lock_error") if defined $lock_error;
 
-# collect command-line options
-# opt_e = email only for errors
-# opt_q = don't email at all
-our ($opt_q,$opt_e);
-getopts ("qe");
+# get run time date and date of last run for use in deciding whether to mail
+my $today = (localtime(time))[3];
+my $state = retrieve($conf->{'STATEFILE'}) if -e $conf->{'STATEFILE'};
 
+# cycle through jobs
+my $email;
 for my $m (sort {$a<=>$b} keys %{$mirror}) {
 
 	printlog($mirror->{$m});
@@ -128,16 +125,14 @@ for my $m (sort {$a<=>$b} keys %{$mirror}) {
 
 }
 
-# set the subject line according to the outcome
-if (($email->{'errors'}) and (! defined $opt_q)) {
+# mail on all errors, but only mail a success report on the first run of the day
+if ($email->{'errors'}) {
 	$email->{'subject'} = "FAILURE: $conf->{'HOSTNAME'} $conf->{'IDENT'} had errors";
 	$email->{'recipient'} = $conf->{'FAILURE-RECIPIENT'};
-} elsif ((! defined $opt_e) and (! defined $opt_q)) {
+} elsif ($state->{'last_run'} ne $today) {
 	$email->{'subject'} = "SUCCESS: $conf->{'HOSTNAME'} $conf->{'IDENT'} ran without errors";
 	$email->{'recipient'} = $conf->{'SUCCESS-RECIPIENT'};
 }
-
-# send message
 if (defined $email->{'recipient'}) {
 	open MAILER, "|/usr/sbin/sendmail -f $conf->{'SENDER'} $email->{'recipient'}";
 	print MAILER "From: $conf->{'SENDER'}\n" .
@@ -145,7 +140,12 @@ if (defined $email->{'recipient'}) {
 		"Subject: $email->{'subject'}\n\n" .
 		"$email->{'report'}";
 	close MAILER;
+	printlog("report sent to $email->{'recipient'}");	
 }
+
+# record state for next run
+$state->{'last_run'} = $today;
+nstore $state, $conf->{'STATEFILE'} or die "couldn't write $conf->{'STATEFILE'}: $!\n";
 
 setlockfile('unset');
 
