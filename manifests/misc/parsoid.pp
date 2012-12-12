@@ -1,6 +1,7 @@
 
 @monitor_group { "parsoid_eqiad": description => "eqiad parsoid servers" }
 @monitor_group { "parsoid_pmtpa": description => "pmtpa parsoid servers" }
+@monitor_group { "parsoidcache_pmtpa": description => "pmtpa parsoid caches" }
 
 class misc::parsoid {
 	package { [ "nodejs", "npm", "build-essential", "git-core" ]:
@@ -42,4 +43,22 @@ class misc::parsoid {
 	}
 
 	monitor_service { "parsoid": description => "Parsoid", check_command => "check_http_on_port!8000" }
+}
+
+class misc::parsoid::cache {
+	package { [ "varnish" ]:
+		ensure => latest
+	}
+
+	file {
+		"/etc/varnish/default.vcl":
+			source => "puppet:///files/misc/parsoid.vcl",
+			owner => root,
+			group => root,
+			mode => 0644;
+	}
+
+	service { "varnish": require => File["/etc/varnish/default.vcl"], subscribe => Package[varnish], ensure => "running" }
+
+	monitor_service { "parsoid Varnish": description => "Parsoid Varnish", check_command => "check_http_generic!varnishcheck!6081" }
 }
