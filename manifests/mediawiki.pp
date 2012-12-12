@@ -31,7 +31,7 @@ class mediawiki::sync {
 	}
 
 	# l10nupdate account required for syncing
-	include admins::acounts::l10nupdate
+	include admins::accounts::l10nupdate
 
 }
 
