@@ -126,7 +126,6 @@ define install_certificate( $group="ssl-cert", $ca="", $privatekey="true" ) {
 		$cas = $name ? {
 			"star.wikimedia.org" => "Equifax_Secure_CA.pem",
 			"star.wikipedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
-			"test-star.wikipedia.org" => "DigiCertHighAssuranceCA-3.pem DigiCert_High_Assurance_EV_Root_CA.pem",
 			"star.wiktionary.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikiquote.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",
 			"star.wikibooks.org" => "RapidSSL_CA.pem GeoTrust_Global_CA.pem",

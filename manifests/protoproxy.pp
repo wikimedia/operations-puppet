@@ -39,7 +39,6 @@ class protoproxy::proxy_sites {
 	$nginx_use_ssl = true
 
 	install_certificate{ "star.wikimedia.org": }
-	install_certificate{ "test-star.wikipedia.org": }
 	install_certificate{ "star.wikipedia.org": }
 	install_certificate{ "star.wiktionary.org": }
 	install_certificate{ "star.wikiquote.org": }
