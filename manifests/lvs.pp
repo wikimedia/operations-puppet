@@ -379,6 +379,10 @@ class lvs::configuration {
 				'pmtpa' => "10.2.1.28",
 				'eqiad' => "10.2.2.28",
 			},
+			'parsoidcache' => {
+				'pmtpa' => "10.2.1.29",
+				'eqiad' => "10.2.2.29",
+			},
 		},
 		'labs' => {
 			'text' => {
@@ -422,6 +426,7 @@ class lvs::configuration {
         },
 			},
 			'parsoid' => {},
+			'parsoidcache' => {},
 		}
 	}
 
@@ -757,6 +762,21 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
 		},
+		'parsoidcache' => {
+			'description' => "Varnish caches in front of Parsoid",
+			'class' => "low-traffic",
+			'sites' => [ "pmtpa", "eqiad" ],
+			'ip' => $service_ips['parsoidcache'][$::site],
+			'port' => 6081,
+			'bgp' => "yes",
+			'depool-threshold' => ".5",
+			'monitors' => {
+				'ProxyFetch' => {
+					'url' => [ 'http://localhost:6081' ],
+				},
+				'IdleConnection' => $idleconnection_monitor_options,
+			},
+		},
 	}
 }
 
@@ -936,6 +956,7 @@ class lvs::monitor {
 	#monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000" }
+	monitor_service_lvs_http { "parsoidcache.svc.pmtpa.wmnet": ip_address => "10.2.1.29", check_command => "check_http_on_port!6081" }
 
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }

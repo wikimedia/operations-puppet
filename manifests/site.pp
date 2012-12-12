@@ -2586,6 +2586,10 @@ node /(celsus|constable|cerium|titanium)\.wikimedia\.org/ {
 		admins::parsoid,
 		misc::parsoid::cache,
 		misc::parsoid
+
+	include lvs::configuration
+	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoid'][$::site]
+	class { "lvs::realserver": realserver_ips => [ $sip ] }
 }
 
 node /(caesium|xenon|wtp100[1-4])\.eqiad\.wmnet/ {
