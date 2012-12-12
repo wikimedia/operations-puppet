@@ -100,6 +100,13 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         content => template('udp2log/wfdebug-ganglia.conf.erb'),
     }
 
+    file { "/usr/local/bin/exceptionmonitor":
+        owner => root,
+        group => root,
+        mode => 0555,
+        content => template("misc/exceptionmonitor.erb");
+    }
+
     service { 'wfdebug-ganglia':
         ensure    => running,
         provider  => 'upstart',
