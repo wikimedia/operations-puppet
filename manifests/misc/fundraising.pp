@@ -231,16 +231,7 @@ class misc::fundraising::backup::archive_sync(
 		$hour,
 		$minute,
 		$weekday = '*',
-		$email = 'errors', # quiet|errors|all
 	) {
-
-	if $email == 'quiet' {
-		$command = '/usr/local/bin/offhost_backups -q'
-	} elsif $email == 'errors' {
-		$command = '/usr/local/bin/offhost_backups -e'
-	} else {
-		$command = '/usr/local/bin/offhost_backups'
-	}
 
 	file { 
 		'/usr/local/bin/offhost_backups':
@@ -256,7 +247,7 @@ class misc::fundraising::backup::archive_sync(
 			weekday => $weekday,
 			hour => $minute,
 			minute => $hour,
-			command => $command,
+			command => '/usr/local/bin/offhost_backups',
 			ensure => present;
 	}
 
