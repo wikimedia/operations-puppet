@@ -25,6 +25,16 @@ class role::zuul {
 
 	class production {
 
+		# We will receive replication of git bare repositories from Gerrit
+		include role::gerrit::replicationdest
+
+		file { "/var/lib/git":
+			ensure => 'directory',
+			owner => 'gerritslave',
+			group => 'root',
+			mode => '0755',
+		}
+
 		system_role { "role::zuul::production": description => "Zuul on production" }
 
 		zuulwikimedia::instance { "zuul-production":
