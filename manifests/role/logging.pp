@@ -51,6 +51,13 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 		monitor_processes	=>	false,
 		monitor_packet_loss	=>	false,
 	}
+
+	file { "/usr/local/bin/exceptionmonitor":
+		owner => root,
+		group => root,
+		mode => 0555,
+		content => template("misc/exceptionmonitor.erb");
+	}
 }
 
 class role::beta::logging::mediawiki {
