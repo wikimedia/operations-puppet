@@ -27,35 +27,38 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# copy from archive peers and fundraising db dumpers
 	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
-	$mirror->{'2'} = "rsync $archive_args backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
-	$mirror->{'3'} = "rsync $archive_args backupmover\@db78.pmtpa.wmnet:/a/archive/ /a/archive/";
+	$mirror->{'2'} = "rsync $archive_args backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
+	$mirror->{'3'} = "rsync $archive_args backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
+	$mirror->{'4'} = "rsync $archive_args backupmover\@db78.pmtpa.wmnet:/a/archive/ /a/archive/";
 
 	# copy local logs to archive peers
-	$mirror->{'3'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@aluminium.wikimedia.org:/archive/indium/logs/";
-	$mirror->{'4'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@db78.pmtpa.wmnet:/a/archive/indium/logs/";
+	$mirror->{'5'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@aluminium.wikimedia.org:/archive/indium/logs/";
+	$mirror->{'6'} = "rsync $archive_args /a/archive/indium/logs/ backupmover\@db78.pmtpa.wmnet:/a/archive/indium/logs/";
 
 } elsif ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# copy from archive peers and db dumpers
 	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
 	$mirror->{'2'} = "rsync $archive_args backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
+	$mirror->{'3'} = "rsync $archive_args backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
 
 } elsif ($conf->{'HOSTNAME'} eq 'aluminium') {
 
 	# copy from archive peers and db dumpers
 	$mirror->{'1'} = "rsync $archive_args backupmover\@db1025.eqiad.wmnet:/a/archive/ /archive/";
 	$mirror->{'2'} = "rsync $archive_args backupmover\@db78.pmtpa.wmnet:/a/archive/ /archive/";
+	$mirror->{'3'} = "rsync $archive_args backupmover\@loudon.wikimedia.org:/archive/ /archive/";
 
 	# collect local syslog stuff from paypal to archive
-	$mirror->{'3'} = "rsync -ar --exclude=*log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
+	$mirror->{'4'} = "rsync -ar --exclude=*log /var/log/fundraising/ /archive/$conf->{'HOSTNAME'}/logs/";
 
 	# hacky remote snapshot strategy for Zack's script-hacking dir (probably switch this to copy to grosley...)
 	## remote: make a hard-link copy of the most recent rsync destination
-	$mirror->{'4'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
+	$mirror->{'5'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"cd /data/fundraising/$conf->{'HOSTNAME'}/br; cp -al \\`ls -t|grep '^[0-9]\\{8\\}-[0-9]\\{6\\}\$'|head -1\\` $conf->{'DATE'}\"";
 	## rsync over the hard-link copy to clobber whatever has changed 
-	$mirror->{'5'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
+	$mirror->{'6'} = "/usr/bin/rsync -ar --delete /srv/br/ fundraising\@tridge.wikimedia.org:$conf->{'HOSTNAME'}/br/$conf->{'DATE'}/";
 	## remote: adjust the modified timestamp on the remote rsync dir, so next run will see it as most recent
-	$mirror->{'6'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
+	$mirror->{'7'} = "/usr/bin/ssh fundraising\@tridge.wikimedia.org \"touch /data/fundraising/$conf->{'HOSTNAME'}/br/$conf->{'DATE'}\"";
 
 } elsif ($conf->{'HOSTNAME'} eq 'grosley') {
 
