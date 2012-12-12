@@ -1,5 +1,3 @@
-# vim: set noet:
-
 # Python testing module:
 import unittest
 
