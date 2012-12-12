@@ -32,11 +32,17 @@ class bots::logbot( $ensure = 'present',
 			owner => root,
 			group => root,
 			content => template('adminbot/config.py.erb'),
-			ensure => present;
+			ensure => present,
+			notify => Service[adminbot];
 		"/var/run/adminbot":
 			mode => 644,
 			owner => adminbot,
 			group => root,
 			ensure => directory;
+	}
+
+	service { 'adminbot':
+		name => "adminbot",
+		ensure => running;
 	}
 }
