@@ -900,7 +900,7 @@ class lvs::monitor {
 	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000" }
 	# Remove check based on a typo
-	monitor_service { "parsoid.pmpta.wmnet": host => "parsoid.pmpta.wmnet", group => "lvs", ensure => absent }
+	monitor_service { "parsoid.pmtpa.wmnet": host => "parsoid.pmtpa.wmnet", group => "lvs", ensure => absent }
 
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
