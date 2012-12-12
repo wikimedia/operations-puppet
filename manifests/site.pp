@@ -833,8 +833,7 @@ node "gallium.wikimedia.org" {
 		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
 	]}
 
-	include base,
-		standard,
+	include standard,
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::analytics::packages,
