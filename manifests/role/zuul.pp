@@ -25,6 +25,9 @@ class role::zuul {
 
 	class production {
 
+		# We will receive replication of git bare repositories from Gerrit
+		include role::gerrit::replicationdest
+
 		system_role { "role::zuul::production": description => "Zuul on production" }
 
 		zuulwikimedia::instance { "zuul-production":
