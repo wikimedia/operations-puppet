@@ -4,7 +4,7 @@ class role::coredb::config {
 			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db61', 'db63', 'db67',
 				'db1001', 'db1017', 'db1042', 'db1043', 'db1047', 'db1049', 'db1050'],
 			'primary_site' => "pmtpa",
-			'masters' => {'pmtpa' => "db63", 'eqiad' => "db1017"},
+			'masters' => {'pmtpa' => "db61", 'eqiad' => "db1017"},
 			'snapshot' => ["db32", "db1050"],
 		},
 		's2' => {
@@ -214,6 +214,10 @@ class role::coredb::common(
 
 	if $::hostname in $topology[$shard]['snapshot'] {
 		include coredb_mysql::snapshot
+	}
+
+	if $::hostname == $topology[$shard]['masters'][$::site] {
+		$readonly = false
 	}
 
 	class { "coredb_mysql":
