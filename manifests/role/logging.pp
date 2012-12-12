@@ -87,6 +87,13 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         mode   => '0555',
         source => "puppet:///files/misc/scripts/mw-log-cleanup",
     }
+
+    file { '/usr/local/bin/exceptionmonitor':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        content => template('misc/exceptionmonitor.erb'),
+    }
 }
 
 class role::beta::logging::mediawiki {
