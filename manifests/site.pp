@@ -2515,6 +2515,8 @@ node /(celsus|constable)\.wikimedia\.org/ {
 		admins::roots,
 		misc::parsoid::cache,
 		misc::parsoid
+
+	class { "lvs::realserver": realserver_ips => [ "10.2.1.29" ] }
 }
 
 node "wtp1001.eqiad.wmnet" {
