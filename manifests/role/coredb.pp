@@ -193,7 +193,6 @@ class role::coredb::researchdb{
 
 class role::coredb::common(
 	$shard,
-	$read_only = true,
 	$skip_name_resolve = true,
 	$mysql_myisam = false,
 	$mysql_max_allowed_packet = "16M",
@@ -212,31 +211,43 @@ class role::coredb::common(
 	include standard,
 		mysql::coredb::ganglia
 
+	if $topology[$shard]['masters'][$::site] == $::hostname {
+		class { "coredb_mysql":
+			shard => $shard,
+			read_only => false,
+			skip_name_resolve => $skip_name_resolve,
+			mysql_myisam => $mysql_myisam,
+			mysql_max_allowed_packet => $mysql_max_allowed_packet,
+			disable_binlogs => $disable_binlogs,
+			innodb_log_file_size => $innodb_log_file_size,
+			innodb_file_per_table => $innodb_file_per_table,
+			long_timeouts => $long_timeouts,
+			enable_unsafe_locks => $enable_unsafe_locks,
+			large_slave_trans_retries => $large_slave_trans_retries
+		}
+
+		class { "mysql::coredb::monitoring": crit => true }
+
+	}
+	else {
+		class { "coredb_mysql":
+			shard => $shard,
+			read_only => true,
+			skip_name_resolve => $skip_name_resolve,
+			mysql_myisam => $mysql_myisam,
+			mysql_max_allowed_packet => $mysql_max_allowed_packet,
+			disable_binlogs => $disable_binlogs,
+			innodb_log_file_size => $innodb_log_file_size,
+			innodb_file_per_table => $innodb_file_per_table,
+			long_timeouts => $long_timeouts,
+			enable_unsafe_locks => $enable_unsafe_locks,
+			large_slave_trans_retries => $large_slave_trans_retries
+		}
+
+		class { "mysql::coredb::monitoring": crit => false }
+	}
+
 	if $::hostname in $topology[$shard]['snapshot'] {
 		include coredb_mysql::snapshot
-	}
-
-	if $::hostname == $topology[$shard]['masters'][$::site] {
-		$readonly = false
-	}
-
-	class { "coredb_mysql":
-		shard => $shard,
-		read_only => $read_only,
-		skip_name_resolve => $skip_name_resolve,
-		mysql_myisam => $mysql_myisam,
-		mysql_max_allowed_packet => $mysql_max_allowed_packet,
-		disable_binlogs => $disable_binlogs,
-		innodb_log_file_size => $innodb_log_file_size,
-		innodb_file_per_table => $innodb_file_per_table,
-		long_timeouts => $long_timeouts,
-		enable_unsafe_locks => $enable_unsafe_locks,
-		large_slave_trans_retries => $large_slave_trans_retries
-	}
-
-	if $topology[$shard]['masters'][$::site] == $::hostname {
-		class { "mysql::coredb::monitoring": crit => true }
-	} else {
-		class { "mysql::coredb::monitoring": crit => false }
 	}
 }
