@@ -10,6 +10,9 @@ CONFDIR=/etc/exim4
 # Main configuration settings #
 ###############################
 
+# these folks can set their own envelope sender among other things
+trusted_groups=www-data
+
 # Standard lists
 hostlist wikimedia_nets = <; 208.80.152.0/22 ; 91.198.174.0/24 ; 203.212.189.192/26 ; 2620:0:860::/46 ; 10.0.0.0/16
 domainlist system_domains = @
