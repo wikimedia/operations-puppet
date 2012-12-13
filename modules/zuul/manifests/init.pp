@@ -45,7 +45,9 @@ class zuul (
 		ensure => present,
 	}
 
-	$zuul_source_dir = '/var/lib/git/integration/zuul'
+	# Used to be in /var/lib/git/zuul but /var/lib/git can be used
+	# to replicate git bare repositories.
+	$zuul_source_dir = '/usr/local/src/zuul'
 
 	git::clone { 'integration/zuul':
 		directory => $zuul_source_dir,
