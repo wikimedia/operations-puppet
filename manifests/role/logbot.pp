@@ -25,7 +25,7 @@ class role::logbot::wikimedia-labs {
 }
 
 
-#  Install the logbot for wikimedia-labs.  It logs to a page on labsconsole.
+#  Install the logbot for wikimedia-analytics.
 class role::logbot::wikimedia-analytics {
 
 	include passwords::misc::scripts
