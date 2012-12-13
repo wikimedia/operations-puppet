@@ -1256,8 +1256,9 @@ host mc1001 {
 	fixed-address mc1001.eqiad.wmnet;
 }
 
+# currently still unimaged 12/13/12
 host mc1002 {
-	hardware ethernet 00:1b:21:70:8e:df;
+	hardware ethernet 00:1b:21:6d:27:63;
 	fixed-address mc1002.eqiad.wmnet;
 }
 
@@ -1292,15 +1293,15 @@ host mc1008 {
 }
 
 
-#host mc1009 {
-#	hardware ethernet 00:1b:21:70:8d:41;
-#	fixed-address mc1009.eqiad.wmnet;
-#}
-#
-#host mc1010 {
-#	hardware ethernet 90:e2:ba:18:90:2c;
-#	fixed-address mc1010.eqiad.wmnet;
-#}
+host mc1009 {
+	hardware ethernet 90:e2:ba:18:95:64;
+	fixed-address mc1009.eqiad.wmnet;
+}
+
+host mc1010 {
+	hardware ethernet 90:e2:ba:1d:48:e4;
+	fixed-address mc1010.eqiad.wmnet;
+}
 
 host mc1011 {
 	hardware ethernet 90:e2:ba:18:93:9c;
