@@ -26,7 +26,7 @@ class role::zuul {
 	class production {
 
 		# We will receive replication of git bare repositories from Gerrit
-		include role::gerrit::replicationdest
+		include role::gerrit::production::replicationdest
 
 		file { "/var/lib/git":
 			ensure => 'directory',
