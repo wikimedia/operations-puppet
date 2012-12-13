@@ -69,6 +69,7 @@ temp-pool
 <% if has_variable?("mariadb") and mariadb == true then -%>
 query_cache_type=0
 log_slow_verbosity=Query_plan
+optimizer_switch='extended_keys=on'
 <% else %>
 rpl_transaction_enabled
 reserved_super_connections=20
