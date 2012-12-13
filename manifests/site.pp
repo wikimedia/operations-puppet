@@ -2490,7 +2490,7 @@ node "williams.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-node /((wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet)|((celsus|constable)\.wikimedia\.org)/ {
+node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
@@ -2504,6 +2504,20 @@ node /((wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet)|((celsus|constable)\.wikimed
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.1.28" ] }
 
+}
+
+node /(celsus|constable)\.wikimedia\.org/ {
+	$cluster = "parsoidcache"
+	$nagios_group = "${cluster}_$::site"
+
+	if $hostname == "constable" {
+		$ganglia_aggregator = "true"
+	}
+
+	include standard,
+		admins::roots,
+		misc::parsoid::cache,
+		misc::parsoid
 }
 
 node "wtp1001.eqiad.wmnet" {
