@@ -2276,7 +2276,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"abartov@ABartov-XPS":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDBFQ01XCX+xrAU7eKmu9Lrc7g3Ut6zYJx+q2JT3ebkRENcRhRvwrhh95qaJl3TvDne0WZ5sFre9XPxyrLKnCOszvUNUcg1x3htVJvavtiD4DdFtm8P711Cm2B8BhW+fUMT/MyvgmA+4VD2HRhMn9EXajJkrud9xWGouAMqUtkhcTblzJEclkPn4oXWxT6a0pXpr8eNxreO71Vf0948MlWuCnIv82A5OBPmWBX84e6eD24ZYYCko4uutBm+UEj+H0F0m8bHXc2wpt2ksJHgZZKM23fhFw6Glz0hjNRVy4bWvfG9eRc6lnkZdZQZXAl73N3GvjBbViG6YK+NTBiKe4wF";
@@ -2297,7 +2297,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"okeyes@wikimedia.org":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIBqzD79g6nyNeJwvBGQdhC2mILwhaoJ9yaf/ysk9LOzrfjIvo3zSpWwr3JT/qLh9/5cDGNOFqXPlbUL4V0lyMlKhDRTrHtsJJLoMUrmvsUo5aLG0Aum5TJ25jJ3v/av5wSGX5tOtQJgemPh0K4pD5iR3PSGUcFEHUOdhFwdrWT38Q==",
@@ -2318,7 +2318,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"jdlrobson@gmail.com":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDD0Dxmydx5Ep7f892alwpB7YZ2684vWPBfRFubxwGjaG9gazYImKpAm2yeuCmB5lUcFqhLoVzqJfp3yx1GMK6XHPqCqYZ4FaJ2huAURDLYen/9/o1D+uZh4/033nbWBKbUoMPPLR/5dkCw1z1RKAecais0AtAcxhX9sZvoPf9Pu7DfAVgub/4AdpBYzKO3uwIwIdrxI2QyBKCHTG6yGG6D3lh5AGSrga3rmss2JhIp/TpdYrrzsAAaDsnaeu3q6OzE5OwGJzkdoZAcDT5rDsCXUUAwx3WyZtPNJzXaFpX6tvw6IK9cNCcy+oaIFRsz9XNHLvbke0MN0ctyZo2QQ4wh",
@@ -2339,7 +2339,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"jgonera@wikimedia.org":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/W+LDuE1zEbrLhkADukE2jILZuecapTqBDBzcohlU9z01z8mFmc9bYck0prBL7I/cLdM65QVcDZIXekNV9A6h746DeYfNhgSNfIVlwauKpvr83gRLuFGfZsIuORGzD19NKbMYxuMJobCP5KP0Xzqvk//8IcersJTooYXXg/bbfOKHi6mpr+YKqJgyXuhF4weQu23ty4HBhOFpg9gZ5oXvAShdudWsB7aFGMPqg+B61n8+j33HxRV4Q4d/JdGNnaYt/G6klhhTHzX1vnGpGCWvDWXJXAM+Q9zdWxH1lAKL3sSR9fMKQ7z5yUK9Nc3QUb7yJuHkeUhuMIysL2HNWvFV",
