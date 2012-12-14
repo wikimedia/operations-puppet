@@ -53,8 +53,8 @@ def main():
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	print(out)
-	print "Running: sudo salt-call publish.runner deploy.checkout '%s' reset=%s" % (prefix,force)
-	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s' reset=%s" % (prefix,force), shell=True, stdout=subprocess.PIPE)
+	print "Running: sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force)
+	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	print(out)
 
