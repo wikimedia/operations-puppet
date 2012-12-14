@@ -77,8 +77,10 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 }
 
 # lock to prevent collisions
-my $lock_error = setlockfile('set');
-printlog("already running? $lock_error") if defined $lock_error;
+if (my $lock_error = setlockfile('set')) {
+	printlog("exit: $lock_error");
+	exit;
+}
 
 # get run time date and date of last run for use in deciding whether to mail
 my $today = (localtime(time))[3];
