@@ -171,12 +171,6 @@ class icinga::monitor::configuration::files {
 			group => root,
 			mode => 0644;
 
-		"/etc/icinga/migration.cfg":
-			source => "puppet:///files/nagios/migration.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
-
 		"/etc/icinga/misccommands.cfg":
 			source => "puppet:///files/nagios/misccommands.cfg",
 			owner => root,

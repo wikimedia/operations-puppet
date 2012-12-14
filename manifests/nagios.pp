@@ -417,13 +417,6 @@ class nagios::monitor {
 		mode => 0644;
 	}
 
-	file { "/etc/nagios/migration.cfg":
-		source => "puppet:///files/nagios/migration.cfg",
-		owner => root,
-		group => root,
-		mode => 0644;
-	}
-
 	file { "/etc/nagios/misccommands.cfg":
 		source => "puppet:///files/nagios/misccommands.cfg",
 		owner => root,
