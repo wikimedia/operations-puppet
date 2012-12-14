@@ -2549,6 +2549,14 @@ node  "yongle.wikimedia.org" {
 		accounts::catrope
 }
 
+node "yttrium.eqiad.wmnet" {
+	system_role { "solr-geodata": description => "Solr server for GeoData"}
+
+	include standard
+
+	class { "solr": schema => "puppet:///modules/solr/schema-geodata.xml" }
+}
+
 node "yvon.wikimedia.org" {
 	include base,
 		ganglia,
@@ -2561,14 +2569,6 @@ node "zhen.wikimedia.org" {
 		groups::wikidev,
 		accounts::preilly,
 		mobile::vumi
-}
-
-node "yttrium.eqiad.wmnet" {
-	system_role { "solr-geodata": description => "Solr server for GeoData"}
-
-	include standard
-
-	class { "solr": schema => "puppet:///modules/solr/schema-geodata.xml" }
 }
 
 node "zirconium.wikimedia.org" {
