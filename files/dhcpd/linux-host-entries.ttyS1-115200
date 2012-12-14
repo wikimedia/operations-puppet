@@ -1258,7 +1258,7 @@ host mc1001 {
 
 # currently still unimaged 12/13/12
 host mc1002 {
-	hardware ethernet 00:1b:21:6d:27:63;
+	hardware ethernet 00:1b:21:70:8d:4f;
 	fixed-address mc1002.eqiad.wmnet;
 }
 
