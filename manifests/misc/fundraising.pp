@@ -245,8 +245,8 @@ class misc::fundraising::backup::archive_sync(
 		'offhost_backups':
 			user => $user,
 			weekday => $weekday,
-			hour => $minute,
-			minute => $hour,
+			hour => $hour,
+			minute => $minute,
 			command => '/usr/local/bin/offhost_backups',
 			ensure => present;
 	}
