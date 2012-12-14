@@ -56,7 +56,6 @@ class icinga::monitor::configuration::variables {
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/checkcommands.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/contactgroups.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/contacts.cfg",
-			  "${icinga::monitor::configuration::variables::icinga_config_dir}/migration.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/misccommands.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/resource.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/timeperiods.cfg",
