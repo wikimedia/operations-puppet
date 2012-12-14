@@ -237,6 +237,16 @@ class gerrit::jetty ($ldap_hosts,
 			require => File["/var/lib/gerrit2/review_site/hooks"];
 	}
 
+	git::clone {
+		"operations/gerrit/plugins" :
+			directory => "/var/lib/gerrit2/review_site/plugins",
+			branch => "master",
+			origin => "https://gerrit.wikimedia.org/r/p/operations/gerrit/plugins.git",
+			owner => gerrit2,
+			group => gerrit2,
+			require => File["/var/lib/gerrit2/review_site"];
+	}
+
 	exec {
 		"install_gerrit_jetty":
 			creates => "/var/lib/gerrit2/review_site/bin",
