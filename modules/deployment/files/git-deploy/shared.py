@@ -21,6 +21,11 @@ def main():
 	
 	prefix = os.environ['DEPLOY_ROLLOUT_PREFIX']
 	tag = os.environ['DEPLOY_ROLLOUT_TAG']
+	force = os.environ['DEPLOY_FORCE']
+	if force:
+		force = "True"
+	else:
+		force = "False"
 	#TODO: Use this message to notify IRC
 	#msg = os.environ['DEPLOY_DEPLOY_TEXT']
 
@@ -48,8 +53,8 @@ def main():
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	print(out)
-	print "Running: sudo salt-call publish.runner deploy.checkout '%s'" % (prefix)
-	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
+	print "Running: sudo salt-call publish.runner deploy.checkout '%s' reset=%s" % (prefix,force)
+	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s' reset=%s" % (prefix,force), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	print(out)
 
