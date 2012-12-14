@@ -28,6 +28,7 @@ class role::gerrit {
 			ssl_cert_key => "star.wikimedia.org",
 			ssl_ca => "Equifax_Secure_CA",
 			replication => {
+				# If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 				"formey" => {
 				  "url" => 'gerritslave@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git',
 				  "threads" => "4"
@@ -40,10 +41,10 @@ class role::gerrit {
   push = +refs/tags/*:refs/tags/*",
 				  "isGithubRepo" => "true",
 				},
-				#'gallium' => {
-					#'url' => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
-					#'threads' => '4',
-				#},
+				'gallium' => {
+					'url' => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
+					'threads' => '4',
+				},
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
 		}
