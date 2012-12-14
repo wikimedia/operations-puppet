@@ -27,7 +27,7 @@ def fetch(repo):
     keys = key.list_keys()
     return report(minions,keys,repo)
 
-def checkout(repo):
+def checkout(repo, reset=False):
     '''
     Fetch from a master, for the specified repo
     '''
@@ -36,7 +36,7 @@ def checkout(repo):
     if repo not in reg:
         return "Error: repo isn't defined"
     regex = reg[repo]
-    arg = (repo,)
+    arg = (repo,reset)
     minions = {}
     ret = client.cmd_cli(regex, cmd, expr_form='pcre', arg=arg, timeout=120)
     for minion in ret:
