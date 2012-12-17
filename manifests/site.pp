@@ -837,6 +837,9 @@ node "gallium.wikimedia.org" {
 		,'ALL = (postgres) NOPASSWD: /usr/bin/psql'
 	]}
 
+	# full root for Jenkins admin (RT-4101)
+	sudo_user { "hashar": privileges => ['ALL = NOPASSWD: ALL'] }
+
 	include standard,
 		misc::contint::test,
 		misc::contint::test::packages,
