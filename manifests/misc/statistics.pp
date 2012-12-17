@@ -241,6 +241,19 @@ class misc::statistics::db::mongo {
 	}
 }
 
+# Ori's EventLogging setup, incrementally
+# puppetized.
+class misc::statistics::eventlogging {
+	package { [
+		"python-gevent",
+		"python-requests",
+		"python-zmq",
+		"zpubsub",
+	]: ensure => latest; }
+
+	class { "redis": maxmemory => "512Mb" }
+}
+
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
