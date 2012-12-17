@@ -1,0 +1,2 @@
+[pep8]
+filename = *.py,*.py.erb
