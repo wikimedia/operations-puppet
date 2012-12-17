@@ -1,7 +1,14 @@
 class snapshots::packages {
 
-	package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.1', 'p7zip-full', 'libicu42', 'wikimedia-php5-utfnormal' ]:
-		ensure => present;
+	if ($::lsbdistcodename == 'precise') {
+		package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.1', 'p7zip-full', 'libicu42', 'utfnormal' ]:
+			ensure => present;
+		}
+	}
+	else {
+		package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.1', 'p7zip-full', 'libicu42', 'wikimedia-php5-utfnormal' ]:
+			ensure => present;
+		}
 	}
 }
 
