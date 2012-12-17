@@ -15,22 +15,24 @@ class snapshots::packages {
 class snapshots::files {
 	require snapshots::packages
 
-	file { 'snapshot-php5-cli-ini':
-		path => "/etc/php5/cli/php.ini",
-		mode => 0644,
-		owner => root,
-		group => root,
-		source => "puppet:///files/php/php.ini.cli.snaps.${::lsbdistcodename}",
-		ensure => present;
-	}
+	if ($::lsbdistcodename != 'precise') {
+		file { 'snapshot-php5-cli-ini':
+			path => "/etc/php5/cli/php.ini",
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/php/php.ini.cli.snaps.${::lsbdistcodename}",
+			ensure => present;
+		}
 
-	file { 'snapshot-fss-ini':
-		path => "/etc/php5/conf.d/fss.ini",
-		mode => 0644,
-		owner => root,
-		group => root,
-		source => "puppet:///files/php/fss.ini.snaps.${::lsbdistcodename}",
-		ensure => present;
+		file { 'snapshot-fss-ini':
+			path => "/etc/php5/conf.d/fss.ini",
+			mode => 0644,
+			owner => root,
+			group => root,
+			source => "puppet:///files/php/fss.ini.snaps.${::lsbdistcodename}",
+			ensure => present;
+		}
 	}
 
 }
