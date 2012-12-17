@@ -39,3 +39,10 @@ class role::statistics::www inherits role::statistics {
 		# community-analytics.wikimedia.org
 		misc::statistics::sites::community_analytics
 }
+
+class role::statistics::eventlogging inherits role::statistics {
+    system_role { "role::statistics": description => "event logging aggregator" }
+
+	include misc::statistics::db::mysql,
+		misc::statistics::eventlogging
+}
