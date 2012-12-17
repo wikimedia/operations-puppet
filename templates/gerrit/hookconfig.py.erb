@@ -9,44 +9,45 @@ logdir = "/var/lib/gerrit2/review_site/logs"
 # Files where Gerrit projects will have their notifications written to
 # See manifests/gerrit.pp $ircecho_infile for actual file/channel map
 filenames = {
-	"operations/puppet": {
-		"production" : "operations.log",
-		"test"       : "labs.log",
-		"default"    : "labs.log"
-	},
+    "operations/puppet": {
+        "production": "operations.log",
+        "test": "labs.log",
+        "default": "labs.log"
+    },
 
-	"mediawiki/core": {
-		"Wikidata" : "wikidata.log",
-		# Explicitly define a default, hookhelper does not fallback properly
-		"default"  : "mediawiki.log",
-	},
+    "mediawiki/core": {
+        "Wikidata": "wikidata.log",
+        # Explicitly define a default, hookhelper does not fallback properly
+        "default": "mediawiki.log",
+    },
 
-	# WMF projects
-	"mediawiki/extensions/MobileFrontend" : "mobile.log",
-	"mediawiki/extensions/Parsoid": "parsoid.log",
-	"analytics/*"   : "wikimedia-dev.log",
-	"integration/*" : "wikimedia-dev.log",
-	"labs/*"      : "labs.log",
-	"mediawiki/*" : "mediawiki.log",
-	"operations/*": "operations.log",
+    # WMF projects
+    "mediawiki/extensions/MobileFrontend": "mobile.log",
+    "mediawiki/extensions/Parsoid": "parsoid.log",
+    "analytics/*": "wikimedia-dev.log",
+    "integration/*": "wikimedia-dev.log",
+    "labs/*": "labs.log",
+    "mediawiki/*": "mediawiki.log",
+    "operations/*": "operations.log",
 
-	# SMW
-	"mediawiki/extensions/Semantic*" : "semantic-mediawiki.log",
-	"mediawiki/extensions/Validator" : "semantic-mediawiki.log",
-	"mediawiki/extensions/Maps" : "semantic-mediawiki.log",
-	"mediawiki/extensions/RDFIO" : "semantic-mediawiki.log",
-	"mediawiki/extensions/SolrStore" : "semantic-mediawiki.log",
-	"mediawiki/extensions/SMW*" : "semantic-mediawiki.log",
+    # SMW
+    "mediawiki/extensions/Semantic*": "semantic-mediawiki.log",
+    "mediawiki/extensions/Validator": "semantic-mediawiki.log",
+    "mediawiki/extensions/Maps": "semantic-mediawiki.log",
+    "mediawiki/extensions/RDFIO": "semantic-mediawiki.log",
+    "mediawiki/extensions/SolrStore": "semantic-mediawiki.log",
+    "mediawiki/extensions/SMW*": "semantic-mediawiki.log",
 
-	# Wikidata
-	"mediawiki/extensions/Wikibase" : "wikidata.log",
-	"mediawiki/extensions/Diff" : "wikidata.log",
-	"mediawiki/extensions/DataValues" : "wikidata.log",
+    # Wikidata
+    "mediawiki/extensions/Wikibase": "wikidata.log",
+    "mediawiki/extensions/Diff": "wikidata.log",
+    "mediawiki/extensions/DataValues": "wikidata.log",
 
-	"default": "mediawiki.log"
+    "default": "mediawiki.log"
 }
 
-# These users are annoying since they're bots and such. Don't report their comments...
+# These users are annoying since they're bots and such. Don't report their
+# comments...
 spammyusers = ["jenkins-bot"]
 # ...or any of their actions
 reallyspammyusers = ["L10n-bot"]
