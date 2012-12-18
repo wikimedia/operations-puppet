@@ -370,7 +370,7 @@ class misc::statistics::rsync::jobs {
 	# Too bad I can't do this with recurse => true.
 	# See: https://projects.puppetlabs.com/issues/86
 	# for a much too long discussion on why I can't.
-	file { ["/a/squid", "/a/squid/archive", "/a/aft", "/a/aft/archive"]:
+	file { ["/a/squid", "/a/squid/archive", "/a/aft", "/a/aft/archive", "/a/eventlogging"]:
 		ensure  => "directory",
 		owner   => "stats",
 		group   => "wikidev",
@@ -411,6 +411,12 @@ class misc::statistics::rsync::jobs {
 	misc::statistics::rsync_job { "edits":
 		source      => "locke.wikimedia.org::udp2log/archive/edits*.gz",
 		destination => "/a/squid/archive/edits",
+	}
+
+	# eventlogging logs from vanadium
+	misc::statistics::rsync_job { "eventlogging":
+		source      => "vanadium.eqiad.wmnet::eventlogging/*",
+		destination => "/a/eventlogging",
 	}
 }
 
