@@ -416,7 +416,7 @@ class misc::statistics::rsync::jobs {
 	# eventlogging logs from vanadium
 	misc::statistics::rsync_job { "eventlogging":
 		source      => "vanadium.eqiad.wmnet::eventlogging/*",
-		destination => "/a/eventlogging",
+		destination => "/a/eventlogging/archive",
 	}
 }
 
