@@ -4,7 +4,13 @@
 	DocumentRoot /var/www
 	ServerAdmin root@wikimedia.org
 
-	<Directory "/var/www/">
+	<Directory "<%= ganglia_webdir %>">
+	## temp until security issues resolved
+	AuthName "ganglia Access"
+	AuthType Basic                                                                                     
+	AuthUserFile /etc/apache2/htaccess.tmp                                                             
+	Require valid-user   
+
 	Options FollowSymLinks
 	AllowOverride None
 	Order allow,deny
@@ -28,7 +34,13 @@
 	SSLCertificateFile <%= ganglia_ssl_cert %>
 	SSLCertificateKeyFile <%= ganglia_ssl_key %>
 
-	<Directory "/var/www/">
+	<Directory "<%= ganglia_webdir %>">
+	## temp until security issues resolved
+	AuthName "ganglia Access"
+	AuthType Basic                                                                                     
+	AuthUserFile /etc/apache2/htaccess.tmp                                                             
+	Require valid-user   
+
 	Options FollowSymLinks
 	AllowOverride None
 	Order allow,deny
