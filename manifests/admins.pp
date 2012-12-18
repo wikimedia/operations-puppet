@@ -847,6 +847,46 @@ class accounts {
 		}
 	}
 
+	class mflaschen inherits baseaccount {
+		$username = "mflaschen"
+		$realname = "Matthew Flaschen"
+		$uid = 625
+		$gid = 500
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+
+		if $enabled == "true" and $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "matthew@matthew-t520":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDFG6c++eZ7Rf9b1XWqmHhURA/dvpyIPdfA/gm5a0Kxbi8mDjqE0rG2svHsRhuFQolDtTqLnVgFUpEPgxOHG2DFXiVQWp5A00OEDikMk0XWTlysXpPl34tYkiQbSLQsQk3wz6zGeD8Wgp+0QPikpQKsnDSKLTNI1o7wIwFNgy2jcgfjSlMOqOvllj9N12CUsF/cD5uJn7IQ5vkIDRP39qXQo3XnsRUm3+Jy0H6Z5mYuWC2IUBr+7VOixPV2HZ42NJDkQzHs8whOYJxWNgzaYQKSvmGnjzScHvLXAD0lJtVBA2dr3FyqqY6a4FofUAuW0nnRwcckYM2K3upMhhS60jHN"
+			}
+		}
+	}
+
+	class mholmquist inherits baseaccount {
+		$username = "mholmquist"
+		$realname = "Mark Holmquist"
+		$uid = 626
+		$gid = 500
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+
+		if $enabled == "true" and $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "administrator@WMF-ThinkPad-T420s":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDIAim5ZuEvBLdg2XabmNI5OHHQgBzi7HJ/AHZj0AeZCdfFg/wwB1TiarcDXRITf2ZVVn2caTuayKeA5dzDWOz1ouZycJ9L4rr2cgs3pz0TJfyP63usqevnwYpHFiFlYHqyR37+JaUrWknHTcslAxeiL3zAHrRLjqI2H8zyajWJ7AWdBLMSKKan9EoFpZ4oKzTYr7A4fGqj70yXw2c4R2qJNuXxmG4CbeVL1bjyTd+a8OT1Ixx3zuMtVCHL1QZDeCtBaMpF62cKKkUM88btoKh1ESSmzQTWu7ZJP/LA1nnTukRt4l4kWv33zt+iAa5KffxCppx77fRSbOlkyk0dqjrj"
+			}
+		}
+	}
+
 	class midom inherits baseaccount {
 		$username = "midom"
 		$realname = "Domas Mituzas"
@@ -2467,6 +2507,8 @@ class admins::mortals {
 	include accounts::khorn
 	include accounts::krinkle
 	include accounts::maxsem
+	include accounts::mflaschen
+	include accounts::mholmquist
 	include accounts::mlitn
 	include accounts::neilk  # revoked access per RT 2345
 	include accounts::nikerabbit
