@@ -5,13 +5,14 @@ Run git deployment commands
 import re
 import urllib
 
+
 def sync_all():
     '''
     Sync all repositories. If a repo doesn't exist on target, clone as well.
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.sync_all
+    salt -G 'cluster:appservers' deploy.sync_all
     '''
     repourls = __pillar__.get('repo_urls')
     minion_regexes = __pillar__.get('repo_minion_regex')
@@ -21,13 +22,13 @@ def sync_all():
     status = 0
 
     minion = __grains__.get('id', '')
-    for repo,repourl in repourls.items():
+    for repo, repourl in repourls.items():
         repoloc = repolocs[repo]
-	minion_regex = minion_regexes[repo]
-        if not re.search(minion_regex,minion):
+        minion_regex = minion_regexes[repo]
+        if not re.search(minion_regex, minion):
             continue
         if not __salt__['file.directory_exists'](repoloc + '/.git'):
-            __salt__['git.clone'](repoloc,repourl + '/.git')
+            __salt__['git.clone'](repoloc, repourl + '/.git')
         else:
             ret = __salt__['deploy.checkout'](repo)
         ret = __salt__['deploy.checkout'](repo)
@@ -36,13 +37,14 @@ def sync_all():
 
     return status
 
+
 def fetch(repo):
     '''
     Call a fetch for the specified repo
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.fetch 'slot0'
+    salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
     site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
@@ -52,21 +54,23 @@ def fetch(repo):
     repoloc = repolocs[repo]
 
     cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
-    __salt__['cmd.retcode'](cmd,repoloc)
+    __salt__['cmd.retcode'](cmd, repoloc)
 
     cmd = '/usr/bin/git fetch'
 
-    return __salt__['cmd.retcode'](cmd,repoloc)
+    return __salt__['cmd.retcode'](cmd, repoloc)
 
-def checkout(repo,reset=False):
+
+def checkout(repo, reset=False):
     '''
     Checkout the current deployment tag. Assumes a fetch has been run.
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.checkout 'slot0'
+    salt -G 'cluster:appservers' deploy.checkout 'slot0'
     '''
-    #TODO: replace the cmd.retcode calls with git module calls, where appropriate
+    #TODO: replace the cmd.retcode calls with git module calls, where
+    #      appropriate.
     site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
     repourls = repourls[site]
@@ -96,19 +100,19 @@ def checkout(repo,reset=False):
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return 20
     else:
         cmd = '/usr/bin/git describe --always --tag'
-        current_tag = __salt__['cmd.run'](cmd,repoloc)
+        current_tag = __salt__['cmd.run'](cmd, repoloc)
         current_tag = current_tag.strip()
         if current_tag == tag:
             return 0
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
-    ret = __salt__['cmd.retcode'](cmd,repoloc)
+    ret = __salt__['cmd.retcode'](cmd, repoloc)
     if ret != 0:
         return 30
 
@@ -117,19 +121,19 @@ def checkout(repo,reset=False):
     if checkout_submodules == "True":
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
-            for before,after in sed.items():
-                after = after.replace('__REPO_URL__',repourl)
+            for before, after in sed.items():
+                after = after.replace('__REPO_URL__', repourl)
                 __salt__['file.sed'](gitmodules, before, after)
 
         # Sync the .gitmodules config
         cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return 40
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --init'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             ret = 50
 

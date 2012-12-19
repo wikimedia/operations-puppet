@@ -7,7 +7,8 @@ import os
 
 def config_symlink(repo):
     '''
-    Put a localsettings.js symlink in the Parsoid checkout pointing to the config checkout
+    Put a localsettings.js symlink in the Parsoid checkout pointing to the
+    config checkout
     '''
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
@@ -19,6 +20,7 @@ def config_symlink(repo):
             return 1
 
     return 0
+
 
 def restart_parsoid(repo):
     '''
