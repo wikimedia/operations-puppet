@@ -47,7 +47,7 @@ class misc::bugzilla::crons {
 class misc::bugzilla::communitymetrics {
 
 	file { bugzilla_communitymetrics_file:
-		path => "/srv/org/wikimedia/bugzilla/bugzilla_community_metrics.sh":
+		path => "/srv/org/wikimedia/bugzilla/bugzilla_community_metrics.sh",
 		owner => root,
 		group => www-data,
 		mode => 0550,
