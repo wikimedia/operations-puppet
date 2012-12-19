@@ -11,7 +11,7 @@ class role::salt::masters::production {
 		},
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
-		salt_worker_threads => "50",
+		salt_worker_threads => "25",
 	}
 
 	salt::master_environment{ "base":
