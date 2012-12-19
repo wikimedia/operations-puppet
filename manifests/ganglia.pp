@@ -406,7 +406,7 @@ class ganglia::web {
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
 		# TODO(ssmollett): when switching to ganglia-webfrontend
 		# package, use /usr/share/ganglia-webfrontend
-		$ganglia_webdir = "/srv/org/wikimedia/ganglia-web-3.5.1"
+		$ganglia_webdir = "/srv/org/wikimedia/ganglia-web-3.5.4"
 		$ganglia_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
 		$ganglia_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
 	}
