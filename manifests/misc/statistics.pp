@@ -252,6 +252,17 @@ class misc::statistics::eventlogging {
 	]: ensure => latest; }
 
 	class { "redis": maxmemory => "512Mb" }
+
+	file {
+		["/var/log/eventlogging", "/var/log/eventlogging/archive"]:
+			owner => "mwdeploy",
+			group => "wikidev",
+			mode => 0664,
+			ensure => "directory";
+		"/etc/logrotate.d/eventlogging":
+			source => "puppet:///files/logrotate/eventlogging",
+			mode => 0444;
+	}
 }
 
 # == Class misc::statistics::gerrit_stats
