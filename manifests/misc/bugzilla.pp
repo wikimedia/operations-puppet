@@ -42,3 +42,24 @@ class misc::bugzilla::crons {
 		weekday => 0  # Sunday
 	}
 }
+
+# RT-3962 - mail bz user stats to community metrics
+class misc::bugzilla::communitymetrics {
+
+	file { bugzilla_communitymetrics_file:
+		path => "/srv/org/wikimedia/bugzilla/bugzilla_community_metrics.sh":
+		owner => root,
+		group => www-data,
+		mode => 0550,
+		source => "puppet:///files/misc/bugzilla_community_metrics.sh",
+		ensure => present,
+	}
+
+	cron { bugzilla_communitymetrics_cron:
+		command	=> "cd /srv/org/wikimedia/bugzilla/ ; ./bugzilla_community_metrics.sh",
+		user => www-data,
+		hour => 0,
+		minute => 0,
+		monthday => 1,
+	}
+}
