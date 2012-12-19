@@ -1256,7 +1256,6 @@ host mc1001 {
 	fixed-address mc1001.eqiad.wmnet;
 }
 
-# currently still unimaged 12/13/12
 host mc1002 {
 	hardware ethernet 00:1b:21:70:8d:4f;
 	fixed-address mc1002.eqiad.wmnet;
@@ -3630,6 +3629,11 @@ host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
 }
+
+host tellurium {
+	hardware ethernet 00:10:18:E4:1E:26;
+	fixed-address tellurium.eqiad.wmnet;
+	}
 
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
