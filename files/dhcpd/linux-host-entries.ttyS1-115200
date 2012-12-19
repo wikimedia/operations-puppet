@@ -3630,6 +3630,11 @@ host strontium {
 	fixed-address strontium.eqiad.wmnet;
 }
 
+host tellurium {
+	hardware ethernet 00:10:18:E4:1E:26;
+	fixed-address tellurium.eqiad.wmnet;
+	}
+
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
 	fixed-address tin.eqiad.wmnet;
