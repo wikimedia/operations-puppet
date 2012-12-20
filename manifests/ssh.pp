@@ -61,6 +61,13 @@ class ssh::hostkeys::collect {
 
 		# Install all collected ssh host keys
 		Sshhostkey <<| |>>
+
+		file { '/etc/ssh/ssh_known_hosts':
+			ensure => 'present',
+			owner => 'root',
+			group => 'root',
+			mode => '0644',
+		}
 	}
 }
 
