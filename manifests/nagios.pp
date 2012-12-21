@@ -195,6 +195,7 @@ class nagios::monitor {
 			  "${nagios_config_dir}/puppet_services.cfg" ]
 
 	$static_files = [ "${nagios_config_dir}/nagios.cfg",
+			  "${nagios_config_dir}/analytics.cfg",  # TEMP.  This will be removed when analytics puppetization goes to production
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
 			  "${nagios_config_dir}/contactgroups.cfg",
@@ -391,6 +392,16 @@ class nagios::monitor {
 
 	file { "/etc/nagios/htpasswd.users":
 		source => "puppet:///private/nagios/htpasswd.users",
+		owner => root,
+		group => root,
+		mode => 0644;
+	}
+
+	# TEMP: analytics eqiad cluster manual entries.
+	# These will be removed from this manually managed file
+	# once analytics puppetization goes to production.
+	file { "/etc/nagios/analytics.cfg":
+		content => template("nagios/analytics.cfg.erb"),
 		owner => root,
 		group => root,
 		mode => 0644;

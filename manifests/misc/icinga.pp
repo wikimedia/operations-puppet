@@ -52,6 +52,7 @@ class icinga::monitor::configuration::variables {
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_hostextinfo.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/puppet_services.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/icinga.cfg",
+			  "${icinga::monitor::configuration::variables::icinga_config_dir}/analytics.cfg", # TEMP.  This will be removed when analytics puppetization goes to production
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/cgi.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/checkcommands.cfg",
 			  "${icinga::monitor::configuration::variables::icinga_config_dir}/contactgroups.cfg",
@@ -149,6 +150,15 @@ class icinga::monitor::configuration::files {
 
 		"/etc/icinga/htpasswd.users":
 			source => "puppet:///private/nagios/htpasswd.users",
+			owner => root,
+			group => root,
+			mode => 0644;
+
+		# TEMP: analytics eqiad cluster manual entries.
+		# These will be removed from this manually managed file
+		# once analytics puppetization goes to production.
+		"/etc/icinga/analytics.cfg":
+			content => template("nagios/analytics.cfg.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
