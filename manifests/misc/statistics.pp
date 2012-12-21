@@ -95,7 +95,7 @@ class misc::statistics::mediawiki {
 
 	git::clone { "statistics_mediawiki":
 		directory => $statistics_mediawiki_directory,
-		origin    => "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git",
+		origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git",
 		ensure    => 'latest',
 		owner     => 'mwdeploy',
 		group     => 'wikidev',
