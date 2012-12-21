@@ -1529,11 +1529,11 @@ node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 	$cluster = "ceph"
-	
+
 	if $::hostname =~ /^ms-be300[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	
+
 	include standard
 }
 
@@ -1600,13 +1600,13 @@ node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
 }
 
 # mw 1153-1160 are imagescalers (precise)
-#node /mw11(5[3-9]|60)\.eqaid\.wmnet/ {
-#	if $hostname =~ /^mw115[34]$/ {
-#		$ganglia_aggregator = "true"
-#	}
-#
-#	include	role::applicationserver::imagescaler
-#}
+node /mw11(5[3-9]|60)\.eqaid\.wmnet/ {
+	if $hostname =~ /^mw115[34]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include	role::applicationserver::imagescaler
+}
 
 node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
@@ -2281,7 +2281,7 @@ node "stat1.wikimedia.org" {
 		accounts::ironholds,
 		accounts::jdlrobson,
 		accounts::jgonera
-		
+
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
