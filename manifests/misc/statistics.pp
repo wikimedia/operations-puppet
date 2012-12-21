@@ -263,6 +263,24 @@ class misc::statistics::eventlogging {
 			source => "puppet:///files/logrotate/eventlogging",
 			mode => 0444;
 	}
+
+	# Create an rsync module that will allow us to copy files from
+	# /varl.og/eventlogging to statistic servers.
+	# This uses modules/rsync to
+	# set up an rsync daemon service
+	include rsync::server
+
+	# Set up an rsync module
+	# (in /etc/rsync.conf) for /var/log/eventlogging.
+	# There is an rsync_job on stat1 that copies
+	# files in /var/log/eventlogging/arvhive.*.gz to stat1.
+	rsync::server::module { "eventlogging":
+		path        => "/var/log/eventlogging",
+		read_only   => "yes",
+		list        => "yes",
+		# allow only statistics servers (stat1, stat1001)
+		hosts_allow => $misc::statistics::base::servers,
+	}
 }
 
 # == Class misc::statistics::gerrit_stats
@@ -426,7 +444,7 @@ class misc::statistics::rsync::jobs {
 
 	# eventlogging logs from vanadium
 	misc::statistics::rsync_job { "eventlogging":
-		source      => "vanadium.eqiad.wmnet::eventlogging/*",
+		source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
 		destination => "/a/eventlogging/archive",
 	}
 }
