@@ -204,11 +204,6 @@ node "analytics1001.wikimedia.org" {
 # interfaces to Kraken and Hadoop.
 node "analytics1027.eqiad.wmnet" {
 	include role::analytics::frontend
-
-	# hue uses ldap to authenticate users, and requires this
-    class { "role::ldap::client::labs":
-            ldapincludes =>  ['openldap', 'utils', 'nss'],
-    }
 }
 
 # analytics1002 - analytics1026

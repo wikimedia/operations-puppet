@@ -26,6 +26,11 @@ class role::analytics {
 		version      => 6,
 	}
 
+	# hadoop and hue use ldap to authenticate users, and require this
+    class { "role::ldap::client::labs":
+            ldapincludes =>  ['openldap', 'utils', 'nss'],
+    }
+
 	# We want to be able to geolocate IP addresses
 	include geoip
 
