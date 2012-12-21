@@ -6,10 +6,5 @@ class coredb_mysql::utils {
 			group => root,
 			mode => 0555,
 			source => "puppet:///modules/coredb_mysql/utils/master_id.py";
-		"/etc/profile.d/mysqlpath.sh":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///modules/coredb_mysql/utils/mysqlpath.sh";
 	}
 }
