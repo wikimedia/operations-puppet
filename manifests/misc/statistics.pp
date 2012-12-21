@@ -95,7 +95,7 @@ class misc::statistics::mediawiki {
 
 	git::clone { "statistics_mediawiki":
 		directory => $statistics_mediawiki_directory,
-		origin    => "https://gerrit.wikimedia.org/r/p/test/mediawiki/core.git",
+		origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git",
 		ensure    => 'latest',
 		owner     => 'mwdeploy',
 		group     => 'wikidev',
@@ -290,7 +290,7 @@ class misc::statistics::eventlogging {
 # to commit and push generated data into
 # a repository.
 #
-class misc::statistics::gerrit_stats {
+ediclass misc::statistics::gerrit_stats {
 	$gerrit_stats_repo_url      = "https://gerrit.wikimedia.org/r/p/analytics/gerrit-stats.git"
 	$gerrit_stats_data_repo_url = "ssh://stats@gerrit.wikimedia.org:29418/analytics/gerrit-stats/data.git"
 	$gerrit_stats_base          = "/a/gerrit-stats"
