@@ -103,6 +103,8 @@ class role::applicationserver {
 
 		class { "role::applicationserver::webserver": maxclients => "18" }
 
+		include mediawiki_new::cgroups
+
 		include	imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
