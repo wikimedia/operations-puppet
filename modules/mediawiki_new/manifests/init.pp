@@ -20,5 +20,5 @@ class mediawiki_new {
 		ensure => stopped;
 	}
 
-	include users, sync
+	include users, sync, cgroup
 }
