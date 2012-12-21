@@ -2547,7 +2547,7 @@ node  "yongle.wikimedia.org" {
 		accounts::catrope
 }
 
-node /^(yttrium|solr(100)?[1-3])\.(eqiad|pmtpa)\.wmnet/ {
+node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
 	system_role { "solr-geodata": description => "Solr server for GeoData"}
 
 	include standard
