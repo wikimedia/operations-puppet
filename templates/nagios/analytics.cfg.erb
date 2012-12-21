@@ -8,10 +8,10 @@
 # is in full production.
 
 analytics_webrequest_udp2log_hosts = [
-  "analytics1003.eqiad.wmnet",
-  "analytics1004.eqiad.wmnet",
-  "analytics1005.eqiad.wmnet",
-  "analytics1006.eqiad.wmnet",
+  "analytics1003",
+  "analytics1004",
+  "analytics1005",
+  "analytics1006",
 ]
 
 analytics_webrequest_udp2log_hosts.each do |hostname| -%>
@@ -27,7 +27,7 @@ define service {
 	notification_options           c,r,f
 	normal_check_interval          2
 	service_description            Packetloss_Average
-	## --PUPPET_NAME-- (called '_naginator_name' in the manifest)                oxygen udp2log-<%= hostname %>-packetloss
+	## --PUPPET_NAME-- (called '_naginator_name' in the manifest)                <%= hostname %> udp2log-<%= hostname %>-packetloss
 	contact_groups                 analytics
 	host_name                      <%= hostname %>
 	max_check_attempts             4
