@@ -1,4 +1,5 @@
-import sys, traceback, ldapsupportlib, pwd, subprocess, os
+#!/usr/bin/python
+import sys, traceback, ldapsupportlib, pwd, subprocess, os, json
 from optparse import OptionParser
 
 try:   
@@ -20,6 +21,9 @@ def main():
 		hosts = proc.communicate()
 		hosts = hosts[0].split()
 		for host in hosts:
+			if host[0] == "(":
+				continue
+			host = host.strip('"')
 			basedn = getPuppetInfo('ldapbase')
 			query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
 			PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
@@ -31,6 +35,17 @@ def main():
 					sys.stderr.write('Failed to remove the certificate: ' + path + '\n')
 			else:
 				subprocess.Popen(['/usr/sbin/puppetca -s ' + host], shell=True, stderr=subprocess.PIPE)
+		proc = subprocess.Popen('/usr/bin/salt-key --list=unaccepted --out=json', shell=True, stdout=subprocess.PIPE)
+		hosts = proc.communicate()
+		hosts = json.loads(hosts[0])
+		for host in hosts["minions_pre"]:
+			basedn = getPuppetInfo('ldapbase')
+			query = "(&(objectclass=puppetclient)(|(dc=" + host + ")(cnamerecord=" + host + ")(associateddomain=" + host + ")))"
+			PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
+			if not PosixData:
+				subprocess.Popen(['/usr/bin/salt-key -y -d ' + host], shell=True, stdout=subprocess.PIPE)
+			else:
+				subprocess.Popen(['/usr/bin/salt-key -a ' + host], shell=True, stderr=subprocess.PIPE)
 	except ldap.PROTOCOL_ERROR:
 		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
 		traceback.print_exc(file=sys.stderr)
