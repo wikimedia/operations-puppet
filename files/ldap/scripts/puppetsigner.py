@@ -1,4 +1,10 @@
 #!/usr/bin/python
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/ldap/scripts/puppetsigner.py
+#####################################################################
+
 import sys, traceback, ldapsupportlib, pwd, subprocess, os, json
 from optparse import OptionParser
 
