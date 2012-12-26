@@ -39,7 +39,9 @@ class role::statistics::www inherits role::statistics {
 		# stats.wikimedia.org
 		misc::statistics::sites::stats,
 		# community-analytics.wikimedia.org
-		misc::statistics::sites::community_analytics
+		misc::statistics::sites::community_analytics,
+		# metrics-api.wikimedia.org
+		misc::statistics::sites::metrics_api
 }
 
 class role::statistics::eventlogging inherits role::statistics {
