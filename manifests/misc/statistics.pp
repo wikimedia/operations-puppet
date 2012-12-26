@@ -60,7 +60,9 @@ class misc::statistics::packages::python {
 		"python-django",
 		"python-mysqldb",
 		"python-yaml",
-		"python-dateutil"
+		"python-dateutil",
+		"python-numpy",
+		"python-scipy",
 	]:
 		ensure => 'installed',
 	}
@@ -116,6 +118,8 @@ class misc::statistics::plotting {
 		ensure => installed;
 	}
 }
+
+
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
@@ -217,6 +221,89 @@ class misc::statistics::sites::community_analytics {
 	"<LocationMatch \"\\.(jpg|gif|png)$\">
 		SetHandler None
 	</LocationMatch>",
+	],
+	}
+}
+
+# metrics-api.wikimedia.org
+# See: http://stat1.wikimedia.org/rfaulk/pydocs/_build/env.html
+# for more info on how and why.
+class misc::statistics::sites::metrics_api {
+	$site_name        = "metrics-api.wikimedia.org"
+	$document_root    = "/srv/org.wikimedia.metrics-api"
+
+	$e3_home          = "/a/e3"
+	$e3_analysis_path = "$e3_home/E3Analysis"
+	$e3_user          = $misc::statistics::user::username
+
+	# these get rendered in $e3_analysis_path/config/settings.py
+	$mysql_user       = $passwords::mysql::research::user
+	$mysql_pass       = $passwords::mysql::research::pass
+	$mysql_db         = "staging"
+	$mysql_host       = "s1-analytics-slave.eqiad.wmnet"
+	$mysql_port       = 3306
+
+	package { "python-flask":
+		ensure => "installed",
+	}
+
+	file { [$e3_home, $document_root]:
+		ensure => "directory",
+		owner  => $misc::statistics::user::username,
+		group  => "wikidev",
+		mode   => 0775,
+	}
+
+	# clone the E3 Analysis repository
+	git::clone { "E3Analysis":
+		directory => "$e3_analysis_path",
+		origin    => "https://github.com/rfaulkner/E3Analysis.git",
+		owner     => $e3_user,
+		require   => [Package["python-flask"], File[$e3_home], Class["misc::statistics::user"], Class["misc::statistics::packages::python"]],
+		ensure    => "latest",
+	}
+
+	# Need settings.py to configure metrics-api python application
+	# Make this only readable by stats user; it has db passwords in it.
+	file { "$e3_analysis_path/config/settings.py":
+		content => template("misc/e3-metrics-api.settings.py.erb"),
+		owner   => $e3_user,
+		group   => "root",
+		mode    => 0600,
+		require => Git::Clone["E3Analysis"],
+	}
+
+	# symlink the e3-analysis src directory into /srv/org.wikimedia.metrics-api
+	file { "$document_root/src":
+		ensure  => "$e3_analysis_path/src",
+		require => Git::Clone["E3Analysis"],
+	}
+
+	# symlink the api.wsgi app loader python script.
+	# api.wsgi loads 'src.api' as a module :/
+	file { "$document_root/api.wsgi":
+		ensure => "$e3_analysis_path/src/api/api.wsgi",
+		require => Git::Clone["E3Analysis"],
+	}
+
+	# Set up the Python WSGI VirtualHost
+	include webserver::apache
+	webserver::apache::module { "wsgi": }
+	webserver::apache::site { $site_name:
+		require => [File["/srv/org.wikimedia.metrics-api"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
+		server_admin => "noc@wikimedia.org",
+		document_root => $document_root,
+		custom => ["
+    WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
+    WSGIScriptAlias / $document_root/api.wsgi
+
+    <Directory $document_root>
+        WSGIProcessGroup api
+        WSGIApplicationGroup %{GLOBAL}
+        WSGIRestrictStdout Off
+        Order deny,allow
+        Allow from all
+    </Directory>",
 	],
 	}
 }
