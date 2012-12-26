@@ -1360,6 +1360,29 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mc[12]$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	# replication mappings may end up all over the place
+	# once servers die and are replaced, so making this
+	# explicit for now.
+	$redis_replication = {
+		'slave' => false,
+		'mc1' => 'mc1001',
+		'mc2' => 'mc1002',
+		'mc3' => 'mc1003',
+		'mc4' => 'mc1004',
+		'mc5' => 'mc1005',
+		'mc6' => 'mc1006',
+		'mc7' => 'mc1007',
+		'mc8' => 'mc1008',
+		'mc9' => 'mc1009',
+		'mc10' => 'mc1010',
+		'mc11' => 'mc1011',
+		'mc12' => 'mc1012',
+		'mc13' => 'mc1013',
+		'mc14' => 'mc1014',
+		'mc15' => 'mc1015',
+		'mc16' => 'mc1016',
+	}
 	include role::memcached
 
 	file { "/a":
@@ -1371,6 +1394,45 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	}
 	include redis::ganglia
 }
+
+node /mc(10[01][0-9])\.eqiad\.wmnet/ {
+	$cluster = "memcached"
+	if $hostname =~ /^mc100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+
+	$redis_replication = {
+		'slave' => 'pmtpa.wmnet',
+		'mc1001' => 'mc1',
+		'mc1002' => 'mc2',
+		'mc1003' => 'mc3',
+		'mc1004' => 'mc4',
+		'mc1005' => 'mc5',
+		'mc1006' => 'mc6',
+		'mc1007' => 'mc7',
+		'mc1008' => 'mc8',
+		'mc1009' => 'mc9',
+		'mc1010' => 'mc10',
+		'mc1011' => 'mc11',
+		'mc1012' => 'mc12',
+		'mc1013' => 'mc13',
+		'mc1014' => 'mc14',
+		'mc1015' => 'mc15',
+		'mc1016' => 'mc16',
+	}
+
+	include role::memcached
+
+	file { "/a":
+		ensure => directory;
+	}
+
+	class { "redis":
+		maxmemory => "500Mb",
+	}
+	include redis::ganglia
+}
+
 
 node "mchenry.wikimedia.org" {
 	$gid = 500
