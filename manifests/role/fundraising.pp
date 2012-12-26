@@ -7,6 +7,8 @@ class role::fundraising::messaging {
 	include standard,
 		groups::wikidev,
 		admins::fr-tech
+
+	monitor_service { "check_cclimbo": description => "check_cclimbo", check_command => "puppet-FAIL", passive => "true", freshness => 300, retries => 2 ; }
 }
 
 
