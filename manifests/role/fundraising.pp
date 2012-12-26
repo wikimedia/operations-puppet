@@ -8,8 +8,22 @@ class role::fundraising::messaging {
 		groups::wikidev,
 		admins::fr-tech
 
-	monitor_service { "check_cclimbo": description => "check_cclimbo", check_command => "check_dummy 1 'passive check_cclimbo is awol'", passive => "true", freshness => 300, retries => 2 ; }
-	monitor_service { "check_donations": description => "check_donations", check_command => "check_dummy 1 'passive check_donations is awol'", passive => "true", freshness => 300, retries => 2 ; }
+	monitor_service { "check_cclimbo":
+		description => "check_cclimbo",
+		check_command => "check_dummy!1!'passive check_cclimbo is awol'",
+		passive => "true",
+		freshness => 300,
+		retries => 2,
+		contact_group = 'fundraising';
+	}
+	monitor_service { "check_donations":
+		description => "check_donations",
+		check_command => "check_dummy!1!'passive check_donations is awol'",
+		passive => "true",
+		freshness => 300,
+		retries => 2
+		contact_group = 'fundraising';
+	}
 }
 
 
