@@ -229,6 +229,8 @@ class misc::statistics::sites::community_analytics {
 # See: http://stat1.wikimedia.org/rfaulk/pydocs/_build/env.html
 # for more info on how and why.
 class misc::statistics::sites::metrics_api {
+	require passwords::mysql::research
+	
 	$site_name        = "metrics-api.wikimedia.org"
 	$document_root    = "/srv/org.wikimedia.metrics-api"
 
