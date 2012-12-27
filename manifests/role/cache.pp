@@ -399,7 +399,7 @@ class role::cache {
 				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 0,
-					'cache4xx' => "5m",
+					'cache4xx' => "1m",
 					'cluster_tier' => $cluster_tier,
 					'upstream_directors' => $upstream_directors
 				},
@@ -425,7 +425,7 @@ class role::cache {
 				director_type => "chash",
 				vcl_config => {
 					'retry5xx' => 0,
-					'cache4xx' => "5m",
+					'cache4xx' => "1m",
 					'cluster_tier' => $cluster_tier,
 				},
 				backend_options => {
