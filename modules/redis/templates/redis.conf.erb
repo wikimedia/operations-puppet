@@ -145,7 +145,7 @@ dir <%= dir %>
 #
 # slaveof <masterip> <masterport>
 <% if redis_replication['site'] -%>
-slaveof <%= redis_replication[hostname] %>.<%= redis_replication['site'] %>
+slaveof <%= redis_replication[hostname] %>.<%= redis_replication['site'] %> <%= port %>
 <% end -%>
 
 # If the master is password protected (using the "requirepass" configuration
