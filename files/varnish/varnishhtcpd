@@ -143,6 +143,7 @@ while(1) {
 
 		foreach my $server (values %servers) {
 			$server->{queue}->enqueue("$url");
+			if ($server->{queue}->pending() > 1000) { exit 1; }
 		}
 	};
 	if($@) {
