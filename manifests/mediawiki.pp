@@ -144,11 +144,11 @@ class mediawiki::singlenode( $ensure = 'present',
 			ensure => present;
 	}
 
-	file { '/var/www/srv':
+	file { "/var/www/srv":
 		ensure => 'directory';
 	}
 
-	file { '/var/www/${install_path}':
+	file { "/var/www/${install_path}":
 		require => [File['/var/www/srv'], git::clone['mediawiki']],
 		ensure => 'link',
 		target => $install_path;
