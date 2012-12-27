@@ -983,6 +983,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::translationnotifications,
 		misc::maintenance::wikidata,
 		misc::maintenance::tor_exit_node,
+		misc::maintenance::echo_mail_batch,
 		misc::maintenance::update_flaggedrev_stats,
 		misc::maintenance::update_special_pages,
 		admins::roots,
