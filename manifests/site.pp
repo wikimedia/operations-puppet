@@ -1365,7 +1365,7 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	# once servers die and are replaced, so making this
 	# explicit for now.
 	$redis_replication = {
-		'slave' => false,
+		'site' => false,
 		'mc1' => 'mc1001',
 		'mc2' => 'mc1002',
 		'mc3' => 'mc1003',
@@ -1402,7 +1402,7 @@ node /mc(10[01][0-9])\.eqiad\.wmnet/ {
 	}
 
 	$redis_replication = {
-		'slave' => 'pmtpa.wmnet',
+		'site' => 'pmtpa.wmnet',
 		'mc1001' => 'mc1',
 		'mc1002' => 'mc2',
 		'mc1003' => 'mc3',
