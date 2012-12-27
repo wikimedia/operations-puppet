@@ -122,6 +122,29 @@ class misc::maintenance::tor_exit_node {
 	}
 }
 
+class misc::maintenance::echo_mail_batch {
+	cron {
+		echo_mail_batch_test:
+			command => "/usr/local/bin/mwscript extensions/Echo/processEchoEmailBatch.php testwiki",
+			user => apache,
+			minute => 0,
+			hour => 0,
+			ensure => present;
+		echo_mail_batch_test2:
+			command => "/usr/local/bin/mwscript extensions/Echo/processEchoEmailBatch.php testwiki2",
+			user => apache,
+			minute => 0,
+			hour => 1,
+			ensure => present;
+		echo_mail_batch_mediawiki:
+			command => "/usr/local/bin/mwscript extensions/Echo/processEchoEmailBatch.php mediawiki",
+			user => apache,
+			minute => 0,
+			hour => 2,
+			ensure => present;
+	}
+}
+
 class misc::maintenance::update_flaggedrev_stats{
 	file {
 		"/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
