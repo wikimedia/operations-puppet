@@ -292,7 +292,7 @@ class misc::statistics::sites::metrics_api {
 	webserver::apache::site { $site_name:
 		require => [File["/srv/org.wikimedia.metrics-api"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
 		server_admin => "noc@wikimedia.org",
-		document_root => $document_root,
+		docroot => $document_root,
 		custom => ["
     WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
     WSGIScriptAlias / $document_root/api.wsgi
