@@ -300,7 +300,6 @@ class misc::statistics::sites::metrics_api {
     <Directory $document_root>
         WSGIProcessGroup api
         WSGIApplicationGroup %{GLOBAL}
-        WSGIRestrictStdout Off
         Order deny,allow
         Allow from all
     </Directory>",
