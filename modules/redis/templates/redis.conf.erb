@@ -144,6 +144,9 @@ dir <%= dir %>
 # different interval, or to listen to another port, and so on.
 #
 # slaveof <masterip> <masterport>
+<% if redis_replication['site'] -%>
+slaveof <%= redis_replication[hostname] %>.<%= redis_replication['site'] %>
+<% end -%>
 
 # If the master is password protected (using the "requirepass" configuration
 # directive below) it is possible to tell the slave to authenticate before
@@ -179,7 +182,10 @@ slave-serve-stale-data yes
 # such as CONFIG, DEBUG, and so forth. To a limited extend you can improve
 # security of read only slaves using 'rename-command' to shadow all the
 # administrative / dangerous commands.
-slave-read-only yes
+
+# writes to slaves are ephemeral, they aren't bgsaved and are lost at restart or
+# slave resync. allowing them simplifies data center failover ordering.
+slave-read-only no
 
 # Slaves send PINGs to server in a predefined interval. It's possible to change
 # this interval with the repl_ping_slave_period option. The default value is 10
