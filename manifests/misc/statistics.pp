@@ -275,12 +275,6 @@ class misc::statistics::sites::metrics_api {
 		require => Git::Clone["E3Analysis"],
 	}
 
-	# symlink the e3-analysis src directory into /srv/org.wikimedia.metrics-api
-	file { "$document_root/src":
-		ensure  => "$e3_analysis_path/src",
-		require => Git::Clone["E3Analysis"],
-	}
-
 	# symlink the api.wsgi app loader python script.
 	# api.wsgi loads 'src.api' as a module :/
 	file { "$document_root/api.wsgi":
