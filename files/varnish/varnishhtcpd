@@ -129,28 +129,20 @@ while(1) {
 	my $raw;
 	my ($len, $datalen, $op, $id, $specifier,$extra);
 	my ($method, $url, $version, $nr3);
-	eval {
-		$0 = $daemon->name . " worker - waiting for net";
+	$0 = $daemon->name . " worker - waiting for net";
 
-		(my $peer = recv($listen, $raw, 4096, 0)) || die "recv: $!";
-		my ($port, $addr) = sockaddr_in($peer);
+	(my $peer = recv($listen, $raw, 4096, 0)) || die "recv: $!";
+	my ($port, $addr) = sockaddr_in($peer);
 
-		# reverse engineered from mediawiki SquidUpdate.php
-		($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
-		($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier);
+	# reverse engineered from mediawiki SquidUpdate.php
+	($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
+	($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier);
 
-		$0 = $daemon->name ." worker - purging $url";
+	$0 = $daemon->name ." worker - purging $url";
 
-		foreach my $server (values %servers) {
-			$server->{queue}->enqueue("$url");
-			if ($server->{queue}->pending() > 1000) { exit 1; }
-		}
-	};
-	if($@) {
-		no warnings;
-		warn "$@\n";
-		warn "$len, $datalen, $op, $id, $specifier,$extra\n";
-		warn "$method, $url, $version, $nr3\n";
+	foreach my $server (values %servers) {
+		$server->{queue}->enqueue("$url");
+		if ($server->{queue}->pending() > 1000) { exit 1; }
 	}
 }
 
