@@ -122,6 +122,17 @@ class misc::maintenance::tor_exit_node {
 	}
 }
 
+class misc::maintenance::echo_mail_batch {
+	cron {
+		echo_mail_batch:
+			command => "/usr/local/bin/mwscript extensions/Echo/processEchoEmailBatch.php testwiki",
+			user => apache,
+			minute => 0,
+			hour => 0,
+			ensure => present;
+	}
+}
+
 class misc::maintenance::update_flaggedrev_stats{
 	file {
 		"/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
