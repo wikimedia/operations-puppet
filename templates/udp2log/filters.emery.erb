@@ -41,16 +41,8 @@ pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /
 # Arabic Wikipedia Banner Pages - Siko Bouterse <sbouterse@wikimedia.org>, Haitham Shammaa <hshammaa@wikimedia.org>
 pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D8%A8%D9%88%D8%A7%D8%A8%D8%A9_%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9' >> /var/log/squid/arabic-banner.log
 
-
-
-
-
-
-
-
-
-
-
+# Temporary filter to estimate view of 2012 fundraiser video
+pipe 1 /usr/bin/udp-filter -d wikimediafoundation.org -p Thank_You_Main >> /var/log/squid/wmf.org-Thank_You_Main.log
 
 
 # DISABLED FILTERS
@@ -59,14 +51,9 @@ pipe 10 /usr/bin/udp-filter -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%
 # -ben 2011-11-01
 # pipe 1 /var/log/squid/filters/mobile-offline-meta >> /var/log/squid/mobile-offline-meta.log
 
-
 #Filters for the necromancy experiment by faulkner RT-2805
 #pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_3mnth=True' >> /var/log/squid/e3_necromancy_idle3month_10.log
 #pipe 10 /usr/bin/udp-filter -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True' >> /var/log/squid/e3_necromancy_idle1year_10.log
-
-
-
-
 
 # CUSTOM FILTERS REPLACED WITH udp-filter
 
