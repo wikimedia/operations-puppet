@@ -4,7 +4,12 @@
 #
 # == Parameters:
 #
-# $schema:: Schema file for Solr (only one schema per instance supported)
+# $schema::             Schema file for Solr (only one schema per instance supported)
+# $replication_master:: Replication master, if this is current hostname, this server will be a master
+# $monitor::            How to monitor this server:
+#                       * "service" - just presence of Solr
+#                       * "results" - whether Solr has some data in its index
+#                       Any other input will disable monitoring
 #
 # == Sample usage:
 #
@@ -60,17 +65,33 @@ class solr::config ( $schema = undef, $replication_master = undef ) {
   }
 }
 
-class solr::service {
+class solr::service($monitor) {
   service { "jetty":
     ensure => running,
     enable => true,
   }
+
+  if ($monitor == "service") {
+    monitor_service { "Solr":
+      description => "Solr search engine",
+      check_command => "check_http_url!{$::host}!http://{$::fqdn}:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on"
+    }
+  }
+  elsif ($monitor == "results") {
+    monitor_service { "Solr":
+      description => "Solr search engine (with non-empty result set)",
+      check_command => "check_http_url_for_string!{$::host}!http://{$::fqdn}:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on!'<str name=\"rows\">1</str>'"
+    }
+  }
 }
 
-class solr ($schema = undef, $replication_master = undef) {
-  include solr::install, solr::service
-  class { "solr::config":
-    schema => $schema,
-    replication_master => $replication_master,
+class solr ($schema = undef, $replication_master = undef, $monitor = "service") {
+  include solr::install
+  class {
+    "solr::config":
+      schema => $schema,
+      replication_master => $replication_master;
+    "solr::service":
+      monitor => $monitor;
   }
 }
