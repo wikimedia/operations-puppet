@@ -74,13 +74,13 @@ class solr::service($monitor) {
   if ($monitor == "service") {
     monitor_service { "Solr":
       description => "Solr search engine",
-      check_command => "check_http_url!{$::host}!http://{$::fqdn}:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on"
+      check_command => "check_http_url!$::hostname!http://$::fqdn:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on"
     }
   }
   elsif ($monitor == "results") {
     monitor_service { "Solr":
       description => "Solr search engine (with non-empty result set)",
-      check_command => "check_http_url_for_string!{$::host}!http://{$::fqdn}:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on!'<str name=\"rows\">1</str>'"
+      check_command => "check_http_url_for_string!$::hostname!http://$::fqdn:8983/solr/select/?q=*%3A*&start=0&rows=1&indent=on!'<str name=\"rows\">1</str>'"
     }
   }
 }
