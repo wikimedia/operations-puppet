@@ -2456,7 +2456,6 @@ node /^tmh[12]\.pmtpa\.wmnet$/ {
 node "vanadium.eqiad.wmnet" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
-	system_role { "solr": description => "ttm solr backend"}
 
 	include standard,
 		groups::wikidev,
@@ -2467,9 +2466,8 @@ node "vanadium.eqiad.wmnet" {
 		accounts::spage,
 		misc::statistics::db::mysql,
 		redis::ganglia,
-		nrpe
-
-	class { "solr": schema => "puppet:///modules/solr/schema-ttmserver.xml" }
+		nrpe,
+		role::solr::ttm
 
 	sudo_user { [ "otto", "olivneh", "spage" ]:
 		privileges => ['ALL = (ALL) NOPASSWD: ALL']
@@ -2602,11 +2600,8 @@ node  "yongle.wikimedia.org" {
 }
 
 node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
-	system_role { "solr-geodata": description => "Solr server for GeoData"}
-
-	include standard
-
-	class { "solr": schema => "puppet:///modules/solr/schema-geodata.xml" }
+	include standard,
+		role::solr::geodata
 }
 
 node "yvon.wikimedia.org" {
