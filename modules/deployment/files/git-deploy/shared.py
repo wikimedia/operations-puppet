@@ -5,8 +5,8 @@ import subprocess
 import json
 
 def main():
-	print "Running: sudo salt-call --json-out pillar.data"
-	p = subprocess.Popen("sudo salt-call --json-out pillar.data", shell=True, stdout=subprocess.PIPE)
+	print "Running: sudo salt-call --out json pillar.data"
+	p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	try:
 		pillar = json.loads(out)
