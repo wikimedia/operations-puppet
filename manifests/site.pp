@@ -2463,14 +2463,15 @@ node "vanadium.eqiad.wmnet" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		accounts::mflaschen,
 		accounts::spage,
-		misc::statistics::db::mysql,
+		misc::statistics::db::mongo,
 		redis::ganglia,
 		nrpe
 
 	class { "solr": schema => "puppet:///modules/solr/schema-ttmserver.xml" }
 
-	sudo_user { [ "otto", "olivneh", "spage" ]:
+	sudo_user { [ "otto", "olivneh", "spage", "mflaschen" ]:
 		privileges => ['ALL = (ALL) NOPASSWD: ALL']
 	}
 }
