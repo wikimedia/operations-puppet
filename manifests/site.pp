@@ -2465,6 +2465,7 @@ node "vanadium.eqiad.wmnet" {
 		accounts::diederik,
 		accounts::spage,
 		misc::statistics::db::mysql,
+		misc::statistics::db::mongo,
 		redis::ganglia,
 		nrpe
 
