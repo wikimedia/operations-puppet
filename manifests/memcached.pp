@@ -4,7 +4,7 @@ class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached
 		$version = "present", $memcached_options = {}) {
 
 	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port",
-		memcached_ip => "$memcached_ip", version => "$version", memcached_options => $memcached_options }
+		memcached_ip => "$memcached_ip", memcached_options => $memcached_options }
 
 	package { memcached:
 		ensure => $version;
