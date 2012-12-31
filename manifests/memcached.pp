@@ -2,11 +2,11 @@
 
 class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0', $memcached_options = {}) {
 
-	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port", 
-		memcached_ip => "$memcached_ip", memcached_options => $memcached_options }
+	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port",
+		memcached_ip => "$memcached_ip", version => "present", memcached_options => $memcached_options }
 
 	package { memcached:
-		ensure => latest;
+		ensure => $version;
 	}
 
 	service { memcached:
