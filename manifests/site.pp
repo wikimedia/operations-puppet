@@ -2463,13 +2463,14 @@ node "vanadium.eqiad.wmnet" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		accounts::mflaschen,
 		accounts::spage,
 		misc::statistics::db::mysql,
 		redis::ganglia,
 		nrpe,
 		role::solr::ttm
 
-	sudo_user { [ "otto", "olivneh", "spage" ]:
+	sudo_user { [ "otto", "olivneh", "spage", "mflaschen" ]:
 		privileges => ['ALL = (ALL) NOPASSWD: ALL']
 	}
 }
