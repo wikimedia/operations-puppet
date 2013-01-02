@@ -60,6 +60,11 @@ class role::deployment::salt_masters::production {
       'parsoid/Parsoid' => '/srv/deployment/parsoid/Parsoid',
       'parsoid/config' => '/srv/deployment/parsoid/config',
     },
+    deployment_deploy_redis => {
+      'host' => 'tin.eqiad.wmnet',
+      'port' => 6379,
+      'db' => '0',
+    },
   }
 }
 

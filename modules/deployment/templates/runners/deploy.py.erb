@@ -19,10 +19,7 @@ def fetch(repo):
         return "Error: repo isn't defined"
     regex = reg[repo]
     arg = (repo,)
-    minions = {}
-    ret = client.cmd_cli(regex, cmd, expr_form='pcre', arg=arg, timeout=120)
-    for minion in ret:
-        minions = dict(minions.items() + minion.items())
+    minions = client.cmd(regex, cmd, expr_form='pcre', arg=arg, timeout=30, ret='deploy_redis')
     key = salt.key.Key(__opts__)
     keys = key.list_keys()
     return report(minions,keys,repo)
@@ -38,9 +35,7 @@ def checkout(repo, reset=False):
     regex = reg[repo]
     arg = (repo,reset)
     minions = {}
-    ret = client.cmd_cli(regex, cmd, expr_form='pcre', arg=arg, timeout=120)
-    for minion in ret:
-        minions = dict(minions.items() + minion.items())
+    minions = client.cmd(regex, cmd, expr_form='pcre', arg=arg, timeout=30, ret='deploy_redis')
     key = salt.key.Key(__opts__)
     keys = key.list_keys()
     return report(minions,keys,repo)
@@ -53,18 +48,23 @@ def report(minions,keys,repo):
         if not isinstance(ret, dict):
             fail[minion] = ret
             continue
-        if 'ret' in ret.keys():
-            if ret['ret'] == 0:
-                success.append(minion)
-            else:
-                if 'comment' in ret.keys():
-                    fail[minion] = ret['comment']
-                else:
-                    fail[minion] = ret
-    ret = sorted(set(keys['minions_pre']) - set(minions))
+        if ret['status'] == 0:
+            success.append(minion)
+        else:
+            fail[minion] = ret['status']
+    ret = sorted(set(keys['minions']) - set(minions))
     for minion in ret:
         if re.search(reg[repo],minion):
             didnotrun.append(minion)
-    report = [{'success': success}, {'didnotrun': didnotrun}, {'fail': fail}]
+    # "succeeded: {0}, didn't run: {1} {2}(?), failed: {3} {4}(?)"
+    report = "succeeded: {0}, didn't run: {1}"
+    if didnotrun:
+        report = report + " {2},"
+    else:
+        report = report + ","
+    report = report + " failed: {3}"
+    if fail:
+        report = report + " {4}"
+    report = report.format(len(success), len(didnotrun), didnotrun, len(fail), fail)
     print report
     return report
