@@ -3160,7 +3160,7 @@ host solr1001 {
 }
 
 host solr1002 {
-	hardware ethernet 90:B1:1C:23:20:68;
+	hardware ethernet 90:B1:1C:1D:E7:E5;
 	fixed-address solr1002.eqiad.wmnet;
 }
 
