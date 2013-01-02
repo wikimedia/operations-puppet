@@ -11,7 +11,7 @@ def sync_all():
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.sync_all
+        salt -G 'cluster:appservers' deploy.sync_all
     '''
     repourls = __pillar__.get('repo_urls')
     minion_regexes = __pillar__.get('repo_minion_regex')
@@ -23,7 +23,7 @@ def sync_all():
     minion = __grains__.get('id', '')
     for repo,repourl in repourls.items():
         repoloc = repolocs[repo]
-	minion_regex = minion_regexes[repo]
+        minion_regex = minion_regexes[repo]
         if not re.search(minion_regex,minion):
             continue
         if not __salt__['file.directory_exists'](repoloc + '/.git'):
@@ -34,7 +34,7 @@ def sync_all():
         if ret != 0:
             status = 1
 
-    return status
+    return {'status': status, 'repo': repo}
 
 def fetch(repo):
     '''
@@ -42,7 +42,7 @@ def fetch(repo):
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.fetch 'slot0'
+        salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
     site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
@@ -56,7 +56,8 @@ def fetch(repo):
 
     cmd = '/usr/bin/git fetch'
 
-    return __salt__['cmd.retcode'](cmd,repoloc)
+    status = __salt__['cmd.retcode'](cmd,repoloc)
+    return {'status': status, 'repo': repo}
 
 def checkout(repo,reset=False):
     '''
@@ -64,7 +65,7 @@ def checkout(repo,reset=False):
 
     CLI Example::
 
-	salt -G 'cluster:appservers' deploy.checkout 'slot0'
+        salt -G 'cluster:appservers' deploy.checkout 'slot0'
     '''
     #TODO: replace the cmd.retcode calls with git module calls, where appropriate
     site = __salt__['grains.item']('site')
@@ -91,26 +92,30 @@ def checkout(repo,reset=False):
             tag = info[5:]
             tag = tag.strip()
     if not tag:
-        return 10
+        return {'status': 10, 'repo': repo}
+    # tags are user-input and are used in shell commands, ensure they are
+    # only passing alphanumeric.
+    if re.match('\W+', tag):
+        return 1
 
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return 20
+            return {'status': 20, 'repo': repo}
     else:
         cmd = '/usr/bin/git describe --always --tag'
         current_tag = __salt__['cmd.run'](cmd,repoloc)
         current_tag = current_tag.strip()
         if current_tag == tag:
-            return 0
+            return {'status': 0, 'repo': repo, 'tag': tag}
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
     ret = __salt__['cmd.retcode'](cmd,repoloc)
     if ret != 0:
-        return 30
+        return {'status': 30, 'repo': repo}
 
     # There's a bug with using booleans in pillars, so for now
     # we're matching against an explicit True string.
@@ -125,15 +130,15 @@ def checkout(repo,reset=False):
         cmd = '/usr/bin/git submodule sync'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return 40
+            return {'status': 40, 'repo': repo}
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --init'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            ret = 50
+            return {'status': 50, 'repo': repo}
 
     # Call modules on the repo's behalf ignore the return on these
     for call in module_calls:
         __salt__[call](repo)
-    return 0
+    return {'status': 0, 'repo': repo, 'tag': tag}

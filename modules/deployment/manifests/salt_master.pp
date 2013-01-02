@@ -1,4 +1,4 @@
-class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $deployment_servers=[], $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}) {
+class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $deployment_servers=[], $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_deploy_redis={}) {
   file {
     "${runner_dir}/deploy.py":
       content => template("deployment/runners/deploy.py.erb"),
