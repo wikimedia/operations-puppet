@@ -2790,11 +2790,6 @@ host palladium {
 	fixed-address palladium.eqiad.wmnet;
 }
 
-host pappas {
-	hardware ethernet 00:10:18:E4:1E:56 ;
-	fixed-address pappas.pmtpa.wmnet;
-}
-
 host payments1 {
 	hardware ethernet 84:2b:2b:54:91:75;
 	fixed-address payments1.pmtpa.wmnet;
@@ -3649,11 +3644,6 @@ host strontium {
 	hardware ethernet 18:03:73:f4:ef:51;
 	fixed-address strontium.eqiad.wmnet;
 }
-
-host tellurium {
-	hardware ethernet 00:10:18:E4:1E:26;
-	fixed-address tellurium.eqiad.wmnet;
-	}
 
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
