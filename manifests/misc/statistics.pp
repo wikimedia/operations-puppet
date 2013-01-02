@@ -258,7 +258,7 @@ class misc::statistics::sites::metrics_api {
 
 	# install a .htpasswd file for E3
 	file { "$e3_home/.htpasswd":
-		content  => "e3:$apr1$krR9Lhez$Yr0Ya9GpCW8KRQLeyR5Rn.",
+		content  => 'e3:$apr1$krR9Lhez$Yr0Ya9GpCW8KRQLeyR5Rn.',
 		owner    => $e3_user,
 		group    => "wikidev",
 		mode     => 0664,
