@@ -256,6 +256,14 @@ class misc::statistics::sites::metrics_api {
 		mode   => 0775,
 	}
 
+	# install a .htpasswd file for E3
+	file { "$e3_home/.htpasswd":
+		contents => "e3:$apr1$krR9Lhez$Yr0Ya9GpCW8KRQLeyR5Rn.",
+		owner    => $e3_user,
+		group    => "wikidev",
+		mode     => 0664,
+	}
+
 	# clone the E3 Analysis repository
 	git::clone { "E3Analysis":
 		directory => "$e3_analysis_path",
@@ -286,10 +294,10 @@ class misc::statistics::sites::metrics_api {
 	include webserver::apache
 	webserver::apache::module { "wsgi": }
 	webserver::apache::site { $site_name:
-		require => [File["/srv/org.wikimedia.metrics-api"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
+		require => [File["/srv/org.wikimedia.metrics-api"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
 		server_admin => "noc@wikimedia.org",
 		docroot => $document_root,
-		custom => ["
+		custom  => ["
     WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
     WSGIScriptAlias / $document_root/api.wsgi
 
@@ -299,6 +307,16 @@ class misc::statistics::sites::metrics_api {
         Order deny,allow
         Allow from all
     </Directory>",
+"
+    <Location />
+        Order deny,allow
+        AuthType Basic
+        AuthName \"WMF E3 Metrics API\"
+        AuthUserFile $e3_home/.htpasswd
+        require valid-user
+        Deny from all
+        Satisfy any
+    </Location>",
 	],
 	}
 }
