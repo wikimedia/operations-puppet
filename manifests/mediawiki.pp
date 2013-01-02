@@ -205,49 +205,28 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 }
 
-class mediawiki::extension-distributor {
-	system_role { "mediawiki::extension-distributor": description => "MediaWiki extension distributor" }
-
-	$extdist_working_dir = "/mnt/upload6/private/ExtensionDistributor"
-	$extdist_download_dir = "/mnt/upload6/ext-dist"
-
+class mediawiki::former-extdist-removesoon {
 	package { xinetd:
-		ensure => latest;
+		ensure => absent;
 	}
 
-	systemuser { extdist: name => "extdist", home => "/var/lib/extdist" }
+	systemuser { extdist: name => "extdist", home => "/var/lib/extdist", ensure => absent }
 
 	file {
 		"/etc/xinetd.d/svn_invoker":
-			require => [ Package[xinetd], Systemuser[extdist] ],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/misc/svn_invoker.xinetd";
+			ensure => absent;
 		"/etc/logrotate.d/svn-invoker":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/logrotate/svn-invoker";
-		"$extdist_working_dir":
-			owner => extdist,
-			group => wikidev,
-			mode => 0775;
+			ensure => absent;
+		"/mnt/upload6/private/ExtensionDistributor":
+			ensure => absent;
 	}
 
 	cron { extdist_updateall:
-		command => "php /home/wikipedia/common/wmf-config/extdist/cron.php 2>&1 >/dev/null",
-		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-		hour => 3,
-		minute => 0,
-		user => extdist,
-		ensure => present;
+		ensure => absent;
 	}
 
 	service { xinetd:
-		require => [ Package[xinetd], File["/etc/xinetd.d/svn_invoker"] ],
-		subscribe => File["/etc/xinetd.d/svn_invoker"],
-		ensure => running;
+		ensure => absent;
 	}
 }
 
