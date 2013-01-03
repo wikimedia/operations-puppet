@@ -16,6 +16,7 @@ try:
 except ImportError:
     has_redis = False
 
+import time
 
 def __virtual__():
     #if not has_redis:
@@ -41,6 +42,7 @@ def returner(ret):
     '''
     if not ret['fun'].startswith('deploy.'):
         return False
+    timestamp = time.time()
     serv = _get_serv()
     ret_data = ret['return']
     repo = ret_data['repo']
@@ -51,7 +53,9 @@ def returner(ret):
     serv.sadd('deploy:{0}:minions'.format(repo), minion)
     if ret['fun'] == "deploy.fetch" or ret['fun'] == "deploy.sync_all":
         serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status', ret_data['status'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp', timestamp)
     if ret['fun'] == "deploy.checkout" or ret['fun'] == "deploy.sync_all":
         if ret_data['status'] == 0:
             serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'tag', ret_data['tag'])
         serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status', ret_data['status'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp', timestamp)
