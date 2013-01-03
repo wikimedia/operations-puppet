@@ -488,7 +488,7 @@ node "db40.pmtpa.wmnet" {
 	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
 }
 
-node /pc[1-9]\.pmtpa\.wmnet/ {
+node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
