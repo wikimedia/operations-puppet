@@ -38,7 +38,7 @@ class wikidata::singlenode( $ensure = latest,
 
 	git::clone { "UniversalLanguageSelector" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "{$install_path}/extensions/UniversalLanguageSelector",
+			directory => "${install_path}/extensions/UniversalLanguageSelector",
 			branch => "master",
 			ensure => $ensure,
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
