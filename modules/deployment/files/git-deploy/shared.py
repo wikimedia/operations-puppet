@@ -43,11 +43,15 @@ def main():
 	# Ensure the fetch will work for the extensions
 	#TODO: make this generic for submodules - it doesn't need to be specific to extensions
 	if os.path.isdir(repodir + '/extensions'):
-		extensiondir = repodir + '/extensions'
 		p = subprocess.Popen('git submodule foreach "git tag %s"' % tag, cwd=repodir, shell=True, stderr=subprocess.PIPE)
 		out = p.communicate()[0]
-		for extension in os.listdir(repodir + '/.git/modules/extensions'):
-			p = subprocess.Popen('git update-server-info', cwd=extensiondir + '/' + extension, shell=True, stderr=subprocess.PIPE)
+		submoduledir = repodir + '/.git/modules/extensions'
+		for extension in os.listdir(submoduledir):
+			p = subprocess.Popen('git update-server-info', cwd=submoduledir + '/' + extension, shell=True, stderr=subprocess.PIPE)
+			out = p.communicate()[0]
+		submoduledir = repodir + '/extensions'
+		for extension in os.listdir(submoduledir):
+			p = subprocess.Popen('git update-server-info', cwd=submoduledir + '/' + extension, shell=True, stderr=subprocess.PIPE)
 			out = p.communicate()[0]
 	print "Running: sudo salt-call publish.runner deploy.fetch '%s'" % (prefix)
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
