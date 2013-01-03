@@ -1,0 +1,97 @@
+#!/usr/bin/python
+
+import redis
+import sys
+import subprocess
+import json
+from optparse import OptionParser
+
+def main():
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage("deploy-info [options]\n\nexample: deploy-info --repo=slot0 --tag=slot0-20121229-034924")
+
+    parser.add_option("--repo", action="store", dest="repo", help="Repo to report on")
+    parser.add_option("--tag", action="store", dest="tag", help="Tag to report on")
+    parser.add_option("--current-tag", action="store_true", dest="current_tag", help="Report on the currently deployed tag")
+    (options, args) = parser.parse_args()
+    serv = redis.Redis(host='tin.eqiad.wmnet', port=6379, db=0)
+    repos = serv.smembers('deploy:repos')
+    if options.repo:
+        if options.repo not in repos:
+            print "{0}: repo does not exist".format(options.repo)
+            sys.exit(1)
+        else:
+            if options.tag:
+                _repo_report(serv, options.repo,options.tag)
+            elif options.current_tag:
+                current_tag = _get_current_tag(options.repo)
+                _repo_report(serv, options.repo, current_tag)
+            else:
+                _repo_report(serv, options.repo)
+    else:
+        for repo in repos:
+            if options.tag:
+                _repo_report(serv, repo, options.tag)
+            elif options.current_tag:
+                current_tag = _get_current_tag(repo)
+                _repo_report(serv, repo, current_tag)
+            else:
+                _repo_report(serv, repo)
+
+def _get_current_tag(repo):
+        p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE)
+        out = p.communicate()[0]
+        try:   
+            pillar = json.loads(out)
+        except ValueError:
+            print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
+            return None
+        try:   
+            pillar = pillar['local']
+        except KeyError:
+            print "Couldn't find 'local' in json output from pillar data. git-deploy can't configure itself. Exiting."
+            return None
+        repodir = pillar['repo_locations'][repo]
+        f = open(repodir + '/.deploy', 'r')
+        deployinfo = f.readlines()
+        tag = ''
+        for info in deployinfo:
+            if info.startswith('tag: '):
+                tag = info[5:]
+                tag = tag.strip()
+        return tag
+
+def _repo_report(serv, repo, check_tag=None):
+    print ""
+    header = "Repo: {0}".format(repo)
+    if check_tag:
+        header = header + "; checking tag: {0}".format(check_tag)
+    print header
+    minions = serv.smembers('deploy:{0}:minions'.format(repo))
+    if check_tag:
+        minion_data = {}
+        for minion in minions:
+            fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
+            if tag != check_tag:
+                minion_data[minion] = (minion, tag, fetch_status, checkout_status)
+        if minion_data:
+            print ""
+	for item, data in minion_data.items():
+            min, tag, fetch_status, check_status = data
+            print "{0}: {1} (fetch: {2}, checkout: {3})".format(min, tag, fetch_status, checkout_status)
+	print ""
+        print "{0} minions without matching tag ({1} reporting)".format(len(minion_data), len(minions))
+    else:
+        print ""
+        for minion in minions:
+            fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
+            print "{0}: {1} (fetch: {2}, checkout: {3})".format(minion, tag, fetch_status, checkout_status)
+        print ""
+        print "{0} minions reporting".format(len(minions))
+
+if __name__ == "__main__":
+    main()
