@@ -51,6 +51,7 @@ NameVirtualHost *:443
 	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
 
 	SetEnvIf User-Agent 80legs bad_browser
+	SetEnvIf User-Agent bingbot bad_browser
 
 	TimeOut 720
 
