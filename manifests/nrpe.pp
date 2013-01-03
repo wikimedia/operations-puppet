@@ -148,7 +148,7 @@ class nrpe::packagesnew {
 	}
 
 	package { [ "icinga-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
-		ensure => latest;
+		ensure => present;
 	}
 
 	file {
@@ -158,7 +158,7 @@ class nrpe::packagesnew {
 			mode => 0755,
 			ensure => directory;
 		"/etc/icinga/nrpe_local.cfg":
-			require => Package[nagios-nrpe-server],
+			require => Package[icinga-nrpe-server],
 			owner => root,
 			group => root,
 			mode => 0444,
@@ -185,7 +185,7 @@ class nrpe::servicenew {
 	Class[nrpe::packagesnew] -> Class[nrpe::servicenew]
 
 	service { nagios-nrpe-server:
-		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
+		require => [ Package[icinga-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
 		subscribe => File["/etc/icinga/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
 		ensure => running;
