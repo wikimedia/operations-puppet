@@ -1,5 +1,17 @@
-class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers=[], $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_deploy_redis={}) {
+class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers=[], $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_deploy_redis={}) {
   file {
+    "${state_dir}/deploy":
+      ensure => directory,
+      mode => 0555,
+      owner => root,
+      group => root,
+      require => [File["${state_dir}"]];
+    "${state_dir}/deploy/sync_all.sls":
+      source => "puppet://deployment/states/sync_all.sls",
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [File["${state_dir}/deployment"]];
     "${runner_dir}/deploy.py":
       content => template("deployment/runners/deploy.py.erb"),
       mode => 0555,
@@ -8,7 +20,7 @@ class deployment::salt_master($runner_dir="/srv/runners", $pillar_dir="/srv/pill
       require => File["${runner_dir}"];
     "${pillar_dir}/deployment":
       ensure => directory,
-      mode => 555,
+      mode => 0555,
       owner => root,
       group => root,
       require => [File["${pillar_dir}"]];
