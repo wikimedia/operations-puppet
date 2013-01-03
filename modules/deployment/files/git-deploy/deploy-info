@@ -4,6 +4,7 @@ import redis
 import sys
 import subprocess
 import json
+import datetime
 from optparse import OptionParser
 
 def main():
@@ -63,6 +64,7 @@ def _get_current_tag(repo):
 
 def _repo_report(serv, repo, check_tag=None):
     print ""
+    now = datetime.datetime.now()
     header = "Repo: {0}".format(repo)
     if check_tag:
         header = header + "; checking tag: {0}".format(check_tag)
@@ -72,7 +74,21 @@ def _repo_report(serv, repo, check_tag=None):
         minion_data = {}
         for minion in minions:
             fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            fetch_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp')
+            if fetch_timestamp:
+                fetch_time = datetime.datetime.fromtimestamp(float(fetch_timestamp))
+                fetch_delta = now - fetch_time
+                fetch_mins = fetch_delta.seconds / 60
+            else:
+                fetch_mins = None
             checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            checkout_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp')
+            if checkout_timestamp:
+                checkout_time = datetime.datetime.fromtimestamp(float(checkout_timestamp))
+                checkout_delta = now - checkout_time
+                checkout_mins = checkout_delta.seconds / 60
+            else:
+                checkout_mins = None
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
             if tag != check_tag:
                 minion_data[minion] = (minion, tag, fetch_status, checkout_status)
@@ -87,9 +103,23 @@ def _repo_report(serv, repo, check_tag=None):
         print ""
         for minion in minions:
             fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            fetch_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp')
+            if fetch_timestamp:
+                fetch_time = datetime.datetime.fromtimestamp(float(fetch_timestamp))
+                fetch_delta = now - fetch_time
+                fetch_mins = fetch_delta.seconds / 60
+            else:
+                fetch_mins = None
             checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            checkout_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp')
+            if checkout_timestamp:
+                checkout_time = datetime.datetime.fromtimestamp(float(checkout_timestamp))
+                checkout_delta = now - checkout_time
+                checkout_mins = checkout_delta.seconds / 60
+            else:
+                checkout_mins = None
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
-            print "{0}: {1} (fetch: {2}, checkout: {3})".format(minion, tag, fetch_status, checkout_status)
+            print "{0}: {1} (fetch: {2} [{3} mins], checkout: {4} [{5} mins])".format(minion, tag, fetch_status, fetch_mins, checkout_status, checkout_mins)
         print ""
         print "{0} minions reporting".format(len(minions))
 
