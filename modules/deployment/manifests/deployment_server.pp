@@ -36,7 +36,7 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       mode => 0444,
       owner => root,
       group => root;
-    "/usr/local/sbin/deploy-info":
+    "/usr/local/bin/deploy-info":
       owner => root,
       group => root,
       mode => 0555,
