@@ -50,6 +50,11 @@ def fetch(repo):
     repourl = repourls[repo]
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
+    sed_lists = __pillar__.get('repo_regex')
+    sed_list = sed_lists[repo]
+    checkout_submodules = __pillar__.get('repo_checkout_submodules')
+    checkout_submodules = checkout_submodules[repo]
+    gitmodules = repoloc + '/.gitmodules'
 
     cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
     __salt__['cmd.retcode'](cmd,repoloc)
@@ -57,6 +62,28 @@ def fetch(repo):
     cmd = '/usr/bin/git fetch'
 
     status = __salt__['cmd.retcode'](cmd,repoloc)
+
+    # There's a bug with using booleans in pillars, so for now
+    # we're matching against an explicit True string.
+    if checkout_submodules == "True":
+        # Transform .gitmodules file based on defined seds
+        for sed in sed_list:
+            for before,after in sed.items():
+                after = after.replace('__REPO_URL__',repourl)
+                __salt__['file.sed'](gitmodules, before, after)
+
+        # Sync the .gitmodules config
+        cmd = '/usr/bin/git submodule sync'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return {'status': 40, 'repo': repo}
+
+        # fetch all submodules
+        cmd = '/usr/bin/git submodule foreach git fetch'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return {'status': 50, 'repo': repo}
+
     return {'status': status, 'repo': repo}
 
 def checkout(repo,reset=False):
