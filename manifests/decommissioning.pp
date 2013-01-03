@@ -199,6 +199,7 @@ $decommissioned_servers = [
 "srv217",
 "storage2",
 "thistle",
+"tarin", # will go back in to service and removed from here on 2013-01-03
 "transcode1",
 "transcode2",
 "wikinews-lb.wikimedia.org",
