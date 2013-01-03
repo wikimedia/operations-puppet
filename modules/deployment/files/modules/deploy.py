@@ -66,6 +66,10 @@ def fetch(repo):
     # There's a bug with using booleans in pillars, so for now
     # we're matching against an explicit True string.
     if checkout_submodules == "True":
+        cmd = '/usr/bin/git checkout .gitmodules'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return {'status': 30, 'repo': repo}
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
             for before,after in sed.items():
