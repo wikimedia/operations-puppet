@@ -1,5 +1,6 @@
 class role::salt::masters::production {
 
+	$salt_state_roots = {"base"=>["/srv/salt"]}
 	$salt_file_roots = {"base"=>["/srv/salt"]}
 	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
@@ -16,6 +17,7 @@ class role::salt::masters::production {
 	}
 
 	salt::master_environment{ "base":
+		salt_state_roots => $salt_state_roots,
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_module_roots => $salt_module_roots,
@@ -26,6 +28,7 @@ class role::salt::masters::production {
 
 class role::salt::masters::labs {
 
+	$salt_state_roots = {"base"=>["/srv/salt"]}
 	$salt_file_roots = {"base"=>["/srv/salt"]}
 	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
@@ -42,6 +45,7 @@ class role::salt::masters::labs {
 	}
 
 	salt::master_environment{ "base":
+		salt_state_roots => $salt_state_roots,
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_module_roots => $salt_module_roots,
