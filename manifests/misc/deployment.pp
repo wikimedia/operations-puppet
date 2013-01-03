@@ -152,6 +152,11 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write2";
+		"${scriptPath}/updateinterwikicache":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/updateinterwikicache";
 
 		# Manpages
 		# Need to be generated manually using make in files/misc/scripts

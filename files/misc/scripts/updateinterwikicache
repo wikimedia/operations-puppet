@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. /usr/local/lib/mw-deployment-vars.sh
+BINDIR=/usr/local/bin
+
+$BINDIR/mwscript extensions/WikimediaMaintenance/dumpInterwiki.php -o "$MW_COMMON"/cache/interwiki.cdb --protocolrelative
+# FIXME: Needs command for git deploy-ing
+#$BINDIR/sync-common-file php-$mwVerNum/cache/interwiki.cdb Updating interwiki cache
+
+echo "Done"
