@@ -12,7 +12,7 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(63|52|34|31|45|47|37|48|1048)|blondel|^es(5|8)$/ {
+	if $hostname =~ /^db(63|52|34|31|45|47|37|48|61|1048)|blondel|^es(5|8)$/ {
 		$master = true
 		$writable = true
 	} else {
@@ -53,10 +53,10 @@ class mysql {
 	elsif $hostname =~ /^db(37|56|58|68|1007|1024|1028|1041)$/ {
 		$db_cluster = "s7"
 	}
-	elsif $hostname =~ /^(es([1-4]|100[1-4]))|db61$/ {
+	elsif $hostname =~ /^es([1-4]|100[1-4])$/ {
 		$db_cluster = "es1"
 	}
-	elsif $hostname =~ /^es([5-7]|100[5-7])$/ {
+	elsif $hostname =~ /^(es([5-7]|100[5-7]))|db6[1-2]$/ {
 		$db_cluster = "es2"
 	}
 	elsif $hostname =~ /^es([8-9]|10|100[8-9]|1010)$/ {
