@@ -1,0 +1,10 @@
+#!/bin/bash
+BINDIR=/usr/local/bin
+mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
+for i in ${mwExtVerDbSets[@]}; do
+        mwVerNum=${i%=*}
+        echo "Updated interwiki cache for $mwVerNum"
+        sudo -u apache $BINDIR/mwscript extensions/WikimediaMaintenance/dumpInterwiki.php -o /home/wikipedia/common/php-$mwVerNum/cache/interwiki.cdb --protocolrelative
+        $BINDIR/sync-common-file php-$mwVerNum/cache/interwiki.cdb Updating $mwVerNum interwiki cache
+done
+echo "Done"
