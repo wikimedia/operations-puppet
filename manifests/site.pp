@@ -692,7 +692,7 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	}
 }
 
-node "ersch.pmtpa.wmnet" {
+node /(ersch|tarin)\.pmtpa\.wmnet/ {
 	include standard,
 		role::poolcounter
 }
@@ -2428,11 +2428,6 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		accounts::datasets,
 		nfs::data,
 		groups::wikidev
-}
-
-node "tarin.wikimedia.org" {
-	include standard,
-		role::poolcounter
 }
 
 node "thistle.pmtpa.wmnet" {
