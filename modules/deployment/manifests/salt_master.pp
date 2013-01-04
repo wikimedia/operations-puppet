@@ -7,7 +7,7 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       group => root,
       require => [File["${state_dir}"]];
     "${state_dir}/deploy/sync_all.sls":
-      source => "puppet://deployment/states/sync_all.sls",
+      source => "puppet:///deployment/states/sync_all.sls",
       mode => 0444,
       owner => root,
       group => root,
