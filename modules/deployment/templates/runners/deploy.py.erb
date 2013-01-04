@@ -7,7 +7,7 @@ import salt.client
 import re
 
 # TODO: make this configurable
-reg = {<% deployment_minion_regex.each do |repo,regex| %>'<%= repo %>': '<%= regex %>',<% end %>}
+reg = {<% deployment_minion_regex.sort.each do |repo,regex| %>'<%= repo %>': '<%= regex %>',<% end %>}
 
 def fetch(repo):
     '''
