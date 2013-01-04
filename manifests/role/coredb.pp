@@ -72,10 +72,9 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		'es2' => {
-			'hosts' => ['es5', 'es6', 'es7', 'db61', 'db62', 'es1005', 'es1006', 'es1007'],
+			'hosts' => ['es5', 'es6', 'es7', 'es1005', 'es1006', 'es1007'],
 			'primary_site' => "pmtpa",
-			'masters' => {'pmtpa' => "db61", 'eqiad' => "es1005"},
-#			'masters' => {'pmtpa' => "es5", 'eqiad' => "es1005"},
+			'masters' => {'pmtpa' => "es5", 'eqiad' => "es1005"},
 			'snapshot' => ["es7", "es1007"],
 			'no_master' => []
 		},
@@ -175,19 +174,20 @@ class role::coredb::es3 {
 	}
 }
 
-class role::coredb::researchdb{
-	## to be filled in
-	## still need to deal with researchdb case....
-## research DBs get:
-# $disable_binlogs = "true"
-# $read_only = "false"
-# $long_timeouts = "true"
-# $enable_unsafe_locks = "true"
-# $large_slave_trans_retries = "true"
+class role::coredb::researchdb( $shard="s1" ){
+	class { "role::coredb::common":
+		shard => $shard,
+		read_only => false,
+		disable_binlogs => true,
+		long_timeouts => true,
+		enable_unsafe_locks => true,
+		large_slave_trans_retries => true,
+	}
 }
 
 class role::coredb::common(
 	$shard,
+	$read_only = true,
 	$skip_name_resolve = true,
 	$mysql_myisam = false,
 	$mysql_max_allowed_packet = "16M",
@@ -229,7 +229,7 @@ class role::coredb::common(
 	else {
 		class { "coredb_mysql":
 			shard => $shard,
-			read_only => true,
+			read_only => $read_only,
 			skip_name_resolve => $skip_name_resolve,
 			mysql_myisam => $mysql_myisam,
 			mysql_max_allowed_packet => $mysql_max_allowed_packet,
