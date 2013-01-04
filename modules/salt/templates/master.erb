@@ -157,8 +157,8 @@ failhard: <%= salt_failhard %>
 #  base:
 #    - /srv/salt
 <% if salt_file_roots != {} %>
-file_roots:<% salt_file_roots.each do |salt_environment, salt_roots| %>
-  <%= salt_environment %>:<% salt_roots.each do |salt_root| %>
+file_roots:<% salt_file_roots.sort.each do |salt_environment, salt_roots| %>
+  <%= salt_environment %>:<% salt_roots.sort.each do |salt_root| %>
     - <%= salt_root %>
 <% end %><% end %><% end %>
 
@@ -187,13 +187,13 @@ file_buffer_size: <%= salt_file_buffer_size %>
 #  - cmd: cat /etc/salt/yaml
 #
 <% if salt_pillar_roots != {} %>
-pillar_roots:<% salt_pillar_roots.each do |salt_environment, salt_roots| %>
-  <%= salt_environment %>:<% salt_roots.each do |salt_root| %>
+pillar_roots:<% salt_pillar_roots.sort.each do |salt_environment, salt_roots| %>
+  <%= salt_environment %>:<% salt_roots.sort.each do |salt_root| %>
     - <%= salt_root %>
 <% end %><% end %><% end %>
 
 <% if salt_ext_pillar != {} %>
-ext_pillar:<% salt_ext_pillar.each do |salt_ext, salt_location| %>
+ext_pillar:<% salt_ext_pillar.sort.each do |salt_ext, salt_location| %>
   - <%= salt_ext %>: <%= salt_location %>
 <% end %><% end %>
 
@@ -256,14 +256,14 @@ ext_pillar:<% salt_ext_pillar.each do |salt_ext, salt_location| %>
 #     - manage.up
 #
 <% if salt_peer != {} %>
-peer:<% salt_peer.each do |salt_peer, salt_commands| %>
-  <%= salt_peer %>:<% salt_commands.each do |salt_command| %>
+peer:<% salt_peer.sort.each do |salt_peer, salt_commands| %>
+  <%= salt_peer %>:<% salt_commands.sort.each do |salt_command| %>
     - <%= salt_command %>
 <% end %><% end %><% end %>
 
 <% if salt_peer_run != {} %>
-peer_run:<% salt_peer_run.each do |salt_peer, salt_commands| %>
-  <%= salt_peer %>:<% salt_commands.each do |salt_command| %>
+peer_run:<% salt_peer_run.sort.each do |salt_peer, salt_commands| %>
+  <%= salt_peer %>:<% salt_commands.sort.each do |salt_command| %>
     - <%= salt_command %>
 <% end %><% end %><% end %>
 
@@ -327,7 +327,7 @@ cluster_mode: <%= salt_cluster_mode %>
 #   group1: 'L@foo.domain.com,bar.domain.com,baz.domain.com and bl*.domain.com'
 #   group2: 'G@os:Debian and foo.domain.com'
 <% if salt_nodegroups != {} %>
-nodegroups:<% salt_nodegroups.each do |salt_group, salt_nodes| %>
+nodegroups:<% salt_nodegroups.sort.each do |salt_group, salt_nodes| %>
   <%= salt_group %>: <%= salt_nodes %>
 <% end %><% end %>
 
