@@ -2341,7 +2341,7 @@ class accounts {
 			}
 		}
 	}
-	
+
 	# RT 4106
 	class abartov inherits baseaccount {
 		$username = "abartov"
@@ -2426,6 +2426,27 @@ class accounts {
 		}
 	}
 
+  # RT 2440
+  class cmcmahon inherits baseaccount {
+    $username = "cmcmahon"
+    $realname = "Chris McMahon"
+    $uid = 627
+
+    unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+    if $manage_home {
+      Ssh_authorized_key { require => Unixaccount[$realname]}
+
+      ssh_authorized_key {
+        "cmcmahon@ubuntu":
+        ensure  => present,
+        user  => $username,
+        type  => "ssh-rsa",
+        key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCxI9s+xp5hVPgYCFoiA7fVZWHp+tpsk8zO+iv0xpoeC1HKu5plsyQ+IrJyZQ3AlXU8TdAregeCZ160scrVJcCLwaU+3JC9dgRKOVnvrOMieK3HFsNBAXgOpLTRqXwXi37OQElEw/+WmnUW6BPtE5laQXwiNZ9HmdKUnuSB7k469gtX8Zp67/NyypOJR4gEoBC5OU9xD99lkKhJMW2o/eDIX//vzjtInQVgVBpfSSp4iNjeB9Z1gx5E28Xc8y7DRe8ShyRL/wQkagZ+cexmo33JkoJ6+vwV3Md9JkKYFkj0WCUrLBfXRAM7zagcnY7vJyW3xu81+HVQxcQAONUxAAKB",
+      }
+    }
+  }
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2498,6 +2519,7 @@ class admins::mortals {
 	include accounts::anomie
 	include accounts::awjrichards
 	include accounts::bsitu
+	include accounts::cmcmahon
 	include accounts::csteipp
 	include accounts::demon
 	include accounts::gwicke
