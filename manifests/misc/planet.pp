@@ -61,8 +61,6 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			owner => www-data,
 			group => www-data,
 			source => "puppet:///files/planet/index.html";
-		"/usr/share/planet-venus/theme/wikimedia/config.ini":
-			source => "puppet:///files/planet/theme/config.ini";
 		"/usr/share/planet-venus/theme/wikimedia/index.html.tmpl":
 			source => "puppet:///files/planet/theme/index.html.tmpl";
 		"/usr/share/planet-venus/theme/wikimedia/planet.css":
@@ -130,6 +128,9 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			"/usr/share/planet-venus/theme/wikimedia/${title}/index.html.tmpl":
 				ensure => present,
 				content => template("planet/index.html.tmpl.erb");
+			"/usr/share/planet-venus/theme/wikimedia/${title}/config.ini":
+				source => "puppet:///files/planet/theme/config.ini";
+
 		}
 
 
