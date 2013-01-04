@@ -6,60 +6,70 @@ class role::coredb::config {
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db63", 'eqiad' => "db1017"},
 			'snapshot' => ["db32", "db1050"],
+			'no_master' => [ 'db67', 'db1047' ]
 		},
 		's2' => {
 			'hosts' => ['db52', 'db53', 'db54', 'db57', 'db1002', 'db1009', 'db1018', 'db1034'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db54", 'eqiad' => "db1034"},
 			'snapshot' => ["db53", "db1018"],
+			'no_master' => []
 		},
 		's3' => {
 			'hosts' => ['db34', 'db39', 'db64', 'db66', 'db1003', 'db1010', 'db1019', 'db1035'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db34", 'eqiad' => "db1019"},
 			'snapshot' => ["db64", "db1035"],
+			'no_master' => []
 		},
 		's4' => {
 			'hosts' => ['db31', 'db33', 'db51', 'db65', 'db1004', 'db1011', 'db1020', 'db1038'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db31", 'eqiad' => "db1038"},
 			'snapshot' => ["db33", "db1020"],
+			'no_master' => []
 		},
 		's5' => {
 			'hosts' => ['db35', 'db44', 'db45', 'db55', 'db1005', 'db1021', 'db1026', 'db1039'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db45", 'eqiad' => "db1039"},
 			'snapshot' => ["db44", "db1005"],
+			'no_master' => []
 		},
 		's6' => {
 			'hosts' => ['db43', 'db46', 'db47', 'db50', 'db1006', 'db1022', 'db1027', 'db1040'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db47", 'eqiad' => "db1006"},
 			'snapshot' => ["db46", "db1022"],
+			'no_master' => []
 		},
 		's7' => {
 			'hosts' => ['db37', 'db56', 'db58', 'db68', 'db1007', 'db1024', 'db1028', 'db1041'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db37", 'eqiad' => "db1041"},
 			'snapshot' => ["db56", "db1007"],
+			'no_master' => []
 		},
 		'm1' => {
 			'hosts' => ['bellin', 'blondel'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "blondel"},
 			'snapshot' => [],
+			'no_master' => []
 		},
 		'm2' => {
 			'hosts' => ['db48', 'db49', 'db1046', 'db1048'],
 			'primary_site' => "both",
 			'masters' => {'pmtpa' => "db48", 'eqiad' => "db1048"},
 			'snapshot' => ["db49", "db1046"],
+			'no_master' => []
 		},
 		'es1' => {
 			'hosts' => ['es1', 'es2', 'es3', 'es4', 'es1001', 'es1002', 'es1003', 'es1004'],
 			'primary_site' => "pmtpa",
 			'masters' => {},
 			'snapshot' => [],
+			'no_master' => []
 		},
 		'es2' => {
 			'hosts' => ['es5', 'es6', 'es7', 'db61', 'db62', 'es1005', 'es1006', 'es1007'],
@@ -67,12 +77,14 @@ class role::coredb::config {
 			'masters' => {'pmtpa' => "db61", 'eqiad' => "es1005"},
 #			'masters' => {'pmtpa' => "es5", 'eqiad' => "es1005"},
 			'snapshot' => ["es7", "es1007"],
+			'no_master' => []
 		},
 		'es3' => {
 			'hosts' => ['es8', 'es9', 'es10', 'es1008', 'es1009', 'es1010'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "es8", 'eqiad' => "es1008"},
 			'snapshot' => ["es10", "es1010"],
+			'no_master' => []
 		},
 	}
 }
