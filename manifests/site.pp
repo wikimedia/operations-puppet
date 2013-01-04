@@ -2588,7 +2588,7 @@ node /(celsus|constable)\.wikimedia\.org/ {
 		misc::parsoid
 }
 
-node "wtp1001.eqiad.wmnet" {
+node /(caesium|xenon|wtp1001)\.eqiad\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
