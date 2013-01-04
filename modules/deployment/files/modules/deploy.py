@@ -26,10 +26,7 @@ def sync_all():
         minion_regex = minion_regexes[repo]
         if not re.search(minion_regex,minion):
             continue
-        if not __salt__['file.directory_exists'](repoloc + '/.git'):
-            __salt__['git.clone'](repoloc,repourl + '/.git')
-        else:
-            ret = __salt__['deploy.checkout'](repo)
+        ret = __salt__['deploy.fetch'](repo)
         ret = __salt__['deploy.checkout'](repo)
         if ret != 0:
             status = 1
@@ -55,6 +52,10 @@ def fetch(repo):
     checkout_submodules = __pillar__.get('repo_checkout_submodules')
     checkout_submodules = checkout_submodules[repo]
     gitmodules = repoloc + '/.gitmodules'
+
+    # Clone the repo if it doesn't exist yet
+    if not __salt__['file.directory_exists'](repoloc + '/.git'):
+        __salt__['git.clone'](repoloc,repourl + '/.git')
 
     cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
     __salt__['cmd.retcode'](cmd,repoloc)
