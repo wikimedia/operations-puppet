@@ -160,7 +160,6 @@ class role::coredb::m2 {
 class role::coredb::es1 {
 	class { "role::coredb::common":
 		shard => "es1",
-		mysql_myisam => true,
 		innodb_file_per_table => true,
 	}
 }
@@ -168,7 +167,6 @@ class role::coredb::es1 {
 class role::coredb::es2 {
 	class { "role::coredb::common":
 		shard => "es2",
-		mysql_myisam => true,
 		innodb_file_per_table => true,
 	}
 }
@@ -176,7 +174,6 @@ class role::coredb::es2 {
 class role::coredb::es3 {
 	class { "role::coredb::common":
 		shard => "es3",
-		mysql_myisam => true,
 		innodb_file_per_table => true,
 	}
 }
