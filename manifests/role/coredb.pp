@@ -1,11 +1,11 @@
 class role::coredb::config {
 	$topology = {
 		's1' => {
-			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db61', 'db63', 'db67',
+			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db63', 'db67',
 				'db1001', 'db1017', 'db1042', 'db1043', 'db1047', 'db1049', 'db1050'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db63", 'eqiad' => "db1017"},
-			'snapshot' => ["db32", "db1050", "db61"],
+			'snapshot' => ["db32", "db1050"],
 		},
 		's2' => {
 			'hosts' => ['db52', 'db53', 'db54', 'db57', 'db1002', 'db1009', 'db1018', 'db1034'],
@@ -62,9 +62,10 @@ class role::coredb::config {
 			'snapshot' => [],
 		},
 		'es2' => {
-			'hosts' => ['es5', 'es6', 'es7', 'es1005', 'es1006', 'es1007'],
+			'hosts' => ['es5', 'es6', 'es7', 'db61', 'db62', 'es1005', 'es1006', 'es1007'],
 			'primary_site' => "pmtpa",
-			'masters' => {'pmtpa' => "es5", 'eqiad' => "es1005"},
+			'masters' => {'pmtpa' => "db61", 'eqiad' => "es1005"},
+#			'masters' => {'pmtpa' => "es5", 'eqiad' => "es1005"},
 			'snapshot' => ["es7", "es1007"],
 		},
 		'es3' => {
