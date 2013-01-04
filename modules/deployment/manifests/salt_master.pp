@@ -11,7 +11,7 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       mode => 0444,
       owner => root,
       group => root,
-      require => [File["${state_dir}/deployment"]];
+      require => [File["${state_dir}/deploy"]];
     "${runner_dir}/deploy.py":
       content => template("deployment/runners/deploy.py.erb"),
       mode => 0555,
