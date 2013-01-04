@@ -11,7 +11,7 @@
 #                       * "results" - whether Solr has some data in its index
 #                       Any other input will disable monitoring
 class role::solr($schema = undef, $replication_master = undef, $monitor = "service" ) {
-	class { "solr":
+	class { "::solr":
 		schema => $schema,
 		replication_master => $replication_master,
 	}
