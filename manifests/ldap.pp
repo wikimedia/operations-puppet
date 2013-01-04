@@ -76,6 +76,12 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
 		"$certificate_location":
 			ensure => directory,
 			require => Package['opendj'];
+		'/etc/java-6-openjdk/security/java.security':
+			source => "puppet:///files/openjdk-6/java.security",
+			owner => root,
+			group => root,
+			mode => 0444,
+			require => Package['openjdk-6-jre'];
 	}
 
 	if ( $first_master == "true" ) {
