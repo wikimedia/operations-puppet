@@ -159,6 +159,11 @@ host cadmium {
 	fixed-address cadmium.eqiad.wmnet;
 }
 
+host caesium {
+	hardware ethernet D4:AE:52:B5:4E:60;
+	fixed-address caesium.eqiad.wmnet;
+}
+
 host carbon {
 	hardware ethernet 78:2b:cb:09:0e:a0;
 	fixed-address carbon.wikimedia.org;
@@ -3723,6 +3728,11 @@ host wtp1001 {
 host yttrium {
 	hardware ethernet 18:03:73:f1:4f:82;
 	fixed-address yttrium.eqiad.wmnet;
+}
+
+host xenon {
+	hardware ethernet 90:B1:1C:00:A3:08;
+	fixed-address xenon.eqiad.wmnet;
 }
 
 host zhen {
