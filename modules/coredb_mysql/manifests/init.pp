@@ -9,14 +9,18 @@ class coredb_mysql(
 	$innodb_file_per_table,
 	$long_timeouts,
 	$enable_unsafe_locks,
-	$large_slave_trans_retries) {
+	$large_slave_trans_retries,
+	$slow_query_digest) {
 
 	include coredb_mysql::base,
 		coredb_mysql::conf,
 		coredb_mysql::heartbeat,
 		coredb_mysql::packages,
-		coredb_mysql::slow_digest,
 		coredb_mysql::utils
+
+	if $slow_query_digest == true {
+		include coredb_mysql::slow_digest
+	}
 
 	Class["coredb_mysql"] -> Class["coredb_mysql::conf"]
 }
