@@ -174,9 +174,10 @@ class role::coredb::es3 {
 	}
 }
 
-class role::coredb::researchdb( $shard="s1" ){
+class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M" ){
 	class { "role::coredb::common":
 		shard => $shard,
+		innodb_log_file_size => $innodb_log_file_size,
 		read_only => false,
 		disable_binlogs => true,
 		long_timeouts => true,
