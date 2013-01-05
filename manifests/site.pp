@@ -567,11 +567,7 @@ node /db6[1]\.pmtpa\.wmnet/ {
 }
 
 node /db6[2]\.pmtpa\.wmnet/ {
-  include role::db::core,
-    mysql::mysqluser,
-    mysql::datadirs,
-    mysql::conf,
-    mysql::packages
+  include role::coredb::researchdb
 }
 
 node /db6([3-9])\.pmtpa\.wmnet/ {

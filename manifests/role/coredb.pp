@@ -1,7 +1,7 @@
 class role::coredb::config {
 	$topology = {
 		's1' => {
-			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db63', 'db67',
+			'hosts' => ['db32', 'db36', 'db38', 'db59', 'db60', 'db62', 'db63', 'db67',
 				'db1001', 'db1017', 'db1042', 'db1043', 'db1047', 'db1049', 'db1050'],
 			'primary_site' => "pmtpa",
 			'masters' => {'pmtpa' => "db63", 'eqiad' => "db1017"},
