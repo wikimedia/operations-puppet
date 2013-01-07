@@ -120,7 +120,7 @@ class mysql {
 	#######################################################################
 	### Research DB Definitions - should also belong to a cluster above
 	#######################################################################
-	if $hostname =~ /^db(62|67|1047)$/ {
+	if $hostname =~ /^db(67|1047)$/ {
 		$research_dbs = true
 		$writable = true
 	}
