@@ -66,6 +66,14 @@ class solr::service {
     ensure => running,
     enable => true,
   }
+
+  cron { "delete-old-jetty-logs":
+    command => "find /var/log/jetty/* -mtime +7 -delete",
+    user => "root",
+    hour => 0,
+    minute => 0,
+    ensure => present,
+  }
 }
 
 class solr ($schema = undef, $replication_master = undef) {
