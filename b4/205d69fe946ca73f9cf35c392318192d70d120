@@ -1,0 +1,9 @@
+Change-Id: Ib4205d69fe946ca73f9cf35c392318192d70d120
+Code-Review+2: Ottomata <otto@wikimedia.org>
+Verified+2: Ottomata <otto@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Ottomata <otto@wikimedia.org>
+Submitted-at: Mon, 07 Jan 2013 15:06:18 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/42516
+Project: operations/puppet
+Branch: refs/heads/production
