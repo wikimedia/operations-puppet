@@ -1396,7 +1396,8 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	}
 
 	class { "redis":
-		maxmemory => "500Mb",
+		maxmemory         => "500Mb",
+		redis_replication => $redis_replication,
 	}
 	include redis::ganglia
 }
@@ -1434,7 +1435,8 @@ node /mc(10[01][0-9])\.eqiad\.wmnet/ {
 	}
 
 	class { "redis":
-		maxmemory => "500Mb",
+		maxmemory         => "500Mb",
+		redis_replication => $redis_replication,
 	}
 	include redis::ganglia
 }

@@ -144,7 +144,7 @@ dir <%= dir %>
 # different interval, or to listen to another port, and so on.
 #
 # slaveof <masterip> <masterport>
-<% if redis_replication['site'] -%>
+<% if @redis_replication and redis_replication.has_key?('site') and redis_replication['site'] -%>
 slaveof <%= redis_replication[hostname] %>.<%= redis_replication['site'] %> <%= port %>
 <% end -%>
 
