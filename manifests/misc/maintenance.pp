@@ -234,3 +234,18 @@ class misc::maintenance::parsercachepurging {
 	}
 
 }
+
+class misc::maintenance::uploadstashcleaning {
+
+	system_role { "misc::maintenance::uploadstashcleaning": description => "Misc - Maintenance Server: upload stash cleaning" }
+
+	cron { 'upload_stash_cleaning':
+		user => apache,
+		minute => 0,
+		hour => 2,
+		weekday => 0,
+		# Purge old upload stash rows and files based on $wgUploadStashMaxAge
+		command => '/usr/local/bin/mwscriptwikiset cleanupUploadStash.php all.dblist >/dev/null 2>&1',
+		ensure => present,
+	}
+}
