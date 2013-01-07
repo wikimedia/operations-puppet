@@ -1,4 +1,4 @@
-define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pillar_roots, $salt_module_roots, $salt_returner_roots) {
+define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pillar_roots, $salt_module_roots, $salt_returner_roots, $salt_reactor_roots) {
 
   file { $salt_state_roots[$title]:
     ensure => directory,
@@ -29,6 +29,13 @@ define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pilla
   }
 
   file { $salt_returner_roots[$title]:
+    ensure => directory,
+    mode => 0755,
+    owner => root,
+    group => root;
+  }
+
+  file { $salt_reactor_roots[$title]:
     ensure => directory,
     mode => 0755,
     owner => root,

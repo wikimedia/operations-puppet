@@ -336,3 +336,9 @@ nodegroups:<% salt_nodegroups.each do |salt_group, salt_nodes| %>
 # The range server (and optional port) that
 # serves your cluster information
 #range_server: range:80
+
+<% if salt_reactor != {} %>
+reactor:<% salt_reactor.each do |salt_tag, salt_states| %>
+  - '<%= salt_tag %>':<% salt_states.each do |salt_state| %>
+    - <%= salt_state %>
+<% end %><% end %><% end %>
