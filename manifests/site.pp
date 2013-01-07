@@ -999,6 +999,7 @@ node "hume.wikimedia.org" {
 		misc::maintenance::update_flaggedrev_stats,
 		misc::maintenance::update_special_pages,
 		misc::maintenance::parsercachepurging,
+		misc::maintenance::uploadstashcleaning,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
