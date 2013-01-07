@@ -561,6 +561,11 @@ class generic::gluster {
 		ensure => present;
 	}
 
+	file { "/etc/logrotate.d/glusterlogs":
+		ensure => present,
+		source => "puppet:///files/logrotate/glusterlogs",
+		owner => 'root',
+	}
 }
 
 class generic::packages::git-core {

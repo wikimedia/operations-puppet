@@ -1,0 +1,9 @@
+/var/log/glusterfs/*.log {
+	missingok
+	rotate 3
+	weekly
+	compress
+	postrotate
+		/usr/bin/killall -HUP glusterfs > /dev/null 2>&1
+	endscript
+}
