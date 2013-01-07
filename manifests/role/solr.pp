@@ -43,6 +43,9 @@ class role::solr::geodata {
 
 	include standard
 
-	class { "role::solr": schema => "puppet:///modules/solr/schema-geodata.xml" }
+	class { "role::solr":
+		schema => "puppet:///modules/solr/schema-geodata.xml",
+		replication_master => 'solr1001.eqiad.wmnet',
+	}
 }
 
