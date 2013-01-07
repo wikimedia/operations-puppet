@@ -1,0 +1,5 @@
+/var/log/glusterfs/*.log {
+	rotate 2
+	daily
+	compress
+}
