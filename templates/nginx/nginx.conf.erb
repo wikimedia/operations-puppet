@@ -3,7 +3,11 @@
 # Thumbs server configuration file
 
 user www-data www-data;
+<% if has_variable?("nginx_use_ssl") then %>
+worker_processes  <%= processorcount.to_i %>;
+<% else %>
 worker_processes  <%= processorcount.to_i * 8 %>;
+<% end %>
 worker_rlimit_nofile 30000;
 
 
