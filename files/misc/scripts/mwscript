@@ -1,6 +1,8 @@
 #!/bin/sh
 # Shell wrapper for the home version of multiversion/MWScript.php.
 # This script belongs in /usr/bin/ and should be in PATH.
-if ! php /home/wikipedia/common/multiversion/MWScript.php "$@"; then
+. /usr/local/lib/mw-deployment-vars.sh
+
+if ! php "$MW_COMMON_SOURCE/multiversion/MWScript.php" "$@"; then
 	exit 1
 fi

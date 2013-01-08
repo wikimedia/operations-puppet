@@ -1,7 +1,8 @@
 #!/bin/bash
+. /usr/local/lib/mw-deployment-vars.sh
 
-cd /home/wikipedia/common/multiversion
-for db in `</home/wikipedia/common/small.dblist`; do
+cd "$MW_COMMON/multiversion"
+for db in `<$MW_DBLISTS/small.dblist`; do
 	echo $db
 	php MWScript.php updateSpecialPages.php $db
 	echo

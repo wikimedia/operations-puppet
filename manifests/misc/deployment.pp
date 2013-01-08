@@ -22,7 +22,8 @@ class misc::deployment {
 	}
 }
 
-class misc::deployment::scripts {
+# Scripts common to both git-deploy and scap
+class misc::deployment::common_scripts {
 	require passwordscripts
 
 	# scap requires sync-common, which is in the wikimedia-task-appserver package
@@ -164,9 +165,17 @@ class misc::deployment::scripts {
 	}
 }
 
+# Scripts for the new git-deploy deployment system
+class misc::deployment::scripts {
+	include misc::deployment::vars,
+		misc::deployment::common_scripts
+}
+
 # Scripts for the old rsync-based deployment system
 class misc::deployment::scap_scripts {
-	include misc::deployment::scripts
+	include misc::deployment::common_scripts
+
+	class { "misc::deployment::vars", system => "scap" }
 
 	$scriptpath = "/usr/local/bin"
 
@@ -339,3 +348,19 @@ class misc::deployment::l10nupdate {
 	}
 }
 
+class misc::deployment::vars ($system = "git-deploy") {
+	if $system == "git-deploy" {
+		$mw_common = "/srv/deployment/mediawiki/common"
+		$mw_common_source = $mw_common
+	} elsif $system == "scap" {
+		$mw_common = "/usr/local/apache/common-local"
+		$mw_common_source = "/home/wikipedia/common"
+	}
+	file {
+		"/usr/local/lib/mw-deployment-vars.sh":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("misc/scripts/mw-deployment-vars.erb");
+	}
+}

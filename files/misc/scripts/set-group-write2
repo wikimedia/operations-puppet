@@ -1,16 +1,11 @@
 #!/bin/bash
 BINDIR=/usr/local/bin
-
-if [ $HOSTNAME == fenari ]; then
-	TARGETBASE=/home/wikipedia/common
-else
-	TARGETBASE=/apache/common-local
-fi
+. /usr/local/lib/mw-deployment-vars.sh
 
 mwVersionNums=$($BINDIR/mwversionsinuse)
 for mwVerNum in ${mwVersionNums[@]}; do
-	find "$TARGETBASE"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+	find "$MW_COMMON_SOURCE"/php-"$mwVerNum" -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
 done
 
-find "$TARGETBASE"/wmf-config -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
-find "$TARGETBASE"/multiversion -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+find "$MW_COMMON_SOURCE"/wmf-config -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
+find "$MW_COMMON_SOURCE"/multiversion -group wikidev -not -perm -020 -exec chmod g+w '{}' ';'
