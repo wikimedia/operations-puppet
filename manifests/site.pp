@@ -776,7 +776,7 @@ node "fenari.wikimedia.org" {
 		misc::deployment,
 		misc::noc-wikimedia,
 		mediawiki::extension-distributor,
-		misc::deployment::scripts,
+		misc::deployment::scap_scripts,
 		misc::ircecho,
 		misc::deployment::l10nupdate,
 		dns::account,
@@ -992,7 +992,7 @@ node "hume.wikimedia.org" {
 
 	include standard,
 		nfs::netapp::home,
-		misc::deployment::scripts,
+		misc::deployment::scap_scripts,
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
 		misc::maintenance::refreshlinks,
