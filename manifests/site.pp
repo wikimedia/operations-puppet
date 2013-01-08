@@ -592,7 +592,11 @@ node "db78.pmtpa.wmnet" {
 }
 
 # eqiad dbs
-node /db10[0-9][0-9]\.eqiad\.wmnet/ {
+node /db1036\.eqiad\.wmnet/ {
+  include role::coredb::s3
+}
+
+node /db10([012456789][0-9]|3[012345789])\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
 		$ganglia_aggregator = "true"
 	}

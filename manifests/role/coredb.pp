@@ -16,10 +16,9 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's3' => {
-			'hosts' => ['db34', 'db39', 'db61', 'db62', 'db64', 'db66', 'db1003', 'db1010', 'db1019', 'db1035'],
+			'hosts' => ['db34', 'db39', 'db64', 'db66', 'db1003', 'db1010', 'db1019', 'db1035', 'db1036'],
 			'primary_site' => "pmtpa",
-      'masters' => {'pmtpa' => "db61", 'eqiad' => "db1019"},
-#			'masters' => {'pmtpa' => "db34", 'eqiad' => "db1019"},
+			'masters' => {'pmtpa' => "db34", 'eqiad' => "db1019"},
 			'snapshot' => ["db64", "db1035"],
 			'no_master' => []
 		},
