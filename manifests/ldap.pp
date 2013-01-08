@@ -328,60 +328,88 @@ class ldap::client::nss($ldapconfig) {
 # Remember though, that including ldap::client::nss will mean users in the
 # ldap database will then be listed as users of the system, so use care.
 class ldap::client::utils($ldapconfig) {
-	include svn::client
 	include base::mwclient
 
 	package { [ "python-ldap", "python-pycurl" ]:
 		ensure => latest;
 	}
 
-	# TODO: move all ldap scripts from SVN to the puppet repo
 	file {
 		"/usr/local/sbin/add-ldap-user":
-			ensure => link,
-			target => "/usr/local/lib/user-management/add-ldap-user";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/add-ldap-user";
 		"/usr/local/sbin/add-labs-user":
-			ensure => link,
-			target => "/usr/local/lib/user-management/add-labs-user";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/add-labs-user";
 		"/usr/local/sbin/modify-ldap-user":
-			ensure => link,
-			target => "/usr/local/lib/user-management/modify-ldap-user";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/modify-ldap-user";
 		"/usr/local/sbin/delete-ldap-user":
-			ensure => link,
-			target => "/usr/local/lib/user-management/delete-ldap-user";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/delete-ldap-user";
 		"/usr/local/sbin/add-ldap-group":
-			ensure => link,
-			target => "/usr/local/lib/user-management/add-ldap-group";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/add-ldap-group";
 		"/usr/local/sbin/modify-ldap-group":
-			ensure => link,
-			target => "/usr/local/lib/user-management/modify-ldap-group";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/modify-ldap-group";
 		"/usr/local/sbin/delete-ldap-group":
-			ensure => link,
-			target => "/usr/local/lib/user-management/delete-ldap-group";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/delete-ldap-group";
 		"/usr/local/sbin/netgroup-mod":
-			ensure => link,
-			target => "/usr/local/lib/user-management/netgroup-mod";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/netgroup-mod";
 		"/usr/local/sbin/ldaplist":
-			ensure => link,
-			target => "/usr/local/lib/user-management/ldaplist";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/ldaplist";
 		"/usr/local/sbin/change-ldap-passwd":
-			ensure => link,
-			target => "/usr/local/lib/user-management/change-ldap-passwd";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/change-ldap-passwd";
 		"/usr/local/sbin/homedirectorymanager.py":
-			ensure => link,
-			target => "/usr/local/lib/user-management/homedirectorymanager.py";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/homedirectorymanager.py";
 		"/usr/local/sbin/manage-exports":
-			ensure => link,
-			target => "/usr/local/lib/user-management/manage-exports";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/manage-exports";
 		"/usr/local/sbin/manage-volumes":
-			ensure => link,
-			target => "/usr/local/lib/user-management/manage-volumes";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/manage-volumes";
 		"/usr/local/sbin/ldapsupportlib.py":
-			ensure => link,
-			target => "/usr/local/lib/user-management/ldapsupportlib.py";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/ldapsupportlib.py";
 		"/usr/local/sbin/mail-instance-creator.py":
-			ensure => link,
-			target => "/usr/local/lib/instance-management/mail-instance-creator.py";
+			owner => root,
+			group => root,
+			mode  => 0544,
+			source => "puppet:///files/ldap/scripts/mail-instance-creator.py";
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
 			group => root,
@@ -397,19 +425,6 @@ class ldap::client::utils($ldapconfig) {
 				mode  => 0700,
 				content => template("ldap/ldapscriptrc.erb");
 		}
-	}
-
-	# Use a specific revision for the checkout, to ensure we are using
-	# a known and approved version of this script.
-	exec { "checkout_user_ldap_tools":
-		command => "/usr/bin/svn co -r115695 http://svn.wikimedia.org/svnroot/mediawiki/trunk/tools/subversion/user-management",
-		cwd => "/usr/local/lib",
-		require => Package["subversion"];
-	}
-	exec { "checkout_instance_ldap_tools":
-		command => "/usr/bin/svn co -r97023 http://svn.wikimedia.org/svnroot/mediawiki/trunk/extensions/OpenStackManager/scripts/ instance-management",
-		cwd => "/usr/local/lib",
-		require => Package["subversion"];
 	}
 }
 

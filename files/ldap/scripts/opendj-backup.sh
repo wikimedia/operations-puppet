@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET 
+### puppet:///files/ldap/scripts/opendj-backup.sh
+#####################################################################
+
 # LDAP backups shouldn't be readable by all
 umask 027
 
