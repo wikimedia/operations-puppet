@@ -223,6 +223,16 @@ acl carrier_telenor_montenegro {
 	"79.143.96.0"/20;
 }
 
+acl carrier_xl_indonesia {
+    "112.215.63.0"/24;
+    "112.215.64.0"/24;
+    "112.215.65.0"/24;
+    "112.215.66.0"/24;
+    "202.152.240.0"/24;
+    "202.152.243.0"/24;
+}
+
+
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers */
 	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
@@ -262,6 +272,11 @@ sub tag_carrier {
 			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 				set req.http.X-Carrier = "Saudi Telecom";
 				set req.http.X-CS = "ST";
+			}
+		} else if (client.ip ~ carrier_xl_indonesia) {
+			if ( req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "XL Axiata";
+				set req.http.X-CS = "XL";
 			}
 		}
 	} else {
