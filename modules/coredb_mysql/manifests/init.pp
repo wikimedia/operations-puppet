@@ -10,7 +10,9 @@ class coredb_mysql(
 	$long_timeouts,
 	$enable_unsafe_locks,
 	$large_slave_trans_retries,
-	$slow_query_digest) {
+	$slow_query_digest,
+	$mariadb,
+	) {
 
 	include coredb_mysql::base,
 		coredb_mysql::conf,
@@ -23,4 +25,5 @@ class coredb_mysql(
 	}
 
 	Class["coredb_mysql"] -> Class["coredb_mysql::conf"]
+	Class["coredb_mysql"] -> Class["coredb_mysql::packages"]
 }
