@@ -43,6 +43,13 @@ class role::applicationserver {
 			include	admins::roots,
 				admins::mortals,
 				geoip
+
+			# sudo privileges per RT-4066
+			sudo_user {
+				"demon": privileges => [
+					'ALL = (apache) NOPASSWD: /usr/bin/strace',
+				]
+			}
 		}
 
 		if $::realm == 'labs' {
