@@ -53,6 +53,13 @@ def fetch(repo):
     checkout_submodules = checkout_submodules[repo]
     gitmodules = repoloc + '/.gitmodules'
 
+    # Fetch repos this repo depends on
+    dependencies = __pillar__.get('repo_dependencies')
+    dependencies = dependencies[repo]
+    depstats = []
+    for dependency in dependencies:
+        depstats.append(__salt__['deploy.fetch'](dependency))
+
     # Clone the repo if it doesn't exist yet
     if not __salt__['file.directory_exists'](repoloc + '/.git'):
         __salt__['git.clone'](repoloc,repourl + '/.git')
@@ -70,7 +77,7 @@ def fetch(repo):
         cmd = '/usr/bin/git checkout .gitmodules'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return {'status': 30, 'repo': repo}
+            return {'status': 30, 'repo': repo, 'dependencies': depstats}
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
             for before,after in sed.items():
@@ -81,15 +88,15 @@ def fetch(repo):
         cmd = '/usr/bin/git submodule sync'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return {'status': 40, 'repo': repo}
+            return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # fetch all submodules
         cmd = '/usr/bin/git submodule foreach git fetch'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return {'status': 50, 'repo': repo}
+            return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
-    return {'status': status, 'repo': repo}
+    return {'status': status, 'repo': repo, 'dependencies': depstats}
 
 def checkout(repo,reset=False):
     '''
@@ -142,6 +149,13 @@ def checkout(repo,reset=False):
         current_tag = current_tag.strip()
         if current_tag == tag:
             return {'status': 0, 'repo': repo, 'tag': tag}
+
+    # Checkout repos this repo depends on
+    dependencies = __pillar__.get('repo_dependencies')
+    dependencies = dependencies[repo]
+    depstats = []
+    for dependency in dependencies:
+        depstats.append(__salt__['deploy.checkout'](dependency))
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
