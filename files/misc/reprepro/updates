@@ -7,3 +7,11 @@ Suite: precise
 Architectures: amd64 source
 VerifyRelease: 7EBFDD5D17ED316D
 ListShellHook: grep-dctrl -X -S ceph || [ $? -eq 1 ]
+
+Name: jenkins
+Method: http://pkg.jenkins-ci.org/debian-stable/
+Suite: binary
+Flat: main
+Architectures: all>amd64
+VerifyRelease: 9B7D32F2D50582E6
+ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
