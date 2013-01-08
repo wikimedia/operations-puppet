@@ -88,6 +88,7 @@ class mediawiki::math {
 #  quoting and escaping!  Note that if you're inserting a bunch of lines you'll be better
 #  served by creating an additional template and including that via $role_requires.
 class mediawiki::singlenode( $ensure = 'present',
+                             $database_name = "testwiki",
                              $role_requires = [],
                              $install_path = "/srv/mediawiki",
                              $role_config_lines = []) {
@@ -174,7 +175,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	exec { 'mediawiki_setup':
 		require => [git::clone["mediawiki"],  File["${install_path}/orig"], exec['password_gen']],
 		creates => "${install_path}/orig/LocalSettings.php",
-		command => "/usr/bin/php ${install_path}/maintenance/install.php testwiki admin --dbname testwiki --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		command => "/usr/bin/php ${install_path}/maintenance/install.php testwiki admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
 		logoutput => "on_failure",
 	}
 

@@ -1,0 +1,3 @@
+<?php
+$wgProfiler['class'] = 'Profiler';
+
