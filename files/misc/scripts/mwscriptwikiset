@@ -4,7 +4,8 @@
 # Unlike mwscript, the takes a dblist filename as the second argument
 # and runs the maintenance script on each of the wikis in the list.
 # Note that this script prints some status info.
-COMMONDIR=/usr/local/apache/common-local
+
+. /usr/local/lib/mw-deployment-vars.sh
 
 SCRIPTFILE=$1
 LISTFILE=$2
@@ -18,8 +19,8 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-if [ ! -f $COMMONDIR/$LISTFILE ]; then
-	echo "The specified dblist file, $COMMONDIR/$LISTFILE, could not be found."
+if [ ! -f $MW_DBLISTS/$LISTFILE ]; then
+	echo "The specified dblist file, $MW_DBLISTS/$LISTFILE, could not be found."
 	exit 1
 fi
 
@@ -30,7 +31,7 @@ unset SCRIPTARGS[1] # dblist file name
 SCRIPTARGS="${SCRIPTARGS[@]}"
 
 # Run the script on all wikis in the dblist
-for DBNAME in $(cat $COMMONDIR/$LISTFILE)
+for DBNAME in $(cat $MW_DBLISTS/$LISTFILE)
 do
 	echo "-------------------------------------"
 	echo "$DBNAME"
