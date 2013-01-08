@@ -2470,10 +2470,16 @@ node "vanadium.eqiad.wmnet" {
 	include standard,
 		groups::wikidev,
 		admins::restricted,
+		accounts::aaron,
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+<<<<<<< HEAD
 		accounts::mflaschen,
+=======
+		accounts::maryana,
+		accounts::rfaulkner,
+>>>>>>> ddd8991... add aaron,maryana,rfaulkner accounts to vanadium (RT-4139)
 		accounts::spage,
 		misc::statistics::db::mysql,
 		misc::statistics::db::mongo,
