@@ -5,7 +5,8 @@
 # and runs the maintenance script on each of the wikis in the list.
 # This only prints information for wikis thas that the script gives
 # a non-empty result for via STD_OUT.
-COMMONDIR=/usr/local/apache/common-local
+
+. /usr/local/lib/mw-deployment-vars.sh
 
 SCRIPTFILE=$1
 LISTFILE=$2
@@ -17,8 +18,8 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
-if [ ! -f $COMMONDIR/$LISTFILE ]; then
-	echo "The specified dblist file, $COMMONDIR/$LISTFILE, could not be found."
+if [ ! -f $MW_DBLISTS/$LISTFILE ]; then
+	echo "The specified dblist file, $MW_DBLISTS/$LISTFILE, could not be found."
 	exit 1
 fi
 
@@ -29,7 +30,7 @@ unset SCRIPTARGS[1] # dblist file name
 SCRIPTARGS="${SCRIPTARGS[@]}"
 
 # Run the script on all wikis in the dblist
-for DBNAME in $(cat $COMMONDIR/$LISTFILE)
+for DBNAME in $(cat $MW_DBLISTS/$LISTFILE)
 do
 	RES=$(mwscript "$SCRIPTFILE" "$DBNAME" $SCRIPTARGS)
 	if [ -n "$RES" ]; then

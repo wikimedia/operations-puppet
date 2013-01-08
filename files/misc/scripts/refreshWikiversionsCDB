@@ -2,4 +2,5 @@
 # Shell wrapper for the home version of multiversion/refreshWikiVersionsCDB
 # This script belongs in /usr/bin/ and should be in PATH.
 
-exec php /home/wikipedia/common/multiversion/refreshWikiVersionsCDB "$@"
+. /usr/local/lib/mw-deployment-vars.sh
+exec php "$MW_COMMON_SOURCE/multiversion/refreshWikiVersionsCDB" "$@"
