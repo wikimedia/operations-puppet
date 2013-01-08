@@ -1,0 +1,14 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/mediawiki/wikidata.cnf
+###
+###  Changes to this file will be clobbered by Puppet.
+###
+#####################################################################
+
+##############
+# Networking #
+##############
+[mysqld]
+bind_address = 0.0.0.0
+
