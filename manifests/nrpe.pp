@@ -147,7 +147,7 @@ class nrpe::packagesnew {
 		"labs" => "10.4.0.34"
 	}
 
-	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard" ]:
+	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard", "libssl0.9.8" ]:
 		ensure => present;
 	}
 
