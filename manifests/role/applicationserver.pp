@@ -44,6 +44,10 @@ class role::applicationserver {
 				geoip
 		}
 
+		if $::realm == 'wmflabs' {
+			include mediawiki_new::labs
+		}
+
 		if $lvs_pool != undef {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] }
