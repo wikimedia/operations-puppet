@@ -21,4 +21,8 @@ class mediawiki_new {
 	}
 
 	include users, sync
+
+	if ( $::realm == 'wmflabs' ) {
+		include labs
+	}
 }
