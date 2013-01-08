@@ -1,3 +1,4 @@
 #!/bin/bash
 
-exec "$(dirname "$0")/foreachwikiindblist" /home/wikipedia/common/all.dblist "${@}"
+. /usr/local/lib/mw-deployment-vars.sh
+exec "$(dirname "$0")/foreachwikiindblist" "$MW_DBLISTS_SOURCE/all.dblist" "${@}"
