@@ -69,6 +69,8 @@ class role::deployment::salt_masters::production {
 }
 
 class role::deployment::deployment_servers {
+  include misc::deployment::scripts
+
   class { "deployment::deployment_server": }
 
   deployment::deployment_repo_sync_hook_link { "common": }
