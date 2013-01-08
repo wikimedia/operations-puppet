@@ -21,11 +21,6 @@ class role::analytics {
 
 	sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 
-	# Include the general purpose stats user.
-	# This user is useful for running analytics
-	# and statistics related cron jobs.
-	include misc::statistics::user
-
 	# Install Sun/Oracle Java JDK on analytics cluster
 	java { "java-6-oracle": 
 		distribution => 'oracle',
