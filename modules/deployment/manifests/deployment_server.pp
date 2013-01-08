@@ -16,8 +16,20 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
         owner => root,
         group => root,
         require => [File["${$deployment_global_hook_dir}"]];
+      "${$deployment_global_hook_dir}/sync/deploylib.py":
+        source => "puppet:///deployment/git-deploy/deploylib.py",
+        mode => 0555,
+        owner => root,
+        group => root,
+        require => [File["${$deployment_global_hook_dir}/sync"]];
       "${$deployment_global_hook_dir}/sync/shared.py":
         source => "puppet:///deployment/git-deploy/shared.py",
+        mode => 0555,
+        owner => root,
+        group => root,
+        require => [File["${$deployment_global_hook_dir}/sync"]];
+      "${$deployment_global_hook_dir}/sync/depends.py":
+        source => "puppet:///deployment/git-deploy/depends.py",
         mode => 0555,
         owner => root,
         group => root,
