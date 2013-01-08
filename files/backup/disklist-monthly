@@ -6,10 +6,3 @@ db10.pmtpa.wmnet /mnt/a default
 grosley.wikimedia.org /var/lib/jenkins/backups default
 stat1.wikimedia.org     /home default
 stat1.wikimedia.org     /a/eventlogging default
-stat1.wikimedia.org     /a {
-	default
-	exclude file "./mysql"
-	exclude file "./squid/archive"
-	exclude file "./wikistats/tmp"
-	exclude file "./wikistats/backup"
-}

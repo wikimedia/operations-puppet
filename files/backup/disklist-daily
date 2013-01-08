@@ -17,9 +17,4 @@ manganese.wikimedia.org /var/lib/gerrit2/review_site/git default
 sodium.wikimedia.org	/var/lib/mailman	default
 stat1.wikimedia.org     /home default
 stat1.wikimedia.org	/a/eventlogging default
-stat1.wikimedia.org     /a {
-	default
-	exclude file "./mysql/archive"
-	exclude file "./squid/archive"
-}
 virt0.wikimedia.org	/a/backup default
