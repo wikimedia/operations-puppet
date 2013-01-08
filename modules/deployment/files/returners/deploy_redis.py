@@ -42,19 +42,27 @@ def returner(ret):
     '''
     if not ret['fun'].startswith('deploy.'):
         return False
+    ret_data = ret['return']
+    dependencies = ret_data['dependencies']
+    minion = ret['id']
     timestamp = time.time()
     serv = _get_serv()
-    ret_data = ret['return']
+    # Record data for all dependent repositories
+    for dep_data in dependencies:
+        _record(serv, ret['fun'], timestamp, minion, dep_data)
+    # Record data for this repo
+    _record(serv, ret['fun'], timestamp, minion, ret_data)
+
+def _record(serv, function, timestamp, minion, ret_data):
     repo = ret_data['repo']
-    minion = ret['id']
     # Ensure this repo exist in the set of repos
     serv.sadd('deploy:repos', repo)
     # Ensure this minion exists in the set of minions
     serv.sadd('deploy:{0}:minions'.format(repo), minion)
-    if ret['fun'] == "deploy.fetch" or ret['fun'] == "deploy.sync_all":
+    if function == "deploy.fetch" or function == "deploy.sync_all":
         serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status', ret_data['status'])
         serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp', timestamp)
-    if ret['fun'] == "deploy.checkout" or ret['fun'] == "deploy.sync_all":
+    if function == "deploy.checkout" or function == "deploy.sync_all":
         if ret_data['status'] == 0:
             serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'tag', ret_data['tag'])
         serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status', ret_data['status'])
