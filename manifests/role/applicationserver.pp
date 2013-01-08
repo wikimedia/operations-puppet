@@ -42,6 +42,14 @@ class role::applicationserver {
 			include	admins::roots,
 				admins::mortals,
 				geoip
+
+			# sudo privileges per RT-4066
+			sudo_user {
+				"demon": privileges => [
+					'ALL = NOPASSWD: /usr/bin/strace',
+					'ALL = NOPASSWD: /usr/sbin/tcpdump'
+				]
+			}
 		}
 
 		if $lvs_pool != undef {
