@@ -428,15 +428,26 @@ class accounts {
 		$uid = 536
 		$gid = 536	# group 'dab'
 
-                group { "dab":
-                        name            => $username,
-                        gid             => $gid,
-                        alias           => $gid,
-                        ensure          => present,
-                        allowdupe       => false;
-                }
+		group { "dab":
+			name            => $username,
+			gid             => $gid,
+			alias           => $gid,
+			ensure          => present,
+			allowdupe       => false;
+		}
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key { "knoppix@DanielXX":
+				ensure  => present,
+				user    => $username,
+				type    => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAABIwAAAIEA4Xz2/yn/LREJbem/0IFF8wdAhn8n/dahlqB94K5hLXDXqFyiSHI3UBqnGlO2vTiwP/zU0/6cqVFQb1dqhftYn/Fet0MuekZRog2wHTrOkPy63Ph6dqVl5IeIqkHu0tEGXehd/3cktJs0ZiDjR6HrThJxLfRXsSsFQgxrHcSXLeM=";
+			}
+		}
 	}
 
 	class daniel inherits baseaccount {
