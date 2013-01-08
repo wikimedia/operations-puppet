@@ -62,10 +62,16 @@ max_connect_errors=1000000000
 
 temp-pool
 
+<% if has_variable?("mariadb") and mariadb == true then -%>
+query_cache_type=0
+log_slow_verbosity=Query_plan
+optimizer_switch='extended_keys=on'
+<% else %>
 rpl_transaction_enabled
 reserved_super_connections=20
 log_slow_extra
 innodb-thread-lifo=1
+<% end -%>
 
 <% ram = memorysize.split[0]; ram = Float(ram) * 0.75; 
 ram = ram.round; ram = String(ram) + "G"; %>
