@@ -44,6 +44,29 @@ class role::applicationserver {
 				geoip
 		}
 
+		if $::realm == 'wmflabs' {
+			# MediaWiki configuration specific to labs instances ('beta' project)
+
+			# /srv is used by git-deploy to publish MediaWiki copies to the Apaches
+			# servers. On labs, we want to use /dev/vdb which is mounted as /mnt
+			file { '/mnt/srv':
+				ensure => directory,
+				owner  => 'root',
+				group  => 'root',
+				mode   => '0775',
+			}
+
+			# Provide a symbolic link to match production. Will avoid us headhaches with
+			# hardcoded paths in production scripts and configuration files.
+			file { '/srv':
+				ensure  => link,
+				owner   => 'root',
+				group   => 'root',
+				target  => '/mnt/srv',
+				require => File['/mnt/srv'],
+			}
+		}
+
 		if $lvs_pool != undef {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] }
