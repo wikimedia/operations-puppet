@@ -593,7 +593,7 @@ node "db78.pmtpa.wmnet" {
 
 # eqiad dbs
 node /db1036\.eqiad\.wmnet/ {
-  include role::coredb::s3
+
 }
 
 node /db10([012456789][0-9]|3[012345789])\.eqiad\.wmnet/ {
