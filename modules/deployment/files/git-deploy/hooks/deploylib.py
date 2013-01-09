@@ -45,13 +45,13 @@ def update_repos(prefix, tag):
 	if prefix in pillar['repo_dependencies']:
 		dependencies = pillar['repo_dependencies'][prefix]
 		for dependency in dependencies:
-			dependency_script = '/var/lib/git-deploy/scripts/dependencies/%s.dep' % dependency
+			dependency_script = '/var/lib/git-deploy/dependencies/%s.dep' % dependency
 			if os.path.exists(dependency_script):
 				p = subprocess.Popen(dependency_script, shell=True, stderr=subprocess.PIPE)
 				out = p.communicate()[0]
 				print out
 			else:
-				print "Error: script for dependency '%s' is missing. Have you added it in puppet? Exiting."
+				print "Error: script for dependency '%s' is missing. Have you added it in puppet? Exiting." % dependency_script
 				return 1
 
 def fetch(prefix):
@@ -72,7 +72,7 @@ def ask(prefix, stage):
 	elif stage == "checkout":
 		check = "/usr/local/bin/deploy-info --repo=%s --current-tag"
 	while True:
-		answer = raw_input("Would you like to continue? ([C]heck %s state,[y]es,[n]o): ")
+		answer = raw_input("Would you like to continue? ([C]heck %s state,[y]es,[n]o): " % stage)
 		if not answer or answer == "c" or answer == "C":
 			p = subprocess.Popen(check % (prefix), shell=True, stdout=subprocess.PIPE)
 			out = p.communicate()[0]
