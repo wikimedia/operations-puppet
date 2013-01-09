@@ -44,7 +44,7 @@ class role::applicationserver {
 				geoip
 		}
 
-		if $::realm == 'wmflabs' {
+		if $::realm == 'labs' {
 			# MediaWiki configuration specific to labs instances ('beta' project)
 
 			# Umount /dev/vdb from /mnt ...
