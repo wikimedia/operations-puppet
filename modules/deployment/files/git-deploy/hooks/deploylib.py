@@ -38,7 +38,7 @@ def update_repos(prefix, tag):
 	if checkout_submodules:
 		p = subprocess.Popen('git submodule foreach "git tag %s"' % tag, cwd=repodir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out = p.communicate()[0]
-		p = subprocess.Popen('git submodule foreach "git update-server-info"', cwd=repodir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		p = subprocess.Popen('git submodule foreach "submodule-update-server-info"', cwd=repodir, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		out = p.communicate()[0]
 
 	# Ensure repos we depend on are handled
