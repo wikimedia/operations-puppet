@@ -123,6 +123,7 @@ def checkout(repo,reset=False):
     module_calls = __pillar__.get('repo_checkout_module_calls')
     module_calls = module_calls[repo]
     gitmodules = repoloc + '/.gitmodules'
+    depstats = []
 
     # Fetch the .deploy file from the server and get the current tag
     deployfile = repourl + '/.deploy'
@@ -140,34 +141,33 @@ def checkout(repo,reset=False):
     if re.match('\W+', tag):
         return 1
 
-    if reset:
-        # User requested we hard reset the repo to the tag
-        cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
-        if ret != 0:
-            return {'status': 20, 'repo': repo}
-    else:
-        cmd = '/usr/bin/git describe --always --tag'
-        current_tag = __salt__['cmd.run'](cmd,repoloc)
-        current_tag = current_tag.strip()
-        if current_tag == tag:
-            return {'status': 0, 'repo': repo, 'tag': tag}
-
     # Checkout repos this repo depends on
     dependencies = __pillar__.get('repo_dependencies')
     try:
         dependencies = dependencies[repo]
     except KeyError:
         dependencies = []
-    depstats = []
     for dependency in dependencies:
-        depstats.append(__salt__['deploy.checkout'](dependency))
+        depstats.append(__salt__['deploy.checkout'](dependency, reset))
+
+    if reset:
+        # User requested we hard reset the repo to the tag
+        cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return {'status': 20, 'repo': repo, 'dependencies': depstats}
+    else:
+        cmd = '/usr/bin/git describe --always --tag'
+        current_tag = __salt__['cmd.run'](cmd,repoloc)
+        current_tag = current_tag.strip()
+        if current_tag == tag:
+            return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
     ret = __salt__['cmd.retcode'](cmd,repoloc)
     if ret != 0:
-        return {'status': 30, 'repo': repo}
+        return {'status': 30, 'repo': repo, 'dependencies': depstats}
 
     # There's a bug with using booleans in pillars, so for now
     # we're matching against an explicit True string.
@@ -182,15 +182,15 @@ def checkout(repo,reset=False):
         cmd = '/usr/bin/git submodule sync'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return {'status': 40, 'repo': repo}
+            return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --init'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
-            return {'status': 50, 'repo': repo}
+            return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
     # Call modules on the repo's behalf ignore the return on these
     for call in module_calls:
         __salt__[call](repo)
-    return {'status': 0, 'repo': repo, 'tag': tag}
+    return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}
