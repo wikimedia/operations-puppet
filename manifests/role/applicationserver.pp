@@ -122,6 +122,10 @@ class role::applicationserver {
 
 		class { "role::applicationserver::webserver": maxclients => "18" }
 
+		if( $::realm == 'labs' ) {
+			include	nfs::apache::labs
+		}
+
 		include	imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
