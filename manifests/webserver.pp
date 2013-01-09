@@ -64,6 +64,8 @@ class webserver::modproxy {
 	}
 }
 
+#  Install the 'php5-mysql' package which will
+#  include mysql and apache via dependencies.
 class webserver::php5-mysql {
 
 	include generic::sysctl::high-http-performance
@@ -82,6 +84,7 @@ class webserver::php5-gd {
 	}
 }
 
+#  Install the 'apache2' package
 class webserver::apache2 {
 
 	include generic::sysctl::high-http-performance
