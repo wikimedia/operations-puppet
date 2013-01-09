@@ -584,6 +584,7 @@ class icinga::monitor::firewall {
 		require "iptables::tables"
 		iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
 		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
+		iptables_purge_service{ "private_eqiad1": source => "10.64.0.0/19", service => "all", jump => "ACCEPT" }
 	}
 
 	class iptables-accepts {
@@ -594,7 +595,7 @@ class icinga::monitor::firewall {
 		iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "private_pmtpa_nolabs": source => "10.0.0.0/14", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "private_esams": source => "10.21.0.0/24", service => "all", jump => "ACCEPT" }
-		iptables_add_service{ "private_eqiad1": source => "10.64.0.0/19", service => "all", jump => "ACCEPT" }
+		iptables_add_service{ "private_eqiad1": source => "10.64.0.0/17", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "private_eqiad2": source => "10.65.0.0/20", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "private_virt": source => "10.4.16.0/24", service => "all", jump => "ACCEPT" }
 		iptables_add_service{ "public_152": source => "208.80.152.0/24", service => "all", jump => "ACCEPT" }
