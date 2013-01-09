@@ -53,6 +53,7 @@ $decommissioned_servers = [
 "knsq13",
 "knsq14",
 "knsq15",
+"knsq25",
 "knsq30",
 "lily",
 "lomaria",
