@@ -78,10 +78,6 @@ class role::applicationserver {
 
 		class { "applicationserver::config::apache": }
 
-		if( $::realm == 'labs' ) {
-			include	nfs::apache::labs
-		}
-
 		monitor_service { "appserver http":
 			description => "Apache HTTP",
 			check_command => $::realm ? {
@@ -107,6 +103,22 @@ class role::applicationserver {
 
 		include role::applicationserver::webserver
 	}
+	# Class for the beta project
+	# The Apaches instances act as webserver AND imagescalers. We cannot
+	# apply both roles cause puppet will complains about a duplicate class
+	# definition for role::applicationserver::common
+	class appserver::beta{
+		class { "role::applicationserver::common": group => "beta_appserver" }
+
+		include nfs::apache::labs
+		include role::applicationserver::webserver
+
+		# Load the class just like the role::applicationserver::imagescaler
+		# role.
+		include imagescaler::cron,
+			imagescaler::packages,
+			imagescaler::files
+	}
 	class appserver::api{
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
@@ -122,10 +134,8 @@ class role::applicationserver {
 
 		class { "role::applicationserver::webserver": maxclients => "18" }
 
-		if( $::realm == 'labs' ) {
-			include nfs::apache::labs
-		}
-
+		# When adding class there, please also update the appserver::beta
+		# class which mix both webserver and imagescaler roles.
 		include	imagescaler::cron,
 			imagescaler::packages,
 			imagescaler::files
