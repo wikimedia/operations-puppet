@@ -16,7 +16,11 @@ def main():
 
     deploylib.update_repos(prefix, tag)
     deploylib.fetch(prefix)
+    if not deploylib.ask(prefix, 'fetch'):
+        return 1
     deploylib.checkout(prefix, force)
+    if not deploylib.ask(prefix, 'checkout'):
+        return 1
 
 if __name__ == "__main__":
     main()
