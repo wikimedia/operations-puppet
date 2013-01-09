@@ -99,8 +99,8 @@ class role::deployment::deployment_servers {
   deployment::deployment_repo_sync_hook_link { "slot1": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "l10n-slot0": target => "depends.py" }
   deployment::deployment_repo_sync_hook_link { "l10n-slot1": target => "depends.py" }
-  deployment::deployment_repo_dependencies_link { "l10n-slot0": target => "l10n.py" }
-  deployment::deployment_repo_dependencies_link { "l10n-slot1": target => "l10n.py" }
+  deployment::deployment_repo_dependencies_link { "l10n-slot0": target => "l10n" }
+  deployment::deployment_repo_dependencies_link { "l10n-slot1": target => "l10n" }
   deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
 
