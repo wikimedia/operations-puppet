@@ -6,7 +6,7 @@ import json
 
 def update_repos(prefix, tag):
 	print "Running: sudo salt-call --out json pillar.data"
-	p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE)
+	p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out = p.communicate()[0]
 	try:
 		pillar = json.loads(out)
