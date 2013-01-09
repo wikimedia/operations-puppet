@@ -584,7 +584,6 @@ class icinga::monitor::firewall {
 		require "iptables::tables"
 		iptables_purge_service{  "deny_pub_snmptrap": service => "snmptrap" }
 		iptables_purge_service{  "deny_pub_nsca": service => "nsca" }
-		iptables_purge_service{ "private_eqiad1": service => "all" }
 	}
 
 	class iptables-accepts {
