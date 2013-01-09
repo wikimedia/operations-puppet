@@ -55,7 +55,10 @@ def fetch(repo):
 
     # Fetch repos this repo depends on
     dependencies = __pillar__.get('repo_dependencies')
-    dependencies = dependencies[repo]
+    try:
+        dependencies = dependencies[repo]
+    except KeyError:
+        dependencies = []
     depstats = []
     for dependency in dependencies:
         depstats.append(__salt__['deploy.fetch'](dependency))
@@ -152,7 +155,10 @@ def checkout(repo,reset=False):
 
     # Checkout repos this repo depends on
     dependencies = __pillar__.get('repo_dependencies')
-    dependencies = dependencies[repo]
+    try:
+        dependencies = dependencies[repo]
+    except KeyError:
+        dependencies = []
     depstats = []
     for dependency in dependencies:
         depstats.append(__salt__['deploy.checkout'](dependency))

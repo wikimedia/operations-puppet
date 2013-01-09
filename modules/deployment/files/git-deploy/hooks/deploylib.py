@@ -42,7 +42,7 @@ def update_repos(prefix, tag):
 		out = p.communicate()[0]
 
 	# Ensure repos we depend on are handled
-	try:
+	if prefix in pillar['repo_dependencies']:
 		dependencies = pillar['repo_dependencies'][prefix]
 		for dependency in dependencies:
 			dependency_script = '/var/lib/git-deploy/scripts/dependencies/%s.dep' % dependency
@@ -53,8 +53,6 @@ def update_repos(prefix, tag):
 			else:
 				print "Error: script for dependency '%s' is missing. Have you added it in puppet? Exiting."
 				return 1
-	except KeyError:
-		print "Error: Repo dependencies aren't configured for this repo."
 
 def fetch(prefix):
 	print "Running: sudo salt-call publish.runner deploy.fetch '%s'" % (prefix)
