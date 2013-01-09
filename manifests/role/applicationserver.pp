@@ -44,6 +44,25 @@ class role::applicationserver {
 				geoip
 		}
 
+		if $::realm == 'wmflabs' {
+			# MediaWiki configuration specific to labs instances ('beta' project)
+
+			# Umount /dev/vdb from /mnt ...
+			mount { '/mnt':
+				name => '/mnt',
+				ensure => absent,
+			}
+
+			# ... and mount it on /srv
+			mount { '/srv':
+				ensure => mounted,
+				device => '/dev/vdb',
+				fstype => 'ext3',
+				name => '/srv',
+				require => Mount['/mnt'],
+			}
+		}
+
 		if $lvs_pool != undef {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$lvs_pool][$::site] }
