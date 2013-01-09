@@ -63,3 +63,18 @@ class misc::bugzilla::communitymetrics {
 		monthday => 1,
 	}
 }
+
+class misc::bugzilla::report {
+
+	systemuser { bzreporter: name => 'reporter', home => '/home/reporter', groups => [ 'reporter' ] }
+
+	file { bugzilla_report:
+		path => "/home/reporter/bugzilla_report.php",
+		owner => reporter,
+		group => reporter,
+		mode => 0550,
+		source => "puppet:///files/misc/bugzilla_report.php",
+		ensure => present,
+	}
+
+}
