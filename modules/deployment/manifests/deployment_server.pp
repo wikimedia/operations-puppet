@@ -65,5 +65,10 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       mode => 0555,
       source => "puppet:///deployment/git-deploy/utils/deploy-info",
       require => [Package["python-redis"]];
+    "/usr/local/bin/submodule-update-server-info":
+      owner => root,
+      group => root,
+      mode => 0555,
+      source => "puppet:///deployment/git-deploy/utils/submodule-update-server-info",
   }
 }

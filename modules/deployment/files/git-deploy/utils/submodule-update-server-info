@@ -1,0 +1,5 @@
+#!/bin/bash
+
+SUBGITDIR=`cat .git | sed 's/gitdir: //'`
+cd $SUBGITDIR
+git update-server-info
