@@ -99,23 +99,6 @@ class applicationserver_old {
 
 }
 
-class imagescaler::labs {
-	$cluster = "imagescaler"
-
-	if( $::realm == 'labs' ) {
-		include nfs::apache::labs
-	}
-
-	include standard,
-		imagescaler::cron,
-		imagescaler::packages,
-		imagescaler::files,
-		mediawiki::packages,
-		apaches::packages,
-		apaches::cron,
-		apaches::service
-}
-
 class protoproxy::ssl {
 	$cluster = "ssl"
 
