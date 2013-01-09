@@ -57,8 +57,8 @@ class role::applicationserver {
 			mount { '/srv':
 				ensure => mounted,
 				device => '/dev/vdb',
-				fstype => 'ext3',
-				name => '/srv',
+				fstype => 'auto',
+				options => 'defaults,nobootwait,comment=cloudconfig',
 				require => Mount['/mnt'],
 			}
 		}
