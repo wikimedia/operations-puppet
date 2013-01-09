@@ -15,8 +15,8 @@ def main():
     #msg = os.environ['DEPLOY_DEPLOY_TEXT']
 
     deploylib.update_repos(prefix, tag)
-    deploylib.fetch(prefix, tag)
-    deploylib.checkout(prefix, tag, force)
+    deploylib.fetch(prefix)
+    deploylib.checkout(prefix, force)
 
 if __name__ == "__main__":
     main()

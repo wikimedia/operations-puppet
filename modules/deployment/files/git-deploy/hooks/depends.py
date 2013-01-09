@@ -16,8 +16,8 @@ def main():
     # of their parent repos. If the repo forces a sync, then we should
     # handle it.
     if force:
-        deploylib.fetch(prefix, tag)
-        deploylib.checkout(prefix, tag, "True")
+        deploylib.fetch(prefix)
+        deploylib.checkout(prefix, "True")
 
 if __name__ == "__main__":
     main()
