@@ -65,3 +65,19 @@ def checkout(prefix, force):
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 	print(out)
+
+def ask(prefix, stage):
+	if stage == "fetch":
+		check = "/usr/local/bin/deploy-info --repo=%s"
+	elif stage == "checkout":
+		check = "/usr/local/bin/deploy-info --repo=%s --current-tag"
+	while True:
+		answer = raw_input("Would you like to continue? ([C]heck %s state,[y]es,[n]o): ")
+		if not answer or answer == "c" or answer == "C":
+			p = subprocess.Popen(check % (prefix), shell=True, stdout=subprocess.PIPE)
+			out = p.communicate()[0]
+			print out
+		elif answer == "Y" or answer == "y":
+			return True
+		elif answer == "N" or answer == "n":
+			return False
