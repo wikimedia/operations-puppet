@@ -388,6 +388,18 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 }
 
+# Class: puppetmaster::self
+#
+# This configures a single system as both puppet client and puppet master.
+# Such a config is useful for puppet development as it allows testing
+# and debugging in one place.
+#
+# The puppet files and manifests are checked out in $gitdir/operations/puppet
+# where they can be modified and then re-applied to the instance via
+# puppetd -tv.
+#
+# This class should probably only be used on temporary labs instances.
+#
 class puppetmaster::self {
 
 	class config inherits base::puppet {
