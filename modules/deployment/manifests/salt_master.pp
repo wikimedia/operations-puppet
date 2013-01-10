@@ -1,4 +1,4 @@
-class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers=[], $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_repo_dependencies = {}, $deployment_deploy_redis={}) {
+class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers={}, $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_repo_dependencies = {}, $deployment_deploy_redis={}) {
   file {
     "${state_dir}/deploy":
       ensure => directory,
