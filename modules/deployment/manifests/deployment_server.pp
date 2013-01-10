@@ -1,6 +1,18 @@
 class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-deploy.conf", $deployment_restrict_umask="002", $deployment_block_file="/etc/ROLLOUTS_BLOCKED", $deployment_support_email="", $deployment_repo_name_detection="dot-git-parent-dir", $deployment_announce_email="", $deployment_send_mail_on_sync="false", $deployment_send_mail_on_revert="false", $deployment_log_directory="/var/log/git-deploy", $deployment_log_timing_data="false", $deployment_git_deploy_dir="/var/lib/git-deploy", $deployment_per_repo_config={}) {
-  package { ["git-deploy", "git-core", "python-redis"]:
-    ensure => present;
+  if ! defined(Package["git-deploy"]){
+    package { "git-deploy":
+      ensure => present;
+    }
+  }
+  if ! defined(Package["git-core"]){
+    package { "git-core":
+      ensure => present;
+    }
+  }
+  if ! defined(Package["python-redis"]){
+    package { "python-redis":
+      ensure => present;
+    }
   }
 
   $deployment_global_hook_dir = "${deployment_git_deploy_dir}/hooks"
