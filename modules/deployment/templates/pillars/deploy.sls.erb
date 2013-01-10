@@ -6,3 +6,4 @@ repo_regex: {<% deployment_repo_regex.sort.each do |repo, regexes| %>'<%= repo %
 repo_checkout_module_calls: {<% deployment_repo_checkout_module_calls.sort.each do |repo, checkout_module_calls| %>'<%= repo %>': [<% checkout_module_calls.sort.each do |call| %>'<%= call %>',<% end %>],<% end %>}
 repo_dependencies: {<% deployment_repo_dependencies.sort.each do |repo, dependencies| %>'<%= repo %>': [<% dependencies.each do |dependency| %>'<%= dependency %>',<% end %>],<% end %>}
 deploy_redis: {host: '<%= deployment_deploy_redis['host'] %>', 'port': <%= deployment_deploy_redis['port'] %>, 'db': '<%= deployment_deploy_redis['db'] %>'}
+deploy_servers: {<% deployment_servers.sort.each do |site, server| %>'<%= site %>': '<%= server %>',<% end %>}

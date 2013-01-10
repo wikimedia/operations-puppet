@@ -2437,7 +2437,7 @@ node "tin.eqiad.wmnet" {
 	include standard,
 		admins::roots,
 		admins::mortals,
-		role::deployment::deployment_servers
+		role::deployment::deployment_servers::production
 }
 
 node "tridge.wikimedia.org" {
@@ -2507,6 +2507,7 @@ node "virt0.wikimedia.org" {
 		role::ldap::client::labs,
 		role::nova::controller,
 		role::salt::masters::labs,
+		role::deployment::salt_masters::labs,
 		backup::client
 }
 
