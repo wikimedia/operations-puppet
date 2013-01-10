@@ -2,8 +2,37 @@
 Run git deployment commands
 '''
 
+import redis
+import time
 import re
 import urllib
+
+
+def _get_serv():
+    '''
+    Return a redis server object
+    '''
+    deploy_redis = __pillar__.get('deploy_redis')
+    serv = redis.Redis(
+            host=deploy_redis['host'],
+            port=deploy_redis['port'],
+            db=deploy_redis['db'])
+    return serv
+
+
+def _check_in(function, repo):
+    serv = _get_serv()
+    minion = __salt__['grains.item']('id')
+    timestamp = time.time()
+    # Ensure this repo exist in the set of repos
+    serv.sadd('deploy:repos', repo)
+    # Ensure this minion exists in the set of minions
+    serv.sadd('deploy:{0}:minions'.format(repo), minion)
+    if function == "deploy.fetch":
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_checkin_timestamp', timestamp)
+    elif function == "deploy.checkout":
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_checkin_timestamp', timestamp)
+
 
 def sync_all():
     '''
@@ -19,19 +48,21 @@ def sync_all():
     repourls = repourls[site]
     repolocs = __pillar__.get('repo_locations')
     status = 0
+    stats = {}
 
     minion = __grains__.get('id', '')
     for repo,repourl in repourls.items():
+        if repo not in stats:
+            stats[repo] = {}
         repoloc = repolocs[repo]
         minion_regex = minion_regexes[repo]
         if not re.search(minion_regex,minion):
             continue
-        ret = __salt__['deploy.fetch'](repo)
-        ret = __salt__['deploy.checkout'](repo)
-        if ret != 0:
-            status = 1
+        stats[repo]["deploy.fetch"] = __salt__['deploy.fetch'](repo)
+        stats[repo]["deploy.checkout"] = __salt__['deploy.checkout'](repo)
 
-    return {'status': status, 'repo': repo}
+    return {'status': status, 'stats': stats}
+
 
 def fetch(repo):
     '''
@@ -62,6 +93,9 @@ def fetch(repo):
     depstats = []
     for dependency in dependencies:
         depstats.append(__salt__['deploy.fetch'](dependency))
+
+    # Notify the deployment system we started
+    _check_in('deploy.fetch', repo)
 
     # Clone the repo if it doesn't exist yet
     if not __salt__['file.directory_exists'](repoloc + '/.git'):
@@ -99,7 +133,12 @@ def fetch(repo):
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
-    return {'status': status, 'repo': repo, 'dependencies': depstats}
+    cmd = '/usr/bin/git describe --always --tag origin'
+    origin_tag = __salt__['cmd.run'](cmd,repoloc)
+    origin_tag = origin_tag.strip()
+
+    return {'status': status, 'repo': repo, 'dependencies': depstats, 'tag': origin_tag}
+
 
 def checkout(repo,reset=False):
     '''
@@ -124,6 +163,9 @@ def checkout(repo,reset=False):
     module_calls = module_calls[repo]
     gitmodules = repoloc + '/.gitmodules'
     depstats = []
+
+    # Notify the deployment system we started
+    _check_in('deploy.checkout', repo)
 
     # Fetch the .deploy file from the server and get the current tag
     deployfile = repourl + '/.deploy'
