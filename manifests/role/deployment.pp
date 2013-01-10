@@ -8,10 +8,10 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "common" => "http://${deploy_server_pmtpa}/mediawiki/common",
       "slot0" => "http://${deploy_server_pmtpa}/mediawiki/slot0",
       "slot1" => "http://${deploy_server_pmtpa}/mediawiki/slot1",
-      "slotmaster" => "http://${deploy_server_pmtpa}/mediawiki/slotmaster",
+      "slotbeta" => "http://${deploy_server_pmtpa}/mediawiki/slotbeta",
       "l10n-slot0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot0",
       "l10n-slot1" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot1",
-      "l10n-slotmaster" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slotmaster",
+      "l10n-slotbeta" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slotbeta",
       # parsoid is currently deployed from eqiad only
       "parsoid/parsoid" => "http://${deploy_server_eqiad}/parsoid/parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
@@ -21,10 +21,10 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "common" => "http://${deploy_server_eqiad}/mediawiki/common",
       "slot0" => "http://${deploy_server_eqiad}/mediawiki/slot0",
       "slot1" => "http://${deploy_server_eqiad}/mediawiki/slot1",
-      "slotmaster" => "http://${deploy_server_eqiad}/mediawiki/slotmaster",
+      "slotbeta" => "http://${deploy_server_eqiad}/mediawiki/slotbeta",
       "l10n-slot0" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot0",
       "l10n-slot1" => "http://${deploy_server_eqiad}/mediawiki/l10n-slot1",
-      "l10n-slotmaster" => "http://${deploy_server_eqiad}/mediawiki/l10n-slotmaster",
+      "l10n-slotbeta" => "http://${deploy_server_eqiad}/mediawiki/l10n-slotbeta",
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
     },
@@ -42,13 +42,13 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
       ".git" => "",
     },
-    "slotmaster" => {
+    "slotbeta" => {
       "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
       ".git" => "",
     },
     "l10n-slot0" => {},
     "l10n-slot1" => {},
-    "l10n-slotmaster" => {},
+    "l10n-slotbeta" => {},
     "parsoid/Parsoid" => {},
     "parsoid/config" => {},
   }
@@ -59,10 +59,10 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "common" => [],
     "slot0" => [],
     "slot1" => [],
-    "slotmaster" => [],
+    "slotbeta" => [],
     "l10n-slot0" => [],
     "l10n-slot1" => [],
-    "l10n-slotmaster" => [],
+    "l10n-slotbeta" => [],
     "parsoid/Parsoid" => ["parsoid.config_symlink","parsoid.restart_parsoid"],
     "parsoid/config" => ["parsoid.restart_parsoid"],
   }
@@ -72,10 +72,10 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "common" => "False",
     "slot0" => "True",
     "slot1" => "True",
-    "slotmaster" => "True",
+    "slotbeta" => "True",
     "l10n-slot0" => "False",
     "l10n-slot1" => "False",
-    "l10n-slotmaster" => "False",
+    "l10n-slotbeta" => "False",
     "parsoid/Parsoid" => "False",
     "parsoid/config" => "False",
   }
@@ -84,10 +84,10 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "common" => "/srv/deployment/mediawiki/common",
     "slot0" => "/srv/deployment/mediawiki/slot0",
     "slot1" => "/srv/deployment/mediawiki/slot1",
-    "slotmaster" => "/srv/deployment/mediawiki/slotmaster",
+    "slotbeta" => "/srv/deployment/mediawiki/slotbeta",
     "l10n-slot0" => "/srv/deployment/mediawiki/l10n-slot0",
     "l10n-slot1" => "/srv/deployment/mediawiki/l10n-slot1",
-    "l10n-slotmaster" => "/srv/deployment/mediawiki/l10n-slotmaster",
+    "l10n-slotbeta" => "/srv/deployment/mediawiki/l10n-slotbeta",
     "parsoid/Parsoid" => "/srv/deployment/parsoid/Parsoid",
     "parsoid/config" => "/srv/deployment/parsoid/config",
   }
@@ -96,7 +96,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
   $deployment_repo_dependencies = {
     "slot0" => ["l10n-slot0"],
     "slot1" => ["l10n-slot1"],
-    "slotmaster" => ["l10n-slotmaster"],
+    "slotbeta" => ["l10n-slotbeta"],
   }
 }
 
@@ -123,10 +123,10 @@ class role::deployment::salt_masters::production {
       "common"  => $mediawiki_regex,
       "slot0"   => $mediawiki_regex,
       "slot1"   => $mediawiki_regex,
-      "slotmaster" => '^$',  # no master branch in production
+      "slotbeta" => '^$',  # no master branch in production
       "l10n-slot0"   => $mediawiki_regex,
       "l10n-slot1"   => $mediawiki_regex,
-      "l10n-slotmaster"   => '^$',  # no master branch in production
+      "l10n-slotbeta"   => '^$',  # no master branch in production
       "parsoid/Parsoid" => $parsoid_regex,
       "parsoid/config" => $parsoid_regex,
     },
@@ -162,10 +162,10 @@ class role::deployment::salt_masters::labs {
       "common"  => $mediawiki_regex,
       "slot0"   => $mediawiki_regex,
       "slot1"   => $mediawiki_regex,
-      "slotmaster"   => $mediawiki_regex,
+      "slotbeta"   => $mediawiki_regex,
       "l10n-slot0"   => $mediawiki_regex,
       "l10n-slot1"   => $mediawiki_regex,
-      "l10n-slotmaster"   => $mediawiki_regex,
+      "l10n-slotbeta"   => $mediawiki_regex,
       "parsoid/Parsoid" => $parsoid_regex,
       "parsoid/config" => $parsoid_regex,
     },
@@ -186,13 +186,13 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_sync_hook_link { "common": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "slot0": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "slot1": target => "shared.py" }
-  deployment::deployment_repo_sync_hook_link { "slotmaster": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { "slotbeta": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "l10n-slot0": target => "depends.py" }
   deployment::deployment_repo_sync_hook_link { "l10n-slot1": target => "depends.py" }
-  deployment::deployment_repo_sync_hook_link { "l10n-slotmaster": target => "depends.py" }
+  deployment::deployment_repo_sync_hook_link { "l10n-slotbeta": target => "depends.py" }
   deployment::deployment_repo_dependencies_link { "l10n-slot0": target => "l10n" }
   deployment::deployment_repo_dependencies_link { "l10n-slot1": target => "l10n" }
-  deployment::deployment_repo_dependencies_link { "l10n-slotmaster": target => "l10n" }
+  deployment::deployment_repo_dependencies_link { "l10n-slotbeta": target => "l10n" }
   deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
 
