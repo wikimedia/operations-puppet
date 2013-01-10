@@ -88,60 +88,60 @@ class role::coredb::config {
 	}
 }
 
-class role::coredb::s1 {
+class role::coredb::s1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s1",
 		innodb_log_file_size => "2000M"
 	}
 }
 
-class role::coredb::s2 {
+class role::coredb::s2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s2",
 		innodb_log_file_size => "2000M"
 	}
 }
 
-class role::coredb::s3 {
+class role::coredb::s3( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s3",
 	}
 }
 
-class role::coredb::s4 {
+class role::coredb::s4( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s4",
 		innodb_log_file_size => "2000M"
 	}
 }
 
-class role::coredb::s5 {
+class role::coredb::s5( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s5",
 		innodb_log_file_size => "1000M"
 	}
 }
 
-class role::coredb::s6 {
+class role::coredb::s6( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s6",
 	}
 }
 
-class role::coredb::s7 {
+class role::coredb::s7( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s7",
 	}
 }
 
-class role::coredb::m1 {
+class role::coredb::m1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "m1",
 		innodb_file_per_table => true,
 	}
 }
 
-class role::coredb::m2 {
+class role::coredb::m2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "m2",
 		innodb_file_per_table => true,
@@ -150,7 +150,7 @@ class role::coredb::m2 {
 	}
 }
 
-class role::coredb::es1 {
+class role::coredb::es1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es1",
 		innodb_file_per_table => true,
@@ -158,7 +158,7 @@ class role::coredb::es1 {
 	}
 }
 
-class role::coredb::es2 {
+class role::coredb::es2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es2",
 		innodb_file_per_table => true,
@@ -166,7 +166,7 @@ class role::coredb::es2 {
 	}
 }
 
-class role::coredb::es3 {
+class role::coredb::es3( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es3",
 		innodb_file_per_table => true,
@@ -174,7 +174,7 @@ class role::coredb::es3 {
 	}
 }
 
-class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M" ){
+class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M", $mariadb = false ){
 	class { "role::coredb::common":
 		shard => $shard,
 		innodb_log_file_size => $innodb_log_file_size,
@@ -188,6 +188,7 @@ class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M" ){
 
 class role::coredb::common(
 	$shard,
+	$mariadb,
 	$read_only = true,
 	$skip_name_resolve = true,
 	$mysql_myisam = false,
@@ -199,7 +200,6 @@ class role::coredb::common(
 	$enable_unsafe_locks = false,
 	$large_slave_trans_retries = false,
 	$slow_query_digest = true,
-	$mariadb = false,
 	) inherits role::coredb::config {
 
 	$cluster = "mysql"
@@ -212,6 +212,7 @@ class role::coredb::common(
 	if $topology[$shard]['masters'][$::site] == $::hostname {
 		class { "coredb_mysql":
 			shard => $shard,
+			mariadb => $mariadb,
 			read_only => false,
 			skip_name_resolve => $skip_name_resolve,
 			mysql_myisam => $mysql_myisam,
@@ -222,8 +223,7 @@ class role::coredb::common(
 			long_timeouts => $long_timeouts,
 			enable_unsafe_locks => $enable_unsafe_locks,
 			large_slave_trans_retries => $large_slave_trans_retries,
-			slow_query_digest => $slow_query_digest,
-			mariadb => $mariadb
+			slow_query_digest => $slow_query_digest
 		}
 
 		class { "mysql::coredb::monitoring": crit => true }
@@ -232,6 +232,7 @@ class role::coredb::common(
 	else {
 		class { "coredb_mysql":
 			shard => $shard,
+			mariadb => $mariadb,
 			read_only => $read_only,
 			skip_name_resolve => $skip_name_resolve,
 			mysql_myisam => $mysql_myisam,
@@ -243,7 +244,6 @@ class role::coredb::common(
 			enable_unsafe_locks => $enable_unsafe_locks,
 			large_slave_trans_retries => $large_slave_trans_retries,
 			slow_query_digest => $slow_query_digest,
-			mariadb => $mariadb
 		}
 
 		class { "mysql::coredb::monitoring": crit => false }
