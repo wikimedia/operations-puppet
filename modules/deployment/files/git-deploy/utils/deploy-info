@@ -8,50 +8,53 @@ import datetime
 from optparse import OptionParser
 
 def main():
+    #TODO: add dependency and nodeps support
     parser = OptionParser(conflict_handler="resolve")
     parser.set_usage("deploy-info [options]\n\nexample: deploy-info --repo=slot0 --tag=slot0-20121229-034924")
 
-    parser.add_option("--repo", action="store", dest="repo", help="Repo to report on")
-    parser.add_option("--tag", action="store", dest="tag", help="Tag to report on")
-    parser.add_option("--current-tag", action="store_true", dest="current_tag", help="Report on the currently deployed tag")
+    parser.add_option("--fetch", action="store", dest="fetch", default=False, help="Report on the state of fetch, rather than checkout")
+    parser.add_option("--repo", action="store", dest="repo", help="Report on this repo and all its dependencies")
+    parser.add_option("--nodeps", action="store_true", dest="nodeps", default=False, help="Don't report the dependencies when using --repo")
+    parser.add_option("--tag", action="store", dest="tag", help="Report on the specified tag, rather than the current tag")
+    parser.add_option("--full-report", action="store_true", dest="fullreport", default=False, help="Show a full report of the state of the requested repo, or all repos")
     (options, args) = parser.parse_args()
     serv = redis.Redis(host='localhost', port=6379, db=0)
+    p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = p.communicate()[0]
+    try:   
+        pillar = json.loads(out)
+    except ValueError:
+        print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
+        return None
+    try:   
+        pillar = pillar['local']
+    except KeyError:
+        print "Couldn't find 'local' in json output from pillar data. git-deploy can't configure itself. Exiting."
+        return None
     repos = serv.smembers('deploy:repos')
     if options.repo:
         if options.repo not in repos:
             print "{0}: repo does not exist".format(options.repo)
             sys.exit(1)
         else:
-            if options.tag:
-                _repo_report(serv, options.repo,options.tag)
-            elif options.current_tag:
-                current_tag = _get_current_tag(options.repo)
-                _repo_report(serv, options.repo, current_tag)
-            else:
+            if options.fullreport:
                 _repo_report(serv, options.repo)
+            elif options.tag:
+                _repo_report(serv, options.repo,options.tag)
+            else:
+                current_tag = _get_current_tag(options.repo, options.fetch)
+                _repo_report(serv, options.repo, current_tag)
     else:
         for repo in repos:
-            if options.tag:
-                _repo_report(serv, repo, options.tag)
-            elif options.current_tag:
-                current_tag = _get_current_tag(repo)
-                _repo_report(serv, repo, current_tag)
-            else:
+            if options.fullreport:
                 _repo_report(serv, repo)
+            elif options.tag:
+                _repo_report(serv, repo, options.tag)
+            else:
+                current_tag = _get_current_tag(repo, pillar, options.fetch)
+                _repo_report(serv, repo, current_tag)
 
 def _get_current_tag(repo):
-        p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out = p.communicate()[0]
-        try:   
-            pillar = json.loads(out)
-        except ValueError:
-            print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
-            return None
-        try:   
-            pillar = pillar['local']
-        except KeyError:
-            print "Couldn't find 'local' in json output from pillar data. git-deploy can't configure itself. Exiting."
-            return None
         repodir = pillar['repo_locations'][repo]
         f = open(repodir + '/.deploy', 'r')
         deployinfo = f.readlines()
@@ -62,7 +65,7 @@ def _get_current_tag(repo):
                 tag = tag.strip()
         return tag
 
-def _repo_report(serv, repo, check_tag=None):
+def _repo_report(serv, repo, check_tag=None, fetch=False):
     print ""
     now = datetime.datetime.now()
     header = "Repo: {0}".format(repo)
@@ -74,32 +77,45 @@ def _repo_report(serv, repo, check_tag=None):
         minion_data = {}
         for minion in minions:
             fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            fetch_checkin_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_checkin_timestamp')
+            fetch_checkin_mins = _mins_ago(now, fetch_checkin_timestamp)
             fetch_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp')
-	    fetch_mins = _mins_ago(now, fetch_timestamp)
+            fetch_mins = _mins_ago(now, fetch_timestamp)
             checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            checkout_checkin_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_checkin_timestamp')
+            checkout_checkin_mins = _mins_ago(now, checkout_checkin_timestamp)
             checkout_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp')
-	    checkout_mins = _mins_ago(now, checkout_timestamp)
+            checkout_mins = _mins_ago(now, checkout_timestamp)
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
-            if tag != check_tag:
-                minion_data[minion] = (minion, tag, fetch_status, fetch_mins, checkout_status, checkout_mins)
+            fetch_tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
+            if fetch:
+                check = tag != fetch_tag
+            else:
+                check = tag != check_tag
+            if check:
+                minion_data[minion] = (minion, tag, fetch_tag, fetch_status, fetch_mins, fetch_checkin_mins, checkout_status, checkout_mins, checkout_checkin_mins)
         if minion_data:
             print ""
-	for item, data in minion_data.items():
-            min, tag, fetch_status, fetch_mins, checkout_status, checkout_mins = data
-            print "{0}: {1} (fetch: {2} [{3} mins], checkout: {4} [{5} mins])".format(min, tag, fetch_status, fetch_mins, checkout_status, checkout_mins)
-	print ""
+        for item, data in minion_data.items():
+            min, tag, fetch_tag, fetch_status, fetch_mins, fetch_checkin_mins, checkout_status, checkout_mins, checkout_checkin_mins = data
+            print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins], checkout: {5} [started: {6} mins, last-return: {7}])".format(min, tag, fetch_status, fetch_checkin_mins, fetch_mins, checkout_status, checkout_checkin_mins, checkout_mins)
+        print ""
         print "{0} minions without matching tag ({1} reporting)".format(len(minion_data), len(minions))
     else:
         print ""
         for minion in minions:
             fetch_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status')
+            fetch_checkin_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_checkin_timestamp')
+            fetch_checkin_mins = _mins_ago(now, fetch_checkin_timestamp)
             fetch_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp')
-	    fetch_mins = _mins_ago(now, fetch_timestamp)
+            fetch_mins = _mins_ago(now, fetch_timestamp)
             checkout_status = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status')
+            checkout_checkin_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_checkin_timestamp')
+            checkout_checkin_mins = _mins_ago(now, checkout_checkin_timestamp)
             checkout_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp')
-	    checkout_mins = _mins_ago(now, checkout_timestamp)
+            checkout_mins = _mins_ago(now, checkout_timestamp)
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
-            print "{0}: {1} (fetch: {2} [{3} mins], checkout: {4} [{5} mins])".format(minion, tag, fetch_status, fetch_mins, checkout_status, checkout_mins)
+            print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins], checkout: {5} [started: {6} mins, last-return: {7}])".format(min, tag, fetch_status, fetch_checkin_mins, fetch_mins, checkout_status, checkout_checkin_mins, checkout_mins)
         print ""
         print "{0} minions reporting".format(len(minions))
 
