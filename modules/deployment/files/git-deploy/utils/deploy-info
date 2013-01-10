@@ -94,7 +94,7 @@ def _repo_report(serv, repo, check_tag=None, fetch=False):
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
             fetch_tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_tag')
             if fetch:
-                check = tag != fetch_tag
+                check = fetch_tag != check_tag
             else:
                 check = tag != check_tag
             if check:
