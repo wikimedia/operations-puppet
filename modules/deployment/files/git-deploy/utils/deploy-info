@@ -123,7 +123,7 @@ def _repo_report(serv, repo, check_tag=None, fetch=False):
             checkout_timestamp = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp')
             checkout_mins = _mins_ago(now, checkout_timestamp)
             tag = serv.hget('deploy:{0}:minions:{1}'.format(repo, minion), 'tag')
-            print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins], checkout: {5} [started: {6} mins, last-return: {7}])".format(min, tag, fetch_status, fetch_checkin_mins, fetch_mins, checkout_status, checkout_checkin_mins, checkout_mins)
+            print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins], checkout: {5} [started: {6} mins, last-return: {7}])".format(minion, tag, fetch_status, fetch_checkin_mins, fetch_mins, checkout_status, checkout_checkin_mins, checkout_mins)
         print ""
         print "{0} minions reporting".format(len(minions))
 
