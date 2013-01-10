@@ -46,7 +46,7 @@ def returner(ret):
             for function, data in functions:
                 _record_function(serv, function, timestamp, minion, data)
     else:
-        _record_functions(serv, function, timestamp, minion, ret_data)
+        _record_function(serv, function, timestamp, minion, ret_data)
 
 
 def _record_function(serv, function, timestamp, minion, ret_data):

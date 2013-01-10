@@ -68,9 +68,9 @@ def checkout(prefix, force):
 
 def ask(prefix, stage):
 	if stage == "fetch":
-		check = "/usr/local/bin/deploy-info --repo=%s"
+		check = "/usr/local/bin/deploy-info --repo=%s --fetch"
 	elif stage == "checkout":
-		check = "/usr/local/bin/deploy-info --repo=%s --current-tag"
+		check = "/usr/local/bin/deploy-info --repo=%s"
 	while True:
 		answer = raw_input("Would you like to continue? ([C]heck %s state,[y]es,[n]o): " % stage)
 		if not answer or answer == "c" or answer == "C":
