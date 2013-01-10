@@ -4,7 +4,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
   $deploy_server_eqiad = $deployment_servers["eqiad"]
   $deployment_repo_urls = {
     "pmtpa" => {
-      "common" => "http://${deploy_server_pmtpa}//common",
+      "common" => "http://${deploy_server_pmtpa}/common",
       "slot0" => "http://${deploy_server_pmtpa}/mediawiki/slot0",
       "slot1" => "http://${deploy_server_pmtpa}/mediawiki/slot1",
       "l10n-slot0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot0",
