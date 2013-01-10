@@ -178,7 +178,7 @@ class role::deployment::deployment_servers::common {
     configure_firewall 	=> false,
   }
 
-  sudo_group { "wikidev_deploy":
+  sudo_group { "wikidev_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call --out json pillar.data",
       "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.fetch *",
