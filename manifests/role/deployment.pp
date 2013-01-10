@@ -177,6 +177,7 @@ class role::deployment::deployment_servers::common {
     ensure		=> absent,
     configure_firewall 	=> false,
   }
+
 }
 
 class role::deployment::deployment_servers::production {
@@ -191,6 +192,11 @@ class role::deployment::deployment_servers::production {
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
   }
+  class { "redis":
+    dir => "/srv/redis",
+    maxmemory => "500Mb",
+    monitor => "true",
+  }
 }
 
 class role::deployment::deployment_servers::labs {
@@ -204,5 +210,10 @@ class role::deployment::deployment_servers::labs {
     docroot_dir_allows  => ["10.4.0.0/16"],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
+  }
+  class { "redis":
+    dir => "/srv/redis",
+    maxmemory => "500Mb",
+    monitor => "false",
   }
 }
