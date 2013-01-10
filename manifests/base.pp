@@ -189,7 +189,12 @@ class base::puppet($server="puppet", $certname=undef) {
 			require => File[ [ "/etc/default/puppet" ] ],
 			command => "/etc/init.d/puppet restart > /dev/null",
 			user => root,
-			hour => 2,
+			# Restart every 4 hours to avoid the runs bunching up and causing an 
+			# overload of the master every 40 mins. This can be reverted back to a
+			# daily restart after we switch to puppet 2.7.14+ since that version
+			# uses a scheduling algorithm which should be more resistant to
+			# bunching.
+			hour => [0, 4, 8, 12, 16, 20],
 			minute => 37,
 			ensure => present;
 		remove-old-lockfile:
