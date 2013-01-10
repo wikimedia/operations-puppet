@@ -1,5 +1,6 @@
 class coredb_mysql(
 	$shard,
+	$mariadb,
 	$read_only,
 	$skip_name_resolve,
 	$mysql_myisam,
@@ -11,7 +12,6 @@ class coredb_mysql(
 	$enable_unsafe_locks,
 	$large_slave_trans_retries,
 	$slow_query_digest,
-	$mariadb,
 	) {
 
 	include coredb_mysql::base,

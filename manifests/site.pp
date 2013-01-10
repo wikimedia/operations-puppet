@@ -575,16 +575,16 @@ node "db78.pmtpa.wmnet" {
 }
 
 # eqiad dbs
-#node /db1036\.eqiad\.wmnet/ {
-#
-#}
+node /db1036\.eqiad\.wmnet/ {
+  class { role::coredb::s4 :  mariadb => true }
+}
 
-node /db10([012456789][0-9]|3[0123456789])\.eqiad\.wmnet/ {
+node /db10([012456789][0-9]|3[012345789])\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
 		$ganglia_aggregator = "true"
 	}
 
-	if $hostname == "db1043" or $hostname == "db1036" {
+	if $hostname == "db1043" {
 		$mariadb = true
 	}
 
