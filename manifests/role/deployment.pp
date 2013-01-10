@@ -209,15 +209,6 @@ class role::deployment::deployment_servers::common {
     ensure		=> absent,
     configure_firewall 	=> false,
   }
-
-  sudo_group { "wikidev_deployment_server":
-    privileges => [
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call --out json pillar.data",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.fetch *",
-      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.checkout *",
-    ],
-    group => "wikidev",
-  }
 }
 
 class role::deployment::deployment_servers::production {
@@ -237,6 +228,14 @@ class role::deployment::deployment_servers::production {
     maxmemory => "500Mb",
     monitor => "true",
   }
+  sudo_group { "wikidev_deployment_server":
+    privileges => [
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.fetch *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.checkout *",
+    ],
+    group => "wikidev",
+  }
 }
 
 class role::deployment::deployment_servers::labs {
@@ -255,5 +254,13 @@ class role::deployment::deployment_servers::labs {
     dir => "/srv/redis",
     maxmemory => "500Mb",
     monitor => "false",
+  }
+  sudo_group { "project_deployment_prep_deployment_server":
+    privileges => [
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call --out json pillar.data",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.fetch *",
+      "ALL = (root) NOPASSWD: /usr/bin/salt-call publish.runner deploy.checkout *",
+    ],
+    group => "project-deployment-prep",
   }
 }
