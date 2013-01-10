@@ -576,7 +576,12 @@ node "db78.pmtpa.wmnet" {
 
 # eqiad dbs
 node /db1036\.eqiad\.wmnet/ {
-  class { role::coredb::s4 :  mariadb => true }
+  $mariadb = true
+  include role::db::core,
+    mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages
 }
 
 node /db10([012456789][0-9]|3[012345789])\.eqiad\.wmnet/ {
