@@ -38,11 +38,22 @@ def main():
             print "{0}: repo does not exist".format(options.repo)
             sys.exit(1)
         else:
+            if repo in pillar['repo_dependencies'] and !options.nodeps;
+                dependencies = pillar['repo_dependencies'][repo]
+            else:
+                dependencies = []
             if options.fullreport:
+                for dependency in dependencies:
+                    _repo_report(serv, dependency, fetch=options.fetch)
                 _repo_report(serv, options.repo, fetch=options.fetch)
             elif options.tag:
+                for dependency in dependencies:
+                    _repo_report(serv, dependency, check_tag=options.tag, fetch=options.fetch)
                 _repo_report(serv, options.repo, check_tag=options.tag, fetch=options.fetch)
             else:
+                for dependency in dependencies:
+                    current_tag = _get_current_tag(dependency, pillar)
+                    _repo_report(serv, dependency, check_tag=current_tag, fetch=options.fetch)
                 current_tag = _get_current_tag(options.repo, pillar)
                 _repo_report(serv, options.repo, check_tag=current_tag, fetch=options.fetch)
     else:
