@@ -84,6 +84,11 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/notifyNewProjects";
+		"${scriptpath}/texvcrecompile":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/texvcrecompile";
 		"${scriptpath}/purge-checkuser": # FIXME this is for a hume cronjob. Should puppetize the cronjob and move this to another class
 			owner => root,
 			group => root,
