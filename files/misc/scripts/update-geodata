@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Allow disabling this script temporarily
+if [ -e /tmp/disable-update-geodata ] ; then
+	exit
+fi
+
+foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php
+foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php
+
