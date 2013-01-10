@@ -3,7 +3,7 @@
 #### puppet:///files/apache/sites/secure.wikimedia.org
 ######################################################################
 
-<VirtualHost *:443>
+<VirtualHost 208.80.152.134:443>
 	ServerName secure.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 
@@ -37,7 +37,7 @@
 
 </VirtualHost>
 
-<VirtualHost *:80>
+<VirtualHost 208.80.152.134:80>
 	ServerName secure.wikimedia.org
 
 	RewriteEngine on
