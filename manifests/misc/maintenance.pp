@@ -234,3 +234,31 @@ class misc::maintenance::parsercachepurging {
 	}
 
 }
+
+class misc::maintenance::geodata {
+	file {
+		"/usr/local/bin/update-geodata":
+			ensure => present,
+			source => "puppet:///files/misc/scripts/update-geodata",
+			mode => 0555;
+		"/usr/local/bin/clean-killist":
+			ensure => present,
+			source => "puppet:///files/misc/scripts/clean-killist",
+			mode => 0555;
+	}
+
+	cron {
+		"update-geodata":
+			command => "/usr/local/bin/update-geodata >/dev/null 2>&1",
+			user => apache,
+			minute => "*/30",
+			ensure => present;
+		"clear-killlist":
+			command => "/usr/local/bin/clear-killlist >/dev/null 2>&1",
+			user => apache,
+			hour => 8,
+			minute => 45,
+			ensure => present;
+	}
+}
+
