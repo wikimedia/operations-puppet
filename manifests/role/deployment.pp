@@ -4,7 +4,8 @@ class role::deployment::salt_masters::common($deployment_servers) {
   $deploy_server_eqiad = $deployment_servers["eqiad"]
   $deployment_repo_urls = {
     "pmtpa" => {
-      "common" => "http://${deploy_server_pmtpa}/common",
+      "private" => "http://${deploy_server_pmtpa}/mediawiki/private",
+      "common" => "http://${deploy_server_pmtpa}/mediawiki/common",
       "slot0" => "http://${deploy_server_pmtpa}/mediawiki/slot0",
       "slot1" => "http://${deploy_server_pmtpa}/mediawiki/slot1",
       "l10n-slot0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot0",
@@ -14,6 +15,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
     },
     "eqiad" => {
+      "private" => "http://${deploy_server_eqiad}/mediawiki/private",
       "common" => "http://${deploy_server_eqiad}/mediawiki/common",
       "slot0" => "http://${deploy_server_eqiad}/mediawiki/slot0",
       "slot1" => "http://${deploy_server_eqiad}/mediawiki/slot1",
@@ -27,6 +29,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
   # TODO: rename this to something more specific
   $deployment_repo_regex = {
     "common" => {},
+    "private" => {},
     "slot0" => {
       "https://gerrit.wikimedia.org/r/p/mediawiki" => "__REPO_URL__/.git/modules",
       ".git" => "",
@@ -43,6 +46,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
   # Call these salt modules after checkout of parent repo and submodules
   # TODO: turn this into a hash so that modules can specify args too
   $deployment_repo_checkout_module_calls = {
+    "private" => [],
     "common" => [],
     "slot0" => [],
     "slot1" => [],
@@ -53,6 +57,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
   }
   # Should this repo also do a submodule update --init?
   $deployment_repo_checkout_submodules = {
+    "private" => "False",
     "common" => "False",
     "slot0" => "True",
     "slot1" => "True",
@@ -62,6 +67,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "parsoid/config" => "False",
   }
   $deployment_repo_locations = {
+    "private" => "/srv/deployment/mediawiki/private",
     "common" => "/srv/deployment/mediawiki/common",
     "slot0" => "/srv/deployment/mediawiki/slot0",
     "slot1" => "/srv/deployment/mediawiki/slot1",
@@ -97,6 +103,7 @@ class role::deployment::salt_masters::production {
     deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
     deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
     deployment_minion_regex => {
+      "private"  => $mediawiki_regex,
       "common"  => $mediawiki_regex,
       "slot0"   => $mediawiki_regex,
       "slot1"   => $mediawiki_regex,
@@ -133,6 +140,7 @@ class role::deployment::salt_masters::labs {
     deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
     deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
     deployment_minion_regex => {
+      "private"  => $mediawiki_regex,
       "common"  => $mediawiki_regex,
       "slot0"   => $mediawiki_regex,
       "slot1"   => $mediawiki_regex,
@@ -154,6 +162,7 @@ class role::deployment::deployment_servers::common {
 
   class { "deployment::deployment_server": }
 
+  deployment::deployment_repo_sync_hook_link { "private": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "common": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "slot0": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "slot1": target => "shared.py" }
