@@ -91,6 +91,7 @@ class role::coredb::config {
 class role::coredb::s1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s1",
+		mariadb => $mariadb,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -98,6 +99,7 @@ class role::coredb::s1( $mariadb = false ) {
 class role::coredb::s2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s2",
+		mariadb => $mariadb,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -105,12 +107,14 @@ class role::coredb::s2( $mariadb = false ) {
 class role::coredb::s3( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s3",
+		mariadb => $mariadb,
 	}
 }
 
 class role::coredb::s4( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s4",
+		mariadb => $mariadb,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -118,6 +122,7 @@ class role::coredb::s4( $mariadb = false ) {
 class role::coredb::s5( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s5",
+		mariadb => $mariadb,
 		innodb_log_file_size => "1000M"
 	}
 }
@@ -125,18 +130,21 @@ class role::coredb::s5( $mariadb = false ) {
 class role::coredb::s6( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s6",
+		mariadb => $mariadb,
 	}
 }
 
 class role::coredb::s7( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s7",
+		mariadb => $mariadb,
 	}
 }
 
 class role::coredb::m1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "m1",
+		mariadb => $mariadb,
 		innodb_file_per_table => true,
 	}
 }
@@ -144,6 +152,7 @@ class role::coredb::m1( $mariadb = false ) {
 class role::coredb::m2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "m2",
+		mariadb => $mariadb,
 		innodb_file_per_table => true,
 		skip_name_resolve => false,
 		mysql_max_allowed_packet => 1073741824,
@@ -153,6 +162,7 @@ class role::coredb::m2( $mariadb = false ) {
 class role::coredb::es1( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es1",
+		mariadb => $mariadb,
 		innodb_file_per_table => true,
 		slow_query_digest => false,
 	}
@@ -161,6 +171,7 @@ class role::coredb::es1( $mariadb = false ) {
 class role::coredb::es2( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es2",
+		mariadb => $mariadb,
 		innodb_file_per_table => true,
 		slow_query_digest => false,
 	}
@@ -169,6 +180,7 @@ class role::coredb::es2( $mariadb = false ) {
 class role::coredb::es3( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "es3",
+		mariadb => $mariadb,
 		innodb_file_per_table => true,
 		slow_query_digest => false,
 	}
@@ -177,6 +189,7 @@ class role::coredb::es3( $mariadb = false ) {
 class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M", $mariadb = false ){
 	class { "role::coredb::common":
 		shard => $shard,
+		mariadb => $mariadb,
 		innodb_log_file_size => $innodb_log_file_size,
 		read_only => false,
 		disable_binlogs => true,
