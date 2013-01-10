@@ -15,7 +15,7 @@ def main():
     parser.add_option("--tag", action="store", dest="tag", help="Tag to report on")
     parser.add_option("--current-tag", action="store_true", dest="current_tag", help="Report on the currently deployed tag")
     (options, args) = parser.parse_args()
-    serv = redis.Redis(host='tin.eqiad.wmnet', port=6379, db=0)
+    serv = redis.Redis(host='localhost', port=6379, db=0)
     repos = serv.smembers('deploy:repos')
     if options.repo:
         if options.repo not in repos:
