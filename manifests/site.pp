@@ -575,7 +575,7 @@ node "db78.pmtpa.wmnet" {
 }
 
 # eqiad dbs
-node /db10(01)\.eqiad\.wmnet/ {
+node /db10(01|42|43|49|50)\.eqiad\.wmnet/ {
   if $hostname =~ /^db1001/ {
     $ganglia_aggregator = "true"
   }
@@ -583,31 +583,31 @@ node /db10(01)\.eqiad\.wmnet/ {
   include role::coredb::s1
 }
 
-node /db10(02)\.eqiad\.wmnet/ {
+node /db10(02|09|18)\.eqiad\.wmnet/ {
   include role::coredb::s2
 }
 
-node /db10(03)\.eqiad\.wmnet/ {
+node /db10(03|10|35)\.eqiad\.wmnet/ {
   include role::coredb::s3
 }
 
-node /db10(04)\.eqiad\.wmnet/ {
+node /db10(04|11|20)\.eqiad\.wmnet/ {
   include role::coredb::s4
 }
 
-node /db10(05)\.eqiad\.wmnet/ {
+node /db10(05|21|26)\.eqiad\.wmnet/ {
   include role::coredb::s5
 }
 
-node /db10(22)\.eqiad\.wmnet/ {
+node /db10(22|27|40)\.eqiad\.wmnet/ {
   include role::coredb::s6
 }
 
-node /db10(07)\.eqiad\.wmnet/ {
+node /db10(07|24|28)\.eqiad\.wmnet/ {
   include role::coredb::s7
 }
 
-node /db10(0[689]|[12456789][0-9]|2[013456789])\.eqiad\.wmnet/ {
+node /db10(0[68]|1([2-7]|9)|2[3589]|3([0-4]|[6-9]|4(1|[4-8])|5[1-9])\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
 		$ganglia_aggregator = "true"
 	}
