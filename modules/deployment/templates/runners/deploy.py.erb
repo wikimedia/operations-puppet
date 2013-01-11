@@ -56,15 +56,10 @@ def report(minions,keys,repo):
     for minion in ret:
         if re.search(reg[repo],minion):
             timedout.append(minion)
-    # "succeeded: {0}, didn't run: {1} {2}(?), failed: {3} {4}(?)"
-    report = "succeeded: {0}, timed out: {1}"
-    if timedout:
-        report = report + " {2},"
-    else:
-        report = report + ","
-    report = report + " failed: {3}"
+    # "succeeded: {0}, didn't run: {1}, failed: {2}"
+    report = "succeeded: {0}, timed out: {1}, failed: {2}"
     if fail:
-        report = report + " {4}"
-    report = report.format(len(success), len(timedout), timedout, len(fail), fail)
+        report = report + " {3}"
+    report = report.format(len(success), len(timedout), len(fail), fail)
     print report
     return report
