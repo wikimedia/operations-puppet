@@ -66,13 +66,13 @@ def checkout(prefix, force):
 	out = p.communicate()[0]
 	print(out)
 
-def ask(prefix, stage):
+def ask(prefix, stage, force=False):
 	if stage == "fetch":
 		check = "/usr/local/bin/deploy-info --repo=%s --fetch"
 	elif stage == "checkout":
 		check = "/usr/local/bin/deploy-info --repo=%s"
 	while True:
-		answer = raw_input("Would you like to continue? ([d]etailed/[C]oncise report,[y]es,[n]o): ")
+		answer = raw_input("Continue? ([d]etailed/[C]oncise report,[y]es,[n]o,[r]etry): ")
 		if not answer or answer == "c" or answer == "C":
 			p = subprocess.Popen(check % (prefix), shell=True, stdout=subprocess.PIPE)
 			out = p.communicate()[0]
@@ -85,3 +85,8 @@ def ask(prefix, stage):
 			return True
 		elif answer == "N" or answer == "n":
 			return False
+		elif answer == "R" or answer == "r":
+			if stage == "fetch":
+				fetch(prefix)
+			if stage == "checkout":
+				checkout(prefix, force)
