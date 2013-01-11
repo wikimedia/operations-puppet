@@ -1,4 +1,0 @@
-
-class wikimedia {
-	# place holder
-}
