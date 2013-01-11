@@ -30,7 +30,7 @@ define systemuser($name, $home=undef, $shell="/bin/false", $groups=undef, $defau
 	if $default_group == $name {
 		group { $default_group:
 			name => $default_group,
-			ensure => $ensure;
+			ensure => present;
 		}
 	}
 
