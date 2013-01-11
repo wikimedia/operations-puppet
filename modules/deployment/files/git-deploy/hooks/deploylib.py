@@ -4,6 +4,7 @@ import os
 import subprocess
 import json
 
+
 def update_repos(prefix, tag):
 	print "Running: sudo salt-call --out json pillar.data"
 	p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -54,23 +55,27 @@ def update_repos(prefix, tag):
 				print "Error: script for dependency '%s' is missing. Have you added it in puppet? Exiting." % dependency_script
 				return 1
 
+
 def fetch(prefix):
 	print "Running: sudo salt-call publish.runner deploy.fetch '%s'" % (prefix)
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
-	print(out)
+
 
 def checkout(prefix, force):
 	print "Running: sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force)
 	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
-	print(out)
+
 
 def ask(prefix, stage, force=False):
 	if stage == "fetch":
 		check = "/usr/local/bin/deploy-info --repo=%s --fetch"
 	elif stage == "checkout":
 		check = "/usr/local/bin/deploy-info --repo=%s"
+	p = subprocess.Popen(check % (prefix), shell=True, stdout=subprocess.PIPE)
+	out = p.communicate()[0]
+	print out
 	while True:
 		answer = raw_input("Continue? ([d]etailed/[C]oncise report,[y]es,[n]o,[r]etry): ")
 		if not answer or answer == "c" or answer == "C":
