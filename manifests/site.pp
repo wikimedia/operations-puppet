@@ -575,16 +575,35 @@ node "db78.pmtpa.wmnet" {
 }
 
 # eqiad dbs
-node /db1036\.eqiad\.wmnet/ {
-  $mariadb = true
-  include role::db::core,
-    mysql::mysqluser,
-    mysql::datadirs,
-    mysql::conf,
-    mysql::packages
+node /db10(01)\.eqiad\.wmnet/ {
+  include role::coredb::s1
 }
 
-node /db10([012456789][0-9]|3[012345789])\.eqiad\.wmnet/ {
+node /db10(02)\.eqiad\.wmnet/ {
+  include role::coredb::s2
+}
+
+node /db10(03)\.eqiad\.wmnet/ {
+  include role::coredb::s3
+}
+
+node /db10(04)\.eqiad\.wmnet/ {
+  include role::coredb::s4
+}
+
+node /db10(05)\.eqiad\.wmnet/ {
+  include role::coredb::s5
+}
+
+node /db10(22)\.eqiad\.wmnet/ {
+  include role::coredb::s6
+}
+
+node /db10(07)\.eqiad\.wmnet/ {
+  include role::coredb::s7
+}
+
+node /db10(0[689]|[12456789][0-9]|2[013456789])\.eqiad\.wmnet/ {
 	if $hostname =~ /^db(1001|1017|1021)$/ {
 		$ganglia_aggregator = "true"
 	}
