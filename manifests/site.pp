@@ -617,11 +617,7 @@ node /db10(07|24|28|41)\.eqiad\.wmnet/ {
 
 ## m2 shard
 node /db104[68]\.eqiad\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+	include role::coredb::m2
 }
 
 ## eqiad fundraising DBs
