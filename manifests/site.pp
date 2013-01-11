@@ -777,19 +777,11 @@ node /es([5-9]|10)\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /es100[5689]\.eqiad\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node /es1007\.eqiad\.wmnet/ {
+node /es100[5-7]\.eqiad\.wmnet/ {
 	include role::coredb::es2
 }
 
-node /es1010\.eqiad\.wmnet/ {
+node /es10(0[89]|10)\.eqiad\.wmnet/ {
 	include role::coredb::es3
 }
 
