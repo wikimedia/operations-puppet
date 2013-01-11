@@ -615,27 +615,47 @@ node /db10(07|24|28|41)\.eqiad\.wmnet/ {
 	include role::coredb::s7
 }
 
-node /db10(08|1[2-6]|2[359]|3([0-3]|[6-7])|4[4-8]|5[1-9])\.eqiad\.wmnet/ {
+## m2 shard
+node /db104[68]\.eqiad\.wmnet/ {
+  include role::db::core,
+    mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages
+}
 
-	include mysql::mysqluser,
-		mysql::datadirs
+## eqiad fundraising DBs
+node /db10(08|13|25)\.eqiad\.wmnet/ {
+  include mysql::mysqluser,
+    mysql::datadirs,
+    mysql::packages,
+    mysql::conf
 
-	if $hostname == "db1008" {
-		include role::fundraising::database::master
-	}
-	elsif $hostname == "db1013" {
-		include role::fundraising::database::slave
-	}
-	elsif $hostname == "db1025" {
-		include role::fundraising::database::dump_slave
-	}
-	else {
-		include role::db::core
-	}
-	if $hostname != "db1047" {
-		include mysql::packages,
-			mysql::conf
-	}
+  if $hostname == "db1008" {
+    include role::fundraising::database::master
+  }
+  if $hostname == "db1013" {
+    include role::fundraising::database::slave
+  }
+  if $hostname == "db1025" {
+    include role::fundraising::database::dump_slave
+  }
+}
+
+## researchdb (currently lucid)
+node /db1047\.eqiad\.wmnet/ {
+    include mysql::mysqluser,
+    mysql::datadirs,
+    role::db::core
+}
+
+## not currently in production and/or hardware issues
+node /db10(1[2456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
+  include role::db::core,
+    mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages
 }
 
 node "dobson.wikimedia.org" {
