@@ -53,7 +53,7 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       group => root,
       require => [File["${$deployment_global_hook_dir}/sync"]];
     "${$deployment_dependencies_dir}/l10n":
-      source => "puppet:///deployment/git-deploy/dependencies/l10n.py",
+      source => "puppet:///deployment/git-deploy/dependencies/l10nupdate-quick",
       mode => 0555,
       owner => root,
       group => root,

@@ -46,7 +46,7 @@ def update_repos(prefix, tag):
 	if prefix in pillar['repo_dependencies']:
 		dependencies = pillar['repo_dependencies'][prefix]
 		for dependency in dependencies:
-			dependency_script = '/var/lib/git-deploy/dependencies/%s.dep' % dependency
+			dependency_script = '/var/lib/git-deploy/dependencies/%s.dep %s %s' % (dependency, dependency, prefix)
 			if os.path.exists(dependency_script):
 				p = subprocess.Popen(dependency_script, shell=True, stderr=subprocess.PIPE)
 				out = p.communicate()[0]
