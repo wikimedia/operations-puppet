@@ -116,7 +116,7 @@ def _repo_report(serv, repo, check_tag=None, fetch=False, detailed=False):
             for item, data in minion_data.items():
                 min, tag, fetch_tag, fetch_status, fetch_mins, fetch_checkin_mins, checkout_status, checkout_mins, checkout_checkin_mins = data
                 if fetch:
-                    print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins])".format(min, tag, fetch_status, fetch_checkin_mins, fetch_mins)
+                    print "{0}: {1} (fetch: {2} [started: {3} mins, last-return: {4} mins])".format(min, fetch_tag, fetch_status, fetch_checkin_mins, fetch_mins)
                 else:
                     print "{0}: {1} (checkout: {2} [started: {3} mins, last-return: {4}])".format(min, tag, checkout_status, checkout_checkin_mins, checkout_mins)
         print ""
