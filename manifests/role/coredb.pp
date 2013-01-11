@@ -222,7 +222,7 @@ class role::coredb::common(
 	include standard,
 		mysql::coredb::ganglia
 
-	if $topology[$shard]['masters'][$::site] == $::hostname {
+	if $topology[$shard]['masters'][$::site] == $::hostname and $topology[$shard]['primary_site'] == $::site {
 		class { "coredb_mysql":
 			shard => $shard,
 			mariadb => $mariadb,
