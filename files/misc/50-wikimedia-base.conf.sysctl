@@ -28,3 +28,6 @@ vm.swappiness = 10
 net.ipv4.tcp_keepalive_time = 300
 net.ipv4.tcp_keepalive_intvl = 1
 net.ipv4.tcp_keepalive_probes = 2
+
+# disable the route cache. prone to DDoS attacks and was even removed in >= 3.6 kernels
+net.ipv4.rt_cache_rebuild_count = -1
