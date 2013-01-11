@@ -205,52 +205,6 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 }
 
-class mediawiki::extension-distributor {
-	system_role { "mediawiki::extension-distributor": description => "MediaWiki extension distributor" }
-
-	$extdist_working_dir = "/mnt/upload6/private/ExtensionDistributor"
-	$extdist_download_dir = "/mnt/upload6/ext-dist"
-
-	package { xinetd:
-		ensure => latest;
-	}
-
-	systemuser { extdist: name => "extdist", home => "/var/lib/extdist" }
-
-	file {
-		"/etc/xinetd.d/svn_invoker":
-			require => [ Package[xinetd], Systemuser[extdist] ],
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/misc/svn_invoker.xinetd";
-		"/etc/logrotate.d/svn-invoker":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/logrotate/svn-invoker";
-		"$extdist_working_dir":
-			owner => extdist,
-			group => wikidev,
-			mode => 0775;
-	}
-
-	cron { extdist_updateall:
-		command => "php /home/wikipedia/common/wmf-config/extdist/cron.php 2>&1 >/dev/null",
-		environment => "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-		hour => 3,
-		minute => 0,
-		user => extdist,
-		ensure => present;
-	}
-
-	service { xinetd:
-		require => [ Package[xinetd], File["/etc/xinetd.d/svn_invoker"] ],
-		subscribe => File["/etc/xinetd.d/svn_invoker"],
-		ensure => running;
-	}
-}
-
 class mediawiki::udpprofile::collector {
 	system_role { "mediawiki::udpprofile::collector": description => "MediaWiki UDP profile collector" }
 
