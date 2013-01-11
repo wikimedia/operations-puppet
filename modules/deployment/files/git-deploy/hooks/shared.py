@@ -19,7 +19,7 @@ def main():
     if not deploylib.ask(prefix, 'fetch'):
         return 1
     deploylib.checkout(prefix, force)
-    if not deploylib.ask(prefix, 'checkout'):
+    if not deploylib.ask(prefix, 'checkout', force):
         return 1
 
 if __name__ == "__main__":
