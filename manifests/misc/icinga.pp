@@ -20,9 +20,11 @@ class icinga::monitor {
 		icinga::monitor::naggen,
 		icinga::monitor::nsca::daemon,
 		icinga::monitor::apache,
+		icinga::monitor::files::misc,
+		nagios::ganglia::monitor::enwiki,
+		nagios::ganglia::ganglios,
 		mysql,
-		nrpe::new,
-		icinga::monitor::files::misc
+		nrpe::new
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 
