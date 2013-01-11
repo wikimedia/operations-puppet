@@ -104,8 +104,7 @@ def fetch(repo):
     cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
     __salt__['cmd.retcode'](cmd,repoloc)
 
-    cmd = '/usr/bin/git fetch'
-
+    cmd = '/usr/bin/git fetch --tags'
     status = __salt__['cmd.retcode'](cmd,repoloc)
 
     # There's a bug with using booleans in pillars, so for now
@@ -127,8 +126,8 @@ def fetch(repo):
         if ret != 0:
             return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
-        # fetch all submodules
-        cmd = '/usr/bin/git submodule foreach git fetch'
+        # fetch all submodules and tag for submodules
+        cmd = '/usr/bin/git submodule foreach git fetch --tags'
         ret = __salt__['cmd.retcode'](cmd,repoloc)
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
