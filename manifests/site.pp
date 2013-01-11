@@ -546,19 +546,19 @@ node /db6[0]\.pmtpa\.wmnet/ {
 }
 
 node /db6[1]\.pmtpa\.wmnet/ {
-  include role::db::core,
-    mysql::mysqluser,
-    mysql::datadirs,
-    mysql::conf,
-    mysql::packages
+	include role::db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node /db6[2]\.pmtpa\.wmnet/ {
-  include role::db::core,
-    mysql::mysqluser,
-    mysql::datadirs,
-    mysql::conf,
-    mysql::packages
+	include role::db::core,
+		mysql::mysqluser,
+		mysql::datadirs,
+		mysql::conf,
+		mysql::packages
 }
 
 node /db6([3-9])\.pmtpa\.wmnet/ {
@@ -575,49 +575,49 @@ node "db78.pmtpa.wmnet" {
 }
 
 # eqiad dbs
-node /db10(01|42|43|49|50)\.eqiad\.wmnet/ {
-  if $hostname =~ /^db1001/ {
-    $ganglia_aggregator = "true"
-  }
-
-  include role::coredb::s1
-}
-
-node /db10(02|09|18)\.eqiad\.wmnet/ {
-  include role::coredb::s2
-}
-
-node /db10(03|10|35)\.eqiad\.wmnet/ {
-  include role::coredb::s3
-}
-
-node /db10(04|11|20)\.eqiad\.wmnet/ {
-  include role::coredb::s4
-}
-
-node /db10(05|21|26)\.eqiad\.wmnet/ {
-    if $hostname =~ /^db1021/ {
-    $ganglia_aggregator = "true"
-  }
-
-  include role::coredb::s5
-}
-
-node /db10(22|27|40)\.eqiad\.wmnet/ {
-  include role::coredb::s6
-}
-
-node /db10(07|24|28)\.eqiad\.wmnet/ {
-  include role::coredb::s7
-}
-
-node /db10(0[68]|1([2-7]|9)|2[3589]|3([0-4]|[6-9])|4(1|[4-8])|5[1-9])\.eqiad\.wmnet/ {
-	if $hostname =~ /^db(1001|1017|1021)$/ {
+node /db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
+	if $hostname =~ /^db1001/ {
 		$ganglia_aggregator = "true"
 	}
 
 	if $hostname == "db1043" {
-		$mariadb = true
+		class { role::coredb::s1 : mariadb => true }
+	} else {
+		include role::coredb::s1
+	}
+}
+
+node /db10(02|09|18|34)\.eqiad\.wmnet/ {
+	include role::coredb::s2
+}
+
+node /db10(03|10|19|35)\.eqiad\.wmnet/ {
+	include role::coredb::s3
+}
+
+node /db10(04|11|20|38)\.eqiad\.wmnet/ {
+	include role::coredb::s4
+}
+
+node /db10(05|21|26|39)\.eqiad\.wmnet/ {
+	if $hostname =~ /^db1021/ {
+		$ganglia_aggregator = "true"
+	}
+
+	include role::coredb::s5
+}
+
+node /db10(06|22|27|40)\.eqiad\.wmnet/ {
+	include role::coredb::s6
+}
+
+node /db10(07|24|28|41)\.eqiad\.wmnet/ {
+	include role::coredb::s7
+}
+
+node /db10(08|1[2-6]|2[3589]|3([0-3]|[6-7])|4[4-8]|5[1-9])\.eqiad\.wmnet/ {
+	if $hostname =~ /^db(1001|1017|1021)$/ {
+		$ganglia_aggregator = "true"
 	}
 
 	include mysql::mysqluser,
