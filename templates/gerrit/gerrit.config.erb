@@ -66,7 +66,19 @@
 [commentlink "rt"]
 	match = "\\b[rR][tT]\\s+#?(\\d+)"
 	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
+[mimetype "application/javascript"]
+	safe = true
+[mimetype "application/x-php"]
+	safe = true
 [mimetype "image/*"]
+	safe = true
+[mimetype "text/css"]
+	safe = true
+[mimetype "text/javascript"]
+	safe = true
+[mimetype "text/plain"]
+	safe = true
+[mimetype "text/x-php"]
 	safe = true
 [repository "*"]
 	ownerGroup = Project and Group Creators
