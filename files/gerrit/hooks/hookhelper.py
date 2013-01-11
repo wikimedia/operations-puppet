@@ -58,8 +58,11 @@ class HookHelper:
             patchsets_fetched = self.get_patchsets(change)
             if not patchsets_fetched:
                 return None
-        subject = str(self.patchsets[change]['subject'])
-        if not subject:
+        if "subject" in self.patchsets[change].keys():
+            subject = str(self.patchsets[change]['subject'])
+            if not subject:
+                subject = "(no subject)"
+        else:
             subject = "(no subject)"
         return subject
 
