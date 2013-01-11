@@ -222,10 +222,6 @@ class mediawiki::former-extdist-removesoon {
 	cron { extdist_updateall:
 		ensure => absent;
 	}
-
-	service { xinetd:
-		ensure => absent;
-	}
 }
 
 class mediawiki::udpprofile::collector {
