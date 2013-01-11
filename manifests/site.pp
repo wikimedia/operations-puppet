@@ -724,12 +724,7 @@ node "gallium.wikimedia.org" {
 	sudo_user { "hashar": privileges => ['ALL = NOPASSWD: ALL'] }
 
 	include standard,
-		misc::contint::test,
-		misc::contint::test::packages,
-		misc::contint::analytics::packages,
-		misc::contint::test::jenkins,
-		misc::contint::android::sdk,
-		misc::contint::test::testswarm,
+		role::contint,
 		misc::docsite,
 		misc::docs::puppet,
 		role::zuul::production,
