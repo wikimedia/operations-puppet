@@ -41,6 +41,7 @@ class role::gerrit {
 				  "push" => "+refs/heads/*:refs/heads/*
   push = +refs/tags/*:refs/tags/*",
 				  "isGithubRepo" => "true",
+				  "remoteNameStyle" => "dash",
 				  "mirror" => "true",
 				},
 				'gallium' => {
