@@ -777,12 +777,20 @@ node /es([5-9]|10)\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /es10(0[5-9]|10)\.eqiad\.wmnet/ {
+node /es100[5689]\.eqiad\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
+}
+
+node /es1007\.eqiad\.wmnet/ {
+	include role::coredb::es2
+}
+
+node /es1010\.eqiad\.wmnet/ {
+	include role::coredb::es3
 }
 
 node "fenari.wikimedia.org" {
