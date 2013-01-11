@@ -615,7 +615,7 @@ node /db10(07|24|28|41)\.eqiad\.wmnet/ {
 	include role::coredb::s7
 }
 
-node /db10(08|1[2-6]|2[3589]|3([0-3]|[6-7])|4[4-8]|5[1-9])\.eqiad\.wmnet/ {
+node /db10(08|1[2-6]|2[359]|3([0-3]|[6-7])|4[4-8]|5[1-9])\.eqiad\.wmnet/ {
 
 	include mysql::mysqluser,
 		mysql::datadirs
