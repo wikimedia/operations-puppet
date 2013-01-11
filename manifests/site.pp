@@ -1729,8 +1729,6 @@ node "neon.wikimedia.org" {
 	include standard,
 		icinga::monitor,
 		misc::ircecho
-#		nagios::ganglia::monitor::enwiki,
-#		nagios::ganglia::ganglios,
 }
 
 node "nescio.esams.wikimedia.org" {
