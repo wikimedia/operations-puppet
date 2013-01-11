@@ -38,8 +38,8 @@ def main():
             print "{0}: repo does not exist".format(options.repo)
             sys.exit(1)
         else:
-            if repo in pillar['repo_dependencies'] and not options.nodeps:
-                dependencies = pillar['repo_dependencies'][repo]
+            if options.repo in pillar['repo_dependencies'] and not options.nodeps:
+                dependencies = pillar['repo_dependencies'][options.repo]
             else:
                 dependencies = []
             if options.fullreport:
