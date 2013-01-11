@@ -72,7 +72,7 @@ def ask(prefix, stage):
 	elif stage == "checkout":
 		check = "/usr/local/bin/deploy-info --repo=%s"
 	while True:
-		answer = raw_input("Would you like to continue? ([d]etailed/[C]oncise report,[y]es,[n]o): "
+		answer = raw_input("Would you like to continue? ([d]etailed/[C]oncise report,[y]es,[n]o): ")
 		if not answer or answer == "c" or answer == "C":
 			p = subprocess.Popen(check % (prefix), shell=True, stdout=subprocess.PIPE)
 			out = p.communicate()[0]
