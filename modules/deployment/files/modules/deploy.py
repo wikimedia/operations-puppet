@@ -133,6 +133,12 @@ def fetch(repo):
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
+        # fetch all submodules
+        cmd = '/usr/bin/git submodule foreach git fetch --tags'
+        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        if ret != 0:
+            return {'status': 60, 'repo': repo, 'dependencies': depstats}
+
     cmd = '/usr/bin/git describe --always --tag origin'
     origin_tag = __salt__['cmd.run'](cmd,repoloc)
     origin_tag = origin_tag.strip()
