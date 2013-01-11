@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
+import os
 import redis
 import getpass
-import subprocess
 import deploylib
 
 def main():
