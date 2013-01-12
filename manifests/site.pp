@@ -1074,7 +1074,8 @@ node "kaulen.wikimedia.org" {
 		misc::download-mediawiki,
 		misc::bugzilla::server,
 		misc::bugzilla::crons,
-		misc::bugzilla::communitymetrics
+		misc::bugzilla::communitymetrics,
+		misc::bugzilla::report
 
 	install_certificate{ "star.wikimedia.org": }
 
