@@ -618,6 +618,8 @@ class nagios::ganglia::monitor::enwiki {
 }
 
 class nagios::ganglia::ganglios {
+	include generic::mysql::packages::client
+
 	package { "ganglios":
 		ensure => latest;
 	}
