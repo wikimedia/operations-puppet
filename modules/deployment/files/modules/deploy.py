@@ -99,7 +99,7 @@ def fetch(repo):
 
     # Clone the repo if it doesn't exist yet
     if not __salt__['file.directory_exists'](repoloc + '/.git'):
-        cmd = '/usr/bin/git clone %s %s' % (repourl + '.git', repoloc)
+        cmd = '/usr/bin/git clone %s %s' % (repourl + '/.git', repoloc)
         status = __salt__['cmd.retcode'](cmd)
         if status != 0:
             return {'status': 5, 'repo': repo, 'dependencies': depstats}
