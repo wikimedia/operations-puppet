@@ -418,7 +418,7 @@ node /^db(9|10)\.pmtpa\.wmnet$/ {
   include role::db::core
 }
 
-node /^db3[1-9]\.pmtpa\.wmnet$/ {
+node /^db3[123467]\.pmtpa\.wmnet$/ {
     include mysql::mysqluser,
     mysql::datadirs,
     mysql::conf,
@@ -430,7 +430,7 @@ node /^db4[12]\.pmtpa\.wmnet$/ {
 ## currently dead
 }
 
-node /db4[3-9]\.pmtpa\.wmnet/ {
+node /db4[4-9]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -438,7 +438,7 @@ node /db4[3-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db5[0-9]\.pmtpa\.wmnet/ {
+node /db5[0345679]\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db(50|51)$/ {
 		$ganglia_aggregator = "true"
 	}
@@ -477,6 +477,35 @@ node /db6([3-9])\.pmtpa\.wmnet/ {
 node "db78.pmtpa.wmnet" {
 	include role::fundraising::database::dump_slave
 	class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+}
+
+# pmtpa dbs (coredb module)
+node /db(38)\.pmtpa\.wmnet/ {
+  include role::coredb::s1
+}
+
+node /db(52)\.pmtpa\.wmnet/ {
+  include role::coredb::s2
+}
+
+node /db(39)\.pmtpa\.wmnet/ {
+  include role::coredb::s3
+}
+
+node /db(51)\.pmtpa\.wmnet/ {
+  include role::coredb::s4
+}
+
+node /db(35)\.pmtpa\.wmnet/ {
+  include role::coredb::s5
+}
+
+node /db(43)\.pmtpa\.wmnet/ {
+  include role::coredb::s6
+}
+
+node /db(58)\.pmtpa\.wmnet/ {
+  include role::coredb::s7
 }
 
 # eqiad dbs
