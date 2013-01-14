@@ -1,3 +1,10 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/glusterlogs
+#####################################################################
+
+
+# Rotate client logs
 /var/log/glusterfs/*.log {
 	missingok
 	rotate 3
@@ -5,5 +12,17 @@
 	compress
 	postrotate
 		/usr/bin/killall -HUP glusterfs > /dev/null 2>&1 || true
+		/usr/bin/killall -HUP glusterd > /dev/null 2>&1 || true
+	endscript
+}
+
+# Rotate server brick logs
+/var/log/glusterfs/bricks/*.log {
+	missingok
+	rotate 3
+	weekly
+	compress
+	postrotate
+		/usr/bin/killall -HUP glusterfsd > /dev/null 2>&1 || true
 	endscript
 }
