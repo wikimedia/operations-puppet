@@ -53,6 +53,7 @@ $decommissioned_servers = [
 "knsq13",
 "knsq14",
 "knsq15",
+"knsq17", # disk fail - RT-4321
 "knsq25",
 "knsq30",
 "lily",
