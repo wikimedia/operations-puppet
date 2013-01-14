@@ -1,6 +1,6 @@
 class misc::beta::autoupdater {
 
-	require misc::deployment::scap_scripts
+	require misc::deployment::scripts
 	include generic::packages::git-core
 
 	file {
