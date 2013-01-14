@@ -418,7 +418,7 @@ node /^db(9|10)\.pmtpa\.wmnet$/ {
   include role::db::core
 }
 
-node /^db3[123467]\.pmtpa\.wmnet$/ {
+node /^db3[12467]\.pmtpa\.wmnet$/ {
     include mysql::mysqluser,
     mysql::datadirs,
     mysql::conf,
@@ -430,7 +430,7 @@ node /^db4[12]\.pmtpa\.wmnet$/ {
 ## currently dead
 }
 
-node /db4[4-9]\.pmtpa\.wmnet/ {
+node /db4[5789]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -438,23 +438,7 @@ node /db4[4-9]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db5[0345679]\.pmtpa\.wmnet/ {
-	if $hostname =~ /^db(50|51)$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	if $hostname == "db59" {
-		$mariadb = true
-	}
-
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node /db6[0]\.pmtpa\.wmnet/ {
+node /db5[4]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -466,7 +450,7 @@ node /db6[12]\.pmtpa\.wmnet/ {
 ##test boxes
 }
 
-node /db6([3-9])\.pmtpa\.wmnet/ {
+node /db6[379]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -480,34 +464,41 @@ node "db78.pmtpa.wmnet" {
 }
 
 # pmtpa dbs (coredb module)
-node /db(38)\.pmtpa\.wmnet/ {
-  include role::coredb::s1
+node /db(32|36|38|59|60)\.pmtpa\.wmnet/ {
+  if $hostname == "db59" {
+    class { role::coredb::s1 : mariadb => true }
+  } else {
+    include role::coredb::s1
+  }
 }
 
-node /db(52)\.pmtpa\.wmnet/ {
+node /db(52|53|57)\.pmtpa\.wmnet/ {
   include role::coredb::s2
 }
 
-node /db(39)\.pmtpa\.wmnet/ {
+node /db(39|64|66)\.pmtpa\.wmnet/ {
   include role::coredb::s3
 }
 
-node /db(51)\.pmtpa\.wmnet/ {
+node /db(33|51|65)\.pmtpa\.wmnet/ {
   if $hostname =~ /^db51/ {
     $ganglia_aggregator = "true"
   }
   include role::coredb::s4
 }
 
-node /db(35)\.pmtpa\.wmnet/ {
+node /db(35|44|55)\.pmtpa\.wmnet/ {
   include role::coredb::s5
 }
 
-node /db(43)\.pmtpa\.wmnet/ {
+node /db(43|46|50)\.pmtpa\.wmnet/ {
+  if $hostname =~ /^db50/ {
+    $ganglia_aggregator = "true"
+  }
   include role::coredb::s6
 }
 
-node /db(58)\.pmtpa\.wmnet/ {
+node /db(56|58|68)\.pmtpa\.wmnet/ {
   include role::coredb::s7
 }
 
