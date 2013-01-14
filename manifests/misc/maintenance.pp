@@ -207,6 +207,14 @@ class misc::maintenance::wikidata {
 			ensure => present;
 	}
 
+	cron {
+		wikibase-poll-huwiki:
+		command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki huwiki --statefile=/home/wikipedia/common/wikibase-huwiki-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.huwiki.log",
+		user => mwdeploy,
+		minute => "*/5",
+		ensure => present;
+	}
+
 	file {
 		"/var/log/wikidata":
 			owner => mwdeploy,
