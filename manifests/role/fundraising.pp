@@ -52,7 +52,7 @@ class role::fundraising::civicrm {
 	include
 		accounts::mhernandez,
 		accounts::pcoombe,
-		accounts::rfaulk,
+		#accounts::rfaulk, # no longer involved with fundraising
 		accounts::zexley,
 		admins::fr-tech,
 		admins::roots,
