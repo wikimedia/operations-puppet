@@ -199,7 +199,7 @@ class role::ldap::server::corp {
 	$proxyagent = $role::ldap::config::corp::ldapconfig["proxyagent"]
 	$proxypass = $role::ldap::config::corp::ldapconfig["proxypass"]
 
-	$certificate = "$hostname.pmtpa.wmnet"
+	$certificate = "${::fqdn}"
 	install_certificate{ $certificate: }
 	create_pkcs12{ "${certificate}.opendj":
 		certname => "${certificate}",
