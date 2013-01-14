@@ -493,6 +493,9 @@ node /db(39)\.pmtpa\.wmnet/ {
 }
 
 node /db(51)\.pmtpa\.wmnet/ {
+  if $hostname =~ /^db51/ {
+    $ganglia_aggregator = "true"
+  }
   include role::coredb::s4
 }
 
