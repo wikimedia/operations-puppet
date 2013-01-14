@@ -133,6 +133,11 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/sql";
+		"${scriptpath}/sqldump":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/sqldump";
 		"${scriptpath}/sync-apache":
 			owner => root,
 			group => root,

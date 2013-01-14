@@ -1,0 +1,21 @@
+#!/bin/bash
+
+db=$1
+cluster=`</etc/cluster`
+. /usr/local/lib/mw-deployment-vars.sh
+
+MWMULTIDIR=$MW_COMMON/multiversion
+
+if [ -z $db ];then
+	db=enwiki
+fi
+if [ "$db" == centralauth ]; then
+	host=`echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki=fawiki`
+else
+	host=`echo 'echo wfGetLB()->getServerName(0);' | php $MWMULTIDIR/MWScript.php maintenance/eval.php --wiki="$db"`
+fi
+
+MU=wikiadmin
+MP=`wikiadmin_pass`
+mysqldump -u $MU -p$MP -h $host "$@"
+
