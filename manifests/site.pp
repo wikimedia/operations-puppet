@@ -413,104 +413,21 @@ node "dataset1001.wikimedia.org" {
 
 }
 
-node /^db[1-9]\.pmtpa\.wmnet$/ {
-	include role::db::core
+node /^db(9|10)\.pmtpa\.wmnet$/ {
+  ## do not have most of our current puppet classe
+  include role::db::core
 }
 
-node "db10.pmtpa.wmnet" {
-	include role::db::core
-		#backup::mysql - no space for lvm snapshots
+node /^db3[1-9]\.pmtpa\.wmnet$/ {
+    include mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages,
+    role::db::core
 }
 
-node /^db1[2-8]\.pmtpa\.wmnet$/ {
-	include role::db::core
-
-	# upgraded hosts
-	if $hostname =~ /^db1[2368]$/ {
-		include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-	}
-}
-
-node /^db2[1-8]\.pmtpa\.wmnet$/ {
-
-	include role::db::core
-
-	# upgraded hosts
-	if $hostname =~ /^db2[456]$/ {
-		include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-	}
-}
-
-node "db29.pmtpa.wmnet" {
-	include base
-}
-
-node /^db3[0-9]\.pmtpa\.wmnet$/ {
-
-	include role::db::core
-
-	# upgraded hosts
-	if $hostname =~ /^db3[123456789]$/ {
-		include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-	}
-}
-
-node "db40.pmtpa.wmnet" {
-	include role::db::core,
-		mysql::packages
-
-	system_role { "lame::not::puppetized": description => "Parser Cache database server" }
-}
-
-node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::pc::conf,
-		mysql::packages
-
-	system_role { "mysql::pc::conf": description => "parser cache mysql server" }
-}
-
-node /^db4[2]\.pmtpa\.wmnet$/ {
-	include role::db::core,
-		mysql::packages
-}
-
-# new pmtpa dbs
-# New and rebuilt DB's go here as they're rebuilt and moved fully to puppet
-# DO NOT add old prod db's to new classes unless you
-# know what you're doing!
-node "db11.pmtpa.wmnet" {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node "db19.pmtpa.wmnet" { # dead
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf
-}
-
-node "db22.pmtpa.wmnet" {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+node /^db4[12]\.pmtpa\.wmnet$/ {
+## currently dead
 }
 
 node /db4[3-9]\.pmtpa\.wmnet/ {
@@ -545,20 +462,8 @@ node /db6[0]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db6[1]\.pmtpa\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node /db6[2]\.pmtpa\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+node /db6[12]\.pmtpa\.wmnet/ {
+##test boxes
 }
 
 node /db6([3-9])\.pmtpa\.wmnet/ {
@@ -1890,6 +1795,16 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 	class { "lvs::realserver": realserver_ips => [ "208.80.152.7" ] }
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
+}
+
+node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
+  include role::db::core,
+    mysql::mysqluser,
+    mysql::datadirs,
+    mysql::pc::conf,
+    mysql::packages
+
+  system_role { "mysql::pc::conf": description => "parser cache mysql server" }
 }
 
 node "pdf1.wikimedia.org" {
