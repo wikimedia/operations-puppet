@@ -3,8 +3,8 @@ port		= 3306
 socket		= /tmp/mysql.sock
 
 [mysqld]
-
-server_id=10650
+<% ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3]; %>
+server_id=<%= server_id %>
 #read_only
 
 user		= mysql
