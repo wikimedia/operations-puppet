@@ -405,7 +405,7 @@ node /^db3[147]\.pmtpa\.wmnet$/ {
     role::db::core
 }
 
-node /db4[57]\.pmtpa\.wmnet/ {
+node /db4[7]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -453,7 +453,7 @@ node /db(33|51|65)\.pmtpa\.wmnet/ {
   include role::coredb::s4
 }
 
-node /db(35|44|55)\.pmtpa\.wmnet/ {
+node /db(35|44|45|55)\.pmtpa\.wmnet/ {
   include role::coredb::s5
 }
 
