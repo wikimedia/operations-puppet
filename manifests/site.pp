@@ -421,7 +421,7 @@ node /db5[4]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db6[37]\.pmtpa\.wmnet/ {
+node /db6[3]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -489,6 +489,11 @@ node /db4[89]\.pmtpa\.wmnet/ {
 node "db78.pmtpa.wmnet" {
   include role::fundraising::database::dump_slave
   class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+}
+
+## researchdb
+node /db67\.pmtpa\.wmnet/ {
+  include role::coredb::researchdb
 }
 
 ## not in use for various reasons
