@@ -160,11 +160,11 @@ class misc::fundraising {
 			group => root,
 			mode => 0444,
 			source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-ssl';
-		'/etc/apache2/sites-available/007-fundraising-analytics':
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-analytics';
+		#'/etc/apache2/sites-available/007-fundraising-analytics':
+		#	owner => root,
+		#	group => root,
+		#	mode => 0444,
+		#	source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-analytics';
 		#'/etc/apache2/sites-available/008-community-analytics':
 		#	owner => root,
 		#	group => root,
@@ -194,7 +194,7 @@ class misc::fundraising {
 	apache_site { 'civicrm-dev-ssl': name => '004-civicrm-dev-ssl' }
 	apache_site { 'fundraising': name => '005-fundraising' }
 	apache_site { 'fundraising-ssl': name => '006-fundraising-ssl' }
-	apache_site { 'fundraising-analytics': name => '007-fundraising-analytics' }
+	#apache_site { 'fundraising-analytics': name => '007-fundraising-analytics' }
 	#apache_site { 'community-analytics': name => '008-community-analytics' }
 
 }
