@@ -1589,7 +1589,7 @@ node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
 }
 
 # mw 1114-1148 are api apaches (precise)
-node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqaid\.wmnet/ {
+node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw111[45]$/ {
 		$ganglia_aggregator = "true"
 	}
@@ -1598,7 +1598,7 @@ node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqaid\.wmnet/ {
 }
 
 # mw 1149-1152 are bits apaches (precise)
-node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
+node /mw11(49|5[0-2])\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw115[12]$/ {
 		$ganglia_aggregator = "true"
 	}
@@ -1607,7 +1607,7 @@ node /mw11(49]|5[0-2])\.eqiad\.wmnet/ {
 }
 
 # mw 1153-1160 are imagescalers (precise)
-node /mw11(5[3-9]|60)\.eqaid\.wmnet/ {
+node /mw11(5[3-9]|60)\.eqiad\.wmnet/ {
 	if $hostname =~ /^mw115[34]$/ {
 		$ganglia_aggregator = "true"
 	}
