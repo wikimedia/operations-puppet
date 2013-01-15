@@ -61,7 +61,8 @@ do
        	then
 		echo "Building initial localisation cache for $mwVerNum (on $mwDbName)"
 		if $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-			--outdir=$MW_COMMON/l10n-$mwVerNum/cache
+			--outdir=$MW_COMMON/l10n-$mwVerNum/cache \
+			--threads=12
 		then
 			true
 		else
@@ -86,7 +87,8 @@ do
 	then
 		echo "Rebuilding localisation cache for $mwVerNum (on $mwDbName)"
 		if $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-			--outdir=$MW_COMMON/l10n-$mwVerNum/cache
+			--outdir=$MW_COMMON/l10n-$mwVerNum/cache \
+			--threads=12
 		then
 			true
 		else
