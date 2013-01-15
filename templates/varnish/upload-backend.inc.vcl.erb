@@ -59,6 +59,27 @@ sub radosgw_rewrite {
 				bereq.url,
 				"^(/swift/v1/[^/]+-[^/]+-local)-\.",
 				"\1-public.");
+		}
+		elsif (req.url ~ "^/[^/]+/[^/]+/timeline/.+$") {
+			set bereq.url = regsub(
+				req.url,
+				"^/([^/]+)/([^/]+)/(timeline)/(.+)$",
+				"/swift/v1/\1-\2-\3-render/\4");
+		}
+		elsif (req.url ~ "^/math/[0-9a-f]/[0-9a-f]/.+$") {
+			set bereq.url = regsub(
+				req.url,
+				"^/(math)/(([0-9a-f])/([0-9a-f])/.+)$",
+				"/swift/v1/global-data-\1-render.\3\4/\2");
+		}
+		elsif (req.url ~ "^/score/.+$") {
+			set bereq.url = regsub(
+				req.url,
+				"^/(score)/(.+)$",
+				"/swift/v1/global-data-\1-render/\2");
+		}
+		
+		if (bereq.url ~ "^/swift/v1/") {
 			set bereq.http.host = "ms-fe.eqiad.wmnet";
 		}
 	}
