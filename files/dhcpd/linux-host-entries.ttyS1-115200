@@ -202,82 +202,122 @@ host nitrogen {
 host cp1001 {
 	hardware ethernet 84:2b:2b:fd:bd:0e;
 	fixed-address cp1001.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1002 {
 	hardware ethernet 84:2b:2b:fd:bc:fc;
 	fixed-address cp1002.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1003 {
 	hardware ethernet 84:2b:2b:fd:be:a3;
 	fixed-address cp1003.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1004 {
 	hardware ethernet 84:2b:2b:fd:bd:56;
 	fixed-address cp1004.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1005 {
 	hardware ethernet 84:2b:2b:fd:bd:5f;
 	fixed-address cp1005.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1006 {
 	hardware ethernet 84:2b:2b:fd:be:b5;
 	fixed-address cp1006.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1007 {
 	hardware ethernet 84:2b:2b:fb:a6:67;
 	fixed-address cp1007.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1008 {
 	hardware ethernet 84:2b:2b:fd:bd:05;
 	fixed-address cp1008.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1009 {
 	hardware ethernet 84:2b:2b:fd:bd:7a;
 	fixed-address cp1009.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1010 {
 	hardware ethernet 84:2b:2b:fd:b9:ff;
 	fixed-address cp1010.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1011 {
 	hardware ethernet 84:2b:2b:fd:be:64;
 	fixed-address cp1011.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1012 {
 	hardware ethernet 84:2b:2b:fd:be:6d;
 	fixed-address cp1012.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1013 {
 	hardware ethernet 84:2b:2b:fc:af:c2;
 	fixed-address cp1013.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1014 {
 	hardware ethernet 84:2b:2b:fd:be:52;
 	fixed-address cp1014.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1015 {
 	hardware ethernet 84:2b:2b:fd:bd:71;
 	fixed-address cp1015.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1016 {
 	hardware ethernet 84:2b:2b:fd:bb:f7;
 	fixed-address cp1016.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1017 {
 	hardware ethernet 84:2b:2b:fd:bc:ea;
 	fixed-address cp1017.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1018 {
 	hardware ethernet 84:2b:2b:fd:be:1c;
 	fixed-address cp1018.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1019 {
 	hardware ethernet 84:2b:2b:fd:be:c7;
 	fixed-address cp1019.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1020 {
 	hardware ethernet 84:2b:2b:fd:bf:60;
 	fixed-address cp1020.eqiad.wmnet;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 host cp1021 {
 	hardware ethernet 84:2b:2b:fd:b9:f6;
@@ -3182,81 +3222,113 @@ host solr1003 {
 host sq51 {
 	hardware ethernet 00:21:9B:9A:6C:60;
 	fixed-address sq51.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq52 {
 	hardware ethernet 00:21:9B:9A:39:D0;
         fixed-address sq52.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq53 {
 	hardware ethernet 00:21:9B:9A:37:90;
-    fixed-address sq53.wikimedia.org;
+	fixed-address sq53.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq54 {
 	hardware ethernet 00:21:9B:9A:39:1C;
-    fixed-address sq54.wikimedia.org;
+	fixed-address sq54.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq55 {
 	hardware ethernet 00:21:9B:9A:0B:8C;
 	fixed-address sq55.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq56 {
 	hardware ethernet 00:21:9B:9A:0D:0F;
 	fixed-address sq56.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq57 {
 	hardware ethernet 00:21:9B:9A:2A:97;
 	fixed-address sq57.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq58 {
 	hardware ethernet 00:21:9B:9A:0B:EF;
 	fixed-address sq58.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq59 {
 	hardware ethernet 00:21:9B:9A:6C:7B;
 	fixed-address sq59.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq60 {
 	hardware ethernet 00:21:9B:9A:3F:9D;
 	fixed-address sq60.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq61 {
 	hardware ethernet 00:21:9B:9A:0C:6D;
 	fixed-address sq61.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq62 {
 	hardware ethernet 00:21:9B:9A:29:BF;
 	fixed-address sq62.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq63 {
 	hardware ethernet 00:21:9B:9A:0C:E2;
 	fixed-address sq63.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq64 {
 	hardware ethernet 00:21:9B:9A:27:BE;
 	fixed-address sq64.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq65 {
 	hardware ethernet 00:21:9B:9A:72:48;
 	fixed-address sq65.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq66 {
 	hardware ethernet 00:21:9B:99:EC:E4;
 	fixed-address sq66.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq67 {
@@ -3282,56 +3354,78 @@ host sq70 {
 host sq71 {
 	hardware ethernet 00:21:9B:9A:AF:A1;
 	fixed-address sq71.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq72 {
 	hardware ethernet 00:21:9B:9A:DA:58;
 	fixed-address sq72.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq73 {
 	hardware ethernet 00:21:9B:9A:D3:35;
 	fixed-address sq73.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq74 {
 	hardware ethernet 00:21:9B:9A:C8:19;
 	fixed-address sq74.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq75 {
 	hardware ethernet 00:21:9B:9A:D2:DB;
 	fixed-address sq75.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq76 {
 	hardware ethernet 00:21:9B:9A:DB:F6;
 	fixed-address sq76.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq77 {
 	hardware ethernet 00:21:9B:9A:D2:8A;
 	fixed-address sq77.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq78 {
 	hardware ethernet 00:21:9B:9A:BE:DA;
 	fixed-address sq78.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq79 {
 	hardware ethernet 00:21:9B:9A:C1:74;
 	fixed-address sq79.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq80 {
 	hardware ethernet 00:21:9B:9A:A7:0D;
 	fixed-address sq80.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq81 {
 	hardware ethernet 00:21:9B:9A:C1:59;
 	fixed-address sq81.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq82 {
@@ -3344,21 +3438,29 @@ host sq82 {
 host sq83 {
 	hardware ethernet 00:21:9B:9A:BA:87;
 	fixed-address sq83.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq84 {
 	hardware ethernet 00:21:9B:9A:C2:8B;
 	fixed-address sq84.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq85 {
 	hardware ethernet 00:21:9B:9A:C1:B3;
 	fixed-address sq85.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host sq86 {
 	hardware ethernet 00:21:9B:9A:BF:A0;
 	fixed-address sq86.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host srv258 {
