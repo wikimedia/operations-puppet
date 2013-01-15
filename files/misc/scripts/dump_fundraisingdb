@@ -18,7 +18,6 @@ my $conf = {
 		'dev_drupal' => 'dev_drupal',
 		'dev_fundraising'  => 'dev_fundraising',
 		'drupal' => 'drupal',
-		'faulkner' => 'faulkner --single_transaction',
 		'fundraisingwiki' => 'fundraisingwiki --single_transaction',
 		'pgehres' => 'pgehres --single_transaction',
 	},
