@@ -61,8 +61,6 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			owner => www-data,
 			group => www-data,
 			source => "puppet:///files/planet/index.html";
-		"/usr/share/planet-venus/theme/wikimedia/index.html.tmpl":
-			source => "puppet:///files/planet/theme/index.html.tmpl";
 		"/usr/share/planet-venus/theme/common/images/planet-wm2.png":
 			source => "puppet:///files/planet/images/planet-wm2.png";
 	}
