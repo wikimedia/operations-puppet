@@ -664,12 +664,16 @@ node /es[1-4]\.pmtpa\.wmnet/ {
 }
 
 # es2-3
-node /es([5-9]|10)\.pmtpa\.wmnet/ {
+node /es([8-9]|10)\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
 		mysql::conf,
 		mysql::packages
+}
+
+node /es[5-7]\.pmtpa\.wmnet/ {
+  include role::coredb::es2
 }
 
 node /es100[5-7]\.eqiad\.wmnet/ {
