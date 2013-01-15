@@ -397,40 +397,8 @@ node "dataset1001.wikimedia.org" {
 
 }
 
-node /^db3[147]\.pmtpa\.wmnet$/ {
-    include mysql::mysqluser,
-    mysql::datadirs,
-    mysql::conf,
-    mysql::packages,
-    role::db::core
-}
-
-node /db4[7]\.pmtpa\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node /db5[4]\.pmtpa\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
-node /db6[3]\.pmtpa\.wmnet/ {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
 # pmtpa dbs
-node /db(32|36|38|59|60)\.pmtpa\.wmnet/ {
+node /db(32|36|38|59|60|63)\.pmtpa\.wmnet/ {
   if $hostname == "db59" {
     class { role::coredb::s1 : mariadb => true }
   } else {
@@ -438,15 +406,15 @@ node /db(32|36|38|59|60)\.pmtpa\.wmnet/ {
   }
 }
 
-node /db(52|53|57)\.pmtpa\.wmnet/ {
+node /db(52|53|54|57)\.pmtpa\.wmnet/ {
   include role::coredb::s2
 }
 
-node /db(39|64|66)\.pmtpa\.wmnet/ {
+node /db(34|39|64|66)\.pmtpa\.wmnet/ {
   include role::coredb::s3
 }
 
-node /db(33|51|65)\.pmtpa\.wmnet/ {
+node /db(31|33|51|65)\.pmtpa\.wmnet/ {
   if $hostname =~ /^db51/ {
     $ganglia_aggregator = "true"
   }
@@ -457,14 +425,14 @@ node /db(35|44|45|55)\.pmtpa\.wmnet/ {
   include role::coredb::s5
 }
 
-node /db(43|46|50)\.pmtpa\.wmnet/ {
+node /db(43|46|47|50)\.pmtpa\.wmnet/ {
   if $hostname =~ /^db50/ {
     $ganglia_aggregator = "true"
   }
   include role::coredb::s6
 }
 
-node /db(56|58|68)\.pmtpa\.wmnet/ {
+node /db(37|56|58|68)\.pmtpa\.wmnet/ {
   include role::coredb::s7
 }
 
