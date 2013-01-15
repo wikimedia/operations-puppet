@@ -430,7 +430,7 @@ node /^db4[12]\.pmtpa\.wmnet$/ {
 ## currently dead
 }
 
-node /db4[5789]\.pmtpa\.wmnet/ {
+node /db4[57]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -500,6 +500,11 @@ node /db(43|46|50)\.pmtpa\.wmnet/ {
 
 node /db(56|58|68)\.pmtpa\.wmnet/ {
   include role::coredb::s7
+}
+
+## m2 shard
+node /db4[89]\.pmtpa\.wmnet/ {
+  include role::coredb::m2
 }
 
 # eqiad dbs
