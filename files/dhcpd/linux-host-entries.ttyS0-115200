@@ -78,6 +78,11 @@ host labsdb1002 {
 	fixed-address labsdb1002.eqiad.wmnet;
 }
 
+host labsdb1003 {
+	hardware ethernet 88:43:E1:C2:54:98;
+	fixed-address labsdb1003.eqiad.wmnet;
+}
+
 host pc1 {
 	hardware ethernet 88:43:E1:C2:4C:AA;
 	fixed-address pc1.pmtpa.wmnet;
@@ -126,11 +131,6 @@ host virt1006 {
 host virt1007 {
 	hardware ethernet 88:43:E1:C2:9D:1C;
 	fixed-address virt1007.eqiad.wmnet;
-}
-
-host virt1008 {
-	hardware ethernet 88:43:E1:C2:54:98;
-	fixed-address virt1008.eqiad.wmnet;
 }
 
 host virt5 {
