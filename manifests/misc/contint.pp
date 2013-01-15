@@ -281,9 +281,7 @@ class misc::contint::test {
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WLMMobile",
 				recurse => "true";
-			# Placing the file in sites-available
 			"/etc/apache2/sites-available/integration.mediawiki.org":
-				path => "/etc/apache2/sites-available/integration.mediawiki.org",
 				mode => 0444,
 				owner => root,
 				group => root,
