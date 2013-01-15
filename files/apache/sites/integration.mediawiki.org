@@ -65,37 +65,6 @@ NameVirtualHost *:443
 		IndexOrderDefault Descending Date
 	</Directory>
 
-	# Publish MediaWiki clones to the outside world for testswarm
-	<Directory /var/lib/testswarm/mediawiki-git/clone>
-		AllowOverride All
-		order allow,deny
-		allow from all
-
-		<IfModule mod_php5.c>
-			AddType application/x-httpd-php .php
-			php_value include_path .
-
-			DirectoryIndex index.html index.php
-		</IfModule>
-
-	</Directory>
-
-	Alias /clone/mw/master /var/lib/testswarm/mediawiki-git/clone
-
-	<Directory /usr/share/testswarm/site>
-		AllowOverride All
-		order allow,deny
-		allow from all
-		Options +FollowSymLinks
-
-		AddType application/x-httpd-php .php
-		php_value include_path .
-
-		DirectoryIndex index.html index.php
-	</Directory>
-
-	Alias /testswarm "/usr/share/testswarm/site/"
-
 	# Force Jenkins request through HTTPS
 	RewriteEngine on
 	RewriteCond %{HTTPS} off
@@ -161,35 +130,4 @@ NameVirtualHost *:443
 		IndexOptions VersionSort
 		IndexOptions NameWidth=*
 	</Directory>
-
-	# Publish MediaWiki clones to the outside world for testswarm
-	<Directory /var/lib/testswarm/mediawiki-git/clone>
-		AllowOverride All
-		order allow,deny
-		allow from all
-
-		<IfModule mod_php5.c>
-			AddType application/x-httpd-php .php
-			php_value include_path .
-
-			DirectoryIndex index.html index.php
-		</IfModule>
-
-	</Directory>
-
-	Alias /clone/mw/master /var/lib/testswarm/mediawiki-git/clone
-
-	<Directory /usr/share/testswarm/site>
-		AllowOverride All
-		order allow,deny
-		allow from all
-		Options +FollowSymLinks
-
-		AddType application/x-httpd-php .php
-		php_value include_path .
-
-		DirectoryIndex index.html index.php
-	</Directory>
-
-	Alias /testswarm "/usr/share/testswarm/site/"
 </VirtualHost>
