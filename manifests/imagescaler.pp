@@ -32,6 +32,7 @@ class imagescaler::packages {
 			"libtheora0",
 			"oggvideotools",
 			"libvips15",
+			"libjpeg-turbo-progs",
 			"libvips-tools"]:
 		ensure => latest;
 	}
