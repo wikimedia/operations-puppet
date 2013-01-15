@@ -48,16 +48,37 @@ sub pick_large_object_stevedore {
 }
 
 sub radosgw_rewrite {
-	if (req.url ~ "^/[^/]+/[^/]+/((thumb|temp)/)?((temp|archive)/)?[0-9a-f]/[0-9a-f]{2}(/.+)?$") {
-		set bereq.url = regsub(
-			req.url,
-			"^/([^/]+)/([^/]+)/((thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
-			"/swift/v1/\1-\2-local-\3.\9/\5");
-		set bereq.url = regsub(
-			bereq.url,
-			"^(/swift/v1/[^/]+-[^/]+-local)-\.",
-			"\1-public.");
-		set bereq.http.host = "ms-fe.eqiad.wmnet";
+	if (req.restarts == 0) {
+		if (req.url ~ "^/[^/]+/[^/]+/((thumb|temp)/)?((temp|archive)/)?[0-9a-f]/[0-9a-f]{2}(/.+)?$") {
+			set bereq.url = regsub(
+				req.url,
+				"^/([^/]+)/([^/]+)/((thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
+				"/swift/v1/\1-\2-local-\3.\9/\5");
+			set bereq.url = regsub(
+				bereq.url,
+				"^(/swift/v1/[^/]+-[^/]+-local)-\.",
+				"\1-public.");
+			set bereq.http.host = "ms-fe.eqiad.wmnet";
+		}
+	}
+	else {
+		if (req.backend == image_scalers && req.url ~ "^/[^-/]+/[^/]+/thumb/(.+)$") {
+			set bereq.url = regsub(req.url, "^/[^-/]+/[^/]+/thumb/(.+)$", "/w/thumb_handler.php/\1");
+			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.org");
+			set bereq.http.X-Original-URI = req.url;
+
+			# Exceptions
+			set bereq.http.host = regsub(bereq.http.host, "^(meta|commons|internal|grants|wikimania2006)\.wikipedia\.org$", "\1.wikimedia.org");
+			set bereq.http.host = regsub(bereq.http.host, "^mediawiki\..+$", "www.mediawiki.org");
+			set bereq.http.host = regsub(bereq.http.host, "^sources\.wikipedia\.org$", "wikisource.org");
+		}
+	}
+}
+
+sub check_thumb_404 {
+	if (beresp.status == 404 && bereq.url ~ "^/swift/v1/[^-/]+-[^-/]+-local-thumb") {
+		set req.backend = image_scalers;
+		restart;
 	}
 }
 
