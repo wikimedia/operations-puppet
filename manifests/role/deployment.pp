@@ -13,7 +13,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "l10n-slot1" => "http://${deploy_server_pmtpa}/mediawiki/l10n-slot1",
       "l10n-beta0" => "http://${deploy_server_pmtpa}/mediawiki/l10n-beta0",
       # parsoid is currently deployed from eqiad only
-      "parsoid/parsoid" => "http://${deploy_server_eqiad}/parsoid/parsoid",
+      "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
     },
     "eqiad" => {
