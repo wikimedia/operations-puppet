@@ -243,24 +243,8 @@ node "bast1001.wikimedia.org" {
 		nfs::netapp::home::othersite
 }
 
-node "bellin.pmtpa.wmnet"{
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
-}
-
 node "beryllium.wikimedia.org" {
 	include newstandard
-}
-
-node "blondel.pmtpa.wmnet" {
-	include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
 }
 
 node "boron.wikimedia.org" {
@@ -413,21 +397,12 @@ node "dataset1001.wikimedia.org" {
 
 }
 
-node /^db(9|10)\.pmtpa\.wmnet$/ {
-  ## do not have most of our current puppet classe
-  include role::db::core
-}
-
 node /^db3[147]\.pmtpa\.wmnet$/ {
     include mysql::mysqluser,
     mysql::datadirs,
     mysql::conf,
     mysql::packages,
     role::db::core
-}
-
-node /^db4[12]\.pmtpa\.wmnet$/ {
-## currently dead
 }
 
 node /db4[57]\.pmtpa\.wmnet/ {
@@ -446,11 +421,7 @@ node /db5[4]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node /db6[12]\.pmtpa\.wmnet/ {
-##test boxes
-}
-
-node /db6[379]\.pmtpa\.wmnet/ {
+node /db6[37]\.pmtpa\.wmnet/ {
 	include role::db::core,
 		mysql::mysqluser,
 		mysql::datadirs,
@@ -458,12 +429,7 @@ node /db6[379]\.pmtpa\.wmnet/ {
 		mysql::packages
 }
 
-node "db78.pmtpa.wmnet" {
-	include role::fundraising::database::dump_slave
-	class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
-}
-
-# pmtpa dbs (coredb module)
+# pmtpa dbs
 node /db(32|36|38|59|60)\.pmtpa\.wmnet/ {
   if $hostname == "db59" {
     class { role::coredb::s1 : mariadb => true }
@@ -502,9 +468,32 @@ node /db(56|58|68)\.pmtpa\.wmnet/ {
   include role::coredb::s7
 }
 
+## m1 shard (still mostly not puppetized...)
+node /^(db(9|10))|blondel|bellin\.pmtpa\.wmnet$/ {
+  ## do not have most of our current puppet classe
+  include role::db::core
+
+  if $hostname =~ /^(bellin|blondel)/ {
+    include mysql::mysqluser,
+    mysql::datadirs,
+    mysql::conf,
+    mysql::packages
+  }
+}
+
 ## m2 shard
 node /db4[89]\.pmtpa\.wmnet/ {
   include role::coredb::m2
+}
+
+node "db78.pmtpa.wmnet" {
+  include role::fundraising::database::dump_slave
+  class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+}
+
+## not in use for various reasons
+node /db(42|6[129]|7[0-7])\.pmtpa\.wmnet/{
+
 }
 
 # eqiad dbs
