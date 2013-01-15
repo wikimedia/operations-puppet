@@ -515,31 +515,22 @@ node /db104[68]\.eqiad\.wmnet/ {
 	include role::coredb::m2
 }
 
-
-node "db1025.eqiad.wmnet" {
-	include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::packages,
-		mysql::conf,
-		role::fundraising::database::dump_slave
-}
-
 ## eqiad fundraising DBs
-node /db10(08|13)\.eqiad\.wmnet/ {
+node /db10(08|13|25)\.eqiad\.wmnet/ {
 	include mysql::mysqluser,
 		mysql::datadirs,
 		mysql::packages,
 		mysql::conf
 
-	if $hostname == "db1008" {
+	  if $hostname == "db1008" {
 		include role::fundraising::database::master
-	}
-	if $hostname == "db1013" {
+	  }
+	  if $hostname == "db1013" {
 		include role::fundraising::database::slave
-	}
-	#if $hostname == "db1025" {
-	#	include role::fundraising::database::dump_slave
-	#}
+	  }
+	  if $hostname == "db1025" {
+		include role::fundraising::database::dump_slave
+	  }
 }
 
 ## researchdb (currently lucid)
