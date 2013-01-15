@@ -2840,6 +2840,11 @@ host potassium {
 	fixed-address potassium.eqiad.wmnet;
 }
 
+host praseodymium {
+	hardware ethernet 78:2b:cb:08:ac:78;
+	fixed-address praseodymium.wikimedia.org;
+}
+
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
