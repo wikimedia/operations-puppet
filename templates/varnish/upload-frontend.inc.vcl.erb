@@ -27,6 +27,9 @@ sub vcl_recv {
 	} else {
 		error 403 "Requested target domain not allowed.";
 	}
+
+	# Replace double slashes
+	set req.url = regsuball(req.url, "/{2,}", "/");
 }
 
 sub vcl_miss {
