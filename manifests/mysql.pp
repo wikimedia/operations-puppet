@@ -617,6 +617,9 @@ class mysql::client::default-charset-binary {
 # Installs the mysql-client package
 class generic::mysql::packages::client($version = "5.1") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		$version = "5.5"
+	}
 	package { "mysql-client-${version}":
 		ensure => latest,
 		alias  => "mysql-client",
