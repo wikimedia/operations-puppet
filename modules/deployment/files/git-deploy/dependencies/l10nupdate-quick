@@ -52,7 +52,7 @@ do
 		mkdir $MW_COMMON/l10n-$mwVerNum/cache
 	fi
 
-	if [ ! -d "$MW_COMMON/l10n-$mwVerNum/ExtensionMessages.php" ]
+	if [ ! -e "$MW_COMMON/l10n-$mwVerNum/ExtensionMessages.php" ]
        	then
 		touch $MW_COMMON/l10n-$mwVerNum/ExtensionMessages.php
 	fi
