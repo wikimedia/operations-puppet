@@ -52,12 +52,12 @@ def sync_all():
 
     minion = __grains__.get('id', '')
     for repo,repourl in repourls.items():
-        if repo not in stats:
-            stats[repo] = {}
-        repoloc = repolocs[repo]
         minion_regex = minion_regexes[repo]
         if not re.search(minion_regex,minion):
             continue
+        if repo not in stats:
+            stats[repo] = {}
+        repoloc = repolocs[repo]
         stats[repo]["deploy.fetch"] = __salt__['deploy.fetch'](repo)
         stats[repo]["deploy.checkout"] = __salt__['deploy.checkout'](repo)
 
