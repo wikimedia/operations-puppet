@@ -615,8 +615,14 @@ class mysql::client::default-charset-binary {
 # are not (yet?) meant for serious production installs.
 
 # Installs the mysql-client package
-class generic::mysql::packages::client($version = "5.1") {
+class generic::mysql::packages::client{
 	# This conflicts with class mysql::packages.  DO NOT use them together
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		$version = "5.5"
+	}
+	else {
+		$version = "5.1"
+	}
 	package { "mysql-client-${version}":
 		ensure => latest,
 		alias  => "mysql-client",
@@ -626,9 +632,16 @@ class generic::mysql::packages::client($version = "5.1") {
 	}
 }
 
-class generic::mysql::packages::server($version = "5.1") {
+class generic::mysql::packages::server{
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
+	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+		$version = "5.5"
+	}
+	else {
+		$version = "5.1"
+	}
+
 	package { "mysql-server-${version}":
 		ensure => present,
 		alias  => "mysql-server"
@@ -720,8 +733,6 @@ class generic::mysql::server(
 {
 	# make sure mysql-server and mysql-client are
 	# installed with the specified version.
-	class { "generic::mysql::packages::server": version => $version }
-	class { "generic::mysql::packages::client": version => $version }
 	include generic::apparmor::service
 
 	# NOTE: $::run_directory is defined in base.pp
