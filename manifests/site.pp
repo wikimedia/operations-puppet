@@ -2524,11 +2524,15 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 
 }
 
-node /(celsus|constable)\.wikimedia\.org/ {
+node /(celsus|constable|cerium|titanium)\.wikimedia\.org/ {
 	$cluster = "parsoidcache"
 	$nagios_group = "${cluster}_$::site"
 
 	if $hostname == "constable" {
+		$ganglia_aggregator = "true"
+	}
+
+	if $hostname == "cerium" {
 		$ganglia_aggregator = "true"
 	}
 
