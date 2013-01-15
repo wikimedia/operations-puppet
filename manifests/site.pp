@@ -437,7 +437,7 @@ node /db(37|56|58|68)\.pmtpa\.wmnet/ {
 }
 
 ## m1 shard (still mostly not puppetized...)
-node /^(db(9|10))|blondel|bellin\.pmtpa\.wmnet$/ {
+node /^(db(9|10)|blondel|bellin)\.pmtpa\.wmnet$/ {
   ## do not have most of our current puppet classe
   include role::db::core
 
