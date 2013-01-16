@@ -569,7 +569,7 @@ class lvs::configuration {
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'sites' => [ "pmtpa" ],
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['apaches'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
@@ -584,7 +584,7 @@ class lvs::configuration {
 		"rendering" => {
 			'description' => "MediaWiki thumbnail rendering cluster, rendering.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'sites' => [ "pmtpa" ],
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['rendering'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".74",
@@ -599,7 +599,7 @@ class lvs::configuration {
 		"api" => {
 			'description' => "MediaWiki API cluster, api.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
-			'sites' => [ "pmtpa" ],
+			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['api'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
