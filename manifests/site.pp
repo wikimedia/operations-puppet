@@ -473,6 +473,7 @@ node /db(42|6[129]|7[0-7])\.pmtpa\.wmnet/{
 node /db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
 	if $hostname =~ /^db10(01|17)/ {
 		$ganglia_aggregator = "true"
+		include mha::manager
 	}
 
 	if $hostname == "db1043" {
