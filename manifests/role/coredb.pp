@@ -59,7 +59,7 @@ class role::coredb::config {
 		'm1' => {
 			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
 				'eqiad' => [] },
-			'primary_site' => "pmtpa",
+			'primary_site' => false,
 			'masters' => { 'pmtpa' => "blondel" },
 			'snapshot' => [],
 			'no_master' => []
@@ -75,7 +75,7 @@ class role::coredb::config {
 		'es1' => {
 			'hosts' => { 'pmtpa' => [ 'es1', 'es2', 'es3', 'es4' ],
 				'eqiad' => [ 'es1001', 'es1002', 'es1003', 'es1004' ] },
-			'primary_site' => $::mw_primary,
+			'primary_site' => false,
 			'masters' => {},
 			'snapshot' => [],
 			'no_master' => []
@@ -231,7 +231,8 @@ class role::coredb::common(
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
-		mysql::coredb::ganglia
+		mysql::coredb::ganglia,
+		mha::node
 
 	if $topology[$shard]['masters'][$::site] == $::hostname
 		and ( $topology[$shard]['primary_site'] == $::site or $topology[$shard]['primary_site'] == 'both' ){
