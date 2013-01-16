@@ -64,16 +64,17 @@ class mha::manager inherits role::coredb::config {
 	}
 
 	define mha_coredb_config {
-		if $topology[$name]["primary_site"] and $topology[$name]["primary_site"] != "both" {
+		$shard = $role::coredb::config::topology[$name]
+		if $shard["primary_site"] and $shard["primary_site"] != "both" {
 			# eqiad
 			mha_shard_config { "${name}-eqiad":
-				shard => $topology[$name],
+				shard => $shard,
 				site => "eqiad",
 				altsite => "pmtpa"
 			}
 			# pmtpa
 			mha_shard_config { "${name}-pmtpa":
-				shard => $topology[$name],
+				shard => $shard,
 				site => "pmtpa",
 				altsite => "eqiad"
 			}
