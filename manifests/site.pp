@@ -1149,6 +1149,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['misc_web'][$::site],
 			],
 		/^lvs100[36]$/ => [
+			$sip['apaches'][$::site],
+			$sip['api'][$::site],
+			$sip['rendering'][$::site],
 			$sip['search_pool1'][$::site],
 			$sip['search_pool2'][$::site],
 			$sip['search_pool3'][$::site],
