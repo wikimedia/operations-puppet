@@ -51,7 +51,8 @@ class mha::manager inherits role::coredb::config {
 			mode => 0555;
 	}
 
-	$shards = inline_template("<%= topology.keys %>")
+	$shardlist = inline_template("<%= topology.keys.join(',') %>")
+	$shards = split($shardlist, ",")
 
 	define mha_shard_config($shard={}, $site="", $altsite="") {
 		file { "/etc/mha/${name}.cnf":
