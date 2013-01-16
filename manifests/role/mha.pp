@@ -63,8 +63,8 @@ class mha::manager inherits role::coredb::config {
 		}
 	}
 
-	define mha_coredb_config {
-		$shard = $role::coredb::config::topology[$name]
+	define mha_coredb_config ($topology={}) {
+		$shard = $topology[$name]
 		if $shard["primary_site"] and $shard["primary_site"] != "both" {
 			# eqiad
 			mha_shard_config { "${name}-eqiad":
@@ -82,5 +82,5 @@ class mha::manager inherits role::coredb::config {
 		}
 	}
 
-	mha_coredb_config { $shards: }
+	mha_coredb_config { $shards: topology => $topology }
 }
