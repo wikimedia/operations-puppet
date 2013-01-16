@@ -731,8 +731,8 @@ class generic::mysql::server(
 	$config_file_path               = "/etc/mysql/my.cnf"
 	)
 {
-	# make sure mysql-server and mysql-client are
-	# installed with the specified version.
+	include generic::mysql::packages::server
+	include generic::mysql::packages::client
 	include generic::apparmor::service
 
 	# NOTE: $::run_directory is defined in base.pp
