@@ -204,5 +204,4 @@ $decommissioned_servers = [
 "transcode2",
 "wikinews-lb.wikimedia.org",
 "yongle",
-"potassium",
 ]
