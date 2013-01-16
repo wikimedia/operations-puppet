@@ -102,7 +102,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
 
 class role::deployment::salt_masters::production {
   $mediawiki_regex = "^(srv|mw|snapshot|tmh)|(searchidx2|searchidx1001).*.(eqiad|pmtpa).wmnet$|^(hume|spence|fenari).wikimedia.org$"
-  $parsoid_regex = "^(wtp1|mexia|tola|lardner|kuo|celsus|constable|wtp1001)\..*"
+  $parsoid_regex = "^(wtp1|mexia|tola|lardner|kuo|celsus|constable|wtp1001|caesium|xenon|cerium|praseodymium)\..*"
   $deployment_servers = {
     "pmtpa" => "tin.eqiad.wmnet",
     "eqiad" => "tin.eqiad.wmnet",
