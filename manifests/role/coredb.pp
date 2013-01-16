@@ -3,7 +3,7 @@ class role::coredb::config {
 		's1' => {
 			'hosts' => { 'pmtpa' => [ 'db32', 'db36', 'db38', 'db59', 'db60', 'db63', 'db67' ],
 				'eqiad' => [ 'db1001', 'db1017', 'db1042', 'db1043', 'db1047', 'db1049', 'db1050'] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db63", 'eqiad' => "db1017" },
 			'snapshot' => [ "db32", "db1050" ],
 			'no_master' => [ 'db67', 'db1047' ]
@@ -11,7 +11,7 @@ class role::coredb::config {
 		's2' => {
 			'hosts' => { 'pmtpa' => [ 'db52', 'db53', 'db54', 'db57' ],
 				'eqiad' => [ 'db1002', 'db1009', 'db1018', 'db1034' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db54", 'eqiad' => "db1034" },
 			'snapshot' => [ "db53", "db1018" ],
 			'no_master' => []
@@ -19,7 +19,7 @@ class role::coredb::config {
 		's3' => {
 			'hosts' => { 'pmtpa' => [ 'db34', 'db39', 'db64', 'db66' ],
 				'eqiad' => [ 'db1003', 'db1010', 'db1019', 'db1035' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db34", 'eqiad' => "db1019" },
 			'snapshot' => [ "db64", "db1035" ],
 			'no_master' => []
@@ -27,7 +27,7 @@ class role::coredb::config {
 		's4' => {
 			'hosts' => { 'pmtpa' => [ 'db31', 'db33', 'db51', 'db65' ],
 				'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1038' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db31", 'eqiad' => "db1038" },
 			'snapshot' => [ "db33", "db1020" ],
 			'no_master' => []
@@ -35,7 +35,7 @@ class role::coredb::config {
 		's5' => {
 			'hosts' => { 'pmtpa' => [ 'db35', 'db44', 'db45', 'db55' ],
 				'eqiad' => [ 'db1006', 'db1021', 'db1026', 'db1039' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db45", 'eqiad' => "db1039" },
 			'snapshot' => [ "db44", "db1005" ],
 			'no_master' => []
@@ -43,7 +43,7 @@ class role::coredb::config {
 		's6' => {
 			'hosts' => { 'pmtpa' => [ 'db43', 'db46', 'db47', 'db50' ],
 				'eqiad' => [ 'db1006', 'db1022', 'db1027', 'db1040' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db47", 'eqiad' => "db1006" },
 			'snapshot' => [ "db46", "db1022" ],
 			'no_master' => []
@@ -51,7 +51,7 @@ class role::coredb::config {
 		's7' => {
 			'hosts' => { 'pmtpa' => [ 'db37', 'db56', 'db58', 'db68' ],
 				'eqiad' => [ 'db1007', 'db1024', 'db1028', 'db1041' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db37", 'eqiad' => "db1041" },
 			'snapshot' => [ "db56", "db1007" ],
 			'no_master' => []
@@ -59,7 +59,7 @@ class role::coredb::config {
 		'm1' => {
 			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
 				'eqiad' => [] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "blondel" },
 			'snapshot' => [],
 			'no_master' => []
@@ -75,7 +75,7 @@ class role::coredb::config {
 		'es1' => {
 			'hosts' => { 'pmtpa' => [ 'es1', 'es2', 'es3', 'es4' ],
 				'eqiad' => [ 'es1001', 'es1002', 'es1003', 'es1004' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => {},
 			'snapshot' => [],
 			'no_master' => []
@@ -83,7 +83,7 @@ class role::coredb::config {
 		'es2' => {
 			'hosts' => { 'pmtpa' => [ 'es5', 'es6', 'es7' ],
 				'eqiad' => [ 'es1005', 'es1006', 'es1007' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "es5", 'eqiad' => "es1005" },
 			'snapshot' => [ "es7", "es1007" ],
 			'no_master' => []
@@ -91,7 +91,7 @@ class role::coredb::config {
 		'es3' => {
 			'hosts' => { 'pmtpa' => [ 'es8', 'es9', 'es10' ],
 				'eqiad' => [ 'es1008', 'es1009', 'es1010' ] },
-			'primary_site' => "pmtpa",
+			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "es8", 'eqiad' => "es1008" },
 			'snapshot' => [ "es10", "es1010" ],
 			'no_master' => []

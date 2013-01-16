@@ -4,6 +4,7 @@
 
 if !$realm {
 	$realm = "production"
+	$mw_primary = "pmtpa"
 }
 
 if !$instanceproject {

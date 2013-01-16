@@ -1304,11 +1304,20 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	case $::mw_primary {
+		'pmtpa': {
+			$redis_repl_site = false
+		}
+		'eqiad': {
+			$redis_repl_site = 'eqiad.wmnet'
+		}
+	}
+
 	# replication mappings may end up all over the place
 	# once servers die and are replaced, so making this
 	# explicit for now.
 	$redis_replication = {
-		'site' => false,
+		'site' => $redis_repl_site,
 		'mc1' => 'mc1001',
 		'mc2' => 'mc1002',
 		'mc3' => 'mc1003',
@@ -1345,8 +1354,17 @@ node /mc(10[01][0-9])\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
+	case $::mw_primary {
+		'pmtpa': {
+			$redis_repl_site = 'pmtpa.wmnet'
+		}
+		'eqiad': {
+			$redis_repl_site = false
+		}
+	}
+
 	$redis_replication = {
-		'site' => 'pmtpa.wmnet',
+		'site' => $redis_repl_site,
 		'mc1001' => 'mc1',
 		'mc1002' => 'mc2',
 		'mc1003' => 'mc3',
