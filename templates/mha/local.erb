@@ -25,7 +25,7 @@ no_master=1
 
 <% if site == shard['primary_site'] -%>
 [server<%= i %>]
-hostname=<%= host + "." + altsite + ".wmnet" %>
+hostname=<%= shard['masters']['altsite'] + "." + altsite + ".wmnet" %>
 no_master=1
 <% end -%>
 
