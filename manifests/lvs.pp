@@ -314,7 +314,7 @@ class lvs::configuration {
 			},
 			'apaches' => {
 				'pmtpa' => "10.2.1.1",
-				'eqiad' => "10.4.1.1",
+				'eqiad' => "10.2.2.1",
 			},
 			'rendering' => {
 				'pmtpa' => "10.2.1.21",
