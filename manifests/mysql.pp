@@ -65,7 +65,7 @@ class mysql {
 	elsif $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
-	elsif $hostname =~ /^(db1008|db1013|db1025|db78)$/ {
+	elsif $hostname =~ /^(db1008|db1025|db78)$/ {
 		$db_cluster = "fundraisingdb"
 	}
 	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
