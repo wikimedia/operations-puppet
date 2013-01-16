@@ -184,7 +184,7 @@ class icinga::monitor::configuration::files {
 			mode => 0644;
 
 		"/etc/icinga/misccommands.cfg":
-			source => "puppet:///files/nagios/misccommands.cfg",
+			source => "puppet:///files/icinga/misccommands.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
