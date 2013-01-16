@@ -42,9 +42,9 @@ def returner(ret):
     timestamp = time.time()
     serv = _get_serv()
     if function == "deploy.sync_all":
-        for repo, functions in ret_data["stats"]:
-            for function, data in functions:
-                _record_function(serv, function, timestamp, minion, data)
+        for repo, functions in ret_data["stats"].items():
+            for func, data in functions.items():
+                _record_function(serv, func, timestamp, minion, data)
     else:
         _record_function(serv, function, timestamp, minion, ret_data)
 
