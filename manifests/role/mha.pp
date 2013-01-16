@@ -81,5 +81,5 @@ class mha::manager inherits role::coredb::config {
 		}
 	}
 
-	mha_coredb_confg { $shards: }
+	mha_coredb_config { $shards: }
 }
