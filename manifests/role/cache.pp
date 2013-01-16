@@ -465,12 +465,17 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
-		$bits_appservers = [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ]
+		$bits_appservers = {
+			'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
+			'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
+		}
 		$test_wikipedia = $::realm ? {
 			"production" => [ "srv193.pmtpa.wmnet" ],
 			"labs" => [ '10.4.0.166' ],
 		}
-		$all_backends = [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet" ]
+		# FIXME: need 'flatten' here
+		$all_backends = [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet",
+		 	"mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ]
 
 		if( $::realm == 'production' ) {
 			$varnish_backends = $::site ? {
@@ -490,8 +495,9 @@ class role::cache {
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
 		$multiple_backends = {
 			'pmtpa-eqiad' => {
-				"backend" => $bits_appservers,
-				"test_wikipedia" => $test_wikipedia
+				"backend" => $bits_appservers['pmtpa'],
+				"eqiad_bits" => $bits_appservers['eqiad'],
+				"test_wikipedia" => $test_wikipedia,
 				},
 			'esams' => {
 				"backend" => $varnish_backends,
