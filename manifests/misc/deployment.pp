@@ -352,9 +352,13 @@ class misc::deployment::vars ($system = "git-deploy") {
 	if $system == "git-deploy" {
 		$mw_common = "/srv/deployment/mediawiki/common"
 		$mw_common_source = $mw_common
+		$dblist_common = "/srv/deployment/mediawiki/common/dblists"
+		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
 		$mw_common = "/usr/local/apache/common-local"
 		$mw_common_source = "/home/wikipedia/common"
+		$dblist_common = $mw_common
+		$dblist_common_source = $mw_common_source
 	}
 	file {
 		"/usr/local/lib/mw-deployment-vars.sh":
