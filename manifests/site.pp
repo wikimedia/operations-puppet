@@ -915,6 +915,7 @@ node "hume.wikimedia.org" {
 
 	include standard,
 		nfs::netapp::home,
+		nfs::upload,
 		misc::deployment::scap_scripts,
 		misc::maintenance::foundationwiki,
 		misc::maintenance::pagetriage,
