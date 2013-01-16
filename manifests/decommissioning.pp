@@ -199,5 +199,4 @@ $decommissioned_servers = [
 "thistle",
 "wikinews-lb.wikimedia.org",
 "yongle",
-"potassium",
 ]
