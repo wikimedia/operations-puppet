@@ -43,7 +43,7 @@ class mha::manager inherits role::coredb::config {
 			ensure => directory,
 			owner => root,
 			group => root,
-			mode => 0755;
+			mode => 0550;
 		"/usr/local/bin/master_ip_online_change":
 			source => "puppet:///files/mha/master_ip_online_change",
 			owner => root,
@@ -54,17 +54,27 @@ class mha::manager inherits role::coredb::config {
 	$shardlist = inline_template("<%= topology.keys.join(',') %>")
 	$shards = split($shardlist, ",")
 
-	define mha_shard_config($shard={}, $site="", $altsite="") {
+	define mha_shard_config( $shard={}, $site="", $altsite="" ) {
 		file { "/etc/mha/${name}.cnf":
 			owner => root,
 			group => root,
-			mode => 0444,
+			mode => 0400,
 			content => template('mha/local.erb'),
 			require => File['/etc/mha'];
 		}
 	}
 
-	define mha_coredb_config ($topology={}) {
+	define mha_dc_switch( $shard={} ) {
+		file { "/etc/mha/${name}-dc.cnf":
+			owner => root,
+			group => root,
+			mode => 0400,
+			content => template('mha/siteswitch.erb'),
+			require => File['/etc/mha'];
+		}
+	}
+
+	define mha_coredb_config( $topology={} ) {
 		$shard = $topology[$name]
 		if $shard["primary_site"] and $shard["primary_site"] != "both" {
 			# eqiad
@@ -79,7 +89,11 @@ class mha::manager inherits role::coredb::config {
 				site => "pmtpa",
 				altsite => "eqiad"
 			}
-			# dc-switch
+			# dc switch
+			mha_dc_switch { $name:
+				shard => $shard,
+			}
+
 		}
 	}
 
