@@ -6,10 +6,10 @@ $decommissioned_servers = [
 "adler",
 "bayes",
 "br1-knams",
+"cadmium", #renaming of server, can be pulled after runs on spence 2013-01-17 robh
 "controller",
 "cp3001",
 "cp3002",
-"dataset1",
 "db1",
 "db2",
 "db3",
@@ -200,4 +200,5 @@ $decommissioned_servers = [
 "virt1008",
 "wikinews-lb.wikimedia.org",
 "yongle",
+"yttrium", #renaming of server, can be pulled after runs on spence 2013-01-17 robh
 ]
