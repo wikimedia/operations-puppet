@@ -13,14 +13,14 @@ if ! $COMMONDIR/multiversion/refreshWikiversionsCDB; then
 fi
 
 # No use going any further if we can't complete the sync
-[ $(which ddsh 2>/dev/null) ] || {
+[ $(which dsh 2>/dev/null) ] || {
 	echo >&2 "Error: no dsh on this host, aborting"
 	exit 1
 }
 
 # Copy files to apaches
 echo 'Copying wikiversions dat and cdb files to apaches...'
-ddsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.{dat,cdb} /usr/local/apache/common-local/'
+dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.{dat,cdb} /usr/local/apache/common-local/'
 
 echo 'Finished'
 
