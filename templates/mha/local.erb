@@ -1,8 +1,8 @@
 [server default]
 user=root
-password=<%= $mysql_root_pass %>
+password=<%= mysql_root_pass %>
 repl_user=repl
-repl_password=<%= $mysql_repl_pass %>
+repl_password=<%= mysql_repl_pass %>
 ssh_user=mysql
 ssh_options="-i /home/mysql/.ssh/mysql.key"
 remote_workdir=/a/tmp
@@ -25,7 +25,7 @@ no_master=1
 
 <% if site == shard['primary_site'] -%>
 [server<%= i %>]
-hostname=<%= shard['masters']['altsite'] %>.<%= altsite %>.wmnet
+hostname=<%= shard['masters'][altsite] %>.<%= altsite %>.wmnet
 no_master=1
 <% end -%>
 
