@@ -51,6 +51,11 @@ class mha::manager inherits role::coredb::config {
 			owner => root,
 			group => root,
 			mode => 0555;
+		"/usr/local/bin/mha_site_switch":
+			source => "puppet:///files/mha/mha_site_switch",
+			owner => root,
+			group => root,
+			mode => 0544;
 	}
 
 	$shardlist = inline_template("<%= topology.keys.join(',') %>")
