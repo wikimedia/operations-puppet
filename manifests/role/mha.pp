@@ -44,6 +44,8 @@ class mha::manager inherits role::coredb::config {
 			owner => root,
 			group => root,
 			mode => 0550;
+		"/etc/mha/primary_site":
+			content => "${::mw_primary}\n";
 		"/usr/local/bin/master_ip_online_change":
 			source => "puppet:///files/mha/master_ip_online_change",
 			owner => root,
