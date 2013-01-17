@@ -12,7 +12,7 @@ master_ip_online_change_script=/usr/local/bin/master_ip_online_change
 <% i=1 -%>
 <% shard['hosts'][site].sort.each do |host| -%>
 [server<%= i %>]
-hostname=<%= host + "." + site + ".wmnet" %>
+hostname=<%= host %>.<%= site %>.wmnet
 <% if shard['masters'][site] == host -%>
 candidate_master=1
 <% end -%>
@@ -25,7 +25,7 @@ no_master=1
 
 <% if site == shard['primary_site'] -%>
 [server<%= i %>]
-hostname=<%= shard['masters']['altsite'] + "." + altsite + ".wmnet" %>
+hostname=<%= shard['masters']['altsite'] %>.<%= altsite %>.wmnet
 no_master=1
 <% end -%>
 
