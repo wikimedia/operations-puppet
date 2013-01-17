@@ -184,47 +184,47 @@ class misc::deployment::scap_scripts {
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/mw-update-l10n";
+			source => "puppet:///files/scap/mw-update-l10n";
 		"${scriptpath}/scap":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/scap";
+			source => "puppet:///files/scap/scap";
 		"${scriptpath}/sync-common-all":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-common-all";
+			source => "puppet:///files/scap/sync-common-all";
 		"${scriptpath}/sync-common-file":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-common-file";
+			source => "puppet:///files/scap/sync-common-file";
 		"${scriptpath}/sync-dblist":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-dblist";
+			source => "puppet:///files/scap/sync-dblist";
 		"${scriptpath}/sync-dir":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-dir";
+			source => "puppet:///files/scap/sync-dir";
 		"${scriptpath}/sync-docroot":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-docroot";
+			source => "puppet:///files/scap/sync-docroot";
 		"${scriptpath}/sync-file":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-file";
+			source => "puppet:///files/scap/sync-file";
 		"${scriptpath}/sync-wikiversions":
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/misc/scripts/sync-wikiversions";
+			source => "puppet:///files/scap/sync-wikiversions";
 	}
 }
 
