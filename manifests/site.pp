@@ -1410,6 +1410,7 @@ node "mchenry.wikimedia.org" {
 		nrpe,
 		role::ldap::client::corp,
 		backup::client,
+		generic::packages::git-core,
 		groups::wikidev,
 		accounts::jdavis
 
