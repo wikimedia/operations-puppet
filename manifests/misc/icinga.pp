@@ -792,7 +792,7 @@ class icinga::monitor::snmp {
 	cron { "restart_snmptt":
 		command => "service snmptt restart",
 		user => root,
-		hour => [0, 4, 8, 12, 16],
+		hour => [0, 4, 8, 12, 16, 20],
 		ensure => present;
 	} 
 
