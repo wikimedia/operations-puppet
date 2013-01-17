@@ -257,12 +257,12 @@ class misc::maintenance::geodata {
 
 	cron {
 		"update-geodata":
-			command => "/usr/local/bin/update-geodata >/dev/null 2>&1",
+			command => "/usr/local/bin/update-geodata",
 			user => apache,
 			minute => "*/30",
 			ensure => present;
 		"clear-killlist":
-			command => "/usr/local/bin/clear-killlist >/dev/null 2>&1",
+			command => "/usr/local/bin/clear-killlist",
 			user => apache,
 			hour => 8,
 			minute => 45,
