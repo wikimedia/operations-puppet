@@ -788,6 +788,14 @@ class icinga::monitor::snmp {
 			       File["/etc/snmp/snmptrapd.conf"]];
 	}
 
+	# FIXME: smptt crashes periodically on precise
+	cron { "restart_snmptt":
+		command => "service snmptt restart",
+		user => root,
+		hour => [4, 8, 12, 16, 24],
+		ensure => present;
+	} 
+
 	service { snmpd:
 		ensure => running;
 	}
