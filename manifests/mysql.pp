@@ -615,15 +615,21 @@ class mysql::client::default-charset-binary {
 # are not (yet?) meant for serious production installs.
 
 # Installs the mysql-client package
-class generic::mysql::packages::client{
+class generic::mysql::packages::client($version = "") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
-	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-		$version = "5.5"
+	if !$version {
+		if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			$ver = "5.5"
+		}
+		else {
+			$ver = "5.1"
+		}
 	}
 	else {
-		$version = "5.1"
+		$ver = $version
 	}
-	package { "mysql-client-${version}":
+
+	package { "mysql-client-${ver}":
 		ensure => latest,
 		alias  => "mysql-client",
 	}
@@ -632,17 +638,22 @@ class generic::mysql::packages::client{
 	}
 }
 
-class generic::mysql::packages::server{
+class generic::mysql::packages::server($version = "") {
 	# This conflicts with class mysql::packages.  DO NOT use them together
 	# if installed on a host with an external IP address, be sure to run a firewall.
-	if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-		$version = "5.5"
+	if !$version {
+		if versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			$ver = "5.5"
+		}
+		else {
+			$ver = "5.1"
+		}
 	}
 	else {
-		$version = "5.1"
+		$ver = $version
 	}
 
-	package { "mysql-server-${version}":
+	package { "mysql-server-${ver}":
 		ensure => present,
 		alias  => "mysql-server"
 	}
@@ -731,9 +742,11 @@ class generic::mysql::server(
 	$config_file_path               = "/etc/mysql/my.cnf"
 	)
 {
-	include generic::mysql::packages::server,
-		generic::mysql::packages::client,
-		generic::apparmor::service
+	# make sure mysql-server and mysql-client are
+	# installed with the specified version.
+	class { "generic::mysql::packages::server": version => $version }
+	class { "generic::mysql::packages::client": version => $version }
+	include generic::apparmor::service
 
 	# NOTE: $::run_directory is defined in base.pp
 

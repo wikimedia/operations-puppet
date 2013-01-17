@@ -10,6 +10,10 @@ class role::labs-mysql-server {
 		innodb_file_per_table => $::mysql_file_per_table ? {
 			undef => "1",
 			default => $::mysql_file_per_table,
-		}
+		},
+		version => $::lsbdistrelease ? {
+			"12.04" => "5.5",
+			default => false,
+		},
 	}
 }
