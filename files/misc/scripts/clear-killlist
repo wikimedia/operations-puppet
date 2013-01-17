@@ -2,6 +2,6 @@
 
 DAYS=3
 
-foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
-foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
+/usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
+/usr/local/bin/foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php --clear-killlist $DAYS --noindex
 
