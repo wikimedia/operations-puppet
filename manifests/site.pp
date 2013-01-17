@@ -260,10 +260,6 @@ node "brewster.wikimedia.org" {
 		backup::client
 }
 
-node  "cadmium.eqiad.wmnet" {
-	include	standard
-}
-
 node "calcium.wikimedia.org" {
 	$cluster = "misc"
 
@@ -2412,8 +2408,8 @@ node "tridge.wikimedia.org" {
 }
 
 # tmh1/tmh2 video encoding server (precise only)
-node /^tmh[12]\.pmtpa\.wmnet$/ {
-	if $hostname =~ /^tmh[12]$/ {
+node /^tmh(100)?[1-2]\.(eqiad|pmtpa)\.wmnet/ {
+	if $hostname =~ /^tmh(100)?[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 

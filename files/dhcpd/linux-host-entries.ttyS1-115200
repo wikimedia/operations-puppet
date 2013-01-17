@@ -154,11 +154,6 @@ host calcium {
 	fixed-address calcium.wikimedia.org;
 }
 
-host cadmium {
-	hardware ethernet 18:03:73:f1:59:5a;
-	fixed-address cadmium.eqiad.wmnet;
-}
-
 host caesium {
 	hardware ethernet D4:AE:52:B5:4E:60;
 	fixed-address caesium.eqiad.wmnet;
@@ -3792,6 +3787,16 @@ host tmh2 {
 	fixed-address tmh2.pmtpa.wmnet;
 }
 
+host tmh1001 {
+	hardware ethernet 18:03:73:f1:4f:82;
+	fixed-address tmh1001.eqiad.wmnet;
+}
+
+host tmh1002 {
+	hardware ethernet 18:03:73:f1:59:5a;
+	fixed-address tmh1002.eqiad.wmnet;
+}
+
 host tola {
 	hardware ethernet 90:B1:1C:00:AE:28;
 	fixed-address tola.pmtpa.wmnet;
@@ -3840,11 +3845,6 @@ host wtp1 {
 host wtp1001 {
 	hardware ethernet 90:B1:1C:00:A2:97;
 	fixed-address wtp1001.eqiad.wmnet;
-}
-
-host yttrium {
-	hardware ethernet 18:03:73:f1:4f:82;
-	fixed-address yttrium.eqiad.wmnet;
 }
 
 host xenon {
