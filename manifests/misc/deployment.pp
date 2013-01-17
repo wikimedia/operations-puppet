@@ -368,3 +368,7 @@ class misc::deployment::vars ($system = "git-deploy") {
 			content => template("misc/mw-deployment-vars.erb");
 	}
 }
+
+class misc::deployment::scap_proxy {
+	class { 'generic::rsyncd': config => "scap" }
+}

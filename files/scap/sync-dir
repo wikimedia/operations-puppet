@@ -23,8 +23,5 @@ php -l /home/wikipedia/common/$FILE || {
 	exit 1
 }
 
-# Cleanup permissions on any new files
-$BINDIR/set-group-write
-
 # Actually sync the dir...
 $BINDIR/sync-common-file $FILE "$@"
