@@ -1637,7 +1637,7 @@ node /mw11(5[3-9]|60)\.eqiad\.wmnet/ {
 node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	$ircecho_infile = "/var/log/nagios/irc.log"
+	$ircecho_infile = "/var/log/icinga/irc.log"
 	$ircecho_nick = "icinga-wm"
 	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
