@@ -12,6 +12,7 @@
 @monitor_group { "jobrunner_eqiad": description => "eqiad jobrunner application servers" }
 @monitor_group { "jobrunner_pmtpa": description => "pmtpa jobrunner application servers" }
 @monitor_group { "videoscaler_pmtpa": description => "pmtpa video scaler" }
+@monitor_group { "videoscaler_eqiad": description => "eqiad video scaler" }
 
 class role::applicationserver {
 # Class: role::applicationserver

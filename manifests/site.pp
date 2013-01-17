@@ -2421,6 +2421,15 @@ node /^tmh[12]\.pmtpa\.wmnet$/ {
 		nfs::upload
 }
 
+# tmh1001/tmh1002 video encoding server (precise only)
+node /^tmh100[12]\.eqiad\.wmnet$/ {
+  if $hostname =~ /^tmh100[12]$/ {
+    $ganglia_aggregator = "true"
+  }
+
+  include role::applicationserver::videoscaler
+}
+
 node "vanadium.eqiad.wmnet" {
 	$gid=500
 	system_role { "misc::log-collector": description => "log collector" }
