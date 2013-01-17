@@ -58,7 +58,7 @@
 	match = \\b([0-9a-f]{8,40})\\b
 	link = "#q,$1,n,z"
 [commentlink "bugzilla"]
-	match = "\\b([bB][uU][gG]\\s+#?)(\\d+)\\b"
+	match = "\\b([bB][uU][gG]\\:\\s+#?)(\\d+)\\b"
 	link = https://bugzilla.wikimedia.org/$2
 [commentlink "codereview"]
 	match = r(\\d+)
@@ -95,5 +95,5 @@
 	system = RT
 [trackingid "bugzilla"]
 	footer = Bug:
-	match = \\d{1,6}
+	match = "\\#\\d{1,6}"
 	system = Bugzilla
