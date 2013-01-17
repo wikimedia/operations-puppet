@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODEFILE=
+
 (
 	set -e
 
@@ -51,18 +53,27 @@
 	# Disable logging
 	export DOLOGMSGNOLOG=1
 
-	# Set write permissions
-	$BINDIR/set-group-write
-
-	# Copy stuff
-	# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
+	echo 'Copying wikiversions.dat to apaches...'
 	sync-wikiversions
 
 	echo 'Copying style sheets to apaches...'
+	# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
 	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
 
+	echo 'Updating rsync proxies...'
+	dsh -cM -g scap-proxies -oSetupTimeout=10 -- 'sudo -u mwdeploy \
+		rsync -a --delete --exclude=**/.svn/lock --exclude=**/.git/objects --no-perms \
+		10.0.5.8::common/ /usr/local/apache/common-local'
+
+	# Do the main code update in random order to avoid overloading any given rsync server
+	NODEFILE=$(mktemp)
+	shuf < /etc/dsh/group/mediawiki-installation > "$NODEFILE"
+
+	RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies`
+
 	echo 'Copying code to apaches...'
-	dsh -F7 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1' || true
+	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -i \
+		bash -s "$RSYNC_SERVERS" < $BINDIR/scap-1 || true
 	echo 'Finished'
 
 	export DOLOGMSGNOLOG=""
@@ -70,3 +81,6 @@
 	$BINDIR/deploy2graphite scap
 ) || echo "sync failed"
 
+if [ -n "$NODEFILE" ]; then
+	rm -f "$NODEFILE"
+fi
