@@ -61,7 +61,7 @@ NODEFILE=
 	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
 
 	echo 'Updating rsync proxies...'
-	dsh -cM -g scap-proxies -oSetupTimeout=10 -- 'sudo -u mwdeploy \
+	dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- 'sudo -u mwdeploy \
 		rsync -a --delete --exclude=**/.svn/lock --exclude=**/.git/objects --no-perms \
 		10.0.5.8::common/ /usr/local/apache/common-local'
 
