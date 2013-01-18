@@ -37,26 +37,34 @@ class mediawiki_new::jobrunner (
 			mode => 0755,
 			content => template("mediawiki_new/jobrunner/jobs-loop.sh.erb");
 	}
-	service {
-		"mw-job-runner":
-			require => [
-				File[
+	if $::site == "pmtpa" {
+		service {
+			"mw-job-runner":
+				require => [
+					File[
+						"/etc/default/mw-job-runner",
+						"/etc/init.d/mw-job-runner",
+						"/usr/local/bin/jobs-loop.sh"
+					],
+					Package[
+						"wikimedia-job-runner",
+						"wikimedia-task-appserver"
+					],
+				],
+				subscribe => File[
 					"/etc/default/mw-job-runner",
 					"/etc/init.d/mw-job-runner",
 					"/usr/local/bin/jobs-loop.sh"
 				],
-				Package[
-					"wikimedia-job-runner",
-					"wikimedia-task-appserver"
-				],
-			],
-			subscribe => File[
-				"/etc/default/mw-job-runner",
-				"/etc/init.d/mw-job-runner",
-				"/usr/local/bin/jobs-loop.sh"
-			],
+				hasstatus => false,
+				pattern => $script,
+				ensure => running;
+		}
+	} else {
+		service { "mw-job-runner":
 			hasstatus => false,
 			pattern => $script,
-			ensure => running;
+			ensure => stopped;
+		}
 	}
 }
