@@ -1301,6 +1301,7 @@ node "marmontel.wikimedia.org" {
 	include standard,
 		admins::roots,
 		svn::client,
+		generic::packages::git-core,
 		misc::blogs::wikimedia
 }
 
