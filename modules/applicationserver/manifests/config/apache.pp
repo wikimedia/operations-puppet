@@ -24,6 +24,15 @@ class applicationserver::config::apache(
 			owner => root,
 			group => root,
 			content => $::site;
+		"/usr/local/apache":
+			ensure => directory;
+	}
+
+	exec { "sync apache wmf config":
+		require => File["/usr/local/apache"],
+		path => "/bin:/sbin:/usr/bin:/usr/sbin",
+		command => "rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf",
+		creates => "/usr/local/apache/conf"
 	}
 
 	Class["applicationserver::config::apache"] -> Class["applicationserver::config::base"]
