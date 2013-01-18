@@ -818,7 +818,4 @@ class icinga::monitor::snmp {
 		ensure => present;
 	} 
 
-	service { snmpd:
-		ensure => running;
-	}
 }
