@@ -32,7 +32,8 @@ class applicationserver::config::apache(
 		require => File["/usr/local/apache"],
 		path => "/bin:/sbin:/usr/bin:/usr/sbin",
 		command => "rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf",
-		creates => "/usr/local/apache/conf"
+		creates => "/usr/local/apache/conf",
+		notify => Service[apache]
 	}
 
 	Class["applicationserver::config::apache"] -> Class["applicationserver::config::base"]
