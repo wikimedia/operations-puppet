@@ -89,6 +89,8 @@ class mediawiki::math {
 #  served by creating an additional template and including that via $role_requires.
 class mediawiki::singlenode( $ensure = 'present',
                              $database_name = "testwiki",
+                             $repo_ip = $wikidata_repo_ip,
+                             $repo_url = $wikidata_repo_url,
                              $role_requires = [],
                              $install_path = "/srv/mediawiki",
                              $role_config_lines = []) {

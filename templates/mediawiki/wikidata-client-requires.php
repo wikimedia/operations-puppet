@@ -8,6 +8,14 @@
 ###  the included orig/LocalSettings.php.
 ###
 #####################################################################
+
+// overwrite the setting in orig/LocalSettings.php concerning pics from Commons
+# InstantCommons allows wiki to use images from http://commons.wikimedia.org
+$wgUseInstantCommons  = true;
+
+// use the Wikidata logo
+$wgLogo = "$wgStylePath/common/images/Wikidata-logo-democlient.png";
+
 require_once( "$IP/extensions/Diff/Diff.php" );
 require_once( "$IP/extensions/DataValues/DataValues.php" );
 require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );
@@ -31,6 +39,37 @@ $wgWBSettings['siteGlobalID'] = "enwiki";
 $wgWBSettings['changesDatabase'] = "repo";
 $wgWBSettings['repoDatabase'] = "repo";
 $wgWBSettings['repoNamespaces'] = array( 'wikibase-item' => 'Item', 'wikibase-property' => 'Property' );
+
+$wgWBSettings['repoUrl'] = "<%=repo_url%>";
+
+//Load Balancer
+$wgLBFactoryConf = array(
+	'class' => 'LBFactory_Multi',
+	'serverTemplate' => array(
+		'dbname' => $wgDBname,
+		'user' => $wgDBuser,
+		'password' => $wgDBpassword,
+		'type' => 'mysql',
+		'flags' => DBO_DEFAULT | DBO_DEBUG,
+	),
+	'sectionLoads' => array(
+		'DEFAULT' => array(
+			'localhost' => 1,
+		),
+		'repo' => array(
+			'local1' => 1,
+		),
+	),
+	'sectionsByDB' => array(
+		$wgDBname => 'DEFAULT',
+		'repo' => 'repo',
+	),
+	'hostsByName' => array(
+		'localhost' => '127.0.0.1:3306',
+		'local1' => '<%=repo_ip%>:3306',
+	),
+	'masterTemplateOverrides' => array( 'fakeMaster' => true ),
+);
 
 // Profiling
 // Only record profiling info for pages that took longer than this
@@ -67,3 +106,4 @@ $wgSiteMatrixPrivateSites = "$IP/../../mediawiki-config/private.dblist";
 $wgSiteMatrixFishbowlSites = "$IP/../../mediawiki-config/fishbowl.dblist";
 // MoodBar
 $wgGroupPermissions['sysop']['moodbar-view'] = true;
+
