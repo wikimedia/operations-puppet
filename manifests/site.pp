@@ -2312,7 +2312,9 @@ node "stat1.wikimedia.org" {
 		accounts::abartov,
 		accounts::ironholds,
 		accounts::jdlrobson,
-		accounts::jgonera
+		accounts::jgonera,
+		# RT 4312
+		accounts::dandreescu
 
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
