@@ -582,6 +582,10 @@ node "ekrem.wikimedia.org" {
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		admins::mortals,
+		# RT 4312
+		accounts::dandreescu
+
+	include
 		generic::sysctl::high-bandwidth-rsync,
 		misc::udp2log::utilities,
 		misc::udp2log
@@ -809,6 +813,10 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
 		accounts::datasets,
+		# RT 4312
+		accounts::dandreescu
+
+	include
 		misc::udp2log::utilities,
 		misc::udp2log
 
@@ -1739,6 +1747,10 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
+		# RT 4312
+		accounts::dandreescu
+
+	include
 		misc::squid-logging::multicast-relay,
 		misc::logging::vanadium-relay,
 		misc::udp2log
@@ -2312,9 +2324,7 @@ node "stat1.wikimedia.org" {
 		accounts::abartov,
 		accounts::ironholds,
 		accounts::jdlrobson,
-		accounts::jgonera,
-		# RT 4312
-		accounts::dandreescu
+		accounts::jgonera
 
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
