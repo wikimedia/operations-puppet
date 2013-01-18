@@ -23,7 +23,6 @@ class nginx::proxy {
           owner => "root",
           group => "root",
           require => Class["nginx::install"];
-    
        "/etc/nginx/sites-enabled/proxy":
           ensure => 'link',
           target => '/etc/nginx/sites-available/proxy',
