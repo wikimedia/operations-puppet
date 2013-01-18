@@ -753,20 +753,30 @@ class icinga::monitor::service {
 class icinga::monitor::snmp {
 
 	file { "/etc/snmp/snmptrapd.conf":
-		source => "puppet:///files/snmp/snmptrapd.conf.icinga",
-		owner => root,
-		group => root,
-		mode => 0600;
+			source => "puppet:///files/snmp/snmptrapd.conf.icinga",
+			owner => root,
+			group => root,
+			mode => 0600;
 	       "/etc/snmp/snmptt.conf":
-		source => "puppet:///files/snmp/snmptt.conf.icinga",
-		owner => root,
-		group => root,
-		mode => 0644;
+			source => "puppet:///files/snmp/snmptt.conf.icinga",
+			owner => root,
+			group => root,
+			mode => 0644;
 	       "/etc/init.d/snmptt":
-		source => "puppet:///files/snmp/snmptt.init",
-		owner => root,
-		group => root,
-		mode => 0755;
+			source => "puppet:///files/snmp/snmptt.init",
+			owner => root,
+			group => root,
+			mode => 0755;
+		"/etc/init.d/snmptrapd":
+			source => "puppet:///files/snmp/snmptrapd.init",
+			owner => root,
+			group => root,
+			mode => 0755;
+		"/etc/init.d/snmpd":
+			source => "puppet:///files/snmp/snmpd.init",
+			owner => root,
+			group => root,
+			mode => 0755;
 	}
 
 	# snmp tarp stuff
@@ -786,6 +796,18 @@ class icinga::monitor::snmp {
 		subscribe => [ File["/etc/snmp/snmptt.conf"],
 			       File["/etc/init.d/snmptt"],
 			       File["/etc/snmp/snmptrapd.conf"]];
+	}
+
+	service { snmptrapd:
+		ensure => running,
+		hasstatus => false,
+		subscribe => File["/etc/init.d/snmptrapd"];
+	}
+
+	service { snmpd:
+		ensure => running,
+		hasstatus => false,
+		subscribe => File["/etc/init.d/snmpd"];
 	}
 
 	# FIXME: smptt crashes periodically on precise
