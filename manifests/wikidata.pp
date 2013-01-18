@@ -7,6 +7,8 @@
 # The following are defaults, the exact specifications are in the role definitions
 class wikidata::singlenode( $install_path = "/srv/mediawiki",
 							$database_name = "repo",
+							$repo_ip = $wikidata_repo_ip,
+							$repo_url = $wikidata_repo_url,
 							$ensure = latest,
 							$install_repo = true,
 							$install_client = true,
@@ -16,6 +18,8 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	class { mediawiki::singlenode:
 		install_path => $install_path,
 		database_name => $database_name,
+		repo_url => $repo_url,
+		repo_ip => $repo_ip,
 		ensure => $ensure,
 		role_requires => $role_requires,
 		role_config_lines => $role_config_lines
@@ -28,6 +32,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		require => Exec["mediawiki_setup"],
 		ensure => present,
 		source => "puppet:///files/mediawiki/StartProfiler.php",
+	}
+
+# permit www-data to write images
+	file { "${install_path}/images":
+		ensure => directory,
+		owner => "www-data",
+		group => "www-data",
+		mode => 775;
 	}
 
 # get the Wikibase extensions and dependencies
@@ -143,6 +155,16 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/wikidata.cnf",
 			notify => Service["mysql"],
 		}
+		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
+			require => Git::Clone["mediawiki"],
+			ensure => present,
+			source => "puppet:///files/mediawiki/Wikidata-logo-demorepo.png",
+		}
+		exec { "repo_import_data":
+			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
+			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv && /usr/bin/php importProperties.php --verbose en en-elements-properties.csv",
+		}
 		exec { "repo_import_data":
 			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
@@ -157,6 +179,11 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			require => Exec["mediawiki_setup"],
 			ensure => present,
 			content => template('mediawiki/wikidata-client-requires.php'),
+		}
+		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-democlient.png":
+			require => Git::Clone["mediawiki"],
+			ensure => present,
+			source => "puppet:///files/mediawiki/Wikidata-logo-democlient.png",
 		}
 		exec { "populate_interwiki":
 			require => [Git::Clone["Wikibase"], Exec["update-script"]],
@@ -205,7 +232,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/simple-elements.xml",
 		}
 		exec { "client_import_data":
-			require => [Git::Clone["Wikibase"], File["${install_path}/simple-elements.xml"]],
+			require => [Git::Clone["Wikibase"], Exec["SitesTable_client"], Exec["populate_interwiki"], File["${install_path}/LocalSettings.php"], File["${install_path}/simple-elements.xml"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php simple-elements.xml",
 			logoutput => "on_failure",
