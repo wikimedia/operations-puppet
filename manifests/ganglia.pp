@@ -265,7 +265,8 @@ class ganglia {
 				default: {
 					$data_sources = {
 						"Decommissioned servers pmtpa" => "eiximenis.wikimedia.org",
-						"Video scalers" => "tmh1.pmtpa.wmnet tmh2.pmtpa.wmnet",
+						"Video scalers pmtpa" => "tmh1.pmtpa.wmnet tmh2.pmtpa.wmnet",
+						"Video scalers eqiad" => "tmh1001.eqiad.wmnet tmh1002.eqiad.wmnet",
 						"Image scalers pmtpa" => "srv220.pmtpa.wmnet srv219.pmtpa.wmnet",
 						"API application servers pmtpa" => "srv254.pmtpa.wmnet srv255.pmtpa.wmnet",
 						"Application servers pmtpa" => "srv258.pmtpa.wmnet srv259.pmtpa.wmnet",

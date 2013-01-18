@@ -2408,13 +2408,22 @@ node "tridge.wikimedia.org" {
 }
 
 # tmh1/tmh2 video encoding server (precise only)
-node /^tmh(100)?[1-2]\.(eqiad|pmtpa)\.wmnet/ {
-	if $hostname =~ /^tmh(100)?[12]$/ {
+node /^tmh[1-2]\.pmtpa\.wmnet/ {
+	if $hostname =~ /^tmh[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::videoscaler,
 		nfs::upload
+}
+
+# tmh1001/tmh1002 video encoding server (precise only)
+node /^tmh100[1-2]\.eqiad\.wmnet/ {
+  if $hostname =~ /^tmh100[12]$/ {
+    $ganglia_aggregator = "true"
+  }
+
+  include role::applicationserver::videoscaler
 }
 
 node "vanadium.eqiad.wmnet" {
