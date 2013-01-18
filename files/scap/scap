@@ -61,7 +61,7 @@ NODEFILE=
 	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
 
 	echo 'Updating rsync proxies...'
-	dsh -cM -g scap-proxies -oSetupTimeout=10 -- 'sudo -u mwdeploy \
+	dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- 'sudo -u mwdeploy \
 		rsync -a --delete --exclude=**/.svn/lock --exclude=**/.git/objects --no-perms \
 		10.0.5.8::common/ /usr/local/apache/common-local'
 
@@ -70,10 +70,11 @@ NODEFILE=
 	shuf < /etc/dsh/group/mediawiki-installation > "$NODEFILE"
 
 	RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies`
+	# Condense whitespace
+	RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 
 	echo 'Copying code to apaches...'
-	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 -i \
-		bash -s "$RSYNC_SERVERS" < $BINDIR/scap-1 || true
+	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/bin/scap-1 "$RSYNC_SERVERS" || true
 	echo 'Finished'
 
 	export DOLOGMSGNOLOG=""
