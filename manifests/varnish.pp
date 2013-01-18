@@ -181,8 +181,11 @@ class varnish {
 		mount { "/srv/${title}":
 			require => File["/srv/${title}"],
 			device => "/dev/${title}",
-			fstype => "xfs",
-			options => "noatime,nodiratime,nobarrier,logbufs=8",
+			fstype => "auto",
+			options => $::realm ? {
+				'production' => "noatime,nodiratime,nobarrier,logbufs=8",
+				'labs' => "noatime,nodiratime,nobarrier,comment=cloudconfig"
+			},
 			ensure => mounted
 		}
 
