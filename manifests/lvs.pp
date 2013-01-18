@@ -389,14 +389,26 @@ class lvs::configuration {
 				'pmtpa' => "10.4.0.4",
 			},
 			'apaches' => {
-				'pmtpa' => "10.4.0.254",
+				# Apparently that IP got reserved for something but never got used,
+				# override with the beta apaches
+				#'pmtpa' => "10.4.0.254",
+				'pmtpa' => [
+					'10.4.0.166',  # deployment-apache32
+					'10.4.0.187',  # deployment-apache33
+				]
 			},
 			'rendering' => {
 				# Used to be 10.4.0.252
 				'pmtpa' => [ '10.4.0.166', '10.4.0.187', ],
 			},
 			'api' => {
-				'pmtpa' => "10.4.0.253",
+				# Apparently that IP got reserved for something but never got used,
+				# override with the beta apaches
+				#'pmtpa' => "10.4.0.253",
+				'pmtpa' => [
+					'10.4.0.166',  # deployment-apache32
+					'10.4.0.187',  # deployment-apache33
+				]
 			},
 			'bits' => {
 				'pmtpa' => "10.4.0.252",

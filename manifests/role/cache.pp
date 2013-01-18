@@ -607,6 +607,7 @@ class role::cache {
 
 	class mobile {
 		include network::constants
+		include role::cache::configuration
 
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
@@ -620,8 +621,15 @@ class role::cache {
 		include standard,
 			nrpe
 
-		varnish::setup_filesystem{ ["sda3", "sdb3"]:
-			before => Varnish::Instance["mobile-backend"]
+		if( $::realm == 'production' ) {
+			varnish::setup_filesystem{ ["sda3", "sdb3"]:
+				before => Varnish::Instance["mobile-backend"]
+			}
+		} else {
+			# beta on labs
+			varnish::setup_filesystem{ ["vdb"]:
+				before => Varnish::Instance["mobile-backend"]
+			}
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
@@ -634,7 +642,10 @@ class role::cache {
 			vcl => "mobile-backend",
 			port => 81,
 			admin_port => 6083,
-			storage => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+			storage => $::realm ? {
+				'production' => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
+			},
 			directors => {
 				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary],
 				"api" => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
@@ -681,8 +692,10 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 
-		varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		if( $::realm == 'production' ) {
+			varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		}
 	}
 }
