@@ -2810,6 +2810,36 @@ host ocg3 {
 	fixed-address ocg3.wikimedia.org;
 }
 
+host osm-cp1001{
+	hardware ethernet d4:be:d9:f0:74:68;
+	fixed-address osm-cp1001.eqiad.wmnet;
+}
+
+host osm-cp1002 {
+	hardware ethernet d4:be:d9:f0:7b:dc;
+	fixed-address osm-cp1002.eqiad.wmnet;
+}
+
+host osm-cp1003 {
+	hardware ethernet d4:be:d9:f0:a9:8b;
+	fixed-address osm-cp1003.eqiad.wmnet;
+}
+
+host osm-cp1004 {
+	hardware ethernet  d4:be:d9:f0:77:fe;
+	fixed-address osm-cp1004.eqiad.wmnet;
+}
+
+host osm-db1001 {
+	hardware ethernet d4:be:d9:f0:21:31;
+	fixed-address osm-db1001.eqiad.wmnet;
+}
+
+host osm-db1002 {
+	hardware ethernet d4:be:d9:f0:0d:81;
+	fixed-address osm-db1002.eqiad.wmnet;
+}
+
 host oxygen {
 	hardware ethernet 78:2b:cb:08:a0:e7;
 	fixed-address oxygen.wikimedia.org;
