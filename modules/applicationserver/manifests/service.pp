@@ -10,6 +10,7 @@ class applicationserver::service {
 		name => "apache2",
 		enable => false,
 		subscribe => Exec['mw-sync'],
+		require => Exec['mw-sync'],
 		ensure => running;
 	}
 
