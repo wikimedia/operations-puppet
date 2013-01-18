@@ -278,6 +278,14 @@ class role::cache {
 				"esams" => []
 			},
 		}
+
+		# Configuration variables used for 'beta' cluster aka deployment-prep
+		# project on labs.  Please prefix all variables with 'beta' to avoid
+		# conflict with the variables in role::cache::configuration
+		$beta_varnish_backends = [
+			'10.4.0.166', # deployment-apache32
+			'10.4.0.187', # deployment-apache33
+		]
 	}
 
 	class squid {
@@ -486,10 +494,7 @@ class role::cache {
 			}
 		} else {
 			# beta on labs
-			$varnish_backends = [
-				'10.4.0.166', # deployment-apache32
-				'10.4.0.187', # deployment-apache33
-			]
+			$varnish_backends = $role::cache::configuration::beta_varnish_backends
 		}
 
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
@@ -612,6 +617,7 @@ class role::cache {
 
 	class mobile {
 		include network::constants
+		include role::cache::configuration
 
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
@@ -619,15 +625,30 @@ class role::cache {
 		include lvs::configuration
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
-		$varnish_fe_backends = $::site ? {
-			"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet",
-				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
-			default => []
-		}
-		$varnish_fe_directors = {
-			"pmtpa" => {},
-			"eqiad" => { "backend" => $varnish_fe_backends },
-			"esams" => {},
+		if( $::realm == 'production' ) {
+			# Mobile frontends (fe) configuration:
+			$varnish_fe_backends = $::site ? {
+				"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet",
+					"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
+				default => []
+			}
+			$varnish_fe_directors = {
+				"pmtpa" => {},
+				"eqiad" => { "backend" => $varnish_fe_backends },
+				"esams" => {},
+			}
+			# Mobile backends (be) configuration:
+			$varnish_be_backends = [ '10.2.1.1' ]
+		} else {
+			# beta on labs
+			$varnish_fe_backends = $role::cache::configuration::beta_varnish_backends
+			$varnish_fe_directors = {
+				'pmtpa' => {},
+				'eqiad' => {},
+				'esams' => {},
+			}
+			# TODO figure out what this is for
+			$varnish_be_backends = $role::cache::configuration::beta_varnish_backends
 		}
 
 		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
@@ -635,9 +656,16 @@ class role::cache {
 		include standard,
 			nrpe
 
-		# FIXME: remove after precise migration
-		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
-			varnish::setup_filesystem{ ["sda3", "sdb3"]:
+		if( $::realm == 'production' ) {
+			# FIXME: remove after precise migration
+			if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+				varnish::setup_filesystem{ ["sda3", "sdb3"]:
+					before => Varnish::Instance["mobile-backend"]
+				}
+			}
+		} else {
+			# beta on labs
+			varnish::setup_filesystem{ ["vdb"]:
 				before => Varnish::Instance["mobile-backend"]
 			}
 		}
@@ -654,10 +682,12 @@ class role::cache {
 			admin_port => 6083,
 			storage => $::hostname ? {
 				/^cp104[12]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+				# For beta
+				/^deployment-varnish-t$/ => '-s vdb=persistent,/srv/vdb/varnish,persist,19G',
 				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			},
-			backends => [ "10.2.1.1" ],
-			directors => { "backend" => [ "10.2.1.1" ] },
+			backends => $varnish_be_backends,
+			directors => { "backend" => $varnish_be_backends },
 			director_options => {
 				'retries' => 2,
 			},
@@ -699,8 +729,10 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 
-		varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		if( $::realm == 'production' ) {
+			varnish::logging { "locke" : listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "emery" : listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		}
 	}
 }

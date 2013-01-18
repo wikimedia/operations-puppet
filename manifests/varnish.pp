@@ -167,12 +167,23 @@ class varnish {
 			ensure => directory
 		}
 
-		mount { "/srv/${title}":
-			require => File["/srv/${title}"],
-			device => "/dev/${title}",
-			fstype => "xfs",
-			options => "noatime,nodiratime,nobarrier,logbufs=8",
-			ensure => mounted
+		if( $::realm == 'production' ) {
+			mount { "/srv/${title}":
+				require => File["/srv/${title}"],
+				device => "/dev/${title}",
+				fstype => "xfs",
+				options => "noatime,nodiratime,nobarrier,logbufs=8",
+				ensure => mounted
+			}
+		} else {
+			# Beta on labs
+			mount { "/srv/${title}":
+				require => File["/srv/${title}"],
+				device => "/dev/${title}",
+				fstype => "auto",
+				options => "noatime,nodiratime,nobarrier,logbufs=8,comment=cloudconfig",
+				ensure => mounted
+			}
 		}
 
 		file { "/srv/${title}/varnish.persist":
