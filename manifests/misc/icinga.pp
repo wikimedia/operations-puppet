@@ -815,6 +815,7 @@ class icinga::monitor::snmp {
 		command => "service snmptt restart",
 		user => root,
 		hour => [0, 4, 8, 12, 16, 20],
+		minute => 7,
 		ensure => present;
 	} 
 
