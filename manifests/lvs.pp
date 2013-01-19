@@ -894,9 +894,13 @@ class lvs::monitor {
 	monitor_service_lvs_http { "m.wikimedia.org": ip_address => "208.80.154.236", check_command => "check_http_mobile" }
 
 	monitor_service_lvs_http { "appservers.svc.pmtpa.wmnet": ip_address => "10.2.1.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	monitor_service_lvs_http { "appservers.svc.eqiad.wmnet": ip_address => "10.2.2.1", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "api.svc.pmtpa.wmnet": ip_address => "10.2.1.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
+	monitor_service_lvs_http { "api.svc.eqiad.wmnet": ip_address => "10.2.2.22", check_command => "check_http_lvs!en.wikipedia.org!/w/api.php?action=query&meta=siteinfo" }
 	monitor_service_lvs_http { "rendering.svc.pmtpa.wmnet": ip_address => "10.2.1.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
+	monitor_service_lvs_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt" }
+	monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/monitoring/pybaltestfile.txt" }
 	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000" }
 
@@ -998,7 +1002,6 @@ class lvs::monitor {
 	}
 
 	# eqiad -lb addresses
-	# FIXME: add the rest
 	monitor_service_lvs_http {
 		"wikimedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikimedialb'],
@@ -1121,12 +1124,53 @@ class lvs::monitor {
 			ip_address => $ip['text']['eqiad']['wikipedialb'],
 			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
+		"wiktionary-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wiktionarylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiquote-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikiquotelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikibooks-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikibookslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikisource-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikisourcelb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikinews-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikinewslb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"wikiversity-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikiversitylb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"mediawiki-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['mediawikilb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
+		"foundation-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['foundationlb'],
+			check_command => "check_https_lvs!en.wikipedia.org!/wiki/Main_Page",
+			critical => "false";
 		"bits-lb.eqiad.wikimedia.org":
 			ip_address => $ip['bits']['eqiad']['bitslb'],
 			check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
 			check_command => "check_https_url!upload.wikimedia.org!/pybaltestfile.txt";
+		"mobile-lb.eqiad.wikimedia.org":
+			ip_address => $ip['mobile']['eqiad']['mobilelb'],
+			check_command => "check_https_lvs!en.m.wikipedia.org!/wiki/Main_Page";
+		"wikidata-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikidatalb'],
+			check_command => "check_https_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.eqiad.wikimedia.org":
+			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
+			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 
 	# esams -lb addresses
