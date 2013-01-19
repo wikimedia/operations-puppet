@@ -30,7 +30,7 @@ TRAPDRUN=yes
 TRAPDOPTS='-On -Lsd -p /var/run/snmptrapd.pid'
 
 # Reads config file (will override defaults above)
-[ -r /etc/default/snmpd ] && . /etc/default/snmpd
+[ -r /etc/default/snmptrapd ] && . /etc/default/snmptrapd
 
 # Cd to / before starting any daemons.
 cd /
