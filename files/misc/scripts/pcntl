@@ -1,0 +1,26 @@
+#!/usr/bin/python
+#
+# reads stdin and calculates some percentiles from the first
+# number found on each line.
+#
+
+from __future__ import division
+import sys
+import re
+
+vals = []
+
+for line in sys.stdin:
+	n = re.search('([\d\.]+)', line)
+	if n:
+		vals.append(float(n.group(1)))
+
+vals = sorted(vals)
+
+p50 = int(round(len(vals) * 0.5))-1
+p90 = int(round(len(vals) * 0.9))-1
+p99 = int(round(len(vals) * 0.99))-1
+avg = reduce(lambda x, y: x + y, vals) / len(vals)
+
+print 'min: %.3f, avg: %.3f, max: %.3f' % (vals[0], avg, vals[len(vals)-1])
+print 'p50: %.3f, p90: %.3f, p99: %.3f' % (vals[p50], vals[p90], vals[p99])
