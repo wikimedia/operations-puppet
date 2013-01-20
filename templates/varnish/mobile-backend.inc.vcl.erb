@@ -4,7 +4,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 
 	if (req.url ~ "^/w/api.php") {
-		set req.backend = api_pmtpa;
+		set req.backend = api;
 	}
 }
 
