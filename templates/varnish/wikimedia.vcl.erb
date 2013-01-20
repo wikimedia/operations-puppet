@@ -171,8 +171,9 @@ backend test {
 	.max_connections = 20;
 }
 
-backend api_pmtpa {
-	.host = "10.2.1.22";
+# certain mobile requests are best sent to the api
+backend api {
+	.host = "<%= cluster_options.fetch( 'api_backend', '10.2.1.22' ) %>";
 	.port = "80";
 	.connect_timeout = 5s;
 	.first_byte_timeout = 35s;
