@@ -164,6 +164,6 @@ host virt10 {
 }
 
 host virt11 {
-	hardware ethernet 88:43:E1:C2:4C:56
+	hardware ethernet 88:43:E1:C2:4C:56;
 	fixed-address virt11.pmtpa.wmnet;
 }
