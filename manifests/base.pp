@@ -384,18 +384,9 @@ class base::monitoring::host($contact_group = "admins") {
 }
 
 class base::decommissioned {
-	# There has to be a better way to check for array membership!
-	define decommissioned_host_role {
-		if $::hostname == $title {
-			system_role { "base::decommissioned": description => "DECOMMISSIONED server" }
-		}
-		else {
-			debug("${title} is not ${::hostname}, so not decommissioning.")
-		}
+	if $::hostname in $decommissioned_servers {
+		system_role { "base::decommissioned": description => "DECOMMISSIONED server" }
 	}
-
-	# Evaluate for every member in $decommissioned_servers
-	decommissioned_host_role { $decommissioned_servers: }
 }
 
 class base::instance-upstarts {
