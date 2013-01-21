@@ -74,31 +74,6 @@ class newstandard {
 # Update: migration is now in progress, into role/<class>.pp. Classes still here
 # are old, and probably need to be rewritten.
 
-
-# TODO: rewrite this old mess.
-class applicationserver_old {
-	class parent {
-		$cluster = "appserver"
-		$nagios_group = "${cluster}_${::site}"
-	}
-
-	# applicationserver::labs bootstrap a MediaWiki Apache for 'beta'
-	class labs inherits parent {
-		include standard,
-			nfs::upload::labs,
-			mediawiki::packages,
-			apaches::cron,
-			apaches::service,
-			apaches::monitoring::labs,
-			geoip
-	}
-
-	class jobrunner {
-		class {"mediawiki_new::jobrunner": }
-	}
-
-}
-
 class protoproxy::ssl {
 	$cluster = "ssl"
 
