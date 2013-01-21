@@ -563,6 +563,7 @@ class generic::gluster {
 
 	file { "/etc/logrotate.d/glusterlogs":
 		ensure => present,
+		mode => '0664',
 		source => "puppet:///files/logrotate/glusterlogs",
 		owner => 'root',
 	}
