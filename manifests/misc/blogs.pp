@@ -4,10 +4,12 @@
 class misc::blogs::wikimedia {
 	system_role { "misc::blogs::wikimedia": description => "blog.wikimedia.org" }
 
-	require apaches::packages,
+	class {'webserver::php5': ssl => 'true'; }
+
+	require webserver::php5-mysql,
 		webserver::php5-gd,
 		webserver::apache2::rpaf
-		
+
 	package { "unzip":
 		ensure => latest;
 	}
