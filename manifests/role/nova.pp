@@ -286,7 +286,7 @@ class role::nova::wikiupdates {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => package["python-mwclient"],
+			require => Package["python-mwclient"],
 			notify => Service["nova-compute"]
 		}
 	} else {
@@ -295,7 +295,7 @@ class role::nova::wikiupdates {
 			mode => 0644,
 			owner => root,
 			group => root,
-			require => package["python-mwclient"],
+			require => Package["python-mwclient"],
 			notify => Service["nova-compute"]
 		}
 	}

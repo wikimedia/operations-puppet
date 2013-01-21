@@ -113,7 +113,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	git::clone { "nuke" :
-		require => git::clone["mediawiki"],
+		require => Git::Clone["mediawiki"],
 		directory => "${install_path}/extensions/Nuke",
 		branch => "master",
 		ensure => $ensure,
@@ -121,7 +121,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	git::clone { "SpamBlacklist" :
-		require => git::clone["mediawiki"],
+		require => Git::Clone["mediawiki"],
 		directory => "${install_path}/extensions/SpamBlacklist",
 		branch => "master",
 		ensure => $ensure,
@@ -129,7 +129,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	git::clone { "ConfirmEdit" :
-		require => git::clone["mediawiki"],
+		require => Git::Clone["mediawiki"],
 		directory => "${install_path}/extensions/ConfirmEdit",
 		branch => "master",
 		ensure => $ensure,
@@ -150,7 +150,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	file { "/var/www/${install_path}":
-		require => [File['/var/www/srv'], git::clone['mediawiki']],
+		require => [File['/var/www/srv'], Git::Clone['mediawiki']],
 		ensure => 'link',
 		target => $install_path;
 	}
@@ -162,18 +162,18 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	file { "${install_path}/orig":
-		require => git::clone["mediawiki"],
+		require => Git::Clone["mediawiki"],
 		ensure => 'directory';
 	}
 
         exec { 'password_gen':
-		require => [git::clone["mediawiki"],  File["${install_path}/orig"]],
+		require => [Git::Clone["mediawiki"],  File["${install_path}/orig"]],
 		creates => "${install_path}/orig/adminpass",
 		command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass"
 	}
 
 	exec { 'mediawiki_setup':
-		require => [git::clone["mediawiki"],  File["${install_path}/orig"], exec['password_gen']],
+		require => [Git::Clone["mediawiki"],  File["${install_path}/orig"], Exec['password_gen']],
 		creates => "${install_path}/orig/LocalSettings.php",
 		command => "/usr/bin/php ${install_path}/maintenance/install.php testwiki admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
 		logoutput => "on_failure",
@@ -181,10 +181,10 @@ class mediawiki::singlenode( $ensure = 'present',
 
 	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
-			require => [git::clone["mediawiki"],
-				git::clone["nuke"],
-				git::clone["SpamBlacklist"],
-				git::clone["ConfirmEdit"],
+			require => [Git::Clone["mediawiki"],
+				Git::Clone["nuke"],
+				Git::Clone["SpamBlacklist"],
+				Git::Clone["ConfirmEdit"],
 				File["${install_path}/LocalSettings.php"]],
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
 			logoutput => "on_failure",

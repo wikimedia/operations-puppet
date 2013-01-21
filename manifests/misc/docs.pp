@@ -29,7 +29,7 @@ class misc::docs::puppet {
 	}
 
 	exec { "generate puppet docsite":
-		require => git::clone['puppetsource'],
+		require => Git::Clone['puppetsource'],
 		command => "/usr/bin/puppet doc --mode rdoc --outputdir /srv/org/wikimedia/doc/puppet --modulepath /srv/org/wikimedia/doc/puppetsource/modules --manifestdir /srv/org/wikimedia/doc/puppetsource/manifests",
 	}
 
