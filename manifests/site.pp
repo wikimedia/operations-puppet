@@ -1976,6 +1976,7 @@ node "sockpuppet.pmtpa.wmnet" {
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		config => {
+			'thin_storeconfigs' => true,
 			'dbadapter' => "mysql",
 			'dbuser' => "puppet",
 			'dbpassword' => $passwords::puppet::database::puppet_production_db_pass,
@@ -2243,6 +2244,7 @@ node "stafford.pmtpa.wmnet" {
 	class { puppetmaster:
 		allow_from => [ "*.wikimedia.org", "*.pmtpa.wmnet", "*.eqiad.wmnet" ],
 		config => {
+			'thin_storeconfigs' => true,
 			'ca' => "false",
 			'ca_server' => "sockpuppet.pmtpa.wmnet",
 			'dbadapter' => "mysql",
