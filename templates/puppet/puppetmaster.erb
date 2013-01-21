@@ -46,6 +46,7 @@ RailsAutoDetect Off
 		allow from all
 	</Directory>
 
-	CustomLog /var/log/apache2/access.log combined
+	LogFormat "%h %l %u %{%Y-%m-%d %H:%M:%S}t \"%r\" %>s %O %D \"%{Referer}i\" \"%{User-Agent}i\"" puppetmaster
+	CustomLog /var/log/apache2/access.log puppetmaster
 </VirtualHost>
 
