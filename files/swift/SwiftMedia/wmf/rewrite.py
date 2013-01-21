@@ -258,6 +258,26 @@ class _WMFRewriteContext(WSGIContext):
                 obj   = match.group('path') # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
                 shard = ''
 
+        if match is None:
+            match = re.match(r'^/monitoring/(?P<what>.+)$', req.path)
+            if match:
+                what  = match.group('what')
+                if what == 'frontend':
+                    headers = {'Content-Type': 'application/octet-stream'}
+                    resp = webob.Response(headers=headers, body="OK\n")
+                elif what == 'backend':
+                    req.host = '127.0.0.1:%s' % self.bind_port
+                    req.path_info = "/v1/%s/monitoring/backend" % self.account
+
+                    app_iter = self._app_call(env)
+                    status = self._get_status_int()
+                    headers = self._response_headers
+
+                    resp = webob.Response(status=status, headers=headers, app_iter=app_iter)
+                else:
+                    resp = webob.exc.HTTPNotFound('Monitoring type not found "%s"' % (req.path))
+                return resp(env, start_response)
+
         # Internally rewrite the URL based on the regex it matched...
         if match:
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
