@@ -1,7 +1,7 @@
 # applicationserver::service
 
 class applicationserver::service {
-	Class["applicationserver::packages"] -> Class["applicationserver::service"]
+	Class["applicationserver::apache_packages"] -> Class["applicationserver::service"]
 	Class["applicationserver::config::base"] -> Class["applicationserver::service"]
 	include mediawiki_new::sync
 

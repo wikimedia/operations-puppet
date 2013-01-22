@@ -6,7 +6,7 @@ class applicationserver::config::apache(
 	$maxclients="40"
 	) {
 
-	Class["applicationserver::packages"] -> Class["applicationserver::config::apache"]
+	Class["applicationserver::apache_packages"] -> Class["applicationserver::config::apache"]
 
 	file {
 		"/etc/apache2/apache2.conf":
