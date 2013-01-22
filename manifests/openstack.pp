@@ -462,7 +462,6 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 
 
 	apache_site { controller: name => "${controller_hostname}" }
-	apache_site { 000_default: name => "000-default", ensure => absent }
 	apache_module { rewrite: name => "rewrite" }
 }
 

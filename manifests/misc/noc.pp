@@ -31,6 +31,10 @@ class misc::noc-wikimedia {
 			ensure => present;
 	}
 
+	# ensure default site is removed
+	apache_site { 000_default: name => "000-default", ensure => absent }
+	apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
+
 	apache_module { php5: name => "php5" }
 	apache_module { userdir: name => "userdir" }
 	apache_module { cgi: name => "cgi" }

@@ -281,7 +281,6 @@ class gerrit::proxy( $no_apache = true,
 
 	if !$no_apache {
 		require webserver::apache
-		apache_site { 000_default: name => "000-default", ensure => absent }
 	}
 
 	file {
