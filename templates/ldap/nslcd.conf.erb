@@ -31,4 +31,4 @@ validnames /^[a-z][a-z0-9_-]*$/i<% end %>
 <% if realm == "labs" %>map passwd loginshell "/bin/bash"<% end %>
 
 pagesize <%= ldapconfig["pagesize"] %>
-nss_min_uid <%= ldapconfig["nss_min_uid"] %>
+<% if scope.function_versioncmp(lsbdistrelease, "12.04") >= 0 %>nss_min_uid <%= ldapconfig["nss_min_uid"] %><% end %>
