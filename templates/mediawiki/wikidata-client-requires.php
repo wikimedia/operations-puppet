@@ -22,6 +22,7 @@ require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );
 require_once( "$IP/extensions/Wikibase/client/WikibaseClient.php" );
 require_once( "$IP/extensions/DismissableSiteNotice/DismissableSiteNotice.php" );
 require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
+require_once( "$IP/extensions/notitle.php" );
 
 $wgShowExceptionDetails = true;
 

@@ -1,0 +1,101 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.8/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.8/ http://www.mediawiki.org/xml/export-0.8.xsd" version="0.8" xml:lang="en">
+  <siteinfo>
+    <sitename>testwiki</sitename>
+    <base>http://wikidata-test-repo.wikimedia.de/wiki/Testwiki:Main_Page</base>
+    <generator>MediaWiki 1.21alpha</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter"/>
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">Testwiki</namespace>
+      <namespace key="5" case="first-letter">Testwiki talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+      <namespace key="102" case="first-letter">Property</namespace>
+      <namespace key="103" case="first-letter">Property talk</namespace>
+      <namespace key="104" case="first-letter">Query</namespace>
+      <namespace key="105" case="first-letter">Query talk</namespace>
+      <namespace key="1198" case="first-letter">Translations</namespace>
+      <namespace key="1199" case="first-letter">Translations talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>MediaWiki:Mainpage</title>
+    <ns>8</ns>
+    <id>124</id>
+    <revision>
+      <id>128</id>
+      <timestamp>2013-01-22T16:02:53Z</timestamp>
+      <contributor>
+        <username>Silke</username>
+        <id>4</id>
+      </contributor>
+      <comment>Created page with "Testwiki:Main_Page"</comment>
+      <text xml:space="preserve" bytes="18">Testwiki:Main_Page</text>
+      <sha1>6ziig642sxwq9879hqonkv1cjiuupzz</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+  <page>
+    <title>Testwiki:Main Page</title>
+    <ns>4</ns>
+    <id>117</id>
+    <revision>
+      <id>1126</id>
+      <parentid>1125</parentid>
+      <timestamp>2013-01-11T16:59:54Z</timestamp>
+      <contributor>
+        <username>Admin</username>
+        <id>1</id>
+      </contributor>
+      <comment>Marked this version for translation</comment>
+      <text xml:space="preserve" bytes="1923">__NOTITLE__
+&lt;translate&gt;
+= What is Wikidata? = &lt;!--T:1--&gt;
+'''Wikidata''' aims to create a free knowledge base about the world that can be read and edited by humans and machines alike. It will provide data in all the languages of the Wikimedia projects, and allow for the central access to data in a similar vein as Wikimedia Commons does for multimedia files.
+
+= What can I see here? = &lt;!--T:2--&gt;
+This is the demo of the current state of Wikidata development. Feel free to play around. Please keep in mind that this is a demo system.
+
+&lt;!--T:3--&gt;
+'''Here is an [[Special:ItemByTitle/enwiki/Helium|example]].'''
+
+&lt;!--T:4--&gt;
+'''You probably want to look at the demo of the client part of Wikidata too. You can find it [http://wikidata-test-client.wikimedia.de here].'''
+
+= What can I try out? = &lt;!--T:5--&gt;
+One simple workflow you can try out is to create a new entry in the repo-wiki and the create a matching article in the client-wiki. The client-wiki page will have all the language links on the left side you added on the repo-wiki.
+
+&lt;!--T:6--&gt;
+# Create a new entry [[Special:CreateItem|here]]. The label you choose must be equal to the title of the page you will create in the client-wiki.
+# Add some language links in the repo-wiki to existing Wikipedias. '''Be sure to add language links to English (en) or the client-wiki won't try to find the interwiki links.'''
+# Create a new article with the label you used in the client-wiki.
+# Once you save the page you should see the language links you added to the repo-wiki on the left side.
+
+= I have trouble editing. = &lt;!--T:7--&gt;
+If you hit spam protection you can work around that by logging in. We're created an account you can use for that.
+ Username: demo
+ Password: test
+
+= Where can I learn more about the project? = &lt;!--T:8--&gt;
+The project is open and you can find out more about the development on the [http://meta.wikimedia.org/wiki/Wikidata Meta-Wiki].
+&lt;/translate&gt;</text>
+      <sha1>0v3kdt5ny0jysrwml41uhwbgl63lemh</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>

@@ -57,14 +57,6 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git",
 	}
 
-	git::clone { "Wikibase" :
-		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
-		directory => "${install_path}/extensions/Wikibase",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
-	}
-
 # get more extensions for Wikidata test instances
 	git::clone { "DismissableSiteNotice" :
 		require => Git::Clone["mediawiki"],
@@ -112,6 +104,12 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SiteMatrix.git",
 	}
 
+	file { "${install_path}/extensions/notitle.php":
+		require => Git::Clone["mediawiki"],
+		ensure => present,
+		source => "puppet:///files/mediawiki/notitle.php",
+	}
+
 	exec { "populateSitesTable":
 			require => [Git::Clone["Wikibase"], File["${install_path}/LocalSettings.php"]],
 			cwd => "${install_path}/extensions/Wikibase/lib/maintenance",
@@ -136,8 +134,37 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # Wikibase repo only:
 	if $install_repo == true {
+		# items are in main namespace, so main page has to be moved first
+		file {"/tmp/wikidata-move-mainpage":
+			ensure => present,
+			source => "puppet:///files/mediawiki/wikidata-move-mainpage",
+		}
+		exec { "repo_move_mainpage":
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], File["/tmp/wikidata-move-mainpage"]],
+			cwd => "$install_path",
+			command => "/usr/bin/php maintenance/moveBatch.php --conf ${install_path}/orig/LocalSettings.php /tmp/wikidata-move-mainpage",
+			logoutput => "on_failure",
+		}
+		file { "${install_path}/wikidata-repo-mainpage.xml":
+			require => Git::Clone["mediawiki"],
+			ensure => present,
+			source => "puppet:///files/mediawiki/wikidata-repo-mainpage.xml",
+		}
+		exec { "repo_import_mainpage":
+			require => [File["${install_path}/wikidata-repo-mainpage.xml"], Exec["repo_move_mainpage"]],
+			cwd => "$install_path",
+			command => "/usr/bin/php maintenance/importDump.php wikidata-repo-mainpage.xml",
+			logoutput => "on_failure",
+		}
+		git::clone { "Wikibase":
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Git::Clone["Diff"], Git::Clone["DataValues"]],
+			directory => "${install_path}/extensions/Wikibase",
+			branch => "master",
+			ensure => $ensure,
+			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
+		}
 		file { "${install_path}/wikidata_repo_requires.php":
-			require => Exec["mediawiki_setup"],
+			require => [Exec["mediawiki_setup"], Exec["repo_move_mainpage"]],
 			ensure => present,
 			content => template('mediawiki/wikidata-repo-requires.php'),
 		}
@@ -168,6 +195,13 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # Wikibase client only:
 	if $install_client == true {
+		git::clone { "Wikibase" :
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
+			directory => "${install_path}/extensions/Wikibase",
+			branch => "master",
+			ensure => $ensure,
+			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
+		}
 		file { "${install_path}/wikidata_client_requires.php":
 			require => Exec["mediawiki_setup"],
 			ensure => present,
@@ -225,7 +259,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/simple-elements.xml",
 		}
 		exec { "client_import_data":
-			require => [Git::Clone["Wikibase"], Exec["SitesTable_client"], Exec["populate_interwiki"], File["${install_path}/LocalSettings.php"], File["${install_path}/simple-elements.xml"]],
+			require => [Git::Clone["Wikibase"], File["${install_path}/simple-elements.xml"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php simple-elements.xml",
 			logoutput => "on_failure",
@@ -246,4 +280,3 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		}
 	}
 }
-
