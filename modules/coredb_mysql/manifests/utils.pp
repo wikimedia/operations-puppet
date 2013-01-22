@@ -5,6 +5,6 @@ class coredb_mysql::utils {
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///modules/coredb_mysql/utils/master_id.py";
+			content => template("coredb_mysql/master_id.py");
 	}
 }
