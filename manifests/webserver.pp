@@ -51,6 +51,10 @@ class webserver::php5( $ssl = 'false' ) {
 		ensure => running;
 	}
 
+	# ensure default site is removed
+	apache_site { default: name => "default", ensure => absent }
+	apache_site { default-ssl: name => "default-ssl", ensure => absent }
+
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
@@ -92,6 +96,10 @@ class webserver::apache2 {
 	package { apache2:
 		ensure => latest;
 	}
+
+	# ensure default site is removed
+	apache_site { default: name => "default", ensure => absent }
+	apache_site { default-ssl: name => "default-ssl", ensure => absent }
 
 }
 
@@ -307,6 +315,10 @@ class webserver::apache {
 						default => "/etc/apache2/sites-available/${title}"
 					};
 		}
+
+		# ensure default site is removed
+		apache_site { default: name => "default", ensure => absent }
+		apache_site { default-ssl: name => "default-ssl", ensure => absent }
 	}
 	
 	# Default selection
