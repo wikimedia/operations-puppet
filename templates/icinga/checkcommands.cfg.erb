@@ -342,6 +342,11 @@ define command{
 }
 
 define command{
+     command_name    nrpe_check_ircecho
+     command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_ircecho
+}
+
+define command{
 	command_name	nrpe_check_jenkins
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
 }

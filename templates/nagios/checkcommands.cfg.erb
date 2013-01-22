@@ -568,6 +568,11 @@ define command{
 }
 
 define command{
+        command_name    nrpe_check_ircecho
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_ircecho
+}
+
+define command{
         command_name    nrpe_check_swift_object_replicator
         command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_replicator
 }
