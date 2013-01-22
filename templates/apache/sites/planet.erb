@@ -36,6 +36,12 @@
 </VirtualHost>
 
 <VirtualHost *:80>
+	ServerName ca.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://ca.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
 	DocumentRoot /var/www/planet/cs
 	ServerName cs.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
@@ -121,6 +127,12 @@
 	ServerName is.planet.<%= planet_domain_name %>
 	php_admin_flag engine off
 	redirectPermanent / http://gmq.planet.<%= planet_domain_name %>/
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName ja.planet.<%= planet_domain_name %>
+	php_admin_flag engine off
+	redirectPermanent / http://ja.planet.<%= planet_domain_name %>/
 </VirtualHost>
 
 <VirtualHost *:80>
