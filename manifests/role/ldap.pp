@@ -26,6 +26,8 @@ class role::ldap::config::labs {
 		"wikildapdomain" => "labs",
 		"wikicontrollerapiurl" => "https://labsconsole.wikimedia.org/w/api.php",
 		"sudobasedn" => $sudobasedn,
+		"pagesize" => "2000",
+		"nss_min_uid" => "499",
 	}
 }
 
@@ -55,6 +57,8 @@ class role::ldap::config::production {
 		"wikildapdomain" => "labs",
 		"wikicontrollerapiurl" => "https://labsconsole.wikimedia.org/w/api.php",
 		"sudobasedn" => $sudobasedn,
+		"pagesize" => "2000",
+		"nss_min_uid" => "499",
 	}
 }
 
@@ -78,6 +82,8 @@ class role::ldap::config::corp {
 		"tenant_id_attribute" => "cn",
 		"ca" => "wmf-ca.pem",
 		"sudobasedn" => $sudobasedn,
+		"pagesize" => "1000",
+		"nss_min_uid" => "499",
 	}
 }
 
