@@ -660,7 +660,7 @@ node "fenari.wikimedia.org" {
 	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
 
-	include standard,
+	include role::applicationserver::maintenance,
 		svn::client,
 		nfs::netapp::home,
 		admins::roots,
@@ -679,7 +679,6 @@ node "fenari.wikimedia.org" {
 		squid::cachemgr,
 		accounts::awjrichards,
 		accounts::erosen,
-		mediawiki_new,
 		generic::wikidev-umask
 
 	install_certificate{ "star.wikimedia.org": }
@@ -888,7 +887,7 @@ node "hooper.wikimedia.org" {
 node "hume.wikimedia.org" {
 	$cluster = "misc"
 
-	include standard,
+	include role::applicationserver::maintenance,
 		nfs::netapp::home,
 		nfs::upload,
 		misc::deployment::scap_scripts,
