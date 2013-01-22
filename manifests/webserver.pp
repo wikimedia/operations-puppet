@@ -1,55 +1,4 @@
-# This file is for all generic web server classes
-# Apache, php, etc belong in here
-# Specific services (racktables, etherpad) do not
-
-
-# Installs a generic, static web server (lighttpd) with default config, which serves /var/www
-class webserver::static {
-	include generic::sysctl::high-http-performance,
-		firewall
-
-	package { lighttpd:
-		ensure => latest;
-	}
-
-	service { lighttpd:
-		ensure => running,
-		hasstatus => $::lsbdistcodename ? {
-			'hardy' => false,
-			default => true
-		}
-	}
-
-	# Monitoring
-	monitor_service { "http": description => "HTTP", check_command => "check_http" }
-
-	# Firewall
-	firewall::open_port {
-		"http-${hostname}":
-			port => 80;
-		"https-${hostname}":
-			port => 443;
-	}
-}
-
-class webserver::php5( $ssl = 'false' ) {
-	#This will use latest package for php5-common
-
-	include generic::sysctl::high-http-performance
-
-	package { [ "apache2", "libapache2-mod-php5" ]:
-		ensure => latest;
-	}
-
-	if $ssl == 'true' {
-		apache_module { ssl: name => "ssl" }
-	}
-
-	service { apache2:
-		require => Package[apache2],
-		subscribe => Package[libapache2-mod-php5],
-		ensure => running;
-	}
+default-ssl: name => "000-default-ssl", ensure => absent }
 
 	# Monitoring
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
@@ -92,6 +41,10 @@ class webserver::apache2 {
 	package { apache2:
 		ensure => latest;
 	}
+
+	# ensure default site is removed
+	apache_site { 000_default: name => "000-default", ensure => absent }
+	apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
 
 }
 
@@ -307,6 +260,10 @@ class webserver::apache {
 						default => "/etc/apache2/sites-available/${title}"
 					};
 		}
+
+		# ensure default site is removed
+		apache_site { 000_default: name => "000-default", ensure => absent }
+		apache_site { 000-default-ssl: name => "default-ssl", ensure => absent }
 	}
 	
 	# Default selection
