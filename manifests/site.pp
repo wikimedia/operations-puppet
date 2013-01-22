@@ -1549,7 +1549,7 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include	role::applicationserver::jobrunner
+	class	{ role::applicationserver::jobrunner: enabled => true }
 }
 
 # mw17-59 are application servers (precise)
@@ -1575,7 +1575,7 @@ node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include	role::applicationserver::jobrunner
+	class  { role::applicationserver::jobrunner: enabled => false }
 }
 
 # mw 1017-1113 are apaches (precise)
@@ -2401,17 +2401,18 @@ node /^tmh[1-2]\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include	role::applicationserver::videoscaler,
-		nfs::upload
+	class { role::applicationserver::videoscaler: enabled => true }
+
+	include	nfs::upload
 }
 
 # tmh1001/tmh1002 video encoding server (precise only)
 node /^tmh100[1-2]\.eqiad\.wmnet/ {
-  if $hostname =~ /^tmh100[12]$/ {
-    $ganglia_aggregator = "true"
-  }
+	if $hostname =~ /^tmh100[12]$/ {
+		$ganglia_aggregator = "true"
+	}
+	class { role::applicationserver::videoscaler: enabled => false }
 
-  include role::applicationserver::videoscaler
 }
 
 node "vanadium.eqiad.wmnet" {

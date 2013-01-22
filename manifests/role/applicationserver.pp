@@ -141,7 +141,7 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 	}
-	class videoscaler{
+	class videoscaler( $enabled = true ){
 		class { "role::applicationserver::common": group => "videoscaler" }
 
 		include imagescaler::cron,
@@ -149,6 +149,7 @@ class role::applicationserver {
 			imagescaler::files
 
 		class {"mediawiki_new::jobrunner":
+			enabled => $enabled,
 			procs => 10,
 			type => "webVideoTranscode",
 			timeout => 14400,
@@ -168,10 +169,10 @@ class role::applicationserver {
 			ensure => stopped;
 		}
 	}
-	class jobrunner{
+	class jobrunner( $enabled = true ){
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki_new::jobrunner": procs => 12 }
+		class { "mediawiki_new::jobrunner": procs => 12, enabled => $enabled }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
@@ -187,7 +188,7 @@ class role::applicationserver {
 	}
 
 	# Class for servers which run MW maintenance scripts.
-	# Maintenance servers are sometimes dual-purpose with misc apache, so the 
+	# Maintenance servers are sometimes dual-purpose with misc apache, so the
 	# apache service installed by wikimedia-task-appserver is not disabled here.
 	class maintenance {
 		class { "role::applicationserver::common": group => "misc" }
@@ -197,6 +198,6 @@ class role::applicationserver {
 			applicationserver::packages,
 			applicationserver::cron,
 			applicationserver::sudo
-		
+
 	}
 }
