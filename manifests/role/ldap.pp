@@ -13,6 +13,8 @@ class role::ldap::config::labs {
 	$ldapconfig = {
 		"servernames" => $servernames,
 		"basedn" => $basedn,
+		"groups_rdn" => "ou=groups",
+		"users_rdn" => "ou=people",
 		"domain" => "wikimedia",
 		"proxyagent" => "cn=proxyagent,ou=profile,${basedn}",
 		"proxypass" => $passwords::ldap::labs::proxypass,
@@ -44,6 +46,8 @@ class role::ldap::config::production {
 	$ldapconfig = {
 		"servernames" => $servernames,
 		"basedn" => $basedn,
+		"groups_rdn" => "ou=groups",
+		"users_rdn" => "ou=people",
 		"domain" => "wikimedia",
 		"proxyagent" => "cn=proxyagent,ou=profile,${basedn}",
 		"proxypass" => $passwords::ldap::production::proxypass,
@@ -71,6 +75,8 @@ class role::ldap::config::corp {
 	$ldapconfig = {
 		"servernames" => $servernames,
 		"basedn" => $basedn,
+		"groups_rdn" => "ou=groups",
+		"users_rdn" => "ou=people",
 		"domain" => "corp",
 		"proxyagent" => "cn=proxyagent,ou=profile,${basedn}",
 		"proxypass" => $passwords::ldap::corp::proxypass,
