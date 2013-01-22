@@ -123,15 +123,24 @@ class role::lucene {
 		$cluster = "search"
 		$nagios_group = "lucene"
 
+		# Include packages needed for MW maintenance scripts
 		include standard,
+			mediawiki_new,
+			applicationserver::config::php,
+			applicationserver::config::base,
+			applicationserver::packages,
+			applicationserver::sudo,
 			admins::roots,
 			admins::mortals,
 			admins::restricted,
-			accounts::l10nupdate,
 			lucene::users
 
-		sudo_group {"wikidev_deploy": privileges => ['ALL = (mwdeploy,l10nupdate) NOPASSWD: ALL'], group => "wikidev" }
-		sudo_user { "l10nupdate": privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
+		# dependency for wikimedia-task-appserver
+		service { 'apache':
+			name => "apache2",
+			enable => false,
+			ensure => stopped;
+		}
 
 		class { "lucene::server":
 			indexer => true, udplogging => false

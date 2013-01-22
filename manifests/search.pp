@@ -51,10 +51,6 @@ class lucene {
 	class config {
 		require role::lucene::configuration
 
-		if $lucene::server::indexer == true {
-			include apaches::files
-		}
-
 		file {
 			"/a/search/conf/lsearch-global-2.1.conf":
 				require => File["/a/search/conf"],
@@ -129,11 +125,6 @@ class lucene {
 	}
 
 	class users {
-		# note: give rainman back limited sudo. although this is currently
-		# incompatible with the /etc/sudoers that apaches::files installs
-		# on the indexer host
-		# FIXME: apache sudoers is installed in /etc/sudoers.d/ nowadays
-
 		systemuser { "lsearch": name => "lsearch", default_group => "search"}
 	}
 
