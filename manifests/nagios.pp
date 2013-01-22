@@ -319,6 +319,9 @@ class nagios::monitor {
 	}
 
 	apache_site { nagios: name => "nagios" }
+	# ensure default site is removed
+	apache_site { 000_default: name => "000_default", ensure => absent; }
+	apache_site { 000_default_ssl: name => "000_default-ssl", ensure => absent; }
 
 	# make sure the directory for individual service checks exists
 	file { "/etc/nagios":
