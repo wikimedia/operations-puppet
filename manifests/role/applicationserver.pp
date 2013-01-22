@@ -100,6 +100,8 @@ class role::applicationserver {
 
 	## prod role classes
 	class appserver{
+		system_role { "role::applicationserver::appserver": description => "Standard Apache Application server" }
+
 		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
@@ -121,16 +123,22 @@ class role::applicationserver {
 			imagescaler::files
 	}
 	class appserver::api{
+		system_role { "role::applicationserver::appserver::api": description => "Api Apache Application server" }
+
 		class { "role::applicationserver::common": group => "api_appserver", lvs_pool => "api" }
 
 		class { "role::applicationserver::webserver": maxclients => "100" }
 	}
 	class appserver::bits{
+		system_role { "role::applicationserver::appserver::bits": description => "Bits Apache Application server" }
+
 		class { "role::applicationserver::common": group => "bits_appserver", lvs_pool => "apaches" }
 
 		include role::applicationserver::webserver
 	}
 	class imagescaler{
+		system_role { "role::applicationserver::imagescaler": description => "Imagescaler Application server" }
+
 		class { "role::applicationserver::common": group => "imagescaler", lvs_pool => "rendering" }
 
 		class { "role::applicationserver::webserver": maxclients => "18" }
@@ -142,6 +150,8 @@ class role::applicationserver {
 			imagescaler::files
 	}
 	class videoscaler( $run_jobs_enabled = true ){
+		system_role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
+
 		class { "role::applicationserver::common": group => "videoscaler" }
 
 		include imagescaler::cron,
@@ -170,6 +180,8 @@ class role::applicationserver {
 		}
 	}
 	class jobrunner( $run_jobs_enabled = true ){
+		system_role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
+
 		class { "role::applicationserver::common": group => "jobrunner" }
 
 		class { "mediawiki_new::jobrunner": procs => 12, run_jobs_enabled => $run_jobs_enabled }
