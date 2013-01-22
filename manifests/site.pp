@@ -1549,7 +1549,7 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	class	{ role::applicationserver::jobrunner: run_jobs_enabled => true }
+	class	{ role::applicationserver::jobrunner: run_jobs_enabled => false }
 }
 
 # mw17-59 are application servers (precise)
@@ -1575,7 +1575,7 @@ node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	class  { role::applicationserver::jobrunner: run_jobs_enabled => false }
+	class  { role::applicationserver::jobrunner: run_jobs_enabled => true }
 }
 
 # mw 1017-1113 are apaches (precise)
@@ -2401,7 +2401,7 @@ node /^tmh[1-2]\.pmtpa\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	class { role::applicationserver::videoscaler: run_jobs_enabled => true }
+	class { role::applicationserver::videoscaler: run_jobs_enabled => false }
 
 	include	nfs::upload
 }
@@ -2411,7 +2411,7 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 	if $hostname =~ /^tmh100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
-	class { role::applicationserver::videoscaler: run_jobs_enabled => false }
+	class { role::applicationserver::videoscaler: run_jobs_enabled => true }
 
 }
 
