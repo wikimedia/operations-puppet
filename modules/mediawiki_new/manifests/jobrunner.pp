@@ -1,4 +1,5 @@
 class mediawiki_new::jobrunner (
+	$run_jobs_enabled,
 	$user = "apache",
 	$type = "",
 	$nice = 20,
@@ -37,7 +38,7 @@ class mediawiki_new::jobrunner (
 			mode => 0755,
 			content => template("mediawiki_new/jobrunner/jobs-loop.sh.erb");
 	}
-	if $::site == "pmtpa" {
+	if $run_jobs_enabled == true {
 		service {
 			"mw-job-runner":
 				require => [
