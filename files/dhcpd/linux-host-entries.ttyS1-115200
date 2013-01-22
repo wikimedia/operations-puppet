@@ -2871,7 +2871,7 @@ host palladium {
 }
 
 host pappas {
-	hardware ethernet 00:10:18:E4:1E:56 ;
+	hardware ethernet 90:b1:1c:13:3d:22;
 	fixed-address pappas.pmtpa.wmnet;
 }
 
