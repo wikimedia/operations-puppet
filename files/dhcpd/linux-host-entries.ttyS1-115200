@@ -2872,7 +2872,9 @@ host palladium {
 
 host pappas {
 	hardware ethernet 90:b1:1c:13:3d:22;
-	fixed-address pappas.pmtpa.wmnet;
+	fixed-address pappas.wikimedia.org;
+	next-server 10.64.40.66;
+	filename "/pxelinux.0";
 }
 
 host payments1 {
@@ -3187,11 +3189,6 @@ host searchidx1001 {
 host searchidx2 {
 	hardware ethernet 14:fe:b5:d2:45:59;
 	fixed-address searchidx2.pmtpa.wmnet;
-}
-
-host silicon {
-	hardware ethernet 78:2b:cb:08:a5:ae;
-	fixed-address silicon.wikimedia.org;
 }
 
 host silver {
