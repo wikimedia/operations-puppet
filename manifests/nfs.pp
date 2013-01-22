@@ -175,20 +175,6 @@ class nfs::home::wikipedia {
 
 }
 
-# Do some NFS magic for labs stuff. Make it clear it is only for labs
-# usage by adding that to the class name
-class nfs::apache::labs {
-	if( $::realm == 'labs' ) {
-		include nfs::common
-
-		file { '/usr/local/apache':
-			ensure => link,
-			target => "/data/project/apache";
-		}
-
-	}
-}
-
 class nfs::upload {
 	include nfs::common
 
