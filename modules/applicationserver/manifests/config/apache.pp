@@ -24,8 +24,15 @@ class applicationserver::config::apache(
 			owner => root,
 			group => root,
 			content => $::site;
-		"/usr/local/apache":
-			ensure => directory;
+	}
+
+	# /usr/local/apache might have been defined previously, for
+	# example in role::appserver::beta() which makes it a symlink
+	if ! defined(File['/usr/local/apache']) {
+		file {
+			"/usr/local/apache":
+				ensure => directory;
+		}
 	}
 
 	exec { "sync apache wmf config":
