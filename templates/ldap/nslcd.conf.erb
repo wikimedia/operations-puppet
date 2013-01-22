@@ -13,7 +13,7 @@ uri <% ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %
 base <%= ldapconfig["basedn"] %>
 base passwd <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
 base shadow <%= ldapconfig["users_rdn"] %>,<%= ldapconfig["basedn"] %>
-base groups <%= ldapconfig["group_rdn"] %>,<%= ldapconfig["basedn"] %>
+base groups <%= ldapconfig["groups_rdn"] %>,<%= ldapconfig["basedn"] %>
 
 # The DN to bind with for normal lookups.
 binddn cn=proxyagent,ou=profile,<%= ldapconfig["basedn"] %>
