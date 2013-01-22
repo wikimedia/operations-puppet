@@ -4,7 +4,7 @@
 
 if !$realm {
 	$realm = "production"
-	$mw_primary = "pmtpa"
+	$mw_primary = "eqiad"
 }
 
 if !$instanceproject {
