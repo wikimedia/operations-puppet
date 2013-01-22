@@ -7,6 +7,8 @@
 # The following are defaults, the exact specifications are in the role definitions
 class wikidata::singlenode( $install_path = "/srv/mediawiki",
 							$database_name = "repo",
+							$repo_ip = $wikidata_repo_ip,
+							$repo_url = $wikidata_repo_url,
 							$ensure = latest,
 							$install_repo = true,
 							$install_client = true,
@@ -205,7 +207,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/simple-elements.xml",
 		}
 		exec { "client_import_data":
-			require => [Git::Clone["Wikibase"], File["${install_path}/simple-elements.xml"]],
+			require => [Git::Clone["Wikibase"], Exec["SitesTable_client"], Exec["populate_interwiki"], File["${install_path}/LocalSettings.php"], File["${install_path}/simple-elements.xml"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php simple-elements.xml",
 			logoutput => "on_failure",
