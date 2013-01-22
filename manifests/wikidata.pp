@@ -30,6 +30,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		source => "puppet:///files/mediawiki/StartProfiler.php",
 	}
 
+# permit www-data to write images
+	file { "${install_path}/images":
+		ensure => directory,
+		owner => "www-data",
+		group => "www-data",
+		mode => 775;
+	}
+
 # get the Wikibase extensions and dependencies
 	git::clone { "Diff" :
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
@@ -143,6 +151,11 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/wikidata.cnf",
 			notify => Service["mysql"],
 		}
+		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
+			require => Git::Clone["mediawiki"],
+			ensure => present,
+			source => "puppet:///files/mediawiki/Wikidata-logo-demorepo.png",
+		}
 		exec { "repo_import_data":
 			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
@@ -157,6 +170,11 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			require => Exec["mediawiki_setup"],
 			ensure => present,
 			content => template('mediawiki/wikidata-client-requires.php'),
+		}
+		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-democlient.png":
+			require => Git::Clone["mediawiki"],
+			ensure => present,
+			source => "puppet:///files/mediawiki/Wikidata-logo-democlient.png",
 		}
 		exec { "populate_interwiki":
 			require => [Git::Clone["Wikibase"], Exec["update-script"]],
