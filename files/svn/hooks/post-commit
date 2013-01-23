@@ -51,9 +51,6 @@
 REPOS="$1"
 REV="$2"
 
-#commit-email.pl "$REPOS" "$REV" commit-watchers@example.org
-#log-commit.py --repository "$REPOS" --revision "$REV"
-
 svnnotify --repos-path "$1" --revision "$2" \
   --to "mediawiki-cvs@lists.wikimedia.org" \
   --smtp smtp.pmtpa.wmnet \
@@ -62,21 +59,6 @@ svnnotify --repos-path "$1" --revision "$2" \
   --user-domain "svn.wikimedia.org" \
   --header "https://www.mediawiki.org/wiki/Special:Code/MediaWiki/$2" \
   -l /usr/bin/svnlook
-
-#  --viewcvs-url "http://svn.wikimedia.org/viewvc" \
-
-#UUID=`svnlook uuid $REPOS`
-#/usr/bin/wget \
-#	  --header "Content-Type:text/plain;charset=UTF-8" \
-#	    --post-data "`svnlook changed --revision $REV $REPOS`" \
-#	      --output-document "-" \
-#	        --timeout=5 \
-#		  http://integration.mediawiki.org/ci/subversion/${UUID}/notifyCommit?rev=$REV
-
-# temporary disable, hanging?
-# enabling again, trying email mode
-ciabot_svn.py "$REPOS" "$REV" "mediawiki"
-# /svnroot/mediawiki/hooks/codurrbot.py "$REPOS" "$REV" "mediawiki" > /home/demon/test-bot-output
 
 # Run deferred updates
 bash /svnroot/mediawiki/hooks/deferred-updates.sh "$REV"

@@ -178,10 +178,7 @@ class svn::server {
 
 	class cia {
 		file { "/usr/local/bin/ciabot_svn.py":
-			owner => root,
-			group => root,
-			mode  => 0555,
-			source => "puppet:///files/svn/ciabot_svn.py";
+			ensure => absent;
 		}
 	}
 
