@@ -267,6 +267,12 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
+node "colby.wikimedia.org" {
+	$cluster = "misc"
+
+	include standard
+}
+
 node /^(copper|zinc)\.wikimedia\.org$/ {
 	$ganglia_aggregator = "true"
 
