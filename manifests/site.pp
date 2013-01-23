@@ -927,11 +927,6 @@ node "iron.wikimedia.org" {
 	include swift::utilities
 }
 
-node "ixia.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include role::db::core
-}
-
 node "kaulen.wikimedia.org" {
 	system_role { "misc": description => "Bugzilla server" }
 	$gid = 500
@@ -1011,10 +1006,6 @@ node "linne.wikimedia.org" {
 			soa_name => "ns1.wikimedia.org",
 			master => $dns_auth_master
 		}
-}
-
-node "lomaria.pmtpa.wmnet" {
-	include role::db::core
 }
 
 node /lvs[1-6]\.wikimedia\.org/ {
@@ -2372,11 +2363,6 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		groups::wikidev
 }
 
-node "thistle.pmtpa.wmnet" {
-	$ganglia_aggregator = "true"
-	include role::db::core
-}
-
 node "tin.eqiad.wmnet" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
@@ -2559,13 +2545,6 @@ node /(caesium|xenon|wtp1001)\.eqiad\.wmnet/ {
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
 
-}
-
-node  "yongle.wikimedia.org" {
-	$gid=500
-	include	standard,
-		groups::wikidev,
-		accounts::catrope
 }
 
 node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
