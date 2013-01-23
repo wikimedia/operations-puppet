@@ -34,6 +34,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # permit www-data to write images
 	file { "${install_path}/images":
+		require => Git::Clone["mediawiki"],
 		ensure => directory,
 		owner => "www-data",
 		group => "www-data",

@@ -8,6 +8,9 @@
 ###  the included orig/LocalSettings.php.
 ###
 #####################################################################
+// use the Wikidata logo
+$wgLogo = "$wgStylePath/common/images/Wikidata-logo-demorepo.png";
+
 // experimental features
 define( 'WB_EXPERIMENTAL_FEATURES', true );
 
