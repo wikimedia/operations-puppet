@@ -237,7 +237,10 @@ node "brewster.wikimedia.org" {
 node "calcium.wikimedia.org" {
 	$cluster = "misc"
 
-	include standard
+	include standard,
+		groups::wikidev,
+		accounts::robh
+
 }
 
 node /^(capella|nitrogen)\.wikimedia\.org$/ {
