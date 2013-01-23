@@ -36,6 +36,7 @@ $daemon->parse_options(
 	'mcast_address=s' => "224.0.0.85" => "htcp multicast port",
 	'cache=s@' => [] => 'Where to purge',
 	'address=s' => '0.0.0.0' => 'Interface to listen to',
+	'http_source=s' => '0.0.0.0' => 'Interface to send HTTP requests from',
 	'debug' => 0 => "Debugging",
 	);
 
@@ -64,6 +65,10 @@ foreach my $cache (@{$daemon->options->{cache}}) {
 	my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
 	$ua->agent("HTCP Purger");
 	$ua->proxy('http', "http://$cache/");
+	if ($daemon->options->{http_source} ne '0.0.0.0') {
+		$ua->local_address($daemon->options->{http_source});
+	}
+
 	$userAgents{$cache} = $ua
 }
 
@@ -87,11 +92,10 @@ while(1) {
 		$req->header("Accept-Encoding" => 'gzip');
 	
 		my $res = $ua->request($req);
-		if($res->is_success()) {
+		if($res->is_success() || $res->code == 404) {
 			if ($daemon->options->{debug}) {
 				print "OK: PURGE $url sent to $cache\n";
 			}
-			$userAgents{$cache} = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
 		} elsif ($daemon->options->{debug}) {
 			print "FAIL: PURGE $url sent to $cache\n";
 		}
