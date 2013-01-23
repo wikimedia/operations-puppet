@@ -1436,9 +1436,7 @@ node /^ms(10|1001)\.wikimedia\.org$/ {
 }
 
 node "ms1002.eqiad.wmnet" {
-	include standard,
-		misc::images::rsyncd,
-		misc::images::rsync
+	include standard
 }
 
 node /ms100[4]\.eqiad\.wmnet/ {
