@@ -127,8 +127,10 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			"/usr/share/planet-venus/theme/wikimedia/${title}/config.ini":
 				source => "puppet:///files/planet/theme/config.ini";
 			"/usr/share/planet-venus/theme/wikimedia/${title}/planet.css":
-				source => "puppet:///files/planet/theme/planet.css";
-
+				source => $title ? {
+					"ar" => 'puppet:///files/planet/theme/planet-ar.css',
+					default => 'puppet:///files/planet/theme/planet.css',
+					},
 
 		}
 
