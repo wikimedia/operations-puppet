@@ -191,8 +191,10 @@ class mediawiki::singlenode( $ensure = 'present',
 		}
 	}
 
-        apache_site { controller: name => "wiki" }
-        apache_site { 000_default: name => "000-default", ensure => absent }
+	apache_site { controller: name => "wiki" }
+	# ensure default site is removed
+	apache_site { 000_default: name => "000-default", ensure => absent }
+	apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
 
 	exec { 'apache_restart':
 		require => [Apache_site['controller'], Apache_site['000_default']],
