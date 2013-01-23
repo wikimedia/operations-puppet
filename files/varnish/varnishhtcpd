@@ -29,6 +29,7 @@ if($^O eq 'linux') {
 
 use Working::Daemon;
 my $daemon = Working::Daemon->new();
+$daemon->name('varnishhtcpd');
 
 $daemon->parse_options(
 	'mcast_port=i' => 4827 => "htcp multicast port to listen to",
@@ -38,80 +39,12 @@ $daemon->parse_options(
 	'debug' => 0 => "Debugging",
 	);
 
-
-
 $daemon->do_action;
 
 $daemon->drop_privs;
 
 use Data::Dumper;
 print Dumper($daemon->options);
-
-use threads;
-use threads::shared;
-my %servers;
-my %servers_count_success : shared;
-my %servers_count_fail : shared;
-my @errors : shared;
-use Thread::Queue;
-
-foreach my $cache (@{$daemon->options->{cache}}) {
-	my $queue = $servers{$cache}->{queue} = Thread::Queue->new;
-	$servers{$cache}->{thread} = threads->create(\&worker, $cache, $queue);
-}
-
-my $admin = threads->create(sub {
-	my $sock = IO::Socket::INET->new
-		(Listen => 5,
-		 LocalAddr => 'localhost',
-		 LocalPort => 9001,
-		 Proto => 'tcp',
-		 Reuse => 1
-		);
-	while(my $connection = $sock->accept) {
-		$connection->print("# Server\tPending\tDelivered\tFailed\n");
-		foreach my $server (keys %servers) {
-			$connection->print("$server: \t" . $servers{$server}->{queue}->pending . "\t$servers_count_success{$server}\t$servers_count_fail{$server}\n");
-		}
-		$connection->print("#######  ERRORS  ##########\n");
-		$connection->print(@errors);
-		close($connection);
-	}
-});
-
-
-sub worker {
-	my ($cache, $queue) = @_;
-	print "Starting worker for $cache\n";
-	$servers_count_success{$cache} = 0;
-	$servers_count_fail{$cache} = 0;
-	my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
-	$ua->agent("HTCP Purger");
-	$ua->proxy('http', "http://$cache/");
-	while(my $url = $queue->dequeue) {
-		my $uri = URI->new($url);
-		my $req = HTTP::Request->new(PURGE => "$uri");
-		$req->header("Accept-Encoding" => 'gzip');
-	
-		my $res = $ua->request($req);
-		if($res->is_success()) {
-			#warn "Purged $uri\n";
-			$servers_count_success{$cache}++;
-		} else {
-			#warn "Purging $uri failed: @{[$res->status_line]}\n";
-			$servers_count_fail{$cache}++;
-			lock(@errors);
-			if (@errors > 20) {
-				pop @errors;
-			}
-			my $error = scalar gmtime;
-			$error .= " $cache: '@{[$res->status_line]}' $uri\n";
-			push @errors, $error;
-			my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
-		}
-	}
-}
-
 
 my $listen = IO::Socket::INET->new(
                                    LocalPort => $daemon->options->{'mcast_port'},
@@ -124,6 +57,15 @@ my $listen = IO::Socket::INET->new(
 setsockopt($listen, 0, $ip_add_membership,,
            pack("a4 a4", inet_aton($daemon->options->{'mcast_address'}), inet_aton($daemon->options->{address})))
            || die "IP_ADD_MEMBERSHIP: $!"; 
+
+
+my %userAgents;
+foreach my $cache (@{$daemon->options->{cache}}) {
+	my $ua = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
+	$ua->agent("HTCP Purger");
+	$ua->proxy('http', "http://$cache/");
+	$userAgents{$cache} = $ua
+}
 
 while(1) {
 	my $raw;
@@ -138,11 +80,21 @@ while(1) {
 	($len, $datalen, $op, $id, $specifier,$extra) = unpack("nxxnCxNxxa*n", $raw);
 	($method, $url, $version, $nr3) = unpack("n/an/an/an", $specifier);
 
-	$0 = $daemon->name ." worker - purging $url";
-
-	foreach my $server (values %servers) {
-		$server->{queue}->enqueue("$url");
-		if ($server->{queue}->pending() > 1000) { exit 1; }
+	foreach my $cache (@{$daemon->options->{cache}}) {
+		my $uri = URI->new($url);
+		my $req = HTTP::Request->new(PURGE => "$uri");
+		my $ua = $userAgents{$cache};
+		$req->header("Accept-Encoding" => 'gzip');
+	
+		my $res = $ua->request($req);
+		if($res->is_success()) {
+			if ($daemon->options->{debug}) {
+				print "OK: PURGE $url sent to $cache\n";
+			}
+			$userAgents{$cache} = LWP::UserAgent->new(keep_alive => 1, timeout => 5);
+		} elsif ($daemon->options->{debug}) {
+			print "FAIL: PURGE $url sent to $cache\n";
+		}
 	}
 }
 
