@@ -744,8 +744,11 @@ class icinga::monitor::service {
 
 	service { "icinga":
 		ensure => running,
+		hasstatus => no,
 		subscribe => [ File[$icinga::monitor::configuration::variables::puppet_files],
 			       File[$icinga::monitor::configuration::variables::static_files],
+			       File["/etc/icinga/puppet_services.cfg"],
+			       File["/etc/icinga/puppet_hostextinfo.cfg"],
 			       File["/etc/icinga/puppet_hosts.cfg"]];
 	}
 }
