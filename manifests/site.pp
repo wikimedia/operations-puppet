@@ -216,8 +216,7 @@ node "brewster.wikimedia.org" {
 node "calcium.wikimedia.org" {
 	$cluster = "misc"
 
-	include standard,
-		misc::smokeping
+	include standard
 }
 
 node /^(capella|nitrogen)\.wikimedia\.org$/ {
