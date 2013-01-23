@@ -64,27 +64,6 @@ class newstandard {
 		ntp::client
 }
 
-#############################
-# Role classes
-#############################
-
-# TODO: Perhaps rename these classes to "role::<class>" to distinguish them
-# from classes inside service manifests
-# Update: migration is now in progress, into role/<class>.pp. Classes still here
-# are old, and probably need to be rewritten.
-
-class protoproxy::ssl {
-	$cluster = "ssl"
-
-	$enable_ipv6_proxy = true
-
-	include standard,
-		certificates::wmf_ca,
-		protoproxy::proxy_sites
-
-	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
-}
-
 
 # Default variables
 $cluster = "misc"
@@ -2124,7 +2103,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include protoproxy::ssl
+	include role::protoproxy::ssl
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
@@ -2136,7 +2115,7 @@ node /ssl100[1-4]\.wikimedia\.org/ {
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
-	include protoproxy::ssl
+	include role::protoproxy::ssl
 }
 
 node /ssl300[1-4]\.esams\.wikimedia\.org/ {
@@ -2146,7 +2125,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
-	include protoproxy::ssl
+	include role::protoproxy::ssl
 
 	if $hostname =~ /^ssl3001$/ {
 		include protoproxy::ipv6_labs
