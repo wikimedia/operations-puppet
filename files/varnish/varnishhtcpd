@@ -37,6 +37,7 @@ $daemon->parse_options(
 	'cache=s@' => [] => 'Where to purge',
 	'address=s' => '0.0.0.0' => 'Interface to listen to',
 	'http_source=s' => '0.0.0.0' => 'Interface to send HTTP requests from',
+	'buffer=i' => 16777216 => "socket receive buffer size (bytes)",
 	'debug' => 0 => "Debugging",
 	);
 
@@ -54,7 +55,7 @@ my $listen = IO::Socket::INET->new(
                                    ReuseAddr => 1,
                                    ) || die;
 
-
+setsockopt($listen, 0, SO_RCVBUF, $daemon->options->{'buffer'});
 setsockopt($listen, 0, $ip_add_membership,,
            pack("a4 a4", inet_aton($daemon->options->{'mcast_address'}), inet_aton($daemon->options->{address})))
            || die "IP_ADD_MEMBERSHIP: $!"; 
