@@ -31,11 +31,15 @@ class misc::irc::wikibugs {
 	systemuser { wikibugs: name => 'wikibugs' }
 
 	file {
+		"/var/lib/wikibugs":
+			owner => wikibugs,
+			group => wikibugs,
+			require => User['wikibugs'];
 		"/var/lib/wikibugs/log":
 			owner  => wikibugs,
 			group => wikidev,
 			mode  => 0775,
-			require => User['wikibugs'];
+			require => File['/var/lib/wikibugs'];
 	}
 
 	git::clone { "wikibugs" :

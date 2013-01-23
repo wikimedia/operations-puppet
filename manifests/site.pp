@@ -1391,6 +1391,7 @@ node "mchenry.wikimedia.org" {
 		backup::client,
 		generic::packages::git-core,
 		groups::wikidev,
+		misc::irc::wikibugs,
 		accounts::jdavis
 
 	include network::constants
