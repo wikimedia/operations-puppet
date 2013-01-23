@@ -91,11 +91,6 @@ define apache_confd($install="false", $enable="true", $ensure="present") {
 	}
 }
 
-class generic::apache::no-default-site {
-	file { "/etc/apache2/sites-enabled/000-default":
-		ensure => absent;
-	}
-}
 
 # Enables a certain Lighttpd config
 #

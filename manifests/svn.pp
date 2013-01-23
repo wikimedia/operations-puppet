@@ -82,8 +82,6 @@ class svn::server {
 
 	apache_site { "svn": name => "svn", prefix => "000-" }
 
-	include generic::apache::no-default-site
-
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
 
 	cron {

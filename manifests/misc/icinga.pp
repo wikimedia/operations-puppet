@@ -68,8 +68,7 @@ class icinga::monitor::configuration::variables {
 class icinga::monitor::apache {
 	class {"webserver::php5": ssl => "true";}
 
-	include webserver::php5-gd,
-		generic::apache::no-default-site
+	include webserver::php5-gd
 
 	file {
 		"/usr/share/icinga/htdocs/images/logos/ubuntu.png":
