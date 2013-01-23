@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "Synchronizing /home/wikipedia/conf/httpd to /usr/local/apache/conf..."
-#echo "pmtpa apaches:"
 
 # Options to pass to the rsync command
 RSYNC_OPTIONS="-a"
@@ -14,19 +13,19 @@ if [ `basename $0` = "sync-apache-simulated" ]; then
 fi;
 
 #This sync works with both puppet and non-puppet hosts
-ddsh -cM -g apaches -o -oSetupTimeout=30 -F30 -- "
+dsh -cM -g apaches -o-lroot -o-oSetupTimeout=30 -F30 -- "
 	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
 "
 # dont forget the image rending cluster
-ddsh -cM -g image_scalers -o -oSetupTimeout=30 -F30 -- "
+dsh -cM -g image_scalers -o-lroot -o-oSetupTimeout=30 -F30 -- "
 	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
 "
 # while we are at it, might as well do the snapshot boxen
-ddsh -cM -g snapshot -o -oSetupTimeout=30 -F30 -- "
+dsh -cM -g snapshot -o-lroot -o-oSetupTimeout=30 -F30 -- "
 	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
 "
 
 # decided we want search indexers too
-ddsh -cM -g searchidx -o -oSetupTimeout=30 -F30 -- "
+dsh -cM -g searchidx -o-lroot -o-oSetupTimeout=30 -F30 -- "
 	rsync $RSYNC_OPTIONS 10.0.5.8::httpdconf/ /usr/local/apache/conf
 "
