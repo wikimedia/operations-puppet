@@ -83,7 +83,10 @@ while [ 1 ];do
 		moreprio=
 		for type in $types; do
 			db=`php MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
-			if [ -n "$db" ]; then
+
+			if [ "$?" -ne "0" ]; then
+				echo "Could not determine the next wiki."
+			elif [ -n "$db" ]; then
 				echo "$db $type"
 				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$maxtime &
 				wait
@@ -96,7 +99,9 @@ while [ 1 ];do
 		# Do the remaining types
 		db=`php MWScript.php nextJobDB.php --wiki=aawiki`
 
-		if [ ! -z "$db" ];then
+		if [ "$?" -ne "0" ]; then
+			echo "Could not determine the next wiki."
+		elif [ ! -z "$db" ];then
 			echo "$db"
 			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$maxtime &
 			wait
