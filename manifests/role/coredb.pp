@@ -272,7 +272,11 @@ class role::coredb::common(
 			slow_query_digest => $slow_query_digest,
 		}
 
-		class { "mysql::coredb::monitoring": crit => false }
+		if $topology[$shard]['primary_site'] == false {
+			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
+		} else {
+			class { "mysql::coredb::monitoring": crit => false }
+		}
 	}
 
 	if $::hostname in $topology[$shard]['snapshot'] {
