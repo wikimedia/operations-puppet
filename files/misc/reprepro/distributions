@@ -46,7 +46,7 @@ Suite: precise-wikimedia
 Codename: precise-wikimedia
 Version: 12.04
 Architectures: source amd64 i386
-Components: main universe
+Components: main universe mariadb
 UDebComponents: main
 Update: ceph jenkins
 Description: Wikimedia specific packages for Ubuntu Precise
