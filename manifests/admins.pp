@@ -2310,6 +2310,13 @@ class accounts {
 					type   => "ssh-rsa",
 					key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCle8Z4m/zR8MFkJ+4agjsWp/gFGXcvsweraTxrZwUxqU2q6NPcP3PzPUgUnOG6hF/KqfLt0eFor8DEHhoiaxrylKBQNx4cQkHRoCj2V9X5IOsLWV3jEIaaN+C4a9xT5WH10wiGSxDq8BvNWBEPESkC68TSjdfGtsdrvrtignbDM/GWhYFPYYYNbNJg3xAKWq/kdQuIvjDVBe9LVmPPl5VoeyahhEGdRzP46d7fpVXwXOCUlObxGW5lLqhS95acBVfIF5sIvHJms3rn8IQRnOm++l65EY+qMmpSqCzwUQDOoZ5pmpMU9O38sGz6Hw4+2p74cP0Vd9EJ6MmX8EA+yNxj";
 			}
+			ssh_authorized_key {
+				" user@user-Inspiron-3520":
+					ensure => present,
+					user   => $username,
+					type   => "ssh-rsa",
+					key    => "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrncifKm+V2aAJz01GND6wJJ2nUaGy7Z+uV6yVT+QNqf2KaoANs93RL/e9YQce3WuMakOiJNBtV55bgZg96hdtLvnEtiNB/fpF2Ft8pspwozL0nNVG6GT/S461Xh1Uwbe8Q+6yBW2zdaG17rj0AvHB07AmLe/od8wd1qA1wlTU44400e6wgQ2W9BqVl70VI5n03xKZstsy1IlPEP/uxQQos7bhaU+VQKNrkO5oRWTSu7WX8d2L7dbL2SWmzIMOYbhLux55Cf70uwR4fvlGlDi9QenqiDce2Fzq2nklo5L8Maz7kCWHqGF4ux1XMlenIyVdDzS+hXvISMTHDvChqVLJ";
+			}
 		}
 	}
 
