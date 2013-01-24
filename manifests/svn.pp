@@ -59,25 +59,13 @@ class svn::server {
 	# hooks
 	file {
 		"/svnroot/mediawiki/hooks/pre-commit":
-			owner => root,
-			group => svnadm,
-			mode => 0555,
-			source => "puppet:///files/svn/hooks/pre-commit";
+			ensure => absent;
 		"/svnroot/mediawiki/hooks/post-commit":
-			owner => root,
-			group => svnadm,
-			mode => 0555,
-			source => "puppet:///files/svn/hooks/post-commit";
+			ensure => absent;
 		"/svnroot/mediawiki/hooks/HooksCommon.inc":
-			owner => root,
-			group => svnadm,
-			mode => 0555,
-			source => "puppet:///files/svn/hooks/HooksCommon.inc";
+			ensure => absent;
 		"/svnroot/mediawiki/hooks/deferred-updates.sh":
-			owner => root,
-			group => svnadm,
-			mode => 0555,
-			source => "puppet:///files/svn/hooks/deferred-updates.sh";
+			ensure => absent;
 	}
 
 	apache_site { "svn": name => "svn", prefix => "000-" }
