@@ -669,7 +669,7 @@ class role::cache {
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
-				'max_connections' => 1000,
+				'max_connections' => 600,
 				},
 			cluster_options => {
 				'api_backend' => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
