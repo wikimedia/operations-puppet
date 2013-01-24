@@ -12,6 +12,7 @@ Alias /icinga /usr/share/icinga/htdocs
 <VirtualHost *:443>
 	ServerName icinga.wikimedia.org
 	ServerAlias neon.wikimedia.org
+	ServerAlias nagios.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	SSLEngine On
 	SSLCertificateFile /etc/ssl/private/star.wikimedia.org.pem
@@ -37,14 +38,15 @@ Alias /icinga /usr/share/icinga/htdocs
 		LoadModule alias_module modules/mod_alias.so
 	</IfModule>
 
-	RedirectMatch ^/$ https://neon.wikimedia.org/icinga
+	RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
 	ErrorLog /var/log/apache2/icinga.log
 	LogLevel warn
 
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName nagios.wikimedia.org
+	ServerName icinga.wikimedia.org
+	ServerAlias nagios.wikimedia.org
 	ServerAlias neon.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	DocumentRoot /usr/share/icinga/htdocs
