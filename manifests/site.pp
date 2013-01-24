@@ -496,11 +496,7 @@ node /db1047\.eqiad\.wmnet/ {
 
 ## not currently in production and/or hardware issues
 node /db10(1[2456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
-	  include role::db::core,
-		mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+
 }
 
 node "dobson.wikimedia.org" {
