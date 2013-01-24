@@ -193,8 +193,12 @@ class nfs::upload {
 	include nfs::common
 
 	# NetApp migration
-	include nfs::netapp::originals
-	include nfs::netapp::thumbs
+	class { 'nfs::netapp::originals':
+		ensure => absent,
+	}
+	class { 'nfs::netapp::thumbs':
+		ensure => absent,
+	}
 
 	file { [ "/mnt/thumbs", "/mnt/upload6" ]:
 			ensure => directory;
@@ -214,7 +218,7 @@ class nfs::upload {
 			name => "/mnt/upload6",
 			options => "bg,soft,udp,rsize=8192,wsize=8192,timeo=14,intr,nfsvers=3",
 			require => File["/mnt/upload6"],
-			ensure => mounted;
+			ensure => absent;
 		"/mnt/upload5":
 			device => "ms1.wikimedia.org:/export/upload",
 			fstype => "nfs",
