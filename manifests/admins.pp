@@ -2311,7 +2311,7 @@ class accounts {
 					key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCle8Z4m/zR8MFkJ+4agjsWp/gFGXcvsweraTxrZwUxqU2q6NPcP3PzPUgUnOG6hF/KqfLt0eFor8DEHhoiaxrylKBQNx4cQkHRoCj2V9X5IOsLWV3jEIaaN+C4a9xT5WH10wiGSxDq8BvNWBEPESkC68TSjdfGtsdrvrtignbDM/GWhYFPYYYNbNJg3xAKWq/kdQuIvjDVBe9LVmPPl5VoeyahhEGdRzP46d7fpVXwXOCUlObxGW5lLqhS95acBVfIF5sIvHJms3rn8IQRnOm++l65EY+qMmpSqCzwUQDOoZ5pmpMU9O38sGz6Hw4+2p74cP0Vd9EJ6MmX8EA+yNxj";
 			}
 			ssh_authorized_key {
-				" user@user-Inspiron-3520":
+				"user@user-Inspiron-3520":
 					ensure => present,
 					user   => $username,
 					type   => "ssh-rsa",
