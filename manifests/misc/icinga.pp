@@ -171,13 +171,13 @@ class icinga::monitor::configuration::files {
 			mode => 0644;
 
 		"/etc/icinga/contactgroups.cfg":
-			source => "puppet:///files/nagios/contactgroups_fake.cfg",
+			source => "puppet:///files/nagios/contactgroups.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
 
 		"/etc/icinga/contacts.cfg":
-			source => "puppet:///private/nagios/contacts_fake.cfg",
+			source => "puppet:///private/nagios/contacts.cfg",
 			owner => root,
 			group => root,
 			mode => 0644;
