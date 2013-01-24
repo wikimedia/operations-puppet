@@ -479,7 +479,7 @@ class lvs::configuration {
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'ProxyFetch' => {
-					'url' => [ 'http://upload.wikimedia.org/pybaltestfile.txt' ],
+					'url' => [ 'http://upload.wikimedia.org/monitoring/backend' ],
 					},
 				'IdleConnection' => $idleconnection_monitor_options
 			},
@@ -991,7 +991,7 @@ class lvs::monitor {
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['uploadlb6'],
-			uri => "upload.wikimedia.org!/pybaltestfile.txt";
+			uri => "upload.wikimedia.org!/monitoring/backend";
 		"wikidata-lb.pmtpa.wikimedia.org":
 			ip_address => $ip['ipv6']['pmtpa']['wikidatalb6'],
 			uri => "www.wikidata.org!/";
@@ -1047,7 +1047,7 @@ class lvs::monitor {
 			check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
-			check_command => "check_http_lvs!upload.wikimedia.org!/pybaltestfile.txt";
+			check_command => "check_http_lvs!upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
 			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page";
@@ -1104,7 +1104,7 @@ class lvs::monitor {
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb6'],
-			uri => "upload.wikimedia.org!/pybaltestfile.txt";
+			uri => "upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb6'],
 			uri => "en.m.wikipedia.org!/wiki/Main_Page";
@@ -1161,7 +1161,7 @@ class lvs::monitor {
 			check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.eqiad.wikimedia.org":
 			ip_address => $ip['upload']['eqiad']['uploadlb'],
-			check_command => "check_https_url!upload.wikimedia.org!/pybaltestfile.txt";
+			check_command => "check_https_url!upload.wikimedia.org!/monitoring/backend";
 		"mobile-lb.eqiad.wikimedia.org":
 			ip_address => $ip['mobile']['eqiad']['mobilelb'],
 			check_command => "check_https_lvs!en.m.wikipedia.org!/wiki/Main_Page";
@@ -1244,7 +1244,7 @@ class lvs::monitor {
 			uri => "bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png";
 		"upload-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['uploadlb6'],
-			uri => "upload.wikimedia.org!/pybaltestfile.txt";
+			uri => "upload.wikimedia.org!/monitoring/backend";
 	}
 
 	# Not really LVS but similar:

@@ -230,13 +230,13 @@ define command{
 # 'check_http_upload' command definition, querying a different URL
 define command{
         command_name    check_http_upload
-        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /pybaltestfile.txt
+        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /monitoring/backend
         }
 
 # 'check_https_upload' command definition, querying a different URL
 define command{
         command_name    check_https_upload
-        command_line    $USER1$/check_http -H upload.wikimedia.org -S -I $HOSTADDRESS$ -u /pybaltestfile.txt
+        command_line    $USER1$/check_http -H upload.wikimedia.org -S -I $HOSTADDRESS$ -u /monitoring/backend
         }
 
 # 'check_http_bits' command definition
@@ -254,7 +254,7 @@ define command{
 # 'check_http_upload' command definition, querying a different URL
 define command{
         command_name    check_http_upload_on_port
-        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /pybaltestfile.txt -p $ARG1$
+        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /monitoring/backend -p $ARG1$
         }
 
 define command{
