@@ -13,7 +13,7 @@ configs="${root}/*dc.cnf"
 switch_options="--master_state=alive --orig_master_is_new_slave --interactive=0"
 log="/var/tmp/siteswitch.$(date +'%Y%m%d%H%M')-$$.log"
 dryrun=1
-unset dest blind
+unset dest blind status
 
 if ! which masterha_master_switch >/dev/null ; then
 	echo 'Error: masterha_master_switch must be in $PATH'
@@ -48,10 +48,15 @@ function switch_all {
 	for conf in $configs ; do
 		echo "============================================================================="
 		echo "On ${conf}:"
-		echo "Running: masterha_master_switch $switch_options --conf=$conf 2>&1 | tee $log"
+		echo "Running: masterha_master_switch $switch_options --conf=$conf 2>&1 | tee -a $log"
 		echo "============================================================================="
 		if [ $dryrun -eq 0 ] ; then
-			masterha_master_switch $switch_options --conf=$conf 2>&1 | tee $log
+			masterha_master_switch $switch_options --conf=$conf 2>&1 | tee -a $log
+			if [ $? -eq 0 ] ; then
+				$status="${status}${conf}: success\n"
+			else
+				$status="${status}${conf}: ERROR\n"
+			fi
 		fi
 	done
 	lognote
@@ -75,10 +80,15 @@ function switch_to_site {
 		eval $(grep hostname= $conf | grep $dest)
 		echo "============================================================================="
 		echo "On ${conf}:"
-		echo "Running: masterha_master_switch $switch_options --new_master_host=$hostname --conf=$conf 2>&1 | tee $log"
+		echo "Running: masterha_master_switch $switch_options --new_master_host=$hostname --conf=$conf 2>&1 | tee -a $log"
 		echo "============================================================================="
 		if [ $dryrun -eq 0 ] ; then
-			masterha_master_switch $switch_options --new_master_host=$hostname --conf=$conf 2>&1 | tee $log
+			masterha_master_switch $switch_options --new_master_host=$hostname --conf=$conf 2>&1 | tee -a $log
+			if [ $? -eq 0 ] ; then
+				$status="${status}${conf}: success\n"
+			else
+				$status="${status}${conf}: ERROR\n"
+			fi
 		fi
 	done
 	lognote
@@ -132,3 +142,4 @@ else
 	usage
 fi
 
+echo -e "\n\n${status}" | tee -a $log
