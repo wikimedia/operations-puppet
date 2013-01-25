@@ -2546,6 +2546,8 @@ node "zirconium.wikimedia.org" {
 	include standard,
 		admins::roots,
 		role::planet
+
+	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node default {
