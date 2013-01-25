@@ -1,3 +1,0 @@
-## Wikimedia mysql APT repository
-deb http://apt.wikimedia.org/wikimedia precise-wikimedia-mariadb main universe
-deb-src http://apt.wikimedia.org/wikimedia precise-wikimedia-mariadb main universe

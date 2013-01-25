@@ -54,18 +54,3 @@ SignWith: default
 DebOverride: deb-override
 Log:
  log
-
-Origin: Wikimedia
-Label: Wikimedia
-Suite: precise-wikimedia-mariadb
-Codename: precise-wikimedia-mariadb
-Version: 12.04
-Architectures: source amd64
-Components: main universe
-UDebComponents: main
-Description: Wikimedia specific mariadb packages for Ubuntu Precise
-SignWith: default
-DebOverride: deb-override
-Log:
- log
-
