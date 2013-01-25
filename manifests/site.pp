@@ -1380,12 +1380,6 @@ node /mobile100[1-4]\.wikimedia\.org/ {
 	include newstandard
 }
 
-node /ms[1-3]\.pmtpa\.wmnet/ {
-	include	standard
-
-	#interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
-}
-
 node "ms5.pmtpa.wmnet" {
 	include	standard,
 		media-storage::thumbs-server,
