@@ -2,8 +2,20 @@
 class coredb_mysql::packages {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		if $mariadb == true {
+			file { "/etc/apt/sources.list.d/wikimedia-mariadb.list":
+				owner => root,
+				group => root,
+				mode => 0444,
+				source => "puppet:///modules/coredb_mysql/wikimedia-mariadb.list"
+			}
+			exec { "update_mysql_apt":
+				subscribe => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
+				command => "/usr/bin/apt-get update",
+				refreshonly => true;
+			}
 			package { [ 'mariadb-client-5.5', 'mariadb-server-core-5.5', 'mariadb-server-5.5', 'libmariadbclient18' ]:
 				ensure => "5.5.28-mariadb-wmf201212041~precise",
+				require => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"];
 			}
 		} else {
 			package { [ 'mysqlfb-client-5.1', 'mysqlfb-server-core-5.1', 'mysqlfb-server-5.1', 'libmysqlfbclient16' ]:

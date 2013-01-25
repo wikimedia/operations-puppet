@@ -1,0 +1,2 @@
+deb http://apt.wikimedia.org/wikimedia precise-wikimedia mariadb
+deb-src http://apt.wikimedia.org/wikimedia precise-wikimedia mariadb
