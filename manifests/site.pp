@@ -181,6 +181,10 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	include role::cache::bits
 }
 
+node /^(barium|colby)\.wikimedia\.org$/ {
+	include standard
+}
+
 node "bast1001.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
@@ -246,12 +250,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 			role::dns::recursor
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
-}
-
-node "colby.wikimedia.org" {
-	$cluster = "misc"
-
-	include standard
 }
 
 node /^(copper|zinc)\.wikimedia\.org$/ {
