@@ -9,7 +9,9 @@ pipe 10 /usr/local/bin/packet-loss 10 >> /var/log/udp2log/packet-loss.log
 # Capture all logs where the X-CS field (currently the last field) is not '-'.
 # X-CS is set by the mobile frontend varnish servers.  It is a different code
 # for each mobile service provider/country.
-pipe 1 /usr/bin/awk '$NF != "-"' >> /a/squid/zero-x-cs.log
+# Disabling this until Erosen and Amit give us the ok,
+# Once they do, we will disable all other IP based filters.
+# pipe 1 /usr/bin/awk '$NF != "-"' >> /a/squid/zero-x-cs.log
 
 
 
