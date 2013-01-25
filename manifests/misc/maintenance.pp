@@ -174,12 +174,7 @@ class misc::maintenance::update_special_pages {
 			minute => 0,
 			ensure => present;
 		update_special_pages_small:
-			command => "flock -n /var/lock/update-special-pages-small /usr/local/bin/update-special-pages-small > /home/wikipedia/logs/norotate/updateSpecialPages-small.log 2>&1",
-			user => "apache",
-			monthday => "*/3",
-			hour => 4,
-			minute => 0,
-			ensure => present;
+			ensure => absent;
 	}
 
 	file {
@@ -190,11 +185,7 @@ class misc::maintenance::update_special_pages {
 			mode => 0755,
 			ensure => present;
 		"/usr/local/bin/update-special-pages-small":
-			source => "puppet:///files/misc/scripts/update-special-pages-small",
-			owner => apache,
-			group => wikidev,
-			mode => 0755,
-			ensure => present;
+			ensure => absent;
 	}
 }
 
