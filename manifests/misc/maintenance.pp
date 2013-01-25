@@ -179,7 +179,7 @@ class misc::maintenance::update_special_pages {
 			monthday => "*/3",
 			hour => 4,
 			minute => 0,
-			ensure => present;
+			ensure => absent;
 	}
 
 	file {
@@ -190,11 +190,7 @@ class misc::maintenance::update_special_pages {
 			mode => 0755,
 			ensure => present;
 		"/usr/local/bin/update-special-pages-small":
-			source => "puppet:///files/misc/scripts/update-special-pages-small",
-			owner => apache,
-			group => wikidev,
-			mode => 0755,
-			ensure => present;
+			ensure => absent;
 	}
 }
 
