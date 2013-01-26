@@ -12,9 +12,8 @@
 # jobs-loop.sh is an infinite "while loop" used to call MediaWiki runJobs.php
 # and eventually attempt to process any job enqueued. MediaWiki jobs are split
 # into several types, by default jobs-loop.sh will:
-#  - first attempt to run the internally priorized jobs (see `types` variable
-#    in script).
-#  - proceed any default jobs
+#  - first attempt to run the priorized jobs (see `types` variable in script).
+#  - proceed to run any default jobs
 #
 # MediaWiki configuration variable $wgJobTypesExcludedFromDefaultQueue is used
 # to exclude some types from the default processing. Those excluded job types
@@ -31,8 +30,27 @@
 # jobs-loop.sh -t 14400 webVideoTranscode
 #
 
-# default maxtime for jobs
-maxtime=300
+# How long can low priority jobs be run until some high priority
+# jobs should be checked for and run if they exist.
+hpmaxdelay=180
+
+# The maxtime parameter for runJobs.php for low priority jobs.
+# The lower this value is, the less jobs of one wiki can hog attention
+# from the jobs on other wikis, though more overhead is incurred.
+# This should be lower than hpmaxdelay.
+lpmaxtime=60
+
+# How long can high priority jobs be run until some low priority
+# jobs should be checked for and run if they exist.
+lpmaxdelay=900
+
+# The maxtime parameter for runJobs.php for high priority jobs.
+# The lower this value is, the less jobs of one wiki/type can hog attention
+# from jobs of another wiki/type, though more overhead is incurred.
+# This should be lower than lpmaxdelay.
+hpmaxtime=30
+
+# default total memory limit (in kb) for this process and its sub-processes
 maxvirtualmemory=400000
 
 # Whether to process the default queue. Will be the case if no job type
@@ -57,16 +75,14 @@ if [ "$maxvirtualmemory" -gt 0 ]; then
 	ulimit -v $maxvirtualmemory
 fi
 
-# When killed, make sure we are also getting ride of the child jobs
+# When killed, make sure we are also getting rid of the child jobs
 # we have spawned.
 trap 'kill %-; exit' SIGTERM
-
 
 if [ -z "$1" ]; then
 	echo "Starting default queue job runner"
 	dodefault=true
-	#types="htmlCacheUpdate sendMail enotifNotify uploadFromUrl fixDoubleRedirect renameUser"
-	types="sendMail enotifNotify uploadFromUrl fixDoubleRedirect MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
+	types="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
 else
 	echo "Starting type-specific job runner: $1"
 	dodefault=false
@@ -75,37 +91,56 @@ fi
 
 # Starting the infinite loop of doom
 cd `readlink -f /usr/local/apache/common/multiversion`
-while [ 1 ];do
+while [ 1 ]; do
 
-	# Do the prioritised types
-	moreprio=y
-	while [ -n "$moreprio" ] ; do
-		moreprio=
-		for type in $types; do
-			db=`php MWScript.php nextJobDB.php --wiki=aawiki --type="$type"`
+	# Do the prioritized job types...
+	local started=`date +%s` # UNIX timestamp
+	local morehpjobs=y
+	while [ "$morehpjobs" -eq "y" ]; do
+		morehpjobs=n
+		local res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$types"`)
+		local db=${res[0]}
+		local type=${res[1]}
+
+		if [ "$?" -ne "0" ]; then
+			echo "Could not determine the next wiki."
+		elif [ -n "$db" -a -n "$type" ]; then
+			echo "$db $type"
+			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$hpmaxtime &
+			wait
+			# Do not spend too much time on prioritized jobs
+			local timestamp=`date +%s` # UNIX timestamp
+			if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
+				break
+			else
+				morehpjobs=y
+			fi
+		fi
+	done
+
+	if $dodefault; then
+		# Do the unprioritized job types...
+		local started=`date +%s` # UNIX timestamp
+		local morelpjobs=y
+		while [ "$morelpjobs" -eq "y" ]; do
+			morelpjobs=n
+			local db=`php MWScript.php nextJobDB.php --wiki=aawiki`
 
 			if [ "$?" -ne "0" ]; then
 				echo "Could not determine the next wiki."
 			elif [ -n "$db" ]; then
-				echo "$db $type"
-				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$maxtime &
+				echo "$db"
+				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$lpmaxtime &
 				wait
-				moreprio=y
+				# Do not spend too much time on unprioritized jobs
+				local timestamp=`date +%s` # UNIX timestamp
+				if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
+					break
+				else
+					morelpjobs=y
+				fi
 			fi
 		done
-	done
-
-	if $dodefault; then
-		# Do the remaining types
-		db=`php MWScript.php nextJobDB.php --wiki=aawiki`
-
-		if [ "$?" -ne "0" ]; then
-			echo "Could not determine the next wiki."
-		elif [ ! -z "$db" ];then
-			echo "$db"
-			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$maxtime &
-			wait
-		fi
 	fi
 
 	# No jobs to do, wait for a while
