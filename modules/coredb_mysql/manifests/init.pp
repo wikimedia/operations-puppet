@@ -12,16 +12,20 @@ class coredb_mysql(
 	$enable_unsafe_locks,
 	$large_slave_trans_retries,
 	$slow_query_digest,
+	$heartbeat_enabled
 	) {
 
 	include coredb_mysql::base,
 		coredb_mysql::conf,
-		coredb_mysql::heartbeat,
 		coredb_mysql::packages,
 		coredb_mysql::utils
 
 	if $slow_query_digest == true {
 		include coredb_mysql::slow_digest
+	}
+
+	if $heartbeat_enabled == true {
+		include coredb_mysql::heartbeat
 	}
 
 	Class["coredb_mysql"] -> Class["coredb_mysql::conf"]
