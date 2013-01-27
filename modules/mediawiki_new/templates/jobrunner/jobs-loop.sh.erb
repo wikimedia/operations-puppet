@@ -94,13 +94,13 @@ cd `readlink -f /usr/local/apache/common/multiversion`
 while [ 1 ]; do
 
 	# Do the prioritized job types...
-	local started=`date +%s` # UNIX timestamp
-	local morehpjobs=y
-	while [ "$morehpjobs" -eq "y" ]; do
+	started=`date +%s` # UNIX timestamp
+	morehpjobs=y
+	while [[ "$morehpjobs" == "y" ]]; do
 		morehpjobs=n
-		local res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$types"`)
-		local db=${res[0]}
-		local type=${res[1]}
+		res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$types"`)
+		db=${res[0]}
+		type=${res[1]}
 
 		if [ "$?" -ne "0" ]; then
 			echo "Could not determine the next wiki."
@@ -109,7 +109,7 @@ while [ 1 ]; do
 			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$hpmaxtime &
 			wait
 			# Do not spend too much time on prioritized jobs
-			local timestamp=`date +%s` # UNIX timestamp
+			timestamp=`date +%s` # UNIX timestamp
 			if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
 				break
 			else
@@ -120,11 +120,11 @@ while [ 1 ]; do
 
 	if $dodefault; then
 		# Do the unprioritized job types...
-		local started=`date +%s` # UNIX timestamp
-		local morelpjobs=y
-		while [ "$morelpjobs" -eq "y" ]; do
+		started=`date +%s` # UNIX timestamp
+		morelpjobs=y
+		while [[ "$morelpjobs" == "y" ]]; do
 			morelpjobs=n
-			local db=`php MWScript.php nextJobDB.php --wiki=aawiki`
+			db=`php MWScript.php nextJobDB.php --wiki=aawiki`
 
 			if [ "$?" -ne "0" ]; then
 				echo "Could not determine the next wiki."
@@ -133,7 +133,7 @@ while [ 1 ]; do
 				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$lpmaxtime &
 				wait
 				# Do not spend too much time on unprioritized jobs
-				local timestamp=`date +%s` # UNIX timestamp
+				timestamp=`date +%s` # UNIX timestamp
 				if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
 					break
 				else
