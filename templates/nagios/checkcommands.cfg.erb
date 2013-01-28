@@ -284,7 +284,7 @@ define command{
 
 define command{
         command_name    check_http_url_on_port
-        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -u $ARG3$
+        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -u $ARG3$ -e $ARG4$
         }
 
 define command {
