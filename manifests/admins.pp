@@ -2562,6 +2562,7 @@ class admins::mortals {
 	include accounts::rmoen
 	include accounts::robla
 	include accounts::spage
+	include accounts::sumanah	#RT 3752
 	include accounts::zak # access revoked
 }
 
