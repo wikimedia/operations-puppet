@@ -19,7 +19,7 @@ class role::solr($schema = undef, $replication_master = undef, $monitor = "servi
 	if ($monitor == "service") {
 		monitor_service { "Solr":
 			description => "Solr",
-			check_command => "check_http_url_on_port!$::hostname!8983!/solr/select/?q=*%3A*&start=0&rows=1&indent=on"
+			check_command => "check_http_url_on_port!$::hostname!8983!/solr/select/?q=*%3A*&start=0&rows=1&indent=on!200"
 		}
 	}
 	elsif ($monitor == "results") {
