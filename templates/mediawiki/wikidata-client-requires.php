@@ -16,6 +16,10 @@ $wgUseInstantCommons  = true;
 // use the Wikidata logo
 $wgLogo = "$wgStylePath/common/images/Wikidata-logo-democlient.png";
 
+// Cache
+$wgCacheDirectory = "/var/cache/mw-cache/<%=database_name%>/";
+$wgLocalisationCacheConf['manualRecache'] = true;
+
 require_once( "$IP/extensions/Diff/Diff.php" );
 require_once( "$IP/extensions/DataValues/DataValues.php" );
 require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );

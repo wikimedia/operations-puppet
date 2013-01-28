@@ -23,6 +23,21 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		role_config_lines => $role_config_lines
 	}
 
+# permissions for $wgCacheDir
+	file { "/var/cache/mw-cache":
+		ensure => directory,
+		owner => "www-data",
+		 group => "www-data",
+		 mode => "0755",
+	}
+
+	file { "/var/cache/mw-cache/${database_name}":
+		ensure => directory,
+		owner => "www-data",
+		group => "www-data",
+		mode => "0755",
+	}
+
 # install either Wikibase repo or client to ${install_path}/extensions
 
 # enable profiling
