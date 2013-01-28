@@ -87,6 +87,7 @@ class role::wikidata-client::labs {
 		install_repo => false,
 		repo_ip => $wikidata_repo_ip,
 		repo_url => $wikidata_repo_url,
+		siteGlobalID => $wikidata_client_siteGlobalID,
 		database_name => "client",
 		ensure => present,
 		install_path => "/srv/mediawiki",
