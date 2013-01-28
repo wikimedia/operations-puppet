@@ -4,8 +4,8 @@
 # Designed to dump to a specific location. Amanda handles the long-term storage from $baseDumpPath/dumps/
 
 ### CONFIG ###
-$repos = array( 'mysql', 'pywikipedia', 'mediawiki', 'wikimedia' );
-$publicCopies = array( 'mediawiki' => '/srv/org/wikimedia/svn/latest-dump/' );
+$repos = array( 'pywikipedia', 'wikimedia' );
+$publicCopies = array();
 $baseDumpPath = '/svnroot/bak';
 ### STOP ###
 
