@@ -2445,25 +2445,47 @@ class accounts {
 	}
 
   # RT 2440
-  class cmcmahon inherits baseaccount {
-    $username = "cmcmahon"
-    $realname = "Chris McMahon"
-    $uid = 627
+	class cmcmahon inherits baseaccount {
+		$username = "cmcmahon"
+		$realname = "Chris McMahon"
+		$uid = 627
 
-    unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-    if $manage_home {
-      Ssh_authorized_key { require => Unixaccount[$realname]}
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
 
-      ssh_authorized_key {
-        "cmcmahon@ubuntu":
-        ensure  => present,
-        user  => $username,
-        type  => "ssh-rsa",
-        key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCxI9s+xp5hVPgYCFoiA7fVZWHp+tpsk8zO+iv0xpoeC1HKu5plsyQ+IrJyZQ3AlXU8TdAregeCZ160scrVJcCLwaU+3JC9dgRKOVnvrOMieK3HFsNBAXgOpLTRqXwXi37OQElEw/+WmnUW6BPtE5laQXwiNZ9HmdKUnuSB7k469gtX8Zp67/NyypOJR4gEoBC5OU9xD99lkKhJMW2o/eDIX//vzjtInQVgVBpfSSp4iNjeB9Z1gx5E28Xc8y7DRe8ShyRL/wQkagZ+cexmo33JkoJ6+vwV3Md9JkKYFkj0WCUrLBfXRAM7zagcnY7vJyW3xu81+HVQxcQAONUxAAKB",
-      }
-    }
-  }
+			ssh_authorized_key {
+				"cmcmahon@ubuntu":
+				ensure  => present,
+				user  => $username,
+				type  => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCxI9s+xp5hVPgYCFoiA7fVZWHp+tpsk8zO+iv0xpoeC1HKu5plsyQ+IrJyZQ3AlXU8TdAregeCZ160scrVJcCLwaU+3JC9dgRKOVnvrOMieK3HFsNBAXgOpLTRqXwXi37OQElEw/+WmnUW6BPtE5laQXwiNZ9HmdKUnuSB7k469gtX8Zp67/NyypOJR4gEoBC5OU9xD99lkKhJMW2o/eDIX//vzjtInQVgVBpfSSp4iNjeB9Z1gx5E28Xc8y7DRe8ShyRL/wQkagZ+cexmo33JkoJ6+vwV3Md9JkKYFkj0WCUrLBfXRAM7zagcnY7vJyW3xu81+HVQxcQAONUxAAKB",
+			}
+		}
+	}
+
+  # RT 4387
+	class ram inherits baseaccount {
+		$username = "ram"
+		$realname = "Munagala Ramanath"
+		$uid = 628
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
+
+			ssh_authorized_key {
+				"ram@wikimedia.org":
+				ensure  => present,
+				user  => $username,
+				type  => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC1crxU3ORFVUydISpXqcTWzUrhnvdkim3rUppL+N9OYb+kIDobFKlzWlPUx9FHvu9Rl4zc7jmJIV36qxC9mDgvIya4XS5dLEVbZ8fR1r+NH0jJU9MDpdUaFTx2svl5WQqig5cnNqi2oL17NGxF1kl9vga6SZzuIngiKvHvfp+tgrXXMPyyaC7+6OJTJjropRifO72XtbcKlNmYtOn8FWeB6Ge1S3S73LZsuTG41LRiumT2ljQT5K2CnFAREwaeuYGNWq7SRbymb7m0kys2OQ7KMeRAPpIjwLekK5+QTAdM3+W3AOFXGX9idYk7iSDWG/+pXNcFRQpgH0WDzsBeKWLv",
+			}
+		}
+	}
+
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -2586,8 +2608,9 @@ class admins::restricted {
 	include accounts::khorn
 	include accounts::mwalker
 	include accounts::otto
-	include accounts::rcole # access revoked
 	include accounts::rainman
+	include accounts::ram #rt4387
+	include accounts::rcole # access revoked
 	include accounts::tparscal
 }
 
