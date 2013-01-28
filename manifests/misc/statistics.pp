@@ -292,7 +292,6 @@ class misc::statistics::sites::metrics_api {
 	}
 
 	# Set up the Python WSGI VirtualHost
-	include webserver::apache
 	webserver::apache::module { "wsgi": }
 	webserver::apache::site { $site_name:
 		require => [File["/srv/org.wikimedia.metrics-api"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
