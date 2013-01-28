@@ -254,7 +254,7 @@ define command{
 # 'check_http_upload' command definition, querying a different URL
 define command{
         command_name    check_http_upload_on_port
-        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /monitoring/backend -p $ARG1$
+        command_line    $USER1$/check_http -H upload.wikimedia.org -I $HOSTADDRESS$ -u /monitoring/backend -p $ARG1$ -e 200
         }
 
 define command{
