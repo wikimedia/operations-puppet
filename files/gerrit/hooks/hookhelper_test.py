@@ -110,6 +110,12 @@ class TestLogToFile(unittest.TestCase):
             'master'
         )
 
+    def test_mediawiki_tools_to_wikimediadev(self):
+        self.assertLogFile('wikimedia-dev.log',
+            'mediawiki/tools/codesniffer')
+        self.assertLogFile('wikimedia-dev.log',
+            'mediawiki/tools/upload/PhotoUpload')
+
     def test_catchall_to_mediawiki(self):
         self.assertLogFile('mediawiki.log',
             'department/project')
