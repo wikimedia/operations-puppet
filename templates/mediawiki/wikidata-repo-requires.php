@@ -21,7 +21,6 @@ require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );
 require_once( "$IP/extensions/Wikibase/repo/Wikibase.php" );
 require_once( "$IP/extensions/DismissableSiteNotice/DismissableSiteNotice.php" );
 require_once( "$IP/extensions/ApiSandbox/ApiSandbox.php" );
-require_once( "$IP/extensions/MoodBar/MoodBar.php" );
 require_once( "$IP/extensions/OAI/OAIRepo.php" );
 require_once( "$IP/extensions/notitle.php" );
 
@@ -86,5 +85,3 @@ $wgSiteMatrixClosedSites = "$IP/../../mediawiki-config/closed.dblist";
 $wgSiteMatrixPrivateSites = "$IP/../../mediawiki-config/private.dblist";
 $wgSiteMatrixFishbowlSites = "$IP/../../mediawiki-config/fishbowl.dblist";
 
-// MoodBar
-$wgGroupPermissions['sysop']['moodbar-view'] = true;

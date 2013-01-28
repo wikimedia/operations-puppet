@@ -105,6 +105,4 @@ $wgSiteMatrixFile = "$IP/../../mediawiki-config/langlist";
 $wgSiteMatrixClosedSites = "$IP/../../mediawiki-config/closed.dblist";
 $wgSiteMatrixPrivateSites = "$IP/../../mediawiki-config/private.dblist";
 $wgSiteMatrixFishbowlSites = "$IP/../../mediawiki-config/fishbowl.dblist";
-// MoodBar
-$wgGroupPermissions['sysop']['moodbar-view'] = true;
 
