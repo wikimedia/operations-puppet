@@ -36,6 +36,7 @@ class role::statistics::www inherits role::statistics {
 	system_role { "role::statistics": description => "statistics web server" }
 
 	include
+		misc::statistics::webserver,
 		# stats.wikimedia.org
 		misc::statistics::sites::stats,
 		# community-analytics.wikimedia.org

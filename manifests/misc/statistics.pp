@@ -120,6 +120,9 @@ class misc::statistics::plotting {
 }
 
 
+class misc::statistics::webserver {
+	include webserver::apache
+}
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
@@ -134,7 +137,6 @@ class misc::statistics::sites::stats {
 		source  => "puppet:///private/apache/htpasswd.stats",
 	}
 
-	include webserver::apache
 	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
 	webserver::apache::site { $site_name:
 		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
@@ -193,7 +195,6 @@ class misc::statistics::sites::community_analytics {
 		ensure => "/a/srv/org.wikimedia.community-analytics"
 	}
 
-	include webserver::apache
 	webserver::apache::site { $site_name:
 		require => [Class["webserver::apache"], Class["misc::statistics::packages::python"]],
 		docroot => $docroot,
