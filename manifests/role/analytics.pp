@@ -18,7 +18,7 @@ class role::analytics {
 		accounts::olivneh,
 		accounts::erik,
 		accounts::dandreescu,
-		accounts::spetreaal # per RT4402
+		accounts::spetrea # per RT4402
 
 	sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 
