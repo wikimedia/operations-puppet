@@ -279,12 +279,12 @@ define command{
 
 define command{
         command_name    check_http_url_for_string_on_port
-        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -u $ARG3$ -s $ARG4$
+        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -s $ARG3$ -u $ARG4$
         }
 
 define command{
         command_name    check_http_url_on_port
-        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -u $ARG3$ -e $ARG4$
+        command_line    $USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -p $ARG2$ -e $ARG3$ -u $ARG4$
         }
 
 define command {
