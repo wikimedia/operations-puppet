@@ -2621,6 +2621,7 @@ class admins::analinterns {
 	include accounts::declerambaul
 	include accounts::diederik
 	include accounts::halfak
+	include accounts::spetrea
 	include accounts::shawn # disabled
 	include accounts::whym # disabled
 
