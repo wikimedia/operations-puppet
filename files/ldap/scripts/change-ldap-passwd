@@ -1,86 +1,92 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/change-ldap-passwd
 #####################################################################
 
-import sys, traceback, getpass, ldapsupportlib, string, random
+import sys
+import traceback
+import getpass
+import ldapsupportlib
+import string
+import random
 from optparse import OptionParser
 
-try:    
-	import ldap
-	import ldap.modlist
+try:
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-	sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('change-ldap-passwd [options] <username>')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('change-ldap-passwd [options] <username>')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("--random", action="store_true", dest="random", help="Choose a random password, and return it.")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--random", action="store_true", dest="random", help="Choose a random password, and return it.")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 1:
-		parser.error("add-ldap-user expects exactly one argument.")
+    if len(args) != 1:
+        parser.error("add-ldap-user expects exactly one argument.")
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	base = ldapSupportLib.getBase()
+    base = ldapSupportLib.getBase()
 
-	ds = ldapSupportLib.connect()
+    ds = ldapSupportLib.connect()
 
-	# w00t We're in!
-	try:
-		username = args[0]
-		dn = 'uid=' + username + ',ou=people,' + base
-		if options.random:
-			chars = string.letters + string.digits + '!@#$%^&*()-=+_[]{};:.<>`~ '
-			newpass = ''
-			for i in range(15):
-				newpass = newpass + random.choice(chars)
-		else:
-			while True:
-				newpass = getpass.getpass('New password: ')
-				repeat = getpass.getpass('Repeat new password: ')
-				if newpass != repeat:
-					print "Passwords do no match, please try again"
-				else:
-					break
-		mod_attrs = [( ldap.MOD_REPLACE, 'userPassword', newpass )]
-		ds.modify_s(dn, mod_attrs)
-		if options.random:
-			print newpass
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("LDAP was unwilling to change the user's password. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.NO_SUCH_OBJECT:
-		sys.stderr.write("The user you are trying to modify does not exists.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except Exception:
-		try:
-			sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			ds.unbind()
-		except Exception:
-			sys.stderr.write("Also failed to unbind.\n")
-			traceback.print_exc(file=sys.stderr)
-		sys.exit(1)
+    # w00t We're in!
+    try:
+        username = args[0]
+        dn = 'uid=' + username + ',ou=people,' + base
+        if options.random:
+            chars = string.letters + string.digits + '!@#$%^&*()-=+_[]{};:.<>`~ '
+            newpass = ''
+            for i in range(15):
+                newpass = newpass + random.choice(chars)
+        else:
+            while True:
+                newpass = getpass.getpass('New password: ')
+                repeat = getpass.getpass('Repeat new password: ')
+                if newpass != repeat:
+                    print "Passwords do no match, please try again"
+                else:
+                    break
+        mod_attrs = [(ldap.MOD_REPLACE, 'userPassword', newpass)]
+        ds.modify_s(dn, mod_attrs)
+        if options.random:
+            print newpass
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to change the user's password. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The user you are trying to modify does not exists.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
 
-	ds.unbind()
-	sys.exit(0)
+    ds.unbind()
+    sys.exit(0)
 
 if __name__ == "__main__":
-	main()
+    main()
