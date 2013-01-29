@@ -79,7 +79,7 @@ sub radosgw_rewrite {
 sub check_thumb_404 {
 	if (beresp.status == 404 && bereq.url ~ "^/swift/v1/[^-/]+-[^-/]+-local-thumb") {
 		set req.backend = image_scalers;
-		restart;
+		return (restart);
 	}
 }
 
