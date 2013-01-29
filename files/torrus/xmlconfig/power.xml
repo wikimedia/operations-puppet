@@ -3815,13 +3815,6 @@
 			<param name="comment" value="ps1-a5-sdtpa Tower A"/>
 		</token-set>
 
-		<token-set name="ps1-a4-pmtpa_Tower_A">
-			<param name="comment" value="ps1-a4-pmtpa Tower A"/>
-		</token-set>
-		<token-set name="ps1-a4-pmtpa_Tower_B">
-			<param name="comment" value="ps1-a4-pmtpa Tower B"/>
-		</token-set>
-
 		<token-set name="ps1-b1-sdtpa_Tower_A">
 			<param name="comment" value="ps1-b1-sdtpa Tower A"/>
 		</token-set>
