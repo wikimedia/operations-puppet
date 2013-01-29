@@ -7,3 +7,4 @@ fi
 
 /usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php
 /usr/local/bin/foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php
+/usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikivoyage.dblist extensions/GeoData/solrupdate.php
