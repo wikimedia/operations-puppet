@@ -24,6 +24,7 @@ class role::wikidata-repo-latest::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
+		experimental => $wikidata_experimental,
 		database_name => "repo",
 		ensure => latest,
 		# all require_once lines here:
@@ -43,6 +44,7 @@ class role::wikidata-repo::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
+		experimental => $wikidata_experimental,
 		database_name => "repo",
 		ensure => present,
 		# all require_once lines here:
@@ -63,6 +65,7 @@ class role::wikidata-client-latest::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
+		experimental => $wikidata_experimental,
 		repo_ip => $wikidata_repo_ip,
 		repo_url => $wikidata_repo_url,
 		siteGlobalID => $wikidata_client_siteGlobalID,
@@ -86,6 +89,7 @@ class role::wikidata-client::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
+		experimental => $wikidata_experimental,
 		repo_ip => $wikidata_repo_ip,
 		repo_url => $wikidata_repo_url,
 		siteGlobalID => $wikidata_client_siteGlobalID,
