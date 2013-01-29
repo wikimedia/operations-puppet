@@ -3,7 +3,7 @@
 class misc::graphite {
 	system_role { "misc::graphite": description => "graphite and carbon services" }
 
-	include webserver::apache2
+	include webserver::apache2, misc::graphite::gdash
 
 	package { [ "python-libxml2", "python-sqlite", "python-sqlitecachec", "python-setuptools", "libapache2-mod-python", "libcairo2", "python-cairo", "python-simplejson", "python-django", "python-django-tagging", "python-twisted", "python-twisted-runner", "python-twisted-web", "memcached", "python-memcache" ]:
 		ensure => present;
@@ -82,3 +82,26 @@ net.core.rmem_default = 536870912
 	}
 }
 
+class misc::graphite::gdash {
+	# TODO
+	# gdash fork needs to be moved out of the puppet file repo!
+	# It should then be packaged and installed via this class.
+	# For now this only installs templates to a preconfigured location
+	# that will probably move after the above happens.
+	# This is all kinds of badness.
+
+	file {
+		"/a/graphite/webapp/gdash/templates":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0555,
+			ensure => directory,
+			recurse => true;
+		"/a/graphite/webapp/gdash/templates/dashboards/":
+			owner => "www-data",
+			group => "www-data",
+			mode => 0555,
+			source => "puppet:///files/graphite/gdash-dashboards/",
+			recurse => remote;
+	}
+}

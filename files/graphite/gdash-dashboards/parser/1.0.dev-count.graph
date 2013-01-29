@@ -1,4 +1,4 @@
-title   "14 Most Deviant Parser Methods by Call Rate log(2) -8hours"
+title   "10 Most Deviant Parser Methods by Call Rate log(2) -8hours"
 linewidth 1
 logbase 2
 linemode "connected"
@@ -7,4 +7,4 @@ hide_legend "false"
 from "-8hours"
 
 field :count, :alias => "none",
-               :data  => 'cactiStyle(substr(mostDeviant(14,maximumAbove(Parser.*.count,1)),1,2))'
+               :data  => 'cactiStyle(substr(mostDeviant(10,maximumAbove(Parser.*.count,1)),1,2))'
