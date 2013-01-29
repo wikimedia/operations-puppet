@@ -11,6 +11,10 @@
 // use the Wikidata logo
 $wgLogo = "$wgStylePath/common/images/Wikidata-logo-demorepo.png";
 
+// Cache
+$wgCacheDirectory = "/var/cache/mw-cache/<%=database_name%>/";
+$wgLocalisationCacheConf['manualRecache'] = true;
+
 // experimental features
 define( 'WB_EXPERIMENTAL_FEATURES', true );
 
