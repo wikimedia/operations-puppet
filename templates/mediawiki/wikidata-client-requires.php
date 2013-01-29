@@ -20,6 +20,9 @@ $wgLogo = "$wgStylePath/common/images/Wikidata-logo-democlient.png";
 $wgCacheDirectory = "/var/cache/mw-cache/<%=database_name%>/";
 $wgLocalisationCacheConf['manualRecache'] = true;
 
+// experimental features
+define( 'WB_EXPERIMENTAL_FEATURES', <%=experimental%> );
+
 require_once( "$IP/extensions/Diff/Diff.php" );
 require_once( "$IP/extensions/DataValues/DataValues.php" );
 require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );
@@ -29,9 +32,6 @@ require_once( "$IP/extensions/ParserFunctions/ParserFunctions.php" );
 require_once( "$IP/extensions/notitle.php" );
 
 $wgShowExceptionDetails = true;
-
-// experimental features
-define( 'WB_EXPERIMENTAL_FEATURES', true );
 
 $wgWBSettings['repoArticlePath'] = "/wiki/$1";
 $wgWBSettings['repoScriptPath'] = "/w";
