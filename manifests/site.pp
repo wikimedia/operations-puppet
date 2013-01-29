@@ -492,8 +492,12 @@ node /db1047\.eqiad\.wmnet/ {
 		role::db::core
 }
 
+node /db1012\.eqiad\.wmnet/ {
+  include role::db::es
+}
+
 ## not currently in production and/or hardware issues
-node /db10(1[23456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
+node /db10(1[3456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
