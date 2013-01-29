@@ -91,14 +91,6 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ApiSandbox.git",
 	}
 
-	git::clone { "Moodbar":
-		require => Git::Clone["mediawiki"],
-		directory => "${install_path}/extensions/MoodBar",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/MoodBar.git",
-	}
-
 	git::clone { "OAI":
 		require => Git::Clone["mediawiki"],
 		directory => "${install_path}/extensions/OAI",
