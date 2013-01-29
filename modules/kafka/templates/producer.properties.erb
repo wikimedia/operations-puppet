@@ -1,0 +1,82 @@
+# Note: This file is managed by Puppet.
+
+# see kafka.producer.ProducerConfig for more details
+
+############################# Producer Basics #############################
+
+# need to set either broker.list or zk.connect
+<% if @zookeeper_hosts -%>
+# discover brokers from ZK
+zk.connect=<%= zookeeper_hosts.sort.join(',') %>
+
+# zookeeper session timeout; default is 6000
+#zk.sessiontimeout.ms=
+
+# the max time that the client waits to establish a connection to zookeeper; default is 6000
+zk.connectiontimeout.ms=<%= zookeeper_connectiontimeout_ms %>
+
+# configure brokers statically
+# format: brokerid1:host1:port1,brokerid2:host2:port2 ...
+# broker.list=0:localhost:9092
+
+<% else -%>
+# configure brokers statically
+# format: brokerid1:host1:port1,brokerid2:host2:port2 ...
+broker.list=0:localhost:9092
+
+# discover brokers from ZK
+#zk.connect=
+
+# zookeeper session timeout; default is 6000
+#zk.sessiontimeout.ms=
+
+# the max time that the client waits to establish a connection to zookeeper; default is 6000
+#zk.connectiontimeout.ms=<%= zookeeper_connectiontimeout_ms %>
+<% end -%>
+
+# name of the partitioner class for partitioning events; default partition spreads data randomly
+#partitioner.class=
+
+# specifies whether the messages are sent asynchronously (async) or synchronously (sync)
+producer.type=<%= producer_type %>
+
+# specify the compression codec for all data generated: 0: no compression, 1: gzip
+compression.codec=0
+
+# message encoder
+serializer.class=kafka.serializer.StringEncoder
+
+# allow topic level compression
+#compressed.topics=
+
+# max message size; messages larger than that size are discarded; default is 1000000
+#max.message.size=
+
+
+############################# Async Producer #############################
+# maximum time, in milliseconds, for buffering data on the producer queue 
+#queue.time=
+
+# the maximum size of the blocking queue for buffering on the producer 
+#queue.size=
+
+# Timeout for event enqueue:
+# 0: events will be enqueued immediately or dropped if the queue is full
+# -ve: enqueue will block indefinitely if the queue is full
+# +ve: enqueue will block up to this many milliseconds if the queue is full
+#queue.enqueueTimeout.ms=
+
+# the number of messages batched at the producer 
+batch.size=<%= producer_batch_size %>
+
+# the callback handler for one or multiple events 
+#callback.handler=
+
+# properties required to initialize the callback handler 
+#callback.handler.props=
+
+# the handler for events 
+#event.handler=
+
+# properties required to initialize the event handler 
+#event.handler.props=
