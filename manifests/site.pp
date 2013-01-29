@@ -492,12 +492,8 @@ node /db1047\.eqiad\.wmnet/ {
 		role::db::core
 }
 
-node /db1012\.eqiad\.wmnet/ {
-  include role::coredb::es1
-}
-
 ## not currently in production and/or hardware issues
-node /db10(1[3456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
+node /db10(1[23456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
@@ -602,21 +598,11 @@ node "aluminium.wikimedia.org" {
 
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
-	if $hostname == "es1001" {
-		class { "role::db::es": mysql_role => "master" }
-	}
-	else {
-		include role::db::es
-	}
+	include role::coredb::es1
 }
 
 node /es[1-4]\.pmtpa\.wmnet/ {
-	if $hostname == "es1" {
-		class { "role::db::es": mysql_role => "master" }
-	}
-	else {
-		include role::db::es
-	}
+	include role::coredb::es1
 }
 
 # es2-3
