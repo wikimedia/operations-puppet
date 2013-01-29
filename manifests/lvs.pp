@@ -1197,7 +1197,8 @@ class lvs::monitor {
 	monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
 	monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
-	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.152.213", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php?title=Special:GlobalCollectGateway&uselang=en&ffname=cc-vm&contribution_tracking_id=1", retries => 20 }
+	# todo: we should probably monitor both eqiad/pmtpa
+	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php?title=Special:GlobalCollectGateway&uselang=en&ffname=cc-vm&contribution_tracking_id=1", retries => 20 }
 
 	monitor_service_lvs6_http_https {
 		"wikimedia-lb.esams.wikimedia.org":
