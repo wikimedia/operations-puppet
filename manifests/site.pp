@@ -493,7 +493,7 @@ node /db1047\.eqiad\.wmnet/ {
 }
 
 node /db1012\.eqiad\.wmnet/ {
-  include role::db::es
+  include role::coredb::es1
 }
 
 ## not currently in production and/or hardware issues
