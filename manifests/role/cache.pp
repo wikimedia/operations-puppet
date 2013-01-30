@@ -282,6 +282,30 @@ class role::cache {
 				"esams" => []
 			},
 		}
+
+		$backends = {
+			'production' => {
+				'bits_appservers' => {
+					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
+					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
+				},
+				'test_appservers' => {
+					'pmtpa' => [ "srv193.pmtpa.wmnet" ],
+					'eqiad' => [ "srv193.pmtpa.wmnet" ],
+				},
+			},
+			'labs' => {
+				'bits_appservers' => {
+					'pmtpa' => [
+						'10.4.0.166', # deployment-apache32
+						'10.4.0.187', # deployment-apache33
+						],
+				},
+				'test_appservers' => {
+					'pmtpa' => [ '10.4.0.166' ],
+				}
+			}
+		}
 	}
 
 	class squid {
