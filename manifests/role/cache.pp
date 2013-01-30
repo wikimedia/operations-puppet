@@ -598,20 +598,6 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
-		$varnish_fe_backends = $::site ? {
-			"eqiad" => [ "cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet",
-				"cp1043.wikimedia.org", "cp1044.wikimedia.org" ],
-			default => []
-		}
-		$varnish_fe_directors = {
-			"pmtpa" => {},
-			"eqiad" => {
-				"backend" => $varnish_fe_backends,
-				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-			},
-			"esams" => {},
-		}
-
 		system_role { "role::cache::mobile": description => "mobile Varnish cache server" }
 
 		include standard,
@@ -663,7 +649,10 @@ class role::cache {
 			vcl => "mobile-frontend",
 			port => 80,
 			admin_port => 6082,
-			directors => $varnish_fe_directors[$::site],
+			directors => {
+				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
+				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			},
 			director_options => {
 				'retries' => 40,
 			},
