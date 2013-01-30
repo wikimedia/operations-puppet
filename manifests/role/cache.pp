@@ -506,20 +506,17 @@ class role::cache {
 			'production': {
 				case $::site {
 					'pmtpa','eqiad': {
-						$varnish_backends = flatten([
-							$::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-							$::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary]
-						])
 						$varnish_directors = {
 							"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
 							"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 						}
+						$varnish_backends = flatten([$varnish_directors['backend'], $varnish_directors['test_wikipedia']])
 					}
 					default: {
-						$varnish_backends = [ "208.80.152.210", "208.80.154.234" ] # [ bits-lb.pmtpa, bits-lb.eqiad ]
 						$varnish_directors = {
-							"backend" => $varnish_backends,
+							"backend" => [ "208.80.152.210", "208.80.154.234" ] # [ bits-lb.pmtpa, bits-lb.eqiad ]
 						}
+						$varnish_backends = $varnish_directors['backend']
 					}
 				}
 
@@ -531,11 +528,11 @@ class role::cache {
 				}
 			}
 			'labs': {
-				$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary]
 				$varnish_directors = {
+					"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary]
 					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-					"backend" => $varnish_backends
 				}
+				$varnish_backends = flatten([$varnish_directors['backend'], $varnish_directors['test_wikipedia']])
 
 				$cluster_options = {
 					'test_hostname' => $test_hostname,
