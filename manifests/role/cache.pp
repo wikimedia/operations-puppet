@@ -499,7 +499,10 @@ class role::cache {
 
 		if( $::realm == 'production' ) {
 			$varnish_backends = $::site ? {
-				/^(pmtpa|eqiad)$/ => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+				/^(pmtpa|eqiad)$/ => flatten([
+					$::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+					$::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary]
+				]),
 				# [ bits-lb.pmtpa, bits-lb.eqiad ]
 				'esams' => [ "208.80.152.210", "208.80.154.234" ],
 				default => []
