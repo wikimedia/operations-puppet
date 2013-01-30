@@ -237,15 +237,14 @@ class openstack::project-storage {
 class openstack::gluster-service {
 	include generic::gluster
 
-	service { "glusterd":
+	service { "glusterfs-server":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs"], File["/etc/init.d/glusterd"], Upstart_job["glusterd"]];
+		require => [Package["glusterfs-server"], Upstart_job["glusterfs-server"]];
 	}
 
-	# TODO: We need to replace the init script with an upstart job that'll ensure
-	# the filesystem gets mounted after gluster is started.
-	upstart_job{ "glusterd": require => Package["glusterfs"], install => "true" }
+	upstart_job{ "glusterfs-server": require => Package["glusterfs-server"], install => "true" }
+
 }
 
 class openstack::database-server($openstack_version="diablo", $novaconfig, $keystoneconfig, $glanceconfig) {
