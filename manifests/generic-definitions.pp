@@ -552,7 +552,7 @@ class generic::rsyncd($config = undef, $content = undef) {
 
 class generic::gluster {
 
-	package { "glusterfs":
+	package { "glusterfs-client":
 		ensure => present;
 	}
 
