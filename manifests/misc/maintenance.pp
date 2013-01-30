@@ -207,23 +207,24 @@ class misc::maintenance::wikidata {
 			ensure => present;
 	}
 
-	# Run the polling script every 5 minutes for test2.
-	# This is a hack, and will be replaced before we roll it out to other wikis
-	# We know it won't scale
+	# Run the dispatcher script every 5 minutes
+	# This handles inserting jobs into client job queue, which then process the changes
 	cron {
-		wikibase-poll-test2:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki test2wiki --statefile=/home/wikipedia/common/wikibase-test2-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.test2wiki.log",
+		wikibase-dispatch-changes:
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 300 2>&1 >> /var/log/wikidata/dispatcher.log",
 			user => mwdeploy,
 			minute => "*/5",
 			ensure => present;
 	}
 
 	cron {
+		wikibase-poll-test2:
+			ensure => absent;
+	}
+
+	cron {
 		wikibase-poll-huwiki:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki huwiki --statefile=/home/wikipedia/common/wikibase-huwiki-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.huwiki.log",
-			user => mwdeploy,
-			minute => "*/5",
-			ensure => present;
+			ensure => absent;
 	}
 
 	file {
