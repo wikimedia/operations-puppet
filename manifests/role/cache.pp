@@ -513,9 +513,7 @@ class role::cache {
 		}
 
 		$test_hostname = $::site ? {
-			'pmtpa' => 'test.wikipedia.org',
-			'eqiad' => 'test.wikipedia.org',
-			'esams' => false,
+			'pmtpa','eqiad' => 'test.wikipedia.org',
 			default => false,
 		}
 
