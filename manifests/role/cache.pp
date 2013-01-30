@@ -497,65 +497,59 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
-		if( $::realm == 'production' ) {
-			$varnish_backends = $::site ? {
-				/^(pmtpa|eqiad)$/ => flatten([
-					$::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-					$::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary]
-				]),
-				# [ bits-lb.pmtpa, bits-lb.eqiad ]
-				'esams' => [ "208.80.152.210", "208.80.154.234" ],
-				default => []
-			}
-		} else {
-			# beta on labs
-			$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::site]
-		}
-
 		$test_hostname = $::site ? {
 			/^(pmtpa|eqiad)$/ => 'test.wikipedia.org',
 			default => false,
 		}
 
-		if( $::realm == 'production' ) {
-			# Whenever altering this options, please reflect the modification
-			#	to the labs options too.
-			$cluster_options = {
-				'test_hostname' => $test_hostname,
-				'enable_geoiplookup' => true,
-			}
-		} else {
-			$cluster_options = {
-				'test_hostname' => $test_hostname,
-				'test_server' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
-				'enable_geoiplookup' => true,
+		case $::realm {
+			'production': {
+				case $::site ? {
+					'pmtpa','eqiad': {
+						$varnish_backends = flatten([
+							$::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+							$::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary]
+						])
+						$varnish_directors = {
+							"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+							"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+						}
+					}
+					default: {
+						$varnish_backends = [ "208.80.152.210", "208.80.154.234" ] # [ bits-lb.pmtpa, bits-lb.eqiad ]
+						$varnish_directors = {
+							"backend" => $varnish_backends,
+						}
+					}
+				}
 
-				# Labs specific options:
-				'top_domain' => 'beta.wmflabs.org',
-				'bits_domain' => 'bits.beta.wmflabs.org',
+				# Whenever altering these options, please reflect the modification
+				# to the labs options too.
+				$cluster_options = {
+					'test_hostname' => $test_hostname,
+					'enable_geoiplookup' => true,
+				}
+			}
+			'labs': {
+				$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::site]
+				$varnish_directors = {
+					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
+					"backend" => $varnish_backends
+				}
+
+				$cluster_options = {
+					'test_hostname' => $test_hostname,
+					'test_server' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
+					'enable_geoiplookup' => true,
+
+					# Labs specific options:
+					'top_domain' => 'beta.wmflabs.org',
+					'bits_domain' => 'bits.beta.wmflabs.org',
+				}
 			}
 		}
 
-		if( $::realm == 'production' ) {
-			if ($::site in ['pmtpa','eqiad']) {
-				$varnish_directors = {
-					"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-				}
-			} else {
-				$varnish_directors = {
-					"backend" => $varnish_backends,
-				}
-			}
-		} else {
-			# beta on labs
-			$varnish_directors = {
-				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
-				"backend" => $varnish_backends
-			}
-		}
-
-		if( $::realm == 'production' ) {
+		if $::realm == 'production' {
 			$event_listener = $::site ? {
 				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
 				'esams' => '208.80.154.15', # oxygen
