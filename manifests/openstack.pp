@@ -235,7 +235,8 @@ class openstack::project-storage {
 }
 
 class openstack::gluster-service {
-	include generic::gluster
+	include generic::gluster-client,
+		generic::gluster-server
 
 	service { "glusterfs-server":
 		enable => true,

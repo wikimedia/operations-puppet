@@ -343,7 +343,7 @@ node "dataset1001.wikimedia.org" {
 		accounts::catrope,
 		misc::download-wikimedia,
 		misc::download-mirror,
-		generic::gluster
+		generic::gluster-client
 		mount { "/mnt/glusterpublicdata":
 		      device => "labstore1.pmtpa.wmnet:/publicdata-project",
 		      fstype => "glusterfs",

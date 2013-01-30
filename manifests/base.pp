@@ -731,7 +731,7 @@ class base {
 
 	if $::realm == "labs" {
 		include base::instance-upstarts,
-			generic::gluster
+			generic::gluster-client
 
 		# make common logs readable
 		class {'base::syslogs': readable => 'true'; }
