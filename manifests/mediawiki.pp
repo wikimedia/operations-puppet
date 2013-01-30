@@ -75,6 +75,26 @@ class mediawiki::math {
 	}
 }
 
+# definition to clone mediawiki extensions
+	define mw-extension(
+		# defaults
+		$branch="master",
+		$ssh="",
+		$owner="root",
+		$group="root",
+		$timeout="300",
+		$depth="full",
+		$mode=0755) {
+		git::clone { "$name":
+			require => git::clone["mediawiki"],
+			directory => "${install_path}/extensions/${name}",
+			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/${name}.git",
+			branch => $branch,
+			ensure => $ensure,
+		}
+	}
+
+
 
 # A one-step class for setting up a single-node MediaWiki install,
 #  running from a Git tree.
@@ -116,28 +136,9 @@ class mediawiki::singlenode( $ensure = 'present',
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
 
-	git::clone { "nuke" :
-		require => git::clone["mediawiki"],
-		directory => "${install_path}/extensions/Nuke",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Nuke.git";
-	}
-
-	git::clone { "SpamBlacklist" :
-		require => git::clone["mediawiki"],
-		directory => "${install_path}/extensions/SpamBlacklist",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.git";
-	}
-
-	git::clone { "ConfirmEdit" :
-		require => git::clone["mediawiki"],
-		directory => "${install_path}/extensions/ConfirmEdit",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ConfirmEdit.git";
+# get the extensions
+	mw-extension { [ "Nuke", "SpamBlacklist", "ConfirmEdit" ]:
+		require => Git::Clone["mediawiki"],
 	}
 
 	file {
@@ -186,9 +187,9 @@ class mediawiki::singlenode( $ensure = 'present',
 	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
 			require => [git::clone["mediawiki"],
-				git::clone["nuke"],
-				git::clone["SpamBlacklist"],
-				git::clone["ConfirmEdit"],
+				Mw-extension["nuke"],
+				Mw-extension["SpamBlacklist"],
+				Mw-extension["ConfirmEdit"],
 				File["${install_path}/LocalSettings.php"]],
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
 			logoutput => "on_failure",
