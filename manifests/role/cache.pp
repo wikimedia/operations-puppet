@@ -594,7 +594,8 @@ class role::cache {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
-		include lvs::configuration
+		include lvs::configuration, role::cache::configuration
+
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
 		$varnish_fe_backends = $::site ? {
@@ -604,7 +605,10 @@ class role::cache {
 		}
 		$varnish_fe_directors = {
 			"pmtpa" => {},
-			"eqiad" => { "backend" => $varnish_fe_backends },
+			"eqiad" => {
+				"backend" => $varnish_fe_backends,
+				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			},
 			"esams" => {},
 		}
 

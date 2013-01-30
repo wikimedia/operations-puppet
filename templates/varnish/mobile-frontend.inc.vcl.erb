@@ -546,7 +546,7 @@ sub vcl_recv {
 	}
 
 	if ( req.http.host ~ "^test\." ) {
-		set req.backend = test;
+		set req.backend = test_wikipedia;
 	}
 
 	call device_detection;
