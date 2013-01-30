@@ -62,16 +62,6 @@ acl opera_mini {
 
 # Backend probes
 
-/*
-probe text {
-	.request =
-		"GET /wiki/Main_Page HTTP/1.1"
-		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
-		"User-agent: Varnish backend check"
-		"Connection: close";	
-}
-*/
-
 # FIXME: need to support checks from pmtpa to backend bits app servers
 <% if vcl == "bits" and scope.lookupvar("::site") == "esams" -%>
 probe bits {
@@ -131,11 +121,6 @@ probe options {
 
 probe swift {
 	.url = "/monitoring/backend";
-	.timeout = 2s;
-}
-
-probe upload {
-	.url = "/pybaltestfile.txt";
 	.timeout = 2s;
 }
 
