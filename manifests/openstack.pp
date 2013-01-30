@@ -393,8 +393,11 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
 	require mediawiki::user
 
-	include memcached,
-		webserver::apache2
+	include webserver::apache2
+
+	class { "memcached":
+		pin => true;
+	}
 
 	$controller_hostname = $novaconfig["controller_hostname"]
 

@@ -1,10 +1,18 @@
 # memcached.pp
 
 class memcached ($memcached_size = '2000', $memcached_port = '11000', $memcached_ip = '0.0.0.0',
-		$version = "present", $memcached_options = {}) {
+		$version = "present", $memcached_options = {}, $pin=false) {
 
 	class { "memcached::config": memcached_size => "$memcached_size", memcached_port => "$memcached_port",
 		memcached_ip => "$memcached_ip", memcached_options => $memcached_options }
+
+	if ( $pin ) {
+		apt::pin { 'memcached':
+			pin      => 'release o=Ubuntu',
+			priority => '1001',
+			before   => Package['memcached'],
+		}
+	}
 
 	package { memcached:
 		ensure => $version;
