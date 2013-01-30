@@ -229,6 +229,9 @@ class role::coredb::common(
 	) inherits role::coredb::config {
 
 	$cluster = "mysql"
+	$primary_site = $topology[$shard]['primary_site']
+	$masters = $topology[$shard]['masters']
+	$snapshots = $topology[$shard]['snapshot']
 
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
@@ -236,8 +239,8 @@ class role::coredb::common(
 		mysql::coredb::ganglia,
 		mha::node
 
-	if $topology[$shard]['masters'][$::site] == $::hostname
-		and ( $topology[$shard]['primary_site'] == $::site or $topology[$shard]['primary_site'] == 'both' ){
+	if $masters[$::site] == $::hostname
+		and ( $primary_site == $::site or $primary_site == 'both' ){
 		class { "coredb_mysql":
 			shard => $shard,
 			mariadb => $mariadb,
@@ -276,14 +279,14 @@ class role::coredb::common(
 			heartbeat_enabled => $heartbeat_enabled,
 		}
 
-		if $topology[$shard]['primary_site'] == false {
+		if $primary_site == false {
 			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
 		} else {
 			class { "mysql::coredb::monitoring": crit => false }
 		}
 	}
 
-	if $::hostname in $topology[$shard]['snapshot'] {
+	if $::hostname in $snapshots {
 		include coredb_mysql::snapshot
 	}
 }
