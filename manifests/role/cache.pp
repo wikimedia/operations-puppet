@@ -634,7 +634,10 @@ class role::cache {
 				/^cp104[12]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			},
-			directors => { "backend" => [ $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary] ] },
+			directors => {
+				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary],
+				"api" => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
+			},
 			director_options => {
 				'retries' => 2,
 			},
@@ -648,9 +651,6 @@ class role::cache {
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 600,
 				},
-			cluster_options => {
-				'api_backend' => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
-			},
 			xff_sources => $network::constants::all_networks
 		}
 

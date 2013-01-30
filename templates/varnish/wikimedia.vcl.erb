@@ -161,16 +161,6 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 
 <% end -%>
 
-# certain mobile requests are best sent to the api
-backend api {
-	.host = "<%= cluster_options.fetch( 'api_backend', '10.2.1.22' ) %>";
-	.port = "80";
-	.connect_timeout = 5s;
-	.first_byte_timeout = 35s;
-	.between_bytes_timeout = 4s;
-	.max_connections = 1000;
-}
-
 # Directors
 # Expected format: { "director name" => [ "backend1", "backend2" ] }
 <% varnish_directors.keys.sort.each do |director| -%>
