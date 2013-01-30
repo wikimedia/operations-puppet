@@ -32,7 +32,7 @@
 
 # How long can low priority jobs be run until some high priority
 # jobs should be checked for and run if they exist.
-hpmaxdelay=180
+hpmaxdelay=120
 
 # The maxtime parameter for runJobs.php for low priority jobs.
 # The lower this value is, the less jobs of one wiki can hog attention
@@ -42,8 +42,7 @@ lpmaxtime=60
 
 # How long can high priority jobs be run until some low priority
 # jobs should be checked for and run if they exist.
-lpmaxdelay=900
-lpmaxdelay=60 # temporary hack --aaron
+lpmaxdelay=600
 
 # The maxtime parameter for runJobs.php for high priority jobs.
 # The lower this value is, the less jobs of one wiki/type can hog attention
