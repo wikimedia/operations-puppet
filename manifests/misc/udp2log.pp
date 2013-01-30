@@ -34,7 +34,7 @@ class misc::udp2log($monitor = true) {
 
 	# make sure the udplog package is installed
 	package { udplog:
-		ensure => latest;
+		ensure => present;
 	}
 }
 
