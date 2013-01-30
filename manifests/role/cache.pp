@@ -497,38 +497,23 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
-		$bits_appservers = {
-			'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
-			'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
-		}
-		$test_wikipedia = $::realm ? {
-			"production" => [ "srv193.pmtpa.wmnet" ],
-			"labs" => [ '10.4.0.166' ],
-		}
-		# FIXME: need 'flatten' here
-		$all_backends = [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet", "srv193.pmtpa.wmnet",
-		 	"mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ]
-
 		if( $::realm == 'production' ) {
 			$varnish_backends = $::site ? {
-				/^(pmtpa|eqiad)$/ => $all_backends,
+				/^(pmtpa|eqiad)$/ => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
 				# [ bits-lb.pmtpa, bits-lb.eqiad ]
 				'esams' => [ "208.80.152.210", "208.80.154.234" ],
 				default => []
 			}
 		} else {
 			# beta on labs
-			$varnish_backends = [
-				'10.4.0.166', # deployment-apache32
-				'10.4.0.187', # deployment-apache33
-			]
+			$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::site]
 		}
 
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
 		$multiple_backends = {
 			'pmtpa-eqiad' => {
-				"backend" => $bits_appservers[$::mw_primary],
-				"test_wikipedia" => $test_wikipedia,
+				"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 			'esams' => {
 				"backend" => $varnish_backends,
@@ -551,7 +536,7 @@ class role::cache {
 		} else {
 			$cluster_options = {
 				'test_hostname' => $test_hostname,
-				'test_server' => $test_wikipedia,
+				'test_server' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
 				'enable_geoiplookup' => true,
 
 				# Labs specific options:
