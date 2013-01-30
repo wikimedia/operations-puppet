@@ -452,7 +452,6 @@ class role::cache {
 				port => 80,
 				admin_port => 6082,
 				storage => "-s malloc,${memory_storage_size}G",
-				backends => flatten(values($varnish_fe_directors[$::site])),
 				directors => $varnish_fe_directors[$::site],
 				director_type => "chash",
 				vcl_config => {
@@ -530,7 +529,6 @@ class role::cache {
 				})
 			}
 		}
-		$varnish_backends = unique(flatten(values($varnish_directors)))
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
@@ -545,7 +543,6 @@ class role::cache {
 			port => 80,
 			admin_port => 6082,
 			storage => "-s malloc,2G",
-			backends => $varnish_backends,
 			directors => $varnish_directors,
 			director_type => "random",
 			vcl_config => {
@@ -637,7 +634,6 @@ class role::cache {
 				/^cp104[12]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
 			},
-			backends => [ $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary] ],
 			directors => { "backend" => [ $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary] ] },
 			director_options => {
 				'retries' => 2,
@@ -663,7 +659,6 @@ class role::cache {
 			vcl => "mobile-frontend",
 			port => 80,
 			admin_port => 6082,
-			backends => $varnish_fe_backends,
 			directors => $varnish_fe_directors[$::site],
 			director_options => {
 				'retries' => 40,
