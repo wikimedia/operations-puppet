@@ -94,6 +94,8 @@ fi
 cd `readlink -f /usr/local/apache/common/multiversion`
 while [ 1 ]; do
 
+	foundjobs=n
+
 	# Do the prioritized job types...
 	started=`date +%s` # UNIX timestamp
 	morehpjobs=y
@@ -116,6 +118,7 @@ while [ 1 ]; do
 			else
 				morehpjobs=y
 			fi
+			foundjobs=y
 		fi
 	done
 
@@ -140,12 +143,15 @@ while [ 1 ]; do
 				else
 					morelpjobs=y
 				fi
+				foundjobs=y
 			fi
 		done
 	fi
 
-	# No jobs to do, wait for a while
-	echo "No jobs..."
-	sleep 5
+	# Reduce polling load when there are no jobs
+	if [[ "$foundjobs" == "n" ]]; then
+		echo "No jobs..."
+		sleep 5
+	fi
 
 done
