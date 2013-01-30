@@ -599,19 +599,6 @@ class role::cache {
 			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks
 		}
-
-		#varnish::udplogger {
-		#	"linne":
-		#		host => "linne.wikimedia.org";
-		#	"emery":
-		#		host => "emery.wikimedia.org";
-		#}
-
-		cron { "session leak":
-			command => "test $(varnishstat -1 -f n_sess_mem | awk '{ print \$2 }') -gt 150000 && service varnish restart > /var/log/varnish-restarts",
-			user => root,
-			ensure => absent;
-		}
 	}
 
 	class mobile {
