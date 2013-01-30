@@ -226,6 +226,22 @@ class misc::maintenance::wikidata {
 			ensure => present;
 	}
 
+	cron {
+		wikibase-poll-hewiki:
+		command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki hewiki --statefile=/home/wikipedia/common/wikibase-hewiki-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.hewiki.log",
+		user => mwdeploy,
+		minute => "*/5",
+		ensure => present;
+	}	
+
+	cron {
+		wikibase-poll-itwiki:
+		command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/pollForChanges.php --wiki itwiki --statefile=/home/wikipedia/common/wikibase-itwiki-poll.changeid --all 2>&1 >> /var/log/wikidata/poll.itwiki.log",
+		user => mwdeploy,
+		minute => "*/5",
+		ensure => present;
+	}
+
 	file {
 		"/var/log/wikidata":
 			owner => mwdeploy,
