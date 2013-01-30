@@ -259,6 +259,9 @@ class role::coredb::common(
 
 	}
 	else {
+	  ## notify for troubleshooting
+	  notify { "calling role::coredb::common; shard is $shard , primary site is $topology[$shard]['primary_site'] ": }
+
 		class { "coredb_mysql":
 			shard => $shard,
 			mariadb => $mariadb,
