@@ -59,7 +59,7 @@ class role::coredb::config {
 		'm1' => {
 			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
 				'eqiad' => [] },
-			'primary_site' => false,
+			'primary_site' => "none",
 			'masters' => { 'pmtpa' => "blondel" },
 			'snapshot' => [],
 			'no_master' => []
@@ -75,7 +75,7 @@ class role::coredb::config {
 		'es1' => {
 			'hosts' => { 'pmtpa' => [ 'es1', 'es2', 'es3', 'es4' ],
 				'eqiad' => [ 'es1001', 'es1002', 'es1003', 'es1004' ] },
-			'primary_site' => false,
+			'primary_site' => "none",
 			'masters' => {},
 			'snapshot' => [],
 			'no_master' => []
@@ -285,7 +285,7 @@ class role::coredb::common(
   ## notify for troubleshooting
   notify { "selecting monitoring in role::coredb::common; shard is $shard , primary site is $primary_site ": }
 
-		if $primary_site == false {
+		if $primary_site == "none" {
 			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
 		} else {
 			class { "mysql::coredb::monitoring": crit => false }
