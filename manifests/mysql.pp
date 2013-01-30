@@ -564,9 +564,6 @@ class mysql::coredb::ganglia{
 
 class mysql::coredb::monitoring( $crit = false, $no_slave = false ) {
 
-  ## notify for troubleshooting
-  notify { "Setting up MySQL monitoring checks; cirt is $crit , no slave is $no_slave": }
-
 		include passwords::nagios::mysql
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
