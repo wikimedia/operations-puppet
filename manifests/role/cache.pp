@@ -542,7 +542,7 @@ class role::cache {
 				}
 			}
 		}
-		$varnish_backends = flatten(values($varnish_directors))
+		$varnish_backends = unique(flatten(values($varnish_directors)))
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
