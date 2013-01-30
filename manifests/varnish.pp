@@ -56,7 +56,7 @@ class varnish {
 		$admin_port="6083",
 		$storage="-s malloc,1G",
 		$runtime_parameters=[],
-		$backends=[],
+		$backends=undef,
 		$directors={},
 		$director_type="hash",
 		$director_options={},
@@ -83,7 +83,7 @@ class varnish {
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
-		$varnish_backends = $backends
+		$varnish_backends = $backends ? { undef => unique(flatten(values($directors))), default => $backends }
 		$varnish_directors = $directors
 		$varnish_backend_options = $backend_options
 		# $cluster_option is referenced directly
