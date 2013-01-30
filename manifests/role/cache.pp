@@ -505,11 +505,13 @@ class role::cache {
 							"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
 							"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 						}
+						$probe = "bits"
 					}
 					default: {
 						$varnish_directors = {
 							"backend" => [ "208.80.152.210", "208.80.154.234" ] # [ bits-lb.pmtpa, bits-lb.eqiad ]
 						}
+						$probe = "varnish"
 					}
 				}
 				$cluster_options = $common_cluster_options
@@ -523,6 +525,7 @@ class role::cache {
 					'top_domain' => 'beta.wmflabs.org',
 					'bits_domain' => 'bits.beta.wmflabs.org',
 				})
+				$probe = "bits"
 			}
 		}
 
@@ -551,7 +554,7 @@ class role::cache {
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "4s",
 				'max_connections' => 10000,
-				'probe' => "bits",
+				'probe' => $probe,
 			},
 			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks
