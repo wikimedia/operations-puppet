@@ -285,10 +285,10 @@ class role::coredb::common(
   ## notify for troubleshooting
   notify { "selecting monitoring in role::coredb::common; shard is $shard , primary site is $primary_site ": }
 
-		if $primary_site == false {
-			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
-		} else {
+		if $primary_site {
 			class { "mysql::coredb::monitoring": crit => false }
+		} else {
+			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
 		}
 	}
 
