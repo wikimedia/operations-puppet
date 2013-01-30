@@ -47,3 +47,26 @@ class role::logbot::wikimedia-analytics {
 		wiki_category => "";
 	}
 }
+
+#  Install the logbot for wikimedia-e3 (Editor Engagement Experiments)
+class role::logbot::wikimedia-e3 {
+
+	include passwords::misc::scripts
+
+	class { "bots::logbot":
+		ensure                = > latest,
+		enable_projects       = > "False",
+		targets               = > ["#wikimedia-e3"],
+		nick                  = > "e3-logbot",
+		wiki_connection       = > '("https","www.mediawiki.org")',
+		wiki_path             = > "/w/",
+		log_url               = > "www.mediawiki.org/wiki/Editor_Engagement_Experiments/E3_log",
+		password_include_file = > 'adminbotpass',
+		author_map            = > '{ "ori-l": "Ori", "ori-away": "Ori", "superm401": "Matt", "spagewmf": "spage"}',
+		# No title_map, I can't see this does anything.
+		wiki_domain           = > "E3",	# ???
+		wiki_page             = > "Editor_Engagement_Experiments/E3_admin_log",
+		wiki_header_depth     = > 3,	# ??  Matches the others.
+		wiki_category         = > "";	# ?? Maybe IRC_bot
+	}
+}
