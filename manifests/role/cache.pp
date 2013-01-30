@@ -512,16 +512,6 @@ class role::cache {
 			$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::site]
 		}
 
-		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
-		$multiple_backends = {
-			'pmtpa-eqiad' => {
-				"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-				},
-			'esams' => {
-				"backend" => $varnish_backends,
-			}
-		}
 		$test_hostname = $::site ? {
 			'pmtpa' => 'test.wikipedia.org',
 			'eqiad' => 'test.wikipedia.org',
@@ -549,9 +539,15 @@ class role::cache {
 		}
 
 		if( $::realm == 'production' ) {
-			$varnish_directors = $::site ? {
-				/^(pmtpa|eqiad)$/ => $multiple_backends["pmtpa-eqiad"],
-				'esams' => $multiple_backends["esams"],
+			if ($::site in ['pmtpa','eqiad']) {
+				$varnish_directors = {
+					"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+				}
+			} else {
+				$varnish_directors = {
+					"backend" => $varnish_backends,
+				}
 			}
 		} else {
 			# beta on labs
