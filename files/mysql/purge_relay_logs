@@ -38,16 +38,12 @@ GetOptions(
     version
     workdir=s
     relay_log_info=s
-    user=s
-    password=s
     host=s
     port=i
     disable_relay_log_purge
     /,
 ) or pod2usage(1);
 $opt{workdir}  ||= "/var/tmp";
-$opt{user}     ||= "root";
-$opt{password} ||= "";
 $opt{host}     ||= "127.0.0.1";
 $opt{port}     ||= 3306;
 
@@ -158,9 +154,9 @@ sub main {
     print "$start: purge_relay_logs script started.\n";
 
     $_binlog_manager = new MHA::BinlogManager();
-    my $dsn = "DBI:mysql:;host=$opt{host};port=$opt{port}";
+    my $dsn = "DBI:mysql:;mysql_read_default_file=/root/.my.cnf";
     my $dbh =
-      DBI->connect( $dsn, $opt{user}, $opt{password},
+      DBI->connect( $dsn, undef, undef,
       { PrintError => 0, RaiseError => 1 } );
     croak " Failed to get DB Handle on $opt{host}!\n" unless ($dbh);
     croak " Target mysql server is not defined as replication slave.\n"
@@ -242,7 +238,9 @@ purge_relay_logs - Deleting relay logs without blocking SQL threads
 
 =head1 SYNOPSIS
 
-purge_relay_logs --user=root --password=rootpass --host=127.0.0.1
+This version is intended to run against a local instance with root credentials in /root/.my.cnf
+
+purge_relay_logs
 
 See online reference (http://code.google.com/p/mysql-master-ha/wiki/Requirements#purge_relay_logs_script) for details.
 
