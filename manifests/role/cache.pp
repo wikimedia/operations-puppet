@@ -546,28 +546,6 @@ class role::cache {
 			}
 		}
 
-		if $::realm == 'production' {
-			$event_listener = $::site ? {
-				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
-				'esams' => '208.80.154.15', # oxygen
-			}
-			varnish::logging { "vanadium" : listener_address => $event_listener,
-				port => "8422",
-				instance_name => "",
-				cli_args => '-m RxURL:^/event\.gif\?. -D',
-				log_fmt => "%q %l %n %t %h",
-				monitor => false,
-			}
-			varnish::logging { "kraken" :
-				listener_address => '208.80.154.154', # analytics1001
-				port => "8422",
-				instance_name => "",
-				cli_args => '-m RxURL:^/event\.gif\?. -D',
-				log_fmt => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
-				monitor => false,
-			}
-		}
-
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
 		require geoip
@@ -598,6 +576,32 @@ class role::cache {
 			},
 			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks
+		}
+		
+		class logging {
+			$event_listener = $::site ? {
+				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
+				'esams' => '208.80.154.15', # oxygen
+			}
+			varnish::logging { "vanadium" : listener_address => $event_listener,
+				port => "8422",
+				instance_name => "",
+				cli_args => '-m RxURL:^/event\.gif\?. -D',
+				log_fmt => "%q %l %n %t %h",
+				monitor => false,
+			}
+			varnish::logging { "kraken" :
+				listener_address => '208.80.154.154', # analytics1001
+				port => "8422",
+				instance_name => "",
+				cli_args => '-m RxURL:^/event\.gif\?. -D',
+				log_fmt => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
+				monitor => false,
+			}
+		}
+		
+		if $::realm == "production" {
+			include logging
 		}
 	}
 
