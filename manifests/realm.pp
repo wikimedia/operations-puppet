@@ -2,9 +2,8 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
-if !$realm {
+if !$::realm {
 	$realm = "production"
-	$mw_primary = "eqiad"
 }
 
 if !$instanceproject {
@@ -34,6 +33,11 @@ $site = $main_ipaddress ? {
 	/^10\.6[48]\./				=> "eqiad",
 	/^91\.198\.174\./		=> "esams",
 	default					=> "(undefined)"
+}
+
+$mw_primary = $::realm ? {
+	'production' => "eqiad",
+	default => $::site
 }
 
 $network_zone = $main_ipaddress ? {
