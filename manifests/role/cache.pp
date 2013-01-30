@@ -493,7 +493,7 @@ class role::cache {
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${::site}"
 
-		include lvs::configuration
+		include lvs::configuration, role::cache::configuration
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
