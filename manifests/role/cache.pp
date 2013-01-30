@@ -372,12 +372,12 @@ class role::cache {
 
 			$varnish_be_directors = {
 				"eqiad" => {
-					"backend" => [ "10.2.1.24" ],
-					"swift" => [ "10.2.1.27" ],
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
+					"swift" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
 					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
 				},
 				"esams" => {
-					"backend" => "208.80.154.235",
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
 				}
 			}
 
