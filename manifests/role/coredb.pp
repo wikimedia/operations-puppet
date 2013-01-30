@@ -233,9 +233,6 @@ class role::coredb::common(
 	$masters = $topology[$shard]['masters']
 	$snapshots = $topology[$shard]['snapshot']
 
-  ## notify for troubleshooting
-  notify { "calling role::coredb::common; shard is $shard , primary site is $primary_site ": }
-
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
@@ -281,9 +278,6 @@ class role::coredb::common(
 			slow_query_digest => $slow_query_digest,
 			heartbeat_enabled => $heartbeat_enabled,
 		}
-
-  ## notify for troubleshooting
-  notify { "selecting monitoring in role::coredb::common; shard is $shard , primary site is $primary_site ": }
 
 		if $primary_site {
 			class { "mysql::coredb::monitoring": crit => false }
