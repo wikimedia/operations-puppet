@@ -551,7 +551,7 @@ class role::cache {
 		} else {
 			# beta on labs
 			$varnish_directors = {
-				"test_wikipedia" => $test_wikipedia,
+				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
 				"backend" => $varnish_backends
 			}
 		}
