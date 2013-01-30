@@ -161,16 +161,6 @@ backend <%= backend.split(".")[0].gsub("-", "_") %> {
 
 <% end -%>
 
-# for test.* routing
-backend test {
-	.host = "<%= cluster_options.fetch( 'test_server', 'srv193.pmtpa.wmnet' ) %>";
-	.port = "80";
-	.connect_timeout = 5s;
-	.first_byte_timeout = 35s;
-	.between_bytes_timeout = 2s;
-	.max_connections = 20;
-}
-
 # certain mobile requests are best sent to the api
 backend api {
 	.host = "<%= cluster_options.fetch( 'api_backend', '10.2.1.22' ) %>";
