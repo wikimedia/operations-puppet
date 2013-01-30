@@ -531,15 +531,15 @@ class role::cache {
 				}
 			}
 			'labs': {
-				$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::site]
+				$varnish_backends = $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary]
 				$varnish_directors = {
-					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
+					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 					"backend" => $varnish_backends
 				}
 
 				$cluster_options = {
 					'test_hostname' => $test_hostname,
-					'test_server' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::site],
+					'test_server' => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 					'enable_geoiplookup' => true,
 
 					# Labs specific options:
