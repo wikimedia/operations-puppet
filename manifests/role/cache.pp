@@ -503,8 +503,7 @@ class role::cache {
 		# FIXME: stupid hack to unbreak hashes-in-selectors in puppet 2.7
 		$multiple_backends = {
 			'pmtpa-eqiad' => {
-				"backend" => $bits_appservers['eqiad'],
-				"eqiad_bits" => $bits_appservers['eqiad'],
+				"backend" => $bits_appservers[$::mw_primary],
 				"test_wikipedia" => $test_wikipedia,
 				},
 			'esams' => {
