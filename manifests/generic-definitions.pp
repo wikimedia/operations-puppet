@@ -550,7 +550,7 @@ class generic::rsyncd($config = undef, $content = undef) {
 	}
 }
 
-class generic::gluster {
+class generic::gluster-client {
 
 	package { "glusterfs-client":
 		ensure => present;
@@ -562,6 +562,14 @@ class generic::gluster {
 		source => "puppet:///files/logrotate/glusterlogs",
 		owner => 'root',
 	}
+}
+
+class generic::gluster-server {
+
+	package { "glusterfs-server":
+		ensure => present;
+	}
+
 }
 
 class generic::packages::git-core {
