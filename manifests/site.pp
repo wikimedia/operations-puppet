@@ -485,11 +485,9 @@ node /^(db1008|db1025)\.eqiad\.wmnet/ {
 	  }
 }
 
-## researchdb (currently lucid)
+## researchdb
 node /db1047\.eqiad\.wmnet/ {
-	include mysql::mysqluser,
-		mysql::datadirs,
-		role::db::core
+	class { role::coredb::researchdb : mariadb => true }
 }
 
 ## not currently in production and/or hardware issues
