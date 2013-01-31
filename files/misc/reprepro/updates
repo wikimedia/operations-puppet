@@ -1,6 +1,6 @@
 # track the testing Ceph release train for now
 Name: ceph
-Method: http://ceph.com/debian-testing/
+Method: http://ceph.com/debian/
 Components: main>main
 UDebComponents:
 Suite: precise
