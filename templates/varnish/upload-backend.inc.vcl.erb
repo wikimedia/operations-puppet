@@ -168,6 +168,12 @@ sub vcl_fetch {
 	}
 }
 
+sub vcl_hit {
+	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
+		error 412 "Etag mismatch";
+	}
+}
+
 sub vcl_miss {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	# Send originals to the Swift cluster
@@ -192,6 +198,10 @@ sub vcl_miss {
 		set bereq.http.Range = req.http.Range;
 		std.log("Passing high range request: " + req.http.Range);
 		return (pass);
+	}
+
+	if (req.http.If-Cached) {
+		error 412 "Entity not in cache";
 	}
 }
 
