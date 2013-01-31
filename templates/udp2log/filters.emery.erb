@@ -53,9 +53,9 @@ pipe 10 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org -p Thank_You_Main
 #pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True' >> /var/log/squid/e3_necromancy_idle1year_10.log
 
 
-# Disabling sqstat, we don't need it anymore.
+
 # process wmf cache server log lines via stdin and report to ganglia
-#pipe 2 /usr/local/bin/sqstat 2
+pipe 2 /usr/local/bin/sqstat 2
 
 # CUSTOM FILTERS REPLACED WITH udp-filter
 

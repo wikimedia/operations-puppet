@@ -271,10 +271,7 @@ class misc::udp2log::utilities {
 			owner => root,
 			group => root,
 			source => "puppet:///files/udp2log/sqstat.pl",
-			# we're not using sqstat anymore, and for it
-			# to work anymore, we'd need to modify it to
-			# split on tab delimiter instead of spaces.
-			ensure => "absent",
+			ensure => "present",
 	}
 }
 
