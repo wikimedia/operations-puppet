@@ -315,10 +315,6 @@ class webserver::apache {
 						default => "/etc/apache2/sites-available/${title}"
 					};
 		}
-
-		# ensure default site is removed
-		apache_site { 000_default: name => "000-default", ensure => absent }
-		apache_site { 000-default-ssl: name => "000-default-ssl", ensure => absent }
 	}
 	
 	# Default selection
