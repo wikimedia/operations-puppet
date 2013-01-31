@@ -43,6 +43,11 @@ sub vcl_miss {
 		set bereq.http.Range = req.http.Range;
 		return (pass);
 	}
+
+	/* Make sure If-Cached requests won't pollute the cache */
+	if (req.http.If-Cached) {
+		return (pass);
+	}
 }
 
 sub vcl_fetch {
