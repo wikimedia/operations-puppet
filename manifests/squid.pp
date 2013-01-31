@@ -63,18 +63,17 @@ class squid {
 			path => "/etc/udev/rules.d/99-squid-disk-permissions.rules",
 			content => template("squid/squid-disk-permissions.erb");
 	}
-	
+
 	service {
 		"squid-frontend":
 			require => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
-			subscribe => File[ ["/etc/squid/frontend.conf", frontendsquiddefaultconfig] ],
+			subscribe => File[  frontendsquiddefaultconfig ],
 			hasstatus => false,
 			pattern => "squid-frontend",
 			enable => false,
 			ensure => running;
 		"squid":
 			require => [ File["/etc/squid/squid.conf"], Exec[setup-aufs-cachedirs] ],
-			subscribe => File["/etc/squid/squid.conf"],
 			hasstatus => false,
 			pattern => "/usr/sbin/squid ",
 			enable => false,
@@ -108,7 +107,7 @@ class squid {
 	include generic::sysctl::high-http-performance
 
 	file {
-		# Fast C External redirect helper 
+		# Fast C External redirect helper
 		"/usr/local/bin/redirector":
 			mode => 0555,
 			source => "puppet:///files/squid/redirector",
