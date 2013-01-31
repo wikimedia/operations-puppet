@@ -31,6 +31,12 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_hit {
+	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
+		error 412 "Etag mismatch";
+	}
+}
+
 sub vcl_miss {
 	/* Convert range requests into pass */
 	if (req.http.Range) {
