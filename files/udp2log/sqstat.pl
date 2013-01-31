@@ -21,6 +21,18 @@
 # sample squid log line:
 # sq40.wikimedia.org 1200534271 2011-06-22T00:06:48.771 490 123.05.05.05 TCP_MISS/200 7196 GET http://en.wikipedia.org/wiki/Category_talk:New_Jersey_District_Factor_Groups CARP/208.80.152.71 text/html - - Mozilla/5.0%20(compatible;%20bingbot/2.0;%20+http://www.bing.com/bingbot.htm)
 #
+#
+#
+# To test this, do the following:
+#
+#   * change $carbon_server to 127.0.0.1
+#   * put 127.0.0.1 in $carbon_server 
+#   * nc -u -l 2003 2>&1 | sort > /tmp/with_tabs.txt
+#   * zcat squid_log_file.gz | perl -ne 'chomp; s/\ /\t/g; print "$_\n";' | ./sqstat.pl
+#
+# Do the same with the old version which uses spaces and without the perl oneliner and compare
+#
+#
 
 use strict;
 use warnings;
@@ -92,7 +104,7 @@ sub send_metrics() {
 
 while ($line = <STDIN>) {
 	$l++;
-	if ($line =~ / [\w_]+\/(\d{3}) /) {
+	if ($line =~ /\t[\w_]+\/(\d{3})\t/) {
 		if ($1 >= 400 && $1 < 500) {
 			$d{'4xx'} += $mult;
 		} elsif ($1 > 500 && $1 <600) {
@@ -106,9 +118,9 @@ while ($line = <STDIN>) {
 		$d{'ssl_requests'} += $mult;
 		next;
 	}
-	if ($line =~ /^\S+ \S+ \S+ \S+ \S+ \S+ \S+ \S+ http:\/\/upload.wik/) {
+	if ($line =~ /^\S+\t\S+\t\S+\t\S+\t\S+\t\S+\t\S+\t\S+\thttp:\/\/upload.wik/) {
 		$d{'upload_requests'} += $mult;
-	} elsif ($line =~ /^\S+ \S+ \S+ (\S+) \S+ \S+ \S+ (GET|POST) http:\/\/([\w.]+org)\/(wiki|w)\/(\S+) /) {
+	} elsif ($line =~ /^\S+\t\S+\t\S+\t(\S+)\t\S+\t\S+\t\S+\t(GET|POST)\thttp:\/\/([\w.]+org)\/(wiki|w)\/(\S+)\t/) {
 		my $time = $1;
 		my $method = $2;
 		my $wiki = $3;
