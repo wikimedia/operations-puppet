@@ -3,14 +3,14 @@
 ###
 
 # udp2log packet loss monitoring
-pipe 10 /usr/local/bin/packet-loss 10 >> /a/squid/packet-loss.log
+pipe 10 /usr/bin/packet-loss 10 '\t' >> /a/squid/packet-loss.log
 
 # 0.0001 of all udp2log messages
 # This log file is also on emery for redundancy
-file 1000 /a/squid/sampled-1000.log
+file 1000 /a/squid/sampled-1000.tab.log
 
 # All edits
-pipe 1 /usr/bin/udp-filter -p action=submit,action=edit >> /a/squid/edits.log
+pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> /a/squid/edits.tab.log
 
 
 # domas' stuff.
@@ -19,17 +19,16 @@ pipe 1 /usr/bin/udp-filter -p action=submit,action=edit >> /a/squid/edits.log
 pipe 1 /a/webstats/bin/filter | log2udp -h 127.0.0.1 -p 3815
 
 # Mobile traffic filter
-pipe 100 /usr/bin/udp-filter -d "m.wikipedia.org" >> /a/squid/mobile.log
+pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> /a/squid/mobile.tab.log
 
 
 
 ## Fundraising
 # Landing pages
-pipe 1 /usr/bin/udp-filter -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.log
+pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.tab.log
 
 # Banner Impressions
-#pipe 100 /usr/bin/udp-filter -p BannerLoader\&banner=,BannerController,RecordImpression\?,BannerRandom >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
-pipe 100 /usr/bin/udp-filter -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.log
+pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.tab.log
 
 
 # Vrije Universiteit
@@ -46,8 +45,8 @@ pipe 10 awk -f /a/squid/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 
 
 # All 5xx error responses -- domas
-# TODO:  /usr/bin/udp-filter -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
-pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
+# TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
+pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.tab.log
 
 
 
