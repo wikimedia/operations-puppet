@@ -972,6 +972,56 @@ host db1050 {
 	fixed-address db1050.eqiad.wmnet;
 }
 
+host db1051 {
+	hardware ethernet 90:B1:1C:2A:B0:2C;
+	fixed-address db1051.eqiad.wmnet;
+}
+
+host db1052 {
+	hardware ethernet ;
+	fixed-address db1052.eqiad.wmnet;
+}
+
+host db1053 {
+	hardware ethernet 90:B1:1C:2A:D6:22;
+	fixed-address db1053.eqiad.wmnet;
+}
+
+host db1054 {
+	hardware ethernet 90:B1:1C:2A:B2:F7;
+	fixed-address db1054.eqiad.wmnet;
+}
+
+host db1055 {
+	hardware ethernet ;
+	fixed-address db1055.eqiad.wmnet;
+}
+
+host db1056 {
+	hardware ethernet 90:B1:1C:2A:B0:06;
+	fixed-address db1056.eqiad.wmnet;
+}
+
+host db1057 {
+	hardware ethernet 90:B1:1C:28:35:C6;
+	fixed-address db1057.eqiad.wmnet;
+}
+
+host db1058 {
+	hardware ethernet 90:B1:1C:2A:D7:0A;
+	fixed-address db1058.eqiad.wmnet;
+}
+
+host db1059 {
+	hardware ethernet 90:B1:1C:2A:D3:AE;
+	fixed-address db1059.eqiad.wmnet;
+}
+
+host db1060 {
+	hardware ethernet 90:B1:1C:2A:D3:BA;
+	fixed-address db1060.eqiad.wmnet;
+}
+
 host ekrem {
 	hardware ethernet 84:2b:2b:06:49:30;
 	fixed-address ekrem.wikimedia.org;
