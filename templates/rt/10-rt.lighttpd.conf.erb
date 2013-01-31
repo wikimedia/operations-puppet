@@ -3,7 +3,7 @@
 # Enable the FastCGI module
 server.modules   += ( "mod_fastcgi" )
 
-$HTTP["host"] == "rt.wikimedia.org" {
+$HTTP["host"] == "<%=site%>" {
         server.document-root = "/usr/share/request-tracker3.8/html"
 
         $HTTP["url"] !~ "^/NoAuth/images/" {
