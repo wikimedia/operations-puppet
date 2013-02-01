@@ -1,0 +1,28 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/qunit.localhost
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:9412>
+	ServerName localhost
+	DocumentRoot /srv/localhost/qunit
+
+	<Directory />
+		Order deny,allow
+		Deny from all
+	</Directory>
+
+	<Directory /srv/localhost/qunit>
+		Options +Indexes
+		Options FollowSymLinks
+
+		Order deny,allow
+		Deny from all
+		Allow from 127.0.0.1
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+	LogLevel warn
+	CustomLog /var/log/apache2/access.log combined
+</VirtualHost>

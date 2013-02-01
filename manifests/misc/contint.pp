@@ -315,6 +315,27 @@ class misc::contint::test {
 		}
 	}
 
+	class qunit {
+
+		file {
+			"/srv/localhost":
+				mode => 0755,
+				owner => www-data,
+				group => wikidev,
+				ensure => directory;
+			 "/srv/localhost/qunit":
+				mode => 0755,
+				owner => jenkins,
+				group => wikidev,
+				ensure => directory;
+			"/etc/apache2/sites-available/qunit.localhost":
+				mode => 0444,
+				owner => root,
+				group => root,
+				source => "puppet:///files/apache/sites/qunit.localhost";
+		}
+	}
+
 	class testswarm {
 
 		class systemuser {
