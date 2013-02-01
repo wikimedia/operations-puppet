@@ -978,7 +978,7 @@ host db1051 {
 }
 
 host db1052 {
-	hardware ethernet ;
+	hardware ethernet 90:B1:1C:2A:C4:D4;
 	fixed-address db1052.eqiad.wmnet;
 }
 
@@ -993,7 +993,7 @@ host db1054 {
 }
 
 host db1055 {
-	hardware ethernet ;
+	hardware ethernet 90:B1:1C:2A:9B:F4;
 	fixed-address db1055.eqiad.wmnet;
 }
 
