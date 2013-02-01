@@ -621,7 +621,8 @@ class nagios::ganglia::monitor::enwiki {
 }
 
 class nagios::ganglia::ganglios {
-	include generic::mysql::packages::client
+	include generic::mysql::packages::client,
+		ganglia::collector
 
 	package { "ganglios":
 		ensure => latest;

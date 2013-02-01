@@ -256,7 +256,8 @@ class ganglia {
 			case $hostname {
 				# manutius runs gmetad to get varnish data into torrus
 				# unlike other servers, manutius uses the default rrd_rootdir
-				/^manutius$/: {
+				# neon needs gmetad for ganglios
+				/^(manutius|neon)$/: {
 					$data_sources = {
 						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet"
 					}
