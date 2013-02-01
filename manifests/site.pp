@@ -2470,6 +2470,7 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 
 	include standard,
 		admins::roots,
+		admins::mortals,
 		misc::parsoid
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.1.28" ] }
@@ -2490,6 +2491,7 @@ node /(celsus|constable|cerium|titanium)\.wikimedia\.org/ {
 
 	include standard,
 		admins::roots,
+		admins::mortals,
 		misc::parsoid::cache,
 		misc::parsoid
 }
@@ -2504,6 +2506,7 @@ node /(caesium|xenon|wtp1001)\.eqiad\.wmnet/ {
 
 	include standard,
 		admins::roots,
+		admins::mortals,
 		misc::parsoid
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
