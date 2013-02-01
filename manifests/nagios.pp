@@ -637,6 +637,14 @@ class nagios::ganglia::ganglios {
 		mode => 0755,
 		owner => nagios;
 	}
+
+	#ganglios relies on a file which relies on gmetad.conf.  FIXME in future - lcarr 2013/02
+	file { "/etc/ganglia/gmetad.conf}":
+		content => template("ganglia/gmetad.conf.erb"),
+		mode => 0444,
+		ensure	=> present
+	}
+
 }
 
 # passive checks / NSCA
