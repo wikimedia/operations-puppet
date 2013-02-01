@@ -11,7 +11,7 @@
 # hostname is matched using shell filename matching, allowing
 # * and other shell wildcards.
 
-<% active_nodes = scope.lookupvar("role::cache::configuration::active_nodes") -%>
+<% active_nodes = scope.lookupvar("role::cache::configuration::active_nodes")[realm] -%>
 
 <% active_nodes.keys.sort.each do |role| -%>
 <% active_nodes[role].keys.sort.each do |site| -%>

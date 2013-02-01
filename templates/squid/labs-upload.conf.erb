@@ -1,0 +1,180 @@
+# This file is managed by puppet
+# file:///puppet/files/squid/labs-upload.conf
+#
+# vim: ft=squid
+
+# Loosely based on upload squid configuration from production
+
+visible_hostname upload.beta.wmflabs.org
+cache_mgr nobody
+# This should be the *.wikimedia.org name. It is used to detect loops.
+unique_hostname upload.beta.wmflabs.org
+
+# Listen on port 3128, but force the destination port to be 80
+http_port 3128 vhost vport=80
+htcp_port 4827
+
+########################################
+# Cache options
+########################################
+
+# Cache errors for 5 mins
+negative_ttl 5 minutes
+
+# maximum header size
+request_header_max_size 15 KB
+
+# deny invalid requests with white space
+uri_whitespace deny
+# maximum upload size
+request_body_max_size 110 MB
+
+
+half_closed_clients off
+pipeline_prefetch on
+
+read_timeout 1 minute
+request_timeout 1 minute
+persistent_request_timeout 10 minutes
+
+quick_abort_min 0 KB
+quick_abort_max 0 KB
+
+read_ahead_gap 64 KB
+
+collapsed_forwarding on
+
+cache_mem 10000 MB
+
+maximum_object_size 110 MB
+maximum_object_size_in_memory 100 KB
+
+# The first number is the size in MB
+cache_dir aufs /aufs/sda5 128000 16 256 min-size=524288
+cache_dir coss /dev/vdb 128000 max-size=1048576 max-stripe-waste=32768 block-size=8192 membufs=80
+# Needed for COSS:
+cache_swap_log /var/spool/squid/%s
+
+refresh_pattern .       300     80%     5184000 stale-while-revalidate=21600 ignore-reload
+max_stale 1 month
+
+
+dead_peer_timeout  10 seconds
+
+# Squid has a dynamic default for this but apparently it's too
+# low when the siblings are on a LAN
+icp_query_timeout 20
+
+cache_effective_user proxy
+cache_effective_group proxy
+#cachemgr_passwd disable shutdown offline_toggle
+#cachemgr_passwd CENSORED all
+
+debug_options ALL,1 44,0
+
+# Coredumps in this dir
+#coredump_dir /var/spool/squid
+
+# Disable the client db, takes way too much memory with our
+# amount of clients (~ 500 MB per squid)
+client_db off
+
+# Disable cache digests
+digest_generation off
+
+
+########################################
+# Logging options
+########################################
+log_mime_hdrs off
+logfile_rotate 1
+#emulate_httpd_log on
+strip_query_terms off
+
+logformat wikimedia amssq47.esams.wikimedia.org %sn %ts.%03tu %tr %>a %Ss/%03Hs %<st %rm %ru %Sh/%<A %mt %{Referer}>h %{X-Forwarded-For}>h %{User-Agent}>h
+
+# No logging for CARP-balanced caches, that will be done by the frontends
+cache_access_log none
+
+cache_log /var/log/squid/cache.log
+#referer_log /var/log/squid/referer.log
+#useragent_log /var/log/squid/ua.log
+
+# don't maintain a store log, we have no use for it
+cache_store_log none
+
+
+########################################
+# General ACLs
+########################################
+
+# First some handy definitions
+acl all      src 0.0.0.0/0.0.0.0
+acl localsrc src 127.0.0.1/255.255.255.255
+acl purge    method PURGE
+acl post     method POST
+
+
+# Responses to requests from cooperating caches have the Cache-Control
+# header modified, so that they can cache our content until they receive
+# a PURGE message
+acl tiertwo src 10.4.0.0/24  # deployment-prep range
+acl tiertwo src 127.0.0.1
+
+# These acls get the headers stripped.
+# Printable pages, won't be cached as well
+# acl printable url_regex -i .*printable=yes
+
+# css and js files
+acl wpstatic urlpath_regex :.*/.*\.(css|js)
+acl wpstatic urlpath_regex action=raw
+
+# wiki content pages
+acl wpcontent url_regex -i http://.*/wiki/.*
+acl wpcontent url_regex -i http://.*/w/.*
+
+#acl thumbs    url_regex ^http://upload\.wikimedia\.org/wikipedia/commons/thumb/
+acl thumbs    url_regex ^http://upload\.beta\.wmflabs\.org/wikipedia/commons/thumb/
+
+acl thumb_php   urlpath_regex ^/w/thumb\.php
+acl api.php     urlpath_regex ^/w/api\.php
+acl wap_domains dstdomain .wap.wikipedia.org
+acl wap_domains dstdomain .mobile.wikipedia.org
+
+
+
+########################################
+# Sibling caches
+########################################
+
+cache_peer        deployment-imagescaler01 parent 80 3130 originserver carp weight=100 no-query no-digest connect-timeout=5 max-conn=100
+cache_peer_access deployment-imagescaler01 allow thumbs
+cache_peer_access deployment-imagescaler01 deny all
+
+
+
+########################################
+# Access rules
+########################################
+
+
+# Only connect to the configured peers
+never_direct allow all
+
+
+# HTCP and HTCP CLR access
+htcp_access     allow  all
+
+htcp_clr_access allow  tiertwo
+htcp_clr_access deny   all
+
+icp_access      allow  all
+
+# PURGE access :-D
+http_access     allow  purge tiertwo
+
+# Deny direct access to CARP-balanced caches
+# Client filtering will be done by the CARP frontends
+http_access allow tiertwo
+http_access deny all
+
