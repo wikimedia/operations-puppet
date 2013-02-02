@@ -43,6 +43,11 @@ class bots::logbot( $ensure = 'present',
 			owner => adminbot,
 			group => root,
 			ensure => directory;
+		"/var/log/adminbot.log":
+			mode => 644,
+			owner => adminbot,
+			group => root,
+			ensure => present
 	}
 
 	service { 'adminbot':
