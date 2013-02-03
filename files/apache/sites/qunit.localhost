@@ -4,6 +4,10 @@
 #####################################################################
 # vim: filetype=apache
 
+# We would prefer not having external requests
+Listen 127.0.0.1:9412
+Listen [::1]:9412
+
 <VirtualHost *:9412>
 	ServerName localhost
 	DocumentRoot /srv/localhost/qunit
@@ -19,7 +23,8 @@
 
 		Order deny,allow
 		Deny from all
-		Allow from 127.0.0.1
+		Allow from 127.0.0.1/32
+		Allow from ::1/128
 	</Directory>
 
 	ErrorLog /var/log/apache2/error.log
