@@ -334,6 +334,8 @@ class misc::contint::test {
 				group => root,
 				source => "puppet:///files/apache/sites/qunit.localhost";
 		}
+
+		apache_site('qunit.localhost')
 	}
 
 	class testswarm {
