@@ -7,6 +7,7 @@
 # The following are defaults, the exact specifications are in the role definitions
 class wikidata::singlenode( $install_path = "/srv/mediawiki",
 							$database_name = "repo",
+							$experimental = "true",
 							$repo_ip = $wikidata_repo_ip,
 							$repo_url = $wikidata_repo_url,
 							$siteGlobalID = $wikidata_client_siteGlobalID,

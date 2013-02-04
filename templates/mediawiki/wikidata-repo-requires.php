@@ -16,7 +16,7 @@ $wgCacheDirectory = "/var/cache/mw-cache/<%=database_name%>/";
 $wgLocalisationCacheConf['manualRecache'] = true;
 
 // experimental features
-define( 'WB_EXPERIMENTAL_FEATURES', true );
+define( 'WB_EXPERIMENTAL_FEATURES', <%=experimental%> );
 
 require_once( "$IP/extensions/Diff/Diff.php" );
 require_once( "$IP/extensions/DataValues/DataValues.php" );
