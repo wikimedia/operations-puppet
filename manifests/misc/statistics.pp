@@ -122,6 +122,18 @@ class misc::statistics::plotting {
 
 class misc::statistics::webserver {
 	include webserver::apache
+
+	# make sure /var/log/apache2 is readable by wikidevs for debugging.
+	# This won't make the actual log files readable, only the directory.
+	# Individual log files can be created and made readable by
+	# classes that manage individual sites.
+	file { "/var/log/apache2":
+		ensure  => "directory",
+		owner   => "root",
+		group   => "wikidev",
+		mode    => 0750,
+		require => Class["webserver::apache"],
+	}
 }
 
 # stats.wikimedia.org
@@ -268,7 +280,7 @@ class misc::statistics::sites::metrics_api {
 	# clone the E3 Analysis repository
 	git::clone { "E3Analysis":
 		directory => "$e3_analysis_path",
-		origin    => "https://github.com/rfaulkner/E3Analysis.git",
+		origin    => "https://gerrit.wikimedia.org/r/p/analytics/E3Analysis.git",
 		owner     => $e3_user,
 		require   => [Package["python-flask"], File[$e3_home], Class["misc::statistics::user"], Class["misc::statistics::packages::python"]],
 		ensure    => "latest",
@@ -291,13 +303,16 @@ class misc::statistics::sites::metrics_api {
 		require => Git::Clone["E3Analysis"],
 	}
 
+	
 	# Set up the Python WSGI VirtualHost
 	webserver::apache::module { "wsgi": }
 	webserver::apache::site { $site_name:
-		require => [File["/srv/org.wikimedia.metrics-api"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
+		require      => [File["/srv/org.wikimedia.metrics-api"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
 		server_admin => "noc@wikimedia.org",
-		docroot => $document_root,
-		custom  => ["
+		docroot      => $document_root,
+		access_log   => "/var/log/apache2/access.metrics-api.log",
+		error_log    => "/var/log/apache2/error.metrics-api.log",
+		custom       => ["
     WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
     WSGIScriptAlias / $document_root/api.wsgi
 
@@ -318,6 +333,12 @@ class misc::statistics::sites::metrics_api {
         Satisfy any
     </Location>",
 	],
+	}
+
+	# make access and error log for metrics-api readable by wikidev group
+	file { ["/var/log/apache2/access.metrics-api.log", "/var/log/apache2/error.metrics-api.log"]:
+		group   => "wikidev",
+		require => Webserver::Apache::Site[$site_name],
 	}
 }
 
