@@ -16,12 +16,12 @@
 		allow from all
 	</Directory>
 
-	ErrorLog /var/log/apache2/error.log
+	ErrorLog <%= error_log %>
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined
+	CustomLog <%= access_log %> combined
 	ServerSignature On
 
 <% custom.each do |customconfig| -%>
@@ -38,7 +38,7 @@
 <VirtualHost *:443>
 	ServerName <%= title %>
 	<% if aliases.length > 0 -%>
-		ServerAlias <%= aliases.join(" ") %>
+	ServerAlias <%= aliases.join(" ") %>
 	<% end -%>
 	ServerAdmin root@wikimedia.org
 
@@ -54,12 +54,12 @@
 		allow from all
 	</Directory>
 
-	ErrorLog /var/log/apache2/error.log
+	ErrorLog <%= error_log %>
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
 	LogLevel warn
 
-	CustomLog /var/log/apache2/access.log combined
+	CustomLog <%= access_log %> combined
 	ServerSignature On
 
 <% custom.each do |customconfig| -%>

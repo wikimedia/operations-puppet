@@ -266,6 +266,9 @@ class webserver::apache {
 	#	$docroot=undef    - defaults to: $title == 'stats.wikimedia.org', then /srv/stats.wikimedia.org
 	#	$custom=[]        - custom Apachce config strings to put into virtual host site file
 	#	$includes=[]
+	#	$server_admin="root@wikimedia.org",
+	#	$access_log       - path to access log, default: /var/log/apache2/access.log
+	#	$error_log        - path to error log,  default: /var/log/apache2/error.log
 	#	$ensure=present
 	#
 	# Usage:
@@ -277,9 +280,12 @@ class webserver::apache {
 		$certkey=undef, 
 		$docroot=undef, 
 		$custom=[], 
-		$includes=[], 
-		$ensure=present,
-		$server_admin="root@wikimedia.org") {
+		$includes=[],
+		$server_admin="root@wikimedia.org",
+		$access_log="/var/log/apache2/access.log",
+		$error_log="/var/log/apache2/error.log",
+		$ensure=present
+		) {
 
 		Class[webserver::apache::packages] -> Webserver::Apache::Site["$title"] -> Class[webserver::apache::service]
 		
