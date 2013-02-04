@@ -335,7 +335,7 @@ class misc::contint::test {
 				source => "puppet:///files/apache/sites/qunit.localhost";
 		}
 
-		apache_site('qunit.localhost')
+		apache_site { 'qunit localhost': name => 'qunit.localhost' }
 	}
 
 	class testswarm {
