@@ -29,10 +29,9 @@ class role::planet {
 	# dependencies
 	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.${planet_domain_name}"]
 
-	# list all planet languages here, configs,dirs,cronjobs are auto-created from this array
-	# $planet_languages = [ "ar", "ca", "cs", "de", "en", "es", "fr", "gmq", "it", "ja", "pl", "pt", "ro", "ru", "sr", "zh", ]
-
-	# languages and translations for the index.html.tmlp
+	# List all planet languages and translations for
+	# index.html.tmpl here.	 Configurations, directories and
+	# cronjobs are auto-created from this hash.
 	$planet_languages = {
 		ar => {
 			'subscribe' => 'اشترك',
