@@ -346,7 +346,7 @@ node "dataset1001.wikimedia.org" {
 		      device => "labstore1.pmtpa.wmnet:/publicdata-project",
 		      fstype => "glusterfs",
 		      options => "defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log",
-		      require => Package["glusterfs"],
+		      require => Package["glusterfs-client"],
 		      ensure => mounted;
 		}
 
