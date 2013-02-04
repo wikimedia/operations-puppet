@@ -1,0 +1,34 @@
+#!/bin/bash
+#This script holds commands to install Dell Omsa (see: https://linux.dell.com/repo/community/deb/OMSA_7.1/) and linux stats plugin.
+#The script assumes you have nagios and nrpe set in place prior to installation.
+
+#Let's install perl module needed for linux stats plugin
+sudo apt-get install libsys-statistics-linux-perl
+
+#############################################
+#             Install OMSA                  #
+#############################################
+
+#Add dell repo to apt
+
+echo 'deb http://linux.dell.com/repo/community/deb/latest /' | sudo tee -a /etc/apt/sources.list.d/linux.dell.com.sources.list 
+
+#Import keys for the repo
+gpg --keyserver pool.sks-keyservers.net --recv-key 1285491434D8786F
+gpg -a --export 1285491434D8786F | sudo apt-key add -
+
+#Make apt aware of the new software repository by issuing the following command:
+
+sudo apt-get update
+
+#Install OMSA components
+
+sudo apt-get install srvadmin-all
+
+#You may want to ignore some components, see details in the link above.
+
+#After installation is done, log out and back to set PATH env.
+
+#Start the services:
+
+sudo service dataeng start
