@@ -31,19 +31,24 @@ class applicationserver::config::apache(
 			'/usr/local/apache':
 				ensure => directory,
 		}
-	} else {
+		exec { "sync apache wmf config":
+			require => File["/usr/local/apache"],
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			command => "rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf",
+			creates => "/usr/local/apache/conf",
+			notify => Service[apache]
+		}
+	} else {  # labs
 		file { '/usr/local/apache':
 			ensure => link,
 			target => '/data/project/apache',
 		}
-	}
-
-	exec { "sync apache wmf config":
-		require => File["/usr/local/apache"],
-		path => "/bin:/sbin:/usr/bin:/usr/sbin",
-		command => "rsync -av 10.0.5.8::httpdconf/ /usr/local/apache/conf",
-		creates => "/usr/local/apache/conf",
-		notify => Service[apache]
+		# bug 38996 - Apache service does not run on start, need a fake
+		# sync to start it up.
+		exec { 'Fake sync apache wmf config on beta':
+			command => '/bin/true',
+			notify  => Service[apache],
+		}
 	}
 
 	Class["applicationserver::config::apache"] -> Class["applicationserver::config::base"]
