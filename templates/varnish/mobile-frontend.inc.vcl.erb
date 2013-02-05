@@ -570,18 +570,11 @@ sub vcl_recv {
 	   header instead.
 	*/
 
-	/* Replace <language>.m.<project>.org by <language>.<project>.org */
-	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
-	}
-
-	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
-	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
-	}
+	/* Replace <language>.(m|zero).<project>.org by <language>.<project>.org */
+	set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
-	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org", "\1.mobile.\2.org");
 	}
 
