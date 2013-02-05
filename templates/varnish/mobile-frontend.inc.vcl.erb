@@ -461,6 +461,12 @@ sub vcl_recv {
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
+<% if realm == 'labs' then %>
+	/* On beta strip the .m. part */
+	else if ( req.http.host ~ "\.m\.beta\.wmflabs\.org$" ) {
+		set req.http.host = regsub( req.http.host, "\.m\.beta\.wmflabs\.org$", ".beta.wmflabs.org" );
+	}
+<% end %>
 
 	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
