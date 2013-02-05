@@ -361,17 +361,33 @@ class misc::statistics::db::mongo {
 	}
 }
 
-# Ori's EventLogging setup, incrementally
-# puppetized.
+# EventLogging
 class misc::statistics::eventlogging {
+
+	# == Event processor ==
+
 	package { [
-		"python-gevent",
-		"python-requests",
+
+		# Core dependencies (Python 2.7):
+		"python-mysqldb",
+		"python-sqlalchemy",
 		"python-zmq",
-		"zpubsub",
+
+		# Test helpers (not required, but nice to have):
+		"python-coverage",
+		"python-nose",
+
+		# Python 3:
+		"python3-nose",
+		"python3-sqlalchemy"
+		"python3-zmq",
+
 	]: ensure => latest; }
 
-	class { "redis": maxmemory => "512Mb" }
+
+	# == Log rotation ==
+	# A corresponding 'rsync_job' on stat1 retrieves
+	# /var/log/eventlogging/archive.*.gz.
 
 	file {
 		["/var/log/eventlogging", "/var/log/eventlogging/archive"]:
@@ -384,22 +400,13 @@ class misc::statistics::eventlogging {
 			mode => 0444;
 	}
 
-	# Create an rsync module that will allow us to copy files from
-	# /varl.og/eventlogging to statistic servers.
-	# This uses modules/rsync to
-	# set up an rsync daemon service
 	include rsync::server
 
-	# Set up an rsync module
-	# (in /etc/rsync.conf) for /var/log/eventlogging.
-	# There is an rsync_job on stat1 that copies
-	# files in /var/log/eventlogging/arvhive.*.gz to stat1.
 	rsync::server::module { "eventlogging":
 		path        => "/var/log/eventlogging",
 		read_only   => "yes",
 		list        => "yes",
-		# allow only statistics servers (stat1, stat1001)
-		hosts_allow => $misc::statistics::base::servers,
+		hosts_allow => $misc::statistics::base::servers,  # stat1, stat1001
 	}
 }
 
