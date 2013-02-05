@@ -715,7 +715,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::analytics::packages,
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
-		misc::contint::test::testswarm,
+		testswarm::systemuser,
 		misc::contint::test::qunit,
 		misc::docsite,
 		misc::docs::puppet,

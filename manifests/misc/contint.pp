@@ -205,19 +205,9 @@ class misc::contint::test {
 
 		}
 
-		# run jenkins behind Apache and have pretty URLs / proxy port 80
-		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
-		class {'webserver::php5': ssl => 'true'; }
-
-		apache_module { proxy: name => "proxy" }
-		apache_module { proxy_http: name => "proxy_http" }
+    include jenkins::webserver
 
 		file {
-			"/etc/apache2/conf.d/jenkins_proxy":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/misc/jenkins/apache_proxy";
 			"/etc/apache2/conf.d/zuul_proxy":
 				owner => "root",
 				group => "root",
@@ -247,74 +237,6 @@ class misc::contint::test {
 		}
 
 		apache_site { 'qunit localhost': name => 'qunit.localhost' }
-	}
-
-	class testswarm {
-
-		class systemuser {
-			# Create a user to run the cronjob with
-			systemuser { testswarm:
-				name  => "testswarm",
-				home  => "/var/lib/testswarm",
-				shell => "/bin/bash",
-				# And part of web server user group so we can let it access
-				# the SQLite databases
-				groups => [ 'www-data' ];
-			}
-		}
-
-		# Make sure we have a 'testswarm' user before doing anything else
-		require misc::contint::test::testswarm::systemuser
-
-		package { "testswarm": ensure => absent; }
-
-		# Uninstall scripts
-		file {
-			"/etc/testswarm":
-				ensure => absent;
-			"/etc/testswarm/fetcher-sample.ini":
-				ensure => absent;
-			"/var/lib/testswarm/script":
-				ensure  => absent;
-			"/var/lib/testswarm/script/testswarm-mw-fetcher-run.php":
-				ensure  => absent;
-			"/var/lib/testswarm/script/testswarm-mw-fetcher.php":
-				ensure  => absent;
-			# Directory that hold the mediawiki fetches
-			"/var/lib/testswarm/mediawiki-trunk":
-				ensure  => absent;
-			# SQLite databases files need specific user rights
-			"/var/lib/testswarm/mediawiki-trunk/dbs":
-				ensure  => absent;
-			# Override Apache configuration coming from the testswarm package.
-			"/etc/apache2/conf.d/testswarm.conf":
-				ensure => absent;
-
-			# dirs holding MediaWiki snapshots are created by jenkins.
-			# SQLite databases needs to be writable by Apache and thus
-			# needs specific user rights.
-			"/var/lib/testswarm/mediawiki-git/db/":
-				ensure => absent;
-		}
-
-		# Was for Bug 34886 / RT 2574
-		file { "/etc/mysql/conf.d/innodb_buffer_pool_size.cnf":
-			ensure => absent;
-		}
-
-		# Was for Bug 35028
-		file { "/etc/mysql/conf.d/log_slow_queries.cnf":
-			ensure => absent;
-		}
-
-		cron {
-			testswarm-fetcher-mw-trunk:
-				ensure => absent;
-		}
-		cron {
-			testswarm-state-wipe:
-				ensure => absent;
-		}
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
