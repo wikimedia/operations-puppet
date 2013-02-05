@@ -484,6 +484,8 @@ sub vcl_recv {
 	}
 
 	call tag_carrier;
+	<% if realm == "production" %>
+
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
@@ -493,6 +495,20 @@ sub vcl_recv {
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
 	}
+
+	<% else %>
+
+	/* Replace <language>.m.<project>.org by <language>.<project>.org */
+	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([.a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([.a-zA-Z0-9-]+)\.org", "\1.\2.org");
+	}
+
+	/* Replace <language>.zero.<project>.org by <language>.<project>.org and set X-Carrier */
+	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.zero\.([.a-zA-Z0-9-]+)\.org" ) {
+		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.zero\.([.a-zA-Z0-9-]+)\.org", "\1.\2.org");
+	}
+
+	<% end %>
 
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
 	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
