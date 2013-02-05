@@ -113,6 +113,15 @@ probe swift {
 }
 
 # Backends
+# for test.* routing
+backend test_wikipedia {
+	.host = "<%= cluster_options.fetch('test_appserver', 'srv193.pmtpa.wmnet') %>";
+	.port = "80";
+	.connect_timeout = 5s;
+	.first_byte_timeout = 35s;
+	.between_bytes_timeout = 2s;
+	.max_connections = 20;
+}
 
 # List of Puppet generated backends
 <% varnish_backends.each do |backend| -%>

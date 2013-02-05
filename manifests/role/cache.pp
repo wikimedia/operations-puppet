@@ -650,7 +650,6 @@ class role::cache {
 			admin_port => 6082,
 			directors => {
 				"backend" => $::role::cache::configuration::active_nodes['mobile'][$::site],
-				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
 			director_options => {
 				'retries' => 40,
@@ -666,6 +665,12 @@ class role::cache {
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
 				'probe' => "varnish",
+			},
+			cluster_options => {
+				'test_appserver' => $::realm ?
+					'production' => 'srv193.pmtpa.wmnet',
+					'labs'       => '10.4.0.166',
+				},
 			},
 			xff_sources => $network::constants::all_networks,
 		}
