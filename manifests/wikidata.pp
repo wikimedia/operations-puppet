@@ -10,6 +10,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 							$experimental = "true",
 							$repo_ip = $wikidata_repo_ip,
 							$repo_url = $wikidata_repo_url,
+							$client_ip = $wikidata_client_ip,
 							$siteGlobalID = $wikidata_client_siteGlobalID,
 							$ensure = latest,
 							$install_repo = true,
@@ -23,6 +24,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		ensure => $ensure,
 		role_requires => $role_requires,
 		role_config_lines => $role_config_lines
+	}
+
+
+# Make mysql listen on all ports (That's o.k. in Labs)
+	file { "/etc/mysql/conf.d/wikidata.cnf":
+		ensure => present,
+		source => "puppet:///files/mediawiki/wikidata.cnf",
+		notify => Service["mysql"],
 	}
 
 # permissions for $wgCacheDir
@@ -185,11 +194,6 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 				ensure => $ensure,
 				origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
 		}
-		file { "/etc/mysql/conf.d/wikidata.cnf":
-			ensure => present,
-			source => "puppet:///files/mediawiki/wikidata.cnf",
-			notify => Service["mysql"],
-		}
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
@@ -200,6 +204,28 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
 			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv && /usr/bin/php importProperties.php --verbose en en-elements-properties.csv",
 			logoutput => "on_failure",
+		}
+		# propagation of changes from repo to client
+		user { "www-data":
+			ensure => present
+		}
+		file { "/var/log/dispatchChanges.log":
+			ensure => present,
+			owner => 'www-data',
+			group => 'www-data',
+			mode => '0664',
+		}
+		cron { "dispatchChanges":
+			require => File["/var/log/dispatchChanges.log"],
+			ensure => present,
+			command => "/usr/bin/php ${install_path}/extensions/Wikibase/lib/maintenance/dispatchChanges.php --verbose --max-time 598 >> /var/log/dispatchChanges.log",
+			user => "www-data",
+			minute => "*/10",
+		}
+		file { "/etc/logrotate.d/wikidata-replication":
+			ensure => present,
+			source => "puppet:///files/logrotate/wikidata-replication",
+			owner => 'root',
 		}
 	}
 
@@ -235,26 +261,24 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			command => "/usr/bin/php extensions/Wikibase/lib/maintenance/populateSitesTable.php",
 			logoutput => "on_failure",
 		}
-
-		user { "www-data":
-			ensure => present
-		}
-		file { "/etc/logrotate.d/wikidata-replication":
-			ensure => present,
-			source => "puppet:///files/logrotate/wikidata-replication",
-			owner => 'root',
-		}
-		file { "/var/log/wikidata-replication.log":
+		# receive repo's propagation of changes
+		file { "/var/log/runJobs.log":
 			ensure => present,
 			owner => 'www-data',
 			group => 'www-data',
 			mode => '0664',
 		}
-		cron {"pollForChanges":
+		cron { "runJobs":
+			require => File["/var/log/runJobs.log"],
 			ensure => present,
-			command => "/usr/bin/php ${install_path}/extensions/Wikibase/lib/maintenance/pollForChanges.php > /var/log/wikidata-replication.log",
-			user => 'www-data',
-			minute => '*/10',
+			command => "/usr/bin/php ${install_path}/maintenance/runJobs.php >> /var/log/runJobs.log",
+			user => "www-data",
+			minute => "*/1",
+		}
+		file { "/etc/logrotate.d/wikidata-runJobs":
+			ensure => present,
+			source => "puppet:///files/logrotate/wikidata-runJobs",
+			owner => 'root',
 		}
 		git::clone { "ParserFunctions":
 			require => Git::Clone["mediawiki"],
