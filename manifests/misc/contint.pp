@@ -86,17 +86,8 @@ class misc::contint::test {
 
 	class jenkins {
 
-		# This used to rely on misc::jenkins to add the jenkins upstream repo and then
-		# install from there.  contint::misc::jenkins is now independent and will
-		# use whatever Ubuntu version is available
-		package { "jenkins":
-			ensure => present
-		}
-
-		# Graphiz needed by the plugin that does the projects dependencies graph
-		package { "graphviz":
-			ensure => present
-		}
+		# Load the Jenkins module
+		include ::jenkins
 
 		# Get several OpenJDK packages including the jdk.
 		# (openjdk is the default distribution for the java define.
@@ -104,24 +95,6 @@ class misc::contint::test {
 		java { 'java-6-openjdk': version => 6, alternative => true  }
 		java { 'java-7-openjdk': version => 7, alternative => false }
 
-		service { 'jenkins':
-			enable => true,
-			ensure => 'running',
-			hasrestart => true,
-			start => '/etc/init.d/jenkins start',
-			stop => '/etc/init.d/jenkins stop';
-		}
-
-		require groups::jenkins
-		user { 'jenkins':
-			name    => 'jenkins',
-			home    => '/var/lib/jenkins',
-			shell   => '/bin/bash',
-			gid     =>  'jenkins',
-			system  => true,
-			managehome => false,
-			require => Group['jenkins'];
-		}
 
 		file {
 			"/var/lib/jenkins/.gitconfig":
@@ -150,24 +123,10 @@ class misc::contint::test {
 			require => [ User['jenkins'], Group['jenkins'], File['/var/lib/jenkins/tmpfs'] ];
 		}
 
-		# nagios monitoring
-		monitor_service { 'jenkins': description => 'jenkins_service_running', check_command => 'nrpe_check_jenkins' }
-
 		file {
-			"/var/lib/jenkins":
-				mode  => 2775,  # group sticky bit
-				owner => "jenkins",
-				group => "jenkins",
-				ensure => directory;
 			"/var/lib/jenkins/.git":
 				mode   => 2775,  # group sticky bit
 				group  => "jenkins",
-				ensure => directory;
-			# Top level jobs folder
-			"/var/lib/jenkins/jobs/":
-				owner => "jenkins",
-				group => "jenkins",
-				mode  => 2775,  # group sticky bit
 				ensure => directory;
 			"/var/lib/jenkins/bin":
 				owner => "jenkins",
@@ -255,11 +214,6 @@ class misc::contint::test {
 		apache_module { proxy_http: name => "proxy_http" }
 
 		file {
-			"/etc/default/jenkins":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/misc/jenkins/etc_default_jenkins";
 			"/etc/apache2/conf.d/jenkins_proxy":
 				owner => "root",
 				group => "root",
