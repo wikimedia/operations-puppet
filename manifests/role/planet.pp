@@ -27,7 +27,7 @@ class role::planet {
 	apache_module { rewrite: name => "rewrite" }
 
 	# dependencies
-	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.${planet_domain_name}"]
+	Class['webserver::php5'] -> apache_module["rewrite"] -> Install_certificate["star.planet.${planet_domain_name}"]
 
 	# List all planet languages and translations for
 	# index.html.tmpl here.	 Configurations, directories and
