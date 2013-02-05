@@ -25,6 +25,7 @@ class role::wikidata-repo-latest::labs {
 		install_repo => true,
 		install_client => false,
 		experimental => $wikidata_experimental,
+		client_ip => $wikidata_client_ip,
 		database_name => "repo",
 		ensure => latest,
 		# all require_once lines here:
@@ -45,6 +46,7 @@ class role::wikidata-repo::labs {
 		install_repo => true,
 		install_client => false,
 		experimental => $wikidata_experimental,
+		client_ip => $wikidata_client_ip,
 		database_name => "repo",
 		ensure => present,
 		# all require_once lines here:

@@ -1,9 +1,9 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/logrotate/wikidata-replication
+### puppet:///files/logrotate/wikidata-runJobs
 #####################################################################
 
-/var/log/dispatchChanges.log {
+/var/log/runJobs.log {
 	weekly
 	rotate 2
 	compress
