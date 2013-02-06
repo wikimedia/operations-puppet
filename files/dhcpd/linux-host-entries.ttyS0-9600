@@ -28,14 +28,14 @@ host cam2-a-b-eqiad {
 	fixed-address cam2-a-b-eqiad.eqiad.wmnet;
 }
 
-host cam1-c-d-eqiad {
+host cam1-b-c-eqiad {
 	hardware ethernet 00:40:8c:a2:69:01;
-	fixed-address cam1-c-d-eqiad.eqiad.wmnet;
+	fixed-address cam1-b-c-eqiad.eqiad.wmnet;
 }
 
-host cam2-c-d-eqiad {
+host cam2-b-c-eqiad {
 	hardware ethernet 00:40:8c:a2:61:25;
-	fixed-address cam2-c-d-eqiad.eqiad.wmnet;
+	fixed-address cam2-b-c-eqiad.eqiad.wmnet;
 }
 
 host cam1-a-sdtpa {
