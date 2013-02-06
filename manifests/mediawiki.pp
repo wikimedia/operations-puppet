@@ -87,11 +87,14 @@ class mediawiki::math {
 #  Members of $role_config_lines will get inserted into the file verbatim -- be careful about
 #  quoting and escaping!  Note that if you're inserting a bunch of lines you'll be better
 #  served by creating an additional template and including that via $role_requires.
+#
+#  Memcached memory usage defaults to 128 megs but can be changed via $memcached_size.
 class mediawiki::singlenode( $ensure = 'present',
                              $database_name = "testwiki",
                              $role_requires = [],
                              $install_path = "/srv/mediawiki",
-                             $role_config_lines = []) {
+                             $role_config_lines = [],
+                             $memcached_size = 128) {
         require "role::labs-mysql-server",
 		"webserver::php5-mysql",
 		"webserver::php5"
@@ -101,7 +104,8 @@ class mediawiki::singlenode( $ensure = 'present',
 	}
 
 	class { "memcached":
-		memcached_ip => "127.0.0.1" }
+		memcached_ip => "127.0.0.1",
+		memcached_size => $memcached_size }
 
 	git::clone { "mediawiki":
 		directory => $install_path,
