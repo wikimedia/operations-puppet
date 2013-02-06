@@ -64,6 +64,7 @@ $decommissioned_servers = [
 "ms2",
 "ms3",
 "ms4",
+"msfe1002",
 "project1",
 "project2",
 "searchidx1",
