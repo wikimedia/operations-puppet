@@ -37,7 +37,13 @@ class misc::beta::autoupdater {
 		# make sure we are not going to ask the password to mwdeploy when
 		# it tries to identify as mwdeploy.
 		'ALL = (mwdeploy) NOPASSWD: ALL',
+
+		# mergeMessageFileList.php is run by mw-update-l10n as the apache user
+		# since https://gerrit.wikimedia.org/r/#/c/44548/
+		# Simply allow mwdeploy to run 'mwscript' as apache. That should be fine.
+		'ALL = (apache) NOPASSWD:/usr/local/bin/mwscript',
 	] }
+
 
 	upstart_job { "wmf-beta-autoupdate": install => true }
 
