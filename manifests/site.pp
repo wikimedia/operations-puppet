@@ -1991,12 +1991,6 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-# srv190-192 are application servers (precise)
-node /^srv19[0-2]\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-
 # srv193 is test.wikipedia.org (precise)
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver
@@ -2005,36 +1999,8 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
-# srv194-199 are application servers (precise)
-node /^srv19[4-9]\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-
-# srv200-213 are application servers (precise)
-node /^srv(20[0-9]|21[0-3])\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-
-# srv214-218 are API application servers (precise)
-node /^srv21[4-8]\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver::api
-	include	nfs::upload
-}
-
-# srv219-224 are precise image scalers (precise)
-node /^srv(219|22[0-4])\.pmtpa\.wmnet$/ {
-	if $hostname =~ /^srv219|srv220$/ {
-		$ganglia_aggregator = "true"
-	}
-
-	include role::applicationserver::imagescaler
-	include nfs::upload
-}
-
-# srv225-230 are applicationservers (precise)
-node /^srv(22[5-9]|230)\.pmtpa\.wmnet$/ {
+# srv226-230 are applicationservers (precise)
+node /^srv(22[6-9]|230)\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
