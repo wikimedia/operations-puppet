@@ -521,6 +521,13 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
 		class { "ldap::client::pam":
 			ldapconfig => $ldapconfig
 		}
+	} else {
+		# The ldap nss package recommends this package
+		# and this package will reconfigure pam as well as add
+		# its support
+		package { "libpam-ldapd":
+			ensure => absent;
+		}
 	}
 
 	if "nss" in $ldapincludes {
