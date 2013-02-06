@@ -88,6 +88,8 @@ class misc::contint::test {
 		# Get perl dependencies so we can lint the wikibugs perl script
 		include misc::irc::wikibugs::packages
 
+    include misc::package-builder
+
 		# split up packages into groups a bit for readability and flexibility ("ensure present" vs. "ensure latest" ?)
 
 		$CI_PHP_packages = [ "php-apc", "php5-cli", "php5-curl", "php5-gd", "php5-intl", "php5-mysql", "php-pear", "php5-sqlite", "php5-tidy", "php5-pgsql" ]
