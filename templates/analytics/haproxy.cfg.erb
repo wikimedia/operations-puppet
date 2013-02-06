@@ -1,0 +1,148 @@
+# Note: This file is managed by Puppet.
+
+global
+  log 127.0.0.1  local0
+  log 127.0.0.1  local1 notice
+  #log loghost  local0 info
+  maxconn 4096
+  #chroot /usr/share/haproxy
+  user haproxy
+  group haproxy
+  daemon
+  #debug
+  #quiet
+
+defaults
+  log  global
+  mode  http
+  option  httplog
+  option  dontlognull
+  retries  3
+  option redispatch
+  option forwardfor
+  option  http-server-close
+  maxconn  2000
+  contimeout  5000
+  clitimeout  50000
+  srvtimeout  50000
+
+
+userlist wmf-analytics
+  user wmf-analytics  password  $6$k6$kyx9DDXmf5xWvECQYqwRDfwgniFIx.BJIvjiXuf8DHJkPh0pCPckhlGnnHKs9pNthCZ9UyxVQzYq9dbQZNhS6/
+  user louisdang      password  $6$k6$j/f8G9CmFjrwWiflr8O6NXpgadA/kA5FSGe0noZNu.JcMfmpeoSGyglYBpfn/7U6Uz10o.REWqouoyxqZ6FuW1
+
+frontend kraken
+  bind 0.0.0.0:<%= port %>
+  timeout client 86400000
+  
+  # Auth ACLs
+  acl auth_ok           http_auth(wmf-analytics)
+
+  # Test for the WebSocket HTTP-upgrade header
+  acl is_websocket      hdr(Upgrade) -i WebSocket
+
+  # HTTP Host based ACLs
+  acl host_analytics    hdr_beg(host)    -i analytics.
+  acl host_namenode     hdr_beg(host)    -i namenode.analytics.
+  acl host_datanode     hdr_beg(host)    -i datanode.analytics
+  acl host_jobs         hdr_beg(host)    -i jobs.analytics.
+  acl host_history      hdr_beg(host)    -i history.analytics.
+  acl host_hue          hdr_beg(host)    -i hue.analytics.
+  acl host_oozie        hdr_beg(host)    -i oozie.analytics.
+  acl host_storm        hdr_beg(host)    -i storm.analytics.
+  acl host_graphite     hdr_beg(host)    -i graphite.analytics.
+  acl host_riemann      hdr_beg(host)    -i riemann.analytics.
+  acl host_riemann_ws   hdr_beg(host)    -i riemann-ws.analytics.
+
+
+  # Whitelisted Network/IP ACLs
+<% whitelist.each do |key, value| -%>
+  acl src_<%= key %>    src <%= value %>
+<% end -%>
+
+  acl host_analytics1001 hdr_beg(host)   -i analytics1001.
+
+  # Kraken Apt repository
+  acl path_apt           path_beg        -i /apt
+
+  # datanode streamfile public path.
+  # This allows anyone who knows the URLs
+  # to access files in HDFS in the /wmf/public
+  # directory without needing to enter HTTP auth
+  # credentials.  Limn uses this for remote
+  # graph datafile URLs, so that when Kraken
+  # generates new data, the graph will automatically
+  # be updated.
+  acl path_hdfs_public path_beg     -i /streamFile/wmf/public
+
+  # Allow public access to the Kraken Apt repository
+  http-request allow if host_analytics1001 path_apt
+
+  # Only allow proxying if:
+  # - the request is to a datanode url and the url path is to the /wmf/public directory
+  # - the request is coming from a whitelisted network or IP,
+  # - the HTTP auth test passes
+  # - the request is to analytics.wikimedia.org.
+  http-request auth unless auth_ok or host_analytics or path_hdfs_public or src_analyticsA or src_analyticsB or src_wmf_office or src_diederik or src_dsc
+
+  # Use appropriate server backend based
+  # on matched HTTP Host ACL
+  use_backend   analytics if host_analytics
+  use_backend   namenode  if host_namenode
+  use_backend   datanode  if host_datanode
+  use_backend   jobs      if host_jobs
+  use_backend   history   if host_history
+  use_backend   hue       if host_hue
+  use_backend   oozie     if host_oozie
+  use_backend   storm     if host_storm
+  use_backend   graphite  if host_graphite
+  use_backend   riemann_ws if host_riemann_ws
+  use_backend   riemann_ws if is_websocket host_riemann
+  use_backend   riemann    if host_riemann
+  
+  default_backend localhost_81
+
+
+
+
+
+# Backends
+
+backend analytics
+  server frontend <%= frontend_hostname %>:80
+
+backend namenode
+  server namenode <%= namenode_hostname %>:50070
+
+backend datanode
+  server datanode <%= datanode_hostname %>:50075
+
+backend jobs
+  server job_server <%= namenode_hostname %>:8088
+
+backend history
+  server history_server <%= namenode_hostname %>:19888
+
+backend hue
+  server hue_server <%= hue_hostname %>:8888
+
+backend oozie
+  server oozie_server <%= oozie_hostname %>:11000
+
+backend storm
+  server storm_server <%= storm_hostname %>:<%= storm_port %>
+
+backend graphite
+  server graphite_server <%= graphite_hostname %>:<%= graphite_dash_port %>
+
+backend riemann
+  server riemann_server <%= riemann_hostname %>:<%= riemann_dash_port %>
+
+backend riemann_ws
+  timeout queue 5000
+  timeout server 86400000
+  timeout connect 86400000
+  server riemann_ws_server <%= riemann_hostname %>:<%= riemann_ws_port %>
+
+backend localhost_81
+  server localhost 127.0.0.1:81
