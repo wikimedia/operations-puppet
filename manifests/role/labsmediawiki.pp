@@ -26,7 +26,6 @@ class role::mediawiki-install::labs {
 #
 # Optional parameters in labsconsole:
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
-
 class role::wikidata-repo-latest::labs {
 
 	class { "wikidata::singlenode":
@@ -55,7 +54,6 @@ class role::wikidata-repo-latest::labs {
 #
 # Optional parameters in labsconsole:
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
-
 class role::wikidata-repo::labs {
 
 	class { "wikidata::singlenode":
@@ -87,7 +85,6 @@ class role::wikidata-repo::labs {
 #
 # Optional parameters in labsconsole:
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
-
 class role::wikidata-client-latest::labs {
 
 	class { "wikidata::singlenode":
@@ -121,7 +118,6 @@ class role::wikidata-client-latest::labs {
 #
 # Optional parameters in labsconsole:
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
-
 class role::wikidata-client::labs {
 
 	class { "wikidata::singlenode":
