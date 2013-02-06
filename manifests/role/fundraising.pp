@@ -114,6 +114,7 @@ class role::fundraising::database::slave {
 	$mysql_role = "slave"
 	include role::fundraising::database
 	monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => true }
+	monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => true }
 	monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => true }
 }
 
