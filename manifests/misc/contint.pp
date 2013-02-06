@@ -81,13 +81,13 @@ class misc::contint::test {
 		include contint::packages
 	}
 
-	# Common apache configuration
-	apache_site { integration: name => "integration.mediawiki.org" }
-
 	class jenkins {
 
 		# Load the Jenkins module
 		include ::jenkins
+
+		# We need a basic site to publish nightly builds in
+		include contint::website
 
 		# Get several OpenJDK packages including the jdk.
 		# (openjdk is the default distribution for the java define.
@@ -133,22 +133,6 @@ class misc::contint::test {
 				group => "wikidev",
 				mode => 0775,
 				ensure => directory;
-			# Let wikidev users maintain the homepage
-			 "/srv/org":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki":
-					mode => 0755,
-					owner => www-data,
-					group => wikidev,
-					ensure => directory;
-			 "/srv/org/mediawiki/integration":
-					mode => 0755,
-					owner => jenkins,
-					group => wikidev,
-					ensure => directory;
 			# Welcome page
 			"/srv/org/mediawiki/integration/index.html":
 				owner => www-data,
@@ -198,12 +182,6 @@ class misc::contint::test {
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WLMMobile",
 				recurse => "true";
-			"/etc/apache2/sites-available/integration.mediawiki.org":
-				mode => 0444,
-				owner => root,
-				group => root,
-				source => "puppet:///files/apache/sites/integration.mediawiki.org";
-
 		}
 
 		# run jenkins behind Apache and have pretty URLs / proxy port 80
@@ -225,29 +203,6 @@ class misc::contint::test {
 				mode => 0444,
 				source => "puppet:///files/zuul/apache_proxy";
 		}
-	}
-
-	class qunit {
-
-		file {
-			"/srv/localhost":
-				mode => 0755,
-				owner => www-data,
-				group => wikidev,
-				ensure => directory;
-			 "/srv/localhost/qunit":
-				mode => 0755,
-				owner => jenkins,
-				group => wikidev,
-				ensure => directory;
-			"/etc/apache2/sites-available/qunit.localhost":
-				mode => 0444,
-				owner => root,
-				group => root,
-				source => "puppet:///files/apache/sites/qunit.localhost";
-		}
-
-		apache_site { 'qunit localhost': name => 'qunit.localhost' }
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)
