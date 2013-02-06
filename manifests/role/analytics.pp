@@ -28,7 +28,10 @@ class role::analytics {
 		version      => 6,
 	}
 
-	# hadoop and hue use ldap to authenticate users, and require this
+	# Hadoop and Hue use LDAP to authenticate users, and require this
+	#
+	# TODO:  Try out Hadoop LDAP user group mapping, so we don't need
+	# NSS LDAP.
     class { "role::ldap::client::labs":
             ldapincludes =>  ['openldap', 'utils', 'nss'],
     }
@@ -38,6 +41,11 @@ class role::analytics {
 
 	# udp-filter is a useful thing!
 	include misc::udp2log::udp_filter
+}
+
+# proxy web access to Kraken web UIs
+class role::analytics::proxy inherits role::analytics {
+	include misc::analytics::proxy
 }
 
 # front end interfaces for Kraken and Hadoop
