@@ -67,60 +67,20 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		mode => 775;
 	}
 
-# get the Wikibase extensions and dependencies
-	git::clone { "Diff" :
+# get the dependencies for Wikibase extension
+	mw-extension { [ "Diff", "DataValues" ]:
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "${install_path}/extensions/Diff",
-			branch => "master",
-			ensure => $ensure,
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Diff.git",
-	}
-
-	git::clone { "DataValues" :
-		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-			directory => "${install_path}/extensions/DataValues",
-			branch => "master",
-			ensure => $ensure,
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git",
 	}
 
 # get more extensions for Wikidata test instances
-	git::clone { "DismissableSiteNotice" :
+	mw-extension { [ "DismissableSiteNotice", "ApiSandbox", "OAI", "SiteMatrix" ]:
 		require => Git::Clone["mediawiki"],
-		directory => "${install_path}/extensions/DismissableSiteNotice",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DismissableSiteNotice.git",
-	}
-
-	git::clone { "ApiSandbox":
-		require => Git::Clone["mediawiki"],
-		directory => "${install_path}/extensions/ApiSandbox",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ApiSandbox.git",
-	}
-
-	git::clone { "OAI":
-		require => Git::Clone["mediawiki"],
-		directory => "${install_path}/extensions/OAI",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/OAI.git",
 	}
 
 	git::clone { "mwconfig":
 		require => Git::Clone["mediawiki"],
 		directory => "/srv/mediawiki-config",
 		origin => "https://gerrit.wikimedia.org/r/p/operations/mediawiki-config.git",
-	}
-
-	git::clone { "SiteMatrix":
-		require => Git::Clone["mediawiki"],
-		directory => "${install_path}/extensions/SiteMatrix",
-		branch => "master",
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SiteMatrix.git",
 	}
 
 	file { "${install_path}/extensions/notitle.php":
@@ -130,21 +90,21 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	}
 
 	exec { "populateSitesTable":
-			require => [Git::Clone["Wikibase"], File["${install_path}/LocalSettings.php"]],
+			require => [Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
 			cwd => "${install_path}/extensions/Wikibase/lib/maintenance",
 			command => "/usr/bin/php populateSitesTable.php",
 			logoutput => "on_failure",
 	}
 
 	exec { "update-script":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"]],
+			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/update.php --quick",
 			logoutput => "on_failure",
 	}
 
 	exec { "localisation-cache":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/rebuildLocalisationCache.php",
 			timeout => "600",
@@ -175,24 +135,15 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			command => "/usr/bin/php maintenance/importDump.php wikidata-repo-mainpage.xml",
 			logoutput => "on_failure",
 		}
-		git::clone { "Wikibase":
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Git::Clone["Diff"], Git::Clone["DataValues"]],
-			directory => "${install_path}/extensions/Wikibase",
-			branch => "master",
-			ensure => $ensure,
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
+
+# get the extensions
+		mw-extension { [ "Wikibase", "UniversalLanguageSelector" ]:
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		file { "${install_path}/wikidata_repo_requires.php":
 			require => [Exec["mediawiki_setup"], Exec["repo_move_mainpage"]],
 			ensure => present,
 			content => template('mediawiki/wikidata-repo-requires.php'),
-		}
-		git::clone { "UniversalLanguageSelector" :
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
-				directory => "${install_path}/extensions/UniversalLanguageSelector",
-				branch => "master",
-				ensure => $ensure,
-				origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git",
 		}
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
 			require => Git::Clone["mediawiki"],
@@ -200,7 +151,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/Wikidata-logo-demorepo.png",
 		}
 		exec { "repo_import_data":
-			require => [Git::Clone["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
 			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv && /usr/bin/php importProperties.php --verbose en en-elements-properties.csv",
 			logoutput => "on_failure",
@@ -231,12 +182,9 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # Wikibase client only:
 	if $install_client == true {
-		git::clone { "Wikibase" :
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Git::Clone["Diff"], Git::Clone["DataValues"]],
-			directory => "${install_path}/extensions/Wikibase",
-			branch => "master",
-			ensure => $ensure,
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git",
+# get the extensions
+		mw-extension { [ "Wikibase", "ParserFunctions" ]:
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		file { "${install_path}/wikidata_client_requires.php":
 			require => Exec["mediawiki_setup"],
@@ -249,14 +197,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/mediawiki/Wikidata-logo-democlient.png",
 		}
 		exec { "populate_interwiki":
-			require => [Git::Clone["Wikibase"], Exec["update-script"]],
+			require => [Mw-extension["Wikibase"], Exec["update-script"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/client/maintenance/populateInterwiki.php",
 			logoutput => "on_failure",
 		}
 
 		exec { "SitesTable_client":
-			require => Git::Clone["Wikibase"],
+			require => Mw-extension["Wikibase"],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/lib/maintenance/populateSitesTable.php",
 			logoutput => "on_failure",
@@ -280,20 +228,13 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			source => "puppet:///files/logrotate/wikidata-runJobs",
 			owner => 'root',
 		}
-		git::clone { "ParserFunctions":
-			require => Git::Clone["mediawiki"],
-			directory => "${install_path}/extensions/ParserFunctions",
-			branch => "master",
-			ensure => $ensure,
-			origin => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ParserFunctions.git",
-		}
 		file { "${install_path}/simple-elements.xml":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
 			source => "puppet:///files/mediawiki/simple-elements.xml",
 		}
 		exec { "client_import_data":
-			require => [Git::Clone["Wikibase"], File["${install_path}/simple-elements.xml"]],
+			require => [Mw-extension["Wikibase"], File["${install_path}/simple-elements.xml"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php simple-elements.xml",
 			logoutput => "on_failure",
@@ -304,10 +245,10 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	if $ensure == 'latest' {
 		exec { 'wikidata_update':
 			require => [Git::Clone["mediawiki"],
-				Git::Clone["Diff"],
-				Git::Clone["DataValues"],
-				Git::Clone["UniversalLanguageSelector"],
-				Git::Clone["Wikibase"],
+				Mw-extension["Diff"],
+				Mw-extension["DataValues"],
+				Mw-extension["UniversalLanguageSelector"],
+				Mw-extension["Wikibase"],
 				File["${install_path}/LocalSettings.php"]],
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
 			logoutput => "on_failure",
