@@ -226,11 +226,12 @@ $decommissioned_servers = [
 "srv222",
 "srv223",
 "srv224",
+"srv225",
 "storage2",
 "storage3",
 "thistle",
 "virt1008",
 "wikinews-lb.wikimedia.org",
 "yongle",
-"yttrium", #renaming of server, can be pulled after runs on spence 2013-01-17 robh
+"yttrium",
 ]
