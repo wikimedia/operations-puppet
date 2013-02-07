@@ -1534,13 +1534,19 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# mw 75-80 are imagescalers (precise)
+# mw75-80 are imagescalers (precise)
 node /mw(7[5-9]|80)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^mw7[56]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::imagescaler
+}
+
+# mw81-85 are application servers (precise)
+node /^mw(8[1-5])\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver
+	include	nfs::upload
 }
 
 # mw 1001-1016 are jobrunners (precise)
