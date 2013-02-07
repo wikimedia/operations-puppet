@@ -80,7 +80,6 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 			ensure => present,
 			command => "/usr/bin/planet -v /usr/share/planet-venus/wikimedia/${title}/config.ini > /var/log/planet/${title}-planet.log 2>&1",
 			user => 'planet',
-			hour => '0',
 			minute => '0',
 			require => [User['planet']];
 		}
