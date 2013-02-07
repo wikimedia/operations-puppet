@@ -5,7 +5,7 @@
 @monitor_group { "parsoidcache_eqiad": description => "eqiad parsoid caches" }
 
 class misc::parsoid {
-	package { [ "nodejs", "npm", "build-essential", "git-core" ]:
+	package { [ "nodejs", "npm", "build-essential" ]:
 		ensure => latest
 	}
 

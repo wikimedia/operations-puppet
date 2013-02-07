@@ -1234,7 +1234,6 @@ node "marmontel.wikimedia.org" {
 	include standard,
 		admins::roots,
 		svn::client,
-		generic::packages::git-core,
 		misc::blogs::wikimedia
 }
 
@@ -1349,7 +1348,6 @@ node "mchenry.wikimedia.org" {
 		nrpe,
 		role::ldap::client::corp,
 		backup::client,
-		generic::packages::git-core,
 		groups::wikidev,
 		accounts::jdavis
 
