@@ -134,6 +134,23 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
 	planettheme { $planet_languages_keys: }
 
+	define planetapachesite {
+
+		file {
+			"/etc/apache2/sites-available/${title}.planet.${planet_domain_name}":
+				mode => 0444,
+				owner => root,
+				group => root,
+				content => template('apache/sites/planet-language.erb');
+		}
+
+		apache_site { "${title}-planet": name => ${title}.planet.${planet_domain_name}" }
+	}
+
+	# Apache site without language, redirects to meta
 	apache_site { planet: name => "planet.${planet_domain_name}" }
+
+	# the actual *.planet language versions
+	planetapachesite{ $planet_languages_keys: }
 
 }
