@@ -658,21 +658,6 @@ class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 			notify => Service["keystone"],
 			require => Package["keystone"],
 			mode => 0440;
-		# Patches; can be removed when keystone changes 10365 and 10370 are released in the packages
-		"/usr/share/pyshared/keystone/identity/backends/ldap/core.py":
-			source => "puppet:///files/openstack/essex/keystone/core.py",
-			owner => root,
-			group => root,
-			mode => 0644,
-			notify => Service["keystone"],
-			require => Package["keystone"];
-		"/usr/share/pyshared/keystone/config.py":
-			source => "puppet:///files/openstack/essex/keystone/config.py",
-			owner => root,
-			group => root,
-			mode => 0644,
-			notify => Service["keystone"],
-			require => Package["keystone"];
 	}
 }
 
