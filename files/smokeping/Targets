@@ -51,10 +51,10 @@ menu = sdtpa A4
 title = Rack A4 (sdtpa) [fenari]
 host = fenari.wikimedia.org
 
-+++ SDTPA_A5
-menu = sdtpa A5
-title = Rack A5 (sdtpa) [srv200]
-host = srv200.pmtpa.wmnet
+#+++ SDTPA_A5
+#menu = sdtpa A5
+#title = Rack A5 (sdtpa) [temp empty]
+#host = 
 
 +++ SDTPA_B1
 menu = sdtpa B1
