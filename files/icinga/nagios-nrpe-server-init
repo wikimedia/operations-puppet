@@ -54,7 +54,7 @@ case "$1" in
 		exit 1
 	fi
 	log_daemon_msg "Starting $DESC" "$NAME"
-	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS --retry 15
+	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS
 	log_end_msg $?
 	;;
   stop)
