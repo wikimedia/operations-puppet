@@ -23,6 +23,12 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 	}
 
 	file {
+		"/etc/apache2/ports.conf":
+			ensure => present,
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/apache/ports.conf.ssl";
 		"/etc/apache2/sites-available/planet.${planet_domain_name}":
 			mode => 0444,
 			owner => root,
