@@ -1,0 +1,25 @@
+# Apache config template for a *.planet language site
+
+<VirtualHost *:80>
+        DocumentRoot /var/www/planet/<%= @name %>
+        ServerName <%= @name %>.planet.<%= planet_domain_name %>
+        php_admin_flag engine off
+
+        <Directory /var/www/planet/<%= @name %>>
+                Allow from all
+        </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+        DocumentRoot /var/www/planet/<%= @name %>
+
+        ServerName <%= @name %>.planet.<%= planet_domain_name %>
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/star.planet.<%= planet_domain_name %>.pem
+        SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= planet_domain_name %>.key
+
+        <Directory /var/www/planet/<%= @name %>>
+                Allow from all
+        </Directory>
+
+</VirtualHost>
