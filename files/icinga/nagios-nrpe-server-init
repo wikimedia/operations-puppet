@@ -18,7 +18,7 @@ DAEMON=/usr/sbin/nrpe
 NAME=nagios-nrpe
 DESC=nagios-nrpe
 CONFIG=/etc/icinga/nrpe.cfg
-PIDDIR=/var/run/icinga
+PIDDIR=/var/run/nagios
 
 test -x $DAEMON || exit 0
 
@@ -54,7 +54,7 @@ case "$1" in
 		exit 1
 	fi
 	log_daemon_msg "Starting $DESC" "$NAME"
-	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS
+	start_daemon -p $PIDDIR/nrpe.pid $NICENESS $DAEMON  -c $CONFIG -d $DAEMON_OPTS --retry 15
 	log_end_msg $?
 	;;
   stop)
