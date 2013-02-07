@@ -1454,6 +1454,21 @@ node /^ms-be(3|[5-8]|10)\.pmtpa\.wmnet$/ {
 	swift::mount_filesystem{ '/dev/sdn3': }
 }
 
+node /^ms-be11\.pmtpa\.wmnet$/ {
+	# the ms-be hosts with ssds have two more disks
+	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
+		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
+		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
+
+	include role::swift::pmtpa-prod::storage
+
+	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+	# these are already partitioned and xfs formatted by the installer
+	swift::label_filesystem{ '/dev/sda3': }
+	swift::label_filesystem{ '/dev/sdb3': }
+	swift::mount_filesystem{ '/dev/sda3': }
+	swift::mount_filesystem{ '/dev/sdb3': }
+}
 
 node /^ms-be1([1-2]|[4-9])\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
