@@ -1464,6 +1464,11 @@ node /^ms-be1([1-2]|[4-9])\.pmtpa\.wmnet$/ {
 	include role::swift::pmtpa-prod::storage
 
 	swift::create_filesystem{ $all_drives: partition_nr => "1" }
+	# these are already partitioned and xfs formatted by the installer
+	swift::label_filesystem{ '/dev/sda3': }
+	swift::label_filesystem{ '/dev/sdb3': }
+	swift::mount_filesystem{ '/dev/sda3': }
+	swift::mount_filesystem{ '/dev/sdb3': }
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
