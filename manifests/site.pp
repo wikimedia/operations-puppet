@@ -1495,7 +1495,7 @@ node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 
 # mw1-16 are application servers for jobrunners only (precise)
 node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
-	if $hostname =~ /^mw[12]$/ {
+	if $::hostname =~ /^mw[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1521,7 +1521,7 @@ node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
 
 # mw 75-80 are imagescalers (precise)
 node /mw(7[5-9]|80)\.pmtpa\.wmnet/ {
-	if $hostname =~ /^mw7[56]$/ {
+	if $::hostname =~ /^mw7[56]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1530,7 +1530,7 @@ node /mw(7[5-9]|80)\.pmtpa\.wmnet/ {
 
 # mw 1001-1016 are jobrunners (precise)
 node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw100[12]$/ {
+	if $::hostname =~ /^mw100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1539,7 +1539,7 @@ node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
 
 # mw 1017-1113 are apaches (precise)
 node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw101[78]$/ {
+	if $::hostname =~ /^mw101[78]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1548,7 +1548,7 @@ node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
 
 # mw 1114-1148 are api apaches (precise)
 node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw111[45]$/ {
+	if $::hostname =~ /^mw111[45]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1557,7 +1557,7 @@ node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet/ {
 
 # mw 1149-1152 are bits apaches (precise)
 node /mw11(49|5[0-2])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw115[12]$/ {
+	if $::hostname =~ /^mw115[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1566,7 +1566,7 @@ node /mw11(49|5[0-2])\.eqiad\.wmnet/ {
 
 # mw 1153-1160 are imagescalers (precise)
 node /mw11(5[3-9]|60)\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw115[34]$/ {
+	if $::hostname =~ /^mw115[34]$/ {
 		$ganglia_aggregator = "true"
 	}
 
