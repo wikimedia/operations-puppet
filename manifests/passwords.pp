@@ -1,4 +1,4 @@
-# This file is deliberately kept empty. Do NOT put it in svn.
+# This file is deliberately kept empty. Do NOT put it in git.
 # The real file is in /etc/puppet/manifests/passwords.pp
 
 class passwords::certs { }
@@ -18,3 +18,4 @@ class passwords::network { }
 class passwords::openstack::glance { }
 class passwords::openstack::nova { }
 class passwords::puppet::database { }
+class passwords::analytics { }
