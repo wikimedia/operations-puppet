@@ -51,9 +51,12 @@ class misc::parsoid::cache {
 		ensure => latest
 	}
 
+	include lvs::configuration
+	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoid'][$::site]
+
 	file {
 		"/etc/varnish/default.vcl":
-			source => "puppet:///files/misc/parsoid.vcl",
+			content => template("misc/parsoid.vcl.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
