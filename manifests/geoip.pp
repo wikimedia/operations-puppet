@@ -42,7 +42,7 @@ class geoip($data_directory = "/usr/share/GeoIP") {
 #
 class geoip::packages {
 	package { [ "libgeoip1", "libgeoip-dev", "geoip-bin" ]:
-		ensure => latest;
+		ensure => present;
 	}
 }
 
@@ -53,7 +53,7 @@ class geoip::packages::python {
 	include geoip::packages
 
 	package { "python-geoip":
-		ensure  => latest,
+		ensure  => present,
 		require => Class["geoip::packages"],
 	}
 }
@@ -193,7 +193,7 @@ class geoip::data::download($data_directory = "/usr/share/GeoIP", $config_file =
 	# modify GeoIP.conf and add the Maxmind
 	# product IDs for those files.
 	cron { "geoipupdate":
-		command     => "$geoipupdate_command > /dev/null",
+		command     => "/bin/echo -en \"\$(/bin/date):\t\" >> /var/log/geoipupdate.log && $geoipupdate_command &>> /var/log/geoipupdate.log",
 		environment => $environment,
 		user        => root,
 		weekday     => 0,
