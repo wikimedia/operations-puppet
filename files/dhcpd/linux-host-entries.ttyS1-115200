@@ -2275,6 +2275,206 @@ host mw85 {
 	fixed-address mw85.pmtpa.wmnet;
 }
 
+host mw86 {
+	hardware ethernet 90:B1:1C:25:95:4D;
+	fixed-address mw86.pmtpa.wmnet;
+}
+
+host mw87 {
+	hardware ethernet 90:B1:1C:25:D8:0A;
+	fixed-address mw87.pmtpa.wmnet;
+}
+
+host mw88 {
+	hardware ethernet 90:B1:1C:25:91:2C;
+	fixed-address mw88.pmtpa.wmnet;
+}
+
+host mw89 {
+	hardware ethernet 90:B1:1C:25:90:34;
+	fixed-address mw89.pmtpa.wmnet;
+}
+
+host mw90 {
+	hardware ethernet 90:B1:1C:28:E2:1B;
+	fixed-address mw90.pmtpa.wmnet;
+}
+
+host mw91 {
+	hardware ethernet 90:B1:1C:28:DC:AF;
+	fixed-address mw91.pmtpa.wmnet;
+}
+
+host mw92 {
+	hardware ethernet 90:B1:1C:24:9A:9E;
+	fixed-address mw92.pmtpa.wmnet;
+}
+
+host mw93 {
+	hardware ethernet 90:B1:1C:25:9F:29;
+	fixed-address mw93.pmtpa.wmnet;
+}
+
+host mw94 {
+	hardware ethernet 90:B1:1C:25:91:AA;
+	fixed-address mw94.pmtpa.wmnet;
+}
+
+host mw95 {
+	hardware ethernet 90:B1:1C:25:D8:0E;
+	fixed-address mw95.pmtpa.wmnet;
+}
+
+host mw96 {
+	hardware ethernet 90:B1:1C:25:D8:5E;
+	fixed-address mw96.pmtpa.wmnet;
+}
+
+host mw97 {
+	hardware ethernet 90:B1:1C:25:95:57;
+	fixed-address mw97.pmtpa.wmnet;
+}
+
+host mw98 {
+	hardware ethernet 90:B1:1C:28:DA:F6;
+	fixed-address mw98.pmtpa.wmnet;
+}
+
+host mw99 {
+	hardware ethernet 90:B1:1C:28:DF:3C;
+	fixed-address mw99.pmtpa.wmnet;
+}
+
+host mw100 {
+	hardware ethernet 90:B1:1C:28:D9:C7;
+	fixed-address mw100.pmtpa.wmnet;
+}
+
+host mw101 {
+	hardware ethernet 90:B1:1C:26:F0:E4;
+	fixed-address mw101.pmtpa.wmnet;
+}
+
+host mw102 {
+	hardware ethernet 90:B1:1C:25:88:19;
+	fixed-address mw102.pmtpa.wmnet;
+}
+
+host mw103 {
+	hardware ethernet 90:B1:1C:25:95:F9;
+	fixed-address mw103.pmtpa.wmnet;
+}
+
+host mw104 {
+	hardware ethernet 90:B1:1C:25:97:48;
+	fixed-address mw104.pmtpa.wmnet;
+}
+
+host mw105 {
+	hardware ethernet 90:B1:1C:28:DC:8F;
+	fixed-address mw105.pmtpa.wmnet;
+}
+
+host mw106 {
+	hardware ethernet 90:B1:1C:28:DB:1A;
+	fixed-address mw106.pmtpa.wmnet;
+}
+
+host mw107 {
+	hardware ethernet 90:B1:1C:28:DA:6C;
+	fixed-address mw107.pmtpa.wmnet;
+}
+
+host mw108 {
+	hardware ethernet 90:B1:1C:17:26:8A;
+	fixed-address mw108.pmtpa.wmnet;
+}
+
+host mw109 {
+	hardware ethernet 90:B1:1C:28:DB:52;
+	fixed-address mw109.pmtpa.wmnet;
+}
+
+host mw110 {
+	hardware ethernet 90:B1:1C:28:DE:01;
+	fixed-address mw110.pmtpa.wmnet;
+}
+
+host mw111 {
+	hardware ethernet 90:B1:1C:28:DF:70;
+	fixed-address mw111.pmtpa.wmnet;
+}
+
+host mw112 {
+	hardware ethernet 90:B1:1C:27:A3:80;
+	fixed-address mw112.pmtpa.wmnet;
+}
+
+host mw113 {
+	hardware ethernet 90:B1:1C:28:DA:D6;
+	fixed-address mw113.pmtpa.wmnet;
+}
+
+host mw114 {
+	hardware ethernet 90:B1:1C:27:8A:AC;
+	fixed-address mw114.pmtpa.wmnet;
+}
+
+host mw115 {
+	hardware ethernet 90:B1:1C:27:9F:A5;
+	fixed-address mw115.pmtpa.wmnet;
+}
+
+host mw116 {
+	hardware ethernet 90:B1:1C:25:A1:4D;
+	fixed-address mw116.pmtpa.wmnet;
+}
+
+host mw117 {
+	hardware ethernet 90:B1:1C:25:A0:FB;
+	fixed-address mw117.pmtpa.wmnet;
+}
+
+host mw118 {
+	hardware ethernet 90:B1:1C:27:8F:BE;
+	fixed-address mw118.pmtpa.wmnet;
+}
+
+host mw119 {
+	hardware ethernet 90:B1:1C:25:8A:24;
+	fixed-address mw119.pmtpa.wmnet;
+}
+
+host mw120 {
+	hardware ethernet 90:B1:1C:25:D7:FE;
+	fixed-address mw120.pmtpa.wmnet;
+}
+
+host mw121 {
+	hardware ethernet 90:B1:1C:25:9F:75;
+	fixed-address mw121.pmtpa.wmnet;
+}
+
+host mw122 {
+	hardware ethernet 90:B1:1C:27:89:D7;
+	fixed-address mw122.pmtpa.wmnet;
+}
+
+host mw123 {
+	hardware ethernet 90:B1:1C:0E:F9:1E;
+	fixed-address mw123.pmtpa.wmnet;
+}
+
+host mw124 {
+	hardware ethernet 90:B1:1C:27:9F:95;
+	fixed-address mw124.pmtpa.wmnet;
+}
+
+host mw125 {
+	hardware ethernet 90:B1:1C:28:DF:40;
+	fixed-address mw125.pmtpa.wmnet;
+}
+
 host mw1001 {
 	hardware ethernet 84:2b:2b:78:2c:b4;
 	fixed-address mw1001.eqiad.wmnet;
