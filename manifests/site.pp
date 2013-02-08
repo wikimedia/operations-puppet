@@ -1509,8 +1509,8 @@ node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {
 }
 
 # mw1-16 are application servers for jobrunners only (precise)
-node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
-	if $hostname =~ /^mw[12]$/ {
+node /^mw([1-9]|1[0-6])\.pmtpa\.wmnet$/ {
+	if $::hostname =~ /^mw[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1518,25 +1518,25 @@ node /mw([1-9]|1[0-6])\.pmtpa\.wmnet/ {
 }
 
 # mw17-59 are application servers (precise)
-node /mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
+node /^mw(1[7-9]|[2-5][0-9])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
 
 # mw60-61 are bits application servers (precise)
-node /mw6[01]\.pmtpa\.wmnet/ {
+node /^mw6[01]\.pmtpa\.wmnet$/ {
 	include role::applicationserver::appserver::bits
 }
 
 # mw62-74 are api application servers (precise)
-node /mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
+node /^mw(6[2-9]|7[0-4])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver::api
 	include	nfs::upload
 }
 
 # mw75-80 are imagescalers (precise)
-node /mw(7[5-9]|80)\.pmtpa\.wmnet/ {
-	if $hostname =~ /^mw7[56]$/ {
+node /^mw(7[5-9]|80)\.pmtpa\.wmnet$/ {
+	if $::hostname =~ /^mw7[56]$/ {
 		$ganglia_aggregator = "true"
 	}
 
@@ -1549,47 +1549,77 @@ node /^mw(8[1-5])\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
-# mw 1001-1016 are jobrunners (precise)
-node /mw10(0[1-9]|1[0-6])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw100[12]$/ {
+# mw1001-1016 are jobrunners (precise)
+node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^mw100[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	class  { role::applicationserver::jobrunner: run_jobs_enabled => true }
 }
 
-# mw 1017-1113 are apaches (precise)
-node /mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw101[78]$/ {
+# mw1017-1113 are apaches (precise)
+node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^mw101[78]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::appserver
 }
 
-# mw 1114-1148 are api apaches (precise)
-node /mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw111[45]$/ {
+# mw1114-1148 are api apaches (precise)
+node /^mw11(1[4-9]|[23][0-9]|4[0-8])\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^mw111[45]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::appserver::api
 }
 
-# mw 1149-1152 are bits apaches (precise)
-node /mw11(49|5[0-2])\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw115[12]$/ {
+# mw1149-1152 are bits apaches (precise)
+node /^mw11(49|5[0-2])\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^mw115[12]$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include	role::applicationserver::appserver::bits
 }
 
-# mw 1153-1160 are imagescalers (precise)
-node /mw11(5[3-9]|60)\.eqiad\.wmnet/ {
-	if $hostname =~ /^mw115[34]$/ {
+# mw1153-1160 are imagescalers (precise)
+node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^mw115[34]$/ {
 		$ganglia_aggregator = "true"
 	}
+
+	include	role::applicationserver::imagescaler
+}
+
+# mw1161-1164 are jobrunners (precise)
+node /^mw11(6[1-4])\.eqiad\.wmnet$/ {
+
+	class  { role::applicationserver::jobrunner: run_jobs_enabled => true }
+}
+
+# mw1165-1188 are apaches (precise)
+node /^mw11(6[5-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+
+	include	role::applicationserver::appserver
+}
+
+# mw1189-1198 are api apaches (precise)
+node /^mw11(89|9[0-8])\.eqiad\.wmnet$/ {
+
+	include	role::applicationserver::appserver::api
+}
+
+# mw1199 is a bits apache (precise)
+node "mw1199.eqiad.wmnet" {
+
+	include	role::applicationserver::appserver::bits
+}
+
+# mw1200 is an imagescaler (precise)
+node "mw1200.eqiad.wmnet" {
 
 	include	role::applicationserver::imagescaler
 }
