@@ -232,6 +232,13 @@ acl carrier_xl_indonesia {
     "202.152.243.0"/24;
 }
 
+acl carrier_orange_meditel_morocco {
+    "41.92.0.0"/18
+    "41.92.64.0"/19
+    "41.214.192.0"/18
+    "197.153.0.0"/16
+    "197.247.0.0"/16
+}
 
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
@@ -327,6 +334,11 @@ sub tag_carrier {
 		} else if ( client.ip ~ carrier_testing ) {
 			set req.http.X-Carrier = "wikimedia";
 			set req.http.X-CS = "WMF";
+		} else if (client.ip ~ carrier_orange_meditel_morocco) {
+			if ( req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Orange Meditel Morocco";
+				set req.http.X-CS = "604-00";
+			}
 		}
 	}
 
