@@ -125,12 +125,19 @@ class mobile::vumi {
 class mobile::vumi::udp2log {
 	include misc::udp2log
 
+	file { "/var/log/vumi/metrics.log":
+		owner  => "root",
+		group  => "udp2log",
+		mode   => 0775,
+		ensure => present,
+	}
+
 	# oxygen's udp2log instance
 	# saves logs mainly in /a/squid
 	misc::udp2log::instance { "vumi":
-		port => 5678,
+		port                => 5678,
 		monitor_packet_loss => false,
 		monitor_log_age     => false,
-		require             => File["/var/log/vumi"],
+		require             => [File["/var/log/vumi"], File["/var/log/vumi/metrics.log"]],
 	}
 }
