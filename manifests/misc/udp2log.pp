@@ -100,6 +100,7 @@ class misc::udp2log::rsyncd(
 #    $monitor_processes   - bool. Default: true
 #    $monitor_log_age     - bool. Default: true
 #    $template_variables  - arbitrary variable(s) for use in udp2log config template file.  Default: undef
+#    $recv_queue          - in KB.  If unset, --recv-queue may be set to /proc/sys/net/core/rmem_max.
 #
 define misc::udp2log::instance(
 	$port                = "8420",
@@ -111,7 +112,8 @@ define misc::udp2log::instance(
 	$monitor_packet_loss = true,
 	$monitor_processes   = true,
 	$monitor_log_age     = true,
-	$template_variables  = undef)
+	$template_variables  = undef,
+	$recv_queue          = undef)
 {
 	# This define requires that the udp2log class has
 	# been included.  The udp2log class is parameterized,
