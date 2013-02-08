@@ -136,6 +136,7 @@ class mobile::vumi::udp2log {
 	# saves logs mainly in /a/squid
 	misc::udp2log::instance { "vumi":
 		port                => 5678,
+		recv_queue          => 1,     # 1KB is the smallest passable receive queue for vumi so logs are flushed more often.
 		monitor_packet_loss => false,
 		monitor_log_age     => false,
 		require             => [File["/var/log/vumi"], File["/var/log/vumi/metrics.log"]],
