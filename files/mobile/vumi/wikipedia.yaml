@@ -13,3 +13,5 @@ max_ussd_session_length: 1800
 
 more_content_postfix: " (Reply for more, price 50p)"
 no_more_content_postfix: " (End of section)"
+
+metrics_prefix: "vumi.metrics-test"
