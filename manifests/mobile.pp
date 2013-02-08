@@ -128,7 +128,7 @@ class mobile::vumi::udp2log {
 	file { "/var/log/vumi/metrics.log":
 		owner  => "root",
 		group  => "udp2log",
-		mode   => 0775,
+		mode   => 0664,
 		ensure => present,
 	}
 
