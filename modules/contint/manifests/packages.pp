@@ -26,6 +26,13 @@ class contint::packages {
     ]: ensure => present,
   }
 
+  # luasandbox is a WMF package, we always want to use the very latest version
+  # since the package is used by unit tests
+  package { [
+    'php-luasandbox',
+  ]: ensure => latest,
+  }
+
   # Database related
   package { [
     'mysql-server',
