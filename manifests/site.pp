@@ -1922,7 +1922,8 @@ node "silver.wikimedia.org" {
 	include standard,
 		groups::wikidev,
 		accounts::preilly,
-		mobile::vumi
+		mobile::vumi,
+		mobile::vumi::udp2log,
 }
 
 node "singer.wikimedia.org" {
