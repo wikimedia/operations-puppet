@@ -420,51 +420,6 @@ host srv193 {
 	fixed-address srv193.pmtpa.wmnet;
 }
 
-host srv226 {
-	hardware ethernet 00:21:9B:8E:AD:1C;
-	fixed-address srv226.pmtpa.wmnet;
-}
-
-host srv227 {
-	hardware ethernet 00:21:9B:8E:AD:26;
-	fixed-address srv227.pmtpa.wmnet;
-}
-
-host srv228 {
-	hardware ethernet 00:21:9B:8E:AD:21;
-	fixed-address srv228.pmtpa.wmnet;
-}
-
-host srv229 {
-	hardware ethernet 00:21:9B:8E:AC:CC;
-	fixed-address srv229.pmtpa.wmnet;
-}
-
-host srv230 {
-	hardware ethernet 00:21:9B:8E:AC:FE;
-	fixed-address srv230.pmtpa.wmnet;
-}
-
-host srv231 {
-	hardware ethernet 00:21:9B:8E:AC:2C;
-	fixed-address srv231.pmtpa.wmnet;
-}
-
-host srv232 {
-	hardware ethernet 00:21:9B:8E:AD:08;
-	fixed-address srv232.pmtpa.wmnet;
-}
-
-host srv233 {
-	hardware ethernet 00:21:9B:8E:AC:EA;
-	fixed-address srv233.pmtpa.wmnet;
-}
-
-host srv234 {
-	hardware ethernet 00:21:9B:8E:AD:03;
-	fixed-address srv234.pmtpa.wmnet;
-}
-
 host srv235 {
 	hardware ethernet 00:21:9B:8E:B9:39;
 	fixed-address srv235.pmtpa.wmnet;
