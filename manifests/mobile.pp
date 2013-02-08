@@ -3,12 +3,12 @@
 class mobile::vumi {
 
 	include passwords::mobile::vumi
-	$testvumi_pw = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
-	$vumi_pw = $passwords::mobile::vumi::wikipedia_xmpp
+	$testvumi_pw          = $passwords::mobile::vumi::wikipedia_xmpp_sms_out
+	$vumi_pw              = $passwords::mobile::vumi::wikipedia_xmpp
 	$tata_sms_incoming_pw = $passwords::mobile::vumi::tata_sms_incoming_pw
 	$tata_sms_outgoing_pw = $passwords::mobile::vumi::tata_sms_outgoing_pw
-	$tata_ussd_pw = $passwords::mobile::vumi::tata_ussd_pw
-	$tata_hyd_ussd_pw = $passwords::mobile::vumi::tata_hyd_ussd_pw
+	$tata_ussd_pw         = $passwords::mobile::vumi::tata_ussd_pw
+	$tata_hyd_ussd_pw     = $passwords::mobile::vumi::tata_hyd_ussd_pw
 
 	file { "/a":
 		ensure => directory;
@@ -30,9 +30,9 @@ class mobile::vumi {
 		"python-txamqp":
 			ensure => "0.6.1-1~ppa3";
 		"vumi":
-			ensure => "0.5.0~a+110-0~ppa3";
+			ensure => "0.5.0~a+143-0~ppa3";
 		"vumi-wikipedia":
-			ensure => "0.1~a+11-0~ppa3";
+			ensure => "0.1~a+14-0~ppa3";
 		"python-twisted":
 			ensure => "latest";
 		"python-tz":
@@ -45,10 +45,10 @@ class mobile::vumi {
 			ensure => "latest";
 	}
 
-	 service { "supervisor":
+	service { "supervisor":
 			enable    => true,
 			ensure    => running,
-			require    => [ Package['supervisor']];
+			require   => [Package['supervisor']];
 	}
 
 	file {
@@ -119,5 +119,18 @@ class mobile::vumi {
 			user => "root",
 			require => File["/usr/local/vumi/rabbitmq.setup.sh"],
 			unless => "/usr/sbin/rabbitmqctl list_user_permissions vumi | grep develop",
+	}
+}
+
+class mobile::vumi::udp2log {
+	include misc::udp2log
+
+	# oxygen's udp2log instance
+	# saves logs mainly in /a/squid
+	misc::udp2log::instance { "vumi":
+		port => 5678,
+		monitor_packet_loss => false,
+		monitor_log_age     => false,
+		require             => File["/var/log/vumi"],
 	}
 }
