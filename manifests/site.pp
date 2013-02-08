@@ -1594,34 +1594,16 @@ node /^mw11(5[3-9]|60)\.eqiad\.wmnet$/ {
 	include	role::applicationserver::imagescaler
 }
 
-# mw1161-1164 are jobrunners (precise)
-node /^mw11(6[1-4])\.eqiad\.wmnet$/ {
-
-	class  { role::applicationserver::jobrunner: run_jobs_enabled => true }
-}
-
-# mw1165-1188 are apaches (precise)
-node /^mw11(6[5-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
+# mw1161-1188 are apaches (precise)
+node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 
 	include	role::applicationserver::appserver
 }
 
-# mw1189-1198 are api apaches (precise)
-node /^mw11(89|9[0-8])\.eqiad\.wmnet$/ {
+# mw1189-1200 are api apaches (precise)
+node /^mw1(189|19[0-8]|200)\.eqiad\.wmnet$/ {
 
 	include	role::applicationserver::appserver::api
-}
-
-# mw1199 is a bits apache (precise)
-node "mw1199.eqiad.wmnet" {
-
-	include	role::applicationserver::appserver::bits
-}
-
-# mw1200 is an imagescaler (precise)
-node "mw1200.eqiad.wmnet" {
-
-	include	role::applicationserver::imagescaler
 }
 
 node "neon.wikimedia.org" {
