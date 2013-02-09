@@ -2382,7 +2382,7 @@ node "vanadium.eqiad.wmnet" {
 		accounts::diederik,
 		accounts::mflaschen,
 		accounts::maryana,
-		accounts::rfaulkner,
+		accounts::rfaulk,
 		accounts::spage,
 		misc::statistics::db::mysql,
 		misc::statistics::db::mongo,
