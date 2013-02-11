@@ -187,7 +187,7 @@ class mediawiki::singlenode( $ensure = 'present',
 	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
 			require => [git::clone["mediawiki"],
-				Mw-extension["nuke"],
+				Mw-extension["Nuke"],
 				Mw-extension["SpamBlacklist"],
 				Mw-extension["ConfirmEdit"],
 				File["${install_path}/LocalSettings.php"]],
