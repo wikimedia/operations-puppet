@@ -76,7 +76,9 @@ NameVirtualHost *:443
 		deny from env=bad_browser
 	</Proxy>
 
-	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0
+	AllowEncodedSlashes NoDecode
+	RewriteEngine On
+	RewriteRule ^/r/(.*) http://127.0.0.1:8080/r/$1 [NE,P]
 
 	ErrorLog /var/log/apache2/error.log
 
