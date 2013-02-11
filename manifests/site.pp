@@ -2040,14 +2040,8 @@ node "srv193.pmtpa.wmnet" {
 		memcached
 }
 
-# srv226-230 are applicationservers (precise)
-node /^srv(22[6-9]|230)\.pmtpa\.wmnet$/ {
-	include	role::applicationserver::appserver
-	include	nfs::upload
-}
-
-# srv231-247 are application servers (precise)
-node /^srv(23[1-9]|24[0-7])\.pmtpa\.wmnet$/ {
+# srv235-247 are application servers (precise)
+node /^srv(23[5-9]|24[0-7])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
 	include	nfs::upload
 }
