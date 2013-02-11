@@ -243,15 +243,32 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # longterm stuff
 	if $ensure == 'latest' {
-		exec { 'wikidata_update':
-			require => [Git::Clone["mediawiki"],
-				Mw-extension["Diff"],
-				Mw-extension["DataValues"],
-				Mw-extension["UniversalLanguageSelector"],
-				Mw-extension["Wikibase"],
-				File["${install_path}/LocalSettings.php"]],
-			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
-			logoutput => "on_failure",
+		case $install_repo {
+			'true': {
+				exec { 'wikidata_update':
+					require => [Git::Clone["mediawiki"],
+						Mw-extension["Diff"],
+						Mw-extension["DataValues"],
+						Mw-extension["UniversalLanguageSelector"],
+						Mw-extension["Wikibase"],
+					File["${install_path}/LocalSettings.php"]],
+					command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
+					logoutput => "on_failure",
+				}
+			}
+		}
+		case $install_client {
+			'true': {
+				exec { 'wikidata_update':
+					require => [Git::Clone["mediawiki"],
+						Mw-extension["Diff"],
+						Mw-extension["DataValues"],
+						Mw-extension["Wikibase"],
+					File["${install_path}/LocalSettings.php"]],
+					command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
+					logoutput => "on_failure",
+				}
+			}
 		}
 	}
 }
