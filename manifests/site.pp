@@ -1601,7 +1601,7 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 }
 
 # mw1189-1200 are api apaches (precise)
-node /^mw1(189|19[0-8]|200)\.eqiad\.wmnet$/ {
+node /^mw1(189|19[0-9]|200)\.eqiad\.wmnet$/ {
 
 	include	role::applicationserver::appserver::api
 }
