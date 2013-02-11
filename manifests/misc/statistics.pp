@@ -361,29 +361,32 @@ class misc::statistics::db::mongo {
 	}
 }
 
+
 # EventLogging
-class misc::statistics::eventlogging {
 
-	# == Event processor ==
+class misc::statistics::eventlogging::packages {
+	require misc::statistics::packages::python
 
+	# == Event processor packages ==
 	package { [
-
 		# Core dependencies (Python 2.7):
-		"python-mysqldb",
 		"python-sqlalchemy",
 		"python-zmq",
-
 		# Test helpers (not required, but nice to have):
 		"python-coverage",
 		"python-nose",
-
 		# Python 3:
 		"python3-nose",
 		"python3-sqlalchemy",
 		"python3-zmq",
-
-	]: ensure => latest; }
-
+	]:
+		ensure => present
+	}
+	
+	
+}
+class misc::statistics::eventlogging {
+	require misc::statistics::eventlogging::packages
 
 	# == Log rotation ==
 	# A corresponding 'rsync_job' on stat1 retrieves
