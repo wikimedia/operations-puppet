@@ -15,5 +15,9 @@ class role::labs-mysql-server {
 			"12.04" => "5.5",
 			default => false,
 		},
+		bind_address => $mysql_server_bind_address ? {
+			undef => "127.0.0.1",
+			default => $mysql_server_bind_address
+		},
 	}
 }
