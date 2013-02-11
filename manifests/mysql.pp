@@ -667,11 +667,13 @@ class generic::mysql::packages::server($version = "") {
 #
 # Most of these defaults are from the
 # debian install + the default .deb my.cnf
+# Allows override of bind_address through the mysql_server_bind_address puppet
+# variable.
 class generic::mysql::server(
 	$version                        = "5.1",
 	$datadir                        = "/var/lib/mysql",
 	$port                           = 3306,
-	$bind_address                   = "127.0.0.1",
+	$server_bind_address            = "",
 	$socket                         = false,
 	$pid_file                       = false,
 
@@ -744,6 +746,19 @@ class generic::mysql::server(
 	$config_file_path               = "/etc/mysql/my.cnf"
 	)
 {
+	# Set the default bind address to 127.0.0.1, should one not be provided
+	# through the $mysql_server_bind_address variable.  In addition, will allow
+	# values directly passed to this class as an argument to be passed through
+	# and used as the bind address.
+	if !$server_bind_address {
+		if !$mysql_server_bind_address{
+			$bind_address = "127.0.0.1"
+		} else {
+			$bind_address = $mysql_server_bind_address
+		}
+	} else {
+		$bind_address = $server_bind_address
+	}
 	# make sure mysql-server and mysql-client are
 	# installed with the specified version.
 	class { "generic::mysql::packages::server": version => $version }
