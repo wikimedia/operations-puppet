@@ -64,7 +64,8 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		ensure => directory,
 		owner => "www-data",
 		group => "www-data",
-		mode => 775;
+		mode => 775,
+		recurse => true,
 	}
 
 # get the dependencies for Wikibase extension
