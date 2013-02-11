@@ -15,6 +15,10 @@ $wgLogo = "$wgStylePath/common/images/Wikidata-logo-demorepo.png";
 $wgCacheDirectory = "/var/cache/mw-cache/<%=database_name%>/";
 $wgLocalisationCacheConf['manualRecache'] = true;
 
+// Shared memory settings
+$wgMainCacheType    = CACHE_MEMCACHED;
+$wgMemCachedServers = array( "127.0.0.1:11000" );
+
 // experimental features
 define( 'WB_EXPERIMENTAL_FEATURES', <%=experimental%> );
 
