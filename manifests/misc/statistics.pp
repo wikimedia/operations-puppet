@@ -111,6 +111,7 @@ class misc::statistics::plotting {
 			"ploticus",
 			"libploticus0",
 			"r-base",
+			"r-cran-rmysql",
 			"libcairo2",
 			"libcairo2-dev",
 			"libxt-dev"
