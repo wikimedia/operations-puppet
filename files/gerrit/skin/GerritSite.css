@@ -121,5 +121,5 @@ a:hover {
  */
 .changeScreenDescription,
 .changeScreenDescription textarea {
-	font-size: 9pt;
+	font-size: 9pt !important;
 }
