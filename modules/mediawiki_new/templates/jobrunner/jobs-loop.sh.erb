@@ -12,7 +12,7 @@
 # jobs-loop.sh is an infinite "while loop" used to call MediaWiki runJobs.php
 # and eventually attempt to process any job enqueued. MediaWiki jobs are split
 # into several types, by default jobs-loop.sh will:
-#  - first attempt to run the priorized jobs (see `types` variable in script).
+#  - first attempt to run the priorized jobs
 #  - proceed to run any default jobs
 #
 # MediaWiki configuration variable $wgJobTypesExcludedFromDefaultQueue is used
@@ -82,25 +82,37 @@ trap 'kill %-; exit' SIGTERM
 if [ -z "$1" ]; then
 	echo "Starting default queue job runner"
 	dodefault=true
-	types="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
+	hptypes="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
 else
 	echo "Starting type-specific job runner: $1"
 	dodefault=false
-	types=$1
+	hptypes=$1
 fi
+
+subprocscreate=0
+# Limit the number of concurrent sub-processes by waiting or updating $subprocscreate
+function getProcSpawnCountOrWait() {
+	local subproccount=$((`ps --no-headers -o pid --ppid=$$ | wc -w` - 1)) # ps counts itself
+	subprocscreate=$$(<%= procs %> - subproccount)
+	if [ "$subprocscreate" -le "0" ]; then
+		echo "Pipeline full at $subproccount sub-processes..."
+		sleep 1 # reduce polling load
+	fi
+}
 
 # Starting the infinite loop of doom
 cd `readlink -f /usr/local/apache/common/multiversion`
 while [ 1 ]; do
-
 	foundjobs=n
 
 	# Do the prioritized job types...
 	started=`date +%s` # UNIX timestamp
 	morehpjobs=y
 	while [[ "$morehpjobs" == "y" ]]; do
+		getProcSpawnCountOrWait() # update $subprocscreate
+
 		morehpjobs=n
-		res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$types"`)
+		res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$hptypes"`)
 		db=${res[0]}
 		type=${res[1]}
 
@@ -108,8 +120,7 @@ while [ 1 ]; do
 			echo "Could not determine the next wiki."
 		elif [ -n "$db" -a -n "$type" ]; then
 			echo "$db $type"
-			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --type="$type" --maxtime=$hpmaxtime &
-			wait
+			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$subprocscreate" --type="$type" --maxtime=$hpmaxtime &
 			# Do not spend too much time on prioritized jobs
 			timestamp=`date +%s` # UNIX timestamp
 			if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
@@ -126,6 +137,8 @@ while [ 1 ]; do
 		started=`date +%s` # UNIX timestamp
 		morelpjobs=y
 		while [[ "$morelpjobs" == "y" ]]; do
+			getProcSpawnCountOrWait() # update $subprocscreate
+
 			morelpjobs=n
 			db=`php MWScript.php nextJobDB.php --wiki=aawiki`
 
@@ -133,8 +146,7 @@ while [ 1 ]; do
 				echo "Could not determine the next wiki."
 			elif [ -n "$db" ]; then
 				echo "$db"
-				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs=<%= procs %> --maxtime=$lpmaxtime &
-				wait
+				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$subprocscreate" --maxtime=$lpmaxtime &
 				# Do not spend too much time on unprioritized jobs
 				timestamp=`date +%s` # UNIX timestamp
 				if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
@@ -147,10 +159,8 @@ while [ 1 ]; do
 		done
 	fi
 
-	# Reduce polling load when there are no jobs
 	if [[ "$foundjobs" == "n" ]]; then
 		echo "No jobs..."
-		sleep 5
+		sleep 5 # reduce polling load
 	fi
-
 done
