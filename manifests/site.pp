@@ -1946,7 +1946,6 @@ node "singer.wikimedia.org" {
 		groups::wikidev,
 		accounts::awjrichards,
 		generic::mysql::packages::client,
-		misc::planet,
 		misc::secure
 
 
