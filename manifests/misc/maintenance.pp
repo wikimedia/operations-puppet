@@ -115,7 +115,7 @@ class misc::maintenance::translationnotifications {
 class misc::maintenance::tor_exit_node {
 	cron {
 		tor_exit_node_update:
-			command => "php /home/wikipedia/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki 2>&1",
+			command => "php /home/wikipedia/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force 2>&1",
 			user => apache,
 			minute => '*/20',
 			ensure => present;
