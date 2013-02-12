@@ -503,7 +503,7 @@ class role::cache {
 					'pmtpa','eqiad': {
 						$varnish_directors = {
 							"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-							"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+							#"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 						}
 						$probe = "bits"
 					}
