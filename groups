@@ -1,6 +1,6 @@
 # UUID                                  	Group Name
 #
-30e3a8d27f3752383d3e6b8cad0ad876dc894f3e	testlabs
-c2061a4bfa0ddc00834a5f89e5a6a9f783182f02	ops
 global:Anonymous-Users                  	Anonymous Users
 global:Registered-Users                 	Registered Users
+ldap:cn=ops,ou=groups,dc=wikimedia,dc=org	ldap/ops
+ldap:cn=testlabs,ou=groups,dc=wikimedia,dc=org	ldap/testlabs
