@@ -9,6 +9,9 @@ sub vcl_recv {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
 		}
+		if (req.url ~ "modules=mobile.startup") {
+			error 503;
+		}
 	/* For https-only wikis, the redirect from http to https for bits assets should occur
 		in varnish instead of apache, since the apache redirect and mediawiki doesn't
 		vary by protocol. This can result in a redirect loop and assets not loading. */
