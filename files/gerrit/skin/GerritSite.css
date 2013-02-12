@@ -114,3 +114,12 @@ a:hover {
 #gerrit_topmenu .gwt-Button {
 	padding: 3px 6px;
 }
+
+/**
+ * https://bugzilla.wikimedia.org/show_bug.cgi?id=44895
+ * Gerrit commit message font is too small
+ */
+.changeScreenDescription,
+.changeScreenDescription textarea {
+	font-size: 9pt;
+}
