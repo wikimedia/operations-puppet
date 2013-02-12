@@ -487,7 +487,7 @@ node /^(db1008|db1025)\.eqiad\.wmnet/ {
 
 ## researchdb
 node /db1047\.eqiad\.wmnet/ {
-	class { role::coredb::researchdb : mariadb => true }
+	class { role::coredb::researchdb : mariadb => true, innodb_file_per_table => true }
 }
 
 ## not currently in production and/or hardware issues
