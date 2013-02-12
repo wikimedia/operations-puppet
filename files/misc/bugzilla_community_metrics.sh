@@ -32,7 +32,7 @@ from
 		ba.bug_when as action_date
 	from bugs_activity ba
 	where
-		date_format(ba.bug_when,'%Y%m')=date_format(NOW(),'%Y%m')-1 and
+		date_format(ba.bug_when,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m') and
 		ba.fieldid in (2,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,30,35,36,37,38,40,41,42,47,55,56,57,58)
 	group by action_date,userid
 	union all
@@ -41,7 +41,7 @@ from
 			b.creation_ts
 		from bugs b
 		where
-			date_format(b.creation_ts,'%Y%m')=date_format(NOW(),'%Y%m')-1
+			date_format(b.creation_ts,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m')
 ) as filtered_actions;
 
 END
