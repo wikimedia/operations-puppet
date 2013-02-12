@@ -11,6 +11,7 @@ class ChangeMerged(HookHelper):
         self.parser.add_option("--submitter", dest="submitter")
         self.parser.add_option("--commit", dest="commit")
         self.parser.add_option("--uploader", dest="uploader")
+        self.parser.add_option("--topic", dest="topic")
         (options, args) = self.parser.parse_args()
         user = re.sub(' \(.*', "", options.submitter)
         message = "Change merged: " + user + '; [' + options.project + "] (" + options.branch + ") - " + options.changeurl + "\n"

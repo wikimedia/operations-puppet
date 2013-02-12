@@ -13,6 +13,7 @@ class PatchsetCreated(HookHelper):
         self.parser.add_option("--uploader", dest="uploader")
         self.parser.add_option("--commit", dest="commit")
         self.parser.add_option("--patchset", dest="patchset", type="int")
+        self.parser.add_option("--is-draft", dest="draft")
         (options, args) = self.parser.parse_args()
         if not options.change or not options.change.isalnum():
             self.parser.error("No change id, or changeid invalid")
