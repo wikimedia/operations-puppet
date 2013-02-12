@@ -10,6 +10,7 @@ class ChangeAbandoned(HookHelper):
         self.parser.set_usage("change-abandoned --change <change id> --change-url <change url> --project <project name> --branch <branch> --abandoner <abandoner> --reason <reason>")
         self.parser.add_option("--abandoner", dest="abandoner")
         self.parser.add_option("--reason", dest="reason")
+        self.parser.add_option("--topic", dest="topic")
         (options, args) = self.parser.parse_args()
         reason = options.reason.splitlines()
         if reason:
