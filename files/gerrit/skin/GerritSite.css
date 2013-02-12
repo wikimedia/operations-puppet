@@ -75,6 +75,8 @@ a:hover {
 	left: 200px;
 	margin-right: 200px;
 	background: none;
+	/* Make sure it is above the logo or we can not clck the sub menu items */
+	z-index: 1;
 }
 
 #gerrit_topmenu tbody tr td table {
