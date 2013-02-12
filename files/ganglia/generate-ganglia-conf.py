@@ -19,7 +19,6 @@ attrs = ['cn', 'gidNumber'] # attributes to return from ldap query
 
 # gmetad and gmond shared variables
 gdir = '/etc/ganglia' # ganglia directory
-portprefix = 2 # number to prefix to gidNumber to create unique port number
 
 # gmetad variables
 gmetadconf = os.path.join(gdir, 'gmetad.conf') # live gmetad conf file
@@ -78,7 +77,7 @@ def gen_ganglia_conf():
           continue
         # write out data_source line to conf file, e.g.,
         # data_source "testlabs" aggregator1.pmtpa.wmflabs:21002
-        f.write('data_source "%s" %s:%d%d\n' % (p[8:], gserver, portprefix, pg[p]))
+        f.write('data_source "%s" %s:%d\n' % (p[8:], gserver, pg[p]))
   f.close()
 
   # write new gmond conf files
@@ -92,8 +91,8 @@ def gen_ganglia_conf():
         # set cluster so hosts show up grouped by project name
         g.write('cluster {\n  name = "%s"\n}\n' % p[8:])
         # write out udp_recv_channel and tcp_accept_channel stanzas
-        g.write('udp_recv_channel {\n  port = %d%s\n}\n' % (portprefix, pg[p]))
-        g.write('tcp_accept_channel {\n  port = %d%s\n}\n\n' % (portprefix, pg[p]))
+        g.write('udp_recv_channel {\n  port = %s\n}\n' % pg[p])
+        g.write('tcp_accept_channel {\n  port = %s\n}\n\n' % pg[p])
     g.close()
 
 def cond_restart(confs, daemon, ps):

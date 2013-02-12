@@ -43,7 +43,7 @@ host {
 <% if has_variable?("project_gid") then %>
 udp_send_channel {
   host = <%= gmetad_host %>
-  port = 2<%= project_gid %>
+  port = <%= project_gid %>
   ttl = 3
 }
 <% end %>
