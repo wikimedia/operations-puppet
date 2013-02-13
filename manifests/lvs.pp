@@ -736,6 +736,7 @@ class lvs::balancer(
 	) {
 
 	require "lvs::configuration"
+	include generic::sysfs::enable-rps
 
 	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
 	$ipv6_hosts = $lvs::configuration::ipv6_hosts

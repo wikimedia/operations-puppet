@@ -920,6 +920,10 @@ class generic::sysctl::high-bandwidth-rsync($ensure="present") {
 	}
 }
 
+class generic::sysfs::enable-rps {
+	upstart_job { "enable-rps": install => "true" }
+}
+
 # this installs a bunch of international locales, f.e. for "planet" on singer
 class generic::locales::international {
 
