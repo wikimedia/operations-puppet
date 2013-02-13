@@ -244,5 +244,6 @@ $decommissioned_servers = [
 "virt1001",
 "virt1002",
 "virt1003",
+"virt1004", # not decom, just offline and need to pull out of nagios -robh 2013-01-13
 "wikinews-lb.wikimedia.org",
 ]
