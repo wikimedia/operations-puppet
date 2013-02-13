@@ -241,6 +241,8 @@ $decommissioned_servers = [
 "storage2",
 "storage3",
 "thistle",
-"virt1008",
+"virt1001",
+"virt1002",
+"virt1003",
 "wikinews-lb.wikimedia.org",
 ]
