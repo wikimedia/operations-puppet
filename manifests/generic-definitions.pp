@@ -156,7 +156,7 @@ define nginx_site($install="false", $template="", $enable="true") {
 
 # Create a symlink in /etc/init.d/ to a generic upstart init script
 
-define upstart_job($install="false") {
+define upstart_job($install="false", $start="false") {
 	# Create symlink
 	file { "/etc/init.d/${title}":
 		ensure => "/lib/init/upstart-job";
@@ -165,6 +165,16 @@ define upstart_job($install="false") {
 	if $install == "true" {
 		file { "/etc/init/${title}.conf":
 			source => "puppet:///files/upstart/${title}.conf"
+		}
+	}
+
+	if $start == "true" {
+		exec { "start $title":
+			require => File["/etc/init/${title}.conf"],
+			subscribe => File["/etc/init/${title}.conf"],
+			refreshonly => true,
+			command => "start ${title}",
+			path => "/bin:/sbin:/usr/bin:/usr/sbin"
 		}
 	}
 }
@@ -921,7 +931,7 @@ class generic::sysctl::high-bandwidth-rsync($ensure="present") {
 }
 
 class generic::sysfs::enable-rps {
-	upstart_job { "enable-rps": install => "true" }
+	upstart_job { "enable-rps": install => "true", start => "true" }
 }
 
 # this installs a bunch of international locales, f.e. for "planet" on singer
