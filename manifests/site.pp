@@ -1600,10 +1600,16 @@ node /^mw11(6[1-9]|7[0-9]|8[0-8])\.eqiad\.wmnet$/ {
 	include	role::applicationserver::appserver
 }
 
-# mw1189-1200 are api apaches (precise)
-node /^mw1(189|19[0-9]|200)\.eqiad\.wmnet$/ {
+# mw1189-1208 are api apaches (precise)
+node /^mw1(189|19[0-9]|20[0-8])\.eqiad\.wmnet$/ {
 
 	include	role::applicationserver::appserver::api
+}
+
+# mw1209-1220 are apaches (precise)
+node /^mw12(09|1[0-9]|20)\.eqiad\.wmnet$/ {
+
+	include	role::applicationserver::appserver
 }
 
 node "neon.wikimedia.org" {
