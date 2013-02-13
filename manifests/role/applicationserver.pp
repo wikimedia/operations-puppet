@@ -106,6 +106,14 @@ class role::applicationserver {
 
 		include role::applicationserver::webserver
 	}
+	# role class specifically for test.w.o apache(s)
+	class appserver::test{
+		system_role { "role::applicationserver::appserver::test": description => "Test Apache Application server" }
+
+		class { "role::applicationserver::common": group => "appserver", lvs_pool => "apaches" }
+
+		class { "role::applicationserver::webserver": maxclients => "100" }
+	}
 	# Class for the beta project
 	# The Apaches instances act as webserver AND imagescalers. We cannot
 	# apply both roles cause puppet will complains about a duplicate class

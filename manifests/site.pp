@@ -2033,7 +2033,7 @@ node "spence.wikimedia.org" {
 
 # srv193 is test.wikipedia.org (precise)
 node "srv193.pmtpa.wmnet" {
-	include	role::applicationserver::appserver
+	include	role::applicationserver::appserver::test
 	include	nfs::upload
 	include nfs::netapp::home,
 		memcached
