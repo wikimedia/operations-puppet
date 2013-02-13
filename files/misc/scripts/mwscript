@@ -3,7 +3,7 @@
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /usr/local/lib/mw-deployment-vars.sh
 
-if groups | grep -Ewq 'sudo|wikidev'; then
+if groups | grep -Ewq 'sudo|wikidev|root'; then
 	sudo -u apache php "$MW_COMMON_SOURCE/multiversion/MWScript.php" "$@"
 else
 	php "$MW_COMMON_SOURCE/multiversion/MWScript.php" "$@"
