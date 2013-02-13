@@ -96,7 +96,7 @@ subprocscreate=0
 function getProcSpawnCountOrWait() {
 	while [ "$subprocscreate" -le 0 ]; do
 		local subproccount=$((`ps --no-headers -o pid --ppid=$$ | wc -w` - 1)) # ps counts itself
-		subprocscreate=$$(<%= procs %> - subproccount)
+		subprocscreate=$((<%= procs %> - subproccount))
 		if [ "$subprocscreate" -gt 0 ]; then
 			break
 		else
