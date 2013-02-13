@@ -1,0 +1,9 @@
+Code-Review+2: preilly <preilly@wikimedia.org>
+Verified+2: preilly <preilly@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Jdlrobson <jrobson@wikimedia.org>
+Submitted-by: preilly <preilly@wikimedia.org>
+Submitted-at: Wed, 13 Feb 2013 18:42:47 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/48854
+Project: operations/puppet
+Branch: refs/heads/production
