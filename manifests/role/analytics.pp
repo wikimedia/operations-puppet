@@ -20,6 +20,10 @@ class role::analytics {
 		accounts::dandreescu,
 		accounts::spetrea # per RT4402
 
+	# include stats system user to
+	# run automated jobs
+	include misc::statistics::user
+
 	sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 
 	# Install Sun/Oracle Java JDK on analytics cluster
