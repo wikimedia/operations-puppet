@@ -77,7 +77,7 @@ class role::applicationserver {
 			applicationserver::syslog,
 			applicationserver::config::php
 
-		class { "applicationserver::config::apache": }
+		class { "applicationserver::config::apache": maxclients => $maxclients }
 
 		monitor_service { "appserver http":
 			description => "Apache HTTP",
