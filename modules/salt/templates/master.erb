@@ -340,5 +340,5 @@ nodegroups:<% salt_nodegroups.sort.each do |salt_group, salt_nodes| %>
 <% if salt_reactor != {} %>
 reactor:<% salt_reactor.each do |salt_tag, salt_states| %>
   - '<%= salt_tag %>':<% salt_states.each do |salt_state| %>
-    - <%= salt_state %>
+    - <%= salt_reactor_root %>/<%= salt_state %>
 <% end %><% end %><% end %>

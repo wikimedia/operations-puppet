@@ -1,0 +1,46 @@
+#!py
+
+import subprocess
+import ldap
+import re
+
+def run():
+    # Only handle key requests
+    if data['act'] != 'pend':
+        return {}
+    host_regex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
+    if not re.match(host_regex, data['id']):
+        return {}
+    base = getLdapInfo("base")
+    ldapHost = getLdapInfo("uri")
+    sslType = getLdapInfo("ssl")
+    binddn = getLdapInfo("binddn")
+    bindpw = getLdapInfo("bindpw")
+    basedn = 'ou=hosts,' + base
+    ds = ldap.initialize(ldapHost)
+    ds.protocol_version=ldap.VERSION3
+    if sslType == "start_tls":
+        ds.start_tls_s()
+    ds.simple_bind_s(binddn, bindpw)
+    query = "(&(objectclass=puppetclient)(|(dc=" + data['id'] + ")(cnamerecord=" + data['id'] + ")(associateddomain=" + data['id'] + ")))"
+    PosixData = ds.search_s(basedn, ldap.SCOPE_SUBTREE, query)
+    if PosixData:
+        subprocess.call(['/usr/bin/salt-key', '-y', '-a', data['id']])
+    else:
+        subprocess.call(['/usr/bin/salt-key', '-y', '-d', data['id']])
+    return {}
+
+def getLdapInfo(attr, conffile="/etc/ldap.conf"):
+    try:
+        f = open(conffile)
+    except IOError:
+        if conffile == "/etc/ldap.conf":
+            # fallback to /etc/ldap/ldap.conf, which will likely
+            # have less information
+            f = open("/etc/ldap/ldap.conf")
+    for line in f:
+        if line.strip() == "":
+            continue
+        if line.split()[0].lower() == attr.lower():
+            return line.split(None, 1)[1].strip()
+            break
