@@ -1119,6 +1119,14 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			'lvs1002' => "208.80.154.141",
 			'lvs1003' => "208.80.154.142",
 		},
+		'public1-c-eqiad' => {
+			'lvs1001' => "208.80.154.67",
+			'lvs1002' => "208.80.154.68",
+			'lvs1003' => "208.80.154.69",
+			'lvs1004' => "208.80.154.70",
+			'lvs1005' => "208.80.154.71",
+			'lvs1006' => "208.80.154.72",
+		}
 		'private1-a-eqiad' => {
 			'lvs1001' => "10.64.1.1",
 			'lvs1002' => "10.64.1.2",
@@ -1134,6 +1142,14 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			'lvs1004' => "10.64.17.4",
 			'lvs1005' => "10.64.17.5",
 			'lvs1006' => "10.64.17.6",
+		},
+		'private1-c-eqiad' => {
+			'lvs1001' => "10.64.33.1",
+			'lvs1002' => "10.64.33.2",
+			'lvs1003' => "10.64.33.3",
+			'lvs1004' => "10.64.33.4",
+			'lvs1005' => "10.64.33.5",
+			'lvs1006' => "10.64.33.6",
 		}
 	}
 
@@ -1160,8 +1176,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 				address => $ips["private1-b-eqiad"][$::hostname],
 				netmask => "255.255.252.0"
 			}
-			# Row C subnets on eth2
-			# Row D subnets on eth3
 		}
 		/^lvs100[4-6]$/: {
 			# Row B subnets on eth0
@@ -1184,9 +1198,22 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 				address => $ips["private1-a-eqiad"][$::hostname],
 				netmask => "255.255.252.0"
 			}
-			# Row C subnets on eth2
-			# Row D subnets on eth3
 		}
+		
+		# Row C subnets on eth2
+		interface_tagged {
+			"eth2.1003":
+				base_interface => "eth2",
+				vlan_id => "1003",
+				address => $ips["public1-c-eqiad"][$::hostname],
+				netmask => "255.255.255.192";
+			"eth2.1019":
+				base_interface => "eth2",
+				vlan_id => "1019",
+				address => $ips["private1-c-eqiad"][$::hostname],
+				netmask => "255.255.252.0";
+		}
+		# Row D subnets on eth3
 	}
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
