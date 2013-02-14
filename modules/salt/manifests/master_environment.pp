@@ -1,4 +1,4 @@
-define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pillar_roots, $salt_module_roots, $salt_returner_roots, $salt_reactor_roots) {
+define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pillar_roots, $salt_module_roots, $salt_returner_roots) {
 
   if ! defined(File[$salt_state_roots[$title]]) {
     file { $salt_state_roots[$title]:
@@ -43,13 +43,6 @@ define salt::master_environment($salt_state_roots, $salt_file_roots, $salt_pilla
       owner => root,
       group => root;
     }
-  }
-
-  file { $salt_reactor_roots[$title]:
-    ensure => directory,
-    mode => 0755,
-    owner => root,
-    group => root;
   }
 
 }
