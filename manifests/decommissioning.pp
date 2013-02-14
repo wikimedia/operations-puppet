@@ -34,6 +34,7 @@ $decommissioned_servers = [
 "db28",
 "db30",
 "db41",
+"db61", #sandboxed for otrs upgrade, can come out after nagios removes from checks -robh 2013-02-13
 "ixia",
 "gilman",
 "knsq1",
