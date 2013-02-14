@@ -419,6 +419,11 @@ node /db67\.pmtpa\.wmnet/ {
 	include role::coredb::researchdb
 }
 
+## pgehres special project
+node /db29\.pmtpa\.wmnet/{
+  include standard
+}
+
 ## not in use for various reasons
 node /db(42|6[129]|7[0-7])\.pmtpa\.wmnet/{
 	include standard
