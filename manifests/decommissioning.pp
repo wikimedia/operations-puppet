@@ -6,8 +6,8 @@ $decommissioned_servers = [
 "adler",
 "bayes",
 "br1-knams",
-"cadmium", #renaming of server, can be pulled after runs on spence 2013-01-17 robh
 "controller",
+"copper", #was switch testing host, reclaiming - rob 2013-02-13
 "cp3001",
 "cp3002",
 "db1",
@@ -56,6 +56,7 @@ $decommissioned_servers = [
 "knsq30",
 "lily",
 "lomaria",
+"magnesium", #was switch testing host, reclaiming - rob 2013-02-13
 "mobile1",
 "mobile2",
 "mobile3",
@@ -247,4 +248,5 @@ $decommissioned_servers = [
 "virt1003",
 "virt1004", # not decom, just offline and need to pull out of nagios -robh 2013-01-13
 "wikinews-lb.wikimedia.org",
+"zinc", #was switch testing host, reclaiming - rob 2013-02-13
 ]
