@@ -9,6 +9,7 @@ class openstack::iptables-purges {
 	iptables_purge_service{ "deny_all_ldaps": service => "ldaps" }
 	iptables_purge_service{ "deny_all_ldaps_backend": service => "ldaps_backend" }
 	iptables_purge_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector" }
+	iptables_purge_service{ "deny_all_ldap_replication": service => "ldap_replication" }
 	iptables_purge_service{ "deny_all_puppetmaster": service => "puppetmaster" }
 	iptables_purge_service{ "deny_all_glance_api": service => "glance_api" }
 	iptables_purge_service{ "deny_all_glance_registry": service => "glance_registry" }
@@ -45,6 +46,9 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_replication_nfs1": source => "10.0.0.244", service => "ldap_replication", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_replication_virt0": source => "208.80.152.32", service => "ldap_replication", jump => "ACCEPT" }
+	iptables_add_service{ "ldap_replication_virt1000": source => "208.80.154.18", service => "ldap_replication", jump => "ACCEPT" }
 	iptables_add_service{ "keystone_service_nova_virt0": source => "208.80.152.32", service => "keystone_service", jump => "ACCEPT" }
 	iptables_add_service{ "keystone_admin_nova_virt0": source => "208.80.152.32", service => "keystone_admin", jump => "ACCEPT" }
 	iptables_add_service{ "keystone_service_nova_virt1000": source => "208.80.154.18", service => "keystone_service", jump => "ACCEPT" }
@@ -82,6 +86,7 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_ldaps": service => "ldaps", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldaps_backend": service => "ldaps_backend", jump => "DROP" }
 	iptables_add_service{ "deny_all_ldap_admin_connector": service => "ldap_admin_connector", jump => "DROP" }
+	iptables_add_service{ "deny_all_replication": service => "ldap_replication", jump => "DROP" }
 	iptables_add_service{ "deny_all_puppetmaster": service => "puppetmaster", jump => "DROP" }
 	iptables_add_service{ "deny_all_glance_api": service => "glance_api", jump => "DROP" }
 	iptables_add_service{ "deny_all_glance_registry": service => "glance_registry", jump => "DROP" }
