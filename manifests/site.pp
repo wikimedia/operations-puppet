@@ -252,12 +252,6 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
-node /^(copper|zinc)\.wikimedia\.org$/ {
-	$ganglia_aggregator = "true"
-
-	include role::swift::eqiad-test
-}
-
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5' ]
 	if $hostname =~ /^cp100(1|2)$/ {
@@ -1204,10 +1198,6 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 
 node "maerlant.esams.wikimedia.org" {
 	include standard
-}
-
-node "magnesium.wikimedia.org" {
-	include role::swift::eqiad-test
 }
 
 node "manganese.wikimedia.org" {
