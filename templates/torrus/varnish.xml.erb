@@ -2,7 +2,7 @@
 
 <%
 def node_lists(role, site)
-	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[role][site]
+	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site], scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
 end
 
 def varnish_nodes(role, site, template="varnish-server")
