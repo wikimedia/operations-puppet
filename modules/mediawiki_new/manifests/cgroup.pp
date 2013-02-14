@@ -1,13 +1,20 @@
 class mediawiki_new::cgroup {
+	require mediawiki_new::cgroup::setup
 
+	service { "mw-cgroup":
+		provider => upstart,
+		ensure => running;
+	}
+}
+class mediawiki_new::cgroup::setup {
 	package { [ 'cgroup-bin' ]:
 		ensure => latest;
 	}
 	file {
-		"/etc/init/mw-cgroup":
+		"/etc/init/mw-cgroup.conf":
 			owner => root,
 			group => root,
-			mode => 0755,
+			mode => 0644,
 			source => "puppet:///modules/mediawiki_new/cgroup/mw-cgroup.conf";
 	}
 	file {
