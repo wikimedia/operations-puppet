@@ -338,7 +338,7 @@ nodegroups:<% salt_nodegroups.sort.each do |salt_group, salt_nodes| %>
 #range_server: range:80
 
 <% if salt_reactor != {} %>
-reactor:<% salt_reactor.each do |salt_tag, salt_states| %>
-  - '<%= salt_tag %>':<% salt_states.each do |salt_state| %>
-    - <%= salt_reactor_root %>/<%= salt_state %>
-<% end %><% end %><% end %>
+reactor:<% salt_reactor.sort.each do |salt_tag, salt_states| %>
+  - '<%= salt_tag %>':<% salt_states.sort.each do |salt_state| %>
+    - <%= salt_reactor_root %>/<%= salt_state %><% end %>
+<% end %><% end %>
