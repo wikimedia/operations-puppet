@@ -5,7 +5,7 @@ class role::salt::masters::production {
 	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
-	$salt_reactor_roots = {"base"=>["/srv/reactors"]}
+	$salt_reactor_root = "/srv/reactors"
 
 	class { "salt::master":
 		salt_runner_dirs => ["/srv/runners"],
@@ -15,6 +15,7 @@ class role::salt::masters::production {
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_worker_threads => "25",
+		salt_reactor_root => $salt_reactor_root,
 	}
 
 	salt::master_environment{ "base":
@@ -23,7 +24,7 @@ class role::salt::masters::production {
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_module_roots => $salt_module_roots,
 		salt_returner_roots => $salt_returner_roots,
-		salt_reactor_roots => $salt_reactor_roots,
+		salt_reactor_root => $salt_reactor_root,
 	}
 
 }
@@ -35,7 +36,7 @@ class role::salt::masters::labs {
 	$salt_pillar_roots = {"base"=>["/srv/pillars"]}
 	$salt_module_roots = {"base"=>["/srv/salt/_modules"]}
 	$salt_returner_roots = {"base"=>["/srv/salt/_returners"]}
-	$salt_reactor_roots = {"base"=>["/srv/reactors"]}
+	$salt_reactor_root = "/srv/reactors"
 
 	class { "salt::master":
 		salt_runner_dirs => ["/srv/runners"],
@@ -45,6 +46,19 @@ class role::salt::masters::labs {
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_worker_threads => "50",
+		salt_reactor_root => $salt_reactor_root,
+		# event_tag => [reactors]
+		salt_reactors => {
+			"auth" => ["auth.sls"],
+			"key" => ["key.sls"],
+			"minion_start" => ["minion_start.sls"],
+			"puppet" => ["puppet.sls"],
+		},
+	}
+
+	class { "salt_reactors":
+		salt_reactor_root => $salt_reactor_root,
+		salt_reactor_options => {"puppet_server" => "virt0.wikimedia.org"},
 	}
 
 	salt::master_environment{ "base":
@@ -53,7 +67,7 @@ class role::salt::masters::labs {
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_module_roots => $salt_module_roots,
 		salt_returner_roots => $salt_returner_roots,
-		salt_reactor_roots => $salt_reactor_roots,
+		salt_reactor_root => $salt_reactor_root,
 	}
 
 }
