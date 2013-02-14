@@ -25,6 +25,7 @@
 	groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
 	groupScope = one
 [sendemail]
+	includeDiff = true
 	smtpServerPort = 25
 <% if smtp_host != "" then %>
 	smtpServer = <%= smtp_host %>
