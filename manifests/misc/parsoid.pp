@@ -69,5 +69,5 @@ class misc::parsoid::cache {
 			ensure => "running"
 	}
 
-	monitor_service { "parsoid Varnish": description => "Parsoid Varnish", check_command => "check_http_generic!varnishcheck!6081" }
+	monitor_service { "parsoid Varnish": description => "Parsoid Varnish", check_command => "check_http_on_port!6081" }
 }
