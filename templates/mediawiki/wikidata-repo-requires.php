@@ -144,3 +144,5 @@ $wgLBFactoryConf = array(
 	'masterTemplateOverrides' => array( 'fakeMaster' => true ),
 );
 
+// Let clients from the test-client edit this wiki via CORS
+$wgCrossSiteAJAXdomains = array( 'wikidata-test-client.wikimedia.de' );
