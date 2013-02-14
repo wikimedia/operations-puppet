@@ -1,0 +1,14 @@
+#!py
+
+import json
+import re
+
+def run():
+    if data['act'] == 'accept':
+        host_regex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
+        if not re.match(host_regex, data['id']):
+            return {}
+        f = open('/var/cache/salt/master/minions/{0}/.first_run'.format(data['id']), 'w')
+        f.write(json.dumps({'key_accepted': '0'}))
+        f.close()
+    return {}
