@@ -121,7 +121,6 @@ class role::applicationserver {
 	class appserver::beta{
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
-		include nfs::apache::labs
 		include role::applicationserver::webserver
 
 		# Load the class just like the role::applicationserver::imagescaler

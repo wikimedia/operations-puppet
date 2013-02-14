@@ -24,8 +24,18 @@ class applicationserver::config::apache(
 			owner => root,
 			group => root,
 			content => $::site;
-		"/usr/local/apache":
-			ensure => directory;
+	}
+
+	if $::realm == 'production' {
+		file {
+			'/usr/local/apache':
+				ensure => directory,
+		}
+	} else {
+		file { '/usr/local/apache':
+			ensure => link,
+			target => '/data/project/apache',
+		}
 	}
 
 	exec { "sync apache wmf config":
