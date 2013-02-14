@@ -62,7 +62,7 @@ class VolumeManager:
 		volumedata = self.ssh_exec_command('sudo gluster volume info', True, True)
 		project_hosts = self.get_hosts(hostdata)
 		project_volumes = self.get_volumes(volumedata)
-		orphan_volumes = project_volumes
+		orphan_volumes = project_volumes.keys()
 		for project in projectdata:
 			project_name = project[1]["cn"][0]
 			hosts = []
@@ -97,7 +97,7 @@ class VolumeManager:
 						continue
 
 				if project_volume in orphan_volumes:
-					orphan_volumes.pop(project_volume)
+					orphan_volumes.remove(project_volume)
 
 				gluster_hosts = []
 				if project_volume in project_volumes and 'auth.allow' in project_volumes[project_volume]:
@@ -121,7 +121,7 @@ class VolumeManager:
 						self.setallow(project_name,volume_name,[])
 			# TODO: Unshare and stop deleted projects
 
-		for orphan in orphan_volumes.keys():
+		for orphan in orphan_volumes:
 			for volume_name in self.volume_names:
 				if orphan.endswith(volume_name):
 					self.log("Volume %s seems to lack a project and may need cleanup." % orphan)
