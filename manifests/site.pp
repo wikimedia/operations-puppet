@@ -928,7 +928,7 @@ node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
 }
 
 # knsq23-30 are text squids
-node /knsq(23|[5-9]|30)\.esams\.wikimedia\.org/ {
+node /knsq(23|2[5-9]|30)\.esams\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
 
 	include role::cache::text
