@@ -601,6 +601,12 @@ class role::cache {
 
 		include standard,
 			nrpe
+
+		# FIXME: remove after precise migration
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
+			varnish::setup_filesystem{ ["sda3", "sdb3"]:
+				before => Varnish::Instance["mobile-backend"]
+			}
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
@@ -613,6 +619,10 @@ class role::cache {
 			vcl => "mobile-backend",
 			port => 81,
 			admin_port => 6083,
+			storage => $::hostname ? {
+				/^cp104[123]$/ => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+				default => "-s file,/a/sda/varnish.persist,50% -s file,/a/sdb/varnish.persist,50%",
+			},
 			directors => {
 				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary],
 				"api" => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
