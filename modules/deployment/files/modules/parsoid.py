@@ -11,10 +11,16 @@ def config_symlink(repo):
     '''
     repolocs = __pillar__.get('repo_locations')
     repoloc = repolocs[repo]
-    symlinkPath = repoloc + '/js/api/localsettings.js'
-    if not __salt__['file.file_exists'](symlinkPath):
+    lsSymlinkPath = repoloc + '/js/api/localsettings.js'
+    nmSymlinkPath = repoloc + '/js/node_modules'
+    if not __salt__['file.file_exists'](lsSymlinkPath):
         try:
-            os.symlink('../../../config/localsettings.js', symlinkPath)
+            os.symlink('../../../config/localsettings.js', lsSymlinkPath)
+        except OSError:
+            return 1
+    if not __salt__['file.file_exists'](nmSymlinkPath):
+        try:
+            os.symlink('../../../config/node_modules', nmSymlinkPath)
         except OSError:
             return 1
 
