@@ -48,7 +48,7 @@ class ldap::server::iptables  {
 
 }
 
-class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
+class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $base_dn, $proxyagent, $proxyagent_pass, $server_bind_ips, $initial_password, $first_master=false ) {
 	package { [ "openjdk-6-jre" ]:
 		ensure => latest;
 	}
@@ -201,7 +201,7 @@ class ldap::server( $certificate_location, $certificate, $cert_pass, $base_dn, $
 
 	monitor_service { "ldap": description => "LDAP", check_command => "check_tcp!389" }
 	monitor_service { "ldaps": description => "LDAPS", check_command => "check_tcp!636" }
-	monitor_service { "ldap cert": description => "Certificate expiration", check_command => "check_cert!${fqdn}!636!Equifax_Secure_CA.pem", critical => "true" }
+	monitor_service { "ldap cert": description => "Certificate expiration", check_command => "check_cert!${fqdn}!636!${ca_name}", critical => "true" }
 
 }
 

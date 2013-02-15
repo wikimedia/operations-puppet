@@ -111,6 +111,10 @@ class role::ldap::server::labs {
 		"production" => "star.wikimedia.org",
 		"labs" => "star.wmflabs",
 	}
+	$ca_name = $realm ? {
+		"production" => "Equifax_Secure_CA.pem",
+		"labs"       => "wmf-labs.pem",
+	}
 	install_certificate{ $certificate: }
 	# Add a pkcs12 file to be used for start_tls, ldaps, and opendj's admin connector.
 	# Add it into the instance location, and ensure opendj can read it.
@@ -132,6 +136,7 @@ class role::ldap::server::labs {
 		certificate_location => $certificate_location,
 		certificate => $certificate,
 		cert_pass => $cert_pass,
+		ca_name => $ca_name,
 		base_dn => $base_dn,
 		proxyagent => $proxyagent,
 		proxyagent_pass => $proxypass,
@@ -170,6 +175,7 @@ class role::ldap::server::production {
 	$proxypass = $role::ldap::config::production::ldapconfig["proxypass"]
 
 	$certificate = "$hostname.pmtpa.wmnet"
+	$ca_name = "wmf-ca.pem"
 	install_certificate{ $certificate: }
 	create_pkcs12{ "${certificate}.opendj":
 		certname => "${certificate}",
@@ -188,6 +194,7 @@ class role::ldap::server::production {
 		certificate_location => $certificate_location,
 		certificate => $certificate,
 		cert_pass => $cert_pass,
+		ca_name => $ca_name,
 		base_dn => $base_dn,
 		proxyagent => $proxyagent,
 		proxyagent_pass => $proxypass,
