@@ -480,6 +480,11 @@ node /db10(07|24|28|41)\.eqiad\.wmnet/ {
 	include role::coredb::s7
 }
 
+## x1 shard
+node /db10(29|30|31)\.eqiad\.wmnet/ {
+	include role::coredb::x1
+}
+
 ## m2 shard
 node /db104[68]\.eqiad\.wmnet/ {
 	include role::coredb::m2
@@ -505,7 +510,7 @@ node /db1047\.eqiad\.wmnet/ {
 }
 
 ## not currently in production and/or hardware issues
-node /db10(1[23456]|2[39]|3[012367]|4[45])\.eqiad\.wmnet/ {
+node /db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
