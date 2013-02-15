@@ -20,7 +20,7 @@ def config_symlink(repo):
             return 1
     if not __salt__['file.file_exists'](nmSymlinkPath):
         try:
-            os.symlink('../../../config/node_modules', nmSymlinkPath)
+            os.symlink('../../config/node_modules', nmSymlinkPath)
         except OSError:
             return 1
 
