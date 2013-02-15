@@ -35,13 +35,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	}
 
 # permissions for $wgCacheDir
+# make sure the parent directory exists
 	file { "/var/cache/mw-cache":
 		ensure => directory,
 		owner => "www-data",
 		 group => "www-data",
 		 mode => "0755",
 	}
-
+# create a directory for instance's cache named after db
 	file { "/var/cache/mw-cache/${database_name}":
 		ensure => directory,
 		owner => "www-data",
@@ -49,16 +50,16 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		mode => "0755",
 	}
 
-# install either Wikibase repo or client to ${install_path}/extensions
+# The following are settings for all Wikidata instances (repo and client)
 
-# enable profiling
+	# enable profiling
 	file { "${install_path}/StartProfiler.php":
 		require => Exec["mediawiki_setup"],
 		ensure => present,
 		source => "puppet:///files/mediawiki/StartProfiler.php",
 	}
 
-# permit www-data to write images
+	# permit www-data to write to image folder
 	file { "${install_path}/images":
 		require => Git::Clone["mediawiki"],
 		ensure => directory,
@@ -68,42 +69,42 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		recurse => true,
 	}
 
-# get the dependencies for Wikibase extension
+	# get the dependencies for Wikibase extension after the successful installation of mediawiki core
 	mw-extension { [ "Diff", "DataValues" ]:
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 	}
 
-# get more extensions for Wikidata test instances
+	# get more extensions for Wikidata test instances
 	mw-extension { [ "DismissableSiteNotice", "ApiSandbox", "OAI", "SiteMatrix" ]:
 		require => Git::Clone["mediawiki"],
 	}
-
+	# get "mediawiki-config" for SiteMatrix extension
 	git::clone { "mwconfig":
 		require => Git::Clone["mediawiki"],
 		directory => "/srv/mediawiki-config",
 		origin => "https://gerrit.wikimedia.org/r/p/operations/mediawiki-config.git",
 	}
-
+	# copy notitle.php file to extensions folder
 	file { "${install_path}/extensions/notitle.php":
 		require => Git::Clone["mediawiki"],
 		ensure => present,
 		source => "puppet:///files/mediawiki/notitle.php",
 	}
-
+	# run populateSitesTable
 	exec { "populateSitesTable":
 			require => [Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
 			cwd => "${install_path}/extensions/Wikibase/lib/maintenance",
 			command => "/usr/bin/php populateSitesTable.php",
 			logoutput => "on_failure",
 	}
-
+	# run the update script after having cloned Wikibase
 	exec { "update-script":
 			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/update.php --quick",
 			logoutput => "on_failure",
 	}
-
+	# rebuild the LocalisationCache
 	exec { "localisation-cache":
 			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "$install_path",
@@ -115,21 +116,25 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 # Wikibase repo only:
 	if $install_repo == true {
 		# items are in main namespace, so main page has to be moved first
+		# get the file you want to hand over to moveBatch.php
 		file {"/tmp/wikidata-move-mainpage":
 			ensure => present,
 			source => "puppet:///files/mediawiki/wikidata-move-mainpage",
 		}
+		# run moveBatch.php
 		exec { "repo_move_mainpage":
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], File["/tmp/wikidata-move-mainpage"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/moveBatch.php --conf ${install_path}/orig/LocalSettings.php /tmp/wikidata-move-mainpage",
 			logoutput => "on_failure",
 		}
+		# get the file that contains our repo's main page
 		file { "${install_path}/wikidata-repo-mainpage.xml":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
 			source => "puppet:///files/mediawiki/wikidata-repo-mainpage.xml",
 		}
+		# import our repo's main page
 		exec { "repo_import_mainpage":
 			require => [File["${install_path}/wikidata-repo-mainpage.xml"], Exec["repo_move_mainpage"]],
 			cwd => "$install_path",
@@ -137,20 +142,24 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			logoutput => "on_failure",
 		}
 
-# get the extensions
+		# get the extensions
+		# for repo get extensions Wikibase and ULS
 		mw-extension { [ "Wikibase", "UniversalLanguageSelector" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
+		# put a repo specific settings file to $install_path (required by LocalSettings.php)
 		file { "${install_path}/wikidata_repo_requires.php":
 			require => [Exec["mediawiki_setup"], Exec["repo_move_mainpage"]],
 			ensure => present,
 			content => template('mediawiki/wikidata-repo-requires.php'),
 		}
+		# logo file for demo repo
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
 			source => "puppet:///files/mediawiki/Wikidata-logo-demorepo.png",
 		}
+		# import items and properties for testing
 		exec { "repo_import_data":
 			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
@@ -158,15 +167,18 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			logoutput => "on_failure",
 		}
 		# propagation of changes from repo to client
+		# dispatchChanges is run by user www-data, check if it exists
 		user { "www-data":
 			ensure => present
 		}
+		# create a log file for dispatchChanges that is writeable by www-data
 		file { "/var/log/dispatchChanges.log":
 			ensure => present,
 			owner => 'www-data',
 			group => 'www-data',
 			mode => '0664',
 		}
+		# write a cronjob for dispatchChanges to www-data's crontab
 		cron { "dispatchChanges":
 			require => File["/var/log/dispatchChanges.log"],
 			ensure => present,
@@ -174,6 +186,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			user => "www-data",
 			minute => "*/10",
 		}
+		# make sure this log rotates sometimes
 		file { "/etc/logrotate.d/wikidata-replication":
 			ensure => present,
 			source => "puppet:///files/logrotate/wikidata-replication",
@@ -183,40 +196,46 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 # Wikibase client only:
 	if $install_client == true {
-# get the extensions
+		# get the extensions
+		# for client get extensions Wikibase and ParserFunctions
 		mw-extension { [ "Wikibase", "ParserFunctions" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
+		# put a client specific settings file to $install_path (required by LocalSettings.php)
 		file { "${install_path}/wikidata_client_requires.php":
 			require => Exec["mediawiki_setup"],
 			ensure => present,
 			content => template('mediawiki/wikidata-client-requires.php'),
 		}
+		# logo file for demo client
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-democlient.png":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
 			source => "puppet:///files/mediawiki/Wikidata-logo-democlient.png",
 		}
+		# run populateInterwiki
 		exec { "populate_interwiki":
 			require => [Mw-extension["Wikibase"], Exec["update-script"]],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/client/maintenance/populateInterwiki.php",
 			logoutput => "on_failure",
 		}
-
+		# run populateSitesTable
 		exec { "SitesTable_client":
 			require => Mw-extension["Wikibase"],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/lib/maintenance/populateSitesTable.php",
 			logoutput => "on_failure",
 		}
-		# receive repo's propagation of changes
+		# receive repo's propagation of changes with runJobs
+		# create a log file for runJobs that is writeable by www-data
 		file { "/var/log/runJobs.log":
 			ensure => present,
 			owner => 'www-data',
 			group => 'www-data',
 			mode => '0664',
 		}
+		# write a cronjob for runJobs to www-data's crontab
 		cron { "runJobs":
 			require => File["/var/log/runJobs.log"],
 			ensure => present,
@@ -224,16 +243,19 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 			user => "www-data",
 			minute => "*/1",
 		}
+		# make sure this log rotates sometimes
 		file { "/etc/logrotate.d/wikidata-runJobs":
 			ensure => present,
 			source => "puppet:///files/logrotate/wikidata-runJobs",
 			owner => 'root',
 		}
+		# get the dump with content for testing
 		file { "${install_path}/simple-elements.xml":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
 			source => "puppet:///files/mediawiki/simple-elements.xml",
 		}
+		# import content for testing
 		exec { "client_import_data":
 			require => [Mw-extension["Wikibase"], File["${install_path}/simple-elements.xml"]],
 			cwd => "$install_path",
@@ -242,7 +264,8 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		}
 	}
 
-# longterm stuff
+# longterm stuff: "latest" option updates core and extensions from gerrit on every puppet run.
+# This is not working for core right now, but unrelated to puppet.
 	if $ensure == 'latest' {
 		exec { 'wikidata_update':
 			require => [Git::Clone["mediawiki"],
