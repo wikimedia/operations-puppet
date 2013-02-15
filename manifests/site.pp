@@ -1709,9 +1709,6 @@ node /^nfs[12].pmtpa.wmnet/ {
 	include standard,
 		misc::nfs-server::home::rsyncd,
 		misc::syslog-server,
-		role::ldap::server::production,
-		# The production ldap is just a replica of labs
-		role::ldap::client::labs,
 		backup::client
 
 	# don't need udp2log monitoring on nfs hosts
