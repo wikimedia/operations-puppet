@@ -1590,9 +1590,15 @@ node /^mw(7[5-9]|80)\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::imagescaler
 }
 
-# mw81-85 are application servers (precise)
-node /^mw(8[1-5])\.pmtpa\.wmnet$/ {
+# mw81-111 are application servers (precise)
+node /^mw(8[1-9]|9[0-9]|10[0-9]|11[0-1])\.pmtpa\.wmnet$/ {
 	include	role::applicationserver::appserver
+	include	nfs::upload
+}
+
+# mw112-125 are api application servers (precise)
+node /^mw(11[2-9]|12[0-5])\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver::api
 	include	nfs::upload
 }
 
