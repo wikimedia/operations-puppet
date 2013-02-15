@@ -425,12 +425,14 @@ node /db67\.pmtpa\.wmnet/ {
 ## pgehres special project
 node /db29\.pmtpa\.wmnet/{
   system_role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
-  include standard,
+  include base,
+	standard,
 	mysql,
 	mysql::conf,
 	mysql::datadirs,
 	mysql::mysqluser,
 	mysql::packages,
+	ntp::client,
 	accounts::pgehres
 }
 
