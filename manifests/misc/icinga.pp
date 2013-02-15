@@ -563,16 +563,6 @@ class icinga::monitor::files::nagios-plugins {
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/libexec/check_solr":
-			source => "puppet:///files/nagios/check_solr",
-			owner => root,
-			group => root,
-			mode => 0755;
-		"/var/lib/check_solr":
-			ensure => directory,
-			owner => nagios,
-			group => wikidev,
-			mode => 0750;
 	}
 
 	# some default configuration files conflict and should be removed
