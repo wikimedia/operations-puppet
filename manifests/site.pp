@@ -430,7 +430,8 @@ node /db29\.pmtpa\.wmnet/{
 	mysql::conf,
 	mysql::datadirs,
 	mysql::mysqluser,
-	mysql::packages
+	mysql::packages,
+	accounts::pgehres
 }
 
 ## not in use for various reasons
