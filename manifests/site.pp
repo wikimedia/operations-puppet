@@ -434,6 +434,7 @@ node /db29\.pmtpa\.wmnet/{
 		mysql::mysqluser,
 		mysql::packages,
 		ntp::client,
+		admins::roots,
 		accounts::pgehres
 }
 
