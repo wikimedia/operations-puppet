@@ -56,6 +56,14 @@ class role::coredb::config {
 			'snapshot' => [ "db56", "db1007" ],
 			'no_master' => []
 		},
+		'x1' => {
+			'hosts' => { 'pmtpa' => [ ],
+				'eqiad' => [ 'db1029', 'db1030', 'db1031' ] },
+			'primary_site' => $::mw_primary,
+			'masters' => { 'pmtpa' => "", 'eqiad' => "db1029" },
+			'snapshot' => [ "db1031" ],
+			'no_master' => []
+		},
 		'm1' => {
 			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
 				'eqiad' => [] },
@@ -149,6 +157,14 @@ class role::coredb::s7( $mariadb = false ) {
 	class { "role::coredb::common":
 		shard => "s7",
 		mariadb => $mariadb,
+	}
+}
+
+class role::coredb::x1( $mariadb = true ) {
+	class { "role::coredb::common":
+		shard => "x1",
+		mariadb => $mariadb,
+		innodb_file_per_table => true,
 	}
 }
 
