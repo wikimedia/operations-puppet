@@ -15,6 +15,9 @@ class misc::parsoid {
 			owner => parsoid,
 			group => wikidev,
 			mode => 2775;
+		"/var/lib/parsoid/Parsoid":
+			ensure => link,
+			target => "/srv/deployment/parsoid/Parsoid";
 		"/etc/init.d/parsoid":
 			source => "puppet:///files/misc/parsoid.init",
 			owner => root,
