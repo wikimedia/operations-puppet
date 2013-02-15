@@ -219,6 +219,7 @@ class role::ldap::server::corp {
 	$proxypass = $role::ldap::config::corp::ldapconfig["proxypass"]
 
 	$certificate = "${::fqdn}"
+	$ca_name = "wmf-ca.pem"
 	install_certificate{ $certificate: }
 	create_pkcs12{ "${certificate}.opendj":
 		certname => "${certificate}",
@@ -232,6 +233,7 @@ class role::ldap::server::corp {
 		certificate_location => $certificate_location,
 		certificate => $certificate,
 		cert_pass => $cert_pass,
+		ca_name => $ca_name,
 		base_dn => $base_dn,
 		proxyagent => $proxyagent,
 		proxyagent_pass => $proxypass,
