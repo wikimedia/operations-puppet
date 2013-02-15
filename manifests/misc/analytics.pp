@@ -14,7 +14,7 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 	}
 
 	$local_tmp_dir = "${tmp_dir}/${name}"
-	$command       = "/bin/rm -rf ${local_tmp_dir} && /usr/bin/hadoop fs -get ${hdfs_source} ${local_tmp_dir} && /usr/bin/rsync -rt ${local_tmp_dir} ${rsync_destination} && /bin/rm -rf ${local_tmp_dir}"
+	$command       = "/bin/rm -rf ${local_tmp_dir} && /usr/bin/hadoop fs -get ${hdfs_source} ${local_tmp_dir} && /usr/bin/rsync -rt ${local_tmp_dir}/ ${rsync_destination} && /bin/rm -rf ${local_tmp_dir}"
 
 	# Create an hourly cron job to rsync to $rsync_destination.
 	cron { "hdfs_sync_${name}":
