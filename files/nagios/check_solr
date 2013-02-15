@@ -107,7 +107,7 @@ def check_handler_errors(entry):
         c = db_conn.cursor()
         c.execute(\
             "SELECT * FROM sqlite_master WHERE tbl_name='errors' LIMIT 1")
-        if len(c.fetchone()) == 0:
+        if c.fetchone() == None:
             c.execute("CREATE TABLE errors(\
                 host TEXT,\
                 what TEXT,\
