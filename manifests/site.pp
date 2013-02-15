@@ -436,7 +436,11 @@ node /db29\.pmtpa\.wmnet/{
 		ntp::client,
 		admins::roots,
 		accounts::pgehres
+	package { [ 'php5', 'php5-cli', 'php5-mysql']:
+		ensure => latest;
+	}
 }
+
 
 ## not in use for various reasons
 node /db(42|6[129]|7[0-7])\.pmtpa\.wmnet/{
