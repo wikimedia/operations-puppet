@@ -7,7 +7,6 @@ $decommissioned_servers = [
 "bayes",
 "br1-knams",
 "controller",
-"copper", #was switch testing host, reclaiming - rob 2013-02-13
 "cp3001",
 "cp3002",
 "db1",
@@ -34,7 +33,6 @@ $decommissioned_servers = [
 "db28",
 "db30",
 "db41",
-"db61", #sandboxed for otrs upgrade, can come out after nagios removes from checks -robh 2013-02-13
 "ixia",
 "gilman",
 "knsq1",
@@ -56,7 +54,6 @@ $decommissioned_servers = [
 "knsq30",
 "lily",
 "lomaria",
-"magnesium", #was switch testing host, reclaiming - rob 2013-02-13
 "mobile1",
 "mobile2",
 "mobile3",
@@ -248,7 +245,5 @@ $decommissioned_servers = [
 "virt1001",
 "virt1002",
 "virt1003",
-"virt1004", # not decom, just offline and need to pull out of nagios -robh 2013-01-13
 "wikinews-lb.wikimedia.org",
-"zinc", #was switch testing host, reclaiming - rob 2013-02-13
 ]
