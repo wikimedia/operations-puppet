@@ -1,4 +1,4 @@
 # Set the Wikimedia logo
-Set($LogoURL, "http://upload.wikimedia.org/wikipedia/commons/d/d3/Wikimedia.png");
+Set($LogoURL, "//upload.wikimedia.org/wikipedia/commons/d/d3/Wikimedia.png");
 
 Set($DefaultQueue, 'ops-requests');
