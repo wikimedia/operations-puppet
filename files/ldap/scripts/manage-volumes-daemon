@@ -219,7 +219,7 @@ class VolumeManager:
 			self.deathwatch.pop(volume)
 		self.log("Starting volume %s" % volume)
 		ret = self.ssh_exec_command('sudo gluster volume start ' + volume, True)
-		if ret:
+		if ret == 0:
 			self.log("Started volume: %s" % volume)
 		else:
 			self.log("Failed to start volume: %s" % volume)
