@@ -599,3 +599,15 @@ define command{
         command_name    check_memory_used
         command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
 }
+
+# Example usage:  check_solr!solr1001!500:1000|5
+define command{
+	command_name	check_solr
+	command_line	$USER1$/check_solr -a $ARG2 -t $ARG3 $ARG1
+	}
+
+# Example usage:  check_replicated_solr!solr1001!500:1000|5
+define command{
+	command_name	check_replicated_solr
+	command_line	$USER1$/check_solr -r -a $ARG2 -t $ARG3 $ARG1
+	}
