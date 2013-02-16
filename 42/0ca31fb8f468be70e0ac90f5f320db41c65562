@@ -1,0 +1,8 @@
+Code-Review-1: MaxSem <maxsem.wiki@gmail.com>
+Verified+2: jenkins-bot
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Sat, 16 Feb 2013 00:34:32 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/49358
+Project: operations/puppet
+Branch: refs/heads/production
