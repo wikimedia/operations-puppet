@@ -624,8 +624,8 @@ class icinga::monitor::firewall {
 }
 
 class icinga::monitor::jobqueue {
-
-  require icinga::monitor::packages
+	include icinga::monitor::packages
+	include applicationserver::packages
 
 	file {"/usr/lib/nagios/plugins/check_job_queue":
 		source => "puppet:///files/nagios/check_job_queue",
@@ -727,13 +727,7 @@ class icinga::monitor::packages {
 	}
 
 	# Stomp Perl module to monitor erzurumi (RT #703)
-
 	package { "libnet-stomp-perl":
-		ensure => latest;
-	}
-
-	# PHP CLI needed for check scripts
-	package { [ "php5-cli", "php5-mysql" ]:
 		ensure => latest;
 	}
 }

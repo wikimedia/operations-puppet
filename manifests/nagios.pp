@@ -304,11 +304,6 @@ class nagios::monitor {
 		ensure => latest;
 	}
 
-	# PHP CLI needed for check scripts
-	package { [ "php5-cli", "php5-mysql" ]:
-		ensure => latest;
-	}
-
 	# install the nagios Apache site
 	file { "/etc/apache2/sites-available/nagios":
 		ensure => present,
@@ -528,6 +523,7 @@ class nagios::monitor {
 
 
 class nagios::monitor::jobqueue {
+	include applicationserver::packages
 
 	file {"/usr/local/nagios/libexec/check_job_queue":
 		source => "puppet:///files/nagios/check_job_queue",
