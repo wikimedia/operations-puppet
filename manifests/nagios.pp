@@ -503,6 +503,11 @@ class nagios::monitor {
 			owner => root,
 			group => root,
 			mode => 0755;
+		"/usr/local/nagios/libexec/check_solr":
+			source => "puppet:///files/nagios/check_solr",
+			owner => root,
+			group => root,
+			mode => 0755;
 		"/usr/local/nagios/libexec/check-ssl-cert":
 			source => "puppet:///files/nagios/check-ssl-cert",
 			owner => root,
