@@ -1,8 +1,0 @@
-#!/bin/sh
-# Shell wrapper for the local version of multiversion/activeMWVersions.
-# This script belongs in /usr/bin/ and should be in PATH.
-. /usr/local/lib/mw-deployment-vars.sh
-
-if ! "$MW_COMMON/multiversion/activeMWVersions" "$@"; then
-	exit 1
-fi

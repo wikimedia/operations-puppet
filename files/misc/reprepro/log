@@ -1,3 +1,0 @@
-#!/bin/bash
-
-echo -e "reprepro changes:\n$@" | mail -s "Reprepro changes" root@wikimedia.org

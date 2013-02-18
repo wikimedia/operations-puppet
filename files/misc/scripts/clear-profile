@@ -1,3 +1,0 @@
-#!/bin/bash
-echo "-truncate" | nc -q0 -u professor.pmtpa.wmnet 3811
-/usr/local/bin/dologmsg "!log $USER cleared profiling data"

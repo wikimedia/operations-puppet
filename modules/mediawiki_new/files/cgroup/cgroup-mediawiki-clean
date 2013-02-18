@@ -1,4 +1,0 @@
-#!/bin/bash
-if [[ $1 == /mediawiki* ]]; then
-    rmdir /sys/fs/cgroup/memory$1
-fi

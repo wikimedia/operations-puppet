@@ -1,9 +1,0 @@
-#!/bin/bash
-
-test -x /usr/sbin/logrotate || exit 0
-
-if [ -x /usr/local/bin/pagecache-management.sh ] ; then
-    /usr/local/bin/pagecache-management.sh /usr/sbin/logrotate /etc/logrotate.conf
-else
-    /usr/sbin/logrotate /etc/logrotate.conf
-fi
