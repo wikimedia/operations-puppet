@@ -35,3 +35,14 @@ class role::db::es($mysql_role = "slave") {
 		nrpe
 
 }
+
+# A database on the beta cluster
+# Really just get the same package as in production. Rest of the configuration
+# applied in production does not apply to beta.
+class role::db::beta {
+
+	system_role { 'role::db::beta': description => 'SQL server on beta' }
+
+	include mysql::packages
+
+}
