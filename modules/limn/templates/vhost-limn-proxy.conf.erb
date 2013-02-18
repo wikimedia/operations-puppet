@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+  ServerName <%= server_name %>
+<% if server_aliases.is_a? Array -%>
+<% server_aliases.each do |name| %><%= "  ServerAlias #{name}\n" %><% end %>
+<% elsif server_aliases != '' -%>
+<%= "  ServerAlias #{server_aliases}" %>
+<% end -%>
+
+  DocumentRoot <%= document_root %>
+
+  LogLevel warn
+  ErrorLog /var/log/<%= scope.lookupvar("apache::params::apache_name") %>/<%= name %>_error.log
+  CustomLog /var/log/<%= scope.lookupvar("apache::params::apache_name") %>/<%= name %>_access.log combined
+
+  ProxyRequests Off
+  <Proxy *>
+    Order allow,deny
+    Allow from all
+  </Proxy>
+
+  # If the file does not exist, assume this is a dynamic
+  # request and send it to the Limn instance.
+  RewriteEngine On
+  RewriteCond <%= document_root %>/%{REQUEST_FILENAME} !-s
+  RewriteRule "^(.*)" "http://<%= limn_host %>:<%= limn_port %>$1" [P]
+</VirtualHost>
