@@ -862,6 +862,16 @@ node 'db1043.eqiad.wmnet' {
         shard  => 'm3',
         master => true,
     }
+
+    # Rsync archived slow-parse logs to dumps.wikimedia.org.
+    # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
+    cron { "rsync-slow-parse":
+        command => "/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/",
+        hour    => 7,
+        minute  => 0,
+        user    => "backup",
+    }
+
 }
 
 node 'db1048.eqiad.wmnet' {
