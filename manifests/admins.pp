@@ -2514,6 +2514,26 @@ class accounts {
 		}
 	}
 
+	# RT 4519
+	class ypanda inherits baseaccount {
+		$username = "yuvipanda"
+		$realname = "Yuvi Panda"
+		$uid = 630
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
+
+			ssh_authorized_key {
+				"yuvipanda@wikimedia.org":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCV5f/HfkCTtWhZnZVwYs+jN6yy+Ru/eBGih+K6HvCI2DDXM0OOZVfVOVCDLPCvYIZD1m//ghibiM3jl5DFrLlAUkuyzuQsjv5AOfo28/kOcsN+o6T8wmQ27oJBbCy2YWqi5r8eypTvh/VTSt1BfEKwyg5KEtPqSKOy3G6dtjYOebSCM2EEGqfDcU/+9KKCsXTeTRgBU3pOHgymQ1zXbxrLazQGGAAUyp1e1T4chg3RtOU0cXe5i9+yQuP8ZlPApLG9/7xN/OIKX7EBrSQn6J2BZMSOw2Uwe38ROjCbFljt+mQF01p4QLZQ2Vm4UjdZiY+ZsMULeDntkqgjalmOvWCj",
+			}
+		}
+	}
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
