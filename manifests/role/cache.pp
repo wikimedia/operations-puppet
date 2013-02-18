@@ -358,7 +358,7 @@ class role::cache {
 
 	class upload {
 		# FIXME: remove this hack
-		if $::site == "eqiad" or ($::site == "esams" and $::hostname =~ /^cp30/) {
+		if $::site == "eqiad" or ($::site == "esams" and $::hostname =~ /^cp30/) or $::realm == 'labs' {
 			# Varnish
 
 			$cluster = "cache_upload"
