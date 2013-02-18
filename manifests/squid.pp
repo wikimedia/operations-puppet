@@ -4,6 +4,9 @@ import "generic-definitions.pp"
 
 class squid {
 
+	# Fast C External redirect helper
+	require squid::redirector
+
 	if $realm == "labs" {
 		# Nova mounts /dev/vdb on /mnt by default. We want to use that device
 		# for coss usage.
@@ -106,6 +109,9 @@ class squid {
 
 	# Tune kernel settings
 	include generic::sysctl::high-http-performance
+}
+
+class squid::redirector {
 
 	file {
 		# Fast C External redirect helper 
@@ -113,14 +119,16 @@ class squid {
 			mode => 0555,
 			source => "puppet:///files/squid/redirector",
 			ensure => present;
+	}
+	file {
 		# ...and its configuration
 		"/etc/squid/redirector.conf":
 			mode => 0444,
 			source => "puppet:///files/squid/redirector.conf",
 			ensure => present;
 	}
-}
 
+}
 
 class squid::cachemgr {
 	require role::cache::configuration
