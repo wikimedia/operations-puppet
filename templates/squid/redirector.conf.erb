@@ -1,0 +1,10 @@
+# This file is managed by Puppet!
+# puppet://files/squid/redirector.conf
+
+# redirector configuration file
+
+# URL parsing regex
+pattern=^http://(?:www\.(?=mediawiki))?((?:species|meta|incubator|outreach|strategy|wikimania2012)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki)\.<%= Regexp.escape(squid_redirector_tld) %>[:\d]*/wiki/(.*)
+
+# What to replace the matching URLs with
+replacement=302:http://%sm.%s.<%= squid_redirector_tld %>/wiki/%s

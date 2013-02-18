@@ -113,6 +113,13 @@ class squid {
 
 class squid::redirector {
 
+	# Top level domain name to use when redirecting URLs
+	# MUST NOT have beginning or trailing dot.
+	$squid_redirector_tld = $::realm ? {
+		labs    => 'beta.wmflabs.org',
+		default => 'org',
+	}
+
 	file {
 		# Fast C External redirect helper 
 		"/usr/local/bin/redirector":
@@ -124,7 +131,7 @@ class squid::redirector {
 		# ...and its configuration
 		"/etc/squid/redirector.conf":
 			mode => 0444,
-			source => "puppet:///files/squid/redirector.conf",
+			content => template('squid/redirector.conf.erb'),
 			ensure => present;
 	}
 
