@@ -38,6 +38,17 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
         description => 'MediaWiki log collector',
     }
 
+    # Rsync archived slow-parse logs to dumps.wikimedia.org.
+    # These are available for download at http://dumps.wikimedia.org/other/slow-parse/
+    include role::dataset::systemusers
+    cron { 'rsync_slow_parse':
+        command     => '/usr/bin/rsync -rt /a/mw-log/archive/slow-parse.log*.gz dumps.wikimedia.org::slow-parse/',
+        hour        => 23,
+        minute      => 0,
+        environment => 'MAILTO=ops-dumps@wikimedia.org',
+        user        => 'datasets',
+    }
+
     class { 'misc::udp2log':
         monitor          => $monitor,
         default_instance => false,

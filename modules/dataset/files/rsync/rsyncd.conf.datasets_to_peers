@@ -10,3 +10,12 @@ gid = root
 read only = false
 path = /data
 hosts allow = dataset1001.wikimedia.org, ms1001.wikimedia.org
+
+# slow-parse logs contain long render times for Wiki articles per server.
+# They are rsynced from fluorine to this directory.
+[slow-parse]
+uid = datasets
+gid = datasets
+read only = false
+path = /data/xmldatadumps/public/other/slow-parse
+hosts allow = fluorine.eqiad.wmnet
