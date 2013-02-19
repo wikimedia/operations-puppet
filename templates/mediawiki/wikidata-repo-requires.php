@@ -144,3 +144,6 @@ $wgLBFactoryConf = array(
 	'masterTemplateOverrides' => array( 'fakeMaster' => true ),
 );
 
+// Let clients edit this wiki via CORS
+// Allow all of wikimedia.de and all labs instances for the sake of simplicity
+$wgCrossSiteAJAXdomains = array( '*.wikimedia.de', '*.instance-proxy.wmflabs.org' );
