@@ -37,6 +37,7 @@ require_once( "$IP/extensions/notitle.php" );
 
 $wgShowExceptionDetails = true;
 
+// information about the repo this client is connected to
 $wgWBSettings['repoArticlePath'] = "/wiki/$1";
 $wgWBSettings['repoScriptPath'] = "/w";
 

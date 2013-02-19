@@ -31,11 +31,15 @@ class role::wikidata-repo-latest::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
+		# get value for experimental features from labsconsole
 		experimental => $wikidata_experimental,
+		# get value for client_ip from labsconsole
 		client_ip => $wikidata_client_ip,
+		# name all repo databases "repo",
 		database_name => "repo",
+		# get updates from git
 		ensure => latest,
-		# all require_once lines here:
+		# additional require_once lines can be added here:
 		role_requires => [
 		'\'wikidata_repo_requires.php\'',
 		],
@@ -59,11 +63,15 @@ class role::wikidata-repo::labs {
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
+		# get value for experimental features from labsconsole
 		experimental => $wikidata_experimental,
+		# get value for client_ip from labsconsole
 		client_ip => $wikidata_client_ip,
+		# name all repo databases "repo",
 		database_name => "repo",
+		# don't get updates from git
 		ensure => present,
-		# all require_once lines here:
+		# additional require_once lines can be added here:
 		role_requires => [
 		'\'wikidata_repo_requires.php\'',
 		],
@@ -90,14 +98,20 @@ class role::wikidata-client-latest::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
+		# get value for experimental features from labsconsole
 		experimental => $wikidata_experimental,
+		# get value for repo_ip from labsconsole
 		repo_ip => $wikidata_repo_ip,
+		# get value for repo_url from labsconsole
 		repo_url => $wikidata_repo_url,
+		# get value for client's siteGlobalID (like "enwiki") from labsconsole
 		siteGlobalID => $wikidata_client_siteGlobalID,
+		# name all client databases "client",
 		database_name => "client",
+		# get updates from git
 		ensure => latest,
 		install_path => "/srv/mediawiki",
-		# all require_once lines here:
+		# additional require_once lines can be added here:
 		role_requires => [
 		'\'wikidata_client_requires.php\'',
 		],
@@ -123,14 +137,20 @@ class role::wikidata-client::labs {
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
+		# get value for experimental features from labsconsole
 		experimental => $wikidata_experimental,
+		# get value for repo_ip from labsconsole
 		repo_ip => $wikidata_repo_ip,
+		# get value for repo_url from labsconsole
 		repo_url => $wikidata_repo_url,
+		# get value for client's siteGlobalID (like "enwiki") from labsconsole
 		siteGlobalID => $wikidata_client_siteGlobalID,
+		# name all client databases "client",
 		database_name => "client",
+		# don't get updates from git
 		ensure => present,
 		install_path => "/srv/mediawiki",
-		# all require_once lines here:
+		# additional require_once lines can be added here:
 		role_requires => [
 		'\'wikidata_client_requires.php\'',
 		],
