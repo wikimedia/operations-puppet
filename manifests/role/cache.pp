@@ -371,13 +371,18 @@ class role::cache {
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
 			$varnish_fe_directors = {
-				"pmtpa" => {},
+				# pmtpa is for labs / beta cluster
+				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 				# TODO: replace after removing Squid
 				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload']["${::site}-varnish"] },
 			}
 
 			$varnish_be_directors = {
+				"pmtpa" => {
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
+					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+				},
 				"eqiad" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
 					"swift" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
