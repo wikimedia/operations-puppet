@@ -651,7 +651,6 @@ class role::cache {
 			admin_port => 6082,
 			directors => {
 				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
-				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
 			director_options => {
 				'retries' => 40,
