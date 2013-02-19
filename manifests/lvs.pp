@@ -405,7 +405,12 @@ class lvs::configuration {
 			'search_prefix' => {},
 			'swift' => {},
 			'payments' => {},
-			'upload' => {},
+			'upload' => {
+				'pmtpa' => [
+					'10.4.0.166',  # deployment-apache32
+					'10.4.0.187',  # deployment-apache33
+				],
+			},
 			'parsoid' => {},
 		}
 	}
