@@ -268,12 +268,10 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 # This is not working for core right now, but unrelated to puppet.
 	if $ensure == 'latest' {
 		exec { 'wikidata_update':
-			require => [Git::Clone["mediawiki"],
-				Mw-extension["Diff"],
-				Mw-extension["DataValues"],
-				Mw-extension["UniversalLanguageSelector"],
-				Mw-extension["Wikibase"],
-				File["${install_path}/LocalSettings.php"]],
+			require => $install_repo ? {
+				true => [Git::Clone["mediawiki"], Mw-extension["UniversalLanguageSelector"], Mw-extension["Diff"], Mw-extension["DataValues"], Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+				default => [Git::Clone["mediawiki"], Mw-extension["Diff"], Mw-extension["DataValues"], Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+			},
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
 			logoutput => "on_failure",
 		}
