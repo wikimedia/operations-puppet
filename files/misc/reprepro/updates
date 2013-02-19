@@ -9,7 +9,7 @@ VerifyRelease: 7EBFDD5D17ED316D
 ListShellHook: grep-dctrl -X -S ceph || [ $? -eq 1 ]
 
 Name: jenkins
-Method: http://pkg.jenkins-ci.org/debian-stable/
+Method: http://mirrors.jenkins-ci.org/debian-stable/
 Suite: binary
 Flat: main
 GetInRelease: no
