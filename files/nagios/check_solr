@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 
 import urllib2
 import sqlite3
@@ -59,7 +59,7 @@ def check_stat(entry, stat, limits, stat_name):
 def check_select(entry):
     check_stat(entry, 'avgTimePerRequest', cmd_options.request_time,\
         'Average request time')
-    check_stat(entry, 'avgRequestsPerSecond', cmd_options.request_time,\
+    check_stat(entry, 'avgRequestsPerSecond', cmd_options.qps,\
         'Average requests per second')
 
 
@@ -69,6 +69,8 @@ def parse_datetime(str):
 
 
 def check_all_stats():
+    if cmd_options.request_time == cmd_options.qps == None:
+        return
     text = http_get('admin/stats.jsp')
     xml = ET.fromstring(text)
 
