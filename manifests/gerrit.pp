@@ -108,7 +108,7 @@ class gerrit::jetty ($ldap_hosts,
 	}
 
 	file {
-		"/etc/default/gerrit":
+		"/etc/default/gerritcodereview":
 			source => "puppet:///files/gerrit/gerrit",
 			owner => root,
 			group => root,
