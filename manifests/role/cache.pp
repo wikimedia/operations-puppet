@@ -592,7 +592,12 @@ class role::cache {
 			}
 
 			$backend_weight = 20
-			if $::site == "eqiad" {
+			if $::realm == 'labs' {
+				$storage_size_main = 19
+				$storage_size_bigobj = 5
+				$cluster_tier = 1
+			# Other realms.. (aka production)
+			} elsif $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
@@ -602,6 +607,21 @@ class role::cache {
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
 				$default_backend = 'eqiad'
+			}
+
+			case $::realm {
+				'production': {
+					$cluster_options = {
+						'upload_domain' => 'upload.wikimedia.org',
+						'top_domain' => 'org',
+					}
+				}
+				'labs': {
+					$cluster_options = {
+						'upload_domain' => 'upload.beta.wmflabs.org',
+						'top_domain' => 'beta.wmflabs.org',
+					}
+				}
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
@@ -623,6 +643,7 @@ class role::cache {
 						'dysprosium' => ['sdc1', 'sdd1'],
 						default => ['sda3', 'sdb3'],
 					},
+				'labs' => [ 'vdb' ],
 			}
 			varnish::setup_filesystem{ $storage_backends:
 				before => Varnish::Instance["upload-backend"]
@@ -633,6 +654,18 @@ class role::cache {
 			# Ganglia monitoring
 			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 
+			case $::realm {
+				'production': {
+					$storage = $::hostname ? {
+						'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
+						default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+					}
+				}  # /production
+				'labs': {
+					$storage = "-s main-vdb=persistent,/srv/vdb/varnish.persist,${storage_size_main}G -s bigobj-vdb=file,/srv/vdb/large-objects.persist,${storage_size_bigobj}G"
+				}  # /labs
+			}
+
 			varnish::instance { "upload-backend":
 				name => "",
 				vcl => "upload-backend",
@@ -642,10 +675,7 @@ class role::cache {
 					'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
 					default => [],
 				},
-				storage => $::hostname ? {
-					'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
-					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
-				},
+				storage => $storage,
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
@@ -673,7 +703,21 @@ class role::cache {
 						'between_bytes_timeout' => "4s",
 						'max_connections' => 1000,
 						'weight' => $backend_weight,
-					}],
+					},
+					'storage_main' => $::realm ? {
+						'production' => false,  # use the default in template
+						'labs'       => 'main-vdb',
+					},
+					'storage_big_object' => $::realm ? {
+						'production' => false,  # use the default in template
+						'labs'       => 'bigobj-vdb',
+					},
+					'imagescalers_as_backend' => $::realm ? {
+						'production' => false,
+						'labs'       => true,
+					},
+				],  # /backend _options
+				cluster_options => $cluster_options,
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
 			}
@@ -707,11 +751,14 @@ class role::cache {
 						'probe' => "varnish",
 						'weight' => $backend_weight,
 					}],
+				cluster_options => $cluster_options,
 				xff_sources => $network::constants::all_networks,
 			}
 
-			varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			if $::realm == 'production' {
+				varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+				varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			}
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator and $::site != "esams" {
