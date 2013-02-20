@@ -195,7 +195,10 @@ class role::cache {
 				'bits'   => { 'pmtpa' => '127.0.0.1', },
 				'mobile' => { 'pmtpa' => '127.0.0.1', },
 				'text'   => { 'pmtpa' => '127.0.0.1', },
-				'upload' => { 'pmtpa' => '127.0.0.1', },
+				'upload' => {
+					'pmtpa' => [ '127.0.0.1' ],
+					'eqiad' => [],
+				},
 			},
 		}
 
@@ -416,8 +419,15 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			varnish::setup_filesystem{ ["sda3", "sdb3"]:
-				before => Varnish::Instance["upload-backend"]
+			if( $::realm == 'production' ) {
+				varnish::setup_filesystem{ ["sda3", "sdb3"]:
+					before => Varnish::Instance["upload-backend"]
+				}
+			} else {
+				# beta on labs
+				varnish::setup_filesystem{ ["vdb"]:
+					before => Varnish::Instance["upload-backend-backend"]
+				}
 			}
 
 			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
