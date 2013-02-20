@@ -437,7 +437,7 @@ node /db29\.pmtpa\.wmnet/{
 	include base,
 		standard,
 		mysql,
-		mysql::conf,
+		#mysql::conf, doing this by hand b/c this is a weird short-term use box
 		mysql::datadirs,
 		mysql::mysqluser,
 		mysql::packages,
