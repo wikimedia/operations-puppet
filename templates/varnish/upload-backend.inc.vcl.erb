@@ -32,19 +32,29 @@ director <%= director %> chash {
 <% end -%>
 
 sub pick_main_stevedore {
+<% storage_main = vcl_config.fetch('storage_main', false) -%>
+<% if storage_main -%>
+	set beresp.storage = "<%= storage_main %>";
+<% else -%>
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "main-sda3";
 	} else {
 		set beresp.storage = "main-sdb3";
 	}
+<% end -%>
 }
 
 sub pick_large_object_stevedore {
+<% storage_big_object = vcl_config.fetch('storage_big_object', false) -%>
+<% if storage_big_object -%>
+	set beresp.storage = "<%= storage_big_object %>";
+<% else -%>
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "bigobj-sda3";
 	} else {
 		set beresp.storage = "bigobj-sdb3";
 	}
+<% end -%>
 }
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
@@ -175,7 +185,9 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
+<% if vcl_config.fetch('imagescalers_as_backend', false) -%>
+	set req.backend = image_scalers;
+<% elsif vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	# Send originals to the Swift cluster
 	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
 		set req.backend = swift;
