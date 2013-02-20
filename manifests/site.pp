@@ -395,7 +395,11 @@ node /db(43|46|47|50)\.pmtpa\.wmnet/ {
 }
 
 node /db(37|56|58|68)\.pmtpa\.wmnet/ {
-	include role::coredb::s7
+	if $hostname == "db58" {
+		class { role::coredb::s7 : mariadb => true }
+	} else {
+		include role::coredb::s7
+	}
 }
 
 ## m1 shard (still mostly not puppetized...)
