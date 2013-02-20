@@ -195,7 +195,10 @@ class role::cache {
 				'bits'   => { 'pmtpa' => '127.0.0.1', },
 				'mobile' => { 'pmtpa' => '127.0.0.1', },
 				'text'   => { 'pmtpa' => '127.0.0.1', },
-				'upload' => { 'pmtpa' => '127.0.0.1', },
+				'upload' => {
+					'pmtpa' => [ '127.0.0.1' ],
+					'eqiad' => [],
+				},
 			},
 		}
 
