@@ -195,7 +195,10 @@ class role::cache {
 				'bits'   => { 'pmtpa' => '127.0.0.1', },
 				'mobile' => { 'pmtpa' => '127.0.0.1', },
 				'text'   => { 'pmtpa' => '127.0.0.1', },
-				'upload' => { 'pmtpa' => '127.0.0.1', },
+				'upload' => {
+					'pmtpa' => [ '127.0.0.1' ],
+					'eqiad' => [],
+				},
 			},
 		}
 
@@ -393,7 +396,13 @@ class role::cache {
 				}
 			}
 
-			if $::site == "eqiad" {
+			if $::realm == 'labs' {
+				$storage_size_main = 19
+				$storage_size_bigobj = 5
+				$cluster_tier = 1
+				$upstream_directors = {}
+			# Other realms.. (aka production)
+			} elsif $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
@@ -403,6 +412,18 @@ class role::cache {
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad'] }
+			}
+
+			case $::realm {
+				'production': {
+					$cluster_options = { }
+				}
+				'labs': {
+					$cluster_options = {
+						'upload_domain' => 'upload.beta.wmflabs.org',
+						'top_domain' => 'beta.wmflabs.org',
+					}
+				}
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
@@ -416,8 +437,15 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			varnish::setup_filesystem{ ["sda3", "sdb3"]:
-				before => Varnish::Instance["upload-backend"]
+			if( $::realm == 'production' ) {
+				varnish::setup_filesystem{ ["sda3", "sdb3"]:
+					before => Varnish::Instance["upload-backend"]
+				}
+			} else {
+				# beta on labs
+				varnish::setup_filesystem{ ["vdb"]:
+					before => Varnish::Instance["upload-backend"]
+				}
 			}
 
 			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
@@ -434,14 +462,26 @@ class role::cache {
 					'esams' => ["prefer_ipv6=on"],
 					default => [],
 				},
-				storage => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				storage => $::realm ? {
+					'production' => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G", 
+					'labs' => "-s main-vdb=persistent,/srv/vdb/varnish.persist,${storage_size_main}G -s bigobj-vdb=file,/srv/vdb/large-objects.persist,${storage_size_bigobj}G",
+				},
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 0,
 					'cache4xx' => "1m",
 					'cluster_tier' => $cluster_tier,
-					'upstream_directors' => $upstream_directors
+					'upstream_directors' => $upstream_directors,
+					'storage_main' => $::realm ? {
+						'labs' => 'main-vdb',
+					},
+					'storage_big_object' => $::realm ? {
+						'labs' => 'bigobj-vdb',
+					},
+					'imagescalers_as_backend' => $::realm ? {
+						'labs' => true,
+					},
 				},
 				backend_options => {
 					'port' => 80,
@@ -450,6 +490,7 @@ class role::cache {
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 1000,
 				},
+				cluster_options => $cluster_options,
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
 			}
@@ -476,12 +517,15 @@ class role::cache {
 					'probe' => "varnish",
 					'weight' => 20,
 				},
+				cluster_options => $cluster_options,
 				xff_sources => $network::constants::all_networks,
 			}
 
-			varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			if $::realm == 'production' {
+				varnish::logging { "locke" : listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+				varnish::logging { "emery" : listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+				varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			}
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator == "true" and $::site != "esams" {
