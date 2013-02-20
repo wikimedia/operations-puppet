@@ -387,7 +387,11 @@ node /db(43|46|47|50)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db50/ {
 		$ganglia_aggregator = "true"
 	}
-	include role::coredb::s6
+	if $hostname == "db43" {
+		class { role::coredb::s6 : mariadb => true }
+	} else {
+		include role::coredb::s6
+	}
 }
 
 node /db(37|56|58|68)\.pmtpa\.wmnet/ {
