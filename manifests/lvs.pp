@@ -380,7 +380,8 @@ class lvs::configuration {
 				'pmtpa' => "10.4.0.254",
 			},
 			'rendering' => {
-				'pmtpa' => "10.4.0.252",
+				# Used to be 10.4.0.252
+				'pmtpa' => [ '10.4.0.166', '10.4.0.187', ],
 			},
 			'api' => {
 				'pmtpa' => "10.4.0.253",
@@ -406,10 +407,10 @@ class lvs::configuration {
 			'swift' => {},
 			'payments' => {},
 			'upload' => {
-				'pmtpa' => [
-					'10.4.0.166',  # deployment-apache32
-					'10.4.0.187',  # deployment-apache33
-				],
+				'pmtpa' => {
+					'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
+					'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
+        },
 			},
 			'parsoid' => {},
 		}
