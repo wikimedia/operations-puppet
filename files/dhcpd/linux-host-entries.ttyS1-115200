@@ -4489,6 +4489,21 @@ host wtp1001 {
 	fixed-address wtp1001.eqiad.wmnet;
 }
 
+host wtp1002 {
+	hardware ethernet 90:B1:1C:2A:0D:B8;
+	fixed-address wtp1002.eqiad.wmnet;
+}
+
+host wtp1003 {
+	hardware ethernet 90:B1:1C:2A:23:2A;
+	fixed-address wtp1003.eqiad.wmnet;
+}
+
+host wtp1004 {
+	hardware ethernet 90:B1:1C:2A:21:A6;
+	fixed-address wtp1004.eqiad.wmnet;
+}
+
 host xenon {
 	hardware ethernet 90:B1:1C:00:A3:08;
 	fixed-address xenon.eqiad.wmnet;
