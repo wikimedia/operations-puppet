@@ -19,7 +19,7 @@ class role::solr($schema = undef, $replication_master = undef ) {
 	}
 	monitor_service { "Solr":
 		description => "Solr",
-		check_command => "$check_command!$::hostname!400:600!5",
+		check_command => "$check_command!$::fqdn!400:600!5",
 	}
 }
 

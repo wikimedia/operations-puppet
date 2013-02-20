@@ -46,14 +46,15 @@ def check_value(value, limits, message):
         warnings.append(message % (value, limits[1]))
 
 
-def check_stat(entry, stat, limits, stat_name):
+def check_stat(entry, statName, limits, stat_name):
     if limits == None:
         return
-    node = entry.find(".//stats/stat[@name='%s']" % stat)
-    if node != None:
-        check_value(node.text, limits, stat_name + ' is %s (gt %s)')
-    else:
-        unknowns.append('Parameter "%s" not found in response' % stat)
+    stats = entry.find('stats')
+    for node in stats.getiterator('stat'):
+        if node.attrib['name'] == statName:
+            check_value(node.text, limits, stat_name + ' is %s (gt %s)')
+            return
+    unknowns.append('Parameter "%s" not found in response' % stat)
 
 
 def check_select(entry):
@@ -74,7 +75,7 @@ def check_all_stats():
     text = http_get('admin/stats.jsp')
     xml = ET.fromstring(text)
 
-    for entry in xml.iter('entry'):
+    for entry in xml.getiterator('entry'):
         name = entry.find('name').text.strip()
         if name == '/select':
             check_select(entry)
