@@ -53,7 +53,7 @@
 [user]
 	email = gerrit@wikimedia.org
 [commentlink "changeid"]
-	match = (I[0-9a-f]{8,40})
+	match = \\b(I[0-9a-f]{8,40})\\b
 	link = "#q,$1,n,z"
 [commentlink "commit"]
 	match = \\b([0-9a-f]{8,40})\\b
@@ -62,10 +62,10 @@
 	match = "\\b([bB][uU][gG]\\:?\\s+#?)(\\d+)\\b"
 	link = https://bugzilla.wikimedia.org/$2
 [commentlink "codereview"]
-	match = r(\\d+)
+	match = \\br(\\d+)\\b
 	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
 [commentlink "rt"]
-	match = "\\b[rR][tT]\\s+#?(\\d+)"
+	match = "\\b[rR][tT]\\s+#?(\\d+)\\b"
 	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
 [mimetype "application/javascript"]
 	safe = true
