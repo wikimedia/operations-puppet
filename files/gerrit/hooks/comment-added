@@ -17,7 +17,7 @@ class CommentAdded(HookHelper):
         self.parser.add_option("--VRIF", dest="verified")
         self.parser.add_option("--CRVW", dest="codereview")
         (options, args) = self.parser.parse_args()
-        comment = options.comment.splitlines()
+        comment = re.sub(r"^\s*Patch Set \d+:.*$", '', options.comment, flags=re.MULTILINE).strip().splitlines()
         if comment:
             comment = comment[0]
             if len(comment) > 103:
