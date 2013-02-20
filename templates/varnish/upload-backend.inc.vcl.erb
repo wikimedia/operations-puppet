@@ -1,3 +1,7 @@
+<%
+top_domain    = cluster_options.fetch( 'top_domain', 'org' )
+upload_domain = cluster_options.fetch( 'upload_domain', 'upload.wikimedia.org' )
+-%>
 # Varnish VCL include file for upload backends
 
 import std;
@@ -32,19 +36,29 @@ director <%= director %> chash {
 <% end -%>
 
 sub pick_main_stevedore {
+<% storage_main = vcl_config.fetch('storage_main', false) -%>
+<% if storage_main -%>
+	set beresp.storage = "<%= storage_main %>";
+<% else -%>
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "main-sda3";
 	} else {
 		set beresp.storage = "main-sdb3";
 	}
+<% end -%>
 }
 
 sub pick_large_object_stevedore {
+<% storage_big_object = vcl_config.fetch('storage_big_object', false) -%>
+<% if storage_big_object -%>
+	set beresp.storage = "<%= storage_big_object %>";
+<% else -%>
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "bigobj-sda3";
 	} else {
 		set beresp.storage = "bigobj-sdb3";
 	}
+<% end -%>
 }
 
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
@@ -86,7 +100,7 @@ sub radosgw_rewrite {
 	else {
 		if (req.backend == image_scalers && req.url ~ "^/[^-/]+/[^/]+/thumb/(.+)$") {
 			set bereq.url = regsub(req.url, "^/[^-/]+/[^/]+/thumb/(.+)$", "/w/thumb_handler.php/\1");
-			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.org");
+			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.<%= Regexp.escape(top_domain) %>");
 			set bereq.http.X-Original-URI = req.url;
 
 			# Exceptions
@@ -112,7 +126,7 @@ sub vcl_recv {
 			error 405 "Denied.";
 		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
 		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
-		} elsif (req.url ~ "^http://upload.wikimedia.org") {
+		} elsif (req.url ~ "^http://<%= upload_domain %>") {
 			set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");
 			return (lookup);
 		} else {
@@ -120,11 +134,15 @@ sub vcl_recv {
 		}
 	}
 
+<% if scope.lookupvar('::realm') == 'production' -%>
 	if (client.ip !~ wikimedia_nets) {
+<% else -%>
+	if (client.ip != "127.0.0.1") {
+<% end -%>
 		error 403 "Access denied";
 	}
 
-	if ( req.http.host != "upload.wikimedia.org") {
+	if ( req.http.host != "<%= upload_domain %>") {
 		error 403 "Requested target domain not allowed.";
 	}
 
@@ -175,6 +193,25 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
+
+<% if vcl_config.fetch('imagescalers_as_backend', false) -%>
+	set req.backend = image_scalers;
+<% elsif vcl_config.fetch("cluster_tier", "1") == "1" -%>
+	# Send originals to the Swift cluster
+	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
+		set req.backend = swift;
+	# Send thumbnails to the Swift cluster
+	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
+		set req.backend = swift;
+	# math to swift
+	} elsif (req.url ~ "^/(math|score)/") {
+		set req.backend = swift;
+	# timeline to swift
+	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/timeline/") {
+		set req.backend = swift;
+	}
+<% end -%>
+
 	/* Convert range requests into pass when over a certain threshold */
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432

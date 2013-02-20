@@ -424,7 +424,9 @@ class lvs::configuration {
 				'pmtpa' => {
 					'uploadlb'  => [ '10.4.0.166', '10.4.0.187', ],
 					'uploadsvc' => [ '10.4.0.166', '10.4.0.187', ],
-        },
+				},
+				'esams' => {},
+				'eqiad' => {},
 			},
 			'parsoid' => {},
 			'parsoidcache' => {},
