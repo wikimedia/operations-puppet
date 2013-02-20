@@ -1,0 +1,43 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+
+	DocumentRoot /data/project
+
+	RewriteEngine On
+	RewriteRule ^/~([^/]+)(.*)$ /data/project/user/$1/public_html$2 [L]
+	RewriteRule ^/([^/]+)(.*)$ /web/$1/public_html$2 [L]
+	#RewriteLog /var/log/apache2/rewrite.log
+	#RewriteLogLevel 3
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+		Order deny,allow
+		Deny from all
+	</Directory>
+
+	# Tools should live in /data/project/web/
+	<Directory /data/project/web/*/public_html>
+		Options Indexes FollowSymLinks
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	# User-specific data, temporary urls for eg. debug
+        <Directory /data/project/user/*/public_html/>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Order allow,deny
+                allow from all  
+        </Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
