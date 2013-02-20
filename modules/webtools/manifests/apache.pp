@@ -1,5 +1,6 @@
 class webtools::apache {
 	include webserver::php5
+	include webtools::libraries
 
 	file {
 		"/etc/apache2/sites-available/apache-default":
