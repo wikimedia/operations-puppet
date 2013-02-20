@@ -592,7 +592,13 @@ class role::cache {
 			}
 
 			$backend_weight = 20
-			if $::site == "eqiad" {
+			if $::realm == 'labs' {
+				$storage_size_main = 19
+				$storage_size_bigobj = 5
+				$cluster_tier = 1
+				$default_backend = 'backend'
+			# Other realms.. (aka production)
+			} elsif $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
@@ -602,6 +608,21 @@ class role::cache {
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
 				$default_backend = 'eqiad'
+			}
+
+			case $::realm {
+				'production': {
+					$cluster_options = {
+						'upload_domain' => 'upload.wikimedia.org',
+						'top_domain' => 'org',
+					}
+				}
+				'labs': {
+					$cluster_options = {
+						'upload_domain' => 'upload.beta.wmflabs.org',
+						'top_domain' => 'beta.wmflabs.org',
+					}
+				}
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
@@ -623,6 +644,7 @@ class role::cache {
 						'dysprosium' => ['sdc1', 'sdd1'],
 						default => ['sda3', 'sdb3'],
 					},
+				'labs' => [ 'vdb' ],
 			}
 			varnish::setup_filesystem{ $storage_backends:
 				before => Varnish::Instance["upload-backend"]
@@ -674,6 +696,7 @@ class role::cache {
 						'max_connections' => 1000,
 						'weight' => $backend_weight,
 					}],
+				cluster_options => $cluster_options,
 				wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"]),
 				xff_sources => $network::constants::all_networks
 			}
@@ -707,11 +730,14 @@ class role::cache {
 						'probe' => "varnish",
 						'weight' => $backend_weight,
 					}],
+				cluster_options => $cluster_options,
 				xff_sources => $network::constants::all_networks,
 			}
 
-			varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			if $::realm == 'production' {
+				varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+				varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			}
 
 			# HTCP packet loss monitoring on the ganglia aggregators
 			if $ganglia_aggregator and $::site != "esams" {

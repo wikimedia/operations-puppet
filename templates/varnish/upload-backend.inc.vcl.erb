@@ -1,3 +1,7 @@
+<%
+top_domain    = cluster_options.fetch( 'top_domain', 'org' )
+upload_domain = cluster_options.fetch( 'upload_domain', 'upload.wikimedia.org' )
+-%>
 # Varnish VCL include file for upload backends
 
 sub pick_main_stevedore {
@@ -62,7 +66,7 @@ sub radosgw_rewrite {
 	else {
 		if (req.backend == rendering && req.url ~ "^/[^-/]+/[^/]+/thumb/(.+)$") {
 			set bereq.url = regsub(req.url, "^/[^-/]+/[^/]+/thumb/(.+)$", "/w/thumb_handler.php/\1");
-			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.org");
+			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.<%= Regexp.escape(top_domain) %>");
 			set bereq.http.X-Original-URI = req.url;
 
 			# Exceptions
@@ -85,7 +89,7 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
 
-	if ( req.http.host != "upload.wikimedia.org") {
+	if ( req.http.host != "<%= upload_domain %>") {
 		error 403 "Requested target domain not allowed.";
 	}
 
@@ -132,6 +136,7 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
+
 	/* Convert range requests into pass when over a certain threshold */
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432
