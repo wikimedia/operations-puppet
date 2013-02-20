@@ -235,6 +235,12 @@ class gerrit::jetty ($ldap_hosts,
 			mode => 0555,
 			source => "puppet:///files/gerrit/hooks/patchset-created",
 			require => File["/var/lib/gerrit2/review_site/hooks"];
+		"/var/lib/gerrit2/review_site/hooks/draft-published":
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0555,
+			source => "puppet:///files/gerrit/hooks/draft-published",
+			require => File["/var/lib/gerrit2/review_site/hooks"];
 	}
 
 	git::clone {
