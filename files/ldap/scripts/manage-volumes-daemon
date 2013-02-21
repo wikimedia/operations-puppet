@@ -5,7 +5,7 @@
 ### puppet:///files/ldap/scripts/manage-volumes
 #####################################################################
 
-import sys, traceback, ldapsupportlib, datetime, paramiko, socket, time
+import sys, time, traceback, ldapsupportlib, datetime, paramiko, socket
 from optparse import OptionParser
 
 try:
@@ -36,8 +36,14 @@ class VolumeManager:
 		self.volume_names = ['home', 'project']
 		self.loglevel = INFO
 		self.logfile = None
+		self.deathwatch = {}
 
 	def run(self):
+		while True:
+			self.refresh_volumes()
+			time.sleep(180)
+
+	def refresh_volumes(self):
 		parser = OptionParser(conflict_handler="resolve")
 		parser.set_usage('manage-volumes [options]')
 	
@@ -56,15 +62,22 @@ class VolumeManager:
 
 		base = ldapSupportLib.getBase()
 		ds = ldapSupportLib.connect()
-
 		projectdata = self.search_s(ds,"ou=projects," + base,ldap.SCOPE_SUBTREE,"(objectclass=groupofnames)")
 		hostdata = self.search_s(ds,"ou=hosts," + base,ldap.SCOPE_SUBTREE,"(puppetvar=instanceproject=*)", ['puppetvar','aRecord'])
 		volumedata = self.ssh_exec_command('sudo gluster volume info', True, True)
+		if not volumedata:
+			self.log("gluster volume info failed; skipping this run.")
+			return 1
 		project_hosts = self.get_hosts(hostdata)
 		project_volumes = self.get_volumes(volumedata)
-		orphan_volumes = project_volumes
+		orphan_volumes = project_volumes.keys()
+		unloved_volumes = []
+		unused_volumes = []
+
 		for project in projectdata:
 			project_name = project[1]["cn"][0]
+			desired_volumes = self.get_desired_volume_names(project)
+
 			hosts = []
 			if project_name in project_hosts:
 				hosts = project_hosts[project_name]
@@ -79,25 +92,8 @@ class VolumeManager:
 				if project_name in self.manual_shares and volume_name in self.manual_shares[project_name]:
 					volume_hosts.extend(self.manual_shares[project_name][volume_name])
 				project_volume = project_name + '-' + volume_name
-				if project_volume not in project_volumes:
-					# First, make the volume directories. This function runs on all
-					# bricks and returns a list of return values. If the return value
-					# isn't 1 or 0, the command failed on a brick, and we shouldn't
-					# create the volume.
-					ret_vals = set(self.mkvolumedir(project_name, volume_name))
-					make_vol = set([1,0]).difference(ret_vals)
-					if make_vol:
-						vol_ret = self.mkvolume(project_name, volume_name)
-						if vol_ret:
-							self.log("Created volume: " + project_name + "-" + volume_name)
-						else:
-							# No point going on if the volume creation failed
-							continue
-					else:
-						continue
-
 				if project_volume in orphan_volumes:
-					orphan_volumes.pop(project_volume)
+					orphan_volumes.remove(project_volume)
 
 				gluster_hosts = []
 				if project_volume in project_volumes and 'auth.allow' in project_volumes[project_volume]:
@@ -111,21 +107,69 @@ class VolumeManager:
 						gluster_nfs_hosts = project_volumes[project_volume]['nfs.rpc-auth-allow']
 					if gluster_nfs_hosts != '*':
 						self.setglobal(project_name,volume_name)
-				if volume_hosts:
+
+				if (volume_name in desired_volumes) and volume_hosts:
+					if project_volume not in project_volumes:
+						# First, make the volume directories. This function runs on all
+						# bricks and returns a list of return values. If the return value
+						# isn't 1 or 0, the command failed on a brick, and we shouldn't
+						# create the volume.
+						ret_vals = set(self.mkvolumedir(project_name, volume_name))
+						make_vol = set([1,0]).difference(ret_vals)
+						if make_vol:
+							vol_ret = self.mkvolume(project_name, volume_name)
+							if vol_ret:
+								self.log("Created volume: " + project_name + "-" + volume_name)
+							else:
+								# No point going on if the volume creation failed
+								continue
+						else:
+							continue
+					elif project_volumes[project_volume]['Status'] == 'Stopped':
+						vol_ret = self.start_volume(project_volume)
+						if vol_ret:
+							self.log("Started volume: %s" % project_volume)
+						else:
+							self.log("Failed to start volume: %s" % project_volume)
+							continue
+
+
 					if gluster_hosts != volume_hosts:
 						self.setallow(project_name,volume_name,volume_hosts)
 				else:
-					# All hosts have been deleted, or none have been created, ensure we
-					# aren't sharing to anything
+					# All hosts have been deleted, or none have been created, or
+					# we aren't supposed to have this volume to begin with.
 					if gluster_hosts != []:
 						self.setallow(project_name,volume_name,[])
-			# TODO: Unshare and stop deleted projects
 
-		for orphan in orphan_volumes.keys():
+					if project_volume in project_volumes:
+						if volume_name in desired_volumes:
+							unused_volumes.append(project_volume)
+						else:
+							unloved_volumes.append(project_volume)
+
+		for orphan in orphan_volumes:
 			for volume_name in self.volume_names:
 				if orphan.endswith(volume_name):
-					self.log("Volume %s seems to lack a project and may need cleanup." % orphan)
+					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+						reason = "No corresponding project found."
+						self.schedule_stop_volume(orphan, reason)
 					break
+		for orphan in unused_volumes:
+			for volume_name in self.volume_names:
+				if orphan.endswith(volume_name):
+					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+						reason = "No instances in this project."
+						self.schedule_stop_volume(orphan, reason)
+					break
+		for orphan in unloved_volumes:
+			for volume_name in self.volume_names:
+				if orphan.endswith(volume_name):
+					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+						reason = "Not requested by the project."
+						self.schedule_stop_volume(orphan, reason)
+					break
+
 		ds.unbind()
 		return 0
 
@@ -161,11 +205,36 @@ class VolumeManager:
 			else:
 				quota = self.volume_quotas['default']
 			self.ssh_exec_command('sudo gluster volume quota ' + volume + ' limit-usage / ' + quota, True)
-			self.ssh_exec_command('sudo gluster volume start ' + volume, True)
+			self.start_volume(volume)
 			return True
 		else:
 			self.log("Gluster volume create failed. Ret = %s" % ret)
 			return False
+
+	def start_volume(self, volume):
+		if volume in self.deathwatch:
+			self.deathwatch.pop(volume)
+		self.log("Starting volume %s" % volume)
+		return self.ssh_exec_command('sudo gluster volume start ' + volume, True)
+
+	def schedule_stop_volume(self, volume, reason):
+		if volume in self.deathwatch:
+			if self.deathwatch[volume] < time.time() - (60 * 60):
+				# If it's been on watch for an hour, then stop it.
+				self.stop_volume(volume)
+		else:
+			self.log("Volume %s is a candidate for stopping.  %s" % (volume, reason))
+			self.deathwatch[volume] = time.time()
+
+	def stop_volume(self, volume):
+		ret = self.ssh_exec_command('sudo gluster --mode=script volume stop ' + volume, True)
+		if ret == 0:
+			self.log("Stopped volume: %s" % volume)
+			self.deathwatch.pop(volume)
+		else:
+			self.log("Failed to stop volume: %s" % volume)
+
+		return ret
 
 	def setallow(self, project_name, volume_name, hosts):
 		if hosts:
@@ -256,6 +325,21 @@ class VolumeManager:
 						break
 		return project_hosts
 
+
+	# returns an array containing zero, one, or both of 'project', 'volume'
+	# Presence of these values indicate that the named shared volume should
+	# exist for a given project.
+	def get_desired_volume_names(self, projectLdapData):
+		vols = []
+		project_name = projectLdapData[1]["cn"][0]
+		if "info" in projectLdapData[1]:
+			infos = projectLdapData[1]["info"]
+			volPrefix = "use_volume="
+			for info in infos:
+				if info.startswith(volPrefix):
+					vols.append(info.lstrip(volPrefix))
+		return vols
+
 	def get_volumes(self, volumedata):
 		volumes = {}
 		if volumedata:
@@ -277,6 +361,8 @@ class VolumeManager:
 					volumes[current_volume]['auth.allow'] = hosts
 				elif len(line_arr) == 2 and line_arr[0] == "nfs.rpc-auth-allow":
 					volumes[current_volume]['nfs.rpc-auth-allow'] = line_arr[1]
+				elif len(line_arr) == 2 and line_arr[0] == "Status":
+					volumes[current_volume]['Status'] = line_arr[1]
 		return volumes
 
 	def search_s(self,ds,base,scope,query,attrlist=None):
