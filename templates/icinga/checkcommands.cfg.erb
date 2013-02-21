@@ -89,13 +89,13 @@ define command{
 # Example usage:  check_solr!500:1000|5
 define command{
 	command_name	check_solr
-	command_line	$USER1$/check_solr -a $HOSTADDRESS$ -t $ARG2$ $ARG1$
+	command_line	$USER1$/check_solr -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
 	}
 
 # Example usage:  check_replicated_solr!500:1000|5
 define command{
 	command_name	check_replicated_solr
-	command_line	$USER1$/check_solr -r -a $HOSTADDRESS$ -t $ARG2$ $ARG1$
+	command_line	$USER1$/check_solr -r -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
 	}
 
 # 'check_ssl_cert'
