@@ -120,5 +120,9 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('mediawiki.log',
             'department/project')
 
+    def test_qa_to_wikimediadev(self):
+        self.assertLogFile('wikimedia-dev.log',
+            'qa/browsertests')
+
 if __name__ == '__main__':
     unittest.main()
