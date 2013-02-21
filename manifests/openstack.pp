@@ -42,7 +42,7 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "ldaps_public": source => "208.80.152.0/22", service => "ldaps", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_backend_public": source => "208.80.152.0/22", service => "ldap_backend", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_backend_public": source => "208.80.152.0/22", service => "ldaps_backend", jump => "ACCEPT" }
-	
+
 	iptables_add_service{ "ldap_admin_connector_nfs1": source => "10.0.0.244", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt0": source => "208.80.152.32", service => "ldap_admin_connector", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_admin_connector_virt1000": source => "208.80.154.18", service => "ldap_admin_connector", jump => "ACCEPT" }
@@ -114,7 +114,7 @@ class openstack::iptables  {
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class openstack::common($openstack_version="diablo", 
+class openstack::common($openstack_version="diablo",
 			$novaconfig,
 			$instance_status_wiki_host,
 			$instance_status_wiki_domain,
@@ -181,12 +181,12 @@ class openstack::project-storage-cron {
 	package { "ircecho":
 		ensure => present;
 	}
-	
+
 	service { "ircecho":
 		require => Package[ircecho],
 		ensure => running;
 	}
-	
+
 	file {
 		"/etc/default/ircecho":
 			require => Package[ircecho],
@@ -396,7 +396,7 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 }
 
 class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
-	require mediawiki::user
+	require mediawiki_new::users::mwdeploy
 
 	include webserver::apache2
 
