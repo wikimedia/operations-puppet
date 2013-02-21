@@ -365,22 +365,38 @@ node /db(32|36|38|59|60|63)\.pmtpa\.wmnet/ {
 }
 
 node /db(52|53|54|57)\.pmtpa\.wmnet/ {
-	include role::coredb::s2
+	if $hostname == "db52" {
+		class { role::coredb::s2 : mariadb => true }
+	} else {
+		include role::coredb::s2
+	}
 }
 
 node /db(34|39|64|66)\.pmtpa\.wmnet/ {
-	include role::coredb::s3
+	if $hostname == "db39" {
+		class { role::coredb::s3 : mariadb => true }
+	} else {
+		include role::coredb::s3
+	}
 }
 
 node /db(31|33|51|65)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db51/ {
 		$ganglia_aggregator = "true"
 	}
-	include role::coredb::s4
+	if $hostname == "db51" {
+		class { role::coredb::s4 : mariadb => true }
+	} else {
+		include role::coredb::s4
+	}
 }
 
 node /db(35|44|45|55)\.pmtpa\.wmnet/ {
-	include role::coredb::s5
+	if $hostname == "db35" {
+		class { role::coredb::s5 : mariadb => true }
+	} else {
+		include role::coredb::s5
+	}
 }
 
 node /db(43|46|47|50)\.pmtpa\.wmnet/ {
