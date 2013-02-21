@@ -339,7 +339,8 @@ class base::standard-packages {
 		'ngrep',
 		'httpry',
 		'acct',
-		'git-core'
+		'git-core',
+		'ack-grep',
 	]
 
 	if $::lsbdistid == "Ubuntu" {
