@@ -20,5 +20,5 @@ class mediawiki_new {
 		ensure => stopped;
 	}
 
-	include users, sync, cgroup
+	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup
 }
