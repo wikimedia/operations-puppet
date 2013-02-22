@@ -10,12 +10,7 @@ class mediawiki_new::jobrunner (
 	$procs = 5
 ) {
 
-## TODO: get rid of this awfulness after full transition to module/precise
-	if ( $::lsbdistcodename == "precise" ) {
 	include mediawiki_new
-	} else {
-	include mediawiki::packages
-	}
 
 	package { [ 'wikimedia-job-runner' ]:
 		ensure => absent;
