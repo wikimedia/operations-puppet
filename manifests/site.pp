@@ -161,20 +161,6 @@ node /analytics10(0[2-9]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
 	include role::analytics
 }
 
-
-
-
-node "argon.wikimedia.org" {
-	$cluster = "misc"
-	include base,
-		ganglia,
-		ntp::client,
-		misc::limesurvey
-
-	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "survey cert": description => "Certificate expiration", check_command => "check_cert!survey.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
-}
-
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	if $hostname =~ /^(arsenic|niobium)$/ {
 		$ganglia_aggregator = "true"
