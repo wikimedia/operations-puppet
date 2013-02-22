@@ -50,10 +50,10 @@ sub pick_large_object_stevedore {
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 sub radosgw_rewrite {
 	if (req.restarts == 0) {
-		if (req.url ~ "^/[^/]+/[^/]+/((thumb|temp)/)?((temp|archive)/)?[0-9a-f]/[0-9a-f]{2}(/.+)?$") {
+		if (req.url ~ "^/[^/]+/[^/]+/((transcoded|thumb|temp)/)?((temp|archive)/)?[0-9a-f]/[0-9a-f]{2}(/.+)?$") {
 			set bereq.url = regsub(
 				req.url,
-				"^/([^/]+)/([^/]+)/((thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
+				"^/([^/]+)/([^/]+)/((transcoded|thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
 				"/swift/v1/\1-\2-local-\3.\9/\5");
 			set bereq.url = regsub(
 				bereq.url,
@@ -180,7 +180,7 @@ sub vcl_miss {
 	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
 		set req.backend = swift;
 	# Send thumbnails to the Swift cluster
-	} elsif (req.url ~ "^/+[^/]+/[^/]+/(thumb|temp)/") {
+	} elsif (req.url ~ "^/+[^/]+/[^/]+/(transcoded|thumb|temp)/") {
 		set req.backend = swift;
 	# math to swift
 	} elsif (req.url ~ "^/(math|score)/") {
