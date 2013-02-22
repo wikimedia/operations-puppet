@@ -5,7 +5,7 @@
 #  running from a Git tree.
 
 # The following are defaults, the exact specifications are in the role definitions
-class wikidata::singlenode( $install_path = "/srv/mediawiki",
+class wikidata_singlenode( $install_path = "/srv/mediawiki",
 							$database_name = "repo",
 							$experimental = "true",
 							$repo_ip = $wikidata_repo_ip,
@@ -18,7 +18,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 							$role_requires = ['"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"'],
 							$role_config_lines = [ '$wgShowExceptionDetails = true' ]) {
 
-	class { mediawiki::singlenode:
+	class { mediawiki_singlenode:
 		install_path => $install_path,
 		database_name => $database_name,
 		ensure => $ensure,
@@ -30,7 +30,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 # Make mysql listen on all ports (That's o.k. in Labs)
 	file { "/etc/mysql/conf.d/wikidata.cnf":
 		ensure => present,
-		source => "puppet:///files/mediawiki/wikidata.cnf",
+		source => "puppet:///modules/wikidata_singlenode/wikidata.cnf",
 		notify => Service["mysql"],
 	}
 
@@ -56,7 +56,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	file { "${install_path}/StartProfiler.php":
 		require => Exec["mediawiki_setup"],
 		ensure => present,
-		source => "puppet:///files/mediawiki/StartProfiler.php",
+		source => "puppet:///modules/wikidata_singlenode/StartProfiler.php",
 	}
 
 	# permit www-data to write to image folder
@@ -88,7 +88,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 	file { "${install_path}/extensions/notitle.php":
 		require => Git::Clone["mediawiki"],
 		ensure => present,
-		source => "puppet:///files/mediawiki/notitle.php",
+		source => "puppet:///modules/wikidata_singlenode/notitle.php",
 	}
 	# run populateSitesTable
 	exec { "populateSitesTable":
@@ -119,7 +119,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		# get the file you want to hand over to moveBatch.php
 		file {"/tmp/wikidata-move-mainpage":
 			ensure => present,
-			source => "puppet:///files/mediawiki/wikidata-move-mainpage",
+			source => "puppet:///modules/wikidata_singlenode/wikidata-move-mainpage",
 		}
 		# run moveBatch.php
 		exec { "repo_move_mainpage":
@@ -132,7 +132,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		file { "${install_path}/wikidata-repo-mainpage.xml":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
-			source => "puppet:///files/mediawiki/wikidata-repo-mainpage.xml",
+			source => "puppet:///modules/wikidata_singlenode/wikidata-repo-mainpage.xml",
 		}
 		# import our repo's main page
 		exec { "repo_import_mainpage":
@@ -151,13 +151,13 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		file { "${install_path}/wikidata_repo_requires.php":
 			require => [Exec["mediawiki_setup"], Exec["repo_move_mainpage"]],
 			ensure => present,
-			content => template('mediawiki/wikidata-repo-requires.php'),
+			content => template('wikidata_singlenode/wikidata-repo-requires.php'),
 		}
 		# logo file for demo repo
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-demorepo.png":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
-			source => "puppet:///files/mediawiki/Wikidata-logo-demorepo.png",
+			source => "puppet:///modules/wikidata_singlenode/Wikidata-logo-demorepo.png",
 		}
 		# import items and properties for testing
 		exec { "repo_import_data":
@@ -189,7 +189,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		# make sure this log rotates sometimes
 		file { "/etc/logrotate.d/wikidata-replication":
 			ensure => present,
-			source => "puppet:///files/logrotate/wikidata-replication",
+			source => "puppet:///modules/wikidata_singlenode/wikidata-replication.logrotate",
 			owner => 'root',
 		}
 	}
@@ -205,13 +205,13 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		file { "${install_path}/wikidata_client_requires.php":
 			require => Exec["mediawiki_setup"],
 			ensure => present,
-			content => template('mediawiki/wikidata-client-requires.php'),
+			content => template('wikidata_singlenode/wikidata-client-requires.php'),
 		}
 		# logo file for demo client
 		file { "/srv/mediawiki/skins/common/images/Wikidata-logo-democlient.png":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
-			source => "puppet:///files/mediawiki/Wikidata-logo-democlient.png",
+			source => "puppet:///modules/wikidata_singlenode/Wikidata-logo-democlient.png",
 		}
 		# run populateInterwiki
 		exec { "populate_interwiki":
@@ -246,14 +246,14 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 		# make sure this log rotates sometimes
 		file { "/etc/logrotate.d/wikidata-runJobs":
 			ensure => present,
-			source => "puppet:///files/logrotate/wikidata-runJobs",
+			source => "puppet:///modules/wikidata_singlenode/wikidata-runJobs.logrotate",
 			owner => 'root',
 		}
 		# get the dump with content for testing
 		file { "${install_path}/simple-elements.xml":
 			require => Git::Clone["mediawiki"],
 			ensure => present,
-			source => "puppet:///files/mediawiki/simple-elements.xml",
+			source => "puppet:///modules/wikidata_singlenode/simple-elements.xml",
 		}
 		# import content for testing
 		exec { "client_import_data":
