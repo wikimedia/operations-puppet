@@ -4,6 +4,7 @@
 
 $decommissioned_servers = [
 "adler",
+"argon", # not really decom, just need to stop nagios monitoring
 "bayes",
 "br1-knams",
 "controller",
