@@ -1,0 +1,105 @@
+#!/bin/sh
+
+# TODO
+# - add locking with flock so that multiple users can't run this script simultaneously.
+
+set -e
+
+usage="$(basename ${0}) [<basedir>]
+
+Fetches changes from origin and from all submodules.
+Shows diffs between HEAD and FETCH_HEAD, including diffs
+of submodule changes.
+
+If the changes are acceptable, HEAD will be fast-forwarded
+to FETCH_HEAD.
+
+"
+
+if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
+    echo "$usage" && exit 0;
+fi
+
+
+
+# Assume we're in puppet working directory unless $1 is specified
+basedir=${1:-$(git rev-parse --show-toplevel)};
+cd "${basedir}"
+
+echo "Fetching new commits from $(git config --get remote.origin.url)"
+
+git fetch
+fetch_head_sha1=$(git rev-parse FETCH_HEAD)
+
+submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
+
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..${fetch_head_sha1})" -a -z "${submodule_changes}" ]; then
+  echo "No changes to merge."
+  exit 0
+fi
+
+
+echo "HEAD is $(git rev-parse HEAD), FETCH_HEAD is ${fetch_head_sha1}.  Reviewing changes..."
+
+# If there are no submodule changes, then just
+# show diff of operations/puppet superproject
+if [ -z "${submodule_changes}" ]; then
+    git diff --color HEAD..${fetch_head_sha1} | cat
+else
+    # Else there are submodule changes.
+    # Do some fancy stuff to show diffs
+    # of submodule changes.
+
+    # clone the puppet working directory to a temp directory, excludiing private/
+    tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
+    git clone --quiet  "${basedir}" "${tmpdir}"
+
+    # merge and update submodules in $tmpdir
+    (cd "${tmpdir}" && \
+     git merge --quiet --ff-only "${fetch_head_sha1}" && \
+     git submodule update --quiet --init)
+
+    # show the diff between the $basedir puppet directory and the $tmpdir puppet directory
+    diff -Nr -x "private" -x ".git" "${basedir}" "${tmpdir}" || true
+
+    # We've shown the diff so we are done with $tmpdir.  Remove it.
+    rm -r "${tmpdir}"
+fi
+
+
+# If cool, merge it!
+echo ""
+echo ""
+echo -n "------------------------------\nMerge these changes? (yes/no)? "
+
+read answer
+if [ "x${answer}" = "xyes" ]; then
+    echo "Merging ${fetch_head_sha1}..."
+    cmd="git merge --ff-only ${fetch_head_sha1}"
+    echo "${cmd}"
+    ${cmd}
+
+    # If there were submodule changes update and init them
+    if [ -n "${submodule_changes}" ]; then
+        echo "Updating submodules..."
+        cmd="git submodule update --init --no-fetch"
+        echo "${cmd}"
+        ${cmd}
+    fi
+
+    # git clean to remove any untracked
+    # (submodule) files and directories
+    echo "Running git clean to clean any untracked files."
+    cmd="git clean -dffx"
+    echo "${cmd}"
+    ${cmd}
+
+    echo "HEAD is now $(git rev-parse HEAD)."
+    cd -
+    exit 0
+else
+    echo "Aborting merge."
+    cd -
+    exit 1
+fi
