@@ -197,7 +197,7 @@ class openstack::project-storage-service {
 
 	upstart_job{ "manage-volumes":
 		require => Package["glusterfs-server"],
-		install => true;
+		install => "true";
 	}
 
 	service { "manage-volumes":
