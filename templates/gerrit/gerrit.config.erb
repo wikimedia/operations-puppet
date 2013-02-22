@@ -59,8 +59,9 @@
 	match = \\b([0-9a-f]{8,40})\\b
 	link = "#q,$1,n,z"
 [commentlink "bugzilla"]
-	match = "\\b([bB][uU][gG]\\:?\\s+#?)(\\d+)\\b"
-	link = https://bugzilla.wikimedia.org/$2
+	match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
+	link = https://bugzilla.wikimedia.org/$1
+	association = OPTIONAL
 [commentlink "codereview"]
 	match = \\br(\\d+)\\b
 	link = https://www.mediawiki.org/wiki/Special:CodeReview/MediaWiki/$1
@@ -101,3 +102,6 @@
 [changeMerge]
 	test = true
 	checkFrequency = 0
+[bugzilla]
+	url = https://bugzilla.wikimedia.org
+	username = gerritadmin@wikimedia.org
