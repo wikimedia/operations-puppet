@@ -172,7 +172,7 @@ class openstack::queue-server($openstack_version, $novaconfig) {
 	}
 }
 
-class openstack::project-storage-cron {
+class openstack::project-storage-service {
 	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
 	$ircecho_nick = "labs-storage-wm"
 	$ircecho_chans = "#wikimedia-labs"
@@ -195,10 +195,15 @@ class openstack::project-storage-cron {
 			mode => 0755;
 	}
 
-	cron { "manage-volumes":
-		command => '/usr/bin/python /usr/local/sbin/manage-volumes --logfile=/var/lib/glustermanager/manage-volumes.log',
-		user => 'glustermanager',
-		require => Systemuser["glustermanager"];
+	upstart_job{ "manage-volumes":
+		require => Package["glusterfs-server"],
+		install => true;
+	}
+
+	service { "manage-volumes":
+		enable => true,
+		ensure => running,
+		require => Upstart_job["manage-volumes"];
 	}
 }
 

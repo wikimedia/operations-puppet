@@ -1008,7 +1008,7 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 
 	if $hostname =~ /^labstore2$/ {
-		include openstack::project-storage-cron
+		include openstack::project-storage-service
 	}
 
 }

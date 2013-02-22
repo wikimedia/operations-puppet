@@ -395,11 +395,13 @@ class ldap::client::utils($ldapconfig) {
 			group => root,
 			mode  => 0544,
 			source => "puppet:///files/ldap/scripts/manage-exports";
-		"/usr/local/sbin/manage-volumes":
+		"/usr/local/sbin/manage-volumes-daemon":
 			owner => root,
 			group => root,
 			mode  => 0544,
-			source => "puppet:///files/ldap/scripts/manage-volumes";
+			source => "puppet:///files/ldap/scripts/manage-volumes-daemon";
+		"/usr/local/sbin/manage-volumes":
+			ensure => absent;
 		"/usr/local/sbin/ldapsupportlib.py":
 			owner => root,
 			group => root,
