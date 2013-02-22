@@ -12,6 +12,13 @@ class misc::pdf::fonts {
 
 }
 
+#install mediawiki-math package
+class misc::pdf::math {
+  package { 'mediawiki-math':
+    ensure => latest;
+  }
+}
+
 # tool for manipulating PDF - http://packages.ubuntu.com/search?keywords=pdftk
 class misc::pdf::pdftk {
 	package { 'pdftk':

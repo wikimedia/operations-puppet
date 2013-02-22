@@ -5,7 +5,7 @@ class role::pdf {
 
 	include standard,
 		misc::pdf::fonts,
+		misc::pdf::math,
 		misc::pdf::pdftk,
-		mediawiki::math,
 		generic::locales::international
 }

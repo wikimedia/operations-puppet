@@ -68,13 +68,6 @@ class mediawiki::user {
 	systemuser { 'mwdeploy': name => 'mwdeploy' }
 }
 
-# is installed on pdf servers - https://launchpad.net/ubuntu/+source/mediawiki-math
-class mediawiki::math {
-	package { 'mediawiki-math':
-		ensure => latest;
-	}
-}
-
 # definition to clone mediawiki extensions
 	define mw-extension(
 		# defaults
