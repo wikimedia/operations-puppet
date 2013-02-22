@@ -206,11 +206,13 @@ class _WMFRewriteContext(WSGIContext):
         #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-thumb/temp/<relpath>
         # (f) http://upload.wikimedia.org/<proj>/<lang>/temp/<relpath>
         #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-temp/<relpath>
-        # (g) http://upload.wikimedia.org/<proj>/<lang>/timeline/<relpath>
+        # (g) http://upload.wikimedia.org/<proj>/<lang>/transcoded/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-local-transcoded/<relpath>
+        # (h) http://upload.wikimedia.org/<proj>/<lang>/timeline/<relpath>
         #         => http://msfe/v1/AUTH_<hash>/<proj>-<lang>-timeline-render/<relpath>
 
         # regular uploads
-        match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
+        match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/((?P<zone>transcoded|thumb|temp)/)?(?P<path>((temp|archive)/)?[0-9a-f]/(?P<shard>[0-9a-f]{2})/.+)$', req.path)
         if match:
             proj  = match.group('proj')
             lang  = match.group('lang')
