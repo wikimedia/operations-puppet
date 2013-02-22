@@ -7,6 +7,7 @@ $decommissioned_servers = [
 "bayes",
 "br1-knams",
 "controller",
+"copper", #moved from external to internal ip, will come back out once spence updates
 "cp3001",
 "cp3002",
 "db1",
