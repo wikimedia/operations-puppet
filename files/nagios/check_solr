@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import urllib2
-import sqlite3
 import xml.etree.ElementTree as ET
 from optparse import OptionParser
 import json
@@ -32,6 +31,7 @@ errors = []
 warnings = []
 unknowns = []
 
+
 def http_get(path):
     url = 'http://' + host + '/solr/' + path
     return urllib2.urlopen(url, None, cmd_options.timeout).read()
@@ -46,12 +46,12 @@ def check_value(value, limits, message):
         warnings.append(message % (value, limits[1]))
 
 
-def check_stat(entry, statName, limits, stat_name):
+def check_stat(entry, stat, limits, stat_name):
     if limits == None:
         return
     stats = entry.find('stats')
     for node in stats.getiterator('stat'):
-        if node.attrib['name'] == statName:
+        if node.attrib['name'] == stat:
             check_value(node.text, limits, stat_name + ' is %s (gt %s)')
             return
     unknowns.append('Parameter "%s" not found in response' % stat)
@@ -125,16 +125,22 @@ def process_results():
     return 0
 
 
+def format_exception(ex):
+    return '%s: %s' % (type(ex).__name__, ex)
+
+
 try:
     check_all_stats()
     check_replication()
 
-except Exception as err:
-    (e, ) = err.args
-    if isinstance(err, urllib2.URLError) and e.errno == 115:
+except urllib2.URLError as ex:
+    (e, ) = ex.args
+    if e.errno == 115:
         msg = 'Request timeout after %ds' % cmd_options.timeout
     else:
-        msg = '%s: %s' % (type(err).__name__, e)
+        msg = format_exception(ex)
     unknowns.append(msg)
+except Exception as ex:
+    unknowns.append(format_exception(ex))
 
 exit(process_results())
