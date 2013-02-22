@@ -1,0 +1,9 @@
+Code-Review+1: Demon <chadh@wikimedia.org>
+Code-Review+2: ArielGlenn <ariel@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Matmarex <matma.rex@gmail.com>
+Submitted-by: ArielGlenn <ariel@wikimedia.org>
+Submitted-at: Fri, 22 Feb 2013 15:34:54 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/50041
+Project: operations/puppet
+Branch: refs/heads/production
