@@ -1,0 +1,73 @@
+#!/bin/sh
+
+usage="$(basename ${0}) [<puppet_basedir>]
+
+Fetches changes from origin and from all submodules.
+Diffs between HEAD and FETCH_HEAD and of each submodule
+where the submodule's SHA has changed will be shown.
+
+If the changes are acceptable, they will be merged locally.
+"
+if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then echo "$usage" && exit 0; fi
+
+# Assume we're in puppet working directory unless $1 is specified
+basedir=${1:-$(git rev-parse --show-toplevel)};
+cd "${basedir}"
+
+echo "Fetching new commits from $(git config --get remote.origin.url)"
+git fetch
+
+# Show diff of operations/puppet superproject
+git diff HEAD..FETCH_HEAD
+
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..FETCH_HEAD)" ]; then
+	echo "No changes to merge."
+	exit 0
+fi
+
+
+submodule_changes="$(git diff --submodule=log HEAD..FETCH_HEAD)"
+# Check for submodule changes
+if [ -n "${submodule_changes}" ]; then
+	# Show diffs of each modified submodule.
+
+	## git diff --submodule HEAD..FETCH_HEAD
+	# shows the log of changes to submodules.
+	# It will look something like:
+	## Submodule modules/temp 83c001c..1120c76:
+	##  > Adding f3.txt
+	## Submodule modules/temp2 83c001c..738e70c:
+	##  > Adding f4.txt
+	##  > Adding f3.txt
+
+	# The following command looks at this output and:
+	# - Greps for the lines where the submodule path and changed sha1s
+	# - Filters out newly added or deleted submodules (can't show the diff in this case) :(
+	# - Removes the trailing ':'
+	# - Uses awk to extract the module path and sha1s and shells out to show diff between sha1s in each submodule.
+	git diff --submodule HEAD..FETCH_HEAD | grep -e '^Submodule ' | grep -v '(not checked out)' | grep -v '(submodule deleted)' | sed 's/:$//' | awk '{ system("cd " $2 " && git diff " $3); }'
+fi
+
+
+
+echo -en "\n\n------------------------------\nMerge these changes? (yes/no)? "
+read answer
+if [ "x${answer}" = "xyes" ]; then
+	echo "Merging..."
+	cmd="git merge --ff-only FETCH_HEAD"
+	echo "${cmd}"
+	$cmd
+
+	if [ -n "${submodule_changes}" ]; then
+		echo "Updating submodules..."
+		cmd="git submodule update"
+		echo "${cmd}"
+		$cmd
+	fi
+else
+	echo "Aborting."
+fi
+
+# Change back into the original cwd.
+cd -
