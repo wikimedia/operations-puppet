@@ -242,6 +242,8 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				source => "puppet:///files/puppet/puppetstoredconfigclean.rb";
 			"/usr/local/bin/decom_servers.sh":
 				content => template("puppet/decom_servers.sh.erb");
+			"/usr/local/bin/puppet-merge":
+				source => "puppet:///files/puppet/puppet-merge";
 		}
 
 		cron {
