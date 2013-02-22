@@ -1,0 +1,95 @@
+#!/bin/sh
+set -e
+
+usage="$(basename ${0}) [<puppet_basedir>]
+
+Fetches changes from origin and from all submodules.
+Shows diffs between HEAD an FETCH_HEAD, including diffs
+of submodule changes.
+
+If the changes are acceptable, they will be merged.
+"
+
+if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
+    echo "$usage" && exit 0;
+fi
+
+
+
+# Assume we're in puppet working directory unless $1 is specified
+basedir=${1:-$(git rev-parse --show-toplevel)};
+cd "${basedir}"
+
+echo "Fetching new commits from $(git config --get remote.origin.url)"
+git fetch
+
+
+submodule_changes="$(git diff --submodule=log HEAD..FETCH_HEAD | grep -e '^Submodule ')" || true
+
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..FETCH_HEAD)" -a -z "${submodule_changes}" ]; then
+  echo "No changes to merge."
+  exit 0
+fi
+
+
+
+# If there are no submodule changes, then just
+# show diff of operations/puppet superproject
+if [ -z "${submodule_changes}" ]; then
+    git diff --color HEAD..FETCH_HEAD | cat
+else
+    # Else there are submodule changes.
+    # Do some fancy stuff to show diffs
+    # of submodule changes.
+
+    # clone the puppet working directory to a temp directory, excludiing private/
+    tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
+    git clone --quiet  "${basedir}" "${tmpdir}"
+
+    fetch_head=$(git rev-parse FETCH_HEAD)
+    # merge and update submodules in $tmpdir
+    (cd "${tmpdir}" && \
+     git merge --quiet --ff-only "${fetch_head}" && \
+     git submodule update --quiet --init)
+
+    # show the diff between the $basedir puppet directory and the $tmpdir puppet directory
+    diff -Nr -x "private" -x ".git" "${basedir}" "${tmpdir}" || true # Avoid set -e causing shell to exit on diff's exit code
+
+    # We've shown the diff so we are done with $tmpdir.  Remove it.
+    rm -r "${tmpdir}"
+fi
+
+
+# If cool, merge it!
+echo -en "\n\n------------------------------\nMerge these changes? (yes/no)? "
+read answer
+if [ "x${answer}" = "xyes" ]; then
+    echo "Merging $(git rev-parse FETCH_HEAD)..."
+    cmd="git merge --ff-only FETCH_HEAD"
+    echo "${cmd}"
+    ${cmd}
+
+    # If there were submodule changes update and init them
+    if [ -n "${submodule_changes}" ]; then
+        echo "Updating submodules..."
+        cmd="git submodule update --init --no-fetch"
+        echo "${cmd}"
+        ${cmd}
+    fi
+
+    # git clean to remove any untracked
+    # (submodule) files and directories
+    echo "Running git clean to clean any untracked files."
+    cmd="git clean -dffx"
+    echo "${cmd}"
+    ${cmd}
+
+    echo "${basedir} updated to $(git rev-parse FETCH_HEAD)"
+else
+    echo "Aborting merge."
+fi
+
+
+# Change back into the original cwd.
+cd -
