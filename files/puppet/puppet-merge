@@ -1,0 +1,92 @@
+#!/bin/sh
+
+usage="$(basename ${0}) [<puppet_basedir>]
+
+Fetches changes from origin and from all submodules.
+Diffs between HEAD and FETCH_HEAD and of each submodule
+where the submodule's SHA has changed will be shown.
+
+If the changes are acceptable, they will be merged locally.
+"
+if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then echo "$usage" && exit 0; fi
+
+# Assume we're in puppet working directory unless $1 is specified
+basedir=${1:-$(git rev-parse --show-toplevel)};
+cd "${basedir}"
+
+echo "Fetching new commits from $(git config --get remote.origin.url)"
+git fetch
+
+# Show diff of operations/puppet superproject
+git diff HEAD..FETCH_HEAD
+
+# Exit if there are no changes to merge.
+if [ -z "$(git diff HEAD..FETCH_HEAD)" ]; then
+	echo "No changes to merge."
+	exit 0
+fi
+
+
+submodule_changes="$(git diff --submodule=log HEAD..FETCH_HEAD)"
+# Check for submodule changes
+if [ -n "${submodule_changes}" ]; then
+	# Show diffs of each modified submodule.
+
+	## git diff --submodule HEAD..FETCH_HEAD
+	# shows the log of changes to submodules.
+	# It will look something like:
+	## Submodule modules/temp 83c001c..1120c76:
+	##  > Adding f3.txt
+	## Submodule modules/temp2 83c001c..738e70c:
+	##  > Adding f4.txt
+	##  > Adding f3.txt
+
+    git diff --submodule=log HEAD..FETCH_HEAD | grep -e '^Submodule ' | tr .: ' '  | while read line; do
+        submodule_path=$(echo "${line}"       | awk '{print $2}')
+        submodule_head=$(echo "${line}"       | awk '{print $3}')
+        submodule_fetch_head=$(echo "${line}" | awk '{print $4}')
+        echo "$submodule_path: $submodule_head -> $submodule_fetch_head"
+
+        if [ "${submodule_head}" == "0000000" ]; then
+            echo "Added new submodule at ${submodule_path} ${submodule_fetch_head}"
+            # clone the submodule into a temp directory
+            # tmpdir=$(mktemp -d /tmp/puppet-merge.XXXXXXXXXX)
+            # git show FETCH_HEAD:.gitmodules > ${tmpdir}/FETCH_HEAD.gitmodules
+            # submodule_url=$(git config --file ${tmpdir}/FETCH_HEAD.gitmodules --get submodule.${submodule_path}.url)
+            # git clone ${submodule_url} ${tmpdir}/${submodule_path}
+            # (cd ${tmpdir}/${submodule_path} && git diff ${submodule_head}..${submodule_fetch_head})
+            # rm -r $tmpdir
+        elif ["${submodule_fetch_head}" == "0000000" ]; then
+            echo "Removed submodule at ${submodule_path}"
+        # else just show the diff
+        else
+            (cd ${submodule_path} && git diff ${submodule_head}..${submodule_fetch_head})
+        fi
+    done
+    # for submodule_change_line in $(git diff --submodule=log HEAD..FETCH_HEAD | grep -e '^Submodule '); do
+    # echo $submodule_change_line;
+    # done
+fi
+
+
+
+echo -en "\n\n------------------------------\nMerge these changes? (yes/no)? "
+read answer
+if [ "x${answer}" = "xyes" ]; then
+	echo "Merging..."
+	cmd="git merge --ff-only FETCH_HEAD"
+	echo "${cmd}"
+	$cmd
+
+	if [ -n "${submodule_changes}" ]; then
+		echo "Updating submodules..."
+		cmd="git submodule init && git submodule update --no-fetch"
+		echo "${cmd}"
+		$cmd
+	fi
+else
+	echo "Aborting."
+fi
+
+# Change back into the original cwd.
+cd -
