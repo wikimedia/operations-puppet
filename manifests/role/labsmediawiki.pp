@@ -1,19 +1,19 @@
 #  Install Mediawiki from git and keep in sync with git trunk
 #
-#  Uses the mediawiki::singlenode class with minimal alterations or customizations.
+#  Uses the mediawiki_singlenode class with minimal alterations or customizations.
 class role::mediawiki-install-latest::labs {
 
-	class { "mediawiki::singlenode":
+	class { "mediawiki_singlenode":
 		ensure => latest
 	}
 }
 
 #  Install Mediawiki from git and then leave it alone.
 #
-#  Uses the mediawiki::singlenode class with no alterations or customizations.
+#  Uses the mediawiki_singlenode class with no alterations or customizations.
 class role::mediawiki-install::labs {
 
-	class { "mediawiki::singlenode":
+	class { "mediawiki_singlenode":
 		ensure => present
 	}
 }
@@ -28,7 +28,7 @@ class role::mediawiki-install::labs {
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
 class role::wikidata-repo-latest::labs {
 
-	class { "wikidata::singlenode":
+	class { "wikidata_singlenode":
 		install_repo => true,
 		install_client => false,
 		# get value for experimental features from wikitech
@@ -60,7 +60,7 @@ class role::wikidata-repo-latest::labs {
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
 class role::wikidata-repo::labs {
 
-	class { "wikidata::singlenode":
+	class { "wikidata_singlenode":
 		install_repo => true,
 		install_client => false,
 		# get value for experimental features from wikitech
@@ -95,7 +95,7 @@ class role::wikidata-repo::labs {
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
 class role::wikidata-client-latest::labs {
 
-	class { "wikidata::singlenode":
+	class { "wikidata_singlenode":
 		install_client => true,
 		install_repo => false,
 		# get value for experimental features from wikitech
@@ -134,7 +134,7 @@ class role::wikidata-client-latest::labs {
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
 class role::wikidata-client::labs {
 
-	class { "wikidata::singlenode":
+	class { "wikidata_singlenode":
 		install_client => true,
 		install_repo => false,
 		# get value for experimental features from wikitech
