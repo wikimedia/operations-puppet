@@ -28,6 +28,7 @@ class gerrit::instance($no_apache=false,
 	$dbname = $db_name
 	$dbuser = $db_user
 	$dbpass = $passwords::gerrit::gerrit_db_pass
+	$bzpass = $passwords::gerrit::gerrit_bz_pass
 
 	# Setup LDAP
 	include role::ldap::config::labs
