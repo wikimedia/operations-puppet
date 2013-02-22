@@ -196,7 +196,7 @@ host constable {
 
 host copper {
 	hardware ethernet 78:2b:cb:09:0e:9d;
-	fixed-address copper.wikimedia.org;
+	fixed-address copper.eqiad.wmnet;
 }
 
 host cp1001 {
@@ -1148,7 +1148,7 @@ host gurvin {
 
 host harmon {
 	hardware ethernet 84:2b:2b:06:36:4f;
-	fixed-address harmon.wikimedia.org;
+	fixed-address harmon.pmtpa.wmnet;
 }
 
 host helium {
