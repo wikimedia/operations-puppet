@@ -37,31 +37,36 @@ class VolumeManager:
 		self.loglevel = INFO
 		self.logfile = None
 		self.deathwatch = {}
+		self.started_or_stopped_this_cycle = False
 
 	def run(self):
-		while True:
-			self.refresh_volumes()
-			time.sleep(180)
-
-	def refresh_volumes(self):
 		parser = OptionParser(conflict_handler="resolve")
 		parser.set_usage('manage-volumes [options]')
 	
-		ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-		ldapSupportLib.addParserOptions(parser)
+		self.ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+		self.ldapSupportLib.addParserOptions(parser)
 	
 		parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdin)")
 		parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
 		(options, args) = parser.parse_args()
-		ldapSupportLib.setBindInfoByOptions(options, parser)
+		self.ldapSupportLib.setBindInfoByOptions(options, parser)
 
 		if options.logfile:
 			self.logfile = options.logfile
 		if options.loglevel:
 			self.loglevel = options.loglevel
 
-		base = ldapSupportLib.getBase()
-		ds = ldapSupportLib.connect()
+		while True:
+			self.refresh_volumes()
+			time.sleep(180)
+
+	def refresh_volumes(self):
+		# starting or stopping volumes seems to exhaust gluster and result
+		# in the server being temporarily unresponsive.  So, we're only
+		# going to do one start or stop per run.
+		self.started_or_stopped_this_cycle = False
+		base = self.ldapSupportLib.getBase()
+		ds = self.ldapSupportLib.connect()
 		projectdata = self.search_s(ds,"ou=projects," + base,ldap.SCOPE_SUBTREE,"(objectclass=groupofnames)")
 		hostdata = self.search_s(ds,"ou=hosts," + base,ldap.SCOPE_SUBTREE,"(puppetvar=instanceproject=*)", ['puppetvar','aRecord'])
 		volumedata = self.ssh_exec_command('sudo gluster volume info', True, True)
@@ -126,13 +131,7 @@ class VolumeManager:
 						else:
 							continue
 					elif project_volumes[project_volume]['Status'] == 'Stopped':
-						vol_ret = self.start_volume(project_volume)
-						if vol_ret:
-							self.log("Started volume: %s" % project_volume)
-						else:
-							self.log("Failed to start volume: %s" % project_volume)
-							continue
-
+						self.start_volume(project_volume)
 
 					if gluster_hosts != volume_hosts:
 						self.setallow(project_name,volume_name,volume_hosts)
@@ -212,10 +211,19 @@ class VolumeManager:
 			return False
 
 	def start_volume(self, volume):
+		if self.started_or_stopped_this_cycle:
+			return False
+		self.started_or_stopped_this_cycle = True
+
 		if volume in self.deathwatch:
 			self.deathwatch.pop(volume)
 		self.log("Starting volume %s" % volume)
-		return self.ssh_exec_command('sudo gluster volume start ' + volume, True)
+		ret = self.ssh_exec_command('sudo gluster volume start ' + volume, True)
+		if ret:
+			self.log("Started volume: %s" % volume)
+		else:
+			self.log("Failed to start volume: %s" % volume)
+		return ret
 
 	def schedule_stop_volume(self, volume, reason):
 		if volume in self.deathwatch:
@@ -227,6 +235,10 @@ class VolumeManager:
 			self.deathwatch[volume] = time.time()
 
 	def stop_volume(self, volume):
+		if self.started_or_stopped_this_cycle:
+			return False
+		self.started_or_stopped_this_cycle = True
+
 		ret = self.ssh_exec_command('sudo gluster --mode=script volume stop ' + volume, True)
 		if ret == 0:
 			self.log("Stopped volume: %s" % volume)
