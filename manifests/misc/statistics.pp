@@ -376,8 +376,10 @@ class misc::statistics::eventlogging::packages {
 		# Test helpers (not required, but nice to have):
 		"python-coverage",
 		"python-nose",
+		"python-pygments",
 		# Python 3:
 		"python3-nose",
+		"python3-pygments",
 		"python3-sqlalchemy",
 		"python3-zmq",
 	]:
