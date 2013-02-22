@@ -219,7 +219,7 @@ class role::deployment::deployment_servers::production {
     vhost_name		=> "10.64.0.196",
     port		=> 80,
     docroot		=> "/srv/deployment",
-    docroot_dir_allows  => ["10.0.0.0/16","10.64.0.0/22","10.64.16.0/24","208.80.152.0/22"],
+    docroot_dir_allows  => ["10.0.0.0/16","10.64.0.0/16","208.80.152.0/22"],
     serveradmin		=> "noc@wikimedia.org",
     configure_firewall 	=> false,
   }
