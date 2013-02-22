@@ -2,6 +2,9 @@
 ## TODO: rename to just mediawiki::sync after full transition to module
 class mediawiki_new::sync {
 
+  require mediawiki_new::packages
+  require mediawiki_new::users::l10nupdate
+
 	exec { 'mw-sync':
 		command => '/usr/bin/sync-common',
 		cwd => '/tmp',
@@ -13,3 +16,4 @@ class mediawiki_new::sync {
 		logoutput => on_failure;
 	}
 }
+

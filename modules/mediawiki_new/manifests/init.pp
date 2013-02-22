@@ -9,10 +9,6 @@ class mediawiki_new {
 		}
 	}
 
-	package { 'wikimedia-task-appserver':
-		ensure => latest;
-	}
-
 	# Disable timidity-daemon
 	# It's recommended by timidity and there's no simple way to avoid installing it
 	service { 'timidity':
@@ -20,5 +16,5 @@ class mediawiki_new {
 		ensure => stopped;
 	}
 
-	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup
+	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
 }
