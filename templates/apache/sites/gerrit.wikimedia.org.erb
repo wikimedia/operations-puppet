@@ -6,6 +6,10 @@
 
 LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
 
+# Due to Jetty's connection limiting flooding logs with "Dispatched
+# Failed" Error messages, we limit connections already here.
+MaxClients 25
+
 NameVirtualHost *:80
 <VirtualHost *:80>
 	ServerAdmin noc@wikimedia.org
