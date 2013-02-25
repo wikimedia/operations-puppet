@@ -19,9 +19,8 @@ def run():
             subprocess.call(['/usr/sbin/puppetca', '-s', data['id']])
             f.write(json.dumps({'key_accepted': '1'}))
             f.close()
-        return {'run_puppet': {'cmd.cmd.run': [{'tgt': data['id']}, {'arg': ['puppet agent --server=<%= puppet_master %> --test; salt-call event.fire_master "run_finished" "puppet"']}]}}
+        return {'run_puppet': {'cmd.cmd.run': [{'tgt': data['id']}, {'arg': ['puppet agent --server=<%= salt_reactor_options["puppet_server"] %> --test; salt-call event.fire_master "run_finished" "puppet"']}]}}
     if data['data'] == 'run_finished':
         if os.path.exists(first_run):
             os.unlink(first_run)
-    else:
-        return {}
+    return {}
