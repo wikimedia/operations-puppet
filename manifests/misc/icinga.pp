@@ -657,16 +657,19 @@ class icinga::monitor::naggen {
 	file {
 		"/etc/icinga/puppet_hosts.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'host'),
+			backup => false,
 			owner => root,
 			group => root,
 			mode => 0644;
 		"/etc/icinga/puppet_services.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'service'),
+			backup => false,
 			owner => root,
 			group => root,
 			mode => 0644;
 		"/etc/icinga/puppet_hostextinfo.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'hostextinfo'),
+			backup => false,
 			owner => root,
 			group => root,
 			mode => 0644;
