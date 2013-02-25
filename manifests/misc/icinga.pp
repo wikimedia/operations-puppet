@@ -828,7 +828,7 @@ class icinga::ganglia::ganglios {
 		ganglia::collector
 
 	package { "ganglios":
-		ensure => latest;
+		ensure => 1.2 ;
 	}
 	cron { "ganglios-cron":
 		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
