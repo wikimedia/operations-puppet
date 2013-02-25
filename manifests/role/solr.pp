@@ -13,9 +13,9 @@ class role::solr($schema = undef, $replication_master = undef ) {
 	}
 
 	if ($replication_master) {
-		$check_command = "check_solr"
-	} else {
 		$check_command = "check_replicated_solr"
+	} else {
+		$check_command = "check_solr"
 	}
 	monitor_service { "Solr":
 		description => "Solr",
