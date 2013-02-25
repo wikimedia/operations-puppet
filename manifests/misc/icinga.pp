@@ -22,7 +22,7 @@ class icinga::monitor {
 		icinga::monitor::apache,
 		icinga::monitor::files::misc,
 		nagios::ganglia::monitor::enwiki,
-		nagios::ganglia::ganglios,
+		icinga::ganglia::ganglios,
 		mysql,
 		nrpe::new
 
@@ -821,4 +821,24 @@ class icinga::monitor::snmp {
 		ensure => present;
 	} 
 
+}
+
+class icinga::ganglia::ganglios {
+	include generic::mysql::packages::client,
+		ganglia::collector
+
+	package { "ganglios":
+		ensure => latest;
+	}
+	cron { "ganglios-cron":
+		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
+		user => icinga,
+		minute => "*/2",
+		ensure => present;
+	}
+	file { "/var/lib/ganglia/xmlcache":
+		ensure => directory,
+		mode => 0755,
+		owner => icinga;
+	}
 }
