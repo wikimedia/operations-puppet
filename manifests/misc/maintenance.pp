@@ -156,7 +156,7 @@ class misc::maintenance::update_flaggedrev_stats{
 class misc::maintenance::cleanup_upload_stash {
 	cron {
 		cleanup_upload_stash:
-			command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php",
+			command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null",
 			user => "apache",
 			hour => 1,
 			minute => 0,
