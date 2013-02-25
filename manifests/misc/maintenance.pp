@@ -115,7 +115,7 @@ class misc::maintenance::translationnotifications {
 class misc::maintenance::tor_exit_node {
 	cron {
 		tor_exit_node_update:
-			command => "php /home/wikipedia/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force 2>&1",
+			command => "php /home/wikipedia/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force > /dev/null",
 			user => apache,
 			minute => '*/20',
 			ensure => present;
@@ -145,7 +145,7 @@ class misc::maintenance::update_flaggedrev_stats{
 
 	cron {
 		update_flaggedrev_stats:
-			command => "/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh 2>&1",
+			command => "/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
 			user => "apache",
 			hour => "*/2",
 			minute => "0",
