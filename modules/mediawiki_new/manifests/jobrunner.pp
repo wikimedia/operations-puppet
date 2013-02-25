@@ -7,7 +7,8 @@ class mediawiki_new::jobrunner (
 	$pid_file = "/var/run/mw-jobs.pid",
 	$timeout = 300,
 	$extra_args = "",
-	$procs = 5
+	$dprioprocs = 5,
+	$iprioprocs = 5
 ) {
 
 	include mediawiki_new

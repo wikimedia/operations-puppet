@@ -60,13 +60,13 @@ maxvirtualmemory=400000
 
 # Whether to process the default queue. Will be the case if no job type
 # was specified on the command line. Else we only want to process given types
-dodefault=true
+dodefault=y
 
 while getopts "t:v:" flag
 do
 	case $flag in
 		t)
-			maxtime=$OPTARG
+			hpmaxtime=$OPTARG
 			;;
 		v)
 			maxvirtualmemory=$OPTARG
@@ -80,28 +80,15 @@ if [ "$maxvirtualmemory" -gt 0 ]; then
 	ulimit -v $maxvirtualmemory
 fi
 
-# When killed, make sure we are also getting rid of the child jobs
-# we have spawned.
-trap 'kill %-; exit' SIGTERM
-
-if [ -z "$1" ]; then
-	echo "Starting default queue job runner"
-	dodefault=true
-	hptypes="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
-else
-	echo "Starting type-specific job runner: $1"
-	dodefault=false
-	hptypes=$1
-fi
-
 # Limit the number of concurrent sub-processes by waiting until the
 # number of immediate child processes is less than the allowed limit.
-function waitForProcessPipeline() {
+# Arguments: (process pipeline size)
+function processPipelineWaitForSlot() {
+	local pipelinesize=$1
 	local subprocscreate=0 # number of free process slots
 	while [ "$subprocscreate" -le 0 ]; do
-		# Note: ps counts itself so 1 is subtracted
-		local subproccount=$((`ps --no-headers -o pid --ppid=$$ | wc -w` - 1))
-		subprocscreate=$((<%= procs %>/forkcount - subproccount))
+		local subproccount=$((`jobs -p | wc -w`))
+		subprocscreate=$((pipelinesize/forkcount - subproccount))
 		if [ "$subprocscreate" -gt 0 ]; then
 			break # another immediate child process can start
 		else
@@ -111,67 +98,102 @@ function waitForProcessPipeline() {
 	done
 }
 
-# Starting the infinite loop of doom
-cd `readlink -f /usr/local/apache/common/multiversion`
-while [ 1 ]; do
-	foundjobs=n
+# Run an infinite loop that checks for jobs and runs them.
+# The first argument is the "job types" parameter. If supplied,
+# only that space-separated list of jobs will be run. Otherwise,
+# the default high priority and low priority jobs will be run.
+# Arguments: (space-separated job types, run default jobs? (y/n), process pipeline size)
+function runJobsLoopService() {
+	# When killed, make sure we also get rid of the child processes
+	trap 'pids=$(jobs -p); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM
 
-	# Do the prioritized job types...
-	started=`date +%s` # UNIX timestamp
-	morehpjobs=y
-	while [[ "$morehpjobs" == "y" ]]; do
-		waitForProcessPipeline
+	local hptypes=$1
+	local dodefault=$2
+	local pipelinesize=$3
+	while [ 1 ]; do
+		local foundjobs=n
 
-		morehpjobs=n
-		res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$hptypes"`)
-		db=${res[0]}
-		type=${res[1]}
+		if [ -n "$hptypes" ]; then
+			# Do the prioritized job types...
+			local started=`date +%s` # UNIX timestamp
+			local morehpjobs=y
+			while [[ "$morehpjobs" == "y" ]]; do
+				processPipelineWaitForSlot "$pipelinesize"
 
-		if [ "$?" -ne "0" ]; then
-			echo "Could not determine the next wiki."
-		elif [ -n "$db" -a -n "$type" ]; then
-			echo "$db $type"
-			nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime &
-			# Do not spend too much time on prioritized jobs
-			timestamp=`date +%s` # UNIX timestamp
-			if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
-				break
-			else
-				morehpjobs=y
-			fi
-			foundjobs=y
+				morehpjobs=n
+				local res=(`php MWScript.php nextJobDB.php --wiki=aawiki --types="$hptypes"`)
+				local db=${res[0]}
+				local type=${res[1]}
+
+				if [ "$?" -ne "0" ]; then
+					echo "Could not determine the next wiki."
+				elif [ -n "$db" -a -n "$type" ]; then
+					foundjobs=y
+					echo "$db $type"
+					nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --type="$type" --maxtime=$hpmaxtime &
+					# Do not spend too much time on prioritized jobs
+					local timestamp=`date +%s` # UNIX timestamp
+					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$lpmaxdelay" ]; then
+						break
+					else
+						morehpjobs=y
+					fi
+				fi
+			done
+		fi
+
+		if [[ "$dodefault" == "y" ]]; then
+			# Do the unprioritized job types...
+			local started=`date +%s` # UNIX timestamp
+			local morelpjobs=y
+			while [[ "$morelpjobs" == "y" ]]; do
+				processPipelineWaitForSlot "$pipelinesize"
+
+				morelpjobs=n
+				local db=`php MWScript.php nextJobDB.php --wiki=aawiki`
+
+				if [ "$?" -ne "0" ]; then
+					echo "Could not determine the next wiki."
+				elif [ -n "$db" ]; then
+					foundjobs=y
+					echo "$db"
+					nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime &
+					# Do not spend too much time on unprioritized jobs
+					local timestamp=`date +%s` # UNIX timestamp
+					if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
+						break
+					else
+						morelpjobs=y
+					fi
+				fi
+			done
+		fi
+
+		if [[ "$foundjobs" == "n" ]]; then
+			echo "No jobs..."
+			sleep 5 # reduce polling load
 		fi
 	done
+}
 
-	if $dodefault; then
-		# Do the unprioritized job types...
-		started=`date +%s` # UNIX timestamp
-		morelpjobs=y
-		while [[ "$morelpjobs" == "y" ]]; do
-			waitForProcessPipeline
+# Make it easy to call MWScript.php
+cd `readlink -f /usr/local/apache/common/multiversion`
 
-			morelpjobs=n
-			db=`php MWScript.php nextJobDB.php --wiki=aawiki`
+# When killed, make sure we also get rid of the child processes
+trap 'pids=$(jobs -p); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM SIGINT
 
-			if [ "$?" -ne "0" ]; then
-				echo "Could not determine the next wiki."
-			elif [ -n "$db" ]; then
-				echo "$db"
-				nice -n 20 php MWScript.php runJobs.php --wiki="$db" --procs="$forkcount" --maxtime=$lpmaxtime &
-				# Do not spend too much time on unprioritized jobs
-				timestamp=`date +%s` # UNIX timestamp
-				if [ "$timestamp" -lt "$started" -o $(( timestamp-started )) -ge "$hpmaxdelay" ]; then
-					break
-				else
-					morelpjobs=y
-				fi
-				foundjobs=y
-			fi
-		done
-	fi
+if [ -n "$1" ]; then
+	echo "Creating type-specific job runner pipeline"
+	(runJobsLoopService "$1" "n" <%= dprioprocs %>) &
+else
+	echo "Creating default and immediate job runner pipelines"
+	# Start a loop for immediate priority jobs
+	ipriotypes="AssembleUploadChunks PublishStashedFile"
+	(runJobsLoopService "$ipriotypes" "n" <%= iprioprocs %>) &
+	# Start a loop for default high and low priority jobs
+	hpriotypes="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
+	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
+fi
 
-	if [[ "$foundjobs" == "n" ]]; then
-		echo "No jobs..."
-		sleep 5 # reduce polling load
-	fi
-done
+wait
+echo "All job runner pipelines closed"
