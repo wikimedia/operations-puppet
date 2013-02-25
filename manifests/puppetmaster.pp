@@ -253,9 +253,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => present;
 		}
 
-		$decomservercron = $::realm ? {
-			'production' => present,
-			default      => absent,
+		# Disable the decomserver cron if not running in production
+		# or if running on the production puppetmaster.
+		if (($::realm != 'production') or ($puppetmaster::config['thin_storeconfigs'] != true)) {
+		  $decomservercron = absent
+		}
+		else {
+		  $decomservercron = present
 		}
 
 		cron {
