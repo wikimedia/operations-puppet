@@ -232,6 +232,14 @@ acl carrier_xl_indonesia {
     "202.152.243.0"/24;
 }
 
+acl carrier_vimpelcom_beeline {
+    /* Testing range */
+    "217.118.66.0"/27;
+    "217.118.66.64"/28;
+    "217.118.66.96"/31;
+    "217.118.66.98"/31;
+}
+
 # for test.* routing, FIXME
 backend test_wikipedia {
 	.host = "srv193.pmtpa.wmnet";
@@ -241,7 +249,6 @@ backend test_wikipedia {
 	.between_bytes_timeout = 2s;
 	.max_connections = 20;
 }
-
 
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
@@ -293,6 +300,11 @@ sub tag_carrier {
 				set req.http.X-Carrier = "XL Axiata";
 				set req.http.X-CS = "510-11";
 			}
+		} else if (client.ip ~ carrier_vimpelcom_beeline) {
+			if ( req.http.host ~ "(^(en|ru)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Vimpelcom Beeline";
+				set req.http.X-CS = "250-99";
+			}
 		}
 	} else {
 		set req.http.X-Subdomain = "M";
@@ -337,6 +349,11 @@ sub tag_carrier {
 		} else if ( client.ip ~ carrier_testing ) {
 			set req.http.X-Carrier = "wikimedia";
 			set req.http.X-CS = "WMF";
+		} else if (client.ip ~ carrier_vimpelcom_beeline) {
+			if ( req.http.host ~ "(^(en|ru)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+				set req.http.X-Carrier = "Vimpelcom Beeline";
+				set req.http.X-CS = "250-99";
+			}
 		}
 	}
 
