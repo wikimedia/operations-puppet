@@ -151,7 +151,7 @@ class misc::contint::test {
 		}
 
 		# nagios monitoring
-		monitor_service { "jenkins": description => "jenkins_service_running", check_command => "check_procs_generic!1!3!1!20!jenkins" }
+		monitor_service { 'jenkins': description => 'jenkins_service_running', check_command => 'nrpe_check_jenkins' }
 
 		file {
 			"/var/lib/jenkins":

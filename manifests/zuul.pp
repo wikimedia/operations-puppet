@@ -31,8 +31,8 @@ class zuulwikimedia {
 				push_change_refs => $push_change_refs,
 			}
 
-			# nagios monitoring
-			monitor_service { "zuul": description => "zuul_service_running", check_command => "check_procs_generic!1!3!1!20!zuul-server" }
+			# nagios/icinga monitoring
+			monitor_service { 'zuul': description => 'zuul_service_running', check_command => 'nrpe_check_zuul' }
 
 			# Deploy Wikimedia Zuul configuration files.
 
