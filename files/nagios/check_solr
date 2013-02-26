@@ -134,8 +134,7 @@ try:
     check_replication()
 
 except urllib2.URLError as ex:
-    (e, ) = ex.args
-    if e.errno == 115:
+    if len(ex.args) > 0 and ex.args[0].errno == 115:
         msg = 'Request timeout after %ds' % cmd_options.timeout
     else:
         msg = format_exception(ex)
