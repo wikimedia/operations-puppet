@@ -33,6 +33,9 @@ class snapshots::files {
 			source => "puppet:///files/php/fss.ini.snaps.${::lsbdistcodename}",
 			ensure => present;
 		}
+		file { "/srv":
+			ensure => directory;
+		}
 	}
 
 }
