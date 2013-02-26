@@ -199,7 +199,7 @@ class nagios::monitor {
 			  "${nagios_config_dir}/cgi.cfg",
 			  "${nagios_config_dir}/checkcommands.cfg",
 			  "${nagios_config_dir}/contactgroups.cfg",
-			  "${nagios_config_dir}/contacts.cfg",
+			  "${nagios_config_dir}/contacts_fake.cfg",
 			  "${nagios_config_dir}/misccommands.cfg",
 			  "${nagios_config_dir}/resource.cfg",
 			  "${nagios_config_dir}/timeperiods.cfg",
