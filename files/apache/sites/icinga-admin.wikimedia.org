@@ -9,8 +9,10 @@ Alias /icinga/stylesheets /etc/icinga/stylesheets
 
 # Where the HTML pages live
 Alias /icinga /usr/share/icinga/htdocs
+
 <VirtualHost *:443>
-	ServerName icinga.wikimedia.org
+	ServerName icinga-admin.wikimedia.org
+	ServerAlias icinga.wikimedia.org
 	ServerAlias neon.wikimedia.org
 	ServerAlias nagios.wikimedia.org
 	ServerAdmin noc@wikimedia.org
@@ -25,40 +27,21 @@ Alias /icinga /usr/share/icinga/htdocs
 		SSLRequireSSL
 		Options ExecCGI
 		DirectoryIndex index.html
-		AllowOverride None
+#		AllowOverride None
+		AllowOverride AuthConfig
+		Order Allow,Deny
+		Allow From All
+		AuthName "Icinga Access"
+		AuthType Basic
+		AuthUserFile /etc/icinga/htpasswd.users
+		require valid-user
 	</DirectoryMatch>
 	<IfModule !mod_alias.c>
 		LoadModule alias_module modules/mod_alias.so
 	</IfModule>
 
-	RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
 	ErrorLog /var/log/apache2/icinga.log
 	LogLevel warn
 
 </VirtualHost>
 
-<VirtualHost *:80>
-	ServerName icinga.wikimedia.org
-	ServerAlias nagios.wikimedia.org
-	ServerAlias neon.wikimedia.org
-	ServerAdmin noc@wikimedia.org
-	DocumentRoot /usr/share/icinga/htdocs
-
-	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
-		Options FollowSymLinks
-		Options ExecCGI
-		DirectoryIndex index.html
-		AllowOverride None
-#		AllowOverride AuthConfig
-#		Order Allow,Deny
-#		Allow From All
-	</DirectoryMatch>
-	<IfModule !mod_alias.c>
-		LoadModule alias_module modules/mod_alias.so
-	</IfModule>
-
-	RedirectMatch ^/$ http://icinga.wikimedia.org/icinga
-
-	ErrorLog /var/log/apache2/icinga.log
-	LogLevel warn
-</VirtualHost>
