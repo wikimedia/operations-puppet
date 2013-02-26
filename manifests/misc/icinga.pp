@@ -548,7 +548,7 @@ class icinga::monitor::files::nagios-plugins {
 			owner => root,
 			group => root,
 			mode => 0755;
-		"/usr/local/nagios/plugins/check_solr":
+		"/usr/lib/nagios/plugins/check_solr":
 			source => "puppet:///files/nagios/check_solr",
 			owner => root,
 			group => root,
