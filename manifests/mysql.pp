@@ -12,7 +12,7 @@ class mysql {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^db(63|54|34|31|45|47|37|48|1048)|blondel|^es(5|8)$/ {
+	if $hostname =~ /^blondel/ {
 		$master = true
 		$writable = true
 	} else {
@@ -20,58 +20,13 @@ class mysql {
 	}
 
 	#######################################################################
-	### LVM snapshot hosts
-	#######################################################################
-	if $hostname =~ /^db(32|33|44|46|49|53|56|64|1005|1007|1018|1020|1022|1035|1046|1050)$/ {
-		$snapshot_host = true
-	}
-	if $hostname =~ /^es(7|10|1007|1010)$/ {
-		$snapshot_host = true
-	}
-
-	#######################################################################
 	### Cluster Definitions - update if changing / building new dbs
 	#######################################################################
-	if $hostname =~ /^db(32|36|38|59|60|63|67|1001|1017|1033|1042|1043|1047|1049|1050)$/ {
-		$db_cluster = "s1"
-	}
-	elsif $hostname =~ /^db(52|53|54|57|1002|1009|1018|1034)$/ {
-		$db_cluster = "s2"
-	}
-	elsif $hostname =~ /^db(34|39|64|66|1003|1010|1019|1035)$/ {
-		$db_cluster = "s3"
-	}
-	elsif $hostname =~ /^db(31|33|51|65|1004|1011|1020|1038|1036)$/ {
-		$db_cluster = "s4"
-	}
-	elsif $hostname =~ /^db(35|44|45|55|1005|1021|1026|1039)$/ {
-		$db_cluster = "s5"
-	}
-	elsif $hostname =~ /^db(43|46|47|50|1006|1022|1027|1040)$/ {
-		$db_cluster = "s6"
-	}
-	elsif $hostname =~ /^db(37|56|58|68|1007|1024|1028|1041)$/ {
-		$db_cluster = "s7"
-	}
-	elsif $hostname =~ /^es([1-4]|100[1-4])$/ {
-		$db_cluster = "es1"
-	}
-	elsif $hostname =~ /^es([5-7]|100[5-7])$/ {
-		$db_cluster = "es2"
-	}
-	elsif $hostname =~ /^es([8-9]|10|100[8-9]|1010)$/ {
-		$db_cluster = "es3"
-	}
-	elsif $hostname =~ /^blondel|bellin$/ {
+	if $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
 	elsif $hostname =~ /^(db1008|db1025|db78)$/ {
 		$db_cluster = "fundraisingdb"
-	}
-	elsif $hostname =~ /^db(48|49|1046|1048)$/ {
-		$db_cluster = "m2"
-		$skip_name_resolve = false
-		$mysql_max_allowed_packet = 1073741824
 	}
 	else {
 		$db_cluster = undef
@@ -83,7 +38,7 @@ class mysql {
 		}
 		# this is for the pt-heartbeat daemon, which needs super privs
 		# to write to read_only=1 databases.
-		if ($db_cluster !~ /(fund|es1)/) {
+		if ($db_cluster !~ /fund/) {
 			include passwords::misc::scripts
 			file {
 				"/root/.my.cnf":
@@ -104,7 +59,7 @@ class mysql {
 				hasstatus => false;
 			}
 			include mysql::monitor::percona
-			if ($db_cluster =~ /^[sm]/) {
+			if ($db_cluster =~ /^m1/) {
 				include mysql::slow_digest
 			}
 		}
@@ -115,14 +70,6 @@ class mysql {
 		group => root,
 		mode => 0555,
 		source => "puppet:///files/mysql/master_id.py"
-	}
-
-	#######################################################################
-	### Research DB Definitions - should also belong to a cluster above
-	#######################################################################
-	if $hostname =~ /^db(67|1047)$/ {
-		$research_dbs = true
-		$writable = true
 	}
 
 	class packages {
@@ -303,18 +250,6 @@ class mysql {
 		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
 	}
 
-	class monitor::percona::es inherits mysql {
-		if $db::es::mysql_role == "master" {
-			$crit = true
-		}
-		require "mysql::monitor::percona::files"
-
-		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
-		monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
-		monitor_service { "mysql slave running": description => "MySQL Slave Running", check_command => "nrpe_check_mysql_slave_running", critical => false }
-		monitor_service { "mysql slave delay": description => "MySQL Slave Delay", check_command => "nrpe_check_mysql_slave_delay", critical => false }
-	}
-
 	class mysqluser {
 		user {
 			"mysql": ensure => "present",
@@ -343,45 +278,12 @@ class mysql {
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
 			},
-			"s1" => {
-				"innodb_log_file_size" => "2000M"
-			},
-			"s2" => {
-				"innodb_log_file_size" => "2000M"
-			},
-			"s3" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"s4" => {
-				"innodb_log_file_size" => "2000M"
-			},
-			"s5" => {
-				"innodb_log_file_size" => "1000M"
-			},
-			"s6" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"s7" => {
-				"innodb_log_file_size" => "500M"
-			},
 			"m1" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"m2" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"es1" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"es2" => {
-				"innodb_log_file_size" => "500M"
-			},
-			"es3" => {
 				"innodb_log_file_size" => "500M"
 			},
 		}
 
-		if $db_cluster =~ /^(es1|fundraisingdb)$/ {
+		if $db_cluster =~ /^fundraisingdb$/ {
 			$mysql_myisam = true
 		}
 		else {
@@ -395,7 +297,7 @@ class mysql {
 		}
 
 		# enable innodb_file_per_table if it's a fundraising or otrs database
-		if $db_cluster =~ /^(fundraisingdb|m|es)/ {
+		if $db_cluster =~ /^(fundraisingdb|m)/ {
 			$innodb_file_per_table = true
 		} else {
 			$innodb_file_per_table = false
@@ -405,13 +307,7 @@ class mysql {
 
 		# FIXME: please qualify these globals with something descriptive, e.g. $mysql_read_only
 		# FIXME: defaults aren't set, so template expansion is currently broken
-		if $research_dbs {
-			$disable_binlogs = true
-			$read_only = false
-			$long_timeouts = true
-			$enable_unsafe_locks = true
-			$large_slave_trans_retries = true
-		} else {
+
 			$disable_binlogs = false
 			$long_timeouts = false
 			$enable_unsafe_locks = false
@@ -421,7 +317,6 @@ class mysql {
 			} else {
 				$read_only = true
 			}
-		}
 
 		if ! $skip_name_resolve {
 			$skip_name_resolve = true
@@ -440,25 +335,6 @@ class mysql {
 				group => root,
 				mode => 0555,
 				source => "puppet:///files/mysql/snaprotate.pl"
-		}
-
-		if $snapshot_host {
-			$snaprotate_extraparams = $hostname ? {
-				'db26' => "-c 1",
-				default => ""
-			}
-			cron { snaprotate:
-				command => "/usr/local/sbin/snaprotate.pl -a swap -V tank -s data -L 100G $snaprotate_extraparams",
-				require => File["/usr/local/sbin/snaprotate.pl"],
-				user => root,
-				minute => 15,
-				hour => '*/8',
-				ensure => present;
-			}
-		} else {
-			cron { snaprotate:
-				ensure => absent;
-			}
 		}
 	}
 
