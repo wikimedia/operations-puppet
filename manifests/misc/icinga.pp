@@ -165,7 +165,7 @@ class icinga::monitor::configuration::files {
 			mode => 0644;
 
 		"/etc/icinga/checkcommands.cfg":
-			content => template("nagios/checkcommands.cfg.erb"),
+			content => template("icinga/checkcommands.cfg.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
