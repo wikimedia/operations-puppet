@@ -298,12 +298,22 @@ define command{
 	command_name	check_http_lvs
 	command_line	$USER1$/check_http -H $ARG1$ -I $HOSTADDRESS$ -u "$ARG2$"
 	}
+
+define command{
+	command_name    check_https_lvs
+	command_line    $USER1$/check_http -H $ARG1$ -S -I $HOSTADDRESS$ -u "$ARG2$"
+	}
+
+define command{
+	command_name    check_http_lvs_on_port
+	command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u "$ARG3"
+	}
 	#
 # 'check_http_swift' command definition, querying a thumbnail that exists in swift
 define command{
-        command_name    check_http_swift
-        command_line    $USER1$/check_http -H ms-fe.pmtpa.wmnet -I $HOSTADDRESS$ -u /wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg
-        }
+	command_name    check_http_swift
+	command_line    $USER1$/check_http -H ms-fe.pmtpa.wmnet -I $HOSTADDRESS$ -u /wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/80px-Little_kitten_.jpg
+	}
 
 
 define command{
@@ -389,6 +399,12 @@ define command{
 define command{
 	command_name	nrpe_check_mysqld
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
+}                
+
+#Generic NRPE check
+define command{
+	command_name	check_nrpe
+	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }
 define command{
 	command_name	check_stomp
@@ -431,6 +447,11 @@ define command{
 define command{
 	command_name	puppet-FAIL
 	command_line	echo "Puppet has not run in the last 10 hours" && exit 2
+}
+
+define command{
+        command_name    nsca-fail
+        command_line    $USER1$/check_dummy $ARG1$ $ARG2$
 }
 
 define command{
