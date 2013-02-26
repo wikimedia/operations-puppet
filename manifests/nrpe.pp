@@ -166,7 +166,7 @@ class nrpe::packagesnew {
 			owner => root,
 			group => root,
 			mode => 0444,
-			content => template("nagios/nrpe_local_icinga.cfg.erb");
+			content => template("icinga/nrpe_local.cfg.erb");
 		"/usr/lib/nagios/plugins/check_dpkg":
 			owner => root,
 			group => root,
