@@ -409,7 +409,7 @@ define command{
 define command{
 	command_name	check_stomp
 	command_line	/usr/lib/nagios/plugins/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
-}
+
 define command{
 	command_name	check_longqueries
 	command_line	/usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
@@ -519,3 +519,94 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysql_slave_heartbeat
 }
 # end percona mysql checks
+# swift process checks (RT-2593)
+
+define command{
+        command_name    nrpe_check_swift_account_auditor
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_auditor
+}
+
+define command{
+        command_name    nrpe_check_swift_account_reaper
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_reaper
+}
+
+define command{
+        command_name    nrpe_check_swift_account_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_account_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_account_server
+}
+
+define command{
+        command_name    nrpe_check_swift_container_auditor
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_auditor
+}
+
+define command{
+        command_name    nrpe_check_swift_container_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_container_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_server
+}
+
+define command{
+        command_name    nrpe_check_swift_container_updater
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_container_updater
+}
+
+define command{
+        command_name    nrpe_check_swift_object_auditor
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_auditor
+}
+
+define command{
+        command_name    nrpe_check_ircecho
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_ircecho
+}
+
+define command{
+        command_name    nrpe_check_swift_object_replicator
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_replicator
+}
+
+define command{
+        command_name    nrpe_check_swift_object_server
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_server
+}
+
+define command{
+        command_name    nrpe_check_swift_object_updater
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_swift_object_updater
+}
+
+# end swift process checks
+
+# dummy check that's useful to check that paging is working
+define command{
+        command_name    check_to_check_nagios_paging
+        command_line    $USER1$/check_to_check_nagios_paging
+}
+
+define command{
+        command_name    check_memory_used
+        command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
+}
+
+# Example usage:  check_solr!500:1000|5
+define command{
+	command_name	check_solr
+	command_line	$USER1$/check_solr -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
+	}
+
+# Example usage:  check_replicated_solr!500:1000|5
+define command{
+	command_name	check_replicated_solr
+	command_line	$USER1$/check_solr -r -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
+	}
