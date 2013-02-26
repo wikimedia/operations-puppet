@@ -367,6 +367,10 @@ define command{
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
 }
 define command{
+	command_name	nrpe_check_zuul
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_zuul
+}
+define command{
 	command_name	nrpe_check_mailman
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mailman
 }
