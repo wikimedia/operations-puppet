@@ -44,6 +44,9 @@
 
 	RedirectMatch ^/$ http://<%= controller_hostname %>/wiki/
 
+	RewriteEngine on
+	RewriteRule ^/view/(.*)$ https://<%= controller_hostname %>/wiki/$1 [L,R]
+
 	DocumentRoot /var/www
 	<Directory />
 		Options FollowSymLinks
