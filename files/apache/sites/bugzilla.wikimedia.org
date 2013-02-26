@@ -128,3 +128,22 @@ RewriteRule ^/(\d+)$ https://bugzilla.wikimedia.org/show_bug.cgi?id=$1 [R]
 		Allow from all
 	</Location>
 </VirtualHost>
+
+<VirtualHost *:443>
+	ServerName bug-attachment.wikimedia.org
+	DocumentRoot /srv/org/wikimedia/bugzilla/
+	SSLEngine On
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+	<Directory />
+		Order Allow,Deny
+		Deny from all
+	</Directory>
+
+	ScriptAlias /attachment.cgi /srv/org/wikimedia/bugzilla/attachment.cgi
+	<Location /attachment.cgi>
+		Order Allow,Deny
+		Allow from all
+	</Location>
+</VirtualHost>
