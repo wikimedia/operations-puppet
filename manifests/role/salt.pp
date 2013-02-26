@@ -42,13 +42,13 @@ class role::salt::masters::labs {
 		salt_file_roots => $salt_file_roots,
 		salt_pillar_roots => $salt_pillar_roots,
 		salt_worker_threads => "50",
-		# event_tag => [reactors]
-		salt_reactor => {
-			"auth" => ["auth.sls"],
-			"key" => ["key.sls"],
-			"minion_start" => ["minion_start.sls"],
-			"puppet" => ["puppet.sls"],
-		},
+		## event_tag => [reactors]
+		#salt_reactor => {
+		#	"auth" => ["auth.sls"],
+		#	"key" => ["key.sls"],
+		#	"minion_start" => ["minion_start.sls"],
+		#	"puppet" => ["puppet.sls"],
+		#},
 	}
 
 	class { "salt_reactors":
