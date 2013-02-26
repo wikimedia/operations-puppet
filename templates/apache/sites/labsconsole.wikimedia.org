@@ -42,7 +42,10 @@
         SSLCertificateFile /etc/ssl/certs/<%= certificate %>.pem
         SSLCertificateKeyFile /etc/ssl/private/<%= certificate %>.key
 
-	RedirectMatch ^/$ http://<%= controller_hostname %>/wiki/
+	RedirectMatch ^/$ https://<%= controller_hostname %>/wiki/
+
+	RewriteEngine on
+	RewriteRule ^/view/(.*)$ https://<%= controller_hostname %>/wiki/$1 [L,R]
 
 	DocumentRoot /var/www
 	<Directory />
