@@ -362,12 +362,6 @@ define command{
 	command_name	nrpe_check_dpkg
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_dpkg
 }
-
-define command{
-     command_name    nrpe_check_ircecho
-     command_line    /usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_ircecho
-}
-
 define command{
 	command_name	nrpe_check_jenkins
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_jenkins
@@ -384,6 +378,17 @@ define command{
 	command_name	nrpe_check_poolcounterd
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_poolcounterd
 }
+define command{
+        command_name    nrpe_check_carbon_cache
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_carbon_cache
+}
+define command{
+        command_name    nrpe_check_profiler_to_carbon
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiler_to_carbon
+}
+define command{
+        command_name    nrpe_check_profiling_collector
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_profiling_collector
 define command{
 	command_name	nrpe_check_udp2log_log_age
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_udp2log_log
@@ -403,17 +408,20 @@ define command{
 
 #Generic NRPE check
 define command{
-	command_name	check_nrpe
+	command_name	nrpe_check
 	command_line	$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }
+
 define command{
 	command_name	check_stomp
 	command_line	/usr/lib/nagios/plugins/check_stomp.pl erzurumi.pmtpa.wmnet 3 monitoring
+}
 
 define command{
 	command_name	check_longqueries
 	command_line	/usr/lib/nagios/plugins/check_longqueries -H $HOSTADDRESS$ -u nagios -p <%= nagios_mysql_check_pass %> -w 30 -c 66
 }
+
 define command{
 	command_name	check_db_lag
 	command_line	$USER1$/check_mysql-replication.pl -sa $HOSTADDRESS$ -sl nagios -spd <%= nagios_mysql_check_pass %>  -a lag -w 60 -c 600
@@ -594,19 +602,3 @@ define command{
         command_line    $USER1$/check_to_check_nagios_paging
 }
 
-define command{
-        command_name    check_memory_used
-        command_line    $USER3$/check_ganglios_memory_v2 -H $HOSTADDRESS -w $ARG1$ -c $ARG2$
-}
-
-# Example usage:  check_solr!500:1000|5
-define command{
-	command_name	check_solr
-	command_line	$USER1$/check_solr -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
-	}
-
-# Example usage:  check_replicated_solr!500:1000|5
-define command{
-	command_name	check_replicated_solr
-	command_line	$USER1$/check_solr -r -a $ARG1$ -t $ARG2$ $HOSTADDRESS$
-	}
