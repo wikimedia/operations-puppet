@@ -192,6 +192,7 @@ class nrpe::servicenew {
 		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
 		subscribe => File["/etc/icinga/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
+		hasrestart => true,
 		ensure => running;
 	}
 
