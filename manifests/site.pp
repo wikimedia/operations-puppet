@@ -2331,7 +2331,7 @@ node "stat1.wikimedia.org" {
 		accounts::fschulenburg,
 		# RT 4519
 		accounts::ypanda,
-		accounts::milimetric #rt4561
+		accounts::dandreescu #rt4561
 
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
