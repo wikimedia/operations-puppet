@@ -2569,7 +2569,7 @@ class accounts {
 				"sahar@Sahars-MacBook-Pro.local":
 				ensure => present,
 				user   => $username,
-				type   => "ssh-rsa",
+				type   => "ssh-dss",
 				key    => "AAAAB3NzaC1kc3MAAACBAOdu/d4GBnHQprlmfB6DePMarUmCHWQ4AuOa7z9RVXKxI/gzDnsqH4VkYoRsTSVDuj3xjG22Z7kyJiPpu/Y7/ydo377KvPDkj4aDUvvhWL1Mo3fhper0TpvJyxDZJSwP34GGFCTop7mpYhxAhIX+5v5C+X2RedqmuxpcyRM2666DAAAAFQDW5LcmtjLxtF/W4kFKPG9pA1K24QAAAIEAn/BGfl+gguXD6zD59reIpA22poIAIMSpxrprU5zklYBEJkcIPY1ByyystXbuLi2zTjOBuzc2YrHiTQfgrM2RmJVRttKGq33j07pRqInqTb6/xn6wtrkBDK0bPPvGvfiUYo4PrmLG6nKrkG8ACYOfF89ncVHXLnEdiab4MxjJA8MAAACANvNp1dr5yzynUi9lwDT/8r6LF00Y9oo/HBEgpLZsGvICXGgcf7/b+7UbVY0kRSmr0/YU0WZM8gT5AviA+G4NItHdLJGLHs6ou7+Xe6PnnfOnSaX6ni71COEaKSj2oADV9fSVXWAULJ3ASfA2z3Ouac/iqwUbYaDD0DQdESNu5lo=",
 			}
 		}
