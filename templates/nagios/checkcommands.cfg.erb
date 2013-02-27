@@ -177,6 +177,14 @@ define command{
         command_line    $USER1$/check_tcp -t 90 -w 10 -p 8123 -H $HOSTADDRESS$
         }
 
+# Http query on a Lucene search box
+# ARG1: lucene method to invoke (search, prefix, related ..)
+# ARG2: a wikimedia database name to use
+define command{
+       command_name    check_lucene_frontend
+       command_line    /usr/lib/nagios/plugins/check_http -H '$HOSTADDRESS$' -p 8123 -u '/$ARG1$/$ARG2$/Main_page'
+       }
+
 
 define command {
         command_name    check_bgpstate
