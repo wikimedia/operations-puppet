@@ -189,6 +189,12 @@ define command{
         command_line    $USER1$/check_tcp -t 90 -w 10 -p 8123 -H $HOSTADDRESS$
         }
 
+# Http query on a Lucene search box
+# /status would contains FAILED whenever some index has an issue.
+define command{
+       command_name    check_lucene_frontend
+       command_line    /usr/lib/nagios/plugins/check_http -H '$HOSTADDRESS$' -p 8123 -url='/status' --regex FAILED --invert-regex
+       }
 
 define command {
 	command_name	check_bgpstate
