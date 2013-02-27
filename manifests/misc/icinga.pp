@@ -95,6 +95,7 @@ class icinga::monitor::apache {
 	}
 
 	apache_site { icinga: name => "icinga.wikimedia.org" }
+	apache_site { icinga-admin: name => "icinga-admin.wikimedia.org" }
 	install_certificate{ "star.wikimedia.org": }
 
 }
