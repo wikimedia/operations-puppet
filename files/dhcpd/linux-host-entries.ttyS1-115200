@@ -3527,6 +3527,16 @@ host promethium {
 	fixed-address promethium.eqiad.wmnet;
 }
 
+host rdb1001 {
+	hardware ethernet 90:B1:1C:2D:7B:74;
+	fixed-address rdb1001.eqiad.wmnet;
+}
+
+host rdb1002 {
+	hardware ethernet 90:B1:1C:2D:78:68;
+	fixed-address rdb1002.eqiad.wmnet;
+}
+
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
