@@ -120,6 +120,9 @@ class lucene {
 
 		if $lucene::server::indexer == false {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
+
+			# Each box hosts different databases
+			monitor_service { 'lucene_search': description => 'Lucene search', check_command => "check_lucene_frontend!$lucene_project_to_check" }
 		}
 	}
 
