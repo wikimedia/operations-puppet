@@ -2084,10 +2084,10 @@ node "spence.wikimedia.org" {
 	$ganglia_aggregator = "true"
 	$nagios_server = "true"
 
-	$ircecho_infile = "/var/log/nagios/irc.log"
-	$ircecho_nick = "nagios-wm"
-	$ircecho_chans = "#wikimedia-operations"
-	$ircecho_server = "irc.freenode.net"
+#	$ircecho_infile = "/var/log/nagios/irc.log"
+#	$ircecho_nick = "nagios-wm"
+#	$ircecho_chans = "#wikimedia-operations"
+#	$ircecho_server = "irc.freenode.net"
 
 	include standard,
 		nagios::monitor,
@@ -2103,8 +2103,8 @@ node "spence.wikimedia.org" {
 		admins::roots,
 		admins::mortals,
 		certificates::wmf_ca,
-		backup::client,
-		misc::ircecho
+		backup::client
+#		misc::ircecho
 
 	install_certificate{ "star.wikimedia.org": }
 }
