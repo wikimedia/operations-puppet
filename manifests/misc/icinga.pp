@@ -84,6 +84,12 @@ class icinga::monitor::apache {
 			group => root,
 			mode => 0444,
 			source => "puppet:///files/apache/sites/icinga.wikimedia.org";
+		"/etc/apache2/sites-available/icinga-admin.wikimedia.org":
+			ensure => present,
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/apache/sites/icinga-admin.wikimedia.org";
 	}
 
 		# remove icinga default config
