@@ -1511,7 +1511,7 @@ host ms-be11 {
 }
 
 host ms-be12 {
-	hardware ethernet 04:7D:7B:2E:2E:7A;
+	hardware ethernet 90:B1:1C:18:AA:93;
 	fixed-address ms-be12.pmtpa.wmnet;
 }
 

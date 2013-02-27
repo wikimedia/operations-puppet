@@ -1506,7 +1506,7 @@ node /^ms-be9\.pmtpa\.wmnet$/ {
 
 node /^ms-be(3|[5-8]|10)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts that are 720xds with ssds have two more disks
-	# but they show up as m and n, those get the OS
+	# but with the h310s they show up as m and n, those get the OS
 	$all_drives = [ '/dev/sda', '/dev/sdb', '/dev/sdc', '/dev/sdd',
 		'/dev/sde', '/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj',
 		'/dev/sdk', '/dev/sdl' ]
@@ -1521,8 +1521,9 @@ node /^ms-be(3|[5-8]|10)\.pmtpa\.wmnet$/ {
 	swift::mount_filesystem{ '/dev/sdn3': }
 }
 
-node /^ms-be11\.pmtpa\.wmnet$/ {
+node /^ms-be(11|12)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
+	# this is the 720xds with h710 layout
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
 		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
@@ -1537,8 +1538,9 @@ node /^ms-be11\.pmtpa\.wmnet$/ {
 	swift::mount_filesystem{ '/dev/sdb3': }
 }
 
-node /^ms-be1([1-2]|[4-9])\.pmtpa\.wmnet$/ {
+node /^ms-be(1|2|4|9)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
+	# these are the c2100s, to be gone soon
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
 		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
 		'/dev/sdl', '/dev/sdm', '/dev/sdn' ]
