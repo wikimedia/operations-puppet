@@ -1,0 +1,9 @@
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Code-Review+1: Andrew Bogott <abogott@wikimedia.org>
+Code-Review+1: DamianZaremba <damian@damianzaremba.co.uk>
+Verified+2: jenkins-bot
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Wed, 27 Feb 2013 19:39:17 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/50913
+Project: operations/puppet
+Branch: refs/heads/production
