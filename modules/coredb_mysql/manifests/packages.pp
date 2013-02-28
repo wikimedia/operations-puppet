@@ -14,7 +14,8 @@ class coredb_mysql::packages {
 				refreshonly => true;
 			}
 			package { [ 'mariadb-client-5.5', 'mariadb-server-core-5.5', 'mariadb-server-5.5', 'libmariadbclient18' ]:
-				ensure => "5.5.28-mariadb-wmf201212041~precise",
+				#ensure => "5.5.28-mariadb-wmf201212041~precise",
+				ensure => present,
 				require => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"];
 			}
 		} else {
