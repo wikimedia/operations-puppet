@@ -70,6 +70,9 @@ class icinga::monitor::apache {
 
 	include webserver::php5-gd
 
+        include passwords::ldap::wmf_cluster
+        $proxypass = $passwords::ldap::wmf_cluster::proxypass
+
 	file {
 		"/usr/share/icinga/htdocs/images/logos/ubuntu.png":
 			source => "puppet:///files/icinga/ubuntu.png",
@@ -83,7 +86,7 @@ class icinga::monitor::apache {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/apache/sites/icinga.wikimedia.org";
+			content => template("apache/sites/icinga.wikimedia.org.erb");
 	}
 
 		# remove icinga default config

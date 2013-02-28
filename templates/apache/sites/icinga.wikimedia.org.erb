@@ -83,10 +83,13 @@ Alias /icinga /usr/share/icinga/htdocs
 		AllowOverride AuthConfig
 		Order Allow,Deny
 		Allow From All
-		AuthName "Icinga Access"
+		AuthName "WMF Labs"
 		AuthType Basic
-		AuthUserFile /etc/icinga/htpasswd.users
-		require valid-user
+		AuthBasicProvider ldap
+		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
+		AuthLDAPBindPassword <%= proxypass %>
+		AuthLDAPURL "ldap://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
 	</DirectoryMatch>
 	<IfModule !mod_alias.c>
 		LoadModule alias_module modules/mod_alias.so
