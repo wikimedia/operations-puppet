@@ -14,7 +14,7 @@ class bots::logbot( $ensure = 'present',
 			     $port = 6667,
 			     $author_map = '{}',
 			     $title_map = '{}',
-			     $wiki_connection = '("https","labsconsole.wikimedia.org")',
+			     $wiki_connection = '("https","wiktiech.wikimedia.org")',
 			     $wiki_path = "/w/",
 			     $wiki_user = "anon",
 			     # The page for viewing logs doesn't necessarily

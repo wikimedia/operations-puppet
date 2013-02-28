@@ -79,7 +79,7 @@ class ssh::config {
 				group => root,
 				mode  => 0444,
 				content => "
-If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
+If you are having access problems, please see: https://wikitech.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
 "
 			}
 			if versioncmp($::lsbdistrelease, "12.04") >= 0 {

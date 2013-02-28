@@ -82,11 +82,11 @@ class role::nova::config::pmtpa inherits role::nova::config {
 			"labs" => "10.4.0.0/21",
 		},
 		controller_hostname => $realm ? {
-			"production" => "labsconsole.wikimedia.org",
+			"production" => "wikitech.wikimedia.org",
 			"labs" => $fqdn,
 		},
 		ajax_proxy_url => $realm ? {
-			"production" => "http://labsconsole.wikimedia.org:8000",
+			"production" => "http://wikitech.wikimedia.org:8000",
 			"labs" => "http://${hostname}.${domain}:8000",
 		},
 		ldap_host => $controller_hostname,
@@ -157,11 +157,11 @@ class role::nova::config::eqiad inherits role::nova::config {
 			"labs" => "10.4.0.0/21",
 		},
 		controller_hostname => $realm ? {
-			"production" => "labsconsole.wikimedia.org",
+			"production" => "wikitech.wikimedia.org",
 			"labs" => $fqdn,
 		},
 		ajax_proxy_url => $realm ? {
-			"production" => "http://labsconsole.wikimedia.org:8000",
+			"production" => "http://wikitech.wikimedia.org:8000",
 			"labs" => "http://${hostname}.${domain}:8000",
 		},
 		ldap_host => $controller_hostname,
@@ -191,7 +191,7 @@ class role::nova::common {
 	class { "openstack::common":
 		openstack_version => $openstack_version,
 		novaconfig => $novaconfig,
-		instance_status_wiki_host => "labsconsole.wikimedia.org",
+		instance_status_wiki_host => "wikitech.wikimedia.org",
 		instance_status_wiki_domain => "labs",
 		instance_status_wiki_page_prefix => "Nova_Resource:",
 		instance_status_wiki_region => "pmtpa",

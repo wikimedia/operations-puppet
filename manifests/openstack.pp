@@ -421,7 +421,7 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 			mode => 0644,
 			owner => root,
 			group => root,
-			content => template('apache/sites/labsconsole.wikimedia.org'),
+			content => template('apache/sites/wikitech.wikimedia.org.erb'),
 			ensure => present;
 		"/a/backup":
 			mode => 755,

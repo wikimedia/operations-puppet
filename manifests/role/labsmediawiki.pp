@@ -21,19 +21,19 @@ class role::mediawiki-install::labs {
 # Install Wikidata repo (incl. MediaWiki) from git and keep in sync with git trunk
 # This class installs a Wikidata repository. This includes MediaWiki the extensions Wikibase depends on and some other extensions used on the public demo system of the Wikidata project.
 #
-# Required parameters in labsconsole:
+# Required parameters in wikitech:
 # $wikidata_client_ip    - the IP address of a Wikibase client that should be informed about changes in this repo.
 #
-# Optional parameters in labsconsole:
+# Optional parameters in wikitech:
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
 class role::wikidata-repo-latest::labs {
 
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
-		# get value for experimental features from labsconsole
+		# get value for experimental features from wikitech
 		experimental => $wikidata_experimental,
-		# get value for client_ip from labsconsole
+		# get value for client_ip from wikitech
 		client_ip => $wikidata_client_ip,
 		# name all repo databases "repo",
 		database_name => "repo",
@@ -53,19 +53,19 @@ class role::wikidata-repo-latest::labs {
 # Install Wikidata repo (incl. Mediawiki) from git and then leave it alone.
 # This class installs a Wikidata repository. This includes MediaWiki the extensions Wikibase depends on and some other extensions used on the public demo system of the Wikidata project.
 #
-# Required parameters in labsconsole:
+# Required parameters in wikitech:
 # $wikidata_client_ip    - the IP address of a Wikibase client that should be informed about changes in this repo.
 #
-# Optional parameters in labsconsole:
+# Optional parameters in wikitech:
 # $wikidata_experimental - true || false, defaults to true, activates experimental features
 class role::wikidata-repo::labs {
 
 	class { "wikidata::singlenode":
 		install_repo => true,
 		install_client => false,
-		# get value for experimental features from labsconsole
+		# get value for experimental features from wikitech
 		experimental => $wikidata_experimental,
-		# get value for client_ip from labsconsole
+		# get value for client_ip from wikitech
 		client_ip => $wikidata_client_ip,
 		# name all repo databases "repo",
 		database_name => "repo",
@@ -86,25 +86,25 @@ class role::wikidata-repo::labs {
 # Install Wikidata client (incl. MediaWiki) from git and keep in sync with git trunk
 # This class installs a Wikibase client. This includes MediaWiki the extensions Wikibase depends on and some other extensions used on the public demo system of the Wikidata project.
 #
-# Required parameters in labsconsole:
+# Required parameters in wikitech:
 # $wikidata_repo_ip             - the IP address of the Wikibase repo this client should get changes from.
 # $wikidata_repo_url            - the URL of that same repo
 # $wikidata_client_siteGlobalID - A repo can be contacted by different clients that "speak" different languages. The siteGlobalID announces the language of this client. Give the siteGlobalID in a format like "enwiki" for English, "hewiki" for Hebrew, "dewiki" for German etc.
 #
-# Optional parameters in labsconsole:
+# Optional parameters in wikitech:
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
 class role::wikidata-client-latest::labs {
 
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
-		# get value for experimental features from labsconsole
+		# get value for experimental features from wikitech
 		experimental => $wikidata_experimental,
-		# get value for repo_ip from labsconsole
+		# get value for repo_ip from wikitech
 		repo_ip => $wikidata_repo_ip,
-		# get value for repo_url from labsconsole
+		# get value for repo_url from wikitech
 		repo_url => $wikidata_repo_url,
-		# get value for client's siteGlobalID (like "enwiki") from labsconsole
+		# get value for client's siteGlobalID (like "enwiki") from wikitech
 		siteGlobalID => $wikidata_client_siteGlobalID,
 		# name all client databases "client",
 		database_name => "client",
@@ -125,25 +125,25 @@ class role::wikidata-client-latest::labs {
 # Install Wikidata client (incl. Mediawiki) from git and then leave it alone.
 # This class installs a Wikibase client. This includes MediaWiki the extensions Wikibase depends on and some other extensions used on the public demo system of the Wikidata project.
 #
-# Required parameters in labsconsole:
+# Required parameters in wikitech:
 # $wikidata_repo_ip             - the IP address of the Wikibase repo this client should get changes from.
 # $wikidata_repo_url            - the URL of that same repo
 # $wikidata_client_siteGlobalID - A repo can be contacted by different clients that "speak" different languages. The siteGlobalID announces the language of this client. Give the siteGlobalID in a format like "enwiki" for English, "hewiki" for Hebrew, "dewiki" for German etc.
 #
-# Optional parameters in labsconsole:
+# Optional parameters in wikitech:
 # $wikidata_experimental        - true || false, defaults to true, activates experimental features
 class role::wikidata-client::labs {
 
 	class { "wikidata::singlenode":
 		install_client => true,
 		install_repo => false,
-		# get value for experimental features from labsconsole
+		# get value for experimental features from wikitech
 		experimental => $wikidata_experimental,
-		# get value for repo_ip from labsconsole
+		# get value for repo_ip from wikitech
 		repo_ip => $wikidata_repo_ip,
-		# get value for repo_url from labsconsole
+		# get value for repo_url from wikitech
 		repo_url => $wikidata_repo_url,
-		# get value for client's siteGlobalID (like "enwiki") from labsconsole
+		# get value for client's siteGlobalID (like "enwiki") from wikitech
 		siteGlobalID => $wikidata_client_siteGlobalID,
 		# name all client databases "client",
 		database_name => "client",
