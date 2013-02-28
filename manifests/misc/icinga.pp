@@ -83,7 +83,7 @@ class icinga::monitor::apache {
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/apache/sites/icinga.wikimedia.org";
+			content => template("apache/sites/icinga.wikimedia.org.erb");
 	}
 
 		# remove icinga default config
