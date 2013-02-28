@@ -1060,6 +1060,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			$sip['search_pool2'][$::site],
 			$sip['search_pool3'][$::site],
 			$sip['search_pool4'][$::site],
+			$sip['search_pool5'][$::site],
 			$sip['search_prefix'][$::site],
 			$sip['swift'][$::site],
 			$sip['parsoid'][$::site]
@@ -1932,12 +1933,17 @@ node "sanger.wikimedia.org" {
 	#include ldap::server::iptables
 }
 
-node /search1[3-8]\.pmtpa\.wmnet/ {
+node /search1[3478]\.pmtpa\.wmnet/ {
 	if $hostname =~ /^search1(3|4)$/ {
 		$ganglia_aggregator = "true"
 	}
 
 	include role::lucene::front_end::pool4
+}
+
+node /search1[56]\.pmtpa\.wmnet/ {
+
+	include role::lucene::front_end::pool5
 }
 
 node /search(19|20)\.pmtpa\.wmnet/ {

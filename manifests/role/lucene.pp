@@ -186,6 +186,9 @@ class role::lucene {
 		class pool4 {
 			class { "role::lucene::front_end::common": search_pool => "search_pool4" }
 		}
+		class pool5 {
+			class { "role::lucene::front_end::common": search_pool => "search_pool5" }
+		}
 		class prefix {
 			class { "role::lucene::front_end::common": search_pool => "search_prefix" }
 		}

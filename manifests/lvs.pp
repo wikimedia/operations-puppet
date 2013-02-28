@@ -344,6 +344,10 @@ class lvs::configuration {
 				'pmtpa' => "10.2.1.15",
 				'eqiad' => "10.2.2.15",
 			},
+			'search_pool5' => {
+				'pmtpa' => "10.2.1.16",
+				'eqiad' => "10.2.2.16",
+			},
 			'mobile' => {
 				'eqiad' => { 'mobilelb' => "208.80.154.236", 'mobilelb6' => "2620:0:861:ed1a::c", 'mobilesvc' => "10.2.2.26"}
 			},
