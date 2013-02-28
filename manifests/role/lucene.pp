@@ -94,14 +94,16 @@ class role::lucene {
 					"pool4" => {
 						"search13" => ['*?'],
 						"search14" => ['*?'],
-						"search15" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search16" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search17" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-						"search18" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
+						"search17" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.|commonswiki.|wikidatawiki|metawiki|enwiktionary))*.hl',
+						'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.|commonswiki.|wikidatawiki|metawiki|enwiktionary))*.spell'],
+						"search18" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.|commonswiki.|wikidatawiki|metawiki|enwiktionary))*.hl',
+						'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.|commonswiki.|wikidatawiki|metawiki|enwiktionary))*.spell'],
+					},
+					"pool5" => {
+						"search15" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl', 'commonswiki.spell',
+							'wikidatawiki', 'metawiki', 'enwiktionary', 'wikidatawiki.hl', 'metawiki.hl', 'enwiktionary.hl', 'wikidatawiki.spell', 'metawiki.spell', 'enwiktionary.spell'],
+						"search16" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl', 'commonswiki.spell',
+							'wikidatawiki', 'metawiki', 'enwiktionary', 'wikidatawiki.hl', 'metawiki.hl', 'enwiktionary.hl', 'wikidatawiki.spell', 'metawiki.spell', 'enwiktionary.spell'],
 					},
 					"prefix" => {
 						"search19" => ['*.prefix'],
@@ -185,6 +187,9 @@ class role::lucene {
 		}
 		class pool4 {
 			class { "role::lucene::front_end::common": search_pool => "search_pool4" }
+		}
+		class pool5 {
+			class { "role::lucene::front_end::common": search_pool => "search_pool5" }
 		}
 		class prefix {
 			class { "role::lucene::front_end::common": search_pool => "search_prefix" }
