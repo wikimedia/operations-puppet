@@ -71,17 +71,27 @@ class ssh::hostkeys::collect {
 	}
 }
 
-class ssh::config {
+
+class ssh::bastion {
+	$ssh_banner = '/etc/ssh/sshd_banner'
 	if $operatingsystem == "Ubuntu" {
 		if ( $realm == "labs" ) {
-			file { "/etc/ssh/sshd_banner":
+			@file { $ssh_banner:
 				owner => root,
 				group => root,
 				mode  => 0444,
+				tag => 'ssh_banner',
 				content => "
 If you are having access problems, please see: https://labsconsole.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
 "
 			}
+		}
+	}
+}
+
+class ssh::config {
+	if $operatingsystem == "Ubuntu" {
+		if ( $realm == "labs" ) {
 			if versioncmp($::lsbdistrelease, "12.04") >= 0 {
 				$ssh_authorized_keys_file = "/etc/ssh/userkeys/%u/.ssh/authorized_keys /public/keys/%u/.ssh/authorized_keys"
 			} else {
@@ -89,6 +99,12 @@ If you are having access problems, please see: https://labsconsole.wikimedia.org
 				$ssh_authorized_keys_file2 = "/public/keys/%u/.ssh/authorized_keys"
 			}
 		}
+
+
+		$ssh_banner = $ssh::bastion::ssh_banner
+
+		File <| tag == 'ssh_banner' |>
+
 		file { "/etc/ssh/sshd_config":
 			owner => root,
 			group => root,
