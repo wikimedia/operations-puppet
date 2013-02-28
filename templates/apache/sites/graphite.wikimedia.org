@@ -20,7 +20,7 @@
 		AuthBasicProvider ldap
 		AuthLDAPBindDN cn=proxyagent,ou=profile,dc=wikimedia,dc=org
 		AuthLDAPBindPassword <%= proxypass %>
-		AuthLDAPURL "ldap://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
+		AuthLDAPURL "ldaps://virt0.wikimedia.org virt1000.wikimedia.org/ou=people,dc=wikimedia,dc=org?cn"
 		Require ldap-group cn=wmf,ou=groups,dc=wikimedia,dc=org
 
 		RedirectMatch ^/$ "https://graphite.wikimedia.org/dashboard/"
