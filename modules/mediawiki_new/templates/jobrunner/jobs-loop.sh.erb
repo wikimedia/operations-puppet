@@ -58,10 +58,6 @@ forkcount=2
 # default total memory limit (in kb) for this process and its sub-processes
 maxvirtualmemory=400000
 
-# Whether to process the default queue. Will be the case if no job type
-# was specified on the command line. Else we only want to process given types
-dodefault=y
-
 while getopts "t:v:" flag
 do
 	case $flag in
