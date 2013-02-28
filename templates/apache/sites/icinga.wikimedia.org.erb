@@ -47,20 +47,9 @@ Alias /icinga /usr/share/icinga/htdocs
 	ServerAdmin noc@wikimedia.org
 	DocumentRoot /usr/share/icinga/htdocs
 
-	<DirectoryMatch (/usr/share/icinga/htdocs|/usr/lib/cgi-bin/icinga|/etc/icinga/stylesheets)>
-		Options FollowSymLinks
-		Options ExecCGI
-		DirectoryIndex index.html
-		AllowOverride None
-#		AllowOverride AuthConfig
-#		Order Allow,Deny
-#		Allow From All
-	</DirectoryMatch>
-	<IfModule !mod_alias.c>
-		LoadModule alias_module modules/mod_alias.so
-	</IfModule>
-
-	RedirectMatch ^/$ http://icinga.wikimedia.org/icinga
+        RewriteEngine on
+        RewriteCond %{SERVER_PORT} !^443$
+        RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [L,R]
 
 	ErrorLog /var/log/apache2/icinga.log
 	LogLevel warn
@@ -101,3 +90,14 @@ Alias /icinga /usr/share/icinga/htdocs
 
 </VirtualHost>
 
+<VirtualHost *:80>
+	ServerName icinga-admin.wikimedia.org
+	DocumentRoot /usr/share/icinga/htdocs
+
+        RewriteEngine on
+        RewriteCond %{SERVER_PORT} !^443$
+        RewriteRule ^/(.*)$ https://icinga-admin.wikimedia.org/$1 [L,R]
+
+	ErrorLog /var/log/apache2/icinga.log
+	LogLevel warn
+</VirtualHost>
