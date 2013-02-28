@@ -2086,34 +2086,34 @@ node "sodium.wikimedia.org" {
 	}
 }
 
-node "spence.wikimedia.org" {
-	$ganglia_aggregator = "true"
-	$nagios_server = "true"
-
+#node "spence.wikimedia.org" {
+#	$ganglia_aggregator = "true"
+#	$nagios_server = "true"
+#
 #	$ircecho_infile = "/var/log/nagios/irc.log"
 #	$ircecho_nick = "nagios-wm"
 #	$ircecho_chans = "#wikimedia-operations"
 #	$ircecho_server = "irc.freenode.net"
-
-	include standard,
-		nagios::monitor,
-		nagios::monitor::pager,
-		nagios::monitor::jobqueue,
-		nagios::monitor::snmp,
-		nagios::monitor::firewall,
-		nagios::ganglia::monitor::enwiki,
-		nagios::ganglia::ganglios,
-		nagios::nsca::daemon,
-		nagios::monitor::checkpaging,
-		nfs::netapp::home,
-		admins::roots,
-		admins::mortals,
-		certificates::wmf_ca,
-		backup::client
+#
+#	include standard,
+#		nagios::monitor,
+#		nagios::monitor::pager,
+#		nagios::monitor::jobqueue,
+#		nagios::monitor::snmp,
+#		nagios::monitor::firewall,
+#		nagios::ganglia::monitor::enwiki,
+#		nagios::ganglia::ganglios,
+#		nagios::nsca::daemon,
+#		nagios::monitor::checkpaging,
+#		nfs::netapp::home,
+#		admins::roots,
+#		admins::mortals,
+#		certificates::wmf_ca,
+#		backup::client
 #		misc::ircecho
-
-	install_certificate{ "star.wikimedia.org": }
-}
+#
+#	install_certificate{ "star.wikimedia.org": }
+#}
 
 # srv193 is test.wikipedia.org (precise)
 node "srv193.pmtpa.wmnet" {
