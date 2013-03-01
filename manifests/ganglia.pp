@@ -284,7 +284,7 @@ class ganglia {
 						"Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
 						"API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
 						"LVS loadbalancers pmtpa" => "lvs1.wikimedia.org lvs2.wikimedia.org",
-						"Miscellaneous" => "hooper.pmtpa.wmnet tarin.pmtpa.wmnet",
+						"Miscellaneous" => "hooper.wikimedia.org tarin.pmtpa.wmnet",
 						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
 						"Bits caches" => "sq67.wikimedia.org sq68.wikimedia.org",
 						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
