@@ -135,7 +135,7 @@ class openstack::common($openstack_version="diablo",
 		ensure => present;
 	}
 
-	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-client", "mysql-common" ]:
+	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-common" ]:
 		ensure => present;
 	}
 
@@ -292,49 +292,41 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 	$keystone_db_user = $keystoneconfig["db_user"]
 	$keystone_db_pass = $keystoneconfig["db_pass"]
 
-	package { "mysql-server":
-		ensure => present;
-	}
-
-	service { "mysql":
-		enable => true,
-		require => Package["mysql-server"],
-		ensure => running;
-	}
+	require generic::mysql::packages::server
 
 	# TODO: This expects the services to be installed in the same location
 	exec {
 		'set_root':
 			onlyif => "/usr/bin/mysql -uroot --password=''",
 			command => "/usr/bin/mysql -uroot --password='' mysql < /etc/nova/mysql.sql",
-			require => [Package["mysql-client"],File["/etc/nova/mysql.sql"]],
+			require => File["/etc/nova/mysql.sql"],
 			before => Exec['create_nova_db'];
 		'create_nova_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/nova/nova-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/nova/nova-user.sql",
-			require => [Package["mysql-client"],File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"]];
+			require => File["/etc/nova/nova-user.sql", "/etc/nova/nova-user.cnf", "/root/.my.cnf"];
 		'create_nova_db':
 			unless => "/usr/bin/mysql -uroot $nova_db_name -e 'exit'",
 			command => "/usr/bin/mysql -uroot -e \"create database $nova_db_name;\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			require => File["/root/.my.cnf"],
 			before => Exec['create_nova_db_user'];
 		'create_puppet_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/puppet/puppet-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/puppet/puppet-user.sql",
-			require => [Package["mysql-client"],File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"]];
+			require => File["/etc/puppet/puppet-user.sql", "/etc/puppet/puppet-user.cnf", "/root/.my.cnf"];
 		'create_puppet_db':
 			unless => "/usr/bin/mysql -uroot $puppet_db_name -e 'exit'",
 			command => "/usr/bin/mysql -uroot -e \"create database $puppet_db_name;\"",
-			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			require => File["/root/.my.cnf"],
 			before => Exec['create_puppet_db_user'];
 		'create_glance_db_user':
 			unless => "/usr/bin/mysql --defaults-file=/etc/glance/glance-user.cnf -e 'exit'",
 			command => "/usr/bin/mysql -uroot < /etc/glance/glance-user.sql",
-			require => [Package['mysql-client'], File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"]];
+			require => File["/etc/glance/glance-user.sql","/etc/glance/glance-user.cnf","/root/.my.cnf"];
 		'create_glance_db':
 			unless => "/usr/bin/mysql -uroot $glance_db_name -e 'exit'",
 			command => "/usr/bin/mysql -uroot -e \"create database $glance_db_name;\"",
-			require => [Package['mysql-client'], File["/root/.my.cnf"]],
+			require => File["/root/.my.cnf"],
 			before => Exec['create_glance_db_user'];
 	}
 
@@ -343,11 +335,11 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 			'create_keystone_db_user':
 				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
 				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
-				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
+				require => File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"];
 			'create_keystone_db':
 				unless => "/usr/bin/mysql -uroot $keystone_db_name -e 'exit'",
 				command => "/usr/bin/mysql -uroot -e \"create database $keystone_db_name;\"",
-				require => [Package["mysql-client"], File["/root/.my.cnf"]],
+				require => File["/root/.my.cnf"],
 				before => Exec['create_keystone_db_user'];
 		}
 	}
@@ -422,15 +414,19 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
 	require mediawiki::users::mwdeploy
 
-	include webserver::apache2
+    if !defined(Class["webserver::php5"]) {
+		class {'webserver::php5': ssl => 'true'; }
+	}
 
-	class { "memcached":
-		pin => true;
+	if !defined(Class["memcached"]) {
+		class { "memcached":
+			pin => true;
+		}
 	}
 
 	$controller_hostname = $novaconfig["controller_hostname"]
 
-	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick' ]:
+	package { [ 'php5', 'php5-cli', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-luasandbox' ]:
 		ensure => present;
 	}
 
