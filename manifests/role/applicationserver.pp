@@ -167,7 +167,8 @@ class role::applicationserver {
 
 		class {"mediawiki_new::jobrunner":
 			run_jobs_enabled => $run_jobs_enabled,
-			procs => 10,
+			dprioprocs => 10,
+			iprioprocs => 0,
 			type => "webVideoTranscode",
 			timeout => 14400,
 			extra_args => "-v 0"
