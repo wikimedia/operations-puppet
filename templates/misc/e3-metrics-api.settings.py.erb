@@ -1,23 +1,61 @@
 # Project settings
 # ================
-__home__ = '<%= e3_home %>'
-__project_home__ = '<%= e3_analysis_path %>'
-__web_home__ = ''.join([__project_home__, 'web_interface/'])
-__sql_home__ = ''.join([__project_home__, 'SQL/'])
-__server_log_local_home__ = ''.join([__project_home__, 'logs/'])
-__data_file_dir__ = ''.join([__project_home__, 'data/'])
 
-__web_app_module__ = 'web_interface'
-__system_user__ = 'stats'
+__project_home__            = '<%= e3_analysis_path %>'
+__web_home__                = ''.join([__project_home__, 'src/api/'])
+__data_file_dir__           = ''.join([__project_home__, 'data/'])
+
+__query_module__            = 'query_calls_sql'
+__user_thread_max__         = 100
+__rev_thread_max__          = 50
+
+__cohort_data_instance__    = 'cohorts'
+__cohort_db__               = 'usertags'
+__cohort_meta_db__          = 'usertags_meta'
+__cohort_meta_instance__    = 'prod'
+
 
 # Database connection settings
 # ============================
 
 connections = {
     'slave': {
-        'user' : '<%= mysql_user %>',
-        'passwd' : '<%= mysql_pass %>',
-        'host' : '<%= mysql_host %>',
-        'db' : '<%= mysql_db %>',
-        'port' : <%= mysql_port %>}
+        'user' : '<%= mysql_user_1 %>',
+        'passwd' : '<%= mysql_pass_1 %>',
+        'host' : '<%= mysql_host_1 %>',
+        'db' : '<%= mysql_db_1 %>',
+        'port' : <%= mysql_port_1 %>}
+    's1': {
+        'user' : '<%= mysql_user_2 %>',
+        'passwd' : '<%= mysql_pass_2 %>',
+        'host' : '<%= mysql_host_2 %>',
+        'port' : <%= mysql_port_2 %>}
+    's2': {
+        'user' : '<%= mysql_user_3 %>',
+        'passwd' : '<%= mysql_pass_3 %>',
+        'host' : '<%= mysql_host_3 %>',
+        'port' : <%= mysql_port_3 %>}
+    's3': {
+        'user' : '<%= mysql_user_4 %>',
+        'passwd' : '<%= mysql_pass_4 %>',
+        'host' : '<%= mysql_host_4 %>',
+        'port' : <%= mysql_port_4 %>}
+    's4': {
+        'user' : '<%= mysql_user_5 %>',
+        'passwd' : '<%= mysql_pass_5 %>',
+        'host' : '<%= mysql_host_5 %>',
+        'port' : <%= mysql_port_5 %>}
+    's5': {
+        'user' : '<%= mysql_user_6 %>',
+        'passwd' : '<%= mysql_pass_6 %>',
+        'host' : '<%= mysql_host_6 %>',
+        'port' : <%= mysql_port_6 %>}
 }
+
+PROJECT_DB_MAP = {
+    'enwiki': 's1',
+    'dewiki': 's5',
+    'itwiki': 's2',
+    'commonswiki': 's4',
+}
+
