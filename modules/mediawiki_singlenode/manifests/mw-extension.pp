@@ -2,12 +2,8 @@
 define mw-extension(
 	# defaults
 	$branch="master",
-	$ssh="",
-	$owner="root",
-	$group="root",
-	$timeout="300",
-	$depth="full",
-	$mode=0755) {
+	$ensure=present,
+	$install_path="") {
 	git::clone { "$name":
 		require => git::clone["mediawiki"],
 		directory => "${install_path}/extensions/${name}",
