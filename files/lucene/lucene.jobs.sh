@@ -9,6 +9,20 @@ ls2="$base/lucene-search"
 
 MWinstall="/usr/local/apache"
 dblist="$MWinstall/common/all.dblist"
+
+# detect realm (production or labs)
+WMF_REALM='production'
+if [ -f /etc/wikimedia-realm ]
+then
+	WMF_REALM=`cat /etc/wikimedia-realm`
+fi
+# Per realm override
+case "$WMF_REALM" in
+	'labs')
+		dblist="$MWinstall/common/all-labs.dblist"
+	;;
+esac
+
 pvtlist="$MWinstall/common/private.dblist"
 
 function build-new {
