@@ -21,18 +21,18 @@ class mediawiki::jobrunner (
 			owner => root,
 			group => root,
 			mode => 0755,
-			source => "puppet:///modules/mediawiki_new/jobrunner/mw-job-runner.init";
+			source => "puppet:///modules/mediawiki/jobrunner/mw-job-runner.init";
 	}
 	file {
 		"/etc/default/mw-job-runner":
-			content => template("mediawiki_new/jobrunner/mw-job-runner.default.erb");
+			content => template("mediawiki/jobrunner/mw-job-runner.default.erb");
 	}
 	file {
 		"/usr/local/bin/jobs-loop.sh":
 			owner => root,
 			group => root,
 			mode => 0755,
-			content => template("mediawiki_new/jobrunner/jobs-loop.sh.erb");
+			content => template("mediawiki/jobrunner/jobs-loop.sh.erb");
 	}
 	if $run_jobs_enabled == true {
 		service {
