@@ -245,7 +245,7 @@ class base::puppet($server="puppet", $certname=undef) {
 }
 
 class base::remote-syslog {
-	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") {
+	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") and ($::instancename != 'deployment-bastion') {
 		package { rsyslog:
 			ensure => latest;
 		}
