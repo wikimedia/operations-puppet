@@ -1,7 +1,7 @@
 # nagios.pp
 
-import "generic-definitions.pp"
-import "decommissioning.pp"
+import "../generic-definitions.pp"
+import "../decommissioning.pp"
 
 $nagios_config_dir = "/etc/nagios"
 
@@ -706,3 +706,9 @@ class nagios::gsbmonitoring {
 class misc::zfs::monitoring {
 	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }
 }
+
+
+# global monitor groups - moved from misc/nagios.pp
+
+@monitor_group { "misc_eqiad": description => "eqiad misc servers" }
+@monitor_group { "misc_pmtpa": description => "pmtpa misc servers" }

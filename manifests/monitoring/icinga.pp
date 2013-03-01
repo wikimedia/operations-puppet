@@ -2,7 +2,7 @@
 
 import "../generic-definitions.pp"
 import "../decommissioning.pp"
-import "../nagios.pp"
+import "nagios.pp"
 
 class icinga::monitor {
 
