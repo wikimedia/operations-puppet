@@ -46,6 +46,8 @@
 
 	RewriteEngine on
 	RewriteRule ^/view/(.*)$ https://<%= controller_hostname %>/wiki/$1 [L,R]
+	RewriteCond %{HTTP_HOST}   !^<%= controller_hostname.gsub(%r[\.],'\\.') %> [NC]
+	RewriteRule ^/(.*)         https://<%= controller_hostname %>/$1 [L,R]
 
 	DocumentRoot /var/www
 	<Directory />
