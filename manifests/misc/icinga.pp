@@ -23,6 +23,9 @@ class icinga::monitor {
 		icinga::monitor::files::misc,
 		nagios::ganglia::monitor::enwiki,
 		icinga::ganglia::ganglios,
+		facilities::pdu_monitoring,
+		lvs::monitor,
+		nagios::gsbmonitoring,
 		mysql,
 		nrpe::new
 
