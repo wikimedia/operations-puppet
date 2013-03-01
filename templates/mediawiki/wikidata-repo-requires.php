@@ -31,6 +31,7 @@ require_once( "$IP/extensions/DismissableSiteNotice/DismissableSiteNotice.php" )
 require_once( "$IP/extensions/ApiSandbox/ApiSandbox.php" );
 require_once( "$IP/extensions/OAI/OAIRepo.php" );
 require_once( "$IP/extensions/notitle.php" );
+require_once( "$IP/extensions/Babel/Babel.php" );
 
 // items in main namespace
 $baseNs = 100;

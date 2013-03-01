@@ -144,7 +144,7 @@ class wikidata::singlenode( $install_path = "/srv/mediawiki",
 
 		# get the extensions
 		# for repo get extensions Wikibase and ULS
-		mw-extension { [ "Wikibase", "UniversalLanguageSelector" ]:
+		mw-extension { [ "Wikibase", "UniversalLanguageSelector", "Babel" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		# put a repo specific settings file to $install_path (required by LocalSettings.php)
