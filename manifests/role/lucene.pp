@@ -129,7 +129,7 @@ class role::lucene {
 
 		# Include packages needed for MW maintenance scripts
 		include standard,
-			mediawiki_new,
+			mediawiki,
 			applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
