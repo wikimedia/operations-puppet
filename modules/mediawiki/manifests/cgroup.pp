@@ -7,7 +7,7 @@ class mediawiki::cgroup {
 		owner   => root,
 		group   => root,
 		mode    => '0644',
-		source  => 'puppet:///modules/mediawiki_new/cgroup/mw-cgroup.conf',
+		source  => 'puppet:///modules/mediawiki/cgroup/mw-cgroup.conf',
 		require => Package['cgroup-bin'],
 	}
 
@@ -21,6 +21,6 @@ class mediawiki::cgroup {
 		owner  => root,
 		group  => root,
 		mode   => '0755',
-		source => 'puppet:///modules/mediawiki_new/cgroup/cgroup-mediawiki-clean',
+		source => 'puppet:///modules/mediawiki/cgroup/cgroup-mediawiki-clean',
 	}
 }
