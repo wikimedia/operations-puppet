@@ -19,7 +19,6 @@ import "ldap.pp"
 import "lvs.pp"
 import "mail.pp"
 import "media-storage.pp"
-import "mediawiki.pp"
 import "memcached.pp"
 import "misc/*.pp"
 import "mobile.pp"
@@ -676,7 +675,6 @@ node "fenari.wikimedia.org" {
 		misc::bastionhost,
 		misc::deployment,
 		misc::noc-wikimedia,
-		mediawiki::former-extdist-removesoon,
 		misc::deployment::scap_scripts,
 		misc::ircecho,
 		misc::deployment::l10nupdate,
