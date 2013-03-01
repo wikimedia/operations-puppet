@@ -18,17 +18,20 @@ class mediawiki_singlenode( $ensure = 'present',
                              $install_path = "/srv/mediawiki",
                              $role_config_lines = [],
                              $memcached_size = 128) {
-        require "role::labs-mysql-server",
-		"webserver::php5-mysql",
-		"webserver::php5"
+    if !defined(Class["webserver::php5"]) {
+        class {'webserver::php5': ssl => 'true'; }
+    }
+	require "role::labs-mysql-server", "webserver::php5-mysql"
 
 	package { [ "imagemagick", "php-apc",  ] :
 		ensure => latest
 	}
 
-	class { "memcached":
-		memcached_ip => "127.0.0.1",
-		memcached_size => $memcached_size }
+    if !defined(Class["memcached"]) {
+		class { "memcached":
+			memcached_ip => "127.0.0.1",
+			memcached_size => $memcached_size }
+	}
 
 	git::clone { "mediawiki":
 		directory => $install_path,
@@ -101,10 +104,10 @@ class mediawiki_singlenode( $ensure = 'present',
 		}
 	}
 
-	apache_site { controller: name => "wiki" }
+	apache_site { wikicontroller: name => "wiki" }
 
 	exec { 'apache_restart':
-		require => [Apache_site['controller']],
+		require => [Apache_site['wikicontroller']],
 		command => "/usr/sbin/service apache2 restart"
 	}
 
