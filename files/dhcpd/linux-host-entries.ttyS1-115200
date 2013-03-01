@@ -4495,7 +4495,7 @@ host wtp1 {
 }
 
 host wtp1001 {
-	hardware ethernet 90:B1:1C:00:A2:97;
+	hardware ethernet 90:B1:1C:2D:85:30;
 	fixed-address wtp1001.eqiad.wmnet;
 }
 
