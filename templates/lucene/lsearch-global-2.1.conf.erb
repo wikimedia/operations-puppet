@@ -2,11 +2,18 @@
 ### THIS FILE IS MANAGED BY PUPPET				 ###
 ### puppet:///templates/search/lsearch-global-2.1.conf.eqiad.erb ###
 ####################################################################
+<% # Shortcuts for convenience
+active_nodes   = scope.lookupvar('role::lucene::configuration::nodes')
+lsearch_global = scope.lookupvar('role::lucene::configuration::lsearch_global')
+realm = scope.lookupvar('::realm')
+site  = scope.lookupvar('::site')
+-%>
 
 # Logical structure, maps different roles to certain db
 [Database]
-{file:///a/search/conf/all.dblist} : (single,true,20,1000) (prefix) (spell,10,3)
-enwiki : (nssplit,2) 
+{file://<%= lsearch_global[realm]['alldblist'] -%>} : (single,true,20,1000) (prefix) (spell,10,3)
+<% if realm == 'production' -%>
+enwiki : (nssplit,2)
 enwiki : (nspart1,[0],true,20,500,2)
 enwiki : (nspart2,[],true,20,500)
 enwiki : (spell,40,10) (warmup,500)
@@ -14,6 +21,7 @@ mediawikiwiki, metawiki, commonswiki, strategywiki : (language,en)
 commonswiki : (nssplit,2) (nspart1,[6]) (nspart2,[])
 dewiki, frwiki : (spell,20,5)
 dewiki, frwiki, itwiki, ptwiki, jawiki, plwiki, nlwiki, ruwiki, svwiki, zhwiki : (nssplit,2) (nspart1,[0,2,4,12,14]) (nspart2,[]) (warmup,0)
+<% end %>
 
 [Database-Group]
 <all> : (titles_by_suffix,2) (tspart1,[ wiki|w ]) (tspart2,[ wiktionary|wikt, wikibooks|b, wikinews|n, wikiquote|q, wikisource|s, wikiversity|v])
@@ -22,11 +30,10 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 
 # Search hosts layout
 [Search-Group]
-<% active_nodes = scope.lookupvar("role::lucene::configuration::nodes") -%>
 
-<% active_nodes[scope.lookupvar("::site")]['front_ends'].keys.sort.each do |pool| -%>
+<% active_nodes[realm][site]['front_ends'].keys.sort.each do |pool| -%>
 # search <%= pool %>
-<% active_nodes[scope.lookupvar("::site")]['front_ends'][pool].sort.each do |node, indexes| -%>
+<% active_nodes[realm][site]['front_ends'][pool].sort.each do |node, indexes| -%>
 <%= node %>: <%= indexes.join(" ") %>
 <% end -%>
 
@@ -34,7 +41,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 
 # Indexers
 [Index]
-<% active_nodes[scope.lookupvar("::site")]['indexers'].each do |node, indexes| -%>
+<% active_nodes[realm][site]['indexers'].each do |node, indexes| -%>
 <%= node %>: <%= indexes.join(" ") %>
 <% end -%>
 
@@ -44,6 +51,7 @@ mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
 [Index-Path]
 <default> : /search
 
+<% if scope.lookupvar('::realm') == 'production' -%>
 [OAI]
 simplewiki : http://simple.wikipedia.org/w/index.php
 rswikimedia : http://rs.wikimedia.org/w/index.php
@@ -66,6 +74,7 @@ trwikimedia : http://tr.wikimedia.org/w/index.php
 arwikimedia : http://ar.wikimedia.org/w/index.php
 mxwikimedia : http://mx.wikimedia.org/w/index.php
 commonswiki: http://commons.wikimedia.org/w/index.php
+<% end -%>
 
 [Namespace-Boost]
 commonswiki : (0, 1) (6, 4)
@@ -94,7 +103,7 @@ ExactCase.suffix=wiktionary jbowiki
 
 # wmf-style init file, attempt to read OAI and lang info from it
 # for sample see http://noc.wikimedia.org/conf/InitialiseSettings.php.html
-WMF.InitialiseSettings=file:///a/search/conf/InitialiseSettings.php
+WMF.InitialiseSettings=file://<%= lsearch_global[realm]['initialisesettings'] -%>
 
 # Where common images are
 Commons.wiki=commonswiki.nspart1
