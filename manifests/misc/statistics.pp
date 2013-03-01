@@ -252,7 +252,7 @@ class misc::statistics::sites::metrics_api {
 	$e3_analysis_path = "$e3_home/E3Analysis"
 	$e3_user          = $misc::statistics::user::username
 
-	# these get rendered in $e3_analysis_path/config/settings.py
+	# these get rendered in $e3_analysis_path/user_metrics/config/settings.py
 	$mysql_user       = $passwords::mysql::research::user
 	$mysql_pass       = $passwords::mysql::research::pass
 	$mysql_db         = "staging"
@@ -289,7 +289,7 @@ class misc::statistics::sites::metrics_api {
 
 	# Need settings.py to configure metrics-api python application
 	# Make this only readable by stats user; it has db passwords in it.
-	file { "$e3_analysis_path/config/settings.py":
+	file { "$e3_analysis_path/user_metrics/config/settings.py":
 		content => template("misc/e3-metrics-api.settings.py.erb"),
 		owner   => $e3_user,
 		group   => "root",
