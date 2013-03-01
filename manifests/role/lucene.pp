@@ -1,128 +1,152 @@
 class role::lucene {
 	class configuration {
 		$nodes = {
-			"eqiad" => {
-				"front_ends" => {
-					# enwiki
-					"pool1" => {
-						"search1001" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.spell'],
-						"search1002" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2'],
-						"search1003" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.nspart2*'],
-						"search1004" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-						"search1005" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-						"search1006" => ['enwiki.nspart2*', 'enwiki.spell'],
-					},
-					# de,fr,jawiki
-					"pool2" => {
-						"search1007" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-						"search1008" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-						"search1009" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-						"search1010" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-					},
-					# it,nl,ru,sv,pl,pt,es,zhwiki
-					"pool3" => {
-						"search1011" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-							 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-						"search1012" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-							 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-						"search1013" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-							 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-						"search1014" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-							 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-						"search1023" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-							'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-						"search1024" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-							'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-					},
-					# everything else
-					"pool4" => {
-						"search1015" => ['*?'],
-						"search1016" => ['*?'],
-						"search1019" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search1020" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search1021" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-						"search1022" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-					},
-					# prefix hosts for all pools
-					"prefix" => {
-						"search1017" => ['*.prefix'],
-						"search1018" => ['*.prefix'],
-					},
-					# assigned to fake host to disable them
-					"disabled" => {
-						"search1000x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
-							'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
-							'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
-							'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
+			'production' => {
+				"eqiad" => {
+					"front_ends" => {
+						# enwiki
+						"pool1" => {
+							"search1001" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.spell'],
+							"search1002" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2'],
+							"search1003" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.nspart2*'],
+							"search1004" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
+							"search1005" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
+							"search1006" => ['enwiki.nspart2*', 'enwiki.spell'],
+						},
+						# de,fr,jawiki
+						"pool2" => {
+							"search1007" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
+							"search1008" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
+							"search1009" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
+							"search1010" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
+						},
+						# it,nl,ru,sv,pl,pt,es,zhwiki
+						"pool3" => {
+							"search1011" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
+								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
+							"search1012" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
+								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
+							"search1013" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
+								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
+							"search1014" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
+								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
+							"search1023" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
+								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
+							"search1024" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
+								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
+						},
+						# everything else
+						"pool4" => {
+							"search1015" => ['*?'],
+							"search1016" => ['*?'],
+							"search1019" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
+								'wikidatawiki', 'metawiki', 'enwiktionary',
+								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
+							"search1020" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
+								'wikidatawiki', 'metawiki', 'enwiktionary',
+								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
+							"search1021" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
+							"search1022" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
+						},
+						# prefix hosts for all pools
+						"prefix" => {
+							"search1017" => ['*.prefix'],
+							"search1018" => ['*.prefix'],
+						},
+						# assigned to fake host to disable them
+						"disabled" => {
+							"search1000x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
+								'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
+								'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
+								'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
+						},
+						"indexers" => {
+							"searchidx1001" => ['*']
+						}
 					}
 				},
-				"indexers" => {
-					"searchidx1001" => ['*']
-				}
-			},
-			"pmtpa" => {
-				"front_ends" => {
-					# these will be reshuffled when pmtpa is rebuilt/upgraded. blank /fake for now.
-					"pool1" => {
-						"search21" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.spell'],
-						"search22" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2'],
-						"search23" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.nspart2*'],
-						"search24" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-						"search25" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
-						"search26" => ['enwiki.nspart2*', 'enwiki.spell'],
+				"pmtpa" => {
+					"front_ends" => {
+						# these will be reshuffled when pmtpa is rebuilt/upgraded. blank /fake for now.
+						"pool1" => {
+							"search21" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.spell'],
+							"search22" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2'],
+							"search23" => ['enwiki.nspart1.sub1', 'enwiki.nspart1.sub2', 'enwiki.nspart2*'],
+							"search24" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
+							"search25" => ['enwiki.nspart1.sub1.hl', 'enwiki.nspart1.sub2.hl'],
+							"search26" => ['enwiki.nspart2*', 'enwiki.spell'],
+						},
+						"pool2" => {
+							"search27" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
+							"search28" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
+							"search29" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
+							"search30" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
+						},
+						"pool3" => {
+							"search31" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
+								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
+							"search32" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
+								 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
+							"search33" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
+								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
+							"search34" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
+								 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
+							"search35" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
+								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
+							"search36" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
+								'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
+						},
+						"pool4" => {
+							"search13" => ['*?'],
+							"search14" => ['*?'],
+							"search15" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
+								'wikidatawiki', 'metawiki', 'enwiktionary',
+								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
+							"search16" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
+								'wikidatawiki', 'metawiki', 'enwiktionary',
+								'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
+							"search17" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
+							"search18" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
+						},
+						"prefix" => {
+							"search19" => ['*.prefix'],
+							"search20" => ['*.prefix'],
+						},
+						# assigned to fake host to disable them
+						"disabled" => {
+							"search0x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
+								'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
+								'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
+								'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
+						}
 					},
-					"pool2" => {
-						"search27" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-						"search28" => ['frwiki.nspart1', 'frwiki.nspart2', 'jawiki.nspart1', 'jawiki.nspart2', 'dewiki.nspart1', 'dewiki.nspart2'],
-						"search29" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-						"search30" => ['dewiki.nspart1.hl', 'dewiki.nspart2.hl', 'frwiki.nspart1.hl', 'frwiki.nspart2.hl', 'frwiki.spell', 'dewiki.spell'],
-					},
-					"pool3" => {
-						"search31" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-							 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-						"search32" => ['eswiki itwiki.nspart1', 'ruwiki.nspart1', 'nlwiki.nspart1',
-							 'svwiki.nspart1', 'plwiki.nspart1', 'ptwiki.nspart1', 'zhwiki.nspart1', 'eswiki.hl'],
-						"search33" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-							 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-						"search34" => ['itwiki.nspart1.hl', 'itwiki.nspart2.hl', 'nlwiki.nspart1.hl', 'nlwiki.nspart2.hl', 'ruwiki.nspart1.hl', 'ruwiki.nspart2.hl',
-							 'itwiki.spell', 'nlwiki.spell', 'ruwiki.spell', 'svwiki.spell', 'plwiki.spell', 'ptwiki.spell', 'eswiki.spell'],
-						"search35" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-							'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-						"search36" => ['svwiki.nspart1.hl', 'svwiki.nspart2.hl', 'plwiki.nspart1.hl', 'plwiki.nspart2.hl', 'ptwiki.nspart1.hl', 'ptwiki.nspart2.hl',
-							'itwiki.nspart2', 'nlwiki.nspart2', 'ruwiki.nspart2', 'svwiki.nspart2', ' plwiki.nspart2', 'ptwiki.nspart2', 'zhwiki.nspart2'],
-					},
-					"pool4" => {
-						"search13" => ['*?'],
-						"search14" => ['*?'],
-						"search15" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search16" => ['commonswiki.nspart1', 'commonswiki.nspart1.hl', 'commonswiki.nspart2', 'commonswiki.nspart2.hl',
-							'wikidatawiki', 'metawiki', 'enwiktionary',
-							'(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.))*.spell'],
-						"search17" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-						"search18" => ['(?!(enwiki.|dewiki.|frwiki.|itwiki.|nlwiki.|ruwiki.|svwiki.|plwiki.|eswiki.|ptwiki.|jawiki.|zhwiki.))*.hl'],
-					},
-					"prefix" => {
-						"search19" => ['*.prefix'],
-						"search20" => ['*.prefix'],
-					},
-					# assigned to fake host to disable them
-					"disabled" => {
-						"search0x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
-							'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
-							'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
-							'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
+					"indexers" => {
+						"searchidx2" => ['*'],
 					}
-				},
-				"indexers" => {
-					"searchidx2" => ['*'],
 				}
-			}
+			},  # production
+			'labs' => {
+				'pmtpa' => {
+					'front_ends' => {
+						'poolbeta' => {
+							# deployment-search01
+							'10.4.1.81' => ['*'],
+						}
+					},
+					'indexers' => {
+							# deployment-searchidx01.pmtpa.wmflabs
+							'10.4.0.56' => ['*'],
+					},
+				},  # labs pmtpa
+			},  # labs
+		}
+	}
+
+	class admins {
+		if $::realm == 'production' {
+			include admins::roots,
+				admins::mortals,
+				admins::restricted
 		}
 	}
 
@@ -138,9 +162,7 @@ class role::lucene {
 			applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::sudo,
-			admins::roots,
-			admins::mortals,
-			admins::restricted,
+			role::lucene::admins,
 			lucene::users
 
 		# dependency for wikimedia-task-appserver
@@ -164,11 +186,8 @@ class role::lucene {
 			include lvs::configuration
 			class { "lvs::realserver": realserver_ips => [ $lvs::configuration::lvs_service_ips[$::realm][$search_pool][$::site] ] }
 
-
 			include standard,
-				admins::roots,
-				admins::mortals,
-				admins::restricted,
+				role::lucene::admins,
 				lucene::users
 
 			class { "lucene::server":
@@ -192,6 +211,16 @@ class role::lucene {
 		}
 		class pool5 {
 			class { "role::lucene::front_end::common": search_pool => "search_pool5" }
+		}
+		# Search frontend for the beta cluster
+		class poolbeta {
+			mount { '/a':
+				ensure => mounted,
+				device => '/dev/vdb',
+				fstype => 'auto',
+				options => 'defaults,nobootwait,comment=cloudconfig',
+			}
+			class { "role::lucene::front_end::common": search_pool => "search_poolbeta" }
 		}
 		class prefix {
 			class { "role::lucene::front_end::common": search_pool => "search_prefix" }
