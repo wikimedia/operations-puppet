@@ -13,6 +13,7 @@
 #  Memcached memory usage defaults to 128 megs but can be changed via $memcached_size.
 class mediawiki_singlenode( $ensure = 'present',
                              $database_name = "testwiki",
+                             $wiki_name = "testwiki",
                              $role_requires = [],
                              $install_path = "/srv/mediawiki",
                              $role_config_lines = [],
@@ -82,7 +83,7 @@ class mediawiki_singlenode( $ensure = 'present',
 	exec { 'mediawiki_setup':
 		require => [git::clone["mediawiki"],  File["${install_path}/orig"], exec['password_gen']],
 		creates => "${install_path}/orig/LocalSettings.php",
-		command => "/usr/bin/php ${install_path}/maintenance/install.php testwiki admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		command => "/usr/bin/php ${install_path}/maintenance/install.php $wiki_name admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
 		logoutput => "on_failure",
 	}
 
