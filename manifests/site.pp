@@ -608,6 +608,7 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 }
 
 node /(ersch|tarin)\.pmtpa\.wmnet/ {
+	$ganglia_aggregator = "true"
 	include standard,
 		role::poolcounter
 }
@@ -884,6 +885,8 @@ node "manutius.wikimedia.org" {
 }
 
 node "hooper.wikimedia.org" {
+	$ganglia_aggregator = "true"
+
 	include standard,
 		admins::roots,
 		svn::client,
