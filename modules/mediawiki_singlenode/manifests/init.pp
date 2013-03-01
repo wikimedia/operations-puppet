@@ -42,6 +42,8 @@ class mediawiki_singlenode( $ensure = 'present',
 # get the extensions
 	mw-extension { [ "Nuke", "SpamBlacklist", "ConfirmEdit" ]:
 		require => Git::Clone["mediawiki"],
+		ensure => $ensure,
+		install_path => $install_path;
 	}
 
 	file {
