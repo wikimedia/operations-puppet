@@ -126,6 +126,7 @@ class lucene {
 	}
 
 	class users {
+		include groups::search
 		systemuser { "lsearch": name => "lsearch", default_group => "search"}
 	}
 
