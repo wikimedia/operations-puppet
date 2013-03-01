@@ -1,4 +1,4 @@
-class mediawiki_new::jobrunner (
+class mediawiki::jobrunner (
 	$run_jobs_enabled,
 	$user = "apache",
 	$type = "",
@@ -11,7 +11,7 @@ class mediawiki_new::jobrunner (
 	$iprioprocs = 5
 ) {
 
-	include mediawiki_new
+	include mediawiki
 
 	package { [ 'wikimedia-job-runner' ]:
 		ensure => absent;

@@ -36,8 +36,7 @@ class role::applicationserver {
 		$cluster = "${group}"
 
 		include	standard,
-		## TODO: rename to just mediawiki after full transition to module
-			mediawiki_new
+			mediawiki
 
 		if $::realm == 'production' {
 			include	admins::roots,
@@ -165,7 +164,7 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 
-		class {"mediawiki_new::jobrunner":
+		class {"mediawiki::jobrunner":
 			run_jobs_enabled => $run_jobs_enabled,
 			dprioprocs => 10,
 			iprioprocs => 0,
@@ -192,7 +191,7 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki_new::jobrunner": dprioprocs => 12, iprioprocs => 8, run_jobs_enabled => $run_jobs_enabled }
+		class { "mediawiki::jobrunner": dprioprocs => 12, iprioprocs => 8, run_jobs_enabled => $run_jobs_enabled }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,

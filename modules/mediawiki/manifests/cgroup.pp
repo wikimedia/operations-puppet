@@ -1,4 +1,4 @@
-class mediawiki_new::cgroup {
+class mediawiki::cgroup {
 	package { 'cgroup-bin':
 		ensure => present,
 	}

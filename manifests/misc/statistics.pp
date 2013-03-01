@@ -91,7 +91,7 @@ class misc::statistics::dataset_mount {
 # and ensures that it is at the latest revision.
 # RT 2162
 class misc::statistics::mediawiki {
-	require mediawiki_new::users::mwdeploy
+	require mediawiki::users::mwdeploy
 
 	$statistics_mediawiki_directory = "/a/mediawiki/core"
 
