@@ -2394,7 +2394,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 	include base,
 		ntp::client,
 		ganglia,
-		mediawiki_new::sync,
+		mediawiki::sync,
 		snapshots::packages,
 		snapshots::sync,
 		snapshots::files,

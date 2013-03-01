@@ -1,8 +1,7 @@
 # sudo rules for mw deployment
-## TODO: rename to just mediawiki::users::sudo after full transition to module
-class mediawiki_new::users::sudo {
+class mediawiki::users::sudo {
 
-	require mediawiki_new::users::l10nupdate
+	require mediawiki::users::l10nupdate
 
 	## sudo definitions
 	sudo_group {"wikidev_deploy":

@@ -401,7 +401,7 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 }
 
 class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
-	require mediawiki_new::users::mwdeploy
+	require mediawiki::users::mwdeploy
 
 	include webserver::apache2
 

@@ -3,7 +3,7 @@
 class applicationserver::service {
 	Class["applicationserver::apache_packages"] -> Class["applicationserver::service"]
 	Class["applicationserver::config::base"] -> Class["applicationserver::service"]
-	include mediawiki_new::sync
+	include mediawiki::sync
 
 	# Start apache but not at boot
 	service { 'apache':
