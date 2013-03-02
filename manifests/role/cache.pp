@@ -570,6 +570,11 @@ class role::cache {
 			},
 			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks
+
+			cron { "alloc failure":
+				command => "test $(varnishstat -1 -f SMA.s0.c_fail | awk '{ print \$2 }') -gt 100 && service varnish restart > /var/log/varnish-restarts",
+				user => root
+			}
 		}
 		
 		class logging {
