@@ -340,7 +340,7 @@ node "dataset1001.wikimedia.org" {
 }
 
 # pmtpa dbs
-node /db(32|36|38|59|60|63|69|70)\.pmtpa\.wmnet/ {
+node /db(32|36|38|59|60|63|69|71)\.pmtpa\.wmnet/ {
 	if $hostname == "db59" {
 		class { role::coredb::s1 : mariadb => true }
 	} else {
