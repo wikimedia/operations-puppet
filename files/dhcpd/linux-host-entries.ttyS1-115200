@@ -679,6 +679,7 @@ host db69 {
 host db70 {
 	hardware ethernet d4:ae:52:90:39:98;
 	fixed-address db70.pmtpa.wmnet;
+}
 
 host db71 {
 	hardware ethernet d4:ae:52:8d:c1:1a;
