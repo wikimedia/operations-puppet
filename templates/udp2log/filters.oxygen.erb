@@ -48,7 +48,8 @@ pipe 10 /usr/bin/udp-filter -F '\t' -i 193.251.155.0/25,41.202.192.0/19,41.202.2
 pipe 10 /usr/bin/udp-filter -F '\t' -i 212.49.88.0/25 >> /a/squid/zero-orange-kenya.tab.log
 
 # Vodaphone India
-pipe 10 /usr/bin/udp-filter -F '\t' -i 203.88.0.0/19,114.31.128.0/18,112.79.0.0/16,1.38.0.0/15,42.104.0.0/13 >> /a/squid/zero-vodaphone-india.tab.log
+## Disabling this for packet loss issues.  2013-03-04 - otto
+# pipe 10 /usr/bin/udp-filter -F '\t' -i 203.88.0.0/19,114.31.128.0/18,112.79.0.0/16,1.38.0.0/15,42.104.0.0/13 >> /a/squid/zero-vodaphone-india.tab.log
 
 # Saudi Telecom
 pipe 10 /usr/bin/udp-filter -F '\t' -i 212.118.140.0/22,212.215.128.0/17,84.235.72.0/22,84.235.94.240/28 >> /a/squid/zero-saudi-telecom.tab.log
