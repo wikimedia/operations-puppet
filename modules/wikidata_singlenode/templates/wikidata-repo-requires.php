@@ -31,6 +31,26 @@ require_once( "$IP/extensions/DismissableSiteNotice/DismissableSiteNotice.php" )
 require_once( "$IP/extensions/ApiSandbox/ApiSandbox.php" );
 require_once( "$IP/extensions/OAI/OAIRepo.php" );
 require_once( "$IP/extensions/notitle.php" );
+require_once( "$IP/extensions/Babel/Babel.php" );
+
+// Translate extension
+require_once( "$IP/extensions/Translate/Translate.php" );
+$wgGroupPermissions['translator']['translate'] = true;
+# You can replace qqq with something more meaningful like info
+$wgTranslateDocumentationLanguageCode = 'qqq';
+# Add these too if you want to enable page translation
+$wgGroupPermissions['sysop']['pagetranslation'] = true;
+$wgEnablePageTranslation = true;
+
+// AbuseFilter extension
+require_once( "$IP/extensions/AbuseFilter/AbuseFilter.php" );
+$wgGroupPermissions['sysop']['abusefilter-modify'] = true;
+$wgGroupPermissions['*']['abusefilter-log-detail'] = true;
+$wgGroupPermissions['*']['abusefilter-view'] = true;
+$wgGroupPermissions['*']['abusefilter-log'] = true;
+$wgGroupPermissions['sysop']['abusefilter-private'] = true;
+$wgGroupPermissions['sysop']['abusefilter-modify-restricted'] = true;
+$wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 
 // items in main namespace
 $baseNs = 100;
