@@ -282,9 +282,9 @@ class role::nova::network {
 
 	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192" } }
 
-	interface_tagged { $novaconfig["network_flat_interface"]:
-		base_interface => $novaconfig["network_flat_interface_name"],
-		vlan_id => $novaconfig["network_flat_interface_vlan"],
+	interface_tagged { "bond1.103":
+		base_interface => "bond1",
+		vlan_id => "103",
 		method => "manual",
 		up => 'ip link set $IFACE up',
 		down => 'ip link set $IFACE down',
