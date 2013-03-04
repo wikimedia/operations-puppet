@@ -280,6 +280,8 @@ class role::nova::network {
 
 	require role::nova::network::bonding
 
+	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192" } }
+
 	interface_tagged { $novaconfig["network_flat_interface"]:
 		base_interface => $novaconfig["network_flat_interface_name"],
 		vlan_id => $novaconfig["network_flat_interface_vlan"],
