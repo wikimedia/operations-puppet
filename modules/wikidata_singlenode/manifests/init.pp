@@ -144,7 +144,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 
 		# get the extensions
 		# for repo get extensions Wikibase and ULS
-		mw-extension { [ "Wikibase", "UniversalLanguageSelector" ]:
+		mw-extension { [ "Wikibase", "UniversalLanguageSelector", "WikibaseSolr", "Solarium" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		# put a repo specific settings file to $install_path (required by LocalSettings.php)
@@ -191,6 +191,16 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 			ensure => present,
 			source => "puppet:///modules/wikidata_singlenode/wikidata-replication.logrotate",
 			owner => 'root',
+		}
+		# install Solr for improved search
+		# make sure the xml schema is present
+		file { "${install_path}/extensions/WikibaseSolr/schema.solr3.xml":
+			ensure => present,
+			require => Mw-extension["WikibaseSolr"],
+		}
+		class { "solr":
+			require => [Mw-extension["WikibaseSolr"], Mw-extension["Solarium"]],
+			schema => "${install_path}/extensions/WikibaseSolr/schema.solr3.xml",
 		}
 	}
 
