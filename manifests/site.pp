@@ -960,6 +960,12 @@ node "gurvin.wikimedia.org" {
 		certificates::wmf_ca
 }
 
+node "harmon.pmtpa.wmnet" {
+	$cluster = "misc"
+
+	include standard,
+		admins::roots
+}
 
 node "helium.eqiad.wmnet" {
 	include standard,
