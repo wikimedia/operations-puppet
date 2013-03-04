@@ -144,7 +144,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 
 		# get the extensions
 		# for repo get extensions Wikibase and ULS
-		mw-extension { [ "Wikibase", "UniversalLanguageSelector" ]:
+		mw-extension { [ "Wikibase", "UniversalLanguageSelector", "WikibaseSolr" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		# put a repo specific settings file to $install_path (required by LocalSettings.php)
@@ -191,6 +191,26 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 			ensure => present,
 			source => "puppet:///modules/wikidata_singlenode/wikidata-replication.logrotate",
 			owner => 'root',
+		}
+		# install Solr for improved search
+		class { "solr":
+			schema => "${install_path}/extensions/WikibaseSolr/schema.solr3.xml",
+			replication_master => "$hostname",
+			require => Mw-extension["WikibaseSolr"],
+		}
+		# manage Solarium dependency in this json file
+		file { "${install_path}/extensions/WikibaseSolr/composer.json":
+			ensure => present,
+			require => Mw-extension["WikibaseSolr"],
+			source => "puppet:///modules/wikidata_singlenode/solarium_composer.json",
+		}
+		# install Solarium via composer
+		exec { "get_composer":
+			require => File["${install_path}/extensions/WikibaseSolr/composer.json"],
+			provider => shell,
+			cwd => "${install_path}/extensions/WikibaseSolr",
+			command => "curl -sS https://getcomposer.org/installer | php && /bin/mv composer.phar /usr/local/bin/composer && /usr/local/bin/composer install",
+			logoutput => "on_failure",
 		}
 	}
 
