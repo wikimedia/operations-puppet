@@ -263,6 +263,10 @@ class role::nova::api {
 	class { "openstack::api-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 }
 
+class role::nova::network::bonding {
+	interface_aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
+}
+
 class role::nova::network {
 	include role::nova::config::pmtpa,
 		role::nova::config::eqiad
@@ -273,6 +277,17 @@ class role::nova::network {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
 		"eqiad" => $role::nova::config::eqiad::novaconfig,
 	}
+
+	require role::nova::network::bonding
+
+	interface_tagged { $novaconfig["network_flat_interface"]:
+		base_interface => $novaconfig["network_flat_interface_name"],
+		vlan_id => $novaconfig["network_flat_interface_vlan"],
+		method => "manual",
+		up => 'ip link set $IFACE up',
+		down => 'ip link set $IFACE down',
+	}
+
 	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 }
 
@@ -310,6 +325,14 @@ class role::nova::compute {
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
 		"eqiad" => $role::nova::config::eqiad::novaconfig,
+	}
+
+	interface_tagged { $novaconfig["network_flat_interface"]:
+		base_interface => $novaconfig["network_flat_interface_name"],
+		vlan_id => $novaconfig["network_flat_interface_vlan"],
+		method => "manual",
+		up => 'ip link set $IFACE up',
+		down => 'ip link set $IFACE down',
 	}
 
 	class { "openstack::compute-service": openstack_version => $openstack_version, novaconfig => $novaconfig }

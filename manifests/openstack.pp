@@ -124,14 +124,6 @@ class openstack::common($openstack_version="diablo",
 			$instance_status_wiki_user,
 			$instance_status_wiki_pass) {
 
-	interface_tagged { $novaconfig["network_flat_interface"]:
-		base_interface => $novaconfig["network_flat_interface_name"],
-		vlan_id => $novaconfig["network_flat_interface_vlan"],
-		method => "manual",
-		up => 'ip link set $IFACE up',
-		down => 'ip link set $IFACE down',
-	}
-
 	package { [ "nova-common", "python-keystone" ]:
 		ensure => present;
 	}

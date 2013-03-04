@@ -2513,7 +2513,6 @@ node /virt2.pmtpa.wmnet/ {
 		role::nova::api
 
 	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
-	interface_aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
 }
 
 node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
