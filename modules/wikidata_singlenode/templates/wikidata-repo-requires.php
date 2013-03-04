@@ -32,6 +32,14 @@ require_once( "$IP/extensions/ApiSandbox/ApiSandbox.php" );
 require_once( "$IP/extensions/OAI/OAIRepo.php" );
 require_once( "$IP/extensions/notitle.php" );
 
+// extensions Solarium and WikibaseSolr
+$wgWBSSolariumAutoloader = "$IP/extensions/Solarium/lib/Autoloader.php";
+require_once( "$IP/extensions/WikibaseSolr/WikibaseSolr.php" );
+require_once( "$IP/extensions/WikibaseSolr/includes/SpecialSolrTest.php" );
+$wgSpecialPages['SolrTest'] = 'SpecialSolrTest';
+$wgWBStores['solrstore'] = 'SolrStore';
+$wgWBSettings['defaultStore'] = 'solrstore';
+
 // items in main namespace
 $baseNs = 100;
 // NOTE: do *not* define WB_NS_ITEM and WB_NS_ITEM_TALK when using a core namespace for items!

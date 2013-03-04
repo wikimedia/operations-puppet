@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="wikidata" version="1.5">
+	<types>
+		<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+		<fieldType name="random" class="solr.RandomSortField" indexed="true" />
+
+	<!-- default for undefined languages -->
+		<fieldType name="term" class="solr.TextField" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+			</analyzer>
+		</fieldType>
+		<fieldType name="description" class="solr.TextField" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+			</analyzer>
+		</fieldType>
+
+	<!-- en -->
+		<fieldType name="term_en" class="solr.TextField" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
+			</analyzer>
+		</fieldType>
+		<fieldType name="description_en" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
+			<analyzer type="index">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_en.txt" enablePositionIncrements="true"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.EnglishPossessiveFilterFactory"/>
+				<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+				<filter class="solr.PorterStemFilterFactory"/>
+				<filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
+				<filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+			</analyzer>
+			<analyzer type="query">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+				<filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_en.txt" enablePositionIncrements="true"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.EnglishPossessiveFilterFactory"/>
+				<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+				<filter class="solr.PorterStemFilterFactory"/>
+				<filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="true"/>
+				<filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+			</analyzer>
+		</fieldType>
+
+	</types>
+	<fields>
+		<field name="id" type="string" indexed="true" stored="true" required="true" />
+		<field name="entityType" type="string" indexed="true" required="true" />
+		<field name="random" type="random" indexed="true" stored="true" />
+		
+	<!-- en -->
+		<field name="label_en" type="term_en" indexed="true" stored="true" multiValued="false" />
+		<field name="alias_en" type="term_en" indexed="true" stored="true" multiValued="true" />
+		<field name="term_en" type="term_en" indexed="true" stored="false" multiValued="true" />
+		<field name="description_en" type="description_en" indexed="true" stored="true" multiValued="false" />
+
+	<!-- catch the undefined languages -->
+		<dynamicField name="label_*" type="term" indexed="true" stored="true" multiValued="false" />
+		<dynamicField name="alias_*" type="term" indexed="true" stored="true" multiValued="true" />
+		<dynamicField name="term_*" type="term" indexed="true" stored="false" multiValued="true" />
+		<dynamicField name="description_*" type="description" indexed="true" stored="true" multivalued="false" />
+
+	<!-- catchall field, containing all searchable text fields -->
+		<field name="text" type="description" indexed="true" stored="false" multiValued="true"/>
+	</fields>
+
+	<uniqueKey>id</uniqueKey>
+
+	<copyField source="alias_*" dest="term_*"/>
+	<copyField source="label_*" dest="term_*"/>
+	<copyField source="*" dest="text" />
+
+	<similarity class="org.apache.lucene.search.DefaultSimilarity"/>
+</schema>
