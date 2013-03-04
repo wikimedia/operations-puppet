@@ -2504,23 +2504,29 @@ node "virt0.wikimedia.org" {
 		backup::client
 }
 
-node /virt([2]|[5-9]|1[0-1]).pmtpa.wmnet/ {
+node /virt2.pmtpa.wmnet/ {
+	$cluster = "virt"
+	$openstack_version = "essex"
+
+	include standard,
+		role::nova::network,
+		role::nova::api
+
+	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
+	interface_aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
+}
+
+node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
 	if $hostname =~ /^virt[56]$/ {
 
 		$ganglia_aggregator = "true"
 	}
 
-	include standard
-
 	$openstack_version = "essex"
-	if $hostname =~ /^virt2$/ {
-		include role::nova::network,
-			role::nova::api
-		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.153.192" }
-	interface_aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
-	}
-	include	role::nova::compute
+
+	include standard,
+		role::nova::compute
 }
 
 node /virt100(5|7|8).eqiad.wmnet/ {
