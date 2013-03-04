@@ -77,14 +77,27 @@ class lucene {
 				}
 		}
 
+		# Conf for sync-conf-from-common cronjob
+		if $::realm == 'production' {
+			$sync_conf_all_dblist = '10.0.5.8::common/all.dblist'
+			$sync_conf_initialisesettings = '10.0.5.8::common/wmf-config/InitialiseSettings.php'
+			$sync_conf_messages = '10.0.5.8::common/php/languages/messages'
+		} else {
+			$sync_conf_all_dblist = '/data/project/apache/common/all-labs.dblist'
+			$sync_conf_initialisesettings = '/data/project/apache/common/wmf-config/InitialiseSettings.php'
+			$sync_conf_messages = '/data/project/apache/common/php-master/languages/messages'
+		}
 		cron {
 			## to occassionally poll for mediawiki configs
 			sync-conf-from-common:
 				require => File["/a/search/conf"],
-				command => 'rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/all.dblist /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/wmf-config/InitialiseSettings.php /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms 10.0.5.8::common/php/languages/messages /a/search/conf/',
+				command => "rsync -a --delete --exclude=**/.svn/lock --no-perms ${sync_conf_all_dblist} /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms ${sync_conf_initialisesettings} /a/search/conf/ && rsync -a --delete --exclude=**/.svn/lock --no-perms ${sync_conf_messages} /a/search/conf/",
 				user => lsearch,
 				minute => 15,
 				ensure => present;
+		}
+
+		cron {
 			## this is to compliment log4j's log rotation. we want to use log4j's logrotate ability, as it's easier on the system,
 			## but log4j does not yet have "delete old logs" capability :/
 			delete-old-logs:
