@@ -30,7 +30,7 @@ class misc::install-server {
 		}
 
 		# Monitoring
-		monitor_service { "http": description => "HTTP", check_command => "check_http" }
+		monitor_service { "http": description => "HTTP", check_command => "check_http", critical => true }
 	}
 
 	class tftp-server {
@@ -115,7 +115,7 @@ class misc::install-server {
 		}
 
 		# Monitoring
-		monitor_service { "squid": description => "Squid", check_command => "check_tcp!8080" }
+		monitor_service { "squid": description => "Squid", check_command => "check_tcp!8080", critical => true }
 	}
 
 	class ubuntu-mirror {
