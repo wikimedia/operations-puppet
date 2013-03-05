@@ -42,6 +42,7 @@ api_paste_config=/etc/nova/api-paste.ini
 #use_ipv6=True
 allow_same_net_traffic=False
 live_migration_uri=<%= novaconfig["live_migration_uri"] %>
+libvirt_use_virtio_for_bridges=True
 
 # Settings for wikistatus, the add-on that updates OSM with instance status:
 notification_driver=nova.notifier.list_notifier
