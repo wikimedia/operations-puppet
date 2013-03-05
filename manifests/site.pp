@@ -1,4 +1,4 @@
-# site.pp
+#site.pp
 
 import "realm.pp"	# These ones first
 import "generic-definitions.pp"
@@ -1063,7 +1063,8 @@ node /lvs[1-6]\.wikimedia\.org/ {
 			$sip['search_pool5'][$::site],
 			$sip['search_prefix'][$::site],
 			$sip['swift'][$::site],
-			$sip['parsoid'][$::site]
+			$sip['parsoid'][$::site],
+			$sip['parsoidcache'][$::site]
 			]
 	}
 
@@ -1140,7 +1141,8 @@ node /lvs100[1-6]\.wikimedia\.org/ {
 			$sip['search_pool5'][$::site],
 			$sip['search_prefix'][$::site],
 			$sip['swift'][$::site],
-			$sip['parsoid'][$::site]
+			$sip['parsoid'][$::site],
+			$sip['parsoidcache'][$::site]
 			]
 	}
 
@@ -2588,7 +2590,7 @@ node /(celsus|constable|cerium|titanium)\.wikimedia\.org/ {
 		misc::parsoid
 
 	include lvs::configuration
-	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoid'][$::site]
+	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site]
 	class { "lvs::realserver": realserver_ips => [ $sip ] }
 }
 
