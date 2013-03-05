@@ -191,7 +191,7 @@ host colby {
 
 host constable {
 	hardware ethernet D4:AE:52:AC:4D:C8;
-	fixed-address constable.wikimedia.org;
+	fixed-address constable.pmtpa.wmnet;
 }
 
 host copper {
