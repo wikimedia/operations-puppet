@@ -1,7 +1,7 @@
 class role::puppet::server::labs {
-	include role::ldap::config::labs,
-		role::nova::config::pmtpa,
-		role::nova::config::eqiad
+	include role::ldap::config::labs
+	class { "role::nova::config::pmtpa": }
+	class { "role::nova::config::eqiad": }
 
 	$novaconfig = $site ? {
 		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
