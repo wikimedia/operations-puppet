@@ -243,8 +243,9 @@ class misc::statistics::sites::community_analytics {
 # See: http://stat1.wikimedia.org/rfaulk/pydocs/_build/env.html
 # for more info on how and why.
 class misc::statistics::sites::metrics_api {
-	require passwords::mysql::research
-
+	require passwords::mysql::research,
+		passwords::mysql::research_prod,
+		passwords::mysql::metrics
 	$site_name        = "metrics-api.wikimedia.org"
 	$document_root    = "/srv/org.wikimedia.metrics-api"
 
@@ -252,7 +253,55 @@ class misc::statistics::sites::metrics_api {
 	$e3_analysis_path = "$e3_home/E3Analysis"
 	$e3_user          = $misc::statistics::user::username
 
-	# these get rendered in $e3_analysis_path/config/settings.py
+	# connetions will be rendered into settings.py.
+	$mysql_connections = {
+		'slave'   => {
+			'user'   =>  $passwords::mysql::metrics::user,
+			'passwd' =>  $passwords::mysql::metrics::pass,
+			'host'   =>  'db1047.eqiad.wmnet',
+			'port'   =>  '3306',
+			'db'     =>  'prod',
+		},
+		'cohorts' =>  {
+			'user'   =>  $passwords::mysql::research_prod::user,
+			'passwd' =>  $passwords::mysql::research_prod::pass,
+			'host'   =>  'db1047.eqiad.wmnet',
+			'port'   =>  '3306',
+			'db'     =>  'prod',
+		},
+		's1'      =>  {
+			'user'   =>   $passwords::mysql::research::user,
+			'passwd' =>   $passwords::mysql::research::pass,
+			'host'   =>  's1-analytics-slave.eqiad.wmnet',
+			'port'   =>   '3306',
+		},
+		's2'      =>  {
+			'user'   =>   $passwords::mysql::research::user,
+			'passwd' =>   $passwords::mysql::research::pass,
+			'host'   =>  's2-analytics-slave.eqiad.wmnet',
+			'port'   =>  '3306',
+		},
+		's3'      =>  {
+			'user'   =>   $passwords::mysql::research::user,
+			'passwd' =>   $passwords::mysql::research::pass,
+			'host'   =>  's3-analytics-slave.eqiad.wmnet',
+			'port'   =>  '3306',
+		},
+		's4'      =>  {
+			'user'   =>   $passwords::mysql::research::user,
+			'passwd' =>   $passwords::mysql::research::pass,
+			'host'   =>  's4-analytics-slave.eqiad.wmnet',
+			'port'   =>  '3306',
+		},
+		's5'      =>  {
+			'user'   =>   $passwords::mysql::research::user,
+			'passwd' =>   $passwords::mysql::research::pass,
+			'host'   =>  's5-analytics-slave.eqiad.wmnet',
+			'port'   =>  '3306',
+		},
+	}
+
+	# these get rendered in $e3_analysis_path/user_metrics/config/settings.py
 	$mysql_user       = $passwords::mysql::research::user
 	$mysql_pass       = $passwords::mysql::research::pass
 	$mysql_db         = "staging"
@@ -289,11 +338,11 @@ class misc::statistics::sites::metrics_api {
 
 	# Need settings.py to configure metrics-api python application
 	# Make this only readable by stats user; it has db passwords in it.
-	file { "$e3_analysis_path/config/settings.py":
+	file { "$e3_analysis_path/user_metrics/config/settings.py":
 		content => template("misc/e3-metrics-api.settings.py.erb"),
 		owner   => $e3_user,
 		group   => "root",
-		mode    => 0600,
+		mode    => 0640,
 		require => Git::Clone["E3Analysis"],
 	}
 
@@ -304,6 +353,7 @@ class misc::statistics::sites::metrics_api {
 		require => Git::Clone["E3Analysis"],
 	}
 
+	include webserver::apache
 	# Set up the Python WSGI VirtualHost
 	webserver::apache::module { "wsgi": }
 	webserver::apache::site { $site_name:

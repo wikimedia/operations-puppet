@@ -1,23 +1,37 @@
 # Project settings
 # ================
-__home__ = '<%= e3_home %>'
-__project_home__ = '<%= e3_analysis_path %>'
-__web_home__ = ''.join([__project_home__, 'web_interface/'])
-__sql_home__ = ''.join([__project_home__, 'SQL/'])
-__server_log_local_home__ = ''.join([__project_home__, 'logs/'])
-__data_file_dir__ = ''.join([__project_home__, 'data/'])
 
-__web_app_module__ = 'web_interface'
-__system_user__ = 'stats'
+__project_home__            = '<%= e3_analysis_path %>'
+__web_home__                = ''.join([__project_home__, 'user_metrics/api/'])
+__data_file_dir__           = ''.join([__project_home__, 'data/'])
+
+__query_module__            = 'query_calls_sql'
+__user_thread_max__         = 100
+__rev_thread_max__          = 50
+
+__cohort_data_instance__    = 'cohorts'
+__cohort_db__               = 'usertags'
+__cohort_meta_db__          = 'usertags_meta'
+__cohort_meta_instance__    = 'prod'
+
 
 # Database connection settings
 # ============================
 
 connections = {
-    'slave': {
-        'user' : '<%= mysql_user %>',
-        'passwd' : '<%= mysql_pass %>',
-        'host' : '<%= mysql_host %>',
-        'db' : '<%= mysql_db %>',
-        'port' : <%= mysql_port %>}
+<% mysql_connections.each_pair do |name, connection| -%>
+    <%= "'#{name}'" %>: {
+<% connection.each_pair do |key, value| -%>
+        <%= "'#{key}': '#{value}'," %>
+<% end # connection.each_pair -%>
+    }
+<% end # mysql_connections.each_pair -%>
 }
+
+PROJECT_DB_MAP = {
+    'enwiki': 's1',
+    'dewiki': 's5',
+    'itwiki': 's2',
+    'commonswiki': 's4',
+}
+
