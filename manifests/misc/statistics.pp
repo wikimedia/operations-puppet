@@ -301,13 +301,6 @@ class misc::statistics::sites::metrics_api {
 		},
 	}
 
-	# these get rendered in $e3_analysis_path/user_metrics/config/settings.py
-	$mysql_user       = $passwords::mysql::research::user
-	$mysql_pass       = $passwords::mysql::research::pass
-	$mysql_db         = "staging"
-	$mysql_host       = "s1-analytics-slave.eqiad.wmnet"
-	$mysql_port       = 3306
-
 	package { "python-flask":
 		ensure => "installed",
 	}
