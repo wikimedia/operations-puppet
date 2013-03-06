@@ -135,6 +135,33 @@ WHERE
 END;
 }
 
+function getHighestPrioTickets() {
+        return <<<END
+
+SELECT
+        products.name AS product,
+        components.name AS component,
+        bugs.bug_id,
+        bugs.short_desc as bugsummary,
+        profiles.login_name AS assignee,
+        bugs.delta_ts,
+        bugs.priority
+FROM
+        bugs 
+JOIN
+        profiles ON assigned_to = profiles.userid 
+JOIN
+        products ON bugs.product_id = products.id
+        JOIN components ON bugs.component_id = components.id 
+WHERE
+        resolution = "" 
+AND
+        priority = "Highest" OR priority = "Immediate"
+ORDER BY
+        product, component, delta_ts
+LIMIT 200;
+END;
+}
 
 function formatOutput($result) {
         while ($row = mysql_fetch_row($result)) {
