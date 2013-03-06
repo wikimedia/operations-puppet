@@ -463,6 +463,13 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 			command => '/usr/local/sbin/mw-files.sh > /dev/null 2>&1',
 			require => File["/a/backup"],
 			ensure => present;
+		"backup-cleanup":
+			user => root,
+			hour => 3,
+			minute => 0,
+			command => 'find /a/backup -type f -mtime +7',
+			require => File["/a/backup"],
+			ensure => present;
 	}
 
 
