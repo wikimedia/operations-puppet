@@ -798,10 +798,8 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
 		accounts::datasets,
-		# RT 4312
-		accounts::dandreescu
-
-	include
+		accounts::dandreescu,
+		accounts::file_mover,
 		misc::udp2log::utilities,
 		misc::udp2log
 
@@ -812,6 +810,8 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	# TODO: Move log_directory to /var/log/udp2log
 	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
 
+	# file_mover needs to be able to HUP udp2log for 15-min interval log rotation
+	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
 	# mount netapp to inject to fundraising banner log pipeline
     class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
 
