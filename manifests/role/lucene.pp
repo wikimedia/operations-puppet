@@ -113,7 +113,7 @@ class role::lucene {
 					},
 					# assigned to fake host to disable them
 					"disabled" => {
-						"search0x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
+						"search1000x" => ['*tspart1', '*tspart2', 'en-titles*', 'de-titles*', 'ja-titles*', 'it-titles*',
 							'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
 							'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
 							'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
