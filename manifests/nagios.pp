@@ -563,44 +563,6 @@ class nagios::monitor::checkpaging {
 	}
 }
 
-class nagios::monitor::pager {
-
-	#package { "gammu":
-	#	ensure => latest;
-	#}
-
-	#package { "gammu-smsd":
-	#	ensure => latest;
-	#}
-
-	include passwords::nagios::monitor
-
-	$gammu_pin = $passwords::nagios::monitor::gammu_pin
-	file {
-		"/etc/gammurc":
-			source => "puppet:///files/nagios/gammurc",
-			owner => root,
-			mode => 0644;
-		"/etc/gammu-smsdrc":
-			content => template("nagios/gammu-smsdrc.erb"),
-			owner => root,
-			mode => 0644;
-		"/usr/local/sbin/page_all":
-			source => "puppet:///files/nagios/page_all",
-			owner => root,
-			group => root,
-			mode => 0550;
-	}
-
-	systemuser { gammu: name => "gammu", home => "/nonexistent", groups => [ "gammu", "dialout" ] }
-
-	service { gammu-smsd:
-		require => [ Systemuser[gammu], File["/etc/gammurc"], File["/etc/gammu-smsdrc"] ],
-		subscribe => [ File["/etc/gammurc"], File["/etc/gammu-smsdrc"] ],
-		ensure => running;
-	}
-}
-
 class nagios::ganglia::ganglios {
 	include generic::mysql::packages::client,
 		ganglia::collector

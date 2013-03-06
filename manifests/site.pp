@@ -2110,7 +2110,6 @@ node "sodium.wikimedia.org" {
 #
 #	include standard,
 #		nagios::monitor,
-#		nagios::monitor::pager,
 #		nagios::monitor::jobqueue,
 #		nagios::monitor::snmp,
 #		nagios::monitor::firewall,
