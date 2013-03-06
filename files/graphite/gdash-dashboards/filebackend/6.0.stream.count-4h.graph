@@ -1,0 +1,9 @@
+title "StreamFile Sampled Call Rate log(2) -1day"
+linewidth 1
+logbase 2
+hide_legend "false"
+from "-1day"
+linemode "connected" 
+
+field :stream, :alias => "none",
+               :data  => 'cactiStyle(StreamFile.*.count)'

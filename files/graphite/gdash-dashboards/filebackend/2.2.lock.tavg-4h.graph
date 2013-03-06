@@ -1,4 +1,4 @@
-title "LockManager and StreamFile Average Latency (ms) log(2) -8hours"
+title "LockManager Average Latency (ms) log(2) -8hours"
 linewidth 1
 logbase 2
 hide_legend "false"
@@ -7,6 +7,3 @@ linemode "connected"
 
 field :lock, :alias => "none",
                :data  => 'cactiStyle(LockManager.*.tavg)'
-
-field :stream, :alias => "none",
-               :data  => 'cactiStyle(StreamFile.*.tavg)'

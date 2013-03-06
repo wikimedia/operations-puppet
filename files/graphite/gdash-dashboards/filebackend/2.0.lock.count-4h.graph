@@ -1,4 +1,4 @@
-title "LockManager and StreamFile Sampled Call Rate log(2) -8hours"
+title "LockManager Sampled Call Rate log(2) -8hours"
 linewidth 1
 logbase 2
 hide_legend "false"
@@ -8,5 +8,3 @@ linemode "connected"
 field :lock, :alias => "none",
                :data  => 'cactiStyle(LockManager.*.count)'
 
-field :stream, :alias => "none",
-               :data  => 'cactiStyle(StreamFile.*.count)'
