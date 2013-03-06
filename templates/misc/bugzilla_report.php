@@ -56,7 +56,7 @@ END;
 }
 
 function getBugsResolvedPerUser($begin_date,$end_date) {
-        print "Top 5 bug report closers\n\n";
+        print "Top 5 bug report resolvers\n\n";
         return <<<END
 SELECT
         login_name, count(*) as total
