@@ -11,3 +11,11 @@ field :pop, :color => "blue",
 field :run, :color => "green",
                :alias => "none",
                :data  => 'cactiStyle(alias(stats.job-pop.count,"Jobs Run/min"))'
+
+field :pop, :color => "red",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-insert-duplicate.count,"Duplicate jobs Queued/min"))'
+
+field :pop, :color => "purple",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-pop-duplicate.count,"Duplicate jobs run/min"))'
