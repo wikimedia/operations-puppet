@@ -21,7 +21,6 @@ class icinga::monitor {
 		icinga::monitor::nsca::daemon,
 		icinga::monitor::apache,
 		icinga::monitor::files::misc,
-		nagios::ganglia::monitor::enwiki,
 		icinga::ganglia::ganglios,
 		facilities::pdu_monitoring,
 		lvs::monitor,
@@ -828,7 +827,7 @@ class icinga::monitor::snmp {
 		hour => [0, 4, 8, 12, 16, 20],
 		minute => 7,
 		ensure => present;
-	} 
+	}
 
 }
 

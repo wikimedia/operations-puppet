@@ -2114,7 +2114,6 @@ node "sodium.wikimedia.org" {
 #		nagios::monitor::jobqueue,
 #		nagios::monitor::snmp,
 #		nagios::monitor::firewall,
-#		nagios::ganglia::monitor::enwiki,
 #		nagios::ganglia::ganglios,
 #		nagios::nsca::daemon,
 #		nagios::monitor::checkpaging,
