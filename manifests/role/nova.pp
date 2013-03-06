@@ -109,7 +109,21 @@ class role::nova::config::pmtpa inherits role::nova::config::common {
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
 		keystone_auth_port => $keystoneconfig["auth_port"],
 	}
-	$novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig )
+	if ( $::hostname == "virt2" ) {
+		$networkconfig = {
+			network_flat_interface => $realm ? {
+				"production" => "bond1.103",
+				"labs" => "eth0.103",
+			},
+			network_flat_interface_name => $realm ? {
+				"production" => "bond1",
+				"labs" => "eth0",
+			},
+		}
+		$novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig, $networkconfig )
+	} else {
+		$novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig )
+	}
 }
 
 class role::nova::config::eqiad inherits role::nova::config::common {
@@ -267,19 +281,7 @@ class role::nova::network::bonding {
 
 class role::nova::network {
 	include role::nova::config
-	$novaconfig_pre = $role::nova::config::novaconfig
-
-	$customconfig = {
-		network_flat_interface => $realm ? {
-			"production" => "bond1.103",
-			"labs" => "eth0.103",
-		},
-		network_flat_interface_name => $realm ? {
-			"production" => "bond1",
-			"labs" => "eth0",
-		},
-	}
-	$novaconfig = merge( $novaconfig_pre, $customconfig )
+	$novaconfig = $role::nova::config::novaconfig
 
 	include role::nova::common
 
