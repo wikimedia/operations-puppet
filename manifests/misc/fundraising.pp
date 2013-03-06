@@ -457,6 +457,14 @@ class misc::fundraising::udp2log_rotation {
 			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
 	}
 
+	cron {
+		'rotate_fundraising_logs':
+			user => file_mover,
+			minute => '*/15',
+			command => '/usr/local/bin/rotate_fundraising_logs',
+			ensure => present;
+	}
+
 	class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
 
 }
