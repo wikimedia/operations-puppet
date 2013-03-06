@@ -1,0 +1,157 @@
+#!/usr/bin/perl
+# What? See http://wikitech.wikimedia.org/view/Fundraising_Analytics/Impression_Stats
+# this is puppetized, see files/misc/scripts/rotate_fundraising_logs
+use strict;
+use File::Copy 'move';
+use File::Find;
+use IO::Compress::Gzip qw(gzip $GzipError);
+use IO::Select;
+use IPC::Open3;
+use Sys::Syslog;
+
+my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0;		# syslog identity
+my $udp2log_dir = '/a/squid/fundraising/logs';	# local dir where udp2log collects logs
+my $archive_dir = "$udp2log_dir/fr_archive";	# netapp where logs are archived long term
+my $buffer_dir  = "$udp2log_dir/buffer";		# local buffer dir
+my $buffer_days = 3;							# days to retain buffered logs
+
+# list of log files (sans extension) to rotate
+my @logs_to_process = qw(bannerImpressions-sampled100.tab landingpages.tab);
+
+# keep the buffer_dir collated by year
+my $year = `/bin/date "+%Y"`;
+chomp $year;
+my $buffer_year_dir = "$buffer_dir/$year";
+unless (-d $buffer_year_dir) {
+	mkdir $buffer_year_dir or failboat("can't create $buffer_year_dir: $!");
+}
+
+failboat("$udp2log_dir is missing") unless -d $udp2log_dir;
+
+# move log files aside
+my $reload_udp2log;
+for my $file (@logs_to_process) {
+	if (-e "$udp2log_dir/$file.log") {
+		my $filesize = -s "$udp2log_dir/$file.log";
+		if ($filesize > 0) {
+			my $date = `/bin/date "+%Y%m%d-%H%M%S"`;
+			chomp $date;
+			printlog("move $udp2log_dir/$file.log (${filesize}b) to $buffer_year_dir/$file-$date.log");
+			move("$udp2log_dir/$file.log", "$buffer_year_dir/$file-$date.log") or failboat($!);
+			$reload_udp2log++;
+		} else {
+			printlog("skip $udp2log_dir/$file.log(${filesize}b)");
+		}
+	} else {
+		printlog("didn't find $udp2log_dir/$file.log?!");
+	}
+}
+
+# kick udp2log if any log files were moved
+if (defined $reload_udp2log) {
+
+	# restart udp2log
+	printlog('sudo /usr/bin/killall -HUP udp2log ' . `sudo /usr/bin/killall -HUP udp2log 2>&1`);
+
+	# wait for udp2log to switch to the new logs before touching the old ones
+	my $tries;
+	while (1) {
+		my $missing;
+		sleep 1;
+		for my $file (@logs_to_process) {
+			unless (-e "$udp2log_dir/$file.log") {
+				$missing .= " $file.log"
+			}
+		}
+		if (defined $missing) {
+			$tries++;
+		} elsif ($tries > 10) {
+			printlog("gave up waiting for udp2log to recreate $missing");
+			last;
+		} else {
+			last;
+		}
+	}
+}
+
+# walk $buffer_dir to cleanup/gzip contents
+find(\&process_buffer_files, $buffer_dir);
+
+# copy stuff to fr_archive if it's mounted
+if (-d "$archive_dir/.snapshot") {
+
+	printlog("rsync -ar $buffer_dir/ $archive_dir/");
+
+	# open system call using open3 so we can cleanly address stderr vs stdout
+	my $child_pid = open3(*W, *R, *E, "rsync -ar $buffer_dir/ $archive_dir/");
+	close (W); # don't need the write handle at all, so we close that
+
+	# use IO::Select to loop through open3 filehandles until all output ends
+	my ($selector) = IO::Select->new();
+	$selector->add (*R, *E);
+	while (1) {
+		last if scalar ($selector->handles) == 0;
+		my @ready = $selector->can_read (1);
+		for my $fh (@ready) {
+			my $ffh = fileno($fh); # identify which handle we're dealing with
+			if (eof ($fh)) { # close the filehandle if we reach the end of output
+				$selector->remove ($fh);
+				next;
+			}
+			my $line = scalar <$fh>; # this is the output itself from the current filehandle
+			chomp $line;
+			if ($ffh == fileno(R)) { # output on stdout
+				printlog($line);
+			} elsif ($ffh == fileno (E)) { # output on stderr
+				printlog("error $line",'warning');
+			}
+		}
+	}
+	close (R);
+	close (E);
+} else {
+	printlog("$archive_dir isn't mounted, logs are kept at $buffer_dir for $buffer_days days");
+}
+
+
+printlog('done!');
+
+exit;
+
+
+#         _                 _   _             
+# ____  _| |__ _ _ ___ _  _| |_(_)_ _  ___ ___
+#(_-< || | '_ \ '_/ _ \ || |  _| | ' \/ -_|_-<
+#/__/\_,_|_.__/_| \___/\_,_|\__|_|_||_\___/__/
+#
+
+sub failboat {
+	my $msg = shift;
+	print "$ident died: $msg\n";
+	printlog("died: $msg");
+	exit 1;
+}
+
+sub printlog {
+	my $msg = $_[0] ? $_[0] : '';
+	my $severity = $_[1] ? $_[1] : 'info'; # notice warning error etc.
+	Sys::Syslog::setlogsock('unix');
+	Sys::Syslog::openlog($ident,'ndelay,pid','user');
+	Sys::Syslog::syslog($severity,$msg);
+	Sys::Syslog::closelog();
+}
+
+sub process_buffer_files {
+	return unless -f $File::Find::name;
+	return if /^\./; # ignore hidden files
+	my $file_date = (stat($File::Find::name))[9];
+	if ( (time - $file_date)/86400 > $buffer_days ) { # delete old file
+		printlog("rm $File::Find::name");
+		unlink $File::Find::name;
+	} elsif ( !($File::Find::name =~ /\.gz$/) ) { # compress uncompressed file
+		my $filesize = -s $File::Find::name;
+		printlog("gzip $File::Find::name (${filesize}b)");
+		gzip $File::Find::name => "$File::Find::name.gz" or failboat("gzip failed: $GzipError");
+		unlink $File::Find::name;
+	}
+}
