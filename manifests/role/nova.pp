@@ -1,4 +1,14 @@
 class role::nova::config {
+	include role::nova::config::pmtpa,
+		role::nova::config::eqiad
+
+	$novaconfig = $site ? {
+		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
+		"eqiad" => $role::nova::config::eqiad::novaconfig,
+	}
+}
+
+class role::nova::config::common {
 	include passwords::openstack::nova
 
 	$commonnovaconfig = {
@@ -26,7 +36,7 @@ class role::nova::config {
 	}
 }
 
-class role::nova::config::pmtpa($customconfig={}) inherits role::nova::config {
+class role::nova::config::pmtpa inherits role::nova::config::common {
 	include role::keystone::config::pmtpa
 
 	$keystoneconfig = $role::keystone::config::pmtpa::keystoneconfig
@@ -99,10 +109,10 @@ class role::nova::config::pmtpa($customconfig={}) inherits role::nova::config {
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
 		keystone_auth_port => $keystoneconfig["auth_port"],
 	}
-	$novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig, $customconfig )
+	$novaconfig = merge( $pmtpanovaconfig, $commonnovaconfig )
 }
 
-class role::nova::config::eqiad($customconfig={}) inherits role::nova::config {
+class role::nova::config::eqiad inherits role::nova::config::common {
 	include role::keystone::config::eqiad
 
 	$keystoneconfig = $role::keystone::config::eqiad::keystoneconfig
@@ -174,17 +184,12 @@ class role::nova::config::eqiad($customconfig={}) inherits role::nova::config {
 		keystone_auth_protocol => $keystoneconfig["auth_protocol"],
 		keystone_auth_port => $keystoneconfig["auth_port"],
 	}
-	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig, $customconfig )
+	$novaconfig = merge( $eqiadnovaconfig, $commonnovaconfig )
 }
 
 class role::nova::common {
-	class { "role::nova::config::pmtpa": }
-	class { "role::nova::config::eqiad": }
-
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
 
 	include passwords::misc::scripts
 
@@ -202,17 +207,14 @@ class role::nova::common {
 }
 
 class role::nova::controller {
-	class { "role::nova::config::pmtpa": }
-	class { "role::nova::config::eqiad": }
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
+
 	include role::keystone::config::pmtpa,
 		role::keystone::config::eqiad,
 		role::glance::config::pmtpa,
 		role::glance::config::eqiad
 
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
 	$glanceconfig = $site ? {
 		"pmtpa" => $role::glance::config::pmtpa::glanceconfig,
 		"eqiad" => $role::glance::config::eqiad::glanceconfig,
@@ -251,15 +253,11 @@ class role::nova::controller {
 }
 
 class role::nova::api {
-	class { "role::nova::config::pmtpa": }
-	class { "role::nova::config::eqiad": }
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
 
 	include role::nova::common
 
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
 	class { "openstack::api-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 }
 
@@ -268,26 +266,22 @@ class role::nova::network::bonding {
 }
 
 class role::nova::network {
-        class { "role::nova::config::pmtpa":
-                customconfig => {
-			network_flat_interface => $realm ? {
-				"production" => "bond1.103",
-				"labs" => "eth0.103",
-			},
-			network_flat_interface_name => $realm ? {
-				"production" => "bond1",
-				"labs" => "eth0",
-			},
-		}
-        }
-	class { "role::nova::config::eqiad": }
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
+
+	$customconfig = {
+		network_flat_interface => $realm ? {
+			"production" => "bond1.103",
+			"labs" => "eth0.103",
+		},
+		network_flat_interface_name => $realm ? {
+			"production" => "bond1",
+			"labs" => "eth0",
+		},
+	}
+	$networkconfig = merge( $novaconfig, $customconfig )
 
 	include role::nova::common
-
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
 
 	require role::nova::network::bonding
 
@@ -330,16 +324,11 @@ class role::nova::wikiupdates {
 }
 
 class role::nova::compute {
-	class { "role::nova::config::pmtpa": }
-	class { "role::nova::config::eqiad": }
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
 
 	include role::nova::wikiupdates,
  		role::nova::common
-
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
 
 	interface_tagged { $novaconfig["network_flat_interface"]:
 		base_interface => $novaconfig["network_flat_interface_name"],
