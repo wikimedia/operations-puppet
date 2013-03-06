@@ -8,15 +8,7 @@
 # 1) set variable $enabled = "false"
 # 2) set all ssh authorized keys to ensure => absent
 
-define unixaccount(
-		$username,
-		$uid,
-		$gid,
-		$groups = '', # ['group1','group2'] default none
-        $membership = 'minimum', # inclusive|minimum
-		$enabled="true"
-	) {
-
+define unixaccount($username, $uid, $gid, $enabled="true") {
 	if defined(Class["nfs::home"]) {
 		$manage_home = "false"
 	} else {
@@ -31,10 +23,8 @@ define unixaccount(
 
 	user { "${username}":
 		name		=> $username,
-		uid			=> $uid,
-		gid			=> $gid,
-		groups		=> $groups,
-		membership	=> $membership,
+		uid		=> $uid,
+		gid		=> $gid,
 		comment		=> $title,
 		shell		=> $shell,
 		ensure		=> $enabled ? {
@@ -91,16 +81,6 @@ class groups {
 			name		=> "l10nupdate",
 			gid		=> 10002,
 			alias		=> 10002,
-			ensure		=> present,
-			allowdupe	=> false,
-		}
-	}
-
-	class file_mover {
-		group { 'file_mover':
-			name		=> 'file_mover',
-			gid			=> 999,
-			alias		=> 999,
 			ensure		=> present,
 			allowdupe	=> false,
 		}
