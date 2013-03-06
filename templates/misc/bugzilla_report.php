@@ -129,6 +129,7 @@ SELECT
 FROM
         bugs
 WHERE
+        bug_status = 'UNCONFIRMED' or
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
         bug_status = 'REOPENED';
