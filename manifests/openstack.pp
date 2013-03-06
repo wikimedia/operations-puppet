@@ -243,10 +243,30 @@ class openstack::gluster-service {
 	service { "glusterfs-server":
 		enable => true,
 		ensure => running,
-		require => [Package["glusterfs-server"], Upstart_job["glusterfs-server"]];
+		require => [Package["glusterfs-server"], File["/etc/init.d/glusterfs-server"], File["/etc/default/glusterd"], File["/etc/glusterfs/glusterd.vol"]];
 	}
-
-	upstart_job{ "glusterfs-server": require => Package["glusterfs-server"], install => "true" }
+	file {
+		"/etc/init.d/glusterfs-server":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/gluster/glusterfs-server",
+			require => [Package["glusterfs-server"]];
+		"/etc/default/glusterd":
+			owner => root,
+			group => root,
+			mode => 0444,
+			source => "puppet:///files/gluster/glusterd-default",
+			require => [Package["glusterfs-server"]];
+		"/etc/glusterfs/glusterd.vol":
+			owner => root,
+			group => root,
+			mode => 0644,
+			source => "puppet:///files/gluster/glusterd.vol",
+			require => [Package["glusterfs-server"]];
+		"/etc/init/glusterfs-server":
+			ensure => absent;
+	}
 
 }
 
