@@ -340,7 +340,7 @@ node "dataset1001.wikimedia.org" {
 }
 
 # pmtpa dbs
-node /db(32|36|38|59|60|63|69|71)\.pmtpa\.wmnet/ {
+node /db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
 	if $hostname == "db59" {
 		class { role::coredb::s1 : mariadb => true }
 	} else {
@@ -400,6 +400,11 @@ node /db(37|56|58|68)\.pmtpa\.wmnet/ {
 	} else {
 		include role::coredb::s7
 	}
+}
+
+## x1 shard
+node /db(36|38)\.pmtpa\.wmnet/ {
+  include role::coredb::x1
 }
 
 ## m1 shard (still mostly not puppetized...)
