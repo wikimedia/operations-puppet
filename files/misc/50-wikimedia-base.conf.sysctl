@@ -22,7 +22,8 @@ net.core.somaxconn = 1024
 net.ipv4.tcp_max_syn_backlog = 4096
 
 # Swapping makes things too slow and should be done rarely
-vm.swappiness = 10
+# 0 = only swap in oom conditions (does not disable swap)
+vm.swappiness = 0
 
 # The default TCP keepalive time of 2H is too long
 net.ipv4.tcp_keepalive_time = 300
