@@ -452,8 +452,8 @@ class misc::fundraising::udp2log_rotation {
 	file {
 		'/usr/local/bin/rotate_fundraising_logs':
 			owner => file_mover,
-			group => root,
-			mode => 0664,
+			group => file_mover,
+			mode => 0554,
 			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
 	}
 
