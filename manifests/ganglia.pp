@@ -317,7 +317,7 @@ class ganglia {
 						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
 						"Parsoid pmtpa" => "wtp1.pmtpa.wmnet",
 						"Parsoid eqiad" => "wtp1001.eqiad.wmnet",
-						"Parsoid Varnish pmtpa" => "constable.wikimedia.org",
+						"Parsoid Varnish pmtpa" => "constable.pmtpa.wmnet",
 						"Parsoid Varnish eqiad" => "cerium.wikimedia.org",
 					}
 					$rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
