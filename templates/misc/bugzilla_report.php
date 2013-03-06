@@ -203,7 +203,7 @@ foreach ($statesToRun as $state) {
         $result = mysql_query($sql);
         if (!$result)
                 reportFailure("Query failure");
-        print pack('A23A3',"Bugs $state",":");
+        print pack('A34A3',"Reports changed/set to $state",":");
         formatOutput($result);
 }
 
@@ -212,7 +212,7 @@ foreach ($totalStatistics as $report) {
         $result = mysql_query($sql);
         if (!$result)
                  reportFailure("Query failure");
-        print "\nTotal bugs still open: ";
+        print "\nTotal reports still open: ";
         formatOutput($result);
 }
 
@@ -222,7 +222,7 @@ foreach ($resolutionsToRun as $resolution) {
         $result = mysql_query($sql);
         if (!$result)
                  reportFailure("Query failure");
-        print pack('A23A3',"Bugs marked $resolution",":");
+        print pack('A25A3',"Reports marked $resolution",":");
         formatOutput($result);
 }
 print "\nSpecific Product/Component Resolutions & User Metrics \n\n";
