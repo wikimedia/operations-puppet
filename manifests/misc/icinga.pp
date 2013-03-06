@@ -803,6 +803,7 @@ class icinga::monitor::snmp {
 	service { snmptt:
 		ensure => running,
 		hasstatus => false,
+		hasrestart => true,
 		subscribe => [ File["/etc/snmp/snmptt.conf"],
 			       File["/etc/init.d/snmptt"],
 			       File["/etc/snmp/snmptrapd.conf"]];
@@ -811,7 +812,8 @@ class icinga::monitor::snmp {
 	service { snmptrapd:
 		ensure => running,
 		hasstatus => false,
-		subscribe => File["/etc/init.d/snmptrapd"];
+		subscribe => [ File["/etc/init.d/snmptrapd"],
+			       File["/etc/snmp/snmptrapd.comf"]];
 	}
 
 	service { snmpd:
@@ -822,7 +824,7 @@ class icinga::monitor::snmp {
 
 	# FIXME: smptt crashes periodically on precise
 	cron { "restart_snmptt":
-		command => "service snmptt restart",
+		command => "service snmptt restart 2>&1",
 		user => root,
 		hour => [0, 4, 8, 12, 16, 20],
 		minute => 7,
