@@ -2,9 +2,10 @@
 # wmf upgrade helper aka. "UFO" (Upgrades For Operations)
 # a script to help with server upgrades
 # initial version dzahn 20120505
+# updated lcarr 20130306
 
 # current features:
-## update node group from nagios config
+## update node group from icinga config
 ## check kernel versions on node groups
 ## check package upgrade status on node groups
 ## check uptimes on node groups
@@ -55,7 +56,7 @@ function menu() {
 	echo -e "\nHi $(whoami), welcome to ..${BRIGHT_WHITE}"
 	echo "wmf upgrade helper" | $FIGLET
 	echo -e $RESET
-	echo -e "${BRIGHT_WHITE}u${RESET} - (u)pdate a dsh group list from nagios data\n"
+	echo -e "${BRIGHT_WHITE}u${RESET} - (u)pdate a dsh group list from icinga data\n"
 	echo -e "${BRIGHT_WHITE}k${RESET} - check (k)ernel versions on a dsh group\n"
 	echo -e "${BRIGHT_WHITE}p${RESET} - check (p)ackage upgrades on a dsh group\n"
 	echo -e "${BRIGHT_WHITE}t${RESET} - check up(t)imes on a dsh group\n"
@@ -236,13 +237,13 @@ function updategroup() {
 	nodegroup=$1
 	overwrite="no"
 
-	echo -e "${BRIGHT_WHITE}fetching puppet_hosts.cfg from nagios on spence via scp .. '${nodegroup}'${RESET}\n"
+	echo -e "${BRIGHT_WHITE}fetching puppet_hosts.cfg from icinga on neon via scp .. '${nodegroup}'${RESET}\n"
 
-	scp root@spence:/etc/nagios/puppet_hosts.cfg /tmp/puppet_hosts.cfg
+	scp root@icinga:/etc/icinga/puppet_hosts.cfg /tmp/puppet_hosts.cfg
 	grep host_name /tmp/puppet_hosts.cfg | cut -d " " -f23 | grep "^${nodegroup}" | sort > /tmp/node_group_${nodegroup}
 
 	echo -e "\nchecking ... cmp -s ${DSH_GROUP_DIR}/${nodegroup} /tmp/node_group_${nodegroup} \n"
-	echo -e "\n! for this to work the node group file must exist and nagios host names need to _start_ with the same string!\n"
+	echo -e "\n! for this to work the node group file must exist and icinga host names need to _start_ with the same string!\n"
 
 	# yeah, "cmp", not "diff" which might return 0 just for being able to open both files
 	cmp -s ${DSH_GROUP_DIR}/${nodegroup} /tmp/node_group_${nodegroup} > /dev/null

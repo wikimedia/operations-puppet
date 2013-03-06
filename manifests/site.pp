@@ -2571,7 +2571,7 @@ node /(wtp1|kuo|lardner|mexia|tola)\.pmtpa\.wmnet/ {
 
 }
 
-node /((celsus|cerium|titanium)\.wikimedia\.org|constable\.pmtpa\.wmnet)/ {
+node /((cerium|titanium)\.wikimedia\.org|(celsus|constable)\.pmtpa\.wmnet)/ {
 	$cluster = "parsoidcache"
 	$nagios_group = "${cluster}_$::site"
 

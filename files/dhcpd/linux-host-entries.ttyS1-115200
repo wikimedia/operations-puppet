@@ -171,7 +171,7 @@ host carbon {
 
 host celsus {
 	hardware ethernet D4:AE:52:B3:90:36;
-	fixed-address celsus.wikimedia.org;
+	fixed-address celsus.pmtpa.wmnet;
 }
 
 host cerium {
