@@ -442,3 +442,21 @@ class misc::fundraising::jenkins_maintenance {
 	}
 
 }
+
+class misc::fundraising::udp2log_rotation {
+	
+	include accounts::file_mover
+
+	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
+
+	file {
+		'/usr/local/bin/rotate_fundraising_logs':
+			owner => file_mover,
+			group => root,
+			mode => 0664,
+			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
+	}
+
+	class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
+
+}
