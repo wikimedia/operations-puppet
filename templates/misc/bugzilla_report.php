@@ -26,7 +26,7 @@ END;
 }
 
 function getBugsPerComponent ($begin_date,$end_date) {
-        print "New bugs per component\n\n";
+        print "Created reports per component\n\n";
         return <<<END
 SELECT
         name, count(*) as total
@@ -37,8 +37,6 @@ JOIN
         on
         component_id = components.id
 WHERE
-        bug_status = 'NEW'
-        and
         creation_ts
 BETWEEN
         "$begin_date"
