@@ -2,7 +2,7 @@
 <?php error_reporting(E_ALL);
 
 function getBugsPerProduct ($begin_date,$end_date) {
-        print "New bugs per product\n\n";
+        print "Created reports per product\n\n";
         return <<<END
 SELECT
         name, count(*)
@@ -13,8 +13,7 @@ JOIN
         on
         product_id = products.id
 WHERE
-        bug_status = 'NEW'
-        and creation_ts
+        creation_ts
 BETWEEN
         "$begin_date"
         and
