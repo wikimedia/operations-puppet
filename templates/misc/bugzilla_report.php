@@ -172,6 +172,7 @@ else
 
 print "MediaWiki Bugzilla Report for " . date('F d, Y', $begin_date) . " - " . date('F d, Y', $end_date) . "\n\n";
 
+/* TODO: mysql_connect is deprecated - switch to MySQLi or PDO */
 $ok = mysql_connect("db9.pmtpa.wmnet", "bugs", "<%= scope.lookupvar('passwords::bugzilla::bugzilla_db_pass') %>");
 if (!$ok)
         reportFailure("DB connection failure");
