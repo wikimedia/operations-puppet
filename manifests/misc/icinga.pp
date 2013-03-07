@@ -26,7 +26,7 @@ class icinga::monitor {
 		lvs::monitor,
 		nagios::gsbmonitoring,
 		mysql,
-		nrpe::new
+		nrpe
 
 	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 
