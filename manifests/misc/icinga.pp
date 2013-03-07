@@ -164,7 +164,7 @@ class icinga::monitor::configuration::files {
 		# These will be removed from this manually managed file
 		# once analytics puppetization goes to production.
 		"/etc/icinga/analytics.cfg":
-			content => template("nagios/analytics.cfg.erb"),
+			content => template("icinga/analytics.cfg.erb"),
 			owner => root,
 			group => root,
 			mode => 0644;
@@ -524,7 +524,7 @@ class icinga::monitor::files::nagios-plugins {
 	# WMF custom service checks
 	file {
 		"/usr/lib/nagios/plugins/check_mysql-replication.pl":
-			source => "puppet:///files/nagios/check_mysql-replication.pl",
+			source => "puppet:///files/icinga/check_mysql-replication.pl",
 			owner => root,
 			group => root,
 			mode => 0755;
@@ -532,39 +532,39 @@ class icinga::monitor::files::nagios-plugins {
 			owner => root,
 			group => root,
 			mode => 0755,
-			source => "puppet:///files/nagios/check_cert";
+			source => "puppet:///files/icinga/check_cert";
 		"/usr/lib/nagios/plugins/check_all_memcached.php":
-			source => "puppet:///files/nagios/check_all_memcached.php",
+			source => "puppet:///files/icinga/check_all_memcached.php",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check_bad_apaches":
-			source => "puppet:///files/nagios/check_bad_apaches",
+			source => "puppet:///files/icinga/check_bad_apaches",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check_longqueries":
-			source => "puppet:///files/nagios/check_longqueries",
+			source => "puppet:///files/icinga/check_longqueries",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check_MySQL.php":
-			source => "puppet:///files/nagios/check_MySQL.php",
+			source => "puppet:///files/icinga/check_MySQL.php",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check_solr":
-			source => "puppet:///files/nagios/check_solr",
+			source => "puppet:///files/icinga/check_solr",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check-ssl-cert":
-			source => "puppet:///files/nagios/check-ssl-cert",
+			source => "puppet:///files/icinga/check-ssl-cert",
 			owner => root,
 			group => root,
 			mode => 0755;
 		"/usr/lib/nagios/plugins/check_stomp.pl":
-			source => "puppet:///files/nagios/check_stomp.pl",
+			source => "puppet:///files/icinga/check_stomp.pl",
 			owner => root,
 			group => root,
 			mode => 0755;

@@ -83,7 +83,6 @@ $decommissioned_servers = [
 "search10",
 "search11",
 "search12",
-"spence",
 "sq31",
 "sq32",
 "sq34",
