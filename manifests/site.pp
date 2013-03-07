@@ -2370,7 +2370,6 @@ node "streber.wikimedia.org" {
 	system_role { "misc": description => "network monitoring server" }
 
 	include	passwords::root,
-		base::decommissioned,
 		base::resolving,
 		base::sysctl,
 		base::motd,
