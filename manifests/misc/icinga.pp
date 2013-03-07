@@ -813,7 +813,7 @@ class icinga::monitor::snmp {
 		ensure => running,
 		hasstatus => false,
 		subscribe => [ File["/etc/init.d/snmptrapd"],
-			       File["/etc/snmp/snmptrapd.comf"]];
+			       File["/etc/snmp/snmptrapd.conf"]];
 	}
 
 	service { snmpd:
