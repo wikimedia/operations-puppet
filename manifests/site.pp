@@ -778,7 +778,7 @@ node "formey.wikimedia.org" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { [ "demon", "krinkle", "reedy", "dsc" ]: privileges => [
+	sudo_user { [ "demon", "krinkle", "reedy", "dsc", "mholmquist" ]: privileges => [
 		 'ALL = (jenkins) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/jenkins'
 		,'ALL = (testswarm) NOPASSWD: ALL'
