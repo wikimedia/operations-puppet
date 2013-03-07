@@ -119,6 +119,7 @@ class role::coredb::s1( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s1",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -127,6 +128,7 @@ class role::coredb::s2( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s2",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -135,6 +137,7 @@ class role::coredb::s3( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s3",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 	}
 }
 
@@ -142,6 +145,7 @@ class role::coredb::s4( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s4",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 		innodb_log_file_size => "2000M"
 	}
 }
@@ -150,6 +154,7 @@ class role::coredb::s5( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s5",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 		innodb_log_file_size => "1000M"
 	}
 }
@@ -158,6 +163,7 @@ class role::coredb::s6( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s6",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 	}
 }
 
@@ -165,6 +171,7 @@ class role::coredb::s7( $mariadb = false, $innodb_file_per_table = false ) {
 	class { "role::coredb::common":
 		shard => "s7",
 		mariadb => $mariadb,
+		innodb_file_per_table => $innodb_file_per_table,
 	}
 }
 
