@@ -11,7 +11,7 @@
 define nrpe::check($command) {
 	Class[nrpe::packages] -> Nrpe::Check[$title]
 
-	file { "/etc/nagios/nrpe.d/${title}.cfg":
+	file { "/etc/icinga/nrpe.d/${title}.cfg":
 		owner => root,
 		group => root,
 		mode => 0444,
@@ -82,6 +82,11 @@ class nrpe::packages {
 	}
 
 	file {
+		"/etc/icinga/":
+			owner => root,
+			group => root,
+			mode => 0755,
+			ensure => directory;
 		"/etc/icinga/nrpe.d":
 			owner => root,
 			group => root,
