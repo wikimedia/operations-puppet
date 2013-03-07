@@ -24,7 +24,7 @@
  
 echocmd="/bin/echo"
  
-CommandFile="/var/lib/nagios/rw/nagios.cmd"
+CommandFile="/var/spool/icinga/cmd"
  
 # get the current date/time in seconds since UNIX epoch
 datetime=`date +%s`
