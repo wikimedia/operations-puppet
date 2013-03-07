@@ -2722,6 +2722,7 @@ class admins::jenkins {
 	include accounts::hashar
 	include accounts::krinkle
 	include accounts::reedy
+	include accounts::mholmquist
 }
 
 class admins::dctech {
