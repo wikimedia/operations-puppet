@@ -264,7 +264,7 @@ class openstack::gluster-service {
 			mode => 0644,
 			source => "puppet:///files/gluster/glusterd.vol",
 			require => [Package["glusterfs-server"]];
-		"/etc/init/glusterfs-server":
+		"/etc/init/glusterfs-server.conf":
 			ensure => absent;
 	}
 
