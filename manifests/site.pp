@@ -208,6 +208,12 @@ node "brewster.wikimedia.org" {
 	include standard,
 		misc::install-server,
 		backup::client
+
+	# set up brewster to use haproxy to proxy puppet
+	# to stafford.
+	class { 'misc::haproxy':
+		config_file =>  'puppet:///files/puppet/haproxy.cfg',
+	}
 }
 
 node "calcium.wikimedia.org" {
