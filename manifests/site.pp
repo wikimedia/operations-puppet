@@ -343,6 +343,8 @@ node "dataset1001.wikimedia.org" {
 node /db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
 	if $hostname == "db59" {
 		class { role::coredb::s1 : mariadb => true }
+	} elsif $hostname == "db71"{
+		class { role::coredb::s1 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s1
 	}
@@ -351,6 +353,8 @@ node /db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
 node /db(52|53|54|57)\.pmtpa\.wmnet/ {
 	if $hostname == "db52" {
 		class { role::coredb::s2 : mariadb => true }
+	} elsif $hostname == "db57"{
+		class { role::coredb::s2 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s2
 	}
@@ -359,6 +363,8 @@ node /db(52|53|54|57)\.pmtpa\.wmnet/ {
 node /db(34|39|64|66)\.pmtpa\.wmnet/ {
 	if $hostname == "db39" {
 		class { role::coredb::s3 : mariadb => true }
+	} elsif $hostname == "db66"{
+		class { role::coredb::s3 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s3
 	}
@@ -370,6 +376,8 @@ node /db(31|33|51|65)\.pmtpa\.wmnet/ {
 	}
 	if $hostname == "db51" {
 		class { role::coredb::s4 : mariadb => true }
+	} elsif $hostname == "db65"{
+		class { role::coredb::s4 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s4
 	}
@@ -378,6 +386,8 @@ node /db(31|33|51|65)\.pmtpa\.wmnet/ {
 node /db(35|44|45|55)\.pmtpa\.wmnet/ {
 	if $hostname == "db35" {
 		class { role::coredb::s5 : mariadb => true }
+	} elsif $hostname == "db55"{
+		class { role::coredb::s5 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s5
 	}
@@ -389,6 +399,8 @@ node /db(43|46|47|50)\.pmtpa\.wmnet/ {
 	}
 	if $hostname == "db43" {
 		class { role::coredb::s6 : mariadb => true }
+	} elsif $hostname == "db50"{
+		class { role::coredb::s6 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s6
 	}
@@ -397,6 +409,8 @@ node /db(43|46|47|50)\.pmtpa\.wmnet/ {
 node /db(37|56|58|68)\.pmtpa\.wmnet/ {
 	if $hostname == "db58" {
 		class { role::coredb::s7 : mariadb => true }
+	} elsif $hostname == "db68"{
+		class { role::coredb::s7 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s7
 	}
