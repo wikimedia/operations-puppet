@@ -59,10 +59,10 @@ class role::lucene {
 								'sv-titles*', 'pl-titles*', 'pt-titles*', 'es-titles*', 'zh-titles*', 'nl-titles*', 'ru-titles*', 'fr-titles*',
 								'commonswiki.spell', 'commonswiki.nspart1.hl', 'commonswiki.nspart1', 'commonswiki.nspart2.hl', 'commonswiki.nspart2',
 								'*.related', 'jawiki.nspart1.hl', 'jawiki.nspart2.hl', 'zhwiki.nspart1.hl', 'zhwiki.nspart2.hl'],
-						},
-						"indexers" => {
-							"searchidx1001" => ['*']
 						}
+					},
+					"indexers" => {
+						"searchidx1001" => ['*']
 					}
 				},
 				"pmtpa" => {
