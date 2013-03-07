@@ -416,6 +416,7 @@ class lvs::configuration {
 			'search_pool3' => {},
 			'search_pool4' => {},
 			'search_pool5' => {},
+			'search_poolbeta' => {},
 			'search_prefix' => {},
 			'swift' => {},
 			'payments' => {},
