@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 base=/a/search
 confs="$base/conf"
