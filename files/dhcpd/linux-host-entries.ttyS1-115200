@@ -1130,6 +1130,11 @@ host es1010 {
 	fixed-address es1010.eqiad.wmnet;
 }
 
+host europium {
+	hardware ethernet 90:B1:1C:00:B1:93;
+	fixed-address europium.wikimedia.org;
+}
+
 host fluorine {
 	hardware ethernet 78:2b:cb:08:ba:a9;
 	fixed-address fluorine.eqiad.wmnet;
