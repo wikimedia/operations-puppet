@@ -342,7 +342,7 @@ class misc::statistics::sites::metrics_api {
 	# symlink the api.wsgi app loader python script.
 	# api.wsgi loads 'src.api' as a module :/
 	file { "$document_root/api.wsgi":
-		ensure => "$e3_analysis_path/src/api/api.wsgi",
+		ensure  => "$e3_analysis_path/user_metrics/api/api.wsgi",
 		require => Git::Clone["E3Analysis"],
 	}
 
