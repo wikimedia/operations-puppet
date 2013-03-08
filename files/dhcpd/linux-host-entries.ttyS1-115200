@@ -877,7 +877,7 @@ host db1031 {
 }
 
 host db1032 {
-	#hardware ethernet 84:2b:2b:51:91:ff;
+	hardware ethernet 84:2b:2b:51:91:ff;
 	fixed-address db1032.eqiad.wmnet;
 }
 
