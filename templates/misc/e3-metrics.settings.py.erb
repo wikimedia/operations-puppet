@@ -24,7 +24,7 @@ connections = {
 <% mysql_connections[name].keys.sort.each do |key| -%>
         <%= "'#{key}': '#{mysql_connections[name][key]}'," %>
 <% end # connection..each -%>
-    }
+    },
 <% end # mysql_connections..each -%>
 }
 
