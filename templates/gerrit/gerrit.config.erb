@@ -68,6 +68,9 @@
 [commentlink "rt"]
 	match = "\\b[rR][tT]\\s+#?(\\d+)\\b"
 	link = https://rt.wikimedia.org/Ticket/Display.html?id=$1
+[commentlink "cve"]
+	match = "\\b(CVE\-\\d{4}-\\d+)\\b"
+	link = https://cve.mitre.org/cgi-bin/cvename.cgi?name=$1
 [mimetype "application/javascript"]
 	safe = true
 [mimetype "application/x-php"]
