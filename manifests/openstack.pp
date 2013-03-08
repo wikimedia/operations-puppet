@@ -164,10 +164,14 @@ class openstack::queue-server($openstack_version, $novaconfig) {
 	}
 }
 
+<<<<<<< HEAD   (9a25d7 ensuring /etc/icinga exists)
 class openstack::project-storage-service {
 	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
+=======
+class openstack::project-storage-cron {
+	$ircecho_logs = { "/var/lib/glustermanager/manage-volumes.log" => "wikimedia-labs" }
+>>>>>>> BRANCH (1ef7f4 make ircecho config sane (not just very long strings))
 	$ircecho_nick = "labs-storage-wm"
-	$ircecho_chans = "#wikimedia-labs"
 	$ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":

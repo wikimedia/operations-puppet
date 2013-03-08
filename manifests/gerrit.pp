@@ -333,9 +333,27 @@ class gerrit::gitweb {
 
 class gerrit::ircbot {
 
+<<<<<<< HEAD   (9a25d7 ensuring /etc/icinga exists)
 	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile;/var/lib/gerrit2/review_site/logs/parsoid.log:#mediawiki-parsoid;/var/lib/gerrit2/review_site/logs/visualeditor.log:#mediawiki-visualeditor;/var/lib/gerrit2/review_site/logs/mediawiki.log:#mediawiki;/var/lib/gerrit2/review_site/logs/wikimedia-dev.log:#wikimedia-dev;/var/lib/gerrit2/review_site/logs/semantic-mediawiki.log:#semantic-mediawiki,#mediawiki;/var/lib/gerrit2/review_site/logs/wikidata.log:#wikimedia-wikidata"
+=======
+	#target channels can be either strings or arrays.
+	#channels names will get a # prepended if it doesn't already start with one
+	$ircecho_logbase = "/var/lib/gerrit2/review_site/logs"
+	$ircecho_logs = {
+		"${ircecho_logbase}/operations.log"    => "wikimedia-operations",
+		"${ircecho_logbase}/labs.log"          => "wikimedia-labs",
+		"${ircecho_logbase}/mobile.log"        => "wikimedia-mobile",
+		"${ircecho_logbase}/mediawiki.log"     => "mediawiki",
+		"${ircecho_logbase}/wikimedia-dev.log" => "wikimedia-dev",
+		"${ircecho_logbase}/semantic-mediawiki.log" => [ "semantic-mediawiki", "mediawiki", ],
+		"${ircecho_logbase}/wikidata.log" => [ "wikimedia-wikidata", "mediawiki", ],
+	}
+>>>>>>> BRANCH (1ef7f4 make ircecho config sane (not just very long strings))
 	$ircecho_nick = "gerrit-wm"
+<<<<<<< HEAD   (9a25d7 ensuring /etc/icinga exists)
 	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki-parsoid,#mediawiki-visualeditor,#mediawiki,#wikimedia-dev,#wikimedia-wikidata,#semantic-mediawiki"
+=======
+>>>>>>> BRANCH (1ef7f4 make ircecho config sane (not just very long strings))
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:

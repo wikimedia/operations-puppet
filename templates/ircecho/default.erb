@@ -1,3 +1,44 @@
+<%
+# logs is a hash which maps log names to values which can be
+# either a single channel name or a list of channels
+# channel name can optionally leave out the leading #.
+
+def infile(logs)
+	# make a list of flattened strings w/ one log each and that log's channels
+	logs = logs.map {|log,channels|
+		# prepend # on channel name if missing
+		channels = channels.map {|channel| channel.sub(/^#?/,'#') }
+
+		# join all channels to a single string. separate them w/ commas
+		channels = channels.join(",")
+
+		# join the log name and (the already joined) channel list. separate them w/ a colon
+		"#{log}:#{channels}"
+	}
+
+	# join the whole list of logs to one big string.
+	# separate each log from the next with a semicolon.
+	logs = logs.join(";")
+
+	return logs
+end
+
+def chans(logs)
+	# make a list of all channels for all logs
+	channels = logs.values.flatten
+
+	# prepend # on channel name if missing
+	channels = channels.map {|channel| channel.sub(/^#?/,'#') }
+
+	# discard duplicate channels (channels which receive from multiple logs)
+	channels = channels.uniq
+
+	# join all channels to a single string. separate them w/ commas
+	channels = channels.join(",")
+
+	return channels
+end
+-%>
 # Defaults for ircecho initscript
 # sourced by /etc/init.d/ircecho
 # installed at /etc/default/ircecho by the maintainer scripts
@@ -5,7 +46,7 @@
 #
 # This is a POSIX shell fragment
 #
-INFILE="<%= ircecho_infile %>"
+INFILE="<%= infile(ircecho_logs) %>"
 NICK="<%= ircecho_nick %>"
-CHANS="<%= ircecho_chans %>"
+CHANS="<%= chans(ircecho_logs) %>"
 SERVER="<%= ircecho_server %>"
