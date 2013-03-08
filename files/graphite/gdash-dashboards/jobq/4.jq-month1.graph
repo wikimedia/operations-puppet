@@ -13,10 +13,10 @@ field :run, :color => "blue",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(stats.job-insert.count, "1day"),"Jobs Queued/day"))'
 
-field :pop, :color => "red",
+field :push-dupl, :color => "red",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(stats.job-insert-duplicate.count, "1day"),"Duplicate jobs Queued/day"))'
 
-field :pop, :color => "purple",
+field :run-dupl, :color => "purple",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(stats.job-pop-duplicate.count, "1day"),"Duplicate jobs run/day"))'
