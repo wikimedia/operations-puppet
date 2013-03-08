@@ -574,7 +574,8 @@ class role::cache {
 		
 		cron { "alloc failure":
 			command => "test $(varnishstat -1 -f SMA.s0.c_fail | awk '{ print \$2 }') -gt 100 && service varnish restart > /var/log/varnish-restarts",
-			user => root
+			user => root,
+			ensure => absent
 		}
 		
 		class logging {
