@@ -19,13 +19,13 @@ __cohort_meta_instance__    = 'prod'
 # ============================
 
 connections = {
-<% mysql_connections.each_pair do |name, connection| -%>
+<% mysql_connections.keys.sort.each do |name| -%>
     <%= "'#{name}'" %>: {
-<% connection.each_pair do |key, value| -%>
-        <%= "'#{key}': '#{value}'," %>
-<% end # connection.each_pair -%>
+<% mysql_connections[name].keys.sort.each do |key| -%>
+        <%= "'#{key}': '#{mysql_connections[name][key]}'," %>
+<% end # connection..each -%>
     }
-<% end # mysql_connections.each_pair -%>
+<% end # mysql_connections..each -%>
 }
 
 PROJECT_DB_MAP = {

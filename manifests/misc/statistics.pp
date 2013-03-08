@@ -242,12 +242,12 @@ class misc::statistics::sites::community_analytics {
 # metrics-api.wikimedia.org
 # See: http://stat1.wikimedia.org/rfaulk/pydocs/_build/env.html
 # for more info on how and why.
-class misc::statistics::sites::metrics_api {
+class misc::statistics::sites::metrics {
 	require passwords::mysql::research,
 		passwords::mysql::research_prod,
 		passwords::mysql::metrics
-	$site_name        = "metrics-api.wikimedia.org"
-	$document_root    = "/srv/org.wikimedia.metrics-api"
+	$site_name        = "metrics.wikimedia.org"
+	$document_root    = "/srv/org.wikimedia.metrics"
 
 	$e3_home          = "/a/e3"
 	$e3_analysis_path = "$e3_home/E3Analysis"
@@ -332,7 +332,7 @@ class misc::statistics::sites::metrics_api {
 	# Need settings.py to configure metrics-api python application
 	# Make this only readable by stats user; it has db passwords in it.
 	file { "$e3_analysis_path/user_metrics/config/settings.py":
-		content => template("misc/e3-metrics-api.settings.py.erb"),
+		content => template("misc/e3-metrics.settings.py.erb"),
 		owner   => $e3_user,
 		group   => "root",
 		mode    => 0640,
@@ -349,12 +349,13 @@ class misc::statistics::sites::metrics_api {
 	include webserver::apache
 	# Set up the Python WSGI VirtualHost
 	webserver::apache::module { "wsgi": }
+	webserver::apache::module { "alias": }
 	webserver::apache::site { $site_name:
-		require      => [File["/srv/org.wikimedia.metrics-api"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"]],
+		require      => [File["/srv/org.wikimedia.metrics"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"], Webserver::Apache::Module['alias']],
 		server_admin => "noc@wikimedia.org",
 		docroot      => $document_root,
-		access_log   => "/var/log/apache2/access.metrics-api.log",
-		error_log    => "/var/log/apache2/error.metrics-api.log",
+		access_log   => "/var/log/apache2/access.metrics.log",
+		error_log    => "/var/log/apache2/error.metrics.log",
 		custom       => ["
     WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
     WSGIScriptAlias / $document_root/api.wsgi
@@ -378,8 +379,20 @@ class misc::statistics::sites::metrics_api {
 	],
 	}
 
+	# This site used to be named metrics-api.
+	# Set up a VirtualHost to handle redirects.
+	file { "/etc/apache2/sites-enabled/metrics-api.wikimedia.org":
+		content => "
+# Redirect metrics-api.wikimedia.org to $site_name.
+<VirtualHost *:80>
+    ServerName metrics-api.wikimedia.org
+    Redirect permanent / http://$site_name
+</VirtualHost>
+",
+	}
+
 	# make access and error log for metrics-api readable by wikidev group
-	file { ["/var/log/apache2/access.metrics-api.log", "/var/log/apache2/error.metrics-api.log"]:
+	file { ["/var/log/apache2/access.metrics.log", "/var/log/apache2/error.metrics.log"]:
 		group   => "wikidev",
 		require => Webserver::Apache::Site[$site_name],
 	}
