@@ -97,7 +97,7 @@ class base::puppet($server="puppet", $certname=undef) {
 	}
 
 	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
-	
+
 	case $::realm {
 		'production': {
 			exec { "puppet snmp trap":
@@ -189,7 +189,7 @@ class base::puppet($server="puppet", $certname=undef) {
 			require => File[ [ "/etc/default/puppet" ] ],
 			command => "/etc/init.d/puppet restart > /dev/null",
 			user => root,
-			# Restart every 4 hours to avoid the runs bunching up and causing an 
+			# Restart every 4 hours to avoid the runs bunching up and causing an
 			# overload of the master every 40 mins. This can be reverted back to a
 			# daily restart after we switch to puppet 2.7.14+ since that version
 			# uses a scheduling algorithm which should be more resistant to
@@ -203,7 +203,7 @@ class base::puppet($server="puppet", $certname=undef) {
 			user => root,
 			minute => 43,
 			ensure => present;
-	}	
+	}
 
 	# Report the last puppet run in MOTD
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
@@ -215,7 +215,7 @@ class base::puppet($server="puppet", $certname=undef) {
 }
 
 class base::remote-syslog {
-	if ($::lsbdistid == "Ubuntu") and ($::hostname != "nfs1") and ($::hostname != "nfs2") {
+	if ($::lsbdistid == "Ubuntu") {
 		package { rsyslog:
 			ensure => latest;
 		}
@@ -231,7 +231,7 @@ class base::remote-syslog {
 				# Per labs project syslog:
 				case $::instanceproject {
 					'deployment-prep': {
-						$syslog_remote_real = 'deployment-dbdump.pmtpa.wmflabs'
+						$syslog_remote_real = 'deployment-bastion.pmtpa.wmflabs'
 					}
 					default: {
 						$syslog_remote_real = 'i-000003a9.pmtpa.wmflabs:5544'
@@ -281,7 +281,7 @@ class base::sysctl {
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
-		
+
 		# Disable IPv6 privacy extensions, we rather not see our servers hide
 		file { "/etc/sysctl.d/10-ipv6-privacy.conf":
 			ensure => absent
@@ -307,7 +307,7 @@ class base::standard-packages {
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
 		}
-		
+
 		# DEINSTALL these packages
 		package { [ "mlocate" ]:
 			ensure => absent;
@@ -419,7 +419,7 @@ class base::instance-finish {
 }
 
 class base::vimconfig {
-	file { "/etc/vim/vimrc.local": 
+	file { "/etc/vim/vimrc.local":
 		owner => root,
 		group => root,
 		mode => 0444,
@@ -539,7 +539,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 		}
 	}
-	
+
 	class generic {
 		class dell {
 			$lom_serial_port = "ttyS1"
@@ -574,7 +574,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 					notify => Exec["reload udev"],
 					tag => "thumper-udev";
 			}
-			
+
 			exec { "reload udev":
 				command => "/sbin/udevadm control --reload-rules",
 				refreshonly => true
@@ -584,14 +584,14 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 	class dell-c2100 inherits base::platform::generic::dell {
 		$lom_serial_speed = "115200"
-		
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	class dell-r300 inherits base::platform::generic::dell {
 		$lom_serial_speed = "57600"
-		
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	class sun-x4500 inherits base::platform::generic::sun {
@@ -608,7 +608,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	class cisco-C250-M1 inherits base::platform::generic::cisco {
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	case $::productname {
@@ -666,7 +666,7 @@ class base::tcptweaks {
 		group => root,
 		ensure => present;
 	}
-	
+
 	exec { "/etc/network/if-up.d/initcwnd":
 		require => File["/etc/network/if-up.d/initcwnd"],
 		subscribe => File["/etc/network/if-up.d/initcwnd"],
@@ -674,7 +674,7 @@ class base::tcptweaks {
 	}
 }
 
-class base {
+class base( $no_rsyslog = false ) {
 	include	apt
 	include apt::update
 
@@ -706,7 +706,6 @@ class base {
 		base::decommissioned,
 		base::grub,
 		base::resolving,
-		base::remote-syslog,
 		base::sysctl,
 		base::motd,
 		base::vimconfig,
@@ -717,6 +716,10 @@ class base {
 		base::screenconfig,
 		ssh,
 		role::salt::minions
+
+	if $no_rsyslog == false {
+	  include base::remote-syslog
+	}
 
 
 	# include base::monitor::host.

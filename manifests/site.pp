@@ -49,11 +49,12 @@ import "stages.pp"
 # Base nodes
 
 # Class for *most* servers, standard includes
-class standard {
-	include base,
-		ganglia,
+class standard($no_rsyslog = false ) {
+	include ganglia,
 		ntp::client,
 		exim::simple-mail-sender
+
+	class { base : no_rsyslog => $no_rsyslog }
 }
 
 class newstandard {
