@@ -21,12 +21,14 @@ mediawikiwiki, metawiki, commonswiki, strategywiki : (language,en)
 commonswiki : (nssplit,2) (nspart1,[6]) (nspart2,[])
 dewiki, frwiki : (spell,20,5)
 dewiki, frwiki, itwiki, ptwiki, jawiki, plwiki, nlwiki, ruwiki, svwiki, zhwiki : (nssplit,2) (nspart1,[0,2,4,12,14]) (nspart2,[]) (warmup,0)
-<% end %>
 
+<% end -%>
+<% if realm == 'production' -%>
 [Database-Group]
 <all> : (titles_by_suffix,2) (tspart1,[ wiki|w ]) (tspart2,[ wiktionary|wikt, wikibooks|b, wikinews|n, wikiquote|q, wikisource|s, wikiversity|v])
 sv-titles: (titles_by_suffix,2) (tspart1,[ svwiki|w ]) (tspart2,[ svwiktionary|wikt, svwikibooks|b, svwikinews|n, svwikiquote|q, svwikisource|src])
 mw-titles: (titles_by_suffix,1) (tspart1, [ mediawikiwiki|mw, metawiki|meta ])
+<% end -%>
 
 # Search hosts layout
 [Search-Group]
