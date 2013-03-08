@@ -572,6 +572,11 @@ class role::cache {
 			xff_sources => $network::constants::all_networks
 		}
 		
+		cron { "alloc failure":
+			command => "test $(varnishstat -1 -f SMA.s0.c_fail | awk '{ print \$2 }') -gt 100 && service varnish restart > /var/log/varnish-restarts",
+			user => root
+		}
+		
 		class logging {
 			$event_listener = $::site ? {
 				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
