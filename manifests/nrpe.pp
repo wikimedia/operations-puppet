@@ -70,7 +70,7 @@ class nrpe {
 class nrpe::packages {
 	$nrpe_allowed_hosts = $::realm ? {
 		"production" => "127.0.0.1,208.80.152.185,208.80.152.161,208.80.154.14",
-		"labs" => "10.4.0.34"
+		"labs" => "10.4.0.120"
 	}
 
 	package { [ "nagios-nrpe-server", "nagios-plugins", "nagios-plugins-basic", "nagios-plugins-extra", "nagios-plugins-standard", "libssl0.9.8" ]:
