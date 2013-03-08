@@ -581,7 +581,6 @@ node "dobson.wikimedia.org" {
 
 node "ekrem.wikimedia.org" {
 	include standard,
-		search::apple-dictionary-bridge,
 		misc::irc-server,
 		misc::mediawiki-irc-relay
 }
