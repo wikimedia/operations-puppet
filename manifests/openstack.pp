@@ -164,10 +164,10 @@ class openstack::queue-server($openstack_version, $novaconfig) {
 	}
 }
 
-class openstack::project-storage-service {
-	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
+class openstack::project-storage-cron {
+	$ircecho_logs = { "/var/lib/glustermanager/manage-volumes.log" => "wikimedia-labs" }
 	$ircecho_nick = "labs-storage-wm"
-	$ircecho_chans = "#wikimedia-labs"
+	$ircecho_infile = "/var/lib/glustermanager/manage-volumes.log"
 	$ircecho_server = "irc.freenode.net"
 
 	package { "ircecho":

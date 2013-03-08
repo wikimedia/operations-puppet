@@ -680,7 +680,7 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	$ircecho_infile = "/var/log/logmsg"
+	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-tech" }
 	$ircecho_nick = "logmsgbot"
 	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
@@ -1711,8 +1711,8 @@ node "neon.wikimedia.org" {
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
 	$ircecho_infile = "/var/log/icinga/irc.log"
+	$ircecho_logs = { "/var/log/nagios/irc.log" => "#wikimedia-operations" }
 	$ircecho_nick = "icinga-wm"
-	$ircecho_chans = "#wikimedia-operations"
 	$ircecho_server = "irc.freenode.net"
 	include standard,
 		icinga::monitor,
@@ -2112,6 +2112,11 @@ node "sodium.wikimedia.org" {
 
 node "spence.wikimedia.org" {
 	$ganglia_aggregator = "true"
+	$nagios_server = "true"
+
+	$ircecho_logs = { "/var/log/nagios/irc.log" => "#wikimedia-operations" }
+	$ircecho_nick = "nagios-wm"
+	$ircecho_server = "irc.freenode.net"
 
 	include standard,
 		nfs::netapp::home,
