@@ -766,7 +766,7 @@ node "formey.wikimedia.org" {
 	$ldapincludes = ['openldap', 'nss', 'utils']
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
-	include role::gerrit::production::slave,
+	include role::gerrit::production::replicationdest,
 		svn::server,
 		backup::client
 
