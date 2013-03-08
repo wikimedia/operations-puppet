@@ -23,6 +23,12 @@ class misc::irc::wikibugs {
 	$ircecho_nick = "wikibugs"
 	# Add channels defined in $ircecho_infile:
 	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki-feed'
+	$ircecho_logbase = '/var/lib/wikibugs/logs'
+	$ircecho_logs = {
+		"${ircecho_logbase}/wikimedia-labs.log" => '#wikimedia-labs',
+		"${ircecho_logbase}/wikimedia-mobile.log" => '#wikimedia-mobile',
+		"${ircecho_logbase}/mediawiki.log" => '#mediawiki',
+	}
 	$ircecho_server = 'irc.freenode.net'
 
 	include misc::ircecho
