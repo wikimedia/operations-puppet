@@ -40,7 +40,7 @@ class role::fundraising::civicrm {
 	# variables used in fundraising exim template
 	$exim_signs_dkim = "true"
 	$exim_bounce_collector = "true"
-	
+
 	$cluster = "fundraising"
 	$nagios_group = "${cluster}_${::site}"
 
@@ -94,11 +94,11 @@ class role::fundraising::database {
 	system_role { "role::fundraising::database": description => "Fundraising Database (${mysql_role})" }
 
 	include standard,
-		mysql,
-		mysql::conf,
-		mysql::datadirs,
-		mysql::mysqluser,
-		mysql::packages
+		mysql_wmf,
+		mysql_wmf::conf,
+		mysql_wmf::datadirs,
+		mysql_wmf::mysqluser,
+		mysql_wmf::packages
 
 }
 

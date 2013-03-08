@@ -6,7 +6,7 @@
 # top are meant for production wikimedia mysql installations.
 
 # TODO should really be named mysql-server, or mysql::server
-class mysql {
+class mysql_wmf {
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
 
 	#######################################################################
@@ -58,9 +58,9 @@ class mysql {
 				ensure => running,
 				hasstatus => false;
 			}
-			include mysql::monitor::percona
+			include mysql_wmf::monitor::percona
 			if ($db_cluster =~ /^m1/) {
-				include mysql::slow_digest
+				include mysql_wmf::slow_digest
 			}
 		}
 	}
@@ -237,9 +237,9 @@ class mysql {
 		}
 	}
 
-	class monitor::percona inherits mysql {
+	class monitor::percona inherits mysql_wmf {
 		$crit = $master
-		require "mysql::monitor::percona::files"
+		require "mysql_wmf::monitor::percona::files"
 
 		monitor_service { "mysqld": description => "mysqld processes", check_command => "nrpe_check_mysqld", critical => $crit }
 		monitor_service { "mysql recent restart": description => "MySQL Recent Restart", check_command => "nrpe_check_mysql_recent_restart", critical => $crit }
@@ -273,7 +273,7 @@ class mysql {
 		}
 	}
 
-	class conf inherits mysql {
+	class conf inherits mysql_wmf {
 		$db_clusters = {
 			"fundraisingdb" => {
 				"innodb_log_file_size" => "500M"
@@ -338,7 +338,7 @@ class mysql {
 		}
 	}
 
-	class pc::conf inherits mysql {
+	class pc::conf inherits mysql_wmf {
 		file { "/etc/my.cnf":
 			content => template("mysql/paresercache.my.cnf.erb")
 		}
@@ -356,8 +356,8 @@ class mysql {
 		}
 	}
 
-	include mysql::ganglia,
-		mysql::monitor::percona::files
+	include mysql_wmf::ganglia,
+		mysql_wmf::monitor::percona::files
 
 	# TODO do we want to have a class for PHP clients (php5-mysql) as well
 	# and rename this to mysql::client-cli?
@@ -387,7 +387,7 @@ class mysql {
 				content => template("mysql/send_query_digest.sh.erb");
 		}
 
-		if $mysql::db_cluster {
+		if $mysql_wmf::db_cluster {
 			cron { slow_digest:
 				command => "/usr/local/bin/send_query_digest.sh >/dev/null 2>&1",
 				require => File["/usr/local/bin/send_query_digest.sh"],
@@ -408,7 +408,7 @@ class mysql {
 	}
 }
 
-class mysql::coredb::ganglia{
+class mysql_wmf::coredb::ganglia{
 
 	include passwords::ganglia
 	$ganglia_mysql_pass = $passwords::ganglia::ganglia_mysql_pass
@@ -438,7 +438,7 @@ class mysql::coredb::ganglia{
 	}
 }
 
-class mysql::coredb::monitoring( $crit = false, $no_slave = false ) {
+class mysql_wmf::coredb::monitoring( $crit = false, $no_slave = false ) {
 
 		include passwords::nagios::mysql
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
@@ -474,7 +474,7 @@ class mysql::coredb::monitoring( $crit = false, $no_slave = false ) {
 	}
 }
 
-class mysql::client::default-charset-binary {
+class mysql_wmf::client::default_charset_binary {
 	# ubuntu's stock mysql client defaults to latin1 charsets
 	# this overrides it to binary
 	file {

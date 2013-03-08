@@ -427,10 +427,10 @@ node /^(db(9|10)|blondel|bellin)\.pmtpa\.wmnet$/ {
 	include role::db::core
 
 	if $hostname =~ /^(bellin|blondel)/ {
-		include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::conf,
-		mysql::packages
+		include mysql_wmf::mysqluser,
+		mysql_wmf::datadirs,
+		mysql_wmf::conf,
+		mysql_wmf::packages
 	}
 }
 
@@ -455,11 +455,11 @@ node /db29\.pmtpa\.wmnet/{
 	system_role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
 	include base,
 		standard,
-		mysql,
+		mysql_wmf,
 		#mysql::conf, doing this by hand b/c this is a weird short-term use box
-		mysql::datadirs,
-		mysql::mysqluser,
-		mysql::packages,
+		mysql_wmf::datadirs,
+		mysql_wmf::mysqluser,
+		mysql_wmf::packages,
 		ntp::client,
 		admins::roots,
 		accounts::pgehres
@@ -528,10 +528,10 @@ node /db104[68]\.eqiad\.wmnet/ {
 
 ## eqiad fundraising DBs
 node /^(db1008|db1025)\.eqiad\.wmnet/ {
-	include mysql::mysqluser,
-		mysql::datadirs,
-		mysql::packages,
-		mysql::conf
+	include mysql_wmf::mysqluser,
+		mysql_wmf::datadirs,
+		mysql_wmf::packages,
+		mysql_wmf::conf
 
 	  if $hostname == "db1008" {
 		include role::fundraising::database::master
@@ -1906,10 +1906,10 @@ node /^payments[1-4]\.wikimedia\.org$/ {
 
 node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
   include role::db::core,
-    mysql::mysqluser,
-    mysql::datadirs,
-    mysql::pc::conf,
-    mysql::packages
+    mysql_wmf::mysqluser,
+    mysql_wmf::datadirs,
+    mysql_wmf::pc::conf,
+    mysql_wmf::packages
 
   system_role { "mysql::pc::conf": description => "parser cache mysql server" }
 }

@@ -2,12 +2,12 @@
 class misc::fundraising {
 
 	include passwords::civi,
-		mysql::client::default-charset-binary
+		mysql_wmf::client::default_charset_binary
 
 	#what is currently on grosley/aluminium
 	system_role { 'misc::fundraising': description => 'fundraising sites and operations' }
 
-	require mysql::client
+	require mysql_wmf::client
 
 	package { [ 'libapache2-mod-php5', 'php5-cli', 'php-pear', 'php5-common', 'php5-curl', 'php5-dev', 'php5-gd', 'php5-mysql', 'php5-sqlite', 'subversion', 'phpunit', 'python-scipy', 'python-matplotlib', 'python-libxml2', 'python-sqlite', 'python-sqlitecachec', 'python-urlgrabber', 'python-argparse', 'python-dev', 'python-setuptools', 'python-mysqldb', 'libapache2-mod-python', 'r-base', 'r-cran-rmysql', 'python-rpy2' ]:
 		ensure => latest;
@@ -206,7 +206,7 @@ class misc::fundraising::backup::dump_fundraising_database(
 		$weekday = '*',
 	) {
 
-	file { 
+	file {
 		'/usr/local/bin/dump_fundraisingdb':
 			owner => root,
 			group => root,
@@ -233,7 +233,7 @@ class misc::fundraising::backup::archive_sync(
 		$weekday = '*',
 	) {
 
-	file { 
+	file {
 		'/usr/local/bin/offhost_backups':
 			owner => root,
 			group => root,
@@ -444,7 +444,7 @@ class misc::fundraising::jenkins_maintenance {
 }
 
 class misc::fundraising::udp2log_rotation {
-	
+
 	include accounts::file_mover
 
 	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }

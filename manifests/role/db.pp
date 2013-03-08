@@ -7,6 +7,6 @@ class role::db::core {
 	system_role { "db::core": description => "Core Database server" }
 
 	include standard,
-		mysql
+		mysql_wmf
 }
 
