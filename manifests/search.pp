@@ -234,35 +234,3 @@ class search::searchqa {
 			mode  => 0774;
 	}
 }
-
-class search::apple-dictionary-bridge {
-	system_role { "search::apple-dictionary-bridge": description => "Apple Dictionary to API OpenSearch bridge" }
-
-	require webserver::php5
-
-	file {
-		"/etc/apache2/sites-available/search.wikimedia.org":
-			path => "/etc/apache2/sites-available/search.wikimedia.org",
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/apache/sites/search.wikimedia.org";
-		"/srv/search.wikimedia.org/":
-			mode => 0755,
-			owner => root,
-			group => root,
-			ensure => directory;
-	}
-
-	apache_site { search:
-		name => "search.wikimedia.org",
-		require => File["/srv/search.wikimedia.org/"];
-	}
-
-	# Monitoring
-	monitor_service { apple-dictionary-bridge:
-		check_command => "check_http_url!search.wikimedia.org!/?site=wikipedia&lang=en&search=wikip&limit=10",
-		description => "Apple Dictionary bridge"
-	}
-}
-
