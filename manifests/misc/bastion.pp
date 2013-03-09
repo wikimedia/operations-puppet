@@ -5,7 +5,7 @@
 class misc::bastionhost {
 	system_role { "misc::bastionhost": description => "Bastion" }
 
-	require mysql::client
+	require mysql_wmf::client
 
 	include sudo::appserver
 

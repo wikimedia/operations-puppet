@@ -268,7 +268,7 @@ class role::coredb::common(
 	system_role { "dbcore": description => "Shard ${shard} Core Database server" }
 
 	include standard,
-		mysql::coredb::ganglia,
+		mysql_wmf::coredb::ganglia,
 		mha::node
 
 	if $masters[$::site] == $::hostname
@@ -290,7 +290,7 @@ class role::coredb::common(
 			heartbeat_enabled => $heartbeat_enabled,
 		}
 
-		class { "mysql::coredb::monitoring": crit => true }
+		class { "mysql_wmf::coredb::monitoring": crit => true }
 
 	}
 	else {
@@ -312,9 +312,9 @@ class role::coredb::common(
 		}
 
 		if $primary_site {
-			class { "mysql::coredb::monitoring": crit => false }
+			class { "mysql_wmf::coredb::monitoring": crit => false }
 		} else {
-			class { "mysql::coredb::monitoring": crit => false, no_slave => true }
+			class { "mysql_wmf::coredb::monitoring": crit => false, no_slave => true }
 		}
 	}
 
