@@ -133,6 +133,20 @@ WHERE
 END;
 }
 
+function getBugsCreated($begin_date, $end_date) {
+         return <<<END
+SELECT
+        count(bug_id)
+FROM
+        bugs
+WHERE
+        creation_ts
+BETWEEN
+        "$begin_date"
+        and
+        "$end_date"
+END;
+}
 
 function formatOutput($result) {
         while ($row = mysql_fetch_row($result)) {
@@ -195,6 +209,7 @@ $resolutionsToRun = array('FIXED',      'REMIND',
 
 $totalStatistics = array ('getTotalOpenBugs',);
 
+$createdStatistics = array('getBugsCreated',);
 
 print "Status changes this week\n\n";
 foreach ($statesToRun as $state) {
@@ -213,6 +228,15 @@ foreach ($totalStatistics as $report) {
                  reportFailure("Query failure");
         print "\nTotal bugs still open: ";
         formatOutput($result);
+}
+
+foreach ($createdStatistics as $report) {
+        $sql = getBugsCreated(date('Y-m-d', $begin_date),date('Y-m-d', $end_date));
+        $result = mysql_query($sql);
+        if (!$result)
+                 reportFailure( 'Query failure' );
+        print "\nReports created this week: ";
+        formatOutput( $result );
 }
 
 print "\nResolutions for the week:\n\n";
