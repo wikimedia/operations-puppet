@@ -197,15 +197,16 @@ $reportsPerItem = array ('getBugsPerComponent',
                          'getBugsPerProduct',
                          'getBugsResolvedPerUser',);
 
-$statesToRun = array('NEW',
+$statesToRun = array('UNCONFIRMED',
+                     'NEW',
                      'ASSIGNED',
                      'REOPENED',
-                     'RESOLVED',);
+                     'RESOLVED',
+                     'VERIFIED',);
 
-$resolutionsToRun = array('FIXED',      'REMIND',
-                          'INVALID',    'DUPLICATE',
-                          'WONTFIX',    'WORKSFORME',
-                          'LATER',      'MOVED',);
+$resolutionsToRun = array('FIXED',      'DUPLICATE',
+                          'INVALID',    'WORKSFORME',
+                          'WONTFIX',);
 
 $totalStatistics = array ('getTotalOpenBugs',);
 
