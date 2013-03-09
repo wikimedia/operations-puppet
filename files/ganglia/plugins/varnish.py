@@ -3,89 +3,82 @@
 """
 varnish.py
 Gather varnish data for ganglia.
-Created by Fred Vassard on 2010-04-06.
+Written by Mark Bergsma <mark@wikimedia.org>
 """
 
 from subprocess import Popen, PIPE
+import json, os, sys
 
 stats_cache = {}
 varnishstat_path = "/usr/bin/varnishstat"
-
-GAUGE_METRICS = set(['n_sess_mem', 'n_sess', 'n_object', 'n_vampireobject', 'n_objectcore', 'n_objecthead', 'n_smf', 'n_smf_frag', 'n_smf_large', 'n_vbe_conn', 'n_wrk', 'n_backend', 'n_expired', 'n_lru_nuked', 'n_lru_saved', 'n_lru_moved', 'n_deathrow', 'sm_nobj', 'sm_balloc', 'sm_bfree', 'sma_nobj', 'sma_nbytes', 'sma_balloc', 'sma_bfree', 'sms_nobj', 'sms_nbytes', 'sms_balloc', 'sms_bfree', 'n_purge'])
 
 instances = ['']
 
 def metric_init(params):
 	global varnishstat_path, instances, stats_cache
 
-	metrics = []
-
-	varnishstat_path = params.get('varnishstat', "/usr/bin/varnishstat")
-
-	# First get the metrics list from one instance
-	stats = get_stats()
+	varnishstat_path = params.get('varnishstat', varnishstat_path)
 
 	instances = params.get('instances', "").split(',')
+	try:
+		instances[instances.index('')] = os.uname()[1]
+	except ValueError:
+		pass
 
-	all_metrics = build_dict()
+	stats_cache = {}
+	stats_cache = get_stats()
 
-	for metric in stats.keys():
-		if metric.startswith(("SMF.", "VBE.", "LCK.")): continue
-		for instance in instances:
+	metrics = []
+	for instance in instances:
+		for metric, properties in stats_cache[instance].iteritems():
+			if metric == "timestamp" or metric.startswith(("VBE.", "LCK.")): continue
+			slope = ( properties['flag'] == 'i' and 'both' or 'positive' )
 			metric_properties = {
-				'name': len(instance) and (instance + '.' + metric) or metric,
+				'name': instance + "." + metric.encode('ascii'),
 				'call_back': get_value,
 				'time_max': 15,
 				'value_type': 'uint',
-				'units': 'N',
-				'slope': ( metric in GAUGE_METRICS and 'both' or 'positive' ),
+				'units': ( slope == 'positive' and 'N/s' or 'N' ),
+				'slope': slope,
 				'format': '%u',
-				'description': all_metrics[metric]
+				'description': properties['description'].encode('ascii'),
+				'groups': "varnish " + instance
 			}
 			metrics.append(metric_properties)
-
-	stats_cache = {}
 
 	return metrics
 
 def get_value(metric):
 	global stats_cache
 
-	if metric not in stats_cache:
+	instance, metric_name = metric.split('.', 1)
+	if metric_name not in stats_cache[instance]:
 		get_stats()
 
-	return int(stats_cache.pop(metric, 0))
+	return int(stats_cache[instance].pop(metric_name, {'value': 0})['value'])
 
 def get_stats():
 	global stats_cache, instances, GAUGE_METRICS
 
-	stats_cache = {}
 	for instance in instances:
-		prefix = len(instance) and (instance + '.') or ""
-		for line in Popen([varnishstat_path, "-1", "-n", instance], stdout=PIPE).stdout:
-			key, value, delta = line.split()[0:3]
-			stats_cache[prefix+key] = value
-			if delta.strip() == ".":
-				GAUGE_METRICS.add(key)
+		stats_cache[instance] = json.load(Popen([varnishstat_path, "-1", "-j", "-n", instance], stdout=PIPE).stdout)
 
 	return stats_cache
-
-def build_dict():
-	all_metrics = {}
-
-	lineno = 0
-	for line in Popen([varnishstat_path, "-l"], stderr=PIPE).stderr:
-		lineno += 1
-		if lineno < 4: continue
-		key, value = line.split(None, 1)
-		all_metrics[key] = value.strip()
-
-	return all_metrics
 
 def metric_cleanup():
 	pass
 
 if __name__ == '__main__':
-	metrics = metric_init({})
+	params = { 'instances': sys.argv[1] }
+
+	metrics = metric_init(params)
+
+	print "# Varnish plugin for Ganglia Monitor, automatically generated config file\n"
+	print "modules {\n\tmodule {\n\t\tname = \"varnish\"\n\t\tlanguage = \"python\"\n\t\tpath = \"varnish.py\"\n"
+	print "\t\tparam instances {\n\t\t\tvalue = \"%s\"\n\t\t}" % ",".join(instances)
+	print "\t}\n}\n"
+
+	print "collection_group {\n\tcollect_every = 15\n\ttime_threshold = 15\n"
 	for metric_properties in metrics:
-		print "\n\tmetric {\n\t\tname = '%(name)s'\n\t\ttitle = '%(description)s'\n\t}" % metric_properties
+		print "\tmetric {\n\t\tname = '%(name)s'\n\t\ttitle = '%(description)s'\n\t}" % metric_properties
+	print "}"
