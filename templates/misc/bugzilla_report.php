@@ -81,7 +81,7 @@ LIMIT
         5;
 END;
 }
-
+/* TODO: Check if this really refers to resolution setting, and not to random changes in last week plus current resolution X */
 function getBugResolutions($begin_date, $end_date, $resolution) {
         $resolution = mysql_real_escape_string($resolution);
         $resolution = "'$resolution'";
