@@ -156,7 +156,7 @@ class varnish {
 		exec {
 			"generate varnish.pyconf":
 				require => File["/usr/lib/ganglia/python_modules/varnish.py", "/etc/ganglia/conf.d"],
-				command => "/usr/bin/python /usr/lib/ganglia/python/modules/varnish.py > /etc/ganglia/conf.d/varnish.pyconf.new";
+				command => "/usr/bin/python /usr/lib/ganglia/python_modules/varnish.py > /etc/ganglia/conf.d/varnish.pyconf.new";
 			"replace varnish.pyconf":
 				cwd => "/etc/ganglia/conf.d",
 				path => "/bin:/usr/bin",
