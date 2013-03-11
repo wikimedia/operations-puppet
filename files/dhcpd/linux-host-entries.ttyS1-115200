@@ -3602,7 +3602,7 @@ host search22 {
 }
 
 host search23 {
-	hardware ethernet d4:ae:52:6e:f0:8e;
+	hardware ethernet a4:ba:db:19:cd:29;
 	fixed-address search23.pmtpa.wmnet;
 	
 }
