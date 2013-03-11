@@ -1,0 +1,19 @@
+-------------------------------------------------
+           ______                  
+          (____  \        _        
+          |____)  ) ___ _| |_  ___ 
+          |  __  ( / _ (_   _)/___)
+          | |__)  ) |_| || |_|___ |
+          |______/ \___/  \__|___/ 
+	      	project
+-------------------------------------------------
+
+This is a server of bots project, the collaborative environment
+to run and operate bots for wikimedia project. In case you
+need a help, you can contact one of following sysadmins:
+
+Petrb (petan), Damian Zaremba (Damianz), Ryan Lane,
+Adam Shorland (addshore)
+
+Important:  don't forget to run command log <message> after every
+	    system change
