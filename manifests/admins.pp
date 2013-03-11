@@ -2298,7 +2298,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 			ssh_authorized_key {
 				"dan@DAndreescu-ThinkPad-T420s":
-					ensure	=> absent,
+					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx";
