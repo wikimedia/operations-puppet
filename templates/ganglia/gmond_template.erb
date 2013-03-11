@@ -3,7 +3,7 @@
 globals {
   daemonize = yes
   setuid = yes
-<% if scope.lookupvar("::lsbdistcodename") == "hardy") then -%>
+<% if scope.lookupvar("::lsbdistcodename") == "hardy" then -%>
   user = nobody
 <% else -%>
   user = ganglia
