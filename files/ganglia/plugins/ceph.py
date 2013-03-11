@@ -53,15 +53,17 @@ def get_value(metric):
 	global stats_cache, metric_types
 
 	instance, section, metric_name = metric.split('.', 2)
-	if instance not in stats_cache or metric_name not in stats_cache[instance][section]:
+	try:
+		stats_cache[instance][section][metric_name]
+	except KeyError:
 		get_stats()
 
-	type = metric_types[instance][section][metric_name]['type']
-	if type & 0b100 > 0:
+	t = metric_types[instance][section][metric_name]['type']
+	if t & 0b100 > 0:
 		# Average
 		try:
-			values = stats_cache[instance][section].pop(metric_name, {'sum': 0, 'avgcount': 0})
-			if type & 1 == 1:
+			values = stats_cache[instance][section].pop(metric_name)
+			if t & 1 == 1:
 				return float(values['sum'] / values['avgcount'])
 			else:
 				return int(values['sum'] / values['avgcount'])
@@ -71,7 +73,7 @@ def get_value(metric):
 		return stats_cache[instance][section].pop(metric_name, 0)
 
 def get_stats():
-	global stats_cache, instances, GAUGE_METRICS
+	global stats_cache, instances
 
 	for instance in instances:
 		stats_cache[instance] = json.load(Popen([ceph_path, "--admin-daemon", "/var/run/ceph/ceph-osd.%s.asok" % instance, "perf", "dump"], stdout=PIPE).stdout)
