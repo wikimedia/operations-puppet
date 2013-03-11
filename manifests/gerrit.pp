@@ -375,6 +375,13 @@ class gerrit::crons {
 		user => root,
 		hour => 1
 	}
+
+	cron { clear_gerrit_sshd_log:
+		# Don't keep any archived sshd logs.
+		command => "rm -f /var/lib/gerrit2/review_site/logs/sshd_log.*"
+		user => root,
+		hour => 1
+	}
 }
 
 # Setup the `gerritslave` account on any host that wants to receive
