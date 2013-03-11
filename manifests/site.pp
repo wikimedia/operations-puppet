@@ -2369,8 +2369,6 @@ node "stat1.wikimedia.org" {
 		accounts::jgonera,
 		# RT 4475
 		accounts::fschulenburg,
-		# RT 4519
-		accounts::ypanda,
 		accounts::dandreescu #rt4561
 
 
@@ -2387,6 +2385,8 @@ node "stat1001.wikimedia.org" {
 		accounts::dsc,
 		accounts::dandreescu,
 		accounts::rfaulk #rt4258
+		# RT 4687
+		accounts::ypanda,
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
