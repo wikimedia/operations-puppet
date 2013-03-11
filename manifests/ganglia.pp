@@ -29,7 +29,7 @@ class ganglia {
 		# aggregator should not be deaf (they should listen)
 		# ganglia_aggregator for production are defined in site.pp;
 		# for labs, 'deaf = "no"' is defined in gmond.conf.labsstub
-		if $::ganglia_aggregator {
+		if $ganglia_aggregator {
 			$deaf = "no"
 		} else {
 			$deaf = "yes"
