@@ -19,24 +19,24 @@
 
 class ganglia {
 
-	if $hostname in $decommissioned_servers {
+	if $::hostname in $::decommissioned_servers {
 		$cluster = "decommissioned"
 		$deaf = "no"
 	} else {
-		if ! $cluster {
+		if ! $::cluster {
 			$cluster = "misc"
 		}
 		# aggregator should not be deaf (they should listen)
 		# ganglia_aggregator for production are defined in site.pp;
 		# for labs, 'deaf = "no"' is defined in gmond.conf.labsstub
-		if $ganglia_aggregator {
+		if $::ganglia_aggregator {
 			$deaf = "no"
 		} else {
 			$deaf = "yes"
 		}
 	}
 
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		$authority_url = "http://ganglia.wmflabs.org"
 		# labs does not use multicast so needs an explict gmetad_host
 		$gmetad_host = "10.4.0.79"
@@ -46,13 +46,13 @@ class ganglia {
 
 	$location = "unspecified"
 
-	$ip_prefix = $site ? {
+	$ip_prefix = $::site ? {
 		"pmtpa"	=> "239.192.0",
 		"eqiad"	=> "239.192.1",
 		"esams"	=> "239.192.20",
 	}
 
-	$name_suffix = " ${site}"
+	$name_suffix = " ${::site}"
 
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
@@ -154,7 +154,7 @@ class ganglia {
 	# and a different IP prefix will be used.
 
 	# gmond.conf template variables
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		# use project names for cluster names in labs
 		$cname = $instanceproject
 	}
@@ -242,7 +242,7 @@ class ganglia {
 			ensure => latest;
 		}
 
-		if $realm == "labs" {
+		if $::realm == "labs" {
 			$gridname = "wmflabs"
 			# for labs, just generate a stub gmetad configuration without data_source lines
 			$gmetad_conf = "gmetad.conf.labsstub"
@@ -253,7 +253,7 @@ class ganglia {
 			$gridname = "Wikimedia"
 			$gmetad_conf = "gmetad.conf"
 			$authority_url = "http://ganglia.wikimedia.org"
-			case $hostname {
+			case $::hostname {
 				# manutius runs gmetad to get varnish data into torrus
 				# unlike other servers, manutius uses the default rrd_rootdir
 				# neon needs gmetad for ganglios
@@ -334,7 +334,7 @@ class ganglia {
 		}
 
 		# for labs, gmond.conf and gmetad.conf are generated every 4 hours by a cron job
-		if $realm == "labs" {
+		if $::realm == "labs" {
 			file { "/etc/ganglia/gmond.conf.labsstub":
 				source => "puppet:///files/ganglia/gmond.conf.labsstub",
 				mode => 0444,
@@ -403,7 +403,7 @@ class ganglia::web {
 
 	class {'webserver::php5': ssl => 'true'; }
 
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		$ganglia_servername = "ganglia.wmflabs.org"
 		$ganglia_serveralias = "aggregator1.pmtpa.wmflabs"
 		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
@@ -509,7 +509,7 @@ class ganglia::web {
 
 	# TODO(ssmollett): install ganglia-webfrontend package in production,
 	# using appropriate conf.php
-	if $realm == "labs" {
+	if $::realm == "labs" {
 		package { "ganglia-webfrontend":
 			ensure => latest;
 		}
