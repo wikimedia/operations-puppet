@@ -1,11 +1,10 @@
 class jenkins::group {
 
-  class jenkins {
-    group { "jenkins":
-      name      => "jenkins",
-      ensure    => present,
-      allowdupe => false;
-    }
+  group { "jenkins":
+    name      => "jenkins",
+    ensure    => present,
+    system    => true,
+    allowdupe => false,
   }
 
 }
