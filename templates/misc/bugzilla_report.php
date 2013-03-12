@@ -148,6 +148,39 @@ BETWEEN
 END;
 }
 
+function getHighestPrioTickets() {
+         return <<<END
+SELECT
+        products.name AS product,
+        components.name AS component,
+        bugs.bug_id AS bugID,
+        bugs.priority,
+        bugs.delta_ts,
+        profiles.login_name AS assignee,
+        bugs.short_desc as bugsummary
+FROM
+        bugs
+JOIN
+        profiles ON assigned_to = profiles.userid
+JOIN
+        products ON bugs.product_id = products.id
+JOIN
+        components ON bugs.component_id = components.id
+LEFT JOIN
+        bug_group_map AS security_map ON bugs.bug_id = security_map.bug_id
+WHERE
+        ( security_map.group_id != 15 OR security_map.group_id IS NULL ) 
+AND
+        resolution = ""
+AND
+        priority = "Highest" OR priority = "Immediate"
+ORDER BY
+        product, component, delta_ts
+LIMIT
+        200;
+END;
+}
+
 function formatOutput($result) {
         while ($row = mysql_fetch_row($result)) {
                 if (is_array($row)) {
@@ -166,6 +199,21 @@ function formatOutput($result) {
 function reportFailure($text) {
                 print "Wikimedia Bugzilla report (FAILED), $text ";
                         die( "FAILED\n\n$text\n" );
+}
+
+function formatOutputHighestPrio($result) {
+        printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s\n %-20.20s | %-37.37s\n",
+                "Product", "Component", "BugID", "Priority", "LastChange", "Assignee", "Summary" );
+        printf ( "%-60s", "--------------------------------------------------------------" );
+        print "\n";
+        while ($row = mysql_fetch_row($result)) {
+                foreach ($row as $row_i) {
+                        $row = str_replace ( '@', '[AT]', $row);
+                }
+                printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s\n %-20.20s | %-37.37s",
+                        $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6] );
+                print "\n";
+        }
 }
 
 # main
@@ -212,6 +260,8 @@ $totalStatistics = array ('getTotalOpenBugs',);
 
 $createdStatistics = array('getBugsCreated',);
 
+$urgentStatistics = array('getHighestPrioTickets',);
+
 print "Status changes this week\n\n";
 foreach ($statesToRun as $state) {
         $sql = getBugsChangingStatus(date('Y-m-d',$begin_date),date('Y-m-d',$end_date), $state);
@@ -257,4 +307,12 @@ foreach ($reportsPerItem as $report) {
                  reportFailure("Query failure");
         formatOutput($result);
         print "\n";
+}
+print "\nMost urgent open issues\n\n";
+foreach ($urgentStatistics as $report) {
+        $sql = getHighestPrioTickets();
+        $result = mysql_query($sql);
+        if (!$result)
+                reportFailure("Query failure");
+        formatOutputHighestPrio($result);
 }
