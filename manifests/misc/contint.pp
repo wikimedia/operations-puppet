@@ -54,6 +54,8 @@ class misc::contint::test {
 		# We need a basic site to publish nightly builds in
 		include contint::website
 
+		include contint::proxy_jenkins
+
 		# Get several OpenJDK packages including the jdk.
 		# (openjdk is the default distribution for the java define.
 		# The java define is found in modules/java/manifests/init.pp )
@@ -133,25 +135,6 @@ class misc::contint::test {
 				recurse => "true";
 		}
 
-		# run jenkins behind Apache and have pretty URLs / proxy port 80
-		# https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache
-		class {'webserver::php5': ssl => 'true'; }
-
-		apache_module { proxy: name => "proxy" }
-		apache_module { proxy_http: name => "proxy_http" }
-
-		file {
-			"/etc/apache2/conf.d/jenkins_proxy":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/misc/jenkins/apache_proxy";
-			"/etc/apache2/conf.d/zuul_proxy":
-				owner => "root",
-				group => "root",
-				mode => 0444,
-				source => "puppet:///files/zuul/apache_proxy";
-		}
 	}
 
 	# prevent users from accessing port 8080 directly (but still allow from localhost and own net)

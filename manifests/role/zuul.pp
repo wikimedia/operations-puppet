@@ -8,6 +8,8 @@ class role::zuul {
 
 		system_role { "role::zuul::labs": description => "Zuul on labs!" }
 
+		include contint::proxy_zuul
+
 		# Setup the instance for labs usage
 		zuulwikimedia::instance { "zuul-labs":
 			jenkins_server => 'http://10.4.0.172:8080/ci',
@@ -27,6 +29,7 @@ class role::zuul {
 
 		# We will receive replication of git bare repositories from Gerrit
 		include role::gerrit::production::replicationdest
+		include contint::proxy_zuul
 
 		file { "/var/lib/git":
 			ensure => 'directory',
