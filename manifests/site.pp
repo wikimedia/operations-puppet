@@ -775,7 +775,6 @@ node "gallium.wikimedia.org" {
 		contint::website,
 		misc::contint::test,
 		misc::contint::test::packages,
-		misc::contint::analytics::packages,
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
 		testswarm::systemuser,
