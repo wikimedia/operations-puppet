@@ -330,13 +330,11 @@ class base::resolving {
 		error("Variable $::nameservers is not defined!")
 	}
 	else {
-		if $::realm != "labs" {
-			file { "/etc/resolv.conf":
-				owner => root,
-				group => root,
-				mode => 0444,
-				content => template("base/resolv.conf.erb");
-			}
+		file { "/etc/resolv.conf":
+			owner => root,
+			group => root,
+			mode => 0444,
+			content => template("base/resolv.conf.erb");
 		}
 	}
 }
@@ -678,42 +676,16 @@ class base {
 	include	apt
 	include apt::update
 
-	if ($::realm == "labs") {
-		include apt::unattendedupgrades,
-			apt::noupgrade
-	}
-
 	include base::tcptweaks
 
-	class { base::puppet:
-		server => $::realm ? {
-			'labs' => $::site ? {
-				'pmtpa' => 'virt0.wikimedia.org',
-				'eqiad' => 'virt1000.wikimedia.org',
-			},
-			default => "puppet",
-		},
-		certname => $::realm ? {
-			# For labs, use instanceid.domain rather than the fqdn
-			# to ensure we're always using a unique certname.
-			# dc is an attribute from LDAP, it's set as the instanceid.
-			'labs' => "${dc}.${domain}",
-			default => undef,
-		},
-	}
-
 	include	passwords::root,
-		base::decommissioned,
 		base::grub,
-		base::resolving,
 		base::remote-syslog,
 		base::sysctl,
 		base::motd,
 		base::vimconfig,
 		base::standard-packages,
 		base::environment,
-		base::platform,
-		base::access::dc-techs,
 		base::screenconfig,
 		ssh,
 		role::salt::minions
@@ -729,27 +701,64 @@ class base {
 		}
 	}
 
+	# this should actually be the other way around (base::labs and
+	# base::production inheriting base), but we're not quite there yet
+
 	if $::realm == "labs" {
-		include base::instance-upstarts,
-			generic::gluster-client
+		include base::labs
+	} else {
+		include base::production
+	}
+}
 
-		# make common logs readable
-		class {'base::syslogs': readable => 'true'; }
-
-		# Add directory for data automounts
-		file { "/data":
-			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0755;
-		}
-		# Add directory for public (ro) automounts
-		file { "/public":
-			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0755;
-		}
+class base::production {
+	class { base::puppet:
+		server => 'puppet',
+		certname => undef,
 	}
 
+	include base::decommissioned
+	include base::resolving
+	include base::platform
+	include base::access::dc-techs
+}
+
+class base::labs {
+	class { base::puppet:
+		server => $::site ? {
+			'pmtpa' => 'virt0.wikimedia.org',
+			'eqiad' => 'virt1000.wikimedia.org',
+		},
+		# For labs, use instanceid.domain rather than the fqdn
+		# to ensure we're always using a unique certname.
+		# dc is an attribute from LDAP, it's set as the instanceid.
+		certname => "${dc}.${domain}",
+	}
+
+
+	include base::instance-upstarts
+	include generic::gluster-client
+
+	include apt::unattendedupgrades
+	include apt::noupgrade
+
+	# make common logs readable
+	class { 'base::syslogs':
+		readable => 'true',
+	}
+
+	# Add directory for data automounts
+	file { "/data":
+		ensure => directory,
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
+	# Add directory for public (ro) automounts
+	file { "/public":
+		ensure => directory,
+		owner => root,
+		group => root,
+		mode => 0755;
+	}
 }
