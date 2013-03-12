@@ -44,9 +44,10 @@ class misc::package-builder {
 			$pbuilder_root = "/var/cache/pbuilder"
 
 			$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe'"
+			$components = "--components 'main universe'"
 
 			exec { "pbuilder --create --distribution ${title}":
-				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${othermirror}",
+				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${components} ${othermirror}",
 				creates => "${pbuilder_root}/${title}.tgz",
 				path => "/bin:/sbin:/usr/bin:/usr/sbin",
 				timeout => 600
