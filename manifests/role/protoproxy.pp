@@ -7,5 +7,5 @@ class role::protoproxy::ssl {
     certificates::wmf_ca,
     protoproxy::proxy_sites
 
-  monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org" }
+  monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!*.wikimedia.org", critical => true }
 }
