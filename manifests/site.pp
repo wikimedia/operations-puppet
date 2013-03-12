@@ -773,6 +773,8 @@ node "gallium.wikimedia.org" {
 	include standard,
 		nrpe,
 		contint::website,
+		contint::proxy_jenkins,
+		contint::proxy_zuul,
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
