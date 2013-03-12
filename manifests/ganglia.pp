@@ -207,7 +207,7 @@ class ganglia {
 					before => Package[ganglia-monitor],
 					ensure => purged;
 				"ganglia-monitor":
-					ensure => latest,
+					ensure => present,
 					alias => "gmond-package";
 			}
 
@@ -239,7 +239,7 @@ class ganglia {
 		system_role { "ganglia::collector": description => "Ganglia gmetad aggregator" }
 
 		package { "gmetad":
-			ensure => latest;
+			ensure => present;
 		}
 
 		if $::realm == "labs" {
