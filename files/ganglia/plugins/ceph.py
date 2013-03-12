@@ -10,6 +10,7 @@ from subprocess import Popen, PIPE
 import json, os, sys
 
 stats_cache = {}
+prev_values = {}
 metric_types = {}
 ceph_path = "/usr/bin/ceph"
 
@@ -43,34 +44,41 @@ def metric_init(params):
 					'slope': ( counter and "positive" or "both" ),
 					'format': ( valtype == "uint" and r'%u' or r'%f' ),
 					'description': "%s %s" % (section.encode('ascii'), metric.encode('ascii')),
-					'groups': "ceph " + instance
+					'groups': "ceph osd " + instance
 				}
 				metrics.append(metric_properties)
 
 	return metrics
 
 def get_value(metric):
-	global stats_cache, metric_types
+	global stats_cache, prev_values, metric_types
 
 	instance, section, metric_name = metric.split('.', 2)
-	try:
-		stats_cache[instance][section][metric_name]
-	except KeyError:
-		get_stats()
 
 	t = metric_types[instance][section][metric_name]['type']
+	try:
+		v = stats_cache[instance][section].pop(metric_name)
+	except KeyError:
+		get_stats()
+		v = stats_cache[instance][section].pop(metric_name)
+
 	if t & 0b100 > 0:
 		# Average
 		try:
-			values = stats_cache[instance][section].pop(metric_name)
-			if t & 1 == 1:
-				return float(values['sum'] / values['avgcount'])
-			else:
-				return int(values['sum'] / values['avgcount'])
-		except:
-			return 0
+			p = prev_values[instance][section][metric_name]
+			r = (v['sum'] - p['sum']) / (v['avgcount'] - p['avgcount'])
+ 		except KeyError:
+			r = 0
+		finally:
+			prev_values.setdefault(instance, {}).setdefault(section, {})[metric_name] = v
 	else:
-		return stats_cache[instance][section].pop(metric_name, 0)
+		r = v
+
+	if t & 1 == 1:
+		return float(r)
+	else:
+		return int(r)
+
 
 def get_stats():
 	global stats_cache, instances
