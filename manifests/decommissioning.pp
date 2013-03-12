@@ -37,6 +37,7 @@ $decommissioned_servers = [
 "db28",
 "db30",
 "db41",
+"europium", #reclaimed rt4689 robh
 "ixia",
 "gilman",
 "knsq1",
