@@ -1145,6 +1145,11 @@ host gallium {
 	fixed-address gallium.wikimedia.org;
 }
 
+host gadolinium {
+	hardware ethernet 90:B1:1C:17:1B:8A;
+	fixed-address gadolinium.wikimedia.org;
+}
+
 host gurvin {
 	hardware ethernet 84:2b:2b:06:49:51;
 	fixed-address gurvin.wikimedia.org;

@@ -649,31 +649,6 @@ node "aluminium.wikimedia.org" {
 	class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
 }
 
-node "europium.wikimedia.org" inherits "base_analytics_logging_node" {
-	include
-		accounts::dsc,
-		accounts::datasets,
-		accounts::dandreescu
-        # misc::udp2log::utilities,
-        # misc::udp2log
-
-	# locke's udp2log instance stores logs
-	# mainly in /a/squid.
-	# TODO: Move log_directory to /var/log/udp2log
-    # misc::udp2log::instance { "locke": log_directory => "/a/squid" }
-
-	# fundraising banner log pipeline
-    # include misc::fundraising::udp2log_rotation
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-    # class { "misc::udp2log::rsyncd":
-    #   path    => "/a/squid",
-    #   require => Misc::Udp2log::Instance["locke"],
-    # }
-}
-
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
 	include role::coredb::es1
@@ -774,6 +749,12 @@ node "formey.wikimedia.org" {
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
+node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
+	include
+		accounts::dsc,
+		accounts::datasets,
+		accounts::dandreescu
+}
 
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
