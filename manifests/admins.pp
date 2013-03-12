@@ -56,16 +56,6 @@ class groups {
 		}
 	}
 
-	class jenkins {
-		group { "jenkins":
-			name      => "jenkins",
-			gid       => 561,
-			alias	  => 561,
-			ensure    => present,
-			allowdupe => false;
-		}
-	}
-
 	class wikidev {
 		group { "wikidevgroup":
 			name		=> "wikidev",
@@ -2715,7 +2705,7 @@ class admins::analinterns {
 class admins::jenkins {
 	$gid = 500  # 'wikidev' by default
 	include groups::wikidev
-	include groups::jenkins
+	include jenkins::group
 
 	include accounts::demon
 	include accounts::dsc
