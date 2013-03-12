@@ -50,6 +50,7 @@ class protoproxy::proxy_sites {
 	install_certificate{ "star.wikimediafoundation.org": }
 	install_certificate{ "star.wikidata.org": }
 	install_certificate{ "star.wikivoyage.org": }
+	install_certificate{ "unified.wikimedia.org": }
 	
 	file {
 		"/etc/nginx/nginx.conf":
@@ -159,7 +160,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.227", "[2620:0:862:ed1a::3]" ]
 			},
 		proxy_server_name => '*.wikiquote.org',
-		proxy_server_cert_name => 'star.wikiquote.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
