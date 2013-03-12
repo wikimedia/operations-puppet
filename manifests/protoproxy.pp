@@ -50,6 +50,7 @@ class protoproxy::proxy_sites {
 	install_certificate{ "star.wikimediafoundation.org": }
 	install_certificate{ "star.wikidata.org": }
 	install_certificate{ "star.wikivoyage.org": }
+	install_certificate{ "unified.wikimedia.org": }
 	
 	file {
 		"/etc/nginx/nginx.conf":
@@ -78,7 +79,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.224", "[2620:0:862:ed1a::]" ]
 			},
 		proxy_server_name => '*.wikimedia.org',
-		proxy_server_cert_name => 'star.wikimedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -95,7 +96,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.233", "[2620:0:862:ed1a::a]" ]
 			},
 		proxy_server_name => 'bits.wikimedia.org geoiplookup.wikimedia.org',
-		proxy_server_cert_name => 'star.wikimedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.23" },
 			"eqiad" => { "primary" => "10.2.2.23" },
@@ -111,7 +112,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.234", "[2620:0:862:ed1a::b]" ]
 			},
 		proxy_server_name => 'upload.wikimedia.org',
-		proxy_server_cert_name => 'star.wikimedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.24" },
 			"eqiad" => { "primary" => "10.2.2.24" },
@@ -127,7 +128,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.225", "[2620:0:862:ed1a::1]" ]
 			},
 		proxy_server_name => '*.wikipedia.org',
-		proxy_server_cert_name => 'star.wikipedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -143,7 +144,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.226", "[2620:0:862:ed1a::2]" ]
 			},
 		proxy_server_name => '*.wiktionary.org',
-		proxy_server_cert_name => 'star.wiktionary.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -159,7 +160,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.227", "[2620:0:862:ed1a::3]" ]
 			},
 		proxy_server_name => '*.wikiquote.org',
-		proxy_server_cert_name => 'star.wikiquote.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -175,7 +176,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.228", "[2620:0:862:ed1a::4]" ]
 			},
 		proxy_server_name => '*.wikibooks.org',
-		proxy_server_cert_name => 'star.wikibooks.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -191,7 +192,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.229", "[2620:0:862:ed1a::5]" ]
 			},
 		proxy_server_name => '*.wikisource.org',
-		proxy_server_cert_name => 'star.wikisource.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -207,7 +208,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.230", "[2620:0:862:ed1a::6]" ]
 			},
 		proxy_server_name => '*.wikinews.org',
-		proxy_server_cert_name => 'star.wikinews.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -223,7 +224,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.231", "[2620:0:862:ed1a::7]" ]
 			},
 		proxy_server_name => '*.wikiversity.org',
-		proxy_server_cert_name => 'star.wikiversity.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -239,7 +240,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.232", "[2620:0:862:ed1a::8]" ]
 			},
 		proxy_server_name => '*.mediawiki.org',
-		proxy_server_cert_name => 'star.mediawiki.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -255,7 +256,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.235", "[2620:0:862:ed1a::9]" ]
 			},
 		proxy_server_name => '*.wikimediafoundation.org',
-		proxy_server_cert_name => 'star.wikimediafoundation.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
@@ -271,7 +272,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "127.0.0.1", "[2620:0:862:ed1a::c]" ]
 		},
 		proxy_server_name => '*.m.wikipedia.org',
-		proxy_server_cert_name => 'star.wikipedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.26" },
 			"eqiad" => { "primary" => "10.2.2.26" },
@@ -289,7 +290,7 @@ class protoproxy::proxy_sites {
 				# "esams" => [ "127.0.0.1" ]
 			},
 			proxy_server_name => '*.wikidata.org',
-			proxy_server_cert_name => 'star.wikidata.org',
+			proxy_server_cert_name => 'unified.wikimedia.org',
 			proxy_backend => {
 				"pmtpa" => { "primary" => "10.2.1.25" },
 				"eqiad" => { "primary" => "10.2.2.25" },
@@ -308,7 +309,7 @@ class protoproxy::proxy_sites {
 				# "esams" => [ "127.0.0.1" ]
 			},
 			proxy_server_name => '*.wikivoyage.org',
-			proxy_server_cert_name => 'star.wikivoyage.org',
+			proxy_server_cert_name => 'unified.wikimedia.org',
 			proxy_backend => {
 				"pmtpa" => { "primary" => "10.2.1.25" },
 				"eqiad" => { "primary" => "10.2.2.25" },
@@ -325,7 +326,7 @@ class protoproxy::proxy_sites {
 			"eqiad" => [ "208.80.154.224", "[2620:0:862:3::80:2]" ],
 			"esams" => [ "91.198.174.224", "[2620:0:862:1::80:2]" ] },
 		proxy_server_name => 'videos.wikimedia.org',
-		proxy_server_cert_name => 'star.wikimedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.64.16.146" },
 			"eqiad" => { "primary" => "10.64.16.146" },
