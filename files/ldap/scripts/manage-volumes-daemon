@@ -1,417 +1,424 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/manage-volumes
 #####################################################################
 
-import sys, time, traceback, ldapsupportlib, datetime, paramiko, socket
+import sys
+import time
+import traceback
+import ldapsupportlib
+import datetime
+import paramiko
+import socket
 from optparse import OptionParser
 
 try:
-	import ldap
-	import ldap.modlist
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
+    sys.stderr.write("Unable to import LDAP library.\n")
 
 NONE = 0
 INFO = 10
 DEBUG = 20
 
+
 class VolumeManager:
-	def __init__(self):
-		# TODO: Pull this info from a configuration file
-		self.base_dir = '/a/'
-		self.user = 'glustermanager'
-		self.gluster_vol_dir = '/etc/glusterd/'
-		# Volumes in projects listed as global; so: { 'dumps': ['xml'] } would be
-		# an xml share in the dumps project being listed as global.
-		self.global_shares = {'publicdata': ['project']}
-		# Volumes which need to have hosts manually added to the gluster access list; so, { 'dumps':
-		# { 'project': ['10.0.0.1'] } } would manually add 10.0.0.1 to the dumps-project access list
-		self.manual_shares = {'publicdata': {'project': ['208.80.154.11']}}
-		self.volume_quotas = {'home': '50GB','default': '300GB'}
-		self.default_options = ['nfs.disable on']
-		self.bricks = ['labstore1.pmtpa.wmnet', 'labstore2.pmtpa.wmnet', 'labstore3.pmtpa.wmnet', 'labstore4.pmtpa.wmnet']
-		self.volume_names = ['home', 'project']
-		self.loglevel = INFO
-		self.logfile = None
-		self.deathwatch = {}
-		self.started_or_stopped_this_cycle = False
+    def __init__(self):
+        # TODO: Pull this info from a configuration file
+        self.base_dir = '/a/'
+        self.user = 'glustermanager'
+        self.gluster_vol_dir = '/etc/glusterd/'
+        # Volumes in projects listed as global; so: { 'dumps': ['xml'] } would be
+        # an xml share in the dumps project being listed as global.
+        self.global_shares = {'publicdata': ['project']}
+        # Volumes which need to have hosts manually added to the gluster access list; so, { 'dumps':
+        # { 'project': ['10.0.0.1'] } } would manually add 10.0.0.1 to the dumps-project access list
+        self.manual_shares = {'publicdata': {'project': ['208.80.154.11']}}
+        self.volume_quotas = {'home': '50GB', 'default': '300GB'}
+        self.default_options = ['nfs.disable on']
+        self.bricks = ['labstore1.pmtpa.wmnet', 'labstore2.pmtpa.wmnet', 'labstore3.pmtpa.wmnet', 'labstore4.pmtpa.wmnet']
+        self.volume_names = ['home', 'project']
+        self.loglevel = INFO
+        self.logfile = None
+        self.deathwatch = {}
+        self.started_or_stopped_this_cycle = False
 
-	def run(self):
-		parser = OptionParser(conflict_handler="resolve")
-		parser.set_usage('manage-volumes [options]')
-	
-		self.ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-		self.ldapSupportLib.addParserOptions(parser)
-	
-		parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdin)")
-		parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
-		(options, args) = parser.parse_args()
-		self.ldapSupportLib.setBindInfoByOptions(options, parser)
+    def run(self):
+        parser = OptionParser(conflict_handler="resolve")
+        parser.set_usage('manage-volumes [options]')
 
-		if options.logfile:
-			self.logfile = options.logfile
-		if options.loglevel:
-			self.loglevel = options.loglevel
+        self.ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+        self.ldapSupportLib.addParserOptions(parser)
 
-		while True:
-			self.refresh_volumes()
-			time.sleep(180)
+        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdin)")
+        parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
+        (options, args) = parser.parse_args()
+        self.ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	def refresh_volumes(self):
-		# starting or stopping volumes seems to exhaust gluster and result
-		# in the server being temporarily unresponsive.  So, we're only
-		# going to do one start or stop per run.
-		self.started_or_stopped_this_cycle = False
-		base = self.ldapSupportLib.getBase()
-		ds = self.ldapSupportLib.connect()
-		projectdata = self.search_s(ds,"ou=projects," + base,ldap.SCOPE_SUBTREE,"(objectclass=groupofnames)")
-		hostdata = self.search_s(ds,"ou=hosts," + base,ldap.SCOPE_SUBTREE,"(puppetvar=instanceproject=*)", ['puppetvar','aRecord'])
-		volumedata = self.ssh_exec_command('sudo gluster volume info', True, True)
-		if not volumedata:
-			self.log("gluster volume info failed; skipping this run.")
-			return 1
-		project_hosts = self.get_hosts(hostdata)
-		project_volumes = self.get_volumes(volumedata)
-		orphan_volumes = project_volumes.keys()
-		unloved_volumes = []
-		unused_volumes = []
+        if options.logfile:
+            self.logfile = options.logfile
+        if options.loglevel:
+            self.loglevel = options.loglevel
 
-		for project in projectdata:
-			project_name = project[1]["cn"][0]
-			desired_volumes = self.get_desired_volume_names(project)
+        while True:
+            self.refresh_volumes()
+            time.sleep(180)
 
-			hosts = []
-			if project_name in project_hosts:
-				hosts = project_hosts[project_name]
-				brick_ips = []
-				for brick in self.bricks:
-					brick_ips.append(socket.gethostbyname(brick))
-				hosts.extend(brick_ips)
-				hosts = list(set(hosts))
-				hosts.sort()
-			for volume_name in self.volume_names:
-				volume_hosts = hosts
-				if project_name in self.manual_shares and volume_name in self.manual_shares[project_name]:
-					volume_hosts.extend(self.manual_shares[project_name][volume_name])
-				project_volume = project_name + '-' + volume_name
-				if project_volume in orphan_volumes:
-					orphan_volumes.remove(project_volume)
+    def refresh_volumes(self):
+        # starting or stopping volumes seems to exhaust gluster and result
+        # in the server being temporarily unresponsive.  So, we're only
+        # going to do one start or stop per run.
+        self.started_or_stopped_this_cycle = False
+        base = self.ldapSupportLib.getBase()
+        ds = self.ldapSupportLib.connect()
+        projectdata = self.search_s(ds, "ou=projects," + base, ldap.SCOPE_SUBTREE, "(objectclass=groupofnames)")
+        hostdata = self.search_s(ds, "ou=hosts," + base, ldap.SCOPE_SUBTREE, "(puppetvar=instanceproject=*)", ['puppetvar', 'aRecord'])
+        volumedata = self.ssh_exec_command('sudo gluster volume info', True, True)
+        if not volumedata:
+            self.log("gluster volume info failed; skipping this run.")
+            return 1
+        project_hosts = self.get_hosts(hostdata)
+        project_volumes = self.get_volumes(volumedata)
+        orphan_volumes = project_volumes.keys()
+        unloved_volumes = []
+        unused_volumes = []
 
-				gluster_hosts = []
-				if project_volume in project_volumes and 'auth.allow' in project_volumes[project_volume]:
-					gluster_hosts = project_volumes[project_volume]['auth.allow']
-					gluster_hosts.sort()
-				if project_name in self.global_shares and volume_name in self.global_shares[project_name]:
-					# This is a global share
-					# A host has been added or deleted, modify the auth.allow
-					gluster_nfs_hosts = '' 
-					if project_volume in project_volumes and 'nfs.rpc-auth-allow' in project_volumes[project_volume]:
-						gluster_nfs_hosts = project_volumes[project_volume]['nfs.rpc-auth-allow']
-					if gluster_nfs_hosts != '*':
-						self.setglobal(project_name,volume_name)
+        for project in projectdata:
+            project_name = project[1]["cn"][0]
+            desired_volumes = self.get_desired_volume_names(project)
 
-				if (volume_name in desired_volumes) and volume_hosts:
-					if project_volume not in project_volumes:
-						# First, make the volume directories. This function runs on all
-						# bricks and returns a list of return values. If the return value
-						# isn't 1 or 0, the command failed on a brick, and we shouldn't
-						# create the volume.
-						ret_vals = set(self.mkvolumedir(project_name, volume_name))
-						make_vol = set([1,0]).difference(ret_vals)
-						if make_vol:
-							vol_ret = self.mkvolume(project_name, volume_name)
-							if vol_ret:
-								self.log("Created volume: " + project_name + "-" + volume_name)
-							else:
-								# No point going on if the volume creation failed
-								continue
-						else:
-							continue
-					elif project_volumes[project_volume]['Status'] == 'Stopped':
-						self.start_volume(project_volume)
+            hosts = []
+            if project_name in project_hosts:
+                hosts = project_hosts[project_name]
+                brick_ips = []
+                for brick in self.bricks:
+                    brick_ips.append(socket.gethostbyname(brick))
+                hosts.extend(brick_ips)
+                hosts = list(set(hosts))
+                hosts.sort()
+            for volume_name in self.volume_names:
+                volume_hosts = hosts
+                if project_name in self.manual_shares and volume_name in self.manual_shares[project_name]:
+                    volume_hosts.extend(self.manual_shares[project_name][volume_name])
+                project_volume = project_name + '-' + volume_name
+                if project_volume in orphan_volumes:
+                    orphan_volumes.remove(project_volume)
 
-					if gluster_hosts != volume_hosts:
-						self.setallow(project_name,volume_name,volume_hosts)
-				else:
-					# All hosts have been deleted, or none have been created, or
-					# we aren't supposed to have this volume to begin with.
-					if gluster_hosts != []:
-						self.setallow(project_name,volume_name,[])
+                gluster_hosts = []
+                if project_volume in project_volumes and 'auth.allow' in project_volumes[project_volume]:
+                    gluster_hosts = project_volumes[project_volume]['auth.allow']
+                    gluster_hosts.sort()
+                if project_name in self.global_shares and volume_name in self.global_shares[project_name]:
+                    # This is a global share
+                    # A host has been added or deleted, modify the auth.allow
+                    gluster_nfs_hosts = ''
+                    if project_volume in project_volumes and 'nfs.rpc-auth-allow' in project_volumes[project_volume]:
+                        gluster_nfs_hosts = project_volumes[project_volume]['nfs.rpc-auth-allow']
+                    if gluster_nfs_hosts != '*':
+                        self.setglobal(project_name, volume_name)
 
-					if project_volume in project_volumes:
-						if volume_name in desired_volumes:
-							unused_volumes.append(project_volume)
-						else:
-							unloved_volumes.append(project_volume)
+                if (volume_name in desired_volumes) and volume_hosts:
+                    if project_volume not in project_volumes:
+                        # First, make the volume directories. This function runs on all
+                        # bricks and returns a list of return values. If the return value
+                        # isn't 1 or 0, the command failed on a brick, and we shouldn't
+                        # create the volume.
+                        ret_vals = set(self.mkvolumedir(project_name, volume_name))
+                        make_vol = set([1, 0]).difference(ret_vals)
+                        if make_vol:
+                            vol_ret = self.mkvolume(project_name, volume_name)
+                            if vol_ret:
+                                self.log("Created volume: " + project_name + "-" + volume_name)
+                            else:
+                                # No point going on if the volume creation failed
+                                continue
+                        else:
+                            continue
+                    elif project_volumes[project_volume]['Status'] == 'Stopped':
+                        self.start_volume(project_volume)
 
-		for orphan in orphan_volumes:
-			for volume_name in self.volume_names:
-				if orphan.endswith(volume_name):
-					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
-						reason = "No corresponding project found."
-						self.schedule_stop_volume(orphan, reason)
-					break
-		for orphan in unused_volumes:
-			for volume_name in self.volume_names:
-				if orphan.endswith(volume_name):
-					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
-						reason = "No instances in this project."
-						self.schedule_stop_volume(orphan, reason)
-					break
-		for orphan in unloved_volumes:
-			for volume_name in self.volume_names:
-				if orphan.endswith(volume_name):
-					if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
-						reason = "Not requested by the project."
-						self.schedule_stop_volume(orphan, reason)
-					break
+                    if gluster_hosts != volume_hosts:
+                        self.setallow(project_name, volume_name, volume_hosts)
+                else:
+                    # All hosts have been deleted, or none have been created, or
+                    # we aren't supposed to have this volume to begin with.
+                    if gluster_hosts != []:
+                        self.setallow(project_name, volume_name, [])
 
-		ds.unbind()
-		return 0
+                    if project_volume in project_volumes:
+                        if volume_name in desired_volumes:
+                            unused_volumes.append(project_volume)
+                        else:
+                            unloved_volumes.append(project_volume)
 
-	def mkvolumedir(self, project_name, volume_name):
-		# We ensure a volume directory is unique by setting <base_dir>/project_name/volume_name
-		# as we know every project is unique and volumes within it also will be unique
-		brickdir = self.base_dir + project_name + '/' + volume_name
+        for orphan in orphan_volumes:
+            for volume_name in self.volume_names:
+                if orphan.endswith(volume_name):
+                    if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+                        reason = "No corresponding project found."
+                        self.schedule_stop_volume(orphan, reason)
+                    break
+        for orphan in unused_volumes:
+            for volume_name in self.volume_names:
+                if orphan.endswith(volume_name):
+                    if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+                        reason = "No instances in this project."
+                        self.schedule_stop_volume(orphan, reason)
+                    break
+        for orphan in unloved_volumes:
+            for volume_name in self.volume_names:
+                if orphan.endswith(volume_name):
+                    if orphan in project_volumes and project_volumes[orphan]['Status'] == 'Started':
+                        reason = "Not requested by the project."
+                        self.schedule_stop_volume(orphan, reason)
+                    break
 
-		# We need to clean up from partially-failed runs.  rmdir is pretty conservative; it will
-		#  only clean up empty dirs.
-		cmd = 'sudo rmdir %s' % brickdir
-		self.ssh_exec_command(cmd)
-		return self.ssh_exec_command('sudo mkdir -p ' +  brickdir)
+        ds.unbind()
+        return 0
 
-	def mkvolume(self, project_name, volume_name):
-		# We ensure volumes are unique by setting project_name-volume_name, as the combo is
-		# known to be unique
-		volume = project_name + '-' + volume_name
-		bricks = ''
-		for brick in self.bricks:
-			bricks = bricks + brick + ':' + self.base_dir + project_name + '/' + volume_name + ' '
-		self.log("Creating volume %s with bricks %s" %(volume, bricks))
-		ret = self.ssh_exec_command('sudo gluster volume create ' + volume + ' replica 2 transport tcp ' + bricks, True)
-		if ret == 0:
-			# We initially set the auth.allow to NONE, since the default is *, and that's stupid
-			self.ssh_exec_command('sudo gluster volume set ' + volume + ' auth.allow NONE', True)
-			for option in self.default_options:
-				self.ssh_exec_command('sudo gluster volume set ' + volume + ' ' + option, True)
-			self.ssh_exec_command('sudo gluster volume profile ' + volume + ' start', True)
-			self.ssh_exec_command('sudo gluster volume quota ' + volume + ' enable', True)
-			if volume_name in self.volume_quotas:
-				quota = self.volume_quotas[volume_name]
-			else:
-				quota = self.volume_quotas['default']
-			self.ssh_exec_command('sudo gluster volume quota ' + volume + ' limit-usage / ' + quota, True)
-			self.start_volume(volume)
-			return True
-		else:
-			self.log("Gluster volume create failed. Ret = %s" % ret)
-			return False
+    def mkvolumedir(self, project_name, volume_name):
+        # We ensure a volume directory is unique by setting <base_dir>/project_name/volume_name
+        # as we know every project is unique and volumes within it also will be unique
+        brickdir = self.base_dir + project_name + '/' + volume_name
 
-	def start_volume(self, volume):
-		if self.started_or_stopped_this_cycle:
-			return False
-		self.started_or_stopped_this_cycle = True
+        # We need to clean up from partially-failed runs.  rmdir is pretty conservative; it will
+        #  only clean up empty dirs.
+        cmd = 'sudo rmdir %s' % brickdir
+        self.ssh_exec_command(cmd)
+        return self.ssh_exec_command('sudo mkdir -p ' + brickdir)
 
-		if volume in self.deathwatch:
-			self.deathwatch.pop(volume)
-		self.log("Starting volume %s" % volume)
-		ret = self.ssh_exec_command('sudo gluster volume start ' + volume, True)
-		if ret == 0:
-			self.log("Started volume: %s" % volume)
-		else:
-			self.log("Failed to start volume: %s" % volume)
-		return ret
+    def mkvolume(self, project_name, volume_name):
+        # We ensure volumes are unique by setting project_name-volume_name, as the combo is
+        # known to be unique
+        volume = project_name + '-' + volume_name
+        bricks = ''
+        for brick in self.bricks:
+            bricks = bricks + brick + ':' + self.base_dir + project_name + '/' + volume_name + ' '
+        self.log("Creating volume %s with bricks %s" % (volume, bricks))
+        ret = self.ssh_exec_command('sudo gluster volume create ' + volume + ' replica 2 transport tcp ' + bricks, True)
+        if ret == 0:
+            # We initially set the auth.allow to NONE, since the default is *, and that's stupid
+            self.ssh_exec_command('sudo gluster volume set ' + volume + ' auth.allow NONE', True)
+            for option in self.default_options:
+                self.ssh_exec_command('sudo gluster volume set ' + volume + ' ' + option, True)
+            self.ssh_exec_command('sudo gluster volume profile ' + volume + ' start', True)
+            self.ssh_exec_command('sudo gluster volume quota ' + volume + ' enable', True)
+            if volume_name in self.volume_quotas:
+                quota = self.volume_quotas[volume_name]
+            else:
+                quota = self.volume_quotas['default']
+            self.ssh_exec_command('sudo gluster volume quota ' + volume + ' limit-usage / ' + quota, True)
+            self.start_volume(volume)
+            return True
+        else:
+            self.log("Gluster volume create failed. Ret = %s" % ret)
+            return False
 
-	def schedule_stop_volume(self, volume, reason):
-		if volume in self.deathwatch:
-			if self.deathwatch[volume] < time.time() - (60 * 60):
-				# If it's been on watch for an hour, then stop it.
-				self.stop_volume(volume)
-		else:
-			self.log("Volume %s is a candidate for stopping.  %s" % (volume, reason))
-			self.deathwatch[volume] = time.time()
+    def start_volume(self, volume):
+        if self.started_or_stopped_this_cycle:
+            return False
+        self.started_or_stopped_this_cycle = True
 
-	def stop_volume(self, volume):
-		if self.started_or_stopped_this_cycle:
-			return False
-		self.started_or_stopped_this_cycle = True
+        if volume in self.deathwatch:
+            self.deathwatch.pop(volume)
+        self.log("Starting volume %s" % volume)
+        ret = self.ssh_exec_command('sudo gluster volume start ' + volume, True)
+        if ret == 0:
+            self.log("Started volume: %s" % volume)
+        else:
+            self.log("Failed to start volume: %s" % volume)
+        return ret
 
-		ret = self.ssh_exec_command('sudo gluster --mode=script volume stop ' + volume, True)
-		if ret == 0:
-			self.log("Stopped volume: %s" % volume)
-			self.deathwatch.pop(volume)
-		else:
-			self.log("Failed to stop volume: %s" % volume)
+    def schedule_stop_volume(self, volume, reason):
+        if volume in self.deathwatch:
+            if self.deathwatch[volume] < time.time() - (60 * 60):
+                # If it's been on watch for an hour, then stop it.
+                self.stop_volume(volume)
+        else:
+            self.log("Volume %s is a candidate for stopping.  %s" % (volume, reason))
+            self.deathwatch[volume] = time.time()
 
-		return ret
+    def stop_volume(self, volume):
+        if self.started_or_stopped_this_cycle:
+            return False
+        self.started_or_stopped_this_cycle = True
 
-	def setallow(self, project_name, volume_name, hosts):
-		if hosts:
-			hosts = ','.join(hosts)
-		else:
-			hosts = 'NONE'
-		volume = project_name + '-' + volume_name
-		self.ssh_exec_command('sudo gluster volume set ' + volume + ' auth.allow ' + hosts, True)
-		self.log("Modified auth.allow for: " + volume)
+        ret = self.ssh_exec_command('sudo gluster --mode=script volume stop ' + volume, True)
+        if ret == 0:
+            self.log("Stopped volume: %s" % volume)
+            self.deathwatch.pop(volume)
+        else:
+            self.log("Failed to stop volume: %s" % volume)
 
-	def setglobal(self, project_name, volume_name):
-		volume = project_name + '-' + volume_name
-		self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.disable ' + 'off', True)
-		self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.volume-access ' + 'read-only', True)
-		self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.rpc-auth-allow ' + '\*', True)
+        return ret
 
-	def ssh_exec_command(self, command, single=False, return_stdout=False):
-		if single:
-			# Only run this on a single brick, we arbitrarily pick the first one
-			return self._ssh_exec_command(command,self.bricks[0],return_stdout)
-		else:
-			# Run this on all bricks
-			returnvals = []
-			for brick in self.bricks:
-				ret = self._ssh_exec_command(command,brick,return_stdout)
-				returnvals.append(ret)
-			return returnvals
+    def setallow(self, project_name, volume_name, hosts):
+        if hosts:
+            hosts = ','.join(hosts)
+        else:
+            hosts = 'NONE'
+        volume = project_name + '-' + volume_name
+        self.ssh_exec_command('sudo gluster volume set ' + volume + ' auth.allow ' + hosts, True)
+        self.log("Modified auth.allow for: " + volume)
 
-	def _ssh_exec_command(self, command, brick, return_stdout=False):
-		ssh = paramiko.SSHClient()
-		ssh.load_host_keys('/var/lib/' + self.user + '/.ssh/known_hosts')
-		if return_stdout:
-			ret = ''
-		else:
-			ret = -1
-		try:
-			ssh.connect(brick, 22, self.user, key_filename='/var/lib/' + self.user + '/.ssh/id_rsa')
-			chan = ssh.get_transport().open_session()
-			if self.loglevel >= DEBUG:
-				self.log(brick + ' - "' + command + '"')
-			chan.exec_command(command)
+    def setglobal(self, project_name, volume_name):
+        volume = project_name + '-' + volume_name
+        self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.disable ' + 'off', True)
+        self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.volume-access ' + 'read-only', True)
+        self.ssh_exec_command('sudo gluster volume set ' + volume + ' nfs.rpc-auth-allow ' + '\*', True)
 
-			# Since we are using a channel, we need to keep reading until there isn't
-			# any output left.  The command won't exit until we've heard everything
-			# it has to say.
-			more_stdout = "non-empty"
-			remote_stdout = []
-			while more_stdout:
-				if not chan.recv_ready():
-					# Remote isn't ready; let's nap.
-					time.sleep(.01)
-				more_stdout = chan.recv(1024)
-				remote_stdout.append(more_stdout)
-			remote_stdout = "".join(remote_stdout)
-			remote_stdout = remote_stdout.split('\n')
+    def ssh_exec_command(self, command, single=False, return_stdout=False):
+        if single:
+            # Only run this on a single brick, we arbitrarily pick the first one
+            return self._ssh_exec_command(command, self.bricks[0], return_stdout)
+        else:
+            # Run this on all bricks
+            returnvals = []
+            for brick in self.bricks:
+                ret = self._ssh_exec_command(command, brick, return_stdout)
+                returnvals.append(ret)
+            return returnvals
 
-			remote_rval = chan.recv_exit_status()
-			if self.loglevel >= DEBUG:
-				self.log("Return value: " + str(remove_rval))
+    def _ssh_exec_command(self, command, brick, return_stdout=False):
+        ssh = paramiko.SSHClient()
+        ssh.load_host_keys('/var/lib/' + self.user + '/.ssh/known_hosts')
+        if return_stdout:
+            ret = ''
+        else:
+            ret = -1
+        try:
+            ssh.connect(brick, 22, self.user, key_filename='/var/lib/' + self.user + '/.ssh/id_rsa')
+            chan = ssh.get_transport().open_session()
+            if self.loglevel >= DEBUG:
+                self.log(brick + ' - "' + command + '"')
+            chan.exec_command(command)
 
-			if return_stdout:
-				ret = remote_stdout
-			else:
-				ret = remote_rval
+            # Since we are using a channel, we need to keep reading until there isn't
+            # any output left.  The command won't exit until we've heard everything
+            # it has to say.
+            more_stdout = "non-empty"
+            remote_stdout = []
+            while more_stdout:
+                if not chan.recv_ready():
+                    # Remote isn't ready; let's nap.
+                    time.sleep(.01)
+                more_stdout = chan.recv(1024)
+                remote_stdout.append(more_stdout)
+            remote_stdout = "".join(remote_stdout)
+            remote_stdout = remote_stdout.split('\n')
 
-			ssh.close()
-		except (paramiko.SSHException, socket.error):
-			sys.stderr.write("Failed to connect to %s." % brick)
-			traceback.print_exc(file=sys.stderr)
-			return None
-		return ret
+            remote_rval = chan.recv_exit_status()
+            if self.loglevel >= DEBUG:
+                self.log("Return value: " + str(remove_rval))
 
-	def get_hosts(self,hostdata):
-		project_hosts = {} 
-		if hostdata:
-			for host in hostdata:
-				host_ip = host[1]["aRecord"][0]
-				puppet_vars = host[1]["puppetvar"]
-				for puppet_var in puppet_vars:
-					var_arr = puppet_var.split('=')
-					if len(var_arr) == 2 and var_arr[0] == "instanceproject":
-						project = var_arr[1]
-						if project in project_hosts:
-							project_hosts[project].append(host_ip)
-						else:
-							project_hosts[project] = [host_ip]
-						# No need to go any further, we aren't reading other variables
-						break
-		return project_hosts
+            if return_stdout:
+                ret = remote_stdout
+            else:
+                ret = remote_rval
 
+            ssh.close()
+        except (paramiko.SSHException, socket.error):
+            sys.stderr.write("Failed to connect to %s." % brick)
+            traceback.print_exc(file=sys.stderr)
+            return None
+        return ret
 
-	# returns an array containing zero, one, or both of 'project', 'volume'
-	# Presence of these values indicate that the named shared volume should
-	# exist for a given project.
-	def get_desired_volume_names(self, projectLdapData):
-		vols = []
-		project_name = projectLdapData[1]["cn"][0]
-		if "info" in projectLdapData[1]:
-			infos = projectLdapData[1]["info"]
-			volPrefix = "use_volume="
-			for info in infos:
-				if info.startswith(volPrefix):
-					vols.append(info.lstrip(volPrefix))
-		return vols
+    def get_hosts(self, hostdata):
+        project_hosts = {}
+        if hostdata:
+            for host in hostdata:
+                host_ip = host[1]["aRecord"][0]
+                puppet_vars = host[1]["puppetvar"]
+                for puppet_var in puppet_vars:
+                    var_arr = puppet_var.split('=')
+                    if len(var_arr) == 2 and var_arr[0] == "instanceproject":
+                        project = var_arr[1]
+                        if project in project_hosts:
+                            project_hosts[project].append(host_ip)
+                        else:
+                            project_hosts[project] = [host_ip]
+                        # No need to go any further, we aren't reading other variables
+                        break
+        return project_hosts
 
-	def get_volumes(self, volumedata):
-		volumes = {}
-		if volumedata:
-			current_volume = ''
-			for line in volumedata:
-				line = line.strip()
-				if not line:
-					current_volume = ''
-					continue
-				line_arr = line.split(': ')
-				if len(line_arr) == 2 and line_arr[0] == "Volume Name":
-					current_volume = line_arr[1]
-					volumes[current_volume] = {}
-				elif len(line_arr) == 2 and line_arr[0] == "auth.allow":
-					if line_arr[1] == "NONE":
-						hosts = []
-					else:
-						hosts = line_arr[1].split(',')
-					volumes[current_volume]['auth.allow'] = hosts
-				elif len(line_arr) == 2 and line_arr[0] == "nfs.rpc-auth-allow":
-					volumes[current_volume]['nfs.rpc-auth-allow'] = line_arr[1]
-				elif len(line_arr) == 2 and line_arr[0] == "Status":
-					volumes[current_volume]['Status'] = line_arr[1]
-		return volumes
+    # returns an array containing zero, one, or both of 'project', 'volume'
+    # Presence of these values indicate that the named shared volume should
+    # exist for a given project.
+    def get_desired_volume_names(self, projectLdapData):
+        vols = []
+        project_name = projectLdapData[1]["cn"][0]
+        if "info" in projectLdapData[1]:
+            infos = projectLdapData[1]["info"]
+            volPrefix = "use_volume="
+            for info in infos:
+                if info.startswith(volPrefix):
+                    vols.append(info.lstrip(volPrefix))
+        return vols
 
-	def search_s(self,ds,base,scope,query,attrlist=None):
-		try:
-			data = ds.search_s(base,scope,query,attrlist)
-			if not data:
-				raise ldap.NO_SUCH_OBJECT()
-			return data
-		except ldap.NO_SUCH_OBJECT:
-			sys.stderr.write("The search returned no entries.\n")
-			return None
-		except ldap.PROTOCOL_ERROR:
-			sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			return None
-		except Exception:
-			try:
-				sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-				traceback.print_exc(file=sys.stderr)
-				return None
-			except Exception:
-				traceback.print_exc(file=sys.stderr)
-			return None
+    def get_volumes(self, volumedata):
+        volumes = {}
+        if volumedata:
+            current_volume = ''
+            for line in volumedata:
+                line = line.strip()
+                if not line:
+                    current_volume = ''
+                    continue
+                line_arr = line.split(': ')
+                if len(line_arr) == 2 and line_arr[0] == "Volume Name":
+                    current_volume = line_arr[1]
+                    volumes[current_volume] = {}
+                elif len(line_arr) == 2 and line_arr[0] == "auth.allow":
+                    if line_arr[1] == "NONE":
+                        hosts = []
+                    else:
+                        hosts = line_arr[1].split(',')
+                    volumes[current_volume]['auth.allow'] = hosts
+                elif len(line_arr) == 2 and line_arr[0] == "nfs.rpc-auth-allow":
+                    volumes[current_volume]['nfs.rpc-auth-allow'] = line_arr[1]
+                elif len(line_arr) == 2 and line_arr[0] == "Status":
+                    volumes[current_volume]['Status'] = line_arr[1]
+        return volumes
 
-	def log(self, logstring):
-		if self.loglevel >= INFO:
-			log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ")  + logstring + "\n"
-			if self.logfile:
-				lf = open(self.logfile, 'a')
-				lf.write(log)
-				lf.close()
-			else:
-				print log
+    def search_s(self, ds, base, scope, query, attrlist=None):
+        try:
+            data = ds.search_s(base, scope, query, attrlist)
+            if not data:
+                raise ldap.NO_SUCH_OBJECT()
+            return data
+        except ldap.NO_SUCH_OBJECT:
+            sys.stderr.write("The search returned no entries.\n")
+            return None
+        except ldap.PROTOCOL_ERROR:
+            sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            return None
+        except Exception:
+            try:
+                sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+                traceback.print_exc(file=sys.stderr)
+                return None
+            except Exception:
+                traceback.print_exc(file=sys.stderr)
+            return None
+
+    def log(self, logstring):
+        if self.loglevel >= INFO:
+            log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ") + logstring + "\n"
+            if self.logfile:
+                lf = open(self.logfile, 'a')
+                lf.write(log)
+                lf.close()
+            else:
+                print log
+
 
 def main():
-	volume_manager = VolumeManager()
-	volume_manager.run()
+    volume_manager = VolumeManager()
+    volume_manager.run()
 
 if __name__ == "__main__":
-	main()
+    main()

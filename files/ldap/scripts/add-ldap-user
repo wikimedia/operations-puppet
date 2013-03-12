@@ -1,173 +1,180 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/add-ldap-user
 #####################################################################
 
-import sys, pwd, traceback, getpass, re, ldapsupportlib, pycurl, homedirectorymanager
+import sys
+import pwd
+import traceback
+import re
+import ldapsupportlib
+import pycurl
+import homedirectorymanager
 from optparse import OptionParser
 from cStringIO import StringIO
 
 try:
-	import ldap
-	import ldap.modlist
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-	sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('add-ldap-user [options] <username> <key(s)>\nexample: add-ldap-user laner http://ryandlane.com/static/pubkey.key')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('add-ldap-user [options] <username> <key(s)>\nexample: add-ldap-user laner http://ryandlane.com/static/pubkey.key')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("--shell", action="store", dest="loginShell", default="/usr/local/bin/sillyshell", help="The user's shell (default: /usr/bin/sillyshell)")
-	parser.add_option("--gid", action="store", dest="gidNumber", default="550", help="The user's gid (default: 550)")
-	parser.add_option("--uid", action="store", dest="uidNumber", help="The user's uid (default: next available uid)")
-	parser.add_option("--home", action="store", dest="homeDirectory", help="The user's home directory (default /home/username)")
-	parser.add_option("--cn", action="store", dest="cn", help="The user's CN (default: firstname + lastname, or username, if first/last not set)")
-	parser.add_option("--firstname", action="store", dest="givenName", help="The user's first name (default: username)")
-	parser.add_option("--lastname", action="store", dest="sn", help="The user's last name (default: username)")
-	parser.add_option("--mail", action="store", dest="mail", help="The user's email address")
-	parser.add_option("--dry-run", action="store_true", dest="dryRun", help="Dry run mode (no changes)")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--shell", action="store", dest="loginShell", default="/usr/local/bin/sillyshell", help="The user's shell (default: /usr/bin/sillyshell)")
+    parser.add_option("--gid", action="store", dest="gidNumber", default="550", help="The user's gid (default: 550)")
+    parser.add_option("--uid", action="store", dest="uidNumber", help="The user's uid (default: next available uid)")
+    parser.add_option("--home", action="store", dest="homeDirectory", help="The user's home directory (default /home/username)")
+    parser.add_option("--cn", action="store", dest="cn", help="The user's CN (default: firstname + lastname, or username, if first/last not set)")
+    parser.add_option("--firstname", action="store", dest="givenName", help="The user's first name (default: username)")
+    parser.add_option("--lastname", action="store", dest="sn", help="The user's last name (default: username)")
+    parser.add_option("--mail", action="store", dest="mail", help="The user's email address")
+    parser.add_option("--dry-run", action="store_true", dest="dryRun", help="Dry run mode (no changes)")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 2:
-		parser.error("add-ldap-user expects exactly two arguments.")
-	
-	dryRun = options.dryRun
+    if len(args) != 2:
+        parser.error("add-ldap-user expects exactly two arguments.")
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    dryRun = options.dryRun
 
-	base = ldapSupportLib.getBase()
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	ds = ldapSupportLib.connect()
+    base = ldapSupportLib.getBase()
 
-	# w00t We're in!
-	try:
-		username = args[0]
-		if username == "root":
-			sys.stderr.write("You are not allowed to add a root user\n")
-			sys.exit(1)
+    ds = ldapSupportLib.connect()
 
-		keyLocation = args[1]
-		keys = []
-		if re.match('^http', keyLocation):
-			buffer = StringIO()
-			c = pycurl.Curl()
-			c.setopt(c.URL, keyLocation)
-			c.setopt(c.WRITEFUNCTION, buffer.write)
-			c.perform()
-			c.close()
-			raw_keys = buffer.getvalue().splitlines(True)
-		else:
-			file = open(keyLocation, 'r')
-			raw_keys = file.readlines()
-		for raw_key in raw_keys:
-			if (re.match('^$', raw_key) or re.match('^#', raw_key)):
-				continue
-			raw_key = raw_key.strip()
-			keys.append(raw_key)
+    # w00t We're in!
+    try:
+        username = args[0]
+        if username == "root":
+            sys.stderr.write("You are not allowed to add a root user\n")
+            sys.exit(1)
 
-		# We need to ensure the keys are unique to avoid an exception
-		uniqueKeys = []
-		[uniqueKeys.append(i) for i in keys if not uniqueKeys.count(i)]
-		keys = uniqueKeys
+        keyLocation = args[1]
+        keys = []
+        if re.match('^http', keyLocation):
+            buffer = StringIO()
+            c = pycurl.Curl()
+            c.setopt(c.URL, keyLocation)
+            c.setopt(c.WRITEFUNCTION, buffer.write)
+            c.perform()
+            c.close()
+            raw_keys = buffer.getvalue().splitlines(True)
+        else:
+            file = open(keyLocation, 'r')
+            raw_keys = file.readlines()
+        for raw_key in raw_keys:
+            if (re.match('^$', raw_key) or re.match('^#', raw_key)):
+                continue
+            raw_key = raw_key.strip()
+            keys.append(raw_key)
 
-		dn = 'uid=' + username + ',ou=people,' + base
-		uid = username
-		objectClasses = ['person', 'organizationalPerson', 'inetorgperson', 'ldapPublicKey', 'shadowaccount', 'posixaccount', 'top']
-		loginShell = options.loginShell
-		if options.homeDirectory:
-			homeDirectory = options.homeDirectory
-		else:
-			homeDirectory = '/home/' + username
-		if options.uidNumber:
-			uidNumber = options.uidNumber
-			if int(uidNumber) < 500:
-				sys.stderr.write("Setting uidnumber to less than 500 is not allowed\n")
-				sys.exit(1)
-		else:
-			# Find the next uid
-			uids = []
-			for user in pwd.getpwall():
-				tmpuid = user[2]
-				if tmpuid < 50000:
-					uids.append(user[2])
-			uids.sort()
-			uidNumber = uids.pop()
-			uidNumber = str(uidNumber + 1)
-		gidNumber = options.gidNumber
-		if options.sn:
-			sn = options.sn
-		else:
-			sn = username
-		if options.givenName:
-			givenName = options.givenName
-		else:
-			givenName = username
-		if options.cn:
-			cn = options.cn
-		elif options.givenName and options.sn:
-			cn = options.givenName + " " + options.sn
-		else:
-			cn = username
+        # We need to ensure the keys are unique to avoid an exception
+        uniqueKeys = []
+        [uniqueKeys.append(i) for i in keys if not uniqueKeys.count(i)]
+        keys = uniqueKeys
 
-		userEntry = {}
-		userEntry['uid'] = uid
-		userEntry['objectclass'] = objectClasses
-		userEntry['loginShell'] = loginShell
-		userEntry['homeDirectory'] = homeDirectory
-		userEntry['sshPublicKey'] = keys
-		userEntry['uidNumber'] = uidNumber
-		userEntry['gidNumber'] = gidNumber
-		userEntry['givenName'] = givenName
-		userEntry['sn'] = sn
-		userEntry['cn'] = cn
+        dn = 'uid=' + username + ',ou=people,' + base
+        uid = username
+        objectClasses = ['person', 'organizationalPerson', 'inetorgperson', 'ldapPublicKey', 'shadowaccount', 'posixaccount', 'top']
+        loginShell = options.loginShell
+        if options.homeDirectory:
+            homeDirectory = options.homeDirectory
+        else:
+            homeDirectory = '/home/' + username
+        if options.uidNumber:
+            uidNumber = options.uidNumber
+            if int(uidNumber) < 500:
+                sys.stderr.write("Setting uidnumber to less than 500 is not allowed\n")
+                sys.exit(1)
+        else:
+            # Find the next uid
+            uids = []
+            for user in pwd.getpwall():
+                tmpuid = user[2]
+                if tmpuid < 50000:
+                    uids.append(user[2])
+            uids.sort()
+            uidNumber = uids.pop()
+            uidNumber = str(uidNumber + 1)
+        gidNumber = options.gidNumber
+        if options.sn:
+            sn = options.sn
+        else:
+            sn = username
+        if options.givenName:
+            givenName = options.givenName
+        else:
+            givenName = username
+        if options.cn:
+            cn = options.cn
+        elif options.givenName and options.sn:
+            cn = options.givenName + " " + options.sn
+        else:
+            cn = username
 
-		if options.mail:
-			userEntry['mail'] = options.mail
+        userEntry = {}
+        userEntry['uid'] = uid
+        userEntry['objectclass'] = objectClasses
+        userEntry['loginShell'] = loginShell
+        userEntry['homeDirectory'] = homeDirectory
+        userEntry['sshPublicKey'] = keys
+        userEntry['uidNumber'] = uidNumber
+        userEntry['gidNumber'] = gidNumber
+        userEntry['givenName'] = givenName
+        userEntry['sn'] = sn
+        userEntry['cn'] = cn
 
-		if not dryRun:
-			modlist = ldap.modlist.addModlist(userEntry)
-			ds.add_s(dn, modlist)
-		else:
-			for key in userEntry.keys():
-				print "%s -> %s" % (key, userEntry[key])
+        if options.mail:
+            userEntry['mail'] = options.mail
 
-		userdict = {uid: {"uidNumber": int(uidNumber), "gidNumber": int(gidNumber), "sshPublicKey": keys}}
-		hdm = homedirectorymanager.HomeDirectoryManager()
-		hdm.dryRun = dryRun
-		hdm.createHomeDir(userdict)
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.TYPE_OR_VALUE_EXISTS:
-		sys.stderr.write("The user you are trying to add already exists.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except Exception:
-		try:
-			sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			ds.unbind()
-		except Exception:
-			sys.stderr.write("Also failed to unbind.\n")
-			traceback.print_exc(file=sys.stderr)
-		sys.exit(1)
+        if not dryRun:
+            modlist = ldap.modlist.addModlist(userEntry)
+            ds.add_s(dn, modlist)
+        else:
+            for key in userEntry.keys():
+                print "%s -> %s" % (key, userEntry[key])
 
-	ds.unbind()
-	sys.exit(0)
+        userdict = {uid: {"uidNumber": int(uidNumber), "gidNumber": int(gidNumber), "sshPublicKey": keys}}
+        hdm = homedirectorymanager.HomeDirectoryManager()
+        hdm.dryRun = dryRun
+        hdm.createHomeDir(userdict)
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.TYPE_OR_VALUE_EXISTS:
+        sys.stderr.write("The user you are trying to add already exists.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
+
+    ds.unbind()
+    sys.exit(0)
 
 if __name__ == "__main__":
-	main()
+    main()
