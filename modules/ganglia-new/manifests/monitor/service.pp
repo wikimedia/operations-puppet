@@ -2,7 +2,7 @@ class ganglia-new::monitor::service() {
 	Class[ganglia-new::monitor::config] -> Class[ganglia-new::monitor::service]
 
 	file { "/etc/init/ganglia-monitor.conf":
-		source => "puppet:///modules/ganglia/upstart/ganglia-monitor.conf",
+		source => "puppet:///modules/ganglia-new/upstart/ganglia-monitor.conf",
 		mode => 0444
 	}
 

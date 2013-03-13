@@ -16,7 +16,7 @@ define ganglia-new::monitor::aggregator::instance() {
 	file { "/etc/ganglia/aggregators/${id}.conf":
 		require => File["/etc/ganglia/aggregators"],
 		mode => 0444,
-		content => template("ganglia/gmond.conf.erb"),
+		content => template("ganglia-new/gmond.conf.erb"),
 		notify => Service[$title]
 	}
 }

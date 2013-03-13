@@ -12,7 +12,7 @@ class ganglia-new::monitor::config($cluster) {
 
 	file { "/etc/ganglia/gmond.conf":
 		mode => 0444,
-		content => template("ganglia/gmond.conf.erb"),
+		content => template("ganglia-new/gmond.conf.erb"),
 		notify => Service["ganglia-monitor"]
 	}
 }
