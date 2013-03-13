@@ -44,7 +44,7 @@ udp_recv_channel {
   port = <%= gmond_port %>
   acl {
     default = "deny"
-<% scope.lookupvar("::network::all_networks").each do |prefix|
+<% scope.lookupvar("::network::constants::all_networks").each do |prefix|
 ip, mask = prefix.split('/')
 -%>
     acess {
