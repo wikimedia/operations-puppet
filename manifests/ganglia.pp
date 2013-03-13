@@ -202,16 +202,18 @@ class ganglia {
 			}
 		}
 		ganglia-monitor: {
-			package {
-				"gmond":
-					before => Package[ganglia-monitor],
-					ensure => purged;
-				"ganglia-monitor":
-					ensure => present,
-					alias => "gmond-package";
+			if !defined(Package["ganglia-monitor"]) {
+				package {
+					"gmond":
+						before => Package[ganglia-monitor],
+						ensure => purged;
+					"ganglia-monitor":
+						ensure => present,
+						alias => "gmond-package";
+				}
 			}
 
-	                file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
+			file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
 				require => Package[ganglia-monitor],
 				ensure => directory;
 			}
