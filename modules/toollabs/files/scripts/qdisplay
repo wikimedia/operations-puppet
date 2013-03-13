@@ -1,0 +1,19 @@
+#!/bin/dash
+
+jobs=`qstat -u "*"`
+waiting=`echo "$jobs" | grep -E '\sqw\s' | wc -l`
+running=`echo "$jobs" | grep -E '\sr\s' | wc -l`
+
+echo "Waiting Jobs: $waiting Running Jobs: $running"
+echo -n "Jobs per server: " 
+for s in `qconf -sel`
+do
+	number=`echo "$jobs" | grep -c $s`
+	echo -n "$s ($number) "
+done
+echo
+echo '\n\nPerformance information\n**************************************\n'
+qhost
+echo '\n\nBlocked queues \n**************************************\n'
+qstat -j
+

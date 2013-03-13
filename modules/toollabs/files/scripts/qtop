@@ -1,0 +1,4 @@
+#!/bin/dash
+
+watch -tn1 "/usr/local/bin/qdisplay"
+

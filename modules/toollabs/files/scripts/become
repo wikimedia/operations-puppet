@@ -1,0 +1,20 @@
+#! /bin/bash
+
+
+if [ $# -lt 1 ]; then
+  echo "usage: $(basename $0) <toolname> [command [args...]]" >&2
+  exit 1
+fi
+if ! id "local-$1" >/dev/null 2>&1
+then
+  echo "$(basename $0): no such tool '$1'" >&2
+  exit 1
+fi
+if ! [ -d "/data/project/$1" ]
+then
+  echo "$(basename $0): no such tool '$1'" >&2
+  exit 1
+fi
+user="$1"
+shift
+exec /usr/bin/sudo -niu "local-$user" "$@"

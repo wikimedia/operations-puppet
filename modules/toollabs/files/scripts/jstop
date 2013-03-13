@@ -1,0 +1,9 @@
+#! /bin/bash
+
+id=$(/usr/local/bin/job "$1")
+if [ $? != 0 ]; then
+  qdel $id
+else
+  echo "No job '$1' is currently queued or running" >&2
+  exit 1
+fi

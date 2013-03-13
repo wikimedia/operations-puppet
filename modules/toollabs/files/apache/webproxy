@@ -1,0 +1,53 @@
+<VirtualHost *:80>
+	ServerAdmin root@wikimedia.org
+
+	DocumentRoot /var/www
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	RewriteEngine On
+	RewriteMap webservers txt:/data/project/.system/webservers
+	RewriteCond ${webservers:$1}	!=""
+	RewriteRule ^/([^/]*)$ http://${webservers:$1}/$1/ [P]
+	RewriteCond ${webservers:$1}	!=""
+	RewriteRule ^/adm(/.+)? https://tools.wmflabs.org/adm$1 [R]
+	RewriteRule ^/([^/]*)/(.*)$ http://${webservers:$1}/$1/$2 [P]
+	RewriteRule ^/(.*) http://${webservers:root|tools-webserver-01}/$1 [P]
+</VirtualHost>
+
+<IfModule mod_ssl.c>
+<VirtualHost _default_:443>
+	ServerAdmin root@wikimedia.org
+
+	DocumentRoot /var/www
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/ssl_access.log combined
+
+	RewriteEngine On
+	RewriteMap webservers txt:/data/project/.system/webservers
+	RewriteCond ${webservers:$1}	!=""
+	RewriteRule ^/([^/]*)$ http://${webservers:$1}/$1/ [P]
+	RewriteCond ${webservers:$1}	!=""
+	RewriteRule ^/([^/]*)/(.*)$ http://${webservers:$1}/$1/$2 [P]
+	RewriteRule ^/(.*) http://${webservers:root|tools-webserver-01}/$1 [P]
+
+	SSLEngine on
+	SSLCertificateFile    /etc/ssl/certs/star.wmflabs.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wmflabs.org.key
+
+	<FilesMatch "\.(cgi|shtml|phtml|php)$">
+		SSLOptions +StdEnvVars
+	</FilesMatch>
+
+	BrowserMatch "MSIE [2-6]" \
+		nokeepalive ssl-unclean-shutdown \
+		downgrade-1.0 force-response-1.0
+	# MSIE 7 and newer should be able to use keepalive
+	BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+</VirtualHost>
+</IfModule>
