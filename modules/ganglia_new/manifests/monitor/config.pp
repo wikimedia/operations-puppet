@@ -1,5 +1,6 @@
 class ganglia_new::monitor::config($cluster) {
 	require ganglia_new::monitor::packages
+	include ganglia_new::configuration
 
 	$aggregator = false
 	$id = $ganglia_new::configuration::clusters[$cluster]['id']

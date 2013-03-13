@@ -1,6 +1,8 @@
 define ganglia_new::monitor::aggregator::instance() {
 	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
+	include ganglia_new::configuration
+
 	$aggregator = true
 
 	# TODO: support multiple $site
