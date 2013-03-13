@@ -24,6 +24,13 @@ class contint::website {
     owner  => 'www-data',
     group  => 'wikidev',
   }
+  # MediaWiki code coverage
+  file { '/srv/org/mediawiki/integration/coverage':
+    ensure => directory,
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'wikidev',
+  }
 
   # Apache configuration for integration.mediawiki.org
   file { '/etc/apache2/sites-available/integration.mediawiki.org':
