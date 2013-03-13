@@ -1,0 +1,30 @@
+#! /bin/bash
+
+
+errdir=/var/log/apache2
+while read tool rest
+do
+  user="local-$tool"
+  if id "$user" >/dev/null 2>&1
+  then
+    home="/data/project/$tool"
+    if [ -d "$home" ]
+    then
+      log="$home/access.log"
+      if [ ! -f "$log" ]
+      then
+	touch "$log~$$"
+	chmod 0640 "$log~$$"
+	chown "$user:$user" "$log~$$"
+	mv "$log~$$" "$log"
+      fi
+      echo "$rest" >>"$log"
+    else
+      echo "$rest [missingdir:$home]" >>/var/log/apache2/lost.log
+    fi
+  else
+    echo "$rest [$tool]" >>/var/log/apache2/access.log
+    errdir=/var/log/apache2
+  fi
+done
+

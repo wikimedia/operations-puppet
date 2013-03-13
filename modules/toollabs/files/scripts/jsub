@@ -1,0 +1,126 @@
+#! /usr/bin/perl
+
+my %qsubargs = (
+       '-a' => 1, '-b' => 1, '-cwd' => 0, '-e' => 1, '-hard' => 0, '-i' => 1, '-j' => 1,
+       '-l' => 1, '-now' => 1, '-N' => 1, '-o' => 1, '-p' => 1, '-q' => 1, '-soft' => 0,
+       '-sync' => 1, '-v' => 1, '-wd' => 1,
+);
+my %qsargs;
+my @args;
+my $memory = '256m';
+my $once = 0;
+my $stderr = 0;
+my $continuous = 0;
+my $script = $0;
+my $queue = 'task';
+$script = $1 if $script =~ m{/([^/]+)$};
+
+$continuous = 1 if $script eq 'jstart';
+
+while($#ARGV > 0) {
+  if(defined $qsubargs{$ARGV[0]}) {
+    $arg = shift;
+    $qsargs{$arg} = $qsubargs{$arg}? $ARGV[0]: '';
+    if($arg eq '-N' or $arg eq '-q') {
+      shift if $qsubargs{$arg};
+      next;
+    }
+    push @args, $arg;
+    push @args, shift if $qsubargs{$arg};
+  } elsif ($ARGV[0] eq '-mem') {
+    shift;
+    $memory = shift;
+    die "$script: memory value must be an integer followed by 'k', 'm' or 'g'\n" unless $memory =~ m/^([1-9][0-9]*[mMgGkK])$/;
+  } elsif ($ARGV[0] eq '-once') {
+    $once = 1;
+    shift;
+  } elsif ($ARGV[0] eq '-stderr') {
+    $stderr = 1;
+    shift;
+  } elsif ($ARGV[0] eq '-continuous') {
+    $continuous = 1;
+    $once = 1;
+    shift;
+  } else {
+    last;
+  }
+}
+
+if($#ARGV<0 or $ARGV[0] =~ m/^-/) {
+  print STDERR <<"END"
+
+usage: $script [options...] program [arg...]
+
+Options include many (but not all) qsub options, along with:
+ -stderr           Send errors to stderr rather than the error
+                   output file.
+ -mem <value>      Request <value> amount of memory for the job.
+                   (number prefixed by 'k', 'm' or 'g')
+ -once             Only start one job with that name, fail if
+                   another is already started or queued.
+ -continuous       Start a self-restarting job on the continuous
+                   queue (default if invoked as 'jstart')
+
+Unlike qsub, if you do not specify output and error files, output is appended
+by default to files named <job>.err and <job>.out in your home directory
+(without job numbers), including errors from starting the job itself.
+
+Additionally, you need to provide an executable on the command line,
+$script will not read a script from standard input.
+
+END
+  ;
+  exit 1;
+}
+
+my $exe = shift;
+my $prog = `/usr/bin/which $exe`;
+chomp $prog;
+$prog = readlink $prog while -l $prog;
+my $cwd = `pwd`;
+chomp $cwd;
+$prog = "$cwd/$exe" unless -f $prog and -x $prog;
+
+my $jobname = 'unknown';
+$jobname = $1 if $prog =~ m{([^/.]+)(\.[^/]*)?$};
+$jobname = $qsargs{'-N'} if defined $qsargs{'-N'};
+
+my $err = "$ENV{'HOME'}/$jobname.err";
+my $out = "$ENV{'HOME'}/$jobname.out";
+
+$err = $qsargs{'-e'} if defined $qsargs{'-e'};
+$out = $qsargs{'-o'} if defined $qsargs{'-o'};
+$err = $out if defined $qsargs{'-j'} and $qsargs{'-j'} =~ m/^[yY]/;
+
+open STDERR, ">>$err" unless $stderr;
+
+my $now = localtime;
+
+die "\[$now\] $prog: not an executable file\n" unless -f $prog and -x $prog;
+
+if($once) {
+  my $running = system "/usr/local/bin/job", '-q', $jobname;
+  die "\[$now\] unable to get job status\n" if $running & 127;
+  $running >>= 8;
+  die "\[$now\] there is a job named '$jobname' already active\n" unless $running==0;
+}
+
+push @args, '-e', $err unless defined $qsargs{'-e'};
+push @args, '-o', $out unless defined $qsargs{'-o'};
+push @args, '-N', $jobname, '-hard', '-l', "h_vmem=$memory";
+
+if($continuous) {
+  push @args, '-q', 'continuous';
+  open QSUB, "|/usr/bin/qsub '".join("' '", @args)."'" or die "\[$now\] unable to start qsub: $!\n";
+  print QSUB "#! /bin/bash\n";
+  print QSUB "while ! '$prog' '".join("' '", @ARGV)."' ; do\n";
+  print QSUB "  sleep 5\n";
+  print QSUB "done\n";
+  close QSUB;
+} else {
+  $queue = $qsargs{'-q'} if defined $qsargs{'-q'};
+  push @args, '-q', $queue, '-b', 'y', $prog, @ARGV;
+  exec '/usr/bin/qsub', @args;
+  die "\[$now\] qsub failed: $!\n";
+}
+

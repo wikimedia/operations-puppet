@@ -1,0 +1,47 @@
+#! /usr/bin/perl
+
+my $mode;
+$mode = shift  if $#ARGV>0 and $ARGV[0] eq '-v';
+$mode = shift  if $#ARGV>0 and $ARGV[0] eq '-q';
+
+if($#ARGV != 0) {
+  print STDERR <<END
+usage: $0 <jobname>       outputs the job number
+       $0 -v <jobname>    outputs verbose (human readable) information
+       $0 -q <jobname>    quietly checks for the job status
+
+If there are multiple jobs with the same name, it is not specified which one
+will have its information returned (though running jobs take precedence)
+
+Returns 0 if no job by that name is present, 1 if it is currently running or
+suspended, and 2 if the job is queued but not running.
+
+END
+  ;
+  exit 0;
+}
+
+my $name = shift;
+
+my $jnum, $jname, $jstate, $jstart;
+
+open XML, "/usr/bin/qstat -xml|" or die "qstat: $!";
+while(<XML>) {
+  $jnum = $1 if m/<JB_job_number>(.*)<\/JB_job_number>/;
+  $jname = $1 if m/<JB_name>(.*)<\/JB_name>/;
+  $jstate = $1 if m/<state>(.*)<\/state>/;
+  $jstart = $1 if m/<JAT_start_time>(.*)<\/JAT_start_time>/;
+  if(m/<\/job_list>/ and defined $jnum) {
+    next unless $jname eq $name;
+    my $run = ($jstate =~ m/[rs]/);
+    if($mode eq '-v') {
+      print "Job '$name' has been running since $jstart as id $jnum\n" if $run;
+      print "Job '$name' is pending as id $jnum\n" unless $run;
+    } else {
+      print "$jnum\n" unless $mode eq '-q';
+    }
+    exit ($run? 1: 2);
+  }
+}
+print "No job '$name' is currently queued or running.\n" if $mode eq '-v';
+exit 0;

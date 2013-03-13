@@ -1,0 +1,66 @@
+<VirtualHost *:80>
+	ServerAdmin mpelletier@wikimedia.org
+	ServerName tools.wmflabs.org
+	ServerSignature Email
+	UseCanonicalName on
+
+	RewriteEngine On
+	RewriteMap webservers txt:/data/project/.system/webservers
+	RewriteCond ${webservers:$1}    !=""
+	RewriteRule ^/([^/]*)/cgi-bin/(.*) /data/project/$1/cgi-bin/$2 [E=TOOL:$1,L]
+	RewriteCond ${webservers:$1}    !=""
+	RewriteRule ^/([^/]*)/(.*) /data/project/$1/public_html/$2 [E=TOOL:$1,L]
+	DocumentRoot /var/www
+
+	RequestHeader unset X-Forwarded-For early
+
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+	<Directory "/usr/lib/cgi-bin">
+		AllowOverride None
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		Order allow,deny
+		Allow from all
+	</Directory>
+
+	<Directory "/data/project">
+		Options MultiViews SymLinksIfOwnerMatch -Indexes
+		AllowOverride AuthConfig FileInfo Options=IncludesNOEXEC
+		AddType application/x-suphp-cgi .py
+		Order allow,deny
+		deny from all
+	</Directory>
+
+	<DirectoryMatch "^/data/project/[^/]+/public_html/?">
+		Order allow,deny
+		allow from all
+	</DirectoryMatch>
+
+	<DirectoryMatch "^/data/project/[^/]+/cgi-bin/?">
+		Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+		SetHandler application/x-suphp-cgi
+		Order allow,deny
+		Allow from all
+	</DirectoryMatch>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	LogFormat "%{TOOL}e 127.0.0.1 - %u %t \"%r\" %>s %b" special
+	#CustomLog ${APACHE_LOG_DIR}/access.log combined env=!TOOL
+	CustomLog "||/usr/local/bin/logsplitter" special
+</VirtualHost>
+
