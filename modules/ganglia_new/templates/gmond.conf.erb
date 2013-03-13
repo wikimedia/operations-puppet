@@ -47,7 +47,7 @@ udp_recv_channel {
 <% scope.lookupvar("::network::constants::all_networks").each do |prefix|
 ip, mask = prefix.split('/')
 -%>
-    acess {
+    access {
       ip = <%= ip %>
       mask = <%= mask %>
       action = "allow"
