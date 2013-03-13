@@ -7,127 +7,18 @@
 NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
-	ServerAlias integration.wikimedia.org
-	ServerAdmin noc@wikimedia.org
 
-	DocumentRoot /srv/org/mediawiki/integration
-
-	ErrorLog /var/log/apache2/error.log
-
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
-
-	CustomLog /var/log/apache2/access.log combined
-
-	<Directory />
-		Order Deny,Allow
-		AllowOverride All
-	</Directory>
-
-	<Directory /srv/org/mediawiki/integration>
-		Options FollowSymLinks
-		AllowOverride All
-		Order allow,deny
-		allow from all
-	</Directory>
-
-	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressIcon
-		IndexOptions SuppressRules
-		IndexOptions SuppressDescription
-		IndexOptions SuppressHTMLPreamble
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-
-		ServerSignature Off
-
-		IndexStyleSheet "../../nightly.css"
-		HeaderName "HEADER.html"
-		ReadmeName "README.html"
-		IndexIgnore "*.html" ".."
-	</Directory>
-
-	# Generic nightly builds, no specific HTML there
-	<Directory /srv/org/mediawiki/integration/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressDescription
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-	</Directory>
-
-	<Directory /srv/org/mediawiki/integration/nightly/mediawiki/core>
-		IndexOrderDefault Descending Date
-	</Directory>
-
-	# Force Jenkins request through HTTPS
-	RewriteEngine on
-	RewriteCond %{HTTPS} off
-	RewriteCond %{REQUEST_URI}  ^/ci
-	RewriteRule ^/ci/ https://%{HTTP_HOST}%{REQUEST_URI}
-
+	RewriteEngine On
+	RewriteRule ^(.*)$ http://integration.wikimedia.org$1 [R=301,L,NE]
 </VirtualHost>
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
-	ServerAdmin noc@wikimedia.org
-
-	DocumentRoot /srv/org/mediawiki/integration
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 
-	ErrorLog /var/log/apache2/error.log
-
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel warn
-
-	CustomLog /var/log/apache2/access.log combined
-
-	<Directory />
-		Order Deny,Allow
-		AllowOverride All
-	</Directory>
-
-	<Directory /srv/org/mediawiki/integration>
-		Options FollowSymLinks
-		AllowOverride All
-		Order allow,deny
-		allow from all
-	</Directory>
-
-	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressIcon
-		IndexOptions SuppressRules
-		IndexOptions SuppressDescription
-		IndexOptions SuppressHTMLPreamble
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-
-		ServerSignature Off
-
-		HeaderName "HEADER.html"
-		ReadmeName "README.html"
-		IndexIgnore "*.html" ".."
-	</Directory>
-
-	# Generic nightly builds, no specific HTML there
-	<Directory /srv/org/mediawiki/integration/nightly/>
-		Options +Indexes
-		IndexOptions FancyIndexing
-		IndexOptions SuppressDescription
-		IndexOptions HTMLTable
-		IndexOptions VersionSort
-		IndexOptions NameWidth=*
-	</Directory>
+	RewriteEngine On
+	RewriteRule ^(.*)$ https://integration.wikimedia.org$1 [R=301,L,NE]
 </VirtualHost>
