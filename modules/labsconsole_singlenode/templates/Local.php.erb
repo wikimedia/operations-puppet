@@ -1,0 +1,128 @@
+<?php
+$wgCookieDomain = "labsconsole.wikimedia.org";
+
+$wgLogo             = "$wgStylePath/common/images/test-labs-logo.png";
+
+# Only sysops can create new accounts.
+$wgGroupPermissions['*']['createaccount'] = true;
+
+$wgGroupPermissions['cloudadmin']['listall'] = true;
+$wgGroupPermissions['bureaucrat']['manageproject'] = true;
+$wgGroupPermissions['cloudadmin']['managednsdomain'] = true;
+$wgGroupPermissions['cloudadmin']['manageglobalpuppet'] = true;
+$wgGroupPermissions['shell']['loginviashell'] = true;
+
+$wgImportSources[] = "wikitech";
+
+enableSemantics('labsconsole');
+
+require_once( "$IP/extensions/LdapAuthentication/LdapAuthentication.php" );
+$wgAuth = new LdapAuthenticationPlugin();
+$wgLDAPDomainNames = array( 'labs');
+$wgLDAPServerNames = array( 'labs' => "<%= ldap_server_primary %> <%= ldap_server_secondary %>" );
+$wgLDAPSearchAttributes = array( 'labs' => 'cn');
+$wgLDAPBaseDNs = array( 'labs' => 'dc=wikimedia,dc=org' );
+$wgLDAPUserBaseDNs = array( 'labs' => 'ou=people,dc=wikimedia,dc=org' );
+$wgLDAPEncryptionType = array( 'labs' => 'tls');
+$wgLDAPWriteLocation = array( 'labs' => 'ou=people,dc=wikimedia,dc=org' );
+$wgLDAPAddLDAPUsers = array( 'labs' => true );
+$wgLDAPUpdateLDAP = array( 'labs' => true );
+$wgLDAPPasswordHash = array( 'labs' => 'clear' );
+// 'invaliddomain' is set to true so that mail password options
+// will be available on user creation and password mailing
+$wgLDAPMailPassword = array( 'labs' => true, 'invaliddomain' => true );
+$wgLDAPPreferences = array( 'labs' => array( "email"=>"mail" ) );
+$wgLDAPUseFetchedUsername = array( 'labs' => true );
+$wgLDAPLowerCaseUsernameScheme = array( 'labs' => false, 'invaliddomain' => false );
+$wgLDAPLowerCaseUsername = array( 'labs' => false, 'invaliddomain' => false );
+// Only enable UseLocal if you need to promote an LDAP user
+#$wgLDAPUseLocal = true;
+$wgMinimalPasswordLength = 1;
+
+require_once( "$IP/extensions/OATHAuth/OATHAuth.php" );
+
+require_once( "$IP/extensions/OpenStackManager/OpenStackManager.php" );
+$wgOpenStackManagerNovaKeypairStorage = 'ldap';
+$wgOpenStackManagerNovaIdentityURI = "http://<%= db_host %>:35357/v2.0";
+$wgOpenStackManagerLDAPDomain = 'labs';
+$wgOpenStackManagerLDAPProjectBaseDN = 'ou=projects,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPProjectGroupBaseDN = "ou=groups,dc=wikimedia,dc=org";
+$wgOpenStackManagerLDAPInstanceBaseDN = 'ou=hosts,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPDefaultGid = '500';
+$wgOpenStackManagerLDAPDefaultShell = '/usr/local/bin/sillyshell';
+$wgOpenStackManagerLDAPUseUidAsNamingAttribute = true;
+$wgOpenStackManagerDNSOptions = array(
+        'enabled' => true,
+		'servers' => array( 'primary' => "<%= ldap_server_primary %>", 'secondary' => "<%= ldap_server_secondary %>" ),
+        'soa'     => array( 'hostmaster' => 'hostmaster.wikimedia.org', 'refresh' => '1800', 'retry' => '3600', 'expiry' => '86400', 'minimum' => '7200' ),
+        );
+$wgOpenStackManagerPuppetOptions = array(
+        'enabled' => true,
+        'defaultclasses' => array( 'base', 'ldap::client::wmf-test-cluster', 'exim::simple-mail-sender', 'sudo::labs_project' ),
+        'defaultvariables' => array( 'realm' => 'labs' ),
+        );
+$wgOpenStackManagerInstanceUserData = array(
+        'cloud-config' => array(
+                #'puppet' => array( 'conf' => array( 'puppetd' => array( 'server' => 'labsconsole.wikimedia.org', 'certname' => '%i' ) ) ),
+                #'apt_upgrade' => 'true',
+                'apt_update' => 'false', // Puppet will cause this
+                #'apt_mirror' => 'http://ubuntu.wikimedia.org/ubuntu/',
+                ),
+        'scripts' => array(
+                'runpuppet.sh' => '/srv/org/wikimedia/controller/scripts/runpuppet.sh',
+                ),
+        'upstarts' => array(
+                'ttyS0.conf' => '/srv/org/wikimedia/controller/upstarts/ttyS0.conf',
+                'ttyS1.conf' => '/srv/org/wikimedia/controller/upstarts/ttyS1.conf',
+                ),
+        );
+$wgOpenStackManagerDefaultSecurityGroupRules = array(
+        # Allow all traffic within the project
+        array( 'group' => 'default' ),
+        # Allow ping from everywhere
+        array( 'fromport' => '-1',
+               'toport' => '-1',
+               'protocol' => 'icmp',
+               'range' => '0.0.0.0/0' ),
+        # Allow ssh from all projects
+        array( 'fromport' => '22',
+               'toport' => '22',
+               'protocol' => 'tcp',
+               'range' => '10.4.0.0/21' ),
+        # Allow nrpe access from all projects (access is limited in config)
+        array( 'fromport' => '5666',
+               'toport' => '5666',
+               'protocol' => 'tcp',
+               'range' => '10.4.0.0/21' ),
+        );
+$wgOpenStackManagerInstanceDefaultImage = "a84558b0-ffaa-4dcd-a020-281b45a87af5";
+$wgOpenStackManagerInstanceBannedImages = array(
+        "b1bec070-81de-4ad5-9c1d-a5b0f7d28819", //lucid loader
+        "c80a63f0-62b0-4f3c-a495-01e2d8a46ade", //lucid kernel
+        "167350c0-0410-4336-9a94-9c8da55f26a3", //natty
+        "a3ee8fe3-b9f6-4a96-bad2-8bac64affde0", //oneiric
+        "e6c0d0ea-a1a3-40a7-8039-641f96b14023", //oneric
+        );
+$wgOpenStackManagerInstanceBannedInstanceTypes = array(
+        "m1.tiny",
+        "s1.tiny",
+        "s1.small",
+        "s1.medium",
+        "s1.large",
+        "s1.xlarge",
+        );
+$wgOpenStackManagerInstanceDefaultImage = "a84558b0-ffaa-4dcd-a020-281b45a87af5";
+
+# Enable doc links on the 'configure instance' page
+$wgOpenStackManagerPuppetDocBase = 'http://doc.wikimedia.org/puppet/classes/__site__/';
+
+$smwgNamespacesWithSemanticLinks[NS_NOVA_RESOURCE] = true;
+$wgNamespacesWithSubpages[NS_NOVA_RESOURCE] = true;
+$wgNamespacesToBeSearchedDefault[NS_NOVA_RESOURCE] = true;
+$wgNamespacesToBeSearchedDefault[NS_HELP] = true;
+
+#require_once("$IP/extensions/OpenID/OpenID.php");
+$wgOpenIDClientOnly = false;
+$wgHideOpenIDLoginLink = true;
+$wgOpenIDConsumerAllow = '';
+$wgOpenIDConsumerDenyByDefault = true;

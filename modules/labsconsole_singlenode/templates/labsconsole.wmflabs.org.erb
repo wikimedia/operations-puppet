@@ -1,0 +1,80 @@
+<VirtualHost *:80>
+    ServerAdmin noc@wikimedia.org
+
+    DocumentRoot /var/www
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory /var/www/>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    RewriteEngine on
+    RewriteRule ^/(.*)$ https://<%=@servername%>/$1 [L,R]
+
+    <Directory <%=install_path%>/orig>
+        Deny from all
+    </Directory>
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName <%=@servername%>
+
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/star.wmflabs.pem
+    SSLCertificateKeyFile /etc/ssl/private/star.wmflabs.key
+
+    RedirectMatch ^/$ https://<%=@servername%>/wiki/
+
+    RewriteEngine on
+
+    DocumentRoot <%=@install_path%>/..
+
+    RewriteRule ^/?wiki(/.*)?$ %{DOCUMENT_ROOT}/w/index.php [L]
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    Alias /dumps /a/backup/public
+    <Directory /a/backup/public>
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+
+    <Directory <%=@install_path%>/..>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    ErrorLog /var/log/apache2/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog /var/log/apache2/access.log combined
+    ServerSignature Off
+
+    Alias /wiki "<%= @install_path %>/index.php"
+    Alias /w "<%= @install_path %>"
+
+</VirtualHost>

@@ -1,0 +1,170 @@
+<?php
+
+$wgShowIPinHeader = false;
+$wgDisableCounters = true;
+
+## Shared memory settings
+$wgMainCacheType = CACHE_MEMCACHED;
+$wgParserCacheType = CACHE_MEMCACHED;
+$wgMessageCacheType = CACHE_MEMCACHED;
+$wgSessionsInMemcached = true;
+$wgMemCachedServers = array( '127.0.0.1:11000' );
+
+require_once( "$IP/extensions/Echo/Echo.php" );
+
+require_once( "$IP/extensions/DynamicSidebar/DynamicSidebar.php" );
+
+# Direct puppet docs to our doc site
+$wgOpenStackManagerPuppetDocBase = "doc.wikimedia.org/puppet";
+
+
+require_once( "$IP/extensions/LdapAuthentication/LdapAuthentication.php" );
+$wgAuth = new LdapAuthenticationPlugin();
+$wgLDAPDomainNames = array( 'labs');
+$wgLDAPServerNames = array( 'labs' => 'localhost' );
+$wgLDAPSearchAttributes = array( 'labs' => 'cn');
+$wgLDAPBaseDNs = array( 'labs' => 'dc=wikimedia,dc=org' );
+$wgLDAPUserBaseDNs = array( 'labs' => 'ou=people,dc=wikimedia,dc=org' );
+$wgLDAPEncryptionType = array( 'labs' => 'clear');
+$wgLDAPProxyAgent =  array( 'labs' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org' );
+$wgLDAPProxyAgentPassword =  array( 'labs' => $ldaproxypswd );
+$wgLDAPWriterDN = array( 'labs' => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org' );
+$wgLDAPWriterPassword = array( 'labs' => $ldapwriterpswd );
+$wgLDAPWriteLocation = array( 'labs' => 'ou=people,dc=wikimedia,dc=org' );
+$wgLDAPAddLDAPUsers = array( 'labs' => true );
+$wgLDAPUpdateLDAP = array( 'labs' => true );
+$wgLDAPPasswordHash = array( 'labs' => 'clear' );
+// 'invaliddomain' is set to true so that mail password options
+// will be available on user creation and password mailing
+$wgLDAPMailPassword = array( 'labs' => true, 'invaliddomain' => true );
+$wgLDAPPreferences = array( 'labs' => array( "email"=>"mail" ) );
+$wgLDAPUseFetchedUsername = array( 'labs' => true );
+$wgLDAPLowerCaseUsernameScheme = array( 'labs' => false, 'invaliddomain' => false );
+$wgLDAPLowerCaseUsername = array( 'labs' => false, 'invaliddomain' => false );
+// Only enable UseLocal if you need to promote an LDAP user
+#$wgLDAPUseLocal = true;
+$wgMinimalPasswordLength = 1;
+
+
+
+require_once( "$IP/extensions/OpenStackManager/OpenStackManager.php" );
+
+$wgOpenStackManagerNovaKeypairStorage = 'ldap';
+$wgOpenStackManagerNovaIdentityURI = "http://<%=host_address%>:35357/v2.0";
+$wgOpenStackManagerLDAPDomain = 'labs';
+$wgOpenStackManagerLDAPUser = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPUsername = 'novaadmin';
+$wgOpenStackManagerLDAPUserPassword = $ldapuserpswd;
+$wgOpenStackManagerLDAPProjectBaseDN = 'ou=projects,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPProjectGroupBaseDN = "ou=groups,dc=wikimedia,dc=org";
+$wgOpenStackManagerLDAPInstanceBaseDN = 'ou=hosts,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPDefaultGid = '500';
+$wgOpenStackManagerLDAPDefaultShell = '/usr/local/bin/sillyshell';
+$wgOpenStackManagerLDAPUseUidAsNamingAttribute = true;
+$wgOpenStackManagerDNSOptions = array(
+        'enabled' => true,
+		'servers' => array( 'primary' => "<%=host_address%>"),
+        'soa'     => array( 'hostmaster' => 'hostmaster.wikimedia.org', 'refresh' => '1800', 'retry' => '3600', 'expiry' => '86400', 'minimum' => '7200' ),
+        );
+$wgOpenStackManagerPuppetOptions = array(
+        'enabled' => true,
+        'defaultclasses' => array( 'base', 'ldap::client::wmf-test-cluster', 'exim::simple-mail-sender', 'sudo::labs_project' ),
+        'defaultvariables' => array( 'realm' => 'labs' ),
+        );
+
+$wgOpenStackManagerInstanceUserData = array(
+        'cloud-config' => array(
+                'apt_update' => 'false', // Puppet will cause this
+                ),
+       'scripts' => array(
+                'runpuppet.sh' => '/srv/org/wikimedia/controller/scripts/runpuppet.sh',
+                ),
+        'upstarts' => array(
+                'ttyS0.conf' => '/srv/org/wikimedia/controller/upstarts/ttyS0.conf',
+                'ttyS1.conf' => '/srv/org/wikimedia/controller/upstarts/ttyS1.conf',
+                ),
+        );
+
+$wgOpenStackManagerDefaultSecurityGroupRules = array(
+        # Allow all traffic within the project
+        array( 'group' => 'default' ),
+        # Allow ping from everywhere
+        array( 'fromport' => '-1',
+               'toport' => '-1',
+               'protocol' => 'icmp',
+               'range' => '0.0.0.0/0' ),
+        # Allow ssh from all projects
+        array( 'fromport' => '22',
+               'toport' => '22',
+               'protocol' => 'tcp',
+               'range' => '10.4.0.0/21' ),
+        # Allow nrpe access from all projects (access is limited in config)
+        array( 'fromport' => '5666',
+               'toport' => '5666',
+               'protocol' => 'tcp',
+               'range' => '10.4.0.0/21' ),
+        );
+
+$wgLogo = "https://<%=host_address%>/w/images/c/cf/Labslogo_thumb.png";
+
+include_once("$IP/extensions/SemanticMediaWiki/SemanticMediaWiki.php");
+enableSemantics(<%=wiki_name%>);
+
+include_once("$IP/extensions/SemanticForms/SemanticForms.php");
+
+#SemanticResultFormats, an extra set of printers for SMW
+require_once("$IP/extensions/SemanticResultFormats/SemanticResultFormats.php");
+
+
+# Only sysops can create new accounts.
+$wgGroupPermissions['*']['createaccount'] = true;
+
+# # Anons can't edit
+$wgGroupPermissions['*']['edit'] = false;
+
+# # Give another group import rights
+$wgGroupPermissions['importers']['import'] = true;
+$wgGroupPermissions['importers']['importupload'] = true;
+$wgGroupPermissions['cloudadmin']['listall'] = true;
+$wgGroupPermissions['bureaucrat']['manageproject'] = true;
+$wgGroupPermissions['cloudadmin']['managednsdomain'] = true;
+$wgGroupPermissions['cloudadmin']['manageglobalpuppet'] = true;
+$wgGroupPermissions['shell']['loginviashell'] = true;
+$wgGroupPermissions['contentadmin']['protect'] = true;
+$wgGroupPermissions['contentadmin']['editprotected'] = true;
+$wgGroupPermissions['contentadmin']['bigdelete'] = true;
+$wgGroupPermissions['contentadmin']['delete'] = true;
+$wgGroupPermissions['contentadmin']['undelete'] = true;
+$wgGroupPermissions['contentadmin']['block'] = true;
+$wgGroupPermissions['contentadmin']['blockemail'] = true;
+$wgGroupPermissions['contentadmin']['patrol'] = true;
+$wgGroupPermissions['contentadmin']['autopatrol'] = true;
+$wgGroupPermissions['contentadmin']['import'] = true;
+$wgGroupPermissions['contentadmin']['importupload'] = true;
+$wgGroupPermissions['contentadmin']['upload_by_url'] = true;
+$wgGroupPermissions['contentadmin']['movefile'] = true;
+$wgGroupPermissions['contentadmin']['suppressredirect'] = true;
+$wgGroupPermissions['contentadmin']['rollback'] = true;
+$wgGroupPermissions['contentadmin']['browsearchive'] = true;
+$wgGroupPermissions['contentadmin']['deletedhistory'] = true;
+$wgGroupPermissions['contentadmin']['deletedtext'] = true;
+$wgGroupPermissions['contentadmin']['autoconfirmed'] = true;
+$wgGroupPermissions['accountcreators']['createaccount'] = true;
+
+$wgImportSources[] = "wikitech";
+
+require_once( "$IP/extensions/OATHAuth/OATHAuth.php" );
+
+require_once( "$IP/extensions/Collection/Collection.php" );
+
+require_once( "$IP/skins/strapping/strapping.php" );
+$wgDefaultSkin = "strapping";
+$wgStrappingSkinLogoLocation = 'navbar';
+$wgStrappingSkinLoginLocation = 'navbar';
+$wgStrappingSkinAnonNavbar = true;
+$wgStrappingSkinUseStandardLayout = true;
+$wgStrappingSkinDisplaySidebarNavigation = true;
+
+$wgLDAPDebug = 5;
+$wgDebugLogGroups["ldap"] = "/tmp/ldap-s-1-debug.log" ;
+$wgPasswordAttemptThrottle = false;
