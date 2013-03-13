@@ -38,14 +38,14 @@ class role::zuul {
 		system_role { "role::zuul::production": description => "Zuul on production" }
 
 		zuulwikimedia::instance { "zuul-production":
-			jenkins_server => 'https://integration.mediawiki.org/ci',
+			jenkins_server => 'https://integration.wikimedia.org/ci',
 			jenkins_user => 'zuul-bot',
 			gerrit_server => 'manganese.wikimedia.org',
 			gerrit_user => 'jenkins-bot',
 			# Not enabled yet but we need a pattern anyway:
-			#url_pattern => 'http://integration.mediawiki.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
-			url_pattern => 'http://integration.mediawiki.org/ci/job/{job.name}/{build.number}/console',
-			status_url => 'http://integration.mediawiki.org/zuul/status',
+			#url_pattern => 'https://integration.wikimedia.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
+			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
+			status_url => 'https://integration.wikimedia.org/zuul/status',
 			push_change_refs => false
 		}
 

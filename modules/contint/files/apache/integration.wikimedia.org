@@ -1,16 +1,15 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/integration.mediawiki.org
+### puppet:///files/apache/sites/integration.wikimedia.org
 #####################################################################
 # vim: filetype=apache
 
 NameVirtualHost *:443
 <VirtualHost *:80>
-	ServerName integration.mediawiki.org
-	ServerAlias integration.wikimedia.org
+	ServerName integration.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 
-	DocumentRoot /srv/org/mediawiki/integration
+	DocumentRoot /srv/org/wikimedia/integration
 
 	ErrorLog /var/log/apache2/error.log
 
@@ -25,14 +24,14 @@ NameVirtualHost *:443
 		AllowOverride All
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration>
+	<Directory /srv/org/wikimedia/integration>
 		Options FollowSymLinks
 		AllowOverride All
 		Order allow,deny
 		allow from all
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
+	<Directory /srv/org/wikimedia/integration/*Mobile/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressIcon
@@ -52,7 +51,7 @@ NameVirtualHost *:443
 	</Directory>
 
 	# Generic nightly builds, no specific HTML there
-	<Directory /srv/org/mediawiki/integration/nightly/>
+	<Directory /srv/org/wikimedia/integration/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressDescription
@@ -61,7 +60,7 @@ NameVirtualHost *:443
 		IndexOptions NameWidth=*
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration/nightly/mediawiki/core>
+	<Directory /srv/org/wikimedia/integration/nightly/mediawiki/core>
 		IndexOrderDefault Descending Date
 	</Directory>
 
@@ -70,17 +69,17 @@ NameVirtualHost *:443
 	RewriteCond %{HTTPS} off
 	RewriteCond %{REQUEST_URI}  ^/ci
 	RewriteRule ^/ci/ https://%{HTTP_HOST}%{REQUEST_URI}
-
 </VirtualHost>
+
 <VirtualHost *:443>
-	ServerName integration.mediawiki.org
+	ServerName integration.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 
-	DocumentRoot /srv/org/mediawiki/integration
+	DocumentRoot /srv/org/wikimedia/integration
 
 	SSLEngine on
-	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
-	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 
 	ErrorLog /var/log/apache2/error.log
@@ -96,14 +95,14 @@ NameVirtualHost *:443
 		AllowOverride All
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration>
+	<Directory /srv/org/wikimedia/integration>
 		Options FollowSymLinks
 		AllowOverride All
 		Order allow,deny
 		allow from all
 	</Directory>
 
-	<Directory /srv/org/mediawiki/integration/*Mobile/nightly/>
+	<Directory /srv/org/wikimedia/integration/*Mobile/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressIcon
@@ -116,13 +115,14 @@ NameVirtualHost *:443
 
 		ServerSignature Off
 
+		IndexStyleSheet "../../nightly.css"
 		HeaderName "HEADER.html"
 		ReadmeName "README.html"
 		IndexIgnore "*.html" ".."
 	</Directory>
 
 	# Generic nightly builds, no specific HTML there
-	<Directory /srv/org/mediawiki/integration/nightly/>
+	<Directory /srv/org/wikimedia/integration/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
 		IndexOptions SuppressDescription
@@ -130,4 +130,27 @@ NameVirtualHost *:443
 		IndexOptions VersionSort
 		IndexOptions NameWidth=*
 	</Directory>
+
+	<Directory /srv/org/wikimedia/integration/nightly/mediawiki/core>
+		IndexOrderDefault Descending Date
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName integration.mediawiki.org
+
+	RewriteEngine On
+    RewriteRule ^(.*)$ http://integration.wikimedia.org$1 [R=301,L,NE]
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName integration.mediawiki.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	RewriteEngine On
+    RewriteRule ^(.*)$ https://integration.wikimedia.org$1 [R=301,L,NE]
 </VirtualHost>
