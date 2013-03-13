@@ -1,0 +1,39 @@
+log_format proxy '$remote_addr - $remote_user [$time_local]  '
+		 '"$http_host" "$request" $status $body_bytes_sent '
+		 '"$http_referer" "$http_user_agent"';
+
+server {
+
+	listen 80;
+	server_name *.instance-proxy.wmflabs.org;
+
+	access_log /var/log/nginx/proxy.log proxy;
+	access_log /var/log/nginx/access.log combined;
+
+	location / {
+
+		resolver 10.4.0.1;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		if ( $host ~ "(\.|^)instance-proxy\.instance-proxy\.wmflabs\.org$" ) {
+			return 403;
+		}
+
+		if ( $host ~ "^([a-z0-9\-_]+)\.instance-proxy\.wmflabs\.org$" ) {
+			set $instance $1;
+			proxy_pass http://$instance.pmtpa.wmflabs;
+			break;
+		}
+
+		if ( $host ~ "^(\d+)\.([a-z0-9\-_]+)\.instance-proxy\.wmflabs\.org$" ) {
+			set $instance $2;
+			set $port $1;
+			proxy_pass http://$instance.pmtpa.wmflabs:$port;
+			break;
+		}
+
+		return 403;
+	}
+
+}
