@@ -1,5 +1,5 @@
-class ganglia::monitor::aggregator {
-	require ganglia::monitor::packages
+class ganglia-new::monitor::aggregator {
+	require ganglia-new::monitor::packages
 
 	system_role { "ganglia::monitor::aggregator": description => "central Ganglia aggregator" }
 
@@ -20,7 +20,7 @@ class ganglia::monitor::aggregator {
 	upstart_job { "ganglia-monitor-aggregator-instance": }
 
 	# Instantiate aggregators for all clusters
-	$cluster_list = keys($ganglia::configuration::clusters)
+	$cluster_list = keys($ganglia-new::configuration::clusters)
 	instance{ $cluster_list: }
 
 	service { "ganglia-monitor-aggregator":

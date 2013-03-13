@@ -1,12 +1,12 @@
-define ganglia::monitor::aggregator::instance() {
-	Ganglia::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
+define ganglia-new::monitor::aggregator::instance() {
+	Ganglia-new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
 	$aggregator = true
 
 	# TODO: support multiple $site
 	$cluster = $title
-	$id = $ganglia::configuration::clusters[$cluster]['id']
-	$portnr = $ganglia::configuration::base_port + $id
+	$id = $ganglia-new::configuration::clusters[$cluster]['id']
+	$portnr = $ganglia-new::configuration::base_port + $id
 	$gmond_port = $::realm ? {
 		production => $portnr,
 		labs => $::project_gid

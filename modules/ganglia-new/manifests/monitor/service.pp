@@ -1,5 +1,5 @@
-class ganglia::monitor::service() {
-	Class[ganglia::monitor::config] -> Class[ganglia::monitor::service]
+class ganglia-new::monitor::service() {
+	Class[ganglia-new::monitor::config] -> Class[ganglia-new::monitor::service]
 
 	file { "/etc/init/ganglia-monitor.conf":
 		source => "puppet:///modules/ganglia/upstart/ganglia-monitor.conf",

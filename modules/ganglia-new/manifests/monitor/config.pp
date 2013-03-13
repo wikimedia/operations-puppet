@@ -1,9 +1,9 @@
-class ganglia::monitor::config($cluster) {
-	require ganglia::monitor::packages
+class ganglia-new::monitor::config($cluster) {
+	require ganglia-new::monitor::packages
 
 	$aggregator = false
-	$id = $ganglia::configuration::clusters[$cluster]['id']
-	$portnr = $ganglia::configuration::base_port + $id
+	$id = $ganglia-new::configuration::clusters[$cluster]['id']
+	$portnr = $ganglia-new::configuration::base_port + $id
 	$gmond_port = $::realm ? {
 		production => $portnr,
 		labs => $::project_gid

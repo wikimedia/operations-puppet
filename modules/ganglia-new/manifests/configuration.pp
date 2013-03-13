@@ -1,6 +1,6 @@
 # modules/ganglia/manifests/configuration.pp
 
-class ganglia::configuration {
+class ganglia-new::configuration {
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
 	# and a different IP prefix will be used.
