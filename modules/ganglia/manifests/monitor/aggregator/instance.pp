@@ -1,5 +1,4 @@
 define ganglia::monitor::aggregator::instance() {
-	Class[ganglia::monitor::aggregator] -> Ganglia::Monitor::Aggregator::Instance[$title]
 	Ganglia::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
 	$aggregator = true
@@ -15,6 +14,7 @@ define ganglia::monitor::aggregator::instance() {
 	$cname = "${cluster} ${::site}"
 
 	file { "/etc/ganglia/aggregators/${id}.conf":
+		require => File["/etc/ganglia/aggregators"],
 		mode => 0444,
 		content => template("ganglia/gmond.conf.erb"),
 		notify => Service[$title]
