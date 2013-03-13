@@ -23,7 +23,7 @@ cluster {
   name = "<%= cname %>"
   owner = "Wikimedia Foundation"
   latlong = "unspecified"
-  url = "<%= scope.lookupvar("ganglia-new::configuration::url") %>"
+  url = "<%= scope.lookupvar("ganglia_new::configuration::url") %>"
 }
 
 /* The host section describes attributes of the host, like the location */
@@ -32,7 +32,7 @@ host {
 }
 
 <% if not aggregator -%>
-<% scope.lookupvar("ganglia-new::configuration::gmetad_hosts").each do |host| -%>
+<% scope.lookupvar("ganglia_new::configuration::gmetad_hosts").each do |host| -%>
 udp_send_channel {
   host = <%= host %>
   port = <%= gmond_port %>
@@ -62,7 +62,7 @@ tcp_accept_channel {
   port = <%= gmond_port %>
   acl {
     default = "deny"
-<% scope.lookupvar("ganglia-new::configuration::gmetad_hosts").each do |host|
+<% scope.lookupvar("ganglia_new::configuration::gmetad_hosts").each do |host|
 -%>
     access {
       ip = <%= host %>
