@@ -20,7 +20,7 @@ class ganglia-new::monitor::aggregator {
 	upstart_job { "ganglia-monitor-aggregator-instance": }
 
 	# Instantiate aggregators for all clusters
-	$cluster_list = keys($ganglia-new::configuration::clusters)
+	$cluster_list = keys(${ganglia-new::configuration::clusters})
 	instance{ $cluster_list: }
 
 	service { "ganglia-monitor-aggregator":
