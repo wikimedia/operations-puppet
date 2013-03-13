@@ -128,7 +128,7 @@ class protoproxy::proxy_sites {
 			"esams" => [ "91.198.174.225", "[2620:0:862:ed1a::1]" ]
 			},
 		proxy_server_name => '*.wikipedia.org',
-		proxy_server_cert_name => 'unified.wikipedia.org',
+		proxy_server_cert_name => 'unified.wikimedia.org',
 		proxy_backend => {
 			"pmtpa" => { "primary" => "10.2.1.25" },
 			"eqiad" => { "primary" => "10.2.2.25" },
