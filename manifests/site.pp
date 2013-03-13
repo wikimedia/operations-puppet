@@ -903,7 +903,7 @@ node "manutius.wikimedia.org" {
 			hosts => $storagehosts
 	}
 
-	include ganglia::aggregator
+	include ganglia::monitor::aggregator
 }
 
 node "hooper.wikimedia.org" {
