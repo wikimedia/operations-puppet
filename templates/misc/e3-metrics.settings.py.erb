@@ -22,7 +22,7 @@ connections = {
 <% mysql_connections.keys.sort.each do |name| -%>
     <%= "'#{name}'" %>: {
 <% mysql_connections[name].keys.sort.each do |key| -%>
-        <%= "'#{key}'" %>: <%= (mysql_connections[name][key] =~ /^d+$/) ? mysql_connections[name][key] : "'#{mysql_connections[name][key]}'" %>,
+        <%= "'#{key}'" %>: <%= (mysql_connections[name][key] =~ /^\d+$/) ? mysql_connections[name][key] : "'#{mysql_connections[name][key]}'" %>,
 <% end # connection..each -%>
     },
 <% end # mysql_connections..each -%>
