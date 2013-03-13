@@ -202,16 +202,18 @@ class ganglia {
 			}
 		}
 		ganglia-monitor: {
-			package {
-				"gmond":
-					before => Package[ganglia-monitor],
-					ensure => purged;
-				"ganglia-monitor":
-					ensure => present,
-					alias => "gmond-package";
-			}
+			include ::ganglia::monitor::packages
+			
+			# package {
+			# 	"gmond":
+			# 		before => Package[ganglia-monitor],
+			# 		ensure => purged;
+			# 	"ganglia-monitor":
+			# 		ensure => present,
+			# 		alias => "gmond-package";
+			# }
 
-	                file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
+			file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
 				require => Package[ganglia-monitor],
 				ensure => directory;
 			}
@@ -379,16 +381,18 @@ class ganglia {
 		}
 	}
 
-	# Class: ganglia::aggregator
-	# for the machine class which listens on multicast and
-	# collects all the ganglia information from other sources
-	class aggregator {
-		# This overrides the default ganglia-monitor script
-		# with one that starts up multiple instances of gmond
-		file { "/etc/init.d/ganglia-monitor":
-			source => "puppet:///files/ganglia/ganglia-monitor",
-			mode   => 0555,
-			ensure => present
+	if $::realm == "labs" {
+		# Class: ganglia::aggregator
+		# for the machine class which listens on multicast and
+		# collects all the ganglia information from other sources
+		class aggregator {
+			# This overrides the default ganglia-monitor script
+			# with one that starts up multiple instances of gmond
+			file { "/etc/init.d/ganglia-monitor":
+				source => "puppet:///files/ganglia/ganglia-monitor",
+				mode   => 0555,
+				ensure => present
+			}
 		}
 	}
 }
