@@ -17,6 +17,7 @@ class mediawiki_singlenode( $ensure = 'present',
                              $role_requires = [],
                              $install_path = "/srv/mediawiki",
                              $role_config_lines = [],
+                             $mysql_pass = '',
                              $memcached_size = 128) {
     if !defined(Class["webserver::php5"]) {
         class {'webserver::php5': ssl => 'true'; }
@@ -58,12 +59,8 @@ class mediawiki_singlenode( $ensure = 'present',
 			ensure => present;
 	}
 
-	file { "/var/www/srv":
-		ensure => 'directory';
-	}
-
 	file { "/var/www/${install_path}":
-		require => [File['/var/www/srv'], git::clone['mediawiki']],
+		require => git::clone['mediawiki'],
 		ensure => 'link',
 		target => $install_path;
 	}
@@ -88,7 +85,7 @@ class mediawiki_singlenode( $ensure = 'present',
 	exec { 'mediawiki_setup':
 		require => [git::clone["mediawiki"],  File["${install_path}/orig"], exec['password_gen']],
 		creates => "${install_path}/orig/LocalSettings.php",
-		command => "/usr/bin/php ${install_path}/maintenance/install.php $wiki_name admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		command => "/usr/bin/php ${install_path}/maintenance/install.php $wiki_name admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
 		logoutput => "on_failure",
 	}
 
