@@ -3,7 +3,7 @@ class applicationserver::packages {
 
 	package { [ "php5-cli", "php-pear", "php5-common", "php5-curl", "php5-mysql", "php5-xmlrpc",
 			"php5", "php5-intl" ]:
-		ensure => "5.3.10-1ubuntu3.4+wmf1";
+		ensure => latest;
 	}
 	package { [ "php-wikidiff2", "php5-wmerrors",  "php-luasandbox", "php5-redis",
 			"php5-memcached", "libmemcached10", "php5-igbinary"  ]:
