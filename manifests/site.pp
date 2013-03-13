@@ -902,6 +902,8 @@ node "manutius.wikimedia.org" {
 			snmp_community => $snmp_ro_community,
 			hosts => $storagehosts
 	}
+
+	include ganglia::aggregator
 }
 
 node "hooper.wikimedia.org" {
