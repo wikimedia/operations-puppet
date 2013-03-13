@@ -26,6 +26,7 @@ class contint::packages {
     'php5-pgsql',
     'php5-sqlite',
     'php5-tidy',
+    'php5-xdebug',
     ]: ensure => present,
   }
 
