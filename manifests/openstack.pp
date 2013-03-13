@@ -471,6 +471,11 @@ class openstack::openstack-manager($openstack_version="essex", $novaconfig, $cer
 			group => root,
 			content => template('apache/sites/wikitech.wikimedia.org.erb'),
 			ensure => present;
+		"/a":
+			mode => 755,
+			owner => root,
+			group => root,
+			ensure => directory;
 		"/a/backup":
 			mode => 755,
 			owner => root,
