@@ -1,7 +1,5 @@
 # Class for website hosted on the continuous integration server
-# https://integration.mediawiki.org/
-# https://doc.wikimedia.org/
-# https://doc.mediawiki.org/
+# https://integration.wikimedia.org
 class contint::website {
 
   # This is mostly to get the files properly setup
@@ -12,35 +10,28 @@ class contint::website {
     group  => 'wikidev',
   }
 
-  file { '/srv/org/mediawiki':
-    ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
-  }
-  file { '/srv/org/mediawiki/integration':
-    ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
-  }
-
-  # Apache configuration for integration.mediawiki.org
-  file { '/etc/apache2/sites-available/integration.mediawiki.org':
-    mode   => '0444',
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/contint/apache/integration.mediawiki.org',
-  }
-  apache_site { 'integration.mediawiki.org':
-    name => 'integration.mediawiki.org'
-  }
-
   file { '/srv/org/wikimedia':
     ensure => directory,
     mode   => '0755',
     owner  => 'www-data',
     group  => 'wikidev',
+  }
+  file { '/srv/org/wikimedia/integration':
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'www-data',
+    group  => 'wikidev',
+  }
+
+  # Apache configuration for integration.wikimedia.org
+  file { '/etc/apache2/sites-available/integration.wikimedia.org':
+    mode   => '0444',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/contint/apache/integration.wikimedia.org',
+  }
+  apache_site { 'integration.wikimedia.org':
+    name => 'integration.wikimedia.org'
   }
 
   file { '/srv/localhost':

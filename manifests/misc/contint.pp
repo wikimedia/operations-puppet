@@ -126,56 +126,56 @@ class misc::contint::test {
 		file {
 			"/var/lib/jenkins/.git":
 				mode   => 2775,  # group sticky bit
-				group  => "jenkins",
+				group  => jenkins,
 				ensure => directory;
 			"/var/lib/jenkins/bin":
-				owner => "jenkins",
-				group => "wikidev",
+				owner => jenkins,
+				group => wikidev,
 				mode => 0775,
 				ensure => directory;
 			# Welcome page
-			"/srv/org/mediawiki/integration/index.html":
+			"/srv/org/wikimedia/integration/index.html":
 				owner => www-data,
 				group => wikidev,
 				mode => 0444,
 				source => "puppet:///files/misc/jenkins/index.html";
 			# Stylesheet used by nightly builds (example: Wiktionary/Wikipedia mobiles apps)
-			"/srv/org/mediawiki/integration/nightly.css":
+			"/srv/org/wikimedia/integration/nightly.css":
 				owner => www-data,
 				group => wikidev,
 				mode => 0444,
 				source => "puppet:///files/misc/jenkins/nightly.css";
-			"/srv/org/mediawiki/integration/WikipediaMobile":
+			"/srv/org/wikimedia/integration/WikipediaMobile":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
 			# Copy HTML materials for ./WikipediaMobile/nightly/ :
-			"/srv/org/mediawiki/integration/WikipediaMobile/nightly":
+			"/srv/org/wikimedia/integration/WikipediaMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WikipediaMobile",
 				recurse => "true";
-			"/srv/org/mediawiki/integration/WiktionaryMobile":
+			"/srv/org/wikimedia/integration/WiktionaryMobile":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
-			"/srv/org/mediawiki/integration/WiktionaryMobile/nightly":
+			"/srv/org/wikimedia/integration/WiktionaryMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0644,
 				ensure => directory,
 				source => "puppet:///files/misc/jenkins/WiktionaryMobile",
 				recurse => "true";
-			"/srv/org/mediawiki/integration/WLMMobile":
+			"/srv/org/wikimedia/integration/WLMMobile":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0755,
 				ensure => directory;
-			"/srv/org/mediawiki/integration/WLMMobile/nightly":
+			"/srv/org/wikimedia/integration/WLMMobile/nightly":
 				owner => jenkins,
 				group => wikidev,
 				mode => 0644,
