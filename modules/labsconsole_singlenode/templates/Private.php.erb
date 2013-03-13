@@ -1,0 +1,16 @@
+<?php
+
+# These values are most likely already set in orig/LocalSettings.php
+#$wgDBuser           = "wikiuser";
+#$wgSecretKey = "REDACTED";
+#$wgUpgradeKey = "REDACTED";
+#$wgCaptchaSecret = "REDACTED";
+#
+$wgDBpassword       = "<%= mysql_pass %>";
+$wgLDAPProxyAgent =  array( 'labs' => 'cn=proxyagent,ou=profile,dc=wikimedia,dc=org' );
+$wgLDAPProxyAgentPassword =  array( 'labs' => "<%= proxyagent_pass %>" );
+$wgLDAPWriterDN = array( 'labs' => 'uid=novaadmin,ou=people,dc=wikimedia,dc=org' );
+$wgLDAPWriterPassword = array( 'labs' => "<%= ldap_user_pass %>" );
+$wgOpenStackManagerLDAPUser = 'uid=novaadmin,ou=people,dc=wikimedia,dc=org';
+$wgOpenStackManagerLDAPUsername = 'novaadmin';
+$wgOpenStackManagerLDAPUserPassword = "<%= ldap_user_pass %>";
