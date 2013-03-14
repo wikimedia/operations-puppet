@@ -1,12 +1,12 @@
 # misc/icinga.pp
 
-import "../generic-definitions.pp"
-import "../decommissioning.pp"
-import "../nagios.pp"
+class icinga::user {
+	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
+}
 
 class icinga::monitor {
 
-	include
+	include icinga::user,
 		icinga::monitor::packages,
 		passwords::nagios::mysql,
 		icinga::monitor::firewall,
@@ -27,8 +27,6 @@ class icinga::monitor {
 		nagios::gsbmonitoring,
 		mysql,
 		nrpe
-
-	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 
 	Class['icinga::monitor::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 
