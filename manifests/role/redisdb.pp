@@ -15,7 +15,7 @@ class role::db::redis (
 
 	include standard
 
-	class { "redis":
+	class { "::redis":
 		maxmemory => $maxmemory,
 		redis_replication => $redis_replication,
 	}
