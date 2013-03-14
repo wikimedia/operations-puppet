@@ -1336,7 +1336,8 @@ node "marmontel.wikimedia.org" {
 		misc::blogs::wikimedia
 }
 
-node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
+
+node /^mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	$cluster = "memcached"
 	if $hostname =~ /^mc[12]$/ {
 		$ganglia_aggregator = "true"
@@ -1386,7 +1387,7 @@ node /mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	include redis::ganglia
 }
 
-node /mc(10[01][0-9])\.eqiad\.wmnet/ {
+node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 	$cluster = "memcached"
 	if $hostname =~ /^mc100[12]$/ {
 		$ganglia_aggregator = "true"
@@ -1434,6 +1435,13 @@ node /mc(10[01][0-9])\.eqiad\.wmnet/ {
 	include redis::ganglia
 }
 
+node /^rdb100[12]\.eqiad\.wmnet/ {
+	$redis_replication = {
+		'rdb1002' => 'rdb1001'
+	}
+
+	class { role::db::redis : redis_replication => $redis_replication }
+}
 
 node "mchenry.wikimedia.org" {
 	$gid = 500
