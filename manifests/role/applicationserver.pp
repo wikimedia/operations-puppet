@@ -54,7 +54,7 @@ class role::applicationserver {
 		if $::realm == 'production' {
 			include	admins::roots,
 				admins::mortals,
-				geoip,
+				misc::geoip,
 				mediawiki
 
 			nrpe::monitor_service { "twemproxy":

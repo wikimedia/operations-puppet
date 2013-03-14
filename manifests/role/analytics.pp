@@ -75,7 +75,7 @@ class role::analytics::packages {
     # include java on all analytics servers
     include role::analytics::java
     # We want to be able to geolocate IP addresses
-    include geoip
+    include misc::geoip
     # udp-filter is a useful thing!
     include misc::udp2log::udp_filter
 

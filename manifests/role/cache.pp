@@ -817,7 +817,7 @@ class role::cache {
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
-		require geoip
+		require misc::geoip
 
 		include standard,
 			nrpe

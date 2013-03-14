@@ -34,7 +34,7 @@ class role::logging
 		groups::wikidev,
 		admins::restricted,
 		nrpe,
-		geoip
+		misc::geoip
 }
 
 # mediawiki udp2log instance.  Does not use monitoring.
