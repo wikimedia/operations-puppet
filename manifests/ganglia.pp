@@ -148,6 +148,9 @@ class ganglia {
 		"parsoidcache"		=> {
 			"name"		=> "Parsoid Varnish",
 			"ip_oct"	=> "38" },
+		"redis"			=> {
+			"name"		=> "Redis",
+			"ip_oct"	=> "39" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
