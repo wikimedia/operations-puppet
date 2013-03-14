@@ -1,6 +1,4 @@
 define ganglia_new::monitor::aggregator::instance() {
-	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
-
 	include ganglia_new::configuration, network::constants
 
 	$aggregator = true
@@ -20,6 +18,16 @@ define ganglia_new::monitor::aggregator::instance() {
 		require => File["/etc/ganglia/aggregators"],
 		mode => 0444,
 		content => template("$module_name/gmond.conf.erb"),
-		notify => Service["ganglia-monitor-aggregator"]
+		notify => Service["ganglia-monitor-aggregator-instance ID=${id}"]
+	}
+
+	service { "ganglia-monitor-aggregator-instance ID=${id}":
+		require => File["/etc/ganglia/aggregators/${id}.conf"],
+		provider => upstart,
+		name => "ganglia-monitor-aggregator-instance",
+		start => "/sbin/start ganglia-monitor-aggregator-instance ID=${id}",
+		stop => "/sbin/stop ganglia-monitor-aggregator-instance ID=${id}",
+		restart => "/sbin/restart ganglia-monitor-aggregator-instance ID=${id}",
+		ensure => running
 	}
 }
