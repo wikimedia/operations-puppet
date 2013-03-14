@@ -2,13 +2,12 @@ class jenkins::user {
 
   include jenkins::group
 
-  user { 'jenkins':
+  systemuser { 'jenkins':
     name       => 'jenkins',
     home       => '/var/lib/jenkins',
+    managehome => false,
     shell      => '/bin/bash',
     gid        =>  'jenkins',
-    system     => true,
-    managehome => false,
     require    => Group['jenkins'];
   }
 
