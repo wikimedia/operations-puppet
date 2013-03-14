@@ -117,6 +117,8 @@ class nrpe::packages {
 }
 
 class nrpe::service {
+	include icinga::user
+
 	Class[nrpe::packages] -> Class[nrpe::service]
 
 	service { nagios-nrpe-server:
