@@ -56,6 +56,7 @@ class misc::statistics::packages {
 # on statistics servers.
 class misc::statistics::packages::python {
 	package { [
+		"python-geoip",
 		"libapache2-mod-python",
 		"python-django",
 		"python-mysqldb",
