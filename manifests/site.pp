@@ -489,7 +489,11 @@ node /db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
 }
 
 node /db10(02|09|18|34)\.eqiad\.wmnet/ {
-	include role::coredb::s2
+	if $hostname == "db1009" {
+		class { role::coredb::s2 : mariadb => true }
+	} else {
+		include role::coredb::s2
+	}
 }
 
 node /db10(03|10|19|35)\.eqiad\.wmnet/ {
