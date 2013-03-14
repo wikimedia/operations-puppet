@@ -340,7 +340,7 @@ node "dataset1001.wikimedia.org" {
 }
 
 # pmtpa dbs
-node /db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
+node /^db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
 	if $hostname == "db59" {
 		class { role::coredb::s1 : mariadb => true }
 	} elsif $hostname == "db71"{
@@ -350,7 +350,7 @@ node /db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(52|53|54|57)\.pmtpa\.wmnet/ {
+node /^db(52|53|54|57)\.pmtpa\.wmnet/ {
 	if $hostname == "db52" {
 		class { role::coredb::s2 : mariadb => true }
 	} elsif $hostname == "db57"{
@@ -360,7 +360,7 @@ node /db(52|53|54|57)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(34|39|64|66)\.pmtpa\.wmnet/ {
+node /^db(34|39|64|66)\.pmtpa\.wmnet/ {
 	if $hostname == "db39" {
 		class { role::coredb::s3 : mariadb => true }
 	} elsif $hostname == "db66"{
@@ -370,7 +370,7 @@ node /db(34|39|64|66)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(31|33|51|65)\.pmtpa\.wmnet/ {
+node /^db(31|33|51|65)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db51/ {
 		$ganglia_aggregator = "true"
 	}
@@ -383,7 +383,7 @@ node /db(31|33|51|65)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(35|44|45|55)\.pmtpa\.wmnet/ {
+node /^db(35|44|45|55)\.pmtpa\.wmnet/ {
 	if $hostname == "db35" {
 		class { role::coredb::s5 : mariadb => true }
 	} elsif $hostname == "db55"{
@@ -393,7 +393,7 @@ node /db(35|44|45|55)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(43|46|47|50)\.pmtpa\.wmnet/ {
+node /^db(43|46|47|50)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db50/ {
 		$ganglia_aggregator = "true"
 	}
@@ -406,7 +406,7 @@ node /db(43|46|47|50)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /db(37|56|58|68)\.pmtpa\.wmnet/ {
+node /^db(37|56|58|68)\.pmtpa\.wmnet/ {
 	if $hostname == "db58" {
 		class { role::coredb::s7 : mariadb => true }
 	} elsif $hostname == "db68"{
@@ -417,7 +417,7 @@ node /db(37|56|58|68)\.pmtpa\.wmnet/ {
 }
 
 ## x1 shard
-node /db(36|38)\.pmtpa\.wmnet/ {
+node /^db(36|38)\.pmtpa\.wmnet/ {
   include role::coredb::x1
 }
 
@@ -435,7 +435,7 @@ node /^(db(9|10)|blondel|bellin)\.pmtpa\.wmnet$/ {
 }
 
 ## m2 shard
-node /db4[89]\.pmtpa\.wmnet/ {
+node /^db4[89]\.pmtpa\.wmnet/ {
 	include role::coredb::m2
 }
 
@@ -445,12 +445,12 @@ node "db78.pmtpa.wmnet" {
 }
 
 ## researchdb
-node /db67\.pmtpa\.wmnet/ {
+node /^db67\.pmtpa\.wmnet/ {
 	include role::coredb::researchdb
 }
 
 ## pgehres special project
-node /db29\.pmtpa\.wmnet/{
+node /^db29\.pmtpa\.wmnet/{
 	$gid = 500
 	system_role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
 	include base,
@@ -470,12 +470,12 @@ node /db29\.pmtpa\.wmnet/{
 
 
 ## not in use for various reasons
-node /db(42|6[12]|7[1-7])\.pmtpa\.wmnet/{
+node /^db(42|6[12]|7[1-7])\.pmtpa\.wmnet/{
 	include standard
 }
 
 # eqiad dbs
-node /db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
+node /^db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
 	if $hostname =~ /^db10(01|17)/ {
 		$ganglia_aggregator = "true"
 		include mha::manager
@@ -488,7 +488,7 @@ node /db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
 	}
 }
 
-node /db10(02|09|18|34)\.eqiad\.wmnet/ {
+node /^db10(02|09|18|34)\.eqiad\.wmnet/ {
 	if $hostname == "db1009" {
 		class { role::coredb::s2 : mariadb => true }
 	} else {
@@ -496,15 +496,15 @@ node /db10(02|09|18|34)\.eqiad\.wmnet/ {
 	}
 }
 
-node /db10(03|10|19|35)\.eqiad\.wmnet/ {
+node /^db10(03|10|19|35)\.eqiad\.wmnet/ {
 	include role::coredb::s3
 }
 
-node /db10(04|11|20|38)\.eqiad\.wmnet/ {
+node /^db10(04|11|20|38)\.eqiad\.wmnet/ {
 	include role::coredb::s4
 }
 
-node /db10(05|21|26|39)\.eqiad\.wmnet/ {
+node /^db10(05|21|26|39)\.eqiad\.wmnet/ {
 	if $hostname =~ /^db1021/ {
 		$ganglia_aggregator = "true"
 	}
@@ -512,21 +512,21 @@ node /db10(05|21|26|39)\.eqiad\.wmnet/ {
 	include role::coredb::s5
 }
 
-node /db10(06|22|27|40)\.eqiad\.wmnet/ {
+node /^db10(06|22|27|40)\.eqiad\.wmnet/ {
 	include role::coredb::s6
 }
 
-node /db10(07|24|28|41)\.eqiad\.wmnet/ {
+node /^db10(07|24|28|41)\.eqiad\.wmnet/ {
 	include role::coredb::s7
 }
 
 ## x1 shard
-node /db10(29|30|31)\.eqiad\.wmnet/ {
+node /^db10(29|30|31)\.eqiad\.wmnet/ {
 	include role::coredb::x1
 }
 
 ## m2 shard
-node /db104[68]\.eqiad\.wmnet/ {
+node /^db104[68]\.eqiad\.wmnet/ {
 	include role::coredb::m2
 }
 
@@ -545,12 +545,12 @@ node /^(db1008|db1025)\.eqiad\.wmnet/ {
 }
 
 ## researchdb
-node /db1047\.eqiad\.wmnet/ {
+node /^db1047\.eqiad\.wmnet/ {
 	class { role::coredb::researchdb : mariadb => true, innodb_file_per_table => true }
 }
 
 ## not currently in production and/or hardware issues
-node /db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
+node /^db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
