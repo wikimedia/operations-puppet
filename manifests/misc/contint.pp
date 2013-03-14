@@ -69,7 +69,7 @@ class misc::contint::analytics::packages {
 		ensure => "installed",
 	}
 	# need geoip to build udp-filter
-	include geoip
+	include misc::geoip
 }
 
 # CI test server as per RT #1204

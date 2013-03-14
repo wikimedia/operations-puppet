@@ -278,20 +278,12 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# data_directory.  By downloading these files into the
 		# volatiledir they will be available for other nodes to get via
 		# puppet by including geoip::data with provider => 'puppet'.
-		class { "geoip::data":
-			provider       => 'maxmind',
-			data_directory => "$puppetmaster::volatiledir/GeoIP",
-			environment    => "http_proxy=http://brewster.wikimedia.org:8080",  # use brewster as http proxy, since puppetmaster probably does not have internet access
-		}
-
-		cron {
-			updategeoipdb:
-				environment => "http_proxy=http://brewster.wikimedia.org:8080",
-				command => "wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz | gunzip > $puppetmaster::volatiledir/misc/GeoIP.dat.new && mv $puppetmaster::volatiledir/misc/GeoIP.dat.new $puppetmaster::volatiledir/misc/GeoIP.dat; wget -qO - http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz | gunzip > $puppetmaster::volatiledir/misc/GeoIPcity.dat.new && mv $puppetmaster::volatiledir/misc/GeoIPcity.dat.new $puppetmaster::volatiledir/misc/GeoIPcity.dat",
-				user => root,
-				hour => 3,
-				minute => 26,
-				ensure => absent;  # this has been replaced by class geoip::data, included below
+		class { 'geoip::data::maxmind':
+			data_directory => "${puppetmaster::volatiledir}/GeoIP",
+			environment    => 'http_proxy=http://brewster.wikimedia.org:8080',  # use brewster as http proxy, since puppetmaster probably does not have internet access
+			license_key    => $passwords::geoip::license_key,
+			user_id        => $passwords::geoip::user_id,
+			produce_ids    => [106, 133, 115],
 		}
 	}
 

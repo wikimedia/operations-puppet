@@ -26,7 +26,7 @@ class role::analytics {
 	}
 
 	# We want to be able to geolocate IP addresses
-	include geoip
+	include misc::geoip
 
 	# udp-filter is a useful thing!
 	include misc::udp2log::udp_filter
