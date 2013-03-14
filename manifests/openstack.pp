@@ -103,7 +103,7 @@ class openstack::iptables-drops {
 	iptables_add_service{ "deny_all_keystone_admin": service => "keystone_admin", jump => "DROP" }
 	iptables_add_service{ "deny_all_salt_publish": service => "salt_publish", jump => "DROP" }
 	iptables_add_service{ "deny_all_salt_ret": service => "salt_ret", jump => "DROP" }
-	iptables_add_service{ "deny_all_amanda": service => "amanda", jump => "DROP" }
+	iptables_add_service{ "deny_all_amanda": service => "inetd", jump => "DROP" }
 }
 
 class openstack::iptables  {
