@@ -772,12 +772,12 @@ node "gallium.wikimedia.org" {
 
 	include standard,
 		nrpe,
+		contint::testswarm,
 		contint::website,
 		misc::contint::test,
 		misc::contint::test::packages,
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
-		testswarm::systemuser,
 		misc::docsite,
 		misc::docs::puppet,
 		role::zuul::production,
