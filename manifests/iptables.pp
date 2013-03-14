@@ -2,6 +2,7 @@ $iptables_ports = {
 	all => "",
 	beam1 => "33416",
 	beam2 => "5672",
+	beam3 => "56918",
 	epmd => "4369",
 	glance_api => "9292",
 	glance_registry => "9191",
@@ -42,12 +43,14 @@ $iptables_ports = {
 	keystone_admin => "35357",
 	salt_publish => "4505",
 	salt_ret => "4506",
+	inetd => "10080",
 }
 
 $iptables_protocols = {
 	all => "all",
 	beam1 => "tcp",
 	beam2 => "tcp",
+	beam3 => "tcp",
 	epmd => "tcp",
 	glance_api => "tcp",
 	glance_registry => "tcp",
@@ -88,6 +91,7 @@ $iptables_protocols = {
 	keystone_admin => "tcp",
 	salt_publish => "tcp",
 	salt_ret => "tcp",
+	inetd => "tcp",
 }
 
 class iptables::tables {
