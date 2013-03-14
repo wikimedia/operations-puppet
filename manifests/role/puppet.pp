@@ -1,12 +1,7 @@
 class role::puppet::server::labs {
-	include role::ldap::config::labs
-	class { "role::nova::config::pmtpa": }
-	class { "role::nova::config::eqiad": }
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
 
-	$novaconfig = $site ? {
-		"pmtpa" => $role::nova::config::pmtpa::novaconfig,
-		"eqiad" => $role::nova::config::eqiad::novaconfig,
-	}
 	$puppet_db_name = $novaconfig["puppet_db_name"]
 	$puppet_db_user = $novaconfig["puppet_db_user"]
 	$puppet_db_pass = $novaconfig["puppet_db_pass"]
