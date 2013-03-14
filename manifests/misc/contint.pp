@@ -60,6 +60,7 @@ class misc::contint::test {
 		java { 'java-6-openjdk': version => 6, alternative => true  }
 		java { 'java-7-openjdk': version => 7, alternative => false }
 
+		include ::contint::tmpfs
 
 		file {
 			"/var/lib/jenkins/.gitconfig":
@@ -69,23 +70,6 @@ class misc::contint::test {
 				ensure => present,
 				source => "puppet:///files/misc/jenkins/gitconfig",
 				require => User['jenkins'];
-		}
-
-		# Setup tmpfs to write SQLite files to
-		file { '/var/lib/jenkins/tmpfs':
-			ensure => directory,
-			mode => 0755,
-			owner => jenkins,
-			group => jenkins,
-			require => [ User['jenkins'], Group['jenkins'] ];
-		}
-
-		mount { '/var/lib/jenkins/tmpfs':
-			ensure => mounted,
-			device => 'tmpfs',
-			fstype => 'tmpfs',
-			options => 'noatime,defaults,size=512M,mode=755,uid=jenkins,gid=jenkins',
-			require => [ User['jenkins'], Group['jenkins'], File['/var/lib/jenkins/tmpfs'] ];
 		}
 
 		file {
