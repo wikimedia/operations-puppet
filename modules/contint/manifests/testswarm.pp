@@ -1,4 +1,4 @@
-class testswarm::systemuser {
+class contint::testswarm {
 
   # Create a user to run the cronjob with
   systemuser { 'testswarm':
