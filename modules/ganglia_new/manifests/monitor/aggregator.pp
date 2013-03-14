@@ -18,15 +18,9 @@ class ganglia_new::monitor::aggregator {
 			mode => 0444;
 	}
 
-	upstart_job { "ganglia-monitor-aggregator-instance": }
+	upstart_job { ["ganglia-monitor-aggregator", "ganglia-monitor-aggregator-instance"]: }
 
 	# Instantiate aggregators for all clusters
 	$cluster_list = keys($ganglia_new::configuration::clusters)
 	instance{ $cluster_list: }
-
-	service { "ganglia-monitor-aggregator":
-		provider => upstart,
-		name => "ganglia-monitor-aggregator",
-		ensure => running
-	}
 }
