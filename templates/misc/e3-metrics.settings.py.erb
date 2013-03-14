@@ -1,6 +1,9 @@
 # Project settings
 # ================
 
+__instance_host__ = 'metrics.wikimedia.org'
+__instance_port__ = 5000
+
 __project_home__            = '<%= e3_analysis_path %>'
 __web_home__                = ''.join([__project_home__, 'user_metrics/api/'])
 __data_file_dir__           = ''.join([__project_home__, 'data/'])
@@ -8,11 +11,14 @@ __data_file_dir__           = ''.join([__project_home__, 'data/'])
 __query_module__            = 'user_metrics.query.query_calls_sql'
 __user_thread_max__         = 100
 __rev_thread_max__          = 50
+__time_series_thread_max__  = 6
 
 __cohort_data_instance__    = 'cohorts'
 __cohort_db__               = 'usertags'
 __cohort_meta_db__          = 'usertags_meta'
 __cohort_meta_instance__    = 'prod'
+
+__secret_key__ = 'yoursecretkeyhere'
 
 
 # Database connection settings
