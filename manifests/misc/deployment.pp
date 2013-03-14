@@ -32,7 +32,9 @@ class misc::deployment::common_scripts {
 	# TODO: Should this be in a package instead, maybe? It's conceptually nicer than keeping scripts in the puppet git repo,
 	# but rebuilding packages isn't as easy as updating a file through this mechanism, right?
 
-	package { "php5-parsekit": ensure => present; }
+	package { ["php5-parsekit", "libwww-perl", "libnet-dns-perl"]:
+		 ensure => present;
+	}
 
 	$scriptpath = "/usr/local/bin"
 
@@ -152,6 +154,11 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/set-group-write2";
+		"${scriptpath}/apache-fast-test":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/misc/scripts/apache-fast-test";
 
 		# Manpages
 		# Need to be generated manually using make in files/misc/scripts
