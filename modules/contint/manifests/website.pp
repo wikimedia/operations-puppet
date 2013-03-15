@@ -25,7 +25,7 @@ class contint::website {
     group  => 'jenkins',
   }
   # MediaWiki code coverage
-  file { '/srv/org/mediawiki/integration/coverage':
+  file { '/srv/org/wikimedia/integration/coverage':
     ensure => directory,
     mode   => '0775',
     owner  => 'jenkins',
