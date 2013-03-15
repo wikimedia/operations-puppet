@@ -20,7 +20,7 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 	cron { "hdfs_sync_${name}":
 		command => $command,
 		user    => $misc::statistics::user::username,
-		minute  => 5,
+		minute  => 15,
 		require => File[$tmp_dir],
 	}
 }
