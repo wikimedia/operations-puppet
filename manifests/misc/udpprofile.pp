@@ -8,6 +8,7 @@ class udpprofile::collector {
 
   service { udpprofile:
     require => Package[ 'udpprofile' ],
+    enable => true,
     ensure => running;
   }
 
