@@ -549,6 +549,11 @@ node /^db1047\.eqiad\.wmnet/ {
 	class { role::coredb::researchdb : mariadb => true, innodb_file_per_table => true }
 }
 
+## SANITARIUM
+node /^db105[1-3]\.eqiad\.wmnet/ {
+  class { role::db::sanitarium : port => 3306 }
+}
+
 ## not currently in production and/or hardware issues
 node /^db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
