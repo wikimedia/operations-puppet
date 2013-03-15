@@ -1,10 +1,10 @@
 # Class for website hosted on the continuous integration server
 # https://integration.mediawiki.org/
 # https://doc.wikimedia.org/
-# https://doc.mediawiki.org/
 class contint::website {
 
-  # This is mostly to get the files properly setup
+  # Static files in these docroots are in integration/docroot.git
+
   file { '/srv/org':
     ensure => directory,
     mode   => '0755',
@@ -25,6 +25,7 @@ class contint::website {
     group  => 'wikidev',
   }
   # MediaWiki code coverage
+  # Written to by jenkins
   file { '/srv/org/mediawiki/integration/coverage':
     ensure => directory,
     mode   => '0775',
@@ -48,6 +49,26 @@ class contint::website {
     mode   => '0755',
     owner  => 'jenkins',
     group  => 'wikidev',
+  }
+
+  # Written to by jenkins for mediawiki-core docs
+  # Written to by misc::docs::puppet for puppet docs
+  file { '/srv/org/wikimedia/doc':
+    ensure => directory,
+    mode   => '0755',
+    owner  => 'jenkins',
+    group  => 'wikidev',
+  }
+
+  file { '/etc/apache2/sites-available/doc.wikimedia.org':
+    mode   => '0444',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/contint/apache/doc.wikimedia.org',
+  }
+
+  apache_site { 'doc.wikimedia.org':
+    name => 'doc.wikimedia.org'
   }
 
   file { '/srv/localhost':
