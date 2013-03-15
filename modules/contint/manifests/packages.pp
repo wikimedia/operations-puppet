@@ -62,6 +62,8 @@ class contint::packages {
     'liblua5.1-0-dev',
     'g++',
     'libthai-dev',
+
+    'doxygen',
     ]: ensure => present,
   }
 
