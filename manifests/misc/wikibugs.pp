@@ -21,9 +21,10 @@ class misc::irc::wikibugs {
   # default one. Values are hardcoded in the Wikibugs perl script
   $ircecho_logbase = '/var/wikibugs'
   $ircecho_logs = {
-    "${ircecho_logbase}/wikibugs.log"         => '#wikimedia-labs',
-    "${ircecho_logbase}/wikimedia-mobile.log" => '#wikimedia-mobile',
-    "${ircecho_logbase}/wikibugs.log"         => '#wikimedia-dev',
+    "${ircecho_logbase}/wikibugs.log"                => '#wikimedia-labs',
+    "${ircecho_logbase}/wikimedia-mobile.log"        => '#wikimedia-mobile',
+    "${ircecho_logbase}/mediawiki-visualeditor.log"  => '#mediawiki-visualeditor',
+    "${ircecho_logbase}/wikibugs.log"                => '#wikimedia-dev',
   }
 
   $ircecho_nick = 'wikibugs'
