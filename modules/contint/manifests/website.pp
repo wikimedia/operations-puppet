@@ -39,13 +39,19 @@ class contint::website {
     group  => 'root',
     source => 'puppet:///modules/contint/apache/integration.wikimedia.org',
   }
-  apache_site { 'integration.mediawiki.org':
-    # Make sure the old configuration does not conflict
-    ensure => absent,
-    name   => 'integration.mediawiki.org',
-  }
   apache_site { 'integration.wikimedia.org':
     name => 'integration.wikimedia.org',
+  }
+
+  # Apache configuration for integration.mediawiki.org
+  file { '/etc/apache2/sites-available/integration.mediawiki.org':
+    mode   => '0444',
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/contint/apache/integration.mediawiki.org',
+  }
+  apache_site { 'integration.mediawiki.org':
+    name   => 'integration.mediawiki.org',
   }
 
   file { '/srv/localhost':
