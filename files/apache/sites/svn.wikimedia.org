@@ -21,7 +21,7 @@ NameVirtualHost *:80
 		Allow from all
 		Deny from 220.181.19.85
 		Deny from 221.115.95.197
-		Deny from 81.208.25.37 
+		Deny from 81.208.25.37
 
 		Options Indexes FollowSymLinks
 	</Directory>
@@ -41,10 +41,7 @@ NameVirtualHost *:80
 
 	ScriptAlias /viewvc /usr/lib/cgi-bin/viewvc.cgi
 
-	Alias /doc /var/mwdocs/phase3/docs/html
-	<Directory /var/mwdocs/phase3/docs/html>
-		Allow from all
-	</Directory>
+	Redirect permanent /doc http://doc.wikimedia.org/mediawiki-core/master/php/html
 
 	# FIXME: What is this for??
 	Alias /stats /var/statsvn/html
@@ -97,8 +94,5 @@ NameVirtualHost *:443
 
 	ScriptAlias /viewvc /usr/lib/cgi-bin/viewvc.cgi
 
-	Alias /doc /var/mwdocs/phase3/docs/html
-	<Directory /var/mwdocs/phase3/docs/html>
-		Allow from all
-	</Directory>
+	Redirect permanent /doc https://doc.wikimedia.org/mediawiki-core/master/php/html
 </VirtualHost>
