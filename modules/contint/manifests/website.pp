@@ -44,6 +44,9 @@ class contint::website {
     ensure => absent,
     name   => 'integration.mediawiki.org',
   }
+  apache_site { 'integration.wikimedia.org':
+    name => 'integration.wikimedia.org',
+  }
 
   file { '/srv/localhost':
     ensure => directory,
