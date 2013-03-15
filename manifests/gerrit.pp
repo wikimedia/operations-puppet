@@ -335,7 +335,7 @@ class gerrit::ircbot {
 
 	$ircecho_infile = "/var/lib/gerrit2/review_site/logs/operations.log:#wikimedia-operations;/var/lib/gerrit2/review_site/logs/labs.log:#wikimedia-labs;/var/lib/gerrit2/review_site/logs/mobile.log:#wikimedia-mobile;/var/lib/gerrit2/review_site/logs/parsoid.log:#mediawiki-parsoid;/var/lib/gerrit2/review_site/logs/visualeditor.log:#mediawiki-visualeditor;/var/lib/gerrit2/review_site/logs/mediawiki.log:#mediawiki;/var/lib/gerrit2/review_site/logs/wikimedia-dev.log:#wikimedia-dev;/var/lib/gerrit2/review_site/logs/semantic-mediawiki.log:#semantic-mediawiki,#mediawiki;/var/lib/gerrit2/review_site/logs/wikidata.log:#wikimedia-wikidata"
 	$ircecho_nick = "gerrit-wm"
-	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki-parsoid,#mediawiki-visualeditor,#mediawiki,#wikimedia-dev,#wikimedia-wikidata,#semantic-mediawiki"
+	$ircecho_chans = "#wikimedia-operations,#wikimedia-labs,#wikimedia-mobile,#mediawiki-parsoid,#mediawiki-visualeditor,#mediawiki-feed,#wikimedia-dev,#wikimedia-wikidata,#semantic-mediawiki"
 	$ircecho_server = "irc.freenode.net"
 
 	package { ['ircecho']:
