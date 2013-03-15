@@ -763,7 +763,7 @@ node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 node "gallium.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
-	sudo_user { [ "demon", "krinkle", "reedy", "dsc", "mholmquist" ]: privileges => [
+	sudo_user { [ "demon", "reedy", "dsc", "mholmquist" ]: privileges => [
 		 'ALL = (jenkins) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/jenkins'
 		,'ALL = (testswarm) NOPASSWD: ALL'
@@ -772,7 +772,7 @@ node "gallium.wikimedia.org" {
 	]}
 
 	# full root for Jenkins admin (RT-4101)
-	sudo_user { "hashar": privileges => ['ALL = NOPASSWD: ALL'] }
+	sudo_user { [ "hashar", "krinkle" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	include standard,
 		nrpe,
