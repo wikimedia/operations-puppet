@@ -2,10 +2,10 @@
 class redis (
 	$port = 6379,
 	$dir = "/a/redis",
-	$dbfilename = "dump.rdb",
 	$maxmemory = "1GB",
 	$maxmemory_policy = "volatile-lru",
 	$maxmemory_samples = 5,
+	$persist = "rdb", # [ rdb, aof, both ]
 	$redis_options = {},
 	$redis_replication = undef,
 	$package = "redis-server",

@@ -17,6 +17,7 @@ class role::db::redis (
 
 	class { "::redis":
 		maxmemory => $maxmemory,
+		persist => "aof",
 		redis_replication => $redis_replication,
 	}
 

@@ -37,7 +37,7 @@ port <%= port %>
 # unixsocketperm 755
 
 # Close the connection after a client is idle for N seconds (0 to disable)
-timeout 120
+timeout 60
 
 # Set server verbosity to 'debug'
 # it can be one of:
@@ -88,9 +88,13 @@ databases 16
 #   like in the following example:
 #
 #   save ""
+<% if persist == "rdb" or persist == "both" -%>
 save 900 1
 save 300 100
-#save 60 10000
+save 60 10000
+<% else -%>
+# rdb disabled
+<% end -%>
 
 # By default Redis will stop accepting writes if RDB snapshots are enabled
 # (at least one save point) and the latest background save failed.
@@ -123,7 +127,7 @@ rdbcompression yes
 rdbchecksum yes
 
 # The filename where to dump the DB
-dbfilename <%= dbfilename %>
+dbfilename <%= hostname %>-<%= port %>.rdb
 
 # The working directory.
 #
@@ -340,10 +344,13 @@ maxmemory-samples <%= maxmemory_samples %>
 # with the better durability guarantees.
 #
 # Please check http://redis.io/topics/persistence for more information.
+<% if persist == "aof" or persist == "both" -%>
+appendonly yes
+<% else -%>
 appendonly no
-
+<% end -%>
 # The name of the append only file (default: "appendonly.aof")
-# appendfilename appendonly.aof
+appendfilename <%= hostname %>-<%= port %>.aof
 
 # The fsync() call tells the Operating System to actually write data on disk
 # instead to wait for more data in the output buffer. Some OS will really flush
@@ -408,7 +415,7 @@ no-appendfsync-on-rewrite yes
 # Specify a percentage of zero in order to disable the automatic AOF
 # rewrite feature.
 auto-aof-rewrite-percentage 100
-auto-aof-rewrite-min-size 64mb
+auto-aof-rewrite-min-size 512mb
 
 ################################ LUA SCRIPTING  ###############################
 
