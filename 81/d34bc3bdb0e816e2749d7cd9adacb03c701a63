@@ -1,0 +1,9 @@
+Code-Review+1: Hashar <hashar@free.fr>
+Verified+1: Hashar <hashar@free.fr>
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Fri, 15 Mar 2013 17:09:11 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/53513
+Project: operations/puppet
+Branch: refs/heads/production
