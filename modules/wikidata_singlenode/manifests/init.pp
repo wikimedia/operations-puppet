@@ -197,8 +197,8 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 # Wikibase client only:
 	if $install_client == true {
 		# get the extensions
-		# for client get extensions Wikibase and ParserFunctions
-		mw-extension { [ "Wikibase", "ParserFunctions" ]:
+		# for client get extensions Wikibase and ParserFunctions (needed) and a bunch of other extensions that are on Wikipedias
+		mw-extension { [ "Wikibase", "ParserFunctions", "AbuseFilter", "AntiBot", "AntiSpoof", "APC", "ArticleFeedback", "ArticleFeedbackv5", "AssertEdit", "Babel", "CategoryTree", "CharInsert", "CheckUser", "Cite", "cldr", "ClickTracking", "CodeEditor", "Collection", "CustomData", "Echo", "EditPageTracking", "EmailCapture", "ExpandTemplates", "FeaturedFeeds", "FlaggedRevs", "Gadgets", "GlobalUsage", "ImageMap", "InputBox", "Interwiki", "LocalisationUpdate", "MarkAsHelpful", "Math", "MobileFrontend", "MwEmbedSupport", "MWSearch", "NewUserMessage", "normal", "OATHAuth", "OpenSearchXml", "Oversight", "PagedTiffHandler", "PageTriage", "PdfHandler", "Poem", "PoolCounter", "PostEdit", "ReaderFeedback", "RelatedArticles", "RelatedSites", "Renameuser", "Scribunto", "SecurePoll", "SimpleAntiSpam", "SwiftCloudFiles", "SyntaxHighlight_GeSHi", "TemplateSandbox", "TitleKey", "TorBlock", "Translate", "UserDailyContribs", "UserMerge", "Vector", "WikiEditor", "wikihiero", "WikiLove", "WikimediaMaintenance", "WikimediaMessages" ]:
 			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mw-extension["Diff"], Mw-extension["DataValues"]],
 		}
 		# put a client specific settings file to $install_path (required by LocalSettings.php)
