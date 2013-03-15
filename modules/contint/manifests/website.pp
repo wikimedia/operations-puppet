@@ -8,20 +8,20 @@ class contint::website {
   file { '/srv/org':
     ensure => directory,
     mode   => '0755',
-    owner  => 'www-data',
+    owner  => 'jenkins',
     group  => 'wikidev',
   }
 
   file { '/srv/org/mediawiki':
     ensure => directory,
     mode   => '0755',
-    owner  => 'www-data',
+    owner  => 'jenkins',
     group  => 'wikidev',
   }
   file { '/srv/org/mediawiki/integration':
     ensure => directory,
     mode   => '0755',
-    owner  => 'www-data',
+    owner  => 'jenkins',
     group  => 'wikidev',
   }
   # MediaWiki code coverage
@@ -46,14 +46,14 @@ class contint::website {
   file { '/srv/org/wikimedia':
     ensure => directory,
     mode   => '0755',
-    owner  => 'www-data',
+    owner  => 'jenkins',
     group  => 'wikidev',
   }
 
   file { '/srv/localhost':
     ensure => directory,
     mode   => '0755',
-    owner  => 'www-data',
+    owner  => 'jenkins',
     group  => 'wikidev',
   }
   file { '/srv/localhost/qunit':
