@@ -10,10 +10,25 @@ class jenkins {
   # Graphiz is needed by the job dependency graph plugin
   package { 'graphviz': ensure => present; }
 
+  # Jenkins should write everything group writable so admins can interact with
+  # files easily, hence we need it to run with umask 0002.
+  # The Jenkins software is daemonized in the init script using /usr/bin/daemon
+  # which reset the umask value.  Daemon accepts per user configuration via the
+  # ~/.daemonrc, set the umask there.
+  file { '/var/lib/jenkins/.daemonrc':
+    ensure  => 'present',
+    content => "jenkins umask=0002\n",
+    owner   => 'jenkins',
+    group   => 'jenkins',
+    mode    => '0644',
+  }
+
   service { 'jenkins':
     ensure     => 'running',
     enable     => true,
     hasrestart => true,
+    # Better have umask properly set before starting
+    require    => File['/var/lib/jenkins/.daemonrc'],
   }
 
   # nagios monitoring
