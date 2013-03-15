@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd /
+
+su wikibugs -c '
+	tail -n0 -f /var/wikibugs/wikibugs.log | \
+	/usr/local/bin/ircecho "#mediawiki" wikibugs irc.freenode.net \
+	2>&1 >/dev/null
+' &

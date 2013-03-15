@@ -19,7 +19,7 @@ class misc::irc::wikibugs {
 
 	# Some Bugzilla product have been blessed with their own log files out of the
 	# default one. Values are hardcoded in the Wikibugs perl script
-	$ircecho_infile = '/var/lib/wikibugs/logs/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/logs/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/logs/mediawiki.log:#mediawiki-feed'
+	$ircecho_infile = '/var/lib/wikibugs/log/wikimedia-labs.log:#wikimedia-labs;/var/lib/wikibugs/log/wikimedia-mobile.log:#wikimedia-mobile;/var/lib/wikibugs/log/mediawiki.log:#mediawiki-feed'
 	$ircecho_nick = "wikibugs"
 	# Add channels defined in $ircecho_infile:
 	$ircecho_chans = '#wikimedia-labs,#wikimedia-mobile,#mediawiki-feed'
@@ -32,17 +32,23 @@ class misc::irc::wikibugs {
 
 	file {
 		"/var/lib/wikibugs/log":
+			ensure => directory,
 			owner  => wikibugs,
 			group => wikidev,
 			mode  => 0775,
 			require => User['wikibugs'];
+		"/usr/local/bin/start-wikibugs-bot":
+			owner  => wikibugs,
+			group => wikidev,
+			mode => 0755,
+			require => User['wikibugs'];
 	}
 
 	git::clone { "wikibugs" :
-		directory => "/var/lib/wikibugs/script",
+		directory => "/var/lib/wikibugs/bin",
 		origin => "https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git",
 		owner => wikibugs,
 		group => wikidev,
-		require => File['/var/lib/wikibugs'];
+		require => User['wikibugs'];
 	}
 }
