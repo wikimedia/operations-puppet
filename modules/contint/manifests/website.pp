@@ -7,29 +7,29 @@ class contint::website {
   # This is mostly to get the files properly setup
   file { '/srv/org':
     ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'jenkins',
   }
 
   file { '/srv/org/mediawiki':
     ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'jenkins',
   }
   file { '/srv/org/mediawiki/integration':
     ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'jenkins',
   }
   # MediaWiki code coverage
   file { '/srv/org/mediawiki/integration/coverage':
     ensure => directory,
     mode   => '0775',
     owner  => 'jenkins',
-    group  => 'wikidev',
+    group  => 'jenkins',
   }
 
   # Apache configuration for integration.mediawiki.org
@@ -45,22 +45,22 @@ class contint::website {
 
   file { '/srv/org/wikimedia':
     ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'jenkins',
   }
 
   file { '/srv/localhost':
     ensure => directory,
-    mode   => '0755',
-    owner  => 'www-data',
-    group  => 'wikidev',
+    mode   => '0775',
+    owner  => 'jenkins',
+    group  => 'jenkins',
   }
   file { '/srv/localhost/qunit':
     ensure => directory,
-    mode   => '0755',
+    mode   => '0775',
     owner  => 'jenkins',
-    group  => 'wikidev',
+    group  => 'jenkins',
   }
 
   # Apache configuration for a virtual host on localhost
