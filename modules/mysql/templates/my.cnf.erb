@@ -14,17 +14,17 @@ socket    = <%= socket %>
 port      = <%= port %>
 basedir   = <%= basedir %>
 datadir   = <%= datadir %>
-tmpdir    = /tmp
+tmpdir    = /a/tmp
 skip-external-locking
 
 <% if bind_address %>
 bind-address    = <%= bind_address %>
 <% end %> 
 
-key_buffer         = 16M
+key_buffer         = 1M
 max_allowed_packet = 16M
 thread_stack       = 192K
-thread_cache_size  = 8
+thread_cache_size  = 300
 myisam-recover     = BACKUP
 query_cache_limit  = 1M
 query_cache_size   = 16M
