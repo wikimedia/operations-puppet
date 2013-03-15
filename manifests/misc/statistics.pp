@@ -669,3 +669,31 @@ define misc::statistics::rsync_job($source, $destination) {
 		minute  => 0,
 	}
 }
+
+
+# Class: misc::statistics::cron_blog_pageviews
+#
+# Sets up daily cron jobs to run a script which
+# groups blog pageviews by url and emails them
+class misc::statistics::cron_blog_pageviews {
+	file {
+		"/usr/local/bin/blog.sh":
+			mode    => 0755,
+			content => template("misc/email-blog-pageviews.erb");
+		"/home/dandreescu/blog_cron_output":
+			ensure => "directory",
+			owner  => "dandreescu",
+			group  => "wikidev",
+			mode   => 0755;
+	}
+
+	# Create a daily cron job to run the blog script
+	# This requires that the $misc::statistics::user::username
+	# user is installed on the source host.
+	cron { "rsync_${name}_logs":
+		command => "/usr/local/bin/blog.sh",
+		user    => "$misc::statistics::user::username",
+		hour    => 8,
+		minute  => 0,
+	}
+}
