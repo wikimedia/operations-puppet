@@ -16,7 +16,7 @@ class mysql::params {
   $port                = 3306
   $etc_root_password   = false
   $ssl                 = false
-  $restart             = true
+  $restart             = false
 
   case $::operatingsystem {
     'Ubuntu': {
@@ -85,14 +85,14 @@ class mysql::params {
 
     'Debian': {
       $basedir              = '/usr'
-      $datadir              = '/var/lib/mysql'
+      $datadir              = '/a/sqldata/'
       $service_name         = 'mysql'
       $client_package_name  = 'mysql-client'
       $server_package_name  = 'mysql-server'
-      $socket               = '/var/run/mysqld/mysqld.sock'
-      $pidfile              = '/var/run/mysqld/mysqld.pid'
+      $socket               = "/tmp/mysqld.sock"
+      $pidfile              = "/a/sqldata/${::hostname}.pid"
       $config_file          = '/etc/mysql/my.cnf'
-      $log_error            = '/var/log/mysql/error.log'
+      $log_error            = "/a/sqldata/${::hostname}.log"
       $ruby_package_name    = 'libmysql-ruby'
       $python_package_name  = 'python-mysqldb'
       $php_package_name     = 'php5-mysql'
