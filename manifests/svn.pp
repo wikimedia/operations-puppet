@@ -17,11 +17,6 @@ class svn::server {
 			group => root,
 			mode  => 0555,
 			source => "puppet:///files/svn/sillyshell";
-		"/var/log/mwdocs.log":
-			owner => mwdocs,
-			group => svn,
-			mode => 0644,
-			ensure => present;
 		"/etc/apache2/sites-available/svn":
 			owner => root,
 			group => root,
@@ -35,14 +30,6 @@ class svn::server {
 			group => svnadm,
 			mode  => 0664,
 			recurse => true;
-		"/var/mwdocs":
-			owner => mwdocs,
-			group => svn,
-			mode => 0755,
-			ensure => directory;
-		"/home/mwdocs/phase3":
-			ensure => link,
-			target => "/var/mwdocs/phase3";
 		"/var/cache/svnusers":
 			ensure => directory,
 			owner => www-data,
@@ -72,28 +59,12 @@ class svn::server {
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
 
-	cron {
-		doc_generation:
-			command => "(cd /var/mwdocs/phase3 && git pull && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",
-			require => Exec["clone mediawiki for doc"],
-			user => "mwdocs",
-			hour => 0,
-			minute => 0;
-		svnuser_generation:
+	cron { "svnuser_generation":
 			command => "(cd /var/cache/svnusers && svn up) > /dev/null 2>&1",
 			require => Package[apache2],
 			user => "www-data",
 			hour => 0,
 			minute => 0;
-	}
-
-	exec {
-		"clone mediawiki for doc":
-		command => "/usr/bin/git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git /var/mwdocs/phase3",
-		creates => "/var/mwdocs/phase3",
-		cwd => "/var/mwdocs",
-		user => "mwdocs",
-		require => File["/var/mwdocs"];
 	}
 
 	exec { "/usr/bin/svn co file:///svnroot/mediawiki/USERINFO svnusers":
@@ -177,6 +148,46 @@ class svn::server {
 	}
 
 	include viewvc, hooks, dumps, cia, conversion
+
+
+	# Ensure doxygen is disabled on svn.wikimedia.org (bug 35663)
+	# @{
+
+	file {
+		"/var/log/mwdocs.log":
+			owner => mwdocs,
+			ensure => absent,
+			group => svn,
+			mode => 0644;
+		"/var/mwdocs":
+			owner => mwdocs,
+			#ensure => directory,
+			ensure => absent,
+			group => svn,
+			mode => 0755;
+		"/home/mwdocs/phase3":
+			#ensure => link,
+			ensure => absent,
+			target => "/var/mwdocs/phase3";
+	}
+
+	# exec {
+	# 	"clone mediawiki for doc":
+	# 	command => "/usr/bin/git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git /var/mwdocs/phase3",
+	# 	creates => "/var/mwdocs/phase3",
+	# 	cwd => "/var/mwdocs",
+	# 	user => "mwdocs",
+	# 	require => File["/var/mwdocs"];
+	# }
+
+	cron { "doc_generation":
+			command => "(cd /var/mwdocs/phase3 && git pull && php maintenance/mwdocgen.php --all) >> /var/log/mwdocs.log 2>&1",
+			ensure => absent,
+			#require => Exec["clone mediawiki for doc"],
+			user => "mwdocs",
+			hour => 0,
+			minute => 0;
+	}
 }
 
 class svn::users {
@@ -187,12 +198,14 @@ class svn::users {
 			gid => 550,
 			comment => "mwdocs",
 			shell => "/bin/bash",
-			ensure => "present",
+			ensure => "absent",
 			managehome => true,
 			allowdupe => false,
 			require => Group[550],
 		}
 	}
+
+	# @}
 }
 
 class svn::groups {
