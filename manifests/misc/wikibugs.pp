@@ -25,6 +25,7 @@ class misc::irc::wikibugs {
 		"${ircecho_logbase}/wikimedia-mobile.log"         => "#wikimedia-mobile",
 		"${ircecho_logbase}/wikimedia-dev.log"            => "#wikimedia-dev",
 	}
+
 	$ircecho_nick = "wikibugs"
 	$ircecho_server = 'chat.freenode.net'
 
@@ -35,6 +36,7 @@ class misc::irc::wikibugs {
 
 	file {
 		"/var/lib/wikibugs/log":
+			ensure => directory,
 			owner  => wikibugs,
 			group => wikidev,
 			mode  => 0775,
@@ -42,10 +44,10 @@ class misc::irc::wikibugs {
 	}
 
 	git::clone { "wikibugs" :
-		directory => "/var/lib/wikibugs/script",
+		directory => "/var/lib/wikibugs/bin",
 		origin => "https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git",
 		owner => wikibugs,
 		group => wikidev,
-		require => File['/var/lib/wikibugs'];
+		require => User['wikibugs'];
 	}
 }
