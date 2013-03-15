@@ -32,6 +32,33 @@
     </namespaces>
   </siteinfo>
   <page>
+    <title>MediaWiki:Sidebar</title>
+    <ns>8</ns>
+    <id>124</id>
+    <revision>
+      <id>384</id>
+      <parentid>383</parentid>
+      <timestamp>2012-12-12T13:38:37Z</timestamp>
+      <contributor>
+        <username>Admin</username>
+        <id>1</id>
+      </contributor>
+      <text xml:space="preserve" bytes="253">
+* navigation
+** mainpage|mainpage-description
+** recentchanges-url|recentchanges
+** Special:ItemByTitle/enwiki/Helium|Example data entry
+** Special:CreateItem|Create a new item
+** Special:NewProperty|Create a new property
+* SEARCH
+* TOOLBOX
+* LANGUAGES</text>
+      <sha1>luq4lzgn7xkwwnwga250pbepfxatgdr</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+  <page>
     <title>MediaWiki:Mainpage</title>
     <ns>8</ns>
     <id>124</id>
