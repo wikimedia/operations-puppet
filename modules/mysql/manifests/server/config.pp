@@ -83,7 +83,7 @@
 #
 define mysql::server::config (
   $settings,
-  $notify_service = true
+  $notify_service = false
 ) {
   include mysql::config
 
@@ -93,7 +93,7 @@ define mysql::server::config (
     $content = $settings
   }
 
-  file { "/etc/mysql/conf.d/${name}.cnf":
+  file { "/etc/mysql/conf.d/${name}":
     ensure  => file,
     content => $content,
     owner   => 'root',
