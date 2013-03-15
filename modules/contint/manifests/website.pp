@@ -42,14 +42,7 @@ class contint::website {
   apache_site { 'integration.mediawiki.org':
     # Make sure the old configuration does not conflict
     ensure => absent,
-    name => 'integration.mediawiki.org',
-  }
-
-  file { '/srv/org/wikimedia':
-    ensure => directory,
-    mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    name   => 'integration.mediawiki.org',
   }
 
   file { '/srv/localhost':
