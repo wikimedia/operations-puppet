@@ -1458,7 +1458,8 @@ node "mchenry.wikimedia.org" {
 		role::ldap::client::corp,
 		backup::client,
 		groups::wikidev,
-		accounts::jdavis
+		accounts::jdavis,
+		misc::irc::wikibugs
 
 	include network::constants
 
