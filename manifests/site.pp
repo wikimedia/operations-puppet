@@ -2785,6 +2785,13 @@ node /(wtp100[1-4])\.eqiad\.wmnet/ {
 
 	class { "lvs::realserver": realserver_ips => [ "10.2.2.28" ] }
 
+	if $hostname == "wtp1004" {
+		# Temporary apachebench install for Gabriel --Roan 2013-03-15
+		package { [ "apache2-utils" ]:
+			ensure => latest
+		}
+	}
+
 }
 
 node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
