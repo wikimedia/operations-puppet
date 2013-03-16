@@ -41,7 +41,9 @@ class role::statistics::www inherits role::statistics {
 		# community-analytics.wikimedia.org
 		misc::statistics::sites::community_analytics,
 		# metrics.wikimedia.org
-		misc::statistics::sites::metrics
+		misc::statistics::sites::metrics,
+		# rsync data for visualization from stat1 hourly
+		misc::statistics::limn_data
 }
 
 class role::statistics::eventlogging inherits role::statistics {
