@@ -58,13 +58,15 @@ class misc::statistics::packages::python {
 	package { [
 		"libapache2-mod-python",
 		"python-django",
+		"python-jinja2",
 		"python-mysqldb",
+		"python-pandas",
 		"python-yaml",
 		"python-dateutil",
 		"python-numpy",
 		"python-scipy",
 	]:
-		ensure => 'installed',
+		ensure => present,
 	}
 }
 
@@ -135,6 +137,27 @@ class misc::statistics::webserver {
 		mode    => 0750,
 		require => Class["webserver::apache"],
 	}
+}
+
+# rsync data for visualization by limn from a data-crunching
+# host to a web server.
+class misc::statistics::limn_data {
+
+	file { '/var/www/limn-public-data':
+		ensure => directory,
+		owner  => 'root',
+		group  => 'www-data',
+		mode   => '0640',
+	}
+
+	cron { 'rsync_limn_data':
+		command => '/usr/bin/rsync -rt stat1.wikimedia.org::limn-public-data/* /var/www/limn-public-data/',
+		require => File['/var/www/limn-public-data'],
+		user    => 'root',
+		hour    => '*',
+		minute  => 45,
+	}
+
 }
 
 # stats.wikimedia.org
@@ -586,8 +609,16 @@ class misc::statistics::rsync::jobs {
 	# Too bad I can't do this with recurse => true.
 	# See: https://projects.puppetlabs.com/issues/86
 	# for a much too long discussion on why I can't.
-	file { ["/a/squid", "/a/squid/archive", "/a/aft", "/a/aft/archive", "/a/eventlogging"]:
-		ensure  => "directory",
+	file { [
+		"/a/squid",
+		"/a/squid/archive",
+		"/a/aft",
+		"/a/aft/archive",
+		"/a/eventlogging",
+		"/a/eventlogging/archive",
+		"/a/limn-public-data",
+	]:
+		ensure  => directory,
 		owner   => "stats",
 		group   => "wikidev",
 		mode    => 0775,
