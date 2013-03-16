@@ -178,13 +178,30 @@ class misc::statistics::webserver {
 	}
 }
 
-
 # reportcard.wikimedia.org
 class misc::statistics::sites::reportcard {
 	require misc::statistics::webserver
 	misc::limn::instance { 'reportcard': }
 }
 
+# rsync sanitized data that has been readied for public consumption to a
+# web server.
+class misc::statistics::public_datasets {
+	file { '/var/www/public-datasets':
+		ensure => directory,
+		owner  => 'root',
+		group  => 'www-data',
+		mode   => '0640',
+	}
+
+	cron { 'rsync public datasets':
+		command => '/usr/bin/rsync -rt stat1.wikimedia.org::public-datasets/* /var/www/public-datasets/',
+		require => File['/var/www/public-datasets'],
+		user    => 'root',
+		hour    => '*',
+		minute  => 45,
+	}
+}
 
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
@@ -591,8 +608,16 @@ class misc::statistics::rsync::jobs {
 	# Too bad I can't do this with recurse => true.
 	# See: https://projects.puppetlabs.com/issues/86
 	# for a much too long discussion on why I can't.
-	file { ["/a/squid", "/a/squid/archive", "/a/aft", "/a/aft/archive", "/a/eventlogging"]:
-		ensure  => "directory",
+	file { [
+		"/a/squid",
+		"/a/squid/archive",
+		"/a/aft",
+		"/a/aft/archive",
+		"/a/eventlogging",
+		"/a/eventlogging/archive",
+		"/a/public-datasets",
+	]:
+		ensure  => directory,
 		owner   => "stats",
 		group   => "wikidev",
 		mode    => 0775,
