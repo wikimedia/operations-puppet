@@ -58,13 +58,15 @@ class misc::statistics::packages::python {
 	package { [
 		"libapache2-mod-python",
 		"python-django",
+		"python-jinja2",
 		"python-mysqldb",
+		"python-pandas",
 		"python-yaml",
 		"python-dateutil",
 		"python-numpy",
 		"python-scipy",
 	]:
-		ensure => 'installed',
+		ensure => latest,
 	}
 }
 
