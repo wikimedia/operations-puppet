@@ -59,12 +59,13 @@ class misc::statistics::packages::python {
 		"libapache2-mod-python",
 		"python-django",
 		"python-mysqldb",
+		"python-pandas",
 		"python-yaml",
 		"python-dateutil",
 		"python-numpy",
 		"python-scipy",
 	]:
-		ensure => 'installed',
+		ensure => latest,
 	}
 }
 
