@@ -682,7 +682,7 @@ class misc::statistics::cron_blog_pageviews {
 			content => template("misc/email-blog-pageviews.erb");
 		"/home/dandreescu/blog_cron_output":
 			ensure => "directory",
-			owner  => "dandreescu",
+			owner  => "$misc::statistics::user::username",
 			group  => "wikidev",
 			mode   => 0755;
 	}
