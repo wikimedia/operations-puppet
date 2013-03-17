@@ -17,13 +17,8 @@ class planet {
     }
   }
 
-  # webserver setup
-  install_certificate{ "star.planet.${planet_domain_name}": }
-  class {'webserver::php5': ssl => 'true'; }
-  apache_module { rewrite: name => "rewrite" }
-
-  # dependencies
-  Class['webserver::php5'] -> apache_module['rewrite'] -> Install_certificate["star.planet.${planet_domain_name}"]
+  # get a webserver with SSL
+  include planet::webserver
 
   # List all planet languages and translations for
   # index.html.tmpl here.  Configurations, directories and
