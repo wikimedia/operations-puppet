@@ -247,7 +247,7 @@ class icinga::monitor::files::misc {
       mode   => '0755';
 
     # Script to purge resources for non-existent hosts
-     '/usr/local/sbin/purge-nagios-resources.py':
+    '/usr/local/sbin/purge-nagios-resources.py':
       source => 'puppet:///files/nagios/purge-nagios-resources.py',
       owner  => 'root',
       group  => 'root',
@@ -750,27 +750,30 @@ class icinga::monitor::service {
   service { 'icinga':
     ensure => running,
     hasstatus => false,
-    subscribe => [ File[$icinga::monitor::configuration::variables::puppet_files],
-             File[$icinga::monitor::configuration::variables::static_files],
-             File['/etc/icinga/puppet_services.cfg'],
-             File['/etc/icinga/puppet_hostextinfo.cfg'],
-             File['/etc/icinga/puppet_hosts.cfg']];
+    subscribe => [
+                File[$icinga::monitor::configuration::variables::puppet_files],
+                File[$icinga::monitor::configuration::variables::static_files],
+                File['/etc/icinga/puppet_services.cfg'],
+                File['/etc/icinga/puppet_hostextinfo.cfg'],
+                File['/etc/icinga/puppet_hosts.cfg']
+                ];
   }
 }
 
 class icinga::monitor::snmp {
 
-  file { '/etc/snmp/snmptrapd.conf':
+  file {
+    '/etc/snmp/snmptrapd.conf':
       source => 'puppet:///files/snmp/snmptrapd.conf.icinga',
       owner => 'root',
       group => 'root',
       mode => '0600';
-         '/etc/snmp/snmptt.conf':
+    '/etc/snmp/snmptt.conf':
       source => 'puppet:///files/snmp/snmptt.conf.icinga',
       owner => 'root',
       group => 'root',
       mode => '0644';
-         '/etc/init.d/snmptt':
+    '/etc/init.d/snmptt':
       source => 'puppet:///files/snmp/snmptt.init',
       owner => 'root',
       group => 'root',
@@ -802,16 +805,18 @@ class icinga::monitor::snmp {
     ensure => running,
     hasstatus => false,
     hasrestart => true,
-    subscribe => [ File['/etc/snmp/snmptt.conf'],
-             File['/etc/init.d/snmptt'],
-             File['/etc/snmp/snmptrapd.conf']];
+    subscribe => [
+      File['/etc/snmp/snmptt.conf'],
+      File['/etc/init.d/snmptt'],
+      File['/etc/snmp/snmptrapd.conf']];
   }
 
   service { 'snmptrapd':
     ensure => running,
     hasstatus => false,
-    subscribe => [ File['/etc/init.d/snmptrapd'],
-             File['/etc/snmp/snmptrapd.conf']];
+    subscribe => [
+      File['/etc/init.d/snmptrapd'],
+      File['/etc/snmp/snmptrapd.conf']];
   }
 
   service { 'snmpd':
