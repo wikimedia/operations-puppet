@@ -6,7 +6,8 @@ class planet::venus( $planet_domain_name, $planet_languages ) {
   $planet_languages_keys = keys($planet_languages)
 
   include planet::packages,
-          planet::locales
+          planet::locales,
+          planet::dirs
 
   systemuser { 'planet':
     name   => 'planet',
@@ -19,20 +20,6 @@ class planet::venus( $planet_domain_name, $planet_languages ) {
     group => 'planet',
     mode  => '0644',
   }
-
-  file { [
-    '/var/www/planet',
-    '/var/log/planet',
-    '/usr/share/planet-venus/wikimedia',
-    '/usr/share/planet-venus/theme/wikimedia',
-    '/usr/share/planet-venus/theme/common',
-    '/var/cache/planet'
-    ]:
-    ensure => 'directory',
-    mode => '0755',
-  }
-
-}
 
   file {
     '/etc/apache2/ports.conf':
