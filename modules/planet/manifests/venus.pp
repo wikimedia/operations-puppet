@@ -1,7 +1,7 @@
 # http://planet.wikimedia.org/ - new planet (planet-venus)
 # http://intertwingly.net/code/venus/
 
-class misc::planet-venus( $planet_domain_name, $planet_languages ) {
+class planet::venus( $planet_domain_name, $planet_languages ) {
 
   $planet_languages_keys = keys($planet_languages)
 
@@ -33,6 +33,8 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
     mode => '0755',
   }
 
+}
+
   file {
     '/etc/apache2/ports.conf':
       ensure => present,
@@ -53,7 +55,7 @@ class misc::planet-venus( $planet_domain_name, $planet_languages ) {
 
     file {
       "/usr/share/planet-venus/wikimedia/${title}":
-        ensure => directory;
+        ensure => directory,
         path   => "/usr/share/planet-venus/wikimedia/${title}",
         mode   => '0755',
         owner  => 'planet',

@@ -1,11 +1,10 @@
 # planet RSS feed aggregator 2.0 (planet-venus)
 
-class role::planet {
+class planet {
 
-  system_role { 'role::planet': description => 'Planet (venus) weblog aggregator' }
+  system_role { 'planet': description => 'Planet (venus) weblog aggregator' }
 
   # locales are essential for planet. if a new language is added check these too
-  include standard,
   generic::locales::international
 
   # be flexible about labs vs. prod
@@ -116,7 +115,7 @@ class role::planet {
   }
 
   # the actual planet-venus class doing all the rest
-  class {'misc::planet-venus':
+  class {'planet::venus':
     planet_domain_name => $planet_domain_name,
     planet_languages => $planet_languages,
   }
