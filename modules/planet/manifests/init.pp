@@ -17,9 +17,6 @@ class planet {
     }
   }
 
-  # get a webserver with SSL
-  include planet::webserver
-
   # List all planet languages and translations for
   # index.html.tmpl here.  Configurations, directories and
   # cronjobs are auto-created from this hash.

@@ -5,5 +5,14 @@ class planet::webserver {
   class {'webserver::php5': ssl => 'true'; }
   apache_module { rewrite: name => "rewrite" }
 
-  Class['webserver::php5'] -> apache_module['rewrite'] -> Install_certificate["star.planet.${planet_domain_name}"]
+  file {
+    '/etc/apache2/ports.conf':
+      ensure => present,
+      mode   => '0444',
+      owner  => 'root',
+      group  => 'root',
+      source => 'puppet:///modules/planet/ssl/ports.conf.ssl';
+}
+
+  Class['webserver::php5'] -> File['/etc/apache2/ports.conf'] -> apache_module['rewrite'] -> Install_certificate["star.planet.${planet_domain_name}"]
 }
