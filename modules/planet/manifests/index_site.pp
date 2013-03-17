@@ -3,7 +3,7 @@
 class planet::index_site {
 
   file {
-    "/etc/apache2/sites-available/planet.${planet_domain_name}":
+    "/etc/apache2/sites-available/planet.${planet::planet_domain_name}":
       mode    => '0444',
       owner   => 'root',
       group   => 'root',
@@ -13,7 +13,7 @@ class planet::index_site {
   # Apache site without language, redirects to meta
   apache_site {
     'planet':
-      name => "planet.${planet_domain_name}"
+      name => "planet.${planet::planet_domain_name}"
   }
 
 }

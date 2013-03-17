@@ -10,9 +10,9 @@ class planet::dirs {
     '/var/cache/planet'
     ]:
     ensure => 'directory',
-    owner => 'planet',
-    group => 'planet',
-    mode => '0755',
+    owner  => 'planet',
+    group  => 'planet',
+    mode   => '0755',
   }
 
 }

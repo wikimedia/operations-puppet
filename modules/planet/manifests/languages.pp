@@ -5,37 +5,37 @@
 class planet::languages {
 
   $planet_languages = {
-    ar => {
+    ar  => {
       'subscribe'     => 'اشترك',
       'subscriptions' => 'الاشتراكات',
       'lastupdated'   => 'اخر تحديث',
     },
-    ca => {
+    ca  => {
       'subscribe'     => 'Subscriure\'s',
       'subscriptions' => 'Subscripcions',
       'lastupdated'   => 'Última actualització',
     },
-    cs => {
+    cs  => {
       'subscribe'     => 'Přihlásit odběr',
       'subscriptions' => 'Odběry',
       'lastupdated'   => 'Poslední aktualizace',
     },
-    de => {
+    de  => {
       'subscribe'     => 'Abonnieren',
       'subscriptions' => 'Teilnehmer',
       'lastupdated'   => 'Zuletzt aktualisiert',
     },
-    en => {
+    en  => {
       'subscribe'     => 'Subscribe',
       'subscriptions' => 'Subscriptions',
       'lastupdated'   => 'Last updated',
     },
-    es => {
+    es  => {
       'subscribe'     => 'Suscribirse',
       'subscriptions' => 'Suscripciones',
       'lastupdated'   => 'Última actualización',
     },
-    fr => {
+    fr  => {
       'subscribe'     => 'S\'abonner',
       'subscriptions' => 'Abonnements',
       'lastupdated'   => 'Dernière mise à jour',
@@ -45,42 +45,42 @@ class planet::languages {
       'subscriptions' => 'Abonnementer',
       'lastupdated'   => 'Senest opdateret',
     },
-    it => {
+    it  => {
       'subscribe'     => 'Abbonati',
       'subscriptions' => 'Sottoscrizioni',
       'lastupdated'   => 'Last updated',
     },
-    ja => {
+    ja  => {
       'subscribe'     => 'Subscribe',
       'subscriptions' => 'Subscriptions',
       'lastupdated'   => 'Last updated',
     },
-    pl => {
+    pl  => {
       'subscribe'     => 'Subskrybuj',
       'subscriptions' => 'Subskrypcje',
       'lastupdated'   => 'Ostatnia zmiana',
     },
-    pt => {
+    pt  => {
       'subscribe'     => 'Subscrever',
       'subscriptions' => 'Subcrições',
       'lastupdated'   => 'Última actualização',
     },
-    ro => {
+    ro  => {
       'subscribe'     => 'Abonare',
       'subscriptions' => 'Abonări',
       'lastupdated'   => 'Ultima actualizare',
     },
-    ru => {
+    ru  => {
       'subscribe'     => 'Подписаться',
       'subscriptions' => 'Подписки',
       'lastupdated'   => 'Последнее обновление',
     },
-    sr => {
+    sr  => {
       'subscribe'     => 'Subscribe',
       'subscriptions' => 'Subscriptions',
       'lastupdated'   => 'Last updated',
     },
-    zh => {
+    zh  => {
       'subscribe'     => '訂閱',
       'subscriptions' => '收錄',
       'lastupdated'   => '最近更新'

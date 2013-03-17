@@ -23,7 +23,7 @@ class planet {
   # the actual planet-venus class doing all the rest
   class {'planet::venus':
     planet_domain_name => $planet_domain_name,
-    planet_languages => $languages::planet_languages,
+    planet_languages   => $languages::planet_languages,
   }
 
 }

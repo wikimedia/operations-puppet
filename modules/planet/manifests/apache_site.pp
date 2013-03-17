@@ -2,8 +2,10 @@
 
 define planet::apache_site {
 
+  $sites_directory = '/etc/apache2/sites-available'
+
   file {
-    "/etc/apache2/sites-available/${title}.planet.${planet_domain_name}":
+    "${sites_directory}/${title}.planet.${planet::planet_domain_name}":
       mode    => '0444',
       owner   => 'root',
       group   => 'root',
@@ -12,7 +14,7 @@ define planet::apache_site {
 
   apache_site {
     "${title}-planet":
-      name => "${title}.planet.${planet_domain_name}"
+      name => "${title}.planet.${planet::planet_domain_name}"
   }
 
 }
