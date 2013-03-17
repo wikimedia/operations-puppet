@@ -4,9 +4,6 @@ class planet {
 
   system_role { 'planet': description => 'Planet (venus) weblog aggregator' }
 
-  # locales are essential for planet. if a new language is added check these too
-  generic::locales::international
-
   # be flexible about labs vs. prod
   case $::realm {
     labs: {

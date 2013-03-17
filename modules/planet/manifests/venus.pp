@@ -5,9 +5,11 @@ class planet::venus( $planet_domain_name, $planet_languages ) {
 
   $planet_languages_keys = keys($planet_languages)
 
-  package { 'planet-venus':
-    ensure => latest;
-  }
+  include planet::packages
+
+  # locales are essential for planet
+  # check for existing locale when adding new language versions
+  generic::locales::international
 
   systemuser { 'planet':
     name   => 'planet',
