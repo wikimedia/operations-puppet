@@ -2869,7 +2869,7 @@ node "zhen.wikimedia.org" {
 node "zirconium.wikimedia.org" {
 	include standard,
 		admins::roots,
-		role::planet
+		planet
 
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 }
