@@ -1,7 +1,7 @@
 # misc/icinga.pp
 
 class icinga::user {
-	systemuser { icinga: name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
+	systemuser { 'icinga': name => "icinga", home => "/home/icinga", groups => [ "icinga", "dialout", "nagios" ] }
 }
 
 class icinga::monitor {
@@ -76,16 +76,16 @@ class icinga::monitor::apache {
 	file {
 		"/usr/share/icinga/htdocs/images/logos/ubuntu.png":
 			source => "puppet:///files/icinga/ubuntu.png",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		# install the icinga Apache site
 		"/etc/apache2/sites-available/icinga.wikimedia.org":
 			ensure => present,
-			owner => root,
-			group => root,
-			mode => 0444,
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
 			content => template("apache/sites/icinga.wikimedia.org.erb");
 	}
 
@@ -97,7 +97,7 @@ class icinga::monitor::apache {
 			ensure => absent;
 	}
 
-	apache_site { icinga: name => "icinga.wikimedia.org" }
+	apache_site { 'icinga': name => "icinga.wikimedia.org" }
 	install_certificate{ "star.wikimedia.org": }
 
 }
@@ -108,9 +108,9 @@ class icinga::monitor::checkpaging {
 
 	file {"/usr/lib/nagios/plugins/check_to_check_nagios_paging":
 		source => "puppet:///files/nagios/check_to_check_nagios_paging",
-		owner => root,
-		group => root,
-		mode => 0755;
+		owner  => 'root',
+		group  => 'root',
+		mode   => '0755';
 	}
 	monitor_service { "check_to_check_nagios_paging":
 		description => "check_to_check_nagios_paging",
@@ -136,78 +136,78 @@ class icinga::monitor::configuration::files {
 
 	file { "/etc/icinga/cgi.cfg":
 			source => "puppet:///files/icinga/cgi.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/icinga.cfg":
 			source => "puppet:///files/icinga/icinga.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/nsca_payments.cfg":
 			source => "puppet:///private/nagios/nsca_payments.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/htpasswd.users":
 			source => "puppet:///private/nagios/htpasswd.users",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		# TEMP: analytics eqiad cluster manual entries.
 		# These will be removed from this manually managed file
 		# once analytics puppetization goes to production.
 		"/etc/icinga/analytics.cfg":
 			content => template("icinga/analytics.cfg.erb"),
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner   => 'root',
+			group   => 'root',
+			mode    => '0644';
 
 		"/etc/icinga/checkcommands.cfg":
 			content => template("icinga/checkcommands.cfg.erb"),
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner   => 'root',
+			group   => 'root',
+			mode    => '0644';
 
 		"/etc/icinga/contactgroups.cfg":
 			source => "puppet:///files/nagios/contactgroups.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/contacts.cfg":
 			source => "puppet:///private/nagios/contacts.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/misccommands.cfg":
 			source => "puppet:///files/icinga/misccommands.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/resource.cfg":
 			source => "puppet:///files/icinga/resource.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/icinga/timeperiods.cfg":
 			source => "puppet:///files/nagios/timeperiods.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0644';
 
 		"/etc/init.d/icinga":
 			source => "puppet:///files/icinga/icinga-init",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0755';
 	}
 }
 
@@ -217,41 +217,41 @@ class icinga::monitor::files::misc {
 
 	file {
 		"/etc/icinga/conf.d":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0755',
 			ensure => directory;
 
 		"/etc/nagios":
 			ensure => directory,
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0755';
 
 		"/var/cache/icinga":
 			ensure => directory,
-			owner => icinga,
-			group => www-data,
-			mode => 0775;
+			owner  => 'icinga',
+			group  => 'www-data',
+			mode   => '0775';
 
 		"/var/lib/nagios/rw":
 			ensure => directory,
-			owner => icinga,
-			group => nagios,
-			mode => 0777;
+			owner  => 'icinga',
+			group  => 'nagios',
+			mode   => '0777';
 
 		"/var/lib/icinga":
 			ensure => directory,
-			owner => icinga,
-			group => www-data,
-			mode => 0755;
+			owner  => 'icinga',
+			group  => 'www-data',
+			mode   => '0755';
 
 		# Script to purge resources for non-existent hosts
 		 "/usr/local/sbin/purge-nagios-resources.py":
 			source => "puppet:///files/nagios/purge-nagios-resources.py",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0755';
 	}
 
 	# fix permissions on all individual service files
@@ -279,298 +279,298 @@ class icinga::monitor::files::nagios-plugins {
 
 	file {
 		"/usr/lib/nagios":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			ensure => directory;
 
 		"/usr/lib/nagios/plugins":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			ensure => directory;
 
 		"/usr/lib/nagios/plugins/eventhandlers":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			ensure => directory;
 
 		"/usr/lib/nagios/plugins/eventhandlers/submit_check_result":
 			source => "puppet:///files/icinga/submit_check_result",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 
 		"/var/lib/nagios/rm":
 			owner => icinga,
 			group => nagios,
-			mode => 0775,
+			mode => '0775',
 			ensure => directory;
 
 		"/etc/nagios-plugins":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			ensure => directory;
 
 		"/etc/nagios-plugins/config":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			ensure => directory;
 
 		"/etc/nagios-plugins/config/apt.cfg":
 			source => "puppet:///files/icinga/plugin-config/apt.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/breeze.cfg":
 			source => "puppet:///files/icinga/plugin-config/breeze.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/dhcp.cfg":
 			source => "puppet:///files/icinga/plugin-config/dhcp.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/disk-smb.cfg":
 			source => "puppet:///files/icinga/plugin-config/disk-smb.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/disk.cfg":
 			source => "puppet:///files/icinga/plugin-config/disk.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/dns.cfg":
 			source => "puppet:///files/icinga/plugin-config/dns.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/dummy.cfg":
 			source => "puppet:///files/icinga/plugin-config/dummy.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/flexlm.cfg":
 			source => "puppet:///files/icinga/plugin-config/flexlm.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ftp.cfg":
 			source => "puppet:///files/icinga/plugin-config/ftp.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/hppjd.cfg":
 			source => "puppet:///files/icinga/plugin-config/hppjd.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/http.cfg":
 			source => "puppet:///files/icinga/plugin-config/http.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ifstatus.cfg":
 			source => "puppet:///files/icinga/plugin-config/ifstatus.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ldap.cfg":
 			source => "puppet:///files/icinga/plugin-config/ldap.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/load.cfg":
 			source => "puppet:///files/icinga/plugin-config/load.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/mail.cfg":
 			source => "puppet:///files/icinga/plugin-config/mail.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/mrtg.cfg":
 			source => "puppet:///files/icinga/plugin-config/mrtg.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/mysql.cfg":
 			source => "puppet:///files/icinga/plugin-config/mysql.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/netware.cfg":
 			source => "puppet:///files/icinga/plugin-config/netware.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/news.cfg":
 			source => "puppet:///files/icinga/plugin-config/news.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/nt.cfg":
 			source => "puppet:///files/icinga/plugin-config/nt.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ntp.cfg":
 			source => "puppet:///files/icinga/plugin-config/ntp.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/pgsql.cfg":
 			source => "puppet:///files/icinga/plugin-config/pgsql.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ping.cfg":
 			source => "puppet:///files/icinga/plugin-config/ping.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/procs.cfg":
 			source => "puppet:///files/icinga/plugin-config/procs.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/radius.cfg":
 			source => "puppet:///files/icinga/plugin-config/radius.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/real.cfg":
 			source => "puppet:///files/icinga/plugin-config/real.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/rpc-nfs.cfg":
 			source => "puppet:///files/icinga/plugin-config/rpc-nfs.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/snmp.cfg":
 			source => "puppet:///files/icinga/plugin-config/snmp.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/ssh.cfg":
 			source => "puppet:///files/icinga/plugin-config/ssh.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/tcp_udp.cfg":
 			source => "puppet:///files/icinga/plugin-config/tcp_udp.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/telnet.cfg":
 			source => "puppet:///files/icinga/plugin-config/telnet.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/users.cfg":
 			source => "puppet:///files/icinga/plugin-config/users.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 
 		"/etc/nagios-plugins/config/vsz.cfg":
 			source => "puppet:///files/icinga/plugin-config/vsz.cfg",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 	}
 
 	# WMF custom service checks
 	file {
 		"/usr/lib/nagios/plugins/check_mysql-replication.pl":
 			source => "puppet:///files/icinga/check_mysql-replication.pl",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_cert":
-			owner => root,
-			group => root,
-			mode => 0755,
+			owner => 'root',
+			group => 'root',
+			mode => '0755',
 			source => "puppet:///files/icinga/check_cert";
 		"/usr/lib/nagios/plugins/check_all_memcached.php":
 			source => "puppet:///files/icinga/check_all_memcached.php",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_bad_apaches":
 			source => "puppet:///files/icinga/check_bad_apaches",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_longqueries":
 			source => "puppet:///files/icinga/check_longqueries",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_MySQL.php":
 			source => "puppet:///files/icinga/check_MySQL.php",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_solr":
 			source => "puppet:///files/icinga/check_solr",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check-ssl-cert":
 			source => "puppet:///files/icinga/check-ssl-cert",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_stomp.pl":
 			source => "puppet:///files/icinga/check_stomp.pl",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/usr/lib/nagios/plugins/check_nrpe":
 			source => "puppet:///files/icinga/check_nrpe",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 	}
 
 	# some default configuration files conflict and should be removed
@@ -637,9 +637,9 @@ class icinga::monitor::jobqueue {
 
 	file {"/usr/lib/nagios/plugins/check_job_queue":
 		source => "puppet:///files/nagios/check_job_queue",
-		owner => root,
-		group => root,
-		mode => 0755;
+		owner => 'root',
+		group => 'root',
+		mode => '0755';
 	}
 
 	monitor_service { "check_job_queue":
@@ -661,27 +661,27 @@ class icinga::monitor::naggen {
 		"/etc/icinga/puppet_hosts.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'host'),
 			backup => false,
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 		"/etc/icinga/puppet_services.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'service'),
 			backup => false,
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 		"/etc/icinga/puppet_hostextinfo.cfg":
 			content => generate('/usr/local/bin/naggen', '--stdout', '--type', 'hostextinfo'),
 			backup => false,
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 	}
 
 	# Fix permissions
 
 	file { $icinga::monitor::configuration::variables::puppet_files:
-		mode => 0644,
+		mode => '0644',
 		ensure => present;
 	}
 
@@ -719,8 +719,8 @@ class icinga::monitor::nsca::daemon {
 
 	file { "/etc/nsca.cfg":
 		source => "puppet:///private/icinga/nsca.cfg",
-		owner => root,
-		mode => 0400;
+		owner => 'root',
+		mode => '0400';
 	}
 
 	service { "nsca":
@@ -762,43 +762,43 @@ class icinga::monitor::snmp {
 
 	file { "/etc/snmp/snmptrapd.conf":
 			source => "puppet:///files/snmp/snmptrapd.conf.icinga",
-			owner => root,
-			group => root,
-			mode => 0600;
+			owner => 'root',
+			group => 'root',
+			mode => '0600';
 	       "/etc/snmp/snmptt.conf":
 			source => "puppet:///files/snmp/snmptt.conf.icinga",
-			owner => root,
-			group => root,
-			mode => 0644;
+			owner => 'root',
+			group => 'root',
+			mode => '0644';
 	       "/etc/init.d/snmptt":
 			source => "puppet:///files/snmp/snmptt.init",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/etc/init.d/snmptrapd":
 			source => "puppet:///files/snmp/snmptrapd.init",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 		"/etc/init.d/snmpd":
 			source => "puppet:///files/snmp/snmpd.init",
-			owner => root,
-			group => root,
-			mode => 0755;
+			owner => 'root',
+			group => 'root',
+			mode => '0755';
 	}
 
 	# snmp tarp stuff
-	systemuser { snmptt: name => "snmptt", home => "/var/spool/snmptt", groups => [ "snmptt", "nagios" ] }
+	systemuser { 'snmptt': name => 'snmptt', home => '/var/spool/snmptt', groups => [ 'snmptt', 'nagios' ] }
 
-	package { "snmpd":
+	package { 'snmpd':
 		ensure => latest;
 	}
 
-	package { "snmptt":
+	package { 'snmptt':
 		ensure => latest;
 	}
 
-	service { snmptt:
+	service { 'snmptt':
 		ensure => running,
 		hasstatus => false,
 		hasrestart => true,
@@ -807,14 +807,14 @@ class icinga::monitor::snmp {
 			       File["/etc/snmp/snmptrapd.conf"]];
 	}
 
-	service { snmptrapd:
+	service { 'snmptrapd':
 		ensure => running,
 		hasstatus => false,
 		subscribe => [ File["/etc/init.d/snmptrapd"],
 			       File["/etc/snmp/snmptrapd.conf"]];
 	}
 
-	service { snmpd:
+	service { 'snmpd':
 		ensure => running,
 		hasstatus => false,
 		subscribe => File["/etc/init.d/snmpd"];
@@ -846,7 +846,7 @@ class icinga::ganglia::ganglios {
 	}
 	file { "/var/lib/ganglia/xmlcache":
 		ensure => directory,
-		mode => 0755,
+		mode => '0755',
 		owner => icinga;
 	}
 }
