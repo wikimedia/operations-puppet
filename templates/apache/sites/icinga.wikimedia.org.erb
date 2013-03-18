@@ -1,3 +1,5 @@
+# vim: filetype=apache
+
 NameVirtualHost *:80
 NameVirtualHost *:443
 
@@ -12,10 +14,39 @@ Alias /icinga/stylesheets /etc/icinga/stylesheets
 
 # Where the HTML pages live
 Alias /icinga /usr/share/icinga/htdocs
+
+<VirtualHost *:443>
+	ServerName nagios.wikimedia.org
+	ServerAdmin noc@wikimedia.org
+	SSLEngine On
+	SSLCertificateFile /etc/ssl/private/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	# Bug 45926 - keep back compatibility for nagios URLs
+	RewriteEngine on
+	# Rewrite the 'nagios' path under cgi-bin
+	RewriteRule ^/cgi-bin/nagios/(.*) https://icinga.wikimedia.org/cgi-bin/icinga/$1 [L,R=301]
+	# Wildcard redirect:
+	RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [R=301]
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName nagios.wikimedia.org
+	ServerAdmin noc@wikimedia.org
+
+	# Bug 45926 - keep back compatibility for nagios URLs
+	RewriteEngine on
+	# Rewrite the 'nagios' path under cgi-bin
+	RewriteRule ^/cgi-bin/nagios/(.*) https://icinga.wikimedia.org/cgi-bin/icinga/$1 [L,R=301]
+	# Wildcard redirect:
+	RewriteRule ^/(.*)$ https://icinga.wikimedia.org/$1 [R=301]
+</VirtualHost>
+
+
 <VirtualHost *:443>
 	ServerName icinga.wikimedia.org
 	ServerAlias neon.wikimedia.org
-	ServerAlias nagios.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	SSLEngine On
 	SSLCertificateFile /etc/ssl/private/star.wikimedia.org.pem
@@ -37,12 +68,10 @@ Alias /icinga /usr/share/icinga/htdocs
 	RedirectMatch ^/$ https://icinga.wikimedia.org/icinga
 	ErrorLog /var/log/apache2/icinga.log
 	LogLevel warn
-
 </VirtualHost>
 
 <VirtualHost *:80>
 	ServerName icinga.wikimedia.org
-	ServerAlias nagios.wikimedia.org
 	ServerAlias neon.wikimedia.org
 	ServerAdmin noc@wikimedia.org
 	DocumentRoot /usr/share/icinga/htdocs
@@ -87,7 +116,6 @@ Alias /icinga /usr/share/icinga/htdocs
 	RedirectMatch ^/$ https://icinga-admin.wikimedia.org/icinga
 	ErrorLog /var/log/apache2/icinga.log
 	LogLevel warn
-
 </VirtualHost>
 
 <VirtualHost *:80>
