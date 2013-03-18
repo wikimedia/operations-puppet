@@ -12,12 +12,12 @@ class misc::contint::android::sdk {
   # 32bit libs needed by Android SDK
   # ..but NOT just all of ia32-libs ..
   package { [
-    "libstdc++6:i386",
-    "libgcc1:i386",
-    "zlib1g:i386",
-    "libncurses5:i386",
-    "libsdl1.2debian:i386",
-    "libswt-gtk-3.5-java"
+    'libstdc++6:i386',
+    'libgcc1:i386',
+    'zlib1g:i386',
+    'libncurses5:i386',
+    'libsdl1.2debian:i386',
+    'libswt-gtk-3.5-java'
     ]: ensure => installed;
   }
 }
@@ -25,7 +25,7 @@ class misc::contint::android::sdk {
 # CI test server as per RT #1204
 class misc::contint::test {
 
-  system_role { "misc::contint::test": description => "continuous integration test server" }
+  system_role { 'misc::contint::test': description => 'continuous integration test server' }
 
   class packages {
     include contint::packages
@@ -50,23 +50,23 @@ class misc::contint::test {
     include ::contint::tmpfs
 
     file {
-      "/var/lib/jenkins/.gitconfig":
+      '/var/lib/jenkins/.gitconfig':
         mode => 0444,
-        owner => "jenkins",
-        group => "jenkins",
+        owner => 'jenkins',
+        group => 'jenkins',
         ensure => present,
-        source => "puppet:///files/misc/jenkins/gitconfig",
+        source => 'puppet:///files/misc/jenkins/gitconfig',
         require => User['jenkins'];
     }
 
     file {
-      "/var/lib/jenkins/.git":
+      '/var/lib/jenkins/.git':
         mode   => 2775,  # group sticky bit
-        group  => "jenkins",
+        group  => 'jenkins',
         ensure => directory;
-      "/var/lib/jenkins/bin":
-        owner => "jenkins",
-        group => "wikidev",
+      '/var/lib/jenkins/bin':
+        owner => 'jenkins',
+        group => 'wikidev',
         mode => 0775,
         ensure => directory;
     }
@@ -77,34 +77,34 @@ class misc::contint::test {
 
   class iptables-purges {
 
-    require "iptables::tables"
+    require 'iptables::tables'
 
-    iptables_purge_service{  "deny_all_http-alt": service => "http-alt" }
+    iptables_purge_service{  'deny_all_http-alt': service => 'http-alt' }
   }
 
   class iptables-accepts {
 
-    require "misc::contint::test::iptables-purges"
+    require 'misc::contint::test::iptables-purges'
 
-    iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
-    iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
-    iptables_add_service{ "private_all": source => "10.0.0.0/8", service => "all", jump => "ACCEPT" }
-    iptables_add_service{ "public_all": source => "208.80.152.0/22", service => "all", jump => "ACCEPT" }
+    iptables_add_service{ 'lo_all': interface => 'lo', service => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'localhost_all': source => '127.0.0.1', service => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'private_all': source => '10.0.0.0/8', service => 'all', jump => 'ACCEPT' }
+    iptables_add_service{ 'public_all': source => '208.80.152.0/22', service => 'all', jump => 'ACCEPT' }
   }
 
   class iptables-drops {
 
-    require "misc::contint::test::iptables-accepts"
+    require 'misc::contint::test::iptables-accepts'
 
-    iptables_add_service{ "deny_all_http-alt": service => "http-alt", jump => "DROP" }
+    iptables_add_service{ 'deny_all_http-alt': service => 'http-alt', jump => 'DROP' }
   }
 
   class iptables {
 
-    require "misc::contint::test::iptables-drops"
+    require 'misc::contint::test::iptables-drops'
 
-    iptables_add_exec{ "${hostname}": service => "http-alt" }
+    iptables_add_exec{ $hostname: service => 'http-alt' }
   }
 
-  require "misc::contint::test::iptables"
+  require 'misc::contint::test::iptables'
 }
