@@ -134,7 +134,7 @@ $wgLBFactoryConf = array(
 	// Configure two sections, one for the repo and one for the client.
 	// Each section contains only one server.
 	'sectionLoads' => array(
-		'repo' => array(
+		'DEFAULT' => array(
 			'localhost' => 1,
 		),
 		'client' => array(
@@ -145,7 +145,7 @@ $wgLBFactoryConf = array(
 	// Map the wiki database names to sections. Database names must be unique,
 	// i.e. may not exist in more than one section.
 	'sectionsByDB' => array(
-		$wgDBname => 'repo',
+		$wgDBname => 'DEFAULT',
 		'client' => 'client',
 	),
 
