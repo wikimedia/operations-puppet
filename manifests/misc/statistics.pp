@@ -252,7 +252,7 @@ class misc::statistics::sites::metrics {
 	$document_root    = "/srv/org.wikimedia.metrics"
 
 	$e3_home          = "/a/e3"
-	$e3_analysis_path = "$e3_home/E3Analysis"
+	$e3_analysis_path = "$e3_home/E3Analysis/"
 	$e3_user          = $misc::statistics::user::username
 
 	$secret_key       = $passwords::e3::metrics::secret_key
