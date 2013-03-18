@@ -8,8 +8,12 @@ NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
 
+	# Back compatibility for the good old status URL:
+	Redirect permanent /zuul/status https://zuul.wikimedia.org/status
+
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
+
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
 
@@ -17,6 +21,9 @@ NameVirtualHost *:443
 	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	# Back compatibility for the good old status URL:
+	Redirect permanent /zuul/status https://zuul.wikimedia.org/status
 
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>

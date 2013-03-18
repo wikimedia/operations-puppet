@@ -1,0 +1,32 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/contint/apaches/zuul.wikimedia.org
+#####################################################################
+# vim: filetype=apache
+
+NameVirtualHost *:443
+<VirtualHost *:80>
+	ServerName zuul.wikimedia.org
+	Redirect permanent / https://zuul.wikimedia.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName zuul.wikimedia.org
+	ServerAdmin noc@wikimedia.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	DocumentRoot /srv/org/wikimedia/zuul
+
+	ErrorLog ${APACHE_LOG_DIR}/zuul.wikimedia.org-error.log
+	LogLevel warn
+	CustomLog ${APACHE_LOG_DIR}/zuul.wikimedia.org-access.log combined
+
+	# Direct access to Zuul daemon
+	RewriteEngine on
+	RewriteRule ^/status$ http://127.0.0.1:8001/status [P]
+	RewriteRule ^/status.json$ http://127.0.0.1:8001/status.json [P]
+</VirtualHost>
