@@ -5,19 +5,31 @@
 # vim: filetype=apache
 
 <VirtualHost *:80>
-	ServerAdmin noc@wikimedia.org
-	ServerName doc.wikimedia.org
+	ServerName doc.mediawiki.org
 
-	DocumentRoot /srv/org/wikimedia/doc
-
-	ErrorLog /var/log/apache2/error.log
-	LogLevel warn
-	CustomLog /var/log/apache2/access.log combined
+	Redirect permanent / https://doc.wikimedia.org/
 </VirtualHost>
 
 <VirtualHost *:443>
-	ServerAdmin noc@wikimedia.org
+	ServerName doc.mediawiki.org
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
+	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
+	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	Redirect permanent / https://doc.wikimedia.org/
+</VirtualHost>
+
+<VirtualHost *:80>
 	ServerName doc.wikimedia.org
+
+	Redirect permanent / https://doc.wikimedia.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+	ServerName doc.wikimedia.org
+	ServerAdmin noc@wikimedia.org
 
 	DocumentRoot /srv/org/wikimedia/doc
 
