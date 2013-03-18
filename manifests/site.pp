@@ -2151,7 +2151,6 @@ node "sodium.wikimedia.org" {
 
 node "spence.wikimedia.org" {
 	$ganglia_aggregator = "true"
-	$nagios_server = "true"
 
 	include standard,
 		nfs::netapp::home,
