@@ -37,7 +37,7 @@ class webserver::php5( $ssl = 'false' ) {
 
 	include generic::sysctl::high-http-performance
 
-	package { [ "apache2", "libapache2-mod-php5" ]:
+	package { [ "apache2-mpm-prefork", "libapache2-mod-php5" ]:
 		ensure => latest;
 	}
 
