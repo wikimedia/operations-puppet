@@ -20,4 +20,5 @@ class passwords::openstack::nova { }
 class passwords::puppet::database { }
 class passwords::analytics { }
 class passwords::bugzilla { }
+class passwords::mysql::eventlogging { }
 
