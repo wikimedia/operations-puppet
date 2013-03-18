@@ -26,9 +26,7 @@ class role::statistics::cruncher inherits role::statistics {
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
 		# rsync logs from logging hosts over to stat1
-		misc::statistics::rsync::jobs,
-		# event logging packages are useful.
-		misc::statistics::eventlogging
+		misc::statistics::rsync::jobs
 }
 
 class role::statistics::www inherits role::statistics {
@@ -42,11 +40,4 @@ class role::statistics::www inherits role::statistics {
 		misc::statistics::sites::community_analytics,
 		# metrics.wikimedia.org
 		misc::statistics::sites::metrics
-}
-
-class role::statistics::eventlogging inherits role::statistics {
-    system_role { "role::statistics": description => "event logging aggregator" }
-
-	include misc::statistics::db::mysql,
-		misc::statistics::eventlogging
 }

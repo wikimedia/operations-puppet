@@ -2485,9 +2485,9 @@ node "vanadium.eqiad.wmnet" {
 		accounts::maryana,
 		accounts::rfaulk,
 		accounts::spage,
+		eventlogging,
 		misc::statistics::db::mysql,
 		misc::statistics::db::mongo,
-		redis::ganglia,
 		nrpe,
 		role::solr::ttm
 

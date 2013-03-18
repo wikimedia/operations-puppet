@@ -418,58 +418,6 @@ class misc::statistics::db::mongo {
 	}
 }
 
-
-# EventLogging
-
-class misc::statistics::eventlogging::packages {
-	require misc::statistics::packages::python
-
-	# == Event processor packages ==
-	package { [
-		# Core dependencies (Python 2.7):
-		"python-sqlalchemy",
-		"python-zmq",
-		# Test helpers (not required, but nice to have):
-		"python-coverage",
-		"python-nose",
-		"python-pygments",
-		# Python 3:
-		"python3-nose",
-		"python3-pygments",
-		"python3-sqlalchemy",
-		"python3-zmq",
-	]:
-		ensure => present
-	}
-}
-class misc::statistics::eventlogging {
-	require misc::statistics::eventlogging::packages
-
-	# == Log rotation ==
-	# A corresponding 'rsync_job' on stat1 retrieves
-	# /var/log/eventlogging/archive.*.gz.
-
-	file {
-		["/var/log/eventlogging", "/var/log/eventlogging/archive"]:
-			owner => "mwdeploy",
-			group => "wikidev",
-			mode => 0664,
-			ensure => "directory";
-		"/etc/logrotate.d/eventlogging":
-			source => "puppet:///files/logrotate/eventlogging",
-			mode => 0444;
-	}
-
-	include rsync::server
-
-	rsync::server::module { "eventlogging":
-		path        => "/var/log/eventlogging",
-		read_only   => "yes",
-		list        => "yes",
-		hosts_allow => $misc::statistics::base::servers,  # stat1, stat1001
-	}
-}
-
 # == Class misc::statistics::gerrit_stats
 #
 # Installs diederik's gerrit-stats python
