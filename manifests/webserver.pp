@@ -9,7 +9,7 @@ class webserver::static {
 		firewall
 
 	package { lighttpd:
-		ensure => present,
+		ensure => latest;
 	}
 
 	service { lighttpd:
@@ -33,10 +33,12 @@ class webserver::static {
 }
 
 class webserver::php5( $ssl = 'false' ) {
+	#This will use latest package for php5-common
+
 	include generic::sysctl::high-http-performance
 
 	package { [ "apache2", "libapache2-mod-php5" ]:
-		ensure => present,
+		ensure => latest;
 	}
 
 	if $ssl == 'true' {
@@ -62,7 +64,7 @@ class webserver::modproxy {
 	include generic::sysctl::high-http-performance
 
 	package { libapache2-mod-proxy-html:
-		ensure => present,
+		ensure => latest;
 	}
 }
 
@@ -73,8 +75,8 @@ class webserver::php5-mysql {
 	include generic::sysctl::high-http-performance
 
 	package { php5-mysql:
-		ensure => present,
-	}
+		ensure => latest;
+		}
 }
 
 class webserver::php5-gd {
@@ -82,7 +84,7 @@ class webserver::php5-gd {
 	include generic::sysctl::high-http-performance
 
 	package { "php5-gd":
-		ensure => present,
+		ensure => latest;
 	}
 }
 
@@ -92,7 +94,7 @@ class webserver::apache2 {
 	include generic::sysctl::high-http-performance
 
 	package { apache2:
-		ensure => present,
+		ensure => latest;
 	}
 
 	# ensure default site is removed
@@ -106,7 +108,7 @@ class webserver::apache2::rpaf {
 	# modify to include squid/varnish/nginx ranges depending
 	# on use.
 	package { libapache2-mod-rpaf:
-		ensure => present,
+		ensure => latest;
 	}
 	apache_module { rpaf:
 		name => "rpaf",
@@ -122,7 +124,7 @@ class webserver::apache2::rpaf {
 class webserver::apache {
 	class packages($mpm="prefork") {
 		package { ["apache2", "apache2-mpm-${mpm}"]:
-			ensure => present,
+			ensure => latest;
 		}
 	}
 
@@ -213,7 +215,7 @@ class webserver::apache {
 
 		if $packagename {
 			package { $packagename:
-				ensure => present,;
+				ensure => latest;
 			}
 		}
 		
