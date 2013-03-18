@@ -1,15 +1,17 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/integration.mediawiki.org
+### puppet:///modules/contint/files/apache/integration.mediawiki.org
 #####################################################################
 # vim: filetype=apache
 
 NameVirtualHost *:443
+
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
 
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
+
 <VirtualHost *:443>
 	ServerName integration.mediawiki.org
 

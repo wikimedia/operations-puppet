@@ -1,10 +1,11 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/integration.wikimedia.org
+### puppet:///modules/contint/files/apache/integration.wikimedia.org
 #####################################################################
 # vim: filetype=apache
 
 NameVirtualHost *:443
+
 <VirtualHost *:80>
 	ServerName integration.wikimedia.org
 
