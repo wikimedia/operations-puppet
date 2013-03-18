@@ -305,7 +305,7 @@ class misc::statistics::sites::metrics {
 		},
 	}
 
-	package { "python-flask":
+	package { ["python-flask", "python-flask-login"]:
 		ensure => "installed",
 	}
 
