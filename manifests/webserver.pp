@@ -46,7 +46,7 @@ class webserver::php5( $ssl = 'false' ) {
 	}
 
 	service { apache2:
-		require => Package[apache2],
+		require => Package[apache2-mpm-prefork],
 		subscribe => Package[libapache2-mod-php5],
 		ensure => running;
 	}
