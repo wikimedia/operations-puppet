@@ -832,8 +832,7 @@ class icinga::monitor::snmp {
 }
 
 class icinga::ganglia::ganglios {
-	include generic::mysql::packages::client,
-		ganglia::collector
+	include ganglia::collector
 
 	package { "ganglios":
 		ensure => latest;
