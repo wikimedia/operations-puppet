@@ -1,3 +1,7 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/contint/apache/proxy_jenkins
+#####################################################################
 # vim: filetype=apache
 
 ProxyPass		/ci	http://localhost:8080/ci

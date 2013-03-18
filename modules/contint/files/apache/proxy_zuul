@@ -1,3 +1,7 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///modules/contint/apache/proxy_zuul
+#####################################################################
 # vim: filetype=apache
 
 ProxyPass		/zuul/	http://localhost:8001/
