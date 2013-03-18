@@ -150,10 +150,10 @@ def main():
     # let's use 'pmtpa prod' instead of 'pmtpa-prod'
     clustername = conf['clustername'].replace('-', ' ')
 
-    submit_to_ganglia(name="swift object count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
-    submit_to_ganglia(name="swift bytes count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
-    submit_to_ganglia(name="swift object change", value=deltastats['Objects'], units='objects per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
-    submit_to_ganglia(name="swift bytes change", value=deltastats['Bytes'], units='bytes per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift_object_count", value=stats['Objects'], units='total objects', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift_bytes_count", value=stats['Bytes'], units='total bytes', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift_object_change", value=deltastats['Objects'], units='objects per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
+    submit_to_ganglia(name="swift_bytes_change", value=deltastats['Bytes'], units='bytes per second', spoof="Swift %s:Swift %s" % (clustername, clustername))
     # not reporting containers at the moment because it's not very interesting
 
 if __name__ == '__main__':
