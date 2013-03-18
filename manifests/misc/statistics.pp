@@ -676,6 +676,8 @@ define misc::statistics::rsync_job($source, $destination) {
 # Sets up daily cron jobs to run a script which
 # groups blog pageviews by url and emails them
 class misc::statistics::cron_blog_pageviews {
+	include passwords::mysql::research
+
 	$script          = '/usr/local/bin/blog.sh'
 	$recipient_email = 'tbayer@wikimedia.org'
 
