@@ -245,13 +245,17 @@ class misc::statistics::sites::community_analytics {
 class misc::statistics::sites::metrics {
 	require passwords::mysql::research,
 		passwords::mysql::research_prod,
-		passwords::mysql::metrics
+		passwords::mysql::metrics,
+		passwords::e3::metrics
+
 	$site_name        = "metrics.wikimedia.org"
 	$document_root    = "/srv/org.wikimedia.metrics"
 
 	$e3_home          = "/a/e3"
 	$e3_analysis_path = "$e3_home/E3Analysis"
 	$e3_user          = $misc::statistics::user::username
+
+	$secret_key       = $passwords::e3::metrics::secret_key
 
 	# connetions will be rendered into settings.py.
 	$mysql_connections = {
