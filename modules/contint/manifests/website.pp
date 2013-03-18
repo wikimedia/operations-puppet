@@ -4,6 +4,15 @@
 # https://doc.mediawiki.org/
 class contint::website {
 
+  # Zuul Apache configuration file requires mod_proxy & mod_proxy_http
+  include contint::proxy_common
+
+  # https://zuul.wikimedia.org/
+  apache_site { 'zuul.wikimedia.org':
+    name => 'zuul.wikimedia.org',
+  }
+  Class['contint::proxy_common'] -> apache_site['zuul.wikimedia.org']
+
   # This is mostly to get the files properly setup
   file { '/srv/org':
     ensure => directory,

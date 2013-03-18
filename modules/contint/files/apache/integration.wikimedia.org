@@ -8,6 +8,9 @@ NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.wikimedia.org
 
+	# Back compatibility for the good old status URL:
+	Redirect permanent /zuul/status https://zuul.wikimedia.org/status
+
 	# Force Jenkins request through HTTPS
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
@@ -22,6 +25,9 @@ NameVirtualHost *:443
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	# Back compatibility for the good old status URL:
+	Redirect permanent /zuul/status https://zuul.wikimedia.org/status
 
 	ErrorLog /var/log/apache2/error.log
 

@@ -48,7 +48,7 @@ class role::zuul {
 			# Not enabled yet but we need a pattern anyway:
 			#url_pattern => 'https://integration.wikimedia.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
 			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
-			status_url => 'https://integration.wikimedia.org/zuul/status',
+			status_url => 'https://zuul.wikimedia.org/status',
 			push_change_refs => false
 		}
 
