@@ -341,10 +341,10 @@ node "dataset1001.wikimedia.org" {
 
 # pmtpa dbs
 node /^db(32|59|60|63|69|71)\.pmtpa\.wmnet/ {
-	if $hostname == "db59" {
+	if $hostname =~ "/^db(59|69)\.pmtpa/" {
 		class { role::coredb::s1 : mariadb => true }
 	} elsif $hostname == "db71"{
-		class { role::coredb::s1 : innodb_file_per_table => true }
+		class { role::coredb::s1 : innodb_file_per_table => true, mariadb => true }
 	} else {
 		include role::coredb::s1
 	}
