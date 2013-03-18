@@ -497,11 +497,19 @@ node /^db10(02|09|18|34)\.eqiad\.wmnet/ {
 }
 
 node /^db10(03|10|19|35)\.eqiad\.wmnet/ {
-	include role::coredb::s3
+	if $hostname == "db1010" {
+		class { role::coredb::s3 : mariadb => true }
+	} else {
+		include role::coredb::s3
+	}
 }
 
 node /^db10(04|11|20|38)\.eqiad\.wmnet/ {
-	include role::coredb::s4
+	if $hostname == "db1011" {
+		class { role::coredb::s4 : mariadb => true }
+	} else {
+		include role::coredb::s4
+	}
 }
 
 node /^db10(05|21|26|39)\.eqiad\.wmnet/ {
@@ -509,15 +517,27 @@ node /^db10(05|21|26|39)\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	include role::coredb::s5
+	if $hostname == "db1026" {
+		class { role::coredb::s5 : mariadb => true }
+	} else {
+		include role::coredb::s5
+	}
 }
 
 node /^db10(06|22|27|40)\.eqiad\.wmnet/ {
-	include role::coredb::s6
+	if $hostname == "db1027" {
+		class { role::coredb::s6 : mariadb => true }
+	} else {
+		include role::coredb::s6
+	}
 }
 
 node /^db10(07|24|28|41)\.eqiad\.wmnet/ {
-	include role::coredb::s7
+	if $hostname == "db1028" {
+		class { role::coredb::s7 : mariadb => true }
+	} else {
+		include role::coredb::s7
+	}
 }
 
 ## x1 shard
