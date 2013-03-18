@@ -1,6 +1,6 @@
 
 from user_metrics.config import logging
-from pkg_resources import WorkingSet , DistributionNotFound
+from pkg_resources import WorkingSet , DistributionNotFound, VersionConflict
 
 # Get working set of Python modules
 working_set = WorkingSet()
@@ -29,10 +29,10 @@ __cohort_meta_instance__    = 'prod'
 __secret_key__ = '<%= secret_key %>'
 
 try:
-    working_set.require('Flask-Login>=0.1.3')
+    working_set.require('Flask-Login>=0.1.2')
     __flask_login_exists__ = True
     logging.debug(__name__ + ' :: Using module flask.ext.login...')
-except DistributionNotFound:
+except (DistributionNotFound, VersionConflict):
     __flask_login_exists__ = False
     logging.debug(__name__ + ' :: Can\'t find module flask.ext.login...')
 
