@@ -1,0 +1,46 @@
+/**
+ * ZeroMQ publisher throughput (messages / sec) monitor for EventLogging
+ * File managed by Puppet: puppet:///files/eventlogging/zpubmon.pyconf
+ */
+
+modules {
+  module {
+    name = "zpubmon"
+    language = "python"
+    param groups {
+        value = "EventLogging"
+    }
+    param server-generated-raw {
+        value = "tcp://127.0.0.1:8421"
+    }
+    param client-generated-raw {
+        value = "tcp://127.0.0.1:8422"
+    }
+    param valid-events {
+        value = "tcp://127.0.0.1:8600"
+    }
+  }
+}
+
+
+collection_group {
+
+  collect_every = 15
+  time_threshold = 30
+
+  metric {
+      name = "server-generated-raw"
+      title = "Server-generated events"
+      value_threshold = 1
+  }
+  metric {
+      name = "client-generated-raw"
+      title = "Client-generated events"
+      value_threshold = 1
+  }
+  metric {
+      name = "valid-events"
+      title = "Total valid events"
+      value_threshold = 1
+  }
+}
