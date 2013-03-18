@@ -705,7 +705,7 @@ node "fenari.wikimedia.org" {
 
 	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-tech" }
 	$ircecho_nick = "logmsgbot"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 
 	include role::applicationserver::maintenance,
 		svn::client,
@@ -1753,7 +1753,7 @@ node "neon.wikimedia.org" {
 
 	$ircecho_logs = { "/var/log/icinga/irc.log" => "#wikimedia-operations" }
 	$ircecho_nick = "icinga-wm"
-	$ircecho_server = "irc.freenode.net"
+	$ircecho_server = "chat.freenode.net"
 	include standard,
 		icinga::monitor,
 		misc::ircecho

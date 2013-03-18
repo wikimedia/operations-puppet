@@ -26,7 +26,7 @@ class misc::irc::wikibugs {
 		"${ircecho_logbase}/mediawiki.log"                => "#mediawiki-feed",
 	}
 	$ircecho_nick = "wikibugs"
-	$ircecho_server = 'irc.freenode.net'
+	$ircecho_server = 'chat.freenode.net'
 
 	include misc::ircecho
 	include misc::irc::wikibugs::packages
