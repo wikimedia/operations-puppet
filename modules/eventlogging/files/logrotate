@@ -1,0 +1,15 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/eventlogging/logrotate
+#####################################################################
+
+/var/log/eventlogging/*.log {
+       daily
+       olddir /var/log/eventlogging/archive
+       notifempty
+       maxage 180
+       rotate 1000
+       dateext
+       compress
+       missingok
+}
