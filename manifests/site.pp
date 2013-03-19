@@ -753,11 +753,20 @@ node "formey.wikimedia.org" {
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
+# gadolinium is a webrequest udp2log machine.
+# base_analytics_logging_node is defined in role/logging.pp
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
 		accounts::datasets,
 		accounts::dandreescu
+
+	# set up the gadolinum udp2log webrequest instance.
+	include role::logging::udp2log::gadolinium
+
+	## NOTE:  This is still on locke.
+	# fundraising banner log pipeline
+	# include misc::fundraising::udp2log_rotation
 }
 
 node "gallium.wikimedia.org" {
@@ -1843,10 +1852,10 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
 	# oxygen's udp2log instance
-	# saves logs mainly in /a/squid
+	# saves logs mainly in /a/squid.
 	misc::udp2log::instance { "oxygen":
 		multicast     => true,
-		# TODO: Move this to /var/log/udp2log
+		# TODO: Move this to /a/log/webrequest
 		log_directory => "/a/squid",
 		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
 		packet_loss_log => "/var/log/udp2log/packet-loss.log",

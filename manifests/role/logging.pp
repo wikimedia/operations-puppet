@@ -64,5 +64,60 @@ class role::beta::logging::mediawiki {
 		ensure => 'link',
 		target => '/data/project/logs';
 	}
+}
 
+
+
+# udp2log base role class
+class role::logging::udp2log {
+	include misc::udp2log,
+		misc::udp2log::utilities
+}
+
+# gadolinium udp2log instance(s)
+class role::logging::udp2log::gadolinum inherits role::logging::udp2log {
+	file { '/a/log':
+		ensure => 'directory',
+	}
+	$log_directory = '/a/log/webrequest'
+
+	# install custom filters
+	file { "$log_directory/bin":
+		ensure => directory,
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+	file { "$log_directory/bin/vu.awk":
+		ensure => 'file',
+		source => 'puppet:///files/udp2log/vu.awk',
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+	file { "$log_directory/bin/minnesota.awk":
+		ensure => 'file',
+		source => 'puppet:///files/udp2log/minnesota.awk',
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+	# Don't forget:
+	# - 5xx-filter from udplog repository
+	# - webstatscollector filter and collector
+	# These are not puppetized :( :(
+
+	# webrequest udp2log instance
+	misc::udp2log::instance { 'gadolinium':
+		log_directory => $log_directory,
+		require       => File['/a/log'],
+	}
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { 'misc::udp2log::rsyncd':
+		path    => $log_directory,
+		require => Misc::Udp2log::Instance['gadolinium'],
+	}
 }
