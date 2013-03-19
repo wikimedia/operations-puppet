@@ -6,6 +6,9 @@
 def infile(logs)
 	# make a list of flattened strings w/ one log each and that log's channels
 	logs = logs.map {|log,channels|
+		# ensure channels is an Array, not a bare string
+		channels = Array(channels)
+
 		# prepend # on channel name if missing
 		channels = channels.map {|channel| channel.sub(/^#?/,'#') }
 
