@@ -65,7 +65,6 @@ class contint::packages {
     'libthai-dev',
 
     'doxygen',
-    'ruby-jsduck',
     ]: ensure => present,
   }
 
@@ -86,10 +85,10 @@ class contint::packages {
   # need geoip to build udp-filter
   include geoip
 
-
-  # Node.js evolves quickly so we want to update it
-  # automatically.
-  package { 'nodejs':
+  # These evolve quickly and we update them frequently
+  # Simply let it update to the latest automatically whenever
+  # we package a new version.
+  package { ['nodejs', 'ruby-jsduck']:
     ensure => latest,
   }
 
