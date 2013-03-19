@@ -59,6 +59,7 @@ class contint::packages {
     'pylint',
 
     'luajit',
+    'libevent-dev',  # PoolCounter daemon
     'liblua5.1-0-dev',
     'g++',
     'libthai-dev',
