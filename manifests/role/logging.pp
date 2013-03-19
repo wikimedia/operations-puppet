@@ -75,7 +75,7 @@ class role::logging::udp2log {
 }
 
 # gadolinium udp2log instance(s)
-class role::logging::udp2log::gadolinum inherits role::logging::udp2log {
+class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	file { '/a/log':
 		ensure => 'directory',
 	}
