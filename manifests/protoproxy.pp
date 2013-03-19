@@ -371,16 +371,3 @@ class protoproxy::ganglia {
 	}
 }
 
-class protoproxy::ipv6_labs {
-
-	include protoproxy::service
-
-	nginx_site {
-		"ipv6and4":
-			template => "ipv6and4",
-			install => "template",
-			require => Package["nginx"];
-	}
-
-}
-
