@@ -217,10 +217,10 @@ class icinga::monitor::files::misc {
 
 	file {
 		'/etc/icinga/conf.d':
-			owner  => 'root',
+			ensure => directory,
+      owner  => 'root',
 			group  => 'root',
-			mode   => '0755',
-			ensure => directory;
+			mode   => '0755';
 
 		'/etc/nagios':
 			ensure => directory,
@@ -279,22 +279,22 @@ class icinga::monitor::files::nagios-plugins {
 
 	file {
 		'/usr/lib/nagios':
-			owner => 'root',
+			ensure => directory,
+      owner => 'root',
 			group => 'root',
-			mode => '0755',
-			ensure => directory;
+			mode => '0755';
 
 		'/usr/lib/nagios/plugins':
+      ensure => directory,
 			owner => 'root',
 			group => 'root',
-			mode => '0755',
-			ensure => directory;
+			mode => '0755';
 
 		'/usr/lib/nagios/plugins/eventhandlers':
+      ensure => directory,
 			owner => 'root',
 			group => 'root',
-			mode => '0755',
-			ensure => directory;
+			mode => '0755';
 
 		'/usr/lib/nagios/plugins/eventhandlers/submit_check_result':
 			source => 'puppet:///files/icinga/submit_check_result',
@@ -303,22 +303,22 @@ class icinga::monitor::files::nagios-plugins {
 			mode => '0755';
 
 		'/var/lib/nagios/rm':
+      ensure => directory,
 			owner => icinga,
 			group => nagios,
-			mode => '0775',
-			ensure => directory;
+			mode => '0775';
 
 		'/etc/nagios-plugins':
+      ensure => directory,
 			owner => 'root',
 			group => 'root',
-			mode => '0755',
-			ensure => directory;
+			mode => '0755';
 
 		'/etc/nagios-plugins/config':
+      ensure => directory,
 			owner => 'root',
 			group => 'root',
-			mode => '0755',
-			ensure => directory;
+			mode => '0755';
 
 		'/etc/nagios-plugins/config/apt.cfg':
 			source => 'puppet:///files/icinga/plugin-config/apt.cfg',
@@ -681,8 +681,8 @@ class icinga::monitor::naggen {
 	# Fix permissions
 
 	file { $icinga::monitor::configuration::variables::puppet_files:
-		mode => '0644',
-		ensure => present;
+		ensure => present,
+    mode   => '0644';
 	}
 
 		# Collect all (virtual) resources
@@ -822,11 +822,11 @@ class icinga::monitor::snmp {
 
 	# FIXME: smptt crashes periodically on precise
 	cron { 'restart_snmptt':
-		command => 'service snmptt restart 2>&1',
+		ensure => present,
+    command => 'service snmptt restart 2>&1',
 		user => root,
 		hour => [0, 4, 8, 12, 16, 20],
-		minute => 7,
-		ensure => present;
+		minute => 7;
 	}
 
 }
@@ -839,10 +839,10 @@ class icinga::ganglia::ganglios {
 		ensure => latest;
 	}
 	cron { 'ganglios-cron':
-		command => 'test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser',
+		ensure => present,
+    command => 'test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser',
 		user => icinga,
-		minute => '*/2',
-		ensure => present;
+		minute => '*/2';
 	}
 	file { '/var/lib/ganglia/xmlcache':
 		ensure => directory,
