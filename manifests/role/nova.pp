@@ -287,7 +287,7 @@ class role::nova::network {
 
 	require role::nova::network::bonding
 
-	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192" } }
+	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
 	interface_tagged { "bond1.103":
 		base_interface => "bond1",
