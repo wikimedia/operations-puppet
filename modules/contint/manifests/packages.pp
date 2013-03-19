@@ -65,6 +65,8 @@ class contint::packages {
     'libthai-dev',
 
     'doxygen',
+    'ruby-execjs', # TODO: Should be a dependency of ruby-jsduck
+    'ruby-jsduck',
     ]: ensure => present,
   }
 
