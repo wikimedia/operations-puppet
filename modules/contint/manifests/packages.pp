@@ -65,6 +65,7 @@ class contint::packages {
     'libthai-dev',
 
     'doxygen',
+    'ruby-jsduck',
     ]: ensure => present,
   }
 
