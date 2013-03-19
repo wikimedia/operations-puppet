@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/qunit.localhost
+### puppet:///modules/contint/apache/qunit.localhost
 #####################################################################
 # vim: filetype=apache
 

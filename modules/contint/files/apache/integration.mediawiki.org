@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///files/apache/sites/integration.mediawiki.org
+### puppet:///modules/contint/apache/integration.mediawiki.org
 #####################################################################
 # vim: filetype=apache
 
