@@ -187,6 +187,15 @@ ca_file = "/etc/ssl/certs/wmf-ca.pem"
 #
 
 
+# Flag to disable verification of our own server certificates
+#
+# When libvirtd starts it performs some sanity checks against
+# its own certificates.
+#
+# Default is to always run sanity checks. Uncommenting this
+# will disable sanity checks which is not a good idea
+#tls_no_sanity_certificate = 1
+
 # Flag to disable verification of client certificates
 #
 # Client certificate verification is the primary authentication mechanism.
@@ -248,6 +257,12 @@ tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundatio
 #min_workers = 5
 #max_workers = 20
 
+
+# The number of priority workers. If all workers from above
+# pool will stuck, some calls marked as high priority
+# (notably domainDestroy) can be executed in this pool.
+#prio_workers = 5
+
 # Total global limit on concurrent RPC calls. Should be
 # at least as large as max_workers. Beyond this, RPC requests
 # will be read into memory and queued. This directly impact
@@ -269,7 +284,7 @@ tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundatio
 # Logging controls
 #
 
-# Logging level: 4 errors, 3 warnings, 2 informations, 1 debug
+# Logging level: 4 errors, 3 warnings, 2 information, 1 debug
 # basically 1 will log everything possible
 #log_level = 3
 
@@ -294,7 +309,7 @@ tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundatio
 # the event layer.
 
 # Logging outputs:
-# An output is one of the places to save logging informations
+# An output is one of the places to save logging information
 # The format for an output can be:
 #    x:stderr
 #      output goes to stderr
@@ -312,6 +327,13 @@ tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundatio
 # e.g.:
 # log_outputs="3:syslog:libvirtd"
 # to log all warnings and errors to syslog under the libvirtd ident
+
+# Log debug buffer size: default 64
+# The daemon keeps an internal debug log buffer which will be dumped in case
+# of crash or upon receiving a SIGUSR2 signal. This setting allows to override
+# the default buffer size in kilobytes.
+# If value is 0 or less the debug log buffer is deactivated
+#log_buffer_size = 64
 
 
 ##################################################################
@@ -344,3 +366,28 @@ tls_allowed_dn_list = ["C=US,ST=California,L=San Francisco,O=Wikimedia Foundatio
 # it with the output of the 'uuidgen' command and then
 # uncomment this entry
 #host_uuid = "00000000-0000-0000-0000-000000000000"
+
+###################################################################
+# Keepalive protocol:
+# This allows libvirtd to detect broken client connections or even
+# dead client.  A keepalive message is sent to a client after
+# keepalive_interval seconds of inactivity to check if the client is
+# still responding; keepalive_count is a maximum number of keepalive
+# messages that are allowed to be sent to the client without getting
+# any response before the connection is considered broken.  In other
+# words, the connection is automatically closed approximately after
+# keepalive_interval * (keepalive_count + 1) seconds since the last
+# message received from the client.  If keepalive_interval is set to
+# -1, libvirtd will never send keepalive requests; however clients
+# can still send them and the deamon will send responses.  When
+# keepalive_count is set to 0, connections will be automatically
+# closed after keepalive_interval seconds of inactivity without
+# sending any keepalive messages.
+#
+#keepalive_interval = 5
+#keepalive_count = 5
+#
+# If set to 1, libvirtd will refuse to talk to clients that do not
+# support keepalive protocol.  Defaults to 0.
+#
+#keepalive_required = 1

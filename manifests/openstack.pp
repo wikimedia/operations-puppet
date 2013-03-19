@@ -584,48 +584,40 @@ class openstack::volume-service($openstack_version="diablo", $novaconfig) {
 }
 
 class openstack::compute-service($openstack_version="diablo", $novaconfig) {
-	# tls is a PITA to enable in labs, let's find another way there.
-	# Disabling this for now, since we don't support live migration
-	#if ( $realm == "production" ) {
-	#	install_certificate{ "${fqdn}": }
-	#	install_additional_key{ "${fqdn}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
+	if ( $realm == "production" ) {
+		$certname = "virt-star.${site}.wmnet"
+		install_certificate{ "${certname}": }
+		install_additional_key{ "${certname}": key_loc => "/var/lib/nova", owner => "nova", group => "libvirtd", require => Package["nova-common"] }
 
-	#	file {
-	#		"/var/lib/nova/clientkey.pem":
-	#			ensure => link,
-	#			target => "/var/lib/nova/${fqdn}.key",
-	#			require => Install_additional_key["${fqdn}"];
-	#		"/var/lib/nova/clientcert.pem":
-	#			ensure => link,
-	#			target => "/etc/ssl/certs/${fqdn}.pem",
-	#			require => Install_certificate["${fqdn}"];
-	#		"/var/lib/nova/cacert.pem":
-	#			ensure => link,
-	#			target => "/etc/ssl/certs/wmf-ca.pem",
-	#			require => Install_certificate["${fqdn}"];
-	#		"/etc/libvirt/libvirtd.conf":
-	#			notify => Service["libvirt-bin"],
-	#			owner => "root",
-	#			group => "root",
-	#			mode => 0444,
-	#			content => template("openstack/common/nova/libvirtd.conf.erb"),
-	#			require => Package["nova-common"];
-	#		"/etc/default/libvirt-bin":
-	#			notify => Service["libvirt-bin"],
-	#			owner => "root",
-	#			group => "root",
-	#			mode => 0444,
-	#			content => template("openstack/common/nova/libvirt-bin.default.erb"),
-	#			require => Package["nova-common"];
-	#		"/etc/init/libvirt-bin.conf":
-	#			notify => Service["libvirt-bin"],
-	#			owner => "root",
-	#			group => "root",
-	#			mode => 0444,
-	#			source => "puppet:///files/upstart/libvirt-bin.conf",
-	#			require => Package["nova-common"];
-	#	}
-	#}
+		file {
+			"/var/lib/nova/clientkey.pem":
+				ensure => link,
+				target => "/var/lib/nova/${certname}.key",
+				require => Install_additional_key["${fqdn}"];
+			"/var/lib/nova/clientcert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/${certname}.pem",
+				require => Install_certificate["${fqdn}"];
+			"/var/lib/nova/cacert.pem":
+				ensure => link,
+				target => "/etc/ssl/certs/wmf-ca.pem",
+				require => Install_certificate["${certname}"];
+			"/etc/libvirt/libvirtd.conf":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				content => template("openstack/common/nova/libvirtd.conf.erb"),
+				require => Package["nova-common"];
+			"/etc/default/libvirt-bin":
+				notify => Service["libvirt-bin"],
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				content => template("openstack/common/nova/libvirt-bin.default.erb"),
+				require => Package["nova-common"];
+		}
+	}
 
 	service { "libvirt-bin":
 		ensure => running,
