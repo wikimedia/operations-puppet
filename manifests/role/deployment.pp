@@ -15,6 +15,8 @@ class role::deployment::salt_masters::common($deployment_servers) {
       # parsoid is currently deployed from eqiad only
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
+      # eventlogging is currently deployed from eqiad only
+      "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
     },
     "eqiad" => {
       "private" => "http://${deploy_server_eqiad}/mediawiki/private",
@@ -27,6 +29,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "l10n-beta0" => "http://${deploy_server_eqiad}/mediawiki/l10n-beta0",
       "parsoid/Parsoid" => "http://${deploy_server_eqiad}/parsoid/Parsoid",
       "parsoid/config" => "http://${deploy_server_eqiad}/parsoid/config",
+      "eventlogging/EventLogging" => "http://${deploy_server_eqiad}/eventlogging/EventLogging",
     },
   }
   # Sed the .gitmodules file for the repo according to the following rules
@@ -51,6 +54,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "l10n-beta0" => {},
     "parsoid/Parsoid" => {},
     "parsoid/config" => {},
+    "eventlogging/EventLogging" => {},
   }
   # Call these salt modules after checkout of parent repo and submodules
   # TODO: turn this into a hash so that modules can specify args too
@@ -65,6 +69,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "l10n-beta0" => [],
     "parsoid/Parsoid" => ["parsoid.config_symlink","parsoid.restart_parsoid"],
     "parsoid/config" => ["parsoid.restart_parsoid"],
+    "eventlogging/EventLogging" => [],
   }
   # Should this repo also do a submodule update --init?
   $deployment_repo_checkout_submodules = {
@@ -78,6 +83,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "l10n-beta0" => "False",
     "parsoid/Parsoid" => "False",
     "parsoid/config" => "False",
+    "eventlogging/EventLogging" => "False",
   }
   $deployment_repo_locations = {
     "private" => "/srv/deployment/mediawiki/private",
@@ -90,6 +96,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
     "l10n-beta0" => "/srv/deployment/mediawiki/l10n-beta0",
     "parsoid/Parsoid" => "/srv/deployment/parsoid/Parsoid",
     "parsoid/config" => "/srv/deployment/parsoid/config",
+    "eventlogging/EventLogging" => "/srv/deployment/eventlogging/EventLogging",
   }
   # ensure dependent repos are fetched and checked out with this repo
   # repos fetched/checkedout in order
@@ -103,6 +110,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
 class role::deployment::salt_masters::production {
   $mediawiki_regex = "^(srv|mw|snapshot|tmh)|(searchidx2|searchidx1001).*.(eqiad|pmtpa).wmnet$|^(hume|spence|fenari).wikimedia.org$"
   $parsoid_regex = "^(wtp1|mexia|tola|lardner|kuo|celsus|constable|wtp1001|wtp1002|wtp1003|wtp1004|caesium|xenon|cerium|titanium)\..*"
+  $eventlogging_regex = "^(vanadium).eqiad.wmnet$"
   $deployment_servers = {
     "pmtpa" => "tin.eqiad.wmnet",
     "eqiad" => "tin.eqiad.wmnet",
@@ -129,6 +137,7 @@ class role::deployment::salt_masters::production {
       "l10n-beta0"   => '^$',  # no master branch in production
       "parsoid/Parsoid" => $parsoid_regex,
       "parsoid/config" => $parsoid_regex,
+      "eventlogging/EventLogging" => $eventlogging_regex,
     },
     deployment_deploy_redis => {
       "host" => "tin.eqiad.wmnet",
@@ -141,6 +150,7 @@ class role::deployment::salt_masters::production {
 class role::deployment::salt_masters::labs {
   $mediawiki_regex = "^(i-000004ff|i-000004cc|i-0000031b|i-0000031a).pmtpa.wmflabs"
   $parsoid_regex = "^$"
+  $eventlogging_regex = "^$"
   $deployment_servers = {
     "pmtpa" => "i-00000390.pmtpa.wmflabs",
     # no eqiad zone, yet
@@ -168,6 +178,7 @@ class role::deployment::salt_masters::labs {
       "l10n-beta0"   => $mediawiki_regex,
       "parsoid/Parsoid" => $parsoid_regex,
       "parsoid/config" => $parsoid_regex,
+      "eventlogging/EventLogging" => $eventlogging_regex,
     },
     deployment_deploy_redis => {
       "host" => "i-00000390.pmtpa.wmflabs",
@@ -195,10 +206,11 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_dependencies_link { "l10n-beta0": target => "l10n" }
   deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
 
   class { "apache": }
-  class {"apache::mod::dav": }
-  class {"apache::mod::dav_fs": }
+  class { "apache::mod::dav": }
+  class { "apache::mod::dav_fs": }
 
   class { "applicationserver::packages": }
 
