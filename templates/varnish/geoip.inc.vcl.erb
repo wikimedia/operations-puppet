@@ -25,7 +25,7 @@ C{
 	GeoIP *gi;
 	void geo_init () {
 		if (!gi) {
-			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MEMORY_CACHE);
+			gi = GeoIP_open("/usr/share/GeoIP/GeoIPCity.dat", GEOIP_MMAP_CACHE);
 		}
 	}
 	getaddrfamily(const char *addr) {
