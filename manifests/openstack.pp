@@ -593,11 +593,11 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 			"/var/lib/nova/clientkey.pem":
 				ensure => link,
 				target => "/var/lib/nova/${certname}.key",
-				require => Install_additional_key["${fqdn}"];
+				require => Install_additional_key["${certname}"];
 			"/var/lib/nova/clientcert.pem":
 				ensure => link,
 				target => "/etc/ssl/certs/${certname}.pem",
-				require => Install_certificate["${fqdn}"];
+				require => Install_certificate["${certname}"];
 			"/var/lib/nova/cacert.pem":
 				ensure => link,
 				target => "/etc/ssl/certs/wmf-ca.pem",
