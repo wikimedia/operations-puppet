@@ -628,6 +628,7 @@ class misc::statistics::rsync::jobs {
 	}
 
 	# edit logs from locke
+	# TODO: Move this to gadolinium
 	misc::statistics::rsync_job { "edits":
 		source      => "locke.wikimedia.org::udp2log/archive/edits*.gz",
 		destination => "/a/squid/archive/edits",
