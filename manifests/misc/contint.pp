@@ -51,24 +51,24 @@ class misc::contint::test {
 
     file {
       '/var/lib/jenkins/.gitconfig':
-        mode => 0444,
-        owner => 'jenkins',
-        group => 'jenkins',
-        ensure => present,
-        source => 'puppet:///files/misc/jenkins/gitconfig',
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'jenkins',
+        group   => 'jenkins',
+        source  => 'puppet:///files/misc/jenkins/gitconfig',
         require => User['jenkins'];
     }
 
     file {
       '/var/lib/jenkins/.git':
-        mode   => 2775,  # group sticky bit
-        group  => 'jenkins',
-        ensure => directory;
+        ensure => directory,
+        mode   => '2775',  # group sticky bit
+        group  => 'jenkins';
       '/var/lib/jenkins/bin':
-        owner => 'jenkins',
-        group => 'wikidev',
-        mode => 0775,
-        ensure => directory;
+        ensure => directory,
+        owner  => 'jenkins',
+        group  => 'wikidev',
+        mode   => '0775';
     }
 
   }
