@@ -10,7 +10,7 @@ def infile(logs)
 		channels = channels.map {|channel| channel.sub(/^#?/,'#') }
 
 		# join all channels to a single string. separate them w/ commas
-		channels = channels.join(",")
+		channels = channels.sort.join(",")
 
 		# join the log name and (the already joined) channel list. separate them w/ a colon
 		"#{log}:#{channels}"
@@ -18,7 +18,7 @@ def infile(logs)
 
 	# join the whole list of logs to one big string.
 	# separate each log from the next with a semicolon.
-	logs = logs.join(";")
+	logs = logs.sort.join(";")
 
 	return logs
 end
@@ -34,7 +34,7 @@ def chans(logs)
 	channels = channels.uniq
 
 	# join all channels to a single string. separate them w/ commas
-	channels = channels.join(",")
+	channels = channels.sort.join(",")
 
 	return channels
 end
