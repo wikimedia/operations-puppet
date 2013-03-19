@@ -202,7 +202,7 @@ function reportFailure($text) {
 }
 
 function formatOutputHighestPrio($result) {
-        printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s\n %-20.20s | %-37.37s\n",
+        printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s | %-20.20s | %-37.37s\n",
                 "Product", "Component", "BugID", "Priority", "LastChange", "Assignee", "Summary" );
         printf ( "%-60s", "--------------------------------------------------------------" );
         print "\n";
@@ -210,9 +210,9 @@ function formatOutputHighestPrio($result) {
                 foreach ($row as $row_i) {
                         $row = str_replace ( '@', '[AT]', $row);
                 }
-                printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s\n %-20.20s | %-37.37s",
+                printf( "%-13.13s | %-13.13s | %5s | %-9.9s | %-10.10s | %-20.20s | %-37.37s",
                         $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6] );
-                print "\n";
+                print "\n\n";
         }
 }
 
