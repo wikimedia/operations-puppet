@@ -647,6 +647,14 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 		ensure => present;
 	}
 
+	# nova-compute adds the user with /bin/false, but resize, live migration, etc.
+	# need the nova use to have a real shell, as it uses ssh.
+	user { "nova":
+		ensure => present,
+		shell => "/bin/bash",
+		require => Package["nova-common"];
+	}
+
 	if $openstack_version == "essex" {
 		package { [ "nova-compute-kvm" ]:
 			ensure => present;
