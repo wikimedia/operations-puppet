@@ -1,0 +1,12 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/logrotate/puppet
+#####################################################################
+
+/var/log/puppet {
+    daily
+    compress 
+    missingok
+    notifempty
+    rotate 7
+}
