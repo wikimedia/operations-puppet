@@ -342,8 +342,16 @@ class role::cache {
 				},
 				'parsoid' => {
 					'pmtpa' => [ '10.4.0.33' ], # parsoid-spof
-				}
-			}
+				},
+				# 'upload' is unneeded in production. role::cache::upload references
+				# the LVS ip directly to set up the varnish backends.
+				'upload' => {
+					'pmtpa' => [
+						'10.4.0.166',  # deployment-apache32
+						'10.4.0.187',  # deployment-apache33
+					],
+				},
+			},
 		}
 	}
 
@@ -577,19 +585,31 @@ class role::cache {
 				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 			}
 
-			$varnish_be_directors = {
-				"pmtpa" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-				},
-				"eqiad" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-				},
-				"esams" => {
-					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
-				}
-			}
+			case $::realm {
+				'production': {
+					$varnish_be_directors = {
+						"pmtpa" => {
+							"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
+							"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+						},
+						"eqiad" => {
+							"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
+							"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+						},
+						"esams" => {
+							"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
+						}
+					}
+				}  # /production
+				'labs': {
+					$varnish_be_directors = {
+						'pmtpa' => {
+							'backend' => $role::cache::configuration::backends[$::realm]['upload'],
+							'rendering' => $role::cache::configuration::backends[$::realm]['rendering'],
+						},
+					}
+				}  # /labs
+			}  # /case $::realm
 
 			$backend_weight = 20
 			if $::site == "eqiad" {
