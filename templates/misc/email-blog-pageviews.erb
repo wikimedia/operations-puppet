@@ -1,7 +1,10 @@
-DATE=`date '+%Y-%m-%d'`;
+DATE=`date --date=yesterday +%Y-%m-%d`;
 OUTPUT=/tmp/blog_$DATE.tsv
 
-mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> -e "select count(event_requestUrl) as count, date(timestamp), event_requestUrl from WikimediaBlogVisit_5308166 where date(timestamp)=date('$DATE') group by event_requestUrl order by date(timestamp) desc, count desc;" > $OUTPUT
+echo "Page view count for the 24 hour period starting at midnight, $DATE UTC" > $OUTPUT
+echo "" >> $OUTPUT
+
+mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> -e "select count(event_requestUrl) as count, date(timestamp), event_requestUrl from WikimediaBlogVisit_5308166 where date(timestamp)=date('$DATE') group by event_requestUrl order by date(timestamp) desc, count desc;" >> $OUTPUT
 
 cat $OUTPUT | mailx -s "Daily Blog Pageviews" <%= recipient_email %>
 rm $OUTPUT
