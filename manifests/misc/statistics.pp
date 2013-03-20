@@ -705,3 +705,54 @@ class misc::statistics::cron_blog_pageviews {
 		minute  => 0,
 	}
 }
+
+
+# Class: misc::statistics::cron_mobile_apps_stats
+#
+# Sets up daily cron jobs to run a script which
+# generates csv datafiles from mobile apps statistics
+# then rsyncs those files to stat1001 so they can be served publicly
+class misc::statistics::cron_mobile_apps_stats {
+	include passwords::mysql::research
+
+	$folder            = '/usr/lib/limn-mobile-data'
+	$command           = '$folder/generate.py'
+	$config            = '$folder/mobile/'
+	$secure            = '/a/.my.cnf.research'
+	$rsync_from        = '/a/limn-public-data'
+	$output            = '$rsync_from/mobile/datafiles'
+	$gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git'
+	$gerrit_stats_user = $misc::statistics::user::username
+
+	$db_user           = $passwords::mysql::research::user
+	$db_pass           = $passwords::mysql::research::pass
+
+	git::clone { 'analytics/limn-mobile-data':
+		directory => $folder,
+		origin    => $gerrit_repo,
+		owner     => $gerrit_stats_user,
+		require   => [User[$gerrit_stats_user]],
+		ensure    => latest,
+	}
+
+	file { $secure:
+		owner   => $gerrit_stats_user,
+		group   => wikidev,
+		mode    => 0755,
+		content => template('misc/mysql-config-research.erb'),
+	}
+
+	file { $output:
+		owner  => $gerrit_stats_user,
+		group  => wikidev,
+		mode   => 0775,
+		ensure => directory,
+	}
+
+	cron { 'rsync_mobile_apps_stats':
+		command => 'python $command $config && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org:/var/www/limn-public-data/',
+		user    => $gerrit_stats_user,
+		hour    => 8,
+		minute  => 0,
+	}
+}
