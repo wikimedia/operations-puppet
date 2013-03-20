@@ -604,14 +604,20 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 				require => Install_certificate["${certname}"];
 			"/var/lib/nova/.ssh":
 				ensure => directory,
+				owner => "nova",
+				group => "nova",
 				mode => 0700,
 				require => Package["nova-common"];
 			"/var/lib/nova/.ssh/id_rsa":
 				source => "puppet:///private/ssh/nova/nova.key",
+				owner => "nova",
+				group => "nova",
 				mode => 0600,
 				require => File["/var/lib/nova/.ssh"];
 			"/var/lib/nova/.ssh/authorized_keys":
 				source => "puppet:///private/ssh/nova/nova.pub",
+				owner => "nova",
+				group => "nova",
 				mode => 0600,
 				require => File["/var/lib/nova/.ssh"];
 			"/etc/libvirt/libvirtd.conf":
