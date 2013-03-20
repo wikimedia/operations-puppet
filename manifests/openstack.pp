@@ -607,11 +607,11 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 				mode => 0700,
 				require => Package["nova-common"];
 			"/var/lib/nova/.ssh/id_rsa":
-				source => "private:///files/ssh/nova/nova.key",
+				source => "puppet:///private/ssh/nova/nova.key",
 				mode => 0600,
 				require => File["/var/lib/nova/.ssh"];
 			"/var/lib/nova/.ssh/authorized_keys":
-				source => "private:///files/ssh/nova/nova.pub",
+				source => "puppet:///private/ssh/nova/nova.pub",
 				mode => 0600,
 				require => File["/var/lib/nova/.ssh"];
 			"/etc/libvirt/libvirtd.conf":
