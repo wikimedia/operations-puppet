@@ -1210,6 +1210,11 @@ host labstore4 {
 	fixed-address 10.0.0.44;
 }
 
+host lanthanum {
+	hardware ethernet 90:B1:1C:00:A2:67;
+	fixed-address lanthanum.wikimedia.org;
+}
+
 host lardner {
 	hardware ethernet D4:AE:52:AD:59:99;
 	fixed-address lardner.pmtpa.wmnet;
