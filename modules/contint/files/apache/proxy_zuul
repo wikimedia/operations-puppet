@@ -4,8 +4,10 @@
 #####################################################################
 # vim: filetype=apache
 
-ProxyPass		/zuul/	http://localhost:8001/
-ProxyPassReverse	/zuul/	http://localhost:8001/
+ProxyPassMatch    ^(/zuul/status)$    http://localhost:8001/$1
+ProxyPassMatch    ^(/zuul/status\.json)$    http://localhost:8001/$1
+# No need for ProxyPassReverse since Zuul never redirect.
+
 ProxyRequests		Off
 
 # Local reverse proxy authorization override
