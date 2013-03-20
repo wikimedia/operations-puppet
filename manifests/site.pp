@@ -479,7 +479,7 @@ node /^db10(01|17|42|43|49|50)\.eqiad\.wmnet/ {
 		include mha::manager
 	}
 
-	if $hostname == "db1043" {
+	if $hostname =~ /^db10(43|49)/ {
 		class { role::coredb::s1 : mariadb => true }
 	} else {
 		include role::coredb::s1
