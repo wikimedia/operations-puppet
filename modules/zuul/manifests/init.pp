@@ -37,9 +37,19 @@ class zuul (
 			'python-gitdb',
 			'python-async',
 			'python-smmap',
+			'python-voluptuous',
 
 			'python-setuptools',
 	]
+
+	# We have packaged the python voluptuous module under
+	# operations/debs/python-voluptuous. Zuul does not work
+	# AT ALL with version 0.7 so make sure we have 0.6.x
+	apt::pin { 'python-voluptuous':
+		pin      => 'version 0.6*',
+		priority => '1001',
+		before   => Package['python-voluptuous'],
+	}
 
 	package { $packages:
 		ensure => present,
