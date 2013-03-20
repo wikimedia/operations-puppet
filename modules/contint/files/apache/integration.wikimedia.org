@@ -31,6 +31,14 @@ NameVirtualHost *:443
 
 	CustomLog /var/log/apache2/access.log combined
 
+	# Direct access to Zuul daemon
+	#
+	# Beware that /zuul/ directory is under integration/docroot.git so we cannot
+	# use a wildcard rewrite rule.
+	RewriteEngine on
+	RewriteRule ^/zuul/status$ http://127.0.0.1:8001/status [P]
+	RewriteRule ^/zuul/status.json$ http://127.0.0.1:8001/status.json [P]
+
 	<Directory />
 		Order Deny,Allow
 		AllowOverride All
