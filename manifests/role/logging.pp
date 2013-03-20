@@ -51,6 +51,17 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 		monitor_processes	=>	false,
 		monitor_packet_loss	=>	false,
 	}
+
+	cron { "mw-log-cleanup":
+		command => "/usr/local/bin/mw-log-cleanup",
+		user => root,
+		hour => 2
+	}
+
+	file { "/usr/local/bin/mw-log-cleanup":
+		source => "puppet:///files/misc/scripts/mw-log-cleanup",
+		mode => '0555'
+	}
 }
 
 class role::beta::logging::mediawiki {
