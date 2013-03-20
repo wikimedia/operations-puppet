@@ -97,7 +97,7 @@ class base::puppet($server="puppet", $certname=undef) {
 	}
 
 	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
-	
+
 	case $::realm {
 		'production': {
 			exec { "puppet snmp trap":
@@ -185,25 +185,31 @@ class base::puppet($server="puppet", $certname=undef) {
 
 	# Keep puppet running
 	cron {
+		puppet_run:
+			require => File[ [ "/etc/default/puppet" ] ],
+			command => 'sleep `$(( $RANDOM % 30 ))` && puppet agent --no-daemonize --one-time',
+			user => root,
+			minute => [0,30],
+			ensure => present;
 		restartpuppet:
 			require => File[ [ "/etc/default/puppet" ] ],
 			command => "/etc/init.d/puppet restart > /dev/null",
 			user => root,
-			# Restart every 4 hours to avoid the runs bunching up and causing an 
+			# Restart every 4 hours to avoid the runs bunching up and causing an
 			# overload of the master every 40 mins. This can be reverted back to a
 			# daily restart after we switch to puppet 2.7.14+ since that version
 			# uses a scheduling algorithm which should be more resistant to
 			# bunching.
 			hour => [0, 4, 8, 12, 16, 20],
 			minute => 37,
-			ensure => present;
+			ensure => absent;
 		remove-old-lockfile:
 			require => Package[puppet],
 			command => "[ -f /var/lib/puppet/state/puppetdlock ] && find /var/lib/puppet/state/puppetdlock -ctime +1 -delete",
 			user => root,
 			minute => 43,
-			ensure => present;
-	}	
+			ensure => absent;
+	}
 
 	# Report the last puppet run in MOTD
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "9.10") >= 0 {
@@ -281,7 +287,7 @@ class base::sysctl {
 			notify => Exec["/sbin/start procps"],
 			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
-		
+
 		# Disable IPv6 privacy extensions, we rather not see our servers hide
 		file { "/etc/sysctl.d/10-ipv6-privacy.conf":
 			ensure => absent
@@ -307,7 +313,7 @@ class base::standard-packages {
 		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 			package { lldpd: ensure => latest; }
 		}
-		
+
 		# DEINSTALL these packages
 		package { [ "mlocate" ]:
 			ensure => absent;
@@ -419,7 +425,7 @@ class base::instance-finish {
 }
 
 class base::vimconfig {
-	file { "/etc/vim/vimrc.local": 
+	file { "/etc/vim/vimrc.local":
 		owner => root,
 		group => root,
 		mode => 0444,
@@ -539,7 +545,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 			upstart_job { "${lom_serial_port}": require => File["/etc/init/${lom_serial_port}.conf"] }
 		}
 	}
-	
+
 	class generic {
 		class dell {
 			$lom_serial_port = "ttyS1"
@@ -574,7 +580,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 					notify => Exec["reload udev"],
 					tag => "thumper-udev";
 			}
-			
+
 			exec { "reload udev":
 				command => "/sbin/udevadm control --reload-rules",
 				refreshonly => true
@@ -584,14 +590,14 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 
 	class dell-c2100 inherits base::platform::generic::dell {
 		$lom_serial_speed = "115200"
-		
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	class dell-r300 inherits base::platform::generic::dell {
 		$lom_serial_speed = "57600"
-		
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	class sun-x4500 inherits base::platform::generic::sun {
@@ -608,7 +614,7 @@ exec /sbin/getty -L ${lom_serial_port} ${$lom_serial_speed} vt102
 	}
 
 	class cisco-C250-M1 inherits base::platform::generic::cisco {
-		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }		
+		class { "common": lom_serial_port => $lom_serial_port, lom_serial_speed => $lom_serial_speed }
 	}
 
 	case $::productname {
@@ -666,7 +672,7 @@ class base::tcptweaks {
 		group => root,
 		ensure => present;
 	}
-	
+
 	exec { "/etc/network/if-up.d/initcwnd":
 		require => File["/etc/network/if-up.d/initcwnd"],
 		subscribe => File["/etc/network/if-up.d/initcwnd"],
