@@ -45,6 +45,13 @@ class zuul (
 		ensure => present,
 	}
 
+	# We have packaged the python voluptuous module under
+	# operations/debs/python-voluptuous. Zuul does not work
+	# AT ALL with version 0.7 so make sure we have 0.6.x
+	package { 'python-voluptuous':
+		ensure => '0.6.1-1',
+	}
+
 	# Used to be in /var/lib/git/zuul but /var/lib/git can be used
 	# to replicate git bare repositories.
 	$zuul_source_dir = '/usr/local/src/zuul'
