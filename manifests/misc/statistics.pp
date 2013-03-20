@@ -567,13 +567,23 @@ class misc::statistics::rsyncd($hosts_allow = undef) {
 	# set up an rsync daemon service
 	include rsync::server
 
-	# set up an rsync module
-	# (in /etc/rsync.conf) for /a
+	# Set up an rsync module
+	# (in /etc/rsync.conf) for /a.
 	rsync::server::module { "a":
 		path        => "/a",
 		read_only   => "no",
 		list        => "yes",
-		# allow only statistics servers (stat1, stat1001)
+		hosts_allow => $hosts_allow,
+	}
+
+	# Set up an rsync module
+	# (in /etc/rsync.conf) for /var/www.
+	# This will allow $hosts_allow to host public data files
+	# from the default Apache VirtualHost.
+	rsync::server::module { "/var/www":
+		path        => "/var/www",
+		read_only   => "no",
+		list        => "yes",
 		hosts_allow => $hosts_allow,
 	}
 }
