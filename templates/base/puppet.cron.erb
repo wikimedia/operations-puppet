@@ -1,0 +1,4 @@
+## This file is managed by Puppet!
+## templates/base/puppet.cron.erb
+<% $crontime = scope.lookupvar('base::puppet::crontime') %>
+<%= $crontime %>,<%= $crontime.to_i + 30 %> * * * * root timeout -k 300 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
