@@ -294,6 +294,8 @@ class role::cache {
 
 		$backends = {
 			'production' => {
+				'apaches' => $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary],
+				'api' => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
 				'bits_appservers' => {
 					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
 					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
@@ -304,6 +306,14 @@ class role::cache {
 				},
 			},
 			'labs' => {
+				'apaches' => [
+					'10.4.0.166',  # deployment-apache32
+					'10.4.0.187',  # deployment-apache33
+				],
+				'api' => [
+					'10.4.0.166',  # deployment-apache32
+					'10.4.0.187',  # deployment-apache33
+				],
 				'bits_appservers' => [
 					'10.4.0.166',  # deployment-apache32
 					'10.4.0.187',  # deployment-apache33
@@ -637,8 +647,8 @@ class role::cache {
 			admin_port => 6083,
 			storage => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
 			directors => {
-				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['apaches'][$::mw_primary],
-				"api" => $lvs::configuration::lvs_service_ips[$::realm]['api'][$::mw_primary],
+				"backend" => $role::cache::configuration::backends[$::realm]['apaches'],
+				"api" => $role::cache::configuration::backends[$::realm]['api'],
 			},
 			director_options => {
 				'retries' => 2,
