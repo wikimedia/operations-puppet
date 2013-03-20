@@ -35,7 +35,6 @@ class svn::server {
 			owner => www-data,
 			group => www-data,
 			mode => 0755,
-			require => Package[apache2];
 		"/svnroot":
 			ensure => directory,
 			owner => root,
