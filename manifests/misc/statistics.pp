@@ -580,7 +580,7 @@ class misc::statistics::rsyncd($hosts_allow = undef) {
 	# (in /etc/rsync.conf) for /var/www.
 	# This will allow $hosts_allow to host public data files
 	# from the default Apache VirtualHost.
-	rsync::server::module { "/var/www":
+	rsync::server::module { "www":
 		path        => "/var/www",
 		read_only   => "no",
 		list        => "yes",
