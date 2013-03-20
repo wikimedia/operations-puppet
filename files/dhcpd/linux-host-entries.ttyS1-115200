@@ -2284,6 +2284,51 @@ host mw125 {
 	fixed-address mw125.pmtpa.wmnet;
 }
 
+host mw126 {
+	hardware ethernet 90:B1:1C:27:8D:C6;
+	fixed-address mw126.pmtpa.wmnet;
+}
+
+host mw127 {
+	hardware ethernet 90:B1:1C:28:DE:09;
+	fixed-address mw127.pmtpa.wmnet;
+}
+
+host mw128 {
+	hardware ethernet 90:B1:1C:23:24:61;
+	fixed-address mw128.pmtpa.wmnet;
+}
+
+host mw129 {
+	hardware ethernet 90:B1:1C:27:8C:FE;
+	fixed-address mw129.pmtpa.wmnet;
+}
+
+host mw130 {
+	hardware ethernet 90:B1:1C:27:A3:9C;
+	fixed-address mw130.pmtpa.wmnet;
+}
+
+host mw131 {
+	hardware ethernet 90:B1:1C:28:DA:84;
+	fixed-address mw131.pmtpa.wmnet;
+}
+
+host mw132 {
+	hardware ethernet 90:B1:1C:28:DB:6E;
+	fixed-address mw132.pmtpa.wmnet;
+}
+
+host mw133 {
+	hardware ethernet 90:B1:1C:0F:03:FA;
+	fixed-address mw133.pmtpa.wmnet;
+}
+
+host mw134 {
+	hardware ethernet 90:B1:1C:27:84:B8;
+	fixed-address mw134.pmtpa.wmnet;
+}
+
 host mw1001 {
 	hardware ethernet 84:2b:2b:78:2c:b4;
 	fixed-address mw1001.eqiad.wmnet;
