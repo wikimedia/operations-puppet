@@ -208,6 +208,14 @@ class misc::maintenance::wikidata {
 			ensure => present;
 	}
 
+    cron {
+        wikibase-dispatch-changes2:
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 420 2>&1 >> /var/log/wikidata/dispatcher2.log",
+			user => mwdeploy,
+			minute => "*/7",
+			ensure => present;
+	}
+
 	cron {
 		wikibase-poll-test2:
 			ensure => absent;
