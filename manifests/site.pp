@@ -1056,6 +1056,12 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 
 }
 
+node "lanthanum.wikimedia.org" {
+	include standard,
+		misc::irc-server,
+		misc::mediawiki-irc-relay
+}
+
 node "linne.wikimedia.org" {
 	interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
 	interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
