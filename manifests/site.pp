@@ -1694,6 +1694,12 @@ node /^mw(11[2-9]|12[0-5])\.pmtpa\.wmnet$/ {
 	include	nfs::upload
 }
 
+# mw126-134 are application servers (precise)
+node /^mw1(2[6-9]|3[0-4])\.pmtpa\.wmnet$/ {
+	include	role::applicationserver::appserver
+	include	nfs::upload
+}
+
 # mw1001-1016 are jobrunners (precise)
 node /^mw10(0[1-9]|1[0-6])\.eqiad\.wmnet$/ {
 	if $::hostname =~ /^mw100[12]$/ {
