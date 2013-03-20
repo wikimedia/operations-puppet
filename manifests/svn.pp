@@ -12,31 +12,30 @@ class svn::server {
 	}
 
 	file {
-		"/usr/local/bin/sillyshell":
+		'/usr/local/bin/sillyshell':
 			owner => root,
 			group => root,
 			mode  => 0555,
-			source => "puppet:///files/svn/sillyshell";
-		"/etc/apache2/sites-available/svn":
+			source => 'puppet:///files/svn/sillyshell';
+		'/etc/apache2/sites-available/svn':
 			owner => root,
 			group => root,
 			mode => 0444,
-			source => "puppet:///files/apache/sites/svn.wikimedia.org",
+			source => 'puppet:///files/apache/sites/svn.wikimedia.org',
 			notify => Service[apache2];
-		"/srv/org/wikimedia/svn":
+		'/srv/org/wikimedia/svn':
 			ensure => directory,
-			source => "puppet:///files/svn/docroot",
+			source => 'puppet:///files/svn/docroot',
 			owner => root,
 			group => svnadm,
 			mode  => 0664,
 			recurse => true;
-		"/var/cache/svnusers":
+		'/var/cache/svnusers':
 			ensure => directory,
 			owner => www-data,
 			group => www-data,
-			mode => 0755,
-			require => Package[apache2];
-		"/svnroot":
+			mode => 0755;
+		'/svnroot':
 			ensure => directory,
 			owner => root,
 			group => svn,
