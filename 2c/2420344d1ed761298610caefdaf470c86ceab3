@@ -1,0 +1,10 @@
+Code-Review+2: Lcarr <lcarr@wikimedia.org>
+Code-Review+1: Brion VIBBER <brion@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Yurik <yurik@wikimedia.org>
+Code-Review+1: Dr0ptp4kt <abaso@wikimedia.org>
+Submitted-by: Lcarr <lcarr@wikimedia.org>
+Submitted-at: Wed, 20 Mar 2013 22:52:31 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/54911
+Project: operations/puppet
+Branch: refs/heads/production
