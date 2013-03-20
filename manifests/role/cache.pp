@@ -306,10 +306,13 @@ class role::cache {
 					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
 					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
 				},
+				'image_scalers' => $lvs::configuration::lvs_service_ips['production']['rendering'],
 				'test_appservers' => {
 					'pmtpa' => [ "srv193.pmtpa.wmnet" ],
 					'eqiad' => [ "srv193.pmtpa.wmnet" ],
 				},
+				# 'upload' is unneeded in production. role::cache::upload references
+				# the LVS ip directly to set up the varnish backends.
 			},
 			'labs' => {
 				'apaches' => {
@@ -330,9 +333,21 @@ class role::cache {
 						'10.4.0.187',  # deployment-apache33
 					],
 				},
+				'image_scalers' => {
+					'pmtpa' => [
+						'10.4.0.166',  # deployment-apache32
+						'10.4.0.187',  # deployment-apache33
+					],
+				},
 				'test_appservers' => {
 					'pmtpa' => [ '10.4.0.166' ],
-				}
+				},
+				'upload' => {
+					'pmtpa' => [
+						'10.4.0.166',  # deployment-apache32
+						'10.4.0.187',  # deployment-apache33
+					],
+				},
 			}
 		}
 	}
@@ -400,19 +415,31 @@ class role::cache {
 				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload']["${::site}-varnish"] },
 			}
 
-			$varnish_be_directors = {
-				"pmtpa" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
-				},
-				"eqiad" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
-					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
-				},
-				"esams" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
-				}
-			}
+			case $::realm {
+				'production': {
+					$varnish_be_directors = {
+						"pmtpa" => {
+							"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
+							"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+						},
+						"eqiad" => {
+							"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
+							"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+						},
+						"esams" => {
+							"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
+						},
+					}
+				}  # /production
+				'labs': {
+					$varnish_be_directors = {
+						'pmtpa' => {
+							'backend' => $role::cache::configuration::backends[$::realm]['upload'][$::mw_primary],
+							'image_scalers' => $role::cache::configuration::backends[$::realm]['image_scalers'][$::mw_primary],
+						},
+					}
+				}  # /labs
+			}  # /case $::realm
 
 			if $::site == "eqiad" {
 				$storage_size_main = 100
