@@ -13,33 +13,33 @@ class svn::server {
 
 	file {
 		'/usr/local/bin/sillyshell':
-			owner => root,
-			group => root,
-			mode  => 0555,
+			owner => 'root',
+			group => 'root',
+			mode  => '0555',
 			source => 'puppet:///files/svn/sillyshell';
 		'/etc/apache2/sites-available/svn':
-			owner => root,
-			group => root,
-			mode => 0444,
+			owner => 'root',
+			group => 'root',
+			mode => '0444',
 			source => 'puppet:///files/apache/sites/svn.wikimedia.org',
 			notify => Service[apache2];
 		'/srv/org/wikimedia/svn':
 			ensure => directory,
 			source => 'puppet:///files/svn/docroot',
-			owner => root,
-			group => svnadm,
-			mode  => 0664,
+			owner => 'root',
+			group => 'svnadm',
+			mode  => '0664',
 			recurse => true;
 		'/var/cache/svnusers':
 			ensure => directory,
-			owner => www-data,
-			group => www-data,
-			mode => 0755;
+			owner => 'www-data',
+			group => 'www-data',
+			mode => '0755';
 		'/svnroot':
 			ensure => directory,
-			owner => root,
-			group => svn,
-			mode => 0775;
+			owner => 'root',
+			group => 'svn',
+			mode => '0775';
 	}
 
 	# hooks
@@ -58,23 +58,22 @@ class svn::server {
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
 
-	cron { "svnuser_generation":
-			command => "(cd /var/cache/svnusers && svn up) > /dev/null 2>&1",
-			require => Package[apache2],
-			user => "www-data",
+	cron { 'svnuser_generation':
+			command => '(cd /var/cache/svnusers && svn up) > /dev/null 2>&1',
+			user => 'www-data',
 			hour => 0,
 			minute => 0;
 	}
 
-	exec { "/usr/bin/svn co file:///svnroot/mediawiki/USERINFO svnusers":
-		creates => "/var/cache/svnusers/.svn",
-		cwd => "/var/cache",
-		user => "www-data",
-		require => File["/var/cache/svnusers"];
+	exec { '/usr/bin/svn co file:///svnroot/mediawiki/USERINFO svnusers':
+		creates => '/var/cache/svnusers/.svn',
+		cwd => '/var/cache',
+		user => 'www-data',
+		require => File['/var/cache/svnusers'];
 	}
 
 	class viewvc {
-		require "svn::server"
+		require svn::server
 
 		package { [ 'viewvc', 'graphviz', 'doxygen' ]:
 			ensure => latest;
@@ -82,19 +81,19 @@ class svn::server {
 
 		file {
 			"/etc/apache2/svn-authz":
-				owner => root,
-				group => root,
-				mode => 0444,
+				owner => 'root',
+				group => 'root',
+				mode => '0444',
 				source => "puppet:///private/svn/svn-authz";
 			"/etc/viewvc/viewvc.conf":
-				owner => root,
-				group => root,
-				mode => 0444,
+				owner => 'root',
+				group => 'root',
+				mode => '0444',
 				source => "puppet:///files/svn/viewvc.conf";
 			"/etc/viewvc/templates/revision.ezt":
-				owner => root,
-				group => root,
-				mode => 0444,
+				owner => 'root',
+				group => 'root',
+				mode => '0444',
 				source => "puppet:///files/svn/revision.ezt";
 		}
 	}
@@ -105,20 +104,20 @@ class svn::server {
 		file {
 			"/svnroot/bak":
 				ensure => directory,
-				owner => root,
-				group => svnadm,
-				mode => 0775,
+				owner => 'root',
+				group => 'svnadm',
+				mode => '0775',
 				require => File["/svnroot"];
 			"/usr/local/bin/svndump.php":
-				owner => root,
-				group => root,
-				mode => 0555,
+				owner => 'root',
+				group => 'root',
+				mode => '0555',
 				source => "puppet:///files/svn/svndump.php",
 				require => File["/svnroot/bak"];
 			}
 
 		cron {
-			svndump:
+			'svndump':
 				command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
 				require => File["/usr/local/bin/svndump.php"],
 				user => root,
@@ -156,14 +155,14 @@ class svn::server {
 		"/var/log/mwdocs.log":
 			owner => mwdocs,
 			ensure => absent,
-			group => svn,
-			mode => 0644;
+			group => 'svn',
+			mode => '0644';
 		"/var/mwdocs":
 			owner => mwdocs,
 			#ensure => directory,
 			ensure => absent,
-			group => svn,
-			mode => 0755;
+			group => 'svn',
+			mode => '0755';
 		"/home/mwdocs/phase3":
 			#ensure => link,
 			ensure => absent,
@@ -208,7 +207,7 @@ class svn::groups {
 
 class svn::client {
 
-	package { subversion:
+	package { 'subversion':
 		ensure => latest;
 	}
 
