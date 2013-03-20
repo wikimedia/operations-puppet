@@ -725,19 +725,19 @@ class misc::statistics::cron_blog_pageviews {
 class misc::statistics::limn::mobile_data_sync {
 	include passwords::mysql::research
 
-	$source_dir        = '/a/limn-mobile-data'
-	$command           = '$source_dir/generate.py'
-	$config            = '$source_dir/mobile/'
-	$mysql_credentials = '/a/.my.cnf.research'
-	$rsync_from        = '/a/limn-public-data'
-	$output            = '$rsync_from/mobile/datafiles'
-	$gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git'
+	$source_dir        = "/a/limn-mobile-data"
+	$command           = "$source_dir/generate.py"
+	$config            = "$source_dir/mobile/"
+	$mysql_credentials = "/a/.my.cnf.research"
+	$rsync_from        = "/a/limn-public-data"
+	$output            = "$rsync_from/mobile/datafiles"
+	$gerrit_repo       = "https://gerrit.wikimedia.org/r/p/analytics/limn-mobile-data.git"
 	$user              = $misc::statistics::user::username
 
 	$db_user           = $passwords::mysql::research::user
 	$db_pass           = $passwords::mysql::research::pass
 
-	git::clone { 'analytics/limn-mobile-data':
+	git::clone { "analytics/limn-mobile-data":
 		directory => $source_dir,
 		origin    => $gerrit_repo,
 		owner     => $user,
@@ -749,7 +749,7 @@ class misc::statistics::limn::mobile_data_sync {
 		owner   => $user,
 		group   => $user,
 		mode    => 0600,
-		content => template('misc/mysql-config-research.erb'),
+		content => template("misc/mysql-config-research.erb"),
 	}
 
 	file { $output:
@@ -759,10 +759,9 @@ class misc::statistics::limn::mobile_data_sync {
 		ensure => directory,
 	}
 
-	cron { 'rsync_mobile_apps_stats':
-		command => 'python $command $config && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/',
+	cron { "rsync_mobile_apps_stats":
+		command => "python $command $config && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/",
 		user    => $user,
-		hour    => 8,
 		minute  => 0,
 	}
 }
