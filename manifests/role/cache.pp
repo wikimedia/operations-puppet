@@ -399,7 +399,7 @@ class role::cache {
 				$cluster_tier = 1
 				$upstream_directors = {}
 			} else {
-				$storage_size_main = 500
+				$storage_size_main = 300
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad'] }
@@ -434,7 +434,10 @@ class role::cache {
 					'esams' => ["prefer_ipv6=on"],
 					default => [],
 				},
-				storage => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				storage => $::hostname ? {
+					/^cp30[0-9][0-9]$/ => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=file,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G"
+					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				},
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
