@@ -2475,7 +2475,8 @@ node "tin.eqiad.wmnet" {
 	include standard,
 		admins::roots,
 		admins::mortals,
-		role::deployment::deployment_servers::production
+		role::deployment::deployment_servers::production,
+		role::applicationserver::maintenance
 }
 
 node "tridge.wikimedia.org" {
