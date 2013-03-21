@@ -645,6 +645,7 @@ class role::cache {
 			},
 			vcl_config => {
 				'retry5xx' => 1,
+				'cache4xx' => "5m",
 			},
 			backend_options => {
 				'port' => 80,
