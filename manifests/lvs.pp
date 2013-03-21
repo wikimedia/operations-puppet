@@ -904,10 +904,10 @@ define monitor_service_lvs_custom ( $description="LVS", $ip_address, $port=80, $
 	@monitor_service { $title: host => $title, group => "lvs", description => $description, check_command => $check_command, critical => "true", retries => $retries }
 }
 
-define monitor_service_lvs_http ( $ip_address, $check_command, $critical="true" ) {
+define monitor_service_lvs_http ( $ip_address, $check_command, $critical="true", $contact_group="admins" ) {
 	# Virtual resource for the monitoring host
-	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true" }
-	@monitor_service { $title: host => $title, group => "lvs", description => "LVS HTTP IPv4", check_command => $check_command, critical => $critical }
+	@monitor_host { $title: ip_address => $ip_address, group => "lvs", critical => "true", contact_group => $contact_group }
+	@monitor_service { $title: host => $title, group => "lvs", description => "LVS HTTP IPv4", check_command => $check_command, critical => $critical, contact_group => $contact_group }
 }
 
 define monitor_service_lvs_https ( $ip_address, $check_command, $port=443, $critical="true" ) {
@@ -955,9 +955,9 @@ class lvs::monitor {
 	monitor_service_lvs_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
 	#monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
-	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000" }
-	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000" }
-	monitor_service_lvs_http { "parsoidcache.svc.pmtpa.wmnet": ip_address => "10.2.1.29", check_command => "check_http_on_port!6081" }
+	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
+	monitor_service_lvs_http { "parsoidcache.svc.pmtpa.wmnet": ip_address => "10.2.1.29", check_command => "check_http_on_port!6081", contact_group => "admins,parsoid" }
 
 	monitor_service_lvs_custom { "search-pool1.svc.pmtpa.wmnet": ip_address => "10.2.1.11", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
 	monitor_service_lvs_custom { "search-pool2.svc.pmtpa.wmnet": ip_address => "10.2.1.12", port => 8123, description => "LVS Lucene", check_command => "check_lucene" }
