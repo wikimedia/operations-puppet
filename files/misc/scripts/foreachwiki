@@ -1,4 +1,19 @@
 #!/bin/bash
 
 . /usr/local/lib/mw-deployment-vars.sh
-exec "$(dirname "$0")/foreachwikiindblist" "$MW_DBLISTS_SOURCE/all.dblist" "${@}"
+
+. $MW_COMMON_SOURCE/multiversion/MWRealm.sh
+
+case "$WMF_REALM" in
+	'labs')
+		ALL_DBLIST='all-labs.dblist'
+		;;
+	'production')
+		ALL_DBLIST='all.dblist'
+		;;
+	*)  # Safety? :-)
+		ALL_DBLIST='all.dblist'
+		;;
+esac
+
+exec "$(dirname "$0")/foreachwikiindblist" "$MW_DBLISTS_SOURCE/$ALL_DBLIST" "${@}"
