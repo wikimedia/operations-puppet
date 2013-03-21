@@ -91,6 +91,12 @@ class base::puppet($server="puppet", $certname=undef) {
 		ensure => latest;
 	}
 
+	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+		package {"timeout":
+			ensure => latest;
+		}
+	}
+
 	# monitoring via snmp traps
 	package { [ "snmp" ]:
 		ensure => latest;
