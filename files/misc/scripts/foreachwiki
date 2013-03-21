@@ -1,4 +1,9 @@
 #!/bin/bash
 
 . /usr/local/lib/mw-deployment-vars.sh
-exec "$(dirname "$0")/foreachwikiindblist" "$MW_DBLISTS_SOURCE/all.dblist" "${@}"
+
+. $MW_COMMON_SOURCE/multiversion/MWRealm.sh
+
+ALL_DBLIST=$(getRealmSpecificFilename $MW_DBLISTS_SOURCE'/all.dblist')
+
+exec "$(dirname "$0")/foreachwikiindblist" "$ALL_DBLIST" "${@}"
