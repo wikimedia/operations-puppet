@@ -963,22 +963,23 @@ node "hume.wikimedia.org" {
 		nfs::netapp::home,
 		nfs::upload,
 		misc::deployment::scap_scripts,
-		misc::maintenance::foundationwiki,
-		misc::maintenance::pagetriage,
-		misc::maintenance::refreshlinks,
-		misc::maintenance::translationnotifications,
-		misc::maintenance::wikidata,
-		misc::maintenance::tor_exit_node,
-		misc::maintenance::echo_mail_batch,
-		misc::maintenance::update_flaggedrev_stats,
-		misc::maintenance::update_special_pages,
-		misc::maintenance::parsercachepurging,
-		misc::maintenance::geodata,
-		misc::maintenance::cleanup_upload_stash,
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
 		nrpe
+
+	class { misc::maintenance::foundationwiki: enabled => true }
+	class { misc::maintenance::pagetriage: enabled => true }
+	class { misc::maintenance::refreshlinks: enabled => true }
+	class { misc::maintenance::translationnotifications: enabled => true }
+	class { misc::maintenance::wikidata: enabled => true }
+	class { misc::maintenance::tor_exit_node: enabled => true }
+	class { misc::maintenance::echo_mail_batch: enabled => true }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
+	class { misc::maintenance::update_special_pages: enabled => true }
+	class { misc::maintenance::parsercachepurging: enabled => true }
+	class { misc::maintenance::geodata: enabled => true }
+	class { misc::maintenance::cleanup_upload_stash: enabled => true }
 
 }
 
@@ -2466,6 +2467,31 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		accounts::datasets,
 		nfs::data,
 		groups::wikidev
+}
+
+node "terbium.eqiad.wmnet" {
+	include role::applicationserver::maintenance,
+		nfs::netapp::home,
+		nfs::upload,
+		misc::deployment::scap_scripts,
+		admins::roots,
+		admins::mortals,
+		admins::restricted,
+		nrpe
+
+	class { misc::maintenance::foundationwiki: enabled => false }
+	class { misc::maintenance::pagetriage: enabled => false }
+	class { misc::maintenance::refreshlinks: enabled => false }
+	class { misc::maintenance::translationnotifications: enabled => false }
+	class { misc::maintenance::wikidata: enabled => false }
+	class { misc::maintenance::tor_exit_node: enabled => false }
+	class { misc::maintenance::echo_mail_batch: enabled => false }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
+	class { misc::maintenance::update_special_pages: enabled => false }
+	class { misc::maintenance::parsercachepurging: enabled => false }
+	class { misc::maintenance::geodata: enabled => false }
+	class { misc::maintenance::cleanup_upload_stash: enabled => false }
+
 }
 
 node "tin.eqiad.wmnet" {
