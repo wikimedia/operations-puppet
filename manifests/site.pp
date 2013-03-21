@@ -2468,6 +2468,21 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 		groups::wikidev
 }
 
+node "terbium.eqiad.wmnet" {
+	$cluster = "misc"
+
+	include role::applicationserver::maintenance,
+		nfs::netapp::home,
+		nfs::upload,
+		misc::deployment::scap_scripts,
+		admins::roots,
+		admins::mortals,
+		admins::restricted,
+		nrpe
+
+}
+
+
 node "tin.eqiad.wmnet" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
