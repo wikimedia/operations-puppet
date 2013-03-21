@@ -87,7 +87,7 @@ class base::puppet($server="puppet", $certname=undef) {
 
 	include passwords::puppet::database
 
-	package { [ "puppet", "facter" ]:
+	package { [ "puppet", "facter", "coreutils" ]:
 		ensure => latest;
 	}
 
