@@ -7,7 +7,7 @@ Written by Mark Bergsma <mark@wikimedia.org>
 """
 
 from subprocess import Popen, PIPE
-import json, os, sys
+import json, sys
 
 stats_cache = {}
 varnishstat_path = "/usr/bin/varnishstat"
@@ -21,7 +21,7 @@ def metric_init(params):
 
 	instances = params.get('instances', "").split(',')
 	try:
-		instances[instances.index('')] = os.uname()[1]
+		instances[instances.index('')] = "varnish"
 	except ValueError:
 		pass
 
@@ -42,7 +42,7 @@ def metric_init(params):
 				'slope': slope,
 				'format': '%u',
 				'description': properties['description'].encode('ascii'),
-				'groups': "varnish " + instance
+				'groups': "varnish " + (instance == "varnish" and "(default instance)" or instance)
 			}
 			metrics.append(metric_properties)
 
@@ -61,7 +61,9 @@ def get_stats():
 	global stats_cache, instances, GAUGE_METRICS
 
 	for instance in instances:
-		stats_cache[instance] = json.load(Popen([varnishstat_path, "-1", "-j", "-n", instance], stdout=PIPE).stdout)
+		params = [varnishstat_path, "-1", "-j"]
+		if instance != 'varnish': params += ["-n", instance]
+		stats_cache[instance] = json.load(Popen(params, stdout=PIPE).stdout)
 
 	return stats_cache
 
