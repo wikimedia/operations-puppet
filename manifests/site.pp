@@ -710,7 +710,7 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	$ircecho_logs = { "/var/log/logmsg" => ["#wikimedia-tech","#wikimedia-operations"] }
+	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-operations" }
 	$ircecho_nick = "logmsgbot"
 	$ircecho_server = "chat.freenode.net"
 
