@@ -346,6 +346,7 @@ class gerrit::ircbot {
 		"${ircecho_logbase}/wikimedia-dev.log"           => "#wikimedia-dev",
 		"${ircecho_logbase}/semantic-mediawiki.log"      => ["#semantic-mediawiki", "#mediawiki"],
 		"${ircecho_logbase}/wikidata.log"                => "#wikimedia-wikidata",
+		"${ircecho_logbase}/wikimedia-analytics.log"     => "#wikimedia-analytics",
 	}
 	$ircecho_nick = "gerrit-wm"
 	$ircecho_server = "chat.freenode.net"
