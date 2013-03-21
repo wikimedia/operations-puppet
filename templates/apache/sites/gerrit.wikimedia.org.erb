@@ -61,6 +61,7 @@ NameVirtualHost *:443
 		AllowOverride None
 		Order deny,allow
 		deny from env=bad_browser
+		deny from 208.110.84.34
 	</Directory>
 	<Directory /var/www/>
 		Options Indexes FollowSymLinks MultiViews
