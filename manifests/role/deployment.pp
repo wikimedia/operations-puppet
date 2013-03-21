@@ -189,7 +189,9 @@ class role::deployment::salt_masters::labs {
 }
 
 class role::deployment::deployment_servers::common {
-  include misc::deployment::scripts
+  # Temp hack to make maintenance scripts work on tin
+  #include misc::deployment::scripts
+  include misc::deployment::scap_scripts
 
   class { "deployment::deployment_server": }
 
