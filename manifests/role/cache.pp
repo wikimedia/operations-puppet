@@ -154,8 +154,9 @@ class role::cache {
 						'cp1036.eqiad.wmnet',
 					],
 					"esams-varnish" => [	# FIXME: rename after Squid decommissioning
-					'cp3009.esams.wikimedia.org',
-					'cp3010.esams.wikimedia.org',
+						'cp3003.esams.wikimedia.org',
+						'cp3009.esams.wikimedia.org',
+						'cp3010.esams.wikimedia.org',
 					],
 					"esams" => [
 						'knsq16.knams.wikimedia.org',
