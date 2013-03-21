@@ -2,3 +2,4 @@
 ## templates/base/puppet.cron.erb
 <% $crontime = scope.lookupvar('base::puppet::crontime') %>
 <%= $crontime %>,<%= $crontime.to_i + 30 %> * * * * root timeout 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
+@reboot root timeout 1800 puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff >> /var/log/puppet.log 2>&1
