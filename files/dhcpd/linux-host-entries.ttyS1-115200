@@ -4478,6 +4478,11 @@ host tellurium {
 	fixed-address tellurium.eqiad.wmnet;
 	}
 
+host terbium {
+	hardware ethernet 90:B1:1C:25:9D:72;
+	fixed-address terbium.eqiad.wmnet;
+	}
+
 host tin {
 	hardware ethernet 90:b1:1c:00:a4:1d;
 	fixed-address tin.eqiad.wmnet;
