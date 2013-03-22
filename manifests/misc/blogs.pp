@@ -63,7 +63,6 @@ class misc::blogs::wikimedia {
 	}
 	# send blog access logs to udp2log instances.
 	varnish::logging { "locke" :           listener_address => "208.80.152.138" }
-	varnish::logging { "gadolinium" :      listener_address => "208.80.154.73" }
 	varnish::logging { "emery" :           listener_address => "208.80.152.184" }
 	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419" }
 
