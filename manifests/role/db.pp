@@ -35,21 +35,15 @@ class role::db::sanitarium {
 
     include role::db::sanitarium::base
 
-    class { mysql::config :
-      port              => $port,
-      config_file       => "/etc/my.cnf.$port",
-      socket            => "/tmp/mysql.$port.sock",
-      pidfile           => "/a/sqldata.$port/mysql.pid",
-      datadir           => "/a/sqldata.$port/",
-      multi_instance    => true,
-    }
-
     class { mysql::server :
       package_name     => 'mariadb-server-5.5',
       config_hash      => {
-        'client' => {
-
-        }
+        port              => $port,
+        config_file       => "/etc/my.cnf.$port",
+        socket            => "/tmp/mysql.$port.sock",
+        pidfile           => "/a/sqldata.$port/mysql.pid",
+        datadir           => "/a/sqldata.$port/",
+        multi_instance    => true,
       }
     }
 
