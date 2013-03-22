@@ -149,6 +149,18 @@ class lucene {
 				source => "puppet:///files/lucene/lucene.jobs.sh";
 		}
 
+		upstart_job { 'wmf-lucene-incupdate': install => true }
+
+		service { 'wmf-lucene-incupdate':
+			require => [
+				File['/a/search/lucene.jobs.sh'],
+				Upstart_job['wmf-lucene-incupdate'],
+				Systemuser['lsearch'],
+			],
+			provider => upstart,
+			ensure => running,
+		}
+
 		cron {
 			snapshot:
 				require => File["/a/search/lucene.jobs.sh"],
