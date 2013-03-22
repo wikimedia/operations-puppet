@@ -24,6 +24,18 @@ class role::db::sanitarium {
    class { mysql :
     package_name => 'mariadb-client-5.5'
    }
+
+    systemuser {
+      "mysql": name => "mysql", shell => "/bin/sh", home => "/home/mysql"
+    }
+    file {
+      "/a/tmp/":
+        owner => mysql,
+        group => mysql,
+        mode => 0755,
+        ensure => directory,
+        require => User["mysql"];
+    }
   }
 
   define instance(
@@ -36,8 +48,10 @@ class role::db::sanitarium {
     include role::db::sanitarium::base
 
     class { mysql::server :
+      alias            => "mysql::server-${port}",
       package_name     => 'mariadb-server-5.5',
       config_hash      => {
+        alias            => "mysql::config-${port}",
         port              => $port,
         config_file       => "/etc/my.cnf.$port",
         socket            => "/tmp/mysql.$port.sock",
@@ -47,12 +61,8 @@ class role::db::sanitarium {
       }
     }
 
-    systemuser {
-      "mysql": name => "mysql", shell => "/bin/sh", home => "/home/mysql"
-    }
-
     file {
-      ["/a/sqldata.${port}/", "/a/tmp"]:
+      "/a/sqldata.${port}/":
         owner => mysql,
         group => mysql,
         mode => 0755,
