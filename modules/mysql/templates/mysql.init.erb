@@ -215,7 +215,7 @@ then
   print_defaults="$bindir/mysql_print_defaults"
 else
   # Try to find basedir in /etc/my.cnf
-  conf=<%= $mysql::config::config_file  %>
+  conf=/etc/my.cnf.<%= port  %>
   print_defaults=
   if test -r $conf
   then
