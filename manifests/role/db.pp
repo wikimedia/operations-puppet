@@ -48,10 +48,8 @@ class role::db::sanitarium {
     include role::db::sanitarium::base
 
     class { mysql::server :
-      alias            => "mysql::server-${port}",
       package_name     => 'mariadb-server-5.5',
       config_hash      => {
-        alias            => "mysql::config-${port}",
         port              => $port,
         config_file       => "/etc/my.cnf.$port",
         socket            => "/tmp/mysql.$port.sock",
