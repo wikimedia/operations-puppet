@@ -51,7 +51,7 @@ class role::db::sanitarium {
       owner => root,
       group => root,
       mode => 0555,
-      source => "puppet:///modules/mysql/mysql.init.erb"
+      content => template('mysql/mysql.init.erb');
     }
 
     mysql::server::config {"my.cnf.${port}" :
