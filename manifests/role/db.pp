@@ -47,11 +47,22 @@ class role::db::sanitarium {
       }
     }
 
-    file { "/etc/init.d/mysql-${port}":
-      owner => root,
-      group => root,
-      mode => 0555,
-      content => template('mysql/mysql.init.erb');
+    systemuser {
+      "mysql": name => "mysql", shell => "/bin/sh", home => "/home/mysql"
+    }
+
+    file {
+      ["/a/sqldata/", "/a/tmp"]:
+        owner => mysql,
+        group => mysql,
+        mode => 0755,
+        ensure => directory,
+        require => User["mysql"];
+      "/etc/init.d/mysql-${port}":
+        owner => root,
+        group => root,
+        mode => 0555,
+        content => template('mysql/mysql.init.erb');
     }
 
     mysql::server::config {"my.cnf.${port}" :
