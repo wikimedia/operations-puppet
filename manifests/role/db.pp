@@ -30,8 +30,8 @@ class role::db::sanitarium {
     $port
     ){
 
-    $serverid = inline_template("<%= (ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + $port; return server_id) %>")
-    $ram      = inline_template("<%= ram = memorysize.split[0]; ram = Float(ram) * 0.75; ram = ram.round; ram = String(ram); return ram %>G")
+    $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + $port; server_id %>")
+    $ram      = inline_template("<%= ram = memorysize.split[0]; ram = Float(ram) * 0.75; ram = ram.round; ram = String(ram); ram %>G")
 
     include role::db::sanitarium::base
 
