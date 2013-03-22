@@ -50,7 +50,7 @@ max_allowed_packet = 16M
 [isamchk]
 key_buffer    = 16M
 <% if multi_instance == true -%>
-!include /etc/mysql/conf.d/my.cnf.$port
+!include /etc/mysql/conf.d/my.cnf.<%= port %>
 <% else %>
 !includedir /etc/mysql/conf.d/
 <% end -%>
