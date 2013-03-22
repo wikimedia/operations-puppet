@@ -4,7 +4,24 @@ OUTPUT=/tmp/blog_$DATE.tsv
 echo "Page view count for the 24 hour period starting at midnight, $DATE UTC" > $OUTPUT
 echo "" >> $OUTPUT
 
-mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> -e "select count(event_requestUrl) as count, date(timestamp), event_requestUrl from WikimediaBlogVisit_5308166 where date(timestamp)=date('$DATE') group by event_requestUrl order by date(timestamp) desc, count desc;" >> $OUTPUT
+mysql log -h <%= db_host %> -p<%= db_pass %> -u<%= db_user %> -e "
+SELECT
+	COUNT(event_requestUrl) AS count,
+	DATE(timestamp),
+	event_requestUrl,
+	SUBSTRING_INDEX(SUBSTRING_INDEX(SUBSTRING_INDEX(event_referrerUrl, '/', 3), '/', -1), '.', -2) AS referer
+FROM WikimediaBlogVisit_5308166
+	WHERE DATE(timestamp)=DATE('$DATE')
+	AND event_requestUrl NOT LIKE '/?s=%'
+	AND event_requestUrl NOT LIKE '/?p=%'
+GROUP BY
+	event_requestUrl, referer
+ORDER BY
+	DATE(timestamp) DESC,
+	event_requestUrl,
+	count DESC;" >> $OUTPUT
+
+
 
 cat $OUTPUT | mailx -s "Daily Blog Pageviews" <%= recipient_email %>
 rm $OUTPUT
