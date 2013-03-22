@@ -58,11 +58,11 @@ acl carrier_celcom_malaysia {
 	"203.82.93.0"/24;
 	"203.82.94.0"/24;
 	"183.171.0.0"/18;
-        "203.82.85.32"/28;
-        "203.82.66.192"/28;
-        "183.171.160.0"/21;
-        "183.171.168.0"/21;
-        "183.171.176.0"/22;
+	"203.82.85.32"/28;
+	"203.82.66.192"/28;
+	"183.171.160.0"/21;
+	"183.171.168.0"/21;
+	"183.171.176.0"/22;
 }
 
 acl carrier_dialog_sri_lanka {
@@ -229,18 +229,18 @@ acl carrier_telenor_montenegro {
 }
 
 acl carrier_xl_indonesia {
-    "112.215.63.0"/24;
-    "112.215.64.0"/24;
-    "112.215.65.0"/24;
-    "112.215.66.0"/24;
-    "202.152.240.0"/24;
-    "202.152.243.0"/24;
+	"112.215.63.0"/24;
+	"112.215.64.0"/24;
+	"112.215.65.0"/24;
+	"112.215.66.0"/24;
+	"202.152.240.0"/24;
+	"202.152.243.0"/24;
 }
 
 acl carrier_vimpelcom_beeline {
-    /* Testing range */
-    "83.220.236.0"/22;
-    "217.118.66.143";
+	/* Testing range */
+	"83.220.236.0"/22;
+	"217.118.66.143";
 }
 
 # for test.* routing, FIXME
@@ -360,7 +360,7 @@ sub tag_carrier {
 		}
 	}
 
-	/* once actuall in prod, ensure users can't make requests
+	/* once actually in prod, ensure users can't make requests
 	with a fake X-Carrier header */
 	/* else {
 		unset req.http.X-Carrier;
@@ -551,6 +551,8 @@ sub vcl_recv {
 			error 666 "http://bn.zero.wikipedia.org";
 		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
 			error 666 "http://ar.m.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Vimpelcom Beeline" ) {
+			error 666 "http://ru.m.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:ZeroRatedMobileAccess";
 		} else {
 			error 666 "http://en.m.wikipedia.org" + req.url;
 		}
@@ -571,6 +573,8 @@ sub vcl_recv {
 			error 666 "http://th.zero.wikipedia.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:ZeroRatedMobileAccess";
 		} else if ( req.http.X-Carrier == "Dialog Sri Lanka" ) {
 			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+		} else if ( req.http.X-Carrier == "Vimpelcom Beeline" ) {
+			error 666 "http://ru.zero.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:ZeroRatedMobileAccess";
 		}
 	}
 
