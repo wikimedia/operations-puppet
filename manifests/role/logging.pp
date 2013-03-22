@@ -76,32 +76,53 @@ class role::logging::udp2log {
 
 # gadolinium udp2log instance(s)
 class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
-	file { '/a/log':
+	# need file_mover account for fundraising logs
+	include accounts::file_mover
+
+	$log_directory             = '/a/log'
+	$webrequest_log_directory  = "$log_directory/webrequest"
+	$fundraising_log_directory = "$log_directory/fundraising"
+
+	file { $log_directory:
 		ensure => 'directory',
 	}
-	$log_directory = '/a/log/webrequest'
 
 	# install custom filters
-	file { "$log_directory/bin":
+	file { "$webrequest_log_directory/bin":
 		ensure => directory,
 		mode   => 0755,
 		owner  => 'udp2log',
 		group  => 'udp2log',
 	}
-	file { "$log_directory/bin/vu.awk":
+	file { "$webrequest_log_directory/bin/vu.awk":
 		ensure => 'file',
 		source => 'puppet:///files/udp2log/vu.awk',
 		mode   => 0755,
 		owner  => 'udp2log',
 		group  => 'udp2log',
 	}
-	file { "$log_directory/bin/minnesota.awk":
+	file { "$webrequest_log_directory/bin/minnesota.awk":
 		ensure => 'file',
 		source => 'puppet:///files/udp2log/minnesota.awk',
 		mode   => 0755,
 		owner  => 'udp2log',
 		group  => 'udp2log',
 	}
+	
+	# gadolinium keeps fundraising logs in a subdir
+	file { "$fundraising_log_directory":
+		ensure => directory,
+		mode   => 0775,
+		owner  => 'udp2log',
+		group  => 'file_mover',
+	}
+	file { "$fundraising_log_directory/logs":
+		ensure => directory,
+		mode   => 0775,
+		owner  => 'udp2log',
+		group  => 'file_mover',
+	}
+	
 	# Don't forget:
 	# - 5xx-filter from udplog repository
 	# - webstatscollector filter and collector
@@ -109,6 +130,8 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 
 	# webrequest udp2log instance
 	misc::udp2log::instance { 'gadolinium':
+		# gadolinium consumes from the multicast stream relay (from oxygen)
+		multicast     => true,
 		log_directory => $log_directory,
 		require       => File['/a/log'],
 	}

@@ -484,7 +484,6 @@ class role::cache {
 			}
 
 			varnish::logging { "locke" :           listener_address => "208.80.152.138" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { "gadolinium" :      listener_address => "208.80.154.73" ,  cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 			varnish::logging { "emery" :           listener_address => "208.80.152.184" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 
@@ -688,7 +687,6 @@ class role::cache {
 		}
 
 		varnish::logging { "locke" :           listener_address => "208.80.152.138", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { "gadolinium" :      listener_address => "208.80.154.73" , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "emery" :           listener_address => "208.80.152.184", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 	}
