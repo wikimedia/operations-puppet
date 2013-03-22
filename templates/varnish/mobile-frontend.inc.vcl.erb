@@ -261,102 +261,128 @@ sub tag_carrier {
 	*/
 	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.X-Subdomain = "ZERO";
-		if ( client.ip ~ carrier_celcom_malaysia ) {
+	} else {
+		set req.http.X-Subdomain = "M";
+	}
+
+	/* Please keep this list alphabetized by the ACL variable */
+	if (client.ip ~ carrier_celcom_malaysia) {
+		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-Carrier = "Celcom Malaysia";
 			set req.http.X-CS = "502-13";
-		} else if ( client.ip ~ carrier_hello_cambodia ) {
-			set req.http.X-Carrier = "Hello Cambodia";
-			set req.http.X-CS = "456-02";
-		} else if (client.ip ~ wmf_office) {
-			set req.http.X-Carrier = "wikimedia";
-			set req.http.X-CS = "WMF";
-		} else if (client.ip ~ carrier_digi) {
-			if ( req.http.User-Agent ~ "Opera" ) {
+		}
+	} else if (client.ip ~ carrier_dialog_sri_lanka) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "Dialog Sri Lanka";
+			set req.http.X-CS = "413-02";
+		}
+	} else if (client.ip ~ carrier_digi) {
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.User-Agent ~ "Opera") {
 				set req.http.X-Carrier = "DIGI";
 				set req.http.X-CS = "502-16";
 			}
-		} else if (client.ip ~ carrier_dialog_sri_lanka) {
-			set req.http.X-Carrier = "Dialog Sri Lanka";
-			set req.http.X-CS = "413-02";
-		} else if (client.ip ~ carrier_dtac) {
+		}
+	} else if (client.ip ~ carrier_dtac) {
+		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-Carrier = "DTAC";
 			set req.http.X-CS = "520-18";
-		} else if (client.ip ~ carrier_tata) {
-			set req.http.X-Carrier = "TATA";
-			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
-			set req.http.X-CS = "405-0*";
-		} else if (client.ip ~ carrier_telenor_montenegro) {
-			set req.http.X-Carrier = "Telenor Montenegro";
-			set req.http.X-CS = "297-01";
-		} else if (client.ip ~ carrier_grameenphone_bangladesh) {
-			if ( req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+		}
+	} else if (client.ip ~ carrier_grameenphone_bangladesh) {
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Grameenphone Bangladesh";
 				set req.http.X-CS = "470-01";
 			}
-		} else if (client.ip ~ carrier_saudi_telecom) {
-			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Saudi Telecom";
-				set req.http.X-CS = "420-01";
-			}
-		} else if (client.ip ~ carrier_xl_indonesia) {
-			if ( req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "XL Axiata";
-				set req.http.X-CS = "510-11";
-			}
-		} else if (client.ip ~ carrier_vimpelcom_beeline) {
-			if ( req.http.host ~ "(^(en|ru)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Vimpelcom Beeline";
-				set req.http.X-CS = "250-99";
-			}
 		}
-	} else {
-		set req.http.X-Subdomain = "M";
-		if ( client.ip ~ carrier_orange_botswana ) {
-			 set req.http.X-Carrier = "Orange Botswana";
+	} else if (client.ip ~ carrier_hello_cambodia) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "Hello Cambodia";
+			set req.http.X-CS = "456-02";
+		}
+	} else if (client.ip ~ carrier_orange_botswana) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Botswana";
 			set req.http.X-CS = "652-02";
-		} else if ( client.ip ~  carrier_orange_congo ) {
-			set req.http.X-Carrier = "Orange Congo";
-			set req.http.X-CS = "630-86";
-		} else if ( client.ip ~  carrier_orange_ivory_coast ) {
-			set req.http.X-Carrier = "Orange Ivory Coast";
-			set req.http.X-CS = "612-03";
-		} else if (client.ip ~ carrier_saudi_telecom) {
-			if ( req.http.host ~ "(^(ar|en|ur|bn|tl)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Saudi Telecom";
-				set req.http.X-CS = "420-01";
-			}
-		} else if ( client.ip ~  carrier_orange_uganda ) {
-			if ( req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Orange Uganda";
-				set req.http.X-CS = "641-14";
-			}
-		} else if ( client.ip ~  carrier_orange_tunisia ) {
-			if ( req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Orange Tunisia";
-				set req.http.X-CS = "605-01";
-			}
-		} else if ( client.ip ~  carrier_orange_niger ) {
-				set req.http.X-Carrier = "Orange Niger";
-				set req.http.X-CS = "614-04";
-		} else if ( client.ip ~ carrier_orange_kenya ) {
-				set req.http.X-Carrier = "Orange Kenya";
-				set req.http.X-CS = "639-07";
-		} else if ( client.ip ~  carrier_orange_cameroon ) {
-			if ( req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
+		}
+	} else if (client.ip ~ carrier_orange_cameroon) {
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Orange Cameroon";
 				set req.http.X-CS = "624-02";
 			}
-		} else if (client.ip ~ carrier_telenor_montenegro) {
-			set req.http.X-Carrier = "Telenor Montenegro";
-			set req.http.X-CS = "297-01";
-		} else if ( client.ip ~ carrier_testing ) {
+		}
+	} else if (client.ip ~ carrier_orange_congo) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Congo";
+			set req.http.X-CS = "630-86";
+		}
+	} else if (client.ip ~ carrier_orange_ivory_coast) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Ivory Coast";
+			set req.http.X-CS = "612-03";
+		}
+	} else if (client.ip ~ carrier_orange_kenya) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Kenya";
+			set req.http.X-CS = "639-07";
+		}
+	} else if (client.ip ~ carrier_orange_niger) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Niger";
+			set req.http.X-CS = "614-04";
+		}
+	} else if (client.ip ~ carrier_orange_tunisia) {
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Tunisia";
+				set req.http.X-CS = "605-01";
+			}
+		}
+	} else if (client.ip ~ carrier_orange_uganda) {
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Uganda";
+				set req.http.X-CS = "641-14";
+			}
+		}
+	} else if (client.ip ~ carrier_saudi_telecom) {
+		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Saudi Telecom";
+			set req.http.X-CS = "420-01";
+		}
+	} else if (client.ip ~ carrier_tata) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "TATA";
+			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
+			set req.http.X-CS = "405-0*";
+		}
+	} else if (client.ip ~ carrier_telenor_montenegro) {
+		set req.http.X-Carrier = "Telenor Montenegro";
+		set req.http.X-CS = "297-01";
+	} else if (client.ip ~ carrier_vimpelcom_beeline) {
+		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Vimpelcom Beeline";
+			set req.http.X-CS = "250-99";
+		}
+	} else if (client.ip ~ carrier_xl_indonesia) {
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "XL Axiata";
+				set req.http.X-CS = "510-11";
+			}
+		}
+	/* Please keep the above list alphabetized by the ACL variable */
+	/* Testing ranges */
+	} else if (client.ip ~ carrier_testing) {
+		if (req.http.X-Subdomain == "M") {
 			set req.http.X-Carrier = "wikimedia";
 			set req.http.X-CS = "WMF";
-		} else if (client.ip ~ carrier_vimpelcom_beeline) {
-			if ( req.http.host ~ "(^(en|ru)\.m|^m)\.([a-zA-Z0-9-]+)\.org" ) {
-				set req.http.X-Carrier = "Vimpelcom Beeline";
-				set req.http.X-CS = "250-99";
-			}
+		}
+	} else if (client.ip ~ wmf_office) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "wikimedia";
+			set req.http.X-CS = "WMF";
 		}
 	}
 
