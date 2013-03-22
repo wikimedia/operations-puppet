@@ -21,7 +21,7 @@ class mysql::server (
   $service_provider = $mysql::params::service_provider,
   $config_hash      = {},
   $enabled          = true,
-  $manage_service   = true
+  $manage_service   = false
 ) inherits mysql::params {
 
   Class['mysql::server'] -> Class['mysql::config']
@@ -30,9 +30,27 @@ class mysql::server (
 
   create_resources( 'class', $config_class )
 
+  if $package_name =~ /mariadb/ {
+    file { "/etc/apt/sources.list.d/wikimedia-mariadb.list":
+      owner => root,
+      group => root,
+      mode => 0444,
+      source => "puppet:///modules/coredb_mysql/wikimedia-mariadb.list"
+    }
+    exec { "update_mysql_apt":
+      subscribe => File['/etc/apt/sources.list.d/wikimedia-mariadb.list'],
+      command => "/usr/bin/apt-get update",
+      refreshonly => true;
+    }
+  }
+
   package { 'mysql-server':
-    ensure => $package_ensure,
-    name   => $package_name,
+    ensure   => $package_ensure,
+    name     => $package_name,
+    require  => $package_name ? {
+      "mariadb-server-5.5" => File["/etc/apt/sources.list.d/wikimedia-mariadb.list"],
+      default => true,
+    }
   }
 
   if $enabled {
