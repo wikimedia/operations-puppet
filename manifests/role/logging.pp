@@ -72,36 +72,56 @@ class role::beta::logging::mediawiki {
 class role::logging::udp2log {
 	include misc::udp2log,
 		misc::udp2log::utilities
-}
 
-# gadolinium udp2log instance(s)
-class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
-	# need file_mover account for fundraising logs
-	include accounts::file_mover
-
-	$log_directory             = '/a/log'
-	$webrequest_log_directory  = "$log_directory/webrequest"
-	$fundraising_log_directory = "$log_directory/fundraising"
+	$log_directory               = '/a/log'
+	$webrequest_log_directory    = "$log_directory/webrequest"
+	$webrequest_filter_directory = "$webrequest_log_directory/bin"
 
 	file { $log_directory:
 		ensure => 'directory',
 	}
-
-	# install custom filters
-	file { "$webrequest_log_directory/bin":
+	file { $webrequest_log_directory: 
 		ensure => directory,
 		mode   => 0755,
 		owner  => 'udp2log',
 		group  => 'udp2log',
 	}
-	file { "$webrequest_log_directory/bin/vu.awk":
+
+	# install custom filters here
+	file { $webrequest_filter_directory:
+		ensure => directory,
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+
+	# Set up an rsync daemon module for udp2log logrotated
+	# archives.  This allows stat1 to copy logs from the
+	# logrotated archive directory
+	class { 'misc::udp2log::rsyncd':
+		path    => $log_directory,
+		require => File[$log_directory],
+	}
+}
+
+
+# gadolinium udp2log instance(s).
+# gadolinum hosts the 'gadolinium' udp2log instance,
+# as well as the nginx udp2log instance.
+class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
+	# need file_mover account for fundraising logs
+	include accounts::file_mover
+	# gadolinium keeps fundraising logs in a subdir
+	$fundraising_log_directory = "$log_directory/fundraising"
+
+	file { "$webrequest_filter_directory/vu.awk":
 		ensure => 'file',
 		source => 'puppet:///files/udp2log/vu.awk',
 		mode   => 0755,
 		owner  => 'udp2log',
 		group  => 'udp2log',
 	}
-	file { "$webrequest_log_directory/bin/minnesota.awk":
+	file { "$webrequest_filter_directory/minnesota.awk":
 		ensure => 'file',
 		source => 'puppet:///files/udp2log/minnesota.awk',
 		mode   => 0755,
@@ -109,7 +129,6 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		group  => 'udp2log',
 	}
 
-	# gadolinium keeps fundraising logs in a subdir
 	file { "$fundraising_log_directory":
 		ensure => directory,
 		mode   => 0775,
@@ -132,15 +151,20 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	misc::udp2log::instance { 'gadolinium':
 		# gadolinium consumes from the multicast stream relay (from oxygen)
 		multicast     => true,
-		log_directory => $log_directory,
-		require       => File['/a/log'],
+		log_directory => $webrequest_log_directory,
+		require       => File[$webrequest_log_directory],
 	}
 
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { 'misc::udp2log::rsyncd':
-		path    => $log_directory,
-		require => Misc::Udp2log::Instance['gadolinium'],
+	# nginx machines are configured to log to 
+	# gadolinium on port 8421.
+	# Since nginx logs are webrequest logs, save
+	# them in the same directory.
+	udp2log::instance { 'nginx':
+		port          => '8421',
+		log_directory => $webrequest_log_directory,
+		require       => File[$webrequest_log_directory],
+		# the gadolinium udp2log instance already
+		# log rotates for $webrequest_log_directory
+		log_rotate    => false,
 	}
 }
