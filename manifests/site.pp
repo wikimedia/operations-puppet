@@ -582,6 +582,9 @@ node /^db1053\.eqiad\.wmnet/ {
 	role::db::sanitarium::instance { "s1" :
 		port => 3306,
 	}
+	role::db::sanitarium::instance { "s2" :
+		port => 3307,
+	}
 }
 
 node /^db1054\.eqiad\.wmnet/ {
