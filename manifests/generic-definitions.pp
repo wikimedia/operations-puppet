@@ -572,6 +572,12 @@ class generic::gluster-client {
 		source => "puppet:///files/logrotate/glusterlogs",
 		owner => 'root',
 	}
+
+	# Gluster installs this but it doesn't work and breaks
+	# the behavior of /etc/logrotate.d/glusterlogs.
+	file { "/etc/logrotate.d/glusterfs-common":
+		ensure => absent,
+	}
 }
 
 class generic::gluster-server {
