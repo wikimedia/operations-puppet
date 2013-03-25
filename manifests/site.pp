@@ -813,7 +813,10 @@ node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 		accounts::datasets,
 		accounts::dandreescu
 
-	# set up the gadolinium udp2log webrequest instance.
+	# gadolinium hosts the separate nginx udp2log instance.
+	include role::logging::udp2log::nginx
+
+	# Set up the gadolinium udp2log webrequest instance.
 	include role::logging::udp2log::gadolinium
 
 	## NOTE:  This is still on locke.

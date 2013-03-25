@@ -74,25 +74,9 @@ class role::logging::udp2log {
 		misc::udp2log::utilities
 
 	$log_directory               = '/a/log'
-	$webrequest_log_directory    = "$log_directory/webrequest"
-	$webrequest_filter_directory = "$webrequest_log_directory/bin"
 
 	file { $log_directory:
 		ensure => 'directory',
-	}
-	file { $webrequest_log_directory:
-		ensure => directory,
-		mode   => 0755,
-		owner  => 'udp2log',
-		group  => 'udp2log',
-	}
-
-	# install custom filters here
-	file { $webrequest_filter_directory:
-		ensure => directory,
-		mode   => 0755,
-		owner  => 'udp2log',
-		group  => 'udp2log',
 	}
 
 	# Set up an rsync daemon module for udp2log logrotated
@@ -104,6 +88,16 @@ class role::logging::udp2log {
 	}
 }
 
+# nginx machines are configured to log to port 8421.
+class role::logging::udp2log::nginx inherits role::logging::udp2log {
+	$nginx_log_directory = "$log_directory/nginx"
+
+	misc::udp2log::instance { 'nginx':
+		port          => '8421',
+		log_directory => $nginx_log_directory,
+	}
+}
+
 
 # gadolinium udp2log instance(s).
 # gadolinium hosts the 'gadolinium' udp2log instance,
@@ -111,6 +105,19 @@ class role::logging::udp2log {
 class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	# need file_mover account for fundraising logs
 	include accounts::file_mover
+
+	# udp2log::instance will ensure this is created
+	$webrequest_log_directory    = "$log_directory/webrequest"
+
+	# install custom filters here
+	$webrequest_filter_directory = "$webrequest_log_directory/bin"
+	file { $webrequest_filter_directory:
+		ensure => directory,
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+
 	# gadolinium keeps fundraising logs in a subdir
 	$fundraising_log_directory = "$log_directory/fundraising"
 
@@ -152,19 +159,5 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		# gadolinium consumes from the multicast stream relay (from oxygen)
 		multicast     => true,
 		log_directory => $webrequest_log_directory,
-		require       => File[$webrequest_log_directory],
-	}
-
-	# nginx machines are configured to log to
-	# gadolinium on port 8421.
-	# Since nginx logs are webrequest logs, save
-	# them in the same directory.
-	misc::udp2log::instance { 'nginx':
-		port          => '8421',
-		log_directory => $webrequest_log_directory,
-		require       => File[$webrequest_log_directory],
-		# the gadolinium udp2log instance already
-		# log rotates for $webrequest_log_directory
-		log_rotate    => false,
 	}
 }
