@@ -450,7 +450,7 @@ node "db78.pmtpa.wmnet" {
 
 ## researchdb
 node /^db67\.pmtpa\.wmnet/ {
-	include role::coredb::researchdb
+	class { role::coredb::researchdb : mariadb => true }
 }
 
 ## pgehres special project
