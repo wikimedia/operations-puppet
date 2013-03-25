@@ -645,5 +645,10 @@ sub vcl_deliver {
 	} else {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
 	}
+
+	/* Temp test */
+	if (req.url == "/favicon.ico" || req.url ~ "^/w/index.php?title=.*Gadget-.*&[0-9]+$") {
+		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
+	}
 }
 
