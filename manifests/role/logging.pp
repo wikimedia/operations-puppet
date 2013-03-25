@@ -159,7 +159,7 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	# gadolinium on port 8421.
 	# Since nginx logs are webrequest logs, save
 	# them in the same directory.
-	udp2log::instance { 'nginx':
+	misc::udp2log::instance { 'nginx':
 		port          => '8421',
 		log_directory => $webrequest_log_directory,
 		require       => File[$webrequest_log_directory],
