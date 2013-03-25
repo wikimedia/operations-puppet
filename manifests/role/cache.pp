@@ -591,7 +591,7 @@ class role::cache {
 				port => "8422",
 				instance_name => "",
 				cli_args => '-m RxURL:^/event\.gif\?. -D',
-				log_fmt => "%q %l %n %t %h",
+				log_fmt => "%q	%l	%n	%t	%h",
 				monitor => false,
 			}
 			varnish::logging { "kraken" :
