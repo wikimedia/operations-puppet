@@ -35,11 +35,11 @@ define nrpe::check($command) {
 #    $ensure        - Default: "present"
 #
 define nrpe::monitor_service(
-	$description, 
-	$nrpe_command  = undef, 
-	$contact_group = "admins", 
-	$retries       = 3, 
-	$ensure        = "present") 
+	$description,
+	$nrpe_command  = undef,
+	$contact_group = "admins",
+	$retries       = 3,
+	$ensure        = "present")
 {
 	if $nrpe_command != undef {
 		nrpe::check { "check_${title}":
@@ -102,7 +102,7 @@ class nrpe::packages {
 			owner => root,
 			group => root,
 			mode => 0555,
-			source => "puppet:///files/nagios/check_dpkg";
+			source => "puppet:///files/icinga/check_dpkg";
 		"/etc/init.d/nagios-nrpe-server":
 			owner => root,
 			group => root,
