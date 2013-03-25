@@ -22,7 +22,7 @@ class media-storage::thumbs-server {
 	system_role { "media-storage::thumbs-server": description => "Thumbnail server" }
 
 	package { "nginx":
-		ensure => "0.7.65-1ubuntu2.1";
+		ensure => "present";
 	}
 
 	file {
