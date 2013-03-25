@@ -404,13 +404,25 @@ class base::monitoring::host($contact_group = "admins") {
 	case $::lsbdistid {
 		Ubuntu: {
 			# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
-			@monitor_service { "dpkg": description => "DPKG", check_command => "nrpe_check_dpkg", tag => nrpe }
+			#@monitor_service { "dpkg": description => "DPKG", check_command => "nrpe_check_dpkg", tag => nrpe }
+			nrpe::monitor_service { "check_dpkg" : description => "DPKG", nrpe_command  => "/usr/lib/nagios/plugins/check_dpkg" }
 		}
 	}
 
 	# Need NRPE. Define as virtual resources, then the NRPE class can pull them in
-	@monitor_service { "disk space": description => "Disk space", check_command => "nrpe_check_disk_6_3", tag => nrpe, contact_group => $contact_group }
-	@monitor_service { "raid": description => "RAID", check_command => "nrpe_check_raid", tag => nrpe, contact_group => $contact_group }
+	# @monitor_service { "disk space": description => "Disk space", check_command => "nrpe_check_disk_6_3", tag => nrpe, contact_group => $contact_group }
+	# @monitor_service { "raid": description => "RAID", check_command => "nrpe_check_raid", tag => nrpe, contact_group => $contact_group }
+	file { "/usr/bin/local/check-raid.py":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/icinga/check-raid.py",
+		ensure => present;
+	}
+
+	sudo_user { [ "nagios", "icinga" ]: privileges => ['ALL = NOPASSWD: /usr/bin/local/check-raid.py'] }
+	nrpe::monitor_service { "check_raid" : description => "RAID", nrpe_command  => "sudo /usr/bin/local/check-raid.py" }
+	nrpe::monitor_service { "check_disk_space" : description => "Disk space", nrpe_command  => "/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e" }
 }
 
 class base::decommissioned {
