@@ -176,41 +176,6 @@ define decommission_monitor_host {
 }
 
 
-class nagios::monitor::jobqueue {
-	include applicationserver::packages
-
-	file {"/usr/local/nagios/libexec/check_job_queue":
-		source => "puppet:///files/nagios/check_job_queue",
-		owner => root,
-		group => root,
-		mode => 0755;
-	}
-	monitor_service { "check_job_queue":
-		description => "check_job_queue",
-		check_command => "check_job_queue",
-		normal_check_interval => 15,
-		retry_check_interval => 5,
-		critical => "false"
-	}
-}
-
-# this class is used to check that paging works.
-class nagios::monitor::checkpaging {
-	file {"/usr/local/nagios/libexec/check_to_check_nagios_paging":
-		source => "puppet:///files/nagios/check_to_check_nagios_paging",
-		owner => root,
-		group => root,
-		mode => 0755;
-	}
-	monitor_service { "check_to_check_nagios_paging":
-		description => "check_to_check_nagios_paging",
-		check_command => "check_to_check_nagios_paging",
-		normal_check_interval => 1,
-		retry_check_interval => 1,
-		contact_group => "pager_testing",
-		critical => "false"
-	}
-}
 
 class nagios::ganglia::ganglios {
 	include generic::mysql::packages::client,

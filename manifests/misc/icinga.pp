@@ -112,7 +112,7 @@ class icinga::monitor::checkpaging {
   require icinga::monitor::packages
 
   file {'/usr/lib/nagios/plugins/check_to_check_nagios_paging':
-    source => 'puppet:///files/nagios/check_to_check_nagios_paging',
+    source => 'puppet:///files/icinga/check_to_check_nagios_paging',
     owner  => 'root',
     group  => 'root',
     mode   => '0755';
@@ -641,7 +641,7 @@ class icinga::monitor::jobqueue {
   include applicationserver::packages
 
   file {'/usr/lib/nagios/plugins/check_job_queue':
-    source => 'puppet:///files/nagios/check_job_queue',
+    source => 'puppet:///files/icinga/check_job_queue',
     owner => 'root',
     group => 'root',
     mode => '0755';
