@@ -576,6 +576,11 @@ class icinga::monitor::files::nagios-plugins {
       owner => 'root',
       group => 'root',
       mode => '0755';
+    '/usr/lib/nagios/plugins/check_ram.sh':
+      source => 'puppet:///files/icinga/check_ram.sh',
+      owner => 'root',
+      group => 'root',
+      mode => '0755';
   }
 
   # some default configuration files conflict and should be removed

@@ -176,28 +176,6 @@ define decommission_monitor_host {
 }
 
 
-
-class nagios::ganglia::ganglios {
-	include generic::mysql::packages::client,
-		ganglia::collector
-
-	package { "ganglios":
-		ensure => latest;
-	}
-	cron { "ganglios-cron":
-		command => "test -w /var/log/ganglia/ganglia_parser.log && /usr/sbin/ganglia_parser",
-		user => nagios,
-		minute => "*/2",
-		ensure => present;
-	}
-	file { "/var/lib/ganglia/xmlcache":
-		ensure => directory,
-		mode => 0755,
-		owner => nagios;
-	}
-}
-
-
 class nagios::gsbmonitoring {
 	@monitor_host { "google": ip_address => "74.125.225.84" }
 
