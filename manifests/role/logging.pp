@@ -137,16 +137,18 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	}
 
 	file { "$fundraising_log_directory":
-		ensure => directory,
-		mode   => 0775,
-		owner  => 'udp2log',
-		group  => 'file_mover',
+		ensure  => directory,
+		mode    => 0775,
+		owner   => 'file_mover',
+		group   => 'udp2log',
+		require => Class['accounts::file_mover'],
 	}
 	file { "$fundraising_log_directory/logs":
-		ensure => directory,
-		mode   => 0775,
-		owner  => 'udp2log',
-		group  => 'file_mover',
+		ensure  => directory,
+		mode    => 0775,
+		owner   => 'file_mover',
+		group   => 'udp2log',
+		require => Class['accounts::file_mover'],
 	}
 
 	# Don't forget:
