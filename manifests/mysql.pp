@@ -458,7 +458,7 @@ class mysql_wmf::coredb::monitoring( $crit = false, $no_slave = false ) {
 				owner => root,
 				group => root,
 				mode => 0555,
-				source => "puppet:///files/nagios/percona";
+				source => "puppet:///files/icinga/percona";
 		}
 
 	monitor_service { "mysql disk space": description => "MySQL disk space", check_command => "nrpe_check_disk_6_3", critical => true }
