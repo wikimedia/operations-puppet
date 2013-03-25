@@ -13,14 +13,3 @@ sub vcl_fetch {
 		set beresp.ttl = 60 s;
 	}
 }
-
-sub vcl_deliver {
-	/* Cachable files delivered to the mobile frontends should be cached for
-	 * a short time only.
-	 */
-	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
-		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
-	} else {
-		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
-	}
-}
