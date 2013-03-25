@@ -647,7 +647,7 @@ sub vcl_deliver {
 	}
 
 	/* Temp test */
-	if (req.url == "/favicon.ico" || req.url ~ "^/w/index\.php\?title=.*:Gadget-.*&[0-9]+$") {
+	if (req.url == "/favicon.ico" || req.url ~ "^/apple-touch-icon(-precomposed)?\.png$" || req.url ~ "^/w/index\.php\?title=.*:Gadget-.*&[0-9]+$") {
 		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
 	}
 }
