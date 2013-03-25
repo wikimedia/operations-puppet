@@ -167,7 +167,7 @@ class mysql_wmf {
 				owner => root,
 				group => nagios,
 				mode => 0440,
-				content => template("nagios/nrpe_percona.cfg.erb"),
+				content => template("icinga/nrpe_percona.cfg.erb"),
 				notify => Service[nagios-nrpe-server];
 			"/usr/lib/nagios/plugins/percona":
 				ensure => directory,
@@ -450,7 +450,7 @@ class mysql_wmf::coredb::monitoring( $crit = false, $no_slave = false ) {
 				owner => root,
 				group => nagios,
 				mode => 0440,
-				content => template("nagios/nrpe_coredb_percona.cfg.erb"),
+				content => template("icinga/nrpe_coredb_percona.cfg.erb"),
 				notify => Service[nagios-nrpe-server];
 			"/usr/lib/nagios/plugins/percona":
 				ensure => directory,
