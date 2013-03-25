@@ -7,22 +7,22 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= webrequest_log_directory %>/packet-l
 
 ### 0.0001 of all udp2log messages
 # This log file is also on emery for redundancy
-file 1000 <%= webrequest_log_directory %>/sampled-1000.log.tsv
+file 1000 <%= webrequest_log_directory %>/sampled-1000.tsv.log
 
 ### All edits
-pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.log.tsv
+pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.tsv.log
 
 ### Mobile traffic filter
 # TODO: use mobile varnish frontend hostnames for
 # filtering rather than 'm.wikipedia.org' domain.
-pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> <%= webrequest_log_directory %>/mobile.log.tsv
+pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> <%= webrequest_log_directory %>/mobile.tsv.log
 
 ### Fundraising
 ## Landing pages
-pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.log.tsv
+pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.tsv.log
 
 ## Banner Impressions
-pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.log.tsv
+pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
 
 
 
@@ -47,6 +47,6 @@ pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Specia
 # pipe 1 /a/webstats/bin/filter | log2udp -h 127.0.0.1 -p 3815
 
 ### All 5xx error responses -- domas
-# TODO: /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.log.tsv
-# pipe 1 <%= webrequest_log_directory %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.log.tsv
+# TODO: /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
+# pipe 1 <%= webrequest_log_directory %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
 
