@@ -213,13 +213,8 @@ sub vcl_fetch {
 		return(restart);
 	}
 <% end -%>
-	if (beresp.status >= 400) {
-<% if vcl_config.fetch("cache4xx", "0") == "0" -%>
-		set beresp.ttl = 30s;
-		return(hit_for_pass);
-<% else -%>
+	if (beresp.status >= 400 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
 		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
-<% end -%>
 	}
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
