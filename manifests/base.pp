@@ -438,8 +438,8 @@ class base::monitoring::host($contact_group = "admins") {
 		ensure => present;
 	}
 
-	sudo_user { [ "nagios", "icinga" ]: privileges => ['ALL = NOPASSWD: /usr/bin/local/check-raid.py'] }
-	nrpe::monitor_service { "raid" : description => "RAID", nrpe_command  => "sudo /usr/bin/local/check-raid.py" }
+	sudo_user { [ "nagios", "icinga" ]: privileges => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'] }
+	nrpe::monitor_service { "raid" : description => "RAID", nrpe_command  => "sudo /usr/local/bin/check-raid.py" }
 	nrpe::monitor_service { "disk_space" : description => "Disk space", nrpe_command  => "/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e" }
 }
 
