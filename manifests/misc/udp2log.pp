@@ -300,7 +300,7 @@ class misc::udp2log::monitoring {
 		mode   => 0555,
 		owner  => root,
 		group  => root,
-		source => "puppet:///files/nagios/check_udp2log_log_age",
+		source => "puppet:///files/icinga/check_udp2log_log_age",
 	}	
 
 	file { "check_udp2log_procs":
@@ -308,7 +308,7 @@ class misc::udp2log::monitoring {
 		mode   => 0555,
 		owner  => root,
 		group  => root,
-		source => "puppet:///files/nagios/check_udp2log_procs",
+		source => "puppet:///files/icinga/check_udp2log_procs",
 	}
 
 	file { "PacketLossLogtailer.py":
