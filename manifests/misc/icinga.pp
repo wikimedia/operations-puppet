@@ -179,7 +179,7 @@ class icinga::monitor::configuration::files {
       mode    => '0644';
 
     '/etc/icinga/contactgroups.cfg':
-      source => 'puppet:///files/nagios/contactgroups.cfg',
+      source => 'puppet:///files/icinga/contactgroups.cfg',
       owner  => 'root',
       group  => 'root',
       mode   => '0644';
@@ -203,7 +203,7 @@ class icinga::monitor::configuration::files {
       mode   => '0644';
 
     '/etc/icinga/timeperiods.cfg':
-      source => 'puppet:///files/nagios/timeperiods.cfg',
+      source => 'puppet:///files/icinga/timeperiods.cfg',
       owner  => 'root',
       group  => 'root',
       mode   => '0644';
