@@ -610,6 +610,7 @@ sub vcl_recv {
 
 	if ( req.http.host ~ "^test\." ) {
 		set req.backend = test_wikipedia;
+		return (pass);
 	}
 
 	call device_detection;
@@ -626,11 +627,6 @@ sub vcl_fetch {
 	set beresp.http.X-CS = req.http.X-CS;
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
-	}
-
-	# don't cache test.m
-	if ( req.http.host ~ "^test\." ) {
-		return(hit_for_pass);
 	}
 }
 
