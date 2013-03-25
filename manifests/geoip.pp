@@ -141,6 +141,7 @@ class geoip::data::sync($data_directory = "/usr/share/GeoIP", $source = "puppet:
 	file { "$data_directory":
 		source  => "$source",
 		recurse => true,
+		backup => false
 	}
 }
 
