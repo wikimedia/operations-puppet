@@ -617,8 +617,8 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	/* Cap the cache TTL to 300s on frontends */
-	if (beresp.ttl > 300) {
-		set beresp.ttl = 300;
+	if (beresp.ttl > 300s) {
+		set beresp.ttl = 300s;
 	}
 
 	set beresp.http.X-Device = req.http.X-Device;
