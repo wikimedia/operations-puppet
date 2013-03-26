@@ -118,8 +118,7 @@ $wgWBSettings['localClientDatabases'] = array( 'enwiki' => 'client' );
 
 // Load Balancer
 $wgLBFactoryConf = array(
-	// In order to seamlessly access a remote wiki, as the pollForChanges script needs to do,
-	// LBFactory_Multi must be used.
+	// In order to seamlessly access a remote wiki, LBFactory_Multi must be used.
 	'class' => 'LBFactory_Multi',
 
 	// Connect to all databases using the same credentials.

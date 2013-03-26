@@ -41,7 +41,7 @@ $wgWBSettings['repoScriptPath'] = "/w";
 
 // The global site ID by which this wiki is known on the repo.
 $wgWBSettings['siteGlobalID'] = "<%=siteGlobalID%>";
-// Database name of the repository, for use by the pollForChanges script.
+// Database name of the repository, for the propagation of changes.
 // This requires the given database name to be known to LBFactory, see
 // $wgLBFactoryConf below.
 $wgWBSettings['changesDatabase'] = "repo";
