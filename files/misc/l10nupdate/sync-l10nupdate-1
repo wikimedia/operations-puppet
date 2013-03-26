@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script belongs in /usr/local/bin/.
+. /usr/local/lib/mw-deployment-vars.sh
+
 MWVER="$1"
 
 if [ -z "$MWVER" ]; then
@@ -7,9 +9,9 @@ if [ -z "$MWVER" ]; then
 	exit 1
 fi
 
-echo "Synchronizing /home/wikipedia/common/php-$MWVER/cache/l10n to /usr/local/apache/common-local/php-$MWVER/cache/l10n..."
+echo "Synchronizing $MW_COMMON_SOURCE/php-$MWVER/cache/l10n to $MW_COMMON/php-$MWVER/cache/l10n..."
 echo "mediawiki-installation:"
 
 # Set forklimit to 30 (-F 30) to prevent NFS from getting overloaded causing some machines to be skipped
 dsh -o -oPasswordAuthentication=no -F 30 -cM -g mediawiki-installation \
-  "sudo -u mwdeploy rsync -a 10.0.5.8::common/php-$MWVER/cache/l10n/ /usr/local/apache/common-local/php-$MWVER/cache/l10n"
+  "sudo -u mwdeploy rsync -a $MW_RSYNC_HOST::common/php-$MWVER/cache/l10n/ $MW_COMMON/php-$MWVER/cache/l10n"
