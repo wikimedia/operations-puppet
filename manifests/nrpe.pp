@@ -128,18 +128,4 @@ class nrpe::service {
 		hasrestart => true,
 		ensure => running;
 	}
-
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { "/etc/sudoers.d/nrpe":
-			owner => root,
-			group => root,
-			mode => 0440,
-			content => "
-nagios	ALL = (root) NOPASSWD: /usr/bin/check-raid.py
-icinga	ALL = (root) NOPASSWD: /usr/bin/check-raid.py
-nagios	ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-icinga	ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-";
-		}
-	}
 }

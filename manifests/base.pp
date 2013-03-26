@@ -432,6 +432,22 @@ class base::monitoring::host($contact_group = "admins") {
 		nrpe::monitor_service { "raid" : description => "RAID", nrpe_command  => "sudo /usr/local/bin/check-raid.py" }
 		nrpe::monitor_service { "disk_space" : description => "Disk space", nrpe_command  => "/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e" }
 		nrpe::monitor_service { "dpkg" : description => "DPKG", nrpe_command  => "/usr/lib/nagios/plugins/check_dpkg" }
+
+		## this is only needed for the raid checks.
+		## should be able to move into sudo_user def above once puppet is caught up
+		if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
+			file { "/etc/sudoers.d/nrpe":
+				owner => root,
+				group => root,
+				mode => 0440,
+				content => "
+nagios  ALL = (root) NOPASSWD: /usr/bin/check-raid.py
+icinga  ALL = (root) NOPASSWD: /usr/bin/check-raid.py
+nagios  ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
+icinga  ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
+";
+			}
+		}
 	}
 }
 
