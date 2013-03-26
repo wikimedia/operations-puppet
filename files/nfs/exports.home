@@ -18,6 +18,7 @@
 /home	-rw,no_subtree_check \
 	208.80.152.165(no_root_squash) \
 	208.80.152.190(no_root_squash) \
+	10.64.32.13(no_root_squash) \
 	10.0.2.193 \
 	10.0.3.0/24 \
 	208.80.152.141 \
