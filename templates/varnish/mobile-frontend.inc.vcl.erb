@@ -238,9 +238,79 @@ acl carrier_xl_indonesia {
 }
 
 acl carrier_vimpelcom_beeline {
-	/* Testing range */
+	"213.252.195.0"/24;
+	"217.118.128.0"/17;
+	"217.118.64.32"/27;
+	"217.118.66.0"/24;
+	"217.118.78.0"/24;
+	"217.118.79.32"/28;
+	"217.118.81.0"/24;
+	"217.118.82.128"/25;
+	"217.118.82.16"/28;
+	"217.118.82.32"/28;
+	"217.118.82.64"/26;
+	"217.118.83.0"/24;
+	"217.118.85.0"/24;
+	"217.118.89.0"/24;
+	"217.118.90.0"/24;
+	"217.118.91.64"/26;
+	"217.118.92.0"/23;
+	"217.118.95.0"/24;
+	"217.118.96.0"/19;
+	"217.119.0.0"/18;
+	"217.119.64.0"/20;
+	"217.119.80.0"/21;
+	"217.119.88.0"/22;
+	"217.119.92.0"/23;
+	"217.119.94.0"/24;
+	"217.119.95.0"/25;
+	"217.119.95.128"/26;
+	"217.119.95.192";
+	"217.148.194.129";
+	"217.148.194.130"/31;
+	"217.148.194.132"/30;
+	"217.148.194.136"/30;
+	"217.148.194.140"/31;
+	"217.148.194.142";
+	"31.13.144.16"/28;
+	"31.13.144.2"/31;
+	"31.13.144.32"/28;
+	"31.13.144.4"/30;
+	"31.13.144.48"/29;
+	"31.13.144.56"/30;
+	"31.13.144.60"/31;
+	"31.13.144.62";
+	"31.13.144.8"/29;
+	"46.16.96.0"/21;
+	"62.33.151.0"/24;
+	"83.220.227.0"/24;
 	"83.220.236.0"/22;
-	"217.118.66.143";
+	"85.115.224.10"/31;
+	"85.115.224.12"/31;
+	"85.115.224.128"/27;
+	"85.115.224.14";
+	"85.115.224.193";
+	"85.115.224.194"/31;
+	"85.115.224.196"/30;
+	"85.115.224.200"/29;
+	"85.115.224.208"/29;
+	"85.115.224.216"/30;
+	"85.115.224.220"/31;
+	"85.115.224.222";
+	"85.115.224.225";
+	"85.115.224.226"/31;
+	"85.115.224.228"/30;
+	"85.115.224.232"/29;
+	"85.115.224.240"/29;
+	"85.115.224.248"/30;
+	"85.115.224.252"/31;
+	"85.115.224.254";
+	"85.115.224.9";
+	"85.115.243.32"/27;
+	"85.115.248.0"/24;
+	"87.228.75.156";
+	"89.179.104.235";
+	"89.188.224.136"/29;
 }
 
 # for test.* routing, FIXME
@@ -265,6 +335,9 @@ sub tag_carrier {
 		set req.http.X-Subdomain = "M";
 	}
 
+	// go to english by default
+	set req.http.X-DfltLang = "en";
+
 	/* Please keep this list alphabetized by the ACL variable */
 	if (client.ip ~ carrier_celcom_malaysia) {
 		if (req.http.X-Subdomain == "ZERO") {
@@ -284,11 +357,13 @@ sub tag_carrier {
 			}
 		}
 	} else if (client.ip ~ carrier_dtac) {
+		set req.http.X-DfltLang = "th";
 		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-Carrier = "DTAC";
 			set req.http.X-CS = "520-18";
 		}
 	} else if (client.ip ~ carrier_grameenphone_bangladesh) {
+		set req.http.X-DfltLang = "bn";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Grameenphone Bangladesh";
@@ -306,6 +381,7 @@ sub tag_carrier {
 			set req.http.X-CS = "652-02";
 		}
 	} else if (client.ip ~ carrier_orange_cameroon) {
+		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Orange Cameroon";
@@ -313,11 +389,13 @@ sub tag_carrier {
 			}
 		}
 	} else if (client.ip ~ carrier_orange_congo) {
+		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-Carrier = "Orange Congo";
 			set req.http.X-CS = "630-86";
 		}
 	} else if (client.ip ~ carrier_orange_ivory_coast) {
+		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-Carrier = "Orange Ivory Coast";
 			set req.http.X-CS = "612-03";
@@ -328,11 +406,13 @@ sub tag_carrier {
 			set req.http.X-CS = "639-07";
 		}
 	} else if (client.ip ~ carrier_orange_niger) {
+		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-Carrier = "Orange Niger";
 			set req.http.X-CS = "614-04";
 		}
 	} else if (client.ip ~ carrier_orange_tunisia) {
+		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Orange Tunisia";
@@ -347,6 +427,7 @@ sub tag_carrier {
 			}
 		}
 	} else if (client.ip ~ carrier_saudi_telecom) {
+		set req.http.X-DfltLang = "ar";
 		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-Carrier = "Saudi Telecom";
 			set req.http.X-CS = "420-01";
@@ -361,11 +442,13 @@ sub tag_carrier {
 		set req.http.X-Carrier = "Telenor Montenegro";
 		set req.http.X-CS = "297-01";
 	} else if (client.ip ~ carrier_vimpelcom_beeline) {
+		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-Carrier = "Vimpelcom Beeline";
 			set req.http.X-CS = "250-99";
 		}
 	} else if (client.ip ~ carrier_xl_indonesia) {
+		set req.http.X-DfltLang = "id";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "XL Axiata";
@@ -497,7 +580,7 @@ sub vcl_recv {
 		char *last;
 
 		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-		
+
 		if (xff_ip == NULL) {
 			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		}
@@ -512,6 +595,13 @@ sub vcl_recv {
 		set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
 	}
 
+	/* This call will always set the following req.http values:
+		X-Subdomain = M or ZERO
+		X-DfltLang = en|fr|ru|...
+	  These values are only set if the carrier has been successfully detected
+		X-Carrier = "Celcom Malaysia"
+		X-CS = "502-13"
+	*/
 	call tag_carrier;
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
@@ -552,59 +642,27 @@ sub vcl_recv {
 		unset req.http.Cookie;
 	}
 
-	if ( req.http.host == "m.wikipedia.org" ) {
-		if ( req.http.X-Carrier == "Orange Congo" ) {
-			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Botswana" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Ivory Coast" ) {
-			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Niger" ) {
-			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "wikimedia" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Uganda" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Tunisia" ) {
-			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Kenya" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Orange Cameroon" ) {
-			error 666 "http://fr.m.wikipedia.org/wiki/Sp%C3%A9cial:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Telenor Montenegro" ) {
-			error 666 "http://en.m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
-			error 666 "http://bn.zero.wikipedia.org";
-		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
-			error 666 "http://ar.m.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Vimpelcom Beeline" ) {
-			error 666 "http://ru.m.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:ZeroRatedMobileAccess";
+	// TODO / FIXME:
+	// * What should be redirect behavior for mobile.wikipedia.org
+	if (req.http.host == "m.wikipedia.org") {
+		if (req.http.X-Carrier) {
+			// Carrier detected
+			error 666 "http://" + req.http.X-DfltLang + ".m.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
 		} else {
+			// Regular m.* request, unknown carrier, navigate to english page with the same URL
 			error 666 "http://en.m.wikipedia.org" + req.url;
 		}
-	} else if ( req.http.host == "mobile.wikipedia.org" ) {
+	} else if (req.http.host == "zero.wikipedia.org") {
+		// All ZERO requests should go to the Special:ZeroRatedMobileAccess, even for unknown carrier
+		error 666 "http://" + req.http.X-DfltLang + ".zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
+	} else if (req.http.host == "mobile.wikipedia.org") {
 		error 666 "http://en.mobile.wikipedia.org" + req.url;
-	} else if ( req.http.host == "zero.wikipedia.org" ) {
-		if ( req.http.X-Carrier == "Hello Cambodia" ) {
-			error 666 "http://en.zero.wikipedia.org";
-		} else if ( req.http.X-Carrier == "Celcom Malaysia" ) {
-			error 666 "http://en.zero.wikipedia.org";
-		} else if ( req.http.X-Carrier == "Grameenphone Bangladesh" ) {
-			error 666 "http://bn.zero.wikipedia.org";
-		} else if ( req.http.X-Carrier == "Saudi Telecom" ) {
-			error 666 "http://ar.zero.wikipedia.org/wiki/%D8%AE%D8%A7%D8%B5:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "TATA" ) {
-			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if( req.http.X-Carrier == "DTAC" ) {
-			error 666 "http://th.zero.wikipedia.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Dialog Sri Lanka" ) {
-			error 666 "http://en.zero.wikipedia.org/wiki/Special:ZeroRatedMobileAccess";
-		} else if ( req.http.X-Carrier == "Vimpelcom Beeline" ) {
-			error 666 "http://ru.zero.wikipedia.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:ZeroRatedMobileAccess";
-		}
 	}
 
-	if ( req.url == "/" ) { 
+	// Don't need to redirect, unset default language
+	unset req.http.X-DfltLang;
+
+	if ( req.url == "/" ) {
 		set req.url = "/?useformat=mobile";
 	}
 
@@ -630,6 +688,10 @@ sub vcl_fetch {
 }
 
 sub vcl_error {
+	// At this point we no longer need the default language.
+	// Hope it doesn't barf if the header is not set.
+	unset req.http.X-DfltLang;
+
 	/* Support mobile redirects */
 	if (obj.status == 666) {
 		set obj.http.Location = obj.response;
