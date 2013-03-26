@@ -155,15 +155,21 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		require => Class['accounts::file_mover'],
 	}
 
-	# Don't forget:
-	# - 5xx-filter from udplog repository
-	# - webstatscollector filter and collector
-	# These are not puppetized :( :(
+	# gadolinium runs Domas' webstatscollector
+	package { 'webstatscollector': ensure => installed }
+	service { 'webstats-collector':
+		ensure     => running,
+		hasstatus  => false,
+		hasrestart => true,
+		require    => Package['webstatscollector'],
+	}
 
 	# webrequest udp2log instance
 	misc::udp2log::instance { 'gadolinium':
 		# gadolinium consumes from the multicast stream relay (from oxygen)
 		multicast     => true,
 		log_directory => $webrequest_log_directory,
+		require       => Package['webstatscollector'],
 	}
+	
 }
