@@ -31,18 +31,6 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.tab.log
 
 
-# Vrije Universiteit
-# Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
-pipe 10 awk -f /a/squid/vu.awk | log2udp -h 130.37.198.252 -p 9999
-
-
-# University of Minnesota
-# Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
-# Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
-# Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
-pipe 10 awk -f /a/squid/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
-
-
 
 # All 5xx error responses -- domas
 # TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
@@ -51,6 +39,20 @@ pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|que
 
 
 
+
+
+#### MOVED TO LOCKE:
+
+# Vrije Universiteit
+# Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
+# pipe 10 awk -f /a/squid/vu.awk | log2udp -h 130.37.198.252 -p 9999
+
+
+# University of Minnesota
+# Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
+# Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
+# Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
+# pipe 10 awk -f /a/squid/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 
 
 
