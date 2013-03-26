@@ -4,22 +4,7 @@
 
 class misc::deployment {
 	system_role { "misc::deployment": description => "Deployment host" }
-
-	$wp = '/home/wikipedia'
-
-	file {
-		"/h"         : ensure => link, target =>  "/home";
-		"/home/w"    : ensure => link, target =>  '/home/wikipedia';
-
-		"${wp}/b"   : ensure => link, target =>  "${wp}/bin";
-		"${wp}/c"   : ensure => link, target =>  "${wp}/common";
-		"${wp}/d"   : ensure => link, target =>  "${wp}/doc";
-		"${wp}/docs": ensure => link, target =>  "${wp}/doc";
-		"${wp}/h"   : ensure => link, target =>  "${wp}/htdocs";
-		"${wp}/l"   : ensure => link, target =>  "${wp}/logs";
-		"${wp}/log" : ensure => link, target =>  "${wp}/logs";
-		"${wp}/s"   : ensure => link, target =>  "${wp}/src";
-	}
+	include misc::deployment::scap_primary
 }
 
 # Scripts common to both git-deploy and scap
@@ -363,7 +348,7 @@ class misc::deployment::vars ($system = "git-deploy") {
 		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
 		$mw_common = "/usr/local/apache/common-local"
-		$mw_common_source = "/home/wikipedia/common"
+		$mw_common_source = "/a/common"
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
 	}
@@ -374,6 +359,10 @@ class misc::deployment::vars ($system = "git-deploy") {
 			mode => 0444,
 			content => template("misc/mw-deployment-vars.erb");
 	}
+}
+
+class misc::deployment::scap_primary {
+	class { 'generic::rsyncd': config => "scap-primary" }
 }
 
 class misc::deployment::scap_proxy {

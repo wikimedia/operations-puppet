@@ -1,6 +1,7 @@
 #!/bin/bash
 ## synchronizes a single file from common on all apaches
 
+. /usr/local/lib/mw-deployment-vars.sh
 BINDIR=/usr/local/bin
 
 [ $# -lt 1 ] && {
@@ -22,13 +23,13 @@ else
 	MESSAGE=
 fi
 
-[ -e "/home/wikipedia/common/$DIR" ] || {
-	echo >&2 "/home/wikipedia/common/$DIR does not exist!"
+[ -e "$MW_COMMON_SOURCE/$DIR" ] || {
+	echo >&2 "$MW_COMMON_SOURCE/$DIR does not exist!"
 	exit 1
 }
 
 # No use going any further if we can't complete the sync
-[ $(which ddsh 2>/dev/null) ] || {
+[ $(which dsh 2>/dev/null) ] || {
 	echo >&2 "no dsh on this host, aborting"
 	exit 1
 }
@@ -36,16 +37,15 @@ fi
 # copy file to all apaches in node mediawiki-installation
 echo >&2 "copying to apaches"
 
-# removed -p from cp, to prevent warnings when the file is not owned by the current user -- TS
-if [ -d "/home/wikipedia/common/$DIR" ]; then
-	DESTDIR=/apache/common-local/$DIR
-	ddsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
-		sudo -u mwdeploy rsync -a --delete --exclude=.svn --exclude=.git --exclude=cache/l10n --no-perms 10.0.5.8::common/$DIR/ $DESTDIR
+if [ -d "$MW_COMMON_SOURCE/$DIR" ]; then
+	DESTDIR=$MW_COMMON/$DIR
+	dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
+		sudo -u mwdeploy rsync -a --delete --exclude=.svn --exclude=.git --exclude=cache/l10n --no-perms $MW_RSYNC_HOST::common/$DIR/ $DESTDIR
 	"
 else
-	DESTDIR=$(dirname /apache/common-local/$DIR)
-	ddsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
-		sudo -u mwdeploy rsync -l 10.0.5.8::common/$DIR $DESTDIR
+	DESTDIR=$(dirname $MW_COMMON/$DIR)
+	dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
+		sudo -u mwdeploy rsync -l $MW_RSYNC_HOST::common/$DIR $DESTDIR
 	"
 fi
 

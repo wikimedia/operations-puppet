@@ -143,7 +143,7 @@ class misc::maintenance::translationnotifications( $enabled = inline_template("<
 class misc::maintenance::tor_exit_node( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
 	cron {
 		tor_exit_node_update:
-			command => "php /home/wikipedia/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force > /dev/null",
+			command => "/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null",
 			user => apache,
 			minute => '*/20',
 			ensure => $enabled ?{
@@ -171,7 +171,7 @@ class misc::maintenance::echo_mail_batch( $enabled = inline_template("<%= $::sit
 
 class misc::maintenance::update_flaggedrev_stats( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
 	file {
-		"/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
+		"/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
 			source => "puppet:///files/misc/scripts/wikimedia-periodic-update.sh",
 			owner => apache,
 			group => wikidev,
@@ -181,7 +181,7 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = inline_template("<%
 
 	cron {
 		update_flaggedrev_stats:
-			command => "/home/wikipedia/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
+			command => "/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
 			user => "apache",
 			hour => "*/2",
 			minute => "0",
