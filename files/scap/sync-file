@@ -12,13 +12,13 @@ FILE=$1
 shift
 
 # Sanity check
-if [ -d "/home/wikipedia/common/$FILE" ]; then
+if [ -d "$MW_COMMON_SOURCE/$FILE" ]; then
 	echo >&2 "Target file is a directory, not a single file"
 	exit 1
 fi
 
 # Perform syntax check
-php -l /home/wikipedia/common/$FILE || {
+php -l $MW_COMMON_SOURCE/$FILE || {
 	echo >&2 "Aborted due to syntax errors"
 	exit 1
 }

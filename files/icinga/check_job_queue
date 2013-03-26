@@ -13,7 +13,7 @@ do
 # The line below is a bash-ism that's needed for the LARGEQUEUES variable above to be in the right scope
 # If you do php ... | while read wiki count; do LARGEQUEUE=blah; done , then the LARGEQUEUE variable will
 # be manipulated in a subshell and the changes won't be visible to the if check below
-done < <( php /home/wikipedia/common/multiversion/MWScript.php extensions/WikimediaMaintenance/getJobQueueLengths.php )
+done < <( php /usr/local/apache/common/multiversion/MWScript.php extensions/WikimediaMaintenance/getJobQueueLengths.php )
 if [ -z "$LARGEQUEUES" ]; then
 	echo "JOBQUEUE OK - all job queues below 10,000"
 	exit 0

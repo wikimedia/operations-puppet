@@ -820,10 +820,6 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-operations" }
-	$ircecho_nick = "logmsgbot"
-	$ircecho_server = "chat.freenode.net"
-
 	include role::applicationserver::maintenance,
 		svn::client,
 		nfs::netapp::home,
@@ -831,11 +827,7 @@ node "fenari.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
-		misc::deployment,
 		misc::noc-wikimedia,
-		misc::deployment::scap_scripts,
-		misc::ircecho,
-		misc::deployment::l10nupdate,
 		dns::account,
 		nrpe,
 		drac::management,
@@ -2607,10 +2599,18 @@ node "tin.eqiad.wmnet" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
+	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-operations" }
+	$ircecho_nick = "logmsgbot"
+	$ircecho_server = "chat.freenode.net"
+
 	include standard,
 		admins::roots,
 		admins::mortals,
-		role::deployment::deployment_servers::production
+		role::deployment::deployment_servers::production,
+		misc::deployment,
+		misc::deployment::scap_scripts,
+		misc::ircecho,
+		misc::deployment::l10nupdate
 }
 
 node "tridge.wikimedia.org" {

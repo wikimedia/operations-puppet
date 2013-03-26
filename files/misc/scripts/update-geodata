@@ -5,6 +5,6 @@ if [ -e /tmp/disable-update-geodata ] ; then
 	exit
 fi
 
-/usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php
-/usr/local/bin/foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php
-/usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikivoyage.dblist extensions/GeoData/solrupdate.php
+/usr/local/bin/foreachwikiindblist /usr/local/apache/common/wikipedia.dblist extensions/GeoData/solrupdate.php
+/usr/local/bin/foreachwikiindblist /usr/local/apache/common/special.dblist extensions/GeoData/solrupdate.php
+/usr/local/bin/foreachwikiindblist /usr/local/apache/common/wikivoyage.dblist extensions/GeoData/solrupdate.php
