@@ -126,6 +126,7 @@ class nrpe::service {
 		subscribe => File["/etc/icinga/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
 		hasrestart => true,
+		restart => "killall nrpe; sleep 2; /etc/init.d/nagios-nrpe-server start",
 		ensure => running;
 	}
 }
