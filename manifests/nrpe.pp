@@ -136,9 +136,7 @@ class nrpe::service {
 			mode => 0440,
 			content => "
 nagios	ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-nagios	ALL = (root) NOPASSWD: /usr/bin/check-raid.py
 icinga	ALL = (root) NOPASSWD: /usr/bin/arcconf getconfig 1
-icinga	ALL = (root) NOPASSWD: /usr/bin/check-raid.py
 ";
 		}
 	}
