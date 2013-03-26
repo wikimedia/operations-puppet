@@ -23,7 +23,7 @@ class lucene {
 	}
 
 	class packages {
-		package { 
+		package {
 			["oracle-j2sdk1.6", "libudp2log-log4j-java"]:
 				ensure => latest;
 			"liblog4j1.2-java":
@@ -121,10 +121,6 @@ class lucene {
 		if $lucene::server::indexer == false {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
 		}
-	}
-
-	class monitoring {
-		monitor_service { "lucene disk space": description => "Lucene disk space", check_command => "nrpe_check_disk_6_3"}
 	}
 
 	class users {
