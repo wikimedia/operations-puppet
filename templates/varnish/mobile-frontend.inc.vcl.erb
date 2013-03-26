@@ -608,12 +608,12 @@ sub vcl_recv {
 		set req.url = "/?useformat=mobile";
 	}
 
+	call device_detection;
+
 	if ( req.http.host ~ "^test\." ) {
 		set req.backend = test_wikipedia;
 		return (pass);
 	}
-
-	call device_detection;
 }
 
 sub vcl_fetch {
