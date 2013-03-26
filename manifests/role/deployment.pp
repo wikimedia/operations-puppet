@@ -189,7 +189,8 @@ class role::deployment::salt_masters::labs {
 }
 
 class role::deployment::deployment_servers::common {
-  include misc::deployment::scripts
+  # Can't include this while scap is present on tin:
+  # include misc::deployment::scripts
 
   class { "deployment::deployment_server": }
 
