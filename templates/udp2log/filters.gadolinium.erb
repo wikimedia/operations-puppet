@@ -41,11 +41,11 @@ pipe 1 /usr/local/bin/filter | log2udp -h 127.0.0.1 -p 3815
 
 ### Vrije Universiteit
 # Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
-pipe 10 awk -f <%= webrequest_filter_directory %>/bin/vu.awk | log2udp -h 130.37.198.252 -p 9999
+pipe 10 awk -f <%= webrequest_filter_directory %>/vu.awk | log2udp -h 130.37.198.252 -p 9999
 
 ### University of Minnesota
 # Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
 # Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
 # Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
-pipe 10 awk -f <%= webrequest_filter_directory %>/bin/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
+pipe 10 awk -f <%= webrequest_filter_directory %>/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 
