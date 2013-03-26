@@ -85,10 +85,10 @@ class lucene {
 
 		# Conf for sync-conf-from-common cronjob
 		if $::realm == 'production' {
-			$sync_conf_all_dblist = '10.0.5.8::common/all.dblist'
-			$sync_conf_initialisesettings = '10.0.5.8::common/wmf-config/InitialiseSettings.php'
+			$sync_conf_all_dblist = 'tin.eqiad.wmnet::common/all.dblist'
+			$sync_conf_initialisesettings = 'tin.eqiad.wmnet::common/wmf-config/InitialiseSettings.php'
 			$sync_conf_initialisesettings_labs = ''
-			$sync_conf_messages = '10.0.5.8::common/php/languages/messages'
+			$sync_conf_messages = 'tin.eqiad.wmnet::common/php/languages/messages'
 		} else {
 			$sync_conf_all_dblist = '/data/project/apache/common/all-labs.dblist'
 			$sync_conf_initialisesettings = '/data/project/apache/common/wmf-config/InitialiseSettings.php'

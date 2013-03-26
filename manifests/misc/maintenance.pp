@@ -143,7 +143,7 @@ class misc::maintenance::translationnotifications( $enabled = false ) {
 class misc::maintenance::tor_exit_node( $enabled = false ) {
 	cron {
 		tor_exit_node_update:
-			command => "php /usr/local/apache/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force > /dev/null",
+			command => "/usr/local/bin/mwscript extensions/TorBlock/loadExitNodes.php --wiki=aawiki --force > /dev/null",
 			user => apache,
 			minute => '*/20',
 			ensure => $enabled ?{

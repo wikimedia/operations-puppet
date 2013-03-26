@@ -1,12 +1,12 @@
 #!/bin/bash
 
+. /usr/local/lib/mw-deployment-vars.sh
 BINDIR=/usr/local/bin
-
-echo "Synchronizing /home/wikipedia/common/*.dblist to /usr/local/apache/common-local/*.dblist..."
+echo "Synchronizing $MW_COMMON_SOURCE/*.dblist to $MW_COMMON/*.dblist..."
 echo "mediawiki-installation:"
 
-ddsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 "
-  sudo -u mwdeploy rsync -a 10.0.5.8::common/*.dblist /usr/local/apache/common-local
+dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 "
+  sudo -u mwdeploy rsync -a $MW_RSYNC_HOST::common/*.dblist $MW_COMMON
 "
 
 $BINDIR/dologmsg "!log $USER synchronized database lists files: $*"

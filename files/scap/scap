@@ -5,9 +5,9 @@ NODEFILE=
 (
 	set -e
 
+	. /usr/local/lib/mw-deployment-vars.sh
+
 	BINDIR=/usr/local/bin
-	SOURCE=/home/wikipedia/common
-	DEST=/usr/local/apache/common-local
 
 	if [ ! -S "$SSH_AUTH_SOCK" ]; then
 		echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
@@ -23,14 +23,14 @@ NODEFILE=
 
 	# Perform syntax check
 	echo Checking syntax...
-	if ( ! ( $BINDIR/lint $SOURCE/wmf-config && $BINDIR/lint $SOURCE/multiversion ) ); then
+	if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
 		echo "Found syntax errors, cannot sync."
 		exit 1
 	fi
 	# Check syntax for all active MediaWiki versions
 	for i in ${mwVerDbSets[@]}; do
 		mwVerNum=${i%=*}
-		if ( ! ( $BINDIR/lint $SOURCE/php-$mwVerNum ) ); then
+		if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/php-$mwVerNum ) ); then
 			echo "Found syntax errors in $mwVerNum, cannot sync."
 			exit 1
 		fi

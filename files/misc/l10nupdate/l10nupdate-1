@@ -75,8 +75,8 @@ do
 		/usr/local/bin/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
 		                  --quiet --outdir=/var/lib/l10nupdate/cache-"$mwVerNum"
 		# Copy the LC files
-		echo "Completed. Copying LC files to /home"
-		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
+		echo "Completed. Copying LC files to $MW_COMMON_SOURCE"
+		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* $MW_COMMON_SOURCE/php-"$mwVerNum"/cache/l10n
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"

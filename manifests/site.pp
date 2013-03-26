@@ -822,10 +822,7 @@ node "fenari.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
-		misc::deployment,
 		misc::noc-wikimedia,
-		misc::deployment::scap_scripts,
-		misc::deployment::l10nupdate,
 		dns::account,
 		nrpe,
 		drac::management,
@@ -2737,7 +2734,10 @@ node "tin.eqiad.wmnet" {
 	include standard,
 		admins::roots,
 		admins::mortals,
-		role::deployment::deployment_servers::production
+		role::deployment::deployment_servers::production,
+		misc::deployment,
+		misc::deployment::scap_scripts,
+		misc::deployment::l10nupdate
 }
 
 node "tridge.wikimedia.org" {
