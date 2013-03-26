@@ -1,6 +1,6 @@
 #!/bin/bash
+. /usr/local/lib/mw-deployment-vars.sh
 BINDIR="/usr/local/bin"
-COMMONDIR="/home/wikipedia/common"
 
 if [ ! -S "$SSH_AUTH_SOCK" ]; then
 	echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
@@ -8,7 +8,7 @@ if [ ! -S "$SSH_AUTH_SOCK" ]; then
 	exit 1
 fi
 
-if ! $COMMONDIR/multiversion/refreshWikiversionsCDB; then
+if ! $MW_COMMON_SOURCE/multiversion/refreshWikiversionsCDB; then
 	echo 'Error: could not rebuild the wikiversions.cdb file'
 fi
 
@@ -20,7 +20,7 @@ fi
 
 # Copy files to apaches
 echo 'Copying wikiversions dat and cdb files to apaches...'
-dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- 'sudo -u mwdeploy rsync -l 10.0.5.8::common/wikiversions.{dat,cdb} /usr/local/apache/common-local/'
+dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "sudo -u mwdeploy rsync -l $MW_RSYNC_HOST::common/wikiversions.{dat,cdb} $MW_COMMON"
 
 echo 'Finished'
 

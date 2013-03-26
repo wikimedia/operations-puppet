@@ -7,9 +7,8 @@
 (
 
 set -e
+. /usr/local/lib/mw-deployment-vars.sh
 BINDIR=/usr/local/bin
-SOURCE=/home/wikipedia/common
-DEST=/usr/local/apache/common-local
 
 if [ "`uname -s`" != Linux ]; then
 	echo "ERROR: This script requires the Linux operating system to function correctly"
@@ -42,17 +41,17 @@ for i in ${mwExtVerDbSets[@]}; do
 	echo "Updating ExtensionMessages-$mwVerNum.php..."
 	mwTempDest=$(sudo -u apache mktemp)
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
-		--list-file=$SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest"
+		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest"
 	sudo -u apache chmod a+r "$mwTempDest"
-	cp "$mwTempDest" $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
+	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
 	sudo -u apache rm "$mwTempDest"
 
 	# Update ExtensionMessages-*.php in the local copy
-	sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
+	sudo -u mwdeploy cp $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $MW_COMMON/wmf-config/
 
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-		--outdir=$SOURCE/php-$mwVerNum/cache/l10n $QUIET
+		--outdir=$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n $QUIET
 	echo "done"
 done
 
