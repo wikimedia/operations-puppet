@@ -57,10 +57,10 @@ class zuul (
 	$zuul_source_dir = '/usr/local/src/zuul'
 
 	git::clone { 'integration/zuul':
+		ensure => present,
 		directory => $zuul_source_dir,
 		origin => $git_source_repo,
 		branch => 'master',
-		ensure => 'latest',
 	}
 
 	exec { 'install_zuul':
