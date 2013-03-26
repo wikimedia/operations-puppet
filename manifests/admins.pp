@@ -2723,6 +2723,7 @@ class admins::mortals {
 	include accounts::aaron
 	include accounts::andrew
 	include accounts::anomie
+	include accounts::awight
 	include accounts::awjrichards
 	include accounts::bsitu
 	include accounts::cmcmahon
@@ -2762,7 +2763,6 @@ class admins::restricted {
 	include accounts::ashields # access revoked
 	include accounts::austin # access revoked
 	include accounts::avar
-	include accounts::awight
 	include accounts::bastique # access revoked
 	include accounts::dab
 	include accounts::dandreescu
