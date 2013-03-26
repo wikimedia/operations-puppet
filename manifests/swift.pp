@@ -26,6 +26,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
 		'swift',
 		'swift-doc',
 		'python-swift',
+		'python-swiftclient',
 		'python-ss-statsd',
 		]:
 		ensure => present;
@@ -149,7 +150,7 @@ class swift::proxy {
 
 	realize File["/etc/swift/proxy-server.conf"]
 
-	package { ['swift-proxy', 'python-swauth', 'python-swiftclient']:
+	package { ['swift-proxy', 'python-swauth']:
 		ensure => present;
 	}
 
