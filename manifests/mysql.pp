@@ -163,7 +163,7 @@ class mysql_wmf {
 		$mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
 		file {
-			"${icinga_config_dir}/nrpe.d/nrpe_percona.cfg":
+			"${icinga::monitor::configuration::variables::icinga_config_dir}/nrpe.d/nrpe_percona.cfg":
 				owner => root,
 				group => nagios,
 				mode => 0440,
