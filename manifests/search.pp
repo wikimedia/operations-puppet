@@ -14,8 +14,7 @@ class lucene {
 
 		include lucene::packages,
 			lucene::config,
-			lucene::service,
-			lucene::monitoring
+			lucene::service
 
 		if $indexer == true {
 			include lucene::indexer
