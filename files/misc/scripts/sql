@@ -1,7 +1,6 @@
 #!/bin/bash
 
 db=$1
-cluster=`</etc/cluster`
 . /usr/local/lib/mw-deployment-vars.sh
 
 MWMULTIDIR=$MW_COMMON/multiversion
