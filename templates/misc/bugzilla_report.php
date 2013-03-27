@@ -308,11 +308,11 @@ foreach ($reportsPerItem as $report) {
         formatOutput($result);
         print "\n";
 }
-print "\nMost urgent open issues\n\n";
+/* print "\nMost urgent open issues\n\n";
 foreach ($urgentStatistics as $report) {
         $sql = getHighestPrioTickets();
         $result = mysql_query($sql);
         if (!$result)
                 reportFailure("Query failure");
         formatOutputHighestPrio($result);
-}
+} */
