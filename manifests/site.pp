@@ -2513,7 +2513,6 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::wikidata: enabled => false }
 	class { misc::maintenance::tor_exit_node: enabled => false }
 	class { misc::maintenance::echo_mail_batch: enabled => false }
-	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
 	class { misc::maintenance::update_special_pages: enabled => false }
 	class { misc::maintenance::parsercachepurging: enabled => false }
 	class { misc::maintenance::geodata: enabled => false }
