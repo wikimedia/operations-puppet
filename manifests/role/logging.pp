@@ -55,7 +55,8 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
 	cron { "mw-log-cleanup":
 		command => "/usr/local/bin/mw-log-cleanup",
 		user => root,
-		hour => 2
+		hour => 2,
+		minute => 0
 	}
 
 	file { "/usr/local/bin/mw-log-cleanup":
