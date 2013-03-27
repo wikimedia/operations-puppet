@@ -628,10 +628,9 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/aft/archive/clicktracking",
 	}
 
-	# edit logs from locke
-	# TODO: Move this to gadolinium
+	# edit logs from gadolinium
 	misc::statistics::rsync_job { "edits":
-		source      => "locke.wikimedia.org::udp2log/archive/edits*.gz",
+		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
 		destination => "/a/squid/archive/edits",
 	}
 
