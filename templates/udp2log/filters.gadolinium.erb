@@ -13,9 +13,8 @@ file 1000 <%= webrequest_log_directory %>/sampled-1000.tsv.log
 pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.tsv.log
 
 ### Mobile traffic filter
-# TODO: use mobile varnish frontend hostnames for
-# filtering rather than 'm.wikipedia.org' domain.
-pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> <%= webrequest_log_directory %>/mobile.tsv.log
+# All mobile traffic goes through cp1041-cp1044 varnish hosts.
+pipe 100 /bin/grep -P '^cp104[1-4]' >> <%= webrequest_log_directory %>/mobile-sampled-100.tsv.log
 
 ### Fundraising
 ## Landing pages

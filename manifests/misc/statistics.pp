@@ -634,6 +634,12 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/squid/archive/edits",
 	}
 
+	# mobile logs from gadolinium
+	misc::statistics::rsync_job { "mobile":
+		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
+		destination => "/a/squid/archive/mobile",
+	}
+
 	# eventlogging logs from vanadium
 	misc::statistics::rsync_job { "eventlogging":
 		source      => "vanadium.eqiad.wmnet::eventlogging/archive/*.gz",
