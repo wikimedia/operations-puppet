@@ -240,7 +240,7 @@ class misc::maintenance::update_special_pages( $enabled = inline_template("<%= $
 class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
 	cron {
 		wikibase-repo-prune:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=1 2>&1 >> /var/log/wikidata/prune.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune.log",
 			user => mwdeploy,
 			minute => [0,15,30,45],
 			ensure => $enabled ?{
@@ -254,7 +254,7 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 	# This handles inserting jobs into client job queue, which then process the changes
 	cron {
 		wikibase-dispatch-changes:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 300 2>&1 >> /var/log/wikidata/dispatcher.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 2>&1 >> /var/log/wikidata/dispatcher.log",
 			user => mwdeploy,
 			minute => "*/5",
 			ensure => $enabled ?{
@@ -266,9 +266,9 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 
     cron {
         wikibase-dispatch-changes2:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 420 2>&1 >> /var/log/wikidata/dispatcher2.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 2>&1 >> /var/log/wikidata/dispatcher2.log",
 			user => mwdeploy,
-			minute => "*/7",
+			minute => "*/5",
 			ensure => $enabled ?{
 				true => present,
 				false => absent,
