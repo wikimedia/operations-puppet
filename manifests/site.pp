@@ -2508,7 +2508,6 @@ node "terbium.eqiad.wmnet" {
 
 	class { misc::maintenance::foundationwiki: enabled => false }
 	class { misc::maintenance::pagetriage: enabled => false }
-	class { misc::maintenance::refreshlinks: enabled => false }
 	class { misc::maintenance::translationnotifications: enabled => false }
 	class { misc::maintenance::wikidata: enabled => false }
 	class { misc::maintenance::tor_exit_node: enabled => false }
