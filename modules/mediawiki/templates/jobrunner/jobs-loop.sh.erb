@@ -184,10 +184,12 @@ if [ -n "$1" ]; then
 else
 	echo "Creating default and immediate job runner pipelines"
 	# Start a loop for immediate priority jobs
-	ipriotypes="AssembleUploadChunks PublishStashedFile"
+	ipriotypes="AssembleUploadChunks PublishStashedFile" # upload
 	(runJobsLoopService "$ipriotypes" "n" <%= iprioprocs %>) &
 	# Start a loop for default high and low priority jobs
-	hpriotypes="sendMail enotifNotify uploadFromUrl MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob RenderJob"
+	hpriotypes="sendMail enotifNotify MoodBarHTMLMailerJob ArticleFeedbackv5MailerJob" # mail
+	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
+	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
 fi
 
