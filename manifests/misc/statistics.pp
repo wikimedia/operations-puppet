@@ -677,7 +677,7 @@ define misc::statistics::rsync_job($source, $destination) {
 		command => "/usr/bin/rsync -rt $source $destination/",
 		user    => "$misc::statistics::user::username",
 		hour    => 8,
-		minute  => 0,
+		minute  => fqdn_rand(60),
 	}
 }
 
