@@ -155,6 +155,7 @@ class role::cache {
 					],
 					"esams-varnish" => [	# FIXME: rename after Squid decommissioning
 						'cp3003.esams.wikimedia.org',
+						'cp3004.esams.wikimedia.org',
 						'cp3009.esams.wikimedia.org',
 						'cp3010.esams.wikimedia.org',
 					],
