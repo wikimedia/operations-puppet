@@ -313,6 +313,12 @@ acl carrier_vimpelcom_beeline {
 	"89.188.224.136"/29;
 }
 
+acl carrier_vimpelcom_mobilink_pakistan {
+	"119.160.125.0"/27;
+	"119.160.126.97"/28;
+	"119.160.126.129"/25;
+}
+
 # for test.* routing, FIXME
 backend test_wikipedia {
 	.host = "srv193.pmtpa.wmnet";
@@ -434,6 +440,11 @@ sub tag_carrier {
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-Carrier = "Vimpelcom Beeline";
 			set req.http.X-CS = "250-99";
+		}
+	} else if (client.ip ~ carrier_vimpelcom_mobilink_pakistan) {
+		if (req.http.host ~ "(^(en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Vimpelcom Mobilink Pakistan";
+			set req.http.X-CS = "410-1";
 		}
 	} else if (client.ip ~ carrier_xl_indonesia) {
 		if (req.http.X-Subdomain == "ZERO") {
