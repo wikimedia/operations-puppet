@@ -119,6 +119,8 @@ class lucene {
 
 		if $lucene::server::indexer == false {
 			monitor_service { "lucene": description => "Lucene", check_command => "check_lucene", retries => 6 }
+
+			monitor_service { 'lucene_search': description => 'Lucene search', check_command => "check_lucene_frontend" }
 		}
 	}
 
