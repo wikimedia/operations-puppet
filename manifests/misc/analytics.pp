@@ -24,3 +24,34 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 		require => File[$tmp_dir],
 	}
 }
+
+
+# Temporary class to manage udp2log instances
+# on analytics nodes.  This class will be refactored
+# and deleted soon.
+#
+# analytics udp2log instances currently shard the
+# webrequest stream into $producer_count pieces.
+# $producer_id tells the current node which shard
+# it is responsible for.
+class misc::analytics::udp2log::webrequest($producer_id, $producer_count) {
+	include misc::udp2log,
+		misc::udp2log::utilities
+
+	# Starts a multicast listening udp2log instance
+	# to read from the webrequest log stream.
+	misc::udp2log::instance { "webrequest":
+		port                => "8420",
+		multicast           => true,
+		log_directory       => "/var/log/udp2log/webrequest",
+		logrotate           => false,
+		monitor_packet_loss => true,
+		monitor_processes   => true,
+		monitor_log_age     => false,
+		template_variables  => {
+			'producer_count' => $producer_count,
+			'producer_id'    => $producer_id,
+		}
+	}
+}
+
