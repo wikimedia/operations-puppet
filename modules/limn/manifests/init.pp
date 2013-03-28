@@ -1,5 +1,5 @@
 # == Class limn
-# Installs limn.
+# Sets up limn.
 # To spawn up a limn server instance, use the limn::instance define.
 #
 # NOTE: This does not install limn.  You must do that youself.
@@ -9,13 +9,10 @@
 # == Parameters
 # $var_directory  - Default path to Limn var directory.  This will also be limn user's home directory.  Default: /var/lib/limn
 # $log_directory  - Default path to Limn server logs.  Default: /var/log/limn
-# $user           - Limn user.  Default: limn
-# $group          - Limn group.  Default: limn
 #
 class limn(
   $var_directory  = '/var/lib/limn',
-  $log_directory  = '/var/log/limn',
-  $install        = false)
+  $log_directory  = '/var/log/limn')
 {
   $user  = 'limn'
   $group = 'limn'
