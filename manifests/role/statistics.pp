@@ -42,6 +42,8 @@ class role::statistics::www inherits role::statistics {
 		misc::statistics::sites::community_analytics,
 		# metrics.wikimedia.org
 		misc::statistics::sites::metrics
+		# reportcard.wikimedia.org
+		misc::statistics::sites::reportcard
 }
 
 class role::statistics::eventlogging inherits role::statistics {
