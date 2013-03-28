@@ -169,15 +169,13 @@ JOIN
 LEFT JOIN
         bug_group_map AS security_map ON bugs.bug_id = security_map.bug_id
 WHERE
-        ( security_map.group_id != 15 OR security_map.group_id IS NULL )
+        ( security_map.group_id != 15 OR security_map.group_id IS NULL
 AND
-        resolution = ""
+        ( bug_status != "RESOLVED" AND bug_status != "VERIFIED" AND bug_status != "CLOSED" )
 AND
         priority = "Highest" OR priority = "Immediate"
 ORDER BY
-        product, component, delta_ts
-LIMIT
-        200;
+        product, component, delta_ts;
 END;
 }
 
@@ -308,11 +306,11 @@ foreach ($reportsPerItem as $report) {
         formatOutput($result);
         print "\n";
 }
-/* print "\nMost urgent open issues\n\n";
+print "\nMost urgent open issues\n\n";
 foreach ($urgentStatistics as $report) {
         $sql = getHighestPrioTickets();
         $result = mysql_query($sql);
         if (!$result)
                 reportFailure("Query failure");
         formatOutputHighestPrio($result);
-} */
+}
