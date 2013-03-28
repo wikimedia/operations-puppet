@@ -45,5 +45,6 @@ define misc::limn::instance($port = 8081, $server_name = undef, $server_aliases 
     limn_port      => $port,
     server_name    => $servername,
     server_aliases => $serveraliases,
+    require        => ::Limn::Instance[$name],
   }
 }
