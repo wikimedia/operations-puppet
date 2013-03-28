@@ -33,12 +33,28 @@ class misc::package-builder {
 		}
 	}
 
-	class pbuilder($dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
+	class builder($type='pbuilder', $dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
+		case $type {
+			cowbuilder: {
+				$base_option = '--basepath'
+				$build_cmd   = 'cowbuilder'
+				$file_ext    = 'cow'
+				$packages    = [ 'cowbuilder' ]
+			}
+			pbuilder: {
+				$base_option = '--basetgz'
+				$build_cmd   = 'cowbuilder'
+				$file_ext    = 'tgz'
+				$packages    = [ 'pbuilder' ]
+			}
+			default: { fail('Only builder types supported are pbuilder and cowbuilder') }
+		}
+
 		class packages {
-			package { "pbuilder": ensure => latest }
+			package { $packages: ensure => latest }
 		}
 		
-		define image{
+		define image {
 			require packages
 
 			$pbuilder_root = "/var/cache/pbuilder"
@@ -46,9 +62,9 @@ class misc::package-builder {
 			$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe'"
 			$components = "--components 'main universe'"
 
-			exec { "pbuilder --create --distribution ${title}":
-				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${components} ${othermirror}",
-				creates => "${pbuilder_root}/${title}.tgz",
+			exec { "$build_cmd --create --distribution ${title}":
+				command => "$build_cmd --create --distribution ${title} ${base_option} ${pbuilder_root}/${title}.${file_ext} ${components} ${othermirror}",
+				creates => "${pbuilder_root}/${title}.${file_ext}",
 				path => "/bin:/sbin:/usr/bin:/usr/sbin",
 				timeout => 600
 			}
@@ -56,11 +72,15 @@ class misc::package-builder {
 
 		image { $dists: }
 
-		file { "/var/cache/pbuilder/base.tgz":
+		file { "/var/cache/pbuilder/base.${file_ext}":
 			require => Image[$defaultdist],
-			ensure => "/var/cache/pbuilder/${defaultdist}.tgz"
+			ensure => "/var/cache/pbuilder/${defaultdist}.${file_ext}"
 		}
 	}
 
-	include packages, defaults, pbuilder
+	include packages, defaults
+
+	class { 'builder': type => 'cowbuilder' }
+	class { 'builder': type => 'pbuilder' }
+
 }
