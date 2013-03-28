@@ -1,7 +1,10 @@
 # == Define limn::instance::proxy
 # Sets up an apache mod_rewrite proxy for proxying to a Limn instance.
 # Static files in $document_root will be served by apache.
-# This define depends on the apache puppet module.
+#
+# NOTE: You must install apache yourself.
+# A Service and Package named 'apache2' must be defined.
+# You must also make sure mod rewrite is enabled.
 #
 # == Parameters:
 # $port           - Apache port to Listen on.  Default: 80.
@@ -19,22 +22,15 @@ define limn::instance::proxy (
   $server_name     = "${name}.${::domain}",
   $server_aliases  = '')
 {
-  # need apache and mod_rewrite
-  class { 'apache':
-    serveradmin  => $server_admin,
-    default_mods => true,
-  }
-  apache::mod { 'rewrite': }
-
   # Configure the Apache Limn instance proxy VirtualHost.
-  $priority      = 10
+  $priority = 10
   file { "${priority}-limn-${name}.conf":
     path    => "${apache::params::vdir}/${priority}-limn-${name}.conf",
     content => template('limn/vhost-limn-proxy.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    require => [Package['httpd'], Apache::Mod['rewrite']],
-    notify  => Service['httpd'],
+    require => Package['apache2'],
+    notify  => Service['apache2'],
   }
 }
