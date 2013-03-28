@@ -135,12 +135,15 @@ class misc::statistics::webserver {
 		mode    => 0750,
 		require => Class["webserver::apache"],
 	}
+	
+	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
 }
 
 
 # reportcard.wikimedia.org
 class misc::statistics::sites::reportcard {
-  misc::limn::instance { 'reportcard': }
+	require misc::statistics::webserver
+	misc::limn::instance { 'reportcard': }
 }
 
 
@@ -157,7 +160,6 @@ class misc::statistics::sites::stats {
 		source  => "puppet:///private/apache/htpasswd.stats",
 	}
 
-	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
 	webserver::apache::site { $site_name:
 		require => [Class["webserver::apache"], Webserver::Apache::Module["rewrite"], File["/etc/apache2/htpasswd.stats"]],
 		docroot => $docroot,
