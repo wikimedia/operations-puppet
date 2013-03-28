@@ -137,6 +137,13 @@ class misc::statistics::webserver {
 	}
 }
 
+
+# reportcard.wikimedia.org
+class misc::statistics::sites::reportcard {
+  misc::limn::instance { 'reportcard': }
+}
+
+
 # stats.wikimedia.org
 class misc::statistics::sites::stats {
 	$site_name = "stats.wikimedia.org"
