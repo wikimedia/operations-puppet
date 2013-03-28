@@ -128,15 +128,17 @@ class misc::statistics::webserver {
 	# This won't make the actual log files readable, only the directory.
 	# Individual log files can be created and made readable by
 	# classes that manage individual sites.
-	file { "/var/log/apache2":
-		ensure  => "directory",
-		owner   => "root",
-		group   => "wikidev",
+	file { '/var/log/apache2':
+		ensure  => 'directory',
+		owner   => 'root',
+		group   => 'wikidev',
 		mode    => 0750,
-		require => Class["webserver::apache"],
+		require => Class['webserver::apache'],
 	}
 	
-	webserver::apache::module { "rewrite": require => Class["webserver::apache"] }
+	webserver::apache::module { ['rewrite', 'proxy']: 
+		require => Class['webserver::apache']
+	}
 }
 
 
