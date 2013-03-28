@@ -1,0 +1,29 @@
+# Note: This file is managed by Puppet.
+
+# Analytics udp2log webrequest instance configuartion file.
+
+<%
+# Quick and easy method for DRYing piping into kafka producer.
+# This uses the bin/kafka-produce script from the Kraken repository.
+def kafka_producer(topic, jmx_port='')
+#  "/usr/lib/kafka/bin/kafka-producer-shell.sh --props=/etc/kafka/producer.properties --topic=#{topic} > /dev/null"
+  "/opt/kraken/bin/kafka-produce #{topic} #{jmx_port} > /dev/null"
+end
+
+webrequest_producer_count = template_variables['producer_count']
+webrequest_producer_id    = template_variables['producer_id']
+
+# We're splitting the webrequest stream into
+# a number of streams across a few different machines.
+# Hopefully this will let us avoid packet loss.
+mod_filter_command = "/usr/bin/awk '{if ($2 % #{webrequest_producer_count} == #{webrequest_producer_id}) print $0; }' | "
+-%>
+
+# udp2log packet loss monitoring
+pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/webrequest/packet-loss.log
+
+
+# pipe all requests from mobile frontend cache servers into Kafka=
+pipe 1 <%= mod_filter_command %>/bin/grep -P '^cp104[1-4]' | <%= kafka_producer("webrequest-wikipedia-mobile", 9951) %>
+
+

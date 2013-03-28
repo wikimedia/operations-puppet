@@ -134,6 +134,50 @@ node "analytics1001.wikimedia.org" {
 	include misc::udp2log::iptables
 }
 
+node "analytics1002.eqiad.wmnet" {
+	include role::analytics
+}
+
+# analytics1003 - analytics1006 are udp2log instances.
+node "analytics1003.eqiad.wmnet" inherits analytics_basenode {
+	# ganglia aggregator for the Analytics cluster.
+	$ganglia_aggregator = "true"
+
+	class { 'misc::analytics::udp2log::webrequest':
+		producer_id    => 0,
+		producer_count => 4,
+	}
+}
+node "analytics1004.eqiad.wmnet" inherits analytics_basenode {
+	class { 'misc::analytics::udp2log::webrequest':
+		producer_id    => 1,
+		producer_count => 4,
+	}
+}
+node "analytics1005.eqiad.wmnet" inherits analytics_basenode {
+	class { 'misc::analytics::udp2log::webrequest':
+		producer_id    => 2,
+		producer_count => 4,
+	}
+}
+node "analytics1006.eqiad.wmnet" inherits analytics_basenode {
+	class { 'misc::analytics::udp2log::webrequest':
+		producer_id    => 3,
+		producer_count => 4,
+	}
+}
+
+
+# analytics1007 - analytics1026
+node /analytics10(0[7-9]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
+	# ganglia aggregator for the Analytics cluster.
+	if ($hostname == "analytics1011") {
+		$ganglia_aggregator = "true"
+	}
+
+	include role::analytics
+}
+
 # analytics1027 hosts the frontend
 # interfaces to Kraken and Hadoop.
 node "analytics1027.eqiad.wmnet" {
@@ -149,15 +193,11 @@ node "analytics1027.eqiad.wmnet" {
 	}
 }
 
-# analytics1002 - analytics1026
-node /analytics10(0[2-9]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
-	# ganglia aggregator for the Analytics cluster.
-	if ($hostname == "analytics1003" or $hostname == "analytics1011") {
-		$ganglia_aggregator = "true"
-	}
 
-	include role::analytics
-}
+
+
+
+
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	if $hostname =~ /^(arsenic|niobium)$/ {
