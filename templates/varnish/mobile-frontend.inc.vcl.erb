@@ -483,22 +483,12 @@ sub device_detection {
 		set req.http.X-Device = "operamobile";
 	} else if( req.http.User-Agent ~ "Safari" && ( req.http.User-Agent ~ "iPad" ||
 		req.http.User-Agent ~ "iPhone" ) ) {
-		if( req.http.User-Agent ~ "iPad" ) {
-			set req.http.X-Device = "iphone";
-		} else if ( req.http.User-Agent ~ "iPhone" ) {
-			if( req.http.User-Agent ~ "iPhone OS 2" ) {
-				set req.http.X-Device = "iphone2";
-			} else {
-				set req.http.X-Device = "iphone";
-			}
-		} else {
-			set req.http.X-Device = "webkit";
-		}
+		set req.http.X-Device = "iphone";
 	} else if( req.http.User-Agent ~ "iPhone" ) {
 		if( req.http.User-Agent ~ "Opera" ) {
 			set req.http.X-Device = "operamini";
 		} else {
-			set req.http.X-Device = "native_iphone";
+			set req.http.X-Device = "capable";
 		}
 	} else if( req.http.User-Agent ~ "WebKit" ) {
 		if( req.http.User-Agent ~ "Series60" ) {
