@@ -26,7 +26,7 @@ class icinga::monitor {
     icinga::monitor::nsca::daemon,
     icinga::monitor::apache,
     icinga::monitor::files::misc,
-    icinga::ganglia::ganglios,
+#    icinga::ganglia::ganglios,
     facilities::pdu_monitoring,
     lvs::monitor,
     nagios::gsbmonitoring,
