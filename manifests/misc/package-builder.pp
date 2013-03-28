@@ -33,34 +33,148 @@ class misc::package-builder {
 		}
 	}
 
-	class pbuilder($dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
-		class packages {
-			package { "pbuilder": ensure => latest }
+	# == Define: image
+	#
+	# Creates a Debian distribution image
+	#
+	# === Parameters:
+	# 
+	# [*namevar*]
+	#  The title will be split by dashes, the first part will be used to set the
+	#  *builder* parameter unless it has been set, the second part is used to set
+	#  the *dist* parameter unless it has been set. Hence
+	#  'cowbuilder-precise-foobar' will ends up selecting the cowbuilder builder
+	#  and generate an image for the Precise distribution.
+	#
+	# [*builder*]
+	#  The building program to use, either 'cowbuilder' or 'pbuilder'. Anything
+	#  else WILL force puppet to raise a failure.
+	#  *builder* is not set by default which means the distribution will be
+	#  interpolated from the defined title (see *namevar*).
+	#
+	# [*dist*]
+	#  The distribution to build for (hardy, lucid, precise..).  *dist* is not
+	#  set by default which means the distribution will be interpolated from the
+	#  defined title (see *namevar*).
+	# 
+	# === Examples
+	#
+	# Creating an image for cowbuilder and the raring distribution:
+	#
+	#   image { 'raring image for cowbuilder':
+	#     builder => 'cowbuilder',
+	#     dist    => 'raring',
+	#   }
+	#
+	# Using title interpolation to generate cowbuilder images for both
+	# precise and lucid:
+	#
+	#   $images = [ 'cowbuilder-precise', 'cowbuilder-lucid' ],
+	#   image { $images: }
+	#
+	define image( $builder=undef, $dist=undef ) {
+		if $builder {
+			$realbuilder = $builder
+		} else {
+			$realbuilder = values_at(split($title, '-',0))
 		}
-		
-		define image{
-			require packages
+		if $dist {
+			$realdist = $dist
+		} else {
+			$realdist = values_at(split($title, '-'),1)
+		}
 
-			$pbuilder_root = "/var/cache/pbuilder"
+		notify { "Creating image $title (distribution: $realdist, builder: $realbuilder)": }
 
-			$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${title}-wikimedia main universe'"
-			$components = "--components 'main universe'"
+		require packages
 
-			exec { "pbuilder --create --distribution ${title}":
-				command => "pbuilder --create --distribution ${title} --basetgz ${pbuilder_root}/${title}.tgz ${components} ${othermirror}",
-				creates => "${pbuilder_root}/${title}.tgz",
-				path => "/bin:/sbin:/usr/bin:/usr/sbin",
-				timeout => 600
+		case $realbuilder {
+			cowbuilder: {
+				$base_option = '--basepath'
+				$file_ext    = 'cow'
+				$packages    = [ 'cowbuilder' ]
 			}
+			pbuilder: {
+				$base_option = '--basetgz'
+				$file_ext    = 'tgz'
+				$packages    = [ 'pbuilder' ]
+			}
+			default: { fail('Only builder types supported are pbuilder and cowbuilder') }
 		}
 
-		image { $dists: }
+		$pbuilder_root = "/var/cache/pbuilder"
 
-		file { "/var/cache/pbuilder/base.tgz":
-			require => Image[$defaultdist],
-			ensure => "/var/cache/pbuilder/${defaultdist}.tgz"
+		$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
+		$components = "--components 'main universe'"
+		$image_file = "${pbuilder_root}/${realdist}.${file_ext}"
+
+		exec { "imaging $realdist for $realbuilder":
+			command => "$realbuilder --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
+			creates => $image_file,
+			path => "/bin:/sbin:/usr/bin:/usr/sbin",
+			timeout => 600,
+			logoutput => on_failure,
 		}
 	}
 
-	include packages, defaults, pbuilder
+	# == Define: builder
+	# Instantiate a debian packaging builder (such as pbuilder and cowbuilder) as
+	# well as their distribution images.
+	#
+	# === Parameters:
+	# [*namevar*]
+	#  The name of the builder to use. Must be either 'cowbuilder' or 'pbuilder'.
+	#  This must be a valid command name.  Defaults to 'pbuilder'.
+	#
+	# [*dists*]
+	#  Array of distribution names to uses. Defaults to ['hardy','lucid','precise']
+	#
+	# [*defaultdist*]
+	#  The default distribution to setup for the builder. Defaults to 'lucid'.
+	#
+	# === Examples
+	#
+	# Instancing cowbuilder for 'precise':
+	#
+	#   builder { 'cowbuilder':
+	#     dists => 'precise',
+	#     defaultdist => 'precise',
+	#   }
+	#
+	# Instancing both pbuilder and cowbuilder:
+	#
+	#   builder { 'cowbuilder': }
+	#   builder { 'pbuilder': }
+	#
+	define builder( $dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
+		$builder = $title
+		notify { "Calling builder '${builder}' on distributions '${dists}'": }
+
+		package { $builder: ensure => latest }
+
+		# Craft unique image titles such as cowbuilder-precise
+		$images = prefix($dists, "${builder}-")
+		image { $images:
+			builder => $builder,
+		}
+
+		case $builder {
+			cowbuilder: { $file_ext = 'cow' }
+			pbuilder:   { $file_ext = 'tgz' }
+			default: {
+				fail('Only builder types supported are pbuilder and cowbuilder')
+			}
+		}
+
+		file { "/var/cache/pbuilder/base.${file_ext}":
+			require => Image["${title}-${defaultdist}"],
+			ensure => "/var/cache/pbuilder/${defaultdist}.${file_ext}"
+		}
+	}
+
+	include packages, defaults
+
+	builder { 'cowbuilder': }
+	builder { 'pbuilder': }
+
 }
