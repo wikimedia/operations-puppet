@@ -318,6 +318,18 @@ class misc::udp2log::monitoring {
 		group  => root,
 		source => "puppet:///files/misc/PacketLossLogtailer.py"
 	}
+
+	# send udp2log socket stats to ganglia.
+	file {
+		'/usr/lib/ganglia/python_modules/udp2log_socket.py':
+			require => File['/usr/lib/ganglia/python_modules'],
+			source => 'puppet:///files/ganglia/plugins/udp2log_socket.py',
+			notify => Service[gmond];
+		'/etc/ganglia/conf.d/udp2log_socket.pyconf':
+			require => File["/usr/lib/ganglia/python_modules/udp2log_socket.py"],
+			source => "puppet:///files/ganglia/plugins/udp2log_socket.pyconf",
+			notify => Service[gmond];
+	}
 }
 
 class misc::udp2log::iptables_purges {
