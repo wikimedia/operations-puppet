@@ -7,7 +7,7 @@
 # $port           - Apache port to Listen on.  Default: 80.
 # $limn_host      - Hostname or IP of Limn instnace.  Default: 127.0.0.1
 # $limn_port      - Port of Limn instance. Default: 8081
-# $document_root  - Path to Apache document root.   This should be the limn::instance $var_directory.  Default: /usr/local/limn/var.
+# $document_root  - Path to Apache document root.   This should be the limn::instance $var_directory.  Default: /usr/local/share/limn/var.
 # $server_name    - Named VirtualHost.    Default: "$name.$domain"
 # $server_aliases - Server name aliases.  Default: none.
 #

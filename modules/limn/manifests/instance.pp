@@ -15,7 +15,6 @@ define limn::instance (
   $base_directory = '/usr/local/share/limn',
   $var_directory  = "/var/lib/limn/${name}",
   $log_file       = "/var/log/limn/limn-${name}.log",
-  $proxy          = true,
   $ensure         = 'present')
 {
   require limn
