@@ -169,7 +169,37 @@ define misc::udp2log::instance(
 		require   => [Package["udplog"], File["/etc/udp2log/${name}"], File["/etc/init.d/udp2log-${name}"]],
 	}
 
+	# include monitoring for this udp2log instance.
+	misc::udp2log::instance::monitoring { $name:
+		log_directory       => $log_directory,
+		ensure              => $ensure,
+		packet_loss_log     => $packet_loss_log,
+		monitor_packet_loss => $monitor_packet_loss,
+		monitor_processes   => $monitor_processes,
+		monitor_log_age     => $monitor_log_age,
+		require             => Service["udp2log-${name}"],
+	}
+}
 
+
+# == Define misc::udp2log::instance::monitoring
+# Monitoring configs for a udp2log instance.
+# This is abstracted out of the udp2log::instance
+# define so it is possible to monitor non-puppetized
+# udp2log instances.
+#
+# == Parameters:
+# See documentation for misc::udp2log::instance. 
+#
+define misc::udp2log::instance::monitoring(
+	$log_directory       = "/var/log/udp2log",
+	$ensure              = "running",
+	$packet_loss_log     = undef,
+	$monitor_packet_loss = true,
+	$monitor_processes   = true,
+	$monitor_log_age     = true,
+) {
+	require misc::udp2log::monitoring
 
 	# Monitoring configs.
 	# There are 3 ways udp2log instances are currently defined:
@@ -186,13 +216,10 @@ define misc::udp2log::instance(
 			description   => "udp2log log age for ${name}",
 			nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
 			contact_group => "admins,analytics",
-			require       => Class["misc::udp2log::monitoring"],
 			ensure        => "present";
 		}
 	}
 	# TODO else ensure absent, can't do this right now due to missing dependencies
-
-
 
 	# Monitor that each filter process defined in 
 	# /etc/udp2log/$name is running
@@ -202,14 +229,10 @@ define misc::udp2log::instance(
 			nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
 			contact_group => "admins,analytics",
 			retries       => 10,
-			require       => Class["misc::udp2log::monitoring"],
 			ensure        => "present";
 		}
 	}
 	# TODO else ensure absent, can't do this right now due to missing dependencies
-
-
-
 
 	# Monitor packet loss using the $packet_loss_log.
 	# This requires that filters.$name.erb has a
@@ -237,7 +260,6 @@ define misc::udp2log::instance(
 			command => "/usr/sbin/ganglia-logtailer --classname PacketLossLogtailer --log_file ${packet_loss_log_file} --mode cron",
 			user    => 'root',
 			minute  => '*/5',
-			require => Class["misc::udp2log::monitoring"],
 			ensure  => $ensure_monitor_packet_loss,
 		}
 
@@ -254,7 +276,6 @@ define misc::udp2log::instance(
 			normal_check_interval => 2,
 			retry_check_interval  => 2,
 			retries               => 4,
-			require               => Class["misc::udp2log::monitoring"],
 			ensure                => $ensure_monitor_packet_loss,
 		}
 	}
@@ -331,6 +352,7 @@ class misc::udp2log::monitoring {
 			notify => Service[gmond];
 	}
 }
+
 
 class misc::udp2log::iptables_purges {
 	require "iptables::tables"

@@ -164,13 +164,10 @@ class icinga::monitor::configuration::files {
       mode   => '0644';
 
     # TEMP: analytics eqiad cluster manual entries.
-    # These will be removed from this manually managed file
-    # once analytics puppetization goes to production.
+    # This has been removed since analytics cluster
+    # udp2log instances are now puppetized.
     '/etc/icinga/analytics.cfg':
-      content => template('icinga/analytics.cfg.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644';
+      ensure  => 'absent';
 
     '/etc/icinga/checkcommands.cfg':
       content => template('icinga/checkcommands.cfg.erb'),
