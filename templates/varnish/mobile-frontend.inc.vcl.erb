@@ -640,10 +640,10 @@ sub vcl_error {
 }
 
 sub vcl_deliver {
-	if (resp.http.Cache-Control ~ "s-maxage=[1-9]") {
-		set resp.http.Cache-Control = "s-maxage=300, must-revalidate, max-age=0";
-	} else {
+	if ( req.http.Cookie ~ "session" ) {
 		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	} else {
+		set resp.http.Cache-Control = "s-maxage=300, max-age=300, must-revalidate";
 	}
 
 	/* Temp test */
