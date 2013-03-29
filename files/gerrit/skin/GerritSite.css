@@ -14,7 +14,7 @@
  */
 body, .gwt-DialogBox .dialogMiddleCenter {
 	color: #353535 !important;
-	background: #fff url(static/page-bkg.jpg) no-repeat 0 0 !important;
+	background: #fff url(/r/static/page-bkg.jpg) no-repeat 0 0 !important;
 	position: static;
 }
 
@@ -61,7 +61,7 @@ a:hover {
 	color: #990000;
 
 	min-height: 59px;
-	background: transparent url(static/wikimedia-codereview-logo.png) no-repeat 0 0;
+	background: transparent url(/r/static/wikimedia-codereview-logo.png) no-repeat 0 0;
 	text-indent: -9999px;
 	overflow: hidden;
 }
