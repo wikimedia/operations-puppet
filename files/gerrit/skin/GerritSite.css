@@ -125,3 +125,24 @@ a:hover {
 .changeScreenDescription textarea {
 	font-size: 9pt !important;
 }
+
+/**
+ * LDAP login
+ */
+#gerrit_body h1 {
+	font-family: Arial Unicode MS, Arial, sans-serif;
+	font-size: 16pt;
+	font-weight: normal;
+}
+
+#login_form {
+	font-size: 13px;
+}
+
+#login_form th {
+	font-weight: normal;
+}
+
+#login_form input[type="submit"] {
+	font-size: 12px;
+}
