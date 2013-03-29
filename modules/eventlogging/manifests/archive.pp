@@ -19,7 +19,7 @@ class eventlogging::archive( $destinations ) {
 	}
 
 	file { '/etc/logrotate.d/eventlogging':
-		source  => 'puppet:///files/eventlogging/logrotate',
+		source  => 'puppet:///modules/eventlogging/logrotate',
 		require => File['/var/log/eventlogging/archive'],
 		mode    => '0444',
 	}
