@@ -567,7 +567,7 @@ sub vcl_recv {
 		char *last;
 
 		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-		
+
 		if (xff_ip == NULL) {
 			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
 		}
@@ -583,6 +583,19 @@ sub vcl_recv {
 	}
 
 	call tag_carrier;
+
+	/* Assemble X-Analytics header */
+	if (req.http.X-CS) {
+		set req.http.X-Analytics = "zero=" + req.http.X-CS;
+	}
+
+	/*
+	   TODO: X-CS is retained here (as the antecedent to X-Analytics),
+	   but should be removed as soon as X-Analytics is confirmed working
+	   and all upstream users of X-CS are modified to use the X-Analytics
+	   header instead.
+	*/
+
 	/* Replace <language>.m.<project>.org by <language>.<project>.org */
 	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org" ) {
 		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.m\.([a-zA-Z0-9-]+)\.org", "\1.\2.org");
@@ -674,7 +687,7 @@ sub vcl_recv {
 		}
 	}
 
-	if ( req.url == "/" ) { 
+	if ( req.url == "/" ) {
 		set req.url = "/?useformat=mobile";
 	}
 
@@ -694,7 +707,13 @@ sub vcl_fetch {
 
 	set beresp.http.X-Device = req.http.X-Device;
 	set beresp.http.X-Carrier = req.http.X-Carrier;
+	/* TODO: remove X-CS header */
 	set beresp.http.X-CS = req.http.X-CS;
+	if ( beresp.http.X-Analytics ) {
+		# Do nothing, X-Analytics has already been handled
+	} else if ( req.http.X-Analytics ) {
+		set beresp.http.X-Analytics = req.http.X-Analytics;
+	}
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
