@@ -30,8 +30,8 @@ class role::gerrit {
 			replication => {
 				# If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
 				"inside-wmf" => {
-				  "url" => "gerritslave@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git
-  url = gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git",
+				  "url" => 'gerritslave@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git
+  url = gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
 				  "threads" => "4",
 				  "mirror" => "true",
 				},
