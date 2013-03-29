@@ -32,7 +32,7 @@ UPDATE_INTERVAL = 5  # seconds
 
 
 defaults = {
-    "slope"      : "both",
+    "slope"      : "positive",
     "time_max"   : 60,
     "format"     : "%d",
     "value_type" : "uint",
