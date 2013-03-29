@@ -53,7 +53,6 @@ def get_udp2log_ports():
     for pid in iter_pids():
         cmd = get_cmd(pid)
         if pattern in cmd[0]:
-            print(cmd)
             p_index = False
             try:
                 p_index = cmd.index('-p')
