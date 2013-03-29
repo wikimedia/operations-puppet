@@ -5,7 +5,7 @@
 
 modules {
   module {
-    name = "udp2log_gmond"
+    name = "udp2log_socket"
     language = "python"
   }
 }
