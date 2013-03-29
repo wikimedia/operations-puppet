@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Gmond module for aggregating and posting udp2log socket stats. Easily
-    adaptable to other processes.
+    Gmond module for aggregating and posting udp2log socket stats.
 
     Notes:
     - If multiple udp2log instances are running, their stats will be
       aggregated.
-    - The user running this script must have read rights on the file
-      descriptors owned by udp2log.
-
-    TODO (Ori.livneh, 6-Aug-2012): Rather than hard-code udp2log, grab the
-    process pattern from 'params' argument to metric_init. If key is missing,
-    tally queues / drops for all open UDP sockets.
+    - Ori's original script read from /proc/<pid>/fd to
+      find socket inodes.  These were used for finding
+      socket stats in /proc/net/udp.  ganglia does not have
+      read permissions on /proc/<pid>/fd.  Instead, this
+      script now finds the udp2log listen port in the
+      udp2log command line, and uses that to find socket
+      stats in /proc/net/udp.
 
     Original: https://github.com/atdt/python-udp-gmond
     
@@ -46,10 +46,21 @@ udp2log_fields = {
     "drops"    : "udp2log Dropped Packets"
 }
 
-def pgrep(pattern):
-    """Get a list of process ids whose invocation matches `pattern`"""
-    return [pid for pid in iter_pids() if pattern in get_cmd(pid)[0]]
-
+def get_udp2log_ports():
+    """Returns the listen ports of running udp2log processes"""
+    pattern = "/usr/bin/udp2log"
+    ports = []
+    for pid in iter_pids():
+        cmd = get_cmd(pid)
+        if pattern in cmd[0]:
+            print(cmd)
+            p_index = False
+            try:
+                p_index = cmd.index('-p')
+            except ValueError, e:
+                continue
+            ports.append(int(cmd[p_index + 1]))
+    return ports
 
 def get_cmd(pid):
     """Get the command-line instantiation for a given process id"""
@@ -58,35 +69,24 @@ def get_cmd(pid):
 
 
 def iter_pids():
-    """Returns an iterator of process ids of running processes"""
+    """Returns an iterator of process ids of all running processes"""
     return (int(node) for node in os.listdir('/proc') if node.isdigit())
-
-
-def iter_fds(pid):
-    """Iterate file descriptors owned by process with id `pid`"""
-    fd_path = '/proc/%s/fd' % pid
-    return (os.path.join(fd_path, fd) for fd in os.listdir(fd_path))
-
-
-def get_socket_inodes(pid):
-    """Get inodes of process's sockets"""
-    stats = (os.stat(fd) for fd in iter_fds(pid))
-    return [fd_stats.st_ino for fd_stats in stats if
-            stat.S_ISSOCK(fd_stats.st_mode)]
 
 
 def check_udp_sockets():
     """
     Gets the number of packets in each active UDP socket's tx/rx queues and the
     number of dropped packets. Returns a dictionary of dictionaries, keyed to
-    socket inodes, with sub-keys 'tx_queue', 'rx_queue' and 'drops'.
+    socket port, with sub-keys 'tx_queue', 'rx_queue' and 'drops'.
     """
     sockets = {}
     with open('/proc/net/udp', 'rt') as f:
         f.readline()  # Consume and discard header line
         for line in f:
             values = line.replace(':', ' ').split()
-            sockets[int(values[13])] = {
+            # key by integer port value.
+            # e.g. Convert 20E4 hex to int 8420.
+            sockets[int(values[2], 16)] = {
                 'tx_queue' : int(values[6], 16),
                 'rx_queue' : int(values[7], 16),
                 'drops'    : int(values[16])
@@ -98,12 +98,12 @@ def check_udp2log():
     """
     Aggregate data about all running udp2log instances
     """
-    inodes = []
-    for udp2log_instance in pgrep('udp2log'):
-        inodes.extend(get_socket_inodes(udp2log_instance))
     aggr = dict(tx_queue=0, rx_queue=0, drops=0)
-    for inode, status in check_udp_sockets().items():
-        if inode in inodes:
+    ports = get_udp2log_ports()
+    for port, status in check_udp_sockets().items():
+        # if the udp socket is a udp2log port,
+        # aggregate the stats.
+        if port in ports:
             aggr['tx_queue'] += status['tx_queue']
             aggr['rx_queue'] += status['rx_queue']
             aggr['drops'] += status['drops']
