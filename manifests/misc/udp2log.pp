@@ -330,6 +330,9 @@ class misc::udp2log::monitoring {
 			source => "puppet:///files/ganglia/plugins/udp2log_socket.pyconf",
 			notify => Service[gmond];
 	}
+
+	# include general UDP statistic monitoring.
+	include misc::monitoring::net::udp
 }
 
 class misc::udp2log::iptables_purges {

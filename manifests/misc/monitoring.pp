@@ -26,3 +26,18 @@ class misc::monitoring::htcp-loss {
 			#source => "puppet:///files/ganglia/plugins/htcpseqcheck.pyconf";
 	}
 }
+
+# == Class misc::monitoring::net::udp
+# Sends UDP statistics to ganglia.
+class misc::monitoring::net::udp {
+	file {
+		'/usr/lib/ganglia/python_modules/udp_stats.py':
+			require => File['/usr/lib/ganglia/python_modules'],
+			source => 'puppet:///files/ganglia/plugins/udp_stats.py',
+			notify => Service[gmond];
+		'/etc/ganglia/conf.d/udp_stats.pyconf':
+			require => File["/usr/lib/ganglia/python_modules/udp_stats.py"],
+			source => "puppet:///files/ganglia/plugins/udp_stats.pyconf",
+			notify => Service[gmond];
+	}
+}
