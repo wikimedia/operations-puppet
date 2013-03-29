@@ -381,6 +381,16 @@ class misc::statistics::sites::metrics {
         Order deny,allow
         Allow from all
     </Directory>",
+"
+	  <Location />
+	    Order deny,allow
+	    AuthType Basic
+	    AuthName \"WMF E3 Metrics API\"
+	    AuthUserFile $e3_home/.htpasswd
+	    require valid-user
+	    Deny from all
+	    Satisfy any
+	</Location>",
 	],
 	}
 
