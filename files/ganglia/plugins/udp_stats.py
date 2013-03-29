@@ -19,7 +19,7 @@ from threading import Timer
 UPDATE_INTERVAL = 5  # seconds
 
 defaults = {
-    "slope"      : "both",
+    "slope"      : "positive",
     "time_max"   : 60,
     "format"     : "%u",
     "value_type" : "uint",
