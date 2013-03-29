@@ -50,10 +50,23 @@ connections = {
 <% end # mysql_connections..each -%>
 }
 
-PROJECT_DB_MAP = {
-    'enwiki': 's1',
-    'dewiki': 's5',
-    'itwiki': 's2',
-    'commonswiki': 's4',
-}
+def get_project_host_map(usecache=True):
+    cache_name = 'project_host_map.json'
+    if not exists(cache_name) or not usecache:
+        cluster_url_fmt = 'https://gerrit.wikimedia.org/r/gitweb?p=' \
+                          'operations/mediawiki-config.git;a=blob_plain;' \
+                          'f=s%d.dblist;hb=HEAD'
+        host_fmt = 's%d'
+        project_host_map = {}
+        for i in range(1,8):
+            host = host_fmt % i
+            url = cluster_url_fmt % i
+            projects = urlopen(url).read().splitlines()
+            for project in projects:
+                project_host_map[project] = host
+        json.dump(project_host_map, open(cache_name, 'w'))
+    else:
+        project_host_map = json.load(open(cache_name))
+    return project_host_map
 
+PROJECT_DB_MAP = get_project_host_map()
