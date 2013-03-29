@@ -29,8 +29,9 @@ class role::gerrit {
 			ssl_ca => "Equifax_Secure_CA",
 			replication => {
 				# If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
-				"formey" => {
-				  "url" => 'gerritslave@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git',
+				"inside-wmf" => {
+				  "url" => "gerritslave@formey.wikimedia.org:/var/lib/gerrit2/review_site/git/${name}.git
+  url = gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git",
 				  "threads" => "4",
 				  "mirror" => "true",
 				},
@@ -43,11 +44,6 @@ class role::gerrit {
 				  "isGithubRepo" => "true",
 				  "remoteNameStyle" => "dash",
 				  "mirror" => "true",
-				},
-				'gallium' => {
-					'url' => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
-					'threads' => '4',
-					"mirror" => "true"
 				},
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
