@@ -51,7 +51,7 @@ class misc::bugzilla::communitymetrics {
 		owner => root,
 		group => www-data,
 		mode => 0550,
-		source => "puppet:///files/misc/bugzilla_community_metrics.sh",
+		source => "puppet:///files/bugzilla/bugzilla_community_metrics.sh",
 		ensure => present,
 	}
 
@@ -71,12 +71,32 @@ class misc::bugzilla::report {
 	require passwords::bugzilla
 
 	file { bugzilla_report:
-		path => "/home/reporter/bugzilla_report.php",
-		owner => reporter,
-		group => reporter,
-		mode => 0550,
+		path    => '/home/reporter/bugzilla_report.php',
+		owner   => 'reporter',
+		group   => 'reporter',
+		mode    => '0550',
 		content => template('misc/bugzilla_report.php'),
+		ensure  => present,
+	}
+
+}
+
+# RT-4802 - mail bz audit_log to bugzilla admins
+class misc::bugzilla::auditlog {
+
+	file { bugzilla_auditlog_file:
+		path   => '/srv/org/wikimedia/bugzilla/bugzilla_audit_log.sh',
+		owner  => 'root',
+		group  => 'www-data',
+		mode   => '0550',
+		source => 'puppet:///files/bugzilla/bugzilla_audit_log.sh',
 		ensure => present,
 	}
 
+	cron { bugzilla_auditlog_cron:
+		command => 'cd /srv/org/wikimedia/bugzilla/ ; ./bugzilla_audit_log.sh',
+		user    => 'www-data',
+		hour    => 0,
+		minute  => 0,
+	}
 }
