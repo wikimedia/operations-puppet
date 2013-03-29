@@ -9,6 +9,10 @@ class applicationserver::packages {
 			"php5-memcached", "libmemcached10", "php5-igbinary"  ]:
 		ensure => latest;
 	}
+	# used by Score extension to render MIDI to Ogg Vorbis
+	package { [ "lilypond" ]:
+		ensure => latest;
+	}
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
