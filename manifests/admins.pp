@@ -1181,13 +1181,13 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "tomasz@scratch":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-dss",
 				key	=> "AAAAB3NzaC1kc3MAAACBAME+XGr43e1N0iWu7qmC2Do/mGBoWEGrSObLXk6Fll9+WJ9nRNHvmQAkEUexWEQaolI+ItWFEAVU/j9pO10MvF4YcGQSGcUEbsQD50W91P3+T/ojnP6bhjI2/aX4HAg6bk0Sq2ckYNpu4owJdhDnTHNk3luptOSwVLnJ92Nm9S7JAAAAFQD7L3zwmi9owkB+HhHxzqgwWAB7LQAAAIAOTsZLkm8nfbqMF0QRWKCb4NU7spftTiFLgVNiq1nQcSA69krEzZPi17vOfJ1a1iMWJL1zKHZhIxbXimDxMAwKS45WU2RxfMbtZw70dAK4AW635yb5riIyuc94NwmhquRypPcGUQKN+/mhxB+NDs8AG32iQjVD5e7M+fczfLsRfAAAAIBoRL51kK9c36OMcrzOJVR8J9b6bkV/AclSQmlNzm2b3armXf9w2OlifqobOpoJL2PG8HWKd7QAqv7PvON20HErNDBMCYhfRmX/Bn4WcWgZzq5y5I66rGs86nqyycbWAFbz/Yd+zq6P1z/LpzXnGsy8j8CAJGQ8c2tXvNGhHToHtA=="
 			}
 			ssh_authorized_key { "tomasz@wmf-barry":
-				ensure	=> present,
+				ensure	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAxk8Zks1Z1qsFhu7CmcYC8474ikLmDVXXLqeC2ekBznIsdX2/1IPaYIZp8w4G8M2X1InMOqQswCqTfvQFuMOFWxJvTQXxZOJUC8L2El1xB7t4O7mvDXw8uq1h20L7ODsLkFga3M7W7IIg3pU12HS1UAInYDQt0SCXtLaTbPQpgP8H0XNZhn/I3P/NVQnaUx00YzrS9ZojNbwEHB8cUpwp2N/gfv/byTTe48Xaq3wlAxw/QTow5G+r3atEOVJ0QKGztl+uScF/ZzP8QYficdMP7aNffg9aQhf/uER10hXu2F16UZQyoMx/sFkS2U8ZNVkCKLhI7MKti7+ZGz4/+fcCOw=="
