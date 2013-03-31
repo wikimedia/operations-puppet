@@ -46,6 +46,8 @@ class varnish {
 		file {
 			"/etc/varnish/geoip.inc.vcl":
 				content => template("varnish/geoip.inc.vcl.erb");
+			"/etc/varnish/device-detection.inc.vcl":
+				content => template("varnish/device-detection.inc.vcl.erb");
 		}
 	}
 

@@ -1,5 +1,7 @@
 # Varnish VCL include file for bits
 
+include "device-detection.inc.vcl";
+
 sub vcl_recv {
 	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
 	if (req.request == "POST") {
@@ -14,6 +16,11 @@ sub vcl_recv {
 		vary by protocol. This can result in a redirect loop and assets not loading. */
 		if ( req.url ~ "^/(auditcom|boardgovcom|board|chair|chapcom|checkuser|collab|donate|exec|fdc|grants|internal|movementroles|nomcom|office|otrs-wiki|searchcom|spcom|steward|wikimaniateam)\.wikimedia\.org/" && req.http.X-Forwarded-Proto != "https" ) {
 			error 301 "https://<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>" + req.url;
+		}
+		# Add X-Device to mobile load.php requests
+		if (req.url ~ "^/m/") {
+			set req.url = regsub(req.url, "^/m/", "/");
+			call device_detection;
 		}
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 		if (req.url == "/geoiplookup") {
