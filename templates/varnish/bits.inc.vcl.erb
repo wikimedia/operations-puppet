@@ -1,5 +1,7 @@
 # Varnish VCL include file for bits
 
+include "device-detection.inc.vcl";
+
 sub vcl_recv {
 	/* Since we are allowing POST at wikimedia3.vcl.erb, disallow here */
 	if (req.request == "POST") {
@@ -8,6 +10,11 @@ sub vcl_recv {
 	if (req.http.host == "<%= cluster_options.fetch( "bits_domain", "bits.wikimedia.org" )%>") {
 		if (req.url ~ "^/event\.gif") {
 			error 204;
+		}
+		# Add X-Device to mobile load.php requests
+		if (req.url ~ "^/m/") {
+			set req.url = regsub(req.url, "^/m/", "/");
+			call device_detection;
 		}
 	/* For https-only wikis, the redirect from http to https for bits assets should occur
 		in varnish instead of apache, since the apache redirect and mediawiki doesn't

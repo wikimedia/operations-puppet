@@ -7,6 +7,8 @@ C{
 #include <arpa/inet.h>
 }C
 
+include "device-detection.inc.vcl";
+
 acl wmf_office {
 	"216.38.130.160"/28;
 }
@@ -462,87 +464,6 @@ sub tag_carrier {
 		unset req.http.X-Carrier;
 	}
 	*/
-}
-
-sub device_detection {
-
-	set req.http.X-Device = "";
-
-	if ( req.http.User-Agent ~ "Android" ){
-		set req.http.X-Device = "android";
-		if ( req.http.User-Agent ~ "Opera Mini" ) {
-			set req.http.X-Device = "operamini";
-		} else if( req.http.User-Agent ~ "Opera Mobi" ) {
-			set req.http.X-Device = "operamobile";
-		}
-	} else if( req.http.User-Agent ~ "MSIE (8|9|1\d)\." ) {
-		set req.http.X-Device = "ie";
-	} else if( req.http.User-Agent ~ "MSIE" ) {
-		set req.http.X-Device = "html";
-	} else if ( req.http.User-Agent ~ "Opera Mobi" ) {
-		set req.http.X-Device = "operamobile";
-	} else if( req.http.User-Agent ~ "Safari" && ( req.http.User-Agent ~ "iPad" ||
-		req.http.User-Agent ~ "iPhone" ) ) {
-		set req.http.X-Device = "iphone";
-	} else if( req.http.User-Agent ~ "iPhone" ) {
-		if( req.http.User-Agent ~ "Opera" ) {
-			set req.http.X-Device = "operamini";
-		} else {
-			set req.http.X-Device = "capable";
-		}
-	} else if( req.http.User-Agent ~ "WebKit" ) {
-		if( req.http.User-Agent ~ "Series60" ) {
-			set req.http.X-Device = "nokia";
-		} else if( req.http.User-Agent ~ "webOS" ) {
-			set req.http.X-Device = "palm_pre";
-		} else {
-			set req.http.X-Device = "webkit";
-		}
-	} else if( req.http.User-Agent ~ "Opera" ) {
-		if( req.http.User-Agent ~ "Nintendo Wii" ) {
-			set req.http.X-Device = "wii";
-		} else if( req.http.User-Agent ~ "Opera Mini" ) {
-			set req.http.X-Device = "operamini";
-		} else {
-			set req.http.X-Device = "operamobile";
-		}
-	} else if( req.http.User-Agent ~ "Kindle/1.0" ) {
-		set req.http.X-Device = "kindle";
-	} else if( req.http.User-Agent ~ "Kindle/2.0" ) {
-		set req.http.X-Device = "kindle2";
-	} else if( req.http.User-Agent ~ "Firefox|Maemo Browser|Fennec" ) {
-		set req.http.X-Device = "capable";
-	} else if( req.http.User-Agent ~ "NetFront" ) {
-		set req.http.X-Device = "netfront";
-	} else if( req.http.User-Agent ~ "SEMC-Browser" ) {
-		set req.http.X-Device = "wap2";
-	} else if( req.http.User-Agent ~ "Series60" ) {
-		set req.http.X-Device = "wap2";
-	} else if( req.http.User-Agent ~ "PlayStation Portable" ) {
-		set req.http.X-Device = "psp";
-	} else if( req.http.User-Agent ~ "PLAYSTATION 3" ) {
-		set req.http.X-Device = "ps3";
-	} else if( req.http.User-Agent ~ "SAMSUNG" ) {
-		set req.http.X-Device = "capable";
-	} else if( req.http.User-Agent ~ "BlackBerry" ) {
-		if( req.http.User-Agent ~ "/1." || req.http.User-Agent ~ "/2." || req.http.User-Agent ~ "/3."
-			|| req.http.User-Agent ~ "/4." ) {
-				set req.http.X-Device = "blackberry-lt5";
-			} else {
-				set req.http.X-Device = "blackberry";
-			}
-	}
-
-	if ( req.http.X-Device == "" ) {
-		if ( req.http.Accept ~ "application/vnd.wap.xhtml+xml" ) {
-			// Should be wap2
-			set req.http.X-Device = "html";
-		} else if ( req.http.Accept ~ "vnd.wap.wml" ) {
-			set req.http.X-Device = "wml";
-		} else {
-			set req.http.X-Device = "html";
-		}
-	}
 }
 
 sub vcl_recv {
