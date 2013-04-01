@@ -82,7 +82,7 @@ class ssh::bastion {
 				mode  => 0444,
 				tag => 'ssh_banner',
 				content => "
-If you are having access problems, please see: https://wikitech.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
+If you're having access problems, I feel bad for you son.  I've got 99 users, but you ain't one.  Hit me: https://wikitech.wikimedia.org/wiki/Access#Accessing_public_and_private_instances
 "
 			}
 		}
