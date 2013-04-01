@@ -1,0 +1,9 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Code-Review+2: Ottomata <otto@wikimedia.org>
+Verified+2: Ottomata <otto@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Ottomata <otto@wikimedia.org>
+Submitted-at: Mon, 01 Apr 2013 16:41:35 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/56921
+Project: operations/puppet
+Branch: refs/heads/production
