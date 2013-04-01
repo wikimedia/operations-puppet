@@ -2559,29 +2559,23 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 
 }
 
+# Receives log data from varnishes (udp 8422) and Apaches (udp 8421),
+# processes it, and broadcasts to internal subscribers.
 node "vanadium.eqiad.wmnet" {
 	$gid=500
-	system_role { "misc::log-collector": description => "log collector" }
+
+	system_role { "misc::log-collector":
+		description => 'EventLogging log collector',
+	}
 
 	include standard,
-		groups::wikidev,
-		admins::restricted,
-		accounts::aaron,
-		accounts::datasets,
-		accounts::dsc,
-		accounts::diederik,
-		accounts::mflaschen,
-		accounts::maryana,
-		accounts::rfaulk,
-		accounts::spage,
 		eventlogging,
-		misc::statistics::db::mysql,
 		misc::statistics::db::mongo,
 		nrpe,
 		role::solr::ttm
 
-	sudo_user { [ "otto", "olivneh", "spage", "mflaschen" ]:
-		privileges => ['ALL = (ALL) NOPASSWD: ALL']
+	sudo_user { [ 'otto', 'olivneh' ]:
+		privileges => ['ALL = (ALL) NOPASSWD: ALL'],
 	}
 }
 
