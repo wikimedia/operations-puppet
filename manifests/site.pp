@@ -577,18 +577,24 @@ node /^db1047\.eqiad\.wmnet/ {
 
 ## SANITARIUM
 node /^db1053\.eqiad\.wmnet/ {
-	include role::db::sanitarium::base
 
-	role::db::sanitarium::instance { "s1" :
-		port => 3306,
-	}
-	role::db::sanitarium::instance { "s2" :
-		port => 3307,
-	}
 }
 
 node /^db1054\.eqiad\.wmnet/ {
-
+  class { role::db::sanitarium:
+    instances => {
+      's2' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "20G"
+      },
+      's4' => {
+        'port' => 3307,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "20G"
+      },
+    }
+  }
 }
 
 node /^db1055\.eqiad\.wmnet/ {
