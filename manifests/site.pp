@@ -1861,7 +1861,8 @@ node "nickel.wikimedia.org" {
 	$ganglia_aggregator = "true"
 
 	include standard,
-		ganglia::web
+		ganglia::web,
+		misc::monitoring::views
 
 	 install_certificate{ "star.wikimedia.org": }
 }
