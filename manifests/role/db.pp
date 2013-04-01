@@ -32,9 +32,9 @@ class role::db::sanitarium( $instances = {} ) {
   ## for key in instances, make a mysql instance. need port, innodb_log_file_size, and amount of ram
   $instances_keys = keys($instances)
   mysql_multi_instance::instance { $instances_keys :
-    port                 => $role::db::sanitarium::instances[$title]['port'],
-    innodb_log_file_size => $role::db::sanitarium::instances[$title]['innodb_log_file_size'],
-    ram                  => $role::db::sanitarium::instances[$title]['ram'],
+    port                 => $role::db::sanitarium::instances["${title}"]['port'],
+    innodb_log_file_size => $role::db::sanitarium::instances["${title}"]['innodb_log_file_size'],
+    ram                  => $role::db::sanitarium::instances["${title}"]['ram'],
   }
 
 }
