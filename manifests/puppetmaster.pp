@@ -27,7 +27,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	# Require /etc/puppet.conf to be in place, so the postinst scripts do the right things.
 	require config
 
-	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby" ]:
+	package { [ "puppetmaster", "puppetmaster-common", "vim-puppet", "puppet-el", "rails", "libmysql-ruby", "ruby-json" ]:
 		ensure => latest;
 	}
 
