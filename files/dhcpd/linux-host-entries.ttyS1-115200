@@ -3587,7 +3587,7 @@ host promethium {
 }
 
 host rdb1 {
-	hardware ethernet90:B1:1C:36:A1:99;
+	hardware ethernet 90:B1:1C:36:A1:99;
 	fixed-address rdb1.pmtpa.wmnet;
 }
 
