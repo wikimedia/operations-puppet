@@ -41,3 +41,52 @@ class misc::monitoring::net::udp {
 			notify => Service[gmond];
 	}
 }
+
+# Ganglia views that should be
+# avaliable on ganglia.wikimedia.org
+class misc::monitoring::views {
+	require ganglia::web
+
+	misc::monitoring::view::udp2log { 'udp2log':
+		host_regex => 'locke|emery|oxygen|gadolinium',
+	}
+}
+
+# == Define misc:monitoring::view::udp2log
+# Installs a ganglia::view for a group of nodes
+# running udp2log.  This is just a wrapper for
+# udp2log specific metrics to include in udp2log
+# ganglia views.
+#
+# == Parameters:
+# $host_regex - regex to pass to ganglia::view for matching host names in the view.
+# $conf_dir
+#
+define misc::monitoring::view::udp2log($host_regex, $conf_dir = undef) {
+	ganglia::view { $name:
+		graphs => [
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'packet_loss_average',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'packet_loss_90th',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'drops',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'pkts_in',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'rx_queue',
+			},
+		],
+		conf_dir => $conf_dir,
+	}
+}
