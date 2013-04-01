@@ -2459,6 +2459,13 @@ class accounts {
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/W+LDuE1zEbrLhkADukE2jILZuecapTqBDBzcohlU9z01z8mFmc9bYck0prBL7I/cLdM65QVcDZIXekNV9A6h746DeYfNhgSNfIVlwauKpvr83gRLuFGfZsIuORGzD19NKbMYxuMJobCP5KP0Xzqvk//8IcersJTooYXXg/bbfOKHi6mpr+YKqJgyXuhF4weQu23ty4HBhOFpg9gZ5oXvAShdudWsB7aFGMPqg+B61n8+j33HxRV4Q4d/JdGNnaYt/G6klhhTHzX1vnGpGCWvDWXJXAM+Q9zdWxH1lAKL3sSR9fMKQ7z5yUK9Nc3QUb7yJuHkeUhuMIysL2HNWvFV",
 			}
+			ssh_authorized_key {
+				"WMF-work":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDT6QY2PcibrrwSCyrBI2TRSN9rwDCLt2uSVlpCRCAUVrHNdXEpLt1WgUotZx3HIWQdPrmpakg4+R8ltsrY01oe5jcjP44aAgj8isIjujjsqKwElKdAl4UxXUQ2udjaqzqr8Qe3sl13bkt/Kkt1yRTzenVek71k878f0TUBQtcTpPUOeRpcNAvHxs/sJMdylGBM3KfjDzD0Cps6NluWXbsrQJCHiMSIaAAYyYaLXBsGRvTYG+vL9nC7gvik+VFh+kyGAindGaCnjx7q+L67837UQloXGrJ/lKDRbaXW8xpepDewSBQ3ItVkXz+TNBWNVcIRo7SL3ZgREpW/WG4DyThj",
+			}
 		}
 	}
 
