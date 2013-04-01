@@ -280,6 +280,25 @@ class _WMFRewriteContext(WSGIContext):
                     resp = webob.exc.HTTPNotFound('Monitoring type not found "%s"' % (req.path))
                 return resp(env, start_response)
 
+        if match is None:
+            match = re.match(r'^/(?P<path>[^/]+)?$', req.path)
+            # /index.html /favicon.ico /robots.txt etc.
+            # serve from a default "root" container
+            if match:
+                path  = match.group('path')
+                if not path:
+                    path = 'index.html'
+
+                req.host = '127.0.0.1:%s' % self.bind_port
+                req.path_info = "/v1/%s/root/%s" % (self.account, path)
+
+                app_iter = self._app_call(env)
+                status = self._get_status_int()
+                headers = self._response_headers
+
+                resp = webob.Response(status=status, headers=headers, app_iter=app_iter)
+                return resp(env, start_response)
+
         # Internally rewrite the URL based on the regex it matched...
         if match:
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
