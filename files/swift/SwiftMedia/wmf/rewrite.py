@@ -190,8 +190,10 @@ class _WMFRewriteContext(WSGIContext):
         # (d) global-data-repo-zone.shard (if sharded)
         #
         # Rewrite wiki-global URLs of these forms:
-        # (a) http://upload.wikimedia.org/math/.*
-        #         => http://msfe/v1/AUTH_<hash>/global-data-math-render/.*
+        # (a) http://upload.wikimedia.org/math/<relpath>
+        #         => http://msfe/v1/AUTH_<hash>/global-data-math-render/<relpath>
+        # (b) http://upload.wikimedia.org/<proj>/<lang>/math/<relpath> (legacy)
+        #         => http://msfe/v1/AUTH_<hash>/global-data-math-render/<relpath>
         #
         # Rewrite wiki-relative URLs of these forms:
         # (a) http://upload.wikimedia.org/<proj>/<lang>/<relpath>
@@ -238,7 +240,9 @@ class _WMFRewriteContext(WSGIContext):
         # math renderings
         if match is None:
             # /math/c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
-            match = re.match(r'^/(?P<repo>math)/(?P<path>(?P<shard1>[0-9a-f])/(?P<shard2>[0-9a-f])/.+)$', req.path)
+            # /wikipedia/en/math/c/9/f/c9f2055dadfb49853eff822a453d9ceb.png (legacy)
+            match = re.match(r'^(/(?P<proj>[^/]+)/(?P<lang>[^/]+))?/(?P<repo>math)/(?P<path>(?P<shard1>[0-9a-f])/(?P<shard2>[0-9a-f])/.+)$', req.path)
+
             if match:
                 proj  = 'global'
                 lang  = 'data'
