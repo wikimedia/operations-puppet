@@ -175,22 +175,6 @@ sub vcl_hit {
 }
 
 sub vcl_miss {
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	# Send originals to the Swift cluster
-	if ( req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/(archive/)?[0-9a-f]/[0-9a-f][0-9a-f]/" ) {
-		set req.backend = swift;
-	# Send thumbnails to the Swift cluster
-	} elsif (req.url ~ "^/+[^/]+/[^/]+/(transcoded|thumb|temp)/") {
-		set req.backend = swift;
-	# math to swift
-	} elsif (req.url ~ "^/(math|score)/") {
-		set req.backend = swift;
-	# timeline to swift
-	} elsif (req.url ~ "^/(wikibooks|wikinews|wikiquote|wikiversity|wikimedia|wikipedia|wikisource|wiktionary|wikivoyage)/[^/]+/timeline/") {
-		set req.backend = swift;
-	}
-<% end -%>
-
 	/* Convert range requests into pass when over a certain threshold */
 	if (req.http.Range
 		&& (std.integer(regsub(req.http.Range, "^bytes=([0-9]*)-", "\1"), 0) > 33554432

@@ -386,8 +386,7 @@ class role::cache {
 					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
 				},
 				"eqiad" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-					"swift" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
 					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
 				},
 				"esams" => {
