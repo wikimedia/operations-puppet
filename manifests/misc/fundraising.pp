@@ -456,6 +456,7 @@ class misc::fundraising::udp2log_rotation {
 			mode => 0554,
 			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
 		'/a/log/fundraising/logs/buffer':
+			ensure => directory,
 			owner => udp2log,
 			group => udp2log,
 			mode => 0750;
