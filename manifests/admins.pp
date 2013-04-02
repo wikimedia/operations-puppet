@@ -2634,6 +2634,26 @@ class accounts {
 		}
 	}
 
+	# RT 4835
+	class yurik inherits baseaccount {
+		$username = "yurik"
+		$realname = "Yuri Astrakhan"
+		$uid = 636
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"yastrakhan@wikimedia.org":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => "AAAAB3NzaC1yc2EAAAABJQAAAgEAks66YFTBrrC9Wv/rPwIf9cTJO1RxsXHMEcWJjosn9fxvUS57KAw2UrCwinu1T1Hng59V+grHxp2wY7Bke3NmYng2OQacH2HKekPFP3fG82OQlj0YRE52deNwlrfBIx7Yg915zpXjXSQi9D5DIncYN/8jE7Q3Shlw0yRfFLmP02zpiX0Vm1d+g8FM0aMaIPR80KlIFSADEYoo2LD9b9gKsIJQ3643geAlzjye7VTr+ojGaPrW7w+tB5ikPgtx8jQnve5UpfKaQHJcdS1of3GNy3/08i+gScog3oxkneBPIW0Wkb3sNwPZ2Y+vxYSIKzO6z/V/HGSNOYQJy7QJRApBav6sKZxdBSPGi3+6vgHxf4IgUVtikJGzTZ2jtWoqNv/j4h4gfehPkr5hQBJIkJQwTM/JPPbWPGOiWmFQkZeDTsoZGgi5B9hmM3UlelN7egyDZXCEvCirR9moviYI9Dr8VQsT/koyRX3kYdEQV19bHiou+ze6mmKO3OI4EmHkdtR55J1cR3/+7Q8GCAfTiD2KKj7yUEjZMewdOcbZzn29AXkc+90wiuWUWxqan7T5iePRvNPfjHg6ntJDs3tG/WdgF8HluXcWGZHa1Fk2kobK+/WFkGz4CuW9asbUgg+2TOLjvYFzEKgKqS8194nf0WZvRnjy3oFeuj0wwdALmuZDnus=",
+			}
+		}
+	}
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -2759,6 +2779,7 @@ class admins::restricted {
 	include accounts::rcole # access revoked
 	include accounts::tparscal
 	include accounts::dandreescu
+	include accounts::yurik
 }
 
 class admins::analinterns {
