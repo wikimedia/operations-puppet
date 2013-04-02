@@ -2614,6 +2614,27 @@ class accounts {
 		}
 	}
 
+	class bblack inherits baseaccount {
+		$username = "bblack"
+		$realname = "Brandon Black"
+		$uid = 635
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"bblack@wikimedia.org":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => " ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxNcPFGwSUYB24njYY0BX/vHm2AFXZSQtPcPGyJxP+fkkaTQOKX4pGST2oCudlV4hBnskTTDyd4r4YF1+HPAzxX7myCcCFh+9L8AOuVcdcH3g9dSiV3csAemlOsfPivrJEx2RG5sFiYqaLSfSMF65QjJUaX7thWIHRFH+sDoPfVBEJABbvO3yeA9uPBzqWPs+kII7n3WMEsiZPvbPRypsfFwa0yoZotnoOC0ZoiQOFZCm3v+Xnoxv5gRxGIZCrR86dstKoISJU0PmPaVZkYElAhtbLUxlBCsE/lSQi/phQduuI9u+pApaW+4FxpUOPD+i6NfdjchJRfNG5Lh/7PPgUo3LWXfQr3qKm5dOT0PbgY7Mif3fvkoI7CT5RG+TVau5YjU6zL8TWAx8nv7U2hgU/VuJT96FvBYbnvbySJwk7LMEl85UzZ4M3o9D74csj9lRGIc3VXoOL7T9peYzTxr6+0Uuo6mBWOdgnp5tn/ew145SXJmwL2Ly3k/KVn5lehL6F11QaUI74Yw/MuZ6eXmiR/ZBcbBHD2WnRyJOPjw/IOwUO848A4NoAcie0ESKSRk5RdmksMns5wYniUEYOCjuErk8NK3ClquQ0Wd6yOz0TTRUkPrUR4fIuEGraYlIARUvnidxK9kFj6q5KYc2MKPGw0m9scPGLGokEAnllrs+nEQ==";
+			}
+		}
+	}
+
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2650,6 +2671,7 @@ class admins::roots {
 	include accounts::andrewb
 	include accounts::ariel
 	include accounts::asher
+	include accounts::bblack
 	include accounts::ben # disabled
 	include accounts::brion #shell re-enabled dz 20121004
 	include accounts::catrope
