@@ -43,7 +43,6 @@ define mysql_multi_instance::instance(
           'tmpdir'                    => "/a/tmp/",
           'query_cache_type'          => 0,
           'log_slow_verbosity'        => 'Query_plan',
-          'optimizer_switch'          => 'extended_keys=on',
           'innodb-adaptive-flushing'  => 1,
           'innodb-buffer-pool-size'   => $ram,
           'innodb-flush-method'       => "O_DIRECT",
