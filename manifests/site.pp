@@ -607,7 +607,15 @@ node /^db1047\.eqiad\.wmnet/ {
 
 ## SANITARIUM
 node /^db1053\.eqiad\.wmnet/ {
-
+  class { role::db::sanitarium:
+    instances => {
+      's1' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "96G"
+      },
+    }
+  }
 }
 
 node /^db1054\.eqiad\.wmnet/ {
@@ -616,20 +624,44 @@ node /^db1054\.eqiad\.wmnet/ {
       's2' => {
         'port' => 3306,
         'innodb_log_file_size' => "2000M",
-        'ram' => "20G"
+        'ram' => "32G"
       },
       's4' => {
         'port' => 3307,
         'innodb_log_file_size' => "2000M",
-        'ram' => "20G"
+        'ram' => "32G"
+      },
+      's5' => {
+        'port' => 3308,
+        'innodb_log_file_size' => "1000M",
+        'ram' => "32G"
       },
     }
   }
 }
 
 node /^db1055\.eqiad\.wmnet/ {
-
+  class { role::db::sanitarium:
+    instances => {
+      's3' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "500M",
+        'ram' => "32G"
+      },
+      's6' => {
+        'port' => 3307,
+        'innodb_log_file_size' => "500M",
+        'ram' => "32G"
+      },
+      's7' => {
+        'port' => 3308,
+        'innodb_log_file_size' => "500M",
+        'ram' => "32G"
+      },
+    }
+  }
 }
+
 
 ## not currently in production and/or hardware issues
 node /^db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
