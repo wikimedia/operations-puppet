@@ -610,7 +610,7 @@ node /^db1054\.eqiad\.wmnet/ {
   }
 }
 
-node /^db1055\.eqiad\.wmnet/ {
+node /^db1057\.eqiad\.wmnet/ {
   class { role::db::sanitarium:
     instances => {
       's3' => {
