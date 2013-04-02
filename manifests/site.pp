@@ -141,7 +141,9 @@ node "analytics1002.eqiad.wmnet" {
 # analytics1003 - analytics1006 are udp2log instances.
 node /analytics100[3456].eqiad.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
-	$ganglia_aggregator = "true"
+	if ($hostname == "analytics1003") {
+		$ganglia_aggregator = "true"
+	}
 
 	# monitor the (currently unpuppetized)
 	# udp2log instances.
