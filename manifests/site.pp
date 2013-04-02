@@ -140,12 +140,12 @@ node "analytics1002.eqiad.wmnet" {
 
 # analytics1003 - analytics1006 are udp2log instances.
 node /analytics100[3456].eqiad.wmnet/ {
-	include role::analytics
-	
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1003") {
 		$ganglia_aggregator = "true"
 	}
+
+	include role::analytics
 
 	# monitor the (currently unpuppetized)
 	# udp2log instances.
