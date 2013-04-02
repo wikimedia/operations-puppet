@@ -82,7 +82,7 @@ define mysql_multi_instance::instance(
           'temp-pool'                 => true,
           'query_cache_type'          => 0,
           'log_slow_verbosity'        => "Query_plan",
-          'optimizer_switch'          => "'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off'",
+          'optimizer_switch'          => '\'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off\'',
         },
         'mysqldump' => {
           'quick'              => true,
