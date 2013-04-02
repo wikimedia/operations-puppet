@@ -139,7 +139,7 @@ node "analytics1002.eqiad.wmnet" {
 }
 
 # analytics1003 - analytics1006 are udp2log instances.
-node /analytics100[3456].eqiad.wmnet/ inherits analytics_basenode {
+node /analytics100[3456].eqiad.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	$ganglia_aggregator = "true"
 
