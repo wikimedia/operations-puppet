@@ -2386,7 +2386,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"abartov@ABartov-XPS":
@@ -2407,7 +2407,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"okeyes@wikimedia.org":
@@ -2428,7 +2428,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"jdlrobson@gmail.com":
@@ -2449,7 +2449,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"jgonera@wikimedia.org":
@@ -2470,7 +2470,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"cmcmahon@ubuntu":
@@ -2491,7 +2491,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"ram@wikimedia.org":
@@ -2512,7 +2512,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"fschulenburg@wikimedia.org":
@@ -2533,7 +2533,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"yuvipanda@wikimedia.org":
@@ -2553,7 +2553,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"sahar@Sahars-MacBook-Pro.local":
@@ -2574,7 +2574,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname]}
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
 				"handrade@administrator-Dell-System-XPS-L322X":
@@ -2582,6 +2582,26 @@ class accounts {
 				user   => $username,
 				type   => "ssh-rsa",
 				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQChbQJJVbZV7Nh+wq0VKfMaWfrIhmpbpHe6xKbJDJtbz1QOcEJJJzz5mSBkf0yEVypvlQgRs0YPbY7TBaXQ0DK2qjJvRjYQz6AFEqAxhjjtB6YcCqGb1XrVqhmVpRW8E4zpYzdCrFAKhEZrShFvTh19tx2tqJyh2AWV/KqJOx2/VTXz4+fhqZYzuLEdnQIxw4dkUHfHmiJi1gPRatv+chFP5snAAjs0ArZZXkVVyWhCS6kv4hC2objC5vKNFYsAEvsv4QCIRnZHkvdNpa8nsVKCg4iq5bhVkt+98nybQAFVfsN9eOU1a8nYzuDrzdze2CcBOTy483KMyomUZepxBjjf",
+			}
+		}
+	}
+
+	class marc inherits baseaccount {
+		$username = "marc"
+		$realname = "Marc-Andre Pelletier"
+		$uid = 634
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"marc@mordor_prod":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-dss",
+				key    => "AAAAB3NzaC1kc3MAAACBAIhfgD+1iRANjpwfBQbWD383oiDHcrzj2urFBKC62o1h7cgK2NplOfxCU5eHtGh5ftzp6JU4deNWw2s3/IRJFVfQnNiHV89/Rl1uqMjLhhvLb07GDonbs+KExCsYsZFHKUH+t2dkVg0NlR1Tpz+h6huYEkaCKWxg/ozvUswHroRtAAAAFQCPGGHMiPuztPl4yFm3cHp+QSZODwAAAIAc9/psvWDUBTSnsIzTwe801NHz/1mqBZHGTmk6IhFb2KTwdu6Sf70JkWQH47h5MmTsld2rzvBopbBMubRfBu6KCWXJM03pfxRdgUuhwovAKgU1hddYdonhkiq24qn+U7tnYHjHfu5jB7dnjEEqoOggUXmVUwS7QaGJqKUnA4B0+gAAAIEAhoDEpBOFA5NsgurAjntLMZiTpkQFyE+c39lBqgd6B5bX7GEB5JkMPVSTjmzogd88+SwImCWgvb1I0PgY/rx8nd9wMkE3W5gBGUiDTNJa2v78nTK9wS+imFDRMbuwdYuN1wmKGrnvskvQ5oi1juLA8jn0At3L2/SYiC7i5z/z//8=";
 			}
 		}
 	}
@@ -2635,6 +2655,7 @@ class admins::roots {
 	include accounts::laner
 	include accounts::lcarr
 	include accounts::mark
+	include accounts::marc
 	include accounts::midom
 	include accounts::preilly # disabled
 	include accounts::py
