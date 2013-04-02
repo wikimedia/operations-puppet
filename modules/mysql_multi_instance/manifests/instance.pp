@@ -37,7 +37,6 @@ define mysql_multi_instance::instance(
           'read_only'                 => 1,
           'user'                      => "mysql",
           'socket'                    => "/tmp/mysql.${port}.sock",
-          'pidfile'                   => "/a/sqldata.${port}/mysql.pid",
           'port'                      => $port,
           'datadir'                   => "/a/sqldata.${port}/",
           'tmpdir'                    => "/a/tmp/",

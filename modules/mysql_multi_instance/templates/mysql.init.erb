@@ -44,7 +44,7 @@
 # overwritten by settings in the MySQL configuration files.
 
 basedir=/usr
-datadir=
+datadir=/a/sqldata.<%= port  %>
 
 # Default value, in seconds, afterwhich the script should timeout waiting
 # for server start. 
@@ -215,7 +215,7 @@ then
   print_defaults="$bindir/mysql_print_defaults"
 else
   # Try to find basedir in /etc/my.cnf
-  conf=/etc/my.cnf.<%= port  %>
+  conf=/etc/mysql/my.cnf.<%= port  %>
   print_defaults=
   if test -r $conf
   then
@@ -327,7 +327,7 @@ case "$mode" in
       # Give extra arguments to mysqld with the my.cnf file. This script
       # may be overwritten at next upgrade.
       pid_file=$server_pid_file
-      $bindir/mysqld_safe --datadir=$datadir --pid-file=$server_pid_file $other_args >/dev/null 2>&1 &
+      $bindir/mysqld_safe --defaults-file=/etc/mysql/my.cnf.<%= port  %> --datadir=$datadir --pid-file=$server_pid_file $other_args >/dev/null 2>&1 &
       wait_for_pid created $!; return_value=$?
 
       # Make lock for RedHat / SuSE
