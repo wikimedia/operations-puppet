@@ -465,6 +465,7 @@ class misc::fundraising::udp2log_rotation {
 			ensure => present;
 	}
 
-	class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
+	#class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
+	class { "nfs::netapp::fr_archive": mountpoint => "/a/log/fundraising/logs/fr_archive" }
 
 }

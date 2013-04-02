@@ -10,13 +10,13 @@ use IPC::Open3;
 use Sys::Syslog;
 
 my $ident = ($0 =~ /([^\/]+)$/) ? $1 : $0;		# syslog identity
-my $udp2log_dir = '/a/squid/fundraising/logs';	# local dir where udp2log collects logs
+my $udp2log_dir = '/a/log/fundraising/logs';	# local dir where udp2log collects logs
 my $archive_dir = "$udp2log_dir/fr_archive";	# netapp where logs are archived long term
 my $buffer_dir  = "$udp2log_dir/buffer";		# local buffer dir
 my $buffer_days = 3;							# days to retain buffered logs
 
 # list of log files (sans extension) to rotate
-my @logs_to_process = qw(bannerImpressions-sampled100.tab landingpages.tab);
+my @logs_to_process = qw(bannerImpressions-sampled100.tsv landingpages.tsv);
 
 # keep the buffer_dir collated by year
 my $year = `/bin/date "+%Y"`;

@@ -855,9 +855,8 @@ node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 	# Set up the gadolinium udp2log webrequest instance.
 	include role::logging::udp2log::gadolinium
 
-	## NOTE:  This is still on locke.
 	# fundraising banner log pipeline
-	# include misc::fundraising::udp2log_rotation
+	include misc::fundraising::udp2log_rotation
 }
 
 node "gallium.wikimedia.org" {
@@ -931,8 +930,8 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	# TODO: Move log_directory to /var/log/udp2log
 	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
 
-	# fundraising banner log pipeline
-	include misc::fundraising::udp2log_rotation
+	# fundraising banner log pipeline (moved to gadolinium)
+	#include misc::fundraising::udp2log_rotation
 
 	# Set up an rsync daemon module for udp2log logrotated
 	# archives.  This allows stat1 to copy logs from the
