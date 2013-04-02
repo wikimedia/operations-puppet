@@ -1,8 +1,9 @@
 define mysql_multi_instance::instance(
-    $port,
-    $innodb_log_file_size,
-    $ram
+    $instances = {}
     ){
+    $port                 = $instances[$name]['port']
+    $innodb_log_file_size = $instances[$name]['innodb_log_file_size']
+    $ram                  = $instances[$name]['ram']
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
     #$ram      = inline_template("<%= ram = memorysize.split[0]; ram = Float(ram) * 0.75; ram = ram.round; ram = String(ram); ram %>G")
