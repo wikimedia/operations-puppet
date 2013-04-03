@@ -54,7 +54,7 @@ class ldap::server( $certificate_location, $certificate, $ca_name, $cert_pass, $
 	}
 
 	package { [ "opendj" ]:
-		ensure => "2.4.0-10",
+		ensure => present,
 		require => Package[ "openjdk-6-jre" ];
 	}
 
