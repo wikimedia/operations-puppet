@@ -465,7 +465,7 @@ define command{
 
 define command{
 	command_name	puppet-FAIL
-	command_line	echo "Puppet has not run in the last 10 hours" && exit 2
+	command_line	echo "No successful Puppet run in the last 10 hours" && exit 2
 }
 
 define command{
