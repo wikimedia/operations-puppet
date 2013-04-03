@@ -128,5 +128,11 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('ignored.log',
             'test/gerrit-ping')
 
+    def test_twn_to_mediawiki_i18n(self):
+        self.assertLogFile('mediawiki-i18n.log',
+            'translatewiki')
+        self.assertLogFile('mediawiki-i18n.log',
+            'translatewiki/futureproject')
+
 if __name__ == '__main__':
     unittest.main()
