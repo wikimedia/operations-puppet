@@ -388,6 +388,14 @@ class gerrit::crons {
 		user => root,
 		hour => 1
 	}
+
+	cron { jgit_gc:
+		# Keep repo sizes sane, so people can be productive
+		command => "ssh -p 29418 localhost gerrit gc --all > /dev/null 2>&1",
+		user => gerrit2,
+		hour => 2,
+		weekday => 6
+	}
 }
 
 # Setup the `gerritslave` account on any host that wants to receive
