@@ -34,7 +34,6 @@ class mediawiki_singlenode( $ensure = 'present',
 		directory => $install_path,
 		branch => "master",
 		timeout => 1800,
-		depth => 1,
 		ensure => $ensure,
 		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
 	}
