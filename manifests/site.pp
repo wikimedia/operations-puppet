@@ -2763,7 +2763,7 @@ node /((cerium|titanium)\.wikimedia\.org|(celsus|constable)\.pmtpa\.wmnet)/ {
 	class { "lvs::realserver": realserver_ips => [ $sip ] }
 }
 
-node /(caesium|xenon|wtp100[1-4])\.eqiad\.wmnet/ {
+node /(wtp100[1-4])\.eqiad\.wmnet/ {
 	$cluster = "parsoid"
 	$nagios_group = "${cluster}_$::site"
 
