@@ -1210,6 +1210,26 @@ host labstore4 {
 	fixed-address 10.0.0.44;
 }
 
+host labstore1001 {
+	hardware ethernet d4:ae:52:76:5b:0d;
+	fixed-address labstore1001.eqiad.wmnet;
+}
+
+host labstore1002 {
+	hardware ethernet d4:ae:52:76:45:15;
+	fixed-address labstore1002.eqiad.wmnet;
+}
+
+host labstore1003 {
+	hardware ethernet d4:ae:52:76:66:59;
+	fixed-address labstore1003.eqiad.wmnet;
+}
+
+host labstore1004 {
+	hardware ethernet d4:ae:52:76:5c:b2;
+	fixed-address labstore1004.eqiad.wmnet;
+}
+
 host lanthanum {
 	hardware ethernet 90:B1:1C:00:A2:67;
 	fixed-address lanthanum.wikimedia.org;
