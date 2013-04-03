@@ -1,0 +1,8 @@
+Code-Review+1: Jeremyb <jeremy@tuxmachine.com>
+Verified+2: jenkins-bot
+Code-Review+2: coren <marc@uberbox.org>
+Submitted-by: coren <marc@uberbox.org>
+Submitted-at: Wed, 03 Apr 2013 01:54:08 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/57239
+Project: operations/puppet
+Branch: refs/heads/production
