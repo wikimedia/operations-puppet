@@ -161,7 +161,7 @@ host calcium {
 
 host caesium {
 	hardware ethernet D4:AE:52:B5:4E:60;
-	fixed-address caesium.eqiad.wmnet;
+	fixed-address caesium.wikimedia.org;
 }
 
 host carbon {
