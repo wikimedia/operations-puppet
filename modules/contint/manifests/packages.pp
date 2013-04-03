@@ -53,6 +53,7 @@ class contint::packages {
 
     'asciidoc',
     'rake',
+    'ruby1.9.3',  # To let us syntax check scripts using 1.9
 
     'pep8',
     'pyflakes',
