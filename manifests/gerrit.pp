@@ -342,6 +342,7 @@ class gerrit::ircbot {
 		"${ircecho_logbase}/mobile.log"                  => "#wikimedia-mobile",
 		"${ircecho_logbase}/parsoid.log"                 => "#mediawiki-parsoid",
 		"${ircecho_logbase}/visualeditor.log"            => "#mediawiki-visualeditor",
+		"${ircecho_logbase}/mediawiki-i18n.log"          => "#mediawiki-i18n",
 		"${ircecho_logbase}/wikimedia-dev.log"           => "#wikimedia-dev",
 		"${ircecho_logbase}/semantic-mediawiki.log"      => ["#semantic-mediawiki", "#wikimedia-dev"],
 		"${ircecho_logbase}/wikidata.log"                => "#wikimedia-wikidata",
