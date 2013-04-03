@@ -712,7 +712,8 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		admins::mortals,
 		# RT 4312
-		accounts::dandreescu
+		accounts::dandreescu,
+		accounts::yurik         # RT 4835
 
 	include
 		generic::sysctl::high-bandwidth-rsync,
