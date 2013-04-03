@@ -246,6 +246,12 @@ node "brewster.wikimedia.org" {
 	}
 }
 
+node "caesium.wikimedia.org" {
+	$cluster = "misc"
+
+	include standard
+}
+
 node "calcium.wikimedia.org" {
 	$cluster = "misc"
 
