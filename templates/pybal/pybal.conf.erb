@@ -31,7 +31,7 @@ scheduler = <%= service.fetch('scheduler', "wrr") %>
 config = http://noc.wikimedia.org/pybal/<%= site %>/<%= servicename %>
 bgp = <%= subserviceip.include?(":") ? ( ipv6_hosts.include?(scope.lookupvar("::hostname")) ? service.fetch('bgp', "no") : "no" ) : service.fetch('bgp', "no") %>
 depool-threshold = <%= service.fetch('depool-threshold', ".5") %>
-monitors = <%= service['monitors'].keys.inspect %>
+monitors = <%= service['monitors'].keys.sort.inspect %>
 
 <% service['monitors'].sort.each do |monitorname, monitor| -%>
 # <%= monitorname %> monitor configuration
