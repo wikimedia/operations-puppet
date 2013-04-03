@@ -7,7 +7,6 @@ $decommissioned_servers = [
 "argon", # not really decom, just need to stop nagios monitoring
 "bayes",
 "br1-knams",
-"caesium",
 "controller",
 "copper", #moved from external to internal ip, will come back out once spence updates
 "cp3001",
