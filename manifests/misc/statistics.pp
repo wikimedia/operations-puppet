@@ -573,6 +573,12 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/squid/archive/zero",
 	}
 
+	# API logs from emery
+	misc::statistics::rsync_job { "api":
+		source      => "emery.wikimedia.org::udp2log/archive/api-usage*.gz",
+		destination => "/a/squid/archive/api",
+	}
+
 	# teahouse logs from emery
 	misc::statistics::rsync_job { "teahouse":
 		source      => "emery.wikimedia.org::udp2log/archive/teahouse*.gz",
