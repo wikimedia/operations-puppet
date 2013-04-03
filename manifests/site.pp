@@ -616,7 +616,7 @@ node /^db1053\.eqiad\.wmnet/ {
       's1' => {
         'port' => 3306,
         'innodb_log_file_size' => "2000M",
-        'ram' => "96G"
+        'ram' => "72G"
       },
     }
   }
@@ -628,17 +628,17 @@ node /^db1054\.eqiad\.wmnet/ {
       's2' => {
         'port' => 3306,
         'innodb_log_file_size' => "2000M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
       's4' => {
         'port' => 3307,
         'innodb_log_file_size' => "2000M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
       's5' => {
         'port' => 3308,
         'innodb_log_file_size' => "1000M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
     }
   }
@@ -650,17 +650,17 @@ node /^db1057\.eqiad\.wmnet/ {
       's3' => {
         'port' => 3306,
         'innodb_log_file_size' => "500M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
       's6' => {
         'port' => 3307,
         'innodb_log_file_size' => "500M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
       's7' => {
         'port' => 3308,
         'innodb_log_file_size' => "500M",
-        'ram' => "32G"
+        'ram' => "24G"
       },
     }
   }
