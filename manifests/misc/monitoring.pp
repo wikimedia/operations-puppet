@@ -76,6 +76,7 @@ define misc::monitoring::view::udp2log($host_regex) {
 			{
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'drops',
+				'type'         => 'stack',
 			},
 			{
 				'host_regex'   => $host_regex,
@@ -89,14 +90,17 @@ define misc::monitoring::view::udp2log($host_regex) {
 			{
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'UDP_InErrors',
+				'type'         => 'stack',
 			},
 			{
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'UDP_RcvbufErrors',
+				'type'         => 'stack',
 			},
 			{
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'UDP_InDatagrams',
+				'type'         => 'stack',
 			},
 		],
 	}
