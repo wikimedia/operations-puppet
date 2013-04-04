@@ -175,6 +175,15 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		hasrestart => true,
 		require    => Package['webstatscollector'],
 	}
+	# cronjob to gzip pagecounts files.
+	# This originally lived as a unpuppetized
+	# cron on locke that ran /a/webstats/scripts/tar.
+	cron { 'webstats-dumps-gzip':
+		command => '/bin/gzip /a/webstats/dumps/pagecounts-????????-?????? 2> /dev/null',
+		minute  => 2,
+		user    => 'nobody',
+		require => Service['webstats-collector'],
+	}
 
 	# webrequest udp2log instance
 	misc::udp2log::instance { 'gadolinium':
