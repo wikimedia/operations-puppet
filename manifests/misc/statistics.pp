@@ -591,9 +591,9 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/squid/archive/arabic-banner",
 	}
 
-	# sampled-1000 logs from emery
+	# sampled-1000 logs from gadolinium
 	misc::statistics::rsync_job { "sampled_1000":
-		source      => "emery.wikimedia.org::udp2log/archive/sampled-1000*.gz",
+		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/sampled-1000*.gz",
 		destination => "/a/squid/archive/sampled",
 	}
 
