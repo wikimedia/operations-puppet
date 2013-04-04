@@ -68,7 +68,7 @@ class mediawiki_singlenode( $ensure = 'present',
 	if $labs_mediawiki_hostname {
 		$mwserver = "http://$labs_mediawiki_hostname"
 	} else {
-		$mwserver = "http://$hostname.pmtpa.wmflabs"
+		$mwserver = "http://$hostname.instance-proxy.wmflabs.org"
 	}
 
 	file { "${install_path}/orig":
