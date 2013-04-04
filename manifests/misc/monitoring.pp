@@ -102,6 +102,16 @@ define misc::monitoring::view::udp2log($host_regex) {
 				'metric_regex' => 'UDP_InDatagrams',
 				'type'         => 'stack',
 			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'UDP_SndbufErrors',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'UDP_OutDatagrams',
+				'type'         => 'stack',
+			},
 		],
 	}
 }
