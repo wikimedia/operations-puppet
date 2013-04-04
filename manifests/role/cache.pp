@@ -150,7 +150,7 @@ class role::cache {
 						'cp1032.eqiad.wmnet',
 						'cp1033.eqiad.wmnet',
 						'cp1034.eqiad.wmnet',
-						'cp1035.eqiad.wmnet',
+						#'cp1035.eqiad.wmnet',
 						'cp1036.eqiad.wmnet',
 					],
 					"esams-varnish" => [	# FIXME: rename after Squid decommissioning
