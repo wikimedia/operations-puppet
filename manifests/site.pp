@@ -888,7 +888,6 @@ node "formey.wikimedia.org" {
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
-		accounts::datasets,
 		accounts::dandreescu
 
 	# gadolinium hosts the separate nginx udp2log instance.
