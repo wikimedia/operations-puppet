@@ -5,23 +5,15 @@
 		<fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
 		<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
 		<fieldType name="tint" class="solr.TrieIntField" precisionStep="50" positionIncrementGap="0"/>
-		<fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
-			<analyzer type="index">
-				<tokenizer class="solr.StandardTokenizerFactory"/>
-				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.EnglishPossessiveFilterFactory"/>
-				<filter class="solr.PorterStemFilterFactory"/>
-			</analyzer>
-			<analyzer type="query">
-				<tokenizer class="solr.StandardTokenizerFactory"/>
-				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
-				<filter class="solr.PorterStemFilterFactory"/>
-			</analyzer>
-		</fieldType>
+		<!-- Our input can basically be in any language, so we use either
+		     language agnostic processing or something that can adapt to
+		     the language in question. -->
 		<fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
 			<analyzer>
-				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+				<!-- Consider using solr.ICUTokenizerFactory -->
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<!-- Consider using solr.ICUNormalizer2FilterFactory -->
+				<filter class="solr.LowerCaseFilterFactory"/>
 			</analyzer>
 		</fieldType>
 	</types>
@@ -45,7 +37,7 @@
 
 		<field name="content" type="string" indexed="true" stored="true" required="true" />
 
-		<field name="text" type="text_ws" indexed="true" stored="false" />
+		<field name="text" type="text_ws" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
 		<copyField source="content" dest="text"/>
 	</fields>
 	<defaultSearchField>text</defaultSearchField>
