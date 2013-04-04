@@ -20,6 +20,7 @@ class cpufrequtils (
 
 	service { 'cpufrequtils':
 		enable => true,
+		hasstatus => false,
 		require => Package['cpufrequtils'],
 		subscribe => File['/etc/default/cpufrequtils'];
 	}
