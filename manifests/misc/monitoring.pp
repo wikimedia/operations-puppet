@@ -86,6 +86,18 @@ define misc::monitoring::view::udp2log($host_regex) {
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'rx_queue',
 			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'UDP_InErrors',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'UDP_RcvbufErrors',
+			},
+			{
+				'host_regex'   => $host_regex,
+				'metric_regex' => 'UDP_InDatagrams',
+			},
 		],
 	}
 }
