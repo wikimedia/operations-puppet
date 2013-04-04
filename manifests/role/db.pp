@@ -27,12 +27,27 @@ class role::db::sanitarium( $instances = {} ) {
     package_name => 'mariadb-client-5.5'
    }
 
-  ## some per-node monitoring here
-
   ## for key in instances, make a mysql instance. need port, innodb_log_file_size, and amount of ram
   $instances_keys = keys($instances)
   mysql_multi_instance::instance { $instances_keys :
     instances => $instances
+  }
+
+  ## some per-node monitoring here
+  $instances_count = size($instances_keys)
+
+  file { "/usr/lib/nagios/plugins/percona":
+    ensure => directory,
+    recurse => true,
+    owner => root,
+    group => root,
+    mode => 0555,
+    source => "puppet:///files/icinga/percona";
+  }
+
+  nrpe::monitor_service { "mysqld":
+    description => "mysqld processes",
+    nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${instances_count}:${instances_count} -C mysqld"
   }
 
 }

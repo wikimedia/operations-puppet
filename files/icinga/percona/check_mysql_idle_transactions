@@ -11,12 +11,14 @@
 PROGPATH="$(dirname "$0")"
 . $PROGPATH/utils.sh
 
+SOCK=''
 # Get command-line options
 for o; do
    case "${o}" in
       -l) shift; USER="${1}"; shift; ;;
       -p) shift; PASS="${1}"; shift; ;;
       -H) shift; HOST="${1}"; shift; ;;
+      -S) shift; SOCK="--socket=${1}"; shift; ;;
       -w) shift; WARN="${1}"; shift; ;;
       -c) shift; CRIT="${1}"; shift; ;;
    esac
@@ -24,7 +26,7 @@ done
 
 EXITSTATUS=$STATE_UNKNOWN
 NOTE="UNK long-running blocking idle transactions"
-IDLE="$(mysql -h${HOST} -u${USER} -p${PASS} -ss -e "
+IDLE="$(mysql -h${HOST} ${SOCK} -u${USER} -p${PASS} -ss -e "
    SELECT COALESCE(MAX(IF(p.command = 'Sleep', p.time, 0)), 0) AS idle_in_trx
    FROM       INFORMATION_SCHEMA.INNODB_LOCK_WAITS AS w
    INNER JOIN INFORMATION_SCHEMA.INNODB_TRX        AS b ON  b.trx_id = w.blocking_trx_id
