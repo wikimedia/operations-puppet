@@ -13,15 +13,20 @@ class cpufrequtils (
 		ensure => present;
 	}
 
+	# start at boot
+	service { 'cpufrequtils':
+		enable => true,
+		require => Package['cpufrequtils'],
+	}
+
 	file { '/etc/default/cpufrequtils':
 		content => "GOVERNOR=${governor}\n",
+		notify => Exec['apply cpufrequtils'],
 		require => Package['cpufrequtils'];
 	}
 
-	service { 'cpufrequtils':
-		enable => true,
-		hasstatus => false,
-		require => Package['cpufrequtils'],
-		subscribe => File['/etc/default/cpufrequtils'];
+	exec { 'apply cpufrequtils':
+		command => '/etc/init.d/cpufrequtils start',
+		refreshonly => true
 	}
 }
