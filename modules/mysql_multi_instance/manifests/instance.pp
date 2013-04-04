@@ -26,19 +26,19 @@ define mysql_multi_instance::instance(
     }
 
     ## some per-instance monitoring here
-    nrpe::monitor_service { "mysql recent restart":
+    nrpe::monitor_service { "mysql_recent_restart":
       description => "MySQL Recent Restart",
       nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_recent_restart -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass}"
     }
-    nrpe::monitor_service { "mysql idle transaction":
+    nrpe::monitor_service { "mysql_idle_transaction":
       description => "MySQL Idle Transactions",
       nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass}"
     }
-    nrpe::monitor_service { "mysql slave delay":
+    nrpe::monitor_service { "mysql_slave_delay":
       description => "MySQL Slave Delay",
       nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass} -w 30 -c 180"
     }
-    nrpe::monitor_service { "mysql slave running":
+    nrpe::monitor_service { "mysql_slave_running":
       description => "MySQL Slave Running",
       nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_slave_running -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass} "
     }
