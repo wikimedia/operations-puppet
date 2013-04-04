@@ -131,7 +131,7 @@ class role::logging::webstatscollector {
 	# This originally lived as an unpuppetized
 	# cron on locke that ran /a/webstats/scripts/tar.
 	cron { 'webstats-dumps-gzip':
-		command => "/bin/gzip ${webstats_dumps_directory}pagecounts-????????-?????? 2> /dev/null",
+		command => "/bin/gzip ${webstats_dumps_directory}/pagecounts-????????-?????? 2> /dev/null",
 		minute  => 2,
 		user    => 'nobody',
 		require => Service['webstats-collector'],
