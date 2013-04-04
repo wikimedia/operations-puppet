@@ -6,7 +6,8 @@ define mysql_multi_instance::instance(
     $ram                  = $instances[$name]['ram']
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
-    #$ram      = inline_template("<%= ram = memorysize.split[0]; ram = Float(ram) * 0.75; ram = ram.round; ram = String(ram); ram %>G")
+    include passwords::nagios::mysql
+    $mysql_check_pass = $passwords::nagios::mysql::mysql_check_pass
 
     include mysql_multi_instance
 
@@ -25,6 +26,22 @@ define mysql_multi_instance::instance(
     }
 
     ## some per-instance monitoring here
+    nrpe::monitor_service { "mysql recent restart":
+      description => "MySQL Recent Restart",
+      nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_recent_restart -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass}"
+    }
+    nrpe::monitor_service { "mysql idle transaction":
+      description => "MySQL Idle Transactions",
+      nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_idle_transactions -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass}"
+    }
+    nrpe::monitor_service { "mysql slave delay":
+      description => "MySQL Slave Delay",
+      nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_slave_delay -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass} -w 30 -c 180"
+    }
+    nrpe::monitor_service { "mysql slave running":
+      description => "MySQL Slave Running",
+      nrpe_command => "/usr/lib/nagios/plugins/percona/check_mysql_slave_running -H localhost -S /tmp/mysql.${port}.sock -l nagios -p ${mysql_check_pass} "
+    }
 
     mysql_multi_instance::config {"my.cnf.${port}" :
       settings => {
