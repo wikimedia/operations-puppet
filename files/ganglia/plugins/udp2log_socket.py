@@ -36,7 +36,7 @@ defaults = {
     "time_max"   : 60,
     "format"     : "%d",
     "value_type" : "uint",
-    "groups"     : "network,udp",
+    "groups"     : "udp2log",
     "units"      : "bytes"
 }
 

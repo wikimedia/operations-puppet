@@ -27,13 +27,16 @@ defaults = {
     "units"      : "packets"
 }
 
+# Prefix names sent to ganglia with this.
+ganglia_name_prefix = "UDP_"
+
 udp_fields = {
-    "UDP_InDatagrams"  : "UDP Packets Received",
-    "UDP_NoPorts"      : "UDP Packets to Unknown Port Received",
-    "UDP_InErrors"     : "UDP Packet Receive Errors",
-    "UDP_OutDatagrams" : "UDP Packets Sent",
-    "UDP_RcvbufErrors" : "UDP Receive Buffer Errors",
-    "UDP_SndbufErrors" : "UDP Send Buffer Errors"
+    "%sInDatagrams"  % (ganglia_name_prefix) : "UDP Packets Received",
+    "%sNoPorts"      % (ganglia_name_prefix) : "UDP Packets to Unknown Port Received",
+    "%sInErrors"     % (ganglia_name_prefix) : "UDP Packet Receive Errors",
+    "%sOutDatagrams" % (ganglia_name_prefix) : "UDP Packets Sent",
+    "%sRcvbufErrors" % (ganglia_name_prefix) : "UDP Receive Buffer Errors",
+    "%sSndbufErrors" % (ganglia_name_prefix) : "UDP Send Buffer Errors"
 }
 
 netstats = {}
@@ -60,8 +63,11 @@ def update_stats():
 
 def metric_handler(name):
     """Get value of particular metric; part of Gmond interface"""
-    logging.debug('metric_handler(): %s', name)
-    return literal_eval(netstats['udp'][name])
+    # The key for this value stored in netstats will not be prefixed
+    # by ganglia_name_prefix.  Strip it off of the name.
+    udp_field_key = name.lstrip(ganglia_name_prefix)
+    logging.debug('metric_handler(): %s', udp_field_key)
+    return literal_eval(netstats['udp'][udp_field_key])
 
 
 def metric_init(params):
