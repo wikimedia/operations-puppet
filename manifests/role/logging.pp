@@ -114,6 +114,41 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
 	}
 }
 
+class role::logging::webstatscollector {
+	# webstatscollector package creates this directory.
+	# webstats-collector process writes dump files here.
+	$webstats_dumps_directory = '/a/webstats/dumps'
+
+	package { 'webstatscollector': ensure => installed }
+	service { 'webstats-collector':
+		ensure     => running,
+		hasstatus  => false,
+		hasrestart => true,
+		require    => Package['webstatscollector'],
+	}
+
+	# Gzip pagecounts files hourly.
+	# This originally lived as an unpuppetized
+	# cron on locke that ran /a/webstats/scripts/tar.
+	cron { 'webstats-dumps-gzip':
+		command => "/bin/gzip ${webstats_dumps_directory}pagecounts-????????-?????? 2> /dev/null",
+		minute  => 2,
+		user    => 'nobody',
+		require => Service['webstats-collector'],
+	}
+
+	# Delete webstats dumps that are older than 10 days daily.
+	# This originally lived as an unpuppetized
+	# cron on locke that ran /a/webstats/scripts/purge.
+	cron { 'webstats-dumps-delete':
+		command => "/usr/bin/find ${webstats_dumps_directory} -maxdepth 1 -type f -mtime +10 -delete",
+		minute  => 28,
+		hour    => 1,
+		user    => 'nobody',
+		require => Service['webstats-collector'],
+	}
+}
+
 
 # gadolinium udp2log instance(s).
 # gadolinium hosts the 'gadolinium' udp2log instance,
@@ -167,30 +202,17 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		require => Class['accounts::file_mover'],
 	}
 
-	# gadolinium runs Domas' webstatscollector
-	package { 'webstatscollector': ensure => installed }
-	service { 'webstats-collector':
-		ensure     => running,
-		hasstatus  => false,
-		hasrestart => true,
-		require    => Package['webstatscollector'],
-	}
-	# cronjob to gzip pagecounts files.
-	# This originally lived as a unpuppetized
-	# cron on locke that ran /a/webstats/scripts/tar.
-	cron { 'webstats-dumps-gzip':
-		command => '/bin/gzip /a/webstats/dumps/pagecounts-????????-?????? 2> /dev/null',
-		minute  => 2,
-		user    => 'nobody',
-		require => Service['webstats-collector'],
-	}
+	# gadolinium runs Domas' webstatscollector.
+	# udp2log runs the 'filter' binary from this
+	# package, which sends logs over to the 'collector'
+	# service, which writes dump files in /a/webstats/dumps.
+	include role::logging::webstatscollector
 
 	# webrequest udp2log instance
 	misc::udp2log::instance { 'gadolinium':
 		# gadolinium consumes from the multicast stream relay (from oxygen)
 		multicast     => true,
 		log_directory => $webrequest_log_directory,
-		require       => Package['webstatscollector'],
+		require       => Class['role::logging::webstatscollector'],
 	}
-	
 }
