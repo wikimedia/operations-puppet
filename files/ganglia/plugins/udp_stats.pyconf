@@ -15,32 +15,32 @@ collection_group {
   time_threshold = 60
   
   metric {
-    name = "InDatagrams"
+    name = "UDP_InDatagrams"
     title = "UDP Packets Received"
     value_threshold = 0
   }
   metric {
-    name = "NoPorts"
+    name = "UDP_NoPorts"
     title = "UDP Packets to Unknown Port Received"
     value_threshold = 0
   }
   metric {
-    name = "InErrors"
+    name = "UDP_InErrors"
     title = "UDP Packet Receive Errors"
     value_threshold = 0
   }
   metric {
-    name = "OutDatagrams"
+    name = "UDP_OutDatagrams"
     title = "UDP Packets Sent"
     value_threshold = 0
   }
   metric {
-    name = "RcvbufErrors"
+    name = "UDP_RcvbufErrors"
     title = "UDP Receive Buffer Errors"
     value_threshold = 0
   }
   metric {
-    name = "SndbufErrors"
+    name = "UDP_SndbufErrors"
     title = "UDP Send Buffer Errors"
     value_threshold = 0
   }

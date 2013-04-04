@@ -28,12 +28,12 @@ defaults = {
 }
 
 udp_fields = {
-    "InDatagrams"  : "UDP Packets Received",
-    "NoPorts"      : "UDP Packets to Unknown Port Received",
-    "InErrors"     : "UDP Packet Receive Errors",
-    "OutDatagrams" : "UDP Packets Sent",
-    "RcvbufErrors" : "UDP Receive Buffer Errors",
-    "SndbufErrors" : "UDP Send Buffer Errors"
+    "UDP_InDatagrams"  : "UDP Packets Received",
+    "UDP_NoPorts"      : "UDP Packets to Unknown Port Received",
+    "UDP_InErrors"     : "UDP Packet Receive Errors",
+    "UDP_OutDatagrams" : "UDP Packets Sent",
+    "UDP_RcvbufErrors" : "UDP Receive Buffer Errors",
+    "UDP_SndbufErrors" : "UDP Send Buffer Errors"
 }
 
 netstats = {}
