@@ -626,7 +626,7 @@ class misc::monitoring::jobqueue {
 
 	cron {
 		all_jobqueue_length:
-			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(mwscript getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --value=$(mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
 			user => mwdeploy,
 			ensure => present;
 	}
@@ -634,7 +634,7 @@ class misc::monitoring::jobqueue {
 	# gather these metrics in a fake host called "www.wikimedia.org"
 	cron {
 		all_jobqueue_length_spoofed:
-			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
+			command => "/usr/bin/gmetric --name='Global JobQueue length' --type=int32 --conf=/etc/ganglia/gmond.conf --spoof 'www.wikimedia.org:www.wikimedia.org' --value=$(/usr/local/bin/mwscript extensions/WikimediaMaintenance/getJobQueueLengths.php --totalonly | grep -oE '[0-9]+') > /dev/null 2>&1",
 			user => mwdeploy,
 			ensure => present;
 	}
