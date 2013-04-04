@@ -269,7 +269,8 @@ class role::coredb::common(
 
 	include standard,
 		mysql_wmf::coredb::ganglia,
-		mha::node
+		mha::node,
+		cpufrequtils
 
 	if $masters[$::site] == $::hostname
 		and ( $primary_site == $::site or $primary_site == 'both' ){
