@@ -42,5 +42,4 @@ exclude = **tmp/ **temp/ **bad/ **save/
 # added amazonaws.com, Oct 31 2012 -- atg
 # we are still in the process of setting it up, for access see file in /home/w/docs/mirrors
 # it will eventually be managed by folks at amazon
-hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com
-
+hosts allow = 199.47.196.26 ftpmirror.your.org ec2-174-129-186-231.compute-1.amazonaws.com 69.31.98.2
