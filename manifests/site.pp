@@ -708,6 +708,8 @@ node "dobson.wikimedia.org" {
 }
 
 node "dysprosium.eqiad.wmnet" {
+	interface_add_ip6_mapped { "main": interface => "eth0" }
+
 	include role::cache::upload
 }
 
