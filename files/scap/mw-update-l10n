@@ -10,6 +10,7 @@ set -e
 BINDIR=/usr/local/bin
 SOURCE=/home/wikipedia/common
 DEST=/usr/local/apache/common-local
+TMPDIR=/tmp/mw-l10n-cache
 
 if [ "`uname -s`" != Linux ]; then
 	echo "ERROR: This script requires the Linux operating system to function correctly"
@@ -37,6 +38,9 @@ done
 mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
 # Regenerate the extension message file list for all active MediaWiki versions
 for i in ${mwExtVerDbSets[@]}; do
+	if [ -d $TMPDIR ]; then
+		rm $TMPDIR/*.cdb
+	fi
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 	echo "Updating ExtensionMessages-$mwVerNum.php..."
@@ -49,7 +53,10 @@ for i in ${mwExtVerDbSets[@]}; do
 
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-		--outdir=$SOURCE/php-$mwVerNum/cache/l10n $QUIET
+		--outdir=$TMPDIR $QUIET
+	echo "done"
+	echo -n "Copying cache files from tmp... "
+	sudo -u l10nupdate mv $TMPDIR/*.cdb $SOURCE/php-$mwVerNum/cache/l10n
 	echo "done"
 done
 
