@@ -40,9 +40,12 @@ for i in ${mwExtVerDbSets[@]}; do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 	echo "Updating ExtensionMessages-$mwVerNum.php..."
+	mwTempDest="`sudo -u apache mktemp`"
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
-		--list-file=$SOURCE/wmf-config/extension-list $QUIET \
-		> $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
+		--list-file=$SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest"
+	sudo -u apache chmod a+r "$mwTempDest"
+	cp "$mwTempDest" $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
+	sudo -u apache rm "$mwTempDest"
 
 	# Update ExtensionMessages-*.php in the local copy
 	sudo -u mwdeploy cp $SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $DEST/wmf-config/
