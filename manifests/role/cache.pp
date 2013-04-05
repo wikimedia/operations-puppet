@@ -157,6 +157,7 @@ class role::cache {
 						#'cp3003.esams.wikimedia.org',
 						'cp3004.esams.wikimedia.org',
 						'cp3005.esams.wikimedia.org',
+						'cp3006.esams.wikimedia.org',
 						'cp3009.esams.wikimedia.org',
 						'cp3010.esams.wikimedia.org',
 					],
