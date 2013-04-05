@@ -22,7 +22,7 @@ filenames = {
 	"mediawiki/core": {
 		"Wikidata" : "wikidata.log",
 		# Explicitly define a default, hookhelper does not fallback properly
-		"default"  : "mediawiki.log",
+		"default"  : "mediawiki-feed.log",
 	},
 
 	# WMF projects
@@ -33,7 +33,7 @@ filenames = {
 	"analytics/*"   : "wikimedia-analytics.log",
 	"integration/*" : "wikimedia-dev.log",
 	"labs/*"      : "labs.log",
-	"mediawiki/*" : "mediawiki.log",
+	"mediawiki/*" : "mediawiki-feed.log",
 	"mediawiki/tools/*" : "wikimedia-dev.log",
 	"operations/*": "operations.log",
 	"qa/*": "wikimedia-dev.log",
@@ -51,7 +51,7 @@ filenames = {
 	"mediawiki/extensions/Diff" : "wikidata.log",
 	"mediawiki/extensions/DataValues" : "wikidata.log",
 
-	"default": "mediawiki.log"
+	"default": "mediawiki-feed.log"
 }
 
 # These users are annoying since they're bots and such. Don't report their comments...

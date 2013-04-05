@@ -100,6 +100,6 @@ class HookHelper:
         if branch in hookconfig.filenames[foundproject]:
             filename = hookconfig.filenames[foundproject][branch]
         else:
-            # Direct assignement such as 'default': 'mediawiki.log'
+            # Direct assignement such as 'default': 'mediawiki-feed.log'
             filename = hookconfig.filenames[foundproject]
         return hookconfig.logdir + "/" + filename
