@@ -20,7 +20,7 @@ class misc::noc-wikimedia {
 			source => "puppet:///files/apache/sites/noc.wikimedia.org";
 		"/etc/apache2/sites-available/graphite.wikimedia.org":
 			path => "/etc/apache2/sites-available/graphite.wikimedia.org",
-			content => template('apache/sites/graphite.wikimedia.org'),
+			content => template('apache/sites/graphite.wikimedia.org.erb'),
 			mode => 0440,
 			owner => root,
 			group => www-data;
