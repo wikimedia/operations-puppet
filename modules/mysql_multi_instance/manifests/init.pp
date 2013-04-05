@@ -40,5 +40,10 @@ class mysql_multi_instance {
     '/etc/mysql/conf.d':
       ensure  => directory,
       mode    => '0755';
+    '/root/.my.cnf':
+      owner => root,
+      group => root,
+      mode => 0400,
+      content => template("mysql_multi_instance/root.my.cnf.erb");
   }
 }
