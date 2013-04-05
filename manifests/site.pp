@@ -707,6 +707,10 @@ node "dobson.wikimedia.org" {
 	}
 }
 
+node "dysprosium.eqiad.wmnet" {
+	include role::cache::upload
+}
+
 node "ekrem.wikimedia.org" {
 	include standard,
 		misc::irc-server,
