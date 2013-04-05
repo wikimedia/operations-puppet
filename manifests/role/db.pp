@@ -21,6 +21,7 @@ class role::db::sanitarium( $instances = {} ) {
    system_role {"role::db::sanitarium": description => "pre-labsdb dbs for Data Sanitization" }
 
    include standard,
+    cpufrequtils,
     mysql_multi_instance
 
    class { mysql :
