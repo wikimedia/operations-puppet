@@ -1021,6 +1021,11 @@ host db1060 {
 	fixed-address db1060.eqiad.wmnet;
 }
 
+host dysprosium {
+	hardware ethernet 90:B1:1C:3B:C7:2C;
+	fixed-address dysprosium.eqiad.wmnet;
+}
+
 host ekrem {
 	hardware ethernet 84:2b:2b:06:49:30;
 	fixed-address ekrem.wikimedia.org;
