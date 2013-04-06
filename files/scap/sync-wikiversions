@@ -20,7 +20,7 @@ fi
 
 # Copy files to apaches
 echo 'Copying wikiversions dat and cdb files to apaches...'
-dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "sudo -u mwdeploy rsync -l $MW_RSYNC_HOST::common/wikiversions.{dat,cdb} $MW_COMMON"
+dsh "${MW_DSH_ARGS[@]}" -- "sudo -u mwdeploy rsync -l $MW_RSYNC_HOST::common/wikiversions.{dat,cdb} $MW_COMMON"
 
 echo 'Finished'
 
