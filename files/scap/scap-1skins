@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /usr/local/lib/mw-deployment-vars.sh
+
 mwVersionNums=$(mwversionsinuse)
 if [ -z "$mwVersionNums" ]; then
 	echo "Unable to read wikiversions.dat or it is empty"
@@ -8,8 +10,8 @@ fi
 
 for mwVerNum in ${mwVersionNums[@]}; do
 	sudo -u mwdeploy sh -c "
-	rsync -a --no-perms tin.eqiad.wmnet::common/php-$mwVerNum/skins/ \
-	/usr/local/apache/common-local/php-$mwVerNum/skins && \
+	echo rsync -a --no-perms ${MW_RSYNC_HOST}::common/php-${mwVerNum}/skins/ \
+	${MW_COMMON}/php-${mwVerNum}/skins && \
 	echo ok || \
 	echo failed
 	"

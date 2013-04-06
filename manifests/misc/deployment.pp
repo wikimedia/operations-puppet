@@ -160,15 +160,14 @@ class misc::deployment::common_scripts {
 
 # Scripts for the new git-deploy deployment system
 class misc::deployment::scripts {
-	include misc::deployment::vars,
-		misc::deployment::common_scripts
+	include misc::deployment::common_scripts
+	class { "misc::deployment::vars": system => "git-deploy" }
 }
 
 # Scripts for the old rsync-based deployment system
 class misc::deployment::scap_scripts {
 	include misc::deployment::common_scripts
-
-	class { "misc::deployment::vars": system => "scap" }
+	include misc::deployment::vars
 
 	$scriptpath = "/usr/local/bin"
 
@@ -341,7 +340,7 @@ class misc::deployment::l10nupdate {
 	}
 }
 
-class misc::deployment::vars ($system = "git-deploy") {
+class misc::deployment::vars ($system = 'scap') {
 	if $system == "git-deploy" {
 		$mw_common = "/srv/deployment/mediawiki/common"
 		$mw_common_source = $mw_common

@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [ ! -d /usr/local/apache/common-local ];then
-	if ! install -d -o mwdeploy -g mwdeploy /usr/local/apache/common-local; then
-		echo "Unable to create common-local, please re-run this script as root."
+. /usr/local/lib/mw-deployment-vars.sh
+
+if [ ! -d "${MW_COMMON}" ];then
+	if ! install -d -o mwdeploy -g mwdeploy "${MW_COMMON}"; then
+		echo "Unable to create ${MW_COMMON}, please re-run this script as root."
 		exit 1
 	fi
 fi
@@ -20,7 +22,7 @@ if [ -n "$RSYNC_SERVERS" ]; then
 	SERVER=$(sudo /usr/local/bin/find-nearest-rsync $RSYNC_SERVERS)
 fi
 if [ -z "$SERVER" ]; then
-	SERVER=tin.eqiad.wmnet
+	SERVER="${MW_RSYNC_HOST}"
 fi
 
 sudo -u mwdeploy /usr/local/bin/scap-2 "$SERVER"

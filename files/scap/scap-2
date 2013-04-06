@@ -3,22 +3,18 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin:
 TERM=dumb
 
+. /usr/local/lib/mw-deployment-vars.sh
+
 SERVER="$1"
 if [ -z "$SERVER" ]; then
-	SERVER=tin.eqiad.wmnet
+	SERVER="${MW_RSYNC_HOST}"
 fi
 
 echo -n Copying to `hostname -s` from "$SERVER"...
-if rsync -a --delete \
-	--exclude=**/.svn/lock \
-	--exclude=**/.git/objects \
-	--exclude=**/.git/**/objects \
-	--no-perms \
-	"$SERVER"::common/ /usr/local/apache/common-local
+if rsync "${MW_RSYNC_ARGS[@]}" "$SERVER"::common/ "${MW_COMMON}"
 then
 	echo "ok"
 else
 	echo "failed"
 	exit 1
 fi
-
