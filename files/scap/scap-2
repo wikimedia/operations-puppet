@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:
+TERM=dumb
+
+SERVER="$1"
+if [ -z "$SERVER" ]; then
+	SERVER=10.0.5.8
+fi
+
+echo -n Copying to `hostname -s` from "$SERVER"...
+if rsync -a --delete \
+	--exclude=**/.svn/lock \
+	--exclude=**/.git/objects \
+	--exclude=**/.git/**/objects \
+	--no-perms \
+	"$SERVER"::common/ /usr/local/apache/common-local
+then
+	echo "ok"
+else
+	echo "failed"
+	exit 1
+fi
+
