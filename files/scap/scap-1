@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ ! -d /usr/local/apache/common-local ];then
+	if ! install -d -o mwdeploy -g mwdeploy /usr/local/apache/common-local; then
+		echo "Unable to create common-local, please re-run this script as root."
+		exit 1
+	fi
+fi
+
+if [ ! -d /usr/local/apache/uncommon ];then
+	if ! install -d -o mwdeploy -g mwdeploy /usr/local/apache/uncommon; then
+		echo "Unable to create /usr/local/apache/uncommon, please re-run this script as root."
+		exit 1
+	fi
+fi
+
+RSYNC_SERVERS="$1"
+SERVER=
+if [ -n "$RSYNC_SERVERS" ]; then
+	SERVER=$(sudo /usr/bin/find-nearest-rsync $RSYNC_SERVERS)
+fi
+if [ -z "$SERVER" ]; then
+	SERVER=10.0.5.8
+fi
+
+sudo -u mwdeploy /usr/bin/scap-2 "$SERVER"
+
+echo Done
+
