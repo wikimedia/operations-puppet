@@ -9,16 +9,10 @@ if [ -z "$SERVER" ]; then
 fi
 
 echo -n Copying to `hostname -s` from "$SERVER"...
-if rsync -a --delete \
-	--exclude=**/.svn/lock \
-	--exclude=**/.git/objects \
-	--exclude=**/.git/**/objects \
-	--no-perms \
-	"$SERVER"::common/ /usr/local/apache/common-local
+if rsync "${MW_RSYNC_ARGS[@]}" "$SERVER"::common/ /usr/local/apache/common-local
 then
 	echo "ok"
 else
 	echo "failed"
 	exit 1
 fi
-
