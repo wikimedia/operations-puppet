@@ -39,12 +39,12 @@ echo >&2 "copying to apaches"
 
 if [ -d "$MW_COMMON_SOURCE/$DIR" ]; then
 	DESTDIR=$MW_COMMON/$DIR
-	dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
-		sudo -u mwdeploy rsync -a --delete --exclude=.svn --exclude=.git --exclude=cache/l10n --no-perms $MW_RSYNC_HOST::common/$DIR/ $DESTDIR
+	dsh "${MW_DSH_ARGS[@]}" -- "
+		sudo -u mwdeploy rsync ${MW_RSYNC_ARGS[*]} --exclude=cache/l10n $MW_RSYNC_HOST::common/$DIR/ $DESTDIR
 	"
 else
 	DESTDIR=$(dirname $MW_COMMON/$DIR)
-	dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 -- "
+	dsh "${MW_DSH_ARGS[@]}" -- "
 		sudo -u mwdeploy rsync -l $MW_RSYNC_HOST::common/$DIR $DESTDIR
 	"
 fi
