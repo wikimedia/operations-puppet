@@ -4,7 +4,7 @@
 echo "Synchronizing $MW_COMMON_SOURCE/*.dblist to $MW_COMMON/*.dblist..."
 echo "mediawiki-installation:"
 
-dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F30 "
+dsh "${MW_DSH_ARGS[@]}" -- "
   sudo -u mwdeploy rsync -a $MW_RSYNC_HOST::common/*.dblist $MW_COMMON
 "
 

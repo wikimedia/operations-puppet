@@ -1,6 +1,7 @@
 #!/bin/bash
 ## synchronizes a single file from common/ on all apaches
 
+. /usr/local/lib/mw-deployment-vars.sh
 BINDIR=/usr/local/bin
 
 [ $# -lt 1 ] && {
