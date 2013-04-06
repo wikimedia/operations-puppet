@@ -2,7 +2,7 @@
 
 . /usr/local/lib/mw-deployment-vars.sh
 echo "Synchronizing $MW_COMMON_SOURCE/docroot to $MW_COMMON/docroot..."
-dsh -cM -g mediawiki-installation  -o -oSetupTimeout=30 -F30 -- "sudo -u mwdeploy rsync -a --no-perms $MW_RSYNC_HOST::common/docroot $MW_COMMON"
+dsh "${MW_DSH_ARGS[@]}" -- "sudo -u mwdeploy rsync -a --no-perms $MW_RSYNC_HOST::common/docroot $MW_COMMON"
 
 BINDIR=/usr/local/bin
 $BINDIR/dologmsg "!log $USER synchronized docroot"
