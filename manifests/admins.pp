@@ -2738,6 +2738,7 @@ class admins::mortals {
 	include accounts::mflaschen
 	include accounts::mholmquist
 	include accounts::mlitn
+	include accounts::mwalker  #Promoted per RT 4747
 	include accounts::neilk  # revoked access per RT 2345
 	include accounts::nikerabbit
 	include accounts::nimishg # revoked
@@ -2764,6 +2765,7 @@ class admins::restricted {
 	include accounts::awight
 	include accounts::bastique # access revoked
 	include accounts::dab
+	include accounts::dandreescu
 	include accounts::daniel
 	include accounts::dartar
 	include accounts::diederik
@@ -2772,13 +2774,11 @@ class admins::restricted {
 	include accounts::ezachte
 	include accounts::jamesofur
 	include accounts::khorn
-	include accounts::mwalker
 	include accounts::otto
 	include accounts::rainman
 	include accounts::ram #rt4387
 	include accounts::rcole # access revoked
 	include accounts::tparscal
-	include accounts::dandreescu
 	include accounts::yurik #rt 4835
 }
 
