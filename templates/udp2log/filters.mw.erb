@@ -1,1 +1,4 @@
 flush pipe 1 python /usr/local/bin/demux.py<% if has_variable?("log_directory") then %> --basedir <%= log_directory %><% end %>
+
+# Relay MediaWiki exceptions and fatals to vanadium for generating reports.
+pipe 1 egrep '^(fatal|exception)' | /usr/bin/log2udp -h vanadium.eqiad.wmnet -p 8423
