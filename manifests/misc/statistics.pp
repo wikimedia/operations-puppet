@@ -429,7 +429,8 @@ class misc::statistics::db::mysql {
 # installs MonogDB on stat1
 class misc::statistics::db::mongo {
 	class { "mongodb":
-		dbpath => "/a/mongodb",
+		mongofork => false,
+		dbpath    => "/a/mongodb",
 	}
 }
 
