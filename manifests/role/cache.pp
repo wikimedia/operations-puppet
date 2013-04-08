@@ -408,7 +408,9 @@ class role::cache {
 				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad'] }
 			}
 
-			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
+			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96) {
+				$memory_storage_size = 16
+			} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
 				$memory_storage_size = 4
 			} else {
 				$memory_storage_size = 1
