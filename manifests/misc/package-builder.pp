@@ -146,7 +146,7 @@ class misc::package-builder {
 	#   pbuilder { 'cowbuilder': }
 	#   pbuilder { 'pbuilder': }
 	#
-	define pbuilder( $dists=["hardy", "lucid", "precise"], $defaultdist="lucid") {
+	define pbuilder( $dists=["lucid", "precise"], $defaultdist="lucid") {
 		$pbuilder = $title
 		notify { "Calling package builder '${pbuilder}' on distributions '${dists}'": }
 
