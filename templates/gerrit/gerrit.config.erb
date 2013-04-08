@@ -42,6 +42,7 @@
 	listenAddress = *:<%= sshport %>
 	threads = 8
 	batchThreads = 2
+	idleTimeout = 864000
 [httpd]
 	listenUrl = proxy-https://127.0.0.1:8080/r/
 [cache]
