@@ -124,5 +124,9 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('wikimedia-dev.log',
             'qa/browsertests')
 
+    def test_gerrit_ping_are_ignored(self):
+        self.assertLogFile('ignored.log',
+            'test/gerrit-ping')
+
 if __name__ == '__main__':
     unittest.main()

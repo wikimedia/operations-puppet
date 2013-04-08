@@ -51,6 +51,11 @@ filenames = {
 	"mediawiki/extensions/Diff" : "wikidata.log",
 	"mediawiki/extensions/DataValues" : "wikidata.log",
 
+	# We ping Gerrit everything 5 mins on test/gerrit-ping.git
+	# so just send that to a file which is not being used
+	# See also bug 46917
+	"test/gerrit-ping" : "ignored.log",
+
 	"default": "mediawiki.log"
 }
 
