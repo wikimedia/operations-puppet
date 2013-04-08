@@ -71,7 +71,8 @@ fi
 # If cool, merge it!
 echo ""
 echo ""
-echo -n "------------------------------\nMerge these changes? (yes/no)? "
+echo "------------------------------"
+echo -n "Merge these changes? (yes/no)? "
 
 read answer
 if [ "x${answer}" = "xyes" ]; then
