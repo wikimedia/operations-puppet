@@ -67,6 +67,13 @@ a:hover {
 }
 
 /**
+ * Prevent the header from pushing the search bar outside the screen in non-wide screens.
+ */
+@media screen and (max-width: 1280px) {
+	.wm-gerrit-heading { display:none; }
+}
+
+/**
  * Top menu (navigation)
  */
 #gerrit_topmenu {
