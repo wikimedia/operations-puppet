@@ -9,65 +9,17 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/squid/packet-loss.log
 # This log file is also on locke for redundancy
 file 1000 /var/log/squid/sampled-1000.tab.log
 
-
-# India
-pipe 10 /usr/bin/udp-filter -F '\t' -c IN -b country -g >> /var/log/squid/india.tab.log
-
 # API Usage
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> /var/log/squid/api-usage.tab.log 
 
 # GLAM NARA / National Archives - RT 2212
 pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/glam_nara.tab.log
 
-
 # Location geocoding filter for Erik Zachte.
 pipe 1000 /usr/bin/udp-filter -F '\t' -g -b everything >> /var/log/squid/location-1000.tab.log
-
-
-# specific country filters - 2012-01-24 through 2012-02-20 then ask Nimish  or Amit if we still need them
-pipe 10  /usr/bin/udp-filter -F '\t' -c CD,CF,CI,GQ                            -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-1.tab.log
-pipe 10  /usr/bin/udp-filter -F '\t' -c KH,BW,CM,MG,ML,MU,NE,VU                -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-10.tab.log
-pipe 100 /usr/bin/udp-filter -F '\t' -c BD,BH,IQ,JO,KE,KW,LK,NG,QA,SN,TN,UG,ZA -g -m /var/log/squid/filters/GeoIPLibs/GeoIP.dat -b country >> /var/log/squid/countries-100.tab.log
 
 # Teahouse filters
 pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> /var/log/squid/teahouse.tab.log
 
 # Arabic Wikipedia Banner Pages - Siko Bouterse <sbouterse@wikimedia.org>, Haitham Shammaa <hshammaa@wikimedia.org>
 pipe 10 /usr/bin/udp-filter -F '\t' -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D8%A8%D9%88%D8%A7%D8%A8%D8%A9_%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9' >> /var/log/squid/arabic-banner.tab.log
-
-# Temporary filter to estimate view of 2012 fundraiser video
-pipe 10 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org -p Thank_You_Main >> /var/log/squid/wmf.org-Thank_You_Main.tab.log
-
-
-
-
-
-# DISABLED FILTERS
-
-# this filter is segfaulting repeatedly.  tomasz says he doesn't need it at the moment
-# -ben 2011-11-01
-# pipe 1 /var/log/squid/filters/mobile-offline-meta >> /var/log/squid/mobile-offline-meta.log
-
-#Filters for the necromancy experiment by faulkner RT-2805
-#pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_3mnth=True' >> /var/log/squid/e3_necromancy_idle3month_10.log
-#pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p '/w/index.php?title=Special:UserLogin&returnto=Main+Page&20120409_noie_1yr=True' >> /var/log/squid/e3_necromancy_idle1year_10.log
-
-
-
-# process wmf cache server log lines via stdin and report to ganglia
-pipe 2 /usr/local/bin/sqstat 2
-
-# CUSTOM FILTERS REPLACED WITH udp-filter
-
-# pipe 10 /var/log/squid/filters/india-filter >> /var/log/squid/india.log
-# pipe 100 /var/log/squid/filters/api-filter >> /var/log/squid/api-usage.log
-# pipe 10 mawk '{ if ($9 ~ /_(NARA|National_Archives)_.*\.(jpg|tif)/) { print $3,$9,$12} }' >> /var/log/squid/glam_nara.log
-
-
-
-# Geocodes IP address and prepends log line with <country> <lat>,<lon> 
-# I would like to replace this with udp-filter, since udp-filter can now
-# geocode inline.  However, this would change the format of location-1000.log,
-# so we'd need to make sure Erik Zachte and other consumers are ok with this first.
-# NOTE: This has been replaced with udp-filter -g -b everything
-#pipe 1000 /var/log/squid/filters/latlongCountry-writer >> /var/log/squid/location-1000.log
