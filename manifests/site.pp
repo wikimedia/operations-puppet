@@ -1146,6 +1146,63 @@ node "knsq24.esams.wikimedia.org" {
 	include role::cache::text
 }
 
+## labsdb dbs
+node /^labsdb1001\.eqiad\.wmnet/ {
+  class { role::db::labsdb:
+    instances => {
+      's1' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "72G"
+      },
+    }
+  }
+}
+
+node /^labsdb1002\.eqiad\.wmnet/ {
+  class { role::db::labsdb:
+    instances => {
+      's2' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "24G"
+      },
+      's4' => {
+        'port' => 3307,
+        'innodb_log_file_size' => "2000M",
+        'ram' => "24G"
+      },
+      's5' => {
+        'port' => 3308,
+        'innodb_log_file_size' => "1000M",
+        'ram' => "24G"
+      },
+    }
+  }
+}
+
+node /^labsdb1003\.eqiad\.wmnet/ {
+  class { role::db::labsdb:
+    instances => {
+      's3' => {
+        'port' => 3306,
+        'innodb_log_file_size' => "500M",
+        'ram' => "24G"
+      },
+      's6' => {
+        'port' => 3307,
+        'innodb_log_file_size' => "500M",
+        'ram' => "24G"
+      },
+      's7' => {
+        'port' => 3308,
+        'innodb_log_file_size' => "500M",
+        'ram' => "24G"
+      },
+    }
+  }
+}
+
 node /labstore[1-4]\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"
