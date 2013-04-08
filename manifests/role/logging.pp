@@ -220,3 +220,14 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 		require       => Class['role::logging::webstatscollector'],
 	}
 }
+
+
+# emery is a generic webrequests udp2log host.
+class role::logging::udp2log::emery inherits role::logging::udp2log {
+	# udp2log::instance will ensure this is created
+	$webrequest_log_directory    = "$log_directory/webrequest"
+
+	misc::udp2log::instance { 'emery': 
+		log_directory => $webrequest_log_directory,
+	}
+}

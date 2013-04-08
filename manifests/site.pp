@@ -722,39 +722,12 @@ node "ekrem.wikimedia.org" {
 # base_analytics_logging_node is defined in role/logging.pp
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
+		generic::sysctl::high-bandwidth-rsync,
 		admins::mortals,
 		# RT 4312
 		accounts::dandreescu
 
-	include
-		generic::sysctl::high-bandwidth-rsync,
-		misc::udp2log::utilities,
-		misc::udp2log
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	# emery's udp2log instance
-	# saves logs mainly in /var/log/squid.
-	# TODO: Move this to /var/log/udp2log
-	misc::udp2log::instance { "emery": log_directory => "/var/log/squid" }
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/var/log/squid",
-		require => Misc::Udp2log::Instance["emery"],
-	}
-
-	# aft (Article Feedback Tool)
-	# udp2log instance for clicktracking logs.
-	misc::udp2log::instance { "aft":
-		log_directory       => "/var/log/squid/aft",
-		port                => "8421",
-		# packet-loss.log is not generated for clicktracking logs,
-		# so packet loss monitoring is disabled.
-		monitor_packet_loss => false,
-	}
+	include role::logging::udp2log::emery
 }
 
 node /(ersch|tarin)\.pmtpa\.wmnet/ {
