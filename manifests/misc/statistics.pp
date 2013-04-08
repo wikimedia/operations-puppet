@@ -597,12 +597,6 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/squid/archive/sampled",
 	}
 
-	# AFT clicktracking logs
-	misc::statistics::rsync_job { "clicktracking":
-		source      => "emery.wikimedia.org::udp2log/aft/archive/clicktracking*.gz",
-		destination => "/a/aft/archive/clicktracking",
-	}
-
 	# edit logs from gadolinium
 	misc::statistics::rsync_job { "edits":
 		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
