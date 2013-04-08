@@ -468,24 +468,6 @@ class base::instance-upstarts {
 
 }
 
-class base::instance-finish {
-
-	if $::realm == "labs" {
-		## The following causes a dependency cycle
-		#Class["base::remote-syslog"] -> Class["base::instance-finish"]
-		#file {
-		#	"/etc/rsyslog.d/60-puppet.conf":
-		#		ensure => absent,
-		#		notify => Service[rsyslog];
-		#}
-		file {
-			"/etc/init/runonce-fixpuppet.conf":
-				ensure => absent;
-		}
-	}
-
-}
-
 class base::vimconfig {
 	file { "/etc/vim/vimrc.local":
 		owner => root,

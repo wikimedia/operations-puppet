@@ -407,11 +407,6 @@ class ldap::client::utils($ldapconfig) {
 			group => root,
 			mode  => 0544,
 			source => "puppet:///files/ldap/scripts/ldapsupportlib.py";
-		"/usr/local/sbin/mail-instance-creator.py":
-			owner => root,
-			group => root,
-			mode  => 0544,
-			source => "puppet:///files/ldap/scripts/mail-instance-creator.py";
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
 			group => root,
@@ -494,21 +489,6 @@ class ldap::client::autofs($ldapconfig) {
 		require => Package["autofs5", "autofs5-ldap", "ldap-utils", "libnss-ldapd" ],
 		subscribe => File[$autofs_subscribe],
 		ensure => running;
-	}
-}
-
-class ldap::client::instance-finish {
-	# Hacks to ensure these services are reloaded after the puppet run finishes
-	if $realm == "labs" {
-		exec { "check_nscd":
-			command => "/etc/init.d/nscd restart",
-			unless => "/usr/bin/id novaadmin";
-		}
-
-		exec { "check_autofs":
-			command => "/etc/init.d/autofs restart",
-			creates => "/home/autofs_check";
-		}
 	}
 }
 
@@ -599,10 +579,5 @@ class ldap::client::includes($ldapincludes, $ldapconfig) {
 			}
 		}
 
-		exec {
-			"/usr/local/sbin/mail-instance-creator.py noc@wikimedia.org $instancecreator_email $instancecreator_lang https://wikitech.wikimedia.org/w/ && touch /var/lib/cloud/data/.usermailed":
-			require => [ File['/usr/local/sbin/mail-instance-creator.py'], File['/etc/default/exim4'], Service['exim4'], Package['exim4-daemon-light'] ],
-			creates => "/var/lib/cloud/data/.usermailed";
-		}
 	}
 }
