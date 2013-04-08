@@ -3,8 +3,16 @@
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /usr/local/lib/mw-deployment-vars.sh
 
-if groups | grep -Ewq 'sudo|wikidev|root'; then
-	sudo -u apache php "$MW_COMMON_SOURCE/multiversion/MWScript.php" "$@"
+# Use the source version of the script if the source directory is present.
+# This only matters if the source dir is shared or when run on the deployment server.
+if [ -d "$MW_COMMON_SOURCE" ]; then
+	MW_COMMON_DIR_USE=$MW_COMMON_SOURCE
 else
-	php "$MW_COMMON_SOURCE/multiversion/MWScript.php" "$@"
+	MW_COMMON_DIR_USE=$MW_COMMON
+fi
+
+if groups | grep -Ewq 'sudo|wikidev|root'; then
+	sudo -u apache php "$MW_COMMON_DIR_USE/multiversion/MWScript.php" "$@"
+else
+	php "$MW_COMMON_DIR_USE/multiversion/MWScript.php" "$@"
 fi
