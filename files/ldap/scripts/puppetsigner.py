@@ -41,6 +41,7 @@ def main():
 					sys.stderr.write('Failed to remove the certificate: ' + path + '\n')
 			else:
 				subprocess.Popen(['/usr/sbin/puppetca -s ' + host], shell=True, stderr=subprocess.PIPE)
+				subprocess.Popen(['/usr/bin/php /srv/org/wikimedia/controller/wikis/w/extensions/OpenStackManager/maintenance/onInstanceActionCompletion.php --action=build --instance=' + host], shell=True, stderr=subprocess.PIPE)
 		proc = subprocess.Popen('/usr/bin/salt-key --list=unaccepted --out=json', shell=True, stdout=subprocess.PIPE)
 		hosts = proc.communicate()
 		hosts = json.loads(hosts[0])
