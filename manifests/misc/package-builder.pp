@@ -91,11 +91,13 @@ class misc::package-builder {
 		case $realpbuilder {
 			cowbuilder: {
 				$base_option = '--basepath'
+				$file_prefix = 'base-'
 				$file_ext    = 'cow'
 				$packages    = [ 'cowbuilder' ]
 			}
 			pbuilder: {
 				$base_option = '--basetgz'
+				$file_prefix = ''
 				$file_ext    = 'tgz'
 				$packages    = [ 'pbuilder' ]
 			}
@@ -106,7 +108,7 @@ class misc::package-builder {
 
 		$othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
 		$components = "--components 'main universe'"
-		$image_file = "${pbuilder_root}/${realdist}.${file_ext}"
+		$image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
 		exec { "imaging $realdist for $realpbuilder":
 			command => "$realpbuilder --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
@@ -159,8 +161,14 @@ class misc::package-builder {
 		}
 
 		case $pbuilder {
-			cowbuilder: { $file_ext = 'cow' }
-			pbuilder:   { $file_ext = 'tgz' }
+			cowbuilder: {
+				$file_prefix = 'base-'
+				$file_ext = 'cow'
+			}
+			pbuilder: {
+				$file_prefix = ''
+				$file_ext = 'tgz'
+			}
 			default: {
 				fail('Only package builder types supported are pbuilder and cowbuilder')
 			}
@@ -168,7 +176,7 @@ class misc::package-builder {
 
 		file { "/var/cache/pbuilder/base.${file_ext}":
 			require => Image["${title}-${defaultdist}"],
-			ensure => "/var/cache/pbuilder/${defaultdist}.${file_ext}"
+			ensure => "/var/cache/pbuilder/${file_prefix}${defaultdist}.${file_ext}"
 		}
 	}
 
