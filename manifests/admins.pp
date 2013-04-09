@@ -1798,7 +1798,7 @@ class accounts {
 
                         ssh_authorized_key {
 				"giovanni@titanus.local":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAs/+a5RVrxt3LPd4+zr/xtMAQfm+HpYk6lOAhfG6JZB6NusRKOR6HFbzTKFQ7v9S676bLZXdD8Cu2tuVspegMdx+RGw4uNlISrxpyp5FXBiXpC10oRVlk5cMthhWp94JDuBFsVstuXR9FotRF3aScM1Hdv5cRFyXDvJTgprESXwFm0uH9MDi7xdJpTKYAV/8Q83IFKwz/6IUKEQ8cnBKfLY9wVIgoQd6I1eQ/4pVuoLcCUQIh/zreFMbfhyehArKVPeyOtgR4gRKZJxlQcVuvbzZFLexyHf9VZrO87IXf+LaSwvWVlBPGDD//8g0Kl7yVCgQHlLzbctB9fBZIk3FS8Q=="
@@ -1818,7 +1818,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"akhanna@administrators-MacBook-Pro-4.local":
-					ensure => present,
+					ensure => absent,
 					user => $username,
 					type => "ssh-dss",
 					key => "AAAAB3NzaC1kc3MAAACBAIfkh5UXiOWGbS5eKsLnedffXz7hyjqHqlkSoxy/f/7tCaZLWvK0zTVZBfBWBPR+8hxkTWGqm5R4Vs4DLpAzb6bXdkm1dJNq/eJmclKrFzbU3Vc9nl+XizgkpadsKbUGF+F9HywBebebBS3KZ4StTzXWMnR8a94F90R7SssntibrAAAAFQDbcWx2byNwngsa35OTUppudr3BCQAAAIBPpv7V0jd4V19fNx8zbKtvAAGFtVGtXhun/5Gk7SLThF+eSAA7zZ21rf1drlfBeW1k1dpGFdTzOaZETcpuhKjQhEZt3bs7wrb0VuSU03bCmEDklIbhj6N4zU41eF4mu8433RpAtk5Fzdh8IWl6BEN+LDSytF19DOwblm4h52+KEAAAAIAm/D3q7wcQUTnRbWZgwwFArkMaE/1IMh+5d2NwuFRNLj1lxnec8lUGX8V9c+gIxqCPMy/PQFFklmLLEec+47pIHtSxht3Gps72Y2WYCN+cR9EJpLoW+uFcjbWp7ljC/naTbwOXvMccaByT0baKMb+Ihgx0fStt5JYyw3TqaXHviQ==";
