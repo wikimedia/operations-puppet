@@ -2473,37 +2473,36 @@ node "stat1.wikimedia.org" {
 	include role::statistics::cruncher
 
 	# special accounts
-	include accounts::ezachte,
-		accounts::reedy,
-		accounts::diederik,
-		accounts::otto,
+	include admins::globaldev, # RT 3119
+		accounts::ezachte,
+		accounts::abartov, # RT 4106
 		accounts::aengels,
-		accounts::dsc,
 		accounts::akhanna,
+		accounts::dandreescu, # RT 3540
+		accounts::diederik,
+		accounts::dsc,
 		accounts::dartar,
 		accounts::declerambaul,
-		accounts::jmorgan,
-		accounts::rfaulk,
-		accounts::haithams,     # RT 3219
-		admins::globaldev,      # RT 3119
-		accounts::olivneh,      # RT 3451
-		accounts::spage,
-		accounts::giovanni,     # RT 3460
+		accounts::fschulenburg, # RT 4475
+		accounts::giovanni, # RT 3460
+		accounts::haithams, # RT 3219
 		accounts::halfak,
-		accounts::maryana,      # RT 3517
-		accounts::dandreescu,   # RT 3540
-		accounts::howief,       # RT 3576
-		accounts::spetrea,      # RT 3584
-		accounts::swalling,     # RT 3653
-		accounts::abartov,      # RT 4106
+		accounts::handrade, # RT 4726
+		accounts::howief, # RT 3576
 		accounts::ironholds,
 		accounts::jdlrobson,
 		accounts::jgonera,
-		accounts::fschulenburg, # RT 4475
-		accounts::dandreescu,   # RT 4561
-		accounts::handrade,     # RT 4726
-		accounts::yurik         # RT 4835
-
+		accounts::jmorgan,
+		accounts::spage,
+		accounts::maryana, # RT 3517
+		accounts::mflaschen, #RT 4796
+		accounts::olivneh, # RT 3451
+		accounts::otto,
+		accounts::reedy,
+		accounts::rfaulk,
+		accounts::spetrea, # RT 3584
+		accounts::swalling,     # RT 3653
+		accounts::yurik # RT 4835
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
