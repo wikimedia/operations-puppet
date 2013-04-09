@@ -674,7 +674,7 @@ node /^db1057\.eqiad\.wmnet/ {
 
 
 ## not currently in production and/or hardware issues
-node /^db10(1[23456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
+node /^db10(1[3456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
