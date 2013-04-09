@@ -37,7 +37,7 @@ class mongodb (
   $servicename     = $mongodb::params::service,
   $logpath         = '/var/log/mongodb/mongodb.log',
   $logappend       = true,
-  $mongofork       = true,
+  $mongofork       = false,
   $port            = '27017',
   $dbpath          = '/var/lib/mongodb',
   $bind_ip         = '127.0.0.1',
