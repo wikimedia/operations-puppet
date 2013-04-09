@@ -2655,6 +2655,26 @@ class accounts {
 		}
 	}
 
+	class bblack inherits baseaccount {
+		$username = "mgrover"
+		$realname = "Michelle Grover"
+		$uid = 637
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"norbertgrover@Norberts-MacBook-Pro.local":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC9npOnzY3kpFadPdPnd1FenTwI50a50zB8+92LDqgaaJU8yYXTncKb24F54/OEtjjedTAYwyS3FsDqlkBU9N5h14UAZuv8Yp813duY1yIfpGBurHirbcPBr/zbtgWtk48Gay2Prup63+CHRLGYR2HDx6csRKfb0wOo1NFtZTuttVu+eCZ9yZ35DmK1fctNPJtbfFVxVa7cyqHY0Fvu/m98EynGReaMiD6yzgIede2mnTLF6S0+Hn9bCX2oXt2aTZY8Wjb3osXACCtK1kjorf65OrMvjgvLDYCASF1D7ckCNlWaTzdKsjNjUiUmuB3DI6G3OxC82OV2xsBXRDB9k3Ah",
+			}
+		}
+	}
+
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2774,6 +2794,7 @@ class admins::restricted {
 	include accounts::ezachte
 	include accounts::jamesofur
 	include accounts::khorn
+	include accounts::mgrover #RT 4600
 	include accounts::otto
 	include accounts::rainman
 	include accounts::ram #rt4387
