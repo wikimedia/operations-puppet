@@ -10,6 +10,7 @@ JAVA=/usr/bin/java
 # arguments to pass to java
 #JAVA_ARGS="-Xmx256m"
 #JAVA_ARGS="-Djava.net.preferIPv4Stack=true" # make jenkins listen on IPv4 address
+JAVA_ARGS="-Dhudson.plugins.git.GitSCM.verbose=true"
 
 PIDFILE=/var/run/jenkins/jenkins.pid
 
@@ -52,4 +53,4 @@ AJP_PORT=-1
 # --argumentsRealm.passwd.$ADMIN_USER=[password]
 # --argumentsRealm.$ADMIN_USER=admin
 # --webroot=~/.jenkins/war
-JENKINS_ARGS="--webroot=/var/run/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=/ci -Dhudson.plugins.git.GitSCM.verbose=true"
+JENKINS_ARGS="--webroot=/var/run/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=/ci"
