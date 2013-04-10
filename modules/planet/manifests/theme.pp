@@ -30,7 +30,7 @@ define planet::theme {
     "/usr/share/planet-venus/theme/wikimedia/${title}/config.ini":
       source  => 'puppet:///modules/planet/theme/config.ini';
     # logo image
-    "/usr/share/planet-venus/theme/wikimedia/${title}/${logo}":
+    "/usr/share/planet-venus/theme/common/images/${logo}":
       source  => "puppet:///modules/planet/theme/images/${logo}";
     # css file
     "/usr/share/planet-venus/theme/wikimedia/${title}/${css_file}":
