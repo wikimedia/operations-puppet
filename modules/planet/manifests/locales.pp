@@ -1,12 +1,6 @@
 # international locales for a planet-venus install
 class planet::locales {
 
-  # locales are important for planet
-  # they can be auto-updated though
-  package { 'locales':
-    ensure => latest;
-  }
-
   #FIXME - move into module
   file { '/var/lib/locales/supported.d/local':
     source => 'puppet:///files/locales/local_int',
