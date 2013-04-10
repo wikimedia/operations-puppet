@@ -10,7 +10,7 @@ class applicationserver::packages {
 		ensure => latest;
 	}
 	# used by Score extension to render MIDI to Ogg Vorbis
-	package { [ "lilypond" ]:
+	package { [ "lilypond", "timidity" ]:
 		ensure => latest;
 	}
 
