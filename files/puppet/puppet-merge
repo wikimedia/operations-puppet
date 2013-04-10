@@ -92,7 +92,7 @@ if [ "x${answer}" = "xyes" ]; then
     # git clean to remove any untracked
     # (submodule) files and directories
     echo "Running git clean to clean any untracked files."
-    cmd="git clean -dffx"
+    cmd="git clean -dffx -e /private/"
     echo "${cmd}"
     ${cmd}
 
