@@ -17,7 +17,7 @@ class planet::webserver {
   # dependencies
   Class['webserver::php5'] ->
   File['/etc/apache2/ports.conf'] ->
-  Apache_module['rewrite'] ->
+  apache_module['rewrite'] ->
   Install_certificate["star.planet.${planet::planet_domain_name}"]
 
 }
