@@ -74,9 +74,9 @@ class role::coredb::config {
 		},
 		'm1' => {
 			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
-				'eqiad' => [] },
+				'eqiad' => ['db1001'] },
 			'primary_site' => false,
-			'masters' => { 'pmtpa' => "blondel" },
+			'masters' => { 'pmtpa' => "blondel", 'eqiad' => "db1001" },
 			'snapshot' => [],
 			'no_master' => []
 		},
