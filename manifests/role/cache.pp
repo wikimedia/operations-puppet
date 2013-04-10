@@ -562,7 +562,8 @@ class role::cache {
 		require geoip
 
 		include standard,
-			varnish::monitoring::ganglia
+			varnish::monitoring::ganglia,
+			nrpe
 
 		varnish::instance { "bits":
 			name => "",
