@@ -392,142 +392,99 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 
 }
 
-# Class: puppetmaster::self
 #
-# This configures a single system as both puppet client and puppet master.
-# Such a config is useful for puppet development as it allows testing
-# and debugging in one place.
+# Below are classes used to configure self hosted puppet
+# on labs instances. role::puppet::self (in puppet.pp)
+# is the recommended class to use.  Please use it to
+# include these classes.
 #
-# The puppet files and manifests are checked out in $gitdir/operations/puppet
-# where they can be modified and then re-applied to the instance via
-# puppetd -tv.
-#
-# This class should probably only be used on temporary labs instances.
+
+# == Class puppetmaster::self
+# Wrapper class for puppet::self::master
+# with server => localhost.  This is
+# maintained for backwards compatibility.
 #
 class puppetmaster::self {
+	class { 'puppet::self::master':
+		server => 'localhost',
+	}
+}
 
-	class config inherits base::puppet {
-		include role::ldap::config::labs
+# == Class puppet::self::client
+# Sets up a node as a puppet client with
+# $server as the puppetmaster.
+#
+# == Parameters
+# $server - hostname of the puppetmaster.
+#
+class puppet::self::client($server) {
+	system_role { 'puppetclient':
+		description => "Puppet client of ${server}"
+	}
 
-		$ldapconfig = $role::ldap::config::labs::ldapconfig
-		$basedn = $ldapconfig["basedn"]
+	# Most of the defaults in puppet::self::config
+	# are good for setting up a puppet client.
+	class { 'puppet::self::config':
+		server => $server,
+	}
+}
 
-		$config = {
-			'dbadapter' => "sqlite3",
-			'node_terminus' => "ldap",
-			'ldapserver' => $ldapconfig["servernames"][0],
-			'ldapbase' => "ou=hosts,${basedn}",
-			'ldapstring' => "(&(objectclass=puppetClient)(associatedDomain=%s))",
-			'ldapuser' => $ldapconfig["proxyagent"],
-			'ldappassword' => $ldapconfig["proxypass"],
-			'ldaptls' => true
-		}
-
-		File["/etc/puppet/puppet.conf.d/10-main.conf"] {
-			ensure => absent
-		}
-
-		file { "/etc/puppet/puppet.conf.d/10-self.conf":
-			require => File["/etc/puppet/puppet.conf.d"],
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("puppet/puppet.conf.d/10-self.conf.erb"),
-			notify => Exec["compile puppet.conf"];
-		}
-
-		file { "/etc/puppet/fileserver.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("puppet/fileserver-self.conf.erb")
-		}
-
-		$gitdir = "/var/lib/git"
-		file { "/etc/puppet/private":
-			ensure => link,
-			target => "$gitdir/labs/private",
-			force  => true,
-		}
-		file { "/etc/puppet/templates":
-			ensure => link,
-			target => "$gitdir/operations/puppet/templates",
-			force  => true,
-		}
-		file { "/etc/puppet/files":
-			ensure => link,
-			target => "$gitdir/operations/puppet/files",
-			force  => true,
-		}
-		file { "/etc/puppet/manifests":
-			ensure => link,
-			target => "$gitdir/operations/puppet/manifests",
-			force  => true,
-		}
-		file { "/etc/puppet/modules":
-			ensure => link,
-			target => "$gitdir/operations/puppet/modules",
-			force  => true,
+# == Class puppet::self::master
+# Sets up a node as a puppetmaster.
+# If server => localhost, then this node will
+# be set up to only act as a puppetmaster for itself.
+# Otherwise, this server will be able to act as a puppetmaster
+# for any labs nodes that are configured using the puppet::self::client
+# class with $server set to this nodes $::fqdn.
+#
+# This class will clone the operations/puppet git repository
+# and set it up with proper symlinks in /etc/puppet.
+#
+# == Parameters
+# $server - hostname of the puppetmaster.
+#
+class puppet::self::master($server) {
+	system_role { 'puppetmaster': 
+		description  => $server ? {
+			'localhost' => 'Puppetmaster for itself',
+			default     => 'Puppetmaster for project labs instances',
 		}
 	}
 
-	class gitclone {
-		$gitdir = "/var/lib/git"
+	# If localhost, only bind to loopback.
+	$bindaddress = $server ? {
+		'localhost' => '127.0.0.1',
+		default => $::ipaddress,
+	}
 
-		file { "$gitdir":
-			ensure => directory,
-			owner  => root,
-			group  =>root,
-		}
-		file { "$gitdir/operations":
-			ensure => directory,
-			owner  => root,
-			group  => root,
-		}
-		file { "$gitdir/labs":
-			ensure => directory,
-			# private repo resides here, so enforce some perms
-			owner  => root,
-			group  => puppet,
-			mode   => 0640,
-		}
-
-		file { "$gitdir/ssh":
-			ensure  => file,
-			owner   => root,
-			group   => root,
-			mode    => 0755,
-			# FIXME: ok, this sucks. ew. ewww.
-			content => "#!/bin/sh\nexec ssh -o StrictHostKeyChecking=no -i $gitdir/labs-puppet-key \$*\n",
-			require => File["$gitdir/labs-puppet-key"],
-		}
-		file { "$gitdir/labs-puppet-key":
-			ensure  => file,
-			owner   => root,
-			group   => root,
-			mode    => 0600,
-			source  => "puppet:///private/ssh/labs-puppet-key",
-		}
-
-		git::clone { "operations/puppet":
-			directory => "$gitdir/operations/puppet",
-			branch    => "production",
-			origin    => "https://gerrit.wikimedia.org/r/operations/puppet.git",
-			require   => File["$gitdir/operations"],
-		}
-		git::clone { "labs/private":
-			directory => "$gitdir/labs/private",
-			origin    => "ssh://labs-puppet@gerrit.wikimedia.org:29418/labs/private.git",
-			ssh       => "$gitdir/ssh",
-			require   => [ File["$gitdir/labs"], File["$gitdir/ssh"] ],
+	# If localhost, only allow this node.
+	# Else allow the labs subnet.
+	$puppet_client_subnet = $server ? {
+		'localhost' => '127.0.0.1',
+		default => $::site ? {
+			'pmtpa' => '10.4.0.0/21',
+			'eqiad' => undef,  # eqiad does not have labs yet.
 		}
 	}
 
-	system_role { "puppetmaster": description => "Puppetmaster for itself" }
+	# If localhost, then just name the cert 'localhost'.
+	# Else certname should be the labs instanceid. ($dc comes from ldap.)
+	$certname = $server ? {
+		'localhost' => 'localhost',
+		default => "${dc}.${::domain}"
+	}
 
-	include config
-	include gitclone
-
+	class { 'puppet::self::config':
+		is_puppetmaster      => true,
+		server               => $server,
+		bindaddress          => $bindaddress,
+		puppet_client_subnet => $puppet_client_subnet,
+		certname             => $certname,
+	}
+	class { 'puppet::self::gitclone':
+		require => Class['puppet::self::config'],
+	}
+	
 	package { [ "vim-puppet", "puppet-el", "rails" ]:
 		ensure => present,
 	}
@@ -543,15 +500,159 @@ class puppetmaster::self {
 			Package['rails'],
 			Package['libsqlite3-ruby'],
 			Package['libldap-ruby1.8'],
-			Class['config'],
-			Class['gitclone'],
+			Class['puppet::self::config'],
+			Class['puppet::self::gitclone'],
 		],
 	}
 
-	class { "puppetmaster::ssl":
-		server_name => $fqdn,
+	class { 'puppetmaster::ssl':
+		server_name => $::fqdn,
 		ca => true
 	}
 
+	include puppetmaster::labs
 	include puppetmaster::scripts
+}
+
+
+# == Class puppet::self::config
+# Configures variables and puppet config files
+# for either self puppetmasters or self puppet clients.
+# 
+# == Parameters
+# $server - hostname of the puppetmaster.
+# $is_puppetmaster - true or false. Default: false.
+# $bindaddress - address to which a puppetmaster should listen.  Unused if $is_puppetmaster is false.
+# $puppet_client_subnet - Network from which to allow fileserver connections.  Unused if $is_puppetmaster is false.
+# $certname - Name of the puppet CA certificate.  Default: "$dc.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+#
+class puppet::self::config(
+	$server,
+	$is_puppetmaster = false,
+	$bindaddress = undef,
+	$puppet_client_subnet = undef,
+	$certname = "${dc}.${::domain}") inherits base::puppet
+{
+	include role::ldap::config::labs
+
+	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	$basedn = $ldapconfig['basedn']
+
+	$config = {
+		'dbadapter' => 'sqlite3',
+		'node_terminus' => 'ldap',
+		'ldapserver' => $ldapconfig['servernames'][0],
+		'ldapbase' => "ou=hosts,${basedn}",
+		'ldapstring' => '(&(objectclass=puppetClient)(associatedDomain=%s))',
+		'ldapuser' => $ldapconfig['proxyagent'],
+		'ldappassword' => $ldapconfig['proxypass'],
+		'ldaptls' => true
+	}
+	
+	File['/etc/puppet/puppet.conf.d/10-main.conf'] {
+		ensure => absent
+	}
+
+	file { '/etc/puppet/puppet.conf.d/10-self.conf':
+		require => File['/etc/puppet/puppet.conf.d'],
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => template('puppet/puppet.conf.d/10-self.conf.erb'),
+		notify => Exec['compile puppet.conf'];
+	}
+
+	file { '/etc/puppet/fileserver.conf':
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => template('puppet/fileserver-self.conf.erb'),
+		ensure => $is_puppetmaster ? {
+			true => 'file',
+			default => absent,
+		}
+	}
+}
+
+
+# == Class puppet::self::gitclone
+# Clones the operations/puppet repository
+# for use by puppet::self::masters.
+#
+class puppet::self::gitclone {
+	$gitdir = '/var/lib/git'
+
+	file { $gitdir:
+		ensure => directory,
+		owner  => root,
+		group  =>root,
+	}
+	file { "${gitdir}/operations":
+		ensure => directory,
+		owner  => root,
+		group  => root,
+	}
+	file { "${gitdir}/labs":
+		ensure => directory,
+		# private repo resides here, so enforce some perms
+		owner  => root,
+		group  => puppet,
+		mode   => 0640,
+	}
+
+	file { "${gitdir}/ssh":
+		ensure  => file,
+		owner   => root,
+		group   => root,
+		mode    => 0755,
+		# FIXME: ok, this sucks. ew. ewww.
+		content => "#!/bin/sh\nexec ssh -o StrictHostKeyChecking=no -i ${gitdir}/labs-puppet-key \$*\n",
+		require => File["${gitdir}/labs-puppet-key"],
+	}
+	file { "${gitdir}/labs-puppet-key":
+		ensure  => file,
+		owner   => root,
+		group   => root,
+		mode    => 0600,
+		source  => 'puppet:///private/ssh/labs-puppet-key',
+	}
+
+	git::clone { 'operations/puppet':
+		directory => "${gitdir}/operations/puppet",
+		branch    => 'production',
+		origin    => 'https://gerrit.wikimedia.org/r/operations/puppet.git',
+		require   => File["${gitdir}/operations"],
+	}
+	git::clone { 'labs/private':
+		directory => "${gitdir}/labs/private",
+		origin    => 'ssh://labs-puppet@gerrit.wikimedia.org:29418/labs/private.git',
+		ssh       => "${gitdir}/ssh",
+		require   => [ File["${gitdir}/labs"], File["${gitdir}/ssh"] ],
+	}
+
+	file { '/etc/puppet/private':
+		ensure => link,
+		target => "${gitdir}/labs/private",
+		force  => true,
+	}
+	file { '/etc/puppet/templates':
+		ensure => link,
+		target => "${gitdir}/operations/puppet/templates",
+		force  => true,
+	}
+	file { '/etc/puppet/files':
+		ensure => link,
+		target => "${gitdir}/operations/puppet/files",
+		force  => true,
+	}
+	file { '/etc/puppet/manifests':
+		ensure => link,
+		target => "${gitdir}/operations/puppet/manifests",
+		force  => true,
+	}
+	file { '/etc/puppet/modules':
+		ensure => link,
+		target => "${gitdir}/operations/puppet/modules",
+		force  => true,
+	}
 }
