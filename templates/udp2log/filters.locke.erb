@@ -5,24 +5,6 @@
 # udp2log packet loss monitoring
 pipe 10 /usr/bin/packet-loss 10 '\t' >> /a/squid/packet-loss.log
 
-# 0.001 of all udp2log messages
-# This log file is also on emery for redundancy
-file 1000 /a/squid/sampled-1000.tab.log
-
-# All edits
-pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> /a/squid/edits.tab.log
-
-
-# domas' stuff.
-# (This looks like a bunch of C to filter for mobile pages
-# and output things by language.)
-pipe 1 /a/webstats/bin/filter | log2udp -h 127.0.0.1 -p 3815
-
-# Mobile traffic filter
-pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> /a/squid/mobile.tab.log
-
-
-
 ## Fundraising
 # Landing pages
 pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.tab.log
@@ -32,9 +14,7 @@ pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Specia
 
 
 
-# All 5xx error responses -- domas
-# TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
-pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.tab.log
+
 
 
 
@@ -42,6 +22,29 @@ pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|que
 
 
 #### MOVED TO GADOLINIUM:
+
+# 0.001 of all udp2log messages
+# This log file is also on emery for redundancy
+#file 1000 /a/squid/sampled-1000.tab.log
+
+# All edits
+#pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> /a/squid/edits.tab.log
+
+
+# domas' stuff.
+# (This looks like a bunch of C to filter for mobile pages
+# and output things by language.)
+#pipe 1 /a/webstats/bin/filter | log2udp -h 127.0.0.1 -p 3815
+
+# Mobile traffic filter
+#pipe 100 /usr/bin/udp-filter -F '\t' -d "m.wikipedia.org" >> /a/squid/mobile.tab.log
+
+# All 5xx error responses -- domas
+# TODO:  /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.log
+#pipe 1 /a/squid/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> /a/squid/5xx.tab.log
+
+
+
 
 # Vrije Universiteit
 # Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
