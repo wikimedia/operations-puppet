@@ -2,7 +2,7 @@
 
 # Passenger configuration
 PassengerHighPerformance on
-PassengerMaxPoolSize <%= scope.lookupvar('::processorcount').to_i * 4 %>
+PassengerMaxPoolSize 30
 PassengerPoolIdleTime 1500
 PassengerMaxRequests 100
 PassengerStatThrottleRate 120
