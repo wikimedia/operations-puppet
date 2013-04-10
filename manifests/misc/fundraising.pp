@@ -24,34 +24,34 @@ class misc::fundraising {
 		#civicrm confs
 		'/srv/org.wikimedia.civicrm/sites/default/civicrm.settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/civicrm.civicrm.settings.php';
 		'/srv/org.wikimedia.civicrm/sites/default/default.settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/civicrm.default.settings.php';
 		'/srv/org.wikimedia.civicrm/sites/default/settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/civicrm.settings.php';
 
 		#civicrm dev confs
 		'/srv/org.wikimedia.civicrm-dev/sites/default/civicrm.settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php';
 		'/srv/org.wikimedia.civicrm-dev/sites/default/default.settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.default.settings.php';
 		'/srv/org.wikimedia.civicrm-dev/sites/default/settings.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.settings.php';
 
@@ -88,36 +88,36 @@ class misc::fundraising {
 			ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
 		'/srv/org.wikimedia.civicrm/fundcore_gateway/paypal':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Standalone.php';
 		'/srv/org.wikimedia.civicrm/IPNListener_Recurring.php':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0440,
 			ensure => '/opt/fundraising-misc/queue_handling/paypal/IPN/IPNListener_Recurring.php';
 		'/srv/org.wikimedia.civicrm/files':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0775,
 			ensure => directory;
 		'/srv/org.wikimedia.civicrm-dev/files':
 			owner => www-data,
-			group => wikidev,
+			group => www-data,
 			mode => 0775,
 			ensure => directory;
-		'/srv/org.wikimedia.civicrm/fundcore_gateway':
-			owner => www-data,
-			group => wikidev,
-			mode => 0775,
-			ensure => directory;
-		'/srv/org.wikimedia.civicrm/fundcore_gateway/.htaccess':
-			owner => www-data,
-			group => wikidev,
-			mode => 0444,
-			content => "<Files paypal>
-	ForceType application/x-httpd-php
-</Files>";
+		#'/srv/org.wikimedia.civicrm/fundcore_gateway':
+		#	owner => www-data,
+		#	group => wikidev,
+		#	mode => 0775,
+		#	ensure => directory;
+		#'/srv/org.wikimedia.civicrm/fundcore_gateway/.htaccess':
+		#	owner => www-data,
+		#	group => wikidev,
+		#	mode => 0444,
+		#	content => "<Files paypal>
+#	ForceType application/x-httpd-php
+#</Files>";
 
 		#apache conf stuffs
 		'/etc/php5/apache2/php.ini':
@@ -160,16 +160,6 @@ class misc::fundraising {
 			group => root,
 			mode => 0444,
 			source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-ssl';
-		#'/etc/apache2/sites-available/007-fundraising-analytics':
-		#	owner => root,
-		#	group => root,
-		#	mode => 0444,
-		#	source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-analytics';
-		#'/etc/apache2/sites-available/008-community-analytics':
-		#	owner => root,
-		#	group => root,
-		#	mode => 0444,
-		#	source => 'puppet:///private/misc/fundraising/apache.conf.community-analytics';
 
 		'/usr/local/bin/drush':
 			ensure => '/opt/drush/drush';
