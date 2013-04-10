@@ -617,7 +617,7 @@ class role::cache {
 			}
 			varnish::logging { "locke" :
 				listener_address => "208.80.152.138",
-				port => "8422",
+				port => "8420",
 				instance_name => "",
 				cli_args => "-m RxRequest:^(?!PURGE\$) -D"
 			}
