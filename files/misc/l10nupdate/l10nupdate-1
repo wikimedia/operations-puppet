@@ -76,8 +76,10 @@ do
 		cp --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
-		echo "Clearing message blobs"
-		/usr/local/bin/mwscript extensions/WikimediaMaintenance/clearMessageBlobs.php --wiki="$mwDbName"
+		# clearMessageBlobs.php sometimes causes some sort of database stampede
+		# that brings the site down. Disable it for now.
+		#echo "Clearing message blobs"
+		#/usr/local/bin/mwscript extensions/WikimediaMaintenance/clearMessageBlobs.php --wiki="$mwDbName"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
 		echo "All done"
 	else
