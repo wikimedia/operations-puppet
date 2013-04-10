@@ -2584,6 +2584,13 @@ node "stat1001.wikimedia.org" {
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
 
+node "stat1002.eqiad.wmnet" {
+
+	include accounts::otto
+
+	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+}
+
 node "streber.wikimedia.org" {
 	system_role { "misc": description => "network monitoring server" }
 

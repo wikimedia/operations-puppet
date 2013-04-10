@@ -776,11 +776,6 @@ host db1011 {
 	fixed-address db1011.eqiad.wmnet;
 }
 
-host db1012 {
-	hardware ethernet 78:2b:cb:0a:0e:fc;
-	fixed-address db1012.eqiad.wmnet;
-}
-
 host db1013 {
 	hardware ethernet 78:2b:cb:0a:04:4e;
 	fixed-address db1013.eqiad.wmnet;
@@ -4501,6 +4496,11 @@ host stat1 {
 host stat1001 {
 	hardware ethernet 78:2b:cb:35:c4:f7;
 	fixed-address stat1001.wikimedia.org;
+}
+
+host stat1002 {
+	hardware ethernet 78:2b:cb:0a:0e:fc;
+	fixed-address stat1002.eqiad.wmnet;
 }
 
 host strontium {
