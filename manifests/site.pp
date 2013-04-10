@@ -2739,6 +2739,7 @@ node "virt0.wikimedia.org" {
 		role::ldap::server::labs,
 		role::ldap::client::labs,
 		role::nova::controller,
+		role::nova::manager,
 		role::salt::masters::labs,
 		role::deployment::salt_masters::labs,
 		backup::client

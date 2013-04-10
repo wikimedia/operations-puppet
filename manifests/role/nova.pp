@@ -220,6 +220,20 @@ class role::nova::common {
 	}
 }
 
+class role::nova::manager {
+	include role::nova::config
+	$novaconfig = $role::nova::config::novaconfig
+
+	class { "openstack::openstack-manager":
+		openstack_version => $openstack_version,
+		novaconfig => $novaconfig,
+		certificate => $realm ? {
+			"production" => "star.wikimedia.org",
+			"labs" => "star.wmflabs",
+		}
+	}
+}
+
 class role::nova::controller {
 	include role::nova::config
 	$novaconfig = $role::nova::config::novaconfig
@@ -242,14 +256,6 @@ class role::nova::controller {
 
 	class { "openstack::scheduler-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
 	class { "openstack::glance-service": openstack_version => $openstack_version, glanceconfig => $glanceconfig }
-	class { "openstack::openstack-manager":
-		openstack_version => $openstack_version,
-		novaconfig => $novaconfig,
-		certificate => $realm ? {
-			"production" => "star.wikimedia.org",
-			"labs" => "star.wmflabs",
-		}
-	}
 	class { "openstack::queue-server": openstack_version => $openstack_version, novaconfig => $novaconfig }
 	class { "openstack::iptables": }
 	class { "openstack::database-server":
