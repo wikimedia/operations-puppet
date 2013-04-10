@@ -519,7 +519,7 @@ node /^db(42|6[12]|7[1-7])\.pmtpa\.wmnet/{
 }
 
 # eqiad dbs
-node /^db10(01|17|42|43|49|50|51|52|56|58)\.eqiad\.wmnet/ {
+node /^db10(17|42|43|49|50|51|52|56|58)\.eqiad\.wmnet/ {
 	if $hostname =~ /^db10(01|17|56)/ {
 		$ganglia_aggregator = "true"
 		include mha::manager
@@ -589,6 +589,11 @@ node /^db10(07|24|28|41)\.eqiad\.wmnet/ {
 ## x1 shard
 node /^db10(29|30|31)\.eqiad\.wmnet/ {
 	include role::coredb::x1
+}
+
+## m1 shard
+node /^db1001\.eqiad\.wmnet/ {
+	class { role::coredb::m1 : mariadb => true }
 }
 
 ## m2 shard
