@@ -32,7 +32,7 @@ class VolumeManager:
 		self.manual_shares = {'publicdata': {'project': ['208.80.154.11']}}
 		self.volume_quotas = {'home': '50GB','default': '300GB'}
 		self.default_options = ['nfs.disable on']
-		self.bricks = ['labstore1.pmtpa.wmnet', 'labstore2.pmtpa.wmnet', 'labstore3.pmtpa.wmnet', 'labstore4.pmtpa.wmnet']
+		self.bricks = ['labstore1.pmtpa.wmnet', 'labstore2.pmtpa.wmnet']
 		self.volume_names = ['home', 'project']
 		self.loglevel = INFO
 		self.logfile = None
