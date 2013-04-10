@@ -865,6 +865,7 @@ class icinga::ganglia::ganglios {
 class misc::monitoring::enwikijobqueue {
 
 	include passwords::nagios::mysql
+	require mysql_wmf::client
 	$ganglia_mysql_enwiki_pass = $passwords::nagios::mysql::mysql_enwiki_pass
 	$ganglia_mysql_enwiki_user = $passwords::nagios::mysql::mysql_enwiki_user
 	# Password is actually the same for all clusters and wikis, not en.wiki only
