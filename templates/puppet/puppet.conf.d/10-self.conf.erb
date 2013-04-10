@@ -3,12 +3,13 @@
 [main]
 logdir = /var/log/puppet
 vardir = /var/lib/puppet
-ssldir = /var/lib/puppet/server/ssl
+ssldir = <%= is_puppetmaster ? '/var/lib/puppet/server/ssl' : '/var/lib/puppet/ssl' %>
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
+certname = <%= certname %>
 
 [agent]
-server = localhost
+server = <%= server %>
 configtimeout = 480
 splay = true
 prerun_command = /etc/puppet/etckeeper-commit-pre
@@ -16,20 +17,21 @@ postrun_command = /etc/puppet/etckeeper-commit-post
 pluginsync = false
 report = true
 
+<% if is_puppetmaster -%>
 [master]
-bindaddress = 127.0.0.1
+bindaddress = <%= bindaddress %>
 ca_md = sha1
-certname = localhost
 thin_storeconfigs = true
 templatedir = /etc/puppet/templates
 
 # SSL
-ssldir = /var/lib/puppet/server/ssl/
+ssldir = /var/lib/puppet/server/ssl
 ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
 
-<% scope.lookupvar('puppetmaster::self::config::config').sort.each do |setting, value| -%>
+<% scope.lookupvar('puppet::self::config::config').sort.each do |setting, value| -%>
 <%= setting %> = <%= value %>
+<% end -%>
 <% end -%>
