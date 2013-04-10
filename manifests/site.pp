@@ -2586,7 +2586,8 @@ node "stat1001.wikimedia.org" {
 
 node "stat1002.eqiad.wmnet" {
 
-	include accounts::otto
+	include	groups::wikidev,
+	accounts::otto
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
