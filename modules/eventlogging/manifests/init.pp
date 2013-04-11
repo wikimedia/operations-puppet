@@ -9,8 +9,10 @@ class eventlogging {
 	}
 
 	package { [
+		'python-jsonschema',
 		'python-mysqldb',
 		'python-pygments',
+		'python-pymongo',
 		'python-sqlalchemy',
 		'python-zmq',
 	]:
