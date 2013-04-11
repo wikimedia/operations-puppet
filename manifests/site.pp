@@ -157,9 +157,23 @@ node /analytics100[3456].eqiad.wmnet/ {
 	}
 }
 
+# analytics1008 is a udp2log instance
+node "analytics1008.eqiad.wmnet" {
+	include role::analytics
 
-# analytics1007 - analytics1026
-node /analytics10(0[7-9]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
+	# monitor the (currently unpuppetized)
+	# udp2log instance.  (geocoded anonymized sampled-1000)
+	misc::udp2log::instance::monitoring { 'misc':
+		log_directory       => '/var/log/udp2log/misc',
+		monitor_packet_loss => true,
+		monitor_processes   => true,
+		monitor_log_age     => false,
+	}
+}
+
+
+# analytics1007, analytics1009-analytics1026
+node /analytics10(0[79]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1011") {
 		$ganglia_aggregator = "true"
