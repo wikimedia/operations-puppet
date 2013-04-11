@@ -68,7 +68,8 @@ class zuul (
 	}
 
 	exec { 'install_zuul':
-		command => 'python setup.py install',
+		# Make sure to install without downloading from pypi
+		command => 'python setup.py easy_install --allow-hosts=None .',
 		cwd => $zuul_source_dir,
 		path => '/bin:/usr/bin',
 		refreshonly => true,
