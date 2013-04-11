@@ -20,6 +20,7 @@ class role::zuul {
 			#url_pattern => 'http://jenkinslogs.wmflabs.org/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
 			url_pattern => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'http://integration.wmflabs.org/zuul/status',
+			git_branch => 'labs',
 			push_change_refs => false
 		}
 
@@ -49,6 +50,7 @@ class role::zuul {
 			#url_pattern => 'https://integration.wikimedia.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
 			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'https://integration.wikimedia.org/zuul/',
+			git_branch => 'master',
 			push_change_refs => false
 		}
 
