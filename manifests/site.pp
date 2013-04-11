@@ -677,7 +677,7 @@ node /^db1057\.eqiad\.wmnet/ {
   }
 }
 
-
+## 2013-04-10: py using db101[345] for testing
 ## not currently in production and/or hardware issues
 node /^db10(1[3456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
