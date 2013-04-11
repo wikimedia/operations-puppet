@@ -67,13 +67,26 @@ class zuul (
 		branch => $git_branch,
 	}
 
+	# We do not ship `statsd` python module so ignore it
+	# it is gracefully ignored by Zuul.
+	exec { 'remove_statsd_dependency':
+		command => '/bin/sed -i "s/^statsd/#statsd/" tools/pip-requires',
+		cwd => $zuul_source_dir,
+		refreshonly => true,
+		subscribe => Git::Clone['integration/zuul'],
+	}
+
 	exec { 'install_zuul':
-		command => 'python setup.py install',
+		# Make sure to install without downloading from pypi
+		command => 'python setup.py easy_install --allow-hosts=None .',
 		cwd => $zuul_source_dir,
 		path => '/bin:/usr/bin',
 		refreshonly => true,
 		subscribe => Git::Clone['integration/zuul'],
-		require => Package['python-setuptools'],
+		require => [
+			Exec['remove_statsd_dependency'],
+			Package['python-setuptools'],
+		],
 	}
 
 	file { '/etc/zuul':
