@@ -313,9 +313,7 @@ class misc::deployment::l10nupdate {
 		user => 'l10nupdate',
 		hour => 2,
 		minute => 0,
-
-		# Temporarily disabled due to it causing s1 master overload -- TS
-		ensure => absent;
+		ensure => present;
 	}
 
 	file {
