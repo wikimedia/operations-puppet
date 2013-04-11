@@ -1079,7 +1079,7 @@ node "hume.wikimedia.org" {
 	class { misc::maintenance::pagetriage: enabled => true }
 	class { misc::maintenance::refreshlinks: enabled => true }
 	class { misc::maintenance::translationnotifications: enabled => true }
-	class { misc::maintenance::wikidata: enabled => true }
+	class { misc::maintenance::wikidata: enabled => false }
 	class { misc::maintenance::tor_exit_node: enabled => true }
 	class { misc::maintenance::echo_mail_batch: enabled => true }
 	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
@@ -2654,7 +2654,7 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::foundationwiki: enabled => false }
 	class { misc::maintenance::pagetriage: enabled => false }
 	class { misc::maintenance::translationnotifications: enabled => false }
-	class { misc::maintenance::wikidata: enabled => false }
+	class { misc::maintenance::wikidata: enabled => true }
 	class { misc::maintenance::tor_exit_node: enabled => false }
 	class { misc::maintenance::echo_mail_batch: enabled => false }
 	class { misc::maintenance::update_special_pages: enabled => false }
