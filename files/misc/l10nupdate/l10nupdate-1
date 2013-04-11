@@ -1,7 +1,10 @@
 #!/bin/bash
 # This script belongs in /usr/local/bin/.
+. /usr/local/lib/mw-deployment-vars.sh
+. $MW_COMMON_SOURCE/multiversion/MWRealm.sh
+
 BINDIR=/usr/local/bin
-MWMULTIDIR=/home/wikipedia/common/multiversion
+MWMULTIDIR=$MW_COMMON_SOURCE/multiversion
 GITDIR=/var/lib/l10nupdate/mediawiki
 GITURL=https://gerrit.wikimedia.org/r/p/mediawiki
 GITREPOS="core extensions"
@@ -76,10 +79,6 @@ do
 		cp --preserve=timestamps --force /var/lib/l10nupdate/cache-"$mwVerNum"/l10n_cache-* /home/wikipedia/common/php-"$mwVerNum"/cache/l10n
 		echo "Syncing to Apaches"
 		$BINDIR/sync-l10nupdate-1 "$mwVerNum"
-		# clearMessageBlobs.php sometimes causes some sort of database stampede
-		# that brings the site down. Disable it for now.
-		#echo "Clearing message blobs"
-		#/usr/local/bin/mwscript extensions/WikimediaMaintenance/clearMessageBlobs.php --wiki="$mwDbName"
 		$BINDIR/dologmsg "!log LocalisationUpdate completed ($mwVerNum) at `date`"
 		echo "All done"
 	else
@@ -87,3 +86,12 @@ do
 		echo "FAILED"
 	fi
 done
+
+# Clear the ResourceLoader cached messages
+echo "Refreshing ResourceLoader caches"
+ALLDB=`getRealmSpecificFilename "$MW_COMMON_SOURCE/all.dblist"`
+for wiki in `<"$ALLDB"`; do
+	/usr/local/bin/mwscript extensions/WikimediaMaintenance/refreshMessageBlobs.php --wiki="$wiki"
+done
+echo "All done"
+$BINDIR/dologmsg "!log LocalisationUpdate ResourceLoader cache refresh completed at `date`"
