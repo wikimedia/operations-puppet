@@ -628,10 +628,6 @@ sub vcl_recv {
 	unset req.http.X-DfltLang;
 	unset req.http.X-DfltPage;
 
-	if ( req.url == "/" ) {
-		set req.url = "/?useformat=mobile";
-	}
-
 	call device_detection;
 
 	if ( req.http.host ~ "^test\." ) {
