@@ -592,7 +592,7 @@ node /^db10(29|30|31)\.eqiad\.wmnet/ {
 }
 
 ## m1 shard
-node /^db1001\.eqiad\.wmnet/ {
+node /^db10(01|16)\.eqiad\.wmnet/ {
 	class { role::coredb::m1 : mariadb => true }
 }
 
@@ -679,7 +679,7 @@ node /^db1057\.eqiad\.wmnet/ {
 
 ## 2013-04-10: py using db101[345] for testing
 ## not currently in production and/or hardware issues
-node /^db10(1[3456]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
+node /^db10(1[345]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
