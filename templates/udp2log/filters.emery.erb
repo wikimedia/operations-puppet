@@ -15,9 +15,6 @@ pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= log_directory %>/api-u
 ### GLAM NARA / National Archives - RT 2212
 pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -m -b country >> <%= log_directory %>/glam_nara.tsv.log
 
-### Location geocoding filter for Erik Zachte.
-pipe 1000 /usr/bin/udp-filter -F '\t' -g -b everything >> <%= log_directory %>/location-1000.tsv.log
-
 ### Teahouse filters
 pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> <%= log_directory %>/teahouse.tsv.log
 
