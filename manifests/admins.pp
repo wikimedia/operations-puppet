@@ -2709,9 +2709,10 @@ class admins::roots {
 	$gid = 500	# 'wikidev' by default
 	include groups::wikidev
 
-	# in addition to adding the user to this list,
-	# you MUST add the user's key to /etc/puppet/files/ssh/root-authorized-keys
-	# to actually get them root; that file is not in SVN.
+	# In addition to adding the user to this list, you MUST add the user's key
+	# to /root/private/files/ssh/root-authorized-keys on sockpuppet, then git
+	# commit and pull to /var/lib/git/operations/private/ on stafford, to
+	# actually get them root; that file is not in the public repo.
 
 	include accounts::andrewb
 	include accounts::ariel
