@@ -575,19 +575,19 @@ class misc::statistics::rsync::jobs {
 
 	# API logs from emery
 	misc::statistics::rsync_job { "api":
-		source      => "emery.wikimedia.org::udp2log/archive/api-usage*.gz",
+		source      => "emery.wikimedia.org::udp2log/webrequest/archive/api-usage*.gz",
 		destination => "/a/squid/archive/api",
 	}
 
 	# teahouse logs from emery
 	misc::statistics::rsync_job { "teahouse":
-		source      => "emery.wikimedia.org::udp2log/archive/teahouse*.gz",
+		source      => "emery.wikimedia.org::udp2log/webrequest/archive/teahouse*.gz",
 		destination => "/a/squid/archive/teahouse",
 	}
 
 	# arabic banner logs from emery
 	misc::statistics::rsync_job { "arabic_banner":
-		source      => "emery.wikimedia.org::udp2log/archive/arabic-banner*.gz",
+		source      => "emery.wikimedia.org::udp2log/webrequest/archive/arabic-banner*.gz",
 		destination => "/a/squid/archive/arabic-banner",
 	}
 
