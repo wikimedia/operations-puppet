@@ -254,7 +254,7 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 	# This handles inserting jobs into client job queue, which then process the changes
 	cron {
 		wikibase-dispatch-changes:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 2>&1 >> /var/log/wikidata/dispatcher.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 batch-size 500 2>&1 >> /var/log/wikidata/dispatcher.log",
 			user => mwdeploy,
 			minute => "*/5",
 			ensure => $enabled ?{
@@ -266,7 +266,7 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 
     cron {
         wikibase-dispatch-changes2:
-			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 2>&1 >> /var/log/wikidata/dispatcher2.log",
+			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 batch-size 500 2>&1 >> /var/log/wikidata/dispatcher2.log",
 			user => mwdeploy,
 			minute => "*/5",
 			ensure => $enabled ?{
