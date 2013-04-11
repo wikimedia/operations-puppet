@@ -38,6 +38,7 @@ class zuul (
 			'python-async',
 			'python-smmap',
 
+			'python-extras',  # backported in Precise (bug 47122)
 			'python-statsd',
 
 			'python-setuptools',
