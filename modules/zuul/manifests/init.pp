@@ -18,6 +18,7 @@ class zuul (
     $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
+    $git_branch = 'master',
     $git_dir = '/var/lib/zuul/git',
     $push_change_refs,
 ) {
@@ -64,7 +65,7 @@ class zuul (
 		ensure => present,
 		directory => $zuul_source_dir,
 		origin => $git_source_repo,
-		branch => 'master',
+		branch => $git_branch,
 	}
 
 	exec { 'install_zuul':
