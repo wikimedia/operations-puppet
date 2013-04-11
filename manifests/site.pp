@@ -903,6 +903,7 @@ node "gallium.wikimedia.org" {
 	$gid=500
 	sudo_user { [ "demon", "krinkle", "reedy", "dsc", "mholmquist" ]: privileges => [
 		 'ALL = (jenkins) NOPASSWD: ALL'
+		,'ALL = (gerritslave) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/jenkins'
 		,'ALL = (testswarm) NOPASSWD: ALL'
 		,'ALL = NOPASSWD: /etc/init.d/postgresql-8.4'
