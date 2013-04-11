@@ -11,6 +11,7 @@ class zuulwikimedia {
 		$gerrit_user,
 		$url_pattern,
 		$status_url,
+		$git_branch='master',
 		$push_change_refs
 	) {
 
@@ -28,6 +29,7 @@ class zuulwikimedia {
 				gerrit_user      => $gerrit_user,
 				url_pattern      => $url_pattern,
 				status_url       => $status_url,
+				git_branch       => $git_branch,
 				push_change_refs => $push_change_refs,
 			}
 
