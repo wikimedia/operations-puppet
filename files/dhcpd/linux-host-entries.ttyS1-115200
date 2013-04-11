@@ -1029,6 +1029,8 @@ host ekrem {
 host emery {
 	hardware ethernet 84:2b:2b:06:47:59;
 	fixed-address emery.wikimedia.org;
+	option pxelinux.pathprefix "lucid-installer/";
+	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
 }
 
 host es1 {
