@@ -110,7 +110,7 @@ class zuul (
 		require => Package['jenkins'],
 	}
 
-	file { '/var/lib/zuul/git':
+	file { $git_dir:
 		ensure => directory,
 		owner => 'jenkins',
 		require => Package['jenkins'],
