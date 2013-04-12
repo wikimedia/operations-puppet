@@ -21,6 +21,7 @@ class role::zuul {
 			url_pattern => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'http://integration.wmflabs.org/zuul/status',
 			git_branch => 'labs',
+			git_dir => '/var/lib/zuul/git',
 			push_change_refs => false
 		}
 
@@ -41,6 +42,22 @@ class role::zuul {
 
 		system_role { "role::zuul::production": description => "Zuul on production" }
 
+		# Create directory that would hold the git repos
+		file { '/srv/ssd/zuul':
+			ensure => directory,
+			owner => 'jenkins',
+			group => 'jenkins',
+			mode => '2775',
+			require => Mount['/srv/ssd'],
+		}
+		file { '/srv/ssd/zuul/git':
+			ensure => directory,
+			owner => 'jenkins',
+			group => 'jenkins',
+			mode => '2775',
+			require => File['/srv/ssd/zuul'],
+		}
+
 		zuulwikimedia::instance { "zuul-production":
 			jenkins_server => 'https://integration.wikimedia.org/ci',
 			jenkins_user => 'zuul-bot',
@@ -51,6 +68,7 @@ class role::zuul {
 			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'https://integration.wikimedia.org/zuul/',
 			git_branch => 'master',
+			git_dir => '/srv/ssd/zuul/git',
 			push_change_refs => false
 		}
 

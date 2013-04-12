@@ -12,6 +12,7 @@ class zuulwikimedia {
 		$url_pattern,
 		$status_url,
 		$git_branch='master',
+		$git_dir='/var/lib/zuul/git',
 		$push_change_refs
 	) {
 
@@ -30,6 +31,7 @@ class zuulwikimedia {
 				url_pattern      => $url_pattern,
 				status_url       => $status_url,
 				git_branch       => $git_branch,
+				git_dir          => $git_dir,
 				push_change_refs => $push_change_refs,
 			}
 
