@@ -8,7 +8,7 @@ command[check_ram]=/usr/lib/nagios/plugins/check_ram.sh 20 5 b
 
 # process checks, we can't make this generic because we don't pass args via nrpe (security)
 command[check_ircecho]=/usr/lib/nagios/plugins/check_procs -w 1:4 -c 1:20 -a ircecho
-command[check_jenkins]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java -jar /usr/share/jenkins/jenkins.war'
+command[check_jenkins]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/java .*-jar /usr/share/jenkins/jenkins.war'
 command[check_zuul]=/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^/usr/bin/python /usr/local/bin/zuul-server'
 command[check_mailman]=/usr/lib/nagios/plugins/check_procs -w 1:25 -c 1:35 -a mailman
 command[check_spamd]=/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd
