@@ -13,7 +13,7 @@ sshkey=/var/lib/jenkins/.ssh/id_rsa
 layout_config=/etc/zuul/wikimedia/layout.yaml
 log_config=/etc/zuul/logging.conf
 state_dir=/var/lib/zuul
-git_dir=/var/lib/zuul/git
+git_dir=<%= git_dir %>
 push_change_refs=<%= push_change_refs %>
 url_pattern=<%= url_pattern %>
 status_url=<%= status_url %>
