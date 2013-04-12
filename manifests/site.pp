@@ -924,6 +924,20 @@ node "gallium.wikimedia.org" {
 		admins::roots,
 		admins::jenkins
 
+	# gallium received a SSD drive (RT #4916) mount it
+	file { '/srv/ssd':
+		owner => root,
+		group => root,
+		ensure => directory,
+	}
+	mount { '/srv/ssd':
+		ensure => mounted,
+		device => '/dev/sdb',
+		fstype => 'xfs',
+		options => 'noatime,nodiratime,nobarrier,logbufs=8',
+		require => File['/srv/ssd'],
+	}
+
 	install_certificate{ "star.mediawiki.org": }
 	install_certificate{ "star.wikimedia.org": }
 }
