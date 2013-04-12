@@ -19,6 +19,7 @@ class zuul (
     $status_url = "https://${::fqdn}/zuul/status",
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
     $git_branch = 'master',
+    $git_dir = '/var/lib/zuul/git',
     $push_change_refs,
 ) {
 
@@ -111,7 +112,7 @@ class zuul (
 		require => Package['jenkins'],
 	}
 
-	file { '/var/lib/zuul/git':
+	file { $git_dir:
 		ensure => directory,
 		owner => 'jenkins',
 		require => Package['jenkins'],
