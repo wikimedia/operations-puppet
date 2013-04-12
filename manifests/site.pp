@@ -2305,9 +2305,6 @@ node "singer.wikimedia.org" {
 	$cluster = "misc"
 	$gid=500
 	include standard,
-		svn::client,
-		groups::wikidev,
-		accounts::awjrichards,
 		generic::mysql::packages::client,
 		misc::secure
 
