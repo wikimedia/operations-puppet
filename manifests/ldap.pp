@@ -405,7 +405,7 @@ class ldap::client::utils($ldapconfig) {
 		"/usr/local/sbin/ldapsupportlib.py":
 			owner => root,
 			group => root,
-			mode  => 0544,
+			mode  => 0555,
 			source => "puppet:///files/ldap/scripts/ldapsupportlib.py";
 		"/etc/ldap/scriptconfig.py":
 			owner => root,
