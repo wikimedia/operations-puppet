@@ -40,8 +40,8 @@ class misc::beta::autoupdater {
 
 		# mergeMessageFileList.php is run by mw-update-l10n as the apache user
 		# since https://gerrit.wikimedia.org/r/#/c/44548/
-		# Simply allow mwdeploy to run 'mwscript' as apache. That should be fine.
-		'ALL = (apache) NOPASSWD:/usr/local/bin/mwscript',
+    # Let it runs mwscript and others as apache user.
+		'ALL = (apache) NOPASSWD: ALL',
 	] }
 
 
