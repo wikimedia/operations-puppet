@@ -1,3 +1,8 @@
+#  Deprecated!
+#
+#  Logbots are now managed by the grid engine in the tools project.
+
+
 import "../bots.pp"
 
 

@@ -1,3 +1,6 @@
+# Deprecated!  This bot is now managed by the grid engine in
+#  the Tools project.
+#
 # Installs a logbot.  Channel, name, etc. are configurable.
 #  at the moment, only one bot per instance, and only one
 #  log page per bot will work.
