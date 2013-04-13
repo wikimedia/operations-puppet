@@ -214,7 +214,7 @@ class ganglia {
 						before => Package[ganglia-monitor],
 						ensure => purged;
 					"ganglia-monitor":
-						ensure => present,
+						ensure => latest,
 						alias => "gmond-package";
 				}
 			}
