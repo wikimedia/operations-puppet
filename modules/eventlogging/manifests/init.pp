@@ -14,6 +14,8 @@ class eventlogging {
 		bind_ip => false,
 	}
 
+	class { 'eventlogging::mediawiki_errors': }
+
 	package { [
 		'python-jsonschema',
 		'python-mysqldb',

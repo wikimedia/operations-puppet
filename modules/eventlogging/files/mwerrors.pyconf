@@ -1,0 +1,49 @@
+/**
+ * MediaWiki exceptions & fatals monitoring
+ * File managed by Puppet: puppet:///files/eventlogging/mwerrors.pyconf
+ */
+
+modules {
+  module {
+    name = "mwerrors"
+    language = "python"
+  }
+}
+
+
+collection_group {
+
+  collect_every = 15
+  time_threshold = 30
+
+  metric {
+      name = "oom"
+      title = "Out-of-memory fatals"
+      value_threshold = 1
+  }
+  metric {
+      name = "timelimit"
+      title = "Time limit fatals"
+      value_threshold = 1
+  }
+  metric {
+      name = "fatal"
+      title = "Miscellaneous fatals"
+      value_threshold = 1
+  }
+  metric {
+      name = "exception"
+      title = "Exceptions"
+      value_threshold = 1
+  }
+  metric {
+      name = "catchable"
+      title = "Catchable fatals"
+      value_threshold = 1
+  }
+  metric {
+      name = "query"
+      title = "Query errors"
+      value_threshold = 1
+  }
+}
