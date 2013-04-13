@@ -8,6 +8,8 @@ class eventlogging {
 		destinations => [ 'stat1.wikimedia.org' ],
 	}
 
+	class { 'eventlogging::mediawiki_errors': }
+
 	package { [
 		'python-jsonschema',
 		'python-mysqldb',
