@@ -510,11 +510,6 @@ class puppet::self::master($server) {
 		],
 	}
 
-	class { 'puppetmaster::ssl':
-		server_name => $::fqdn,
-		ca => true
-	}
-
 	service { 'puppetmaster':
 		ensure    => 'running',
 		require   => Package['puppetmaster'],
@@ -566,9 +561,26 @@ class puppet::self::config(
 	# This is set to something different than the default
 	# /var/lib/puppet/ssl to avoid conflicts with previously
 	# generated puppet certificates from the normal puppet setup.
-	$ssldir = $is_puppetmaster ? {
-		true    => '/var/lib/puppet/server/ssl',
-		default => '/var/lib/puppet/client/ssl',
+	if $is_puppetmaster {
+		$ssldir = '/var/lib/puppet/server/ssl'
+		# include puppetmaster::ssl for self hosted
+		# puppetmasters.  (This sets up the ssl directories).
+		class { 'puppetmaster::ssl':
+			server_name => $::fqdn,
+			ca          => true
+		}
+	}
+	else {
+		$ssldir = '/var/lib/puppet/client/ssl'
+		# ensure $ssldir's parent dir exists
+		# so that puppet can create $ssldir.
+		file { '/var/lib/puppet/client':
+			ensure  => directory,
+			owner   => puppet,
+			group   => root,
+			mode    => 0771,
+			require => Package['puppet'],
+		}
 	}
 
 	File['/etc/puppet/puppet.conf.d/10-main.conf'] {
@@ -594,7 +606,6 @@ class puppet::self::config(
 			default => absent,
 		}
 	}
-
 }
 
 
