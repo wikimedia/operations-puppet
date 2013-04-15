@@ -23,6 +23,7 @@ class contint::packages {
     'php5-gd',
     'php5-intl',
     'php5-mysql',
+    'php5-parsekit',
     'php5-pgsql',
     'php5-sqlite',
     'php5-tidy',
