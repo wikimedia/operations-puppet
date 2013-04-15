@@ -1,0 +1,331 @@
+#!/usr/bin/python
+
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/ldap/scripts/manage-nfs-volumes
+#####################################################################
+
+import datetime
+import ldapsupportlib
+from optparse import OptionParser
+import os
+import socket
+import subprocess
+import sys
+import time
+import traceback
+
+try:
+    import ldap
+    import ldap.modlist
+except ImportError:
+    sys.stderr.write("Unable to import LDAP library.\n")
+
+NONE = 0
+INFO = 10
+DEBUG = 20
+
+
+class VolumeManager:
+    def __init__(self):
+        # Turn on for testing
+        self.dry_run = True
+
+        # TODO: Pull this info from a configuration file
+        self.base_dir = '/srv/'
+        self.base_snapshot_dir = '/time/'
+        self.base_export_volume_dir = '/exp/'
+        self.export_snapshot_dir = '.snapshot'
+        self.base_exports_dir = '/etc/exports.d/'
+        # Volumes in projects listed as global; so: { 'dumps': ['xml'] } would be
+        # an xml share in the dumps project being listed as global.
+        self.global_shares = {'publicdata': ['project']}
+        # Volumes which need to have hosts manually added to the export list; so, { 'dumps':
+        # { 'project': ['10.0.0.1'] } } would manually add 10.0.0.1 to the dumps-project access list
+        self.manual_shares = {'publicdata': {'project': ['208.80.154.11']}}
+        self.volume_names = ['home', 'project']
+        self.loglevel = INFO
+        self.logfile = None
+
+    def run(self):
+        parser = OptionParser(conflict_handler="resolve")
+        parser.set_usage('manage-volumes [options]')
+
+        self.ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+        self.ldapSupportLib.addParserOptions(parser)
+
+        parser.add_option("--logfile", dest="logfile", help="Write output to the specified log file. (default: stdin)")
+        parser.add_option("--loglevel", dest="loglevel", help="Change level of logging; NONE, INFO, DEBUG (default: INFO)")
+        (options, args) = parser.parse_args()
+        self.ldapSupportLib.setBindInfoByOptions(options, parser)
+
+        if options.logfile:
+            self.logfile = options.logfile
+        if options.loglevel:
+            self.loglevel = options.loglevel
+
+        while True:
+            self.refresh_volumes()
+            time.sleep(180)
+
+    # Updates a member var:
+    #
+    # self.project_volumes:  A dict of existing volumes of the form
+    #         project_volumes[<project_name>][<timestamp>|"present'] =
+    #                   <array of volnames>
+    def update_volume_info(self):
+        self.project_volumes = {}
+        project_dirs = os.listdir(self.base_dir)
+        for project_name in project_dirs:
+            project_path = os.path.join(self.base_dir, project_name)
+            if not os.path.isdir(project_path):
+                continue
+
+            self.project_volumes[project_name] = {}
+            self.project_volumes[project_name]["present"] = os.listdir(project_path)
+
+        snap_dirs = os.listdir(self.base_snapshot_dir)
+        for snap_time in snap_dirs:
+            snap_path = os.path.join(self.base_snapshot_dir, snap_time)
+            if not os.path.isdir(snap_path):
+                continue
+
+            project_snap_dirs = os.listdir(snap_path)
+            for project_name in project_snap_dirs:
+                project_snap_path = os.path.join(snap_path, project_name)
+                if not os.path.isdir(project_snap_path):
+                    continue
+
+                if project_name not in self.project_volumes:
+                    self.project_volumes[project_name] = {}
+                self.project_volumes[project_name][snap_time] = os.listdir(project_snap_path)
+
+    def refresh_volumes(self):
+        base = self.ldapSupportLib.getBase()
+        ds = self.ldapSupportLib.connect()
+        projectdata = self.search_s(ds, "ou=projects," + base, ldap.SCOPE_ONELEVEL, "(objectclass=groupofnames)")
+        self.groupdata = self.search_s(ds, "ou=groups," + base, ldap.SCOPE_ONELEVEL, "(objectclass=groupofnames)")
+        hostdata = self.search_s(ds, "ou=hosts," + base, ldap.SCOPE_SUBTREE, "(puppetvar=instanceproject=*)", ['puppetvar', 'aRecord'])
+        self.update_volume_info()
+
+        project_hosts = self.get_hosts(hostdata)
+
+        # orphan_projects will eventually contain a list of projects that we have volumes for
+        #  but which no longer exist.
+        orphan_projects = self.project_volumes.keys()
+        unloved_volumes = []
+        unused_volumes = []
+        self.schedule_sync_exports = False
+
+        for project in projectdata:
+            project_name = project[1]["cn"][0]
+            desired_volumes = self.get_desired_volume_names(project)
+
+            hosts = []
+            if project_name in project_hosts:
+                hosts = project_hosts[project_name]
+                hosts = list(set(hosts))
+                hosts.sort()
+
+            present_volumes = []
+            if project_name in self.project_volumes:
+                if "present" in self.project_volumes[project_name]:
+                    present_volumes = self.project_volumes[project_name]["present"]
+
+            for volume_name in self.volume_names:
+                if project_name in self.manual_shares and volume_name in self.manual_shares[project_name]:
+                    hosts.extend(self.manual_shares[project_name][volume_name])
+
+                if project_name in self.global_shares and volume_name in self.global_shares[project_name]:
+                    hosts.append("*")
+
+                project_subpath = os.path.join(project_name, volume_name)
+                if project_name in orphan_projects:
+                    orphan_projects.remove(project_name)
+
+                if (volume_name in desired_volumes) and hosts:
+                    # We want this volume to exist.
+                    if volume_name not in present_volumes:
+                        # We may need to create it.
+                        rval = self.make_volume(project_name, volume_name)
+                        if rval:
+                            self.log("Created volume: " + project_name + ", " + volume_name)
+                            self.schedule_sync_exports = True
+                            self.update_volume_info()
+
+                    self.update_exports(project_name, volume_name, hosts)
+                else:
+                    # All hosts have been deleted, or none have been created, or
+                    # we aren't supposed to have this volume to begin with.
+                    if hosts != []:
+                        # Clear all the exports.
+                        self.update_exports(project_name, volume_name, [])
+
+                    if volume_name in present_volumes:
+                        if volume_name in desired_volumes:
+                            unused_volumes.append("%s, %s" % (project_name, volume_name))
+                        else:
+                            unloved_volumes.append("%s, %s" % (project_name, volume_name))
+
+        for unused in unused_volumes:
+            self.log("Unused volume %s is possible candidate for cleanup -- no hosts are using it!" % unused)
+        for unloved in unloved_volumes:
+            self.log("Unwanted volume %s is possible candidate for cleanup -- this share was not requested." % unloved)
+        for orphan in orphan_projects:
+            self.log("Project %s no longer exists but still has allocated volumes." % orphan)
+
+        ds.unbind()
+        if self.schedule_sync_exports:
+            if self.dry_run:
+                print "Calling sync-exports"
+            else:
+                subprocess.call(["/usr/local/sbin/sync-exports"])
+
+    def update_exports(self, project_name, volume_name, hosts):
+        if project_name not in self.project_volumes:
+            self.log("Unable to set exports for %s, %s because we can't find it." % (project_name, volume_name))
+            return False
+
+        if self.dry_run:
+            export_file_path = os.path.join("/etc/test-exports.d", "%s-%s.exports" % (project_name, volume_name))
+        else:
+            export_file_path = os.path.join(self.base_exports_dir, "%s-%s.exports" % (project_name, volume_name))
+
+        f = open(export_file_path, "w")
+
+        if not hosts:
+            f.close()
+            return
+
+        project_gid = self.get_gid_for_project(project_name)
+
+        timestamps = self.project_volumes[project_name].keys()
+        for stamp in timestamps:
+            if stamp == "present":
+                volpath = os.path.join(self.base_export_volume_dir, project_name)
+                yyyymmddhh = "0000000000"
+                permissions = "rw,nohide"
+            else:
+                volpath = os.path.join(self.base_export_volume_dir, project_name, self.export_snapshot_dir, stamp)
+                yyyymmddhh = "%s%s" % (stamp.split(".")[0], stamp.split(".")[1][:2])
+                permissions = "ro"
+
+            fsid = "00000000000000000-%s-%s" % (project_gid.zfill(5), yyyymmddhh)
+
+            if "*" in hosts:
+                # Add a special-case read-only line for this
+                exportline = "%s -ro,fsid=%s,subtree_check,async,no_root_squash *\n" % (
+                    volpath, permissions, fsid)
+                f.write(exportline)
+                hosts.remove("*")
+
+            exportline = "%s -%s,fsid=%s,subtree_check,async,no_root_squash %s\n" % (
+                volpath, permissions, fsid, " ".join(hosts))
+
+            f.write(exportline)
+        f.close()
+        self.log("Updated exports for %s, %s" % (project_name, volume_name))
+        return True
+
+    def make_volume(self, project_name, volume_name):
+        # We ensure a volume directory is unique by setting <base_dir>/project_name/volume_name
+        # as we know every project is unique and volumes within it also will be unique
+        voldir = self.base_dir + project_name + '/' + volume_name
+
+        # We need to clean up from partially-failed runs.  rmdir is pretty conservative; it will
+        #  only clean up empty dirs.
+        cmds1 = ['sudo', 'rmdir %s' % voldir]
+        cmds2 = ['sudo', 'mkdir -p %s' % voldir]
+
+        if self.dry_run:
+            print "Exec %s" % cmds1
+            print "Exec %s" % cmds2
+            return True
+        else:
+            subprocess.call(cmds1)
+            return subprocess.call(cmds2)
+
+    def get_gid_for_project(self, project):
+        if self.groupdata:
+            for group in self.groupdata:
+                name = group[1]["cn"][0]
+                if name == "project-%s" % project:
+                    return group[1]["gidNumber"][0]
+
+            self.log("Unable to locate group %s.  Returning 00000." % project)
+            return "00000"
+        else:
+            self.log("Without group data, I can't determine the gid!  Returning 00000.")
+            return "00000"
+
+    def get_hosts(self, hostdata):
+        project_hosts = {}
+        if hostdata:
+            for host in hostdata:
+                host_ip = host[1]["aRecord"][0]
+                puppet_vars = host[1]["puppetvar"]
+                for puppet_var in puppet_vars:
+                    var_arr = puppet_var.split('=')
+                    if len(var_arr) == 2 and var_arr[0] == "instanceproject":
+                        project = var_arr[1]
+                        if project in project_hosts:
+                            project_hosts[project].append(host_ip)
+                        else:
+                            project_hosts[project] = [host_ip]
+                        # No need to go any further, we aren't reading other variables
+                        break
+        return project_hosts
+
+    # returns an array containing zero, one, or both of 'project', 'volume'
+    # Presence of these values indicate that the named shared volume should
+    # exist for a given project.
+    def get_desired_volume_names(self, projectLdapData):
+        vols = []
+        project_name = projectLdapData[1]["cn"][0]
+        if "info" in projectLdapData[1]:
+            infos = projectLdapData[1]["info"]
+            volPrefix = "use_volume="
+            for info in infos:
+                if info.startswith(volPrefix):
+                    vols.append(info.lstrip(volPrefix))
+        return vols
+
+    def search_s(self, ds, base, scope, query, attrlist=None):
+        try:
+            data = ds.search_s(base, scope, query, attrlist)
+            if not data:
+                raise ldap.NO_SUCH_OBJECT()
+            return data
+        except ldap.NO_SUCH_OBJECT:
+            sys.stderr.write("The search returned no entries.\n")
+            return None
+        except ldap.PROTOCOL_ERROR:
+            sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            return None
+        except Exception:
+            try:
+                sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+                traceback.print_exc(file=sys.stderr)
+                return None
+            except Exception:
+                traceback.print_exc(file=sys.stderr)
+            return None
+
+    def log(self, logstring):
+        if self.loglevel >= INFO:
+            log = datetime.datetime.now().strftime("%m/%d/%Y - %H:%M:%S - ") + logstring + "\n"
+            if self.logfile:
+                lf = open(self.logfile, 'a')
+                lf.write(log)
+                lf.close()
+            else:
+                print log
+
+
+def main():
+    volume_manager = VolumeManager()
+    volume_manager.run()
+
+if __name__ == "__main__":
+    main()
