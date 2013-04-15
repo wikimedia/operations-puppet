@@ -1279,7 +1279,8 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 
 	$ganglia_aggregator = true
 
-	include standard
+	include standard,
+		openstack::project-nfs-storage-service
 
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
