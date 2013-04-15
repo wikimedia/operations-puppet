@@ -533,17 +533,19 @@ class puppet::self::master($server) {
 #
 # == Parameters
 # $server - hostname of the puppetmaster.
-# $is_puppetmaster - true or false. Default: false.
-# $bindaddress - address to which a puppetmaster should listen.  Unused if $is_puppetmaster is false.
-# $puppet_client_subnet - Network from which to allow fileserver connections.  Unused if $is_puppetmaster is false.
-# $certname - Name of the puppet CA certificate.  Default: "$dc.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+# $is_puppetmaster      - Boolean. Default: false.
+# $bindaddress          - Address to which a puppetmaster should listen.
+#                         Unused if $is_puppetmaster is false.
+# $puppet_client_subnet - Network from which to allow fileserver connections.
+#                         Unused if $is_puppetmaster is false.
+# $certname             - Name of the puppet CA certificate.  Default: "$dc.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
 #
 class puppet::self::config(
 	$server,
-	$is_puppetmaster = false,
-	$bindaddress = undef,
+	$is_puppetmaster      = false,
+	$bindaddress          = undef,
 	$puppet_client_subnet = undef,
-	$certname = "${dc}.${::domain}") inherits base::puppet
+	$certname             = "${dc}.${::domain}") inherits base::puppet
 {
 	include role::ldap::config::labs
 
@@ -559,6 +561,14 @@ class puppet::self::config(
 		'ldapuser'      => $ldapconfig['proxyagent'],
 		'ldappassword'  => $ldapconfig['proxypass'],
 		'ldaptls'       => true
+	}
+
+	# This is set to something different than the default
+	# /var/lib/puppet/ssl to avoid conflicts with previously
+	# generated puppet certificates from the normal puppet setup.
+	$ssldir = $is_puppetmaster ? {
+		true    => '/var/lib/puppet/server/ssl',
+		default => '/var/lib/puppet/client/ssl',
 	}
 
 	File['/etc/puppet/puppet.conf.d/10-main.conf'] {
