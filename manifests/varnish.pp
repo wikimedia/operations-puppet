@@ -128,7 +128,7 @@ class varnish {
 
 		exec { "load-new-vcl-file${instancesuffix}":
 			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia_${vcl}.vcl"] ],
-			subscribe => File["/etc/varnish/wikimedia_${vcl}.vcl"],
+			subscribe => [File["/etc/varnish/wikimedia_${vcl}.vcl"], Class["varnish::common-vcl"]],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
