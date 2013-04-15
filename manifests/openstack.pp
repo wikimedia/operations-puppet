@@ -205,6 +205,24 @@ class openstack::project-storage-service {
 	}
 }
 
+class openstack::project-nfs-storage-service {
+	upstart_job{ "manage-nfs-volumes":
+		install => "true";
+	}
+
+	service { "manage-nfs-volumes":
+		enable => true,
+		ensure => running,
+		require => Upstart_job["manage-nfs-volumes"];
+	}
+
+	$sudo_privs = [ 'ALL = NOPASSWD: /bin/mkdir -p /srv/*',
+			'ALL = NOPASSWD: /bin/rmdir /srv/*',
+			'ALL = NOPASSWD: /usr/local/sbin/sync-exports' ]
+	sudo_user { [ "nfsmanager" ]: privileges => $sudo_privs, require => Systemuser["nfsmanager"] }
+	systemuser { "nfsmanager": name => "nfsmanager", home => "/var/lib/nfsmanager", shell => "/bin/bash" }
+}
+
 class openstack::project-storage {
 	include openstack::gluster-service
 
