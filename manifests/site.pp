@@ -1220,14 +1220,12 @@ node /^labsdb1003\.eqiad\.wmnet/ {
   }
 }
 
-node /labstore[1-4]\.pmtpa\.wmnet/ {
+node /labstore[12]\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"
 	$ldapincludes = ['openldap', 'nss', 'utils']
 
-	if $hostname =~ /^labstore[12]$/ {
-		$ganglia_aggregator = "true"
-	}
+	$ganglia_aggregator = "true"
 
 	include standard,
 		openstack::project-storage
@@ -1238,6 +1236,18 @@ node /labstore[1-4]\.pmtpa\.wmnet/ {
 		include openstack::project-storage-service
 	}
 
+}
+
+node /labstore[34]\.pmtpa\.wmnet/ {
+
+	$cluster = "labsnfs"
+	$ldapincludes = ['openldap', 'nss', 'utils']
+
+	$ganglia_aggregator = "true"
+
+	include standard
+
+	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
 node "lanthanum.wikimedia.org" {

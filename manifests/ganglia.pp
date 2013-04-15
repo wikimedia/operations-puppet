@@ -151,6 +151,9 @@ class ganglia {
 		"redis"			=> {
 			"name"		=> "Redis",
 			"ip_oct"	=> "39" },
+		"labsnfs"	=> {
+			"name"		=> "Labs NFS cluster",
+			"ip_oct"	=> "40" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
