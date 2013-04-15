@@ -29,7 +29,7 @@ DEBUG = 20
 class VolumeManager:
     def __init__(self):
         # Turn on for testing
-        self.dry_run = True
+        self.dry_run = False
 
         # TODO: Pull this info from a configuration file
         self.base_dir = '/srv/'
@@ -183,7 +183,8 @@ class VolumeManager:
 
     def update_exports(self, project_name, volume_name, hosts):
         if project_name not in self.project_volumes:
-            self.log("Unable to set exports for %s, %s because we can't find it." % (project_name, volume_name))
+            if hosts:
+                self.log("Unable to set exports for %s, %s because we can't find it." % (project_name, volume_name))
             return False
 
         if self.dry_run:
@@ -215,7 +216,7 @@ class VolumeManager:
             if "*" in hosts:
                 # Add a special-case read-only line for this
                 exportline = "%s -ro,fsid=%s,subtree_check,async,no_root_squash *\n" % (
-                    volpath, permissions, fsid)
+                    volpath, fsid)
                 f.write(exportline)
                 hosts.remove("*")
 
