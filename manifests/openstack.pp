@@ -205,6 +205,18 @@ class openstack::project-storage-service {
 	}
 }
 
+class openstack::project-nfs-storage-service {
+	upstart_job{ "manage-nfs-volumes":
+		install => "true";
+	}
+
+	service { "manage-nfs-volumes":
+		enable => true,
+		ensure => running,
+		require => Upstart_job["manage-nfs-volumes"];
+	}
+}
+
 class openstack::project-storage {
 	include openstack::gluster-service
 
