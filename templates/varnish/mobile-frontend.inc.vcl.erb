@@ -685,5 +685,14 @@ sub vcl_deliver {
 	if (req.url == "/favicon.ico" || req.url ~ "^/apple-touch-icon(-precomposed)?\.png$" || req.url ~ "^/w/index\.php\?title=.*:Gadget-.*&[0-9]+$") {
 		set resp.http.Cache-Control = "s-maxage=3600, max-age=3600";
 	}
+
+	// FIXME: This makes sure the X-Analytics header
+	// is properly set even if the request is already cached.
+	// This can be removed once we are sure that all requests
+	// that should have this header set but are cached without
+	// it set have been invalidated.
+	if ( ! resp.http.X-Analytics && req.http.X-Analytics ) {
+		set resp.http.X-Analytics = req.http.X-Analytics;
+	}
 }
 
