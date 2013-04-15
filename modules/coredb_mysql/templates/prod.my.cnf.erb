@@ -64,6 +64,12 @@ temp-pool
 
 <% if has_variable?("mariadb") and mariadb == true then -%>
 query_cache_type=0
+
+# these were set as compile time defaults in our mysql builds
+character_set_server=binary
+character_set_filesystem=binary
+collation_server=binary
+
 log_slow_verbosity=Query_plan
 optimizer_switch='mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off'
 #thread_handling=pool-of-threads
