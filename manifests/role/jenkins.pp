@@ -1,7 +1,7 @@
 # vim: noet
 class role::jenkins::master::production {
 
-	system_role { 'role::jenkins::production': description => 'Jenkins master on production' }
+	system_role { 'role::jenkins::master::production': description => 'Jenkins master on production' }
 
 	file { '/srv/ssd/jenkins':
 		ensure => 'directory',
