@@ -2810,19 +2810,6 @@ class admins::restricted {
 	include accounts::yurik #rt 4835
 }
 
-class admins::analinterns {
-	$gid = 500	# 'wikidev' by default
-	include groups::wikidev
-
-	include accounts::declerambaul
-	include accounts::diederik
-	include accounts::halfak
-	include accounts::spetrea
-	include accounts::shawn # disabled
-	include accounts::whym # disabled
-
-}
-
 class admins::jenkins {
 	$gid = 500  # 'wikidev' by default
 	include groups::wikidev
