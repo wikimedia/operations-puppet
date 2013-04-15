@@ -402,7 +402,9 @@ class ldap::client::utils($ldapconfig) {
 			source => "puppet:///files/ldap/scripts/manage-volumes-daemon";
 		"/usr/local/sbin/manage-volumes":
 			ensure => absent;
-		"/usr/local/sbin/ldapsupportlib.py":
+	}
+
+	pythonfile {"/usr/local/sbin/ldapsupportlib.py":
 			owner => root,
 			group => root,
 			mode  => 0544,
