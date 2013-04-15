@@ -413,7 +413,7 @@ class role::cache {
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
 				$memory_storage_size = 16
 			} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
-				$memory_storage_size = 4
+				$memory_storage_size = 8
 			} else {
 				$memory_storage_size = 1
 			}
