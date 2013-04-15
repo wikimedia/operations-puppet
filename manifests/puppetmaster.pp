@@ -426,8 +426,12 @@ class puppet::self::client($server) {
 
 	# Most of the defaults in puppet::self::config
 	# are good for setting up a puppet client.
+	# We need to change the ssldir for self::clients
+	# so that any previously generated puppet certs
+	# (from a normal puppet setup) don't conflict.
 	class { 'puppet::self::config':
 		server => $server,
+		ssldir => '/var/lib/puppet/client/ssl',
 	}
 }
 
@@ -482,6 +486,7 @@ class puppet::self::master($server) {
 		bindaddress          => $bindaddress,
 		puppet_client_subnet => $puppet_client_subnet,
 		certname             => $certname,
+		ssldir               => '/var/lib/puppet/server/ssl'
 	}
 	class { 'puppet::self::gitclone':
 		require => Class['puppet::self::config'],
@@ -533,17 +538,23 @@ class puppet::self::master($server) {
 #
 # == Parameters
 # $server - hostname of the puppetmaster.
-# $is_puppetmaster - true or false. Default: false.
-# $bindaddress - address to which a puppetmaster should listen.  Unused if $is_puppetmaster is false.
-# $puppet_client_subnet - Network from which to allow fileserver connections.  Unused if $is_puppetmaster is false.
-# $certname - Name of the puppet CA certificate.  Default: "$dc.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+# $is_puppetmaster      - Boolean. Default: false.
+# $bindaddress          - Address to which a puppetmaster should listen.
+#                         Unused if $is_puppetmaster is false.
+# $puppet_client_subnet - Network from which to allow fileserver connections.
+#                         Unused if $is_puppetmaster is false.
+# $certname             - Name of the puppet CA certificate.  Default: "$dc.$domain", e.g. the labs instance name:  i-00000699.pmtpa.wmflabs.
+# $ssldir               - puppet ssldir.  This is different than the puppet default so that
+#                         self hosted puppets use new certificates instead of relying on
+#                         the original ones they were created with.
 #
 class puppet::self::config(
 	$server,
-	$is_puppetmaster = false,
-	$bindaddress = undef,
+	$is_puppetmaster      = false,
+	$bindaddress          = undef,
 	$puppet_client_subnet = undef,
-	$certname = "${dc}.${::domain}") inherits base::puppet
+	$certname             = "${dc}.${::domain}",
+	$ssldir               = undef) inherits base::puppet
 {
 	include role::ldap::config::labs
 
