@@ -1,5 +1,6 @@
 # UUID                                  	Group Name
 #
+d34747bee94be39cff54b5fda1ae36b575107792	Analytics
 global:Registered-Users                 	Registered Users
 ldap:cn=ops,ou=groups,dc=wikimedia,dc=org	ldap/ops
 ldap:cn=testlabs,ou=groups,dc=wikimedia,dc=org	ldap/testlabs
