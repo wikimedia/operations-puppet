@@ -33,7 +33,7 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's4' => {
-			'hosts' => { 'pmtpa' => [ 'db31', 'db33', 'db51', 'db65' ],
+			'hosts' => { 'pmtpa' => [ 'db31', 'db33', 'db51', 'db65', 'db72' ],
 				'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1038' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db31", 'eqiad' => "db1038" },
@@ -41,7 +41,7 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's5' => {
-			'hosts' => { 'pmtpa' => [ 'db35', 'db44', 'db45', 'db55' ],
+			'hosts' => { 'pmtpa' => [ 'db35', 'db44', 'db45', 'db55', 'db73' ],
 				'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1039' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db45", 'eqiad' => "db1039" },

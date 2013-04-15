@@ -428,23 +428,23 @@ node /^db(34|39|64|66)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /^db(31|33|51|65)\.pmtpa\.wmnet/ {
+node /^db(31|33|51|65|72)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db51/ {
 		$ganglia_aggregator = "true"
 	}
 	if $hostname == "db51" {
 		class { role::coredb::s4 : mariadb => true }
-	} elsif $hostname == "db65"{
+	} elsif $hostname =~ /^db(65|72)/ {
 		class { role::coredb::s4 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s4
 	}
 }
 
-node /^db(35|44|45|55)\.pmtpa\.wmnet/ {
+node /^db(35|44|45|55|73)\.pmtpa\.wmnet/ {
 	if $hostname == "db35" {
 		class { role::coredb::s5 : mariadb => true }
-	} elsif $hostname == "db55"{
+	} elsif $hostname =~ /^db(55|73)/{
 		class { role::coredb::s5 : innodb_file_per_table => true }
 	} else {
 		include role::coredb::s5
@@ -528,7 +528,7 @@ node /^db29\.pmtpa\.wmnet/{
 
 
 ## not in use for various reasons
-node /^db(42|6[12]|7[1-7])\.pmtpa\.wmnet/{
+node /^db(42|6[12]|7[4-7])\.pmtpa\.wmnet/{
 	include standard
 }
 
