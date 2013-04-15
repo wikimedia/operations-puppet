@@ -234,8 +234,8 @@ class VolumeManager:
 
         # We need to clean up from partially-failed runs.  rmdir is pretty conservative; it will
         #  only clean up empty dirs.
-        cmds1 = ['sudo', 'rmdir %s' % voldir]
-        cmds2 = ['sudo', 'mkdir -p %s' % voldir]
+        cmds1 = ['sudo', 'rmdir', voldir]
+        cmds2 = ['sudo', 'mkdir', '-p', voldir]
 
         if self.dry_run:
             print "Exec %s" % cmds1
