@@ -516,8 +516,9 @@ class puppet::self::master($server) {
 	}
 
 	service { 'puppetmaster':
-		ensure  => 'running',
-		require => Package['puppetmaster'],
+		ensure    => 'running',
+		require   => Package['puppetmaster'],
+		subscribe => Class['puppet::self::config'],
 	}
 
 	include puppetmaster::scripts
