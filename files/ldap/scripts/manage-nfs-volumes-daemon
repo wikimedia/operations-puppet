@@ -215,7 +215,7 @@ class VolumeManager:
             if "*" in hosts:
                 # Add a special-case read-only line for this
                 exportline = "%s -ro,fsid=%s,subtree_check,async,no_root_squash *\n" % (
-                    volpath, permissions, fsid)
+                    volpath, fsid)
                 f.write(exportline)
                 hosts.remove("*")
 
