@@ -1845,11 +1845,11 @@ class accounts {
                         Ssh_authorized_key { require => Unixaccount[$realname]}
 
                         ssh_authorized_key {
-				"jgreen@spork":
+				"jgreen@thwibbith":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAIEA0065bEe76amow8pXj+cS7rMHajCMfBCrUxOlijTgUv5o6e1v04hm7iEwxadcUbPrauGgsZOoeuoLzz3J/oS7qb1pliNKgdvcMw/sA+sqZoh2iIKjwLkEu49CJJ6Wxiolg+p3Y8yQHOUTc7sozkREkXsDyZZsNbmOcwtDlCe5SJc="
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX"
 			}
 		}
 	}
