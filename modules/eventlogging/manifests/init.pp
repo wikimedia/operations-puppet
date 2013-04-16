@@ -8,6 +8,11 @@ class eventlogging {
 		destinations => [ 'stat1.wikimedia.org' ],
 	}
 
+	class { 'mongodb':
+		dbpath  => '/a/mongodb',
+		bind_ip => false,
+	}
+
 	package { [
 		'python-jsonschema',
 		'python-mysqldb',

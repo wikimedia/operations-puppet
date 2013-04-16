@@ -2744,7 +2744,6 @@ node "vanadium.eqiad.wmnet" {
 
 	include standard,
 		eventlogging,
-		misc::statistics::db::mongo,
 		nrpe,
 		role::solr::ttm
 
