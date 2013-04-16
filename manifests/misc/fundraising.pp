@@ -50,7 +50,7 @@ class misc::fundraising {
 		'/srv/org.wikimedia.civicrm/files':
 			owner => 'root',
 			group => 'www-data',
-			mode => 0750,
+			mode => 2770,
 			ensure => directory;
 
 		#civicrm dev confs
@@ -72,7 +72,7 @@ class misc::fundraising {
 		'/srv/org.wikimedia.civicrm-dev/files':
 			owner => 'root',
 			group => 'www-data',
-			mode => 1770,
+			mode => 2770,
 			ensure => directory;
 
 		#misc fundraising confs
