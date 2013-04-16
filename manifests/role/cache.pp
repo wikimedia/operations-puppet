@@ -310,10 +310,12 @@ class role::cache {
 				},
 			},
 			'labs' => {
-				'bits_appservers' => [
-					'10.4.0.166',  # deployment-apache32
-					'10.4.0.187',  # deployment-apache33
-				],
+				'bits_appservers' => {
+					'pmtpa' => [
+						'10.4.0.166',  # deployment-apache32
+						'10.4.0.187',  # deployment-apache33
+					],
+				},
 				'test_appservers' => {
 					'pmtpa' => [ '10.4.0.166' ],
 				}
