@@ -1841,15 +1841,17 @@ class accounts {
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
-                if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname]}
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname]}
 
-                        ssh_authorized_key {
+			ssh_authorized_key {
 				"jgreen@thwibbith":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCjkTnfRGIhs0of/3Z9GhOEEavkzFFg87n9D5BqNJAKtRSy5uh87p3DEHWnYcA5Ak7TD66hWae/V2tyQTHVBcDfZhoSFKsIMmhC/ooDtN8iewl37Dbss+a7m4GT0BmILkgUC2IJnFDFz2Eb6RVsnD11ajfbO4buNfokJC7jMjxQ2btpR5FojWNX7xffw5yg4aGg+k9x+32bM8ZTEzyYUGpxUZxV9jmbK1uzTBfZSlgmfok3Hn+scki52DM7EPIU0pxf8cyPHPIc7WX/wR56GsILoFNMBkePP86O/ZDuhOSdsFMJaBmOHM+9qCMW6JPKOtogvEaglbgCRrTZ0VkJx2HX"
+			}
+			ssh_authorized_key {
 				"jgreen@spork":
 					ensure	=> absent,
 					user	=> $username,
