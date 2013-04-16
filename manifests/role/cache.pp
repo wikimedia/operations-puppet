@@ -12,6 +12,8 @@
 
 class role::cache {
 	class configuration {
+		include lvs::configuration
+
 		$active_nodes = {
 			'production' => {
 				"text" => {
