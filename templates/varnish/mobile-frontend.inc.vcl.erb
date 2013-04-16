@@ -574,19 +574,17 @@ sub vcl_recv {
 	set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 
 	/* Rewrite <language>.wap.wikipedia.org to new mobile site */
-	if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.wap\.([a-zA-Z0-9-]+)\.org", "\1.mobile.\2.org");
-	}
+	set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.wap\.", "\1.mobile.");
 
 	/* Rewrite m.mediawiki.org to mediawiki.org etc */
-	if ( req.http.host ~ "^m\.mediawiki\.org" ) {
-		set req.http.host = regsub( req.http.host, "^m\.mediawiki\.org", "www.mediawiki.org");
+	if (req.http.host == "m.mediawiki.org") {
+		set req.http.host = "www.mediawiki.org";
 	}
 
 	/* Support the old mobile.wikipedia.org wap gateway */
-	else if ( req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org" ) {
-		set req.http.host = regsub( req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org", "\1.\2.org" );
-		set req.url = regsub( req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1" );
+	if (req.http.host ~ "^([a-zA-Z0-9-]+)\.mobile\.([a-zA-Z0-9-]+)\.org$") {
+		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.", "\1.");
+		set req.url = regsub(req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1");
 	}
 
 	/* FIXME: deploy X-Vary-Options support */
