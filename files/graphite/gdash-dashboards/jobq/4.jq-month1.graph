@@ -5,7 +5,7 @@ hide_legend "false"
 from "-2month"
 area "first"
 
-field :pop, :color => "green",
+field :push, :color => "green",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(stats.job-pop.count, "1day"),"Jobs Run/day"))'
 
@@ -20,3 +20,7 @@ field :run, :color => "blue",
 field :rundupl, :color => "purple",
                :alias => "none",
                :data  => 'cactiStyle(alias(summarize(stats.job-pop-duplicate.count, "1day"),"Duplicate jobs run/day"))'
+
+field :recycle, :color => "orange",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(summarize(stats.job-recycle.count, "1day"),"Jobs recycled/day"))'
