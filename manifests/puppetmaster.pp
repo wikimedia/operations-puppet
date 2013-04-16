@@ -568,6 +568,7 @@ class puppet::self::config(
 		class { 'puppetmaster::ssl':
 			server_name => $::fqdn,
 			ca          => true
+			require     => Exec['compile puppet.conf'],
 		}
 	}
 	else {
