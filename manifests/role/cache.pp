@@ -664,7 +664,7 @@ class role::cache {
 
 		$storage_backends = $::realm ? {
 			'production' => ["sda3", "sdb3"],
-			'labs' => ["vdb"]
+			'labs' => ["vdb"],
 		}
 		varnish::setup_filesystem{ $storage_backends:
 			before => Varnish::Instance["mobile-backend"]
