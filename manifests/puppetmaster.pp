@@ -567,7 +567,8 @@ class puppet::self::config(
 		# puppetmasters.  (This sets up the ssl directories).
 		class { 'puppetmaster::ssl':
 			server_name => $::fqdn,
-			ca          => true
+			ca          => true,
+			require     => Exec['compile puppet.conf'],
 		}
 	}
 	else {
