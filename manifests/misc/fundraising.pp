@@ -50,7 +50,7 @@ class misc::fundraising {
 		'/srv/org.wikimedia.civicrm/files':
 			owner => 'root',
 			group => 'www-data',
-			mode => 0775,
+			mode => 0750,
 			ensure => directory;
 
 		#civicrm dev confs
@@ -70,9 +70,9 @@ class misc::fundraising {
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.settings.php';
 		'/srv/org.wikimedia.civicrm-dev/files':
-			owner => 'root',
+			owner => 'wikidev',
 			group => 'www-data',
-			mode => 0775,
+			mode => 1770,
 			ensure => directory;
 
 		#misc fundraising confs
@@ -99,7 +99,7 @@ class misc::fundraising {
 		'/opt/fundraising-misc/public_reporting/update_config.php':
 			owner => 'root',
 			group => 'root',
-			mode => 0444,
+			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/fundraising-misc.update_config.php';
 		'/srv/org.wikimedia.fundraising/IPNListener_Standalone.php':
 			owner => 'www-data',
