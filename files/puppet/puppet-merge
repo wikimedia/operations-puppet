@@ -14,8 +14,7 @@ of submodule changes.
 If the changes are acceptable, HEAD will be fast-forwarded
 to FETCH_HEAD.
 
-If the current directory is not a git repository,
-<basedir> will default to /root/puppet.
+<basedir> defaults to /root/puppet.
 
 "
 
