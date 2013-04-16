@@ -1093,16 +1093,25 @@ node "hume.wikimedia.org" {
 	class { misc::maintenance::pagetriage: enabled => false }
 	class { misc::maintenance::translationnotifications: enabled => false }
 	class { misc::maintenance::wikidata: enabled => false }
-	class { misc::maintenance::tor_exit_node: enabled => false }
 	class { misc::maintenance::echo_mail_batch: enabled => false }
-	class { misc::maintenance::update_special_pages: enabled => false }
 	class { misc::maintenance::parsercachepurging: enabled => false }
-	class { misc::maintenance::geodata: enabled => false }
 	class { misc::maintenance::cleanup_upload_stash: enabled => false }
 
-	# These cron jobs were left behind for some reason (I7a786046)
-	class { misc::maintenance::refreshlinks: enabled => true }
+	# These cron jobs were left behind for some reason:
+	# No external IP, so no HTTPS access
+	class { misc::maintenance::tor_exit_node: enabled => true }
+	
+	# foreachwikiindblist broken
+	class { misc::maintenance::geodata: enabled => true }
+
+	# Wrong log file location
+	class { misc::maintenance::update_special_pages: enabled => true }
+
+	# wikimedia-periodic-update.sh is unpuppetized and not in the scap source
 	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
+
+	# Unknown issue, works for me
+	class { misc::maintenance::refreshlinks: enabled => true }
 }
 
 node "iron.wikimedia.org" {
@@ -2673,16 +2682,19 @@ node "terbium.eqiad.wmnet" {
 		admins::restricted,
 		nrpe
 
+	
 	class { misc::maintenance::foundationwiki: enabled => true }
 	class { misc::maintenance::pagetriage: enabled => true }
 	class { misc::maintenance::translationnotifications: enabled => true }
 	class { misc::maintenance::wikidata: enabled => true }
-	class { misc::maintenance::tor_exit_node: enabled => true }
 	class { misc::maintenance::echo_mail_batch: enabled => true }
-	class { misc::maintenance::update_special_pages: enabled => true }
 	class { misc::maintenance::parsercachepurging: enabled => true }
-	class { misc::maintenance::geodata: enabled => true }
 	class { misc::maintenance::cleanup_upload_stash: enabled => true }
+
+	# Broken cron jobs moved back to hume:
+	class { misc::maintenance::tor_exit_node: enabled => false }
+	class { misc::maintenance::geodata: enabled => false }
+	class { misc::maintenance::update_special_pages: enabled => false }
 
 }
 
