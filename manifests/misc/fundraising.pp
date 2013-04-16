@@ -59,11 +59,11 @@ class misc::fundraising {
 			group => 'www-data',
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.civicrm.settings.php';
-		'/srv/org.wikimedia.civicrm-dev/sites/default/default.settings.php':
-			owner => 'root',
-			group => 'www-data',
-			mode => 0440,
-			source => 'puppet:///private/misc/fundraising/dev.civicrm.default.settings.php';
+		#'/srv/org.wikimedia.civicrm-dev/sites/default/default.settings.php':
+		#	owner => 'root',
+		#	group => 'www-data',
+		#	mode => 0440,
+		#	source => 'puppet:///private/misc/fundraising/dev.civicrm.default.settings.php';
 		'/srv/org.wikimedia.civicrm-dev/sites/default/settings.php':
 			owner => 'root',
 			group => 'www-data',
