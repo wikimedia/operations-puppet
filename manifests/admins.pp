@@ -105,6 +105,26 @@ class baseaccount {
 }
 
 class accounts {
+	class abaso inherits baseaccount {
+		$username = "abaso"
+		$realname = "Adam Baso"
+		$uid = 639
+    $enabled = true
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+			if $enabled == true and $manage_home {
+				Ssh_authorized_key { require => Unixaccount[$realname]}
+
+				ssh_authorized_key {
+				"abaso@wikimedia.org":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDoKHi5isY9FixH31qz/81V7fOHsorLZI/NLKr9Z6Xawl2a2Ih0ZV/pJtD+BTu1ufK2QOdgobeRSrnybzf2/1aCqi3Z9H2XxJhMCfnLb/9AIcKJ9tN63T4nRnjLoPsmRgDQrOSIqY5NfLKzXBsQOqc3chZ5SaDf8f09OdBk+Obn5vhr6yWh4GhrfTzoZUfp6+JRiueZZYuGMIKdBAH82s9TyuhuGWvHJmO9WC1MJOV/3hIcim+X0xR+BNLEU/Uj4OPEXC0/EiXh2CJDLugBpLU28RF+Y16TRj/WmO2H0H6qVdmkiK7Ez9PCbsy4RFPq4hdART9QiQbQJzZzaYSAkSFV";
+			}
+		}
+	}
 	class aengels inherits baseaccount {
 		$username = "aengels"
 		$realname = "Andre Engels"
@@ -2794,6 +2814,7 @@ class admins::mortals {
 	include groups::wikidev
 
 	include accounts::aaron
+	include accounts::abaso
 	include accounts::andrew
 	include accounts::anomie
 	include accounts::awight
