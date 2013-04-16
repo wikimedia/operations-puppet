@@ -567,8 +567,21 @@ class puppet::self::config(
 		# puppetmasters.  (This sets up the ssl directories).
 		class { 'puppetmaster::ssl':
 			server_name => $::fqdn,
-			ca          => true,
-			subscribe   => Exec['compile puppet.conf'],
+			ca          => false,
+		}
+		# THIS IS A STOOPID HACK!
+		# puppet cert generate needs to run AFTER
+		# the compile puppet.conf exec (defined in base::puppet).
+		# I could not force the puppetmaster::ssl class (where
+		# the original generate hostcert exec is defined) to
+		# wait until the refreshonly compile puppet.conf exec
+		# runs.  ca => false on the above inclusion of puppetmaster::ssl
+		# means the cert generate won't run there, and I can run my own
+		# and add dependencies here.
+		exec { 'generate puppet::self hostcert':
+			require => [Class['puppetmaster::ssl'], Exec['compile puppet.conf']],
+			command => "/usr/bin/puppet cert generate ${server_name}",
+			creates => "${ssldir}/certs/${server_name}.pem",
 		}
 	}
 	else {
