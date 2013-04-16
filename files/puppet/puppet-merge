@@ -14,6 +14,9 @@ of submodule changes.
 If the changes are acceptable, HEAD will be fast-forwarded
 to FETCH_HEAD.
 
+If the current directory is not a git repository,
+<basedir> will default to /root/puppet.
+
 "
 
 if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
@@ -21,9 +24,8 @@ if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
 fi
 
 
-
-# Assume we're in puppet working directory unless $1 is specified
-basedir=${1:-$(git rev-parse --show-toplevel)};
+# Default to /root/puppet unless $1 is specified
+basedir=${1:-/root/puppet}
 cd "${basedir}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"
