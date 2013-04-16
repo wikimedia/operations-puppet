@@ -70,7 +70,7 @@ class misc::fundraising {
 			mode => 0440,
 			source => 'puppet:///private/misc/fundraising/dev.civicrm.settings.php';
 		'/srv/org.wikimedia.civicrm-dev/files':
-			owner => 'wikidev',
+			owner => 'root',
 			group => 'www-data',
 			mode => 1770,
 			ensure => directory;
