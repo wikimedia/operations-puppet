@@ -104,8 +104,8 @@ class TestLogToFile(unittest.TestCase):
             'mediawiki/core',
             'Wikidata'
         )
-        # Make sure mediawiki/core.git@master is still sent to #mediawiki
-        self.assertLogFile('mediawiki.log',
+        # Make sure mediawiki/core.git@master is sent to #wikimedia-dev
+        self.assertLogFile('wikimedia-dev.log',
             'mediawiki/core',
             'master'
         )
@@ -116,8 +116,8 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('wikimedia-dev.log',
             'mediawiki/tools/upload/PhotoUpload')
 
-    def test_catchall_to_mediawiki(self):
-        self.assertLogFile('mediawiki.log',
+    def test_catchall_to_wikimediadev(self):
+        self.assertLogFile('wikimedia-dev.log',
             'department/project')
 
     def test_qa_to_wikimediadev(self):

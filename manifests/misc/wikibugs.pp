@@ -23,7 +23,7 @@ class misc::irc::wikibugs {
 	$ircecho_logs = {
 		"${ircecho_logbase}/wikimedia-labs.log"           => "#wikimedia-labs",
 		"${ircecho_logbase}/wikimedia-mobile.log"         => "#wikimedia-mobile",
-		"${ircecho_logbase}/mediawiki.log"                => "#mediawiki-feed",
+		"${ircecho_logbase}/wikimedia-dev.log"            => "#wikimedia-dev",
 	}
 	$ircecho_nick = "wikibugs"
 	$ircecho_server = 'chat.freenode.net'
