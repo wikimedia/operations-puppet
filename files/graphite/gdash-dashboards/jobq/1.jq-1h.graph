@@ -4,7 +4,7 @@ linemode "connected"
 hide_legend "false"
 from "-1 hours"
 
-field :pop, :color => "blue",
+field :push, :color => "blue",
                :alias => "none",
                :data  => 'cactiStyle(alias(stats.job-insert.count,"Jobs Queued/min"))'
 
@@ -19,3 +19,7 @@ field :run, :color => "green",
 field :rundupl, :color => "purple",
                :alias => "none",
                :data  => 'cactiStyle(alias(stats.job-pop-duplicate.count,"Duplicate jobs run/min"))'
+
+field :recycle, :color => "orange",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-recycle.count,"Jobs recycled/min"))'
