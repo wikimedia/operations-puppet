@@ -20,3 +20,6 @@ pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p /wiki/Wikipedia:Teaho
 
 ### Arabic Wikipedia Banner Pages - Siko Bouterse <sbouterse@wikimedia.org>, Haitham Shammaa <hshammaa@wikimedia.org>
 pipe 10 /usr/bin/udp-filter -F '\t' -d ar.wikipedia.org -p '/wiki/%D9%88%D9%8A%D9%83%D9%8A%D8%A8%D9%8A%D8%AF%D9%8A%D8%A7:%D8%A8%D9%88%D8%A7%D8%A8%D8%A9_%D8%A7%D9%84%D9%85%D8%B4%D8%A7%D8%B1%D9%83%D8%A9' >> <%= log_directory %>/arabic-banner.tsv.log
+
+## This feeds all http related graphs in graphite / gdash.wikimedia.org
+pipe 2 /usr/local/bin/sqstat 2
