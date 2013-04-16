@@ -577,7 +577,7 @@ node /^db10(05|21|26|39|58)\.eqiad\.wmnet/ {
 		$ganglia_aggregator = "true"
 	}
 
-	if $hostname =~ /^db10(21|26|58)/ {
+	if $hostname =~ /^db10(05|21|26|58)/ {
 		class { role::coredb::s5 : mariadb => true }
 	} else {
 		include role::coredb::s5
