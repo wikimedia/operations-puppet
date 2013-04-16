@@ -32,14 +32,22 @@
 ; UDP -> ZMQ bridge
 ; -----------------
 
-[program:udp2zmq]
+[group:udp2zmq]
+programs = udp2zmq-8421,udp2zmq-8422
+priority = 100
+
+[program:udp2zmq-8421]
 user = eventlogging
-numprocs = 2
-numprocs_start = 8421
-command = udp2zmq %(process_num)d
+command = udp2zmq --count 8421
 redirect_stderr = true
-process_name = %(program_name)s_%(process_num)d
-stdout_logfile = /var/log/supervisor/%(program_name)s_%(process_num)s.log
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
+stderr_logfile = NONE
+
+[program:udp2zmq-8422]
+user = eventlogging
+command = udp2zmq 8422
+redirect_stderr = true
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
 stderr_logfile = NONE
 
 
