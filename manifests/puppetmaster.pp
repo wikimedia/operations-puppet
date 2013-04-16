@@ -579,10 +579,13 @@ class puppet::self::config(
 		# means the cert generate won't run there, and I can run my own
 		# and add dependencies here.
 		exec { 'generate puppet::self hostcert':
-			require => [Class['puppetmaster::ssl'], Exec['compile puppet.conf']],
+			require => Class['puppetmaster::ssl'],
 			command => "/usr/bin/puppet cert generate ${server_name}",
 			creates => "${ssldir}/certs/${server_name}.pem",
 		}
+
+		# Make sure puppet.conf file is compiled before puppet cert generate
+		Exec['compile puppet.conf'] { before => Exec['generate puppet::self hostcert'] }
 	}
 	else {
 		$ssldir = '/var/lib/puppet/client/ssl'
