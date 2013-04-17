@@ -9,6 +9,7 @@ class eventlogging::notebook {
 		'python-matplotlib',
 		'python-numpy',
 		'python-pandas',
+		'python-pexpect',
 		'python-scipy',
 	]:
 		ensure => latest,
@@ -16,6 +17,13 @@ class eventlogging::notebook {
 
 	systemuser { 'ipython':
 		name => 'ipython',
+	}
+
+	file { '/etc/supervisor/conf.d/notebook.conf':
+		source  => 'puppet:///modules/eventlogging/notebook.conf',
+		require => [ Package['ipython-notebook'], Systemuser['ipython'] ],
+		notify  => Service['supervisor'],
+		mode    => '0444',
 	}
 
 }
