@@ -21,6 +21,8 @@
 #  The distribution to build for (hardy, lucid, precise..).  *dist* is not
 #  set by default which means the distribution will be interpolated from the
 #  defined title (see *namevar*).
+#  When using the dist 'unstable', the repository will be pointed to a
+#  debian.org mirror.
 #
 # === Examples
 #
@@ -69,14 +71,26 @@ define package-builder::image( $pbuilder=undef, $dist=undef ) {
     default: { fail('Only package builder types supported are pbuilder and cowbuilder') }
   }
 
+  # Hack to support Debian unstable
+  case $realdist {
+    'unstable': {
+      $mirror = "--mirror http://ftp.us.debian.org/debian"
+      $othermirror = "--othermirror 'deb-src http://ftp.us.debian.org/debian ${realdist} main'"
+      $components = "--components 'main'"
+    }
+    default: {
+      $mirror = ''  # default APT (aka wikimedia)
+      $othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
+      $components = "--components 'main universe'"
+    }
+  }
+
   $pbuilder_root = '/var/cache/pbuilder'
 
-  $othermirror = "--othermirror 'deb http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe' --othermirror 'deb-src http://apt.wikimedia.org/wikimedia ${realdist}-wikimedia main universe'"
-  $components = "--components 'main universe'"
   $image_file = "${pbuilder_root}/${file_prefix}${realdist}.${file_ext}"
 
   exec { "imaging ${realdist} for ${realpbuilder}":
-    command   => "${realpbuilder} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${othermirror}",
+    command   => "${realpbuilder} --create --distribution ${realdist} ${base_option} ${image_file} ${components} ${mirror} ${othermirror}",
     creates   => $image_file,
     path      => '/bin:/sbin:/usr/bin:/usr/sbin',
     timeout   => 600,
