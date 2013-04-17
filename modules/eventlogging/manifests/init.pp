@@ -3,6 +3,7 @@
 class eventlogging {
 
 	class { 'eventlogging::supervisor': }
+	class { 'eventlogging::notebook': }
 	class { 'eventlogging::ganglia': }
 	class { 'eventlogging::archive':
 		destinations => [ 'stat1.wikimedia.org' ],
