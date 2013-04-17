@@ -5,11 +5,11 @@ class role::package-builder {
   include package-builder
 
   package-builder::pbuilder { 'cowbuilder':
-    dists       => 'lucid',
+    dists       => [ 'lucid', 'unstable' ],
     defaultdist => 'precise',
   }
   package-builder::pbuilder { 'pbuilder':
-    dists       => 'lucid',
+    dists       => [ 'lucid', 'unstable' ],
     defaultdist => 'precise',
   }
 
