@@ -78,7 +78,15 @@ if (defined $reload_udp2log) {
 find(\&process_buffer_files, $buffer_dir);
 
 # copy stuff to fr_archive if it's mounted
-if (-d "$archive_dir/.snapshot") {
+if (!(-e "$archive_dir/.snapshot")) {
+
+	printlog("$archive_dir isn't mounted, logs are kept at $buffer_dir for $buffer_days days");
+
+} elsif (!(-w $archive_dir)) {
+
+	printlog("$archive_dir isn't writable, logs are kept at $buffer_dir for $buffer_days days");
+
+} else {
 
 	printlog("rsync -ar $buffer_dir/ $archive_dir/");
 
@@ -109,8 +117,6 @@ if (-d "$archive_dir/.snapshot") {
 	}
 	close (R);
 	close (E);
-} else {
-	printlog("$archive_dir isn't mounted, logs are kept at $buffer_dir for $buffer_days days");
 }
 
 

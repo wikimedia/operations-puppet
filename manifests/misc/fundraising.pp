@@ -419,9 +419,9 @@ class misc::fundraising::udp2log_rotation {
 
 	file {
 		'/usr/local/bin/rotate_fundraising_logs':
-			owner => udp2log,
-			group => udp2log,
-			mode => 0554,
+			owner => root,
+			group => root,
+			mode => 0555,
 			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
 		'/a/log/fundraising/logs/buffer':
 			ensure => directory,
@@ -438,7 +438,6 @@ class misc::fundraising::udp2log_rotation {
 	#		ensure => present;
 	#}
 
-	#class { "nfs::netapp::fr_archive": mountpoint => "/a/squid/fundraising/logs/fr_archive" }
 	class { "nfs::netapp::fr_archive": mountpoint => "/a/log/fundraising/logs/fr_archive" }
 
 }
