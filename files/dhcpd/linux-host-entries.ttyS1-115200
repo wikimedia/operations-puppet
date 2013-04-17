@@ -9,16 +9,6 @@ host aluminium {
 	fixed-address aluminium.wikimedia.org;
 }
 
-host argon {
-	hardware ethernet 78:2b:cb:09:11:f0;
-	fixed-address argon.wikimedia.org;
-}
-
-host arsenic {
-	hardware ethernet 18:03:73:f1:4f:5e;
-	fixed-address arsenic.wikimedia.org;
-}
-
 host amslvs1 {
 	hardware ethernet a4:ba:db:38:e2:5e;
 	fixed-address amslvs1.esams.wikimedia.org;
@@ -122,6 +112,21 @@ host analytics1026 {
 host analytics1027 {
 	hardware ethernet d4:ae:52:7a:b9:e5;
 	fixed-address analytics1027.eqiad.wmnet;
+}
+
+host antimony {
+	hardware ethernet D4:AE:52:AF:56:93;
+	fixed-address antimony.wikimedia.org;
+}
+
+host argon {
+	hardware ethernet 78:2b:cb:09:11:f0;
+	fixed-address argon.wikimedia.org;
+}
+
+host arsenic {
+	hardware ethernet 18:03:73:f1:4f:5e;
+	fixed-address arsenic.wikimedia.org;
 }
 
 host barium {
