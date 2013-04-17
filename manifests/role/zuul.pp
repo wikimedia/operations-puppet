@@ -41,22 +41,7 @@ class role::zuul {
 
 		system_role { "role::zuul::production": description => "Zuul on production" }
 
-		# Create directory that would hold the git repos
-		file { '/srv/ssd/zuul':
-			ensure => directory,
-			owner => 'jenkins',
-			group => 'jenkins',
-			mode => '2775',
-			require => Mount['/srv/ssd'],
-		}
-		file { '/srv/ssd/zuul/git':
-			ensure => directory,
-			owner => 'jenkins',
-			group => 'jenkins',
-			mode => '2775',
-			require => File['/srv/ssd/zuul'],
-		}
-
+		# TODO: should require Mount['/srv/ssd']
 		zuulwikimedia::instance { "zuul-production":
 			jenkins_server => 'https://integration.wikimedia.org/ci',
 			jenkins_user => 'zuul-bot',
