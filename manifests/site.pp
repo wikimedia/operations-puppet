@@ -202,7 +202,7 @@ node "antimony.eqiad.wmnet" {
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
-		accounts::demon
+		accounts::demon,
 		role::gerrit::production::replicationdest
 
 	# full root for gerrit admin (RT-3698)
