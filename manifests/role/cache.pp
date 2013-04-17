@@ -516,7 +516,7 @@ class role::cache {
 			varnish::logging { "multicast_relay" : listener_address => "208.80.154.15" , port => "8419", cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 
 			# HTCP packet loss monitoring on the ganglia aggregators
-			if $ganglia_aggregator == "true" and $::site != "esams" {
+			if $ganglia_aggregator and $::site != "esams" {
 				include misc::monitoring::htcp-loss
 			}
 		}
