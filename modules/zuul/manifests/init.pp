@@ -18,6 +18,7 @@ class zuul (
     $url_pattern,
     $status_url = "https://${::fqdn}/zuul/status",
     $git_source_repo = 'https://gerrit.wikimedia.org/r/p/integration/zuul.git',
+    $git_dir = '/var/lib/zuul/git',
     $push_change_refs,
 ) {
 
