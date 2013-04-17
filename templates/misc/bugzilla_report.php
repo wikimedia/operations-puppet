@@ -119,7 +119,7 @@ BETWEEN
 END;
 }
 
-function getTotalOpenBugs() {
+function getTotalOpenReports() {
          return <<<END
 SELECT
         count(*)
@@ -130,6 +130,56 @@ WHERE
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
         bug_status = 'REOPENED';
+END;
+}
+
+function getTotalOpenEnhancements() {
+         return <<<END
+SELECT
+        count(*)
+FROM
+        bugs
+WHERE
+        (bug_status = 'UNCONFIRMED' or
+        bug_status = 'ASSIGNED' or
+        bug_status = 'NEW' or
+        bug_status = 'REOPENED')
+AND
+        bug_severity = 'enhancement';
+END;
+}
+
+function getTotalOpenBugs() {
+         return <<<END
+SELECT
+        count(*)
+FROM
+        bugs
+WHERE
+        (bug_status = 'UNCONFIRMED' or
+        bug_status = 'ASSIGNED' or
+        bug_status = 'NEW' or
+        bug_status = 'REOPENED')
+AND
+        bug_severity != 'enhancement';
+END;
+}
+
+function getTotalOpenBugsNonLowestPriority() {
+         return <<<END
+SELECT
+        count(*)
+FROM
+        bugs
+WHERE
+        (bug_status = 'UNCONFIRMED' or
+        bug_status = 'ASSIGNED' or
+        bug_status = 'NEW' or
+        bug_status = 'REOPENED')
+AND
+        bug_severity != 'enhancement'
+AND
+        priority != 'lowest';
 END;
 }
 
@@ -257,7 +307,13 @@ $resolutionsToRun = array('FIXED',      'DUPLICATE',
                           'INVALID',    'WORKSFORME',
                           'WONTFIX',);
 
-$totalStatistics = array ('getTotalOpenBugs',);
+$totalStatistics = array ('getTotalOpenReports',);
+
+$totalStatisticsEnhancements = array ('getTotalOpenEnhancements',);
+
+$totalStatisticsBugs = array ('getTotalOpenBugs',);
+
+$totalStatisticsBugsNonLowestPriority = array ('getTotalOpenBugsNonLowestPriority',);
 
 $createdStatistics = array('getBugsCreated',);
 
@@ -274,11 +330,38 @@ foreach ($statesToRun as $state) {
 }
 
 foreach ($totalStatistics as $report) {
+        $sql = getTotalOpenReports();
+        $result = mysql_query($sql);
+        if (!$result)
+                 reportFailure("Query failure");
+        print "\nTotal reports still open              : ";
+        formatOutput($result);
+}
+
+foreach ($totalStatisticsBugs as $report) {
         $sql = getTotalOpenBugs();
         $result = mysql_query($sql);
         if (!$result)
                  reportFailure("Query failure");
-        print "\nTotal reports still open: ";
+        print "Total bugs still open                 : ";
+        formatOutput($result);
+}
+
+foreach ($totalStatisticsBugsNonLowestPriority as $report) {
+        $sql = getTotalOpenBugsNonLowestPriority();
+        $result = mysql_query($sql);
+        if (!$result)
+                 reportFailure("Query failure");
+        print "Total non-lowest prio. bugs still open: ";
+        formatOutput($result);
+}
+
+foreach ($totalStatisticsEnhancements as $report) {
+        $sql = getTotalOpenEnhancements();
+        $result = mysql_query($sql);
+        if (!$result)
+                 reportFailure("Query failure");
+        print "Total enhancements still open         : ";
         formatOutput($result);
 }
 
