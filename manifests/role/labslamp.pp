@@ -8,5 +8,5 @@
 #  change it!
 class role::lamp::labs {
 
-    include "role::labs-mysql-server", "webserver::php5-mysql"
+    include "role::labs-mysql-server", "webserver::php5-mysql", "webserver::php5"
 }
