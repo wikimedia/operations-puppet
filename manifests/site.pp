@@ -197,11 +197,17 @@ node "analytics1027.eqiad.wmnet" {
 	}
 }
 
+# git.wikimedia.org
+node "antimony.eqiad.wmnet" {
+	install_certificate{ "star.wikimedia.org": }
 
+	include standard,
+		accounts::demon
+		role::gerrit::production::replicationdest
 
-
-
-
+	# full root for gerrit admin (RT-3698)
+	sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
+}
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	if $hostname =~ /^(arsenic|niobium)$/ {
