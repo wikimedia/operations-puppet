@@ -81,8 +81,6 @@ class groups {
 	class file_mover {
 		group { 'file_mover':
 			name      => 'file_mover',
-			gid       => 999,
-			alias     => 999,
 			ensure    => present,
 			allowdupe => false,
 		}
