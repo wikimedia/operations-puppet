@@ -1,5 +1,8 @@
+; supervisor configuration for ipython-notebook
+; This file is managed by Puppet.
+
 [program:notebook]
-command = ipython notebook --ipython-dir="<%= ipython_dir %>" --profile nbserver
+command = ipython notebook --ipython-dir="<%= ipython_dir %>" --profile="<%= ipython_profile %>"
 user = <%= ipython_user %>
 directory = <%= ipython_dir %>
 redirect_stderr = true
