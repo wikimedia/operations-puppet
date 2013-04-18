@@ -413,7 +413,7 @@ class misc::fundraising::jenkins_maintenance {
 
 class misc::fundraising::udp2log_rotation {
 
-	#include accounts::file_mover
+	include accounts::file_mover
 
 	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
 
@@ -430,13 +430,13 @@ class misc::fundraising::udp2log_rotation {
 			mode => 0750;
 	}
 
-	#cron {
-	#	'rotate_fundraising_logs':
-	#		user => udp2log,
-	#		minute => '*/15',
-	#		command => '/usr/local/bin/rotate_fundraising_logs',
-	#		ensure => present;
-	#}
+	cron {
+		'rotate_fundraising_logs':
+			user => file_mover,
+			minute => '*/15',
+			command => '/usr/local/bin/rotate_fundraising_logs',
+			ensure => present;
+	}
 
 	class { "nfs::netapp::fr_archive": mountpoint => "/a/log/fundraising/logs/fr_archive" }
 
