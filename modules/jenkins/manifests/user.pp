@@ -7,8 +7,6 @@ class jenkins::user {
     home       => '/var/lib/jenkins',
     managehome => false,
     shell      => '/bin/bash',
-    gid        =>  'jenkins',
-    require    => Group['jenkins'];
   }
 
 }
