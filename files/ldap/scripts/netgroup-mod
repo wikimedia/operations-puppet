@@ -1,292 +1,302 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/netgroup-mod
 #####################################################################
 
-import sys, os, getpass, socket, copy, string, ldapsupportlib, traceback
+import sys
+import socket
+import copy
+import string
+import ldapsupportlib
+import traceback
 from optparse import OptionParser
 
-try:    
-	import ldap
-	import ldap.modlist
+try:
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-		sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('netgroup-mod [options] netgroup-name [host|-u user] [-f|--file filename]\n\nexample: netgroup-mod "test-ng" "fenari.wikimedia.org"\nexample: netgroup-mod "test-ng" -f test.file')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('netgroup-mod [options] netgroup-name [host|-u user] [-f|--file filename]\n\nexample: netgroup-mod "test-ng" "fenari.wikimedia.org"\nexample: netgroup-mod "test-ng" -f test.file')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("-u", "--user", action="store_true", dest="user", help="Modify a user netgroup instead of a host netgroup.")
-	parser.add_option("--add", action="store_true", dest="addentry", help="Add new netgroup")
-	parser.add_option("--delete", action="store_true", dest="deleteentry", help="Delete a netgroup")
-	parser.add_option("-h", action="store_true", dest="hosts", help="Show available hosts")
-	parser.add_option("-n", action="store_true", dest="netgroups", help="Show available netgroups (notice you may not be able to add hosts to some netgroups shown). This option will show all available netgroups unless the additional non-exclusive flags are used.")
-	parser.add_option("--showhost", action="store_true", dest="showhost", help="Show ou=host netgroups (used with -n)")
-	parser.add_option("--showshare", action="store_true", dest="showshares", help="Show ou=shares netgroups (used with -n)")
-	parser.add_option("--showuser", action="store_true", dest="showuser", help="Show ou=user netgroups (used with -n)")
-	parser.add_option("-d", action="store_true", dest="delete", help="Remove provided host/user from provided netgroup")
-	parser.add_option("-f", "--file", dest="file", help="Add hosts provided from the following file. The file should have one IP address or hostname per line. IP addresses that are not in DNS will be ignored (you will be informed though).", metavar="FILE")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("-u", "--user", action="store_true", dest="user", help="Modify a user netgroup instead of a host netgroup.")
+    parser.add_option("--add", action="store_true", dest="addentry", help="Add new netgroup")
+    parser.add_option("--delete", action="store_true", dest="deleteentry", help="Delete a netgroup")
+    parser.add_option("-h", action="store_true", dest="hosts", help="Show available hosts")
+    parser.add_option("-n", action="store_true", dest="netgroups", help="Show available netgroups (notice you may not be able to add hosts to some netgroups shown). This option will show all available netgroups unless the additional non-exclusive flags are used.")
+    parser.add_option("--showhost", action="store_true", dest="showhost", help="Show ou=host netgroups (used with -n)")
+    parser.add_option("--showshare", action="store_true", dest="showshares", help="Show ou=shares netgroups (used with -n)")
+    parser.add_option("--showuser", action="store_true", dest="showuser", help="Show ou=user netgroups (used with -n)")
+    parser.add_option("-d", action="store_true", dest="delete", help="Remove provided host/user from provided netgroup")
+    parser.add_option("-f", "--file", dest="file", help="Add hosts provided from the following file. The file should have one IP address or hostname per line. IP addresses that are not in DNS will be ignored (you will be informed though).", metavar="FILE")
+    (options, args) = parser.parse_args()
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	base = ldapSupportLib.getBase()
+    base = ldapSupportLib.getBase()
 
-	ds = ldapSupportLib.connect()
+    ds = ldapSupportLib.connect()
 
-	# w00t We're in!
-	try:
-		if options.hosts:
-			PosixData = ds.search_s("ou=hosts," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=iphost)(cn=*))")
-		elif options.netgroups:
-			PosixData = ds.search_s("ou=netgroup," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=nisnetgroup)(cn=*))")
-		elif options.addentry:
-			PosixData = ds.search_s("ou=netgroup," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=nisNetGroup)(cn=" + args[0] + "))")
-			if PosixData:
-				sys.stderr.write("The entry you wish to add already exists.\n")
-				sys.exit(1)
-			if not PosixData and options.addentry:
-				nametoadd = args[1]
-				if options.user:
-					formattednametoadd = "(," + nametoadd + ",)"
-				else:
-					nametocheck = nametoadd
-					nametoadd = socket.gethostbyaddr(nametocheck)[0]
-					formattednametoadd = "(" + nametoadd + ",,)"
-				netgrouplist = []
-				if options.file:
-					infofromfile(netgrouplist, "add", options.file, netgrouptype, PosixCheckData)
-				else:
-					netgrouplist.append(formattednametoadd)
-				NewPosixData = {}
-				NewPosixData['objectclass'] = ['top', 'nisnetgroup']
-				NewPosixData['nisnetgrouptriple'] = netgrouplist
-				mods = ldap.modlist.addModlist(NewPosixData)
-				ds.add_s('cn=' + args[0] + ",ou=netgroup," + base, mods)
-				print "The netgroup was successfully added."
-				sys.exit(0)
-		elif options.deleteentry:
-			PosixData = ds.search_s("ou=netgroup," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=nisNetGroup)(cn=" + args[0] + "))")
-			if not PosixData:
-				sys.stderr.write("The entry you wish to delete doesn't exist.\n")
-				sys.exit(1)
-			else:
-				dn = PosixData[0][0]
-				verification = raw_input("Are you sure you wish to delete the following entry: " + dn + "? [y/N] ")
-				if verification == "y" or verification == "Y":
-					try:
-						ds.delete_s(dn)
-						print "The netgroup was successfully deleted.\n"
-					except Exception:
-						sys.stderr.write("There was an error while trying to delete the netgroup; see traceback\n")
-						traceback.print_exc(file=sys.stderr)
-						sys.exit(1)
-					sys.exit(0)
-				else:
-					print "Cancelling deletion\n"
-					sys.exit()
-		else:
-			try:
-				if options.user:
-					netgrouptype = "user"
-				else:
-					netgrouptype = "host"
-				if not options.file:
-					nametoadd = args[1]
-					if options.user:
-						formattednametoadd = "(," + nametoadd + ",)"
-					else:
-						nametocheck = nametoadd
-						nametoadd = socket.gethostbyaddr(nametocheck)[0]
-						formattednametoadd = "(" + nametoadd + ",,)"
+    # w00t We're in!
+    try:
+        if options.hosts:
+            PosixData = ds.search_s("ou=hosts," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=iphost)(cn=*))")
+        elif options.netgroups:
+            PosixData = ds.search_s("ou=netgroup," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=nisnetgroup)(cn=*))")
+        elif options.addentry:
+            PosixData = ds.search_s("ou=netgroup," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=nisNetGroup)(cn=" + args[0] + "))")
+            if PosixData:
+                sys.stderr.write("The entry you wish to add already exists.\n")
+                sys.exit(1)
+            if not PosixData and options.addentry:
+                nametoadd = args[1]
+                if options.user:
+                    formattednametoadd = "(," + nametoadd + ",)"
+                else:
+                    nametocheck = nametoadd
+                    nametoadd = socket.gethostbyaddr(nametocheck)[0]
+                    formattednametoadd = "(" + nametoadd + ",,)"
+                netgrouplist = []
+                if options.file:
+                    infofromfile(netgrouplist, "add", options.file, netgrouptype, PosixCheckData)
+                else:
+                    netgrouplist.append(formattednametoadd)
+                NewPosixData = {}
+                NewPosixData['objectclass'] = ['top', 'nisnetgroup']
+                NewPosixData['nisnetgrouptriple'] = netgrouplist
+                mods = ldap.modlist.addModlist(NewPosixData)
+                ds.add_s('cn=' + args[0] + ",ou=netgroup," + base, mods)
+                print "The netgroup was successfully added."
+                sys.exit(0)
+        elif options.deleteentry:
+            PosixData = ds.search_s("ou=netgroup," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=nisNetGroup)(cn=" + args[0] + "))")
+            if not PosixData:
+                sys.stderr.write("The entry you wish to delete doesn't exist.\n")
+                sys.exit(1)
+            else:
+                dn = PosixData[0][0]
+                verification = raw_input("Are you sure you wish to delete the following entry: " + dn + "? [y/N] ")
+                if verification == "y" or verification == "Y":
+                    try:
+                        ds.delete_s(dn)
+                        print "The netgroup was successfully deleted.\n"
+                    except Exception:
+                        sys.stderr.write("There was an error while trying to delete the netgroup; see traceback\n")
+                        traceback.print_exc(file=sys.stderr)
+                        sys.exit(1)
+                    sys.exit(0)
+                else:
+                    print "Cancelling deletion\n"
+                    sys.exit()
+        else:
+            try:
+                if options.user:
+                    netgrouptype = "user"
+                else:
+                    netgrouptype = "host"
+                if not options.file:
+                    nametoadd = args[1]
+                    if options.user:
+                        formattednametoadd = "(," + nametoadd + ",)"
+                    else:
+                        nametocheck = nametoadd
+                        nametoadd = socket.gethostbyaddr(nametocheck)[0]
+                        formattednametoadd = "(" + nametoadd + ",,)"
 
-				netgrouptomod = args[0]
-				try:
-					PosixData = ds.search_s("ou=netgroup," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=nisNetGroup)(cn=" + netgrouptomod + "))")
-				except Exception:
-					sys.stderr.write("There was an error while searching for the netgroup; see traceback\n")
-					traceback.print_exc(file=sys.stderr)
-					ds.unbind()
-					sys.exit(1)
-				if options.user:
-					PosixCheckData = ds.search_s("ou=people," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=posixaccount)(uid=*))")
-				else:
-					PosixCheckData = ds.search_s("ou=hosts," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=iphost)(cn=*))")
+                netgrouptomod = args[0]
+                try:
+                    PosixData = ds.search_s("ou=netgroup," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=nisNetGroup)(cn=" + netgrouptomod + "))")
+                except Exception:
+                    sys.stderr.write("There was an error while searching for the netgroup; see traceback\n")
+                    traceback.print_exc(file=sys.stderr)
+                    ds.unbind()
+                    sys.exit(1)
+                if options.user:
+                    PosixCheckData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=posixaccount)(uid=*))")
+                else:
+                    PosixCheckData = ds.search_s("ou=hosts," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=iphost)(cn=*))")
 
-				NewPosixData = copy.deepcopy(PosixData)
-				if NewPosixData[0][1].has_key('nisNetgroupTriple'):
-					if options.delete:
-						if options.file:
-							infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "delete", options.file, netgrouptype, PosixCheckData)
-						elif "(" + nametoadd + ",,)" in NewPosixData[0][1]['nisNetgroupTriple']:
-							NewPosixData[0][1]['nisNetgroupTriple'].remove(formattednametoadd)
-					else:
-						if options.file:
-							infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "add", options.file, netgrouptype, PosixCheckData)
-						else:
-							NewPosixData[0][1]['nisNetgroupTriple'].append(formattednametoadd)
-				else:
-					if not options.delete:
-						if options.file:
-							NewPosixData[0][1]['nisNetgroupTriple'] = []
-							infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "add", options.file, netgrouptype, PosixCheckData)
-						else:
-							NewPosixData[0][1]['nisNetgroupTriple'] = [formattednametoadd]
+                NewPosixData = copy.deepcopy(PosixData)
+                if NewPosixData[0][1].has_key('nisNetgroupTriple'):
+                    if options.delete:
+                        if options.file:
+                            infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "delete", options.file, netgrouptype, PosixCheckData)
+                        elif "(" + nametoadd + ",,)" in NewPosixData[0][1]['nisNetgroupTriple']:
+                            NewPosixData[0][1]['nisNetgroupTriple'].remove(formattednametoadd)
+                    else:
+                        if options.file:
+                            infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "add", options.file, netgrouptype, PosixCheckData)
+                        else:
+                            NewPosixData[0][1]['nisNetgroupTriple'].append(formattednametoadd)
+                else:
+                    if not options.delete:
+                        if options.file:
+                            NewPosixData[0][1]['nisNetgroupTriple'] = []
+                            infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "add", options.file, netgrouptype, PosixCheckData)
+                        else:
+                            NewPosixData[0][1]['nisNetgroupTriple'] = [formattednametoadd]
 
-				if PosixData == NewPosixData:
-					if options.delete:
-						sys.stderr.write("The host/user(s) you are trying to remove are not in the netgroup provided.\n")
-						ds.unbind()
-						sys.exit(1)
-					else:
-						sys.stderr.write("The host/user(s) you are trying to add are already in the netgroup provided.\n")
-						ds.unbind()
-						sys.exit(1)
+                if PosixData == NewPosixData:
+                    if options.delete:
+                        sys.stderr.write("The host/user(s) you are trying to remove are not in the netgroup provided.\n")
+                        ds.unbind()
+                        sys.exit(1)
+                    else:
+                        sys.stderr.write("The host/user(s) you are trying to add are already in the netgroup provided.\n")
+                        ds.unbind()
+                        sys.exit(1)
 
-				netgroupdn = PosixData[0][0]
-				modlist = ldap.modlist.modifyModlist(PosixData[0][1], NewPosixData[0][1])
-				ds.modify_s(netgroupdn, modlist)
-			except socket.herror:
-				sys.stderr.write("This IP address isn't in DNS, please have it added, then try again.\n")
-				ds.unbind()
-				sys.exit(1)
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("The search returned an error. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.NO_SUCH_OBJECT:
-		sys.stderr.write("The netgroup provided cannot be found, please try again.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.TYPE_OR_VALUE_EXISTS:
-		sys.stderr.write("The host/user you are trying to add is already in the netgroup you provided.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		if options.delete:
-			sys.stderr.write("The host/user you are trying to remove is not in the netgroup you provided.\n")
-		else:
-			sys.stderr.write("There was an LDAP protocol error, please contact an administrator via the helpdesk.\n")
-		ds.unbind()
-		sys.exit(1)
-	#except Exception:
-	#	try:
-	#		ds.unbind()
-	#		sys.stderr.write("There was a general error, please contact an administrator via the helpdesk.\n")
-	#	except Exception:
-	#		pass
-	#	sys.exit(1)
+                netgroupdn = PosixData[0][0]
+                modlist = ldap.modlist.modifyModlist(PosixData[0][1], NewPosixData[0][1])
+                ds.modify_s(netgroupdn, modlist)
+            except socket.herror:
+                sys.stderr.write("This IP address isn't in DNS, please have it added, then try again.\n")
+                ds.unbind()
+                sys.exit(1)
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("The search returned an error. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The netgroup provided cannot be found, please try again.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.TYPE_OR_VALUE_EXISTS:
+        sys.stderr.write("The host/user you are trying to add is already in the netgroup you provided.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        if options.delete:
+            sys.stderr.write("The host/user you are trying to remove is not in the netgroup you provided.\n")
+        else:
+            sys.stderr.write("There was an LDAP protocol error, please contact an administrator via the helpdesk.\n")
+        ds.unbind()
+        sys.exit(1)
+    #except Exception:
+    #    try:
+    #        ds.unbind()
+    #        sys.stderr.write("There was a general error, please contact an administrator via the helpdesk.\n")
+    #    except Exception:
+    #        pass
+    #    sys.exit(1)
 
-	# /End of stolen stuff
+    # /End of stolen stuff
 
-	# PosixData is a list of lists where:
-	# index 0 of PosixData[N]: contains the distinquished name
-	# index 1 of PosixData[N]: contains a dictionary of lists hashed by the following keys:
-	#               telephoneNumber, departmentNumber, uid, objectClass, loginShell,
-	#               uidNumber, gidNumber, sn, homeDirectory, givenName, cn
+    # PosixData is a list of lists where:
+    # index 0 of PosixData[N]: contains the distinquished name
+    # index 1 of PosixData[N]: contains a dictionary of lists hashed by the following keys:
+    #               telephoneNumber, departmentNumber, uid, objectClass, loginShell,
+    #               uidNumber, gidNumber, sn, homeDirectory, givenName, cn
 
-	if options.hosts or options.netgroups:
-		for i in range(len(PosixData)):
-				if options.hosts:
-					print "hostname: " + PosixData[i][1]["cn"][0]
-					print "	IP: " + PosixData[i][1]["ipHostNumber"][0]
-				elif options.netgroups:
-					if not (options.showhost or options.showshares or options.showuser):
-						print "Netgroup Name: " + PosixData[i][1]["cn"][0]
-					else:
-						if options.showhost:
-							if "ou=host" in PosixData[i][0]:
-								print "Netgroup Name: " + PosixData[i][1]["cn"][0]
-						if options.showshares:
-							if "ou=shares" in PosixData[i][0]:
-								print "Netgroup Name: " + PosixData[i][1]["cn"][0]
-						if options.showuser:
-							if "ou=user" in PosixData[i][0]:
-								print "Netgroup Name: " + PosixData[i][1]["cn"][0]
-	else:
-		if options.user:
-			netgrouptype = "user"
-		else:
-			netgrouptype = "host"
-		if options.delete:
-			print "The " + netgrouptype + "(s) were successfully removed."
-		else:
-			print "The " + netgrouptype + "(s) were successfully added."
+    if options.hosts or options.netgroups:
+        for i in range(len(PosixData)):
+                if options.hosts:
+                    print "hostname: " + PosixData[i][1]["cn"][0]
+                    print "    IP: " + PosixData[i][1]["ipHostNumber"][0]
+                elif options.netgroups:
+                    if not (options.showhost or options.showshares or options.showuser):
+                        print "Netgroup Name: " + PosixData[i][1]["cn"][0]
+                    else:
+                        if options.showhost:
+                            if "ou=host" in PosixData[i][0]:
+                                print "Netgroup Name: " + PosixData[i][1]["cn"][0]
+                        if options.showshares:
+                            if "ou=shares" in PosixData[i][0]:
+                                print "Netgroup Name: " + PosixData[i][1]["cn"][0]
+                        if options.showuser:
+                            if "ou=user" in PosixData[i][0]:
+                                print "Netgroup Name: " + PosixData[i][1]["cn"][0]
+    else:
+        if options.user:
+            netgrouptype = "user"
+        else:
+            netgrouptype = "host"
+        if options.delete:
+            print "The " + netgrouptype + "(s) were successfully removed."
+        else:
+            print "The " + netgrouptype + "(s) were successfully added."
 
-		ds.unbind()
-	sys.exit(0)
+        ds.unbind()
+    sys.exit(0)
+
 
 def checkargs(options, args):
-	if (len(args) < 2 or len(args) > 2):
-		if options.file and len(args) == 1:
-			return
-		sys.stderr.write("Invalid syntax, please see \"netgroup-mod --help\"\n")
-		sys.exit(1)
+    if (len(args) < 2 or len(args) > 2):
+        if options.file and len(args) == 1:
+            return
+        sys.stderr.write("Invalid syntax, please see \"netgroup-mod --help\"\n")
+        sys.exit(1)
+
 
 def infofromfile(list, changetype, file, netgrouptype, PosixCheckData):
-	f = open(file)
-	for line in f:
-		try:
-			line = string.strip(line)
-			if netgrouptype == "user":
-				nametoadd = "(," + line + ",)"
-			else:
-				# netgrouptype is "host"
-				nametoadd1 = socket.gethostbyaddr(line)[0]
-				nametoadd = "(" + nametoadd1 + ",,)"
-			if changetype == "delete" and nametoadd in list:
-				list.remove(nametoadd)
-			elif changetype == "add" and nametoadd not in list:
-				if netgrouptype == "user":
-					if checkuserinldap(line, PosixCheckData):
-						list.append(nametoadd)
-					else:
-						continue
-				else:
-					# netgrouptype is "host"
-					if checkhostinldap(line, nametoadd1, PosixCheckData):
-						list.append(nametoadd)
-					else:
-						continue
-			else:
-				if changetype == "delete":
-					sys.stderr.write(line + " is not in the netgroup provided.\n")
-				else:
-					sys.stderr.write(line + " is already in the netgroup provided.\n")
-		except socket.herror:
-			sys.stderr.write(line + " isn't in DNS, please have it added, then try again.\n")
-		except socket.gaierror:
-			sys.stderr.write(line + " isn't in DNS, please have it added, then try again.\n")
+    f = open(file)
+    for line in f:
+        try:
+            line = string.strip(line)
+            if netgrouptype == "user":
+                nametoadd = "(," + line + ",)"
+            else:
+                # netgrouptype is "host"
+                nametoadd1 = socket.gethostbyaddr(line)[0]
+                nametoadd = "(" + nametoadd1 + ",,)"
+            if changetype == "delete" and nametoadd in list:
+                list.remove(nametoadd)
+            elif changetype == "add" and nametoadd not in list:
+                if netgrouptype == "user":
+                    if checkuserinldap(line, PosixCheckData):
+                        list.append(nametoadd)
+                    else:
+                        continue
+                else:
+                    # netgrouptype is "host"
+                    if checkhostinldap(line, nametoadd1, PosixCheckData):
+                        list.append(nametoadd)
+                    else:
+                        continue
+            else:
+                if changetype == "delete":
+                    sys.stderr.write(line + " is not in the netgroup provided.\n")
+                else:
+                    sys.stderr.write(line + " is already in the netgroup provided.\n")
+        except socket.herror:
+            sys.stderr.write(line + " isn't in DNS, please have it added, then try again.\n")
+        except socket.gaierror:
+            sys.stderr.write(line + " isn't in DNS, please have it added, then try again.\n")
+
 
 def checkuserinldap(user, PosixCheckData):
-	for i in range(len(PosixCheckData)):
-		if string.lower(PosixCheckData[i][1]['uid'][0]) == string.lower(user):
-			return True
-	# We just looped through all the users in LDAP. The user doesn't exist.
-	sys.stderr.write(user + " cannot be found in LDAP.\n")
-	return False
+    for i in range(len(PosixCheckData)):
+        if string.lower(PosixCheckData[i][1]['uid'][0]) == string.lower(user):
+            return True
+    # We just looped through all the users in LDAP. The user doesn't exist.
+    sys.stderr.write(user + " cannot be found in LDAP.\n")
+    return False
+
 
 def checkhostinldap(host, hostfromdns, PosixCheckData):
-	for i in range(len(PosixCheckData)):
-		if string.lower(PosixCheckData[i][1]['cn'][0]) == string.lower(hostfromdns):
-			return True
-		elif string.lower(PosixCheckData[i][1]['cn'][0]) == string.lower(host):
-			sys.stderr.write(host + " matches an entry in LDAP; however, the DNS entry is different than the LDAP entry, please put in a ripken ticket (skipping)\n")
-			return False
-		elif string.lower(PosixCheckData[i][1]['ipHostNumber'][0]) == string.lower(host):
-			sys.stderr.write(host + " matches an IP address in LDAP; however, the LDAP entry and the DNS entry are in conflict, please put in a ripken ticket (skipping)\n")
-			return False
-	# We just looped through all the hosts in LDAP. The host doesn't exist.
-	# Since we are only checking to make sure there aren't LDAP/DNS
-	# conflicts, this is ok.
-	return True
+    for i in range(len(PosixCheckData)):
+        if string.lower(PosixCheckData[i][1]['cn'][0]) == string.lower(hostfromdns):
+            return True
+        elif string.lower(PosixCheckData[i][1]['cn'][0]) == string.lower(host):
+            sys.stderr.write(host + " matches an entry in LDAP; however, the DNS entry is different than the LDAP entry, please put in a ripken ticket (skipping)\n")
+            return False
+        elif string.lower(PosixCheckData[i][1]['ipHostNumber'][0]) == string.lower(host):
+            sys.stderr.write(host + " matches an IP address in LDAP; however, the LDAP entry and the DNS entry are in conflict, please put in a ripken ticket (skipping)\n")
+            return False
+    # We just looped through all the hosts in LDAP. The host doesn't exist.
+    # Since we are only checking to make sure there aren't LDAP/DNS
+    # conflicts, this is ok.
+    return True
 
 if __name__ == "__main__":
-	main()
+    main()
