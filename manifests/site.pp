@@ -199,12 +199,12 @@ node "analytics1027.eqiad.wmnet" {
 
 # git.wikimedia.org
 node "antimony.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "git.wikimedia.org": }
 
 	include standard,
 		groups::wikidev,
 		accounts::demon,
-		role::gerrit::production::replicationdest
+		role::gitblit
 
 	# full root for gerrit admin (RT-3698)
 	sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
