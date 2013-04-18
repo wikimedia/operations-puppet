@@ -1,0 +1,92 @@
+#####################################################################
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///templates/apache/sites/git.wikimedia.org.erb
+#####################################################################
+# vim: filetype=apache
+
+LogFormat "%h %l %u %t \"%r\" %>s %O T=%Ts \"%{Referer}i\" \"%{User-Agent}i\"" combined_time
+
+NameVirtualHost *:80
+<VirtualHost *:80>
+	ServerAdmin noc@wikimedia.org
+	ServerName <%= host %>
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined_time
+	ServerSignature Off
+
+	RewriteEngine on
+	RewriteCond %{SERVER_PORT} !^443$
+	RewriteRule ^/(.*)$ https://<%= host %>/$1 [L,R,NE]
+</VirtualHost>
+
+NameVirtualHost *:443
+<VirtualHost *:443>
+	ServerAdmin noc@wikimedia.org
+	ServerName <%= host %>
+
+	SSLEngine on
+	SSLCertificateFile /etc/ssl/certs/<%= ssl_cert %>.pem
+	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
+	SSLCACertificateFile /etc/ssl/certs/<%= ssl_ca %>.pem
+
+	SetEnvIf User-Agent 80legs bad_browser
+	SetEnvIf User-Agent bingbot bad_browser
+
+	TimeOut 720
+
+	DocumentRoot /var/www
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+		Order deny,allow
+		deny from env=bad_browser
+		deny from 208.110.84.34
+	</Directory>
+	<Directory /var/www/>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+	</Directory>
+
+	ProxyRequests Off
+	ProxyVia Off
+	ProxyPreserveHost On
+
+	<Proxy *>
+		Order deny,allow
+		deny from env=bad_browser
+		deny from 208.110.84.34
+	</Proxy>
+
+	AllowEncodedSlashes NoDecode
+	RewriteEngine On
+	RewriteRule ^/(.*) http://127.0.0.1:8080/$1 [NE,P]
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined_time
+	ServerSignature Off
+
+</VirtualHost>
