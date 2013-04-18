@@ -41,7 +41,6 @@ class role::gerrit {
 				  "authGroup" => "mediawiki-replication",
 				  "push" => "+refs/heads/*:refs/heads/*
   push = +refs/tags/*:refs/tags/*",
-				  "isGithubRepo" => "true",
 				  "remoteNameStyle" => "dash",
 				  "mirror" => "true",
 				},
