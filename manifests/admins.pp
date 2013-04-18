@@ -1203,6 +1203,12 @@ class accounts {
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAxk8Zks1Z1qsFhu7CmcYC8474ikLmDVXXLqeC2ekBznIsdX2/1IPaYIZp8w4G8M2X1InMOqQswCqTfvQFuMOFWxJvTQXxZOJUC8L2El1xB7t4O7mvDXw8uq1h20L7ODsLkFga3M7W7IIg3pU12HS1UAInYDQt0SCXtLaTbPQpgP8H0XNZhn/I3P/NVQnaUx00YzrS9ZojNbwEHB8cUpwp2N/gfv/byTTe48Xaq3wlAxw/QTow5G+r3atEOVJ0QKGztl+uScF/ZzP8QYficdMP7aNffg9aQhf/uER10hXu2F16UZQyoMx/sFkS2U8ZNVkCKLhI7MKti7+ZGz4/+fcCOw=="
 			}
+			ssh_authorized_key { "tfinc@kumo":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDOXgblcBarO8An5LNYfIBOjl+//EK6XhJu3agV8nQvmuaT2qnPtIiLl3W/X34bKHcRJbWsJRe7C3MqJqFWF6BWWtU9MZWj/s1TRtyA8Olgx4y7cXGXSUY/0woJnM6yIh6WitQEPX35iZyKaVapX5FCYlkkSbTEAbJwm/bFV5j2hOTyews7Cff1E0Zp0+E4hli39MvflkMOtllcZvFoLjve5AjETeabZEppvvSR8VPAK5bNMl7zo7fWcoExaNNlglLLRxP8y8Ne2PQlks5gTMrsh5e55BGVr/Nd6kD5OIB7s63InMbudYViWX66MjPgKMXXg8m7RKqkLB33nBifQrY5";
+			}
 		}
 	}
 
