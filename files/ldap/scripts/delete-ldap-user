@@ -1,74 +1,78 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/delete-ldap-user
 #####################################################################
 
-import sys, pwd, traceback, getpass, ldapsupportlib, homedirectorymanager
+import sys
+import traceback
+import ldapsupportlib
+import homedirectorymanager
 from optparse import OptionParser
 
-try:    
-	import ldap
-	import ldap.modlist
+try:
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-	sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('delete-ldap-user [options] <username>')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('delete-ldap-user [options] <username>')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("--no-delete-home", action="store_true", dest="nodeletehome", help="Don't delete the user's home directory")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--no-delete-home", action="store_true", dest="nodeletehome", help="Don't delete the user's home directory")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 1:
-		parser.error("add-ldap-user expects exactly one argument.")
+    if len(args) != 1:
+        parser.error("add-ldap-user expects exactly one argument.")
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	base = ldapSupportLib.getBase()
+    base = ldapSupportLib.getBase()
 
-	ds = ldapSupportLib.connect()
+    ds = ldapSupportLib.connect()
 
-	# w00t We're in!
-	try:
-		username = args[0]
-		dn = 'uid=' + username + ',ou=people,' + base
-		ds.delete_s(dn)
+    # w00t We're in!
+    try:
+        username = args[0]
+        dn = 'uid=' + username + ',ou=people,' + base
+        ds.delete_s(dn)
 
-		if not options.nodeletehome:
-			hdm = homedirectorymanager.HomeDirectoryManager()
-			hdm.deleteUser(username)
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("LDAP was unwilling to delete the user. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.NO_SUCH_OBJECT:
-		sys.stderr.write("The user you are trying to delete does not exists.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except Exception:
-		try:
-			sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			ds.unbind()
-		except Exception:
-			sys.stderr.write("Also failed to unbind.\n")
-			traceback.print_exc(file=sys.stderr)
-		sys.exit(1)
+        if not options.nodeletehome:
+            hdm = homedirectorymanager.HomeDirectoryManager()
+            hdm.deleteUser(username)
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to delete the user. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The user you are trying to delete does not exists.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
 
-	ds.unbind()
-	sys.exit(0)
+    ds.unbind()
+    sys.exit(0)
 
 if __name__ == "__main__":
-	main()
+    main()
