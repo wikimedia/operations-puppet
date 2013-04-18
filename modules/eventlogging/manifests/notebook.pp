@@ -64,7 +64,7 @@ class eventlogging::notebook(
 	}
 
 	exec { "Create IPython profile ${ipython_profile}":
-		command     => "ipython profile create ${ipython_profile} --ipython-dir=\"${ipython_dir}\"",
+		command     => "/usr/bin/ipython profile create ${ipython_profile} --ipython-dir=\"${ipython_dir}\"",
 		creates     => "${ipython_dir}/profile_${ipython_profile}",
 		environment => "IPYTHONDIR=${ipython_dir}",
 		user        => $ipython_user,
