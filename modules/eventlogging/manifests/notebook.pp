@@ -33,7 +33,7 @@ class eventlogging::notebook(
 	}
 
 	file { '/etc/supervisor/conf.d/notebook.conf':
-		content => template('/eventlogging/notebook.conf.erb'),
+		content => template('eventlogging/notebook.conf.erb'),
 		require => [ Package['ipython-notebook'], File[$notebook_dir] ],
 		notify  => Service['supervisor'],
 		mode    => '0444',
