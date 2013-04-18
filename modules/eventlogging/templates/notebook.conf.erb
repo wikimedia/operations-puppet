@@ -1,5 +1,5 @@
 [program:notebook]
-command = ipython notebook --profile nbserver
+command = ipython notebook --ipython-dir="<%= ipython_dir %>" --profile nbserver
 user = <%= ipython_user %>
 directory = <%= ipython_dir %>
 redirect_stderr = true
