@@ -148,7 +148,6 @@ BETWEEN
 END;
 }
 
-/* TODO: Make query not return closed tickets - see https://bugzilla.wikimedia.org/show_bug.cgi?id=47176 */
 function getHighestPrioTickets() {
          return <<<END
 SELECT
@@ -174,7 +173,7 @@ WHERE
 AND
         ( bug_status != "RESOLVED" AND bug_status != "VERIFIED" AND bug_status != "CLOSED" )
 AND
-        priority = "Highest" OR priority = "Immediate"
+        ( priority = "Highest" OR priority = "Immediate" )
 ORDER BY
         product, component, delta_ts
 LIMIT
@@ -309,7 +308,6 @@ foreach ($reportsPerItem as $report) {
         formatOutput($result);
         print "\n";
 }
-/*
 print "\nMost urgent open issues\n\n";
 foreach ($urgentStatistics as $report) {
         $sql = getHighestPrioTickets();
@@ -318,4 +316,3 @@ foreach ($urgentStatistics as $report) {
                 reportFailure("Query failure");
         formatOutputHighestPrio($result);
 }
-*/
