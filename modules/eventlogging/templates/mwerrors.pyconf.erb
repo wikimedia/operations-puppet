@@ -1,6 +1,6 @@
 /**
  * MediaWiki exceptions & fatals monitoring
- * File managed by Puppet: puppet:///files/eventlogging/mwerrors.pyconf
+ * File managed by Puppet
  */
 
 modules {
@@ -8,7 +8,7 @@ modules {
     name = "mwerrors"
     language = "python"
     param endpoint {
-        value = "tcp://127.0.0.1:8423"
+        value = "tcp://127.0.0.1:<%= @port %>"
     }
   }
 }
