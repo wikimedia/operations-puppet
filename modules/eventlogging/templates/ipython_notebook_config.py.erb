@@ -1,0 +1,10 @@
+# Configuration file for ipython-notebook.
+# This file is managed by Puppet.
+
+c = get_config()
+c.IPKernelApp.pylab = 'inline'
+c.NotebookApp.enable_mathjax = True
+c.NotebookApp.open_browser = False
+c.NotebookApp.ip = '<%= notebook_ip %>'
+c.NotebookApp.port = <%= notebook_port %>
+c.NotebookManager.notebook_dir = '<%= notebook_dir %>'
