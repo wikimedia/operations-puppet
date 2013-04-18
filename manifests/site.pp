@@ -198,7 +198,7 @@ node "analytics1027.eqiad.wmnet" {
 }
 
 # git.wikimedia.org
-node "antimony.eqiad.wmnet" {
+node "antimony.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
