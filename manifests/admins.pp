@@ -76,6 +76,17 @@ class groups {
 		}
 	}
 
+	# group file_mover is used by fundraising
+	# to move udp2log fundraising logs around.
+	class file_mover {
+		group { 'file_mover':
+			name      => 'file_mover',
+			gid       => 999,
+			alias     => 999,
+			ensure    => present,
+			allowdupe => false,
+		}
+	}
 }
 
 class baseaccount {
@@ -1496,7 +1507,8 @@ class accounts {
 		$realname = "file_mover"
 		$uid = 10001
 
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+		include groups::file_mover
+		unixaccount { $realname: username => $username, uid => $uid, gid => 'file_mover', require => Class['groups::file_mover'] }
 
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname]}
@@ -1509,7 +1521,7 @@ class accounts {
 					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEA7c29cQHB7hbBwvp1aAqnzkfjJpkpiLo3gwpv73DAZ2FVhDR4PBCoksA4GvUwoG8s7tVn2Xahj4p/jRF67XLudceY92xUTjisSHWYrqCqHrrlcbBFjhqAul09Zwi4rojckTyreABBywq76eVj5yWIenJ6p/gV+vmRRNY3iJjWkddmWbwhfWag53M/gCv05iceKK8E7DjMWGznWFa1Q8IUvfI3kq1XC4EY6REL53U3SkRaCW/HFU0raalJEwNZPoGUaT7RZQsaKI6ec8i2EqTmDwqiN4oq/LDmnCxrO9vMknBSOJG2gCBoA/DngU276zYLg2wsElTPumN8/jVjTnjgtw==";
 			}
 		}
-        }
+	}
 
 	class datasets inherits baseaccount {
 		$username = "datasets"
