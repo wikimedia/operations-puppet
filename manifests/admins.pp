@@ -80,9 +80,11 @@ class groups {
 	# to move udp2log fundraising logs around.
 	class file_mover {
 		group { 'file_mover':
-			name      => 'file_mover',
-			ensure    => present,
-			allowdupe => false,
+			name		=> 'file_mover',
+			gid			=> 30001,
+			alias		=> 30001,
+			ensure		=> present,
+			allowdupe	=> false,
 		}
 	}
 }
@@ -1503,7 +1505,7 @@ class accounts {
 	class file_mover inherits baseaccount {
 		$username = "file_mover"
 		$realname = "file_mover"
-		$uid = 10001
+		$uid = 30001
 
 		include groups::file_mover
 		unixaccount { $realname: username => $username, uid => $uid, gid => 'file_mover', require => Class['groups::file_mover'] }

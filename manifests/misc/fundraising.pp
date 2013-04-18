@@ -415,7 +415,7 @@ class misc::fundraising::udp2log_rotation {
 
 	#include accounts::file_mover
 
-	sudo_user { "udp2log": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
+	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
 
 	file {
 		'/usr/local/bin/rotate_fundraising_logs':
@@ -425,8 +425,8 @@ class misc::fundraising::udp2log_rotation {
 			source => 'puppet:///files/misc/scripts/rotate_fundraising_logs';
 		'/a/log/fundraising/logs/buffer':
 			ensure => directory,
-			owner => udp2log,
-			group => udp2log,
+			owner => file_mover,
+			group => wikidev,
 			mode => 0750;
 	}
 
