@@ -435,7 +435,7 @@ node /^db(34|39|64|66)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /^db(31|33|51|65|72)\.pmtpa\.wmnet/ {
+node /^db(31|51|65|72)\.pmtpa\.wmnet/ {
 	if $hostname =~ /^db51/ {
 		$ganglia_aggregator = true
 	}
@@ -448,7 +448,7 @@ node /^db(31|33|51|65|72)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /^db(35|44|45|55|73)\.pmtpa\.wmnet/ {
+node /^db(44|45|55|73)\.pmtpa\.wmnet/ {
 	if $hostname == "db35" {
 		class { role::coredb::s5 : mariadb => true }
 	} elsif $hostname =~ /^db(55|73)/{
@@ -483,7 +483,7 @@ node /^db(37|56|58|68)\.pmtpa\.wmnet/ {
 
 ## x1 shard
 node /^db(36|38)\.pmtpa\.wmnet/ {
-  include role::coredb::x1
+	include role::coredb::x1
 }
 
 ## m1 shard (still mostly not puppetized...)
@@ -497,6 +497,11 @@ node /^(db(9|10)|blondel|bellin)\.pmtpa\.wmnet$/ {
 		mysql_wmf::conf,
 		mysql_wmf::packages
 	}
+}
+
+## m1 shard (new)
+node /^db(33|35)\.pmtpa\.wmnet/ {
+	class { role::coredb::m1 : mariadb => true }
 }
 
 ## m2 shard
