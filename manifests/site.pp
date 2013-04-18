@@ -1098,6 +1098,7 @@ node "hume.wikimedia.org" {
 	$cluster = "misc"
 
 	include role::applicationserver::maintenance,
+		generic::mysql::packages::client,
 		nfs::netapp::home,
 		nfs::upload,
 		misc::deployment::scap_scripts,
@@ -2697,6 +2698,7 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
 
 node "terbium.eqiad.wmnet" {
 	include role::applicationserver::maintenance,
+		generic::mysql::packages::client,
 		misc::deployment::scap_scripts,
 		admins::roots,
 		admins::mortals,
