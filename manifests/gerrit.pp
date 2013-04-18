@@ -292,6 +292,31 @@ class gerrit::proxy( $no_apache = true,
 			ensure => present;
 	}
 
+	apache_site { git: name => "git.wikimedia.org" }
+	apache_module { rewrite: name => "rewrite" }
+	apache_module { proxy: name => "proxy" }
+	apache_module { proxy_http: name => "proxy_http" }
+	apache_module { ssl: name => "ssl" }
+}
+
+# Setup apache for the git viewer and replicated git repos
+# Also needs gerrit::replicationdest installed
+class gerrit::gitviewer( $host, $ssl_cert="", $ssl_cert_key="", $ssl_ca="" ) {
+	file {
+		"/etc/apache2/sites-available/git.wikimedia.org":
+			mode => 0644,
+			owner => root,
+			group => root,
+			content => template('apache/sites/git.wikimedia.org.erb'),
+			ensure => present;
+		"/var/lib/git":
+			mode => 0644
+			owner => gerritslave,
+			group => gerritslave,
+			ensure => directory,
+			require => Systemuser["gerritslave"]
+	}
+
 	apache_site { gerrit: name => "gerrit.wikimedia.org" }
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
