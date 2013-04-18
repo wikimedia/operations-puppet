@@ -7,6 +7,9 @@ modules {
   module {
     name = "mwerrors"
     language = "python"
+    param endpoint {
+        value = "tcp://127.0.0.1:8423"
+    }
   }
 }
 
