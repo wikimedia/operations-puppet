@@ -770,13 +770,15 @@ node "loudon.wikimedia.org" {
 }
 
 node "grosley.wikimedia.org" {
-	include role::fundraising::civicrm
+	include role::fundraising::civicrm,
+		accounts::file_mover
 	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
 }
 
 node "aluminium.wikimedia.org" {
 	include role::fundraising::civicrm,
-		misc::fundraising::jenkins
+		misc::fundraising::jenkins,
+		accounts::file_mover
 	class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
 }
 
