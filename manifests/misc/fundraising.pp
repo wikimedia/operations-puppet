@@ -139,8 +139,9 @@ class misc::fundraising {
 			mode => 0444,
 			source => 'puppet:///private/misc/fundraising/apache.conf.fundraising-ssl';
 
-		'/usr/local/bin/drush':
-			ensure => '/opt/drush/drush';
+		# remove this for now, eventually puppetize the wrapper
+		#'/usr/local/bin/drush':
+		#	ensure => '/opt/drush/drush';
 
 		# other stuff
 		'/etc/php5/cli/php.ini':
