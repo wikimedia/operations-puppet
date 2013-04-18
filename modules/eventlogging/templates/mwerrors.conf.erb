@@ -1,10 +1,10 @@
 ; Supervisord configuration for 'mwerrors' Ganglia module.
-; Managed by Puppet: puppet:///files/eventlogging/mwerrors.conf
+; File managed by Puppet
 ; Forward MediaWiki fatals / exceptions to ZeroMQ
 
 [group:mwerrors]
-programs = udp2zmq_8423
+programs = udp2zmq_<%= @port %>
 
-[program:udp2zmq_8423]
-command = udp2zmq 8423
+[program:udp2zmq_<%= @port %>]
+command = udp2zmq <%= @port %>
 user = eventlogging
