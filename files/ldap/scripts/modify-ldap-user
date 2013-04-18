@@ -1,144 +1,149 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/modify-ldap-user
 #####################################################################
 
-import sys, pwd, traceback, getpass, re, ldapsupportlib, pycurl, copy, homedirectorymanager
+import sys
+import traceback
+import ldapsupportlib
+import copy
+import homedirectorymanager
 from optparse import OptionParser
 
 try:
-	import ldap
-	import ldap.modlist
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-	sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('modify-ldap-user [options] <username> [--rename <newusername>]\nexample: modify-ldap-user --replacekeys=http://ryandlane.com/static/pubkey.key laner')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('modify-ldap-user [options] <username> [--rename <newusername>]\nexample: modify-ldap-user --replacekeys=http://ryandlane.com/static/pubkey.key laner')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("--shell", action="store", dest="loginShell", help="Set the user's shell")
-	parser.add_option("--gid", action="store", dest="gidNumber", help="Set the user's gid")
-	parser.add_option("--uid", action="store", dest="uidNumber", help="Set the user's uid")
-	parser.add_option("--cn", action="store", dest="cn", help="Set the user's CN")
-	parser.add_option("--mail", action="store", dest="mail", help="Set the user's email address")
-	parser.add_option("--firstname", action="store", dest="givenName", help="Set the user's first name")
-	parser.add_option("--lastname", action="store", dest="sn", help="Set the user's last name")
-	parser.add_option("--replacekeys", action="store", dest="replaceKeyLocation", help="Replaces all of the user's keys")
-	parser.add_option("--addkeys", action="store", dest="addKeyLocation", help="Adds keys to the user's entry")
-	parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--shell", action="store", dest="loginShell", help="Set the user's shell")
+    parser.add_option("--gid", action="store", dest="gidNumber", help="Set the user's gid")
+    parser.add_option("--uid", action="store", dest="uidNumber", help="Set the user's uid")
+    parser.add_option("--cn", action="store", dest="cn", help="Set the user's CN")
+    parser.add_option("--mail", action="store", dest="mail", help="Set the user's email address")
+    parser.add_option("--firstname", action="store", dest="givenName", help="Set the user's first name")
+    parser.add_option("--lastname", action="store", dest="sn", help="Set the user's last name")
+    parser.add_option("--replacekeys", action="store", dest="replaceKeyLocation", help="Replaces all of the user's keys")
+    parser.add_option("--addkeys", action="store", dest="addKeyLocation", help="Adds keys to the user's entry")
+    parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 1:
-		if options.rename and len(args) != 2:
-			parser.error("modify-ldap-user expects exactly two arguments when using rename.")
-		elif not options.rename:
-			parser.error("modify-ldap-user expects exactly one argument, unless using --rename.")
+    if len(args) != 1:
+        if options.rename and len(args) != 2:
+            parser.error("modify-ldap-user expects exactly two arguments when using rename.")
+        elif not options.rename:
+            parser.error("modify-ldap-user expects exactly one argument, unless using --rename.")
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	base = ldapSupportLib.getBase()
+    base = ldapSupportLib.getBase()
 
-	ds = ldapSupportLib.connect()
+    ds = ldapSupportLib.connect()
 
-	# w00t We're in!
-	try:
-		username = args[0]
-		PosixData = ds.search_s("ou=people," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=inetOrgPerson)(uid=" + username + "))")
-		if not PosixData:
-			raise ldap.NO_SUCH_OBJECT()
-		dn = PosixData[0][0]
-		hdm = homedirectorymanager.HomeDirectoryManager()
+    # w00t We're in!
+    try:
+        username = args[0]
+        PosixData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + username + "))")
+        if not PosixData:
+            raise ldap.NO_SUCH_OBJECT()
+        dn = PosixData[0][0]
+        hdm = homedirectorymanager.HomeDirectoryManager()
 
-		if options.rename:
-			newusername = args[1]
-			if newusername == "root":
-				sys.stderr.write("You are not allowed to rename a user to root.\n")
-				sys.exit(1)
+        if options.rename:
+            newusername = args[1]
+            if newusername == "root":
+                sys.stderr.write("You are not allowed to rename a user to root.\n")
+                sys.exit(1)
 
-			# Rename the entry
-			newrdn = 'uid=' + newusername
-			ds.rename_s(dn, newrdn)
+            # Rename the entry
+            newrdn = 'uid=' + newusername
+            ds.rename_s(dn, newrdn)
 
-			# Fix the user's home directory
-			PosixData = ds.search_s("ou=people," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=inetOrgPerson)(uid=" + newusername + "))")
-			dn = PosixData[0][0]
-			PosixData = PosixData[0][1]
-			NewPosixData = copy.deepcopy(PosixData)
-			NewPosixData['homeDirectory'] = '/home/' + newusername
-			modlist = ldap.modlist.modifyModlist(PosixData,NewPosixData)
-			ds.modify_s(dn, modlist)
+            # Fix the user's home directory
+            PosixData = ds.search_s("ou=people," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=inetOrgPerson)(uid=" + newusername + "))")
+            dn = PosixData[0][0]
+            PosixData = PosixData[0][1]
+            NewPosixData = copy.deepcopy(PosixData)
+            NewPosixData['homeDirectory'] = '/home/' + newusername
+            modlist = ldap.modlist.modifyModlist(PosixData, NewPosixData)
+            ds.modify_s(dn, modlist)
 
-			# Update the home directory
-			hdm.moveUser(username, newusername)
-		else:
-			PosixData = PosixData[0][1]
-			NewPosixData = copy.deepcopy(PosixData)
-			if options.replaceKeyLocation:
-				keys = hdm.fetchKeys(options.replaceKeyLocation)
-				NewPosixData['sshPublicKey'] = keys
-			if options.addKeyLocation:
-				keys = hdm.fetchKeys(options.addKeyLocation)
-				NewPosixData['sshPublicKey'].extend(keys)
-				NewPosixData['sshPublicKey'] = hdm.uniqueKeys(NewPosixData['sshPublicKey'])
-			if options.loginShell:
-				NewPosixData['loginShell'] = options.loginShell
-			if options.uidNumber:
-				if int(options.uidNumber) < 500:
-					sys.stderr.write("Setting uid to less than 500 is not allowed.\n")
-					sys.exit(1)
-				NewPosixData['uidNumber'] = options.uidNumber
-			if options.gidNumber:
-				NewPosixData['gidNumber'] = options.gidNumber
-			if options.sn:
-				NewPosixData['sn'] = options.sn
-			if options.givenName:
-				NewPosixData['givenName'] = options.givenName
-			if options.cn:
-				NewPosixData['cn'] = options.cn
-			if options.mail:
-				NewPosixData['mail'] = options.mail
+            # Update the home directory
+            hdm.moveUser(username, newusername)
+        else:
+            PosixData = PosixData[0][1]
+            NewPosixData = copy.deepcopy(PosixData)
+            if options.replaceKeyLocation:
+                keys = hdm.fetchKeys(options.replaceKeyLocation)
+                NewPosixData['sshPublicKey'] = keys
+            if options.addKeyLocation:
+                keys = hdm.fetchKeys(options.addKeyLocation)
+                NewPosixData['sshPublicKey'].extend(keys)
+                NewPosixData['sshPublicKey'] = hdm.uniqueKeys(NewPosixData['sshPublicKey'])
+            if options.loginShell:
+                NewPosixData['loginShell'] = options.loginShell
+            if options.uidNumber:
+                if int(options.uidNumber) < 500:
+                    sys.stderr.write("Setting uid to less than 500 is not allowed.\n")
+                    sys.exit(1)
+                NewPosixData['uidNumber'] = options.uidNumber
+            if options.gidNumber:
+                NewPosixData['gidNumber'] = options.gidNumber
+            if options.sn:
+                NewPosixData['sn'] = options.sn
+            if options.givenName:
+                NewPosixData['givenName'] = options.givenName
+            if options.cn:
+                NewPosixData['cn'] = options.cn
+            if options.mail:
+                NewPosixData['mail'] = options.mail
 
-			if PosixData == NewPosixData:
-				sys.stderr.write("No changes to make; exiting.\n")
-			else:
-				modlist = ldap.modlist.modifyModlist(PosixData,NewPosixData)
-				ds.modify_s(dn, modlist)
+            if PosixData == NewPosixData:
+                sys.stderr.write("No changes to make; exiting.\n")
+            else:
+                modlist = ldap.modlist.modifyModlist(PosixData, NewPosixData)
+                ds.modify_s(dn, modlist)
 
-				if options.replaceKeyLocation or options.addKeyLocation:
-					# Update the keys
-					hdm.writeKeys(username, NewPosixData['sshPublicKey'])
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.NO_SUCH_OBJECT:
-		sys.stderr.write("The user you are trying to modify doesn't exist.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except Exception:
-		try:
-			sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			ds.unbind()
-		except Exception:
-			sys.stderr.write("Also failed to unbind.\n")
-			traceback.print_exc(file=sys.stderr)
-		sys.exit(1)
+                if options.replaceKeyLocation or options.addKeyLocation:
+                    # Update the keys
+                    hdm.writeKeys(username, NewPosixData['sshPublicKey'])
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to create the user. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The user you are trying to modify doesn't exist.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
 
-	ds.unbind()
-	sys.exit(0)
+    ds.unbind()
+    sys.exit(0)
 
 if __name__ == "__main__":
-	main()
+    main()

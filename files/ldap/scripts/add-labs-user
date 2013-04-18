@@ -1,43 +1,47 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/add-labs-user
 #####################################################################
 
-import sys, subprocess, ldapsupportlib, scriptconfig, mwclient, urlparse
+import subprocess
+import scriptconfig
+import mwclient
+import urlparse
 from optparse import OptionParser
 
+
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('add-labs-user --wikiname="Wiki Name" --mail="wikiname@domain.org" <username>')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('add-labs-user --wikiname="Wiki Name" --mail="wikiname@domain.org" <username>')
 
-	parser.add_option("--wikiname", action="store", dest="wikiname", help="Set the user's wiki name (required)")
-	parser.add_option("--mail", action="store", dest="mail", help="Set the user's email address (required)")
-	(options, args) = parser.parse_args()
+    parser.add_option("--wikiname", action="store", dest="wikiname", help="Set the user's wiki name (required)")
+    parser.add_option("--mail", action="store", dest="mail", help="Set the user's email address (required)")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 1:
-		parser.error("Username is required.\n")
+    if len(args) != 1:
+        parser.error("Username is required.\n")
 
-	if not (options.wikiname and options.mail):
-		parser.error("--wikiname and --mail options are required.\n")
+    if not (options.wikiname and options.mail):
+        parser.error("--wikiname and --mail options are required.\n")
 
-	username = args[0]
+    username = args[0]
 
-	# Set a random password for the user
-	passwdargs = ['/usr/local/sbin/change-ldap-passwd', '--random', username]
-	passwd = subprocess.Popen(passwdargs, stdout=subprocess.PIPE).communicate()[0]
-	passwd = passwd.strip()
+    # Set a random password for the user
+    passwdargs = ['/usr/local/sbin/change-ldap-passwd', '--random', username]
+    passwd = subprocess.Popen(passwdargs, stdout=subprocess.PIPE).communicate()[0]
+    passwd = passwd.strip()
 
-	# Set the user's CN and email address
-	modifyuserargs = ['/usr/local/sbin/modify-ldap-user', '--cn=' + options.wikiname, '--mail=' + options.mail, username]
-	ignore = subprocess.Popen(modifyuserargs, stdout=subprocess.PIPE).communicate()[0]
+    # Set the user's CN and email address
+    modifyuserargs = ['/usr/local/sbin/modify-ldap-user', '--cn=' + options.wikiname, '--mail=' + options.mail, username]
+    ignore = subprocess.Popen(modifyuserargs, stdout=subprocess.PIPE).communicate()[0]
 
-	# Do an initial log in as the user, which will cause the wiki to create an account
-	# for the user.
-	url = urlparse.urlparse(scriptconfig.controllerapiurl)
-	site = mwclient.Site((url.scheme, url.hostname))
-	site.login(options.wikiname, passwd, domain=scriptconfig.domain)
+    # Do an initial log in as the user, which will cause the wiki to create an account
+    # for the user.
+    url = urlparse.urlparse(scriptconfig.controllerapiurl)
+    site = mwclient.Site((url.scheme, url.hostname))
+    site.login(options.wikiname, passwd, domain=scriptconfig.domain)
 
 if __name__ == "__main__":
-	main()
+    main()
