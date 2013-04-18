@@ -204,7 +204,7 @@ node "antimony.wikimedia.org" {
 	include standard,
 		groups::wikidev,
 		accounts::demon,
-		role::gerrit::production::replicationdest
+		role::gerrit::production::gitviewer
 
 	# full root for gerrit admin (RT-3698)
 	sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
