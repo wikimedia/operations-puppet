@@ -253,8 +253,13 @@ class misc::statistics::sites::community_analytics {
 # metrics-api.wikimedia.org
 # See: http://stat1.wikimedia.org/rfaulk/pydocs/_build/env.html
 # for more info on how and why.
+#
+# TODO: Make this a module.
+#
 class misc::statistics::sites::metrics {
-	require passwords::mysql::research,
+	require misc::statistics::user,
+		misc::statistics::packages::python,
+		passwords::mysql::research,
 		passwords::mysql::research_prod,
 		passwords::mysql::metrics,
 		passwords::e3::metrics
@@ -264,7 +269,7 @@ class misc::statistics::sites::metrics {
 
 	$e3_home          = "/a/e3"
 	$e3_analysis_path = "$e3_home/E3Analysis/"
-	$e3_user          = $misc::statistics::user::username
+	$metrics_user          = $misc::statistics::user::username
 
 	$secret_key       = $passwords::e3::metrics::secret_key
 
@@ -330,7 +335,7 @@ class misc::statistics::sites::metrics {
 	# install a .htpasswd file for E3
 	file { "$e3_home/.htpasswd":
 		content  => 'e3:$apr1$krR9Lhez$Yr0Ya9GpCW8KRQLeyR5Rn.',
-		owner    => $e3_user,
+		owner    => $metrics_user,
 		group    => "wikidev",
 		mode     => 0664,
 	}
@@ -339,7 +344,7 @@ class misc::statistics::sites::metrics {
 	git::clone { "E3Analysis":
 		directory => "$e3_analysis_path",
 		origin    => "https://gerrit.wikimedia.org/r/p/analytics/E3Analysis.git",
-		owner     => $e3_user,
+		owner     => $metrics_user,
 		require   => [Package["python-flask"], File[$e3_home], Class["misc::statistics::user"], Class["misc::statistics::packages::python"]],
 		ensure    => "latest",
 	}
@@ -348,7 +353,7 @@ class misc::statistics::sites::metrics {
 	# Make this only readable by stats user; it has db passwords in it.
 	file { "$e3_analysis_path/user_metrics/config/settings.py":
 		content => template("misc/e3-metrics.settings.py.erb"),
-		owner   => $e3_user,
+		owner   => $metrics_user,
 		group   => "root",
 		mode    => 0640,
 		require => Git::Clone["E3Analysis"],
@@ -362,54 +367,30 @@ class misc::statistics::sites::metrics {
 	}
 
 	include webserver::apache
-	# Set up the Python WSGI VirtualHost
 	webserver::apache::module { "wsgi": }
 	webserver::apache::module { "alias": }
-	webserver::apache::site { $site_name:
-		require      => [File["/srv/org.wikimedia.metrics"], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"], Webserver::Apache::Module['alias']],
-		server_admin => "noc@wikimedia.org",
-		docroot      => $document_root,
-		access_log   => "/var/log/apache2/access.metrics.log",
-		error_log    => "/var/log/apache2/error.metrics.log",
-		custom       => ["
-    WSGIDaemonProcess api user=$e3_user group=wikidev threads=5 python-path=$e3_analysis_path
-    WSGIScriptAlias / $document_root/api.wsgi
+	webserver::apache::module { "ssl": }
 
-    <Directory $document_root>
-        WSGIProcessGroup api
-        WSGIApplicationGroup %{GLOBAL}
-        Order deny,allow
-        Allow from all
-    </Directory>",
-"
-	  <Location />
-	    Order deny,allow
-	    AuthType Basic
-	    AuthName \"WMF E3 Metrics API\"
-	    AuthUserFile $e3_home/.htpasswd
-	    require valid-user
-	    Deny from all
-	    Satisfy any
-	</Location>",
-	],
+	# install metrics.wikimedia.org SSL certificate
+  install_certificate{ $site_name: }
+
+	# Set up the Python WSGI VirtualHost
+	file { "/etc/apache2/sites-available/$site_name":
+		content => template("apache/sites/${site_name}.erb"),
+		require =>  [File[$document_root], File["$e3_home/.htpasswd"], Class["webserver::apache"], Webserver::Apache::Module["wsgi"], Webserver::Apache::Module['alias'], Webserver::Apache::Module['ssl']],
+		notify  => Class['webserver::apache::service'],
 	}
-
-	# This site used to be named metrics-api.
-	# Set up a VirtualHost to handle redirects.
-	file { "/etc/apache2/sites-enabled/metrics-api.wikimedia.org":
-		content => "
-# Redirect metrics-api.wikimedia.org to $site_name.
-<VirtualHost *:80>
-    ServerName metrics-api.wikimedia.org
-    Redirect permanent / http://$site_name
-</VirtualHost>
-",
+	file { "/etc/apache2/sites-enabled/$site_name":
+		ensure  => link,
+		target  => "/etc/apache2/sites-available/${site_name}",
+		require => File["/etc/apache2/sites-available/${site_name}"],
+		notify  => Class['webserver::apache::service'],
 	}
 
 	# make access and error log for metrics-api readable by wikidev group
 	file { ["/var/log/apache2/access.metrics.log", "/var/log/apache2/error.metrics.log"]:
 		group   => "wikidev",
-		require => Webserver::Apache::Site[$site_name],
+		require => File["/etc/apache2/sites-enabled/$site_name"],
 	}
 }
 
