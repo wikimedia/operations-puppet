@@ -202,6 +202,7 @@ node "antimony.eqiad.wmnet" {
 	install_certificate{ "star.wikimedia.org": }
 
 	include standard,
+		groups::wikidev,
 		accounts::demon,
 		role::gerrit::production::replicationdest
 
