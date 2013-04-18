@@ -11,6 +11,7 @@
 # Command line option parsing library
 require 'optparse'
 require 'erb'
+require 'ostruct'
 
 # Filename of the ERB template we are going to expand
 $filename = nil
@@ -53,15 +54,18 @@ ARGV.each do |val|
 end
 p template_values
 
-def get_values(key)
-	template_values[key]
-end
 
+
+def render_erb(template, locals)
+	# make sure we can render templates with -%> closing tags.
+	# Note that this does not actually remove newlines after -%>, it just
+	# avoids a syntax error.
+	ERB.new(template, nil, '%<>-').result(OpenStruct.new(locals).instance_eval { binding })
+end
 
 # Parse template
 begin
-	template = ERB.new(File.read($filename))
-	p template.result(get_values)
+	puts render_erb(File.read($filename), template_values)
 rescue
 	p "Something went wrong, usually because you are missing a variable."
 	p $!.to_s
