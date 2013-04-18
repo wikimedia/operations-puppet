@@ -1,0 +1,70 @@
+# Note: This file is managed by Puppet.
+<%
+# ERb template variables:
+#
+#   site_name
+#   document_root
+#   e3_analysis_path
+#   metrics_user
+# 
+-%>
+
+<VirtualHost *:80>
+  # The previous ServerName was metrics-api.wikimedia.org.
+  # Redirect this to <%= site_name %>
+  ServerName metrics-api.wikimedia.org
+  Redirect permanent / https://<%= site_name %>
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName <%= site_name %>
+  ServerAdmin noc@wikimedia.org
+
+  RewriteEngine on
+  RewriteCond %{SERVER_PORT} !^443$
+  RewriteRule ^/(.*)$ https://metrics.wikimedia.org/$1 [L,R]
+
+  ErrorLog /var/log/apache2/error.metrics.log
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/access.metrics.log combined
+  ServerSignature On
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName   <%= site_name %>
+  DocumentRoot <%= document_root %>
+  ServerAdmin  noc@wikimedia.org
+  
+  SSLEngine on
+  SSLCertificateFile    /etc/ssl/certs/<%= site_name %>.pem
+  SSLCertificateKeyFile /etc/ssl/private/<%= site_name %>.key
+  SSLCACertificatePath  /etc/ssl/certs/
+
+  WSGIDaemonProcess api user=<%= metrics_user %> group=wikidev threads=5 python-path=<%= e3_analysis_path %>
+  WSGIScriptAlias / <%= document_root %>/api.wsgi
+
+  <Directory <%= document_root %>>
+      WSGIProcessGroup api
+      WSGIApplicationGroup %{GLOBAL}
+
+      Options Indexes FollowSymLinks MultiViews
+      AllowOverride None
+      Order deny,allow
+      Allow from all
+  </Directory>
+
+  <Location />
+    Order deny,allow
+    AuthType Basic
+    AuthName "WMF E3 Metrics API"
+    AuthUserFile /a/e3/.htpasswd
+    require valid-user
+    Deny from all
+    Satisfy any
+  </Location>
+
+</VirtualHost>
+
