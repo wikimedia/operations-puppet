@@ -33,7 +33,7 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's4' => {
-			'hosts' => { 'pmtpa' => [ 'db31', 'db33', 'db51', 'db65', 'db72' ],
+			'hosts' => { 'pmtpa' => [ 'db31', 'db51', 'db65', 'db72' ],
 				'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1038' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db31", 'eqiad' => "db1038" },
@@ -41,7 +41,7 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's5' => {
-			'hosts' => { 'pmtpa' => [ 'db35', 'db44', 'db45', 'db55', 'db73' ],
+			'hosts' => { 'pmtpa' => [ 'db44', 'db45', 'db55', 'db73' ],
 				'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1039', 'db1058' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db45", 'eqiad' => "db1039" },
@@ -73,11 +73,11 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		'm1' => {
-			'hosts' => { 'pmtpa' => [ 'bellin', 'blondel' ],
+			'hosts' => { 'pmtpa' => [ 'db33', 'db35' ],
 				'eqiad' => ['db1001', 'db1016'] },
 			'primary_site' => false,
-			'masters' => { 'pmtpa' => "blondel", 'eqiad' => "db1001" },
-			'snapshot' => ["db1016"],
+			'masters' => { 'pmtpa' => "db35", 'eqiad' => "db1001" },
+			'snapshot' => ["db1016", "db33"],
 			'no_master' => []
 		},
 		'm2' => {
