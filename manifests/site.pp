@@ -682,7 +682,8 @@ node /^db1057\.eqiad\.wmnet/ {
       's3' => {
         'port' => 3306,
         'innodb_log_file_size' => "500M",
-        'ram' => "24G"
+        'ram' => "24G",
+        'repl_ignore_dbs' => $::private_wikis,
       },
       's6' => {
         'port' => 3307,
@@ -1115,7 +1116,7 @@ node "hume.wikimedia.org" {
 	# These cron jobs were left behind for some reason:
 	# No external IP, so no HTTPS access
 	class { misc::maintenance::tor_exit_node: enabled => true }
-	
+
 	# foreachwikiindblist broken
 	class { misc::maintenance::geodata: enabled => true }
 
@@ -2697,7 +2698,7 @@ node "terbium.eqiad.wmnet" {
 		admins::restricted,
 		nrpe
 
-	
+
 	class { misc::maintenance::foundationwiki: enabled => true }
 	class { misc::maintenance::pagetriage: enabled => true }
 	class { misc::maintenance::translationnotifications: enabled => true }

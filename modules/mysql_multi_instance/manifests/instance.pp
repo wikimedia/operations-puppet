@@ -4,6 +4,11 @@ define mysql_multi_instance::instance(
     $port                 = $instances[$name]['port']
     $innodb_log_file_size = $instances[$name]['innodb_log_file_size']
     $ram                  = $instances[$name]['ram']
+    if has_key( $instances[$name],  'repl_ignore_dbs') {
+      $repl_ignore_dbs = $instances[$name]['repl_ignore_dbs']
+    }else {
+      $repl_ignore_dbs = false
+    }
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
     include passwords::nagios::mysql
@@ -98,6 +103,7 @@ define mysql_multi_instance::instance(
           'query_cache_type'          => 0,
           'log_slow_verbosity'        => "Query_plan",
           'optimizer_switch'          => '\'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off\'',
+          'replicate-ignore-db'       => $repl_ignore_dbs,
         },
         'mysqldump' => {
           'quick'              => true,

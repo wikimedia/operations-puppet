@@ -66,6 +66,36 @@ $domain_search = $domain
 # Default group
 $gid = 500
 
+## puppet-accessible list of private wikis
+## please keep alphabetized
+$private_wikis = [ 'arbcom_dewiki',
+		'arbcom_enwiki',
+		'arbcom_fiwiki',
+		'arbcom_nlwiki',
+		'auditcomwiki',
+		'boardgovcomwiki',
+		'boardwiki',
+		'chairwiki',
+		'chapcomwiki',
+		'checkuserwiki',
+		'collabwiki',
+		'execwiki',
+		'fdcwiki',
+		'grantswiki',
+		'ilwikimedia',
+		'internalwiki',
+		'movementroleswiki',
+		'noboard_chapterswikimedia',
+		'officewiki',
+		'ombudsmenwiki',
+		'otrs_wikiwiki',
+		'searchcomwiki',
+		'spcomwiki',
+		'stewardwiki',
+		'transitionteamwiki',
+		'wg_enwiki',
+		'wikimaniateamwiki', ]
+
 # Route list for mail coming from MediaWiki mailer
 $exim_mediawiki_route_list = $::realm ? {
 	'production' => 'smtp.pmtpa.wmnet',
