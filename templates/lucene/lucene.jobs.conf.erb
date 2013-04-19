@@ -1,0 +1,39 @@
+#######################################################################
+# WARNING: this file is managed by Puppet
+# puppet:///templates/search/lucene.jobs.conf.erb
+#
+# Configuration variables comes from role::lucene::configuration
+#######################################################################
+
+# Configuration script for lucene.jobs.sh runner.  It is sourced inside
+# the shell script and let you override the inner settings.
+<%
+
+# Fetch configuration hash from puppet scope
+full_conf = scope.lookupvar('role::lucene::configuration::lucene_jobs')
+realm  = scope.lookupvar('::realm')
+jobs_config = full_conf[realm]
+
+# Helper to convert the puppet hash to bash variables having
+# the -Xms and -Xmx settings.
+def java_opts(name, conf_hash)
+	opts = ''
+
+	heap_init = conf_hash.fetch( 'java_heap_size_initial' )
+	heap_max  = conf_hash.fetch( 'java_heap_size_maximum' )
+
+	# Dont forget to add a space between options =)
+	opts += "-Xms#{heap_init} " if heap_init and ! heap_init.empty?
+	opts += "-Xms#{heap_max} "  if heap_max  and ! heap_max.empty?
+
+	if opts.empty?
+		return "##{name}=''"  # Variable commented out
+	else
+		return "#{name}='#{opts}'"
+	end
+end
+-%>
+<%= java_opts( 'JAVA_OPTS_IMPORTER', jobs_config['importer']) %>
+<%= java_opts( 'JAVA_OPTS_PREFIXINDEXBUILDER', jobs_config['prefixindexbuilder']) %>
+<%= java_opts( 'JAVA_OPTS_RELATEDBUILDER', jobs_config['relatedbuilder']) %>
+<%= java_opts( 'JAVA_OPTS_SUGGESTBUILDER', jobs_config['suggestbuilder']) %>

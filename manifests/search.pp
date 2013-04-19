@@ -1,4 +1,5 @@
 # search.pp
+# vim: set noet :
 
 # Virtual resource for the monitoring server
 @monitor_group { "lucene": description => "pmtpa search servers" }
@@ -74,6 +75,13 @@ class lucene {
 					source => "puppet:///files/logrotate/search-indexer",
 					ensure => present;
 				}
+			file { '/a/search/conf/lucene.jobs.conf':
+				ensure => present,
+				owner  => root,
+				group  => root,
+				mode   => 0444,
+				content => template('lucene/lucene.jobs.conf.erb'),
+			}
 		}
 
 		# Conf for sync-conf-from-common cronjob
