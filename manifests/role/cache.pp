@@ -154,6 +154,7 @@ class role::cache {
 						'cp1034.eqiad.wmnet',
 						'cp1035.eqiad.wmnet',
 						'cp1036.eqiad.wmnet',
+						'dysprosium.eqiad.wmnet',
 					],
 					"esams-varnish" => [	# FIXME: rename after Squid decommissioning
 						#'cp3003.esams.wikimedia.org',
