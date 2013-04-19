@@ -336,16 +336,6 @@ acl carrier_central_african_republic {
 	"41.223.184.152"/30;
 }
 
-# for test.* routing, FIXME
-backend test_wikipedia {
-	.host = "srv193.pmtpa.wmnet";
-	.port = "80";
-	.connect_timeout = 5s;
-	.first_byte_timeout = 35s;
-	.between_bytes_timeout = 2s;
-	.max_connections = 20;
-}
-
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
 	   The values for the X-CS headers are obtained from
@@ -620,11 +610,6 @@ sub vcl_recv {
 	unset req.http.X-DfltPage;
 
 	call device_detection;
-
-	if ( req.http.host ~ "^test\." ) {
-		set req.backend = test_wikipedia;
-		return (pass);
-	}
 }
 
 sub vcl_fetch {
