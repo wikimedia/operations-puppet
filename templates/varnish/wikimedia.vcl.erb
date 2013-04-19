@@ -115,20 +115,31 @@ probe swift {
 # Backends
 
 # List of Puppet generated backends
-<% varnish_backends.each do |backend| -%>
-<% if backend =~ /^[0-9\.]+$/ -%>
-backend ipv4_<%= backend.gsub(".", "_") %> {
-<% else -%>
-backend <%= backend.split(".")[0].gsub("-", "_") %> {
-<% end -%>
+<%
+varnish_backends.each do |backend|
+	if varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'servers' key is a regexp against the FQDN
+		be_options = Hash.new()
+		varnish_backend_options.each do |options|
+			if scope.lookupvar("::fqdn") =~ Regexp.new(options.fetch("servers", "^.*$"))
+				be_options = options
+				break
+			end
+		end
+	else
+		be_options = varnish_backend_options
+	end
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+backend <%= name %> {
 	.host = "<%= backend %>";
-	.port = "<%= varnish_backend_options.fetch("port", "80") %>";
-	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
-	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
-	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
-	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
-<% if varnish_backend_options.has_key?("probe") -%>
-	.probe = <%= varnish_backend_options["probe"] %>;
+	.port = "<%= be_options.fetch("port", "80") %>";
+	.connect_timeout = <%= be_options.fetch("connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= be_options.fetch("first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= be_options.fetch("between_bytes_timeout", "2s") %>;
+	.max_connections = <%= be_options.fetch("max_connections", "100") %>;
+<% if be_options.has_key?("probe") -%>
+	.probe = <%= be_options["probe"] %>;
 <% end -%>
 }
 
