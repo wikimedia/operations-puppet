@@ -2593,6 +2593,7 @@ node "stat1.wikimedia.org" {
 		accounts::abartov, # RT 4106
 		accounts::aengels,
 		accounts::akhanna,
+		accounts::bsitu,  # RT 4959
 		accounts::dandreescu, # RT 3540
 		accounts::diederik,
 		accounts::dsc,
@@ -2608,10 +2609,13 @@ node "stat1.wikimedia.org" {
 		accounts::jdlrobson,
 		accounts::jgonera,
 		accounts::jmorgan,
+		accounts::kaldari,  # RT 4959
+		accounts::lwelling, # RT 4959
 		accounts::spage,
 		accounts::maryana, # RT 3517
 		accounts::mflaschen, #RT 4796
 		accounts::mgrover, #RT 4600
+		accounts::mlitn,  # RT 4959
 		accounts::olivneh, # RT 3451
 		accounts::otto,
 		accounts::reedy,
