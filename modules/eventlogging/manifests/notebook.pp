@@ -33,6 +33,7 @@ class eventlogging::notebook(
 	$ipython_dir = '/var/lib/ipython',
 	$ipython_profile = 'nbserver',
 	$ipython_user = 'ipython',
+	$graph_dir = '/var/lib/ipython/graphs',
 	$notebook_dir = '/var/lib/ipython/notebooks',
 	$notebook_ip = '*',
 	$notebook_port = 8888,
@@ -63,6 +64,14 @@ class eventlogging::notebook(
 		require => Systemuser[$ipython_user],
 	}
 
+	file { $graph_dir:
+		ensure  => directory,
+		owner   => $ipython_user,
+		group   => $ipython_user,
+		mode    => '0664',
+		require => Systemuser[$ipython_user],
+	}
+
 	exec { "Create IPython profile ${ipython_profile}":
 		command     => "/usr/bin/ipython profile create ${ipython_profile} --ipython-dir=\"${ipython_dir}\"",
 		creates     => "${ipython_dir}/profile_${ipython_profile}",
@@ -82,7 +91,7 @@ class eventlogging::notebook(
 
 	file { '/etc/supervisor/conf.d/notebook.conf':
 		content => template('eventlogging/notebook.conf.erb'),
-		require => [ Package['ipython-notebook'], File[$notebook_dir] ],
+		require => [ Package['ipython-notebook'], File[$notebook_dir], File[$graph_dir] ],
 		notify  => Service['supervisor'],
 		mode    => '0444',
 	}
