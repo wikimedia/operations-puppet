@@ -15,6 +15,11 @@ JAVA_OPTS_PREFIXINDEXBUILDER='-Xmx4000m'
 JAVA_OPTS_RELATEDBUILDER='-Xmx4000m'
 JAVA_OPTS_SUGGESTBUILDER='-Xmx8000m'
 
+# load configuration file maintained by puppet
+if [ -s "$confs/lucene.jobs.conf" ]; then
+	. "$confs/lucene.jobs.conf"
+fi
+
 # detect realm (production or labs)
 WMF_REALM='production'
 if [ -f /etc/wikimedia-realm ]
