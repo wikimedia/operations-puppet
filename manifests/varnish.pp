@@ -85,7 +85,7 @@ class varnish {
 		$varnish_port = $port
 		$varnish_admin_port = $admin_port
 		$varnish_storage = $storage
-		$varnish_backends = $backends ? { undef => unique(flatten(values($directors))), default => $backends }
+		$varnish_backends = $backends ? { undef => sort(unique(flatten(values($directors)))), default => $backends }
 		$varnish_directors = $directors
 		$varnish_backend_options = $backend_options
 		# $cluster_option is referenced directly
