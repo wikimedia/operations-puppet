@@ -3,6 +3,10 @@
 sub vcl_recv {
 	call vcl_recv_purge;
 
+	if ( req.http.host ~ "^test\." ) {
+		set req.backend = test_wikipedia;
+		return (pass);
+	}
 	if (req.url ~ "^/w/api.php") {
 		set req.backend = api;
 	}

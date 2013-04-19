@@ -691,6 +691,7 @@ class role::cache {
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['apaches'][$::mw_primary],
 				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
 			director_options => {
 				'retries' => 2,
@@ -698,13 +699,18 @@ class role::cache {
 			vcl_config => {
 				'retry5xx' => 1,
 			},
-			backend_options => {
-				'port' => 80,
-				'connect_timeout' => "5s",
-				'first_byte_timeout' => "35s",
-				'between_bytes_timeout' => "4s",
-				'max_connections' => 600,
+			backend_options => [
+				{
+					'backend_match' => "^srv193\.pmtpa\.wmnet$",
+					'max_connections' => 20,
 				},
+				{
+					'port' => 80,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 600,
+				}],
 			xff_sources => $network::constants::all_networks
 		}
 
