@@ -8,4 +8,4 @@ directory = <%= ipython_dir %>
 redirect_stderr = true
 stdout_logfile = /var/log/supervisor/%(program_name)s.log
 stderr_logfile = NONE
-environment = IPYTHONDIR=<%= ipython_dir %>
+environment = IPYTHONDIR=<%= ipython_dir %>,MPLCONFIGDIR=<%= graph_dir %>
