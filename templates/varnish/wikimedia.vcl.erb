@@ -1,5 +1,20 @@
 # Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
 # This file is managed by Puppet!
+<%
+def backend_option(backend, option, default)
+	if varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
+		varnish_backend_options.each do |be_options|
+			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
+				return be_options.fetch(option, default)
+			end
+		end
+		return default
+	else
+		return varnish_backend_options.fetch(option, default)
+	end
+end
+-%>
 
 <% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
 include "geoip.inc.vcl";
@@ -115,20 +130,20 @@ probe swift {
 # Backends
 
 # List of Puppet generated backends
-<% varnish_backends.each do |backend| -%>
-<% if backend =~ /^[0-9\.]+$/ -%>
-backend ipv4_<%= backend.gsub(".", "_") %> {
-<% else -%>
-backend <%= backend.split(".")[0].gsub("-", "_") %> {
-<% end -%>
+<%
+varnish_backends.each do |backend|
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+	probe = backend_option(backend, "probe", nil)
+-%>
+backend <%= name %> {
 	.host = "<%= backend %>";
-	.port = "<%= varnish_backend_options.fetch("port", "80") %>";
-	.connect_timeout = <%= varnish_backend_options.fetch("connect_timeout", "2s") %>;
-	.first_byte_timeout = <%= varnish_backend_options.fetch("first_byte_timeout", "35s") %>;
-	.between_bytes_timeout = <%= varnish_backend_options.fetch("between_bytes_timeout", "2s") %>;
-	.max_connections = <%= varnish_backend_options.fetch("max_connections", "100") %>;
-<% if varnish_backend_options.has_key?("probe") -%>
-	.probe = <%= varnish_backend_options["probe"] %>;
+	.port = "<%= backend_option(backend, "port", "80") %>";
+	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
+	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
+<% if probe -%>
+	.probe = <%= probe %>;
 <% end -%>
 }
 
@@ -141,16 +156,15 @@ director <%= director %> <%= director_type %> {
 <% director_options.each_pair do |option,value| -%>
 	.<%= option %> = <%= value %>;
 <% end -%>
-<% varnish_directors[director].each do |backend| -%>
+<%
+	varnish_directors[director].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
 	{
-<% if backend =~ /^[0-9\.]+$/ -%>
-		.backend = ipv4_<%= backend.gsub(".", "_") %>;
-<% else -%>
-		.backend = <%= backend.split(".")[0].gsub("-", "_") %>;
-<% end -%>
-		.weight = <%= varnish_backend_options.fetch("weight", 10) %>;
+		.backend = <%= name %>;
+		.weight = <%= backend_option(backend, "weight", 10) %>;
 	}
-<% end -%>
+<% 	end -%>
 }
 <% end -%>
 
