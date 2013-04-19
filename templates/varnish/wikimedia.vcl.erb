@@ -3,14 +3,15 @@
 <%
 def backend_option(backend, option, default)
 	if varnish_backend_options.kind_of?(Array)
-		r = default
 		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
 		varnish_backend_options.each do |be_options|
 			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
-				r = be_options.fetch(option, r)
+				if be_options.has_key?(option)
+					return be_options[option]
+				end
 			end
 		end
-		return r
+		return default
 	else
 		return varnish_backend_options.fetch(option, default)
 	end
