@@ -10,6 +10,11 @@ ls2="$base/lucene-search"
 MWinstall="/usr/local/apache"
 dblist="$MWinstall/common/all.dblist"
 
+JAVA_OPTS_IMPORTER='-Xms128m -Xmx2000m'
+JAVA_OPTS_PREFIXINDEXBUILDER='-Xmx4000m'
+JAVA_OPTS_RELATEDBUILDER='-Xmx4000m'
+JAVA_OPTS_SUGGESTBUILDER='-Xmx8000m'
+
 # detect realm (production or labs)
 WMF_REALM='production'
 if [ -f /etc/wikimedia-realm ]
@@ -43,8 +48,8 @@ function build-new {
 function import-file {
 	echo "Importing $2 ..."
 	# Syntax: import-file <xmldump> <dbname>
-	cd $ls2 && 
-	java -Xms128m -Xmx2000m -cp $ls2/LuceneSearch.jar org.wikimedia.lsearch.importer.BuildAll $1 $2
+	cd $ls2 &&
+	java $JAVA_OPTS_IMPORTER -cp $ls2/LuceneSearch.jar org.wikimedia.lsearch.importer.BuildAll $1 $2
 }
 
 function import-db {
@@ -79,17 +84,17 @@ function import-private {
 }
 
 function indexer-cron {
-	cd $ls2 && 
-	java -Xmx8000m -cp LuceneSearch.jar org.wikimedia.lsearch.spell.SuggestBuilder -l >> $base/log/log-spell 2>&1 &
+	cd $ls2 &&
+	java $JAVA_OPTS_SUGGESTBUILDER -cp LuceneSearch.jar org.wikimedia.lsearch.spell.SuggestBuilder -l >> $base/log/log-spell 2>&1 &
 
 	cd $ls2 &&
-	java -Xmx4000m -cp LuceneSearch.jar org.wikimedia.lsearch.related.RelatedBuilder -l >> $base/log/log-related 2>&1 &
+	java $JAVA_OPTS_RELATEDBUILDER -cp LuceneSearch.jar org.wikimedia.lsearch.related.RelatedBuilder -l >> $base/log/log-related 2>&1 &
 }
 
 function build-prefix {
 	cd $ls2 &&
 	java -cp LuceneSearch.jar org.wikimedia.lsearch.util.Snapshot -pre -p *.prefix.pre >> $base/log/log-prefix 2>&1 &&
-	java -Xmx4000m -cp LuceneSearch.jar org.wikimedia.lsearch.prefix.PrefixIndexBuilder -l -s >> $base/log/log-prefix 2>&1 &
+	java $JAVA_OPTS_PREFIXINDEXBUILDER -cp LuceneSearch.jar org.wikimedia.lsearch.prefix.PrefixIndexBuilder -l -s >> $base/log/log-prefix 2>&1 &
 }
 
 function inc-updater-start {
