@@ -1,5 +1,13 @@
-# Monitor MediaWiki errors using Ganglia
-class eventlogging::mediawiki_errors {
+# == Class: eventlogging::mediawiki_errors
+#
+# Monitors MediaWiki exceptions and fatals using Ganglia.
+#
+# === Parameters
+#
+# [*port*]
+#   UDP port to listen on.
+#
+class eventlogging::mediawiki_errors($port = 8423) {
 
 	file { '/usr/lib/ganglia/python_modules/mwerrors.py':
 		ensure  => present,
@@ -11,7 +19,7 @@ class eventlogging::mediawiki_errors {
 	}
 
 	file { '/etc/supervisor/conf.d/mwerrors.conf':
-		source  => 'puppet:///modules/eventlogging/mwerrors.conf',
+		content => template('eventlogging/mwerrors.conf.erb'),
 		require => [ Package['supervisor'], Systemuser['eventlogging'] ],
 		notify  => Service['supervisor'],
 		mode    => '0444',
@@ -19,7 +27,7 @@ class eventlogging::mediawiki_errors {
 
 	file { '/etc/ganglia/conf.d/mwerrors.pyconf':
 		ensure   => present,
-		source   => 'puppet:///modules/eventlogging/mwerrors.pyconf',
+		content  => template('eventlogging/mwerrors.pyconf.erb'),
 		require  => [
 			File['/etc/ganglia/conf.d'],
 			File['/usr/lib/ganglia/python_modules/mwerrors.py'],
