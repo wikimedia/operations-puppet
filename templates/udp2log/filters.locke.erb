@@ -7,10 +7,10 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /a/squid/packet-loss.log
 
 ## Fundraising
 # Landing pages
-pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.tab.log
+#pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> /a/squid/fundraising/logs/landingpages.tab.log
 
 # Banner Impressions
-pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.tab.log
+#pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> /a/squid/fundraising/logs/bannerImpressions-sampled100.tab.log
 
 
 
