@@ -413,6 +413,7 @@ class role::cache {
 				},
 				"esams" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
+					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
 				}
 			}
 
@@ -420,12 +421,10 @@ class role::cache {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
-				$upstream_directors = {}
 			} else {
 				$storage_size_main = 300
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
-				$upstream_directors = { "eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad'] }
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
@@ -473,15 +472,20 @@ class role::cache {
 					'retry5xx' => 0,
 					'cache4xx' => "1m",
 					'cluster_tier' => $cluster_tier,
-					'upstream_directors' => $upstream_directors
 				},
-				backend_options => {
-					'port' => 80,
-					'connect_timeout' => "5s",
-					'first_byte_timeout' => "35s",
-					'between_bytes_timeout' => "4s",
-					'max_connections' => 1000,
-				},
+				backend_options => [
+					{
+						'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+						'port' => 3128,
+						'probe' => "varnish",
+					},
+					{
+						'port' => 80,
+						'connect_timeout' => "5s",
+						'first_byte_timeout' => "35s",
+						'between_bytes_timeout' => "4s",
+						'max_connections' => 1000,
+					}],
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
 			}

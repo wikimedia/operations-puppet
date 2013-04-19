@@ -1,57 +1,6 @@
 # Varnish VCL include file for upload backends
 
 import std;
-<%
-def backend_option(backend, option, default)
-	if varnish_backend_options.kind_of?(Array)
-		r = default
-		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
-		varnish_backend_options.each do |be_options|
-			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
-				r = be_options.fetch(option, r)
-			end
-		end
-		return r
-	else
-		return varnish_backend_options.fetch(option, default)
-	end
-end
--%>
-
-<% if vcl_config.fetch("cluster_tier", "1") == "2" -%>
-# Define backends and directors specific for upload
-
-# List of Puppet generated backends
-
-<%
-	vcl_config.fetch("upstream_directors", {}).values.flatten.sort.each do |backend|
-		name = backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
--%>
-backend <%= name %> {
-	.host = "<%= backend %>";
-	.port = "3128";
-	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
-	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
-	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
-	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
-	.probe = varnish;
-}
-<% 	end -%>
-
-# Directors
-<%	vcl_config.fetch("upstream_directors", {}).each_pair do |director,backends| -%>
-director <%= director %> chash {
-<%
-		backends.sort.each do |backend|
-			name = backend =~ /^[0-9]\.]+$/ ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
--%>
-	{	.backend = <%= name %>;
-		.weight = <%= backend_option(backend, "weight", 20) %>;
-	}
-<%		end -%>
-}
-<%	end -%>
-<% end -%>
 
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
