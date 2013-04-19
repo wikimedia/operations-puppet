@@ -533,7 +533,7 @@ node /^db29\.pmtpa\.wmnet/{
 		ntp::client,
 		admins::roots,
 		accounts::pgehres
-	package { [ 'php5', 'php5-cli', 'php5-mysql']:
+	package { [ 'php5', 'php5-cli', 'php5-mysql', 'python-sqlalchemy']:
 		ensure => latest;
 	}
 }
