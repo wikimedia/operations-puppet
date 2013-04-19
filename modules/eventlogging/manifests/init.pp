@@ -12,7 +12,7 @@ class eventlogging {
 	}
 
 	class { 'mongodb':
-		dbpath  => '/a/mongodb',
+		dbpath  => '/srv/mongodb',
 		bind_ip => false,
 	}
 
