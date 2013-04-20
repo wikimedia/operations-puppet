@@ -2348,6 +2348,7 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 		ssh_authorized_key {
 			'dan@DAndreescu-ThinkPad-T420s (disabled)':
+				name    => 'dan@DAndreescu-ThinkPad-T420s',
 				ensure  => absent,
 				user    => $username,
 				type    => 'ssh-rsa',
