@@ -757,7 +757,7 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
 		generic::sysctl::high-bandwidth-rsync,
 		admins::mortals,
 		# RT 4312
-		accounts::dandreescu
+		accounts::milimetric
 
 	include role::logging::udp2log::emery
 }
@@ -901,7 +901,7 @@ node "formey.wikimedia.org" {
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
-		accounts::dandreescu
+		accounts::milimetric
 
 	# gadolinium hosts the separate nginx udp2log instance.
 	include role::logging::udp2log::nginx
@@ -995,7 +995,7 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 	include
 		accounts::dsc,
 		accounts::datasets,
-		accounts::dandreescu,
+		accounts::milimetric,
 		misc::udp2log::utilities,
 		misc::udp2log
 
@@ -2101,7 +2101,7 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		accounts::dsc,
 		accounts::diederik,
 		# RT 4312
-		accounts::dandreescu
+		accounts::milimetric
 
 	include
 		misc::squid-logging::multicast-relay,
@@ -2594,7 +2594,7 @@ node "stat1.wikimedia.org" {
 		accounts::aengels,
 		accounts::akhanna,
 		accounts::bsitu,  # RT 4959
-		accounts::dandreescu, # RT 3540
+		accounts::milimetric, # RT 3540
 		accounts::diederik,
 		accounts::dsc,
 		accounts::dartar,
@@ -2638,7 +2638,7 @@ node "stat1001.wikimedia.org" {
 		accounts::diederik,
 		accounts::otto,
 		accounts::dsc,
-		accounts::dandreescu,
+		accounts::milimetric,
 		accounts::rfaulk, #rt4258
 		# RT 4687
 		accounts::ypanda

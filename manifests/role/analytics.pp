@@ -44,12 +44,12 @@ class role::analytics::users {
 		accounts::erosen,
 		accounts::olivneh,
 		accounts::erik,
-		accounts::dandreescu,
+		accounts::milimetric,
 		accounts::spetrea # per RT4402
 
 	# add Analytics team members to the stats group so they can
 	# access data group owned by 'stats'.
-	User<|title == dandreescu|>  { groups +> [ "stats" ] }
+	User<|title == milimetric|>  { groups +> [ "stats" ] }
 	User<|title == dartar|>      { groups +> [ "stats" ] }
 	User<|title == dsc|>         { groups +> [ "stats" ] }
 	User<|title == diederik|>    { groups +> [ "stats" ] }
