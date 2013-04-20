@@ -2337,7 +2337,7 @@ class accounts {
 	# so this will simplify many things.
 	class dandreescu inherits baseaccount {
 		$username = "dandreescu"
-		$realname = "Dan Andreescu"
+		$realname = "Dan Andreescu (disabled)"
 		$uid = 610
 		$enabled = false
 
