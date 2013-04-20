@@ -6,6 +6,7 @@
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.planet.<%= planet_domain_name %>.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.planet.<%= planet_domain_name %>.key
+	SSLCACertificatePath /etc/ssl/certs/
 
 	RewriteEngine on
 	RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301]
