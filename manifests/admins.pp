@@ -2331,21 +2331,16 @@ class accounts {
 		}
 	}
 
-
-	# Dan Andreescu's user 'dandreescu' user has been disabled
-	# in favor of his 'milimetric' user.  He is milimetric in LDAP,
-	# so this will simplify many things.
 	class dandreescu inherits baseaccount {
-		$username = "milimetric"
+		$username = "dandreescu"
 		$realname = "Dan Andreescu"
 		$uid = 610
-		$enabled = false
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 			ssh_authorized_key {
 				"dan@DAndreescu-ThinkPad-T420s":
-					ensure	=> absent,
+					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx";
@@ -2752,33 +2747,6 @@ class accounts {
 		}
 	}
 
-	# Dan Andreescu was previously the 'dandreescu' user.
-	# dandreescu has been removed for the milimetric user.
-	# milimetric exists in LDAP, and using this account simplifies things.
-	class milimetric inherits baseaccount {
-		# include the disabled dandreescu user.
-		# I do this here so that we don't have to maintain
-		# inclusions of dandreescu elsewhere in order to
-		# ensure that it is absent.
-		include dandreescu
-
-		$username = 'milimetric'
-		$realname = 'Dan Andreescu'
-		$uid      = 640
-
-		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
-		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname] }
-			ssh_authorized_key {
-				'dan@DAndreescu-ThinkPad-T420s':
-					ensure => present,
-					user   => $username,
-					type   => 'ssh-rsa',
-					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx';
-			}
-		}
-	}
-
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
 		$username = "l10nupdate"
@@ -2891,7 +2859,7 @@ class admins::restricted {
 	include accounts::avar
 	include accounts::bastique # access revoked
 	include accounts::dab
-	include accounts::milimetric
+	include accounts::dandreescu
 	include accounts::daniel
 	include accounts::dartar
 	include accounts::diederik
