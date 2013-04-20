@@ -1,0 +1,24 @@
+# vim: set ft=upstart:
+
+# Upstart job configuration for IPython Notebook
+# This file is managed by Puppet
+
+description "IPython Notebook"
+author "Ori Livneh <ori@wikimedia.org>"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid <%= ipython_user %>
+setgid <%= ipython_dir %>
+
+chdir "<%= ipython_dir %>"
+
+env HOME="<%= ipython_dir %>"
+env IPYTHONDIR="<%= ipython_dir %>"
+env MPLCONFIGDIR="<%= graph_dir %>"
+
+exec ipython notebook \
+    --ipython-dir="<%= ipython_dir %>" \
+    --profile="<%= ipython_profile %>"
+respawn
