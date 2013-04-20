@@ -89,11 +89,22 @@ class eventlogging::notebook(
 		mode    => '0444',
 	}
 
-	file { '/etc/supervisor/conf.d/notebook.conf':
-		content => template('eventlogging/notebook.conf.erb'),
-		require => [ Package['ipython-notebook'], File[$notebook_dir], File[$graph_dir] ],
-		notify  => Service['supervisor'],
-		mode    => '0444',
+	file { '/etc/init.d/ipython-notebook':
+		ensure => link,
+		target => '/lib/init/upstart-job',
+	}
+
+	file { '/etc/init/ipython-notebook.conf':
+		content => template('eventlogging/ipython-notebook.conf.erb'),
+		require => File['/etc/init.d/ipython-notebook'],
+		notify  => Exec['start ipython-notebook'],
+	}
+
+	exec { 'Start IPython Notebook':
+		command     => '/sbin/start ipython-notebook',
+		refreshonly => true,
+		require     => [ Package['ipython-notebook'], File[$notebook_dir], File[$graph_dir] ],
+		returns     => [ 0, 1 ],  # OK if "Job is already running"
 	}
 
 }
