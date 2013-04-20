@@ -2336,20 +2336,23 @@ class accounts {
 	# in favor of his 'milimetric' user.  He is milimetric in LDAP,
 	# so this will simplify many things.
 	class dandreescu inherits baseaccount {
-		$username = "milimetric"
+		$username = "dandreescu"
 		$realname = "Dan Andreescu"
 		$uid = 610
 		$enabled = false
+
+		# I don't want dandreescu's home directory to be deleted.
+		# Setting $manage_home to false manually and also manually
+		# ensuring that the ssh key is absent for the dandreescu user.
+		$manage_home = false
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
-		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname] }
-			ssh_authorized_key {
-				"dan@DAndreescu-ThinkPad-T420s":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx";
-			}
+		ssh_authorized_key {
+			'dan@DAndreescu-ThinkPad-T420s':
+				ensure  => absent,
+				user    => $username,
+				type    => 'ssh-rsa',
+				key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDAOgZWjHAoVJF6hJCrDUjVuiZiNeW1GudEfkFJS4ORo+WpVaMjwrILGThrriIYZNEIQNEf4l+7ht2l7/9g7e0j56NxXX3NJftJWRKOk1d7s57CKZAdvcbQ4G+L/Tyed+qZj9JurHdMstcVo50nd6S/UvbvDAdieXHemhZLtFcqPBQj66XDJkGzm0U9eW49lB1qCzcQnsNQbxRbV39RsSgIU9YHeGWMsglI227nZX6Lvd6/Vvz2VsFR5xtdPBHQ170XqbRylZQaBaR1lmRz9Aa7dSKSbNgGYAUNkzijILhBccJK1Iulmh/yDFPm6ZVWFaezinbCspXnvCIdJfG9EoLx',
+				require => Unixaccount[$realname],
 		}
 	}
 
