@@ -2347,7 +2347,7 @@ class accounts {
 		$manage_home = false
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 		ssh_authorized_key {
-			'dan@DAndreescu-ThinkPad-T420s':
+			'dan@DAndreescu-ThinkPad-T420s (disabled)':
 				ensure  => absent,
 				user    => $username,
 				type    => 'ssh-rsa',
