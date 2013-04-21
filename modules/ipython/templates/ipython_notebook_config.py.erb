@@ -5,9 +5,9 @@ c = get_config()
 c.IPKernelApp.pylab = 'inline'
 c.NotebookApp.enable_mathjax = True
 c.NotebookApp.open_browser = False
-c.NotebookApp.ip = '<%= notebook_ip %>'
-c.NotebookApp.port = <%= notebook_port %>
-c.NotebookManager.notebook_dir = '<%= notebook_dir %>'
+c.NotebookApp.ip = '<%= @ip %>'
+c.NotebookApp.port = <%= @port %>
+c.NotebookManager.notebook_dir = '<%= @notebookdir %>'
 
 c.InteractiveShellApp.exec_files = [
 <% exec_files.each do |file| -%>

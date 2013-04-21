@@ -3,9 +3,7 @@
 class eventlogging( $archive_destinations = [] ) {
 
 	class { 'eventlogging::supervisor': }
-	class { 'eventlogging::notebook':
-		exec_files => [ '/var/lib/ipython/helpers/helpers.py' ],
-	}
+	class { 'eventlogging::analysis': }
 	class { 'eventlogging::ganglia': }
 	class { 'eventlogging::archive':
 		destinations => $archive_destinations,
