@@ -3,9 +3,7 @@
 class eventlogging {
 
 	class { 'eventlogging::supervisor': }
-	class { 'eventlogging::notebook':
-		exec_files => [ '/var/lib/ipython/helpers/helpers.py' ],
-	}
+	class { 'eventlogging::analysis': }
 	class { 'eventlogging::ganglia': }
 	class { 'eventlogging::archive':
 		destinations => [ 'stat1.wikimedia.org' ],
