@@ -1,0 +1,37 @@
+== Puppet module for IPython Notebook
+
+=== What is it?
+
+This folder contains a Puppet module for configuring an integrated, web-based
+numeric computation environment (like Mathematica), based on PyLab and IPython
+Notebook.
+
+See RDoc in manifests/init.pp for a listing of various configuration options
+and their default values.
+
+
+=== Usage
+
+To use the default options, you can simply add this to your manifest:
+
+	class { 'ipython_notebook': }
+
+
+=== Limitations
+
+ * No support for IPython Cluster at the moment.
+ * Somewhat limited configurability. (IPython has a lot of options..)
+ * Ubuntu-specific, as it depends on Upstart and /lib/init/upstart-job.
+
+
+=== Links
+
+ * http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html
+ * http://www.scipy.org/PyLab
+
+
+=== Copyright
+
+  Written by Ori Livneh <ori@wikimedia.org>
+  Copyright (C) 2013 Wikimedia Foundation
+  Licensed under the GNU Public License, version 2 or later.

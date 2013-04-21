@@ -9,16 +9,16 @@ author "Ori Livneh <ori@wikimedia.org>"
 start on (local-filesystems and net-device-up IFACE!=lo)
 stop on runlevel [!2345]
 
-setuid <%= ipython_user %>
-setgid <%= ipython_dir %>
+setuid <%= @user %>
+setgid <%= @user %>
 
-chdir "<%= ipython_dir %>"
+chdir "<%= @ipython_dir %>"
 
-env HOME="<%= ipython_dir %>"
-env IPYTHONDIR="<%= ipython_dir %>"
-env MPLCONFIGDIR="<%= graph_dir %>"
+env HOME="<%= @ipython_dir %>"
+env IPYTHONDIR="<%= @ipython_dir %>"
+env MPLCONFIGDIR="<%= @matplotlib_dir_real %>"
 
 exec ipython notebook \
-    --ipython-dir="<%= ipython_dir %>" \
-    --profile="<%= ipython_profile %>"
+    --ipython-dir="<%= @ipython_dir %>" \
+    --profile="<%= @ipython_profile %>"
 respawn

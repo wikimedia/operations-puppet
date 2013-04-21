@@ -3,12 +3,13 @@
 class eventlogging {
 
 	class { 'eventlogging::supervisor': }
-	class { 'eventlogging::notebook':
-		exec_files => [ '/var/lib/ipython/helpers/helpers.py' ],
-	}
 	class { 'eventlogging::ganglia': }
 	class { 'eventlogging::archive':
 		destinations => [ 'stat1.wikimedia.org' ],
+	}
+
+	class { 'ipython_notebook':
+		exec_files => [ '/var/lib/ipython/helpers/helpers.py' ],
 	}
 
 	class { 'mongodb':
