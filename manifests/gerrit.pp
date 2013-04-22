@@ -404,7 +404,6 @@ class gerrit::crons {
 # replication. See role::gerrit::production::replicationdest
 class gerrit::replicationdest( $sshkey, $extra_groups = undef, $slaveuser = "gerritslave" ) {
   systemuser { $slaveuser:
-    name => $slaveuser,
     groups => $extra_groups,
     shell => "/bin/bash";
   }
