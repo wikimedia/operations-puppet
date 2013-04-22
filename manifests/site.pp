@@ -248,10 +248,6 @@ node "beryllium.wikimedia.org" {
 	include newstandard
 }
 
-node "boron.wikimedia.org" {
-	include newstandard
-}
-
 node "brewster.wikimedia.org" {
 
 	$tftpboot_server_type = 'master'
@@ -2484,10 +2480,10 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
 	include role::protoproxy::ssl
 }
 
-#sq31-sq36 are api squids
-node /sq(3[1-6])\.wikimedia\.org/ {
+#sq36 is api squids, sq31-35 are decom
+node /sq36\.wikimedia\.org/ {
 	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-	if $hostname =~ /^sq3[15]$/ {
+	if $hostname =~ /^sq3[6]$/ {
 		$ganglia_aggregator = true
 	}
 	include role::cache::text
