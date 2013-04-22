@@ -476,10 +476,6 @@ class role::cache {
 				},
 				backend_options => [
 					{
-						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 40,
-					},
-					{
 						'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
 						'port' => 3128,
 						'probe' => "varnish",
@@ -508,20 +504,15 @@ class role::cache {
 					'cache4xx' => "1m",
 					'cluster_tier' => $cluster_tier,
 				},
-				backend_options => [
-					{
-						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 40,
-					},
-					{
-						'port' => 3128,
-						'connect_timeout' => "5s",
-						'first_byte_timeout' => "35s",
-						'between_bytes_timeout' => "2s",
-						'max_connections' => 100000,
-						'probe' => "varnish",
-						'weight' => 20,
-					}],
+				backend_options => {
+					'port' => 3128,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "2s",
+					'max_connections' => 100000,
+					'probe' => "varnish",
+					'weight' => 20,
+				},
 				xff_sources => $network::constants::all_networks,
 			}
 
