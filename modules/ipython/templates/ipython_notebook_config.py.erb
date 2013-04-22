@@ -7,6 +7,13 @@ c.NotebookApp.enable_mathjax = True
 c.NotebookApp.open_browser = False
 c.NotebookApp.ip = '<%= @ip %>'
 c.NotebookApp.port = <%= @port %>
+<% if @certfile -%>
+c.NotebookApp.certfile = u'<%= @certfile %>'
+<% end -%>
+<% if @password -%>
+c.NotebookApp.password = u'sha1:<%= scope.function_sha1([password]) %>'
+<% end -%>
+
 c.NotebookManager.notebook_dir = '<%= @notebookdir %>'
 
 c.InteractiveShellApp.exec_files = [
