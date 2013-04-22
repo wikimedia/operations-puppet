@@ -43,14 +43,11 @@ class misc::irc::wikibugs {
   file {
     '/var/lib/wikibugs':
       ensure => directory;
-    '/var/lib/wikibugs/bin':
-      ensure => directory;
     '/var/lib/wikibugs/log':
       ensure => directory;
   }
 
-  User['wikibugs'] -> File['/var/lib/wikibugs'] ->
-  File['/var/lib/wikibugs/bin'] -> File['/var/lib/wikibugs/log']
+  User['wikibugs'] -> File['/var/lib/wikibugs'] -> File['/var/lib/wikibugs/log']
 
   git::clone { 'wikibugs' :
     directory => '/var/lib/wikibugs/bin',
