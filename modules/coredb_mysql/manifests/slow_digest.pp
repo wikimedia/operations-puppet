@@ -2,7 +2,7 @@
 class coredb_mysql::slow_digest {
 	include passwords::mysql::querydigest
 	$mysql_user = "ops"
-	$digest_host = "db9.pmtpa.wmnet"
+	$digest_host = "db1001.eqiad.wmnet"
 	$digest_db = "query_digests"
 
 	file {
