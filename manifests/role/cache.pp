@@ -418,6 +418,7 @@ class role::cache {
 				}
 			}
 
+			$backend_weight = 20
 			if $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
@@ -490,7 +491,7 @@ class role::cache {
 						'first_byte_timeout' => "35s",
 						'between_bytes_timeout' => "4s",
 						'max_connections' => 1000,
-						'weight' => 20,
+						'weight' => $backend_weight,
 					}],
 				wikimedia_networks => $network::constants::all_networks,
 				xff_sources => $network::constants::all_networks
@@ -512,7 +513,7 @@ class role::cache {
 				backend_options => [
 					{
 						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 40,
+						'weight' => 6 * $backend_weight,
 					},
 					{
 						'port' => 3128,
@@ -521,7 +522,7 @@ class role::cache {
 						'between_bytes_timeout' => "2s",
 						'max_connections' => 100000,
 						'probe' => "varnish",
-						'weight' => 20,
+						'weight' => $backend_weight,
 					}],
 				xff_sources => $network::constants::all_networks,
 			}
