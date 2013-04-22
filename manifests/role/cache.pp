@@ -464,7 +464,7 @@ class role::cache {
 					default => [],
 				},
 				storage => $::hostname ? {
-					'dysprosium' => "-s main-sdc1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdd1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sdc1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdd1=file,/srv/sdd1/large-objects.persist,50G",
+					'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
 					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				},
 				directors => $varnish_be_directors[$::site],
