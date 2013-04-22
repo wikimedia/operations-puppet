@@ -37,6 +37,15 @@
 # [*port*]
 #   The port the Notebook server will listen on (default: 8888).
 #
+# [*certfile*]
+#   Fully qualified path to your SSL certificate's .pem file. If
+#   unspecified, the server will not be configured for SSL.
+#
+# [*password*]
+#   If specified, the web interface will require users to authenticate
+#   using this shared secret key. By default, the server does not
+#   attempt to authenticate users.
+#
 # [*exec_files*]
 #   Array of fully qualified paths to Python files to execute at start of
 #   Notebook session (default: none).
@@ -50,6 +59,8 @@ class ipython::notebook(
 	$notebookdir  = "${ipython::ipythondir}/notebooks",
 	$port         = 8888,
 	$ip           = '*',
+	$certfile     = undef,
+	$password     = undef,
 	$exec_files   = []
 ) inherits ipython {
 
@@ -94,6 +105,6 @@ class ipython::notebook(
 		require   => [
 			Package['ipython-notebook'],
 			File['/etc/init/ipython-notebook.conf'],
-		]
+		],
 	}
 }
