@@ -145,6 +145,11 @@ class misc::fundraising {
 			group => 'root',
 			mode => 0555,
 			source => 'puppet:///files/misc/scripts/drush-wrapper';
+		'/etc/sudoers.d/drupal':
+			owner => 'root',
+			group => 'root',
+			mode => 0440,
+			source => 'puppet:///files/sudo/sudoers.drupal_fundraising';
 
 		# other stuff
 		'/etc/php5/cli/php.ini':
