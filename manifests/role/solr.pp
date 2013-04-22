@@ -33,14 +33,19 @@ class role::solr::ttm {
 	}
 }
 
-class role::solr::geodata {
+class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet') {
 	system_role { "solr-geodata": description => "Solr server for GeoData" }
 
 	include standard
 
 	class { "role::solr":
 		schema => "puppet:///modules/solr/schema-geodata.xml",
-		replication_master => 'solr1001.eqiad.wmnet',
+		replication_master => $replication_master,
 	}
 }
 
+class role::solr::geodata::labs {
+	class { "role::solr::geodata":
+		replication_master => undef,
+	}
+}
