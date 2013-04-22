@@ -21,31 +21,36 @@ class misc::irc::wikibugs {
 	# default one. Values are hardcoded in the Wikibugs perl script
 	$ircecho_logbase = '/var/lib/wikibugs/logs'
 	$ircecho_logs = {
-		"${ircecho_logbase}/wikimedia-labs.log"           => "#wikimedia-labs",
-		"${ircecho_logbase}/wikimedia-mobile.log"         => "#wikimedia-mobile",
-		"${ircecho_logbase}/wikimedia-dev.log"            => "#wikimedia-dev",
+		"${ircecho_logbase}/wikimedia-labs.log"           => '#wikimedia-labs',
+		"${ircecho_logbase}/wikimedia-mobile.log"         => '#wikimedia-mobile',
+		"${ircecho_logbase}/wikimedia-dev.log"            => '#wikimedia-dev',
 	}
 
-	$ircecho_nick = "wikibugs"
+	$ircecho_nick = 'wikibugs'
 	$ircecho_server = 'chat.freenode.net'
 
 	include misc::ircecho
 	include misc::irc::wikibugs::packages
 
-	systemuser { wikibugs: name => 'wikibugs' }
+	systemuser { 'wikibugs': name => 'wikibugs' }
 
 	file {
-		"/var/lib/wikibugs/log":
+		'/var/lib/wikibugs':
 			ensure => directory,
 			owner  => wikibugs,
 			group => wikidev,
-			mode  => 0775,
+			mode  => '0755';
+		'/var/lib/wikibugs/log':
+			ensure => directory,
+			owner  => wikibugs,
+			group => wikidev,
+			mode  => '0775',
 			require => User['wikibugs'];
 	}
 
-	git::clone { "wikibugs" :
-		directory => "/var/lib/wikibugs/bin",
-		origin => "https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git",
+	git::clone { 'wikibugs' :
+		directory => '/var/lib/wikibugs/bin',
+		origin => 'https://gerrit.wikimedia.org/r/p/wikimedia/bugzilla/wikibugs.git',
 		owner => wikibugs,
 		group => wikidev,
 		require => User['wikibugs'];
