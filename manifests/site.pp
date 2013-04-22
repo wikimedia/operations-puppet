@@ -445,7 +445,7 @@ node /^db(31|51|65|72)\.pmtpa\.wmnet/ {
 }
 
 node /^db(44|45|55|73)\.pmtpa\.wmnet/ {
-	if $hostname == "db35" {
+	if $hostname == "db44" {
 		class { role::coredb::s5 : mariadb => true }
 	} elsif $hostname =~ /^db(55|73)/{
 		class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
