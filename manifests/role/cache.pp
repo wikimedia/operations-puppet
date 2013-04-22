@@ -477,7 +477,7 @@ class role::cache {
 				backend_options => [
 					{
 						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 80,
+						'weight' => 40,
 					},
 					{
 						'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
@@ -512,7 +512,7 @@ class role::cache {
 				backend_options => [
 					{
 						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 80,
+						'weight' => 40,
 					},
 					{
 						'port' => 3128,
