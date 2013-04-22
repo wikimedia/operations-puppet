@@ -1535,7 +1535,7 @@ host ms-be8 {
 }
 
 host ms-be9 {
-	hardware ethernet 04:7D:7B:2E:2D:E8;
+	hardware ethernet 90:B1:1C:18:A7:68;
 	fixed-address ms-be9.pmtpa.wmnet;
 }
 
