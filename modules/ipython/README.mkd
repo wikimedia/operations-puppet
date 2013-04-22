@@ -1,0 +1,56 @@
+Puppet module for IPython
+=========================
+
+What is it?
+-----------
+
+This folder contains a Puppet module for [IPython][1], a platform for
+interactive computing using Python. The module is especially suited for
+configuring [IPython Notebook][2], an integrated, web-based numeric
+computation environment (like Mathematica), with rich support for
+mathematical expressions, inline plots and other rich media.
+
+
+Usage
+-----
+
+The typical use-case for this module is the configuration of an IPython
+Notebook server. To provision this setup, simply include the class
+'ipython::notebook'. By default, it will set up an IPython Notebook
+web server, running under a dedicated 'ipython' user account.
+
+Example:
+
+    class { 'ipython::notebook':
+        port => 80,
+    }
+
+For a full listing of module parameters, see the comment blocks at the
+top of each file in the 'manifests' subdirectory.
+
+
+Limitations
+-----------
+
+ * This module targets Ubuntu and has not been tested against other
+   platforms. It depends on Upstart and on packages in Ubuntu's
+   'universe' component.
+ * Support for configuring [IPython for parallel computing][3] is
+   currently rudimentary, but additional work on this front is
+   forthcoming.
+
+
+License
+-------
+
+  Copyright (C) 2013 by Ori Livneh <ori@wikimedia.org>
+
+  Licensed under the GNU Public License, version 2 or later.
+
+
+
+ [1]: http://ipython.org/
+
+ [2]: http://ipython.org/ipython-doc/dev/interactive/htmlnotebook.html
+
+ [3]: http://ipython.org/ipython-doc/dev/parallel/
