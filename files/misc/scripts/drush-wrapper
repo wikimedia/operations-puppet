@@ -1,0 +1,3 @@
+#!/bin/sh
+# this is puppetized
+sudo -u www-data /opt/drush/drush $@
