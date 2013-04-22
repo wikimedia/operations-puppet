@@ -35,6 +35,11 @@ class misc::irc::wikibugs {
 	systemuser { wikibugs: name => 'wikibugs' }
 
 	file {
+		"/var/lib/wikibugs":
+			ensure => directory,
+			owner  => wikibugs,
+			group => wikidev,
+			mode  => 0755;
 		"/var/lib/wikibugs/log":
 			ensure => directory,
 			owner  => wikibugs,
