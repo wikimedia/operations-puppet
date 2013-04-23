@@ -1731,7 +1731,7 @@ class accounts {
 		$username = "halfak"
 		$realname = "Aaron Halfaker"
 		$uid = 564
-    $enabled = false
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -1748,6 +1748,11 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQCqjDvky8+pqKrACjc1eZ3nLuAOa9pmwHBEk7EFqRVMSSy9IsaP7Q2RbblrcMFUJP0dCj+rDDu5Q4YKDYhN/x0Wr0vPdjQqrU2Ujx65EEeeYJQ4/InG1MgABoFOcm8TdCjkOFdvwD/JFzaNJ3YxMilv+xepqyGOTfTf+ThsXtGX6qGGWMZwfBmt7Z7oC/R/juaH49xHcFihzbh3DFdZLB2/VpyzIn55kvtqXFcw6SBppegu7bknnLMaXFi4edG/Jm1BjuFBnpHRVO1V91ou5tNNrMhTDGLGGyKgqmz/xYS70yPdy3nW8V3ygOdZWDmOCeWYMVGQE4pfSNA1vdsuV33r";
+				"halfak@graphite2":
+					ensure => present,
+					user   => $username,
+					type   => "ssh-rsa",
+					key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5";
 			}
 		}
 	}
