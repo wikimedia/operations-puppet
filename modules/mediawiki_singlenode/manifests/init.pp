@@ -107,6 +107,18 @@ class mediawiki_singlenode( $ensure = 'present',
 		command => "/usr/sbin/service apache2 restart"
 	}
 
+	file { "${install_path}/cache":
+		require => Exec["mediawiki_setup"],
+		mode => '0775',
+		owner => 'www-data';
+	}
+
+	file { "${install_path}/images":
+		require => Exec["mediawiki_setup"],
+		mode => '0775',
+		owner => 'www-data';
+	}
+
 	file { "${install_path}/LocalSettings.php":
 		require => Exec["mediawiki_setup"],
 		content => template('mediawiki_singlenode/labs-localsettings'),
