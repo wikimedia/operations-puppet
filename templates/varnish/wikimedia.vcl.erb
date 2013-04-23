@@ -173,9 +173,7 @@ director <%= director %> <%= director_type %> {
 # Functions
 
 sub rewrite_proxy_urls {
-	if (req.url ~ "^http:") {
-		set req.url = regsub ( req.url, "^http://[\w.]+(/.*)", "\1");
-	}
+	set req.url = regsub(req.url, "^http://[^/]+", "");
 }
 
 sub vcl_recv_purge {
@@ -185,8 +183,8 @@ sub vcl_recv_purge {
 			error 405 "Denied.";
 		# This is a stupid hack to make varnishhtcpd work - it's using a perl mod that sends purge reqs like
 		# PURGE http://de.wikipedia.orghttp://de.wikipedia.org/w/index.php
-		} else {
-			call rewrite_proxy_urls;
+		} elsif (req.url ~ "^http:") {
+			set req.url = regsub(req.url, "^http://[\w.]+(/.*)", "\1");
 		}
 		return (lookup);
 	}
