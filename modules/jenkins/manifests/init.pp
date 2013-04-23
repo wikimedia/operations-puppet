@@ -1,6 +1,5 @@
 class jenkins {
   require jenkins::user
-  require jenkins::group
 
   # Upgrades are usually done manually by upload the Jenkins
   # package at apt.wikimedia.org then restarting jenkins and
