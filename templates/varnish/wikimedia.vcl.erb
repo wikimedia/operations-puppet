@@ -186,6 +186,7 @@ sub vcl_recv_purge {
 			return (lookup);
 		} else {
 			error 200 "Domain not cached here.";
+		}
 	}
 }
 
