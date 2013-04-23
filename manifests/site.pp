@@ -1003,14 +1003,6 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 
 	# fundraising banner log pipeline (moved to gadolinium)
 	#include misc::fundraising::udp2log_rotation
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid",
-		require => Misc::Udp2log::Instance["locke"],
-	}
 }
 
 node "manutius.wikimedia.org" {
