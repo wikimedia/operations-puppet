@@ -368,9 +368,9 @@ class misc::deployment::vars ($system = "git-deploy") {
 		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
 		$mw_common = "/usr/local/apache/common-local"
-		$mw_common_source = "/home/wikipedia/common"
+		$mw_common_source = $mw_common
 		$dblist_common = $mw_common
-		$dblist_common_source = $mw_common_source
+		$dblist_common_source = $mw_common
 	}
 	file {
 		"/usr/local/lib/mw-deployment-vars.sh":
