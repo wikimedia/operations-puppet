@@ -513,8 +513,13 @@ sub tag_carrier {
 }
 
 sub vcl_recv {
-	call rewrite_proxy_urls;
-	call vcl_recv_purge;
+	if (req.host ~ "^([a-zA-Z0-9-]+)\.(m|zero|wap|mobile)\.") {
+		call vcl_recv_purge;
+	}
+	elsif (req.request == "PURGE") {
+		error 200 "Domain not cached here.";
+	}
+
 	/* if the request comes from Opera Mini's accelerating proxies, grab
 	 * XFF Header and replace client ip value */
 	if (client.ip ~ opera_mini) {
