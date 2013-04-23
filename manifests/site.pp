@@ -2580,6 +2580,7 @@ node "stat1.wikimedia.org" {
 		accounts::dsc,
 		accounts::dartar,
 		accounts::declerambaul,
+		accounts::ebernhardson, # RT 4959
 		accounts::fschulenburg, # RT 4475
 		accounts::giovanni, # RT 3460
 		accounts::haithams, # RT 3219
