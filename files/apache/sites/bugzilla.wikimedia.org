@@ -44,6 +44,8 @@ NameVirtualHost *:443
 	SSLEngine On
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificatePath /etc/ssl/certs/
+
 	RewriteEngine On
 	RewriteRule (.*) https://bugzilla.wikimedia.org%{REQUEST_URI}
 </VirtualHost>
@@ -55,6 +57,7 @@ NameVirtualHost *:443
 	SSLEngine On
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificatePath /etc/ssl/certs/
 
 	<Directory />
 		Options FollowSymLinks
@@ -135,6 +138,7 @@ RewriteRule ^/(\d+)$ https://bugzilla.wikimedia.org/show_bug.cgi?id=$1 [R]
 	SSLEngine On
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+	SSLCACertificatePath /etc/ssl/certs/
 
 	<Directory />
 		Order Allow,Deny
