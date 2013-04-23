@@ -1001,11 +1001,6 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	# locke's udp2log instance stores logs
-	# mainly in /a/squid.
-	# TODO: Move log_directory to /var/log/udp2log
-	misc::udp2log::instance { "locke": log_directory => "/a/squid" }
-
 	# fundraising banner log pipeline (moved to gadolinium)
 	#include misc::fundraising::udp2log_rotation
 
