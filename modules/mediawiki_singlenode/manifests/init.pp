@@ -136,6 +136,18 @@ class mediawiki_singlenode(
 		command => '/usr/sbin/service apache2 restart',
 	}
 
+	file { "${install_path}/cache":
+		require => Exec["mediawiki_setup"],
+		mode => '0775',
+		owner => 'www-data';
+	}
+
+	file { "${install_path}/images":
+		require => Exec["mediawiki_setup"],
+		mode => '0775',
+		owner => 'www-data';
+	}
+
 	file { "${install_path}/LocalSettings.php":
 		ensure  => present,
 		require => Exec['mediawiki_setup'],
