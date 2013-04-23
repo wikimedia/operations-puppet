@@ -1,12 +1,7 @@
 # Varnish VCL include file for mobile backends
 
 sub vcl_recv {
-	if (req.http.host ~ "^([a-zA-Z0-9-]+)\.(m|zero|wap|mobile)\.") {
-		call vcl_recv_purge;
-	}
-	elsif (req.request == "PURGE") {
-		error 200 "Domain not cached here.";
-	}
+	call vcl_recv_purge;
 
 	if ( req.http.host ~ "^test\." ) {
 		set req.backend = test_wikipedia;
