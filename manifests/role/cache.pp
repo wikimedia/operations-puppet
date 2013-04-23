@@ -712,6 +712,7 @@ class role::cache {
 			},
 			vcl_config => {
 				'retry5xx' => 1,
+				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 			},
 			backend_options => [
 				{
@@ -742,6 +743,7 @@ class role::cache {
 			director_type => "chash",
 			vcl_config => {
 				'retry5xx' => 0,
+				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 			},
 			backend_options => {
 				'port' => 81,
