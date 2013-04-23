@@ -513,6 +513,7 @@ sub tag_carrier {
 }
 
 sub vcl_recv {
+	call rewrite_proxy_urls;
 	call vcl_recv_purge;
 	/* if the request comes from Opera Mini's accelerating proxies, grab
 	 * XFF Header and replace client ip value */
