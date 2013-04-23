@@ -513,13 +513,6 @@ sub tag_carrier {
 }
 
 sub vcl_recv {
-	if (req.http.host ~ "^([a-zA-Z0-9-]+)\.(m|zero|wap|mobile)\.") {
-		call vcl_recv_purge;
-	}
-	elsif (req.request == "PURGE") {
-		error 200 "Domain not cached here.";
-	}
-
 	/* if the request comes from Opera Mini's accelerating proxies, grab
 	 * XFF Header and replace client ip value */
 	if (client.ip ~ opera_mini) {
@@ -582,6 +575,9 @@ sub vcl_recv {
 		set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.mobile\.", "\1.");
 		set req.url = regsub(req.url, "\S+[\?&]go=([^&]+).*", "/wiki/\1");
 	}
+
+	/* Allow purging */
+	call vcl_recv_purge;
 
 	/* FIXME: deploy X-Vary-Options support */
 	set req.http.X-Orig-Cookie = req.http.Cookie;
