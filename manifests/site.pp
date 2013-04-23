@@ -1105,10 +1105,9 @@ node "hume.wikimedia.org" {
 	class { misc::maintenance::echo_mail_batch: enabled => false }
 	class { misc::maintenance::parsercachepurging: enabled => false }
 	class { misc::maintenance::cleanup_upload_stash: enabled => false }
+	class { misc::maintenance::tor_exit_node: enabled => false }
 
 	# These cron jobs were left behind for some reason:
-	# No external IP, so no HTTPS access
-	class { misc::maintenance::tor_exit_node: enabled => true }
 
 	# foreachwikiindblist broken
 	class { misc::maintenance::geodata: enabled => true }
@@ -2705,9 +2704,9 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::echo_mail_batch: enabled => true }
 	class { misc::maintenance::parsercachepurging: enabled => true }
 	class { misc::maintenance::cleanup_upload_stash: enabled => true }
+	class { misc::maintenance::tor_exit_node: enabled => true }
 
 	# Broken cron jobs moved back to hume:
-	class { misc::maintenance::tor_exit_node: enabled => false }
 	class { misc::maintenance::geodata: enabled => false }
 	class { misc::maintenance::update_special_pages: enabled => false }
 
