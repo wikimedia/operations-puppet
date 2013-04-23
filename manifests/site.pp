@@ -2724,6 +2724,9 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::geodata: enabled => false }
 	class { misc::maintenance::update_special_pages: enabled => false }
 
+	class { misc::maintenance::update_flaggedrev_stats: enable => false }
+	class { misc::maintenance::refreshlinks: enabled => false }
+
 }
 
 node "tin.eqiad.wmnet" {
