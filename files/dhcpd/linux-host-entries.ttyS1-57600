@@ -338,13 +338,6 @@ host spence {
 	fixed-address spence.wikimedia.org;
 }
 
-host sq33 {
-	hardware ethernet 00:19:b9:dd:ef:a9;
-	fixed-address sq33.wikimedia.org;
-	option pxelinux.pathprefix "lucid-installer/";
-	filename "lucid-installer/ubuntu-installer/amd64/pxelinux.0";
-}
-
 host sq36 {
 	hardware ethernet 00:19:B9:DD:EF:36;
 	fixed-address sq36.wikimedia.org;
