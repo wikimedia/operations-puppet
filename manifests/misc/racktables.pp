@@ -1,5 +1,27 @@
 # https://racktables.wikimedia.org
+
 class misc::racktables {
+
+	include generic::mysql::packages::client,
+		passwords::racktables
+
+	# variables
+	$racktables_db_host = 'db9.pmtpa.wmnet'
+	$rackeables_db = 'racktables'
+
+	file {
+		'/srv/org/wikimedia/racktables/wwwroot/inc/secret.php':
+		ensure  => present,
+		mode    => '0444',
+		owner   => 'root',
+		group   => 'root',
+		content => template('racktables/racktables.config.erb');
+	}
+
+}
+
+
+class misc::racktables-old {
 	# When this class is chosen, ensure that apache, php5-common, php5-mysql are
 	# installed on the host via another package set.
 
