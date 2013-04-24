@@ -619,11 +619,6 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	/* Cap the cache TTL to 300s on frontends */
-	if (beresp.ttl > 300s) {
-		set beresp.ttl = 300s;
-	}
-
 	set beresp.http.X-Device = req.http.X-Device;
 	set beresp.http.X-Carrier = req.http.X-Carrier;
 	/* TODO: remove X-CS header */
