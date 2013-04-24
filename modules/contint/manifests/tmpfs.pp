@@ -1,3 +1,5 @@
+# Wikimedia uses a small tmpfs disk to help soften I/O on the contint server.
+# A typical use cases are the MediaWiki sqlite files
 class contint::tmpfs {
 
   include jenkins::user
