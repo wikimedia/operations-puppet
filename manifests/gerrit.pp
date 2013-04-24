@@ -266,8 +266,7 @@ class gerrit::jetty ($ldap_hosts,
 	service {
 		"gerrit":
 			subscribe => [File["/var/lib/gerrit2/review_site/etc/gerrit.config"],
-				File["/var/lib/gerrit2/review_site/etc/secure.config"],
-				File["/var/lib/gerrit2/review_site/etc/replication.config"]],
+				File["/var/lib/gerrit2/review_site/etc/secure.config"]],
 			enable => true,
 			ensure => running,
 			hasstatus => false,
