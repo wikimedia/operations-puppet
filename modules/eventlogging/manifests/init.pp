@@ -1,6 +1,6 @@
 # Collector of analytic events
 # See <https://wikitech.wikimedia.org/wiki/EventLogging>
-class eventlogging {
+class eventlogging( $backup_destinations = [] ) {
 
 	class { 'eventlogging::supervisor': }
 	class { 'eventlogging::notebook':
@@ -8,7 +8,7 @@ class eventlogging {
 	}
 	class { 'eventlogging::ganglia': }
 	class { 'eventlogging::archive':
-		destinations => [ 'stat1.wikimedia.org' ],
+		destinations => $archive_destinations,
 	}
 
 	class { 'mongodb':
