@@ -231,3 +231,14 @@ class role::logging::udp2log::emery inherits role::logging::udp2log {
 		log_directory => $webrequest_log_directory,
 	}
 }
+
+# EventLogging collector
+class role::logging::eventlogging {
+	system_role { "misc::log-collector":
+		description => 'EventLogging log collector',
+	}
+
+	class{ "eventlogging":
+		archive_destinations => [ "stat1.wikimedia.org" ],
+	}
+}

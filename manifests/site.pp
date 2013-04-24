@@ -2750,12 +2750,8 @@ node /^tmh100[1-2]\.eqiad\.wmnet/ {
 node "vanadium.eqiad.wmnet" {
 	$gid=500
 
-	system_role { "misc::log-collector":
-		description => 'EventLogging log collector',
-	}
-
 	include standard,
-		eventlogging,
+		role::logging::eventlogging,
 		nrpe,
 		role::solr::ttm
 
