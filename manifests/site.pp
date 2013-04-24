@@ -1561,7 +1561,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "manganese.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "gerrit.wikimedia.org": }
 
 	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
