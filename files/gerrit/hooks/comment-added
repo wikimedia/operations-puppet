@@ -20,7 +20,8 @@ class CommentAdded(HookHelper):
         (options, args) = self.parser.parse_args()
         if options.draft == "true":
             return  # Don't report drafts to IRC!
-        comment = re.sub(r"^\s*Patch Set \d+:.*$", '', options.comment, flags=re.MULTILINE).strip().splitlines()
+        comment = re.sub(r"^\s*Patch Set \d+:.*$", '', options.comment, flags=re.MULTILINE)
+        comment = re.sub(r"^\s*\(\d+ comments\).*$", '', comment, flags=re.MULTILINE).strip().splitlines()
         if comment:
             comment = comment[0]
             if len(comment) > 103:
