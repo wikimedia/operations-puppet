@@ -12,11 +12,3 @@ class misc::outreach::civicrm {
 	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
 }
 
-# https://outreachcivi.wikimedia.org/
-class misc::outreach::outreachcivi {
-	system_role { "misc::outreach::outreachcivi": description => "outreachcivi.wikimedia.org" }
-
-	class {'webserver::php5': ssl => 'true'; }
-
-	apache_site { outreachcivi: name => "outreachcivi.wikimedia.org" }
-}
