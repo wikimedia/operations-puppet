@@ -205,7 +205,7 @@ node "analytics1027.eqiad.wmnet" {
 
 # git.wikimedia.org
 node "antimony.wikimedia.org" {
-	install_certificate{ "git.wikimedia.org": }
+	install_certificate{ "git.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
 	include standard,
 		groups::wikidev,
@@ -1560,7 +1560,7 @@ node "maerlant.esams.wikimedia.org" {
 }
 
 node "manganese.wikimedia.org" {
-	install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "gerrit.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
 	$sudo_privs = [ 'ALL = NOPASSWD: /usr/local/sbin/add-ldap-user',
 			'ALL = NOPASSWD: /usr/local/sbin/delete-ldap-user',
