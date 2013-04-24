@@ -1081,7 +1081,7 @@ node "hooper.wikimedia.org" {
 		admins::roots,
 		svn::client,
 		misc::etherpad,
-		misc::racktables
+		misc::racktables-old
 
 	install_certificate{ "star.wikimedia.org": }
 }
