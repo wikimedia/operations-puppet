@@ -21,12 +21,12 @@
 	SSLCertificateFile <%= racktables_ssl_cert %>
 	SSLCertificateKeyFile <%= racktables_ssl_key %>
 
-	DocumentRoot /srv/org/wikimedia/racktables
+	DocumentRoot /srv/org/wikimedia/racktables/wwwroot
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
-        <Directory /srv/org/wikimedia/racktables/>
+        <Directory /srv/org/wikimedia/racktables/wwwroot/>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 Order allow,deny
