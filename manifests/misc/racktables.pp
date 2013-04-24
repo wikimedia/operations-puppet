@@ -1,5 +1,5 @@
 # https://racktables.wikimedia.org
-class misc::racktables {
+class role::racktables {
 	# When this class is chosen, ensure that apache, php5-common, php5-mysql are
 	# installed on the host via another package set.
 
