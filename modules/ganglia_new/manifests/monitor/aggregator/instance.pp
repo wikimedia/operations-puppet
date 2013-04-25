@@ -5,7 +5,7 @@ define ganglia_new::monitor::aggregator::instance($site) {
 
 	$aggregator = true
 
-	$cluster = $title
+	$cluster = regsubst($title, '^(.*)_[^_]+$', '\1')
 	if has_key($ganglia_new::configuration::clusters[$cluster], 'sites') {
 		$sites = $ganglia_new::configuration::clusters[$cluster]['sites']
 	} else {
