@@ -109,7 +109,7 @@ class ganglia_new::configuration {
 	case $::realm {
 		'production': {
 			$url = "http://ganglia.wikimedia.org"
-			$gmetad_hosts = [ "208.80.152.15" ]
+			$gmetad_hosts = [ "208.80.152.15", "208.80.154.150" ]
 			$base_port = 8649
 		}
 		'labs': {
