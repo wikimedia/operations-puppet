@@ -95,6 +95,12 @@ class ganglia_new::configuration {
 		"parsoidcache"	=> {
 			"name"		=> "Parsoid Varnish",
 			"id"	=> 38 },
+		"redis"			=> {
+			"name"		=> "Redis",
+			"id"	=> "39" },
+		"labsnfs"	=> {
+			"name"		=> "Labs NFS cluster",
+			"id"	=> "40" },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
