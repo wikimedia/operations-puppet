@@ -9,6 +9,8 @@ class gitblit::instance($host,
 	$ssl_cert="",
 	$ssl_cert_key="") {
 
+	include webserver::apache
+
 	systemuser { $user: name => $user }
 
 	file {
