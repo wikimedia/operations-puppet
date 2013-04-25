@@ -661,6 +661,15 @@ class role::cache {
 		
 		if $::realm == "production" {
 			include logging
+		} else {
+			varnish::logging { "eventlogging" :
+				listener_address => '10.4.1.14', # deployment-eventlogging
+				port => "8422",
+				instance_name => "",
+				cli_args => '-m RxURL:^/event\.gif\?. -D',
+				log_fmt => "%q	%l	%n	%t	%h",
+				monitor => false,
+			}
 		}
 	}
 
