@@ -1,4 +1,4 @@
-class ganglia_new::monitor::aggregator {
+class ganglia_new::monitor::aggregator($sites) {
 	require ganglia_new::monitor::packages
 	include ganglia_new::configuration
 
@@ -20,9 +20,13 @@ class ganglia_new::monitor::aggregator {
 
 	upstart_job { "ganglia-monitor-aggregator-instance": }
 
-	# Instantiate aggregators for all clusters
-	$cluster_list = keys($ganglia_new::configuration::clusters)
-	instance{ $cluster_list: }
+	define site_instances() {
+		# Instantiate aggregators for all clusters for this site ($title)
+		$cluster_list = suffix(keys($ganglia_new::configuration::clusters), "_${title}")
+		instance{ $cluster_list: site => $title }
+	}
+
+	site_instances{ $sites: }
 
 	service { "ganglia-monitor-aggregator":
 		provider => upstart,

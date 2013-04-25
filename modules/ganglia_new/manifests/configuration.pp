@@ -121,11 +121,21 @@ class ganglia_new::configuration {
 			$url = "http://ganglia.wikimedia.org"
 			$gmetad_hosts = [ "208.80.152.15", "208.80.154.150" ]
 			$base_port = 8649
+			$site_port_prefix = {
+				pmtpa => 0,
+				eqiad => 1000,
+				esams => 3000,
+			}
+			$default_sites = ["pmtpa", "eqiad"]
 		}
 		'labs': {
 			$url = "http://ganglia.wmflabs.org"
 			$gmetad_hosts = [ "10.4.0.79"]
 			$base_port = 8649
-		}
+			$site_port_prefix = {
+				pmtpa => 0,
+				eqiad => 0,
+			}
+			$default_sites = ["pmtpa"]
 	}
 }
