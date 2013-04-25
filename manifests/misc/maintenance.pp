@@ -157,7 +157,7 @@ class misc::maintenance::tor_exit_node( $enabled = inline_template("<%= $::site 
 class misc::maintenance::echo_mail_batch( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
 	cron {
 		echo_mail_batch:
-			command => "/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/processEchoEmailBatch.php",
+			command => "/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/maintenance/processEchoEmailBatch.php",
 			user => apache,
 			minute => 0,
 			hour => 0,
