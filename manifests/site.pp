@@ -648,60 +648,60 @@ node /^db1047\.eqiad\.wmnet/ {
 
 ## SANITARIUM
 node /^db1053\.eqiad\.wmnet/ {
-  class { role::db::sanitarium:
-    instances => {
-      's1' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "72G"
-      },
-    }
-  }
+	class { role::db::sanitarium:
+		instances => {
+			's1' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "72G"
+			},
+		}
+	}
 }
 
 node /^db1054\.eqiad\.wmnet/ {
-  class { role::db::sanitarium:
-    instances => {
-      's2' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "24G"
-      },
-      's4' => {
-        'port' => 3307,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "24G"
-      },
-      's5' => {
-        'port' => 3308,
-        'innodb_log_file_size' => "1000M",
-        'ram' => "24G"
-      },
-    }
-  }
+	class { role::db::sanitarium:
+		instances => {
+			's2' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "24G"
+			},
+			's4' => {
+				'port' => 3307,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "24G"
+			},
+			's5' => {
+				'port' => 3308,
+				'innodb_log_file_size' => "1000M",
+				'ram' => "24G"
+			},
+		}
+	}
 }
 
 node /^db1057\.eqiad\.wmnet/ {
-  class { role::db::sanitarium:
-    instances => {
-      's3' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G",
-        'repl_ignore_dbs' => $::private_wikis,
-      },
-      's6' => {
-        'port' => 3307,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G"
-      },
-      's7' => {
-        'port' => 3308,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G"
-      },
-    }
-  }
+	class { role::db::sanitarium:
+		instances => {
+			's3' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "500M",
+				'ram' => "24G",
+				'repl_ignore_dbs' => $::private_wikis,
+			},
+			's6' => {
+				'port' => 3307,
+				'innodb_log_file_size' => "500M",
+				'ram' => "24G"
+			},
+			's7' => {
+				'port' => 3308,
+				'innodb_log_file_size' => "500M",
+				'ram' => "24G"
+			},
+		}
+	}
 }
 
 ## 2013-04-10: py using db101[345] for testing
