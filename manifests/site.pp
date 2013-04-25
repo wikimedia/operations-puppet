@@ -1072,7 +1072,7 @@ node "manutius.wikimedia.org" {
 			hosts => $storagehosts
 	}
 
-	include ganglia_new::monitor::aggregator
+	class { "ganglia_new::monitor::aggregator": sites => ["pmtpa"] }
 }
 
 node "hooper.wikimedia.org" {
