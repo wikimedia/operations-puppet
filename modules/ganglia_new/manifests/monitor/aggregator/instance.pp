@@ -19,9 +19,10 @@ define ganglia_new::monitor::aggregator::instance($site) {
 		labs => $::project_gid
 	}
 	$cname = "${desc} ${::site}"
-	$ensure = $site in $sites ? {
-		true => present,
-		default => absent
+	if $site in $sites {
+		$ensure = "present"
+	} else {
+		$ensure = "absent"
 	}
 
 	file { "/etc/ganglia/aggregators/${id}.conf":
