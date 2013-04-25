@@ -3,7 +3,7 @@ class ganglia_new::monitor::packages {
 		package { "ganglia-monitor": ensure => latest }
 	}
 
-	file { "/usr/lib/ganglia/python_modules":
+	file { ["/usr/lib/ganglia/python_modules", "/etc/ganglia/conf.d"]:
 		require => Package["ganglia-monitor"],
 		ensure => directory
 	}
