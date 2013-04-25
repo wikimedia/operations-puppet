@@ -1525,6 +1525,11 @@ class accounts {
 					user    => $username,
 					type    => "ssh-rsa",
 					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQD74a9VKRGqzCmiWZZUkZoy1XnPgd9nlFTsPrBn8Nnf9mMBbzEArMupuolHOSFhczk5lC9y7KSRKiWJ6sypvVjfGZypr98SA1SEe5AxvBN+8DbWEpxxwbOGCMhHo+GPVucILa5cjzZn2iKlCli39oMa0Dxwzd7v+SuswNtfqjp47RlrJoG5hTZMYcbICjEVGNDvSxSXBX2E17Kxdw3CiPnvZun+twTRYEuTo0GshGjO/2fQaTnyYHfPKOyFYC8HDsaaSaOWzXPXb7ey8s4lY+vEt5Imj5OqHhNOuG+thH/5dxuSv6Jkfi1Ygl2t3j1aYdo5g/0IRQ1lIqhRQuFqxe7j";
+				"chad@ubuntu-desktop":
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDptp6lYbp9jlCe/wjp2gHH9i6BcL5pgrEUnjz3f+q8Scfm4Tzs7wTSsaAsfYmdYcI8ERJW2ZYU3BRiPqPIyCmOF7WaUMSM0qTf+NoZpfFb+hV0J9CNfdjwNCQGbsZyq39i9u8hCmZg9+fg+eSZ5q3ceH9MJCckx571YtFJs+F6DioCUlad5uGg+2sPE36cbJtQOmmC+Oys+E9go/vJ72mrxEaPoBUP9Z1p8c5GhJ5TjoSqg+bYUsnV0d9yZPTrcyWeeCWeumeQe5YKtG9Z0EJ86axQgKp7nIBAL3EovTTaPTBSMusfjvftCjkIocbS7eLt+6LqgOyxtUWco5oKCtQn";
 			}
 		}
 	}
