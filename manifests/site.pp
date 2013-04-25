@@ -51,9 +51,15 @@ import "stages.pp"
 # Class for *most* servers, standard includes
 class standard {
 	include base,
-		ganglia,
 		ntp::client,
 		exim::simple-mail-sender
+
+	# FIXME: remove after the ganglia module migration
+	if $::site == "pmtpa" and $cluster in ["cache_bits"] {
+		class { "ganglia_new::monitor": cluster => $cluster }
+	} else {
+		include ganglia
+	}
 }
 
 class newstandard {
