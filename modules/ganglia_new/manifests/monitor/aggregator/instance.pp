@@ -11,9 +11,9 @@ define ganglia_new::monitor::aggregator::instance($site) {
 	} else {
 		$sites = $ganglia_new::configuration::default_sites
 	}
-	$id = $ganglia_new::configuration::clusters[$cluster]['id']
+	$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$site]
 	$desc = $ganglia_new::configuration::clusters[$cluster]['name']
-	$portnr = $ganglia_new::configuration::base_port + $ganglia_new::configuration::site_port_prefix[$site] + $id
+	$portnr = $ganglia_new::configuration::base_port + $id
 	$gmond_port = $::realm ? {
 		production => $portnr,
 		labs => $::project_gid
