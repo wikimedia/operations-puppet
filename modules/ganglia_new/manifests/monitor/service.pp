@@ -10,6 +10,7 @@ class ganglia_new::monitor::service() {
 
 	service { "ganglia-monitor":
 		require => File["/etc/init/ganglia-monitor.conf"],
+		alias => "gmond",
 		ensure => running,
 		provider => upstart
 	}
