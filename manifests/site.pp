@@ -55,7 +55,7 @@ class standard {
 		exim::simple-mail-sender
 
 	# FIXME: remove after the ganglia module migration
-	if $::site == "pmtpa" and $cluster in ["cache_bits"] {
+	if $::hostname == "manutius" or ($::site == "pmtpa" and $cluster in ["cache_bits"]) {
 		class { "ganglia_new::monitor": cluster => $cluster }
 	} else {
 		include ganglia
