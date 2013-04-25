@@ -294,7 +294,7 @@ class ganglia {
 						"LVS loadbalancers pmtpa" => "lvs1.wikimedia.org lvs2.wikimedia.org",
 						"Miscellaneous" => "hooper.wikimedia.org tarin.pmtpa.wmnet",
 						"Text squids" => "sq59.wikimedia.org sq60.wikimedia.org",
-						"Bits caches" => "manutius.wikimedia.org:8670 sq67.wikimedia.org sq68.wikimedia.org",
+						"Bits caches pmtpa" => "manutius.wikimedia.org:8670 sq67.wikimedia.org sq68.wikimedia.org",
 						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
 						"Fundraising eqiad" => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
