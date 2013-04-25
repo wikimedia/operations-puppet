@@ -322,11 +322,11 @@ class misc::maintenance::geodata( $enabled = inline_template("<%= $::site == $::
 	file {
 		"/usr/local/bin/update-geodata":
 			ensure => present,
-			source => "puppet:///files/misc/scripts/update-geodata",
+			source => template( "misc/update-geodata.erb" ),
 			mode => 0555;
 		"/usr/local/bin/clear-killlist":
 			ensure => present,
-			source => "puppet:///files/misc/scripts/clear-killlist",
+			source => template( "misc/clear-killlist.erb" ),
 			mode => 0555;
 	}
 

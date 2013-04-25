@@ -5,6 +5,10 @@ if [ -e /tmp/disable-update-geodata ] ; then
 	exit
 fi
 
+<% if scope.lookupvar('::realm') == 'production' -%>
 /usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikipedia.dblist extensions/GeoData/solrupdate.php
 /usr/local/bin/foreachwikiindblist /home/wikipedia/common/special.dblist extensions/GeoData/solrupdate.php
 /usr/local/bin/foreachwikiindblist /home/wikipedia/common/wikivoyage.dblist extensions/GeoData/solrupdate.php
+<% else -%>
+/usr/local/bin/foreachwikiindblist /home/wikipedia/common/all-labs.dblist extensions/GeoData/solrupdate.php
+<$% end -%>

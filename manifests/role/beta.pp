@@ -7,3 +7,7 @@ class role::beta::autoupdater {
 	}
 
 }
+
+class role::beta::maintenance {
+	class{ 'misc::maintenance::geodata': enable => true }
+}
