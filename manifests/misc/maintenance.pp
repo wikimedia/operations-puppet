@@ -2,7 +2,7 @@
 
 # mw maintenance/batch hosts
 
-class misc::maintenance::foundationwiki( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::foundationwiki( $enabled = false ) {
 
 	system_role { "misc::maintenance::foundationwiki": description => "Misc - Maintenance Server: foundationwiki" }
 
@@ -29,7 +29,7 @@ class misc::maintenance::foundationwiki( $enabled = inline_template("<%= $::site
 	}
 }
 
-class misc::maintenance::refreshlinks( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::refreshlinks( $enabled = false ) {
 
 	require mediawiki
 
@@ -65,14 +65,14 @@ class misc::maintenance::refreshlinks( $enabled = inline_template("<%= $::site =
 	cronjob { ['s2@2', 's3@3', 's4@4', 's5@5', 's6@6', 's7@7']: }
 }
 
-class misc::maintenance::pagetriage( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::pagetriage( $enabled = false ) {
 
 	system_role { "misc::maintenance::pagetriage": description => "Misc - Maintenance Server: pagetriage extension" }
 
 	cron { 'pagetriage_cleanup_en':
 		user => apache,
 		minute => 55,
- 		hour => 20,
+		hour => 20,
 		monthday => '*/2',
 		command => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php enwiki > /tmp/updatePageTriageQueue.en.log',
 		ensure => $enabled ?{
@@ -96,7 +96,7 @@ class misc::maintenance::pagetriage( $enabled = inline_template("<%= $::site == 
 	}
 }
 
-class misc::maintenance::translationnotifications( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::translationnotifications( $enabled = false ) {
 	require misc::deployment::scripts
 
 	# Should there be crontab entry for each wiki,
@@ -140,7 +140,7 @@ class misc::maintenance::translationnotifications( $enabled = inline_template("<
 	}
 }
 
-class misc::maintenance::tor_exit_node( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::tor_exit_node( $enabled = false ) {
 	cron {
 		tor_exit_node_update:
 			command => "php /usr/local/apache/common/multiversion/MWScript.php extensions/TorBlock/loadExitNodes.php aawiki --force > /dev/null",
@@ -154,7 +154,7 @@ class misc::maintenance::tor_exit_node( $enabled = inline_template("<%= $::site 
 	}
 }
 
-class misc::maintenance::echo_mail_batch( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::echo_mail_batch( $enabled = false ) {
 	cron {
 		echo_mail_batch:
 			command => "/usr/local/bin/foreachwikiindblist /usr/local/apache/common/echowikis.dblist extensions/Echo/processEchoEmailBatch.php",
@@ -169,7 +169,7 @@ class misc::maintenance::echo_mail_batch( $enabled = inline_template("<%= $::sit
 	}
 }
 
-class misc::maintenance::update_flaggedrev_stats( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 	file {
 		"/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
 			source => "puppet:///files/misc/scripts/wikimedia-periodic-update.sh",
@@ -193,7 +193,7 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = inline_template("<%
 	}
 }
 
-class misc::maintenance::cleanup_upload_stash( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 	cron {
 		cleanup_upload_stash:
 			command => "/usr/local/bin/foreachwiki maintenance/cleanupUploadStash.php > /dev/null",
@@ -208,7 +208,7 @@ class misc::maintenance::cleanup_upload_stash( $enabled = inline_template("<%= $
 	}
 }
 
-class misc::maintenance::update_special_pages( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::update_special_pages( $enabled = false ) {
 	cron {
 		update_special_pages:
 			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /home/wikipedia/logs/norotate/updateSpecialPages.log 2>&1",
@@ -237,7 +237,7 @@ class misc::maintenance::update_special_pages( $enabled = inline_template("<%= $
 	}
 }
 
-class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::wikidata( $enabled = false ) {
 	cron {
 		wikibase-repo-prune:
 			command => "/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/pruneChanges.php --wiki wikidatawiki --number-of-days=3 2>&1 >> /var/log/wikidata/prune.log",
@@ -264,8 +264,8 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 			};
 	}
 
-    cron {
-        wikibase-dispatch-changes2:
+	cron {
+		wikibase-dispatch-changes2:
 			command => "/usr/local/bin/mwscript extensions/Wikibase/lib/maintenance/dispatchChanges.php --wiki wikidatawiki --max-time 900 --batch-size 200 --dispatch-interval 30 2>&1 >> /var/log/wikidata/dispatcher2.log",
 			user => mwdeploy,
 			minute => "*/5",
@@ -298,7 +298,7 @@ class misc::maintenance::wikidata( $enabled = inline_template("<%= $::site == $:
 	}
 }
 
-class misc::maintenance::parsercachepurging( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::parsercachepurging( $enabled = false ) {
 
 	system_role { "misc::maintenance::parsercachepurging": description => "Misc - Maintenance Server: parser cache purging" }
 
@@ -318,7 +318,7 @@ class misc::maintenance::parsercachepurging( $enabled = inline_template("<%= $::
 
 }
 
-class misc::maintenance::geodata( $enabled = inline_template("<%= $::site == $::primary_site  %>") ) {
+class misc::maintenance::geodata( $enabled = false ) {
 	file {
 		"/usr/local/bin/update-geodata":
 			ensure => present,
