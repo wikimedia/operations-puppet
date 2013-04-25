@@ -3,7 +3,7 @@ class ganglia_new::monitor::config($cluster) {
 	include ganglia_new::configuration
 
 	$aggregator = false
-	$id = $ganglia_new::configuration::clusters[$cluster]['id']
+	$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$::site]
 	$desc = $ganglia_new::configuration::clusters[$cluster]['name']
 	$portnr = $ganglia_new::configuration::base_port + $id
 	$gmond_port = $::realm ? {
