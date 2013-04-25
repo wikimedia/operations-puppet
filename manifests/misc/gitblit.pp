@@ -3,7 +3,7 @@
 
 # Setup apache for the git viewer and replicated git repos
 # Also needs gerrit::replicationdest installed
-class gitblit($host,
+class gitblit::instance($host,
 	$user = "gitblit",
 	$git_repo_owner="gerritslave",
 	$ssl_cert="",
