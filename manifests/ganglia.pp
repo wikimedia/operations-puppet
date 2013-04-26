@@ -20,7 +20,7 @@
 class ganglia {
 
 	# FIXME: remove after the ganglia module migration
-	if $::realm == "labs" or ($::hostname in ["manutius","hooft"] or ($::site == "pmtpa" and $cluster in ["cache_bits"])) {
+	if $::realm == "labs" or ($::hostname in ["manutius"] or $::site == "esams" or ($::site == "pmtpa" and $cluster in ["cache_bits"])) {
 		class { "ganglia_new::monitor":
 			cluster => $::realm ? {
 				labs => $::instanceproject,
@@ -296,7 +296,7 @@ class ganglia {
 						"Fundraiser payments" => "payments1.wikimedia.org payments2.wikimedia.org",
 						"Fundraising eqiad" => "pay-lvs1001.frack.eqiad.wmnet pay-lvs1002.frack.eqiad.wmnet",
 						"SSL cluster" => "ssl1.wikimedia.org ssl2.wikimedia.org",
-						"SSL cluster esams" => "ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
+						"SSL cluster esams" => "hooft.esams.wikimedia.org:11675 ssl3001.esams.wikimedia.org ssl3002.esams.wikimedia.org",
 						"Swift pmtpa" => "ms-fe1.pmtpa.wmnet ms-fe2.pmtpa.wmnet",
 						"Virtualization cluster pmtpa" => "virt5.pmtpa.wmnet virt6.pmtpa.wmnet",
 						"Glusterfs cluster pmtpa" => "labstore1.pmtpa.wmnet labstore2.pmtpa.wmnet",
@@ -311,15 +311,15 @@ class ganglia {
 						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
 						"Search eqiad" => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
 						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
-						"Bits caches esams" => "cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
-						"Text squids esams" => "amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
-						"Upload squids esams" => "knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
-						"LVS loadbalancers esams" => "amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
-						"Miscellaneous esams" => "hooft.esams.wikimedia.org",
+						"Bits caches esams" => "hooft.esams.wikimedia.org:11670 cp3019.esams.wikimedia.org cp3020.esams.wikimedia.org",
+						"Text squids esams" => "hooft.esams.wikimedia.org:11669 amssq31.esams.wikimedia.org amssq32.esams.wikimedia.org",
+						"Upload squids esams" => "hooft.esams.wikimedia.org:3006 knsq16.esams.wikimedia.org knsq17.esams.wikimedia.org",
+						"LVS loadbalancers esams" => "hooft.esams.wikimedia.org:11651 amslvs1.esams.wikimedia.org amslvs2.esams.wikimedia.org",
+						"Miscellaneous esams" => "hooft.esams.wikimedia.org:11657",
 						"Analytics cluster eqiad" => "analytics1003.eqiad.wmnet analytics1011.eqiad.wmnet",
 						"Memcached pmtpa" => "mc1.pmtpa.wmnet mc2.pmtpa.wmnet",
 						"Memcached eqiad" => "mc1001.eqiad.wmnet mc1002.eqiad.wmnet",
-						"Upload caches esams" => "cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
+						"Upload caches esams" => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
 						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
 						"Parsoid pmtpa" => "wtp1.pmtpa.wmnet",
 						"Parsoid eqiad" => "wtp1001.eqiad.wmnet",
