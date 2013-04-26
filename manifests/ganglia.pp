@@ -19,228 +19,222 @@
 
 class ganglia {
 
-	if $::hostname in $::decommissioned_servers {
-		$cluster = "decommissioned"
-		$deaf = "no"
+	if $::realm == "labs" {
+		class { "ganglia_new::monitor": cluster => $::instanceproject }
 	} else {
-		if ! $::cluster {
-			$cluster = "misc"
-		}
-		# aggregator should not be deaf (they should listen)
-		# ganglia_aggregator for production are defined in site.pp;
-		# for labs, 'deaf = "no"' is defined in gmond.conf.labsstub
-		if $ganglia_aggregator {
+		if $::hostname in $::decommissioned_servers {
+			$cluster = "decommissioned"
 			$deaf = "no"
 		} else {
-			$deaf = "yes"
+			if ! $::cluster {
+				$cluster = "misc"
+			}
+			# aggregator should not be deaf (they should listen)
+			# ganglia_aggregator for production are defined in site.pp;
+			# for labs, 'deaf = "no"' is defined in gmond.conf.labsstub
+			if $ganglia_aggregator {
+				$deaf = "no"
+			} else {
+				$deaf = "yes"
+			}
 		}
-	}
 
-	if $::realm == "labs" {
-		$authority_url = "http://ganglia.wmflabs.org"
-		# labs does not use multicast so needs an explict gmetad_host
-		$gmetad_host = "10.4.0.79"
-	} else {
-		$authority_url = "http://ganglia.wikimedia.org"
-	}
+		} else {
+			$authority_url = "http://ganglia.wikimedia.org"
+		}
 
-	$location = "unspecified"
+		$location = "unspecified"
 
-	$ip_prefix = $::site ? {
-		"pmtpa"	=> "239.192.0",
-		"eqiad"	=> "239.192.1",
-		"esams"	=> "239.192.20",
-	}
+		$ip_prefix = $::site ? {
+			"pmtpa"	=> "239.192.0",
+			"eqiad"	=> "239.192.1",
+			"esams"	=> "239.192.20",
+		}
 
-	$name_suffix = " ${::site}"
+		$name_suffix = " ${::site}"
 
-	# NOTE: Do *not* add new clusters *per site* anymore,
-	# the site name will automatically be appended now,
-	# and a different IP prefix will be used.
-	$ganglia_clusters = {
-		"decommissioned" => {
-			"name"		=> "Decommissioned servers",
-			"ip_oct"	=> "1" },
-		"lvs" => {
-			"name"		=> "LVS loadbalancers",
-			"ip_oct"	=> "2" },
-		"search"	=>	{
-			"name"		=> "Search",
-			"ip_oct"	=> "4" },
-		"mysql"		=>	{
-			"name"		=> "MySQL",
-			"ip_oct"	=> "5" },
-		"squids_upload"	=>	{
-			"name"		=> "Upload squids",
-			"ip_oct"	=> "6" },
-		"squids_text"	=>	{
-			"name"		=> "Text squids",
-			"ip_oct"	=> "7" },
-		"misc"		=>	{
-			"name"		=> "Miscellaneous",
-			"ip_oct"	=> "8" },
-		"appserver"	=>	{
-			"name"		=> "Application servers",
-			"ip_oct"	=> "11"	},
-		"imagescaler"	=>	{
-			"name"		=> "Image scalers",
-			"ip_oct"	=> "12" },
-		"api_appserver"	=>	{
-			"name"		=> "API application servers",
-			"ip_oct"	=> "13" },
-		"pdf"		=>	{
-			"name"		=> "PDF servers",
-			"ip_oct"	=> "15" },
-		"cache_text"	=> {
-			"name"		=> "Text caches",
-			"ip_oct"	=> "20" },
-		"cache_bits"	=> {
-			"name"		=> "Bits caches",
-			"ip_oct"	=> "21" },
-		"cache_upload"	=> {
-			"name"		=> "Upload caches",
-			"ip_oct"	=> "22" },
-		"payments"	=> {
-			"name"		=> "Fundraiser payments",
-			"ip_oct"	=> "23" },
-		"bits_appserver"	=> {
-			"name"		=> "Bits application servers",
-			"ip_oct"	=> "24" },
-		"squids_api"		=> {
-			"name"		=> "API squids",
-			"ip_oct"	=> "25" },
-		"ssl"		=> {
-			"name"		=> "SSL cluster",
-			"ip_oct"	=> "26" },
-		"swift" => {
-			"name"		=> "Swift",
-			"ip_oct"	=> "27" },
-		"cache_mobile"	=> {
-			"name"		=> "Mobile caches",
-			"ip_oct"	=> "28" },
-		"virt"	=> {
-			"name"		=> "Virtualization cluster",
-			"ip_oct"	=> "29" },
-		"gluster"	=> {
-			"name"		=> "Glusterfs cluster",
-			"ip_oct"	=> "30" },
-		"jobrunner"	=>	{
-			"name"		=> "Jobrunners",
-			"ip_oct"	=> "31" },
-		"analytics"		=> {
-			"name"		=> "Analytics cluster",
-			"ip_oct"	=> "32" },
-		"memcached"		=> {
-			"name"		=> "Memcached",
-			"ip_oct"	=> "33" },
-		"videoscaler"		=> {
-			"name"		=> "Video scalers",
-			"ip_oct"	=> "34" },
-		"fundraising"	=> {
-			"name"		=> "Fundraising",
-			"ip_oct"	=> "35" },
-		"ceph"			=> {
-			"name"		=> "Ceph",
-			"ip_oct"	=> "36" },
-		"parsoid"		=> {
-			"name"		=> "Parsoid",
-			"ip_oct"	=> "37" },
-		"parsoidcache"		=> {
-			"name"		=> "Parsoid Varnish",
-			"ip_oct"	=> "38" },
-		"redis"			=> {
-			"name"		=> "Redis",
-			"ip_oct"	=> "39" },
-		"labsnfs"	=> {
-			"name"		=> "Labs NFS cluster",
-			"ip_oct"	=> "40" },
-	}
-	# NOTE: Do *not* add new clusters *per site* anymore,
-	# the site name will automatically be appended now,
-	# and a different IP prefix will be used.
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
+		$ganglia_clusters = {
+			"decommissioned" => {
+				"name"		=> "Decommissioned servers",
+				"ip_oct"	=> "1" },
+			"lvs" => {
+				"name"		=> "LVS loadbalancers",
+				"ip_oct"	=> "2" },
+			"search"	=>	{
+				"name"		=> "Search",
+				"ip_oct"	=> "4" },
+			"mysql"		=>	{
+				"name"		=> "MySQL",
+				"ip_oct"	=> "5" },
+			"squids_upload"	=>	{
+				"name"		=> "Upload squids",
+				"ip_oct"	=> "6" },
+			"squids_text"	=>	{
+				"name"		=> "Text squids",
+				"ip_oct"	=> "7" },
+			"misc"		=>	{
+				"name"		=> "Miscellaneous",
+				"ip_oct"	=> "8" },
+			"appserver"	=>	{
+				"name"		=> "Application servers",
+				"ip_oct"	=> "11"	},
+			"imagescaler"	=>	{
+				"name"		=> "Image scalers",
+				"ip_oct"	=> "12" },
+			"api_appserver"	=>	{
+				"name"		=> "API application servers",
+				"ip_oct"	=> "13" },
+			"pdf"		=>	{
+				"name"		=> "PDF servers",
+				"ip_oct"	=> "15" },
+			"cache_text"	=> {
+				"name"		=> "Text caches",
+				"ip_oct"	=> "20" },
+			"cache_bits"	=> {
+				"name"		=> "Bits caches",
+				"ip_oct"	=> "21" },
+			"cache_upload"	=> {
+				"name"		=> "Upload caches",
+				"ip_oct"	=> "22" },
+			"payments"	=> {
+				"name"		=> "Fundraiser payments",
+				"ip_oct"	=> "23" },
+			"bits_appserver"	=> {
+				"name"		=> "Bits application servers",
+				"ip_oct"	=> "24" },
+			"squids_api"		=> {
+				"name"		=> "API squids",
+				"ip_oct"	=> "25" },
+			"ssl"		=> {
+				"name"		=> "SSL cluster",
+				"ip_oct"	=> "26" },
+			"swift" => {
+				"name"		=> "Swift",
+				"ip_oct"	=> "27" },
+			"cache_mobile"	=> {
+				"name"		=> "Mobile caches",
+				"ip_oct"	=> "28" },
+			"virt"	=> {
+				"name"		=> "Virtualization cluster",
+				"ip_oct"	=> "29" },
+			"gluster"	=> {
+				"name"		=> "Glusterfs cluster",
+				"ip_oct"	=> "30" },
+			"jobrunner"	=>	{
+				"name"		=> "Jobrunners",
+				"ip_oct"	=> "31" },
+			"analytics"		=> {
+				"name"		=> "Analytics cluster",
+				"ip_oct"	=> "32" },
+			"memcached"		=> {
+				"name"		=> "Memcached",
+				"ip_oct"	=> "33" },
+			"videoscaler"		=> {
+				"name"		=> "Video scalers",
+				"ip_oct"	=> "34" },
+			"fundraising"	=> {
+				"name"		=> "Fundraising",
+				"ip_oct"	=> "35" },
+			"ceph"			=> {
+				"name"		=> "Ceph",
+				"ip_oct"	=> "36" },
+			"parsoid"		=> {
+				"name"		=> "Parsoid",
+				"ip_oct"	=> "37" },
+			"parsoidcache"		=> {
+				"name"		=> "Parsoid Varnish",
+				"ip_oct"	=> "38" },
+			"redis"			=> {
+				"name"		=> "Redis",
+				"ip_oct"	=> "39" },
+			"labsnfs"	=> {
+				"name"		=> "Labs NFS cluster",
+				"ip_oct"	=> "40" },
+		}
+		# NOTE: Do *not* add new clusters *per site* anymore,
+		# the site name will automatically be appended now,
+		# and a different IP prefix will be used.
 
-	# gmond.conf template variables
-	if $::realm == "labs" {
-		# use project names for cluster names in labs
-		$cname = $instanceproject
-	}
-	else {
+		# gmond.conf template variables
 		$ipoct = $ganglia_clusters[$cluster]["ip_oct"]
 		$mcast_address = "${ip_prefix}.${ipoct}"
 		$clustername = $ganglia_clusters[$cluster][name]
 		$cname = "${clustername}${name_suffix}"
-	}
 
-	if versioncmp($::lsbdistrelease, "9.10") >= 0 {
-		$gmond = "ganglia-monitor"
-	}
-	else {
-		$gmond = "gmond"
-	}
-
-	$gmondpath = $gmond ? {
-		"ganglia-monitor"       => "/etc/ganglia/gmond.conf",
-		default                 => "/etc/gmond.conf"
-	}
-
-
-	# Resource definitions
-	file { "gmondconfig":
-		require => Package[$gmond],
-		name	=> $gmondpath,
-		owner	=> "root",
-		group	=> "root",
-		mode	=> 0444,
-		content => template("ganglia/gmond_template.erb"),
-		notify  => Service[gmond],
-		ensure	=> present
-	}
-
-	case $gmond {
-		gmond: {
-			package {
-				"gmond":
-					ensure => latest,
-					alias => "gmond-package";
-				"ganglia-monitor":
-					before => Package[gmond],
-					ensure => purged;
-			}
+		if versioncmp($::lsbdistrelease, "9.10") >= 0 {
+			$gmond = "ganglia-monitor"
 		}
-		ganglia-monitor: {
-			if !defined(Package["ganglia-monitor"]) {
+		else {
+			$gmond = "gmond"
+		}
+
+		$gmondpath = $gmond ? {
+			"ganglia-monitor"       => "/etc/ganglia/gmond.conf",
+			default                 => "/etc/gmond.conf"
+		}
+
+
+		# Resource definitions
+		file { "gmondconfig":
+			require => Package[$gmond],
+			name	=> $gmondpath,
+			owner	=> "root",
+			group	=> "root",
+			mode	=> 0444,
+			content => template("ganglia/gmond_template.erb"),
+			notify  => Service[gmond],
+			ensure	=> present
+		}
+
+		case $gmond {
+			gmond: {
 				package {
 					"gmond":
-						before => Package[ganglia-monitor],
-						ensure => purged;
-					"ganglia-monitor":
-						ensure => present,
+						ensure => latest,
 						alias => "gmond-package";
+					"ganglia-monitor":
+						before => Package[gmond],
+						ensure => purged;
 				}
 			}
+			ganglia-monitor: {
+				if !defined(Package["ganglia-monitor"]) {
+					package {
+						"gmond":
+							before => Package[ganglia-monitor],
+							ensure => purged;
+						"ganglia-monitor":
+							ensure => present,
+							alias => "gmond-package";
+					}
+				}
 
-			file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
-				require => Package[ganglia-monitor],
-				ensure => directory;
-			}
+				file { [ "/etc/ganglia/conf.d", "/usr/lib/ganglia/python_modules" ]:
+					require => Package[ganglia-monitor],
+					ensure => directory;
+				}
 
-			file { "/etc/gmond.conf":
-				ensure => absent;
+				file { "/etc/gmond.conf":
+					ensure => absent;
+				}
 			}
 		}
-	}
 
-	service {
-		"gmond":
-			name		=> $gmond,
-			require		=> [ File[gmondconfig], Package["gmond-package"] ],
-			subscribe	=> File[gmondconfig],
-			hasstatus	=> false,
-			pattern		=> "gmond",
-			ensure		=> running;
-	}
+		service {
+			"gmond":
+				name		=> $gmond,
+				require		=> [ File[gmondconfig], Package["gmond-package"] ],
+				subscribe	=> File[gmondconfig],
+				hasstatus	=> false,
+				pattern		=> "gmond",
+				ensure		=> running;
+		}
 
-	systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
+		systemuser { gmetric: name => "gmetric", home => "/home/gmetric", shell => "/bin/sh" }
+	}
 
 	# Class for setting up the collector (gmetad)
 	class collector {
