@@ -48,6 +48,9 @@ NameVirtualHost *:443
 	SSLCertificateKeyFile /etc/ssl/private/<%= ssl_cert_key %>.key
 	SSLCACertificatePath /etc/ssl/certs/
 
+	RequestHeader set X-Forwarded-Proto https
+	RequestHeader set X-Forwarded-Port 443
+
 	SetEnvIf User-Agent 80legs bad_browser
 	SetEnvIf User-Agent bingbot bad_browser
 

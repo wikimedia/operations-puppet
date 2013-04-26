@@ -29,6 +29,7 @@ class gitblit::instance($host,
 	}
 
 	apache_site { git: name => "git.wikimedia.org" }
+	apache_module { headers: name => "headers" }
 	apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
