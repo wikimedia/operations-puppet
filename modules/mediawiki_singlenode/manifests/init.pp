@@ -88,6 +88,25 @@ class mediawiki_singlenode( $ensure = 'present',
 		logoutput => "on_failure",
 	}
 
+	file { "${install_path}/robots.txt":
+		require => Git::Clone["mediawiki"],
+		ensure => present,
+		source => "puppet:///modules/mediawiki_singlenode/robots.txt",
+	}
+
+	file { "${install_path}/privacy-policy.xml":
+		require => Git::Clone["mediawiki"],
+		ensure => present,
+		source => "puppet:///modules/mediawiki_singlenode/privacy-policy.xml",
+	}
+
+	exec { "import_privacy_policy":
+		require => [Exec["mediawiki_setup"], File["${install_path}/privacy-policy.xml"]],
+		cwd => "$install_path",
+		command => "/usr/bin/php maintenance/importDump.php privacy-policy.xml",
+		logoutput => "on_failure",
+	}
+
 	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
 			require => [git::clone["mediawiki"],
