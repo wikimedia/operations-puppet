@@ -89,11 +89,14 @@ class role::ceph::eqiad inherits role::ceph::base {
             serveradmin => 'webmaster@wikimedia.org',
         }
 
-        monitor_service { 'http':
-            description   => 'HTTP',
-            check_command => 'check_http',
+        monitor_service { 'http-apache':
+            description   => 'HTTP Apache',
+            check_command => 'check_http_url!ms-fe.eqiad.wmnet!/monitoring/frontend',
         }
-        # FIXME: more high-level Swift/S3 check, actual file check
+        monitor_service { 'http-radosgw':
+            description   => 'HTTP radosgw',
+            check_command => 'check_http_url!ms-fe.eqiad.wmnet!/monitoring/backend',
+        }
 
         file { '/usr/lib/ganglia/python_modules/apache_status.py':
             source => 'puppet:///files/ganglia/plugins/apache_status.py',
