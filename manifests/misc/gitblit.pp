@@ -26,6 +26,12 @@ class gitblit::instance($host,
 			group => $git_repo_owner,
 			ensure => directory,
 			require => User[$git_repo_owner];
+		"/var/lib/${user}/data/gitblit.properties":
+			mode => 0644,
+			owner => $user,
+			group => $user,
+			content => "puppet:///files/gitblit/gitblit.properties",
+			require => User[$user];
 	}
 
 	apache_site { git: name => "git.wikimedia.org" }
