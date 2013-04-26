@@ -44,5 +44,9 @@ class apt {
 		priority => '80',
 		key      => 'Acquire::http::Proxy',
 		value    => 'http://brewster.wikimedia.org:8080',
+		ensure   => $::site ? {
+			pmtpa,eqiad => present,
+			default     => absent
+		}
 	}
 }
