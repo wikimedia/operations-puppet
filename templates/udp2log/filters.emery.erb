@@ -13,7 +13,7 @@ file 1000 <%= log_directory %>/sampled-1000.tsv.log
 pipe 100 /usr/bin/udp-filter -F '\t' -p /w/api.php >> <%= log_directory %>/api-usage.tsv.log 
 
 ### GLAM NARA / National Archives - RT 2212
-pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -m -b country >> <%= log_directory %>/glam_nara.tsv.log
+pipe 10 /usr/bin/udp-filter -F '\t' -p _NARA_ -g -b country >> <%= log_directory %>/glam_nara.tsv.log
 
 ### Teahouse filters
 pipe 10 /usr/bin/udp-filter -F '\t' -d en.wikipedia.org -p /wiki/Wikipedia:Teahouse >> <%= log_directory %>/teahouse.tsv.log
