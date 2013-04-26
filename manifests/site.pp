@@ -53,13 +53,6 @@ class standard {
 	include base,
 		ntp::client,
 		exim::simple-mail-sender
-
-	# FIXME: remove after the ganglia module migration
-	if $::hostname == "manutius" or ($::site == "pmtpa" and $cluster in ["cache_bits"]) {
-		class { "ganglia_new::monitor": cluster => $cluster }
-	} else {
-		include ganglia
-	}
 }
 
 class newstandard {
