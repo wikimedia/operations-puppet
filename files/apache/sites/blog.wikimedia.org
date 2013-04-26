@@ -51,12 +51,13 @@ NameVirtualHost *:443
         RewriteEngine On
         RewriteRule ^/blog/(.*) http://blog.wikimedia.org/$1 [R]
         RewriteRule ^/category/(.*) http://blog.wikimedia.org/c/$1 [R]
-	
+
 	DocumentRoot /srv/org/wikimedia/blog/
 
         SSLEngine on
         SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
         SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+        SSLCACertificatePath /etc/ssl/certs/
 
 	<Directory />
 		Options FollowSymLinks
@@ -112,6 +113,7 @@ NameVirtualHost *:443
     SSLEngine on
     SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
     SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+    SSLCACertificatePath /etc/ssl/certs/
 
     ServerAlias communityblog.wikimedia.org globalblog.wikimedia.org blog.wikimediafoundation.org
                 RewriteEngine On
