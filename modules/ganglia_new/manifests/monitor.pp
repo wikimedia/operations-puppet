@@ -15,6 +15,7 @@ class ganglia_new::monitor($cluster) {
 		production => "${desc} ${::site}",
 		labs => $::instanceproject
 	}
+	$aggregator_hosts = $ganglia_new::configuration::aggregator_hosts[$::site]
 	$override_hostname = $::realm ? {
 		production => undef,
 		labs => $::instancename
@@ -23,6 +24,7 @@ class ganglia_new::monitor($cluster) {
 	class { "ganglia_new::monitor::config":
 		gmond_port => $gmond_port,
 		cname => $cname,
+		aggregator_hosts => $aggregator_hosts,
 		override_hostname => $override_hostname
 	}
 }

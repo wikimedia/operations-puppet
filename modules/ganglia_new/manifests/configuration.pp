@@ -120,6 +120,11 @@ class ganglia_new::configuration {
 		'production': {
 			$url = "http://ganglia.wikimedia.org"
 			$gmetad_hosts = [ "208.80.152.15", "208.80.154.150" ]
+			$aggregator_hosts = {
+				'pmtpa' => [ "208.80.152.15", "208.80.154.150" ],
+				'eqiad' => [ "208.80.152.15", "208.80.154.150" ],
+				'esams' => [ "91.198.174.113" ]
+			}
 			$base_port = 8649
 			$id_prefix = {
 				pmtpa => 0,
@@ -131,6 +136,10 @@ class ganglia_new::configuration {
 		'labs': {
 			$url = "http://ganglia.wmflabs.org"
 			$gmetad_hosts = [ "10.4.0.79"]
+			$aggregator_hosts = {
+				'pmtpa' => [ "10.4.0.79" ],
+				'eqiad' => [ "10.4.0.79" ],
+			}
 			$base_port = 8649
 			$id_prefix = {
 				pmtpa => 0,
