@@ -1,5 +1,6 @@
 class ganglia_new::monitor($cluster) {
 	include packages, service
+	include ganglia_new::configuration
 
 	if $::realm == "production" {
 		$id = $ganglia_new::configuration::clusters[$cluster]['id'] + $ganglia_new::configuration::id_prefix[$::site]
