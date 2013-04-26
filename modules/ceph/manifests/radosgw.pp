@@ -2,7 +2,7 @@ class ceph::radosgw(
     $servername='localhost',
     $serveradmin='webmaster@localhost',
 ) {
-    Class['ceph::radosgw'] -> Class['ceph']
+    Class['ceph'] -> Class['ceph::radosgw']
 
     package { [ 'radosgw', 'radosgw-dbg' ]:
         ensure => present,
@@ -11,8 +11,10 @@ class ceph::radosgw(
     service { 'radosgw id=radosgw':
         ensure     => 'running',
         hasrestart => true,
-        hasstatus  => true,
+        # upstart status is broken with id= ...
+        status     => '/usr/bin/pgrep radosgw',
         provider   => 'upstart',
+        require    => Package['radosgw'],
     }
 
     $id = 'client.radosgw'
@@ -43,7 +45,11 @@ class ceph::radosgw(
     file { '/etc/apache2/sites-available/radosgw':
         ensure  => present,
         content => template('ceph/radosgw/vhost.erb'),
-        require => Package['apache2'],
+        require => [
+            Package['apache2'],
+            Apache::Mod['fastcgi'],
+            Apache::Mod['rewrite'],
+            ],
         notify  => Service['apache2'],
     }
     file { '/etc/apache2/sites-enabled/radosgw':
@@ -59,11 +65,12 @@ class ceph::radosgw(
     }
 
     file { '/var/www/monitoring':
-      ensure  => directory,
+        ensure  => directory,
+        require => Package['apache2'],
     }
     file { '/var/www/monitoring/frontend':
-      ensure  => present,
-      content => "OK\n",
-      require => File['/var/www/monitoring'],
+        ensure  => present,
+        content => "OK\n",
+        require => File['/var/www/monitoring'],
     }
 }

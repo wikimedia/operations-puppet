@@ -1,7 +1,7 @@
 class ceph::mon(
     $monitor_secret,
 ) {
-    Class['ceph::mon'] -> Class['ceph']
+    Class['ceph'] -> Class['ceph::mon']
 
     $cluster  = 'ceph'
     $mon_data = "/var/lib/ceph/mon/ceph-${::hostname}"

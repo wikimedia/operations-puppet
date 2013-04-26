@@ -1,5 +1,5 @@
 class ceph::osd {
-    Class['ceph::osd'] -> Class['ceph']
+    Class['ceph'] -> Class['ceph::osd']
 
     package { ['parted', 'gdisk' ]:
         ensure => present,
