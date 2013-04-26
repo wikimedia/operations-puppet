@@ -13,6 +13,7 @@ class ceph::radosgw(
         hasrestart => true,
         hasstatus  => true,
         provider   => 'upstart',
+        require    => Package['radosgw'],
     }
 
     $id = 'client.radosgw'
@@ -59,11 +60,12 @@ class ceph::radosgw(
     }
 
     file { '/var/www/monitoring':
-      ensure  => directory,
+        ensure  => directory,
+        require => Package['apache2'],
     }
     file { '/var/www/monitoring/frontend':
-      ensure  => present,
-      content => "OK\n",
-      require => File['/var/www/monitoring'],
+        ensure  => present,
+        content => "OK\n",
+        require => File['/var/www/monitoring'],
     }
 }
