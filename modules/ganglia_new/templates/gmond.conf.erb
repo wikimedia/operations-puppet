@@ -114,6 +114,12 @@ modules {
     name = "sys_module"
     path = "/usr/lib/ganglia/modsys.so"
   }
+
+  module {
+    name = "python_module"
+    path = "/usr/lib/ganglia/modpython.so"
+    params = "/usr/lib/ganglia/python_modules"
+  }
 }
 
 include ('/etc/ganglia/conf.d/*.conf')
