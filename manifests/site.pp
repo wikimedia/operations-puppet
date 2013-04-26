@@ -1837,20 +1837,20 @@ node /^ms-be(1|2|4)\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
-	$cluster = "ceph"
+	include role::ceph::eqiad::radosgw
 
 	if $hostname =~ /^ms-fe100[12]$/ {
 		$ganglia_aggregator = true
+		include role::ceph::eqiad::mon
 	}
-	class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
-
-	include standard
 }
 
 node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
-	$cluster = "ceph"
+	include role::ceph::eqiad::osd
 
-	include standard
+	if $hostname == 'ms-be1003' {
+		include role::ceph::eqiad::mon
+	}
 }
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {

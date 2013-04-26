@@ -1,0 +1,24 @@
+/var/log/radosgw/*.log {
+    rotate 7
+    daily
+    compress
+    sharedscripts
+    postrotate
+        if which invoke-rc.d > /dev/null && [ -x `which invoke-rc.d` ]; then
+            invoke-rc.d radosgw reload >/dev/null
+        elif which service > /dev/null && [ -x `which service` ]; then
+            service radosgw reload >/dev/null
+        fi
+        # Possibly reload twice, but depending on ceph.conf the reload above may be a no-op
+        if which initctl > /dev/null && [ -x `which initctl` ]; then
+            for type in mon osd mds; do
+		initctl list \
+		    | perl -ne 'print "$+{service} cluster=$+{cluster} id=$+{id}\n" if m{^(?<service>radosgw)\s+\((?<cluster>[^/)]+)/(?<id>[^)]+)\) start/}' \
+		    | while read l; do
+		    initctl reload -- $l 2>/dev/null || :
+		done
+            done
+        fi
+    endscript
+    missingok
+}
