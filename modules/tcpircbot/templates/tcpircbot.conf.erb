@@ -1,0 +1,17 @@
+# vim: set ft=upstart:
+
+# Upstart job configuration for tcpircbot
+# This file is managed by Puppet
+
+description "TCP socket to IRC bot: <%= @title %>"
+
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [!2345]
+
+setuid <%= scope.lookupvar('tcpircbot::user') %>
+setgid <%= scope.lookupvar('tcpircbot::group') %>
+
+chdir "<%= scope.lookupvar('tcpircbot::dir') %>"
+exec python tcpircbot.py "<%= @title %>.json"
+
+respawn

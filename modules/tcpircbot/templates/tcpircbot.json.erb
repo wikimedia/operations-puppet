@@ -1,0 +1,12 @@
+{
+    "irc": {
+        "channel": "<%= @channel %>",
+        "network": ["<%= @server_host %>", <%= @server_port %>, "<%= @nickname %>:<%= @password %>"],
+        <% if @ssl %>"ssl": true,<% end %>
+        "nickname": "<%= @nickname %>"
+    },
+    "tcp": {
+        "max_clients": <%= @max_clients %>,
+        "port": <%= @listen_port %>
+    }
+}
