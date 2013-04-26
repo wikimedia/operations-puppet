@@ -1837,10 +1837,13 @@ node /^ms-be(1|2|4)\.pmtpa\.wmnet$/ {
 }
 
 node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
+	if $::hostname =~ /^ms-fe100[12]$/ {
+		$ganglia_aggregator = true
+	}
+
 	include role::ceph::eqiad::radosgw
 
 	if $::hostname =~ /^ms-fe100[12]$/ {
-		$ganglia_aggregator = true
 		include role::ceph::eqiad::mon
 	}
 }
