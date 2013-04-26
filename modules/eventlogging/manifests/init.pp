@@ -1,6 +1,6 @@
 # Collector of analytic events
 # See <https://wikitech.wikimedia.org/wiki/EventLogging>
-class eventlogging( $backup_destinations = [] ) {
+class eventlogging( $archive_destinations = [] ) {
 
 	class { 'eventlogging::supervisor': }
 	class { 'eventlogging::notebook':
