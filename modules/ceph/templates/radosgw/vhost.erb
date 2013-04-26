@@ -1,0 +1,34 @@
+StartServers 5
+ServerLimit 50
+MaxClients 800
+FastCgiExternalServer /var/www/dummyradosgw.fcgi -socket /run/radosgw.sock
+
+LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxy_combined
+LogFormat "%{X-Forwarded-For}i %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxy_debug
+
+<VirtualHost *:80>
+  ServerName <%= @servername %>
+  ServerAdmin <%= @serveradmin %>
+  ServerSignature Off
+  DocumentRoot /var/www/
+
+  RewriteEngine On
+  RewriteCond %{REQUEST_URI} !^/monitoring/
+  RewriteCond %{REQUEST_URI} !^/($|index.html|favicon.ico|robots.txt)
+  RewriteRule ^/(.*) /dummyradosgw.fcgi?params=$1&%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
+  <IfModule mod_fastcgi.c>
+    <Directory /var/www/>
+      Options +ExecCGI
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+      AuthBasicAuthoritative Off
+    </Directory>
+  </IfModule>
+
+  AllowEncodedSlashes On
+
+  ErrorLog /var/log/apache2/error.log
+  CustomLog /var/log/apache2/access.log proxy_debug
+</VirtualHost>
