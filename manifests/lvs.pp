@@ -735,7 +735,7 @@ class lvs::configuration {
 			},
 		},
 		"swift" => {
-			'description' => "Swift object store for thumbnails",
+			'description' => "Swift/Ceph media storage",
 			'class' => "low-traffic",
 			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['swift'][$::site],
