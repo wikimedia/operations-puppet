@@ -1,4 +1,5 @@
 # misc/wikistats.pp
+# vim: set noexpandtab :
 # mediawiki statistics site
 
 class misc::wikistats {
@@ -41,8 +42,24 @@ class misc::wikistats::web ( $wikistats_host, $wikistats_ssl_cert, $wikistats_ss
 
 }
 
+class misc::wikistats::packages {
+
+	package { [
+		'libhtml-treebuilder-xpath-perl',
+		'libjson-xs-perl',
+		'libnet-patricia-perl',
+		'libtemplate-perl',
+		'libweb-scraper-perl',
+	]:
+		ensure => 'installed',
+	}
+
+}
+
 # the update scripts fetching data (input)
 class misc::wikistats::updates {
+
+	include misc::wikistats::packages
 
 	#FIXME - this was used in labs in the past but is gone unfortunately
 	#require misc::mariadb::server
