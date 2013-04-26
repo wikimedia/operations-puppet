@@ -2,9 +2,7 @@ StartServers 5
 ServerLimit 50
 MaxClients 800
 
-<IfModule mod_fastcgi.c>
 FastCgiExternalServer /var/www/dummyradosgw.fcgi -socket /run/radosgw.sock
-</IfModule>
 
 LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxy_combined
 LogFormat "%{X-Forwarded-For}i %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" proxy_debug
@@ -15,22 +13,18 @@ LogFormat "%{X-Forwarded-For}i %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{Use
   ServerSignature Off
   DocumentRoot /var/www/
 
-  <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteCond %{REQUEST_URI} !^/server-status
   RewriteCond %{REQUEST_URI} !^/monitoring/frontend$
   RewriteRule ^/(.*) /dummyradosgw.fcgi?params=$1&%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
-  </IfModule>
 
-  <IfModule mod_fastcgi.c>
-    <Directory /var/www/>
-      Options +ExecCGI
-      AllowOverride All
-      Order allow,deny
-      Allow from all
-      AuthBasicAuthoritative Off
-    </Directory>
-  </IfModule>
+  <Directory /var/www/>
+    Options +ExecCGI
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    AuthBasicAuthoritative Off
+  </Directory>
 
   <Location /server-status>
     SetHandler server-status

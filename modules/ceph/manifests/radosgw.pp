@@ -48,15 +48,25 @@ class ceph::radosgw(
         group   => 'root',
     }
 
+    # install apache + fastcgi + rewrite. fcgid doesn't stream
+    # the standard apache module is crap really, so this isn't great
     class { 'apache':
         default_mods => false,
         serveradmin  => $serveradmin,
     }
-    apache::mod { 'fastcgi':
-        package => 'libapache2-mod-fastcgi',
+    package { 'libapache2-mod-fastcgi':
+        ensure => present,
+        require => Package['apache2'],
+        notify  => Service['apache2'],
     }
-    apache::mod { 'rewrite': }
+    file { '/etc/apache2/mods-enabled/rewrite.load':
+        ensure  => link,
+        target  => '../mods-available/rewrite.load',
+        require => Package['apache2'],
+        notify  => Service['apache2'],
+    }
 
+    # VirtualHost config
     file { '/etc/apache2/sites-available/radosgw':
         ensure  => present,
         owner   => 'root',
@@ -77,6 +87,8 @@ class ceph::radosgw(
         notify  => Service['apache2'],
     }
 
+    # just a simple file to be able to do health checks on Apache
+    # /monitoring/backend also exists but is routed over to radosgw
     file { '/var/www/monitoring':
         ensure  => directory,
         owner   => 'root',
