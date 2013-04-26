@@ -45,6 +45,10 @@ class role::analytics::reportcard {
 ```
 
 # Requirements
-* puppet-labs' apache puppet module.
+* Apache2 is installed and running.  The service 'apache2' must be managed by puppet somehow.  You choose.
+* mod_rewrite, mod_proxy, and mod_proxy_http must be enabled:
+** ```a2enmod rewrite && a2enmod proxy && a2enmod proxy_http```
+** Or manage these via Puppet however you see fit.
+
 
 

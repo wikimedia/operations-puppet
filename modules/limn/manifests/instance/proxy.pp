@@ -4,7 +4,8 @@
 #
 # NOTE: You must install apache yourself.
 # A Service and Package named 'apache2' must be defined.
-# You must also make sure mod rewrite is enabled.
+# You must also make sure mod_rewrite, mod_proxy, and mod_proxy_http
+# are enabled.
 #
 # == Parameters:
 # $port           - Apache port to Listen on.  Default: 80.
