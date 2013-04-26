@@ -993,6 +993,8 @@ node "hooft.esams.wikimedia.org" {
 		admins::roots,
 		admins::mortals,
 		admins::restricted
+
+	class { "ganglia_new::monitor::aggregator": sites => ["esams"] }
 }
 
 # base_analytics_logging_node is defined in role/logging.pp
