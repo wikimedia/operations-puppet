@@ -1,0 +1,54 @@
+[global]
+	auth cluster required = cephx
+	auth service required = cephx
+	auth client required = cephx
+	cephx require signatures = true
+
+	keyring = /etc/ceph/$cluster.$name.keyring
+
+	fsid = <%= @config['fsid'] %>
+	mon host = <%= @config['mon_addresses'].join(' ') %>
+	mon initial members = <%= @config['mon_initial_members'] %>
+<% if (! @config['global'].nil?) -%>
+
+	<%- @config['global'].sort.each do |k, v| -%>
+	<%= k %> = <%= v %>
+	<%- end -%>
+<% end -%>
+
+[mon]
+	keyring = /var/lib/ceph/mon/$cluster-$id/keyring
+<% if (! @config['mon'].nil?) -%>
+
+	<%- @config['mon'].sort.each do |k, v| -%>
+	<%= k %> = <%= v %>
+	<%- end -%>
+<% end -%>
+
+[osd]
+	keyring = /var/lib/ceph/osd/$cluster-$id/keyring
+<% if (! @config['osd'].nil?) -%>
+
+	<%- @config['osd'].sort.each do |k, v| -%>
+	<%= k %> = <%= v %>
+	<%- end -%>
+<% end -%>
+
+[mds]
+	keyring = /var/lib/ceph/mds/$cluster-$id/keyring
+<% if (! @config['mds'].nil?) -%>
+
+	<%- @config['mds'].sort.each do |key, value| -%>
+	<%= key %> = <%= value %>
+	<%- end -%>
+<% end -%>
+
+[client.radosgw]
+	log file = /var/log/radosgw/radosgw.log
+	rgw socket path = /run/radosgw.sock
+<% if (! @config['radosgw'].nil?) -%>
+
+	<%- @config['radosgw'].sort.each do |key, value| -%>
+	<%= key %> = <%= value %>
+	<%- end -%>
+<% end -%>
