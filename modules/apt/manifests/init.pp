@@ -40,14 +40,26 @@ class apt {
 		priority => 1001,
 	}
 
-	apt::conf { 'wikimedia-proxy':
-		priority => '80',
-		key      => 'Acquire::http::Proxy',
-		value    => 'http://brewster.wikimedia.org:8080',
-		ensure   => $::site ? {
-			pmtpa       => present,
-			eqiad       => present,
-			default     => absent
-		}
+	$enable_proxy = $::site ? {
+		pmtpa   => present,
+		eqiad   => present,
+		default => absent
+	}
+	apt::conf {
+		'wikimedia-proxy':
+			priority => '80',
+			key      => 'Acquire::http::Proxy',
+			value    => 'http://brewster.wikimedia.org:8080',
+			ensure   => absent;
+		'security-ubuntu-proxy':
+			priority => '80',
+			key      => 'Acquire::http::Proxy::security.ubuntu.com',
+			value    => 'http://brewster.wikimedia.org:8080',
+			ensure   => $enable_proxy;
+		'old-releases-proxy':
+			priority => '80',
+			key      => 'Acquire::http::Proxy::old-releases.ubuntu.com',
+			value    => 'http://brewster.wikimedia.org:8080',
+			ensure   => $enable_proxy;
 	}
 }
