@@ -51,6 +51,7 @@ import "stages.pp"
 # Class for *most* servers, standard includes
 class standard {
 	include base,
+		ganglia,
 		ntp::client,
 		exim::simple-mail-sender
 }
