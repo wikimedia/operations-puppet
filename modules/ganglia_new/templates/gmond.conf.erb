@@ -14,7 +14,7 @@ globals {
   cleanup_threshold = 300 /*secs */
   gexec = no
   send_metadata_interval = 60
-<% if override_hostname -%>
+<% if @override_hostname -%>
   override_hostname = <%= override_hostname %>
 <% end -%>
 }
