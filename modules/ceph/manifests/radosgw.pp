@@ -8,13 +8,26 @@ class ceph::radosgw(
         ensure => present,
     }
 
+    file { '/var/lib/ceph/radosgw/ceph-radosgw':
+        ensure  => directory,
+        owner   => 'root'   ,
+        group   => 'root',
+        require => Package['radosgw'],
+    }
+    file { '/var/lib/ceph/radosgw/ceph-radosgw/done':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        require => File['/var/lib/ceph/radosgw/ceph-radosgw'],
+    }
+
     service { 'radosgw id=radosgw':
         ensure     => 'running',
         hasrestart => true,
         # upstart status is broken with id= ...
         status     => '/usr/bin/pgrep radosgw',
         provider   => 'upstart',
-        require    => Package['radosgw'],
+        require    => File['/var/lib/ceph/radosgw/ceph-radosgw/done'],
     }
 
     $id = 'client.radosgw'
@@ -31,6 +44,8 @@ class ceph::radosgw(
     file { '/etc/logrotate.d/radosgw':
         ensure => present,
         source => 'puppet:///modules/ceph/logrotate-radosgw',
+        owner   => 'root',
+        group   => 'root',
     }
 
     class { 'apache':
@@ -44,12 +59,10 @@ class ceph::radosgw(
 
     file { '/etc/apache2/sites-available/radosgw':
         ensure  => present,
+        owner   => 'root',
+        group   => 'root',
         content => template('ceph/radosgw/vhost.erb'),
-        require => [
-            Package['apache2'],
-            Apache::Mod['fastcgi'],
-            Apache::Mod['rewrite'],
-            ],
+        require => Package['apache2'],
         notify  => Service['apache2'],
     }
     file { '/etc/apache2/sites-enabled/radosgw':
@@ -66,10 +79,14 @@ class ceph::radosgw(
 
     file { '/var/www/monitoring':
         ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
         require => Package['apache2'],
     }
     file { '/var/www/monitoring/frontend':
         ensure  => present,
+        owner   => 'root',
+        group   => 'root',
         content => "OK\n",
         require => File['/var/www/monitoring'],
     }
