@@ -86,7 +86,7 @@ class contint::packages {
 
   # these packages are used by the tests for wikistats to parse the
   # generated reports to see if they are correct
-  package { ['libhtml-treebuilder-xpath-perl','libweb-scraper-perl']:
+  package { ['libhtml-treebuilder-xpath-perl','libweb-scraper-perl','libnet-patricia-perl','libtemplate-perl','libjson-xs-perl']:
     ensure => 'installed',
   }
 
