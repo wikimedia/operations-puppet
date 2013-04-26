@@ -57,4 +57,12 @@ class ceph::radosgw(
         require => Package['apache2'],
         notify  => Service['apache2'],
     }
+
+    file { '/var/www/monitoring':
+      ensure  => directory,
+    }
+    file { '/var/www/monitoring/frontend':
+      ensure  => present,
+      content => "OK\n",
+    }
 }
