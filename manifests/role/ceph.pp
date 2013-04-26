@@ -1,4 +1,4 @@
-@monitor_group { 'Ceph': description => 'Ceph servers' }
+@monitor_group { 'ceph': description => 'Ceph servers' }
 
 class role::ceph::base {
     $cluster      = 'ceph'
