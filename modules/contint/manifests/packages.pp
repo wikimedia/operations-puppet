@@ -1,3 +1,8 @@
+#
+# Holds all the packages needed for continuous integration.
+#
+# FIXME: split this!
+#
 class contint::packages {
 
   # Make sure we use ant version 1.8 or we will have a conflict
