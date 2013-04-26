@@ -35,7 +35,7 @@ host {
 }
 
 <% if not aggregator -%>
-<% scope.lookupvar("ganglia_new::configuration::gmetad_hosts").each do |host| -%>
+<% aggregator_hosts.each do |host| -%>
 udp_send_channel {
   host = <%= host %>
   port = <%= gmond_port %>
