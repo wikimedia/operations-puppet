@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# Wrapper around ceph-disk-prepare & ceph-disk-activate Workarounds a few bugs
+# & limitations of theirs (see bugs inline)
+#
+# Works with certain Wikimedia-specific assumptions (hostnames, RAID
+# controllers, number of disks) and would probably make little sense for
+# everyone else.
+
+#set -e
+
+## remove:
+# MegaCli -DiscardPreservedCache -L8  -a0
+# MegaCli -CfgLDDel -L8 -aALL
+
+usage() {
+	echo "I: Usage: $0 <target-id>"
+	echo "I:	target-id is the SCSI target ID, as can be seen with e.g."
+	echo "I:	# MegaCli -LDInfo -Lall -aALL | grep ^Virtual"
+	echo "I:	WARNING: It is NOT the Virtual Disk number."
+}
+if [ $# -eq 0 ]; then usage; exit 1; fi
+
+options=':hl:'
+while getopts $options option
+do
+	case $option in
+		h) usage; exit 1;;
+		l) LD=$OPTARG;;
+		\?) echo "Unknown option: -$OPTARG" >&2; exit 1;;
+		:) echo "Missing option argument for -$OPTARG" >&2; exit 1;;
+	esac
+done
+
+if ! [ "$LD" -eq "$LD" ] 2>/dev/null; then
+	echo "E: $LD is not a valid target ID"
+	exit 1
+fi
+
+if ! MegaCli -LDInfo -Lall -aALL |grep -q "(Target Id: $LD)"; then
+	echo "E: Unknown target ID $LD on MegaCli"
+	echo "I: You might want to run:"
+	echo "I:	MegaCli -PDList -aALL | less # identify the unconfigured disk"
+	echo "I:	MegaCli -CfgLdAdd -r0[32:\$pd] -a0"
+	exit 2
+fi
+
+if [ ! -e /dev/disk/by-path/pci-*-scsi-0:2:$LD:0 ]; then
+	echo "I: Rescanning the SCSI bus"
+	echo "- $LD -" > /sys/class/scsi_host/host0/scan
+	sleep 2
+fi
+
+# H710 disks always appear as channel 2
+disk=$(readlink -e /dev/disk/by-path/pci-*-scsi-0\:2\:$LD:0)
+if [ "x$disk" = "x" ]; then
+	echo "E: Couldn't identify the device node for target ID $LD"
+	exit 2
+fi
+
+# this is per our convention and assumes 12 disks per box
+boxid=$(hostname |sed 's/^ms-be//')
+osdid=$(((${boxid} % 1000 - 1) * 12 + $LD - 1))
+
+echo -n "I: Setting up OSD $osdid using disk $LD, device node $disk. Confirm (y/n)? "
+read answer
+if [ "x${answer}" != "xy" ]; then
+	echo "Aborting"
+	exit 2
+fi
+
+# sanity checks
+if grep -q $disk /proc/mounts; then
+	echo "E: $disk or a partition of it seems to be mounted:"
+	mount | grep $disk
+	exit 2
+fi
+
+if grep -q "/var/lib/ceph/osd/ceph-${osdid}" /proc/mounts; then
+	echo "E: OSD ${osdid} seems to be mounted already:"
+	mount | grep ceph-${osdid}
+	exit 2
+fi
+
+if pgrep -f -- "/usr/bin/ceph-osd --cluster=ceph -i ${osdid}" > /dev/null; then
+	echo "E: Ceph OSD daemon for ${osdid} seems to be running"
+	exit 2
+fi
+
+echo "I: Partioning and formatting the disk"
+# disable ceph-disk-activate, or it is spawned prematurely by prepare
+# http://tracker.ceph.com/issues/3255
+mv /usr/sbin/ceph-disk-activate /usr/sbin/ceph-disk-activate.off
+ceph-disk-prepare ${disk}
+sleep 2
+mv /usr/sbin/ceph-disk-activate.off /usr/sbin/ceph-disk-activate
+
+# explicitly set whoami
+# WARNING: this can be dangerous if not previously cleaned up properly
+# http://tracker.ceph.com/issues/4032
+mkdir -p /var/lib/ceph/tmp
+mountpoint=$(mktemp -d --tmpdir=/var/lib/ceph/tmp/)
+mount ${disk}1 ${mountpoint}/
+echo ${osdid} > ${mountpoint}/whoami
+umount ${mountpoint}
+rmdir ${mountpoint}
+
+# cleanup possibly old journal
+rm /var/lib/ceph/journal/ceph-${osdid}
+
+# http://tracker.ceph.com/issues/4031
+mount ${disk}1 /var/lib/ceph/osd/ceph-${osdid}
+ceph-osd --cluster=ceph -i ${osdid} --mkjournal -f
+umount /var/lib/ceph/osd/ceph-${osdid}
+
+echo "I: activating the new OSD"
+ceph-disk-activate --mount ${disk}1
