@@ -8,6 +8,10 @@ NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.wikimedia.org
 
+	LogLevel warn
+	ErrorLog /var/log/apache2/integration_error.log
+	CustomLog /var/log/apache2/integration_access.log vhost_combined
+
 	# Force Jenkins request through HTTPS
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
@@ -23,13 +27,9 @@ NameVirtualHost *:443
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
 
-	ErrorLog /var/log/apache2/error.log
-
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
 	LogLevel warn
-
-	CustomLog /var/log/apache2/access.log combined
+	ErrorLog /var/log/apache2/integration_error.log
+	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
 	<Directory />
 		Order Deny,Allow

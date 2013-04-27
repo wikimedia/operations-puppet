@@ -7,11 +7,19 @@
 <VirtualHost *:80>
 	ServerName doc.mediawiki.org
 
+	LogLevel warn
+	ErrorLog /var/log/apache2/doc_error.log
+	CustomLog /var/log/apache2/doc_access.log vhost_combined
+
 	Redirect permanent / https://doc.wikimedia.org/
 </VirtualHost>
 
 <VirtualHost *:443>
 	ServerName doc.mediawiki.org
+
+	LogLevel warn
+	ErrorLog /var/log/apache2/doc_error.log
+	CustomLog /var/log/apache2/doc_access.log vhost_combined
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
@@ -24,6 +32,10 @@
 <VirtualHost *:80>
 	ServerName doc.wikimedia.org
 
+	LogLevel warn
+	ErrorLog /var/log/apache2/doc_error.log
+	CustomLog /var/log/apache2/doc_access.log vhost_combined
+
 	Redirect permanent / https://doc.wikimedia.org/
 </VirtualHost>
 
@@ -33,9 +45,9 @@
 
 	DocumentRoot /srv/org/wikimedia/doc
 
-	ErrorLog /var/log/apache2/error.log
 	LogLevel warn
-	CustomLog /var/log/apache2/access.log combined
+	ErrorLog /var/log/apache2/doc_error.log
+	CustomLog /var/log/apache2/doc_access.log vhost_combined
 
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
