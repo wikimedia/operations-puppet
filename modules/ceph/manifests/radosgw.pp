@@ -23,9 +23,11 @@ class ceph::radosgw(
 
     service { 'radosgw id=radosgw':
         ensure     => 'running',
+        status     => '/sbin/status radosgw id=radosgw',
+        start      => '/sbin/start  radosgw id=radosgw',
+        stop       => '/sbin/stop   radosgw id=radosgw',
+        restart    => '/sbin/start  radosgw id=radosgw',
         hasrestart => true,
-        # upstart status is broken with id= ...
-        status     => '/usr/bin/pgrep radosgw',
         provider   => 'upstart',
         require    => File['/var/lib/ceph/radosgw/ceph-radosgw/done'],
     }
