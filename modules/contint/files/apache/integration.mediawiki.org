@@ -8,6 +8,10 @@ NameVirtualHost *:443
 <VirtualHost *:80>
 	ServerName integration.mediawiki.org
 
+	LogLevel warn
+	ErrorLog /var/log/apache2/integration_error.log
+	CustomLog /var/log/apache2/integration_access.log vhost_combined
+
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
 <VirtualHost *:443>
@@ -17,6 +21,10 @@ NameVirtualHost *:443
 	SSLCertificateFile /etc/ssl/certs/star.mediawiki.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.mediawiki.org.key
 	SSLCACertificateFile /etc/ssl/certs/RapidSSL_CA.pem
+
+	LogLevel warn
+	ErrorLog /var/log/apache2/integration_error.log
+	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
 	Redirect permanent / https://integration.wikimedia.org/
 </VirtualHost>
