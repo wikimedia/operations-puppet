@@ -515,12 +515,12 @@ node "db78.pmtpa.wmnet" {
 }
 
 ## researchdb
-node /^db67\.pmtpa\.wmnet/ {
+node 'db67.pmtpa.wmnet' {
 	class { role::coredb::researchdb : mariadb => true }
 }
 
 ## pgehres special project
-node /^db29\.pmtpa\.wmnet/{
+node 'db29.pmtpa.wmnet' {
 	$gid = 500
 	system_role { "role::admin_tools_sul_audit_db": description => "Admin Tools/SUL Audit database" }
 	include base,
@@ -642,12 +642,15 @@ node /^(db1008|db1025)\.eqiad\.wmnet/ {
 }
 
 ## researchdb
-node /^db1047\.eqiad\.wmnet/ {
-	class { role::coredb::researchdb : mariadb => true, innodb_file_per_table => true }
+node 'db1047.eqiad.wmnet' {
+	class { role::coredb::researchdb :
+		mariadb => true,
+		innodb_file_per_table => true,
+	}
 }
 
 ## SANITARIUM
-node /^db1053\.eqiad\.wmnet/ {
+node 'db1053.eqiad.wmnet' {
 	class { role::db::sanitarium:
 		instances => {
 			's1' => {
@@ -659,7 +662,7 @@ node /^db1053\.eqiad\.wmnet/ {
 	}
 }
 
-node /^db1054\.eqiad\.wmnet/ {
+node 'db1054.eqiad.wmnet' {
 	class { role::db::sanitarium:
 		instances => {
 			's2' => {
@@ -681,7 +684,7 @@ node /^db1054\.eqiad\.wmnet/ {
 	}
 }
 
-node /^db1057\.eqiad\.wmnet/ {
+node 'db1057.eqiad.wmnet' {
 	class { role::db::sanitarium:
 		instances => {
 			's3' => {
@@ -1186,7 +1189,7 @@ node "knsq24.esams.wikimedia.org" {
 }
 
 ## labsdb dbs
-node /^labsdb1001\.eqiad\.wmnet/ {
+node 'labsdb1001.eqiad.wmnet' {
   class { role::db::labsdb:
     instances => {
       's1' => {
@@ -1198,7 +1201,7 @@ node /^labsdb1001\.eqiad\.wmnet/ {
   }
 }
 
-node /^labsdb1002\.eqiad\.wmnet/ {
+node 'labsdb1002.eqiad.wmnet' {
   class { role::db::labsdb:
     instances => {
       's2' => {
@@ -1220,7 +1223,7 @@ node /^labsdb1002\.eqiad\.wmnet/ {
   }
 }
 
-node /^labsdb1003\.eqiad\.wmnet/ {
+node 'labsdb1003.eqiad.wmnet' {
   class { role::db::labsdb:
     instances => {
       's3' => {
@@ -2791,14 +2794,13 @@ node "virt0.wikimedia.org" {
 		backup::client
 }
 
-node /virt2.pmtpa.wmnet/ {
+node 'virt2.pmtpa.wmnet' {
 	$cluster = "virt"
 	$openstack_version = "essex"
 
 	include standard,
 		role::nova::network,
 		role::nova::api
-
 }
 
 node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
