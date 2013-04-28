@@ -124,7 +124,7 @@ stderr_logfile = NONE
 [program:json2sql-db1047]
 user = eventlogging
 command = json2sql --sid=db1047 tcp://localhost:8600
-    mysql://<%= scope.lookupvar('passwords::mysql::eventlogging::user') %>:<%= scope.lookupvar('passwords::mysql::eventlogging::password') %>@db1047.eqiad.wmnet/log?charset=utf8
+    mysql://<%= scope.lookupvar('passwords::mysql::eventlogging::user') %>:<%= scope.lookupvar('passwords::mysql::eventlogging::password') %>@db1047.eqiad.wmnet/log?charset=utf8mb4
 priority = 500
 redirect_stderr = true
 stdout_logfile = /var/log/supervisor/%(program_name)s.log
