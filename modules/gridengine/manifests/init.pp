@@ -1,7 +1,7 @@
 # gridengine/init.pp
 
 
-class gridengine {
+class gridengine($gridmaster) {
 	file { "/var/local/preseed":
 		mode => 0600,
 		ensure => directory,
