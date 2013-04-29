@@ -2,7 +2,9 @@
 
 
 class gridengine::shadow_master($gridmaster = $grid_master) {
-	require gridengine($gridmaster)
+	class { 'gridengine':
+		gridmaster => $gridmaster,
+	}
 
         package { "gridengine-master":
                 ensure => latest,

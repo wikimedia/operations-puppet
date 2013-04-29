@@ -2,7 +2,9 @@
 
 
 class gridengine::submit_host($gridmaster = $grid_master) {
-	require gridengine($gridmaster)
+	class { 'gridengine':
+		gridmaster => $gridmaster,
+	}
 
         package { "gridengine-client":
                 ensure => latest,
