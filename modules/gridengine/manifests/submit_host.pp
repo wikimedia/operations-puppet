@@ -1,8 +1,8 @@
 # gridengine.pp
 
 
-class gridengine::submit_host {
-	require gridengine
+class gridengine::submit_host($gridmaster = $grid_master) {
+	require gridengine($gridmaster)
 
         package { "gridengine-client":
                 ensure => latest,

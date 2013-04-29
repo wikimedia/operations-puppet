@@ -1,7 +1,10 @@
 # gridengine/init.pp
+#
+# The gridmaster parameter is used in the template to preseed the package
+# installation with the (annoyingly) semi-hardcoded FQDN to the grid
+# master server.
 
-
-class gridengine {
+class gridengine($gridmaster) {
 	file { "/var/local/preseed":
 		mode => 0600,
 		ensure => directory,

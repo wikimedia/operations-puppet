@@ -1,8 +1,8 @@
 # gridengine.pp
 
 
-class gridengine::shadow_master {
-	require gridengine
+class gridengine::shadow_master($gridmaster = $grid_master) {
+	require gridengine($gridmaster)
 
         package { "gridengine-master":
                 ensure => latest,
