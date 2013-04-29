@@ -1500,7 +1500,7 @@ host ms-be1 {
 }
 
 host ms-be2 {
-	hardware ethernet E8:9A:8F:D3:3E:44;
+	hardware ethernet 90:B1:1C:18:A6:32;
 	fixed-address ms-be2.pmtpa.wmnet;
 }
 
