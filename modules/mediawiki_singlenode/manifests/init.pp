@@ -94,6 +94,12 @@ class mediawiki_singlenode( $ensure = 'present',
 		source => "puppet:///modules/mediawiki_singlenode/robots.txt",
 	}
 
+	file { "${install_path}/skins/common/images/labs_mediawiki_logo.png":
+		require => Git::Clone["mediawiki"],
+		ensure => present,
+		source => "puppet:///modules/mediawiki_singlenode/labs_mediawiki_logo.png",
+	}
+
 	file { "${install_path}/privacy-policy.xml":
 		require => Git::Clone["mediawiki"],
 		ensure => present,
