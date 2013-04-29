@@ -191,6 +191,7 @@ else
 	(runJobsLoopService "$ipriotypes" "n" <%= iprioprocs %>) &
 	# Start a loop for default high and low priority jobs
 	hpriotypes="sendMail enotifNotify MoodBarHTMLMailerJob MWEchoNotificationEmailBundleJob ArticleFeedbackv5MailerJob" # mail
+	hpriotypes="$hpriotypes EchoNotificationJob" # echo notification
 	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
