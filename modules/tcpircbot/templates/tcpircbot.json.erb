@@ -7,6 +7,7 @@
     },
     "tcp": {
         "max_clients": <%= @max_clients %>,
+        <% if @cidr %>"cidr": "<%= @cidr %>",<% end %>
         "port": <%= @listen_port %>
     }
 }
