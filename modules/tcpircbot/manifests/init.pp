@@ -1,20 +1,35 @@
-# Listens on a TCP port and forwards messages to an IRC channel.
-# Connects to freenode via SSL and listens on TCP port 9200 by default.
+# == Class: tcpircbot
 #
-# Example:
+# Base class for tcpircbot, a daemon that reads messages from a TCP socket and
+# writes them to an IRC channel. You should not need to override the defaults
+# for this class's parameters. You likely need to simply 'include tcpircbot'
+# and then provision an instance by declaring a 'tcpircbot::instance' resource.
+# See instance.pp for the configuration options you do need to specify.
 #
-#  include tcpircbot
+# === Parameters
 #
-#  tcpircbot::instance { 'announcebot':
-#    password => 'nickserv_secret123',
-#    channel  => '#wikimedia-operations',
-#  }
+# [*user*]
+#   Run tcpircbot instances as this system user (default: 'tcpircbot').
 #
-# You can test it like this:
+# [*group*]
+#   Run tcpircbot under this gid (default: 'tcpircbot').
 #
-#   nc localhost 9200 <<<"Hello, IRC!"
+# [*dir*]
+#   Directory for tcpircbot script and configuration files and home directory
+#   for user.
 #
-# Logs to /var/log/upstart/tcpircbot-*.log
+# === Examples
+#
+# The following snippet will configure a bot nicknamed 'announcebot' that will
+# sit on #wikimedia-operations on Freenode and forward messages that come in from
+# private and loopback IPs on port 9200:
+#
+#   include tcpircbot
+#
+#   tcpircbot::instance { 'announcebot':
+#     channel  => '#wikimedia-operations',
+#     password => $passwords::irc::announcebot,
+#   }
 #
 class tcpircbot (
 	$user        = 'tcpircbot',
