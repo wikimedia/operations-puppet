@@ -188,6 +188,7 @@ else
 	echo "Creating default and immediate job runner pipelines"
 	# Start a loop for immediate priority jobs
 	ipriotypes="AssembleUploadChunks PublishStashedFile" # upload
+	ipriotypes="$ipriotypes EchoNotificationJob" # echo notification
 	(runJobsLoopService "$ipriotypes" "n" <%= iprioprocs %>) &
 	# Start a loop for default high and low priority jobs
 	hpriotypes="sendMail enotifNotify MoodBarHTMLMailerJob MWEchoNotificationEmailBundleJob ArticleFeedbackv5MailerJob" # mail
