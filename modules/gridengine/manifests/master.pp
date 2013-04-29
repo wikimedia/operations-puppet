@@ -2,7 +2,7 @@
 
 
 class gridengine::master {
-	require gridengine
+	require gridengine($fqdn)
 
         package { "gridengine-master":
                 ensure => latest,

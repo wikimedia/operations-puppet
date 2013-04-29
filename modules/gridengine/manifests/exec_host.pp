@@ -1,7 +1,7 @@
 # gridengine/exec_host.pp
 
-class gridengine::exec_host {
-	require gridengine
+class gridengine::exec_host($gridmaster = $grid_master) {
+	require gridengine($gridmaster)
 
         package { "gridengine-exec":
                 ensure => latest,
