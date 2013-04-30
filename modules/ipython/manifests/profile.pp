@@ -27,7 +27,7 @@ define ipython::profile(
 	}
 
 	exec { "ipython profile ${title}":
-		command     => "ipython profile create ${title} ${options}",
+		command     => "/usr/bin/ipython profile create ${title} ${options}",
 		creates     => "${ipythondir}/profile_${title}",
 		environment => "IPYTHONDIR=${ipythondir}",
 		require     => Package['ipython'],
