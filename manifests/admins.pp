@@ -1486,7 +1486,7 @@ class accounts {
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA1WerRcJULxj26JimklCkoFUO6XKBjwTbPH54/hUv5c3lvyuUol6AF86rWziHgwIAy4+jPlm9mTS3IzWoRf0sSMgSrjkmykVaD4Zc+7QnXXGtnehHfryKTyB30TI39/JB5CoS1pGQQoMg67kF0nl2RKP47r0HY07m3rl1m5MWMTKByZ9p6/oVAuJ7XNxLjfN1N+Li7HhyueQonkw8Na4CxSz/Uj6zDgxB1Odw9LgHErgOe99Nza4yOsvpa9iq30eLJjXYKJ+9s8aPI68H+nBh8/CaBaPJkuTcYfwXhE6EG9JTtUrf43y88J+SDeN0lRF8w0SMluheIzkv/3TNyDdr1w=="
 			}
-			ssh_authorized_key { "rfaulk":
+			ssh_authorized_key { "rfaulk2":
 				ensure	=> present,
 				user	=> $username,
 				type	=> "ssh-rsa",
