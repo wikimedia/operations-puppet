@@ -22,8 +22,16 @@ CONFIGFILE should be a JSON file with the following structure:
       }
   }
 
-Requires irclib >=0.4.8 <http://bitbucket.org/jaraco/irc>
-Available in Ubuntu as 'python-irclib'
+Requirements:
+ * irclib >=0.4.8
+   <http://bitbucket.org/jaraco/irc>
+   Ubuntu package: 'python-irclib'
+ * netaddr >=0.7.5
+   <https://pypi.python.org/pypi/netaddr>
+   Ubuntu package: 'python-netaddr'
+
+The Puppet module bundled with this script will manage these
+dependencies for you.
 
 """
 import sys
