@@ -261,7 +261,7 @@ class base::remote-syslog {
 				# Per labs project syslog:
 				case $::instanceproject {
 					'deployment-prep': {
-						$syslog_remote_real = 'deployment-dbdump.pmtpa.wmflabs'
+						$syslog_remote_real = 'deployment-bastion.pmtpa.wmflabs'
 					}
 					default: {
 						$syslog_remote_real = 'i-000003a9.pmtpa.wmflabs:5544'
