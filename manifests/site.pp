@@ -239,7 +239,6 @@ node "bast1001.wikimedia.org" {
 		admins::mortals,
 		admins::restricted,
 		misc::bastionhost,
-		misc::deployment::scripts,
 		nrpe,
 		nfs::netapp::home::othersite
 }
