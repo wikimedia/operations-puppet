@@ -23,19 +23,22 @@ warnings.filterwarnings('ignore')
 import apt
 from xml.dom.minidom import Document
 
+
 # shamelessly stolen from /usr/lib/update-notifier/apt_check.py ported/modified
 def isSecurityUpgrade(candidate):
     "check if the given version is a security update (or masks one)"
 
     for origin in candidate.origins:
         if (origin.origin == "Debian" and
-            (origin.label == "Debian-Security" or origin.site == "security.debian.org")):
+            (origin.label == "Debian-Security" or
+             origin.site == "security.debian.org")):
             return True
 
         if (origin.origin == "Ubuntu" and
             origin.archive.endswith('-security')):
             return True
     return False
+
 
 def getUpdates():
     cache = apt.Cache()
@@ -68,7 +71,7 @@ def getUpdates():
 
         host.appendChild(u)
 
-    return doc.toxml().replace('\n','')
+    return doc.toxml().replace('\n', '')
 
 if __name__ == '__main__':
     print getUpdates()
