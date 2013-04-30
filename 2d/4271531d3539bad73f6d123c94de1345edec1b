@@ -1,0 +1,7 @@
+Code-Review+2: Ryan Lane <rlane@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: coren <mpelletier@wikimedia.org>
+Submitted-at: Tue, 30 Apr 2013 19:15:29 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/61578
+Project: operations/puppet
+Branch: refs/heads/production
