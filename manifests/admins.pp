@@ -603,7 +603,7 @@ class accounts {
 
 				ssh_authorized_key {
 				"ebernhardson@wikimedia.org":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC2uE3+x8aZ6YRlnIKzWxTkihDi83ROTcDqkgAsFDVG8Y+re6OFFYQzRytNlTese+LYAxlgsmkq57I827/O9AffYjeiE004yBKRRCt40yEDf9Df73GbGu0M3YaIJAi812153UVeon/XhKaVRM1O20N4XtX6D2s5V4NJiKuAz9ZxGkxkm5rSFI2TFun60I4NA00Uyfqcd4Nn9Bft3nBwW9ixPA14XTOQTXjE1y+xDl4uzNbn+doDcbDE4LhM5bOrFI97jCYwen1dI3nykmdjbR7anYp2b7sucrww8hfCmXAUPjClBIt7b2nWK0gVd4wSMRNRLAOXTRwylCK4mqKpTXxT";
