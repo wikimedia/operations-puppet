@@ -559,6 +559,9 @@ sub vcl_recv {
 	   header instead.
 	*/
 
+	/* strip proxy URLs as to not have to rewrite them below too */
+	call rewrite_proxy_urls;
+
 	/* Replace <language>.(m|zero).<project>.org by <language>.<project>.org */
 	set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 
