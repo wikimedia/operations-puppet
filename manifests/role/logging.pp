@@ -238,7 +238,7 @@ class role::logging::eventlogging {
 		description => 'EventLogging log collector',
 	}
 
-	class{ "eventlogging":
-		archive_destinations => [ "stat1.wikimedia.org" ],
+	class { '::eventlogging':
+		archive_destinations => [ 'stat1.wikimedia.org' ],
 	}
 }
