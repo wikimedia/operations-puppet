@@ -1,0 +1,7 @@
+@include 'functions.conf';
+
+<% if @default_firewall -%>
+@include 'minimal_ruleset.conf';
+
+<% end -%>
+@include 'conf.d/';
