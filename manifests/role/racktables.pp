@@ -18,9 +18,8 @@ class role::racktables {
 
 
 	# dependencies
-	Class['webserver::php5'] -> apache_module['rewrite'] ->
-	Install_certificate["${racktables_ssl_cert}"]
-
+	Class['webserver::php5'] -> apache_module['rewrite']
+	
 	# be flexible about labs vs. prod
 	case $::realm {
 		labs: {
