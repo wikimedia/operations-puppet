@@ -30,6 +30,7 @@ $iptables_ports = {
 	ntp_tcp => "123",
 	ntp_udp => "123",
 	puppetmaster => "8140",
+	redis => "6379",
 	rsyncd_tcp => "873",
 	rsyncd_udp => "873",
 	snmptrap => "162",
@@ -91,6 +92,7 @@ $iptables_protocols = {
 	keystone_admin => "tcp",
 	salt_publish => "tcp",
 	salt_ret => "tcp",
+	redis => "tcp",
 	inetd => "tcp",
 }
 
