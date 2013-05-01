@@ -552,7 +552,7 @@ class role::cache {
 
 		include lvs::configuration, role::cache::configuration
 
-		class { "varnish::packages": version => "3.0.3plus~rc1-wm8" }
+		class { "varnish::packages": version => "3.0.3plus~rc1-wm10" }
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
