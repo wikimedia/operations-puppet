@@ -1,0 +1,36 @@
+# ************************************
+# Default template in module puppetlabs-apache
+# Managed by Puppet
+# ************************************
+
+NameVirtualHost <%= vhost_name %>:<%= port %>
+<VirtualHost <%= vhost_name %>:<%= port %>>
+  ServerName <%= srvname %>
+<% if serveradmin %>
+  ServerAdmin <%= serveradmin %>
+<% end %>
+<% if serveraliases.is_a? Array -%>
+<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+<% elsif serveraliases != '' -%>
+<%= "  ServerAlias #{serveraliases}" %>
+<% end -%>
+ DocumentRoot <%= docroot %>
+PerlOptions +Parent
+<Perl>
+    $ENV{PLACK_ENV} = 'production';
+</Perl>
+<Location />
+SetHandler perl-script
+PerlHandler Plack::Handler::Apache2
+PerlSetVar psgi_app 'home/LaTeXML/blib/script/latexml.psgi'
+</Location>
+
+<Directory />
+    Options FollowSymLinks
+    AllowOverride None
+</Directory> 
+  ErrorLog <%= logroot %>/<%= name %>_error.log
+  LogLevel warn
+  CustomLog <%= logroot %>/<%= name %>_access.log combined
+  ServerSignature Off
+</VirtualHost>
