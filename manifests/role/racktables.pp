@@ -15,7 +15,6 @@ class role::racktables {
 
 	class {'webserver::php5': ssl => true; }
 
-	install_certificate{ "${racktables_ssl_cert}": }
 
 
 	# dependencies
@@ -28,13 +27,13 @@ class role::racktables {
 			$racktables_host = "${instancename}.${domain}"
 			$racktables_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
 			$racktables_ssl_key = '/etc/ssl/private/star.wmflabs.key'
-			$racktables_ssl_cert = 'star.wmflabs.org'
+			install_certificate{ 'star.wmflabs.org': }
 		}
 		production: {
 			$racktables_host = 'racktables.wikimedia.org'
 			$racktables_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
 			$racktables_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
-			$racktables_ssl_cert = 'star.wikimedia.org'
+			install_certificate{ 'star.wikimedia.org': }
 		}
 		default: {
 			fail('unknown realm, should be labs or production')
