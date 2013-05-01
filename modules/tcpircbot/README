@@ -1,0 +1,30 @@
+tcpircbot
+---------
+
+This Puppet module configures a Python script that runs as an Upstart service
+and forwards messages from a TCP socket to an IRC channel. It thus functions as
+a relay for intranet hosts that need to emit IRC notifications.
+
+By default, it will connect to Freenode using SSL and listen for incoming
+connections on port 9200. If the configuration specifies a CIDR range, only
+clients within that range are allowed to connect. The default behavior is to
+allow clients from private and loopback IPs only.
+
+The defaults are sane and fit the most common use-case. There are three values
+which you must specify: a nickname for your bot, a nickserv password for that
+nickname, and a channel name. The nickname can be specified as the resource
+name. A typical configuration looks like this:
+
+	node mynode {
+		include tcpircbot
+
+		tcpircbot::instance { 'announcebot':
+			channel  => '#wikimedia-operations',
+			password => $passwords::irc::announcebot,
+		}
+	}
+
+Additional configuration options are documented in manifests/init.pp and
+manifests/instance.pp.
+
+To troubleshoot, check /var/log/upstart/tcpircbot-*.log.
