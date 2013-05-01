@@ -1,5 +1,5 @@
 #! /bin/sh
 if [ -z $DOLOGMSGNOLOG ]; then
-	echo "$*" >> /var/log/logmsg
+	echo "$*" | nc -q0 neon.wikimedia.org 9000
 fi
 

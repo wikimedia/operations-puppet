@@ -827,10 +827,6 @@ node "fenari.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
-	$ircecho_logs = { "/var/log/logmsg" => "#wikimedia-operations" }
-	$ircecho_nick = "logmsgbot"
-	$ircecho_server = "chat.freenode.net"
-
 	include role::applicationserver::maintenance,
 		svn::client,
 		nfs::netapp::home,
@@ -841,7 +837,6 @@ node "fenari.wikimedia.org" {
 		misc::deployment,
 		misc::noc-wikimedia,
 		misc::deployment::scap_scripts,
-		misc::ircecho,
 		misc::deployment::l10nupdate,
 		dns::account,
 		nrpe,
@@ -1974,7 +1969,12 @@ node "neon.wikimedia.org" {
 	$ircecho_server = "chat.freenode.net"
 	include standard,
 		icinga::monitor,
-		misc::ircecho
+		misc::ircecho,
+		tcpircbot
+
+	tcpircbot::instance { 'logmsgbot':
+		channel => '#wikimedia-operations',
+	}
 }
 
 node "nescio.esams.wikimedia.org" {
