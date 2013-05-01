@@ -733,6 +733,22 @@ class base::tcptweaks {
 	}
 }
 
+# Don't include this sub class on all hosts yet
+class base::firewall {
+	class { 'ferm': default_firewall => false } # Do NOT create a default DROP firewall for now
+
+	ferm::conf { 'defs':
+		ensure  => present,
+		prio    => '00',
+		source  => "puppet:///files/firewall/defs.${::realm}",
+	}
+
+	ferm::rule { 'bastion-ssh':
+		ensure => present,
+		rule   => 'proto tcp dport ssh saddr $BASTION ACCEPT',
+	}
+}
+
 class base {
 	include	apt
 	include apt::update
