@@ -382,7 +382,7 @@ class misc::statistics::sites::metrics {
 	# clone the E3 Analysis repository
 	git::clone { "E3Analysis":
 		directory => "$e3_analysis_path",
-		origin    => "https://gerrit.wikimedia.org/r/p/analytics/E3Analysis.git",
+		origin    => "https://gerrit.wikimedia.org/r/p/analytics/user-metrics.git",
 		owner     => $metrics_user,
 		require   => [Package["python-flask"], File[$e3_home], Class["misc::statistics::user"], Class["misc::statistics::packages::python"]],
 		ensure    => "latest",
