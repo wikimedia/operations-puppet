@@ -57,11 +57,11 @@ class mediawiki_singlenode(
 		owner   => root,
 		group   => root,
 		mode    => '0644',
-		content => template('mediawiki_singlenode/simplewiki.wmflabs.org'),
+		content => template('mediawiki_singlenode/mediawiki_singlenode.erb'),
 	}
 
-	if $::labs_mediawiki_hostname {
-		$mwserver = "http://${::labs_mediawiki_hostname}"
+	if $labs_mediawiki_hostname {
+		$mwserver = "http://${labs_mediawiki_hostname}"
 	} else {
 		$mwserver = "http://${::hostname}.pmtpa.wmflabs"
 	}
@@ -80,7 +80,7 @@ class mediawiki_singlenode(
 	exec { 'mediawiki_setup':
 		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], exec['password_gen'] ],
 		creates   => "${install_path}/orig/LocalSettings.php",
-		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath '/w' --confpath \"${install_path}/orig/\"",
 		logoutput => on_failure,
 	}
 
@@ -124,12 +124,16 @@ class mediawiki_singlenode(
 	}
 
 	apache_site { 'wikicontroller':
-		name => 'wiki',
+		name   => 'wiki',
+	}
+
+	apache_module { 'rewrite':
+		name   => 'rewrite',
 	}
 
 	exec { 'apache_restart':
-		require => [ Apache_site['wikicontroller'] ],
 		command => '/usr/sbin/service apache2 restart',
+		require => [ Apache_module['rewrite'], Apache_site['wikicontroller'] ],
 	}
 
 	file { "${install_path}/cache":
