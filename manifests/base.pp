@@ -725,6 +725,21 @@ class base::tcptweaks {
 	}
 }
 
+class base::firewall {
+	include ferm
+
+	ferm::conf { 'defs':
+		ensure  => present,
+		prio    => '00',
+		source  => "puppet:///files/firewall/defs.${::realm}",
+	}
+
+	ferm::rule { 'bastion-ssh':
+		ensure => present,
+		rule   => 'proto tcp dport ssh saddr @ipfilter($BASTION) ACCEPT',
+	}
+}
+
 class base {
 	include	apt
 	include apt::update

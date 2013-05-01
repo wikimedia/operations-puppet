@@ -1,0 +1,3 @@
+@def $BASTION_V4 = (208.80.152.165 208.80.154.149 91.198.174.113);
+@def $BASTION_V6 = (2620:0:860:2:21e:c9ff:feea:ab95 2620:0:861:2:7a2b:cbff:fe09:11ba 2620:0:862:1:a6ba:dbff:fe30:d770);
+@def $BASTION = ($BASTION_V4 $BASTION_V6);
