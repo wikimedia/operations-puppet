@@ -7,7 +7,7 @@
     },
     "tcp": {
         "max_clients": <%= @max_clients %>,
-        <% if @cidr %>"cidr": "<%= @cidr %>",<% end %>
+        <% if @cidr %>"cidr": "<%= @cidr.is_a?(Array) ? @cidr.join(',') : @cidr %>",<% end %>
         "port": <%= @listen_port %>
     }
 }
