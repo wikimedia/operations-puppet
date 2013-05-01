@@ -8,6 +8,7 @@ my $conf = {
 	'LOCALDIR' => '/a/archive/database_dumps',
 	'KEEPDAYS' => {
 		'db1025' => 7,
+		'db1013' => 7,
 	},
 	'SENDER' => 'root@wikimedia.org',
 	'SUCCESS-RECIPIENT' => 'jgreen@wikimedia.org',
