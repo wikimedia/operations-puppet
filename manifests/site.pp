@@ -1585,6 +1585,14 @@ node "manganese.wikimedia.org" {
 	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
 }
 
+node "magnesium.wikimedia.org" {
+
+	$cluster = "misc"
+
+	include role::racktables
+
+}
+
 node "marmontel.wikimedia.org" {
 	include standard,
 		admins::roots,
