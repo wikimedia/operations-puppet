@@ -1625,7 +1625,8 @@ node /^mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 		'mc15' => 'mc1015',
 		'mc16' => 'mc1016',
 	}
-	include role::memcached
+	include role::memcached,
+		passwords::redis
 
 	file { "/a":
 		ensure => directory;
@@ -1634,6 +1635,7 @@ node /^mc(1[0-9]|[0-9])\.pmtpa\.wmnet/ {
 	class { "redis":
 		maxmemory         => "500Mb",
 		redis_replication => $redis_replication,
+		password          => $passwords::redis::main_password,
 	}
 	include redis::ganglia
 }
@@ -1673,7 +1675,8 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 		'mc1016' => 'mc16',
 	}
 
-	include role::memcached
+	include role::memcached,
+		passwords::redis
 
 	file { "/a":
 		ensure => directory;
@@ -1682,6 +1685,7 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 	class { "redis":
 		maxmemory         => "500Mb",
 		redis_replication => $redis_replication,
+		password          => $passwords::redis::main_password,
 	}
 	include redis::ganglia
 }

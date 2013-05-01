@@ -12,6 +12,7 @@ class redis (
 	$package_version = "2:2.6.3-wmf1",
 	$servicename = "redis-server",
 	$monitor = true,
+	$password = false,
 ) {
 	case $::operatingsystem {
 		debian, ubuntu: {

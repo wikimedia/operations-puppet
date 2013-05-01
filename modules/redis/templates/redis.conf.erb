@@ -159,7 +159,9 @@ slaveof <%= redis_replication[hostname] %> <%= port %>
 # starting the replication synchronization process, otherwise the master will
 # refuse the slave request.
 #
-# masterauth <master-password>
+<% if @password %>
+	masterauth <%= @password %>
+<% end %>
 
 # When a slave lost the connection with the master, or when the replication
 # is still in progress, the slave can act in two different ways:
@@ -236,7 +238,9 @@ slave-priority 100
 # 150k passwords per second against a good box. This means that you should
 # use a very strong password otherwise it will be very easy to break.
 #
-# requirepass foobared
+<% if @password %>
+	requirepass <%= @password %>
+<% end %>
 
 # Command renaming.
 #
