@@ -78,7 +78,7 @@ define misc::logging::relay(
 		target => '/lib/init/upstart-job';
 	}
 
-	file { "/etc/init/${$daemon_name}.conf":
+	file { "/etc/init/${daemon_name}.conf":
 		content => template('misc/logging-relay.upstart.conf.erb'),
 	}
 
