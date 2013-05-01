@@ -10,7 +10,7 @@ class role::racktables {
 	system_role { 'role::racktables': description => 'Racktables' }
 
 	include standard,
-	php5-gd,
+	webserver::php5-gd,
 	misc::racktables
 
 	class {'webserver::php5': ssl => true; }
