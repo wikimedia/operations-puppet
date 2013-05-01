@@ -59,7 +59,7 @@ define apache_site($name, $prefix="", $ensure="link") {
 }
 
 # Enables a certain Apache 2 module
-define apache_module($name) {
+define apache_module($name=$title) {
 	file {
 		"/etc/apache2/mods-available/${name}.conf":
 			ensure => present;
