@@ -625,7 +625,7 @@ node /^db104[68]\.eqiad\.wmnet/ {
 }
 
 ## eqiad fundraising DBs
-node /^(db1008|db1025)\.eqiad\.wmnet/ {
+node /^(db1008|db1025|db1013)\.eqiad\.wmnet/ {
 	include mysql_wmf::mysqluser,
 		mysql_wmf::datadirs,
 		mysql_wmf::packages,
@@ -633,7 +633,7 @@ node /^(db1008|db1025)\.eqiad\.wmnet/ {
 
 	  if $hostname == "db1008" {
 		include role::fundraising::database::master
-	  } elsif $hostname == "db1025" {
+	  } elsif $hostname =~ /^(db1025|db1013)$/ {
 		include role::fundraising::database::dump_slave
 	  }
 }
