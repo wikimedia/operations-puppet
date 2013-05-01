@@ -1988,7 +1988,8 @@ node "neon.wikimedia.org" {
 
 	tcpircbot::instance { 'logmsgbot':
 		channel => '#wikimedia-operations',
-		password => $passwords::logmsgbot::logmsgbot_password
+		password => $passwords::logmsgbot::logmsgbot_password,
+		cidr => '::/0'
 	}
 }
 
