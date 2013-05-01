@@ -1989,7 +1989,8 @@ node "neon.wikimedia.org" {
 	tcpircbot::instance { 'logmsgbot':
 		channel => '#wikimedia-operations',
 		password => $passwords::logmsgbot::logmsgbot_password,
-		cidr => '::/0'
+		# Allow connections from tin, fenari, & localhost:
+		cidr => '::ffff:10.64.0.196/128,::ffff:208.80.152.165/128,::ffff:127.0.0.1/128',
 	}
 }
 
