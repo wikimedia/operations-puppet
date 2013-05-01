@@ -1,0 +1,14 @@
+# configuration for /etc/init.d/ferm
+
+# use iptables-restore for fast firewall initialization?
+FAST=yes
+
+# cache the output of ferm --lines in /var/cache/ferm?
+CACHE=yes
+
+# additional paramaters for ferm (like --def '$foo=bar')
+OPTIONS=
+
+# Enable ferm on bootup?
+ENABLED=yes
+
