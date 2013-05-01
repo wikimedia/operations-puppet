@@ -83,7 +83,7 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
     def log_event(self, connection, event):
         if connection.real_nickname in [event._source, event._target]:
             logging.info('%(_eventtype)s [%(_source)s -> %(_target)s]'
-                    % vars(event))
+                         % vars(event))
 
     def on_welcome(self, connection, event):
         connection.join(self.channel)
@@ -109,6 +109,7 @@ bot._connect()
 
 sockets = [server]
 
+
 def close_sockets():
     for sock in sockets:
         try:
@@ -122,11 +123,12 @@ atexit.register(close_sockets)
 def is_ip_allowed(ip):
     """Check if we should accept a connection from remote IP `ip`. If
     the config specifies a CIDR, test against that; otherwise allow only
-    private and loopback IPs.
+    private and loopback IPs. Multiple comma-separated CIDRs may be specified.
     """
     ip = netaddr.IPAddress(ip)
     if 'cidr' in config['tcp']:
-        return ip in netaddr.IPNetwork(config['tcp']['cidr'])
+        cidrs = config['tcp']['cidr'].split(',')
+        return any(ip in netaddr.IPNetwork(cidr) for cidr in cidrs)
     try:
         ip = ip.ipv4()
     except netaddr.core.AddrConversionError:

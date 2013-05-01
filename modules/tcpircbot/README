@@ -8,7 +8,8 @@ a relay for intranet hosts that need to emit IRC notifications.
 By default, it will connect to Freenode using SSL and listen for incoming
 connections on port 9200. If the configuration specifies a CIDR range, only
 clients within that range are allowed to connect. The default behavior is to
-allow clients from private and loopback IPs only.
+allow clients from private and loopback IPs only. Multiple CIDR ranges may be
+specified as an array of values.
 
 The defaults are sane and fit the most common use-case. There are three values
 which you must specify: a nickname for your bot, a nickserv password for that
