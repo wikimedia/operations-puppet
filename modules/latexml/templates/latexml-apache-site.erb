@@ -1,0 +1,20 @@
+    <VirtualHost *:80>
+    ServerName <%= srvnm %>
+    DocumentRoot /home/LaTeXML/webapp
+    PerlSwitches -I/home/LaTeXML/lib/
+    SetEnv PERL5LIB /home/LaTeXML/lib/
+    <Perl>
+    $ENV{PLACK_ENV} = 'production';
+    $ENV{MOJO_HOME} = '/home/LaTeXML/webapp';
+    </Perl>
+     
+    <Location />
+    SetHandler perl-script
+    PerlHandler Plack::Handler::Apache2
+    PerlSetVar psgi_app /home/LaTeXML/webapp/ltxmojo
+    </Location>
+     
+    ErrorLog /var/log/apache2/latexml.error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/latexml.access.log combined
+    </VirtualHost>
