@@ -79,6 +79,40 @@ class role::beta::logging::mediawiki {
 }
 
 
+# == Class role::logging::relay::webrequest-multicast
+# Sets up a multicast relay using socat for
+# webrequest log streams (squid, varnish, nginx etc.).
+# Anything sent to this node on port 8419 will be
+# relayed to the 233.58.59.1:8420 multicast group.
+#
+class role::logging::relay::webrequest-multicast {
+	system_role { 'role::logging::relay::webrequest-multicast':
+		description => 'Webrequest log stream unicast to multicast relay',
+	}
+
+	misc::logging::relay { 'webrequest':
+		listen_port      => '8419',
+		destination_ip   => '233.58.59.1',
+		destination_port => '8420',
+		multicast        => true,
+	}
+}
+
+# == Class role::logging::relay::eventlogging
+# Relays EventLogging traffic over to Vandadium.
+#
+class role::logging::relay::eventlogging {
+	system_role { 'misc::logging::relay::eventlogging':
+		description => 'esams bits event logging to vanadium relay',
+	}
+
+	misc::logging::relay { 'eventlogging':
+		listen_port      => '8422',
+		destination_ip   => '10.64.21.123',
+		destination_port => '8422',
+	}
+}
+
 
 # udp2log base role class
 class role::logging::udp2log {

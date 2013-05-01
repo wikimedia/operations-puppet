@@ -1,0 +1,14 @@
+# This file is managed by Puppet!
+#
+# <%= daemon_name %>
+
+description	"<%= title %> socat relay"
+
+start on filesystem
+stop on runlevel S
+
+respawn
+respawn limit 10 5
+umask 022
+
+exec /usr/bin/socat UDP-RECV:<%= listen_port %>,su=nobody UDP4-DATAGRAM:<%= destination_ip %>:<%= destination_port %><%= multicast ? ',ip-multicast-ttl=10' : '' %>
