@@ -1,4 +1,4 @@
-# A one-step class for setting up a single-node MediaWiki install,
+#  A one-step class for setting up a single-node MediaWiki install,
 #  running from a Git tree.
 #
 #  Roles can insert additional lines into LocalSettings.php via the
@@ -11,130 +11,134 @@
 #  served by creating an additional template and including that via $role_requires.
 #
 #  Memcached memory usage defaults to 128 megs but can be changed via $memcached_size.
-class mediawiki_singlenode( $ensure = 'present',
-                             $database_name = "testwiki",
-                             $wiki_name = "testwiki",
-                             $role_requires = [],
-                             $install_path = "/srv/mediawiki",
-                             $role_config_lines = [],
-                             $memcached_size = 128) {
-        require "role::labs-mysql-server",
-		"webserver::php5-mysql",
-		"webserver::php5"
+class mediawiki_singlenode(
+	$ensure            = 'present',
+	$database_name     = 'testwiki',
+	$wiki_name         = 'testwiki',
+	$role_requires     = [],
+	$install_path      = '/srv/mediawiki',
+	$role_config_lines = [],
+	$memcached_size    = 128
+) {
+	require role::labs-mysql-server
+	require webserver::php5-mysql
+	require webserver::php5
 
-	package { [ "imagemagick", "php-apc",  ] :
-		ensure => latest
+	package { [ 'imagemagick', 'php-apc' ] :
+		ensure => latest,
 	}
 
-	class { "memcached":
-		memcached_ip => "127.0.0.1",
-		memcached_size => $memcached_size }
+	class { 'memcached':
+		memcached_ip   => '127.0.0.1',
+		memcached_size => $memcached_size,
+	}
 
-	git::clone { "mediawiki":
+	git::clone { 'mediawiki':
+		ensure    => $ensure,
 		directory => $install_path,
-		branch => "master",
-		timeout => 1800,
-		ensure => $ensure,
-		origin => "https://gerrit.wikimedia.org/r/p/mediawiki/core.git";
+		branch    => 'master',
+		timeout   => 1800,
+		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
 	}
 
-# get the extensions
-	mw-extension { [ "Nuke", "SpamBlacklist", "ConfirmEdit" ]:
-		require => Git::Clone["mediawiki"],
-		ensure => $ensure,
-		install_path => $install_path;
+	mw-extension { [ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ]:
+		ensure       => $ensure,
+		install_path => $install_path,
 	}
 
-	file {
-		"/etc/apache2/sites-available/wiki":
-			mode => 644,
-			owner => root,
-			group => root,
-			content => template('mediawiki_singlenode/simplewiki.wmflabs.org'),
-			ensure => present;
+	file { '/etc/apache2/sites-available/wiki':
+		ensure  => present,
+		owner   => root,
+		group   => root,
+		mode    => '0644',
+		content => template('mediawiki_singlenode/simplewiki.wmflabs.org'),
 	}
 
-	file { "/var/www/srv":
-		ensure => 'directory';
+	file { '/var/www/srv':
+		ensure => directory,
 	}
 
 	file { "/var/www/${install_path}":
-		require => [File['/var/www/srv'], git::clone['mediawiki']],
-		ensure => 'link',
-		target => $install_path;
+		ensure  => link,
+		target  => $install_path,
+		require => [ File['/var/www/srv'], Git::Clone['mediawiki'] ],
 	}
 
-	if $labs_mediawiki_hostname {
-		$mwserver = "http://$labs_mediawiki_hostname"
+	if $::labs_mediawiki_hostname {
+		$mwserver = "http://${::labs_mediawiki_hostname}"
 	} else {
-		$mwserver = "http://$hostname.pmtpa.wmflabs"
+		$mwserver = "http://${::hostname}.pmtpa.wmflabs"
 	}
 
 	file { "${install_path}/orig":
-		require => git::clone["mediawiki"],
-		ensure => 'directory';
+		ensure  => directory,
+		require => Git::Clone['mediawiki'],
 	}
 
-        exec { 'password_gen':
-		require => [git::clone["mediawiki"],  File["${install_path}/orig"]],
+	exec { 'password_gen':
+		require => [ Git::Clone['mediawiki'],  File["${install_path}/orig"] ],
 		creates => "${install_path}/orig/adminpass",
 		command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass"
 	}
 
 	exec { 'mediawiki_setup':
-		require => [git::clone["mediawiki"],  File["${install_path}/orig"], exec['password_gen']],
-		creates => "${install_path}/orig/LocalSettings.php",
-		command => "/usr/bin/php ${install_path}/maintenance/install.php $wiki_name admin --dbname $database_name --dbuser root --passfile \"${install_path}/orig/adminpass\" --server $mwserver --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
-		logoutput => "on_failure",
+		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], exec['password_gen'] ],
+		creates   => "${install_path}/orig/LocalSettings.php",
+		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		logoutput => on_failure,
 	}
 
 	file { "${install_path}/robots.txt":
-		require => Git::Clone["mediawiki"],
-		ensure => present,
-		source => "puppet:///modules/mediawiki_singlenode/robots.txt",
+		ensure  => present,
+		require => Git::Clone['mediawiki'],
+		source  => 'puppet:///modules/mediawiki_singlenode/robots.txt',
 	}
 
 	file { "${install_path}/skins/common/images/labs_mediawiki_logo.png":
-		require => Git::Clone["mediawiki"],
-		ensure => present,
-		source => "puppet:///modules/mediawiki_singlenode/labs_mediawiki_logo.png",
+		ensure  => present,
+		require => Git::Clone['mediawiki'],
+		source  => 'puppet:///modules/mediawiki_singlenode/labs_mediawiki_logo.png',
 	}
 
 	file { "${install_path}/privacy-policy.xml":
-		require => Git::Clone["mediawiki"],
-		ensure => present,
-		source => "puppet:///modules/mediawiki_singlenode/privacy-policy.xml",
+		ensure  => present,
+		require => Git::Clone['mediawiki'],
+		source  => 'puppet:///modules/mediawiki_singlenode/privacy-policy.xml',
 	}
 
-	exec { "import_privacy_policy":
-		require => [Exec["mediawiki_setup"], File["${install_path}/privacy-policy.xml"]],
-		cwd => "$install_path",
-		command => "/usr/bin/php maintenance/importDump.php privacy-policy.xml",
-		logoutput => "on_failure",
+	exec { 'import_privacy_policy':
+		require   => [ Exec['mediawiki_setup'], File["${install_path}/privacy-policy.xml"] ],
+		cwd       => $install_path,
+		command   => '/usr/bin/php maintenance/importDump.php privacy-policy.xml',
+		logoutput => on_failure,
 	}
 
 	if $ensure == 'latest' {
 		exec { 'mediawiki_update':
-			require => [git::clone["mediawiki"],
-				Mw-extension["Nuke"],
-				Mw-extension["SpamBlacklist"],
-				Mw-extension["ConfirmEdit"],
-				File["${install_path}/LocalSettings.php"]],
-			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
-			logoutput => "on_failure",
+			require   => [
+				Git::Clone['mediawiki'],
+				Mw-extension['Nuke'],
+				Mw-extension['SpamBlacklist'],
+				Mw-extension['ConfirmEdit'],
+				File["${install_path}/LocalSettings.php"]
+			],
+			command   => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
+			logoutput => on_failure,
 		}
 	}
 
-	apache_site { controller: name => "wiki" }
+	apache_site { 'controller':
+		name => 'wiki',
+	}
 
 	exec { 'apache_restart':
-		require => [Apache_site['controller']],
-		command => "/usr/sbin/service apache2 restart"
+		require => [ Apache_site['controller'] ],
+		command => '/usr/sbin/service apache2 restart',
 	}
 
 	file { "${install_path}/LocalSettings.php":
-		require => Exec["mediawiki_setup"],
+		ensure  => present,
+		require => Exec['mediawiki_setup'],
 		content => template('mediawiki_singlenode/labs-localsettings'),
-		ensure => present,
 	}
 }
