@@ -57,11 +57,11 @@ class mediawiki_singlenode(
 		owner   => root,
 		group   => root,
 		mode    => '0644',
-		content => template('mediawiki_singlenode/simplewiki.wmflabs.org'),
+		content => template('mediawiki_singlenode/mediawiki_singlenode.erb'),
 	}
 
-	if $::labs_mediawiki_hostname {
-		$mwserver = "http://${::labs_mediawiki_hostname}"
+	if $labs_mediawiki_hostname {
+		$mwserver = "http://${labs_mediawiki_hostname}"
 	} else {
 		$mwserver = "http://${::hostname}.pmtpa.wmflabs"
 	}
@@ -124,12 +124,18 @@ class mediawiki_singlenode(
 	}
 
 	apache_site { 'wikicontroller':
-		name => 'wiki',
+		name   => 'wiki',
+		notify => Exec['apache_restart'],
+	}
+
+	apache_module { 'rewrite':
+		name   => 'rewrite',
+		notify => Exec['apache_restart'],
 	}
 
 	exec { 'apache_restart':
-		require => [ Apache_site['wikicontroller'] ],
-		command => '/usr/sbin/service apache2 restart',
+		command     => '/usr/sbin/service apache2 restart',
+		refreshonly => true,
 	}
 
 	file { "${install_path}/cache":
