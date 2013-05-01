@@ -13,12 +13,14 @@ class role::db::redis (
 
 	system_role { "db::redis": description => "Redis server" }
 
-	include standard
+	include standard,
+		passwords::redis
 
 	class { "::redis":
 		maxmemory => $maxmemory,
 		persist => "aof",
 		redis_replication => $redis_replication,
+		password => $passwords::redis::main_password,
 	}
 
 	include redis::ganglia
