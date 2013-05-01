@@ -1,3 +1,42 @@
+class misc::statistics::iptables-purges {
+	require "iptables::tables"
+
+	# The deny_all rule must always be purged, otherwise ACCEPTs can be placed below it
+	iptables_purge_service{ "deny_all_redis": service => "redis" }
+
+	# When removing or modifying a rule, place the old rule here, otherwise it won't
+	# be purged, and will stay in the iptables forever
+}
+
+class misc::statistics::iptables-accepts {
+	require "misc::statistics::iptables-purges"
+
+	# Rememeber to place modified or removed rules into purges!
+	iptables_add_service{ "redis_internal": source => "208.80.152.0/22", service => "redis", jump => "ACCEPT" }
+}
+
+class misc::statistics::iptables-drops {
+	require "misc::statistics::iptables-accepts"
+
+	# Deny by default
+	iptables_add_service{ "deny_all_redis": service => "redis", jump => "DROP" }
+}
+
+class misc::statistics::iptables  {
+	if $realm == "production" {
+		# We use the following requirement chain:
+		# iptables -> iptables::drops -> iptables::accepts -> iptables::accept-established -> iptables::purges
+		#
+		# This ensures proper ordering of the rules
+		require "misc::statistics::iptables-drops"
+
+		# This exec should always occur last in the requirement chain.
+		iptables_add_exec{ "${hostname}": service => "statistics" }
+	}
+
+	# Labs has security groups, and as such, doesn't need firewall rules
+}
+
 # this file is for stat[0-9]/(ex-bayes) statistics servers (per ezachte - RT 2162)
 
 class misc::statistics::user {

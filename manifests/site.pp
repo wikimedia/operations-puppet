@@ -2596,8 +2596,9 @@ node "stat1.wikimedia.org" {
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
-	include misc::statistics::cron_blog_pageviews
-	include misc::statistics::limn::mobile_data_sync
+	include misc::statistics::cron_blog_pageviews,
+		misc::statistics::limn::mobile_data_sync,
+		misc::statistics::iptables
 }
 
 node "stat1001.wikimedia.org" {
