@@ -18,19 +18,25 @@ class mediawiki_singlenode(
 	$role_requires     = [],
 	$install_path      = '/srv/mediawiki',
 	$role_config_lines = [],
+	$mysql_pass = '',
 	$memcached_size    = 128
 ) {
-	require role::labs-mysql-server
-	require webserver::php5-mysql
-	require webserver::php5
+	if !defined(Class['webserver::php5']) {
+		class {'webserver::php5':
+			ssl => true;
+		}
+	}
+	require role::labs-mysql-server, webserver::php5-mysql
 
 	package { [ 'imagemagick', 'php-apc' ] :
 		ensure => latest,
 	}
 
-	class { 'memcached':
-		memcached_ip   => '127.0.0.1',
-		memcached_size => $memcached_size,
+    if !defined(Class['memcached']) {
+		class { 'memcached':
+			memcached_ip   => '127.0.0.1',
+			memcached_size => $memcached_size,
+		}
 	}
 
 	git::clone { 'mediawiki':
@@ -54,16 +60,6 @@ class mediawiki_singlenode(
 		content => template('mediawiki_singlenode/simplewiki.wmflabs.org'),
 	}
 
-	file { '/var/www/srv':
-		ensure => directory,
-	}
-
-	file { "/var/www/${install_path}":
-		ensure  => link,
-		target  => $install_path,
-		require => [ File['/var/www/srv'], Git::Clone['mediawiki'] ],
-	}
-
 	if $::labs_mediawiki_hostname {
 		$mwserver = "http://${::labs_mediawiki_hostname}"
 	} else {
@@ -84,7 +80,7 @@ class mediawiki_singlenode(
 	exec { 'mediawiki_setup':
 		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], exec['password_gen'] ],
 		creates   => "${install_path}/orig/LocalSettings.php",
-		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
+		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath \"${install_path}\" --confpath \"${install_path}/orig/\"",
 		logoutput => on_failure,
 	}
 
@@ -127,25 +123,25 @@ class mediawiki_singlenode(
 		}
 	}
 
-	apache_site { 'controller':
+	apache_site { 'wikicontroller':
 		name => 'wiki',
 	}
 
 	exec { 'apache_restart':
-		require => [ Apache_site['controller'] ],
+		require => [ Apache_site['wikicontroller'] ],
 		command => '/usr/sbin/service apache2 restart',
 	}
 
 	file { "${install_path}/cache":
-		require => Exec["mediawiki_setup"],
-		mode => '0775',
-		owner => 'www-data';
+		require => Exec['mediawiki_setup'],
+		mode    => '0775',
+		owner   => 'www-data',
 	}
 
 	file { "${install_path}/images":
-		require => Exec["mediawiki_setup"],
-		mode => '0775',
-		owner => 'www-data';
+		require => Exec['mediawiki_setup'],
+		mode    => '0775',
+		owner   => 'www-data',
 	}
 
 	file { "${install_path}/LocalSettings.php":

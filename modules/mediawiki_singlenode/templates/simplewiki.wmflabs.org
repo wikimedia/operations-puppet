@@ -17,8 +17,8 @@
                 Deny from all
         </Directory>
 
-        Alias /w /srv/mediawiki
-        Alias /wiki /srv/mediawiki/index.php
+        Alias /w <%=install_path%>
+        Alias /wiki <%=install_path%>/index.php
 
         ErrorLog /var/log/apache2/error.log
 
