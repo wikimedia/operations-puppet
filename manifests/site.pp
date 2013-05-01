@@ -903,7 +903,12 @@ node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
 		accounts::dsc,
 		accounts::milimetric
 
-	# gadolinium hosts the separate nginx udp2log instance.
+	# relay the incoming webrequest log stream to multicast
+	include role::logging::relay::webrequest-multicast
+	# relay EventLogging traffic over to vanadium
+	include role::logging::relay::eventlogging
+
+	# gadolinium hosts the separate nginx webrequest udp2log instance.
 	include role::logging::udp2log::nginx
 
 	# Set up the gadolinium udp2log webrequest instance.

@@ -33,12 +33,68 @@ class misc::syslog-server($config="nfs") {
 	}
 }
 
-class misc::socat {
-	package { "socat": ensure => latest; }
+
+
+
+class misc::logging::socat {
+	package { 'socat':
+		ensure => 'installed',
+	}
 }
 
+
+# == Define misc::logging::multicast-relay
+# Sets up a UDP unicast to multicast relay process.
+#
+# == Parameters:
+# $listen_port       - The port on which to accept UDP traffic for relay.
+# $destination_ip
+# $destination_port
+# $multicast         - boolean.  Default false.  If true, the received traffic will be relayed to multicast group specified by $destination_ip and $destination_port.
+define misc::logging::relay(
+	$listen_port,
+	$destination_ip,
+	$destination_port,
+	$multicast = false,
+)
+{
+	require misc::logging::socat
+
+	# Configure and start the upstart job for
+	# luanching the socat multicast relay daemon.
+	# Note: Not using upstart_job define here since
+	# it doesn't support using ERb templates.
+
+	if $multicast {
+		$daemon_name = "${title}-multicast-relay"
+	}
+	else {
+		$daemon_name = "${title}-unicast-relay"
+	}
+
+	# Create symlink
+	file { "/etc/init.d/${daemon_name}":
+		ensure => 'link',
+		target => '/lib/init/upstart-job';
+	}
+
+	file { "/etc/init/${$daemon_name}.conf":
+		content => template('misc/logging-relay.upstart.conf.erb'),
+	}
+
+	service { "${daemon_name}":
+		ensure    => running,
+		require   => Package['socat'],
+		subscribe => File["/etc/init/${daemon_name}.conf"],
+		provider  => 'upstart',
+	}
+}
+
+
+# NOTE:  This class is depcreated.
+# It will be removed once oxygen is no longer using it.
 class misc::squid-logging::multicast-relay {
-	require misc::socat
+	require misc::logging::socat
 
 	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
 
@@ -51,8 +107,11 @@ class misc::squid-logging::multicast-relay {
 	}
 }
 
+
+# NOTE:  This class is deprecated.
+# It will be removed once oxygen is no longer using it.
 class misc::logging::vanadium-relay {
-	require misc::socat
+	require misc::logging::socat
 
 	system_role { "misc::logging::vanadium-relay": description => "esams bits event logging to vanadium relay" }
 
