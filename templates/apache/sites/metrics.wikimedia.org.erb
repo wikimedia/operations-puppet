@@ -38,6 +38,13 @@
   DocumentRoot <%= document_root %>
   ServerAdmin  noc@wikimedia.org
 
+  ErrorLog /var/log/apache2/error.metrics.log
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+
+  CustomLog /var/log/apache2/access.metrics.log combined
+
   SSLEngine on
   SSLCertificateFile    /etc/ssl/certs/<%= site_name %>.pem
   SSLCertificateKeyFile /etc/ssl/private/<%= site_name %>.key
