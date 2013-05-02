@@ -2642,7 +2642,7 @@ node "stat1002.eqiad.wmnet" {
 	# for the purposes of crunching private
 	# webrequest access logs have been ported
 	# over from there.
-	include accounts::globaldev
+	include accounts::globaldev,
 		accounts::ezachte,
 		accounts::milimetric,
 		accounts::diederik,
