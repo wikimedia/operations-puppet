@@ -601,12 +601,11 @@ class accounts {
 			if $enabled == true and $manage_home {
 				Ssh_authorized_key { require => Unixaccount[$realname]}
 
-				ssh_authorized_key {
-				"ebernhardson@wikimedia.org":
-					ensure	=> absent,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC2uE3+x8aZ6YRlnIKzWxTkihDi83ROTcDqkgAsFDVG8Y+re6OFFYQzRytNlTese+LYAxlgsmkq57I827/O9AffYjeiE004yBKRRCt40yEDf9Df73GbGu0M3YaIJAi812153UVeon/XhKaVRM1O20N4XtX6D2s5V4NJiKuAz9ZxGkxkm5rSFI2TFun60I4NA00Uyfqcd4Nn9Bft3nBwW9ixPA14XTOQTXjE1y+xDl4uzNbn+doDcbDE4LhM5bOrFI97jCYwen1dI3nykmdjbR7anYp2b7sucrww8hfCmXAUPjClBIt7b2nWK0gVd4wSMRNRLAOXTRwylCK4mqKpTXxT";
+				ssh_authorized_key { 'ebernhardson@wikimedia.org':
+					ensure => present,
+					user   => $username,
+					type   => 'ssh-rsa',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDnafs6VPTCwrVEEqllEMpH6zhLreme1qGFuLxKD5uYQu2OJ01fhxICnswF7uuDrOSs5X9kTyj4zYjoGLHkEbucv3tBunEwYvzbrtRh+WxWkNjBNqhnUkM6T3IxOIpGlXwFxs6rD57i5ZtG2RPdRbOd+NYMjjkR/tELNSwuOfwi0vFeaumqhrbs5Q4XRqcdjPpMxE/BwqqAFA0SU/WeU5ewifF+FedAwYp5LRaeGmgWt0wuRnTjib8xxyyoH8ZJa79bYHK1CSWo4HU/EPsFdAgTWhrX59UQwOWTFOztQKU6zUc50bfh3cpv3wQ/4+VXFWG4J6XMdL4jLVxZwhCebYnf',
 			}
 		}
 	}
