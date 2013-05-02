@@ -12,9 +12,7 @@ class icinga::user {
     system     => true,
     managehome => false,
     shell      => "/bin/false",
-    require    => Group['icinga'],
-    require    => Group['dialout'],
-    require    => Group['nagios'],
+    require    => [ Group['icinga'], Group['dialout'], Group['nagios'] ],
     groups     => [ 'dialout', 'nagios' ]
   }
 }
