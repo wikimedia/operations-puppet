@@ -2,10 +2,20 @@
 # misc/icinga.pp
 
 class icinga::user {
-  systemuser { 'icinga':
-    name   => 'icinga',
-    home   => '/home/icinga',
-    groups => [ 'icinga', 'dialout', 'nagios' ]
+  include nagios::group
+  # where does the dialout user group come from? it should be included here somehow
+
+  user { 'icinga':
+    name       => 'icinga',
+    home       => '/home/icinga',
+    gid        => 'icinga',
+    system     => true,
+    managehome => false,
+    shell      => "/bin/false",
+    require    => Group['icinga'],
+    require    => Group['dialout'],
+    require    => Group['nagios'],
+    groups     => [ 'icinga', 'dialout', 'nagios' ]
   }
 }
 
