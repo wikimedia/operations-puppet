@@ -5,6 +5,11 @@ class icinga::user {
   include nagios::group
   # where does the dialout user group come from? it should be included here somehow
 
+  group { 'icinga':
+    name       => 'icinga',
+    ensure     => present;
+  }
+
   user { 'icinga':
     name       => 'icinga',
     home       => '/home/icinga',
@@ -12,7 +17,7 @@ class icinga::user {
     system     => true,
     managehome => false,
     shell      => "/bin/false",
-    require    => Group['nagios'],
+    require    => [ Group['icinga'], Group['nagios'] ],
     groups     => [ 'dialout', 'nagios' ]
   }
 }
