@@ -27,7 +27,7 @@ Listen [::1]:9412
 		Allow from ::1/128
 	</Directory>
 
-	ErrorLog /var/log/apache2/error.log
+	ErrorLog /srv/localhost/qunit/log/error.log
 	LogLevel warn
-	CustomLog /var/log/apache2/access.log combined
+	CustomLog /srv/localhost/qunit/log/access.log combined
 </VirtualHost>
