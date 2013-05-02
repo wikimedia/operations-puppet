@@ -15,7 +15,7 @@ class icinga::user {
     require    => Group['icinga'],
     require    => Group['dialout'],
     require    => Group['nagios'],
-    groups     => [ 'icinga', 'dialout', 'nagios' ]
+    groups     => [ 'dialout', 'nagios' ]
   }
 }
 
