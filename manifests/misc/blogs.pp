@@ -62,9 +62,8 @@ class misc::blogs::wikimedia {
 		monitor       => false,
 	}
 	# send blog access logs to udp2log instances.
-	varnish::logging { "locke" :           listener_address => "208.80.152.138" }
 	varnish::logging { "emery" :           listener_address => "208.80.152.184" }
-	varnish::logging { "multicast_relay" : listener_address => "208.80.154.15", port => "8419" }
+	varnish::logging { "multicast_relay" : listener_address => "208.80.154.73", port => "8419" }
 
 	# Capture blog traffic logs on its own stream in analytics cluster.
 	# 208.80.154.154 == analytics1001.wikimedia.org
