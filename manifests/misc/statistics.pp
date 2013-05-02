@@ -73,9 +73,7 @@ class misc::statistics::base {
 	}
 
 	# Manually set a list of statistics servers.
-	# 208.80.152.146 - stat1
-	# 208.80.154.155 - stat1001
-	$servers = ["stat1.wikimedia.org", "stat1001.wikimedia.org", "analytics1027.eqiad.wmnet"]
+	$servers = ["stat1.wikimedia.org", "stat1001.wikimedia.org", "stat1002.eqiad.wmnet", "analytics1027.eqiad.wmnet"]
 
 	# set up rsync modules for copying files
 	# on statistic servers in /a
