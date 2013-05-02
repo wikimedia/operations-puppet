@@ -446,10 +446,10 @@ node /^db(31|51|65|72)\.pmtpa\.wmnet/ {
 	}
 }
 
-node /^db(44|45|55|73)\.pmtpa\.wmnet/ {
+node /^db(44|45|55|73|74)\.pmtpa\.wmnet/ {
 	if $hostname == "db44" {
 		class { role::coredb::s5 : mariadb => true }
-	} elsif $hostname =~ /^db(55|73)/{
+	} elsif $hostname =~ /^db(55|73|74)/{
 		class { role::coredb::s5 : mariadb => true, innodb_file_per_table => true }
 	} else {
 		include role::coredb::s5
@@ -538,13 +538,13 @@ node 'db29.pmtpa.wmnet' {
 
 
 ## not in use for various reasons
-node /^db(42|6[12]|7[4-7])\.pmtpa\.wmnet/{
+node /^db(42|6[12]|7[5-7])\.pmtpa\.wmnet/{
 	include standard
 }
 
 # eqiad dbs
 node /^db10(17|42|43|49|50|51|52|56)\.eqiad\.wmnet/ {
-	if $hostname =~ /^db10(01|17|56)/ {
+	if $hostname =~ /^db10(17|56)/ {
 		$ganglia_aggregator = true
 		include mha::manager
 	}

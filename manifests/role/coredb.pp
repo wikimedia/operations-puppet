@@ -41,7 +41,7 @@ class role::coredb::config {
 			'no_master' => []
 		},
 		's5' => {
-			'hosts' => { 'pmtpa' => [ 'db44', 'db45', 'db55', 'db73' ],
+			'hosts' => { 'pmtpa' => [ 'db44', 'db45', 'db55', 'db73', 'db74' ],
 				'eqiad' => [ 'db1005', 'db1021', 'db1026', 'db1039', 'db1058' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db73", 'eqiad' => "db1058" },
