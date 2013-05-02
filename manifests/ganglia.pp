@@ -393,10 +393,16 @@ class ganglia {
 	class aggregator {
 		# This overrides the default ganglia-monitor script
 		# with one that starts up multiple instances of gmond
-		file { "/etc/init.d/ganglia-monitor":
+		file { "/etc/init.d/ganglia-monitor-aggrs":
 			source => "puppet:///files/ganglia/ganglia-monitor",
 			mode   => 0555,
-			ensure => present
+			ensure => present,
+			require => Package["ganglia-monitor"];
+		}
+		service { "ganglia-monitor-aggrs":
+			require => File["/etc/init.d/ganglia-monitor-aggrs"],
+			enable => true,
+			ensure => running;
 		}
 	}
 }
@@ -417,6 +423,7 @@ class ganglia::web {
 		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
 		$ganglia_confdir = "/var/lib/ganglia/conf"
 
+		include ganglia::aggregator
 	} else {
 		$ganglia_servername = "ganglia.wikimedia.org"
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
