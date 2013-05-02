@@ -246,7 +246,7 @@ class varnish {
 	class logging_monitor {
 		nrpe::monitor_service { "varnishncsa":
 			description => "Varnish traffic logger",
-			nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 3:3 -c 3:6 -C varnishncsa"
+			nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:4 -C varnishncsa"
 		}
 	}
 
