@@ -513,9 +513,11 @@ sub tag_carrier {
 }
 
 sub vcl_recv {
-	/* if the request comes from Opera Mini's accelerating proxies, grab
-	 * XFF Header and replace client ip value */
-	if (client.ip ~ opera_mini) {
+	/* if the request comes from Opera Mini's accelerating proxies, or it came
+	 * from the allowed_xff ip range and the XFF header is set,
+	 * replace client ip value with the XFF Header
+	 */
+	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ allow_xff)) {
 		C{
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
 		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
