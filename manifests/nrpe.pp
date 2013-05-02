@@ -116,10 +116,13 @@ class nrpe::packages {
 	}
 }
 
-class nrpe::service {
+class nrpe::user {
 	include icinga::user
+}
 
-	Class[nrpe::packages] -> Class[nrpe::service]
+class nrpe::service {
+	# user needs nagios group which is created by nagios-nrpe-server so...
+	Class[nrpe::packages] -> Class[nrpe::user] -> Class[nrpe::service]
 
 	service { nagios-nrpe-server:
 		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
