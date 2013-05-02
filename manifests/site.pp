@@ -573,8 +573,8 @@ node /^db10(03|10|19|35)\.eqiad\.wmnet/ {
 	}
 }
 
-node /^db10(04|11|20|38)\.eqiad\.wmnet/ {
-	if $hostname =~ /^db10(04|11)/ {
+node /^db10(04|11|20|38|59)\.eqiad\.wmnet/ {
+	if $hostname =~ /^db10(04|11|20|59)/ {
 		class { role::coredb::s4 : mariadb => true }
 	} else {
 		include role::coredb::s4
