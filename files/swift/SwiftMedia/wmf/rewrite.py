@@ -13,12 +13,14 @@ import urlparse
 from swift.common.utils import get_logger
 from swift.common.wsgi import WSGIContext
 
+
 class DumbRedirectHandler(urllib2.HTTPRedirectHandler):
     def http_error_301(self, req, fp, code, msg, headers):
         return None
 
     def http_error_302(self, req, fp, code, msg, headers):
         return None
+
 
 class _WMFRewriteContext(WSGIContext):
     """
@@ -37,13 +39,13 @@ class _WMFRewriteContext(WSGIContext):
         self.thumbhost = conf['thumbhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
-        self.shard_containers = conf['shard_containers'].strip() #all, some, none
+        self.shard_containers = conf['shard_containers'].strip()  # all, some, none
         if (self.shard_containers == 'some'):
             # if we're supposed to shard some containers, get a cleaned list of the containers to shard
             self.shard_container_list = striplist(conf['shard_container_list'].split(','))
         # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
         # converted  and only the path sent back (eg en.wikipedia/thumb).
-        self.backend_url_format = conf['backend_url_format'].strip() #'asis', 'sitelang'
+        self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
 
     def handle404(self, reqorig, url, container, obj):
         """
@@ -60,14 +62,14 @@ class _WMFRewriteContext(WSGIContext):
         opener = urllib2.build_opener(redirect_handler, proxy_handler)
         # Pass on certain headers from the caller squid to the scalers
         opener.addheaders = []
-        if reqorig.headers.get('User-Agent') != None:
+        if reqorig.headers.get('User-Agent') is not None:
             opener.addheaders.append(('User-Agent', reqorig.headers.get('User-Agent')))
         else:
             opener.addheaders.append(('User-Agent', self.user_agent))
         for header_to_pass in ['X-Forwarded-For', 'X-Forwarded-Proto',
-                'Accept', 'Accept-Encoding', 'X-Original-URI']:
-            if reqorig.headers.get( header_to_pass ) != None:
-                opener.addheaders.append((header_to_pass, reqorig.headers.get( header_to_pass )))
+                               'Accept', 'Accept-Encoding', 'X-Original-URI']:
+            if reqorig.headers.get(header_to_pass) is not None:
+                opener.addheaders.append((header_to_pass, reqorig.headers.get(header_to_pass)))
         # At least in theory, we shouldn't be handing out links to originals
         # that we don't have (or in the case of thumbs, can't generate).
         # However, someone may have a formerly valid link to a file, so we
@@ -122,6 +124,7 @@ class _WMFRewriteContext(WSGIContext):
             upcopy = opener.open(encodedurl)
         except urllib2.HTTPError, error:
             # copy the urllib2 HTTPError into a webob HTTPError class as-is
+
             class CopiedHTTPError(webob.exc.HTTPError):
                 code = error.code
                 title = error.msg
@@ -131,15 +134,14 @@ class _WMFRewriteContext(WSGIContext):
 
                 def __init__(self):
                     super(CopiedHTTPError, self).__init__(
-                            detail="".join(error.readlines()),
-                            headers=error.hdrs.items()
-                        )
+                        detail="".join(error.readlines()),
+                        headers=error.hdrs.items())
 
             resp = CopiedHTTPError()
             return resp
         except urllib2.URLError, error:
             msg = 'There was a problem while contacting the image scaler: %s' % \
-                    error.reason
+                  error.reason
             resp = webob.exc.HTTPServiceUnavailable(msg)
             return resp
 
@@ -168,7 +170,7 @@ class _WMFRewriteContext(WSGIContext):
         req = webob.Request(env)
 
         # Double (or triple, etc.) slashes in the URL should be ignored; collapse them. fixes bug 32864
-        req.path_info = re.sub( r'/{2,}', '/', req.path_info )
+        req.path_info = re.sub(r'/{2,}', '/', req.path_info)
 
         # Keep a copy of the original request so we can ask the scalers for it
         reqorig = req.copy()
@@ -218,11 +220,11 @@ class _WMFRewriteContext(WSGIContext):
         if match:
             proj  = match.group('proj')
             lang  = match.group('lang')
-            repo  = 'local' # the upload repo name is "local"
+            repo  = 'local'  # the upload repo name is "local"
             # Get the repo zone (if not provided that means "public")
             zone  = (match.group('zone') if match.group('zone') else 'public')
             # Get the object path relative to the zone (and thus container)
-            obj   = match.group('path') # e.g. "archive/a/ab/..."
+            obj   = match.group('path')  # e.g. "archive/a/ab/..."
             shard = match.group('shard')
 
         # timeline renderings
@@ -230,11 +232,11 @@ class _WMFRewriteContext(WSGIContext):
             # /wikipedia/en/timeline/a876297c277d80dfd826e1f23dbfea3f.png
             match = re.match(r'^/(?P<proj>[^/]+)/(?P<lang>[^/]+)/(?P<repo>timeline)/(?P<path>.+)$', req.path)
             if match:
-                proj  = match.group('proj') # wikipedia
-                lang  = match.group('lang') # en
-                repo  = match.group('repo') # timeline
+                proj  = match.group('proj')  # wikipedia
+                lang  = match.group('lang')  # en
+                repo  = match.group('repo')  # timeline
                 zone  = 'render'
-                obj   = match.group('path') # a876297c277d80dfd826e1f23dbfea3f.png
+                obj   = match.group('path')  # a876297c277d80dfd826e1f23dbfea3f.png
                 shard = ''
 
         # math renderings
@@ -246,10 +248,10 @@ class _WMFRewriteContext(WSGIContext):
             if match:
                 proj  = 'global'
                 lang  = 'data'
-                repo  = match.group('repo') # math
+                repo  = match.group('repo')  # math
                 zone  = 'render'
-                obj   = match.group('path') # c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
-                shard = match.group('shard1') + match.group('shard2') # c9
+                obj   = match.group('path')  # c/9/f/c9f2055dadfb49853eff822a453d9ceb.png
+                shard = match.group('shard1') + match.group('shard2')  # c9
 
         # score renderings
         if match is None:
@@ -259,9 +261,9 @@ class _WMFRewriteContext(WSGIContext):
             if match:
                 proj  = 'global'
                 lang  = 'data'
-                repo  = match.group('repo') # score
+                repo  = match.group('repo')  # score
                 zone  = 'render'
-                obj   = match.group('path') # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
+                obj   = match.group('path')  # j/q/jqn99bwy8777srpv45hxjoiu24f0636/jqn99bwy.png
                 shard = ''
 
         if match is None:
@@ -306,11 +308,11 @@ class _WMFRewriteContext(WSGIContext):
         # Internally rewrite the URL based on the regex it matched...
         if match:
             # Get the per-project "conceptual" container name, e.g. "<proj><lang><repo><zone>"
-            container = "%s-%s-%s-%s" % (proj, lang, repo, zone) #02/#03
+            container = "%s-%s-%s-%s" % (proj, lang, repo, zone)
             # Add 2-digit shard to the container if it is supposed to be sharded.
             # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
-            if ( (self.shard_containers == 'all') or \
-                 ((self.shard_containers == 'some') and (container in self.shard_container_list)) ):
+            if ((self.shard_containers == 'all') or
+               ((self.shard_containers == 'some') and (container in self.shard_container_list))):
                 container += ".%s" % shard
 
             # Save a url with just the account name in it.
@@ -324,7 +326,7 @@ class _WMFRewriteContext(WSGIContext):
 
             # do_start_response just remembers what it got called with,
             # because our 404 handler will generate a different response.
-            app_iter = self._app_call(env) #01
+            app_iter = self._app_call(env)
             status = self._get_status_int()
             headers = self._response_headers
 
@@ -332,8 +334,8 @@ class _WMFRewriteContext(WSGIContext):
                 # We have it! Just return it as usual.
                 #headers['X-Swift-Proxy']= `headers`
                 return webob.Response(status=status, headers=headers,
-                        app_iter=app_iter)(env, start_response) #01a
-            elif status == 404: #4
+                                      app_iter=app_iter)(env, start_response)
+            elif status == 404:
                 # only send thumbs to the 404 handler; just return a 404 for everything else.
                 if repo == 'local' and zone == 'thumb':
                     resp = self.handle404(reqorig, url, container, obj)
@@ -343,13 +345,13 @@ class _WMFRewriteContext(WSGIContext):
                     return resp(env, start_response)
             elif status == 401:
                 # if the Storage URL is invalid or has expired we'll get this error.
-                resp = webob.exc.HTTPUnauthorized('Token may have timed out') #05
+                resp = webob.exc.HTTPUnauthorized('Token may have timed out')
                 return resp(env, start_response)
             else:
-                resp = webob.exc.HTTPNotImplemented('Unknown Status: %s' % (status)) #10
+                resp = webob.exc.HTTPNotImplemented('Unknown Status: %s' % (status))
                 return resp(env, start_response)
         else:
-            resp = webob.exc.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path)) #11
+            resp = webob.exc.HTTPNotFound('Regexp failed to match URI: "%s"' % (req.path))
             return resp(env, start_response)
 
 
@@ -383,4 +385,3 @@ def filter_factory(global_conf, **local_conf):
     return wmfrewrite_filter
 
 # vim: set expandtab tabstop=4 shiftwidth=4 autoindent:
-
