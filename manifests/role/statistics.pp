@@ -43,3 +43,18 @@ class role::statistics::www inherits role::statistics {
 		# reportcard.wikimedia.org
 		misc::statistics::sites::reportcard
 }
+
+class role::statistics::private inherits role::statistics {
+	system_role { "role::statistics": description => "statistics private data host" }
+
+	# include classes needed for crunching private data on stat1002
+	include geoip,
+		geoip::packages::python,
+		misc::statistics::dataset_mount,
+		misc::statistics::mediawiki,
+		misc::statistics::plotting,
+		generic::pythonpip,
+		misc::udp2log::udp_filter,
+		# rsync logs from logging hosts
+		misc::statistics::rsync::jobs
+}

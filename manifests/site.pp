@@ -2588,9 +2588,7 @@ node "stat1.wikimedia.org" {
 		accounts::ebernhardson, # RT 4959
 		accounts::fschulenburg, # RT 4475
 		accounts::giovanni, # RT 3460
-		accounts::haithams, # RT 3219
 		accounts::halfak,
-		accounts::handrade, # RT 4726
 		accounts::howief, # RT 3576
 		accounts::ironholds,
 		accounts::jdlrobson,
@@ -2635,11 +2633,32 @@ node "stat1001.wikimedia.org" {
 }
 
 node "stat1002.eqiad.wmnet" {
-	include role::statistics
+	# stat1002 is intended to be the private
+	# webrequest access log storage host.
+	# Users should not use it for app development.
+	# Data processing on this machine is fine.
 
-	include	accounts::otto
+	# Accounts that were previously on stat1
+	# for the purposes of crunching private
+	# webrequest access logs have been ported
+	# over from there.
+	include accounts::globaldev
+		accounts::ezachte,
+		accounts::milimetric,
+		accounts::diederik,
+		accounts::dartar,
+		accounts::otto,
+		accounts::spetrea,
+		accounts::yurik,   # RT 4835
+		accounts::howief,  # RT 3576
+		accounts::mgrover, # RT 4600
+		accounts::olivneh  # RT 3451
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
+
+	# include classes needed for storing and crunching
+	# private data on stat1002.
+	include role::statistics::private
 }
 
 node "streber.wikimedia.org" {

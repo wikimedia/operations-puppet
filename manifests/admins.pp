@@ -2986,7 +2986,9 @@ class admins::globaldev {
 	$gid = 500   # 'wikidev' by default
 	include groups::wikidev
 
-	include accounts::erosen
+	include accounts::erosen, # RT 3119
+		accounts::haithams,     # RT 3219
+		accounts::handrade      # RT 4726
 }
 
 class admins::fr-tech {
