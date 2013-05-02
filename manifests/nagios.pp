@@ -189,6 +189,14 @@ class nagios::gsbmonitoring {
 	@monitor_service { "GSB_wiktionary": description => "check google safe browsing for wiktionary.org", check_command => "check_http_url_for_string!www.google.com!/safebrowsing/diagnostic?site=wiktionary.org/!'This site is not currently listed as suspicious'", host => "google" }
 }
 
+class nagios::group {
+	group { 'nagios':
+		ensure    => present,
+		name      => 'nagios',
+		system    => true,
+		allowdupe => false,
+	}
+}
 
 class misc::zfs::monitoring {
 	monitor_service { "zfs raid": description => "ZFS RAID", check_command => "nrpe_check_zfs" }

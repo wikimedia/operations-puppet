@@ -63,7 +63,6 @@ define nrpe::monitor_service(
 class nrpe {
 	include nrpe::packages
 	include nrpe::service
-	include nrpe::user
 
 	#Collect virtual NRPE nagios service checks
 	Monitor_service <| tag == "nrpe" |>
@@ -117,13 +116,10 @@ class nrpe::packages {
 	}
 }
 
-class nrpe::user {
-	include icinga::user
-}
-
 class nrpe::service {
-	# user needs nagios group which is created by nagios-nrpe-server so...
-	Class[nrpe::packages] -> Class[nrpe::user] -> Class[nrpe::service]
+	include icinga::user
+
+	Class[nrpe::packages] -> Class[nrpe::service]
 
 	service { nagios-nrpe-server:
 		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
