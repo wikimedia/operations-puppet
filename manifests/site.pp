@@ -837,6 +837,7 @@ node "fenari.wikimedia.org" {
 		misc::deployment,
 		misc::noc-wikimedia,
 		misc::deployment::scap_scripts,
+		misc::deployment::common_scripts,
 		misc::deployment::l10nupdate,
 		dns::account,
 		nrpe,
