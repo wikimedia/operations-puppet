@@ -24,6 +24,16 @@ class contint::website {
     owner  => 'jenkins',
     group  => 'jenkins',
   }
+
+  # have a favicon, even if we also specify it in HTML
+  file { '/srv/org/wikmedia/integration/favicon.ico':
+    ensure => present,
+    mode   => '0444'
+    owner  => 'www-data',
+    group  => 'www-data',
+    source => 'puppet:///modules/contint/apache/wmf.ico',
+  }
+
   # MediaWiki code coverage
   file { '/srv/org/wikimedia/integration/coverage':
     ensure => directory,
@@ -62,6 +72,16 @@ class contint::website {
     owner  => 'jenkins',
     group  => 'jenkins',
   }
+
+  # have a favicon, even if we also specify it in HTML
+  file { '/srv/org/wikmedia/doc/favicon.ico':
+    ensure => present,
+    mode   => '0444'
+    owner  => 'www-data',
+    group  => 'www-data',
+    source => 'puppet:///modules/contint/apache/wmf.ico',
+  }
+
   file { '/etc/apache2/sites-available/doc.wikimedia.org':
     mode   => '0444',
     owner  => 'root',
