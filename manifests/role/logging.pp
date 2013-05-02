@@ -273,6 +273,6 @@ class role::logging::eventlogging {
 	}
 
 	class { '::eventlogging':
-		archive_destinations => [ 'stat1.wikimedia.org' ],
+		archive_destinations => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
 	}
 }
