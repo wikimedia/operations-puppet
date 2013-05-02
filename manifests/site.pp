@@ -1287,7 +1287,6 @@ node "linne.wikimedia.org" {
 		ganglia,
 		exim::simple-mail-sender,
 		misc::url-downloader
-		# misc::squid-logging::multicast-relay # linne has no iptable rules, and this appears unused here
 
 	class { 'ntp::server':
 		servers => [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ],
@@ -2093,8 +2092,6 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		accounts::milimetric
 
 	include
-		misc::squid-logging::multicast-relay,
-		misc::logging::vanadium-relay,
 		misc::udp2log
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
