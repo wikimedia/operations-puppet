@@ -28,6 +28,6 @@ Listen [::1]:9412
 	</Directory>
 
 	LogLevel warn
-	ErrorLog /var/log/apache2/qunit_error.log
-	CustomLog /var/log/apache2/qunit_access.log vhost_combined
+	ErrorLog /srv/localhost/qunit/log/error.log
+	CustomLog /srv/localhost/qunit/log/access.log vhost_combined
 </VirtualHost>
