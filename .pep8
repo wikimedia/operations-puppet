@@ -1,0 +1,14 @@
+[pep8]
+# Turn off some tedious warnings:
+#
+#  E501 complains when lines exceed 79 characters.  People hate this!
+#
+#  E221 prevents extra spaces before equals signs which means that things like
+#
+#  a   = 1
+#  ab  = 2
+#  abc = 3
+#
+#  throw warnings.  Some devs want to be able to do this.
+#
+ignore = E501,E221
