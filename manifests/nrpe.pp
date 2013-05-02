@@ -63,6 +63,7 @@ define nrpe::monitor_service(
 class nrpe {
 	include nrpe::packages
 	include nrpe::service
+	include nrpe::user
 
 	#Collect virtual NRPE nagios service checks
 	Monitor_service <| tag == "nrpe" |>
