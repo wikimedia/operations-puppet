@@ -356,6 +356,18 @@ class misc::statistics::sites::metrics {
 			'host'   =>  's5-analytics-slave.eqiad.wmnet',
 			'port'   =>  3306,
 		},
+                's6'      =>  {
+                        'user'   =>   $passwords::mysql::research::user,
+                        'passwd' =>   $passwords::mysql::research::pass,
+                        'host'   =>  's6-analytics-slave.eqiad.wmnet',
+                        'port'   =>  3306,
+                },
+                's7'      =>  {
+                        'user'   =>   $passwords::mysql::research::user,
+                        'passwd' =>   $passwords::mysql::research::pass,
+                        'host'   =>  's7-analytics-slave.eqiad.wmnet',
+                        'port'   =>  3306,
+                },
 	}
 
 	package { ["python-flask", "python-flask-login"]:
