@@ -417,8 +417,6 @@ class ganglia::web {
 		$ganglia_webdir = "/usr/share/ganglia-webfrontend"
 		$ganglia_confdir = "/var/lib/ganglia/conf"
 
-		require ganglia::aggregator
-
 	} else {
 		$ganglia_servername = "ganglia.wikimedia.org"
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
