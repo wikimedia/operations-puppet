@@ -645,13 +645,6 @@ class role::cache {
 					log_fmt          => '%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n',
 					monitor          => false,
 				}
-
-				varnish::logging { 'locke' :
-					listener_address => '208.80.152.138',
-					port             => '8420',
-					instance_name    => '',
-					cli_args         => '-m RxRequest:^(?!PURGE\$) -D',
-				}
 			}
 			else {
 				$event_listener = '10.4.1.14' # deployment-eventlogging
