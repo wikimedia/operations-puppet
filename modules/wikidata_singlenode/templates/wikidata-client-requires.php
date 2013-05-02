@@ -36,19 +36,19 @@ require_once( "$IP/extensions/DismissableSiteNotice/DismissableSiteNotice.php" )
 $wgShowExceptionDetails = true;
 
 // information about the repo this client is connected to
-$wgWBSettings['repoArticlePath'] = "/wiki/$1";
-$wgWBSettings['repoScriptPath'] = "/w";
+$wgWBClientSettings['repoArticlePath'] = "/wiki/$1";
+$wgWBClientSettings['repoScriptPath'] = "/w";
 
 // The global site ID by which this wiki is known on the repo.
-$wgWBSettings['siteGlobalID'] = "<%=siteGlobalID%>";
+$wgWBClientSettings['siteGlobalID'] = "<%=siteGlobalID%>";
 // Database name of the repository, for the propagation of changes.
 // This requires the given database name to be known to LBFactory, see
 // $wgLBFactoryConf below.
 $wgWBSettings['changesDatabase'] = "repo";
-$wgWBSettings['repoDatabase'] = "repo";
-$wgWBSettings['repoNamespaces'] = array( 'wikibase-item' => 'Item', 'wikibase-property' => 'Property' );
+$wgWBClientSettings['repoDatabase'] = "repo";
+$wgWBClientSettings['repoNamespaces'] = array( 'wikibase-item' => 'Item', 'wikibase-property' => 'Property' );
 
-$wgWBSettings['repoUrl'] = "<%=repo_url%>";
+$wgWBClientSettings['repoUrl'] = "<%=repo_url%>";
 
 //Load Balancer
 $wgLBFactoryConf = array(
@@ -203,7 +203,7 @@ require_once( "$IP/extensions/TitleKey/TitleKey.php" );
 require_once( "$IP/extensions/TorBlock/TorBlock.php" );
 require_once( "$IP/extensions/UserDailyContribs/UserDailyContribs.php" );
 require_once( "$IP/extensions/UserMerge/UserMerge.php" );
-$wgGroupPermissions['sysop']['usermerge'] = true; 
+$wgGroupPermissions['sysop']['usermerge'] = true;
 $wgUserMergeProtectedGroups = array( 'sysop' );
 
 require_once( "$IP/extensions/Vector/Vector.php" );
