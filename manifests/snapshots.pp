@@ -1,7 +1,7 @@
 class snapshots::packages {
 
 	if ($::lsbdistcodename == 'precise') {
-		package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.1', 'p7zip-full', 'libicu42', 'utfnormal' ]:
+		package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.5', 'p7zip-full', 'libicu42', 'utfnormal' ]:
 			ensure => present;
 		}
 	}
