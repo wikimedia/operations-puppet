@@ -91,7 +91,7 @@ class lvs::configuration {
 			/^lvs100[1-3]$/ => "208.80.154.196",
 			/^lvs100[4-6]$/ => "208.80.154.197",
 			/^amslvs[12]$/ => "91.198.174.247",
-			/^amslvs[34]$/ => "91.198.174.244",
+			/^amslvs[34]$/ => "91.198.174.246",
 			default => "(unspecified)"
 			},
 		'bgp-nexthop-ipv4' => $::ipaddress_eth0,
