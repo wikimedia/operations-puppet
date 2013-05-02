@@ -89,37 +89,3 @@ define misc::logging::relay(
 		provider  => 'upstart',
 	}
 }
-
-
-# NOTE:  This class is depcreated.
-# It will be removed once oxygen is no longer using it.
-class misc::squid-logging::multicast-relay {
-	require misc::logging::socat
-
-	system_role { "misc::squid-logging::multicast-relay": description => "Squid logging unicast to multicast relay" }
-
-	upstart_job { "squid-logging-multicast-relay": install => "true" }
-
-	service { squid-logging-multicast-relay:
-		require => [ Package[socat], Upstart_job[squid-logging-multicast-relay] ],
-		subscribe => Upstart_job[squid-logging-multicast-relay],
-		ensure => running;
-	}
-}
-
-
-# NOTE:  This class is deprecated.
-# It will be removed once oxygen is no longer using it.
-class misc::logging::vanadium-relay {
-	require misc::logging::socat
-
-	system_role { "misc::logging::vanadium-relay": description => "esams bits event logging to vanadium relay" }
-
-	upstart_job { "event-logging-vanadium-relay": install => "true" }
-
-	service { event-logging-vanadium-relay:
-		require => [ Package[socat], Upstart_job[event-logging-vanadium-relay] ],
-		subscribe => Upstart_job[event-logging-vanadium-relay],
-		ensure => running;
-	}
-}
