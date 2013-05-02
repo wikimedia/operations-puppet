@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BINDIR=/usr/local/bin
+
 echo "Synchronizing /home/wikipedia/common/*.dblist to /usr/local/apache/common-local/*.dblist..."
 echo "mediawiki-installation:"
 
