@@ -10,7 +10,7 @@ class role::coredb::config {
 	$topology = {
 		's1' => {
 			'hosts' => { 'pmtpa' => [ 'db32', 'db59', 'db60', 'db63', 'db67', 'db69', 'db71' ],
-				'eqiad' => [ 'db1017', 'db1042', 'db1043', 'db1049', 'db1050', 'db1051', 'db1052', 'db1056' ] },
+				'eqiad' => [ 'db1017', 'db1043', 'db1049', 'db1050', 'db1051', 'db1052', 'db1056' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db63", 'eqiad' => "db1056" },
 			'snapshot' => [ "db32", "db1050" ],
@@ -34,7 +34,7 @@ class role::coredb::config {
 		},
 		's4' => {
 			'hosts' => { 'pmtpa' => [ 'db31', 'db51', 'db65', 'db72' ],
-				'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1038', 'db1059' ] },
+				'eqiad' => [ 'db1004', 'db1011', 'db1020', 'db1038', 'db1042', 'db1059' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db31", 'eqiad' => "db1038" },
 			'snapshot' => [ "db65", "db1020" ],
