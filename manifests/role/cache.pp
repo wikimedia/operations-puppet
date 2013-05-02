@@ -641,8 +641,8 @@ class role::cache {
 					listener_address => '208.80.154.154', # analytics1001
 					port             => '8422',
 					instance_name    => '',
-					cli_args         => '-m RxURL:^/event\.gif\?. -D',
-					log_fmt          => '%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n',
+					cli_args         => "-m RxURL:^/event\.gif\?. -D",
+					log_fmt          => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
 					monitor          => false,
 				}
 			}
@@ -654,8 +654,8 @@ class role::cache {
 				listener_address => $event_listener,
 				port             => '8422',
 				instance_name    => '',
-				cli_args         => '-m RxURL:^/event\.gif\?. -D',
-				log_fmt          => '%q	%l	%n	%t	%h',
+				cli_args         => "-m RxURL:^/event\.gif\?. -D",
+				log_fmt          => "%q	%l	%n	%t	%h",
 				monitor          => false,
 			}
 		}
@@ -756,8 +756,8 @@ class role::cache {
 		}
 
 		if( $::realm == 'production' ) {
-			varnish::logging { 'emery' :           listener_address => '208.80.152.184', cli_args => '-m RxRequest:^(?!PURGE\$) -D' }
-			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419', cli_args => '-m RxRequest:^(?!PURGE\$) -D' }
+			varnish::logging { 'emery' :           listener_address => '208.80.152.184', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
 		}
 	}
 }
