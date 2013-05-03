@@ -3008,7 +3008,8 @@ class admins::privatedata {
 		accounts::yurik,        # RT 4835
 		accounts::howief,       # RT 3576
 		accounts::mgrover,      # RT 4600
-		accounts::olivneh       # RT 3451
+		accounts::olivneh,      # RT 3451
+		accounts::mwalker       # RT 5038
 }
 
 class admins::fr-tech {
