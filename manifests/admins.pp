@@ -1382,7 +1382,7 @@ class accounts {
 
 			# new key
 			ssh_authorized_key{ "catrope@fenari-2":
-				ensure => present,
+				ensure => absent,
 				user => $username,
 				type => "ssh-rsa",
 				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAZea7fnmc4gDHyupnZA+Cx8SFG59oJnKMFNi/fKLyqJyBI/kfWnqDaCJ2bCFEwMZ883zPOZegb4VF/D6aO5LM0eo8KVvCZHWssC9Le8Og31L/Njg03fAh7P5mLY+vKYC7WtY0IZQNLb5BuW48C+lnjwZ+Q9t0up36vn5U4aqgvo+OosAd4qcYcYsYF20KeeQCtuYMv/rhJw1tD7HuPIrXjBevPEDW9n0DyZDTKjfGxuYkfnO+qpiFuKba+/ns7pSgRgSwrAfVzyM2eo4sP9b1/1KoEL0E5mhGn/BGV/yIWVz/S8oBb8mMjr3OOTfSu97//6fJw/TDKguRzhqU6P4l"
