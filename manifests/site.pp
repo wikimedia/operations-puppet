@@ -2580,10 +2580,10 @@ node "stat1.wikimedia.org" {
 	# special accounts
 	include admins::globaldev, # RT 3119
 		accounts::ezachte,
-		accounts::abartov, # RT 4106
+		accounts::abartov,    # RT 4106
 		accounts::aengels,
 		accounts::akhanna,
-		accounts::bsitu,  # RT 4959
+		accounts::bsitu,      # RT 4959
 		accounts::milimetric, # RT 3540
 		accounts::diederik,
 		accounts::dsc,
@@ -2591,27 +2591,27 @@ node "stat1.wikimedia.org" {
 		accounts::declerambaul,
 		accounts::ebernhardson, # RT 4959
 		accounts::fschulenburg, # RT 4475
-		accounts::giovanni, # RT 3460
+		accounts::giovanni,  # RT 3460
 		accounts::halfak,
-		accounts::howief, # RT 3576
+		accounts::howief,    # RT 3576
 		accounts::ironholds,
 		accounts::jdlrobson,
 		accounts::jgonera,
 		accounts::jmorgan,
-		accounts::kaldari,  # RT 4959
-		accounts::lwelling, # RT 4959
+		accounts::kaldari,   # RT 4959
+		accounts::lwelling,  # RT 4959
 		accounts::spage,
-		accounts::maryana, # RT 3517
-		accounts::mflaschen, #RT 4796
-		accounts::mgrover, #RT 4600
-		accounts::mlitn,  # RT 4959
-		accounts::olivneh, # RT 3451
+		accounts::maryana,   # RT 3517
+		accounts::mflaschen, # RT 4796
+		accounts::mgrover,   # RT 4600
+		accounts::mlitn,     # RT 4959
+		accounts::olivneh,   # RT 3451
 		accounts::otto,
 		accounts::reedy,
 		accounts::rfaulk,
-		accounts::spetrea, # RT 3584
-		accounts::swalling,     # RT 3653
-		accounts::yurik # RT 4835
+		accounts::spetrea,   # RT 3584
+		accounts::swalling,  # RT 3653
+		accounts::yurik      # RT 4835
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2646,17 +2646,7 @@ node "stat1002.eqiad.wmnet" {
 	# for the purposes of crunching private
 	# webrequest access logs have been ported
 	# over from there.
-	include admins::globaldev,
-		accounts::ezachte,
-		accounts::milimetric,
-		accounts::diederik,
-		accounts::dartar,
-		accounts::otto,
-		accounts::spetrea,
-		accounts::yurik,   # RT 4835
-		accounts::howief,  # RT 3576
-		accounts::mgrover, # RT 4600
-		accounts::olivneh  # RT 3451
+	include admins::privatedata
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 

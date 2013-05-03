@@ -2991,6 +2991,26 @@ class admins::globaldev {
 		accounts::handrade      # RT 4726
 }
 
+# == Class admins::privatedata
+# Includes approved users that need access
+# to private webrequests access logs.
+#
+class admins::privatedata {
+	include accounts::erosen, # RT 3119
+		accounts::haithams,     # RT 3219
+		accounts::handrade,     # RT 4726
+		accounts::ezachte,
+		accounts::milimetric,
+		accounts::diederik,
+		accounts::dartar,
+		accounts::otto,
+		accounts::spetrea,
+		accounts::yurik,        # RT 4835
+		accounts::howief,       # RT 3576
+		accounts::mgrover,      # RT 4600
+		accounts::olivneh       # RT 3451
+}
+
 class admins::fr-tech {
 	$gid = 500   # 'wikidev' by default
 	include groups::wikidev
