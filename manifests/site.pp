@@ -2604,7 +2604,7 @@ node "stat1.wikimedia.org" {
 		accounts::olivneh, # RT 3451
 		accounts::otto,
 		accounts::reedy,
-		accounts::rfaulk,
+		accounts::rfaulk, # RT 5040
 		accounts::spetrea, # RT 3584
 		accounts::swalling,     # RT 3653
 		accounts::yurik # RT 4835

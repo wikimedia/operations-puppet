@@ -1470,9 +1470,8 @@ class accounts {
 
 	class rfaulk inherits baseaccount {
 		$username = "rfaulk"
-		$realname = "Ryan Faulk"
+		$realname = "Ryan Faulkner"
 		$uid = 555
-		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
