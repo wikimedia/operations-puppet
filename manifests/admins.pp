@@ -1470,9 +1470,8 @@ class accounts {
 
 	class rfaulk inherits baseaccount {
 		$username = "rfaulk"
-		$realname = "Ryan Faulk"
+		$realname = "Ryan Faulkner"
 		$uid = 555
-		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2937,7 +2936,6 @@ class admins::mortals {
 	include accounts::pgehres
 	include accounts::raindrift # access revoked per RT 3088
 	include accounts::reedy
-	include accounts::rfaulk
 	include accounts::rmoen
 	include accounts::robla
 	include accounts::spage
