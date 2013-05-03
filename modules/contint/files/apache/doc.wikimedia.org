@@ -45,6 +45,9 @@
 
 	DocumentRoot /srv/org/wikimedia/doc
 
+	# Favicon proxy
+	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+
 	LogLevel warn
 	ErrorLog /var/log/apache2/doc_error.log
 	CustomLog /var/log/apache2/doc_access.log vhost_combined
