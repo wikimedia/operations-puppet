@@ -22,6 +22,9 @@ NameVirtualHost *:443
 
 	DocumentRoot /srv/org/wikimedia/integration
 
+	# Favicon proxy
+	RewriteRule ^/favicon\.ico$ /favicon.php [L]
+
 	SSLEngine on
 	SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
 	SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
