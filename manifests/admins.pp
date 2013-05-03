@@ -2481,11 +2481,18 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
-				"adamw@sting":
-					ensure  => present,
-					user  => $username,
-					type  => "ssh-rsa",
-					key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCTng4vgEtyrjtl3JDNv1Q6M1PVvHWIomE17fqODCvFx6eClupAmY1XExdj3x6sPBtZd2ZStwH0IopkKgF6172b+0fl/ReMUq9gOiywKMOc8/wf/fYuWTI2TSR8MfdYrkq6k4rkn/6WMUayHcHrYl610Wi77WJ5a6PF83QRo1D3VAy69Z8PA+P73tTur846iOgfuDBfKw8aTb6mvwnq3hELuuYFaj8cVkveqEi9m2TYDZF/TWvLRbNTQvh9MloTjpOYhtyNYqeWj4xxjVWlr++RPeFa92TeePzKag87O+k/g74tUSfTqrqjhGGK615JPHVWNWMmNUHeFcajltKAf67N";
+				'adamw@sting':
+					ensure => absent,
+					user   => $username,
+					type   => 'ssh-rsa',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCTng4vgEtyrjtl3JDNv1Q6M1PVvHWIomE17fqODCvFx6eClupAmY1XExdj3x6sPBtZd2ZStwH0IopkKgF6172b+0fl/ReMUq9gOiywKMOc8/wf/fYuWTI2TSR8MfdYrkq6k4rkn/6WMUayHcHrYl610Wi77WJ5a6PF83QRo1D3VAy69Z8PA+P73tTur846iOgfuDBfKw8aTb6mvwnq3hELuuYFaj8cVkveqEi9m2TYDZF/TWvLRbNTQvh9MloTjpOYhtyNYqeWj4xxjVWlr++RPeFa92TeePzKag87O+k/g74tUSfTqrqjhGGK615JPHVWNWMmNUHeFcajltKAf67N';
+			}
+			ssh_authorized_key {
+				'adamw@lytho':
+					ensure => present,
+					user   => $username,
+					type   => 'ssh-rsa',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDCVYUIFsCWN5odLFNGGMUJ/dgC2BB/EJ14srHC61BIWouLlahZdCOT5F2Zeuhs+aTigaTWtaFrYAOIfiChcPNSffVEMI+RTbMSZ9gXJxY294aDVe3xdd+XAZUVY0VKyPwIQbrNgTHDyKRbi5w+YmA26H02FjtcPrbYYojYI3uxNoLc/6cVJRBaKu1L+ZHqbZn4JesNlFUeEDo5Urv5TEI9K7qlfXbCdT/CMg6j9GyKlolJbAReay8+nUL4WwUMDmocy+mT1rWc+O2E7VfJw41A6GxM+TUVK+WP7dvzlHXDlatXy4PR7RvoUlxtZKjb7phSPOXvJjv5Gt6mrl6/qrwH',
 			}
 		}
 	}
@@ -3009,7 +3016,8 @@ class admins::privatedata {
 		accounts::howief,       # RT 3576
 		accounts::mgrover,      # RT 4600
 		accounts::olivneh,      # RT 3451
-		accounts::mwalker       # RT 5038
+		accounts::mwalker,      # RT 5038
+		accounts::awight        # RT 5048
 }
 
 class admins::fr-tech {
