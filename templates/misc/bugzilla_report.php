@@ -80,23 +80,27 @@ LIMIT
         5;
 END;
 }
-/* TODO: Check if this really refers to resolution setting, and not to random changes in last week plus current resolution X */
 function getBugResolutions($begin_date, $end_date, $resolution) {
         $resolution = mysql_real_escape_string($resolution);
         $resolution = "'$resolution'";
 
         return <<<END
 SELECT
-        count(*)
+        count (distinct bugs.bug_id)
 FROM
-        bugs
+        bugs, bugs_activity
 WHERE
-        resolution = $resolution
-        and delta_ts
+        bugs.resolution = "$resolution"
+AND
+        bugs_activity.added = "$resolution"
+AND
+        bugs_activity.bug_when
 BETWEEN
         "$begin_date"
-        and
+AND
         "$end_date"
+AND
+        bugs.bug_id = bugs_activity.bug_id;
 END;
 }
 
