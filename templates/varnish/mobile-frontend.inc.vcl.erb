@@ -559,9 +559,6 @@ sub vcl_recv {
 	   header instead.
 	*/
 
-	/* strip proxy URLs as to not have to rewrite them below too */
-	call rewrite_proxy_urls;
-
 	/* Replace <language>.(m|zero).<project>.org by <language>.<project>.org */
 	set req.http.host = regsub(req.http.host, "^([a-zA-Z0-9-]+)\.(m|zero)\.", "\1.");
 
@@ -581,6 +578,10 @@ sub vcl_recv {
 
 	/* Allow purging */
 	call vcl_recv_purge;
+
+	/* make absolute URIs relative as to not have to rewrite them too;
+	 * do this after vcl_recv_purge, as it operates on a full URI */
+	call rewrite_proxy_urls;
 
 	/* FIXME: deploy X-Vary-Options support */
 	set req.http.X-Orig-Cookie = req.http.Cookie;
