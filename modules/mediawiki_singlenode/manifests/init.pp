@@ -19,7 +19,8 @@ class mediawiki_singlenode(
 	$install_path      = '/srv/mediawiki',
 	$role_config_lines = [],
 	$mysql_pass = '',
-	$memcached_size    = 128
+	$memcached_size    = 128,
+	$apache_site_content = 'mediawiki_singlenode/mediawiki_singlenode.erb'
 ) {
 	if !defined(Class['webserver::php5']) {
 		class {'webserver::php5':
@@ -57,14 +58,15 @@ class mediawiki_singlenode(
 		owner   => root,
 		group   => root,
 		mode    => '0644',
-		content => template('mediawiki_singlenode/mediawiki_singlenode.erb'),
+		content => template($apache_site_content),
 	}
 
 	if $::labs_mediawiki_hostname {
-		$mwserver = "http://${::labs_mediawiki_hostname}"
+		$servername = "${::labs_mediawiki_hostname}"
 	} else {
-		$mwserver = "http://${::hostname}.pmtpa.wmflabs"
+		$servername = "${::hostname}.pmtpa.wmflabs"
 	}
+	$mwserver = "http://${servername}"
 
 	file { "${install_path}/orig":
 		ensure  => directory,
@@ -128,7 +130,7 @@ class mediawiki_singlenode(
 	}
 
 	apache_module { 'rewrite':
-		name   => 'rewrite',
+		name => 'rewrite',
 	}
 
 	exec { 'apache_restart':
