@@ -1,14 +1,14 @@
 <VirtualHost *:80>
         ServerAdmin "https://wikitech.wikimedia.org/wiki/Help:Single_Node_MediaWiki"
 
-        DocumentRoot /var/www
+        DocumentRoot <%=@install_path%>/..
 
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
 
-        <Directory /var/www/>
+        <Directory <%=@install_path%>/..>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 Order allow,deny
