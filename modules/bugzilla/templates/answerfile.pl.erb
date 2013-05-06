@@ -1,0 +1,12 @@
+# Answer file for Bugzilla's checksetup.pl.
+# This file is managed by Puppet.
+
+# Never pause for user input.
+$answer{'NO_PAUSE'} = 1;
+
+# The answers below this line are automatically generated
+# from '$localconfig' in the Bugzilla Puppet module.
+
+<%- @defaults.merge(@localconfig).sort.each do |k,v| -%> 
+$answer{'<%= k %>'} = '<%= v %>';
+<%- end -%>
