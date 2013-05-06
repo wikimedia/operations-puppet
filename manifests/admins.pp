@@ -2948,6 +2948,7 @@ class admins::mortals {
 	include accounts::robla
 	include accounts::spage
 	include accounts::sumanah #RT 3752
+	include accounts::yurik #rt 4835, rt 5069
 	include accounts::zak # access revoked
 }
 
@@ -2975,7 +2976,6 @@ class admins::restricted {
 	include accounts::ram #rt4387
 	include accounts::rcole # access revoked
 	include accounts::tparscal
-	include accounts::yurik #rt 4835
 }
 
 class admins::jenkins {
