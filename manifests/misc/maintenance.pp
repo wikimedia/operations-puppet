@@ -171,7 +171,7 @@ class misc::maintenance::echo_mail_batch( $enabled = false ) {
 
 class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 	file {
-		"/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh":
+		"/usr/local/bin/wikimedia-periodic-update.sh":
 			source => "puppet:///files/misc/scripts/wikimedia-periodic-update.sh",
 			owner => apache,
 			group => wikidev,
@@ -181,7 +181,7 @@ class misc::maintenance::update_flaggedrev_stats( $enabled = false ) {
 
 	cron {
 		update_flaggedrev_stats:
-			command => "/usr/local/apache/common/php/extensions/FlaggedRevs/maintenance/wikimedia-periodic-update.sh > /dev/null",
+			command => "/usr/local/bin/wikimedia-periodic-update.sh > /dev/null",
 			user => "apache",
 			hour => "*/2",
 			minute => "0",
@@ -211,7 +211,7 @@ class misc::maintenance::cleanup_upload_stash( $enabled = false ) {
 class misc::maintenance::update_special_pages( $enabled = false ) {
 	cron {
 		update_special_pages:
-			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /home/wikipedia/logs/norotate/updateSpecialPages.log 2>&1",
+			command => "flock -n /var/lock/update-special-pages /usr/local/bin/update-special-pages > /dev/null",
 			user => "apache",
 			monthday => "*/3",
 			hour => 5,

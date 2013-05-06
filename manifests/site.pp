@@ -1114,20 +1114,12 @@ node "hume.wikimedia.org" {
 	class { misc::maintenance::parsercachepurging: enabled => false }
 	class { misc::maintenance::cleanup_upload_stash: enabled => false }
 	class { misc::maintenance::tor_exit_node: enabled => false }
-
-	# These cron jobs were left behind for some reason:
+	class { misc::maintenance::update_special_pages: enabled => false }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
+	class { misc::maintenance::refreshlinks: enabled => false }
 
 	# foreachwikiindblist broken
 	class { misc::maintenance::geodata: enabled => true }
-
-	# Wrong log file location
-	class { misc::maintenance::update_special_pages: enabled => true }
-
-	# wikimedia-periodic-update.sh is unpuppetized and not in the scap source
-	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
-
-	# Unknown issue, works for me
-	class { misc::maintenance::refreshlinks: enabled => true }
 }
 
 node "iron.wikimedia.org" {
@@ -2727,14 +2719,12 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::parsercachepurging: enabled => true }
 	class { misc::maintenance::cleanup_upload_stash: enabled => true }
 	class { misc::maintenance::tor_exit_node: enabled => true }
+ 	class { misc::maintenance::update_special_pages: enabled => true }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
+	class { misc::maintenance::refreshlinks: enabled => true }
 
 	# Broken cron jobs moved back to hume:
 	class { misc::maintenance::geodata: enabled => false }
-	class { misc::maintenance::update_special_pages: enabled => false }
-
-	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
-	class { misc::maintenance::refreshlinks: enabled => false }
-
 }
 
 node "tin.eqiad.wmnet" {
