@@ -368,8 +368,10 @@ sub tag_carrier {
 		}
 	} else if (client.ip ~ carrier_dialog_sri_lanka) {
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "Dialog Sri Lanka";
-			set req.http.X-CS = "413-02";
+			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Dialog Sri Lanka";
+				set req.http.X-CS = "413-02";
+			}
 		}
 	} else if (client.ip ~ carrier_digi) {
 		if (req.http.X-Subdomain == "ZERO") {
