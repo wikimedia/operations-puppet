@@ -33,6 +33,9 @@ NameVirtualHost *:443
                 RewriteRule . /index.php [L]
 
 	</Directory>
+	<Directory /srv/org/wikimedia/blog/wp-content/uploads/>
+		php_flag engine off
+	</Directory>
 
         ErrorLog /var/log/apache2/error.log
 

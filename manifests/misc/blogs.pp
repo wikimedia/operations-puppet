@@ -22,6 +22,12 @@ class misc::blogs::wikimedia {
 			owner => root,
 			group => root,
 			source => "puppet:///files/apache/sites/blog.wikimedia.org";
+		"/etc/apache2/ports.conf":
+			ensure => file,
+			mode   => 0644,
+			owner  => root,
+			group  => root,
+			source => "puppet:///files/apache/blog_ports.conf";
 	}
 
 	class { "memcached": memcached_ip => "127.0.0.1" }

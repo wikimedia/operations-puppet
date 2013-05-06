@@ -978,6 +978,12 @@ node "helium.eqiad.wmnet" {
 		role::poolcounter
 }
 
+node "holmium.wikimedia.org" {
+	include standard,
+		admins::roots,
+		misc::blogs::wikimedia
+}
+
 node "hooft.esams.wikimedia.org" {
 	$ganglia_aggregator = true
 	$domain_search = "esams.wikimedia.org wikimedia.org esams.wmnet"

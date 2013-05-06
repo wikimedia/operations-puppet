@@ -1386,6 +1386,14 @@ class accounts {
 				type => "ssh-rsa",
 				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDAZea7fnmc4gDHyupnZA+Cx8SFG59oJnKMFNi/fKLyqJyBI/kfWnqDaCJ2bCFEwMZ883zPOZegb4VF/D6aO5LM0eo8KVvCZHWssC9Le8Og31L/Njg03fAh7P5mLY+vKYC7WtY0IZQNLb5BuW48C+lnjwZ+Q9t0up36vn5U4aqgvo+OosAd4qcYcYsYF20KeeQCtuYMv/rhJw1tD7HuPIrXjBevPEDW9n0DyZDTKjfGxuYkfnO+qpiFuKba+/ns7pSgRgSwrAfVzyM2eo4sP9b1/1KoEL0E5mhGn/BGV/yIWVz/S8oBb8mMjr3OOTfSu97//6fJw/TDKguRzhqU6P4l"
 			}
+
+			# newer key
+			ssh_authorized_key{ "catrope@catrope-Lenovo-IdeaPad-U300s":
+				ensure => present,
+				user => $username,
+				type => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDNnm5p7ShbI9suKmhOzmYfYScifGDJ3oS9KtwlEtuuVXThsdms0pF5KrLsVnnZWGyLsOjAARYdvNmwipelXebpQm9nMNvBreHCGAmqKFW2UFi2yMnezhANUhvdtJL0j1jjkhh5liRsesvw1Xrv2GvgKnfCwGvUcYvrwcLNTTGSka2hAGfQRalgomSdrb0diTzqA6Ijm33BeiZlpmbgiQ6LzeZRMLrs+Nm+EtZIRLgb08DCZfebIoPH6hh1Hz38ljpkQm6menjpxbcrVvjBmXClwANPssSaTxNEprrZpeS9/2eB0un3G8aLmORohgJ15w1w2KZaFXokYxQ7/ky5kYID"
+			}
 		}
 	}
 
