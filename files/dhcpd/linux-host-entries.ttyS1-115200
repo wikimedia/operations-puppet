@@ -1170,6 +1170,11 @@ host helium {
 	fixed-address helium.eqiad.wmnet;
 }
 
+host holmium {
+	hardware ethernet 90:B1:1C:00:A1:0E;
+	fixed-address holmium.wikimedia.org;
+}
+
 host hooft {
 	hardware ethernet a4:ba:db:30:d7:70;
 	fixed-address hooft.esams.wikimedia.org;
