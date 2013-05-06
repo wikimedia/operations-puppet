@@ -429,9 +429,8 @@ class ganglia::web {
 		$ganglia_serveralias = "nickel.wikimedia.org ganglia3.wikimedia.org ganglia3-tip.wikimedia.org"
 		# TODO(ssmollett): when switching to ganglia-webfrontend
 		# package, use /usr/share/ganglia-webfrontend
-		$ganglia_webdir = "/srv/org/wikimedia/ganglia-web-3.5.4+security"
-		# Why is this set to a different directory than $ganglia_webdir???
-		$ganglia_confdir = "/srv/org/ganglia_storage/3.5.1/conf"
+		$ganglia_webdir = "/srv/org/wikimedia/ganglia-web-latest"
+		$ganglia_confdir = "/srv/org/wikimedia/ganglia-web-conf"
 
 		$ganglia_ssl_cert = "/etc/ssl/certs/star.wikimedia.org.pem"
 		$ganglia_ssl_key = "/etc/ssl/private/star.wikimedia.org.key"
