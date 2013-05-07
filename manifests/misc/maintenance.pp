@@ -353,3 +353,20 @@ class misc::maintenance::geodata( $enabled = false ) {
 	}
 }
 
+class misc::maintenance::aft5($enabled=false) {
+	define cronjob($cronenabled) {
+		cron { "aft5-archivefeedback-${title}":
+			command => "/usr/local/bin/mwscript extensions/ArticleFeedbackv5/maintenance/archiveFeedback.php --wiki ${title} --quiet",
+			user => apache,
+			hour => 7,
+			minute => 4,
+			ensure => $cronenabled ? {
+				true => present,
+				false => absent,
+				default => absent
+			}
+		}
+	}
+
+	cronjob{ ["enwiki", "dewiki", "frwiki"]: cronenabled => $enabled }
+}
