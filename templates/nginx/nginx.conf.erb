@@ -1,4 +1,8 @@
 # This file is managed by Puppet!
+<%
+# Shortcuts for convenience
+realm =  scope.lookupvar('::realm')
+-%>
 
 # Thumbs server configuration file
 
@@ -24,6 +28,12 @@ events {
 }
 
 http {
+<% if realm == 'labs' then -%>
+    # On labs nginx find a CPU cache size of 32 bytes which is
+    # not enough to hold the keys defined by mime types.
+    # See bug 48210
+    types_hash_bucket_size 64;
+<% end -%>
     include       /etc/nginx/mime.types;
 
     access_log	/var/log/nginx/access.log;
