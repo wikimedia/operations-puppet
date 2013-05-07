@@ -5,6 +5,6 @@ class eventlogging::analysis {
 	}
 
 	class { 'ipython::notebook':
-		exec_files => [ '/var/lib/ipython/helpers/helpers.py' ],
+		exec_files => [ '/srv/ipython/helpers/helpers.py' ],
 	}
 }
