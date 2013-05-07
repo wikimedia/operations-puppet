@@ -39,6 +39,7 @@ $decommissioned_servers = [
 "db30",
 "db41",
 "db1012", #turned into stat1002
+"db1025", #moved to frack.eqiad
 "europium", #reclaimed rt4689 robh
 "ixia",
 "gilman",
