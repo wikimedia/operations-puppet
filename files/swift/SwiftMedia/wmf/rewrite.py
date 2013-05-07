@@ -83,7 +83,7 @@ class _WMFRewriteContext(WSGIContext):
 
             # if sitelang, we're supposed to mangle the URL so that
             # http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
-            # changes to http://commons.wikipedia.org/thumb/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
+            # changes to http://commons.wikipedia.org/w/thumb_handler.php/a/a2/Little_kitten_.jpg/330px-Little_kitten_.jpg
             if self.backend_url_format == 'sitelang':
                 match = re.match(r'^http://(?P<host>[^/]+)/(?P<proj>[^-/]+)/(?P<lang>[^/]+)/thumb/(?P<path>.+)', encodedurl)
                 if match:
@@ -91,7 +91,7 @@ class _WMFRewriteContext(WSGIContext):
                     lang = match.group('lang')
                     # and here are all the legacy special cases, imported from thumb_handler.php
                     if(proj == 'wikipedia'):
-                        if(lang in ['meta', 'commons', 'internal', 'grants', 'wikimania2006']):
+                        if(lang in ['meta', 'commons', 'internal', 'grants']):
                             proj = 'wikimedia'
                         if(lang in ['mediawiki']):
                             lang = 'www'
