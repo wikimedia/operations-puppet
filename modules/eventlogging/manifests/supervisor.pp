@@ -2,7 +2,8 @@
 # daemontools) to start / stop / restart / monitor EventLogging processes.
 class eventlogging::supervisor {
 
-	require passwords::mysql::eventlogging  # RT 4752
+	require passwords::mysql::eventlogging    # RT 4752
+	require passwords::mongodb::eventlogging  # RT 5101
 
 	package { 'supervisor':
 		ensure => present,
