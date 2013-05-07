@@ -61,7 +61,7 @@ sub radosgw_rewrite {
 			set bereq.http.X-Original-URI = req.url;
 
 			# Exceptions
-			set bereq.http.host = regsub(bereq.http.host, "^(meta|commons|internal|grants|wikimania2006)\.wikipedia\.org$", "\1.wikimedia.org");
+			set bereq.http.host = regsub(bereq.http.host, "^(meta|commons|internal|grants)\.wikipedia\.org$", "\1.wikimedia.org");
 			set bereq.http.host = regsub(bereq.http.host, "^mediawiki\..+$", "www.mediawiki.org");
 			set bereq.http.host = regsub(bereq.http.host, "^sources\.wikipedia\.org$", "wikisource.org");
 		}
