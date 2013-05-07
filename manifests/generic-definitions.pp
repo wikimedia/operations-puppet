@@ -130,7 +130,7 @@ define nginx_site($install="false", $template="", $enable="true") {
 	} else {
 		$template_name = $template
 	}
-	if ( $enable == "true" ) {
+	if ( $enable == "true" or $enable == true ) {
 		file { "/etc/nginx/sites-enabled/${name}":
 			ensure => "/etc/nginx/sites-available/${name}",
 		}
@@ -141,7 +141,7 @@ define nginx_site($install="false", $template="", $enable="true") {
 	}
 
 	case $install {
-	"true": {
+	"true", true: {
 			file { "/etc/nginx/sites-available/${name}":
 				source => "puppet:///files/nginx/sites/${name}";
 			}
