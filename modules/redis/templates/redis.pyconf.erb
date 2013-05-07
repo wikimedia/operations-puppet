@@ -4,6 +4,7 @@ modules {
     language = "python"
     param host { value = "127.0.0.1" }
     param port { value = 6379 }
+    <% if @password %>param password { value = "<%= @password %>" }<% end %>
   }
 }
 collection_group {
