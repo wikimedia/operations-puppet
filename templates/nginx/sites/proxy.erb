@@ -32,6 +32,10 @@ server {
 	# Skip IPv6 address
 	next
 end -%>
+<% if proxy_address == ipaddress then
+	# HACK will be configured below (see LVS-DR)
+	next
+end -%>
 	listen <%= proxy_address %>:443<% if proxy_address == proxy_addresses[site][0] -%> <%= proxy_listen_flags %><% end -%>;
 <% end -%>
 	# For LVS-DR, we must listen to the RIP and the VIP addresses
