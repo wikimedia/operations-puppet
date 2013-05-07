@@ -4,7 +4,7 @@ define proxy_configuration( $proxy_addresses, $proxy_server_name, $proxy_server_
 		"${name}":
 			template => "proxy",
 			install => "template",
-			enable => $enable,
+			enable => $enabled,
 			require => Package["nginx"];
 	}
 
