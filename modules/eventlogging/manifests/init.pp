@@ -12,6 +12,7 @@ class eventlogging( $archive_destinations = [] ) {
 	class { 'mongodb':
 		dbpath  => '/srv/mongodb',
 		bind_ip => false,
+		auth    => true,
 	}
 
 	class { 'eventlogging::mediawiki_errors': }
