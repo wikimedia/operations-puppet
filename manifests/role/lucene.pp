@@ -1,3 +1,5 @@
+# vim: set noet :
+
 class role::lucene {
 	class configuration {
 		$nodes = {
@@ -151,6 +153,48 @@ class role::lucene {
 				'alldblist' => '/a/search/conf/all-labs.dblist',
 				'initialisesettings' => '/a/search/conf/mw-beta-context.php',
 			}
+		}
+
+		# lucene.jobs.sh tweaking
+		# java_heap_size_initial => -Xms
+		# java_heap_size_maximum  => -Xmx
+		$lucene_jobs = {
+			'production' => {
+				'importer' => {
+					'java_heap_size_initial' => '128m',
+					'java_heap_size_maximum' => '2000m',
+				},
+				'prefixindexbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '4000m',
+				},
+				'relatedbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '4000m',
+				},
+				'suggestbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '8000m',
+				},
+			},
+			'labs' => {
+				'importer' => {
+					'java_heap_size_initial' => '128m',
+					'java_heap_size_maximum' => '2000m',
+				},
+				'prefixindexbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '4000m',
+				},
+				'relatedbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '4000m',
+				},
+				'suggestbuilder' => {
+					'java_heap_size_initial' => '',
+					'java_heap_size_maximum' => '8000m',
+				},
+			},
 		}
 	}
 
