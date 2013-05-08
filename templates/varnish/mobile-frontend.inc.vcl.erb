@@ -357,163 +357,149 @@ sub tag_carrier {
 	/* Please keep this list alphabetized by the ACL variable */
 	if (client.ip ~ carrier_celcom_malaysia) {
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "Celcom Malaysia";
 			set req.http.X-CS = "502-13";
 		}
 	} else if (client.ip ~ carrier_central_african_republic) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ar|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Orange Central African Republic";
 				set req.http.X-CS = "623-01";
 			}
 		}
 	} else if (client.ip ~ carrier_dialog_sri_lanka) {
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Dialog Sri Lanka";
 				set req.http.X-CS = "413-02";
 			}
 		}
 	} else if (client.ip ~ carrier_digi) {
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.User-Agent ~ "Opera") {
-				set req.http.X-Carrier = "DIGI";
 				set req.http.X-CS = "502-16";
 			}
 		}
 	} else if (client.ip ~ carrier_dtac) {
 		set req.http.X-DfltLang = "th";
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "DTAC";
 			set req.http.X-CS = "520-18";
 		}
 	} else if (client.ip ~ carrier_grameenphone_bangladesh) {
 		set req.http.X-DfltLang = "bn";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Grameenphone Bangladesh";
 				set req.http.X-CS = "470-01";
 			}
 		}
 	} else if (client.ip ~ carrier_hello_cambodia) {
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "Hello Cambodia";
 			set req.http.X-CS = "456-02";
 		}
 	} else if (client.ip ~ carrier_orange_botswana) {
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "Orange Botswana";
 			set req.http.X-CS = "652-02";
 		}
 	} else if (client.ip ~ carrier_orange_cameroon) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Orange Cameroon";
 				set req.http.X-CS = "624-02";
 			}
 		}
 	} else if (client.ip ~ carrier_orange_congo) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "Orange Congo";
 			set req.http.X-CS = "630-86";
 		}
 	} else if (client.ip ~ carrier_orange_ivory_coast) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "Orange Ivory Coast";
 			set req.http.X-CS = "612-03";
 		}
 	} else if (client.ip ~ carrier_orange_kenya) {
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "Orange Kenya";
 			set req.http.X-CS = "639-07";
 		}
 	} else if (client.ip ~ carrier_orange_meditel_morocco) {
 		set req.http.X-DfltLang =  "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Orange Meditel Morocco";
 				set req.http.X-CS = "604-00";
 			}
 		}
 	} else if (client.ip ~ carrier_orange_niger) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "Orange Niger";
 			set req.http.X-CS = "614-04";
 		}
 	} else if (client.ip ~ carrier_orange_tunisia) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Orange Tunisia";
 				set req.http.X-CS = "605-01";
 			}
 		}
 	} else if (client.ip ~ carrier_orange_uganda) {
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "Orange Uganda";
 				set req.http.X-CS = "641-14";
 			}
 		}
 	} else if (client.ip ~ carrier_saudi_telecom) {
 		set req.http.X-DfltLang = "ar";
 		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
-			set req.http.X-Carrier = "Saudi Telecom";
 			set req.http.X-CS = "420-01";
 		}
 	} else if (client.ip ~ carrier_tata) {
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "TATA";
 			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
 			set req.http.X-CS = "405-0*";
 		}
 	} else if (client.ip ~ carrier_telenor_montenegro) {
-		set req.http.X-Carrier = "Telenor Montenegro";
 		set req.http.X-CS = "297-01";
 	} else if (client.ip ~ carrier_vimpelcom_beeline) {
 		set req.http.X-DfltLang = "ru";
 		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
-			set req.http.X-Carrier = "Vimpelcom Beeline";
 			set req.http.X-CS = "250-99";
 		}
 	} else if (client.ip ~ carrier_vimpelcom_mobilink_pakistan) {
 		if (req.http.host ~ "(^(en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
-			set req.http.X-Carrier = "Vimpelcom Mobilink Pakistan";
 			set req.http.X-CS = "410-01";
 		}
 	} else if (client.ip ~ carrier_xl_indonesia) {
 		set req.http.X-DfltLang = "id";
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-Carrier = "XL Axiata";
 				set req.http.X-CS = "510-11";
 			}
 		}
 	/* Please keep the above list alphabetized by the ACL variable */
 	/* Testing ranges */
+	/*
 	} else if (client.ip ~ carrier_testing) {
 		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "wikimedia";
 			set req.http.X-CS = "WMF";
 		}
 	} else if (client.ip ~ wmf_office) {
 		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "wikimedia";
 			set req.http.X-CS = "WMF";
 		}
+	*/
 	}
 
-	/* once actually in prod, ensure users can't make requests
-	with a fake X-Carrier header */
+
+	/* once actually in prod, ensure users can't make requests with a fake X-CS header */
 	/* else {
-		unset req.http.X-Carrier;
+		unset req.http.X-CS;
 	}
 	*/
+
+	// TODO: REMOVE after July 2013
+	// The cache is currently varied on X-Carrier, but will be X-CS dependent
+	// Onece all mobile items expire from cache, it will be safe to remove X-Carrier everywhere.
+	// For now just fake a unique X-Carrier
+	if (req.http.X-CS) {
+		set req.http.X-Carrier = req.http.X-ID;
+	}
 }
 
 sub vcl_recv {
@@ -545,8 +531,7 @@ sub vcl_recv {
 	/* This call will always set the following req.http values:
 		X-Subdomain = M or ZERO
 		X-DfltLang = en|fr|ru|...
-	  These values are only set if the carrier has been successfully detected
-		X-Carrier = "Celcom Malaysia"
+	  This value is only set if the carrier has been successfully detected
 		X-CS = "502-13"
 	*/
 	call tag_carrier;
@@ -601,7 +586,7 @@ sub vcl_recv {
 	}
 
 	if (req.http.host == "m.wikipedia.org") {
-		if (req.http.X-Carrier) {
+		if (req.http.X-CS) {
 			// Carrier detected
 			error 666 "http://" + req.http.X-DfltLang + ".m.wikipedia.org" + req.http.X-DfltPage;
 		} else {
@@ -628,8 +613,8 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
+	/* TODO: remove X-Carrier header after July 2013 */
 	set beresp.http.X-Carrier = req.http.X-Carrier;
-	/* TODO: remove X-CS header */
 	set beresp.http.X-CS = req.http.X-CS;
 	if ( beresp.http.X-Analytics ) {
 		# Do nothing, X-Analytics has already been handled
