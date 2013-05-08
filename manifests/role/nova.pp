@@ -291,16 +291,18 @@ class role::nova::network {
 
 	include role::nova::common
 
-	require role::nova::network::bonding
+	if ($::site == "pmtpa") {
+		require role::nova::network::bonding
 
-	interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
+		interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-	interface_tagged { "bond1.103":
-		base_interface => "bond1",
-		vlan_id => "103",
-		method => "manual",
-		up => 'ip link set $IFACE up',
-		down => 'ip link set $IFACE down',
+		interface_tagged { "bond1.103":
+			base_interface => "bond1",
+			vlan_id => "103",
+			method => "manual",
+			up => 'ip link set $IFACE up',
+			down => 'ip link set $IFACE down',
+		}
 	}
 
 	class { "openstack::network-service": openstack_version => $openstack_version, novaconfig => $novaconfig }
