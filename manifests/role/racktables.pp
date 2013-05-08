@@ -11,6 +11,7 @@ class role::racktables {
 
 	include standard,
 	webserver::php5-gd,
+	webserver::php5-mysql,
 	misc::racktables
 
 	class {'webserver::php5': ssl => true; }
