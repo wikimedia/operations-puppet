@@ -2791,7 +2791,7 @@ node "virt1000.wikimedia.org" {
 	$cluster = "virt"
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
-	$openstack_version = "essex"
+	$openstack_version = "folsom"
 
 	include standard,
 		role::dns::ldap,
@@ -2848,7 +2848,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
 
 	include standard
 
-	$openstack_version = "essex"
+	$openstack_version = "folsom"
 	if $hostname =~ /^virt1005$/ {
 		include role::nova::network,
 			role::nova::api
