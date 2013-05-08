@@ -31,7 +31,6 @@ class toollabs::dev_environ {
       'emacs',
       'elinks',
       'mercurial',
-      'gdb', # debugger is useful on dev
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
