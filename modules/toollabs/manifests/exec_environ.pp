@@ -40,6 +40,11 @@ class toollabs::exec_environ {
       'gnuplot-nox',
       'libpod-simple-wiki-perl',
       'libxml-libxml-perl',
+      'tcl',
+      'tclcurl',
+      'tcllib',
+      'libthreads-shared-perl',
+      'libthreads-perl',
       'p7zip' ]:
     ensure => present
   }

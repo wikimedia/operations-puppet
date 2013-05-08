@@ -27,9 +27,7 @@ class role::labs::tools {
 
   class master inherits role::labs::tools::config {
     system_role { "role::labs::tools::master": description => "Tool Labs gridengine master" }
-    class { 'toollabs::master':
-      gridmaster => $grid_master,
-    }
+    class { 'toollabs::master' }
   }
 
   class shadow inherits role::labs::tools::config {
