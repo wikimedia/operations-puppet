@@ -27,9 +27,7 @@ class role::labs::tools {
 
   class master inherits role::labs::tools::config {
     system_role { "role::labs::tools::master": description => "Tool Labs gridengine master" }
-    class { 'toollabs::master':
-      gridmaster => $grid_master,
-    }
+    class { 'toollabs::master': }
   }
 
   class shadow inherits role::labs::tools::config {
@@ -48,9 +46,7 @@ class role::labs::tools {
 
   class webproxy inherits role::labs::tools::config {
     system_role { "role::labs::tools::webproxy": description => "Tool Labs web proxy" }
-    class { 'toollabs::webproxy':
-      gridmaster => $grid_master,
-    }
+    class { 'toollabs::webproxy': }
   }
 
 } # class role::labs::tools
