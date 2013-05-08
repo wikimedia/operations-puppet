@@ -15,8 +15,12 @@ bind_port = 9191
 # file for both the API and registry servers!
 log_file = /var/log/glance/registry.log
 
-# Send logs to syslog (/dev/log) instead of to file specified by `log_file`
-use_syslog = False
+# Backlog requests when creating socket
+backlog = 4096
+
+# TCP_KEEPIDLE value in seconds when creating socket.
+# Not supported on OS X.
+#tcp_keepidle = 600
 
 # SQLAlchemy connection string for the reference implementation
 # registry server. Any valid SQLAlchemy connection string is fine.
@@ -40,27 +44,44 @@ api_limit_max = 1000
 # default to `limit_param_default`
 limit_param_default = 25
 
-[pipeline:glance-registry]
-pipeline = context registryapp
-# NOTE: use the following pipeline for keystone
-# pipeline = authtoken keystone_shim context registryapp
+# Role used to identify an authenticated user as administrator
+#admin_role = admin
 
-[app:registryapp]
-paste.app_factory = glance.registry.server:app_factory
+# ================= Syslog Options ============================
 
-[filter:context]
-context_class = glance.registry.context.RequestContext
-paste.filter_factory = glance.common.context:filter_factory
+# Send logs to syslog (/dev/log) instead of to file specified
+# by `log_file`
+use_syslog = False
 
-[filter:authtoken]
-paste.filter_factory = keystone.middleware.auth_token:filter_factory
-#service_protocol = http
-#service_host = 127.0.0.1
-#service_port = 5000
+# Facility to use. If unset defaults to LOG_USER.
+#syslog_log_facility = LOG_LOCAL1
+
+# ================= SSL Options ===============================
+
+# Certificate file to use when starting registry server securely
+#cert_file = /path/to/certfile
+
+# Private key file to use when starting registry server securely
+#key_file = /path/to/keyfile
+
+# CA certificate file to use to verify connecting clients
+#ca_file = /path/to/cafile
+
+[keystone_authtoken]
+service_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
+service_host = <%= glanceconfig["keystone_auth_host"] %>
+service_port = 5000
 auth_host = <%= glanceconfig["keystone_auth_host"] %>
 auth_port = <%= glanceconfig["keystone_auth_port"] %>
 auth_protocol = <%= glanceconfig["keystone_auth_protocol"] %>
 admin_token = <%= glanceconfig["keystone_admin_token"] %>
 
-[filter:keystone_shim]
-paste.filter_factory = keystone.middleware.glance_auth_token:filter_factory
+[paste_deploy]
+# Name of the paste configuration file that defines the available pipelines
+#config_file = glance-registry-paste.ini
+
+# Partial name of a pipeline in your paste configuration file with the
+# service name removed. For example, if your paste section name is
+# [pipeline:glance-registry-keystone], you would configure the flavor below
+# as 'keystone'.
+flavor=keystone

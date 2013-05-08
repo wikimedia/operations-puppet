@@ -121,7 +121,18 @@ class openstack::iptables  {
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class openstack::common($openstack_version="diablo",
+class openstack::repo($openstack_version="essex") {
+	if ($::lsbdistcodename == 'precise') {
+		apt::repository { 'ubuntucloud':
+			uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+			dist       => "precise-updates/${openstack_version}",
+			components => 'main',
+			keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
+		}
+	}
+}
+
+class openstack::common($openstack_version="essex",
 			$novaconfig,
 			$instance_status_wiki_host,
 			$instance_status_wiki_domain,
@@ -130,18 +141,24 @@ class openstack::common($openstack_version="diablo",
 			$instance_status_dns_domain,
 			$instance_status_wiki_user,
 			$instance_status_wiki_pass) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
 
 	package { [ "nova-common", "python-keystone" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-client", "mysql-common" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	# For IPv6 support
 	package { [ "python-netaddr", "radvd" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	file {
@@ -153,21 +170,24 @@ class openstack::common($openstack_version="diablo",
 			require => Package['nova-common'];
 	}
 
-	if $openstack_version == "essex" {
-		file {
-			"/etc/nova/api-paste.ini":
-				content => template("openstack/essex/nova/nova-api-paste.ini.erb"),
-				owner => nova,
-				group => nogroup,
-				mode => 0440,
-				require => Package['nova-common'];
-		}
+	file {
+		"/etc/nova/api-paste.ini":
+			content => template("openstack/${$openstack_version}/nova/api-paste.ini.erb"),
+			owner => nova,
+			group => nogroup,
+			mode => 0440,
+			require => Package['nova-common'];
 	}
 }
 
 class openstack::queue-server($openstack_version, $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package { [ "rabbitmq-server" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 }
 
@@ -294,7 +314,7 @@ class openstack::gluster-service {
 
 }
 
-class openstack::database-server($openstack_version="diablo", $novaconfig, $keystoneconfig, $glanceconfig) {
+class openstack::database-server($openstack_version="essex", $novaconfig, $keystoneconfig, $glanceconfig) {
 	$nova_db_name = $novaconfig["db_name"]
 	$nova_db_user = $novaconfig["db_user"]
 	$nova_db_pass = $novaconfig["db_pass"]
@@ -355,18 +375,16 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 			before => Exec['create_glance_db_user'];
 	}
 
-	if $openstack_version == "essex" {
-		exec {
-			'create_keystone_db_user':
-				unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
-				command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
-				require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
-			'create_keystone_db':
-				unless => "/usr/bin/mysql -uroot $keystone_db_name -e 'exit'",
-				command => "/usr/bin/mysql -uroot -e \"create database $keystone_db_name;\"",
-				require => [Package["mysql-client"], File["/root/.my.cnf"]],
-				before => Exec['create_keystone_db_user'];
-		}
+	exec {
+		'create_keystone_db_user':
+			unless => "/usr/bin/mysql --defaults-file=/etc/keystone/keystone-user.cnf -e 'exit'",
+			command => "/usr/bin/mysql -uroot < /etc/keystone/keystone-user.sql",
+			require => [Package["mysql-client"],File["/etc/keystone/keystone-user.sql", "/etc/keystone/keystone-user.cnf", "/root/.my.cnf"]];
+		'create_keystone_db':
+			unless => "/usr/bin/mysql -uroot $keystone_db_name -e 'exit'",
+			command => "/usr/bin/mysql -uroot -e \"create database $keystone_db_name;\"",
+			require => [Package["mysql-client"], File["/root/.my.cnf"]],
+			before => Exec['create_keystone_db_user'];
 	}
 
 	file {
@@ -418,25 +436,23 @@ class openstack::database-server($openstack_version="diablo", $novaconfig, $keys
 			mode => 0640,
 			require => Package["glance"];
 	}
-	if $openstack_version == "essex" {
-		file {
-			"/etc/keystone/keystone-user.sql":
-				content => template("openstack/common/controller/keystone-user.sql.erb"),
-				owner => root,
-				group => root,
-				mode => 0640,
-				require => Package["keystone"];
-			"/etc/keystone/keystone-user.cnf":
-				content => template("openstack/common/controller/keystone-user.cnf.erb"),
-				owner => root,
-				group => root,
-				mode => 0640,
-				require => Package["keystone"];
-		}
+	file {
+		"/etc/keystone/keystone-user.sql":
+			content => template("openstack/common/controller/keystone-user.sql.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
+		"/etc/keystone/keystone-user.cnf":
+			content => template("openstack/common/controller/keystone-user.cnf.erb"),
+			owner => root,
+			group => root,
+			mode => 0640,
+			require => Package["keystone"];
 	}
 }
 
-class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $certificate) {
+class openstack::openstack-manager($openstack_version="essex", $novaconfig, $certificate) {
 	require mediawiki::users::mwdeploy
 
 	include webserver::apache2
@@ -521,9 +537,14 @@ class openstack::openstack-manager($openstack_version="diablo", $novaconfig, $ce
 	apache_module { rewrite: name => "rewrite" }
 }
 
-class openstack::scheduler-service($openstack_version="diablo", $novaconfig) {
+class openstack::scheduler-service($openstack_version="essex", $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package { "nova-scheduler":
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	service { "nova-scheduler":
@@ -533,9 +554,14 @@ class openstack::scheduler-service($openstack_version="diablo", $novaconfig) {
 	}
 }
 
-class openstack::network-service($openstack_version="diablo", $novaconfig) {
+class openstack::network-service($openstack_version="essex", $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package {  [ "nova-network", "dnsmasq" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	service { "nova-network":
@@ -551,25 +577,19 @@ class openstack::network-service($openstack_version="diablo", $novaconfig) {
 		require => Package["dnsmasq"];
 	}
 
-	if $openstack_version == "diablo" {
-		file { "/usr/share/pyshared/nova/network/linux_net.py":
-			source => "puppet:///files/openstack/diablo/nova/linux_net.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			notify => Service["nova-network"],
-			require => Package["nova-network"];
-		}
-	}
-
 	# Enable IP forwarding
 	include generic::sysctl::advanced-routing,
 		generic::sysctl::ipv6-disable-ra
 }
 
-class openstack::api-service($openstack_version="diablo", $novaconfig) {
+class openstack::api-service($openstack_version="essex", $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package {  [ "nova-api" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	service { "nova-api":
@@ -577,21 +597,24 @@ class openstack::api-service($openstack_version="diablo", $novaconfig) {
 		subscribe => File['/etc/nova/nova.conf'],
 		require => Package["nova-api"];
 	}
-	if $openstack_version == "essex" {
-		file { "/etc/nova/policy.json":
-			source => "puppet:///files/openstack/essex/nova/policy.json",
-			mode => 0644,
-			owner => root,
-			group => root,
-			notify => Service["nova-api"],
-			require => Package["nova-api"];
-		}
+	file { "/etc/nova/policy.json":
+		source => "puppet:///files/openstack/${openstack_version}/nova/policy.json",
+		mode => 0644,
+		owner => root,
+		group => root,
+		notify => Service["nova-api"],
+		require => Package["nova-api"];
 	}
 }
 
-class openstack::volume-service($openstack_version="diablo", $novaconfig) {
+class openstack::volume-service($openstack_version="essex", $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package { [ "nova-volume" ]:
-		ensure => absent;
+		ensure => absent,
+		require => Class["openstack::repo"];
 	}
 
 	#service { "nova-volume":
@@ -601,7 +624,11 @@ class openstack::volume-service($openstack_version="diablo", $novaconfig) {
 	#}
 }
 
-class openstack::compute-service($openstack_version="diablo", $novaconfig) {
+class openstack::compute-service($openstack_version="essex", $novaconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	if ( $realm == "production" ) {
 		$certname = "virt-star.${site}.wmnet"
 		install_certificate{ "${certname}": }
@@ -661,8 +688,9 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 		require => Package["nova-common"];
 	}
 
-	package { [ "nova-compute" ]:
-		ensure => present;
+	package { [ "nova-compute", "nova-compute-kvm" ]:
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	# nova-compute adds the user with /bin/false, but resize, live migration, etc.
@@ -673,35 +701,10 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 		require => Package["nova-common"];
 	}
 
-	if $openstack_version == "essex" {
-		package { [ "nova-compute-kvm" ]:
-			ensure => present;
-		}
-	}
-
 	service { "nova-compute":
 		ensure => running,
 		subscribe => File['/etc/nova/nova.conf'],
 		require => Package["nova-compute"];
-	}
-
-	if $openstack_version == "diablo" {
-		file { "/usr/share/pyshared/nova/compute/api.py":
-			source => "puppet:///files/openstack/diablo/nova/compute-api.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			notify => Service["nova-compute"],
-			require => Package["nova-compute"];
-		}
-		file { "/usr/share/pyshared/nova/db/sqlalchemy/api.py":
-			source => "puppet:///files/openstack/diablo/nova/sqlalchemy-api.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			notify => Service["nova-compute"],
-			require => Package["nova-compute"];
-		}
 	}
 
 	file {
@@ -711,8 +714,13 @@ class openstack::compute-service($openstack_version="diablo", $novaconfig) {
 }
 
 class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package { [ "keystone" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	service { "keystone":
@@ -732,9 +740,14 @@ class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 	}
 }
 
-class openstack::glance-service($openstack_version="diablo", $glanceconfig) {
+class openstack::glance-service($openstack_version="essex", $glanceconfig) {
+	if ! defined(Class["openstack::repo"]) {
+		class { "openstack::repo": openstack_version => $openstack_version }
+	}
+
 	package { [ "glance" ]:
-		ensure => present;
+		ensure => present,
+		require => Class["openstack::repo"];
 	}
 
 	service { "glance-api":
@@ -764,6 +777,8 @@ class openstack::glance-service($openstack_version="diablo", $glanceconfig) {
 			mode => 0440;
 	}
 	if ($openstack_version == "essex") {
+		# Keystone config was (thankfully) moved out of the paste config
+		# So, past essex we don't need to change these.
 		file {
 			"/etc/glance/glance-api-paste.ini":
 				content => template("openstack/${$openstack_version}/glance/glance-api-paste.ini.erb"),
