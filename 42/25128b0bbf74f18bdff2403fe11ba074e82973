@@ -1,0 +1,7 @@
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Wed, 08 May 2013 19:03:17 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/59996
+Project: operations/puppet
+Branch: refs/heads/production
