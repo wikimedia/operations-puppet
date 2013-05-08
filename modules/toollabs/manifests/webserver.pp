@@ -21,10 +21,7 @@ class toollabs::webserver($gridmaster) {
 
   package { [
       'libapache2-mod-suphp',
-      'libhtml-parser-perl',
-      'libwww-perl',
-      'liburi-perl',
-      'libdbd-sqlite3-perl' ]:
+      ]:
     ensure => present
   }
 
