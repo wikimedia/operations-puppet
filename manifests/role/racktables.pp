@@ -30,7 +30,7 @@ class role::racktables {
 			install_certificate{ 'star.wmflabs.org': }
 		}
 		production: {
-			$racktables_host = 'racktables2.wikimedia.org'
+			$racktables_host = 'racktables.wikimedia.org'
 			$racktables_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
 			$racktables_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
 			install_certificate{ 'star.wikimedia.org': }

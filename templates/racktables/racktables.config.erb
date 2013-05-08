@@ -3,7 +3,7 @@
  * this file is managed by puppet.
  */
 $pdo_dsn = 'mysql:host=<%= scope.lookupvar('misc::racktables::racktables_db_host') %>;dbname=<%= scope.lookupvar('misc::racktables::racktables_db') %>';
-$db_user = '<%= scope.lookupvar('passwords::racktables::racktables_db_user') %>';
+$db_username = '<%= scope.lookupvar('passwords::racktables::racktables_db_user') %>';
 $db_password = '<%= scope.lookupvar('passwords::racktables::racktables_db_pass') %>';
 
 ?>
