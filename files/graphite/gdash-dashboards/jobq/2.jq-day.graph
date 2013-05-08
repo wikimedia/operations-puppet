@@ -23,3 +23,7 @@ field :rundupl, :color => "purple",
 field :recycle, :color => "orange",
                :alias => "none",
                :data  => 'cactiStyle(alias(stats.job-recycle.count,"Jobs recycled/min"))'
+
+field :abandon, :color => "brown",
+               :alias => "none",
+               :data  => 'cactiStyle(alias(stats.job-abandon.count,"Jobs abandoned/min"))'
