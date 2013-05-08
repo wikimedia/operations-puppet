@@ -25,6 +25,13 @@ class toollabs::dev_environ {
       'sqlite3',
       'python-dev',
       'libmysqlclient-dev',
+      'lintian',
+      'apt-file',
+      'dh-make-perl',
+      'emacs',
+      'elinks',
+      'mercurial',
+      'subversion',
       'cython' ]:
     ensure => present
   }
