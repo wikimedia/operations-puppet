@@ -6,7 +6,7 @@ class misc::racktables {
 		passwords::racktables
 
 	# variables
-	$racktables_db_host = 'db9.pmtpa.wmnet'
+	$racktables_db_host = 'db1001.eqiad.wmnet'
 	$racktables_db = 'racktables'
 
 	file {
