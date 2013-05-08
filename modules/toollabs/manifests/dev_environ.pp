@@ -31,6 +31,11 @@ class toollabs::dev_environ {
       'emacs',
       'elinks',
       'mercurial',
+      'mono-complete', # contains a lot of developer stuff
+      'gdb', # debugger is useful on dev
+      'fakeroot', # for dpkg
+      'build-essential', # for dpkg
+      'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
       'subversion',
       'cython' ]:
     ensure => present
