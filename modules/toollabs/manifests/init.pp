@@ -41,7 +41,7 @@ class toollabs {
 
   file { "/etc/ssh/ssh_known_hosts":
     ensure => file,
-    requires => Exec["make_known_hosts"],
+    require => Exec["make_known_hosts"],
     source => "/etc/ssh/ssh_known_hosts~",
     mode => "0444",
     owner => "root",
