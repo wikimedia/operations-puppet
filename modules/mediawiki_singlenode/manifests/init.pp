@@ -33,7 +33,7 @@ class mediawiki_singlenode(
 		ensure => latest,
 	}
 
-    if !defined(Class['memcached']) {
+	if !defined(Class['memcached']) {
 		class { 'memcached':
 			memcached_ip   => '127.0.0.1',
 			memcached_size => $memcached_size,
@@ -105,9 +105,10 @@ class mediawiki_singlenode(
 	}
 
 	exec { 'import_privacy_policy':
-		require   => [ Exec['mediawiki_setup'], File["${install_path}/privacy-policy.xml"] ],
-		cwd       => $install_path,
-		command   => '/usr/bin/php maintenance/importDump.php privacy-policy.xml',
+		require   => [ Exec['mediawiki_setup'], File["${install_path}/privacy-policy.xml", "${install_path}/LocalSettings.php"], Mw-extension[ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ] ],
+		cwd       => "$install_path/maintenance",
+		command   => '/usr/bin/php importDump.php ../privacy-policy.xml',
+		unless    => '/usr/bin/test $(/usr/bin/php updateArticleCount.php | grep -Po \'\d+\') -gt 300',
 		logoutput => on_failure,
 	}
 
