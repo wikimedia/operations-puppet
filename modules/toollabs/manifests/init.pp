@@ -33,5 +33,19 @@ class toollabs {
     require => File[$store],
     content => "[$fqdn]:* ssh-dss $sshdsakey\n[$ipaddress]:* ssh-dss $sshdsakey\n",
   }
+
+  exec { "make_known_hosts":
+    command => "/bin/cat /data/project/.system/store/hostkey-* >/etc/ssh/ssh_known_hosts~",
+    requires => File[$store],
+  }
+
+  file { "/etc/ssh/ssh_known_hosts":
+    ensure => file,
+    requires => Exec["make_known_hosts"],
+    source => "/etc/ssh/ssh_known_hosts~",
+    mode => "0444",
+    owner => "root",
+    group => "root",
+  }
 }
 
