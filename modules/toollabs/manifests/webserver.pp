@@ -13,7 +13,7 @@
 #
 class toollabs::webserver($gridmaster) {
   include toollabs,
-    toollabs::exec_envrion
+    toollabs::exec_environ
 
   class { 'gridengine::submit_host':
     gridmaster => $gridmaster,
