@@ -264,9 +264,7 @@ class role::nova::controller {
 		glanceconfig => $glanceconfig,
 		keystoneconfig => $keystoneconfig,
 	}
-	if $openstack_version == "essex" {
-		class { "role::keystone::server": }
-	}
+	class { "role::keystone::server": }
 	if $realm == "production" {
 		class { "role::puppet::server::labs": }
 	}
