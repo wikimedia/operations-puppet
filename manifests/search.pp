@@ -69,18 +69,17 @@ class lucene {
 		if $lucene::server::indexer == true {
 			file {
 				"/etc/logrotate.d/lucene-indexer":
+					ensure => present,
 					owner => root,
 					group => root,
 					mode => 0444,
-					source => "puppet:///files/logrotate/search-indexer",
-					ensure => present;
-				}
-			file { '/a/search/conf/lucene.jobs.conf':
-				ensure => present,
-				owner  => root,
-				group  => root,
-				mode   => 0444,
-				content => template('lucene/lucene.jobs.conf.erb'),
+					source => "puppet:///files/logrotate/search-indexer";
+				'/a/search/conf/lucene.jobs.conf':
+					ensure => present,
+					owner  => root,
+					group  => root,
+					mode   => 0444,
+					content => template('lucene/lucene.jobs.conf.erb');
 			}
 		}
 
