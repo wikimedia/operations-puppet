@@ -1,0 +1,160 @@
+# Puppet Cron Module
+
+## Build Status:
+
+  * **master:** [![master branch status](https://secure.travis-ci.org/torrancew/puppet-cron.png?branch=master)](http://travis-ci.org/torrancew/puppet-cron)
+  * **develop:** [![develop branch status](https://secure.travis-ci.org/torrancew/puppet-cron.png?branch=develop)](http://travis-ci.org/torrancew/puppet-cron)
+
+## Notes:
+
+This module manages cronjobs by placing a file in /etc/cron.d.
+It defines the following types:
+
+  * cron::job     - basic job skeleton
+  * cron::hourly  - wrapper for hourly jobs
+  * cron::daily   - wrapper for daily jobs
+  * cron::weekly  - wrapper for weekly jobs
+  * cron::monthly - wrapper for monthly jobs
+
+## Installation:
+
+Install in your puppet master's modulepath as a directory named 'cron'.
+
+This module can install cron if needed - simply
+
+    include cron
+
+## Usage:
+
+*The name of the job (quoted part after the opening '{' ) is completely arbitrary. However, there can only be one cron job by that name.*
+
+### cron::job
+
+cron::job creates generic jobs in /etc/cron.d.
+It allows specifying the following parameters:
+
+  * minute
+  * hour
+  * date
+  * month
+  * weekday
+  * user
+  * command
+  * environment
+
+Example:
+  This would run the command "mysqldump -u root mydb" as root at 2:40 AM every day:
+
+    cron::job{
+      'mysqlbackup':
+        minute      => '40',
+        hour        => '2',
+        date        => '*',
+        month       => '*',
+        weekday     => '*',
+        user        => 'root',
+        command     => 'mysqldump -u root mydb',
+        environment => [ 'MAILTO=root', 'PATH="/usr/bin:/bin"' ];
+    }
+
+### cron::hourly
+
+cron::hourly creates jobs in /etc/cron.d that run once per hour.
+It allows specifying the following parameters:
+
+  * minute
+  * user
+  * command
+  * environment
+
+Example:
+  This would run the command "mysqldump -u root mydb" as root on the 20th minute of every hour:
+
+    cron::hourly{
+      'mysqlbackup_hourly':
+        minute      => '20',
+        user        => 'root',
+        command     => 'mysqldump -u root mydb',
+        environment => "MAILTO=root\nPATH='/usr/bin:/bin'";
+    }
+
+### cron::daily
+
+cron::daily creates jobs in /etc/cron.d that run once per day.
+It allows specifying the following parameters:
+
+  * minute
+  * hour
+  * user
+  * command
+  * environment
+
+Example:
+  This would run the command "mysqldump -u root mydb" as root at 2:40 AM every day, like the above generic example:
+
+    cron::daily{
+      'mysqlbackup_daily':
+        minute  => '40',
+        hour    => '2',
+        user    => 'root',
+        command => 'mysqldump -u root mydb';
+    }
+
+### cron::weekly
+
+cron::weekly creates jobs in /etc/cron.d that run once per week.
+It allows specifying the following parameters:
+
+  * minute
+  * hour
+  * weekday
+  * user
+  * command
+  * environment
+
+Example:
+  This would run the command "mysqldump -u root mydb" as root at 4:40 AM every Sunday, like the above generic example:
+
+    cron::weekly{
+      'mysqlbackup_weekly':
+        minute  => '40',
+        hour    => '4',
+        weekday => '0',
+        user    => 'root',
+        command => 'mysqldump -u root mydb';
+    }
+
+### cron::monthly
+
+cron::monthly creates jobs in /etc/cron.d that run once per month.
+It allows specifying the following parameters:
+
+  * minute
+  * hour
+  * date
+  * user
+  * command
+  * environment
+
+Example:
+  This would run the command "mysqldump -u root mydb" as root at 3:40 AM the 1st of every month, like the above generic example:
+
+    cron::monthly{
+      'mysqlbackup_monthly':
+        minute  => '40',
+        hour    => '3',
+        date    => '1',
+        user    => 'root',
+        command => 'mysqldump -u root mydb';
+    }
+
+## Contributors:
+
+  * Kevin Goess (@kgoess)   - Environment Variable support + fixes
+  * Andy Shinn (@andyshinn) - RedHat derivatives package name fix 
+
+## TODO:
+
+  * <del>Add PuppetDoc markup to manifests</del>
+  * <del>Add a Modulefile, upload to the Puppet Forge</del>
+
