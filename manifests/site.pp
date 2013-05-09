@@ -955,6 +955,12 @@ node "gallium.wikimedia.org" {
 		require => File['/srv/ssd'],
 	}
 
+  # FIXME requested by hashar to debug out an issue
+  # with Jenkins (bug 48025)
+  package { 'pstack':
+    ensure => present,
+  }
+
 	install_certificate{ "star.mediawiki.org": }
 	install_certificate{ "star.wikimedia.org": }
 }
