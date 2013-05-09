@@ -125,39 +125,3 @@ class misc::download-mediawiki {
 
 	apache_site { "download.mediawiki.org": name => "download.mediawiki.org" }
 }
-
-class misc::kiwix-mirror {
-	# TODO: add system_role
-
-	group { mirror:
-		ensure => "present";
-	}
-
-	user { mirror:
-		name => "mirror",
-		gid => "mirror",
-		groups => [ "www-data"],
-		membership => "minimum",
-		home => "/data/home",
-		shell => "/bin/bash";
-	}
-
-	file {
-		"/data/xmldatadumps/public/kiwix":
-			ensure => "/data/xmldatadumps/public/other/kiwix";
-		"/data/xmldatadumps/public/other/kiwix":
-			owner => "mirror",
-			group => "mirror",
-			mode => 0644,
-			ensure => present;
-	}
-
-	cron { kiwix-mirror-update:
-		command => "rsync -vzrlptD  download.kiwix.org::download.kiwix.org/zim/0.9/ /data/xmldatadumps/public/other/kiwix/zim/0.9/ >/dev/null 2>&1",
-		user => mirror,
-		minute => '*/15',
-		ensure => present;
-	}
-
-}
-
