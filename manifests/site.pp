@@ -381,7 +381,7 @@ node "dataset2.wikimedia.org" {
 		accounts::catrope,
 		misc::download-wikimedia,
 		misc::download-primary,
-		role::mirror::kiwix
+		misc::kiwix-mirror
 }
 
 node "dataset1001.wikimedia.org" {
