@@ -1083,8 +1083,7 @@ node "hooper.wikimedia.org" {
 	include standard,
 		admins::roots,
 		svn::client,
-		misc::etherpad,
-		misc::racktables-old
+		misc::etherpad
 
 	install_certificate{ "star.wikimedia.org": }
 }
