@@ -27,13 +27,20 @@ upstream <%= name %>_fallback {
 
 # SSL proxying
 server {
-<% proxy_addresses[site].each do |proxy_address| -%>
-<% if proxy_address[0,1] == "[" and !(has_variable?("enable_ipv6_proxy") and ipv6_enabled == true) then
-	# Skip IPv6 address
-	next
-end -%>
+<%
+# proxy_addresses is optional or migth be empty for the current site
+if proxy_addresses.has_key?(site) then
+	proxy_addresses[site].each do |proxy_address|
+		if proxy_address[0,1] == "[" and !(has_variable?("enable_ipv6_proxy") and ipv6_enabled == true) then
+			# Skip IPv6 address
+			next
+		end
+-%>
 	listen <%= proxy_address %>:443<% if proxy_address == proxy_addresses[site][0] -%> <%= proxy_listen_flags %><% end -%>;
-<% end -%>
+<%
+	end  # .each
+end  # if
+-%>
 	# For LVS-DR, we must listen to the RIP and the VIP addresses
 	listen <%= ipaddress %>:443;
 	ssl on;
