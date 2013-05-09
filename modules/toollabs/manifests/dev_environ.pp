@@ -21,6 +21,8 @@ class toollabs::dev_environ {
 
   package { [
       'libtool',
+      'libxml2-dev',
+      'libxslt-dev',
       'autoconf',
       'sqlite3',
       'python-dev',
