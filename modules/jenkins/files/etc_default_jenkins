@@ -45,6 +45,10 @@ HTTP_PORT=8080
 # port for AJP connector (disabled by default)
 AJP_PORT=-1
 
+# Hack to enable accesslog for Jenkins.
+# Append it to JENKINS_ARGS below to enable.
+JENKINS_ACCESSLOG_ENABLE="--accessLoggerClassName=winstone.accesslog.SimpleAccessLogger --simpleAccessLogger.format=combined --simpleAccessLogger.file=/var/log/jenkins/access.log"
+
 # arguments to pass to jenkins.
 # --javahome=$JAVA_HOME
 # --httpPort=$HTTP_PORT (default 8080; disable with -1)
@@ -53,4 +57,4 @@ AJP_PORT=-1
 # --argumentsRealm.passwd.$ADMIN_USER=[password]
 # --argumentsRealm.$ADMIN_USER=admin
 # --webroot=~/.jenkins/war
-JENKINS_ARGS="--webroot=/var/run/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=/ci"
+JENKINS_ARGS="--webroot=/var/run/jenkins/war --httpPort=$HTTP_PORT --ajp13Port=$AJP_PORT --prefix=/ci $JENKINS_ACCESSLOG_ENABLE"
