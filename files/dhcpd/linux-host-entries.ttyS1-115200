@@ -5,7 +5,7 @@
 
 
 host aluminium {
-	hardware ethernet 78:2b:cb:09:0d:8c;
+	hardware ethernet d4:ae:52:65:05:2a;
 	fixed-address aluminium.wikimedia.org;
 }
 
