@@ -25,7 +25,7 @@ fi
 
 # Wrappers to make sure we dont forget about --quiet
 GIT_PULL="git pull $GIT_QUIET"
-GIT_SUBMODULE_UPDATE="git submodule $GIT_QUIET update --init"
+GIT_SUBMODULE_UPDATE="git submodule $GIT_QUIET update --init --recursive"
 
 # Write a message prefixed with the current time
 ts_echo() { echo `date '+%Y-%m-%d %H:%M:%S'` $*; }
