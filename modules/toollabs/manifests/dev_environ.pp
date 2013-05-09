@@ -27,7 +27,7 @@ class toollabs::dev_environ {
       'sqlite3',
       'python-dev',
       'libmysqlclient-dev',
-      'libpng2-dev',
+      'libpng3-dev',
       'libfreetype6-dev',
       'lintian',
       'apt-file',

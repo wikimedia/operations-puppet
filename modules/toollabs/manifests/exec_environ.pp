@@ -40,7 +40,7 @@ class toollabs::exec_environ {
       'libdigest-hmac-perl',
       'libmediawiki-bot-perl',
       'libmediawiki-api-perl',
-      'libpng2',
+      'libpng3',
       'libfreetype6',
       'libmpc2',
       'libmpfr4',
