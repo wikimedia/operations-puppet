@@ -306,7 +306,7 @@ class misc::statistics::sites::metrics {
 
 	$e3_home          = "/a/e3"
 	$e3_analysis_path = "$e3_home/E3Analysis/"
-	$metrics_user          = $misc::statistics::user::username
+	$metrics_user     = $misc::statistics::user::username
 
 	$secret_key       = $passwords::e3::metrics::secret_key
 
@@ -394,6 +394,7 @@ class misc::statistics::sites::metrics {
 		directory => "$e3_analysis_path",
 		origin    => "https://gerrit.wikimedia.org/r/p/analytics/user-metrics.git",
 		owner     => $metrics_user,
+		group     => "wikidev",
 		require   => [Package["python-flask"], File[$e3_home], Class["misc::statistics::user"], Class["misc::statistics::packages::python"]],
 		ensure    => "latest",
 	}
