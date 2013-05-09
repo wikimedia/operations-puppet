@@ -27,6 +27,8 @@ class toollabs::exec_environ {
       'libhtml-parser-perl',
       'libwww-perl',
       'liburi-perl',
+      'libjson-perl',
+      'libjson-xs-perl',
       'libdbd-sqlite3-perl',
       'mysql-client-core-5.5',
       'python-twisted',
