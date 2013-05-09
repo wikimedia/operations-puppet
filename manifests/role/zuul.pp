@@ -44,7 +44,8 @@ class role::zuul {
 
 		# TODO: should require Mount['/srv/ssd']
 		zuulwikimedia::instance { "zuul-production":
-			jenkins_server => 'https://integration.wikimedia.org/ci',
+#			jenkins_server => 'https://integration.wikimedia.org/ci',
+			jenkins_server => 'http://127.0.0.1:8080/ci',
 			jenkins_user => 'zuul-bot',
 			gerrit_server => 'manganese.wikimedia.org',
 			gerrit_user => 'jenkins-bot',
