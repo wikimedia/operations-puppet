@@ -21,10 +21,14 @@ class toollabs::dev_environ {
 
   package { [
       'libtool',
+      'libxml2-dev',
+      'libxslt-dev',
       'autoconf',
       'sqlite3',
       'python-dev',
       'libmysqlclient-dev',
+      'libpng2-dev',
+      'libfreetype6-dev',
       'lintian',
       'apt-file',
       'dh-make-perl',
