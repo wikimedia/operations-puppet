@@ -28,7 +28,7 @@ upstream <%= name %>_fallback {
 # SSL proxying
 server {
 <% proxy_addresses[site].each do |proxy_address| -%>
-<% if proxy_address[0,1] == "[" and !(has_variable?("enable_ipv6_proxy") and ipv6_enabled == 'true') then
+<% if proxy_address[0,1] == "[" and !(has_variable?("enable_ipv6_proxy") and ipv6_enabled == true) then
 	# Skip IPv6 address
 	next
 end -%>
@@ -82,9 +82,9 @@ location @fallback {
 	<% end -%>
 
 }
-<% if has_variable?("enable_ipv6_proxy") and ipv6_enabled == "true" then -%>
-	
-# IPv6 proxying	
+<% if has_variable?("enable_ipv6_proxy") and ipv6_enabled == true then -%>
+
+# IPv6 proxying
 server {
 <% proxy_addresses[site].each do |proxy_address| -%>
 	<% if proxy_address[0].chr != '[' then next end %>
