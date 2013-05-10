@@ -4658,6 +4658,7 @@ host wtp1015 {
 	fixed-address wtp1015.eqiad.wmnet;
 }
 
+host wtp1016 {
 	hardware ethernet 90:B1:1C:3D:11:84;
 	fixed-address wtp1016.eqiad.wmnet;
 }
