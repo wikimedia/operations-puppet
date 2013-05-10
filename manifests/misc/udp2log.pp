@@ -332,12 +332,20 @@ class misc::udp2log::monitoring {
 		source => "puppet:///files/icinga/check_udp2log_procs",
 	}
 
-	file { "PacketLossLogtailer.py":
-		path   => "/usr/share/ganglia-logtailer/PacketLossLogtailer.py",
+	file { 'rolematcher.py':
+		path   => '/usr/share/ganglia-logtailer/rolematcher.py',
 		mode   => 0444,
 		owner  => root,
 		group  => root,
-		source => "puppet:///files/misc/PacketLossLogtailer.py"
+		source => 'puppet:///files/misc/rolematcher.py'
+	}
+
+	file { 'PacketLossLogtailer.py':
+		path   => '/usr/share/ganglia-logtailer/PacketLossLogtailer.py',
+		mode   => 0444,
+		owner  => root,
+		group  => root,
+		source => 'puppet:///files/misc/PacketLossLogtailer.py'
 	}
 
 	# send udp2log socket stats to ganglia.
