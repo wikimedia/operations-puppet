@@ -1,0 +1,17 @@
+<VirtualHost "<%=@site%>">
+    AddDefaultCharset UTF-8
+
+    DocumentRoot "/usr/share/request-tracker4/html"
+    <Location />
+        Order allow,deny
+        Allow from all
+
+        SetHandler modperl
+        PerlResponseHandler Plack::Handler::Apache2
+        PerlSetVar psgi_app /usr/share/request-tracker4/libexec/rt-server
+    </Location>
+    <Perl>
+        use Plack::Handler::Apache2;
+        Plack::Handler::Apache2->preload("/usr/share/request-tracker4/libexec/rt-server");
+    </Perl>
+</VirtualHost>
