@@ -54,6 +54,7 @@ class toollabs::exec_environ {
       'libpcsclite1',
       'libquadmath0',
       'libstring-diff-perl',
+      'libstring-shellquote-perl',   # For jsub.
       'libsvn1',
       'mariadb-common',
       'openjdk-7-jre-headless',
