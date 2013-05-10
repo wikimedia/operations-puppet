@@ -50,7 +50,7 @@
   SSLCertificateKeyFile /etc/ssl/private/<%= site_name %>.key
   SSLCACertificatePath  /etc/ssl/certs/
 
-  WSGIDaemonProcess api user=<%= metrics_user %> group=wikidev threads=5 python-path=<%= e3_analysis_path %>
+  WSGIDaemonProcess api user=<%= metrics_user %> group=wikidev threads=1 python-path=<%= e3_analysis_path %>
   WSGIScriptAlias / <%= document_root %>/api.wsgi
 
   <Directory <%= document_root %>>
