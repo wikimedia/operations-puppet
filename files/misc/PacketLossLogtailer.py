@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 ###
 ###  This plugin for logtailer will crunch WMF packet loss logs and return:
-###    * average percent loss
-###    * ninetieth percentile loss
+###    * average percent loss per server role
+###    * ninetieth percentile loss per server role
 ###  It will throw out
 ###    * packet loss numbers greater than 98%
 ###    * large margins of error
@@ -17,6 +17,7 @@ import re
 # local dependencies
 from ganglia_logtailer_helper import GangliaMetricObject
 from ganglia_logtailer_helper import LogtailerParsingException, LogtailerStateException
+import rolematcher
 
 class PacketLossLogtailer(object):
     # only used in daemon mode
@@ -26,6 +27,8 @@ class PacketLossLogtailer(object):
         needed for the internal state of the line parser.'''
         self.reset_state()
         self.lock = threading.RLock()
+        # a list of rolematchers which are simple object to determine the role of a particular server
+        self.matchers = rolematcher.init()
         # this is what will match the packet loss lines
         # packet loss format :
         # %[%Y-%m-%dT%H:%M:%S]t %server lost: (%percentloss +/- %margin)
@@ -51,11 +54,13 @@ class PacketLossLogtailer(object):
                 # capture data
                 percentloss = float(linebits['percentloss'])
                 margin = float(linebits['margin'])
+                role = self.determine_role(linebits['server'])
                 # store for 90th % and average calculations
                 # on ssl servers, sequence numbers are out of order.
                 # http://rt.wikimedia.org/Ticket/Display.html?id=1616
                 if( ( margin <= 20 ) and ( percentloss <= 98 ) ):
-                    self.percentloss_list.append(percentloss)
+                    self.percentloss_dict.setdefault(role, [])
+                    self.percentloss_dict[role].append(percentloss)
             else:
                 raise LogtailerParsingException, "regmatch failed to match"
 
@@ -63,6 +68,17 @@ class PacketLossLogtailer(object):
             self.lock.release()
             raise LogtailerParsingException, "regmatch or contents failed with %s" % e
         self.lock.release()
+
+    def determine_role(self, hostname):
+        if hostname == 'total':
+            return 'total'
+        role = 'misc' # default group for when we were not able to determine the role
+        for matcher in self.matchers:
+            if matcher == hostname:
+                role = matcher.get_role()
+                break;
+        return role
+
     # example function for deep copy
     # takes no arguments
     # returns one object
@@ -72,9 +88,10 @@ class PacketLossLogtailer(object):
         currently being modified so that the other thread can deal with it
         without fear of it changing out from under it.  The format of this
         object is internal to the plugin.'''
-        myret = dict(percentloss_list=self.percentloss_list
+        myret = dict(percentloss_dict=self.percentloss_dict
                     )
         return myret
+
     # example function for reset_state
     # takes no arguments
     # returns nothing
@@ -87,8 +104,9 @@ class PacketLossLogtailer(object):
         reset_state should store now() each time it's called, and get_state
         will use the time since that now() to do its calculations'''
         self.num_hits = 0
-        self.percentloss_list = list()
+        self.percentloss_dict = dict()
         self.last_reset_time = time.time()
+
     # example for keeping track of runtimes
     # takes no arguments
     # returns float number of seconds for this run
@@ -98,6 +116,7 @@ class PacketLossLogtailer(object):
         it.'''
         self.duration = dur
         self.dur_override = True
+
     def get_check_duration(self):
         '''This function should return the time since the last check.  If called
         from cron mode, this must be set using set_check_duration().  If in
@@ -113,6 +132,7 @@ class PacketLossLogtailer(object):
             if (duration < acceptable_duration_min or duration > acceptable_duration_max):
                 raise LogtailerStateException, "time calculation problem - duration (%s) > 10%% away from period (%s)" % (duration, self.period)
         return duration
+
     # example function for get_state
     # takes no arguments
     # returns a dictionary of (metric => metric_object) pairs
@@ -137,20 +157,25 @@ class PacketLossLogtailer(object):
             raise e
 
         # calculate 90th % and average request times
-        percentloss_list = mydata['percentloss_list']
-        percentloss_list.sort()
-        num_entries = len(percentloss_list)
-        if (num_entries != 0 ):
-            packetloss_90th = percentloss_list[int(num_entries * 0.9)]
-            packetloss_ave = sum(percentloss_list) / len(percentloss_list)
-        else:
-            # in this event, all data was thrown out in parse_line
-            packetloss_90th = 99
-            packetloss_ave = 99
-        # package up the data you want to submit
-        # setting tmax to 960 seconds as data may take as long as 15 minutes to be processed
-        packetloss_ave_metric = GangliaMetricObject( 'packet_loss_average', packetloss_ave, units='%', tmax=960 )
-        packetloss_90th_metric = GangliaMetricObject( 'packet_loss_90th', packetloss_90th, units='%', tmax=960 )
+        percentloss_dict = mydata['percentloss_dict']
+        metrics = list()
+        for role, percentloss_list in percentloss_dict.iteritems():
+
+            percentloss_list.sort()
+            num_entries = len(percentloss_list)
+            if (num_entries != 0 ):
+                packetloss_90th = percentloss_list[int(num_entries * 0.9)]
+                packetloss_ave = sum(percentloss_list) / len(percentloss_list)
+            else:
+                # in this event, all data was thrown out in parse_line
+                packetloss_90th = 99
+                packetloss_ave = 99
+            # package up the data you want to submit
+            # setting tmax to 960 seconds as data may take as long as 15 minutes to be processed
+            packetloss_ave_metric = GangliaMetricObject( '%s:packet_loss_average' % role, packetloss_ave, units='%', tmax=960 )
+            packetloss_90th_metric = GangliaMetricObject( '%s:packet_loss_90th' % role, packetloss_90th, units='%', tmax=960 )
+            metrics.append(packetloss_ave_metric)
+            metrics.append(packetloss_90th_metric)
 
         # return a list of metric objects
-        return [ packetloss_ave_metric, packetloss_90th_metric, ]
+        return metrics
