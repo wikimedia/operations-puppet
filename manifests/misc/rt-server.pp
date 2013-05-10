@@ -1,4 +1,9 @@
 # RT - Request Tracker
+# 
+#  This will create a server running RT on lighttpd.
+#
+#  It's used in production but should function in labs
+#  as well.
 class misc::rt::server ( $site = 'rt.wikmedia.org', $datadir = '/var/lib/mysql' ) {
   system_role { 'misc::rt::server': description => 'RT server' }
 
@@ -43,11 +48,14 @@ class misc::rt::server ( $site = 'rt.wikmedia.org', $datadir = '/var/lib/mysql' 
       content => '@reboot root  mkdir /var/run/fastcgi';
   }
 
-  exec { 'rt-db-initialize':
-    command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
-    require => [ package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd',
-      'libdbd-pg-perl' ] ],
-    creates     => '/a/mysql/rtdb';
+  if ( $realm == "labs" ) {
+    # If we're a new labs install, set up the RT database.
+    exec { 'rt-db-initialize':
+      command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
+      require => [ package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd',
+        'libdbd-pg-perl' ] ],
+      unless  => '/usr/bin/mysqlshow rtdb';
+    }
   }
 
   exec { 'update-rt-siteconfig':
