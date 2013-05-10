@@ -225,10 +225,6 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 	include role::cache::bits
 }
 
-node /^(barium|colby)\.wikimedia\.org$/ {
-	include standard
-}
-
 node "bast1001.wikimedia.org" {
 	$cluster = "misc"
 	$domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
