@@ -103,4 +103,10 @@ class contint::packages {
     ensure => latest,
   }
 
+  # Colordiff gives us nice coloring in Jenkins console whenever
+  # it is used instead of the stock diff.
+  package { 'colordiff':
+    ensure => present,
+  }
+
 }
