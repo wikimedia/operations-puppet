@@ -479,17 +479,9 @@ node /^db(36|38)\.pmtpa\.wmnet/ {
 	include role::coredb::x1
 }
 
-## m1 shard (still mostly not puppetized...)
-node /^(db(9)|blondel|bellin)\.pmtpa\.wmnet$/ {
-	## do not have most of our current puppet classe
+## m1 shard (used to be db9|blondel|bellin in the past)
+node "db9.pmtpa.wmnet" {
 	include role::db::core
-
-	if $hostname =~ /^(bellin|blondel)/ {
-		include mysql_wmf::mysqluser,
-		mysql_wmf::datadirs,
-		mysql_wmf::conf,
-		mysql_wmf::packages
-	}
 }
 
 ## m1 shard (new)
