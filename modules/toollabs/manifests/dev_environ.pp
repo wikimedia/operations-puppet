@@ -38,7 +38,6 @@ class toollabs::dev_environ {
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
-      'libxml2-dev', # needed to compile some bots
       'libxslt1-dev', # -- same
       'subversion',
       'cython' ]:
