@@ -11,9 +11,8 @@
 #
 # Sample Usage:
 #
-class toollabs::webserver($gridmaster) {
-  include toollabs,
-    toollabs::infrastructure,
+class toollabs::webserver($gridmaster) inherits toollabs {
+  include toollabs::infrastructure,
     toollabs::exec_environ
 
   class { 'gridengine::submit_host':

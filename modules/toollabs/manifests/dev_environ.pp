@@ -17,7 +17,6 @@
 # Sample Usage:
 #
 class toollabs::dev_environ {
-  include toollabs
 
   package { [
       'libtool',
