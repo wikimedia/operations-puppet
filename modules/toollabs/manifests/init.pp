@@ -52,5 +52,20 @@ class toollabs {
     owner => "root",
     group => "root",
   }
+
+  # Tool Labs is enduser-facing, so we want to control the motd
+  # properly (most things make no sense for community users: they
+  # don't care that packages need updating, or that filesystems
+  # will be checked, for instance)
+
+  file { "/etc/motd.d":
+    ensure => directory,
+    mode => "0755",
+    owner => "root",
+    group => "root",
+    force => true,
+    recurse => true,
+    pruge => true,
+  }
 }
 

@@ -13,6 +13,7 @@
 #
 class toollabs::shadow($gridmaster) {
   include toollabs,
+    toollabs::infrastructure,
     toollabs::exec_environ
 
   class { 'gridengine::shadow_master':
