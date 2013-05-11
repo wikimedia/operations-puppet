@@ -26,7 +26,7 @@ class toollabs::bastion($gridmaster) {
     mode => "0755",
     owner => "root",
     group => "root",
-    source => "puppet:///modules/toollabs/40-$instanceproject-bastion-banner",
+    source => "puppet:///modules/toollabs/40-${instanceproject}-bastion-banner",
   }
 
   # TODO: sshd config
