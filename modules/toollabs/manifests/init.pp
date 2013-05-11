@@ -58,7 +58,7 @@ class toollabs {
   # don't care that packages need updating, or that filesystems
   # will be checked, for instance)
 
-  file { "/etc/motd.d":
+  file { "/etc/update-motd.d":
     ensure => directory,
     mode => "0755",
     owner => "root",

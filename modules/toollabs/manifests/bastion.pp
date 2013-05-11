@@ -21,7 +21,7 @@ class toollabs::bastion($gridmaster) {
     gridmaster => $gridmaster,
   }
 
-  file { "/etc/motd.d/40-bastion-banner":
+  file { "/etc/update-motd.d/40-bastion-banner":
     ensure => file,
     mode => "0755",
     owner => "root",
