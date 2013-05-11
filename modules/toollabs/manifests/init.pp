@@ -34,6 +34,11 @@ class toollabs {
     content => "[$fqdn]:* ssh-dss $sshdsakey\n[$ipaddress]:* ssh-dss $sshdsakey\n",
   }
 
+  file { "/shared":
+    ensure => link,
+    target => "/data/project/.shared";
+  }
+
   exec { "make_known_hosts":
     command => "/bin/cat /data/project/.system/store/hostkey-* >/etc/ssh/ssh_known_hosts~",
     require => File[$store],
