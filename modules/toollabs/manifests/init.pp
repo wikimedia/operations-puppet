@@ -65,7 +65,7 @@ class toollabs {
     group => "root",
     force => true,
     recurse => true,
-    pruge => true,
+    purge => true,
   }
 }
 
