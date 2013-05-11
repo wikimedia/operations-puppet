@@ -10,9 +10,8 @@
 #
 # Sample Usage:
 #
-class toollabs::webproxy {
-  include toollabs,
-    toollabs::infrastructure
+class toollabs::webproxy inherits toollabs {
+  include toollabs::infrastructure
 
   #TODO: apache config
   #TODO: sshd config

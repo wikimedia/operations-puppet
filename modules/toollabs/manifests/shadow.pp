@@ -11,9 +11,8 @@
 #
 # Sample Usage:
 #
-class toollabs::shadow($gridmaster) {
-  include toollabs,
-    toollabs::infrastructure,
+class toollabs::shadow($gridmaster) inherits toollabs {
+  include toollabs::infrastructure,
     toollabs::exec_environ
 
   class { 'gridengine::shadow_master':

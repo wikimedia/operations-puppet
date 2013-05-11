@@ -16,6 +16,7 @@ class toollabs {
   # TODO: PAM config
 
   $store = "/data/project/.system/store"
+  $repo  = "/data/project/.system/deb"
 
   file { $store:
     ensure => directory,
@@ -40,7 +41,7 @@ class toollabs {
   }
 
   exec { "make_known_hosts":
-    command => "/bin/cat /data/project/.system/store/hostkey-* >/etc/ssh/ssh_known_hosts~",
+    command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
     require => File[$store],
   }
 
@@ -67,5 +68,23 @@ class toollabs {
     recurse => true,
     purge => true,
   }
+
+  file { "/etc/apt/sources.list.d/local.list":
+    ensure => file,
+    content => "deb arch=amd64 trusted=yes file:$repo/ amd64/\ndeb arch=all trusted=yes file:$repo/ all/\n",
+    mode = "0444",
+    owner = "root",
+    group = "root",
+  }
+
+  # Trustworthy enough
+  file { "/etc/apt/sources.list.d/mariadb.list":
+    ensure => file,
+    content => "deb http://ftp.osuosl.org/pub/mariadb/repo/5.5/ubuntu precise main\n",
+    mode = "0444",
+    owner = "root",
+    group = "root",
+  }
+
 }
 

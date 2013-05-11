@@ -13,6 +13,7 @@
 # Sample Usage:
 #
 class toollabs::infrastructure {
+
   file { "/etc/update-motd.d/40-infrastructure-banner":
     ensure => file,
     mode => "0755",

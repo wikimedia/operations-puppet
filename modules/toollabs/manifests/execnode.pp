@@ -11,9 +11,8 @@
 #
 # Sample Usage:
 #
-class toollabs::execnode($gridmaster) {
-  include toollabs,
-    toollabs::exec_environ
+class toollabs::execnode($gridmaster) inherits toollabs {
+  include toollabs::exec_environ
 
   class { 'gridengine::exec_host':
     gridmaster => $gridmaster,

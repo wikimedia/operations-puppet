@@ -11,9 +11,8 @@
 #
 # Sample Usage:
 #
-class toollabs::bastion($gridmaster) {
-  include toollabs,
-    ssh::bastion,
+class toollabs::bastion($gridmaster) inherits toollabs {
+  include ssh::bastion,
     toollabs::exec_environ,
     toollabs::dev_environ
 
