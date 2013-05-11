@@ -13,6 +13,7 @@
 class toollabs::master {
   include toollabs,
     gridengine::master,
+    toollabs::infrastructure,
     toollabs::exec_environ
 
   # TODO: Grid config

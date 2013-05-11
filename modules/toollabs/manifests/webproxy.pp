@@ -11,7 +11,8 @@
 # Sample Usage:
 #
 class toollabs::webproxy {
-  include toollabs
+  include toollabs,
+    toollabs::infrastructure
 
   #TODO: apache config
   #TODO: sshd config

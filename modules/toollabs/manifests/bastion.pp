@@ -21,8 +21,15 @@ class toollabs::bastion($gridmaster) {
     gridmaster => $gridmaster,
   }
 
+  file { "/etc/motd.d/40-bastion-banner":
+    ensure => file,
+    mode => "0755",
+    owner => "root",
+    group => "root",
+    source => "puppet:///modules/toollabs/40-$instanceproject-bastion-banner",
+  }
+
   # TODO: sshd config
-  # TODO: MOTD
   # TODO: local scripts
   # TODO: j* tools
   # TODO: cron setup
