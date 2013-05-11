@@ -16,7 +16,8 @@
 # Sample Usage:
 #
 class toollabs::exec_environ {
-  include toollabs
+  include toollabs,
+    generic::locales::international
 
   package { [
       'nodejs',
