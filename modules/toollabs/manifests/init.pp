@@ -71,7 +71,7 @@ class toollabs {
 
   file { "/etc/apt/sources.list.d/local.list":
     ensure => file,
-    content => "deb arch=amd64 trusted=yes file:$repo/ amd64/\ndeb arch=all trusted=yes file:$repo/ all/\n",
+    content => "deb [ arch=amd64 trusted=yes ] file:$repo/ amd64/\ndeb [ arch=all trusted=yes ] file:$repo/ all/\n",
     mode => "0444",
     owner => "root",
     group => "root",
