@@ -32,7 +32,7 @@ class toollabs {
     group => 'root',
     mode => '0444',
     require => File[$store],
-    content => "[$fqdn]:* ssh-dss $sshdsakey\n[$ipaddress]:* ssh-dss $sshdsakey\n",
+    content => "[$fqdn]:*,[$ipaddress]:* ssh-rsa $sshrsakey\n$fqdn ssh-rsa $sshrsakey\n",
   }
 
   file { "/shared":
