@@ -1,0 +1,9 @@
+#! /bin/bash
+
+cd /data/project/.system/store
+echo '+:ALL:' $(for host in submithost-*; do
+  if [ -s $host ]; then
+    cat $host
+  fi
+done)
+echo '-:ALL EXCEPT root:ALL'
