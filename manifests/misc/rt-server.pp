@@ -4,7 +4,7 @@
 #
 #  It's used in production but should function in labs
 #  as well.
-class misc::rt::server ( $site = 'rt.wikimedia.org', $datadir = '/var/lib/mysql' ) {
+class misc::rt::server ( $site = 'rt.wikmedia.org', $datadir = '/var/lib/mysql' ) {
   system_role { 'misc::rt::server': description => 'RT server' }
 
   package { [ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd',
