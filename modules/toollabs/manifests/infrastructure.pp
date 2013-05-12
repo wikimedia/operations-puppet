@@ -22,7 +22,7 @@ class toollabs::infrastructure {
     source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
   }
 
-  File <| name == '/etc/security/access.conf' |> {
+  File <| title == '/etc/security/access.conf' |> {
     content => "-:ALL EXCEPT (local-admin) root:ALL",
   }
 }
