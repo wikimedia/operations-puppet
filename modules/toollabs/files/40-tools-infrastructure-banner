@@ -1,5 +1,9 @@
 #! /bin/sh
 
+#
+# This script is managed by puppet
+#
+
 cat <<EOF
       [33;1m^[0m
      [33;1m/ \[0m    This server is part of the Tool Labs infrastructure.

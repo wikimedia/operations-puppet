@@ -35,6 +35,12 @@ class toollabs::execnode($gridmaster) inherits toollabs {
     content => "$ipaddress\n",
   }
 
+  # Execution hosts have funky access requirements; they need to be ssh-able
+  # by service accounts, and they need to use host-based authentication.
+
+  # We override /etc/ssh/shosts.equiv and /etc/security/access.conf
+  # accordingly from information collected from the project store.
+
   file { "/usr/local/sbin/project-make-shosts":
     ensure => file,
     owner => 'root',

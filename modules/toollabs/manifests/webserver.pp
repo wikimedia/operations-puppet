@@ -36,6 +36,5 @@ class toollabs::webserver($gridmaster) inherits toollabs {
 
   # TODO: Apache config
   # TODO: Local scripts
-  # TODO: sshd config
 }
 

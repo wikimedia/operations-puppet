@@ -16,18 +16,17 @@ class toollabs::master inherits toollabs {
     toollabs::exec_environ
 
   # TODO: Grid config
-  # TODO: Key collection
-  # TODO: sshd config
   # TODO: (conditional) shadow config
-  # TODO: NFS overrides (job queue)
+  # TODO: project-local NFS (job queue)
 
 
-  ##
-  ## These things are done on toollabs::master because they
-  ## need to be done exactly once per project (they live on the
-  ## shared filesystem), and there can only be exactly one
-  ## gridmaster in this setup.
-  ##
+  #
+  # These things are done on toollabs::master because they
+  # need to be done exactly once per project (they live on the
+  # shared filesystem), and there can only be exactly one
+  # gridmaster in this setup.  They could have been done on
+  # any singleton instance.
+  #
 
   file { $repo:
     ensure => directory,

@@ -12,11 +12,19 @@
 # Sample Usage:
 #
 class toollabs {
-  # TODO: autofs overrides
-  # TODO: PAM config
 
   $store = "/data/project/.system/store"
   $repo  = "/data/project/.system/deb"
+
+  #
+  # The $store is an incredibly horrid workaround the fact that we cannot
+  # use exported resources in our puppet setup: individual instances store
+  # information in a shared filesystem that are collected locally into
+  # files to finish up the configuration.
+  #
+  # Case in point here: SSH host keys distributed around the project for
+  # known_hosts and HBA of the execution nodes.
+  #
 
   file { $store:
     ensure => directory,
@@ -35,11 +43,6 @@ class toollabs {
     content => "[$fqdn]:*,[$ipaddress]:* ssh-rsa $sshrsakey\n$fqdn ssh-rsa $sshrsakey\n",
   }
 
-  file { "/shared":
-    ensure => link,
-    target => "/data/project/.shared";
-  }
-
   exec { "make_known_hosts":
     command => "/bin/cat $store/hostkey-* >/etc/ssh/ssh_known_hosts~",
     require => File[$store],
@@ -53,6 +56,12 @@ class toollabs {
     owner => "root",
     group => "root",
   }
+
+  file { "/shared":
+    ensure => link,
+    target => "/data/project/.shared";
+  }
+
 
   # Tool Labs is enduser-facing, so we want to control the motd
   # properly (most things make no sense for community users: they
@@ -68,6 +77,10 @@ class toollabs {
     recurse => true,
     purge => true,
   }
+
+  # We keep a project-locat apt repo where we stuff packages we build
+  # that are intended to be local to the project.  By keeping it on the
+  # shared storage, we have no need to set up a server to use it.
 
   file { "/etc/apt/sources.list.d/local.list":
     ensure => file,

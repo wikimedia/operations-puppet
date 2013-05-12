@@ -14,6 +14,5 @@ class toollabs::webproxy inherits toollabs {
   include toollabs::infrastructure
 
   #TODO: apache config
-  #TODO: sshd config
 }
 

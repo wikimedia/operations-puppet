@@ -37,8 +37,6 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     content => "$ipaddress\n",
   }
 
-
-  # TODO: sshd config
   # TODO: local scripts
   # TODO: j* tools
   # TODO: cron setup

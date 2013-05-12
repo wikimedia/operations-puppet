@@ -22,6 +22,9 @@ class toollabs::infrastructure {
     source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
   }
 
+  # Infrastructure instances are limited to an (arbitrarily picked) local
+  # service group and root.
+
   File <| title == '/etc/security/access.conf' |> {
     content => "-:ALL EXCEPT (local-admin) root:ALL\n",
   }

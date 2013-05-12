@@ -1,5 +1,9 @@
 #! /bin/bash
 
+#
+# This script is managed by puppet
+#
+
 cd /data/project/.system/store
 (for host in submithost-*; do
   if [ -s $host ]; then

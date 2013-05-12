@@ -1,5 +1,9 @@
 #! /bin/sh
 
+#
+# This script is managed by puppet
+#
+
 cat <<EOF
 
 [31m         ##########          [0;1;4mWikimedia Tool Labs[0m

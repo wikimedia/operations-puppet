@@ -1,5 +1,9 @@
 #! /bin/sh
 
+#
+# This script is managed by puppet
+#
+
 cat <<EOF
 
      [31m#######[0m     [1mThis is an execution host of the Tool Labs grid engine.[0m

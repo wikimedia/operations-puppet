@@ -20,6 +20,6 @@ class toollabs::shadow($gridmaster) inherits toollabs {
   }
 
   # TODO: grid setup
-  # TODO: NFS overrides (job queue)
+  # TODO: project-local NFS (job queue)
 }
 
