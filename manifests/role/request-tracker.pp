@@ -51,7 +51,7 @@ class role::request-tracker-apache::production {
 
 	class { "misc::rt-apache::server":
 		site => 'rt.wikimedia.org',
-		dbhost => 'db1001',
+		dbhost => 'db1001.eqiad.wmnet',
 		dbport => '',
 		dbuser => $passwords::misc::rt::rt_mysql_user,
 		dbpass => $passwords::misc::rt::rt_mysql_pass,
