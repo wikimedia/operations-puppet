@@ -22,9 +22,8 @@ class toollabs::infrastructure {
     source => "puppet:///modules/toollabs/40-${instanceproject}-infrastructure-banner",
   }
 
-  # Can you do this?
-  # $::restricted_from = 'local-admin'
-  # Nope.  Will this be visible from the template, then?
-  $restricted_from = 'local-admin'
+  File <| name == '/etc/security/access.conf' |> {
+    content => "-:ALL EXCEPT (local-admin) root:ALL",
+  }
 }
 
