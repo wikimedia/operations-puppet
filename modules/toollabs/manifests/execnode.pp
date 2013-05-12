@@ -71,6 +71,7 @@ class toollabs::execnode($gridmaster) inherits toollabs {
   }
 
   File <| title == '/etc/security/access.conf' |> {
+    content => undef,
     source => "/etc/security/access.conf~",
     require => Exec['make-access'],
   }
