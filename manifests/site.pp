@@ -1582,7 +1582,7 @@ node "magnesium.wikimedia.org" {
 	$cluster = "misc"
 
 	include role::racktables
-
+	include role::request-tracker-apache::production
 }
 
 node "marmontel.wikimedia.org" {
