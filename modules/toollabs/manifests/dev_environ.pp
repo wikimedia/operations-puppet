@@ -35,6 +35,7 @@ class toollabs::dev_environ {
       'elinks',
       'mercurial',
       'mosh',
+      'tig',
       'fakeroot', # for dpkg
       'build-essential', # for dpkg
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
