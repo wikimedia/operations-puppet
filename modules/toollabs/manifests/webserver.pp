@@ -25,6 +25,15 @@ class toollabs::webserver($gridmaster) inherits toollabs {
     ensure => present
   }
 
+  file { "$store/submithost-$fqdn":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0444',
+    require => File[$store],
+    content => "$ipaddress\n",
+  }
+
   # TODO: Apache config
   # TODO: Local scripts
   # TODO: sshd config

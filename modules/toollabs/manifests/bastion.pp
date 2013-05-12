@@ -28,6 +28,16 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/40-${instanceproject}-bastion-banner",
   }
 
+  file { "$store/submithost-$fqdn":
+    ensure => file,
+    owner => 'root',
+    group => 'root',
+    mode => '0444',
+    require => File[$store],
+    content => "$ipaddress\n",
+  }
+
+
   # TODO: sshd config
   # TODO: local scripts
   # TODO: j* tools

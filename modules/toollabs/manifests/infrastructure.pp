@@ -23,7 +23,7 @@ class toollabs::infrastructure {
   }
 
   File <| title == '/etc/security/access.conf' |> {
-    content => "-:ALL EXCEPT (local-admin) root:ALL",
+    content => "-:ALL EXCEPT (local-admin) root:ALL\n",
   }
 }
 
