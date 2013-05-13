@@ -15,8 +15,6 @@ class eventlogging( $archive_destinations = [] ) {
 		auth    => true,
 	}
 
-	class { 'eventlogging::mediawiki_errors': }
-
 	package { [
 		'python-jsonschema',
 		'python-mysqldb',

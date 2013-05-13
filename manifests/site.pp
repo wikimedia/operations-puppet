@@ -2772,6 +2772,7 @@ node "vanadium.eqiad.wmnet" {
 
 	include standard,
 		role::logging::eventlogging,
+		eventlogging::mediawiki_errors,
 		nrpe,
 		role::solr::ttm
 
