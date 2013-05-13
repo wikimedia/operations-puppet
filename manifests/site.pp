@@ -1599,7 +1599,6 @@ node "magnesium.wikimedia.org" {
 
 	$cluster = "misc"
 
-	include standard-noexim
 	include role::racktables
 	include role::request-tracker-apache::production, exim::rt
 }

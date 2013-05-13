@@ -9,7 +9,7 @@ class role::racktables {
 
 	system_role { 'role::racktables': description => 'Racktables' }
 
-	include webserver::php5-gd,
+	include standard-noexim, webserver::php5-gd,
 	webserver::php5-mysql,
 	misc::racktables
 
