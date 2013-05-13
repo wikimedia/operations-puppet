@@ -51,8 +51,13 @@
 [cache "web_sessions"]
 	maxAge = 90 days
 [gitweb]
-	cgi = /usr/lib/cgi-bin/gitweb.cgi
-	url = /r/gitweb
+	url = https://git.wikimedia.org
+	type = custom
+	revision = /commit/${project}/${commit}
+	project = /summary/${project}
+	branch = /log/${project}/${branch}
+	filehistory = /blob/${project}/${branch}/${file}
+	linkname = gitblit
 	linkDrafts = false
 [user]
 	email = gerrit@wikimedia.org
