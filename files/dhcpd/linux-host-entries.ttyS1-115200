@@ -4653,6 +4653,26 @@ host wtp1010 {
 	fixed-address wtp1010.eqiad.wmnet;
 }
 
+host wtp1011 {
+	hardware ethernet 90:B1:1C:3C:FB:2A;
+	fixed-address wtp1011.eqiad.wmnet;
+}
+
+host wtp1012 {
+	hardware ethernet 90:B1:1C:41:A8:3B;
+	fixed-address wtp1012.eqiad.wmnet;
+}
+
+host wtp1013 {
+	hardware ethernet 90:B1:1C:4A:85:AC;
+	fixed-address wtp1013.eqiad.wmnet;
+}
+
+host wtp1014 {
+	hardware ethernet 90:B1:1C:41:7A:90;
+	fixed-address wtp1014.eqiad.wmnet;
+}
+
 host wtp1015 {
 	hardware ethernet 90:B1:1C:3D:02:B7;
 	fixed-address wtp1015.eqiad.wmnet;
@@ -4671,6 +4691,36 @@ host wtp1017 {
 host wtp1018 {
 	hardware ethernet 90:B1:1C:38:6E:9D;
 	fixed-address wtp1018.eqiad.wmnet;
+}
+
+host wtp1019 {
+	hardware ethernet 90:B1:1C:41:7B:1A;
+	fixed-address wtp1019.eqiad.wmnet;
+}
+
+host wtp1020 {
+	hardware ethernet 90:B1:1C:41:87:1E;
+	fixed-address wtp1020.eqiad.wmnet;
+}
+
+host wtp1021 {
+	hardware ethernet 90:B1:1C:41:7A:A0;
+	fixed-address wtp1021.eqiad.wmnet;
+}
+
+host wtp1022 {
+	hardware ethernet 90:B1:1C:38:6D:4D;
+	fixed-address wtp1022.eqiad.wmnet;
+}
+
+host wtp1023 {
+	hardware ethernet 90:B1:1C:3D:06:D1;
+	fixed-address wtp1023.eqiad.wmnet;
+}
+
+host wtp1024 {
+	hardware ethernet 90:B1:1C:3D:0E:1C;
+	fixed-address wtp1024.eqiad.wmnet;
 }
 
 host xenon {
