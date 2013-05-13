@@ -139,7 +139,7 @@ node "analytics1002.eqiad.wmnet" {
 }
 
 # analytics1003 - analytics1006 are udp2log instances.
-node /analytics100[3456].eqiad.wmnet/ {
+node /analytics100[34569].eqiad.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1003") {
 		$ganglia_aggregator = true
@@ -173,7 +173,7 @@ node "analytics1008.eqiad.wmnet" {
 
 
 # analytics1007, analytics1009-analytics1026
-node /analytics10(0[79]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
+node /analytics10(0[7]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1011") {
 		$ganglia_aggregator = true
