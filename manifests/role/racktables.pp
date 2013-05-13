@@ -9,8 +9,7 @@ class role::racktables {
 
 	system_role { 'role::racktables': description => 'Racktables' }
 
-	include standard,
-	webserver::php5-gd,
+	include webserver::php5-gd,
 	webserver::php5-mysql,
 	misc::racktables
 

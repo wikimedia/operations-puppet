@@ -55,7 +55,7 @@ class standard {
 		exim::simple-mail-sender
 }
 
-class newstandard {
+class standard-noexim {
 	include base,
 		ganglia,
 		ntp::client
@@ -240,11 +240,11 @@ node "bast1001.wikimedia.org" {
 }
 
 node "beryllium.wikimedia.org" {
-	include newstandard
+	include standard-noexim
 }
 
 node "boron.wikimedia.org" {
-	include newstandard
+	include standard-noexim
 }
 
 node "brewster.wikimedia.org" {
@@ -1599,6 +1599,7 @@ node "magnesium.wikimedia.org" {
 
 	$cluster = "misc"
 
+	include standard-noexim
 	include role::racktables
 	include role::request-tracker-apache::production, exim::rt
 }
@@ -1749,7 +1750,7 @@ node "mchenry.wikimedia.org" {
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
-	include newstandard
+	include standard-noexim
 }
 
 node "ms5.pmtpa.wmnet" {
@@ -2082,7 +2083,7 @@ node /^ocg[1-3]\.wikimedia\.org$/ {
 }
 
 node /^osm-cp100[1-4]\.wikimedia\.org$/ {
-	include newstandard
+	include standard-noexim
 }
 
 node /^owa[1-3]\.wikimedia\.org$/ {
