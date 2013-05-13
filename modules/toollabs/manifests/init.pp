@@ -104,5 +104,11 @@ class toollabs {
     source => [ "$store/mail-relay", "puppet:///modules/toollabs/exim4-norelay.conf" ],
   }
 
+  file { "/var/mail":
+    ensure => link,
+    force => true,
+    target => "$store/mail",
+  }
+
 }
 
