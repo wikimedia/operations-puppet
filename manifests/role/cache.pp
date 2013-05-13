@@ -647,7 +647,7 @@ class role::cache {
 				}
 			}
 			else {
-				$event_listener = '10.4.1.14' # deployment-eventlogging
+				$event_listener = '10.4.0.48' # deployment-eventlogging
 			}
 
 			varnish::logging { 'vanadium' :
