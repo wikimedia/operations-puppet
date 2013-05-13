@@ -25,7 +25,7 @@ class toollabs::dev_environ {
       'autoconf',
       'sqlite3',
       'python-dev',
-      'libmysqlclient-dev',
+      'libmariadbclient-dev',
       'libpng3-dev',
       'libfreetype6-dev',
       'lintian',

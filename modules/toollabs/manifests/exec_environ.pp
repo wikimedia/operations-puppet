@@ -30,7 +30,6 @@ class toollabs::exec_environ {
       'libjson-perl',
       'libjson-xs-perl',
       'libdbd-sqlite3-perl',
-      'mysql-client-core-5.5',
       'python-twisted',
       'python-virtualenv',
       'libclass-data-inheritable-perl',
