@@ -144,6 +144,25 @@ class accounts {
 			}
 		}
 	}
+	class akosiaris inherits baseaccount {
+		$username = "akosiaris"
+		$realname = "Alexandros Kosiaris"
+		$uid = 642
+		$enabled = true
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+			if $enabled == true and $manage_home {
+				Ssh_authorized_key { require => Unixaccount[$realname]}
+
+				ssh_authorized_key { 'akosiaris':
+					ensure => present,
+					user   => $username,
+					type   => 'ssh-rsa',
+					key    => 'AAAAB3NzaC1yc2EAAAADAQABAAACAQC5IbCL8F2mKMLVL2yp3RP+1rs5v6R4iveIctHQA6kccymfoUa5y9FLT9+hx9ljXZDjrUN3rPeagbZDrGQj6UlI32YZVKRwAeaLkp85HpbzaL/2GKM9UlSq6Qztnuxp/cQGQtDrSK9rwPHk1kqxhXQDeu0+mzqgKMsTqZshG2pH+T27rpZMcUyyF0nX14yoqPHdxvetYfjhAo0WIuwmMcyDcv/Au4AaDgOoKqbYVNY/I5gRYxEotRuJeNg9NLFlUDmntA5mXthotK4uWimfDV8rI1695n2Idvf/iNtZiO6tnIFfs7nrv3C0vFZO+MMbrU0cz/Abbhq4zaQH7zqrP0GfaR4AJu+0SgOjDbmAhOgwgYOxpdhChIABjVJTP3chKgJ1y1JeUxyUaIayddp/Kyye7z0kFJw0+D8YROAPWkkJvpV6c0/U88LMjupG2kcVlxqPrUCJiL4e8viyZQxxJOJhS/Zdf56AO8Xh8WAxX0RZGLbA2GYln1euu+8zZuvfYuZa+IRPihlY9b1fkyYP4Y7WtVNkvtFuwqKzwI2qyRGPH9W6PI0yva1BYNf/jg2qdFiboH44cBzc0MoFoqjzD7RHJpPQJQFeEiZsrQjDvm18MMCONJTPHYJaA5YwxClRXH8scWx+H0MjDwC9KmhMPm+Rb0iXPh7KePhP1jAxN+Ldew==',
+			}
+		}
+	}
 	class anomie inherits baseaccount {
 		$username = "anomie"
 		$realname = "Brad Jorsch"
