@@ -1,0 +1,11 @@
+## Managed by puppet
+
+qualify_domain = <%= maildomain %>
+local_domains =
+
+smarthost:
+  driver = domainlist
+  transport = remote_smtp
+  route_list = "* <%= fqdn %> bydns_a"
+end
+

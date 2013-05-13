@@ -49,5 +49,12 @@ class role::labs::tools {
     class { 'toollabs::webproxy': }
   }
 
+  class webproxy inherits role::labs::tools::mailrelay {
+    system_role { "role::labs::tools::mailrelay": description => "Tool Labs mail relay" }
+    class { 'toollabs::mailrelay':
+      maildomain => "tools.wmflabs.org", ### TEMPORARY DO NOT USE FOR REAL! ###
+    }
+  }
+
 } # class role::labs::tools
 

@@ -99,5 +99,10 @@ class toollabs {
     group => "root",
   }
 
+  File <| title == '/etc/exim4/exim4.conf' |> {
+    content => undef,
+    source => [ "$store/mail-relay", "puppet:///modules/toollabs/exim4-norelay.conf" ],
+  }
+
 }
 
