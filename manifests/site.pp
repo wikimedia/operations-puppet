@@ -1599,6 +1599,9 @@ node "magnesium.wikimedia.org" {
 
 	$cluster = "misc"
 
+	include base,
+		ganglia,
+		ntp::client
 	include role::racktables
 	include role::request-tracker-apache::production, exim::rt
 }
