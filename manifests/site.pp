@@ -2771,10 +2771,18 @@ node "vanadium.eqiad.wmnet" {
 	$gid=500
 
 	include standard,
+		passwords::mongodb::eventlogging,
 		role::logging::eventlogging,
 		eventlogging::mediawiki_errors,
 		nrpe,
 		role::solr::ttm
+
+
+	class { 'eventlogging::mongo':
+		db_user    => $passwords::mongodb::eventlogging::user,
+		db_pass    => $passwords::mongodb::eventlogging::password,
+		pub_stream => 'tcp://localhost:8600',
+	}
 
 	sudo_user { [ 'otto', 'olivneh' ]:
 		privileges => ['ALL = (ALL) NOPASSWD: ALL'],

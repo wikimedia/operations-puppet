@@ -130,18 +130,6 @@ redirect_stderr = true
 stdout_logfile = /var/log/supervisor/%(program_name)s.log
 stderr_logfile = NONE
 
-; JSON logs -> MongoDB
-; --------------------
-
-[program:json2mongo-vanadium]
-user = eventlogging
-command = json2mongo --sid=json2mongo tcp://localhost:8600
-    mongodb://<%= scope.lookupvar('passwords::mongodb::eventlogging::user') %>:<%= scope.lookupvar('passwords::mongodb::eventlogging::password') %>@vanadium.eqiad.wmnet:27017/?w=1
-priority = 500
-redirect_stderr = true
-stdout_logfile = /var/log/supervisor/%(program_name)s.log
-stderr_logfile = NONE
-
 ; UDP sequence ID monitoring
 ; --------------------------
 

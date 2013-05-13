@@ -9,17 +9,10 @@ class eventlogging( $archive_destinations = [] ) {
 		destinations => $archive_destinations,
 	}
 
-	class { 'mongodb':
-		dbpath  => '/srv/mongodb',
-		bind_ip => false,
-		auth    => true,
-	}
-
 	package { [
 		'python-jsonschema',
 		'python-mysqldb',
 		'python-pygments',
-		'python-pymongo',
 		'python-sqlalchemy',
 		'python-zmq',
 	]:

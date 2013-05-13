@@ -1,0 +1,10 @@
+; EventLogging supervisord configuration for logging to MongoDB.
+; This file is managed by Puppet.
+
+[program:json2mongo-<%= @socket_id %>]
+user = eventlogging
+command = json2mongo --sid=<%= @socket_id %> <%= @pub_stream %> mongodb://<%= @db_user %>:<%= @db_pass %>@<%= scope.lookupvar('::fqdn') %>:27017/?w=1
+priority = 500
+redirect_stderr = true
+stdout_logfile = /var/log/supervisor/%(program_name)s.log
+stderr_logfile = NONE
