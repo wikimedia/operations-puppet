@@ -31,6 +31,8 @@ NameVirtualHost *:443
 	ErrorLog /var/log/apache2/integration_error.log
 	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
+	Include *_proxy
+
 	<Directory />
 		Order Deny,Allow
 		AllowOverride All

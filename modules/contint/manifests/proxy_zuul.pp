@@ -5,6 +5,11 @@ class contint::proxy_zuul {
 
   file {
     '/etc/apache2/conf.d/zuul_proxy':
+      ensure => absent,
+  }
+
+  file {
+    '/etc/apache2/zuul_proxy':
       owner  => 'root',
       group  => 'root',
       mode   => '0444',

@@ -8,6 +8,11 @@ class contint::proxy_jenkins {
 
   file {
     '/etc/apache2/conf.d/jenkins_proxy':
+      ensure => absent,
+  }
+
+  file {
+    '/etc/apache2/jenkins_proxy':
       owner  => 'root',
       group  => 'root',
       mode   => '0444',
