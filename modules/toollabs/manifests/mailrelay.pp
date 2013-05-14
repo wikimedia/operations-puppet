@@ -25,11 +25,13 @@ class toollabs::mailrelay($maildomain) inherits toollabs {
   File <| title == '/etc/exim4/exim4.conf' |> {
     source => undef,
     content => template("toollabs/exim4.conf.erb"),
+    refresh => Service['exim4'],
   }
 
   File <| title == '/etc/default/exim4' |> {
     content => undef,
     source =>  "puppet:///modules/toollabs/exim4.default.mailrelay",
+    refresh => Service['exim4'],
   }
 }
 

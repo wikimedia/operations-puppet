@@ -102,6 +102,7 @@ class toollabs {
   File <| title == '/etc/exim4/exim4.conf' |> {
     content => undef,
     source => [ "$store/mail-relay", "puppet:///modules/toollabs/exim4-norelay.conf" ],
+    refresh => Service['exim4'],
   }
 
   file { "/var/mail":

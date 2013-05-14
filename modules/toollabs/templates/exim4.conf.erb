@@ -65,6 +65,14 @@ system_aliases:
   allow_defer
   data = ${lookup{$local_part}lsearch{/etc/aliases}}
 
+userforward:
+  driver = redirect
+  check_local_user
+  file = $home/.forward
+  no_verify
+  no_expn
+  check_ancestor
+
 localuser:
   driver = accept
   check_local_user
