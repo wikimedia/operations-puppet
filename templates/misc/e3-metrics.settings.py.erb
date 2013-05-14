@@ -4,9 +4,17 @@ from pkg_resources import WorkingSet , DistributionNotFound, VersionConflict
 from os.path import exists
 from urllib2 import urlopen
 import json
+import subprocess
 
 # Get working set of Python modules
 working_set = WorkingSet()
+
+# Determine UMAPI version using git foo
+cmd = ['git', 'log', '--date', 'relative', "--pretty=format:'%an %ar %h'", '-n', '1']
+p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
+version, err =  p.communicate()
+if err is not None:
+    version = 'Unknown version'
 
 
 # Project settings
