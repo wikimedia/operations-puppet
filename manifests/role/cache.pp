@@ -198,6 +198,11 @@ class role::cache {
 					"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
 					"esams" => []
 				},
+				"parsoid" => {
+					"pmtpa" => ["celsus.pmtpa.wmnet", "constable.pmtpa.wmnet"],
+					"eqiad" => ["cerium.wikimedia.org", "titanium.wikimedia.org"],
+					"esams" => []
+				}
 			},
 			'labs' => {
 				'api'    => { 'pmtpa' => '127.0.0.1', },
@@ -205,6 +210,7 @@ class role::cache {
 				'mobile' => { 'pmtpa' => '127.0.0.1', },
 				'text'   => { 'pmtpa' => '127.0.0.1', },
 				'upload' => { 'pmtpa' => '127.0.0.1', },
+				'parsoid' => { 'pmtpa' => '127.0.0.1', },
 			},
 		}
 
@@ -299,6 +305,11 @@ class role::cache {
 				"eqiad" => [],
 				"esams" => []
 			},
+			"parsoid" => {
+				"pmtpa" => [],
+				"eqiad" => [],
+				"esams" => []
+			}
 		}
 
 		$backends = {
@@ -313,6 +324,7 @@ class role::cache {
 					'pmtpa' => [ "srv193.pmtpa.wmnet" ],
 					'eqiad' => [ "srv193.pmtpa.wmnet" ],
 				},
+				'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
 			},
 			'labs' => {
 				'apaches' => {
@@ -335,6 +347,9 @@ class role::cache {
 				},
 				'test_appservers' => {
 					'pmtpa' => [ '10.4.0.166' ],
+				},
+				'parsoid' => {
+					'pmtpa' => [ '10.4.0.61' ], # deployment-parsoid1
 				}
 			}
 		}
@@ -748,6 +763,105 @@ class role::cache {
 				'port' => 81,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
+				'between_bytes_timeout' => "2s",
+				'max_connections' => 100000,
+				'probe' => "varnish",
+			},
+			xff_sources => $network::constants::all_networks,
+		}
+
+		if( $::realm == 'production' ) {
+			varnish::logging { 'emery' :           listener_address => '208.80.152.184', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		}
+	}
+
+	class parsoid {
+		include network::constants
+		include role::cache::configuration
+
+		$cluster = "cache_parsoid"
+		$nagios_group = "cache_parsoid_${::site}"
+
+		include lvs::configuration, role::cache::configuration
+
+		if ( $::realm == 'production' ) {
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
+		}
+
+		system_role { "role::cache::parsoid": description => "Parsoid Varnish cache server" }
+
+		include standard,
+			nrpe
+
+		# TODO figure this out
+		$storage_backends = $::realm ? {
+			'production' => ["sda3", "sdb3"],
+			'labs' => ["vdb"],
+		}
+		varnish::setup_filesystem{ $storage_backends:
+			before => Varnish::Instance["parsoid-backend"]
+		}
+
+		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+		varnish::instance { "parsoid-backend":
+			name => "",
+			vcl => "parsoid-backend",
+			port => 81,
+			admin_port => 6083,
+			storage => $::realm ? {
+				# TODO: figure this out
+				'production' => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
+				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
+			},
+			directors => {
+				"backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+			},
+			# TODO: what does this all mean?
+			director_options => {
+				'retries' => 2,
+			},
+			vcl_config => {
+				'retry5xx' => 1,
+				# TODO: do we need something here?
+				#'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+			},
+			backend_options => [
+				{
+					'port' => 8000,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "60s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 600,
+				}],
+			xff_sources => $network::constants::all_networks
+		}
+
+		varnish::instance { "parsoid-frontend":
+			name => "frontend",
+			vcl => "parsoid-frontend",
+			port => 80,
+			admin_port => 6082,
+			directors => {
+				"backend" => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
+			},
+			director_options => {
+				'retries' => 40,
+			},
+			director_type => "chash",
+			vcl_config => {
+				'retry5xx' => 0,
+				# TODO: do we need something here?
+				#'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+			},
+			backend_options => {
+				'port' => 81,
+				'connect_timeout' => "5s",
+				'first_byte_timeout' => "60s",
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
 				'probe' => "varnish",
