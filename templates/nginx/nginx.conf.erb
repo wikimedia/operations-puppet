@@ -33,6 +33,7 @@ http {
     # not enough to hold the keys defined by mime types.
     # See bug 48210
     types_hash_bucket_size 64;
+    server_names_hash_bucket_size 64;
 <% end -%>
     include       /etc/nginx/mime.types;
 
