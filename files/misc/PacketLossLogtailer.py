@@ -27,12 +27,12 @@ class PacketLossLogtailer(object):
     def __init__(self):
         '''This function should initialize any data structures or variables
         needed for the internal state of the line parser.'''
+        self.last_update_time = time.time()
         self.reset_state()
         self.lock = threading.RLock()
         # a list of rolematchers which are simple object to determine the role of a particular server
         # this list is obtained from crawling noc.wikimedia.org/pybal and parse the available configurations
         self.day_in_seconds = 24 * 60 * 60
-        self.last_update_time = time.time()
         self.matchers = rolematcher.init()
         # this is what will match the packet loss lines
         # packet loss format :
