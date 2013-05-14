@@ -1,0 +1,19 @@
+# Varnish VCL include file for upload backends
+
+import std;
+
+sub vcl_recv {
+	call vcl_recv_purge;
+}
+
+sub vcl_hit {
+	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
+		error 412 "Etag mismatch";
+	}
+}
+
+sub vcl_miss {
+	if (req.http.If-Cached) {
+		error 412 "Entity not in cache";
+	}
+}
