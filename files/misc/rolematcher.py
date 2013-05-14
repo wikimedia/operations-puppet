@@ -204,11 +204,11 @@ def init():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 1:
+    if len(sys.argv) != 2:
         print 'Please specify path to packetloss log file, call this file only for testing purposes.'
         sys.exit(-1)
     else:
-        path = sys.argv[0]
+        path = sys.argv[1]
 
     matchers = init()
     line_matcher = re.compile('^\[(?P<date>[^]]+)\] (?P<server>[^ ]+) lost: \((?P<percentloss>[^ ]+) \+\/- (?P<margin>[^)]+)\)%')
