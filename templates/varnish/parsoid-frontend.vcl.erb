@@ -1,0 +1,20 @@
+# Varnish VCL include file for Parsoid frontends
+
+import std;
+
+sub vcl_recv {
+	call vcl_recv_purge;
+}
+
+sub vcl_hit {
+	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
+		error 412 "Etag mismatch";
+	}
+}
+
+sub vcl_miss {
+	/* Make sure If-Cached requests won't pollute the cache */
+	if (req.http.If-Cached) {
+		return (pass);
+	}
+}
