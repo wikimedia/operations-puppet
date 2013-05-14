@@ -39,7 +39,7 @@ NODEFILE=
 	# Update the current machine so that serialization works.
 	# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
 	# and mwscript work with the right version of the files.
-	/usr/bin/sync-common
+	/usr/local/bin/sync-common
 
 
 	# Update list of extension message files and regenerate
@@ -58,10 +58,10 @@ NODEFILE=
 
 	echo 'Copying style sheets to apaches...'
 	# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
-	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/bin/scap-1skins' || true
+	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/local/bin/scap-1skins' || true
 
 	echo 'Updating rsync proxies...'
-	dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- /usr/bin/scap-1
+	dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- /usr/local/bin/scap-1
 
 	# Do the main code update in random order to avoid overloading any given rsync server
 	NODEFILE=$(mktemp)
@@ -72,7 +72,7 @@ NODEFILE=
 	RSYNC_SERVERS=`echo $RSYNC_SERVERS`
 
 	echo 'Copying code to apaches...'
-	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/bin/scap-1 \""$RSYNC_SERVERS"\" || true
+	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\" || true
 	echo 'Finished'
 
 	export DOLOGMSGNOLOG=""

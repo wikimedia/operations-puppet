@@ -17,13 +17,13 @@ fi
 RSYNC_SERVERS="$1"
 SERVER=
 if [ -n "$RSYNC_SERVERS" ]; then
-	SERVER=$(sudo /usr/bin/find-nearest-rsync $RSYNC_SERVERS)
+	SERVER=$(sudo /usr/local/bin/find-nearest-rsync $RSYNC_SERVERS)
 fi
 if [ -z "$SERVER" ]; then
 	SERVER=tin.eqiad.wmnet
 fi
 
-sudo -u mwdeploy /usr/bin/scap-2 "$SERVER"
+sudo -u mwdeploy /usr/local/bin/scap-2 "$SERVER"
 
 echo Done
 

@@ -7,11 +7,26 @@ class mediawiki::sync {
 	$scriptpath = "/usr/local/bin"
 
 	file {
+		"${scriptpath}/find-nearest-rsync":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/find-nearest-rsync';
+		"${scriptpath}/mwversionsinuse":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/mwversionsinuse';
 		"${scriptpath}/scap-1":
 			owner  => root,
 			group  => root,
 			mode   => '0555',
 			source => 'puppet:///files/scap/scap-1';
+		"${scriptpath}/scap-1skins":
+			owner  => root,
+			group  => root,
+			mode   => '0555',
+			source => 'puppet:///files/scap/scap-1skins';
 		"${scriptpath}/scap-2":
 			owner  => root,
 			group  => root,

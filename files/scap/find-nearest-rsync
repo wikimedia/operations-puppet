@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+use strict;
+use Net::Ping;
+
+my $verbose = 0;
+if ( $#ARGV >= 0 && $ARGV[0] eq '--verbose' ) {
+	$verbose = 1;
+	shift;
+}
+
+if ( $#ARGV < 0 ) {
+	print STDERR "Usage: find-nearest-rsync [--verbose] <host> [<host> ...]\n";
+	exit( 1 );
+}
+
+my( $bestHost, $bestRTT );
+my $p = Net::Ping->new( "icmp", 2 );
+$p->hires();
+
+foreach my $host ( @ARGV ) {
+	my ( $success, $rtt, $ip ) = $p->ping( $host );
+	if ( not defined( $bestHost ) ) {
+		$bestHost = $host;
+		$bestRTT = $rtt;
+	} elsif ( $rtt < $bestRTT ) {
+		$bestRTT = $rtt;
+		$bestHost = $host;
+	}
+	if ( $verbose ) {
+		printf STDERR "%s: %.6f\n", ( $host, $rtt * 1000 );
+	}
+}
+
+if ( not defined( $bestHost ) ) {
+	print STDERR "find-nearest-rsync: No hosts replied!\n";
+	exit( 1 );
+}
+print "$bestHost\n";
+

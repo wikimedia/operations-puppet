@@ -1,0 +1,16 @@
+#!/bin/bash
+
+mwVersionNums=$(mwversionsinuse)
+if [ -z "$mwVersionNums" ]; then
+	echo "Unable to read wikiversions.dat or it is empty"
+	exit 1
+fi
+
+for mwVerNum in ${mwVersionNums[@]}; do
+	sudo -u mwdeploy sh -c "
+	rsync -a --no-perms tin.eqiad.wmnet::common/php-$mwVerNum/skins/ \
+	/usr/local/apache/common-local/php-$mwVerNum/skins && \
+	echo ok || \
+	echo failed
+	"
+done
