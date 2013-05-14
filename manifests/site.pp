@@ -236,7 +236,8 @@ node "bast1001.wikimedia.org" {
 		admins::restricted,
 		misc::bastionhost,
 		nrpe,
-		nfs::netapp::home::othersite
+		nfs::netapp::home::othersite,
+		misc::dsh
 }
 
 node "beryllium.wikimedia.org" {
@@ -829,7 +830,8 @@ node "fenari.wikimedia.org" {
 		squid::cachemgr,
 		accounts::awjrichards,
 		accounts::erosen,
-		generic::wikidev-umask
+		generic::wikidev-umask,
+		misc::dsh
 
 	install_certificate{ "star.wikimedia.org": }
 }
