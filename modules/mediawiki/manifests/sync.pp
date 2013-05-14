@@ -4,7 +4,7 @@ class mediawiki::sync {
 	require mediawiki::packages
 	require mediawiki::users::l10nupdate
 
-	$scriptpath = $misc::deployment::scap_scripts::scriptpath
+	$scriptpath = "/usr/local/bin"
 
 	file {
 		"${scriptpath}/scap-1":
@@ -22,6 +22,11 @@ class mediawiki::sync {
 			group  => root,
 			mode   => '0555',
 			source => 'puppet:///files/scap/sync-common';
+
+		# Fix $scriptpath screwup
+		"/scap-1": ensure => absent;
+		"/scap-2": ensure => absent;
+		"/sync-common": ensure => absent;
 	}
 
 	exec { 'mw-sync':
