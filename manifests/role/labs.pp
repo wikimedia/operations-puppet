@@ -52,7 +52,7 @@ class role::labs::tools {
   class mailrelay inherits role::labs::tools::config {
     system_role { "role::labs::tools::mailrelay": description => "Tool Labs mail relay" }
     class { 'toollabs::mailrelay':
-      maildomain => "tools.wmflabs.org", ### TEMPORARY DO NOT USE FOR REAL! ###
+      maildomain => "toollabs.org",
     }
   }
 
