@@ -9,7 +9,7 @@ class applicationserver::sudo {
 	}
 
 	sudo_group {"wikidev_root":
-		privileges => ['ALL= NOPASSWD: /usr/sbin/apache2ctl, /etc/init.d/apache2, /usr/bin/renice, /usr/bin/find-nearest-rsync'],
+		privileges => ['ALL= NOPASSWD: /usr/sbin/apache2ctl, /etc/init.d/apache2, /usr/bin/renice, /usr/local/bin/find-nearest-rsync'],
 		group => "wikidev"
 	}
 
