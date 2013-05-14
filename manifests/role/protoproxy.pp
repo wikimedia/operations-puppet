@@ -382,7 +382,18 @@ class role::protoproxy::ssl::beta {
     }
 
     $instances = {
-        'bits' => { proxy_server_name => 'bits.beta.wmflabs.org' },
+        'bits'        => { proxy_server_name => 'bits.beta.wmflabs.org' },
+        'wikidata'    => { proxy_server_name => 'wikidata.beta.wmflabs.org' },
+        'wikimedia'   => { proxy_server_name => '*.wikimedia.beta.wmflabs.org' },
+
+        'wikibooks'   => { proxy_server_name => '*.wikibooks.beta.wmflabs.org' },
+        'wikinews'    => { proxy_server_name => '*.wikinews.beta.wmflabs.org' },
+        'wikipedia'   => { proxy_server_name => '*.wikipedia.beta.wmflabs.org' },
+        'wikiquote'   => { proxy_server_name => '*.wikiquote.beta.wmflabs.org' },
+        'wikisource'  => { proxy_server_name => '*.wikisource.beta.wmflabs.org' },
+        'wikiversity' => { proxy_server_name => '*.wikiversity.beta.wmflabs.org' },
+        'wikivoyage'  => { proxy_server_name => '*.wikivoyage.beta.wmflabs.org' },
+        'wiktionary'  => { proxy_server_name => '*.wiktionary.beta.wmflabs.org' },
     }
 
     create_resources( protoproxy, $instances, $defaults )
