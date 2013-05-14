@@ -2738,7 +2738,8 @@ node "tin.eqiad.wmnet" {
 		role::deployment::deployment_servers::production,
 		misc::deployment,
 		misc::deployment::scap_scripts,
-		misc::deployment::l10nupdate
+		misc::deployment::l10nupdate,
+		generic::mysql::packages::client
 }
 
 node "tridge.wikimedia.org" {
