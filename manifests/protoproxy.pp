@@ -9,8 +9,10 @@
 #
 # [*proxy_addresses*]
 # Additional IP address to listen to. IPv6 addresses will be skipped
-# unless *IpV6_enabled* is true.  The hash first level is made of sites
+# unless *IpV6_enabled* is true. The hash first level is made of sites
 # entries, the IP are passed as an array.
+# This is optional, the site will always listen on the server real IP.
+# Defaults to {}
 #
 # [*proxy_server_name*]
 #
@@ -39,7 +41,7 @@
 # Defaults to {}
 #
 define proxy_configuration(
-  $proxy_addresses,
+  $proxy_addresses={},
   $proxy_server_name,
   $proxy_server_cert_name,
   $proxy_backend,
