@@ -2707,6 +2707,7 @@ node "terbium.eqiad.wmnet" {
 		admins::roots,
 		admins::mortals,
 		admins::restricted,
+		generic::wikidev-umask,
 		nrpe
 
 
@@ -2735,6 +2736,7 @@ node "tin.eqiad.wmnet" {
 	include standard,
 		admins::roots,
 		admins::mortals,
+		generic::wikidev-umask,
 		role::deployment::deployment_servers::production,
 		misc::deployment,
 		misc::deployment::scap_scripts,
