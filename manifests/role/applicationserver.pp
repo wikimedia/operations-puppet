@@ -118,6 +118,8 @@ class role::applicationserver {
 	# apply both roles cause puppet will complains about a duplicate class
 	# definition for role::applicationserver::common
 	class appserver::beta{
+		system_role { "role::applicationserver::appserver::beta": description => "Beta Apache Application server" }
+
 		class { "role::applicationserver::common": group => "beta_appserver" }
 
 		include role::applicationserver::webserver
