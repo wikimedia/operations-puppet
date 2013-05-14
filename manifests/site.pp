@@ -2893,8 +2893,7 @@ node /((cerium|titanium)\.wikimedia\.org|(celsus|constable)\.pmtpa\.wmnet)/ {
 	include standard,
 		admins::roots,
 		admins::parsoid,
-		misc::parsoid::cache,
-		misc::parsoid
+		misc::parsoid::cache
 
 	include lvs::configuration
 	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site]
