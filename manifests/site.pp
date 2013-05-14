@@ -923,6 +923,7 @@ node "gallium.wikimedia.org" {
 		misc::contint::test::jenkins,
 		misc::contint::android::sdk,
 		role::jenkins::master::production,
+		role::jenkins::slave::production,
 		role::zuul::production,
 		admins::roots,
 		admins::jenkins
