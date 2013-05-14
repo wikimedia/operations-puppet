@@ -79,11 +79,6 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/mwscriptwikiset";
-		"${scriptpath}/mwversionsinuse":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/misc/scripts/mwversionsinuse";
 		"${scriptpath}/notifyNewProjects":
 			owner => root,
 			group => root,
