@@ -1,0 +1,30 @@
+# Varnish VCL include file shared between Parsoid front- and backends
+
+sub vcl_recv {
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		return (lookup);
+	}
+	// Enable force-refresh
+	// See https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
+	if (req.http.Cache-Control ~ "no-cache") {
+		set req.hash_always_miss = true;
+	}
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged";
+	}
+}
+
+sub vcl_miss {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Cache miss";
+	}
+	if (req.http.Cache-Control ~ "only-if-cached") {
+		error 412 "Entity not in cache";
+	}
+}
