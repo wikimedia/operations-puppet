@@ -150,9 +150,15 @@ class openstack::common($openstack_version="essex",
 		require => Class["openstack::repo"];
 	}
 
-	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-client", "mysql-common" ]:
+	package { [ "unzip", "vblade-persist", "python-mysqldb", "bridge-utils", "ebtables", "mysql-common" ]:
 		ensure => present,
 		require => Class["openstack::repo"];
+	}
+
+	if ! defined(Package['mysql-client']) {
+		package {'mysql-client':
+			ensure => present,
+			require => Class["openstack::repo"];
 	}
 
 	# For IPv6 support
@@ -329,14 +335,12 @@ class openstack::database-server($openstack_version="essex", $novaconfig, $keyst
 	$keystone_db_user = $keystoneconfig["db_user"]
 	$keystone_db_pass = $keystoneconfig["db_pass"]
 
-	package { "mysql-server":
-		ensure => present;
-	}
-
-	service { "mysql":
-		enable => true,
-		require => Package["mysql-server"],
-		ensure => running;
+	if !defined(Service['mysql']) {
+		service { "mysql":		
+			enable => true,		
+			require => Class['generic::mysql::packages::server'],
+			ensure => running;
+		}
 	}
 
 	# TODO: This expects the services to be installed in the same location
@@ -455,15 +459,19 @@ class openstack::database-server($openstack_version="essex", $novaconfig, $keyst
 class openstack::openstack-manager($openstack_version="essex", $novaconfig, $certificate) {
 	require mediawiki::users::mwdeploy
 
-	include webserver::apache2
+	if !defined(Class["webserver::php5"]) {
+		class {'webserver::php5': ssl => 'true'; }
+	}
 
-	class { "memcached":
-		pin => true;
+	if !defined(Class["memcached"]) {
+		class { "memcached":
+			pin => true;
+		}
 	}
 
 	$controller_hostname = $novaconfig["controller_hostname"]
 
-	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick' ]:
+	package { [ 'php5', 'php5-cli', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-luasandbox' ]:
 		ensure => present;
 	}
 
@@ -475,6 +483,11 @@ class openstack::openstack-manager($openstack_version="essex", $novaconfig, $cer
 			group => root,
 			content => template('apache/sites/wikitech.wikimedia.org.erb'),
 			ensure => present;
+		"/a":
+			mode => 755,
+			owner => root,
+			group => root,
+			ensure => directory;
 		"/a/backup":
 			mode => 755,
 			owner => root,
