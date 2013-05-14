@@ -1,6 +1,6 @@
 # track the testing Ceph release train for now
 Name: ceph
-Method: http://ceph.com/debian/
+Method: http://ceph.com/debian-bobtail/
 Components: main>main
 UDebComponents:
 Suite: precise
