@@ -2918,8 +2918,9 @@ node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
 
 	if $hostname == "wtp1004" {
 		# Temporary apachebench install for Gabriel --Roan 2013-03-15
+		# Removed, no longer needed --Roan 2013-05-14
 		package { [ "apache2-utils" ]:
-			ensure => latest
+			ensure => absent
 		}
 	}
 
