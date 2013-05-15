@@ -21,6 +21,7 @@ class role::request-tracker::labs {
 #
 class role::request-tracker-apache::labs {
 	include passwords::misc::rt
+	include apache
 
 	class { "misc::rt-apache::server":
 		dbuser => $passwords::misc::rt::rt_mysql_user,

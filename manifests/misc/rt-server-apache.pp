@@ -14,8 +14,6 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     ensure => latest;
   }
 
-  include apache
-
   $rtconf = '# This file is for the command-line client, /usr/bin/rt.\n\nserver http://localhost/rt\n'
 
   file {
