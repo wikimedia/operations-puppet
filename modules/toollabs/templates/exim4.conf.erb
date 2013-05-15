@@ -78,6 +78,7 @@ userprocmail:
   check_local_user
   file = $home/.procmailrc
   require_files = $local_part:$home/.procmailrc
+  transport = procmailpipe
   no_verify
   no_expn
 
