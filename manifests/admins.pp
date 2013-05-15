@@ -2645,6 +2645,7 @@ class accounts {
 		$username = "ram"
 		$realname = "Munagala Ramanath"
 		$uid = 628
+		$enabled = false
 
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
@@ -2653,7 +2654,7 @@ class accounts {
 
 			ssh_authorized_key {
 				"ram@wikimedia.org":
-				ensure  => present,
+				ensure  => absent,
 				user  => $username,
 				type  => "ssh-rsa",
 				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC1crxU3ORFVUydISpXqcTWzUrhnvdkim3rUppL+N9OYb+kIDobFKlzWlPUx9FHvu9Rl4zc7jmJIV36qxC9mDgvIya4XS5dLEVbZ8fR1r+NH0jJU9MDpdUaFTx2svl5WQqig5cnNqi2oL17NGxF1kl9vga6SZzuIngiKvHvfp+tgrXXMPyyaC7+6OJTJjropRifO72XtbcKlNmYtOn8FWeB6Ge1S3S73LZsuTG41LRiumT2ljQT5K2CnFAREwaeuYGNWq7SRbymb7m0kys2OQ7KMeRAPpIjwLekK5+QTAdM3+W3AOFXGX9idYk7iSDWG/+pXNcFRQpgH0WDzsBeKWLv",
@@ -2998,7 +2999,7 @@ class admins::restricted {
 	include accounts::mgrover #RT 4600
 	include accounts::otto
 	include accounts::rainman
-	include accounts::ram #rt4387
+	include accounts::ram # revoked
 	include accounts::rcole # access revoked
 	include accounts::tparscal
 }
