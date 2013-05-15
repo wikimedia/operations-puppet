@@ -870,7 +870,6 @@ node "formey.wikimedia.org" {
 	$ssh_tcp_forwarding = "no"
 	$ssh_x11_forwarding = "no"
 	include standard,
-		role::gerrit::production::replicationdest,
 		svn::server,
 		backup::client
 
