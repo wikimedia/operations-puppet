@@ -523,6 +523,18 @@ node 'db29.pmtpa.wmnet' {
 	}
 }
 
+node "db77.pmtpa.wmnet" {
+
+  include role::fundraising::database::dump_slave
+  class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+
+#  system_role { "role::fundraising::database::dump": description => "Fundraising Database Dump/Backup" }
+#  system_role { "role::fundraising::database": description => "Fundraising Database (${mysql_role})" }
+#  include role::coredb::fundraising
+# include misc::fundraising::backup::backupmover_user
+# class { 'misc::fundraising::backup::dump_fundraising_database': hour => 9, minute => 0 }
+#  class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+}
 
 ## not in use for various reasons
 node /^db(42|6[12]|7[5-7])\.pmtpa\.wmnet/{
