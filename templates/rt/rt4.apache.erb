@@ -1,19 +1,38 @@
 # This file is managed by Puppet!
 #
-<VirtualHost "<%=@site%>">
-    AddDefaultCharset UTF-8
+<VirtualHost *:80>
 
-    DocumentRoot "/usr/share/request-tracker4/html"
-    <Location />
-        Order allow,deny
-        Allow from all
+  ServerName <%=@site%>
 
-        SetHandler modperl
-        PerlResponseHandler Plack::Handler::Apache2
-        PerlSetVar psgi_app /usr/share/request-tracker4/libexec/rt-server
-    </Location>
-    <Perl>
-        use Plack::Handler::Apache2;
-        Plack::Handler::Apache2->preload("/usr/share/request-tracker4/libexec/rt-server");
-    </Perl>
+  RewriteEngine on
+  RewriteRule ^/(.*)$ https://<%=@site%>/$1 [R=301]
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+  ServerName <%=@site%>
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/star.wikimedia.org.pem
+  SSLCertificateKeyFile /etc/ssl/private/star.wikimedia.org.key
+
+  AddDefaultCharset UTF-8
+
+  DocumentRoot "/usr/share/request-tracker4/html"
+
+  <Location />
+    Order allow,deny
+    Allow from all
+
+    SetHandler modperl
+    PerlResponseHandler Plack::Handler::Apache2
+    PerlSetVar psgi_app /usr/share/request-tracker4/libexec/rt-server
+  </Location>
+
+  <Perl>
+    use Plack::Handler::Apache2;
+    Plack::Handler::Apache2->preload("/usr/share/request-tracker4/libexec/rt-server");
+  </Perl>
+
 </VirtualHost>

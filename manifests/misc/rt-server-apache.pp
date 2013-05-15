@@ -63,6 +63,17 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     content => template('rt/rt4.apache.erb'),
   }
 
+  # use this to have a NameVirtualHost *:443
+  # avoid [warn] _default_ VirtualHost overlap
+
+  file { '/etc/apache2/ports.conf':
+    ensure => present,
+    mode => 0444,
+    owner => root,
+    group => root,
+    source => 'puppet:///files/apache/ports.conf.ssl';
+  }
+
   apache_module { 'perl':
     name => 'perl',
   }
