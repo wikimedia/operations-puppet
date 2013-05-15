@@ -80,6 +80,8 @@ class toollabs::exec_environ {
       'gnuplot-nox',
       'libpod-simple-wiki-perl',
       'libxml-libxml-perl',
+      'libdbd-mysql-perl',
+      'libnetaddr-ip-perl',
       'tcl',
       'tclcurl',
       'tcllib',
