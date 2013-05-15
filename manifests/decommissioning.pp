@@ -4,8 +4,6 @@
 
 $decommissioned_servers = [
 'adler',
-'argon', # not really decom, just need to stop nagios monitoring
-'barium',
 'bayes',
 'bellin',
 'blondel',
@@ -40,9 +38,7 @@ $decommissioned_servers = [
 'db28',
 'db30',
 'db41',
-'db1012', #turned into stat1002
 'db1025', #moved to frack.eqiad
-'europium', #reclaimed rt4689 robh
 'ixia',
 'gilman',
 'knsq1',
@@ -74,8 +70,9 @@ $decommissioned_servers = [
 'ms3',
 'ms4',
 'msfe1002',
-'project1',
-'project2',
+'ocg1',
+'ocg2',
+'ocg3',
 'searchidx1',
 'search1',
 'search2',
@@ -257,5 +254,4 @@ $decommissioned_servers = [
 'virt1002',
 'virt1003',
 'wikinews-lb.wikimedia.org',
-'xenon',
 ]
