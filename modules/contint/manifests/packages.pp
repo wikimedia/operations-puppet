@@ -9,6 +9,17 @@ class contint::packages {
   # with android
   include generic::packages::ant18
 
+  # Get several OpenJDK packages including the jdk to build mobile
+  # applications.
+  # (openjdk is the default distribution for the java define.
+  # The java define is found in modules/java/manifests/init.pp )
+  package { 'java-6-openjdk':
+    ensure => present,
+  }
+  package { 'java-7-openjdk':
+    ensure => present,
+  }
+
   include generic::packages::maven
 
   # Get perl dependencies so we can lint the wikibugs perl script
