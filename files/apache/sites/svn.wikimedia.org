@@ -42,12 +42,6 @@ NameVirtualHost *:80
 	ScriptAlias /viewvc /usr/lib/cgi-bin/viewvc.cgi
 
 	Redirect permanent /doc http://doc.wikimedia.org/mediawiki-core/master/php/html
-
-	# FIXME: What is this for??
-	Alias /stats /var/statsvn/html
-	<Directory /var/statsvn/html>
-		Allow from all
-	</Directory>
 </VirtualHost>
 
 NameVirtualHost *:443

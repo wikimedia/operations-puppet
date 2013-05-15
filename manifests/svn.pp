@@ -42,18 +42,6 @@ class svn::server {
 			mode => '0775';
 	}
 
-	# hooks
-	file {
-		"/svnroot/mediawiki/hooks/pre-commit":
-			ensure => absent;
-		"/svnroot/mediawiki/hooks/post-commit":
-			ensure => absent;
-		"/svnroot/mediawiki/hooks/HooksCommon.inc":
-			ensure => absent;
-		"/svnroot/mediawiki/hooks/deferred-updates.sh":
-			ensure => absent;
-	}
-
 	apache_site { "svn": name => "svn", prefix => "000-" }
 
 	monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!svn.wikimedia.org" }
@@ -133,45 +121,13 @@ class svn::server {
 		}
 	}
 
-	class cia {
-		file { "/usr/local/bin/ciabot_svn.py":
-			ensure => absent;
-		}
-	}
-
 	class conversion {
 		package { ['libqt4-dev', 'libsvn-dev', 'g++']:
 			ensure => latest;
 		}
 	}
 
-	include viewvc, hooks, dumps, cia, conversion
-
-
-	# Ensure doxygen is disabled on svn.wikimedia.org (bug 35663)
-	# @{
-
-	file {
-		"/var/log/mwdocs.log":
-			owner => mwdocs,
-			ensure => absent,
-			group => 'svn',
-			mode => '0644';
-		"/var/mwdocs":
-			owner => mwdocs,
-			#ensure => directory,
-			ensure => absent,
-			group => 'svn',
-			mode => '0755';
-		"/home/mwdocs/phase3":
-			#ensure => link,
-			ensure => absent,
-			target => "/var/mwdocs/phase3";
-	}
-
-	cron { "doc_generation":
-			ensure => absent,
-	}
+	include viewvc, hooks, dumps, conversion
 }
 
 class svn::users {
@@ -188,8 +144,6 @@ class svn::users {
 			require => Group[550],
 		}
 	}
-
-	# @}
 }
 
 class svn::groups {
@@ -202,13 +156,10 @@ class svn::groups {
 			allowdupe => false;
 		}
 	}
-
 }
 
 class svn::client {
-
 	package { 'subversion':
 		ensure => latest;
 	}
-
 }
