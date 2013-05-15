@@ -641,7 +641,8 @@ node 'db1053.eqiad.wmnet' {
 			's1' => {
 				'port' => 3306,
 				'innodb_log_file_size' => "2000M",
-				'ram' => "72G"
+				'ram' => "72G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 		}
 	}
@@ -653,17 +654,20 @@ node 'db1054.eqiad.wmnet' {
 			's2' => {
 				'port' => 3306,
 				'innodb_log_file_size' => "2000M",
-				'ram' => "24G"
+				'ram' => "24G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 			's4' => {
 				'port' => 3307,
 				'innodb_log_file_size' => "2000M",
-				'ram' => "24G"
+				'ram' => "24G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 			's5' => {
 				'port' => 3308,
 				'innodb_log_file_size' => "1000M",
-				'ram' => "24G"
+				'ram' => "24G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 		}
 	}
@@ -677,16 +681,19 @@ node 'db1057.eqiad.wmnet' {
 				'innodb_log_file_size' => "500M",
 				'ram' => "24G",
 				'repl_ignore_dbs' => $::private_wikis,
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 			's6' => {
 				'port' => 3307,
 				'innodb_log_file_size' => "500M",
-				'ram' => "24G"
+				'ram' => "24G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 			's7' => {
 				'port' => 3308,
 				'innodb_log_file_size' => "500M",
-				'ram' => "24G"
+				'ram' => "24G",
+				'repl_wild_ignore_tables' => $::private_tables,
 			},
 		}
 	}
