@@ -5,6 +5,12 @@
 class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $dbhost = 'localhost', $dbport = '', $datadir = '/var/lib/mysql' ) {
   system_role { 'misc::rt-apache::server': description => 'RT server with Apache' }
 
+
+  if ! defined(Class["webserver::php5"]) {
+    class {'webserver::php5': ssl => true; }
+  }
+
+
   $rt_mysql_user = $dbuser
   $rt_mysql_pass = $dbpass
   $rt_mysql_host = $dbhost
@@ -46,7 +52,7 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
                        "/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia" ],
     require => package[ 'request-tracker4', 'rt4-db-mysql', 'rt4-clients' ],
     refreshonly => true,
-    notify      => Service[httpd];
+    notify      => Service[apache2];
   }
 
   file { '/etc/apache2/sites-available/rt4':

@@ -14,9 +14,9 @@ class role::racktables {
 	webserver::php5-mysql,
 	misc::racktables
 
-	class {'webserver::php5': ssl => true; }
-
-
+	if ! defined(Class["webserver::php5"]) {
+		class {'webserver::php5': ssl => true; }
+	}
 
 	# dependencies
 	Class['webserver::php5'] -> apache_module['rewrite']
