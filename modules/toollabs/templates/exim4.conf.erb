@@ -73,6 +73,14 @@ userforward:
   no_expn
   check_ancestor
 
+userprocmail:
+  driver = accept
+  check_local_user
+  file = $home/.procmailrc
+  require_files = $local_part:$home/.procmailrc
+  no_verify
+  no_expn
+
 localuser:
   driver = accept
   check_local_user
@@ -82,6 +90,16 @@ begin transports
 
 remote_smtp:
   driver = smtp
+
+procmailpipe:
+  driver = pipe
+  command = "/usr/bin/procmail -d"
+  return_path_add
+  delivery_date_add
+  path = "/bin:/usr/bin:/usr/local/bin"
+  envelope_to_add
+  check_string = "From "
+  escape_string = ">From "
 
 local_delivery:
   driver = appendfile

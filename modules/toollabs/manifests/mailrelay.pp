@@ -13,6 +13,10 @@
 class toollabs::mailrelay($maildomain) inherits toollabs {
   include toollabs::infrastructure
 
+  package { "procmail":
+    ensure => present,
+  }
+
   file { "$store/mail-relay":
     ensure => file,
     owner => 'root',
