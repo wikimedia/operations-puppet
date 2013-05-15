@@ -112,6 +112,14 @@ class role::coredb::config {
 			'snapshot' => [ "es10", "es1010" ],
 			'no_master' => []
 		},
+		'fundraisingdb' => {
+			'hosts' => { 'pmtpa' => [ 'db78' ],
+				'eqiad' => ['db1008', 'db1013'] },
+			'primary_site' => $::mw_primary,
+			'masters' => { 'eqiad' => "db1008" },
+			'snapshot' => [],
+			'no_master' => []
+		},
 	}
 }
 
@@ -243,8 +251,20 @@ class role::coredb::researchdb( $shard="s1", $innodb_log_file_size = "2000M", $m
 	}
 }
 
+class role::coredb::fundraising( $mariadb = true ) {
+	class { "role::coredb::common":
+		shard => "fundraisingdb",
+		logical_cluster => "fundraising",
+		mariadb => $mariadb,
+		innodb_file_per_table => true,
+		slow_query_digest => false,
+		heartbeat_enabled => false
+	}
+}
+
 class role::coredb::common(
 	$shard,
+	$logical_cluster = "mysql",
 	$mariadb,
 	$read_only = true,
 	$skip_name_resolve = true,
@@ -260,7 +280,7 @@ class role::coredb::common(
 	$heartbeat_enabled = true,
 	) inherits role::coredb::config {
 
-	$cluster = "mysql"
+	$cluster = $logical_cluster
 	$primary_site = $topology[$shard]['primary_site']
 	$masters = $topology[$shard]['masters']
 	$snapshots = $topology[$shard]['snapshot']
