@@ -41,12 +41,6 @@ class misc::contint::test {
 
     include contint::proxy_jenkins
 
-    # Get several OpenJDK packages including the jdk.
-    # (openjdk is the default distribution for the java define.
-    # The java define is found in modules/java/manifests/init.pp )
-    java { 'java-6-openjdk': version => 6, alternative => true  }
-    java { 'java-7-openjdk': version => 7, alternative => false }
-
     include ::contint::tmpfs
 
     file {
