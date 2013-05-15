@@ -90,9 +90,9 @@ SELECT
 FROM
         bugs, bugs_activity
 WHERE
-        bugs.resolution = "$resolution"
+        bugs.resolution = $resolution
 AND
-        bugs_activity.added = "$resolution"
+        bugs_activity.added = $resolution
 AND
         bugs_activity.bug_when
 BETWEEN
@@ -114,9 +114,9 @@ SELECT
 FROM
         bugs, bugs_activity
 WHERE
-        bugs.bug_status = "$state"
+        bugs.bug_status = $state
 AND
-        bugs_activity.added = "$state"
+        bugs_activity.added = $state
 AND
         bugs_activity.bug_when
 BETWEEN
