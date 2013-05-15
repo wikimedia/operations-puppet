@@ -2802,7 +2802,7 @@ node "virt0.wikimedia.org" {
 
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
-	$openstack_version = "essex"
+	$openstack_version = "folsom"
 
 	include standard,
 		role::dns::ldap,
@@ -2817,7 +2817,7 @@ node "virt0.wikimedia.org" {
 
 node 'virt2.pmtpa.wmnet' {
 	$cluster = "virt"
-	$openstack_version = "essex"
+	$openstack_version = "folsom"
 
 	include standard,
 		role::nova::network,
@@ -2831,7 +2831,7 @@ node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 		$ganglia_aggregator = true
 	}
 
-	$openstack_version = "essex"
+	$openstack_version = "folsom"
 
 	include standard,
 		role::nova::compute
