@@ -736,21 +736,9 @@ class base {
 
 	include base::tcptweaks
 
-	class { base::puppet:
-		server => $::realm ? {
-			'labs' => $::site ? {
-				'pmtpa' => 'virt0.wikimedia.org',
-				'eqiad' => 'virt1000.wikimedia.org',
-			},
-			default => "puppet",
-		},
-		certname => $::realm ? {
-			# For labs, use instanceid.domain rather than the fqdn
-			# to ensure we're always using a unique certname.
-			# dc is an attribute from LDAP, it's set as the instanceid.
-			'labs' => "${dc}.${domain}",
-			default => undef,
-		},
+	case $::realm {
+		'production': { include role::puppet::agent::production }
+		'labs': { include role::puppet::agent::labs }
 	}
 
 	include	passwords::root,
