@@ -73,3 +73,53 @@ class role::puppet::self {
 		}
 	}
 }
+
+# Reapply the "default" puppet configuration on a labs instance
+# this should conflict with role::puppet::self
+class role::puppet::agent::labs {
+
+  system_role { 'role::puppet::agent::labs': description => 'Puppet instance pointing to labs puppetmaster' }
+
+  if $::realm != 'labs' {
+    fail('This class should only be used on labs')
+  }
+
+  # Make sure we no more have the puppetmaster::self installed
+  class { 'puppet::self::symlinks': ensure => absent }
+
+  # and get rid of puppet::self conf:
+  file { '/etc/puppet/puppet.conf.d/10-self.conf':
+    ensure => absent,
+    notify => Exec["compile puppet.conf"],
+  }
+
+  # Reapply the 'default' puppet configuration from base.
+  class { 'base::puppet':
+    server => $::site ? {
+      'pmtpa' => 'virt0.wikimedia.org',
+      'eqiad' => 'virt1000.wikimedia.org',
+    },
+    certname => "${::dc}.${::domain}",
+  }
+
+  # puppetmaster is no more needed on the instance
+  service {'puppetmaster':
+    ensure => stopped,
+  }
+
+}
+
+class role::puppet::agent::production {
+
+	system_role { 'role::puppet::agent::production': description => 'Puppet instance pointing to production puppetmaster' }
+
+	if $::realm != 'production' {
+		fail('This class should only be used on production')
+	}
+
+	class { 'base::puppet':
+		server   => 'puppet',
+		certname => undef,
+	}
+
+}

@@ -669,28 +669,33 @@ class puppet::self::gitclone {
 		require   => [ File["${gitdir}/labs"], File["${gitdir}/ssh"] ],
 	}
 
+  class { 'puppet::self::symlinks': ensure => link }
+
+}
+
+class puppet::self::symlinks( $ensure=link ) {
 	file { '/etc/puppet/private':
-		ensure => link,
+		ensure => $ensure,
 		target => "${gitdir}/labs/private",
 		force  => true,
 	}
 	file { '/etc/puppet/templates':
-		ensure => link,
+		ensure => $ensure,
 		target => "${gitdir}/operations/puppet/templates",
 		force  => true,
 	}
 	file { '/etc/puppet/files':
-		ensure => link,
+		ensure => $ensure,
 		target => "${gitdir}/operations/puppet/files",
 		force  => true,
 	}
 	file { '/etc/puppet/manifests':
-		ensure => link,
+		ensure => $ensure,
 		target => "${gitdir}/operations/puppet/manifests",
 		force  => true,
 	}
 	file { '/etc/puppet/modules':
-		ensure => link,
+		ensure => $ensure,
 		target => "${gitdir}/operations/puppet/modules",
 		force  => true,
 	}
