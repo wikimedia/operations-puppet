@@ -1,4 +1,4 @@
-# Varnish VCL include file for upload backends
+# Varnish VCL include file for Parsoid backends
 
 import std;
 
@@ -7,15 +7,17 @@ sub vcl_recv {
 	if (req.request == "PURGE") {
 		return (lookup);
 	}
+        // Enable force-refresh
+        // See https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
+        if (req.http.Cache-Control ~ "no-cache") {
+            set req.hash_always_miss = true;
+        }
 }
 
 sub vcl_hit {
 	if (req.request == "PURGE") {
 		purge;
 		error 200 "Purged";
-	}
-	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		error 412 "Etag mismatch";
 	}
 }
 
@@ -24,7 +26,7 @@ sub vcl_miss {
 		purge;
 		error 200 "Cache miss";
 	}
-	if (req.http.If-Cached) {
+	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
 }
