@@ -4,16 +4,6 @@ class mediawiki::sync {
 	require mediawiki::packages
 	require mediawiki::users::l10nupdate
 
-	if $::realm == 'labs' {
-		file { '/usr/local/apache':
-			ensure => link,
-			target => '/data/project/apache',
-			# Create link before wikimedia-task-appserver attempts
-			# to create /usr/local/apache/common.
-			before => Package['wikimedia-task-appserver'],
-		}
-	}
-
 	$scriptpath = "/usr/local/bin"
 
 	file {
