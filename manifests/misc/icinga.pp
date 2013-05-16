@@ -164,8 +164,8 @@ class icinga::monitor::configuration::files {
       group  => 'root',
       mode   => '0644';
 
-    '/etc/icinga/nsca_payments.cfg':
-      source => 'puppet:///private/nagios/nsca_payments.cfg',
+    '/etc/icinga/nsca_frack.cfg':
+      source => 'puppet:///private/nagios/nsca_frack.cfg',
       owner  => 'root',
       group  => 'root',
       mode   => '0644';
