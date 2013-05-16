@@ -1,31 +1,4 @@
 # Varnish VCL include file for Parsoid frontends
 
-import std;
-
-sub vcl_recv {
-	/* Support HTTP PURGE */
-	if (req.request == "PURGE") {
-		return (lookup);
-	}
-}
-
-sub vcl_hit {
-	if (req.request == "PURGE") {
-		purge;
-		error 200 "Purged";
-	}
-	if (req.http.If-Cached && req.http.If-Cached != obj.http.Etag) {
-		error 412 "Etag mismatch";
-	}
-}
-
-sub vcl_miss {
-	if (req.request == "PURGE") {
-		purge;
-		error 200 "Cache miss";
-	}
-	/* Make sure If-Cached requests won't pollute the cache */
-	if (req.http.If-Cached) {
-		return (pass);
-	}
-}
+# Include common Parsoid config shared between front- and backend
+include "parsoid-common.inc.vcl.erb";
