@@ -39,10 +39,6 @@ class applicationserver::config::apache(
 			notify => Service[apache]
 		}
 	} else {  # labs
-		file { '/usr/local/apache':
-			ensure => link,
-			target => '/data/project/apache',
-		}
 		# bug 38996 - Apache service does not run on start, need a fake
 		# sync to start it up.
 		exec { 'Fake sync apache wmf config on beta':
