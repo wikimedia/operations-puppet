@@ -173,7 +173,7 @@ class misc::statistics::webserver {
 		require => Class['webserver::apache'],
 	}
 	
-	webserver::apache::module { ['rewrite', 'proxy']: 
+	webserver::apache::module { ['rewrite', 'proxy', 'proxy_http']:
 		require => Class['webserver::apache']
 	}
 }
