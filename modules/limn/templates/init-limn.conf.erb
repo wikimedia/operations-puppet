@@ -23,4 +23,4 @@ setgid <%= scope.lookupvar('limn::group') %>
 
 console output
 chdir <%= base_directory %>
-exec ./node_modules/.bin/coco ./server/server.co >> <%= log_file %>
+exec ./node_modules/.bin/coco ./server/server.co >> <%= log_file %> 2>&1
