@@ -13,10 +13,10 @@ class contint::packages {
   # applications.
   # (openjdk is the default distribution for the java define.
   # The java define is found in modules/java/manifests/init.pp )
-  package { 'java-6-openjdk':
+  package { 'openjdk-6-jre':
     ensure => present,
   }
-  package { 'java-7-openjdk':
+  package { 'openjdk-7-jre':
     ensure => present,
   }
 
