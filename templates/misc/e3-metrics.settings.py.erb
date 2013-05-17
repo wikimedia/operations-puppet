@@ -9,14 +9,6 @@ import subprocess
 # Get working set of Python modules
 working_set = WorkingSet()
 
-# Determine UMAPI version using git foo
-cmd = ['git', 'log', '--date', 'relative', "--pretty=format:'%an %ar %h'", '-n', '1']
-p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE)
-version, err =  p.communicate()
-if err is not None:
-    version = 'Unknown version'
-
-
 # Project settings
 # ================
 
@@ -38,6 +30,13 @@ __cohort_meta_db__          = 'usertags_meta'
 __cohort_meta_instance__    = 'prod'
 
 __secret_key__ = '<%= secret_key %>'
+
+# Determine UMAPI version using git foo
+cmd = ['git', 'log', '--date', 'relative', "--pretty=format:'%an %ar %h'", '-n', '1']
+p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, cwd=__project_home__)
+version, err =  p.communicate()
+if err is not None:
+    version = 'Unknown version'
 
 try:
     working_set.require('Flask-Login>=0.1.2')
