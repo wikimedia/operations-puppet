@@ -104,7 +104,7 @@ VARNISH_STORAGE="<%= varnish_storage %>"
 #              -s ${VARNISH_STORAGE}"
 #
 
-EXTRA_OPTS="-p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p send_timeout=30 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 -p shm_reclen=1024 <%= runtime_params %>"
+EXTRA_OPTS="-p user=varnish -p thread_pool_add_delay=1 -p thread_pool_stack=131072 -p listen_depth=4096 -p session_max=200000 -p vcc_err_unref=off -p nuke_limit=300 -p shm_reclen=1024 <%= runtime_params %>"
 <% if has_variable?("extraopts") then %>
 EXTRA_OPTS="$EXTRA_OPTS <%= extraopts %>"
 <% end %>
