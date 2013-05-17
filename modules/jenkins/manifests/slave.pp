@@ -21,9 +21,7 @@ class jenkins::slave(
 
   user { $user:
     ensure     => present,
-    require    => Group['jenkins'],
     name       => $user,
-    gid        => 'jenkins',
     home       => $home,
     managehome => false,
     shell      => '/bin/bash',
