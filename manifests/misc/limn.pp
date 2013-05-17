@@ -8,13 +8,26 @@
 # $port            - limn port
 # $server_name     - ServerName for limn instance proxy.     Default it to infer from $name and $::realm.
 # $server_aliases  - ServerAliases for limn instance proxy.  Default is to infer from $name and $::realm.
+# $environment     - Node environment.  Default: production
+# $base_directory  - Limn install base directory.  Default: /usr/local/share/limn
+# $var_directory   - Limn instance var directory.  Limn datafiles live here.  Default: /var/lib/limn/$name
 #
 # == Example
 # misc::limn::instance { 'reportcard': }
 #
-define misc::limn::instance($port = 8081, $server_name = undef, $server_aliases = undef) {
+define misc::limn::instance(
+  $port           = 8081,
+  $envirionment   = 'production',
+  $base_directory = '/usr/local/share/limn',
+  $var_directory  = "/var/lib/limn/${name}",
+  $server_name    = undef,
+  $server_aliases = undef)
+{
   ::limn::instance { $name:
-    port => $port,
+    port           => $port,
+    environment    => $environment,
+    base_directory => $base_directory,
+    var_directory  => $var_directory,
   }
 
   # If $server_name was not specified,
