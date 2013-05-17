@@ -193,7 +193,7 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki::jobrunner": dprioprocs => 12, iprioprocs => 6, run_jobs_enabled => $run_jobs_enabled }
+		class { "mediawiki::jobrunner": dprioprocs => 15, iprioprocs => 6, run_jobs_enabled => $run_jobs_enabled }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
