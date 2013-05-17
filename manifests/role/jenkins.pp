@@ -33,7 +33,7 @@ class role::jenkins::slave::production {
 		# Lamely restrict to master which is gallium
 		ssh_key_options    => [ 'from="208.80.154.135"' ],
 		user               => 'jenkins-slave',
-		home               => '/srv/ssd/jenkins-slave',
+		workdir            => '/srv/ssd/jenkins-slave',
 		require            => Mount['/srv/ssd'],
 	}
 
