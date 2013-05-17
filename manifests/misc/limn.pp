@@ -17,7 +17,7 @@
 #
 define misc::limn::instance(
   $port           = 8081,
-  $envirionment   = 'production',
+  $environment    = 'production',
   $base_directory = '/usr/local/share/limn',
   $var_directory  = "/var/lib/limn/${name}",
   $server_name    = undef,
