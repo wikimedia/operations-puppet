@@ -19,11 +19,13 @@ define limn::instance (
 {
   require limn
 
-  file { $base_directory:
-    ensure => 'directory',
-    owner  => $limn::user,
-    group  => $limn::group,
-    mode   => '0775',
+  if !defined(File[$base_directory]) {
+    file { $base_directory:
+      ensure => 'directory',
+      owner  => $limn::user,
+      group  => $limn::group,
+      mode   => '0775',
+    }
   }
 
   file { $var_directory:
