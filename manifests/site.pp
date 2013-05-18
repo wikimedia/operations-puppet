@@ -655,6 +655,7 @@ node 'db1053.eqiad.wmnet' {
 				'innodb_log_file_size' => "2000M",
 				'ram' => "72G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 		}
@@ -669,6 +670,7 @@ node 'db1054.eqiad.wmnet' {
 				'innodb_log_file_size' => "2000M",
 				'ram' => "24G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 			's4' => {
@@ -676,6 +678,7 @@ node 'db1054.eqiad.wmnet' {
 				'innodb_log_file_size' => "2000M",
 				'ram' => "24G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 			's5' => {
@@ -683,6 +686,7 @@ node 'db1054.eqiad.wmnet' {
 				'innodb_log_file_size' => "1000M",
 				'ram' => "24G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 		}
@@ -698,6 +702,7 @@ node 'db1057.eqiad.wmnet' {
 				'ram' => "24G",
 				'repl_ignore_dbs' => $::private_wikis,
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 			's6' => {
@@ -705,6 +710,7 @@ node 'db1057.eqiad.wmnet' {
 				'innodb_log_file_size' => "500M",
 				'ram' => "24G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 			's7' => {
@@ -712,6 +718,7 @@ node 'db1057.eqiad.wmnet' {
 				'innodb_log_file_size' => "500M",
 				'ram' => "24G",
 				'repl_wild_ignore_tables' => $::private_tables,
+				'log_bin' => true,
 				'binlog_format' => "row",
 			},
 		}
@@ -1216,7 +1223,6 @@ node 'labsdb1001.eqiad.wmnet' {
 				'port' => 3306,
 				'innodb_log_file_size' => "2000M",
 				'ram' => "151G",
-				'log_bin' => false,
 				'innodb_locks_unsafe_for_binlog' => true,
 			},
 		}
@@ -1230,22 +1236,17 @@ node 'labsdb1002.eqiad.wmnet' {
 				'port' => 3306,
 				'innodb_log_file_size' => "2000M",
 				'ram' => "48G",
-				'log_bin' => false,
 				'innodb_locks_unsafe_for_binlog' => true,
 			},
 			's4' => {
 				'port' => 3307,
 				'innodb_log_file_size' => "2000M",
 				'ram' => "48G",
-				'log_bin' => false,
-				'innodb_locks_unsafe_for_binlog' => true,
 			},
 			's5' => {
 				'port' => 3308,
 				'innodb_log_file_size' => "1000M",
 				'ram' => "48G",
-				'log_bin' => false,
-				'innodb_locks_unsafe_for_binlog' => true,
 			},
 		}
 	}
@@ -1258,21 +1259,18 @@ node 'labsdb1003.eqiad.wmnet' {
 				'port' => 3306,
 				'innodb_log_file_size' => "500M",
 				'ram' => "48G",
-				'log_bin' => false,
 				'innodb_locks_unsafe_for_binlog' => true,
 			},
 			's6' => {
 				'port' => 3307,
 				'innodb_log_file_size' => "500M",
 				'ram' => "48G",
-				'log_bin' => false,
 				'innodb_locks_unsafe_for_binlog' => true,
 			},
 			's7' => {
 				'port' => 3308,
 				'innodb_log_file_size' => "500M",
 				'ram' => "48G",
-				'log_bin' => false,
 				'innodb_locks_unsafe_for_binlog' => true,
 			},
 		}

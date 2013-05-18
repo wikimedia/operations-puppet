@@ -22,7 +22,7 @@ define mysql_multi_instance::instance(
     if has_key( $instances[$name],  'log_bin') {
       $log_bin = $instances[$name]['log_bin']
     }else {
-      $log_bin = true
+      $log_bin = false
     }
     if has_key( $instances[$name],  'innodb_locks_unsafe_for_binlog') {
       $innodb_locks_unsafe_for_binlog = $instances[$name]['innodb_locks_unsafe_for_binlog']
