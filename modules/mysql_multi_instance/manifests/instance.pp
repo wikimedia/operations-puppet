@@ -67,8 +67,9 @@ define mysql_multi_instance::instance(
       settings => {
         'client' => {
           'port'   => $port,
-          'socket' => "/tmp/mysql.sock",
+          'socket' => "/tmp/mysql.${port}.sock",
         },
+        # FIXME - make threads and io-capacity dynamic
         'mysqld' => {
           'server_id'                   => $serverid,
           'read_only'                   => 1,
@@ -76,11 +77,12 @@ define mysql_multi_instance::instance(
           'socket'                      => "/tmp/mysql.${port}.sock",
           'port'                        => $port,
           'datadir'                     => "/a/sqldata.${port}/",
-          'tmpdir'                      => "/a/tmp/",
+          'tmpdir'                      => "/a/tmp.${port}/",
           'query_cache_type'            => 0,
           'log_slow_verbosity'          => 'Query_plan',
           'innodb-adaptive-flushing'    => 1,
           'innodb-buffer-pool-size'     => $ram,
+          'innodb_use_native_aio'       => 0,
           'innodb-flush-method'         => "O_DIRECT",
           'innodb-io-capacity'          => 1000,
           'innodb-log-file-size'        => $innodb_log_file_size,
