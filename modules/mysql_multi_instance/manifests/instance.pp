@@ -14,6 +14,16 @@ define mysql_multi_instance::instance(
     }else {
       $repl_wild_ignore_tables = false
     }
+    if has_key( $instances[$name],  'binlog_format') {
+      $binlog_format = $instances[$name]['binlog_format']
+    }else {
+      $binlog_format = "statement"
+    }
+    if has_key( $instances[$name],  'log_bin') {
+      $log_bin = $instances[$name]['log_bin']
+    }else {
+      $log_bin = true
+    }
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
     include passwords::nagios::mysql
@@ -94,12 +104,12 @@ define mysql_multi_instance::instance(
           'query_cache_size'            => 0,
           'log_slow_queries'            => true,
           'long_query_time'             => 0.45,
-          'log_bin'                     => true,
+          'log_bin'                     => $log_bin,
           'log_slave_updates'           => true,
           'sync_binlog'                 => 1,
           'binlog_cache_size'           => "1M",
           'max_binlog_size'             => "1000M",
-          'binlog_format'               => "statement",
+          'binlog_format'               => $binlog_format,
           'expire_logs_days'            => 30,
           'connect_timeout'             => 3,
           'back_log'                    => 1000,
