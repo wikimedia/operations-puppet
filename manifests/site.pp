@@ -1210,59 +1210,73 @@ node "knsq24.esams.wikimedia.org" {
 
 ## labsdb dbs
 node 'labsdb1001.eqiad.wmnet' {
-  class { role::db::labsdb:
-    instances => {
-      's1' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "72G"
-      },
-    }
-  }
+	class { role::db::labsdb:
+		instances => {
+			's1' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "151G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+		}
+	}
 }
 
 node 'labsdb1002.eqiad.wmnet' {
-  class { role::db::labsdb:
-    instances => {
-      's2' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "24G"
-      },
-      's4' => {
-        'port' => 3307,
-        'innodb_log_file_size' => "2000M",
-        'ram' => "24G"
-      },
-      's5' => {
-        'port' => 3308,
-        'innodb_log_file_size' => "1000M",
-        'ram' => "24G"
-      },
-    }
-  }
+	class { role::db::labsdb:
+		instances => {
+			's2' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+			's4' => {
+				'port' => 3307,
+				'innodb_log_file_size' => "2000M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+			's5' => {
+				'port' => 3308,
+				'innodb_log_file_size' => "1000M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+		}
+	}
 }
 
 node 'labsdb1003.eqiad.wmnet' {
-  class { role::db::labsdb:
-    instances => {
-      's3' => {
-        'port' => 3306,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G"
-      },
-      's6' => {
-        'port' => 3307,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G"
-      },
-      's7' => {
-        'port' => 3308,
-        'innodb_log_file_size' => "500M",
-        'ram' => "24G"
-      },
-    }
-  }
+	class { role::db::labsdb:
+		instances => {
+			's3' => {
+				'port' => 3306,
+				'innodb_log_file_size' => "500M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+			's6' => {
+				'port' => 3307,
+				'innodb_log_file_size' => "500M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+			's7' => {
+				'port' => 3308,
+				'innodb_log_file_size' => "500M",
+				'ram' => "48G",
+				'log_bin' => false,
+				'innodb_locks_unsafe_for_binlog' => true,
+			},
+		}
+	}
 }
 
 node /labstore[12]\.pmtpa\.wmnet/ {

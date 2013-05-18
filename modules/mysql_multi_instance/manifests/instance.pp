@@ -24,6 +24,11 @@ define mysql_multi_instance::instance(
     }else {
       $log_bin = true
     }
+    if has_key( $instances[$name],  'innodb_locks_unsafe_for_binlog') {
+      $innodb_locks_unsafe_for_binlog = $instances[$name]['innodb_locks_unsafe_for_binlog']
+    }else {
+      $innodb_locks_unsafe_for_binlog = false
+    }
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
     include passwords::nagios::mysql
@@ -94,6 +99,7 @@ define mysql_multi_instance::instance(
           'innodb-write-io-threads'     => 8,
           'innodb-checksums'            =>1,
           'innodb_file_per_table'       => true,
+          'innodb_locks_unsafe_for_binlog' => $innodb_locks_unsafe_for_binlog,
           'skip-external-locking'       => true,
           'skip-name-resolve'           => true,
           'key_buffer'                  => 1M,
