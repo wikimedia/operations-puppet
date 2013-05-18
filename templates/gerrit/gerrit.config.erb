@@ -60,8 +60,8 @@
 	match = \\b(I[0-9a-f]{7,40})\\b
 	link = "#q,$1,n,z"
 [commentlink "commit"]
-	match = \\b([0-9a-f]{7,40})\\b
-	link = "#q,$1,n,z"
+	match = (^|\\s|[:.,!?])([0-9a-f]{7,40})\\b
+	link = "#q,$2,n,z"
 [commentlink "bugzilla"]
 	match =  "\\b[bB][uU][gG]\\:?\\s+#?(\\d+)\\b"
 	link = https://bugzilla.wikimedia.org/$1
