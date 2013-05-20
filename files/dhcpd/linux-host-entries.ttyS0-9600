@@ -138,11 +138,6 @@ host db25 {
 	fixed-address db25.pmtpa.wmnet;
 }
 
-host db26 {
-	hardware ethernet 00:14:4F:8D:8E:2E;
-	fixed-address db26.pmtpa.wmnet;
-}
-
 host db28 {
 	hardware ethernet 00:14:4F:8D:51:46;
 	fixed-address db28.pmtpa.wmnet;
