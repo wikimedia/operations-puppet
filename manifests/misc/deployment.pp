@@ -285,8 +285,7 @@ class misc::deployment::passwordscripts {
 }
 
 class misc::deployment::l10nupdate {
-	require misc::deployment::scap_scripts,
-		accounts::l10nupdate
+	require misc::deployment::scap_scripts
 
 	$scriptpath = "/usr/local/bin"
 
