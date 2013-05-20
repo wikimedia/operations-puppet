@@ -45,6 +45,7 @@ class role::analytics::users {
 		accounts::olivneh,
 		accounts::erik,
 		accounts::milimetric,
+		accounts::yurik,   # RT 5158
 		accounts::spetrea, # RT 4402
 		accounts::ram      # RT 5059
 
