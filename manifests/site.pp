@@ -1,5 +1,6 @@
 # vim: set ts=4 et sw=4:
 #site.pp
+# vim: set noet:
 
 import "realm.pp" # These ones first
 import "generic-definitions.pp"
@@ -1346,8 +1347,37 @@ node /labstore[34]\.pmtpa\.wmnet/ {
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
 
-node "lanthanum.wikimedia.org" {
-    include standard
+node 'lanthanum.eqiad.wmnet' {
+    include standard,
+        admins::root,
+        admins::mortals,
+        admins::jenkins,
+        contint::packages,
+        role::jenkins::slave::production  # RT #5074
+
+    # Used as a Jenkins slave so some folks need escalated privileges
+    $gid=500
+    sudo_user { [ 'demon', 'hashar', 'krinkle', 'reedy', 'dsc', 'mholmquist' ]: privileges => [
+        'ALL = (jenkins-slave) NOPASSWD: ALL',
+        'ALL = (gerritslave) NOPASSWD: ALL',
+        ]
+    }
+
+
+    # lanthanum received a SSD drive just like gallium (RT #5178) mount it
+    file { '/srv/ssd':
+        owner => root,
+        group => root,
+        ensure => directory,
+    }
+    mount { '/srv/ssd':
+        ensure => mounted,
+        device => '/dev/sda1',
+        fstype => 'xfs',
+        options => 'noatime,nodiratime,nobarrier,logbufs=8',
+        require => File['/srv/ssd'],
+    }
+
 }
 
 node "linne.wikimedia.org" {
