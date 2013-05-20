@@ -318,6 +318,17 @@ class misc::deployment::l10nupdate {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/l10nupdate/sync-l10nupdate-1";
+		# add ssh keypair for l10nupdate user from fenari for RT-5187
+		"/home/l10nupdate/.ssh/id_rsa":
+			owner => l10nupdate,
+			group => l10nupdate,
+			mode => 0400,
+			source => "private:///files/ssh/tin/l10nupdate/id_rsa";
+		"/home/l10nupdate/.ssh/id_rsa.pub":
+			owner => l10nupdate,
+			group => l10nupdate,
+			mode => 0444,
+			source => "private:///files/ssh/tin/l10nupdate/id_rsa.pub";
 	}
 
 	# Make sure the log directory exists and has adequate permissions.
