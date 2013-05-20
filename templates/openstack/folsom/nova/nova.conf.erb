@@ -47,10 +47,7 @@ libvirt_use_virtio_for_bridges=True
 force_dhcp_release=True
 iscsi_helper=tgtadm
 
-# Settings for wikistatus, the add-on that updates OSM with instance status:
-notification_driver=nova.notifier.list_notifier
-list_notifier_drivers=wikinotifier.WikiStatus
-
+# Settings for wikistatus, the plugin that updates OSM with instance status:
 wiki_host=<%= instance_status_wiki_host %>
 wiki_domain=<%= instance_status_wiki_domain %>
 wiki_page_prefix=<%= instance_status_wiki_page_prefix %>

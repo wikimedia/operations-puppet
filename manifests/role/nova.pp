@@ -310,25 +310,32 @@ class role::nova::wikiupdates {
 
     include base::mwclient
 
-    if ($::lsbdistcodename == "lucid") {
-		file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
-			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			require => package["python-mwclient"],
-			notify => Service["nova-compute"]
-		}
-	} else {
-		file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
-			source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
-			mode => 0644,
-			owner => root,
-			group => root,
-			require => package["python-mwclient"],
-			notify => Service["nova-compute"]
-		}
-	}
+    if ($openstack_version == "essex") {
+        if ($::lsbdistcodename == "lucid") {
+		    file { "/usr/local/lib/python2.6/dist-packages/wikinotifier.py":
+			    source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			    mode => 0644,
+			    owner => root,
+			    group => root,
+			    require => package["python-mwclient"],
+			    notify => Service["nova-compute"]
+		    }
+	    } else {
+		    file { "/usr/local/lib/python2.7/dist-packages/wikinotifier.py":
+			    source => "puppet:///files/openstack/essex/nova/wikinotifier.py",
+			    mode => 0644,
+			    owner => root,
+			    group => root,
+			    require => package["python-mwclient"],
+			    notify => Service["nova-compute"]
+		    }
+	    }
+    } else {
+        package { 'python-openstack-wikistatus':
+            ensure => installed,
+            require => package["python-mwclient"],
+        }
+    }
 }
 
 class role::nova::compute {
