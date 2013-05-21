@@ -94,6 +94,12 @@ class toollabs::exec_environ {
   sysctl { "vm.overcommit_memory": value => 2 }
   sysctl { "vm.overcommit_ratio": value => 95 }
 
+  file { "/usr/local/bin/sql":
+    ensure => file,
+    mode => "0555",
+    source => "puppet:///files/toollabs/sql";
+  }
+
   # TODO: quotas
 }
 

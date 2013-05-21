@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function check_host () {
+    for HOST_I in enwiki bgwiki bgwiktionary cswiki enwikiquote \
+                  enwiktionary eowiki fiwiki idwiki itwiki nlwiki \
+                  nowiki plwiki ptwiki svwiki thwiki trwiki zhwiki \
+                  commonswiki dewiki wikidatawiki; do
+        if [ "$1" = "$HOST_I" ]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+# No database name or extra parameters given?
+if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: $0 DATABASE [COMMAND]" >&2
+    exit 1
+fi
+
+# Database name doesn't end up with "_p"?
+HOST="${1%_p}"
+if [ "$1" = "$HOST" ]; then
+    echo "$0: Database name '$1' doesn't end with '_p'." >&2
+    exit 1
+fi
+
+# Host in list of replicated databases?
+if ! check_host "$HOST"; then
+    echo "$0: Database '$1' hasn't been replicated to Tools yet." >&2
+    exit 1
+fi
+
+# Call mysql.
+if [ $# -eq 1 ]; then
+    exec mysql -ch "$HOST.labsdb" "$1"
+else
+    exec mysql -ch "$HOST.labsdb" "$1" -e "$2"
+fi
