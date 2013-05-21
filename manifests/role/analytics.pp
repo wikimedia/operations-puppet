@@ -78,5 +78,5 @@ class role::analytics::frontend inherits role::analytics {
 
 # Monitoring for kafka brokers.
 class role::analytics::kafka::server inherits role::analytics {
-  include ::analytics::monitoring::kafka::server
+  include misc::analytics::monitoring::kafka::server
 }
