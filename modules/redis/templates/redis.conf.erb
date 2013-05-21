@@ -419,7 +419,7 @@ no-appendfsync-on-rewrite yes
 # Specify a percentage of zero in order to disable the automatic AOF
 # rewrite feature.
 auto-aof-rewrite-percentage 100
-auto-aof-rewrite-min-size 512mb
+auto-aof-rewrite-min-size <%= auto_aof_rewrite_min_size %>
 
 ################################ LUA SCRIPTING  ###############################
 

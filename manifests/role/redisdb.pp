@@ -16,14 +16,27 @@ class role::db::redis (
 	include standard,
 		passwords::redis
 
-	class { "::redis":
-		maxmemory => $maxmemory,
-		persist => "aof",
-		redis_replication => $redis_replication,
-		password => $passwords::redis::main_password,
+	if $::realm == "production" {
+
+		class { "::redis":
+			maxmemory => $maxmemory,
+			persist => "aof",
+			redis_replication => $redis_replication,
+			password => $passwords::redis::main_password,
+		}
+
+		include redis::ganglia
 	}
 
-	include redis::ganglia
+	if $::realm == "labs" {
 
+		class { "::redis":
+			maxmemory		  => "500mb",
+			persist			  => "aof",
+			redis_replication	  => undef,
+			password		  => $::passwords::redis::main_password,
+			dir			  => "/var/lib/redis/",
+			auto_aof_rewrite_min_size => "64mb",
+		}
+	}
 }
-

@@ -13,6 +13,7 @@ class redis (
 	$servicename = "redis-server",
 	$monitor = true,
 	$password = false,
+        $auto_aof_rewrite_min_size = "512mb",
 ) {
 	case $::operatingsystem {
 		debian, ubuntu: {
