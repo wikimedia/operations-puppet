@@ -4,6 +4,11 @@ define mysql_multi_instance::instance(
     $port                 = $instances[$name]['port']
     $innodb_log_file_size = $instances[$name]['innodb_log_file_size']
     $ram                  = $instances[$name]['ram']
+    if has_key( $instances[$name], 'read_only') {
+      $read_only = $instances[$name]['readonly']
+    }else {
+      $read_only = 1
+    }
     if has_key( $instances[$name],  'repl_ignore_dbs') {
       $repl_ignore_dbs = $instances[$name]['repl_ignore_dbs']
     }else {
@@ -77,7 +82,7 @@ define mysql_multi_instance::instance(
         # FIXME - make threads and io-capacity dynamic
         'mysqld' => {
           'server_id'                   => $serverid,
-          'read_only'                   => 1,
+          'read_only'                   => $read_only,
           'user'                        => "mysql",
           'socket'                      => "/tmp/mysql.${port}.sock",
           'port'                        => $port,
