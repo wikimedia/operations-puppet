@@ -92,3 +92,22 @@ class role::db::labsdb( $instances = {} ) {
 		nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${instances_count}:${instances_count} -C mysqld"
 	}
 }
+
+class role::labsdb::manager {
+	package { ["python-mysqldb", "python-yaml"]:
+		ensure => present;
+	}
+
+	file {
+		"/root/skrillex.py":
+			owner => root,
+			group => root,
+			mode => 0500,
+			source => "puppet:///files/mysql/skrillex.py";
+		"/root/skrillex.yaml":
+			owner => root,
+			group => root,
+			mode => 0400,
+			content => template('mysql/skrillex.yaml');
+	}
+}

@@ -1,0 +1,48 @@
+---
+sanitarium:
+    mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s1:
+        host: db1053.eqiad.wmnet
+        port: 3306
+    s2:
+        host: db1054.eqiad.wmnet
+        port: 3306
+    s3:
+        host: db1057.eqiad.wmnet
+        port: 3306
+    s4:
+        host: db1054.eqiad.wmnet
+        port: 3307
+    s5:
+        host: db1054.eqiad.wmnet
+        port: 3308
+    s6:
+        host: db1057.eqiad.wmnet
+        port: 3307
+    s7:
+        host: db1057.eqiad.wmnet
+        port: 3308
+labsdb:
+    mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s1:
+        host: labsdb1001.eqiad.wmnet
+        port: 3306
+    s2:
+        host: labsdb1002.eqiad.wmnet
+        port: 3306
+    s3:
+        host: labsdb1003.eqiad.wmnet
+        port: 3306
+    s4:
+        host: labsdb1002.eqiad.wmnet
+        port: 3307
+    s5:
+        host: labsdb1002.eqiad.wmnet
+        port: 3308
+    s6:
+        host: labsdb1003.eqiad.wmnet
+        port: 3307
+    s7:
+        host: labsdb1003.eqiad.wmnet
+        port: 3308
+...
