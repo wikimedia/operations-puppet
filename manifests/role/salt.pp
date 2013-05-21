@@ -51,7 +51,7 @@ class role::salt::masters::labs {
 		#},
 	}
 
-	class { "salt_reactors":
+	class { "salt::reactors":
 		salt_reactor_options => {"puppet_server" => "virt0.wikimedia.org"},
 	}
 
