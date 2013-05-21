@@ -180,7 +180,7 @@
 
 # Add any additional locations to look for master runners
 #runner_dirs: []
-<% if @salt_runner_dirs %>runner_dirs: [<%= salt_runner_dirs.map { |i| "'" + i.to_s + "'" }.join(",") %>]<% end %
+<% if @salt_runner_dirs %>runner_dirs: [<%= salt_runner_dirs.map { |i| "'" + i.to_s + "'" }.join(",") %>]<% end %>
 
 # Enable Cython for master side modules
 #cython_enable: False
