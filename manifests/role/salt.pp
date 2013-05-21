@@ -79,7 +79,7 @@ class role::salt::minions {
 		$salt_master_finger = "5d:07:fb:28:21:60:fb:db:46:ff:e8:1c:91:a2:1a:f9"
 	} else {
 		$salt_master = "sockpuppet.pmtpa.wmnet"
-		$salt_client_id = undef
+		$salt_client_id = ${fqdn},
 		$salt_grains = {
 			"realm" => $realm,
 			"site" => $site,

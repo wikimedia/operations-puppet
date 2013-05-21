@@ -36,7 +36,7 @@ master: <%= salt_master %>
 # Since salt uses detached ids it is possible to run multiple minions on the
 # same machine but with different ids, this can be useful for salt compute
 # clusters.
-id: <%= salt_client_id %>
+<% if @salt_master %>id: <%= salt_client_id %><% end %>
 
 # Append a domain to a hostname in the event that it does not exist.  This is
 # useful for systems where socket.getfqdn() does not actually result in a
