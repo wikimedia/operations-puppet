@@ -5,7 +5,7 @@ define mysql_multi_instance::instance(
     $innodb_log_file_size = $instances[$name]['innodb_log_file_size']
     $ram                  = $instances[$name]['ram']
     if has_key( $instances[$name], 'read_only') {
-      $read_only = $instances[$name]['readonly']
+      $read_only = $instances[$name]['read_only']
     }else {
       $read_only = 1
     }
