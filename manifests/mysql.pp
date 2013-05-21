@@ -12,7 +12,7 @@ class mysql_wmf {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^blondel/ {
+	if $hostname =~ /^(blondel|db1008)/ {
 		$master = true
 		$writable = true
 	} else {
