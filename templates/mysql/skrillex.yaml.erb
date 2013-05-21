@@ -1,0 +1,60 @@
+---
+sanitarium:
+    s1:
+        host: db1053.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s2:
+        host: db1054.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s3:
+        host: db1057.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s4:
+        host: db1054.eqiad.wmnet
+        port: 3307
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s5:
+        host: db1054.eqiad.wmnet
+        port: 3308
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s6:
+        host: db1057.eqiad.wmnet
+        port: 3307
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+    s7:
+        host: db1057.eqiad.wmnet
+        port: 3308
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_root_pass') %>
+labsdb:
+    s1:
+        host: labsdb1001.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s2:
+        host: labsdb1002.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s3:
+        host: labsdb1003.eqiad.wmnet
+        port: 3306
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s4:
+        host: labsdb1002.eqiad.wmnet
+        port: 3307
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s5:
+        host: labsdb1002.eqiad.wmnet
+        port: 3308
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s6:
+        host: labsdb1003.eqiad.wmnet
+        port: 3307
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+    s7:
+        host: labsdb1003.eqiad.wmnet
+        port: 3308
+        mysqlpasswd: <%= scope.lookupvar('passwords::misc::scripts::mysql_labsdb_root_pass') %>
+...
