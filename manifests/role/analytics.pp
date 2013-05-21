@@ -75,3 +75,8 @@ class role::analytics::frontend inherits role::analytics {
 		version => "5.5",
 	}
 }
+
+# Monitoring for kafka brokers.
+class role::analytics::kafka::server inherits role::analytics {
+  include ::analytics::monitoring::kafka::server
+}

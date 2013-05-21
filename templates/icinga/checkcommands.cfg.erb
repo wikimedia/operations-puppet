@@ -613,3 +613,12 @@ define command{
         command_line    $USER1$/check_to_check_nagios_paging
 }
 
+
+# Analytics Kraken checks
+# Check that Kafka Brokers are getting ProduceRequests.
+define command{
+	command_name	check_kafka_broker_produce_requests
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o lt
+}
+
+

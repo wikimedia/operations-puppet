@@ -24,3 +24,15 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 		require => File[$tmp_dir],
 	}
 }
+
+
+class misc::analytics::monitoring::kafka::server {
+	# Set up icinga monitoring of Kafka broker server produce requests per second.
+	# If this drops too low, trigger an alert
+	# for this udp2log instance.
+	monitor_service { "kakfa-broker-ProduceRequestsPerSecond":
+		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond",
+		check_command         => "check_kafka_broker_produce_requests!3!2",
+		contact_group         => "analytics",
+	}
+}

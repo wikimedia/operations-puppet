@@ -170,9 +170,13 @@ node "analytics1008.eqiad.wmnet" {
 	}
 }
 
+# analytics1021 and analytics1022 are Kafka Brokers.
+node /analytics102[12]\.eqiad\.wmnet/ {
+	include role::analytics::kafka::server
+}
 
-# analytics1007, analytics1009-analytics1026
-node /analytics10(0[7]|1[0-9]|2[0-6])\.eqiad\.wmnet/ {
+# analytics1007, analytics1009-analytics1020, analytics1023-analytics1027
+node /analytics10(0[7]|1[0-9]|2[034567])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1011") {
 		$ganglia_aggregator = true
