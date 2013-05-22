@@ -87,6 +87,7 @@ class toollabs::exec_environ {
       'tcllib',
       'libthreads-shared-perl',
       'libthreads-perl',
+      'dc',
       'p7zip' ]:
     ensure => present
   }
