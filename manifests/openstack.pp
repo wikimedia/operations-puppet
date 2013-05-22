@@ -129,6 +129,8 @@ class openstack::repo($openstack_version="essex") {
 			components => 'main',
 			keyfile    => 'puppet:///files/misc/ubuntu-cloud.key';
 		}
+
+		include apt::updatefornewrepo
 	}
 }
 
