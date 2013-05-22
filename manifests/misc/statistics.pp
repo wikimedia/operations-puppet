@@ -383,7 +383,7 @@ class misc::statistics::sites::metrics {
 
 	# install a .htpasswd file for E3
 	file { "$e3_home/.htpasswd":
-		content  => 'e3:$apr1$krR9Lhez$Yr0Ya9GpCW8KRQLeyR5Rn.',
+		content  => $passwords::e3::metrics::htpasswd_content,
 		owner    => $metrics_user,
 		group    => "wikidev",
 		mode     => 0664,
