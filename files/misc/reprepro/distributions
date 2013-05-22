@@ -48,7 +48,7 @@ Version: 12.04
 Architectures: source amd64 i386
 Components: main universe mariadb
 UDebComponents: main
-Update: ceph jenkins
+Update: ceph jenkins cloudera
 Description: Wikimedia specific packages for Ubuntu Precise
 SignWith: default
 DebOverride: deb-override

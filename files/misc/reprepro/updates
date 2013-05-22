@@ -16,3 +16,14 @@ GetInRelease: no
 Architectures: all>amd64
 VerifyRelease: 9B7D32F2D50582E6
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
+
+# track the cloudera hadoop release
+# They have an ugly and duplicated repository structure btw 
+Name: cloudera
+Method: http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/
+Components: contrib>main 
+UDebComponents:
+Suite: precise-cdh4
+Architectures: amd64 source
+VerifyRelease: 327574EE02A818DD
+ListShellHook: grep-dctrl -X -S zookeeper -o -X -S hadoop -o -X -S bigtop-jsvc -o -X -S bigtop-utils  || [ $? -eq 1 ]
