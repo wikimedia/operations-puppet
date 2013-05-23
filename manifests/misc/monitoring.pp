@@ -50,6 +50,10 @@ class misc::monitoring::views {
 	misc::monitoring::view::udp2log { 'udp2log':
 		host_regex => 'locke|emery|oxygen|gadolinium',
 	}
+	misc::monitoring::view::kafka { 'kafka':
+		kafka_broker_host_regexn  => 'analytics10[12].eqiad.wmnet',
+		kafka_producer_host_regex => 'analytics100[345689].eqiad.wmnet',
+	}
 }
 
 # == Define misc:monitoring::view::udp2log
@@ -60,7 +64,6 @@ class misc::monitoring::views {
 #
 # == Parameters:
 # $host_regex - regex to pass to ganglia::view for matching host names in the view.
-# $conf_dir
 #
 define misc::monitoring::view::udp2log($host_regex) {
 	ganglia::view { $name:
@@ -110,6 +113,53 @@ define misc::monitoring::view::udp2log($host_regex) {
 			{
 				'host_regex'   => $host_regex,
 				'metric_regex' => 'UDP_OutDatagrams',
+				'type'         => 'stack',
+			},
+		],
+	}
+}
+
+
+# == Define misc:monitoring::view::kafka
+# Installs a ganglia::view for a group of nodes
+# running kafka broker servers.  This is just a wrapper for
+# kafka specific metrics to include in kafka
+#
+# == Parameters:
+# $kafka_broker_host_regex  - regex matching kafka broker hosts
+# kafka_producer_host_regex - regex matching kafka producer hosts
+#
+define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_producer_host_regex) {
+	ganglia::view { $name:
+		graphs => [
+			{
+				'host_regex'   => $kafka_broker_host_regex,
+				'metric_regex' => 'kafka_network_SocketServerStats.ProduceRequestsPerSecond',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $kafka_broker_host_regex,
+				'metric_regex' => 'kafka_network_SocketServerStats.FetchRequestsPerSecond',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $kafka_broker_host_regex,
+				'metric_regex' => 'kafka_network_SocketServerStats.BytesWrittenPerSecond',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $kafka_broker_host_regex,
+				'metric_regex' => 'kafka_network_SocketServerStats.BytesReadPerSecond',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $kafka_broker_host_regex,
+				'metric_regex' => 'kafka_message_LogFlushStats.FlushesPerSecond',
+				'type'         => 'stack',
+			},
+			{
+				'host_regex'   => $kafka_producer_host_regex,
+				'metric_regex' => 'kafka_producer_KafkaProducerStats-.+.ProduceRequestsPerSecond',
 				'type'         => 'stack',
 			},
 		],
