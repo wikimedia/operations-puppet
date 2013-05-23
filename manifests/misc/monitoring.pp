@@ -51,7 +51,7 @@ class misc::monitoring::views {
 		host_regex => 'locke|emery|oxygen|gadolinium',
 	}
 	misc::monitoring::view::kafka { 'kafka':
-		kafka_broker_host_regexn  => 'analytics10[12].eqiad.wmnet',
+		kafka_broker_host_regex   => 'analytics10[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[345689].eqiad.wmnet',
 	}
 }
