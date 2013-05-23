@@ -434,6 +434,7 @@ sub tag_carrier {
 		}
 	/* Please keep the above list alphabetized by the ACL variable */
 	/* Testing ranges */
+	/*
 	} else if (client.ip ~ carrier_testing) {
 		if (req.http.X-Subdomain == "M") {
 			set req.http.X-Carrier = "wikimedia";
@@ -445,6 +446,7 @@ sub tag_carrier {
 			set req.http.X-CS = "WMF";
 		}
 	}
+	*/
 
 	/* once actually in prod, ensure users can't make requests
 	with a fake X-Carrier header */
