@@ -9,10 +9,6 @@ C{
 
 include "device-detection.inc.vcl";
 
-acl wmf_office {
-	"216.38.130.160"/28;
-}
-
 acl carrier_dtac {
 	"1.46.0.0"/15;
 	"103.1.164.0"/22;
@@ -107,11 +103,6 @@ acl carrier_tata {
 	"219.64.175.215";
 	"219.64.175.216"/31;
 	"219.64.175.219";
-}
-
-acl carrier_testing {
-	"208.80.152.165";
-	"208.80.153.194";
 }
 
 acl carrier_digi {
@@ -432,26 +423,8 @@ sub tag_carrier {
 				set req.http.X-CS = "510-11";
 			}
 		}
+	}
 	/* Please keep the above list alphabetized by the ACL variable */
-	/* Testing ranges */
-	} else if (client.ip ~ carrier_testing) {
-		if (req.http.X-Subdomain == "M") {
-			set req.http.X-Carrier = "wikimedia";
-			set req.http.X-CS = "WMF";
-		}
-	} else if (client.ip ~ wmf_office) {
-		if (req.http.X-Subdomain == "ZERO") {
-			set req.http.X-Carrier = "wikimedia";
-			set req.http.X-CS = "WMF";
-		}
-	}
-
-	/* once actually in prod, ensure users can't make requests
-	with a fake X-Carrier header */
-	/* else {
-		unset req.http.X-Carrier;
-	}
-	*/
 }
 
 sub vcl_recv {
