@@ -86,7 +86,7 @@ function getBugResolutions($begin_date, $end_date, $resolution) {
 
         return <<<END
 SELECT
-        count (distinct bugs.bug_id)
+        count(distinct bugs.bug_id)
 FROM
         bugs, bugs_activity
 WHERE
