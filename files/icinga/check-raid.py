@@ -215,8 +215,8 @@ def checkMegaSas():
 		print 'WARNING: error executing MegaCli64: %s' % str(error)
 		return 1
 	
-	stateRegex = re.compile('^State:\s*([^\n]*)')
-	drivesRegex = re.compile('^Number Of Drives( per span)?:\s*([^\n]*)')
+	stateRegex = re.compile('^State\s*:\s*([^\n]*)')
+	drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
 	state = None
 	numDrives = None
 	for line in proc.stdout:
