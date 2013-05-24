@@ -360,15 +360,25 @@ class misc::deployment::vars ($system = "git-deploy") {
 		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
 		$mw_common = "/usr/local/apache/common-local"
-		if $::realm == 'production' {
-			$mw_common_source = "/a/common"
-		} else {
-			# For the beta cluster
-			$mw_common_source = "/data/project/apache/common-local"
-		}
+		$mw_common_source = "/a/common"
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
 	}
+
+	if $::realm == 'production' {
+		file { $mw_common_source:
+			ensure => directory,
+			owner  => root,
+			group  => wikidev,
+			mode   => '0775',
+		}
+	} else {
+		file { $mw_common_source:
+			ensure => link,
+			target => '/data/project/apache/common-local',
+		}
+	}
+
 	file {
 		"/usr/local/lib/mw-deployment-vars.sh":
 			owner => root,
