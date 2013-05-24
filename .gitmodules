@@ -1,0 +1,3 @@
+[submodule "modules/cdh4"]
+	path = modules/cdh4
+	url = https://gerrit.wikimedia.org/r/operations/puppet/cdh4
