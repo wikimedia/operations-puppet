@@ -1285,9 +1285,7 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 }
 
 node "lanthanum.wikimedia.org" {
-	include standard,
-		misc::irc-server,
-		misc::mediawiki-irc-relay
+	include standard
 }
 
 node "linne.wikimedia.org" {
