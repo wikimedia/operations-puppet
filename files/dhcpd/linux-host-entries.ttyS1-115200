@@ -29,6 +29,86 @@ host amslvs4 {
 	fixed-address amslvs4.esams.wikimedia.org;
 }
 
+host amssq47 {
+	hardware ethernet a4:ba:db:30:cf:b3;
+	fixed-address amssq47.esams.wikimedia.org;
+}
+
+host amssq48 {
+	hardware ethernet a4:ba:db:38:ff:da;
+	fixed-address amssq48.esams.wikimedia.org;
+}
+
+host amssq49 {
+	hardware ethernet a4:ba:db:38:fa:e1;
+	fixed-address amssq49.esams.wikimedia.org;
+}
+
+host amssq50 {
+	hardware ethernet a4:ba:db:38:db:56;
+	fixed-address amssq50.esams.wikimedia.org;
+}
+
+host amssq51 {
+	hardware ethernet a4:ba:db:38:d7:5f;
+	fixed-address amssq51.esams.wikimedia.org;
+}
+
+host amssq52 {
+	hardware ethernet a4:ba:db:38:db:c0;
+	fixed-address amssq52.esams.wikimedia.org;
+}
+
+host amssq53 {
+	hardware ethernet a4:ba:db:30:d8:7d;
+	fixed-address amssq53.esams.wikimedia.org;
+}
+
+host amssq54 {
+	hardware ethernet a4:ba:db:38:fa:e7;
+	fixed-address amssq54.esams.wikimedia.org;
+}
+
+host amssq55 {
+	hardware ethernet a4:ba:db:38:e9:49;
+	fixed-address amssq55.esams.wikimedia.org;
+}
+
+host amssq56 {
+	hardware ethernet a4:ba:db:38:fc:71;
+	fixed-address amssq56.esams.wikimedia.org;
+}
+
+host amssq57 {
+	hardware ethernet a4:ba:db:38:db:9f;
+	fixed-address amssq57.esams.wikimedia.org;
+}
+
+host amssq58 {
+	hardware ethernet a4:ba:db:30:d8:53;
+	fixed-address amssq58.esams.wikimedia.org;
+}
+
+host amssq59 {
+	hardware ethernet a4:ba:db:30:d8:44;
+	fixed-address amssq59.esams.wikimedia.org;
+}
+
+host amssq60 {
+	hardware ethernet a4:ba:db:38:ff:bf;
+	fixed-address amssq60.esams.wikimedia.org;
+}
+
+host amssq61 {
+	hardware ethernet a4:ba:db:38:dc:22;
+	fixed-address amssq61.esams.wikimedia.org;
+}
+
+host amssq62 {
+	hardware ethernet a4:ba:db:38:db:20;
+	fixed-address amssq62.esams.wikimedia.org;
+}
+
 host analytics1011 {
 	hardware ethernet 90:b1:1c:06:bf:01;
 	fixed-address analytics1011.eqiad.wmnet;
