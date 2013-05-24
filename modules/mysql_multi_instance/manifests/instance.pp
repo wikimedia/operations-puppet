@@ -57,7 +57,7 @@ define mysql_multi_instance::instance(
 
     service {
       "mysql-${port}":
-        enabled => true,
+        enable => true,
         require  => File["/etc/init.d/mysql-${port}"],
     }
 
