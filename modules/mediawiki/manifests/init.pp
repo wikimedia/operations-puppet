@@ -1,5 +1,5 @@
 # mediawiki installation base class
-class mediawiki {
+class mediawiki($twemproxy = true) {
 	case $::operatingsystem {
 		debian, ubuntu: {
 		}
@@ -16,4 +16,8 @@ class mediawiki {
 	}
 
 	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
+
+	if $twemproxy {
+		include twemproxy
+	}
 }
