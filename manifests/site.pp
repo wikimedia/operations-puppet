@@ -119,6 +119,11 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	include role::cache::text
 }
 
+# amssq47 is a text varnish
+node /^amssq47\.esams\.wikimedia\.org$/ {
+	include role::cache::text
+}
+
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics
