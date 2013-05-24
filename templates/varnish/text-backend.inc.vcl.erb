@@ -1,0 +1,15 @@
+# Varnish VCL include file for text backends
+
+sub vcl_recv {
+	call vcl_recv_purge;
+<% if cluster_tier == 1 -%>
+
+	if ( req.http.host ~ "^test\." ) {
+		set req.backend = test_wikipedia;
+		return (pass);
+	}
+	if (req.url ~ "^/w/api.php") {
+		set req.backend = api;
+	}
+<% end -%>
+}

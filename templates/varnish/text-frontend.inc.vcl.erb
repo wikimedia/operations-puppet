@@ -1,0 +1,10 @@
+# Varnish VCL include file for text frontends
+
+sub vcl_recv {
+	/* Allow purging */
+	call vcl_recv_purge;
+
+	/* make absolute URIs relative as to not have to rewrite them too;
+	 * do this after vcl_recv_purge, as it operates on a full URI */
+	call rewrite_proxy_urls;
+}
