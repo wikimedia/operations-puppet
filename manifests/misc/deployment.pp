@@ -358,20 +358,41 @@ class misc::deployment::vars ($system = 'scap') {
 		$dblist_common_source = $dblist_common
 	} elsif $system == "scap" {
 		$mw_common = "/usr/local/apache/common-local"
-		if $::realm == 'production' {
-			$mw_common_source = "/a/common"
-		} else {
-			# For the beta cluster
-			$mw_common_source = "/data/project/apache/common-local"
-		}
+		$mw_common_source = "/a/common"
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
 	}
 
 	if $::realm == 'production' {
 		$mw_rsync_host = 'tin.eqiad.wmnet'
+
+		file { $mw_common_source:
+			ensure => directory,
+			owner  => root,
+			group  => wikidev,
+			mode   => '0775',
+		}
 	} else {
 		$mw_rsync_host = 'deployment-bastion.pmtpa.wmflabs'
+
+		file { '/data/project/apache':
+			ensure => directory,
+			owner  => mwdeploy,
+			group  => mwdeploy,
+			mode   => '0775',
+		}
+
+		file { '/data/project/apache/common-local':
+			ensure => directory,
+			owner  => mwdeploy,
+			group  => mwdeploy,
+			mode   => '0775',
+		}
+
+		file { $mw_common_source:
+			ensure => link,
+			target => '/data/project/apache/common-local',
+		}
 	}
 
 	file {
