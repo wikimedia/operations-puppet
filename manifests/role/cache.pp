@@ -355,7 +355,7 @@ class role::cache {
 	}
 
 	class text {
-		if $::site == "esams" and $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/ {
+		if ($::site == "esams" and $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
 
 			$cluster = "cache_text"
