@@ -11,7 +11,7 @@ class mediawiki::packages {
     }
   }
 
-  package { [ 'wikimedia-task-appserver', 'twemproxy' ]:
+  package { 'wikimedia-task-appserver':
     ensure => latest;
   }
 }

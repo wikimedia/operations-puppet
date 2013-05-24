@@ -16,4 +16,8 @@ class mediawiki {
 	}
 
 	include users::mwdeploy, users::l10nupdate, users::sudo, sync, cgroup, packages
+
+	if $::realm == 'production' {
+		include twemproxy
+	}
 }
