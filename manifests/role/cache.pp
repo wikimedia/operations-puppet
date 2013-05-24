@@ -156,7 +156,7 @@ class role::cache {
 						'cp1036.eqiad.wmnet',
 						'dysprosium.eqiad.wmnet',
 					],
-					"esams-varnish" => [	# FIXME: rename after Squid decommissioning
+					"esams" => [
 						'cp3003.esams.wikimedia.org',
 						'cp3004.esams.wikimedia.org',
 						'cp3005.esams.wikimedia.org',
@@ -165,32 +165,6 @@ class role::cache {
 						'cp3008.esams.wikimedia.org',
 						'cp3009.esams.wikimedia.org',
 						'cp3010.esams.wikimedia.org',
-					],
-					"esams" => [
-						'knsq16.knams.wikimedia.org',
-						'knsq17.knams.wikimedia.org',
-						'knsq18.knams.wikimedia.org',
-						'knsq19.knams.wikimedia.org',
-						'knsq20.knams.wikimedia.org',
-						'knsq21.knams.wikimedia.org',
-						'knsq22.knams.wikimedia.org',
-
-						'amssq47.esams.wikimedia.org',
-						'amssq48.esams.wikimedia.org',
-						'amssq49.esams.wikimedia.org',
-						'amssq50.esams.wikimedia.org',
-						'amssq51.esams.wikimedia.org',
-						'amssq52.esams.wikimedia.org',
-						'amssq53.esams.wikimedia.org',
-						'amssq54.esams.wikimedia.org',
-						'amssq55.esams.wikimedia.org',
-						'amssq56.esams.wikimedia.org',
-						'amssq57.esams.wikimedia.org',
-						'amssq58.esams.wikimedia.org',
-						'amssq59.esams.wikimedia.org',
-						'amssq60.esams.wikimedia.org',
-						'amssq61.esams.wikimedia.org',
-						'amssq62.esams.wikimedia.org',
 					],
 				},
 				"mobile" => {
@@ -383,7 +357,7 @@ class role::cache {
 
 	class upload {
 		# FIXME: remove this hack
-		if $::site == "eqiad" or ($::site == "esams" and $::hostname =~ /^cp30/) or $::realm == 'labs' {
+		if $::site == "eqiad" or $::realm == 'labs' {
 			# Varnish
 
 			$cluster = "cache_upload"
@@ -399,8 +373,7 @@ class role::cache {
 				# pmtpa is for labs / beta cluster
 				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-				# TODO: replace after removing Squid
-				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload']["${::site}-varnish"] },
+				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 			}
 
 			$varnish_be_directors = {

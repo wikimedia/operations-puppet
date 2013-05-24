@@ -119,12 +119,6 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 	include role::cache::text
 }
 
-node /amssq(4[7-9]|5[0-9]|6[0-2])\.esams\.wikimedia\.org/ {
-	$squid_coss_disks = [ 'sdb5' ]
-
-	include role::cache::upload
-}
-
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics
@@ -1194,29 +1188,6 @@ node "kaulen.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 
 	sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
-}
-
-# knsq16-22 are upload squids, 13 and 14 have been decommissioned
-node /knsq(1[6-9]|2[0-2])\.esams\.wikimedia\.org/ {
-	$squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-	if $hostname =~ /^knsq1[67]$/ {
-		$ganglia_aggregator = true
-	}
-
-	include role::cache::upload
-}
-
-# knsq23-30 are text squids
-node /knsq(23|2[5-9]|30)\.esams\.wikimedia\.org/ {
-	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc', 'sdd' ]
-
-	include role::cache::text
-}
-# broken/non-present sdd
-node "knsq24.esams.wikimedia.org" {
-	$squid_coss_disks = [ 'sda5', 'sdb5', 'sdc' ]
-
-	include role::cache::text
 }
 
 ## labsdb dbs
