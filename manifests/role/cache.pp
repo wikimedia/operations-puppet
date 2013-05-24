@@ -389,7 +389,7 @@ class role::cache {
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"esams" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text']['eqiad']['wikipedialb'],
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['wikipedialb'],
 					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
 				},
 			}
