@@ -55,6 +55,12 @@ define mysql_multi_instance::instance(
         content => template('mysql_multi_instance/mysql.init.erb');
     }
 
+    service {
+      "mysql-${port}":
+        enabled => true,
+        require  => File["/etc/init.d/mysql-${port}"],
+    }
+
     ## some per-instance monitoring here
     nrpe::monitor_service { "mysql_recent_restart_${port}":
       description => "MySQL Recent Restart Port ${port}",
