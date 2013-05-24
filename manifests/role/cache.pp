@@ -86,6 +86,9 @@ class role::cache {
 						"amssq44.esams.wikimedia.org",
 						"amssq45.esams.wikimedia.org",
 						"amssq46.esams.wikimedia.org",
+					],
+					"esams-varnish" => [
+						'amssq47.esams.wikimedia.org',
 					]
 				},
 				"api" => {
@@ -352,7 +355,156 @@ class role::cache {
 	}
 
 	class text {
-		class { "role::cache::squid::common": role => "text" }
+		if $::site == "esams" and $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/ {
+			# Varnish
+
+			$cluster = "cache_text"
+			$nagios_group = "cache_text_${::site}"
+
+			system_role { "role::cache::text": description => "text Varnish cache server" }
+
+			include lvs::configuration, role::cache::configuration, network::constants
+
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
+
+			$varnish_fe_directors = {
+				# pmtpa is for labs / beta cluster
+				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
+				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
+				# TODO: replace after removing Squid
+				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text']["${::site}-varnish"] },
+			}
+
+			$varnish_be_directors = {
+				"pmtpa" => {
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['textsvc'],
+					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+				},
+				"eqiad" => {
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['textsvc'],
+					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+				},
+				"esams" => {
+					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text']['eqiad']['wikipedialb'],
+					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+				},
+			}
+
+			$backend_weight = 20
+			$storage_size_main = 100
+			$storage_size_bigobj = 10
+			if $::site == "eqiad" {
+				$cluster_tier = 1
+			} else {
+				$cluster_tier = 2
+			}
+
+			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
+				$memory_storage_size = 16
+			} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
+				$memory_storage_size = 8
+			} else {
+				$memory_storage_size = 1
+			}
+
+			include standard,
+				nrpe
+
+			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
+
+			varnish::setup_filesystem{
+				$::hostname ? {
+					default => ["sda3", "sdb3"]
+				}:
+				before => Varnish::Instance["text-backend"]
+			}
+
+			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+
+			# Ganglia monitoring
+			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+			varnish::instance { "text-backend":
+				name => "",
+				vcl => "text-backend",
+				port => 3128,
+				admin_port => 6083,
+				runtime_parameters => $::site ? {
+					'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
+					default => [],
+				},
+				storage => $::hostname ? {
+					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				},
+				directors => $varnish_be_directors[$::site],
+				director_type => "random",
+				vcl_config => {
+					'retry5xx' => 0,
+					'cache4xx' => "1m",
+					'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+					'cluster_tier' => $cluster_tier,
+				},
+				backend_options => [
+					{
+						'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+						'port' => 3128,
+						'probe' => "varnish",
+					},
+					{
+						'port' => 80,
+						'connect_timeout' => "5s",
+						'first_byte_timeout' => "35s",
+						'between_bytes_timeout' => "4s",
+						'max_connections' => 1000,
+						'weight' => $backend_weight,
+					}],
+				wikimedia_networks => $network::constants::all_networks,
+				xff_sources => $network::constants::all_networks
+			}
+
+			varnish::instance { "text-frontend":
+				name => "frontend",
+				vcl => "text-frontend",
+				port => 80,
+				admin_port => 6082,
+				storage => "-s malloc,${memory_storage_size}G",
+				directors => $varnish_fe_directors[$::site],
+				director_type => "chash",
+				vcl_config => {
+					'retry5xx' => 0,
+					'cache4xx' => "1m",
+					'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+					'cluster_tier' => $cluster_tier,
+				},
+				backend_options => [
+					{
+						'port' => 3128,
+						'connect_timeout' => "5s",
+						'first_byte_timeout' => "35s",
+						'between_bytes_timeout' => "2s",
+						'max_connections' => 100000,
+						'probe' => "varnish",
+						'weight' => $backend_weight,
+					}],
+				xff_sources => $network::constants::all_networks,
+			}
+
+			# TODO
+			varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+
+			# HTCP packet loss monitoring on the ganglia aggregators
+			if $ganglia_aggregator and $::site != "esams" {
+				include misc::monitoring::htcp-loss
+			}
+		}
+		else {
+			class { "role::cache::squid::common": role => "text" }
+		}
 	}
 
 	class upload {
