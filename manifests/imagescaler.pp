@@ -7,10 +7,11 @@
 
 class imagescaler::cron {
 	cron { removetmpfiles:
-		command => "for dir in /tmp /a/magick-tmp; do find \$dir -ignore_readdir_race -type f \\( -name 'gs_*' -o -name 'magick-*' \\) -cmin +15 -exec rm -f {} \\;; done",
+		command => "for dir in /tmp /a/magick-tmp /tmp/magick-tmp; do find \$dir -ignore_readdir_race -type f \\( -name 'gs_*' -o -name 'magick-*' \\) -cmin +15 -exec rm -f {} \\;; done",
 		user => root,
 		minute => '*/5',
-		ensure => present
+		ensure => present;
+
 	}
 }
 
@@ -115,6 +116,11 @@ class imagescaler::files {
 			group => root,
 			mode => 755,
 			require => File["/a"];
+		"/tmp/magick-tmp":
+			ensure => directory,
+			owner => apache,
+			group => root,
+			mode => 755;
 	}
 
 }
