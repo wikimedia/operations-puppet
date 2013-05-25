@@ -1,5 +1,18 @@
 # Varnish VCL include file for text frontends
 
+sub mobile_redirect {
+	if ((req.http.User-Agent ~ "mobi" || req.http.Accept ~ "vnd.wap.wml")
+		&& req.http.User-Agent !~ "(iPad|Android.3|(?i)tablet|(?i)(?!google)bot|PlayBook|Wii)"
+		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
+		&& req.url ~ "^/wiki/") {
+		set req.http.MobileHost = regsub(req.http.host, "^(?:www\.(?=mediawiki))?((?:species|meta|incubator|outreach|strategy|wikimania2012)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki)\.", "\1m.\2.");
+		if (req.http.Host != req.http.MobileHost) {
+			error 666 req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
+		}
+		unset req.http.MobileHost;
+	}
+}
+
 sub vcl_recv {
 	/* Allow purging */
 	call vcl_recv_purge;
@@ -7,4 +20,19 @@ sub vcl_recv {
 	/* make absolute URIs relative as to not have to rewrite them too;
 	 * do this after vcl_recv_purge, as it operates on a full URI */
 	call rewrite_proxy_urls;
+
+	if (!req.http.X-Forwarded-Proto) {
+		set req.http.X-Forwarded-Proto = "http";
+	}
+
+	call mobile_redirect;
+}
+
+sub vcl_error {
+	/* Support mobile redirects */
+	if (obj.status == 666) {
+		set obj.http.Location = obj.response;
+		set obj.status = 302;
+		return(deliver);
+	}
 }
