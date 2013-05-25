@@ -431,6 +431,7 @@ sub vcl_recv {
 	/* if the request comes from Opera Mini's accelerating proxies, grab
 	 * XFF Header and replace client ip value */
 	if (client.ip ~ opera_mini) {
+		set req.http.X-Orig-Client-IP = client.ip;
 		C{
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
 		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
@@ -448,9 +449,7 @@ sub vcl_recv {
 		}
 		}C
 
-		set req.http.X-CLIENT-IP = client.ip;
-		set req.http.X-Forwarded-For = client.ip;
-		set req.http.X-ORIG-CLIENT-IP = req.http.rlnclientipaddr;
+		unset req.http.X-Forwarded-For;
 	}
 
 	/* This call will always set the following req.http values:
