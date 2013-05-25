@@ -1595,10 +1595,10 @@ node "manganese.wikimedia.org" {
 
 node "magnesium.wikimedia.org" {
 
-	$cluster = "misc"
+    $cluster = "misc"
 
-	include role::racktables
-	include role::request-tracker-apache::production, exim::rt
+    include role::racktables
+    include role::request-tracker-apache::production, exim::rt
 }
 
 node "marmontel.wikimedia.org" {
