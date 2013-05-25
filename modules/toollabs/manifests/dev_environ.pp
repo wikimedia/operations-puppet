@@ -41,7 +41,6 @@ class toollabs::dev_environ {
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
       'libxslt1-dev', # -- same
       'subversion',
-      'mc',
       'cython' ]:
     ensure => present
   }
