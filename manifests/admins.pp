@@ -2564,7 +2564,12 @@ class accounts {
 				ensure	=> present,
 				user	=> $username,
 				type	=> "ssh-rsa",
-				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIBqzD79g6nyNeJwvBGQdhC2mILwhaoJ9yaf/ysk9LOzrfjIvo3zSpWwr3JT/qLh9/5cDGNOFqXPlbUL4V0lyMlKhDRTrHtsJJLoMUrmvsUo5aLG0Aum5TJ25jJ3v/av5wSGX5tOtQJgemPh0K4pD5iR3PSGUcFEHUOdhFwdrWT38Q==",
+				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIBqzD79g6nyNeJwvBGQdhC2mILwhaoJ9yaf/ysk9LOzrfjIvo3zSpWwr3JT/qLh9/5cDGNOFqXPlbUL4V0lyMlKhDRTrHtsJJLoMUrmvsUo5aLG0Aum5TJ25jJ3v/av5wSGX5tOtQJgemPh0K4pD5iR3PSGUcFEHUOdhFwdrWT38Q==";
+				"ironholds@spektor":
+				ensure	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAADAQABAAACAQC0D2VQbDTHgWoH5NM/QpLjpm0JfxXobf1CjRJemla/Vik/SPwbaJntnL28C0yFiATX62tea3vnuOQk5ZHTK40199qMZhvEU2rGgONZFKTdPzk1uDMyuXgV6j8z22Xkxacr9kGozgQgb+ibGYuaho+KGW/Ed926PNWHDAsYBLzgS4gqNKLW+Jyt5Rh5ZgxsKvjHfopa37RifPznW0m92evRmsG5j++tYZublWcLs18ZGeqelsP3iyy6PS5K0zAlfsiTH+Q8htotUAr33tpmKH+DGw5fNXTKFvbZ9YIKOH2l///3hIVhVRvg1I4BhO1IHAHKr0RISuxEdQ3QiujrXvI3Ss8OvhBn1eKervysObbJuuUyFYel7IGIu75vVpYbzlwlQSfd4p42PWR5a5lFC72BI65k1VN2dDdXanJor6keU7562smwh2/9yAL12igmRLgTZ9DOvuHNc9qNezJXP0JY7Cye5ByLgopiD7cqYg9Rw1avcEbH9uEJgD3d/lT4KG/QpE+ejUMm8N5LH9PSxc6h9ywtliNXrnqWwej/9CBp4KoXQDV9hB0F2pYppn9p1oqhjQPzb+w8G3F0Liaikvw30+cWCknQXpfPQNvKg3Ejb66crkLc5br6GfDhnFl4CagMRIsaxxyKLQFko3egYPszu7dgdTfJcDFJkd1j20z+KQ==",
 			}
 		}
 	}
