@@ -1,0 +1,65 @@
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+### puppet:///files/apache/sites/smokeping.wikimedia.org.erb
+#####################################################################
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+	ServerName <%= smokeping_host %>
+
+	DocumentRoot /srv/org/wikimedia/smokeping/
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /srv/org/wikimedia/smokeping/>
+                AddHandler cgi-script .fcgi .cgi .pl
+                Options Indexes FollowSymLinks MultiViews +ExecCGI
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+        ServerSignature On
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+	ServerName <%= smokeping_host %>
+
+	SSLEngine on
+	SSLCertificateFile <%= smokeping_ssl_cert %>
+	SSLCertificateKeyFile <%= smokeping_ssl_key %>
+
+	DocumentRoot /srv/org/wikimedia/smokeping/
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /srv/org/wikimedia/smokeping/>
+                AddHandler cgi-script .fcgi .cgi .pl
+                Options Indexes FollowSymLinks MultiViews +ExecCGI
+                AllowOverride None
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ErrorLog /var/log/apache2/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/access.log combined
+        ServerSignature On
+
+</VirtualHost>
