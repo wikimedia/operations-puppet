@@ -1,0 +1,462 @@
+# Varnish VCL include file for Wikipedia Zero
+
+C{
+#include <netinet/in.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+}C
+
+acl carrier_testing {
+	"216.38.130.160"/28;                // WMF office
+	"208.80.152.165";                   // fenari
+	"2620:0:860:2:21e:c9ff:feea:ab95";  // fenari
+	"208.80.154.149";                   // bast1001
+	"2620:0:861:2:7a2b:cbff:fe09:11ba"; // bast1001
+}
+
+acl carrier_dtac {
+	"1.46.0.0"/15;
+	"103.1.164.0"/22;
+	"111.84.0.0"/16;
+	"115.67.0.0"/16;
+	"202.91.16.0"/21;
+}
+
+acl carrier_orange_congo {
+	"41.77.220.64"/27;
+	"41.77.221.64"/27;
+	"41.77.222.64"/27;
+	"41.77.223.64"/27;
+	"81.199.62.88"/29;
+	"81.199.62.128"/26;
+	"91.151.146.64"/27;
+	"203.222.195.80"/28;
+	"203.222.206.112"/28;
+}
+
+acl carrier_orange_botswana {
+	"41.223.141.0"/24;
+}
+
+acl carrier_hello_cambodia {
+	"117.20.116.83";
+	"117.20.116.84"/30;
+	"117.20.116.88"/30;
+	"117.20.116.92"/31;
+}
+
+acl carrier_celcom_malaysia {
+	"183.171.0.0"/17;
+	"183.171.128.0"/19;
+	"183.171.160.0"/20;
+	"183.171.176.0"/22;
+	"203.82.66.192"/28;
+	"203.82.80.0"/23;
+	"203.82.82.0"/24;
+	"203.82.85.32"/28;
+	"203.82.87.0"/24;
+	"203.82.90.0"/23;
+	"203.82.92.0"/22;
+}
+
+acl carrier_dialog_sri_lanka {
+	"103.2.148.0"/22;
+	"111.223.128.0"/18;
+	"122.255.52.0"/23;
+	"122.255.54.0"/24;
+	"123.231.8.0"/21;
+	"123.231.40.0"/21;
+	"123.231.48.0"/20;
+	"123.231.120.0"/21;
+	"175.157.0.0"/16;
+	"182.161.0.0"/19;
+}
+
+acl carrier_tata {
+	"10.234.0.0"/16;
+	"14.96.246.36";
+	"14.96.246.40"/30;
+	"14.194.0.0"/15;
+	"27.107.0.0"/16;
+	"49.200.0.0"/14;
+	"49.248.224.0"/20;
+	"49.248.240.0"/22;
+	"49.248.244.0"/23;
+	"49.249.0.0"/16;
+	"59.161.95.65";
+	"59.161.95.66"/31;
+	"59.161.95.68";
+	"59.161.95.86";
+	"59.161.254.21";
+	"115.117.128.0"/17;
+	"115.118.16.0"/22;
+	"115.118.44.0"/22;
+	"115.118.48.0"/20;
+	"115.118.80.0"/20;
+	"115.118.108.0"/22;
+	"115.118.144.0"/20;
+	"115.118.176.0"/20;
+	"115.118.204.0"/22;
+	"115.118.208.0"/20;
+	"115.118.224.0"/19;
+	"182.156.0.0"/16;
+	"219.64.175.132";
+	"219.64.175.134"/31;
+	"219.64.175.136"/31;
+	"219.64.175.139";
+	"219.64.175.142";
+	"219.64.175.215";
+	"219.64.175.216"/31;
+	"219.64.175.219";
+}
+
+acl carrier_digi {
+	"115.164.0.0"/16;
+	"116.197.0.0"/17;
+	"203.92.128.185";
+}
+
+acl carrier_orange_ivory_coast {
+	"41.66.28.72"/31;
+	"41.66.28.94"/31;
+	"41.66.28.96";
+}
+
+acl carrier_orange_uganda {
+	"41.202.224.0"/19;
+	"197.157.0.0"/18;
+}
+
+acl carrier_saudi_telecom {
+	"84.235.72.0"/22;
+	"84.235.94.240"/28;
+	"212.118.140.0"/22;
+	"212.215.128.0"/17;
+}
+
+acl carrier_orange_kenya {
+	"212.49.88.0"/25;
+}
+
+acl carrier_orange_tunisia {
+	"197.29.192.0"/18;
+	"197.30.0.0"/17;
+	"197.30.128.0"/19;
+	"197.30.224.0"/19;
+}
+
+acl carrier_orange_niger {
+	"41.203.157.1";
+	"41.203.157.2";
+	"41.203.159.243";
+}
+
+acl carrier_orange_cameroon {
+	"41.202.192.0"/19;
+	"193.251.155.0"/25;
+}
+
+acl carrier_grameenphone_bangladesh {
+	"119.30.38.0"/23;
+	"119.30.45.0"/24;
+	"119.30.47.0"/24;
+}
+
+acl carrier_telenor_montenegro {
+	"79.143.96.0"/20;
+}
+
+acl carrier_xl_indonesia {
+	"112.215.63.0"/24;
+	"112.215.64.0"/23;
+	"112.215.66.0"/24;
+	"202.152.240.0"/24;
+	"202.152.243.0"/24;
+}
+
+acl carrier_vimpelcom_beeline {
+	"31.13.144.2"/31;
+	"31.13.144.4"/30;
+	"31.13.144.8"/29;
+	"31.13.144.16"/28;
+	"31.13.144.32"/28;
+	"31.13.144.48"/29;
+	"31.13.144.56"/30;
+	"31.13.144.60"/31;
+	"31.13.144.62";
+	"46.16.96.0"/21;
+	"62.33.151.0"/24;
+	"83.220.227.0"/24;
+	"83.220.236.0"/22;
+	"85.115.224.9";
+	"85.115.224.10"/31;
+	"85.115.224.12"/31;
+	"85.115.224.14";
+	"85.115.224.128"/27;
+	"85.115.224.193";
+	"85.115.224.194"/31;
+	"85.115.224.196"/30;
+	"85.115.224.200"/29;
+	"85.115.224.208"/29;
+	"85.115.224.216"/30;
+	"85.115.224.220"/31;
+	"85.115.224.222";
+	"85.115.224.225";
+	"85.115.224.226"/31;
+	"85.115.224.228"/30;
+	"85.115.224.232"/29;
+	"85.115.224.240"/29;
+	"85.115.224.248"/30;
+	"85.115.224.252"/31;
+	"85.115.224.254";
+	"85.115.243.32"/27;
+	"85.115.248.0"/24;
+	"87.228.75.156";
+	"89.179.104.235";
+	"89.188.224.136"/29;
+	"213.252.195.0"/24;
+	"217.118.64.32"/27;
+	"217.118.66.0"/24;
+	"217.118.78.0"/24;
+	"217.118.79.32"/28;
+	"217.118.81.0"/24;
+	"217.118.82.16"/28;
+	"217.118.82.32"/28;
+	"217.118.82.64"/26;
+	"217.118.82.128"/25;
+	"217.118.83.0"/24;
+	"217.118.85.0"/24;
+	"217.118.89.0"/24;
+	"217.118.90.0"/24;
+	"217.118.91.64"/26;
+	"217.118.92.0"/23;
+	"217.118.95.0"/24;
+	"217.118.96.0"/19;
+	"217.118.128.0"/17;
+	"217.119.0.0"/18;
+	"217.119.64.0"/20;
+	"217.119.80.0"/21;
+	"217.119.88.0"/22;
+	"217.119.92.0"/23;
+	"217.119.94.0"/24;
+	"217.119.95.0"/25;
+	"217.119.95.128"/26;
+	"217.119.95.192";
+	"217.148.194.129";
+	"217.148.194.130"/31;
+	"217.148.194.132"/30;
+	"217.148.194.136"/30;
+	"217.148.194.140"/31;
+	"217.148.194.142";
+}
+
+acl carrier_vimpelcom_mobilink_pakistan {
+	"119.160.116.0"/22;
+	"119.160.125.0"/27;
+	"119.160.126.96"/28;
+	"119.160.126.128"/25;
+}
+
+acl carrier_orange_meditel_morocco {
+	"41.92.0.0"/18;
+	"41.92.64.0"/19;
+	"41.214.192.0"/18;
+	"197.153.0.0"/16;
+	"197.247.0.0"/16;
+}
+
+acl carrier_central_african_republic {
+	"41.223.184.1";
+	"41.223.184.2"/31;
+	"41.223.184.148"/30;
+	"41.223.184.152"/30;
+}
+
+sub tag_carrier {
+	/* For wiki zero project - tags partnered carriers
+	   The values for the X-CS headers are obtained from
+	   http://en.wikipedia.org/wiki/Mobile_country_code
+	   and http://www.mcc-mnc.com/
+	*/
+	if ( req.http.host ~ "(^([a-zA-Z0-9-]+)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org" ) {
+		set req.http.X-Subdomain = "ZERO";
+	} else {
+		set req.http.X-Subdomain = "M";
+	}
+
+	// go to english by default
+	set req.http.X-DfltLang = "en";
+	set req.http.X-DfltPage = "/wiki/Special:ZeroRatedMobileAccess";
+
+	/* Please keep this list alphabetized by the ACL variable */
+	if (client.ip ~ carrier_celcom_malaysia) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "Celcom Malaysia";
+			set req.http.X-CS = "502-13";
+		}
+	} else if (client.ip ~ carrier_central_african_republic) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ar|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Central African Republic";
+				set req.http.X-CS = "623-01";
+			}
+		}
+	} else if (client.ip ~ carrier_dialog_sri_lanka) {
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Dialog Sri Lanka";
+				set req.http.X-CS = "413-02";
+			}
+		}
+	} else if (client.ip ~ carrier_digi) {
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.User-Agent ~ "Opera") {
+				set req.http.X-Carrier = "DIGI";
+				set req.http.X-CS = "502-16";
+			}
+		}
+	} else if (client.ip ~ carrier_dtac) {
+		set req.http.X-DfltLang = "th";
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "DTAC";
+			set req.http.X-CS = "520-18";
+		}
+	} else if (client.ip ~ carrier_grameenphone_bangladesh) {
+		set req.http.X-DfltLang = "bn";
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.host ~ "(^(bn)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Grameenphone Bangladesh";
+				set req.http.X-CS = "470-01";
+			}
+		}
+	} else if (client.ip ~ carrier_hello_cambodia) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "Hello Cambodia";
+			set req.http.X-CS = "456-02";
+		}
+	} else if (client.ip ~ carrier_orange_botswana) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Botswana";
+			set req.http.X-CS = "652-02";
+		}
+	} else if (client.ip ~ carrier_orange_cameroon) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(fr|en|es|de|zh|ar|ha|ln|yo|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Cameroon";
+				set req.http.X-CS = "624-02";
+			}
+		}
+	} else if (client.ip ~ carrier_orange_congo) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Congo";
+			set req.http.X-CS = "630-86";
+		}
+	} else if (client.ip ~ carrier_orange_ivory_coast) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Ivory Coast";
+			set req.http.X-CS = "612-03";
+		}
+	} else if (client.ip ~ carrier_orange_kenya) {
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Kenya";
+			set req.http.X-CS = "639-07";
+		}
+	} else if (client.ip ~ carrier_orange_meditel_morocco) {
+		set req.http.X-DfltLang =  "fr";
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(fr|ar|en|es|de|it|nl|pt|ru|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Meditel Morocco";
+				set req.http.X-CS = "604-00";
+			}
+		}
+	} else if (client.ip ~ carrier_orange_niger) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			set req.http.X-Carrier = "Orange Niger";
+			set req.http.X-CS = "614-04";
+		}
+	} else if (client.ip ~ carrier_orange_tunisia) {
+		set req.http.X-DfltLang = "fr";
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(ar|en|fr|es|de|it|ru|ja|zh)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Tunisia";
+				set req.http.X-CS = "605-01";
+			}
+		}
+	} else if (client.ip ~ carrier_orange_uganda) {
+		if (req.http.X-Subdomain == "M") {
+			if (req.http.host ~ "(^(ko|fr|de|en|zh|sw|rw|ar|hi|es)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "Orange Uganda";
+				set req.http.X-CS = "641-14";
+			}
+		}
+	} else if (client.ip ~ carrier_saudi_telecom) {
+		set req.http.X-DfltLang = "ar";
+		if (req.http.host ~ "(^(ar|bn|en|tl|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Saudi Telecom";
+			set req.http.X-CS = "420-01";
+		}
+	} else if (client.ip ~ carrier_tata) {
+		if (req.http.X-Subdomain == "ZERO") {
+			set req.http.X-Carrier = "TATA";
+			/* MCC-MNC not clear from http://en.wikipedia.org/wiki/Mobile_country_code */
+			set req.http.X-CS = "405-0*";
+		}
+	} else if (client.ip ~ carrier_telenor_montenegro) {
+		set req.http.X-Carrier = "Telenor Montenegro";
+		set req.http.X-CS = "297-01";
+	} else if (client.ip ~ carrier_vimpelcom_beeline) {
+		set req.http.X-DfltLang = "ru";
+		if (req.http.host ~ "(^(en|ru)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Vimpelcom Beeline";
+			set req.http.X-CS = "250-99";
+		}
+	} else if (client.ip ~ carrier_vimpelcom_mobilink_pakistan) {
+		if (req.http.host ~ "(^(en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-Carrier = "Vimpelcom Mobilink Pakistan";
+			set req.http.X-CS = "410-01";
+		}
+	} else if (client.ip ~ carrier_xl_indonesia) {
+		set req.http.X-DfltLang = "id";
+		if (req.http.X-Subdomain == "ZERO") {
+			if (req.http.host ~ "(^(id|en|zh|ar|hi|ms|jv|su)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
+				set req.http.X-Carrier = "XL Axiata";
+				set req.http.X-CS = "510-11";
+			}
+		}
+	}
+	/* Please keep the above list alphabetized by the ACL variable */
+}
+
+sub spoof_clientip {
+	/* In case the XFF header is present, trust it in case it comes from
+	 * Opera Mini's accelerating proxies, or from a carrier_testing ip range,
+	 * and replace client ip value with the first value from the XFF Header
+	 */
+	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+		set req.http.X-Orig-Client-IP = client.ip;
+		C{
+		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
+		char *last;
+
+		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
+
+		if (xff_ip == NULL) {
+			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		}
+
+		if (xff_ip != NULL) {
+			inet_pton(AF_INET, xff_ip, client_ip_ia);
+		}
+		}C
+
+		unset req.http.X-Forwarded-For;
+	}
+}
