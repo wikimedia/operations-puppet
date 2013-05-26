@@ -16,8 +16,8 @@ class {'webserver::php5': ssl => true; }
     case $::realm {
         labs: {
             $smokeping_host = "${role::smokeping::instancename}.${role::smokeping::domain}"
-            $smokeping_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
-            $smokeping_ssl_key = '/etc/ssl/private/star.wmflabs.key'
+            $smokeping_ssl_cert = '/etc/ssl/certs/star.wmflabs.org.pem'
+            $smokeping_ssl_key = '/etc/ssl/private/star.wmflabs..org.key'
             install_certificate{ 'star.wmflabs.org': }
         }
         production: {
