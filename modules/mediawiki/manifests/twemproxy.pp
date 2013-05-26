@@ -3,7 +3,7 @@ class mediawiki::twemproxy {
     ensure => latest;
   }
 
-  upstart_job { "twemproxy": install => "true" }
+  upstart_job { "twemproxy": install => "true", start => "true" }
 
   service { twemproxy:
     require => [ Package[twemproxy], Upstart_job[twemproxy] ],
