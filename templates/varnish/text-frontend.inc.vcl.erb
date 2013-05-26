@@ -16,17 +16,13 @@ sub mobile_redirect {
 }
 
 sub cookie_munging {
-	if (req.http.Cookie ~ "([sS]ession|Token)") {
+	if (req.http.Cookie ~ "([sS]ession|Token|LoggedOut)") {
 		return(pass);
 	}
 
 	/* This header is saved, and restored before sending it to MediaWiki */
 	set req.http.Orig-Cookie = req.http.Cookie;
 	unset req.http.Cookie;
-
-	if (req.http.Orig-Cookie ~ "LoggedOut") {
-		set req.http.Cookie = "LoggedOut=1";
-	}
 }
 
 sub vcl_recv {
