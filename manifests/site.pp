@@ -2109,47 +2109,10 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		# RT 4312
 		accounts::milimetric
 
-	include
-		misc::udp2log
-
-	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
-
-	# oxygen's udp2log instance
-	# saves logs mainly in /a/squid.
-	misc::udp2log::instance { "oxygen":
-		multicast     => true,
-		# TODO: Move this to /a/log/webrequest
-		log_directory => "/a/squid",
-		# oxygen's packet-loss.log file is alredy in /var/log/udp2log
-		packet_loss_log => "/var/log/udp2log/packet-loss.log",
-	}
-
-	# Set up an rsync daemon module for udp2log logrotated
-	# archives.  This allows stat1 to copy logs from the
-	# logrotated archive directory
-	class { "misc::udp2log::rsyncd":
-		path    => "/a/squid",
-		require => Misc::Udp2log::Instance["oxygen"],
-	}
-
-	# udp2log-lucene instance for
-	# lucene search logs.  Don't need
-	# to monitor packet loss here.
-	misc::udp2log::instance { "lucene":
-		port                => "51234",
-		log_directory       => "/a/log/lucene",
-		monitor_packet_loss => false,
-	}
-
-	# rsync archived lucene logs over to dataset2
-	# These are available for download at http://dumps.wikimedia.org/other/search/
-	cron { "search_logs_rsync":
-		command => "rsync -r /a/log/lucene/archive/lucene.log*.gz dataset2::search-logs/",
-		hour    => '8',
-		minute  => '0',
-		user    => 'backup',
-		ensure => absent,
-	}
+		# main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
+		include role::logging::udp2log::oxygen
+		# Also include lucene search loggging udp2log instance
+		include role::logging::udp2log::lucene
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {

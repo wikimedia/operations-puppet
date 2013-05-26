@@ -266,6 +266,31 @@ class role::logging::udp2log::emery inherits role::logging::udp2log {
 	}
 }
 
+# oxygen is a generic webrequests udp2log host
+# mostly running wikipedia zero filters.
+class role::logging::udp2log::oxygen inherits role::logging::udp2log {
+	# udp2log::instance will ensure this is created
+	$webrequest_log_directory    = "$log_directory/webrequest"
+
+	misc::udp2log::instance { 'oxygen':
+		multicast     => true,
+		log_directory => $webrequest_log_directory,
+	}
+}
+
+# lucene udp2log instance for capturing search logs
+class role::logging::udp2log::lucene inherits role::logging::udp2log {
+	# udp2log::instance will ensure this is created
+	$lucene_log_directory    = "$log_directory/lucene"
+
+	misc::udp2log::instance { 'lucene': 
+		port                 => '51234',
+		log_directory        => $lucene_log_directory,
+		monitor_packet_loss  => false,
+	}
+}
+
+
 # EventLogging collector
 class role::logging::eventlogging {
 	system_role { "misc::log-collector":

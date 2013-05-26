@@ -11,7 +11,7 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/packet-loss.log
 # for each mobile service provider/country.
 # Disabling this until Erosen and Amit give us the ok,
 # Once they do, we will disable all other IP based filters.
-# pipe 1 /usr/bin/awk '$NF != "-"' >> /a/squid/zero-x-cs.tab.log
+# pipe 1 /usr/bin/awk '$NF != "-"' >> /a/log/webrequest/zero-x-cs.tsv.log
 
 
 
@@ -24,71 +24,71 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/packet-loss.log
 #
 
 # Digi Malaysia
-pipe 10 /usr/bin/udp-filter -F '\t' -i 115.164.0.0/16,116.197.0.0/17 >> /a/squid/zero-digi-malaysia.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 115.164.0.0/16,116.197.0.0/17 >> /a/log/webrequest/zero-digi-malaysia.tsv.log
 
 # Orange Ivory Coast
-pipe 10 /usr/bin/udp-filter -F '\t' -i 41.66.28.94/32,41.66.28.95/32,41.66.28.96/32,41.66.28.72/32,41.66.28.73/32 >> /a/squid/zero-orange-ivory-coast.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 41.66.28.94/32,41.66.28.95/32,41.66.28.96/32,41.66.28.72/32,41.66.28.73/32 >> /a/log/webrequest/zero-orange-ivory-coast.tsv.log
 
 # Telenor Montenegro
-pipe 10 /usr/bin/udp-filter -F '\t' -i 79.143.96.0/20 >> /a/squid/zero-telenor-montenegro.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 79.143.96.0/20 >> /a/log/webrequest/zero-telenor-montenegro.tsv.log
 
 # Orange Uganda
-pipe 10 /usr/bin/udp-filter -F '\t' -i 41.202.224.0/19,197.157.0.0/18 >> /a/squid/zero-orange-uganda.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 41.202.224.0/19,197.157.0.0/18 >> /a/log/webrequest/zero-orange-uganda.tsv.log
 
 # Orange Tunisia
-pipe 10 /usr/bin/udp-filter -F '\t' -i 197.30.0.0/17,197.30.128.0/19,197.30.224.0/19,197.29.192.0/18 >> /a/squid/zero-orange-tunesia.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 197.30.0.0/17,197.30.128.0/19,197.30.224.0/19,197.29.192.0/18 >> /a/log/webrequest/zero-orange-tunesia.tsv.log
 
 # Orange Niger
-pipe 10 /usr/bin/udp-filter -F '\t' -i 41.203.157.1,41.203.157.2,41.203.159.243 >> /a/squid/zero-orange-niger.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 41.203.157.1,41.203.157.2,41.203.159.243 >> /a/log/webrequest/zero-orange-niger.tsv.log
 
 # Orange Cameroon
-pipe 10 /usr/bin/udp-filter -F '\t' -i 193.251.155.0/25,41.202.192.0/19,41.202.219.64/28,41.202.219.112/30,41.202.219.14,41.202.219.10 >> /a/squid/zero-orange-cameroon.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 193.251.155.0/25,41.202.192.0/19,41.202.219.64/28,41.202.219.112/30,41.202.219.14,41.202.219.10 >> /a/log/webrequest/zero-orange-cameroon.tsv.log
 
 # Orange Kenya
-pipe 10 /usr/bin/udp-filter -F '\t' -i 212.49.88.0/25 >> /a/squid/zero-orange-kenya.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 212.49.88.0/25 >> /a/log/webrequest/zero-orange-kenya.tsv.log
 
 # Vodaphone India
 ## Disabling this for packet loss issues.  2013-03-04 - otto
-# pipe 10 /usr/bin/udp-filter -F '\t' -i 203.88.0.0/19,114.31.128.0/18,112.79.0.0/16,1.38.0.0/15,42.104.0.0/13 >> /a/squid/zero-vodaphone-india.tab.log
+# pipe 10 /usr/bin/udp-filter -F '\t' -i 203.88.0.0/19,114.31.128.0/18,112.79.0.0/16,1.38.0.0/15,42.104.0.0/13 >> /a/log/webrequest/zero-vodaphone-india.tsv.log
 
 # Saudi Telecom
-pipe 10 /usr/bin/udp-filter -F '\t' -i 212.118.140.0/22,212.215.128.0/17,84.235.72.0/22,84.235.94.240/28 >> /a/squid/zero-saudi-telecom.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 212.118.140.0/22,212.215.128.0/17,84.235.72.0/22,84.235.94.240/28 >> /a/log/webrequest/zero-saudi-telecom.tsv.log
 
 # Grameenphone Bangladesh
-pipe 10 /usr/bin/udp-filter -F '\t' -i 119.30.38.0/24,119.30.39.0/24,119.30.45.0/24,119.30.47.0/24 >> /a/squid/zero-grameenphone-bangladesh.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 119.30.38.0/24,119.30.39.0/24,119.30.45.0/24,119.30.47.0/24 >> /a/log/webrequest/zero-grameenphone-bangladesh.tsv.log
 
 # Tata India
-pipe 10 /usr/bin/udp-filter -F '\t' -i 182.156.0.0/16,27.107.0.0/16,14.194.0.0/16,14.195.0.0/16,49.200.0.0/16,49.201.0.0/16,49.202.0.0/16,49.203.0.0/16,49.249.64.0/18,49.249.128.0/18,49.249.192.0/19,49.248.224.0/20,49.248.240.0/22,49.248.244.0/23,49.249.0.0/19,49.249.32.0/19,49.249.224.0/19,115.117.192.0/18,115.118.208.0/20,115.118.224.0/19,115.118.16.0/22,115.118.44.0/22,115.118.48.0/20,115.118.80.0/20,59.161.254.21,182.156.191.10,219.64.175.132,219.64.175.134,219.64.175.135,219.64.175.136,219.64.175.137,219.64.175.139,219.64.175.142,59.161.95.86,219.64.175.215,219.64.175.216,219.64.175.217,219.64.175.219,14.96.246.43,14.96.246.36,14.96.246.40,14.96.246.41,14.96.246.42,59.161.95.65,59.161.95.66,59.161.95.67,59.161.95.68,115.118.108.0/22,115.118.144.0/20,115.118.180.0/21,115.118.188.0/22,115.118.204.0/22,115.117.128.0/18  >> /a/squid/zero-tata-india.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 182.156.0.0/16,27.107.0.0/16,14.194.0.0/16,14.195.0.0/16,49.200.0.0/16,49.201.0.0/16,49.202.0.0/16,49.203.0.0/16,49.249.64.0/18,49.249.128.0/18,49.249.192.0/19,49.248.224.0/20,49.248.240.0/22,49.248.244.0/23,49.249.0.0/19,49.249.32.0/19,49.249.224.0/19,115.117.192.0/18,115.118.208.0/20,115.118.224.0/19,115.118.16.0/22,115.118.44.0/22,115.118.48.0/20,115.118.80.0/20,59.161.254.21,182.156.191.10,219.64.175.132,219.64.175.134,219.64.175.135,219.64.175.136,219.64.175.137,219.64.175.139,219.64.175.142,59.161.95.86,219.64.175.215,219.64.175.216,219.64.175.217,219.64.175.219,14.96.246.43,14.96.246.36,14.96.246.40,14.96.246.41,14.96.246.42,59.161.95.65,59.161.95.66,59.161.95.67,59.161.95.68,115.118.108.0/22,115.118.144.0/20,115.118.180.0/21,115.118.188.0/22,115.118.204.0/22,115.117.128.0/18  >> /a/log/webrequest/zero-tata-india.tsv.log
 
 # DTAC Thailand (DT)
-pipe 10 /usr/bin/udp-filter -F '\t' -i 115.67.0.0/16,111.84.0.0/16,1.46.0.0/16,1.47.0.0/16,103.1.164.0/22,202.91.16.0/21 >> /a/squid/zero-dtac-thailand.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 115.67.0.0/16,111.84.0.0/16,1.46.0.0/16,1.47.0.0/16,103.1.164.0/22,202.91.16.0/21 >> /a/log/webrequest/zero-dtac-thailand.tsv.log
 
 # Dialog Sri Lanka (DL)
-pipe 10 /usr/bin/udp-filter -F '\t' -i 175.157.0.0/16,111.223.128.0/18,103.2.148.0/22,123.231.8.0/21,123.231.40.0/21,123.231.48.0/21,123.231.56.0/21,123.231.120.0/21,182.161.0.0/19,122.255.52.0/24,122.255.53.0/24,122.255.54.0/24 >> /a/squid/zero-dialog-sri-lanka.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 175.157.0.0/16,111.223.128.0/18,103.2.148.0/22,123.231.8.0/21,123.231.40.0/21,123.231.48.0/21,123.231.56.0/21,123.231.120.0/21,182.161.0.0/19,122.255.52.0/24,122.255.53.0/24,122.255.54.0/24 >> /a/log/webrequest/zero-dialog-sri-lanka.tsv.log
 
 
 # XL Axiata Indonesia (XL)
-pipe 10 /usr/bin/udp-filter -F '\t' -i 112.215.63.0/24,112.215.64.0/24,112.215.65.0/24,112.215.66.0/24,202.152.240.0/24,202.152.243.0/24 >> /a/squid/zero-xl-axiata-indonesia.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 112.215.63.0/24,112.215.64.0/24,112.215.65.0/24,112.215.66.0/24,202.152.240.0/24,202.152.243.0/24 >> /a/log/webrequest/zero-xl-axiata-indonesia.tsv.log
 
 # TIM Brasil (TB)
-pipe 10 /usr/bin/udp-filter -F '\t' -i 189.40.0.0/16,189.64.0.0/14,189.116.0.0/14,187.46.0.0/15,187.80.0.0/14,187.96.0.0/14,186.196.0.0/14,186.252.0.0/14,177.28.0.0/14,177.48.0.0/14,177.108.0.0/14,177.120.0.0/15,177.149.0.0/16,177.150.0.0/15,177.164.0.0/14,177.122.0.0/15,177.186.0.0/15,177.216.0.0/14,172.20.0.0/14,172.24.0.0/14,172.28.0.0/16,10.207.0.0/16,10.222.0.0/16,10.15.0.0/16,10.4.0.0/17,10.0.192.0/18 >> /a/squid/zero-tim-brasil.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 189.40.0.0/16,189.64.0.0/14,189.116.0.0/14,187.46.0.0/15,187.80.0.0/14,187.96.0.0/14,186.196.0.0/14,186.252.0.0/14,177.28.0.0/14,177.48.0.0/14,177.108.0.0/14,177.120.0.0/15,177.149.0.0/16,177.150.0.0/15,177.164.0.0/14,177.122.0.0/15,177.186.0.0/15,177.216.0.0/14,172.20.0.0/14,172.24.0.0/14,172.28.0.0/16,10.207.0.0/16,10.222.0.0/16,10.15.0.0/16,10.4.0.0/17,10.0.192.0/18 >> /a/log/webrequest/zero-tim-brasil.tsv.log
 
 # Orange Morocco (OM)
-pipe 10 /usr/bin/udp-filter -F '\t' -i 41.92.0.0/18,41.92.64.0/19,41.214.192.0/18,197.153.0.0/16,197.247.0.0/16 >> /a/squid/zero-orange-morocco.tab.log
+pipe 10 /usr/bin/udp-filter -F '\t' -i 41.92.0.0/18,41.92.64.0/19,41.214.192.0/18,197.153.0.0/16,197.247.0.0/16 >> /a/log/webrequest/zero-orange-morocco.tsv.log
 
 
 
 # Disabling these for now.  We can't run any more filters on
 # oxygen until we get the X-Carrier filter working.
 # Hello Cambodia
-#pipe 10 /usr/bin/udp-filter -F '\t' -i 117.20.116.83,117.20.116.84/30,117.20.116.88/30,117.20.116.92/31 >> /a/squid/zero-hello-cambodia.tab.log
+#pipe 10 /usr/bin/udp-filter -F '\t' -i 117.20.116.83,117.20.116.84/30,117.20.116.88/30,117.20.116.92/31 >> /a/log/webrequest/zero-hello-cambodia.tsv.log
 
 # Celcom Malaysia
-#pipe 10 /usr/bin/udp-filter -F '\t' -i 183.171.0.0/18,183.171.64.0/18,183.171.128.0/19,203.82.80.0/24,203.82.81.0/24,203.82.82.0/24,203.82.87.0/24,203.82.95.0/24,203.82.90.0/24,203.82.91.0/24,203.82.92.0/24,203.82.93.0/24,203.82.94.0/24 >> /a/squid/zero-celcom-malaysia.tab.log
+#pipe 10 /usr/bin/udp-filter -F '\t' -i 183.171.0.0/18,183.171.64.0/18,183.171.128.0/19,203.82.80.0/24,203.82.81.0/24,203.82.82.0/24,203.82.87.0/24,203.82.95.0/24,203.82.90.0/24,203.82.91.0/24,203.82.92.0/24,203.82.93.0/24,203.82.94.0/24 >> /a/log/webrequest/zero-celcom-malaysia.tsv.log
 
 # Orange Congo
-#pipe 10 /usr/bin/udp-filter -F '\t' -i 41.77.220.64/27,41.77.221.64/27,41.77.222.64/27,41.77.223.64/27,81.199.62.88/29,81.199.62.128/26,91.151.146.64/27,203.222.206.112/28,203.222.195.80/28 >> /a/squid/zero-orange-congo.tab.log
+#pipe 10 /usr/bin/udp-filter -F '\t' -i 41.77.220.64/27,41.77.221.64/27,41.77.222.64/27,41.77.223.64/27,81.199.62.88/29,81.199.62.128/26,91.151.146.64/27,203.222.206.112/28,203.222.195.80/28 >> /a/log/webrequest/zero-orange-congo.tsv.log
 
 # Orange Botswana
-#pipe 10 /usr/bin/udp-filter -F '\t' -i 41.223.141.80/29,41.223.141.81/29,41.223.141.82/29,41.223.141.83/29,41.223.141.84/29,41.223.141.85/29,41.223.141.86/29,41.223.142.92/32,41.223.141.160/29 >> /a/squid/zero-orange-botswana.tab.log
+#pipe 10 /usr/bin/udp-filter -F '\t' -i 41.223.141.80/29,41.223.141.81/29,41.223.141.82/29,41.223.141.83/29,41.223.141.84/29,41.223.141.85/29,41.223.141.86/29,41.223.142.92/32,41.223.141.160/29 >> /a/log/webrequest/zero-orange-botswana.tsv.log
 
