@@ -1,5 +1,7 @@
 # Varnish VCL include file for text backends
 
+include "errorpage.inc.vcl";
+
 sub vcl_recv {
 	call vcl_recv_purge;
 <% if cluster_tier == 1 -%>
@@ -20,4 +22,9 @@ sub vcl_miss {
 	/* Restore the original Cookie header for MediaWiki */
 	set req.http.Cookie = req.http.Orig-Cookie;
 	unset req.http.Orig-Cookie;
+}
+
+sub vcL_error {
+	call errorpage;
+	return(deliver);
 }
