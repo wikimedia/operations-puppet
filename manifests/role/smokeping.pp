@@ -42,16 +42,9 @@ class role::smokeping {
     }
 
     file {
-        '/srv/org/wikimedia/smokeping':
-        ensure  => 'directory',
-        mode    => '0775',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    file {
         '/srv/org/wikimedia/smokeping/index.cgi':
         ensure  => 'link',
+        recurse => true,
         target  => '/usr/lib/cgi-bin/smokeping.cgi',
         mode    => '0444',
         owner   => 'root',
