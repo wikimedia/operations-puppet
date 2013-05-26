@@ -16,7 +16,8 @@
 ###
 
 # cribbed the apachevhost logtailer for use crunching swift logs
-# sadly the proxy server log line format is slightly different from the container, object, and account server log line format.
+# sadly the proxy server log line format is slightly different from the
+# container, object, and account server log line format.
 # sample logs (delete, get, head, and put):
 # proxy format: month day time host process ip ip date action path httpver resp - useragent auth - - - - - dur
 #  Feb  2 23:09:30 ms-fe1 proxy-server 10.0.11.21 10.0.11.21 02/Feb/2012/23/09/30 DELETE /v1/AUTH_43651b15-ed7a-40b6-b745-47666abf8dfe/wikipedia-commons-local-thumb.62/6/62/1_single_stroke_roll.svg/150px-1_single_stroke_roll.svg.png HTTP/1.0 204 - PHP-CloudFiles/1.7.10 mw%3Athumb%2CAUTH_tke52932a795f44f418bc2432dac1d81fc - - - - - 0.3470
@@ -43,9 +44,11 @@ import copy
 from ganglia_logtailer_helper import GangliaMetricObject
 from ganglia_logtailer_helper import LogtailerParsingException, LogtailerStateException
 
+
 class SwiftHTTPLogtailer(object):
     # only used in daemon mode
     period = 30
+
     def __init__(self):
         '''This function should initialize any data structures or variables
         needed for the internal state of the line parser.'''
@@ -71,20 +74,19 @@ class SwiftHTTPLogtailer(object):
         # assume we're in daemon mode unless set_check_duration gets called
         self.dur_override = False
 
-
     def swiftLogToRegex(self, logFormat):
         logFormatDict = {
-            '%date':                '(?P<date>[A-Z][a-z]+ +[0-9][0-9]? [0-9:]{8})', #eg "Feb  2 23:08:24"
+            '%date':                '(?P<date>[A-Z][a-z]+ +[0-9][0-9]? [0-9:]{8})',  # eg "Feb  2 23:08:24"
             '%host':                '(?P<host>[^ ]+)',
             '%process':             '(?P<process>[^ ]+)',
             '%client':              '(?P<client>[^ ]+)',
             '%remote_ip':           '(?P<remote_ip>[^ ]+)',
-            '%slashdate':           '(?P<slashdate>[^ ]+)',     #eg 02/Feb/2012/23/08/24
-            '%bracketdate':          '(?P<bracketdate>[^ ]+ [^ ]+)',     #eg [07/Mar/2012:19:56:55 +0000]
-            '%method':              '(?P<method>[A-Z]+)',   #GET, HEAD, PUT, DELETE, etc.
+            '%slashdate':           '(?P<slashdate>[^ ]+)',  # eg 02/Feb/2012/23/08/24
+            '%bracketdate':          '(?P<bracketdate>[^ ]+ [^ ]+)',  # eg [07/Mar/2012:19:56:55 +0000]
+            '%method':              '(?P<method>[A-Z]+)',  # GET, HEAD, PUT, DELETE, etc.
             '%path':                '(?P<path>[^ ]+)',
             '%httpver':             '(?P<httpver>[^ ]+)',
-            '%status':              '(?P<status>[^ ]+)',    # 404, 204, 200, etc.
+            '%status':              '(?P<status>[^ ]+)',  # 404, 204, 200, etc.
             '%referrer':            '(?P<referrer>[^ ]+)',
             '%useragent':           '(?P<useragent>[^ ]+)',
             '%quoteduseragent':     '(?P<useragent>[^"]+)',
@@ -102,7 +104,6 @@ class SwiftHTTPLogtailer(object):
 
         return "^%s$" % logFormat
 
-
     # example function for parse line
     # takes one argument (text) line to be parsed
     # returns nothing
@@ -116,7 +117,7 @@ class SwiftHTTPLogtailer(object):
             procMatch = self.processreg.match(line)
         except Exception, e:
             self.lock.release()
-            raise LogtailerParsingException, "regmatch or contents failed with %s" % e
+            raise LogtailerParsingException("regmatch or contents failed with %s" % e)
         if procMatch:
             proc = procMatch.group('process')
             if(proc == 'proxy-server'):
@@ -128,20 +129,20 @@ class SwiftHTTPLogtailer(object):
             regMatch = reg.match(line)
         except Exception, e:
             self.lock.release()
-            raise LogtailerParsingException, "regmatch or contents failed with %s" % e
+            raise LogtailerParsingException("regmatch or contents failed with %s" % e)
 
         if regMatch:
             lineBits = regMatch.groupdict()
             # ignore swauth lines
-            if( (lineBits['process'] == 'swauth') or (lineBits['useragent'] == 'Swauth') ):
+            if ((lineBits['process'] == 'swauth') or (lineBits['useragent'] == 'Swauth')):
                 return
             # all my stats are keyed off of method (GET, PUT, HEAD, etc)
             method = lineBits['method']
-            if( method not in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE'] ):
+            if (method not in ['GET', 'PUT', 'POST', 'HEAD', 'DELETE']):
                 method = 'OTHER'
             # I only care about some status codes.
             status = lineBits['status']
-            if( status not in ['200', '201', '204', '304', '404', '500', '503'] ):
+            if (status not in ['200', '201', '204', '304', '404', '500', '503']):
                 status = 'other'
             statusname = "durlist_%s" % status   # change 204 into 'durist_204'
             # finally, I want query duration (it's in seconds)
@@ -150,10 +151,9 @@ class SwiftHTTPLogtailer(object):
             self.stats[method][statusname].append(req_time)
         else:
             self.lock.release()
-            raise LogtailerParsingException, "regmatch failed to match"
+            raise LogtailerParsingException("regmatch failed to match")
 
         self.lock.release()
-
 
     # Returns a dict of zeroed stats
     def getBlankStats(self):
@@ -168,8 +168,7 @@ class SwiftHTTPLogtailer(object):
                      'durlist_404':   [],
                      'durlist_500':   [],
                      'durlist_503':   [],
-                     'durlist_other': []
-                    }
+                     'durlist_other': []}
         return blankData
 
     # example function for reset_state
@@ -187,7 +186,6 @@ class SwiftHTTPLogtailer(object):
         self.stats = {}
         self.last_reset_time = time.time()
 
-
     # example for keeping track of runtimes
     # takes no arguments
     # returns float number of seconds for this run
@@ -197,7 +195,6 @@ class SwiftHTTPLogtailer(object):
         it.'''
         self.duration = dur
         self.dur_override = True
-
 
     def get_check_duration(self):
         '''This function should return the time since the last check.  If called
@@ -212,9 +209,9 @@ class SwiftHTTPLogtailer(object):
             acceptable_duration_min = self.period - (self.period / 10.0)
             acceptable_duration_max = self.period + (self.period / 10.0)
             if (duration < acceptable_duration_min or duration > acceptable_duration_max):
-                raise LogtailerStateException, "time calculation problem - duration (%s) > 10%% away from period (%s)" % (duration, self.period)
+                raise LogtailerStateException("time calculation problem - duration (%s) > 10%% away from period (%s)" %
+                                              (duration, self.period))
         return duration
-
 
     # example function for get_state
     # takes no arguments
@@ -236,10 +233,10 @@ class SwiftHTTPLogtailer(object):
             self.lock.release()
             raise e
 
-        combined = {}       # A dict containing stats for broken out & 'other' vhosts
-        results  = []       # A list for all the Ganglia Log objects
+        combined = {}  # A dict containing stats for broken out & 'other' vhosts
+        results = []  # A list for all the Ganglia Log objects
 
-        # for each method (get, put, etc.) we want to calculate 
+        # for each method (get, put, etc.) we want to calculate
         # - number of hits total
         # - avg, 90th, 50th, and max duration
         # - for each status code (200, 204, etc.)
@@ -254,18 +251,18 @@ class SwiftHTTPLogtailer(object):
         #   (for example, put will never return 200)
 
         totalhits = 0
-        statuscounter = {} #this will have counts for each status
+        statuscounter = {}  # this will have counts for each status
         for (method, stats) in mydata.iteritems():
             # method = get, put, etc., stats = dict of statuses
             methodhits = 0
             methodstats = []
             for (status, durs) in stats.iteritems():
                 # status = 'durlist_200', etc., durs = list of durations
-                statusnum = status[8:] #turn 'durlist_200' into '200' (string, not int)
+                statusnum = status[8:]  # turn 'durlist_200' into '200' (string, not int)
                 totalhits += len(durs)
                 methodhits += len(durs)
                 statushits = len(durs)
-                try: #increment the statuscounter for this status
+                try:  # increment the statuscounter for this status
                     statuscounter[statusnum] += statushits
                 except KeyError:
                     statuscounter[statusnum] = statushits
@@ -299,8 +296,10 @@ class SwiftHTTPLogtailer(object):
             except ZeroDivisionError:
                 combined['swift_%s_hits' % (method)] = 0
             #print "method 90th index is %s, len is %s" % (int(len(durs) * 0.9), len(durs))
-            combined['swift_%s_%s' % (method, '90th')] = durs[int(len(durs) * 0.9)]
-            combined['swift_%s_%s' % (method, '50th')] = durs[int(len(durs) * 0.5)]
+            combined['swift_%s_%s' % (method, '90th')] = durs[int(len(durs) *
+                                                              0.9)]
+            combined['swift_%s_%s' % (method, '50th')] = durs[int(len(durs) *
+                                                              0.5)]
             combined['swift_%s_%s' % (method, 'max')] = durs[-1]
             #print durs
             #print ">> %s %s<<" % (sum(durs), len(durs))
@@ -309,21 +308,26 @@ class SwiftHTTPLogtailer(object):
             combined['swift_hits'] = totalhits / check_time
             for (key, val) in statuscounter.items():
                 combined['swift_%s_hits' % key] = val / check_time
-                combined['swift_%s_hits_%%' % key] = (val / check_time) / combined['swift_hits'] * 100 # percentage of hits that are 200s etc.
+                # percentage of hits that are 200s etc.
+                combined['swift_%s_hits_%%' % key] = ((val / check_time) /
+                                                      combined['swift_hits'] *
+                                                      100)
         except ZeroDivisionError:
             combined['swift_hits'] = 0
             for (key, val) in statuscounter.items():
                 combined['swift_%s_hits' % key] = 0
 
-
-
         for metricname, metricval in combined.iteritems():
             # package up the data you want to submit
             if 'hits' in metricname:
-                #print "metric info %s, %s, %s" % (metricname, metricval, 'hps')
-                results.append(GangliaMetricObject(metricname, metricval, units='hps'))
+                #print "metric info %s, %s, %s" % (metricname,
+                #                                  metricval, 'hps')
+                results.append(GangliaMetricObject(metricname,
+                                                   metricval, units='hps'))
             else:
-                #print "metric info %s, %s, %s" % (metricname, metricval, 'sec')
-                results.append(GangliaMetricObject(metricname, metricval, units='sec'))
+                #print "metric info %s, %s, %s" % (metricname, metricval,
+                #                                  'sec')
+                results.append(GangliaMetricObject(metricname,
+                                                   metricval, units='sec'))
         # return a list of metric objects
         return results
