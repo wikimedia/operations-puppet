@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# this tool allow you to connect quickly to sql database
+# it should work for all newbies
+
+
+if [ $# -lt 1 ];then
+    echo "Usage: sql <database name|wiki name>"
+    exit 0
+fi
+
+if [ "$1" = "-h" ] || [ "$1" == "--help" ];then
+	echo "This tool allows you to easily open a connection to sql database without having to provide the credentials or a database host server"
+	echo "Example: sql frwiki_p"
+	exit 0
+fi
+
+list=/usr/share/dblist
+
+param=""
+# check if the user has a replica file
+if [ -f ~/replica.my.cnf ];then
+    param=" --defaults-file=~/replica.my.cnf"
+else
+    if [ ! -f ~/.my.cnf ];then
+        param=" -p"
+    fi
+fi
+
+server="enwiki.labsdb"
+db="enwiki_p"
+
+case "$1" in
+    "en" | "enwiki_p")
+        server="enwiki.labsdb"
+        db="enwiki_p"
+    ;;
+    "de" | "dewiki_p")
+        server="dewiki.labsdb"
+        db="dewiki_p"
+    ;;
+    "fr" | "frwiki_p")
+        server="frwiki.labsdb"
+        db="frwiki_p"
+    ;;
+    "cs" | "cswiki_p")
+        server="cswiki.labsdb"
+        db="cswiki_p"
+    ;;
+    "local")
+        server=tools-db
+        db="mysql"
+        if [ -f ~/.my.cnf ];then
+	    param=""
+        fi
+   ;;
+   "commonswiki_p" | "commons")
+       server=commonswiki.labsdb
+       db="commonswiki_p"
+   ;;
+   *)
+	# we don't know what the database is so we check if it exist first
+	echo "This database name is not known by sql script, fallback to dblist resolution"
+	# lookup from hosts
+	if [ `echo "$1" | grep -cE '_p$'` -lt 1 ];then
+             echo "Make sure to ask for a db in format of <wiki>_p"
+	     exit 1
+	fi
+	db=$1
+	server=`echo "$1" | sed 's/_p//' | sed 's/$/.labsdb/'`
+	if [ `cat /etc/hosts | grep -cE "\s$server"` -gt 0 ]
+	then
+		echo "Resolved to $server $db"
+	else
+	        echo "This is unknown db to me, if you don't like, blame petan on freenode"
+	        exit 1
+	fi
+   ;;
+esac
+
+echo "Connecting to $server"
+mysql $param -h $server $db ${*:2}
