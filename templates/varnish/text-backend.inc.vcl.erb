@@ -12,4 +12,14 @@ sub vcl_recv {
 		set req.backend = api;
 	}
 <% end -%>
+
+	return(lookup);
+}
+
+sub vcl_miss {
+	/* Restore the original Cookie header for MediaWiki */
+	set req.http.Cookie = req.http.Orig-Cookie;
+}
+
+sub vcl_fetch {
 }

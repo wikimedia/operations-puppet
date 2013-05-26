@@ -13,6 +13,20 @@ sub mobile_redirect {
 	}
 }
 
+sub cookie_munging {
+	if (req.http.Cookie ~ "([sS]ession|Token)") {
+		return(pass);
+	}
+
+	/* This header is saved, and restored before sending it to MediaWiki */
+	set req.http.Orig-Cookie = req.http.Cookie;
+	unset req.http.Cookie;
+
+	if (req.http.Orig-Cookie ~ "LoggedOut") {
+		set req.http.Cookie = "LoggedOut=1";
+	}
+}
+
 sub vcl_recv {
 	/* Allow purging */
 	call vcl_recv_purge;
@@ -26,6 +40,20 @@ sub vcl_recv {
 	}
 
 	call mobile_redirect;
+
+	call cookie_munging;
+
+	return(lookup);
+}
+
+sub vcl_fetch {
+}
+
+sub vcl_deliver {
+	/* Override the Cache-Control header for wiki content pages */
+	if (req.url ~ "(?i)^/w(iki)?/.*" && req.url !~ "(?i)^/w/extensions/.*" && req.url !~ "(?i)bcache=1") {
+		set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+	}
 }
 
 sub vcl_error {
