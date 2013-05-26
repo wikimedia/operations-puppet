@@ -71,10 +71,6 @@ sub vcl_deliver {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
 		remove resp.http.X-Content-Range;
 	}
-	
-	/* TODO: Move this to wikimedia.vcl once all instances are >= 3.0.3plus-rc1-wm5 */
-	std.collect(resp.http.Via);
-	std.collect(resp.http.X-Varnish);
 
 	set resp.http.Access-Control-Allow-Origin = "*";
 }

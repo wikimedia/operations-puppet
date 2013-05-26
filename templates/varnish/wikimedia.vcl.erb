@@ -257,6 +257,9 @@ sub vcl_miss {
 }
 
 sub vcl_deliver {
+	std.collect(resp.http.Via);
+	std.collect(resp.http.X-Varnish);
+
 	if (resp.http.X-Cache) {
 		if (obj.hits > 0) {
 			set resp.http.X-Cache = resp.http.X-Cache + ", <%= hostname + (name.empty? ? "" : " " + name) %> hit (" + obj.hits + ")";
