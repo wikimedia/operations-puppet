@@ -65,10 +65,10 @@ def main():
         if output:
             for line in output:
                 linearr = line.split('=')
-		if len(linearr) > 1:
+                if len(linearr) > 1:
                     nic = linearr[0]
                     mac = linearr[1]
-		    if re.search('^NIC', nic) and (nic.strip().split()[0][3] == options.nicnumber):
+                    if re.search('^NIC', nic) and (nic.strip().split()[0][3] == options.nicnumber):
                         print mac.strip()
                         sys.exit(0)
             # We didn't find a NIC, this is an error
@@ -87,7 +87,7 @@ def run_command(server, username, password, command):
             print "Failed to connect to %s." % server
             return
         stdin, stdout, stderr = ssh.exec_command(command)
-	return stdout.readlines()
+        return stdout.readlines()
     except Exception:
         print "Couldn't connect to %s" % (server)
         return
