@@ -32,7 +32,7 @@ class role::smokeping {
 
 
     file {
-        "etc/apache2/sites-available/${smokeping_host}":
+        "/etc/apache2/sites-available/${smokeping_host}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
