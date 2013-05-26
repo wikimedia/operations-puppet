@@ -1,0 +1,9 @@
+[pep8]
+
+ignore=W191,E701,E201,E202,E302,E111,W291,E401,E501,E292,E203,E221,W293,E128,E126,W601,E251,E231,W292,W391,E303,E241,E226,E123,E261,E101,E225,E703,E301,E125
+
+#  Q:  It looks like you're just suppressing every damn thing.
+#
+#  A:  Yep.  The files in this directory are copied from upstream, and I don't
+#      want to modify them and get out of sync.  So I just exhaustively listed every
+#      single warning and error here so that our tests can run cleanly.
