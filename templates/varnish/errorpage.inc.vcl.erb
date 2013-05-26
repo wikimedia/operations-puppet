@@ -1,0 +1,101 @@
+
+sub errorpage {
+	synthetic {"
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Wikimedia Error</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="author" content="Mark Ryan"/>
+<meta name="copyright" content="(c) 2005-2007 Mark Ryan and others. Text licensed under the GNU Free Documentation License. http://www.gnu.org/licenses/fdl.txt"/>
+
+<style type="text/css"><!--
+body {
+background-color: #dbe5df;
+font: 100% "Gill Sans MT", "Gill Sans", "Trebuchet MS", Helvetica, sans-serif;
+margin: 0px;
+}
+.TechnicalStuff {
+font-size: 0.8em;
+font-style: italic;
+text-align: center;
+padding-bottom: 0.8em;
+}
+.Lines {
+width: 100%;
+height: 1px;
+overflow: hidden;
+font-size: 0.5px;
+}
+.ContentArea {
+background-color: white;
+padding: 0.8em 10% 0 10%;
+font-size: 1.0em;
+}
+a:hover {
+color: red;
+}
+h1, h2 {
+margin: 0px;
+font-size: 1.0em;
+}
+h2 {
+background: #9fbfd8;
+font-size: 1.2em;
+font-weight: bold;
+text-align: center;
+}
+h1 {
+background: #dbe5df;
+font: bold 1.5em "Gill Sans MT", "Gill Sans", Helvetica, Humanist, sans-serif;
+text-transform: uppercase;
+text-align: center;
+width: 100%;
+padding-top:0.8em;
+}
+-->
+</style>
+<script>/*<![CDATA[*/
+	function lines(s) {
+		var c = s.split(' ');
+		for (var i = 0; i < c.length; i++) {
+			document.write('<div class="Lines" style="background-color:#' + c[i] + ';"></div>');
+		}
+	}
+//]]></script>
+</head>
+
+<body link="#24442E" text="#000000" vlink="#24442E" alink="#FF0000">
+<h1>Wikimedia Foundation</h1>
+<script>lines('ccd4cf bdc3bf adb1af 9ea09f dbe5df');</script>
+
+<h2>Error</h2>
+
+<script>lines('8f8f8f acacac c6c6c6 dbdbdb eaeaea f4f4f4');</script>
+
+<!-- BEGIN CONTENT AREA -->
+<div class="ContentArea">
+
+<div id="en" lang="en">
+<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please <a href="%U" onclick="window.location.reload(false); return false">try again</a> in a few minutes.</p>
+<p>You may be able to get further information in the <a href="irc://chat.freenode.net/wikipedia">#wikipedia</a> channel on the <a href="http://www.freenode.net">Freenode IRC network</a>.</p>
+<p>The Wikimedia Foundation is a non-profit organisation which hosts some of the most popular sites on the Internet, including Wikipedia. It has a constant need to purchase new hardware. If you would like to help, please <a href="http://wikimediafoundation.org/wiki/Fundraising">donate</a>.</p>
+<hr noshade="noshade" size="1px" width="80%" />
+<div class="TechnicalStuff">
+If you report this error to the Wikimedia System Administrators, please include the details below.<br/>
+</div>
+<div class="TechnicalStuff">
+<bdo dir="ltr">
+Request: %M %U, from %i via %h (%s) to %H (%I)<br/>
+Error: %c, errno %E at %T
+</bdo>
+</div>
+</div>
+
+</div>
+<script>lines('9ea09f adb1af bdc3bf ccd4cf');</script>
+
+</body>
+</html>
+"};
+}
