@@ -35,4 +35,13 @@ class jenkins::slave(
       options => $ssh_key_options,
   }
 
+  file { '/var/lib/jenkins/slave_scripts':
+    ensure => directory,
+    owner => 'root',
+    group => 'root',
+    mode => '0755',
+    recurse => true,
+    require => File['/var/lib/jenkins'],
+    source => 'puppet:///modules/jenkins/slave_scripts',
+  }
 }
