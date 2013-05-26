@@ -16,7 +16,7 @@ sub mobile_redirect {
 }
 
 sub cookie_munging {
-	if (req.http.Cookie ~ "([sS]ession|Token|LoggedOut)") {
+	if (req.http.Cookie ~ "([sS]ession|Token)") {
 		return(pass);
 	}
 
@@ -40,6 +40,10 @@ sub vcl_recv {
 	call mobile_redirect;
 
 	call cookie_munging;
+
+	if (req.http.Orig-Cookie ~ "LoggedOut") {
+		set req.hash_always_miss = true;
+	}
 
 	return(lookup);
 }
