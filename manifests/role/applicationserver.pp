@@ -36,17 +36,22 @@ class role::applicationserver {
 		$cluster = "${group}"
 
 		include	standard,
-			mediawiki
 
 		if $::realm == 'production' {
 			include	admins::roots,
 				admins::mortals,
-				geoip
+				geoip,
+				mediawiki
+
+			nrpe::monitor_service { "twemproxy":
+				description => "twemproxy process",
+				nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u nobody -C nutcracker"
+			}
 		}
 
 		if $::realm == 'labs' {
 			# MediaWiki configuration specific to labs instances ('beta' project)
-
+			class { "mediawiki": twemproxy => false }
 			# Umount /dev/vdb from /mnt ...
 			mount { '/mnt':
 				name => '/mnt',
