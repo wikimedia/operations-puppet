@@ -9,6 +9,14 @@ C{
 
 include "device-detection.inc.vcl";
 
+acl carrier_testing {
+	"216.38.130.160"/28;                // WMF office
+	"208.80.152.165";                   // fenari
+	"2620:0:860:2:21e:c9ff:feea:ab95";  // fenari
+	"208.80.154.149";                   // bast1001
+	"2620:0:861:2:7a2b:cbff:fe09:11ba"; // bast1001
+}
+
 acl carrier_dtac {
 	"1.46.0.0"/15;
 	"103.1.164.0"/22;
@@ -428,9 +436,11 @@ sub tag_carrier {
 }
 
 sub vcl_recv {
-	/* if the request comes from Opera Mini's accelerating proxies, grab
-	 * XFF Header and replace client ip value */
-	if (client.ip ~ opera_mini) {
+	/* In case the XFF header is present, trust it in case it comes from
+	 * Opera Mini's accelerating proxies, or from a carrier_testing ip range,
+	 * and replace client ip value with the first value from the XFF Header
+	 */
+	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
 		set req.http.X-Orig-Client-IP = client.ip;
 		C{
 		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
