@@ -1,5 +1,8 @@
 # Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
 # This file is managed by Puppet!
+
+import std;
+
 <%
 def backend_option(backend, option, default)
 	if varnish_backend_options.kind_of?(Array)
@@ -257,8 +260,10 @@ sub vcl_miss {
 }
 
 sub vcl_deliver {
+<% if vcl_config.fetch("layer", "") == "frontend" -%>
 	std.collect(resp.http.Via);
 	std.collect(resp.http.X-Varnish);
+<% end -%>
 
 	if (resp.http.X-Cache) {
 		if (obj.hits > 0) {

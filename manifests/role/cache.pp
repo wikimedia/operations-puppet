@@ -447,6 +447,7 @@ class role::cache {
 					'cache4xx' => "1m",
 					'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 					'cluster_tier' => $cluster_tier,
+					'layer' => 'backend',
 				},
 				backend_options => [
 					{
@@ -479,6 +480,7 @@ class role::cache {
 					'cache4xx' => "1m",
 					'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 					'cluster_tier' => $cluster_tier,
+					'layer' => 'frontend',
 				},
 				backend_options => [
 					{
@@ -600,6 +602,7 @@ class role::cache {
 					'cache4xx' => "1m",
 					'purge_regex' => '^http://upload\.wikimedia\.org/',
 					'cluster_tier' => $cluster_tier,
+					'layer' => 'backend',
 				},
 				backend_options => [
 					{
@@ -636,6 +639,7 @@ class role::cache {
 					'cache4xx' => "1m",
 					'purge_regex' => '^http://upload\.wikimedia\.org/',
 					'cluster_tier' => $cluster_tier,
+					'layer' => 'frontend',
 				},
 				backend_options => [
 					{
@@ -736,6 +740,7 @@ class role::cache {
 			vcl_config => {
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
+				'layer' => 'frontend',
 			},
 			backend_options => {
 				'port' => 80,
@@ -837,6 +842,7 @@ class role::cache {
 			vcl_config => {
 				'retry5xx' => 1,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+				'layer' => 'backend',
 			},
 			backend_options => [
 				{
@@ -868,6 +874,7 @@ class role::cache {
 			vcl_config => {
 				'retry5xx' => 0,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+				'layer' => 'frontend',
 			},
 			backend_options => {
 				'port' => 81,
