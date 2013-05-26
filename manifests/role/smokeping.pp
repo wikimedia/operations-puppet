@@ -45,7 +45,7 @@ class role::smokeping {
     }
 
     file {
-        '/srv/org/wikimedia/smokeping/':
+        ['/srv/org/', '/srv/org/wikimedia/', '/srv/org/wikimedia/smokeping' ]:
         recurse => true,
         mode    => '0444',
         owner   => 'root',
