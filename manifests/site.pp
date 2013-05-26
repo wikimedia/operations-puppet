@@ -717,7 +717,7 @@ node 'db1057.eqiad.wmnet' {
 
 ## 2013-04-10: py using db101[45] and db1023 and db1033 for testing
 ## not currently in production and/or hardware issues
-node /^db10(1[5]|2[3]|3[2367]|4[45])\.eqiad\.wmnet/ {
+node /^db10(1[45]|2[3]|3[367]|4[45])\.eqiad\.wmnet/ {
 	include standard
 }
 
