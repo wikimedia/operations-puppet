@@ -68,179 +68,179 @@ except:
 import MySQLdb
 
 def longish(x):
-	if len(x):
-		try:
-			return long(x)
-		except ValueError:
-			return longish(x[:-1])
-	else:
-		raise ValueError
+    if len(x):
+        try:
+            return long(x)
+        except ValueError:
+            return longish(x[:-1])
+    else:
+        raise ValueError
 
 def hexlongish(x):
-	if len(x):
-		try:
-			return long(str(x), 16)
-		except ValueError:
-			return longish(x[:-1])
-	else:
-		raise ValueError
+    if len(x):
+        try:
+            return long(str(x), 16)
+        except ValueError:
+            return longish(x[:-1])
+    else:
+        raise ValueError
 
 def parse_innodb_status(innodb_status_raw, innodb_version="51fb"):
-	def sumof(status):
-		def new(*idxs):
-			return sum(map(lambda x: longish(status[x]), idxs))
-		#new.func_name = 'sumof'  #not ok in py2.3
-		return new
+    def sumof(status):
+        def new(*idxs):
+            return sum(map(lambda x: longish(status[x]), idxs))
+        #new.func_name = 'sumof'  #not ok in py2.3
+        return new
 
-	innodb_status = defaultdict(int)
-	innodb_status['active_transactions']
+    innodb_status = defaultdict(int)
+    innodb_status['active_transactions']
 
-	for line in innodb_status_raw:
-		istatus = line.split()
+    for line in innodb_status_raw:
+        istatus = line.split()
 
-		isum = sumof(istatus)
+        isum = sumof(istatus)
 
-		# SEMAPHORES
-		if "Mutex spin waits" in line:
-			innodb_status['spin_waits'] += longish(istatus[3])
-			innodb_status['spin_rounds'] += longish(istatus[5])
-			innodb_status['os_waits'] += longish(istatus[8])
+        # SEMAPHORES
+        if "Mutex spin waits" in line:
+            innodb_status['spin_waits'] += longish(istatus[3])
+            innodb_status['spin_rounds'] += longish(istatus[5])
+            innodb_status['os_waits'] += longish(istatus[8])
 
-		elif "RW-shared spins" in line:
-			if innodb_version == "51fb":
-				innodb_status['spin_waits'] += isum(2,8)
-				innodb_status['os_waits'] += isum(5,11)
-			elif innodb_version == "55xdb":
-				innodb_status['spin_waits'] += longish(istatus[2])
-				innodb_status['os_waits'] += longish(istatus[7])
+        elif "RW-shared spins" in line:
+            if innodb_version == "51fb":
+                innodb_status['spin_waits'] += isum(2,8)
+                innodb_status['os_waits'] += isum(5,11)
+            elif innodb_version == "55xdb":
+                innodb_status['spin_waits'] += longish(istatus[2])
+                innodb_status['os_waits'] += longish(istatus[7])
 
-		elif "RW-excl spins" in line and innodb_version == "55xdb":
-			innodb_status['spin_waits'] += longish(istatus[2])
-			innodb_status['os_waits'] += longish(istatus[7])
+        elif "RW-excl spins" in line and innodb_version == "55xdb":
+            innodb_status['spin_waits'] += longish(istatus[2])
+            innodb_status['os_waits'] += longish(istatus[7])
 
-		# TRANSACTIONS
-		elif "Trx id counter" in line:
-			innodb_status['transactions'] += hexlongish(istatus[3])
+        # TRANSACTIONS
+        elif "Trx id counter" in line:
+            innodb_status['transactions'] += hexlongish(istatus[3])
 
-		elif "Purge done for trx" in line:
-			innodb_status['transactions_purged'] += hexlongish(istatus[6])
+        elif "Purge done for trx" in line:
+            innodb_status['transactions_purged'] += hexlongish(istatus[6])
 
-		elif "History list length" in line:
-			innodb_status['history_list'] = longish(istatus[3])
+        elif "History list length" in line:
+            innodb_status['history_list'] = longish(istatus[3])
 
-		elif "---TRANSACTION" in line and innodb_status['transactions']:
-			innodb_status['current_transactions'] += 1
-			if "ACTIVE" in line:
-				innodb_status['active_transactions'] += 1
+        elif "---TRANSACTION" in line and innodb_status['transactions']:
+            innodb_status['current_transactions'] += 1
+            if "ACTIVE" in line:
+                innodb_status['active_transactions'] += 1
 
-		elif "LOCK WAIT" in line and innodb_status['transactions']:
-			innodb_status['locked_transactions'] += 1
+        elif "LOCK WAIT" in line and innodb_status['transactions']:
+            innodb_status['locked_transactions'] += 1
 
-		elif 'read views open inside' in line:
-			innodb_status['read_views'] = longish(istatus[0])
+        elif 'read views open inside' in line:
+            innodb_status['read_views'] = longish(istatus[0])
 
-		# FILE I/O
-		elif 'OS file reads' in line:
-			innodb_status['data_reads'] = longish(istatus[0])
-			innodb_status['data_writes'] = longish(istatus[4])
-			innodb_status['data_fsyncs'] = longish(istatus[8])
+        # FILE I/O
+        elif 'OS file reads' in line:
+            innodb_status['data_reads'] = longish(istatus[0])
+            innodb_status['data_writes'] = longish(istatus[4])
+            innodb_status['data_fsyncs'] = longish(istatus[8])
 
-		elif 'Pending normal aio' in line:
-			innodb_status['pending_normal_aio_reads'] = longish(istatus[4])
-			innodb_status['pending_normal_aio_writes'] = longish(istatus[7])
+        elif 'Pending normal aio' in line:
+            innodb_status['pending_normal_aio_reads'] = longish(istatus[4])
+            innodb_status['pending_normal_aio_writes'] = longish(istatus[7])
 
-		elif 'ibuf aio reads' in line:
-			innodb_status['pending_ibuf_aio_reads'] = longish(istatus[3])
-			innodb_status['pending_aio_log_ios'] = longish(istatus[6])
-			innodb_status['pending_aio_sync_ios'] = longish(istatus[9])
+        elif 'ibuf aio reads' in line:
+            innodb_status['pending_ibuf_aio_reads'] = longish(istatus[3])
+            innodb_status['pending_aio_log_ios'] = longish(istatus[6])
+            innodb_status['pending_aio_sync_ios'] = longish(istatus[9])
 
-		elif 'Pending flushes (fsync)' in line:
-			innodb_status['pending_log_flushes'] = longish(istatus[4])
-			innodb_status['pending_buffer_pool_flushes'] = longish(istatus[7])
+        elif 'Pending flushes (fsync)' in line:
+            innodb_status['pending_log_flushes'] = longish(istatus[4])
+            innodb_status['pending_buffer_pool_flushes'] = longish(istatus[7])
 
-		# INSERT BUFFER AND ADAPTIVE HASH INDEX
-		elif 'merged recs' in line and innodb_version == "51fb":
-			innodb_status['ibuf_inserts'] = longish(istatus[0])
-			innodb_status['ibuf_merged'] = longish(istatus[2])
-			innodb_status['ibuf_merges'] = longish(istatus[5])
+        # INSERT BUFFER AND ADAPTIVE HASH INDEX
+        elif 'merged recs' in line and innodb_version == "51fb":
+            innodb_status['ibuf_inserts'] = longish(istatus[0])
+            innodb_status['ibuf_merged'] = longish(istatus[2])
+            innodb_status['ibuf_merges'] = longish(istatus[5])
 
-		elif 'Ibuf: size' in line and innodb_version == "55xdb":
-			innodb_status['ibuf_merges'] = longish(istatus[10])
+        elif 'Ibuf: size' in line and innodb_version == "55xdb":
+            innodb_status['ibuf_merges'] = longish(istatus[10])
 
-		elif 'merged operations' in line and innodb_version == "55xdb":
-			in_merged = 1
+        elif 'merged operations' in line and innodb_version == "55xdb":
+            in_merged = 1
 
-		elif 'delete mark' in line and 'in_merged' in vars() and innodb_version == "55xdb":
-			innodb_status['ibuf_inserts'] = longish(istatus[1])
-			del in_merged
+        elif 'delete mark' in line and 'in_merged' in vars() and innodb_version == "55xdb":
+            innodb_status['ibuf_inserts'] = longish(istatus[1])
+            del in_merged
 
-		# LOG
-		elif "log i/o's done" in line:
-			innodb_status['log_writes'] = longish(istatus[0])
+        # LOG
+        elif "log i/o's done" in line:
+            innodb_status['log_writes'] = longish(istatus[0])
 
-		elif "pending log writes" in line:
-			innodb_status['pending_log_writes'] = longish(istatus[0])
-			innodb_status['pending_chkp_writes'] = longish(istatus[4])
-		
-		elif "Log sequence number" in line:
-			innodb_status['log_bytes_written'] = longish(istatus[3])
-		
-		elif "Log flushed up to" in line:
-			innodb_status['log_bytes_flushed'] = longish(istatus[4])
+        elif "pending log writes" in line:
+            innodb_status['pending_log_writes'] = longish(istatus[0])
+            innodb_status['pending_chkp_writes'] = longish(istatus[4])
+        
+        elif "Log sequence number" in line:
+            innodb_status['log_bytes_written'] = longish(istatus[3])
+        
+        elif "Log flushed up to" in line:
+            innodb_status['log_bytes_flushed'] = longish(istatus[4])
 
-		# BUFFER POOL AND MEMORY
-		elif "Buffer pool size" in line and "bytes" not in line:
-			innodb_status['buffer_pool_pages_total'] = longish(istatus[3])
-		
-		elif "Free buffers" in line:
-			innodb_status['buffer_pool_pages_free'] = longish(istatus[2])
-		
-		elif "Database pages" in line:
-			innodb_status['buffer_pool_pages_data'] = longish(istatus[2])
-		
-		elif "Modified db pages" in line:
-			innodb_status['buffer_pool_pages_dirty'] = longish(istatus[3])
-		
-		elif "Pages read" in line and "ahead" not in line:
-			innodb_status['pages_read'] = longish(istatus[2])
-			innodb_status['pages_created'] = longish(istatus[4])
-			innodb_status['pages_written'] = longish(istatus[6])
+        # BUFFER POOL AND MEMORY
+        elif "Buffer pool size" in line and "bytes" not in line:
+            innodb_status['buffer_pool_pages_total'] = longish(istatus[3])
+        
+        elif "Free buffers" in line:
+            innodb_status['buffer_pool_pages_free'] = longish(istatus[2])
+        
+        elif "Database pages" in line:
+            innodb_status['buffer_pool_pages_data'] = longish(istatus[2])
+        
+        elif "Modified db pages" in line:
+            innodb_status['buffer_pool_pages_dirty'] = longish(istatus[3])
+        
+        elif "Pages read" in line and "ahead" not in line:
+            innodb_status['pages_read'] = longish(istatus[2])
+            innodb_status['pages_created'] = longish(istatus[4])
+            innodb_status['pages_written'] = longish(istatus[6])
 
-		# ROW OPERATIONS
-		elif 'Number of rows inserted' in line:
-			innodb_status['rows_inserted'] = longish(istatus[4])
-			innodb_status['rows_updated'] = longish(istatus[6])
-			innodb_status['rows_deleted'] = longish(istatus[8])
-			innodb_status['rows_read'] = longish(istatus[10])
-		
-		elif "queries inside InnoDB" in line:
-			innodb_status['queries_inside'] = longish(istatus[0])
-			innodb_status['queries_queued'] = longish(istatus[4])
+        # ROW OPERATIONS
+        elif 'Number of rows inserted' in line:
+            innodb_status['rows_inserted'] = longish(istatus[4])
+            innodb_status['rows_updated'] = longish(istatus[6])
+            innodb_status['rows_deleted'] = longish(istatus[8])
+            innodb_status['rows_read'] = longish(istatus[10])
+        
+        elif "queries inside InnoDB" in line:
+            innodb_status['queries_inside'] = longish(istatus[0])
+            innodb_status['queries_queued'] = longish(istatus[4])
 
-	# Some more stats
-	innodb_status['transactions_unpurged'] = innodb_status['transactions'] - innodb_status['transactions_purged']
-	innodb_status['log_bytes_unflushed'] = innodb_status['log_bytes_written'] - innodb_status['log_bytes_flushed']
+    # Some more stats
+    innodb_status['transactions_unpurged'] = innodb_status['transactions'] - innodb_status['transactions_purged']
+    innodb_status['log_bytes_unflushed'] = innodb_status['log_bytes_written'] - innodb_status['log_bytes_flushed']
 
-	return innodb_status
-	
+    return innodb_status
+    
 if __name__ == '__main__':
-	from optparse import OptionParser
+    from optparse import OptionParser
 
-	parser = OptionParser()
-	parser.add_option("-H", "--Host", dest="host", help="Host running mysql", default="localhost")
-	parser.add_option("-u", "--user", dest="user", help="user to connect as", default="")
-	parser.add_option("-p", "--password", dest="passwd", help="password", default="")
-	(options, args) = parser.parse_args()
+    parser = OptionParser()
+    parser.add_option("-H", "--Host", dest="host", help="Host running mysql", default="localhost")
+    parser.add_option("-u", "--user", dest="user", help="user to connect as", default="")
+    parser.add_option("-p", "--password", dest="passwd", help="password", default="")
+    (options, args) = parser.parse_args()
 
-	try:
-		conn = MySQLdb.connect(user=options.user, host=options.host, passwd=options.passwd)
+    try:
+        conn = MySQLdb.connect(user=options.user, host=options.host, passwd=options.passwd)
 
-		cursor = conn.cursor(MySQLdb.cursors.Cursor)
-		cursor.execute("SHOW ENGINE INNODB STATUS")
-		innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
-		cursor.close()
+        cursor = conn.cursor(MySQLdb.cursors.Cursor)
+        cursor.execute("SHOW ENGINE INNODB STATUS")
+        innodb_status = parse_innodb_status(cursor.fetchone()[0].split('\n'))
+        cursor.close()
 
-		conn.close()
-	except MySQLdb.OperationalError, (errno, errmsg):
-		raise
+        conn.close()
+    except MySQLdb.OperationalError, (errno, errmsg):
+        raise
 

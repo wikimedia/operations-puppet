@@ -143,8 +143,8 @@ def get_delta(name):
     try:
       delta = multiplier * (float(curr_metrics['data'][name]) - float(last_metrics['data'][name])) /(curr_metrics['time'] - last_metrics['time'])
       if delta < 0:
-	print name + " is less 0"
-	delta = 0
+         print name + " is less 0"
+         delta = 0
     except KeyError:
       delta = 0.0      
 
