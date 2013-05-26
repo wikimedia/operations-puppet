@@ -1,5 +1,7 @@
 # Varnish VCL include file for text frontends
 
+#include "errorpage.inc.vcl";
+
 sub mobile_redirect {
 	if ((req.http.User-Agent ~ "mobi" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.User-Agent !~ "(iPad|Android.3|(?i)tablet|(?i)(?!google)bot|PlayBook|Wii)"
@@ -63,4 +65,8 @@ sub vcl_error {
 		set obj.status = 302;
 		return(deliver);
 	}
+
+	/* TODO: move error page to wikimedia.vcl */
+	call errorpage;
+	return(deliver);
 }
