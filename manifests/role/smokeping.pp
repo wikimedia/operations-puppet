@@ -4,12 +4,13 @@ class role::smokeping {
 
     system_role { 'role::smokeping': description => 'Smokeping' }
 
-    include standard-noexim, webserver::php5-gd,
+    include standard-noexim,
     misc::smokeping
 
-    if ! defined(Class['webserver::php5']) {
-        class {'webserver::php5': ssl => true; }
-    }
+class {'webserver::php5': ssl => true; }
+
+    #dependencies for apache
+    #apache_module["ssl"] -> Install_certificate["${smokeping_ssl_cert}"] -> Class['webserver::php5']
 
     # be flexible about labs vs. prod
     case $::realm {
@@ -31,8 +32,8 @@ class role::smokeping {
     }
 
     # dependencies
+    File['/srv/org/'] -> File['/srv/org/wikimedia/'] ->
     File['/srv/org/wikimedia/smokeping/'] -> File["/etc/apache2/sites-available/${smokeping_host}"]
-
 
     file {
         "/etc/apache2/sites-available/${smokeping_host}":
@@ -46,8 +47,9 @@ class role::smokeping {
 
     file {
         ['/srv/org/', '/srv/org/wikimedia/', '/srv/org/wikimedia/smokeping' ]:
+        ensure  => directory,
         recurse => true,
-        mode    => '0444',
+        mode    => '0775',
         owner   => 'root',
         group   => 'root',
     }
