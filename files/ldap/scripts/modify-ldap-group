@@ -1,134 +1,140 @@
 #!/usr/bin/python
 
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/ldap/scripts/modify-ldap-group
 #####################################################################
 
-import sys, pwd, grp, traceback, getpass, ldapsupportlib, copy
+import sys
+import pwd
+import grp
+import traceback
+import ldapsupportlib
+import copy
 from optparse import OptionParser
 
-try:    
-	import ldap
-	import ldap.modlist
+try:
+    import ldap
+    import ldap.modlist
 except ImportError:
-	sys.stderr.write("Unable to import LDAP library.\n")
-	sys.exit(1)
+    sys.stderr.write("Unable to import LDAP library.\n")
+    sys.exit(1)
+
 
 def main():
-	parser = OptionParser(conflict_handler="resolve")
-	parser.set_usage('modify-ldap-group [options] <groupname> [--rename <newusergroup>]\nexample: modify-ldap-group --gid=501 wikidev')
+    parser = OptionParser(conflict_handler="resolve")
+    parser.set_usage('modify-ldap-group [options] <groupname> [--rename <newusergroup>]\nexample: modify-ldap-group --gid=501 wikidev')
 
-	ldapSupportLib = ldapsupportlib.LDAPSupportLib()
-	ldapSupportLib.addParserOptions(parser, "scriptuser")
+    ldapSupportLib = ldapsupportlib.LDAPSupportLib()
+    ldapSupportLib.addParserOptions(parser, "scriptuser")
 
-	parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
-	parser.add_option("--gid", action="store", dest="gidNumber", help="Set the group's gid")
-	parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
-	parser.add_option("--addmembers", action="store", dest="addMembers", help="Add a comma separated list of users to this group")
-	parser.add_option("--deletemembers", action="store", dest="deleteMembers", help="Delete a comma separated list of users from this")
-	(options, args) = parser.parse_args()
+    parser.add_option("-m", "--directorymanager", action="store_true", dest="directorymanager", help="Use the Directory Manager's credentials, rather than your own")
+    parser.add_option("--gid", action="store", dest="gidNumber", help="Set the group's gid")
+    parser.add_option("--rename", action="store_true", dest="rename", help="Rename the user")
+    parser.add_option("--addmembers", action="store", dest="addMembers", help="Add a comma separated list of users to this group")
+    parser.add_option("--deletemembers", action="store", dest="deleteMembers", help="Delete a comma separated list of users from this")
+    (options, args) = parser.parse_args()
 
-	if len(args) != 1:
-		if options.rename and len(args) != 2:
-			parser.error("modify-ldap-group expects exactly two arguments when using rename.")
-		elif not options.rename:
-			parser.error("modify-ldap-group expects exactly one argument, unless using --rename.")
+    if len(args) != 1:
+        if options.rename and len(args) != 2:
+            parser.error("modify-ldap-group expects exactly two arguments when using rename.")
+        elif not options.rename:
+            parser.error("modify-ldap-group expects exactly one argument, unless using --rename.")
 
-	ldapSupportLib.setBindInfoByOptions(options, parser)
+    ldapSupportLib.setBindInfoByOptions(options, parser)
 
-	base = ldapSupportLib.getBase()
+    base = ldapSupportLib.getBase()
 
-	ds = ldapSupportLib.connect()
+    ds = ldapSupportLib.connect()
 
-	# w00t We're in!
-	try:
-		groupname = args[0]
-		PosixData = ds.search_s("ou=groups," + base,ldap.SCOPE_SUBTREE,"(&(objectclass=posixGroup)(cn=" + groupname + "))")
-		if not PosixData:
-			raise ldap.NO_SUCH_OBJECT()
-		dn = PosixData[0][0]
+    # w00t We're in!
+    try:
+        groupname = args[0]
+        PosixData = ds.search_s("ou=groups," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=posixGroup)(cn=" + groupname + "))")
+        if not PosixData:
+            raise ldap.NO_SUCH_OBJECT()
+        dn = PosixData[0][0]
 
-		if options.rename:
-			newgroupname = args[1]
+        if options.rename:
+            newgroupname = args[1]
 
-			# Rename the entry
-			newrdn = 'cn=' + newgroupname
-			ds.rename_s(dn, newrdn)
-		else:
-			PosixData = PosixData[0][1]
-			NewPosixData = copy.deepcopy(PosixData)
-			if options.gidNumber:
-				try:
-					groupcheck = grp.getgrgid(options.gidNumber)
-					raise ldap.TYPE_OR_VALUE_EXISTS()
-				except KeyError:
-					NewPosixData['gidNumber'] = options.gidNumber
-			if options.addMembers:
-				raw_members = options.addMembers.split(',')
-				for raw_member in raw_members:
-					try:
-						# Ensure the user exists
-						# TODO: make this use LDAP calls instead of getent
-						checkuid = pwd.getpwnam(raw_member)
+            # Rename the entry
+            newrdn = 'cn=' + newgroupname
+            ds.rename_s(dn, newrdn)
+        else:
+            PosixData = PosixData[0][1]
+            NewPosixData = copy.deepcopy(PosixData)
+            if options.gidNumber:
+                try:
+                    groupcheck = grp.getgrgid(options.gidNumber)
+                    raise ldap.TYPE_OR_VALUE_EXISTS()
+                except KeyError:
+                    NewPosixData['gidNumber'] = options.gidNumber
+            if options.addMembers:
+                raw_members = options.addMembers.split(',')
+                for raw_member in raw_members:
+                    try:
+                        # Ensure the user exists
+                        # TODO: make this use LDAP calls instead of getent
+                        checkuid = pwd.getpwnam(raw_member)
 
-						membertoadd = 'uid=' + raw_member + ',ou=people,' + base
-						# member expects DNs
-						if 'member' in NewPosixData.keys():
-							if membertoadd in NewPosixData['member']:
-								sys.stderr.write(raw_member + " is already a member of the group, skipping.\n")
-							else:
-								NewPosixData['member'].append(membertoadd)
-						else:
-							NewPosixData['member'] = [ membertoadd ]
-					except KeyError:
-						sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
-			elif options.deleteMembers:
-				raw_members = options.deleteMembers.split(',')
-				for raw_member in raw_members:
-					membertoremove = 'uid=' + raw_member + ',ou=people,' + base
-					if 'member' in NewPosixData.keys():
-						if membertoremove in NewPosixData['member']:
-							NewPosixData['member'].remove(membertoremove)
-						else:
-       			 				sys.stderr.write(raw_member + " isn't a member of the group, skipping.\n")
-					else:
-       			 				sys.stderr.write("This group contains no members.\n")
+                        membertoadd = 'uid=' + raw_member + ',ou=people,' + base
+                        # member expects DNs
+                        if 'member' in NewPosixData.keys():
+                            if membertoadd in NewPosixData['member']:
+                                sys.stderr.write(raw_member + " is already a member of the group, skipping.\n")
+                            else:
+                                NewPosixData['member'].append(membertoadd)
+                        else:
+                            NewPosixData['member'] = [membertoadd]
+                    except KeyError:
+                        sys.stderr.write(raw_member + " doesn't exist, and won't be added to the group.\n")
+            elif options.deleteMembers:
+                raw_members = options.deleteMembers.split(',')
+                for raw_member in raw_members:
+                    membertoremove = 'uid=' + raw_member + ',ou=people,' + base
+                    if 'member' in NewPosixData.keys():
+                        if membertoremove in NewPosixData['member']:
+                            NewPosixData['member'].remove(membertoremove)
+                        else:
+                                    sys.stderr.write(raw_member + " isn't a member of the group, skipping.\n")
+                    else:
+                                    sys.stderr.write("This group contains no members.\n")
 
-			if PosixData == NewPosixData:
-				sys.stderr.write("No changes to make; exiting.\n")
-			else:
-				modlist = ldap.modlist.modifyModlist(PosixData,NewPosixData)
-				ds.modify_s(dn, modlist)
-	except ldap.UNWILLING_TO_PERFORM, msg:
-		sys.stderr.write("LDAP was unwilling to modify the group. Error was: %s\n" % msg[0]["info"])
-		ds.unbind()
-		sys.exit(1)
-	except ldap.NO_SUCH_OBJECT:
-		sys.stderr.write("The group you are trying to modify doesn't exist.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.TYPE_OR_VALUE_EXISTS:
-		sys.stderr.write("The gid given already exists.\n")
-		ds.unbind()
-		sys.exit(1)
-	except ldap.PROTOCOL_ERROR:
-		sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
-		traceback.print_exc(file=sys.stderr)
-		ds.unbind()
-		sys.exit(1)
-	except Exception:
-		try:
-			sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
-			traceback.print_exc(file=sys.stderr)
-			ds.unbind()
-		except Exception:
-			sys.stderr.write("Also failed to unbind.\n")
-			traceback.print_exc(file=sys.stderr)
-		sys.exit(1)
+            if PosixData == NewPosixData:
+                sys.stderr.write("No changes to make; exiting.\n")
+            else:
+                modlist = ldap.modlist.modifyModlist(PosixData, NewPosixData)
+                ds.modify_s(dn, modlist)
+    except ldap.UNWILLING_TO_PERFORM, msg:
+        sys.stderr.write("LDAP was unwilling to modify the group. Error was: %s\n" % msg[0]["info"])
+        ds.unbind()
+        sys.exit(1)
+    except ldap.NO_SUCH_OBJECT:
+        sys.stderr.write("The group you are trying to modify doesn't exist.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.TYPE_OR_VALUE_EXISTS:
+        sys.stderr.write("The gid given already exists.\n")
+        ds.unbind()
+        sys.exit(1)
+    except ldap.PROTOCOL_ERROR:
+        sys.stderr.write("There was an LDAP protocol error; see traceback.\n")
+        traceback.print_exc(file=sys.stderr)
+        ds.unbind()
+        sys.exit(1)
+    except Exception:
+        try:
+            sys.stderr.write("There was a general error, this is unexpected; see traceback.\n")
+            traceback.print_exc(file=sys.stderr)
+            ds.unbind()
+        except Exception:
+            sys.stderr.write("Also failed to unbind.\n")
+            traceback.print_exc(file=sys.stderr)
+        sys.exit(1)
 
-	ds.unbind()
-	sys.exit(0)
+    ds.unbind()
+    sys.exit(0)
 
 if __name__ == "__main__":
-	main()
+    main()
