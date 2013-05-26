@@ -1,6 +1,6 @@
 # Varnish VCL include file for text frontends
 
-#include "errorpage.inc.vcl";
+include "errorpage.inc.vcl";
 
 sub mobile_redirect {
 	if ((req.http.User-Agent ~ "mobi" || req.http.Accept ~ "vnd.wap.wml")
