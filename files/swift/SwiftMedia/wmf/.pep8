@@ -1,0 +1,6 @@
+[pep8]
+
+# Suppress warnings:
+#  E501: line too long
+#  E221: multiple spaces before operator
+ignore = E501,E221
