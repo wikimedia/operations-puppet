@@ -30,6 +30,9 @@ class role::smokeping {
         }
     }
 
+    # dependencies
+    File['/srv/org/wikimedia/smokeping/'] -> File["/etc/apache2/sites-available/${smokeping_host}"]
+
 
     file {
         "/etc/apache2/sites-available/${smokeping_host}":
@@ -42,9 +45,16 @@ class role::smokeping {
     }
 
     file {
+        '/srv/org/wikimedia/smokeping/':
+        recurse => true,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    file {
         '/srv/org/wikimedia/smokeping/index.cgi':
         ensure  => 'link',
-        recurse => true,
         target  => '/usr/lib/cgi-bin/smokeping.cgi',
         mode    => '0444',
         owner   => 'root',
