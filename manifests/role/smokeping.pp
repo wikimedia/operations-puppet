@@ -14,7 +14,7 @@ class role::smokeping {
     # be flexible about labs vs. prod
     case $::realm {
         labs: {
-            $smokeping_host = "${instancename}.${domain}"
+            $smokeping_host = "${role::smokeping::instancename}.${role::smokeping::domain}"
             $smokeping_ssl_cert = '/etc/ssl/certs/star.wmflabs.pem'
             $smokeping_ssl_key = '/etc/ssl/private/star.wmflabs.key'
             install_certificate{ 'star.wmflabs.org': }
@@ -32,7 +32,7 @@ class role::smokeping {
 
 
     file {
-        "/etc/apache2/sites-available/${smokeping_host}":
+        "etc/apache2/sites-available/${smokeping_host}":
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
@@ -42,7 +42,15 @@ class role::smokeping {
     }
 
     file {
-        "/srv/org/wikimedia/smokeping/index.cgi":
+        '/srv/org/wikimedia/smokeping':
+        ensure  => 'directory',
+        mode    => '0775',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    file {
+        '/srv/org/wikimedia/smokeping/index.cgi':
         ensure  => 'link',
         target  => '/usr/lib/cgi-bin/smokeping.cgi',
         mode    => '0444',
@@ -50,7 +58,7 @@ class role::smokeping {
         group   => 'root',
     }
 
-    apache_site { 'smokeping': name => "${smokeping_host}" }
+    apache_site { 'smokeping': name => $smokeping_host }
     apache_confd {'namevirtualhost': install => true, name => 'namevirtualhost'}
 
 }
