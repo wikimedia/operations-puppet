@@ -35,7 +35,7 @@ def isSecurityUpgrade(candidate):
             return True
 
         if (origin.origin == "Ubuntu" and
-           origin.archive.endswith('-security')):
+                origin.archive.endswith('-security')):
             return True
     return False
 
