@@ -1,11 +1,6 @@
 #!/usr/bin/python
 
-import os
-import os.path
-import re
-import subprocess
-import sys
-
+import sys, os, os.path, re, subprocess
 
 def main():
     osName = os.uname()[0]
@@ -14,12 +9,11 @@ def main():
     elif osName == 'Linux':
         utility = getLinuxUtility()
     else:
-        print ('WARNING: Operating system "%s" is not '
-               'supported by this check script' % (osName))
+        print 'WARNING: Operating system "%s" is not supported by this check script' % (osName)
         sys.exit(1)
 
     try:
-        if utility is None:
+        if utility == None:
             print 'OK: no RAID installed'
             status = 0
         elif utility == 'arcconf':
@@ -33,16 +27,14 @@ def main():
         elif utility == 'mdadm':
             status = checkSoftwareRaid()
         else:
-            print ('WARNING: %s is not yet supported '
-                   'by this check script' % (utility))
+            print 'WARNING: %s is not yet supported by this check script' % (utility)
             status = 1
     except:
         error = sys.exc_info()[1]
         print 'WARNING: check-raid.py encountered exception: ' + str(error)
         status = 1
-
+    
     sys.exit(status)
-
 
 def getLinuxUtility():
     f = open("/proc/devices", "r")
@@ -50,10 +42,10 @@ def getLinuxUtility():
     utility = None
     for line in f:
         m = regex.match(line)
-        if m is None:
+        if m == None:
             continue
         name = m.group(1)
-
+        
         if name == 'aac':
             utility = 'arcconf'
             break
@@ -66,9 +58,9 @@ def getLinuxUtility():
         elif name == 'megaraid_sas_ioctl':
             utility = 'MegaCli'
             break
-
+    
     f.close()
-    if utility is not None:
+    if utility != None:
         return utility
 
     # Try mdadm
@@ -78,14 +70,13 @@ def getLinuxUtility():
 
     return None
 
-
 def getSoftwareRaidDevices():
     if not os.path.exists('/sbin/mdadm'):
         return []
 
     try:
-        proc = subprocess.Popen(['/sbin/mdadm', '--detail', '--scan'],
-                                stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['/sbin/mdadm', '--detail', '--scan'], 
+                stdout=subprocess.PIPE)
     except:
         return []
 
@@ -93,12 +84,11 @@ def getSoftwareRaidDevices():
     devices = []
     for line in proc.stdout:
         m = regex.match(line)
-        if m is not None:
+        if m != None:
             devices.append(m.group(1))
     proc.wait()
 
     return devices
-
 
 def checkAdaptec():
     # Need to change directory so that the log file goes to the right place
@@ -115,8 +105,8 @@ def checkAdaptec():
 
     # Run the command
     try:
-        proc = subprocess.Popen(cmd + ['/usr/bin/arcconf', 'getconfig', '1'],
-                                stdout=subprocess.PIPE, stderr=devNull)
+        proc = subprocess.Popen(cmd + ['/usr/bin/arcconf', 'getconfig', '1'], 
+                stdout = subprocess.PIPE, stderr = devNull)
     except:
         print 'WARNING: Unable to execute arcconf'
         os.chdir(oldDir)
@@ -128,13 +118,13 @@ def checkAdaptec():
     numLogical = None
     for line in proc.stdout:
         m = defunctRegex.match(line)
-        if m is not None and m.group(1) != '0':
+        if m != None and m.group(1) != '0':
             print 'CRITICAL: Defunct disk drive count: ' + m.group(1)
             status = 2
             break
 
         m = logicalRegex.match(line)
-        if m is not None:
+        if m != None:
             numLogical = int(m.group(1))
             if m.group(2) != '0' and m.group(3) != '0':
                 print 'CRITICAL: logical devices: %s failed and %s defunct' % \
@@ -157,10 +147,10 @@ def checkAdaptec():
         print 'WARNING: arcconf returned exit status %d' % (ret)
         status = 1
 
-    if status == 0 and numLogical is None:
+    if status == 0 and numLogical == None:
         print 'WARNING: unable to parse output from arcconf'
         status = 1
-
+    
     if status == 0:
         print 'OK: %d logical device(s) checked' % numLogical
 
@@ -171,8 +161,7 @@ def checkAdaptec():
 def check3ware():
     # Get the list of controllers
     try:
-        proc = subprocess.Popen(['/usr/bin/tw_cli', 'show'],
-                                stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['/usr/bin/tw_cli', 'show'], stdout = subprocess.PIPE)
     except:
         print 'WARNING: error executing tw_cli'
         return 1
@@ -181,9 +170,9 @@ def check3ware():
     controllers = []
     for line in proc.stdout:
         m = regex.match(line)
-        if m is not None:
+        if m != None:
             controllers.push('/' + m.group(1))
-
+    
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: tw_cli returned exit status %d' % (ret)
@@ -195,19 +184,19 @@ def check3ware():
     numDrives = 0
     for controller in controllers:
         proc = subprocess.Popen(['/usr/bin/tw_cli', controller, 'show'],
-                                stdout=subprocess.PIPE)
+                stdout = subprocess.PIPE)
         for line in proc.stdout():
             m = regex.match(line)
-            if m is not None:
+            if m != None:
                 numDrives += 1
                 if m.group(2) != 'OK':
                     failedDrives.push(controller + '/' + m.group(1))
 
         proc.wait()
-
+    
     if len(failedDrives) != 0:
-        print ('CRITICAL: %d failed drive(s): %s' %
-               (len(failedDrives), ', '.join(failedDrives)))
+        print 'CRITICAL: %d failed drive(s): %s' % \
+                (len(failedDrives), ', '.join(failedDrives) )
         return 2
 
     if numDrives == 0:
@@ -217,38 +206,36 @@ def check3ware():
         print 'OK: %d drives checked' % numDrives
         return 0
 
-
 def checkMegaSas():
     try:
-        proc = subprocess.Popen(['/usr/bin/MegaCli64',
-                                '-LDInfo', '-LALL', '-aALL'],
-                                stdout=subprocess.PIPE)
+        proc = subprocess.Popen(['/usr/bin/MegaCli64', '-LDInfo', '-LALL', '-aALL'], 
+                stdout=subprocess.PIPE)
     except:
         error = sys.exc_info()[1]
         print 'WARNING: error executing MegaCli64: %s' % str(error)
         return 1
-
+    
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
     state = None
     numDrives = None
     for line in proc.stdout:
         m = stateRegex.match(line)
-        if m is not None:
+        if m != None:
             state = m.group(1)
             continue
-
+        
         m = drivesRegex.match(line)
-        if m is not None:
+        if m != None:
             numDrives = int(m.group(2))
             continue
-
+    
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: MegaCli64 returned exit status %d' % (ret)
         return 1
 
-    if numDrives is None:
+    if numDrives == None:
         print 'WARNING: Parse error processing MegaCli64 output'
         return 1
 
@@ -259,11 +246,10 @@ def checkMegaSas():
     print 'OK: State is %s, checked %d logical device(s)' % (state, numDrives)
     return 0
 
-
 def checkZfs():
     try:
         proc = subprocess.Popen(['/sbin/zpool', 'list', '-Honame,health'],
-                                stdout=subprocess.PIPE)
+                stdout=subprocess.PIPE)
     except:
         error = sys.exc_info()[1]
         print 'WARNING: error executing zpool: %s' % str(error)
@@ -274,7 +260,7 @@ def checkZfs():
     msg = ''
     for line in proc.stdout:
         m = regex.match(line)
-        if m is not None:
+        if m != None:
             name = m.group(1)
             health = m.group(2)
             if health != 'ONLINE':
@@ -288,13 +274,12 @@ def checkZfs():
     if ret != 0:
         print 'WARNING: zpool returned exit status %d' % (ret)
         return 1
-
+    
     if status:
         print 'CRITICAL: ' + msg
     else:
         print 'OK: ' + msg
     return status
-
 
 def checkSoftwareRaid():
     devices = getSoftwareRaidDevices()
@@ -305,7 +290,7 @@ def checkSoftwareRaid():
     args = ['/sbin/mdadm', '--detail']
     args.extend(devices)
     try:
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(args, stdout = subprocess.PIPE)
     except:
         error = sys.exc_info()[1]
         print 'WARNING: error executing mdadm: %s' % str(error)
@@ -322,15 +307,15 @@ def checkSoftwareRaid():
     }
     for line in proc.stdout:
         m = deviceRegex.match(line)
-        if m is None:
-            if currentDevice is None:
+        if m == None:
+            if currentDevice == None:
                 continue
         else:
             currentDevice = m.group(1)
             continue
-
+        
         m = statRegex.match(line)
-        if m is None:
+        if m == None:
             continue
 
         stats[m.group(1)] += int(m.group(2))
@@ -345,7 +330,7 @@ def checkSoftwareRaid():
         if msg != '':
             msg += ', '
         msg += name + ': ' + str(stats[name])
-
+    
     if stats['Failed'] > 0:
         print 'CRITICAL: ' + msg
         return 2
