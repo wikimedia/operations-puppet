@@ -5,7 +5,11 @@
 
 # Written on 2010/08/14 by Mark Bergsma <mark@wikimedia.org>
 
-import sys, os.path, stat, tempfile
+import os.path
+import stat
+import sys
+import tempfile
+
 
 def readHostsFile(path):
     hosts = set([])
@@ -19,8 +23,9 @@ def readHostsFile(path):
             inDefinition = False
         elif inDefinition and line.startswith("host_name"):
             hosts.add(line.split(None, 2)[1])
-    
+
     return hosts
+
 
 def filterServices(sourcePath, newFile, hosts):
     inDefinition = False
