@@ -19,6 +19,10 @@ class toollabs::exec_environ {
   include generic::locales::international
 
   package { [
+      'mdbtools',                    # Bug #48805.
+      'python-genshi',               # Bug #48863.
+      'python-genshi-doc',           # Bug #48863.
+      'tree',                        # Bug #48862.
       'nodejs',
       'php5-curl',
       'mono-runtime',
