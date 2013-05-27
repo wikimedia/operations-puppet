@@ -27,9 +27,9 @@ import zmq
 
 patterns = (
     # Substring to match                     # Metric      # Metric title
-    ('Fatal error: Out of memory',           'oom',        'Out-of-memory fatals'),
-    ('Fatal error: Maximum execution time',  'timelimit',  'Time limit fatals'),
-    ('Fatal error:',                         'fatal',      'Miscellaneous fatals'),
+    ('Fatal error: Out of memory',           'oom',        'Out-of-memory fatals'),  # noqa
+    ('Fatal error: Maximum execution time',  'timelimit',  'Time limit fatals'),     # noqa
+    ('Fatal error:',                         'fatal',      'Miscellaneous fatals'),  # noqa
     ('Exception from',                       'exception',  'Exceptions'),
     ('Catchable fatal error',                'catchable',  'Catchable fatals'),
     ('DatabaseBase->reportQueryError',       'query',      'Query errors'),
