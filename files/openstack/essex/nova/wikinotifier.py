@@ -47,8 +47,8 @@ wiki_opts = [
                default='',
                help='Hard-coded domain for wiki page. E.g. pmtpa.wmflabs'),
     cfg.StrOpt('wiki_login',
-                default='login',
-                help='Account used to edit wiki pages.'),
+               default='login',
+               help='Account used to edit wiki pages.'),
     cfg.StrOpt('wiki_password',
                default='password',
                help='Password for wiki_login.'),
@@ -56,38 +56,36 @@ wiki_opts = [
                 default=True,
                 help='Indicates whether or not keystone is in use.'),
     cfg.StrOpt('wiki_keystone_auth_url',
-                default='http://127.0.0.1:35357/v2.0',
-                help='keystone auth url'),
+               default='http://127.0.0.1:35357/v2.0',
+               help='keystone auth url'),
     cfg.StrOpt('wiki_keystone_login',
-                default='keystonelogin',
-                help='keystone admin login'),
+               default='keystonelogin',
+               help='keystone admin login'),
     cfg.StrOpt('wiki_keystone_password',
                default='keystonepass',
                help='keystone admin password'),
     cfg.MultiStrOpt('wiki_eventtype_whitelist',
-               default=['compute.instance.delete.start',
-                        'compute.instance.create.start',
-                        'compute.instance.create.end',
-                        'compute.instance.rebuild.start',
-                        'compute.instance.rebuild.end',
-                        'compute.instance.resize.start',
-                        'compute.instance.resize.end',
-                        'compute.instance.create_ip.end',
-                        'compute.instance.delete_ip.end',
-                        'compute.instance.suspend',
-                        'compute.instance.resume',
-                        'compute.instance.exists',
-                        'compute.instance.forcewikistatusupdate',
-                        'compute.instance.reboot.start',
-                        'compute.instance.reboot.end',
-                       ],
-               help='Event types to always handle.'),
+                    default=['compute.instance.delete.start',
+                             'compute.instance.create.start',
+                             'compute.instance.create.end',
+                             'compute.instance.rebuild.start',
+                             'compute.instance.rebuild.end',
+                             'compute.instance.resize.start',
+                             'compute.instance.resize.end',
+                             'compute.instance.create_ip.end',
+                             'compute.instance.delete_ip.end',
+                             'compute.instance.suspend',
+                             'compute.instance.resume',
+                             'compute.instance.exists',
+                             'compute.instance.forcewikistatusupdate',
+                             'compute.instance.reboot.start',
+                             'compute.instance.reboot.end'],
+                    help='Event types to always handle.'),
     cfg.MultiStrOpt('wiki_eventtype_blacklist',
-               default=[],
-               help='Event types to always ignore.'
-                'In the event of a conflict, this overrides the whitelist.'),
-    ]
-
+                    default=[],
+                    help='Event types to always ignore. '
+                    'In the event of a conflict, '
+                    'this overrides the whitelist.')]
 
 FLAGS = flags.FLAGS
 FLAGS.register_opts(wiki_opts)
@@ -108,8 +106,7 @@ class WikiStatus(object):
     (This is a crippled version of this file, specially for essex.)
     """
 
-    RawTemplateFields = [
-                         'created_at',
+    RawTemplateFields = ['created_at',
                          'disk_gb',
                          'display_name',
                          'instance_id',
@@ -117,8 +114,7 @@ class WikiStatus(object):
                          'launched_at',
                          'memory_mb',
                          'state',
-                         'state_description',
-                        ]
+                         'state_description']
 
     def __init__(self):
         self.site = None
@@ -131,11 +127,12 @@ class WikiStatus(object):
     def _wiki_login(self):
         if not self._wiki_logged_in:
             if not self.site:
-                self.site = mwclient.Site(("https",FLAGS.wiki_host),
+                self.site = mwclient.Site(("https", FLAGS.wiki_host),
                                           retry_timeout=5,
                                           max_retries=3)
             if self.site:
-                self.site.login(FLAGS.wiki_login, FLAGS.wiki_password, domain=FLAGS.wiki_domain)
+                self.site.login(FLAGS.wiki_login,
+                                FLAGS.wiki_password, domain=FLAGS.wiki_domain)
                 self._wiki_logged_in = True
             else:
                 LOG.warning("Unable to reach %s.  We'll keep trying, "
@@ -144,10 +141,10 @@ class WikiStatus(object):
     def _keystone_login(self, tenant_id, ctxt):
         if tenant_id not in self.kclient:
             self.kclient[tenant_id] = keystoneclient.Client(token='devstack',
-                                       username=FLAGS.wiki_keystone_login,
-                                       password=FLAGS.wiki_keystone_password,
-                                       tenant_id=tenant_id,
-                                       endpoint=FLAGS.wiki_keystone_auth_url)
+                                                            username=FLAGS.wiki_keystone_login,
+                                                            password=FLAGS.wiki_keystone_password,
+                                                            tenant_id=tenant_id,
+                                                            endpoint=FLAGS.wiki_keystone_auth_url)
 
             self.tenant_manager[tenant_id] = self.kclient[tenant_id].tenants
             self.user_manager[tenant_id] = self.kclient[tenant_id].users
@@ -179,7 +176,7 @@ class WikiStatus(object):
 
         tenant_id = payload['tenant_id']
         if (FLAGS.wiki_use_keystone and
-            self._keystone_login(tenant_id, ctxt)):
+                self._keystone_login(tenant_id, ctxt)):
             tenant_obj = self.tenant_manager[tenant_id].get(tenant_id)
             user_obj = self.user_manager[tenant_id].get(payload['user_id'])
             tenant_name = tenant_obj.name
