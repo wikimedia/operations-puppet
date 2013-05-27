@@ -75,11 +75,11 @@ class PacketLossLogtailer(object):
                     if role != 'https':
                         self.percentloss_dict['all_roles'].append(percentloss)
             else:
-                raise LogtailerParsingException, "regmatch failed to match"
+                raise LogtailerParsingException("regmatch failed to match")
 
         except Exception, e:
             self.lock.release()
-            raise LogtailerParsingException, "regmatch or contents failed with %s" % e
+            raise LogtailerParsingException("regmatch or contents failed with %s" % e)
         self.lock.release()
 
     def update_rolematchers(self):
@@ -152,8 +152,8 @@ class PacketLossLogtailer(object):
             acceptable_duration_min = self.period - (self.period / 10.0)
             acceptable_duration_max = self.period + (self.period / 10.0)
             if (duration < acceptable_duration_min or duration > acceptable_duration_max):
-                raise LogtailerStateException, "time calculation problem - duration (%s) > 10%% away from period (%s)" % (
-                    duration, self.period)
+                raise LogtailerStateException("time calculation problem - duration (%s) > 10%% away from period (%s)" % (
+                    duration, self.period))
         return duration
 
     # example function for get_state
