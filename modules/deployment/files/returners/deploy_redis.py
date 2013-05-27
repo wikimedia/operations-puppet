@@ -23,10 +23,9 @@ def _get_serv():
     Return a redis server object
     '''
     deploy_redis = __pillar__.get('deploy_redis')
-    serv = redis.Redis(
-            host=deploy_redis['host'],
-            port=deploy_redis['port'],
-            db=deploy_redis['db'])
+    serv = redis.Redis(host=deploy_redis['host'],
+                       port=deploy_redis['port'],
+                       db=deploy_redis['db'])
     return serv
 
 
@@ -62,11 +61,17 @@ def _record(serv, function, timestamp, minion, ret_data):
     repo = ret_data['repo']
     if function == "deploy.fetch":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_timestamp', timestamp)
+            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                      'fetch_tag', ret_data['tag'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'fetch_status', ret_data['status'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'fetch_timestamp', timestamp)
     if function == "deploy.checkout":
         if ret_data['status'] == 0:
-            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'tag', ret_data['tag'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_status', ret_data['status'])
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_timestamp', timestamp)
+            serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                      'tag', ret_data['tag'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'checkout_status', ret_data['status'])
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'checkout_timestamp', timestamp)

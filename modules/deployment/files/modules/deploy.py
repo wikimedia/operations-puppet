@@ -13,10 +13,9 @@ def _get_serv():
     Return a redis server object
     '''
     deploy_redis = __pillar__.get('deploy_redis')
-    serv = redis.Redis(
-            host=deploy_redis['host'],
-            port=deploy_redis['port'],
-            db=deploy_redis['db'])
+    serv = redis.Redis(host=deploy_redis['host'],
+                       port=deploy_redis['port'],
+                       db=deploy_redis['db'])
     return serv
 
 
@@ -29,9 +28,11 @@ def _check_in(function, repo):
     # Ensure this minion exists in the set of minions
     serv.sadd('deploy:{0}:minions'.format(repo), minion)
     if function == "deploy.fetch":
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'fetch_checkin_timestamp', timestamp)
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'fetch_checkin_timestamp', timestamp)
     elif function == "deploy.checkout":
-        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion), 'checkout_checkin_timestamp', timestamp)
+        serv.hset('deploy:{0}:minions:{1}'.format(repo, minion),
+                  'checkout_checkin_timestamp', timestamp)
 
 
 def sync_all():
@@ -51,9 +52,9 @@ def sync_all():
     stats = {}
 
     minion = __grains__.get('id', '')
-    for repo,repourl in repourls.items():
+    for repo, repourl in repourls.items():
         minion_regex = minion_regexes[repo]
-        if not re.search(minion_regex,minion):
+        if not re.search(minion_regex, minion):
             continue
         if repo not in stats:
             stats[repo] = {}
@@ -105,15 +106,15 @@ def fetch(repo):
             return {'status': 5, 'repo': repo, 'dependencies': depstats}
 
     cmd = '/usr/bin/git remote set-url origin %s' % repourl + "/.git"
-    __salt__['cmd.retcode'](cmd,repoloc)
+    __salt__['cmd.retcode'](cmd, repoloc)
 
     cmd = '/usr/bin/git fetch'
-    status = __salt__['cmd.retcode'](cmd,repoloc)
+    status = __salt__['cmd.retcode'](cmd, repoloc)
     if status != 0:
         return {'status': 10, 'repo': repo, 'dependencies': depstats}
 
     cmd = '/usr/bin/git fetch --tags'
-    status = __salt__['cmd.retcode'](cmd,repoloc)
+    status = __salt__['cmd.retcode'](cmd, repoloc)
     if status != 0:
         return {'status': 20, 'repo': repo, 'dependencies': depstats}
 
@@ -121,41 +122,42 @@ def fetch(repo):
     # we're matching against an explicit True string.
     if checkout_submodules == "True":
         cmd = '/usr/bin/git checkout .gitmodules'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 30, 'repo': repo, 'dependencies': depstats}
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
-            for before,after in sed.items():
-                after = after.replace('__REPO_URL__',repourl)
+            for before, after in sed.items():
+                after = after.replace('__REPO_URL__', repourl)
                 __salt__['file.sed'](gitmodules, before, after)
 
         # Sync the .gitmodules config
         cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # fetch all submodules and tag for submodules
         cmd = '/usr/bin/git submodule foreach git fetch'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
         # fetch all submodules and tag for submodules
         cmd = '/usr/bin/git submodule foreach git fetch --tags'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 60, 'repo': repo, 'dependencies': depstats}
 
     cmd = '/usr/bin/git describe --always --tag origin'
-    origin_tag = __salt__['cmd.run'](cmd,repoloc)
+    origin_tag = __salt__['cmd.run'](cmd, repoloc)
     origin_tag = origin_tag.strip()
 
-    return {'status': status, 'repo': repo, 'dependencies': depstats, 'tag': origin_tag}
+    return {'status': status, 'repo': repo,
+            'dependencies': depstats, 'tag': origin_tag}
 
 
-def checkout(repo,reset=False):
+def checkout(repo, reset=False):
     '''
     Checkout the current deployment tag. Assumes a fetch has been run.
 
@@ -163,7 +165,8 @@ def checkout(repo,reset=False):
 
         salt -G 'cluster:appservers' deploy.checkout 'slot0'
     '''
-    #TODO: replace the cmd.retcode calls with git module calls, where appropriate
+    #TODO: replace the cmd.retcode calls with git module calls,
+    # where appropriate
     site = __salt__['grains.item']('site')
     repourls = __pillar__.get('repo_urls')
     repourls = repourls[site]
@@ -210,19 +213,20 @@ def checkout(repo,reset=False):
     if reset:
         # User requested we hard reset the repo to the tag
         cmd = '/usr/bin/git reset --hard tags/%s' % (tag)
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 20, 'repo': repo, 'dependencies': depstats}
     else:
         cmd = '/usr/bin/git describe --always --tag'
-        current_tag = __salt__['cmd.run'](cmd,repoloc)
+        current_tag = __salt__['cmd.run'](cmd, repoloc)
         current_tag = current_tag.strip()
         if current_tag == tag:
-            return {'status': 0, 'repo': repo, 'tag': tag, 'dependencies': depstats}
+            return {'status': 0, 'repo': repo,
+                    'tag': tag, 'dependencies': depstats}
 
     # Switch to the tag defined in the server's .deploy file
     cmd = '/usr/bin/git checkout --force --quiet tags/%s' % (tag)
-    ret = __salt__['cmd.retcode'](cmd,repoloc)
+    ret = __salt__['cmd.retcode'](cmd, repoloc)
     if ret != 0:
         return {'status': 30, 'repo': repo, 'dependencies': depstats}
 
@@ -231,19 +235,19 @@ def checkout(repo,reset=False):
     if checkout_submodules == "True":
         # Transform .gitmodules file based on defined seds
         for sed in sed_list:
-            for before,after in sed.items():
-                after = after.replace('__REPO_URL__',repourl)
+            for before, after in sed.items():
+                after = after.replace('__REPO_URL__', repourl)
                 __salt__['file.sed'](gitmodules, before, after)
 
         # Sync the .gitmodules config
         cmd = '/usr/bin/git submodule sync'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 40, 'repo': repo, 'dependencies': depstats}
 
         # Update the submodules to match this tag
         cmd = '/usr/bin/git submodule update --init'
-        ret = __salt__['cmd.retcode'](cmd,repoloc)
+        ret = __salt__['cmd.retcode'](cmd, repoloc)
         if ret != 0:
             return {'status': 50, 'repo': repo, 'dependencies': depstats}
 
