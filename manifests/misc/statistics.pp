@@ -614,7 +614,6 @@ class misc::statistics::rsync::jobs {
 		"/a/aft",
 		"/a/aft/archive",
 		"/a/eventlogging",
-		"/a/eventlogging/archive",
 		"/a/public-datasets",
 	]:
 		ensure  => directory,
