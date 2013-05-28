@@ -24,7 +24,7 @@ sub vcl_miss {
 	unset req.http.Orig-Cookie;
 }
 
-sub vcL_error {
+sub vcl_error {
 	call errorpage;
 	return(deliver);
 }
