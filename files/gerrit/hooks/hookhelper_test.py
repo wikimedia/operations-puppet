@@ -31,108 +31,100 @@ class TestLogToFile(unittest.TestCase):
 
     def test_operations_puppet(self):
         self.assertLogFile('operations.log',
-            'operations/puppet',
-            'production')
+                           'operations/puppet',
+                           'production')
         self.assertLogFile('labs.log',
-            'operations/puppet',
-            'test')
+                           'operations/puppet',
+                           'test')
         self.assertLogFile('labs.log',
-            'operations/puppet',
-            'IAmNotConfigured')
+                           'operations/puppet',
+                           'IAmNotConfigured')
 
     def test_labs_private_to_labs(self):
         self.assertLogFile('labs.log',
-            'labs/private')
+                           'labs/private')
 
     def test_labs_to_wikimedia_labs(self):
         self.assertLogFile('labs.log',
-            'labs/someproject')
+                           'labs/someproject')
 
     def test_operations_software_to_operations(self):
         self.assertLogFile('operations.log',
-            'operations/software')
+                           'operations/software')
 
     def test_operations_dumps_to_operations(self):
         self.assertLogFile('operations.log',
-            'operations/dumps')
+                           'operations/dumps')
 
     def test_operations_to_operations(self):
         self.assertLogFile('operations.log',
-            'operations/someProject')
+                           'operations/someProject')
 
     # Some very specific WMF projects
     def test_parsoid(self):
         self.assertLogFile('parsoid.log',
-            'mediawiki/extensions/Parsoid')
+                           'mediawiki/extensions/Parsoid')
 
     def test_mobile(self):
         self.assertLogFile('mobile.log',
-            'mediawiki/extensions/MobileFrontend')
+                           'mediawiki/extensions/MobileFrontend')
 
     def test_visualeditor(self):
         self.assertLogFile('visualeditor.log',
-            'mediawiki/extensions/VisualEditor')
+                           'mediawiki/extensions/VisualEditor')
 
     # Semantic MediaWiki related
     def test_semantic_mediawiki(self):
-        for repo in [
-            'SemanticFoobar',
-            'Validator',
-            'Maps',
-            'RDFIO',
-            'SolrStore',
-            'SMWFoobar',
-            ]:
+        for repo in ['SemanticFoobar',
+                     'Validator',
+                     'Maps',
+                     'RDFIO',
+                     'SolrStore',
+                     'SMWFoobar']:
             self.assertLogFile('semantic-mediawiki.log',
-                'mediawiki/extensions/%s' % repo
-            )
+                               'mediawiki/extensions/%s' % repo)
 
     # Wikidata related
     def test_wikidata_extensions(self):
-        for repo in [
-            'Wikibase',
-            'Diff',
-            'DataValues',
-            ]:
+        for repo in ['Wikibase',
+                     'Diff',
+                     'DataValues']:
             self.assertLogFile('wikidata.log',
-                'mediawiki/extensions/%s' % repo
-            )
+                               'mediawiki/extensions/%s' % repo)
 
     def test_core_wikidata_branch(self):
         # Wikidata branch is sent to a specific log
         self.assertLogFile('wikidata.log',
-            'mediawiki/core',
-            'Wikidata'
-        )
+                           'mediawiki/core',
+                           'Wikidata')
         # Make sure mediawiki/core.git@master is sent to #wikimedia-dev
         self.assertLogFile('wikimedia-dev.log',
-            'mediawiki/core',
-            'master'
-        )
+                           'mediawiki/core',
+                           'master')
 
     def test_mediawiki_tools_to_wikimediadev(self):
         self.assertLogFile('wikimedia-dev.log',
-            'mediawiki/tools/codesniffer')
+                           'mediawiki/tools/codesniffer')
         self.assertLogFile('wikimedia-dev.log',
-            'mediawiki/tools/upload/PhotoUpload')
+                           'mediawiki/tools/upload/PhotoUpload')
 
     def test_catchall_to_wikimediadev(self):
         self.assertLogFile('wikimedia-dev.log',
-            'department/project')
+                           'department/project')
 
     def test_qa_to_wikimediadev(self):
         self.assertLogFile('wikimedia-dev.log',
-            'qa/browsertests')
+                           'qa/browsertests')
 
     def test_gerrit_ping_are_ignored(self):
         self.assertLogFile('ignored.log',
-            'test/gerrit-ping')
+                           'test/gerrit-ping')
 
     def test_twn_to_mediawiki_i18n(self):
         self.assertLogFile('mediawiki-i18n.log',
-            'translatewiki')
+                           'translatewiki')
         self.assertLogFile('mediawiki-i18n.log',
-            'translatewiki/futureproject')
+                           'translatewiki/futureproject')
 
 if __name__ == '__main__':
     unittest.main()
