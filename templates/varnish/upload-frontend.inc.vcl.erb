@@ -1,7 +1,5 @@
 # Varnish VCL include file for upload frontends
 
-import std;
-
 sub vcl_recv {
 	call vcl_recv_purge;
 
