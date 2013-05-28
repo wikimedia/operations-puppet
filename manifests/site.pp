@@ -197,6 +197,10 @@ node "analytics1027.eqiad.wmnet" {
 		hdfs_source       => "/wmf/public",
 		rsync_destination => "stat1001.wikimedia.org::a/srv/stats.wikimedia.org/htdocs/kraken-public",
 	}
+
+	# check webrequest loss in Kraken HDFS.
+	# (This can run on any analytics node.)
+	include misc::monitoring::kraken::loss
 }
 
 # git.wikimedia.org
