@@ -4,6 +4,7 @@ include "errorpage.inc.vcl";
 
 sub vcl_recv {
 	call vcl_recv_purge;
+	call restrict_access;
 <% if cluster_tier == 1 -%>
 
 	if ( req.http.host ~ "^test\." ) {
