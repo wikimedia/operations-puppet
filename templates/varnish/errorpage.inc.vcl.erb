@@ -86,20 +86,10 @@ If you report this error to the Wikimedia System Administrators, please include 
 </div>
 <div class="TechnicalStuff">
 <bdo dir="ltr">
-"};
-synthetic "Request: " + req.request + " http://" + req.http.host + req.url + ", from " + client.ip + " via " + server.hostname;
-if (server.identity != server.hostname) {
-	synthetic " " + server.identity;
-}
-synthetic " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br/>";
-if (req.http.X-Forwarded-For) {
-	synthetic "Forwarded for: " + req.http.X-Forwarded-For + "<br/>";
-}
-if (obj.http.X-Cache) {
-	synthetic " Upstream caches: " + obj.http.X-Cache + "<br/>";
-}
-synthetic "Error: " + obj.status + ", " + obj.response + " at " + now;
-synthetic {"
+Request: "} + req.request + " http://" + req.http.host + req.url + ", from " + client.ip + " via " + server.hostname + " " + server.identity + " ([" + server.ip + "]:" + server.port + "), Varnish XID " + req.xid + "<br/>" +
+regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br/>") + regsub(obj.http.X-Cache, ".+", "Upstream caches: \0<br/>") +
+"Error: " + obj.status + ", " + obj.response + " at " + now +
+{"
 </bdo>
 </div>
 </div>
