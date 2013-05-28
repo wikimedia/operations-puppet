@@ -6,14 +6,14 @@
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
 # of the License, or (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software 
+# along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 
@@ -58,14 +58,14 @@ MAILMAN_SITE_LIST = 'mailman'
 # accordingly (Alias and ScriptAlias directives in most httpds)
 DEFAULT_URL_PATTERN = 'https://%s/mailman/'
 PRIVATE_ARCHIVE_URL = '/mailman/private'
-IMAGE_LOGOS         = '/images/mailman/'
+IMAGE_LOGOS = '/images/mailman/'
 
 #-------------------------------------------------------------
 # Default domain for email addresses of newly created MLs
 DEFAULT_EMAIL_HOST = 'lists.wikimedia.org'
 #-------------------------------------------------------------
 # Default host for web interface of newly created MLs
-DEFAULT_URL_HOST   = 'lists.wikimedia.org'
+DEFAULT_URL_HOST = 'lists.wikimedia.org'
 #-------------------------------------------------------------
 # Required when setting any of its arguments.
 add_virtualhost(DEFAULT_URL_HOST, DEFAULT_EMAIL_HOST)
@@ -76,7 +76,7 @@ DEFAULT_SERVER_LANGUAGE = 'en'
 
 #-------------------------------------------------------------
 # Iirc this was used in pre 2.1, leave it for now
-USE_ENVELOPE_SENDER    = 0              # Still used?
+USE_ENVELOPE_SENDER = 0              # Still used?
 
 #-------------------------------------------------------------
 # Unset send_reminders on newly created lists
@@ -87,7 +87,7 @@ DEFAULT_SEND_REMINDERS = 0
 # automatically recognizes newly created lists.
 # (see /usr/share/doc/mailman/README.{EXIM,...})
 # MTA=None   # Misnomer, suppresses alias output on newlist
-MTA=None
+MTA = None
 
 #-------------------------------------------------------------
 # Uncomment if you use Postfix virtual domains, but be sure to
