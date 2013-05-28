@@ -1,7 +1,5 @@
 # Varnish VCL include file for upload backends
 
-import std;
-
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "main-sda3";
