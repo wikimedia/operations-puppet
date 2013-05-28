@@ -9,7 +9,8 @@ sub mobile_redirect {
 		&& req.url ~ "^/wiki/") {
 		set req.http.MobileHost = regsub(req.http.host, "^(?:www\.(?=mediawiki))?((?:species|meta|incubator|outreach|strategy|wikimania2012)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki)\.", "\1m.\2.");
 		if (req.http.Host != req.http.MobileHost) {
-			error 666 req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
+			set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
+			error 666 "Found";
 		}
 		unset req.http.MobileHost;
 	}
@@ -63,7 +64,7 @@ sub vcl_deliver {
 sub vcl_error {
 	/* Support mobile redirects */
 	if (obj.status == 666) {
-		set obj.http.Location = obj.response;
+		set obj.http.Location = req.http.Location;
 		set obj.status = 302;
 		return(deliver);
 	}
