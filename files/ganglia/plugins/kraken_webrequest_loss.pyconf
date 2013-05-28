@@ -1,0 +1,20 @@
+# Gmond configuration for calculating
+# webrequest data loss stored in HDFS in Kraken.
+
+modules {
+  module {
+    name = "kraken_webrequest_loss"
+    language = "python"
+  }
+}
+
+collection_group {
+  collect_every = 3600
+  time_threshold = 3660
+  
+  metric {
+    name = "webrequest_loss_average"
+    title = "Average Loss Percentage"
+    value_threshold = 0
+  }
+}

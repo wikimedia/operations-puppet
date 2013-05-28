@@ -29,6 +29,7 @@ class misc::monitoring::htcp-loss {
 
 # == Class misc::monitoring::net::udp
 # Sends UDP statistics to ganglia.
+#
 class misc::monitoring::net::udp {
 	file {
 		'/usr/lib/ganglia/python_modules/udp_stats.py':
@@ -38,6 +39,23 @@ class misc::monitoring::net::udp {
 		'/etc/ganglia/conf.d/udp_stats.pyconf':
 			require => File["/usr/lib/ganglia/python_modules/udp_stats.py"],
 			source => "puppet:///files/ganglia/plugins/udp_stats.pyconf",
+			notify => Service[gmond];
+	}
+}
+
+# == Class misc::monitoring::kraken::loss
+# Checks recently generated webrequest loss statistics in
+# Kraken HDFS and sends the average loss percentage to ganglia.
+#
+class misc::monitoring::kraken::loss {
+	file {
+		'/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py':
+			require => File['/usr/lib/ganglia/python_modules'],
+			source => 'puppet:///files/ganglia/plugins/kraken_webrequest_loss.py',
+			notify => Service[gmond];
+		'/etc/ganglia/conf.d/udp_stats.pyconf':
+			require => File["/usr/lib/ganglia/python_modules/kraken_webrequest_loss.py"],
+			source => "puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf",
 			notify => Service[gmond];
 	}
 }
