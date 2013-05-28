@@ -86,7 +86,7 @@ If you report this error to the Wikimedia System Administrators, please include 
 </div>
 <div class="TechnicalStuff">
 <bdo dir="ltr">
-Request: "} + req.request + " http://" + req.http.host + req.url + ", from " + client.ip + " via " + server.hostname + " (" + server.ip + ")<br/>Error: " + obj.status + ", " + obj.response + " at " + now + "<br/>Varnish XID " + req.xid + {"
+Request: "} + req.request + " http://" + req.http.host + req.url + ", from " + client.ip + " via " + server.hostname + " (" + server.ip + ")<br/>Forwarded for: " + req.http.X-Forwarded-For + "<br/>Upstream caches: " + resp.http.X-Cache + "<br/>Error: " + obj.status + ", " + obj.response + " at " + now + "<br/>Varnish XID " + req.xid + {"
 </bdo>
 </div>
 </div>
