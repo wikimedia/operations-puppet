@@ -3,7 +3,8 @@
 include "errorpage.inc.vcl";
 
 sub mobile_redirect {
-	if ((req.http.User-Agent ~ "mobi" || req.http.Accept ~ "vnd.wap.wml")
+	if ((req.http.User-Agent ~ "(?i)(mobi|240x240|240x320|320x320|alcatel|android|audiovox|bada|benq|blackberry|cdm-|compal-|docomo|ericsson|hiptop|htc[-_]|huawei|ipod|kddi-|kindle|meego|midp|mitsu|mmp\/|mot-|motor|ngm_|nintendo|opera.m|palm|panasonic|philips|phone|playstation|portalmmm|sagem-|samsung|sanyo|sec-|sendo|sharp|softbank|symbian|teleca|up.browser|webos)"
+		|| req.http.User-Agent ~ "^(lge?|sie|nec|sgh|pg)-" || req.http.Accept ~ "vnd.wap.wml")
 		&& req.http.User-Agent !~ "(iPad|Android.3|(?i)tablet|(?i)(?!google)bot|PlayBook|Wii)"
 		&& req.http.Cookie !~ "(stopMobileRedirect=true|mf_useformat=desktop)"
 		&& req.url ~ "^/wiki/") {
