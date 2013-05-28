@@ -44,7 +44,7 @@ sub vcl_recv {
 	/* Users that just logged out, should not get a 304 for their
 	 * (locally cached) logged in pages. */
 	if (req.http.Orig-Cookie ~ "LoggedOut") {
-		set req.hash_always_miss = true;
+		unset req.http.If-Modified-Since;
 	}
 
 	return(lookup);
