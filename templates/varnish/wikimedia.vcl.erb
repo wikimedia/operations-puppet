@@ -191,6 +191,12 @@ sub vcl_recv_purge {
 	}
 }
 
+sub restrict_access {
+	if (client.ip !~ wikimedia_nets) {
+		error 403 "Access denied";
+	}
+}
+
 sub vcl_recv {
 	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
 		/* We only deal with GET, HEAD and POST by default */

@@ -78,10 +78,7 @@ sub check_thumb_404 {
 <% end -%>
 sub vcl_recv {
 	call vcl_recv_purge;
-
-	if (client.ip !~ wikimedia_nets) {
-		error 403 "Access denied";
-	}
+	call restrict_access;
 
 	if ( req.http.host != "upload.wikimedia.org") {
 		error 403 "Requested target domain not allowed.";
