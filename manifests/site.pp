@@ -1805,16 +1805,6 @@ node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
 	include role::swift::pmtpa-prod::proxy
 }
 
-node /^ms-be(1|4)\.pmtpa\.wmnet$/ {
-	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
-		'/dev/sdf', '/dev/sdg', '/dev/sdh', '/dev/sdi', '/dev/sdj', '/dev/sdk',
-		'/dev/sdl' ]
-
-	include role::swift::pmtpa-prod::storage
-
-	swift::create_filesystem{ $all_drives: partition_nr => "1" }
-}
-
 node /^ms-be(3|[5-8]|10)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts that are 720xds with ssds have two more disks
 	# but with the h310s they show up as m and n, those get the OS
@@ -1832,7 +1822,7 @@ node /^ms-be(3|[5-8]|10)\.pmtpa\.wmnet$/ {
 	swift::mount_filesystem{ '/dev/sdn3': }
 }
 
-node /^ms-be(2|9|11|12)\.pmtpa\.wmnet$/ {
+node /^ms-be(1|2|4|9|11|12)\.pmtpa\.wmnet$/ {
 	# the ms-be hosts with ssds have two more disks
 	# this is the 720xds with h710 layout
 	$all_drives = [ '/dev/sdc', '/dev/sdd', '/dev/sde',
