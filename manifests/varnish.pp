@@ -204,6 +204,8 @@ class varnish {
 	class htcppurger($varnish_instances=["localhost:80"]) {
 		Class[varnish::packages] -> Class[varnish::htcppurger]
 
+		# start legacy varnishhtcpd stuff
+
 		systemuser { "varnishhtcpd": name => "varnishhtcpd", default_group => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
 
 		$packages = ["liburi-perl", "liblwp-useragent-determined-perl"]
@@ -229,12 +231,45 @@ class varnish {
 		service { varnishhtcpd:
 			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Package[$packages], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
 			provider => upstart,
-			ensure => running;
+			ensure => stopped; # conflicts with vhtcpd below, set to "running" if we revert...
 		}
 		
 		nrpe::monitor_service { "varnishhtcpd":
+			description => "Varnish HTCP daemon (old, stopped)",
+			# was "-c 1:1" when service was set to "running" state...
+			nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 0:0 -u varnishhtcpd -a 'varnishhtcpd worker'"
+		}
+
+		# end legacy varnishhtcpd stuff
+
+		package { "vhtcpd":
+			ensure => latest,
+			# depend on "stopped" state to avoid port conflict aborting package post-install startup
+			# TODO: remove this in the future, when legacy parts gone above
+			require => Service["varnishhtcpd"];
+		}
+
+		file { "/etc/default/vhtcpd":
+			owner => root,
+			group => root,
+			mode => 0444,
+			require => Package["vhtcpd"], # if we go first, we get overwritten
+			# TODO: -r ^upload\\.wikimedia\\.org\$ (POSIX ERE, new param for class, quoting/escaping will be tricky...)
+			# TODO: remove -F when VCL updated to match (no hostname in PURGE URL)
+			content => inline_template('DAEMON_OPTS="-F -m 239.128.0.112<% varnish_instances.each do |inst| -%> -c <%= inst %><% end -%>"');
+		}
+
+		service { vhtcpd:
+			require => Package["vhtcpd"],
+			subscribe => File["/etc/default/vhtcpd"],
+			hasstatus => true,
+			hasrestart => true,
+			ensure => running;
+		}
+
+		nrpe::monitor_service { "vhtcpd":
 			description => "Varnish HTCP daemon",
-			nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u varnishhtcpd -a 'varnishhtcpd worker'"
+			nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u vhtcpd -a vhtcpd"
 		}
 	}
 
