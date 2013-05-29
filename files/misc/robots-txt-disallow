@@ -1,2 +1,6 @@
+# THIS FILE IS MANAGED BY PUPPET
+#
+# puppet:///files/misc/robots-txt-disallow
+#
 User-agent: *
 Disallow: /

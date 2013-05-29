@@ -10,6 +10,10 @@ server {
 	access_log /var/log/nginx/proxy.log proxy;
 	access_log /var/log/nginx/access.log combined;
 
+	location robots.txt {
+		alias /var/www/robots.txt
+	}
+
 	location / {
 
 		resolver 10.4.0.1;
