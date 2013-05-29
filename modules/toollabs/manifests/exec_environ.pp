@@ -93,7 +93,8 @@ class toollabs::exec_environ {
       'libthreads-perl',
       'dc',
       'p7zip',
-      'phpunit' ]:
+      'phpunit',
+      'r-base' ]:
     ensure => present
   }
 
