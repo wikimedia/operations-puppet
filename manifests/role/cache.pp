@@ -423,7 +423,7 @@ class role::cache {
 				before => Varnish::Instance["text-backend"]
 			}
 
-			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
 			# Ganglia monitoring
 			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
@@ -577,7 +577,7 @@ class role::cache {
 				before => Varnish::Instance["upload-backend"]
 			}
 
-			class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
 			# Ganglia monitoring
 			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
@@ -817,7 +817,7 @@ class role::cache {
 			before => Varnish::Instance["mobile-backend"]
 		}
 
-		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:81" ] }
+		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:81" ] }
 
 		# Ganglia monitoring
 		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
