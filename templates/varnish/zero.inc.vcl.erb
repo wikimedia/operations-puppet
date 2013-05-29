@@ -417,7 +417,7 @@ sub tag_carrier {
 			set req.http.X-CS = "250-99";
 		}
 	} else if (client.ip ~ carrier_vimpelcom_mobilink_pakistan) {
-		if (req.http.host ~ "(^(en)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-Carrier = "Vimpelcom Mobilink Pakistan";
 			set req.http.X-CS = "410-01";
 		}
