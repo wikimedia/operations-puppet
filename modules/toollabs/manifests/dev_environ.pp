@@ -40,6 +40,7 @@ class toollabs::dev_environ {
       'build-essential', # for dpkg
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
       'libxslt1-dev', # -- same
+      'p7zip-full', # requested by Betacommand to extract files using 7zip
       'subversion',
       'cython' ]:
     ensure => present
