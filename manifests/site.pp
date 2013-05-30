@@ -333,6 +333,16 @@ node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
 	include role::cache::upload
 }
 
+node /^cp10(3[7-9]|40\.eqiad\.wmnet$/ {
+	if $hostname =~ /^cp103[78]$/ {
+		$ganglia_aggregator = true
+	}
+
+	interface_add_ip6_mapped { "main": }
+
+	include role::cache::text
+}
+
 # eqiad varnish for m.wikipedia.org
 node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 
