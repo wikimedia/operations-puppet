@@ -1,6 +1,7 @@
 # Varnish VCL include file for text frontends
 
 include "errorpage.inc.vcl";
+include "text-common.inc.vcl";
 
 sub mobile_redirect {
 	if ((req.http.User-Agent ~ "mobi" || req.http.Accept ~ "vnd.wap.wml")
@@ -14,16 +15,6 @@ sub mobile_redirect {
 		}
 		unset req.http.MobileHost;
 	}
-}
-
-sub cookie_munging {
-	if (req.http.Cookie ~ "([sS]ession|Token)=") {
-		return(pass);
-	}
-
-	/* This header is saved, and restored before sending it to MediaWiki */
-	set req.http.Orig-Cookie = req.http.Cookie;
-	unset req.http.Cookie;
 }
 
 sub vcl_recv {
@@ -49,6 +40,10 @@ sub vcl_recv {
 	}
 
 	return(lookup);
+}
+
+sub vcl_miss {
+	call restore_cookie;
 }
 
 sub vcl_deliver {

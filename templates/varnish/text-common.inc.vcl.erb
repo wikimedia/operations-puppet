@@ -1,0 +1,17 @@
+# Common functions for the Text Varnish cluster
+
+sub cookie_munging {
+	if (req.http.Cookie ~ "([sS]ession|Token)=") {
+		return(pass);
+	}
+
+	/* This header is saved, and restored before sending it to MediaWiki */
+	set req.http.Orig-Cookie = req.http.Cookie;
+	unset req.http.Cookie;
+}
+
+sub restore_cookie {
+	/* Restore the original Cookie header for upstream */
+	set req.http.Cookie = req.http.Orig-Cookie;
+	unset req.http.Orig-Cookie;
+}
