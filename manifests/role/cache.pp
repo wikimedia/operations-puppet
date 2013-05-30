@@ -440,6 +440,7 @@ class role::cache {
 			varnish::instance { "text-backend":
 				name => "",
 				vcl => "text-backend",
+				extra_vcl => ["text-common"],
 				port => 3128,
 				admin_port => 6083,
 				runtime_parameters => $::site ? {
@@ -487,6 +488,7 @@ class role::cache {
 			varnish::instance { "text-frontend":
 				name => "frontend",
 				vcl => "text-frontend",
+				extra_vcl => ["text-common"],
 				port => 80,
 				admin_port => 6082,
 				storage => "-s malloc,${memory_storage_size}G",

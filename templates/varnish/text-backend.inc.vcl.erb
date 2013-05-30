@@ -6,6 +6,8 @@ sub vcl_recv {
 	call vcl_recv_purge;
 	call restrict_access;
 
+	call cookie_munging;
+
 <% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
 	if ( req.http.host ~ "^test\." ) {
 		set req.backend = test_wikipedia;
@@ -24,11 +26,7 @@ sub vcl_recv {
 }
 
 sub vcl_miss {
-<% if vcl_config.fetch("cluster_tier", "1") == "1" -%>
-	/* Restore the original Cookie header for MediaWiki */
-	set req.http.Cookie = req.http.Orig-Cookie;
-	unset req.http.Orig-Cookie;
-<% end -%>
+	call restore_cookie;
 }
 
 sub vcl_error {
