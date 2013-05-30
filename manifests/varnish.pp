@@ -53,11 +53,14 @@ class varnish {
 		}
 	}
 
-	define extra-vcl($instancesuffix) {
-		file { "/etc/varnish/${title}.inc.vcl":
-			content => template("varnish/${title}.inc.vcl.erb"),
-			notify => Exec["load-new-vcl-file${instancesuffix}"],
-			mode => 0444;
+	define extra-vcl {
+		$vcl = regsubst($title, '^([^/]+)/', '\1')
+		$filename = "/etc/varnish/${vcl}.inc.vcl"
+		if !defined(File[$filename]) {
+			file { $filename:
+				content => template("varnish/${vcl}.inc.vcl.erb"),
+				mode => 0444;
+			}
 		}
 	}
 
@@ -104,7 +107,8 @@ class varnish {
 		# Install VCL include files shared by all instances
 		require "varnish::common-vcl"
 
-		extra-vcl { $extra_vcl: instancesuffix => $instancesuffix }
+		$extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, "/${instancesuffix}")
+		extra-vcl{ $extra_vcl_variable_to_make_puppet_parser_happy: }
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":
@@ -141,7 +145,10 @@ class varnish {
 
 		exec { "load-new-vcl-file${instancesuffix}":
 			require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia_${vcl}.vcl"] ],
-			subscribe => [File["/etc/varnish/wikimedia_${vcl}.vcl"], Class["varnish::common-vcl"]],
+			subscribe => [File["/etc/varnish/wikimedia_${vcl}.vcl"],
+				Class["varnish::common-vcl"],
+				File[suffix(prefix($extra_vcl, "/etc/varnish/"), ".inc.vcl")]
+				],
 			command => "/usr/share/varnish/reload-vcl $extraopts",
 			path => "/bin:/usr/bin",
 			refreshonly => true;
