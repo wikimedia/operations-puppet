@@ -37,6 +37,15 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     content => "$ipaddress\n",
   }
 
+  file { "/usr/bin/sql":
+    ensure => file,
+    mode => "0755",
+    owner => "root",
+    group => "root",
+    source => "puppet://modules/toollabs/sql",
+  }
+
+
   # TODO: local scripts
   # TODO: j* tools
   # TODO: cron setup
