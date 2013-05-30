@@ -88,11 +88,16 @@ if pgrep -f -- "/usr/bin/ceph-osd --cluster=ceph -i ${osdid}" > /dev/null; then
 fi
 
 echo "I: Partioning and formatting the disk"
+journal=$(ceph-conf --cluster=ceph --name=osd.${osdid} --lookup 'osd journal')
+
+# cleanup possibly old journal
+rm -f ${journal}
+
 # disable ceph-disk-activate, or it is spawned prematurely by prepare
 # http://tracker.ceph.com/issues/3255
 mv /usr/sbin/ceph-disk-activate /usr/sbin/ceph-disk-activate.off
-ceph-disk-prepare ${disk}
-sleep 2
+ceph-disk-prepare ${disk} ${journal}
+udevadm settle
 mv /usr/sbin/ceph-disk-activate.off /usr/sbin/ceph-disk-activate
 
 # explicitly set whoami
@@ -104,14 +109,6 @@ mount ${disk}1 ${mountpoint}/
 echo ${osdid} > ${mountpoint}/whoami
 umount ${mountpoint}
 rmdir ${mountpoint}
-
-# cleanup possibly old journal
-rm /var/lib/ceph/journal/ceph-${osdid}
-
-# http://tracker.ceph.com/issues/4031
-mount ${disk}1 /var/lib/ceph/osd/ceph-${osdid}
-ceph-osd --cluster=ceph -i ${osdid} --mkjournal -f
-umount /var/lib/ceph/osd/ceph-${osdid}
 
 echo "I: activating the new OSD"
 ceph-disk-activate --mount ${disk}1
