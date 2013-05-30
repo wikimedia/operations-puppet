@@ -468,6 +468,10 @@ class role::cache {
 						'probe' => "varnish",
 					},
 					{
+						'backend_match' => "^srv193\.pmtpa\.wmnet$",
+						'max_connections' => 20,
+					},
+					{
 						'port' => 80,
 						'connect_timeout' => "5s",
 						'first_byte_timeout' => "30s",
