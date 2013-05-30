@@ -13,6 +13,8 @@ sub vcl_recv {
 	}
 	if (req.url ~ "^/w/api.php") {
 		set req.backend = api;
+	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
+		set req.backend = rendering;
 	}
 <% else -%>
 	set req.backend = eqiad;
