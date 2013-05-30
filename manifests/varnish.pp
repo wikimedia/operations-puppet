@@ -235,7 +235,7 @@ class varnish {
 		}
 		
 		nrpe::monitor_service { "varnishhtcpd":
-			description => "Varnish HTCP daemon (old, stopped)",
+			description => "Varnish HTCP old daemon",
 			# was "-c 1:1" when service was set to "running" state...
 			nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 0:0 -u varnishhtcpd -a 'varnishhtcpd worker'"
 		}
