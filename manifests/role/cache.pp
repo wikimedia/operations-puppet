@@ -61,6 +61,12 @@ class role::cache {
 						'cp1019.eqiad.wmnet',
 						'cp1020.eqiad.wmnet',
 					],
+					"eqiad-varnish" => [
+						'cp1037.eqiad.wmnet',
+						'cp1038.eqiad.wmnet',
+						'cp1039.eqiad.wmnet',
+						'cp1040.eqiad.wmnet',
+					],
 					"esams" => [
 						"knsq23.knams.wikimedia.org",
 						"knsq24.knams.wikimedia.org",
@@ -355,7 +361,7 @@ class role::cache {
 	}
 
 	class text {
-		if ($::site == "esams" and $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
+		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
 
 			$cluster = "cache_text"
@@ -370,7 +376,8 @@ class role::cache {
 			$varnish_fe_directors = {
 				# pmtpa is for labs / beta cluster
 				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
+				# TODO: replace after removing Squid
+				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text']["${::site}-varnish"] },
 				# TODO: replace after removing Squid
 				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text']["${::site}-varnish"] },
 			}
