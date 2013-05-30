@@ -288,6 +288,7 @@ class role::cache {
 			'production' => {
 				'apaches' => $lvs::configuration::lvs_service_ips['production']['apaches'],
 				'api' => $lvs::configuration::lvs_service_ips['production']['api'],
+				'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
 				'bits_appservers' => {
 					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
 					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
@@ -384,15 +385,15 @@ class role::cache {
 
 			$varnish_be_directors = {
 				"pmtpa" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['textsvc'],
+					"backend" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"eqiad" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['textsvc'],
+					"backend" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"image_scalers" => $lvs::configuration::lvs_service_ips[$::realm]['rendering'][$::mw_primary],
+					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"esams" => {
