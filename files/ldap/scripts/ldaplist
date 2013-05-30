@@ -36,9 +36,9 @@ def main():
 
 	base = ldapSupportLib.getBase()
 
-	objectbasedns = {"base":base, "passwd":"ou=people,"+base, "group":"ou=groups,"+base, "netgroup":"ou=netgroup,"+base, "hosts":"ou=hosts,"+base, "automount":base, "auto_*":"nisMapName=auto_AUTO,"+base, "uids":"ou=uids,"+base}
-	objectdefaulttypes = {"base":"none", "passwd":"uid", "group":"cn", "netgroup":"cn", "hosts":"cn", "automount":"nisMapName", "auto_*":"cn", "uids":"cn"}
-	objectobjectclasses = {"base":"none", "passwd":"posixaccount", "group":"posixgroup", "netgroup":"nisNetGroup", "hosts":"iphost", "automount":"nisMap", "auto_*":"nisObject", "uids":"inetOrgPerson"}
+	objectbasedns = {"base":base, "passwd":"ou=people,"+base, "group":"ou=groups,"+base, "netgroup":"ou=netgroup,"+base, "hosts":"ou=hosts,"+base, "automount":base, "auto_*":"nisMapName=auto_AUTO,"+base, "uids":"ou=uids,"+base, "servicegroups":"ou=projects,"+base}
+	objectdefaulttypes = {"base":"none", "passwd":"uid", "group":"cn", "netgroup":"cn", "hosts":"cn", "automount":"nisMapName", "auto_*":"cn", "uids":"cn", "servicegroups":"cn"}
+	objectobjectclasses = {"base":"none", "passwd":"posixaccount", "group":"posixgroup", "netgroup":"nisNetGroup", "hosts":"iphost", "automount":"nisMap", "auto_*":"nisObject", "uids":"inetOrgPerson", "servicegroups":"posixgroup"}
 
 	if options.showdatabase:
 		showdatabase(objectbasedns, args)
