@@ -751,7 +751,7 @@ class role::cache {
 			directors => $varnish_directors,
 			director_type => "random",
 			vcl_config => {
-				'retry503' => 1,
+				'retry503' => 4,
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
 				'layer' => 'frontend',
@@ -854,7 +854,7 @@ class role::cache {
 				'retries' => 2,
 			},
 			vcl_config => {
-				'retry503' => 1,
+				'retry503' => 4,
 				'retry5xx' => 1,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'layer' => 'backend',
