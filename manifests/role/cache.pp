@@ -397,7 +397,8 @@ class role::cache {
 				},
 				"esams" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['wikipedialb'],
-					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+					# TODO: replace after removing Squid
+					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad-varnish'],
 				},
 			}
 
