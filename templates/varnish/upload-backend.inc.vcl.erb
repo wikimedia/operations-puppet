@@ -53,7 +53,7 @@ sub radosgw_rewrite {
 		}
 	}
 	else {
-		if (req.backend == image_scalers && req.url ~ "^/[^-/]+/[^/]+/thumb/(.+)$") {
+		if (req.backend == rendering && req.url ~ "^/[^-/]+/[^/]+/thumb/(.+)$") {
 			set bereq.url = regsub(req.url, "^/[^-/]+/[^/]+/thumb/(.+)$", "/w/thumb_handler.php/\1");
 			set bereq.http.host = regsub(req.url, "^/([^-/]+)/([^/]+)/thumb/.+$", "\2.\1.org");
 			set bereq.http.X-Original-URI = req.url;
@@ -68,7 +68,7 @@ sub radosgw_rewrite {
 
 sub check_thumb_404 {
 	if (beresp.status == 404 && bereq.url ~ "^/swift/v1/[^-/]+-[^-/]+-local-thumb") {
-		set req.backend = image_scalers;
+		set req.backend = rendering;
 		return (restart);
 	}
 }
