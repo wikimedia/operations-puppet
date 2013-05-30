@@ -48,8 +48,6 @@ class varnish {
 				content => template("varnish/geoip.inc.vcl.erb");
 			"/etc/varnish/device-detection.inc.vcl":
 				content => template("varnish/device-detection.inc.vcl.erb");
-			"/etc/varnish/zero.inc.vcl":
-				content => template("varnish/zero.inc.vcl.erb");
 			"/etc/varnish/errorpage.inc.vcl":
 				content => template("varnish/errorpage.inc.vcl.erb");
 		}
@@ -58,6 +56,7 @@ class varnish {
 	define instance(
 		$name="",
 		$vcl = "",
+		$extra_vcl = [],
 		$port="80",
 		$admin_port="6083",
 		$storage="-s malloc,1G",
@@ -96,6 +95,16 @@ class varnish {
 
 		# Install VCL include files shared by all instances
 		require "varnish::common-vcl"
+
+		define extra-vcl($instancesuffix) {
+			file { "/etc/varnish/${title}.inc.vcl":
+				content => template("varnish/${title}.inc.vcl.erb"),
+				notify => Exec["load-new-vcl-file${instancesuffix}"],
+				mode => 0444;
+			}
+		}
+		
+		extra-vcl { $extra_vcl: instancesuffix => $instancesuffix }
 
 		file {
 			"/etc/init.d/varnish${instancesuffix}":

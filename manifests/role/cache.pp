@@ -885,6 +885,7 @@ class role::cache {
 		varnish::instance { "mobile-frontend":
 			name => "frontend",
 			vcl => "mobile-frontend",
+			extra_vcl => ["zero"],
 			port => 80,
 			admin_port => 6082,
 			directors => {
