@@ -73,6 +73,11 @@ acl carrier_dialog_sri_lanka {
 	"182.161.0.0"/19;
 }
 
+acl carrier_dialog_sri_lanka_wap {
+	"125.214.169.32"/32;
+	"125.214.170.1"/32;
+}
+
 acl carrier_tata {
 	"10.234.0.0"/16;
 	"14.96.246.36";
@@ -303,7 +308,7 @@ sub tag_carrier {
 				set req.http.X-CS = "623-01";
 			}
 		}
-	} else if (client.ip ~ carrier_dialog_sri_lanka) {
+	} else if (client.ip ~ carrier_dialog_sri_lanka || client.ip ~ carrier_dialog_sri_lanka_wap) {
 		if (req.http.X-Subdomain == "ZERO") {
 			if (req.http.host ~ "(^(en|ta|si)\.zero|^zero)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Dialog Sri Lanka";
