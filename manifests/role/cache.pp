@@ -614,10 +614,7 @@ class role::cache {
 					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				},
 				directors => $varnish_be_directors[$::site],
-				director_type => $cluster_tier ? {
-					1 => 'random',
-					default => 'chash',
-				},
+				director_type => "random",
 				vcl_config => {
 					'retry5xx' => 0,
 					'cache4xx' => "1m",
