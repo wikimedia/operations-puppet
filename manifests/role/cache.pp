@@ -286,7 +286,7 @@ class role::cache {
 
 		$backends = {
 			'production' => {
-				'apaches' => $lvs::configuration::lvs_service_ips['production']['apaches'],
+				'appservers' => $lvs::configuration::lvs_service_ips['production']['apaches'],
 				'api' => $lvs::configuration::lvs_service_ips['production']['api'],
 				'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
 				'bits_appservers' => {
@@ -299,7 +299,7 @@ class role::cache {
 				},
 			},
 			'labs' => {
-				'apaches' => {
+				'appservers' => {
 					'pmtpa' => [
 						'10.4.0.166',  # deployment-apache32
 						'10.4.0.187',  # deployment-apache33
@@ -854,7 +854,7 @@ class role::cache {
 				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
 			},
 			directors => {
-				"backend" => $role::cache::configuration::backends[$::realm]['apaches'][$::mw_primary],
+				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
 				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
 				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
