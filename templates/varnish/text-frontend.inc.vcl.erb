@@ -17,7 +17,7 @@ sub mobile_redirect {
 }
 
 sub cookie_munging {
-	if (req.http.Cookie ~ "([sS]ession|Token)") {
+	if (req.http.Cookie ~ "([sS]ession|Token)=") {
 		return(pass);
 	}
 
