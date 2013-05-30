@@ -387,13 +387,13 @@ class role::cache {
 				"pmtpa" => {
 					"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
 					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"eqiad" => {
 					"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
 					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"esams" => {
@@ -551,11 +551,11 @@ class role::cache {
 			$varnish_be_directors = {
 				"pmtpa" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 				},
 				"eqiad" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
-					"image_scalers" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 				},
 				"esams" => {
 					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
