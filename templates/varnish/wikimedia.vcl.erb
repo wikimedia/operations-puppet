@@ -291,7 +291,7 @@ sub vcl_deliver {
 }
 
 sub vcl_error {
-<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
+<% if vcl_config.fetch("retry503", "0") == "1" -%>
 	if (obj.status == 503 && req.restarts < 4) {
 		return(restart);
 	}
