@@ -1858,7 +1858,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
 	include role::ceph::eqiad::radosgw
 
-	if $::hostname =~ /^ms-fe100[12]$/ {
+	if $::hostname =~ /^ms-fe100[13]$/ {
 		include role::ceph::eqiad::mon
 	}
 }
@@ -1866,7 +1866,7 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 	include role::ceph::eqiad::osd
 
-	if $::hostname == 'ms-be1003' {
+	if $::hostname == 'ms-be1005' {
 		include role::ceph::eqiad::mon
 	}
 }
