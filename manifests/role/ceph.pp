@@ -100,14 +100,14 @@ class role::ceph::eqiad inherits role::ceph::base {
             check_command => 'check_http_url!ms-fe.eqiad.wmnet!/monitoring/backend',
         }
 
-        file { '/usr/lib/ganglia/python_modules/apache_status.py':
-            source => 'puppet:///files/ganglia/plugins/apache_status.py',
-            notify => Service['gmond'],
-        }
-
-        file { '/etc/ganglia/conf.d/apache_status.pyconf':
-            source => 'puppet:///files/ganglia/plugins/apache_status.pyconf',
-            notify => Service['gmond'],
-        }
+#        file { '/usr/lib/ganglia/python_modules/apache_status.py':
+#            source => 'puppet:///files/ganglia/plugins/apache_status.py',
+#            notify => Service['gmond'],
+#        }
+#
+#        file { '/etc/ganglia/conf.d/apache_status.pyconf':
+#            source => 'puppet:///files/ganglia/plugins/apache_status.pyconf',
+#            notify => Service['gmond'],
+#        }
     }
 }
