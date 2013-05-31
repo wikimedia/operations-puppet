@@ -49,6 +49,15 @@ class toollabs::execnode($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/project-make-shosts",
   }
 
+  file { "/usr/bin/sql":
+    ensure => file,
+    mode => "0755",
+    owner => "root",
+    group => "root",
+    source => "puppet://modules/toollabs/sql",
+  }
+
+
   exec { "make-shosts":
     command => "/usr/local/sbin/project-make-shosts >/etc/ssh/shosts.equiv~",
     require => File['/usr/local/sbin/project-make-shosts', $store],
