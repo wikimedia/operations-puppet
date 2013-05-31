@@ -12,15 +12,20 @@ fi
 }
 
 if [ $# -lt 1 ];then
-    echo "Usage: sql <database name|wiki name> [-v]"
+    echo "Usage: \"sql <database name|wiki name> [-vh]\" type sql --help for more help"
     exit 0
 fi
 
 if [ "$1" = "-h" ] || [ "$1" == "--help" ];then
+	echo "Usage: sql <database>[_p] [-vh]"
+	echo
 	echo "This tool allows you to easily open a connection to sql database without having to provide the credentials or a database host server"
 	echo "Example: sql frwiki_p"
+	echo
 	echo "Parameters:"
 	echo "  -v: verbose - produce various information about the resolution of db"
+	echo
+	echo "Report bugs to bugzilla at http://bugzilla.wikimedia.org"
 	exit 0
 fi
 
