@@ -94,7 +94,8 @@ class toollabs::exec_environ {
       'dc',
       'p7zip',
       'phpunit',
-      'r-base' ]:
+      'r-base',
+      'subversion' ]:
     ensure => present
   }
 
