@@ -78,6 +78,7 @@ class toollabs::exec_environ {
       'python-mysqldb',
       'python-requests',
       'python3',
+      'pidentd',
       'mono-complete',
       'python-irclib',
       'adminbot',
@@ -100,6 +101,15 @@ class toollabs::exec_environ {
 
   sysctl { "vm.overcommit_memory": value => 2 }
   sysctl { "vm.overcommit_ratio": value => 95 }
+
+  file { "/etc/identd.conf":
+    ensure => file,
+    mode => "0444",
+    owner => "root",
+    group => "root",
+    source => "puppet:///modules/toollabs/identd.conf",
+    require => Package['pidentd'],
+  }
 
   # TODO: quotas
 }
