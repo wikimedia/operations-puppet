@@ -54,7 +54,7 @@ class varnish {
 	}
 
 	define extra-vcl {
-		$vcl = regsubst($title, '^([^/]+)/', '\1')
+		$vcl = regsubst($title, '^[^ ]+ ', '\1')
 		$filename = "/etc/varnish/${vcl}.inc.vcl"
 		if !defined(File[$filename]) {
 			file { $filename:
@@ -107,7 +107,7 @@ class varnish {
 		# Install VCL include files shared by all instances
 		require "varnish::common-vcl"
 
-		$extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, "/${instancesuffix}")
+		$extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
 		extra-vcl{ $extra_vcl_variable_to_make_puppet_parser_happy: }
 
 		file {
