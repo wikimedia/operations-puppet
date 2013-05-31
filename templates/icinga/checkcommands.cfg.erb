@@ -621,4 +621,17 @@ define command{
 	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o lt
 }
 
+# Alerts for data loss in Kraken HDFS.
+define command{
+	command_name	check_kraken_webrequest_loss_positive
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m webrequest_loss_average -w $ARG1$ -c $ARG2$ -o gt
+}
+
+# Data loss percentage CAN be negative if we receive duplicate traffic
+# (this has happened before).  We need an extra alert if the percentages goes negative.
+define command{
+	command_name	check_kraken_webrequest_loss_negative
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m webrequest_loss_average -w $ARG1$ -c $ARG2$ -o lt
+}
+
 

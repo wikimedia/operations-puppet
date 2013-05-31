@@ -58,6 +58,20 @@ class misc::monitoring::kraken::loss {
 			source => "puppet:///files/ganglia/plugins/kraken_webrequest_loss.pyconf",
 			notify => Service[gmond];
 	}
+
+	# Set up icinga monitoring of Kraken HDFS data loss.
+	monitor_service { "kraken_webrequest_loss_average_positive":
+		description           => "webrequest_loss_average_positive",
+		check_command         => "check_kraken_webrequest_loss_positive!2!8",
+		contact_group         => "analytics",
+	}
+	# It is possible to have negative data loss.  This would mean that
+	# we are receiving duplicates log lines.  We need alerts for this too.
+	monitor_service { "kraken_webrequest_loss_average_negative":
+		description           => "webrequest_loss_average_negative",
+		check_command         => "check_kraken_webrequest_loss_negative!-2!-8",
+		contact_group         => "analytics",
+	}
 }
 
 # Ganglia views that should be
