@@ -17,6 +17,7 @@
 #
 class toollabs::exec_environ {
   include generic::locales::international
+  include identd
 
   package { [
       'mdbtools',                    # Bug #48805.
