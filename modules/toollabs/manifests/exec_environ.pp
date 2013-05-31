@@ -94,7 +94,9 @@ class toollabs::exec_environ {
       'dc',
       'p7zip',
       'phpunit',
-      'r-base' ]:
+      'r-base',
+      'ksh',
+      'mysql-client' ]:
     ensure => present
   }
 
