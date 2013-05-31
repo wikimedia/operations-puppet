@@ -307,7 +307,7 @@ class ganglia {
 						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
 						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet",
 						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
-						"Swift eqiad" => "ms-fe1001.eqiad.wmnet, ms-fe1002.eqiad.wmnet",
+						"Swift eqiad" => "ms-fe1001.eqiad.wmnet ms-fe1002.eqiad.wmnet",
 						"Text squids eqiad" => "cp1001.eqiad.wmnet cp1002.eqiad.wmnet",
 						"Search eqiad" => "search1001.eqiad.wmnet search1002.eqiad.wmnet",
 						"Decommissioned servers esams" => "knsq1.esams.wikimedia.org",
