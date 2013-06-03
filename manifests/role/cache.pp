@@ -403,7 +403,7 @@ class role::cache {
 				},
 			}
 
-			$backend_weight = 20
+			$backend_weight = 100
 			$storage_size_main = 100
 			$storage_size_bigobj = 10
 			if $::site == "eqiad" {
