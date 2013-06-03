@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<configuration>
+
+  <property>
+    <name>yarn.scheduler.fair.allocation.file</name>
+    <value>/etc/hadoop/conf/fair-scheduler-allocation.xml</value>
+    <description>Path to allocation file. An allocation file is an XML manifest describing queues and their properties, in addition to certain policy defaults. This file must be in XML format as described in the next section.</description>
+  </property>
+
+  <property>
+    <name>yarn.scheduler.fair.user-as-default-queue</name>
+    <value>false</value>
+    <description>Whether to use the username associated with the allocation as the default queue name, in the event that a queue name is not specified. If this is set to "false" or unset, all jobs have a shared default queue, called "default". Defaults to true.</description>
+  </property>
+
+</configuration>
