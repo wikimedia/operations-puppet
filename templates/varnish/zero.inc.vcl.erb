@@ -175,6 +175,14 @@ acl carrier_grameenphone_bangladesh {
 	"119.30.47.0"/24;
 }
 
+acl carrier_safaricom_kenya {
+	"41.80.0.0"/15;
+	"41.90.0.0"/16;
+	"105.160.0.0"/13;
+	"196.200.0.0"/15;
+	"197.176.0.0"/13;
+}
+
 acl carrier_telenor_montenegro {
 	"79.143.96.0"/20;
 }
@@ -413,6 +421,9 @@ sub tag_carrier {
 			set req.http.X-Carrier = "Saudi Telecom";
 			set req.http.X-CS = "420-01";
 		}
+	} else if (client.ip ~ carrier_safaricom_kenya) {
+		set req.http.X-Carrier = "Safaricom Kenya";
+		set req.http.X-CS = "639-02";
 	} else if (client.ip ~ carrier_tata) {
 		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-Carrier = "TATA";
