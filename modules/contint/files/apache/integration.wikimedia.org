@@ -23,6 +23,7 @@ NameVirtualHost *:443
 	DocumentRoot /srv/org/wikimedia/integration
 
 	# Favicon proxy
+	RewriteEngine On
 	RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
 	SSLEngine on

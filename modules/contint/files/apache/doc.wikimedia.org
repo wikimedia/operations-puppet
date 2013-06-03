@@ -46,6 +46,7 @@
 	DocumentRoot /srv/org/wikimedia/doc
 
 	# Favicon proxy
+	RewriteEngine On
 	RewriteRule ^/favicon\.ico$ /favicon.php [L]
 
 	LogLevel warn
