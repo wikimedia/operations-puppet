@@ -25,4 +25,4 @@ UDebComponents:
 Suite: precise-cdh4
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
-ListShellHook: grep-dctrl -X -S zookeeper -o -X -S hadoop -o -X -S bigtop-jsvc -o -X -S bigtop-utils  || [ $? -eq 1 ]
+ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$'  || [ $? -eq 1 ]
