@@ -571,12 +571,12 @@ class role::cache {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
-				$default_cluster = 'backend'
+				$default_backend = 'backend'
 			} else {
 				$storage_size_main = 300
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
-				$default_cluster = 'eqiad'
+				$default_backend = 'eqiad'
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
