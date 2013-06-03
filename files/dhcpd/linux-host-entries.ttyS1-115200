@@ -1580,7 +1580,7 @@ host ms1004 {
 }
 
 host ms-be1 {
-	hardware ethernet 04:7D:7B:06:5E:F4;
+	hardware ethernet 90:B1:1C:18:A7:74;
 	fixed-address ms-be1.pmtpa.wmnet;
 }
 
