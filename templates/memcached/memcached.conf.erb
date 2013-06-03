@@ -53,7 +53,7 @@ logfile /var/log/memcached.log
 # Chunk growth factor - allows more steps and better memory efficiency too
 -f 1.05
 
-<% memcached_options.each_pair do |option,value| -%>
+<% memcached_options.sort.each do |option,value| -%>
 <%= option %> <%= value %>
 <% end -%>
 
