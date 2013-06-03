@@ -9,7 +9,7 @@ class redis (
 	$redis_options = {},
 	$redis_replication = undef,
 	$package = "redis-server",
-	$package_version = "2:2.6.3-wmf1",
+	$package_version = "present",
 	$servicename = "redis-server",
 	$monitor = true,
 	$password = false,
