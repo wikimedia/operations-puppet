@@ -19,8 +19,6 @@ sub vcl_recv {
 	} else if (req.url ~ "^/w/thumb(_handler)?\.php") {
 		set req.backend = rendering;
 	}
-<% else -%>
-	set req.backend = eqiad;
 <% end -%>
 
 	return(lookup);

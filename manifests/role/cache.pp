@@ -397,7 +397,6 @@ class role::cache {
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"esams" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::mw_primary]['wikipedialb'],
 					# TODO: replace after removing Squid
 					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad-varnish'],
 				},
@@ -408,8 +407,10 @@ class role::cache {
 			$storage_size_bigobj = 10
 			if $::site == "eqiad" {
 				$cluster_tier = 1
+				$default_backend = "backend"
 			} else {
 				$cluster_tier = 2
+				$default_backend = $::mw_primary
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
@@ -456,6 +457,7 @@ class role::cache {
 					default => 'chash',
 				},
 				vcl_config => {
+					'default_backend' => $default_backend,
 					'retry503' => 1,
 					'retry5xx' => 0,
 					'cache4xx' => "1m",
