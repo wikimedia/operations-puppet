@@ -562,7 +562,6 @@ class role::cache {
 					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 				},
 				"esams" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['eqiad']['uploadlb'],
 					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
 				}
 			}
@@ -572,10 +571,12 @@ class role::cache {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
 				$cluster_tier = 1
+				$default_cluster = 'backend'
 			} else {
 				$storage_size_main = 300
 				$storage_size_bigobj = 50
 				$cluster_tier = 2
+				$default_cluster = 'eqiad'
 			}
 
 			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
@@ -620,6 +621,7 @@ class role::cache {
 				directors => $varnish_be_directors[$::site],
 				director_type => "random",
 				vcl_config => {
+					'default_backend' => $default_backend,
 					'retry5xx' => 0,
 					'cache4xx' => "1m",
 					'purge_regex' => '^http://upload\.wikimedia\.org/',
