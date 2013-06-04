@@ -956,11 +956,6 @@ host db1031 {
 	fixed-address db1031.eqiad.wmnet;
 }
 
-host db1032 {
-	hardware ethernet 84:2b:2b:51:91:ff;
-	fixed-address db1032.eqiad.wmnet;
-}
-
 host db1033 {
 	hardware ethernet 78:2b:cb:0a:0f:c5;
 	fixed-address db1033.eqiad.wmnet;
@@ -3552,6 +3547,11 @@ host neodymium {
 host neon {
 	hardware ethernet 78:2b:cb:08:a4:2f;
 	fixed-address neon.wikimedia.org;
+}
+
+host netmon1001 {
+	hardware ethernet 84:2b:2b:51:91:ff;
+	fixed-address netmon1001.wikimedia.org;
 }
 
 host nescio {
