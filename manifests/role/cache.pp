@@ -10,6 +10,9 @@
 @monitor_group { "cache_upload_eqiad": description => "upload squids eqiad" }
 @monitor_group { "cache_upload_esams": description => "upload squids esams" }
 
+@monitor_group { "cache_parsoid_pmtpa": description => "Parsoid caches pmtpa" }
+@monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
+
 class role::cache {
 	class configuration {
 		include lvs::configuration

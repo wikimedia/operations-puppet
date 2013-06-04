@@ -1,8 +1,6 @@
 
 @monitor_group { "parsoid_eqiad": description => "eqiad parsoid servers" }
 @monitor_group { "parsoid_pmtpa": description => "pmtpa parsoid servers" }
-@monitor_group { "parsoidcache_pmtpa": description => "pmtpa parsoid caches" }
-@monitor_group { "parsoidcache_eqiad": description => "eqiad parsoid caches" }
 
 class misc::parsoid {
 	package { [ "nodejs", "npm", "build-essential" ]:
