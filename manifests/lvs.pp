@@ -768,7 +768,7 @@ class lvs::configuration {
 			'class' => "low-traffic",
 			'sites' => [ "pmtpa", "eqiad" ],
 			'ip' => $service_ips['parsoidcache'][$::site],
-			'port' => 6081,
+			'port' => 80,
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
 			'monitors' => {
