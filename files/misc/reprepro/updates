@@ -22,7 +22,7 @@ Name: cloudera
 Method: http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/
 Components: contrib>main
 UDebComponents:
-Suite: precise-cdh4
+Suite: precise-cdh4.2.1
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
 ListShellHook: grep-dctrl -e -S '^zookeeper$|^hadoop$|^bigtop-jsvc$|^bigtop-utils$|^sqoop$|^hbase$|^pig$|^hive$'  || [ $? -eq 1 ]
