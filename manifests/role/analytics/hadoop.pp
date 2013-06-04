@@ -1,61 +1,61 @@
-# role/hadoop.pp
+# role/analytics/hadoop.pp
 #
-# Role classes for Hadoop nodes.
-# These role classes will configure hadoop properly in either
+# Role classes for Analytics Hadoop nodes.
+# These role classes will configure Hadoop properly in either
 # the Analytics labs or Analytics production environments.
 
 #
 # Usage:
 #
 # To install only hadoop client packages and configs:
-#   include role::hadoop
+#   include role::analytics::hadoop
 #
 # To install a Hadoop Master (NameNode + ResourceManager, etc.):
-#   include role::hadoop::master
+#   include role::analytics::hadoop::master
 #
 # To install a Hadoop Worker (DataNode + NodeManager + etc.):
-#   include role::hadoop::worker
+#   include role::analytics::hadoop::worker
 #
 
 
-# == Class role::hadoop
+# == Class role::analytics::hadoop
 # Installs base configs for Hadoop nodes
 #
-class role::hadoop {
+class role::analytics::hadoop {
     # include common labs or production hadoop configs
     # based on $::realm
     if ($::realm == 'labs') {
-        include role::hadoop::labs
+        include role::analytics::hadoop::labs
     }
     else {
-        include role::hadoop::production
+        include role::analytics::hadoop::production
     }
 }
 
-# == Class role::hadoop::master
+# == Class role::analytics::hadoop::master
 # Includes cdh4::hadoop::master classes
 #
-class role::hadoop::master inherits role::hadoop {
-    system_role { "role::hadoop::master": description => "Hadoop Master (NameNode & ResourceManager)" }
+class role::analytics::hadoop::master inherits role::analytics::hadoop {
+    system_role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
     include cdh4::hadoop::master
 }
 
-# == Class role::hadoop::worker
+# == Class role::analytics::hadoop::worker
 # Includes cdh4::hadoop::worker classes
-class role::hadoop::worker inherits role::hadoop {
-    system_role { "role::hadoop::worker": description => "Hadoop Worker (DataNode & NodeManager)" }
+class role::analytics::hadoop::worker inherits role::analytics::hadoop {
+    system_role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
     include cdh4::hadoop::worker
 }
 
 
-# == Class role::hadoop::production
+# == Class role::analytics::hadoop::production
 # Common hadoop configs for the production Kraken cluster
 #
-class role::hadoop::production {
-    $namenode_hostname        = "analytics1010.eqiad.wmnet"
-    $hadoop_name_directory    = "/var/lib/hadoop/name"
+class role::analytics::hadoop::production {
+    $namenode_hostname        = 'analytics1010.eqiad.wmnet'
+    $hadoop_name_directory    = '/var/lib/hadoop/name'
 
-    $hadoop_data_directory    = "/var/lib/hadoop/data"
+    $hadoop_data_directory    = '/var/lib/hadoop/data'
     $datanode_mounts = [
         "$hadoop_data_directory/c",
         "$hadoop_data_directory/d",
@@ -107,14 +107,14 @@ class role::hadoop::production {
 
 
 
-# == Class role::hadoop::labs
+# == Class role::analytics::hadoop::labs
 # Common hadoop configs for the labs Kraken cluster
 #
-class role::hadoop::labs {
-    $namenode_hostname        = "kraken0.pmtpa.wmflabs"
-    $hadoop_name_directory    = "/var/lib/hadoop/name"
+class role::analytics::hadoop::labs {
+    $namenode_hostname        = 'kraken0.pmtpa.wmflabs'
+    $hadoop_name_directory    = '/var/lib/hadoop/name'
 
-    $hadoop_data_directory    = "/var/lib/hadoop/data"
+    $hadoop_data_directory    = '/var/lib/hadoop/data'
     $datanode_mounts = [
         "$hadoop_data_directory/a",
         "$hadoop_data_directory/b",
