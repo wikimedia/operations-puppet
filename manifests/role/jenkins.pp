@@ -21,6 +21,22 @@ class role::jenkins::master::production {
 		],
 	}
 
+	# Ganglia monitoring for Jenkins
+	file { '/usr/lib/ganglia/python_modules/jenkins.py':
+			source => 'puppet:///files/ganglia/plugins/jenkins.py',
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
+			notify => Service[gmond],
+	}
+	file { '/etc/ganglia/conf.d/jenkins.pyconf':
+			source => 'puppet:///files/ganglia/plugins/jenkins.pyconf',
+			owner  => 'root',
+			group  => 'root',
+			mode   => '0444',
+			notify => Service[gmond],
+	}
+
 }
 
 class role::jenkins::slave::production {
