@@ -2060,6 +2060,14 @@ node "nescio.esams.wikimedia.org" {
 
 }
 
+node 'netmon1001.wikimedia.org' {
+
+    $cluster = "misc"
+
+    include role::smokeping
+
+}
+
 node /^nfs[12].pmtpa.wmnet/ {
 
 	$server_bind_ips = "127.0.0.1 $ipaddress_eth0"

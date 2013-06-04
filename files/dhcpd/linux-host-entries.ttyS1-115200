@@ -3559,6 +3559,11 @@ host nescio {
 	fixed-address nescio.esams.wikimedia.org;
 }
 
+host netmon1001 {
+	hardware ethernet 84:2b:2b:51:91:ff;
+	fixed-address netmon1001.wikimedia.org;
+}
+
 host nickel {
 	hardware ethernet 78:2b:cb:08:aa:93;
 	fixed-address nickel.wikimedia.org;
