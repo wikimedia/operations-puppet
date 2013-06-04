@@ -975,6 +975,7 @@ class role::cache {
 		varnish::instance { "parsoid-backend":
 			name => "",
 			vcl => "parsoid-backend",
+			extra_vcl => ["parsoid-common"],
 			port => 3128,
 			admin_port => 6083,
 			storage => $::realm ? {
@@ -1007,6 +1008,7 @@ class role::cache {
 		varnish::instance { "parsoid-frontend":
 			name => "frontend",
 			vcl => "parsoid-frontend",
+			extra_vcl => ["parsoid-common"],
 			port => 80,
 			admin_port => 6082,
 			directors => {
