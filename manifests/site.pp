@@ -2888,11 +2888,7 @@ node /((cerium|titanium)\.wikimedia\.org|(celsus|constable)\.pmtpa\.wmnet)/ {
 	include standard,
 		admins::roots,
 		admins::parsoid,
-		misc::parsoid::cache
-
-	include lvs::configuration
-	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site]
-	class { "lvs::realserver": realserver_ips => [ $sip ] }
+		role::cache::parsoid
 }
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
