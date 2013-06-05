@@ -26,6 +26,9 @@ class toollabs::exec_environ {
       'tree',                        # Bug #48862.
       'nodejs',
       'php5-curl',
+      'php5-memcache',
+      'php5-memcached',
+      'php5-igbinary',
       'mono-runtime',
       'php5-cli',
       'php5-mysql',
@@ -75,13 +78,16 @@ class toollabs::exec_environ {
       'python-newt',
       'python-wadllib',
       'python-webpy',
+      'python-wikitools',
+      'python-psycopg2',
       'python-werkzeug',
       'python-mysqldb',
       'python-requests',
       'python3',
-      'mono-complete',
+      'python-memcache',
       'python-irclib',
       'adminbot',
+      'mono-complete',
       'gnuplot-nox',
       'libpod-simple-wiki-perl',
       'libxml-libxml-perl',
@@ -95,7 +101,16 @@ class toollabs::exec_environ {
       'dc',
       'p7zip',
       'phpunit',
-      'r-base' ]:
+      'r-base',
+      'csh',
+      'bash-completion', #useful when you need to do maintenance there
+      'ed', #shell scripts need this
+      'ftp', #shell scripts may need this (some jobs may download stuff using ftp periodically
+      'ksh',
+      'lsof', #shell scripts may use this
+      'subversion', #some automatic jobs use svn to sync repo
+      'telnet', #some jobs may need this
+      'time']:
     ensure => present
   }
 
