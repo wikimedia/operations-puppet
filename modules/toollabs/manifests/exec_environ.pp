@@ -90,6 +90,7 @@ class toollabs::exec_environ {
       'tcl',
       'tclcurl',
       'tcllib',
+      'ruby1.9.3',
       'libthreads-shared-perl',
       'libthreads-perl',
       'dc',
