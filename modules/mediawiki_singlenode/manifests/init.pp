@@ -105,26 +105,24 @@ class mediawiki_singlenode(
 	}
 
 	exec { 'import_privacy_policy':
-		require   => [ Exec['mediawiki_setup'], File["${install_path}/privacy-policy.xml", "${install_path}/LocalSettings.php"], Mw-extension[ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ] ],
+		require   => [ Exec['mediawiki_setup','mediawiki_update'], File["${install_path}/privacy-policy.xml", "${install_path}/LocalSettings.php"], Mw-extension[ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ] ],
 		cwd       => "$install_path/maintenance",
 		command   => '/usr/bin/php importDump.php ../privacy-policy.xml',
 		unless    => '/usr/bin/test $(/usr/bin/php updateArticleCount.php | grep -Po \'\d+\') -gt 300',
 		logoutput => on_failure,
 	}
 
-	if $ensure == 'latest' {
-		exec { 'mediawiki_update':
-			require   => [
-				Git::Clone['mediawiki'],
-				Mw-extension['Nuke'],
-				Mw-extension['SpamBlacklist'],
-				Mw-extension['ConfirmEdit'],
-				File["${install_path}/LocalSettings.php"]
-			],
-			command   => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
-			logoutput => on_failure,
-		}
+	exec { 'mediawiki_update':
+		require   => [
+			Git::Clone['mediawiki'],
+			File["${install_path}/LocalSettings.php"]
+		],
+		refreshonly => true,
+		command   => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf \"${install_path}/LocalSettings.php\"",
+		logoutput => on_failure,
 	}
+
+	Mw-extension <| |> -> Exec['mediawiki_update']
 
 	apache_site { 'wikicontroller':
 		name   => 'wiki',

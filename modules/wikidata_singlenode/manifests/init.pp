@@ -59,24 +59,14 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		source => "puppet:///modules/wikidata_singlenode/StartProfiler.php",
 	}
 
-	# permit www-data to write to image folder
-	file { "${install_path}/images":
-		require => Git::Clone["mediawiki"],
-		ensure => directory,
-		owner => "www-data",
-		group => "www-data",
-		mode => 775,
-		recurse => true,
-	}
-
 	# get the dependencies for Wikibase extension after the successful installation of mediawiki core
-	mw-extension { [ "Diff", "DataValues" ]:
+	mediawiki_singlenode::mw-extension { [ "Diff", "DataValues" ]:
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 		install_path => $install_path,
 	}
 
 	# get more extensions for Wikidata test instances
-	mw-extension { [ "DismissableSiteNotice", "ApiSandbox", "OAI", "SiteMatrix" ]:
+	mediawiki_singlenode::mw-extension { [ "DismissableSiteNotice", "ApiSandbox", "OAI", "SiteMatrix" ]:
 		require => Git::Clone["mediawiki"],
 		install_path => $install_path,
 	}
@@ -94,21 +84,16 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 	}
 	# run populateSitesTable
 	exec { "populateSitesTable":
-			require => [Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"],
+                                    File["${install_path}/LocalSettings.php"],
+                                    Exec['localisation-cache']],
 			cwd => "${install_path}/extensions/Wikibase/lib/maintenance",
 			command => "/usr/bin/php populateSitesTable.php",
 			logoutput => "on_failure",
 	}
-	# run the update script after having cloned Wikibase
-	exec { "update-script":
-			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"]],
-			cwd => "$install_path",
-			command => "/usr/bin/php maintenance/update.php --quick",
-			logoutput => "on_failure",
-	}
 	# rebuild the LocalisationCache
 	exec { "localisation-cache":
-			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"], Exec['mediawiki_update']],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/rebuildLocalisationCache.php",
 			timeout => "600",
@@ -138,7 +123,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		}
 		# import our repo's main page
 		exec { "repo_import_mainpage":
-			require => [File["${install_path}/wikidata-repo-mainpage.xml"], Exec["repo_move_mainpage"]],
+			require => [File["${install_path}/wikidata-repo-mainpage.xml"], Exec['repo_move_mainpage','mediawiki_update']],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php wikidata-repo-mainpage.xml",
 			logoutput => "on_failure",
@@ -146,8 +131,8 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 
 		# get the extensions
 		# for repo get extensions Wikibase and ULS
-		mw-extension { [ "Wikibase", "UniversalLanguageSelector", "Babel", "Translate", "AbuseFilter" ]:
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"], Mw-extension["Diff"], Mw-extension["DataValues"]],
+		mediawiki_singlenode::mw-extension { [ "Wikibase", "UniversalLanguageSelector", "Babel", "Translate", "AbuseFilter" ]:
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"],Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"]],
 			install_path => $install_path,
 		}
 		# put a repo specific settings file to $install_path (required by LocalSettings.php)
@@ -164,7 +149,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		}
 		# import items and properties for testing
 		exec { "repo_import_data":
-			require => [Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec["update-script"]],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"], Exec["populateSitesTable"], Exec['mediawiki_update']],
 			cwd => "${install_path}/extensions/Wikibase/repo/maintenance",
 			command => "/usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv && /usr/bin/php importProperties.php --verbose en en-elements-properties.csv",
 			logoutput => "on_failure",
@@ -201,8 +186,8 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 	if $install_client == true {
 		# get the extensions
 		# for client get extensions Wikibase and ParserFunctions (needed) and a bunch of other extensions that are on Wikipedias
-		mw-extension { [ "Wikibase", "ParserFunctions", "AbuseFilter", "AntiBot", "AntiSpoof", "APC", "ArticleFeedback", "ArticleFeedbackv5", "AssertEdit", "Babel", "CategoryTree", "CharInsert", "CheckUser", "Cite", "cldr", "ClickTracking", "CodeEditor", "Collection", "CustomData", "Echo", "EditPageTracking", "EmailCapture", "ExpandTemplates", "FeaturedFeeds", "FlaggedRevs", "Gadgets", "GlobalUsage", "ImageMap", "InputBox", "Interwiki", "LocalisationUpdate", "MarkAsHelpful", "Math", "MobileFrontend", "MwEmbedSupport", "MWSearch", "NewUserMessage", "normal", "OATHAuth", "OpenSearchXml", "Oversight", "PagedTiffHandler", "PageTriage", "PdfHandler", "Poem", "PoolCounter", "PostEdit", "ReaderFeedback", "RelatedArticles", "RelatedSites", "Renameuser", "Scribunto", "SecurePoll", "SimpleAntiSpam", "SwiftCloudFiles", "SyntaxHighlight_GeSHi", "TemplateSandbox", "TitleKey", "TorBlock", "Translate", "UserDailyContribs", "UserMerge", "Vector", "WikiEditor", "wikihiero", "WikiLove", "WikimediaMaintenance", "WikimediaMessages" ]:
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mw-extension["Diff"], Mw-extension["DataValues"]],
+		mediawiki_singlenode::mw-extension { [ "Wikibase", "ParserFunctions", "AbuseFilter", "AntiBot", "AntiSpoof", "APC", "ArticleFeedback", "ArticleFeedbackv5", "AssertEdit", "Babel", "CategoryTree", "CharInsert", "CheckUser", "Cite", "cldr", "ClickTracking", "CodeEditor", "Collection", "CustomData", "Echo", "EditPageTracking", "EmailCapture", "ExpandTemplates", "FeaturedFeeds", "FlaggedRevs", "Gadgets", "GlobalUsage", "ImageMap", "InputBox", "Interwiki", "LocalisationUpdate", "MarkAsHelpful", "Math", "MobileFrontend", "MwEmbedSupport", "MWSearch", "NewUserMessage", "normal", "OATHAuth", "OpenSearchXml", "Oversight", "PagedTiffHandler", "PageTriage", "PdfHandler", "Poem", "PoolCounter", "PostEdit", "ReaderFeedback", "RelatedArticles", "RelatedSites", "Renameuser", "Scribunto", "SecurePoll", "SimpleAntiSpam", "SwiftCloudFiles", "SyntaxHighlight_GeSHi", "TemplateSandbox", "TitleKey", "TorBlock", "Translate", "UserDailyContribs", "UserMerge", "Vector", "WikiEditor", "wikihiero", "WikiLove", "WikimediaMaintenance", "WikimediaMessages" ]:
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"]],
 			install_path => $install_path,
 		}
 		# put a client specific settings file to $install_path (required by LocalSettings.php)
@@ -219,14 +204,14 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		}
 		# run populateInterwiki
 		exec { "populate_interwiki":
-			require => [Mw-extension["Wikibase"], Exec["update-script"]],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"], Exec['mediawiki_update']],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/client/maintenance/populateInterwiki.php",
 			logoutput => "on_failure",
 		}
 		# run populateSitesTable
 		exec { "SitesTable_client":
-			require => Mw-extension["Wikibase"],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"],Exec['mediawiki_update']],
 			cwd => "$install_path",
 			command => "/usr/bin/php extensions/Wikibase/lib/maintenance/populateSitesTable.php",
 			logoutput => "on_failure",
@@ -261,7 +246,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		}
 		# import content for testing
 		exec { "client_import_data":
-			require => [Mw-extension["Wikibase"], File["${install_path}/simple-elements.xml"]],
+			require => [Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/simple-elements.xml"], Exec['mediawiki_update']],
 			cwd => "$install_path",
 			command => "/usr/bin/php maintenance/importDump.php simple-elements.xml",
 			logoutput => "on_failure",
@@ -273,8 +258,8 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 	if $ensure == 'latest' {
 		exec { 'wikidata_update':
 			require => $install_repo ? {
-				true => [Git::Clone["mediawiki"], Mw-extension["UniversalLanguageSelector"], Mw-extension["Diff"], Mw-extension["DataValues"], Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
-				default => [Git::Clone["mediawiki"], Mw-extension["Diff"], Mw-extension["DataValues"], Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+				true => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["UniversalLanguageSelector"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+				default => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
 			},
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
 			logoutput => "on_failure",
