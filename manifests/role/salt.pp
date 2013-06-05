@@ -85,7 +85,7 @@ class role::salt::minions {
 			"site" => $site,
 			"cluster" => $cluster,
 		}
-		$salt_master_finger = "e6:f5:71:f5:b0:5c:45:7b:b1:f2:1d:06:4e:b9:98:9f"
+		$salt_master_finger = "f6:1d:a7:1f:7e:12:10:40:75:d5:73:af:0c:be:7d:7c"
 	}
 
 	class { "salt::minion":
