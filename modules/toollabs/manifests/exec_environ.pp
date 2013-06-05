@@ -79,9 +79,10 @@ class toollabs::exec_environ {
       'python-mysqldb',
       'python-requests',
       'python3',
-      'mono-complete',
+      'python-memcache',
       'python-irclib',
       'adminbot',
+      'mono-complete',
       'gnuplot-nox',
       'libpod-simple-wiki-perl',
       'libxml-libxml-perl',
@@ -95,7 +96,16 @@ class toollabs::exec_environ {
       'dc',
       'p7zip',
       'phpunit',
-      'r-base' ]:
+      'r-base',
+      'csh',
+      'bash-completion', #useful when you need to do maintenance there
+      'ed', #shell scripts need this
+      'ftp', #shell scripts may need this (some jobs may download stuff using ftp periodically
+      'ksh',
+      'lsof', #shell scripts may use this
+      'subversion', #some automatic jobs use svn to sync repo
+      'telnet', #some jobs may need this
+      'time']:
     ensure => present
   }
 
