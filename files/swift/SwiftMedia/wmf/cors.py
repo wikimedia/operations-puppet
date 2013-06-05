@@ -20,6 +20,7 @@ class CORS(object):
 
         return self.app(env, _start_response)
 
+
 def filter_factory(global_conf, **local_conf):
     def cors_filter(app):
         return CORS(app)
