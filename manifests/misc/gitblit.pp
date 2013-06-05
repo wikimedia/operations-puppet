@@ -30,13 +30,13 @@ class gitblit::instance($host,
 			mode => 0644,
 			owner => $user,
 			group => $user,
-			content => "puppet:///files/gitblit/gitblit.properties",
+			source => "puppet:///files/gitblit/gitblit.properties",
 			require => Systemuser[$user];
 		"/var/lib/${user}/data/header.md":
 			mode => 0644,
 			owner => $user,
 			group => $user,
-			content => "puppet:///files/gitblit/header.md",
+			source => "puppet:///files/gitblit/header.md",
 			require => Systemuser[$user];
 	}
 
