@@ -206,12 +206,12 @@ class WikiStatus(object):
             fixed_ips = db.fixed_ip_get_by_instance(ctxt, old_school_id)
         except exception.FixedIpNotFoundForInstance:
             fixed_ips = []
-	ips = []
-	floating_ips = []
-	for fixed_ip in fixed_ips:
-	    ips.append(fixed_ip.address)
-	    for floating_ip in db.floating_ip_get_by_fixed_ip_id(ctxt, fixed_ip.id):
-	        floating_ips.append(floating_ip.address)
+        ips = []
+        floating_ips = []
+        for fixed_ip in fixed_ips:
+            ips.append(fixed_ip.address)
+        for floating_ip in db.floating_ip_get_by_fixed_ip_id(ctxt, fixed_ip.id):
+            floating_ips.append(floating_ip.address)
 
         template_param_dict['private_ip'] = ','.join(ips)
         template_param_dict['public_ip'] = ','.join(floating_ips)
