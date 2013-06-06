@@ -194,8 +194,9 @@ class misc::statistics::public_datasets {
 		mode   => '0640',
 	}
 
+    # rsync from stat1:/a/public-datasets to /var/www/public-datasets/
 	cron { 'rsync public datasets':
-		command => '/usr/bin/rsync -rt stat1.wikimedia.org::public-datasets/* /var/www/public-datasets/',
+		command => '/usr/bin/rsync -rt stat1.wikimedia.org::a/public-datasets/* /var/www/public-datasets/',
 		require => File['/var/www/public-datasets'],
 		user    => 'root',
 		hour    => '*',
