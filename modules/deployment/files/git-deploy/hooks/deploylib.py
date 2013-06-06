@@ -6,8 +6,8 @@ import json
 
 
 def update_repos(prefix, tag):
-	print "Running: sudo salt-call --out json pillar.data"
-	p = subprocess.Popen("sudo salt-call --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	print "Running: sudo salt-call -l quiet --out json pillar.data"
+	p = subprocess.Popen("sudo salt-call -l quiet --out json pillar.data", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	out = p.communicate()[0]
 	try:
 		pillar = json.loads(out)
@@ -53,14 +53,14 @@ def update_repos(prefix, tag):
 
 
 def fetch(prefix):
-	print "Running: sudo salt-call publish.runner deploy.fetch '%s'" % (prefix)
-	p = subprocess.Popen("sudo salt-call publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
+	print "Running: sudo salt-call -l quiet publish.runner deploy.fetch '%s'" % (prefix)
+	p = subprocess.Popen("sudo salt-call -l quiet publish.runner deploy.fetch '%s'" % (prefix), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 
 
 def checkout(prefix, force):
-	print "Running: sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force)
-	p = subprocess.Popen("sudo salt-call publish.runner deploy.checkout '%s,%s'" % (prefix,force), shell=True, stdout=subprocess.PIPE)
+	print "Running: sudo salt-call -l quiet publish.runner deploy.checkout '%s,%s'" % (prefix,force)
+	p = subprocess.Popen("sudo salt-call -l quiet publish.runner deploy.checkout '%s,%s'" % (prefix,force), shell=True, stdout=subprocess.PIPE)
 	out = p.communicate()[0]
 
 
