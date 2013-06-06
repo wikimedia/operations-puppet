@@ -51,8 +51,7 @@ class role::analytics::zookeeper::production {
 #
 class role::analytics::zookeeper::labs {
     $zookeeper_hosts = [
-        'kraken0.pmtpa.wmflabs',
-        'kraken1.pmtpa.wmflabs',
+        'kraken-puppet.pmtpa.wmflabs',
     ]
 
     class { '::zookeeper':
