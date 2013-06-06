@@ -35,11 +35,11 @@ class role::analytics::zookeeper::server inherits role::analytics::zookeeper::cl
 # == Class role::analytics::zookeeper::production
 #
 class role::analytics::zookeeper::production {
-    $zookeeper_hosts = [
-        'analytics1023.eqiad.wmnet',
-        'analytics1024.eqiad.wmnet',
-        'analytics1025.eqiad.wmnet',
-    ]
+    $zookeeper_hosts = {
+        'analytics1023.eqiad.wmnet' => 23,
+        'analytics1024.eqiad.wmnet' => 24,
+        'analytics1025.eqiad.wmnet' => 25,
+    }
 
     class { '::zookeeper':
         hosts   => $zookeeper_hosts,
@@ -50,9 +50,9 @@ class role::analytics::zookeeper::production {
 # == Class role::analytics::zookeeper::labs
 #
 class role::analytics::zookeeper::labs {
-    $zookeeper_hosts = [
-        'kraken-puppet.pmtpa.wmflabs',
-    ]
+    $zookeeper_hosts = {
+        'kraken-puppet.pmtpa.wmflabs' => 1,
+    }
 
     class { '::zookeeper':
         hosts   => $zookeeper_hosts,
