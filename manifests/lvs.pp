@@ -773,7 +773,7 @@ class lvs::configuration {
 			'depool-threshold' => ".5",
 			'monitors' => {
 				'ProxyFetch' => {
-					'url' => [ 'http://localhost:6081' ],
+					'url' => [ 'http://localhost' ],
 				},
 				'IdleConnection' => $idleconnection_monitor_options,
 			},
