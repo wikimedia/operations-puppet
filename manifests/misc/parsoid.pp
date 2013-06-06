@@ -46,29 +46,3 @@ class misc::parsoid {
 
 	monitor_service { "parsoid": description => "Parsoid", check_command => "check_http_on_port!8000" }
 }
-
-class misc::parsoid::cache {
-	package { [ "varnish" ]:
-		ensure => latest
-	}
-
-	include lvs::configuration
-	$sip = $lvs::configuration::lvs_service_ips[$::realm]['parsoid'][$::site]
-
-	file {
-		"/etc/varnish/default.vcl":
-			content => template("misc/parsoid.vcl.erb"),
-			owner => root,
-			group => root,
-			mode => 0644;
-	}
-
-	service {
-		"varnish":
-			subscribe => File["/etc/varnish/default.vcl"],
-			require => Package[varnish],
-			ensure => "running"
-	}
-
-	monitor_service { "parsoid Varnish": description => "Parsoid Varnish", check_command => "check_http_on_port!6081" }
-}
