@@ -376,11 +376,9 @@ class lvs::configuration {
 				'eqiad' => "208.80.154.241",
 			},
 			'parsoid' => {
-				'pmtpa' => "10.2.1.28",
 				'eqiad' => "10.2.2.28",
 			},
 			'parsoidcache' => {
-				'pmtpa' => "10.2.1.29",
 				'eqiad' => "10.2.2.29",
 			},
 		},
@@ -751,7 +749,7 @@ class lvs::configuration {
 		"parsoid" => {
 			'description' => "Parsoid wikitext parser for VisualEditor",
 			'class' => "low-traffic",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['parsoid'][$::site],
 			'port' => 8000,
 			'bgp' => "yes",
@@ -766,7 +764,7 @@ class lvs::configuration {
 		'parsoidcache' => {
 			'description' => "Varnish caches in front of Parsoid",
 			'class' => "low-traffic",
-			'sites' => [ "pmtpa", "eqiad" ],
+			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['parsoidcache'][$::site],
 			'port' => 80,
 			'bgp' => "yes",
@@ -955,7 +953,6 @@ class lvs::monitor {
 	monitor_service_lvs_http { "rendering.svc.eqiad.wmnet": ip_address => "10.2.2.21", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page" }
 	monitor_service_lvs_http { "ms-fe.pmtpa.wmnet": ip_address => "10.2.1.27", check_command => "check_http_lvs!ms-fe.pmtpa.wmnet!/monitoring/backend" }
 	monitor_service_lvs_http { "ms-fe.eqiad.wmnet": ip_address => "10.2.2.27", check_command => "check_http_lvs!ms-fe.eqiad.wmnet!/monitoring/backend" }
-	monitor_service_lvs_http { "parsoid.svc.pmtpa.wmnet": ip_address => "10.2.1.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
 	monitor_service_lvs_http { "parsoid.svc.eqiad.wmnet": ip_address => "10.2.2.28", check_command => "check_http_on_port!8000", contact_group => "admins,parsoid" }
 	monitor_service_lvs_http { "parsoidcache.svc.eqiad.wmnet": ip_address => "10.2.2.29", check_command => "check_http_lvs!parsoid!/", contact_group => "admins,parsoid" }
 

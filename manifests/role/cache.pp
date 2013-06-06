@@ -185,7 +185,7 @@ class role::cache {
 					"esams" => []
 				},
 				"parsoid" => {
-					"pmtpa" => ["celsus.pmtpa.wmnet", "constable.pmtpa.wmnet"],
+					"pmtpa" => [],
 					"eqiad" => ["cerium.wikimedia.org", "titanium.wikimedia.org"],
 					"esams" => []
 				}
