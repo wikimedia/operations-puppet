@@ -8,10 +8,13 @@
 # $replication_master::   Replication master, if this is current hostname, this server will be a master
 # $average_request_time:: Average request time check threshold, the format is
 #                         "warning threshold:error threshold", or simply "error threshold"
-class role::solr($schema = undef, $replication_master = undef, $average_request_time = "400:600" ) {
+# $max_heap::             Maximum size of the JVM heap that Solr will use.  Use Xmx and Xms valid
+#                         parameters like 4G, 512M, etc.  Defaults to 4G.
+class role::solr($schema = undef, $replication_master = undef, $average_request_time = "400:600", $max_heap = "4G" ) {
 	class { "::solr":
 		schema => $schema,
 		replication_master => $replication_master,
+		max_heap => $max_heap,
 	}
 
 	$check_command = $replication_master ? {
@@ -30,10 +33,11 @@ class role::solr::ttm {
 	class { "role::solr":
 		schema => "puppet:///modules/solr/schema-ttmserver.xml",
 		average_request_time => '1000:1500', # Translate uses fairly slow queries
+		max_heap => "1G",
 	}
 }
 
-class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet') {
+class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet', $max_heap = undef) {
 	system_role { "solr-geodata": description => "Solr server for GeoData" }
 
 	include standard
@@ -41,11 +45,13 @@ class role::solr::geodata($replication_master = 'solr1001.eqiad.wmnet') {
 	class { "role::solr":
 		schema => "puppet:///modules/solr/schema-geodata.xml",
 		replication_master => $replication_master,
+		max_heap => $max_heap,
 	}
 }
 
 class role::solr::geodata::labs {
 	class { "role::solr::geodata":
 		replication_master => undef,
+		max_heap => "1G",
 	}
 }
