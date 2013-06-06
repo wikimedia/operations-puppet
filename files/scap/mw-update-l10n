@@ -42,7 +42,7 @@ for i in ${mwExtVerDbSets[@]}; do
 	mwTempDest=$(sudo -u apache mktemp)
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
 		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest"
-	sudo -u apache chmod a+r "$mwTempDest"
+	sudo -u apache chmod 664 "$mwTempDest"
 	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
 	sudo -u apache rm "$mwTempDest"
 
