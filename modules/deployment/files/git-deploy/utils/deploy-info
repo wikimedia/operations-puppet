@@ -27,11 +27,6 @@ def main():
     except ValueError:
         print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
         return None
-    try:   
-        pillar = pillar['local']
-    except KeyError:
-        print "Couldn't find 'local' in json output from pillar data. git-deploy can't configure itself. Exiting."
-        return None
     repos = serv.smembers('deploy:repos')
     if options.repo:
         if options.repo not in repos:

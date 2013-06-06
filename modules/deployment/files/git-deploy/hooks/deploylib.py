@@ -14,11 +14,6 @@ def update_repos(prefix, tag):
 	except ValueError:
 		print "JSON data wasn't loaded from the pillar call. git-deploy can't configure itself. Exiting."
 		return 1
-	try:
-		pillar = pillar['local']
-	except KeyError:
-		print "Couldn't find 'local' in json output from pillar data. git-deploy can't configure itself. Exiting."
-		return 1
 	
 	try:
 		repodir = pillar['repo_locations'][prefix]

@@ -22,7 +22,7 @@ def _get_serv():
 
 def _check_in(function, repo):
     serv = _get_serv()
-    minion = __salt__['grains.item']('id')
+    minion = __grains__.get('id')
     timestamp = time.time()
     # Ensure this repo exist in the set of repos
     serv.sadd('deploy:repos', repo)
@@ -44,13 +44,13 @@ def sync_all():
     '''
     repourls = __pillar__.get('repo_urls')
     minion_regexes = __pillar__.get('repo_minion_regex')
-    site = __salt__['grains.item']('site')
+    site = __grains__.get('site')
     repourls = repourls[site]
     repolocs = __pillar__.get('repo_locations')
     status = 0
     stats = {}
 
-    minion = __grains__.get('id', '')
+    minion = __grains__.get('id')
     for repo,repourl in repourls.items():
         minion_regex = minion_regexes[repo]
         if not re.search(minion_regex,minion):
@@ -72,7 +72,7 @@ def fetch(repo):
 
         salt -G 'cluster:appservers' deploy.fetch 'slot0'
     '''
-    site = __salt__['grains.item']('site')
+    site = __grains__.get('site')
     repourls = __pillar__.get('repo_urls')
     repourls = repourls[site]
     repourl = repourls[repo]
@@ -164,7 +164,7 @@ def checkout(repo,reset=False):
         salt -G 'cluster:appservers' deploy.checkout 'slot0'
     '''
     #TODO: replace the cmd.retcode calls with git module calls, where appropriate
-    site = __salt__['grains.item']('site')
+    site = __grains__.get('site')
     repourls = __pillar__.get('repo_urls')
     repourls = repourls[site]
     repourl = repourls[repo]
