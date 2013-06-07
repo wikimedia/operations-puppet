@@ -54,9 +54,13 @@ NameVirtualHost *:443
 	RedirectMatch ^/$ https://<%= host %>/r/
 	RedirectMatch ^/gitweb/(.*)$ https://<%= host %>/r/gitweb?p=$1
 
+	# Misbehaving bots
 	SetEnvIf User-Agent 80legs bad_browser
 	SetEnvIf User-Agent bingbot bad_browser
 	SetEnvIf User-Agent Baiduspider bad_browser
+	SetEnvIf Remote_Addr 208.110.84.34 bad_browser
+	SetEnvIf Remote_Addr 89.83.122.45 bad_browser
+	SetEnvIf Remote_Addr 129.242.4.62 bad_browser
 
 	TimeOut 720
 
@@ -66,9 +70,6 @@ NameVirtualHost *:443
 		AllowOverride None
 		Order deny,allow
 		deny from env=bad_browser
-		deny from 208.110.84.34
-		deny from 89.83.122.45
-		deny from 129.242.4.62
 	</Directory>
 	<Directory /var/www/>
 		Options Indexes FollowSymLinks MultiViews
@@ -82,9 +83,6 @@ NameVirtualHost *:443
 	<Proxy *>
 		Order deny,allow
 		deny from env=bad_browser
-		deny from 208.110.84.34
-		deny from 89.83.122.45
-		deny from 129.242.4.62
 	</Proxy>
 
 	AllowEncodedSlashes NoDecode
