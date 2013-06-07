@@ -148,7 +148,7 @@ class ganglia {
 			"parsoid"		=> {
 				"name"		=> "Parsoid",
 				"ip_oct"	=> "37" },
-			"parsoidcache"		=> {
+			"cache_parsoid" => {
 				"name"		=> "Parsoid Varnish",
 				"ip_oct"	=> "38" },
 			"redis"			=> {
