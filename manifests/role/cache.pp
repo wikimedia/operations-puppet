@@ -968,7 +968,8 @@ class role::cache {
 			before => Varnish::Instance["parsoid-backend"]
 		}
 
-		class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
+		# No HTCP daemon for Parsoid; the MediaWiki extension sends PURGE requests itself
+		#class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
 
 		# Ganglia monitoring
 		if ( $::realm == 'production' ) {
