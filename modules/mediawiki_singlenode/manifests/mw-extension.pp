@@ -10,5 +10,6 @@ define mediawiki_singlenode::mw-extension(
 		origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/${name}.git",
 		branch    => $branch,
 		ensure    => $ensure,
+		notify => Exec['mediawiki_update'],
 	}
 }
