@@ -32,7 +32,6 @@ class contint::packages {
 
   # PHP related packages
   package { [
-    'php-apc',
     'php-pear',
     'php5-cli',
     'php5-curl',
@@ -118,6 +117,12 @@ class contint::packages {
   # it is used instead of the stock diff.
   package { 'colordiff':
     ensure => present,
+  }
+
+  # Uninstalled packages
+  package { [
+    'php-apc',
+    ]: ensure => absent,
   }
 
 }
