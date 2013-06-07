@@ -584,12 +584,7 @@ class role::cache {
 				}
 			}
 
-			if $::hostname =~ /^cp102[1]$/ {
-				$backend_weight = 100
-			}
-			else {
-				$backend_weight = 40
-			}
+			$backend_weight = 20
 			if $::site == "eqiad" {
 				$storage_size_main = 100
 				$storage_size_bigobj = 10
