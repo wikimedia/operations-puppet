@@ -3,6 +3,7 @@
 import os
 import deploylib
 
+
 def main():
     prefix = os.environ['DEPLOY_ROLLOUT_PREFIX']
     tag = os.environ['DEPLOY_ROLLOUT_TAG']
