@@ -5,16 +5,20 @@
 
 # Simple python script for demultiplexing MediaWiki log files
 
-import sys, os, string, re, argparse
+import argparse
+import os
+import re
+import string
+import sys
 
 
 transTable = string.maketrans("./", "__")
 openFiles = {}
-baseDir = '/a/mw-log';
+baseDir = '/a/mw-log'
 nameRegex = re.compile(r"^[\040-\176]*$")
 
 parser = argparse.ArgumentParser()
-parser.add_argument( '--basedir', help='destination path of log files' )
+parser.add_argument('--basedir', help='destination path of log files')
 args = parser.parse_args()
 if args.basedir:
     baseDir = args.basedir
@@ -57,4 +61,3 @@ while True:
             except:
                 pass
             del openFiles[name]
-

@@ -4,7 +4,7 @@
 '''
 This script parses the packet-loss.log file and for each server entry
 it determines what it's role is. Server role data has been obtained
-from noc.wikimeda.org/pybal and can either be downloaded or the 
+from noc.wikimeda.org/pybal and can either be downloaded or the
 hard-coded version can be used.
 
 Purpose of this script is to use it in conjunction with
@@ -63,7 +63,7 @@ class RoleMatcher(object):
 
 def manual_init():
     '''
-    This is the hard-coded version of the rolematchers, it's useful for 
+    This is the hard-coded version of the rolematchers, it's useful for
     testing purposes.
     '''
     matchers = [
@@ -158,6 +158,7 @@ def determine_hostname_prefix(hostname):
     prefix = ''.join([i for i in prefix if not i.isdigit()])
     return prefix
 
+
 def fetch_url(url):
     req = urllib2.Request(url)
     data = []
@@ -177,6 +178,7 @@ def fetch_url(url):
         import traceback
         sys.stderr.write('Generic exception: %s' % traceback.format_exc())
     return data
+
 
 def init():
     matchers = []
