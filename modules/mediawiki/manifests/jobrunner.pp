@@ -8,7 +8,8 @@ class mediawiki::jobrunner (
 	$timeout = 300,
 	$extra_args = "",
 	$dprioprocs = 5,
-	$iprioprocs = 5
+	$iprioprocs = 5,
+	$ioboundprocs_per_type = 1
 ) {
 
 	include mediawiki

@@ -175,6 +175,7 @@ class role::applicationserver {
 			run_jobs_enabled => $run_jobs_enabled,
 			dprioprocs => 10,
 			iprioprocs => 0,
+			ioboundprocs_per_type => 0,
 			type => "webVideoTranscode",
 			timeout => 14400,
 			extra_args => "-v 0"
@@ -198,7 +199,7 @@ class role::applicationserver {
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki::jobrunner": dprioprocs => 15, iprioprocs => 6, run_jobs_enabled => $run_jobs_enabled }
+		class { "mediawiki::jobrunner": dprioprocs => 15, iprioprocs => 6, ioboundprocs_per_type => 1, run_jobs_enabled => $run_jobs_enabled }
 		include applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
