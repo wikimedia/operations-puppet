@@ -2325,18 +2325,6 @@ node "silver.wikimedia.org" {
 		mobile::vumi::udp2log
 }
 
-node "singer.wikimedia.org" {
-	$cluster = "misc"
-	$gid=500
-	include standard,
-		generic::mysql::packages::client,
-		misc::secure
-
-
-	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "secure cert": description => "Certificate expiration", check_command => "check_cert!secure.wikimedia.org!443!Equifax_Secure_CA.pem", critical => "true" }
-}
-
 node "sockpuppet.pmtpa.wmnet" {
 	include passwords::puppet::database
 
