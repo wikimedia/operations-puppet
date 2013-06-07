@@ -87,6 +87,8 @@ class role::analytics::hadoop::production {
         mapreduce_task_io_sort_factor           => 10,
         yarn_nodemanager_resource_memory_mb     => 40960,
         yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
+        # TODO: use variables from new ganglia module once it is finished.
+        ganglia_hosts                           => ['239.192.1.32:8649'],
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
@@ -130,6 +132,8 @@ class role::analytics::hadoop::labs {
         mapreduce_reduce_tasks_maximum          => 2,
         mapreduce_job_reuse_jvm_num_tasks       => 1,
         yarn_resourcemanager_scheduler_class    => 'org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler',
+        # TODO: use variables from new ganglia module once it is finished.
+        ganglia_hosts                           => ['10.4.0.79:8649'],
     }
 
     file { "$::cdh4::hadoop::config_directory/fair-scheduler.xml":
