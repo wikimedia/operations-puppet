@@ -56,5 +56,11 @@ class role::labs::tools {
     }
   }
 
+  class syslog inherits role::labs::tools::config {
+    system_role { "role::labs::tools::syslog": description => "Central logging server for tools and services" }
+    class { 'toollabs::syslog': }
+  }
+
+
 } # class role::labs::tools
 
