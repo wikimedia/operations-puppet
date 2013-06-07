@@ -109,6 +109,11 @@ function runJobsLoopService() {
 	local hptypes=$1
 	local dodefault=$2
 	local pipelinesize=$3
+
+	if [[ "$pipelinesize" -lt 1 ]]; then
+		exit # nothing to do
+	fi
+
 	while [ 1 ]; do
 		local foundjobs=n
 
@@ -195,6 +200,8 @@ else
 	hpriotypes="$hpriotypes TranslateRenderJob TranslateMoveJob TranslateDeleteJob" # translate
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
+	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
+	(runJobsLoopService "ParsoidCacheUpdateJob" "n" <%= procs_per_iobound_type %>) &
 fi
 
 wait
