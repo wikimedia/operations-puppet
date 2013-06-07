@@ -28,7 +28,9 @@ class HookHelper:
         ssh = paramiko.SSHClient()
         ssh.load_host_keys(hookconfig.sshhostkeys)
         try:
-            ssh.connect(hookconfig.sshhost, hookconfig.sshport, hookconfig.gerrituser, key_filename=hookconfig.sshkey)
+            ssh.connect(hookconfig.sshhost,
+                        hookconfig.sshport, hookconfig.gerrituser,
+                        key_filename=hookconfig.sshkey)
             stdin, stdout, stderr = ssh.exec_command(command)
             out = stdout.readlines()
             err = stderr.readlines()
@@ -43,13 +45,15 @@ class HookHelper:
         command = 'gerrit query --format=JSON --patch-sets ' + change
         queryresult, err = self.ssh_exec_command(command)
         if not queryresult:
-            sys.stderr.write("Couldn't find patchset for change: " + change + "\n")
+            sys.stderr.write("Couldn't find patchset for change: " +
+                             change + "\n")
             return False
         try:
             self.patchsets[change] = json.loads(queryresult[0])
             return True
         except Exception:
-            sys.stderr.write("Couldn't load patchset json for change: " + change + "\n")
+            sys.stderr.write("Couldn't load patchset json for change: " +
+                             change + "\n")
             traceback.print_exc(file=sys.stderr)
             return False
 
