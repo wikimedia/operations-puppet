@@ -57,8 +57,6 @@ $baseNs = 100;
 // NOTE: do *not* define WB_NS_ITEM and WB_NS_ITEM_TALK when using a core namespace for items!
 define( 'WB_NS_PROPERTY', $baseNs +2 );
 define( 'WB_NS_PROPERTY_TALK', $baseNs +3 );
-define( 'WB_NS_QUERY', $baseNs +4 );
-define( 'WB_NS_QUERY_TALK', $baseNs +5 );
 
 // You can set up an alias for the main namespace, if you like.
 $wgNamespaceAliases['Item'] = NS_MAIN;
@@ -67,14 +65,20 @@ $wgNamespaceAliases['Item_talk'] = NS_TALK;
 // No extra namespace for items, using a core namespace for that.
 $wgExtraNamespaces[WB_NS_PROPERTY] = 'Property';
 $wgExtraNamespaces[WB_NS_PROPERTY_TALK] = 'Property_talk';
-$wgExtraNamespaces[WB_NS_QUERY] = 'Query';
-$wgExtraNamespaces[WB_NS_QUERY_TALK] = 'Query_talk';
 
 // Tell Wikibase which namespace to use for which kind of entity
 $wgWBRepoSettings['entityNamespaces'][CONTENT_MODEL_WIKIBASE_ITEM] = NS_MAIN; // <=== Use main namespace for items!!!
 $wgWBRepoSettings['entityNamespaces'][CONTENT_MODEL_WIKIBASE_PROPERTY] = WB_NS_PROPERTY; // use custom namespace
-$wgWBRepoSettings['entityNamespaces'][CONTENT_MODEL_WIKIBASE_QUERY] = WB_NS_QUERY; // use custom namespace
 
+if ( defined( 'CONTENT_MODEL_WIKIBASE_QUERY' ) ) {
+	define( 'WB_NS_QUERY', $baseNs +4 );
+	define( 'WB_NS_QUERY_TALK', $baseNs +5 );
+
+	$wgExtraNamespaces[WB_NS_QUERY] = 'Query';
+	$wgExtraNamespaces[WB_NS_QUERY_TALK] = 'Query_talk';
+
+	$wgWBRepoSettings['entityNamespaces'][CONTENT_MODEL_WIKIBASE_QUERY] = WB_NS_QUERY; // use custom namespace
+}
 
 $wgShowExceptionDetails = true;
 $wgContentHandlerUseDB = true;
