@@ -127,7 +127,7 @@ def main():
                     PosixCheckData = ds.search_s("ou=hosts," + base, ldap.SCOPE_SUBTREE, "(&(objectclass=iphost)(cn=*))")
 
                 NewPosixData = copy.deepcopy(PosixData)
-                if NewPosixData[0][1].has_key('nisNetgroupTriple'):
+                if 'nisNetgroupTriple' in NewPosixData[0][1]:
                     if options.delete:
                         if options.file:
                             infofromfile(NewPosixData[0][1]['nisNetgroupTriple'], "delete", options.file, netgrouptype, PosixCheckData)
