@@ -1,12 +1,13 @@
 #!/usr/bin/python
 #####################################################################
-### THIS FILE IS MANAGED BY PUPPET 
+### THIS FILE IS MANAGED BY PUPPET
 ### puppet:///files/powerdns/selective-answer.py
 #####################################################################
 
 """
 Selective Answer
-A PowerDNS Pipe backend, for selectively answering records to certain resolvers.
+A PowerDNS Pipe backend, for selectively answering records
+to certain resolvers.
 
 Copyright (C) 2008 by Mark Bergsma <mark@nedworks.org>
 
@@ -24,8 +25,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import sys, stat
 import radix
+import stat
+import sys
 
 ALWAYS, MATCH, NOMATCH = range(3)
 
@@ -33,7 +35,7 @@ ALWAYS, MATCH, NOMATCH = range(3)
 filename = "/etc/powerdns/participants"
 
 dnsRecords = {
-'upload.esams.wikimedia.org': [
+    'upload.esams.wikimedia.org': [
     # (selectivity, qtype, ttl, content)
     (ALWAYS,  'A',    3600, "91.198.174.234"),
     (MATCH,   'AAAA', 3600, "2620:0:862:1::80:2"),
@@ -48,48 +50,52 @@ def loadList(filename):
     try:
         for line in file(filename, 'r'):
             line = line[:-1].strip()
-            if len(line) == 0 or line.startswith('#'): continue # Skip empty lines & comments
-            net = line.split('#', 2)[0].strip()                 # Allow comments after the IP
+            if len(line) == 0 or line.startswith('#'):
+                continue  # Skip empty lines & comments
+            net = line.split('#', 2)[0].strip()  # Allow comments after the IP
             netlist.add(net)
     except:
         print "LOG\tCould not (fully) load netlist file", filename
-    
+
     return netlist
+
 
 def answerRecord(qNameSet, (qName, qClass, qType, qId, remoteIp, localIp), netlist):
     for record in qNameSet:
         selectivity, rQType, ttl, content = record
-        if selectivity != ALWAYS: # no reason to search
-            ip_matched = (netlist.search_best(remoteIp) != None)
+        if selectivity != ALWAYS:  # no reason to search
+            ip_matched = (netlist.search_best(remoteIp) is not None)
 
         if qType in (rQType, 'ANY', 'AXFR'):
             if (selectivity == ALWAYS
-                or (selectivity == MATCH and ip_matched)
-                or (selectivity == NOMATCH and not ip_matched)):
-                
+                    or (selectivity == MATCH and ip_matched)
+                    or (selectivity == NOMATCH and not ip_matched)):
                 # Substitute values in the record content
                 content = content % {'qname': qName,
                                      'qtype': qType,
                                      'remoteip': remoteIp,
-                                     'localip': localIp
-                                    }
-                print "DATA\t%s\t%s\t%s\t%d\t%d\t%s" % (qName, 'IN', rQType, ttl, int(qId), content)  
+                                     'localip': localIp}
+                print ("DATA\t%s\t%s\t%s\t%d\t%d\t%s" %
+                       (qName, 'IN', rQType, ttl, int(qId), content))
+
 
 def query((qName, qClass, qType, qId, remoteIp, localIp), dnsRecords, netlist):
     if qClass == 'IN' and qName.lower() in dnsRecords:
         answerRecord(dnsRecords[qName.lower()], (qName, qClass, qType, qId, remoteIp, localIp), netlist)
     print "END"
 
+
 def axfr(id):
     for qName, qNameSet in dnsRecords.iteritems():
         answerRecord(qNameSet, (qName, "IN", "AXFR", id, "None", "None"), radix.Radix())
     print "END"
 
+
 def main():
     netlist, lastMTime = radix.Radix(), 0
     # Do not use buffering
     line = sys.stdin.readline()
-    while line:        
+    while line:
         line = line[:-1].strip()
         words = line.split('\t')
         try:
@@ -110,9 +116,9 @@ def main():
         except (IndexError, ValueError):
             print "LOG\tPowerDNS sent an unparseable line: '%s'" % line
             print "FAIL"    # FAIL!
-        
+
         sys.stdout.flush()
-        
+
         # Reload the netlist file if it has changed
         try:
             curMTime = os.stat(filename)[stat.ST_MTIME]
@@ -121,8 +127,8 @@ def main():
         else:
             if curMTime > lastMTime:
                 netlist = loadList(filename)
-                lastMTime = curMTime           
-               
+                lastMTime = curMTime
+
         line = sys.stdin.readline()
 
 if __name__ == '__main__':
@@ -144,5 +150,5 @@ if __name__ == '__main__':
             os.close(fd)
         except:
             pass
-    
+
     main()
