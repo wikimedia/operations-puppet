@@ -3,6 +3,7 @@ Parsoid deployment module for git-deploy / salt
 '''
 
 import os
+import subprocess
 
 
 def config_symlink(repo):
@@ -32,7 +33,5 @@ def restart_parsoid(repo):
     '''
     restart the parsoid service
     '''
-    if __salt__['service.restart']('parsoid'):
-        return 0
-    else:
-        return 1
+    ret = subprocess.call("/etc/init.d/parsoid restart", shell=True)
+    return ret
