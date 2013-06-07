@@ -1,14 +1,18 @@
-# this file is for: outreach / contacts / (civi)CRM related things
-# (constituency relationship management)
-
 # https://contacts.wikimedia.org | http://en.wikipedia.org/wiki/CiviCRM
 class misc::outreach::civicrm {
-	system_role { "misc::outreach::civicrm": description => "CiviCRM server" }
 
-	class {'webserver::php5': ssl => 'true'; }
+	system_role { "misc::outreach::civicrm": description => "contacts.wikimedia.org - Drupal/CiviCRM service" }
 
-	apache_site { contacts: name => "contacts.wikimedia.org" }
+	file {
+		"/etc/apache2/sites-available/contacts.wikimedia.org":
+			ensure	=> present,
+			mode	=> '0444',
+			owner	=> root,
+			group	=> root,
+            source  => 'puppet:///files/apache/sites/contacts.wikimedia.org';
+	}
 
-	systemuser { civimail: name => "civimail", home => "/home/civimail", groups => [ "civimail" ] }
+	apache_site { "contacts": name => "contacts.wikimedia.org" }
+
 }
 
