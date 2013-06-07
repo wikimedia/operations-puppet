@@ -24,22 +24,22 @@ echo \"$(hostname) is a Wikimedia ${description} (${title}).\"
 }
 
 # Creates a system username with associated group, random uid/gid, and /bin/false as shell
-define systemuser($name = undef, $home=undef, $managehome=true, $shell="/bin/false", $groups=undef, $default_group=$name, $ensure=present) {
-	$username = $name ? { undef => $title, default => $name }
+define systemuser($name, $home=undef, $managehome=true, $shell="/bin/false", $groups=undef, $default_group=$name, $ensure=present) {
+	# FIXME: deprecate $name parameter in favor of just using $title
 
-	if $default_group == $username {
+	if $default_group == $name {
 		group { $default_group:
 			name => $default_group,
 			ensure => present;
 		}
 	}
 
-	user { $username:
+	user { $name:
 		require => Group[$default_group],
-		name => $username,
+		name => $name,
 		gid => $default_group,
 		home => $home ? {
-			undef => "/var/lib/${username}",
+			undef => "/var/lib/${name}",
 			default => $home
 		},
 		managehome => $managehome,
