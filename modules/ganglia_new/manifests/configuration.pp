@@ -102,7 +102,7 @@ class ganglia_new::configuration {
 		"parsoid"		=> {
 			"name"		=> "Parsoid",
 			"id"	=> 37 },
-		"parsoidcache"	=> {
+		"cache_parsoid"	=> {
 			"name"		=> "Parsoid Varnish",
 			"id"	=> 38 },
 		"redis"			=> {
