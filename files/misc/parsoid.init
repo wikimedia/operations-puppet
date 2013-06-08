@@ -36,6 +36,8 @@ start_parsoid() {
 
 stop_parsoid() {
 	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+	# Stuck workers don't always restart properly, so kill them hard
+	pkill -9 -f Parsoid/js/api/server.js
 }
 
 status_parsoid() {
