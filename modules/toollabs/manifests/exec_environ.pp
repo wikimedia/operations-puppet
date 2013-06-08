@@ -29,6 +29,7 @@ class toollabs::exec_environ {
       'mono-runtime',
       'php5-cli',
       'php5-mysql',
+      'libcache-memcached-fast-perl',
       'libhtml-parser-perl',
       'libwww-perl',
       'liburi-perl',
