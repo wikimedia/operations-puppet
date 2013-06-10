@@ -28,9 +28,6 @@ class _WMFRewriteContext(WSGIContext):
     """
 
     def __init__(self, rewrite, conf):
-        def striplist(l):
-            return([x.strip() for x in l])
-
         WSGIContext.__init__(self, rewrite.app)
         self.app = rewrite.app
         self.logger = rewrite.logger
@@ -39,10 +36,7 @@ class _WMFRewriteContext(WSGIContext):
         self.thumbhost = conf['thumbhost'].strip()
         self.user_agent = conf['user_agent'].strip()
         self.bind_port = conf['bind_port'].strip()
-        self.shard_containers = conf['shard_containers'].strip()  # all, some, none
-        if (self.shard_containers == 'some'):
-            # if we're supposed to shard some containers, get a cleaned list of the containers to shard
-            self.shard_container_list = striplist(conf['shard_container_list'].split(','))
+        self.shard_container_list = [ item.strip() for item in conf['shard_container_list'].split(',') ]
         # this parameter controls whether URLs sent to the thumbhost are sent as is (eg. upload/proj/lang/) or with the site/lang
         # converted  and only the path sent back (eg en.wikipedia/thumb).
         self.backend_url_format = conf['backend_url_format'].strip()  # asis, sitelang
@@ -311,8 +305,7 @@ class _WMFRewriteContext(WSGIContext):
             container = "%s-%s-%s-%s" % (proj, lang, repo, zone)
             # Add 2-digit shard to the container if it is supposed to be sharded.
             # We may thus have an "actual" container name like "<proj><lang><repo><zone>.<shard>"
-            if ((self.shard_containers == 'all') or
-               ((self.shard_containers == 'some') and (container in self.shard_container_list))):
+            if container in self.shard_container_list:
                 container += ".%s" % shard
 
             # Save a url with just the account name in it.
