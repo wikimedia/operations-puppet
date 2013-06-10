@@ -26,7 +26,7 @@ MAILMAN_GID = list
 # Main configuration settings #
 ###############################
 
-<% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
+<% if enable_mail_relay == "primary" then -%>
 # MySQL lookups (OTRS)
 hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
@@ -36,11 +36,11 @@ LDAPPASSWORD=<%= scope.lookupvar('exim::smtp::smtp_ldap_password') %>
 <% end -%>
 
 domainlist system_domains = @
-domainlist local_domains = <%= scope.lookupvar('exim::roled::local_domains').join(" : ") %>
-<% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>
+domainlist local_domains = <%= local_domains.join(" : ") %>
+<% if enable_mail_relay == "secondary" then -%>
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 <% end -%>
-<%if scope.lookupvar('exim::roled::enable_mail_relay') != "false "%>
+<%if enable_mail_relay != "false "%>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 <% end -%>
 
@@ -55,12 +55,12 @@ domainlist rt_domains = rt.wikimedia.org
 domainlist spamassassin_domains = *
 
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
-hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
+hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
 hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join(" ; ") %>
 
 
-<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
+<% if enable_imap_delivery == "true" then -%>
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
 <% end -%>
@@ -74,7 +74,7 @@ acl_smtp_connect = acl_check_connect
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
 
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 helo_try_verify_hosts = *
 <% end -%>
 
@@ -98,12 +98,12 @@ smtp_accept_reserve = 100
 # Lookups
 host_lookup = *
 rfc1413_hosts =
-<% if scope.lookupvar('exim::roled::enable_spamassassin') == "true" then -%>
+<% if enable_spamassassin == "true" then -%>
 
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
+<% if enable_imap_delivery == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
@@ -116,7 +116,7 @@ never_users = root : daemon : bin
 ignore_bounce_errors_after = 0h
 
 # Hold mail for these domains (e.g. for testing/debugging)
-hold_domains = <%= scope.lookupvar('exim::roled::hold_domains').join(" : ") %>
+hold_domains = <%= hold_domains.join(" : ") %>
 
 ###############################
 # Access Control Lists (ACLs) #
@@ -126,7 +126,7 @@ begin acl
 
 acl_check_rcpt:
 
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 	# If there have been ~4 times as many previous RCPT rejects than
 	# accepts, drop the connection
 
@@ -151,7 +151,7 @@ acl_check_rcpt:
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
-<% if scope.lookupvar('exim::roled::enable_mail_submission') == "true" then -%>
+<% if enable_mail_submission == "true" then -%>
 # Mail submissions from other hosts must be from SMTP authenticated users
 
 	accept authenticated = *
@@ -168,7 +168,7 @@ acl_check_rcpt:
 	# Require recipient domain to be local, or a domain we relay for
 
 	require message = Relay not permitted
-		domains = +local_domains : +relay_domains <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>: +secondary_domains<% end %>
+		domains = +local_domains : +relay_domains <% if enable_mail_relay == "secondary" then -%>: +secondary_domains<% end %>
 
 	# { recipient domain is under our administrative control }
 
@@ -186,19 +186,19 @@ acl_check_rcpt:
 
 	require verify = recipient
 
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 	# If the destination domain is a domain we relay for,
 	# check if the local part exists at the destination,
 	# reject if it doesn't.
 	# Accept if the destination cannot be reached within 30s.
 
-	deny domains = +relay_domains <% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>: +secondary_domains<% end %>
+	deny domains = +relay_domains <% if enable_mail_relay == "secondary" then -%>: +secondary_domains<% end %>
 		! verify = recipient/callout=10s,maxwait=30s,defer_ok
 <% end -%>
 
 	# Mail can be safely accepted here, but we may want to do more
 	# rfc compliance checking and spam filtering.
-	<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+	<% if enable_mail_relay != "false" then -%>
 
 	# Check whether the sender address domain exists
 
@@ -206,7 +206,7 @@ acl_check_rcpt:
 
 <% end -%>
 	accept
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 		set acl_m2 = ${if eq{$local_part@$domain}{wiki@wikimedia.org}{skip_spamd}{}}
 <% end -%>
 
@@ -222,7 +222,7 @@ acl_check_connect:
 	accept
 
 acl_check_data:
-<% if ( scope.lookupvar('exim::roled::enable_spamassassin') == "true" ) then -%>
+<% if ( enable_spamassassin == "true" ) then -%>
 	# Let's trust local senders (Mailman) to not send out spam
 	accept hosts = +wikimedia_nets
 		set acl_m0 = trusted relay
@@ -232,7 +232,7 @@ acl_check_data:
 <% end -%>
 	accept
 
-<% if ( scope.lookupvar('exim::roled::enable_spamassassin') == "true" ) then -%>
+<% if ( enable_spamassassin == "true" ) then -%>
 spamassassin:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation
@@ -262,7 +262,7 @@ spamassassin:
 
 begin routers
 
-<% if scope.lookupvar('exim::roled::enable_mail_relay') == "secondary" then -%>
+<% if enable_mail_relay == "secondary" then -%>
 # Route relay domains only if the higher prio MXes are in the allowed list
 secondary:
 	driver = dnslookup
@@ -284,7 +284,7 @@ domains = ! +local_domains
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	no_verify
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 # Route non-local domains (including +relay_domains) via DNS MX and A records
 dnslookup:
 	driver = dnslookup
@@ -306,7 +306,7 @@ system_aliases:
 	allow_defer
 	forbid_file
 
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+<% if enable_mailman == "true" then -%>
 # Mailman list handling.
 
 list_aliases:
@@ -322,7 +322,7 @@ list_aliases:
 	include_directory = CONFDIR
 <% end -%>
 
-<% if ( scope.lookupvar('exim::roled::enable_mail_relay') == "primary" ) -%>
+<% if ( enable_mail_relay == "primary" ) -%>
 aliases:
 	driver = redirect
 	domains = +local_domains
@@ -336,7 +336,7 @@ aliases:
 	pipe_transport = address_pipe
 <% end -%>
 
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+<% if enable_mailman == "true" then -%>
 # Test the mailing list address without suffix
 # first, as a mailing list like wikifi-admin is a valid list name.
 
@@ -356,7 +356,7 @@ list_suffix:
 				-subscribe : -unsubscribe
 	transport = list
 <% end -%>
-<% if scope.lookupvar('exim::roled::enable_mail_relay') == "primary" then -%>
+<% if enable_mail_relay == "primary" then -%>
 # Use alias files /etc/exim4/aliases/$domain for domains like
 # wikimedia.org, wikipedia.org, wiktionary.org etc.
 
@@ -456,7 +456,7 @@ otrs:
 	route_list = *  williams.wikimedia.org  byname
 	transport = remote_smtp
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
+<% if enable_imap_delivery == "true" then -%>
 # Run a custom user filter, e.g. to sort mail into subfolders
 # By default Exim filter CONFDIR/default_user_filter is run,
 # which sorts mail classified spam into the Junk folder
@@ -527,7 +527,7 @@ smart_route:
 	transport = remote_smtp
 	route_list = *  mchenry.wikimedia.org:lists.wikimedia.org
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% if enable_mail_relay != "false" then -%>
 
 # Redirect postmaster@$domain if it hasn't been accepted before
 postmaster:
@@ -536,9 +536,9 @@ postmaster:
 	local_parts = postmaster
 	data = postmaster@$primary_hostname
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+<% if enable_mailman == "true" then -%>
 	cannot_route_message = Mailing list $local_part does not exist.
-<% elsif scope.lookupvar('exim::roled::enable_mail_relay') != "false" then -%>
+<% elsif enable_mail_relay != "false" then -%>
 	cannot_route_message = Address $local_part@$domain does not exist
 <% end %>
 
@@ -553,8 +553,8 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
-	interface = <; <%= scope.lookupvar('exim::roled::outbound_ips').join(" ; ") %>
-<% if scope.lookupvar('exim::roled::enable_mailman' == "true" ) -%>
+	interface = <; <%= outbound_ips.join(" ; ") %>
+<% if (enable_mailman == "true" ) -%>
 	helo_data = lists.wikimedia.org
 <% end -%>
 
@@ -573,7 +573,7 @@ address_pipe:
 	driver = pipe
 	return_output
 
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+<% if enable_mailman == "true" then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
 
@@ -591,7 +591,7 @@ list:
 	#headers_rewrite = \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_imap_delivery') == "true" then -%>
+<% if enable_imap_delivery == "true" then -%>
 # Delivery via Dovecot's "deliver" LDA. The advantage over using Exim's
 # internal Maildir appendfile transport is that it can immediately update
 # Dovecot's internal indexes for better performance.
@@ -647,7 +647,7 @@ left_message:
 reply_transport:
 	driver = autoreply
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_mail_submission') == "true" then -%>
+<% if enable_mail_submission == "true" then -%>
 ##################
 # Authenticators #
 ##################
@@ -681,7 +681,7 @@ begin retry
 *	*	senders=wiki@wikimedia.org      F,1h,15m; G,8
 <% end -%>
 *	*	F,2h,15m; G,16h,1h,1.5; F,4d,6h
-<% if ( scope.lookupvar('exim::roled::enable_mail_relay') != "false" ) -%>
+<% if ( enable_mail_relay != "false" ) -%>
 
 #################
 # Rewrite rules #
@@ -690,10 +690,10 @@ begin retry
 begin rewrite
 
 <% end %>
-<% if scope.lookupvar('exim::roled::enable_mailman') == "true" then -%>
+<% if enable_mailman == "true" then -%>
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 <% end %>
-<% if ( scope.lookupvar('exim::roled::enable_mail_relay') != "false" ) -%>
+<% if ( enable_mail_relay != "false" ) -%>
 # Rewrite the envelope From for mails from internal servers in *.pmtpa.wmnet,
 # as they are usually rejected by sender domain address verification.
 *@*.pmtpa.wmnet		root@wikimedia.org	F
