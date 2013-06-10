@@ -45,9 +45,10 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     source => "puppet://modules/toollabs/sql",
   }
 
+  package { [ 'jobutils', 'misctools' ]:
+    ensure => latest,
+  }
 
-  # TODO: local scripts
-  # TODO: j* tools
   # TODO: cron setup
 }
 

@@ -25,6 +25,12 @@ class toollabs::webserver($gridmaster) inherits toollabs {
     ensure => present
   }
 
+  package { [
+      'jobutils',
+      ]:
+    ensure => latest
+  }
+
   file { "$store/submithost-$fqdn":
     ensure => file,
     owner => 'root',
