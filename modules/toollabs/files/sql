@@ -74,6 +74,14 @@ case "$1" in
         server="cswiki.labsdb"
         db="cswiki_p"
     ;;
+    "commons")
+        server="commonswiki.labsdb"
+        db="commonswiki_p"
+    ;;
+    "wikidata")
+        server="wikidatawiki.labsdb"
+        db="wikidatawiki_p"
+    ;;
     "local")
         server=tools-db
         db=""
@@ -103,7 +111,7 @@ case "$1" in
 	then
 		Log "Resolved to $server $db"
 	else
-	        echo "This is unknown db to me, if you don't like, blame petan on freenode"
+	        echo "This is unknown db to me, if you don't like that, blame petan on freenode"
 	        exit 1
 	fi
    ;;
