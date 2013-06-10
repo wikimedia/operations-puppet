@@ -5,7 +5,9 @@ class mediawiki::users::sudo {
 
 	## sudo definitions
 	sudo_group {"wikidev_deploy":
-		privileges => ['ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL'],
+		privileges => ['ALL = (apache,mwdeploy,l10nupdate) NOPASSWD: ALL',
+			'ALL = (root) NOPASSWD: /sbin/restart twemproxy',
+			'ALL = (root) NOPASSWD: /sbin/start twemproxy'],
 		group => "wikidev"
 	}
 	sudo_user { "l10nupdate": privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
