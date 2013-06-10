@@ -1879,17 +1879,13 @@ node /^ms-fe100[1-4]\.eqiad\.wmnet$/ {
 
 	include role::ceph::eqiad::radosgw
 
-	if $::hostname =~ /^ms-fe100[13]$/ {
+	if $::hostname =~ /^ms-fe100[134]$/ {
 		include role::ceph::eqiad::mon
 	}
 }
 
 node /^ms-be10[01][0-9]\.eqiad\.wmnet$/ {
 	include role::ceph::eqiad::osd
-
-	if $::hostname == 'ms-be1005' {
-		include role::ceph::eqiad::mon
-	}
 }
 
 node /^ms-be300[1-4]\.esams\.wikimedia\.org$/ {

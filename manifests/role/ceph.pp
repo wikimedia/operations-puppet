@@ -18,12 +18,12 @@ class role::ceph::eqiad inherits role::ceph::base {
             mon_initial_members => [
 	        'ms-fe1001',
 		'ms-fe1003',
-		'ms-be1005',
+		'ms-fe1004',
             ],
             mon_addresses       => [
                 '10.64.0.167:6789',  # ms-fe1001
                 '10.64.16.150:6789', # ms-fe1003
-                '10.64.32.10:6789',  # ms-be1005
+                '10.64.32.92:6789',  # ms-fe1004
             ],
             'global'            => {
                 # eqiad hardware has H710s which have a BBU
