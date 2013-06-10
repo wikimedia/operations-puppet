@@ -20,10 +20,17 @@ sub pick_large_object_stevedore {
 sub radosgw_rewrite {
 	if (req.restarts == 0) {
 		if (req.url ~ "^/[^/]+/[^/]+/((transcoded|thumb|temp)/)?((temp|archive)/)?[0-9a-f]/[0-9a-f]{2}(/.+)?$") {
-			set bereq.url = regsub(
-				req.url,
-				"^/([^/]+)/([^/]+)/((transcoded|thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
-				"/swift/v1/\1-\2-local-\3.\9/\5");
+			if (req.url ~ "^/wikipedia/(commons|de|en|fi|fr|he|hu|id|it|ja|ro|ru|th|tr|uk|zh)/") {
+				set bereq.url = regsub(
+					req.url,
+					"^/([^/]+)/([^/]+)/((transcoded|thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
+					"/swift/v1/\1-\2-local-\3.\9/\5");
+			} else {
+				set bereq.url = regsub(
+					req.url,
+					"^/([^/]+)/([^/]+)/((transcoded|thumb|temp)/)?(((temp|archive)/)?([0-9a-f])/([0-9a-f]{2})(/.+)?)$",
+					"/swift/v1/\1-\2-local-\3/\5");
+			}
 			set bereq.url = regsub(
 				bereq.url,
 				"^(/swift/v1/[^/]+-[^/]+-local)-\.",
