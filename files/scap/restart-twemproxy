@@ -1,0 +1,24 @@
+#!/bin/bash
+. /usr/local/lib/mw-deployment-vars.sh
+BINDIR="/usr/local/bin"
+
+if [ ! -S "$SSH_AUTH_SOCK" ]; then
+	echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
+	echo >&2 "Did you start your ssh-agent?"
+	exit 1
+fi
+
+# No use going any further if we can't complete the sync
+[ $(which dsh 2>/dev/null) ] || {
+	echo >&2 "Error: no dsh on this host, aborting"
+	exit 1
+}
+
+# Restart twemproxy
+echo 'Restarting twemproxy on all servers'
+dsh -cM -g mediawiki-installation -o -oSetupTimeout=30 -F8 -- "sudo /sbin/restart twemproxy"
+
+echo 'Finished'
+
+# Notify
+$BINDIR/dologmsg "!log $USER restarted twemproxy on all servers"

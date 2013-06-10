@@ -178,6 +178,11 @@ class misc::deployment::scap_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/scap/mw-update-l10n";
+		"${scriptpath}/restart-twemproxy":
+			owner => root,
+			group => root,
+			mode => 0555,
+			source => "puppet:///files/scap/restart-twemproxy";
 		"${scriptpath}/scap":
 			owner => root,
 			group => root,
