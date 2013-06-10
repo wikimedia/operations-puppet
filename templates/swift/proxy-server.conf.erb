@@ -53,9 +53,6 @@ account = <%= scope.lookupvar("swift::proxy::config::rewrite_account") %>
 thumbhost = <%= scope.lookupvar("swift::proxy::config::rewrite_thumb_server") %>
 # upload doesn"t like our User-agent (Python-urllib/2.6), otherwise we could call it using urllib2.urlopen()
 user_agent = Mozilla/5.0
-# should we shard containers, and if so how many?  all, none, some
-shard_containers = <%= scope.lookupvar("swift::proxy::config::shard_containers") %>
-# if we shard some containers, which ones?  ignored for all and none.
 # this list is the containers that should be sharded
 shard_container_list = <%= scope.lookupvar("swift::proxy::config::shard_container_list") %>
 # backend_url_format controls whether we pass the URL through to the thumbhost unmolested
