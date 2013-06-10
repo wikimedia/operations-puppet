@@ -19,14 +19,18 @@ class role::analytics {
     # include analytics user accounts
     include role::analytics::users
 
-    # all analytics nodes need java installed
-    include role::analytics::java
-
     # We want to be able to geolocate IP addresses
     include geoip
 
     # udp-filter is a useful thing!
     include misc::udp2log::udp_filter
+
+    # all analytics nodes need java installed
+    # Install Sun/Oracle Java JDK on analytics cluster
+    java { "java-6-oracle":
+        distribution => 'oracle',
+        version      => 6,
+    }
 }
 
 # Contains list of reinstalled analytics nodes.
@@ -37,35 +41,6 @@ class role::analytics::reinstalled {
         'analytics1001',
         'analytics1020',
     ]
-}
-
-class role::analytics::java {
-    # Most analytics nodes currently are running
-    # Sun/Oracle Java 6.  As we reinstall these nodes,
-    # we want to switch over to Java 7.
-    # The following conditional will be removed once
-    # all nodes have been reinstalled.
-    include role::analytics::reinstalled
-
-    if (member($role::analytics::reinstalled::nodes, $hostname)) {
-        java { "java-7-openjdk":
-            distribution => 'openjdk',
-            version      => 7,
-        }
-        # Install Sun/Oracle Java JDK on analytics cluster
-        java { "java-6-oracle":
-            distribution => 'oracle',
-            version      => 6,
-            ensure       => 'absent'
-        }
-    }
-    else {
-    # Install Sun/Oracle Java JDK on analytics cluster
-        java { "java-6-oracle":
-            distribution => 'oracle',
-            version      => 6,
-        }
-    }
 }
 
 class role::analytics::users {
