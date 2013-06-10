@@ -6,6 +6,8 @@
 #
 # $schema::             Schema file for Solr (only one schema per instance supported)
 # $replication_master:: Replication master, if this is current hostname, this server will be a master
+# $max_heap::           Maximum size of the JVM heap that Solr will use.  Use Xmx and Xms valid
+#                       parameters like 4G, 512M, etc.
 #
 # == Sample usage:
 #
@@ -24,7 +26,7 @@ class solr::install {
   }
 }
 
-class solr::config ( $schema = undef, $replication_master = undef ) {
+class solr::config ( $schema = undef, $replication_master = undef, $max_heap = undef ) {
   File {
     owner => 'jetty',
     group => 'root',
@@ -36,7 +38,7 @@ class solr::config ( $schema = undef, $replication_master = undef ) {
   file {
     "/etc/default/jetty":
       ensure  => present,
-      source  => "puppet:///modules/solr/jetty",
+      content  => template("solr/jetty.erb"),
       owner   => 'root';
     "/etc/solr/conf/solrconfig.xml":
       ensure  => present,
@@ -76,12 +78,13 @@ class solr::service {
   }
 }
 
-class solr ($schema = undef, $replication_master = undef) {
+class solr ($schema = undef, $replication_master = undef, $max_heap = undef ) {
   include solr::install,
     solr::service
 
   class { "solr::config":
     schema => $schema,
     replication_master => $replication_master,
+    max_heap => $max_heap
   }
 }
