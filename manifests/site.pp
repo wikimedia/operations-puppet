@@ -127,6 +127,8 @@ node /^amssq47\.esams\.wikimedia\.org$/ {
 	interface_add_ip6_mapped { "main": }
 }
 
+
+
 # analytics1001.wikimedia.org is the analytics cluster master.
 node "analytics1001.wikimedia.org" {
 	include role::analytics
@@ -134,6 +136,18 @@ node "analytics1001.wikimedia.org" {
 	# include udp2log iptables rules.
 	include misc::udp2log::iptables
 }
+
+# analytics1020 is a Hadoop Worker
+node "analytics1020.eqiad.wmnet" {
+	include role::analytics
+}
+
+
+
+
+
+
+### Analytics nodes below this line need to be reinstalled.
 
 node "analytics1002.eqiad.wmnet" {
 	include role::analytics
