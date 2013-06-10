@@ -209,7 +209,6 @@ class swift::proxy::config(
 	$super_admin_key,
 	$rewrite_account,
 	$rewrite_thumb_server,
-	$shard_containers,
 	$shard_container_list,
 	$backend_url_format ) {
 
