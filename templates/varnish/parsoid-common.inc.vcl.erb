@@ -14,9 +14,3 @@ sub vcl_recv {
 		set req.hash_always_miss = true;
 	}
 }
-
-sub vcl_miss {
-	if (req.http.Cache-Control ~ "only-if-cached") {
-		error 412 "Entity not in cache";
-	}
-}
