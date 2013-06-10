@@ -12,7 +12,7 @@ class gridengine::master {
   class monitoring {
 	file { "/usr/local/sbin/grid-ganglia-report":
 	  mode => 0555,
-	  source => "puppet:///files/gridengine/grid-ganglia-report",
+	  source => "puppet:///modules/gridengine/grid-ganglia-report",
 	  ensure => present;
 	}
 
