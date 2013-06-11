@@ -426,7 +426,7 @@ class role::cache {
 			}
 
 			$backend_weight = 100
-			$storage_size_main = 100
+			$storage_size_main = $::realm ? { 'labs' => 19, default => 100 }
 			$storage_size_bigobj = 10
 			if $::site == "eqiad" {
 				$cluster_tier = 1
@@ -449,10 +449,11 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			varnish::setup_filesystem{
-				$::hostname ? {
-					default => ["sda3", "sdb3"]
-				}:
+			$storage_backends = $::realm ? {
+				'production' => ["sda3", "sdb3"],
+				'labs' => ["vdb"],
+			}
+			varnish::setup_filesystem{ $storage_backends:
 				before => Varnish::Instance["text-backend"]
 			}
 
@@ -471,8 +472,9 @@ class role::cache {
 					'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
 					default => [],
 				},
-				storage => $::hostname ? {
-					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				storage => $::realm ? {
+					'production' => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
+					'labs' => '-s main1=persistent,/srv/vdb/varnish.persist,${storage_size_main}G',
 				},
 				directors => $varnish_be_directors[$::site],
 				director_type => $cluster_tier ? {
@@ -615,11 +617,14 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			varnish::setup_filesystem{
-				$::hostname ? {
-					'dysprosium' => ["sdc1", "sdd1"],
-					default => ["sda3", "sdb3"]
-				}:
+			$storage_backends = $::realm ? {
+				'production' =>
+					$::hostname ? {
+						'dysprosium' => ['sdc1', 'sdd1'],
+						default => ['sda3', 'sdb3'],
+					},
+			}
+			varnish::setup_filesystem{ $storage_backends:
 				before => Varnish::Instance["upload-backend"]
 			}
 
