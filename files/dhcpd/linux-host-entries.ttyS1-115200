@@ -3691,16 +3691,6 @@ host promethium {
 	fixed-address promethium.eqiad.wmnet;
 }
 
-host rdb1003 {
-	hardware ethernet 90:B1:1C:36:A1:99;
-	fixed-address rdb1.pmtpa.wmnet;
-}
-
-host rdb1004 {
-	hardware ethernet 90:B1:1C:36:A2:99;
-	fixed-address rdb2.pmtpa.wmnet;
-}
-
 host rdb1001 {
 	hardware ethernet 90:B1:1C:2D:7B:74;
 	fixed-address rdb1001.eqiad.wmnet;
@@ -3709,6 +3699,16 @@ host rdb1001 {
 host rdb1002 {
 	hardware ethernet 90:B1:1C:2D:78:68;
 	fixed-address rdb1002.eqiad.wmnet;
+}
+
+host rdb1003 {
+	hardware ethernet 90:B1:1C:36:A1:99;
+	fixed-address rdb1003.eqiad.wmnet;
+}
+
+host rdb1004 {
+	hardware ethernet 90:B1:1C:36:A2:99;
+	fixed-address rdb1004.eqiad.wmnet;
 }
 
 host search13 {
