@@ -89,19 +89,15 @@ class exim {
 	}
 
 	class rt {
-		class { "exim::config": queuerunner => "combined" }
-		Class["exim::config"] -> Class[exim::rt]
-
-		file {
-			"/etc/exim4/exim4.conf":
-				require => Package[exim4-config],
-				owner => root,
-				group => root,
-				mode => 0444,
-				source => "puppet:///files/exim/exim4.rt.conf";
-		}
-
-		include exim::service
+		class { exim::roled:
+         		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
+         		local_domains => [ "+system_domains", "+rt_domains" ],
+         		enable_mail_relay => "false",
+         		enable_mailman => "false",
+         		rt_relay => "true",
+         		enable_mail_submission => "false",
+         		enable_spamassassin => "false"
+ 		}
 	}
 
 	class smtp {
@@ -142,6 +138,7 @@ class exim {
 		$enable_imap_delivery="false",
 		$enable_mail_submission="false",
 		$mediawiki_relay="false",
+		$rt_relay="false",
 		$enable_spamassassin="false",
 		$outbound_ips=[ $ipaddress ],
 		$hold_domains=[] ) {
