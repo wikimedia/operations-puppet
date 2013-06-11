@@ -86,6 +86,17 @@ class misc::monitoring::views {
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[345689].eqiad.wmnet',
 	}
+
+	# basic metrics for continuous integration
+	ganglia::view { 'contint':
+		graphs => [
+			{
+				'host_regex'   => 'gallium.wikimedia.org',
+				'metric_regex' => '^jenkins_overallload.*',
+			},
+		],
+	}
+
 }
 
 # == Define misc:monitoring::view::udp2log
