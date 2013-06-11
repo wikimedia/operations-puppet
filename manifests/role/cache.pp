@@ -331,6 +331,12 @@ class role::cache {
 						'10.4.0.187',  # deployment-apache33
 					],
 				},
+				'rendering' => {
+					'pmtpa' => [
+						'10.4.0.166',  # deployment-apache32
+						'10.4.0.187',  # deployment-apache33
+					],
+				},
 				'test_appservers' => {
 					'pmtpa' => [ '10.4.0.166' ],
 				},
