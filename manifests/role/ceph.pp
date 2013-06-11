@@ -37,8 +37,8 @@ class role::ceph::eqiad inherits role::ceph::base {
             'osd'               => {
                 'osd journal'                 => '/var/lib/ceph/journal/$cluster-$id',
                 'osd journal size'            => '10240',
-                'osd op thread timeout'       => '7200',
-                'osd recovery thread timeout' => '7200',
+                # set log entries to 300 from 3000, could be a workaround to #5084
+                'osd min pg log entries'      => '300',
             },
             'radosgw'           => {
                 'rgw enable ops log'          => 'false',
