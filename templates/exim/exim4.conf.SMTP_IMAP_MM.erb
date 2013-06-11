@@ -54,6 +54,10 @@ domainlist mailman_domains = lists.wikimedia.org
 domainlist rt_domains = rt.wikimedia.org
 domainlist spamassassin_domains = *
 
+<% if rt_relay == "true" then -%>
+hostlist rt_mail_from_hosts = mchenry.wikimedia.org
+<% end -%>
+
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
@@ -76,6 +80,12 @@ acl_smtp_data = acl_check_data
 
 <% if enable_mail_relay != "false" then -%>
 helo_try_verify_hosts = *
+<% end -%>
+
+<% if rt_relay == "true" then -%>
+# Allow RT to use any sender address
+untrusted_set_sender = *
+local_from_check = false
 <% end -%>
 
 system_filter = CONFDIR/system_filter
@@ -293,6 +303,27 @@ dnslookup:
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	cannot_route_message = Cannot route to remote domain $domain
 	no_more
+<% end -%>
+
+<% if rt_relay == "true" then -%>
+rt_ticket:
+	driver = redirect
+	domains = +rt_domains
+	local_part_suffix = -comment
+	local_part_suffix_optional
+	condition = ${if match{$local_part}{\N^\d+$\N}{yes}{no}}
+	address_data = EXTENSION=$local_part
+	data = general$local_part_suffix@$domain
+	redirect_router = rt
+	no_verify
+
+rt:
+	driver = accept
+	domains = +rt_domains
+	local_part_suffix = -comment
+	local_part_suffix_optional
+	transport = rt_pipe
+
 <% end -%>
 
 # Use the system aliasfile /etc/aliases for system domains
@@ -573,6 +604,19 @@ address_pipe:
 	driver = pipe
 	return_output
 
+<% if rt_relay == "true" then -%>
+# RT transport
+rt_pipe:
+	driver = pipe
+	command = /usr/bin/rt-mailgate --queue $local_part \
+        	--action "${if eq{$local_part_suffix}{-comment}{comment}{correspond}}" \
+        	--extension ticket --url https://rt.wikimedia.org
+	environment = $address_data
+	user = mail
+	group = mail
+	return_fail_output
+<% end -%>
+
 <% if enable_mailman == "true" then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
@@ -690,6 +734,12 @@ begin retry
 begin rewrite
 
 <% end %>
+
+<% if rt_relay == "true" then -%>
+# Rewrite RT
+www-data@$primary_hostname      general@rt.wikimedia.org        Fq
+<% end -%>
+
 <% if enable_mailman == "true" then -%>
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 <% end %>
