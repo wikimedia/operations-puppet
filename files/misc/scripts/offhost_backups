@@ -27,8 +27,7 @@ my $mirror;
 if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# pull from archive peers and fundraising db dumpers
-	#$mirror->{'1'} = "rsync $archive_pull backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
-	$mirror->{'1'} = "rsync $archive_pull backupmover\@db1013.eqiad.wmnet:/a/archive/ /a/archive/";
+	$mirror->{'1'} = "rsync $archive_pull backupmover\@db1025.frack.eqiad.wmnet:/a/archive/ /a/archive/";
 	$mirror->{'2'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
 	$mirror->{'3'} = "rsync $archive_pull backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
 	$mirror->{'4'} = "rsync $archive_pull backupmover\@db78.pmtpa.wmnet:/a/archive/ /a/archive/";
@@ -40,7 +39,6 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 } elsif ($conf->{'HOSTNAME'} eq 'db78') {
 
 	# pull from archive peers and db dumpers
-	#$mirror->{'1'} = "rsync $archive_pull backupmover\@db1025.eqiad.wmnet:/a/archive/ /a/archive/";
 	$mirror->{'1'} = "rsync $archive_pull backupmover\@db1013.eqiad.wmnet:/a/archive/ /a/archive/";
 	$mirror->{'2'} = "rsync $archive_pull backupmover\@aluminium.wikimedia.org:/archive/ /a/archive/";
 	$mirror->{'3'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /a/archive/";
@@ -49,7 +47,6 @@ if ($conf->{'HOSTNAME'} eq 'indium') {
 
 	# pull from archive peers and db dumpers
 	$mirror->{'1'} = "rsync $archive_pull backupmover\@db78.pmtpa.wmnet:/a/archive/ /archive/";
-	#$mirror->{'2'} = "rsync $archive_pull backupmover\@db1025.eqiad.wmnet:/a/archive/ /archive/";
 	$mirror->{'2'} = "rsync $archive_pull backupmover\@db1013.eqiad.wmnet:/a/archive/ /archive/";
 	$mirror->{'3'} = "rsync $archive_pull backupmover\@loudon.wikimedia.org:/archive/ /archive/";
 
