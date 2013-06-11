@@ -2,10 +2,12 @@
 
 modules {
   module {
-    name = 'jenkins'
+    # wikimedia: renamed to avoid clash with python-jenkins module
+    name = 'gmond_jenkins'
     language = 'python'
 
     param base_url {
+      # wikimedia: appended '/ci'
       value = 'http://127.0.0.1:8080/ci'
     }
   }

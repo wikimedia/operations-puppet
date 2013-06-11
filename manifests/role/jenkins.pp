@@ -22,14 +22,26 @@ class role::jenkins::master::production {
 	}
 
 	# Ganglia monitoring for Jenkins
+	# The upstream module is named 'jenkins' which conflicts with python-jenkins
+	# since gmond will lookup the 'jenkins' python module in the system path
+	# before the module path.
+	# See: https://github.com/ganglia/monitor-core/issues/111
+
 	file { '/usr/lib/ganglia/python_modules/jenkins.py':
+		ensure => absent,
+	}
+	file { '/usr/lib/ganglia/python_modules/gmond_jenkins.py':
 			source => 'puppet:///files/ganglia/plugins/jenkins.py',
 			owner  => 'root',
 			group  => 'root',
 			mode   => '0444',
 			notify => Service[gmond],
 	}
+
 	file { '/etc/ganglia/conf.d/jenkins.pyconf':
+		ensure => absent,
+	}
+	file { '/etc/ganglia/conf.d/gmond_jenkins.pyconf':
 			source => 'puppet:///files/ganglia/plugins/jenkins.pyconf',
 			owner  => 'root',
 			group  => 'root',
