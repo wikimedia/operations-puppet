@@ -79,6 +79,16 @@ if [ "$maxvirtualmemory" -gt 0 ]; then
 	ulimit -v $maxvirtualmemory
 fi
 
+# Function to also get rid of the child processes.
+# This function can be used as a SIGINT trap callback.
+function terminateProcessPipeline() {
+	local pids=$(jobs -pr);
+	if [ -n "$pids" ]; then
+		kill $pids
+	fi
+	exit
+}
+
 # Limit the number of concurrent sub-processes by waiting until the
 # number of immediate child processes is less than the allowed limit.
 # Arguments: (process pipeline size)
@@ -104,7 +114,7 @@ function processPipelineWaitForSlot() {
 # Arguments: (space-separated job types, run default jobs? (y/n), process pipeline size)
 function runJobsLoopService() {
 	# When killed, make sure we also get rid of the child processes
-	trap 'pids=$(jobs -pr); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM
+	trap 'terminateProcessPipeline' SIGTERM
 
 	local hptypes=$1
 	local dodefault=$2
@@ -184,7 +194,7 @@ function runJobsLoopService() {
 cd `readlink -f /usr/local/apache/common/multiversion`
 
 # When killed, make sure we also get rid of the child processes
-trap 'pids=$(jobs -pr); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM SIGINT
+trap 'terminateProcessPipeline' SIGTERM SIGINT
 
 if [ -n "$1" ]; then
 	echo "Creating type-specific job runner pipeline"
