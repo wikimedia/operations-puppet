@@ -10,3 +10,7 @@ sub vcl_miss {
 		set bereq.http.Cache-Control = req.http.Cache-Control;
 	}
 }
+
+sub vcl_fetch {
+	set beresp.http.Cache-Control = "no-cache";
+}
