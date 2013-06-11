@@ -6,6 +6,7 @@ class misc::maintenance::foundationwiki( $enabled = false ) {
 
 	system_role { "misc::maintenance::foundationwiki": description => "Misc - Maintenance Server: foundationwiki" }
 
+	# This is broken and points to a non-existing DB
 	cron { 'updatedays':
 		user => apache,
 		minute => '*/15',
@@ -17,6 +18,7 @@ class misc::maintenance::foundationwiki( $enabled = false ) {
 		};
 	}
 
+	# This is broken and points to a non-existing DB
 	cron { 'populatefundraisers':
 		user => apache,
 		minute => 5,

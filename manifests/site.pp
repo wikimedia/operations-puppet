@@ -2710,7 +2710,6 @@ node "terbium.eqiad.wmnet" {
 		nrpe
 
 
-	class { misc::maintenance::foundationwiki: enabled => true }
 	class { misc::maintenance::pagetriage: enabled => true }
 	class { misc::maintenance::translationnotifications: enabled => true }
 	class { misc::maintenance::wikidata: enabled => true }
@@ -2726,6 +2725,8 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
 	class { misc::maintenance::refreshlinks: enabled => false }
 
+	# totally broken, misconfigured in non-version reporting-setup.php
+	class { misc::maintenance::foundationwiki: enabled => false }
 }
 
 node "tin.eqiad.wmnet" {
