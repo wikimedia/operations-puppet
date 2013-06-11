@@ -86,7 +86,7 @@ function processPipelineWaitForSlot() {
 	local pipelinesize=$1
 	local subprocscreate=0 # number of free process slots
 	while [ "$subprocscreate" -le 0 ]; do
-		local subproccount=$((`jobs -p | wc -w`))
+		local subproccount=$((`jobs -pr | wc -w`))
 		subprocscreate=$((pipelinesize/forkcount - subproccount))
 		if [ "$subprocscreate" -gt 0 ]; then
 			break # another immediate child process can start
@@ -104,7 +104,7 @@ function processPipelineWaitForSlot() {
 # Arguments: (space-separated job types, run default jobs? (y/n), process pipeline size)
 function runJobsLoopService() {
 	# When killed, make sure we also get rid of the child processes
-	trap 'pids=$(jobs -p); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM
+	trap 'pids=$(jobs -pr); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM
 
 	local hptypes=$1
 	local dodefault=$2
@@ -184,7 +184,7 @@ function runJobsLoopService() {
 cd `readlink -f /usr/local/apache/common/multiversion`
 
 # When killed, make sure we also get rid of the child processes
-trap 'pids=$(jobs -p); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM SIGINT
+trap 'pids=$(jobs -pr); if [ -n "$pids" ]; then kill $pids; fi; exit' SIGTERM SIGINT
 
 if [ -n "$1" ]; then
 	echo "Creating type-specific job runner pipeline"
