@@ -968,6 +968,7 @@ class role::cache {
 
 		$storage_backends = $::realm ? {
 			'production' => $::hostname ? {
+				# FIXME: Use consistent partitions on the new servers
 				"titanium" => ["sdb1", "sdd1"],
 				"cerium" => ["sda1", "sdb1"],
 				default => []
@@ -993,11 +994,12 @@ class role::cache {
 			port => 3128,
 			admin_port => 6083,
 			storage => $::realm ? {
+				# FIXME: Use consistent partitions on the new servers
 				'production' => $::hostname ? {
-					"titanium" => "-s sdb1=persistent,/srv/sdb1/varnish.persist,139G -s sdd1=persistent,/srv/sdd1/varnish.persist,139G",
-					"cerium" => "-s sda1=persistent,/srv/sda1/varnish.persist,139G -s sdb1=persistent,/srv/sdb1/varnish.persist,139G",
+					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,139G -s main2=persistent,/srv/sdd1/varnish.persist,139G",
+					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,139G -s main2=persistent,/srv/sdb1/varnish.persist,139G",
 				},
-				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
+				'labs' => '-s main1=persistent,/srv/vdb/varnish.main1,19G -s main2=persistent,/srv/vdb/varnish.main2,19G',
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
