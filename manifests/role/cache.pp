@@ -449,11 +449,11 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			$storage_backends = $::realm ? {
+			$storage_partitions = $::realm ? {
 				'production' => ["sda3", "sdb3"],
 				'labs' => ["vdb"],
 			}
-			varnish::setup_filesystem{ $storage_backends:
+			varnish::setup_filesystem{ $storage_partitions:
 				before => Varnish::Instance["text-backend"]
 			}
 
@@ -617,14 +617,14 @@ class role::cache {
 
 			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
-			$storage_backends = $::realm ? {
+			$storage_partitions = $::realm ? {
 				'production' =>
 					$::hostname ? {
 						'dysprosium' => ['sdc1', 'sdd1'],
 						default => ['sda3', 'sdb3'],
 					},
 			}
-			varnish::setup_filesystem{ $storage_backends:
+			varnish::setup_filesystem{ $storage_partitions:
 				before => Varnish::Instance["upload-backend"]
 			}
 
@@ -862,11 +862,11 @@ class role::cache {
 		include standard,
 			nrpe
 
-		$storage_backends = $::realm ? {
+		$storage_partitions = $::realm ? {
 			'production' => ["sda3", "sdb3"],
 			'labs' => ["vdb"],
 		}
-		varnish::setup_filesystem{ $storage_backends:
+		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["mobile-backend"]
 		}
 
@@ -966,7 +966,7 @@ class role::cache {
 		include standard,
 			nrpe
 
-		$storage_backends = $::realm ? {
+		$storage_partitions = $::realm ? {
 			'production' => $::hostname ? {
 				# FIXME: Use consistent partitions on the new servers
 				"titanium" => ["sdb1", "sdd1"],
@@ -975,7 +975,7 @@ class role::cache {
 			},
 			'labs' => ["vdb"],
 		}
-		varnish::setup_filesystem{ $storage_backends:
+		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["parsoid-backend"]
 		}
 
