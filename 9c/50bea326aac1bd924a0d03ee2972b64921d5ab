@@ -1,0 +1,9 @@
+Code-Review+1: Mark Bergsma <mark@wikimedia.org>
+Code-Review+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: Andrew Bogott <abogott@wikimedia.org>
+Verified+2: jenkins-bot
+Submitted-by: Andrew Bogott <abogott@wikimedia.org>
+Submitted-at: Wed, 12 Jun 2013 15:01:13 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/68006
+Project: operations/puppet
+Branch: refs/heads/production
