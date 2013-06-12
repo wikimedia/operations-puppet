@@ -389,7 +389,7 @@ class role::cache {
 		include lvs::configuration, role::cache::configuration, network::constants
 
 		$backend_weight = 100
-		$storage_size_main = $::realm ? { 'labs' => 19, default => 100 }
+		$storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
 		$storage_size_bigobj = 10
 		if $::site in ["pmtpa", "eqiad"] {
 			$cluster_tier = 1
@@ -914,14 +914,9 @@ class role::cache {
 		}
 	}
 
-	class parsoid {
-		include network::constants
-		include role::cache::configuration
-
+	class parsoid inherits role::cache::varnish::two-tier {
 		$cluster = "cache_parsoid"
 		$nagios_group = "cache_parsoid_${::site}"
-
-		include lvs::configuration, role::cache::configuration
 
 		if ( $::realm == 'production' ) {
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
@@ -932,6 +927,7 @@ class role::cache {
 		include standard,
 			nrpe
 
+		$storage_size_main = $::realm ? { 'labs' => 5, default => 139 }
 		$storage_partitions = $::realm ? {
 			'production' => $::hostname ? {
 				# FIXME: Use consistent partitions on the new servers
@@ -962,10 +958,10 @@ class role::cache {
 			storage => $::realm ? {
 				# FIXME: Use consistent partitions on the new servers
 				'production' => $::hostname ? {
-					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,139G -s main2=persistent,/srv/sdd1/varnish.persist,139G",
-					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,139G -s main2=persistent,/srv/sdb1/varnish.persist,139G",
+					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdd1/varnish.persist,${storage_size_main}G",
+					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb1/varnish.persist,${storage_size_main}G",
 				},
-				'labs' => '-s main1=persistent,/srv/vdb/varnish.main1,19G -s main2=persistent,/srv/vdb/varnish.main2,19G',
+				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
