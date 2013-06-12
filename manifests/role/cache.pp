@@ -341,7 +341,7 @@ class role::cache {
 					'pmtpa' => [ '10.4.0.166' ],
 				},
 				'parsoid' => {
-					'pmtpa' => [ '10.4.1.121' ], # deployment-parsoid2
+					'pmtpa' => [ '10.4.0.33' ], # parsoid-spof
 				}
 			}
 		}
