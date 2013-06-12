@@ -812,14 +812,9 @@ class role::cache {
 		include logging
 	}
 
-	class mobile {
-		include network::constants
-		include role::cache::configuration
-
+	class mobile inherits role::cache::varnish::two-tier {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
-
-		include lvs::configuration, role::cache::configuration
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['mobile'][$::site] }
 
@@ -828,10 +823,6 @@ class role::cache {
 		include standard,
 			nrpe
 
-		$storage_partitions = $::realm ? {
-			'production' => ["sda3", "sdb3"],
-			'labs' => ["vdb"],
-		}
 		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["mobile-backend"]
 		}
@@ -847,8 +838,8 @@ class role::cache {
 			port => 81,
 			admin_port => 6083,
 			storage => $::realm ? {
-				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,100G -s main2=persistent,/srv/sdb3/varnish.main2,100G",
-				'labs' => '-s main1=persistent,/srv/vdb/varnish.main1,19G -s main2=persistent,/srv/vdb/varnish.main2,19G',
+				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
