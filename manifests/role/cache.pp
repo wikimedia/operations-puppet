@@ -473,8 +473,8 @@ class role::cache {
 					default => [],
 				},
 				storage => $::realm ? {
-					'production' => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
-					'labs' => "-s main1=persistent,/srv/vdb/varnish.persist,${storage_size_main}G",
+					'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
+					'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 				},
 				directors => $varnish_be_directors[$::site],
 				director_type => $cluster_tier ? {
