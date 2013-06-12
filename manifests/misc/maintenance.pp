@@ -353,3 +353,23 @@ class misc::maintenance::geodata( $enabled = false ) {
 	}
 }
 
+class misc::maintenance::mail_exim_aliases( $enabled = false ) {
+
+	$alias_file = '/etc/exim4/aliases/wikimedia.org'
+	$recipient  = 'office@wikimedia.org'
+	$subject    = "${hostname} mail aliases"
+
+	cron { 'mail_exim_aliases':
+		user => root,
+		minute => 0,
+		hour => 0,
+		weekday => 0,
+		command => "/usr/bin/mail -s '${subject}' ${recipient} < ${alias_file} >/dev/null 2>&1",
+		ensure => $enabled ?{
+			true => present,
+			false => absent,
+			default => absent
+		};
+	}
+
+}
