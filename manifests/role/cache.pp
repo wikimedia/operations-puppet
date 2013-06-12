@@ -397,24 +397,6 @@ class role::cache {
 
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
-			$varnish_be_directors = {
-				"pmtpa" => {
-					"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-				},
-				"eqiad" => {
-					"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-					"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-				},
-				"esams" => {
-					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
-				},
-			}
-
 			$backend_weight = 100
 			$storage_size_main = $::realm ? { 'labs' => 19, default => 100 }
 			$storage_size_bigobj = 10
@@ -466,7 +448,17 @@ class role::cache {
 					'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
 					'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 				},
-				directors => $varnish_be_directors[$::site],
+				directors => $cluster_tier ? {
+					1 => {
+						"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+						"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+						"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+						"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+					},
+					default => {
+						"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+					}
+				},
 				director_type => $cluster_tier ? {
 					1 => 'random',
 					default => 'chash',
