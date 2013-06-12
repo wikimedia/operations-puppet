@@ -391,7 +391,7 @@ class role::cache {
 		$backend_weight = 100
 		$storage_size_main = $::realm ? { 'labs' => 19, default => 100 }
 		$storage_size_bigobj = 10
-		if $::site == "eqiad" {
+		if $::site in ["pmtpa", "eqiad"] {
 			$cluster_tier = 1
 			$default_backend = "backend"
 		} else {
@@ -537,6 +537,147 @@ class role::cache {
 		}
 	}
 
+	class varnish::upload inherits role::cache::varnish::two-tier {
+		$cluster = "cache_upload"
+		$nagios_group = "cache_upload_${::site}"
+
+		system_role { "role::cache::upload": description => "upload Varnish cache server" }
+
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
+
+		$varnish_be_directors = {
+			"pmtpa" => {
+				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
+				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+			},
+			"eqiad" => {
+				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
+				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+			},
+			"esams" => {
+				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
+			}
+		}
+
+		$backend_weight = 20
+		if $::site == "eqiad" {
+			$storage_size_main = 100
+			$storage_size_bigobj = 10
+			$default_backend = 'backend'
+		} else {
+			$storage_size_main = 300
+			$storage_size_bigobj = 50
+			$default_backend = 'eqiad'
+		}
+
+		include standard,
+			nrpe
+
+		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
+
+		$storage_partitions = $::realm ? {
+			'production' =>
+				$::hostname ? {
+					'dysprosium' => ['sdc1', 'sdd1'],
+					default => ['sda3', 'sdb3'],
+				},
+			'labs' => ['vdb']
+		}
+		varnish::setup_filesystem{ $storage_partitions:
+			before => Varnish::Instance["upload-backend"]
+		}
+
+		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
+
+		varnish::instance { "upload-backend":
+			name => "",
+			vcl => "upload-backend",
+			port => 3128,
+			admin_port => 6083,
+			runtime_parameters => $::site ? {
+				'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
+				default => [],
+			},
+			storage => $::hostname ? {
+				'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
+				default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+			},
+			directors => $varnish_be_directors[$::site],
+			director_type => "random",
+			vcl_config => {
+				'default_backend' => $default_backend,
+				'retry5xx' => 0,
+				'cache4xx' => "1m",
+				'purge_regex' => '^http://upload\.wikimedia\.org/',
+				'cluster_tier' => $cluster_tier,
+				'layer' => 'backend',
+			},
+			backend_options => [
+				{
+					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
+					'weight' => 4 * $backend_weight,
+				},
+				{
+					'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+					'port' => 3128,
+					'probe' => "varnish",
+				},
+				{
+					'port' => 80,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 1000,
+					'weight' => $backend_weight,
+				}],
+			wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"]),
+			xff_sources => $network::constants::all_networks
+		}
+
+		varnish::instance { "upload-frontend":
+			name => "frontend",
+			vcl => "upload-frontend",
+			port => 80,
+			admin_port => 6082,
+			storage => "-s malloc,${memory_storage_size}G",
+			directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
+			director_type => "chash",
+			vcl_config => {
+				'retry5xx' => 0,
+				'cache4xx' => "1m",
+				'purge_regex' => '^http://upload\.wikimedia\.org/',
+				'cluster_tier' => $cluster_tier,
+				'layer' => 'frontend',
+			},
+			backend_options => [
+				{
+					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
+					'weight' => 4 * $backend_weight,
+				},
+				{
+					'port' => 3128,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "35s",
+					'between_bytes_timeout' => "2s",
+					'max_connections' => 100000,
+					'probe' => "varnish",
+					'weight' => $backend_weight,
+				}],
+			xff_sources => $network::constants::all_networks,
+		}
+
+		varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+
+		# HTCP packet loss monitoring on the ganglia aggregators
+		if $ganglia_aggregator and $::site != "esams" {
+			include misc::monitoring::htcp-loss
+		}
+	}
+
 	class text {
 		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
@@ -551,156 +692,7 @@ class role::cache {
 		# FIXME: remove this hack
 		if $::site in ["eqiad","esams"] or $::realm == 'labs' {
 			# Varnish
-
-			$cluster = "cache_upload"
-			$nagios_group = "cache_upload_${::site}"
-
-			system_role { "role::cache::upload": description => "upload Varnish cache server" }
-
-			include lvs::configuration, role::cache::configuration, network::constants
-
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
-
-			$varnish_be_directors = {
-				"pmtpa" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-				},
-				"eqiad" => {
-					"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
-					"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-				},
-				"esams" => {
-					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
-				}
-			}
-
-			$backend_weight = 20
-			if $::site == "eqiad" {
-				$storage_size_main = 100
-				$storage_size_bigobj = 10
-				$cluster_tier = 1
-				$default_backend = 'backend'
-			} else {
-				$storage_size_main = 300
-				$storage_size_bigobj = 50
-				$cluster_tier = 2
-				$default_backend = 'eqiad'
-			}
-
-			if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
-				$memory_storage_size = 16
-			} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
-				$memory_storage_size = 8
-			} else {
-				$memory_storage_size = 1
-			}
-
-			include standard,
-				nrpe
-
-			#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
-
-			$storage_partitions = $::realm ? {
-				'production' =>
-					$::hostname ? {
-						'dysprosium' => ['sdc1', 'sdd1'],
-						default => ['sda3', 'sdb3'],
-					},
-			}
-			varnish::setup_filesystem{ $storage_partitions:
-				before => Varnish::Instance["upload-backend"]
-			}
-
-			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
-
-			# Ganglia monitoring
-			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
-
-			varnish::instance { "upload-backend":
-				name => "",
-				vcl => "upload-backend",
-				port => 3128,
-				admin_port => 6083,
-				runtime_parameters => $::site ? {
-					'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
-					default => [],
-				},
-				storage => $::hostname ? {
-					'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
-					default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
-				},
-				directors => $varnish_be_directors[$::site],
-				director_type => "random",
-				vcl_config => {
-					'default_backend' => $default_backend,
-					'retry5xx' => 0,
-					'cache4xx' => "1m",
-					'purge_regex' => '^http://upload\.wikimedia\.org/',
-					'cluster_tier' => $cluster_tier,
-					'layer' => 'backend',
-				},
-				backend_options => [
-					{
-						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 4 * $backend_weight,
-					},
-					{
-						'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
-						'port' => 3128,
-						'probe' => "varnish",
-					},
-					{
-						'port' => 80,
-						'connect_timeout' => "5s",
-						'first_byte_timeout' => "35s",
-						'between_bytes_timeout' => "4s",
-						'max_connections' => 1000,
-						'weight' => $backend_weight,
-					}],
-				wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"]),
-				xff_sources => $network::constants::all_networks
-			}
-
-			varnish::instance { "upload-frontend":
-				name => "frontend",
-				vcl => "upload-frontend",
-				port => 80,
-				admin_port => 6082,
-				storage => "-s malloc,${memory_storage_size}G",
-				directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-				director_type => "chash",
-				vcl_config => {
-					'retry5xx' => 0,
-					'cache4xx' => "1m",
-					'purge_regex' => '^http://upload\.wikimedia\.org/',
-					'cluster_tier' => $cluster_tier,
-					'layer' => 'frontend',
-				},
-				backend_options => [
-					{
-						'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-						'weight' => 4 * $backend_weight,
-					},
-					{
-						'port' => 3128,
-						'connect_timeout' => "5s",
-						'first_byte_timeout' => "35s",
-						'between_bytes_timeout' => "2s",
-						'max_connections' => 100000,
-						'probe' => "varnish",
-						'weight' => $backend_weight,
-					}],
-				xff_sources => $network::constants::all_networks,
-			}
-
-			varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-
-			# HTCP packet loss monitoring on the ganglia aggregators
-			if $ganglia_aggregator and $::site != "esams" {
-				include misc::monitoring::htcp-loss
-			}
+			include role::cache::varnish::upload
 		}
 		else {
 			# Squid
