@@ -411,9 +411,6 @@ class role::cache {
 			'production' => ["sda3", "sdb3"],
 			'labs' => ["vdb"],
 		}
-
-		include standard,
-			nrpe
 	}
 
 	class varnish::text inherits role::cache::varnish::two-tier {
@@ -435,6 +432,9 @@ class role::cache {
 				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
 			},
 		}
+
+		include standard,
+			nrpe
 
 		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
