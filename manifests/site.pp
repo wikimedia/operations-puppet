@@ -2905,6 +2905,12 @@ node /^solr(100)?[1-3]\.(eqiad|pmtpa)\.wmnet/ {
 		role::solr::geodata
 }
 
+## 2013-06-12
+## peter using xenon for galera cluster testing
+node "xenon.eqiad.wmnet" {
+	include standard
+}
+
 node "yvon.wikimedia.org" {
 	include base,
 		ganglia,
