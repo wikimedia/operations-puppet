@@ -546,15 +546,11 @@ class role::cache {
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
 		$varnish_be_directors = {
-			"pmtpa" => {
-				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['upload']['pmtpa']['uploadsvc'],
-				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-			},
-			"eqiad" => {
+			1 => {
 				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
 				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 			},
-			"esams" => {
+			2 => {
 				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
 			}
 		}
@@ -605,7 +601,7 @@ class role::cache {
 				'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
 				default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 			},
-			directors => $varnish_be_directors[$::site],
+			directors => $varnish_be_directors[$cluster_tier],
 			director_type => "random",
 			vcl_config => {
 				'default_backend' => $default_backend,
