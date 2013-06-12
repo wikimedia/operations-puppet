@@ -384,27 +384,9 @@ class role::cache {
 		}
 	}
 
-	class text-varnish {
-		$cluster = "cache_text"
-		$nagios_group = "cache_text_${::site}"
-
-		system_role { "role::cache::text": description => "text Varnish cache server" }
-
+	# Ancestor class for common resources of two-tier clusters
+	class varnish::two-tier {
 		include lvs::configuration, role::cache::configuration, network::constants
-
-		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
-
-		$varnish_be_directors = {
-			1 => {
-				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
-				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-			},
-			2 => {
-				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
-			},
-		}
 
 		$backend_weight = 100
 		$storage_size_main = $::realm ? { 'labs' => 19, default => 100 }
@@ -425,15 +407,37 @@ class role::cache {
 			$memory_storage_size = 1
 		}
 
-		include standard,
-			nrpe
-
-		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
-
 		$storage_partitions = $::realm ? {
 			'production' => ["sda3", "sdb3"],
 			'labs' => ["vdb"],
 		}
+
+		include standard,
+			nrpe
+	}
+
+	class varnish::text inherits role::cache::varnish::two-tier {
+		$cluster = "cache_text"
+		$nagios_group = "cache_text_${::site}"
+
+		system_role { "role::cache::text": description => "text Varnish cache server" }
+
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
+
+		$varnish_be_directors = {
+			1 => {
+				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
+				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			},
+			2 => {
+				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
+			},
+		}
+
+		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
+
 		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["text-backend"]
 		}
@@ -536,7 +540,7 @@ class role::cache {
 	class text {
 		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
-			include text-varnish
+			include role::cache::varnish::text
 		}
 		else {
 			class { "role::cache::squid::common": role => "text" }
