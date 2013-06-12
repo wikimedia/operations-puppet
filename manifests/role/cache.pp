@@ -993,11 +993,8 @@ class role::cache {
 			port => 3128,
 			admin_port => 6083,
 			storage => $::realm ? {
-				'production' => $::hostname ? {
-					"titanium" => "-s sdb1=persistent,/srv/sdb1/varnish.persist,139G -s sdd1=persistent,/srv/sdd1/varnish.persist,139G",
-					"cerium" => "-s sda1=persistent,/srv/sda1/varnish.persist,139G -s sdb1=persistent,/srv/sdb1/varnish.persist,139G",
-				},
-				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
+				'production' => "-s main1=persistent,/srv/sda1/varnish.main1,139G -s main2=persistent,/srv/sdb1/varnish.main2,139G",
+				'labs' => '-s main1=persistent,/srv/vdb/varnish.main1,19G -s main2=persistent,/srv/vdb/varnish.main2,19G',
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
