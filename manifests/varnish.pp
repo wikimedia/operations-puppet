@@ -208,13 +208,6 @@ class varnish {
 			},
 			ensure => mounted
 		}
-
-		file { "/srv/${title}/varnish.persist":
-			require => Mount["/srv/${title}"],
-			owner => root,
-			group => root,
-			ensure => present
-		}
 	}
 
 	class htcppurger($varnish_instances=["localhost:80"]) {
