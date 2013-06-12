@@ -19,7 +19,7 @@ class role::cache {
 		$active_nodes = {
 			'production' => {
 				"text" => {
-					"pmtpa" => [
+					"pmtpa-squid" => [
 						'sq33.wikimedia.org',   # API
 						'sq34.wikimedia.org',   # API
 						'sq36.wikimedia.org',   # API
@@ -41,7 +41,7 @@ class role::cache {
 						'sq77.wikimedia.org',
 						'sq78.wikimedia.org',
 					],
-					"eqiad" => [
+					"eqiad-squid" => [
 						'cp1001.eqiad.wmnet',	# API
 						'cp1002.eqiad.wmnet',	# API
 						'cp1003.eqiad.wmnet',	# API
@@ -63,13 +63,13 @@ class role::cache {
 						'cp1019.eqiad.wmnet',
 						'cp1020.eqiad.wmnet',
 					],
-					"eqiad-varnish" => [
+					"eqiad" => [
 						'cp1037.eqiad.wmnet',
 						'cp1038.eqiad.wmnet',
 						'cp1039.eqiad.wmnet',
 						'cp1040.eqiad.wmnet',
 					],
-					"esams" => [
+					"esams-squid" => [
 						"knsq23.knams.wikimedia.org",
 						"knsq24.knams.wikimedia.org",
 						"knsq25.knams.wikimedia.org",
@@ -95,17 +95,17 @@ class role::cache {
 						"amssq45.esams.wikimedia.org",
 						"amssq46.esams.wikimedia.org",
 					],
-					"esams-varnish" => [
+					"esams" => [
 						'amssq47.esams.wikimedia.org',
 					]
 				},
 				"api" => {
-					"pmtpa" => [
+					"pmtpa-squid" => [
 						'sq33.wikimedia.org',   # API
 						'sq34.wikimedia.org',   # API
 						'sq36.wikimedia.org',   # API
 					],
-					"eqiad" => [
+					"eqiad-squid" => [
 						'cp1001.eqiad.wmnet',	# API
 						'cp1002.eqiad.wmnet',	# API
 						'cp1003.eqiad.wmnet',	# API
@@ -120,7 +120,7 @@ class role::cache {
 					"esams" => ["cp3019.esams.wikimedia.org", "cp3020.esams.wikimedia.org", "cp3021.esams.wikimedia.org", "cp3022.esams.wikimedia.org"],
 				},
 				"upload" => {
-					"pmtpa" => [
+					"pmtpa-squid" => [
 						'sq41.wikimedia.org',
 						'sq42.wikimedia.org',
 						'sq43.wikimedia.org',
@@ -400,10 +400,8 @@ class role::cache {
 			$varnish_fe_directors = {
 				# pmtpa is for labs / beta cluster
 				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-				# TODO: replace after removing Squid
-				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text']["${::site}-varnish"] },
-				# TODO: replace after removing Squid
-				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text']["${::site}-varnish"] },
+				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
+				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
 			}
 
 			$varnish_be_directors = {
@@ -420,8 +418,7 @@ class role::cache {
 					"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 				},
 				"esams" => {
-					# TODO: replace after removing Squid
-					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad-varnish'],
+					"eqiad" => $role::cache::configuration::active_nodes[$::realm]['text']['eqiad'],
 				},
 			}
 
