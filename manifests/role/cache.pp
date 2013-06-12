@@ -881,8 +881,8 @@ class role::cache {
 			port => 81,
 			admin_port => 6083,
 			storage => $::realm ? {
-				'production' => "-s sda3=persistent,/srv/sda3/varnish.persist,100G -s sdb3=persistent,/srv/sdb3/varnish.persist,100G",
-				'labs' => '-s vdb=persistent,/srv/vdb/varnish.persist,19G',
+				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,100G -s main2=persistent,/srv/sdb3/varnish.main2,100G",
+				'labs' => '-s main1=persistent,/srv/vdb/varnish.main1,19G -s main2=persistent,/srv/vdb/varnish.main2,19G',
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
