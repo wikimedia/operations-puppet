@@ -411,6 +411,9 @@ class role::cache {
 			'production' => ["sda3", "sdb3"],
 			'labs' => ["vdb"],
 		}
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 	}
 
 	class varnish::text inherits role::cache::varnish::two-tier {
@@ -443,9 +446,6 @@ class role::cache {
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
-
-		# Ganglia monitoring
-		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 
 		varnish::instance { "text-backend":
 			name => "",
@@ -584,9 +584,6 @@ class role::cache {
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
-
-		# Ganglia monitoring
-		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 
 		varnish::instance { "upload-backend":
 			name => "",
@@ -829,9 +826,6 @@ class role::cache {
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:81" ] }
 
-		# Ganglia monitoring
-		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
-
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
@@ -934,11 +928,6 @@ class role::cache {
 
 		# No HTCP daemon for Parsoid; the MediaWiki extension sends PURGE requests itself
 		#class { "varnish::htcppurger": varnish_instances => [ "localhost:80", "localhost:3128" ] }
-
-		# Ganglia monitoring
-		if ( $::realm == 'production' ) {
-			class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
-		}
 
 		varnish::instance { "parsoid-backend":
 			name => "",
