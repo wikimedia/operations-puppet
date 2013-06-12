@@ -40,7 +40,7 @@ domainlist local_domains = <%= local_domains.join(" : ") %>
 <% if enable_mail_relay == "secondary" then -%>
 domainlist secondary_domains = @mx_secondary/ignore=127.0.0.1
 <% end -%>
-<%if enable_mail_relay != "false "%>
+<%if enable_mail_relay != "false"%>
 domainlist relay_domains = lsearch;CONFDIR/relay_domains
 <% end -%>
 
