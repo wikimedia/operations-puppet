@@ -6,7 +6,7 @@ class applicationserver::packages {
 		ensure => latest;
 	}
 	package { [ "php-wikidiff2", "php5-wmerrors",  "php-luasandbox", "php5-redis",
-			"php5-memcached", "libmemcached10", "php5-igbinary"  ]:
+			"php5-memcached", "libmemcached11", "php5-igbinary"  ]:
 		ensure => latest;
 	}
 
