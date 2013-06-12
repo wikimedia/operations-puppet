@@ -397,13 +397,6 @@ class role::cache {
 
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
-			$varnish_fe_directors = {
-				# pmtpa is for labs / beta cluster
-				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
-			}
-
 			$varnish_be_directors = {
 				"pmtpa" => {
 					"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
@@ -516,7 +509,7 @@ class role::cache {
 				port => 80,
 				admin_port => 6082,
 				storage => "-s malloc,${memory_storage_size}G",
-				directors => $varnish_fe_directors[$::site],
+				directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['text'][$::site] },
 				director_type => "chash",
 				vcl_config => {
 					'retry503' => 1,
@@ -566,13 +559,6 @@ class role::cache {
 			include lvs::configuration, role::cache::configuration, network::constants
 
 			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
-
-			$varnish_fe_directors = {
-				# pmtpa is for labs / beta cluster
-				"pmtpa" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-				"eqiad" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-				"esams" => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
-			}
 
 			$varnish_be_directors = {
 				"pmtpa" => {
@@ -681,7 +667,7 @@ class role::cache {
 				port => 80,
 				admin_port => 6082,
 				storage => "-s malloc,${memory_storage_size}G",
-				directors => $varnish_fe_directors[$::site],
+				directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 				director_type => "chash",
 				vcl_config => {
 					'retry5xx' => 0,
