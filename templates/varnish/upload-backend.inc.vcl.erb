@@ -2,17 +2,17 @@
 
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
-		set beresp.storage = "main-sda3";
+		set beresp.storage = "main1";
 	} else {
-		set beresp.storage = "main-sdb3";
+		set beresp.storage = "main2";
 	}
 }
 
 sub pick_large_object_stevedore {
 	if (std.random(0, 2) < 1) {
-		set beresp.storage = "bigobj-sda3";
+		set beresp.storage = "bigobj1";
 	} else {
-		set beresp.storage = "bigobj-sdb3";
+		set beresp.storage = "bigobj2";
 	}
 }
 
