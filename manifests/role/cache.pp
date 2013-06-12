@@ -508,7 +508,7 @@ class role::cache {
 						'max_connections' => 1000,
 						'weight' => $backend_weight,
 					}],
-				wikimedia_networks => $network::constants::all_networks,
+				wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1"]),
 				xff_sources => $network::constants::all_networks
 			}
 
@@ -674,7 +674,7 @@ class role::cache {
 						'max_connections' => 1000,
 						'weight' => $backend_weight,
 					}],
-				wikimedia_networks => $network::constants::all_networks,
+				wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1"]),
 				xff_sources => $network::constants::all_networks
 			}
 
