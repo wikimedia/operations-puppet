@@ -62,3 +62,22 @@ class misc::beta::autoupdater {
 	}
 
 }
+
+class misc::beta::sync-site-resources {
+	file { "/usr/local/bin/sync-site-resources":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/misc/beta/sync-site-resources"
+	}
+
+	cron { "sync-site-resources":
+		command => "/usr/local/bin/sync-site-resources >/dev/null 2>&1",
+		require => File["/usr/local/bin/sync-site-resources"],
+		hour => 12,
+		user => apache,
+		ensure => present,
+	}
+}
+
