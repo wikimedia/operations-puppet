@@ -1013,4 +1013,54 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 	}
+
+	class parsoid-single inherits role::cache::varnish::1layer {
+		$cluster = "cache_parsoid"
+		$nagios_group = "cache_parsoid_${::site}"
+
+		if ( $::realm == 'production' ) {
+			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['parsoidcache'][$::site] }
+		}
+
+		system_role { "role::cache::parsoid": description => "Parsoid Varnish cache server" }
+
+		include standard,
+			nrpe
+
+		$storage_size_main = $::realm ? { 'labs' => 5, default => 350 }
+		varnish::setup_filesystem{ $storage_partitions:
+			before => Varnish::Instance["parsoid"]
+		}
+
+		# No HTCP daemon for Parsoid; the MediaWiki extension sends PURGE requests itself
+
+		varnish::instance { "parsoid":
+			name => "",
+			vcl => "parsoid",
+			port => 80,
+			admin_port => 6083,
+			storage => $::realm ? {
+				'production' => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
+				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
+			},
+			directors => {
+				"backend" => $role::cache::configuration::backends[$::realm]['parsoid'][$::mw_primary],
+			},
+			director_options => {
+				'retries' => 2,
+			},
+			vcl_config => {
+				'retry5xx' => 1,
+			},
+			backend_options => [
+				{
+					'port' => 8000,
+					'connect_timeout' => "5s",
+					'first_byte_timeout' => "60s",
+					'between_bytes_timeout' => "4s",
+					'max_connections' => 600,
+				}],
+			xff_sources => $network::constants::all_networks
+		}
+	}
 }

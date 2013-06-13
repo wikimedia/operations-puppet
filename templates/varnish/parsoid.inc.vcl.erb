@@ -1,0 +1,35 @@
+# Varnish VCL include file for (single layer) Parsoid caches
+
+sub vcl_recv {
+	/* Clamp the host header to 'parsoid' */
+	set req.http.host = "parsoid";
+
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		return (lookup);
+	}
+	// Enable force-refresh
+	// See https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
+	if (req.http.Cache-Control ~ "no-cache") {
+		set req.hash_always_miss = true;
+	}
+
+	return(lookup);
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged.";
+	}
+}
+
+sub vcl_miss {
+	if (req.http.Cache-Control ~ "only-if-cached") {
+		error 412 "Entity not in cache";
+	}
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged.";
+	}
+}
