@@ -3,8 +3,23 @@
 # Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
+sub vcl_recv {
+	/* During an object refresh, the old object can be requested
+	 * for re-use with CC: only-if-cached
+	 */
+	if (req.http.Cache-Control ~ "only-if-cached") {
+		set req.hash_always_miss = true;
+	}
+
+	return (lookup);
+}
+
 sub vcl_miss {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
+}
+
+sub vcl_fetch {
+	return (deliver);
 }
