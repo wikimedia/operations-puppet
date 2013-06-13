@@ -429,16 +429,13 @@ class role::cache {
 		}
 	}
 
-
-	# Ancestor class for common resources of 2-layer clusters
-	class varnish::2layer {
+	# Ancestor class for all Varnish clusters
+	class varnish::base {
 		include lvs::configuration, role::cache::configuration, network::constants
 
 		# Any changes here will affect all descendent Varnish clusters
 		# unless they're overridden!
-		$backend_weight = 100
 		$storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
-		$storage_size_bigobj = 10
 		if $::site in ["pmtpa", "eqiad"] {
 			$cluster_tier = 1
 			$default_backend = "backend"
@@ -448,6 +445,31 @@ class role::cache {
 		}
 		$wikimedia_networks = flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"])
 
+		$storage_partitions = $::realm ? {
+			'production' => ["sda3", "sdb3"],
+			'labs' => ["vdb"],
+		}
+
+		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
+	}
+
+	# Ancestor class for common resources of 1-layer clusters
+	class varnish::1layer inherits role::cache::varnish::base {
+		# Any changes here will affect all descendent Varnish clusters
+		# unless they're overridden!
+		$backend_weight = 10
+
+		# Ganglia monitoring
+		class { "varnish::monitoring::ganglia": }
+	}
+
+	# Ancestor class for common resources of 2-layer clusters
+	class varnish::2layer inherits role::cache::varnish::base {
+		# Any changes here will affect all descendent Varnish clusters
+		# unless they're overridden!
+		$backend_weight = 100
+		$storage_size_bigobj = 10
+
 		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
 			$memory_storage_size = 16
 		} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
@@ -455,13 +477,6 @@ class role::cache {
 		} else {
 			$memory_storage_size = 1
 		}
-
-		$storage_partitions = $::realm ? {
-			'production' => ["sda3", "sdb3"],
-			'labs' => ["vdb"],
-		}
-
-		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
 		# Ganglia monitoring
 		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
@@ -740,15 +755,9 @@ class role::cache {
 		}
 	}
 
-	class bits {
-		include network::constants
-
+	class bits inherits role::cache::varnish::1layer {
 		$cluster = "cache_bits"
 		$nagios_group = "cache_bits_${::site}"
-
-		include lvs::configuration, role::cache::configuration
-
-		#class { "varnish::packages": version => "3.0.3plus~rc1-wm10" }
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['bits'][$::site] }
 
@@ -791,7 +800,6 @@ class role::cache {
 		require geoip
 
 		include standard,
-			varnish::monitoring::ganglia,
 			nrpe
 
 		varnish::instance { "bits":
