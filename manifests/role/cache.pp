@@ -388,6 +388,8 @@ class role::cache {
 	class varnish::two-tier {
 		include lvs::configuration, role::cache::configuration, network::constants
 
+		# Any changes here will affect all descendent Varnish clusters
+		# unless they're overridden!
 		$backend_weight = 100
 		$storage_size_main = $::realm ? { 'labs' => 5, default => 100 }
 		$storage_size_bigobj = 10
