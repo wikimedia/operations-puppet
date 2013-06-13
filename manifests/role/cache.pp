@@ -784,24 +784,16 @@ class role::cache {
 			}
 		}
 
+		$probe = $cluster_tier ? { 1 => "bits", default => "varnish" }
 		case $::realm {
-			'production': {
-				case $::site {
-					'pmtpa','eqiad': {
-						$probe = "bits"
-					}
-					default: {
-						$probe = "varnish"
-					}
-				}
-				$cluster_options = $common_cluster_options
-			}
 			'labs': {
 				$cluster_options = merge($common_cluster_options, {
 					'top_domain' => 'beta.wmflabs.org',
 					'bits_domain' => 'bits.beta.wmflabs.org',
-				})
-				$probe = "bits"
+					})
+			},
+			default: {
+				$cluster_options = $common_cluster_options
 			}
 		}
 
