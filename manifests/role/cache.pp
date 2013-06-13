@@ -446,6 +446,7 @@ class role::cache {
 			$cluster_tier = 2
 			$default_backend = $::mw_primary
 		}
+		$wikimedia_networks = flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"])
 
 		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
 			$memory_storage_size = 16
@@ -541,7 +542,7 @@ class role::cache {
 					'max_connections' => 1000,
 					'weight' => $backend_weight,
 				}],
-			wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"]),
+			wikimedia_networks => $wikimedia_networks,
 			xff_sources => $network::constants::all_networks
 		}
 
@@ -673,7 +674,7 @@ class role::cache {
 					'max_connections' => 1000,
 					'weight' => $backend_weight,
 				}],
-			wikimedia_networks => flatten([$network::constants::all_networks, "127.0.0.0/8", "::1/128"]),
+			wikimedia_networks => $wikimedia_networks,
 			xff_sources => $network::constants::all_networks
 		}
 
@@ -878,6 +879,7 @@ class role::cache {
 					'between_bytes_timeout' => "4s",
 					'max_connections' => 600,
 				}],
+			wikimedia_networks => $wikimedia_networks,
 			xff_sources => $network::constants::all_networks
 		}
 
