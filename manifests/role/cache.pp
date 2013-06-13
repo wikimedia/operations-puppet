@@ -302,6 +302,10 @@ class role::cache {
 				'appservers' => $lvs::configuration::lvs_service_ips['production']['apaches'],
 				'api' => $lvs::configuration::lvs_service_ips['production']['api'],
 				'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
+				'bits' => {
+					'pmtpa' => $lvs::configuration::lvs_service_ips['production']['bits']['pmtpa']['bitslb'],
+					'eqiad' => $lvs::configuration::lvs_service_ips['production']['bits']['eqiqd']['bitslb'],
+				}
 				'bits_appservers' => {
 					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
 					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
@@ -324,6 +328,9 @@ class role::cache {
 						'10.4.0.166',  # deployment-apache32
 						'10.4.0.187',  # deployment-apache33
 					],
+				},
+				'bits' => {
+					'pmtpa' => "10.4.0.252",
 				},
 				'bits_appservers' => {
 					'pmtpa' => [
@@ -766,9 +773,15 @@ class role::cache {
 			'enable_geoiplookup' => true,
 		}
 
+		$default_backend = "backend"
 		$varnish_directors = {
-			"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-			"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			1 => {
+				"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			},
+			2 => {
+				"backend" => $role::cache::configuration::backends[$::realm]['bits']
+			}
 		}
 
 		case $::realm {
@@ -778,9 +791,6 @@ class role::cache {
 						$probe = "bits"
 					}
 					default: {
-						$varnish_directors = {
-							"backend" => [ "208.80.152.210", "208.80.154.234" ] # [ bits-lb.pmtpa, bits-lb.eqiad ]
-						}
 						$probe = "varnish"
 					}
 				}
@@ -808,9 +818,10 @@ class role::cache {
 			port => 80,
 			admin_port => 6082,
 			storage => "-s malloc,2G",
-			directors => $varnish_directors,
+			directors => $varnish_directors[$cluster_tier],
 			director_type => "random",
 			vcl_config => {
+				'default_backend' => $default_backend,
 				'retry503' => 4,
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
