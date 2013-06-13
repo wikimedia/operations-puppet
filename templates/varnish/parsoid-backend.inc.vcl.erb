@@ -3,8 +3,23 @@
 # Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
+sub vcl_recv {
+	return (lookup);
+}
+
+sub vcl_hit {
+	if (req.http.Cache-Control ~ "no-cache") {
+		purge;
+		restart;
+	}
+}
+
 sub vcl_miss {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
+}
+
+sub vcl_fetch {
+	return (deliver);
 }
