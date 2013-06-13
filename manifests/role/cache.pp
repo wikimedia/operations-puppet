@@ -430,8 +430,8 @@ class role::cache {
 	}
 
 
-	# Ancestor class for common resources of two-tier clusters
-	class varnish::two-tier {
+	# Ancestor class for common resources of 2-layer clusters
+	class varnish::2layer {
 		include lvs::configuration, role::cache::configuration, network::constants
 
 		# Any changes here will affect all descendent Varnish clusters
@@ -467,7 +467,7 @@ class role::cache {
 		class { "varnish::monitoring::ganglia": varnish_instances => [ "", "frontend" ] }
 	}
 
-	class varnish::text inherits role::cache::varnish::two-tier {
+	class varnish::text inherits role::cache::varnish::2layer {
 		$cluster = "cache_text"
 		$nagios_group = "cache_text_${::site}"
 
@@ -584,7 +584,7 @@ class role::cache {
 		}
 	}
 
-	class varnish::upload inherits role::cache::varnish::two-tier {
+	class varnish::upload inherits role::cache::varnish::2layer {
 		$cluster = "cache_upload"
 		$nagios_group = "cache_upload_${::site}"
 
@@ -823,7 +823,7 @@ class role::cache {
 		include role::cache::varnish::logging::eventlistener
 	}
 
-	class mobile inherits role::cache::varnish::two-tier {
+	class mobile inherits role::cache::varnish::2layer {
 		$cluster = "cache_mobile"
 		$nagios_group = "cache_mobile_${::site}"
 
@@ -913,7 +913,7 @@ class role::cache {
 		include role::cache::varnish::logging
 	}
 
-	class parsoid inherits role::cache::varnish::two-tier {
+	class parsoid inherits role::cache::varnish::2layer {
 		$cluster = "cache_parsoid"
 		$nagios_group = "cache_parsoid_${::site}"
 
