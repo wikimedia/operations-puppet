@@ -3,14 +3,9 @@
 # Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
-sub vcl_miss {
-	// forward the Cache-Control header to the backend
-	if ( req.http.Cache-Control )
-	{
-		set bereq.http.Cache-Control = req.http.Cache-Control;
-	}
-}
+sub vcl_recv {
+	/* Clamp the host header to 'parsoid' */
+	set req.http.host = "parsoid";
 
-sub vcl_fetch {
-	set beresp.ttl = 0s;
+	return (pass);
 }
