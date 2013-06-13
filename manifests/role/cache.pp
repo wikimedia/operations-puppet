@@ -304,7 +304,7 @@ class role::cache {
 				'rendering' => $lvs::configuration::lvs_service_ips['production']['rendering'],
 				'bits' => {
 					'pmtpa' => $lvs::configuration::lvs_service_ips['production']['bits']['pmtpa']['bitslb'],
-					'eqiad' => $lvs::configuration::lvs_service_ips['production']['bits']['eqiqd']['bitslb'],
+					'eqiad' => $lvs::configuration::lvs_service_ips['production']['bits']['eqiad']['bitslb'],
 				},
 				'bits_appservers' => {
 					'pmtpa' => [ "srv248.pmtpa.wmnet", "srv249.pmtpa.wmnet", "mw60.pmtpa.wmnet", "mw61.pmtpa.wmnet" ],
