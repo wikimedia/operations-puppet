@@ -101,7 +101,16 @@ class contint::packages {
 
   # these packages are used by the tests for wikistats to parse the
   # generated reports to see if they are correct
-  include misc::wikistats::packages
+
+  package { [
+    'libhtml-treebuilder-xpath-perl',
+    'libjson-xs-perl',
+    'libnet-patricia-perl',
+    'libtemplate-perl',
+    'libweb-scraper-perl',
+  ]:
+    ensure => 'installed',
+  }
 
   # need geoip to build udp-filter
   include geoip
