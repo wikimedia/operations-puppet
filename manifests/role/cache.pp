@@ -757,14 +757,15 @@ class role::cache {
 			'enable_geoiplookup' => true,
 		}
 
+		$varnish_directors = {
+			"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
+			"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+		}
+
 		case $::realm {
 			'production': {
 				case $::site {
 					'pmtpa','eqiad': {
-						$varnish_directors = {
-							"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-							"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-						}
 						$probe = "bits"
 					}
 					default: {
@@ -777,10 +778,6 @@ class role::cache {
 				$cluster_options = $common_cluster_options
 			}
 			'labs': {
-				$varnish_directors = {
-					"backend" => $::role::cache::configuration::backends[$::realm]['bits_appservers'][$::mw_primary],
-					"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-				}
 				$cluster_options = merge($common_cluster_options, {
 					'top_domain' => 'beta.wmflabs.org',
 					'bits_domain' => 'bits.beta.wmflabs.org',
