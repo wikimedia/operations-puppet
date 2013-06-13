@@ -780,7 +780,7 @@ class role::cache {
 				"test_wikipedia" => $::role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
 			2 => {
-				"backend" => $role::cache::configuration::backends[$::realm]['bits']
+				"backend" => values($role::cache::configuration::backends[$::realm]['bits'])
 			}
 		}
 
