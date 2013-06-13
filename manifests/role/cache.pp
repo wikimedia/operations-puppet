@@ -383,6 +383,52 @@ class role::cache {
 			}
 		}
 	}
+	
+	class varnish::logging {
+		if $::realm == 'production' {
+			$cliargs = '-m RxRequest:^(?!PURGE$) -D'
+			varnish::logging {
+				'emery':
+					listener_address => '208.80.152.184',
+					cli_args => $cliargs;
+				'multicast_relay':
+					listener_address => '208.80.154.73',
+					port => '8419',
+					cli_args => $cliargs;
+			}
+		}
+	}
+
+	class varnish::logging::eventlistener {
+		if $::realm == 'production' {
+			$event_listener = $::site ? {
+				/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
+				'esams'           => '208.80.154.73', # gadolinium
+			}
+
+			varnish::logging { 'kraken' :
+				listener_address => '208.80.154.154', # analytics1001
+				port             => '8422',
+				instance_name    => '',
+				cli_args         => "-m RxURL:^/event\.gif\?. -D",
+				log_fmt          => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
+				monitor          => false,
+			}
+		}
+		else {
+			$event_listener = '10.4.0.48' # deployment-eventlogging
+		}
+
+		varnish::logging { 'vanadium' :
+			listener_address => $event_listener,
+			port             => '8422',
+			instance_name    => '',
+			cli_args         => "-m RxURL:^/event\.gif\?. -D",
+			log_fmt          => "%q	%l	%n	%t	%h",
+			monitor          => false,
+		}
+	}
+
 
 	# Ancestor class for common resources of two-tier clusters
 	class varnish::two-tier {
@@ -529,9 +575,7 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 
-		# TODO
-		varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		include role::cache::varnish::logging
 
 		# HTCP packet loss monitoring on the ganglia aggregators
 		if $ganglia_aggregator and $::site != "esams" {
@@ -665,8 +709,7 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 
-		varnish::logging { 'emery' :           listener_address => '208.80.152.184' , cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73' , port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
+		include role::cache::varnish::logging
 
 		# HTCP packet loss monitoring on the ganglia aggregators
 		if $ganglia_aggregator and $::site != "esams" {
@@ -779,37 +822,7 @@ class role::cache {
 			xff_sources => $network::constants::all_networks
 		}
 
-		class logging {
-			if $::realm == 'production' {
-				$event_listener = $::site ? {
-					/^(pmtpa|eqiad)$/ => '10.64.21.123', # vanadium
-					'esams'           => '208.80.154.73', # gadolinium
-				}
-
-				varnish::logging { 'kraken' :
-					listener_address => '208.80.154.154', # analytics1001
-					port             => '8422',
-					instance_name    => '',
-					cli_args         => "-m RxURL:^/event\.gif\?. -D",
-					log_fmt          => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
-					monitor          => false,
-				}
-			}
-			else {
-				$event_listener = '10.4.0.48' # deployment-eventlogging
-			}
-
-			varnish::logging { 'vanadium' :
-				listener_address => $event_listener,
-				port             => '8422',
-				instance_name    => '',
-				cli_args         => "-m RxURL:^/event\.gif\?. -D",
-				log_fmt          => "%q	%l	%n	%t	%h",
-				monitor          => false,
-			}
-		}
-		
-		include logging
+		include role::cache::varnish::logging::eventlistener
 	}
 
 	class mobile inherits role::cache::varnish::two-tier {
@@ -898,10 +911,7 @@ class role::cache {
 			xff_sources => $network::constants::all_networks,
 		}
 
-		if( $::realm == 'production' ) {
-			varnish::logging { 'emery' :           listener_address => '208.80.152.184', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-			varnish::logging { 'multicast_relay' : listener_address => '208.80.154.73', port => '8419', cli_args => "-m RxRequest:^(?!PURGE\$) -D" }
-		}
+		include role::cache::varnish::logging
 	}
 
 	class parsoid inherits role::cache::varnish::two-tier {
