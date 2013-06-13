@@ -3,8 +3,27 @@
 # Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
+sub vcl_recv {
+	/* Enable force-refresh.
+	 * https://www.varnish-cache.org/trac/wiki/VCLExampleEnableForceRefresh
+	 * During an object refresh, the old object can be requested
+	 * for re-use with CC: only-if-cached, so purge can't be used for this.
+	 */
+	if (req.http.Cache-Control ~ "no-cache") {
+		set req.hash_always_miss = true;
+	}
+
+	/* Don't run the default vcl_run */
+	return (lookup);
+}
+
 sub vcl_miss {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
+}
+
+sub vcl_fetch {
+	/* Don't run the default vcl_fetch */
+	return (deliver);
 }
