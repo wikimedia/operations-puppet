@@ -555,6 +555,7 @@ class role::cache {
 			}
 		}
 
+		# FIXME: set to (default) 100 on new servers
 		$backend_weight = 20
 		if $::site == "eqiad" {
 			$storage_size_main = 100
@@ -571,6 +572,7 @@ class role::cache {
 
 		#class { "varnish::packages": version => "3.0.3plus~rc1-wm5" }
 
+		# FIXME: set to default on new servers
 		$storage_partitions = $::realm ? {
 			'production' =>
 				$::hostname ? {
@@ -594,12 +596,13 @@ class role::cache {
 				'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
 				default => [],
 			},
+			# FIXME: rename on new servers
 			storage => $::hostname ? {
 				'dysprosium' => "-s main-sda1=persistent,/srv/sdc1/varnish.persist,300G -s main-sdb1=file,/srv/sdd1/varnish.persist,300G -s bigobj-sda1=file,/srv/sdc1/large-objects.persist,50G -s bigobj-sdb1=file,/srv/sdd1/large-objects.persist,50G",
 				default => "-s main-sda3=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main-sdb3=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj-sda3=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj-sdb3=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 			},
 			directors => $varnish_be_directors[$cluster_tier],
-			director_type => "random",
+			director_type => "random",	# FIXME: set to chash on new servers
 			vcl_config => {
 				'default_backend' => $default_backend,
 				'retry5xx' => 0,
@@ -829,6 +832,7 @@ class role::cache {
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
+			# FIXME: set to 3128 on new servers
 			port => 81,
 			admin_port => 6083,
 			storage => $::realm ? {
@@ -883,6 +887,7 @@ class role::cache {
 				'layer' => 'frontend',
 			},
 			backend_options => {
+				# FIXME: set to 3128 for new servers
 				'port' => 81,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
