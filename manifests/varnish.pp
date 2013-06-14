@@ -5,9 +5,6 @@ class varnish {
 		package { [ 'varnish', 'libvarnishapi1', 'varnish-dbg' ]:
 			ensure => $version;
 		}
-		package { libworking-daemon-perl:
-			ensure => present;
-		}
 	}
 	
 	class common {
@@ -207,44 +204,6 @@ class varnish {
 
 	class htcppurger($varnish_instances=["localhost:80"]) {
 		Class[varnish::packages] -> Class[varnish::htcppurger]
-
-		# start legacy varnishhtcpd stuff
-
-		systemuser { "varnishhtcpd": name => "varnishhtcpd", default_group => "varnishhtcpd", home => "/var/lib/varnishhtcpd" }
-
-		$packages = ["liburi-perl", "liblwp-useragent-determined-perl"]
-
-		package { $packages: ensure => latest; }
-
-		file {
-			"/usr/local/bin/varnishhtcpd":
-				source => "puppet:///files/varnish/varnishhtcpd",
-				owner => root,
-				group => root,
-				mode => 0555,
-				notify => Service[varnishhtcpd];
-			"/etc/default/varnishhtcpd":
-				owner => root,
-				group => root,
-				mode => 0444,
-				content => inline_template('DAEMON_OPTS="--user=varnishhtcpd --group=varnishhtcpd --mcast_address=239.128.0.112<% varnish_instances.each do |inst| -%> --cache=<%= inst %><% end -%>"');
-		}
-
-		upstart_job { "varnishhtcpd": install => "true" }
-
-		service { varnishhtcpd:
-			require => [ File[["/usr/local/bin/varnishhtcpd", "/etc/default/varnishhtcpd"]], Package[$packages], Systemuser[varnishhtcpd], Upstart_job[varnishhtcpd] ],
-			provider => upstart,
-			ensure => stopped; # conflicts with vhtcpd below, set to "running" if we revert...
-		}
-		
-		nrpe::monitor_service { "varnishhtcpd":
-			description => "Varnish HTCP old daemon",
-			# was "-c 1:1" when service was set to "running" state...
-			nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 0:0 -u varnishhtcpd -a 'varnishhtcpd worker'"
-		}
-
-		# end legacy varnishhtcpd stuff
 
 		package { "vhtcpd":
 			ensure => latest,
