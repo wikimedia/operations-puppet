@@ -57,7 +57,7 @@ domainlist spamassassin_domains = *
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
-hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join(" ; ") %>
+hostlist primary_mx = <; <%= primary_mx.join(" ; ") %>
 
 
 <% if enable_imap_delivery == "true" then -%>
