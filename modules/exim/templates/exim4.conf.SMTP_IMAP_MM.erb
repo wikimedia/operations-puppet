@@ -74,6 +74,7 @@ hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join
 <% if enable_otrs_server == "true" then -%>
 hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 <% end -%>
+
 <% if enable_imap_delivery == "true" then -%>
 
 # Interfaces

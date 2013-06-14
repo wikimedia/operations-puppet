@@ -14,7 +14,6 @@ import "ganglia.pp"
 import "gerrit.pp"
 import "imagescaler.pp"
 import "iptables.pp"
-import "mail.pp"
 import "misc/*.pp"
 import "mobile.pp"
 import "nagios.pp"
@@ -41,10 +40,10 @@ import "stages.pp"
 
 # Class for *most* servers, standard includes
 class standard {
-    include base,
-        ganglia,
-        ntp::client,
-        exim::simple-mail-sender
+	include base,
+		ganglia,
+		ntp::client,
+		wmrole::exim::simple-mail-sender
 }
 
 class standard-noexim {
@@ -760,10 +759,10 @@ node /^db10(24)\.eqiad\.wmnet/ {
 node "dobson.wikimedia.org" {
     interface::ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
-    include base,
-        ganglia,
-        exim::simple-mail-sender,
-        dns::recursor::statistics
+	include	base,
+		ganglia,
+		wmrole::exim::simple-mail-sender,
+		dns::recursor::statistics
 
     include network::constants
 
@@ -1353,10 +1352,10 @@ node 'lanthanum.eqiad.wmnet' {
 node "linne.wikimedia.org" {
     interface::ip { 'url-downloader': interface => 'eth0', address => '208.80.152.143' }
 
-    include base,
-        ganglia,
-        exim::simple-mail-sender,
-        url-downloader
+	include base,
+		ganglia,
+		wmrole::exim::simple-mail-sender,
+		url-downloader
 
     class { 'ntp::server':
         servers => [ "198.186.191.229", "64.113.32.2", "173.8.198.242", "208.75.88.4", "75.144.70.35" ],
@@ -1509,7 +1508,7 @@ node "magnesium.wikimedia.org" {
     $cluster = "misc"
 
     include role::racktables
-    include role::request-tracker-apache::production, exim::rt
+    include role::request-tracker-apache::production, wmrole::exim::rt
 }
 
 node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
