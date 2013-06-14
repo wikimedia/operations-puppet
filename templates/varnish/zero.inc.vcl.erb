@@ -318,7 +318,7 @@ sub tag_carrier {
 	} else if (client.ip ~ carrier_623_01) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
-			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ar|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
+			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
 				set req.http.X-Carrier = "Orange Central African Republic";
 				set req.http.X-CS = "623-01";
 			}
