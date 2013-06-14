@@ -17,7 +17,6 @@ import "imagescaler.pp"
 import "iptables.pp"
 import "ldap.pp"
 import "lvs.pp"
-import "mail.pp"
 import "media-storage.pp"
 import "memcached.pp"
 import "misc/*.pp"
@@ -52,7 +51,7 @@ class standard {
 	include base,
 		ganglia,
 		ntp::client,
-		exim::simple-mail-sender
+		exim::role::simple-mail-sender
 }
 
 class standard-noexim {
@@ -1643,7 +1642,7 @@ node "magnesium.wikimedia.org" {
     $cluster = "misc"
 
     include role::racktables
-    include role::request-tracker-apache::production, exim::rt
+    include role::request-tracker-apache::production, exim::role::rt
 }
 
 node "marmontel.wikimedia.org" {
@@ -2370,19 +2369,9 @@ node "sodium.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		nrpe,
-		mailman,
 		dns::recursor,
-		spamassassin,
-		backup::client
-
-	class { exim::roled:
-		outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
-		local_domains => [ "+system_domains", "+mailman_domains" ],
-		enable_mail_relay => "secondary",
-		enable_mailman => "true",
-		enable_mail_submission => "false",
-		enable_spamassassin => "true"
-	}
+		backup::client,
+		exim::role::mediawiki
 
 	interface_ip {
 		"lists.wikimedia.org_v4": interface => "eth0", address => "208.80.154.4", prefixlen => 32;
@@ -2680,7 +2669,7 @@ node "streber.wikimedia.org" {
 		ntp::client,
 		admins::roots,
 #		misc::torrus,
-		exim::rt,
+		exim::role::rt,
 		misc::rt::server,
 		misc::rancid,
 		firewall::builder
