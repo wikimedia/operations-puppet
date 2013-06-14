@@ -1,9 +1,9 @@
 # role/dns.pp
 
 class role::dns::ldap {
-	include role::ldap::config::labs
+	include ldap::role::config::labs
 
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	$ldapconfig = $ldap::role::config::labs::ldapconfig
 
 	if $site == "pmtpa" {
 		interface_ip { "role::dns::ldap": interface => "eth0", address => "208.80.152.33" }

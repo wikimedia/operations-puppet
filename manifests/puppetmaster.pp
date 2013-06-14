@@ -542,9 +542,9 @@ class puppet::self::config(
 	$puppet_client_subnet = undef,
 	$certname             = "${dc}.${::domain}") inherits base::puppet
 {
-	include role::ldap::config::labs
+	include ldap::role::config::labs
 
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	$ldapconfig = $ldap::role::config::labs::ldapconfig
 	$basedn = $ldapconfig['basedn']
 
 	$config = {
