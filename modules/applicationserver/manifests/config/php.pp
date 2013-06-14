@@ -1,7 +1,12 @@
 # Configuration files for php5 running on application servers
 #
+# **fatal_log_file**
+# Where to send PHP fatal traces.
+#
 # requires applicationserver::packages to be in place
-class applicationserver::config::php {
+class applicationserver::config::php(
+	$fatal_log_file='udp://10.64.0.21:8420'
+) {
 
 	Class["applicationserver::packages"] -> Class["applicationserver::config::php"]
 
@@ -27,10 +32,10 @@ class applicationserver::config::php {
 			mode => 0444,
 			source => "puppet:///modules/applicationserver/php/apc.ini";
 		"/etc/php5/conf.d/wmerrors.ini":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///modules/applicationserver/php/wmerrors.ini";
+			owner   => root,
+			group   => root,
+			mode    => 0444,
+			content => template("applicationserver/php/wmerrors.ini.erb");
 		"/etc/php5/conf.d/igbinary.ini":
 			owner => root,
 			group => root,
