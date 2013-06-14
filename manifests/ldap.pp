@@ -431,8 +431,10 @@ class ldap::client::utils($ldapconfig) {
 }
 
 class ldap::client::sudo($ldapconfig) {
-	package { [ "sudo-ldap" ]:
-		ensure => latest;
+	if ! defined (Package['sudo-ldap']) {
+		package { 'sudo-ldap':
+			ensure => latest;
+		}
 	}
 }
 
