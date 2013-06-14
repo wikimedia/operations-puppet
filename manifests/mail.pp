@@ -169,6 +169,11 @@ class exim {
 				group => Debian-exim,
 				mode => 0444,
 				content => template("exim/system_filter.conf.erb");
+			"/etc/exim4/defer_domains":
+				owner => root,
+				group => Debian-exim,
+				mode => 0444,
+				ensure => present;
 		}
 
 		class mail_relay {
