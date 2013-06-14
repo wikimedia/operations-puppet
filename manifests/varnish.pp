@@ -207,9 +207,6 @@ class varnish {
 
 		package { "vhtcpd":
 			ensure => latest,
-			# depend on "stopped" state to avoid port conflict aborting package post-install startup
-			# TODO: remove this in the future, when legacy parts gone above
-			require => Service["varnishhtcpd"];
 		}
 
 		file { "/etc/default/vhtcpd":
