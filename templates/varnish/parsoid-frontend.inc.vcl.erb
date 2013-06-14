@@ -3,16 +3,14 @@
 # Include common Parsoid config shared between front- and backend
 include "parsoid-common.inc.vcl";
 
-sub vcl_recv {
-	call vcl_recv_common;
-	/* Don't cache anything
-	 * Just forward the original request with all headers (including
-	 * Cache-Control) to the backend.
-	 */
-	return (pass);
+sub vcl_miss {
+	// forward the Cache-Control header to the backend
+	if ( req.http.Cache-Control )
+	{
+		set bereq.http.Cache-Control = req.http.Cache-Control;
+	}
 }
 
 sub vcl_fetch {
-	/* Don't run the default vcl_fetch */
-	return (deliver);
+	set beresp.ttl = 0s;
 }
