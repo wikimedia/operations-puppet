@@ -17,7 +17,7 @@ class gerrit::instance($no_apache=false,
 		$smtp_host="") {
 
 	include standard,
-		role::ldap::config::labs
+		ldap::role::config::labs
 
 	# Main config
 	include passwords::gerrit
@@ -30,8 +30,8 @@ class gerrit::instance($no_apache=false,
 	$bzpass = $passwords::gerrit::gerrit_bz_pass
 
 	# Setup LDAP
-	include role::ldap::config::labs
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	include ldap::role::config::labs
+	$ldapconfig = $ldap::role::config::labs::ldapconfig
 
 	$ldap_hosts = $ldapconfig["servernames"]
 	$ldap_base_dn = $ldapconfig["basedn"]
