@@ -6,7 +6,7 @@ class role::puppet::server::labs {
 	$puppet_db_user = $novaconfig["puppet_db_user"]
 	$puppet_db_pass = $novaconfig["puppet_db_pass"]
 
-	$ldapconfig = $role::ldap::config::labs::ldapconfig
+	$ldapconfig = $ldap::role::config::labs::ldapconfig
 	$basedn = $ldapconfig["basedn"]
 
 	# Only allow puppet access from the instances
