@@ -10,6 +10,12 @@
 @monitor_group { "cache_upload_eqiad": description => "upload squids eqiad" }
 @monitor_group { "cache_upload_esams": description => "upload squids esams" }
 
+@monitor_group { "cache_bits_pmtpa": description => "pmtpa bits Varnish" }
+@monitor_group { "cache_bits_eqiad": description => "eqiad bits Varnish "}
+@monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
+
+@monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
+
 @monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
 
 class role::cache {
