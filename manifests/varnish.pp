@@ -233,7 +233,7 @@ class varnish {
 		}
 	}
 
-	class logging_config {
+	class logging::config {
 		file { "/etc/default/varnishncsa":
 			source => "puppet:///files/varnish/varnishncsa.default",
 			owner => root,
@@ -242,7 +242,7 @@ class varnish {
 		}
 	}
 
-	class logging_monitor {
+	class logging::monitor {
 		nrpe::monitor_service { "varnishncsa":
 			description => "Varnish traffic logger",
 			nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 2:2 -c 2:4 -C varnishncsa"
@@ -251,9 +251,9 @@ class varnish {
 
 	define logging($listener_address, $port="8420", $cli_args="", $log_fmt=false, $instance_name="frontend", $monitor=true) {
 		require varnish::packages,
-			varnish::logging_config
+			varnish::logging::config
 		if $monitor {
-			require varnish::logging_monitor
+			require varnish::logging::monitor
 		}
 
 		$varnishservice = $instance_name ? {
@@ -283,42 +283,6 @@ class varnish {
 		}
 	}
 
-	class varnishncsa {
-		upstart_job { "varnishncsa": install => "true" }
-	}
-
-	# Definition: varnish::udplogging
-	#
-	# Sets up a UDP logging instances of varnishncsa
-	#
-	# Parameters:
-	# - $title:
-	#	Name of the instance
-	# - $host:
-	#	Hostname or ip address of the logger
-	# - $port:
-	#	UDP port (default 8420)
-	# - $varnish_instance:
-	#	Varnish instance name (default: undefined)
-	define udplogger($host, $port=8420, $varnish_instance=$::hostname) {
-		Class[varnish::packages] -> Varnish::Udplogger[$title]
-		require varnish::varnishncsa
-
-		$environment = [
-			"LOGGER_NAME=${title}",
-			"LOG_DEST=\"${host}:${port}\"",
-			"VARNISH_INSTANCE=\"-n ${varnish_instance}\""
-		]
-
-		exec { "varnishncsa $title":
-			path => "/bin:/sbin:/usr/bin:/usr/sbin",
-			command => inline_template("start varnishncsa <%= environment.join(\" \") %>"),
-			unless => "status varnishncsa LOGGER_NAME=${title}",
-			logoutput => true
-		}
-		
-		# TODO: monitoring
-	}
 
 	# Make a default instance
 	instance { "default": }
