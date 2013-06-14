@@ -34,6 +34,11 @@ define mysql_multi_instance::instance(
     }else {
       $innodb_locks_unsafe_for_binlog = false
     }
+    if has_key( $instances[$name],  'slave_transaction_retries') {
+      $slave_transaction_retries = $instances[$name]['slave_transaction_retries']
+    }else {
+      $slave_transaction_retries = 10
+    }
 
     $serverid = inline_template("<%= ia = ipaddress.split('.'); server_id = ia[0] + ia[2] + ia[3] + String($port); server_id %>")
     include passwords::nagios::mysql
@@ -139,6 +144,7 @@ define mysql_multi_instance::instance(
           'optimizer_switch'            => '\'mrr=on,mrr_cost_based=on,mrr_sort_keys=on,optimize_join_buffer_size=on,extended_keys=off\'',
           'replicate-ignore-db'         => $repl_ignore_dbs,
           'replicate-wild-ignore-table' => $repl_wild_ignore_tables,
+          'slave_transaction_retries'   => $slave_transaction_retries,
         },
         'mysqldump' => {
           'quick'              => true,

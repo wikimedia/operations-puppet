@@ -1231,6 +1231,7 @@ node 'labsdb1001.eqiad.wmnet' {
 				'ram' => "151G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 		}
@@ -1246,20 +1247,25 @@ node 'labsdb1002.eqiad.wmnet' {
 				'ram' => "48G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 			's4' => {
 				'port' => 3307,
 				'innodb_log_file_size' => "2000M",
 				'ram' => "48G",
+				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 			's5' => {
 				'port' => 3308,
 				'innodb_log_file_size' => "1000M",
 				'ram' => "48G",
+				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 		}
@@ -1275,6 +1281,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'ram' => "48G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 			's6' => {
@@ -1283,6 +1290,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'ram' => "48G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 			's7' => {
@@ -1291,6 +1299,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'ram' => "48G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
+				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
 			},
 		}
