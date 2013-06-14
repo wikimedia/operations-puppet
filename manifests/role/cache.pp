@@ -424,7 +424,7 @@ class role::cache {
 				port             => '8422',
 				instance_name    => '',
 				cli_args         => "-m RxURL:^/event\.gif\?. -D",
-				log_fmt          => "%U	%q	%{Host}i	%t	%h	%{X-Forwarded-For}i	%{Referer}i	%{Accept-Language}i	%{Cookie}i	%{X-WAP-Profile}i	%{User-agent}i	%l	%n",
+				log_fmt          => "%U\t%q\t%{Host}i\t%t\t%h\t%{X-Forwarded-For}i\t%{Referer}i\t%{Accept-Language}i\t%{Cookie}i\t%{X-WAP-Profile}i\t%{User-agent}i\t%l\t%n",
 				monitor          => false,
 			}
 		}
@@ -437,7 +437,7 @@ class role::cache {
 			port             => '8422',
 			instance_name    => '',
 			cli_args         => "-m RxURL:^/event\.gif\?. -D",
-			log_fmt          => "%q	%l	%n	%t	%h",
+			log_fmt          => "%q\t%l\t%n\t%t\t%h",
 			monitor          => false,
 		}
 	}
