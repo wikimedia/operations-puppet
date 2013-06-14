@@ -2618,7 +2618,8 @@ node "stat1.wikimedia.org" {
 		accounts::swalling,  # RT 3653
 		accounts::yurik,     # RT 4835
 		accounts::mwalker,   # RT 5038
-		accounts::awight     # RT 5048
+		accounts::awight,    # RT 5048
+		accounts::jforrester # RT 5302
 
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 

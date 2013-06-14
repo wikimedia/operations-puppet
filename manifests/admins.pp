@@ -2830,6 +2830,27 @@ class accounts {
 		}
 	}
 
+	# RT 5302
+	class jforrester inherits baseaccount {
+		$username = "jforrester"
+		$realname = "James D. Forrester"
+		$uid = 643
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			Ssh_authorized_key { require => Unixaccount[$realname] }
+
+			ssh_authorized_key {
+				"jforrester@wikimedia.org":
+				ensure => present,
+				user   => $username,
+				type   => "ssh-rsa",
+				key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQCsgEkgi7ceiRLCeBABExyA1qiFS7t0Lxs+vQndqRTukAooT16araiKSudavjr78qUAXeerSvuNm2dlQR2Bv6DZLumwPi2mFZA52LhlCm5Bj8GKSpwc9lVVWrrtjwCb8Qv+cZXquhvxMj3L0prfeMbXzkpbOBVK8J5bVIRSewVBsammz5nzd6myqeL0Z1BXiX6ihKeIjSyyiy6REWuIO5cBt3IJn6o/9IKei+Fm2UbXKegRFyOPPjXOiTItLG7iR0DI3PNT+FFAqjMXQKzQMbm8Lj0/hQIq8ViyA6xai6VDPtnFsmvKi+z8q6jZP/Omvf+5TKF5evttguYF9SrbmUrb",
+			}
+		}
+	}
+
 	# RT 4959
 	class lwelling inherits baseaccount {
 		$username = "lwelling"
