@@ -1,0 +1,302 @@
+# Wikimedia VCL file for <%= scope.lookupvar("::fqdn") %>, site <%= scope.lookupvar("::site") %>
+# This file is managed by Puppet!
+
+import std;
+
+<%
+def backend_option(backend, option, default)
+	if varnish_backend_options.kind_of?(Array)
+		# List of hashes of options, 'backend_match' key is a regexp against the FQDN
+		varnish_backend_options.each do |be_options|
+			if Regexp.new(be_options.fetch("backend_match", "^.*$")).match(backend)
+				if be_options.has_key?(option)
+					return be_options[option]
+				end
+			end
+		end
+		return default
+	else
+		return varnish_backend_options.fetch(option, default)
+	end
+end
+-%>
+
+<% if cluster_options.fetch( "enable_geoiplookup", false ) -%>
+include "geoip.inc.vcl";
+<% end -%>
+
+# ACLs
+
+acl purge { 
+	"127.0.0.1";
+}
+
+<% if ! wikimedia_networks.empty? -%>
+acl wikimedia_nets {
+<% wikimedia_networks.each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+<% end -%>
+
+# Hosts we trust for XFF
+<% if ! xff_sources.empty? -%>
+acl allow_xff {
+<% xff_sources.each do |entry|
+	subnet, mask = entry.split("/", 2)
+-%>
+	"<%= subnet %>"/<%= mask %>;
+<% end -%>
+}
+<% end -%>
+
+# Though this is a mobile ACL, we also need it for XFF
+# so we need to include it here.
+acl opera_mini {
+	"37.228.104.0"/21;
+	"58.67.157.0"/24;
+	"59.151.95.128"/25;
+	"59.151.98.128"/27;
+	"59.151.106.224"/27;
+	"59.151.120.32"/27;
+	"80.84.1.0"/24;
+	"80.232.117.120"/29;
+	"80.239.242.0"/23;
+	"82.145.208.0"/20;
+	"91.203.96.0"/22;
+	"116.58.209.128"/27;
+	"141.0.8.0"/21;
+	"195.189.142.0"/23;
+	"209.170.68.0"/24;
+	"217.212.226.0"/24;
+	"217.212.230.0"/23;
+	"2001:4c28:1::"/48;
+	"2001:4c28:2000::"/35;
+}
+
+# Backend probes
+
+probe bits {
+	.request =
+		"GET /w/load.php HTTP/1.1"
+		"Host: en.wikipedia.<%= cluster_options.fetch( "top_domain", "org" ) %>"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 1s;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+# frontends in front of other varnish instances should send
+# probes that don't depend on the app backend
+probe varnish {
+	.request =
+		"GET /check HTTP/1.1"
+		"Host: varnishcheck"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 1s;
+	.interval = 1s;
+	.window = 3;
+	.threshold = 2;
+}
+
+probe blog {
+	.request =
+		"HEAD /wp-content/themes/WP-Victor.git/favicon.ico HTTP/1.1"
+		"Host: blog.wikimedia.org"
+		"User-agent: Varnish backend check"
+		"Connection: close";
+	.timeout = 5s;	
+}
+
+probe options {
+	.request =
+		"OPTIONS * HTTP/1.0"
+		"Connection: close";
+	.timeout = 2s;
+	.interval = 2s;
+	.window = 6;
+	.threshold = 2;
+}
+
+probe swift {
+	.url = "/monitoring/backend";
+	.timeout = 2s;
+}
+
+# Backends
+
+# List of Puppet generated backends
+<%
+varnish_backends.each do |backend|
+	name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+	probe = backend_option(backend, "probe", nil)
+-%>
+backend <%= name %> {
+	.host = "<%= backend %>";
+	.port = "<%= backend_option(backend, "port", "80") %>";
+	.connect_timeout = <%= backend_option(backend, "connect_timeout", "2s") %>;
+	.first_byte_timeout = <%= backend_option(backend, "first_byte_timeout", "35s") %>;
+	.between_bytes_timeout = <%= backend_option(backend, "between_bytes_timeout", "2s") %>;
+	.max_connections = <%= backend_option(backend, "max_connections", "100") %>;
+<% if probe -%>
+	.probe = <%= probe %>;
+<% end -%>
+}
+
+<% end -%>
+
+# Directors
+# Expected format: { "director name" => [ "backend1", "backend2" ] }
+<% varnish_directors.keys.sort.each do |director| -%>
+director <%= director %> <%= director_type %> {
+<% director_options.each_pair do |option,value| -%>
+	.<%= option %> = <%= value %>;
+<% end -%>
+<%
+	varnish_directors[director].each do |backend|
+		name = /^[0-9\.]+$/.match(backend) ? "ipv4_" + backend.gsub(".", "_") : backend.split(".")[0].gsub("-", "_")
+-%>
+	{
+		.backend = <%= name %>;
+		.weight = <%= backend_option(backend, "weight", 10) %>;
+	}
+<% 	end -%>
+}
+<% end -%>
+
+# Functions
+
+sub rewrite_proxy_urls {
+	set req.url = regsub(req.url, "^http://[^/]+", "");
+}
+
+sub vcl_recv_purge {
+	/* Support HTTP PURGE */
+	if (req.request == "PURGE") {
+		if (!client.ip ~ purge) {
+			error 405 "Denied.";
+		} elsif (req.url ~ "<%= vcl_config.fetch("purge_regex", "^http:") %>") {
+			call rewrite_proxy_urls;
+			return (lookup);
+		} else {
+			error 200 "Domain not cached here.";
+		}
+	}
+}
+
+<% if ! wikimedia_networks.empty? -%>
+sub restrict_access {
+	if (client.ip !~ wikimedia_nets) {
+		error 403 "Access denied";
+	}
+}
+
+<% end -%>
+sub vcl_recv {
+	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
+		/* We only deal with GET, HEAD and POST by default */
+		error 403 "HTTP method not allowed.";
+	}
+
+	/* Select the default backend/director */
+	set req.backend = <%= vcl_config.fetch("default_backend", "backend") %>;
+
+	if (req.backend.healthy) {
+		set req.grace = 5m;
+	} else {
+		set req.grace = 60m;
+	}
+	
+<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
+	/* Ensure we only accept Forwarded headers from the SSL proxies */
+	if (client.ip ~ allow_xff || client.ip ~ opera_mini) {
+		// Do nothing. It seems you can't do !~ with IP matches
+	} else {
+		// Strip the headers, we shouldn't trust these from anything other
+		// than hosts we specify. Needed for the geoiplookup code later on
+		// as it will use xff. MediaWiki uses xfp.
+		set req.http.X-Forwarded-For = client.ip;
+		unset req.http.X-Forwarded-Proto;
+	}
+<% end -%>
+
+	if ( req.http.host ~ "^varnishcheck" ) {
+		error 200 "OK"; 
+	}
+
+	/* Function vcl_recv in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_fetch {
+	set beresp.grace = 60m;
+
+<% if vcl_config.fetch("retry5xx", "0") == "1" -%>
+	if (beresp.status > 499 && beresp.status < 505) {
+		return(restart);
+	}
+<% end -%>
+	if (beresp.status >= 400 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
+		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
+	}
+
+	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_hit {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Purged";
+	}
+	
+	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_miss {
+	if (req.request == "PURGE") {
+		purge;
+		error 200 "Cache miss";
+	}
+
+	/* Function vcl_miss in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_deliver {
+<% if vcl_config.fetch("layer", "") == "frontend" -%>
+	std.collect(resp.http.Via);
+	std.collect(resp.http.X-Varnish);
+<% end -%>
+
+	if (resp.http.X-Cache) {
+		if (obj.hits > 0) {
+			set resp.http.X-Cache = resp.http.X-Cache + ", <%= hostname + (name.empty? ? "" : " " + name) %> hit (" + obj.hits + ")";
+		} else {
+			set resp.http.X-Cache = resp.http.X-Cache + ", <%= hostname + (name.empty? ? "" : " " + name) %> miss (0)";
+		}
+	} else {
+		if (obj.hits > 0) {
+			set resp.http.X-Cache = "<%= hostname + (name.empty? ? "" : " " + name) %> hit (" + obj.hits + ")";
+		} else {
+			set resp.http.X-Cache = "<%= hostname + (name.empty? ? "" : " " + name) %> miss (0)";
+		}
+	}
+
+	/* Function vcl_deliver in <%= vcl %>.inc.vcl will be appended here */
+}
+
+sub vcl_error {
+<% if vcl_config.fetch("retry503", "0") != "0" -%>
+	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
+		return(restart);
+	}
+<% end -%>
+	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
+}
+
+
+/* Include the VCL file for this role */
+include "<%= vcl %>.inc.vcl";

@@ -1,0 +1,184 @@
+#!/bin/sh
+
+# reload-varnish: Script to reload varnishd from VCL defined in
+# /etc/default/varnish.
+#
+# Stig Sandbeck Mathisen <ssm@debian.org>
+
+# Settings
+defaults=/etc/default/varnish
+secret=/etc/varnish/secret
+instance=""
+
+# Paths
+varnishadm=/usr/bin/varnishadm
+date=/bin/date
+tempfile=/bin/tempfile
+
+# Messages
+# msg_no_varnishadm: varnishadm
+msg_no_varnishadm="Error: Cannot execute %s\n"
+msg_no_management="Management port disabled. \$DAEMON_OPTS must contain '-T hostname:port'\n"
+# msg_defaults_not_readable: defaults
+msg_defaults_not_readable="Error: %s is not readable\n"
+# msg_defaults_not_there: defaults
+msg_defaults_not_there="Error: %s does not exist\n"
+msg_no_vcl="Error: No VCL file used, nothing to reload\n"
+msg_usage="Usage: $0 [-h][-c][-q][-n instance]\n\t-h\tdisplay help\n\t-q\tquiet\n\t-c\tcompile only, do not reload\n"
+# msg_compile_only: varnishadm, mgmt_interface, vcl_label
+msg_compile_only="To activate, run:\n\t%s -T %s \\\\\n\tvcl.use %s\n"
+# msg_compile_failed: vcl_label, vcl_file
+msg_compile_failed="Error: vcl.load %s %s failed"
+# msg_use_ok: vcl_label
+msg_use_ok="VCL reloaded, active label is %s\n"
+# msg_use_failed: vcl_label
+msg_use_failed="Error: vcl.use %s failed\n"
+# msg_secret_not_readable: secret
+msg_secret_not_readable="Error: Secret file %s is not readable\n"
+# msg_secret_not_there: secret
+msg_secret_not_there="Error: Secret file %s does not exist\n"
+
+# Generate a label, prefixed with the caller's username, from the
+# kernel random uuid generator, fallback to timestamp
+if [ -f /proc/sys/kernel/random/uuid ]
+then
+    uuid=$(cat /proc/sys/kernel/random/uuid)
+    vcl_label="${LOGNAME}${LOGNAME:+:}${uuid}"
+else
+    vcl_label="$($date +${LOGNAME}${LOGNAME:+:}%s.%N)"
+fi
+
+# parse command line arguments
+while getopts n:hcq flag
+do
+    case $flag in
+	h)
+	    printf >&2 "$msg_usage"
+	    exit 0
+	    ;;
+	c)
+	    compile_only=1
+	    ;;
+	q)
+	    quiet=1
+	    ;;
+	n)
+		if [  -n "$OPTARG" ] ; then
+			instance="-n $OPTARG"
+			defaults="${defaults}-${OPTARG}"
+		fi
+		;;
+	*)
+	    printf >&2 "$msg_usage\n"
+	    exit 1
+	    ;;
+    esac
+done
+
+# Load defaults file
+if [ -f "$defaults" ]
+then
+    if [ -r "$defaults" ]
+    then
+	. "$defaults"
+    else
+	printf >&2 "$msg_defaults_not_readable" $defaults
+	exit 1
+    fi
+else
+    printf >&2 "$msg_defaults_not_there" $defaults
+    exit 1
+fi
+
+# Parse $DAEMON_OPTS (options must be kept in sync with varnishd).
+# Extract the -f and the -T option, and (try to) ensure that the
+# management interface is on the form hostname:address.
+OPTIND=1
+while getopts a:b:dFf:g:h:l:n:P:p:S:s:T:t:u:Vw: flag $DAEMON_OPTS
+do
+    case $flag in
+		f)
+			if [ -f "$OPTARG" ]; then
+				vcl_file="$OPTARG"
+			fi
+			;;
+		T)
+			if [ -n "$OPTARG" -a "$OPTARG" != "${OPTARG%%:*}" ]
+			then
+				mgmt_interface="$OPTARG"
+			fi
+			;;
+		S)
+			secret="$OPTARG"
+			;;
+    esac
+done
+
+
+# Sanity checks
+if [ ! -x "$varnishadm" ]
+then
+    printf >&2 "$msg_no_varnishadm" $varnishadm
+    exit 1
+fi
+
+if [ -z "$mgmt_interface" ]
+then
+    printf >&2 "$msg_no_management"
+    exit 1
+fi
+
+if [ -z "$vcl_file" ]
+then
+    printf >&2 "$msg_no_vcl"
+    exit 1
+fi
+
+# Check secret file
+if [ -f "$secret" ]
+	then
+	if [ ! -r "$secret" ]
+	then
+		printf >&2 "$msg_secret_not_readable" $secret
+		exit 1
+	fi
+else
+	printf >&2 "$msg_secret_not_there" $secret
+	exit 1
+fi
+
+logfile=$($tempfile -n /tmp/$vcl_label)
+
+# Compile and maybe reload
+if $varnishadm $instance vcl.load $vcl_label $vcl_file
+then
+    if [ -n "$compile_only" ]
+    then
+	printf "$msg_compile_only" $varnishadm $mgmt_interface $vcl_label
+    else
+	if $varnishadm $instance vcl.use $vcl_label
+	then
+	    printf "$msg_use_ok" $vcl_label
+	else
+	    printf "$msg_use_failed" $vcl_label
+	    exitstatus=1
+	fi
+    fi
+else
+    printf "$msg_compile_failed" $vcl_label $vcl_file
+    exitstatus=1
+fi 
+
+if [ -n "$exitstatus" ] ; then
+	echo "$vcl_file $vcl_label reload failed" > $logfile
+fi
+
+# Blather
+if [ -z "${quiet}" -o -n "$exitstatus" ]
+then
+    cat >&2 $logfile
+fi
+
+# Cleanup
+rm -f $logfile
+exit $exitstatus
