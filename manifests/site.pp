@@ -15,7 +15,6 @@ import "geoip.pp"
 import "gerrit.pp"
 import "imagescaler.pp"
 import "iptables.pp"
-import "ldap.pp"
 import "lvs.pp"
 import "mail.pp"
 import "media-storage.pp"
@@ -934,7 +933,7 @@ node "formey.wikimedia.org" {
 		svn::server,
 		backup::client
 
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
+	class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
 
 # gadolinium is a webrequest udp2log machine.
@@ -1316,7 +1315,7 @@ node /labstore[12]\.pmtpa\.wmnet/ {
 	include standard,
 		openstack::project-storage
 
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
+	class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 
 	if $hostname =~ /^labstore2$/ {
 		include openstack::project-storage-service
@@ -1334,7 +1333,7 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 	include standard,
 		openstack::project-nfs-storage-service
 
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
+	class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
 
 node "lanthanum.wikimedia.org" {
@@ -1636,7 +1635,7 @@ node "manganese.wikimedia.org" {
 	include role::gerrit::production,
 		backup::client
 
-	class { "role::ldap::client::labs": ldapincludes => $ldapincludes }
+	class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
 
 node "magnesium.wikimedia.org" {
@@ -1777,7 +1776,7 @@ node "mchenry.wikimedia.org" {
 		ntp::client,
 		dns::recursor::statistics,
 		nrpe,
-		role::ldap::client::corp,
+		ldap::role::client::corp,
 		backup::client,
 		groups::wikidev,
 		accounts::jdavis
@@ -2239,8 +2238,8 @@ node "sanger.wikimedia.org" {
 		ganglia,
 		ntp::client,
 		nrpe,
-		role::ldap::server::corp,
-		role::ldap::client::corp,
+		ldap::role::server::corp,
+		ldap::role::client::corp,
 		groups::wikidev,
 		accounts::jdavis,
 		backup::client
@@ -2804,8 +2803,8 @@ node "virt1000.wikimedia.org" {
 
 	include standard,
 		role::dns::ldap,
-		role::ldap::server::labs,
-		role::ldap::client::labs,
+		ldap::role::server::labs,
+		ldap::role::client::labs,
 		role::nova::controller
 }
 
@@ -2818,8 +2817,8 @@ node "virt0.wikimedia.org" {
 
 	include standard,
 		role::dns::ldap,
-		role::ldap::server::labs,
-		role::ldap::client::labs,
+		ldap::role::server::labs,
+		ldap::role::client::labs,
 		role::nova::controller,
 		role::nova::manager,
 		role::salt::masters::labs,
