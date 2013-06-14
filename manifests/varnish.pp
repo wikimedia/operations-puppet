@@ -31,7 +31,7 @@ class varnish::common {
     }
 }
 
-class varnish::common-vcl {
+class varnish::common::vcl {
     require "varnish::common"
 
     file {
@@ -44,7 +44,7 @@ class varnish::common-vcl {
     }
 }
 
-define varnish::extra-vcl {
+define varnish::extra_vcl {
     $vcl = regsubst($title, '^([^ ]+) .*$', '\1')
     $filename = "/etc/varnish/${vcl}.inc.vcl"
     if !defined(File[$filename]) {
@@ -96,10 +96,10 @@ define varnish::instance(
     # $cluster_option is referenced directly
 
     # Install VCL include files shared by all instances
-    require "varnish::common-vcl"
+    require "varnish::common::vcl"
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
-    extra-vcl{ $extra_vcl_variable_to_make_puppet_parser_happy: }
+    extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy: }
 
     file {
         "/etc/init.d/varnish${instancesuffix}":
@@ -137,7 +137,7 @@ define varnish::instance(
     exec { "load-new-vcl-file${instancesuffix}":
         require => [ Service["varnish${instancesuffix}"], File["/etc/varnish/wikimedia_${vcl}.vcl"] ],
         subscribe => [File["/etc/varnish/wikimedia_${vcl}.vcl"],
-            Class["varnish::common-vcl"],
+            Class["varnish::common::vcl"],
             File[suffix(prefix($extra_vcl, "/etc/varnish/"), ".inc.vcl")]
             ],
         command => "/usr/share/varnish/reload-vcl $extraopts",
