@@ -282,9 +282,4 @@ class varnish {
 			hasstatus => false;
 		}
 	}
-
-
-	# Make a default instance
-	instance { "default": }
 }
-
