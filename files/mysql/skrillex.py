@@ -15,18 +15,20 @@ def parseCommandLine():
 
     parser = argparse.ArgumentParser(
         description='skrillex [options] db::group  \"some sql;\"',
-        epilog='group must be one of the following:
-        all::all : all sanitarium and all labsdb instances
-        sanitarium::all : all sanitarium instances
-        labsdb::all : all labsdb instances
-        sanitarium::SHARD : specific sanitarium instance
-        labsdb::SHARD : specific labsdb instance')
+        epilog='group must be one of the following: '
+        'all::all : all sanitarium and all labsdb instances '
+        'sanitarium::all : all sanitarium instances '
+        'labsdb::all : all labsdb instances '
+        'sanitarium::SHARD : specific sanitarium instance '
+        'labsdb::SHARD : specific labsdb instance')
     parser.add_argument('-c', '--config',
-                        help='Specify yaml config file. Default /etc/skrill.yaml')
+                        help='Specify yaml config file. '
+                             'Default /etc/skrill.yaml')
     parser.add_argument('-q', '--query',
                         help='Specify a MySQL query to run', required=True)
     parser.add_argument('-g', '--group',
-                        help='Specify a group of mysql instances on which to run a query',
+                        help='Specify a group of mysql instances '
+                             'on which to run a query',
                         required=True)
     parser.add_argument('-a', '--forall', action='store_true',
                         help='Run on all databases in the MySQL instance')
