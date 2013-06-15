@@ -9,8 +9,7 @@ sub vcl_recv {
 	/* This call will always set the following req.http values:
 		X-Subdomain = M or ZERO
 		X-DfltLang = en|fr|ru|...
-	  These values are only set if the carrier has been successfully detected
-		X-Carrier = "Celcom Malaysia"
+	  This value is only set if the carrier has been successfully detected
 		X-CS = "502-13"
 	*/
 	call tag_carrier;
@@ -85,8 +84,6 @@ sub vcl_recv {
 
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
-	/* TODO: remove X-Carrier header */
-	set beresp.http.X-Carrier = req.http.X-Carrier;
 	set beresp.http.X-CS = req.http.X-CS;
 	if ( beresp.http.X-Analytics ) {
 		# Do nothing, X-Analytics has already been handled
