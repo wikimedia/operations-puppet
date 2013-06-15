@@ -15,6 +15,20 @@
 @monitor_group { "videoscaler_eqiad": description => "eqiad video scaler" }
 
 class role::applicationserver {
+
+	class configuration {
+		# Passed to wmerrors extension
+		$fatal_log_file = $::realm ? {
+			'production' => 'udp://10.64.0.21:8420',
+			'labs'       => 'udp://10.4.0.58:8420',  # deployment-bastion
+		}
+
+		class { 'applicationserver::config::php':
+			fatal_log_file => $fatal_log_file,
+		}
+
+	}
+
 # Class: role::applicationserver
 #
 # This class installs a mediawiki application server
@@ -79,7 +93,7 @@ class role::applicationserver {
 		include	::applicationserver,
 			applicationserver::pybal_check,
 			applicationserver::syslog,
-			applicationserver::config::php
+			role::applicationserver::configuration
 
 		class { "applicationserver::config::apache": maxclients => $maxclients }
 
@@ -181,11 +195,11 @@ class role::applicationserver {
 			extra_args => "-v 0"
 		}
 
-		include applicationserver::config::php,
-			applicationserver::config::base,
+		include applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::cron,
-			applicationserver::sudo
+			applicationserver::sudo,
+			role::applicationserver::configuration
 
 		# dependency for wikimedia-task-appserver
 		service { 'apache':
@@ -200,11 +214,11 @@ class role::applicationserver {
 		class { "role::applicationserver::common": group => "jobrunner" }
 
 		class { "mediawiki::jobrunner": dprioprocs => 15, iprioprocs => 6, procs_per_iobound_type => 5, run_jobs_enabled => $run_jobs_enabled }
-		include applicationserver::config::php,
-			applicationserver::config::base,
+		include applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::cron,
-			applicationserver::sudo
+			applicationserver::sudo,
+			role::applicationserver::configuration
 
 		# dependency for wikimedia-task-appserver
 			service { 'apache':
@@ -220,11 +234,11 @@ class role::applicationserver {
 	class maintenance {
 		class { "role::applicationserver::common": group => "misc" }
 
-		include applicationserver::config::php,
-			applicationserver::config::base,
+		include applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::cron,
-			applicationserver::sudo
-
+			applicationserver::sudo,
+			role::applicationserver::configuration
 	}
+
 }
