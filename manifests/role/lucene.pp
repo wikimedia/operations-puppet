@@ -227,12 +227,16 @@ class role::lucene {
 		# Include packages needed for MW maintenance scripts
 		include standard,
 			mediawiki,
-			applicationserver::config::php,
 			applicationserver::config::base,
 			applicationserver::packages,
 			applicationserver::sudo,
+			role::applicationserver::configuration,
 			role::lucene::admins,
 			lucene::users
+
+		class { 'applicationserver::config::php':
+			fatal_log_file => $role::applicationserver::configuration::fatal_log_file[$::realm]
+		}
 
 		# dependency for wikimedia-task-appserver
 		service { 'apache':
