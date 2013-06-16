@@ -25,7 +25,6 @@ import "mobile.pp"
 import "mysql.pp"
 import "nagios.pp"
 import "network.pp"
-import "nfs.pp"
 import "nrpe.pp"
 import "openstack.pp"
 import "poolcounter.pp"
@@ -2077,7 +2076,7 @@ node /^nfs[12].pmtpa.wmnet/ {
 	$cluster = "misc"
 
 	include standard,
-		misc::nfs-server::home::rsyncd,
+		nfs::role::server::home::rsyncd,
 		misc::syslog-server,
 		backup::client
 
