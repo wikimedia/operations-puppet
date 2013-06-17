@@ -2691,15 +2691,12 @@ node "streber.wikimedia.org" {
 		ntp::client,
 		admins::roots,
 #		misc::torrus,
-		exim::rt,
-		misc::rt::server,
 		misc::rancid,
 		firewall::builder
 
 	class { "misc::syslog-server": config => "network" }
 
 	install_certificate{ "star.wikimedia.org": }
-	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 }
 
 node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
