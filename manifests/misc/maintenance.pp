@@ -37,11 +37,13 @@ class misc::maintenance::refreshlinks( $enabled = false ) {
 
 	# Include this to add cron jobs calling refreshLinks.php on all clusters. (RT-2355)
 
-	file { '/home/mwdeploy/refreshLinks':
-		ensure => directory,
-		owner => mwdeploy,
-		group => mwdeploy,
-		mode => 0664,
+	if $enabled == true {
+		file { '/home/mwdeploy/refreshLinks':
+			ensure => directory,
+			owner => mwdeploy,
+			group => mwdeploy,
+			mode => 0664,
+		}
 	}
 
 	define cronjob( $cronenabled = $enabled ) {
