@@ -22,11 +22,12 @@ class eventlogging::supervisor {
 		mode    => '0444',
 	}
 
-	file { '/etc/supervisor/conf.d/eventlogging.conf':
-		content => template('eventlogging/eventlogging.conf.erb'),
-		require => File['/etc/supervisor/supervisord.conf'],
-		notify  => Service['supervisor'],
-		mode    => '0444',
-	}
+	# Temporarily disabled while I upgrade EL back-end (ori-l, 17-Jun-2013):
+	# file { '/etc/supervisor/conf.d/eventlogging.conf':
+	# 	content => template('eventlogging/eventlogging.conf.erb'),
+	# 	require => File['/etc/supervisor/supervisord.conf'],
+	# 	notify  => Service['supervisor'],
+	# 	mode    => '0444',
+	# }
 
 }
