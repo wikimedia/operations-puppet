@@ -29,7 +29,7 @@ class role::coredb::config {
 				'eqiad' => [ 'db1003', 'db1010', 'db1019', 'db1035' ] },
 			'primary_site' => $::mw_primary,
 			'masters' => { 'pmtpa' => "db34", 'eqiad' => "db1019" },
-			'snapshot' => [ "db64", "db1035" ],
+			'snapshot' => [ "db66", "db1035" ],
 			'no_master' => []
 		},
 		's4' => {
