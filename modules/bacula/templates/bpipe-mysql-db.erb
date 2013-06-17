@@ -1,0 +1,44 @@
+#!/bin/sh
+
+<% if @xtrabackup -%>
+INNOBACKUPEX="/usr/bin/innobackupex"
+XBSTREAM="/usr/bin/xbstream -x -C <%= @xbstream_dir -%> "
+<% else -%>
+MYSQL="/usr/bin/mysql"
+MYSQLDUMP="/usr/bin/mysqldump"
+<% end -%>
+PIGZ="/usr/bin/pigz"
+PIGZD="/usr/bin/pigz -d"
+<% if @pigz_level -%>
+PIGZ="$PIGZ --<%= @pigz_level -%>"
+<% end -%>
+<% if @password_file -%>
+# This is just for a user with credentials to connect to the database
+MYSQL="$MYSQL --defaults-file=<%= @password_file -%> "
+MYSQLDUMP="$MYSQLDUMP --defaults-file=<%= @password_file -%> "
+<% end -%>
+<% if @mysqldump_innodb_only -%>
+# Provided we only have innodb tables --single-transcation works wonders
+MYSQLDUMP="$MYSQLDUMP --single-transaction "
+<% end -%>
+<% if @is_slave -%>
+INNOBACKUPEX="$INNOBACKUPEX --slave-info --safe-slave-backup "
+MYSQLDUMP="$MYSQLDUMP --dump-slave=1 "
+<% end -%>
+
+<% if @per_database -%>
+for database in `$MYSQL -B -N -e "show databases"`
+do
+<% if @xtrabackup -%>
+echo "bpipe:/XTRABACKUP/$database:$INNOBACKUPEX --stream=xbstream --databases=$database /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log @xbstream_dir"
+<% else -%>
+echo "bpipe:/MYSQLDUMP/$database.dump:$MYSQLDUMP --create-options --single-transaction -c $database | $PIGZ:$PIGZD | $MYSQL $database"
+<% end -%>
+done
+<% else -%>
+<% if @xtrabackup -%>
+echo "bpipe:/XTRABACKUP/all:$INNOBACKUPEX --stream=xbstream /dev/null | $PIGZ:$PIGZD | $XBSTREAM ; $INNOBACKUPEX --apply-log <%= @xbstream_dir -%>"
+<% else -%>
+echo "bpipe:/MYSQLDUMP/all:$MYSQLDUMP --alldatabases --create-options -c | $PIGZ:$PIGZD | $MYSQL"
+<% end -%>
+<% end %>
