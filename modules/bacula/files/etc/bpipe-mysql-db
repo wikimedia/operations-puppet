@@ -1,0 +1,12 @@
+#!/bin/sh
+
+MYSQL="/usr/bin/mysql --defaults-file=/etc/mysql/debian.cnf"
+MYSQLDUMP="/usr/bin/mysqldump --defaults-file=/etc/mysql/debian.cnf"
+GZIP="/bin/gzip -9 -c"
+GUNZIP="/bin/gzip -d -c"
+
+for database in `$MYSQL -B -N -e "show databases"`
+do
+	echo "bpipe:/MYSQL/$database.dump:$MYSQLDUMP --create-options --single-transaction -c $database | $GZIP:$GUNZIP | $MYSQL $database"
+done
+
