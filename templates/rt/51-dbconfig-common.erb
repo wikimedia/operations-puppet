@@ -12,6 +12,7 @@ my %typemap = (
 
 Set($DatabaseType, $typemap{mysql} || "UNKNOWN");
 
+Set($DatabaseName, 'rt');
 Set($DatabaseHost, '<%=@rt_mysql_host%>');
 Set($DatabasePort, '<%=@rt_mysql_port%>');
 
