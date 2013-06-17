@@ -1,6 +1,43 @@
 # backups (amanda)
 #
 
+# Transitioning to bacula stanzas
+
+class backup::host($sets) {
+    class { 'bacula::client':
+        director        => $director,
+        catalog         => 'WMF',
+        file_retention  => '90 days',
+        job_retention   => '6 months',
+    }
+
+    create_resources(bacula::client::job, $sets)
+}
+
+class backup::mysqlhost($xtrabackup=true, $per_db=false, $innodb_only=false) {
+    bacula::client::mysql-bpipe { "x${xtrabackup}-p${per_db}-i${innodb_only}":
+        per_database           => $per_db,
+        xtrabackup             => $xtrabackup,
+        mysqldump_innodb_only  => $innodb_only,
+    }
+}
+
+# Utility definition to deduplicate code
+define backup::schedule($pool) {
+    bacula::director::schedule { "Monthly-1st-${name}":
+        runs => [
+                    { 'level' => 'Full', 'at' => "1st ${name} at 02:05", },
+                    { 'level' => 'Differential', 'at' => "3rd ${name} at 03:05", },
+                    { 'level' => 'Incremental', 'at' => 'at 04:05', },
+                ],
+    }
+
+    bacula::director::jobdefaults { "Monthly-1st-${name}-${pool}":
+        when        => "Monthly-${name}",
+        pool        => "${pool}",
+    }
+
+}
 
 class backup::server {
 
