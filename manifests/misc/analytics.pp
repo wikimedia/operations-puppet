@@ -32,7 +32,7 @@ class misc::analytics::monitoring::kafka::server {
 	# for this udp2log instance.
 	monitor_service { "kakfa-broker-ProduceRequestsPerSecond":
 		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond",
-		check_command         => "check_kafka_broker_produce_requests!3!2",
+		check_command         => "check_kafka_broker_produce_requests!2!1",
 		contact_group         => "analytics",
 	}
 }
