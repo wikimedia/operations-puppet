@@ -2754,7 +2754,8 @@ node "tin.eqiad.wmnet" {
 		misc::deployment,
 		misc::deployment::scap_scripts,
 		misc::deployment::l10nupdate,
-		generic::mysql::packages::client
+		generic::mysql::packages::client,
+		role::labsdb::manager
 }
 
 node "tridge.wikimedia.org" {
