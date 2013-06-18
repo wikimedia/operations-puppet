@@ -101,8 +101,8 @@ class role::labsdb::manager {
 	file {
 		"/usr/local/sbin/skrillex.py":
 			owner => root,
-			group => root,
-			mode => 0500,
+			group => wikidev,
+			mode => 0550,
 			source => "puppet:///files/mysql/skrillex.py";
 		"/etc/skrillex.yaml":
 			owner => root,
