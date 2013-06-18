@@ -1228,7 +1228,7 @@ node 'labsdb1001.eqiad.wmnet' {
 			's1' => {
 				'port' => 3306,
 				'innodb_log_file_size' => "2000M",
-				'ram' => "151G",
+				'ram' => "120G",
 				'innodb_locks_unsafe_for_binlog' => true,
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
