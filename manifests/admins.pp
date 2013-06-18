@@ -500,7 +500,7 @@ class accounts {
 			if $svnkey {
                         	Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key { "siebrand@remote":
+				ssh_authorized_key { 'daniel.kinzler@wikimedia.de':
 					ensure  => present,
 					user    => $username,
 					type    => "ssh-rsa",
