@@ -108,6 +108,6 @@ class role::labsdb::manager {
 			owner => root,
 			group => root,
 			mode => 0400,
-			content => template('mysql/skrillex.yaml');
+			content => template('mysql/skrillex.yaml.erb');
 	}
 }
