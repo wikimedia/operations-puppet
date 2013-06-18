@@ -340,6 +340,11 @@ class misc::fundraising::backup::backupmover_user {
 			user	=> backupmover,
 			type	=> 'ssh-rsa',
 			key	 => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQC3f6OaJUZInlh35vv5qfCvOk8RA40Jsa76MFqoHAJeLXeFwMexZCbXWz/FeyXEOuvel6i9NCeu5C3tTxv1fTSylahCUg1CuOTwNVpIfZ15ZkeAwiPwEyaDCa9vfwHzI52sOHikCja9ah2OLuvqoV/tv0HdxtZlIc9QnOBwXe7jqwX9LfNynltl3um6+3Z85fo5Vfs/nPBzqet8lQw2XsJ1um26C0gIwfOtjxNN43+Q5jIRZj9ggLgil0ucFCITGJlUKGbQ5VueQaJs5JgAGKLbYMq6jl9j5kdtDSu0szlKKDwJQepoRcags5m2nJBFG06clwOuKi8urTfvpZb5B7mp';
+		'backupmover/root@barium':
+			ensure  => present,
+			user	=> backupmover,
+			type	=> 'ssh-rsa',
+			key	 => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDSnKG77CY/0xJb2x8+iZx4o7pCBLnc90M7msL/vB5mSBlyu3asPnaBk2H9Eqe5dv+eXOx53DhRwVZ2ttdsFb2ufKdk6fjesqOcb9XDWwPN5y1WUtUxWFlULxTa9DGKOMHPIy6XQ9/6N2buSRsIlk9ZT6dz1Rue01bPXE6WSaLNRqqvrKV+nBDQtqacwZRcKLIK+a8h/x3Y8ePtnwnmi5xkYMNFwHk/EEnjfjIqTYTJlRbEaXuzGsU+QbT1brlIiQP4zMF2CiohqbCAKH7YtRZfSKCqU9+x4PQKOJQnXjMTxMEOdAQ65WLd3LtFG1VhvBxUeKYpOBxVDxmTgu5zER1p';
 	}
 
 }
