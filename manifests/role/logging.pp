@@ -274,6 +274,7 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
 
 	misc::udp2log::instance { 'oxygen':
 		multicast     => true,
+		packet_loss_log => '/var/log/udp2log/packet-loss.log'
 		log_directory => $webrequest_log_directory,
 	}
 }
