@@ -3100,6 +3100,7 @@ class admins::restricted {
 	include accounts::rainman
 	include accounts::ram # revoked
 	include accounts::rcole # access revoked
+	include accounts::spetrea # RT 5406
 	include accounts::tparscal
 }
 
