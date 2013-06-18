@@ -4767,7 +4767,7 @@ host wtp1007 {
 }
 
 host wtp1008 {
-	hardware ethernet 90:B1:1C:3D:21:3F;
+	hardware ethernet 90:B1:1C:38:6B:DD;
 	fixed-address wtp1008.eqiad.wmnet;
 }
 
