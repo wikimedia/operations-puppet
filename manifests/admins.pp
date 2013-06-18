@@ -2977,6 +2977,7 @@ class admins::mortals {
 	include accounts::rmoen
 	include accounts::robla
 	include accounts::spage
+	include accounts::spetrea
 	include accounts::sumanah #RT 3752
 	include accounts::yurik #rt 4835, rt 5069
 	include accounts::zak # access revoked
