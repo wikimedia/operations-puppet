@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+RESOURCES=( 'Common.js Common.css Vector.js Vector.css Monobook.js Monobook.css Mobile.js Mobile.css' )
+
+function sync_resource() {
+	local resource=$1
+	local dbname=$2
+	local source=$3
+
+	echo "Synchronizing $resource with $source"
+	curl "https://$source/w/index.php?title=MediaWiki:$resource&action=raw" | \
+		mwscript edit.php --wiki=$dbname -b -s "Automatic synchronization with $source" "MediaWiki:$resource"
+}
+
+function sync_wiki() {
+	local dbname=$1
+	local source=$2
+
+	echo "== $dbname =="
+	for resource in $RESOURCES
+	do
+		sync_resource $resource $dbname $source
+	done
+}
+
+# TODO: other wikis?
+sync_wiki 'enwiki' 'en.wikipedia.org'
+
