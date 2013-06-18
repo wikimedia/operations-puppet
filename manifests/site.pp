@@ -1757,11 +1757,12 @@ node /^mc(10[01][0-9])\.eqiad\.wmnet/ {
 	include redis::ganglia
 }
 
-node /^rdb100[12]\.eqiad\.wmnet/ {
+node /^rdb100[1-4]\.eqiad\.wmnet/ {
 	$ganglia_aggregator = true
 
 	$redis_replication = {
-		'rdb1002' => 'rdb1001'
+		'rdb1002' => 'rdb1001',
+		'rdb1004' => 'rdb1003',
 	}
 
 	class { role::db::redis : redis_replication => $redis_replication }
