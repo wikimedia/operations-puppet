@@ -28,13 +28,17 @@ function getBugsPerComponent ($begin_date,$end_date) {
         print "Created reports per component\n\n";
         return <<<END
 SELECT
-        name, count(*) as total
+        products.name, components.name, count(*) as total
 FROM
         bugs
 JOIN
         components
         on
-        component_id = components.id
+        bugs.component_id = components.id
+JOIN
+        products
+        on
+        bugs.product_id = products.id
 WHERE
         creation_ts
 BETWEEN
@@ -245,7 +249,7 @@ function formatOutput($result) {
                 if (is_array($row)) {
                      foreach ($row as $row_i) {
                           $row_i = str_replace ( '@', ' [AT] ', $row_i); //strip out any easy scrapes
-                          print pack('A36',($row_i));
+                          print pack('A30',($row_i));
                      }
                 }
                 else {
