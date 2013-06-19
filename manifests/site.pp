@@ -2138,8 +2138,8 @@ node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
 		accounts::datasets,
 		accounts::dsc,
 		accounts::diederik,
-		# RT 4312
-		accounts::milimetric
+		accounts::manybubbles, #RT 4312
+		accounts::milimetric #RT 4312
 
 		# main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
 		include role::logging::udp2log::oxygen
