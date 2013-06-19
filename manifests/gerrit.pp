@@ -181,6 +181,30 @@ class gerrit::jetty ($ldap_hosts,
 			group => gerrit2,
 			mode => 0444,
 			source => "puppet:///files/gerrit/skin/GerritSiteHeader.html";
+		"/var/lib/gerrit2/review_site/etc/its":
+			ensure => directory,
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			require => File["/var/lib/gerrit2/review_site/etc"];
+		"/var/lib/gerrit2/review_site/etc/its/action.config":
+			source => "puppet:///files/gerrit/its/action.config",
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			require => File["/var/lib/gerrit2/review_site/etc/its"];
+		"/var/lib/gerrit2/review_site/etc/its/templates":
+			ensure => directory,
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			require => File["/var/lib/gerrit2/review_site/etc/its"];
+		"/var/lib/gerrit2/review_site/etc/its/templates/DraftPublished.vm":
+			source => "puppet:///files/gerrit/its/templates/DraftPublished.vm",
+			owner => gerrit2,
+			group => gerrit2,
+			mode => 0755,
+			require => File["/var/lib/gerrit2/review_site/etc/its/templates"];
 		"/var/lib/gerrit2/review_site/static/page-bkg.jpg":
 			owner => gerrit2,
 			group => gerrit2,
