@@ -2878,6 +2878,9 @@ node "williams.wikimedia.org" {
 }
 
 node /(cerium|titanium)\.wikimedia\.org/ {
+	$cluster = "cache_parsoid"
+	$nagios_group = "${cluster}_$::site"
+
 	if $hostname == "cerium" {
 		$ganglia_aggregator = true
 	}
