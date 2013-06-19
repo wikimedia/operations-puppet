@@ -31,16 +31,16 @@ class role::analytics {
         distribution => 'oracle',
         version      => 6,
     }
-}
 
-# Contains list of reinstalled analytics nodes.
-# Once all analytics nodes are reinstalled, this
-# class will be removed.
-class role::analytics::reinstalled {
-    $nodes = [
-        'analytics1001',
-        'analytics1020',
-    ]
+
+    # Include these common classes on all analytics nodes.
+    # (for now we only include these on reinstalled and
+    #  fully puppetized nodes.)
+    if ($hostname =~ /analytics10(19|20)/) {
+        include role::analytics::pig
+        include role::analytics::hive
+        include role::analytics::sqoop
+    }
 }
 
 class role::analytics::users {
@@ -76,6 +76,7 @@ class role::analytics::users {
     # Diederik, David and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
+
 
 # front end interfaces for Kraken and Hadoop
 class role::analytics::frontend inherits role::analytics {
