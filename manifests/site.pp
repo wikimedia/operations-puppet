@@ -136,14 +136,11 @@ node "analytics1001.wikimedia.org" {
 	include misc::udp2log::iptables
 }
 
-# analytics1020 is a Hadoop Worker
-node "analytics1020.eqiad.wmnet" {
+# analytics1011-analytics1020 are Hadoop Worker nodes
+node /analytics10(19|20).eqiad.wmnet/ {
 	include role::analytics
+	include role::analytics::hadoop::worker
 }
-
-
-
-
 
 
 ### Analytics nodes below this line need to be reinstalled.
@@ -190,8 +187,8 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 	include role::analytics::kafka::server
 }
 
-# analytics1007, analytics1009-analytics1020, analytics1023-analytics1027
-node /analytics10(0[7]|1[0-9]|2[234567])\.eqiad\.wmnet/ {
+# analytics1007, analytics1009-analytics1018, analytics1023-analytics1027
+node /analytics10(0[7]|1[0-8]|2[234567])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1011") {
 		$ganglia_aggregator = true
@@ -200,13 +197,7 @@ node /analytics10(0[7]|1[0-9]|2[234567])\.eqiad\.wmnet/ {
 	include role::analytics
 }
 
-# # analytics1011-analytics1020 are Kraken Hadoop Datanodes.
-# # TODO:  Puppetize all Hadoop Datanodes.  analytics1020
-# # is being used as the first puppetization test.
-# node "analytics1020.eqiad.wmnet" {
-#   include role::analytics
-#   include role::hadoop::worker
-# }
+
 
 # analytics1027 hosts the frontend
 # interfaces to Kraken and Hadoop.

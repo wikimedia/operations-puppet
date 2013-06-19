@@ -99,10 +99,6 @@ class role::analytics::hadoop::production {
         content => template('hadoop/fair-scheduler-allocation.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
-
-    include cdh4::hive
-    include cdh4::pig
-    include cdh4::sqoop
 }
 
 
@@ -144,10 +140,6 @@ class role::analytics::hadoop::labs {
         content => template('hadoop/fair-scheduler-allocation.xml.erb'),
         require => Class['cdh4::hadoop'],
     }
-
-    include cdh4::hive
-    include cdh4::pig
-    include cdh4::sqoop
 }
 
 
