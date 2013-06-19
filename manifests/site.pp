@@ -2133,18 +2133,18 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node "oxygen.wikimedia.org"  inherits "base_analytics_logging_node" {
-	include
-		accounts::awjrichards,
-		accounts::datasets,
-		accounts::dsc,
-		accounts::diederik,
-		# RT 4312
-		accounts::milimetric
+    include
+        accounts::awjrichards,
+        accounts::datasets,
+        accounts::dsc,
+        accounts::diederik,
+        accounts::manybubbles, #RT 4312
+        accounts::milimetric #RT 4312
 
-		# main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
-		include role::logging::udp2log::oxygen
-		# Also include lucene search loggging udp2log instance
-		include role::logging::udp2log::lucene
+    # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
+        include role::logging::udp2log::oxygen
+    # Also include lucene search loggging udp2log instance
+        include role::logging::udp2log::lucene
 }
 
 node /^payments[1-4]\.wikimedia\.org$/ {
