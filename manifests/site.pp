@@ -1224,6 +1224,7 @@ node 'labsdb1001.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 		}
 	}
@@ -1240,6 +1241,7 @@ node 'labsdb1002.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 			's4' => {
 				'port' => 3307,
@@ -1249,6 +1251,7 @@ node 'labsdb1002.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 			's5' => {
 				'port' => 3308,
@@ -1258,6 +1261,7 @@ node 'labsdb1002.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 		}
 	}
@@ -1274,6 +1278,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 			's6' => {
 				'port' => 3307,
@@ -1283,6 +1288,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 			's7' => {
 				'port' => 3308,
@@ -1292,6 +1298,7 @@ node 'labsdb1003.eqiad.wmnet' {
 				'repl_ignore_dbs' => 'mysql',
 				'slave_transaction_retries' => 100000,
 				'read_only' => 0,
+				'max_user_connections' => 512,
 			},
 		}
 	}
