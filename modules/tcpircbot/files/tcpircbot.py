@@ -129,10 +129,6 @@ def is_ip_allowed(ip):
     if 'cidr' in config['tcp']:
         cidrs = config['tcp']['cidr'].split(',')
         return any(ip in netaddr.IPNetwork(cidr) for cidr in cidrs)
-    try:
-        ip = ip.ipv4()
-    except netaddr.core.AddrConversionError:
-        pass
     return ip.is_private() or ip.is_loopback()
 
 

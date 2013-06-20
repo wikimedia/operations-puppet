@@ -24,11 +24,11 @@
 #   IRC server's port (default: 7000).
 #
 # [*cidr*]
-#   IPv6 CIDR range. Optional. If defined, inbound connections from addresses
-#   outside this range will be rejected. If not defined (the default), the
-#   service will only accept connections from private and loopback IPs.
-#   Multiple ranges may be specified as an array of values.
-#   Example: ['fc00::/7', '::1/128']
+#   Allowed CIDR range. Optional. If defined, inbound connections from
+#   addresses outside this range will be rejected. If not defined (the
+#   default), the service will only accept connections from private and
+#   loopback IPs.  Multiple ranges may be specified as an array of values.
+#   Example: ['192.0.2.0/24', '2001:db8::/32']
 #
 # [*ssl*]
 #   Whether to use SSL to connect to IRC server (default: true).
