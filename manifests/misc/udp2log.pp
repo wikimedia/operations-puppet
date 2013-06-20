@@ -61,7 +61,7 @@ class misc::udp2log::sysctl($ensure="present") {
 # and analytics servers to copy logs off of a
 # udp2log host.
 #
-# NOTE: I would much rather have generic::rsyncd to be a
+# NOTE: I would much rather have rsyncd to be a
 # more generic define, and allow for configuration of multiple
 # rsync modules from different places.  This would allow for
 # the misc::udp2log::instance to set up rsync-ability.  This
@@ -80,7 +80,7 @@ class misc::udp2log::rsyncd(
 	# Set up an rsync daemon module for $path.
 	# This allows stat1 to copy logs from the
 	# logrotated archive directory
-	class { "generic::rsyncd":
+	class { "rsyncd":
 		content => template("udp2log/rsyncd.conf.erb"),
 	}
 }

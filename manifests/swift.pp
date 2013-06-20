@@ -330,7 +330,7 @@ class swift::storage {
 	class config {
 		require swift::storage::packages
 
-		class { "generic::rsyncd": config => "swift" }
+		class { "rsyncd": config => "swift" }
 
 		# set up swift specific configs
 		File { owner => swift, group => swift, mode => 0440 }

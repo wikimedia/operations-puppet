@@ -138,7 +138,7 @@ class lucene {
 
 	class indexer {
 
-		class { 'generic::rsyncd': config => "searchidx" }
+		class { 'rsyncd': config => "searchidx" }
 
 		file {
 			"/a/search/conf/nooptimize.dblist":
