@@ -5,7 +5,7 @@ function getBugsPerProduct ($begin_date,$end_date) {
         print "Created reports per product\n\n";
         return <<<END
 SELECT
-        name, count(*)
+        name, count(*) as total
 FROM
         bugs
 JOIN
@@ -20,6 +20,9 @@ BETWEEN
         "$end_date"
 GROUP BY
         product_id
+ORDER BY
+        total
+DESC
 LIMIT 5;
 END;
 }
