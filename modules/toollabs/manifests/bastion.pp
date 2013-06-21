@@ -42,7 +42,7 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     mode => "0755",
     owner => "root",
     group => "root",
-    source => "puppet://modules/toollabs/sql",
+    source => "puppet:///modules/toollabs/sql",
   }
 
   package { [ 'jobutils', 'misctools' ]:
