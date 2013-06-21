@@ -3037,7 +3037,6 @@ class admins::restricted {
 	include accounts::dab
 	include accounts::manybubbles
 	include accounts::milimetric
-	include accounts::daniel
 	include accounts::dartar
 	include accounts::diederik
 	include accounts::dsc
