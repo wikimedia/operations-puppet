@@ -41,7 +41,7 @@ class toollabs::dev_environ {
       'mc', # midnight commander is favorite on toolserver, let's not make labs worse than toolserver
       'libxslt1-dev', # -- same
       'p7zip-full', # requested by Betacommand to extract files using 7zip
-      'qt4-make',
+      'qt4-qmake',
       'subversion',
       'cython' ]:
     ensure => present
