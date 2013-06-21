@@ -60,6 +60,7 @@ class role::analytics::users {
         accounts::spetrea,  # RT 4402
         accounts::ram,      # RT 5059
         accounts::maryana   # RT 5017
+        accounts::halfak    # RT 5233
 
     # add Analytics team members to the stats group so they can
     # access data group owned by 'stats'.
