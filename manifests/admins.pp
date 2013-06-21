@@ -489,6 +489,27 @@ class accounts {
 		}
 	}
 
+	class daniel inherits baseaccount {
+		$username = "daniel"
+		$realname = "Daniel Kinzler"
+		$uid = 545
+
+		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+		if $manage_home {
+			if $svnkey {
+                        	Ssh_authorized_key { require => Unixaccount[$realname] }
+
+				ssh_authorized_key { 'daniel.kinzler@wikimedia.de':
+					ensure  => present,
+					user    => $username,
+					type    => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=";
+				}
+			}
+		}
+	}
+
 	class dsc inherits baseaccount {
 		$username = "dsc"
 		$realname = "David Schoonover"
@@ -3015,6 +3036,7 @@ class admins::restricted {
 	include accounts::dab
 	include accounts::manybubbles
 	include accounts::milimetric
+	include accounts::daniel
 	include accounts::dartar
 	include accounts::diederik
 	include accounts::dsc
