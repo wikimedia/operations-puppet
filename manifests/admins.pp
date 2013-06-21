@@ -3034,10 +3034,10 @@ class admins::restricted {
 	include accounts::austin # access revoked
 	include accounts::avar
 	include accounts::bastique # access revoked
+	include accounts::daniel # access revoked
 	include accounts::dab
 	include accounts::manybubbles
 	include accounts::milimetric
-	include accounts::daniel
 	include accounts::dartar
 	include accounts::diederik
 	include accounts::dsc
