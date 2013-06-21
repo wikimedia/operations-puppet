@@ -1788,6 +1788,9 @@ node "mchenry.wikimedia.org" {
 	}
 
 	dns::recursor::monitor { "208.80.152.132": }
+
+	# mails the wikimedia.org mail alias file to OIT once per week
+	class { misc::maintenance::mail_exim_aliases: enabled => true }
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
