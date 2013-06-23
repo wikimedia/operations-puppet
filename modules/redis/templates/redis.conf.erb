@@ -258,6 +258,10 @@ slave-priority 100
 #
 # rename-command CONFIG ""
 
+<% rename_commands.keys.sort.each do |command| -%>
+rename-command <%= command %> "<%= rename_commands[command] %>"
+<% end -%>
+
 ################################### LIMITS ####################################
 
 # Set the max number of connected clients at the same time. By default
@@ -550,8 +554,8 @@ client-output-buffer-limit pubsub 32mb 8mb 60
 ##############################################################################
 # Anything passed into redis_options ( i.e. { "save" => "20 10000" } ) will
 # appear here and override the above
-<% redis_options.each_pair do |option,value| -%>
-<%= option %> <%= value %>
+<% redis_options.keys.sort.each do |option| -%>
+<%= option %> <%= redis_options[option] %>
 <% end -%>
 
 ################################## INCLUDES ###################################
