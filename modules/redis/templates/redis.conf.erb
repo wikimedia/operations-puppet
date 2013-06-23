@@ -258,6 +258,9 @@ slave-priority 100
 #
 # rename-command CONFIG ""
 
+<% rename_commands.each_pair do |command,renamed_to| -%>
+rename-command <%= command %> "<%= renamed_to %>"
+<% end -%>
 ################################### LIMITS ####################################
 
 # Set the max number of connected clients at the same time. By default
