@@ -7,6 +7,7 @@ class redis (
 	$maxmemory_samples = 5,
 	$persist = "rdb", # [ rdb, aof, both ]
 	$redis_options = {},
+	$rename_commands = {},
 	$redis_replication = undef,
 	$package = "redis-server",
 	$package_version = "present",

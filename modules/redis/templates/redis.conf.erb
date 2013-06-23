@@ -554,6 +554,10 @@ client-output-buffer-limit pubsub 32mb 8mb 60
 <%= option %> <%= value %>
 <% end -%>
 
+# Rename commands if any are required. Can be also used to disable them
+<% rename_commands.each_pair do |command,renamed_to| -%>
+<%= command %> <%= renamed_to %>
+<% end -%>
 ################################## INCLUDES ###################################
 
 # Include one or more other config files here.  This is useful if you
