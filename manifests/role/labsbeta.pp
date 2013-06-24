@@ -61,6 +61,10 @@ class role::labs::toolsbeta {
     class { 'toollabs::syslog': }
   }
 
+  class redis inherits role::labs::toolsbeta::config {
+    system_role { "role::labs::toolsbeta::redis": description => "Server that hosts shared Redis instance" }
+    class { 'toollabs::redis' }
+  }
 
 } # class role::labs::tools
 
