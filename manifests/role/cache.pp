@@ -935,7 +935,7 @@ class role::cache {
 				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
 			},
 			director_options => {
-				'retries' => $director_retries,
+				'retries' => $backend_weight * 4,
 			},
 			director_type => "chash",
 			vcl_config => {
