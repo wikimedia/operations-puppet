@@ -388,6 +388,12 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
 	include role::cache::upload
 }
 
+node /^cp301[1-4]\.esams\.wikimedia\.org$/ {
+	interface_add_ip6_mapped { "main": }
+
+	include role::cache::mobile
+}
+
 node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
 	if $::hostname =~ /^cp(3019|3020)$/ {
 		$ganglia_aggregator = true

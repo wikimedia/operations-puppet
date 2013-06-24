@@ -187,7 +187,7 @@ class role::cache {
 				"mobile" => {
 					"pmtpa" => [],
 					"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
-					"esams" => []
+					"esams" => ['cp3011.esams.wikimedia.org', 'cp3012.esams.wikimedia.org', 'cp3013.esams.wikimedia.org', 'cp3014.esams.wikimedia.org'],
 				},
 				"parsoid" => {
 					"pmtpa" => [],
@@ -851,6 +851,11 @@ class role::cache {
 
 		include standard,
 			nrpe
+
+		$storage_size_main = $::hostname ? {
+			/^cp301[1-4]$/ => 300,
+			default => 100,
+		}
 
 		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["mobile-backend"]
