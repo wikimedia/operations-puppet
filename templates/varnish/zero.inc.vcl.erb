@@ -288,7 +288,7 @@ acl carrier_604_00 { // Orange Morocco
 	"197.247.0.0"/16;
 }
 
-acl carrier_623_01 { // Orange Central African Republic
+acl carrier_623_03 { // Orange - Central African Republic
 	"41.223.184.1";
 	"41.223.184.2"/31;
 	"41.223.184.148"/30;
@@ -316,11 +316,11 @@ sub tag_carrier {
 		if (req.http.X-Subdomain == "ZERO") {
 			set req.http.X-CS = "502-13";
 		}
-	} else if (client.ip ~ carrier_623_01) {
+	} else if (client.ip ~ carrier_623_03) {
 		set req.http.X-DfltLang = "fr";
 		if (req.http.X-Subdomain == "M") {
 			if (req.http.host ~ "(^(fr|ar|sg|en|es|zh|ha|ln|eo)\.m|^m)\.([a-zA-Z0-9-]+)\.org") {
-				set req.http.X-CS = "623-01";
+				set req.http.X-CS = "623-03";
 			}
 		}
 	} else if (client.ip ~ carrier_413_02) {
