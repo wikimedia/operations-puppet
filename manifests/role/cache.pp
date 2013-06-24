@@ -924,9 +924,11 @@ class role::cache {
 			{
 				'backend_match' => '^cp104[1-4]\.',
 				'port' => 81,
+				'weight' => 10,
 			},
 			{
 				'port' => 3128,
+				'weight' => $backend_weight,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "2s",
@@ -1017,6 +1019,7 @@ class role::cache {
 				'retry5xx' => 0,
 			},
 			backend_options => {
+				# FIXME: set weight to $backend_weight for new servers
 				'port' => 3128,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "60s",
