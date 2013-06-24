@@ -1,10 +1,10 @@
 # analytics servers (RT-1985)
 
-@monitor_group { "analytics-eqiad": description => "analytics servers in eqiad" }
+@monitor_group { 'analytics-eqiad': description => 'analytics servers in eqiad' }
 
 class role::analytics {
-    system_role { "role::analytics": description => "analytics server" }
-    $nagios_group = "analytics-eqiad"
+    system_role { 'role::analytics': description => 'analytics server' }
+    $nagios_group = 'analytics-eqiad'
     # ganglia cluster name.
     $cluster = "analytics"
 
@@ -19,19 +19,14 @@ class role::analytics {
     # include analytics user accounts
     include role::analytics::users
 
+    # include java on all analytics servers
+    include role::analytics::java
+
     # We want to be able to geolocate IP addresses
     include geoip
 
     # udp-filter is a useful thing!
     include misc::udp2log::udp_filter
-
-    # all analytics nodes need java installed
-    # Install Sun/Oracle Java JDK on analytics cluster
-    java { "java-6-oracle":
-        distribution => 'oracle',
-        version      => 6,
-    }
-
 
     # Include these common classes on all analytics nodes.
     # (for now we only include these on reinstalled and
@@ -78,6 +73,16 @@ class role::analytics::users {
 
     # Diederik, David and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
+}
+
+
+class role::analytics::java {
+    # all analytics nodes need java installed
+    # Install Sun/Oracle Java JDK on analytics cluster
+    java { "java-6-oracle":
+        distribution => 'oracle',
+        version      => 6,
+    }
 }
 
 
