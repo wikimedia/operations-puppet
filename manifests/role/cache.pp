@@ -861,8 +861,11 @@ class role::cache {
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
-			# FIXME: set to 3128 on new servers
-			port => 81,
+            # TODO: remove after migration
+			port => $::hostname ? {
+			    /^cp104[1-4]$/ => 81,
+			    default => 3128,
+			}
 			admin_port => 6083,
 			storage => $::realm ? {
 				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
@@ -916,15 +919,20 @@ class role::cache {
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'layer' => 'frontend',
 			},
-			backend_options => {
-				# FIXME: set to 3128 for new servers
-				'port' => 81,
+			backend_options => [
+			# TODO: remove after migration
+			{
+			    'backend_match' => '^cp104[1-4]\.',
+			    'port' => 81,
+			},
+			{
+				'port' => 3128,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "35s",
 				'between_bytes_timeout' => "2s",
 				'max_connections' => 100000,
 				'probe' => "varnish",
-			},
+			}],
 			xff_sources => $network::constants::all_networks,
 		}
 
