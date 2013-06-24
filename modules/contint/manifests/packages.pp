@@ -35,6 +35,7 @@ class contint::packages {
     'php-pear',
     'php5-cli',
     'php5-curl',
+    'php5-dev',  # phpize
     'php5-gd',
     'php5-intl',
     'php5-mysql',
