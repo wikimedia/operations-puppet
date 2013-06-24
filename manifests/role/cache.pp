@@ -887,6 +887,9 @@ class role::cache {
 				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
 				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
+			runtime_parameters => $::site ? {
+				'esams' => ["prefer_ipv6=on"],
+			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
 				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
