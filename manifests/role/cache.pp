@@ -856,6 +856,11 @@ class role::cache {
 			/^cp301[1-4]$/ => 300,
 			default => 100,
 		}
+		
+		$director_retries = $cluster_tier ? {
+			1 => 2,
+			default => $backend_weight * 4
+		}
 
 		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["mobile-backend"]
@@ -891,7 +896,7 @@ class role::cache {
 				default => 'chash',
 			},
 			director_options => {
-				'retries' => 2,
+				'retries' => $director_retries,
 			},
 			vcl_config => {
 				'retry503' => 4,
@@ -903,6 +908,10 @@ class role::cache {
 				{
 					'backend_match' => "^srv193\.pmtpa\.wmnet$",
 					'max_connections' => 20,
+				},
+				{
+					'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
+					'weight' => $backend_weight,
 				},
 				{
 					'port' => 80,
@@ -925,7 +934,7 @@ class role::cache {
 				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
 			},
 			director_options => {
-				'retries' => 40,
+				'retries' => $director_retries,
 			},
 			director_type => "chash",
 			vcl_config => {
