@@ -886,6 +886,10 @@ class role::cache {
 				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
 				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
 			},
+			director_type => $cluster_tier ? {
+				1 => 'random',
+				default => 'chash',
+			},
 			director_options => {
 				'retries' => 2,
 			},
