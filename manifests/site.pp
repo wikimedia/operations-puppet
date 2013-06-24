@@ -89,6 +89,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
 		/^amslvs[13]$/ => [
 			$sip['text'][$::site],
 			$sip['bits'][$::site],
+			$sip['mobile'][$::site],
 			$sip['ipv6'][$::site],
 			],
 		/^amslvs[24]$/ => [

@@ -503,7 +503,7 @@ class lvs::configuration {
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
 			'class' => 'high-traffic1',
-			'sites' => [ "eqiad" ],
+			'sites' => [ 'eqiad', 'esams' ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".6",
