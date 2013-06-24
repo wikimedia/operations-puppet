@@ -593,12 +593,12 @@ host cp1057 {
 
 host cp1058 {
 	hardware ethernet 90:B1:1C:42:CC:CF;
-	fixed-address cp1058.wikimedia.org;
+	fixed-address cp1058.eqiad.wmnet;
 }
 
 host cp1059 {
-	hardware ethernet 84:2b:2b:fd:bd:f8;
-	fixed-address cp1059.wikimedia.org;
+	hardware ethernet 90:B1:1C:42:B3:57;
+	fixed-address cp1059.eqiad.wmnet;
 }
 
 host cp1060 {
