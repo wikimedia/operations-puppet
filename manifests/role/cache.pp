@@ -15,6 +15,7 @@
 @monitor_group { "cache_bits_esams": description => "esams bits Varnish" }
 
 @monitor_group { "cache_mobile_eqiad": description => "eqiad mobile Varnish" }
+@monitor_group { "cache_mobile_esams": description => "esams mobile Varnish" }
 
 @monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
 
