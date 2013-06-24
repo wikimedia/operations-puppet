@@ -856,7 +856,12 @@ class role::cache {
 			before => Varnish::Instance["mobile-backend"]
 		}
 
-		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:81" ] }
+		# TODO: remove after migration
+		if $::hostname ~= /^cp104[1-4]$/ {
+			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:81" ] }
+		} else {
+			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+		}
 
 		varnish::instance { "mobile-backend":
 			name => "",
