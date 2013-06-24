@@ -66,10 +66,6 @@ class lvs::configuration {
 			},
 			default => undef,
 		},
-		'testing' => $::realm ? {
-			'production' => [ "lvs1001", "lvs1004" ],
-			'labs' => [ "i-00000051" ],
-		},
 	}
 
 	# This needs to stay in place until the esams MX80 is in production
@@ -506,7 +502,7 @@ class lvs::configuration {
 		},
 		"mobile" => {
 			'description' => "MediaWiki based mobile site",
-			'class' => "testing",
+			'class' => 'high-traffic1',
 			'sites' => [ "eqiad" ],
 			'ip' => $service_ips['mobile'][$::site],
 			'bgp' => "yes",
