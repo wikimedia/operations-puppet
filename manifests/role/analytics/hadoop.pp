@@ -22,6 +22,9 @@
 # Installs base configs for Hadoop nodes
 #
 class role::analytics::hadoop {
+    # need java before hadoop is installed
+    require role::analytics::java
+
     # include common labs or production hadoop configs
     # based on $::realm
     if ($::realm == 'labs') {

@@ -137,7 +137,7 @@ node "analytics1001.wikimedia.org" {
 }
 
 # analytics1011-analytics1020 are Hadoop Worker nodes
-node /analytics10(19|20).eqiad.wmnet/ {
+node /analytics10(1[8-9]|20).eqiad.wmnet/ {
 	include role::analytics
 	include role::analytics::hadoop::worker
 }
@@ -188,7 +188,7 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 }
 
 # analytics1007, analytics1009-analytics1018, analytics1023-analytics1027
-node /analytics10(0[7]|1[0-8]|2[234567])\.eqiad\.wmnet/ {
+node /analytics10(0[7]|1[0-7]|2[234567])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
 	if ($hostname == "analytics1011") {
 		$ganglia_aggregator = true
