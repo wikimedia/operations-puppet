@@ -74,6 +74,14 @@ class toollabs {
     group => "root",
   }
 
+  file { "/root/.bashrc":
+    ensure => file,
+    source => "puppet:///modules/toollabs/rootrc",
+    mode => "0750",
+    owner => "root",
+    group => "root",
+  }
+
 
   # Tool Labs is enduser-facing, so we want to control the motd
   # properly (most things make no sense for community users: they
