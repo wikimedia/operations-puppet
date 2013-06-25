@@ -303,7 +303,7 @@ class ganglia {
 						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
 						"LVS loadbalancers eqiad" => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
 						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-						"Mobile caches eqiad" => "cp1043.wikimedia.org cp1044.wikimedia.org",
+						"Mobile caches eqiad" => "cp1046.wikimedia.org cp1047.wikimedia.org",
 						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
 						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet",
 						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
@@ -322,7 +322,7 @@ class ganglia {
 						"Upload caches esams" => "hooft.esams.wikimedia.org:11671 cp3003.esams.wikimedia.org cp3004.esams.wikimedia.org",
 						"Ceph cluster esams" => "ms-be3001.esams.wikimedia.org ms-be3002.esams.wikimedia.org",
 						"Parsoid eqiad" => "wtp1001.eqiad.wmnet",
-						"Parsoid Varnish eqiad" => "cerium.wikimedia.org",
+						"Parsoid Varnish eqiad" => "cp1045.eqiad.wmnet cp1058.eqiad.wmnet",
 						"Redis eqiad" => "rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet",
 						"Labs NFS cluster pmtpa" => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
 					}
