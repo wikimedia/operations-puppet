@@ -11,7 +11,7 @@
 define nrpe::check($command) {
 	Class[nrpe::packages] -> Nrpe::Check[$title]
 
-	file { "/etc/icinga/nrpe.d/${title}.cfg":
+	file { "/etc/nagios/nrpe.d/${title}.cfg":
 		owner => root,
 		group => root,
 		mode => 0444,
@@ -77,6 +77,24 @@ class nrpe::packages {
 		ensure => present;
 	}
 
+	file { "/etc/nagios/nrpe_local.cfg":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0444,
+		content => template("icinga/nrpe_local.cfg.erb"),
+		require => Package[nagios-nrpe-server],
+	}
+
+	file { "/usr/lib/nagios/plugins/check_dpkg":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/icinga/check_dpkg",
+	}
+
+	# TBD: remove all that, completely unneeded
 	package { [ "icinga-nrpe-server" ]:
 		ensure => absent;
 	}
@@ -92,23 +110,12 @@ class nrpe::packages {
 			group => root,
 			mode => 0755,
 			ensure => directory;
-		"/etc/icinga/nrpe_local.cfg":
-			require => Package[nagios-nrpe-server],
-			owner => root,
-			group => root,
-			mode => 0444,
-			content => template("icinga/nrpe_local.cfg.erb");
-		"/usr/lib/nagios/plugins/check_dpkg":
-			owner => root,
-			group => root,
-			mode => 0555,
-			source => "puppet:///files/icinga/check_dpkg";
 		"/etc/init.d/nagios-nrpe-server":
 			owner => root,
 			group => root,
 			mode => 0755,
 			source => "puppet:///files/icinga/nagios-nrpe-server-init";
-		"/etc/icinga/nrpe.cfg":
+		"/etc/nagios/nrpe.cfg":
 			owner => root,
 			group => root,
 			mode => 0644,
@@ -117,13 +124,11 @@ class nrpe::packages {
 }
 
 class nrpe::service {
-	include icinga::user
-
 	Class[nrpe::packages] -> Class[nrpe::service]
 
 	service { nagios-nrpe-server:
-		require => [ Package[nagios-nrpe-server], File["/etc/icinga/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
-		subscribe => File["/etc/icinga/nrpe_local.cfg"],
+		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
+		subscribe => File["/etc/nagios/nrpe_local.cfg"],
 		pattern => "/usr/sbin/nrpe",
 		hasrestart => true,
 		restart => "killall nrpe; sleep 2; /etc/init.d/nagios-nrpe-server start",
