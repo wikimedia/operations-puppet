@@ -126,12 +126,12 @@ class nrpe::packages {
 class nrpe::service {
 	Class[nrpe::packages] -> Class[nrpe::service]
 
-	service { nagios-nrpe-server:
-		require => [ Package[nagios-nrpe-server], File["/etc/nagios/nrpe_local.cfg"], File["/usr/lib/nagios/plugins/check_dpkg"] ],
-		subscribe => File["/etc/nagios/nrpe_local.cfg"],
+	service { 'nagios-nrpe-server':
+		ensure => running,
 		pattern => "/usr/sbin/nrpe",
 		hasrestart => true,
 		restart => "killall nrpe; sleep 2; /etc/init.d/nagios-nrpe-server start",
-		ensure => running;
+		require => Package['nagios-nrpe-server'],
+		subscribe => File['/etc/nagios/nrpe_local.cfg'],
 	}
 }
