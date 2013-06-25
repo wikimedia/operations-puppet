@@ -370,6 +370,12 @@ node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 	include role::cache::mobile
 }
 
+node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
+	$ganglia_aggregator = true
+
+	include role::cache::parsoid
+}
+
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
