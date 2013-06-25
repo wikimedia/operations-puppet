@@ -1,4 +1,4 @@
-# Class: toollabs::execnode
+# Class: toollabs::redis
 #
 # This role sets up a redis node for use by tool-labs
 # Restricts usage of certain commands, to prevent
