@@ -982,13 +982,13 @@ class role::cache {
 		include standard,
 			nrpe
 
-		$storage_size_main = $::realm ? { 'labs' => 5, default => 139 }
+		$storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
 		$storage_partitions = $::realm ? {
 			'production' => $::hostname ? {
 				# FIXME: Use consistent partitions on the new servers
 				"titanium" => ["sdb1", "sdd1"],
 				"cerium" => ["sda1", "sdb1"],
-				default => []
+				default => ['sda3', 'sdb3'],
 			},
 			'labs' => ["vdb"],
 		}
@@ -1008,8 +1008,9 @@ class role::cache {
 			storage => $::realm ? {
 				# FIXME: Use consistent partitions on the new servers
 				'production' => $::hostname ? {
-					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdd1/varnish.persist,${storage_size_main}G",
-					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb1/varnish.persist,${storage_size_main}G",
+					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,139G -s main2=persistent,/srv/sdd1/varnish.persist,139G",
+					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,139G -s main2=persistent,/srv/sdb1/varnish.persist,139G",
+					default => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
 				},
 				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
@@ -1043,6 +1044,9 @@ class role::cache {
 				"backend" => $::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site],
 			},
 			director_type => "chash",
+			director_options => {
+				'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['parsoid'][$::site]),
+			},
 			vcl_config => {
 				'retry5xx' => 0,
 			},
