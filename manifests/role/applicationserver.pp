@@ -191,7 +191,7 @@ class role::applicationserver {
 			iprioprocs => 0,
 			procs_per_iobound_type => 0,
 			type => "webVideoTranscode",
-			timeout => 14400,
+			timeout => 28800,
 			extra_args => "-v 0"
 		}
 
