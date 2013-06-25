@@ -187,7 +187,9 @@ class role::cache {
 				},
 				"mobile" => {
 					"pmtpa" => [],
-					"eqiad" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+					# FIXME: remove after migration
+					"eqiad-old" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
+					'eqiad' => ['cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet'],
 					"esams" => ['cp3011.esams.wikimedia.org', 'cp3012.esams.wikimedia.org', 'cp3013.esams.wikimedia.org', 'cp3014.esams.wikimedia.org'],
 				},
 				"parsoid" => {
@@ -874,6 +876,11 @@ class role::cache {
 		} else {
 			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 		}
+		# FIXME: remove after migration
+		$suffix = $::hostname ? {
+			/^cp104[1-4]$/ => "-old",
+			default => "",
+		}
 
 		varnish::instance { "mobile-backend":
 			name => "",
@@ -938,7 +945,7 @@ class role::cache {
 			admin_port => 6082,
 			storage => "-s malloc,${memory_storage_size}G",
 			directors => {
-				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
+				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile']["${::site}${suffix}"],
 			},
 			director_options => {
 				'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
