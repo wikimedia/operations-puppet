@@ -2921,6 +2921,25 @@ class accounts {
         }
     }
 
+    class springle inherits baseaccount {
+        $username = "springle"
+        $realname = "Sean Pringle"
+        $uid = 645
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key {
+                "sean@mintaka":
+                ensure => present,
+                user   => $username,
+                type   => "ssh-rsa",
+                key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDZ632eqrXOJ2vVKmxwode44lGL6UGEXUWG8muUP1ItqSCdYqmG11zaeH3uJNfsbqUu0jJbKpO7uiKSwolaYrHDPLDl5v5jNyRx7aQDzMgCjtVGAZIN3zQGGybl7v8ZQ635L9SAaATuYd7nOdDGa5TZ46YiAv1BA/+RGnUSz5h/ycb09V7o+RlQbHRTsTCIxjIMg45Rqnn3ukBeGNEZAU4IgaTRkg19PfPeSH9q6Ni6Wa1jz32ygmotT38vKuCvOXZxigrHJKwovS6xdfdxC67UBMV5J+KICpRPVAn1iIQMyiatdG4tBlPOUEecZcL6f7QaZufZwI/gU3wkC2zlVchF",
+            }
+        }
+    }
 
 	# FIXME: not an admin. This is more like a system account.
 	class l10nupdate inherits baseaccount {
@@ -2980,6 +2999,7 @@ class admins::roots {
 	include accounts::py
 	include accounts::robh
 	include accounts::sara # disabled
+	include accounts::springle
 	include accounts::tfinc
 	include accounts::tstarling
 }
