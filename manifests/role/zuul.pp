@@ -30,7 +30,7 @@ class role::zuul {
 	class production {
 
 		# We will receive replication of git bare repositories from Gerrit
-		include role::gerrit::production::replicationdest
+		include wmrole::gerrit::production::replicationdest
 		include contint::proxy_zuul
 
 		file { "/var/lib/git":

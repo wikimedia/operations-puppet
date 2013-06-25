@@ -3,7 +3,7 @@
 class role::gitblit {
 	system_role { "role::gitblit": description => "Gitblit, a git viewer" }
 
-	include role::gerrit::production::replicationdest
+	include wmrole::gerrit::production::replicationdest
 
 	class { "gitblit::instance":
 		host => "git.wikimedia.org",

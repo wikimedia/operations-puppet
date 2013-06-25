@@ -1653,7 +1653,7 @@ node "manganese.wikimedia.org" {
 	$ssh_x11_forwarding = "no"
 	# Note: whenever moving Gerrit out of manganese, you will need
 	# to update the role::zuul::production
-	include role::gerrit::production,
+	include wmrole::gerrit::production,
 		backup::client
 
 	class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
