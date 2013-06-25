@@ -192,7 +192,7 @@ class role::cache {
 				},
 				"parsoid" => {
 					"pmtpa" => [],
-					"eqiad" => ["cerium.wikimedia.org", "titanium.wikimedia.org"],
+					"eqiad" => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
 					"esams" => []
 				}
 			},
@@ -1051,8 +1051,8 @@ class role::cache {
 				'retry5xx' => 0,
 			},
 			backend_options => {
-				# FIXME: set weight to $backend_weight for new servers
 				'port' => 3128,
+				'weight' => $backend_weight,
 				'connect_timeout' => "5s",
 				'first_byte_timeout' => "60s",
 				'between_bytes_timeout' => "2s",
