@@ -1,4 +1,5 @@
 #site.pp
+# vim: noet
 
 import "realm.pp"	# These ones first
 import "generic-definitions.pp"
@@ -1000,6 +1001,11 @@ node "gallium.wikimedia.org" {
 		role::zuul::production,
 		admins::roots,
 		admins::jenkins
+
+	# Make sure continuous integration configuration is applied after we have
+	# setup Jenkins.  We do not want be missing a user.
+	Class['role::jenkins::master::production'] -> Class['misc::contint::test::jenkins::master']
+	Class['role::jenkins::slave::production'] -> Class['misc::contint::test::jenkins::slave']
 
 	# gallium received a SSD drive (RT #4916) mount it
 	file { '/srv/ssd':
