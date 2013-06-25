@@ -149,13 +149,11 @@ node "analytics1002.eqiad.wmnet" {
 	include role::analytics
 }
 
-# analytics1003 - analytics1006 are udp2log instances.
-node /analytics100[34569].eqiad.wmnet/ {
-	# ganglia aggregator for the Analytics cluster.
-	if ($hostname == "analytics1003") {
-		$ganglia_aggregator = true
-	}
+#### analytics udp2log kafka producer instances:
 
+#   analytics1006 - webrequest-wikipedia-mobile (unanonymized)
+#   analytics1009 - webrequest-mobile (geocoded and anonymized)
+node /analytics100[69].eqiad.wmnet/ {
 	include role::analytics
 
 	# monitor the (currently unpuppetized)
@@ -168,7 +166,7 @@ node /analytics100[34569].eqiad.wmnet/ {
 	}
 }
 
-# analytics1008 is a udp2log instance
+#   analytics1008 - webrequest-all-1000 (sampled)
 node "analytics1008.eqiad.wmnet" {
 	include role::analytics
 
@@ -187,10 +185,10 @@ node /analytics102[12]\.eqiad\.wmnet/ {
 	include role::analytics::kafka::server
 }
 
-# analytics1007, analytics1009-analytics1018, analytics1023-analytics1027
-node /analytics10(0[7]|1[0-7]|2[234567])\.eqiad\.wmnet/ {
+# misc unpuppetized analytics hosts
+node /analytics10(0[3457]|1[0-7]|2[234567])\.eqiad\.wmnet/ {
 	# ganglia aggregator for the Analytics cluster.
-	if ($hostname == "analytics1011") {
+	if ($hostname == 'analytics1003' or $hostname == 'analytics1011') {
 		$ganglia_aggregator = true
 	}
 

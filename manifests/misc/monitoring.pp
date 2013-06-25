@@ -82,9 +82,12 @@ class misc::monitoring::views {
 	misc::monitoring::view::udp2log { 'udp2log':
 		host_regex => 'locke|emery|oxygen|gadolinium',
 	}
+	misc::monitoring::view::udp2log { 'udp2log-analytics':
+		host_regex => 'analytics100[689].eqiad.wmnet',
+	}
 	misc::monitoring::view::kafka { 'kafka':
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
-		kafka_producer_host_regex => 'analytics100[345689].eqiad.wmnet',
+		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
 	}
 }
 
