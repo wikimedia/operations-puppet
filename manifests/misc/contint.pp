@@ -41,8 +41,7 @@ class misc::contint::test {
 
     include contint::proxy_jenkins
 
-    include ::contint::tmpfs
-
+    include jenkins::user
     file {
       '/var/lib/jenkins/.gitconfig':
         ensure  => present,
@@ -65,6 +64,26 @@ class misc::contint::test {
         mode   => '0775';
     }
 
+  }
+
+  # Specific Jenkins master configuration for Continuous Integration
+  class jenkins::master {
+    class { '::contint::tmpfs':
+      user        => 'jenkins',
+      group       => 'jenkins',
+      mount_point => '/var/lib/jenkins/tmpfs',
+      size        => '512M',
+    }
+  }
+
+  # Specific Jenkins slave configuration for Continuous Integration
+  class jenkins::slave {
+    class { '::contint::tmpfs':
+      user        => 'jenkins-slave',
+      group       => 'jenkins-slave',
+      mount_point => '/var/lib/jenkins-slave/tmpfs',
+      size        => '128M',
+    }
   }
 
   # prevent users from accessing port 8080 directly (but still allow from localhost and own net)

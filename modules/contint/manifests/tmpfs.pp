@@ -1,25 +1,28 @@
 # Wikimedia uses a small tmpfs disk to help soften I/O on the contint server.
 # A typical use cases are the MediaWiki sqlite files
-class contint::tmpfs {
-
-  include jenkins::user
+class contint::tmpfs(
+  $user = 'jenkins',
+  $group = 'jenkins',
+  $mount_point = '/var/lib/jenkins/tmpfs',
+  $size = '512M',
+  ) {
 
   # Setup tmpfs to write SQLite files to
-  file { '/var/lib/jenkins/tmpfs':
+  file { $mount_point:
     ensure  => directory,
     mode    => '0755',
-    owner   => jenkins,
-    group   => jenkins,
-    require => [ User['jenkins'], Group['jenkins'] ],
+    owner   => $user,
+    group   => $group,
+    require => [ User[$user], Group[$group] ],
   }
 
-  mount { '/var/lib/jenkins/tmpfs':
+  mount { $mount_point:
     ensure  => mounted,
     device  => 'tmpfs',
     fstype  => 'tmpfs',
-    options => 'noatime,defaults,size=512M,mode=755,uid=jenkins,gid=jenkins',
-    require => [ User['jenkins'], Group['jenkins'],
-      File['/var/lib/jenkins/tmpfs'] ],
+    options => "noatime,defaults,size=${size},mode=755,uid=${user},gid=${group}",
+    require => [ User[$user], Group[$group],
+      File[$mount_point] ],
   }
 
 }
