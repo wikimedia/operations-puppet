@@ -890,6 +890,7 @@ class role::cache {
 			},
 			runtime_parameters => $::site ? {
 				'esams' => ["prefer_ipv6=on"],
+				default => [],
 			},
 			directors => {
 				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
