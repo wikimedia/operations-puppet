@@ -936,6 +936,7 @@ class role::cache {
 			extra_vcl => ["zero"],
 			port => 80,
 			admin_port => 6082,
+			storage => "-s malloc,${memory_storage_size}G",
 			directors => {
 				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
 			},
