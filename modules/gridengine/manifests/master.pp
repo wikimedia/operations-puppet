@@ -25,4 +25,11 @@ class gridengine::master {
   }
 
   include monitoring
+
+  cron { "push-accounting-to-shared":
+    command => "cp -f /var/lib/gridengine/default/common/accounting /data/project/.system/accounting.tmp && mv -f /data/project/.system/accounting.tmp /data/project/.system/accounting",
+    user => root,
+    minute => [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
+    ensure => present;
+  }
 }
