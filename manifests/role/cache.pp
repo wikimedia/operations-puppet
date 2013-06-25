@@ -854,8 +854,8 @@ class role::cache {
 			nrpe
 
 		$storage_size_main = $::hostname ? {
-			/^cp301[1-4]$/ => 300,
-			default => 100,
+			/^cp104[1-4]$/ => 100,
+			default => 300,
 		}
 		
 		if $cluster_tier == 1 {
