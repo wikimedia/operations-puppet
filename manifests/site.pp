@@ -376,6 +376,16 @@ node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 	include role::cache::parsoid
 }
 
+node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
+	if $::hostname =~ /^cp104[67]$/ {
+		$ganglia_aggregator = true
+	}
+
+	interface_add_ip6_mapped { "main": }
+
+	include role::cache::mobile
+}
+
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
