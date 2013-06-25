@@ -17,8 +17,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/sbin/nrpe
 NAME=nagios-nrpe
 DESC=nagios-nrpe
-CONFIG=/etc/icinga/nrpe.cfg
-PIDDIR=/var/run/icinga
+CONFIG=/etc/nagios/nrpe.cfg
+PIDDIR=/var/run/nagios
 
 test -x $DAEMON || exit 0
 
@@ -43,7 +43,7 @@ if [ "$NICENESS" ]; then NICENESS="-n $NICENESS"; fi
 #since /var/run can be wiped completly we create our run directory here
 if [ ! -d "$PIDDIR" ]; then 
 	mkdir "$PIDDIR"
-	chown icinga "$PIDDIR"
+	chown nagios "$PIDDIR"
 fi
 
 set -e
@@ -59,14 +59,12 @@ case "$1" in
 	;;
   stop)
 	log_daemon_msg "Stopping $DESC" "$NAME"
-    start-stop-daemon --stop --quiet --oknodo --pidfile $PIDDIR/nrpe.pid --retry 15
+	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDDIR/nrpe.pid --retry 15
 	log_end_msg $?
-    #sometimes deleting the pidfile fails. cleanup afterwards.
-    test -e $PIDDIR/nrpe.pid && rm $PIDDIR/nrpe.pid
 	;;
   reload|force-reload)
 	log_daemon_msg "Reloading $DESC configuration files" "$NAME"
-    start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDDIR/nrpe.pid
+	start-stop-daemon --stop --signal HUP --quiet --pidfile $PIDDIR/nrpe.pid
 	log_end_msg $?
 	;;
   status)
@@ -74,7 +72,7 @@ case "$1" in
     ;;
   restart)
 	$0 stop
-	sleep 15
+	sleep 1
 	$0 start
 	;;
   *)
