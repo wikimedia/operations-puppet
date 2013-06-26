@@ -101,10 +101,18 @@ class zuul (
     owner   => 'jenkins',
     mode    => '0400',
     content => template('zuul/zuul.conf.erb'),
+    notify  => Exec['craft public zuul conf'],
     require => [
       File['/etc/zuul'],
       Package['jenkins'],
     ],
+  }
+
+  # Additionally provide a publicly readeable configuration file
+  exec { 'craft public zuul conf':
+    cwd         => '/etc/zuul/',
+    command     => '/bin/sed "s/apikey=.*/apikey=<obfuscacated>/" /etc/zuul/zuul.conf > /etc/zuul/public.conf',
+    refreshonly => true,
   }
 
   file { '/var/log/zuul':
