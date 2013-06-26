@@ -55,6 +55,7 @@ class role::fundraising::civicrm {
 		#accounts::rfaulk, # no longer involved with fundraising
 		accounts::zexley,
 		accounts::sahar,
+		accounts::pcoombe,
 		admins::fr-tech,
 		admins::roots,
 		apt,
