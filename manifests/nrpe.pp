@@ -93,34 +93,6 @@ class nrpe::packages {
 		mode => 0555,
 		source => "puppet:///files/icinga/check_dpkg",
 	}
-
-	# TBD: remove all that, completely unneeded
-	package { [ "icinga-nrpe-server" ]:
-		ensure => absent;
-	}
-
-	file {
-		"/etc/icinga/":
-			owner => root,
-			group => root,
-			mode => 0755,
-			ensure => directory;
-		"/etc/icinga/nrpe.d":
-			owner => root,
-			group => root,
-			mode => 0755,
-			ensure => directory;
-		"/etc/init.d/nagios-nrpe-server":
-			owner => root,
-			group => root,
-			mode => 0755,
-			source => "puppet:///files/icinga/nagios-nrpe-server-init";
-		"/etc/nagios/nrpe.cfg":
-			owner => root,
-			group => root,
-			mode => 0644,
-			source => "puppet:///files/icinga/nrpe.cfg";
-	}
 }
 
 class nrpe::service {
