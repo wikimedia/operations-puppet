@@ -760,6 +760,10 @@ class role::cache {
 					'weight' => 20,
 				},
 				{
+					'backend_match' => '^cp30[0-9][0-9]\.esams\.wikimedia\.org$',
+					'weight' => 20,
+				},
+				{
 					'port' => 3128,
 					'connect_timeout' => "5s",
 					'first_byte_timeout' => "35s",
