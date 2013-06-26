@@ -636,7 +636,7 @@ class role::cache {
 
 		# FIXME: remove after migration
 		$suffix = $::hostname ? {
-			/^cp10[23][0-9]$/ => "-old",
+			/^(dysprosium|cp10[23][0-9])$/ => "-old",
 			default => "",
 		}
 		$varnish_be_directors = {
