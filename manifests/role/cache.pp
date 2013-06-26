@@ -711,8 +711,8 @@ class role::cache {
 				{
 					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
 					'weight' => 80,
-					'port' => 3128,
-					'probe' => "varnish",
+					#'port' => 3128,
+					#'probe' => "varnish",
 				},
 				{
 					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
