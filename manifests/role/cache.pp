@@ -484,7 +484,7 @@ class role::cache {
 		# Any changes here will affect all descendent Varnish clusters
 		# unless they're overridden!
 		$backend_weight = 100
-		$storage_size_bigobj = 10
+		$storage_size_bigobj = 50
 
 		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
 			$memory_storage_size = 16
@@ -633,16 +633,20 @@ class role::cache {
 			}
 		}
 
-		# FIXME: set to (default) 100 on new servers
-		$backend_weight = 20
-		if $::site == "eqiad" {
+		$default_backend = $cluster_tier ? { 1 => 'backend', default => 'eqiad' }
+
+		# FIXME: remove after migration
+		if $::hostname =~ /^cp10[23][0-9]$/ {
+			$backend_weight = 20
 			$storage_size_main = 100
 			$storage_size_bigobj = 10
-			$default_backend = 'backend'
-		} else {
+		}
+		elsif $::hostname =~ /cp30[0-9][0-9]$/ {
+			$backend_weight = 20
 			$storage_size_main = 300
-			$storage_size_bigobj = 50
-			$default_backend = 'eqiad'
+		}
+		else {
+			$storage_size_main = 250
 		}
 
 		include standard,
@@ -690,10 +694,14 @@ class role::cache {
 			backend_options => [
 				{
 					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-					'weight' => 4 * $backend_weight,
+					'weight' => 80,
 				},
 				{
-					'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'weight' => 20,
+				},
+				{
+					'backend_match' => "^cp[0-9]+\.eqiad.wmnet$",
 					'port' => 3128,
 					'probe' => "varnish",
 				},
@@ -727,7 +735,11 @@ class role::cache {
 			backend_options => [
 				{
 					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-					'weight' => 4 * $backend_weight,
+					'weight' => 80,
+				},
+				{
+					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'weight' => 20,
 				},
 				{
 					'port' => 3128,
