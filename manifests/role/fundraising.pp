@@ -51,8 +51,6 @@ class role::fundraising::civicrm {
 	$gid = 500
 	include
 		accounts::mhernandez,
-		#accounts::pcoombe, # no longer involved with fundraising
-		#accounts::rfaulk, # no longer involved with fundraising
 		accounts::zexley,
 		accounts::sahar,
 		accounts::pcoombe,
