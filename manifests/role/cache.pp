@@ -693,7 +693,8 @@ class role::cache {
 			# FIXME: remove after migration
 			storage => $::hostname ? {
 				'dysprosium' => "-s main1=persistent,/srv/sdc1/varnish.persist,300G -s main2=file,/srv/sdd1/varnish.persist,300G -s bigobj1=file,/srv/sdc1/large-objects.persist,50G -s bigobj2=file,/srv/sdd1/large-objects.persist,50G",
-				default => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj1=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				/^cp(10[23][0-9]|30[01][0-9])$/ => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj1=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
 			},
 			directors => $varnish_be_directors[$cluster_tier],
 			director_type => "random",	# FIXME: set to chash on new servers
