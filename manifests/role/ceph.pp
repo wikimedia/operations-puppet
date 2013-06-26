@@ -32,13 +32,11 @@ class role::ceph::eqiad inherits role::ceph::base {
             'mon'               => {
                 'mon osd down out interval'   => '600',
                 # be more resilient to malfunctioning OSDs; see Ceph #4552 et al
-                'osd min down reporters'      => '14',
+                'mon osd min down reporters'  => '14',
             },
             'osd'               => {
                 'osd journal'                 => '/var/lib/ceph/journal/$cluster-$id',
                 'osd journal size'            => '10240',
-                # set log entries to 300 from 3000, could be a workaround to #5084
-                'osd min pg log entries'      => '300',
             },
             'radosgw'           => {
                 'rgw enable ops log'          => 'false',
