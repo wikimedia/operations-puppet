@@ -155,7 +155,8 @@ class role::cache {
 						'sq85.wikimedia.org',
 						'sq86.wikimedia.org',
 					],
-					"eqiad" => [
+					# FIXME: remove after migration
+					"eqiad-old" => [
 						'cp1021.eqiad.wmnet',
 						'cp1022.eqiad.wmnet',
 						'cp1023.eqiad.wmnet',
@@ -173,6 +174,16 @@ class role::cache {
 						'cp1035.eqiad.wmnet',
 						'cp1036.eqiad.wmnet',
 						'dysprosium.eqiad.wmnet',
+					],
+					'eqiad' => [
+						'cp1048.eqiad.wmnet',
+						'cp1049.eqiad.wmnet',
+						'cp1050.eqiad.wmnet',
+						'cp1051.eqiad.wmnet',
+						'cp1061.eqiad.wmnet',
+						'cp1062.eqiad.wmnet',
+						'cp1063.eqiad.wmnet',
+						'cp1064.eqiad.wmnet',
 					],
 					"esams" => [
 						'cp3003.esams.wikimedia.org',
@@ -484,7 +495,7 @@ class role::cache {
 		# Any changes here will affect all descendent Varnish clusters
 		# unless they're overridden!
 		$backend_weight = 100
-		$storage_size_bigobj = 10
+		$storage_size_bigobj = 50
 
 		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
 			$memory_storage_size = 16
@@ -623,26 +634,33 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
+		# FIXME: remove after migration
+		$suffix = $::hostname ? {
+			/^cp10[23][0-9]$/ => "-old",
+			default => "",
+		}
 		$varnish_be_directors = {
 			1 => {
 				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
 				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 			},
 			2 => {
-				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
+				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad-old']
 			}
 		}
 
-		# FIXME: set to (default) 100 on new servers
-		$backend_weight = 20
-		if $::site == "eqiad" {
+		$default_backend = $cluster_tier ? { 1 => 'backend', default => 'eqiad' }
+
+		# FIXME: remove after migration
+		if $::hostname =~ /^cp10[23][0-9]$/ {
 			$storage_size_main = 100
 			$storage_size_bigobj = 10
-			$default_backend = 'backend'
-		} else {
+		}
+		elsif $::hostname =~ /^cp30[0-9][0-9]$/ {
 			$storage_size_main = 300
-			$storage_size_bigobj = 50
-			$default_backend = 'eqiad'
+		}
+		else {
+			$storage_size_main = 250
 		}
 
 		include standard,
@@ -688,12 +706,18 @@ class role::cache {
 				'layer' => 'backend',
 			},
 			backend_options => [
+				# FIXME: remove after migration
 				{
 					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-					'weight' => 4 * $backend_weight,
+					'weight' => 80,
+					'port' => 3128,
 				},
 				{
-					'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'weight' => 20,
+				},
+				{
+					'backend_match' => "^cp[0-9]+\.eqiad.wmnet$",
 					'port' => 3128,
 					'probe' => "varnish",
 				},
@@ -715,7 +739,7 @@ class role::cache {
 			port => 80,
 			admin_port => 6082,
 			storage => "-s malloc,${memory_storage_size}G",
-			directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
+			directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload']["${::site}${suffix}"] },
 			director_type => "chash",
 			vcl_config => {
 				'retry5xx' => 0,
@@ -727,7 +751,11 @@ class role::cache {
 			backend_options => [
 				{
 					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
-					'weight' => 4 * $backend_weight,
+					'weight' => 80,
+				},
+				{
+					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'weight' => 20,
 				},
 				{
 					'port' => 3128,
