@@ -679,6 +679,13 @@ class openstack::compute-service($openstack_version="essex", $novaconfig) {
 				mode => 0444,
 				content => template("openstack/common/nova/libvirt-bin.default.erb"),
 				require => Package["nova-common"];
+			"/etc/nova/nova-compute.conf":
+				notify => Service["nova-compute"],
+				owner => "root",
+				group => "root",
+				mode => 0444,
+				content => template("openstack/common/nova/nova-compute.conf.erb"),
+				require => Package["nova-common"];
 		}
 	}
 
