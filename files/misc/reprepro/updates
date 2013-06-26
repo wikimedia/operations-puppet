@@ -1,6 +1,6 @@
 # Ceph
 Name: ceph
-Method: http://ceph.com/debian-cuttlefish/
+Method: http://ceph.com/debian/
 Components: main>main
 UDebComponents:
 Suite: precise
