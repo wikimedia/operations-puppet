@@ -41,8 +41,7 @@ class misc::contint::test {
 
     include contint::proxy_jenkins
 
-    include ::contint::tmpfs
-
+    include jenkins::user
     file {
       '/var/lib/jenkins/.gitconfig':
         ensure  => present,

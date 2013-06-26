@@ -21,6 +21,13 @@ class role::jenkins::master::production {
 		],
 	}
 
+	contint::tmpfs { 'tmpfs for jenkins CI master':
+		user        => 'jenkins',
+		group       => 'jenkins',
+		mount_point => '/var/lib/jenkins/tmpfs',
+		size        => '512M',
+	}
+
 	# Ganglia monitoring for Jenkins
 	# The upstream module is named 'jenkins' which conflicts with python-jenkins
 	# since gmond will lookup the 'jenkins' python module in the system path
@@ -63,6 +70,13 @@ class role::jenkins::slave::production {
 		user               => 'jenkins-slave',
 		workdir            => '/srv/ssd/jenkins-slave',
 		require            => Mount['/srv/ssd'],
+	}
+
+	contint::tmpfs { 'tmpfs for jenkins CI slave':
+		user        => 'jenkins-slave',
+		group       => 'jenkins-slave',
+		mount_point => '/var/lib/jenkins-slave/tmpfs',
+		size        => '128M',
 	}
 
 }
