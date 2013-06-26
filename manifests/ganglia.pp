@@ -303,7 +303,7 @@ class ganglia {
 						"MySQL eqiad" => "db1017.eqiad.wmnet db1021.eqiad.wmnet",
 						"LVS loadbalancers eqiad" => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
 						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
-						"Mobile caches eqiad" => "cp1046.wikimedia.org cp1047.wikimedia.org",
+						"Mobile caches eqiad" => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
 						"Bits caches eqiad" => "arsenic.wikimedia.org niobium.wikimedia.org",
 						"Upload caches eqiad" => "cp1021.eqiad.wmnet cp1022.eqiad.wmnet",
 						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
