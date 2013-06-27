@@ -126,5 +126,11 @@ class TestLogToFile(unittest.TestCase):
         self.assertLogFile('mediawiki-i18n.log',
                            'translatewiki/futureproject')
 
+    def test_pwb_to_pywikipediabot(self):
+        self.assertLogFile('pywikipediabot.log',
+                           'pywikibot')
+        self.assertLogFile('pywikipediabot.log',
+                           'pywikibot/core')
+
 if __name__ == '__main__':
     unittest.main()
