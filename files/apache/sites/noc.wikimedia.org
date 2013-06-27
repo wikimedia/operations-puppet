@@ -11,7 +11,7 @@ NameVirtualHost *:443
         
 	ServerName noc.wikimedia.org
 
-	DocumentRoot /home/wikipedia/common/docroot/noc
+	DocumentRoot /usr/local/apache/common/docroot/noc
 
 	UserDir public_html
 
@@ -30,11 +30,11 @@ NameVirtualHost *:443
 		AllowOverride All
 	</Directory>
 
-	<Directory /home/wikipedia/common/docroot/noc/conf>
+	<Directory /usr/local/apache/common/docroot/noc/conf>
 		AddDefaultCharset utf-8
 	</Directory>
 
-	<Directory /home/wikipedia/common/docroot/noc/cgi-bin>
+	<Directory /usr/local/apache/common/docroot/noc/cgi-bin>
 		Order Deny,Allow
 		Options ExecCGI
 	</Directory>
@@ -43,7 +43,7 @@ NameVirtualHost *:443
 	ServerAdmin noc@wikimedia.org
 	ServerName noc.wikimedia.org
 
-	DocumentRoot /home/wikipedia/common/docroot/noc
+	DocumentRoot /usr/local/apache/common/docroot/noc
 
 	UserDir public_html
 
@@ -64,11 +64,11 @@ NameVirtualHost *:443
 		AllowOverride All
 	</Directory>
 
-	<Directory /home/wikipedia/common/docroot/noc/conf>
+	<Directory /usr/local/apache/common/docroot/noc/conf>
 		AddDefaultCharset utf-8
 	</Directory>
 
-	<Directory /home/wikipedia/common/docroot/noc/cgi-bin>
+	<Directory /usr/local/apache/common/docroot/noc/cgi-bin>
 		Order Deny,Allow
 		Options ExecCGI
 	</Directory>
