@@ -123,7 +123,8 @@ class role::cache {
 				},
 				"bits" => {
 					"pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
-					"eqiad" => ["arsenic.wikimedia.org", "niobium.wikimedia.org", "strontium.eqiad.wmnet", "palladium.eqiad.wmnet", ],
+					"eqiad" => ["arsenic.wikimedia.org", "niobium.wikimedia.org", "strontium.eqiad.wmnet", "palladium.eqiad.wmnet",
+					 	'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet'],
 					"esams" => ["cp3019.esams.wikimedia.org", "cp3020.esams.wikimedia.org", "cp3021.esams.wikimedia.org", "cp3022.esams.wikimedia.org"],
 				},
 				"upload" => {
