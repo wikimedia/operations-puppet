@@ -395,7 +395,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
 }
 
 node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet' {
-	if $::hostname =~ /^cp10[56]$/ {
+	if $::hostname =~ /^cp105[67]$/ {
 		$ganglia_aggregator = true
 	}
 
