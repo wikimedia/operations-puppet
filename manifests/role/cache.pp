@@ -840,6 +840,12 @@ class role::cache {
 			}
 		}
 		$cluster_options = merge($common_cluster_options, $realm_cluster_options)
+		
+		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
+			$memory_storage_size = 32
+		} else {
+			$memory_storage_size = 2
+		}
 
 		system_role { "role::cache::bits": description => "bits Varnish cache server" }
 
@@ -853,7 +859,7 @@ class role::cache {
 			vcl => "bits",
 			port => 80,
 			admin_port => 6082,
-			storage => "-s malloc,2G",
+			storage => "-s malloc,${memory_storage_size}G",
 			directors => $varnish_directors[$cluster_tier],
 			director_type => "random",
 			vcl_config => {
