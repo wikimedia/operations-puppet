@@ -413,7 +413,9 @@ class lvs::configuration {
 			'search_pool5' => {},
 			'search_poolbeta' => {},
 			'search_prefix' => {},
-			'swift' => {},
+			'swift' => {
+				'pmtpa' => '10.4.1.103',  # deployment-upload.pmtpa.wmflabs
+			},
 			'payments' => {},
 			'upload' => {
 				'pmtpa' => {
