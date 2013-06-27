@@ -681,6 +681,33 @@ class role::cache {
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
+		case $::realm {
+			'production': {
+				$cluster_options = {
+					'upload_domain' => 'upload.wikimedia.org',
+					'top_domain'    => 'org',
+				}
+			}
+			'labs': {
+				$cluster_options = {
+					'upload_domain' => 'upload.beta.wmflabs.org',
+					'top_domain'    => 'beta.wmflabs.org',
+				}
+			}
+		}
+
+    # Hack around fake sda3,sdb3 for labs
+    if( $::realm == 'labs' ) {
+      file { '/srv/sda3':
+        ensure => link,
+        target => '/srv/vdb',
+      }
+      file { '/srv/sdb3':
+        ensure => link,
+        target => '/srv/vdb',
+      }
+    }
+
 		varnish::instance { "upload-backend":
 			name => "",
 			vcl => "upload-backend",
@@ -731,6 +758,7 @@ class role::cache {
 					'max_connections' => 1000,
 					'weight' => $backend_weight,
 				}],
+			cluster_options => $cluster_options,
 			wikimedia_networks => $wikimedia_networks,
 			xff_sources => $network::constants::all_networks
 		}
@@ -772,6 +800,7 @@ class role::cache {
 					'probe' => "varnish",
 					'weight' => $backend_weight,
 				}],
+			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks,
 		}
 
