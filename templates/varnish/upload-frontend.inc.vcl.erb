@@ -1,3 +1,7 @@
+<%
+top_domain = cluster_options.fetch( 'top_domain', 'org' )
+upload_domain = cluster_options.fetch( 'upload_domain', 'upload.wikimedia.org' )
+-%>
 # Varnish VCL include file for upload frontends
 
 include "errorpage.inc.vcl";
@@ -10,7 +14,7 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 
-	if ( req.http.host == "upload.wikimedia.org") {
+	if ( req.http.host == "<%= upload_domain %>") {
 		# Replace double slashes
 		set req.url = regsuball(req.url, "/{2,}", "/");
 		return (lookup);

@@ -667,6 +667,32 @@ class role::cache {
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
+		case $::realm {
+			'production': {
+				$cluster_options = {
+					'upload_domain' => 'upload.wikimedia.org',
+					'top_domain'    => 'org',
+				}
+			}
+			'labs': {
+				$cluster_options = {
+					'upload_domain' => 'upload.beta.wmflabs.org',
+					'top_domain'    => 'beta.wmflabs.org',
+				}
+			}
+		}
+
+		# FIXME: remove after migration
+		case $::realm {
+			'production': {
+				$storage = "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+				}
+			}
+			'labs': {
+				$storage = "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/vdb/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/vdb/varnish.bigobj2,${storage_size_bigobj}G"
+			}
+		}
+
 		varnish::instance { "upload-backend":
 			name => "",
 			vcl => "upload-backend",
@@ -676,7 +702,7 @@ class role::cache {
 				'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
 				default => [],
 			},
-			storage => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
+			storage => $storage,
 			directors => $varnish_be_directors[$cluster_tier],
 			director_type => $cluster_tier ? {
 				1 => 'random',
@@ -707,6 +733,7 @@ class role::cache {
 					'max_connections' => 1000,
 					'weight' => $backend_weight,
 				}],
+			cluster_options => $cluster_options,
 			wikimedia_networks => $wikimedia_networks,
 			xff_sources => $network::constants::all_networks
 		}
@@ -736,6 +763,7 @@ class role::cache {
 					'probe' => "varnish",
 					'weight' => $backend_weight,
 				}],
+			cluster_options => $cluster_options,
 			xff_sources => $network::constants::all_networks,
 		}
 
