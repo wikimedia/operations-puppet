@@ -49,11 +49,10 @@ NODEFILE=
 	# Notify
 	$BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
 
-
 	# Disable logging
 	export DOLOGMSGNOLOG=1
 
-	echo 'Copying wikiversions.dat to apaches...'
+	# Builds wikiversions.cdb and syncs it to the apaches with the dat file
 	sync-wikiversions
 
 	echo 'Copying style sheets to apaches...'
