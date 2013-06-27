@@ -17,6 +17,8 @@ class misc::ishmael {
 		content => template('apache/sites/ishmael.wikimedia.org.erb');
 	}
 
+	apache_site { 'ishmael': name => 'ishmael.wikimedia.org' }
+
 	define ishmael_config( db_central_host='db1001.eqiad.wmnet', review_table='%query_review', history_table='%query_review_history' ) {
 		include passwords::mysql::querydigest
 
