@@ -36,7 +36,7 @@ class role::gerrit {
 					"url" => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
 					"threads" => "4",
 					"authGroup" => "mediawiki-replication",
-					"push" => "refs/*:refs/*",
+					"push" => "+refs/*:refs/*",
 					"mirror" => "true",
 				},
 				"github" => {
