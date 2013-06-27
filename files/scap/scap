@@ -22,7 +22,7 @@ NODEFILE=
 	fi
 
 	# Perform syntax check
-	echo Checking syntax...
+	echo -n "Checking syntax..."
 	if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
 		echo "Found syntax errors, cannot sync."
 		exit 1
@@ -35,6 +35,7 @@ NODEFILE=
 			exit 1
 		fi
 	done
+	echo " done"
 
 	# Update the current machine so that serialization works.
 	# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
