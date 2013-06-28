@@ -8,6 +8,8 @@ write only      = <%= write_only %>
 list            = <%= list %>
 uid             = <%= uid %>
 gid             = <%= gid %>
+incoming chmod  = <%= incoming_chmod %>
+outgoing chmod  = <%= outgoing_chmod %>
 max connections = <%= max_connections %>
 <% if Integer(max_connections) > 0 %>lock file =     <%= lock_file %><% end %>
 <% if comment != :undef %>comment               = <%= comment %><% end %>
