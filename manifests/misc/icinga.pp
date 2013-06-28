@@ -852,6 +852,17 @@ class icinga::monitor::snmp {
     hour => [0, 4, 8, 12, 16, 20],
     minute => 7;
   }
+  # FIXME: smptt doesn't always delete old files from spool
+  # and can run out of inodes, rsync from empty dir is fastest way to delete
+  cron { 'empty_snmptt_spool':
+    ensure => present,
+    command => 'mkdir /tmp/empty/ &&
+                rsync -a --delete /tmp/empty /var/spool/snmptt/ &&
+                rmdir /tmp/empty',
+    user => root,
+    hour => 0,
+    minute => 23;
+  }
 
 }
 
