@@ -1,0 +1,5 @@
+This is mostly the upstream puppetlabs rsync module:
+
+ puppetlabs-rsync:  https://github.com/puppetlabs/puppetlabs-rsync
+
+It has several WMF customizations, though, which are listed in CHANGELOG.

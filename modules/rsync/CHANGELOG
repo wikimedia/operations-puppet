@@ -1,3 +1,6 @@
+* 2013-06-27 0.1.1-wmf
+- Added log_file option to server class
+
 * 2012-08-30 0.1.0-wmf
 - Removed xinetd support (otto@wikimedia.org)
 - Removed '< I <3 Puppet Labs >' default motd.
