@@ -8,28 +8,28 @@ class contint::website {
   file { '/srv/org':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
 
   file { '/srv/org/wikimedia':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
   file { '/srv/org/wikimedia/integration':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
   # MediaWiki code coverage
   file { '/srv/org/wikimedia/integration/coverage':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
 
   # Apache configuration for integration.wikimedia.org
@@ -59,8 +59,8 @@ class contint::website {
   file { '/srv/org/wikimedia/doc':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
   file { '/etc/apache2/sites-available/doc.wikimedia.org':
     mode   => '0444',
