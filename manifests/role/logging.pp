@@ -297,6 +297,7 @@ class role::logging::eventlogging {
 	system_role { "misc::log-collector":
 		description => 'EventLogging log collector',
 	}
+	deployment::target { "eventlogging": }
 
 	class { '::eventlogging':
 		archive_destinations => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
