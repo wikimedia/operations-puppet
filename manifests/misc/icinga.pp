@@ -844,13 +844,22 @@ class icinga::monitor::snmp {
     subscribe => File['/etc/init.d/snmpd'];
   }
 
-  # FIXME: smptt crashes periodically on precise
+  # FIXME: snmptt crashes periodically on precise
   cron { 'restart_snmptt':
     ensure => present,
     command => 'service snmptt restart 2>&1',
     user => root,
     hour => [0, 4, 8, 12, 16, 20],
     minute => 7;
+  }
+  # FIXME: snmptt doesn't always delete old files from spool
+  # and can run out of inodes, rsync from empty dir is fastest way to delete
+  cron { 'empty_snmptt_spool':
+    ensure => present,
+    command => 'rsync -a --delete /lost+found/ /var/spool/snmptt/',
+    user => root,
+    hour => 0,
+    minute => 23;
   }
 
 }
