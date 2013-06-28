@@ -330,30 +330,7 @@ class swift::storage {
 	class config {
 		require swift::storage::packages
 
-		class {'rsync::server': log_file => '/var/log/rsyncd.log'}
-		rsync::server::module {
-			'account':
-				uid => 'swift',
-				gid => 'swift',
-				max_connections => '2',
-				path        => '/srv/swift-storage/',
-				read_only   => 'false',
-				lock_file => '/var/lock/account.lock';
-			'container':
-				uid => 'swift',
-				gid => 'swift',
-				max_connections => '2',
-				path        => '/srv/swift-storage/',
-				read_only   => 'false',
-				lock_file => '/var/lock/container.lock';
-			'object':
-				uid => 'swift',
-				gid => 'swift',
-				max_connections => '3',
-				path        => '/srv/swift-storage/',
-				read_only   => 'false',
-				lock_file => '/var/lock/object.lock';
-		}
+		class { "generic::rsyncd": config => "swift" }
 
 		# set up swift specific configs
 		File { owner => swift, group => swift, mode => 0440 }
