@@ -18,15 +18,9 @@ class role::analytics {
 
     # include analytics user accounts
     include role::analytics::users
-
-    # include java on all analytics servers
-    include role::analytics::java
-
-    # We want to be able to geolocate IP addresses
-    include geoip
-
-    # udp-filter is a useful thing!
-    include misc::udp2log::udp_filter
+    
+    # include common analytics packages
+    include role::analytics::packages
 
     # Include these common classes on all analytics nodes.
     # (for now we only include these on reinstalled and
@@ -75,6 +69,25 @@ class role::analytics::users {
     # Diederik, David and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }
 }
+
+# includes packages common to analytics nodes
+class role::analytics::packages {
+    # include java on all analytics servers
+    include role::analytics::java
+    # We want to be able to geolocate IP addresses
+    include geoip
+    # udp-filter is a useful thing!
+    include misc::udp2log::udp_filter
+
+    # need python-lxml to try out check_ganglia
+    # (https://github.com/larsks/check_ganglia)
+    if !defined(Package['python-lxml']) {
+        package { 'python-lxml':
+            ensure => 'installed',
+        }
+    }
+}
+
 
 
 class role::analytics::java {
