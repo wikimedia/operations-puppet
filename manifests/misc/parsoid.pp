@@ -3,6 +3,9 @@
 @monitor_group { "parsoid_pmtpa": description => "pmtpa parsoid servers" }
 
 class misc::parsoid {
+	system_role { "misc::parsoid": description => "Parsoid server" }
+	deployment::target { "parsoid": }
+
 	package { [ "nodejs", "npm", "build-essential" ]:
 		ensure => latest
 	}
