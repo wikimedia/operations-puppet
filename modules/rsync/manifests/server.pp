@@ -11,7 +11,7 @@
 # into the WMF puppet repository. - otto
 
 class rsync::server(
-  # $use_xinetd = true,
+  $use_xinetd = false,  # this parameter should not be used.  xinetd is not available.
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
   $log_file  = 'UNSET',
@@ -19,6 +19,17 @@ class rsync::server(
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'
+  $rsync_conf      = '/etc/rsyncd.conf'
+  $rsync_pid       = '/var/run/rsync.pid'
+
+  # rsync daemon defaults file
+  file { "/etc/default/rsync":
+    ensure  => present,
+    mode    => 0444,
+    owner   => root,
+    group   => root,
+    content => template("rsync/rsync.default.erb"),
+  }
 
   # if($use_xinetd) {
   #   include xinetd
@@ -26,14 +37,14 @@ class rsync::server(
   #     bind        => $address,
   #     port        => '873',
   #     server      => '/usr/bin/rsync',
-  #     server_args => '--daemon --config /etc/rsync.conf',
+  #     server_args => '--daemon --config ${rsync_conf}',
   #     require     => Package['rsync'],
   #   }
   # } else {
     service { 'rsync':
       ensure    => running,
       enable    => true,
-      subscribe => Exec['compile fragments'],
+      subscribe => [ Exec['compile fragments'], File['/etc/default/rsync'] ],
     }
   # }
 
@@ -57,7 +68,7 @@ class rsync::server(
   # which happens with cobbler systems by default
   exec { 'compile fragments':
     refreshonly => true,
-    command     => "ls ${rsync_fragments}/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat ${rsync_fragments}/header ${rsync_fragments}/frag-* > /etc/rsync.conf; else cat ${rsync_fragments}/header > /etc/rsync.conf; fi; $(exit 0)",
+    command     => "ls ${rsync_fragments}/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat ${rsync_fragments}/header ${rsync_fragments}/frag-* > ${rsync_conf}; else cat ${rsync_fragments}/header > ${rsync_conf}; fi; $(exit 0)",
     subscribe   => File["${rsync_fragments}/header"],
     path        => '/bin:/usr/bin',
   }

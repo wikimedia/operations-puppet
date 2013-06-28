@@ -4,6 +4,10 @@
 * 2012-08-30 0.1.0-wmf
 - Removed xinetd support (otto@wikimedia.org)
 - Removed '< I <3 Puppet Labs >' default motd.
+- Puppetized /etc/default/rsync for RSYNC_ENABLE.
+- Changed config file path to rsyncd.conf (was rsync.conf)
+- Changed default pid file to rsyncd.pid (was rsync.pid)
+- Removed undefined variables incoming_chmod/outgoing_chmod from templates
 
 
 * 2012-06-07 0.1.0
