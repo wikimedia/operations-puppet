@@ -22,13 +22,19 @@ class salt::minion(
     require => [Package["salt-minion"]];
   }
 
-  file { "/etc/salt/minion":
-    content => template("salt/minion.erb"),
-    owner => root,
-    group => root,
-    mode => 0444,
-    notify => Service["salt-minion"],
-    require => Package["salt-minion"];
+  file {
+    "/etc/salt/minion":
+      content => template("salt/minion.erb"),
+      owner => root,
+      group => root,
+      mode => 0444,
+      notify => Service["salt-minion"],
+      require => Package["salt-minion"];
+    "/usr/local/sbin/grain-merge":
+      source => "puppet:///modules/salt/grain-merge",
+      owner => root,
+      group => root,
+      mode => 0544;
   }
 
 }
