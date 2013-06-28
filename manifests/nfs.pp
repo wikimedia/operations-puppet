@@ -324,6 +324,11 @@ class misc::nfs-server::home {
 class misc::nfs-server::home::rsyncd {
 	system_role { "misc::nfs-server::home::rsyncd": description => "/home rsync daemon" }
 
-	class { 'generic::rsyncd': config => "home" }
+	include rsync::server
+	rsync::server::module {
+		'httpdconf':
+			path        => '/home/wikipedia/conf/httpd',
+			read_only   => 'true',
+			hosts_allow => ['10.0.0.0/16', '10.64.0.0/22', '10.64.16.0/24', '208.80.152.0/22', '10.64.32.0/22'];
+    }
 }
-
