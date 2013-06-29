@@ -32,6 +32,6 @@ class toollabs::redis inherits toollabs {
             "RANDOMKEY"  => "",
             "DEBUG"      => ""
         },
-        monitor => false # Monitoring isn't setup for labs / tool labs, IIRC
+        monitor => true
     }
 }
