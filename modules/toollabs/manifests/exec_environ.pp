@@ -37,6 +37,7 @@ class toollabs::exec_environ {
       'libjson-perl',
       'libjson-xs-perl',
       'libdbd-sqlite3-perl',
+      'libpoe-perl',
       'python-twisted',
       'python-virtualenv',
       'libclass-data-inheritable-perl',
