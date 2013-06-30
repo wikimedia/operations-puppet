@@ -786,3 +786,53 @@ class misc::statistics::limn::mobile_data_sync {
 		minute  => 0,
 	}
 }
+
+
+# Class: misc::statistics::limn::ee_data_sync
+#
+# Sets up daily cron jobs to run a script which
+# generates csv datafiles from ee statistics
+# then rsyncs those files to stat1001 so they can be served publicly
+class misc::statistics::limn::ee_data_sync {
+	include passwords::mysql::research
+
+	$source_dir        = '/a/limn-ee-data'
+	$command           = '$source_dir/cron.sh'
+	$mysql_credentials = '/a/.my.cnf.research'
+	$rsync_from        = '/a/limn-public-data'
+	$output            = '$rsync_from/ee/datafiles'
+	$gerrit_repo       = 'https://gerrit.wikimedia.org/r/p/analytics/limn-ee-data.git'
+	$user              = $misc::statistics::user::username
+
+	$db_user           = $passwords::mysql::research::user
+	$db_pass           = $passwords::mysql::research::pass
+
+	git::clone { 'analytics/limn-ee-data':
+		directory => $source_dir,
+		origin    => $gerrit_repo,
+		owner     => $user,
+		require   => [User[$user]],
+		ensure    => latest,
+	}
+
+	file { $mysql_credentials:
+		owner   => $user,
+		group   => $user,
+		mode    => 0600,
+		content => template('misc/mysql-config-research.erb'),
+	}
+
+	file { $output:
+		owner  => $user,
+		group  => wikidev,
+		mode   => 0775,
+		ensure => directory,
+	}
+
+	cron { 'rsync_ee_stats':
+		command => 'sh $command && /usr/bin/rsync -rt $rsync_from/* stat1001.wikimedia.org::www/limn-public-data/',
+		user    => $user,
+		hour    => 1,
+		minute  => 0,
+	}
+}

@@ -2669,6 +2669,7 @@ node "stat1.wikimedia.org" {
 
 	include misc::statistics::cron_blog_pageviews,
 		misc::statistics::limn::mobile_data_sync,
+		misc::statistics::limn::ee_data_sync,
 		misc::statistics::iptables
 }
 
