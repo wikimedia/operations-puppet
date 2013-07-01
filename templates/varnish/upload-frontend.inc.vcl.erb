@@ -64,6 +64,11 @@ sub vcl_fetch {
 	}
 }
 
+sub vcl_error {
+	call errorpage;
+	return(deliver);
+}
+
 sub vcl_deliver {
 	if (resp.http.X-Content-Range) {
 		set resp.http.Content-Range = resp.http.X-Content-Range;
