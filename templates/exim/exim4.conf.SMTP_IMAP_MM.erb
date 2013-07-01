@@ -299,10 +299,10 @@ domains = ! +local_domains
 <% if enable_mail_relay != "false" then -%>
 # Send donate.wikimedia.org mail to Fundraising CiviCRM server
 donate:
-    driver = manualroute
-    domains = +donate_domains
-    route_list = * aluminium.wikimedia.org byname
-    transport = remote_smtp
+	driver = manualroute
+	domains = +donate_domains
+	route_list = * aluminium.wikimedia.org byname
+	transport = remote_smtp
 
 # Route non-local domains (including +relay_domains) via DNS MX and A records
 dnslookup:
