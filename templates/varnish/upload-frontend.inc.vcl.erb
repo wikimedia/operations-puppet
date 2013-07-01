@@ -1,5 +1,7 @@
 # Varnish VCL include file for upload frontends
 
+include "errorpage.inc.vcl";
+
 sub vcl_recv {
 	call vcl_recv_purge;
 
@@ -62,6 +64,11 @@ sub vcl_fetch {
 			return (hit_for_pass);
 		}
 	}
+}
+
+sub vcl_error {
+	call errorpage;
+	return(deliver);
 }
 
 sub vcl_deliver {

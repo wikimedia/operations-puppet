@@ -1,5 +1,7 @@
 # Varnish VCL include file for upload backends
 
+include "errorpage.inc.vcl";
+
 sub pick_main_stevedore {
 	if (std.random(0, 2) < 1) {
 		set beresp.storage = "main1";
@@ -144,6 +146,11 @@ sub vcl_miss {
 	if (req.http.If-Cached) {
 		error 412 "Entity not in cache";
 	}
+}
+
+sub vcl_error {
+	call errorpage;
+	return(deliver);
 }
 
 sub vcl_deliver {
