@@ -672,7 +672,7 @@ class role::cache {
 
 		# FIXME: remove after migration
 		$temp_backend_weight = $::hostname ? {
-			/^cp300[345]$/ => 100,
+			/^cp300[3-6]$/ => 100,
 			default => 20,
 		}
 
