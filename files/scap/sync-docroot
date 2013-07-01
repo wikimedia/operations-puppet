@@ -8,3 +8,4 @@ echo "done!"
 BINDIR=/usr/local/bin
 $BINDIR/dologmsg "!log $USER synchronized docroot and w"
 $BINDIR/deploy2graphite sync-docroot
+exit 0

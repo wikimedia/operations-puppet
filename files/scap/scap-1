@@ -26,4 +26,4 @@ fi
 sudo -u mwdeploy /usr/local/bin/scap-2 "$SERVER"
 
 echo Done
-
+exit 0

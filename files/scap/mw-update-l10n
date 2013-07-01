@@ -4,15 +4,20 @@
 # dedicated user such as `mwdeploy`. This script is running as user `root` on
 # the beta cluster.
 
-(
-
-set -e
 . /usr/local/lib/mw-deployment-vars.sh
 BINDIR=/usr/local/bin
 
-if [ "`uname -s`" != Linux ]; then
-	echo "ERROR: This script requires the Linux operating system to function correctly"
+function die() {
+	if [ -n "$*" ]; then
+		echo >&2 "$*"
+	else
+		echo >&2 "Update of MediaWiki localisation messages failed" 
+	fi
 	exit 1
+}
+
+if [ "`uname -s`" != Linux ]; then
+	die "ERROR: This script requires the Linux operating system to function correctly"
 fi
 
 QUIET=--quiet
@@ -33,28 +38,30 @@ while true; do
 	esac
 done
 
-mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb)
+mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb) || die
 # Regenerate the extension message file list for all active MediaWiki versions
 for i in ${mwExtVerDbSets[@]}; do
 	mwVerNum=${i%=*}
 	mwDbName=${i#*=}
 	echo -n "Updating ExtensionMessages-$mwVerNum.php..."
-	mwTempDest=$(sudo -u apache mktemp)
+	mwTempDest=$(sudo -u apache mktemp) || die
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
-		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest"
-	sudo -u apache chmod 664 "$mwTempDest"
-	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php
-	sudo -u apache rm "$mwTempDest"
+		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest" \
+		|| die
+	sudo -u apache chmod 664 "$mwTempDest"  || die
+	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php || die
+	sudo -u apache rm "$mwTempDest" || die
 	echo "done"
 
 	# Update ExtensionMessages-*.php in the local copy
-	sudo -u mwdeploy cp $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $MW_COMMON/wmf-config/
+	sudo -u mwdeploy \
+		cp $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $MW_COMMON/wmf-config/ \
+		|| die
 
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
-		--outdir=$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n $QUIET
+		--outdir=$MW_COMMON_SOURCE/php-$mwVerNum/cache/l10n $QUIET \
+		|| die
 	echo "done"
 done
 
-
-) || echo "Update of MediaWiki localisation messages failed"

@@ -2,84 +2,89 @@
 
 NODEFILE=
 
-(
-	set -e
-
-	. /usr/local/lib/mw-deployment-vars.sh
-
-	BINDIR=/usr/local/bin
-
-	if [ ! -S "$SSH_AUTH_SOCK" ]; then
-		echo >&2 "SSH_AUTH_SOCK not set or not pointing to a socket."
-		echo >&2 "Did you start your ssh-agent?"
-		exit 1
+function cleanup() {
+	if [ -n "$NODEFILE" ]; then
+		rm -f "$NODEFILE"
 	fi
+}
 
-	mwVerDbSets=$($BINDIR/mwversionsinuse --home --withdb)
-	if [ -z "$mwVerDbSets" ]; then
-		echo "Unable to read wikiversions.dat or it is empty."
-		exit 1
+function die() {
+	cleanup
+	if [ -n "$*" ]; then
+		echo >&2 "$*"
+	else
+		echo >&2 "sync failed" 
 	fi
+	exit 1
+}
 
-	# Perform syntax check
-	echo -n "Checking syntax..."
-	if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
-		echo "Found syntax errors, cannot sync."
-		exit 1
-	fi
-	# Check syntax for all active MediaWiki versions
-	for i in ${mwVerDbSets[@]}; do
-		mwVerNum=${i%=*}
-		if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/php-$mwVerNum ) ); then
-			echo "Found syntax errors in $mwVerNum, cannot sync."
-			exit 1
-		fi
-	done
-	echo " done"
+. /usr/local/lib/mw-deployment-vars.sh
 
-	# Update the current machine so that serialization works.
-	# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
-	# and mwscript work with the right version of the files.
-	/usr/local/bin/sync-common
+BINDIR=/usr/local/bin
 
-
-	# Update list of extension message files and regenerate
-	# the localisation cache
-	/usr/local/bin/mw-update-l10n
-
-	# Notify
-	$BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
-
-	# Disable logging
-	export DOLOGMSGNOLOG=1
-
-	# Builds wikiversions.cdb and syncs it to the apaches with the dat file
-	sync-wikiversions
-
-	echo 'Copying style sheets to apaches...'
-	# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
-	dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/local/bin/scap-1skins' || true
-
-	echo 'Updating rsync proxies...'
-	dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- /usr/local/bin/scap-1
-
-	# Do the main code update in random order to avoid overloading any given rsync server
-	NODEFILE=$(mktemp)
-	shuf < /etc/dsh/group/mediawiki-installation > "$NODEFILE"
-
-	RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies`
-	# Condense whitespace
-	RSYNC_SERVERS=`echo $RSYNC_SERVERS`
-
-	echo 'Copying code to apaches...'
-	dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\" || true
-	echo 'Finished'
-
-	export DOLOGMSGNOLOG=""
-	$BINDIR/dologmsg "!log $USER Finished syncing Wikimedia installation... : $*"
-	$BINDIR/deploy2graphite scap
-) || echo "sync failed"
-
-if [ -n "$NODEFILE" ]; then
-	rm -f "$NODEFILE"
+if [ ! -S "$SSH_AUTH_SOCK" ]; then
+	die "SSH_AUTH_SOCK not set or not pointing to a socket. Did you start your ssh-agent?"
 fi
+
+mwVerDbSets=$($BINDIR/mwversionsinuse --home --withdb)
+if [ -z "$mwVerDbSets" ]; then
+	die "Unable to read wikiversions.dat or it is empty."
+fi
+
+# Perform syntax check
+echo -n "Checking syntax..."
+if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/wmf-config && $BINDIR/lint $MW_COMMON_SOURCE/multiversion ) ); then
+	die "Found syntax errors, cannot sync."
+fi
+# Check syntax for all active MediaWiki versions
+for i in ${mwVerDbSets[@]}; do
+	mwVerNum=${i%=*}
+	if ( ! ( $BINDIR/lint $MW_COMMON_SOURCE/php-$mwVerNum ) ); then
+		die "Found syntax errors in $mwVerNum, cannot sync."
+	fi
+done
+echo " done"
+
+# Update the current machine so that serialization works.
+# Push wikiversions.cdb changes so mwversionsinuse, set-group-write,
+# and mwscript work with the right version of the files.
+/usr/local/bin/sync-common || die
+
+# Update list of extension message files and regenerate
+# the localisation cache
+/usr/local/bin/mw-update-l10n || die
+
+# Notify
+$BINDIR/dologmsg "!log $USER Started syncing Wikimedia installation... : $*"
+
+# Disable logging
+export DOLOGMSGNOLOG=1
+
+# Builds wikiversions.cdb and syncs it to the apaches with the dat file
+sync-wikiversions || die
+
+echo 'Copying style sheets to apaches...'
+# Ignore errors from dsh since it gives an exit status of 1 on a connection timeout
+dsh -F30 -cM -g mediawiki-installation -o -oSetupTimeout=10 '/usr/local/bin/scap-1skins'
+
+echo 'Updating rsync proxies...'
+dsh -cM -g scap-proxies -o -oSetupTimeout=10 -- /usr/local/bin/scap-1
+
+# Do the main code update in random order to avoid overloading any given rsync server
+NODEFILE=$(mktemp)
+shuf < /etc/dsh/group/mediawiki-installation > "$NODEFILE" || die
+
+RSYNC_SERVERS=`sed 's/^#.*//' /etc/dsh/group/scap-proxies` || die
+# Condense whitespace
+RSYNC_SERVERS=`echo $RSYNC_SERVERS`
+
+echo 'Copying code to apaches...'
+dsh -F30 -cM -f "$NODEFILE" -o -oSetupTimeout=10 /usr/local/bin/scap-1 \""$RSYNC_SERVERS"\"
+echo 'Finished'
+
+export DOLOGMSGNOLOG=""
+$BINDIR/dologmsg "!log $USER Finished syncing Wikimedia installation... : $*"
+$BINDIR/deploy2graphite scap
+
+cleanup
+exit 0
