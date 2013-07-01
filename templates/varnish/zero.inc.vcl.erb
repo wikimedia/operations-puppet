@@ -295,6 +295,19 @@ acl carrier_623_03 { // Orange - Central African Republic
 	"41.223.184.152"/30;
 }
 
+acl carrier_404_01 { // Aircel India
+	"27.248.0.0"/16;
+	"49.136.0.0"/15;
+	"49.138.0.0"/16;
+	"49.139.224.0"/19;
+	"58.68.26.150";
+	"101.208.0.0"/12;
+	"118.102.183.46";
+	"118.102.186.29";
+	"118.102.186.30";
+	"118.102.186.240"/28;
+}
+
 sub tag_carrier {
 	/* For wiki zero project - tags partnered carriers
 	   The values for the X-CS headers are obtained from
@@ -423,6 +436,10 @@ sub tag_carrier {
 	} else if (client.ip ~ carrier_410_01) {
 		if (req.http.host ~ "(^(en|ur)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-CS = "410-01";
+		}
+	} else if (client.ip ~ carrier_404_01) {
+		if (req.http.host ~ "(^(en|hi|ta)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+			set req.http.X-CS = "404-01";
 		}
 	} else if (client.ip ~ carrier_510_11) {
 		set req.http.X-DfltLang = "id";
