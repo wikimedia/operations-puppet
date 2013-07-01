@@ -664,6 +664,12 @@ class role::cache {
 			$storage_size_main = 250
 		}
 
+		if $cluster_tier == 1 {
+			$director_retries = 2
+		} else {
+			$director_retries = $backend_weight * 4
+		}
+
 		include standard,
 			nrpe
 
@@ -698,7 +704,13 @@ class role::cache {
 				default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
 			},
 			directors => $varnish_be_directors[$cluster_tier],
-			director_type => "random",	# FIXME: set to chash on new servers
+			director_type => $cluster_tier ? {
+				1 => 'random',
+				default => 'chash',
+			},
+			director_options => {
+				'retries' => $director_retries,
+			},
 			vcl_config => {
 				'default_backend' => $default_backend,
 				'retry5xx' => 0,
