@@ -670,6 +670,12 @@ class role::cache {
 			$director_retries = $backend_weight * 4
 		}
 
+		# FIXME: remove after migration
+		$temp_backend_weight = $::hostname ? {
+			/^cp300[3]$/ => 100,
+			default => 20,
+		}
+
 		include standard,
 			nrpe
 
@@ -774,7 +780,7 @@ class role::cache {
 				},
 				{
 					'backend_match' => '^cp30[0-9][0-9]\.esams\.wikimedia\.org$',
-					'weight' => 20,
+					'weight' => $temp_backend_weight,
 				},
 				{
 					'port' => 3128,
