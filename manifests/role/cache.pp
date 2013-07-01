@@ -991,6 +991,8 @@ class role::cache {
 				{
 					'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
 					'weight' => $backend_weight,
+					'port' => 3128,
+					'probe' => "varnish",
 				},
 				{
 					'port' => 80,
