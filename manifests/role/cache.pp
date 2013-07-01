@@ -646,7 +646,7 @@ class role::cache {
 				"rendering" => $role::cache::configuration::backends[$::realm]['rendering'][$::mw_primary],
 			},
 			2 => {
-				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad-old']
+				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['upload']['eqiad']
 			}
 		}
 
