@@ -370,7 +370,7 @@ node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 	$ganglia_aggregator = true
 
-	include role::cache::parsoid
+	include role::cache::parsoid, admins::parsoid
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
