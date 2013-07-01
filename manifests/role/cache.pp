@@ -982,6 +982,7 @@ class role::cache {
 				'retry503' => 4,
 				'retry5xx' => 1,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+				'cluster_tier' => $cluster_tier,
 				'layer' => 'backend',
 			},
 			backend_options => [
@@ -1023,6 +1024,7 @@ class role::cache {
 			vcl_config => {
 				'retry5xx' => 0,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
+				'cluster_tier' => $cluster_tier,
 				'layer' => 'frontend',
 			},
 			backend_options => [
