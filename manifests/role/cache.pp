@@ -438,7 +438,7 @@ class role::cache {
 				listener_address => '208.80.154.154', # analytics1001
 				port             => '8422',
 				instance_name    => '',
-				cli_args         => "-m RxURL:^/event\.gif\?. -D",
+				cli_args         => '-m RxURL:^/event\.gif\?. -D',
 				log_fmt          => "%U\t%q\t%{Host}i\t%t\t%h\t%{X-Forwarded-For}i\t%{Referer}i\t%{Accept-Language}i\t%{Cookie}i\t%{X-WAP-Profile}i\t%{User-agent}i\t%l\t%n",
 				monitor          => false,
 			}
@@ -451,7 +451,7 @@ class role::cache {
 			listener_address => $event_listener,
 			port             => '8422',
 			instance_name    => '',
-			cli_args         => "-m RxURL:^/event\.gif\?. -D",
+			cli_args         => '-m RxURL:^/event\.gif\?. -D',
 			log_fmt          => "%q\t%l\t%n\t%t\t%h",
 			monitor          => false,
 		}
@@ -498,9 +498,9 @@ class role::cache {
 		$backend_weight = 100
 		$storage_size_bigobj = 50
 
-		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
+		if regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 96 {
 			$memory_storage_size = 16
-		} elsif regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 32 {
+		} elsif regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 32 {
 			$memory_storage_size = 8
 		} else {
 			$memory_storage_size = 1
@@ -569,12 +569,12 @@ class role::cache {
 			},
 			backend_options => [
 				{
-					'backend_match' => "^cp[0-9]+\.eqiad\.wmnet$",
+					'backend_match' => '^cp[0-9]+\.eqiad\.wmnet$',
 					'port' => 3128,
 					'probe' => "varnish",
 				},
 				{
-					'backend_match' => "^srv193\.pmtpa\.wmnet$",
+					'backend_match' => '^srv193\.pmtpa\.wmnet$',
 					'max_connections' => 20,
 				},
 				{
@@ -710,17 +710,17 @@ class role::cache {
 			backend_options => [
 				# FIXME: remove after migration
 				{
-					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
+					'backend_match' => '^dysprosium\.eqiad\.wmnet$',
 					'weight' => 80,
 					#'port' => 3128,
 					#'probe' => "varnish",
 				},
 				{
-					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'backend_match' => '^cp10[23][0-9]\.eqiad\.wmnet$',
 					'weight' => 20,
 				},
 				{
-					'backend_match' => "^cp[0-9]+\.eqiad.wmnet$",
+					'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
 					'port' => 3128,
 					'probe' => "varnish",
 				},
@@ -753,11 +753,11 @@ class role::cache {
 			},
 			backend_options => [
 				{
-					'backend_match' => "^dysprosium\.eqiad\.wmnet$",
+					'backend_match' => '^dysprosium\.eqiad\.wmnet$',
 					'weight' => 80,
 				},
 				{
-					'backend_match' => "^cp10[23][0-9]\.eqiad\.wmnet$",
+					'backend_match' => '^cp10[23][0-9]\.eqiad\.wmnet$',
 					'weight' => 20,
 				},
 				{
@@ -842,7 +842,7 @@ class role::cache {
 		}
 		$cluster_options = merge($common_cluster_options, $realm_cluster_options)
 
-		if regsubst($::memorytotal, "^([0-9]+)\.[0-9]* GB$", "\1") > 96 {
+		if regsubst($::memorytotal, '^([0-9]+)\.[0-9]* GB$', '\1') > 96 {
 			$memory_storage_size = 32
 		} else {
 			$memory_storage_size = 2
@@ -960,7 +960,7 @@ class role::cache {
 			},
 			backend_options => [
 				{
-					'backend_match' => "^srv193\.pmtpa\.wmnet$",
+					'backend_match' => '^srv193\.pmtpa\.wmnet$',
 					'max_connections' => 20,
 				},
 				{
