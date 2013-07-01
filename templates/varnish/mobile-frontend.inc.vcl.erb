@@ -1,5 +1,6 @@
 # Varnish VCL include file for mobile frontends
 
+include "errorpage.inc.vcl";
 include "device-detection.inc.vcl";
 include "zero.inc.vcl";
 
@@ -107,6 +108,9 @@ sub vcl_error {
 		set obj.status = 302;
 		return(deliver);
 	}
+
+	call errorpage;
+	return(deliver);
 }
 
 sub vcl_deliver {

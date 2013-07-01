@@ -1,5 +1,7 @@
 # Varnish VCL include file for mobile backends
 
+include "errorpage.inc.vcl";
+
 sub vcl_recv {
 	call vcl_recv_purge;
 	/* FIXME: restrict access */
@@ -21,4 +23,9 @@ sub vcl_fetch {
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
+}
+
+sub vcl_error {
+	call errorpage;
+	return(deliver);
 }
