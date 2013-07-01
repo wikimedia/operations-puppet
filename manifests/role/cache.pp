@@ -914,6 +914,17 @@ class role::cache {
 		include standard,
 			nrpe
 
+		$varnish_be_directors = {
+			1 => {
+				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
+				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
+				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
+			},
+			2 => {
+				"eqiad" => $role::cache::configuration::active_nodes[$::realm]['mobile']['eqiad']
+			}
+		}
+
 		$storage_size_main = $::hostname ? {
 			/^cp104[1-4]$/ => 100,
 			default => 300,
@@ -958,11 +969,7 @@ class role::cache {
 				'esams' => ["prefer_ipv6=on"],
 				default => [],
 			},
-			directors => {
-				"backend" => $role::cache::configuration::backends[$::realm]['appservers'][$::mw_primary],
-				"api" => $role::cache::configuration::backends[$::realm]['api'][$::mw_primary],
-				"test_wikipedia" => $role::cache::configuration::backends[$::realm]['test_appservers'][$::mw_primary],
-			},
+			directors => $varnish_be_directors[$cluster_tier],
 			director_type => $cluster_tier ? {
 				1 => 'random',
 				default => 'chash',
