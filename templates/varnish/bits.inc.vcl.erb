@@ -1,5 +1,6 @@
 # Varnish VCL include file for bits
 
+include "errorpage.inc.vcl";
 include "device-detection.inc.vcl";
 
 sub vcl_recv {
@@ -86,4 +87,7 @@ sub vcl_error {
 		set obj.status = 301;
 		return(deliver);
 	}
+
+	call errorpage;
+	return(deliver);
 }
