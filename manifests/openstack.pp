@@ -463,7 +463,7 @@ class openstack::openstack-manager($openstack_version="essex", $novaconfig, $cer
 
 	$controller_hostname = $novaconfig["controller_hostname"]
 
-	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick' ]:
+	package { [ 'php5', 'php5-cli', 'php5-mysql', 'php5-ldap', 'php5-uuid', 'php5-curl', 'php-apc', 'php-luasandbox', 'imagemagick', 'librsvg2-bin' ]:
 		ensure => present;
 	}
 
