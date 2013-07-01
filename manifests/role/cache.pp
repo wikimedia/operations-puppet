@@ -978,6 +978,7 @@ class role::cache {
 				'retries' => $director_retries,
 			},
 			vcl_config => {
+				'default_backend' => $default_backend,
 				'retry503' => 4,
 				'retry5xx' => 1,
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
