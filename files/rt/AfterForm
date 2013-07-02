@@ -1,0 +1,141 @@
+%# this adds the "Reset Password" feature to RT.
+%# slightly modified version from:
+%# http://requesttracker.wikia.com/wiki/PasswordReset
+%# taken from http://www2.usit.uio.no/it/rt/modifications/
+%# Add template named 'Password Change', with description
+%#
+%#   Automatically generate password for external users who have forgotten their password
+%#
+
+
+<div style="margin: -20px auto 10px auto; text-align: center;">
+
+
+<b>Forgot Your Password?</b>
+<div style="color: green; font-weight: bold;"><%$forgotSuccess%></div>
+<form method="get" style="display: <%$forgotFormDisplay%>;" action="NoAuth/Login.html">
+
+% if($forgotFail) {
+        <div class="error" style="text-align: left;">
+            <div class="titlebox error">
+                <div class="titlebox-title">
+                    <span class="left">Error</span><span class="right-empty"> </span>
+                </div>
+                <div class="titlebox-content">
+                    <%$forgotFail%><hr class="clear" />
+                </div>
+            </div>
+        </div>
+% }
+                <%$forgotPrompt%> <input type="text" name="email"> <input type="submit" value='Send New Password'>
+            </form>
+        </div>
+
+
+        <%INIT>
+        my $forgotPrompt = "Enter your email address: ";
+        my $forgotFail = '';
+        my $forgotFormDisplay = 'block';
+        my $forgotSuccess = '';
+
+        my $mailfrom = 'RT <rt@rt.wikimedia.org>';
+        if ($email)
+        {
+            $email =~ s/^\s+|\s+$//g;
+            my $UserObj = RT::User->new($RT::SystemUser);
+            $UserObj->LoadByEmail($email);
+
+            if (defined($UserObj->Id))
+            {
+                my ($val, $str) = ResetPassword($UserObj, $mailfrom);
+                if($val > 0)
+                {
+                    $forgotFormDisplay = 'none';
+                    $forgotSuccess = $str;
+                }
+                else
+                {
+                    $forgotFail = $str;
+                }
+            }
+            else
+            {
+                $forgotFail = "Sorry, no account in the ticket system has the email address: $email";
+                $forgotPrompt = "Please enter the email used in one of your existing tickets:";
+            }
+        }
+
+        sub ResetPassword {
+            my $self = shift;
+            my $mailfrom = shift;
+
+            my $email = $self->EmailAddress;
+
+            unless ( $self->CurrentUserCanModify('Password') ) {
+                return ( 0, $self->loc("You don't have permission to change your password.") );
+            }
+
+            unless ( ($self->Name =~ m/\@/) ) {
+                return ( 0, $self->loc("Only external users can reset their passwords this way.") );
+            }
+
+            my ( $status, $pass ) = $self->SetRandomPassword();
+
+            unless ($status) {
+                return ( 0, "$pass" );
+            }
+
+            my $template = RT::Template->new( $self->CurrentUser );
+
+            my $parsed;
+            # This test do not work.  I'm not sure how to detect if the template loading failed [pere 2006-08-16]
+            if ($template->LoadGlobalTemplate('PasswordChange')) {
+                $T::RealName = $self->RealName;
+                $T::Username = $self->Name;
+                $T::Password = $pass;
+                $parsed = $template->_ParseContent();
+            }
+            else
+            {
+
+# hardcoded default text body in case 'Password Change' template is missing.
+
+$parsed = <<EOF;
+
+        Greetings,
+
+        This message was automatically sent in response to a Reset Password request in
+        the web based ticket system.
+
+        You may now login using the following:
+
+                Username: $self->Name
+                Password: $pass
+
+        Wikimedia Ops
+
+EOF
+            }
+            my $entity = MIME::Entity->build(
+                                              From    => $mailfrom,
+                                              To      => $email,
+                                              Subject => loc("CF Ticket Password Changed"),
+                                              'X-RT-Loop-Prevention' => $RT::rtname,
+                                              Type    => "text/plain",
+                                              Charset => "UTF-8",
+                                              Data    => [$parsed]
+                                            );
+            open (MAIL, "|$RT::SendmailPath $RT::SendmailArguments -t") || return(0, "Failed to open mailpipe");
+            print MAIL $entity->as_string;
+            close(MAIL);
+
+            return (1, "SUCCESS! A new password was sent to your email address.");
+        }
+        </%INIT>
+
+        <%ARGS>
+        $email => undef
+  # if you are using RT4, you need this next line:
+        $next => undef
+  # end for RT4
+        </%ARGS>
