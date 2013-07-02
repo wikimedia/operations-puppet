@@ -87,11 +87,12 @@ NameVirtualHost *:443
 		deny from env=bad_browser
 	</Proxy>
 
-	AllowEncodedSlashes NoDecode
+	AllowEncodedSlashes On
 	RewriteEngine On
 	RewriteCond %{QUERY_STRING} ^p=mediawiki/core\.git;a=blob_plain;f=languages/messages/([a-zA-Z_]+)\.php;hb=HEAD$
 	RewriteRule ^/r/gitweb$ https://git.wikimedia.org/raw/mediawiki\%2Fcore.git/HEAD/languages\%2Fmessages\%2F%1.php [R=301,L,NE]
-	RewriteRule ^/r/(.*) http://127.0.0.1:8080/r/$1 [NE,P]
+
+	ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon
 
 	ErrorLog /var/log/apache2/error.log
 
