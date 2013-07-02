@@ -48,6 +48,16 @@ class role::gerrit {
 				  "remoteNameStyle" => "dash",
 				  "mirror" => "true",
 				},
+				"github-puppet-cdh4" => {
+				  "url" => 'git@github.com:wikimedia/puppet-cdh4',
+				  "threads" => "1",
+				  "authGroup" => "mediawiki-replication",
+				  "push" => "+refs/heads/*:refs/heads/*
+  push = +refs/tags/*:refs/tags/*",
+				  "remoteNameStyle" => "dash",
+				  "mirror" => "true",
+				  "projects" => "operations/puppet/cdh4",
+				},
 			},
 			smtp_host => "smtp.pmtpa.wmnet"
 		}
