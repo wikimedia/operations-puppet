@@ -294,6 +294,10 @@ sub vcl_error {
 		return(restart);
 	}
 <% end -%>
+
+	if (obj.status == 200) {
+		return(deliver);
+	}
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
