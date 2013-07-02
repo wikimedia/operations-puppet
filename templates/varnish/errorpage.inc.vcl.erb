@@ -1,7 +1,8 @@
 
 sub errorpage {
-	set obj.http.Content-Type = "text/html; charset=utf-8";
-	synthetic {"
+	if (obj.status != 200) {
+		set obj.http.Content-Type = "text/html; charset=utf-8";
+		synthetic {"
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -104,4 +105,5 @@ regsub(req.http.X-Forwarded-For, ".+", "Forwarded for: \0<br/>") + regsub(obj.ht
 </body>
 </html>
 "};
+	}
 }
