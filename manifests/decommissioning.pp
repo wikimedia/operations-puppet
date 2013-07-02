@@ -11,6 +11,7 @@ $decommissioned_servers = [
 'blondel',
 'br1-knams',
 'celsus',
+'cerium',
 'constable',
 'controller',
 'cp1021',
@@ -64,6 +65,7 @@ $decommissioned_servers = [
 'db30',
 'db41',
 'db1013', #moved to frack.eqiad 6-7-13
+'dysprosium',
 'ixia',
 'gilman',
 'knsq1',
@@ -295,6 +297,7 @@ $decommissioned_servers = [
 'storage3',
 'strontium',
 'thistle',
+'titantium',
 'tola',
 'virt1001',
 'virt1002',
