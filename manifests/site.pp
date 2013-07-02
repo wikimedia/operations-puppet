@@ -229,10 +229,6 @@ node "antimony.wikimedia.org" {
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
-	if $hostname =~ /^(arsenic|niobium)$/ {
-		$ganglia_aggregator = true
-	}
-
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	interface_add_ip6_mapped { "main":
@@ -240,7 +236,7 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 		interface => "bond0"
 	}
 
-	include role::cache::bits
+	include standard
 }
 
 node "bast1001.wikimedia.org" {
@@ -332,17 +328,13 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
-	if $hostname =~ /^cp102[12]$/ {
-		$ganglia_aggregator = true
-	}
-
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
 	interface_add_ip6_mapped { "main":
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
 	}
-	include role::cache::upload
+	include standard
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
@@ -357,14 +349,9 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
 
 # eqiad varnish for m.wikipedia.org
 node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
-
-	if $hostname =~ /^cp104(3|4)$/ {
-		$ganglia_aggregator = true
-	}
-
 	interface_add_ip6_mapped { "main": }
 
-	include role::cache::mobile
+	include standard
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
@@ -410,6 +397,7 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
 	}
+	include standard
 }
 
 node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
