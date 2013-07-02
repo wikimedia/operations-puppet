@@ -20,6 +20,9 @@ class toollabs::exec_environ {
   include identd
 
   package { [
+      'libdata-compare-perl',        # For Checkwiki.
+      'libtest-exception-perl',      # For Checkwiki.
+      'libxml-xpathengine-perl',     # For Checkwiki.
       'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
       'python-genshi',               # Bug #48863.
