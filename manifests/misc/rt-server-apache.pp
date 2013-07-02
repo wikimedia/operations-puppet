@@ -46,6 +46,15 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
     '/etc/request-tracker4/rt.conf':
       require => Package['request-tracker4'],
       content => $rtconf;
+    # the password-reset self-service form
+    '/usr/local/share/request-tracker4/html':
+    '/usr/local/share/request-tracker4/html/Callbacks':
+    '/usr/local/share/request-tracker4/html/Callbacks/Default':
+    '/usr/local/share/request-tracker4/html/Callbacks/Default/Elements':
+    '/usr/local/share/request-tracker4/html/Callbacks/Default/Elements/Login':
+      ensure => 'directory';
+    '/usr/local/share/request-tracker4/html/Callbacks/Default/Elements/Login/AfterForm':
+      source  => 'puppet:///files/rt/AfterForm';
   }
 
   exec { 'update-rt-siteconfig':
