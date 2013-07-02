@@ -49,8 +49,7 @@ class role::statistics::private inherits role::statistics {
 	system_role { "role::statistics": description => "statistics private data host" }
 
 	# include classes needed for crunching private data on stat1002
-	include geoip,
-		geoip::packages::python,
+	include misc::geoip,
 		misc::statistics::dataset_mount,
 		misc::statistics::mediawiki,
 		misc::statistics::plotting,
