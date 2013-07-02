@@ -11,11 +11,13 @@ import "dns.pp"
 import "drac.pp"
 import "facilities.pp"
 import "ganglia.pp"
+import "geoip.pp"
 import "gerrit.pp"
 import "imagescaler.pp"
 import "iptables.pp"
 import "lvs.pp"
 import "mail.pp"
+import "media-storage.pp"
 import "memcached.pp"
 import "misc/*.pp"
 import "mobile.pp"
@@ -228,6 +230,10 @@ node "antimony.wikimedia.org" {
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
+	if $hostname =~ /^(arsenic|niobium)$/ {
+		$ganglia_aggregator = true
+	}
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
 	interface_add_ip6_mapped { "main":
@@ -235,7 +241,7 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 		interface => "bond0"
 	}
 
-	include standard
+	include role::cache::bits
 }
 
 node "bast1001.wikimedia.org" {
@@ -327,13 +333,17 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
+	if $hostname =~ /^cp102[12]$/ {
+		$ganglia_aggregator = true
+	}
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
 	interface_add_ip6_mapped { "main":
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
 	}
-	include standard
+	include role::cache::upload
 }
 
 node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
@@ -348,15 +358,20 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
 
 # eqiad varnish for m.wikipedia.org
 node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
+
+	if $hostname =~ /^cp104(3|4)$/ {
+		$ganglia_aggregator = true
+	}
+
 	interface_add_ip6_mapped { "main": }
 
-	include standard
+	include role::cache::mobile
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 	$ganglia_aggregator = true
 
-	include role::cache::parsoid, admins::parsoid
+	include role::cache::parsoid
 }
 
 node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet' {
@@ -396,7 +411,6 @@ node /^cp300[12]\.esams\.wikimedia\.org$/ {
 		require => Interface_aggregate[bond0],
 		interface => "bond0"
 	}
-	include standard
 }
 
 node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
@@ -808,7 +822,7 @@ node "dobson.wikimedia.org" {
 node "dysprosium.eqiad.wmnet" {
 	interface_add_ip6_mapped { "main": interface => "eth0" }
 
-	include standard
+	include role::cache::upload
 }
 
 node "ekrem.wikimedia.org" {
@@ -1804,6 +1818,7 @@ node "mchenry.wikimedia.org" {
 		nrpe,
 		ldap::role::client::corp,
 		backup::client,
+		exim::aliases::private,
 		groups::wikidev,
 		accounts::jdavis
 
@@ -1825,13 +1840,20 @@ node /mobile100[1-4]\.wikimedia\.org/ {
 }
 
 node "ms5.pmtpa.wmnet" {
-	include	standard
+	include	standard,
+		media-storage::thumbs-server,
+		media-storage::thumbs-handler
 }
 
 node "ms6.esams.wikimedia.org" {
+	$thumbs_proxying = "true"
+	$thumbs_proxy_source = "http://208.80.152.211"
+
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
-	include standard
+	include standard,
+		media-storage::thumbs-server,
+		media-storage::htcp-purger
 }
 
 node /^ms(10|1001)\.wikimedia\.org$/ {
@@ -1847,7 +1869,12 @@ node /ms100[4]\.eqiad\.wmnet/ {
 	$cluster = "misc"
 	$ganglia_aggregator = true
 
-	include standard
+	$thumbs_proxying = "true"
+	$thumbs_proxy_source = "http://10.0.0.252"
+
+	include standard,
+		media-storage::thumbs-server,
+		media-storage::htcp-purger
 }
 
 node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
@@ -2056,10 +2083,10 @@ node "neon.wikimedia.org" {
 		channel  => '#wikimedia-operations',
 		password => $passwords::logmsgbot::logmsgbot_password,
 		cidr     => [
-			'::ffff:10.64.21.123/128',    # vanadium
-			'::ffff:10.64.0.196/128',     # tin
-			'::ffff:208.80.152.165/128',  # fenari
-			'::ffff:127.0.0.1/128',       # loopback
+			'10.64.21.123/32',    # vanadium
+			'10.64.0.196/32',     # tin
+			'208.80.152.165/32',  # fenari
+			'127.0.0.1/32',       # loopback
 		],
 	}
 }
@@ -2892,7 +2919,14 @@ node "williams.wikimedia.org" {
 }
 
 node /(cerium|titanium)\.wikimedia\.org/ {
-	include standard
+	if $hostname == "cerium" {
+		$ganglia_aggregator = true
+	}
+
+	include standard,
+		admins::roots,
+		admins::parsoid,
+		role::cache::parsoid
 }
 
 node /^wtp10(0[1-9]|1[0-9]|2[0-4])\.eqiad\.wmnet$/ {
