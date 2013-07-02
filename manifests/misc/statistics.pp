@@ -82,7 +82,7 @@ class misc::statistics::base {
 
 
 class misc::statistics::packages {
-	package { ["mc", "zip", "p7zip", "p7zip-full", "subversion", "mercurial", "tofrodos"]:
+	package { ['mc', 'zip', 'p7zip', 'p7zip-full', 'subversion', 'mercurial', 'tofrodos', 'git-review']:
 		ensure => latest;
 	}
 
