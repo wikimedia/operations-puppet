@@ -123,8 +123,7 @@ class role::cache {
 				},
 				"bits" => {
 					"pmtpa" => ["sq67.wikimedia.org", "sq68.wikimedia.org", "sq69.wikimedia.org", "sq70.wikimedia.org"],
-					"eqiad" => ["arsenic.wikimedia.org", "niobium.wikimedia.org", "strontium.eqiad.wmnet", "palladium.eqiad.wmnet",
-					 	'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet'],
+					"eqiad" => ['cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.eqiad.wmnet'],
 					"esams" => ["cp3019.esams.wikimedia.org", "cp3020.esams.wikimedia.org", "cp3021.esams.wikimedia.org", "cp3022.esams.wikimedia.org"],
 				},
 				"upload" => {
@@ -156,26 +155,6 @@ class role::cache {
 						'sq85.wikimedia.org',
 						'sq86.wikimedia.org',
 					],
-					# FIXME: remove after migration
-					"eqiad-old" => [
-						'cp1021.eqiad.wmnet',
-						'cp1022.eqiad.wmnet',
-						'cp1023.eqiad.wmnet',
-						'cp1024.eqiad.wmnet',
-						'cp1025.eqiad.wmnet',
-						'cp1026.eqiad.wmnet',
-						'cp1027.eqiad.wmnet',
-						'cp1028.eqiad.wmnet',
-						'cp1029.eqiad.wmnet',
-						'cp1030.eqiad.wmnet',
-						'cp1031.eqiad.wmnet',
-						'cp1032.eqiad.wmnet',
-						'cp1033.eqiad.wmnet',
-						'cp1034.eqiad.wmnet',
-						'cp1035.eqiad.wmnet',
-						'cp1036.eqiad.wmnet',
-						'dysprosium.eqiad.wmnet',
-					],
 					'eqiad' => [
 						'cp1048.eqiad.wmnet',
 						'cp1049.eqiad.wmnet',
@@ -199,8 +178,6 @@ class role::cache {
 				},
 				"mobile" => {
 					"pmtpa" => [],
-					# FIXME: remove after migration
-					"eqiad-old" => ["cp1041.eqiad.wmnet", "cp1042.eqiad.wmnet", "cp1043.wikimedia.org", "cp1044.wikimedia.org"],
 					'eqiad' => ['cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.eqiad.wmnet'],
 					"esams" => ['cp3011.esams.wikimedia.org', 'cp3012.esams.wikimedia.org', 'cp3013.esams.wikimedia.org', 'cp3014.esams.wikimedia.org'],
 				},
@@ -265,7 +242,7 @@ class role::cache {
 			},
 			"bits" => {
 				"pmtpa" => [],
-				"eqiad" => [],
+				"eqiad" => ['arsenic.wikimedia.org', 'niobium.wikimedia.org', 'strontium.eqiad.wmnet', 'palladium.eqiad.wmnet'],
 				"esams" => [
 					"knsq1.esams.wikimedia.org",
 					"knsq2.esams.wikimedia.org",
@@ -294,7 +271,24 @@ class role::cache {
 					'sq15.wikimedia.org',
 					'sq47.wikimedia.org',
 				],
-				"eqiad" => [],
+				"eqiad" => [
+					'cp1021.eqiad.wmnet',
+					'cp1022.eqiad.wmnet',
+					'cp1023.eqiad.wmnet',
+					'cp1024.eqiad.wmnet',
+					'cp1025.eqiad.wmnet',
+					'cp1026.eqiad.wmnet',
+					'cp1027.eqiad.wmnet',
+					'cp1028.eqiad.wmnet',
+					'cp1029.eqiad.wmnet',
+					'cp1030.eqiad.wmnet',
+					'cp1031.eqiad.wmnet',
+					'cp1032.eqiad.wmnet',
+					'cp1033.eqiad.wmnet',
+					'cp1034.eqiad.wmnet',
+					'cp1035.eqiad.wmnet',
+					'cp1036.eqiad.wmnet',
+				],
 				"esams" => [
 					'knsq8.knams.wikimedia.org',
 					'knsq9.knams.wikimedia.org',
@@ -308,7 +302,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => [],
+				"eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet', 'cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
 				"esams" => []
 			},
 			"parsoid" => {
@@ -635,11 +629,6 @@ class role::cache {
 
 		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['upload'][$::site] }
 
-		# FIXME: remove after migration
-		$suffix = $::hostname ? {
-			/^(dysprosium|cp10[23][0-9])$/ => "-old",
-			default => "",
-		}
 		$varnish_be_directors = {
 			1 => {
 				"backend" => $lvs::configuration::lvs_service_ips[$::realm]['swift']['pmtpa'],
@@ -652,12 +641,7 @@ class role::cache {
 
 		$default_backend = $cluster_tier ? { 1 => 'backend', default => 'eqiad' }
 
-		# FIXME: remove after migration
-		if $::hostname =~ /^cp10[23][0-9]$/ {
-			$storage_size_main = 100
-			$storage_size_bigobj = 10
-		}
-		elsif $::hostname =~ /^cp30[0-9][0-9]$/ {
+		if $::hostname =~ /^cp30[0-9][0-9]$/ {
 			$storage_size_main = 300
 		}
 		else {
@@ -673,13 +657,8 @@ class role::cache {
 		include standard,
 			nrpe
 
-		# FIXME: set to default on new servers
 		$storage_partitions = $::realm ? {
-			'production' =>
-				$::hostname ? {
-					'dysprosium' => ['sdc1', 'sdd1'],
-					default => ['sda3', 'sdb3'],
-				},
+			'production' => ['sda3', 'sdb3'],
 			'labs' => ['vdb']
 		}
 		varnish::setup_filesystem{ $storage_partitions:
@@ -699,8 +678,7 @@ class role::cache {
 			},
 			# FIXME: remove after migration
 			storage => $::hostname ? {
-				'dysprosium' => "-s main1=persistent,/srv/sdc1/varnish.persist,300G -s main2=file,/srv/sdd1/varnish.persist,300G -s bigobj1=file,/srv/sdc1/large-objects.persist,50G -s bigobj2=file,/srv/sdd1/large-objects.persist,50G",
-				/^cp(10[23][0-9]|30[01][0-9])$/ => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj1=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
+				/^cp30[01][0-9]$/ => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj1=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
 				default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
 			},
 			directors => $varnish_be_directors[$cluster_tier],
@@ -720,17 +698,6 @@ class role::cache {
 				'layer' => 'backend',
 			},
 			backend_options => [
-				# FIXME: remove after migration
-				{
-					'backend_match' => '^dysprosium\.eqiad\.wmnet$',
-					'weight' => 80,
-					#'port' => 3128,
-					#'probe' => "varnish",
-				},
-				{
-					'backend_match' => '^cp10[23][0-9]\.eqiad\.wmnet$',
-					'weight' => 20,
-				},
 				{
 					'backend_match' => '^cp[0-9]+\.eqiad.wmnet$',
 					'port' => 3128,
@@ -754,7 +721,7 @@ class role::cache {
 			port => 80,
 			admin_port => 6082,
 			storage => "-s malloc,${memory_storage_size}G",
-			directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload']["${::site}${suffix}"] },
+			directors => { "backend" => $role::cache::configuration::active_nodes[$::realm]['upload'][$::site] },
 			director_type => "chash",
 			vcl_config => {
 				'retry5xx' => 0,
@@ -764,14 +731,6 @@ class role::cache {
 				'layer' => 'frontend',
 			},
 			backend_options => [
-				{
-					'backend_match' => '^dysprosium\.eqiad\.wmnet$',
-					'weight' => 80,
-				},
-				{
-					'backend_match' => '^cp10[23][0-9]\.eqiad\.wmnet$',
-					'weight' => 20,
-				},
 				{
 					'port' => 3128,
 					'connect_timeout' => "5s",
@@ -915,10 +874,7 @@ class role::cache {
 			}
 		}
 
-		$storage_size_main = $::hostname ? {
-			/^cp104[1-4]$/ => 100,
-			default => 300,
-		}
+		$storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
 		
 		if $cluster_tier == 1 {
 			$director_retries = 2
@@ -930,26 +886,12 @@ class role::cache {
 			before => Varnish::Instance["mobile-backend"]
 		}
 
-		# TODO: remove after migration
-		if $::hostname =~ /^cp104[1-4]$/ {
-			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:81" ] }
-		} else {
-			class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
-		}
-		# FIXME: remove after migration
-		$suffix = $::hostname ? {
-			/^cp104[1-4]$/ => "-old",
-			default => "",
-		}
+		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
 		varnish::instance { "mobile-backend":
 			name => "",
 			vcl => "mobile-backend",
-			# TODO: remove after migration
-			port => $::hostname ? {
-				/^cp104[1-4]$/ => 81,
-				default => 3128,
-			},
+			port => 3128,
 			admin_port => 6083,
 			storage => $::realm ? {
 				'production' => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G",
@@ -1005,7 +947,7 @@ class role::cache {
 			admin_port => 6082,
 			storage => "-s malloc,${memory_storage_size}G",
 			directors => {
-				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile']["${::site}${suffix}"],
+				"backend" => $::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site],
 			},
 			director_options => {
 				'retries' => $backend_weight * size($::role::cache::configuration::active_nodes[$::realm]['mobile'][$::site]),
@@ -1018,12 +960,6 @@ class role::cache {
 				'layer' => 'frontend',
 			},
 			backend_options => [
-			# TODO: remove after migration
-			{
-				'backend_match' => '^cp104[1-4]\.',
-				'port' => 81,
-				'weight' => 10,
-			},
 			{
 				'port' => 3128,
 				'weight' => $backend_weight,
@@ -1054,12 +990,7 @@ class role::cache {
 
 		$storage_size_main = $::realm ? { 'labs' => 5, default => 300 }
 		$storage_partitions = $::realm ? {
-			'production' => $::hostname ? {
-				# FIXME: Use consistent partitions on the new servers
-				"titanium" => ["sdb1", "sdd1"],
-				"cerium" => ["sda1", "sdb1"],
-				default => ['sda3', 'sdb3'],
-			},
+			'production' => ['sda3', 'sdb3'],
 			'labs' => ["vdb"],
 		}
 		varnish::setup_filesystem{ $storage_partitions:
@@ -1076,12 +1007,7 @@ class role::cache {
 			port => 3128,
 			admin_port => 6083,
 			storage => $::realm ? {
-				# FIXME: Use consistent partitions on the new servers
-				'production' => $::hostname ? {
-					"titanium" => "-s main1=persistent,/srv/sdb1/varnish.persist,139G -s main2=persistent,/srv/sdd1/varnish.persist,139G",
-					"cerium" => "-s main1=persistent,/srv/sda1/varnish.persist,139G -s main2=persistent,/srv/sdb1/varnish.persist,139G",
-					default => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
-				},
+				'production' => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G",
 				'labs' => "-s main1=persistent,/srv/vdb/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/vdb/varnish.main2,${storage_size_main}G",
 			},
 			directors => {
