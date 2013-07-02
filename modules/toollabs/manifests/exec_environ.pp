@@ -20,6 +20,7 @@ class toollabs::exec_environ {
   include identd
 
   package { [
+      'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
       'python-genshi',               # Bug #48863.
       'python-genshi-doc',           # Bug #48863.
