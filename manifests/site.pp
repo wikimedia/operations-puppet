@@ -1839,20 +1839,13 @@ node /mobile100[1-4]\.wikimedia\.org/ {
 }
 
 node "ms5.pmtpa.wmnet" {
-	include	standard,
-		media-storage::thumbs-server,
-		media-storage::thumbs-handler
+	include	standard
 }
 
 node "ms6.esams.wikimedia.org" {
-	$thumbs_proxying = "true"
-	$thumbs_proxy_source = "http://208.80.152.211"
-
 	interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
-	include standard,
-		media-storage::thumbs-server,
-		media-storage::htcp-purger
+	include standard
 }
 
 node /^ms(10|1001)\.wikimedia\.org$/ {
@@ -1868,12 +1861,7 @@ node /ms100[4]\.eqiad\.wmnet/ {
 	$cluster = "misc"
 	$ganglia_aggregator = true
 
-	$thumbs_proxying = "true"
-	$thumbs_proxy_source = "http://10.0.0.252"
-
-	include standard,
-		media-storage::thumbs-server,
-		media-storage::htcp-purger
+	include standard
 }
 
 node /^ms-fe[1-4]\.pmtpa\.wmnet$/ {
