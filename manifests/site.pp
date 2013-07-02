@@ -2082,10 +2082,10 @@ node "neon.wikimedia.org" {
 		channel  => '#wikimedia-operations',
 		password => $passwords::logmsgbot::logmsgbot_password,
 		cidr     => [
-			'10.64.21.123/32',    # vanadium
-			'10.64.0.196/32',     # tin
-			'208.80.152.165/32',  # fenari
-			'127.0.0.1/32',       # loopback
+			'::ffff:10.64.21.123/128',    # vanadium
+			'::ffff:10.64.0.196/128',     # tin
+			'::ffff:208.80.152.165/128',  # fenari
+			'::ffff:127.0.0.1/128',       # loopback
 		],
 	}
 }
