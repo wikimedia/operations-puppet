@@ -30,8 +30,8 @@ class salt::minion(
       mode => 0444,
       notify => Service["salt-minion"],
       require => Package["salt-minion"];
-    "/usr/local/sbin/grain-merge":
-      source => "puppet:///modules/salt/grain-merge.py",
+    "/usr/local/sbin/grain-ensure":
+      source => "puppet:///modules/salt/grain-ensure.py",
       owner => root,
       group => root,
       mode => 0544;
