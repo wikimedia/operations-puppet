@@ -226,7 +226,7 @@ class misc::monitoring::view::analytics::data($hdfs_stat_host, $kafka_broker_hos
 		graphs => [
 			{
 				'host_regex'   => $kafka_producer_host_regex,
-				'metric_regex' => 'packet_loss_average',
+				'metric_regex' => '^packet_loss_average$',
 			},
 			{
 				'host_regex'   => $kafka_producer_host_regex,
