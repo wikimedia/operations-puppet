@@ -3866,6 +3866,12 @@ host rdb1004 {
 	fixed-address rdb1004.eqiad.wmnet;
 }
 
+host rubidium {
+	hardware ethernet 18:03:73:f1:4f:70;
+	fixed-address rubidium.wikimedia.org;
+}
+
+
 host search13 {
 	hardware ethernet 00:26:B9:53:54:E2;
 	fixed-address search13.pmtpa.wmnet;
