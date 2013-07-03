@@ -79,4 +79,23 @@ class role::jenkins::slave::production {
 		size        => '128M',
 	}
 
+	# Packages to support use of rspec on puppet modules:
+	package { [
+		# Regular ubuntu packages:
+		'rubygems',
+		'rake',
+		# Packages imported from Debian Sid:
+		'rubygems-integration',
+		'ruby-metaclass',
+		'ruby-rspec-mocks',
+		'ruby-rspec-expectations',
+		'ruby-mocha',
+		'ruby-rspec',
+		'ruby-rspec-core',
+		# Packages built using gem2deb:
+		'ruby-rspec-puppet',
+		'ruby-puppetlabs-spec-helper',
+		]:
+		ensure => present;
+	}
 }
