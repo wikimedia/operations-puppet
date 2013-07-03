@@ -27,13 +27,13 @@ define salt::grain(
   $ensure = present,
 ) {
   if $ensure == 'absent' {
-    exec { "grain-ensure remove ${grain} ${value}":
-      onlyif  => "grain-ensure contains ${grain} ${value}",
+    exec { "/usr/local/sbin/grain-ensure remove ${grain} ${value}":
+      onlyif  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
       require => File['/usr/local/sbin/grain-ensure'],
     }
   } else {
-    exec { "grain-ensure set ${grain} ${value}":
-      unless  => "grain-ensure contains ${grain} ${value}",
+    exec { "/usr/local/sbin/grain-ensure set ${grain} ${value}":
+      unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
       require => File['/usr/local/sbin/grain-ensure'],
     }
   }
