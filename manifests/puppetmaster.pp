@@ -281,6 +281,13 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# data_directory.  By downloading these files into the
 		# volatiledir they will be available for other nodes to get via
 		# puppet by including geoip with data_provider => 'puppet'.
+
+		# Sigh, need to manually include ::geoip::data here, since we are
+		# changing data_directory and puppet class inheritance with parameters
+		# is funky.
+		class { '::geoip::data': 
+		    data_directory => "${puppetmaster::volatiledir}/GeoIP",
+	    }
 		class { '::geoip':
 			data_provider  => 'maxmind',
 			data_directory => "${puppetmaster::volatiledir}/GeoIP",
