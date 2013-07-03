@@ -194,12 +194,12 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_producer_h
 			},
 			{
 				'host_regex'   => $kafka_producer_host_regex,
-				'metric_regex' => 'kafka_producer_KafkaProducerStats-.+.ProduceRequestsPerSecond',
+				'metric_regex' => 'udp2log_kafka_producer_-.+.ProduceRequestsPerSecond',
 				'type'         => 'stack',
 			},
 			{
 				'host_regex'   => $kafka_producer_host_regex,
-				'metric_regex' => 'kafka_producer_AsyncProducerStats-.+.AsyncProducerEvents',
+				'metric_regex' => 'udp2log_kafka_producer_.+.AsyncProducerEvents',
 				'type'         => 'stack',
 			},
 		],
