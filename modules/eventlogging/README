@@ -1,0 +1,18 @@
+EventLogging
+------------
+EventLogging is a platform for modeling, logging and processing
+arbitrary analytic data. This Puppet module manages the configuration
+of its event processing component, which comprises a suite of four
+services, each of which implements a different step in a data
+processing pipeline. The services communicate with one another using a
+publisher/subscriber model, using ØMQ as the transport layer.
+An arbitrary number of service instances running on an arbitrary
+number of hosts can be freely composed to form different event
+processing patterns.
+
+For more information, see the extension's page and user guide on
+MediaWiki.org and the maintenance instructions on Wikitech:
+
+ * https://www.mediawiki.org/wiki/Extension:EventLogging
+ * https://www.mediawiki.org/wiki/Extension:EventLogging/Guide
+ * https://wikitech.wikimedia.org/wiki/EventLogging
