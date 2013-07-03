@@ -280,7 +280,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		# data_directory.  By downloading these files into the
 		# volatiledir they will be available for other nodes to get via
 		# puppet by including geoip with data_provider => 'puppet'.
-		class { 'geoip':
+		class { '::geoip':
 			data_provider  => 'maxmind',
 			data_directory => "${puppetmaster::volatiledir}/GeoIP",
 			environment    => 'http_proxy=http://brewster.wikimedia.org:8080',  # use brewster as http proxy, since puppetmaster probably does not have internet access
