@@ -1,6 +1,7 @@
-define deployment::target() {
+define deployment::target($ensure=present) {
     salt::grain { "deployment_target_$name":
-        grain => "deployment_target",
-        value => $name;
+        ensure => $ensure,
+        grain  => "deployment_target",
+        value  => $name;
     }
 }
