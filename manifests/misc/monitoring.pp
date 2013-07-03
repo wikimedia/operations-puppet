@@ -110,7 +110,7 @@ define misc::monitoring::view::udp2log($host_regex) {
 		graphs => [
 			{
 				'host_regex'   => $host_regex,
-				'metric_regex' => 'packet_loss_average',
+				'metric_regex' => '^packet_loss_average$',
 			},
 			{
 				'host_regex'   => $host_regex,
