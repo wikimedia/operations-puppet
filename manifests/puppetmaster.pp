@@ -274,6 +274,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	}
 
 	class geoip {
+	    include passwords::geoip
 		# Including geoip with data_provider => maxmind will install a
 		# cron job to download GeoIP data files from Maxmind weekly.
 		# Setting data_directory will have those files downloaded into
