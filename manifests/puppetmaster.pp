@@ -274,13 +274,14 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	}
 
 	class geoip {
-		# Including geoip::data with provider => maxmind will install a
+		# Including geoip with data_provider => maxmind will install a
 		# cron job to download GeoIP data files from Maxmind weekly.
 		# Setting data_directory will have those files downloaded into
 		# data_directory.  By downloading these files into the
 		# volatiledir they will be available for other nodes to get via
-		# puppet by including geoip::data with provider => 'puppet'.
-		class { 'geoip::data::maxmind':
+		# puppet by including geoip with data_provider => 'puppet'.
+		class { 'geoip':
+			data_provider  => 'maxmind',
 			data_directory => "${puppetmaster::volatiledir}/GeoIP",
 			environment    => 'http_proxy=http://brewster.wikimedia.org:8080',  # use brewster as http proxy, since puppetmaster probably does not have internet access
 			license_key    => $passwords::geoip::license_key,
