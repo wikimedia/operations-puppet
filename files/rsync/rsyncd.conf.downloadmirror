@@ -13,7 +13,8 @@ read only = true
 
 # for rolling rsyncs between dump hosts
 [data]
-read only = false # (move to push model for rsync)
+# using push model for rsync, so...
+read only = false
 path = /data
 hosts allow = dataset1001.wikimedia.org, dataset2.wikimedia.org
 
