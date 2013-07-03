@@ -18,9 +18,10 @@ class eventlogging::mediawiki_errors($port = 8423) {
 		],
 	}
 
+	# FIXME(ori-l, 3-Jul-2013): We're no longer using supervisord.
 	file { '/etc/supervisor/conf.d/mwerrors.conf':
 		content => template('eventlogging/mwerrors.conf.erb'),
-		require => [ Package['supervisor'], Systemuser['eventlogging'] ],
+		require => [ Package['supervisor'], User['eventlogging'] ],
 		notify  => Service['supervisor'],
 		mode    => '0444',
 	}

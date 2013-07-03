@@ -1,9 +1,10 @@
 # Monitor events per second using Ganglia
-class eventlogging::ganglia {
+class eventlogging::monitor {
+	include eventlogging
 
 	file { '/usr/lib/ganglia/python_modules/zpubmon.py':
 		ensure  => link,
-		target  => '/srv/deployment/eventlogging/EventLogging/ganglia/python_modules/zpubmon.py',
+		target  => "${eventlogging::path}/ganglia/python_modules/zpubmon.py",
 		require => [
 			File['/usr/lib/ganglia/python_modules'],
 			Package['python-zmq'],
@@ -19,5 +20,4 @@ class eventlogging::ganglia {
 		],
 		notify   => Service[gmond],
 	}
-
 }
