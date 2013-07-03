@@ -5,13 +5,14 @@
 
 # rsync conf file for internal mirroring of XML dumps
 #
-max connections = 5
+max connections = 6
+read only = true
 
 # for rolling rsyncs between dump hosts
 [data]
-read only = true
+read only = false # (move to push model for rsync)
 path = /data
-hosts allow = dataset1001.wikimedia.org
+hosts allow = dataset1001.wikimedia.org, dataset2.wikimedia.org
 
 # this will go away as soon as the secondary host is stable for rsyncers
 [dumpmirrors]

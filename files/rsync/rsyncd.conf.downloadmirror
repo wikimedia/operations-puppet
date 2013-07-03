@@ -11,7 +11,14 @@ uid = backup
 gid = backup
 read only = true
 
+# for rolling rsyncs between dump hosts
+[data]
+read only = false # (move to push model for rsync)
+path = /data
+hosts allow = dataset1001.wikimedia.org, dataset2.wikimedia.org
+
 [dumpmirrorslastfivedumps]
+read only = true
 # this will include only the last five good dumps. 
 # include/exclude list coming soon...
 path = /data/xmldatadumps/public
@@ -22,6 +29,7 @@ path = /data/xmldatadumps/public
 hosts allow = sagres.c3sl.ufpr.br odysseus.fi.muni.cz odysseus.linux.cz odysseus.ip6.fi.muni.cz
 
 [dumpmirrorsalldumps]
+read only = true
 # this includes only dumps, no archives, no other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
@@ -30,6 +38,7 @@ exclude = **tmp/ **temp/ **bad/ **save/ **other/ **archive/
 hosts allow = mirror.fr.wickedway.nl
 
 [dumpmirrorseverything]
+read only = true
 # this includes archives, other datasets
 path = /data/xmldatadumps/public
 exclude = **tmp/ **temp/ **bad/ **save/
