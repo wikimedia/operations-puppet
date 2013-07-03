@@ -676,11 +676,7 @@ class role::cache {
 				'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
 				default => [],
 			},
-			# FIXME: remove after migration
-			storage => $::hostname ? {
-				/^cp30[01][0-9]$/ => "-s main1=persistent,/srv/sda3/varnish.persist,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.persist,${storage_size_main}G -s bigobj1=file,/srv/sda3/large-objects.persist,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/large-objects.persist,${storage_size_bigobj}G",
-				default => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
-			},
+			storage => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
 			directors => $varnish_be_directors[$cluster_tier],
 			director_type => $cluster_tier ? {
 				1 => 'random',
