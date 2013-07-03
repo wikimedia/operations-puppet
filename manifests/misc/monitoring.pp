@@ -89,7 +89,7 @@ class misc::monitoring::views {
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
 	}
-	class { 'misc::monitoring::view::analytics':
+	class { 'misc::monitoring::view::analytics::data':
 		hdfs_stat_host            => 'analytics1027.eqiad.wmnet',
 		kafka_broker_host_regex   => 'analytics102[12].eqiad.wmnet',
 		kafka_producer_host_regex => 'analytics100[689].eqiad.wmnet',
