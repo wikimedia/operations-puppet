@@ -134,4 +134,25 @@ class contint::packages {
     ]: ensure => absent,
   }
 
+  # Packages to support use of rspec on puppet modules:
+  package { [
+    # Regular ubuntu packages:
+    'rake',
+    # Packages imported from Debian Sid:
+    # Most of these would be pulled in via dependencies
+    # from ruby-rspec but I'm enumerating them here as a note
+    # that the standard ubuntu versions are insufficient.
+    'rubygems-integration',
+    'ruby-metaclass',
+    'ruby-rspec-mocks',
+    'ruby-rspec-expectations',
+    'ruby-mocha',
+    'ruby-rspec',
+    'ruby-rspec-core',
+    # Packages built using gem2deb:
+    'ruby-rspec-puppet',
+    'ruby-puppetlabs-spec-helper',
+    ]:
+    ensure => present;
+  }
 }
