@@ -73,6 +73,7 @@ class PacketLossLogtailer(object):
                     #  filtering out HTTPS/IP6 traffic as the packetloss numbers
                     #  are inaccurate.
                     if role != 'https':
+                        self.percentloss_dict.setdefault('all_roles', [])
                         self.percentloss_dict['all_roles'].append(percentloss)
             else:
                 raise LogtailerParsingException("regmatch failed to match")

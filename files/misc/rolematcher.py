@@ -58,7 +58,7 @@ class RoleMatcher(object):
             return False
 
     def get_role(self):
-        return self.__str__()
+        return self.role
 
 
 def manual_init():
