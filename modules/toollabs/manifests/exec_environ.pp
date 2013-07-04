@@ -20,20 +20,19 @@ class toollabs::exec_environ {
   include identd
 
   package { [
+      # Language Runtimes
+      'openjdk-7-jre-headless',
+      'python3',
+      'nodejs',
+      'mono-runtime',
+      'tcl',
+      'ruby1.9.3',
+      'r-base',
+
+      # Perl libraries
       'libdata-compare-perl',        # For Checkwiki.
       'libtest-exception-perl',      # For Checkwiki.
       'libxml-xpathengine-perl',     # For Checkwiki.
-      'mariadb-client',              # For /usr/bin/mysql.
-      'mdbtools',                    # Bug #48805.
-      'python-genshi',               # Bug #48863.
-      'python-genshi-doc',           # Bug #48863.
-      'tree',                        # Bug #48862.
-      'nodejs',
-      'php5-curl',
-      'mono-runtime',
-      'php5-cli',
-      'php5-mysql',
-      'php5-redis',
       'libcache-memcached-fast-perl',
       'libhtml-parser-perl',
       'libwww-perl',
@@ -42,8 +41,6 @@ class toollabs::exec_environ {
       'libjson-xs-perl',
       'libdbd-sqlite3-perl',
       'libpoe-perl',
-      'python-twisted',
-      'python-virtualenv',
       'libclass-data-inheritable-perl',
       'libcommon-sense-perl',
       'libcrypt-openssl-bignum-perl',
@@ -51,24 +48,21 @@ class toollabs::exec_environ {
       'libdigest-hmac-perl',
       'libmediawiki-bot-perl',
       'libmediawiki-api-perl',
-      'libpng3',
-      'libfreetype6',
-      'libmpc2',
-      'libmpfr4',
-      'libneon27-gnutls',
-      'libnet-oauth-perl',
-      'libnfnetlink0',
-      'libnspr4',
-      'libnss3',
-      'libnss3-1d',
-      'libotf0',
-      'libpcsclite1',
-      'libquadmath0',
       'libstring-diff-perl',
       'libstring-shellquote-perl',   # For jsub.
-      'libsvn1',
-      'mariadb-common',
-      'openjdk-7-jre-headless',
+      'libpod-simple-wiki-perl',
+      'libxml-libxml-perl',
+      'libdbd-mysql-perl',
+      'libnetaddr-ip-perl',
+      'libthreads-shared-perl',
+      'libthreads-perl',
+      'libnet-oauth-perl',
+
+      # Python libraries
+      'python-genshi',               # Bug #48863.
+      'python-genshi-doc',           # Bug #48863.
+      'python-twisted',
+      'python-virtualenv',
       'python-apport',
       'python-flask',
       'python-flup',
@@ -92,25 +86,41 @@ class toollabs::exec_environ {
       'python-flask-oauth',
       'python-nose',
       'python-sqlalchemy',
-      'python3',
-      'mono-complete',
       'python-irclib',
+
+      # PHP libraries
+      'php5-curl',
+      'php5-cli',
+      'php5-mysql',
+      'php5-redis',
+
+      # Other packages
+      'mariadb-client',              # For /usr/bin/mysql.
+      'mariadb-common',
+      'mdbtools',                    # Bug #48805.
+      'tree',                        # Bug #48862.
+      'libpng3',
+      'libfreetype6',
+      'libmpc2',
+      'libmpfr4',
+      'libneon27-gnutls',
+      'libnfnetlink0',
+      'libnspr4',
+      'libnss3',
+      'libnss3-1d',
+      'libotf0',
+      'libpcsclite1',
+      'libquadmath0',
+      'libsvn1',
+      'mono-complete',
       'adminbot',
       'gnuplot-nox',
-      'libpod-simple-wiki-perl',
-      'libxml-libxml-perl',
-      'libdbd-mysql-perl',
-      'libnetaddr-ip-perl',
-      'tcl',
       'tclcurl',
       'tcllib',
-      'ruby1.9.3',
-      'libthreads-shared-perl',
-      'libthreads-perl',
       'dc',
       'p7zip',
-      'phpunit',
-      'r-base' ]:
+      'phpunit'
+      ]:
     ensure => present
   }
 
