@@ -126,5 +126,9 @@ class role::ci::testswarm {
 class role::ci::website {
   system_role { 'role::ci::website': description => 'CI Websites' }
 
-  include contint::website
+  include role::zuul::configuration
+
+  class { 'contint::website':
+    zuul_git_dir => $role::zuul::configuration::zuul_git_dir[$::realm],
+  }
 }
