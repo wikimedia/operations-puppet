@@ -1,7 +1,9 @@
 # Class for website hosted on the continuous integration server
 # https://integration.mediawiki.org/
 # https://doc.wikimedia.org/
-class contint::website {
+class contint::website(
+  $zuul_git_dir = '/var/lib/zuul/git'
+){
 
   # Static files in these docroots are in integration/docroot.git
 
@@ -42,10 +44,10 @@ class contint::website {
 
   # Apache configuration for integration.wikimedia.org
   file { '/etc/apache2/sites-available/integration.wikimedia.org':
-    mode   => '0444',
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/contint/apache/integration.wikimedia.org',
+    mode    => '0444',
+    owner   => 'root',
+    group   => 'root',
+    content => template('contint/apache/integration.wikimedia.org.erb'),
   }
   apache_site { 'integration.wikimedia.org':
     name => 'integration.wikimedia.org',

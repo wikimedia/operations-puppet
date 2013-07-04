@@ -1,6 +1,6 @@
 #####################################################################
 ### THIS FILE IS MANAGED BY PUPPET
-### puppet:///modules/contint/apache/integration.wikimedia.org
+### contint module templates/apache/integration.wikimedia.org.erb
 #####################################################################
 # vim: filetype=apache
 
@@ -12,8 +12,33 @@ NameVirtualHost *:443
 	ErrorLog /var/log/apache2/integration_error.log
 	CustomLog /var/log/apache2/integration_access.log vhost_combined
 
-	# Force Jenkins request through HTTPS
-	Redirect permanent / https://integration.wikimedia.org/
+	# Force any request to HTTPS except the Zuul git repository
+	RedirectMatch permanent ^/((?!(zuul\/git)).*) https://integration.wikimedia.org/$1
+
+	# Publish Zuul git repositories
+	#
+	# This let Jenkins slaves the possibility to fetch git references crafted
+	# by Zuul.
+
+	SetEnv GIT_PROJECT_ROOT <%= scope.lookupvar("zuul_git_dir") %>/
+	# Allow access to any repository:
+	SetEnv GIT_HTTP_EXPORT_ALL
+
+	# Rewrites borrowed from OpenStack Zuul configuration
+	AliasMatch ^/zuul/git/(.*/objects/[0-9a-f]{2}/[0-9a-f]{38})$ <%= scope.lookupvar("zuul_git_dir") %>/$1
+	AliasMatch ^/zuul/git/(.*/objects/pack/pack-[0-9a-f]{40}.(pack|idx))$ <%= scope.lookupvar("zuul_git_dir") %>/$1
+	ScriptAlias /zuul/git/ /usr/lib/git-core/git-http-backend/
+
+	# Restrict access to internal network
+	<Directory <%= scope.lookupvar("zuul_git_dir") %>>
+		Order Deny,Allow
+		Deny from all
+		Allow from 10.0.0.0/8
+		Allow from 127.0.0.1
+		# gallium is a slave with a public IP address
+		Allow from 208.80.154.135
+	</Directory>
+
 </VirtualHost>
 
 <VirtualHost *:443>
@@ -89,4 +114,5 @@ NameVirtualHost *:443
 	<Directory /srv/org/wikimedia/integration/nightly/mediawiki/core>
 		IndexOrderDefault Descending Date
 	</Directory>
+
 </VirtualHost>
