@@ -617,8 +617,14 @@ define command{
 # Analytics Kraken checks
 # Check that Kafka Brokers are getting ProduceRequests.
 define command{
-	command_name	check_kafka_broker_produce_requests
+	command_name	check_kafka_broker_produce_requests_min
 	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o lt
+}
+
+# Check that Kafka Brokers aren't getting TOO many ProduceRequests
+define command{
+	command_name	check_kafka_producer_produce_requests_max
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o gt
 }
 
 # Alerts for data loss in Kraken HDFS.
