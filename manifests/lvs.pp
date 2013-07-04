@@ -227,6 +227,7 @@ class lvs::configuration {
 					'wikipedialbsecure' => "91.198.174.225",
 					'bitslbsecure' => "91.198.174.233",
 					'uploadlbsecure' => "91.198.174.234",
+					'mobilelbsecure' => '91.198.174.236',
 					'wiktionarylbsecure' => "91.198.174.226",
 					'wikiquotelbsecure' => "91.198.174.227",
 					'wikibookslbsecure' => "91.198.174.228",
@@ -248,6 +249,7 @@ class lvs::configuration {
 					'foundationlbsecure6' => "2620:0:862:ed1a::9",
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
 					'uploadlbsecure6' => "2620:0:862:ed1a::b",
+					'uploadlbsecure6' => '2620:0:862:ed1a::c',
 				},
 			},
 			'ipv6' => {
