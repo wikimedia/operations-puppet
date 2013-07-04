@@ -32,32 +32,47 @@ class toollabs::exec_environ {
       'tcl',
 
       # Perl libraries
+      'libbot-basicbot-perl',
       'libcache-memcached-fast-perl',
       'libclass-data-inheritable-perl',
       'libcommon-sense-perl',
+      'libcrypt-gcrypt-perl',
       'libcrypt-openssl-bignum-perl',
       'libcrypt-openssl-rsa-perl',
       'libdata-compare-perl',        # For Checkwiki.
+      'libdata-dumper-simple-perl',
+      'libdatetime-format-duration-perl',
+      'libdatetime-format-strptime-perl',
       'libdbd-mysql-perl',
       'libdbd-sqlite3-perl',
+      'libdigest-crc-perl',
       'libdigest-hmac-perl',
+      'libhtml-html5-entities-perl',
       'libhtml-parser-perl',
+      'libirc-utils-perl',
       'libjson-perl',
       'libjson-xs-perl',
       'libmediawiki-api-perl',
       'libmediawiki-bot-perl',
       'libnet-oauth-perl',
       'libnetaddr-ip-perl',
+      'libobject-pluggable-perl',
       'libpod-simple-wiki-perl',
+      'libpoe-component-irc-perl',
+      'libpoe-component-syndicator-perl',
+      'libpoe-filter-ircd-perl',
       'libpoe-perl',
+      'libsocket-getaddrinfo-perl',
       'libstring-diff-perl',
       'libstring-shellquote-perl',   # For jsub.
+      'libtask-weaken-perl',
       'libtest-exception-perl',      # For Checkwiki.
       'libthreads-perl',
       'libthreads-shared-perl',
       'liburi-perl',
       'libwww-perl',
       'libxml-libxml-perl',
+      'libxml-simple-perl',
       'libxml-xpathengine-perl',     # For Checkwiki.
 
       # Python libraries
