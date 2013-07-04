@@ -79,6 +79,8 @@ class toollabs::exec_environ {
       'python-apport',
       'python-celery',
       'python-celery-with-redis',
+      'python-egenix-mxdatetime',
+      'python-egenix-mxtools',
       'python-flask',
       'python-flask-login',
       'python-flask-oauth',
@@ -86,8 +88,11 @@ class toollabs::exec_environ {
       'python-gdbm',
       'python-genshi',               # Bug #48863.
       'python-genshi-doc',           # Bug #48863.
+      'python-gevent',
       'python-gi',
+      'python-greenlet',
       'python-httplib2',
+      'python-imaging',
       'python-irclib',
       'python-keyring',
       'python-launchpadlib',
