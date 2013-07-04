@@ -249,7 +249,7 @@ class lvs::configuration {
 					'foundationlbsecure6' => "2620:0:862:ed1a::9",
 					'bitslbsecure6' => "2620:0:862:ed1a::a",
 					'uploadlbsecure6' => "2620:0:862:ed1a::b",
-					'uploadlbsecure6' => '2620:0:862:ed1a::c',
+					'mobilelbsecure6' => '2620:0:862:ed1a::c',
 					'wikidatalbsecure6' => "2620:0:862:ed1a::12",
 					'wikivoyagelbsecure6' => "2620:0:862:ed1a::13"
 				},
