@@ -20,87 +20,87 @@ class toollabs::exec_environ {
   include identd
 
   package { [
+      # Please keep all packages in each group sorted in alphabetical order
+
       # Language Runtimes
+      'mono-runtime',
+      'nodejs',
       'openjdk-7-jre-headless',
       'python3',
-      'nodejs',
-      'mono-runtime',
-      'tcl',
-      'ruby1.9.3',
       'r-base',
+      'ruby1.9.3',
+      'tcl',
 
       # Perl libraries
-      'libdata-compare-perl',        # For Checkwiki.
-      'libtest-exception-perl',      # For Checkwiki.
-      'libxml-xpathengine-perl',     # For Checkwiki.
       'libcache-memcached-fast-perl',
-      'libhtml-parser-perl',
-      'libwww-perl',
-      'liburi-perl',
-      'libjson-perl',
-      'libjson-xs-perl',
-      'libdbd-sqlite3-perl',
-      'libpoe-perl',
       'libclass-data-inheritable-perl',
       'libcommon-sense-perl',
       'libcrypt-openssl-bignum-perl',
       'libcrypt-openssl-rsa-perl',
+      'libdata-compare-perl',        # For Checkwiki.
+      'libdbd-mysql-perl',
+      'libdbd-sqlite3-perl',
       'libdigest-hmac-perl',
-      'libmediawiki-bot-perl',
+      'libhtml-parser-perl',
+      'libjson-perl',
+      'libjson-xs-perl',
       'libmediawiki-api-perl',
+      'libmediawiki-bot-perl',
+      'libnet-oauth-perl',
+      'libnetaddr-ip-perl',
+      'libpod-simple-wiki-perl',
+      'libpoe-perl',
       'libstring-diff-perl',
       'libstring-shellquote-perl',   # For jsub.
-      'libpod-simple-wiki-perl',
-      'libxml-libxml-perl',
-      'libdbd-mysql-perl',
-      'libnetaddr-ip-perl',
-      'libthreads-shared-perl',
+      'libtest-exception-perl',      # For Checkwiki.
       'libthreads-perl',
-      'libnet-oauth-perl',
+      'libthreads-shared-perl',
+      'liburi-perl',
+      'libwww-perl',
+      'libxml-libxml-perl',
+      'libxml-xpathengine-perl',     # For Checkwiki.
 
       # Python libraries
-      'python-genshi',               # Bug #48863.
-      'python-genshi-doc',           # Bug #48863.
-      'python-twisted',
-      'python-virtualenv',
       'python-apport',
+      'python-celery',
+      'python-celery-with-redis',
       'python-flask',
+      'python-flask-login',
+      'python-flask-oauth',
       'python-flup',
       'python-gdbm',
+      'python-genshi',               # Bug #48863.
+      'python-genshi-doc',           # Bug #48863.
       'python-gi',
       'python-httplib2',
+      'python-irclib',
       'python-keyring',
       'python-launchpadlib',
       'python-mysql.connector',
-      'python-problem-report',
+      'python-mysqldb',
       'python-newt',
+      'python-nose',
+      'python-problem-report',
+      'python-redis',
+      'python-requests',
+      'python-sqlalchemy',
+      'python-twisted',
+      'python-virtualenv',
       'python-wadllib',
       'python-webpy',
       'python-werkzeug',
-      'python-mysqldb',
-      'python-requests',
-      'python-redis',
-      'python-celery',
-      'python-celery-with-redis',
-      'python-flask-login',
-      'python-flask-oauth',
-      'python-nose',
-      'python-sqlalchemy',
-      'python-irclib',
 
       # PHP libraries
-      'php5-curl',
       'php5-cli',
+      'php5-curl',
       'php5-mysql',
       'php5-redis',
       'php5-xsl',
 
       # Other packages
-      'mariadb-client',              # For /usr/bin/mysql.
-      'mariadb-common',
-      'mdbtools',                    # Bug #48805.
-      'tree',                        # Bug #48862.
-      'libpng3',
+      'adminbot',
+      'dc',
+      'gnuplot-nox',
       'libfreetype6',
       'libmpc2',
       'libmpfr4',
@@ -111,16 +111,18 @@ class toollabs::exec_environ {
       'libnss3-1d',
       'libotf0',
       'libpcsclite1',
+      'libpng3',
       'libquadmath0',
       'libsvn1',
+      'mariadb-client',              # For /usr/bin/mysql.
+      'mariadb-common',
+      'mdbtools',                    # Bug #48805.
       'mono-complete',
-      'adminbot',
-      'gnuplot-nox',
+      'p7zip',
+      'phpunit',
       'tclcurl',
       'tcllib',
-      'dc',
-      'p7zip',
-      'phpunit'
+      'tree'                         # Bug #48862.
       ]:
     ensure => present
   }
