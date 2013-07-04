@@ -435,6 +435,7 @@ node "dataset2.wikimedia.org" {
 		accounts::catrope,
 		misc::download-wikimedia,
 		misc::download-primary,
+                misc::download::cron-rsync-dumps,
 		misc::kiwix-mirror
 }
 
