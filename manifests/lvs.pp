@@ -70,7 +70,7 @@ class lvs::configuration {
 
 	# This needs to stay in place until the esams MX80 is in production
 	# amslvs1 and amslvs2 currently can't have ipv6 enabled
-	$ipv6_hosts = ["lvs1", "lvs2", "lvs3", "lvs4", "lvs5", "lvs6", "lvs1001", "lvs1002", "lvs1003", "lvs1004", "lvs1005", "lvs1006", "amslvs3", "amslvs4"]
+	$ipv6_hosts = ["lvs1", "lvs2", "lvs3", "lvs4", "lvs5", "lvs6", "lvs1001", "lvs1002", "lvs1003", "lvs1004", "lvs1005", "lvs1006", "amslvs1", "amslvs2", "amslvs3", "amslvs4"]
 
 	if $::ipaddress6_eth0 {
 		$v6_ip = $::ipaddress6_eth0
