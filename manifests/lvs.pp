@@ -800,7 +800,8 @@ class lvs::balancer(
 	class { 'pybal::configuration':
 		global_options => $lvs::configuration::pybal,
 		lvs_services => $lvs::configuration::lvs_services,
-		lvs_class_hosts => $lvs::configuration::lvs_class_hosts
+		lvs_class_hosts => $lvs::configuration::lvs_class_hosts,
+		site => $::site
 	}
 
 	# Tune the ip_vs conn_tab_bits parameter
