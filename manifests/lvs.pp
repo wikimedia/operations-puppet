@@ -789,21 +789,18 @@ class lvs::balancer(
 
 	require "lvs::configuration"
 	include generic::sysfs::enable-rps
-
-	$lvs_class_hosts = $lvs::configuration::lvs_class_hosts
-	$pybal = $lvs::configuration::pybal
-	$lvs_services = $lvs::configuration::lvs_services
+	include pybal
 
 	system_role { "lvs::balancer": description => "LVS balancer" }
 
-	package { [ ipvsadm, pybal, ethtool ]:
+	package { ethtool:
 		ensure => installed;
 	}
 
-	# Generate PyBal config file
-	file { "/etc/pybal/pybal.conf":
-		require => Package[pybal],
-		content => template("pybal/pybal.conf.erb");
+	class { 'pybal::configuration':
+		global_options => $lvs::configuration::pybal,
+		lvs_services => $lvs::configuration::lvs_services,
+		lvs_class_hosts => $lvs::configuration::lvs_class_hosts
 	}
 
 	# Tune the ip_vs conn_tab_bits parameter
