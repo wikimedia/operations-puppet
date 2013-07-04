@@ -93,6 +93,7 @@ class toollabs::exec_environ {
       'php5-cli',
       'php5-mysql',
       'php5-redis',
+      'php5-xsl',
 
       # Other packages
       'mariadb-client',              # For /usr/bin/mysql.
