@@ -233,19 +233,25 @@ class nfs::upload::labs {
 class nfs::data {
 	include nfs::common
 
-	file { [ "/mnt/data" ]:
+	file { [ '/mnt/data' ]:
 		ensure => directory;
 	}
 
+        $datasetserver = $::site ? {
+                'eqiad' => 'dataset1001.wikimedia.org',
+                'pmtpa' => 'dataset2.wikimedia.org',
+                default => 'dataset2.wikimedia.org',
+        }
+
 	mount {
-		"/mnt/data":
-			device => "dataset2.wikimedia.org:/data",
-			fstype => "nfs",
-			name => "/mnt/data",
-			options => "bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3",
-			require => File["/mnt/data"],
+		'/mnt/data':
+			device   => "${datasetserver}:/data",
+			fstype   => 'nfs',
+			name     => '/mnt/data',
+			options  => 'bg,hard,tcp,rsize=8192,wsize=8192,intr,nfsvers=3',
+			require  => File['/mnt/data'],
 			remounts => false,
-			ensure => mounted;
+			ensure   => mounted;
 	}
 }
 
