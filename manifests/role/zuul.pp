@@ -2,6 +2,13 @@
 
 class role::zuul {
 
+	class configuration {
+		$zuul_git_dir = {
+			'production' => '/srv/ssd/zuul/git',
+			'labs'       => '/var/lib/zuul/git',
+		}
+	}
+
 	system_role { "role::zuul": description => "Zuul gating system for Gerrit/Jenkins" }
 
 	class labs {
@@ -21,7 +28,7 @@ class role::zuul {
 			url_pattern => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'http://integration.wmflabs.org/zuul/status',
 			git_branch => 'labs',
-			git_dir => '/var/lib/zuul/git',
+			git_dir => $role::zuul::configuration::zuul_git_dir,
 			push_change_refs => false
 		}
 
@@ -54,7 +61,7 @@ class role::zuul {
 			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
 			status_url => 'https://integration.wikimedia.org/zuul/',
 			git_branch => 'master',
-			git_dir => '/srv/ssd/zuul/git',
+			git_dir => $role::zuul::configuration::zuul_git_dir,
 			push_change_refs => false
 		}
 
