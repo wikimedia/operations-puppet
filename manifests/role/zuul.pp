@@ -2,6 +2,18 @@
 
 # manifests/role/zuul.pp
 
+# == Class: role::zuul::configuration
+#
+# Realm based configuration for Zuul roles.
+class role::zuul::configuration {
+
+    $zuul_git_dir = $::realm ? {
+        'production' => '/srv/ssd/zuul/git',
+        'labs'       => '/var/lib/zuul/git',
+    }
+
+} # /role::zuul::configuration
+
 # == Class: role::zuul::labs
 #
 # Install the Zuul gating system suitable for the Continuous Integration labs
@@ -10,7 +22,8 @@
 class role::zuul::labs {
     system_role { 'role::zuul::labs': description => 'Zuul on labs!' }
 
-    include contint::proxy_zuul
+    include contint::proxy_zuul,
+        role::zuul::configuration
 
     # Setup the instance for labs usage
     zuulwikimedia::instance { 'zuul-labs':
@@ -21,7 +34,7 @@ class role::zuul::labs {
         url_pattern      => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
         status_url       => 'http://integration.wmflabs.org/zuul/status',
         git_branch       => 'labs',
-        git_dir          => '/var/lib/zuul/git',
+        git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
     }
 
@@ -56,7 +69,7 @@ class role::zuul::production {
         url_pattern      => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
         status_url       => 'https://integration.wikimedia.org/zuul/',
         git_branch       => 'master',
-        git_dir          => '/srv/ssd/zuul/git',
+        git_dir          => $role::zuul::configuration::zuul_git_dir,
         push_change_refs => false,
     }
 
