@@ -1,3 +1,2 @@
-#!/bin/sh
+#!/bin/bash
 /usr/local/bin/scap-1
-
