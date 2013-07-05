@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class toollabs::redis inherits toollabs {
+class toollabs::tyrant inherits toollabs {
     include toollabs::infrastructure
 
 }
