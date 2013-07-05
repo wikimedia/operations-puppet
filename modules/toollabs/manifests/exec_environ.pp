@@ -113,6 +113,8 @@ class toollabs::exec_environ {
       # PHP libraries
       'php5-cli',
       'php5-curl',
+      'php5-gd',
+      'php5-mcrypt',
       'php5-mysql',
       'php5-redis',
       'php5-xsl',
