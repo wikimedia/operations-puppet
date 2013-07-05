@@ -81,8 +81,8 @@ class contint::website {
   file { '/srv/localhost/qunit':
     ensure => directory,
     mode   => '0775',
-    owner  => 'jenkins',
-    group  => 'jenkins',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
   }
 
   # Apache configuration for a virtual host on localhost
