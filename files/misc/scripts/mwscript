@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Shell wrapper for the home version of multiversion/MWScript.php.
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /usr/local/lib/mw-deployment-vars.sh
