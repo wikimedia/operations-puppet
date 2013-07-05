@@ -303,7 +303,7 @@ class role::protoproxy::ssl {
                 proxy_backend => {
                     'pmtpa' => { 'primary' => '10.2.1.25' },
                     'eqiad' => { 'primary' => '10.2.2.25' },
-                    'esams' => { 'primary' => '10.2.3.25' },
+                    'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.242' },
                     },
                     ipv6_enabled => true,
                     enabled => true,
@@ -320,7 +320,7 @@ class role::protoproxy::ssl {
                 proxy_backend => {
                     'pmtpa' => { 'primary' => '10.2.1.25' },
                     'eqiad' => { 'primary' => '10.2.2.25' },
-                    'esams' => { 'primary' => '10.2.3.25' },
+                    'esams' => { 'primary' => '10.2.3.25', 'secondary' => '208.80.154.243' },
                     },
                     ipv6_enabled => true,
                     enabled => true,
