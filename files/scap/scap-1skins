@@ -10,7 +10,7 @@ fi
 
 for mwVerNum in ${mwVersionNums[@]}; do
 	sudo -u mwdeploy sh -c "
-	echo rsync -a --no-perms ${MW_RSYNC_HOST}::common/php-${mwVerNum}/skins/ \
+	rsync -a --no-perms ${MW_RSYNC_HOST}::common/php-${mwVerNum}/skins/ \
 	${MW_COMMON}/php-${mwVerNum}/skins && \
 	echo ok || \
 	echo failed
