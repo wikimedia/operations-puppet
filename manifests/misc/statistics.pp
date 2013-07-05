@@ -82,11 +82,32 @@ class misc::statistics::base {
 
 
 class misc::statistics::packages {
-	package { ['mc', 'zip', 'p7zip', 'p7zip-full', 'subversion', 'mercurial', 'tofrodos', 'git-review']:
+	package { [
+		'mc',
+		'zip',
+		'p7zip',
+		'p7zip-full',
+		'subversion',
+		'mercurial',
+		'tofrodos',
+		'git-review',
+	]:
 		ensure => latest;
 	}
 
 	include misc::statistics::packages::python
+}
+
+# packages needed for wikistats (stats.wikimedia.org generation code)
+class misc::statistics::packages::wikistats {
+	package { [
+		'libjson-xs-perl',
+		'libtemplate-perl',
+		'libnet-patricia-perl',
+		'libregexp-assemble-perl',
+	]:
+		ensure => 'installed',
+	}
 }
 
 # Packages needed for various python stuffs
