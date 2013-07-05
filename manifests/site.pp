@@ -1175,17 +1175,6 @@ node "hume.wikimedia.org" {
 		nrpe
 
 
-	# Moved to terbium
-	class { misc::maintenance::foundationwiki: enabled => false }
-	class { misc::maintenance::pagetriage: enabled => false }
-	class { misc::maintenance::translationnotifications: enabled => false }
-	class { misc::maintenance::wikidata: enabled => false }
-	class { misc::maintenance::echo_mail_batch: enabled => false }
-	class { misc::maintenance::parsercachepurging: enabled => false }
-	class { misc::maintenance::cleanup_upload_stash: enabled => false }
-	class { misc::maintenance::tor_exit_node: enabled => false }
-	class { misc::maintenance::aft5: enabled => false }
-
 	# These cron jobs were left behind for some reason:
 
 	# foreachwikiindblist broken

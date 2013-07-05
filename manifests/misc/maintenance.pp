@@ -101,8 +101,6 @@ class misc::maintenance::pagetriage( $enabled = false ) {
 }
 
 class misc::maintenance::translationnotifications( $enabled = false ) {
-	require misc::deployment::scripts
-
 	# Should there be crontab entry for each wiki,
 	# or just one which runs the scripts which iterates over
 	# selected set of wikis?
