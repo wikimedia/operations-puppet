@@ -99,6 +99,11 @@ class role::fundraising::database {
 		mysql_wmf::mysqluser,
 		mysql_wmf::packages
 
+	class { 'mysql::config':
+		default_engine = 'InnoDB',
+		config_file = '/etc/my.cnf-puppet-test',
+	}
+
 }
 
 
