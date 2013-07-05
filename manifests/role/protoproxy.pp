@@ -292,42 +292,38 @@ class role::protoproxy::ssl {
             enabled => true,
         }
         # wikidata.org
-        if $::site != 'esams' {
-            protoproxy{ 'wikidata':
-                proxy_addresses => {
-                    'pmtpa' => [ '208.80.152.218', '[2620:0:860:ed1a::12]' ],
-                    'eqiad' => [ '208.80.154.242', '[2620:0:861:ed1a::12]' ],
-                    'esams' => [ '91.198.174.237', '[2620:0:862:ed1a::12]' ],
+        protoproxy{ 'wikidata':
+            proxy_addresses => {
+                'pmtpa' => [ '208.80.152.218', '[2620:0:860:ed1a::12]' ],
+                'eqiad' => [ '208.80.154.242', '[2620:0:861:ed1a::12]' ],
+                'esams' => [ '91.198.174.237', '[2620:0:862:ed1a::12]' ],
+                },
+                proxy_server_name => '*.wikidata.org',
+                proxy_server_cert_name => 'unified.wikimedia.org',
+                proxy_backend => {
+                    'pmtpa' => { 'primary' => '10.2.1.25' },
+                    'eqiad' => { 'primary' => '10.2.2.25' },
+                    'esams' => { 'primary' => '10.2.3.25' },
                     },
-                    proxy_server_name => '*.wikidata.org',
-                    proxy_server_cert_name => 'unified.wikimedia.org',
-                    proxy_backend => {
-                        'pmtpa' => { 'primary' => '10.2.1.25' },
-                        'eqiad' => { 'primary' => '10.2.2.25' },
-                        'esams' => { 'primary' => '10.2.3.25' },
-                        },
-                        ipv6_enabled => true,
-                        enabled => true,
-            }
+                    ipv6_enabled => true,
+                    enabled => true,
         }
         # wikivoyage.org
-        if $::site != 'esams' {
-            protoproxy{ 'wikivoyage':
-                proxy_addresses => {
-                    'pmtpa' => [ '208.80.152.219', '[2620:0:860:ed1a::13]' ],
-                    'eqiad' => [ '208.80.154.243', '[2620:0:861:ed1a::13]' ],
-                    'esams' => [ '91.198.174.238', '[2620:0:862:ed1a::13]' ],
+        protoproxy{ 'wikivoyage':
+            proxy_addresses => {
+                'pmtpa' => [ '208.80.152.219', '[2620:0:860:ed1a::13]' ],
+                'eqiad' => [ '208.80.154.243', '[2620:0:861:ed1a::13]' ],
+                'esams' => [ '91.198.174.238', '[2620:0:862:ed1a::13]' ],
+                },
+                proxy_server_name => '*.wikivoyage.org',
+                proxy_server_cert_name => 'unified.wikimedia.org',
+                proxy_backend => {
+                    'pmtpa' => { 'primary' => '10.2.1.25' },
+                    'eqiad' => { 'primary' => '10.2.2.25' },
+                    'esams' => { 'primary' => '10.2.3.25' },
                     },
-                    proxy_server_name => '*.wikivoyage.org',
-                    proxy_server_cert_name => 'unified.wikimedia.org',
-                    proxy_backend => {
-                        'pmtpa' => { 'primary' => '10.2.1.25' },
-                        'eqiad' => { 'primary' => '10.2.2.25' },
-                        'esams' => { 'primary' => '10.2.3.25' },
-                        },
-                        ipv6_enabled => true,
-                        enabled => true,
-            }
+                    ipv6_enabled => true,
+                    enabled => true,
         }
         # Misc services
         protoproxy{ 'videos':
