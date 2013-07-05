@@ -173,7 +173,7 @@ class misc::statistics::wikistats {
 	cron { 'new mobile pageviews report':
 		command => '/bin/bash /a/wikistats_git/pageviews_reports/bin/stat1-cron-script.sh',
 		user    => 'stats',
-                day     => 1,
+                weekday => 1,
 		hour    => 7,
 		minute  => 20,
 	}
