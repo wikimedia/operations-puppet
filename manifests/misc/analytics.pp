@@ -30,9 +30,18 @@ class misc::analytics::monitoring::kafka::server {
 	# Set up icinga monitoring of Kafka broker server produce requests per second.
 	# If this drops too low, trigger an alert
 	# for this udp2log instance.
-	monitor_service { "kakfa-broker-ProduceRequestsPerSecond":
-		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond",
-		check_command         => "check_kafka_broker_produce_requests!2!1",
+	monitor_service { "kakfa-broker-ProduceRequestsPerSecond_min":
+		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond_min",
+		check_command         => "check_kafka_broker_produce_requests_min!5!1",
+		contact_group         => "analytics",
+	}
+
+	# Set up icinga monitoring of Kafka broker server produce requests per second.
+	# If this drops too low, trigger an alert
+	# for this udp2log instance.
+	monitor_service { "kakfa-broker-ProduceRequestsPerSecond_max":
+		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond_max",
+		check_command         => "check_kafka_broker_produce_requests_max!15!20",
 		contact_group         => "analytics",
 	}
 }
