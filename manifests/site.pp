@@ -1178,7 +1178,9 @@ node "hume.wikimedia.org" {
 	# Moved to terbium
 	class { misc::maintenance::foundationwiki: enabled => false }
 	class { misc::maintenance::pagetriage: enabled => false }
-	class { misc::maintenance::translationnotifications: enabled => false }
+	# Commented out by Ori on 4-Jul-2013. All of these jobs should be removed
+	# from the manifest.
+	# class { misc::maintenance::translationnotifications: enabled => false }
 	class { misc::maintenance::wikidata: enabled => false }
 	class { misc::maintenance::echo_mail_batch: enabled => false }
 	class { misc::maintenance::parsercachepurging: enabled => false }
