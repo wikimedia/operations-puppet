@@ -98,17 +98,6 @@ class misc::statistics::packages {
 	include misc::statistics::packages::python
 }
 
-# packages needed for wikistats (stats.wikimedia.org generation code)
-class misc::statistics::packages::wikistats {
-	package { [
-		'libjson-xs-perl',
-		'libtemplate-perl',
-		'libnet-patricia-perl',
-		'libregexp-assemble-perl',
-	]:
-		ensure => 'installed',
-	}
-}
 
 # Packages needed for various python stuffs
 # on statistics servers.
@@ -146,6 +135,7 @@ class misc::statistics::dataset_mount {
 	}
 }
 
+
 # clones mediawiki core at /a/mediawiki/core
 # and ensures that it is at the latest revision.
 # RT 2162
@@ -160,6 +150,22 @@ class misc::statistics::mediawiki {
 		ensure    => 'latest',
 		owner     => 'mwdeploy',
 		group     => 'wikidev',
+	}
+}
+
+# wikistats configuration for generating
+# stat.wikimedia.org data.
+#
+# TODO: puppetize clone of wikistats?
+class misc::statistics::wikistats {
+	# Perl packages needed for wikistats
+	package { [
+		'libjson-xs-perl',
+		'libtemplate-perl',
+		'libnet-patricia-perl',
+		'libregexp-assemble-perl',
+	]:
+		ensure => 'installed',
 	}
 }
 

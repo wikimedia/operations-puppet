@@ -25,9 +25,7 @@ class role::statistics::cruncher inherits role::statistics {
 		# generate gerrit stats from stat1.
 		misc::statistics::gerrit_stats,
 		# rsync logs from logging hosts over to stat1
-		misc::statistics::rsync::jobs,
-        # packages needed for wikistats stats generation
-		misc::statistics::packages::wikistats
+		misc::statistics::rsync::jobs
 }
 
 class role::statistics::www inherits role::statistics {
@@ -58,5 +56,8 @@ class role::statistics::private inherits role::statistics {
 		generic::pythonpip,
 		misc::udp2log::udp_filter,
 		# rsync logs from logging hosts
-		misc::statistics::rsync::jobs
+		misc::statistics::rsync::jobs,
+		# wikistats code is run here to
+		# generate stats.wikimedia.org data
+		misc::statistics::wikistats
 }
