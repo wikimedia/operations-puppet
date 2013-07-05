@@ -102,15 +102,15 @@ class role::fundraising::database {
 	class { 'mysql::config':
 		default_engine => 'InnoDB',
 		config_file => '/etc/my.cnf-puppet-test',
-		settings => {
-			'mysqld' => {
-				'max_connect_errors' => 1000000000,
-				'replicate_ignore_db' => 'mwalker',
-			},
-			'client' => {
-				'default-character-set' => 'binary',
-			}
-		},
+		#settings => {
+		#	'mysqld' => {
+		#		'max_connect_errors' => 1000000000,
+		#		'replicate_ignore_db' => 'mwalker',
+		#	},
+		#	'client' => {
+		#		'default-character-set' => 'binary',
+		#	}
+		#},
 	}
 
 }
