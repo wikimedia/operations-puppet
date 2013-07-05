@@ -10,7 +10,7 @@ sub vcl_recv {
 		error 403 "HTTP method not allowed.";
 	}
 
-	if ( req.http.host == "upload.wikimedia.org") {
+	if ( req.http.host == "<%= cluster_options.fetch('upload_domain', 'upload.wikimedia.org') %>") {
 		# Replace double slashes
 		set req.url = regsuball(req.url, "/{2,}", "/");
 		return (lookup);
