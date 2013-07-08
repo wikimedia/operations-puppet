@@ -1222,7 +1222,8 @@ node "kaulen.wikimedia.org" {
 		misc::bugzilla::server,
 		misc::bugzilla::crons,
 		misc::bugzilla::communitymetrics,
-		misc::bugzilla::report
+		misc::bugzilla::report,
+		misc::bugzilla::auditlog,
 
 	install_certificate{ "star.wikimedia.org": }
 
