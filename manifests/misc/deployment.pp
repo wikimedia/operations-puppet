@@ -383,5 +383,11 @@ class misc::deployment::vars ($system = 'scap') {
 }
 
 class misc::deployment::scap_primary {
-	class { 'generic::rsyncd': config => "scap-primary" }
+	include rsync::server
+	rsync::server::module {
+		'common':
+			path        => '/a/common',
+			read_only   => 'true',
+			hosts_allow => ['10.0.0.0/16', '10.64.0.0/22', '10.64.16.0/24', '208.80.152.0/22', '10.64.32.0/22'];
+    }
 }
