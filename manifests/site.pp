@@ -1218,8 +1218,7 @@ node "kaulen.wikimedia.org" {
 		accounts::demon,
 		accounts::hashar,
 		accounts::reedy,
-		accounts::robla,
-		misc::download-mediawiki
+		accounts::robla
 
 	install_certificate{ "star.wikimedia.org": }
 
