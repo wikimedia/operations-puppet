@@ -37,7 +37,7 @@ use = egg:swift#healthcheck
 [filter:cache]
 use = egg:swift#memcache
 memcache_servers = <%= scope.lookupvar("swift::proxy::config::memcached_servers").join(",") %>
-memcache_serialization_support = 1
+memcache_serialization_support = 2
 
 [filter:cors]
 paste.filter_factory = wmf.cors:filter_factory
