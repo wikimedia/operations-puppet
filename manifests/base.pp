@@ -781,8 +781,19 @@ class base {
 	}
 
 	if $::realm == "labs" {
-		include base::instance-upstarts,
-			generic::gluster-client
+		include base::instance-upstarts
+
+		# Storage backend to use for /home & /data/project
+		# Configured on a per project basis inside puppet since we do not have any
+		# other good way to do so.
+		case $::instanceproject {
+			'deployment-prep': {
+				include role::labsnfs::client
+			}
+			default: {
+				include generic::gluster-client
+			}
+		}
 
 		# make common logs readable
 		class {'base::syslogs': readable => 'true'; }
