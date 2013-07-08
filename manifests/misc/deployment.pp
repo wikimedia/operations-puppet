@@ -373,6 +373,13 @@ class misc::deployment::vars ($system = 'scap') {
 		$dblist_common = $mw_common
 		$dblist_common_source = $mw_common_source
 	}
+
+	if $::realm == 'production' {
+		$mw_rsync_host = 'tin.eqiad.wmnet'
+	} else {
+		$mw_rsync_host = 'deployment-bastion.pmtpa.wmflabs'
+	}
+
 	file {
 		"/usr/local/lib/mw-deployment-vars.sh":
 			owner => root,
