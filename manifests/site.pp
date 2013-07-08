@@ -356,6 +356,8 @@ node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
 	$ganglia_aggregator = true
 
+	sudo_user { "gwicke" : privileges => 'ALL = NOPASSWD: /usr/bin/varnishadm' }
+
 	include role::cache::parsoid, admins::parsoid
 }
 
