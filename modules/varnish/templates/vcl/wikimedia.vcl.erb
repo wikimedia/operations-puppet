@@ -293,7 +293,12 @@ sub vcl_error {
 	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
 		return(restart);
 	}
+
 <% end -%>
+	if (obj.status == 200 && req.request == "PURGE") {
+		set obj.http.Connection = "keep-alive";
+	}
+
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
