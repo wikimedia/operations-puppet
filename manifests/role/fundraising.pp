@@ -99,18 +99,18 @@ class role::fundraising::database {
 		mysql_wmf::mysqluser,
 		mysql_wmf::packages
 
-	class { 'mysql::config':
+	class { 'mysql::server::config':
 		default_engine => 'InnoDB',
 		config_file => '/etc/my.cnf-puppet-test',
-		#settings => {
-		#	'mysqld' => {
-		#		'max_connect_errors' => 1000000000,
-		#		'replicate_ignore_db' => 'mwalker',
-		#	},
-		#	'client' => {
-		#		'default-character-set' => 'binary',
-		#	}
-		#},
+		settings => {
+			'mysqld' => {
+				'max_connect_errors' => 1000000000,
+				'replicate-ignore-db' => ['mwalker'],
+			},
+			'client' => {
+				'default-character-set' => 'binary',
+			},
+		},
 	}
 
 }
