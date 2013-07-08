@@ -197,6 +197,13 @@ sub restrict_access {
 }
 
 <% end -%>
+sub vcl_error_keepalive {
+	if ((req.proto == "HTTP/1.1" && req.http.Connection != "close")
+		|| (req.proto != "HTTP/1.1" && req.http.Connection == "keep-alive")) {
+		set obj.http.Connection = "keep-alive";
+	}
+}
+
 sub vcl_recv {
 	if (req.request != "GET" && req.request != "HEAD" && req.request != "POST" && req.request != "PURGE") {
 		/* We only deal with GET, HEAD and POST by default */
@@ -293,7 +300,12 @@ sub vcl_error {
 	if (obj.status == 503 && req.restarts < <%= vcl_config["retry503"].to_i %>) {
 		return(restart);
 	}
+
 <% end -%>
+	if (obj.status == 200 && req.request == "PURGE") {
+		call vcl_error_keepalive;
+	}
+
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
