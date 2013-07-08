@@ -138,7 +138,13 @@ class lucene {
 
 	class indexer {
 
-		class { 'generic::rsyncd': config => "searchidx" }
+		include rsync::server
+		rsync::server::module {
+			'search':
+				path        => '/a/search/indexes',
+				read_only   => 'yes',
+				comment   => 'Lucene Search 2 index data';
+		}
 
 		file {
 			"/a/search/conf/nooptimize.dblist":
