@@ -28,7 +28,7 @@ RSYNCSRC='/data/xmldatadumps/public/'
 MAILCMD='/usr/bin/mail'
 MAILARGS=( '-E' '-s' "DUMPS RSYNC $HOST" 'ops-dumps@wikimedia.org' )
 
-SERVERS=( 'dataset2' 'dataset1001' 'localhost.localdomain' )
+SERVERS=( 'dataset2' 'dataset1001' )
 # remove self from the list
 for ((i=0; i<"${#SERVERS[*]}"; i++)); do
     if [ "${SERVERS[$i]}" == "$HOST" ]; then
@@ -60,7 +60,7 @@ case "$HOST" in
 	EXTRAARGS=( "${DIRARGS[@]}" "${DIRARGS[@]/%/**}" '--exclude=*' )
 	do_rsyncs
 	;;
-    'localhost.localdomain'|'dataset2' )
+    'dataset2' )
 	# directories for which this host produces dumps
 	DIRS=( '/enwiki/' ) # must have leading/trailing slash
 	EXTRAARGS=( "${DIRS[@]/#/--exclude=}" )
