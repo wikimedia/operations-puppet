@@ -1251,6 +1251,11 @@ host dysprosium {
 	fixed-address dysprosium.eqiad.wmnet;
 }
 
+host eeden {
+	hardware ethernet a4:ba:db:30:d8:80;
+	fixed-address eeden.esams.wikimedia.org;
+}
+
 host ekrem {
 	hardware ethernet 84:2b:2b:06:49:30;
 	fixed-address ekrem.wikimedia.org;
