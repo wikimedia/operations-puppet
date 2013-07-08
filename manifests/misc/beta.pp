@@ -1,6 +1,6 @@
 class misc::beta::autoupdater {
 
-	require misc::deployment::scripts
+	require misc::deployment::common_scripts
 
 	file {
 		"/usr/local/bin/wmf-beta-autoupdate":
