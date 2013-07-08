@@ -114,3 +114,70 @@ class role::analytics::frontend inherits role::analytics {
 class role::analytics::kafka::server inherits role::analytics {
   include misc::analytics::monitoring::kafka::server
 }
+
+
+
+# == role::analytics::udp2log::mobile
+#
+# Geocodes and anonymizes webrequest logs generated on mobile hosts
+# and pipes them into Kafka.
+#
+class role::analytics::udp2log::mobile {
+	include misc::udp2log,
+		misc::udp2log::utilities,
+		role::cache::configuration,
+		passwords::analytics
+
+	$log_directory   = '/var/log/udp2log/webrequest'
+	$packet_loss_log = "${log_directory}/packet-loss.log"
+
+	misc::udp2log::instance { 'analytics-mobile':
+		multicast          => true,
+		log_directory      => $log_directory,
+		packet_loss_log    => $packet_loss_log,
+		monitor_log_age    => false,
+	}
+}
+
+# == role::analytics::udp2log::wikipedia_mobile
+#
+# Pipes webrequest logs generated on mobile hosts into Kafka.
+# This stream is not geocoded or anonymized.
+#
+class role::analytics::udp2log::wikipedia_mobile {
+	include misc::udp2log,
+		misc::udp2log::utilities,
+		role::cache::configuration
+
+	$log_directory   = '/var/log/udp2log/webrequest'
+	$packet_loss_log = "${log_directory}/packet-loss.log"
+
+	misc::udp2log::instance { 'analytics-wikipedia-mobile':
+		multicast          => true,
+		log_directory      => $log_directory,
+		packet_loss_log    => $packet_loss_log,
+		monitor_log_age    => false,
+	}
+}
+
+
+# == role::analytics::udp2log::sampled
+#
+# Geocodes and anonymizses a full sampled 1000 stream
+# and pipes it into Kafka.
+#
+class role::analytics::udp2log::sampled {
+	include misc::udp2log,
+		misc::udp2log::utilities,
+		passwords::analytics
+
+	$log_directory   = '/var/log/udp2log/misc'
+	$packet_loss_log = "${log_directory}/packet-loss.log"
+
+	misc::udp2log::instance { 'analytics-sampled':
+		multicast          => true,
+		log_directory      => $log_directory,
+		packet_loss_log    => $packet_loss_log,
+		monitor_log_age    => false,
+	}
+}
