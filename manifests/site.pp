@@ -148,34 +148,20 @@ node "analytics1002.eqiad.wmnet" {
 }
 
 #### analytics udp2log kafka producer instances:
+# NOTE: These instances will be removed once we switch to Kafka 0.8
+# and start producing logs from varnish frontend hosts.
 
-#   analytics1006 - webrequest-wikipedia-mobile (unanonymized)
-#   analytics1009 - webrequest-mobile (geocoded and anonymized)
-node /analytics100[69].eqiad.wmnet/ {
+node "analytics1006.eqiad.wmnet" {
 	include role::analytics
-
-	# monitor the (currently unpuppetized)
-	# udp2log instances.
-	misc::udp2log::instance::monitoring { 'webrequest':
-		log_directory       => '/var/log/udp2log/webrequest',
-		monitor_packet_loss => true,
-		monitor_processes   => true,
-		monitor_log_age     => false,
-	}
+	include role::analytics::udp2log::wikipedia_mobile
 }
-
-#   analytics1008 - webrequest-all-1000 (sampled)
 node "analytics1008.eqiad.wmnet" {
 	include role::analytics
-
-	# monitor the (currently unpuppetized)
-	# udp2log instance.  (geocoded anonymized sampled-1000)
-	misc::udp2log::instance::monitoring { 'misc':
-		log_directory       => '/var/log/udp2log/misc',
-		monitor_packet_loss => true,
-		monitor_processes   => true,
-		monitor_log_age     => false,
-	}
+	include role::analytics::udp2log::mobile
+}
+node "analytics1009.eqiad.wmnet" {
+	include role::analytics
+	include role::analytics::udp2log::sampled
 }
 
 # analytics1021 and analytics1022 are Kafka Brokers.
