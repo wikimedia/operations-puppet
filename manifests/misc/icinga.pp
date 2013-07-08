@@ -770,6 +770,7 @@ class icinga::monitor::service {
   service { 'icinga':
     ensure => running,
     hasstatus => false,
+    restart => "/etc/init.d/icinga reload",
     subscribe => [
       File[$icinga::monitor::configuration::variables::puppet_files],
       File[$icinga::monitor::configuration::variables::static_files],
