@@ -1213,17 +1213,13 @@ node "kaulen.wikimedia.org" {
 	$gid = 500
 
 	include standard,
+		role::bugzilla,
 		admins::roots,
 		accounts::demon,
 		accounts::hashar,
 		accounts::reedy,
 		accounts::robla,
-		misc::download-mediawiki,
-		misc::bugzilla::server,
-		misc::bugzilla::crons,
-		misc::bugzilla::communitymetrics,
-		misc::bugzilla::report,
-		misc::bugzilla::auditlog
+		misc::download-mediawiki
 
 	install_certificate{ "star.wikimedia.org": }
 
