@@ -63,7 +63,7 @@ connections = {
 def get_project_host_map(usecache=True):
     cache_name = 'project_host_map.json'
     if not exists(cache_name) or not usecache:
-	cluster_url_fmt = 'http://noc.wikimedia.org/conf/s%d.dblist'
+        cluster_url_fmt = 'https://noc.wikimedia.org/conf/s%d.dblist'
         host_fmt = 's%d'
         project_host_map = {}
         for i in range(1,8):
