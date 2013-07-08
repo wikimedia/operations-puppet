@@ -2669,6 +2669,11 @@ node "stat1002.eqiad.wmnet" {
 	# over from there.
 	include admins::privatedata
 
+    # add ezachte and spetrea to stats group so they can
+    # access files created by stats user cron jobs.
+	User<|title == ezachte|>     { groups +> [ "stats" ] }
+	User<|title == spetrea|>     { groups +> [ "stats" ] }
+
 	sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
 	# include classes needed for storing and crunching
