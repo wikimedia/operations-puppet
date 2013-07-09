@@ -156,6 +156,71 @@ def puppet_parser_validate(*manifests)
 	sh "puppet parser validate #{$puppetcolor} #{manifests}"
 end
 
+desc "Run spec tests found in modules"
+task :spec do
+
+	# Hold a list of modules not passing tests
+	failed_modules = []
+
+	# Invoke rake whenever a module has a Rakefile
+	FileList["modules/*/Rakefile"].each do |rakefile|
+
+		module_name = rakefile.match('modules/(.+)/')[1]
+
+		if not run_module_spec(module_name)
+			failed_modules << module_name  # recording
+		end
+		puts "\n"
+
+	end
+
+	puts '-' * 80
+	puts 'Finished running tests for all modules'
+	puts '-' * 80
+
+	unless failed_modules.empty?
+		puts "\nThe following modules are NOT passing tests:\n"
+		puts '- ' + failed_modules * "\n- "
+		puts
+		raise "Some modules had failures, sorry."
+	end
+end
+
+# Wrapper to run rspec in a module
+def run_module_spec(module_name)
+
+	puts '-' * 80
+	puts "Running rspec tests for module #{module_name}"
+	puts '-' * 80
+
+	Dir.chdir("modules/#{module_name}") do
+
+		puts "Initializing fixtures..."
+		# This will clone github repositories containing fixtures whenever they
+		# do not exist.
+		system('rake spec_prep')
+
+		puts "Updating fixtures..."
+		# If the git repositories already existed, they haven't been updated
+		FileList[Dir.pwd + '/spec/fixtures/modules/*'].each do |fixture|
+			# `spec_prep` symlink the tested module and we only want to
+			# update real directories.
+			if File.symlink?(fixture) or not File.directory?(fixture)
+				puts "Skipping #{fixture}"
+				next
+			end
+			puts "git pull in #{fixture}"
+			system("cd #{fixture}; git pull")
+		end
+
+		puts "All fixtures should now be up to date."
+		puts
+		puts "Invoking tests on module #{module_name}"
+		system('rake spec_standalone')
+	end
+end
+
+
 =begin lint
 amass profit
 donate!
