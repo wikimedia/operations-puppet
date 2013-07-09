@@ -1039,8 +1039,8 @@ class role::cache {
 				{
 					'port' => 8000,
 					'connect_timeout' => "5s",
-					'first_byte_timeout' => "60s",
-					'between_bytes_timeout' => "4s",
+					'first_byte_timeout' => "5m",
+					'between_bytes_timeout' => "20s",
 					'max_connections' => 600,
 				}],
 			xff_sources => $network::constants::all_networks
@@ -1066,8 +1066,8 @@ class role::cache {
 				'port' => 3128,
 				'weight' => $backend_weight,
 				'connect_timeout' => "5s",
-				'first_byte_timeout' => "60s",
-				'between_bytes_timeout' => "2s",
+				'first_byte_timeout' => "6m",
+				'between_bytes_timeout' => "20s",
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			},
