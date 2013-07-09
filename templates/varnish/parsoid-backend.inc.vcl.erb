@@ -7,4 +7,5 @@ sub vcl_miss {
 	if (req.http.Cache-Control ~ "only-if-cached") {
 		error 412 "Entity not in cache";
 	}
+	set bereq.first_byte_timeout = 5m;
 }
