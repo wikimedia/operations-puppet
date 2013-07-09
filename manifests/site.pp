@@ -1211,17 +1211,12 @@ node "kaulen.wikimedia.org" {
     system_role { "misc": description => "Bugzilla server" }
     $gid = 500
 
-    include standard,
-        role::bugzilla,
-        admins::roots,
-        accounts::demon,
-        accounts::hashar,
-        accounts::reedy,
-        accounts::robla
+	include standard,
+		role::bugzilla,
+		admins::roots
 
-    install_certificate{ "star.wikimedia.org": }
+	install_certificate{ "star.wikimedia.org": }
 
-    sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
 ## labsdb dbs
