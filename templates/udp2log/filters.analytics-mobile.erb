@@ -14,4 +14,4 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
 # Produce logs into Kafka:
 
 # pipe all requests from mobile frontend cache servers into kafka
-pipe 1 /bin/grep -P '<%= mobile_hosts_regex %>' | /usr/bin/udp-filter -F '\t' --geocode --bird=country --anonymize='<%= scope.lookupvar('::passwords::analytics::libanon_salt') %>' | /opt/kraken/bin/kafka-produce webrequest-mobile 9951 > /dev/null
+pipe 1 /bin/grep -P '<%= mobile_hosts_regex %>' | /usr/bin/udp-filter -F '\t' --geocode --bird=country --anonymize=<%= scope.lookupvar('::passwords::analytics::libanon_salt') %> | /opt/kraken/bin/kafka-produce webrequest-mobile 9951 > /dev/null
