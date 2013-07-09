@@ -1212,16 +1212,11 @@ node "kaulen.wikimedia.org" {
     $gid = 500
 
     include standard,
-        role::bugzilla,
-        admins::roots,
-        accounts::demon,
-        accounts::hashar,
-        accounts::reedy,
-        accounts::robla
+    role::bugzilla,
+    admins::roots
 
     install_certificate{ "star.wikimedia.org": }
 
-    sudo_user { [ "demon", "reedy" ]: privileges => ['ALL = (mwdeploy) NOPASSWD: ALL'] }
 }
 
 ## labsdb dbs
