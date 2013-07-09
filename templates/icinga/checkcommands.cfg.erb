@@ -626,6 +626,13 @@ define command{
 	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m kafka_network_SocketServerStats.ProduceRequestsPerSecond -w $ARG1$ -c $ARG2$ -o gt
 }
 
+# Check that udp2log Kakfa producers are producing
+define command{
+	command_name	check_kafka_producer_produce_events
+	command_line	$USER1$/check_ganglios_generic_value -H $HOSTADDRESS$ -m udp2log_kafka_producer_$ARG1.AsyncProducerEvents -w $ARG2$ -c $ARG3$ -o lt
+}
+
+
 
 # Alerts for data loss in Kraken HDFS.
 define command{

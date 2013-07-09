@@ -25,11 +25,33 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 	}
 }
 
+# == Define misc::analytics::monitoring::kafka::producer
+# Sets up Icinga alerts for a Kafka Producer identified by $topic.
+#
+# == Parameters:
+# $warning
+# $critical
+#
+# Usage:
+#   misc::analytics::monitoring::kafka::producer { 'webrequest-mobile':
+#      warning  => 1,
+#      critical => 5,
+#   }
+#
+define misc::analytics::monitoring::kafka::producer($warning, $critical) {
+	# Set up icinga monitoring of Kafka producer async produce events per second.
+	# If this drops too low, trigger an alert.
+	monitor_service { "kafka-producer-${title}.AsyncProducerEvents":
+		description           => "kafka_producer_${title}.AsyncProducerEvents",
+		check_command         => "check_kafka_producer_produce_events!${title}!${warning}!${critical}",
+		contact_group         => "analytics",
+	}
+}
+
 
 class misc::analytics::monitoring::kafka::server {
 	# Set up icinga monitoring of Kafka broker server produce requests per second.
 	# If this drops too low, trigger an alert
-	# for this udp2log instance.
 	monitor_service { "kakfa-broker-ProduceRequestsPerSecond_min":
 		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond_min",
 		check_command         => "check_kafka_broker_produce_requests_min!5!1",
@@ -38,7 +60,6 @@ class misc::analytics::monitoring::kafka::server {
 
 	# Set up icinga monitoring of Kafka broker server produce requests per second.
 	# If this drops too low, trigger an alert
-	# for this udp2log instance.
 	monitor_service { "kakfa-broker-ProduceRequestsPerSecond_max":
 		description           => "kafka_network_SocketServerStats.ProduceRequestsPerSecond_max",
 		check_command         => "check_kafka_broker_produce_requests_max!15!20",

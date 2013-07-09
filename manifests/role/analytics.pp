@@ -143,6 +143,11 @@ class role::analytics::udp2log::mobile {
 		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
 	}
+
+	misc::analytics::monitoring::kafka::producer { 'webrequest-mobile':
+		warning  => 2000000,
+		critical => 1000000,
+	}
 }
 
 # == role::analytics::udp2log::wikipedia_mobile
@@ -166,6 +171,11 @@ class role::analytics::udp2log::wikipedia_mobile {
 		log_directory      => $log_directory,
 		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
+	}
+
+	misc::analytics::monitoring::kafka::producer { 'webrequest-wikipedia-mobile':
+		warning  => 2000000,
+		critical => 1000000,
 	}
 }
 
@@ -191,5 +201,10 @@ class role::analytics::udp2log::sampled {
 		log_directory      => $log_directory,
 		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
+	}
+
+	misc::analytics::monitoring::kafka::producer { 'webrequest-wikipedia-mobile':
+		warning  => 120000,
+		critical => 6000,
 	}
 }
