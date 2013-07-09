@@ -157,11 +157,11 @@ node "analytics1006.eqiad.wmnet" {
 }
 node "analytics1008.eqiad.wmnet" {
 	include role::analytics
-	include role::analytics::udp2log::mobile
+	include role::analytics::udp2log::sampled
 }
 node "analytics1009.eqiad.wmnet" {
 	include role::analytics
-	include role::analytics::udp2log::sampled
+	include role::analytics::udp2log::mobile
 }
 
 # analytics1021 and analytics1022 are Kafka Brokers.
