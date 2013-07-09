@@ -784,6 +784,15 @@ class base {
 		include base::instance-upstarts,
 			generic::gluster-client
 
+		# Storage backend to use for /home & /data/project
+		# Configured on a per project basis inside puppet since we do not have any
+		# other good way to do so yet.
+		# FIXME  this is ugly and need to be removed whenever we got rid of
+		# the Gluster shared storage.
+		if $::instanceproject == 'deployment-prep' {
+				include role::labsnfs::client
+		}
+
 		# make common logs readable
 		class {'base::syslogs': readable => 'true'; }
 
