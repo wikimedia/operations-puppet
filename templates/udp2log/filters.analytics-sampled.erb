@@ -6,4 +6,4 @@ pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
 # Produce logs into Kafka:
 
 # pipe geocoded and anonymized sampled 1000 into kraken.
-pipe 1000 /usr/bin/udp-filter --geocode --bird=country --anonymize='<%= scope.lookupvar('::passwords::analytics::libanon_salt') %>' -F '\t' | /opt/kraken/bin/kafka-produce webrequest-all-sampled-1000 9954 > /dev/null
+pipe 1000 /usr/bin/udp-filter --geocode --bird=country --anonymize=<%= scope.lookupvar('::passwords::analytics::libanon_salt') %> -F '\t' | /opt/kraken/bin/kafka-produce webrequest-all-sampled-1000 9954 > /dev/null
