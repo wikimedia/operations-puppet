@@ -199,7 +199,7 @@ define misc::monitoring::view::kafka($kafka_broker_host_regex, $kafka_producer_h
 			},
 			{
 				'host_regex'   => $kafka_producer_host_regex,
-				'metric_regex' => 'udp2log_kafka_producer_-.+.ProduceRequestsPerSecond',
+				'metric_regex' => 'udp2log_kafka_producer_.+.ProduceRequestsPerSecond',
 				'type'         => 'stack',
 			},
 			{
