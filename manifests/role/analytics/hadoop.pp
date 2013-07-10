@@ -115,6 +115,13 @@ class role::analytics::hadoop::labs {
     $namenode_hostname        = 'kraken0.pmtpa.wmflabs'
     $hadoop_name_directory    = '/var/lib/hadoop/name'
 
+    # We don't have to create any partions in hive, so it
+    # is unlikely that /var/lib/hadoop will be created manually.
+    # Ensure it exists.
+    file { '/var/lib/hadoop':
+        ensure => 'directory',
+    }
+
     $hadoop_data_directory    = '/var/lib/hadoop/data'
     $datanode_mounts = [
         "$hadoop_data_directory/a",
