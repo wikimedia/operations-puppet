@@ -333,11 +333,6 @@ host sockpuppet {
 	fixed-address sockpuppet.pmtpa.wmnet;
 }
 
-host spence {
-	hardware ethernet 00:1E:C9:E2:70:5D;
-	fixed-address spence.wikimedia.org;
-}
-
 host sq36 {
 	hardware ethernet 00:19:B9:DD:EF:36;
 	fixed-address sq36.wikimedia.org;
