@@ -130,12 +130,9 @@ class role::analytics::hadoop::labs {
     ]
 
     # We don't have to create any partions in labs, so it
-    # is unlikely that /var/lib/hadoop will be created manually.
-    # Ensure it and datanode_mounts exist.
-    file { '/var/lib/hadoop':
-        ensure => 'directory',
-    }
-    file { $datanode_mounts:
+    # is unlikely that /var/lib/hadoop and $hadoop_data_directory
+    # will be created manually. Ensure it and datanode_mounts exist.
+    file { ['/var/lib/hadoop', $hadoop_data_directory]:
         ensure => 'directory',
     }
 
