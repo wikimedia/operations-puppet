@@ -34,11 +34,46 @@ define misc::analytics::hdfs::sync($hdfs_source, $rsync_destination, $tmp_dir = 
 #
 # Usage:
 #   misc::analytics::monitoring::kafka::producer { 'webrequest-mobile':
-#      warning  => 1,
-#      critical => 5,
+#      jmx_port                => 9951,
+#      ganglia                 => '239.192.1.32:8649,
+#      produce_events_warning  => 1000000
+#      produce_events_critical => 2000000,
 #   }
 #
-define misc::analytics::monitoring::kafka::producer($warning, $critical) {
+define misc::analytics::monitoring::kafka::producer(
+    $jmx_port,
+    $ganglia,
+    $produce_events_warning,
+    $produce_events_critical
+)
+{
+    # Set up a jmxtrans instance sending stats from the Kafka JVM to ganglia.
+    jmxtrans::metrics { "kafka-producer-${title}":
+        jmx                => "${::fqdn}:${jmx_port}",
+        ganglia            => $ganglia,
+        ganglia_group_name => 'kafka',
+        objects            => [
+            {
+                'name'        => 'kafka:type=kafka.KafkaProducerStats',
+                'resultAlias' => "udp2log_kafka_producer_${title}",
+                'attrs'       => {
+                    'AvgProduceRequestsMs'       => { 'units' => 'ms', 'dmax'  => $dmax },
+                    'MaxProduceRequestsMs'       => { 'units' => 'ms', 'dmax'  => $dmax },
+                    'NumProduceRequests'         => { 'units' => 'requests', 'slope' => 'positive', 'dmax'  => $dmax },
+                },
+            },
+            {
+                'name'        => 'kafka.producer.Producer:type=AsyncProducerStats',
+                'resultAlias' => "udp2log_kafka_producer_${title}",
+                'attrs'       => {
+                    'AsyncProducerEvents'        => { 'units' => 'events', 'slope' => 'positive', 'dmax'  => $dmax },
+                    'AsyncProducerDroppedEvents' => { 'units' => 'events', 'slope' => 'positive', 'dmax'  => $dmax },
+                },
+            },
+        ],
+    }
+
+
 	# Set up icinga monitoring of Kafka producer async produce events per second.
 	# If this drops too low, trigger an alert.
 	monitor_service { "kafka-producer-${title}.AsyncProducerEvents":

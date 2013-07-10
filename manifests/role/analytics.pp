@@ -145,8 +145,10 @@ class role::analytics::udp2log::mobile {
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-mobile':
-		warning  => 2000000,
-		critical => 1000000,
+		jmx_port                => 9951,
+		ganglia                 => '239.192.1.32:8649',
+		produce_events_warning  => 2000000,
+		produce_events_critical => 1000000,
 	}
 }
 
@@ -174,8 +176,10 @@ class role::analytics::udp2log::wikipedia_mobile {
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-wikipedia-mobile':
-		warning  => 2000000,
-		critical => 1000000,
+		jmx_port                => 9951,
+		ganglia                 => '239.192.1.32:8649',
+		produce_events_warning  => 2000000,
+		produce_events_critical => 1000000,
 	}
 }
 
@@ -204,7 +208,9 @@ class role::analytics::udp2log::sampled {
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-all-sampled-1000':
-		warning  => 80,
-		critical => 40,
+		jmx_port                => 9954,
+		ganglia                 => '239.192.1.32:8649',
+		produce_events_warning  => 80,
+		produce_events_critical => 40,
 	}
 }
