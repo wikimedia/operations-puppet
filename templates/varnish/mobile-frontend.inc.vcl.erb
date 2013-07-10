@@ -98,7 +98,6 @@ sub vcl_fetch {
 
 sub vcl_error {
 	// At this point we no longer need the default language.
-	// Hope it doesn't barf if the header is not set.
 	unset req.http.X-DfltLang;
 	unset req.http.X-DfltPage;
 
@@ -106,6 +105,7 @@ sub vcl_error {
 	if (obj.status == 666) {
 		set obj.http.Location = obj.response;
 		set obj.status = 302;
+		set obj.http.Connection = "keep-alive";
 		return(deliver);
 	}
 
