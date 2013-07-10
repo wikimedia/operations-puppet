@@ -241,6 +241,9 @@ class role::deployment::deployment_servers::production {
     maxmemory => "500Mb",
     monitor => "true",
   }
+  package { "percona-toolkit":
+    ensure => latest;
+  }
   sudo_group { "wikidev_deployment_server":
     privileges => [
       "ALL = (root) NOPASSWD: /usr/bin/salt-call -l quiet --out json pillar.data",
