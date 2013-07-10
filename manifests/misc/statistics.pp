@@ -663,7 +663,7 @@ class misc::statistics::rsync::jobs {
 
 	# wikipedia zero logs from oxygen
 	misc::statistics::rsync_job { "wikipedia_zero":
-		source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/zero-*.gz",
+		source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/zero*.gz",
 		destination => "/a/squid/archive/zero",
 	}
 
