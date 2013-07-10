@@ -46,6 +46,14 @@ define misc::analytics::monitoring::kafka::producer($warning, $critical) {
 		check_command         => "check_kafka_producer_produce_events!${title}!${warning}!${critical}",
 		contact_group         => "analytics",
 	}
+
+	# install a nrpe check for the Kafka producer process for this topic
+	nrpe::monitor_service { "kafka_producer_process_${title}":
+		description   => "Kafka Producer Process ${title} running",
+		nrpe_command  => "/usr/lib/nagios/plugins/check_procs --ereg-argument-array '^java.+kafka.tools.ProducerShell.+--topic=${title}' -c 1:1",
+		contact_group => 'analytics',
+		retries       => 10,
+	}
 }
 
 
