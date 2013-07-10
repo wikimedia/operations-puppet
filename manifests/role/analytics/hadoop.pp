@@ -136,7 +136,7 @@ class role::analytics::hadoop::labs {
         ensure => 'directory',
     }
     file { $datanode_mounts:
-        ensure => 'directory':
+        ensure => 'directory',
     }
 
     class { 'cdh4::hadoop':
