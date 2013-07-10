@@ -47,6 +47,8 @@ define misc::analytics::monitoring::kafka::producer(
     $produce_events_critical
 )
 {
+	$dmax = 3600
+
     # Set up a jmxtrans instance sending stats from the Kafka JVM to ganglia.
     jmxtrans::metrics { "kafka-producer-${title}":
         jmx                => "${::fqdn}:${jmx_port}",
