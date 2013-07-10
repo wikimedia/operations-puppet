@@ -13,51 +13,49 @@
 #   include role::analytics::zookeeper::server
 #
 
-
-# == Class role::analytics::zookeeper::client
+# == Class role::analytics::zookeeper::config
+# Bare config role class for client and server classes.
+# You may include this class manually if you need to know use the 
+# $role::analytics::zookeeper::hosts or
+# $role::analytics::zookeeper::hosts_array variables.
 #
-class role::analytics::zookeeper::client {
-    # include common labs or production zookeeper configs
-    # based on $::realm
-    if ($::realm == 'labs') {
-        include role::analytics::zookeeper::labs
+class role::analytics::zookeeper::config {
+    # TODO: Make this configurable via labs
+    # global variables.
+    $labs_hosts = {
+         'kraken-puppet.pmtpa.wmflabs' => 1,
     }
-    else {
-        include role::analytics::zookeeper::production
-    }
-}
 
-class role::analytics::zookeeper::server inherits role::analytics::zookeeper::client {
-    class { '::zookeeper::server': }
-}
-
-
-# == Class role::analytics::zookeeper::production
-#
-class role::analytics::zookeeper::production {
-    $zookeeper_hosts = {
+    $production_hosts = {
         'analytics1023.eqiad.wmnet' => 23,
         'analytics1024.eqiad.wmnet' => 24,
         'analytics1025.eqiad.wmnet' => 25,
     }
 
+    $hosts = $::realm ? {
+        'labs'       => $labs_hosts,
+        'production' => $production_hosts,
+    }
+
+    # maintain a $hosts_array variable here for
+    # cases where you need a list of zookeeper hosts,
+    # rather than a hash with ZK IDs.  (This is used
+    # in role/analytics/hive.pp, for example.)
+    $hosts_array = keys($hosts)
+}
+
+
+# == Class role::analytics::zookeeper::client
+#
+class role::analytics::zookeeper::client {
+    require role::analytics::zookeeper::config
+
     class { '::zookeeper':
-        hosts   => $zookeeper_hosts,
+        hosts   => $role::analytics::zookeeper::config::hosts,
         version => '3.3.5+dfsg1-1ubuntu1',
     }
 }
 
-# == Class role::analytics::zookeeper::labs
-#
-class role::analytics::zookeeper::labs {
-    # TODO: make this configurable via a global
-    # variable in labs.
-    $zookeeper_hosts = {
-        'kraken-zookeeper.pmtpa.wmflabs' => 1,
-    }
-
-    class { '::zookeeper':
-        hosts   => $zookeeper_hosts,
-        version => '3.3.5+dfsg1-1ubuntu1',
-    }
+class role::analytics::zookeeper::server inherits role::analytics::zookeeper::client {
+    class { '::zookeeper::server': }
 }
