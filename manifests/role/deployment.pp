@@ -108,7 +108,7 @@ class role::deployment::salt_masters::common($deployment_servers) {
 }
 
 class role::deployment::salt_masters::production {
-  $mediawiki_regex = "^(srv|mw|snapshot|tmh)|(searchidx2|searchidx1001).*.(eqiad|pmtpa).wmnet$|^(hume|spence|fenari).wikimedia.org$"
+  $mediawiki_regex = "^(srv|mw|snapshot|tmh)|(searchidx2|searchidx1001).*.(eqiad|pmtpa).wmnet$|^(hume|fenari).wikimedia.org$"
   $parsoid_regex = "^(wtp10[01][0-9]|wtp102[0-4])\..*"
   $eventlogging_regex = "^(vanadium).eqiad.wmnet$"
   $deployment_servers = {
