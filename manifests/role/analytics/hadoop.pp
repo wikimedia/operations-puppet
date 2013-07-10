@@ -21,7 +21,7 @@
 # == Class role::analytics::hadoop
 # Installs base configs for Hadoop nodes
 #
-class role::analytics::hadoop {
+class role::analytics::hadoop::client {
     # need java before hadoop is installed
     require role::analytics::java
 
@@ -38,17 +38,24 @@ class role::analytics::hadoop {
 # == Class role::analytics::hadoop::master
 # Includes cdh4::hadoop::master classes
 #
-class role::analytics::hadoop::master inherits role::analytics::hadoop {
+class role::analytics::hadoop::master inherits role::analytics::hadoop::client {
     system_role { 'role::analytics::hadoop::master': description => 'Hadoop Master (NameNode & ResourceManager)' }
     include cdh4::hadoop::master
 }
 
 # == Class role::analytics::hadoop::worker
 # Includes cdh4::hadoop::worker classes
-class role::analytics::hadoop::worker inherits role::analytics::hadoop {
+class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     system_role { 'role::analytics::hadoop::worker': description => 'Hadoop Worker (DataNode & NodeManager)' }
     include cdh4::hadoop::worker
 }
+
+
+
+### The following classes should not be included directly.
+### You should either include role::analytics::hadoop::client,
+### or role::analytics::hadoop::worker or
+### role::analytics::hadoop::master.
 
 
 # == Class role::analytics::hadoop::production
@@ -115,7 +122,9 @@ class role::analytics::hadoop::production {
 # this nodes $::fqdn.
 #
 class role::analytics::hadoop::labs {
-    # if the globa
+    # if the global variable $::hadoop_namenode is set,
+    # use it as the namenode_hostname.  This allows
+    # configuration via the Labs Instance configuration page.
     $namenode_hostname = $::hadoop_namenode ? {
         undef       => $::fqdn,
         default     => "${::hadoop_namenode}.${domain}",
