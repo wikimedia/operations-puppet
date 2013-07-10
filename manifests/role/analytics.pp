@@ -203,8 +203,8 @@ class role::analytics::udp2log::sampled {
 		monitor_log_age    => false,
 	}
 
-	misc::analytics::monitoring::kafka::producer { 'webrequest-wikipedia-mobile':
-		warning  => 120000,
-		critical => 6000,
+	misc::analytics::monitoring::kafka::producer { 'webrequest-all-sampled-1000':
+		warning  => 80,
+		critical => 40,
 	}
 }
