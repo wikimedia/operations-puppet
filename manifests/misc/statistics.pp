@@ -238,8 +238,7 @@ class misc::statistics::public_datasets {
 		command => '/usr/bin/rsync -rt --delete stat1.wikimedia.org::a/public-datasets/* /var/www/public-datasets/',
 		require => File['/var/www/public-datasets'],
 		user    => 'root',
-		hour    => '*',
-		minute  => 45,
+		minute  => '*/30',
 	}
 }
 
