@@ -110,12 +110,20 @@ class role::analytics::hadoop::production {
 
 # == Class role::analytics::hadoop::labs
 # Common hadoop configs for the labs Kraken cluster
+# namenode_hostname is configurable via the 
+# hadoop_namenode global variable, and defaults to
+# this nodes $::fqdn.
 #
 class role::analytics::hadoop::labs {
-    $namenode_hostname        = 'kraken0.pmtpa.wmflabs'
+    # if the globa
+    $namenode_hostname = $::hadoop_namenode ? {
+        undef       => $::fqdn,
+        default     => "${::hadoop_namenode}.${domain}",
+    }
+
     $hadoop_name_directory    = '/var/lib/hadoop/name'
 
-    # We don't have to create any partions in hive, so it
+    # We don't have to create any partions in labs, so it
     # is unlikely that /var/lib/hadoop will be created manually.
     # Ensure it exists.
     file { '/var/lib/hadoop':
