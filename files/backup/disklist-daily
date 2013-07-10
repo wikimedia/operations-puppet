@@ -1,4 +1,3 @@
-#spence.wikimedia.org   /etc/nagios daily
 mchenry.wikimedia.org   /root default
 sockpuppet.pmtpa.wmnet /svnroot default
 sockpuppet.pmtpa.wmnet /var/lib/puppet/ssl default

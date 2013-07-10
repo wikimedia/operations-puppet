@@ -34,7 +34,6 @@ class openstack::iptables-accepts {
 	iptables_add_service{ "lo_all": interface => "lo", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "localhost_all": source => "127.0.0.1", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "virt0_all": source => "208.80.152.32", service => "all", jump => "ACCEPT" }
-	iptables_add_service{ "spence_all": source => "208.80.152.161", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "neon_all": source => "208.80.154.14", service => "all", jump => "ACCEPT" }
 	iptables_add_service{ "ldap_private": source => "10.0.0.0/8", service => "ldap", jump => "ACCEPT" }
 	iptables_add_service{ "ldaps_private": source => "10.0.0.0/8", service => "ldaps", jump => "ACCEPT" }

@@ -58,7 +58,7 @@ class icinga::monitor::configuration::variables {
   #It is called master hosts as monitor_host is already
   #a service.
 
-  $master_hosts = [ 'neon.wikimedia.org', 'spence.wikimedia.org' ]
+  $master_hosts = [ 'neon.wikimedia.org' ]
 
   $icinga_config_dir = '/etc/icinga'
   $nagios_config_dir = '/etc/nagios'
