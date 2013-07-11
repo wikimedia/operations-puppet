@@ -7,9 +7,9 @@ describe 'rsync::server', :type => :class do
 
   describe 'when using default params' do
     it {
-      should contain_class('xinetd')
-      should contain_xinetd__service('rsync').with({ 'bind' => '0.0.0.0' })
-      should_not contain_service('rsync')
+      should_not contain_class('xinetd')
+      should_not contain_xinetd__service('rsync').with({ 'bind' => '0.0.0.0' })
+      should contain_service('rsync')
       should_not contain_file('/etc/rsync-motd')
       should contain_file(fragment_file).with_content(/^use chroot\s*=\s*yes$/)
       should contain_file(fragment_file).with_content(/^address\s*=\s*0.0.0.0$/)
