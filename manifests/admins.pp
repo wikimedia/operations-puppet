@@ -389,10 +389,17 @@ class accounts {
 			}
 			ssh_authorized_key {
 				"chrisj@chrisjohnson":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDRLeXOUkI5OZkubtTv8jVVq7itOUQ38usJdMap8zjSQw9g7kbLj66369NQrp4g8MRiD1WhDGkxL5IeU8leQcAhTYB0SmAr/JAK363a/bgcR3OJL3LZcoji6iIhhDukanXNwo19uotoqJVj+J/CdSWzIbYefihN/FGf6CW9bqHhrBKY0t8k2HaT7EXxvxx7NXlCUQCSKHlkfNyd+BT+nYQ+oQQxyxFHrvKPhs9TPy8U7eVKpU1d0DfVVlKKB65l0O2Ldny0K4i8NPv+CmwX1zJqRzqc0inqfT3Eatc6a47pqJq2tL8ah4hYyrtYh2swicY3JbOP8lVWvnV3PZ2/iRMN";
+                        }
+			ssh_authorized_key {
+				"chrisj@chrisjohnson":
+					ensure	=> present,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDjVPy2od8cEq1waL62yVzYmppKJSg95xFecXKVUutsE8P9VcHEdGFIg+pZoOv9X9u1rV4zrjxFomLka4RD9fhV4be3r4aXIswQ08Y9fQhQ6ixs0Y0rNmfF0P/C1vxZgZ9gPp5nSIAfng+W+CU6Ecsf/0TUc136KnpliYBIOWUD0kcgTRd3cu24w+6JYHXelZXvMB7dImlb9ilkk3OehXfNuABZpBN0PHM4CDDiZeSO1G6OD38evfuigFBo1U5zezRuOdDh5tTWug3fkmGf9bBH5MKnnIEfrzsbzQomeB0fJs1LEweFlwPZAsjQ4o0riJEhLwWFUlE88ABGbPhwJ9/X";
 			}
 		}
 	}
