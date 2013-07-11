@@ -111,7 +111,7 @@ $decommissioned_servers = [
 'mc6',
 'mc7',
 'mc8',
-'mc8',
+'mc9',
 'mc10',
 'mc11',
 'mc12',
