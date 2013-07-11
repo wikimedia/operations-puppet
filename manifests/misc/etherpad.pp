@@ -51,6 +51,10 @@ class misc::etherpad {
 
 class misc::etherpad_lite {
 
+	$etherpad_host = 'epl.wikimedia.org'
+	$etherpad_ip = '127.0.0.1'
+	$etherpad_port = '9001'
+
 	include passwords::etherpad_lite
 
 	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
@@ -59,6 +63,9 @@ class misc::etherpad_lite {
 		$etherpad_host = $fqdn
 		$etherpad_ssl_cert = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 		$etherpad_ssl_key = "/etc/ssl/private/ssl-cert-snakeoil.key"
+	} else {
+		$etherpad_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
+		$etherpad_ssl_key = '/etc/ssl/certs/star.wikimedia.org.key'
 	}
 
 	system_role { "misc::etherpad_lite": description => "Etherpad-lite server" }
