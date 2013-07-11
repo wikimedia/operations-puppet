@@ -1165,13 +1165,13 @@ node "hume.wikimedia.org" {
 	# These cron jobs were left behind for some reason:
 
 	# foreachwikiindblist broken
-	class { misc::maintenance::geodata: enabled => true }
+	class { misc::maintenance::geodata: enabled => false }
 
 	# Wrong log file location
 	class { misc::maintenance::update_special_pages: enabled => true }
 
 	# wikimedia-periodic-update.sh is unpuppetized and not in the scap source
-	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
 
 	# Unknown issue, works for me
 	class { misc::maintenance::refreshlinks: enabled => true }
@@ -2726,10 +2726,10 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::aft5: enabled => true }
 
 	# Broken cron jobs moved back to hume:
-	class { misc::maintenance::geodata: enabled => false }
+	class { misc::maintenance::geodata: enabled => true }
+	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
 	class { misc::maintenance::update_special_pages: enabled => false }
 
-	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
 	class { misc::maintenance::refreshlinks: enabled => false }
 
 	# totally broken, misconfigured in non-version reporting-setup.php
