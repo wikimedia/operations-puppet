@@ -296,6 +296,8 @@ class lvs::configuration {
 					'mediawikilb6' => "2620:0:862:ed1a::8",
 					'foundationlb6' => "2620:0:862:ed1a::9",
 					'uploadlb6' => "2620:0:862:ed1a::b",
+					'wikidatalb6' => "2620:0:862:ed1a::12",
+					'wikivoyagelb6' => "2620:0:862:ed1a::13"
 				},
 			},
 			'bits' => {
@@ -1254,19 +1256,23 @@ class lvs::monitor {
 	monitor_service_lvs_http {
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikidatalb'],
-			check_command => "check_http_lvs!www.wikidata.org!/";
+			check_command => "check_http_lvs!www.wikidata.org!/",
+			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikivoyagelb'],
-			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
 	}
 
 	monitor_service_lvs_https {
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikidatalb'],
-			check_command => "check_https_lvs!www.wikidata.org!/";
+			check_command => "check_https_lvs!www.wikidata.org!/",
+			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikivoyagelb'],
-			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
+			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
 	}
 
 	# todo: we should probably monitor both eqiad/pmtpa
@@ -1320,10 +1326,12 @@ class lvs::monitor {
 			uri => "upload.wikimedia.org!/monitoring/backend";
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikidatalb6'],
-			uri => "www.wikidata.org!/";
+			uri => "www.wikidata.org!/",
+			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikivoyagelb6'],
-			uri => "en.wikivoyage.org!/wiki/Main_Page";
+			uri => "en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
 	}
 
 	# Not really LVS but similar:
