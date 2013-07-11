@@ -51,8 +51,7 @@ class misc::etherpad {
 
 class misc::etherpad_lite {
 
-	include webserver::apache2,
-		passwords::etherpad_lite
+	include passwords::etherpad_lite
 
 	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
 
