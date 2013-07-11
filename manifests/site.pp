@@ -1303,6 +1303,18 @@ node 'labsdb1003.eqiad.wmnet' {
 	}
 }
 
+## labsudb dbs (user databases)
+node 'labsudb1.pmtpa.wmnet' {
+	include role::db::labsudb
+}
+
+node 'labsudb2.pmtpa.wmnet' {
+    include standard
+    # need Asher to explain how we setup slaves here.  :-)
+}
+
+
+
 node /labstore[12]\.pmtpa\.wmnet/ {
 
 	$cluster = "gluster"

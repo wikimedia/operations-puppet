@@ -157,6 +157,9 @@ class ganglia {
 			"labsnfs"	=> {
 				"name"		=> "Labs NFS cluster",
 				"ip_oct"	=> "40" },
+			"labsudb"	=> {
+				"name"		=> "Labs user database cluster",
+				"ip_oct"	=> "41" },
 		}
 		# NOTE: Do *not* add new clusters *per site* anymore,
 		# the site name will automatically be appended now,

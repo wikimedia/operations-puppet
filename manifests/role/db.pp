@@ -93,6 +93,39 @@ class role::db::labsdb( $instances = {} ) {
 	}
 }
 
+class role::db::labsudb {
+	$cluster = "labsudb"
+
+	system_role {"role::db::labsudb": description => "database for labs users' use" }
+
+	include standard,
+		cpufrequtils,
+		mysql_multi_instance
+
+	class { mysql :
+		package_name => 'mariadb-client-5.5'
+	}
+
+	class { "generic::mysql::server":
+		datadir => "/a/mysql",
+		version => "5.5",
+	}
+
+	file { "/usr/lib/nagios/plugins/percona":
+		ensure => directory,
+		recurse => true,
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/icinga/percona";
+	}
+
+	nrpe::monitor_service { "mysqld":
+		description => "mysqld processes",
+		nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld"
+	}
+}
+
 class role::labsdb::manager {
 	package { ["python-mysqldb", "python-yaml"]:
 		ensure => present;
