@@ -1174,7 +1174,7 @@ node "hume.wikimedia.org" {
 	class { misc::maintenance::update_flaggedrev_stats: enabled => false }
 
 	# Unknown issue, works for me
-	class { misc::maintenance::refreshlinks: enabled => true }
+	class { misc::maintenance::refreshlinks: enabled => false }
 }
 
 node "iron.wikimedia.org" {
@@ -2730,7 +2730,7 @@ node "terbium.eqiad.wmnet" {
 	class { misc::maintenance::update_flaggedrev_stats: enabled => true }
 	class { misc::maintenance::update_special_pages: enabled => false }
 
-	class { misc::maintenance::refreshlinks: enabled => false }
+	class { misc::maintenance::refreshlinks: enabled => true }
 
 	# totally broken, misconfigured in non-version reporting-setup.php
 	class { misc::maintenance::foundationwiki: enabled => false }
