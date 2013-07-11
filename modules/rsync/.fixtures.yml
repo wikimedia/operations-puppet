@@ -1,5 +1,0 @@
-fixtures:
-  repositories:
-    "xinetd": "git://github.com/ghoneycutt/puppet-xinetd"
-  symlinks:
-    "rsync": "#{source_dir}"
