@@ -368,7 +368,8 @@ class ganglia {
 				user => root,
 				hour => [0, 4, 8, 12, 16, 20],
 				minute => 30,
-				ensure => present;
+				ensure => present,
+				environment => 'PATH=$PATH:/sbin',
 			}
 
 			# log gmetad messages to /var/log/ganglia.log
