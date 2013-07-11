@@ -81,7 +81,7 @@ class misc::etherpad_lite {
 	}
 
 	apache_site { controller: name => "etherpad.wikimedia.org" }
-	apache_module { rewrite: name => "rewrite" }
+	# apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
 	apache_module { ssl: name => "ssl" }
