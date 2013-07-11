@@ -527,6 +527,8 @@ class role::cache {
 		include standard,
 			nrpe
 
+		class { "varnish::packages": version => "3.0.3plus~rc1-wm13" }
+
 		varnish::setup_filesystem{ $storage_partitions:
 			before => Varnish::Instance["text-backend"]
 		}

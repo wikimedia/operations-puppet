@@ -62,6 +62,7 @@ sub vcl_error {
 	if (obj.status == 666) {
 		set obj.http.Location = req.http.Location;
 		set obj.status = 302;
+		set obj.http.Connection = "keep-alive";
 		return(deliver);
 	}
 
