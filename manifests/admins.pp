@@ -395,7 +395,7 @@ class accounts {
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDRLeXOUkI5OZkubtTv8jVVq7itOUQ38usJdMap8zjSQw9g7kbLj66369NQrp4g8MRiD1WhDGkxL5IeU8leQcAhTYB0SmAr/JAK363a/bgcR3OJL3LZcoji6iIhhDukanXNwo19uotoqJVj+J/CdSWzIbYefihN/FGf6CW9bqHhrBKY0t8k2HaT7EXxvxx7NXlCUQCSKHlkfNyd+BT+nYQ+oQQxyxFHrvKPhs9TPy8U7eVKpU1d0DfVVlKKB65l0O2Ldny0K4i8NPv+CmwX1zJqRzqc0inqfT3Eatc6a47pqJq2tL8ah4hYyrtYh2swicY3JbOP8lVWvnV3PZ2/iRMN";
                         }
 			ssh_authorized_key {
-				"chrisj@chrisjohnson":
+				"chrisj@chrisjohnson2":
 					ensure	=> present,
 					user	=> $username,
 					type	=> "ssh-rsa",
