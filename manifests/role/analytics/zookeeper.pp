@@ -50,8 +50,10 @@ class role::analytics::zookeeper::production {
 # == Class role::analytics::zookeeper::labs
 #
 class role::analytics::zookeeper::labs {
+    # TODO: make this configurable via a global
+    # variable in labs.
     $zookeeper_hosts = {
-        'kraken-puppet.pmtpa.wmflabs' => 1,
+        'kraken-zookeeper.pmtpa.wmflabs' => 1,
     }
 
     class { '::zookeeper':
