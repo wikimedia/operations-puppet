@@ -1251,6 +1251,24 @@ class lvs::monitor {
 	monitor_service_lvs_http { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_http_lvs!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png" }
 	monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
+	monitor_service_lvs_http {
+		"wikidata-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikidatalb'],
+			check_command => "check_http_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikivoyagelb'],
+			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+	}
+
+	monitor_service_lvs_https {
+		"wikidata-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikidatalb'],
+			check_command => "check_https_lvs!www.wikidata.org!/";
+		"wikivoyage-lb.esams.wikimedia.org":
+			ip_address => $ip['text']['esams']['wikivoyagelb'],
+			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
+	}
+
 	# todo: we should probably monitor both eqiad/pmtpa
 	monitor_service_lvs_custom { "payments.wikimedia.org": ip_address => "208.80.155.5", port => 443, check_command => "check_https_url!payments.wikimedia.org!/index.php/Special:SystemStatus", retries => 20 }
 
@@ -1300,6 +1318,12 @@ class lvs::monitor {
 		"upload-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['uploadlb6'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
+		"wikidata-lb.esams.wikimedia.org":
+			ip_address => $ip['ipv6']['esams']['wikidatalb6'],
+			uri => "www.wikidata.org!/";
+		"wikivoyage-lb.esams.wikimedia.org":
+			ip_address => $ip['ipv6']['esams']['wikivoyagelb6'],
+			uri => "en.wikivoyage.org!/wiki/Main_Page";
 	}
 
 	# Not really LVS but similar:
