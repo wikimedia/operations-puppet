@@ -101,10 +101,6 @@ class misc::etherpad_lite {
 			group => 'root',
 			mode => 0444,
 			content => template('etherpad_lite/settings.json.erb');
-		'/etc/apache2/sites-enabled/000-default':
-			notify => Service["apache2"],
-			require => Package["apache2"],
-			ensure => absent;
 	}
 }
 
