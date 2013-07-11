@@ -4829,14 +4829,14 @@ host virt2 {
 	fixed-address virt2.pmtpa.wmnet;
 }
 
-host virt3 {
+host labsudb1 {
 	hardware ethernet f0:4d:a2:0b:33:f2;
-	fixed-address virt3.pmtpa.wmnet;
+	fixed-address labsudb1.pmtpa.wmnet;
 }
 
-host virt4 {
+host labsudb2 {
 	hardware ethernet f0:4d:a2:0b:3e:5a;
-	fixed-address virt4.pmtpa.wmnet;
+	fixed-address labsudb2.pmtpa.wmnet;
 }
 
 host wtp1 {
