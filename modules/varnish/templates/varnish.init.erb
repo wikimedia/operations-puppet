@@ -58,7 +58,7 @@ case "$1" in
 				log_end_msg 0
 				break
 			else
-				if [ $? != 75 -o $i == 3 ]
+				if [ "( $? -ne 75 ) -o ( $i -eq 3 )" ]
 				then
 					log_end_msg 1
 					cat $output
