@@ -1965,7 +1965,12 @@ node /^mw1(01[7-9]|0[2-9][0-9]|10[0-9]|11[0-3])\.eqiad\.wmnet$/ {
 		$ganglia_aggregator = true
 	}
 
-	include	role::applicationserver::appserver
+	# mw1017 is test.wikipedia.org (precise)
+	if $::hostname = "mw1017" {
+		include	role::applicationserver::appserver::test
+	} else {
+		include	role::applicationserver::appserver
+	}
 }
 
 # mw1114-1148 are api apaches (precise)

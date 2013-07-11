@@ -326,8 +326,8 @@ class role::cache {
 					'eqiad' => [ "mw1149.eqiad.wmnet", "mw1150.eqiad.wmnet", "mw1151.eqiad.wmnet", "mw1152.eqiad.wmnet" ],
 				},
 				'test_appservers' => {
-					'pmtpa' => [ "srv193.pmtpa.wmnet" ],
-					'eqiad' => [ "srv193.pmtpa.wmnet" ],
+					'pmtpa' => [ "mw1017.eqiad.wmnet" ],
+					'eqiad' => [ "mw1017.eqiad.wmnet" ],
 				},
 				'parsoid' => $lvs::configuration::lvs_service_ips['production']['parsoid']
 			},
@@ -570,7 +570,7 @@ class role::cache {
 					'probe' => "varnish",
 				},
 				{
-					'backend_match' => '^srv193\.pmtpa\.wmnet$',
+					'backend_match' => '^mw1017\.eqiad\.wmnet$',
 					'max_connections' => 20,
 				},
 				{
@@ -937,7 +937,7 @@ class role::cache {
 			},
 			backend_options => [
 				{
-					'backend_match' => '^srv193\.pmtpa\.wmnet$',
+					'backend_match' => '^mw1017\.eqiad\.wmnet$',
 					'max_connections' => 20,
 				},
 				{
