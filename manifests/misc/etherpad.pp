@@ -81,10 +81,11 @@ class misc::etherpad_lite {
 	}
 
 	apache_site { controller: name => "etherpad.wikimedia.org" }
+	# FIX ME - move this to a common role to avoid duplicate defs
 	# apache_module { rewrite: name => "rewrite" }
 	apache_module { proxy: name => "proxy" }
 	apache_module { proxy_http: name => "proxy_http" }
-	apache_module { ssl: name => "ssl" }
+	# apache_module { ssl: name => "ssl" }
 
 	package { etherpad-lite:
 		ensure => latest;
