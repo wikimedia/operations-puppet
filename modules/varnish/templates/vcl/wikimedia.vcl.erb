@@ -184,7 +184,7 @@ sub vcl_recv_purge {
 			call rewrite_proxy_urls;
 			return (lookup);
 		} else {
-			error 200 "Domain not cached here.";
+			error 204 "Domain not cached here.";
 		}
 	}
 }
@@ -250,7 +250,7 @@ sub vcl_fetch {
 sub vcl_hit {
 	if (req.request == "PURGE") {
 		purge;
-		error 200 "Purged";
+		error 204 "Purged";
 	}
 	
 	/* Function vcl_hit in <%= vcl %>.inc.vcl will be appended here */
@@ -259,7 +259,7 @@ sub vcl_hit {
 sub vcl_miss {
 	if (req.request == "PURGE") {
 		purge;
-		error 200 "Cache miss";
+		error 204 "Cache miss";
 	}
 
 	/* Function vcl_miss in <%= vcl %>.inc.vcl will be appended here */
@@ -294,6 +294,9 @@ sub vcl_error {
 		return(restart);
 	}
 <% end -%>
+	if (obj.status == 204 && req.request == "PURGE") {
+		set obj.http.Connection = "keep-alive";
+	}
 	/* Function vcl_error in <%= vcl %>.inc.vcl will be appended here */
 }
 
