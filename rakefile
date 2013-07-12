@@ -18,20 +18,30 @@ puppet-lint doc is at https://github.com/rodjek/puppet-lint
  -- hashar 20120216
 =end
 
+$enable_color=false
+
 # Only care about color when using a tty
 if Rake.application.tty_output?
 	# Since we are going to use puppet internal stuff, we might as
-	# well reuse their colorization utility:
-	require'puppet/util/colors'
-	include Puppet::Util::Colors
+	# well attempt to reuse their colorization utility. Note the utility class
+	# is not available in older puppet versions.
+	begin
+		require'puppet/util/colors'
+		include Puppet::Util::Colors
+		$enable_color=true
+	rescue LoadError
+		puts "Cant load puppet/util/colors .. no color for you!"
+	end
+end
 
+# Setup colorization if need be
+if $enable_color
 	$puppetcolor = '--color true'
 else
 	# define our own colorization method that simply output the message
 	def console_color( level, message )
 		return message
 	end
-
 	$puppetcolor = '--color none'
 end
 
