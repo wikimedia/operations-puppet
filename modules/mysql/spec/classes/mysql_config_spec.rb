@@ -8,7 +8,7 @@ describe 'mysql::config' do
      :bind_address      => '127.0.0.1',
      :port              => '3306',
      :etc_root_password => false,
-     :datadir           => '/var/lib/mysql',
+     :datadir           => '/a/sqldata',
      :default_engine    => 'UNSET',
      :ssl               => false,
     }
@@ -17,11 +17,11 @@ describe 'mysql::config' do
   describe 'with osfamily specific defaults' do
     {
       'Debian' => {
-         :datadir      => '/var/lib/mysql',
+         :datadir      => '/a/sqldata',
          :service_name => 'mysql',
          :config_file  => '/etc/mysql/my.cnf',
-         :socket       => '/var/run/mysqld/mysqld.sock',
-         :pidfile      => '/var/run/mysqld/mysqld.pid',
+         :socket       => '/tmp/mysqld.sock',
+         :pidfile      => '/a/sqldata/hostname.pid',
          :root_group   => 'root',
          :ssl_ca       => '/etc/mysql/cacert.pem',
          :ssl_cert     => '/etc/mysql/server-cert.pem',
@@ -52,7 +52,8 @@ describe 'mysql::config' do
       describe "when osfamily is #{osfamily}" do
 
         let :facts do
-          {:osfamily => osfamily}
+          {:osfamily => osfamily,
+	   :hostname => 'hostname'}
         end
 
         describe 'when root password is set' do
@@ -104,7 +105,8 @@ describe 'mysql::config' do
             :ssl            => true,
             :ssl_ca         => '/path/to/cacert.pem',
             :ssl_cert       => '/path/to/server-cert.pem',
-            :ssl_key        => '/path/to/server-key.pem'
+            :ssl_key        => '/path/to/server-key.pem',
+            :restart        => true
           }
         ].each do |passed_params|
 
@@ -135,21 +137,18 @@ describe 'mysql::config' do
             it { should contain_file('/etc/mysql').with(
               'owner'  => 'root',
               'group'  => param_values[:root_group],
-              'notify' => 'Exec[mysqld-restart]',
               'ensure' => 'directory',
               'mode'   => '0755'
             )}
             it { should contain_file('/etc/mysql/conf.d').with(
               'owner'  => 'root',
               'group'  => param_values[:root_group],
-              'notify' => 'Exec[mysqld-restart]',
               'ensure' => 'directory',
               'mode'   => '0755'
             )}
             it { should contain_file(param_values[:config_file]).with(
               'owner'  => 'root',
               'group'  => param_values[:root_group],
-              'notify' => 'Exec[mysqld-restart]',
               'mode'   => '0644'
             )}
             it 'should have a template with the correct contents' do

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'mysql::server::config', :type => :define do
-  filename = '/etc/mysql/conf.d/test_config.cnf'
+  filename = '/etc/mysql/conf.d/test_config'
 
   let :facts do
     { :osfamily => 'Debian'}
   end
 
-  let(:title) { File.basename(filename, '.cnf') }
+  let(:title) { File.basename(filename) }
 
   let(:params) {
     { 'settings' => {
@@ -17,10 +17,6 @@ describe 'mysql::server::config', :type => :define do
       }
     }
   }
-
-  it 'should notify the mysql daemon' do
-    should contain_file(filename).with_notify('Exec[mysqld-restart]')
-  end
 
   it 'should contain config parameter in content' do
     should contain_file(filename).with_content("### MANAGED BY PUPPET ###\n[mysqld]\nbind-address = 0.0.0.0\n\n")

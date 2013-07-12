@@ -85,7 +85,7 @@ class mysql::params {
 
     'Debian': {
       $basedir              = '/usr'
-      $datadir              = '/a/sqldata/'
+      $datadir              = '/a/sqldata'
       $service_name         = 'mysql'
       $client_package_name  = 'mysql-client'
       $server_package_name  = 'mysql-server'
