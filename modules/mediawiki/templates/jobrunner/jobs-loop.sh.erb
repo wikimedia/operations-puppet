@@ -211,7 +211,8 @@ else
 	hpriotypes="$hpriotypes uploadFromUrl" # upload
 	(runJobsLoopService "$hpriotypes" "y" <%= dprioprocs %>) &
 	# Start loops for highly I/O bound jobs that work on special services (e.g. not the DBs)
-	(runJobsLoopService "ParsoidCacheUpdateJob" "n" <%= procs_per_iobound_type %>) &
+	parsoidprocs=$((<%= procs_per_iobound_type %> * 3))
+	(runJobsLoopService "ParsoidCacheUpdateJob" "n" "$parsoidprocs") &
 fi
 
 wait
