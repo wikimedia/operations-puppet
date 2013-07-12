@@ -2399,7 +2399,8 @@ node "spence.wikimedia.org" {
 	install_certificate{ "star.wikimedia.org": }
 }
 
-# srv193 is test.wikipedia.org (precise)
+# srv193 was test.wikipedia.org (precise)
+# on 20130711 test has been switched over to mw1017
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver::test
 	include	nfs::upload
