@@ -2383,17 +2383,6 @@ node "sodium.wikimedia.org" {
 	}
 }
 
-node "spence.wikimedia.org" {
-	$ganglia_aggregator = true
-
-	include standard,
-		nfs::netapp::home,
-		admins::roots,
-		backup::client
-
-	install_certificate{ "star.wikimedia.org": }
-}
-
 # srv193 is test.wikipedia.org (precise)
 node "srv193.pmtpa.wmnet" {
 	include	role::applicationserver::appserver::test
