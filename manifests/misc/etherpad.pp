@@ -96,10 +96,11 @@ class misc::etherpad_lite {
 		enable => true,
 		ensure => running;
 	}
-	service { apache2:
-		enable => true,
-		ensure => running;
-	}
+	#FIXME
+	#service { apache2:
+	#	enable => true,
+	#	ensure => running;
+	#}
 
 	file {
 		'/etc/etherpad-lite/settings.json':
