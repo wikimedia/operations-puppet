@@ -54,6 +54,8 @@ class misc::etherpad_lite {
 	include passwords::etherpad_lite
 
 	$etherpad_db_user = $passwords::etherpad_lite::etherpad_db_user
+	$etherpad_db_host = $passwords::etherpad_lite::etherpad_db_host
+	$etherpad_db_name = $passwords::etherpad_lite::etherpad_db_name
 	$etherpad_db_pass = $passwords::etherpad_lite::etherpad_db_pass
 
 	if $realm == 'labs' {
