@@ -65,7 +65,7 @@ class misc::etherpad_lite {
 	} else {
 		$etherpad_host = 'epl.wikimedia.org'
 		$etherpad_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
-		$etherpad_ssl_key = '/etc/ssl/certs/star.wikimedia.org.key'
+		$etherpad_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
 	}
 
 	$etherpad_ip = '127.0.0.1'
