@@ -95,6 +95,7 @@ class misc::udp2log::rsyncd(
 #    $monitor_log_age     - bool. Default: true
 #    $template_variables  - arbitrary variable(s) for use in udp2log config template file.  Default: undef
 #    $recv_queue          - in KB.  If unset, --recv-queue may be set to /proc/sys/net/core/rmem_max.
+#    $logrotate_template  - Path to template file to use for logrotate.  Default: udp2log_logrotate.erb
 #
 define misc::udp2log::instance(
 	$port                = "8420",
@@ -107,7 +108,8 @@ define misc::udp2log::instance(
 	$monitor_processes   = true,
 	$monitor_log_age     = true,
 	$template_variables  = undef,
-	$recv_queue          = undef)
+	$recv_queue          = undef,
+	$logrotate_template  = 'udp2log/logrotate_udp2log.erb')
 {
 	# This define requires that the udp2log class has
 	# been included.  The udp2log class is parameterized,
