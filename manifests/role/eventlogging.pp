@@ -58,7 +58,7 @@ class role::eventlogging {
 	eventlogging::service::consumer {
 		'vanadium':
 			input  => 'tcp://vanadium.eqiad.wmnet:8600',
-			output => "mongodb://${mongo_user}:${mongo_pass}@vanadium.eqiad.wmnet:27017/?w=1";
+			output => "mongodb://${mongo_user}:${mongo_pass}@vanadium.eqiad.wmnet:27017";
 		'mysql-db1047':
 			input  => 'tcp://vanadium.eqiad.wmnet:8600',
 			output => "mysql://${mysql_user}:${mysql_pass}@db1047.eqiad.wmnet/log?charset=utf8";
