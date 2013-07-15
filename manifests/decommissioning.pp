@@ -64,10 +64,12 @@ $decommissioned_servers = [
 'db28',
 'db30',
 'db41',
+'db78', #moved to frack.eqiad 7-15-13
 'db1013', #moved to frack.eqiad 6-7-13
 'dysprosium',
 'ixia',
 'gilman',
+'grosley', #moved to frack.eqiad 7-15-13
 'knsq1',
 'knsq2',
 'knsq3',
@@ -102,6 +104,7 @@ $decommissioned_servers = [
 'lardner',
 'lily',
 'lomaria',
+'loudon', #moved to frack.eqiad 7-15-13
 'mexia',
 'mc1', #Remove mc1-16 7/12/13 or later
 'mc2',
