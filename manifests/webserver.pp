@@ -5,7 +5,7 @@
 
 # Installs a generic, static web server (lighttpd) with default config, which serves /var/www
 class webserver::static {
-	include generic::sysctl::high-http-performance,
+	include sysctlfile::high-http-performance,
 		firewall
 
 	package { lighttpd:
@@ -33,7 +33,8 @@ class webserver::static {
 }
 
 class webserver::php5( $ssl = 'false' ) {
-	include generic::sysctl::high-http-performance
+
+	include sysctlfile::high-http-performance
 
 	package { [ "apache2-mpm-prefork", "libapache2-mod-php5" ]:
 		ensure => present;
@@ -59,7 +60,7 @@ class webserver::php5( $ssl = 'false' ) {
 
 class webserver::modproxy {
 
-	include generic::sysctl::high-http-performance
+	include sysctlfile::high-http-performance
 
 	package { libapache2-mod-proxy-html:
 		ensure => present;
@@ -70,7 +71,7 @@ class webserver::modproxy {
 #  include mysql and apache via dependencies.
 class webserver::php5-mysql {
 
-	include generic::sysctl::high-http-performance
+	include sysctlfile::high-http-performance
 
 	package { php5-mysql:
 		ensure => present;
@@ -79,7 +80,7 @@ class webserver::php5-mysql {
 
 class webserver::php5-gd {
 
-	include generic::sysctl::high-http-performance
+	include sysctlfile::high-http-performance
 
 	package { "php5-gd":
 		ensure => present;
@@ -89,7 +90,7 @@ class webserver::php5-gd {
 #  Install the 'apache2' package
 class webserver::apache2 {
 
-	include generic::sysctl::high-http-performance
+	include sysctlfile::high-http-performance
 
 	package { apache2:
 		ensure => present;
@@ -325,5 +326,5 @@ class webserver::apache {
 	include packages,
 		config,
 		service,
-		generic::sysctl::high-http-performance
+		sysctlfile::high-http-performance
 }

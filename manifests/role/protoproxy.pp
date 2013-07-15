@@ -20,7 +20,7 @@ class role::protoproxy::ssl::common {
     include protoproxy::package
 
     # Tune kernel settings
-    include generic::sysctl::high-http-performance
+    include sysctlfile::high-http-performance
 
     $nginx_worker_connections = '32768'
     $nginx_use_ssl = true

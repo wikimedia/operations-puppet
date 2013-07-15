@@ -82,7 +82,7 @@ class role::ceph::eqiad inherits role::ceph::base {
 
         class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
 
-        include generic::sysctl::high-http-performance
+        include sysctlfile::high-http-performance
 
         class { 'ceph::radosgw':
             servername  => 'ms-fe.eqiad.wmnet',
