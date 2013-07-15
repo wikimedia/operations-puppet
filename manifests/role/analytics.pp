@@ -134,13 +134,8 @@ class role::analytics::udp2log::mobile {
 		role::cache::configuration,
 		passwords::analytics
 
-	$log_directory   = '/var/log/udp2log/webrequest'
-	$packet_loss_log = "${log_directory}/packet-loss.log"
-
 	misc::udp2log::instance { 'analytics-mobile':
 		multicast          => true,
-		log_directory      => $log_directory,
-		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
 	}
 
@@ -165,13 +160,8 @@ class role::analytics::udp2log::wikipedia_mobile {
 		misc::udp2log::utilities,
 		role::cache::configuration
 
-	$log_directory   = '/var/log/udp2log/webrequest'
-	$packet_loss_log = "${log_directory}/packet-loss.log"
-
 	misc::udp2log::instance { 'analytics-wikipedia-mobile':
 		multicast          => true,
-		log_directory      => $log_directory,
-		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
 	}
 
@@ -197,13 +187,8 @@ class role::analytics::udp2log::sampled {
 		misc::udp2log::utilities,
 		passwords::analytics
 
-	$log_directory   = '/var/log/udp2log/misc'
-	$packet_loss_log = "${log_directory}/packet-loss.log"
-
 	misc::udp2log::instance { 'analytics-sampled':
 		multicast          => true,
-		log_directory      => $log_directory,
-		packet_loss_log    => $packet_loss_log,
 		monitor_log_age    => false,
 	}
 
