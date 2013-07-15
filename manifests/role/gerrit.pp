@@ -78,6 +78,16 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/zookeeper',
 				},
+				'github-kraken' => {
+					'url'                  => 'git@github.com:wikimedia/kraken',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => '+refs/heads/*:refs/heads/*
+  push = +refs/tags/*:refs/tags/*',
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'analytics/kraken',
+				},
 			},
 			smtp_host => 'smtp.pmtpa.wmnet'
 		}
