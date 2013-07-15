@@ -68,6 +68,16 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/jmxtrans',
 				},
+				'github-puppet-zookeeper' => {
+					'url'                  => 'git@github.com:wikimedia/puppet-zookeeper',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => '+refs/heads/*:refs/heads/*
+  push = +refs/tags/*:refs/tags/*',
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'operations/puppet/zookeeper',
+				},
 			},
 			smtp_host => 'smtp.pmtpa.wmnet'
 		}
