@@ -3149,7 +3149,8 @@ class admins::privatedata {
 		accounts::mgrover,      # RT 4600
 		accounts::olivneh,      # RT 3451
 		accounts::mwalker,      # RT 5038
-		accounts::awight        # RT 5048
+		accounts::awight,       # RT 5048
+		accounts::abaso         # RT 5446
 }
 
 class admins::fr-tech {
