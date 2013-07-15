@@ -541,8 +541,9 @@ node /^db4[89]\.pmtpa\.wmnet/ {
 }
 
 node "db78.pmtpa.wmnet" {
-	include role::fundraising::database::dump_slave
-	class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
+	# moved to frack puppet
+	#include role::fundraising::database::dump_slave
+	#class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
 }
 
 ## researchdb
@@ -827,13 +828,15 @@ node "erzurumi.pmtpa.wmnet" {
 }
 
 node "loudon.wikimedia.org" {
-	include	role::fundraising::logger
+	# moved to frack puppet
+	#include	role::fundraising::logger
 }
 
 node "grosley.wikimedia.org" {
-	include role::fundraising::civicrm,
-		accounts::file_mover
-	class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
+	# moved to frack puppet
+	#include role::fundraising::civicrm,
+	#	accounts::file_mover
+	#class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
 }
 
 node "aluminium.wikimedia.org" {
