@@ -1472,7 +1472,7 @@ host labstore1004 {
 
 host lanthanum {
 	hardware ethernet 90:B1:1C:00:A2:67;
-	fixed-address lanthanum.wikimedia.org;
+	fixed-address lanthanum.eqiad.wmnet;
 }
 
 host lardner {
