@@ -5,7 +5,7 @@ describe 'mysql::server' do
     {:config_hash    => {},
      :package_ensure => 'present',
      :enabled        => true,
-     :manage_service => true
+     :manage_service => false
     }
   end
 
@@ -16,13 +16,7 @@ describe 'mysql::server' do
       }
     end
 
-    it { should contain_service('mysqld').with(
-      :name     => 'mysql',
-      :ensure   => 'running',
-      :enable   => 'true',
-      :provider => 'upstart',
-      :require  => 'Package[mysql-server]'
-    )}
+    it { should_not contain_service('mysqld') }
   end
 
   describe 'with osfamily specific defaults' do
@@ -55,7 +49,7 @@ describe 'mysql::server' do
             :service_name   => 'dans_service',
             :config_hash    => {'root_password' => 'foo'},
             :enabled        => false,
-            :manage_service => false
+            :manage_service => true
           }
         ].each do |passed_params|
 
