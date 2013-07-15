@@ -15,10 +15,8 @@ describe 'mongodb', :type => :class do
       it {
         should_not contain_class('mongodb::sources::apt')
         should_not contain_apt__source('10gen')
-        should contain_package('mongodb-10gen').with({
-          :name => 'mongodb'
-        })
-        should contain_file('/etc/mongod.conf')
+        should_not contain_package('mongodb-10gen')
+        should contain_file('/etc/mongodb.conf')
         should contain_service('mongodb').with({
           :name => 'mongodb'
         })
