@@ -2,9 +2,9 @@
 # THIS FILE IS MANAGED BY PUPPET #
 ##################################
 
-# Rotate anything in <%= log_directory %>/*.log every 100 MB
+# Rotate anything in <%= log_directory %>/*.log every 100M
 <%= log_directory %>/*.log {
-	size 100m
+	size 100M
 	olddir <%= log_directory %>/archive
 	notifempty
 	nocreate
