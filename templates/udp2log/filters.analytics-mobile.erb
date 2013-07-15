@@ -9,7 +9,7 @@ mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.fl
 -%>
 
 # udp2log packet loss monitoring
-pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
+pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/packet-loss.log
 
 # Produce logs into Kafka:
 
