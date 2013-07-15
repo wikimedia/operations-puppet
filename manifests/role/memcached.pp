@@ -10,7 +10,7 @@ class role::memcached {
 	system_role { "role::memcached": description => "memcached server" }
 
 	include standard,
-		generic::sysctl::high-http-performance
+		sysctlfile::high-http-performance
 
 	class { "::memcached":
 		memcached_size => '89088',
