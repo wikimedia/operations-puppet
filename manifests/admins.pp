@@ -3096,6 +3096,7 @@ class admins::restricted {
 	include accounts::khorn
 	include accounts::mgrover #RT 4600
 	include accounts::otto
+	include accounts::qchris #RT 5403
 	include accounts::rainman
 	include accounts::ram # revoked
 	include accounts::rcole # access revoked
