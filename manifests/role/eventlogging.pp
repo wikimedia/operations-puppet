@@ -11,7 +11,6 @@ class role::eventlogging {
 	}
 
 	include eventlogging
-	include eventlogging::mediawiki_errors
 	include eventlogging::monitor
 
 	class { 'eventlogging::archive':
