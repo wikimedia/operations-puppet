@@ -2792,7 +2792,7 @@ node "vanadium.eqiad.wmnet" {
 	$gid=500
 
 	include standard,
-		role::logging::eventlogging,
+		role::eventlogging,
 		nrpe,
 		role::solr::ttm
 
