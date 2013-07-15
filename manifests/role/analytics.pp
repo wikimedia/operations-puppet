@@ -137,6 +137,7 @@ class role::analytics::udp2log::mobile {
 	misc::udp2log::instance { 'analytics-mobile':
 		multicast          => true,
 		monitor_log_age    => false,
+		logrotate_template => 'udp2log/logrotate_udp2log_analytics.erb',
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-mobile':
@@ -163,6 +164,7 @@ class role::analytics::udp2log::wikipedia_mobile {
 	misc::udp2log::instance { 'analytics-wikipedia-mobile':
 		multicast          => true,
 		monitor_log_age    => false,
+		logrotate_template => 'udp2log/logrotate_udp2log_analytics.erb',
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-wikipedia-mobile':
@@ -190,6 +192,7 @@ class role::analytics::udp2log::sampled {
 	misc::udp2log::instance { 'analytics-sampled':
 		multicast          => true,
 		monitor_log_age    => false,
+		logrotate_template => 'udp2log/logrotate_udp2log_analytics.erb',
 	}
 
 	misc::analytics::monitoring::kafka::producer { 'webrequest-all-sampled-1000':
