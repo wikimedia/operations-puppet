@@ -216,6 +216,7 @@ class role::deployment::deployment_servers::common {
   deployment::deployment_repo_dependencies_link { "l10n-beta0": target => "l10n" }
   deployment::deployment_repo_sync_hook_link { "parsoid/Parsoid": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "parsoid/config": target => "shared.py" }
+  deployment::deployment_repo_sync_hook_link { "eventlogging/EventLogging": target => "shared.py" }
   deployment::deployment_repo_sync_hook_link { "fluoride/fluoride": target => "shared.py" }
 
   class { "apache": }
