@@ -1,4 +1,2 @@
---sid
-<%= @sid %>
-<%= @input %>
+<%= @input %><%= @input.include?('?') ? '&' : '?' %>socket_id=<%= @sid %>
 <%= @output %>

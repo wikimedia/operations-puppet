@@ -22,6 +22,7 @@
 # [*sid*]
 #   Specifies the Socket ID consumer should use to identify itself when
 #   subscribing to the input stream. Defaults to the resource title.
+#   Should contain only URL-safe characters.
 #
 # [*ensure*]
 #   Specifies whether the consumer should be provisioned or destroyed.
