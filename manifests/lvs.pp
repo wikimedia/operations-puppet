@@ -1254,6 +1254,9 @@ class lvs::monitor {
 	monitor_service_lvs_https { "bits.esams.wikimedia.org": ip_address => "91.198.174.233", check_command => "check_https_url!bits.wikimedia.org!/skins-1.5/common/images/poweredby_mediawiki_88x31.png", critical => "false" }
 
 	monitor_service_lvs_http {
+		"mobile-lb.esams.wikimedia.org":
+			ip_address => $ip['mobile']['esams']['mobilelb'],
+			check_command => "check_http_lvs!en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikidatalb'],
 			check_command => "check_http_lvs!www.wikidata.org!/",
@@ -1265,6 +1268,9 @@ class lvs::monitor {
 	}
 
 	monitor_service_lvs_https {
+		"mobile-lb.esams.wikimedia.org":
+			ip_address => $ip['mobile']['esams']['mobilelb'],
+			check_command => "check_https_lvs!en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['text']['esams']['wikidatalb'],
 			check_command => "check_https_lvs!www.wikidata.org!/",
@@ -1324,6 +1330,9 @@ class lvs::monitor {
 		"upload-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['uploadlb6'],
 			uri => "upload.wikimedia.org!/monitoring/backend";
+		"mobile-lb.esams.wikimedia.org":
+			ip_address => $ip['mobile']['esams']['mobilelb6'],
+			uri => "en.m.wikipedia.org!/wiki/Main_Page";
 		"wikidata-lb.esams.wikimedia.org":
 			ip_address => $ip['ipv6']['esams']['wikidatalb6'],
 			uri => "www.wikidata.org!/",
