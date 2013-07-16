@@ -6,8 +6,14 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       owner => root,
       group => root,
       require => [File["${state_dir}"]];
+    "${state_dir}/top.sls":
+      source => "puppet:///deployment/states/top.sls",
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [File["${state_dir}/deploy"]];
     "${state_dir}/deploy/sync_all.sls":
-      source => "puppet:///deployment/states/sync_all.sls",
+      source => "puppet:///deployment/states/deploy/sync_all.sls",
       mode => 0444,
       owner => root,
       group => root,
@@ -30,13 +36,12 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       owner => root,
       group => root,
       require => [File["${pillar_dir}/deployment"]];
-    ## Disable management of top pillar for now
-    #"${pillar_dir}/top.sls":
-    #  content => template("deployment/pillars/top.sls.erb"),
-    #  mode => 0444,
-    #  owner => root,
-    #  group => root,
-    #  require => [File["${pillar_dir}"]];
+    "${pillar_dir}/top.sls":
+      content => template("deployment/pillars/top.sls.erb"),
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [File["${pillar_dir}"]];
     "${module_dir}/deploy.py":
       source => "puppet:///deployment/modules/deploy.py",
       mode => 0555,
@@ -60,17 +65,17 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
   # If pillars or modules change, we need to sync them to the deployment hosts
   exec {
     "refresh_deployment_pillars":
-      command => "/usr/bin/salt -E '*' saltutil.refresh_pillar",
+      command => "/usr/bin/salt -G 'deployment_target:*' saltutil.refresh_pillar",
       subscribe => [File["${pillar_dir}/deployment/init.sls"], File["${pillar_dir}"]],
       refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_modules":
-      command => "/usr/bin/salt -E '*' saltutil.sync_modules",
+      command => "/usr/bin/salt -G 'deployment_target:*' saltutil.sync_modules",
       subscribe => [File["${module_dir}/deploy.py"],File["${module_dir}/parsoid.py"]],
       refreshonly => true,
       require => [Package["salt-master"]];
     "refresh_deployment_returners":
-      command => "/usr/bin/salt -E '*' saltutil.sync_returners",
+      command => "/usr/bin/salt -G 'deployment_target:*' saltutil.sync_returners",
       subscribe => [File["${returner_dir}/deploy_redis.py"]],
       refreshonly => true,
       require => [Package["salt-master"]];

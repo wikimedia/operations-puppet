@@ -1,3 +1,3 @@
 base:
   'deployment_target:*':
-    - deployment
+    - deploy.sync_all
