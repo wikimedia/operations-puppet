@@ -2803,6 +2803,7 @@ node "vanadium.eqiad.wmnet" {
 
 node "virt1000.wikimedia.org" {
 	$cluster = "virt"
+	$ganglia_aggregator = true
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
 	$openstack_version = "folsom"
@@ -2816,6 +2817,7 @@ node "virt1000.wikimedia.org" {
 
 node "virt0.wikimedia.org" {
 	$cluster = "virt"
+	$ganglia_aggregator = true
 
 	$is_puppet_master = "true"
 	$is_labs_puppet_master = "true"
@@ -2843,7 +2845,7 @@ node 'virt2.pmtpa.wmnet' {
 
 node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 	$cluster = "virt"
-	if $hostname =~ /^virt[56]$/ {
+	if $hostname =~ /^virt5$/ {
 
 		$ganglia_aggregator = true
 	}
@@ -2856,7 +2858,7 @@ node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 
 node /virt100(5|7|8).eqiad.wmnet/ {
 	$cluster = "virt"
-	if $hostname =~ /^virt100[57]$/ {
+	if $hostname =~ /^virt1005$/ {
 		$ganglia_aggregator = true
 	}
 
