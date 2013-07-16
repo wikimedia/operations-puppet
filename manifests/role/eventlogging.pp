@@ -24,6 +24,11 @@ class role::eventlogging {
         description => 'EventLogging',
     }
 
+    # Event data flows through several processes that communicate with each
+    # other via TCP/IP sockets. At the moment, all processing is performed
+    # locally, but the work could be easily distributed across multiple hosts.
+    $processor = '127.0.0.1'
+
 
     ## Data flow
 
@@ -39,7 +44,7 @@ class role::eventlogging {
 
     eventlogging::service::processor { 'server-side events':
         format => '%n EventLogging %j',
-        input  => 'tcp://localhost:8421',
+        input  => "tcp://${processor}:8421",
         output => 'tcp://*:8521',
     }
 
@@ -55,7 +60,7 @@ class role::eventlogging {
 
     eventlogging::service::processor { 'client-side events':
         format => '%q %l %n %t %h',
-        input  => 'tcp://localhost:8422',
+        input  => "tcp://${processor}:8422",
         output => 'tcp://*:8522',
     }
 
@@ -64,7 +69,7 @@ class role::eventlogging {
     # single output stream, published on TCP port 8600.
 
     eventlogging::service::multiplexer { 'all events':
-        inputs => [ 'tcp://127.0.0.1:8521', 'tcp://127.0.0.1:8522' ],
+        inputs => [ "tcp://${processor}:8521", "tcp://${processor}:8522" ],
         output => 'tcp://*:8600',
     }
 
@@ -76,16 +81,22 @@ class role::eventlogging {
     include passwords::mongodb::eventlogging  # RT 5101
     $mongo_user = $passwords::mongodb::eventlogging::user
     $mongo_pass = $passwords::mongodb::eventlogging::password
+    $mongo_host = $::realm ? {
+        production => '127.0.0.1',
+        labs       => '127.0.0.1',
+    }
 
-    class { 'mongodb':
-        dbpath  => '/srv/mongodb',
-        bind_ip => false,
-        auth    => true,
+    if $mongo_host == '127.0.0.1' {
+        class { 'mongodb':
+            dbpath  => '/srv/mongodb',
+            bind_ip => false,
+            auth    => true,
+        }
     }
 
     eventlogging::service::consumer { 'vanadium':
-        input  => 'tcp://vanadium.eqiad.wmnet:8600',
-        output => "mongodb://${mongo_user}:${mongo_pass}@vanadium.eqiad.wmnet:27017",
+        input  => "tcp://${processor}:8600",
+        output => "mongodb://${mongo_user}:${mongo_pass}@${mongo_host}:27017",
     }
 
 
@@ -97,10 +108,14 @@ class role::eventlogging {
     include passwords::mysql::eventlogging    # RT 4752
     $mysql_user = $passwords::mysql::eventlogging::user
     $mysql_pass = $passwords::mysql::eventlogging::password
+    $mysql_db = $::realm ? {
+        production => 'db1047.eqiad.wmnet/log',
+        labs       => '127.0.0.1/log',
+    }
 
     eventlogging::service::consumer { 'mysql-db1047':
-        input  => 'tcp://vanadium.eqiad.wmnet:8600',
-        output => "mysql://${mysql_user}:${mysql_pass}@db1047.eqiad.wmnet/log?charset=utf8",
+        input  => "tcp://${processor}:8600",
+        output => "mysql://${mysql_user}:${mysql_pass}@${mysql_db}?charset=utf8",
     }
 
 
@@ -112,20 +127,22 @@ class role::eventlogging {
 
     eventlogging::service::consumer {
         'server-side-events.log':
-            input  => 'tcp://vanadium.eqiad.wmnet:8421',
+            input  => "tcp://${processor}:8421",
             output => 'file:///var/log/eventlogging/server-side-events.log';
         'client-side-events.log':
-            input  => 'tcp://vanadium.eqiad.wmnet:8422',
+            input  => "tcp://${processor}:8422",
             output => 'file:///var/log/eventlogging/client-side-events.log';
         'all-events.log':
-            input  => 'tcp://vanadium.eqiad.wmnet:8600',
+            input  => "tcp://${processor}:8600",
             output => 'file:///var/log/eventlogging/all-events.log';
     }
 
+    $archive_destinations = $::realm ? {
+        production => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
+        labs       => [],
+    },
+
     class { 'eventlogging::archive':
-        destinations => [
-            'stat1.wikimedia.org',
-            'stat1002.eqiad.wmnet'
-        ],
+        destinations => $archive_destinations,
     }
 }
