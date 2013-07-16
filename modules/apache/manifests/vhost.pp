@@ -44,7 +44,7 @@ define apache::vhost(
     $docroot_dir_allows = ['all'],
     $docroot_dir_denies = '',
     $serveradmin        = false,
-    $configure_firewall = true,
+    $configure_firewall = false,
     $ssl                = $apache::params::ssl,
     $template           = $apache::params::template,
     $priority           = $apache::params::priority,
