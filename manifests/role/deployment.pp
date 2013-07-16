@@ -157,7 +157,7 @@ class role::deployment::salt_masters::production {
 class role::deployment::salt_masters::labs {
   $mediawiki_regex = "^(i-000004ff|i-000004cc|i-0000031b|i-0000031a).pmtpa.wmflabs"
   $parsoid_regex = "^$"
-  $eventlogging_regex = "^$"
+  $eventlogging_regex = "^(I-00000733).pmtpa.wmflabs$"
   $fluoride_regex = "^$"
   $deployment_servers = {
     "pmtpa" => "i-00000390.pmtpa.wmflabs",
