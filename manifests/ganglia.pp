@@ -313,6 +313,7 @@ class ganglia {
 						"LVS loadbalancers eqiad" => "lvs1001.wikimedia.org lvs1002.wikimedia.org",
 						"Miscellaneous eqiad" => "carbon.wikimedia.org ms1004.eqiad.wmnet",
 						"Mobile caches eqiad" => "cp1046.eqiad.wmnet cp1047.eqiad.wmnet",
+						"Mobile caches esams" => "hooft.esams.wikimedia.org:11677",
 						"Bits caches eqiad" => "cp1056.eqiad.wmnet cp1057.eqiad.wmnet",
 						"Upload caches eqiad" => "cp1048.eqiad.wmnet cp1049.eqiad.wmnet",
 						"SSL cluster eqiad" => "ssl1001.wikimedia.org ssl1002.wikimedia.org",
