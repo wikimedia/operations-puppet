@@ -2855,10 +2855,10 @@ node /virt([5-9]|1[0-1]).pmtpa.wmnet/ {
 }
 
 node /virt100(5|7|8).eqiad.wmnet/ {
-	#$cluster = "virt"
-	#if $hostname =~ /^virt100[57]$/ {
-	#	$ganglia_aggregator = true
-	#}
+	$cluster = "virt"
+	if $hostname =~ /^virt100[57]$/ {
+		$ganglia_aggregator = true
+	}
 
 	include standard
 
