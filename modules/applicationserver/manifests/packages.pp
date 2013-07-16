@@ -9,6 +9,9 @@ class applicationserver::packages {
 			"php5-memcached", "libmemcached11", "php5-igbinary"  ]:
 		ensure => latest;
 	}
+        package { [ "php-mail", "php-mail-mime" ]:
+                ensure => latest;
+        }
 
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "12.04") >= 0 {
 		# On Precise, the 'php5' packages also provides the 'php5-fpm' which
