@@ -39,4 +39,4 @@ hostname=`echo $1 | awk -F . ' { print $1 } '`
 cmdline="[$datetime] PROCESS_SERVICE_CHECK_RESULT;$hostname;$2;$3;$4"
  
 # append the command to the end of the command file
-echo "$cmdline" >> $CommandFile`
+echo "$cmdline" >> $CommandFile
