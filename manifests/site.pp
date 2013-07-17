@@ -227,7 +227,7 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 
 node "bast1001.wikimedia.org" {
     $cluster = "misc"
-    $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+    $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
 
     include standard,
         svn::client,
@@ -1183,6 +1183,8 @@ node "hume.wikimedia.org" {
 
 node "iron.wikimedia.org" {
     $cluster = "misc"
+    $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
+
 
     include standard,
     admins::roots,
