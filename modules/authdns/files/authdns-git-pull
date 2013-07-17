@@ -1,0 +1,63 @@
+#!/bin/sh
+
+# Simple script that substitutes "git pull" but making sure that:
+# - the working tree has no untracked files
+# - the working tree has no unstaged changes
+# - the working tree has no staged but uncommited changes
+# - the working tree has no commits that are not present in FETCH_HEAD
+#
+# This is basically estabilishing that the repository is being used as a
+# replica and that a "pull" would only resync with remote
+#
+# Created by Faidon Liambotis, Jul 2013
+
+REMOTE=$1
+BRANCH=$2
+
+die() { echo >&2 "E: $*"; exit 1; }
+
+if [ -z "$REMOTE" ]; then
+	# shall we use 'origin' here?
+	die "no remote specified"
+elif [ -z "$BRANCH" ]; then
+	BRANCH="master"
+fi
+
+
+if test "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = false; then
+	die "not inside a working tree"
+fi
+
+if ! git rev-parse --verify $BRANCH >/dev/null; then
+	die "could not verify $BRANCH"
+fi
+
+if [ $(git rev-parse HEAD) != $(git rev-parse $BRANCH) ]; then
+	cur=$(git rev-parse --abbrev-ref HEAD)
+	die "working tree HEAD is pointed to '$cur', not '$BRANCH'"
+fi
+
+untracked=$(git ls-files --exclude-standard --others)
+if [ "$untracked" != "" ]; then
+	die "untracked files present: $untracked"
+fi
+
+if ! git diff-files --quiet --ignore-submodules; then
+	die "unstaged changes present"
+fi
+
+if ! git diff-index --cached --quiet --ignore-submodules HEAD --; then
+	die "staged but uncommited changes present"
+fi
+
+if ! git fetch $REMOTE $BRANCH 2>/dev/null; then
+	die "could not fetch $REMOTE $BRANCH"
+fi
+
+revlist=$(git rev-list -1 $BRANCH --not FETCH_HEAD)
+if [ "$revlist" != "" ]; then
+	echo $revlist
+	die "$BRANCH has diverged from $REMOTE, please reconcile first"
+fi
+
+git merge FETCH_HEAD
