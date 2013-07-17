@@ -1,5 +1,11 @@
-class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers={}, $deployment_minion_regex=".*", $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_repo_dependencies = {}, $deployment_deploy_redis={}) {
+class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners", $pillar_dir="/srv/pillars", $module_dir="/srv/salt/_modules", $returner_dir="/srv/salt/_returners", $deployment_servers={}, $deployment_repo_grains={}, $deployment_repo_urls={}, $deployment_repo_regex={}, $deployment_repo_locations={}, $deployment_repo_checkout_module_calls={}, $deployment_repo_checkout_submodules={}, $deployment_repo_dependencies = {}, $deployment_deploy_redis={}) {
   file {
+    "/etc/salt/deploy_runner.conf":
+      content => template("deployment/deploy_runner.conf.erb"),
+      mode => 0444,
+      owner => root,
+      group => root,
+      require => [Package["salt-master"]];
     "${state_dir}/deploy":
       ensure => directory,
       mode => 0555,
@@ -19,7 +25,7 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
       group => root,
       require => [File["${state_dir}/deploy"]];
     "${runner_dir}/deploy.py":
-      content => template("deployment/runners/deploy.py.erb"),
+      source => "puppet:///deployment/runners/deploy.py"),
       mode => 0555,
       owner => root,
       group => root,
@@ -66,6 +72,11 @@ class deployment::salt_master($state_dir="/srv/salt", $runner_dir="/srv/runners"
   exec {
     "refresh_deployment_pillars":
       command => "/usr/bin/salt -G 'deployment_target:*' saltutil.refresh_pillar",
+      subscribe => [File["${pillar_dir}/deployment/init.sls"], File["${pillar_dir}"]],
+      refreshonly => true,
+      require => [Package["salt-master"]];
+    "refresh_master_pillars":
+      command => "/usr/bin/salt -G 'master_node:True' saltutil.refresh_pillar",
       subscribe => [File["${pillar_dir}/deployment/init.sls"], File["${pillar_dir}"]],
       refreshonly => true,
       require => [Package["salt-master"]];
