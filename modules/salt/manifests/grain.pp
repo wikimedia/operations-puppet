@@ -32,7 +32,7 @@ define salt::grain(
       require => File['/usr/local/sbin/grain-ensure'],
     }
   } else {
-    exec { "/usr/local/sbin/grain-ensure set ${grain} ${value}":
+    exec { "/usr/local/sbin/grain-ensure add ${grain} ${value}":
       unless  => "/usr/local/sbin/grain-ensure contains ${grain} ${value}",
       require => File['/usr/local/sbin/grain-ensure'],
     }
