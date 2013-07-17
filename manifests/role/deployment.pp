@@ -33,6 +33,23 @@ class role::deployment::salt_masters::common($deployment_servers) {
       "fluoride/fluoride" => "http://${deploy_server_eqiad}/fluoride/fluoride",
     },
   }
+  # deployment_target grain value for this repo. This must match the deployment::target
+  # value that is being set on the targets via puppet. If unset, the default value
+  # is the repo name
+  $deployment_repo_grains = {
+    "common" => "mediawiki",
+    "private" => "mediawiki",
+    "slot0" => "mediawiki",
+    "slot1" => "mediawiki",
+    "beta0" => "mediawiki",
+    "l10n-slot0" => "mediawiki",
+    "l10n-slot1" => "mediawiki",
+    "l10n-beta0" => "mediawiki",
+    "parsoid/Parsoid" => "parsoid",
+    "parsoid/config" => "parsoid",
+    "eventlogging/EventLogging" => "eventlogging",
+    "fluoride/fluoride" => "eventlogging",
+  }
   # Sed the .gitmodules file for the repo according to the following rules
   # TODO: rename this to something more specific
   $deployment_repo_regex = {
@@ -113,10 +130,6 @@ class role::deployment::salt_masters::common($deployment_servers) {
 }
 
 class role::deployment::salt_masters::production {
-  $mediawiki_regex = "^(srv|mw|snapshot|tmh)|(searchidx2|searchidx1001).*.(eqiad|pmtpa).wmnet$|^(hume|fenari).wikimedia.org$"
-  $parsoid_regex = "^(wtp10[01][0-9]|wtp102[0-4])\..*"
-  $eventlogging_regex = "^(vanadium).eqiad.wmnet$"
-  $fluoride_regex = "^(vanadium).eqiad.wmnet$"
   $deployment_servers = {
     "pmtpa" => "tin.eqiad.wmnet",
     "eqiad" => "tin.eqiad.wmnet",
@@ -132,20 +145,7 @@ class role::deployment::salt_masters::production {
     deployment_repo_checkout_submodules => $role::deployment::salt_masters::common::deployment_repo_checkout_submodules,
     deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
     deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
-    deployment_minion_regex => {
-      "private"  => $mediawiki_regex,
-      "common"  => $mediawiki_regex,
-      "slot0"   => $mediawiki_regex,
-      "slot1"   => $mediawiki_regex,
-      "beta0" => '^$',  # no master branch in production
-      "l10n-slot0"   => $mediawiki_regex,
-      "l10n-slot1"   => $mediawiki_regex,
-      "l10n-beta0"   => '^$',  # no master branch in production
-      "parsoid/Parsoid" => $parsoid_regex,
-      "parsoid/config" => $parsoid_regex,
-      "eventlogging/EventLogging" => $eventlogging_regex,
-      "fluoride/fluoride" => $fluoride_regex,
-    },
+    deployment_repo_grains => $role::deployment::salt_masters::common::deployment_repo_grains,
     deployment_deploy_redis => {
       "host" => "tin.eqiad.wmnet",
       "port" => 6379,
@@ -155,10 +155,6 @@ class role::deployment::salt_masters::production {
 }
 
 class role::deployment::salt_masters::labs {
-  $mediawiki_regex = "^(i-000004ff|i-000004cc|i-0000031b|i-0000031a).pmtpa.wmflabs"
-  $parsoid_regex = "^$"
-  $eventlogging_regex = "^$"
-  $fluoride_regex = "^$"
   $deployment_servers = {
     "pmtpa" => "i-00000390.pmtpa.wmflabs",
     # no eqiad zone, yet
@@ -175,20 +171,7 @@ class role::deployment::salt_masters::labs {
     deployment_repo_checkout_submodules => $role::deployment::salt_masters::common::deployment_repo_checkout_submodules,
     deployment_repo_locations => $role::deployment::salt_masters::common::deployment_repo_locations,
     deployment_repo_dependencies => $role::deployment::salt_masters::common::deployment_repo_dependencies,
-    deployment_minion_regex => {
-      "private"  => $mediawiki_regex,
-      "common"  => $mediawiki_regex,
-      "slot0"   => $mediawiki_regex,
-      "slot1"   => $mediawiki_regex,
-      "beta0"   => $mediawiki_regex,
-      "l10n-slot0"   => $mediawiki_regex,
-      "l10n-slot1"   => $mediawiki_regex,
-      "l10n-beta0"   => $mediawiki_regex,
-      "parsoid/Parsoid" => $parsoid_regex,
-      "parsoid/config" => $parsoid_regex,
-      "eventlogging/EventLogging" => $eventlogging_regex,
-      "fluoride/fluoride" => $fluoride_regex,
-    },
+    deployment_repo_grains => $role::deployment::salt_masters::common::deployment_repo_grains,
     deployment_deploy_redis => {
       "host" => "i-00000390.pmtpa.wmflabs",
       "port" => 6379,

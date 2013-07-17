@@ -83,4 +83,8 @@ class deployment::deployment_server($deployment_conffile="/etc/git-deploy/git-de
       mode => 0555,
       source => "puppet:///deployment/git-deploy/utils/submodule-update-server-info",
   }
+  salt::grain { "deployment_server":
+      grain  => "deployment_server",
+      value  => "True";
+  }
 }
