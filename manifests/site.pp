@@ -227,8 +227,9 @@ node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
 }
 
 node "bast1001.wikimedia.org" {
+    system_role { "misc": description => "Bastion Server" }
     $cluster = "misc"
-    $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
+    $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
 
     include standard,
         svn::client,
@@ -883,6 +884,7 @@ node /es10(0[89]|10)\.eqiad\.wmnet/ {
 }
 
 node "fenari.wikimedia.org" {
+    system_role { "misc": description => "Bastion & NOC Server" }
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
@@ -1183,7 +1185,9 @@ node "hume.wikimedia.org" {
 }
 
 node "iron.wikimedia.org" {
+    system_role { "misc": description => "Operations Bastion" }
     $cluster = "misc"
+    $domain_search = "wikimedia.org eqiad.wmnet pmtpa.wmnet esams.wikimedia.org"
 
     include standard,
     admins::roots,
