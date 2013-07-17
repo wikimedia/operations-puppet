@@ -94,6 +94,30 @@ class role::db::labsdb( $instances = {} ) {
     }
 }
 
+class role::db::labsdb( $instances = {} ) {
+    $cluster = "labsudb"
+
+    system_role { "role::db::labsudb": description => "database for general user from Labs users" }
+
+    include standard,
+        cpufrequtils
+
+    class { mysql:
+        package_name => 'mariadb-client-5.5'
+    }
+
+    # generic::mysql::server presumes mysql vs mariadb
+    # and pulls in stuff we do not want here.
+    class { mysql::server:
+        package_name => 'mariadb-server-5.5'
+    }
+
+    nrpe::monitor_service { "mysqld":
+        description => "mysqld processes",
+        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld"
+    }
+}
+
 class role::labsdb::manager {
     package { ["python-mysqldb", "python-yaml"]:
         ensure => present;

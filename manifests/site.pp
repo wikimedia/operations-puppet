@@ -1307,6 +1307,15 @@ node 'labsdb1003.eqiad.wmnet' {
     }
 }
 
+node 'labsudb1.pmtpa.wmnet' {
+    include role::db::labsudb
+}
+
+node 'labsudb2.pmtpa.wmnet' {
+    include standard
+    # will need Asher's help to set up as a slave the "WMF Way"
+}
+
 node /labstore[12]\.pmtpa\.wmnet/ {
 
     $cluster = "gluster"
