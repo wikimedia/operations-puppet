@@ -105,6 +105,7 @@ class toollabs::exec_environ {
       'python-requests',
       'python-sqlalchemy',
       'python-twisted',
+      'python-uwsgi',
       'python-virtualenv',
       'python-wadllib',
       'python-webpy',
