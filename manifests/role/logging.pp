@@ -195,6 +195,10 @@ class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
 	# need file_mover account for fundraising logs
 	include accounts::file_mover
 
+    # include this to infer mobile varnish frontend hosts in
+    # udp2log filter template.
+	include role::cache::configuration
+
 	# udp2log::instance will ensure this is created
 	$webrequest_log_directory    = "$log_directory/webrequest"
 
