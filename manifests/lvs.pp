@@ -121,6 +121,7 @@ class lvs::configuration {
 					'wikiversitylb' => "208.80.152.207",
 					'mediawikilb' => "208.80.152.208",
 					'foundationlb' => "208.80.152.209",
+					'wikidatalb' => "208.80.152.218",
 					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
@@ -135,6 +136,7 @@ class lvs::configuration {
 					'wikiversitylb' => "208.80.154.231",
 					'mediawikilb' => "208.80.154.232",
 					'foundationlb' => "208.80.154.233",
+					'wikidatalb' => "208.80.154.242",
 					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
@@ -149,18 +151,8 @@ class lvs::configuration {
 					'wikiversitylb' => "91.198.174.231",
 					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235",
-					'wikivoyagelb' => '91.198.174.238',
-				},
-			},
-			'text-varnish' => {
-				'pmtpa' => {
-					'wikidatalb' => '208.80.152.218',
-				},
-				'eqiad' => {
-					'wikidatalb' => '208.80.154.242',
-				},
-				'esams' => {
 					'wikidatalb' => '91.198.174.237',
+					'wikivoyagelb' => '91.198.174.238',
 				},
 			},
 			'https' => {
@@ -397,9 +389,6 @@ class lvs::configuration {
 			'text' => {
 				'pmtpa' => "10.4.0.4",
 			},
-			'text-varnish' => {
-				'pmtpa' => [],
-			},
 			'apaches' => {
 				'pmtpa' => "10.4.0.254",
 			},
@@ -455,20 +444,6 @@ class lvs::configuration {
 			'ip' => $service_ips['text'][$::site],
 			'bgp' => "yes",
 			'depool-threshold' => ".5",
-			'monitors' => {
-				'ProxyFetch' => {
-					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
-				},
-				'IdleConnection' => $idleconnection_monitor_options
-			},
-		},
-		'text-varnish' => {
-			'description' => "Main wiki platform LVS service, text.${::site}.wikimedia.org (Varnish)",
-			'class' => 'high-traffic1',
-			'sites' => [ 'pmtpa', 'eqiad', 'esams' ],
-			'ip' => $service_ips['text-varnish'][$::site],
-			'bgp' => 'yes',
-			'depool-threshold' => '.5',
 			'monitors' => {
 				'ProxyFetch' => {
 					'url' => [ 'http://en.wikipedia.org/wiki/Main_Page' ],
