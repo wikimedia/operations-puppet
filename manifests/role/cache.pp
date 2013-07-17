@@ -777,10 +777,6 @@ class role::cache {
 		else {
 			class { "role::cache::squid::common": role => "text" }
 		}
-
-		# FIXME: remove this hack
-		include lvs::configuration
-		Class['lvs::realserver'] { realserver_ips +> $lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site] }
 	}
 
 	class upload {
