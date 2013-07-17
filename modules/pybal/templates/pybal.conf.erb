@@ -35,7 +35,8 @@ monitors = <%= service['monitors'].keys.sort.inspect %>
 
 <% service['monitors'].sort.each do |monitorname, monitor| -%>
 # <%= monitorname %> monitor configuration
-<% monitor.each_pair do |param, value| -%>
+<% monitor.keys.sort.each do |param|
+value = monitor[param] -%>
 <%= monitorname.downcase %>.<%= param %> = <%= value.class == Array ? value.inspect : value %>
 <% end -%>
 <% end -%>
