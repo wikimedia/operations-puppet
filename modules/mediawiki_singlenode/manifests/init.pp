@@ -40,12 +40,11 @@ class mediawiki_singlenode(
 		}
 	}
 
-	git::clone { 'mediawiki':
-		ensure    => $ensure,
-		directory => $install_path,
-		branch    => 'master',
-		timeout   => 1800,
-		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
+	vcsrepo { $install_path:
+		ensure => $ensure,
+		provider => git,
+		source => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
+		revision => 'master'
 	}
 
 	mw-extension { [ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ]:
@@ -70,17 +69,17 @@ class mediawiki_singlenode(
 
 	file { "${install_path}/orig":
 		ensure  => directory,
-		require => Git::Clone['mediawiki'],
+		require => Vcsrepo[$install_path],
 	}
 
 	exec { 'password_gen':
-		require => [ Git::Clone['mediawiki'],  File["${install_path}/orig"] ],
+		require => [ Vcsrepo[$install_path], File["${install_path}/orig"] ],
 		creates => "${install_path}/orig/adminpass",
 		command => "/usr/bin/openssl rand -base64 32 | tr -dc _A-Z-a-z-0-9 > ${install_path}/orig/adminpass"
 	}
 
 	exec { 'mediawiki_setup':
-		require   => [ Git::Clone['mediawiki'],  File["${install_path}/orig"], exec['password_gen'] ],
+		require   => [ Vcsrepo[$install_path], File["${install_path}/orig"], exec['password_gen'] ],
 		creates   => "${install_path}/orig/LocalSettings.php",
 		command   => "/usr/bin/php ${install_path}/maintenance/install.php ${wiki_name} admin --dbname ${database_name} --dbuser root --passfile \"${install_path}/orig/adminpass\" --server ${mwserver} --installdbuser=\"root\" --installdbpass \"${mysql_pass}\" --scriptpath '/w' --confpath \"${install_path}/orig/\"",
 		logoutput => on_failure,
@@ -88,19 +87,19 @@ class mediawiki_singlenode(
 
 	file { "${install_path}/robots.txt":
 		ensure  => present,
-		require => Git::Clone['mediawiki'],
+		require => Vcsrepo[$install_path],
 		source  => 'puppet:///modules/mediawiki_singlenode/robots.txt',
 	}
 
 	file { "${install_path}/skins/common/images/labs_mediawiki_logo.png":
 		ensure  => present,
-		require => Git::Clone['mediawiki'],
+		require => Vcsrepo[$install_path],
 		source  => 'puppet:///modules/mediawiki_singlenode/labs_mediawiki_logo.png',
 	}
 
 	file { "${install_path}/privacy-policy.xml":
 		ensure  => present,
-		require => Git::Clone['mediawiki'],
+		require => Vcsrepo[$install_path],
 		source  => 'puppet:///modules/mediawiki_singlenode/privacy-policy.xml',
 	}
 
@@ -114,7 +113,7 @@ class mediawiki_singlenode(
 
 	exec { 'mediawiki_update':
 		require   => [
-			Git::Clone['mediawiki'],
+			Vcsrepo[$install_path],
 			File["${install_path}/LocalSettings.php"]
 		],
 		refreshonly => true,

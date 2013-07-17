@@ -5,7 +5,7 @@ define mediawiki_singlenode::mw-extension(
 	$install_path = '/srv/mediawiki',
 ) {
 	git::clone { $name:
-		require   => Git::Clone['mediawiki'],
+		require   => Vcsrepo[$install_path],
 		directory => "${install_path}/extensions/${name}",
 		origin    => "https://gerrit.wikimedia.org/r/p/mediawiki/extensions/${name}.git",
 		branch    => $branch,
