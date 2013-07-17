@@ -11,14 +11,15 @@ def main():
     #TODO: Use this message to notify IRC
     #msg = os.environ['DEPLOY_DEPLOY_TEXT']
 
-    deploylib.update_repos(prefix, tag)
+    prefixlib = deploylib.DeployLib(prefix)
+    prefixlib.update_repos(tag)
     # In general, for dependent repos, the parent repo is handling
     # fetch and checkout. Some dependent repos also update outside
     # of their parent repos. If the repo forces a sync, then we should
     # handle it.
     if force:
-        deploylib.fetch(prefix)
-        deploylib.checkout(prefix, "True")
+        prefixlib.fetch()
+        prefixlib.checkout("True")
 
 if __name__ == "__main__":
     main()
