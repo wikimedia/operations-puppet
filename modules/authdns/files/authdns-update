@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+# Shell script that takes care of running authdns-local-update for each
+# nameserver via SSH, optionally skipping failed ones. 
+#
+# Written by Faidon Liambotis, Jul 2013 based on previous work by Mark Bergsma
+
+
+set -e
+
+CONFFILE=/etc/wikimedia-authdns.conf
+
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Source the configuration file
+[ -f $CONFFILE ] && . $CONFFILE
+
+if [ -z "$NAMESERVERS" -o -z "$SKIP" ]; then
+	echo "Missing config file options, system misconfigured"
+	exit 1
+fi
+
+while [ -n "$1" ]; do
+	if [ "$1" = "-s" ]; then
+		# Skip the following slaves
+		SKIP="$SKIP $2"
+	fi
+	shift
+done
+
+if ssh-add -l>/dev/null 2>&1
+then
+    echo "Found your ssh agent."
+else
+    echo "Can't contact your ssh agent.  You must forward your ssh agent to use this script."
+    exit 2
+fi
+
+# update the local instance first
+authdns-local-update
+
+echo "Will skip slave(s) $SKIP."
+
+for slave in $NAMESERVERS; do
+    for skip in $SKIP; do
+        if [ $skip = $slave ]; then
+	    echo "Skipping $slave."
+            continue 2
+        fi
+    done
+ 
+    echo "Updating $slave..."
+    ssh $slave authdns-local-update
+done
+
+echo "Done!"
