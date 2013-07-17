@@ -43,6 +43,9 @@ def sync_all():
 
         salt -G 'cluster:appservers' deploy.sync_all
     '''
+    # Needs to be fixed, exiting for now
+    # TODO: match grains, not regex
+    return {}
     repourls = __pillar__.get('repo_urls')
     minion_regexes = __pillar__.get('repo_minion_regex')
     site = __grains__.get('site')
