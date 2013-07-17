@@ -20,12 +20,15 @@ def main():
     serv.rpush("deploy:log", "!log {0} started synchronizing "
                "{1} '{2}'".format(getpass.getuser(), tag, log))
 
-    deploylib.update_repos(prefix, tag)
-    deploylib.fetch(prefix)
-    if not deploylib.ask(prefix, 'fetch'):
+    prefixlib = deploylib.DeployLib(prefix)
+    if not prefixlib.get_config():
         return 1
-    deploylib.checkout(prefix, force)
-    if not deploylib.ask(prefix, 'checkout', force):
+    prefixlib.update_repos(tag)
+    prefixlib.fetch()
+    if not prefixlib.ask('fetch'):
+        return 1
+    prefixlib.checkout(force)
+    if not prefixlib.ask('checkout', force):
         return 1
 
     serv.rpush("deploy:log", "!log {0} synchronized "

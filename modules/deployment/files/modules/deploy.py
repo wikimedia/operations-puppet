@@ -43,22 +43,16 @@ def sync_all():
 
         salt -G 'cluster:appservers' deploy.sync_all
     '''
-    repourls = __pillar__.get('repo_urls')
-    minion_regexes = __pillar__.get('repo_minion_regex')
-    site = __grains__.get('site')
-    repourls = repourls[site]
-    repolocs = __pillar__.get('repo_locations')
+    repo_grains = __pillar__.get('repo_grains')
+    deployment_target = __grains__.get('deployment_target')
     status = 0
     stats = {}
 
-    minion = __grains__.get('id')
-    for repo, repourl in repourls.items():
-        minion_regex = minion_regexes[repo]
-        if not re.search(minion_regex, minion):
+    for repo, grain in repo_grains.items():
+        if grain not in deployment_target:
             continue
         if repo not in stats:
             stats[repo] = {}
-        repoloc = repolocs[repo]
         stats[repo]["deploy.fetch"] = __salt__['deploy.fetch'](repo)
         stats[repo]["deploy.checkout"] = __salt__['deploy.checkout'](repo)
 
