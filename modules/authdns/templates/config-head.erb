@@ -1,0 +1,20 @@
+options => {
+<% if (! @ipaddress.nil? || ! @ipaddress6.nil?) -%>
+	listen = [
+<% if (! @ipaddress.nil?) -%>
+		<%= @ipaddress  %>,
+<% end -%>
+<% if (! @ipaddress6.nil?) -%>
+		<%= @ipaddress6 %>,
+<% end -%>
+	],
+<% end -%>
+	http_listen = [
+		127.0.0.1,
+		::1,
+	],
+	zones_default_ttl = 43200,
+	include_optional_ns = true,
+	# don't inotify on zonefiles but wait for HUP
+	zones_rfc1035_auto = false,
+}
