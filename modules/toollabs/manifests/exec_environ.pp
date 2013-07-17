@@ -62,6 +62,7 @@ class toollabs::exec_environ {
       'libpoe-component-syndicator-perl',
       'libpoe-filter-ircd-perl',
       'libpoe-perl',
+      'libredis-perl',
       'libsocket-getaddrinfo-perl',
       'libstring-diff-perl',
       'libstring-shellquote-perl',   # For jsub.
