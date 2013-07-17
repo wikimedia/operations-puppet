@@ -23,7 +23,7 @@ class toollabs::exec_environ {
       # Please keep all packages in each group sorted in alphabetical order
 
       # Language Runtimes
-      'mono-runtime',
+      'mono-complete',
       'nodejs',
       'openjdk-7-jre-headless',
       'python3',
@@ -138,9 +138,7 @@ class toollabs::exec_environ {
       'libquadmath0',
       'libsvn1',
       'mariadb-client',              # For /usr/bin/mysql.
-      'mariadb-common',
       'mdbtools',                    # Bug #48805.
-      'mono-complete',
       'p7zip',
       'phpunit',
       'tclcurl',
