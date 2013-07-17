@@ -15,7 +15,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 							$ensure = latest,
 							$install_repo = true,
 							$install_client = true,
-							$role_requires = ['"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"'],
+							$role_requires = ['"$IP/extensions/Diff/Diff.php"', '"$IP/extensions/DataValues/DataValues.php"', '"$IP/extensions/WikibaseDataModel/WikibaseDataModel.php"', '"$IP/extensions/Wikibase/lib/WikibaseLib.php"'],
 							$role_config_lines = [ '$wgShowExceptionDetails = true' ]) {
 
 	class { mediawiki_singlenode:
@@ -60,7 +60,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 	}
 
 	# get the dependencies for Wikibase extension after the successful installation of mediawiki core
-	mediawiki_singlenode::mw-extension { [ "Diff", "DataValues" ]:
+	mediawiki_singlenode::mw-extension { [ "Diff", "DataValues", "WikibaseDataModel" ]:
 		require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"]],
 		install_path => $install_path,
 	}
@@ -132,7 +132,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		# get the extensions
 		# for repo get extensions Wikibase and ULS
 		mediawiki_singlenode::mw-extension { [ "Wikibase", "UniversalLanguageSelector", "Babel", "Translate", "AbuseFilter" ]:
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"],Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"]],
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Exec["repo_move_mainpage"],Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["WikibaseDataModel"]],
 			install_path => $install_path,
 		}
 		# put a repo specific settings file to $install_path (required by LocalSettings.php)
@@ -187,7 +187,7 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 		# get the extensions
 		# for client get extensions Wikibase and ParserFunctions (needed) and a bunch of other extensions that are on Wikipedias
 		mediawiki_singlenode::mw-extension { [ "Wikibase", "ParserFunctions", "AbuseFilter", "AntiBot", "AntiSpoof", "APC", "ArticleFeedback", "ArticleFeedbackv5", "AssertEdit", "Babel", "CategoryTree", "CharInsert", "CheckUser", "Cite", "cldr", "ClickTracking", "CodeEditor", "Collection", "CustomData", "Echo", "EditPageTracking", "EmailCapture", "ExpandTemplates", "FeaturedFeeds", "FlaggedRevs", "Gadgets", "GlobalUsage", "ImageMap", "InputBox", "Interwiki", "LocalisationUpdate", "MarkAsHelpful", "Math", "MobileFrontend", "MwEmbedSupport", "MWSearch", "NewUserMessage", "normal", "OATHAuth", "OpenSearchXml", "Oversight", "PagedTiffHandler", "PageTriage", "PdfHandler", "Poem", "PoolCounter", "PostEdit", "ReaderFeedback", "RelatedArticles", "RelatedSites", "Renameuser", "Scribunto", "SecurePoll", "SimpleAntiSpam", "SwiftCloudFiles", "SyntaxHighlight_GeSHi", "TemplateSandbox", "TitleKey", "TorBlock", "Translate", "UserDailyContribs", "UserMerge", "Vector", "WikiEditor", "wikihiero", "WikiLove", "WikimediaMaintenance", "WikimediaMessages" ]:
-			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"]],
+			require => [Git::Clone["mediawiki"], Exec["mediawiki_setup"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["WikibaseDataModel"], Mediawiki_singlenode::Mw-extension["DataValues"]],
 			install_path => $install_path,
 		}
 		# put a client specific settings file to $install_path (required by LocalSettings.php)
@@ -258,8 +258,8 @@ class wikidata_singlenode( $install_path = "/srv/mediawiki",
 	if $ensure == 'latest' {
 		exec { 'wikidata_update':
 			require => $install_repo ? {
-				true => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["UniversalLanguageSelector"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
-				default => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+				true => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["UniversalLanguageSelector"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["WikibaseDataModel"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
+				default => [Git::Clone["mediawiki"], Mediawiki_singlenode::Mw-extension["Diff"], Mediawiki_singlenode::Mw-extension["DataValues"], Mediawiki_singlenode::Mw-extension["WikibaseDataModel"], Mediawiki_singlenode::Mw-extension["Wikibase"], File["${install_path}/LocalSettings.php"]],
 			},
 			command => "/usr/bin/php ${install_path}/maintenance/update.php --quick --conf '${install_path}/LocalSettings.php'",
 			logoutput => "on_failure",
