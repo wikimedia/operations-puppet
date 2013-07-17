@@ -12,9 +12,17 @@ file 1000 <%= webrequest_log_directory %>/sampled-1000.tsv.log
 ### All edits
 pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.tsv.log
 
+
+<%
+# pull in $role::cache::configuration::active_nodes
+# to find mobile host names and build a regex on which to grep.
+cache_configuration = scope.lookupvar('::role::cache::configuration::active_nodes')
+mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.join('|') + ')'
+-%>
+
 ### Mobile traffic filter
-# All mobile traffic goes through cp1041-cp1044 varnish hosts.
-pipe 100 /bin/grep -P '^cp104[1-4]' >> <%= webrequest_log_directory %>/mobile-sampled-100.tsv.log
+# All mobile traffic goes through CC-cp1044 varnish hosts.
+pipe 100 /bin/grep -P '<%= mobile_hosts_regex %>' >> <%= webrequest_log_directory %>/mobile-sampled-100.tsv.log
 
 ### Fundraising
 ## Landing pages
