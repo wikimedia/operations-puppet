@@ -30,6 +30,10 @@ sub vcl_miss {
 	call restore_cookie;
 }
 
+sub vcl_fetch {
+	return (deliver);
+}
+
 sub vcl_error {
 	call errorpage;
 	return(deliver);
