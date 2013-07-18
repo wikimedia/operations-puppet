@@ -96,7 +96,7 @@ class role::analytics::packages {
 class role::analytics::java {
     # all analytics nodes need java installed
     # Install Sun/Oracle Java JDK on analytics cluster
-    java { 'java-6-oracle':
+    java::install { 'java-6-oracle':
         distribution => 'oracle',
         version      => 6,
     }

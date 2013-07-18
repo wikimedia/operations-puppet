@@ -59,6 +59,7 @@ class role::statistics::private inherits role::statistics {
 		misc::statistics::rsync::jobs,
 		# wikistats code is run here to
 		# generate stats.wikimedia.org data
-		misc::statistics::wikistats,
-		misc::statistics::packages::java
+		misc::statistics::wikistats
+
+	include java
 }
