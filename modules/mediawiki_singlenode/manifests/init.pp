@@ -22,11 +22,6 @@ class mediawiki_singlenode(
 	$memcached_size    = 128,
 	$apache_site_template = 'mediawiki_singlenode/mediawiki_singlenode.erb'
 ) {
-	if !defined(Class['webserver::php5']) {
-		class {'webserver::php5':
-			ssl => true;
-		}
-	}
 	require role::labs-mysql-server, webserver::php5-mysql
 
 	package { [ 'imagemagick', 'php-apc' ] :
@@ -51,14 +46,6 @@ class mediawiki_singlenode(
 	mw-extension { [ 'Nuke', 'SpamBlacklist', 'ConfirmEdit' ]:
 		ensure       => $ensure,
 		install_path => $install_path,
-	}
-
-	file { '/etc/apache2/sites-available/wiki':
-		ensure  => present,
-		owner   => root,
-		group   => root,
-		mode    => '0644',
-		content => template($apache_site_template),
 	}
 
 	if $::labs_mediawiki_hostname {
@@ -124,17 +111,20 @@ class mediawiki_singlenode(
 
 	Mw-extension <| |> -> Exec['mediawiki_update']
 
-	apache_site { 'wikicontroller':
-		name   => 'wiki',
+	file { '/etc/apache2/sites-available/wiki':
+		ensure => absent
+	}
+	include apache::mod::php
+	apache::vhost{ 'wikicontroller':
+		port => '80',
+		priority => '000',
+		vhost_name => 'wiki',
+		docroot => $install_path,
+		template => $apache_site_template
 	}
 
 	apache_module { 'rewrite':
 		name => 'rewrite',
-	}
-
-	exec { 'apache_restart':
-		command => '/usr/sbin/service apache2 restart',
-		require => [ Apache_module['rewrite'], Apache_site['wikicontroller'] ],
 	}
 
 	file { "${install_path}/cache":
