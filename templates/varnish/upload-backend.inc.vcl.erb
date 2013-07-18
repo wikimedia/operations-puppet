@@ -125,6 +125,8 @@ sub vcl_fetch {
 		 */
 		set beresp.http.X-Content-Range = beresp.http.Content-Range;
 	}
+
+	return (deliver);
 }
 
 sub vcl_hit {
