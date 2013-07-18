@@ -201,7 +201,7 @@ host antimony {
 
 host argon {
 	hardware ethernet 78:2b:cb:09:11:f0;
-	fixed-address argon.wikimedia.org;
+	fixed-address argon.eqiad.wmnet;
 }
 
 host arsenic {
