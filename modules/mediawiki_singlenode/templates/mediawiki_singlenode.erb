@@ -1,29 +1,29 @@
 <VirtualHost *:80>
         ServerAdmin "https://wikitech.wikimedia.org/wiki/Help:Single_Node_MediaWiki"
 
-        DocumentRoot <%=@install_path%>/..
+        DocumentRoot <%=@docroot%>
 
         <Directory />
                 Options FollowSymLinks
                 AllowOverride None
         </Directory>
 
-        <Directory <%=@install_path%>/..>
+        <Directory <%=@docroot%>>
                 Options Indexes FollowSymLinks MultiViews
                 AllowOverride None
                 Order allow,deny
                 allow from all
         </Directory>
 
-        <Directory <%= @install_path %>/orig>
+        <Directory <%= @docroot %>/orig>
                 Deny from all
         </Directory>
 
         RewriteEngine On
         RewriteRule ^/$ /w/index.php [R=301]
 
-        Alias /wiki "<%= @install_path %>/index.php"
-        Alias /w "<%= @install_path %>"
+        Alias /wiki "<%= @docroot %>/index.php"
+        Alias /w "<%= @docroot %>"
 
         ErrorLog /var/log/apache2/error.log
 
