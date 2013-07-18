@@ -23,6 +23,7 @@ class toollabs::exec_environ {
       # Please keep all packages in each group sorted in alphabetical order
 
       # Language Runtimes
+      'luarocks',
       'mono-complete',
       'nodejs',
       'openjdk-7-jre-headless',
