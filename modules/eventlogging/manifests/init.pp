@@ -88,4 +88,9 @@ class eventlogging {
             User['eventlogging']
         ],
     }
+
+    # Plug-ins placed in this directory are loaded automatically.
+    file { '/usr/lib/eventlogging':
+        ensure => directory,
+    }
 }
