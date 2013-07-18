@@ -9,7 +9,7 @@ class role::ipython_notebook {
     }
 
     $ipythondir = '/srv/ipython'
-    $helperfile = "${ipython_dir}/helpers.py"
+    $helperfile = "${ipythondir}/helpers.py"
 
     class { 'ipython::notebook':
         ipythondir => $ipythondir,
