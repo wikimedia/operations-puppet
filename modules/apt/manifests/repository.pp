@@ -50,7 +50,7 @@ define apt::repository(
         }
     }
 
-    exec { 'apt-update-for-${name}':
+    exec { "apt-update-for-${name}":
         command => '/usr/bin/apt-get update',
         timeout => 240,
         returns => [ 0, 100 ],
