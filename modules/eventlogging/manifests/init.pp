@@ -82,10 +82,15 @@ class eventlogging {
     # </etc/eventlogging.d> and starts a job for each instance
     # definition file that it encounters.
     service { 'eventlogging/init':
-        provider   => 'upstart',
-        require    => [
+        provider => 'upstart',
+        require  => [
             File['/etc/init/eventlogging'],
             User['eventlogging']
         ],
+    }
+
+    # Plug-ins placed in this directory are loaded automatically.
+    file { '/usr/local/lib/eventlogging':
+        ensure => directory,
     }
 }
