@@ -460,6 +460,7 @@ class openstack::openstack-manager($openstack_version="essex", $novaconfig, $cer
 
 	if !defined(Class["memcached"]) {
 		class { "memcached":
+			memcached_ip => "127.0.0.1",
 			pin => true;
 		}
 	}
