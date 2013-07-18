@@ -690,8 +690,8 @@ class role::cache {
 			port => 3128,
 			admin_port => 6083,
 			runtime_parameters => $::site ? {
-				'esams' => ["prefer_ipv6=on", "default_ttl=86400"],
-				default => [],
+				'esams' => ['prefer_ipv6=on', 'default_ttl=2592000'],
+				default => ['default_ttl=2592000'],
 			},
 			storage => $::realm ? {
 				production => "-s main1=persistent,/srv/sda3/varnish.main1,${storage_size_main}G -s main2=persistent,/srv/sdb3/varnish.main2,${storage_size_main}G -s bigobj1=file,/srv/sda3/varnish.bigobj1,${storage_size_bigobj}G -s bigobj2=file,/srv/sdb3/varnish.bigobj2,${storage_size_bigobj}G",
