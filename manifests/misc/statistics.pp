@@ -116,6 +116,11 @@ class misc::statistics::packages::python {
 	}
 }
 
+# Installs java.
+class misc::statistics::packages::java {
+    java { 'default-java': }
+}
+
 # Mounts /data from dataset2 server.
 # xmldumps and other misc files needed
 # for generating statistics are here.
