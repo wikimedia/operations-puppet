@@ -2795,6 +2795,7 @@ node "vanadium.eqiad.wmnet" {
 
     include standard,
         role::eventlogging,
+        role::ipython_notebook,
         nrpe,
         role::solr::ttm
 
