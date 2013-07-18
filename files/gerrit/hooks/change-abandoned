@@ -11,6 +11,7 @@ class ChangeAbandoned(HookHelper):
         self.parser.add_option("--abandoner", dest="abandoner")
         self.parser.add_option("--reason", dest="reason")
         self.parser.add_option("--topic", dest="topic")
+        self.parser.add_option("--commit", dest="commit")
         (options, args) = self.parser.parse_args()
         reason = options.reason.splitlines()
         if reason:
