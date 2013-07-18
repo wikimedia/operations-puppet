@@ -3029,7 +3029,6 @@ class admins::roots {
 	include accounts::robh
 	include accounts::sara # disabled
 	include accounts::springle
-	include accounts::tfinc
 	include accounts::tstarling
 }
 
@@ -3071,6 +3070,7 @@ class admins::mortals {
 	include accounts::robla
 	include accounts::spage
 	include accounts::sumanah #RT 3752
+	include accounts::tfinc # move from roots RT 5485
 	include accounts::yurik #rt 4835, rt 5069
 	include accounts::zak # access revoked
 }
