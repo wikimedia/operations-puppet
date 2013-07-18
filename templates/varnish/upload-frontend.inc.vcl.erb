@@ -66,6 +66,8 @@ sub vcl_fetch {
 			return (hit_for_pass);
 		}
 	}
+
+	return (deliver);
 }
 
 sub vcl_error {
