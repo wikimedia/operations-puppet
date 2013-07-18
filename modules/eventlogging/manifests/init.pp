@@ -2,17 +2,43 @@
 #
 # EventLogging is a platform for modeling, logging and processing
 # arbitrary analytic data. This Puppet module manages the configuration
-# of its event processing component, which comprises a suite of four
-# services, each of which implements a different step in a data
-# processing pipeline. The services communicate with one another using a
-# publisher/subscriber model, using ØMQ as the transport layer.
-# An arbitrary number of service instances running on an arbitrary
-# number of hosts can be freely composed to form different event
-# processing patterns.
+# of its event-processing back end.
+#
+# The back end comprises a suite of service types, each of which
+# implements a different task:
+#
+# [forwarders]    Read line-oriented data via UDP and publish it on a
+#                 ZeroMQ TCP socket with the same port number.
+#
+# [processors]    Decode raw, streaming log data into strictly-validated
+#                 JSON objects.
+#
+# [multiplexers]  Selects multiple ZeroMQ publisher streams into a
+#                 single stream.
+#
+# [consumers]     Data sinks. Consumers subscribe to the parsed and
+#                 validated event stream and write it to some medium.
+#
+# These services communicate with one another using a publisher /
+# subscriber model using ØMQ as the transport layer. Different
+# event-processing patterns can be implemented by freely composing
+# multiple instances of each type, running locally or distributed across
+# several hosts.
+#
+# The /etc/eventlogging.d file hierarchy contains instance definitions.
+# It has a subfolder for each service type. An Upstart task,
+# 'eventlogging/init', walks this file hierarchy and provisions a
+# job for each instance definition. Instance definition files contain
+# command-line arguments for the service program, one argument per line.
+#
+# An 'eventloggingctl' shell script provides a convenient wrapper around
+# Upstart's initctl that is specifically tailored for managing
+# EventLogging tasks.
 #
 class eventlogging {
     include eventlogging::package
 
+    # EventLogging jobs set 'eventlogging' gid & uid.
     group { 'eventlogging':
         ensure => present,
     }
@@ -26,6 +52,8 @@ class eventlogging {
         system     => true,
     }
 
+    # The /etc/eventlogging.d file hierarchy contains instance
+    # definition files.
     file { [
         '/etc/eventlogging.d',
         '/etc/eventlogging.d/consumers',
@@ -37,17 +65,22 @@ class eventlogging {
         before => File['/etc/init/eventlogging'],
     }
 
-
-    file { '/etc/init/eventlogging':
-        source  => 'puppet:///modules/eventlogging/init',
-        recurse => true,
-    }
-
+    # Manage EventLogging services with 'eventloggingctl'.
+    # Usage: eventloggingctl {start|stop|restart|status|tail}
     file { '/sbin/eventloggingctl':
         source => 'puppet:///modules/eventlogging/eventloggingctl',
         mode   => '0755',
     }
 
+    # Upstart job definitions.
+    file { '/etc/init/eventlogging':
+        source  => 'puppet:///modules/eventlogging/init',
+        recurse => true,
+    }
+
+    # 'eventlogging/init' is the master upstart task; it walks
+    # </etc/eventlogging.d> and starts a job for each instance
+    # definition file that it encounters.
     service { 'eventlogging/init':
         provider   => 'upstart',
         require    => [
