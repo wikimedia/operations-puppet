@@ -381,7 +381,9 @@ class role::cache {
 			include	standard,
 				::squid
 
-			class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
+			if !defined(Class['lvs::realserver']) {
+				class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm][$role][$::site] }
+			}
 
 			# Monitoring
 			monitor_service {
@@ -509,8 +511,6 @@ class role::cache {
 		$nagios_group = "cache_text_${::site}"
 
 		system_role { "role::cache::text": description => "text Varnish cache server" }
-
-		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['text'][$::site] }
 
 		$varnish_be_directors = {
 			1 => {
@@ -770,6 +770,13 @@ class role::cache {
 	}
 
 	class text {
+
+		include lvs::configuration
+		class { 'lvs::realserver':
+			realserver_ips => flatten([$lvs::configuration::lvs_service_ips[$::realm]['text'][$::site],
+				$lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site]])
+		}
+
 		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
 			include role::cache::varnish::text
