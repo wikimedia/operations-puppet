@@ -160,11 +160,7 @@ class gerrit::jetty ($ldap_hosts,
 			mode => 0444,
 			require => File["/var/lib/gerrit2/review_site/etc"];
 		"/var/lib/gerrit2/review_site/etc/hookconfig.py":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0444,
-			content => template('gerrit/hookconfig.py.erb'),
-			require => File["/var/lib/gerrit2/review_site/etc"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/etc/mail/ChangeSubject.vm":
 			owner => gerrit2,
 			group => gerrit2,
@@ -222,47 +218,19 @@ class gerrit::jetty ($ldap_hosts,
 			ensure => directory,
 			require => Exec["install_gerrit_jetty"];
 		"/var/lib/gerrit2/review_site/hooks/change-abandoned":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/change-abandoned",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/hookhelper.py":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/hookhelper.py",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/change-merged":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/change-merged",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/change-restored":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/change-restored",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/comment-added":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/comment-added",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/patchset-created":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/patchset-created",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/hooks/draft-published":
-			owner => gerrit2,
-			group => gerrit2,
-			mode => 0555,
-			source => "puppet:///files/gerrit/hooks/draft-published",
-			require => File["/var/lib/gerrit2/review_site/hooks"];
+			ensure => absent;
 	}
 
 	git::clone {
@@ -358,43 +326,18 @@ class gerrit::gitweb {
 }
 
 class gerrit::ircbot {
-
-	#target channels can be either strings or arrays.
-	#channels names will get a # prepended if it doesn't already start with one
-	$ircecho_logbase = "/var/lib/gerrit2/review_site/logs"
-	$ircecho_logs = {
-		"${ircecho_logbase}/operations.log"              => "#wikimedia-operations",
-		"${ircecho_logbase}/labs.log"                    => "#wikimedia-labs",
-		"${ircecho_logbase}/mobile.log"                  => "#wikimedia-mobile",
-		"${ircecho_logbase}/parsoid.log"                 => "#mediawiki-parsoid",
-		"${ircecho_logbase}/visualeditor.log"            => "#mediawiki-visualeditor",
-		"${ircecho_logbase}/mediawiki-i18n.log"          => "#mediawiki-i18n",
-		"${ircecho_logbase}/wikimedia-dev.log"           => "#wikimedia-dev",
-		"${ircecho_logbase}/semantic-mediawiki.log"      => ["#semantic-mediawiki", "#wikimedia-dev"],
-		"${ircecho_logbase}/wikidata.log"                => "#wikimedia-wikidata",
-		"${ircecho_logbase}/wikimedia-analytics.log"     => "#wikimedia-analytics",
-		"${ircecho_logbase}/pywikipediabot.log"          => "#pywikipediabot",
-	}
-	$ircecho_nick = "gerrit-wm"
-	$ircecho_server = "chat.freenode.net"
-
 	package { ['ircecho']:
-		ensure => latest;
+		ensure => absent;
 	}
 
 	service { ['ircecho']:
-		enable => true,
-		ensure => running;
+		enable => false,
+		ensure => stopped;
 	}
 
 	file {
 		"/etc/default/ircecho":
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => template('ircecho/default.erb'),
-			notify => Service[ircecho],
-			require => Package[ircecho];
+			ensure => absent;
 	}
 }
 
