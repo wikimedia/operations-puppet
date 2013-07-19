@@ -786,22 +786,6 @@ define sysctl(
 	}
 }
 
-class generic::sysctl::advanced-routing-ipv6($ensure="present") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { advanced-routing-sysctl:
-			name => "/etc/sysctl.d/50-advanced-routing-ipv6.conf",
-			owner => root,
-			group => root,
-			mode => 0444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-advanced-routing-ipv6.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
 class generic::sysctl::ipv6-disable-ra($ensure="present") {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { ipv6-disable-ra:
