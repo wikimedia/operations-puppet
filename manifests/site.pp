@@ -812,7 +812,7 @@ node "ekrem.wikimedia.org" {
 # base_analytics_logging_node is defined in role/logging.pp
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
     include
-        generic::sysctl::high-bandwidth-rsync,
+        sysctlfile::high-bandwidth-rsync,
         admins::mortals,
         # RT 4312
         accounts::milimetric
