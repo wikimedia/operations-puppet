@@ -848,20 +848,6 @@ class generic::sysctl::lvs($ensure="present") {
 	}
 }
 
-class generic::sysctl::high-bandwidth-rsync($ensure="present") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { high-bandwidth-rsync-sysctl:
-			name => "/etc/sysctl.d/60-high-bandwidth-rsync.conf",
-			mode => 0444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/60-high-bandwidth-rsync.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
 class generic::sysfs::enable-rps {
 	upstart_job { "enable-rps": install => "true", start => "true" }
 }
