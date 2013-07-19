@@ -834,20 +834,6 @@ class generic::sysctl::ipv6-disable-ra($ensure="present") {
 	}
 }
 
-class generic::sysctl::lvs($ensure="present") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { lvs-sysctl:
-			name => "/etc/sysctl.d/50-lvs.conf",
-			mode => 0444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-lvs.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
 class generic::sysctl::high-bandwidth-rsync($ensure="present") {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { high-bandwidth-rsync-sysctl:
