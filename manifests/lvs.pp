@@ -829,7 +829,7 @@ class lvs::balancer(
 	class { "lvs::realserver": realserver_ips => $service_ips }
 
 	# Sysctl settings
-	class { "generic::sysctl::advanced-routing": ensure => absent }
+	class { "sysctlfile::advanced-routing": ensure => absent }
 	include generic::sysctl::lvs
 }
 
