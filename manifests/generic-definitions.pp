@@ -786,22 +786,6 @@ define sysctl(
 	}
 }
 
-class generic::sysctl::ipv6-disable-ra($ensure="present") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { ipv6-disable-ra:
-			name => "/etc/sysctl.d/50-ipv6-disable-ra.conf",
-			owner => root,
-			group => root,
-			mode => 0444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-ipv6-disable-ra.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
 class generic::sysctl::lvs($ensure="present") {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { lvs-sysctl:
