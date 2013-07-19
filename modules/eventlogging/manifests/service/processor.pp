@@ -56,6 +56,6 @@ define eventlogging::service::processor(
     file { "/etc/eventlogging.d/processors/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/processor.erb'),
-        notify  => Service['eventlogging/init'],
+        notify  => Service['eventlogging/init', 'gmond'],
     }
 }
