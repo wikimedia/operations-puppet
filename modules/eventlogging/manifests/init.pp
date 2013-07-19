@@ -93,4 +93,18 @@ class eventlogging {
     file { '/usr/local/lib/eventlogging':
         ensure => directory,
     }
+
+    # Logs are collected in </var/log/eventlogging> and rotated daily.
+    file { [ '/var/log/eventlogging', '/var/log/eventlogging/archive' ]:
+        ensure  => directory,
+        owner   => 'eventlogging',
+        group   => 'eventlogging',
+        mode    => '0664',
+    }
+
+    file { '/etc/logrotate.d/eventlogging':
+        source  => 'puppet:///modules/eventlogging/logrotate',
+        require => File['/var/log/eventlogging/archive'],
+        mode    => '0444',
+    }
 }

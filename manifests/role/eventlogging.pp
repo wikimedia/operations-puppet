@@ -137,12 +137,20 @@ class role::eventlogging {
             output => 'file:///var/log/eventlogging/all-events.log';
     }
 
-    $archive_destinations = $::realm ? {
+    $backup_destinations = $::realm ? {
         production => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
-        labs       => [],
+        labs       => false,
     }
 
-    class { 'eventlogging::archive':
-        destinations => $archive_destinations,
+    if ( $backup_destinations ) {
+        include rsync::server
+
+        rsync::server::module { 'eventlogging':
+            path        => '/var/log/eventlogging',
+            read_only   => 'yes',
+            list        => 'yes',
+            require     => File['/var/log/eventlogging'],
+            hosts_allow => $backup_destinations,
+        }
     }
 }
