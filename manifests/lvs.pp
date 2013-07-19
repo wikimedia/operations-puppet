@@ -830,7 +830,7 @@ class lvs::balancer(
 
 	# Sysctl settings
 	class { "sysctlfile::advanced-routing": ensure => absent }
-	include generic::sysctl::lvs
+	include sysctlfile::lvs
 }
 
 # Supporting the PyBal RunCommand monitor
