@@ -1,0 +1,18 @@
+# Ganglia metric module for EventLogging ZeroMQ publishers.
+# Counts messages per second. This file is managed by Puppet.
+modules {
+    module {
+        name = "eventlogging_mon"
+        language = "python"
+    }
+}
+
+collection_group {
+    collect_every = 10
+    time_threshold = 60
+    metric {
+        name_match = "zeromq_(.+)"
+        title = "\\1"
+        value_threshold = 0
+    }
+}
