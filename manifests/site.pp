@@ -791,7 +791,7 @@ node "dobson.wikimedia.org" {
     dns::recursor::monitor { "208.80.152.131": }
 
     class { "dns::auth-server":
-        ipaddress => "208.80.152.130",
+        ipaddress => [ "208.80.152.130" ],
         soa_name => "ns0.wikimedia.org",
         master => $dns_auth_master
     }
@@ -1362,7 +1362,7 @@ node "linne.wikimedia.org" {
     }
 
         class { "dns::auth-server":
-            ipaddress => "208.80.152.142",
+            ipaddress => [ "208.80.152.142" ],
             soa_name => "ns1.wikimedia.org",
             master => $dns_auth_master
         }
@@ -2068,7 +2068,7 @@ node "nescio.esams.wikimedia.org" {
         dns::recursor::statistics
 
     class { "dns::auth-server":
-        ipaddress => "91.198.174.4",
+        ipaddress => [ "91.198.174.4" ],
         soa_name => "ns2.wikimedia.org",
         master => $dns_auth_master
     }
