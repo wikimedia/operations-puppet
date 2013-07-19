@@ -786,22 +786,6 @@ define sysctl(
 	}
 }
 
-class generic::sysctl::high-http-performance($ensure="present") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		file { high-http-performance-sysctl:
-			name => "/etc/sysctl.d/60-high-http-performance.conf",
-			owner => root,
-			group => root,
-			mode => 0444,
-			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/60-high-http-performance.conf.sysctl",
-			ensure => $ensure
-		}
-	} else {
-		alert("Distribution on $hostname does not support /etc/sysctl.d/ files yet.")
-	}
-}
-
 class generic::sysctl::advanced-routing($ensure="present") {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		file { advanced-routing-sysctl:
