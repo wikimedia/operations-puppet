@@ -2739,6 +2739,7 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::cleanup_upload_stash: enabled => true }
     class { misc::maintenance::tor_exit_node: enabled => true }
     class { misc::maintenance::aft5: enabled => true }
+    class { misc::maintenance::purge_securepoll: enabled => true }
 
     # Broken cron jobs moved back to hume:
     class { misc::maintenance::geodata: enabled => true }
