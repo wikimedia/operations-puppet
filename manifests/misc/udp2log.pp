@@ -43,14 +43,11 @@ class misc::udp2log::sysctl($ensure="present") {
 	# start procps can be notified.
 	include base::sysctl
 
-	file { big-rmem-sysctl:
-		name => "/etc/sysctl.d/99-big-rmem.conf",
-		owner => root,
-		group => root,
-		mode => 0444,
+	sysctlfile { 'big-rmem':
+		source => 'puppet:///modules/sysctlfile/99-big-rmem.conf',
+		number_prefix => '99',
+		ensure => $ensure,
 		notify => Exec["/sbin/start procps"],
-		source => "puppet:///files/misc/99-big-rmem.conf.sysctl",
-		ensure => $ensure
 	}
 }
 
