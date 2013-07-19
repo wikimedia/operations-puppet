@@ -295,26 +295,14 @@ class gerrit::proxy( $no_apache = true,
 
 class gerrit::gitweb {
 	package { [ "gitweb" ]:
-		ensure => latest;
+		ensure => absent;
 	}
 
 	file {
-		# Overwrite gitweb's stupid default apache file
 		"/etc/apache2/conf.d/gitweb":
-			mode => 0444,
-			owner => root,
-			group => root,
-			content => "Alias /gitweb /usr/share/gitweb",
-			ensure => present,
-			require => Package[gitweb];
-		# Add our own customizations to gitweb
+			ensure => absent;
 		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/gerrit/gitweb_config.perl",
-			ensure => present,
-			require => Package[gitweb];
+			ensure => absent;
 		# Spiders make gitweb cry when they request tarballs
 		"/var/www/robots.txt":
 			mode => 0444,
