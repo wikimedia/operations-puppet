@@ -136,13 +136,4 @@ class role::eventlogging {
             input  => "tcp://${processor}:8600",
             output => 'file:///var/log/eventlogging/all-events.log';
     }
-
-    $archive_destinations = $::realm ? {
-        production => [ 'stat1.wikimedia.org', 'stat1002.eqiad.wmnet' ],
-        labs       => [],
-    }
-
-    class { 'eventlogging::archive':
-        destinations => $archive_destinations,
-    }
 }

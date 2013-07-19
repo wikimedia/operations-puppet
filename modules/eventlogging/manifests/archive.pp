@@ -1,12 +1,16 @@
-# Configures node to rotate event logs and serve archived logs via rsync
-class eventlogging::archive( $destinations ) {
-
+# == Class: eventlogging::archive
+#
+# This class creates log directories for EventLogging logs under the
+# /var/log hierarchy and provisions an Rsync server module that serves
+# log data to backup destinations.
+#
+class eventlogging::archive {
     include rsync::server
 
     file { [ '/var/log/eventlogging', '/var/log/eventlogging/archive' ]:
         ensure  => directory,
         owner   => 'eventlogging',
-        group   => 'wikidev',
+        group   => 'eventlogging',
         mode    => '0664',
     }
 
@@ -15,7 +19,7 @@ class eventlogging::archive( $destinations ) {
         read_only   => 'yes',
         list        => 'yes',
         require     => File['/var/log/eventlogging'],
-        hosts_allow => $destinations,
+        hosts_allow => $::network::constants::all_networks,
     }
 
     file { '/etc/logrotate.d/eventlogging':
@@ -23,5 +27,4 @@ class eventlogging::archive( $destinations ) {
         require => File['/var/log/eventlogging/archive'],
         mode    => '0444',
     }
-
 }

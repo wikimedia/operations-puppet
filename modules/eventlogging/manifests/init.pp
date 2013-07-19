@@ -36,6 +36,7 @@
 # EventLogging tasks.
 #
 class eventlogging {
+    include eventlogging::archive
     include eventlogging::package
 
     # EventLogging jobs set 'eventlogging' gid & uid.
