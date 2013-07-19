@@ -580,3 +580,18 @@ class misc::maintenance::purge_checkuser( $enabled = false ) {
         command => '/usr/local/bin/foreachwiki extensions/CheckUser/maintenance/purgeOldData.php 2>&1 > /dev/null',
     }
 }
+
+class misc::maintenance::purge_securepoll( $enabled = false ) {
+    $status = $enabled ? {
+        true    => 'present',
+        false   => 'absent',
+        default => 'absent',
+    }
+
+    cron { 'purge_securepollvotedata':
+        ensure  => $status,
+        user    => 'apache',
+        hour    => '1',
+        command => '/usr/local/bin/foreachwiki extensions/SecurePoll/cli/purgePrivateVoteData.php 2>&1 > /dev/null',
+    }
+}
