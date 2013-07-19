@@ -303,13 +303,11 @@ class base::sysctl {
 			refreshonly => true;
 		}
 
-		file { wikimedia-base-sysctl:
-			name => "/etc/sysctl.d/50-wikimedia-base.conf",
-			owner => root,
-			group => root,
-			mode => 0444,
+		sysctlfile { 'wikimedia-base':
+			source => 'puppet:///modules/sysctlfile/50-wikimedia-base.conf',
+			number_prefix => '50',
+			ensure => $ensure,
 			notify => Exec["/sbin/start procps"],
-			source => "puppet:///files/misc/50-wikimedia-base.conf.sysctl"
 		}
 
 		# Disable IPv6 privacy extensions, we rather not see our servers hide
