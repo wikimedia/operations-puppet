@@ -5,8 +5,8 @@
 
 # Always bind to specific addresses - pdns complains when using INADDR_ANY.
 # Change this to the external interface address
-local-address=<%= dns_auth_ipaddress %>
-query-local-address=<%= dns_auth_ipaddress %>
+local-address=<%= dns_auth_ipaddress.join(',') %>
+query-local-address=<%= dns_auth_query_address %>
 
 # Change this to the actual SOA name:
 default-soa-name=<%= dns_auth_soa_name %>

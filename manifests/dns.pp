@@ -38,8 +38,10 @@ class dns::auth-server::ldap($dns_auth_ipaddress, $dns_auth_soa_name, $dns_auth_
 
 }
 
-class dns::auth-server($ipaddress="", $soa_name="", $master="") {
+class dns::auth-server($ipaddress=[], $soa_name="", $master="") {
 	$dns_auth_ipaddress = $ipaddress
+	# only used for AXFR and notifies, we don't really care
+	$dns_auth_query_address = $ipaddress[0]
 	$dns_auth_soa_name = $soa_name
 	$dns_auth_master = $master
 
@@ -122,12 +124,12 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 	}
 
 	# Publish service ip hostkeys
-	@@sshkey {
-		"${dns_auth_soa_name}":
+	@@sshkey { $dns_auth_soa_name:
 			type => ssh-rsa,
 			key => $sshrsakey,
 			ensure => present;
-		"${dns_auth_ipaddress}":
+	}
+	@@sshkey { $dns_auth_ipaddress:
 			type => ssh-rsa,
 			key => $sshrsakey,
 			ensure => present;
@@ -146,7 +148,7 @@ class dns::auth-server($ipaddress="", $soa_name="", $master="") {
 	}
 
 	# Monitoring
-	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress }
+	monitor_host { $dns_auth_soa_name: ip_address => $dns_auth_ipaddress[0] }
 	monitor_service { "auth dns": host => $dns_auth_soa_name, description => "Auth DNS", check_command => "check_dns!www.wikipedia.org" }
 }
 
