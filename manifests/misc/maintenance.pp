@@ -389,7 +389,29 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 			true => present,
 			false => absent,
 			default => absent
-		};
+		}
 	}
+}
 
+class misc::maintenance::purge_checkuser( $enabled = false ) {
+	$scriptpath = "/usr/local/bin"
+	
+	"${scriptpath}/purge-checkuser":
+		owner => root,
+		group => root,
+		mode => 0555,
+		source => "puppet:///files/misc/scripts/purge-checkuser";
+
+	cron { 'purge-checkuser':
+		user => root,
+		minute => 0,
+		hour => 0,
+		weekday => 0,
+		command => "${scriptpath}/purge-checkuser",
+		ensure => $enabled ?{
+			true => present,
+			false => absent,
+			default => absent
+		}
+	}
 }
