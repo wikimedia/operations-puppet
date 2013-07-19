@@ -1,23 +1,21 @@
-# Monitor events per second using Ganglia
+# == Class: eventlogging::monitor
+#
+# This class provisions a Ganglia metric module which reports throughput
+# (measured in events per second) of all locally-published event streams.
+#
 class eventlogging::monitor {
     include eventlogging
 
-    file { '/usr/lib/ganglia/python_modules/zpubmon.py':
-        ensure  => link,
-        target  => "${eventlogging::path}/ganglia/python_modules/zpubmon.py",
-        require => [
-            File['/usr/lib/ganglia/python_modules'],
-            Package['python-zmq'],
-        ],
+    file { '/usr/lib/ganglia/python_modules/eventlogging_mon.py':
+        ensure  => present,
+        source  => "${eventlogging::package::path}/ganglia/python_modules/eventlogging_mon.py",
+        require => Package['python-zmq'],
     }
 
-    file { '/etc/ganglia/conf.d/zpubmon.pyconf':
-        ensure   => present,
-        source   => 'puppet:///modules/eventlogging/zpubmon.pyconf',
-        require  => [
-            File['/etc/ganglia/conf.d'],
-            File['/usr/lib/ganglia/python_modules/zpubmon.py'],
-        ],
-        notify   => Service['gmond'],
+    file { '/etc/ganglia/conf.d/eventlogging_mon.pyconf':
+        ensure  => present,
+        source  => 'puppet:///modules/eventlogging/eventlogging_mon.pyconf',
+        require => File['/usr/lib/ganglia/python_modules/eventlogging_mon.py'],
+        notify  => Service['gmond'],
     }
 }

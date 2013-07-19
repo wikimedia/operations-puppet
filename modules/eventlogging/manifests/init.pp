@@ -37,6 +37,7 @@
 #
 class eventlogging {
     include eventlogging::package
+    include eventlogging::monitor
 
     # EventLogging jobs set 'eventlogging' gid & uid.
     group { 'eventlogging':

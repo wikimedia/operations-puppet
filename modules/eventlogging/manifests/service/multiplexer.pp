@@ -38,6 +38,6 @@ define eventlogging::service::multiplexer(
     file { "/etc/eventlogging.d/multiplexers/${basename}":
         ensure  => $ensure,
         content => template('eventlogging/multiplexer.erb'),
-        notify  => Service['eventlogging/init'],
+        notify  => Service['eventlogging/init', 'gmond'],
     }
 }
