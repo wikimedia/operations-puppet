@@ -154,8 +154,8 @@ class toollabs::exec_environ {
     ensure => present
   }
 
-  sysctl { "vm.overcommit_memory": value => 2 }
-  sysctl { "vm.overcommit_ratio": value => 95 }
+  sysctlfile { "vm.overcommit_memory": value => 2 }
+  sysctlfile { "vm.overcommit_ratio": value => 95 }
 
   # TODO: quotas
 }
