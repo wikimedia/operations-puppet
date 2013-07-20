@@ -10,3 +10,9 @@ export PATH
 
 # This bug has allegedly been fixed, so let's try with touch site.pp again
 touch /etc/puppet/manifests/site.pp
+
+if [ `hostname` = 'sockpuppet' ]; then
+    # No need to specify a command; gitpuppet's key will automatically run 
+    # 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init' on stafford.
+    sudo -u gitpuppet "ssh stafford.pmtpa.wmnet"
+fi
