@@ -2,7 +2,6 @@
 [master]
 ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
-templatedir = /var/lib/puppet/templates
 
 # puppetmaster($config) settings
 <% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>

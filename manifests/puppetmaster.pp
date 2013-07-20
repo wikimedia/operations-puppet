@@ -219,7 +219,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			target => "${gitdir}/operations/puppet/modules",
 			force  => true,
 		}
-		file { '/etc/private':
+		file { '/etc/puppet/private':
 			ensure => link,
 			target => "${gitdir}/operations/private",
 			force  => true,
