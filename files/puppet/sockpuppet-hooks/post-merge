@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# An example hook script that is called after a successful
+# merge is made.
+#
+# To enable this hook, rename this file to "post-merge".
+
+rsync -a --delete /root/puppet/files/. /etc/puppet/files/.
+rsync -a --delete /root/puppet/manifests/. /etc/puppet/manifests/.
+rsync -a --delete /root/puppet/modules/. /etc/puppet/modules/.
+rsync -a --delete /root/puppet/templates/. /var/lib/puppet/templates/.
+
+# Add an apache reload, since puppet is stupid and will botch
+# catalogues in a way that does not show up on the clients and causes
+# an insane amount of confusion. A reload makes it regenerate them properly.
+#/etc/init.d/apache2 reload
+
+# This bug has allegedly been fixed, so let's try with touch site.pp again
+touch /etc/puppet/manifests.site.pp
+
+# Update stafford
+# Replaced using this key with needing to use forwarded keys
+# ssh -i ~/.ssh/sockpuppet root@stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull'
+ssh root@stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull'

@@ -1,0 +1,8 @@
+Files in this directory are not currently installed by puppet,
+but I'm sticking them here because right now they are live hacks,
+and I want them tracked someplace at least.
+
+If you're installing this, stick these files in .git/hooks on sockpuppet
+or whatever has replaced sockpuppet.
+
+(Andrew Bogott, 7/22)
