@@ -181,10 +181,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 					source => "puppet:///files/puppet/git/private/post-merge",
 					owner => gitpuppet,
 					mode => 0550;
-				"$puppetmaster::gitdir/operations/puppet/private":
-					ensure => link,
-					owner => gitpuppet,
-					target => "${gitdir}/operations/private";
 			}
 		}
 
@@ -223,9 +219,9 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			target => "${gitdir}/operations/puppet/modules",
 			force  => true,
 		}
-		file { '/etc/puppet/private':
+		file { '/etc/private':
 			ensure => link,
-			target => "${gitdir}/operations/puppet/private",
+			target => "${gitdir}/operations/private",
 			force  => true,
 		}
 	}
