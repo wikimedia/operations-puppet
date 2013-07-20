@@ -12,7 +12,7 @@ export PATH
 touch /etc/puppet/manifests/site.pp
 
 if [ `hostname` = 'sockpuppet' ]; then
-    # No need to specify a command; gitpuppet's key will automatically run 
-    # 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init' on stafford.
-    ssh stafford.pmtpa.wmnet
+    # If no key is forwarded then this will use the ready-made equivalent command
+    #  on stafford and ignore our command.
+    ssh -t -t stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull && git submodule update --init'
 fi
