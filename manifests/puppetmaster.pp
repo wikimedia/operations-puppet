@@ -466,7 +466,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		ca => $config['ca']
 	}
 
-	include scripts, geoip, gitclone
+	include scripts, geoip, gitclone, gitpuppet
 
 	if $is_labs_puppet_master {
 		include labs
