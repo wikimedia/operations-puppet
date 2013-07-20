@@ -62,6 +62,37 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 	}
 
+	# Service user to handle the post-merge hook on sockpuppet
+	class gitpuppet {
+		user { 'gitpuppet':
+			ensure     => present,
+			gid        => 'gitpuppet',
+			shell      => '/bin/false',
+			home       => '/home/gitpuppet',
+			managehome => true,
+			system     => true,
+		}
+		file { [ "/home/gitpuppet", "/home/gitpuppet/.ssh" ]:
+			ensure => directory,
+			owner => gitpuppet,
+			group => gitpuppet,
+			mode => 0700,
+			require => User['gitpuppet'];
+		}
+		file {
+			"/home/gitpuppet/.ssh/gitpuppet.key":
+				owner => gitpuppet,
+				group => gitpuppet,
+				mode => 0400,
+				source => 'puppet:///private/ssh/gitpuppet/gitpuppet.key';
+			"/home/gitpuppet/.ssh/authorized_keys":
+				owner => gitpuppet,
+				group => gitpuppet,
+				mode => 0400,
+				source => 'pupppet:///files/puppet/git/gitpuppet_authorized_keys';
+		}
+	}
+
 	# Class: puppetmaster::config
 	#
 	# This class handles the master part of /etc/puppet.conf. Do not include directly.
@@ -123,16 +154,25 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		}
 
 		if ! $is_labs_puppet_master {
+			# Set up private repo.
+			# Note that puppet does not actually clone the repo -- puppetizing that
+			# turns out to be a big, insecure mess.  On a new puppetmaster you will
+			# will need to do a clone of $puppetmaster::gitdir/operations/puppet/private
+                        # by hand and with a forwarded key.
 			file {
 				"$puppetmaster::gitdir/operations/private":
 					ensure => directory,
-					owner => root,
+					owner => gitpuppet,
 					group => puppet,
 					mode => 0750;
-
 				"$puppetmaster::gitdir/operations/private/.git/hooks/post-merge":
 					source => "puppet:///files/puppet/git/private/post-merge",
+					owner => gitpuppet,
 					mode => 0550;
+				"$puppetmaster::gitdir/operations/puppet/private":
+					ensure => link,
+					owner => gitpuppet,
+					target => "${gitdir}/operations/private";
 			}
 		}
 
@@ -140,12 +180,41 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			"operations/puppet":
 				require => File["$puppetmaster::gitdir/operations"],
 				directory => "$puppetmaster::gitdir/operations/puppet",
+				owner => 'gitpuppet',
 				branch => "production",
 				origin => "https://gerrit.wikimedia.org/r/p/operations/puppet";
 			"operations/software":
 				require => File["$puppetmaster::gitdir/operations"],
+				owner => 'gitpuppet',
 				directory => "$puppetmaster::gitdir/operations/software",
 				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
+		}
+
+		# These symlinks will allow us to use /etc/puppet for the puppetmaster to run out of.
+		file { '/etc/puppet/templates':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/templates",
+			force  => true,
+		}
+		file { '/etc/puppet/files':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/files",
+			force  => true,
+		}
+		file { '/etc/puppet/manifests':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/manifests",
+			force  => true,
+		}
+		file { '/etc/puppet/modules':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/modules",
+			force  => true,
+		}
+		file { '/etc/puppet/private':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/private",
+			force  => true,
 		}
 	}
 
