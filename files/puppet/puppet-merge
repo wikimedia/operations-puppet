@@ -24,7 +24,7 @@ fi
 
 
 # Default to /root/puppet unless $1 is specified
-basedir=${1:-/root/puppet}
+basedir=${1:-/var/lib/git/operations/puppet}
 cd "${basedir}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"

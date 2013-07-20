@@ -122,20 +122,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				ensure => directory;
 		}
 
-		if ! $is_labs_puppet_master {
-			file {
-				"$puppetmaster::gitdir/operations/private":
-					ensure => directory,
-					owner => root,
-					group => puppet,
-					mode => 0750;
-
-				"$puppetmaster::gitdir/operations/private/.git/hooks/post-merge":
-					source => "puppet:///files/puppet/git/private/post-merge",
-					mode => 0550;
-			}
-		}
-
 		git::clone {
 			"operations/puppet":
 				require => File["$puppetmaster::gitdir/operations"],
@@ -146,6 +132,49 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				require => File["$puppetmaster::gitdir/operations"],
 				directory => "$puppetmaster::gitdir/operations/software",
 				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
+		}
+
+		if ! $is_labs_puppet_master {
+			# TODO:  How to get auth to make this clone?
+			git::clone {
+				"operations/puppet/private":
+					require => Git::clone['operations/puppet'],
+					directory => "$puppetmaster::gitdir/operations/puppet/private",
+					origin => "ssh://sockpuppet.pmtpa.wmnet/root/private/";
+			}
+			file {
+				"$puppetmaster::gitdir/operations/private/.git/hooks/post-merge":
+					require => Git::clone['operations/puppet/private'],
+					source => "puppet:///files/puppet/git/private/post-merge",
+					mode => 0550;
+			}
+		}
+
+		# These symlinks will allow us to use /etc/puppet for the puppetmaster to run out of.
+		file { '/etc/puppet/templates':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/templates",
+			force  => true,
+		}
+		file { '/etc/puppet/files':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/files",
+			force  => true,
+		}
+		file { '/etc/puppet/manifests':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/manifests",
+			force  => true,
+		}
+		file { '/etc/puppet/modules':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/modules",
+			force  => true,
+		}
+		file { '/etc/puppet/private':
+			ensure => link,
+			target => "${gitdir}/operations/puppet/private",
+			force  => true,
 		}
 	}
 
