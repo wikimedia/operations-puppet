@@ -81,7 +81,7 @@ if [ "x${answer}" = "xyes" ]; then
     echo "Merging ${fetch_head_sha1}..."
     cmd="git merge --ff-only ${fetch_head_sha1}"
     echo "${cmd}"
-    ${cmd}
+    su - $git_user -c "cd ${basedir} && ${cmd}"
 
     # If there were submodule changes update and init them
     if [ -n "${submodule_changes}" ]; then
