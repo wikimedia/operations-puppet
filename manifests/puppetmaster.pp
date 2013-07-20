@@ -89,7 +89,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				owner => gitpuppet,
 				group => gitpuppet,
 				mode => 0400,
-				source => 'pupppet:///files/puppet/git/gitpuppet_authorized_keys';
+				source => 'puppet:///files/puppet/git/gitpuppet_authorized_keys';
 		}
 	}
 
