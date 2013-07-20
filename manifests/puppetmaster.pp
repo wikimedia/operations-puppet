@@ -66,7 +66,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class gitpuppet {
 		user { 'gitpuppet':
 			ensure     => present,
-			gid        => 'gitpuppet',
 			shell      => '/bin/false',
 			home       => '/home/gitpuppet',
 			managehome => true,
@@ -75,19 +74,16 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 		file { [ "/home/gitpuppet", "/home/gitpuppet/.ssh" ]:
 			ensure => directory,
 			owner => gitpuppet,
-			group => gitpuppet,
 			mode => 0700,
 			require => User['gitpuppet'];
 		}
 		file {
 			"/home/gitpuppet/.ssh/gitpuppet.key":
 				owner => gitpuppet,
-				group => gitpuppet,
 				mode => 0400,
 				source => 'puppet:///private/ssh/gitpuppet/gitpuppet.key';
 			"/home/gitpuppet/.ssh/authorized_keys":
 				owner => gitpuppet,
-				group => gitpuppet,
 				mode => 0400,
 				source => 'puppet:///files/puppet/git/gitpuppet_authorized_keys';
 		}
@@ -175,7 +171,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				"$puppetmaster::gitdir/operations/private":
 					ensure => directory,
 					owner => gitpuppet,
-					group => puppet,
 					mode => 0750;
 				"$puppetmaster::gitdir/operations/private/.git/hooks/post-merge":
 					source => "puppet:///files/puppet/git/private/post-merge",
