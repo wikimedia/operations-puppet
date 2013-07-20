@@ -78,7 +78,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 			require => User['gitpuppet'];
 		}
 		file {
-			"/home/gitpuppet/.ssh/gitpuppet.key":
+			"/home/gitpuppet/.ssh/id_rsa":
 				owner => gitpuppet,
 				mode => 0400,
 				source => 'puppet:///private/ssh/gitpuppet/gitpuppet.key';
