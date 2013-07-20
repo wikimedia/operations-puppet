@@ -22,14 +22,15 @@ if [ "${1}" = "help" -o "${1}" = "--help" -o "${1}" = "-h" ]; then
     echo "$usage" && exit 0;
 fi
 
+git_user='gitpuppet'
 
-# Default to /root/puppet unless $1 is specified
-basedir=${1:-/root/puppet}
+# Default to /var/lib/git/operations/puppet unless $1 is specified
+basedir=${1:-/var/lib/git/operations/puppet}
 cd "${basedir}"
 
 echo "Fetching new commits from $(git config --get remote.origin.url)"
 
-git fetch
+sudo -u $git_user "git fetch"
 fetch_head_sha1=$(git rev-parse FETCH_HEAD)
 
 submodule_changes="$(git diff --submodule=log HEAD..${fetch_head_sha1} | grep -e '^Submodule ')" || true
@@ -87,7 +88,7 @@ if [ "x${answer}" = "xyes" ]; then
         echo "Updating submodules..."
         cmd="git submodule update --init --no-fetch"
         echo "${cmd}"
-        ${cmd}
+        sudo -u $git_user ${cmd}
     fi
 
     # git clean to remove any untracked
@@ -95,7 +96,7 @@ if [ "x${answer}" = "xyes" ]; then
     echo "Running git clean to clean any untracked files."
     cmd="git clean -dffx -e /private/"
     echo "${cmd}"
-    ${cmd}
+    sudo -u $git_user ${cmd}
 
     echo "HEAD is now $(git rev-parse HEAD)."
     cd -
