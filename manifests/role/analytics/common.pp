@@ -1,12 +1,12 @@
-# == Class role::analytics::kraken
-# Includes common analytics Kraken client classes:
+# == Class role::analytics::common
+# Includes common analytics client classes:
 # - hadoop
 # - hive
 # - oozie
 # - pig
 # - sqoop
 #
-class role::analytics::kraken {
+class role::analytics::common {
     include role::analytics::hadoop::client,
         role::analytics::hive::client,
         role::analytics::oozie::client,
