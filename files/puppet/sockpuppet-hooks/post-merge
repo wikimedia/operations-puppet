@@ -21,4 +21,4 @@ touch /etc/puppet/manifests.site.pp
 # Update stafford
 # Replaced using this key with needing to use forwarded keys
 # ssh -i ~/.ssh/sockpuppet root@stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull'
-ssh root@stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull'
+ssh root@stafford.pmtpa.wmnet 'cd /var/lib/git/operations/puppet && git pull && git submodule-update --init'
