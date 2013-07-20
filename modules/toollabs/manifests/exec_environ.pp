@@ -122,6 +122,12 @@ class toollabs::exec_environ {
       'php5-redis',
       'php5-xsl',
 
+      # tcl packages
+      'mysqltcl',
+      'tclcurl',
+      'tcllib',
+      'tclthread',
+
       # Other packages
       'adminbot',
       'dc',
@@ -143,8 +149,6 @@ class toollabs::exec_environ {
       'mdbtools',                    # Bug #48805.
       'p7zip',
       'phpunit',
-      'tclcurl',
-      'tcllib',
       'tree'                         # Bug #48862.
       ]:
     ensure => present
