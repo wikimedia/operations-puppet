@@ -180,12 +180,45 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 					ensure => link,
 					target => "${gitdir}/operations/private",
 					force  => true;
+				'/etc/puppet/templates':
+					ensure => link,
+					target => "${gitdir}/operations/puppet/templates",
+					force  => true;
+				'/etc/puppet/files':
+					ensure => link,
+					target => "${gitdir}/operations/puppet/files",
+					force  => true;
+				'/etc/puppet/manifests':
+					ensure => link,
+					target => "${gitdir}/operations/puppet/manifests",
+					force  => true;
+				'/etc/puppet/modules':
+					ensure => link,
+					target => "${gitdir}/operations/puppet/modules",
+					force  => true,
 			}
 		} else {
-			file { '/etc/puppet/private':
-				ensure => link,
-				target => "${gitdir}/operations/labs/private",
-				force  => true,
+			file {
+				'/etc/puppet/private':
+					ensure => link,
+					target => "/root/testrepo/private",
+					force  => true;
+				'/etc/puppet/templates':
+					ensure => link,
+					target => "/root/testrepo/puppet/templates",
+					force  => true;
+				'/etc/puppet/files':
+					ensure => link,
+					target => "/root/testrepo/puppet/files",
+					force  => true;
+				'/etc/puppet/manifests':
+					ensure => link,
+					target => "/root/testrepo/puppet/manifests",
+					force  => true;
+				'/etc/puppet/modules':
+					ensure => link,
+					target => "/root/testrepo/puppet/modules",
+					force  => true,
 			}
 		}
 
@@ -203,27 +236,6 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 				origin => "https://gerrit.wikimedia.org/r/p/operations/software";
 		}
 
-		# These symlinks will allow us to use /etc/puppet for the puppetmaster to run out of.
-		file { '/etc/puppet/templates':
-			ensure => link,
-			target => "${gitdir}/operations/puppet/templates",
-			force  => true,
-		}
-		file { '/etc/puppet/files':
-			ensure => link,
-			target => "${gitdir}/operations/puppet/files",
-			force  => true,
-		}
-		file { '/etc/puppet/manifests':
-			ensure => link,
-			target => "${gitdir}/operations/puppet/manifests",
-			force  => true,
-		}
-		file { '/etc/puppet/modules':
-			ensure => link,
-			target => "${gitdir}/operations/puppet/modules",
-			force  => true,
-		}
 	}
 
 	# Class: puppetmaster::passenger
