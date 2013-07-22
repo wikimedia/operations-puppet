@@ -4720,7 +4720,7 @@ host ssl1005 {
 }
 
 host ssl1006 {
-	hardware ethernet 90:B1:1C:2D:7E:CD;
+	hardware ethernet 90:B1:1C:2A:36:F9;
 	fixed-address ssl1006.wikimedia.org;
 }
 
