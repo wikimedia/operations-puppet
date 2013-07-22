@@ -291,32 +291,58 @@ class base::remote-syslog {
 }
 
 class base::sysctl {
-	if ($::lsbdistid == "Ubuntu") and ($::lsbdistrelease != "8.04") {
-		exec { "/sbin/start procps":
-			path => "/bin:/sbin:/usr/bin:/usr/sbin",
-			refreshonly => true;
-		}
+    # Defaults sysctl parameters for Ubuntu Precise
+    # We set them ourselves so we can purge /etc/sysctl.d.
+    sysctl::parameters { 'ubuntu precise defaults':
+        values => {
+            # 10-console-messages.conf
+            'kernel.printk'                   => [ 4, 4, 1, 7 ],
 
-		# FIXME: *never* source a file from a module
-		sysctlfile { 'wikimedia-base':
-			source => 'puppet:///modules/sysctlfile/50-wikimedia-base.conf',
-			number_prefix => '50',
-			ensure => $ensure,
-			notify => Exec["/sbin/start procps"],
-		}
+            # 10-kernel-hardening.conf
+            'kernel.kptr_restrict'            => 1,
 
-		# Disable IPv6 privacy extensions, we rather not see our servers hide
-		file { "/etc/sysctl.d/10-ipv6-privacy.conf":
-			ensure => absent
-		}
-	} else {
-	    # FIXME: this is a super ugly hack but the sysctlfile module is broken,
-	    # relying on a definition to be defined in base.pp to actually work
-		exec { "/sbin/start procps":
-			command => '/bin/true',
-			refreshonly => true,
-		}
-	}
+            # 10-network-security.conf
+            'net.ipv4.conf.default.rp_filter' => 1,
+            'net.ipv4.conf.all.rp_filter'     => 1,
+            'net.ipv4.tcp_syncookies'         => 1,
+
+            # 10-ptrace.conf
+            'kernel.yama.ptrace_scope'        => 1,
+
+            # 10-zeropage.conf
+            'vm.mmap_min_addr'                => 65536,
+
+            # We don't want 10-ipv6-privacy.conf, so skip it.
+        },
+    }
+
+    sysctl::parameters { 'wikimedia base':
+        values => {
+            # Increase TCP max buffer size
+            'net.core.rmem_max'             => 16777216,
+            'net.core.wmem_max'             => 16777216,
+
+            # Increase Linux auto-tuning TCP buffer limits
+            # Values represent min, default, & max num. of bytes to use.
+            'net.ipv4.tcp_rmem'             => [ 4096, 87380, 16777216 ],
+            'net.ipv4.tcp_wmem'             => [ 4096, 65536, 16777216 ],
+
+            # Don't cache ssthresh from previous connection
+            'net.ipv4.tcp_no_metrics_save'  => 1,
+            'net.core.netdev_max_backlog'   => 2500,
+
+            # Increase the queue size of new TCP connections
+            'net.core.somaxconn'            => 1024,
+            'net.ipv4.tcp_max_syn_backlog'  => 4096,
+
+            # Swapping makes things too slow and should be done rarely
+            # 0 = only swap in OOM conditions (it does NOT disable swap.)
+            'vm.swappiness'                 => 0,
+            'net.ipv4.tcp_keepalive_time'   => 300,
+            'net.ipv4.tcp_keepalive_intvl'  => 1,
+            'net.ipv4.tcp_keepalive_probes' => 2,
+        },
+    }
 }
 
 class base::standard-packages {
