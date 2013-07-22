@@ -50,6 +50,15 @@ class jenkins {
     owner  => 'jenkins',
     group  => 'jenkins',
   }
+  # access.log rotation. Not provided by upstream Debian package
+  # https://issues.jenkins-ci.org/browse/JENKINS-18870
+  file { '/etc/logrotate.d/jenkins_accesslog':
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0444',
+    source => 'puppet:///modules/jenkins/jenkins_accesslog.logrotate',
+  }
+
   file { '/etc/default/jenkins':
     owner  => 'root',
     group  => 'root',
