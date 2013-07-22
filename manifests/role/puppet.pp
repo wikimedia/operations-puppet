@@ -56,7 +56,10 @@ class role::puppet::self {
 		undef       => 'localhost',
 		'localhost' => 'localhost',
 		''          => 'localhost',
-		default     => "${::puppetmaster}.${domain}",
+		# if only word characters, assume that this is a short hostname
+		/^\w+$/     => "${::puppetmaster}::${::domain}",
+		# else use assume fqdn
+		default     => $::puppetmaster,
 	}
 
 	# If localhost or if $server matches this node's
