@@ -9,7 +9,7 @@ class role::mirror::common {
 		ensure => latest;
 	}
 
-	include sysctlfile::high-bandwidth-rsync
+	include role::rsync
 }
 
 class role::mirror::media {
