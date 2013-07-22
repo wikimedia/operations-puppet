@@ -2974,6 +2974,12 @@ node "zhen.wikimedia.org" {
         mobile::vumi
 }
 
+node "zinc.eqiad.wmnet" {
+
+    include standard,
+        role::solr::ttm
+}
+
 node "zirconium.wikimedia.org" {
     include standard,
         admins::roots,
