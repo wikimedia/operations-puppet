@@ -18,6 +18,10 @@ sub vcl_recv {
 	}
 <% end -%>
 
+	if (req.http.Cookie ~ "([sS]ession|Token)=") {
+		return (pass);
+	}
+
 	/* Default (now modified) Varnish vcl_recv function */
 	if (req.restarts == 0) {
 		if (req.http.x-forwarded-for) {
@@ -29,10 +33,6 @@ sub vcl_recv {
 	}
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
-		return (pass);
-	}
-	if (req.http.Authorization || req.http.Cookie) {
-		/* Not cacheable by default */
 		return (pass);
 	}
 	return (lookup);
