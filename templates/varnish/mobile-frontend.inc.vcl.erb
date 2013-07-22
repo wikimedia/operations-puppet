@@ -97,6 +97,12 @@ sub vcl_fetch {
 	if (req.url ~ "mobileaction=" || req.url ~ "useformat=") {
 		set beresp.ttl = 60 s;
 	}
+
+	if (beresp.ttl <= 0s) {
+		set beresp.ttl = 120s;
+		return (hit_for_pass);
+	}
+	return (deliver);
 }
 
 sub vcl_error {
