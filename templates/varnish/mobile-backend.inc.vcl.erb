@@ -31,10 +31,6 @@ sub vcl_recv {
 		/* We only deal with GET and HEAD by default */
 		return (pass);
 	}
-	if (req.http.Authorization || req.http.Cookie) {
-		/* Not cacheable by default */
-		return (pass);
-	}
 	return (lookup);
 }
 
