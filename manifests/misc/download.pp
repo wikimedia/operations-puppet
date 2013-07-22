@@ -40,8 +40,14 @@ class misc::download-wikimedia {
 	}
 
 	package { nfs-kernel-server:
-		ensure => latest;
+		ensure => present;
 	}
+
+        if ($::lsbdistcodename == 'precise') {
+                package { mwbzutils:
+                        ensure => present;
+                }
+        }
 
 	file { "/etc/exports":
 		require => Package[nfs-kernel-server],
