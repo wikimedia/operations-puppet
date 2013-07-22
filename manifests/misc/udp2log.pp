@@ -11,8 +11,14 @@ class misc::udp2log($monitor = true) {
 
 	include 
 		contacts::udp2log,
-		misc::udp2log::udp_filter,
-		misc::udp2log::sysctl
+		misc::udp2log::udp_filter
+
+	sysctl::parameters { 'big rmem':
+		values => {
+			'net.core.rmem_max'     => 536870912,
+			'net.core.rmem_default' => 4194304,
+		},
+	}
 
 	# include the monitoring scripts
 	# required for monitoring udp2log instances
@@ -37,20 +43,6 @@ class misc::udp2log($monitor = true) {
 		ensure => present;
 	}
 }
-
-class misc::udp2log::sysctl($ensure="present") {
-	# make sure base::sysctl is here so that
-	# start procps can be notified.
-	include base::sysctl
-
-	sysctlfile { 'big-rmem':
-		source => 'puppet:///modules/sysctlfile/99-big-rmem.conf',
-		number_prefix => '99',
-		ensure => $ensure,
-		notify => Exec["/sbin/start procps"],
-	}
-}
-
 
 # Class: misc::udp2log::rsyncd
 #

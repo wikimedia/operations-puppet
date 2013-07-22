@@ -828,9 +828,22 @@ class lvs::balancer(
 	# Bind balancer IPs to the loopback interface
 	class { "lvs::realserver": realserver_ips => $service_ips }
 
-	# Sysctl settings
-	class { "sysctlfile::advanced-routing": ensure => absent }
-	include sysctlfile::lvs
+	sysctl::parameters { 'lvs':
+		values => {
+			# Turn OFF RP filter
+			'net.ipv4.conf.default.rp_filter' => 0,
+			'net.ipv4.conf.all.rp_filter'     => 0,
+
+			# Turn off IP forwarding for security
+			# LVS servers sit on all subnets
+			'net.ipv4.ip_forward'             => 0,
+
+			# Disable the route cache
+			# It is prone to DDoS attacks, and was even
+			# removed in >= 3.6 kernels.
+			'net.ipv4.rt_cache_rebuild_count' => -1,
+		},
+	}
 }
 
 # Supporting the PyBal RunCommand monitor
