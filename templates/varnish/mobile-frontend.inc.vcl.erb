@@ -47,19 +47,6 @@ sub vcl_recv {
 	 * do this after vcl_recv_purge, as it operates on a full URI */
 	call rewrite_proxy_urls;
 
-	/* FIXME: deploy X-Vary-Options support */
-	set req.http.X-Orig-Cookie = req.http.Cookie;
-	if( req.http.Cookie ~ "disable" ||
-		req.http.Cookie ~ "optin" ||
-		req.http.Cookie ~ "session" ||
-		req.http.Cookie ~ "forceHTTPS" ) {
-		/* Do nothing; these are the cookies we pass.
-		 * this is a hack in the absence of X-V-O support
-		 */
-	} else {
-		unset req.http.Cookie;
-	}
-
 	if (req.http.host == "m.wikipedia.org") {
 		if (req.http.X-CS) {
 			// Carrier detected
@@ -81,6 +68,23 @@ sub vcl_recv {
 
 	call device_detection;
 
+	if (req.http.Cookie ~ "([sS]ession|Token)=") {
+		return (pass);
+	}
+
+	/* Store the original Cookie header, and build a new one
+	 * with just the cookies we need to vary on
+	 */
+	set req.http.X-Orig-Cookie = req.http.Cookie;
+	set req.http.Cookie = regsuball(req.http.X-Orig-Cookie, "^.*([a-zA-Z]+disableImages=1|optin=1|[a-zA-Z]+forceHTTPS=true).*$", "\1; ");
+	set req.http.Cookie = regsub(req.http.Cookie, "; $", "");
+
+	/* Users that just logged out, should not get a 304 for their
+	 * (locally cached) logged in pages. */
+	if (req.http.If-Modified-Since && req.http.X-Orig-Cookie ~ "LoggedOut") {
+		unset req.http.If-Modified-Since;
+	}
+
 	if ( req.http.host ~ "^test\." ) {
 		return (pass);
 	}
@@ -91,10 +95,6 @@ sub vcl_recv {
 	call vcl_recv_append_xff;
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
-		return (pass);
-	}
-	if (req.http.Authorization || req.http.Cookie) {
-		/* Not cacheable by default */
 		return (pass);
 	}
 	return (lookup);
