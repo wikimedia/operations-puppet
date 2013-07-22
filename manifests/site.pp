@@ -2468,7 +2468,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
     interface_add_ip6_mapped { "main": interface => "eth0" }
 }
 
-node /ssl100[1-4]\.wikimedia\.org/ {
+node /ssl100[1-6]\.wikimedia\.org/ {
     if $hostname =~ /^ssl100[12]$/ {
         $ganglia_aggregator = true
     }
