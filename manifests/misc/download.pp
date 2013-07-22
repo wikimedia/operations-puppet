@@ -43,12 +43,6 @@ class misc::download-wikimedia {
 		ensure => present;
 	}
 
-        if ($::lsbdistcodename == 'precise') {
-                package { mwbzutils:
-                        ensure => present;
-                }
-        }
-
 	file { "/etc/exports":
 		require => Package[nfs-kernel-server],
 		mode => 0444,
