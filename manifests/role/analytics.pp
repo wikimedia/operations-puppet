@@ -96,6 +96,18 @@ class role::analytics::packages {
             require => Class['role::analytics::java'],
         }
     }
+    # Symlink libdclass* .so into /usr/lib.
+    # (Oracle java does not support multiarch.)
+    file { '/usr/lib/libdclass.so':
+        ensure => 'link',
+        target => '/usr/lib/x86_64-linux-gnu/libdclass.so.0',
+        require => Package['libdclass-java'],
+    }
+    file { '/usr/lib/libdclassjni.so':
+        ensure => 'link',
+        target => '/usr/lib/x86_64-linux-gnu/jni/libdclassjni.so',
+        require => Package['libdclass-java'],
+    }
 }
 
 
