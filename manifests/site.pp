@@ -770,6 +770,7 @@ node /^db10(1[45]|2[3]|3[367]|4[45])\.eqiad\.wmnet/ {
 
 node "dobson.wikimedia.org" {
     interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
+    interface_ip { "dns::auth-server::ns0": interface => "eth0", address => "208.80.154.238" }
     interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
     include base,
@@ -791,7 +792,9 @@ node "dobson.wikimedia.org" {
     dns::recursor::monitor { "208.80.152.131": }
 
     class { "dns::auth-server":
-        ipaddress => [ "208.80.152.130" ],
+        # Yes, this is an eqiad service IP. This is *not* wrong.
+        # this is a temporary measure for migrating ns0 to eqiad
+        ipaddress => [ "208.80.152.130", "208.80.154.238" ],
         soa_name => "ns0.wikimedia.org",
         master => $dns_auth_master
     }
@@ -1349,6 +1352,7 @@ node "lanthanum.wikimedia.org" {
 
 node "linne.wikimedia.org" {
     interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
+    interface_ip { "dns::auth-server::ns1": interface => "eth0", address => "208.80.152.214" }
     interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
     include base,
@@ -1362,7 +1366,7 @@ node "linne.wikimedia.org" {
     }
 
         class { "dns::auth-server":
-            ipaddress => [ "208.80.152.142" ],
+            ipaddress => [ "208.80.152.142", "208.80.152.214" ],
             soa_name => "ns1.wikimedia.org",
             master => $dns_auth_master
         }
