@@ -4714,6 +4714,16 @@ host ssl1004 {
 	fixed-address ssl1004.wikimedia.org;
 }
 
+host ssl1005 {
+	hardware ethernet 90:B1:1C:2A:09:F7;
+	fixed-address ssl1005.wikimedia.org;
+}
+
+host ssl1006 {
+	hardware ethernet 90:B1:1C:2D:7E:CD;
+	fixed-address ssl1006.wikimedia.org;
+}
+
 host ssl3001 {
 	hardware ethernet 78:2b:cb:45:1d:e0;
 	fixed-address ssl3001.esams.wikimedia.org;
