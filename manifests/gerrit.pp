@@ -284,6 +284,14 @@ class gerrit::proxy( $no_apache = true,
 			group => root,
 			content => template('apache/sites/gerrit.wikimedia.org.erb'),
 			ensure => present;
+		# We don't use gitweb anymore, so we're going to allow spiders again
+		# If it becomes a problem, just set ensure => present again
+		"/var/www/robots.txt":
+			mode => 0444,
+			owner => root,
+			group => root,
+			source => "puppet:///files/misc/robots-txt-disallow",
+			ensure => absent;
 	}
 
 	apache_site { gerrit: name => "gerrit.wikimedia.org" }
@@ -303,13 +311,6 @@ class gerrit::gitweb {
 			ensure => absent;
 		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
 			ensure => absent;
-		# Spiders make gitweb cry when they request tarballs
-		"/var/www/robots.txt":
-			mode => 0444,
-			owner => root,
-			group => root,
-			source => "puppet:///files/misc/robots-txt-disallow",
-			ensure => present;
 	}
 }
 
