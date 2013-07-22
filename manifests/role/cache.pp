@@ -582,7 +582,7 @@ class role::cache {
 					'weight' => $backend_weight,
 				}],
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $network::constants::all_networks
+			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "text-frontend":
@@ -612,7 +612,7 @@ class role::cache {
 					'probe' => "varnish",
 					'weight' => $backend_weight,
 				}],
-			xff_sources => $network::constants::all_networks,
+			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -729,7 +729,7 @@ class role::cache {
 				}],
 			cluster_options => $cluster_options,
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $network::constants::all_networks
+			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "upload-frontend":
@@ -758,7 +758,7 @@ class role::cache {
 					'weight' => $backend_weight,
 				}],
 			cluster_options => $cluster_options,
-			xff_sources => $network::constants::all_networks,
+			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -871,7 +871,7 @@ class role::cache {
 				'probe' => $probe,
 			},
 			cluster_options => $cluster_options,
-			xff_sources => $network::constants::all_networks
+			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging::eventlistener
@@ -961,7 +961,7 @@ class role::cache {
 					'max_connections' => 600,
 				}],
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $network::constants::all_networks
+			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "mobile-frontend":
@@ -994,7 +994,7 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			}],
-			xff_sources => $network::constants::all_networks,
+			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -1052,7 +1052,7 @@ class role::cache {
 					'between_bytes_timeout' => "20s",
 					'max_connections' => 600,
 				}],
-			xff_sources => $network::constants::all_networks
+			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "parsoid-frontend":
@@ -1080,7 +1080,7 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			},
-			xff_sources => $network::constants::all_networks,
+			xff_sources => $wikimedia_networks,
 		}
 	}
 }
