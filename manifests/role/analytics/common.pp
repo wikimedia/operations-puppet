@@ -1,5 +1,5 @@
 # == Class role::analytics::common
-# Includes common analytics client classes:
+# Includes common analytics classes:
 # - hadoop
 # - hive
 # - oozie

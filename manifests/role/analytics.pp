@@ -26,9 +26,7 @@ class role::analytics {
     # (for now we only include these on reinstalled and
     #  fully puppetized nodes.)
     if ($hostname =~ /analytics10(1[8-9]|20)/) {
-        include role::analytics::pig
-        include role::analytics::hive
-        include role::analytics::sqoop
+        include role::analytics::common
     }
 }
 
@@ -87,6 +85,15 @@ class role::analytics::packages {
     if !defined(Package['python-lxml']) {
         package { 'python-lxml':
             ensure => 'installed',
+        }
+    }
+
+    # install dclass JNI package
+    # for device classification.
+    if !defined(Package['libdclass-java']) {
+        package { 'libdclass-java': 
+            ensure  => 'installed',
+            require => Class['role::analytics::java'],
         }
     }
 }
