@@ -1,12 +1,13 @@
+# vim: set et:
 # Logrotate file copied from upstream since it is not shipped
 # by upstream Debian package.
 # https://issues.jenkins-ci.org/browse/JENKINS-18870
 /var/log/jenkins/access.log {
     compress
     dateext
-	daily
+    daily
     maxage 30
-	rotate 30
+    rotate 30
     size=+4096k
     notifempty
     missingok
