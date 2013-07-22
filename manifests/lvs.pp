@@ -829,8 +829,8 @@ class lvs::balancer(
 	class { "lvs::realserver": realserver_ips => $service_ips }
 
 	# Sysctl settings
-	class { "sysctlfile::advanced-routing": ensure => absent }
-	include sysctlfile::lvs
+	class { "role::sysctl::advanced_routing": ensure => absent }
+	include role::sysctl::lvs
 }
 
 # Supporting the PyBal RunCommand monitor

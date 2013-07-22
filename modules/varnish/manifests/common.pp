@@ -2,7 +2,8 @@ class varnish::common {
     require varnish::packages
 
     # Tune kernel settings
-    include sysctlfile::high-http-performance
+    # TODO: Should be moved to a role class.
+    include role::sysctl::high_http_performance
 
     # Mount /var/lib/ganglia as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk

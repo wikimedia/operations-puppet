@@ -587,8 +587,8 @@ class openstack::network-service($openstack_version="essex", $novaconfig) {
 	}
 
 	# Enable IP forwarding
-	include sysctlfile::advanced-routing,
-		sysctlfile::ipv6-disable-ra
+	include role::sysctl::advanced_routing,
+		role::sysctl::ipv6_disable_ra
 }
 
 class openstack::api-service($openstack_version="essex", $novaconfig) {

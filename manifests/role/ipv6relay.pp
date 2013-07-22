@@ -1,7 +1,7 @@
 class role::ipv6relay {
         system_role { "role::ipv6relay": description => "IPv6 tunnel relay (6to4/Teredo)" }
 
-	include sysctlfile::advanced-routing-ipv6
+	include role::sysctl::advanced_routing_ipv6
 
 	# Teredo
 	include misc::miredo

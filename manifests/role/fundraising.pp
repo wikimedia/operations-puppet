@@ -75,7 +75,7 @@ class role::fundraising::civicrm {
         base::puppet,
         base::resolving,
         base::standard-packages,
-        base::sysctl,
+        role::sysctl::base,
         base::tcptweaks,
         base::vimconfig,
         passwords::root,

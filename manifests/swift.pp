@@ -7,7 +7,7 @@ class swift::base($hash_path_suffix, $cluster_name) {
 
 	# include tcp settings
 	include swift::sysctl::tcp-improvements
-	include sysctlfile::high-http-performance
+	include role::sysctl::high_http_performance
 
 	# this is on purpose not a >=. the cloud archive only exists for
 	# precise right now, and will perhaps exist for the next LTS, but

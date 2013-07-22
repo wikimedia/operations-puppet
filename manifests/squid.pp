@@ -110,7 +110,7 @@ class squid {
 	include aufs
 
 	# Tune kernel settings
-	include sysctlfile::high-http-performance
+	include role::sysctl::high_http_performance
 }
 
 class squid::redirector {

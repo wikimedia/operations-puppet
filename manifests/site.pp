@@ -812,7 +812,7 @@ node "ekrem.wikimedia.org" {
 # base_analytics_logging_node is defined in role/logging.pp
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
     include
-        sysctlfile::high-bandwidth-rsync,
+        role::sysctl::high_bandwidth_rsync,
         admins::mortals,
         # RT 4312
         accounts::milimetric
@@ -2171,7 +2171,7 @@ node /^payments[1-4]\.wikimedia\.org$/ {
     system_role { "misc::payments": description => "Fundraising payments server" }
 
     include base::remote-syslog,
-        base::sysctl,
+        role::sysctl::base,
         base::resolving,
         base::motd,
         base::monitoring::host,
@@ -2682,7 +2682,7 @@ node "streber.wikimedia.org" {
 
     include passwords::root,
         base::resolving,
-        base::sysctl,
+        role::sysctl::base,
         base::motd,
         base::vimconfig,
         base::standard-packages,
