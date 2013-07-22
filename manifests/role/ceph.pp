@@ -68,11 +68,31 @@ class role::ceph::eqiad inherits role::ceph::base {
         include ceph::osd
 
         # I/O busy systems, tune a few knobs to avoid page alloc failures
-        sysctlfile { 'sys.vm.min_free_kbytes':
-            value => '512000',
-        }
-        sysctlfile { 'sys.vm.vfs_cache_pressure':
-            value => '120',
+        sysctl::parameters { 'ceph':
+            values => {
+                # Increase the number of ephemeral ports
+                'net.ipv4.ip_local_port_range' =>  [ 1024, 65535 ],
+
+                # Recommended to increase this for 1000 BT or higher
+                'net.core.netdev_max_backlog'  =>  30000,
+
+                # Increase the queue size of new TCP connections
+                'net.core.somaxconn'           => 4096,
+                'net.ipv4.tcp_max_syn_backlog' => 262144,
+                'net.ipv4.tcp_max_tw_buckets'  => 360000,
+
+                # Decrease FD usage
+                'net.ipv4.tcp_fin_timeout'     => 3,
+                'net.ipv4.tcp_max_orphans'     => 262144,
+                'net.ipv4.tcp_synack_retries'  => 2,
+                'net.ipv4.tcp_syn_retries'     => 2,
+
+                # Start freeing unused pages of memory sooner
+                'sys.vm.min_free_kbytes'       => '512000',
+
+                # Prefer to reclaim dentries and inodes
+                'sys.vm.vfs_cache_pressure'    => '120',
+            },
         }
     }
 
@@ -83,7 +103,7 @@ class role::ceph::eqiad inherits role::ceph::base {
 
         class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
 
-        include sysctlfile::high-http-performance
+        include webserver::base
 
         class { 'ceph::radosgw':
             servername  => 'ms-fe.eqiad.wmnet',

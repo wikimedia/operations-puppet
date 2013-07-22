@@ -477,3 +477,16 @@ class generic::wikidev-umask {
 		}
 	}
 }
+
+
+class generic::greedy_kswapd {
+	# Set a high min_free_kbytes watermark to make kswapd free unused memory
+	# pages sooner. This works around rsync page allocations errors that happen
+	# with certain NIC drivers. Should be investigated further.
+	# See https://wikitech.wikimedia.org/wiki/Dataset1001#Feb_8_2012
+	sysctl::parameters { 'eager_page_reclaim':
+		values => {
+			'vm.min_free_kbytes' => 1024 * 256,
+		},
+	}
+
