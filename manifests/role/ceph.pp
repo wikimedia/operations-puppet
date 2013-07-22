@@ -67,11 +67,11 @@ class role::ceph::eqiad inherits role::ceph::base {
         include ceph::osd
 
         # I/O busy systems, tune a few knobs to avoid page alloc failures
-        sysctlfile { 'sys.vm.min_free_kbytes':
-            value => '512000',
-        }
-        sysctlfile { 'sys.vm.vfs_cache_pressure':
-            value => '120',
+        sysctl::parameters { 'ceph':
+            values => {
+                'sys.vm.min_free_kbytes'    => '512000',
+                'sys.vm.vfs_cache_pressure' => '120',
+            },
         }
     }
 
@@ -82,7 +82,7 @@ class role::ceph::eqiad inherits role::ceph::base {
 
         class { "lvs::realserver": realserver_ips => [ "10.2.2.27" ] }
 
-        include sysctlfile::high-http-performance
+        include webserver::base
 
         class { 'ceph::radosgw':
             servername  => 'ms-fe.eqiad.wmnet',

@@ -586,9 +586,19 @@ class openstack::network-service($openstack_version="essex", $novaconfig) {
 		require => Package["dnsmasq"];
 	}
 
-	# Enable IP forwarding
-	include sysctlfile::advanced-routing,
-		sysctlfile::ipv6-disable-ra
+    # Sysctl:
+	# - Enable IP forwarding
+    # - Turn OFF RP filter
+    # - Disable RA
+    sysctl::parameters { 'openstack':
+        values => {
+            'net.ipv4.conf.default.rp_filter' => 0,
+            'net.ipv4.conf.all.rp_filter'     => 0,
+            'net.ipv4.ip_forward'             => 1,
+            'net.ipv6.conf.all.forwarding'    => 1,
+            'net.ipv6.conf.all.accept_ra'     => 0,
+        },
+    }
 }
 
 class openstack::api-service($openstack_version="essex", $novaconfig) {

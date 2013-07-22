@@ -1,0 +1,3 @@
+# sysctl parameters managed by Puppet.
+<%= @values.sort.map { |kv| kv.join("=") }.join("\n") %>
+

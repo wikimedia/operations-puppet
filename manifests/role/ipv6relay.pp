@@ -1,11 +1,23 @@
 class role::ipv6relay {
         system_role { "role::ipv6relay": description => "IPv6 tunnel relay (6to4/Teredo)" }
 
-	include sysctlfile::advanced-routing-ipv6
+    # Enable router advertisements even when forwarding is enabled
+    # ("all" doesn't work with accept_ra, add eth0 here as a hack)
+    # Turn on ip forwarding
+    sysctl::parameters { 'ipv6 routing':
+        values: {
+            'net.ipv4.conf.all.forwarding'     => 1,
+            'net.ipv4.conf.default.forwarding' => 1,
+            'net.ipv6.conf.all.forwarding'     => 1,
+            'net.ipv6.conf.default.accept_ra'  => 2,
+            'net.ipv6.conf.default.forwarding' => 1,
+            'net.ipv6.conf.eth0.accept_ra'     => 2,
+        },
+    }
 
-	# Teredo
-	include misc::miredo
+    # Teredo
+    include misc::miredo
 
-	# 6to4
-	interface_tun6to4 { "tun6to4": }
+    # 6to4
+    interface_tun6to4 { "tun6to4": }
 }
