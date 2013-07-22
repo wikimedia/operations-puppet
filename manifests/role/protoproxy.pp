@@ -362,7 +362,7 @@ class role::protoproxy::ssl::beta::common {
 #
 class role::protoproxy::ssl::beta {
 
-    system_role { 'role::protoproxy::ssl:beta::bits': description => 'SSL proxy on beta' }
+    system_role { 'role::protoproxy::ssl:beta': description => 'SSL proxy on beta' }
 
     include role::protoproxy::ssl::beta::common
 
