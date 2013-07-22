@@ -12,6 +12,17 @@ ProxyRequests		Off
 # Most unix distribution deny proxy by default (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
 
 <Proxy http://localhost:8080/ci*>
+
+	# user agent blacklisting for Jenkins
+	SetEnvIf User-Agent 80legs bad_browser
+	SetEnvIf User-Agent bingbot bad_browser
+	SetEnvIf User-Agent Baiduspider bad_browser
+	SetEnvIf User-Agent JikeSpider bad_browser
+	SetEnvIf User-Agent Sogou bad_browser
+	SetEnvIf User-Agent Sosospider bad_browser
+	SetEnvIf User-Agent TweetmemeBot bad_browser
+
 	Order deny,allow
-	Allow from all
+	deny from env=bad_browser
+
 </Proxy>
