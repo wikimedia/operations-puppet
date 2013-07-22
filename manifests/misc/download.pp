@@ -55,7 +55,7 @@ class misc::download-wikimedia {
 		require => [ Package[nfs-kernel-server], File["/etc/exports"] ],
 	}
 
-        include sysctlfile::high-bandwidth-rsync
+	include role::rsync
 
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
