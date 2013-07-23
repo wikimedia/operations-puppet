@@ -263,12 +263,6 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     # keep fundraising logs in a subdir
     $fundraising_log_directory = "${log_directory}/fundraising"
 
-    file { $webrequest_filter_directory:
-        ensure => directory,
-        mode   => 0755,
-        owner  => 'udp2log',
-        group  => 'udp2log',
-    }
     file { "${fundraising_log_directory}":
         ensure  => 'directory',
         mode    => '0775',
