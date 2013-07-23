@@ -38,6 +38,20 @@ class gitblit::instance($host,
 			group => $user,
 			source => "puppet:///files/gitblit/header.md",
 			require => Systemuser[$user];
+		"/etc/init.d/gitblit":
+			mode => 0554,
+			owner => $user,
+			group => $user,
+			source => "puppet:///files/gitblit/gitblit-ubuntu",
+			require => Systemuser[$user];
+	}
+
+	service {
+		"gitblit":
+			subscribe => File["/var/lib/${user}/data/gitblit.properties"],
+			enable => true,
+			ensure => running,
+			require => Systemuser[$user];
 	}
 
 	apache_site { git: name => "git.wikimedia.org" }
