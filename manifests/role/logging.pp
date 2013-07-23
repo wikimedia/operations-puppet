@@ -257,9 +257,18 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 # - Webstatscollector 'filter'
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
+    # udp2log::instance will ensure this is created
+	$webrequest_log_directory    = "$log_directory/webrequest"
+
 	# keep fundraising logs in a subdir
 	$fundraising_log_directory = "${log_directory}/fundraising"
 
+	file { $webrequest_filter_directory:
+		ensure => directory,
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
 	file { "${fundraising_log_directory}":
 		ensure  => 'directory',
 		mode    => '0775',
@@ -280,7 +289,6 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
 	package { 'webstatscollector':
 	    ensure => 'installed',
 	}
-
 
 	misc::udp2log::instance { 'erbium':
 		multicast       => true,

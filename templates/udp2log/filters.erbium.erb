@@ -3,7 +3,7 @@
 ###
 
 ### udp2log packet loss monitoring
-pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= webrequest_log_directory %>/packet-loss.log
+pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= packet_loss_log %>
 
 ### Fundraising
 ## Landing pages
