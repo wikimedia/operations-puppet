@@ -188,78 +188,6 @@ class role::logging::webstatscollector {
 }
 
 
-# gadolinium udp2log instance(s).
-# gadolinium hosts the 'gadolinium' udp2log instance,
-# as well as the nginx udp2log instance.
-class role::logging::udp2log::gadolinium inherits role::logging::udp2log {
-	# need file_mover account for fundraising logs
-	include accounts::file_mover
-
-    # include this to infer mobile varnish frontend hosts in
-    # udp2log filter template.
-	include role::cache::configuration
-
-	# udp2log::instance will ensure this is created
-	$webrequest_log_directory    = "$log_directory/webrequest"
-
-	# install custom filters here
-	$webrequest_filter_directory = "$webrequest_log_directory/bin"
-	file { $webrequest_filter_directory:
-		ensure => directory,
-		mode   => 0755,
-		owner  => 'udp2log',
-		group  => 'udp2log',
-	}
-
-	# gadolinium keeps fundraising logs in a subdir
-	$fundraising_log_directory = "$log_directory/fundraising"
-
-	file { "$webrequest_filter_directory/vu.awk":
-		ensure => 'file',
-		source => 'puppet:///files/udp2log/vu.awk',
-		mode   => 0755,
-		owner  => 'udp2log',
-		group  => 'udp2log',
-	}
-	file { "$webrequest_filter_directory/minnesota.awk":
-		ensure => 'file',
-		source => 'puppet:///files/udp2log/minnesota.awk',
-		mode   => 0755,
-		owner  => 'udp2log',
-		group  => 'udp2log',
-	}
-
-	file { "$fundraising_log_directory":
-		ensure  => directory,
-		mode    => 0775,
-		owner   => 'udp2log',
-		group   => 'file_mover',
-		require => Class['accounts::file_mover'],
-	}
-	file { "$fundraising_log_directory/logs":
-		ensure  => directory,
-		mode    => 2775,  # make sure setgid bit is set.
-		owner   => 'udp2log',
-		group   => 'file_mover',
-		require => Class['accounts::file_mover'],
-	}
-
-	# gadolinium runs Domas' webstatscollector.
-	# udp2log runs the 'filter' binary from this
-	# package, which sends logs over to the 'collector'
-	# service, which writes dump files in /a/webstats/dumps.
-	include role::logging::webstatscollector
-
-	# webrequest udp2log instance
-	misc::udp2log::instance { 'gadolinium':
-		# gadolinium consumes from the multicast stream relay (from oxygen)
-		multicast     => true,
-		log_directory => $webrequest_log_directory,
-		require       => Class['role::logging::webstatscollector'],
-	}
-}
-
-
 # emery is a generic webrequests udp2log host.
 class role::logging::udp2log::emery inherits role::logging::udp2log {
 	# udp2log::instance will ensure this is created
@@ -289,6 +217,21 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
 		group  => 'udp2log',
 	}
 
+	file { "$webrequest_filter_directory/vu.awk":
+		ensure => 'file',
+		source => 'puppet:///files/udp2log/vu.awk',
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+	file { "$webrequest_filter_directory/minnesota.awk":
+		ensure => 'file',
+		source => 'puppet:///files/udp2log/minnesota.awk',
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+
 	misc::udp2log::instance { 'oxygen':
 		multicast       => true,
 		packet_loss_log => '/var/log/udp2log/packet-loss.log',
@@ -305,5 +248,44 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 		port                 => '51234',
 		log_directory        => $lucene_log_directory,
 		monitor_packet_loss  => false,
+	}
+}
+
+# == Class role::logging::udp2log::erbium
+# Erbium udp2log instance:
+# - Fundraising: This requires write permissions on the netapp mount.
+# - Webstatscollector 'filter'
+#
+class role::logging::udp2log::erbium inherits role::logging::udp2log {
+	# keep fundraising logs in a subdir
+	$fundraising_log_directory = "${log_directory}/fundraising"
+
+	file { "${fundraising_log_directory}":
+		ensure  => 'directory',
+		mode    => '0775',
+		owner   => 'udp2log',
+		group   => 'file_mover',
+		require => Class['accounts::file_mover'],
+	}
+	file { "${fundraising_log_directory}/logs":
+		ensure  => 'directory',
+		mode    => '2775',  # make sure setgid bit is set.
+		owner   => 'udp2log',
+		group   => 'file_mover',
+		require => Class['accounts::file_mover'],
+	}
+
+    # erbium run webstatscollector's filter process,
+    # sending filtered logs to gadolinium's collector process.
+	package { 'webstatscollector':
+	    ensure => 'installed',
+	}
+
+
+	misc::udp2log::instance { 'erbium':
+		multicast       => true,
+		packet_loss_log => '/var/log/udp2log/packet-loss.log',
+		log_directory   => $fundraising_log_directory,
+		require         => [File["${fundraising_log_directory}/logs"], Package['webstatscollector']],
 	}
 }
