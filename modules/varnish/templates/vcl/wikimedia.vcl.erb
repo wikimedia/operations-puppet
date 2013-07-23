@@ -189,6 +189,16 @@ sub vcl_recv_purge {
 	}
 }
 
+sub vcl_recv_append_xff {
+	if (req.restarts == 0) {
+		if (req.http.X-Forwarded-For) {
+			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+		} else {
+			set req.http.X-Forwarded-For = client.ip;
+		}
+	}
+}
+
 <% if ! wikimedia_networks.empty? -%>
 sub restrict_access {
 	if (client.ip !~ wikimedia_nets) {

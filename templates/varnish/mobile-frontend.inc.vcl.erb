@@ -88,14 +88,7 @@ sub vcl_recv {
 	set req.hash_ignore_busy = true;
 
 	/* Default (now modified) Varnish vcl_recv function */
-	if (req.restarts == 0) {
-		if (req.http.x-forwarded-for) {
-			set req.http.X-Forwarded-For =
-			req.http.X-Forwarded-For + ", " + client.ip;
-		} else {
-			set req.http.X-Forwarded-For = client.ip;
-		}
-	}
+	call vcl_recv_append_xff;
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
 		return (pass);
