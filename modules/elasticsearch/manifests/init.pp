@@ -29,18 +29,21 @@ class elasticsearch($cluster_name, $heap_memory = '2G') {
         content => template('elasticsearch/elasticsearch.yml.erb'),
         mode    => '0444',
         notify  => Service['elasticsearch'],
+        require => Package['elasticsearch'],
     }
     file { '/etc/elasticsearch/logging.yml':
         ensure  => file,
         content => template('elasticsearch/logging.yml.erb'),
         mode    => '0444',
         notify  => Service['elasticsearch'],
+        require => Package['elasticsearch'],
     }
     file { '/etc/default/elasticsearch':
         ensure  => file,
         content => template('elasticsearch/elasticsearch.erb'),
         mode    => '0444',
         notify  => Service['elasticsearch'],
+        require => Package['elasticsearch'],
     }
 
     # Keep service running
