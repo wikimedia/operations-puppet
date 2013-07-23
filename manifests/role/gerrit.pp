@@ -26,13 +26,21 @@ class role::gerrit {
 			smtp_host    => 'smtp.pmtpa.wmnet',
 			replication  => {
 				# If adding a new entry, remember to add the fingerprint to gerrit2's known_hosts
+
+				# FIXME remove it when all Jenkins jobs have been migrated to the new
+				# directory /srv/ssd/gerrit defined in 'jenkins-gallium'
 				'inside-wmf'              => {
 					'url'                  => 'gerritslave@gallium.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'              => '4',
 					'mirror'               => 'true',
 				},
+				# All entries should have the same target directory '/srv/ssd/gerrit'
+				# since it is referenced in Jenkins jobs.
 				'jenkins-slaves' => {
-					'url'     => 'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
+					'url'     => [
+						'gerritslave@gallium.wikimedia.org:/srv/ssd/gerrit/${name}.git',
+						'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
+					],
 					'threads' => '4',
 					'mirror'  => 'true',
 				},
