@@ -84,9 +84,7 @@ sub vcl_recv {
 	if ( req.http.host ~ "^test\." ) {
 		return (pass);
 	}
-}
 
-sub vcl_hash {
 	set req.hash_ignore_busy = true;
 }
 
