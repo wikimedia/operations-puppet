@@ -27,10 +27,6 @@ class misc::contint::test {
 
   system_role { 'misc::contint::test': description => 'continuous integration test server' }
 
-  class packages {
-    include contint::packages
-  }
-
   class jenkins {
 
     # Load the Jenkins module
