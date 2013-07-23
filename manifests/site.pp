@@ -1349,7 +1349,7 @@ node /labstore[34]\.pmtpa\.wmnet/ {
 
 node 'lanthanum.eqiad.wmnet' {
     include standard,
-        admins::root,
+        admins::roots,
         admins::jenkins,
         contint::packages,
         role::jenkins::slave::production  # RT #5074
