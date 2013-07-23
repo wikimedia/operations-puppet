@@ -1367,7 +1367,7 @@ host es1010 {
 
 host erbium {
 	hardware ethernet 90:B1:1C:2D:7E:CD;
-	fixed-address erbium.eqiad.wmnet
+	fixed-address erbium.eqiad.wmnet;
 }
 
 host europium {
