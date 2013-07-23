@@ -5,37 +5,6 @@
 ### udp2log packet loss monitoring
 pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= webrequest_log_directory %>/packet-loss.log
 
-### 0.0001 of all udp2log messages
-# This log file is also on emery for redundancy
-file 1000 <%= webrequest_log_directory %>/sampled-1000.tsv.log
-
-### All edits
-pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.tsv.log
-
-
-<%
-# pull in $role::cache::configuration::active_nodes
-# to find mobile host names and build a regex on which to grep.
-cache_configuration = scope.lookupvar('::role::cache::configuration::active_nodes')
-mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.join('|') + ')'
--%>
-
-### Mobile traffic filter
-# All mobile traffic goes through CC-cp1044 varnish hosts.
-pipe 100 /bin/grep -P '<%= mobile_hosts_regex %>' >> <%= webrequest_log_directory %>/mobile-sampled-100.tsv.log
-
-### Fundraising
-## Landing pages
-pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.tsv.log
-
-## Banner Impressions
-pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
-
-
-
-### All 5xx error responses -- domas (now using udp-filter instead of 5xx-filter).
-# pipe 1 <%= webrequest_filter_directory %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
-pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
 
 ### webstatscollector -- domas
 # NOTE!  The files that filter and collector generates
@@ -45,14 +14,48 @@ pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "uploa
 pipe 1 /usr/local/bin/filter | log2udp -h 127.0.0.1 -p 3815
 
 
+### Fundraising
+## Landing pages
+pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.tsv.log
 
-### Vrije Universiteit
-# Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
-pipe 10 awk -f <%= webrequest_filter_directory %>/vu.awk | log2udp -h 130.37.198.252 -p 9999
+## Banner Impressions
+pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
 
-### University of Minnesota
-# Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
-# Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
-# Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
-pipe 10 awk -f <%= webrequest_filter_directory %>/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
+
+# ----- The filters below have been moved to oxygen -----
+
+<%
+# pull in $role::cache::configuration::active_nodes
+# to find mobile host names and build a regex on which to grep.
+cache_configuration = scope.lookupvar('::role::cache::configuration::active_nodes')
+mobile_hosts_regex = '(' + cache_configuration['production']['mobile'].values.flatten.join('|') + ')'
+-%>
+# 
+# ### Mobile traffic filter
+# # All mobile traffic goes through CC-cp1044 varnish hosts.
+# pipe 100 /bin/grep -P '<%= mobile_hosts_regex %>' >> <%= webrequest_log_directory %>/mobile-sampled-100.tsv.log
+#
+#
+# ### 0.0001 of all udp2log messages
+# # This log file is also on emery for redundancy
+# file 1000 <%= webrequest_log_directory %>/sampled-1000.tsv.log
+#
+#
+# ### All 5xx error responses -- domas (now using udp-filter instead of 5xx-filter).
+# # pipe 1 <%= webrequest_filter_directory %>/5xx-filter | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
+# pipe 1 /usr/bin/udp-filter -F '\t' -r -s '^5' | awk -W interactive '$9 !~ "upload.wikimedia.org|query.php"' >> <%= webrequest_log_directory %>/5xx.tsv.log
+# 
+# 
+# ### All edits
+# pipe 1 /usr/bin/udp-filter -F '\t' -p action=submit,action=edit >> <%= webrequest_log_directory %>/edits.tsv.log
+# 
+# ### Vrije Universiteit
+# # Contact: <%= scope.lookupvar('contacts::udp2log::vrije_universiteit_contact') %>
+# pipe 10 awk -f <%= webrequest_filter_directory %>/vu.awk | log2udp -h 130.37.198.252 -p 9999
+# 
+# ### University of Minnesota
+# # Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact') %>
+# # Former Contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former') %>
+# # Former contact: <%= scope.lookupvar('contacts::udp2log::university_minnesota_contact_former2') %>
+# pipe 10 awk -f <%= webrequest_filter_directory %>/minnesota.awk | log2udp -h bento.cs.umn.edu -p 9999
 

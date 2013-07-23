@@ -690,21 +690,21 @@ class misc::statistics::rsync::jobs {
 		destination => "/a/squid/archive/arabic-banner",
 	}
 
-	# sampled-1000 logs from gadolinium
+	# sampled-1000 logs from emery
 	misc::statistics::rsync_job { "sampled_1000":
-		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/sampled-1000*.gz",
+		source      => "emery.wikimedia.org::udp2log/webrequest/archive/sampled-1000*.gz",
 		destination => "/a/squid/archive/sampled",
 	}
 
-	# edit logs from gadolinium
+	# edit logs from oxygen
 	misc::statistics::rsync_job { "edits":
-		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
+		source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/edits*.gz",
 		destination => "/a/squid/archive/edits",
 	}
 
-	# mobile logs from gadolinium
+	# mobile logs from oxygen
 	misc::statistics::rsync_job { "mobile":
-		source      => "gadolinium.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
+		source      => "oxygen.wikimedia.org::udp2log/webrequest/archive/mobile*.gz",
 		destination => "/a/squid/archive/mobile",
 	}
 
