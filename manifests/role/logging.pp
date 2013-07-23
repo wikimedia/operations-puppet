@@ -280,6 +280,15 @@ class role::logging::udp2log::oxygen inherits role::logging::udp2log {
 	# udp2log::instance will ensure this is created
 	$webrequest_log_directory    = "$log_directory/webrequest"
 
+	# install custom filters here
+	$webrequest_filter_directory = "$webrequest_log_directory/bin"
+	file { $webrequest_filter_directory:
+		ensure => directory,
+		mode   => 0755,
+		owner  => 'udp2log',
+		group  => 'udp2log',
+	}
+
 	misc::udp2log::instance { 'oxygen':
 		multicast       => true,
 		packet_loss_log => '/var/log/udp2log/packet-loss.log',
