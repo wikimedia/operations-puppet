@@ -991,10 +991,10 @@ node "gallium.wikimedia.org" {
 
     include standard,
         nrpe,
+        contint::packages,
         contint::testswarm,
         contint::website,
         misc::contint::test,
-        misc::contint::test::packages,
         misc::contint::test::jenkins,
         misc::contint::android::sdk,
         role::jenkins::master::production,
