@@ -1,0 +1,8 @@
+Code-Review+2: Pyoungmeister <py@wikimedia.org>
+Verified+2: jenkins-bot
+Code-Review+1: Manybubbles <neverett@wikimedia.org>
+Submitted-by: Pyoungmeister <py@wikimedia.org>
+Submitted-at: Tue, 23 Jul 2013 19:51:36 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/74534
+Project: operations/puppet
+Branch: refs/heads/production
