@@ -25,19 +25,10 @@ class misc::contint::android::sdk {
 # CI test server as per RT #1204
 class misc::contint::test {
 
-  system_role { 'misc::contint::test': description => 'continuous integration test server' }
-
+  # Creates placeholders for slave-scripts. This need to be moved out to a
+  # better place under contint module.
   class jenkins {
 
-    # Load the Jenkins module
-    include ::jenkins
-
-    # We need a basic site to publish nightly builds in
-    include contint::website
-
-    include contint::proxy_jenkins
-
-    include jenkins::user
     file {
       '/var/lib/jenkins/.gitconfig':
         ensure  => present,
@@ -48,6 +39,8 @@ class misc::contint::test {
         require => User['jenkins'];
     }
 
+    # FIXME needs to be migrated somewhere else
+    # Maybe contint::slave-scripts
     file {
       '/var/lib/jenkins/.git':
         ensure => directory,
