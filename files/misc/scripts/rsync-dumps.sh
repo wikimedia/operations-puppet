@@ -54,15 +54,15 @@ do_rsyncs () {
 
 case "$HOST" in
     'dataset1001' )
-	# all dumps are produced on this host except these
-	DIRS=( '/enwiki/' ) # must have leading/trailing slash
-	DIRARGS="${DIRS[@]/#/--include=}"
+	# directories for which this host produces dumps
+	DIRS=( '/enwiki/' '/ruwiki/' '/eswiki/' '/dewiki/' '/ptwiki/' '/plwiki/' '/nlwiki/' '/frwiki/' '/itwiki/' '/jawiki/' ) # must have leading/trailing slash
+	DIRARGS=( "${DIRS[@]/#/--include=}" )
 	EXTRAARGS=( "${DIRARGS[@]}" "${DIRARGS[@]/%/**}" '--exclude=*' )
 	do_rsyncs
 	;;
     'dataset2' )
-	# directories for which this host produces dumps
-	DIRS=( '/enwiki/' ) # must have leading/trailing slash
+	# all dumps are produced on this host except these
+	DIRS=( '/enwiki/' '/ruwiki/' '/eswiki/' '/dewiki/' '/ptwiki/' '/plwiki/' '/nlwiki/' '/frwiki/' '/itwiki/' '/jawiki/' ) # must have leading/trailing slash
 	EXTRAARGS=( "${DIRS[@]/#/--exclude=}" )
 	do_rsyncs
 	;;
