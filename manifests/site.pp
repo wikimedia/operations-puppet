@@ -849,7 +849,7 @@ node "aluminium.wikimedia.org" {
 }
 
 # erbium is a webrequest udp2log host
-node "erbium.wikimedia.org" inherits "base_analytics_logging_node" {
+node "erbium.eqiad.wmnet" inherits "base_analytics_logging_node" {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
 }
