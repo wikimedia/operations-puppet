@@ -273,6 +273,10 @@ class role::logging::udp2log::emery inherits role::logging::udp2log {
 # oxygen is a generic webrequests udp2log host
 # mostly running wikipedia zero filters.
 class role::logging::udp2log::oxygen inherits role::logging::udp2log {
+	# include this to infer mobile varnish frontend hosts in
+	# udp2log filter template.
+	include role::cache::configuration
+
 	# udp2log::instance will ensure this is created
 	$webrequest_log_directory    = "$log_directory/webrequest"
 
