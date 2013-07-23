@@ -44,6 +44,11 @@ class gitblit::instance($host,
 			group => $user,
 			source => "puppet:///files/gitblit/gitblit-ubuntu",
 			require => Systemuser[$user];
+		"/var/www/robots.txt":
+			mode => 0444,
+			owner => root,
+			group => root,
+			content => "User-agent: *\nDisallow: /zip/";
 	}
 
 	service {
