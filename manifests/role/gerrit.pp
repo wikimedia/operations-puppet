@@ -32,6 +32,11 @@ class role::gerrit {
 					'threads'              => '4',
 					'mirror'               => 'true',
 				},
+				'jenkins-lanthanum' => {
+					'url'     => 'gerritslave@lanthanum.eqiad.wmnet:/srv/ssd/gerrit/${name}.git',
+					'threads' => '4',
+					'mirror'  => 'true',
+				},
 				'gitblit'                => {
 					'url'                   => 'gerritslave@antimony.wikimedia.org:/var/lib/git/${name}.git',
 					'threads'               => '4',
