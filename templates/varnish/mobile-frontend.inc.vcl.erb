@@ -86,6 +86,10 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_hash {
+	set req.hash_ignore_busy = true;
+}
+
 sub vcl_fetch {
 	set beresp.http.X-Device = req.http.X-Device;
 	set beresp.http.X-CS = req.http.X-CS;
