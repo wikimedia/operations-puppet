@@ -12,7 +12,7 @@ class mysql_wmf {
 	#######################################################################
 	### MASTERS - make sure to update here whenever changing replication
 	#######################################################################
-	if $hostname =~ /^(blondel|db1008)/ {
+	if $hostname =~ /^blondel/ {
 		$master = true
 		$writable = true
 	} else {
@@ -25,7 +25,7 @@ class mysql_wmf {
 	if $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
-	elsif $hostname =~ /^(db1008|db1013|db78)$/ {
+	elsif $hostname =~ /^db1008$/ {
 		$db_cluster = "fundraisingdb"
 	}
 	else {

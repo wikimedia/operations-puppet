@@ -114,9 +114,9 @@ class role::coredb::config {
 		},
 		'fundraisingdb' => {
 			'hosts' => { 'pmtpa' => [ 'db78' ],
-				'eqiad' => ['db1008', 'db1013'] },
+				'eqiad' => ['db1008'] },
 			'primary_site' => $::mw_primary,
-			'masters' => { 'eqiad' => "db1008" },
+			'masters' => { 'eqiad' => "db1025" },
 			'snapshot' => [],
 			'no_master' => []
 		},
