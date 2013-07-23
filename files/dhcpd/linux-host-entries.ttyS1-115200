@@ -1365,6 +1365,11 @@ host es1010 {
 	fixed-address es1010.eqiad.wmnet;
 }
 
+host erbium {
+	hardware ethernet 90:B1:1C:2D:7E:CD;
+	fixed-address erbium.eqiad.wmnet
+}
+
 host europium {
 	hardware ethernet 90:B1:1C:00:B1:93;
 	fixed-address europium.wikimedia.org;

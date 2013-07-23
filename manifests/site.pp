@@ -848,6 +848,12 @@ node "aluminium.wikimedia.org" {
     class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
 }
 
+# erbium is a webrequest udp2log host
+node "erbium.wikimedia.org" inherits "base_analytics_logging_node" {
+    # gadolinium hosts the separate nginx webrequest udp2log instance.
+    include role::logging::udp2log::erbium
+}
+
 # es1 equad
 node /es100[1-4]\.eqiad\.wmnet/ {
     include role::coredb::es1
@@ -948,12 +954,10 @@ node "formey.wikimedia.org" {
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
 }
 
-# gadolinium is a webrequest udp2log machine.
+# gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
-    include
-        accounts::dsc,
-        accounts::milimetric
+    include accounts::milimetric
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -963,11 +967,11 @@ node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::nginx
 
-    # Set up the gadolinium udp2log webrequest instance.
-    include role::logging::udp2log::gadolinium
-
-    # fundraising banner log pipeline
-    include misc::fundraising::udp2log_rotation
+    # gadolinium runs Domas' webstatscollector.
+    # udp2log runs the 'filter' binary (on erbium)
+    # which sends logs over to the 'collector' (on gadolinium)
+    # service, which writes dump files in /a/webstats/dumps.
+    include role::logging::webstatscollector
 }
 
 node "gallium.wikimedia.org" {
