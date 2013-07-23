@@ -5,6 +5,14 @@
 # udp2log packet loss monitoring
 pipe 10 /usr/bin/packet-loss 10 '\t' >> /var/log/udp2log/packet-loss.log
 
+### webstatscollector -- domas
+# NOTE!  The files that filter and collector (on gadolinium) generates
+# are rsynced over to dataset2 by a cron maintained by
+# apergos running on snapshot1.
+# gadolinium.wikimedia.org:3815 should be the webstats collector process.
+pipe 1 /usr/local/bin/filter | /usr/bin/log2udp -h gadolinium.wikimedia.org -p 3815
+
+
 # Capture all logs with 'zero=' set.  The X-Analytics header is set with this
 # by mobile varnish frontends upon getting a Wikipedia Zero request.
 pipe 1 /bin/grep -P 'zero=\d{3}-\d{2}' >> <%= log_directory %>/zero.tsv.log

@@ -5,15 +5,6 @@
 ### udp2log packet loss monitoring
 pipe 10 /usr/bin/packet-loss 10 '\t' >> <%= webrequest_log_directory %>/packet-loss.log
 
-
-### webstatscollector -- domas
-# NOTE!  The files that filter and collector generates
-# are rsynced over to dataset2 by a cron maintained by
-# apergos running on snapshot1.
-# 127.0.0.1:3815 should be the webstats collector process.
-pipe 1 /usr/local/bin/filter | log2udp -h 127.0.0.1 -p 3815
-
-
 ### Fundraising
 ## Landing pages
 pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.org >> <%= fundraising_log_directory %>/logs/landingpages.tsv.log
@@ -22,7 +13,24 @@ pipe 1 /usr/bin/udp-filter -F '\t' -d wikimediafoundation.org,donate.wikimedia.o
 pipe 100 /usr/bin/udp-filter -F '\t' -p Special:RecordImpression\?banner=,Special:RecordImpression\?result= >> <%= fundraising_log_directory %>/logs/bannerImpressions-sampled100.tsv.log
 
 
+
+
+
+
+
+
+
+
 # ----- The filters below have been moved to oxygen -----
+
+### webstatscollector -- domas
+# NOTE!  The files that filter and collector generates
+# are rsynced over to dataset2 by a cron maintained by
+# apergos running on snapshot1.
+# 127.0.0.1:3815 should be the webstats collector process.
+# pipe 1 /usr/local/bin/filter | log2udp -h 127.0.0.1 -p 3815
+
+
 
 <%
 # pull in $role::cache::configuration::active_nodes
