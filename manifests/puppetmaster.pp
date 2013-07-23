@@ -66,7 +66,7 @@ class puppetmaster($server_name="puppet", $bind_address="*", $verify_client="opt
 	class gitpuppet {
 		user { 'gitpuppet':
 			ensure     => present,
-			shell      => '/bin/false',
+			shell      => '/bin/sh',
 			home       => '/home/gitpuppet',
 			managehome => true,
 			system     => true,
