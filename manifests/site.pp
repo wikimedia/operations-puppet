@@ -2429,17 +2429,6 @@ node "sodium.wikimedia.org" {
     }
 }
 
-node "spence.wikimedia.org" {
-    $ganglia_aggregator = true
-
-    include standard,
-        nfs::netapp::home,
-        admins::roots,
-        backup::client
-
-    install_certificate{ "star.wikimedia.org": }
-}
-
 # srv193 was test.wikipedia.org (precise)
 # on 20130711 test has been switched over to mw1017
 node "srv193.pmtpa.wmnet" {
