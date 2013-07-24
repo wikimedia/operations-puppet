@@ -80,7 +80,7 @@ class misc::monitoring::views {
 	require ganglia::web
 
 	misc::monitoring::view::udp2log { 'udp2log':
-		host_regex => 'emery|oxygen|gadolinium',
+		host_regex => 'emery|oxygen|erbium',
 	}
 	misc::monitoring::view::udp2log { 'udp2log-analytics':
 		host_regex => 'analytics100[689].eqiad.wmnet',
