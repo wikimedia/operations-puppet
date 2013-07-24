@@ -207,7 +207,8 @@ node "analytics1027.eqiad.wmnet" {
 node "antimony.wikimedia.org" {
     install_certificate{ "git.wikimedia.org": ca => "RapidSSL_CA.pem" }
 
-    include standard,
+    include nrpe,
+        standard,
         groups::wikidev,
         accounts::demon,
         role::gitblit
@@ -1681,7 +1682,8 @@ node "manganese.wikimedia.org" {
     $ssh_x11_forwarding = "no"
     # Note: whenever moving Gerrit out of manganese, you will need
     # to update the role::zuul::production
-    include role::gerrit::production,
+    include nrpe,
+        role::gerrit::production,
         backup::client
 
     class { "ldap::role::client::labs": ldapincludes => $ldapincludes }
