@@ -1174,7 +1174,6 @@ node "hume.wikimedia.org" {
         nfs::netapp::home,
         nfs::upload,
         misc::deployment::scap_scripts,
-#       misc::monitoring::enwikijobqueue,
         misc::monitoring::jobqueue,
         admins::roots,
         admins::mortals,
