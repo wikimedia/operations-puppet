@@ -42,7 +42,9 @@ define varnish::instance(
     require "varnish::common::vcl"
 
     $extra_vcl_variable_to_make_puppet_parser_happy = suffix($extra_vcl, " ${instancesuffix}")
-    extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy: }
+    extra_vcl{ $extra_vcl_variable_to_make_puppet_parser_happy:
+        before => Service["varnish${instancesuffix}"]
+    }
 
     file {
         "/etc/init.d/varnish${instancesuffix}":
