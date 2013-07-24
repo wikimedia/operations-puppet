@@ -6,12 +6,16 @@ sub cookie_munging {
 	}
 
 	/* This header is saved, and restored before sending it to MediaWiki */
-	set req.http.Orig-Cookie = req.http.Cookie;
-	unset req.http.Cookie;
+	if (req.restarts == 0) {
+		set req.http.Orig-Cookie = req.http.Cookie;
+		unset req.http.Cookie;
+	}
 }
 
 sub restore_cookie {
 	/* Restore the original Cookie header for upstream */
-	set req.http.Cookie = req.http.Orig-Cookie;
-	unset req.http.Orig-Cookie;
+	if (req.http.Orig-Cookie) {
+		set req.http.Cookie = req.http.Orig-Cookie;
+		unset req.http.Orig-Cookie;
+	}
 }
