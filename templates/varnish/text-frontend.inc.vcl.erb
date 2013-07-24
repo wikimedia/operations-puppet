@@ -18,7 +18,14 @@ sub mobile_redirect {
 	}
 }
 
+sub filter_headers {
+	if (req.restarts == 0) {
+		unset req.http.Orig-Cookie;
+	}
+}
+
 sub vcl_recv {
+	call filter_headers;
 	call vcl_recv_append_xff;
 
 	/* Allow purging */
