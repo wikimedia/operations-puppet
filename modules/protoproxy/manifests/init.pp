@@ -83,3 +83,24 @@ define protoproxy(
     }
 
 }
+
+define protoproxy::localssl(
+    $proxy_server_name,
+    $proxy_server_cert_name,
+    $upstream_port='80'
+) {
+    require protoproxy::package
+    include protoproxy::service
+
+    # The WMF nginx module is pretty bad, and it's almost pointless to use it here.
+
+    file { "/etc/nginx/sites-available/${name}":
+        content => template("${module_name}/localssl.erb");
+    }
+
+    nginx_site { $name:
+        require => File["/etc/nginx/sites-available/${name}"],
+        enable  => $enabled,
+        notify  => Service[nginx]
+    }
+}
