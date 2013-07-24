@@ -5,7 +5,10 @@ sub pass_requests {
 		return (pass);
 	}
 	if (req.http.Cookie ~ "([sS]ession|Token)=") {
-		return(pass);
+		return (pass);
+	}
+	if (req.http.host ~ "^test\.") {
+		return (pass);
 	}
 }
 
