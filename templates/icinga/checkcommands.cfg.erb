@@ -415,7 +415,15 @@ define command{
 define command{
 	command_name	nrpe_check_mysqld
 	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_mysqld
-}                
+}
+define commaned{
+	command_name	nrpe_check_gerrit
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_gerrit
+}
+define commaned{
+	command_name	nrpe_check_gitblit
+	command_line	/usr/lib/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c check_gitblit
+}
 
 #Generic NRPE check
 define command{

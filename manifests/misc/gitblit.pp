@@ -58,6 +58,7 @@ class gitblit::instance($host,
 			ensure => running,
 			require => Systemuser[$user];
 	}
+	monitor_service { 'gitblit': description => 'gitblit_service_running', check_command => 'nrpe_check_gitblit' }
 
 	apache_site { git: name => "git.wikimedia.org" }
 	apache_module { headers: name => "headers" }

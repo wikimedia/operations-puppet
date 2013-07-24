@@ -265,7 +265,7 @@ class gerrit::jetty ($ldap_hosts,
 			status => "/etc/init.d/gerrit check",
 			require => Exec["install_gerrit_jetty"];
 	}
-
+	monitor_service { 'gerrit': description => 'gerrit_service_running', check_command => 'nrpe_check_gerrit' }
 }
 
 class gerrit::proxy( $no_apache = true,
