@@ -19,6 +19,8 @@ sub mobile_redirect {
 }
 
 sub vcl_recv {
+	call vcl_recv_append_xff;
+
 	/* Allow purging */
 	call vcl_recv_purge;
 
@@ -40,6 +42,9 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
+	if (req.request != "GET" && req.request != "HEAD") {
+		return (pass);
+	}
 	return(lookup);
 }
 
