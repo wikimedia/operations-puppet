@@ -32,6 +32,14 @@ class contint::website {
     group  => 'jenkins-slave',
   }
 
+  # Jenkins console logs
+  file { '/srv/org/wikimedia/integration/logs':
+    ensure => directory,
+    mode   => '0775',
+    owner  => 'jenkins-slave',
+    group  => 'jenkins-slave',
+  }
+
   # Apache configuration for integration.wikimedia.org
   file { '/etc/apache2/sites-available/integration.wikimedia.org':
     mode   => '0444',

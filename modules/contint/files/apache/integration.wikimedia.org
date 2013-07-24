@@ -49,6 +49,11 @@ NameVirtualHost *:443
 		allow from all
 	</Directory>
 
+	<Directory /srv/org/wikimedia/integration/logs>
+		# Let people browse the console logs
+		Options +Indexes
+	</Directory>
+
 	<Directory /srv/org/wikimedia/integration/*Mobile/nightly/>
 		Options +Indexes
 		IndexOptions FancyIndexing
