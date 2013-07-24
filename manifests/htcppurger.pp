@@ -15,6 +15,13 @@ class varnish::htcppurger($varnish_instances=["localhost:80"]) {
         content => inline_template('DAEMON_OPTS="-F -m 239.128.0.112<% varnish_instances.each do |inst| -%> -c <%= inst %><% end -%>"');
     }
 
+    # Wikimedia used to provide vhtcpd under the name varnishhtcpd with an
+    # upstart job. This is nore more needed since the init script is provided
+    # by vhtcpd package and the daemon got renamed vhtcpd.
+    files { '/etc/init/varnishhtcpd.conf':
+      ensure => absent,
+    }
+
     service { vhtcpd:
         require => Package["vhtcpd"],
         subscribe => File["/etc/default/vhtcpd"],
