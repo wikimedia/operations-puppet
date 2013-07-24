@@ -31,6 +31,15 @@ sub vcl_miss {
 }
 
 sub vcl_fetch {
+	/* FIXME: Fix up missing Vary headers on Apache redirects */
+	if ((obj.status == 301 || obj.status == 302) && obj.http.Location ~ "^http" && obj.http.Vary !~ "X-Forwarded-Proto") {
+		if (obj.http.Vary) {
+			set obj.http.Vary = obj.http.Vary = ",X-Forwarded-Proto";
+		} else {
+			set obj.http.Vary = "X-Forwarded-Proto";
+		}
+	}
+
 	return (deliver);
 }
 
