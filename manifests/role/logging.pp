@@ -164,6 +164,14 @@ class role::logging::webstatscollector {
         hasrestart => true,
         require    => Package['webstatscollector'],
     }
+    # install a nrpe check for the webstatscollector collector process
+    nrpe::monitor_service { 'webstats-collector':
+        description   => "webstats-collector process running",
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:1',
+        contact_group => 'analytics',
+        retries       => 10,
+        require       => Service['webstats-collector']
+    }
 
     # Gzip pagecounts files hourly.
     # This originally lived as an unpuppetized
@@ -292,5 +300,14 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         packet_loss_log => '/var/log/udp2log/packet-loss.log',
         log_directory   => $webrequest_log_directory,
         require         => [File["${fundraising_log_directory}/logs"], Package['webstatscollector']],
+    }
+
+    # install a nrpe check for the webstatscollector filter process
+    nrpe::monitor_service { 'webstats-filter':
+        description   => "webstats-filter process running",
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/filter -c 1:1',
+        contact_group => 'analytics',
+        retries       => 10,
+        require       => Misc::Udp2log::Instance['erbium'],
     }
 }
