@@ -71,10 +71,14 @@ class role::cache {
 						'cp1020.eqiad.wmnet',
 					],
 					"eqiad" => [
-						'cp1037.eqiad.wmnet',
-						'cp1038.eqiad.wmnet',
-						'cp1039.eqiad.wmnet',
-						'cp1040.eqiad.wmnet',
+						'cp1056.eqiad.wmnet',
+						'cp1057.eqiad.wmnet',
+						'cp1058.eqiad.wmnet',
+						'cp1059.eqiad.wmnet',
+						'cp1065.eqiad.wmnet',
+						'cp1066.eqiad.wmnet',
+						'cp1067.eqiad.wmnet',
+						'cp1068.eqiad.wmnet',
 					],
 					"esams-squid" => [
 						"knsq23.knams.wikimedia.org",
@@ -777,7 +781,7 @@ class role::cache {
 				$lvs::configuration::lvs_service_ips[$::realm]['text-varnish'][$::site]])
 		}
 
-		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
+		if ($::hostname in ['cp1037', 'cp1038', 'cp1039', 'cp1040'] or $::hostname =~ /^cp10(5[2-5]|6[5-8])$/ or $::hostname =~ /^amssq(4[7-9]|[56][0-9])$/) or ($::realm == "labs" and $::hostname =~ /^deployment-cache-text/) {
 			# Varnish
 			include role::cache::varnish::text
 		}
