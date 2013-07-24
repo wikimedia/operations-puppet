@@ -32,6 +32,12 @@ sub vcl_recv {
 	return(lookup);
 }
 
+sub vcl_pass {
+	if (req.http.Orig-Cookie) {
+		call restore_cookie;
+	}
+}
+
 sub vcl_miss {
 	call restore_cookie;
 }
