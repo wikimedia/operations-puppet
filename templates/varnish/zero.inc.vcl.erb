@@ -438,7 +438,7 @@ sub tag_carrier {
 			set req.http.X-CS = "410-01";
 		}
 	} else if (client.ip ~ carrier_404_01) {
-		if (req.http.host ~ "(^(en|hi|ta)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
+		if (req.http.host ~ "(^([a-zA-Z0-9-]+)\.(zero|m)|^(zero|m))\.([a-zA-Z0-9-]+)\.org") {
 			set req.http.X-CS = "404-01";
 		}
 	} else if (client.ip ~ carrier_510_11) {
