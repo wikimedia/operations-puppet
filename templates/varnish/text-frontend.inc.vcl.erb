@@ -11,7 +11,11 @@ sub mobile_redirect {
 		&& req.url ~ "^/wiki/") {
 		set req.http.MobileHost = regsub(req.http.host, "^(?:www\.(?=mediawiki))?((?:commons|species|meta|incubator|outreach|strategy|wikimania2012|wikimania2013)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki)\.", "\1m.\2.");
 		if (req.http.Host != req.http.MobileHost) {
-			set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
+			if (req.http.X-Forwarded-Proto {
+				set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
+			} else {
+				set req.http.Location = "http://" + req.http.MobileHost + req.url;
+			}
 			error 666 "Found";
 		}
 		unset req.http.MobileHost;
@@ -35,12 +39,7 @@ sub vcl_recv {
 	 * do this after vcl_recv_purge, as it operates on a full URI */
 	call rewrite_proxy_urls;
 
-	if (!req.http.X-Forwarded-Proto) {
-		set req.http.X-Forwarded-Proto = "http";
-	}
-
 	call mobile_redirect;
-
 	call pass_requests;
 
 	/* Users that just logged out, should not get a 304 for their
