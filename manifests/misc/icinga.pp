@@ -660,12 +660,9 @@ class icinga::monitor::jobqueue {
     mode => '0755';
   }
 
-  monitor_service { 'check_job_queue':
+  nrpe::monitor_service { 'check_job_queue':
     description => 'check_job_queue',
-    check_command => 'check_job_queue',
-    normal_check_interval => 15,
-    retry_check_interval => 5,
-    critical => false
+    nrpe_command => '/usr/lib/nagios/plugins/check_job_queue',
   }
 }
 
