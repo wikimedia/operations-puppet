@@ -3,6 +3,8 @@
 # https://doc.wikimedia.org/
 class contint::website {
 
+  require contint::publish-console
+
   # Static files in these docroots are in integration/docroot.git
 
   file { '/srv/org':
