@@ -18,7 +18,7 @@ class varnish::htcppurger($varnish_instances=["localhost:80"]) {
     # Wikimedia used to provide vhtcpd under the name varnishhtcpd with an
     # upstart job. This is nore more needed since the init script is provided
     # by vhtcpd package and the daemon got renamed vhtcpd.
-    files { '/etc/init/varnishhtcpd.conf':
+    file { '/etc/init/varnishhtcpd.conf':
       ensure => absent,
     }
 
