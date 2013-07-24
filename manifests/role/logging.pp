@@ -257,6 +257,9 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 # - Webstatscollector 'filter'
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
+    include misc::fundraising::udp2log_rotation,
+        accounts::file_mover
+
     # udp2log::instance will ensure this is created
     $webrequest_log_directory    = "$log_directory/webrequest"
 
