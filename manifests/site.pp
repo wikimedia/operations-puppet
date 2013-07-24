@@ -138,7 +138,7 @@ node "analytics1001.wikimedia.org" {
 }
 
 # analytics1011-analytics1020 are Hadoop Worker nodes
-node /analytics10(1[8-9]|20).eqiad.wmnet/ {
+node /analytics10(1[7-9]|20).eqiad.wmnet/ {
     include role::analytics
     include role::analytics::hadoop::worker
 }

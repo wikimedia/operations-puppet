@@ -25,7 +25,7 @@ class role::analytics {
     # Include these common classes on all analytics nodes.
     # (for now we only include these on reinstalled and
     #  fully puppetized nodes.)
-    if ($hostname =~ /analytics10(1[8-9]|20)/) {
+    if ($hostname =~ /analytics10(1[7-9]|20)/) {
         include role::analytics::common
     }
 }
