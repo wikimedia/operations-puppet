@@ -23,13 +23,13 @@ sub vcl_recv {
 	}
 
 <% end -%>
-	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
-
-	call cookie_munging;
+	call pass_requests;
 
 	return(lookup);
+}
+
+sub vcl_hash {
+	call cookie_munging;	
 }
 
 sub vcl_pass {

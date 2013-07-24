@@ -41,11 +41,7 @@ sub vcl_recv {
 
 	call mobile_redirect;
 
-	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
-
-	call cookie_munging;
+	call pass_requests;
 
 	/* Users that just logged out, should not get a 304 for their
 	 * (locally cached) logged in pages. */
@@ -54,6 +50,10 @@ sub vcl_recv {
 	}
 
 	return(lookup);
+}
+
+sub vcl_hash {
+	call cookie_munging;	
 }
 
 sub vcl_pass {
