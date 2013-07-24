@@ -32,7 +32,9 @@ sub vcl_miss {
 
 sub vcl_fetch {
 	/* FIXME: Fix up missing Vary headers on Apache redirects */
-	if ((beresp.status == 301 || beresp.status == 302) && beresp.http.Location ~ "^http" && beresp.http.Vary !~ "X-Forwarded-Proto") {
+	if ((beresp.status == 301 || beresp.status == 302)
+		&& beresp.http.Location ~ "^http"
+		&& beresp.http.Vary !~ "X-Forwarded-Proto") {
 		if (beresp.http.Vary) {
 			set beresp.http.Vary = beresp.http.Vary + ",X-Forwarded-Proto";
 		} else {
@@ -40,6 +42,10 @@ sub vcl_fetch {
 		}
 	}
 
+	if (beresp.ttl <= 0s) {
+		set beresp.ttl = 120s;
+		return (hit_for_pass);
+	}
 	return (deliver);
 }
 
