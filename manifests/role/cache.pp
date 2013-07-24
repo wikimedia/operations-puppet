@@ -772,6 +772,26 @@ class role::cache {
 			include misc::monitoring::htcp-loss
 		}
 	}
+	
+	class ssl::text {
+		include certificates::wmf_ca, role::protoproxy::ssl::common, protoproxy::ganglia
+
+		# Assumes that LVS service IPs are setup elsewhere
+
+		# Nagios monitoring
+		monitor_service { "https":
+			description => "HTTPS",
+			check_command => "check_ssl_cert!*.wikimedia.org",
+		}
+
+		install_certificate { 'unified.wikimedia.org': }
+
+		protoproxy::localssl { 'text':
+			proxy_server_cert_name => 'unified.wikimedia.org',
+			upstream_port => '80',
+			enabled => true
+		}
+	}
 
 	class text {
 
