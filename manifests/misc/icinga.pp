@@ -33,7 +33,6 @@ class icinga::monitor {
     icinga::monitor::snmp,
     icinga::monitor::checkpaging,
     icinga::monitor::service,
-    icinga::monitor::jobqueue,
     icinga::monitor::snmp,
     icinga::monitor::naggen,
     icinga::monitor::nsca::daemon,
@@ -652,7 +651,6 @@ class icinga::monitor::firewall {
 }
 
 class icinga::monitor::jobqueue {
-  include icinga::monitor::packages
   include applicationserver::packages
 
   file {'/usr/lib/nagios/plugins/check_job_queue':
