@@ -223,16 +223,13 @@ sub vcl_recv {
 	}
 	
 <% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
-	/* Ensure we only accept Forwarded headers from the SSL proxies */
-	if (client.ip ~ allow_xff || client.ip ~ opera_mini) {
-		// Do nothing. It seems you can't do !~ with IP matches
-	} else {
-		// Strip the headers, we shouldn't trust these from anything other
-		// than hosts we specify. Needed for the geoiplookup code later on
-		// as it will use xff. MediaWiki uses xfp.
-		set req.http.X-Forwarded-For = client.ip;
+<% if vcl_config.fetch("layer", "frontend") == "frontend" -%>
+	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
+	if (client.ip !~ allow_xff) {
 		unset req.http.X-Forwarded-Proto;
 	}
+<% end -%>
+	call vcl_recv_append_xff;
 <% end -%>
 
 	if ( req.http.host ~ "^varnishcheck" ) {
