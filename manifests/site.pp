@@ -1993,10 +1993,21 @@ node /^mw(11[2-9]|12[0-5])\.pmtpa\.wmnet$/ {
     include nfs::upload
 }
 
-# mw126-134 are application servers (precise)
-node /^mw1(2[6-9]|3[0-4])\.pmtpa\.wmnet$/ {
+# mw126-130 are application servers (precise)
+node /^mw1(2[6-9]|30)\.pmtpa\.wmnet$/ {
     include role::applicationserver::appserver
     include nfs::upload
+}
+
+# mw131-134 are pulled for elasticsearch testing
+# approved by site architect afeldman ;)
+node "mw131.pmtpa.wmnet" {
+    include role::applicationserver::appserver
+    include nfs::upload
+}
+node /^mw13[234]\.pmtpa\.wmnet$/ {
+    include standard
+    include role::elasticsearch::production
 }
 
 # mw1001-1016 are jobrunners (precise)
