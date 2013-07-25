@@ -457,25 +457,26 @@ sub spoof_clientip {
 	 * Opera Mini's accelerating proxies, or from a carrier_testing ip range,
 	 * and replace client ip value with the first value from the XFF Header
 	 */
-	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+	if (req.http.X-Forwarded-For
+		&& (client.ip ~ allow_xff || client.ip ~ opera_mini || client.ip ~ carrier_testing) {
 		set req.http.X-Orig-Client-IP = client.ip;
-		C{
-		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
-		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
-		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-		char *last;
-
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-
-		if (xff_ip == NULL) {
-			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		if (client.ip ~ allow_xff) {
+			call replace_clientip;
 		}
-
-		if (xff_ip != NULL) {
-			inet_pton(AF_INET, xff_ip, client_ip_ia);
+		if (client.ip ~ opera_mini || client.ip ~ carrier_testing) {
+			call replace_clientip;
 		}
-		}C
-
-		unset req.http.X-Forwarded-For;
 	}
+}
+
+call replace_clientip {
+	C{
+		struct sockaddr_in *client_ip_si = (struct sockaddr_in *)VRT_r_client_ip(sp);
+		char *xff, *last_xff;
+
+		xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		last_xff = strrchr(xff, ',');
+		inet_pton(AF_INET, (last_xff ? last_xff+1 : xff), &(client_ip_si->sin_addr));
+	}C
+	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
 }
