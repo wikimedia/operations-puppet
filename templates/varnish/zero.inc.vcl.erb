@@ -5,6 +5,8 @@ C{
 #include <string.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/types.h>
+#include <netdb.h>
 }C
 
 acl carrier_testing {
@@ -452,30 +454,56 @@ sub tag_carrier {
 	/* Please keep the above list alphabetized by the ACL variable */
 }
 
+sub replace_clientip {
+	C{
+		struct addrinfo hints, *rp;
+		int s;
+		char *xff, *last_comma, *ipstr;
+
+		xff = VRT_GetHdr(sp, HDR_REQ, "\017X-Stripped-XFF:");
+		if (xff) {
+			last_comma = strrchr(xff, ',');
+			if (last_comma)
+				ipstr = last_comma + 1;
+			else
+				ipstr = xff;
+
+			memset(&hints, 0, sizeof(struct addrinfo));
+			hints.ai_family = AF_UNSPEC;
+			hints.ai_flags = AI_NUMERICHOST;
+			hints.ai_protocol = 0;
+
+			s = getaddrinfo(ipstr, NULL, &hints, &rp);
+			if (s != 0) {
+				VSL(SLT_VCL_Log, 0, "Unable to decode IP address '%s'", ipstr);
+				VSL(SLT_VCL_Log, 0, "getaddrinfo(): %s", gai_strerror(s));
+			} else {
+				sp->sockaddrlen = rp->ai_addrlen;
+				memcpy(sp->sockaddr, rp->ai_addr, sizeof(struct sockaddr_storage));
+				freeaddrinfo(rp);
+			}
+		}
+	}C
+}
+
 sub spoof_clientip {
-	/* In case the XFF header is present, trust it in case it comes from
-	 * Opera Mini's accelerating proxies, or from a carrier_testing ip range,
-	 * and replace client ip value with the first value from the XFF Header
+	/* FIXME: remove this awful hack
+	 *
+	 * We need to do this because Varnish can only match client.ip and server.ip against an ACL
+	 * Replace client.ip with the last IP in the XFF header, or the penultimate IP in case
+	 * of Opera Mini in front of an SSL proxy.
 	 */
-	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+	if (req.restarts == 0
+		&& (client.ip ~ ssl_proxies || client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
 		set req.http.X-Orig-Client-IP = client.ip;
-		C{
-		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
-		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
-		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-		char *last;
-
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-
-		if (xff_ip == NULL) {
-			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		set req.http.X-Stripped-XFF = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
+		if (req.http.X-Forwarded-Proto == "https" && client.ip ~ ssl_proxies) {
+			call replace_clientip;
+			set req.http.X-Stripped-XFF = regsub(req.http.X-Stripped-XFF, ",[^,]+$", "");
 		}
-
-		if (xff_ip != NULL) {
-			inet_pton(AF_INET, xff_ip, client_ip_ia);
+		if (req.http.X-Stripped-XFF && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+			call replace_clientip;
 		}
-		}C
-
-		unset req.http.X-Forwarded-For;
+		unset req.http.X-Stripped-XFF;
 	}
 }
