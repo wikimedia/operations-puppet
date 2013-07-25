@@ -41,10 +41,9 @@ acl wikimedia_nets {
 }
 <% end -%>
 
-# Hosts we trust for XFF
-<% if ! xff_sources.empty? -%>
-acl allow_xff {
-<% xff_sources.each do |entry|
+<% if vcl_config.fetch("ssl_proxies", []).empty? -%>
+acl ssl_proxies {
+<% vcl_config.fetch("ssl_proxies", []).each do |entry|
 	subnet, mask = entry.split("/", 2)
 -%>
 	"<%= subnet %>"/<%= mask %>;
@@ -222,18 +221,13 @@ sub vcl_recv {
 		set req.grace = 60m;
 	}
 	
-<% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
-	/* Ensure we only accept Forwarded headers from the SSL proxies */
-	if (client.ip ~ allow_xff || client.ip ~ opera_mini) {
-		// Do nothing. It seems you can't do !~ with IP matches
-	} else {
-		// Strip the headers, we shouldn't trust these from anything other
-		// than hosts we specify. Needed for the geoiplookup code later on
-		// as it will use xff. MediaWiki uses xfp.
-		set req.http.X-Forwarded-For = client.ip;
+<% if vcl_config.fetch("layer", "frontend") == "frontend" -%>
+	/* Ensure we only accept Forwarded-Proto headers from the SSL proxies */
+	if (client.ip !~ ssl_proxies) {
 		unset req.http.X-Forwarded-Proto;
 	}
 <% end -%>
+	call vcl_recv_append_xff;
 
 	if ( req.http.host ~ "^varnishcheck" ) {
 		error 200 "OK"; 
