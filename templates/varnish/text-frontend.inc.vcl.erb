@@ -11,7 +11,7 @@ sub mobile_redirect {
 		&& req.url ~ "^/wiki/") {
 		set req.http.MobileHost = regsub(req.http.host, "^(?:www\.(?=mediawiki))?((?:commons|species|meta|incubator|outreach|strategy|wikimania2012|wikimania2013)\.(?=wikimedia)|\w+\.(?!wikimedia|mediawiki)|(?=mediawiki))(wikimedia|wikipedia|wiktionary|wikinews|wikisource|wikiquote|wikibooks|wikiversity|wikivoyage|mediawiki)\.", "\1m.\2.");
 		if (req.http.Host != req.http.MobileHost) {
-			if (req.http.X-Forwarded-Proto {
+			if (req.http.X-Forwarded-Proto) {
 				set req.http.Location = req.http.X-Forwarded-Proto + "://" + req.http.MobileHost + req.url;
 			} else {
 				set req.http.Location = "http://" + req.http.MobileHost + req.url;
