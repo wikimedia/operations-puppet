@@ -59,6 +59,8 @@ net.core.rmem_default = 536870912
 
 	include network::constants
 
+	class { "varnish::monitoring::ganglia": varnish_instances => [ "graphite" ] }
+
 	varnish::instance { "graphite":
 		name => "",
 		vcl => "graphite",
