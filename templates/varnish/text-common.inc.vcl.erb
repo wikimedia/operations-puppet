@@ -24,8 +24,8 @@ sub restore_cookie {
 	/* Restore the original Cookie header for upstream
 	 * Assumes client header Orig-Cookie has been filtered!
 	 */
-	if (req.http.Orig-Cookie) {
-		set req.http.Cookie = req.http.Orig-Cookie;
-		unset req.http.Orig-Cookie;
+	if (bereq.http.Orig-Cookie) {
+		set bereq.http.Cookie = bereq.http.Orig-Cookie;
+		unset bereq.http.Orig-Cookie;
 	}
 }
