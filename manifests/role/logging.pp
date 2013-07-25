@@ -176,7 +176,7 @@ class role::logging::webstatscollector {
     # install a nrpe check for the webstatscollector collector process
     nrpe::monitor_service { 'webstats-collector':
         description   => "webstats-collector process running",
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:1',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/collector -c 1:2',
         contact_group => 'analytics',
         retries       => 10,
         require       => Service['webstats-collector']
@@ -314,7 +314,7 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
     # install a nrpe check for the webstatscollector filter process
     nrpe::monitor_service { 'webstats-filter':
         description   => "webstats-filter process running",
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/filter -c 1:1',
+        nrpe_command  => '/usr/lib/nagios/plugins/check_procs --argument-array /usr/local/bin/filter -c 1:3',
         contact_group => 'analytics',
         retries       => 10,
         require       => Misc::Udp2log::Instance['erbium'],
