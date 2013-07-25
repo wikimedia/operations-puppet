@@ -145,6 +145,7 @@ WHERE
         bug_status = 'UNCONFIRMED' or
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
+        bug_status = 'PATCH_TO_REVIEW' or
         bug_status = 'REOPENED';
 END;
 }
@@ -159,6 +160,7 @@ WHERE
         (bug_status = 'UNCONFIRMED' or
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
+        bug_status = 'PATCH_TO_REVIEW' or
         bug_status = 'REOPENED')
 AND
         bug_severity = 'enhancement';
@@ -175,6 +177,7 @@ WHERE
         (bug_status = 'UNCONFIRMED' or
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
+        bug_status = 'PATCH_TO_REVIEW' or
         bug_status = 'REOPENED')
 AND
         bug_severity != 'enhancement';
@@ -191,6 +194,7 @@ WHERE
         (bug_status = 'UNCONFIRMED' or
         bug_status = 'ASSIGNED' or
         bug_status = 'NEW' or
+        bug_status = 'PATCH_TO_REVIEW' or
         bug_status = 'REOPENED')
 AND
         bug_severity != 'enhancement'
@@ -315,6 +319,7 @@ $statesToRun = array('UNCONFIRMED',
                      'NEW',
                      'ASSIGNED',
                      'REOPENED',
+                     'PATCH_TO_REVIEW',
                      'RESOLVED',
                      'VERIFIED',);
 
