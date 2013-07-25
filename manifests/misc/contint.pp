@@ -29,16 +29,6 @@ class misc::contint::test {
   # better place under contint module.
   class jenkins {
 
-    file {
-      '/var/lib/jenkins/.gitconfig':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        source  => 'puppet:///files/misc/jenkins/gitconfig',
-        require => User['jenkins'];
-    }
-
     # FIXME needs to be migrated somewhere else
     # Maybe contint::slave-scripts
     file {
