@@ -27,8 +27,7 @@ class role::elasticsearch::beta {
 #
 class role::elasticsearch::labs {
     if $::elasticsearch_cluster_name == undef {
-        fail("$::elasticsearch_cluster_name must be set to something unique " +
-            'for your cluster')
+        fail("$::elasticsearch_cluster_name must be set to something unique for your cluster")
     }
     class { '::elasticsearch':
         cluster_name => $::elasticsearch_cluster_name,
