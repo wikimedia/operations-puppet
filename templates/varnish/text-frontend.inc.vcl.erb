@@ -30,7 +30,6 @@ sub filter_headers {
 
 sub vcl_recv {
 	call filter_headers;
-	call vcl_recv_append_xff;
 
 	/* Allow purging */
 	call vcl_recv_purge;
