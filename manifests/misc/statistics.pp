@@ -899,13 +899,9 @@ password=${globaldev_mysql_pass}
 	# store results in the research staging database.
 	# Backup files will be kept $geowiki_backups_path.
 	cron { 'geowiki-process-data':
-		minute   => 0,
-		command  => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py\
--o ${$geowiki_backups_path}\
---wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily\
---start=`date --date='-1 day' +\\%Y-\\%m-\\%d`\
---end=`date --date='1 day' +\\%Y-\\%m-\\%d`\
---source_sql_cnf=${geowiki_path}/.globaldev.my.cnf\
---dest_sql_cnf=${geowiki_path}/.research.my.cnf",
+		minute  => 0,
+		hour    => 12,
+		command => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py -o ${$geowiki_backups_path} --wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily --start=`date --date='-1 day' +\\%Y-\\%m-\\%d` --end=`date --date='1 day' +\\%Y-\\%m-\\%d` --source_sql_cnf=${geowiki_path}/.globaldev.my.cnf --dest_sql_cnf=${geowiki_path}/.research.my.cnf",
+		require => File[$geowiki_backups_path],
 	}
 }
