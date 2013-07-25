@@ -93,12 +93,10 @@ journal=$(ceph-conf --cluster=ceph --name=osd.${osdid} --lookup 'osd journal')
 # cleanup possibly old journal
 rm -f ${journal}
 
-# disable ceph-disk-activate, or it is spawned prematurely by prepare
-# http://tracker.ceph.com/issues/3255
-mv /usr/sbin/ceph-disk-activate /usr/sbin/ceph-disk-activate.off
-ceph-disk-prepare ${disk} ${journal}
+ceph-disk suppress-activate
+ceph-disk prepare ${disk} ${journal}
 udevadm settle
-mv /usr/sbin/ceph-disk-activate.off /usr/sbin/ceph-disk-activate
+ceph-disk unsuppress-activate
 
 # explicitly set whoami
 # WARNING: this can be dangerous if not previously cleaned up properly
@@ -111,4 +109,4 @@ umount ${mountpoint}
 rmdir ${mountpoint}
 
 echo "I: activating the new OSD"
-ceph-disk-activate --mount ${disk}1
+ceph-disk activate --mount ${disk}1
