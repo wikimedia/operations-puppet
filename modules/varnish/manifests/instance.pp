@@ -76,7 +76,7 @@ define varnish::instance(
         hasstatus => false,
         pattern => "/var/run/varnishd${instancesuffix}.pid",
         subscribe => Package[varnish],
-        before => Exec['generate varnish.pyconf'],
+        before => varnish::monitoring::ganglia::Exec['generate varnish.pyconf'],
         ensure => running;
     }
 
