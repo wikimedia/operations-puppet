@@ -224,14 +224,19 @@ sub vcl_recv {
 	
 <% if has_variable?("xff_sources") and xff_sources.length > 0 -%>
 	/* Ensure we only accept Forwarded headers from the SSL proxies */
-	if (client.ip ~ allow_xff || client.ip ~ opera_mini) {
-		// Do nothing. It seems you can't do !~ with IP matches
-	} else {
-		// Strip the headers, we shouldn't trust these from anything other
-		// than hosts we specify. Needed for the geoiplookup code later on
-		// as it will use xff. MediaWiki uses xfp.
-		set req.http.X-Forwarded-For = client.ip;
-		unset req.http.X-Forwarded-Proto;
+	if (req.restarts == 0) {
+		if (client.ip ~ allow_xff || client.ip ~ opera_mini) {
+			/* As nginx doesn't filter, keep only the last IP */
+			set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "^.*([0-9a-f.:]+)$", "\1");
+		} else {
+			/* Strip the headers, we shouldn't trust these from anything other
+			 * than hosts we specify. Needed for the geoiplookup code later on
+			 * as it will use XFF. MediaWiki uses XFP.
+			 */
+			unset req.http.X-Forwarded-For;
+			unset req.http.X-Forwarded-Proto;
+		}
+		call vcl_recv_append_xff;
 	}
 <% end -%>
 
