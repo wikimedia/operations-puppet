@@ -838,7 +838,7 @@ class misc::statistics::limn::mobile_data_sync {
 # editor geocoding statistics, saved back into a db.
 #
 class misc::statistics::geowiki {
-	require misc::statisics::user,
+	require misc::statistics::user,
 		passwords::mysql::research,
 		passwords::mysql::globaldev,
 		misc::statistics::packages::python,
