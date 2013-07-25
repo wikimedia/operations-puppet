@@ -16,6 +16,18 @@ class role::ci::master {
     include ::jenkins,
       contint::proxy_jenkins
 
+    # .gitconfig file required for rare git write operations
+    git::userconfig { '.gitconfig for jenkins user':
+      homedir => '/var/lib/jenkins',
+      settings => {
+        'user' => {
+          'name'  => 'Wikimedia Jenkins Bot',
+          'email' => 'jenkins@gallium.wikimedia.org',
+        },  # end of [user] section
+      },  # end of settings
+      require => User['jenkins'],
+    }
+
     file { '/srv/ssd/jenkins':
         ensure  => 'directory',
         owner   => 'jenkins',
@@ -91,6 +103,18 @@ class role::ci::slave {
         workdir            => '/srv/ssd/jenkins-slave',
         # Mount is handled on the node definition
         require            => Mount['/srv/ssd'],
+    }
+
+    # .gitconfig file required for rare git write operations
+    git::userconfig { '.gitconfig for jenkins user':
+      homedir => '/var/lib/jenkins-slave',
+      settings => {
+        'user' => {
+          'name'  => 'Wikimedia Jenkins Bot',
+          'email' => "jenkins-slave@${::fqdn}",
+        },  # end of [user] section
+      },  # end of settings
+      require => User['jenkins-slave'],
     }
 
     contint::tmpfs { 'tmpfs for jenkins CI slave':
