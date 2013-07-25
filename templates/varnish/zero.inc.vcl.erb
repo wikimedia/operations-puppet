@@ -453,29 +453,33 @@ sub tag_carrier {
 }
 
 sub spoof_clientip {
-	/* In case the XFF header is present, trust it in case it comes from
-	 * Opera Mini's accelerating proxies, or from a carrier_testing ip range,
-	 * and replace client ip value with the first value from the XFF Header
+	/* FIXME: remove this awful hack
+	 *
+	 * We need to do this because Varnish can only match client.ip and server.ip against an ACL
+	 * Replace client.ip with the last IP in the XFF header, or the penultimate IP in case
+	 * of Opera Mini in front of an SSL proxy.
 	 */
-	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+	if (req.http.X-Forwarded-For
+		&& (client.ip ~ ssl_proxies || client.ip ~ opera_mini || client.ip ~ carrier_testing) {
 		set req.http.X-Orig-Client-IP = client.ip;
-		C{
-		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
-		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
-		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-		char *last;
-
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-
-		if (xff_ip == NULL) {
-			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		if (req.http.X-Forwarded-Proto == "https" && client.ip ~ ssl_proxies) {
+			call replace_clientip;
 		}
-
-		if (xff_ip != NULL) {
-			inet_pton(AF_INET, xff_ip, client_ip_ia);
+		if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+			call replace_clientip;
 		}
-		}C
-
-		unset req.http.X-Forwarded-For;
 	}
+}
+
+call replace_clientip {
+	/* Assumes XFF header exists */
+	C{
+		struct sockaddr_in *client_ip_si = (struct sockaddr_in *)VRT_r_client_ip(sp);
+		char *xff, *last_comma;
+
+		xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+		last_comma = strrchr(xff, ',');
+		inet_pton(AF_INET, (last_comma ? last_comma+1 : xff), &(client_ip_si->sin_addr));
+	}C
+	set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, ",[^,]+$", "");
 }
