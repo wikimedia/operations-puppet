@@ -829,3 +829,83 @@ class misc::statistics::limn::mobile_data_sync {
 		minute  => 0,
 	}
 }
+
+
+# == Class misc::statistics::geowiki
+# Clones analytics/editor-geocoding python scripts
+# and installs a cron job to get recent editor data
+# from the research slave databases and generate
+# editor geocoding statistics, saved back into a db.
+#
+class misc::statistics::geowiki {
+	require misc::statisics::user,
+		passwords::mysql::research,
+		passwords::mysql::globaldev,
+		misc::statistics::packages::python,
+		misc::geoip
+
+	$geowiki_user = $misc::statisics::user::username
+	$geowiki_path = '/a/geowiki'
+
+	git::clone { 'geowiki':
+		directory => $geowiki_path,
+		origin    => "https://gerrit.wikimedia.org/r/p/analytics/editor-geocoding.git",
+		ensure    => 'latest',
+		owner     => $geowiki_user,
+	}
+
+	# install MySQL conf files for db acccess
+	$research_mysql_user = $passwords::mysql::research::user
+	$research_mysql_pass = $passwords::mysql::research::pass
+
+	$globaldev_mysql_user = $passwords::mysql::globaldev::user
+	$globaldev_mysql_pass = $passwords::mysql::globaldev::pass
+
+	file { "${geowiki_path}/.research.my.cnf":
+		owner   => $geowiki_user,
+		group   => $geowiki_user,
+		mode    => '0400',
+		content => "
+[client]
+user=${research_mysql_user}
+password=${research_mysql_pass}
+host=s1-analytics-slave.eqiad.wmnet'
+",
+		require => Git::Clone['geowiki'],
+	}
+
+	file { "${geowiki_path}/.globaldev.my.cnf":
+		owner   => $geowiki_user,
+		group   => $geowiki_user,
+		mode    => '0400',
+		content => "
+[client]
+user=${globaldev_mysql_user}
+password=${globaldev_mysql_pass}
+",
+		require => Git::Clone['geowiki'],
+	}
+
+	$geowiki_backups_path = "${geowiki_path}/geowiki-backup-data"
+	file { $geowiki_backups_path:
+		ensure  => 'directory',
+		owner   => $geowiki_user,
+		group   => $geowiki_user,
+		require => Git::Clone['geowiki'],
+	}
+
+	# cron to run geowiki/process_data.py.
+	# This will query the production slaves and
+	# store results in the research staging database.
+	# Backup files will be kept $geowiki_backups_path.
+	cron { 'geowiki-process-data':
+		minute   => 0,
+		command  => "/usr/bin/python ${geowiki_path}/geowiki/process_data.py\
+-o ${$geowiki_backups_path}\
+--wpfiles ${geowiki_path}/geowiki/data/all_ids.tsv --daily\
+--start=`date --date='-1 day' +\\%Y-\\%m-\\%d`\
+--end=`date --date='1 day' +\\%Y-\\%m-\\%d`\
+--source_sql_cnf=${geowiki_path}/.globaldev.my.cnf\
+--dest_sql_cnf=${geowiki_path}/.research.my.cnf",
+	}
+}
