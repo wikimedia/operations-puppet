@@ -29,14 +29,15 @@ class misc::contint::test {
   # better place under contint module.
   class jenkins {
 
-    file {
-      '/var/lib/jenkins/.gitconfig':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'jenkins',
-        group   => 'jenkins',
-        source  => 'puppet:///files/misc/jenkins/gitconfig',
-        require => User['jenkins'];
+    git::userconfig { '.gitconfig for jenkins user':
+      homedir => '/var/lib/jenkins',
+      settings => {
+        'user' => {
+          'name'  => 'Wikimedia Jenkins Bot',
+          'email' => 'jenkins@gallium.wikimedia.org',
+        },  # end of [user] section
+      },  # end of settings
+      require => User['jenkins'],
     }
 
     # FIXME needs to be migrated somewhere else
