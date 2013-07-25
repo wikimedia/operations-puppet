@@ -1001,14 +1001,13 @@ node "gallium.wikimedia.org" {
 
     include standard,
         nrpe,
-        contint::packages,
-        contint::testswarm,
-        contint::website,
-        misc::contint::test,
-        misc::contint::test::jenkins,
+        misc::contint::test,  # Setup iptables rules
+        misc::contint::test::jenkins,  # FIXME slave scripts
         misc::contint::android::sdk,
-        role::jenkins::master::production,
-        role::jenkins::slave::production,
+        role::ci::master,
+        role::ci::slave,
+        role::ci::testswarm,
+        role::ci::website,
         role::zuul::production,
         admins::roots,
         admins::jenkins
@@ -1360,8 +1359,7 @@ node 'lanthanum.eqiad.wmnet' {
     include standard,
         admins::roots,
         admins::jenkins,
-        contint::packages,
-        role::jenkins::slave::production  # RT #5074
+        role::ci::slave  # RT #5074
 
     # Used as a Jenkins slave so some folks need escalated privileges
     $gid=500
