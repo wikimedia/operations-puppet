@@ -844,7 +844,7 @@ class misc::statistics::geowiki {
 		misc::statistics::packages::python,
 		misc::geoip
 
-	$geowiki_user = $misc::statisics::user::username
+	$geowiki_user = $misc::statistics::user::username
 	$geowiki_path = '/a/geowiki'
 
 	git::clone { 'geowiki':
