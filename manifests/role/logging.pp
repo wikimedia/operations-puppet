@@ -45,11 +45,20 @@ class role::logging::mediawiki($monitor = true, $log_directory = '/home/wikipedi
     include misc::udp2log::utilities,
         misc::udp2log::iptables
 
+    $error_processor_host = $::realm ? {
+        production => 'vanadium.eqiad.wmnet',
+        labs       => 'deployment-fluoride.pmtpa.wmflabs',
+    }
+
     misc::udp2log::instance { "mw":
         log_directory    =>    $log_directory,
         monitor_log_age    =>    false,
         monitor_processes    =>    false,
         monitor_packet_loss    =>    false,
+        template_variables => {
+            error_processor_host => $error_processor_host,
+            error_processor_port => 8423,
+        },
     }
 
     cron { "mw-log-cleanup":
