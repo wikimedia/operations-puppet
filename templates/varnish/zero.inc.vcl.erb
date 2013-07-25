@@ -458,24 +458,17 @@ sub spoof_clientip {
 	 * and replace client ip value with the first value from the XFF Header
 	 */
 	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
+		/* Because MediaWiki is not configured for the Opera Mini proxies,
+		 * we need to strip the proxy IPs here.
+		 */
 		set req.http.X-Orig-Client-IP = client.ip;
+		set req.http.X-Forwarded-For = regsub(req.http.X-Forwarded-For, "^([0-9a-fA-F.:]+).*$", "\1");
 		C{
-		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
-		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
-		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-		char *last;
+			struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+			struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+			struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
 
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-
-		if (xff_ip == NULL) {
-			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
-		}
-
-		if (xff_ip != NULL) {
-			inet_pton(AF_INET, xff_ip, client_ip_ia);
-		}
+			inet_pton(AF_INET, VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), client_ip_ia);
 		}C
-
-		unset req.http.X-Forwarded-For;
 	}
 }
