@@ -88,7 +88,6 @@ sub vcl_recv {
 	set req.hash_ignore_busy = true;
 
 	/* Default (now modified) Varnish vcl_recv function */
-	call vcl_recv_append_xff;
 	if (req.request != "GET" && req.request != "HEAD") {
 		/* We only deal with GET and HEAD by default */
 		return (pass);
