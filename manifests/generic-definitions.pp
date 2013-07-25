@@ -508,6 +508,11 @@ class generic::gluster-client {
 		ensure => present;
 	}
 
+    file { [ '/var/log/glusterfs', '/var/log/glusterfs/bricks' ]:
+        ensure => directory,
+        before => File['/etc/logrotate.d/glusterlogs'],
+    }
+
 	file { "/etc/logrotate.d/glusterlogs":
 		ensure => present,
 		mode => '0664',
