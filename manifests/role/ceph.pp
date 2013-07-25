@@ -39,6 +39,7 @@ class role::ceph::eqiad inherits role::ceph::base {
                 'osd journal size'            => '10240',
             },
             'radosgw'           => {
+                'rgw print continue'          => 'false',
                 'rgw enable ops log'          => 'false',
                 'rgw enable usage log'        => 'false',
                 'rgw extended http attrs'     => 'x_content_duration',
