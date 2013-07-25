@@ -460,22 +460,19 @@ sub spoof_clientip {
 	if (req.http.X-Forwarded-For && (client.ip ~ opera_mini || client.ip ~ carrier_testing)) {
 		set req.http.X-Orig-Client-IP = client.ip;
 		C{
-		struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
-		struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
-		struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
-		char *last;
+			struct sockaddr_storage *client_ip_ss = VRT_r_client_ip(sp);
+			struct sockaddr_in *client_ip_si = (struct sockaddr_in *) client_ip_ss;
+			struct in_addr *client_ip_ia = &(client_ip_si->sin_addr);
+			char xff_ip[INET_ADDRSTRLEN], *xff, *xff_sep;
 
-		char *xff_ip = strtok(VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:"), ",");
-
-		if (xff_ip == NULL) {
-			xff_ip = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
-		}
-
-		if (xff_ip != NULL) {
-			inet_pton(AF_INET, xff_ip, client_ip_ia);
-		}
+			xff = VRT_GetHdr(sp, HDR_REQ, "\020X-Forwarded-For:");
+			xff_sep = strchr(xff, ',');
+			if (xff_sep == NULL) {
+				inet_pton(AF_INET, xff, client_ip_ia);
+			} else {
+				strncpy(xff_ip, xff, xff_sep - xff);
+				inet_pton(AF_INET, xff_ip, client_ip_ia);
+			}
 		}C
-
-		unset req.http.X-Forwarded-For;
 	}
 }
