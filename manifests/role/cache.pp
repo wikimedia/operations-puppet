@@ -566,6 +566,7 @@ class role::cache {
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'backend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -586,7 +587,6 @@ class role::cache {
 					'weight' => $backend_weight,
 				}],
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "text-frontend":
@@ -605,6 +605,7 @@ class role::cache {
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'frontend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -616,7 +617,6 @@ class role::cache {
 					'probe' => "varnish",
 					'weight' => $backend_weight,
 				}],
-			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -716,6 +716,7 @@ class role::cache {
 				'purge_regex' => '^http://upload\.wikimedia\.org/',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'backend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -733,7 +734,6 @@ class role::cache {
 				}],
 			cluster_options => $cluster_options,
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "upload-frontend":
@@ -750,6 +750,7 @@ class role::cache {
 				'purge_regex' => '^http://upload\.wikimedia\.org/',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'frontend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -762,7 +763,6 @@ class role::cache {
 					'weight' => $backend_weight,
 				}],
 			cluster_options => $cluster_options,
-			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -885,6 +885,7 @@ class role::cache {
 				'retry5xx' => 1,
 				'cache4xx' => "1m",
 				'layer' => 'frontend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => {
 				'port' => 80,
@@ -895,7 +896,6 @@ class role::cache {
 				'probe' => $probe,
 			},
 			cluster_options => $cluster_options,
-			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging::eventlistener
@@ -965,6 +965,7 @@ class role::cache {
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'backend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -985,7 +986,6 @@ class role::cache {
 					'max_connections' => 600,
 				}],
 			wikimedia_networks => $wikimedia_networks,
-			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "mobile-frontend":
@@ -1007,6 +1007,7 @@ class role::cache {
 				'purge_regex' => '^http://(?!upload\.wikimedia\.org)',
 				'cluster_tier' => $cluster_tier,
 				'layer' => 'frontend',
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 			{
@@ -1018,7 +1019,6 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			}],
-			xff_sources => $wikimedia_networks,
 		}
 
 		include role::cache::varnish::logging
@@ -1067,6 +1067,7 @@ class role::cache {
 			},
 			vcl_config => {
 				'retry5xx' => 1,
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => [
 				{
@@ -1076,7 +1077,6 @@ class role::cache {
 					'between_bytes_timeout' => "20s",
 					'max_connections' => 600,
 				}],
-			xff_sources => $wikimedia_networks,
 		}
 
 		varnish::instance { "parsoid-frontend":
@@ -1094,6 +1094,7 @@ class role::cache {
 			},
 			vcl_config => {
 				'retry5xx' => 0,
+				'ssl_proxies' => $wikimedia_networks,
 			},
 			backend_options => {
 				'port' => 3128,
@@ -1104,7 +1105,6 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			},
-			xff_sources => $wikimedia_networks,
 		}
 	}
 }
