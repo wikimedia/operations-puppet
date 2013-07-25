@@ -140,7 +140,7 @@ class misc::deployment::common_scripts {
 			group => root,
 			mode => 0555,
 			source => "puppet:///files/misc/scripts/apache-fast-test";
-		"${scriptPath}/updateinterwikicache":
+		"${scriptpath}/updateinterwikicache":
 			owner => root,
 			group => root,
 			mode => 0555,
