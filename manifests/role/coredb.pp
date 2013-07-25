@@ -112,14 +112,6 @@ class role::coredb::config {
 			'snapshot' => [ "es10", "es1010" ],
 			'no_master' => []
 		},
-		'fundraisingdb' => {
-			'hosts' => { 'pmtpa' => [ 'db78' ],
-				'eqiad' => ['db1008'] },
-			'primary_site' => $::mw_primary,
-			'masters' => { 'eqiad' => "db1025" },
-			'snapshot' => [],
-			'no_master' => []
-		},
 	}
 }
 

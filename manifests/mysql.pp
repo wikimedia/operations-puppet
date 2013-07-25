@@ -25,9 +25,6 @@ class mysql_wmf {
 	if $hostname =~ /^blondel|bellin$/ {
 		$db_cluster = "m1"
 	}
-	elsif $hostname =~ /^db1008$/ {
-		$db_cluster = "fundraisingdb"
-	}
 	else {
 		$db_cluster = undef
 	}

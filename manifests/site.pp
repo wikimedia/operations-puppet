@@ -556,8 +556,6 @@ node /^db4[89]\.pmtpa\.wmnet/ {
 
 node "db78.pmtpa.wmnet" {
     # moved to frack puppet
-    #include role::fundraising::database::dump_slave
-    #class { 'misc::fundraising::backup::archive_sync': hour => [4,12,20], minute => 5 }
 }
 
 ## researchdb
@@ -672,13 +670,8 @@ node /^db104[68]\.eqiad\.wmnet/ {
     include role::coredb::m2
 }
 
-## eqiad fundraising DBs
 node "db1008.eqiad.wmnet" {
-    include mysql_wmf::mysqluser,
-        mysql_wmf::datadirs,
-        mysql_wmf::packages,
-        mysql_wmf::conf,
-        role::fundraising::database::slave
+    # moved to frack puppet
 }
 
 ## researchdb
