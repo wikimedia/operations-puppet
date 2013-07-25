@@ -1,0 +1,35 @@
+# Proxy site configuration file for <%= name %>
+# This file is managed by Puppet!
+
+upstream localhost {
+	# max fails is ignored when using one host, so we use the same host twice
+	server 127.0.0.1:<%= @upstream_port %>;
+	server 127.0.0.1:<%= @upstream_port %>;
+}
+
+# SSL proxying
+server {
+	listen *:443 ssl;
+	ssl on;
+	server_name  <%= @fqdn %>;
+
+	error_log   /var/log/nginx/<%= @name %>.error.log;
+	access_log   off;
+
+	ssl_certificate /etc/ssl/certs/<%= @proxy_server_cert_name %>.chained.pem;
+	ssl_certificate_key /etc/ssl/private/<%= @proxy_server_cert_name %>.key;
+	keepalive_timeout 60;
+
+	location / {
+		proxy_pass http://localhost;
+
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_set_header X-Forwarded-Proto https;
+
+		proxy_redirect off;
+		proxy_buffering off;
+	}
+}
