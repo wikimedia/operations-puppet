@@ -1994,7 +1994,6 @@ node /^mw1(2[6-9]|30)\.pmtpa\.wmnet$/ {
 # mw131-134 are pulled for elasticsearch testing
 # approved by site architect afeldman ;)
 node "mw131.pmtpa.wmnet" {
-
     include accounts::manybubbles
     sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2002,7 +2001,9 @@ node "mw131.pmtpa.wmnet" {
     include nfs::upload
 }
 node /^mw13[234]\.pmtpa\.wmnet$/ {
-    include accounts::manybubbles
+    include accounts::manybubbles,
+        groups::wikidev
+
     sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
     include standard
