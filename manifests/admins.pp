@@ -263,7 +263,7 @@ class accounts {
 					type		=> "ssh-rsa",
 					key		=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA2Di7q/bc8OJ5HP4X2U19r8w/mIH6CDbZHkOv//5cNvE50udM7McwxRWSz5idIF2P2JyIU2tQhixM3vkWO2chcifIom60F2/vhKA+TuUr9l/IbnBv6CoCjeAxre0g3gVhcazHKKtjbpRMYRxMSrLs+SBzsQpTuB/MqJB/jy1rUDTLCwN8Dtz3nAR5vRtgM673kivDLvDsHrfgR1uScESawPe6c9iFLbnzptH4z86r98tj3s4U+3yVFaH9AG7YuovulyA6UEgXFL8swsrpp58s1+XIausfYAqjetIL0YS3vOwEeBw3Hg57c+bZ+dVODEV6wc+uOgtJFZs6zVHTFq5QoQ==";
 				"andrew@zwinger":
-					ensure          => present,
+					ensure          => absent,
 					user            => $username,
 					type            => "ssh-rsa",
 					key		=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAub5dQVlS7jvr0e3Df+5xDYXqEmROgb0vpEkjBlJwl7Ak+J7k5bfQL+YcHs0oPyjLEJ4ZxwN4JQw+AsB9Ifw2eFIFB+tlKmXj++d9I9PS/IY9hSKJHJ8Og8uqK4X08tqURnyfL8QvH3g+VuSuCTwQcyfIm0MVKpJ5/grpK+Zg3OYSU4JQJpa4TDcJpJrx+V6GCC5yNJshs2VSsXyUZYWHaa3r+MXHE+KRZDlVP1tkQhzdK1g+/vcp7s13+QaWioiUDbxkCN63pKxY5qQwOugT31EEacBOCgXsS2jY00mJ5KpVt0zJychsX7WTtNfk6Rt9u9xt/imghT80rCd97P63Hw==";
