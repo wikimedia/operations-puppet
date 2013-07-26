@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$1" = "" -o "$2" = "" ] ; then
+	echo 'Usage: check_dsh_groups <host> <group1> [group2...]'
+	exit 1
+fi
+
+HOST=$1
+shift
+
+for GROUP in $@
+do
+	FILE="/etc/dsh/group/$GROUP"
+	if [ ! -e $FILE ] ; then
+		echo "dsh group $GROUP not found"
+		exit 3
+	fi
+	if [ "`grep $HOST $FILE`" != "$HOST" ] ; then
+		echo "Host $HOST is not in $GROUP dsh group"
+		exit 2
+	fi
+done;
+
+echo 'OK'
+
