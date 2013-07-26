@@ -648,3 +648,11 @@ define command{
 }
 
 
+
+
+# Checks whether a host belongs to given dsh group(s)
+define command{
+	command_name	check_dsh_groups
+	command_line	$HOSTNAME$ $ARG1$
+}
+

@@ -43,7 +43,8 @@ class icinga::monitor {
     lvs::monitor,
     nagios::gsbmonitoring,
     mysql,
-    nrpe
+    nrpe,
+    misc::dsh::files
 
   Class['icinga::monitor::packages'] -> Class['icinga::monitor::configuration::files'] -> Class['icinga::monitor::service']
 
@@ -552,6 +553,11 @@ class icinga::monitor::files::nagios-plugins {
       mode => '0755';
     '/usr/lib/nagios/plugins/check_bad_apaches':
       source => 'puppet:///files/icinga/check_bad_apaches',
+      owner => 'root',
+      group => 'root',
+      mode => '0755';
+    '/usr/lib/nagios/plugins/check_dsh_groups':
+      source => 'puppet:///files/icinga/check_dsh_groups',
       owner => 'root',
       group => 'root',
       mode => '0755';
