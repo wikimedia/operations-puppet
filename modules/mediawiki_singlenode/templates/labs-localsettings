@@ -37,6 +37,8 @@ if ( ! $wgLogo or $wgLogo == '/wiki/skins/common/images/wiki.png' ) {
     $wgLogo = "$wgStylePath/common/images/labs_mediawiki_logo.png";
 }
 
+$wgMaxShellMemory = 1024 * 1024;
+
 # Offer possibility to require addition things in the respective role
 <% role_requires.each do | req | -%>
 require_once( <%=req%> );
