@@ -154,7 +154,7 @@ class exim {
 		include exim::smtp
 		include exim::constants
 		include network::constants
-		include exim::listserve::private
+		include privateexim::listserve
 
 		file {
 			"/etc/exim4/exim4.conf":

@@ -6,10 +6,6 @@ import "ssh.pp"
 import "sudo.pp"
 import "nagios.pp"
 import "nrpe.pp"
-import "../private/manifests/passwords.pp"
-import "../private/manifests/contacts.pp"
-import "../private/manifests/mail.pp"
-
 
 # /var/run has moved to /run in newer Ubuntu versions.
 # See: http://lwn.net/Articles/436012/
