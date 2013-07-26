@@ -774,7 +774,7 @@ class role::cache {
 	}
 	
 	class ssl::text {
-		include certificates::wmf_ca, role::protoproxy::ssl::common, protoproxy::ganglia
+		include certificates::wmf_ca, role::protoproxy::ssl::common
 
 		# Assumes that LVS service IPs are setup elsewhere
 
