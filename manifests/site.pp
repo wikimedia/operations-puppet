@@ -2660,7 +2660,8 @@ node "stat1.wikimedia.org" {
         accounts::yurik,     # RT 4835
         accounts::mwalker,   # RT 5038
         accounts::awight,    # RT 5048
-        accounts::jforrester # RT 5302
+        accounts::jforrester,# RT 5302
+        accounts::qchris     # RT 5474
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2678,11 +2679,10 @@ node "stat1001.wikimedia.org" {
         accounts::otto,
         accounts::dsc,
         accounts::milimetric,
-        accounts::rfaulk, #rt4258
-        # RT 4687
-        accounts::ypanda,
-        # RT 5161
-        accounts::erosen
+        accounts::rfaulk,  # RT 4258
+        accounts::ypanda,  # RT 4687
+        accounts::erosen,  # RT 5161
+        accounts::qchris   # RT 5474
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
