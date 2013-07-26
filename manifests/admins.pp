@@ -2340,13 +2340,12 @@ class accounts {
 		$uid = 604
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 		if $manage_home {
-			Ssh_authorized_key { require => Unixaccount[$realname] }
-			ssh_authorized_key {
-				"Olivneh@WMF":
-					ensure	=> present,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQC5sz9Sq9+vAas4hY9HdVV0/xukFFRJj0NMDuWY4cRf/MKXkGwQB2CVEa6/owW3G1dbC3t5viimS347DoQh9SHy9ltpnrjga5sd/8RLV/7FSs2QjG+WtMwEupAfO1YRUzWEYCbs/sYJ/dYjY6hdJJfByxH8XOQHXI6hiddjqZ7XrQUq9IVYb6rm/Td7OmwD5/T2l1YXVa/w4DHqVMEnXxtSo4Njww2BwmEYPIa9HusE8TblpAs1B78ixVLCSAg7/VLXDj2mzeX75bID3To9CvxRxPbLKJpSy/yRHM8p5XJ55ZZjp+pmkdOj/kcdvqiEe2KhfdVgXS4Ywk1/R4ZGlA+9";
+			ssh_authorized_key { 'ori@wmf.prod':
+				ensure  => present,
+				user    => $username,
+				type    => 'ssh-rsa',
+				key     => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCxJRZZM8H1g9SfP0pvE3SJZN3zSV4ULDMHr4sEKTYTsIeOZObG99EcauqaaDi8XBBYhvEuAkhL9xTtrG/dWTPXINEAxXl4dmHn4AEg5ycdSj0kvJHK1tbDzCbHNVzJw+3GFcoYKlzRo4qwNHXe6j0pmuX21uh+MRMiCBlrZv6ir3U/guv37Fy3Ng7AOBSC+NSSb3O8Umhb5XVGHr4wh1C28pPx9+CDhwt54ZGwTRbL4UIQ1IPYhiNbI+niK8etXKNXPS2Um6j17SNrAI903+lb2tM2CTWwj3877FvyxZFOfvZovp9uR3kIwIMM5/PyDSy9YvnHMH/O9SWEqEI/aQjR',
+				require => Unixaccount[$realname],
 			}
 		}
 	}
