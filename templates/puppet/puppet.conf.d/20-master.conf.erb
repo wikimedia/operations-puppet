@@ -3,6 +3,7 @@
 ca_md = sha1
 certname = <%= scope.lookupvar('puppetmaster::server_name') %>
 templatedir = /etc/puppet/templates
+modulepath = /etc/puppet/private/modules:/etc/puppet/modules
 
 # puppetmaster($config) settings
 <% scope.lookupvar('puppetmaster::config').sort.each do |setting, value| -%>
@@ -15,4 +16,3 @@ ssl_client_header = SSL_CLIENT_S_DN
 ssl_client_verify_header = SSL_CLIENT_VERIFY
 hostcert = /var/lib/puppet/server/ssl/certs/<%= fqdn %>.pem
 hostprivkey = /var/lib/puppet/server/ssl/private_keys/<%= fqdn %>.pem
-modulepath = /etc/puppet/private/modules:/etc/puppet/modules
