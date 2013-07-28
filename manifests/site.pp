@@ -2216,27 +2216,6 @@ node "oxygen.wikimedia.org" inherits "base_analytics_logging_node" {
         include role::logging::udp2log::lucene
 }
 
-node /^payments[1-4]\.wikimedia\.org$/ {
-    $cluster = "payments"
-
-    if $hostname =~ /^payments[12]$/ {
-        $ganglia_aggregator = true
-    }
-
-    system_role { "misc::payments": description => "Fundraising payments server" }
-
-    include base::remote-syslog,
-        base::sysctl,
-        base::resolving,
-        base::motd,
-        base::monitoring::host,
-        ganglia
-
-    class { "lvs::realserver": realserver_ips => [ "208.80.152.7" ] }
-
-    monitor_service { "https": description => "HTTPS", check_command => "check_ssl_cert!payments.wikimedia.org" }
-}
-
 node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
   include role::db::core,
     mysql_wmf::mysqluser,
