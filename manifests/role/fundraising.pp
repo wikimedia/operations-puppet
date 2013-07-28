@@ -49,7 +49,8 @@ class role::fundraising::civicrm {
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$gid = 500
-	include accounts::mhernandez,
+	include standard-noexim,
+		accounts::mhernandez,
 		accounts::zexley,
 		accounts::sahar,
 		accounts::pcoombe,
