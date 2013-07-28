@@ -842,7 +842,8 @@ node "grosley.wikimedia.org" {
 }
 
 node "aluminium.wikimedia.org" {
-    include role::fundraising::civicrm,
+    include standard-noexim,
+        role::fundraising::civicrm,
         misc::fundraising::jenkins,
         accounts::file_mover
     class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }

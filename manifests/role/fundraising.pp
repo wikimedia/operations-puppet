@@ -49,38 +49,17 @@ class role::fundraising::civicrm {
 	sudo_user { [ "khorn" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
 	$gid = 500
-	include
-		accounts::mhernandez,
+	include accounts::mhernandez,
 		accounts::zexley,
 		accounts::sahar,
 		accounts::pcoombe,
 		admins::fr-tech,
 		admins::roots,
-		apt,
 		backup::client,
-		ganglia,
 		misc::fundraising,
 		misc::fundraising::backup::backupmover_user,
 		misc::fundraising::mail,
-		nrpe,
-		ntp::client,
-        apt::update,
-        base::access::dc-techs,
-        base::decommissioned,
-        base::environment,
-        base::grub,
-        base::monitoring::host,
-        base::motd,
-        base::platform,
-        base::puppet,
-        base::resolving,
-        base::standard-packages,
-        base::sysctl,
-        base::tcptweaks,
-        base::vimconfig,
-        passwords::root,
-        ssh
-
+		nrpe
 	monitor_service { "smtp": description => "Exim SMTP", check_command => "check_smtp" }
 	monitor_service { "http": description => "HTTP", check_command => "check_http" }
 }
