@@ -13,19 +13,9 @@ class misc::beta::autoupdater {
 			],
 			source => "puppet:///files/misc/beta/wmf-beta-autoupdate";
 		"/etc/default/wmf-beta-autoupdate":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/misc/beta/wmf-beta-autoupdate.default";
+			ensure => absent;
 		"/etc/init/wmf-beta-autoupdate.conf":
-			owner => root,
-			group => root,
-			mode => 0444,
-			source => "puppet:///files/upstart/wmf-beta-autoupdate.conf";
-		"/var/log/wmf-beta-autoupdate.log":
-			owner => mwdeploy,
-			group => mwdeploy,
-			mode => 0664;
+			ensure => absent;
 	}
 
 	# Make sure wmf-beta-autoupdate can run the l10n updater as l10nupdate
@@ -44,21 +34,9 @@ class misc::beta::autoupdater {
 		'ALL = (apache) NOPASSWD: ALL',
 	] }
 
-
-	upstart_job { "wmf-beta-autoupdate": install => true }
-
-	service { "wmf-beta-autoupdate":
-		require => [
-			File["/usr/local/bin/wmf-beta-autoupdate"],
-			Upstart_job["wmf-beta-autoupdate"],
-			Systemuser["mwdeploy"],
-		],
-		subscribe => [
-			File["/etc/default/wmf-beta-autoupdate"],
-			File["/usr/local/bin/wmf-beta-autoupdate"],
-		],
-		provider => upstart,
-		ensure => running;
+	# Phase out old upstart job
+	file { '/etc/init.d/wmf-beta-autoupdate':
+		ensure => absent;
 	}
 
 }

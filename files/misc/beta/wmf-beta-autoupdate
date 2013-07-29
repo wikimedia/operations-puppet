@@ -14,7 +14,6 @@
 # Parameters with sane (to the WMF) default values
 MW_CORE_PATH=${MW_CORE_PATH:-"/home/wikipedia/common/php-master"}
 MW_EXTENSIONS_PATH=${MW_EXTENSIONS_PATH:-"$MW_CORE_PATH/extensions"}
-WMF_BETA_AUTOUPDATE_SLEEP=${WMF_BETA_AUTOUPDATE_SLEEP:-180}
 VERBOSE=${VERBOSE:-"no"}
 
 if [ "$VERBOSE" != "no" ]; then
@@ -44,39 +43,23 @@ handle_command_result() {
 	ts_echo "Exit code: $exitcode"
 }
 
-# When killed, make sure we are also getting rid of the child jobs
-# we have spawned.
-trap 'kill %-; exit' SIGTERM
+ts_echo "update MediaWiki core in $MW_CORE_PATH"
+OUTPUT=`(cd $MW_CORE_PATH && $GIT_PULL 2>&1)`
+handle_command_result $? "$OUTPUT"
 
-# Start infinite loop
-while [ 1 ]; do
-
-	ts_echo "update MediaWiki core in $MW_CORE_PATH"
-#	if [ ! -d "${MW_CORE_PATH}/.git" ]; then
-#		error "ERR> $MW_CORE_PATH is not a git repo"
-#	else
-		OUTPUT=`(cd $MW_CORE_PATH && $GIT_PULL 2>&1)`
-		handle_command_result $? "$OUTPUT"
-#	fi
-
-	ts_echo "update extensions in $MW_EXTENSIONS_PATH"
-	if [ ! -d "${MW_EXTENSIONS_PATH}/.git" ]; then
-		error "ERR> $MW_EXTENSIONS_PATH is not a git repo"
-	else
-		# Update the generic repository holding all submodules
-		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_PULL 2>&1)`
-		handle_command_result $? "$OUTPUT"
-		# Update submodules
-		OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_SUBMODULE_UPDATE 2>&1)`
-		handle_command_result $? "$OUTPUT"
-	fi
-
-	# Update localisation cache
-	ts_echo "updating localisation cache"
-	OUTPUT=`(mw-update-l10n)`
+ts_echo "update extensions in $MW_EXTENSIONS_PATH"
+if [ ! -d "${MW_EXTENSIONS_PATH}/.git" ]; then
+	error "ERR> $MW_EXTENSIONS_PATH is not a git repo"
+else
+	# Update the generic repository holding all submodules
+	OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_PULL 2>&1)`
 	handle_command_result $? "$OUTPUT"
+	# Update submodules
+	OUTPUT=`(cd $MW_EXTENSIONS_PATH && $GIT_SUBMODULE_UPDATE 2>&1)`
+	handle_command_result $? "$OUTPUT"
+fi
 
-	ts_echo "Sleeping for ${WMF_BETA_AUTOUPDATE_SLEEP} seconds"
-	sleep $WMF_BETA_AUTOUPDATE_SLEEP;
-
-done;
+# Update localisation cache
+ts_echo "updating localisation cache"
+OUTPUT=`(mw-update-l10n)`
+handle_command_result $? "$OUTPUT"
