@@ -54,9 +54,15 @@ for i in ${mwExtVerDbSets[@]}; do
 	echo "done"
 
 	# Update ExtensionMessages-*.php in the local copy
-	sudo -u mwdeploy \
-		cp $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $MW_COMMON/wmf-config/ \
-		|| die
+	# Though only when commons are different files. Beta has everything on the same
+	# shared filesystem and thus cp would complain about copying to the same file.
+	if [ `readlink -f $MW_COMMON_SOURCE` != `readlink -f $MW_COMMON` ]; then
+		echo "Copying to local copy..."
+		sudo -u mwdeploy \
+			cp $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php $MW_COMMON/wmf-config/ \
+			|| die
+		echo "done"
+	fi
 
 	echo -n "Updating LocalisationCache for $mwVerNum... "
 	sudo -u l10nupdate $BINDIR/mwscript rebuildLocalisationCache.php --wiki="$mwDbName" \
