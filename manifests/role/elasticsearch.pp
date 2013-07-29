@@ -17,6 +17,7 @@ class role::elasticsearch::production {
 class role::elasticsearch::beta {
     class { '::elasticsearch':
         cluster_name => 'beta-search',
+        heap_memory  => '4G',
     }
 }
 
