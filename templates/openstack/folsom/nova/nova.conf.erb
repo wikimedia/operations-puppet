@@ -45,6 +45,10 @@ allow_same_net_traffic=False
 live_migration_uri=<%= novaconfig["live_migration_uri"] %>
 libvirt_use_virtio_for_bridges=True
 force_dhcp_release=True
+# set the lease time to 24 hours
+dhcp_lease_time=86400
+# timeout expired leases after 48 hours
+fixed_ip_disassociate_timeout=172800
 iscsi_helper=tgtadm
 
 # Settings for wikistatus, the plugin that updates OSM with instance status:
