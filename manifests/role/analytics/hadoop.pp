@@ -50,6 +50,12 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
     include cdh4::hadoop::worker
 }
 
+# == Class role::analytics::hadoop::standby inherits role::analytics::hadoop::client
+#
+class role::analytics::hadoop::standby inherits role::analytics::hadoop::client {
+    system_role { 'role::analytics::hadoop::standby': description => 'Hadoop Standby NameNode' }
+    include cdh4::hadoop::namenode::standby
+}
 
 
 ### The following classes should not be included directly.
@@ -61,8 +67,9 @@ class role::analytics::hadoop::worker inherits role::analytics::hadoop::client {
 # == Class role::analytics::hadoop::production
 # Common hadoop configs for the production Kraken cluster
 #
+# TODO: Setup Standby NameNode
 class role::analytics::hadoop::production {
-    $namenode_hostname        = 'analytics1010.eqiad.wmnet'
+    $namenode_hosts           = ['analytics1010.eqiad.wmnet']
     $hadoop_name_directory    = '/var/lib/hadoop/name'
 
     $hadoop_data_directory    = '/var/lib/hadoop/data'
@@ -80,7 +87,7 @@ class role::analytics::hadoop::production {
     ]
 
     class { 'cdh4::hadoop':
-        namenode_hostname                       => $namenode_hostname,
+        namenode_hostnames                      => $namenode_hosts,
         datanode_mounts                         => $datanode_mounts,
         dfs_name_dir                            => [$hadoop_name_directory],
         dfs_block_size                          => 268435456,  # 256 MB
@@ -122,13 +129,24 @@ class role::analytics::hadoop::production {
 # this nodes $::fqdn.
 #
 class role::analytics::hadoop::labs {
-    # if the global variable $::hadoop_namenode is set,
-    # use it as the namenode_hostname.  This allows
+    # if the global variable $::hadoop_namenodes is set,
+    # use it as the namenode_hostnames.  This allows
     # configuration via the Labs Instance configuration page.
-    $namenode_hostname = $::hadoop_namenode ? {
-        undef       => $::fqdn,
-        default     => "${::hadoop_namenode}.${domain}",
+    $namenode_hosts = $::hadoop_namenodes ? {
+        undef   => [$::fqdn],
+        default => split($::hadoop_namenodes, ','),
     }
+
+    $journalnode_hosts = $::hadoop_journalnodes ? {
+        undef   => undef,
+        default => split($::hadoop_journalnodes, ','),
+    }
+
+    $nameservice_id = $::hadoop_nameservice_id ? {
+        undef   => undef,
+        default => $::hadoop_nameservice_id,
+    }
+
 
     $hadoop_name_directory    = '/var/lib/hadoop/name'
 
@@ -138,6 +156,8 @@ class role::analytics::hadoop::labs {
         "$hadoop_data_directory/b",
     ]
 
+    $hadoop_journal_directory = '/var/lib/hadoop/journal'
+
     # We don't have to create any partions in labs, so it
     # is unlikely that /var/lib/hadoop and $hadoop_data_directory
     # will be created manually. Ensure it and datanode_mounts exist.
@@ -146,9 +166,12 @@ class role::analytics::hadoop::labs {
     }
 
     class { 'cdh4::hadoop':
-        namenode_hostname                       => $namenode_hostname,
+        namenode_hosts                          => $namenode_hosts,
+        nameservice_id                          => $nameservice_id,
+        journalnode_hosts                       => $journalnode_hosts,
         datanode_mounts                         => $datanode_mounts,
         dfs_name_dir                            => [$hadoop_name_directory],
+        dfs_journalnode_edits_dir               => $hadoop_journal_directory,
         dfs_block_size                          => 268435456,  # 256 MB
         io_file_buffer_size                     => 131072,
         mapreduce_map_tasks_maximum             => 2,
