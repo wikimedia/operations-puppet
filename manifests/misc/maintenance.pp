@@ -394,7 +394,7 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 
 }
 
-class misc::maintenance::updatequerypages {
+class misc::maintenance::updatequerypages( $enabled = false ) {
         # Include this to add cron jobs calling updateSpecialPages.php on all clusters.
 
         file { '/home/mwdeploy/updateSpecialPages':
@@ -414,7 +414,11 @@ class misc::maintenance::updatequerypages {
                         hour => 1,
                         minute => 0,
                         monthday => $monthday,
-                        ensure => present,
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
