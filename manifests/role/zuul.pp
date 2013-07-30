@@ -1,63 +1,63 @@
+# vim: set sw=4 ts=4 expandtab:
+
 # manifests/role/zuul.pp
 
-class role::zuul {
+# == Class: role::zuul::labs
+#
+# Install the Zuul gating system suitable for the Continuous Integration labs
+# instance. This role can not really be reused on a different instance since it
+# hardcodes several parameters such as the Gerrit IP or the URL hostnames.
+class role::zuul::labs {
+    system_role { 'role::zuul::labs': description => 'Zuul on labs!' }
 
-	system_role { "role::zuul": description => "Zuul gating system for Gerrit/Jenkins" }
+    include contint::proxy_zuul
 
-	class labs {
+    # Setup the instance for labs usage
+    zuulwikimedia::instance { 'zuul-labs':
+        jenkins_server   => 'http://10.4.0.172:8080/ci',
+        jenkins_user     => 'zuul',
+        gerrit_server    => '10.4.0.172',
+        gerrit_user      => 'jenkins',
+        url_pattern      => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
+        status_url       => 'http://integration.wmflabs.org/zuul/status',
+        git_branch       => 'labs',
+        git_dir          => '/var/lib/zuul/git',
+        push_change_refs => false,
+    }
 
-		system_role { "role::zuul::labs": description => "Zuul on labs!" }
+} # /role::zuul::labs
 
-		include contint::proxy_zuul
+# Class: role::zuul::production
+#
+# Install the continuous integration Zuul instance for production usage.
+#
+# https://www.mediawiki.org/wiki/Continuous_integration/Zuul
+#
+class role::zuul::production {
+    system_role { 'role::zuul::production': description => 'Zuul on production' }
 
-		# Setup the instance for labs usage
-		zuulwikimedia::instance { "zuul-labs":
-			jenkins_server => 'http://10.4.0.172:8080/ci',
-			jenkins_user => 'zuul',
-			gerrit_server => '10.4.0.172',
-			gerrit_user => 'jenkins',
-			# Not enabled yet but we need a pattern anyway:
-			#url_pattern => 'http://jenkinslogs.wmflabs.org/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
-			url_pattern => 'http://integration.wmflabs.org/ci/job/{job.name}/{build.number}/console',
-			status_url => 'http://integration.wmflabs.org/zuul/status',
-			git_branch => 'labs',
-			git_dir => '/var/lib/zuul/git',
-			push_change_refs => false
-		}
+    # We will receive replication of git bare repositories from Gerrit
+    include role::gerrit::production::replicationdest
+    include contint::proxy_zuul
 
-	} # /role::zuul::labs
+    file { '/var/lib/git':
+        ensure => 'directory',
+        owner  => 'gerritslave',
+        group  => 'root',
+        mode   => '0755',
+    }
 
-	class production {
+    # TODO: should require Mount['/srv/ssd']
+    zuulwikimedia::instance { 'zuul-production':
+        jenkins_server   => 'http://127.0.0.1:8080/ci',
+        jenkins_user     => 'zuul-bot',
+        gerrit_server    => 'manganese.wikimedia.org',
+        gerrit_user      => 'jenkins-bot',
+        url_pattern      => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
+        status_url       => 'https://integration.wikimedia.org/zuul/',
+        git_branch       => 'master',
+        git_dir          => '/srv/ssd/zuul/git',
+        push_change_refs => false,
+    }
 
-		# We will receive replication of git bare repositories from Gerrit
-		include role::gerrit::production::replicationdest
-		include contint::proxy_zuul
-
-		file { "/var/lib/git":
-			ensure => 'directory',
-			owner => 'gerritslave',
-			group => 'root',
-			mode => '0755',
-		}
-
-		system_role { "role::zuul::production": description => "Zuul on production" }
-
-		# TODO: should require Mount['/srv/ssd']
-		zuulwikimedia::instance { "zuul-production":
-#			jenkins_server => 'https://integration.wikimedia.org/ci',
-			jenkins_server => 'http://127.0.0.1:8080/ci',
-			jenkins_user => 'zuul-bot',
-			gerrit_server => 'manganese.wikimedia.org',
-			gerrit_user => 'jenkins-bot',
-			# Not enabled yet but we need a pattern anyway:
-			#url_pattern => 'https://integration.wikimedia.org/zuulreport/{change.number}/{change.patchset}/{pipeline.name}/{job.name}/{build.number}',
-			url_pattern => 'https://integration.wikimedia.org/ci/job/{job.name}/{build.number}/console',
-			status_url => 'https://integration.wikimedia.org/zuul/',
-			git_branch => 'master',
-			git_dir => '/srv/ssd/zuul/git',
-			push_change_refs => false
-		}
-
-	} # /role::zuul::production
-
-} # /role::zuul
+} # /role::zuul::production
