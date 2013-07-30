@@ -1072,6 +1072,7 @@ node "hooft.esams.wikimedia.org" {
 node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
     include
         accounts::dsc,
+        accounts::tstarling,
         accounts::datasets,
         accounts::milimetric,
         misc::udp2log::utilities,
