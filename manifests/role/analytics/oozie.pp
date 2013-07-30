@@ -6,7 +6,7 @@ class role::analytics::oozie::client {
 
     $oozie_host = $::realm ? {
         'production' => 'analytics1027.eqiad.wmnet',
-        'labs'       => $role::analytics::hadoop::labs::namenode_hostname,
+        'labs'       => $role::analytics::hadoop::labs::namenode_hosts[0],
     }
 
     class { 'cdh4::oozie':

@@ -72,7 +72,7 @@ class role::analytics::hive::production {
 #
 class role::analytics::hive::labs {
     class { '::cdh4::hive':
-        metastore_host  => $role::analytics::hadoop::labs::namenode_hostname,
+        metastore_host  => $role::analytics::hadoop::labs::namenode_hosts[0],
         zookeeper_hosts => $role::analytics::zookeeper::hosts_array,
     }
 }
