@@ -1,10 +1,9 @@
 # Common functions for the Text Varnish cluster
 
+import cookie;
+
 sub pass_requests {
 	if (req.request != "GET" && req.request != "HEAD") {
-		return (pass);
-	}
-	if (req.http.Cookie ~ "([sS]ession|Token)=") {
 		return (pass);
 	}
 	if (req.http.host ~ "^test\.") {
@@ -27,5 +26,14 @@ sub restore_cookie {
 	if (bereq.http.Orig-Cookie) {
 		set bereq.http.Cookie = bereq.http.Orig-Cookie;
 		unset bereq.http.Orig-Cookie;
+	}
+}
+
+sub evaluate_cookie {
+	/* A session or token cookie will prevent caching if varied on,
+	 * move the Cookie header out of the way otherwise
+	 */
+	if (req.http.Cookie !~ "([sS]ession|Token)=") {
+		call cookie_munging;
 	}
 }
