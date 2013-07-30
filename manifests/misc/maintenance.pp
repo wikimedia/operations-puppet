@@ -394,7 +394,7 @@ class misc::maintenance::mail_exim_aliases( $enabled = false ) {
 
 }
 
-class misc::maintenance::updatequerypages {
+class misc::maintenance::updatequerypages( $enabled = false ) {
         # Include this to add cron jobs calling updateSpecialPages.php on all clusters.
 
         file { '/home/mwdeploy/updateSpecialPages':
@@ -414,37 +414,66 @@ class misc::maintenance::updatequerypages {
                         hour => 1,
                         minute => 0,
                         monthday => $monthday,
-                        ensure => present,
                 }
 
                 cron { "cron-updatequerypages-ancientpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=AncientPages > /home/mwdeploy/updateSpecialPages/${name}-AncientPages.log 2>&1",
-                        month => [1, 7]
+                        month => [1, 7],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-deadendpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=DeadendPages > /home/mwdeploy/updateSpecialPages/${name}-DeadendPages.log 2>&1",
-                        month => [2, 8]
+                        month => [2, 8],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-mostlinked-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=MostLinked > /home/mwdeploy/updateSpecialPages/${name}-MostLinked.log 2>&1",
-                        month => [3, 9]
+                        month => [3, 9],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-mostrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=MostRevisions > /home/mwdeploy/updateSpecialPages/${name}-MostRevisions.log 2>&1",
-                        month => [4, 10]
+                        month => [4, 10],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-wantedpages-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=WantedPages > /home/mwdeploy/updateSpecialPages/${name}-WantedPages.log 2>&1",
-                        month => [5, 11]
+                        month => [5, 11],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
 
                 cron { "cron-updatequerypages-fewestrevisions-${name}":
                         command => "/usr/local/bin/mwscriptwikiset updateSpecialPages.php ${cluster}.dblist --override --only=FewestRevisions > /home/mwdeploy/updateSpecialPages/${name}-FewestRevisions.log 2>&1",
-                        month => [6, 12]
+                        month => [6, 12],
+                        ensure => $enabled ?{
+                          true => present,
+                          false => absent,
+                          default => absent
+                        };
                 }
         }
 
