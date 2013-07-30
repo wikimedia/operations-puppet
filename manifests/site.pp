@@ -1173,8 +1173,9 @@ node "hume.wikimedia.org" {
         admins::restricted,
         nrpe
 
-	# To be run against PMTPA slaves
-	class { misc::maintenance::updatequerypages: enabled => true }
+    # (bug 15434) Periodical run of currently disabled special pages
+    # to be run against PMTPA slaves
+    class { misc::maintenance::updatequerypages: enabled => false }
 
     # These cron jobs were left behind for some reason:
 
@@ -2781,6 +2782,10 @@ node "terbium.eqiad.wmnet" {
 
     # totally broken, misconfigured in non-version reporting-setup.php
     class { misc::maintenance::foundationwiki: enabled => false }
+
+    # (bug 15434) Periodical run of currently disabled special pages
+    # to be run against PMTPA slaves
+    class { misc::maintenance::updatequerypages: enabled => true }
 }
 
 node "tin.eqiad.wmnet" {
