@@ -24,7 +24,7 @@ sub vcl_recv {
 }
 
 sub vcl_hash {
-	call cookie_munging;
+	call evaluate_cookie;
 }
 
 sub vcl_pass {
