@@ -232,16 +232,14 @@ class accounts {
 		unixaccount { "Avar": username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			if $svnkey {
-				Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key {
-					"avar@Rancorwe":
-						ensure => present,
-						user => $username,
-						type => "ssh-rsa",
-						key => "AAAAB3NzaC1yc2EAAAABIwAAAIEAvRT1SgaE5Us4I7yMEQEOhT/A4dkOnar036SLOfnYZ4pSez/rYFwO7IRkkvx5PbC/1BAUztJESW6iVVpbGoYyYCI6qoLJ5/Bk3RM7HCfEe/1HIIPsaKNOKkUL+M552DKNKynUAtoBOQk5c7oSrdKQu0LZqR0Vh3zLfhiOpidL6GU=";
-				}
+			ssh_authorized_key {
+				"avar@Rancorwe":
+					ensure => absent,
+					user => $username,
+					type => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABIwAAAIEAvRT1SgaE5Us4I7yMEQEOhT/A4dkOnar036SLOfnYZ4pSez/rYFwO7IRkkvx5PbC/1BAUztJESW6iVVpbGoYyYCI6qoLJ5/Bk3RM7HCfEe/1HIIPsaKNOKkUL+M552DKNKynUAtoBOQk5c7oSrdKQu0LZqR0Vh3zLfhiOpidL6GU=";
 			}
 		}
 	}
@@ -306,17 +304,16 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-                        Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-                        ssh_authorized_key {
-                                "cbass@Cary-Bass":
-                                        ensure  => absent,
-                                        user    => $username,
-                                        type    => "ssh-rsa",
-                                        key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEA390DUZg46zDR+o7PdEMypqqtCzg6rOj+ZP2FXWi8pof3bsGJ0J/bhRqP5/CPwdoAKsqhfAumYj2RAu1m4ikaQ3Kx7bhyCTqYNYpiqvARd2FgACFLPPhht6cG9sgF3KeQk6I1B8/vfx/fjtANQSxT5oRMle+71n0TmRWptdEVflYOwtBA/huIcrqXWR6Fnb7S6HntsNlWboZq0vdget8eB8WhOIPffeX5kpE2AbmCk4RtxiWif5rFjWPtOHHiBugDGhP7y0ljzimeBCmVFcWQ9ySQcQQbBFYj4QLc8B1U357E6HYSL1xNyCgWzVdjpHUCaXBkk4xoziIRuLbugzfwhw==";
-                        }
-                }
-
+			ssh_authorized_key {
+				"cbass@Cary-Bass":
+					ensure  => absent,
+					user    => $username,
+					type    => "ssh-rsa",
+					key     => "AAAAB3NzaC1yc2EAAAABIwAAAQEA390DUZg46zDR+o7PdEMypqqtCzg6rOj+ZP2FXWi8pof3bsGJ0J/bhRqP5/CPwdoAKsqhfAumYj2RAu1m4ikaQ3Kx7bhyCTqYNYpiqvARd2FgACFLPPhht6cG9sgF3KeQk6I1B8/vfx/fjtANQSxT5oRMle+71n0TmRWptdEVflYOwtBA/huIcrqXWR6Fnb7S6HntsNlWboZq0vdget8eB8WhOIPffeX5kpE2AbmCk4RtxiWif5rFjWPtOHHiBugDGhP7y0ljzimeBCmVFcWQ9ySQcQQbBFYj4QLc8B1U357E6HYSL1xNyCgWzVdjpHUCaXBkk4xoziIRuLbugzfwhw==";
+			}
+		}
 	}
 
 	class brion inherits baseaccount {
@@ -349,17 +346,14 @@ class accounts {
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAADAQABAAABAQDPe5ARdfajt7cDlcK6Fn3uFf5d5hvFdefqdr3L4Q2qeojQYioEvgcbZfVXRzpoSuPPx1cl/tDZCdfYityJiZWaE3T+gDZqYh/zO4M/JkiRp0vfnHKQeRbW7ledlitPKi9ZoEGE0e8FX17V9DNxnSolI3wBrEOOHxmBnnqS2Q04bM1/MRuMH/jxkcOWEp/SG5TOJtlSqKMAOrui7vU0gycQ9Kn6bwB0csuRA2IUwAnn07oVlCoBLR4nDTzj+iXF9j3aB2nyuZE0huXJM4ys3oL5CSDVTDow42vLyH4jwMlugxsgC2QBwUuCPLGz0uTVOvdFG5PstXBEWJnr6lL/0D13";
-
 			}
 		}
 
-		if $svnkey {
-			ssh_authorized_key { "brion@stormcloud":
-				ensure => present,
-				user => $username,
-				type => "ssh-rsa",
-				key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAmi7DfRt6vSuT7oQLE8kBjXN6tZvskked8ZHkAhwB80d6yuSa317XqMzYrxzU2SqDnprNqZZTdK0i2l7G+X8jLodTADrTvxX3oANQy9ConVkXFrd6+qfZxUs6y8rTMX/FPNxCCK/G7iQSg1GjMGzyIwdOwHPOaxx/ASJFKNbCbAhxaf/lRUdz/rirPm11KcS/h5qplA/G/Kbcgd7oopBBXnmmEPLEyVI0agIBNb8E4r7GNXikycJqPON2Wxp3id1Fs84ALacStTs49ZPtynUuRhprslhN3z6G6uliighcc0PzHMRSR/H8zjBREfqcfvAgdqSgn8DSqIv2bzWDjcNtOw==";
-			}
+		ssh_authorized_key { "brion@stormcloud":
+			ensure => absent,
+			user => $username,
+			type => "ssh-rsa",
+			key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAmi7DfRt6vSuT7oQLE8kBjXN6tZvskked8ZHkAhwB80d6yuSa317XqMzYrxzU2SqDnprNqZZTdK0i2l7G+X8jLodTADrTvxX3oANQy9ConVkXFrd6+qfZxUs6y8rTMX/FPNxCCK/G7iQSg1GjMGzyIwdOwHPOaxx/ASJFKNbCbAhxaf/lRUdz/rirPm11KcS/h5qplA/G/Kbcgd7oopBBXnmmEPLEyVI0agIBNb8E4r7GNXikycJqPON2Wxp3id1Fs84ALacStTs49ZPtynUuRhprslhN3z6G6uliighcc0PzHMRSR/H8zjBREfqcfvAgdqSgn8DSqIv2bzWDjcNtOw==";
 		}
 	}
 
@@ -505,15 +499,13 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid, enabled => $enabled }
 
 		if $manage_home {
-			if $svnkey {
-				Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key { 'daniel.kinzler@wikimedia.de':
-					ensure  => absent,
-					user    => $username,
-					type    => "ssh-rsa",
-					key => "AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=";
-				}
+						ssh_authorized_key { 'daniel.kinzler@wikimedia.de':
+				ensure  => absent,
+				user    => $username,
+				type    => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAABJQAAAIEAuH1eNAxPgzMG0GoCZBtNx/eTnneQRT0Z/IZvbj0uQusaNlSG7MlFrUEI/HWCwIcWZlAdMBCvp2Ywc7+flvgH+JuBzbjvXDhhkC9o0/9wxKEwGRnP8RDnNBlaouzk/ROP4m8L2FZahAahFzoqDqYxzBl7bQ/iw+N811rAo+R0AGU=";
 			}
 		}
 	}
@@ -644,21 +636,19 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			if $svnkey {
-				Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key {
-					"moeller@peace":
-						ensure => present,
-						user => $username,
-						type => "ssh-dss",
-						key => "AAAAB3NzaC1kc3MAAACBAK+lRTWsGdEVTUMpERPE2pDREkNPXbNhFaHx+LZdfzCusOD6DRqv1yposhhjkMH4a1WpLxw2PM6Ew+YE5D8bJ1UCPYDDt7sjLXkVF/OtynNZchl+Eo2haanZzYzaRh/2+aZNoXfJ5OrpBCYAh7vt9a/aHKB3rKxgAR81rdjZ78gVAAAAFQCLF+CasSOhQIK1li8z5LIlpeUj4QAAAIB/QzV7a9w8xSjJbpfiUgPNeGBFTuZuizKUoygNPEgoPcKlaBT/0WuHfwshk5I6UKFwT0zkf3Ph8xdnwR3C+diM5F8ecJxVDIJjnSmNbX8FLYxkCqiawQMtlICIp7t3yHCJ7ziwG4yb3ayp0h5hfJ381xVoYyZe5XfLHUPziF8PKwAAAIA8LQPhqnGLa7TFW0Oc3exIHbEKGdH0I0D9BpgRNmGH5eOfxhYqm/DTsM9tN40XT/MIKb2dJuwIRXluCs5I2zThblTfVJzba71+uI88ou0s0iglfF4X+KdDyV+6ZR2N2rLqxi0QIJkobg2JUjUSmgzad7TtSPa6cc66AdMGjbhMhQ==";
-					"erik@zwinger.wikimedia.org":
-						ensure => present,
-						user => $username,
-						type => "ssh-rsa",
-						key => "AAAAB3NzaC1yc2EAAAABIwAAAIEA2FOxgqYXUNKz/wcmyMY+dJyH9zStGNd4vM/RGjo5M3AI7J1qZpzVgJjphtrH1O8K8eJw2LAxIuqWt2MnHUzjCvOIT9zrMbZzsCGE81po88RTtZBYW9321/KnFpnuTrfAtQagRyge7KX/8TrRa8iE0CTuRB03sIH1BtF4U0OSTmc=";
-				}
+			ssh_authorized_key {
+				"moeller@peace":
+					ensure => absent,
+					user => $username,
+					type => "ssh-dss",
+					key => "AAAAB3NzaC1kc3MAAACBAK+lRTWsGdEVTUMpERPE2pDREkNPXbNhFaHx+LZdfzCusOD6DRqv1yposhhjkMH4a1WpLxw2PM6Ew+YE5D8bJ1UCPYDDt7sjLXkVF/OtynNZchl+Eo2haanZzYzaRh/2+aZNoXfJ5OrpBCYAh7vt9a/aHKB3rKxgAR81rdjZ78gVAAAAFQCLF+CasSOhQIK1li8z5LIlpeUj4QAAAIB/QzV7a9w8xSjJbpfiUgPNeGBFTuZuizKUoygNPEgoPcKlaBT/0WuHfwshk5I6UKFwT0zkf3Ph8xdnwR3C+diM5F8ecJxVDIJjnSmNbX8FLYxkCqiawQMtlICIp7t3yHCJ7ziwG4yb3ayp0h5hfJ381xVoYyZe5XfLHUPziF8PKwAAAIA8LQPhqnGLa7TFW0Oc3exIHbEKGdH0I0D9BpgRNmGH5eOfxhYqm/DTsM9tN40XT/MIKb2dJuwIRXluCs5I2zThblTfVJzba71+uI88ou0s0iglfF4X+KdDyV+6ZR2N2rLqxi0QIJkobg2JUjUSmgzad7TtSPa6cc66AdMGjbhMhQ==";
+				"erik@zwinger.wikimedia.org":
+					ensure => absent,
+					user => $username,
+					type => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABIwAAAIEA2FOxgqYXUNKz/wcmyMY+dJyH9zStGNd4vM/RGjo5M3AI7J1qZpzVgJjphtrH1O8K8eJw2LAxIuqWt2MnHUzjCvOIT9zrMbZzsCGE81po88RTtZBYW9321/KnFpnuTrfAtQagRyge7KX/8TrRa8iE0CTuRB03sIH1BtF4U0OSTmc=";
 			}
 		}
 	}
@@ -831,13 +821,11 @@ class accounts {
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBANooK6FcUTzatD5XDUFAN03FFvJ2mYkBy9vF/OtH/hnWxH43vtgtyf7N+/f2JEmRo3gcTEpfV4eIztE4gLNd2u6S5dSXuZDIy146AD3PHRwcYjEuEL/fNC0oKEIYOKYiLoQqpnB+/idQHP7uQaiGNHC6lhEy5oWpui+kTCZBTr9bAAAAFQDJ7lk/ddYc7Wo+/IhR0EOQ3mTpjQAAAIEAtagACraVrg8PtpbpK7tjNjqQkgK8IaQDjEMGbGyJdpASBZkyw+EZSLV/10pihQktIYcHJCmjEBOsFN9BEf0IlgoQkJO4IhhgoRXA8eZRRl106GpIv18QUmayjWNtvG321oibmSJdi4VwdfckH6x63bS5t3RQP2ExW/3KiBDa91cAAACAW2t7AgL3qI7NhXjIGeo4lPY45SVSy+KxHuyQKiGs7v753mtdrhSDD4xaawzQf53jOlYe1yBIlEbqICRJ8zhT+e5eS9ZiXWM+G0V5P6U1f6HeRDBLm1SPsvJUdYFPdoIlcg8e9ys5E3sHNy6xYF1zjzMe+EtCsiM1+mC5olBWl8I=";
 			}
-			if $svnkey {
-				ssh_authorized_key { "jf@alster089.server4you.de":
-					ensure	=> present,
-					user	=> $username,
-					type	=> "ssh-dss",
-					key => "AAAAB3NzaC1kc3MAAAEBAIWL+yGT24UBP1leJnF7hkaG/AyyUWKP0uCFX4tJNdIlKj3sLb4V7AEtiRaX+h93Df1L5SPOr96iN1TOd51+ny5K/D3iOse8ACQTa0Zigll/mo6S30ceixBk218ud/k0q/hAIvMnZj2AxPIX/jYV3Akjp1sPaT9/Ed06SHGyj9LfdOTK8YlrkH6eO3lUJ6DBU5Qg3KurUXGgnfFx75Ij7nr+C6tekgj7eF+stg87lSt2Q0gi4fu/jBMd3HQyPY3kFBRpe5Ey3RfGRwA0Zre1gvyByliFRSx+zuBHLph2djyXRgS0GeyR/txxKS4dcE/7Qk4dQed3m91VyRCikbs6M/sAAAAVANahyQS99I9cKiiLig3L907M06fjAAABACphqj549n+hJk+PQNY8wiYjxUsH0JMybiVPmihnSa7P9Eys7YCn3onT+Qs12POzvo69sCM20HSulZe5UJu3cLNxlwrphkg+Rmm6PBULNJYNFA1Va+aotEuk3yeXhJUFcFgKYax2QsMbTUXSvGjwICGH+5g5Mv+be4NMhDG1iFALpIprVxRY0dvbRnh5PlAozjfrDL08XnEZWneOPp5AQtZrkwLIynM//z7DRE2VKN2yoxGkqQO6fBRqp9Dn3kzxDf1A8DGmzahZl7h8YMHLgR8CjKYzd/GGeOL5VnQtDj+/wVeXvBm5HSbnoAJJ1jqahPcIzT1faHZKliANxOuhbOIAAAEAPaef9bwlLj+nNqHhc9uT9DHQABMzclB5TFjO9XO4Tm0kqjlp//itY2Jqz9lUnKty6uymvIioIuGgqsTeznAqIDSv+74h96jXAL5GveXtHHFK4ItLd1tadbfCpGN19s6ONDCng162XHHeCdQlB711Ua38Sn2FZOdNkIXiDby4FzXOdC1G0SYdBa5uPfgA7ljLojvYgH5gNSGJXGj2e///433FRM5N9tn9WzilIuEcWloNTkabgdIwc2PWWv/bA0mZOlV44AR1u29P39IklQrBTmBYxMRv/XyP8CpNHiD9wnUinO8b78mZiIp78Cxbo3cyIPIusRzc+m7A9cKR13EWOw==";
-				}
+			ssh_authorized_key { "jf@alster089.server4you.de":
+				ensure	=> absent,
+				user	=> $username,
+				type	=> "ssh-dss",
+				key => "AAAAB3NzaC1kc3MAAAEBAIWL+yGT24UBP1leJnF7hkaG/AyyUWKP0uCFX4tJNdIlKj3sLb4V7AEtiRaX+h93Df1L5SPOr96iN1TOd51+ny5K/D3iOse8ACQTa0Zigll/mo6S30ceixBk218ud/k0q/hAIvMnZj2AxPIX/jYV3Akjp1sPaT9/Ed06SHGyj9LfdOTK8YlrkH6eO3lUJ6DBU5Qg3KurUXGgnfFx75Ij7nr+C6tekgj7eF+stg87lSt2Q0gi4fu/jBMd3HQyPY3kFBRpe5Ey3RfGRwA0Zre1gvyByliFRSx+zuBHLph2djyXRgS0GeyR/txxKS4dcE/7Qk4dQed3m91VyRCikbs6M/sAAAAVANahyQS99I9cKiiLig3L907M06fjAAABACphqj549n+hJk+PQNY8wiYjxUsH0JMybiVPmihnSa7P9Eys7YCn3onT+Qs12POzvo69sCM20HSulZe5UJu3cLNxlwrphkg+Rmm6PBULNJYNFA1Va+aotEuk3yeXhJUFcFgKYax2QsMbTUXSvGjwICGH+5g5Mv+be4NMhDG1iFALpIprVxRY0dvbRnh5PlAozjfrDL08XnEZWneOPp5AQtZrkwLIynM//z7DRE2VKN2yoxGkqQO6fBRqp9Dn3kzxDf1A8DGmzahZl7h8YMHLgR8CjKYzd/GGeOL5VnQtDj+/wVeXvBm5HSbnoAJJ1jqahPcIzT1faHZKliANxOuhbOIAAAEAPaef9bwlLj+nNqHhc9uT9DHQABMzclB5TFjO9XO4Tm0kqjlp//itY2Jqz9lUnKty6uymvIioIuGgqsTeznAqIDSv+74h96jXAL5GveXtHHFK4ItLd1tadbfCpGN19s6ONDCng162XHHeCdQlB711Ua38Sn2FZOdNkIXiDby4FzXOdC1G0SYdBa5uPfgA7ljLojvYgH5gNSGJXGj2e///433FRM5N9tn9WzilIuEcWloNTkabgdIwc2PWWv/bA0mZOlV44AR1u29P39IklQrBTmBYxMRv/XyP8CpNHiD9wnUinO8b78mZiIp78Cxbo3cyIPIusRzc+m7A9cKR13EWOw==";
 			}
 		}
 	}
@@ -993,24 +981,23 @@ class accounts {
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAIEAomwyIAuPEDxmRFl3O11IH1yH+n7th+meS4dmB9OzKxh5Sg/aURrfFPUV/rSh+2QqfR7M7kB59ganKpc/7tCXW9mxoIr/c1kQ9jBzpyc7VUox/VTlSTZOFJA9sH9PUVIDINVNPyPFLNy9RtvWkSfHwffo6LHNju+us9PaUlmAaE0=";
 			}
-			if $svnkey {
-				ssh_authorized_key {
-					"midom@flute.local":
-						ensure => present,
-						user => $username,
-						type => "ssh-dss",
-						key => "AAAAB3NzaC1kc3MAAACBAIRBscJUrqCDE7vK6YwlQdEXsGCBaW44dbPoG8QRtHU+bD8wZg/ViI5RX6hRCEJ7EWC8W+3xfocbo48UP94cAuvsQCquDvE+mwnVPihy3EtfbPFdPj0X8E/dGGD3YzRhq7ALMAnRPYlsgixd2YMDUrEYM7gsmeZbwfDrfgFYihTxAAAAFQCZv5NzAdGZSURVo/oAGr/27rxYswAAAIAlzeKOSWRBHV+01jPhESwbQpDhgVWd7KcowZ8JP/Ok2isperY9Yyi49udCy3PTNR63zyVqsrA8HHFbAmQvMXInAQxeqLxthWQL5MPYGKaZ7GeFiR5IhJjW1uK7flmdL8855BAbFbtdMGXgLVfH+Wa5o68e8hdNfP5jKkzTQRqkbAAAAIAhIqRn8sfBgd8vh0oZfzEJKaU8mOentbfN/tGXoFsPZF1kI4HTnYlktfzxo6wd9GGeXb8dJOa3r5OBvuw35zs/4ChPyONaMwyXCLRIDf6Iamhn6Vh81UFrGjuhng5awW5VLhQJcAr5zZ2tw0YWHQ8UExFnIYPnKuWnAs+qIFv0rA==";
-					"root@flake.defau.lt":
-						ensure => present,
-						user => $username,
-						type => "ssh-dss",
-						key => "AAAAB3NzaC1kc3MAAACBAO+dLGWJQ2nu3jsNnRG2zsX7W9HK/XHOvWRRiezAf8e/d0n8vHOUL20MszrIRenM+F/WP4DPhIpDBpZ0DlIslY1IxX0hNeG5kgkq0dftRbO+qnf70nurWmggAlK5H+omCDgn9odR68f+ovfkcCz7edYz2Gq2vNHFpuK4wOJhQGZTAAAAFQCWwe8yW7iddPkBaViWTDpvLwBd4QAAAIEA5AYTGGVu8DAuL0OShVduean+IQd3j2xiU0HTCuALQZHTxMcN9BSxbgYY7Moh1TRAKpNwQUvtw6RVS2k58s69RAj8URpFzMSmnrgbTZt6CZ3AuRrnlz74S8FLTwDWMeHDyg5ey5ezOcQn0o34wuK3H0EFtkshykKQA53nd6aFmfYAAACAax/cZBm/Sjrb2+c3HE6WKfVSSi0dLLe/D1LidksSYEv/Kfcgx+/6ze7o+yHT3n+5cW813/2Iaa18cYD591o9tD6NM+WI/WtWrJIx/4sIwudow90N6P1JMkf+gr8hnIszaw52Zf0Xw5C7tLSkR6gMcI4WgwTQakQkram1DaJEIPk=";
-					"midom@flare.local":
-						ensure => present,
-						user => $username,
-						type => "ssh-rsa",
-						key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAvIaIOXvgvLTMPmSIEg/ebFWQtwj9x8KGs4148oj/ytyhwtcBcx1qT+dy03YyZebxt1snVUr/o/xYnzQNksYJug61dmGZLmeG7ktTVkLeUJqoLDmgP450vR/Vlug+YX63kGCKZIaCO47AzINfSSBfaXJq+GF8OBWEThfxq8V5GoOp2BMqf7e3LPIQOe/p7/Yr0yGAjFXZ5ju+KLs3JFP5wDVKSKNjjs+x8a74DYyUYiKeFox549e/iOXq8cLSfGyLQ7asYRKS0+UjPLO5Pi3iW5bGLMibiSNui+sWLL8meEPVr7DtqtZ2/XptzDCb9KUaxldRtYNoYczls1dR0fXjmw==";
-				}
+
+			ssh_authorized_key {
+				"midom@flute.local":
+					ensure => absent,
+					user => $username,
+					type => "ssh-dss",
+					key => "AAAAB3NzaC1kc3MAAACBAIRBscJUrqCDE7vK6YwlQdEXsGCBaW44dbPoG8QRtHU+bD8wZg/ViI5RX6hRCEJ7EWC8W+3xfocbo48UP94cAuvsQCquDvE+mwnVPihy3EtfbPFdPj0X8E/dGGD3YzRhq7ALMAnRPYlsgixd2YMDUrEYM7gsmeZbwfDrfgFYihTxAAAAFQCZv5NzAdGZSURVo/oAGr/27rxYswAAAIAlzeKOSWRBHV+01jPhESwbQpDhgVWd7KcowZ8JP/Ok2isperY9Yyi49udCy3PTNR63zyVqsrA8HHFbAmQvMXInAQxeqLxthWQL5MPYGKaZ7GeFiR5IhJjW1uK7flmdL8855BAbFbtdMGXgLVfH+Wa5o68e8hdNfP5jKkzTQRqkbAAAAIAhIqRn8sfBgd8vh0oZfzEJKaU8mOentbfN/tGXoFsPZF1kI4HTnYlktfzxo6wd9GGeXb8dJOa3r5OBvuw35zs/4ChPyONaMwyXCLRIDf6Iamhn6Vh81UFrGjuhng5awW5VLhQJcAr5zZ2tw0YWHQ8UExFnIYPnKuWnAs+qIFv0rA==";
+				"root@flake.defau.lt":
+					ensure => absent,
+					user => $username,
+					type => "ssh-dss",
+					key => "AAAAB3NzaC1kc3MAAACBAO+dLGWJQ2nu3jsNnRG2zsX7W9HK/XHOvWRRiezAf8e/d0n8vHOUL20MszrIRenM+F/WP4DPhIpDBpZ0DlIslY1IxX0hNeG5kgkq0dftRbO+qnf70nurWmggAlK5H+omCDgn9odR68f+ovfkcCz7edYz2Gq2vNHFpuK4wOJhQGZTAAAAFQCWwe8yW7iddPkBaViWTDpvLwBd4QAAAIEA5AYTGGVu8DAuL0OShVduean+IQd3j2xiU0HTCuALQZHTxMcN9BSxbgYY7Moh1TRAKpNwQUvtw6RVS2k58s69RAj8URpFzMSmnrgbTZt6CZ3AuRrnlz74S8FLTwDWMeHDyg5ey5ezOcQn0o34wuK3H0EFtkshykKQA53nd6aFmfYAAACAax/cZBm/Sjrb2+c3HE6WKfVSSi0dLLe/D1LidksSYEv/Kfcgx+/6ze7o+yHT3n+5cW813/2Iaa18cYD591o9tD6NM+WI/WtWrJIx/4sIwudow90N6P1JMkf+gr8hnIszaw52Zf0Xw5C7tLSkR6gMcI4WgwTQakQkram1DaJEIPk=";
+				"midom@flare.local":
+					ensure => absent,
+					user => $username,
+					type => "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAvIaIOXvgvLTMPmSIEg/ebFWQtwj9x8KGs4148oj/ytyhwtcBcx1qT+dy03YyZebxt1snVUr/o/xYnzQNksYJug61dmGZLmeG7ktTVkLeUJqoLDmgP450vR/Vlug+YX63kGCKZIaCO47AzINfSSBfaXJq+GF8OBWEThfxq8V5GoOp2BMqf7e3LPIQOe/p7/Yr0yGAjFXZ5ju+KLs3JFP5wDVKSKNjjs+x8a74DYyUYiKeFox549e/iOXq8cLSfGyLQ7asYRKS0+UjPLO5Pi3iW5bGLMibiSNui+sWLL8meEPVr7DtqtZ2/XptzDCb9KUaxldRtYNoYczls1dR0fXjmw==";
 			}
 		}
 	}
@@ -1098,15 +1085,14 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
-			if $svnkey {
-                        	Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key { "rainman@localhost.localdomain":
-                                        ensure  => present,
-                                        user    => $username,
-                                        type    => "ssh-dss",
+			ssh_authorized_key { 
+				'rainman@localhost.localdomain':
+					ensure  => absent,
+					user    => $username,
+					type    => "ssh-dss",
 					key => "AAAAB3NzaC1kc3MAAACBAPo8Dv0FDT2DYr+olg6k5iJFgBfaXn3wk+9vDv+DQe8Ys4WzVhQcQ++/kB155dlKczmCvzQWIT7r/af7tEjbB+C3I9qz6BN5htxvvrVCrzab9SQXL4fYy7TTg4mPprJm5GZScBgO1VLua403Kx6SXZ36HEgBHWK8tkblJq9cuazpAAAAFQCpS4v9SsjqXsDR1LALBw4BvfZQowAAAIEAiHxv/Wqj99FPYRcquxehZN6ZsBxBEqhtDiQPL6SQy4VyPZRNfj9sH/8BAbwOdNkaU/nXgH0xOTyW86k2CfDMNUf8etRBXy6MSGoPWIdugkY0mRKqorqkoVDMvZVPbTI03nWBpvb2CDb47/mJLqhn6s1xQ5OzuZ2u2R+cr+8yc7MAAACBAMenXuT9/kRpVcWHrkAxJNqf0FLpuRXAGwAfI3gGFntsa+PVNA/8tz4afEO1NnaWmGQ6MO7xXKMejU2WR7NpKkxbCEHeyy5yKdvK5tZ3xkt2r/QLtxdiTSvizB8Fl+25JP3oUR5o+laxrk0gbEfbMqI6rHj+LJ8ibrE5+EYe6dAH";
-				}
 			}
 		}
 	}
@@ -1129,19 +1115,17 @@ class accounts {
 				key 	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAoDAuzkYEIeGVC10zh3i6WnyJjhWK/JpQbSFlWfb5t02kGPvmi8m+fdCPhvqiOpOCcQqTL1Knia6AeRNMx+dj3qxctsas/RnJtIUbACK5gH6aKg0OMmcG9LNiVLN5knx1UMHhQ7Ma6KSiDLeqsID009j7+Fj8qgGup7lKOQs7WYRpaXlAyR0hdKeyxcXWh+GPQEZAhl0DHrjFgdDcc5n2K8GBRESfdfCKm0SomHYGWPsTIpWrY13se0kUJzWXIafzr0U/czEdVDuSuil6P65d9cU7vypcUC3i5d2L4QiO4MBVNcXluFuFNZ8UY/QAlixz/5x/ARbgjcMvXwJQWjhh+w==",
 			}
 
-			if $svnkey {
-				ssh_authorized_key {
-					"rob@Navi.local":
-						ensure	=> present,
-						user	=> $username,
-						type	=> "ssh-rsa",
-						key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsyIODQk6BtkDVp8rHfMRZFcDJxdv7jLK6ga2U5oRUb/thKLoocECQ8fEzkAJBOmuyhv825W86NmiAmPj320gI72zQacCyu3Mj1FnLQV9P9z2G6POqs/OdnG+3wZV1aTRoWHFREalEon1FoBOSE2TOgr5UtNnL+X+pmFkqjIKmCx/97KOq27xwNlYLEzO6FJcSptDoWoYEChT+/MtUiKoh5ZwAxSH1j8iLLwsKhV7+RC5EKKor21teTRMzYj59oYR7wM9IuhKFJRewKRJwaZSFboS0H33QxMsEgZhbawOSBn1r3mepfNsa+AI4B8T/1EIdSe3H+NArq8Wm/oAR3hN2w==";
-					"robh@zwinger":
-						ensure	=> present,
-						user	=> $username,
-						type	=> "ssh-rsa",
-						key => "AAAAB3NzaC1yc2EAAAABIwAAAQEA8SKRT6tT1G/qDHuSoZsR/qTEREN7Zk39P/Gptzr4Ttu2TdCRDLyStHrssqfVXVXwa9AJ7UG8FOnwkz6Ow1zjQEOce6dOAPnZI/hdrxChsUOULTzxK56KwHh9J51vu26+2xpuW6CG0w2ycohTjAXiNEQJbfGthQTXto0h26KdZsCGqTbAlKy1X/Gm/kJeOXzGNja9ezivWRfD8XsNX4igKz/2PHRlWhv6hWIzBVZmMJ1yYm9guhwWaya97uRTWhD9H0OL8/xKBwMrM5eXlVWX5BQhFwkqwvtArSioIWf5wD3e6a0OdOjfCHZEpBpUY/Rv1BW+9FXJ310nleoN4kfuvQ==";
-				}
+			ssh_authorized_key {
+				"rob@Navi.local":
+					ensure	=> absent,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABIwAAAQEAsyIODQk6BtkDVp8rHfMRZFcDJxdv7jLK6ga2U5oRUb/thKLoocECQ8fEzkAJBOmuyhv825W86NmiAmPj320gI72zQacCyu3Mj1FnLQV9P9z2G6POqs/OdnG+3wZV1aTRoWHFREalEon1FoBOSE2TOgr5UtNnL+X+pmFkqjIKmCx/97KOq27xwNlYLEzO6FJcSptDoWoYEChT+/MtUiKoh5ZwAxSH1j8iLLwsKhV7+RC5EKKor21teTRMzYj59oYR7wM9IuhKFJRewKRJwaZSFboS0H33QxMsEgZhbawOSBn1r3mepfNsa+AI4B8T/1EIdSe3H+NArq8Wm/oAR3hN2w==";
+				"robh@zwinger":
+					ensure	=> absent,
+					user	=> $username,
+					type	=> "ssh-rsa",
+					key => "AAAAB3NzaC1yc2EAAAABIwAAAQEA8SKRT6tT1G/qDHuSoZsR/qTEREN7Zk39P/Gptzr4Ttu2TdCRDLyStHrssqfVXVXwa9AJ7UG8FOnwkz6Ow1zjQEOce6dOAPnZI/hdrxChsUOULTzxK56KwHh9J51vu26+2xpuW6CG0w2ycohTjAXiNEQJbfGthQTXto0h26KdZsCGqTbAlKy1X/Gm/kJeOXzGNja9ezivWRfD8XsNX4igKz/2PHRlWhv6hWIzBVZmMJ1yYm9guhwWaya97uRTWhD9H0OL8/xKBwMrM5eXlVWX5BQhFwkqwvtArSioIWf5wD3e6a0OdOjfCHZEpBpUY/Rv1BW+9FXJ310nleoN4kfuvQ==";
 			}
 		}
 	}
@@ -1283,15 +1267,13 @@ class accounts {
 		$uid = 541
 
 		if $manage_home {
-			if $svnkey {
-                        	Ssh_authorized_key { require => Unixaccount[$realname] }
+			Ssh_authorized_key { require => Unixaccount[$realname] }
 
-				ssh_authorized_key { "tparscal@Trevor-Parscals-MacBook-Air.local":
-                                        ensure  => present,
-                                        user    => $username,
-                                        type    => "ssh-rsa",
-					key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC7az/zEdHr8aB1y2uojbvCq/5qM9hSS6GV4TQwN1OojwyuSVipsliJ0ikuGXSHRfzhjfNTx4WRYCTG9TdoXgIRly/+QUA52/4dxaV32f1JakYhdRtnTDtuD8GCju3J6JFcd2FN6pipYV7jhzAHHbug8q2PlD99PZ35sBJ6/Of9aCGA9v1tG8nSQ3vXOg1kcSDtxUQLf8cGyNlBIKOjSmJHp8ym9/ADI2yXufqYccuunqdVgUxJ2XsqGAXtq8Y4AJdUyIoQVVFtXq/ek0RY9kIW22910V7aipFvLBahUUnnYsQ1T++A8yyGHVw+ApL+lT5SCtJwy6eHXdENhxrwgKTF";
-				}
+			ssh_authorized_key { "tparscal@Trevor-Parscals-MacBook-Air.local":
+				ensure  => absent,
+				user    => $username,
+				type    => "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC7az/zEdHr8aB1y2uojbvCq/5qM9hSS6GV4TQwN1OojwyuSVipsliJ0ikuGXSHRfzhjfNTx4WRYCTG9TdoXgIRly/+QUA52/4dxaV32f1JakYhdRtnTDtuD8GCju3J6JFcd2FN6pipYV7jhzAHHbug8q2PlD99PZ35sBJ6/Of9aCGA9v1tG8nSQ3vXOg1kcSDtxUQLf8cGyNlBIKOjSmJHp8ym9/ADI2yXufqYccuunqdVgUxJ2XsqGAXtq8Y4AJdUyIoQVVFtXq/ek0RY9kIW22910V7aipFvLBahUUnnYsQ1T++A8yyGHVw+ApL+lT5SCtJwy6eHXdENhxrwgKTF";
 			}
 		}
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
@@ -1321,13 +1303,11 @@ class accounts {
 				key     => "AAAAB3NzaC1yc2EAAAABJQAAAIBwXVG0SwhtFVCJGfsOi+P5suGzST9RjFeyXIXMQJX6JrpcyCjwmA11eISlnwuOIpd4vyjJ+uJ4IVyizj9xWjLQH0Gl2+ptkyR5IvIyi8EosSpTLlYyZxVXqod4q0vnEGmFPcOMN6eQKOEX8VX4JpplodBlEVl+p1lyr+YAO3S3hw=="
 			}
 
-			if $svnkey {
-				ssh_authorized_key { "rsa-key-20061225":
-					ensure 	=> present,
-					user	=> $username,
-					type	=> "ssh-rsa",
-					key => "AAAAB3NzaC1yc2EAAAABJQAAAQEApNzNTrx3FjBamdXUIXzaI34JNbhaz0cYmU9UZiOsgRulBuDLV3V9tefWdg8AS4sH+Zl4nMXHqwQHt4+95u9j2LwoBGbfSRqowo/T0Y1WGuU+vRBFIzRPRwardRdkqw/dGaVFGTRkWG5sAS+tNmjgwPLp4gKEho35mw5J9pljwI9KS0+BUgTOGcbApjIWJLS+XYLb4zPKsb5SMl4ZDfEa1ULSQp24xrjOk8vSfgsxxplSOMsfeETmkIv9CD/OpRQWWpAOakMS2KrLSf8IRn/Wm3dbky5RKCW8Y6RRA7pV0Mi1/1JoFMTRAUrTrjxqqVid/qXGZo7GjKz6UbXmai6XOQ==";
-				}
+			ssh_authorized_key { "rsa-key-20061225":
+				ensure 	=> absent,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key => "AAAAB3NzaC1yc2EAAAABJQAAAQEApNzNTrx3FjBamdXUIXzaI34JNbhaz0cYmU9UZiOsgRulBuDLV3V9tefWdg8AS4sH+Zl4nMXHqwQHt4+95u9j2LwoBGbfSRqowo/T0Y1WGuU+vRBFIzRPRwardRdkqw/dGaVFGTRkWG5sAS+tNmjgwPLp4gKEho35mw5J9pljwI9KS0+BUgTOGcbApjIWJLS+XYLb4zPKsb5SMl4ZDfEa1ULSQp24xrjOk8vSfgsxxplSOMsfeETmkIv9CD/OpRQWWpAOakMS2KrLSf8IRn/Wm3dbky5RKCW8Y6RRA7pV0Mi1/1JoFMTRAUrTrjxqqVid/qXGZo7GjKz6UbXmai6XOQ==";
 			}
 		}
 	}
@@ -1377,7 +1357,6 @@ class accounts {
 			}
 		}
 	}
-
 
 	class catrope inherits baseaccount {
 		$username = "catrope"
