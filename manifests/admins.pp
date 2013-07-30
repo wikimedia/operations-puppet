@@ -1341,6 +1341,13 @@ class accounts {
 		unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
 
 		if $manage_home {
+			file { "/home/tstarling/.bashrc":
+				owner => $username,
+				group => $gid,
+				mode => 0444,
+				source => "puppet:///files/home/tstarling/.bashrc";
+			}
+
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key {
