@@ -2,3 +2,8 @@
 Set($LogoURL, "//upload.wikimedia.org/wikipedia/commons/d/d3/Wikimedia.png");
 
 Set($DefaultQueue, 'ops-requests');
+
+Set(%FullTextSearch,
+    Enable  => 1,
+    Indexed => 0,
+);
