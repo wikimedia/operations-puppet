@@ -179,8 +179,7 @@ sub vcl_recv_purge {
 	if (req.request == "PURGE") {
 		if (!client.ip ~ purge) {
 			error 405 "Denied.";
-		} elsif (req.url ~ "<%= vcl_config.fetch("purge_regex", "^http:") %>") {
-			call rewrite_proxy_urls;
+		} elsif (req.http.Host ~ "<%= vcl_config.fetch("purge_host_regex", ".*") %>") {
 			return (lookup);
 		} else {
 			error 204 "Domain not cached here.";
