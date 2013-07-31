@@ -5,19 +5,23 @@ include "device-detection.inc.vcl";
 include "zero.inc.vcl";
 
 sub vcl_recv {
-	call spoof_clientip;
+	if (!req.http.X-Forwarded-Proto) {
+		call spoof_clientip;
 
-	/* This call will always set the following req.http values:
-		X-Subdomain = M or ZERO
-		X-DfltLang = en|fr|ru|...
-	  This value is only set if the carrier has been successfully detected
-		X-CS = "502-13"
-	*/
-	call tag_carrier;
+		/* This call will always set the following req.http values:
+			X-Subdomain = M or ZERO
+			X-DfltLang = en|fr|ru|...
+		  This value is only set if the carrier has been successfully detected
+			X-CS = "502-13"
+		*/
+		call tag_carrier;
 
-	/* Assemble X-Analytics header */
-	if (req.http.X-CS) {
-		set req.http.X-Analytics = "zero=" + req.http.X-CS;
+		/* Assemble X-Analytics header */
+		if (req.http.X-CS) {
+			set req.http.X-Analytics = "zero=" + req.http.X-CS;
+		}
+	} else {
+		set req.X-Subdomain = "M";
 	}
 
 	/* Replace <language>.(m|zero).<project>.org by <language>.<project>.org */
