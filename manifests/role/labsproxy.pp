@@ -20,7 +20,7 @@ class role::pmtpa-proxy {
 			mode => 0555;
 		"/var/www/robots.txt":
 			ensure => present,
-			require => file["/var/www"],
+			require => File["/var/www"],
 			mode => 0444,
 			owner => root,
 			group => root,
@@ -50,7 +50,7 @@ class role::eqiad-proxy {
 			mode => 0555;
 		"/var/www/robots.txt":
 			ensure => present,
-			require => file["/var/www"],
+			require => File["/var/www"],
 			mode => 0444,
 			owner => root,
 			group => root,
