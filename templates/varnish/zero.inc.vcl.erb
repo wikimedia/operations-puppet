@@ -450,6 +450,11 @@ sub tag_carrier {
 		}
 	}
 	/* Please keep the above list alphabetized by the ACL variable */
+
+	// Until zero extension supports it, https should not set X-CS
+	if (req.http.X-Forwarded-Proto == "https") {
+		unset req.http.X-CS;
+	}
 }
 
 sub replace_clientip {
