@@ -90,26 +90,14 @@ class svn::server {
 
 		file {
 			"/svnroot/bak":
-				ensure => directory,
-				owner => 'root',
-				group => 'svnadm',
-				mode => '0775',
-				require => File["/svnroot"];
+				ensure => absent;
 			"/usr/local/bin/svndump.php":
-				owner => 'root',
-				group => 'root',
-				mode => '0555',
-				source => "puppet:///files/svn/svndump.php",
-				require => File["/svnroot/bak"];
+				ensure => absent;
 			}
 
 		cron {
 			'svndump':
-				command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
-				require => File["/usr/local/bin/svndump.php"],
-				user => root,
-				hour => 18,
-				minute => 0;
+				ensure => absent;
 		}
 	}
 
