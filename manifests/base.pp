@@ -5,7 +5,6 @@ import "generic-definitions.pp"
 import "ssh.pp"
 import "sudo.pp"
 import "nagios.pp"
-import "nrpe.pp"
 
 # /var/run has moved to /run in newer Ubuntu versions.
 # See: http://lwn.net/Articles/436012/
