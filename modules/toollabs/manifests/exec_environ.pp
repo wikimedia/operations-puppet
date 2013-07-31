@@ -112,6 +112,7 @@ class toollabs::exec_environ {
       'python-wadllib',
       'python-webpy',
       'python-werkzeug',
+      'python-zmq',
 
       # PHP libraries
       'php5-cli',
