@@ -29,6 +29,44 @@ class role::applicationserver {
 
 	}
 
+	class configuration {
+		# Parameters passed by the role to mediawiki::jobrunner
+		# dprioprocs : default high and low priority jobs
+		# iprioprocs : immediate priority jobs
+		# procs_per_iobound_type: I/O bounded jobs
+		$jobrunner = {
+
+			'production' => {
+				'jobrunner' => {
+					'dprioprocs'             => 15,
+					'iprioprocs'             => 6,
+					'procs_per_iobound_type' => 5,
+				},
+				'videoscaler' => {
+					'dprioprocs'             => 5,
+					'iprioprocs'             => 0,
+					'procs_per_iobound_type' => 0,
+					'timeout'                => 14400,
+				},
+			},
+
+			'labs' => {
+				'jobrunner' => {
+					'dprioprocs'             => 4,
+					'iprioprocs'             => 1,
+					'procs_per_iobound_type' => 1,
+				},
+				'videoscaler' => {
+					'dprioprocs'             => 5,
+					'iprioprocs'             => 0,
+					'procs_per_iobound_type' => 0,
+					'timeout'                => 14400,
+				},
+			},
+
+		}  # end of $jobrunner
+	}
+
 # Class: role::applicationserver
 #
 # This class installs a mediawiki application server
@@ -185,7 +223,25 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 	}
-	class videoscaler( $run_jobs_enabled = true ){
+
+	# Parent class for jobrunners
+	class jobrunner::base {
+		include applicationserver::config::base,
+			applicationserver::packages,
+			applicationserver::cron,
+			applicationserver::sudo,
+			role::applicationserver::configuration::php,
+			role::applicationserver::configuration
+
+		# dependency for wikimedia-task-appserver
+			service { 'apache':
+				name => "apache2",
+				enable => false,
+				ensure => stopped;
+		}
+	}
+
+	class videoscaler( $run_jobs_enabled = true ) inherits jobrunner::base {
 		system_role { "role::applicationserver::videoscaler": description => "TMH Jobrunner Server" }
 
 		class { "role::applicationserver::common": group => "videoscaler" }
@@ -194,46 +250,31 @@ class role::applicationserver {
 			imagescaler::packages,
 			imagescaler::files
 
+		$video_scaler_conf = $role::applicationserver::configuration::jobrunner[$::realm]['videoscaler']
+
 		class {"mediawiki::jobrunner":
-			run_jobs_enabled => $run_jobs_enabled,
-			dprioprocs => 5,
-			iprioprocs => 0,
-			procs_per_iobound_type => 0,
-			type => "webVideoTranscode",
-			timeout => 14400,
-			extra_args => "-v 0"
-		}
-
-		include applicationserver::config::base,
-			applicationserver::packages,
-			applicationserver::cron,
-			applicationserver::sudo,
-			role::applicationserver::configuration::php
-
-		# dependency for wikimedia-task-appserver
-		service { 'apache':
-			name => "apache2",
-			enable => false,
-			ensure => stopped;
+			run_jobs_enabled       => $run_jobs_enabled,
+			dprioprocs             => $video_scaler_conf['dprioprocs'],
+			iprioprocs             => $video_scaler_conf['iprioprocs'],
+			procs_per_iobound_type => $video_scaler_conf['procs_per_iobound_type'],
+			timeout                => $video_scaler_conf['timeout'],
+			type                   => "webVideoTranscode",
+			extra_args             => "-v 0"
 		}
 	}
-	class jobrunner( $run_jobs_enabled = true ){
+
+	class jobrunner( $run_jobs_enabled = true ) inherits jobrunner::base {
 		system_role { "role::applicationserver::jobrunner": description => "Standard Jobrunner Server" }
 
 		class { "role::applicationserver::common": group => "jobrunner" }
 
-		class { "mediawiki::jobrunner": dprioprocs => 15, iprioprocs => 6, procs_per_iobound_type => 5, run_jobs_enabled => $run_jobs_enabled }
-		include applicationserver::config::base,
-			applicationserver::packages,
-			applicationserver::cron,
-			applicationserver::sudo,
-			role::applicationserver::configuration::php
-
-		# dependency for wikimedia-task-appserver
-			service { 'apache':
-				name => "apache2",
-				enable => false,
-				ensure => stopped;
+		# Load the realm based configuration for jobrunners:
+		$jobrunner_conf = $role::applicationserver::configuration::jobrunner[$::realm]['jobrunner']
+		class { "mediawiki::jobrunner":
+			dprioprocs             => $jobrunner_conf['dprioprocs'],
+			iprioprocs             => $jobrunner_conf['iprioprocs'],
+			procs_per_iobound_type => $jobrunner_conf['procs_per_iobound_type'],
+			run_jobs_enabled       => $run_jobs_enabled
 		}
 	}
 
