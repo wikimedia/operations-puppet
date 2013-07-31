@@ -20,11 +20,9 @@ sub vcl_recv {
 <% end -%>
 	call pass_requests;
 
-	return(lookup);
-}
-
-sub vcl_hash {
 	call evaluate_cookie;
+
+	return(lookup);
 }
 
 sub vcl_pass {

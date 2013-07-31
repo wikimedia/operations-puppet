@@ -47,11 +47,9 @@ sub vcl_recv {
 		unset req.http.If-Modified-Since;
 	}
 
-	return(lookup);
-}
-
-sub vcl_hash {
 	call evaluate_cookie;
+
+	return(lookup);
 }
 
 sub vcl_pass {
