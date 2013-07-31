@@ -180,6 +180,9 @@ define upstart_job($install="false", $start="false") {
 }
 
 # Expects address without a length, like address => "208.80.152.10", prefixlen => "32"
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_ip($interface, $address, $prefixlen="32") {
 	$prefix = "${address}/${prefixlen}"
 	$ipaddr_command = "ip addr add ${prefix} dev ${interface}"
@@ -200,6 +203,9 @@ define interface_ip($interface, $address, $prefixlen="32") {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_manual($interface, $family="inet") {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to create a new manually setup interface
@@ -216,6 +222,9 @@ define interface_manual($interface, $family="inet") {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_up_command($interface, $command) {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
@@ -227,6 +236,9 @@ define interface_up_command($interface, $command) {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_setting($interface, $setting, $value) {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
@@ -237,10 +249,16 @@ define interface_setting($interface, $setting, $value) {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 class base::vlan-tools {
 	package { vlan: ensure => latest; }
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 class base::bonding-tools {
 	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
 }
@@ -249,6 +267,9 @@ class base::mwclient {
     package { python-mwclient: ensure => latest; }
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_tun6to4($remove=undef) {
 	if $remove == 'true' {
 		$augeas_cmd = [	"rm auto[./1 = 'tun6to4']",
@@ -285,6 +306,9 @@ define interface_tun6to4($remove=undef) {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=undef, $family="inet", $method="static", $up=undef, $down=undef, $remove=undef) {
 	require base::vlan-tools
 
@@ -346,6 +370,9 @@ define interface_tagged($base_interface, $vlan_id, $address=undef, $netmask=unde
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_aggregate_member($master) {
 	require base::bonding-tools
 
@@ -371,6 +398,9 @@ define interface_aggregate_member($master) {
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast", $hash_policy="layer2+3") {
 	require base::bonding-tools
 
@@ -438,6 +468,9 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 	}
 }
 
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 	if ! $interface {
 		$all_interfaces = split($::interfaces, ",")
@@ -479,6 +512,9 @@ define interface_add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 #	The (abbreviated) offload setting, e.g. 'gro'
 # - $value:
 #	The value (on/off)
+#  WARNING:  This function is deprecated, and code will soon be switched
+#            over to the new 'interface' module.  Until that cut happens
+#            THIS CLASS IS FROZEN.
 define interface_offload($interface="eth0", $setting, $value) {
 	# Set in /etc/network/interfaces
 	interface_setting { $title: interface => $interface, setting => "offload-${setting}", value => $value }
