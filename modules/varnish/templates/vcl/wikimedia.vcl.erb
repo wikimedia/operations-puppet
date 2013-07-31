@@ -236,6 +236,12 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
+	/* Add max-age/s-maxage to CC to fix Varnish's broken behaviour */
+	if (beresp.http.Cache-Control !~ "(max-age|s-maxage)"
+		&& beresp.http.Cache-Control ~ "(private|no-cache)") {
+		set beresp.http.Cache-Control = beresp.http.Cache-Control + ", s-maxage=0, max-age=0";
+	}
+
 	set beresp.grace = 60m;
 
 <% if vcl_config.fetch("retry5xx", "0") == "1" -%>
