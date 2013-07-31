@@ -85,41 +85,13 @@ class svn::server {
 		}
 	}
 
-	class dumps {
-		require "svn::server"
-
-		file {
-			"/svnroot/bak":
-				ensure => directory,
-				owner => 'root',
-				group => 'svnadm',
-				mode => '0775',
-				require => File["/svnroot"];
-			"/usr/local/bin/svndump.php":
-				owner => 'root',
-				group => 'root',
-				mode => '0555',
-				source => "puppet:///files/svn/svndump.php",
-				require => File["/svnroot/bak"];
-			}
-
-		cron {
-			'svndump':
-				command => "/usr/local/bin/svndump.php > /dev/null 2>&1",
-				require => File["/usr/local/bin/svndump.php"],
-				user => root,
-				hour => 18,
-				minute => 0;
-		}
-	}
-
 	class conversion {
 		package { ['libqt4-dev', 'libsvn-dev', 'g++']:
 			ensure => latest;
 		}
 	}
 
-	include viewvc, dumps, conversion
+	include viewvc, conversion
 }
 
 class svn::groups {
