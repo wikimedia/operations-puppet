@@ -33,7 +33,7 @@ sub evaluate_cookie {
 	 */
 	if (req.http.Cookie ~ "([sS]ession|Token)=") {
 		set req.hash_ignore_busy = true;
-	else {
+	} else {
 		call cookie_munging;
 	}
 }
