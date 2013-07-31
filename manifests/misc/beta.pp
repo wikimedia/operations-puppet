@@ -3,15 +3,24 @@ class misc::beta::autoupdater {
 	require misc::deployment::common_scripts
 
 	file {
+		# Shell version, FIXME need to be removed
 		"/usr/local/bin/wmf-beta-autoupdate":
 			owner => root,
 			group => root,
 			mode => 0555,
 			require => [
-				#File["/usr/local/bin/mw-update-l10n"],
 				Package["git-core"],
 			],
 			source => "puppet:///files/misc/beta/wmf-beta-autoupdate";
+		# Python rewrite
+		"/usr/local/bin/wmf-beta-autoupdate.py":
+			owner => root,
+			group => root,
+			mode => 0555,
+			require => [
+				Package['git-core'],
+			],
+			source => 'puppet:///files/misc/beta/wmf-beta-autoupdate.py';
 		"/etc/default/wmf-beta-autoupdate":
 			ensure => absent;
 		"/etc/init/wmf-beta-autoupdate.conf":
