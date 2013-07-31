@@ -11,7 +11,6 @@ brewster.wikimedia.org	/srv/tftpboot	default
 sanger.wikimedia.org	/var/vmail	default
 nfs1.pmtpa.wmnet        /var/opendj/backups default
 nfs2.pmtpa.wmnet        /var/opendj/backups default
-formey.wikimedia.org    /svnroot/bak default
 manganese.wikimedia.org /var/lib/gerrit2/review_site/git default
 sodium.wikimedia.org	/var/lib/mailman	default
 stat1.wikimedia.org     /home default
