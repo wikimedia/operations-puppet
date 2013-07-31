@@ -340,6 +340,14 @@ class gerrit::crons {
 		minute => [0, 15, 30, 45]
 	}
 
+	cron { list_reviewer_counts:
+		# This is useful information about the distribution of reviewers.
+		# Gerrit's rest api doesn't provide an easy way to get this data.
+		command => "gerrit gsql --format JSON -c \"'SELECT change_id.s AS change_id, COUNT(DISTINCT patch_set_approvals.account_id) AS reviewer_count FROM change_id LEFT JOIN patch_set_approvals ON (change_id.s = patch_set_approvals.change_id) GROUP BY change_id.s'\" > /var/www/reviewer-counts.json",
+		user => gerrit2,
+		hour => 1
+	}
+
 	cron { clear_gerrit_logs:
 		# Gerrit rotates their own logs, but doesn't clean them out
 		# Delete logs older than a week
