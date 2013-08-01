@@ -2943,7 +2943,7 @@ class accounts {
                 ensure => present,
                 user   => $username,
                 type   => "ssh-rsa",
-                key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/"
+                key    => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC/FKzYz14zzwGZBltEn/PKw90dTxGvvmMUK2no5qE9gHd+zGlYNoriQK0dRsiGyWEf0O0V0dEMhkM/LjSVMqxBK0nOoAY01sgJrAH2VTYgB6RnTqAG2gUWuPEfPMZ+5tJMVgr0hRkbrZQoEvBRAv45xfywXI9if0pBtbG710JrEbAryyLfU4tt6gRAPgaAZ5ch9ISnMXden2c+N+KmjC0IXwtN7DteaCbvsL4vQHZ1JyC2OjPbHaH/6gJwE/IRbZSxTUzkH9UL/+v9N/b4yFYFGKP/2yZgHtWQfOsDpClOUiooik0pK/w9oQA+kOcKdjm2oumss4FQwRswDYJhaKI/",
             }
         }
     }
@@ -2963,7 +2963,27 @@ class accounts {
                 ensure => present,
                 user   => $username,
                 type   => 'ssh-rsa',
-                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDzsPbsUjMIWw5KMJQMlkjEHnlrknUJju/74vs47iVb1lW3oAgULPxww+MX3cswFx3zYY8vw6K6fLbTaUKnEGAnW7JX2+Lo5nDfov3D+Lbb4jn6HfutvFWWrvMblUmd4FCiCsYsCXFj7E5WSzNmIgIWHzbxSSeCUPiUiG9enyEEpJJj5GvtrBZbdcoTpfhJuwGpAb2PrSQOCfuqE4izwN9ZfWruVhFbv8JvKu1shrG2DtXro2HmIVUwwHVZ8YMoMOjBtQo7Ioe2bjNWM1Ev9lvamcToJHe5FsauMcxiNmf2NXolDO+9VaoCQak1w06lvEUMegsFb8XbssFbA3uF/pfT'
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDzsPbsUjMIWw5KMJQMlkjEHnlrknUJju/74vs47iVb1lW3oAgULPxww+MX3cswFx3zYY8vw6K6fLbTaUKnEGAnW7JX2+Lo5nDfov3D+Lbb4jn6HfutvFWWrvMblUmd4FCiCsYsCXFj7E5WSzNmIgIWHzbxSSeCUPiUiG9enyEEpJJj5GvtrBZbdcoTpfhJuwGpAb2PrSQOCfuqE4izwN9ZfWruVhFbv8JvKu1shrG2DtXro2HmIVUwwHVZ8YMoMOjBtQo7Ioe2bjNWM1Ev9lvamcToJHe5FsauMcxiNmf2NXolDO+9VaoCQak1w06lvEUMegsFb8XbssFbA3uF/pfT',
+            }
+        }
+    }
+
+    # RT 5512
+    class ssastry inherits baseaccount {
+        $username = 'ssastry'
+        $realname = 'Subramanya Sastry'
+        $uid      = 648
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'subbu@earth':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpsA8yuweHpvf1MqoURe7npQV5PlqwVjIGSshN2BWUrqO4tzC9mvy4vfGyvKdfPMFUlsk8hs6BQgMbIY3Qr3cF1+62CH7jx6FWzRWTZpFfyckUhdJu22vaxwYxzZu0au2zIkeVaHqnV+QYPrhjnvcOrwosF4ArfW3guXH5gjBF9RsJWqlC0xejiaVVefsaEKan6cOLslLG+caQalJdNfJ7mBs4hPKLQWF6d8tbWld5/jJUL/hFe188/hkyLyfD/TSmRyWtoN0q4Ubcqx3LMDoX3EKYAl95i42a7TT+zg2GOOZXLk9rruFKk55hNfg4R3T+JxAffkJygKykyPvlfhp',
             }
         }
     }
@@ -3100,6 +3120,7 @@ class admins::restricted {
 	include accounts::rcole # access revoked
 	include accounts::spetrea # RT 5406
 	include accounts::tparscal
+	include accounts::ssastry  # RT 5512
 }
 
 class admins::jenkins {
@@ -3170,4 +3191,5 @@ class admins::parsoid {
 
 	include accounts::gwicke
 	include accounts::catrope
+	include accounts::ssastry # RT 5512
 }
