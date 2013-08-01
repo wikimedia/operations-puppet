@@ -1421,7 +1421,7 @@ host hydrogen {
 }
 
 host iodine {
-	hardware ethernet 90:B1:1C:00:B1:93;
+	hardware ethernet 90:B1:1C:00:A9:D5;
 	fixed-address iodine.wikimedia.org;
 }
 
@@ -4727,6 +4727,21 @@ host ssl1005 {
 host ssl1006 {
 	hardware ethernet 90:B1:1C:2A:36:F9;
 	fixed-address ssl1006.wikimedia.org;
+}
+
+host ssl1007 {
+	hardware ethernet 90:B1:1C:2D:7F:6B;
+	fixed-address ssl1007.wikimedia.org;
+}
+
+host ssl1008 {
+	hardware ethernet 90:B1:1C:2D:87:0C;
+	fixed-address ssl1008.wikimedia.org;
+}
+
+host ssl1009 {
+	hardware ethernet 90:B1:1C:2D:80:E4;
+	fixed-address ssl1009.wikimedia.org;
 }
 
 host ssl3001 {
