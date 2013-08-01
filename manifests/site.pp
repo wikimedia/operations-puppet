@@ -2446,7 +2446,7 @@ node "sodium.wikimedia.org" {
         enable_spamassassin => "true"
     }
 
-    interface_ip {
+    interface::ip {
         "lists.wikimedia.org_v4": interface => "eth0", address => "208.80.154.4", prefixlen => 32;
         "lists.wikimedia.org_v6": interface => "eth0", address => "2620:0:861:1::2", prefixlen => 128;
     }
