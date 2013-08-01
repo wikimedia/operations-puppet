@@ -239,19 +239,6 @@ define interface_up_command($interface, $command) {
 #  WARNING:  This function is deprecated, and code will soon be switched
 #            over to the new 'interface' module.  Until that cut happens
 #            THIS CLASS IS FROZEN.
-define interface_setting($interface, $setting, $value) {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		# Use augeas to add an 'up' command to the interface
-		augeas { "${interface}_${title}":
-			context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
-			changes => "set ${setting} '${value}'",
-		}
-	}
-}
-
-#  WARNING:  This function is deprecated, and code will soon be switched
-#            over to the new 'interface' module.  Until that cut happens
-#            THIS CLASS IS FROZEN.
 class base::vlan-tools {
 	package { vlan: ensure => latest; }
 }
@@ -465,43 +452,6 @@ define interface_aggregate($orig_interface=undef, $members=[], $lacp_rate="fast"
 			require => Interface_aggregate_member[$members],
 			refreshonly => true
 		}
-	}
-}
-
-# Definition: interface_offload
-#
-# Sets interface offload parameters (with ethtool)
-#
-# Parameters:
-# - $interface:
-#	The network interface to operate on
-# - $setting:
-#	The (abbreviated) offload setting, e.g. 'gro'
-# - $value:
-#	The value (on/off)
-#  WARNING:  This function is deprecated, and code will soon be switched
-#            over to the new 'interface' module.  Until that cut happens
-#            THIS CLASS IS FROZEN.
-define interface_offload($interface="eth0", $setting, $value) {
-	# Set in /etc/network/interfaces
-	interface_setting { $title: interface => $interface, setting => "offload-${setting}", value => $value }
-
-	# And make sure it's always active
-	$long_param = $setting ? {
-		'rx' => "rx-checksumming",
-		'tx' => "tx-checksumming",
-		'sg' => "scatter-gather",
-		'tso' => "tcp-segmentation-offload",
-		'ufo' => "udp-fragmentation-offload",
-		'gso' => "generic-segmentation-offload",
-		'gro' => "generic-receive-offload",
-		'lro' => "large-receive-offload"
-	}
-
-	exec { "ethtool ${interface} -K ${setting} ${value}":
-		path => "/usr/bin:/usr/sbin:/bin:/sbin",
-		command => "ethtool -K ${interface} ${setting} ${value}",
-		unless => "test $(ethtool -k ${interface} | awk '/${long_param}:/ { print \$2 }') = '${value}'"
 	}
 }
 
