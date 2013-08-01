@@ -1637,9 +1637,9 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     interface::add_ip6_mapped { "main": interface => "eth0" }
 
     # Make sure GRO is off
-    interface_manual { "eth1": interface => "eth1", before => Interface::Offload["eth1 gro"] }
-    interface_manual { "eth2": interface => "eth2", before => Interface::Offload["eth2 gro"] }
-    interface_manual { "eth3": interface => "eth3", before => Interface::Offload["eth3 gro"] }
+    interface::manual { "eth1": interface => "eth1", before => Interface::Offload["eth1 gro"] }
+    interface::manual { "eth2": interface => "eth2", before => Interface::Offload["eth2 gro"] }
+    interface::manual { "eth3": interface => "eth3", before => Interface::Offload["eth3 gro"] }
 
     interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
     interface::offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }

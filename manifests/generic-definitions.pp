@@ -206,25 +206,6 @@ define interface_ip($interface, $address, $prefixlen="32") {
 #  WARNING:  This function is deprecated, and code will soon be switched
 #            over to the new 'interface' module.  Until that cut happens
 #            THIS CLASS IS FROZEN.
-define interface_manual($interface, $family="inet") {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		# Use augeas to create a new manually setup interface
-		$augeas_cmd = [	"set auto[./1 = '$interface']/1 '$interface'",
-				"set iface[. = '$interface'] '$interface'",
-				"set iface[. = '$interface']/family '$family'",
-				"set iface[. = '$interface']/method 'manual'",
-		]
-
-		augeas { "${interface}_manual":
-			context => "/files/etc/network/interfaces",
-			changes => $augeas_cmd;
-		}
-	}
-}
-
-#  WARNING:  This function is deprecated, and code will soon be switched
-#            over to the new 'interface' module.  Until that cut happens
-#            THIS CLASS IS FROZEN.
 define interface_up_command($interface, $command) {
 	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
 		# Use augeas to add an 'up' command to the interface
