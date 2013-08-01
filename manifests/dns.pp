@@ -117,7 +117,7 @@ class dns::auth-server($ipaddress=[], $soa_name="", $master="") {
 	}
 
 	service { pdns:
-		require => [ Package[wikimedia-task-dns-auth], File["/etc/powerdns/pdns.conf"], Interface_ip["dns::auth-server"] ],
+		require => [ Package[wikimedia-task-dns-auth], File["/etc/powerdns/pdns.conf"], Interface::Ip["dns::auth-server"] ],
 		subscribe => File["/etc/powerdns/pdns.conf"],
 		hasrestart => false,
 		ensure => running;

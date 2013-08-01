@@ -768,9 +768,9 @@ node /^db10(1[45]|2[3]|3[367]|4[45])\.eqiad\.wmnet/ {
 }
 
 node "dobson.wikimedia.org" {
-    interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
-    interface_ip { "dns::auth-server::ns0": interface => "eth0", address => "208.80.154.238" }
-    interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
+    interface::ip { "dns::auth-server": interface => "eth0", address => "208.80.152.130" }
+    interface::ip { "dns::auth-server::ns0": interface => "eth0", address => "208.80.154.238" }
+    interface::ip { "dns::recursor": interface => "eth0", address => "208.80.152.131" }
 
     include base,
         ganglia,
@@ -1378,9 +1378,9 @@ node 'lanthanum.eqiad.wmnet' {
 }
 
 node "linne.wikimedia.org" {
-    interface_ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
-    interface_ip { "dns::auth-server::ns1": interface => "eth0", address => "208.80.152.214" }
-    interface_ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
+    interface::ip { "dns::auth-server": interface => "eth0", address => "208.80.152.142" }
+    interface::ip { "dns::auth-server::ns1": interface => "eth0", address => "208.80.152.214" }
+    interface::ip { "misc::url-downloader": interface => "eth0", address => "208.80.152.143" }
 
     include base,
         ganglia,
@@ -1808,7 +1808,7 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 node "mchenry.wikimedia.org" {
     $gid = 500
 
-    interface_ip { "dns::recursor": interface => "eth0", address => "208.80.152.132" }
+    interface::ip { "dns::recursor": interface => "eth0", address => "208.80.152.132" }
 
     include base,
         ganglia,
@@ -2116,8 +2116,8 @@ node 'netmon1001.wikimedia.org' {
 }
 
 node "nescio.esams.wikimedia.org" {
-    interface_ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
-    interface_ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
+    interface::ip { "dns::auth-server": interface => "eth0", address => "91.198.174.4" }
+    interface::ip { "dns::recursor": interface => "eth0", address => "91.198.174.6" }
 
     include standard,
         dns::recursor::statistics
@@ -2917,7 +2917,7 @@ node /virt100(5|7|8).eqiad.wmnet/ {
     if $hostname =~ /^virt1005$/ {
         include role::nova::network,
             role::nova::api
-        interface_ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.155.255" }
+        interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => "208.80.155.255" }
     }
     include role::nova::compute
 }

@@ -6,7 +6,7 @@ class role::dns::ldap {
 	$ldapconfig = $ldap::role::config::labs::ldapconfig
 
 	if $site == "pmtpa" {
-		interface_ip { "role::dns::ldap": interface => "eth0", address => "208.80.152.33" }
+		interface::ip { "role::dns::ldap": interface => "eth0", address => "208.80.152.33" }
 
 		# FIXME: turn these settings into a hash that can be included somewhere
 		class { "dns::auth-server::ldap":
@@ -20,7 +20,7 @@ class role::dns::ldap {
 		}
 	}
 	if $site == "eqiad" {
-		interface_ip { "role::dns::ldap": interface => "eth0", address => "208.80.154.19" }
+		interface::ip { "role::dns::ldap": interface => "eth0", address => "208.80.154.19" }
 
 		# FIXME: turn these settings into a hash that can be included somewhere
 		class { "dns::auth-server::ldap":

@@ -22,7 +22,7 @@ class misc::url-downloader {
 	}
 
 	service { squid:
-		require => [ File["/etc/squid/squid.conf"], Package[squid], Interface_ip["misc::url-downloader"] ],
+		require => [ File["/etc/squid/squid.conf"], Package[squid], Interface::Ip["misc::url-downloader"] ],
 		subscribe => File["/etc/squid/squid.conf"],
 		ensure => running;
 	}
