@@ -280,7 +280,7 @@ class role::nova::api {
 }
 
 class role::nova::network::bonding {
-	interface_aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
+	interface::aggregate { "bond1": orig_interface => "eth1", members => [ "eth1", "eth2", "eth3" ] }
 }
 
 class role::nova::network {

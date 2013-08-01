@@ -217,10 +217,10 @@ node "antimony.wikimedia.org" {
 }
 
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
-    interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
+    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
     interface::add_ip6_mapped { "main":
-        require => Interface_aggregate[bond0],
+        require => Interface::Aggregate[bond0],
         interface => "bond0"
     }
 
@@ -317,10 +317,10 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 }
 
 node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
-    interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
     interface::add_ip6_mapped { "main":
-        require => Interface_aggregate[bond0],
+        require => Interface::Aggregate[bond0],
         interface => "bond0"
     }
     include standard
@@ -390,10 +390,10 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 }
 
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
-    interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
     interface::add_ip6_mapped { "main":
-        require => Interface_aggregate[bond0],
+        require => Interface::Aggregate[bond0],
         interface => "bond0"
     }
     include standard
@@ -442,7 +442,7 @@ node "dataset2.wikimedia.org" {
 node "dataset1001.wikimedia.org" {
     $cluster = "misc"
     $gid=500
-    interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
+    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
     include standard,
         admins::roots,
         groups::wikidev,
