@@ -52,7 +52,7 @@ class misc::rt::server ( $site = 'rt.wikimedia.org', $datadir = '/var/lib/mysql'
     # If we're a new labs install, set up the RT database.
     exec { 'rt-db-initialize':
       command => "/bin/echo '' | /usr/sbin/rt-setup-database --action init --dba root --prompt-for-dba-password",
-      require => [ package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd',
+      require => [ Package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd',
         'libdbd-pg-perl' ] ],
       unless  => '/usr/bin/mysqlshow rtdb';
     }
@@ -62,13 +62,13 @@ class misc::rt::server ( $site = 'rt.wikimedia.org', $datadir = '/var/lib/mysql'
     command     => '/usr/sbin/update-rt-siteconfig-3.8',
     subscribe => file[ "/etc/request-tracker3.8/RT_SiteConfig.d/50-debconf",
                        "/etc/request-tracker3.8/RT_SiteConfig.d/80-wikimedia" ],
-    require => package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl' ],
+    require => Package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl' ],
     refreshonly => true,
     notify      => Service[lighttpd];
   }
 
   lighttpd_config { '10-rt':
-    require => [ package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd' ],
+    require => [ Package[ 'request-tracker3.8', 'rt3.8-db-mysql', 'rt3.8-clients', 'libcgi-fast-perl', 'lighttpd' ],
       File[ '/etc/lighttpd/conf-available/10-rt.conf', '/var/run/fastcgi', '/etc/request-tracker3.8/RT_SiteConfig.d/50-debconf',
         '/etc/request-tracker3.8/RT_SiteConfig.d/80-wikimedia', '/etc/cron.d/mkdir-var-run-fastcgi', '/etc/request-tracker3.8/rt.conf' ] ],
     notify      => Service[lighttpd];

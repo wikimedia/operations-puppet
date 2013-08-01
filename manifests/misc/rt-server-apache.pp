@@ -27,19 +27,19 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
 
   file {
     '/etc/request-tracker4/RT_SiteConfig.d/50-debconf':
-      require => package['request-tracker4'],
+      require => Package['request-tracker4'],
       content => template('rt/50-debconf.erb'),
       notify  => Exec['update-rt-siteconfig'];
     '/etc/request-tracker4/RT_SiteConfig.d/51-dbconfig-common':
-      require => package['request-tracker4'],
+      require => Package['request-tracker4'],
       content => template('rt/51-dbconfig-common.erb'),
       notify  => Exec['update-rt-siteconfig'];
     '/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia':
-      require => package['request-tracker4'],
+      require => Package['request-tracker4'],
       source  => 'puppet:///files/rt/80-wikimedia',
       notify  => Exec['update-rt-siteconfig'];
     '/etc/request-tracker4/RT_SiteConfig.pm':
-      require => package['request-tracker4'],
+      require => Package['request-tracker4'],
       owner   => 'root',
       group   => 'www-data',
       mode    => '0440';
@@ -76,7 +76,7 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
                         '/etc/request-tracker4/RT_SiteConfig.d/50-debconf',
                         '/etc/request-tracker4/RT_SiteConfig.d/51-dbconfig-common',
                         '/etc/request-tracker4/RT_SiteConfig.d/80-wikimedia' ],
-    require     => package[ 'request-tracker4', 'rt4-db-mysql', 'rt4-clients' ],
+    require     => Package[ 'request-tracker4', 'rt4-db-mysql', 'rt4-clients' ],
     refreshonly => true,
     notify      => Service[apache2];
   }
