@@ -124,7 +124,7 @@ node /amssq(3[1-9]|4[0-6])\.esams\.wikimedia\.org/ {
 node /^amssq47\.esams\.wikimedia\.org$/ {
     include role::cache::text, role::cache::ssl::text
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 }
 
 
