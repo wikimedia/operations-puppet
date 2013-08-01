@@ -1576,20 +1576,20 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     case $::hostname {
         /^lvs100[1-3]$/: {
             # Row A subnets on eth0
-            interface_tagged { "eth0.1017":
+            interface::tagged { "eth0.1017":
                 base_interface => "eth0",
                 vlan_id => "1017",
                 address => $ips["private1-a-eqiad"][$::hostname],
                 netmask => "255.255.252.0"
             }
             # Row B subnets on eth1
-            interface_tagged { "eth1.1002":
+            interface::tagged { "eth1.1002":
                 base_interface => "eth1",
                 vlan_id => "1002",
                 address => $ips["public1-b-eqiad"][$::hostname],
                 netmask => "255.255.255.192"
             }
-            interface_tagged { "eth1.1018":
+            interface::tagged { "eth1.1018":
                 base_interface => "eth1",
                 vlan_id => "1018",
                 address => $ips["private1-b-eqiad"][$::hostname],
@@ -1598,20 +1598,20 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         }
         /^lvs100[4-6]$/: {
             # Row B subnets on eth0
-            interface_tagged { "eth0.1018":
+            interface::tagged { "eth0.1018":
                 base_interface => "eth0",
                 vlan_id => "1018",
                 address => $ips["private1-b-eqiad"][$::hostname],
                 netmask => "255.255.252.0"
             }
             # Row A subnets on eth1
-            interface_tagged { "eth1.1001":
+            interface::tagged { "eth1.1001":
                 base_interface => "eth1",
                 vlan_id => "1001",
                 address => $ips["public1-a-eqiad"][$::hostname],
                 netmask => "255.255.255.192"
             }
-            interface_tagged { "eth1.1017":
+            interface::tagged { "eth1.1017":
                 base_interface => "eth1",
                 vlan_id => "1017",
                 address => $ips["private1-a-eqiad"][$::hostname],
@@ -1620,7 +1620,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
         }
     }
     # Row C subnets on eth2
-    interface_tagged {
+    interface::tagged {
         "eth2.1003":
             base_interface => "eth2",
             vlan_id => "1003",

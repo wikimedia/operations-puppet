@@ -294,7 +294,7 @@ class role::nova::network {
 
 		interface::ip { "openstack::network_service_public_dynamic_snat": interface => "lo", address => $site ? { "pmtpa" => "208.80.153.192", "eqiad" => "208.80.155.255" } }
 
-		interface_tagged { "bond1.103":
+		interface::tagged { "bond1.103":
 			base_interface => "bond1",
 			vlan_id => "103",
 			method => "manual",
@@ -345,7 +345,7 @@ class role::nova::compute {
 	include role::nova::wikiupdates,
  		role::nova::common
 
-	interface_tagged { $novaconfig["network_flat_interface"]:
+	interface::tagged { $novaconfig["network_flat_interface"]:
 		base_interface => $novaconfig["network_flat_interface_name"],
 		vlan_id => $novaconfig["network_flat_interface_vlan"],
 		method => "manual",
