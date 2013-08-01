@@ -20,7 +20,7 @@ define interface::add_ip6_mapped($interface=undef, $ipv4_address=undef) {
 
         $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${intf}\")).mask(64) | IPAddr.new(ip4_address.gsub('.', ':'))).to_s() %>")
 
-        interface { $title:
+        interface::ip { $title:
             interface => $intf,
             address => $ipv6_address,
             prefixlen => "64"
