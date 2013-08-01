@@ -17,8 +17,9 @@ class toollabs::redis inherits toollabs {
     include toollabs::infrastructure
 
     class { '::redis':
-        persist => "aof",
-        dir     => "/var/lib/redis",
+        persist   => "aof",
+        dir       => "/var/lib/redis",
+        maxmemory => "7GB",
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
         rename_commands => {
