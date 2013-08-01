@@ -4,11 +4,11 @@
 
 import "realm.pp" # These ones first
 import "generic-definitions.pp"
-import "base.pp"
 
 import "admins.pp"
 import "backups.pp"
 import "certs.pp"
+import "decommissioning.pp"
 import "dns.pp"
 import "drac.pp"
 import "facilities.pp"
@@ -34,6 +34,8 @@ import "role/analytics/*.pp"
 import "search.pp"
 import "snapshots.pp"
 import "squid.pp"
+import "ssh.pp"
+import "sudo.pp"
 import "svn.pp"
 import "swift.pp"
 import "webserver.pp"
