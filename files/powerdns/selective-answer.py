@@ -36,11 +36,16 @@ filename = "/etc/powerdns/participants"
 
 dnsRecords = {
     'upload.esams.wikimedia.org': [
-    # (selectivity, qtype, ttl, content)
-    (ALWAYS,  'A',    3600, "91.198.174.234"),
-    (MATCH,   'AAAA', 3600, "2620:0:862:1::80:2"),
-    (MATCH,   'TXT',  3600, "DNS resolver ip %(remoteip)s is listed as a AAAA participant. Please contact ipv6@wikimedia.org if you see any problems."),
-    (NOMATCH, 'TXT',  3600, "DNS resolver ip %(remoteip)s is not listed as a AAAA participant. Please contact ipv6@wikimedia.org if you would like to join in this IPv6 experiment.")
+        # (selectivity, qtype, ttl, content)
+        (ALWAYS,  'A',    3600, "91.198.174.234"),
+        (MATCH,   'AAAA', 3600, "2620:0:862:1::80:2"),
+        (MATCH,   'TXT',  3600, (
+            "DNS resolver ip %(remoteip)s is listed as a AAAA participant. "
+            "Please contact ipv6@wikimedia.org if you see any problems.")),
+        (NOMATCH, 'TXT',  3600, (
+            "DNS resolver ip %(remoteip)s is not listed as a AAAA "
+            "participant. Please contact ipv6@wikimedia.org if you would like "
+            "to join in this IPv6 experiment."))
     ]
 }
 
