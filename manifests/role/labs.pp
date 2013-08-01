@@ -63,7 +63,9 @@ class role::labs::tools {
 
   class redis inherits role::labs::tools::config {
     system_role { "role::labs::tools::redis": description => "Server that hosts shared Redis instance" }
-    class { 'toollabs::redis': }
+    class { 'toollabs::redis':
+      maxmemory => $::redis_maxmemory
+    }
   }
 
   class tyrant inherits role::labs::tools::config {

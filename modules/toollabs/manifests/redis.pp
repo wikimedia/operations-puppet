@@ -13,12 +13,15 @@
 #
 # Sample Usage:
 #
-class toollabs::redis inherits toollabs {
+class toollabs::redis (
+    $maxmemory = "1GB"
+) inherits toollabs {
     include toollabs::infrastructure
 
     class { '::redis':
-        persist => "aof",
-        dir     => "/var/lib/redis",
+        persist   => "aof",
+        dir       => "/var/lib/redis",
+        maxmemory => $maxmemory,
         # Disable the following commands, to try to limit people from
         # Trampling on each others' keys
         rename_commands => {
