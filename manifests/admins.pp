@@ -3120,6 +3120,7 @@ class admins::restricted {
 	include accounts::rcole # access revoked
 	include accounts::spetrea # RT 5406
 	include accounts::tparscal
+	include accounts::tnegrin  # RT 5391
 	include accounts::ssastry  # RT 5512
 }
 
