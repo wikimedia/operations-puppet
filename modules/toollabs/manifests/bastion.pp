@@ -45,8 +45,15 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/sql",
   }
 
-  package { [ 'jobutils', 'misctools' ]:
+  package { "misctools":
     ensure => latest,
+  }
+
+  # Temporary hack to manage obsolete files in /usr/local/bin.
+  # TODO: Remove when no longer needed.
+  file { "/usr/local/bin/become":
+    ensure => link,
+    target => "/usr/bin/become"
   }
 
   # TODO: cron setup
