@@ -107,7 +107,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
     class { "lvs::balancer": service_ips => $lvs_balancer_ips }
 
     # Make sure GRO is off
-    interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+    interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 }
 
 # amssq31-46 are text squids
@@ -1637,14 +1637,14 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     interface::add_ip6_mapped { "main": interface => "eth0" }
 
     # Make sure GRO is off
-    interface_manual { "eth1": interface => "eth1", before => Interface_offload["eth1 gro"] }
-    interface_manual { "eth2": interface => "eth2", before => Interface_offload["eth2 gro"] }
-    interface_manual { "eth3": interface => "eth3", before => Interface_offload["eth3 gro"] }
+    interface_manual { "eth1": interface => "eth1", before => Interface::Offload["eth1 gro"] }
+    interface_manual { "eth2": interface => "eth2", before => Interface::Offload["eth2 gro"] }
+    interface_manual { "eth3": interface => "eth3", before => Interface::Offload["eth3 gro"] }
 
-    interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
-    interface_offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
-    interface_offload { "eth2 gro": interface => "eth2", setting => "gro", value => "off" }
-    interface_offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
+    interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+    interface::offload { "eth1 gro": interface => "eth1", setting => "gro", value => "off" }
+    interface::offload { "eth2 gro": interface => "eth2", setting => "gro", value => "off" }
+    interface::offload { "eth3 gro": interface => "eth3", setting => "gro", value => "off" }
 }
 
 node "maerlant.esams.wikimedia.org" {
