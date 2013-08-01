@@ -61,9 +61,16 @@ class role::labs::tools {
     class { 'toollabs::syslog': }
   }
 
+  class redis::small inherits role::labs::tools::config {
+    system_role { "role::labs::tools::redis::small": description => "Server that hosts a small shared Redis instance" }
+    class { 'toollabs::redis': }
+  }
+
   class redis inherits role::labs::tools::config {
     system_role { "role::labs::tools::redis": description => "Server that hosts shared Redis instance" }
-    class { 'toollabs::redis': }
+    class { 'toollabs::redis':
+      maxmemory => '7G'
+    }
   }
 
   class tyrant inherits role::labs::tools::config {
