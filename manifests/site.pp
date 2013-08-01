@@ -99,7 +99,7 @@ node /^amslvs[1-4]\.esams\.wikimedia\.org$/ {
             ]
     }
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include base,
         ganglia
@@ -219,7 +219,7 @@ node "antimony.wikimedia.org" {
 node /(arsenic|niobium|strontium|palladium)\.(wikimedia\.org|eqiad\.wmnet)/ {
     interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
-    interface_add_ip6_mapped { "main":
+    interface::add_ip6_mapped { "main":
         require => Interface_aggregate[bond0],
         interface => "bond0"
     }
@@ -287,7 +287,7 @@ node /^(capella|nitrogen)\.wikimedia\.org$/ {
         role::ipv6relay
 
     if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-        interface_add_ip6_mapped { "main": interface => "eth0" }
+        interface::add_ip6_mapped { "main": interface => "eth0" }
     }
 
 }
@@ -304,7 +304,7 @@ node /^(chromium|hydrogen)\.wikimedia\.org$/ {
     include standard,
             role::dns::recursor
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
@@ -319,7 +319,7 @@ node /^cp10(0[1-9]|1[0-9]|20)\.eqiad\.wmnet$/ {
 node /^cp10(2[1-9]|3[0-6])\.eqiad\.wmnet$/ {
     interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
-    interface_add_ip6_mapped { "main":
+    interface::add_ip6_mapped { "main":
         require => Interface_aggregate[bond0],
         interface => "bond0"
     }
@@ -331,14 +331,14 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::text
 }
 
 # eqiad varnish for m.wikipedia.org
 node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include standard
 }
@@ -354,7 +354,7 @@ node 'cp1046.eqiad.wmnet', 'cp1047.eqiad.wmnet', 'cp1059.eqiad.wmnet', 'cp1060.e
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::mobile
 }
@@ -364,7 +364,7 @@ node /^cp10(4[89]|5[01]|6[1-4])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::upload
 }
@@ -374,7 +374,7 @@ node /^cp10(5[2-5]|6[5-8])\.eqiad\.wmnet$/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::text
 }
@@ -384,7 +384,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::bits
 }
@@ -392,7 +392,7 @@ node 'cp1056.eqiad.wmnet', 'cp1057.eqiad.wmnet', 'cp1069.eqiad.wmnet', 'cp1070.e
 node /^cp300[12]\.esams\.wikimedia\.org$/ {
     interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1" ] }
 
-    interface_add_ip6_mapped { "main":
+    interface::add_ip6_mapped { "main":
         require => Interface_aggregate[bond0],
         interface => "bond0"
     }
@@ -404,13 +404,13 @@ node /^cp30(0[3-9]|10)\.esams\.wikimedia\.org$/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::upload
 }
 
 node /^cp301[1-4]\.esams\.wikimedia\.org$/ {
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::mobile
 }
@@ -420,7 +420,7 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": }
+    interface::add_ip6_mapped { "main": }
 
     include role::cache::bits
 }
@@ -800,7 +800,7 @@ node "dobson.wikimedia.org" {
 }
 
 node "dysprosium.eqiad.wmnet" {
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include standard
 }
@@ -1460,7 +1460,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
         },
     }
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     # Set up tagged interfaces to all subnets with real servers in them
     interface_tagged { "eth0.2":
@@ -1634,7 +1634,7 @@ node /lvs100[1-6]\.wikimedia\.org/ {
     }
     # Row D subnets on eth3
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     # Make sure GRO is off
     interface_manual { "eth1": interface => "eth1", before => Interface_offload["eth1 gro"] }
@@ -2505,7 +2505,7 @@ node /ssl[1-4]\.wikimedia\.org/ {
 
     include role::protoproxy::ssl
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node /ssl100[1-6]\.wikimedia\.org/ {
@@ -2513,7 +2513,7 @@ node /ssl100[1-6]\.wikimedia\.org/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include role::protoproxy::ssl
 }
@@ -2523,7 +2523,7 @@ node /ssl300[1-4]\.esams\.wikimedia\.org/ {
         $ganglia_aggregator = true
     }
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 
     include role::protoproxy::ssl
 }
@@ -2582,7 +2582,7 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
         members => [ "eth0", "eth1", "eth2", "eth3" ]
     }
 
-    interface_add_ip6_mapped { "main":
+    interface::add_ip6_mapped { "main":
         require => Interface_aggregate[bond0],
         interface => "bond0"
     }
@@ -2996,7 +2996,7 @@ node "zirconium.wikimedia.org" {
         misc::outreach::civicrm, # contacts.wikimedia.org
         misc::etherpad_lite
 
-    interface_add_ip6_mapped { "main": interface => "eth0" }
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 }
 
 node default {
