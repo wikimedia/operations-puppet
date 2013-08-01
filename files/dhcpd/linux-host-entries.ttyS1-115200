@@ -1926,7 +1926,7 @@ host ms-fe3002 {
 
 host mexia {
 	hardware ethernet D4:AE:52:AD:62:75;
-	fixed-address mexia.pmtpa.wmnet;
+	fixed-address mexia.wikimedia.org;
 }
 
 host mw1 {
