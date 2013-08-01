@@ -3013,6 +3013,31 @@ class accounts {
             }
         }
     }
+
+    # RT 5391
+    class tnegrin inherits baseaccount {
+        $username = 'tnegrin'
+        $realname = 'Toby Negrin'
+        $uid      = 647
+
+        unixaccount { $realname: username => $username, uid => $uid, gid => $gid }
+
+        if $manage_home {
+            Ssh_authorized_key { require => Unixaccount[$realname] }
+
+            ssh_authorized_key { 'tnegrin@Administrators-MacBook-Air.local':
+                ensure => present,
+                user   => $username,
+                type   => 'ssh-rsa',
+                key    => 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDzsPbsUjMIWw5KMJQMlkjEHnlrknUJju/74vs47iVb1lW3oAgULPxww+MX3cswFx3zYY8vw6K6fLbTaUKnEGAnW7JX2+Lo5nDfov3D+Lbb4jn6HfutvFWWrvMblUmd4FCiCsYsCXFj7E5WSzNmIgIWHzbxSSeCUPiUiG9enyEEpJJj5GvtrBZbdcoTpfhJuwGpAb2PrSQOCfuqE4izwN9ZfWruVhFbv8JvKu1shrG2DtXro2HmIVUwwHVZ8YMoMOjBtQo7Ioe2bjNWM1Ev9lvamcToJHe5FsauMcxiNmf2NXolDO+9VaoCQak1w06lvEUMegsFb8XbssFbA3uF/pfT'
+            }
+        }
+    }
+
+
+
+
+
 }
 
 class admins::roots {
@@ -3122,6 +3147,7 @@ class admins::restricted {
     include accounts::rcole # access revoked
     include accounts::spetrea # RT 5406
     include accounts::tparscal
+    include accounts::tnegrin # RT 5391
 }
 
 class admins::jenkins {
@@ -3171,7 +3197,8 @@ class admins::privatedata {
         accounts::mwalker,      # RT 5038
         accounts::awight,       # RT 5048
         accounts::abaso,        # RT 5446
-        accounts::qchris        # RT 5467
+        accounts::qchris,       # RT 5467
+        accounts::tnegrin       # RT 5391
 }
 
 class admins::fr-tech {
