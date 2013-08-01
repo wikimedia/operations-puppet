@@ -23,7 +23,7 @@ define interface::aggregate_member($master) {
     }
 }
 
-define aggregate($orig_interface=undef, $members=[], $lacp_rate="fast", $hash_policy="layer2+3") {
+define interface::aggregate($orig_interface=undef, $members=[], $lacp_rate="fast", $hash_policy="layer2+3") {
     require interface::bonding-tools
 
     # Use the definition title as the destination (aggregated) interface
