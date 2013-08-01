@@ -12,5 +12,5 @@ class role::ipv6relay {
     include misc::miredo
 
     # 6to4
-    interface_tun6to4 { 'tun6to4': }
+    interface::tun6to4 { 'tun6to4': }
 }
