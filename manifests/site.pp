@@ -1843,7 +1843,7 @@ node "ms5.pmtpa.wmnet" {
 }
 
 node "ms6.esams.wikimedia.org" {
-    interface_aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
+    interface::aggregate { "bond0": orig_interface => "eth0", members => [ "eth0", "eth1", "eth2", "eth3" ] }
 
     include standard
 }
@@ -2577,13 +2577,13 @@ node /sq(6[7-9]|70)\.wikimedia\.org/ {
         $ganglia_aggregator = true
     }
 
-    interface_aggregate { "bond0":
+    interface::aggregate { "bond0":
         orig_interface => "eth0",
         members => [ "eth0", "eth1", "eth2", "eth3" ]
     }
 
     interface::add_ip6_mapped { "main":
-        require => Interface_aggregate[bond0],
+        require => Interface::Aggregate[bond0],
         interface => "bond0"
     }
 
