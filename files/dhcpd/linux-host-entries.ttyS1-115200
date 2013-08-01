@@ -1425,6 +1425,11 @@ host hydrogen {
 	fixed-address hydrogen.wikimedia.org;
 }
 
+host iodine {
+	hardware ethernet 90:B1:1C:00:B1:93;
+	fixed-address iodine.wikimedia.org;
+}
+
 host iron {
 	hardware ethernet 78:2b:cb:09:0d:5c;
 	fixed-address iron.wikimedia.org;
