@@ -22,6 +22,7 @@ Name: cloudera
 Method: http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh/
 Components: contrib>main
 UDebComponents:
+GetInRelease: no
 Suite: precise-cdh4.2.1
 Architectures: amd64 source
 VerifyRelease: 327574EE02A818DD
