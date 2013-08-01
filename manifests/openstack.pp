@@ -120,7 +120,7 @@ class openstack::iptables  {
 	# Labs has security groups, and as such, doesn't need firewall rules
 }
 
-class openstack::repo($openstack_version="essex") {
+class openstack::repo($openstack_version="folsom") {
 	if ($::lsbdistcodename == 'precise') {
 		apt::repository { 'ubuntucloud':
 			uri        => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',
@@ -131,7 +131,7 @@ class openstack::repo($openstack_version="essex") {
 	}
 }
 
-class openstack::common($openstack_version="essex",
+class openstack::common($openstack_version="folsom",
 			$novaconfig,
 			$instance_status_wiki_host,
 			$instance_status_wiki_domain,
@@ -315,7 +315,7 @@ class openstack::gluster-service {
 
 }
 
-class openstack::database-server($openstack_version="essex", $novaconfig, $keystoneconfig, $glanceconfig) {
+class openstack::database-server($openstack_version="folsom", $novaconfig, $keystoneconfig, $glanceconfig) {
 	$nova_db_name = $novaconfig["db_name"]
 	$nova_db_user = $novaconfig["db_user"]
 	$nova_db_pass = $novaconfig["db_pass"]
@@ -451,7 +451,7 @@ class openstack::database-server($openstack_version="essex", $novaconfig, $keyst
 	}
 }
 
-class openstack::openstack-manager($openstack_version="essex", $novaconfig, $certificate) {
+class openstack::openstack-manager($openstack_version="folsom", $novaconfig, $certificate) {
 	require mediawiki::users::mwdeploy
 
 	if !defined(Class["webserver::php5"]) {
@@ -546,7 +546,7 @@ class openstack::openstack-manager($openstack_version="essex", $novaconfig, $cer
 	apache_module { rewrite: name => "rewrite" }
 }
 
-class openstack::scheduler-service($openstack_version="essex", $novaconfig) {
+class openstack::scheduler-service($openstack_version="folsom", $novaconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -563,7 +563,7 @@ class openstack::scheduler-service($openstack_version="essex", $novaconfig) {
 	}
 }
 
-class openstack::network-service($openstack_version="essex", $novaconfig) {
+class openstack::network-service($openstack_version="folsom", $novaconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -591,7 +591,7 @@ class openstack::network-service($openstack_version="essex", $novaconfig) {
 		sysctlfile::ipv6-disable-ra
 }
 
-class openstack::api-service($openstack_version="essex", $novaconfig) {
+class openstack::api-service($openstack_version="folsom", $novaconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -616,7 +616,7 @@ class openstack::api-service($openstack_version="essex", $novaconfig) {
 	}
 }
 
-class openstack::volume-service($openstack_version="essex", $novaconfig) {
+class openstack::volume-service($openstack_version="folsom", $novaconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -633,7 +633,7 @@ class openstack::volume-service($openstack_version="essex", $novaconfig) {
 	#}
 }
 
-class openstack::compute-service($openstack_version="essex", $novaconfig) {
+class openstack::compute-service($openstack_version="folsom", $novaconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -726,10 +726,19 @@ class openstack::compute-service($openstack_version="essex", $novaconfig) {
 	file {
 		"/etc/libvirt/qemu/networks/autostart/default.xml":
 			ensure => absent;
+		# Live hack to use qcow2 ephemeral base images. Need to upstream
+		# a config option for this in havana.
+		"/usr/share/pyshared/nova/virt/libvirt/driver.py":
+			source => "puppet:///files/openstack/${openstack_version}/nova/virt-libvirt-driver",
+			notify => Service["nova-compute"],
+			owner => "root",
+			group => "root",
+			mode => 0444,
+			require => Package["nova-common"];
 	}
 }
 
-class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
+class openstack::keystone-service($openstack_version="folsom", $keystoneconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
@@ -756,7 +765,7 @@ class openstack::keystone-service($openstack_version="essex", $keystoneconfig) {
 	}
 }
 
-class openstack::glance-service($openstack_version="essex", $glanceconfig) {
+class openstack::glance-service($openstack_version="folsom", $glanceconfig) {
 	if ! defined(Class["openstack::repo"]) {
 		class { "openstack::repo": openstack_version => $openstack_version }
 	}
