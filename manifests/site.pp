@@ -1463,7 +1463,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
     interface::add_ip6_mapped { "main": interface => "eth0" }
 
     # Set up tagged interfaces to all subnets with real servers in them
-    interface_tagged { "eth0.2":
+    interface::tagged { "eth0.2":
         base_interface => "eth0",
         vlan_id => "2",
         address => $ips["internal"][$hostname],
