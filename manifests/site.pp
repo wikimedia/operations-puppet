@@ -2913,6 +2913,14 @@ node "williams.wikimedia.org" {
     install_certificate{ "star.wikimedia.org": }
 }
 
+node "iodine.wikimedia.org" {
+    include base,
+        ganglia,
+        ntp::client
+
+    install_certificate{ "star.wikimedia.org": }
+}
+
 node /(cerium|titanium)\.wikimedia\.org/ {
     include standard
 }
