@@ -49,7 +49,8 @@ class role::analytics::users {
         accounts::maryana,  # RT 5017
         accounts::halfak,   # RT 5233
         accounts::abaso,    # RT 5273
-        accounts::qchris    # RT 5403
+        accounts::qchris,   # RT 5403
+        accounts::tnegrin   # RT 5391
 
     # add Analytics team members to the stats group so they can
     # access data group owned by 'stats'.
@@ -65,7 +66,7 @@ class role::analytics::users {
     User<|title == spetrea|>     { groups +> [ "stats" ] }
     User<|title == abaso|>       { groups +> [ "stats" ] }
     User<|title == qchris|>      { groups +> [ "stats" ] }
-
+    User<|title == tnegrin|>     { groups +> [ "stats" ] }
 
     # Diederik, David and Otto have sudo privileges on Analytics nodes.
     sudo_user { [ "diederik", "dsc", "otto" ]: privileges => ['ALL = (ALL) NOPASSWD: ALL'] }

@@ -813,8 +813,8 @@ node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
     include
         sysctlfile::high-bandwidth-rsync,
         admins::mortals,
-        # RT 4312
-        accounts::milimetric
+        accounts::milimetric, # RT 4312
+        accounts::tnegrin     # RT 5391
 
     include role::logging::udp2log::emery
 }
@@ -852,6 +852,9 @@ node "aluminium.wikimedia.org" {
 node "erbium.eqiad.wmnet" inherits "base_analytics_logging_node" {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
+
+    include accounts::milimetric  # RT 4312
+    include accounts::tnegrin     # RT 5391
 }
 
 # es1 equad
@@ -958,6 +961,7 @@ node "formey.wikimedia.org" {
 # base_analytics_logging_node is defined in role/logging.pp
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
     include accounts::milimetric
+    include accounts::tnegrin     # RT 5391
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -1072,6 +1076,7 @@ node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
         accounts::tstarling,
         accounts::datasets,
         accounts::milimetric,
+        accounts::tnegrin,       # RT 5391
         misc::udp2log::utilities,
         misc::udp2log
 
@@ -2204,13 +2209,14 @@ node "oxygen.wikimedia.org" inherits "base_analytics_logging_node" {
         accounts::datasets,
         accounts::dsc,
         accounts::diederik,
-        accounts::manybubbles, #RT 4312
-        accounts::milimetric #RT 4312
+        accounts::manybubbles, # RT 4312
+        accounts::milimetric,  # RT 4312
+        accounts::tnegrin      # RT 5391
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
-        include role::logging::udp2log::oxygen
+    include role::logging::udp2log::oxygen
     # Also include lucene search loggging udp2log instance
-        include role::logging::udp2log::lucene
+    include role::logging::udp2log::lucene
 }
 
 node /pc([1-3]\.pmtpa|100[1-3]\.eqiad)\.wmnet/ {
@@ -2641,7 +2647,8 @@ node "stat1.wikimedia.org" {
         accounts::mwalker,   # RT 5038
         accounts::awight,    # RT 5048
         accounts::jforrester,# RT 5302
-        accounts::qchris     # RT 5474
+        accounts::qchris,    # RT 5474
+        accounts::tnegrin    # RT 5391
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2662,7 +2669,8 @@ node "stat1001.wikimedia.org" {
         accounts::rfaulk,  # RT 4258
         accounts::ypanda,  # RT 4687
         accounts::erosen,  # RT 5161
-        accounts::qchris   # RT 5474
+        accounts::qchris,  # RT 5474
+        accounts::tnegrin  # RT 5391
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
