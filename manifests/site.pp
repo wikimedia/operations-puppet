@@ -286,10 +286,7 @@ node /^(capella|nitrogen)\.wikimedia\.org$/ {
     include standard,
         role::ipv6relay
 
-    if versioncmp($::lsbdistrelease, "12.04") >= 0 {
-        interface::add_ip6_mapped { "main": interface => "eth0" }
-    }
-
+    interface::add_ip6_mapped { "main": interface => "eth0" }
 }
 node "carbon.wikimedia.org" {
     $cluster = "misc"
