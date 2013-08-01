@@ -179,31 +179,6 @@ define upstart_job($install="false", $start="false") {
 	}
 }
 
-#  WARNING:  This function is deprecated, and code will soon be switched
-#            over to the new 'interface' module.  Until that cut happens
-#            THIS CLASS IS FROZEN.
-define interface_up_command($interface, $command) {
-	if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "10.04") >= 0 {
-		# Use augeas to add an 'up' command to the interface
-		augeas { "${interface}_${title}":
-			context => "/files/etc/network/interfaces/*[. = '${interface}']",
-			changes => "set up[last()+1] '${command}'",
-			onlyif => "match up[. = '${command}'] size == 0";
-		}
-	}
-}
-
-class base::vlan-tools {
-	package { vlan: ensure => latest; }
-}
-
-#  WARNING:  This function is deprecated, and code will soon be switched
-#            over to the new 'interface' module.  Until that cut happens
-#            THIS CLASS IS FROZEN.
-class base::bonding-tools {
-	package { ["ifenslave-2.6", "ethtool"] : ensure => latest; }
-}
-
 class base::mwclient {
     package { python-mwclient: ensure => latest; }
 }
