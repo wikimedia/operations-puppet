@@ -661,7 +661,7 @@ class generic::mysql::server(
 		mode  => 0644,
 		content => template('mysql/generic_my.cnf.erb'),
 		require => [Package["mysql-server"], File["/etc/apparmor.d/usr.sbin.mysqld"]],
-		notify => [exec["dpkg-reconfigure mysql-server"]]
+		notify => [Exec["dpkg-reconfigure mysql-server"]]
 	}
 
 	# mysql is protected by apparmor.  Need to
