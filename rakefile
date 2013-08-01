@@ -131,6 +131,19 @@ task :run_puppet_lint do
 	}
 end
 
+desc "Build documentation"
+task :doc do
+	base_dir = File.dirname(__FILE__)
+	doc_cmd = ["puppet doc",
+		"--mode rdoc",
+		"--all",  # build all references
+		"--manifestdir #{base_dir}/manifests",
+		"--modulepath #{base_dir}/modules",
+	].join(' ')
+	puts "Running #{doc_cmd}"
+	system(doc_cmd)
+end
+
 desc "Lint puppet files"
 task :lint => :run_puppet_lint
 
