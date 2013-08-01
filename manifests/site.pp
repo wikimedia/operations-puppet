@@ -1471,7 +1471,7 @@ node /lvs[1-6]\.wikimedia\.org/ {
     }
 
     # Make sure GRO is off
-    interface_offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
+    interface::offload { "eth0 gro": interface => "eth0", setting => "gro", value => "off" }
 }
 
 node /lvs100[1-6]\.wikimedia\.org/ {
