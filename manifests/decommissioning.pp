@@ -12,6 +12,7 @@ $decommissioned_servers = [
 'br1-knams',
 'celsus',
 'cerium',
+'colby',
 'constable',
 'controller',
 'cp1021',

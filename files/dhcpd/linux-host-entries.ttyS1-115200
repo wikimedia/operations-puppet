@@ -219,19 +219,9 @@ host bast1001 {
 	fixed-address bast1001.wikimedia.org;
 }
 
-host bellin {
-	hardware ethernet 18:03:73:ed:d9:95;
-	fixed-address bellin.pmtpa.wmnet;
-}
-
 host beryllium {
 	hardware ethernet 78:2b:cb:08:a3:ab;
 	fixed-address beryllium.wikimedia.org;
-}
-
-host blondel {
-	hardware ethernet d4:be:d9:af:66:ba;
-	fixed-address blondel.pmtpa.wmnet;
 }
 
 host boron {
@@ -267,11 +257,6 @@ host cerium {
 host chromium {
 	hardware ethernet 78:2b:cb:08:aa:48;
 	fixed-address chromium.wikimedia.org;
-}
-
-host colby {
-	hardware ethernet 90:B1:1C:00:B1:4B;
-	fixed-address colby.wikimedia.org;
 }
 
 host constable {
