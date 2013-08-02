@@ -60,10 +60,5 @@ class role::eqiad-proxy {
 
 # A dynamic HTTP routing proxy, based on nginx+lua+redis
 class role::proxy-project {
-    class { '::redis':
-        persist   => "aof",
-        dir       => "/var/lib/redis",
-        maxmemory => "512MB",
-        monitor   => true
-    }
+    class { '::labsproxy': }
 }
