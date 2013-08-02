@@ -52,6 +52,6 @@ class role::otrs::mailserver {
             content => template('exim/exim4.otrs.erb');
         '/etc/exim4/system_filter':
             ensure => present,
-            source => 'puppet:///files/exim4/system_filter.otrs';
+            source => 'puppet:///files/exim/system_filter.otrs';
     }
 }
