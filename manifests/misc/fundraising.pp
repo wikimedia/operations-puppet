@@ -427,7 +427,7 @@ class misc::fundraising::jenkins_maintenance {
 
 class misc::fundraising::udp2log_rotation {
 
-	include accounts::file_mover
+	include admin::file_mover
 
 	sudo_user { "file_mover": privileges => ['ALL = NOPASSWD: /usr/bin/killall -HUP udp2log'] }
 

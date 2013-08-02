@@ -158,9 +158,8 @@ class role::logging::udp2log::nginx inherits role::logging::udp2log {
 }
 
 class role::logging::webstatscollector {
-    # datasets account is needed so that snapshot1
-    # can rsync webstats dumps to dataset2 (dumps.wikimedia.org).
-    include accounts::datasets
+    # so we can rsync webstats dumps to dataset2 (dumps.wikimedia.org).
+    include admins::webstatsrsync
 
     # webstatscollector package creates this directory.
     # webstats-collector process writes dump files here.
@@ -275,7 +274,7 @@ class role::logging::udp2log::lucene inherits role::logging::udp2log {
 #
 class role::logging::udp2log::erbium inherits role::logging::udp2log {
     include misc::fundraising::udp2log_rotation,
-        accounts::file_mover
+        admins::file_mover
 
     # udp2log::instance will ensure this is created
     $webrequest_log_directory    = "$log_directory/webrequest"
@@ -288,14 +287,14 @@ class role::logging::udp2log::erbium inherits role::logging::udp2log {
         mode    => '0775',
         owner   => 'udp2log',
         group   => 'file_mover',
-        require => Class['accounts::file_mover'],
+        require => Class['admins::file_mover'],
     }
     file { "${fundraising_log_directory}/logs":
         ensure  => 'directory',
         mode    => '2775',  # make sure setgid bit is set.
         owner   => 'udp2log',
         group   => 'file_mover',
-        require => Class['accounts::file_mover'],
+        require => Class['admins::file_mover'],
     }
 
     # erbium run webstatscollector's filter process,

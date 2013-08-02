@@ -6,6 +6,7 @@ import "realm.pp" # These ones first
 import "generic-definitions.pp"
 import "base.pp"
 
+import "accounts.pp"
 import "admins.pp"
 import "backups.pp"
 import "certs.pp"
@@ -14,6 +15,7 @@ import "drac.pp"
 import "facilities.pp"
 import "ganglia.pp"
 import "gerrit.pp"
+import "groups.pp"
 import "imagescaler.pp"
 import "iptables.pp"
 import "lvs.pp"
@@ -209,7 +211,7 @@ node "antimony.wikimedia.org" {
 
     include standard,
         groups::wikidev,
-        accounts::demon,
+        admins::gerrit,
         role::gitblit
 
     # full root for gerrit admin (RT-3698)
@@ -277,8 +279,7 @@ node "calcium.wikimedia.org" {
 
     include standard,
         groups::wikidev,
-        accounts::robh
-
+        admins::robhtestbed
 }
 
 node /^(capella|nitrogen)\.wikimedia\.org$/ {
@@ -422,14 +423,12 @@ node /^cp(3019|302[0-2])\.esams\.wikimedia\.org$/ {
     include role::cache::bits
 }
 
-
 node "dataset2.wikimedia.org" {
     $cluster = "misc"
     $gid=500
     include standard,
         admins::roots,
         groups::wikidev,
-        accounts::catrope,
         misc::download-wikimedia,
         misc::download-primary,
                 misc::download::cron-rsync-dumps,
@@ -443,7 +442,6 @@ node "dataset1001.wikimedia.org" {
     include standard,
         admins::roots,
         groups::wikidev,
-        accounts::catrope,
         misc::download-wikimedia,
         misc::download-mirror,
                 misc::download::cron-rsync-dumps,
@@ -573,7 +571,7 @@ node 'db29.pmtpa.wmnet' {
         mysql_wmf::packages,
         ntp::client,
         admins::roots,
-        accounts::pgehres
+        admins::admintoolsdb
     package { [ 'php5', 'php5-cli', 'php5-mysql', 'python-sqlalchemy']:
         ensure => latest;
     }
@@ -810,11 +808,11 @@ node "ekrem.wikimedia.org" {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node "emery.wikimedia.org" inherits "base_analytics_logging_node" {
+    include base::accounts # since it doesn't include base
     include
         sysctlfile::high-bandwidth-rsync,
         admins::mortals,
-        accounts::milimetric, # RT 4312
-        accounts::tnegrin     # RT 5391
+        admins::analytics::logging::allhosts
 
     include role::logging::udp2log::emery
 }
@@ -836,15 +834,17 @@ node "loudon.wikimedia.org" {
 
 node "grosley.wikimedia.org" {
     # moved to frack puppet
+    # include base::accounts # since it doesn't include base
     #include role::fundraising::civicrm,
-    #   accounts::file_mover
+    #   admins::file_mover
     #class { 'misc::fundraising::backup::archive_sync': hour => 0, minute => 5 }
 }
 
 node "aluminium.wikimedia.org" {
+    include base::accounts # since it doesn't include base
     include role::fundraising::civicrm,
         misc::fundraising::jenkins,
-        accounts::file_mover
+        admins::file_mover
     class { 'misc::fundraising::backup::archive_sync': hour => [0,8,16], minute => 5 }
 }
 
@@ -852,8 +852,7 @@ node "aluminium.wikimedia.org" {
 node "erbium.eqiad.wmnet" inherits "base_analytics_logging_node" {
     # gadolinium hosts the separate nginx webrequest udp2log instance.
     include role::logging::udp2log::erbium
-
-    include accounts::tnegrin       # RT 5391
+    include admins::analytics::logging::allhosts
 }
 
 # es1 equad
@@ -895,20 +894,20 @@ node "fenari.wikimedia.org" {
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
 
+    include base::accounts # since it doesn't include base
     include role::applicationserver::maintenance,
         svn::client,
         nfs::netapp::home,
         admins::roots,
         admins::mortals,
         admins::restricted,
+        admins::bastion::fenari::others,
         misc::bastionhost,
         misc::noc-wikimedia,
         dns::account,
         nrpe,
         drac::management,
         squid::cachemgr,
-        accounts::awjrichards,
-        accounts::erosen,
         generic::wikidev-umask,
         misc::dsh
 
@@ -959,8 +958,7 @@ node "formey.wikimedia.org" {
 # gadolinium is the webrequest socat multicast relay.
 # base_analytics_logging_node is defined in role/logging.pp
 node "gadolinium.wikimedia.org" inherits "base_analytics_logging_node" {
-    include accounts::milimetric
-    include accounts::tnegrin     # RT 5391
+    include admins::analytics::logging::allhosts
 
     # relay the incoming webrequest log stream to multicast
     include role::logging::relay::webrequest-multicast
@@ -1070,12 +1068,8 @@ node "hooft.esams.wikimedia.org" {
 # base_analytics_logging_node is defined in role/logging.pp
 
 node "locke.wikimedia.org" inherits "base_analytics_logging_node" {
-    include
-        accounts::dsc,
-        accounts::tstarling,
-        accounts::datasets,
-        accounts::milimetric,
-        accounts::tnegrin,       # RT 5391
+    include admins::analytics::logging::locke
+    include admins::analytics::logging::allhosts
         misc::udp2log::utilities,
         misc::udp2log
 
@@ -1163,6 +1157,7 @@ node "hooper.wikimedia.org" {
 node "hume.wikimedia.org" {
     $cluster = "misc"
 
+    include base::accounts # since it doesn't include base
     include role::applicationserver::maintenance,
         generic::mysql::packages::client,
         nfs::netapp::home,
@@ -1217,8 +1212,8 @@ node "kaulen.wikimedia.org" {
     $gid = 500
 
     include standard,
-            role::bugzilla,
-            admins::roots
+        role::bugzilla,
+        admins::roots
 
     install_certificate{ "star.wikimedia.org": }
 
@@ -1820,7 +1815,6 @@ node "mchenry.wikimedia.org" {
         backup::client,
         exim::aliases::private,
         groups::wikidev,
-        accounts::jdavis
 
     include network::constants
 
@@ -1994,9 +1988,8 @@ node /^mw1(2[6-9]|30)\.pmtpa\.wmnet$/ {
 # mw131-134 are pulled for elasticsearch testing
 # approved by site architect afeldman ;)
 node "mw131.pmtpa.wmnet" {
-    include accounts::manybubbles,
-        accounts::demon
-
+    include base::accounts # since it doesn't include base
+    include admins::elasticsearch
     sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
     sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2004,8 +1997,8 @@ node "mw131.pmtpa.wmnet" {
     include nfs::upload
 }
 node /^mw13[234]\.pmtpa\.wmnet$/ {
-    include accounts::manybubbles,
-        accounts::demon,
+    include base::accounts # since it doesn't include base
+    include admins::elasticsearch,
         groups::wikidev
 
     sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
@@ -2191,10 +2184,7 @@ node /^owa[1-3]\.wikimedia\.org$/ {
     ### the hosts are still doing pmtpa-test, but I'm taking out the role to not overwrite local perf testing changes.
     #include role::swift::pmtpa-test::proxy
     include groups::wikidev,
-        accounts::darrell,
-        accounts::orion,
-        accounts::smerritt,
-        accounts::john
+            admins::owa
     sudo_user { [ "darrell" ]: privileges => ['ALL = NOPASSWD: ALL'] }
     sudo_user { [ "orion" ]: privileges => ['ALL = NOPASSWD: ALL'] }
     sudo_user { [ "smerritt" ]: privileges => ['ALL = NOPASSWD: ALL'] }
@@ -2203,14 +2193,8 @@ node /^owa[1-3]\.wikimedia\.org$/ {
 
 # base_analytics_logging_node is defined in role/logging.pp
 node "oxygen.wikimedia.org" inherits "base_analytics_logging_node" {
-    include
-        accounts::awjrichards,
-        accounts::datasets,
-        accounts::dsc,
-        accounts::diederik,
-        accounts::manybubbles, #RT 4312
-        accounts::milimetric,  #RT 4312
-        accounts::tnegrin     # RT 5391
+    include admins::analytics::logging:oxygen
+    include admins::analytics::logging:allhosts
 
     # main oxygen udp2log handles mostly Wikipedia Zero webrequest logs
         include role::logging::udp2log::oxygen
@@ -2232,26 +2216,29 @@ node "pdf1.wikimedia.org" {
     $ganglia_aggregator = true
     $cluster = "pdf"
 
+    include base::accounts # since it doesn't include base
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        admins::file_mover
 }
 
 node "pdf2.wikimedia.org" {
     $ganglia_aggregator = true
     $cluster = "pdf"
 
+    include base::accounts # since it doesn't include base
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        admins::file_mover
 }
 
 node "pdf3.wikimedia.org" {
     $cluster = "pdf"
 
+    include base::accounts # since it doesn't include base
     include role::pdf,
         groups::wikidev,
-        accounts::file_mover
+        admins::file_mover
 }
 
 node "professor.pmtpa.wmnet" {
@@ -2284,7 +2271,6 @@ node "sanger.wikimedia.org" {
         ldap::role::server::corp,
         ldap::role::client::corp,
         groups::wikidev,
-        accounts::jdavis,
         backup::client
 
     ## hardy doesn't support augeas, so we can't do this. /stab
@@ -2610,44 +2596,7 @@ node "stat1.wikimedia.org" {
 
     # special accounts
     include admins::globaldev, # RT 3119
-        accounts::ezachte,
-        accounts::abartov,    # RT 4106
-        accounts::aengels,
-        accounts::akhanna,
-        accounts::bsitu,      # RT 4959
-        accounts::milimetric, # RT 3540
-        accounts::diederik,
-        accounts::dsc,
-        accounts::dartar,
-        accounts::declerambaul,
-        accounts::ebernhardson, # RT 4959
-        accounts::fschulenburg, # RT 4475
-        accounts::giovanni,  # RT 3460
-        accounts::halfak,
-        accounts::howief,    # RT 3576
-        accounts::ironholds,
-        accounts::jdlrobson,
-        accounts::jgonera,
-        accounts::jmorgan,
-        accounts::kaldari,   # RT 4959
-        accounts::lwelling,  # RT 4959
-        accounts::spage,
-        accounts::maryana,   # RT 3517
-        accounts::mflaschen, # RT 4796
-        accounts::mgrover,   # RT 4600
-        accounts::mlitn,     # RT 4959
-        accounts::olivneh,   # RT 3451
-        accounts::otto,
-        accounts::reedy,
-        accounts::rfaulk,    # RT 5040
-        accounts::spetrea,   # RT 3584
-        accounts::swalling,  # RT 3653
-        accounts::yurik,     # RT 4835
-        accounts::mwalker,   # RT 5038
-        accounts::awight,    # RT 5048
-        accounts::jforrester,# RT 5302
-        accounts::qchris,    # RT 5474
-        accounts::tnegrin    # RT 5391
+        admins::stat1
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 
@@ -2660,16 +2609,7 @@ node "stat1001.wikimedia.org" {
     include role::statistics::www
 
     # special accounts
-    include accounts::ezachte,
-        accounts::diederik,
-        accounts::otto,
-        accounts::dsc,
-        accounts::milimetric,
-        accounts::rfaulk,  # RT 4258
-        accounts::ypanda,  # RT 4687
-        accounts::erosen,  # RT 5161
-        accounts::qchris,  # RT 5474
-        accounts::tnegrin  # RT 5391
+    include admins::stat1001
 
     sudo_user { "otto": privileges => ['ALL = NOPASSWD: ALL'] }
 }
@@ -2702,14 +2642,15 @@ node "streber.wikimedia.org" {
     system_role { "misc": description => "network monitoring server" }
 
     include passwords::root,
-        base::resolving,
-        base::sysctl,
-        base::motd,
-        base::vimconfig,
-        base::standard-packages,
-        base::monitoring::host,
+        base::accounts,
         base::environment,
+        base::monitoring::host,
+        base::motd,
         base::platform,
+        base::resolving,
+        base::standard-packages,
+        base::sysctl,
+        base::vimconfig,
         ssh,
         ganglia,
         ntp::client,
@@ -2736,12 +2677,13 @@ node /^snapshot([1-4]\.pmtpa|100[1-4]\.eqiad)\.wmnet/ {
         sudo::appserver,
         admins::roots,
         admins::mortals,
-        accounts::datasets,
+        admins::webstatsrsync,
         nfs::data,
         groups::wikidev
 }
 
 node "terbium.eqiad.wmnet" {
+    include base::accounts # since it doesn't include base
     include role::applicationserver::maintenance,
         generic::mysql::packages::client,
         misc::deployment::scap_scripts,

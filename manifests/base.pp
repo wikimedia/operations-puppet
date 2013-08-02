@@ -18,7 +18,7 @@ if $::lsbdistid == "Ubuntu" and versioncmp($::lsbdistrelease, "11.10") >= 0 {
 
 class base::access::dc-techs {
 	# add account and sudoers rules for data center techs
-	#include accounts::cmjohnson
+	#include admins::dc-techs (was cmjohnson)
 
 	# hardy doesn't support sudoers.d; only do sudo_user for lucid and later
 	if versioncmp($::lsbdistrelease, "10.04") >= 0 {
@@ -34,6 +34,11 @@ class base::access::dc-techs {
 		]}
 	}
 
+}
+
+class base::accounts {
+        include accounts::all       # all accounts that can possibly exist on any host
+        include accounts::disabled  # globally disabled accounts across the cluster
 }
 
 class base::grub {
@@ -762,18 +767,19 @@ class base {
 	}
 
 	include	passwords::root,
+		base::access::dc-techs,
+		base::accounts,
 		base::decommissioned,
+		base::environment,
 		base::grub,
+		base::motd,
+		base::platform,
 		base::resolving,
 		base::remote-syslog,
-		base::sysctl,
-		base::motd,
-		base::vimconfig,
-		base::standard-packages,
-		base::environment,
-		base::platform,
-		base::access::dc-techs,
 		base::screenconfig,
+		base::standard-packages,
+		base::sysctl,
+		base::vimconfig,
 		ssh,
 		role::salt::minions
 
