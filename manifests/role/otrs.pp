@@ -5,16 +5,19 @@ class role::otrs::webserver {
 
     system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
 
-    package { ['libapache2-mod-perl2', 'libdbd-mysql-perl', 'libtimedate-perl', 'libnet-dns-perl', 'libnet-ldap-perl',
-        'libio-socket-ssl-perl', 'libpdf-api2-perl', 'libdbd-mysql-perl', 'libsoap-lite-perl', 'libgd-text-perl',
-        'libtext-csv-xs-perl', 'libjson-xs-perl', 'libgd-graph-perl', 'libapache-dbi-perl', 'perl-doc']:
+    package {
+        ['libapache-dbi-perl', 'libapache2-mod-perl2', 'libdbd-mysql-perl', 'libgd-graph-perl',
+        'libgd-text-perl', 'libio-socket-ssl-perl', 'libjson-xs-perl', 'libnet-dns-perl',
+        'libnet-ldap-perl', 'libpdf-api2-perl', 'libsoap-lite-perl', 'libtext-csv-xs-perl',
+        'libtimedate-perl', 'perl-doc']:
         ensure => 'present',
     }
 
     install_certificate{ "star.wikimedia.org": }
 
     # enable modperl
-    #apache_module { 'perl': name => 'perl', }
+    #apache_module { 'perl': name => 'perl',
+}
 
     file {
         '/etc/apache2/sites-available/ticket.wikimedia.org':
