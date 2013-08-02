@@ -33,17 +33,17 @@ lock_method flock
 
 #   Set the threshold at which a message is considered spam (default: 5.0)
 #
-required_score 4.0
+required_score <%= required_score %>
 
 
 #   Use Bayesian classifier (default: 1)
 #
-use_bayes 0
+use_bayes <%= use_bayes %>
 
 
 #   Bayesian classifier auto-learning (default: 1)
 #
-bayes_auto_learn 0
+bayes_auto_learn <%= bayes_auto_learn %>
 
 
 #   Set headers which may provide inappropriate cues to the Bayesian

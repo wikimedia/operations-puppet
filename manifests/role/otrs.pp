@@ -4,8 +4,14 @@
 class role::otrs {
     include role::otrs::webserver,
         role::otrs::mailserver
-    systemuser { 'otrs': name => 'otrs', home => '/opt/otrs-home' }
+
+    systemuser { 'otrs':
+        name => 'OTRS user',
+        home => '/opt/otrs-home',
+        groups => 'www-data'
+    }
 }
+
 
 class role::otrs::webserver {
     system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
@@ -33,11 +39,18 @@ class role::otrs::webserver {
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 }
 
+
 class role::otrs::mailserver {
     include exim::smtp,
         exim::constants,
         network::constants,
-        spamassassin
+
+    class { 'spamassassin':
+        required_score => '5.0',
+        use_bayes => 1,
+        bayes_auto_learn => 1
+    }
+
     package { [ 'exim4-daemon-heavy', 'exim4-config' ]:
         ensure => latest;
     }
