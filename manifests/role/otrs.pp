@@ -4,6 +4,7 @@
 class role::otrs {
     include role::otrs::webserver,
         role::otrs::mailserver
+    systemuser { 'otrs': name => 'otrs', home => '/opt/otrs-home' }
 }
 
 class role::otrs::webserver {
@@ -25,7 +26,6 @@ class role::otrs::webserver {
             mode => '0444',
             source => 'puppet:///files/apache/sites/ticket.wikimedia.org';
     }
-
     install_certificate{ "star.wikimedia.org": }
     apache_module { 'perl': name => 'perl' }
     apache_module { 'rewrite': name => 'rewrite' }
@@ -34,14 +34,13 @@ class role::otrs::webserver {
 }
 
 class role::otrs::mailserver {
-
     include exim::smtp,
-        exim::constants
-
+        exim::constants,
+        network::constants,
+        spamassassin
     package { [ 'exim4-daemon-heavy', 'exim4-config' ]:
         ensure => latest;
     }
-
     File {
         owner => root,
         group => root,
