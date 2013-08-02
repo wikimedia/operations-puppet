@@ -213,8 +213,11 @@ class exim {
 }
 
 # SpamAssassin http://spamassassin.apache.org/
-
-class spamassassin {
+class spamassassin(
+		$required_score = '4.0',
+		$use_bayes = 0,
+		$bayes_auto_learn = 0
+	) {
 	include network::constants
 
 	package { [ "spamassassin" ]:
