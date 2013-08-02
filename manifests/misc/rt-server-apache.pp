@@ -70,6 +70,15 @@ class misc::rt-apache::server ( $dbuser, $dbpass, $site = 'rt.wikimedia.org', $d
       source => 'puppet:///files/rt/AfterForm',
   }
 
+  # RT Shredder plugin
+  file {
+    '/var/cache/request-tracker4/data/RT-Shredder':
+      ensure => 'directory',
+      owner  => 'www-data',
+      group  => 'www-data',
+      mode   => '0750',
+  }
+
   exec { 'update-rt-siteconfig':
     command     => '/usr/sbin/update-rt-siteconfig-4',
     subscribe   => file[
