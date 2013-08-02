@@ -3,12 +3,10 @@
 
 class role::otrs::webserver {
 
-    $apache_ssl = true
-
     system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
 
     include standard-noexim,
-        webserver::apache2
+        webserver::apache
 
     package {
         ['libapache-dbi-perl', 'libapache2-mod-perl2', 'libdbd-mysql-perl', 'libgd-graph-perl',
@@ -27,12 +25,6 @@ class role::otrs::webserver {
             group => root,
             mode => '0444',
             source => 'puppet:///files/apache/sites/ticket.wikimedia.org';
-        #'/etc/apache2/ports.conf':
-        #    ensure => present,
-        #    mode   => '0444',
-        #    owner  => root,
-        #    group  => root,
-        #    source => 'puppet:///files/apache/ports.conf.ssl';
     }
 
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
