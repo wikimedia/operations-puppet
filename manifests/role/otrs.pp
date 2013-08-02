@@ -6,7 +6,7 @@ class role::otrs {
         role::otrs::mailserver
 
     systemuser { 'otrs':
-        name => 'OTRS user',
+        name => 'otrs',
         home => '/opt/otrs-home',
         groups => 'www-data'
     }
