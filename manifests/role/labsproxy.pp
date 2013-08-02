@@ -66,4 +66,20 @@ class role::proxy-project {
         maxmemory => "512MB",
         monitor   => true
     }
+
+    package { 'nginx-extras': }
+
+    file { '/etc/nginx/sites-available/default':
+        ensure  => 'file',
+        source  => 'puppet:///files/nginx/labs/proxy.conf',
+        require => Package['nginx-extras'],
+        notify  => Service['nginx']
+    }
+
+    file { '/etc/nginx/proxy.lua':
+        ensure  => 'file',
+        source  => 'puppet:///files/nginx/labs/proxy.lua',
+        require => Package['nginx-extras'],
+        notify  => Service['nginx']
+    }
 }
