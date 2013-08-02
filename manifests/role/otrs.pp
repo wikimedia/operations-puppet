@@ -17,7 +17,7 @@ class role::otrs::webserver {
 
     # enable modperl
     #apache_module { 'perl': name => 'perl',
-}
+    #}
 
     file {
         '/etc/apache2/sites-available/ticket.wikimedia.org':
