@@ -50,10 +50,7 @@ class role::fundraising::civicrm {
 
 	$gid = 500
 	include standard-noexim,
-		accounts::mhernandez,
-		accounts::zexley,
-		accounts::sahar,
-		accounts::pcoombe,
+		admins::fr-civicrm,
 		admins::fr-tech,
 		admins::roots,
 		backup::client,
