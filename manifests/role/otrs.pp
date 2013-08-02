@@ -1,7 +1,7 @@
 # vim: set ts=4 et sw=4:
 # role/otrs.pp
 
-class otrs {
+class role::otrs {
     include role::otrs::webserver,
         role::otrs::mailserver
 }
