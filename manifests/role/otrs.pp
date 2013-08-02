@@ -35,6 +35,9 @@ class role::otrs::webserver {
 
 class role::otrs::mailserver {
 
+    include exim::smtp,
+        exim::constants
+
     package { [ 'exim4-daemon-heavy', 'exim4-config' ]:
         ensure => latest;
     }
@@ -48,8 +51,8 @@ class role::otrs::mailserver {
         '/etc/exim4/exim4.conf':
             ensure => present,
             content => template('exim/exim4.otrs.erb');
-        #'/etc/exim4/system_filter':
-        #    ensure => present,
-        #    source => 'puppet:///files/exim4/otrs-system_filter';
+        '/etc/exim4/system_filter':
+            ensure => present,
+            source => 'puppet:///files/exim4/system_filter.otrs';
     }
 }
