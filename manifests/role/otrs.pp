@@ -25,7 +25,7 @@ class role::otrs::webserver {
             owner => root,
             group => root,
             mode => '0444',
-            source => 'puppet:///files/apache/sites/ticket.wikimedia.org',
+            source => 'puppet:///files/apache/sites/ticket.wikimedia.org';
         #'/etc/apache2/ports.conf':
         #    ensure => present,
         #    mode   => '0444',
