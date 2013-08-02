@@ -34,8 +34,8 @@ if Rake.application.tty_output?
 	end
 end
 
-# Setup colorization if need be or forced via env variable 'color'
-if $enable_color or ENV['color']
+# Setup colorization if need be
+if $enable_color
 	$puppetcolor = '--color true'
 else
 	# define our own colorization method that simply output the message
@@ -64,14 +64,10 @@ Welcome #{ENV['USER']} in WMF wonderful rake helper to play with puppet.
 
 puts "-----------------------------------------------------------------------"
 puts "
-
 Examples:
 
 Validate syntax for all puppet manifests:
   rake validate
-
-Same, forcing color output:
-  rake validate color=true
 
 Validate manifests/nfs.pp and manifests/apaches.pp
   rake \"validate[manifests/nfs.pp manifests/apaches.pp]\"
