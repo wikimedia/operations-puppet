@@ -2229,13 +2229,6 @@ class accounts {
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAM82rXO0k53/D9xQs8e2keb8Gpyag2MsOMDFmwWJFevguUNYKsNp3n3GfWlUNax83H9mrfpUcWKD1NeZcly6g9EuYn1BxReSSUEegzIZ8+RNZBhs6mxvR2BFdYVQ5M0oD3WC3xQHtwzxkTq5e6gqHXrq7e2ybi2LHQ1ngspds/JVAAAAFQDDi/hw+MoP8Z7xiARtSBCuZW+l+wAAAIEAs5SZSr7ozKTP+CRW8pokc43HgBStPjhGgtYaGFHx61O0ACD4OnJMzeomtAImTNT3duYmqmeFVramta2cPqj9ET/d/Pk9po6X/SokV/klqUeB7UHJaU7DCs0n0N/ub832uUlY2LJ5rbMKMen/JD03ABYWklkOHuv5dEouAkPB9G0AAACBAKi0C6nho7YvcKQcDV0RANCnoFOLQCB7xUrRZ6hJtVg8AaBz2yGnafceb3dkbqR2h7xomjbjJjgFjug1S7VtiiiLbBKu5ikTUzaNAJqufumJu7IPAhD4V6BWl0oZ90pf9lNgYoQpYPPmwh0/MSQzxkwWvc9KA3eg8FnY1LOIW0aK";
 			}
-			ssh_authorized_key {
-				"darrell@localhost":
-					ensure	=> present,
-					user	=> $username,
-					type	=> "ssh-dss",
-					key	=> "AAAAB3NzaC1kc3MAAACBAM82rXO0k53/D9xQs8e2keb8Gpyag2MsOMDFmwWJFevguUNYKsNp3n3GfWlUNax83H9mrfpUcWKD1NeZcly6g9EuYn1BxReSSUEegzIZ8+RNZBhs6mxvR2BFdYVQ5M0oD3WC3xQHtwzxkTq5e6gqHXrq7e2ybi2LHQ1ngspds/JVAAAAFQDDi/hw+MoP8Z7xiARtSBCuZW+l+wAAAIEAs5SZSr7ozKTP+CRW8pokc43HgBStPjhGgtYaGFHx61O0ACD4OnJMzeomtAImTNT3duYmqmeFVramta2cPqj9ET/d/Pk9po6X/SokV/klqUeB7UHJaU7DCs0n0N/ub832uUlY2LJ5rbMKMen/JD03ABYWklkOHuv5dEouAkPB9G0AAACBAKi0C6nho7YvcKQcDV0RANCnoFOLQCB7xUrRZ6hJtVg8AaBz2yGnafceb3dkbqR2h7xomjbjJjgFjug1S7VtiiiLbBKu5ikTUzaNAJqufumJu7IPAhD4V6BWl0oZ90pf9lNgYoQpYPPmwh0/MSQzxkwWvc9KA3eg8FnY1LOIW0aK";
-			}
 		}
 	}
 
