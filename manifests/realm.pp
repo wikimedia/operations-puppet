@@ -2,15 +2,15 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
-if !$::realm {
+if $::realm == undef {
 	$realm = "production"
 }
 
-if !$instanceproject {
+if $::instanceproject == undef {
 	$instanceproject = ''
 }
 
-if !$projectgroup {
+if $::projectgroup == undef {
 	$projectgroup = "project-$instanceproject"
 }
 
@@ -18,9 +18,9 @@ if !$projectgroup {
 $all_prefixes = [ "208.80.152.0/22", "91.198.174.0/24" ]
 
 # Determine the site the server is in
-if $ipaddress_eth0 {
+if $::ipaddress_eth0 != undef {
 	$main_ipaddress = $ipaddress_eth0
-} elsif $ipaddress_bond0 {
+} elsif $::ipaddress_bond0 != undef {
 	$main_ipaddress = $ipaddress_bond0
 } else {
 	$main_ipaddress = $ipaddress
