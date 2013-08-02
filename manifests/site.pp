@@ -2913,6 +2913,11 @@ node "williams.wikimedia.org" {
     install_certificate{ "star.wikimedia.org": }
 }
 
+node "iodine.wikimedia.org" {
+    include standard-noexim,
+		role::otrs::webserver
+}
+
 node /(cerium|titanium)\.wikimedia\.org/ {
     include standard
 }
