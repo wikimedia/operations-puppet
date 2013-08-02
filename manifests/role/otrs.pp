@@ -30,5 +30,6 @@ class role::otrs::webserver {
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
     apache_module { 'perl': name => 'perl' }
     apache_module { 'rewrite': name => 'rewrite' }
+    apache_module { 'ssl': name => 'ssl' }
 
 }
