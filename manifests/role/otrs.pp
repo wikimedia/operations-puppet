@@ -3,7 +3,12 @@
 
 class role::otrs::webserver {
 
+    $apache_ssl = true,
+
     system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
+
+    include standard-noexim,
+        webserver::apache2
 
     package {
         ['libapache-dbi-perl', 'libapache2-mod-perl2', 'libdbd-mysql-perl', 'libgd-graph-perl',
@@ -14,10 +19,6 @@ class role::otrs::webserver {
     }
 
     install_certificate{ "star.wikimedia.org": }
-
-    # enable modperl
-    #apache_module { 'perl': name => 'perl',
-    #}
 
     file {
         '/etc/apache2/sites-available/ticket.wikimedia.org':
@@ -35,5 +36,7 @@ class role::otrs::webserver {
     }
 
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
+    apache_module { 'perl': name => 'perl' },
+    apache_module { 'rewrite': name => 'rewrite' },
 
 }

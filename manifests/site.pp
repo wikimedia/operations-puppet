@@ -2914,8 +2914,7 @@ node "williams.wikimedia.org" {
 }
 
 node "iodine.wikimedia.org" {
-    include standard-noexim,
-		role::otrs::webserver
+    include role::otrs::webserver
 }
 
 node /(cerium|titanium)\.wikimedia\.org/ {
