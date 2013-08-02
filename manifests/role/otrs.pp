@@ -9,8 +9,7 @@ class role::otrs {
 class role::otrs::webserver {
     system_role { 'role::otrs::webserver': description => 'OTRS Web Application Server' }
     include standard-noexim,
-        webserver::apache,
-        role::otrs::cli 
+        webserver::apache
     package {
         ['libapache-dbi-perl', 'libapache2-mod-perl2', 'libdbd-mysql-perl', 'libgd-graph-perl',
         'libgd-text-perl', 'libio-socket-ssl-perl', 'libjson-xs-perl', 'libnet-dns-perl',
