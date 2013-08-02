@@ -27,8 +27,6 @@ Then:
 
 =end
 
-$enable_color=false
-
 # Only care about color when using a tty
 if Rake.application.tty_output?
 	# Since we are going to use puppet internal stuff, we might as
@@ -40,18 +38,11 @@ if Rake.application.tty_output?
 		$enable_color=true
 	rescue LoadError
 		puts "Cant load puppet/util/colors .. no color for you!"
+		# define our own colorization method that simply output the message
+		def console_color( level, message )
+			return message
+		end
 	end
-end
-
-# Setup colorization if need be
-if $enable_color
-	$puppetcolor = '--color true'
-else
-	# define our own colorization method that simply output the message
-	def console_color( level, message )
-		return message
-	end
-	$puppetcolor = '--color none'
 end
 
 task :default => [:help]
@@ -184,7 +175,7 @@ end
 # Validate manifests passed as an array of filenames
 def puppet_parser_validate(*manifests)
 	manifests = manifests.join(' ')
-	sh "puppet parser validate #{$puppetcolor} #{manifests}"
+	sh "puppet parser validate #{manifests}"
 end
 
 desc "Run spec tests found in modules"
