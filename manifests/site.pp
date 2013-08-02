@@ -2915,7 +2915,7 @@ node "williams.wikimedia.org" {
 }
 
 node "iodine.wikimedia.org" {
-    include role::otrs::webserver
+    include role::otrs
 }
 
 node /(cerium|titanium)\.wikimedia\.org/ {
