@@ -41,7 +41,7 @@ class role::otrs::webserver {
 
 
 class role::otrs::mailserver {
-    include exim::smtp,
+    include passwords::exim4,
         network::constants
 
     class { 'spamassassin':
