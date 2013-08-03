@@ -17,7 +17,7 @@ OTRS_GROUP=otrs
 ###############################
 
 # MySQL lookups (OTRS)
-hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('passwords::exim4::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('passwords::exim4::otrs_mysql_password') %>
+hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 
 # Standard lists
 hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networks').join(" ; ") %>
