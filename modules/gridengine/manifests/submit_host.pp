@@ -11,10 +11,12 @@ class gridengine::submit_host($gridmaster = $grid_master) {
         }
 
         cron { "pull-accounting-from-shared":
-          command => "cp -f /data/project/.system/accounting /var/lib/gridengine/default/common/accounting.tmp && mv -f /var/lib/gridengine/default/common/accounting.tmp /var/lib/gridengine/default/common/accounting",
-          user => root,
-          minute => [1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56],
-          ensure => present;
+          ensure => absent,
+        }
+
+        file { "/var/lib/gridengine/default/common/accounting":
+          ensure => link,
+          target => "/data/project/.system/accounting",
         }
 
 # Not actually possible in the labs
