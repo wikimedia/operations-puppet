@@ -7,6 +7,10 @@ class labsproxy ($redis_maxmemory="512MB") {
 
     package { 'nginx-extras': }
 
+    service { 'nginx':
+        ensure => 'running'
+    }
+
     file { '/etc/nginx/sites-available/default':
         ensure  => 'file',
         source  => 'puppet:///modules/labsproxy/proxy.conf',
