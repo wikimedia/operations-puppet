@@ -43,6 +43,7 @@ class role::otrs {
         required_score => '5.0',
         use_bayes => '1',
         bayes_auto_learn => '1',
+        smart_route_list => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
     }
 
     class { 'exim::roled':
