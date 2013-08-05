@@ -362,7 +362,6 @@ rt:
 	transport = rt_pipe
 
 <% end -%>
-
 <% if enable_mailman == "true" then -%>
 # Mailman list handling.
 
@@ -378,7 +377,6 @@ list_aliases:
 	forbid_pipe
 	include_directory = CONFDIR
 <% end -%>
-
 <% if ( enable_mail_relay == "primary" ) -%>
 aliases:
 	driver = redirect
@@ -392,7 +390,6 @@ aliases:
 	include_directory = CONFDIR
 	pipe_transport = address_pipe
 <% end -%>
-
 <% if enable_mailman == "true" then -%>
 # Test the mailing list address without suffix
 # first, as a mailing list like wikifi-admin is a valid list name.
@@ -598,7 +595,7 @@ postmaster:
 <% if (enable_otrs_server == "true" ) -%>
 otrs:
 	driver = accept
-	condition = ${lookup mysql{SELECT value0 FROM system_
+	condition = ${lookup mysql{SELECT value0 FROM system_address WHERE value0='${quote_mysql:$local_part@$domain}'}{true}fail}
 	transport = otrs
 <% end %>
 
