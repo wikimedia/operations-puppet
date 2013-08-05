@@ -2,13 +2,16 @@
 # role/otrs.pp
 
 class role::otrs {
-    include role::otrs::webserver,
-        role::otrs::mailserver
-
+    include role::otrs::webserver
     systemuser { 'otrs':
         name => 'otrs',
         home => '/opt/otrs-home',
         groups => 'www-data'
+    }
+    class { 'exim::roled':
+        $enable_otrs_server => 'true',
+        $enable_imap_delivery => 'true',
+        $enable_spamassassin => 'true'
     }
 }
 
@@ -40,31 +43,26 @@ class role::otrs::webserver {
 }
 
 
-class role::otrs::mailserver {
-    include exim::smtp,
-        exim::constants,
-        network::constants
-
-    class { 'spamassassin':
-        required_score => '5.0',
-        use_bayes => 1,
-        bayes_auto_learn => 1
-    }
-
-    package { [ 'exim4-daemon-heavy', 'exim4-config' ]:
-        ensure => latest;
-    }
-    File {
-        owner => root,
-        group => root,
-        mode => '0444',
-    }
-    file {
-        '/etc/exim4/exim4.conf':
-            ensure => present,
-            content => template('exim/exim4.otrs.erb');
-        '/etc/exim4/system_filter':
-            ensure => present,
-            source => 'puppet:///files/exim/system_filter.otrs';
-    }
-}
+#class role::otrs::mailserver {
+#    include network::constants
+#
+#    class { 'spamassassin':
+#        required_score => '5.0',
+#        use_bayes => 1,
+#        bayes_auto_learn => 1
+#    }
+#
+#    File {
+#        owner => root,
+#        group => root,
+#        mode => '0444',
+#    }
+#    file {
+#        '/etc/exim4/exim4.conf':
+#            ensure => present,
+#            content => template('exim/exim4.otrs.erb');
+#        '/etc/exim4/system_filter':
+#            ensure => present,
+#            source => 'puppet:///files/exim/system_filter.otrs';
+#    }
+#}
