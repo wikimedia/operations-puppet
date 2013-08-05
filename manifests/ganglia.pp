@@ -337,6 +337,7 @@ class ganglia {
                         "Parsoid Varnish eqiad" => "cp1045.eqiad.wmnet cp1058.eqiad.wmnet",
                         "Redis eqiad" => "rdb1001.eqiad.wmnet rdb1002.eqiad.wmnet",
                         "Labs NFS cluster pmtpa" => "labstore3.pmtpa.wmnet labstore4.pmtpa.wmnet",
+                        "Text caches eqiad" => "cp1052.eqiad.wmnet cp1053.eqiad.wmnet",
                     }
                     $rra_sizes = '"RRA:AVERAGE:0.5:1:360" "RRA:AVERAGE:0.5:24:245" "RRA:AVERAGE:0.5:168:241" "RRA:AVERAGE:0.5:672:241" "RRA:AVERAGE:0.5:5760:371"'
                     $rrd_rootdir = "/mnt/ganglia_tmp/rrds.pmtpa"
