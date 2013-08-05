@@ -47,7 +47,6 @@ class role::otrs {
 
     class { 'exim::roled':
         enable_otrs_server => 'true',
-        enable_imap_delivery => 'true',
         enable_spamassassin => 'true',
     }
 }
