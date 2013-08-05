@@ -208,16 +208,16 @@ class exim {
 			include mail_relay
 		}
 		if ( $enable_spamassassin == "true" ) {
-			include spamassassin
+			Class[spamassassin] -> Class[exim::roled]
 		}
 	}
 }
 
 # SpamAssassin http://spamassassin.apache.org/
 class spamassassin(
-		$required_score = '4.0',
-		$use_bayes = 0,
-		$bayes_auto_learn = 0
+		$required_score = '5.0',
+		$use_bayes = 1,
+		$bayes_auto_learn = 1
 	) {
 	include network::constants
 
