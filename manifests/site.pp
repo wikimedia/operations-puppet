@@ -2291,7 +2291,7 @@ node "sanger.wikimedia.org" {
     #include ldap::server::iptables
 }
 
-node /search1[3478]\.pmtpa\.wmnet/ {
+node /^search1[3478]\.pmtpa\.wmnet/ {
     if $hostname =~ /^search1(3|4)$/ {
         $ganglia_aggregator = true
     }
@@ -2299,32 +2299,32 @@ node /search1[3478]\.pmtpa\.wmnet/ {
     include role::lucene::front_end::pool4
 }
 
-node /search1[56]\.pmtpa\.wmnet/ {
+node /^search1[56]\.pmtpa\.wmnet/ {
 
     include role::lucene::front_end::pool5
 }
 
-node /search(19|20)\.pmtpa\.wmnet/ {
+node /^search(19|20)\.pmtpa\.wmnet/ {
 
     include role::lucene::front_end::prefix
 }
 
-node /search2[1-6]\.pmtpa\.wmnet/ {
+node /^search2[1-6]\.pmtpa\.wmnet/ {
 
     include role::lucene::front_end::pool1
 }
 
-node /search(2[7-9]|30)\.pmtpa\.wmnet/ {
+node /^search(2[7-9]|30)\.pmtpa\.wmnet/ {
 
     include role::lucene::front_end::pool2
 }
 
-node /search3[1-6]\.pmtpa\.wmnet/ {
+node /^search3[1-6]\.pmtpa\.wmnet/ {
 
     include role::lucene::front_end::pool3
 }
 
-node /search100[0-6]\.eqiad\.wmnet/ {
+node /^search100[0-6]\.eqiad\.wmnet/ {
     if $hostname =~ /^search100(1|2)$/ {
         $ganglia_aggregator = true
     }
@@ -2332,42 +2332,42 @@ node /search100[0-6]\.eqiad\.wmnet/ {
     include role::lucene::front_end::pool1
 }
 
-node /search10(0[7-9]|10)\.eqiad\.wmnet/ {
+node /^search10(0[7-9]|10)\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool2
 }
 
-node /search101[1-4]\.eqiad\.wmnet/ {
+node /^search101[1-4]\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool3
 }
 
-node /search101[56]\.eqiad\.wmnet/ {
+node /^search101[56]\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool4
 }
 
-node /search10(19|20)\.eqiad\.wmnet/ {
+node /^search10(19|20)\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool5
 }
 
-node /search101[78]\.eqiad\.wmnet/ {
+node /^search101[78]\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::prefix
 }
 
-node /search10(19|2[0-2])\.eqiad\.wmnet/ {
+node /^search10(19|2[0-2])\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool4
 }
 
-node /search102[3-4]\.eqiad\.wmnet/ {
+node /^search102[3-4]\.eqiad\.wmnet/ {
 
     include role::lucene::front_end::pool3
 }
 
-node /searchidx100[0-2]\.eqiad\.wmnet/ {
+node /^searchidx100[0-2]\.eqiad\.wmnet/ {
 
     include role::lucene::indexer
 }
