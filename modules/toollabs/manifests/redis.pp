@@ -38,4 +38,7 @@ class toollabs::redis (
         },
         monitor => true
     }
+
+    # Enable Ganglia monitoring.
+    include redis::ganglia
 }
