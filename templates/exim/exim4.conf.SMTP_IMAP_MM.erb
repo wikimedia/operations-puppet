@@ -71,7 +71,7 @@ hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join
 hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 <% end -%>
 
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == "true" or enable_otrs_server == "true" then -%>
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
 <% end -%>
@@ -89,8 +89,8 @@ acl_smtp_data = acl_check_data
 helo_try_verify_hosts = *
 <% end -%>
 
-<% if rt_relay == "true" then -%>
-# Allow RT to use any sender address
+<% if rt_relay == "true" or enable_otrs_server == "true" then -%>
+# Allow RT, OTRS to use any sender address
 untrusted_set_sender = *
 local_from_check = false
 <% end -%>
@@ -120,7 +120,7 @@ rfc1413_hosts =
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
-<% if enable_imap_delivery == "true" then -%>
+<% if enable_imap_delivery == "true" or enable_otrs_server == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
@@ -645,6 +645,23 @@ rt_pipe:
 	user = mail
 	group = mail
 	return_fail_output
+
+<% end -%>
+<% if enable_otrs_server == "true" then -%>
+# OTRS pipe transport
+
+otrs:
+	driver = pipe
+	command = OTRS_POSTMASTER
+	current_directory = OTRS_HOME
+	home_directory = OTRS_HOME
+	user = OTRS_USER
+	group = OTRS_GROUP
+	freeze_exec_fail
+	log_fail_output
+	timeout = 1m
+	timeout_defer
+
 <% end -%>
 
 <% if enable_mailman == "true" then -%>
