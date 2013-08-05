@@ -32,7 +32,7 @@ OTRS_GROUP=otrs
 # Main configuration settings #
 ###############################
 
-<% if enable_mail_relay == "primary" or enable_otrs_server == "yes" then -%>
+<% if enable_mail_relay == "primary" or enable_otrs_server == "true" then -%>
 # MySQL lookups (OTRS)
 hide mysql_servers =  db48.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %> : db49.pmtpa.wmnet/otrs/exim/<%= scope.lookupvar('exim::smtp::otrs_mysql_password') %>
 <% end -%>
@@ -67,7 +67,7 @@ hostlist wikimedia_nets = <; <%= scope.lookupvar('network::constants::all_networ
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <% if enable_mail_relay != "false" -%><%= scope.lookupvar('network::constants::external_networks').join(" ; ") %>; 10.0.0.0/8<% end %>
 # Relay @mx_secondary domains only to these hosts
 hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join(" ; ") %>
-<% if enable_otrs_server == "yes" then -%>
+<% if enable_otrs_server == "true" then -%>
 hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 <% end -%>
 
