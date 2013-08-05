@@ -96,8 +96,10 @@ helo_try_verify_hosts = *
 untrusted_set_sender = *
 local_from_check = false
 <% end -%>
+<% if enable_otrs_server == "false" then -%>
 
 system_filter = CONFDIR/system_filter
+<% end -%>
 
 # Resource control
 check_spool_space = 50M
@@ -278,7 +280,7 @@ acl_check_data:
 <% end -%>
 	accept
 
-<% if ( enable_spamassassin == "true" and enable_otrs_server == "false" ) then -%>
+<% if ( enable_spamassassin == "true" ) then -%>
 spamassassin:
 	# Only run through SpamAssassin if requested for this domain and
 	# the message is not too large (Mailman's default moderation

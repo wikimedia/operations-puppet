@@ -47,7 +47,7 @@ class role::otrs {
 
     class { 'exim::roled':
         enable_otrs_server => 'true',
-        enable_spamassassin => 'true',
+        enable_spamassassin => 'false', # done by OTRS, not exim
         enable_external_mail => 'true',
         smart_route_list => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
     }
