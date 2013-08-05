@@ -8,6 +8,11 @@ class role::otrs {
         home => '/opt/otrs-home',
         groups => 'www-data'
     }
+    class { 'spamassassin':
+        required_score => '5.0',
+        use_bayes => '1',
+        bayes_auto_learn => '1',
+    }
     class { 'exim::roled':
         enable_otrs_server => 'true',
         enable_imap_delivery => 'true',
@@ -41,28 +46,3 @@ class role::otrs::webserver {
     apache_module { 'ssl': name => 'ssl' }
     apache_site { 'ticket': name => 'ticket.wikimedia.org' }
 }
-
-
-#class role::otrs::mailserver {
-#    include network::constants
-#
-#    class { 'spamassassin':
-#        required_score => '5.0',
-#        use_bayes => 1,
-#        bayes_auto_learn => 1
-#    }
-#
-#    File {
-#        owner => root,
-#        group => root,
-#        mode => '0444',
-#    }
-#    file {
-#        '/etc/exim4/exim4.conf':
-#            ensure => present,
-#            content => template('exim/exim4.otrs.erb');
-#        '/etc/exim4/system_filter':
-#            ensure => present,
-#            source => 'puppet:///files/exim/system_filter.otrs';
-#    }
-#}

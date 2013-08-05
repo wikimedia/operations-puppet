@@ -2415,8 +2415,13 @@ node "sodium.wikimedia.org" {
         nrpe,
         mailman,
         dns::recursor,
-        spamassassin,
         backup::client
+
+    class { 'spamassassin':
+        required_score => '4.0',
+        use_bayes => '0',
+        bayes_auto_learn => '0',
+    }
 
     class { exim::roled:
         outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
