@@ -121,7 +121,6 @@ class lvs::configuration {
 					'wikiversitylb' => "208.80.152.207",
 					'mediawikilb' => "208.80.152.208",
 					'foundationlb' => "208.80.152.209",
-					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
 					'textsvc' => "10.2.2.25",
@@ -135,7 +134,6 @@ class lvs::configuration {
 					'wikiversitylb' => "208.80.154.231",
 					'mediawikilb' => "208.80.154.232",
 					'foundationlb' => "208.80.154.233",
-					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
 					'textsvc' => "10.2.3.25",
@@ -149,18 +147,20 @@ class lvs::configuration {
 					'wikiversitylb' => "91.198.174.231",
 					'mediawikilb' => "91.198.174.232",
 					'foundationlb' => "91.198.174.235",
-					'wikivoyagelb' => '91.198.174.238',
 				},
 			},
 			'text-varnish' => {
 				'pmtpa' => {
 					'wikidatalb' => '208.80.152.218',
+					'wikivoyagelb' => "208.80.152.219"
 				},
 				'eqiad' => {
 					'wikidatalb' => '208.80.154.242',
+					'wikivoyagelb' => "208.80.154.243"
 				},
 				'esams' => {
 					'wikidatalb' => '91.198.174.237',
+					'wikivoyagelb' => '91.198.174.238',
 				},
 			},
 			'https' => {
