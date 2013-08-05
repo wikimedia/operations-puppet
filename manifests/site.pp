@@ -2782,6 +2782,18 @@ node "terbium.eqiad.wmnet" {
     class { misc::maintenance::updatequerypages: enabled => true }
 }
 
+node /^testsearch100[1-3]\.eqiad\.wmnet/ {
+    include accounts::manybubbles,
+        accounts::demon,
+        groups::wikidev
+
+    sudo_user { [ "manybubbles" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+    sudo_user { [ "demon" ]: privileges => ['ALL = NOPASSWD: ALL'] }
+
+    include standard
+    include role::elasticsearch::production
+}
+
 node "tin.eqiad.wmnet" {
     $cluster = "misc"
     $domain_search = "wikimedia.org pmtpa.wmnet eqiad.wmnet esams.wikimedia.org"
