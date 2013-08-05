@@ -135,6 +135,8 @@ class exim {
 	class roled(
 		$local_domains = [ "+system_domains" ],
 		$enable_mail_relay="false",
+		$enable_otrs_server="false",
+		$otrs_home="/opt/otrs-home",
 		$enable_mailman="false",
 		$enable_imap_delivery="false",
 		$enable_mail_submission="false",
