@@ -520,7 +520,7 @@ class ganglia::web {
         require => File["$ganglia_tmp_mountpoint"],
         device => "tmpfs",
         fstype => "tmpfs",
-        options => "noauto,noatime,defaults,size=3000m",
+        options => "noauto,noatime,defaults,size=4000m",
         pass => 0,
         dump => 0,
         ensure => mounted;
