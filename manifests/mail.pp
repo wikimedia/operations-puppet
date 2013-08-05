@@ -102,9 +102,9 @@ class exim {
 	}
 
 	class smtp {
-		include passwords::exim4
-		$otrs_mysql_password = $passwords::exim4::otrs_mysql_password
-		$smtp_ldap_password = $passwords::exim4::smtp_ldap_password
+		include passwords::exim
+		$otrs_mysql_password = $passwords::exim::otrs_mysql_password
+		$smtp_ldap_password = $passwords::exim::smtp_ldap_password
 	}
 
 	# Class: exim::roled
