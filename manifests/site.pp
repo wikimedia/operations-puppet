@@ -154,7 +154,6 @@ node "analytics1010.eqiad.wmnet" {
     include role::analytics::hadoop::master
 }
 
-
 # analytics1011-analytics1020 are Hadoop worker nodes
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
     # ganglia aggregator for the Analytics cluster.
@@ -170,10 +169,9 @@ node /analytics10(1[1-9]|20).eqiad.wmnet/ {
 }
 
 # analytics1021 and analytics1022 are Kafka Brokers.
-# NOTE:  These still need reinstalled as of 2013-08-26
 node /analytics102[12]\.eqiad\.wmnet/ {
     include role::analytics
-    # include role::analytics::kafka::server
+    include role::analytics::kafka::server
 }
 
 # analytics1023-1025 are zookeeper server nodes
