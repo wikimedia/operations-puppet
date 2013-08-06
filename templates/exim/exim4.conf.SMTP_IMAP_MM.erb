@@ -70,8 +70,8 @@ hostlist primary_mx = <; <%= scope.lookupvar('exim::constants::primary_mx').join
 <% if enable_otrs_server == "true" then -%>
 hostlist otrs_mail_from_hosts = mchenry.wikimedia.org
 <% end -%>
-
 <% if enable_imap_delivery == "true" or enable_otrs_server == "true" then -%>
+
 # Interfaces
 daemon_smtp_ports = smtp : ssmtp
 <% end -%>
@@ -124,7 +124,7 @@ rfc1413_hosts =
 # Content filtering
 spamd_address = 127.0.0.1 783
 <% end %>
-<% if enable_imap_delivery == "true" or enable_otrs_server == "true" then -%>
+<% if enable_imap_delivery == "true" then -%>
 # TLS
 tls_certificate = /etc/ssl/certs/wikimedia.org.pem
 tls_privatekey = /etc/ssl/private/wikimedia.org.key
@@ -694,7 +694,6 @@ otrs:
 	timeout_defer
 
 <% end -%>
-
 <% if enable_mailman == "true" then -%>
 # Mailman pipe transport
 # Rewrite body headers of old mailing list addresses to new ones
@@ -812,7 +811,6 @@ begin retry
 begin rewrite
 
 <% end %>
-
 <% if rt_relay == "true" then -%>
 #################
 # Rewrite rules #
@@ -824,7 +822,6 @@ begin rewrite
 www-data@$primary_hostname      general@rt.wikimedia.org        Fq
 
 <% end -%>
-
 <% if enable_mailman == "true" then -%>
 \N^.*@(mail\.)?wiki[mp]edia\.org$\N "${if exists{MAILMAN_LISTS_HOME/lists/$local_part/config.pck}{$local_part@lists.wikimedia.org}fail}" ct
 <% end %>
