@@ -16,6 +16,7 @@
 # https://ticket.wikimedia.org
 <VirtualHost *:443>
 	ServerName ticket.wikimedia.org
+	ServerAlias iodine.wikimedia.org
 
 	SSLEngine On
 	SSLProtocol -ALL +SSLv3 +TLSv1
@@ -32,15 +33,14 @@
 	Alias /otrs-web/ "/opt/otrs/var/httpd/htdocs/"
 
 	# Setup environment and preload modules
-	Perlrequire /opt/otrs/scripts/apache2-perl-startup.pl
+	PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
 
 	# Reload Perl modules when changed on disk
-	PerlModule Apache2::Reload
-	PerlInitHandler Apache2::Reload
+	#PerlModule Apache2::Reload
+	#PerlInitHandler Apache2::Reload
 
 	# general mod_perl2 options
 	<Location /otrs>
-		#ErrorDocument 403 /otrs/customer.pl
 		ErrorDocument 403 /otrs/index.pl
 		SetHandler  perl-script
 		PerlResponseHandler ModPerl::Registry
@@ -83,7 +83,7 @@
 				Header set Cache-Control "max-age=2592000 must-revalidate"
 			</FilesMatch>
 		</Directory>
-
+	
 		<Directory "/opt/otrs/var/httpd/htdocs/js/js-cache">
 			<FilesMatch "\.(js|JS)$">
 				Header set Cache-Control "max-age=2592000 must-revalidate"
@@ -93,5 +93,14 @@
 
 	# Limit the number of requests per child to avoid excessive memory usage
 	#MaxRequestsPerChild 4000
+
+	RewriteEngine On
+	RewriteRule ^/otrs$ /otrs/index.pl [R=301]
+	RewriteRule ^/otrs/$ /otrs/index.pl [R=301]
+	RewriteRule ^/$ /otrs/index.pl [R=301]
+
+	# Fix incorrect TicketID links (common on Wikipedia)
+	RewriteCond %{QUERY_STRING} ^Action=AgentTicketZoom\&TicketID=(200[0-9]{13})$
+	RewriteRule ^/otrs/index\.pl /otrs/index.pl?Action=AgentTicketZoom&TicketNumber=%1 [R]
 
 </VirtualHost>
