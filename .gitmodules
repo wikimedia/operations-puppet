@@ -7,3 +7,6 @@
 [submodule "modules/jmxtrans"]
 	path = modules/jmxtrans
 	url = https://gerrit.wikimedia.org/r/operations/puppet/jmxtrans
+[submodule "modules/kafka"]
+	path = modules/kafka
+	url = https://gerrit.wikimedia.org/r/p/operations/puppet/kafka

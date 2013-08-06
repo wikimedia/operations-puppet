@@ -154,6 +154,12 @@ node "analytics1010.eqiad.wmnet" {
     include role::analytics::hadoop::master
 }
 
+# analytics1021 and analytics1022 are Kafka Brokers.
+node /analytics102[12]\.eqiad\.wmnet/ {
+    include role::analytics
+    include role::analytics::kafka::server
+}
+
 
 # analytics1011-analytics1020 are Hadoop worker nodes
 node /analytics10(1[1-9]|20).eqiad.wmnet/ {
