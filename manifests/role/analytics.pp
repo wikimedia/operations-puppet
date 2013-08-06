@@ -133,12 +133,6 @@ class role::analytics::frontend inherits role::analytics {
     }
 }
 
-# Monitoring for kafka brokers.
-class role::analytics::kafka::server inherits role::analytics {
-  include misc::analytics::monitoring::kafka::server
-}
-
-
 
 # == role::analytics::udp2log::mobile
 #
