@@ -539,6 +539,8 @@ class role::cache {
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
 
+		include varnish::monitoring::ganglia::vhtcpd
+
 		varnish::instance { "text-backend":
 			name => "",
 			vcl => "text-backend",
@@ -672,6 +674,8 @@ class role::cache {
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+
+		include varnish::monitoring::ganglia::vhtcpd
 
 		case $::realm {
 			'production': {
@@ -936,6 +940,8 @@ class role::cache {
 		}
 
 		class { "varnish::htcppurger": varnish_instances => [ "127.0.0.1:80", "127.0.0.1:3128" ] }
+
+		include varnish::monitoring::ganglia::vhtcpd
 
 		varnish::instance { "mobile-backend":
 			name => "",
