@@ -169,7 +169,7 @@ node "analytics1009.eqiad.wmnet" {
 
 # analytics1021 and analytics1022 are Kafka Brokers.
 node /analytics102[12]\.eqiad\.wmnet/ {
-    include role::analytics::kafka::server
+    include misc::analytics::kafka::server::monitoring
 }
 
 # misc unpuppetized analytics hosts
