@@ -1,0 +1,42 @@
+# Vhtcpd plugin for Ganglia Monitor
+
+modules {
+  module {
+    name = "vhtcpd"
+    language = "python"
+  }
+}
+
+collection_group {
+    collect_every = 30
+    time_threshold = 120
+
+    metric {
+        name = "vhtcpd_start"
+        title = "Time service started (epoch)"
+    }
+    metric {
+        name = "vhtcpd_uptime"
+        title = "Service uptime (s)"
+    }
+    metric {
+        name = "vhtcpd_inpkts_recvd"
+        title = "Multicast packets since startup (pkts)"
+    }
+    metric {
+        name = "vhtcpd_inpkts_sane"
+        title = "Sane packets since startup (pkts)"
+    }
+    metric {
+        name = "vhtcpd_inpkts_enqueued"
+        title = "Pakets enqueued since startup (pkts)"
+    }
+    metric {
+        name = "vhtcpd_inpkts_dequeued"
+        title = "Packets dequeued since startup (pkts)"
+    }
+    metric {
+        name = "vhtcpd_queue_overflows"
+        title = "Number of queue overflows since startup (count)"
+    }
+}
