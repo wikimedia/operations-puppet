@@ -14,6 +14,7 @@ class role::otrs {
         name => 'otrs',
         home => '/opt/otrs-home',
         groups => 'www-data',
+        shell => "/bin/sh",
     }
 
     package {
@@ -47,7 +48,7 @@ class role::otrs {
 
     class { 'exim::roled':
         enable_otrs_server => 'true',
-        enable_spamassassin => 'false', # done by OTRS, not exim
+        enable_spamassassin => 'false',
         enable_external_mail => 'true',
         smart_route_list => [ 'mchenry.wikimedia.org', 'lists.wikimedia.org' ],
     }
