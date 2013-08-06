@@ -36,8 +36,8 @@
 	PerlRequire /opt/otrs/scripts/apache2-perl-startup.pl
 
 	# Reload Perl modules when changed on disk
-	#PerlModule Apache2::Reload
-	#PerlInitHandler Apache2::Reload
+	PerlModule Apache2::Reload
+	PerlInitHandler Apache2::Reload
 
 	# general mod_perl2 options
 	<Location /otrs>
