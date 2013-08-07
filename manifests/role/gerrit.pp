@@ -100,6 +100,17 @@ class role::gerrit {
 					'mirror'               => 'true',
 					'projects'             => 'operations/puppet/kafka',
 				},
+
+				'github-varnish-varnishkafka' => {
+					'url'                  => 'git@github.com:wikimedia/varnishkafka',
+					'threads'              => '1',
+					'authGroup'            => 'mediawiki-replication',
+					'push'                 => '+refs/heads/*:refs/heads/*
+  push = +refs/tags/*:refs/tags/*',
+					'remoteNameStyle'      => 'dash',
+					'mirror'               => 'true',
+					'projects'             => 'operations/software/varnish/varnishkafka',
+				},
 			},
 		}
 	}
