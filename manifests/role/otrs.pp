@@ -14,7 +14,7 @@ class role::otrs {
         name => 'otrs',
         home => '/opt/otrs-home',
         groups => 'www-data',
-        shell => "/bin/sh",
+        shell => "/bin/bash",
     }
 
     package {
