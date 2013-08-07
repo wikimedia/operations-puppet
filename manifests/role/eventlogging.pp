@@ -128,10 +128,10 @@ class role::eventlogging {
 
     eventlogging::service::consumer {
         'server-side-events.log':
-            input  => "tcp://${processor}:8421",
+            input  => "tcp://${processor}:8421?raw=1",
             output => 'file:///var/log/eventlogging/server-side-events.log';
         'client-side-events.log':
-            input  => "tcp://${processor}:8422",
+            input  => "tcp://${processor}:8422?raw=1",
             output => 'file:///var/log/eventlogging/client-side-events.log';
         'all-events.log':
             input  => "tcp://${processor}:8600",
