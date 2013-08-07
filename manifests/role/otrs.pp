@@ -12,7 +12,7 @@ class role::otrs {
 
     systemuser { 'otrs':
         name => 'otrs',
-        home => '/opt/otrs-home',
+        home => '/var/lib/otrs',
         groups => 'www-data',
         shell => "/bin/bash",
     }
