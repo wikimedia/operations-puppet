@@ -432,7 +432,7 @@ node "dataset2.wikimedia.org" {
         accounts::catrope,
         misc::download-wikimedia,
         misc::download-primary,
-                misc::download::cron-rsync-dumps,
+        misc::download::cron-rsync-dumps,
         misc::kiwix-mirror
 }
 
@@ -446,16 +446,8 @@ node "dataset1001.wikimedia.org" {
         accounts::catrope,
         misc::download-wikimedia,
         misc::download-mirror,
-                misc::download::cron-rsync-dumps,
-        generic::gluster-client
-        mount { "/mnt/glusterpublicdata":
-              device => "labstore1.pmtpa.wmnet:/publicdata-project",
-              fstype => "glusterfs",
-              options => "defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log",
-              require => Package["glusterfs-client"],
-              ensure => mounted;
-        }
-
+        misc::download::cron-rsync-dumps,
+        misc::download-gluster
 }
 
 # pmtpa dbs
