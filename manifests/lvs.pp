@@ -1123,7 +1123,7 @@ class lvs::monitor {
 			ip_address => $ip['text-varnish']['eqiad']['wikidatalb'],
 			check_command => "check_http_lvs!www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
 			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 
