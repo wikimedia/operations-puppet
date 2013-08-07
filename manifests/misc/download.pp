@@ -64,9 +64,7 @@ class misc::download-wikimedia {
 class misc::download-primary {
 	system_role { "misc::download-primary": description => "Service for rsync to internal download mirrors" }
 
-	package { rsync:
-		ensure => latest;
-	}
+        include role::mirror::common
 
 	file {
 		"/etc/rsyncd.conf":
@@ -92,9 +90,7 @@ class misc::download-primary {
 class misc::download-mirror {
 	system_role { "misc::download-mirror": description => "Service for rsync to external download mirrors" }
 
-	package { rsync:
-		ensure => latest;
-	}
+        include role::mirror::common
 
 	file {
 		"/etc/rsyncd.conf":
