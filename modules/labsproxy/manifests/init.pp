@@ -19,10 +19,31 @@ class labsproxy ($redis_maxmemory="512MB") {
         notify  => Service['nginx']
     }
 
-    file { '/etc/nginx/proxy.lua':
+    file { '/etc/nginx/lua':
+        ensure  => 'directory',
+        require => Package['nginx-extras']
+    }
+
+    file { '/etc/nginx/lua/proxy.lua':
         ensure  => 'file',
-        source  => 'puppet:///modules/labsproxy/proxy.lua',
-        require => Package['nginx-extras'],
+        source  => 'puppet:///modules/labsproxy/lib/proxy.lua',
+        require => File['/etc/nginx/lua'],
         notify  => Service['nginx']
+    }
+
+    file { '/etc/nginx/lua/lib':
+        ensure  => 'directory',
+        require => File['/etc/nginx/lua']
+    }
+
+    file { '/etc/nginx/lua/lib/resty':
+        ensure  => 'directory',
+        require => File['/etc/nginx/lua/lib']
+    }
+
+    file { '/etc/nginx/lua/lib/resty/redis.lua':
+        ensure  => 'file',
+        require => File['/etc/nginx/lua/lib/resty'],
+        source  => 'puppet:///modules/labsproxy/lua/lib/resty/redis.lua'
     }
 }
