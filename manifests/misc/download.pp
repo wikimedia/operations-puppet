@@ -161,9 +161,9 @@ class misc::download-gluster {
 		'/usr/local/bin/wmfdumpsmirror.py':
 			ensure => present,
 			mode   => '0755',
-			source => 'puppet:///files/mirror/wmfdumpsmirror.py',
-			ensure => present;
+			source => 'puppet:///files/mirror/wmfdumpsmirror.py';
 		'/usr/local/sbin/gluster-rsync-cron.sh':
+			ensure => present,
 			mode   => '0755',
 			source => 'puppet:///files/mirror/gluster-rsync-cron.sh',
 	}
