@@ -7,14 +7,14 @@ class misc::download::cron-rsync-dumps {
 		group  => root,
 		path   => '/usr/local/bin/rsync-dumps.sh',
 		source => 'puppet:///files/misc/scripts/rsync-dumps.sh';
-        }
+	}
 
 	cron { 'rsync-dumps':
 		ensure  => present,
 		command => '/usr/local/bin/rsync-dumps.sh',
 		user    => root,
 		minute  => '0',
-                hour    => '*/2',
+		hour    => '*/2',
 		require => File['/usr/local/bin/rsync-dumps.sh'];
 	}
 }
@@ -55,7 +55,7 @@ class misc::download-wikimedia {
 		require => [ Package[nfs-kernel-server], File["/etc/exports"] ],
 	}
 
-        include sysctlfile::high-bandwidth-rsync
+	include sysctlfile::high-bandwidth-rsync
 
 	monitor_service { "lighttpd http": description => "Lighttpd HTTP", check_command => "check_http" }
 	monitor_service { "nfs": description => "NFS", check_command => "check_tcp!2049" }
@@ -117,6 +117,7 @@ class misc::download-mirror {
 	}
 }
 
+
 class misc::download-mediawiki {
 
 	system_role { "misc::download-mediawiki": description => "MediaWiki download" }
@@ -144,6 +145,46 @@ class misc::download-mediawiki {
 
 	apache_site { "download.mediawiki.org": name => "download.mediawiki.org" }
 }
+
+class misc::download-gluster {
+	include role::mirror::common
+	include generic::gluster-client
+
+	system_role { "misc::download-gluster": description => "Gluster dumps copy" }
+
+	mount {
+		'/mnt/glusterpublicdata':
+			ensure  => mounted,
+			device  => 'labstore1.pmtpa.wmnet:/publicdata-project',
+			fstype  => 'glusterfs',
+			options => 'defaults,_netdev=bond0,log-level=WARNING,log-file=/var/log/gluster.log',
+			require => Package['glusterfs-client'],
+	}
+
+	file {
+		'/usr/local/bin/wmfdumpsmirror.py':
+			ensure => present,
+			mode   => '0755',
+			source => 'puppet:///files/mirror/wmfdumpsmirror.py',
+			ensure => present;
+		'/usr/local/sbin/gluster-rsync-cron.sh':
+			mode   => '0755',
+			source => 'puppet:///files/mirror/gluster-rsync-cron.sh',
+	}
+
+	cron {
+	       'dumps_gluster_rsync':
+			ensure      => present,
+			user        => root,
+			minute      => '50',
+			hour        => '3',
+			command     => '/usr/local/sbin/gluster-rsync-cron.sh',
+			environment => 'MAILTO=ops-dumps@wikimedia.org',
+			require     => [ File[ ['/usr/local/bin/wmfdumpsmirror.py',
+					'/usr/local/sbin/gluster-rsync-cron.sh'] ], Mount['/mnt/glusterpublicdata'] ]
+	}
+}
+
 
 class misc::kiwix-mirror {
 	# TODO: add system_role
