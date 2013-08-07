@@ -32,6 +32,12 @@ class role::otrs {
             group => root,
             mode => '0444',
             source => 'puppet:///files/apache/sites/ticket.wikimedia.org';
+        '/etc/cron.d/otrs':
+            ensure => present,
+            owner => root,
+            group => root,
+            mode => '0444',
+            source => 'puppet:///files/otrs/crontab.otrs';
     }
 
     install_certificate{ "star.wikimedia.org": }
