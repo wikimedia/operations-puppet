@@ -1123,7 +1123,7 @@ class lvs::monitor {
 			ip_address => $ip['text-varnish']['eqiad']['wikidatalb'],
 			check_command => "check_http_lvs!www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
 			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 
@@ -1237,7 +1237,7 @@ class lvs::monitor {
 			ip_address => $ip['text-varnish']['eqiad']['wikidatalb'],
 			check_command => "check_https_lvs!www.wikidata.org!/";
 		"wikivoyage-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikivoyagelb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
 			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
 	}
 
@@ -1274,7 +1274,7 @@ class lvs::monitor {
 			check_command => "check_http_lvs!www.wikidata.org!/",
 			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikivoyagelb'],
+			ip_address => $ip['text-varnish']['esams']['wikivoyagelb'],
 			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page",
 			critical => "false";
 	}
@@ -1288,7 +1288,7 @@ class lvs::monitor {
 			check_command => "check_https_lvs!www.wikidata.org!/",
 			critical => "false";
 		"wikivoyage-lb.esams.wikimedia.org":
-			ip_address => $ip['text']['esams']['wikivoyagelb'],
+			ip_address => $ip['text-varnish']['esams']['wikivoyagelb'],
 			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page",
 			critical => "false";
 	}
