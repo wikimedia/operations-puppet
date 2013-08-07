@@ -62,7 +62,7 @@ class svn::server {
 	class viewvc {
 		require svn::server
 
-		package { [ 'viewvc', 'graphviz', 'doxygen' ]:
+		package { 'viewvc':
 			ensure => latest;
 		}
 
@@ -113,20 +113,13 @@ class svn::server {
 		}
 	}
 
-	class hooks {
-		# The commit hooks run PHP5
-		package { "php5-cli":
-			ensure => latest;
-		}
-	}
-
 	class conversion {
 		package { ['libqt4-dev', 'libsvn-dev', 'g++']:
 			ensure => latest;
 		}
 	}
 
-	include viewvc, hooks, dumps, conversion
+	include viewvc, dumps, conversion
 }
 
 class svn::groups {
