@@ -1139,13 +1139,18 @@ class role::cache {
 				'default_backend' => 'antimony',	# FIXME
 			},
 			backends => [ 'antimony.wikimedia.org' ],
-			backend_options => {
+			backend_options => [
+			{
+				'backend_match' => '^antimoney',
+				'port' => 8080,
+			},
+			{
 				'port' => 80,
 				'connect_timeout' => '5s',
 				'first_byte_timeout' => '35s',
 				'between_bytes_timeout' => '4s',
 				'max_connections' => 100,
-			}
+			}]
 		}
 	}
 }
