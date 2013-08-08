@@ -1136,7 +1136,9 @@ class role::cache {
 				'cache4xx' => '1m',
 				'layer' => 'frontend',
 				'ssl_proxies' => $wikimedia_networks,
+				'default_backend' => 'antimony',	# FIXME
 			},
+			backends => [ 'antimony.wikimedia.org' ],
 			backend_options => {
 				'port' => 80,
 				'connect_timeout' => '5s',
