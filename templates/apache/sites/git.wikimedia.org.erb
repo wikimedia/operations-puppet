@@ -93,6 +93,7 @@ NameVirtualHost *:443
 
 	AllowEncodedSlashes NoDecode
 	RewriteEngine On
+	RewriteCond %{REQUEST_URI} !^/robots.txt$
 	RewriteRule ^/(.*) http://127.0.0.1:8080/$1 [NE,P]
 
 	ErrorLog /var/log/apache2/error.log
