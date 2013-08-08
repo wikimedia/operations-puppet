@@ -15,7 +15,7 @@ class gitblit::instance($host,
 
 	file {
 		"/etc/apache2/sites-available/git.wikimedia.org":
-			mode => 0644,
+			mode => 0444,
 			owner => root,
 			group => root,
 			content => template('apache/sites/git.wikimedia.org.erb'),
@@ -27,13 +27,13 @@ class gitblit::instance($host,
 			ensure => directory,
 			require => User[$git_repo_owner];
 		"/var/lib/${user}/data/gitblit.properties":
-			mode => 0644,
+			mode => 0444,
 			owner => $user,
 			group => $user,
 			source => "puppet:///files/gitblit/gitblit.properties",
 			require => Systemuser[$user];
 		"/var/lib/${user}/data/header.md":
-			mode => 0644,
+			mode => 0444,
 			owner => $user,
 			group => $user,
 			source => "puppet:///files/gitblit/header.md",
