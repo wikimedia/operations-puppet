@@ -1,3 +1,5 @@
+include "errorpage.inc.vcl";
+
 sub vcl_recv {
 	if (req.http.Host == "git.wikimedia.org") {
 		set req.backend = antimony;
@@ -6,4 +8,9 @@ sub vcl_recv {
 		set req.http.X-Forwarded-Port = "443";
 		return (lookup);
 	}
+}
+
+sub vcl_error {
+	call errorpage;
+	return(deliver);
 }
