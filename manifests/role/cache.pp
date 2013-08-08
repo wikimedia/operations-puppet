@@ -189,6 +189,9 @@ class role::cache {
 					"pmtpa" => [],
 					"eqiad" => ['cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet'],
 					"esams" => []
+				},
+				'misc' => {
+				    'eqiad' => ['cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
 				}
 			},
 			'labs' => {
@@ -306,7 +309,7 @@ class role::cache {
 			},
 			"mobile" => {
 				"pmtpa" => [],
-				"eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet', 'cp1043.wikimedia.org', 'cp1044.wikimedia.org'],
+				"eqiad" => ['cp1041.eqiad.wmnet', 'cp1042.eqiad.wmnet'],
 				"esams" => []
 			},
 			"parsoid" => {
@@ -1105,6 +1108,40 @@ class role::cache {
 				'max_connections' => 100000,
 				'probe' => "varnish",
 			},
+		}
+	}
+
+	class misc inherits role::cache::varnish::1layer {
+		$cluster = "cache_misc"
+		$nagios_group = "cache_misc_${::site}"
+
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc'][$::site] }
+
+		system_role { 'role::cache::misc': description => 'misc Varnish cache server' }
+
+		include standard,
+			nrpe
+
+		varnish::instance { 'misc':
+			name => '',
+			vcl => 'misc',
+			port => 80,
+			admin_port => 6082,
+			storage => "-s malloc,${memory_storage_size}G",
+			vcl_config => {
+				'retry503' => 4,
+				'retry5xx' => 1,
+				'cache4xx' => '1m',
+				'layer' => 'frontend',
+				'ssl_proxies' => $wikimedia_networks,
+			},
+			backend_options => {
+				'port' => 80,
+				'connect_timeout' => '5s',
+				'first_byte_timeout' => '35s',
+				'between_bytes_timeout' => '4s',
+				'max_connections' => 100,
+			}
 		}
 	}
 }
