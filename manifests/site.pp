@@ -333,11 +333,12 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
     include role::cache::text
 }
 
-# eqiad varnish for m.wikipedia.org
-node /^cp104[1-4]\.(wikimedia\.org|eqiad\.wmnet)$/ {
+node /^cp104[34]\.eqiad\.wmnet$/ {
+	$ganglia_aggregator = true
+
     interface::add_ip6_mapped { "main": }
 
-    include standard
+    include role::cache::misc
 }
 
 node 'cp1045.eqiad.wmnet', 'cp1058.eqiad.wmnet' {
