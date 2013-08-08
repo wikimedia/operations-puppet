@@ -1141,7 +1141,7 @@ class role::cache {
 			backends => [ 'antimony.wikimedia.org' ],
 			backend_options => [
 			{
-				'backend_match' => '^antimoney',
+				'backend_match' => '^antimony',
 				'port' => 8080,
 			},
 			{
