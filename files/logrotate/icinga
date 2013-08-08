@@ -3,7 +3,7 @@
 ### puppet:///files/logrotate/icinga
 #####################################################################
 
-/var/log/icinga {
+/var/log/icinga/icinga.log {
     daily
     copytruncate
     missingok
