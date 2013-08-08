@@ -23,12 +23,9 @@
 
 	DocumentRoot /var/www/planet
 
-	<Directory /var/www/planet>
-		Allow from all
-		Redirect /atom.xml http://en.planet.<%= planet_domain_name %>/atom.xml
-		Redirect /rss10.xml http://en.planet.<%= planet_domain_name %>/rss10.xml
-		Redirect /rss20.xml http://en.planet.<%= planet_domain_name %>/rss20.xml
-	</Directory>
+	Redirect /atom.xml http://en.planet.<%= planet_domain_name %>/atom.xml
+	Redirect /rss10.xml http://en.planet.<%= planet_domain_name %>/rss10.xml
+	Redirect /rss20.xml http://en.planet.<%= planet_domain_name %>/rss20.xml
 
 	RedirectTemp / http://meta.wikimedia.org/wiki/Planet_Wikimedia
 </VirtualHost>
