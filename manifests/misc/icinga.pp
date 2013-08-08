@@ -38,6 +38,7 @@ class icinga::monitor {
     icinga::monitor::nsca::daemon,
     icinga::monitor::apache,
     icinga::monitor::files::misc,
+    icinga::monitor::logrotate,
 #    icinga::ganglia::ganglios,
     facilities::pdu_monitoring,
     lvs::monitor,
@@ -873,6 +874,14 @@ class icinga::ganglia::ganglios {
     ensure => directory,
     mode => '0755',
     owner => icinga;
+  }
+}
+
+class icinga::monitor::logrotate {
+  file { "/etc/logrotate.d/icinga":
+      source => "puppet:///files/logrotate/icinga",
+      mode => 0444,
+      ensure => present;
   }
 }
 
