@@ -10,3 +10,11 @@
     notifempty
     rotate 7
 }
+
+/var/log/puppet.log {
+    daily
+    compress
+    missingok
+    notifempty
+    rotate 7
+}
