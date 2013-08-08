@@ -503,12 +503,12 @@ host cp1042 {
 
 host cp1043 {
 	hardware ethernet 84:2b:2b:fd:c0:2f;
-	fixed-address cp1043.wikimedia.org;
+	fixed-address cp1043.eqiad.wmnet;
 }
 
 host cp1044 {
 	hardware ethernet 84:2b:2b:fd:bd:f8;
-	fixed-address cp1044.wikimedia.org;
+	fixed-address cp1044.eqiad.wmnet;
 }
 
 host cp1045 {
