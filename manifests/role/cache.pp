@@ -776,7 +776,7 @@ class role::cache {
 		}
 	}
 	
-	class ssl::text {
+	class ssl::unified {
 		include certificates::wmf_ca, role::protoproxy::ssl::common
 
 		# Assumes that LVS service IPs are setup elsewhere
@@ -789,7 +789,7 @@ class role::cache {
 
 		install_certificate { 'unified.wikimedia.org': }
 
-		protoproxy::localssl { 'text':
+		protoproxy::localssl { 'unified':
 			proxy_server_cert_name => 'unified.wikimedia.org',
 			upstream_port => '80',
 			enabled => true
