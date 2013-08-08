@@ -1115,7 +1115,7 @@ class role::cache {
 		$cluster = "cache_misc"
 		$nagios_group = "cache_misc_${::site}"
 
-		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc'][$::site] }
+		class { "lvs::realserver": realserver_ips => $lvs::configuration::lvs_service_ips[$::realm]['misc_web'][$::site] }
 
 		system_role { 'role::cache::misc': description => 'misc Varnish cache server' }
 
