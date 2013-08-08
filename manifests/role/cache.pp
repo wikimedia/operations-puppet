@@ -1122,6 +1122,8 @@ class role::cache {
 		include standard,
 			nrpe
 
+		$memory_storage_size = 8
+
 		varnish::instance { 'misc':
 			name => '',
 			vcl => 'misc',
