@@ -10,8 +10,17 @@ class gitblit::instance($host,
 	$ssl_cert_key="") {
 
 	include webserver::apache
+	require iptables::tables
 
 	systemuser { $user: name => $user }
+
+	# Prevent external connections to the GitBlit HTTP service
+	iptables_add_service { 'gitblit_8080':
+		service => 'http-alt',
+		source => '! 10.64.0.0/12',
+		protocol => 'tcp',
+		jump => 'REJECT'
+	}
 
 	file {
 		"/etc/apache2/sites-available/git.wikimedia.org":
