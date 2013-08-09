@@ -787,7 +787,9 @@ class role::cache {
 			check_command => "check_ssl_cert!*.wikimedia.org",
 		}
 
-		install_certificate { 'unified.wikimedia.org': }
+		install_certificate { 'unified.wikimedia.org':
+			before => Protoproxy::Localssl['unified']
+		}
 
 		protoproxy::localssl { 'unified':
 			proxy_server_cert_name => 'unified.wikimedia.org',
