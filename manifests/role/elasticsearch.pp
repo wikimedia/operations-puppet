@@ -8,6 +8,7 @@ class role::elasticsearch::production {
         cluster_name => 'production-search',
         heap_memory  => '7G',
     }
+    include elasticsearch::ganglia
 }
 
 # = Class: role::elasticsearch::beta
@@ -19,6 +20,7 @@ class role::elasticsearch::beta {
         cluster_name => 'beta-search',
         heap_memory  => '4G',
     }
+    include elasticsearch::ganglia
 }
 
 # = Class: role::elasticsearch::labs
@@ -33,4 +35,5 @@ class role::elasticsearch::labs {
     class { '::elasticsearch':
         cluster_name => $::elasticsearch_cluster_name,
     }
+    include elasticsearch::ganglia
 }
