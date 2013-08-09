@@ -2410,6 +2410,8 @@ node "sodium.wikimedia.org" {
         dns::recursor,
         backup::client
 
+    interface::add_ip6_mapped { "main": interface => "eth0" }
+
     class { 'spamassassin':
         required_score => '4.0',
         use_bayes => '0',
