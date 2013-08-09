@@ -1,6 +1,4 @@
-class ferm(
-$default_firewall=true
-) {
+class ferm {
     package { 'ferm':
         ensure => present,
     }
@@ -40,17 +38,6 @@ $default_firewall=true
         purge   => true,
         require => Package['ferm'],
         notify  => Service['ferm'],
-    }
-
-    file { '/etc/ferm/conf.d/minimal_ruleset.conf':
-        owner => root,
-        group => root,
-        mode => 0444,
-        notify => Service['ferm'],
-        ensure => $default_firewall ? {
-            true => present,
-            default => absent
-        },
     }
 
     file { '/etc/default/ferm' :
