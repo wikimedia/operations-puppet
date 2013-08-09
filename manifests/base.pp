@@ -745,7 +745,7 @@ class base::firewall {
 
 	ferm::rule { 'bastion-ssh':
 		ensure => present,
-		rule   => 'proto tcp dport ssh saddr $BASTION ACCEPT',
+		rule   => 'proto tcp dport ssh saddr $BASTION ACCEPT;',
 	}
 }
 

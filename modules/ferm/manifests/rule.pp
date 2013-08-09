@@ -12,7 +12,7 @@ define ferm::rule(
         owner   => root,
         group   => root,
         mode    => '0400',
-        content => template('ferm/custom.erb'),
+        content => template('ferm/rule.erb'),
         require => File['/etc/ferm/conf.d'],
         notify  => Service['ferm'],
         tag     => 'ferm',
