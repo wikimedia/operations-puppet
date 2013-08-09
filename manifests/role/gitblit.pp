@@ -10,4 +10,11 @@ class role::gitblit {
 		ssl_cert => "git.wikimedia.org",
 		ssl_cert_key => "git.wikimedia.org"
 	}
+
+    # Firewall GitBlit, it should be accessed from localhost or Varnish
+    class { 'ferm': default_firewall => false }
+
+	ferm::rule { 'gitblit_8080':
+		rule => 'proto tcp dport 8080 { saddr (127.0.0.1 ::1 $INTERNAL) ACCEPT; DROP; }'
+	}
 }
