@@ -18,7 +18,6 @@ class gitblit::instance($host,
 	iptables_add_service { 'gitblit_8080':
 		service => 'http-alt',
 		source => '! 10.64.0.0/12',
-		protocol => 'tcp',
 		jump => 'REJECT'
 	}
 
