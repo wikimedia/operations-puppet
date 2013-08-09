@@ -1120,7 +1120,8 @@ class role::cache {
 		system_role { 'role::cache::misc': description => 'misc Varnish cache server' }
 
 		include standard,
-			nrpe
+			nrpe,
+			role::cache::ssl::unified
 
 		$memory_storage_size = 8
 
