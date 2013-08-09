@@ -735,7 +735,14 @@ class base::tcptweaks {
 
 # Don't include this sub class on all hosts yet
 class base::firewall {
-	class { 'ferm': default_firewall => false } # Do NOT create a default DROP firewall for now
+	include ferm
+
+	ferm::conf { 'main':
+		ensure  => present,
+		prio	=> '00',
+		# we also have a default DROP around, postpone its usage for later
+		source  => 'puppet:///files/firewall/main-minimal.conf',
+	}
 
 	ferm::conf { 'defs':
 		ensure  => present,
