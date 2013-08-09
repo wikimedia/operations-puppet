@@ -6,7 +6,7 @@
 class role::elasticsearch::production {
     class { '::elasticsearch':
         cluster_name => 'production-search',
-        heap_memory  => '30G',
+        heap_memory  => '7G',
     }
 }
 
