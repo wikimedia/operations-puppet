@@ -2,7 +2,7 @@
 
 set -e
 
-RESOURCES=( 'Common.js Common.css Vector.js Vector.css Monobook.js Monobook.css Mobile.js Mobile.css' )
+RESOURCES=( 'Common.js Common.css Cologneblue.js Cologneblue.css Modern.js Modern.css Monobook.js Monobook.css Vector.js Vector.css Mobile.js Mobile.css' )
 
 function sync_resource() {
 	local resource=$1
