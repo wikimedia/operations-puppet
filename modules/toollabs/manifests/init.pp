@@ -63,17 +63,6 @@ class toollabs {
     target => "/data/project/.shared";
   }
 
-  # this file contains the motd tips and also the admin motd script
-  # in fact it just check if the shared script exist and if so
-  # it executes it
-  file { "/etc/profile.d/tips.sh":
-    ensure => file,
-    source => "puppet:///modules/toollabs/profile-tool-labs.sh",
-    mode => "0555",
-    owner => "root",
-    group => "root",
-  }
-
   file { "/root/.bashrc":
     ensure => file,
     source => "puppet:///modules/toollabs/rootrc",
