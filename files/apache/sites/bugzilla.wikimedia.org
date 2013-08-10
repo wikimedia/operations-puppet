@@ -98,16 +98,6 @@ NameVirtualHost *:443
 		Allow from all
 	</Directory>
 
-	<Directory "/srv/org/wikimedia/bzapi/">
-		AddHandler cgi-script .cgi
-		Options Indexes ExecCGI FollowSymLinks
-		DirectoryIndex index.cgi
-		AllowOverride Limit
-	</Directory>
-
-FastCgiServer /srv/org/wikimedia/bzapi/script/bugzilla_api_fastcgi.pl -processes 3 -idle-timeout 180
-Alias /bzapi /srv/org/wikimedia/bzapi/script/bugzilla_api_fastcgi.pl/
-
 ErrorLog /var/log/apache2/error.log
 
 # Possible values include: debug, info, notice, warn, error, crit,
