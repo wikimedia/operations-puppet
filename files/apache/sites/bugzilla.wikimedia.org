@@ -110,6 +110,9 @@ ServerSignature On
 RewriteEngine On
 RewriteRule ^/(\d+)$ https://bugzilla.wikimedia.org/show_bug.cgi?id=$1 [R]
 
+RewriteCond %{QUERY_STRING} ^(id=bug-writing.html)$
+RewriteRule /page\.cgi$ http://www.mediawiki.org/wiki/How_to_report_a_bug? [R=303]
+
 </VirtualHost>
 
 <VirtualHost *:80>
