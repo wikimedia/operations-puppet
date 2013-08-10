@@ -113,6 +113,9 @@ RewriteRule ^/(\d+)$ https://bugzilla.wikimedia.org/show_bug.cgi?id=$1 [R]
 RewriteCond %{QUERY_STRING} ^(id=bug-writing.html)$
 RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/How_to_report_a_bug? [R=303]
 
+RewriteCond %{QUERY_STRING} ^(id=fields.html)$
+RewriteRule /page\.cgi$ https://www.mediawiki.org/wiki/Bugzilla/Fields? [R=303]
+
 </VirtualHost>
 
 <VirtualHost *:80>
