@@ -45,6 +45,26 @@ class toollabs::bastion($gridmaster) inherits toollabs {
     source => "puppet:///modules/toollabs/sql",
   }
 
+  # Display tips.
+  package { 'grep':
+    ensure => present,
+  }
+
+  file { "/etc/profile.d/motd-tips.sh":
+    ensure => file,
+    mode => "0555",
+    owner => "root",
+    group => "root",
+    source => "puppet:///modules/toollabs/motd-tips.sh",
+    require => Package['grep'],
+  }
+
+  file { [ '/data/project/.system/tips.sh',
+           '/data/project/.system/bin/tips.sh',
+           '/data/project/.system/bin/tips2.sh' ]:
+    ensure => absent,
+  }
+
   package { [ 'jobutils', 'misctools' ]:
     ensure => latest,
   }
