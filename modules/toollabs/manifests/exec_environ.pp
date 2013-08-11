@@ -147,6 +147,10 @@ class toollabs::exec_environ {
       'libpng3',
       'libquadmath0',
       'libsvn1',
+      'libtiff4-dev',
+      'libvips-dev',
+      'libvips-tools',
+      'libvips15',
       'mariadb-client',              # For /usr/bin/mysql.
       'mdbtools',                    # Bug #48805.
       'p7zip',
