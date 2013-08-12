@@ -339,27 +339,22 @@ discovery.zen.ping.multicast.group: <%= @multicast_group %>
 
 # Shard level query and fetch threshold logging.
 
-#index.search.slowlog.threshold.query.warn: 10s
-#index.search.slowlog.threshold.query.info: 5s
-#index.search.slowlog.threshold.query.debug: 2s
-#index.search.slowlog.threshold.query.trace: 500ms
+index.search.slowlog.threshold.fetch.warn: 1s
+index.search.slowlog.threshold.fetch.info: 800ms
+index.search.slowlog.threshold.fetch.debug: 500ms
+index.search.slowlog.threshold.fetch.trace: 200ms
 
-#index.search.slowlog.threshold.fetch.warn: 1s
-#index.search.slowlog.threshold.fetch.info: 800ms
-#index.search.slowlog.threshold.fetch.debug: 500ms
-#index.search.slowlog.threshold.fetch.trace: 200ms
-
-#index.indexing.slowlog.threshold.index.warn: 10s
-#index.indexing.slowlog.threshold.index.info: 5s
-#index.indexing.slowlog.threshold.index.debug: 2s
-#index.indexing.slowlog.threshold.index.trace: 500ms
+index.indexing.slowlog.threshold.index.warn: 10s
+index.indexing.slowlog.threshold.index.info: 5s
+index.indexing.slowlog.threshold.index.debug: 2s
+index.indexing.slowlog.threshold.index.trace: 500ms
 
 ################################## GC Logging ################################
 
-#monitor.jvm.gc.ParNew.warn: 1000ms
-#monitor.jvm.gc.ParNew.info: 700ms
-#monitor.jvm.gc.ParNew.debug: 400ms
+monitor.jvm.gc.ParNew.warn: 1000ms
+monitor.jvm.gc.ParNew.info: 700ms
+monitor.jvm.gc.ParNew.debug: 400ms
 
-#monitor.jvm.gc.ConcurrentMarkSweep.warn: 10s
-#monitor.jvm.gc.ConcurrentMarkSweep.info: 5s
-#monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
+monitor.jvm.gc.ConcurrentMarkSweep.warn: 10s
+monitor.jvm.gc.ConcurrentMarkSweep.info: 5s
+monitor.jvm.gc.ConcurrentMarkSweep.debug: 2s
