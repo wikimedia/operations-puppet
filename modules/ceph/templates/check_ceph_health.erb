@@ -1,0 +1,14 @@
+#!/bin/sh
+
+CLUSTER="<%= @cluster %>"
+ENTITY="<%= @entity %>"
+KEYRING="<%= @keyring %>"
+
+HEALTH=$(ceph --cluster "$CLUSTER" --id "$ENTITY" --keyring "$KEYRING" health)
+
+echo "Ceph $HEALTH"
+if echo $HEALTH | grep -q OK; then
+	exit 0
+else
+	exit 2
+fi
