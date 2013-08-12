@@ -45,9 +45,9 @@ define ceph::key(
     # ping-pong trickery to securely do permissions, puppet has no umask on exec
     file { $keyring:
         ensure  => $ensure,
-        mode    => '0600',
-        owner   => 'root',
-        group   => 'root',
+        owner   => $owner,
+        group   => $group,
+        mode    => $mode,
         backup  => false,
     }
 
