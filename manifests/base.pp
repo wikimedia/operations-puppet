@@ -358,7 +358,7 @@ class base::standard-packages {
 		}
 
 		# DEINSTALL these packages
-		package { [ "mlocate" ]:
+		package { [ "mlocate", "os-prober" ]:
 			ensure => absent;
 		}
 	}
