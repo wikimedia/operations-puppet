@@ -63,7 +63,7 @@ class misc::etherpad_lite {
 		$etherpad_ssl_cert = '/etc/ssl/certs/ssl-cert-snakeoil.pem'
 		$etherpad_ssl_key = '/etc/ssl/private/ssl-cert-snakeoil.key'
 	} else {
-		$etherpad_host = 'epl.wikimedia.org'
+		$etherpad_host = 'etherpad.wikimedia.org epl.wikimedia.org'
 		$etherpad_ssl_cert = '/etc/ssl/certs/star.wikimedia.org.pem'
 		$etherpad_ssl_key = '/etc/ssl/private/star.wikimedia.org.key'
 	}

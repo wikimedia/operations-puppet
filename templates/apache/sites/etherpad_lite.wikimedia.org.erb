@@ -14,6 +14,7 @@
 	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPreserveHost On
+	RewriteRule	^/([^/]+)$ /p/$1 [R=301,L]
 
 	<Proxy *>
 		Options FollowSymLinks MultiViews
@@ -41,6 +42,7 @@
 	ProxyPass / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPassReverse / http://<%= etherpad_ip %>:<%= etherpad_port %>/
 	ProxyPreserveHost On
+	RewriteRule	^/([^/]+)$ /p/$1 [R=301,L]
 
 	<Proxy *>
 		Options FollowSymLinks MultiViews
