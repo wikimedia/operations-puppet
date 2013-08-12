@@ -68,10 +68,10 @@ class role::ceph::eqiad inherits role::ceph::base {
         include ceph::osd
 
         # I/O busy systems, tune a few knobs to avoid page alloc failures
-        sysctlfile { 'sys.vm.min_free_kbytes':
+        sysctlfile { 'vm.min_free_kbytes':
             value => '512000',
         }
-        sysctlfile { 'sys.vm.vfs_cache_pressure':
+        sysctlfile { 'vm.vfs_cache_pressure':
             value => '120',
         }
     }
