@@ -57,7 +57,7 @@ class role::ceph::eqiad inherits role::ceph::base {
             monitor_secret => $passwords::ceph::eqiad::monitor_secret,
         }
 
-        # FIXME: need a Ceph nagios check
+        include ceph::nagios
     }
 
     class osd inherits role::ceph::eqiad {
