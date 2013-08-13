@@ -100,6 +100,17 @@ class contint::packages {
     ensure => 'latest',
   }
 
+  # Used for mobile device classification in Kraken:
+  package { [
+    'libdclass0',
+    'libdclass-dev',
+    'libdclass-jni',
+    'libdclass-java',
+    'libdclass-data',
+  ]:
+    ensure => 'installed',
+  }
+
   # these packages are used by the tests for wikistats to parse the
   # generated reports to see if they are correct
 
