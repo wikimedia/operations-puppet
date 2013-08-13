@@ -97,6 +97,16 @@ class misc::install-server {
 			ensure => present;
 		}
 
+				file { "/etc/logrotate.d/squid":
+			require => Package[squid],
+			mode => 0644,
+			owner => root,
+			group => root,
+			path => "/etc/logrotate.d/squid",
+			source => "puppet:///files/logrotate.d/squid",
+			ensure => present;
+		}
+
 		# pin package to the default, Ubuntu version, instead of our own
 		apt::pin { [ 'squid', 'squid-common', 'squid-langpack' ]:
 			pin      => 'release o=Ubuntu',
