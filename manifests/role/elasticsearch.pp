@@ -4,9 +4,14 @@
 # production.
 #
 class role::elasticsearch::production {
+    $multicast_group = $::site ? {
+        'eqiad' => '224.2.2.5',
+        'pmtpa' => '224.2.2.6',
+    }
     class { '::elasticsearch':
-        cluster_name => 'production-search',
-        heap_memory  => '7G',
+        cluster_name    => "production-search-${::site}",
+        heap_memory     => '7G',
+        multicast_group => $multicast_group
     }
 }
 

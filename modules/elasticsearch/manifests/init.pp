@@ -7,6 +7,8 @@
 # - $heap_memory:   amount of memory to allocate to elasticsearch.  Defaults to
 #       "2G".  Should be set to about half of ram or a 30G, whichever is
 #       smaller.
+# - $multicast_group:  multicast group to use for peer discovery.  Defaults to
+#       elasticsearch's default: '224.2.2.4'.
 #
 # == Sample usage:
 #
@@ -14,7 +16,8 @@
 #       cluster_name = 'labs-search'
 #   }
 #
-class elasticsearch($cluster_name, $heap_memory = '2G') {
+class elasticsearch($cluster_name, $heap_memory = '2G',
+    $multicast_group = '224.2.2.4') {
     # Install
     # Get a jdk on which to run elasticsearch
     java { 'java-default': }
