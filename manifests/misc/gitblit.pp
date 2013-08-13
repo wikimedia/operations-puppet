@@ -48,7 +48,9 @@ class gitblit::instance($host,
 			mode => 0444,
 			owner => root,
 			group => root,
-			content => "User-agent: *\nDisallow: /zip/\nDisallow: /blobdiff/\n";
+#			content => "User-agent: *\nDisallow: /zip/\nDisallow: /blobdiff/\n";
+			# temporary, see bz 51769
+			content => "User-agent: *\nDisallow: /";
 	}
 
 	service {
