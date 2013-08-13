@@ -103,7 +103,7 @@ class contint::packages {
   # Used for mobile device classification in Kraken:
   package { [
     'libdclass0',
-    'libdclass-dev',
+    'libdclass0-dev',
     'libdclass-jni',
     'libdclass-java',
     'libdclass-data',
