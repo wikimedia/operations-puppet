@@ -1290,7 +1290,7 @@ class accounts {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
 			ssh_authorized_key { "rsa-key-20101031":
-				ensure 	=> present,
+				ensure 	=> absent,
 				user	=> $username,
 				type	=> "ssh-rsa",
 				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIBv9rklx9iBwtRUh9JB9ZwRGPX60KrS22X48XR4VjMIa56+IG2/yfQ9Z2nUl8Jt2gNHg/SG6JXelctU6kvmg5J9nU+fTYz88Yq4+DOkMwl88Q431IMXW8WKODKkj3dC4I5xHPZP4YH+eWuLoFphJtifiLNm4lbhKG7cxtNtowWj6Q=="
