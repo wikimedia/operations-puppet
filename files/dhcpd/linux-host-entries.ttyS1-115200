@@ -4999,6 +4999,11 @@ host xenon {
 	fixed-address xenon.eqiad.wmnet;
 }
 
+host ytterbium {
+	hardware ethernet 90:B1:1C:2A:0E:60;
+	fixed-address ytterbium.wikimedia.org;
+}
+
 host zhen {
 	hardware ethernet d4:be:d9:af:68:4f;
 	fixed-address zhen.wikimedia.org;
