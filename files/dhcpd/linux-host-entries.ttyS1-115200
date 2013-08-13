@@ -1375,6 +1375,11 @@ host gurvin {
 	fixed-address gurvin.wikimedia.org;
 }
 
+host hafnium {
+	hardware ethernet 78:2b:cb:1f:17:48;
+	fixed-address hafnium.wikimedia.org;
+}
+
 host harmon {
 	hardware ethernet 84:2b:2b:06:36:4f;
 	fixed-address harmon.pmtpa.wmnet;
@@ -3717,21 +3722,6 @@ host niobium {
 host nitrogen {
 	hardware ethernet 78:2b:cb:09:0e:37;
 	fixed-address nitrogen.wikimedia.org;
-}
-
-host ocg1 {
-	hardware ethernet 84:2B:2B:45:B2:74;
-	fixed-address ocg1.wikimedia.org;
-}
-
-host ocg2 {
-	hardware ethernet 78:2b:cb:1f:18:b0;
-	fixed-address ocg2.wikimedia.org;
-}
-
-host ocg3 {
-	hardware ethernet 78:2b:cb:1f:17:48;
-	fixed-address ocg3.wikimedia.org;
 }
 
 host osm-cp1001{
