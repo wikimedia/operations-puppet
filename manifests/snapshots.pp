@@ -1,5 +1,8 @@
 class snapshots::packages {
 
+	# pick up various users, twemproxy
+	include mediawiki
+
 	if ($::lsbdistcodename == 'precise') {
 		package { [ 'subversion', 'php5', 'php5-cli', 'php5-mysql', 'mysql-client-5.5', 'p7zip-full', 'libicu42', 'utfnormal', 'mwbzutils' ]:
 			ensure => present;
