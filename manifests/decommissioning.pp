@@ -33,8 +33,6 @@ $decommissioned_servers = [
 'cp1036',
 'cp1041',
 'cp1042',
-'cp1043',
-'cp1044',
 'cp3001',
 'cp3002',
 'db1',
