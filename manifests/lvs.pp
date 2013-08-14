@@ -602,6 +602,20 @@ class lvs::configuration {
 				'IdleConnection' => $idleconnection_monitor_options
 			},
 		},
+		'misc_web_https' => {
+			'description' => 'Miscellaneous web sites Varnish cluster (HTTPS)',
+			'class' => 'high-traffic2',
+			'sites' => [ 'pmtpa', 'eqiad' ],
+			'ip' => $service_ips['misc_web'][$::site],
+			'port' => 443,
+			'scheduler' => 'sh',
+			# These IPs are announced by the corresponding HTTP services
+			'bgp' => 'no',
+			'depool-threshold' => '.5',
+			'monitors' => {
+				'IdleConnection' => $idleconnection_monitor_options
+			},
+		},
 		"apaches" => {
 			'description' => "Main MediaWiki application server cluster, appservers.svc.pmtpa.wmnet",
 			'class' => "low-traffic",
