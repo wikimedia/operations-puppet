@@ -111,6 +111,9 @@ class ganglia_new::configuration {
 		"labsnfs"	=> {
 			"name"		=> "Labs NFS cluster",
 			"id"	=> "40" },
+		'cache_misc'	=> {
+			'name'		=> 'Misc Web caching cluster',
+			'ip_oct'	=> '41' },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
