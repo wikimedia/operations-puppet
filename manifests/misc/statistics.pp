@@ -832,7 +832,7 @@ class misc::statistics::limn::mobile_data_sync {
 
 
 # == Class misc::statistics::geowiki
-# Clones analytics/editor-geocoding python scripts
+# Clones analytics/geocoding python scripts
 # and installs a cron job to get recent editor data
 # from the research slave databases and generate
 # editor geocoding statistics, saved back into a db.
@@ -849,7 +849,7 @@ class misc::statistics::geowiki {
 
 	git::clone { 'geowiki':
 		directory => $geowiki_path,
-		origin    => "https://gerrit.wikimedia.org/r/p/analytics/editor-geocoding.git",
+		origin    => "https://gerrit.wikimedia.org/r/p/analytics/geowiki.git",
 		ensure    => 'present',
 		owner     => $geowiki_user,
 	}
