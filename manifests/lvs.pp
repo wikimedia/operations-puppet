@@ -383,8 +383,8 @@ class lvs::configuration {
 				'eqiad' => "208.80.154.240",
 			},
 			'misc_web' => {
-				'pmtpa' => "208.80.152.217",
-				'eqiad' => "208.80.154.241",
+				'pmtpa' => { 'misc_web' => '208.80.152.217', 'misc_web6' => '2620:0:860:ed1a::11' },
+				'eqiad' => { 'misc_web' => '208.80.154.241', 'misc_web6' => '2620:0:861:ed1a::11' },
 			},
 			'parsoid' => {
 				'eqiad' => "10.2.2.28",
