@@ -4,7 +4,10 @@ sub pass_requests {
 	if (req.request != "GET" && req.request != "HEAD") {
 		return (pass);
 	}
-	if (req.http.host ~ "^test\.") {
+	if (req.http.Host ~ "^test\.") {
+		return (pass);
+	}
+	if (req.http.Host == "login.wikimedia.org") {
 		return (pass);
 	}
 }
