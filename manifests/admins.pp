@@ -1289,6 +1289,13 @@ class accounts {
 		if $manage_home {
 			Ssh_authorized_key { require => Unixaccount[$realname] }
 
+			ssh_authorized_key { "rsa-key-20130812":
+				ensure 	=> present,
+				user	=> $username,
+				type	=> "ssh-rsa",
+				key	=> "AAAAB3NzaC1yc2EAAAABJQAAAQEAljtlNa6pQX9gEyjrpCUqqQyO1HtYtHFSDuWBiWX5oiLnTSXRr0e7pECiuy9ISEI6oIt7KkaU68+cxSkqK6gwr9YwZ5Pmj3kkopT9LjguzBYxN3jEOj5+oGwdyK6ivQQA/PwPEtVgk8LgJ0EKf+74lQ4cQVsZXyu25HTq3cjfLgQRpwoYc9OBuuwIj//3uhLvIBKS3JvO3BGFsjZBPJmxoZr6+HJI7lXNfy6wWbbinXMS0gzVYhHvPwU5lFYSN0/njh3gCV8EwBYdzV6PmF0q6HXM0R1gLH2FfrhwJY3mnveWu30B7VXENYUHqc6H3wUt3rS2koTHOMvBgy3PbNCyXw=="
+			}
+
 			ssh_authorized_key { "rsa-key-20101031":
 				ensure 	=> absent,
 				user	=> $username,
