@@ -1810,7 +1810,7 @@ node "mchenry.wikimedia.org" {
         nrpe,
         ldap::role::client::corp,
         backup::client,
-        exim::aliases::private,
+        privateexim::aliases::private,
         groups::wikidev,
         accounts::jdavis
 
