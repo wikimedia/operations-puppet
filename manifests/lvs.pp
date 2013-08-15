@@ -1086,7 +1086,7 @@ class lvs::monitor {
 	# eqiad -lb addresses
 	monitor_service_lvs_http {
 		"wikimedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikimedialb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikimedialb'],
 			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikipedialb'],
@@ -1200,7 +1200,7 @@ class lvs::monitor {
 
 	monitor_service_lvs_https {
 		"wikimedia-lb.eqiad.wikimedia.org":
-			ip_address => $ip['text']['eqiad']['wikimedialb'],
+			ip_address => $ip['text-varnish']['eqiad']['wikimedialb'],
 			check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page";
 		"wikipedia-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text']['eqiad']['wikipedialb'],
@@ -1256,8 +1256,6 @@ class lvs::monitor {
 	}
 
 	# esams -lb addresses
-	monitor_service_lvs_http { "wikimedia-lb.esams.wikimedia.org": ip_address => "91.198.174.224", check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page" }
-	monitor_service_lvs_https { "wikimedia-lb.esams.wikimedia.org": ip_address => "91.198.174.224", check_command => "check_https_url!meta.wikimedia.org!/wiki/Main_Page", critical => "false" }
 	monitor_service_lvs_http { "wikipedia-lb.esams.wikimedia.org": ip_address => "91.198.174.225", check_command => "check_http_lvs!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
 	monitor_service_lvs_https { "wikipedia-lb.esams.wikimedia.org": ip_address => "91.198.174.225", check_command => "check_https_url!en.wikipedia.org!/wiki/Main_Page", critical => "false" }
 	monitor_service_lvs_http { "wiktionary-lb.esams.wikimedia.org": ip_address => "91.198.174.226", check_command => "check_http_lvs!en.wiktionary.org!/wiki/Main_Page", critical => "false" }
@@ -1291,6 +1289,10 @@ class lvs::monitor {
 			ip_address => $ip['text-varnish']['esams']['wikivoyagelb'],
 			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page",
 			critical => "false";
+		"wikimedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikimedialb'],
+			check_command => "check_http_lvs!meta.wikimedia.org!/wiki/Main_Page",
+			critical => "false";
 	}
 
 	monitor_service_lvs_https {
@@ -1304,6 +1306,10 @@ class lvs::monitor {
 		"wikivoyage-lb.esams.wikimedia.org":
 			ip_address => $ip['text-varnish']['esams']['wikivoyagelb'],
 			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page",
+			critical => "false";
+		"wikimedia-lb.esams.wikimedia.org":
+			ip_address => $ip['text-varnish']['esams']['wikimedialb'],
+			check_command => "check_https_lvs!meta.wikimedia.org!/wiki/Main_Page",
 			critical => "false";
 	}
 
