@@ -9,6 +9,10 @@ HEALTH=$(ceph --cluster "$CLUSTER" --id "$ENTITY" --keyring "$KEYRING" health)
 echo "Ceph $HEALTH"
 if echo $HEALTH | grep -q OK; then
 	exit 0
-else
+elif echo $HEALTH | grep -q WARN; then
+	exit 1
+elif echo $HEALTH | grep -q ERR; then
 	exit 2
+else
+	exit 3
 fi
