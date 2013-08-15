@@ -7,6 +7,9 @@ sub vcl_recv {
 		set req.http.X-Forwarded-Proto = "https";
 		set req.http.X-Forwarded-Port = "443";
 		return (lookup);
+	} elsif (req.http.Host == "gerrit.wikimedia.org") {
+		set req.backend = manganese;
+		return (lookup);
 	}
 }
 

@@ -1141,10 +1141,10 @@ class role::cache {
 				'ssl_proxies' => $wikimedia_networks,
 				'default_backend' => 'antimony',	# FIXME
 			},
-			backends => [ 'antimony.wikimedia.org' ],
+			backends => [ 'antimony.wikimedia.org', 'manganese.wikimedia.org' ],
 			backend_options => [
 			{
-				'backend_match' => '^antimony',
+				'backend_match' => '^(antimony|manganese)',
 				'port' => 8080,
 			},
 			{
