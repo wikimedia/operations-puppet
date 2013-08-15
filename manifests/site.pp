@@ -2845,6 +2845,16 @@ node "vanadium.eqiad.wmnet" {
     }
 }
 
+# Hosts visualization / monitoring of EventLogging event streams
+# and MediaWiki errors. Non-critical at the moment. See RT #5514.
+node 'hafnium.wikimedia.org' {
+    include standard
+
+    sudo_user { 'olivneh':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
+}
+
 node "virt1000.wikimedia.org" {
     $cluster = "virt"
     $ganglia_aggregator = true
