@@ -2835,6 +2835,7 @@ node "vanadium.eqiad.wmnet" {
     $gid=500
 
     include standard,
+        accounts::olivneh,
         role::eventlogging,
         role::ipython_notebook,
         nrpe,
@@ -2848,7 +2849,8 @@ node "vanadium.eqiad.wmnet" {
 # Hosts visualization / monitoring of EventLogging event streams
 # and MediaWiki errors. Non-critical at the moment. See RT #5514.
 node 'hafnium.wikimedia.org' {
-    include standard
+    include standard,
+        accounts::olivneh
 
     sudo_user { 'olivneh':
         privileges => ['ALL = (ALL) NOPASSWD: ALL'],
