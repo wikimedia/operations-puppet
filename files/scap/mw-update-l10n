@@ -38,6 +38,11 @@ while true; do
 	esac
 done
 
+# Calculate the number of parallel threads
+# Leave a couple of cores free for other stuff
+CPUS=`grep -c 'model name' /proc/cpuinfo`
+THREADS=`expr $CPUS - 2`
+
 mwExtVerDbSets=$($BINDIR/mwversionsinuse --extended --withdb) || die
 # Regenerate the extension message file list for all active MediaWiki versions
 for i in ${mwExtVerDbSets[@]}; do
@@ -47,6 +52,7 @@ for i in ${mwExtVerDbSets[@]}; do
 	mwTempDest=$(sudo -u apache mktemp) || die
 	sudo -u apache $BINDIR/mwscript mergeMessageFileList.php --wiki="$mwDbName" \
 		--list-file=$MW_COMMON_SOURCE/wmf-config/extension-list $QUIET --output="$mwTempDest" \
+		--threads=$THREADS \
 		|| die
 	sudo -u apache chmod 664 "$mwTempDest"  || die
 	cp "$mwTempDest" $MW_COMMON_SOURCE/wmf-config/ExtensionMessages-"$mwVerNum".php || die
