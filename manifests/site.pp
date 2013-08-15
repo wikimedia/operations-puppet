@@ -2845,6 +2845,14 @@ node "vanadium.eqiad.wmnet" {
     }
 }
 
+node 'hafnium.wikimedia.org' {
+    include standard
+
+    sudo_user { 'olivneh':
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
+}
+
 node "virt1000.wikimedia.org" {
     $cluster = "virt"
     $ganglia_aggregator = true
