@@ -2835,6 +2835,7 @@ node "vanadium.eqiad.wmnet" {
     $gid=500
 
     include standard,
+        groups::wikidev,
         accounts::olivneh,
         role::eventlogging,
         role::ipython_notebook,
@@ -2850,6 +2851,7 @@ node "vanadium.eqiad.wmnet" {
 # and MediaWiki errors. Non-critical at the moment. See RT #5514.
 node 'hafnium.wikimedia.org' {
     include standard,
+        groups::wikidev,
         accounts::olivneh
 
     sudo_user { 'olivneh':
