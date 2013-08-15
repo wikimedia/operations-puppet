@@ -93,10 +93,10 @@ journal=$(ceph-conf --cluster=ceph --name=osd.${osdid} --lookup 'osd journal')
 # cleanup possibly old journal
 rm -f ${journal}
 
-ceph-disk suppress-activate
+ceph-disk suppress-activate ${disk}
 ceph-disk prepare ${disk} ${journal}
 udevadm settle
-ceph-disk unsuppress-activate
+ceph-disk unsuppress-activate ${disk}
 
 # explicitly set whoami
 # WARNING: this can be dangerous if not previously cleaned up properly
