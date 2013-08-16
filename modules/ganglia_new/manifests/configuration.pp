@@ -107,13 +107,13 @@ class ganglia_new::configuration {
 			"id"	=> 38 },
 		"redis"			=> {
 			"name"		=> "Redis",
-			"id"	=> "39" },
+			"id"	=> 39 },
 		"labsnfs"	=> {
 			"name"		=> "Labs NFS cluster",
-			"id"	=> "40" },
+			"id"	=> 40 },
 		'cache_misc'	=> {
 			'name'		=> 'Misc Web caching cluster',
-			'ip_oct'	=> '41' },
+			'id'	=> 41 },
 	}
 	# NOTE: Do *not* add new clusters *per site* anymore,
 	# the site name will automatically be appended now,
