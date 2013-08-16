@@ -131,6 +131,8 @@ class exim {
 	#		Enable/disable SpamAssassin spam checking
 	#	- $outbound_ips:
 	#		IP addresses to use for sending outbound e-mail
+	#	- $list_outbound_ips:
+	#		IP addresses to use for sending outbound e-mail from Mailman
 	#	- $hold_domains:
 	#		List of domains to hold on the queue without processing
 	class roled(
@@ -146,6 +148,7 @@ class exim {
 		$rt_relay="false",
 		$enable_spamassassin="false",
 		$outbound_ips=[ $ipaddress ],
+		$list_outbound_ips=[],
 		$hold_domains=[] ) {
 
 		class { "exim::config": install_type => "heavy", queuerunner => "combined" }
