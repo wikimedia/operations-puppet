@@ -1,7 +1,7 @@
 # A set of roles for the backup director, storage and client as they are
 # configured in WMF
 
-$director = "FILLMEIN"
+$director = "helium.eqiad.wmnet"
 
 class role::backup::director {
     system_role { "role::backup::director": description => "Primary Backup server" }
@@ -92,16 +92,50 @@ class role::backup::director {
 class role::backup::storage() {
     system_role { "role::backup::storage": description => "Storage backup server" }
 
+    include nfs::netapp::common
+
     class { 'bacula::storage':
         director            => $director,
         sd_max_concur_jobs  => 5,
         sqlvariant          => 'mysql',
     }
     
-    bacula::storage::device { 'FileStorage':
+    file { [ '/srv/bacula-sd1',
+             '/srv/bacula-sd2' ]:
+        ensure  => directory,
+        owner   => bacula,
+        group   => bacula,
+        mode    => '0660',
+        require => Class['bacula::storage'],
+    }
+
+    mount { "/srv/bacula-sd1" :
+        ensure  => mounted,
+        device  => "${nfs::netapp::common::device}:/vol/bacula-sd1",
+        fstype  => "nfs",
+        options => "${nfs::netapp::common::options},rw",
+        require => File['/srv/bacula-sd1'],
+    }
+
+    mount { "/srv/bacula-sd2" :
+        ensure  => mounted,
+        device  => "${nfs::netapp::common::device}:/vol/bacula-sd2",
+        fstype  => "nfs",
+        options => "${nfs::netapp::common::options},rw",
+        require => File['/srv/bacula-sd2'],
+    }
+
+    bacula::storage::device { 'FileStorage2':
         device_type     => 'File',
         media_type      => 'File',
-        archive_device  => '/srv/backups',
+        archive_device  => '/srv/bacula-sd2',
+        max_concur_jobs => 2,
+    }
+
+    bacula::storage::device { 'FileStorage1':
+        device_type     => 'File',
+        media_type      => 'File',
+        archive_device  => '/srv/bacula-sd1',
         max_concur_jobs => 2,
     }
 }
