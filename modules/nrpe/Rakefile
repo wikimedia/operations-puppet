@@ -1,7 +1,35 @@
 require 'rake'
+require 'fileutils'
 
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec) do |t|
+symlinks = { 'spec/fixtures/modules/nrpe/files' => '../../../../files',
+  'spec/fixtures/modules/nrpe/manifests' => '../../../../manifests',
+  'spec/fixtures/modules/nrpe/templates' => '../../../../templates',
+}
+
+
+task :setup do
+  FileUtils.mkdir_p('spec/fixtures/modules/nrpe')
+  symlinks.each do |x|
+    if !File.exist?(x[0])
+      FileUtils.ln_s(x[1], x[0])
+    end
+  end
+end
+
+task :teardown do
+  symlinks.each { |x| FileUtils.rm(x[0], :force => true) }
+  FileUtils.rmdir('spec/fixtures/modules/nrpe')
+  FileUtils.rmdir('spec/fixtures/modules')
+end
+
+RSpec::Core::RakeTask.new(:realspec) do |t|
+  t.fail_on_error = false
   t.pattern = 'spec/*/*_spec.rb'
+end
+
+task :spec => [ :setup, :realspec, :teardown]
+
+task :default => :spec do
 end
