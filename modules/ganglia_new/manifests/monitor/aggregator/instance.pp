@@ -1,7 +1,7 @@
 define ganglia_new::monitor::aggregator::instance($site) {
 	Ganglia_new::Monitor::Aggregator::Instance[$title] -> Service[ganglia-monitor-aggregator]
 
-	require ganglia_new::configuration, network::constants
+	include ganglia_new::configuration, network::constants
 
 	$aggregator = true
 
