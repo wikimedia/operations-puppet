@@ -18,24 +18,21 @@
 #    $ensure
 #       Defaults to present
 #
-define nrpe::monitor_service(
-                            $description,
-                            $nrpe_command  = undef,
-                            $contact_group = 'admins',
-                            $retries       = 3,
-                            $ensure        = 'present') {
+define nrpe::monitor_service( $description,
+                              $nrpe_command  = undef,
+                              $contact_group = 'admins',
+                              $retries       = 3,
+                              $ensure        = 'present') {
     if $nrpe_command != undef {
         nrpe::check { "check_${title}":
             command => $nrpe_command,
             before  => ::Monitor_service[$title],
         }
     }
-    else {
-        # TODO: Figure out why this is here
-        Nrpe::Check["check_${title}"] -> Nrpe::Monitor_service[$title]
-    }
 
-    ::monitor_service{ $title:
+    # TODO: Refactor this to make a call to nagios::monitor_service (or similar) after nagios
+    # has been refactored to a module. It is known to cause rspec tests to fail
+    ::monitor_service { $title:
         ensure        => $ensure,
         description   => $description,
         check_command => "nrpe_check!check_${title}",
