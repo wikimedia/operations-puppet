@@ -48,9 +48,6 @@ class role::backup::director {
     bacula::director::fileset { 'a-eventlogging':
         includes => [ '/a/eventlogging' ]
     }
-    bacula::director::fileset { 'a-sqldata':
-        includes => [ '/a/sqldata' ]
-    }
     bacula::director::fileset { 'home':
         includes => [ '/home' ]
     }
