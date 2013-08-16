@@ -2985,6 +2985,14 @@ node "xenon.eqiad.wmnet" {
     include standard
 }
 
+node "ytterbium.wikimedia.org" {
+
+    sudo_user { "demon": privileges => ['ALL = NOPASSWD: ALL'] }
+
+    include standard-noexim
+}
+
+
 node "yvon.wikimedia.org" {
     include base,
         ganglia,
