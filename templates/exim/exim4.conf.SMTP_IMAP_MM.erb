@@ -339,7 +339,17 @@ domains = ! +local_domains
 	transport = bulk_smtp
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	no_verify
-<% end %>
+
+<% end -%>
+<% if enable_mailman == "true" then -%>
+list_outbound:
+	driver = dnslookup
+	condition = ${if match_ip{$sender_host_address}{@[]}}
+	senders = *@lists.wikimedia.org
+	transport = list_smtp
+	no_verify
+
+<% end -%>
 <% if enable_mail_relay != "false" then -%>
 # Send donate.wikimedia.org mail to Fundraising CiviCRM server
 donate:
@@ -654,7 +664,12 @@ remote_smtp:
 <% if (enable_otrs_server == "false" ) -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
-<% if (enable_mailman == "true" ) -%>
+<% if enable_mailman == "true" ) -%>
+
+list_smtp:
+	driver = smtp
+	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	interface = <; <%= list_outbound_ips.join(" ; ") %>
 	helo_data = lists.wikimedia.org
 <% end -%>
 
