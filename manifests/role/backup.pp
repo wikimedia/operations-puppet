@@ -7,6 +7,9 @@ class role::backup::config {
 }
 
 class role::backup::director {
+    include role::backup::config
+    include passwords::bacula
+
     system_role { 'role::backup::director': description => 'Backup server' }
 
     class { 'bacula::director':
@@ -33,7 +36,7 @@ class role::backup::director {
     bacula::director::catalog { 'production':
         dbname      => 'bacula',
         dbuser      => 'bacula',
-        dbhost      => $bacula::config::database,
+        dbhost      => $role::backup::config::database,
         dbport      => '3306',
         dbpassword  => $passwords::bacula::database
     }
@@ -98,6 +101,8 @@ class role::backup::director {
 }
 
 class role::backup::storage() {
+    include role::backup::config
+
     system_role { 'role::backup::storage': description => 'Backup Storage' }
 
     include nfs::netapp::common
