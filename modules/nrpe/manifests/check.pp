@@ -13,7 +13,7 @@
 #       Install a NRPE check definition in /etc/nagios/nrpe.d/
 #
 # Requires:
-#   Class[nrpe::packages]
+#   Class[nrpe]
 #
 # Sample Usage:
 #   nrpe::check { 'check_myprocess':
@@ -21,7 +21,9 @@
 #   }
 
 define nrpe::check($command) {
-    Class[nrpe::packages] -> Nrpe::Check[$title]
+    if !defined(Class['nrpe']) {
+        class {'nrpe': }
+    }
 
     file { "/etc/nagios/nrpe.d/${title}.cfg":
         owner   => root,

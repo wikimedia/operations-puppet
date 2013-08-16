@@ -431,7 +431,7 @@ class base::monitoring::host($contact_group = "admins") {
 		sudo_user { [ "nagios", "icinga" ]: privileges => ['ALL = NOPASSWD: /usr/local/bin/check-raid.py'] }
 		nrpe::monitor_service { "raid" : description => "RAID", nrpe_command  => "sudo /usr/local/bin/check-raid.py" }
 		nrpe::monitor_service { "disk_space" : description => "Disk space", nrpe_command  => "/usr/lib/nagios/plugins/check_disk -w 6% -c 3% -l -e" }
-		nrpe::monitor_service { "dpkg" : description => "DPKG", nrpe_command  => "/usr/lib/nagios/plugins/check_dpkg" }
+		nrpe::monitor_service { "dpkg" : description => "DPKG", nrpe_command  => "/usr/local/lib/nagios/plugins/check_dpkg" }
 
 		## this is only needed for the raid checks.
 		## should be able to move into sudo_user def above once puppet is caught up
