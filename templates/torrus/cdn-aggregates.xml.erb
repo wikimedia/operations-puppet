@@ -6,9 +6,14 @@ def node_list(role, site)
 	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site]
 end
 
+def node_list_squid(role, site)
+	realm = scope.lookupvar('::realm')
+	return scope.lookupvar("role::cache::configuration::decommissioned_nodes")[role][site] + scope.lookupvar("role::cache::configuration::active_nodes")[realm][role][site+'-squid']
+end
+
 def squid_rpn(role, site, list=nil)
 	result = ""
-	list = node_list(role, site+'-squid') if list == nil
+	list = node_list_squid(role, site) if list == nil
 	list.each do |node|
 		result << "{/Squids/#{site}/#{role}/#{node}/%layer%/%squidmetric%},"
 	end
@@ -39,7 +44,7 @@ end
 		</param>
 		
 		<param name="expr-Squid_api_pmtpa">
-<%= squid_rpn('text', 'pmtpa', node_list('api', 'pmtpa'+'-squid')) %>
+<%= squid_rpn('text', 'pmtpa', node_list_squid('api', 'pmtpa')) %>
 		</param>
 
 		<param name="expr-Squid_upload_pmtpa">	
@@ -51,7 +56,7 @@ end
 		</param>
 
 		<param name="expr-Squid_api_eqiad">
-<%= squid_rpn('text', 'eqiad', node_list('api', 'eqiad'+'-squid')) %>
+<%= squid_rpn('text', 'eqiad', node_list_squid('api', 'eqiad')) %>
 		</param>
 
 		<param name="expr-Squid_text_esams">
