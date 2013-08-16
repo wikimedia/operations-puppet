@@ -42,7 +42,7 @@ define sysctlfile($value         = undef,
 
     # if using $value, then set $key = $value in the sysctl.d file
     if $value {
-        File[$sysctl_file] { content => "${key} = ${value}" }
+        File[$sysctl_file] { content => "${key} = ${value}\n" }
     }
     # else just set the content
     elsif $content {
