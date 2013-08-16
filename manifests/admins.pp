@@ -433,7 +433,7 @@ class accounts {
                                         ensure  => present,
                                         user    => $username,
                                         type    => "ssh-rsa",
-                                        key     => "AAAAB3NzaC1yc2EAAAABJQAAAIBt7ePL3ps6MVHEAMGdNHVd/lO2L3Yc0szq/M5gSino+bNmn7yOmNMk7QxVHHwsPOBPbEuBhKEUj5LC/K5oxMT4jOW5lH/PTGntsHNK+42nLsrbkTV20MVZerf5JUw7y/IL12RYzrzk6/uvA5LqBLGucha2yi2llcrWCzbvlnxTUw==";
+                                        key     => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC+bZ1KKVo3jL93NYN/9++YVvbJobz5onNLMhQz37Ec8UZnb+m22R16JN0Fl++HfHy19RkI2H9Ex1vg5mqQHD+8BGpbRfl5VEJSmXB1zcbr+yJgk/b3G51EDCulJuuqQpcieI2Z4D8ds4q8NVl3cI3kH3hbjrIT4bojWz+GB0WzG2aNdkgwMUZynvLjQb+VrxcTd6fnWQsjEIVdtXXsp1croF3+lDPwrC3DFq0svPsDLu8jaFPM45VQ5VdxVZNYBGBAy+IzMeLCnLph/lBW0vS9jhAR+r0QYzzNHOiEnOISnoiw8ECtwOTAQjTaGdkv3enFme9/KXbdk6YWByapygrL";
                         }
                 }
 
