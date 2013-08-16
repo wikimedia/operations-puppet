@@ -10,7 +10,8 @@ echo "Ceph $HEALTH"
 if echo $HEALTH | grep -q OK; then
 	exit 0
 elif echo $HEALTH | grep -q WARN; then
-	exit 1
+	# make it CRITICAL as we currently don't track WARNINGs at all...
+	exit 2
 elif echo $HEALTH | grep -q ERR; then
 	exit 2
 else
