@@ -39,6 +39,8 @@ class misc::blogs::wikimedia {
 	# knows which varnish service to notify.
 	$varnish_blog_instance_name = ""
 
+	class { "varnish::monitoring::ganglia": varnish_instances => [ "blog" ] }
+
 	# varnish cache instance for blog.wikimedia.org
 	varnish::instance { "blog":
 		name => $varnish_blog_instance_name,
