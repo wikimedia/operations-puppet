@@ -92,7 +92,7 @@ class role::backup::director {
     }
 
     # The console should be on the director
-    bacula::console { 'bconsole':
+    class { 'bacula::console':
         director   => $::fqdn,
     }
 }
