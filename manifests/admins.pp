@@ -796,27 +796,27 @@ class accounts {
 
 			ssh_authorized_key {
 				"jf@htz1.mormo.org":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEA6oJQl5pStZupvWuqliV4iyRwEO5XPOG5SWVdctyf/DJA6FnSB3MLqfui+NJFeShIbrAyVMeHPk009wC4SCUsuxJz52/YlfMXLRfmYMOy2QvsLVlXATzU2koCafyqdmPETWPazCAobNtgH1eTfhtewOqBaL63gulYZHIrgGjUxqv02JEdMsaLB9KcmKbtbwiUnilCAx1agsjXVkxrBD/Pl+wcMWgJklfxnt80czndvBPPzxPKQOkJGvuqNp39JqHoKVZtJ9wFhEXM5greAu4JXhz18OcGZFtXUlBaCvHsVIpWwkg0DHMqTbtEaxlWuJXj5whOgc2xwao4Dvu1p5h5eQ==";
 				"jf@nx7400":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAIEAm0iSI9O2ThFVmGXGzdKCnhPHt/1+qWfanOu7gyhlTvNu4Mt7EtrjoiagsDkYSQMqkFion/u7l5r27nJ63elGfBuND1RrJEbgQqCjSZA2hFKRrwCD9N8pMiffxJiRB/tb3PTghdYCdzDrBYyHgi1WKtO/0eCsBpwD/zSwQobEHr8=";
 				"jf@hpmini":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABJQAAAMEAqilgQkGZLiuyqSt3nvPTb68otGHrwB7yPm5BI0TcHML2eMqOifGwSBBjuPbXiNFtenWG5uZtBHLhTJyLTTQ1sJx0nz0qdOc0hWQzGAv3AIQl5casuiD7UQd4xtmJ81ZBxcsDtlllDN+ceQhiitP2iR9gIlda6SpgIiNxK3CvbEGE7Ep/LdTeNrb6/j3NLjvQtHBMYt45jz0WcWBy0zF33fNZGX43ActpYvO79L7vULPQk+eFAPiCoPUhIzh0O6nB";
 				"jf@mormo":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBAP+T1xnSHS4r8qwJw4np5syradidl7RYfpz2ZTn1yDdaKdfV7J9uMGswhILdTCnH/2RawgH0Y+q0AYY41qBZ/GLYrTdOy9MS+coK4j71l7jDPxQob+IazGwSvo/7A2WzOH0F/oaGAqDg2m66QVvtofbfUgmxBzA8zHkvzYFsUUeRAAAAFQCSLmm2GvN4tlLOL8addUUo8MDOxQAAAIA0qVhPLKA8k4oEzM1DE8C36xIMs7DU7ymDW2pbjq2VU8RjpZjhCH5ewaVEnN7CMmsVLaUsC9rFCMiT0N7z02Y5Zup4gzGuoxgdD5DtLFPdRMyVMEmPrOJIrYWL7cnd+KCZ6xmLrj7TSjzgEr6lGVwmLprBtHrx3Nvwm2f81kqXeQAAAIBj/ZLel34m5FItEK5LZiY/Ljg87iMsZW/AKcl2abKmF9Tuoi8y76BS+3WtaMD0X1ic90oSc3EacLDyDpwE1XzWk9rO3FhHXnsVZFYQIdK7LINy8+yGrccGVMpIR9OUMFpMCPC+td6VrXfRM/5DX7NZXSBbzCHJ/Co9ztHS8FIH4Q==";
 				"jeluf@zwinger":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-dss",
 					key	=> "AAAAB3NzaC1kc3MAAACBANooK6FcUTzatD5XDUFAN03FFvJ2mYkBy9vF/OtH/hnWxH43vtgtyf7N+/f2JEmRo3gcTEpfV4eIztE4gLNd2u6S5dSXuZDIy146AD3PHRwcYjEuEL/fNC0oKEIYOKYiLoQqpnB+/idQHP7uQaiGNHC6lhEy5oWpui+kTCZBTr9bAAAAFQDJ7lk/ddYc7Wo+/IhR0EOQ3mTpjQAAAIEAtagACraVrg8PtpbpK7tjNjqQkgK8IaQDjEMGbGyJdpASBZkyw+EZSLV/10pihQktIYcHJCmjEBOsFN9BEf0IlgoQkJO4IhhgoRXA8eZRRl106GpIv18QUmayjWNtvG321oibmSJdi4VwdfckH6x63bS5t3RQP2ExW/3KiBDa91cAAACAW2t7AgL3qI7NhXjIGeo4lPY45SVSy+KxHuyQKiGs7v753mtdrhSDD4xaawzQf53jOlYe1yBIlEbqICRJ8zhT+e5eS9ZiXWM+G0V5P6U1f6HeRDBLm1SPsvJUdYFPdoIlcg8e9ys5E3sHNy6xYF1zjzMe+EtCsiM1+mC5olBWl8I=";
@@ -842,12 +842,12 @@ class accounts {
 
 			ssh_authorized_key {
 				"kate@zwinger.wikimedia.org":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAIEAtj96Qh5uNEsO6bgK+4Uj5dFQ6TAJlV3DAtB/FCNJNXmcV4eggnHxAcMVy7jbGYk/gRhPUNLBil59ZImrXcsRF7wP+/QYegeJQ5er/KqNKd4EtSnD7+mEaM90rSlm0suG93k5VDShMS/Yb74XWMEMwcFwrltaXve16P+9IpmTF2k=";
 				"river@loreley":
-					ensure	=> present,
+					ensure	=> absent,
 					user	=> $username,
 					type	=> "ssh-rsa",
 					key	=> "AAAAB3NzaC1yc2EAAAABIwAAAQEAyszt9jTA88Dz4SjVVevwgCKHY1GfS5hla0XatqtAWNI+9O5eXasbybB7UfHo5Y6FB8Xu7Snu1NAj/xVGKLlQ69cNT6YMaj3TC1TLfhK2pmHxWHXDUqffU5ZOE/C4VSdING8FateJ5E7oOw9152UKNRoI12Fsu9yzzUZnKm0+43kFg/XfGioGqagm4jAUNhwylqRulRxFWCpZLjEjJOiRI+6pgVK8+wsq5kpuwVe36k0wmHEPWhbGabNY1Uw6dkVWIz3pI1PtaAmmb4FZ6KLYFh6kO4u3M+uhPfj94mtJb3Yr5jPkOb/9DKhCaZqYLVm3cs7pyQZtN3oRkitjzJC34Q==";
@@ -3066,9 +3066,9 @@ class admins::roots {
 	include accounts::dzahn
 	include accounts::faidon
 	include accounts::fvassard # disabled
-	include accounts::jeluf
+	include accounts::jeluf # disabled 
 	include accounts::jgreen
-	include accounts::kate
+	include accounts::kate # disabled
 	include accounts::laner
 	include accounts::lcarr
 	include accounts::marc
