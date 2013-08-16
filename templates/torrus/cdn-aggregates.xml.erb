@@ -8,7 +8,7 @@ end
 
 def squid_rpn(role, site, list=nil)
 	result = ""
-	list = node_list(role, site) if list == nil
+	list = node_list(role, site+'-squid') if list == nil
 	list.each do |node|
 		result << "{/Squids/#{site}/#{role}/#{node}/%layer%/%squidmetric%},"
 	end
@@ -39,7 +39,7 @@ end
 		</param>
 		
 		<param name="expr-Squid_api_pmtpa">
-<%= squid_rpn('text', 'pmtpa', node_list('api', 'pmtpa')) %>
+<%= squid_rpn('text', 'pmtpa', node_list('api', 'pmtpa'+'-squid')) %>
 		</param>
 
 		<param name="expr-Squid_upload_pmtpa">	
@@ -51,7 +51,7 @@ end
 		</param>
 
 		<param name="expr-Squid_api_eqiad">
-<%= squid_rpn('text', 'eqiad', node_list('api', 'eqiad')) %>
+<%= squid_rpn('text', 'eqiad', node_list('api', 'eqiad'+'-squid')) %>
 		</param>
 
 		<param name="expr-Squid_text_esams">
