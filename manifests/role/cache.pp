@@ -48,6 +48,7 @@ class role::cache {
 						'sq77.wikimedia.org',
 						'sq78.wikimedia.org',
 					],
+					"pmtpa" => [],
 					"eqiad-squid" => [
 						'cp1001.eqiad.wmnet',	# API
 						'cp1002.eqiad.wmnet',	# API
@@ -159,6 +160,8 @@ class role::cache {
 						'sq85.wikimedia.org',
 						'sq86.wikimedia.org',
 					],
+					"pmtpa" => [],
+					"eqiad-squid" => [],
 					'eqiad' => [
 						'cp1048.eqiad.wmnet',
 						'cp1049.eqiad.wmnet',
@@ -169,6 +172,7 @@ class role::cache {
 						'cp1063.eqiad.wmnet',
 						'cp1064.eqiad.wmnet',
 					],
+					"esams-squid" => [],
 					"esams" => [
 						'cp3003.esams.wikimedia.org',
 						'cp3004.esams.wikimedia.org',
