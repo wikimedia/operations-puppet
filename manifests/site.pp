@@ -1037,7 +1037,9 @@ node "harmon.pmtpa.wmnet" {
 
 node "helium.eqiad.wmnet" {
     include standard,
-        role::poolcounter
+        role::poolcounter,
+        role::backup::director,
+        role::backup::storage
 }
 
 node "holmium.wikimedia.org" {
