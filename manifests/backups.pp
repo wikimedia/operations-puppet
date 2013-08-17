@@ -33,7 +33,7 @@ define backup::schedule($pool) {
     }
 
     bacula::director::jobdefaults { "Monthly-1st-${name}-${pool}":
-        when        => "Monthly-${name}",
+        when        => "Monthly-1st-${name}",
         pool        => "${pool}",
     }
 
