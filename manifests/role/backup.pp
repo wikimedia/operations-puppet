@@ -115,8 +115,8 @@ class role::backup::storage() {
 
     # We have two storage devices to overcome any limitations from backend
     # infrastructure (e.g. Netapp used to have only < 16T volumes)
-    file { ['/srv/bacula-sd1',
-            '/srv/bacula-sd2' ]:
+    file { ['/srv/baculasd1',
+            '/srv/baculasd2' ]:
         ensure  => directory,
         owner   => 'bacula',
         group   => 'bacula',
@@ -124,33 +124,33 @@ class role::backup::storage() {
         require => Class['bacula::storage'],
     }
 
-    mount { '/srv/bacula-sd1' :
+    mount { '/srv/baculasd1' :
         ensure  => mounted,
-        device  => "${nfs::netapp::common::device}:/vol/bacula-sd1",
+        device  => "${nfs::netapp::common::device}:/vol/baculasd1",
         fstype  => 'nfs',
         options => "${nfs::netapp::common::options},rw",
-        require => File['/srv/bacula-sd1'],
+        require => File['/srv/baculasd1'],
     }
 
-    mount { '/srv/bacula-sd2' :
+    mount { '/srv/baculasd2' :
         ensure  => mounted,
-        device  => "${nfs::netapp::common::device}:/vol/bacula-sd2",
+        device  => "${nfs::netapp::common::device}:/vol/baculasd2",
         fstype  => 'nfs',
         options => "${nfs::netapp::common::options},rw",
-        require => File['/srv/bacula-sd2'],
+        require => File['/srv/baculasd2'],
     }
 
     bacula::storage::device { 'FileStorage1':
         device_type     => 'File',
         media_type      => 'File',
-        archive_device  => '/srv/bacula-sd1',
+        archive_device  => '/srv/baculasd1',
         max_concur_jobs => 2,
     }
 
     bacula::storage::device { 'FileStorage2':
         device_type     => 'File',
         media_type      => 'File',
-        archive_device  => '/srv/bacula-sd2',
+        archive_device  => '/srv/baculasd2',
         max_concur_jobs => 2,
     }
 }
