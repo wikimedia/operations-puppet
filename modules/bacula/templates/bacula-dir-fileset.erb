@@ -8,10 +8,12 @@ FileSet {
         File = include
         <% end -%>
     }
+    <% if @excludes -%>
     Exclude {
         <% @excludes.each do |exclude| %>
         File = exclude
         <% end -%>
     }
+    <% end -%>
     # Ignore FileSet Changes = no
 }

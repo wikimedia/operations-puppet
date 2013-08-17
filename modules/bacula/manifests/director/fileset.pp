@@ -20,7 +20,7 @@
 #           excludes     => [ '/tmp', ],
 #       }
 
-define bacula::director::fileset($includes, $excludes) {
+define bacula::director::fileset($includes, $excludes=undef) {
     file { "/etc/bacula/conf.d/fileset-${name}.conf":
         ensure  => present,
         owner   => root,

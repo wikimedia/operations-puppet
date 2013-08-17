@@ -19,6 +19,7 @@
 #           dbhost      => 'bacula-db.example.org',
 #           dbport      => '3306',
 #           dbpassword  => 'bacula',
+#       }
 define bacula::director::catalog($dbname, $dbuser, $dbhost, $dbport, $dbpassword) {
     file { "/etc/bacula/conf.d/catalog-${name}.conf":
         ensure  => present,
