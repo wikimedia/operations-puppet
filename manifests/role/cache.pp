@@ -1144,7 +1144,7 @@ class role::cache {
 
 		include standard,
 			nrpe,
-			role::cache::ssl::unified
+			role::cache::ssl::wikimedia
 
 		$memory_storage_size = 8
 
