@@ -786,8 +786,8 @@ class role::cache {
 			include misc::monitoring::htcp-loss
 		}
 	}
-	
-	class ssl::unified {
+
+	class ssl($sitename, $certname) {
 		include certificates::wmf_ca, role::protoproxy::ssl::common
 
 		# Assumes that LVS service IPs are setup elsewhere
@@ -798,15 +798,23 @@ class role::cache {
 			check_command => "check_ssl_cert!*.wikimedia.org",
 		}
 
-		install_certificate { 'unified.wikimedia.org':
-			before => Protoproxy::Localssl['unified']
+		install_certificate { $certname:
+			before => Protoproxy::Localssl[$sitename]
 		}
 
-		protoproxy::localssl { 'unified':
-			proxy_server_cert_name => 'unified.wikimedia.org',
+		protoproxy::localssl { $sitename:
+			proxy_server_cert_name => $certname,
 			upstream_port => '80',
 			enabled => true
 		}
+	}
+
+	class ssl::wikimedia {
+		class{ '::role::cache::ssl': sitename => 'wikimedia', certname => 'star.wikimedia.org' }
+	}
+
+	class ssl::unified {
+		class{ '::role::cache::ssl': sitename => 'unified', certname => 'unified.wikimedia.org' }
 	}
 
 	class text {
