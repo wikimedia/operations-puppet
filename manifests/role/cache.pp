@@ -19,6 +19,8 @@
 
 @monitor_group { "cache_parsoid_eqiad": description => "Parsoid caches eqiad" }
 
+@monitor_group { 'cache_misc_eqiad': description => 'Misc caches eqiad' }
+
 class role::cache {
 	class configuration {
 		include lvs::configuration
