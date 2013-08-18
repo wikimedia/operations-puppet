@@ -1,5 +1,14 @@
 include "errorpage.inc.vcl";
 
+call robots_txt_disallow_all {
+	set obj.status = 200;
+	set obj.http.Connection = "keep-alive";
+	synthetic {"
+User-agent: *
+Disallow: /
+	"}
+}
+
 sub vcl_recv {
 	if (req.http.Host == "git.wikimedia.org") {
 		set req.backend = antimony;
@@ -13,7 +22,17 @@ sub vcl_recv {
 	}
 }
 
+sub vcl_fetch {
+	if (req.url == "/robots.txt" && (beresp.status != 200 || beresp.http.Content-Length == "0")) {
+		error 667 "OK";
+	}
+}
+
 sub vcl_error {
+	if (obj.status == 667) {
+		call robots_txt_disallow_all;
+		return(deliver);
+	}
 	call errorpage;
 	return(deliver);
 }
