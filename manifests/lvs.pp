@@ -1139,6 +1139,9 @@ class lvs::monitor {
 		"wikivoyage-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
 			check_command => "check_http_lvs!en.wikivoyage.org!/wiki/Main_Page";
+		'misc-web-lb.eqiad.wikimedia.org':
+			ip_address => $ip['misc_web']['eqiad']['misc_web'],
+			check_command => 'check_http_lvs!git.wikimedia.org!/robots.txt';
 	}
 
 	monitor_service_lvs6_http_https {
@@ -1196,6 +1199,9 @@ class lvs::monitor {
 		"wikivoyage-lb.eqiad.wikimedia.org":
 			ip_address => $ip['ipv6']['eqiad']['wikivoyagelb6'],
 			uri => "en.wikivoyage.org!/wiki/Main_Page";
+		'misc-web-lb.eqiad.wikimedia.org':
+			ip_address => $ip['misc_web']['eqiad']['misc_web6'],
+			uri => 'git.wikimedia.org!/robots.txt';
 	}
 
 	monitor_service_lvs_https {
@@ -1253,6 +1259,9 @@ class lvs::monitor {
 		"wikivoyage-lb.eqiad.wikimedia.org":
 			ip_address => $ip['text-varnish']['eqiad']['wikivoyagelb'],
 			check_command => "check_https_lvs!en.wikivoyage.org!/wiki/Main_Page";
+		'misc-web-lb.eqiad.wikimedia.org':
+			ip_address => $ip['misc_web']['eqiad']['misc_web'],
+			check_command => 'check_https_lvs!git.wikimedia.org!/robots.txt';
 	}
 
 	# esams -lb addresses
