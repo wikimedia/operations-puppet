@@ -304,6 +304,7 @@ define git::clone(
 			exec { "git_clone_${title}":
 				command     => "git clone ${brancharg}${origin}${deptharg} $directory",
 				logoutput   => on_failure,
+				cwd         => '/tmp',
 				environment => $env,
 				creates     => "$directory/.git/config",
 				user        => $owner,
