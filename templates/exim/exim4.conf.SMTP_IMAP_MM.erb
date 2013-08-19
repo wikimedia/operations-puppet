@@ -665,6 +665,10 @@ begin transports
 remote_smtp:
 	driver = smtp
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
+	dkim_domain = wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = /etc/exim4/dkim/wikimedia.org-wikimedia.key
+	dkim_canon = relaxed
 <% if (enable_otrs_server == "false" ) -%>
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
@@ -676,6 +680,10 @@ list_smtp:
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	interface = <; <%= list_outbound_ips.join(" ; ") %>
 	helo_data = lists.wikimedia.org
+	dkim_domain = lists.wikimedia.org
+	dkim_selector = wikimedia
+	dkim_private_key = /etc/exim4/dkim/lists.wikimedia.org-wikimedia.key
+	dkim_canon = relaxed
 <% end -%>
 
 <% if mediawiki_relay == "true" -%>
@@ -685,6 +693,10 @@ bulk_smtp:
 	hosts_avoid_tls = <; 0.0.0.0/0 ; 0::0/0
 	interface = WIKI_INTERFACE
 	helo_data = <; wiki-mail.wikimedia.org ; lists.wikimedia.org
+	dkim_domain = wikimedia.org
+	dkim_selector = wiki-mail
+	dkim_private_key = /etc/exim4/dkim/wikimedia.org-wiki-mail.key
+	dkim_canon = relaxed
 <% end -%>
 
 # Generic pipe local delivery transport (for use by alias/forward files)
