@@ -105,7 +105,6 @@ $decommissioned_servers = [
 'lily',
 'lomaria',
 'loudon', #moved to frack.eqiad 7-15-13
-'mexia',
 'mc1', #Remove mc1-16 7/12/13 or later
 'mc2',
 'mc3',
