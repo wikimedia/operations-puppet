@@ -4,14 +4,14 @@ FileSet {
     Name = <%= @name %>
     Include {
         Options { signature = MD5 }
-        <% @includes.each do |include| %>
-        File = include
+        <% @includes.each do |include| -%>
+		File = <%= include %>
         <% end -%>
     }
     <% if @excludes -%>
     Exclude {
-        <% @excludes.each do |exclude| %>
-        File = exclude
+        <% @excludes.each do |exclude| -%>
+		File = <%= exclude %>
         <% end -%>
     }
     <% end -%>
