@@ -39,6 +39,8 @@ class mediawiki_singlenode(
 		ensure    => $ensure,
 		directory => $install_path,
 		branch    => 'master',
+		group     => "project-${instanceproject}",
+		mode      => '2775',
 		timeout   => 1800,
 		origin    => 'https://gerrit.wikimedia.org/r/p/mediawiki/core.git',
 	}
