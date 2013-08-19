@@ -24,6 +24,13 @@ class role::backup::director {
         volume_retention => '180 days',
     }
 
+    # Default pool needed internally by bacula
+    bacula::director::pool { 'Default':
+        max_vols         => 1,
+        storage          => 'FileStorage1',
+        volume_retention => '1800 days',
+    }
+
     # One schedule per day of the week.
     # Setting execution times so that it is unlikely jobs will run concurrently
     # with cron.{hourly,daily,monthly} or other cronscripts
@@ -57,7 +64,7 @@ class role::backup::director {
     bacula::director::fileset { 'mnt-a':
         includes => [ '/mnt/a' ]
     }
-    bacula::director::fileset { 'root':
+    bacula::director::fileset { 'roothome':
         includes => [ '/root' ]
     }
     bacula::director::fileset { 'srv-autoinstall':
