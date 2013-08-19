@@ -1041,12 +1041,12 @@ node "helium.eqiad.wmnet" {
         role::backup::director,
         role::backup::storage
 
-	class { 'backup::host':
-		sets	=> {
-			'roothome' => { fileset => 'roothome',
-						    jobdefaults => 'Monthly-1st-Mon-production', },
-			}
-	}
+    class { 'backup::host':
+        sets	=> {
+            'roothome' => { fileset => 'roothome',
+                            jobdefaults => 'Monthly-1st-Mon-production', },
+        }
+    }
 }
 
 node "holmium.wikimedia.org" {
