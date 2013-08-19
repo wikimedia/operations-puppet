@@ -34,14 +34,14 @@ class authdns::account {
         owner   => $user,
         group   => $group,
         mode    => '0400',
-        source  => 'puppet:///modules/private/authdns/id_rsa',
+        source  => 'puppet:///private/authdns/id_rsa',
     }
     file { "${home}/.ssh/id_rsa.pub":
         ensure  => 'present',
         owner   => $user,
         group   => $group,
         mode    => '0400',
-        source  => 'puppet:///modules/private/authdns/id_rsa.pub',
+        source  => 'puppet:///private/authdns/id_rsa.pub',
     }
     file { "${home}/.ssh/authorized_keys":
         ensure  => 'link',
