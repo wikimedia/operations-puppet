@@ -80,6 +80,7 @@ class toollabs::exec_environ {
 
       # Python libraries
       'python-apport',
+      'python-beautifulsoup',        # For valhallasw.
       'python-celery',
       'python-celery-with-redis',
       'python-egenix-mxdatetime',
