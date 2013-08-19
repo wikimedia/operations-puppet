@@ -2586,10 +2586,10 @@ node /sq(3[7-9]|40)\.wikimedia\.org/ {
     include role::cache::text
 }
 
-# sq41-50 are old 4 disk upload squids
-node /sq(4[1-9]|50)\.wikimedia\.org/ {
+# sq42-50 are old 4 disk upload squids
+node /sq(4[2-9]|50)\.wikimedia\.org/ {
     $squid_coss_disks = [ 'sdb5', 'sdc', 'sdd' ]
-    if $hostname =~ /^sq4[12]$/ {
+    if $hostname =~ /^sq4[23]$/ {
         $ganglia_aggregator = true
     }
 
