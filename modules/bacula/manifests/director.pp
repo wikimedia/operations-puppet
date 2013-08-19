@@ -47,8 +47,8 @@ class bacula::director(
     file { '/etc/bacula/bacula-dir.conf':
         ensure  => present,
         owner   => root,
-        group   => root,
-        mode    => '0400',
+        group   => bacula,
+        mode    => '0440',
         notify  => Service['bacula-director'],
         content => template('bacula/bacula-dir.conf.erb'),
         require => Package["bacula-director-${sqlvariant}"],
@@ -87,6 +87,16 @@ class bacula::director(
         owner   => root,
         group   => bacula,
         require => Package["bacula-director-${sqlvariant}"],
+    }
+
+    # Populating restore template/migrate jobs
+    file { '/etc/bacula/jobs.d/restore-migrate-jobs.conf':
+        ensure  => file,
+        mode    => '0444',
+        owner   => root,
+        group   => bacula,
+        require => File['/etc/bacula/jobs.d'],
+        content => template('bacula/restore-migrate-jobs.conf.erb'),
     }
 
     # Storage daemons will export their resources here

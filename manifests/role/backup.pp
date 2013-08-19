@@ -49,8 +49,11 @@ class role::backup::director {
     }
 
     # This has been taken straight from old files/backup/disklist-*
+    bacula::director::fileset { 'root':
+        includes     => [ '/' ]
+    }
     bacula::director::fileset { 'a-sqldata':
-        includes     => [ '/a/sqldata']
+        includes     => [ '/a/sqldata' ]
     }
     bacula::director::fileset { 'a-backup':
         includes => [ '/a/backup' ]

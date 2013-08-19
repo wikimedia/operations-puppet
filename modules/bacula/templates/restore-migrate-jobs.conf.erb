@@ -1,0 +1,21 @@
+Job {
+  Name = "RestoreFiles"
+  Type = Restore
+  FileSet = "root"
+  Pool = Default
+  Client = <%= @fqdn -%>-fd
+  Messages = Standard
+  Where = /var/tmp/bacula-restores
+}
+
+Job {
+  Name = "Migrate Job"
+  Type = Migrate
+  Level = Full
+  Pool = Default
+  FileSet = "root"
+  Client = <%= @fqdn -%>-fd
+  Messages = Standard
+  Selection Type = SQLQuery
+  Selection Pattern = "SELECT 15515"
+}
