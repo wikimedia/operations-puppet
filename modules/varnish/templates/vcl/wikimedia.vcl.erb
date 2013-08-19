@@ -237,23 +237,20 @@ sub vcl_recv {
 }
 
 sub vcl_fetch {
-	/* Add max-age/s-maxage to CC to fix Varnish's broken behaviour */
-	if (beresp.http.Cache-Control !~ "(max-age|s-maxage)"
-		&& beresp.http.Cache-Control ~ "(private|no-cache)") {
+	/* Don't cache private, no-cache, no-store objects */
+	if (beresp.http.Cache-Control ~ "(private|no-cache|no-store)") {
 		set beresp.ttl = 0s;
-		set beresp.http.Cache-Control = beresp.http.Cache-Control + ", s-maxage=0, max-age=0";
+		/* This should be translated into hit_for_pass later */
 	}
-
-	set beresp.grace = 60m;
-
+	elsif (beresp.status >= 400 && beresp.status <= 499 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
+		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
+	}
 <% if vcl_config.fetch("retry5xx", "0") == "1" -%>
-	if (beresp.status > 499 && beresp.status < 505) {
+	if (beresp.status >= 500 && beresp.status < 505) {
 		return(restart);
 	}
 <% end -%>
-	if (beresp.status >= 400 && beresp.ttl > <%= vcl_config.fetch("cache4xx", "5m") %>) {
-		set beresp.ttl = <%= vcl_config.fetch("cache4xx", "5m") %>;
-	}
+	set beresp.grace = 60m;
 
 	/* Function vcl_fetch in <%= vcl %>.inc.vcl will be appended here */
 }
