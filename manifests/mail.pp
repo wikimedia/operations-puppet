@@ -169,6 +169,13 @@ class exim {
 				group => Debian-exim,
 				mode => 0440,
 				content => template("exim/exim4.conf.SMTP_IMAP_MM.erb");
+			"/etc/exim4/dkim/":
+				ensure => 'directory',
+				purge => true,
+				owner => root,
+				group => Debian-exim,
+				mode => 0440,
+				require => Package[exim4-config];
 			"/etc/exim4/system_filter":
 				owner => root,
 				group => Debian-exim,
@@ -184,24 +191,52 @@ class exim {
 		class mail_relay {
 			Class["exim::config"] -> Class[exim::roled::mail_relay]
 
-			file {
-				"/etc/exim4/relay_domains":
+			file { '/etc/exim4/relay_domains':
 					owner => root,
 					group => root,
 					mode => 0444,
 					source => "puppet:///files/exim/exim4.secondary_relay_domains.conf";
+			}
+			file { '/etc/exim4/dkim/wikimedia.org-wikimedia.key':
+				ensure  => present,
+				owner   => 'root',
+				group   => 'Debian-exim',
+				mode    => '0440',
+				content => 'puppet:///private/dkim/wikimedia.org-wikimedia.key',
+				require => File['/etc/exim4/dkim'],
+				notify  => Service['exim4'],
 			}
 		}
 
 		class mailman {
 			Class["exim::config"] -> Class[exim::roled::mailman]
 
-			file {
-				"/etc/exim4/aliases/lists.wikimedia.org":
+			file { '/etc/exim4/aliases/lists.wikimedia.org':
 					owner => root,
 					group => root,
 					mode => 0444,
 					source => "puppet:///files/exim/exim4.listserver_aliases.conf";
+			}
+			file { '/etc/exim4/dkim/lists.wikimedia.org-wikimedia.key':
+				ensure  => present,
+				owner   => 'root',
+				group   => 'Debian-exim',
+				mode    => '0440',
+				content => 'puppet:///private/dkim/lists.wikimedia.org-wikimedia.key',
+				require => File['/etc/exim4/dkim'],
+				notify  => Service['exim4'],
+			}
+		}
+
+		if ( $mediawiki_relay == "true" ) {
+			file { '/etc/exim4/dkim/wikimedia.org-wiki-mail.key':
+				ensure  => present,
+				owner   => 'root',
+				group   => 'Debian-exim',
+				mode    => '0440',
+				content => 'puppet:///private/dkim/wikimedia.org-wiki-mail.key',
+				require => File['/etc/exim4/dkim'],
+				notify  => Service['exim4'],
 			}
 		}
 
