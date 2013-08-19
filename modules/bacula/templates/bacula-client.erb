@@ -12,6 +12,8 @@ Client {
     TLS Enable = yes
     TLS Require = yes
     TLS CA Certificate File = "/var/lib/puppet/ssl/certs/ca.pem"
+    TLS Certificate = "/var/lib/puppet/ssl/certs/<%= @director -%>.pem"
+    TLS Key = "/var/lib/puppet/ssl/private_keys/<%= @director -%>.pem"
     # Priority = 10
     # Maximum Bandwith Per Job =
     # Autoprune = yes

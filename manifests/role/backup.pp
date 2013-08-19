@@ -22,6 +22,7 @@ class role::backup::director {
         max_vols         => 30,
         storage          => 'FileStorage1',
         volume_retention => '180 days',
+        label_fmt        => 'production',
     }
 
     # Default pool needed internally by bacula
