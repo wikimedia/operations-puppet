@@ -147,6 +147,9 @@ ignore_bounce_errors_after = 0h
 # Hold mail for these domains (e.g. for testing/debugging)
 hold_domains = <%= hold_domains.join(" : ") %>
 
+# force Gmail over IPv4 due to reports of bad spam reputation over IPv6
+dns_ipv4_lookup = gmail-smtp-in.l.google.com : aspmx.l.google.com
+
 ###############################
 # Access Control Lists (ACLs) #
 ###############################
