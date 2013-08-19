@@ -794,6 +794,23 @@ node "dysprosium.eqiad.wmnet" {
     include standard
 }
 
+node 'eeden.esams.wikimedia.org' {
+    # FIXME: to be switched to role::authdns::ns2 after the transition
+    include standard
+
+    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
+    $nameservers = [
+            'rubidium.wikimedia.org',
+            'mexia.wikimedia.org',
+            'eeden.esams.wikimedia.org',
+    ]
+
+    class { 'authdns':
+        nameservers   => $nameservers,
+        gitrepo       => $gitrepo,
+    }
+}
+
 node "ekrem.wikimedia.org" {
     include standard,
         misc::irc-server,
@@ -1807,6 +1824,23 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
     class { role::db::redis : redis_replication => $redis_replication }
 }
 
+node 'rubidium.wikimedia.org' {
+    # FIXME: to be switched to role::authdns::ns0 after the transition
+    include standard
+
+    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
+    $nameservers = [
+            'rubidium.wikimedia.org',
+            'mexia.wikimedia.org',
+            'eeden.esams.wikimedia.org',
+    ]
+
+    class { 'authdns':
+        nameservers   => $nameservers,
+        gitrepo       => $gitrepo,
+    }
+}
+
 node "mchenry.wikimedia.org" {
     $gid = 500
 
@@ -1834,6 +1868,23 @@ node "mchenry.wikimedia.org" {
 
     # mails the wikimedia.org mail alias file to OIT once per week
     class { misc::maintenance::mail_exim_aliases: enabled => true }
+}
+
+node 'mexia.wikimedia.org' {
+    # FIXME: to be switched to role::authdns::ns1 after the transition
+    include standard
+
+    $gitrepo = 'https://gerrit.wikimedia.org/r/p/operations/dns.git'
+    $nameservers = [
+            'rubidium.wikimedia.org',
+            'mexia.wikimedia.org',
+            'eeden.esams.wikimedia.org',
+    ]
+
+    class { 'authdns':
+        nameservers   => $nameservers,
+        gitrepo       => $gitrepo,
+    }
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
