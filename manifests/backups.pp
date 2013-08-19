@@ -4,9 +4,11 @@
 # Transitioning to bacula stanzas
 
 class backup::host($sets) {
+    include role::backup::config
+
     class { 'bacula::client':
-        director        => $director,
-        catalog         => 'WMF',
+        director        => $role::backup::config::director,
+        catalog         => 'production',
         file_retention  => '90 days',
         job_retention   => '6 months',
     }
