@@ -62,8 +62,8 @@ class bacula::client(
     # resource
     exec { 'concat-bacula-keypair':
         command => "/bin/cat /var/lib/puppet/ssl/certs/$::fqdn.pem \
- /var/lib/puppet/ssl/certs//$::fqdn.pem > \
- /var/lib/puppet/ssl/private_keys/bacula_keypair-$::fqdn.pem",
+ /var/lib/puppet/ssl/private_keys/$::fqdn.pem > \
+ /var/lib/puppet/ssl/private_keys/bacula-keypair-$::fqdn.pem",
         creates => "/var/lib/puppet/ssl/private_keys/bacula-keypair-$::fqdn.pem",
     }
 
