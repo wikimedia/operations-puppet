@@ -669,7 +669,6 @@ remote_smtp:
 	interface = <; <%= outbound_ips.join(" ; ") %>
 <% end -%>
 <% if enable_mailman == "true" -%>
-	helo_data = lists.wikimedia.org
 
 list_smtp:
 	driver = smtp
