@@ -47,4 +47,28 @@ collection_group {
         name = "vhtcpd_queue_max_size"
         title = "Maximum number of packets in queue since startup/overflow (count)"
     }
+    metric {
+        name = "vhtcpd_inpkts_recvd_delta"
+        title = "Multicast packets since last check"
+    }
+    metric {
+        name = "vhtcpd_inpkts_sane_delta"
+        title = "Sane packets since last check"
+    }
+    metric {
+        name = "vhtcpd_inpkts_enqueued_delta"
+        title = "Pakets enqueued since last check"
+    }
+    metric {
+        name = "vhtcpd_inpkts_dequeued_delta"
+        title = "Packets dequeued since last check"
+    }
+    metric {
+        name = "vhtcpd_queue_overflows_delta"
+        title = "Number of queue overflows since last check"
+    }
+    metric {
+        name = "vhtcpd_queue_max_size_delta"
+        title = "Maximum number of packets in queue since last check/overflow"
+    }
 }
