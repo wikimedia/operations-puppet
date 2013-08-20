@@ -8,6 +8,11 @@ class misc::dsh {
 	
 	class files {
 		file {
+			"/etc/dsh":
+				ensure => true,
+				owner => root,
+				group => root,
+				mode => 0444;
 			"/etc/dsh/group":
 				owner => root,
 				group => root,
