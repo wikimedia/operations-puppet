@@ -322,6 +322,8 @@ $decommissioned_servers = [
 'virt1001',
 'virt1002',
 'virt1003',
+'virt3',
+'virt4',
 'zinc', #reclaimed, not really decommissioned
 'wikinews-lb.wikimedia.org',
 'wtp1',
