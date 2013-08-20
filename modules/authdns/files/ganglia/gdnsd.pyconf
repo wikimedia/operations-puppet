@@ -13,78 +13,78 @@ collection_group {
 
     metric {
         name = "gdnsd_stats_formerr"
-        title = "FORMERR"
+        title = "DNS FORMERR responses"
     }
     metric {
         name = "gdnsd_stats_v6"
-        title = "IPv6"
+        title = "DNS queries over IPv6"
     }
     metric {
         name = "gdnsd_stats_refused"
-        title = "REFUSED"
+        title = "DNS REFUSED responses"
     }
     metric {
         name = "gdnsd_stats_badvers"
-        title = "BADVERS"
+        title = "DNS BADVERS responses"
     }
     metric {
         name = "gdnsd_stats_noerror"
-        title = "NOERROR"
+        title = "DNS NOERROR responses"
     }
     metric {
         name = "gdnsd_stats_dropped"
-        title = "Dropped"
+        title = "DNS dropped packets"
     }
     metric {
         name = "gdnsd_stats_nxdomain"
-        title = "NXDOMAIN"
+        title = "DNS NXDOMAIN responses"
     }
     metric {
         name = "gdnsd_stats_edns_clientsub"
-        title = "EDNS Client Subnet"
+        title = "DNS queries with EDNS Client Subnet"
     }
     metric {
         name = "gdnsd_stats_notimp"
-        title = "NOTIMP"
+        title = "DNS NOTIMP responses"
     }
     metric {
         name = "gdnsd_stats_edns"
-        title = "EDNS"
+        title = "DNS EDNS queries"
     }
     metric {
         name = "gdnsd_udp_edns_big"
-        title = "UDP EDNS Big"
+        title = "DNS UDP EDNS big"
     }
     metric {
         name = "gdnsd_udp_reqs"
-        title = "UDP requests"
+        title = "DNS UDP requests"
     }
     metric {
         name = "gdnsd_udp_sendfail"
-        title = "UDP sendfail"
+        title = "DNS UDP sendfail"
     }
     metric {
         name = "gdnsd_udp_edns_tc"
-        title = "UDP EDNS TC-bit"
+        title = "DNS UDP EDNS TC-bit"
     }
     metric {
         name = "gdnsd_udp_recvfail"
-        title = "UDP recvfail"
+        title = "DNS UDP recvfail"
     }
     metric {
         name = "gdnsd_udp_tc"
-        title = "UDP TC-bit"
+        title = "DNS UDP TC-bit"
     }
     metric {
         name = "gdnsd_tcp_sendfail"
-        title = "TCP sendfail"
+        title = "DNS TCP sendfail"
     }
     metric {
         name = "gdnsd_tcp_recvfail"
-        title = "TCP recvfail"
+        title = "DNS TCP recvfail"
     }
     metric {
         name = "gdnsd_tcp_reqs"
-        title = "TCP requests"
+        title = "DNS TCP requests"
     }
 }

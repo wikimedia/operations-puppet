@@ -31,9 +31,9 @@ CONF = {
 }
 DESCRIPTIONS = {
     'stats_v6': 'DNS queries over IPv6',
-    'stats_badvers': ' DNS BADVERS responses',
+    'stats_badvers': 'DNS BADVERS responses',
     'stats_formerr': 'DNS FORMERR responses',
-    'stats_noerror': ' DNS NOERROR responses',
+    'stats_noerror': 'DNS NOERROR responses',
     'stats_notimp': 'DNS NOTIMP responses',
     'stats_nxdomain': 'DNS NXDOMAIN responses',
     'stats_refused': 'DNS REFUSED responses',
