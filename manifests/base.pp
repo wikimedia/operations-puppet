@@ -97,6 +97,15 @@ class base::puppet($server="puppet", $certname=undef) {
 		ensure => latest;
 	}
 
+	file { "/etc/snmp/snmp.conf":
+		ensure => present,
+		owner => root,
+		group => root,
+		mode  => 0444,
+		content => template("snmp/snmp.conf.erb"),
+		require => Package[ "snmp" ];
+	}
+
 	monitor_service { "puppet freshness": description => "Puppet freshness", check_command => "puppet-FAIL", passive => "true", freshness => 36000, retries => 1 ; }
 
 	case $::realm {
