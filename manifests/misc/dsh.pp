@@ -9,7 +9,7 @@ class misc::dsh {
 	class files {
 		file {
 			"/etc/dsh":
-				ensure => present,
+				ensure => directory,
 				owner => root,
 				group => root,
 				mode => 0444;
