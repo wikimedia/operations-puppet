@@ -124,8 +124,8 @@ def metric_init(params):
     for category in raw:
         try:
             for metric in raw[category]:
-                name = "%s_%s_%s" % (CONF['prefix'], category, metric)
-                desc = "%s_%s" % (category, metric)
+                name = str("%s_%s_%s" % (CONF['prefix'], category, metric))
+                desc = str("%s_%s" % (category, metric))
                 descriptors.append(build_desc(skel, {
                     'name': name,
                     'description': DESCRIPTIONS.get(desc, desc),
