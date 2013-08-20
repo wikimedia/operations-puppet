@@ -2,7 +2,7 @@
 # Monitoring checks for authdns, specific to Wikimedia setup
 #
 class authdns::monitoring {
-    Class['authdns'] -> Class['authdns-monitoring']
+    Class['authdns'] -> Class['authdns::monitoring']
 
     if $authdns::ipaddress {
         $monitor_ip = $authdns::ipaddress

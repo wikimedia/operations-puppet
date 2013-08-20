@@ -809,6 +809,7 @@ node 'eeden.esams.wikimedia.org' {
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
     }
+    include authdns::ganglia
 }
 
 node "ekrem.wikimedia.org" {
@@ -1839,6 +1840,7 @@ node 'rubidium.wikimedia.org' {
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
     }
+    include authdns::ganglia
 }
 
 node "mchenry.wikimedia.org" {
@@ -1885,6 +1887,7 @@ node 'mexia.wikimedia.org' {
         nameservers   => $nameservers,
         gitrepo       => $gitrepo,
     }
+    include authdns::ganglia
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {

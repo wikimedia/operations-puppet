@@ -1,0 +1,90 @@
+# gdnsd plugin for Ganglia monitor, automatically generated config file
+
+modules {
+    module {
+        name = "gdnsd"
+        language = "python"
+    }
+}
+
+collection_group {
+    collect_every = 15
+    time_threshold = 15
+
+    metric {
+        name = "gdnsd_stats_formerr"
+        title = "FORMERR"
+    }
+    metric {
+        name = "gdnsd_stats_v6"
+        title = "IPv6"
+    }
+    metric {
+        name = "gdnsd_stats_refused"
+        title = "REFUSED"
+    }
+    metric {
+        name = "gdnsd_stats_badvers"
+        title = "BADVERS"
+    }
+    metric {
+        name = "gdnsd_stats_noerror"
+        title = "NOERROR"
+    }
+    metric {
+        name = "gdnsd_stats_dropped"
+        title = "Dropped"
+    }
+    metric {
+        name = "gdnsd_stats_nxdomain"
+        title = "NXDOMAIN"
+    }
+    metric {
+        name = "gdnsd_stats_edns_clientsub"
+        title = "EDNS Client Subnet"
+    }
+    metric {
+        name = "gdnsd_stats_notimp"
+        title = "NOTIMP"
+    }
+    metric {
+        name = "gdnsd_stats_edns"
+        title = "EDNS"
+    }
+    metric {
+        name = "gdnsd_udp_edns_big"
+        title = "UDP EDNS Big"
+    }
+    metric {
+        name = "gdnsd_udp_reqs"
+        title = "UDP requests"
+    }
+    metric {
+        name = "gdnsd_udp_sendfail"
+        title = "UDP sendfail"
+    }
+    metric {
+        name = "gdnsd_udp_edns_tc"
+        title = "UDP EDNS TC-bit"
+    }
+    metric {
+        name = "gdnsd_udp_recvfail"
+        title = "UDP recvfail"
+    }
+    metric {
+        name = "gdnsd_udp_tc"
+        title = "UDP TC-bit"
+    }
+    metric {
+        name = "gdnsd_tcp_sendfail"
+        title = "TCP sendfail"
+    }
+    metric {
+        name = "gdnsd_tcp_recvfail"
+        title = "TCP recvfail"
+    }
+    metric {
+        name = "gdnsd_tcp_reqs"
+        title = "TCP requests"
+    }
+}
