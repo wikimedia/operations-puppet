@@ -2481,7 +2481,7 @@ node "sodium.wikimedia.org" {
     }
 
     class { exim::roled:
-        outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
+        outbound_ips => [ "208.80.154.61", "2620:0:861:1:208:80:154:61" ],
         list_outbound_ips => [ "208.80.154.4", "2620:0:861:1::2" ],
         local_domains => [ "+system_domains", "+mailman_domains" ],
         enable_mail_relay => "secondary",
