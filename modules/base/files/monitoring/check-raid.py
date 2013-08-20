@@ -234,8 +234,10 @@ def checkMegaSas():
 
     stateRegex = re.compile('^State\s*:\s*([^\n]*)')
     drivesRegex = re.compile('^Number Of Drives( per span)?\s*:\s*([^\n]*)')
+    configuredRegex = re.compile('^Adapter \d+: No Virtual Drive Configured')
     state = None
     numDrives = None
+    configured = True
     for line in proc.stdout:
         m = stateRegex.match(line)
         if m is not None:
@@ -247,14 +249,23 @@ def checkMegaSas():
             numDrives = int(m.group(2))
             continue
 
+        c = configuredRegex.match(line)
+        if c is not None:
+            configured = False
+            continue
+
     ret = proc.wait()
     if ret != 0:
         print 'WARNING: MegaCli64 returned exit status %d' % (ret)
         return 1
 
     if numDrives is None:
-        print 'WARNING: Parse error processing MegaCli64 output'
-        return 1
+        if configured:
+            print 'WARNING: Parse error processing MegaCli64 output'
+            return 1
+        else:
+            print 'OK: No disks configured for RAID'
+            return 0
 
     if state != 'Optimal':
         print 'CRITICAL: %s' % (state)
