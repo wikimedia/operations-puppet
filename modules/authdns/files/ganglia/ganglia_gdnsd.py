@@ -23,31 +23,32 @@
 import urllib2
 import json
 
+
 CONF = {
     'stats_url': 'http://127.0.0.1:3506/json',
     'prefix': 'gdnsd',
     'groups': 'gdnsd',
 }
 DESCRIPTIONS = {
-    'stats_formerr': 'FORMERR',
-    'stats_v6': 'IPv6',
-    'stats_refused': 'REFUSED',
-    'stats_badvers': 'BADVERS',
-    'stats_noerror': 'NOERROR',
-    'stats_dropped': 'Dropped',
-    'stats_nxdomain': 'NXDOMAIN',
-    'stats_edns_clientsub': 'EDNS Client Subnet',
-    'stats_notimp': 'NOTIMP',
-    'stats_edns': 'EDNS',
-    'udp_edns_big': 'UDP EDNS Big',
-    'udp_reqs': 'UDP requests',
-    'udp_sendfail': 'UDP sendfail',
-    'udp_edns_tc': 'UDP EDNS TC-bit',
-    'udp_recvfail': 'UDP recvfail',
-    'udp_tc': 'UDP TC-bit',
-    'tcp_sendfail': 'TCP sendfail',
-    'tcp_recvfail': 'TCP recvfail',
-    'tcp_reqs': 'TCP requests',
+    'stats_v6': 'DNS queries over IPv6',
+    'stats_badvers': ' DNS BADVERS responses',
+    'stats_formerr': 'DNS FORMERR responses',
+    'stats_noerror': ' DNS NOERROR responses',
+    'stats_notimp': 'DNS NOTIMP responses',
+    'stats_nxdomain': 'DNS NXDOMAIN responses',
+    'stats_refused': 'DNS REFUSED responses',
+    'stats_dropped': 'DNS dropped packets',
+    'stats_edns': 'DNS EDNS queries',
+    'stats_edns_clientsub': 'DNS queries with EDNS Client Subnet',
+    'udp_reqs': 'DNS UDP requests',
+    'tcp_reqs': 'DNS TCP requests',
+    'udp_edns_big': 'DNS UDP EDNS big',
+    'udp_tc': 'DNS UDP TC-bit',
+    'udp_edns_tc': 'DNS UDP EDNS TC-bit',
+    'udp_sendfail': 'DNS UDP sendfail',
+    'udp_recvfail': 'DNS UDP recvfail',
+    'tcp_sendfail': 'DNS TCP sendfail',
+    'tcp_recvfail': 'DNS TCP recvfail',
 }
 
 
@@ -76,11 +77,7 @@ def fetch_metrics(url=CONF['stats_url']):
         data = response.read()
         response.close()
         metrics = json.loads(data)
-    except urllib2.URLError:
-        pass
-    except KeyError:
-        pass
-    except:
+    except (urllib2.URLError, KeyError):
         pass
 
     return metrics
@@ -139,9 +136,11 @@ def metric_init(params):
 
 def metric_config(params):
     """Returns a pyconf to accompany this"""
+    import textwrap
+
     descriptors = metric_init(params)
 
-    out = """
+    out = """\
     # gdnsd plugin for Ganglia monitor, automatically generated config file
 
     modules {
@@ -158,17 +157,15 @@ def metric_config(params):
 
     for desc in descriptors:
         out += """
-        metric {{
-            name = "{name}"
-            title = "{description}"
-        }}""".format(**desc)  # pylint: disable-msg=W0142
+        metric {
+            name = "%(name)s"
+            title = "%(description)s"
+        }""" % desc
 
     out += """
-    }
-    """
+    }"""
 
-    import textwrap
-    return textwrap.dedent(out).strip()
+    return textwrap.dedent(out)
 
 
 def metric_cleanup():
@@ -183,5 +180,4 @@ if __name__ == '__main__':
     else:
         for d in metric_init({}):
             d['value'] = d['call_back'](d['name'])
-            fmt = ' {name}: {units} {value} [{description}]'
-            print fmt.format(**d)  # pylint: disable-msg=W0142
+            print ' %(name)s: %(units)s %(value)s [%(description)s]' % d
