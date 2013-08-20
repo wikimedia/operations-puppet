@@ -322,6 +322,7 @@ $decommissioned_servers = [
 'virt1001',
 'virt1002',
 'virt1003',
+'virt1',
 'virt3',
 'virt4',
 'zinc', #reclaimed, not really decommissioned
