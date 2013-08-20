@@ -50,4 +50,4 @@ rainman         ALL=NOPASSWD: SEARCH
 # %users  ALL=/sbin/mount /cdrom,/sbin/umount /cdrom
 # %users  localhost=/sbin/shutdown -h now
 
-nagios ALL=NOPASSWD: /usr/bin/check-raid.py ""
+nagios ALL=NOPASSWD: /usr/local/bin/check-raid.py ""
