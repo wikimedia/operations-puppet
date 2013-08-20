@@ -1,0 +1,7 @@
+Verified+2: jenkins-bot
+Code-Review+2: Faidon <faidon@wikimedia.org>
+Submitted-by: Faidon <faidon@wikimedia.org>
+Submitted-at: Tue, 20 Aug 2013 08:03:29 +0000
+Reviewed-on: https://gerrit.wikimedia.org/r/79981
+Project: operations/puppet
+Branch: refs/heads/production
