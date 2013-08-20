@@ -649,6 +649,11 @@ class accounts {
 					user => $username,
 					type => "ssh-rsa",
 					key => "AAAAB3NzaC1yc2EAAAABIwAAAIEA2FOxgqYXUNKz/wcmyMY+dJyH9zStGNd4vM/RGjo5M3AI7J1qZpzVgJjphtrH1O8K8eJw2LAxIuqWt2MnHUzjCvOIT9zrMbZzsCGE81po88RTtZBYW9321/KnFpnuTrfAtQagRyge7KX/8TrRa8iE0CTuRB03sIH1BtF4U0OSTmc=";
+				"erik@deep_thought":
+					ensure => present,
+					user => $username,
+					type => "ssh-dsa",
+					key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDYiVifze8jetMrDIeZd8NRMKYofzT8fval1kdjAE2/3lAPpewZw8UxCM8Voz7jlJ2/NnGntNt99uGEp+6Z6VmUu15NUyeWSTdfe6BEQtLqtWaZ2qqdhoIS1bwdOEwZhSPGrP2Hp5LE0WRhAaCtVXQsCsKEFLwBjyXHQi3d1tR+qxFouKm2Yhq4atFksGfaJGCcUZ9k3qHJPheOM/0lIaOMm8cBkfacDFb7cZPHoNx8JrUcmKTHeqV8mYeIQQ4lfbwFSYnVy6F43psXWLIOYoHXmneu1840Of8Nxqd02ExEqZKBpwTZa/qPiLnVbexuPYzD3RcUE3g0NtL1smYZo6pr erik@deep_thought";
 			}
 		}
 	}
