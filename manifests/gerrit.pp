@@ -3,7 +3,6 @@
 
 class gerrit::instance($no_apache=false,
 		$apache_ssl=false,
-		$ircbot=false,
 		$slave=false,
 		$ssh_port="29418",
 		$db_host="",
@@ -63,9 +62,6 @@ class gerrit::instance($no_apache=false,
 		smtp_host => $smtp_host,
 		ssh_key => $ssh_key,
 	}
-
-	# Optional modules
-	if $ircbot { include gerrit::ircbot }
 }
 
 class gerrit::jetty ($ldap_hosts,
@@ -310,22 +306,6 @@ class gerrit::gitweb {
 		"/etc/apache2/conf.d/gitweb":
 			ensure => absent;
 		"/var/lib/gerrit2/review_site/etc/gitweb_config.perl":
-			ensure => absent;
-	}
-}
-
-class gerrit::ircbot {
-	package { ['ircecho']:
-		ensure => absent;
-	}
-
-	service { ['ircecho']:
-		enable => false,
-		ensure => stopped;
-	}
-
-	file {
-		"/etc/default/ircecho":
 			ensure => absent;
 	}
 }
