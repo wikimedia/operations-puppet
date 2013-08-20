@@ -25,7 +25,7 @@ import copy
 CONF = {
     'log': '/tmp/vhtcpd.stats',
     'prefix': 'vhtcpd_',
-    'cache_secs': 5,
+    'cache_secs': 30,
     'groups': 'vhtcpd',
 }
 METRICS = {
@@ -192,6 +192,45 @@ def metric_init(params):
         'units': 'count',
         'description': 'Maximum number of packets in queue since startup/overflow',
         }))
+
+    # *_delta metrics compute diff from prior sample using internal cache
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'inpkts_recvd_delta',
+        'call_back': get_delta,
+        'units': 'pkts',
+        'description': 'Multicast packets since last check',
+        }))
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'inpkts_sane_delta',
+        'call_back': get_delta,
+        'units': 'pkts',
+        'description': 'Sane packets since last check',
+        }))
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'inpkts_enqueued_delta',
+        'call_back': get_delta,
+        'units': 'pkts',
+        'description': 'Pakets enqueued since last check',
+        }))
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'inpkts_dequeued_delta',
+        'call_back': get_delta,
+        'units': 'pkts',
+        'description': 'Packets dequeued since last check',
+        }))
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'queue_overflows_delta',
+        'call_back': get_delta,
+        'units': 'count',
+        'description': 'Number of queue overflows since last check',
+        }))
+    descriptors.append(build_desc(skel, {
+        'name': CONF['prefix'] + 'queue_max_size_delta',
+        'call_back': get_delta,
+        'units': 'count',
+        'description': 'Maximum number of packets in queue since last check/overflow',
+        }))
+
     return descriptors
 #end metric_init
 
