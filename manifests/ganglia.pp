@@ -300,7 +300,7 @@ class ganglia {
                         "Search pmtpa" => "search13.pmtpa.wmnet search14.pmtpa.wmnet",
                         "MySQL" => "db50.pmtpa.wmnet db51.pmtpa.wmnet",
                         "PDF servers" => "pdf1.wikimedia.org pdf2.wikimedia.org",
-                        "Upload squids" => "sq41.wikimedia.org sq42.wikimedia.org",
+                        "Upload squids" => "sq42.wikimedia.org",
                         "API squids" => "sq31.wikimedia.org sq35.wikimedia.org",
                         "LVS loadbalancers pmtpa" => "lvs1.wikimedia.org lvs2.wikimedia.org",
                         "Miscellaneous" => "hooper.wikimedia.org tarin.pmtpa.wmnet",
