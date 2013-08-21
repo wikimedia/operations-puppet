@@ -1,6 +1,5 @@
-# vim: set ts=4 et sw=4:
+# vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 #site.pp
-# vim: set noet:
 
 import "realm.pp" # These ones first
 import "generic-definitions.pp"
@@ -333,7 +332,7 @@ node /^cp10(3[7-9]|40)\.eqiad\.wmnet$/ {
 }
 
 node /^cp104[34]\.eqiad\.wmnet$/ {
-	$ganglia_aggregator = true
+    $ganglia_aggregator = true
 
     interface::add_ip6_mapped { "main": }
 
@@ -1060,7 +1059,7 @@ node "helium.eqiad.wmnet" {
         role::backup::storage
 
     class { 'backup::host':
-        sets	=> {
+        sets    => {
             'roothome' => { fileset => 'roothome',
                             jobdefaults => 'Monthly-1st-Mon-production', },
         }
@@ -1826,7 +1825,7 @@ node /^rdb100[1-4]\.eqiad\.wmnet/ {
 }
 
 node 'rubidium.wikimedia.org' {
-	include role::authdns::ns0
+    include role::authdns::ns0
 }
 
 node "mchenry.wikimedia.org" {
@@ -1859,7 +1858,7 @@ node "mchenry.wikimedia.org" {
 }
 
 node 'mexia.wikimedia.org' {
-	include role::authdns::ns1
+    include role::authdns::ns1
 }
 
 node /mobile100[1-4]\.wikimedia\.org/ {
