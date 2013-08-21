@@ -116,3 +116,7 @@ SHORTCUT_ICON = 'favicon.png'
 
 #Limiting the size of message to prevent archrunner from dying...
 MAX_MESSAGE_SIZE = 5120
+
+# we put footers etc. and hence invalidate DKIM signatures
+# although they shouldn't theoretically hurt, remove them to avoid confusion
+REMOVE_DKIM_HEADERS = Yes
