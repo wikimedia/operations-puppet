@@ -37,11 +37,17 @@ class role::ceph::eqiad inherits role::ceph::base {
             'osd'               => {
                 'osd journal'                 => '/var/lib/ceph/journal/$cluster-$id',
                 'osd journal size'            => '10240',
+                # lower from 5->3 and 10->5 respectively to ease up on the
+                # recovery traffic; GbE has easilly been maxed out before
+                'osd recovery max active'     => '3',
+                'osd max backfills'           => '5',
             },
             'radosgw'           => {
                 'rgw print continue'          => 'false',
                 'rgw enable ops log'          => 'false',
                 'rgw enable usage log'        => 'false',
+                # default is 100, far too small for the nr. of req that we want
+                'rgw thread pool size'        => '600',
                 'rgw extended http attrs'     => 'x_content_duration',
                 'debug rgw'                   => '1',
             },
